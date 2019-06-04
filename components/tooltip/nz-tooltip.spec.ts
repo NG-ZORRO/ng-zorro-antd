@@ -37,13 +37,13 @@ import { NzToolTipModule } from './nz-tooltip.module';
   `
 })
 export class NzTooltipTestDirectiveComponent {
-  @ViewChild('titleString', { static: true }) titleString: ElementRef;
+  @ViewChild('titleString', { static: false }) titleString: ElementRef;
   @ViewChild('titleString', { static: false, read: NzTooltipDirective })
   titleStringNzTooltipDirective: NzTooltipDirective;
-  @ViewChild('titleTemplate', { static: true }) titleTemplate: ElementRef;
+  @ViewChild('titleTemplate', { static: false }) titleTemplate: ElementRef;
   @ViewChild('titleTemplate', { static: false, read: NzTooltipDirective })
   titleTemplateNzTooltipDirective: NzTooltipDirective;
-  @ViewChild('inBtnGroup', { static: true }) inBtnGroup: ElementRef;
+  @ViewChild('inBtnGroup', { static: false }) inBtnGroup: ElementRef;
   title = 'title-string';
 }
 
@@ -62,13 +62,13 @@ export class NzTooltipTestDirectiveComponent {
   `
 })
 export class NzTooltipTestWrapperComponent {
-  @ViewChild('clickTrigger', { static: true }) clickTrigger: ElementRef;
-  @ViewChild('focusTrigger', { static: true }) focusTrigger: ElementRef;
+  @ViewChild('clickTrigger', { static: false }) clickTrigger: ElementRef;
+  @ViewChild('focusTrigger', { static: false }) focusTrigger: ElementRef;
   @ViewChild('mostSimpleTrigger', { static: false, read: NzTooltipDirective }) mostSimpleDirective: NzTooltipDirective;
-  @ViewChild('mostSimpleTrigger', { static: true }) mostSimpleTrigger: ElementRef;
-  @ViewChild('normalTrigger', { static: true }) normalTrigger: ElementRef;
-  @ViewChild('templateTrigger', { static: true }) templateTrigger: ElementRef;
-  @ViewChild('visibleTrigger', { static: true }) visibleTrigger: ElementRef;
+  @ViewChild('mostSimpleTrigger', { static: false }) mostSimpleTrigger: ElementRef;
+  @ViewChild('normalTrigger', { static: false }) normalTrigger: ElementRef;
+  @ViewChild('templateTrigger', { static: false }) templateTrigger: ElementRef;
+  @ViewChild('visibleTrigger', { static: false }) visibleTrigger: ElementRef;
   visible: boolean;
 }
 

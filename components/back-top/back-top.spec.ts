@@ -217,7 +217,7 @@ class TestBackTopComponent {
   `
 })
 class TestBackTopTemplateComponent {
-  @ViewChild(NzBackTopComponent, { static: true })
+  @ViewChild(NzBackTopComponent, { static: false })
   nzBackTopComponent: NzBackTopComponent;
 }
 

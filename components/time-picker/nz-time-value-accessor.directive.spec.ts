@@ -71,6 +71,7 @@ describe('input-time', () => {
   `
 })
 export class NzTestTimeInputComponent {
-  @ViewChild(NzTimeValueAccessorDirective, { static: true }) nzTimeValueAccessorDirective: NzTimeValueAccessorDirective;
+  @ViewChild(NzTimeValueAccessorDirective, { static: false })
+  nzTimeValueAccessorDirective: NzTimeValueAccessorDirective;
   value = new Date(0, 0, 0, 0, 0, 0);
 }

@@ -248,9 +248,9 @@ describe('switch', () => {
   `
 })
 export class NzTestSwitchBasicComponent {
-  @ViewChild(NzSwitchComponent, { static: true }) nzSwitchComponent: NzSwitchComponent;
-  @ViewChild('checkedChildrenTemplate', { static: true }) checkedChildrenTemplate: TemplateRef<void>;
-  @ViewChild('unCheckedChildrenTemplate', { static: true }) unCheckedChildrenTemplate: TemplateRef<void>;
+  @ViewChild(NzSwitchComponent, { static: false }) nzSwitchComponent: NzSwitchComponent;
+  @ViewChild('checkedChildrenTemplate', { static: false }) checkedChildrenTemplate: TemplateRef<void>;
+  @ViewChild('unCheckedChildrenTemplate', { static: false }) unCheckedChildrenTemplate: TemplateRef<void>;
   checkedChildren = 'on';
   unCheckedChildren = 'off';
   value = false;

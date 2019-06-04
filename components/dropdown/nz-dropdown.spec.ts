@@ -457,9 +457,9 @@ describe('dropdown', () => {
   styles: []
 })
 export class NzTestDropdownComponent {
-  @ViewChild(NzDropDownComponent, { static: true }) nzDropDownComponent: NzDropDownComponent;
+  @ViewChild(NzDropDownComponent, { static: false }) nzDropDownComponent: NzDropDownComponent;
   @ViewChild(NzDropDownDirective, { static: true }) nzDropDownDirective: NzDropDownDirective;
-  @ViewChild(NzSubMenuComponent, { static: true }) nzSubMenuComponent: NzSubMenuComponent;
+  @ViewChild(NzSubMenuComponent, { static: false }) nzSubMenuComponent: NzSubMenuComponent;
   visible = false;
   selectable = true;
   itemSelected = false;

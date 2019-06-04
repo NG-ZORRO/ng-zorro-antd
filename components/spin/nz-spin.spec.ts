@@ -120,7 +120,7 @@ describe('spin', () => {
   `
 })
 export class NzTestSpinBasicComponent {
-  @ViewChild('indicatorTemplate', { static: true }) indicatorTemplate: TemplateRef<void>;
+  @ViewChild('indicatorTemplate', { static: false }) indicatorTemplate: TemplateRef<void>;
   size = 'default';
   delay = 0;
   spinning = true;

@@ -209,13 +209,13 @@ describe('NzPopover', () => {
   `
 })
 export class NzPopoverTestNewComponent {
-  @ViewChild('stringPopover', { static: true }) stringPopover: ElementRef;
+  @ViewChild('stringPopover', { static: false }) stringPopover: ElementRef;
   @ViewChild('stringPopover', { static: false, read: NzPopoverDirective })
   stringPopoverNzPopoverDirective: NzPopoverDirective;
-  @ViewChild('templatePopover', { static: true }) templatePopover: ElementRef;
+  @ViewChild('templatePopover', { static: false }) templatePopover: ElementRef;
   @ViewChild('templatePopover', { static: false, read: NzPopoverDirective })
   templatePopoverNzPopoverDirective: NzPopoverDirective;
-  @ViewChild('inBtnGroup', { static: true }) inBtnGroup: ElementRef;
+  @ViewChild('inBtnGroup', { static: false }) inBtnGroup: ElementRef;
 }
 
 @Component({
@@ -236,14 +236,14 @@ export class NzPopoverTestNewComponent {
   `
 })
 export class NzPopoverTestWrapperComponent {
-  @ViewChild('normalTrigger', { static: true }) normalTrigger: ElementRef;
+  @ViewChild('normalTrigger', { static: false }) normalTrigger: ElementRef;
 
-  @ViewChild('templateTrigger', { static: true }) templateTrigger: ElementRef;
+  @ViewChild('templateTrigger', { static: false }) templateTrigger: ElementRef;
 
-  @ViewChild('focusTrigger', { static: true }) focusTrigger: ElementRef;
+  @ViewChild('focusTrigger', { static: false }) focusTrigger: ElementRef;
 
-  @ViewChild('clickTrigger', { static: true }) clickTrigger: ElementRef;
+  @ViewChild('clickTrigger', { static: false }) clickTrigger: ElementRef;
 
   visible: boolean;
-  @ViewChild('visibleTrigger', { static: true }) visibleTrigger: ElementRef;
+  @ViewChild('visibleTrigger', { static: false }) visibleTrigger: ElementRef;
 }

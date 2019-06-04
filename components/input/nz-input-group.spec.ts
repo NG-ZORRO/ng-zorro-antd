@@ -232,8 +232,8 @@ describe('input-group', () => {
   `
 })
 export class NzTestInputGroupAddonComponent {
-  @ViewChild('beforeTemplate', { static: true }) beforeTemplate: TemplateRef<void>;
-  @ViewChild('afterTemplate', { static: true }) afterTemplate: TemplateRef<void>;
+  @ViewChild('beforeTemplate', { static: false }) beforeTemplate: TemplateRef<void>;
+  @ViewChild('afterTemplate', { static: false }) afterTemplate: TemplateRef<void>;
   beforeContent: string | TemplateRef<void>;
   afterContent: string | TemplateRef<void>;
   size = 'default';
@@ -250,8 +250,8 @@ export class NzTestInputGroupAddonComponent {
   `
 })
 export class NzTestInputGroupAffixComponent {
-  @ViewChild('beforeTemplate', { static: true }) beforeTemplate: TemplateRef<void>;
-  @ViewChild('afterTemplate', { static: true }) afterTemplate: TemplateRef<void>;
+  @ViewChild('beforeTemplate', { static: false }) beforeTemplate: TemplateRef<void>;
+  @ViewChild('afterTemplate', { static: false }) afterTemplate: TemplateRef<void>;
   beforeContent: string | TemplateRef<void>;
   afterContent: string | TemplateRef<void>;
   size = 'default';
