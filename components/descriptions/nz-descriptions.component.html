@@ -6,8 +6,7 @@
   <table>
     <tbody>
       <tr class="ant-descriptions-row"
-          *ngFor="let row of itemMatrix; let i = index"
-          [attr.key]="i">
+          *ngFor="let row of itemMatrix; let i = index">
         <ng-container *ngFor="let item of row; let isLast = last">
           <ng-container *ngIf="!nzBordered">
             <td class="ant-descriptions-item"

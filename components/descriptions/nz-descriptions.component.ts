@@ -7,6 +7,7 @@
  */
 
 import { MediaMatcher } from '@angular/cdk/layout';
+import { Platform } from '@angular/cdk/platform';
 import {
   isDevMode,
   AfterContentInit,
@@ -75,7 +76,12 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
   private destroy$ = new Subject<void>();
   private resize$ = new Subject<void>();
 
-  constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone, private mediaMatcher: MediaMatcher) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone,
+    private mediaMatcher: MediaMatcher,
+    private platform: Platform
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzColumn) {
@@ -97,18 +103,20 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
         this.cdr.markForCheck();
       });
 
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent(window, 'resize')
-        .pipe(
-          auditTime(16),
-          takeUntil(this.destroy$)
-        )
-        .subscribe(() => {
-          this.ngZone.run(() => {
-            this.resize$.next();
+    if (this.platform.isBrowser) {
+      this.ngZone.runOutsideAngular(() => {
+        fromEvent(window, 'resize')
+          .pipe(
+            auditTime(16),
+            takeUntil(this.destroy$)
+          )
+          .subscribe(() => {
+            this.ngZone.run(() => {
+              this.resize$.next();
+            });
           });
-        });
-    });
+      });
+    }
   }
 
   ngOnDestroy(): void {
