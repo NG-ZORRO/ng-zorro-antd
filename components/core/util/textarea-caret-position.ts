@@ -5,6 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { NzLoggerFuncs } from 'ng-zorro-antd';
 
 // from https://github.com/component/textarea-caret-position
 
@@ -175,6 +176,6 @@ export function createDebugEle(element: HTMLInputElement | HTMLTextAreaElement, 
     element.scrollLeft +
     window.pageXOffset +
     coordinates.left}px`;
-  console.log(rect.style.top);
-  console.log(rect.style.left);
+  NzLoggerFuncs.log(rect.style.top);
+  NzLoggerFuncs.log(rect.style.left);
 }

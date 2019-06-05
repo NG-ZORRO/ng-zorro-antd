@@ -30,6 +30,7 @@ import {
   collapseMotion,
   InputBoolean,
   NzFormatBeforeDropEvent,
+  NzLoggerFuncs,
   NzNoAnimationDirective,
   NzTreeBaseService,
   NzTreeNode
@@ -73,11 +74,13 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   /**
-   * @deprecated use
-   * nzExpandAll instead
+   * @deprecated use `nzExpandAll` instead.
    */
   @Input()
   set nzDefaultExpandAll(value: boolean) {
+    NzLoggerFuncs.warnDeprecation(
+      `'nzDefaultExpandAll' is going to be removed in 9.0.0. Please use 'nzExpandAll' instead.`
+    );
     this._nzExpandAll = value;
     if (value && this.nzTreeNode && !this.nzTreeNode.isLeaf) {
       this.nzTreeNode.isExpanded = true;

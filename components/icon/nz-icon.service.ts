@@ -47,7 +47,7 @@ import {
   UploadOutline,
   UpOutline
 } from '@ant-design/icons-angular/icons';
-import { NzLoggerService } from 'ng-zorro-antd/core';
+import { NzLoggerFuncs } from 'ng-zorro-antd/core';
 
 export interface NzIconfontOption {
   scriptUrl: string;
@@ -105,15 +105,15 @@ export class NzIconService extends IconService {
 
   warnAPI(type: 'old' | 'cross' | 'vertical'): void {
     if (type === 'old') {
-      this.loggerService.warn(
-        `<i class="anticon"></i> would be deprecated soon. Please use <i nz-icon type=""></i> API.`
+      NzLoggerFuncs.warn(
+        `<i class="anticon"></i> would be deprecated in 9.0.0. Please use <i nz-icon nzType=""></i> API.`
       );
     }
     if (type === 'cross') {
-      this.loggerService.warn(`'cross' icon is replaced by 'close' icon.`);
+      NzLoggerFuncs.warn(`'cross' icon is replaced by 'close' icon.`);
     }
     if (type === 'vertical') {
-      this.loggerService.warn(`'verticle' is misspelled, would be corrected in the next major version.`);
+      NzLoggerFuncs.warn(`'verticle' is misspelled, would be corrected in the next major version.`);
     }
   }
 
@@ -148,7 +148,6 @@ export class NzIconService extends IconService {
   constructor(
     protected rendererFactory: RendererFactory2,
     protected sanitizer: DomSanitizer,
-    private loggerService: NzLoggerService,
     @Optional() protected handler: HttpBackend,
     // tslint:disable-next-line:no-any
     @Optional() @Inject(DOCUMENT) protected document: any,
@@ -164,7 +163,7 @@ export class NzIconService extends IconService {
       if (this.defaultColor.startsWith('#')) {
         primaryColor = this.defaultColor;
       } else {
-        this.loggerService.warn('Twotone color must be a hex color!');
+        NzLoggerFuncs.warn('Twotone color must be a hex color!');
       }
     }
     this.twoToneColor = { primaryColor };

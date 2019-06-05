@@ -6,4 +6,4 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export { NzLoggerService } from './nz-logger.service';
+export * from './logger';
