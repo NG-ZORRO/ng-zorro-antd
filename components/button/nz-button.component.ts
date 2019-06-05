@@ -43,7 +43,7 @@ import {
 } from 'ng-zorro-antd/core';
 import { NzIconDirective } from 'ng-zorro-antd/icon';
 
-export type NzButtonType = 'primary' | 'dashed' | 'danger' | 'default';
+export type NzButtonType = 'primary' | 'dashed' | 'danger' | 'default' | 'link';
 export type NzButtonShape = 'circle' | 'round' | null;
 
 @Component({
