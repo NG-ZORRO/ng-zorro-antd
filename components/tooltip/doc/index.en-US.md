@@ -18,7 +18,7 @@ A simple text popup tip.
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzTooltipModule } from 'ng-zorro-antd';
+import { NzToolTipModule } from 'ng-zorro-antd';
 ```
 
 ### [nz-tooltip]
