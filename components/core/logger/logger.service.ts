@@ -6,56 +6,53 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Inject, Injectable, InjectionToken, Optional, Provider, SkipSelf } from '@angular/core';
+// tslint:disable:no-any
 
-export const NZ_LOGGER_STATE = new InjectionToken<boolean>('nz-logger-state'); // Whether print the log
+import { isDevMode, Injectable } from '@angular/core';
 
-@Injectable()
+const isDev = isDevMode();
+
+/**
+ * A module can be injected into other components to produce log only in dev mode.
+ */
+@Injectable({
+  providedIn: 'root'
+})
 export class LoggerService {
-  constructor(@Inject(NZ_LOGGER_STATE) private _loggerState: boolean) {}
-
-  // tslint:disable-next-line:no-any
   log(...args: any[]): void {
-    if (this._loggerState) {
-      console.log(...args);
+    if (isDev) {
+      console.log(this.getPrefix(), ...args);
     }
   }
 
-  // tslint:disable-next-line:no-any
   warn(...args: any[]): void {
-    if (this._loggerState) {
-      console.warn(...args);
+    if (isDev) {
+      console.warn(this.getPrefix(), ...args);
     }
   }
 
-  // tslint:disable-next-line:no-any
   error(...args: any[]): void {
-    if (this._loggerState) {
-      console.error(...args);
+    if (isDev) {
+      console.error(this.getPrefix(), ...args);
     }
   }
 
-  // tslint:disable-next-line:no-any
   info(...args: any[]): void {
-    if (this._loggerState) {
-      console.log(...args);
+    if (isDev) {
+      console.log(this.getPrefix(), ...args);
     }
   }
 
-  // tslint:disable-next-line:no-any
   debug(...args: any[]): void {
-    if (this._loggerState) {
-      console.log('[NG-ZORRO-DEBUG]', ...args);
+    if (isDev) {
+      console.log(this.getPrefix(), ...args);
     }
   }
-}
 
-export function LOGGER_SERVICE_PROVIDER_FACTORY(exist: LoggerService, loggerState: boolean): LoggerService {
-  return exist || new LoggerService(loggerState);
+  /**
+   * Use this method to get a prefix. Only use when you want to throw an error with correct prefix.
+   */
+  getPrefix(): string {
+    return '[NG-ZORRO]';
+  }
 }
-
-export const LOGGER_SERVICE_PROVIDER: Provider = {
-  provide: LoggerService,
-  useFactory: LOGGER_SERVICE_PROVIDER_FACTORY,
-  deps: [[new Optional(), new SkipSelf(), LoggerService], NZ_LOGGER_STATE]
-};
