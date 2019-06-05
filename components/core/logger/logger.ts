@@ -26,7 +26,7 @@ export namespace NzLoggerFuncs {
       return false;
     } else {
       record[asRecord] = true;
-      return false;
+      return true;
     }
   }
 
@@ -37,11 +37,7 @@ export namespace NzLoggerFuncs {
   }
 
   function consoleCommonBehavior(consoleFunc: ConsoleFunc, ...args: any[]): void {
-    if (!isDev) {
-      return;
-    }
-
-    if (!notRecorded(...args)) {
+    if (!isDev || !notRecorded(...args)) {
       return;
     }
 
