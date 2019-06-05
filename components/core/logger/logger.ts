@@ -47,12 +47,12 @@ export namespace NzLoggerFuncs {
 
   export const warn = (...args: any[]) =>
     consoleCommonBehavior((...arg: any[]) => console.warn(getNzConsolePrefix(), ...arg), ...args);
-  export const error = (...args: any[]) =>
-    consoleCommonBehavior((...arg: any[]) => console.error(getNzConsolePrefix(), ...arg), ...args);
   export const warnDeprecation = (...args: any[]) =>
     consoleCommonBehavior((...arg: any[]) => console.error(getNzConsolePrefix(), 'deprecated:', ...arg), ...args);
   export const log = (...args: any[]) =>
     consoleCommonBehavior((...arg: any[]) => console.log(getNzConsolePrefix(), 'deprecated:', ...arg), ...args);
+
+  export const error = (...args: any[]) => console.error(getNzConsolePrefix(), ...args);
 
   // export const log = isDev
   //   ? (...args: any[]) => {
