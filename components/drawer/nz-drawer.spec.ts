@@ -1,3 +1,4 @@
+import { ESCAPE } from '@angular/cdk/keycodes';
 import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
 
 import { async, fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -5,6 +6,7 @@ import { async, fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angu
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { dispatchKeyboardEvent } from 'ng-zorro-antd';
 import { NzDrawerRef } from './nz-drawer-ref';
 import { NzDrawerComponent } from './nz-drawer.component';
 import { NzDrawerModule } from './nz-drawer.module';
@@ -107,6 +109,15 @@ describe('NzDrawerComponent', () => {
     (overlayContainerElement.querySelector('.ant-drawer .ant-drawer-mask') as HTMLElement).click();
     fixture.detectChanges();
     expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
+  });
+
+  it('should be closed when ESC keydown', () => {
+    component.open();
+    fixture.detectChanges();
+    expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
+    dispatchKeyboardEvent(document.body, 'keydown', ESCAPE);
+    fixture.detectChanges();
+    expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(false);
   });
 
   it('should close when click mask', () => {
