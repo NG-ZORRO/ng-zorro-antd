@@ -11,7 +11,7 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { ComponentRef, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { IndexableObject, LoggerService } from 'ng-zorro-antd/core';
+import { IndexableObject, NzLoggerService } from 'ng-zorro-antd/core';
 
 import { NzModalControlService } from './nz-modal-control.service';
 import { NzModalRef } from './nz-modal-ref.class';
@@ -72,7 +72,7 @@ export class NzModalService {
     return this.modalControl.afterAllClose.asObservable();
   }
 
-  constructor(private overlay: Overlay, private logger: LoggerService, private modalControl: NzModalControlService) {}
+  constructor(private overlay: Overlay, private logger: NzLoggerService, private modalControl: NzModalControlService) {}
 
   // Closes all of the currently-open dialogs
   closeAll(): void {

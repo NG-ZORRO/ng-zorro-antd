@@ -7,8 +7,10 @@
  */
 
 import { Inject, Injectable, Optional, TemplateRef, Type } from '@angular/core';
-import { LoggerService } from 'ng-zorro-antd/core';
 import { BehaviorSubject } from 'rxjs';
+
+import { NzLoggerService } from 'ng-zorro-antd/core';
+
 import { NzEmptyCustomContent, NZ_DEFAULT_EMPTY_CONTENT } from './nz-empty-config';
 
 @Injectable({
@@ -20,7 +22,7 @@ export class NzEmptyService<T = any> {
 
   constructor(
     @Inject(NZ_DEFAULT_EMPTY_CONTENT) @Optional() private defaultEmptyContent: Type<T>,
-    private loggerService: LoggerService
+    private loggerService: NzLoggerService
   ) {
     if (this.defaultEmptyContent) {
       this.userDefaultContent$.next(this.defaultEmptyContent);

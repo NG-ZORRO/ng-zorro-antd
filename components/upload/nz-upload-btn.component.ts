@@ -20,9 +20,10 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { LoggerService, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 import { of, Observable, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+
+import { NzLoggerService, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
 import { UploadFile, UploadXHRArgs, ZipButtonOptions } from './interface';
 
@@ -327,7 +328,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     @Optional() private http: HttpClient,
     private el: ElementRef,
     private updateHostClassService: NzUpdateHostClassService,
-    private loggerService: LoggerService
+    private loggerService: NzLoggerService
   ) {
     if (!http) {
       throw new Error(`Not found 'HttpClient', You can import 'HttpClientModule' in your root module.`);

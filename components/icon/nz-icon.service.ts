@@ -47,7 +47,7 @@ import {
   UploadOutline,
   UpOutline
 } from '@ant-design/icons-angular/icons';
-import { LoggerService } from 'ng-zorro-antd/core';
+import { NzLoggerService } from 'ng-zorro-antd/core';
 
 export interface NzIconfontOption {
   scriptUrl: string;
@@ -148,7 +148,7 @@ export class NzIconService extends IconService {
   constructor(
     protected rendererFactory: RendererFactory2,
     protected sanitizer: DomSanitizer,
-    private loggerService: LoggerService,
+    private loggerService: NzLoggerService,
     @Optional() protected handler: HttpBackend,
     // tslint:disable-next-line:no-any
     @Optional() @Inject(DOCUMENT) protected document: any,

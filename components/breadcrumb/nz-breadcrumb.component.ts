@@ -25,7 +25,7 @@ import { Subject } from 'rxjs';
 import { startWith } from 'rxjs/internal/operators/startWith';
 import { filter, takeUntil } from 'rxjs/operators';
 
-import { InputBoolean, LoggerService } from 'ng-zorro-antd/core';
+import { InputBoolean, NzLoggerService } from 'ng-zorro-antd/core';
 
 export const NZ_ROUTE_DATA_BREADCRUMB = 'breadcrumb';
 
@@ -62,7 +62,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
     private injector: Injector,
     private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
-    private loggerService: LoggerService,
+    private loggerService: NzLoggerService,
     elementRef: ElementRef,
     renderer: Renderer2
   ) {

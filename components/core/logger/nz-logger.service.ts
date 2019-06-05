@@ -18,7 +18,7 @@ const isDev = isDevMode();
 @Injectable({
   providedIn: 'root'
 })
-export class LoggerService {
+export class NzLoggerService {
   log(...args: any[]): void {
     if (isDev) {
       console.log(this.getPrefix(), ...args);
