@@ -282,6 +282,15 @@ describe('dropdown', () => {
       expect(clickCallback).toHaveBeenCalledTimes(1);
       expect(clickCallback).toHaveBeenCalledWith(true);
     });
+    it('should icon work', () => {
+      fixture.detectChanges();
+      const rightIcon = button.nativeElement.querySelector('.ant-dropdown-trigger i') as HTMLElement;
+      expect(rightIcon.classList).toContain('anticon-down');
+      testComponent.strIcon = false;
+      fixture.detectChanges();
+      const rightButton = button.nativeElement.querySelector('.ant-dropdown-trigger') as HTMLButtonElement;
+      expect(rightButton.textContent).toContain('Expand');
+    });
     it('should disabled work', () => {
       testComponent.disabled = true;
       fixture.detectChanges();
@@ -472,6 +481,7 @@ export class NzTestDropdownComponent {
       [nzPlacement]="placement"
       [nzDisabled]="disabled"
       [nzTrigger]="'click'"
+      [nzIcon]="strIcon ? 'down' : iconTemp"
       (nzVisibleChange)="visibleChange($event)"
     >
       DropDown
@@ -487,12 +497,14 @@ export class NzTestDropdownComponent {
         </li>
       </ul>
     </nz-dropdown-button>
+    <ng-template #iconTemp>Expand</ng-template>
   `,
   styles: []
 })
 export class NzTestDropdownButtonComponent {
   @ViewChild(NzDropDownButtonComponent) nzDropDownButtonComponent: NzDropDownButtonComponent;
   @ViewChild(NzSubMenuComponent) nzSubMenuComponent: NzSubMenuComponent;
+  strIcon = true;
   disabled = false;
   visible = false;
   placement = 'bottomLeft';
