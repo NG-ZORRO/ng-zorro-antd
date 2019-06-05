@@ -47,6 +47,14 @@ export class NzWaveDirective implements OnInit, OnDestroy {
   private waveRenderer: NzWaveRenderer;
   private waveDisabled: boolean = false;
 
+  get disabled(): boolean {
+    return this.waveDisabled;
+  }
+
+  get rendererRef(): NzWaveRenderer {
+    return this.waveRenderer;
+  }
+
   constructor(
     private ngZone: NgZone,
     private elementRef: ElementRef,
@@ -74,6 +82,23 @@ export class NzWaveDirective implements OnInit, OnDestroy {
   renderWaveIfEnabled(): void {
     if (!this.waveDisabled && this.elementRef.nativeElement) {
       this.waveRenderer = new NzWaveRenderer(this.elementRef.nativeElement, this.ngZone, this.nzWaveExtraNode);
+    }
+  }
+
+  disable(): void {
+    this.waveDisabled = true;
+    if (this.waveRenderer) {
+      this.waveRenderer.removeTriggerEvent();
+      this.waveRenderer.removeStyleAndExtraNode();
+    }
+  }
+
+  enable(): void {
+    this.waveDisabled = false;
+    if (this.waveRenderer) {
+      this.waveRenderer.bindTriggerEvent();
+    } else {
+      this.renderWaveIfEnabled();
     }
   }
 }
