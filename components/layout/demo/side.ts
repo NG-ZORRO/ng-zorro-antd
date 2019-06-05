@@ -55,5 +55,5 @@ import { Component } from '@angular/core';
 export class NzDemoLayoutSideComponent {
   isCollapsed = false;
   isReverseArrow = false;
-  width = 200;
+  width: string | number = '200px';
 }
