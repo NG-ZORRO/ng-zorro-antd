@@ -23,6 +23,7 @@ import {
   NgZone,
   OnChanges,
   OnDestroy,
+  Optional,
   Output,
   QueryList,
   Renderer2,
@@ -37,7 +38,13 @@ import { isTouchEvent, InputBoolean, InputNumber } from 'ng-zorro-antd/core';
 import { takeUntil, throttleTime } from 'rxjs/operators';
 
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
-import { FromToInterface, NzCarouselEffects, PointerVector } from './nz-carousel-definitions';
+import {
+  CarouselStrategyRegistryItem,
+  FromToInterface,
+  NzCarouselEffects,
+  NZ_CAROUSEL_CUSTOM_STRATEGIES,
+  PointerVector
+} from './nz-carousel-definitions';
 import { NzCarouselBaseStrategy } from './strategies/base-strategy';
 import { NzCarouselOpacityStrategy } from './strategies/opacity-strategy';
 import { NzCarouselTransformStrategy } from './strategies/transform-strategy';
@@ -111,7 +118,8 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     private ngZone: NgZone,
-    private platform: Platform
+    private platform: Platform,
+    @Optional() @Inject(NZ_CAROUSEL_CUSTOM_STRATEGIES) private customStrategies: CarouselStrategyRegistryItem[]
   ) {
     this.document = document;
     this.renderer.addClass(elementRef.nativeElement, 'ant-carousel');
@@ -221,6 +229,14 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   private switchStrategy(): void {
     if (this.strategy) {
       this.strategy.dispose();
+    }
+
+    // Load custom strategies first.
+    const customStrategy = this.customStrategies ? this.customStrategies.find(s => s.name === this.nzEffect) : null;
+    if (customStrategy) {
+      // tslint:disable-next-line:no-any
+      this.strategy = new (customStrategy.strategy as any)(this, this.cdr, this.renderer);
+      return;
     }
 
     this.strategy =
