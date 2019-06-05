@@ -5,11 +5,11 @@ title: Descriptions
 cols: 1
 ---
 
-Empty state placeholder.
+Display multiple read-only fields in groups.
 
 ## When To Use
 
-When there is no data provided, display for friendly tips.
+Commonly displayed on the details page.
 
 ## API
 
