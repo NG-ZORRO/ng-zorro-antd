@@ -247,6 +247,7 @@ export class AppModule { }`;
     dependencies: {
       rxjs                               : '^6.3.3',
       '@angular/cdk'                     : '^7.0.0',
+      '@angular/compiler'                : '^7.0.0',
       '@angular/core'                    : '^7.0.0',
       '@angular/forms'                   : '^7.0.0',
       '@angular/http'                    : '^7.0.0',
