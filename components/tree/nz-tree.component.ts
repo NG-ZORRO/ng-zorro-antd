@@ -95,12 +95,14 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   @InputBoolean()
   set nzDefaultExpandAll(value: boolean) {
     warnDeprecation(`'nzDefaultExpandAll' would be removed in 9.0.0. Please use 'nzExpandAll' instead.`);
-    this.nzExpandAll = value;
+    this._nzDefaultExpandAll = value;
   }
 
   get nzDefaultExpandAll(): boolean {
-    return this.nzExpandAll;
+    return this._nzDefaultExpandAll;
   }
+
+  private _nzDefaultExpandAll = false;
 
   @Input() nzBeforeDrop: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;
 
