@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 面包屑
-type: Navigation
+type: 导航
 title: Breadcrumb
 ---
 
@@ -15,21 +15,41 @@ title: Breadcrumb
 
 ## API
 
+### 单独引入此组件
+
+想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
+
+```ts
+import { NzBreadCrumbModule } from 'ng-zorro-antd';
+```
+
 ### nz-breadcrumb
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
-| --- | --- | --- | --- | --- |
-| `[nzSeparator]` | 分隔符自定义 | string丨`TemplateRef<void>` |  | '/' |
-| `[nzAutoGenerate]` | 自动生成 Breadcrumb | boolean |  | `false` |
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `[nzSeparator]` | 分隔符自定义 | `string｜TemplateRef<void>` | `'/'` |
+| `[nzAutoGenerate]` | 自动生成 Breadcrumb | `boolean` | `false` |
 
 使用 `[nzAutoGenerate]` 时，需要在路由类中定义 `data`:
 
 ```ts
 {
-  path: '/path',
+  path: 'path',
   component: SomeComponent,
   data: {
     breadcrumb: 'Display Name'
   }
+}
+```
+
+对于懒加载路由，应该在父层路由写 `data`：
+
+```ts
+{
+  path: 'first',
+  loadChildren: './first/first.module#FirstModule',
+  data: {
+    breadcrumb: 'First'
+  },
 }
 ```

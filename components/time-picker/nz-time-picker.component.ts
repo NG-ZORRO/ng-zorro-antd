@@ -1,84 +1,62 @@
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger
-} from '@angular/animations';
-import { CdkOverlayOrigin, ConnectionPositionPair, Overlay, OverlayPositionBuilder } from '@angular/cdk/overlay';
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { CdkOverlayOrigin, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
   Renderer2,
+  SimpleChanges,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { dropDownAnimation } from '../core/animation/dropdown-animations';
-import { NzUpdateHostClassService as UpdateCls } from '../core/services/update-host-class.service';
-import { isNotNil } from '../core/util/check';
-import { toBoolean } from '../core/util/convert';
-import { NzI18nService as I18n } from '../i18n/nz-i18n.service';
+
+import { isNotNil, slideMotion, toBoolean, NzUpdateHostClassService as UpdateCls } from 'ng-zorro-antd/core';
 
 @Component({
-  selector   : 'nz-time-picker',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'nz-time-picker',
+  exportAs: 'nzTimePicker',
   templateUrl: './nz-time-picker.component.html',
-  animations : [
-    trigger('dropDownAnimation', [
-      state('void', style({
-        opacity: 0,
-        display: 'none'
-      })),
-      state('*', style({
-        opacity        : 1,
-        transform      : 'scaleY(1)',
-        transformOrigin: '0% 0%'
-      })),
-      transition('void => *', [
-        style({
-          opacity        : 0,
-          transform      : 'scaleY(0.8)',
-          transformOrigin: '0% 0%'
-        }),
-        animate('100ms cubic-bezier(0.755, 0.05, 0.855, 0.06)')
-      ]),
-      transition('* => void', [
-        animate('100ms cubic-bezier(0.755, 0.05, 0.855, 0.06)', style({
-          opacity        : 0,
-          transform      : 'scaleY(0.8)',
-          transformOrigin: '0% 0%'
-        }))
-      ])
-    ])
-  ],
-  providers  : [
-    UpdateCls,
-    { provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }
-  ]
+  animations: [slideMotion],
+  providers: [UpdateCls, { provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }]
 })
-export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit {
+export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
   private _disabled = false;
   private _value: Date | null = null;
   private _allowEmpty = true;
   private _autoFocus = false;
-  private _onChange: (value: Date) => void;
+  private _onChange: (value: Date | null) => void;
   private _onTouched: () => void;
   private _hideDisabledOptions = false;
   isInit = false;
   origin: CdkOverlayOrigin;
-  overlayPositions: ConnectionPositionPair[] = [ {
-    originX : 'start',
-    originY : 'top',
-    overlayX: 'end',
-    overlayY: 'top',
-    offsetX : 0,
-    offsetY : 0
-  } ];
+  overlayPositions: ConnectionPositionPair[] = [
+    {
+      originX: 'start',
+      originY: 'top',
+      overlayX: 'end',
+      overlayY: 'top',
+      offsetX: 0,
+      offsetY: 0
+    }
+  ];
   @ViewChild('inputElement') inputRef: ElementRef;
   @Input() nzSize: string | null = null;
   @Input() nzHourStep = 1;
@@ -94,7 +72,8 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input() nzDisabledSeconds: (hour: number, minute: number) => number[];
   @Input() nzFormat = 'HH:mm:ss';
   @Input() nzOpen = false;
-  @Output() nzOpenChange = new EventEmitter<boolean>();
+  @Input() nzUse12Hours = false;
+  @Output() readonly nzOpenChange = new EventEmitter<boolean>();
 
   @Input()
   set nzHideDisabledOptions(value: boolean) {
@@ -176,10 +155,14 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     }
   }
 
+  onClickClearBtn(): void {
+    this.value = null;
+  }
+
   private setClassMap(): void {
     this.updateCls.updateHostClass(this.element.nativeElement, {
-      [ `ant-time-picker` ]               : true,
-      [ `ant-time-picker-${this.nzSize}` ]: isNotNil(this.nzSize)
+      [`ant-time-picker`]: true,
+      [`ant-time-picker-${this.nzSize}`]: isNotNil(this.nzSize)
     });
   }
 
@@ -195,17 +178,23 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     }
   }
 
-  constructor(private element: ElementRef,
-              private renderer: Renderer2,
-              private overlay: Overlay,
-              private positionBuilder: OverlayPositionBuilder,
-              private i18n: I18n,
-              private updateCls: UpdateCls) {
-  }
+  constructor(
+    private element: ElementRef,
+    private renderer: Renderer2,
+    private updateCls: UpdateCls,
+    public cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.setClassMap();
     this.origin = new CdkOverlayOrigin(this.element);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const { nzUse12Hours, nzFormat } = changes;
+    if (nzUse12Hours && !nzUse12Hours.previousValue && nzUse12Hours.currentValue && !nzFormat) {
+      this.nzFormat = 'h:mm:ss a';
+    }
   }
 
   ngAfterViewInit(): void {
@@ -215,9 +204,10 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
   writeValue(time: Date | null): void {
     this._value = time;
+    this.cdr.markForCheck();
   }
 
-  registerOnChange(fn: (time: Date) => void): void {
+  registerOnChange(fn: (time: Date | null) => void): void {
     this._onChange = fn;
   }
 
@@ -227,5 +217,6 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = isDisabled;
+    this.cdr.markForCheck();
   }
 }

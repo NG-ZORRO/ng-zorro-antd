@@ -1,6 +1,8 @@
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
+import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzDividerComponent } from './nz-divider.component';
 import { NzDividerModule } from './nz-divider.module';
@@ -11,8 +13,8 @@ describe('divider', () => {
   let dl: DebugElement;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ NzDividerModule ],
-      declarations: [ TestDividerComponent, TestDividerTextTemplateComponent ]
+      imports: [NzDividerModule, NzIconTestModule],
+      declarations: [TestDividerComponent, TestDividerTextTemplateComponent]
     }).compileComponents();
     fixture = TestBed.createComponent(TestDividerComponent);
     context = fixture.componentInstance;
@@ -21,7 +23,7 @@ describe('divider', () => {
   });
 
   describe('#nzDashed', () => {
-    for (const value of [ true, false ]) {
+    for (const value of [true, false]) {
       it(`[${value}]`, () => {
         context.nzDashed = value;
         fixture.detectChanges();
@@ -31,7 +33,7 @@ describe('divider', () => {
   });
 
   describe('#nzType', () => {
-    for (const value of [ 'horizontal', 'vertical' ]) {
+    for (const value of ['horizontal', 'vertical']) {
       it(`[${value}]`, () => {
         context.nzType = value;
         fixture.detectChanges();
@@ -41,7 +43,7 @@ describe('divider', () => {
   });
 
   describe('#nzText', () => {
-    for (const item of [ { text: 'with text', ret: true }, { text: undefined, ret: false } ]) {
+    for (const item of [{ text: 'with text', ret: true }, { text: undefined, ret: false }]) {
       it(`[${item.text}]`, () => {
         context.nzText = item.text;
         fixture.detectChanges();
@@ -58,7 +60,7 @@ describe('divider', () => {
   });
 
   describe('#nzOrientation', () => {
-    [ 'left', 'right' ].forEach(type => {
+    ['left', 'right'].forEach(type => {
       it(`with ${type}`, () => {
         context.nzOrientation = type;
         fixture.detectChanges();
@@ -70,27 +72,28 @@ describe('divider', () => {
 
 @Component({
   template: `
-  <nz-divider #comp
-    [nzDashed]="nzDashed"
-    [nzType]="nzType"
-    [nzText]="nzText"
-    [nzOrientation]="nzOrientation"></nz-divider>
+    <nz-divider
+      #comp
+      [nzDashed]="nzDashed"
+      [nzType]="nzType"
+      [nzText]="nzText"
+      [nzOrientation]="nzOrientation"
+    ></nz-divider>
   `
 })
 class TestDividerComponent {
   @ViewChild('comp') comp: NzDividerComponent;
   nzDashed = false;
   nzType = 'horizontal';
-  nzText = 'with text';
+  nzText?: string = 'with text';
   nzOrientation: string = '';
 }
 
 @Component({
   template: `
-  <nz-divider nzDashed [nzText]="text">
-    <ng-template #text><i class="anticon anticon-plus"></i> Add</ng-template>
-  </nz-divider>
+    <nz-divider nzDashed [nzText]="text">
+      <ng-template #text><i nz-icon type="plus"></i> Add</ng-template>
+    </nz-divider>
   `
 })
-class TestDividerTextTemplateComponent {
-}
+class TestDividerTextTemplateComponent {}

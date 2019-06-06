@@ -1,29 +1,62 @@
-import { AfterContentInit, Component, ContentChild, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, NgControl } from '@angular/forms';
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import {
+  AfterContentInit,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ContentChild,
+  ElementRef,
+  Host,
+  Input,
+  OnDestroy,
+  OnInit,
+  Optional,
+  Renderer2,
+  ViewEncapsulation
+} from '@angular/core';
+import { FormControl, FormControlName, NgControl, NgModel } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
-import { toBoolean } from '../core/util/convert';
-import { NzColComponent } from '../grid/nz-col.component';
+import { startWith } from 'rxjs/operators';
+
+import { toBoolean, NgClassType, NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { NzColDirective, NzRowDirective } from 'ng-zorro-antd/grid';
+
+import { NzFormItemComponent } from './nz-form-item.component';
 
 @Component({
-  selector           : 'nz-form-control',
-  providers          : [ NzUpdateHostClassService ],
+  selector: 'nz-form-control',
+  exportAs: 'nzFormControl',
   preserveWhitespaces: false,
-  templateUrl        : './nz-form-control.component.html',
-  host               : {
-    '[class.ant-form-item-control-wrapper]': 'true'
-  },
-  styles             : [ `:host {
-    display: block;
-  }` ]
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [NzUpdateHostClassService],
+  templateUrl: './nz-form-control.component.html',
+  styles: [
+    `
+      nz-form-control {
+        display: block;
+      }
+    `
+  ]
 })
-export class NzFormControlComponent extends NzColComponent implements OnDestroy, OnInit, AfterContentInit {
+export class NzFormControlComponent extends NzColDirective
+  implements OnDestroy, OnInit, AfterContentInit, AfterViewInit, OnDestroy {
   private _hasFeedback = false;
-  validateChanges: Subscription;
-  validateString: string;
-  controlStatus: string;
-  controlClassMap;
-  @ContentChild(NgControl) validateControl: FormControl;
+  validateChanges: Subscription | null;
+  validateString: string | null;
+  status: 'warning' | 'validating' | 'error' | 'success' | 'init';
+  controlClassMap: NgClassType = {};
+  iconType: string;
+  validateControl: FormControl | NgModel | null;
+  @ContentChild(NgControl) defaultValidateControl: FormControlName;
 
   @Input()
   set nzHasFeedback(value: boolean) {
@@ -36,17 +69,18 @@ export class NzFormControlComponent extends NzColComponent implements OnDestroy,
   }
 
   @Input()
-  set nzValidateStatus(value: string | FormControl) {
-    if (value instanceof FormControl) {
+  set nzValidateStatus(value: string | FormControl | FormControlName | NgModel) {
+    if (value instanceof FormControl || value instanceof NgModel) {
       this.validateControl = value;
       this.validateString = null;
-      this.controlStatus = null;
-      this.setControlClassMap();
+      this.watchControl();
+    } else if (value instanceof FormControlName) {
+      this.validateControl = value.control;
+      this.validateString = null;
       this.watchControl();
     } else {
       this.validateString = value;
       this.validateControl = null;
-      this.removeSubscribe();
       this.setControlClassMap();
     }
   }
@@ -58,48 +92,82 @@ export class NzFormControlComponent extends NzColComponent implements OnDestroy,
     }
   }
 
-  updateValidateStatus(status: string): void {
-    if (this.validateControl.dirty || this.validateControl.touched) {
-      this.controlStatus = status;
-      this.setControlClassMap();
-    } else {
-      this.controlStatus = null;
-      this.setControlClassMap();
-    }
-  }
-
   watchControl(): void {
     this.removeSubscribe();
     /** miss detect https://github.com/angular/angular/issues/10887 **/
     if (this.validateControl && this.validateControl.statusChanges) {
-      this.validateChanges = this.validateControl.statusChanges.subscribe(data => this.updateValidateStatus(data));
+      this.validateChanges = this.validateControl.statusChanges.pipe(startWith(null)).subscribe(() => {
+        this.setControlClassMap();
+        this.cdr.markForCheck();
+      });
     }
+  }
 
+  validateControlStatus(status: string): boolean {
+    return (!!this.validateControl &&
+      (this.validateControl.dirty || this.validateControl.touched) &&
+      this.validateControl.status === status) as boolean;
   }
 
   setControlClassMap(): void {
+    if (this.validateString === 'warning') {
+      this.status = 'warning';
+      this.iconType = 'exclamation-circle-fill';
+    } else if (
+      this.validateString === 'validating' ||
+      this.validateString === 'pending' ||
+      this.validateControlStatus('PENDING')
+    ) {
+      this.status = 'validating';
+      this.iconType = 'loading';
+    } else if (this.validateString === 'error' || this.validateControlStatus('INVALID')) {
+      this.status = 'error';
+      this.iconType = 'close-circle-fill';
+    } else if (this.validateString === 'success' || this.validateControlStatus('VALID')) {
+      this.status = 'success';
+      this.iconType = 'check-circle-fill';
+    } else {
+      this.status = 'init';
+      this.iconType = '';
+    }
     this.controlClassMap = {
-      [ `has-warning` ]  : this.validateString === 'warning',
-      [ `is-validating` ]: this.validateString === 'validating' || this.validateString === 'pending' || this.controlStatus === 'PENDING',
-      [ `has-error` ]    : this.validateString === 'error' || this.controlStatus === 'INVALID',
-      [ `has-success` ]  : this.validateString === 'success' || this.controlStatus === 'VALID',
-      [ `has-feedback` ] : this.nzHasFeedback
+      [`has-warning`]: this.status === 'warning',
+      [`is-validating`]: this.status === 'validating',
+      [`has-error`]: this.status === 'error',
+      [`has-success`]: this.status === 'success',
+      [`has-feedback`]: this.nzHasFeedback
     };
   }
 
+  constructor(
+    nzUpdateHostClassService: NzUpdateHostClassService,
+    elementRef: ElementRef,
+    @Optional() @Host() nzFormItemComponent: NzFormItemComponent,
+    @Optional() @Host() nzRowDirective: NzRowDirective,
+    private cdr: ChangeDetectorRef,
+    renderer: Renderer2
+  ) {
+    super(nzUpdateHostClassService, elementRef, nzFormItemComponent || nzRowDirective, renderer);
+    renderer.addClass(elementRef.nativeElement, 'ant-form-item-control-wrapper');
+  }
+
   ngOnInit(): void {
-    this.setClassMap();
+    super.ngOnInit();
     this.setControlClassMap();
   }
 
   ngOnDestroy(): void {
     this.removeSubscribe();
+    super.ngOnDestroy();
   }
 
   ngAfterContentInit(): void {
-    this.watchControl();
-    if (this.validateControl) {
-      this.updateValidateStatus(this.validateControl.status);
+    if (this.defaultValidateControl && !this.validateControl && !this.validateString) {
+      this.nzValidateStatus = this.defaultValidateControl;
     }
+  }
+
+  ngAfterViewInit(): void {
+    super.ngAfterViewInit();
   }
 }

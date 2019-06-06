@@ -3,18 +3,11 @@ import { PortalModule } from '@angular/cdk/portal';
 import { ScrollDispatchModule, VIEWPORT_RULER_PROVIDER } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
-import {
-  async,
-  discardPeriodicTasks,
-  fakeAsync,
-  tick,
-  ComponentFixture,
-  TestBed
-} from '@angular/core/testing';
+import { async, discardPeriodicTasks, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 
-import { dispatchFakeEvent } from '../core/testing';
+import { dispatchFakeEvent } from 'ng-zorro-antd/core';
 
 import { NzTabsNavComponent } from './nz-tabs-nav.component';
 import { NzTabsModule } from './nz-tabs.module';
@@ -28,11 +21,9 @@ describe('tabs nav', () => {
   beforeEach(async(() => {
     dir = 'ltr';
     TestBed.configureTestingModule({
-      imports     : [ CommonModule, PortalModule, NzTabsModule, ScrollDispatchModule ],
-      declarations: [
-        NzTestTabNavComponent
-      ],
-      providers   : [
+      imports: [CommonModule, PortalModule, NzTabsModule, ScrollDispatchModule],
+      declarations: [NzTestTabNavComponent],
+      providers: [
         VIEWPORT_RULER_PROVIDER,
         { provide: Directionality, useFactory: () => ({ value: dir, change: change.asObservable() }) }
       ]
@@ -49,7 +40,6 @@ describe('tabs nav', () => {
         fixture.detectChanges();
 
         appComponent = fixture.componentInstance;
-
       });
       it('should scroll click emit', () => {
         const nav = fixture.debugElement.query(By.directive(NzTabsNavComponent));
@@ -74,8 +64,9 @@ describe('tabs nav', () => {
         // Focus on the last tab, expect this to be the maximum scroll distance.
         appComponent.nzTabsNavComponent.selectedIndex = appComponent.tabs.length - 1;
         fixture.detectChanges();
-        expect(appComponent.nzTabsNavComponent.scrollDistance)
-        .toBe(appComponent.nzTabsNavComponent.getMaxScrollDistance());
+        expect(appComponent.nzTabsNavComponent.scrollDistance).toBe(
+          appComponent.nzTabsNavComponent.getMaxScrollDistance()
+        );
 
         // Focus on the first tab, expect this to be the maximum scroll distance.
         appComponent.nzTabsNavComponent.selectedIndex = 0;
@@ -102,8 +93,9 @@ describe('tabs nav', () => {
         // Focus on the last tab, expect this to be the maximum scroll distance.
         appComponent.nzTabsNavComponent.selectedIndex = appComponent.tabs.length - 1;
         fixture.detectChanges();
-        expect(appComponent.nzTabsNavComponent.scrollDistance)
-        .toBe(appComponent.nzTabsNavComponent.getMaxScrollDistance());
+        expect(appComponent.nzTabsNavComponent.scrollDistance).toBe(
+          appComponent.nzTabsNavComponent.getMaxScrollDistance()
+        );
 
         // Focus on the first tab, expect this to be the maximum scroll distance.
         appComponent.nzTabsNavComponent.selectedIndex = 0;
@@ -157,38 +149,33 @@ describe('tabs nav', () => {
       expect(header.checkPaginationEnabled).toHaveBeenCalled();
       discardPeriodicTasks();
     }));
-
   });
 });
 
 @Component({
-  selector     : 'nz-test-tab-nav',
-  template     : `
+  selector: 'nz-test-tab-nav',
+  template: `
     <div [dir]="dir" style="width: 130px;">
-      <div nz-tabs-nav
+      <div
+        nz-tabs-nav
         role="tablist"
         tabindex="0"
         [selectedIndex]="selectedIndex"
         (nzOnNextClick)="onNextClick()"
-        (nzOnPrevClick)="onPrevClick()">
-        <div
-          *ngFor="let tab of tabs"
-          nz-tab-label
-          role="tab">
-          {{tab.label}}
+        (nzOnPrevClick)="onPrevClick()"
+      >
+        <div *ngFor="let tab of tabs" nz-tab-label role="tab">
+          {{ tab.label }}
         </div>
       </div>
     </div>
   `,
   encapsulation: ViewEncapsulation.None,
-  styleUrls    : [
-    '../style/index.less',
-    './style/index.less'
-  ]
+  styleUrls: ['../style/index.less', './style/index.less']
 })
 class NzTestTabNavComponent {
   selectedIndex: number = 0;
-  tabs = [ { label: 'tab one' }, { label: 'tab one' }, { label: 'tab one' }, { label: 'tab one' } ];
+  tabs = [{ label: 'tab one' }, { label: 'tab one' }, { label: 'tab one' }, { label: 'tab one' }];
   dir: Direction = 'ltr';
   onNextClick = jasmine.createSpy('next click change');
   onPrevClick = jasmine.createSpy('pre click change');

@@ -1,6 +1,6 @@
 ---
 category: Components
-type: Data Entry
+type: 数据录入
 title: Autocomplete
 subtitle: 自动完成
 ---
@@ -27,6 +27,14 @@ subtitle: 自动完成
 </nz-autocomplete>
 ```
 
+### 单独引入此组件
+
+想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
+
+```ts
+import { NzAutocompleteModule } from 'ng-zorro-antd';
+```
+
 ### [nzAutocomplete]
 
 | 属性 | 说明 | 类型 | 默认值 |
@@ -41,6 +49,8 @@ subtitle: 自动完成
 | `[nzDataSource]` | 自动完成的数据源 | `AutocompleteDataSource` | - |
 | `[nzDefaultActiveFirstOption]` | 是否默认高亮第一个选项。 | `boolean` | `true` |
 | `[nzWidth]` | 自定义宽度单位 px | `number` | 触发元素宽度 |
+| `[nzOverlayClassName]` | 下拉根元素的类名称 | `string` | - |
+| `[nzOverlayStyle]` | 下拉根元素的样式 | `object` | - |
 
 ### nz-auto-option
 

@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import Calendar from './calendar/ru_RU';
 import DatePicker from './date-picker/ru_RU';
 import Pagination from './pagination/ru_RU';
@@ -13,32 +21,30 @@ export default {
     filterTitle: 'Фильтр',
     filterConfirm: 'OK',
     filterReset: 'Сбросить',
-    emptyText: 'Нет данных',
     selectAll: 'Выбрать всё',
-    selectInvert: 'Инвертировать выбор',
+    selectInvert: 'Инвертировать выбор'
   },
   Modal: {
     okText: 'OK',
     cancelText: 'Отмена',
-    justOkText: 'OK',
+    justOkText: 'OK'
   },
   Popconfirm: {
     okText: 'OK',
-    cancelText: 'Отмена',
+    cancelText: 'Отмена'
   },
   Transfer: {
-    notFoundContent: 'Ничего не найдено',
-    searchPlaceholder: 'Введите название для поиска',
-    itemUnit: 'item',
-    itemsUnit: 'items',
-  },
-  Select: {
-    notFoundContent: 'Ничего не найдено',
+    searchPlaceholder: 'Поиск',
+    itemUnit: 'элем.',
+    itemsUnit: 'элем.'
   },
   Upload: {
-    uploading: 'Закачиваю...',
+    uploading: 'Загрузка...',
     removeFile: 'Удалить файл',
-    uploadError: 'Ошибка при закачке',
-    previewFile: 'Предпросмотр файла',
+    uploadError: 'При загрузке произошла ошибка',
+    previewFile: 'Предпросмотр файла'
   },
+  Empty: {
+    description: 'Нет данных'
+  }
 };

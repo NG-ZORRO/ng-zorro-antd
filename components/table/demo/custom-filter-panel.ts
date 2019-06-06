@@ -3,109 +3,126 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-custom-filter-panel',
   template: `
-    <nz-table #nzTable [nzData]="displayData">
+    <nz-table #nzTable [nzData]="listOfDisplayData">
       <thead>
         <tr>
-          <th>
+          <th nzCustomFilter>
             Name
-            <nz-dropdown nzTrigger="click" [nzClickHide]="false">
-              <i class="anticon anticon-smile-o ant-table-filter-icon" nz-dropdown></i>
-              <div class="custom-filter-dropdown">
-                <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue">
-                <button nz-button [nzType]="'primary'" (click)="search()">Search</button>
+            <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
+              <i
+                nz-icon
+                nzType="search"
+                class="ant-table-filter-icon"
+                [class.ant-table-filter-open]="dropdown.nzVisible"
+                nz-dropdown
+              ></i>
+              <div class="search-box">
+                <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue" />
+                <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                  Search
+                </button>
+                <button nz-button nzSize="small" (click)="reset()">Reset</button>
               </div>
             </nz-dropdown>
           </th>
           <th>Age</th>
-          <th nzShowFilter [nzFilters]="filterAddressArray" (nzFilterChange)="filterAddressChange($event)">Address</th>
+          <th nzShowFilter [nzFilters]="listOfFilterAddress" (nzFilterChange)="filterAddressChange($event)">Address</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of nzTable.data">
-          <td>{{data.name}}</td>
-          <td>{{data.age}}</td>
-          <td>{{data.address}}</td>
+          <td>{{ data.name }}</td>
+          <td>{{ data.age }}</td>
+          <td>{{ data.address }}</td>
         </tr>
       </tbody>
-    </nz-table>`,
-  styles  : [
-      `
-      .custom-filter-dropdown {
+    </nz-table>
+  `,
+  styles: [
+    `
+      .search-box {
         padding: 8px;
-        border-radius: 6px;
-        background: #fff;
-        box-shadow: 0 1px 6px rgba(0, 0, 0, .2);
       }
 
-      [nz-input] {
-        width: 130px;
+      .search-box input {
+        width: 188px;
+        margin-bottom: 8px;
+        display: block;
+      }
+
+      .search-box button {
+        width: 90px;
+      }
+
+      .search-button {
         margin-right: 8px;
-      }
-
-      .highlight {
-        color: #f50;
       }
     `
   ]
 })
 export class NzDemoTableCustomFilterPanelComponent {
   searchValue = '';
-  filterAddressArray = [
-    { text: 'London', value: 'London' },
-    { text: 'Sidney', value: 'Sidney' }
-  ];
-  searchAddress = [];
-  sortMap = {
-    name   : null,
-    age    : null,
-    address: null
-  };
-  sortName = null;
-  sortValue = null;
-  data = [
+  sortName: string | null = null;
+  sortValue: string | null = null;
+  listOfFilterAddress = [{ text: 'London', value: 'London' }, { text: 'Sidney', value: 'Sidney' }];
+  listOfSearchAddress: string[] = [];
+  listOfData: Array<{ name: string; age: number; address: string; [key: string]: string | number }> = [
     {
-      name   : 'John Brown',
-      age    : 32,
+      name: 'John Brown',
+      age: 32,
       address: 'New York No. 1 Lake Park'
     },
     {
-      name   : 'Jim Green',
-      age    : 42,
+      name: 'Jim Green',
+      age: 42,
       address: 'London No. 1 Lake Park'
     },
     {
-      name   : 'Joe Black',
-      age    : 32,
+      name: 'Joe Black',
+      age: 32,
       address: 'Sidney No. 1 Lake Park'
     },
     {
-      name   : 'Jim Red',
-      age    : 32,
+      name: 'Jim Red',
+      age: 32,
       address: 'London No. 2 Lake Park'
     }
   ];
-  displayData = [ ...this.data ];
+  listOfDisplayData = [...this.listOfData];
 
-  sort(sortName: string, value: boolean): void {
+  reset(): void {
+    this.searchValue = '';
+    this.search();
+  }
+
+  sort(sortName: string, value: string): void {
     this.sortName = sortName;
     this.sortValue = value;
-    for (const key in this.sortMap) {
-      this.sortMap[ key ] = (key === sortName ? value : null);
-    }
     this.search();
   }
 
   filterAddressChange(value: string[]): void {
-    this.searchAddress = value;
+    this.listOfSearchAddress = value;
     this.search();
   }
 
   search(): void {
-    const filterFunc = (item) => {
-      return (this.searchAddress.length ? this.searchAddress.some(address => item.address.indexOf(address) !== -1) : true) &&
-        (item.name.indexOf(this.searchValue) !== -1);
+    const filterFunc = (item: { name: string; age: number; address: string }) => {
+      return (
+        (this.listOfSearchAddress.length
+          ? this.listOfSearchAddress.some(address => item.address.indexOf(address) !== -1)
+          : true) && item.name.indexOf(this.searchValue) !== -1
+      );
     };
-    const data = this.data.filter(item => filterFunc(item));
-    this.displayData = data.sort((a, b) => (this.sortValue === 'ascend') ? (a[ this.sortName ] > b[ this.sortName ] ? 1 : -1) : (b[ this.sortName ] > a[ this.sortName ] ? 1 : -1));
+    const data = this.listOfData.filter((item: { name: string; age: number; address: string }) => filterFunc(item));
+    this.listOfDisplayData = data.sort((a, b) =>
+      this.sortValue === 'ascend'
+        ? a[this.sortName!] > b[this.sortName!]
+          ? 1
+          : -1
+        : b[this.sortName!] > a[this.sortName!]
+        ? 1
+        : -1
+    );
   }
 }

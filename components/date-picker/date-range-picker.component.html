@@ -10,7 +10,8 @@
   [className]="nzClassName"
   [placeholder]="nzPlaceHolder"
   [size]="nzSize"
-  [style]="nzStyle"
+  [style]="pickerStyle"
+  [noAnimation]="noAnimation?.nzNoAnimation"
   (openChange)="onOpenChange($event)"
 >
   <date-range-popup *ngIf="realOpenState"
@@ -20,6 +21,7 @@
     (panelModeChange)="nzOnPanelChange.emit($event)"
     [value]="nzValue"
     (valueChange)="onValueChange($event)"
+    (calendarChange)="onCalendarChange($event)"
     [locale]="nzLocale?.lang"
     [showToday]="realShowToday"
     [showTime]="nzShowTime"

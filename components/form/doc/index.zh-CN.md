@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 表单
-type: Data Entry
+type: 数据录入
 cols: 1
 title: Form
 ---
@@ -44,11 +44,20 @@ title: Form
 
 ## API
 
+### 单独引入此组件
+
+想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
+
+```ts
+import { NzFormModule } from 'ng-zorro-antd';
+```
+
 ### nz-form
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzLayout]`| 表单布局	 | `'horizontal'丨'vertical'丨'inline'`| 'horizontal'|
+| `[nzLayout]`| 表单布局 | `'horizontal'｜'vertical'｜'inline'` | `'horizontal'` |
+| `[nzNoColon]`| 配置 `nz-form-label` 的 `[nzNoColon]` 的默认值 | `boolean` | `false` |
 
 ### nz-form-item
 
@@ -58,7 +67,7 @@ title: Form
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzFlex]`| 是否Flex布局	 | boolean | false|
+| `[nzFlex]`| 是否Flex布局 | `boolean` | `false` |
 
 ### nz-form-label
 
@@ -68,10 +77,14 @@ title: Form
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzRequired]`| 当前项是否为必填，仅影响样式	 | boolean | false|
-| `[nzFor]`| label 标签的 for 属性	 | string | -|
+| `[nzRequired]`| 当前项是否为必填，仅影响样式 | `boolean` | `false` |
+| `[nzNoColon]`| 是否不显示 label 后面的冒号 | `boolean` | `false` |
+| `[nzFor]`| label 标签的 for 属性	 | `string` | - |
+| `[nzColon]` | 配合 label 属性使用，表示是否显示 label 后面的冒号 | `boolean` | `true` |
 
 ### nz-form-control
+
+> 注意：由于 Angular Form 目前提供的[状态变更订阅](https://github.com/angular/angular/issues/10887)不完整。手动更改表单状态时，例如 `markAsDirty` 后，需要执行 `updateValueAndValidity` 通知 `nz-form-control` 进行状态变更。
 
 表单一定会包含表单域，表单域可以是输入控件，标准表单域，标签，下拉菜单，文本域等。
 
@@ -80,9 +93,11 @@ title: Form
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzValidateStatus]`(Reactive Forms) | 会根据 FormControl 的状态自动生成校验状态 | FormControl | `nz-form-control` 中包裹的第一个 `FormControl`  |
-| `[nzValidateStatus]`(Template-driven Forms) | 校验状态，可选：'success' 'warning' 'error' 'validating' | string |  |
-| `[nzHasFeedback]`| 配合 nzValidateStatus 属性使用，展示校验状态图标	 | boolean | false|
+| `[nzValidateStatus]` | Reactive Forms：会根据 FormControl 的状态自动生成校验状态 | `FormControl` | `nz-form-control` 中包裹的第一个 `FormControl`  |
+| `[nzValidateStatus]` | Template-driven Forms：校验状态 | `'success'｜'warning'｜'error'｜'validating'` | - |
+| `[nzHasFeedback]`| 配合 `nzValidateStatus` 属性使用，展示校验状态图标	 | `boolean` | `false`|
+
+从 7.3.0 版本开始，`nz-form-control` 提供了 `status` 变量用于指示校验状态，`status` 会自动根据 `[nzValidateStatus]` 在 `'success'｜'warning'｜'error'｜'validating'` 中自动切换，用户可以通过模板变量导出 `status` 用于切换提示信息。
 
 ### nz-form-explain
 

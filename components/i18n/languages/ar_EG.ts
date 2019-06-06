@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import Calendar from './calendar/ar_EG';
 import DatePicker from './date-picker/ar_EG';
 import Pagination from './pagination/ar_EG';
@@ -13,32 +21,30 @@ export default {
     filterTitle: 'الفلاتر',
     filterConfirm: 'تأكيد',
     filterReset: 'إعادة ضبط',
-    emptyText: 'لا توجد بيانات',
     selectAll: 'اختيار الكل',
-    selectInvert: 'إلغاء الاختيار',
+    selectInvert: 'إلغاء الاختيار'
   },
   Modal: {
     okText: 'تأكيد',
     cancelText: 'إلغاء',
-    justOkText: 'تأكيد',
+    justOkText: 'تأكيد'
   },
   Popconfirm: {
     okText: 'تأكيد',
-    cancelText: 'إلغاء',
+    cancelText: 'إلغاء'
   },
   Transfer: {
-    notFoundContent: 'لا يوجد محتوى',
     searchPlaceholder: 'ابحث هنا',
     itemUnit: 'عنصر',
-    itemsUnit: 'عناصر',
-  },
-  Select: {
-    notFoundContent: 'لايوجد محتوى',
+    itemsUnit: 'عناصر'
   },
   Upload: {
     uploading: 'جاري الرفع...',
     removeFile: 'احذف الملف',
     uploadError: 'مشكلة فى الرفع',
-    previewFile: 'استعرض الملف',
+    previewFile: 'استعرض الملف'
   },
+  Empty: {
+    description: 'لا توجد بيانات'
+  }
 };

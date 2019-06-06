@@ -1,34 +1,41 @@
-import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 
-import { toBoolean } from '../core/util/convert';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
+
+import { InputBoolean } from 'ng-zorro-antd/core';
+import { Subject } from 'rxjs';
 
 @Component({
-  selector   : 'nz-option',
+  selector: 'nz-option',
+  exportAs: 'nzOption',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './nz-option.component.html'
 })
-export class NzOptionComponent {
-  private _disabled = false;
-  private _customContent = false;
+export class NzOptionComponent implements OnChanges {
+  changes = new Subject();
   @ViewChild(TemplateRef) template: TemplateRef<void>;
   @Input() nzLabel: string;
   // tslint:disable-next-line:no-any
   @Input() nzValue: any;
+  @Input() @InputBoolean() nzDisabled = false;
+  @Input() @InputBoolean() nzCustomContent = false;
 
-  @Input()
-  set nzDisabled(value: boolean) {
-    this._disabled = toBoolean(value);
-  }
-
-  get nzDisabled(): boolean {
-    return this._disabled;
-  }
-
-  @Input()
-  set nzCustomContent(value: boolean) {
-    this._customContent = toBoolean(value);
-  }
-
-  get nzCustomContent(): boolean {
-    return this._customContent;
+  ngOnChanges(): void {
+    this.changes.next();
   }
 }

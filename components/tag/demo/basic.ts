@@ -7,14 +7,13 @@ import { Component } from '@angular/core';
     <nz-tag>
       <a href="https://github.com/NG-ZORRO/ng-zorro-antd">Link</a>
     </nz-tag>
-    <nz-tag nzMode="closeable" (nzOnClose)="onClose($event)" (nzAfterClose)="afterClose()">Tag 2</nz-tag>
+    <nz-tag nzMode="closeable" (nzOnClose)="onClose()" (nzAfterClose)="afterClose()">Tag 2</nz-tag>
     <nz-tag nzMode="closeable" (nzOnClose)="preventDefault($event)">Prevent Default</nz-tag>
   `,
-  styles  : []
+  styles: []
 })
 export class NzDemoTagBasicComponent {
-
-  onClose(e: MouseEvent): void {
+  onClose(): void {
     console.log('tag was closed.');
   }
 

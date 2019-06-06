@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import Calendar from './calendar/en_US';
 import DatePicker from './date-picker/tr_TR';
 import Pagination from './pagination/en_US';
@@ -13,32 +21,30 @@ export default {
     filterTitle: 'Menü Filtrele',
     filterConfirm: 'Tamam',
     filterReset: 'Sıfırla',
-    emptyText: 'Veri Yok',
     selectAll: 'Hepsini Seç',
-    selectInvert: 'Tersini Seç',
+    selectInvert: 'Tersini Seç'
   },
   Modal: {
     okText: 'Tamam',
     cancelText: 'İptal',
-    justOkText: 'Tamam',
+    justOkText: 'Tamam'
   },
   Popconfirm: {
     okText: 'Tamam',
-    cancelText: 'İptal',
+    cancelText: 'İptal'
   },
   Transfer: {
-    notFoundContent: 'Bulunamadı',
     searchPlaceholder: 'Arama',
     itemUnit: 'Öğe',
-    itemsUnit: 'Öğeler',
-  },
-  Select: {
-    notFoundContent: 'Bulunamadı',
+    itemsUnit: 'Öğeler'
   },
   Upload: {
     uploading: 'Yükleniyor...',
     removeFile: `Dosyayı kaldır`,
     uploadError: 'Yükleme Hatası',
-    previewFile: `Dosyayı Önizle`,
+    previewFile: `Dosyayı Önizle`
   },
+  Empty: {
+    description: 'Veri Yok'
+  }
 };

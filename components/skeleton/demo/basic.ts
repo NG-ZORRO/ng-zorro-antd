@@ -6,4 +6,4 @@ import { Component } from '@angular/core';
     <nz-skeleton></nz-skeleton>
   `
 })
-export class NzDemoSkeletonBasicComponent { }
+export class NzDemoSkeletonBasicComponent {}

@@ -1,18 +1,9 @@
-import {
-  Component,
-  DebugElement,
-  ViewChild
-} from '@angular/core';
-import {
-  fakeAsync,
-  tick,
-  ComponentFixture,
-  TestBed
-} from '@angular/core/testing';
+import { Component, DebugElement, ViewChild } from '@angular/core';
+import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { NzScrollService } from '../core/scroll/nz-scroll.service';
+import { NzScrollService } from 'ng-zorro-antd/core';
 
 import { NzBackTopComponent } from './nz-back-top.component';
 import { NzBackTopModule } from './nz-back-top.module';
@@ -20,7 +11,6 @@ import { NzBackTopModule } from './nz-back-top.module';
 describe('Component:nz-back-top', () => {
   let scrollService: MockNzScrollService;
   let fixture: ComponentFixture<TestBackTopComponent>;
-  let context: TestBackTopComponent;
   let debugElement: DebugElement;
   let component: NzBackTopComponent;
   let componentObject: NzBackTopPageObject;
@@ -43,10 +33,7 @@ describe('Component:nz-back-top', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        NzBackTopModule,
-        NoopAnimationsModule
-      ],
+      imports: [NzBackTopModule, NoopAnimationsModule],
       declarations: [TestBackTopComponent, TestBackTopTemplateComponent],
       providers: [
         {
@@ -57,7 +44,6 @@ describe('Component:nz-back-top', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestBackTopComponent);
-    context = fixture.componentInstance;
     component = fixture.componentInstance.nzBackTopComponent;
     componentObject = new NzBackTopPageObject();
     debugElement = fixture.debugElement;
@@ -99,7 +85,7 @@ describe('Component:nz-back-top', () => {
         componentObject.clickBackTop();
         tick();
 
-        expect(scrollService.getScroll(window)).toEqual(0);
+        expect(scrollService.getScroll()).toEqual(0);
       }));
     });
   });
@@ -149,7 +135,7 @@ describe('Component:nz-back-top', () => {
 
     describe('when clicked', () => {
       it(`emit event on nzClick`, fakeAsync(() => {
-        component.nzClick.subscribe((returnValue) => {
+        component.nzClick.subscribe((returnValue: boolean) => {
           expect(returnValue).toBe(true);
         });
 
@@ -182,14 +168,24 @@ describe('Component:nz-back-top', () => {
 
       expect(componentObject.backTopButton() === null).toBe(false);
     }));
+
+    it('element (use string id) scroll shows the button', fakeAsync(() => {
+      component.nzTarget = '#fakeTarget';
+
+      const throttleTime = 50;
+
+      componentObject.scrollTo(fakeTarget, defaultVisibilityHeight + 1);
+      tick(throttleTime + 1);
+      fixture.detectChanges();
+
+      expect(componentObject.backTopButton() === null).toBe(false);
+    }));
   });
 
   describe('#nzTemplate', () => {
     it(`should show custom template`, fakeAsync(() => {
       let fixtureTemplate: ComponentFixture<TestBackTopTemplateComponent>;
-      let contextTemplate: TestBackTopTemplateComponent;
       fixtureTemplate = TestBed.createComponent(TestBackTopTemplateComponent);
-      contextTemplate = fixture.componentInstance;
 
       componentObject.scrollTo(window, defaultVisibilityHeight + 1);
       tick();
@@ -201,9 +197,9 @@ describe('Component:nz-back-top', () => {
 
 @Component({
   template: `
-  <nz-back-top></nz-back-top>
-  <div id="fakeTarget"></div>
-`
+    <nz-back-top></nz-back-top>
+    <div id="fakeTarget"></div>
+  `
 })
 class TestBackTopComponent {
   @ViewChild(NzBackTopComponent)
@@ -213,12 +209,12 @@ class TestBackTopComponent {
 @Component({
   template: `
     my comp
-  <nz-back-top [nzTemplate]="tpl">
-    <ng-template #tpl>
-      <div class="this-is-my-template"></div>
-    </ng-template>
-  </nz-back-top>
-`
+    <nz-back-top [nzTemplate]="tpl">
+      <ng-template #tpl>
+        <div class="this-is-my-template"></div>
+      </ng-template>
+    </nz-back-top>
+  `
 })
 class TestBackTopTemplateComponent {
   @ViewChild(NzBackTopComponent)
@@ -228,16 +224,11 @@ class TestBackTopTemplateComponent {
 class MockNzScrollService {
   mockTopOffset: number;
 
-  getScroll(el?: Element | Window, top: boolean = true): number {
+  getScroll(): number {
     return this.mockTopOffset;
   }
 
-  scrollTo(
-    containerEl: Element | Window,
-    targetTopValue: number = 0,
-    easing?: {},
-    callback?: {}
-  ): void {
+  scrollTo(_containerEl: Element | Window, targetTopValue: number = 0): void {
     this.mockTopOffset = targetTopValue;
   }
 }

@@ -1,6 +1,7 @@
 ---
 order: 0
 title: Ant Design of Angular
+widget: <nz-github-btn></nz-github-btn>
 ---
 
 这里是 Ant Design 的 Angular 实现，开发和服务于企业级后台产品。
@@ -32,7 +33,9 @@ title: Ant Design of Angular
 
 ## 支持环境
 
-现代浏览器和 IE9 及以上（需要 [polyfills](https://angular.io/guide/browser-support)）。
+- 现代浏览器和 IE11 及以上（需要 [polyfills](https://angular.io/guide/browser-support)）
+- 支持服务端渲染
+- [Electron](http://electron.atom.io/)
 
 ## 当前版本
 
@@ -40,7 +43,7 @@ title: Ant Design of Angular
 
 ## 支持 Angular 版本
 
-目前支持 Angular `^6.0.0` 版本。
+目前支持 Angular `^7.0.0` 版本。
 
 ## 设计规范
 
@@ -71,6 +74,8 @@ $ ng add ng-zorro-antd
 
 - [阿里巴巴](http://www.alibaba.com/)
 - [阿里云](http://www.aliyun.com/)
+- [Apache Flink](https://flink.apache.org/)
+- [ThoughtWorks](https://www.thoughtworks.com/)
 
 > 如果你的公司和产品使用了 NG-ZORRO，欢迎到 [这里](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1142) 留言。
 
@@ -91,4 +96,4 @@ $ ng add ng-zorro-antd
 3. [![Gitter](https://img.shields.io/gitter/room/ng-zorro/ng-zorro-antd.svg?style=flat-square)](https://gitter.im/ng-zorro/ng-zorro-antd)
 4. 加入钉钉 NG-ZORRO 自助服务群（中文）
 
-<img src="https://img.alicdn.com/tfs/TB17P11r_qWBKNjSZFxXXcpLpXa-750-990.jpg" width="300">
+<img src="https://img.alicdn.com/tfs/TB1aYpsHAvoK1RjSZPfXXXPKFXa-750-990.jpg" width="300">

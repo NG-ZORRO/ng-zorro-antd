@@ -1,23 +1,43 @@
 import { Component, OnInit } from '@angular/core';
 
+export interface Data {
+  id: number;
+  name: string;
+  age: number;
+  address: string;
+  disabled: boolean;
+}
+
 @Component({
   selector: 'nz-demo-table-row-selection-and-operation',
   template: `
-    <div style="margin-bottom: 16px;">
-      <button nz-button [disabled]="disabledButton" [nzType]="'primary'" [nzLoading]="operating" (click)="operateData()">
+    <div class="operate">
+      <button
+        nz-button
+        [disabled]="numberOfChecked === 0"
+        [nzType]="'primary'"
+        [nzLoading]="isOperating"
+        (click)="operateData()"
+      >
         Reload
       </button>
-      <span style="margin-left: 8px;" *ngIf="checkedNumber">Selected {{checkedNumber}} items</span>
+      <span *ngIf="numberOfChecked">Selected {{ numberOfChecked }} items</span>
     </div>
     <nz-table
       #rowSelectionTable
-      [nzData]="dataSet"
+      nzShowPagination
+      nzShowSizeChanger
+      [nzData]="listOfAllData"
       (nzCurrentPageDataChange)="currentPageDataChange($event)"
-      (nzPageIndexChange)="refreshStatus()"
-      (nzPageSizeChange)="refreshStatus()">
+    >
       <thead>
         <tr>
-          <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
+          <th
+            nzShowCheckbox
+            [(nzChecked)]="isAllDisplayDataChecked"
+            [nzIndeterminate]="isIndeterminate"
+            (nzCheckedChange)="checkAll($event)"
+          ></th>
           <th>Name</th>
           <th>Age</th>
           <th>Address</th>
@@ -25,58 +45,77 @@ import { Component, OnInit } from '@angular/core';
       </thead>
       <tbody>
         <tr *ngFor="let data of rowSelectionTable.data">
-          <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()"></td>
-          <td>{{data.name}}</td>
-          <td>{{data.age}}</td>
-          <td>{{data.address}}</td>
+          <td
+            nzShowCheckbox
+            [(nzChecked)]="mapOfCheckedId[data.id]"
+            [nzDisabled]="data.disabled"
+            (nzCheckedChange)="refreshStatus()"
+          ></td>
+          <td>{{ data.name }}</td>
+          <td>{{ data.age }}</td>
+          <td>{{ data.address }}</td>
         </tr>
       </tbody>
-    </nz-table>`,
-  styles  : []
+    </nz-table>
+  `,
+  styles: [
+    `
+      .operate {
+        margin-bottom: 16px;
+      }
+
+      .operate span {
+        margin-left: 8px;
+      }
+    `
+  ]
 })
 export class NzDemoTableRowSelectionAndOperationComponent implements OnInit {
-  allChecked = false;
-  disabledButton = true;
-  checkedNumber = 0;
-  displayData: Array<{ name: string; age: number; address: string; checked: boolean }> = [];
-  operating = false;
-  dataSet = [];
-  indeterminate = false;
+  isAllDisplayDataChecked = false;
+  isOperating = false;
+  isIndeterminate = false;
+  listOfDisplayData: Data[] = [];
+  listOfAllData: Data[] = [];
+  mapOfCheckedId: { [key: string]: boolean } = {};
+  numberOfChecked = 0;
 
-  currentPageDataChange($event: Array<{ name: string; age: number; address: string; checked: boolean }>): void {
-    this.displayData = $event;
+  currentPageDataChange($event: Data[]): void {
+    this.listOfDisplayData = $event;
+    this.refreshStatus();
   }
 
   refreshStatus(): void {
-    const allChecked = this.displayData.every(value => value.checked === true);
-    const allUnChecked = this.displayData.every(value => !value.checked);
-    this.allChecked = allChecked;
-    this.indeterminate = (!allChecked) && (!allUnChecked);
-    this.disabledButton = !this.dataSet.some(value => value.checked);
-    this.checkedNumber = this.dataSet.filter(value => value.checked).length;
+    this.isAllDisplayDataChecked = this.listOfDisplayData
+      .filter(item => !item.disabled)
+      .every(item => this.mapOfCheckedId[item.id]);
+    this.isIndeterminate =
+      this.listOfDisplayData.filter(item => !item.disabled).some(item => this.mapOfCheckedId[item.id]) &&
+      !this.isAllDisplayDataChecked;
+    this.numberOfChecked = this.listOfAllData.filter(item => this.mapOfCheckedId[item.id]).length;
   }
 
   checkAll(value: boolean): void {
-    this.displayData.forEach(data => data.checked = value);
+    this.listOfDisplayData.filter(item => !item.disabled).forEach(item => (this.mapOfCheckedId[item.id] = value));
     this.refreshStatus();
   }
 
   operateData(): void {
-    this.operating = true;
-    setTimeout(_ => {
-      this.dataSet.forEach(value => value.checked = false);
+    this.isOperating = true;
+    setTimeout(() => {
+      this.listOfAllData.forEach(item => (this.mapOfCheckedId[item.id] = false));
       this.refreshStatus();
-      this.operating = false;
+      this.isOperating = false;
     }, 1000);
   }
 
   ngOnInit(): void {
-    for (let i = 0; i < 46; i++) {
-      this.dataSet.push({
-        name   : `Edward King ${i}`,
-        age    : 32,
+    for (let i = 0; i < 100; i++) {
+      this.listOfAllData.push({
+        id: i,
+        name: `Edward King ${i}`,
+        age: 32,
         address: `London, Park Lane no. ${i}`,
-        checked: false
+        disabled: i % 2 === 0
       });
     }
   }

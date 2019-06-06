@@ -8,19 +8,19 @@ import { Component } from '@angular/core';
         <ng-template #titleTemplate>
           <div>
             {{ tab }}
-            <i class="anticon anticon-close" (click)="closeTab(tab)"></i>
+            <i nz-icon type="close" (click)="closeTab(tab)" class="ant-tabs-close-x"></i>
           </div>
         </ng-template>
         Content of {{ tab }}
       </nz-tab>
     </nz-tabset>
     <ng-template #extraTemplate>
-      <i class="ant-tabs-new-tab anticon anticon-plus" (click)="newTab()"></i>
+      <i class="ant-tabs-new-tab" nz-icon type="plus" (click)="newTab()"></i>
     </ng-template>
   `
 })
 export class NzDemoTabsEditableCardComponent {
-  tabs = [ 'Tab 1', 'Tab 2' ];
+  tabs = ['Tab 1', 'Tab 2'];
 
   closeTab(tab: string): void {
     this.tabs.splice(this.tabs.indexOf(tab), 1);

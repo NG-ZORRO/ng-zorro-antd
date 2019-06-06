@@ -5,11 +5,10 @@ import { Component } from '@angular/core';
   template: `
     <nz-layout>
       <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzWidth]="width" [nzReverseArrow]="isReverseArrow">
-        <div class="logo">
-        </div>
+        <div class="logo"></div>
         <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
           <li nz-submenu>
-            <span title><i class="anticon anticon-user"></i><span class="nav-text">User</span></span>
+            <span title><i nz-icon type="user"></i><span class="nav-text">User</span></span>
             <ul>
               <li nz-menu-item>Tom</li>
               <li nz-menu-item>Bill</li>
@@ -17,13 +16,15 @@ import { Component } from '@angular/core';
             </ul>
           </li>
           <li nz-submenu>
-            <span title><i class="anticon anticon-team"></i><span class="nav-text">Team</span></span>
+            <span title><i nz-icon type="team"></i><span class="nav-text">Team</span></span>
             <ul>
               <li nz-menu-item>Team 1</li>
               <li nz-menu-item>Team 2</li>
             </ul>
           </li>
-          <li nz-menu-item><span><i class="anticon anticon-file"></i><span class="nav-text">File</span></span></li>
+          <li nz-menu-item>
+            <span><i nz-icon type="file"></i><span class="nav-text">File</span></span>
+          </li>
         </ul>
       </nz-sider>
       <nz-layout>
@@ -37,15 +38,15 @@ import { Component } from '@angular/core';
             Bill is a cat.
           </div>
         </nz-content>
-        <nz-footer style="text-align: center;">Ant Design ©2017 Implement By Angular</nz-footer>
+        <nz-footer style="text-align: center;">Ant Design ©2019 Implement By Angular</nz-footer>
       </nz-layout>
     </nz-layout>
   `,
-  styles  : [
-      `
-      :host ::ng-deep .logo {
+  styles: [
+    `
+      .logo {
         height: 32px;
-        background: rgba(255, 255, 255, .2);
+        background: rgba(255, 255, 255, 0.2);
         margin: 16px;
       }
     `
@@ -54,5 +55,5 @@ import { Component } from '@angular/core';
 export class NzDemoLayoutSideComponent {
   isCollapsed = false;
   isReverseArrow = false;
-  width = 200;
+  width: string | number = '200px';
 }

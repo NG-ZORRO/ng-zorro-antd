@@ -10,12 +10,6 @@
         [nzTime]="format"
         [(ngModel)]="time.value"
         (blur)="time.changed()">
-      <a
-        *ngIf="nzAllowEmpty"
-        class="{{ prefixCls }}-clear-btn"
-        [attr.title]="nzClearText"
-        (click)="clear()">
-      </a>
     </div>
     <div class="{{ prefixCls }}-combobox">
       <div
@@ -71,6 +65,24 @@
               "
             >
               {{ second.index | number:'2.0-0' }}
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+      <div
+        *ngIf="nzUse12Hours"
+        #use12HoursListElement
+        class="{{ prefixCls }}-select">
+        <ul>
+          <ng-container *ngFor="let range of use12HoursRange ">
+            <li
+              *ngIf="!nzHideDisabledOptions"
+              (click)="select12Hours(range)"
+              class="
+                {{ isSelected12Hours(range) ? prefixCls + '-select-option-selected' : '' }}
+              "
+            >
+              {{ range.value }}
             </li>
           </ng-container>
         </ul>

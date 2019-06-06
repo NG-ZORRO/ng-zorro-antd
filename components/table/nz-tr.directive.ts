@@ -1,17 +1,23 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Directive, ElementRef, Host, Input, Optional, Renderer2 } from '@angular/core';
-import { toBoolean } from '../core/util/convert';
+import { toBoolean } from 'ng-zorro-antd/core';
 import { NzTableComponent } from './nz-table.component';
 
 @Directive({
   // tslint:disable-next-line:directive-selector
   selector: 'tr',
-  host    : {
+  host: {
     '[class.ant-table-row]': 'nzTableComponent'
   }
 })
-
 export class NzTrDirective {
-
   @Input()
   set nzExpand(value: boolean) {
     if (toBoolean(value)) {
@@ -23,7 +29,9 @@ export class NzTrDirective {
     }
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, @Host() @Optional() public nzTableComponent: NzTableComponent) {
-
-  }
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    @Host() @Optional() public nzTableComponent: NzTableComponent
+  ) {}
 }

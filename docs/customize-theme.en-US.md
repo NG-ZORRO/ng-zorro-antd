@@ -1,5 +1,5 @@
 ---
-order: 5
+order: 6
 title: Customize Theme
 ---
 
@@ -17,13 +17,9 @@ We are using [Less](http://lesscss.org/) as the development language for styling
 
 Run `ng add ng-zorro-antd --theme`，then modified the file `src/theme.less`.
 
-> Note: `ng add ng-zorro-antd --theme` will [downgrade](https://github.com/angular/angular-cli/issues/10430) the version of `less` to `2.7`.
-
 ### Without schematics
 
 Create a standalone less file named `theme.less` in `src` folder, and add the path of it to the list of `styles` in `angular.json` file.
-
-> Note: You have to [downgrade](https://github.com/angular/angular-cli/issues/10430) the version of `less` to `2.7`.
 
 ```json
 ...
@@ -47,18 +43,4 @@ Here is an example of `theme.less`
 ```
 
 
-All less vars can be checked [here](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/site_scripts/_site/src/theme.less) is a sample of theme define file.
-
-
-## Local deployment fonts
-
-You can modify `@icon-url` to make a locally deployed version of the icon font, the newest iconfont file could be downloaded [here](https://github.com/ant-design/ant-design/releases/download/resource/iconfont-3.x.zip).
-Here is an example set icon url to the folder `assets/fonts`
-
-```css
-// -------- import official less file -----------
-@import "../node_modules/ng-zorro-antd/ng-zorro-antd.less";
-
-// -------- override less var -----------
-@icon-url               : "/assets/fonts/iconfont";
-```
+All less vars can be checked [here](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/scripts/site/_site/doc/theme.less) is a sample of theme define file.

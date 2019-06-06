@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzFormExplainComponent } from './nz-form-explain.component';
@@ -9,16 +9,16 @@ import { NzFormModule } from './nz-form.module';
 describe('nz-form-item', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzFormModule, NoopAnimationsModule ],
-      declarations: [ NzTestFormItemComponent ]
+      imports: [NzFormModule, NoopAnimationsModule],
+      declarations: [NzTestFormItemComponent]
     });
     TestBed.compileComponents();
   }));
   describe('default', () => {
-    let fixture;
-    let testComponent;
-    let item;
-    let explain;
+    let fixture: ComponentFixture<NzTestFormItemComponent>;
+    let testComponent: NzTestFormItemComponent;
+    let item: DebugElement;
+    let explain: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestFormItemComponent);
       fixture.detectChanges();
@@ -60,7 +60,8 @@ describe('nz-form-item', () => {
     <nz-form-item [nzFlex]="flex">
       <nz-form-explain *ngIf="first"></nz-form-explain>
       <nz-form-explain *ngIf="second"></nz-form-explain>
-    </nz-form-item>`
+    </nz-form-item>
+  `
 })
 export class NzTestFormItemComponent {
   first = true;

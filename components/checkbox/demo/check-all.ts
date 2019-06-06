@@ -4,11 +4,16 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-checkbox-check-all',
   template: `
     <div style="border-bottom: 1px solid rgb(233, 233, 233);">
-      <label nz-checkbox [(ngModel)]="allChecked" (ngModelChange)="updateAllChecked()" [nzIndeterminate]="indeterminate">
+      <label
+        nz-checkbox
+        [(ngModel)]="allChecked"
+        (ngModelChange)="updateAllChecked()"
+        [nzIndeterminate]="indeterminate"
+      >
         Check all
       </label>
     </div>
-    <br>
+    <br />
     <nz-checkbox-group [(ngModel)]="checkOptionsOne" (ngModelChange)="updateSingleChecked()"></nz-checkbox-group>
   `
 })
@@ -24,9 +29,19 @@ export class NzDemoCheckboxCheckAllComponent {
   updateAllChecked(): void {
     this.indeterminate = false;
     if (this.allChecked) {
-      this.checkOptionsOne.forEach(item => item.checked = true);
+      this.checkOptionsOne = this.checkOptionsOne.map(item => {
+        return {
+          ...item,
+          checked: true
+        };
+      });
     } else {
-      this.checkOptionsOne.forEach(item => item.checked = false);
+      this.checkOptionsOne = this.checkOptionsOne.map(item => {
+        return {
+          ...item,
+          checked: false
+        };
+      });
     }
   }
 

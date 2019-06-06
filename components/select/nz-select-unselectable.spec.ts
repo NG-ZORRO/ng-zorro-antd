@@ -1,24 +1,22 @@
-import { Component } from '@angular/core';
-import { fakeAsync, TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzSelectUnselectableDirective } from './nz-select-unselectable.directive';
 
 describe('select unselectable', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [],
-      declarations: [ NzTestSelectUnselectableComponent, NzSelectUnselectableDirective ]
+      imports: [],
+      declarations: [NzTestSelectUnselectableComponent, NzSelectUnselectableDirective]
     });
     TestBed.compileComponents();
   }));
   describe('basic select unselectable', () => {
-    let fixture;
-    let testComponent;
-    let unselectable;
+    let fixture: ComponentFixture<NzTestSelectUnselectableComponent>;
+    let unselectable: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSelectUnselectableComponent);
       fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
       unselectable = fixture.debugElement.query(By.directive(NzSelectUnselectableDirective));
     });
     it('should unselectable style work', () => {
@@ -32,7 +30,7 @@ describe('select unselectable', () => {
 @Component({
   selector: 'nz-test-select-unselectable',
   template: `
-    <div nz-select-unselectable></div>`
+    <div nz-select-unselectable></div>
+  `
 })
-export class NzTestSelectUnselectableComponent {
-}
+export class NzTestSelectUnselectableComponent {}

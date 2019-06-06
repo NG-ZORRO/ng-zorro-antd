@@ -1,10 +1,18 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { ESCAPE } from '@angular/cdk/keycodes';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   EventEmitter,
   Inject,
   Injector,
@@ -23,72 +31,33 @@ import {
 } from '@angular/core';
 
 import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
-import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
+import { Overlay, OverlayConfig, OverlayKeyboardDispatcher, OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortalOutlet, ComponentPortal, PortalInjector, TemplatePortal } from '@angular/cdk/portal';
 
 import { Observable, Subject } from 'rxjs';
 
-import { NzScrollStrategyOptions } from '../core/overlay/scroll/nz-scroll-strategy-options';
-import { toCssPixel, InputBoolean } from '../core/util/convert';
-import { NzDrawerOptions, NzDrawerPlacement } from './nz-drawer-options';
+import { toCssPixel, InputBoolean } from 'ng-zorro-antd/core';
+import { takeUntil } from 'rxjs/operators';
+import { NzDrawerOptionsOfComponent, NzDrawerPlacement } from './nz-drawer-options';
 import { NzDrawerRef } from './nz-drawer-ref';
 
 export const DRAWER_ANIMATE_DURATION = 300;
 
 @Component({
-  selector           : 'nz-drawer',
-  templateUrl        : './nz-drawer.component.html',
+  selector: 'nz-drawer',
+  exportAs: 'nzDrawer',
+  templateUrl: './nz-drawer.component.html',
   preserveWhitespaces: false,
-  changeDetection    : ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 // tslint:disable-next-line:no-any
-export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R> implements OnInit, OnDestroy, AfterViewInit, OnChanges, NzDrawerOptions {
-  previouslyFocusedElement: HTMLElement;
-  nzContentParams: D; // only service
-  overlayRef: OverlayRef;
-  portal: TemplatePortal;
-  focusTrap: FocusTrap;
-  isOpen = false;
-  templateContext: { $implicit: D; drawerRef: NzDrawerRef<R> } = {
-    $implicit: undefined,
-    drawerRef: this as NzDrawerRef<R>
-  };
-
-  get transform(): string {
-
-    switch (this.nzPlacement) {
-      case 'left':
-        return this.isOpen ? `translateX(${this.nzOffsetX}px)` : `translateX(-${this.width})`;
-      case 'right':
-        return this.isOpen ? `translateX(-${this.nzOffsetX}px)` : `translateX(${this.width})`;
-      case 'top':
-        return this.isOpen ? `translateY(${this.nzOffsetY}px)` : `translateY(-${this.height})`;
-      case 'bottom':
-        return this.isOpen ? `translateY(-${this.nzOffsetY}px)` : `translateY(${this.height})`;
-      default:
-        return '';
-    }
-  }
-
-  get width(): string {
-    return this.isLeftOrRight ? toCssPixel(this.nzWidth) : null;
-  }
-
-  get height(): string {
-    return !this.isLeftOrRight ? toCssPixel(this.nzHeight) : null;
-  }
-
-  get isLeftOrRight(): boolean {
-    return this.nzPlacement === 'left' || this.nzPlacement === 'right';
-  }
-
-  @ViewChild('drawerTemplate') drawerTemplate: TemplateRef<{}>;
-  @ViewChild('contentTemplate') contentTemplate: TemplateRef<{}>;
-  @ViewChild(CdkPortalOutlet) bodyPortalOutlet: CdkPortalOutlet;
-  @Input() nzContent: TemplateRef<{ $implicit: D, drawerRef: NzDrawerRef<R> }> | Type<T>;
+export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
+  implements OnInit, OnDestroy, AfterViewInit, OnChanges, NzDrawerOptionsOfComponent {
+  @Input() nzContent: TemplateRef<{ $implicit: D; drawerRef: NzDrawerRef<R> }> | Type<T>;
   @Input() @InputBoolean() nzClosable = true;
   @Input() @InputBoolean() nzMaskClosable = true;
   @Input() @InputBoolean() nzMask = true;
+  @Input() @InputBoolean() nzNoAnimation = false;
   @Input() nzTitle: string | TemplateRef<{}>;
   @Input() nzPlacement: NzDrawerPlacement = 'right';
   @Input() nzMaskStyle: object = {};
@@ -109,8 +78,70 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
     return this.isOpen;
   }
 
-  @Output() nzOnViewInit = new EventEmitter<void>();
-  @Output() nzOnClose = new EventEmitter<MouseEvent>();
+  @Output() readonly nzOnViewInit = new EventEmitter<void>();
+  @Output() readonly nzOnClose = new EventEmitter<MouseEvent>();
+
+  @ViewChild('drawerTemplate') drawerTemplate: TemplateRef<{}>;
+  @ViewChild('contentTemplate') contentTemplate: TemplateRef<{}>;
+  @ViewChild(CdkPortalOutlet) bodyPortalOutlet: CdkPortalOutlet;
+
+  destroy$ = new Subject<void>();
+  previouslyFocusedElement: HTMLElement;
+  nzContentParams: D; // only service
+  overlayRef: OverlayRef | null;
+  portal: TemplatePortal;
+  focusTrap: FocusTrap;
+  isOpen = false;
+  templateContext: { $implicit: D | undefined; drawerRef: NzDrawerRef<R> } = {
+    $implicit: undefined,
+    drawerRef: this as NzDrawerRef<R>
+  };
+
+  get offsetTransform(): string | null {
+    if (!this.isOpen || this.nzOffsetX + this.nzOffsetY === 0) {
+      return null;
+    }
+    switch (this.nzPlacement) {
+      case 'left':
+        return `translateX(${this.nzOffsetX}px)`;
+      case 'right':
+        return `translateX(-${this.nzOffsetX}px)`;
+      case 'top':
+        return `translateY(${this.nzOffsetY}px)`;
+      case 'bottom':
+        return `translateY(-${this.nzOffsetY}px)`;
+    }
+  }
+
+  get transform(): string | null {
+    if (this.isOpen) {
+      return null;
+    }
+
+    switch (this.nzPlacement) {
+      case 'left':
+        return `translateX(-100%)`;
+      case 'right':
+        return `translateX(100%)`;
+      case 'top':
+        return `translateY(-100%)`;
+      case 'bottom':
+        return `translateY(100%)`;
+    }
+  }
+
+  get width(): string | null {
+    return this.isLeftOrRight ? toCssPixel(this.nzWidth) : null;
+  }
+
+  get height(): string | null {
+    return !this.isLeftOrRight ? toCssPixel(this.nzHeight) : null;
+  }
+
+  get isLeftOrRight(): boolean {
+    return this.nzPlacement === 'left' || this.nzPlacement === 'right';
+  }
+
   nzAfterOpen = new Subject<void>();
   nzAfterClose = new Subject<R>();
 
@@ -122,10 +153,6 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
     return this.nzAfterClose.asObservable();
   }
 
-  isNonEmptyString(value: {}): boolean {
-    return typeof value === 'string' && value !== '';
-  }
-
   isTemplateRef(value: {}): boolean {
     return value instanceof TemplateRef;
   }
@@ -135,12 +162,12 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
     @Optional() @Inject(DOCUMENT) private document: any,
     private renderer: Renderer2,
     private overlay: Overlay,
-    private elementRef: ElementRef,
     private injector: Injector,
     private changeDetectorRef: ChangeDetectorRef,
     private focusTrapFactory: FocusTrapFactory,
-    private nzScrollStrategyOptions: NzScrollStrategyOptions,
-    private viewContainerRef: ViewContainerRef) {
+    private viewContainerRef: ViewContainerRef,
+    private overlayKeyboardDispatcher: OverlayKeyboardDispatcher
+  ) {
     super();
   }
 
@@ -162,38 +189,40 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.hasOwnProperty('nzVisible')) {
       const value = changes.nzVisible.currentValue;
-      this.updateOverlayStyle();
       if (value) {
-        this.updateBodyOverflow();
-        this.savePreviouslyFocusedElement();
-        this.trapFocus();
+        this.open();
       } else {
-        setTimeout(() => {
-          this.updateBodyOverflow();
-          this.restoreFocus();
-        }, DRAWER_ANIMATE_DURATION);
+        this.close();
       }
     }
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.disposeOverlay();
+  }
+
+  private getAnimationDuration(): number {
+    return this.nzNoAnimation ? 0 : DRAWER_ANIMATE_DURATION;
   }
 
   close(result?: R): void {
     this.isOpen = false;
     this.updateOverlayStyle();
+    this.overlayKeyboardDispatcher.remove(this.overlayRef!);
     this.changeDetectorRef.detectChanges();
     setTimeout(() => {
       this.updateBodyOverflow();
       this.restoreFocus();
       this.nzAfterClose.next(result);
       this.nzAfterClose.complete();
-    }, DRAWER_ANIMATE_DURATION);
+    }, this.getAnimationDuration());
   }
 
   open(): void {
     this.isOpen = true;
+    this.overlayKeyboardDispatcher.add(this.overlayRef!);
     this.updateOverlayStyle();
     this.updateBodyOverflow();
     this.savePreviouslyFocusedElement();
@@ -201,7 +230,7 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
     this.changeDetectorRef.detectChanges();
     setTimeout(() => {
       this.nzAfterOpen.next();
-    }, DRAWER_ANIMATE_DURATION);
+    }, this.getAnimationDuration());
   }
 
   closeClick(): void {
@@ -218,12 +247,10 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
     this.bodyPortalOutlet.dispose();
 
     if (this.nzContent instanceof Type) {
-      const childInjector = new PortalInjector(this.injector, new WeakMap([ [ NzDrawerRef, this ] ]));
+      const childInjector = new PortalInjector(this.injector, new WeakMap([[NzDrawerRef, this]]));
       const componentPortal = new ComponentPortal<T>(this.nzContent, null, childInjector);
       const componentRef = this.bodyPortalOutlet.attachComponentPortal(componentPortal);
-      if (this.nzContentParams) {
-        Object.assign(componentRef.instance, this.nzContentParams);
-      }
+      Object.assign(componentRef.instance, this.nzContentParams);
       componentRef.changeDetectorRef.detectChanges();
     }
   }
@@ -236,17 +263,27 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
 
     if (this.overlayRef && !this.overlayRef.hasAttached()) {
       this.overlayRef.attach(this.portal);
+      this.overlayRef!.keydownEvents()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((event: KeyboardEvent) => {
+          if (event.keyCode === ESCAPE && this.isOpen) {
+            this.nzOnClose.emit();
+          }
+        });
     }
   }
 
   private disposeOverlay(): void {
-    this.overlayRef.dispose();
+    if (this.overlayRef) {
+      this.overlayRef.dispose();
+    }
     this.overlayRef = null;
   }
 
   private getOverlayConfig(): OverlayConfig {
     return new OverlayConfig({
-      scrollStrategy: this.nzScrollStrategyOptions.block()
+      positionStrategy: this.overlay.position().global(),
+      scrollStrategy: this.overlay.scrollStrategies.block()
     });
   }
 
@@ -259,29 +296,33 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
   private updateBodyOverflow(): void {
     if (this.overlayRef) {
       if (this.isOpen) {
-        this.overlayRef.getConfig().scrollStrategy.enable();
+        this.overlayRef.getConfig().scrollStrategy!.enable();
       } else {
-        this.overlayRef.getConfig().scrollStrategy.disable();
+        this.overlayRef.getConfig().scrollStrategy!.disable();
       }
     }
   }
 
   savePreviouslyFocusedElement(): void {
-    if (this.document) {
+    if (this.document && !this.previouslyFocusedElement) {
       this.previouslyFocusedElement = this.document.activeElement as HTMLElement;
-      this.previouslyFocusedElement.blur();
+      // We need the extra check, because IE's svg element has no blur method.
+      if (this.previouslyFocusedElement && typeof this.previouslyFocusedElement.blur === 'function') {
+        this.previouslyFocusedElement.blur();
+      }
     }
   }
 
   private trapFocus(): void {
-    if (!this.focusTrap) {
-      this.focusTrap = this.focusTrapFactory.create(this.overlayRef.overlayElement);
+    if (!this.focusTrap && this.overlayRef && this.overlayRef.overlayElement) {
+      this.focusTrap = this.focusTrapFactory.create(this.overlayRef!.overlayElement);
+      this.focusTrap.focusInitialElement();
     }
-    this.focusTrap.focusInitialElementWhenReady();
   }
 
   private restoreFocus(): void {
-    if (this.previouslyFocusedElement) {
+    // We need the extra check, because IE can set the `activeElement` to null in some cases.
+    if (this.previouslyFocusedElement && typeof this.previouslyFocusedElement.focus === 'function') {
       this.previouslyFocusedElement.focus();
     }
     if (this.focusTrap) {

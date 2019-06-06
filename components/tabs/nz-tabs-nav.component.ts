@@ -1,50 +1,59 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 /** code from https://github.com/angular/material2 */
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentChecked,
   AfterContentInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChildren,
   ElementRef,
   EventEmitter,
   Input,
   NgZone,
+  OnDestroy,
   Optional,
   Output,
   QueryList,
   Renderer2,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import { fromEvent, merge, of as observableOf, Subscription } from 'rxjs';
 import { auditTime, startWith } from 'rxjs/operators';
 
-import { toBoolean } from '../core/util/convert';
+import { InputBoolean } from 'ng-zorro-antd/core';
 
 import { NzTabLabelDirective } from './nz-tab-label.directive';
 import { NzTabsInkBarDirective } from './nz-tabs-ink-bar.directive';
+import { NzTabPositionMode } from './nz-tabset.component';
 
 const EXAGGERATED_OVERSCROLL = 64;
 export type ScrollDirection = 'after' | 'before';
 
-import { NzTabPositionMode } from './nz-tabset.component';
-
 @Component({
-  selector           : '[nz-tabs-nav]',
+  selector: '[nz-tabs-nav]',
+  exportAs: 'nzTabsNav',
   preserveWhitespaces: false,
-  templateUrl        : './nz-tabs-nav.component.html',
-  host               : {
-    '[class.ant-tabs-bar]': 'true'
-  }
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  templateUrl: './nz-tabs-nav.component.html'
 })
-export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit {
-  private _animated = true;
-  private _hideBar = false;
-  private _showPagination = true;
-  private _type = 'line';
+export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit, OnDestroy {
   private _tabPositionMode: NzTabPositionMode = 'horizontal';
   private _scrollDistance = 0;
   private _selectedIndex = 0;
+  /** Cached text content of the header. */
+  private currentTextContent: string;
   showPaginationControls = false;
   disableScrollAfter = true;
   disableScrollBefore = true;
@@ -56,57 +65,23 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
   @ViewChild(NzTabsInkBarDirective) nzTabsInkBarDirective: NzTabsInkBarDirective;
   @ViewChild('navContainerElement') navContainerElement: ElementRef;
   @ViewChild('navListElement') navListElement: ElementRef;
-  @Output() nzOnNextClick = new EventEmitter<void>();
-  @Output() nzOnPrevClick = new EventEmitter<void>();
+  @ViewChild('scrollListElement') scrollListElement: ElementRef;
+  @Output() readonly nzOnNextClick = new EventEmitter<void>();
+  @Output() readonly nzOnPrevClick = new EventEmitter<void>();
   @Input() nzTabBarExtraContent: TemplateRef<void>;
-
-  @Input()
-  set nzAnimated(value: boolean) {
-    this._animated = toBoolean(value);
-  }
-
-  get nzAnimated(): boolean {
-    return this._animated;
-  }
-
-  @Input()
-  set nzHideBar(value: boolean) {
-    this._hideBar = toBoolean(value);
-  }
-
-  get nzHideBar(): boolean {
-    return this._hideBar;
-  }
-
-  @Input()
-  set nzType(value: string) {
-    this._type = value;
-    if (this._type !== 'line') {
-      this.nzTabsInkBarDirective.setDisplay('none');
-    } else {
-      this.nzTabsInkBarDirective.setDisplay('block');
-    }
-  }
-
-  get nzType(): string {
-    return this._type;
-  }
-
-  @Input()
-  set nzShowPagination(value: boolean) {
-    this._showPagination = toBoolean(value);
-  }
-
-  get nzShowPagination(): boolean {
-    return this._showPagination;
-  }
+  @Input() @InputBoolean() nzAnimated = true;
+  @Input() @InputBoolean() nzHideBar = false;
+  @Input() @InputBoolean() nzShowPagination = true;
+  @Input() nzType = 'line';
 
   @Input()
   set nzPositionMode(value: NzTabPositionMode) {
     this._tabPositionMode = value;
     this.alignInkBarToSelectedTab();
     if (this.nzShowPagination) {
-      this.updatePagination();
+      Promise.resolve().then(() => {
+        this.updatePagination();
+      });
     }
   }
 
@@ -117,7 +92,6 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
   @Input()
   set selectedIndex(value: number) {
     this.selectedIndexChanged = this._selectedIndex !== value;
-
     this._selectedIndex = value;
   }
 
@@ -125,17 +99,28 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
     return this._selectedIndex;
   }
 
-  constructor(public elementRef: ElementRef,
-              private ngZone: NgZone,
-              private renderer: Renderer2,
-              @Optional() private dir: Directionality) {
-  }
+  constructor(
+    public elementRef: ElementRef,
+    private ngZone: NgZone,
+    private renderer: Renderer2,
+    private cdr: ChangeDetectorRef,
+    @Optional() private dir: Directionality
+  ) {}
 
   onContentChanges(): void {
-    if (this.nzShowPagination) {
-      this.updatePagination();
+    const textContent = this.elementRef.nativeElement.textContent;
+    // We need to diff the text content of the header, because the MutationObserver callback
+    // will fire even if the text content didn't change which is inefficient and is prone
+    // to infinite loops if a poorly constructed expression is passed in (see #14249).
+    if (textContent !== this.currentTextContent) {
+      this.ngZone.run(() => {
+        if (this.nzShowPagination) {
+          this.updatePagination();
+        }
+        this.alignInkBarToSelectedTab();
+        this.cdr.markForCheck();
+      });
     }
-    this.alignInkBarToSelectedTab();
   }
 
   scrollHeader(scrollDir: ScrollDirection): void {
@@ -145,16 +130,16 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
       this.nzOnNextClick.emit();
     }
     // Move the scroll distance one-third the length of the tab list's viewport.
-    this.scrollDistance += (scrollDir === 'before' ? -1 : 1) * this.viewWidthHeightPix / 3;
+    this.scrollDistance += ((scrollDir === 'before' ? -1 : 1) * this.viewWidthHeightPix) / 3;
   }
 
   ngAfterContentChecked(): void {
-
     if (this.tabLabelCount !== this.listOfNzTabLabelDirective.length) {
       if (this.nzShowPagination) {
         this.updatePagination();
       }
       this.tabLabelCount = this.listOfNzTabLabelDirective.length;
+      this.cdr.markForCheck();
     }
     if (this.selectedIndexChanged) {
       this.scrollToLabel(this._selectedIndex);
@@ -163,28 +148,37 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
       }
       this.alignInkBarToSelectedTab();
       this.selectedIndexChanged = false;
+      this.cdr.markForCheck();
     }
     if (this.scrollDistanceChanged) {
       if (this.nzShowPagination) {
         this.updateTabScrollPosition();
       }
       this.scrollDistanceChanged = false;
+      this.cdr.markForCheck();
     }
   }
 
   ngAfterContentInit(): void {
     this.realignInkBar = this.ngZone.runOutsideAngular(() => {
       const dirChange = this.dir ? this.dir.change : observableOf(null);
-      const resize = typeof window !== 'undefined' ?
-        fromEvent(window, 'resize').pipe(auditTime(10)) :
-        observableOf(null);
-      return merge(dirChange, resize).pipe(startWith(null)).subscribe(() => {
-        if (this.nzShowPagination) {
-          this.updatePagination();
-        }
-        this.alignInkBarToSelectedTab();
-      });
+      const resize =
+        typeof window !== 'undefined' ? fromEvent(window, 'resize').pipe(auditTime(10)) : observableOf(null);
+      return merge(dirChange, resize)
+        .pipe(startWith(null))
+        .subscribe(() => {
+          if (this.nzShowPagination) {
+            this.updatePagination();
+          }
+          this.alignInkBarToSelectedTab();
+        });
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.realignInkBar) {
+      this.realignInkBar.unsubscribe();
+    }
   }
 
   updateTabScrollPosition(): void {
@@ -204,18 +198,18 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
   }
 
   checkPaginationEnabled(): void {
-    this.showPaginationControls =
-      this.tabListScrollWidthHeightPix > this.elementRefOffSetWidthHeight;
-
-    if (!this.showPaginationControls) {
+    const isEnabled = this.tabListScrollWidthHeightPix > this.tabListScrollOffSetWidthHeight;
+    if (!isEnabled) {
       this.scrollDistance = 0;
     }
+    if (isEnabled !== this.showPaginationControls) {
+      this.cdr.markForCheck();
+    }
+    this.showPaginationControls = isEnabled;
   }
 
   scrollToLabel(labelIndex: number): void {
-    const selectedLabel = this.listOfNzTabLabelDirective
-      ? this.listOfNzTabLabelDirective.toArray()[ labelIndex ]
-      : null;
+    const selectedLabel = this.listOfNzTabLabelDirective ? this.listOfNzTabLabelDirective.toArray()[labelIndex] : null;
 
     if (selectedLabel) {
       // The view length is the visible width of the tab labels.
@@ -251,6 +245,7 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
     // Check if the pagination arrows should be activated.
     this.disableScrollBefore = this.scrollDistance === 0;
     this.disableScrollAfter = this.scrollDistance === this.getMaxScrollDistance();
+    this.cdr.markForCheck();
   }
 
   /**
@@ -261,7 +256,7 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
    * should be called sparingly.
    */
   getMaxScrollDistance(): number {
-    return (this.tabListScrollWidthHeightPix - this.viewWidthHeightPix) || 0;
+    return this.tabListScrollWidthHeightPix - this.viewWidthHeightPix || 0;
   }
 
   /** Sets the distance in pixels that the tab header should be transformed in the X-axis. */
@@ -299,9 +294,9 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
     }
   }
 
-  get elementRefOffSetWidthHeight(): number {
+  get tabListScrollOffSetWidthHeight(): number {
     if (this.nzPositionMode === 'horizontal') {
-      return this.elementRef.nativeElement.offsetWidth;
+      return this.scrollListElement.nativeElement.offsetWidth;
     } else {
       return this.elementRef.nativeElement.offsetHeight;
     }
@@ -313,9 +308,10 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
 
   alignInkBarToSelectedTab(): void {
     if (this.nzType === 'line') {
-      const selectedLabelWrapper = this.listOfNzTabLabelDirective && this.listOfNzTabLabelDirective.length
-        ? this.listOfNzTabLabelDirective.toArray()[ this.selectedIndex ].elementRef.nativeElement
-        : null;
+      const selectedLabelWrapper =
+        this.listOfNzTabLabelDirective && this.listOfNzTabLabelDirective.length
+          ? this.listOfNzTabLabelDirective.toArray()[this.selectedIndex].elementRef.nativeElement
+          : null;
       if (this.nzTabsInkBarDirective) {
         this.nzTabsInkBarDirective.alignToElement(selectedLabelWrapper);
       }

@@ -1,5 +1,5 @@
 ---
-order: 9
+order: 10
 title: Contributing to NG-ZORRO
 ---
 
@@ -15,7 +15,7 @@ All work on NG-ZORRO happens directly on [GitHub](https://github.com/NG-ZORRO/ng
 
 ## Bugs
 
-We are using [GitHub Issues](https://github.com/NG-ZORRO/ng-zorro-antd/issues) for bug tracing. The best way to get your bug fixed is using our [issue helper](https://ng.ant.design/issue-helper/#/en) and provide a reprduction with this [template](https://stackblitz.com/edit/ng-zorro-antd-setup?file=app%2Fapp.component.ts).
+We are using [GitHub Issues](https://github.com/NG-ZORRO/ng-zorro-antd/issues) for bug tracing. The best way to get your bug fixed is using our [issue helper](https://ng.ant.design/issue-helper/#/en) and provide a reproduction with this [template](https://stackblitz.com/edit/ng-zorro-antd-start).
 
 Before you reporting a bug, please make sure you've searched exists issues, and read our [FAQ](docs/faq/en).
 
@@ -25,9 +25,10 @@ If you intend to change the public API or introduce new feature, we also recomme
 
 ## Your First Pull Request
 
-Working on your first Pull Request? You can learn how from this free video series:
+Working on your first Pull Request? You can learn how from these resources:
 
-[How to Contribute to Open Source](https://opensource.guide/how-to-contribute/)
+* [How to Contribute to Open Source](https://opensource.guide/how-to-contribute/)
+* [First Contributions](https://github.com/firstcontributions/first-contributions)
 
 To help you get your feet wet and get you familiar with our contribution process, we have a list of [good first issues](https://github.com/NG-ZORRO/ng-zorro-antd/labels/good%20first%20issue) that contain bugs or small features that have a relatively limited scope. This is a great place to get started.
 
@@ -55,4 +56,4 @@ After cloning `ng-zorro-antd`, run `npm install` to fetch its dependencies. Then
 1. `npm run site:start` runs NG-ZORRO website locally.
 2. `npm run lint` checks the code style.
 3. `npm test` runs the complete test suite.
-5. `npm run generate` creates build of `ng-zorro-antd`.
+4. `npm run generate` creates build of `ng-zorro-antd`.

@@ -1,5 +1,13 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { DisabledDateFn, DisabledTimeConfig, DisabledTimeFn } from '../standard-types';
-import { CandyDate } from './candy-date';
+import { CandyDate } from './candy-date/candy-date';
 
 const defaultDisabledTime: DisabledTimeConfig = {
   nzDisabledHours(): number[] {
@@ -14,7 +22,7 @@ const defaultDisabledTime: DisabledTimeConfig = {
 };
 
 export function getTimeConfig(value: CandyDate, disabledTime: DisabledTimeFn): DisabledTimeConfig {
-  let disabledTimeConfig = disabledTime ? disabledTime(value && value.nativeDate) : {} as DisabledTimeConfig;
+  let disabledTimeConfig = disabledTime ? disabledTime(value && value.nativeDate) : ({} as DisabledTimeConfig);
   disabledTimeConfig = {
     ...defaultDisabledTime,
     ...disabledTimeConfig

@@ -6,16 +6,19 @@ import { filter } from 'rxjs/operators';
 @Component({
   selector: 'nz-demo-upload-manually',
   template: `
-  <nz-upload
-    [(nzFileList)]="fileList"
-    [nzBeforeUpload]="beforeUpload">
-    <button nz-button>
-      <i class="anticon anticon-upload"></i><span>Select File</span>
+    <nz-upload [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload">
+      <button nz-button><i nz-icon nzType="upload"></i><span>Select File</span></button>
+    </nz-upload>
+    <button
+      nz-button
+      [nzType]="'primary'"
+      [nzLoading]="uploading"
+      (click)="handleUpload()"
+      [disabled]="fileList.length == 0"
+      style="margin-top: 16px"
+    >
+      {{ uploading ? 'Uploading' : 'Start Upload' }}
     </button>
-  </nz-upload>
-  <button nz-button [nzType]="'primary'" [nzLoading]="uploading" (click)="handleUpload()" [disabled]="fileList.length == 0" style="margin-top: 16px">
-    {{ uploading ? 'Uploading' : 'Start Upload' }}
-  </button>
   `
 })
 export class NzDemoUploadManuallyComponent {
@@ -25,9 +28,9 @@ export class NzDemoUploadManuallyComponent {
   constructor(private http: HttpClient, private msg: NzMessageService) {}
 
   beforeUpload = (file: UploadFile): boolean => {
-    this.fileList.push(file);
+    this.fileList = this.fileList.concat(file);
     return false;
-  }
+  };
 
   handleUpload(): void {
     const formData = new FormData();
@@ -44,11 +47,12 @@ export class NzDemoUploadManuallyComponent {
       .request(req)
       .pipe(filter(e => e instanceof HttpResponse))
       .subscribe(
-        (event: {}) => {
+        () => {
           this.uploading = false;
+          this.fileList = [];
           this.msg.success('upload successfully.');
         },
-        err => {
+        () => {
           this.uploading = false;
           this.msg.error('upload failed.');
         }

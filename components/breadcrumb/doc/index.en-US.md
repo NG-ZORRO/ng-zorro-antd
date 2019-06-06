@@ -15,12 +15,20 @@ A breadcrumb displays the current location within a hierarchy. It allows going b
 
 ## API
 
+### Import this Component Individually
+
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzBreadCrumbModule } from 'ng-zorro-antd';
+```
+
 ### nz-breadcrumb
 
-| Property | Description | Type | Optional | Default |
-| -------- | ----------- | ---- | -------- | ------- |
-| `[nzSeparator]` | Custom separator | string丨`TemplateRef<void>` |  | `/` |
-| `[nzAutoGenerate]` | Auto generate breadcrumb | boolean |  | `false` |
+| Property | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
+| `[nzSeparator]` | Custom separator | `string｜TemplateRef<void>` | `'/'` |
+| `[nzAutoGenerate]` | Auto generate breadcrumb | `boolean` | `false` |
 
 Using `[nzAutoGenerate]` by configuring `data` like this:
 
@@ -31,5 +39,17 @@ Using `[nzAutoGenerate]` by configuring `data` like this:
   data: {
     breadcrumb: 'Display Name'
   }
+}
+```
+
+For lazy loading moduels, you should write `data` in parent module like this:
+
+```ts
+{
+  path: 'first',
+  loadChildren: './first/first.module#FirstModule',
+  data: {
+    breadcrumb: 'First'
+  },
 }
 ```

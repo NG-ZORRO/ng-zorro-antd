@@ -1,7 +1,18 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   AfterContentInit,
+  AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   ContentChildren,
+  ElementRef,
   EventEmitter,
   Host,
   Input,
@@ -9,65 +20,70 @@ import {
   Optional,
   Output,
   QueryList,
+  Renderer2,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
-
 import { merge, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { flatMap, startWith, takeUntil } from 'rxjs/operators';
 
-import { toBoolean } from '../core/util/convert';
-import { NzThComponent } from './nz-th.component';
+import { InputBoolean } from 'ng-zorro-antd/core';
 
 import { NzTableComponent } from './nz-table.component';
+import { NzThComponent } from './nz-th.component';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector   : 'thead:not(.ant-table-thead)',
+  selector: 'thead:not(.ant-table-thead)',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   templateUrl: './nz-thead.component.html'
 })
-export class NzTheadComponent implements AfterContentInit, OnDestroy {
-  private _singleSort = false;
-  private unsubscribe$ = new Subject<void>();
-
-  @ViewChild('contentTemplate') template: TemplateRef<void>;
+export class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewInit {
+  private destroy$ = new Subject<void>();
+  @ViewChild('contentTemplate') templateRef: TemplateRef<void>;
   @ContentChildren(NzThComponent, { descendants: true }) listOfNzThComponent: QueryList<NzThComponent>;
-  @Output() nzSortChange = new EventEmitter<{ key: string, value: string }>();
+  @Input() @InputBoolean() nzSingleSort = false;
+  @Output() readonly nzSortChange = new EventEmitter<{ key: string; value: string }>();
 
-  @Input()
-  set nzSingleSort(value: boolean) {
-    this._singleSort = toBoolean(value);
-  }
-
-  get nzSingleSort(): boolean {
-    return this._singleSort;
-  }
-
-  constructor(@Host() @Optional() public nzTableComponent: NzTableComponent) {
+  // tslint:disable-next-line:no-any
+  constructor(
+    @Host() @Optional() public nzTableComponent: NzTableComponent,
+    private elementRef: ElementRef,
+    private renderer: Renderer2
+  ) {
     if (this.nzTableComponent) {
       this.nzTableComponent.nzTheadComponent = this;
     }
   }
 
   ngAfterContentInit(): void {
-    let sortChange = new Subject<{ key: string, value: string }>().asObservable();
-    const listOfTh = this.listOfNzThComponent.toArray();
-    const sortChangeArray = listOfTh.map(th => th.nzSortChangeWithKey);
-    if (sortChangeArray.length) {
-      sortChangeArray.forEach(sort => {
-        sortChange = merge(sort.asObservable(), sortChange);
+    this.listOfNzThComponent.changes
+      .pipe(
+        startWith(true),
+        flatMap(() => merge(...this.listOfNzThComponent.map(th => th.nzSortChangeWithKey))),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((data: { key: string; value: string }) => {
+        this.nzSortChange.emit(data);
+        if (this.nzSingleSort) {
+          this.listOfNzThComponent.forEach(th => {
+            th.nzSort = th.nzSortKey === data.key ? th.nzSort : null;
+            th.marForCheck();
+          });
+        }
       });
+  }
+
+  ngAfterViewInit(): void {
+    if (this.nzTableComponent) {
+      this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), this.elementRef.nativeElement);
     }
-    sortChange.pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-      this.nzSortChange.emit(data);
-      if (this.nzSingleSort) {
-        listOfTh.forEach(th => th.nzSort = (th.nzSortKey === data.key ? th.nzSort : null));
-      }
-    });
   }
 
   ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

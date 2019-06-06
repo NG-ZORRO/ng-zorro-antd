@@ -1,14 +1,16 @@
 <ng-template #drawerTemplate>
   <div
     class="ant-drawer"
+    [nzNoAnimation]="nzNoAnimation"
     [class.ant-drawer-open]="isOpen"
     [class.ant-drawer-top]="nzPlacement === 'top'"
     [class.ant-drawer-bottom]="nzPlacement === 'bottom'"
     [class.ant-drawer-right]="nzPlacement === 'right'"
-    [class.ant-drawer-left]="nzPlacement === 'left'">
-    <div  class="ant-drawer-mask" (click)="maskClick()" *ngIf="nzMask" [style.zIndex]="nzZIndex" [ngStyle]="nzMaskStyle"></div>
+    [class.ant-drawer-left]="nzPlacement === 'left'"
+    [style.transform]="offsetTransform"
+    [style.zIndex]="nzZIndex">
+    <div  class="ant-drawer-mask" (click)="maskClick()" *ngIf="nzMask" [ngStyle]="nzMaskStyle"></div>
     <div class="ant-drawer-content-wrapper {{ nzWrapClassName }}"
-         [style.zIndex]="nzZIndex"
          [style.width]="width"
          [style.height]="height"
          [style.transform]="transform">
@@ -18,13 +20,12 @@
           [style.height]="isLeftOrRight ? '100%' : null">
           <div *ngIf="nzTitle" class="ant-drawer-header">
             <div class="ant-drawer-title">
-              <ng-container [ngSwitch]="true">
-                <ng-container *ngSwitchCase="isTemplateRef(nzTitle)" [ngTemplateOutlet]="nzTitle"></ng-container>
-                <ng-container *ngSwitchCase="isNonEmptyString(nzTitle)"><div [innerHTML]="nzTitle"></div></ng-container>
-              </ng-container>
+              <ng-container *nzStringTemplateOutlet="nzTitle"><div [innerHTML]="nzTitle"></div></ng-container>
             </div>
           </div>
-          <button *ngIf="nzClosable" (click)="closeClick()" aria-label="Close" class="ant-drawer-close"><span class="ant-drawer-close-x"></span></button>
+          <button *ngIf="nzClosable" (click)="closeClick()" aria-label="Close" class="ant-drawer-close">
+            <span class="ant-drawer-close-x"><i nz-icon type="close"></i></span>
+          </button>
           <div class="ant-drawer-body" [ngStyle]="nzBodyStyle">
             <ng-template cdkPortalOutlet></ng-template>
             <ng-container *ngIf="isTemplateRef(nzContent)">

@@ -1,50 +1,43 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { Platform } from '@angular/cdk/platform';
+import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  Inject,
   Input,
   OnDestroy,
   OnInit,
   Output,
-  TemplateRef
+  TemplateRef,
+  ViewEncapsulation
 } from '@angular/core';
 
-import {
-  animate,
-  style,
-  transition,
-  trigger
-} from '@angular/animations';
-
+import { fadeMotion, toNumber, NzScrollService } from 'ng-zorro-antd/core';
 import { fromEvent, Subscription } from 'rxjs';
 import { distinctUntilChanged, throttleTime } from 'rxjs/operators';
 
-import { NzScrollService } from '../core/scroll/nz-scroll.service';
-import { toNumber } from '../core/util/convert';
-
 @Component({
-  selector           : 'nz-back-top',
-  animations         : [
-    trigger('enterLeave', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate(300, style({ opacity: 1 }))
-      ]),
-      transition(':leave', [
-        style({ opacity: 1 }),
-        animate(300, style({ opacity: 0 }))
-      ])
-    ])
-  ],
-  templateUrl        : './nz-back-top.component.html',
-  changeDetection    : ChangeDetectionStrategy.OnPush,
+  selector: 'nz-back-top',
+  exportAs: 'nzBackTop',
+  animations: [fadeMotion],
+  templateUrl: './nz-back-top.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false
 })
 export class NzBackTopComponent implements OnInit, OnDestroy {
-
-  private scroll$: Subscription = null;
-  private target: HTMLElement = null;
+  private scroll$: Subscription | null = null;
+  private target: HTMLElement | null = null;
 
   visible: boolean = false;
 
@@ -62,15 +55,20 @@ export class NzBackTopComponent implements OnInit, OnDestroy {
   }
 
   @Input()
-  set nzTarget(el: HTMLElement) {
-    this.target = el;
+  set nzTarget(el: string | HTMLElement) {
+    this.target = typeof el === 'string' ? this.doc.querySelector(el) : el;
     this.registerScrollEvent();
   }
 
-  @Output() nzClick: EventEmitter<boolean> = new EventEmitter();
+  @Output() readonly nzClick: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(private scrollSrv: NzScrollService, private cd: ChangeDetectorRef) {
-  }
+  constructor(
+    private scrollSrv: NzScrollService,
+    // tslint:disable-next-line:no-any
+    @Inject(DOCUMENT) private doc: any,
+    private platform: Platform,
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     if (!this.scroll$) {
@@ -92,7 +90,7 @@ export class NzBackTopComponent implements OnInit, OnDestroy {
       return;
     }
     this.visible = !this.visible;
-    this.cd.detectChanges();
+    this.cd.markForCheck();
   }
 
   private removeListen(): void {
@@ -102,14 +100,20 @@ export class NzBackTopComponent implements OnInit, OnDestroy {
   }
 
   private registerScrollEvent(): void {
+    if (!this.platform.isBrowser) {
+      return;
+    }
     this.removeListen();
     this.handleScroll();
-    this.scroll$ = fromEvent(this.getTarget(), 'scroll').pipe(throttleTime(50), distinctUntilChanged())
-    .subscribe(e => this.handleScroll());
+    this.scroll$ = fromEvent(this.getTarget(), 'scroll')
+      .pipe(
+        throttleTime(50),
+        distinctUntilChanged()
+      )
+      .subscribe(() => this.handleScroll());
   }
 
   ngOnDestroy(): void {
     this.removeListen();
   }
-
 }

@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 全局提示
-type: Feedback
+type: 反馈
 noinstant: true
 title: Message
 ---
@@ -30,6 +30,14 @@ title: Message
 
 ## API
 
+### 单独引入此组件
+
+想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
+
+```ts
+import { NzMessageModule } from 'ng-zorro-antd';
+```
+
 ### NzMessageService
 
 组件提供了一些服务方法，使用方式和参数如下：
@@ -42,16 +50,16 @@ title: Message
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| content | 提示内容 | string | - |
-| options | 支持设置针对当前提示框的参数，见下方表格 | object | - |
+| content | 提示内容 | `string｜TemplateRef<void>` | - |
+| options | 支持设置针对当前提示框的参数，见下方表格 | `object` | - |
 
 `options` 支持设置的参数如下：
 
 | 参数 | 说明 | 类型 |
 | --- | --- | --- |
-| nzDuration | 持续时间(毫秒)，当设置为0时不消失 | number |
-| nzPauseOnHover | 鼠标移上时禁止自动移除 | boolean |
-| nzAnimate | 开关动画效果 | boolean |
+| nzDuration | 持续时间(毫秒)，当设置为0时不消失 | `number` |
+| nzPauseOnHover | 鼠标移上时禁止自动移除 | `boolean` |
+| nzAnimate | 开关动画效果 | `boolean` |
 
 还提供了全局销毁方法：
 
@@ -61,7 +69,18 @@ title: Message
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzDuration | 持续时间(毫秒)，当设置为0时不消失 | number | 3000 |
-| nzMaxStack | 同一时间可展示的最大提示数量 | number | 8 |
-| nzPauseOnHover | 鼠标移上时禁止自动移除 | boolean | true |
-| nzAnimate | 开关动画效果 | boolean | true |
+| nzDuration | 持续时间(毫秒)，当设置为0时不消失 | `number` | `3000` |
+| nzMaxStack | 同一时间可展示的最大提示数量 | `number` | `8` |
+| nzPauseOnHover | 鼠标移上时禁止自动移除 | `boolean` | `true` |
+| nzAnimate | 开关动画效果 | `boolean` | `true` |
+| nzTop | 消息距离顶部的位置 | `number｜string` | `24` |
+
+### NzMessageDataFilled
+
+当你调用 `NzMessageService.success` 或其他方法时会返回该对象。
+
+```ts
+export interface NzMessageDataFilled {
+  onClose: Subject<false>; // 当 message 关闭时它会派发一个事件
+}
+```

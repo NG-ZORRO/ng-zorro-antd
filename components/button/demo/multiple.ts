@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
     <button nz-button nzType="primary">primary</button>
     <button nz-button nzType="default">secondary</button>
     <nz-dropdown>
-      <button nz-button nz-dropdown>Actions<i class="anticon anticon-down"></i></button>
+      <button nz-button nz-dropdown>Actions<i nz-icon type="down"></i></button>
       <ul nz-menu>
         <li nz-menu-item>
           <a>1st item</a>
@@ -20,7 +20,7 @@ import { Component } from '@angular/core';
       </ul>
     </nz-dropdown>
   `,
-  styles  : [
+  styles: [
     `
       [nz-button] {
         margin-right: 8px;
@@ -29,5 +29,4 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class NzDemoButtonMultipleComponent {
-}
+export class NzDemoButtonMultipleComponent {}

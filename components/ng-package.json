@@ -3,11 +3,7 @@
   "dest": "../publish",
   "deleteDestPath": true,
   "lib": {
-    "entryFile": "ng-zorro-antd.module.ts"
+    "entryFile": "./ng-zorro-antd.module.ts"
   },
-  "whitelistedNonPeerDependencies": [
-    "tslib",
-    "angular",
-    "date-fns"
-  ]
+  "whitelistedNonPeerDependencies": ["tslib", "angular", "date-fns", "@ant-design/icons-angular"]
 }

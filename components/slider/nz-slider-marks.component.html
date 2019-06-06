@@ -1,3 +1,9 @@
-<div [class]="nzClassName">
-  <span *ngFor="let attr of attrs; trackBy: trackById" [ngClass]="attr.classes" [ngStyle]="attr.style" [innerHTML]="attr.label"></span>
+<div class="ant-slider-mark">
+  <span
+    class="ant-slider-mark-text"
+    *ngFor="let attr of marks; trackBy: trackById"
+    [class.ant-slider-mark-active]="attr.active"
+    [ngStyle]="attr.style"
+    [innerHTML]="attr.label">
+  </span>
 </div>

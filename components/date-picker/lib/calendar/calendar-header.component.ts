@@ -1,38 +1,60 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 
-import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
-import { NzI18nService } from '../../../i18n/nz-i18n.service';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewEncapsulation
+} from '@angular/core';
+
+import { DateHelperByDatePipe, DateHelperService, NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+
 import { PanelMode } from '../../standard-types';
-import { CandyDate } from '../candy-date';
+import { CandyDate } from '../candy-date/candy-date';
 
 @Component({
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  // tslint:disable-next-line:component-selector
   selector: 'calendar-header',
+  exportAs: 'calendarHeader',
   templateUrl: 'calendar-header.component.html'
 })
-
 export class CalendarHeaderComponent implements OnInit, OnChanges {
   @Input() locale: NzCalendarI18nInterface;
   @Input() enablePrev: boolean = true;
   @Input() enableNext: boolean = true;
   @Input() disabledMonth: (date: Date) => boolean;
+  @Input() disabledYear: (date: Date) => boolean;
   @Input() showTimePicker: boolean = false;
 
   @Input() value: CandyDate;
-  @Output() valueChange = new EventEmitter<CandyDate>();
+  @Output() readonly valueChange = new EventEmitter<CandyDate>();
 
   @Input() panelMode: PanelMode;
-  @Output() panelModeChange = new EventEmitter<PanelMode>();
+  @Output() readonly panelModeChange = new EventEmitter<PanelMode>();
 
-  @Output() chooseDecade = new EventEmitter<CandyDate>();
-  @Output() chooseYear = new EventEmitter<CandyDate>();
-  @Output() chooseMonth = new EventEmitter<CandyDate>();
+  @Output() readonly chooseDecade = new EventEmitter<CandyDate>();
+  @Output() readonly chooseYear = new EventEmitter<CandyDate>();
+  @Output() readonly chooseMonth = new EventEmitter<CandyDate>();
 
   prefixCls: string = 'ant-calendar';
   yearMonthDaySelectors: YearMonthDaySelector[];
 
   private yearToMonth: boolean = false; // Indicate whether should change to month panel when current is year panel (if referer=month, it should show month panel when choosed a year)
 
-  constructor(private i18n: NzI18nService) { }
+  constructor(private dateHelper: DateHelperService) {}
 
   ngOnInit(): void {
     if (!this.value) {
@@ -114,7 +136,7 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
   }
 
   private formatDateTime(localeFormat: string): string {
-    return this.i18n.formatDateCompatible(this.value.nativeDate, localeFormat);
+    return this.dateHelper.format(this.value.nativeDate, localeFormat);
   }
 
   private createYearMonthDaySelectors(): YearMonthDaySelector[] {
@@ -122,33 +144,43 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
     let month: YearMonthDaySelector;
     let day: YearMonthDaySelector;
 
+    // NOTE: Compat for DatePipe formatting rules
+    let yearFormat: string = this.locale.yearFormat;
+    if (this.dateHelper.relyOnDatePipe) {
+      yearFormat = (this.dateHelper as DateHelperByDatePipe).transCompatFormat(yearFormat);
+    }
     year = {
       className: `${this.prefixCls}-year-select`,
       title: this.locale.yearSelect,
-      onClick: () => this.showTimePicker ? null : this.changePanel('year'),
-      label: this.formatDateTime(this.locale.yearFormat)
+      onClick: () => (this.showTimePicker ? null : this.changePanel('year')),
+      label: this.formatDateTime(yearFormat)
     };
 
     month = {
       className: `${this.prefixCls}-month-select`,
       title: this.locale.monthSelect,
-      onClick: () => this.showTimePicker ? null : this.changeToMonthPanel(),
-      label: this.locale.monthFormat ? this.formatDateTime(this.locale.monthFormat) : this.i18n.formatDate(this.value.nativeDate, 'MMM')
+      onClick: () => (this.showTimePicker ? null : this.changeToMonthPanel()),
+      label: this.formatDateTime(this.locale.monthFormat || 'MMM')
     };
 
+    // NOTE: Compat for DatePipe formatting rules
+    let dayFormat: string = this.locale.dayFormat;
+    if (this.dateHelper.relyOnDatePipe) {
+      dayFormat = (this.dateHelper as DateHelperByDatePipe).transCompatFormat(dayFormat);
+    }
     if (this.showTimePicker) {
       day = {
         className: `${this.prefixCls}-day-select`,
-        label: this.formatDateTime(this.locale.dayFormat)
+        label: this.formatDateTime(dayFormat)
       };
     }
 
     let result: YearMonthDaySelector[];
 
     if (this.locale.monthBeforeYear) {
-      result = [ month, day, year ];
+      result = [month, day!, year];
     } else {
-      result = [ year, month, day ];
+      result = [year, month, day!];
     }
 
     return result.filter(selector => !!selector);

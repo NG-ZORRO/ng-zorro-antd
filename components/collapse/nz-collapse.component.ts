@@ -1,64 +1,57 @@
-import {
-  Component,
-  Input
-} from '@angular/core';
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 
-import { toBoolean } from '../core/util/convert';
+import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
+
+import { InputBoolean } from 'ng-zorro-antd/core';
 
 import { NzCollapsePanelComponent } from './nz-collapse-panel.component';
 
 @Component({
-  selector   : 'nz-collapse',
+  selector: 'nz-collapse',
+  exportAs: 'nzCollapse',
   templateUrl: './nz-collapse.component.html',
-  styles     : [
-    `:host {
-      display: block;
-    }`
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  styles: [
+    `
+      nz-collapse {
+        display: block;
+      }
+    `
   ]
 })
 export class NzCollapseComponent {
-  private _accordion = false;
-  private _bordered = true;
-  private listOfPanel: NzCollapsePanelComponent[] = [];
+  private listOfNzCollapsePanelComponent: NzCollapsePanelComponent[] = [];
+  @Input() @InputBoolean() nzAccordion = false;
+  @Input() @InputBoolean() nzBordered = true;
 
-  @Input()
-  set nzAccordion(value: boolean) {
-    this._accordion = toBoolean(value);
+  addPanel(value: NzCollapsePanelComponent): void {
+    this.listOfNzCollapsePanelComponent.push(value);
   }
 
-  get nzAccordion(): boolean {
-    return this._accordion;
-  }
-
-  @Input()
-  set nzBordered(value: boolean) {
-    this._bordered = toBoolean(value);
-  }
-
-  get nzBordered(): boolean {
-    return this._bordered;
+  removePanel(value: NzCollapsePanelComponent): void {
+    this.listOfNzCollapsePanelComponent.splice(this.listOfNzCollapsePanelComponent.indexOf(value), 1);
   }
 
   click(collapse: NzCollapsePanelComponent): void {
-    if (this.nzAccordion) {
-      this.listOfPanel.forEach(item => {
-        const active = collapse === item;
-        if (item.nzActive !== active) {
-          item.nzActive = active;
-          item.nzActiveChange.emit(item.nzActive);
-        }
-      });
-    } else {
-      collapse.nzActive = !collapse.nzActive;
-      collapse.nzActiveChange.emit(collapse.nzActive);
+    if (this.nzAccordion && !collapse.nzActive) {
+      this.listOfNzCollapsePanelComponent
+        .filter(item => item !== collapse)
+        .forEach(item => {
+          if (item.nzActive) {
+            item.nzActive = false;
+            item.nzActiveChange.emit(item.nzActive);
+            item.markForCheck();
+          }
+        });
     }
-  }
-
-  addCollapse(collapse: NzCollapsePanelComponent): void {
-    this.listOfPanel.push(collapse);
-  }
-
-  removeCollapse(collapse: NzCollapsePanelComponent): void {
-    this.listOfPanel.splice(this.listOfPanel.indexOf(collapse), 1);
+    collapse.nzActive = !collapse.nzActive;
+    collapse.nzActiveChange.emit(collapse.nzActive);
   }
 }

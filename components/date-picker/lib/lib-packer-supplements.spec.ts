@@ -1,13 +1,14 @@
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
-import { fakeAsync, inject, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { fakeAsync, inject, TestBed } from '@angular/core/testing';
+
+import { DateHelperService } from '../../i18n/date-helper.service';
 import { NzI18nService } from '../../i18n/nz-i18n.service';
-
 import { AbstractPickerComponent } from '../abstract-picker.component';
 import { CalendarHeaderComponent } from './calendar/calendar-header.component';
 import { TodayButtonComponent } from './calendar/today-button.component';
-import { CandyDate } from './candy-date';
+import { CandyDate } from './candy-date/candy-date';
 import { DateTableComponent } from './date/date-table.component';
 import { LibPackerModule } from './lib-packer.module';
 import { MonthTableComponent } from './month/month-table.component';
@@ -18,40 +19,36 @@ registerLocaleData(zh);
 
 describe('Coverage supplements', () => {
   let componentInstance: any; // tslint:disable-line:no-any
+  let dateHelper: DateHelperService;
   let i18n: NzI18nService;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ LibPackerModule ]
+      imports: [LibPackerModule]
     });
 
     TestBed.compileComponents();
   }));
 
-  beforeEach(inject([ NzI18nService ], (service) => {
-    i18n = service;
-  }));
+  beforeEach(inject(
+    [NzI18nService, DateHelperService],
+    (i18nService: NzI18nService, dateHelperService: DateHelperService) => {
+      dateHelper = dateHelperService;
+      i18n = i18nService;
+    }
+  ));
 
   describe('CalendarHeader', () => {
-
     beforeEach(() => {
-      componentInstance = new CalendarHeaderComponent(i18n);
+      componentInstance = new CalendarHeaderComponent(dateHelper);
     });
 
-    it('should not render if no relative changes', () => { // Currently: value/showTimePicker/panelMode will trigger render()
+    it('should not render if no relative changes', () => {
+      // Currently: value/showTimePicker/panelMode will trigger render()
       spyOn(componentInstance, 'render');
       componentInstance.ngOnChanges({});
       expect(componentInstance.render).not.toHaveBeenCalled();
     });
-
-    // it('should work with forceToMonth branch', () => {
-    //   componentInstance.forceToMonth = true;
-    //   spyOn(componentInstance, 'changePanel');
-    //   componentInstance.onChooseDecade(new CandyDate());
-    //   expect(componentInstance.changePanel).toHaveBeenCalledWith('year');
-    //   componentInstance.onChooseYear(new CandyDate());
-    //   expect(componentInstance.changePanel).toHaveBeenCalledWith('month');
-    // });
 
     it('should step into yearToMonth branch', () => {
       const testDate = new CandyDate();
@@ -85,13 +82,11 @@ describe('Coverage supplements', () => {
       // should support locale.monthFormat
       expect(componentInstance.formatDateTime).toHaveBeenCalledWith(componentInstance.locale.monthFormat);
     });
-
   }); // /CalendarHeader
 
   describe('TodayButton', () => {
-
     beforeEach(() => {
-      componentInstance = new TodayButtonComponent(i18n);
+      componentInstance = new TodayButtonComponent(dateHelper);
     });
 
     it('should cover untouched branches', () => {
@@ -99,13 +94,11 @@ describe('Coverage supplements', () => {
       componentInstance.ngOnChanges({ disabledDate: {} }); // Fake mock
       expect(componentInstance.isDisabled).toBeTruthy();
     });
-
   }); // /TodayButton
 
   describe('DateTable', () => {
-
     beforeEach(() => {
-      componentInstance = new DateTableComponent(i18n);
+      componentInstance = new DateTableComponent(i18n, dateHelper);
     });
 
     it('should cover untouched branches', () => {
@@ -116,13 +109,11 @@ describe('Coverage supplements', () => {
 
       expect(componentInstance.isBeforeMonthYear(new CandyDate('2018-11'), new CandyDate('2019-11'))).toBeTruthy();
     });
-
   }); // /DateTable
 
   describe('MonthTable', () => {
-
     beforeEach(() => {
-      componentInstance = new MonthTableComponent(i18n);
+      componentInstance = new MonthTableComponent(dateHelper);
     });
 
     it('should cover untouched branches', () => {
@@ -131,11 +122,9 @@ describe('Coverage supplements', () => {
       componentInstance.ngOnChanges({ disabledDate: true }); // Fake
       expect(componentInstance.render).toHaveBeenCalled();
     });
-
   }); // /MonthTable
 
   describe('DateRangePopup', () => {
-
     beforeEach(() => {
       componentInstance = new DateRangePopupComponent();
     });
@@ -145,7 +134,7 @@ describe('Coverage supplements', () => {
       const start = new CandyDate('2018-11-11');
       const end = new CandyDate('2018-12-12');
       componentInstance.isRange = true;
-      componentInstance.selectedValue = [ end ];
+      componentInstance.selectedValue = [end];
       componentInstance.onDayHover(start);
       expect(componentInstance.hoverValue[0].getDate()).toBe(11);
       expect(componentInstance.hoverValue[1].getDate()).toBe(12);
@@ -157,17 +146,16 @@ describe('Coverage supplements', () => {
       expect(componentInstance.isValidRange(new CandyDate())).toBeFalsy();
 
       // sortRangeValue
-      componentInstance.selectedValue = [ end, start ];
+      componentInstance.selectedValue = [end, start];
       componentInstance.sortRangeValue('selectedValue');
       expect(componentInstance.selectedValue[0].getDate()).toBe(11);
     });
-
   }); // /DateRangePopup
 
   describe('AbstractPicker', () => {
-
     beforeEach(() => {
-      componentInstance = new (AbstractPickerComponent as any)(); // tslint:disable-line:no-any
+      const fakeCdr = { markForCheck: () => void 0 };
+      componentInstance = new (AbstractPickerComponent as any)(i18n, fakeCdr); // tslint:disable-line:no-any
     });
 
     it('should cover untouched branches', () => {
@@ -180,11 +168,9 @@ describe('Coverage supplements', () => {
       componentInstance.setDisabledState(true);
       expect(componentInstance.nzDisabled).toBeTruthy();
     });
-
   }); // /AbstractPicker
 
   describe('YearPanel', () => {
-
     beforeEach(() => {
       componentInstance = new YearPanelComponent();
     });
@@ -214,7 +200,5 @@ describe('Coverage supplements', () => {
       spyOn(componentInstance, 'makePanelYears');
       expect(componentInstance.makePanelYears).not.toHaveBeenCalled();
     });
-
   }); // /YearPanel
-
 });

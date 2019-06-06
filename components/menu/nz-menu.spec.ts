@@ -1,13 +1,22 @@
 import { Directionality } from '@angular/cdk/bidi';
 import { ConnectedOverlayPositionChange, OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
-import { Component, ElementRef, NO_ERRORS_SCHEMA, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { async, fakeAsync, inject, tick, TestBed } from '@angular/core/testing';
+import {
+  Component,
+  DebugElement,
+  ElementRef,
+  NO_ERRORS_SCHEMA,
+  QueryList,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
+import { async, fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
-import { dispatchFakeEvent } from '../core/testing';
+import { dispatchFakeEvent } from 'ng-zorro-antd/core';
+import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzDemoMenuHorizontalComponent } from './demo/horizontal';
 import { NzDemoMenuInlineComponent } from './demo/inline';
@@ -27,10 +36,20 @@ describe('menu', () => {
   beforeEach(async(() => {
     const dir = 'ltr';
     TestBed.configureTestingModule({
-      imports     : [ NzMenuModule, NoopAnimationsModule, NoopAnimationsModule ],
-      declarations: [ NzDemoMenuHorizontalComponent, NzDemoMenuInlineComponent, NzDemoMenuInlineCollapsedComponent, NzDemoMenuSiderCurrentComponent, NzDemoMenuThemeComponent, NzDemoMenuSwitchModeComponent, NzTestMenuHorizontalComponent, NzTestMenuInlineComponent, NzDemoMenuNgForComponent ],
-      schemas     : [ NO_ERRORS_SCHEMA ],
-      providers   : [
+      imports: [NzMenuModule, NoopAnimationsModule, NoopAnimationsModule, NzIconTestModule],
+      declarations: [
+        NzDemoMenuHorizontalComponent,
+        NzDemoMenuInlineComponent,
+        NzDemoMenuInlineCollapsedComponent,
+        NzDemoMenuSiderCurrentComponent,
+        NzDemoMenuThemeComponent,
+        NzDemoMenuSwitchModeComponent,
+        NzTestMenuHorizontalComponent,
+        NzTestMenuInlineComponent,
+        NzDemoMenuNgForComponent
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [
         { provide: Directionality, useFactory: () => ({ value: dir }) },
         { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) }
       ]
@@ -38,26 +57,24 @@ describe('menu', () => {
 
     TestBed.compileComponents();
 
-    inject([ OverlayContainer ], (oc: OverlayContainer) => {
+    inject([OverlayContainer], (oc: OverlayContainer) => {
       overlayContainer = oc;
       overlayContainerElement = oc.getContainerElement();
     })();
   }));
 
-  afterEach(inject([ OverlayContainer ], (currentOverlayContainer: OverlayContainer) => {
+  afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();
   }));
   describe('demo', () => {
     describe('horizontal', () => {
-      let fixture;
-      let testComponent;
-      let items;
-      let submenu;
-      let menu;
+      let fixture: ComponentFixture<NzDemoMenuHorizontalComponent>;
+      let items: DebugElement[];
+      let submenu: DebugElement;
+      let menu: DebugElement;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzDemoMenuHorizontalComponent);
-        testComponent = fixture.debugElement.componentInstance;
         items = fixture.debugElement.queryAll(By.directive(NzMenuItemDirective));
         submenu = fixture.debugElement.query(By.directive(NzSubMenuComponent));
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
@@ -65,31 +82,31 @@ describe('menu', () => {
       it('should className correct', () => {
         fixture.detectChanges();
         expect(items.every(item => item.nativeElement.classList.contains('ant-menu-item'))).toBe(true);
-        expect(items[ 1 ].nativeElement.classList.contains('ant-menu-item-disabled')).toBe(true);
+        expect(items[1].nativeElement.classList.contains('ant-menu-item-disabled')).toBe(true);
         expect(submenu.nativeElement.classList.contains('ant-menu-submenu-horizontal')).toBe(true);
         expect(submenu.nativeElement.classList.contains('ant-menu-submenu')).toBe(true);
         expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-light ant-menu-horizontal');
       });
       it('should menu item select', () => {
-        items[ 0 ].nativeElement.click();
         fixture.detectChanges();
-        expect(items[ 0 ].nativeElement.classList.contains('ant-menu-item-selected')).toBe(true);
+        items[0].nativeElement.click();
+        fixture.detectChanges();
+        expect(items[0].nativeElement.classList.contains('ant-menu-item-selected')).toBe(true);
       });
       it('should menu disabled work', () => {
-        items[ 1 ].nativeElement.click();
         fixture.detectChanges();
-        expect(items[ 0 ].nativeElement.classList.contains('ant-menu-item-selected')).toBe(false);
+        items[1].nativeElement.click();
+        fixture.detectChanges();
+        expect(items[0].nativeElement.classList.contains('ant-menu-item-selected')).toBe(false);
       });
     });
     describe('inline', () => {
-      let fixture;
-      let testComponent;
-      let items;
-      let submenus;
-      let menu;
+      let fixture: ComponentFixture<NzDemoMenuInlineComponent>;
+      let items: DebugElement[];
+      let submenus: DebugElement[];
+      let menu: DebugElement;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzDemoMenuInlineComponent);
-        testComponent = fixture.debugElement.componentInstance;
         items = fixture.debugElement.queryAll(By.directive(NzMenuItemDirective));
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
         submenus = fixture.debugElement.queryAll(By.directive(NzSubMenuComponent));
@@ -97,7 +114,9 @@ describe('menu', () => {
       it('should className correct', () => {
         fixture.detectChanges();
         expect(submenus.every(subitem => subitem.nativeElement.classList.contains('ant-menu-submenu'))).toBe(true);
-        expect(submenus.every(subitem => subitem.nativeElement.classList.contains('ant-menu-submenu-inline'))).toBe(true);
+        expect(submenus.every(subitem => subitem.nativeElement.classList.contains('ant-menu-submenu-inline'))).toBe(
+          true
+        );
         expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-light ant-menu-inline');
       });
       it('should padding left work', () => {
@@ -109,31 +128,29 @@ describe('menu', () => {
       });
       it('should click expand', fakeAsync(() => {
         fixture.detectChanges();
-        const ul = submenus[ 0 ].nativeElement.querySelector('.ant-menu');
-        const title = submenus[ 0 ].nativeElement.querySelector('.ant-menu-submenu-title');
+        const ul = submenus[0].nativeElement.querySelector('.ant-menu');
+        const title = submenus[0].nativeElement.querySelector('.ant-menu-submenu-title');
         expect(ul.style.height).toBe('0px');
         title.click();
         fixture.detectChanges();
         tick(500);
         expect(ul.style.height).not.toBe('0px');
-        expect(submenus[ 0 ].nativeElement.classList.contains('ant-menu-submenu-open')).toBe(true);
+        expect(submenus[0].nativeElement.classList.contains('ant-menu-submenu-open')).toBe(true);
         title.click();
         fixture.detectChanges();
         tick(500);
         expect(ul.style.height).toBe('0px');
-        expect(submenus[ 0 ].nativeElement.classList.contains('ant-menu-submenu-open')).toBe(false);
+        expect(submenus[0].nativeElement.classList.contains('ant-menu-submenu-open')).toBe(false);
       }));
     });
     describe('inline-collapsed', () => {
-      let fixture;
-      let testComponent;
-      let items;
-      let submenus;
-      let menu;
+      let fixture: ComponentFixture<NzDemoMenuInlineCollapsedComponent>;
+      let testComponent: NzDemoMenuInlineCollapsedComponent;
+      let submenus: DebugElement[];
+      let menu: DebugElement;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzDemoMenuInlineCollapsedComponent);
         testComponent = fixture.debugElement.componentInstance;
-        items = fixture.debugElement.queryAll(By.directive(NzMenuItemDirective));
         submenus = fixture.debugElement.queryAll(By.directive(NzSubMenuComponent));
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
       });
@@ -142,21 +159,23 @@ describe('menu', () => {
         expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-dark ant-menu-inline');
         testComponent.isCollapsed = true;
         fixture.detectChanges();
-        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-dark ant-menu-vertical ant-menu-inline-collapsed');
+        expect(menu.nativeElement.className).toBe(
+          'ant-menu ant-menu-root ant-menu-dark ant-menu-vertical ant-menu-inline-collapsed'
+        );
         testComponent.isCollapsed = false;
         fixture.detectChanges();
         expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-dark ant-menu-inline');
       });
       it('should keep open after change mode', () => {
         fixture.detectChanges();
-        let ul = submenus[ 0 ].nativeElement.querySelector('.ant-menu');
-        const title = submenus[ 0 ].nativeElement.querySelector('.ant-menu-submenu-title');
+        let ul = submenus[0].nativeElement.querySelector('.ant-menu');
+        const title = submenus[0].nativeElement.querySelector('.ant-menu-submenu-title');
         expect(ul.style.height).toBe('0px');
         testComponent.isCollapsed = true;
         fixture.detectChanges();
         testComponent.isCollapsed = false;
         fixture.detectChanges();
-        ul = submenus[ 0 ].nativeElement.querySelector('.ant-menu');
+        ul = submenus[0].nativeElement.querySelector('.ant-menu');
         expect(ul.style.height).toBe('0px');
         title.click();
         fixture.detectChanges();
@@ -169,61 +188,51 @@ describe('menu', () => {
       });
     });
     describe('slider-current', () => {
-      let fixture;
-      let testComponent;
-      let items;
-      let submenus;
-      let menu;
+      let fixture: ComponentFixture<NzDemoMenuSiderCurrentComponent>;
+      let submenus: DebugElement[];
       beforeEach(() => {
         fixture = TestBed.createComponent(NzDemoMenuSiderCurrentComponent);
-        testComponent = fixture.debugElement.componentInstance;
-        items = fixture.debugElement.queryAll(By.directive(NzMenuItemDirective));
         submenus = fixture.debugElement.queryAll(By.directive(NzSubMenuComponent));
-        menu = fixture.debugElement.query(By.directive(NzMenuDirective));
       });
       it('should collapsed self work', fakeAsync(() => {
         fixture.detectChanges();
-        const ul = submenus[ 0 ].nativeElement.querySelector('.ant-menu');
-        const title = submenus[ 0 ].nativeElement.querySelector('.ant-menu-submenu-title');
+        const ul = submenus[0].nativeElement.querySelector('.ant-menu');
+        const title = submenus[0].nativeElement.querySelector('.ant-menu-submenu-title');
         expect(ul.style.height).not.toBe('0px');
         title.click();
         fixture.detectChanges();
         tick(500);
         expect(ul.style.height).toBe('0px');
-        expect(submenus[ 0 ].nativeElement.classList.contains('ant-menu-submenu-open')).toBe(false);
+        expect(submenus[0].nativeElement.classList.contains('ant-menu-submenu-open')).toBe(false);
         title.click();
         fixture.detectChanges();
         tick(500);
         expect(ul.style.height).not.toBe('0px');
-        expect(submenus[ 0 ].nativeElement.classList.contains('ant-menu-submenu-open')).toBe(true);
+        expect(submenus[0].nativeElement.classList.contains('ant-menu-submenu-open')).toBe(true);
       }));
       it('should collapsed other work', fakeAsync(() => {
         fixture.detectChanges();
-        const firstUl = submenus[ 0 ].nativeElement.querySelector('.ant-menu');
-        const secondUl = submenus[ 1 ].nativeElement.querySelector('.ant-menu');
-        const secondTitle = submenus[ 1 ].nativeElement.querySelector('.ant-menu-submenu-title');
+        const firstUl = submenus[0].nativeElement.querySelector('.ant-menu');
+        const secondUl = submenus[1].nativeElement.querySelector('.ant-menu');
+        const secondTitle = submenus[1].nativeElement.querySelector('.ant-menu-submenu-title');
         expect(firstUl.style.height).not.toBe('0px');
-        expect(submenus[ 0 ].nativeElement.classList.contains('ant-menu-submenu-open')).toBe(true);
+        expect(submenus[0].nativeElement.classList.contains('ant-menu-submenu-open')).toBe(true);
         secondTitle.click();
         fixture.detectChanges();
         tick(500);
         expect(firstUl.style.height).toBe('0px');
-        expect(submenus[ 0 ].nativeElement.classList.contains('ant-menu-submenu-open')).toBe(false);
+        expect(submenus[0].nativeElement.classList.contains('ant-menu-submenu-open')).toBe(false);
         expect(secondUl.style.height).not.toBe('0px');
-        expect(submenus[ 1 ].nativeElement.classList.contains('ant-menu-submenu-open')).toBe(true);
+        expect(submenus[1].nativeElement.classList.contains('ant-menu-submenu-open')).toBe(true);
       }));
     });
     describe('theme', () => {
-      let fixture;
-      let testComponent;
-      let items;
-      let submenus;
-      let menu;
+      let fixture: ComponentFixture<NzDemoMenuThemeComponent>;
+      let testComponent: NzDemoMenuThemeComponent;
+      let menu: DebugElement;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzDemoMenuThemeComponent);
         testComponent = fixture.debugElement.componentInstance;
-        items = fixture.debugElement.queryAll(By.directive(NzMenuItemDirective));
-        submenus = fixture.debugElement.queryAll(By.directive(NzSubMenuComponent));
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
       });
       it('should className correct', () => {
@@ -231,39 +240,43 @@ describe('menu', () => {
         expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-dark ant-menu-inline');
         testComponent.theme = false;
         fixture.detectChanges();
-        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-inline ant-menu-light');
+        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-light ant-menu-inline');
       });
     });
     describe('swich-mode', () => {
-      let fixture;
-      let testComponent;
-      let items;
-      let submenus;
-      let menu;
+      let fixture: ComponentFixture<NzDemoMenuSwitchModeComponent>;
+      let testComponent: NzDemoMenuSwitchModeComponent;
+      let submenus: DebugElement[];
+      let menu: DebugElement;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzDemoMenuSwitchModeComponent);
         testComponent = fixture.debugElement.componentInstance;
-        items = fixture.debugElement.queryAll(By.directive(NzMenuItemDirective));
         submenus = fixture.debugElement.queryAll(By.directive(NzSubMenuComponent));
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
       });
       it('should className correct', () => {
         fixture.detectChanges();
         expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-light ant-menu-inline');
-        expect(submenus.every(submenu => submenu.nativeElement.classList.contains('ant-menu-submenu-inline'))).toBe(true);
+        expect(submenus.every(submenu => submenu.nativeElement.classList.contains('ant-menu-submenu-inline'))).toBe(
+          true
+        );
         testComponent.mode = true;
         fixture.detectChanges();
         expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-light ant-menu-vertical');
-        expect(submenus.every(submenu => submenu.nativeElement.classList.contains('ant-menu-submenu-inline'))).toBe(false);
-        expect(submenus.every(submenu => submenu.nativeElement.classList.contains('ant-menu-submenu-vertical'))).toBe(true);
+        expect(submenus.every(submenu => submenu.nativeElement.classList.contains('ant-menu-submenu-inline'))).toBe(
+          false
+        );
+        expect(submenus.every(submenu => submenu.nativeElement.classList.contains('ant-menu-submenu-vertical'))).toBe(
+          true
+        );
       });
     });
   });
   describe('coverage', () => {
     describe('horizontal submenu', () => {
-      let fixture;
-      let testComponent;
-      let submenu;
+      let fixture: ComponentFixture<NzTestMenuHorizontalComponent>;
+      let testComponent: NzTestMenuHorizontalComponent;
+      let submenu: DebugElement;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzTestMenuHorizontalComponent);
         testComponent = fixture.debugElement.componentInstance;
@@ -281,7 +294,7 @@ describe('menu', () => {
         const mouseenterCallback = jasmine.createSpy('mouseenter callback');
         const subs = testComponent.subs.toArray();
         const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
-        subs[ 0 ].$mouseSubject.subscribe(mouseenterCallback);
+        subs[0].nzSubmenuService.mouseEnterLeave$.subscribe(mouseenterCallback);
         dispatchFakeEvent(title, 'mouseenter');
         fixture.detectChanges();
         expect(mouseenterCallback).toHaveBeenCalledWith(true);
@@ -292,7 +305,7 @@ describe('menu', () => {
         const mouseleaveCallback = jasmine.createSpy('mouseleave callback');
         const subs = testComponent.subs.toArray();
         const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
-        subs[ 0 ].$mouseSubject.subscribe(mouseleaveCallback);
+        subs[0].nzSubmenuService.mouseEnterLeave$.subscribe(mouseleaveCallback);
         dispatchFakeEvent(title, 'mouseleave');
         fixture.detectChanges();
         expect(mouseleaveCallback).toHaveBeenCalledWith(false);
@@ -303,12 +316,12 @@ describe('menu', () => {
         fixture.detectChanges();
         const nestedCallback = jasmine.createSpy('nested callback');
         const subs = testComponent.subs.toArray();
-        subs[ 0 ].$subOpen.subscribe(nestedCallback);
-        subs[ 1 ].nzOpen = true;
-        subs[ 1 ].handleOpenEvent(false);
+        subs[0].nzSubmenuService.subMenuOpen$.subscribe(nestedCallback);
+        subs[1].nzOpen = true;
+        subs[1].nzSubmenuService.open$.next(false);
         fixture.detectChanges();
         expect(nestedCallback).toHaveBeenCalledWith(false);
-        expect(nestedCallback).toHaveBeenCalledTimes(2);
+        expect(nestedCallback).toHaveBeenCalledTimes(1);
       });
       it('should nested submenu disabled work', () => {
         testComponent.open = true;
@@ -316,20 +329,31 @@ describe('menu', () => {
         fixture.detectChanges();
         const nestedCallback = jasmine.createSpy('nested callback');
         const subs = testComponent.subs.toArray();
-        subs[ 0 ].$subOpen.subscribe(nestedCallback);
-        subs[ 1 ].nzOpen = true;
-        subs[ 1 ].handleOpenEvent(false);
+        subs[0].nzSubmenuService.subMenuOpen$.subscribe(nestedCallback);
+        subs[1].nzOpen = true;
+        subs[1].nzSubmenuService.open$.next(false);
         fixture.detectChanges();
         expect(nestedCallback).toHaveBeenCalledTimes(1);
       });
+      it('should click menu and other submenu menu not active', fakeAsync(() => {
+        testComponent.open = true;
+        fixture.detectChanges();
+        dispatchFakeEvent(testComponent.menuitem1.nativeElement, 'mouseenter');
+        fixture.detectChanges();
+        testComponent.menuitem1.nativeElement.click();
+        expect(submenu.nativeElement.classList).toContain('ant-menu-submenu-active');
+        fixture.detectChanges();
+        tick(500);
+        expect(submenu.nativeElement.classList).not.toContain('ant-menu-submenu-active');
+      }));
       it('should click submenu menu item close', () => {
         testComponent.open = true;
         fixture.detectChanges();
         const nestedCallback = jasmine.createSpy('nested callback');
         const subs = testComponent.subs.toArray();
-        subs[ 1 ].nzOpen = true;
+        subs[1].nzOpen = true;
         fixture.detectChanges();
-        subs[ 1 ].$mouseSubject.subscribe(nestedCallback);
+        subs[1].nzSubmenuService.mouseEnterLeave$.subscribe(nestedCallback);
         testComponent.menuitem.nativeElement.click();
         fixture.detectChanges();
         expect(nestedCallback).toHaveBeenCalledWith(false);
@@ -340,8 +364,8 @@ describe('menu', () => {
         fixture.detectChanges();
         const nestedCallback = jasmine.createSpy('nested callback');
         const subs = testComponent.subs.toArray();
-        subs[ 1 ].$mouseSubject.subscribe(nestedCallback);
-        subs[ 1 ].nzOpen = true;
+        subs[1].nzSubmenuService.mouseEnterLeave$.subscribe(nestedCallback);
+        subs[1].nzOpen = true;
         testComponent.disableditem.nativeElement.click();
         fixture.detectChanges();
         expect(nestedCallback).toHaveBeenCalledTimes(0);
@@ -363,16 +387,16 @@ describe('menu', () => {
       it('should position change correct', () => {
         const fakeLeftTopEvent = {
           connectionPair: {
-            originX : 'start',
-            originY : 'top',
+            originX: 'start',
+            originY: 'top',
             overlayX: 'end',
             overlayY: 'top'
           }
         } as ConnectedOverlayPositionChange;
         const fakeRightTopEvent = {
           connectionPair: {
-            originX : 'end',
-            originY : 'top',
+            originX: 'end',
+            originY: 'top',
             overlayX: 'start',
             overlayY: 'top'
           }
@@ -380,20 +404,39 @@ describe('menu', () => {
         fixture.detectChanges();
         testComponent.open = true;
         const subs = testComponent.subs.toArray();
-        subs[ 1 ].nzOpen = true;
+        subs[1].nzOpen = true;
         fixture.detectChanges();
-        subs[ 1 ].onPositionChange(fakeLeftTopEvent);
+        subs[1].onPositionChange(fakeLeftTopEvent);
         fixture.detectChanges();
-        expect(subs[ 1 ].placement).toBe('leftTop');
-        subs[ 1 ].onPositionChange(fakeRightTopEvent);
+        expect(subs[1].placement).toBe('leftTop');
+        subs[1].onPositionChange(fakeRightTopEvent);
         fixture.detectChanges();
-        expect(subs[ 1 ].placement).toBe('rightTop');
+        expect(subs[1].placement).toBe('rightTop');
+      });
+      it('should `nzMenuClassName` work', fakeAsync(() => {
+        fixture.detectChanges();
+        testComponent.open = true;
+        fixture.detectChanges();
+        expect((overlayContainerElement.querySelector('ul.submenu') as HTMLUListElement).classList).toContain(
+          'ant-menu-sub'
+        );
+      }));
+      it('should nested submenu `nzMenuClassName` work', () => {
+        testComponent.open = true;
+        fixture.detectChanges();
+        const subs = testComponent.subs.toArray();
+        subs[1].nzOpen = true;
+        subs[1].nzSubmenuService.open$.next(true);
+        fixture.detectChanges();
+        expect((overlayContainerElement.querySelector('ul.nested-submenu') as HTMLUListElement).classList).toContain(
+          'ant-menu-sub'
+        );
       });
     });
     describe('inline submenu', () => {
-      let fixture;
-      let testComponent;
-      let submenu;
+      let fixture: ComponentFixture<NzTestMenuInlineComponent>;
+      let testComponent: NzTestMenuInlineComponent;
+      let submenu: DebugElement;
       beforeEach(() => {
         fixture = TestBed.createComponent(NzTestMenuInlineComponent);
         testComponent = fixture.debugElement.componentInstance;
@@ -409,6 +452,17 @@ describe('menu', () => {
         tick(500);
         expect(ul.style.height).not.toBe('0px');
         expect(submenu.nativeElement.classList.contains('ant-menu-submenu-open')).toBe(true);
+      }));
+      it('should `nzMenuClassName` work', fakeAsync(() => {
+        fixture.detectChanges();
+        expect(submenu.nativeElement.querySelector('.ant-menu-sub').className).toContain('submenu');
+      }));
+      it('should `nzMenuClassName` multi class names work', fakeAsync(() => {
+        fixture.detectChanges();
+        testComponent.submenuClassName = 'submenu submenu-1';
+        fixture.detectChanges();
+        expect(submenu.nativeElement.querySelector('.ant-menu-sub').className).toContain('submenu');
+        expect(submenu.nativeElement.querySelector('.ant-menu-sub').className).toContain('submenu-1');
       }));
       it('should disabled work', fakeAsync(() => {
         testComponent.disabled = true;
@@ -435,8 +489,8 @@ describe('menu', () => {
   selector: 'nz-test-menu-horizontal',
   template: `
     <ul nz-menu [nzMode]="'horizontal'">
-      <li nz-submenu [nzOpen]="open" [style.width.px]="width">
-        <span title><i class="anticon anticon-setting"></i> Navigation Three - Submenu</span>
+      <li nz-submenu nzMenuClassName="submenu" [nzOpen]="open" [style.width.px]="width">
+        <span title><i nz-icon type="setting"></i> Navigation Three - Submenu</span>
         <ul>
           <li nz-menu-group>
             <span title>Item 1</span>
@@ -448,9 +502,9 @@ describe('menu', () => {
           <li nz-menu-group>
             <span title>Item 2</span>
             <ul>
-              <li nz-menu-item>Option 3</li>
+              <li nz-menu-item #menuitem1>Option 3</li>
               <li nz-menu-item>Option 4</li>
-              <li nz-submenu [nzDisabled]="disabled">
+              <li nz-submenu nzMenuClassName="nested-submenu" [nzDisabled]="disabled">
                 <span title>Sub Menu</span>
                 <ul>
                   <li nz-menu-item #menuitem>Option 5</li>
@@ -477,6 +531,7 @@ export class NzTestMenuHorizontalComponent {
   disabled = false;
   @ViewChildren(NzSubMenuComponent) subs: QueryList<NzSubMenuComponent>;
   @ViewChild('menuitem', { read: ElementRef }) menuitem: ElementRef;
+  @ViewChild('menuitem1', { read: ElementRef }) menuitem1: ElementRef;
   @ViewChild('disableditem', { read: ElementRef }) disableditem: ElementRef;
 }
 
@@ -484,8 +539,8 @@ export class NzTestMenuHorizontalComponent {
   selector: 'nz-test-menu-inline',
   template: `
     <ul nz-menu [nzMode]="'inline'" [nzInlineCollapsed]="collapse">
-      <li nz-submenu [nzDisabled]="disabled">
-        <span title><i class="anticon anticon-mail"></i> Navigation One</span>
+      <li nz-submenu [nzMenuClassName]="submenuClassName" [nzDisabled]="disabled">
+        <span title><i nz-icon type="mail"></i> Navigation One</span>
         <ul>
           <li nz-menu-item style="padding-left:0px;">Option 1</li>
           <li nz-menu-item>Option 2</li>
@@ -493,11 +548,12 @@ export class NzTestMenuHorizontalComponent {
       </li>
     </ul>
   `,
-  styles  : []
+  styles: []
 })
 export class NzTestMenuInlineComponent {
   disabled = false;
   collapse = false;
+  submenuClassName = 'submenu';
   @ViewChild(NzSubMenuComponent) subsmenu: NzSubMenuComponent;
   @ViewChild('menuitem', { read: ElementRef }) menuitem: ElementRef;
 }
@@ -507,29 +563,28 @@ export class NzTestMenuInlineComponent {
   template: `
     <ul nz-menu [nzMode]="'inline'" style="width: 240px;">
       <li *ngFor="let l1 of menus" nz-submenu>
-        <span title><i class="anticon anticon-appstore"></i> {{l1.text}}</span>
+        <span title><i nz-icon type="appstore"></i> {{ l1.text }}</span>
         <ul>
           <li *ngFor="let l2 of l1.children" nz-submenu>
-            <span title>{{l2.text}}</span>
+            <span title>{{ l2.text }}</span>
             <ul>
-              <li *ngFor="let l3 of l2.children" nz-menu-item>{{l3.text}}</li>
+              <li *ngFor="let l3 of l2.children" nz-menu-item>{{ l3.text }}</li>
             </ul>
           </li>
         </ul>
       </li>
-    </ul>`,
-  styles  : []
+    </ul>
+  `,
+  styles: []
 })
 export class NzDemoMenuNgForComponent {
   menus = [
     {
-      text    : 'level1',
+      text: 'level1',
       children: [
         {
-          text    : 'level2',
-          children: [
-            { text: 'level3' }
-          ]
+          text: 'level2',
+          children: [{ text: 'level3' }]
         }
       ]
     }

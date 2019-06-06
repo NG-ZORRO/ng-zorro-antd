@@ -4,30 +4,28 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-slider-event',
   template: `
     <nz-slider
-      [nzDefaultValue]="30"
-      [(ngModel)]="singleValue" (ngModelChange)="onChange($event)"
+      [(ngModel)]="singleValue"
+      (ngModelChange)="onChange($event)"
       (nzOnAfterChange)="onAfterChange($event)"
     ></nz-slider>
     <nz-slider
       nzRange
       [nzStep]="10"
-      [nzDefaultValue]="[20, 50]"
-      [(ngModel)]="rangeValue" (ngModelChange)="onChange($event)"
+      [(ngModel)]="rangeValue"
+      (ngModelChange)="onChange($event)"
       (nzOnAfterChange)="onAfterChange($event)"
     ></nz-slider>
   `
 })
 export class NzDemoSliderEventComponent {
+  singleValue = 30;
+  rangeValue = [20, 50];
 
-  singleValue;
-  rangeValue;
-
-  onChange(value) {
+  onChange(value: number): void {
     console.log(`onChange: ${value}`);
   }
 
-  onAfterChange(value) {
+  onAfterChange(value: number): void {
     console.log(`onAfterChange: ${value}`);
   }
-
 }

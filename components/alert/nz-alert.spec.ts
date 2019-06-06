@@ -1,5 +1,5 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { fakeAsync, tick, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
+import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -9,15 +9,15 @@ import { NzAlertModule } from './nz-alert.module';
 describe('alert', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzAlertModule, NoopAnimationsModule ],
-      declarations: [ NzDemoTestBasicComponent, NzDemoTestBannerComponent ]
+      imports: [NzAlertModule, NoopAnimationsModule],
+      declarations: [NzDemoTestBasicComponent, NzDemoTestBannerComponent]
     });
     TestBed.compileComponents();
   }));
   describe('basic alert', () => {
-    let fixture;
-    let testComponent;
-    let alert;
+    let fixture: ComponentFixture<NzDemoTestBasicComponent>;
+    let testComponent: NzDemoTestBasicComponent;
+    let alert: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoTestBasicComponent);
       fixture.detectChanges();
@@ -26,16 +26,16 @@ describe('alert', () => {
     });
     it('should className correct', () => {
       fixture.detectChanges();
-      expect(alert.nativeElement.firstElementChild.classList).toContain('ant-alert');
+      expect(alert.nativeElement.firstElementChild!.classList).toContain('ant-alert');
     });
     it('should banner work', () => {
       fixture.detectChanges();
-      expect(alert.nativeElement.firstElementChild.classList).not.toContain('ant-alert-banner');
+      expect(alert.nativeElement.firstElementChild!.classList).not.toContain('ant-alert-banner');
       expect(alert.nativeElement.querySelector('.ant-alert').classList).toContain(`ant-alert-info`);
       expect(alert.nativeElement.querySelector('.ant-alert-icon')).toBeNull();
       testComponent.banner = true;
       fixture.detectChanges();
-      expect(alert.nativeElement.firstElementChild.classList).toContain('ant-alert-banner');
+      expect(alert.nativeElement.firstElementChild!.classList).toContain('ant-alert-banner');
       expect(alert.nativeElement.querySelector('.ant-alert').classList).toContain(`ant-alert-info`);
       expect(alert.nativeElement.querySelector('.ant-alert-icon')).toBeNull();
     });
@@ -43,7 +43,7 @@ describe('alert', () => {
       testComponent.closeable = true;
       fixture.detectChanges();
       expect(testComponent.onClose).toHaveBeenCalledTimes(0);
-      expect(alert.nativeElement.querySelector('.anticon-cross')).toBeDefined();
+      expect(alert.nativeElement.querySelector('.anticon-close')).toBeDefined();
       alert.nativeElement.querySelector('.ant-alert-close-icon').click();
       fixture.detectChanges();
       tick();
@@ -91,7 +91,7 @@ describe('alert', () => {
       expect(alert.nativeElement.querySelector('.ant-alert-icon').classList).toContain('anticon-lock');
     });
     it('should type work', () => {
-      const listOfType = [ 'success', 'info', 'warning', 'error' ];
+      const listOfType = ['success', 'info', 'warning', 'error'];
       listOfType.forEach(type => {
         testComponent.type = type;
         fixture.detectChanges();
@@ -100,15 +100,15 @@ describe('alert', () => {
     });
   });
   describe('banner alert', () => {
-    let fixture;
-    let testComponent;
-    let alert;
+    let fixture: ComponentFixture<NzDemoTestBannerComponent>;
+    let alert: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoTestBannerComponent);
       fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
       alert = fixture.debugElement.query(By.directive(NzAlertComponent));
     });
+
     it('should banner work', () => {
       fixture.detectChanges();
       expect(alert.nativeElement.querySelector('.ant-alert').classList).toContain(`ant-alert-warning`);
@@ -130,7 +130,8 @@ describe('alert', () => {
       [nzShowIcon]="showIcon"
       [nzIconType]="iconType"
       [nzType]="type"
-      (nzOnClose)="onClose($event)">
+      (nzOnClose)="onClose($event)"
+    >
     </nz-alert>
   `
 })
@@ -138,11 +139,11 @@ export class NzDemoTestBasicComponent {
   @ViewChild('template') template: TemplateRef<void>;
   banner = false;
   closeable = false;
-  closeText;
-  description = 'description';
-  message = 'message';
+  closeText: string | TemplateRef<void>;
+  description: string | TemplateRef<void> = 'description';
+  message: string | TemplateRef<void> = 'message';
   showIcon = false;
-  iconType;
+  iconType: string;
   type = 'info';
   onClose = jasmine.createSpy('close callback');
 }
@@ -150,9 +151,7 @@ export class NzDemoTestBasicComponent {
 @Component({
   selector: 'nz-test-alert-banner',
   template: `
-    <nz-alert nzBanner>
-    </nz-alert>
+    <nz-alert nzBanner> </nz-alert>
   `
 })
-export class NzDemoTestBannerComponent {
-}
+export class NzDemoTestBannerComponent {}

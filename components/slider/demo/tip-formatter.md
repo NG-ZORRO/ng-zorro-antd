@@ -7,10 +7,10 @@ title:
 
 ## zh-CN
 
-使用 `tipFormatter` 可以格式化 `Tooltip` 的内容，设置 `tipFormatter={null}`，则隐藏 `Tooltip`。
+使用 `nzTipFormatter` 可以格式化 `Tooltip` 的内容，设置 `nzTipFormatter = null`，则隐藏 `Tooltip`。
 
 ## en-US
 
-Use `tipFormatter` to format content of `Toolip`. If `tipFormatter` is null, hide it.
+Use `nzTipFormatter` to format content of `Toolip`. If `nzTipFormatter` is null, hide it.
 
 

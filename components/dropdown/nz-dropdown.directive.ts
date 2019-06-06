@@ -1,38 +1,39 @@
-import { Directive, ElementRef, HostListener, OnInit, Renderer2 } from '@angular/core';
-import { Subject } from 'rxjs';
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { Directive, ElementRef, Renderer2 } from '@angular/core';
+import { fromEvent, merge, Observable } from 'rxjs';
+import { mapTo, tap } from 'rxjs/operators';
 
 @Directive({
   selector: '[nz-dropdown]',
-  host    : {
-    '[class.ant-dropdown-trigger]': 'true'
-  }
+  exportAs: 'nzDropdown'
 })
-export class NzDropDownDirective implements OnInit {
-  $mouseenter = new Subject<MouseEvent>();
-  $mouseleave = new Subject<MouseEvent>();
-  $click = new Subject<MouseEvent>();
+export class NzDropDownDirective {
+  el: HTMLElement = this.elementRef.nativeElement;
+  hover$: Observable<boolean> = merge(
+    fromEvent(this.el, 'mouseenter').pipe(mapTo(true)),
+    fromEvent(this.el, 'mouseleave').pipe(mapTo(false))
+  );
+  $click: Observable<boolean> = fromEvent(this.el, 'click').pipe(
+    tap(e => e.stopPropagation()),
+    mapTo(true)
+  );
 
-  @HostListener('mouseenter', [ '$event' ])
-  onMouseEnter(e: MouseEvent): void {
-    this.$mouseenter.next(e);
-  }
-
-  @HostListener('mouseleave', [ '$event' ])
-  onMouseLeave(e: MouseEvent): void {
-    this.$mouseleave.next(e);
-  }
-
-  @HostListener('click', [ '$event' ])
-  onClick(e: MouseEvent): void {
-    this.$click.next(e);
+  setDisabled(disabled: boolean): void {
+    if (disabled) {
+      this.renderer.setAttribute(this.el, 'disabled', '');
+    } else {
+      this.renderer.removeAttribute(this.el, 'disabled');
+    }
   }
 
   constructor(public elementRef: ElementRef, private renderer: Renderer2) {
-  }
-
-  ngOnInit(): void {
-    if (this.elementRef.nativeElement.nodeName === 'A') {
-      this.renderer.addClass(this.elementRef.nativeElement, 'ant-dropdown-link');
-    }
+    renderer.addClass(elementRef.nativeElement, 'ant-dropdown-trigger');
   }
 }

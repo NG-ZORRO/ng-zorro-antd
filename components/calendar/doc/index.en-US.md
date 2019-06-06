@@ -26,12 +26,22 @@ registerLocaleData(en);
 <nz-calendar
   [nzDateCell]="dateCellTpl"
   [(ngModel)]="selectedDate"
-  [(nzMode)]="mode">
+  [(nzMode)]="mode"
+  (nzPanelChange)="panelChange($event)"
+  (nzSelectChange)="selectChange($event)">
   <!-- Another method for cell definition -->
   <div *nzDateCell>Foo</div>
 </nz-calendar>
 <!-- Passing TemplateRef -->
-<ng-template #dateCellTpl>Bar</ng-template>
+<ng-template #dateCellTpl let-date><span>{{ date | date:'d'}}</span></ng-template>
+```
+
+### Import this Component Individually
+
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzCalendarModule } from 'ng-zorro-antd';
 ```
 
 ### nz-calendar
@@ -39,10 +49,11 @@ registerLocaleData(en);
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[(ngModel)]` | (Two-way bindable) The current selected date | `Date` | current date |
-| `[(nzMode)]` | The display mode of the calendar (two-way bindable) | `'month'/'year'` | `'month'` |
+| `[(nzMode)]` | The display mode of the calendar (two-way bindable) | `'month'｜'year'` | `'month'` |
 | `[nzFullscreen]` | Whether to display in full-screen | `boolean` | `true` |
 | `[nzCard]` | Whether to not display in full-screen | `boolean` | `false` |
 | `[nzDateCell]` | (Contentable) Customize the display of the date cell, the template content will be appended to the cell | `TemplateRef<Date>` | - |
 | `[nzDateFullCell]` | (Contentable) Customize the display of the date cell, the template content will override the cell | `TemplateRef<Date>` | - |
 | `[nzMonthCell]` | (Contentable) Customize the display of the month cell, the template content will be appended to the cell | `TemplateRef<Date>` | - |
 | `[nzMonthFullCell]` | (Contentable) Customize the display of the month cell, the template content will override the cell | `TemplateRef<Date>` | - |
+| `(nzPanelChange)` | Callback for when panel changes | `EventEmitter<{ date: Date, mode: 'month'｜'year' }>` | - |

@@ -1,60 +1,48 @@
-import { Component, Input, TemplateRef } from '@angular/core';
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input,
+  Renderer2,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
 
 @Component({
-  selector           : 'nz-list-item-meta',
-  templateUrl        : './nz-list-item-meta.component.html',
+  selector: 'nz-list-item-meta',
+  exportAs: 'nzListItemMeta',
+  templateUrl: './nz-list-item-meta.component.html',
   preserveWhitespaces: false,
-  host               : {
-    '[class.ant-list-item-meta]': 'true'
-  }
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class NzListItemMetaComponent {
-
-  isAvatar = false;
   avatarStr = '';
   avatarTpl: TemplateRef<void>;
 
   @Input()
   set nzAvatar(value: string | TemplateRef<void>) {
     if (value instanceof TemplateRef) {
-      this.avatarStr = null;
+      this.avatarStr = '';
       this.avatarTpl = value;
     } else {
       this.avatarStr = value;
     }
-
-    this.isAvatar = !!value;
   }
 
-  isTitle = false;
-  titleStr = '';
-  titleTpl: TemplateRef<void>;
+  @Input() nzTitle: string | TemplateRef<void>;
 
-  @Input()
-  set nzTitle(value: string | TemplateRef<void>) {
-    if (value instanceof TemplateRef) {
-      this.titleStr = null;
-      this.titleTpl = value;
-    } else {
-      this.titleStr = value;
-    }
+  @Input() nzDescription: string | TemplateRef<void>;
 
-    this.isTitle = !!value;
-  }
-
-  isDesc = false;
-  descStr = '';
-  descTpl: TemplateRef<void>;
-
-  @Input()
-  set nzDescription(value: string | TemplateRef<void>) {
-    if (value instanceof TemplateRef) {
-      this.descStr = null;
-      this.descTpl = value;
-    } else {
-      this.descStr = value;
-    }
-
-    this.isDesc = !!value;
+  constructor(public elementRef: ElementRef, private renderer: Renderer2) {
+    this.renderer.addClass(elementRef.nativeElement, 'ant-list-item-meta');
   }
 }

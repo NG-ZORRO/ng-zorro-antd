@@ -1,8 +1,20 @@
-export * from './calculate-node-height';
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+export * from './array';
 export * from './check';
 export * from './convert';
+export * from './dom';
 export * from './getMentions';
-export * from './keycodes';
-export * from './nz-global-monitor';
+export * from './string';
+export * from './is-promise';
+export * from './number';
+export * from './scroll-into-view-if-needed';
 export * from './textarea-caret-position';
 export * from './throttleByAnimationFrame';
+export * from './time';

@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 export default {
   // Options.jsx
   items_per_page: '/ หน้า',
@@ -11,5 +19,5 @@ export default {
   prev_5: 'ย้อนกลับ 5 หน้า',
   next_5: 'ถัดไป 5 หน้า',
   prev_3: 'ย้อนกลับ 3 หน้า',
-  next_3: 'ถัดไป 3 หน้า',
+  next_3: 'ถัดไป 3 หน้า'
 };

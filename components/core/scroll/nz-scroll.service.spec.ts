@@ -5,11 +5,9 @@ import { ReflectiveInjector } from '@angular/core';
 import { NzScrollService } from './nz-scroll.service';
 
 describe('NzScrollService', () => {
-
   const TOP: number = 10;
   let injector: ReflectiveInjector;
   let document: MockDocument;
-  let location: MockPlatformLocation;
   let scrollService: NzScrollService;
 
   class MockDocument {
@@ -39,7 +37,6 @@ describe('NzScrollService', () => {
       { provide: DOCUMENT, useClass: MockDocument },
       { provide: PlatformLocation, useClass: MockPlatformLocation }
     ]);
-    location = injector.get(PlatformLocation);
     document = injector.get(DOCUMENT);
     scrollService = injector.get(NzScrollService);
   });
@@ -56,5 +53,4 @@ describe('NzScrollService', () => {
       expect(el.scrollTop).toBe(TOP);
     });
   });
-
 });

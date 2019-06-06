@@ -9,7 +9,7 @@ import { NzModalService } from 'ng-zorro-antd';
   styles: []
 })
 export class NzDemoModalManualComponent {
-  constructor(private modalService: NzModalService) { }
+  constructor(private modalService: NzModalService) {}
 
   success(): void {
     const modal = this.modalService.success({
@@ -17,6 +17,6 @@ export class NzDemoModalManualComponent {
       nzContent: 'This modal will be destroyed after 1 second'
     });
 
-    window.setTimeout(() => modal.destroy(), 1000);
+    setTimeout(() => modal.destroy(), 1000);
   }
 }

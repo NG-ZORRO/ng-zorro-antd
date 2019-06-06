@@ -1,44 +1,59 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  Host,
   Input,
-  Output
+  Optional,
+  Output,
+  TemplateRef,
+  ViewEncapsulation
 } from '@angular/core';
-import { fadeAnimation } from '../core/animation/fade-animations';
-import { toBoolean } from '../core/util/convert';
-import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
+
+import { zoomBigMotion, InputBoolean, NzNoAnimationDirective } from 'ng-zorro-antd/core';
+import { NzToolTipComponent } from 'ng-zorro-antd/tooltip';
 
 @Component({
-  selector           : 'nz-popconfirm',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-popconfirm',
+  exportAs: 'nzPopconfirmComponent',
   preserveWhitespaces: false,
-  animations         : [ fadeAnimation ],
-  templateUrl        : './nz-popconfirm.component.html',
-  styles             : [ `
-    .ant-popover {
-      position: relative;
-    }
-  ` ]
+  animations: [zoomBigMotion],
+  templateUrl: './nz-popconfirm.component.html',
+  styles: [
+    `
+      .ant-popover {
+        position: relative;
+      }
+    `
+  ]
 })
 export class NzPopconfirmComponent extends NzToolTipComponent {
-  _condition = false;
   _prefix = 'ant-popover-placement';
   _trigger = 'click';
   _hasBackdrop = true;
-  @Output() nzOnCancel: EventEmitter<void> = new EventEmitter();
-  @Output() nzOnConfirm: EventEmitter<void> = new EventEmitter();
 
   @Input() nzOkText: string;
   @Input() nzOkType: string = 'primary';
   @Input() nzCancelText: string;
+  @Input() @InputBoolean() nzCondition = false;
+  @Input() nzIcon: string | TemplateRef<void>;
 
-  @Input()
-  set nzCondition(value: boolean) {
-    this._condition = toBoolean(value);
-  }
+  @Output() readonly nzOnCancel: EventEmitter<void> = new EventEmitter();
+  @Output() readonly nzOnConfirm: EventEmitter<void> = new EventEmitter();
 
-  get nzCondition(): boolean {
-    return this._condition;
+  constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
+    super(cdr, noAnimation);
   }
 
   show(): void {
@@ -58,9 +73,4 @@ export class NzPopconfirmComponent extends NzToolTipComponent {
     this.nzOnConfirm.emit();
     this.nzVisible = false;
   }
-
-  constructor(cdr: ChangeDetectorRef) {
-    super(cdr);
-  }
-
 }

@@ -1,14 +1,33 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Overlay } from '@angular/cdk/overlay';
-import { ComponentPortal } from '@angular/cdk/portal';
-import { ApplicationRef, ComponentFactoryResolver, EmbeddedViewRef, Injectable, Injector, Type } from '@angular/core';
+import {
+  ApplicationRef,
+  ComponentFactoryResolver,
+  EmbeddedViewRef,
+  Injectable,
+  Injector,
+  TemplateRef,
+  Type
+} from '@angular/core';
 
 import { NzMessageConfig } from './nz-message-config';
 import { NzMessageContainerComponent } from './nz-message-container.component';
 import { NzMessageData, NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
 
-let globalCounter = 0; // global ID counter for messages
+let globalCounter = 0;
 
-export class NzMessageBaseService<ContainerClass extends NzMessageContainerComponent, MessageData, MessageConfig extends NzMessageConfig> {
+export class NzMessageBaseService<
+  ContainerClass extends NzMessageContainerComponent,
+  MessageData,
+  MessageConfig extends NzMessageConfig
+> {
   protected _container: ContainerClass;
 
   constructor(
@@ -17,9 +36,8 @@ export class NzMessageBaseService<ContainerClass extends NzMessageContainerCompo
     private injector: Injector,
     private cfr: ComponentFactoryResolver,
     private appRef: ApplicationRef,
-    private _idPrefix: string = '') {
-
-    // this._container = overlay.create().attach(new ComponentPortal(containerClass)).instance;
+    private _idPrefix: string = ''
+  ) {
     this._container = this.createContainer();
   }
 
@@ -32,12 +50,12 @@ export class NzMessageBaseService<ContainerClass extends NzMessageContainerCompo
   }
 
   createMessage(message: MessageData, options?: NzMessageDataOptions): NzMessageDataFilled {
-    // TODO: spread on literal has been disallow on latest proposal
     const resultMessage: NzMessageDataFilled = {
-      ...(message as {}), ...{
+      ...(message as NzMessageData),
+      ...{
+        createdAt: new Date(),
         messageId: this._generateMessageId(),
-        options,
-        createdAt: new Date()
+        options
       }
     };
     this._container.createMessage(resultMessage);
@@ -62,7 +80,7 @@ export class NzMessageBaseService<ContainerClass extends NzMessageContainerCompo
     this.appRef.attachView(componentRef.hostView); // Load view into app root
     const overlayPane = this.overlay.create().overlayElement;
     overlayPane.style.zIndex = '1010'; // Patching: assign the same zIndex of ant-message to it's parent overlay panel, to the ant-message's zindex work.
-    overlayPane.appendChild((componentRef.hostView as EmbeddedViewRef<{}>).rootNodes[ 0 ] as HTMLElement);
+    overlayPane.appendChild((componentRef.hostView as EmbeddedViewRef<{}>).rootNodes[0] as HTMLElement);
 
     return componentRef.instance;
   }
@@ -71,39 +89,41 @@ export class NzMessageBaseService<ContainerClass extends NzMessageContainerCompo
 @Injectable({
   providedIn: 'root'
 })
-export class NzMessageService extends NzMessageBaseService<NzMessageContainerComponent, NzMessageData, NzMessageConfig> {
-
-  constructor(
-    overlay: Overlay,
-    injector: Injector,
-    cfr: ComponentFactoryResolver,
-    appRef: ApplicationRef) {
-
+export class NzMessageService extends NzMessageBaseService<
+  NzMessageContainerComponent,
+  NzMessageData,
+  NzMessageConfig
+> {
+  constructor(overlay: Overlay, injector: Injector, cfr: ComponentFactoryResolver, appRef: ApplicationRef) {
     super(overlay, NzMessageContainerComponent, injector, cfr, appRef, 'message-');
   }
 
   // Shortcut methods
-  success(content: string, options?: NzMessageDataOptions): NzMessageDataFilled {
+  success(content: string | TemplateRef<void>, options?: NzMessageDataOptions): NzMessageDataFilled {
     return this.createMessage({ type: 'success', content }, options);
   }
 
-  error(content: string, options?: NzMessageDataOptions): NzMessageDataFilled {
+  error(content: string | TemplateRef<void>, options?: NzMessageDataOptions): NzMessageDataFilled {
     return this.createMessage({ type: 'error', content }, options);
   }
 
-  info(content: string, options?: NzMessageDataOptions): NzMessageDataFilled {
+  info(content: string | TemplateRef<void>, options?: NzMessageDataOptions): NzMessageDataFilled {
     return this.createMessage({ type: 'info', content }, options);
   }
 
-  warning(content: string, options?: NzMessageDataOptions): NzMessageDataFilled {
+  warning(content: string | TemplateRef<void>, options?: NzMessageDataOptions): NzMessageDataFilled {
     return this.createMessage({ type: 'warning', content }, options);
   }
 
-  loading(content: string, options?: NzMessageDataOptions): NzMessageDataFilled {
+  loading(content: string | TemplateRef<void>, options?: NzMessageDataOptions): NzMessageDataFilled {
     return this.createMessage({ type: 'loading', content }, options);
   }
 
-  create(type: 'success' | 'info' | 'warning' | 'error' | 'loading' | string, content: string, options?: NzMessageDataOptions): NzMessageDataFilled {
+  create(
+    type: 'success' | 'info' | 'warning' | 'error' | 'loading' | string,
+    content: string | TemplateRef<void>,
+    options?: NzMessageDataOptions
+  ): NzMessageDataFilled {
     return this.createMessage({ type, content }, options);
   }
 }

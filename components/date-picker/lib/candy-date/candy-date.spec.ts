@@ -8,7 +8,7 @@ describe('candy-date coverage supplements', () => {
   it('support getMilliseconds', () => expect(date.getMilliseconds()).toBe(date.nativeDate.getMilliseconds()));
 
   it('support endOf', () => {
-    expect(date.endOf('month').getDate()).toBe(31);
+    expect(date.endOf('month')!.getDate()).toBe(31);
     // tslint:disable-next-line:no-any
     expect(date.endOf('should return null' as any)).toBeNull();
   });
@@ -83,5 +83,4 @@ describe('candy-date coverage supplements', () => {
     const errorMessage = 'The input date type is not supported ("Date" and "string" is now recommended)';
     expect(() => new CandyDate({} as any)).toThrowError(errorMessage); // tslint:disable-line:no-any
   });
-
 }); // /candy-date coverage supplements

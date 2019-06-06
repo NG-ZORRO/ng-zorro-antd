@@ -1,26 +1,36 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { InjectionToken } from '@angular/core';
 
-import { NzMessageConfig } from '../message/nz-message-config';
+import { NzMessageConfig } from 'ng-zorro-antd/message';
 
 export interface NzNotificationConfig extends NzMessageConfig {
-  nzTop?: string;
-  nzBottom?: string;
+  nzTop?: string | number;
+  nzBottom?: string | number;
   nzPlacement?: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight' | string;
 }
 
-export const NZ_NOTIFICATION_DEFAULT_CONFIG = new InjectionToken<NzNotificationConfig>('NZ_NOTIFICATION_DEFAULT_CONFIG');
+export const NZ_NOTIFICATION_DEFAULT_CONFIG = new InjectionToken<NzNotificationConfig>(
+  'NZ_NOTIFICATION_DEFAULT_CONFIG'
+);
 
 export const NZ_NOTIFICATION_CONFIG = new InjectionToken<NzNotificationConfig>('NZ_NOTIFICATION_CONFIG');
 
 export const NZ_NOTIFICATION_DEFAULT_CONFIG_PROVIDER = {
-  provide : NZ_NOTIFICATION_DEFAULT_CONFIG,
+  provide: NZ_NOTIFICATION_DEFAULT_CONFIG,
   useValue: {
-    nzTop         : '24px',
-    nzBottom      : '24px',
-    nzPlacement   : 'topRight',
-    nzDuration    : 4500,
-    nzMaxStack    : 7,
+    nzTop: '24px',
+    nzBottom: '24px',
+    nzPlacement: 'topRight',
+    nzDuration: 4500,
+    nzMaxStack: 7,
     nzPauseOnHover: true,
-    nzAnimate     : true
+    nzAnimate: true
   }
 };

@@ -1,7 +1,19 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { LayoutModule } from '@angular/cdk/layout';
+import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { NzGridModule } from '../grid/nz-grid.module';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
 import { NzFormControlComponent } from './nz-form-control.component';
 import { NzFormExplainComponent } from './nz-form-explain.component';
 import { NzFormExtraComponent } from './nz-form-extra.component';
@@ -12,9 +24,26 @@ import { NzFormTextComponent } from './nz-form-text.component';
 import { NzFormDirective } from './nz-form.directive';
 
 @NgModule({
-  declarations: [ NzFormExtraComponent, NzFormLabelComponent, NzFormDirective, NzFormItemComponent, NzFormControlComponent, NzFormExplainComponent, NzFormTextComponent, NzFormSplitComponent ],
-  exports     : [ NzFormExtraComponent, NzFormLabelComponent, NzFormDirective, NzFormItemComponent, NzFormControlComponent, NzFormExplainComponent, NzFormTextComponent, NzFormSplitComponent ],
-  imports     : [ CommonModule, NzGridModule ]
+  declarations: [
+    NzFormExtraComponent,
+    NzFormLabelComponent,
+    NzFormDirective,
+    NzFormItemComponent,
+    NzFormControlComponent,
+    NzFormExplainComponent,
+    NzFormTextComponent,
+    NzFormSplitComponent
+  ],
+  exports: [
+    NzFormExtraComponent,
+    NzFormLabelComponent,
+    NzFormDirective,
+    NzFormItemComponent,
+    NzFormControlComponent,
+    NzFormExplainComponent,
+    NzFormTextComponent,
+    NzFormSplitComponent
+  ],
+  imports: [CommonModule, NzGridModule, NzIconModule, LayoutModule, PlatformModule]
 })
-export class NzFormModule {
-}
+export class NzFormModule {}

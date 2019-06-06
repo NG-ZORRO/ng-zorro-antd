@@ -13,17 +13,26 @@ Rate component.
 
 ## API
 
+### Import this Component Individually
+
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzRateModule } from 'ng-zorro-antd';
+```
+
 ### nz-rate
 
 | Property | Description | type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzAllowClear]` | whether to allow clear when click again | boolean | true |
-| `[nzAllowHalf]` | whether to allow semi selection | boolean | false |
-| `[nzAutoFocus]` | get focus when component mounted | boolean | false |
-| `[nzCharacter]` | custom character of rate | `TemplateRef<void>` | `<i class="anticon anticon-star"></i>` |
-| `[nzCount]` | star count | number | 5 |
-| `[nzDisabled]` | read only, unable to interact | boolean | false |
-| `[ngModel]` | current value , double binding | number | - |
+| `[nzAllowClear]` | whether to allow clear when click again | `boolean` | `true` |
+| `[nzAllowHalf]` | whether to allow semi selection | `boolean` | `false` |
+| `[nzAutoFocus]` | get focus when component mounted | `boolean` | `false` |
+| `[nzCharacter]` | custom character of rate | `TemplateRef<void>` | `<i nz-icon type="star"></i>` |
+| `[nzCount]` | star count | `number` | `5` |
+| `[nzDisabled]` | read only, unable to interact | `boolean` | `false` |
+| `[nzTooltips]` | Customize tooltip by each character | `string[]` | `[]` |
+| `[ngModel]` | current value , double binding | `number` | - |
 | `(ngModelChange)` | callback when select value | `EventEmitter<number>` | - |
 | `(nzOnBlur)` | callback when component lose focus | `EventEmitter<FocusEvent>` | - |
 | `(nzOnFocus)` | callback when component get focus | `EventEmitter<FocusEvent>` | - |

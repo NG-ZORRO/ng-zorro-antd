@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
-import { fakeAsync, tick, TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
+import { NGStyleInterface } from 'ng-zorro-antd/core';
 
 import { NzBadgeComponent } from './nz-badge.component';
 import { NzBadgeModule } from './nz-badge.module';
@@ -9,25 +11,29 @@ import { NzBadgeModule } from './nz-badge.module';
 describe('badge', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzBadgeModule, NoopAnimationsModule ],
-      declarations: [ NzTestBadgeBasicComponent ]
+      imports: [NzBadgeModule, NoopAnimationsModule],
+      declarations: [NzTestBadgeBasicComponent]
     });
     TestBed.compileComponents();
   }));
+
   describe('basic badge', () => {
-    let fixture;
-    let testComponent;
-    let badgeElement;
+    let fixture: ComponentFixture<NzTestBadgeBasicComponent>;
+    let testComponent: NzTestBadgeBasicComponent;
+    let badgeElement: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestBadgeBasicComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       badgeElement = fixture.debugElement.query(By.directive(NzBadgeComponent));
     });
+
     it('should className correct', () => {
       fixture.detectChanges();
       expect(badgeElement.nativeElement.classList).toContain('ant-badge');
     });
+
     it('should count work', () => {
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('sup').classList).toContain('ant-scroll-number');
@@ -37,9 +43,10 @@ describe('badge', () => {
       testComponent.count = 10;
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('sup').classList).toContain('ant-badge-multiple-words');
-      expect(badgeElement.nativeElement.querySelectorAll('.current')[ 0 ].innerText).toBe('1');
-      expect(badgeElement.nativeElement.querySelectorAll('.current')[ 1 ].innerText).toBe('0');
+      expect(badgeElement.nativeElement.querySelectorAll('.current')[0].innerText).toBe('1');
+      expect(badgeElement.nativeElement.querySelectorAll('.current')[1].innerText).toBe('0');
     });
+
     it('should overflow work', () => {
       testComponent.overflow = 4;
       fixture.detectChanges();
@@ -53,6 +60,7 @@ describe('badge', () => {
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('sup').innerText).not.toBe('99+');
     });
+
     it('should showZero work', fakeAsync(() => {
       testComponent.count = 0;
       fixture.detectChanges();
@@ -63,6 +71,7 @@ describe('badge', () => {
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('.current').innerText).toBe('0');
     }));
+
     it('should negative number not display', fakeAsync(() => {
       testComponent.count = -10;
       fixture.detectChanges();
@@ -73,6 +82,7 @@ describe('badge', () => {
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('.current').innerText).toBe('0');
     }));
+
     it('should dot work', () => {
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('sup').classList).not.toContain('ant-badge-dot');
@@ -80,6 +90,7 @@ describe('badge', () => {
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('sup').classList).toContain('ant-badge-dot');
     });
+
     it('should no wrapper work', fakeAsync(() => {
       testComponent.inner = false;
       testComponent.style = { backgroundColor: '#52c41a' };
@@ -87,17 +98,20 @@ describe('badge', () => {
       tick(1000);
       fixture.detectChanges();
       badgeElement = fixture.debugElement.query(By.directive(NzBadgeComponent));
-//      TODO: fix next line error
-//      expect(badgeElement.nativeElement.classList).toContain('ant-badge-not-a-wrapper');
+      //      TODO: fix next line error
+      //      expect(badgeElement.nativeElement.classList).toContain('ant-badge-not-a-wrapper');
       expect(badgeElement.nativeElement.querySelector('sup').style.backgroundColor).toBe('rgb(82, 196, 26)');
     }));
+
     it('should status work', () => {
       testComponent.inner = false;
-      const statusList = [ 'success', 'processing', 'default', 'error', 'warning' ];
+      const statusList = ['success', 'processing', 'default', 'error', 'warning'];
       statusList.forEach(status => {
         testComponent.status = status;
         fixture.detectChanges();
-        expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').classList).toContain(`ant-badge-status-${status}`);
+        expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').classList).toContain(
+          `ant-badge-status-${status}`
+        );
       });
       testComponent.text = 'test';
       fixture.detectChanges();
@@ -116,18 +130,19 @@ describe('badge', () => {
       [nzShowZero]="showZero"
       [nzOverflowCount]="overflow"
       [nzStyle]="style"
-      [nzDot]="dot">
+      [nzDot]="dot"
+    >
       <a *ngIf="inner"></a>
     </nz-badge>
   `
 })
 export class NzTestBadgeBasicComponent {
-  style;
   count = 5;
+  dot = false;
+  inner = true;
   overflow = 20;
   showZero = false;
-  inner = true;
-  status;
-  text;
-  dot = false;
+  status: string;
+  style: NGStyleInterface;
+  text: string;
 }

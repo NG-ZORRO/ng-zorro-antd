@@ -1,79 +1,93 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
-  ElementRef,
   Input,
-  NgZone,
-  Renderer2,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
   TemplateRef,
-  ViewChild
+  ViewEncapsulation
 } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
-import { isEmpty, isNotNil } from '../core/util/check';
-import { toBoolean } from '../core/util/convert';
+import { InputBoolean, InputNumber, NzSizeLDSType } from 'ng-zorro-antd/core';
 
 @Component({
-  selector           : 'nz-spin',
+  selector: 'nz-spin',
+  exportAs: 'nzSpin',
   preserveWhitespaces: false,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  templateUrl        : './nz-spin.component.html'
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './nz-spin.component.html',
+  host: {
+    '[class.ant-spin-nested-loading]': '!nzSimple'
+  },
+  styles: [
+    `
+      nz-spin {
+        display: block;
+      }
+    `
+  ]
 })
-export class NzSpinComponent implements AfterViewInit {
-  private _tip: string;
-  private _delay = 0;
-  el: HTMLElement;
-  isNested = false;
-  baseSpinning$ = new BehaviorSubject(true);
-  resultSpinning$: Observable<boolean> = this.baseSpinning$.asObservable().pipe(debounceTime(this.nzDelay));
-  @ViewChild('containerElement') containerElement: ElementRef;
+export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
   @Input() nzIndicator: TemplateRef<void>;
-  @Input() nzSize = 'default';
+  @Input() nzSize: NzSizeLDSType = 'default';
+  @Input() nzTip: string;
+  @Input() @InputNumber() nzDelay = 0;
+  @Input() @InputBoolean() nzSimple = false;
+  @Input() @InputBoolean() nzSpinning = true;
+  loading = true;
+  private spinning$ = new BehaviorSubject(this.nzSpinning);
+  private loading$: Observable<boolean> = this.spinning$.pipe(debounceTime(this.nzDelay));
+  private loading_: Subscription | null;
 
-  @Input()
-  set nzDelay(value: number) {
-    if (isNotNil(value)) {
-      this._delay = value;
-      this.resultSpinning$ = this.baseSpinning$.asObservable().pipe(debounceTime(this.nzDelay));
+  subscribeLoading(): void {
+    this.unsubscribeLoading();
+    this.loading_ = this.loading$.subscribe(data => {
+      this.loading = data;
+      this.cdr.markForCheck();
+    });
+  }
+
+  unsubscribeLoading(): void {
+    if (this.loading_) {
+      this.loading_.unsubscribe();
+      this.loading_ = null;
     }
   }
 
-  get nzDelay(): number {
-    return this._delay;
+  constructor(private cdr: ChangeDetectorRef) {}
+
+  ngOnInit(): void {
+    this.subscribeLoading();
   }
 
-  @Input()
-  set nzTip(value: string) {
-    this._tip = value;
-  }
-
-  get nzTip(): string {
-    return this._tip;
-  }
-
-  @Input()
-  set nzSpinning(value: boolean) {
-    this.baseSpinning$.next(toBoolean(value));
-  }
-
-  checkNested(): void {
-    /** no way to detect empty https://github.com/angular/angular/issues/12530 **/
-    if (!isEmpty(this.containerElement.nativeElement)) {
-      this.isNested = true;
-      this.renderer.setStyle(this.el, 'display', 'block');
-    } else {
-      this.isNested = false;
-      this.renderer.removeStyle(this.el, 'display');
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.nzSpinning) {
+      if (changes.nzSpinning.isFirstChange()) {
+        this.loading = this.nzSpinning;
+      }
+      this.spinning$.next(this.nzSpinning);
+    }
+    if (changes.nzDelay) {
+      this.loading$ = this.spinning$.pipe(debounceTime(this.nzDelay));
+      this.subscribeLoading();
     }
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, private zone: NgZone) {
-    this.el = this.elementRef.nativeElement;
-  }
-
-  ngAfterViewInit(): void {
-    this.checkNested();
+  ngOnDestroy(): void {
+    this.unsubscribeLoading();
   }
 }

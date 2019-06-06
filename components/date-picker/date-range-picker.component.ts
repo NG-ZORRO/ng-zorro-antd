@@ -1,18 +1,33 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef } from '@angular/core';
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 
-import { FunctionProp } from '../core/types/common-wrap';
-import { toBoolean, valueFunctionProp, InputBoolean } from '../core/util/convert';
-import { LoggerService } from '../core/util/logger/logger.service';
-import { NzI18nService } from '../i18n/nz-i18n.service';
-import { CandyDate } from './lib/candy-date';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  TemplateRef
+} from '@angular/core';
+
+import { toBoolean, valueFunctionProp, FunctionProp, InputBoolean, NzNoAnimationDirective } from 'ng-zorro-antd/core';
+import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { AbstractPickerComponent, CompatibleDate } from './abstract-picker.component';
+import { CandyDate } from './lib/candy-date/candy-date';
 import { DisabledTimeFn, PanelMode, PresetRanges } from './standard-types';
 
 @Component({
   template: `` // Just for rollup
 })
-
 export class DateRangePickerComponent extends AbstractPickerComponent implements OnInit, OnChanges {
   showWeek: boolean = false; // Should show as week picker
 
@@ -21,25 +36,35 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
   @Input() nzRenderExtraFooter: FunctionProp<TemplateRef<void> | string>;
   @Input() @InputBoolean() nzShowToday: boolean = true;
   @Input() nzMode: PanelMode | PanelMode[];
-  @Input() nzRanges: FunctionProp<PresetRanges>;
-  @Output() nzOnPanelChange = new EventEmitter<PanelMode | PanelMode[]>();
+  @Input() nzRanges: PresetRanges;
+  @Output() readonly nzOnPanelChange = new EventEmitter<PanelMode | PanelMode[]>();
+  @Output() readonly nzOnCalendarChange = new EventEmitter<Date[]>();
 
   private _showTime: object | boolean;
-  @Input() get nzShowTime(): object | boolean { return this._showTime; }
+  @Input() get nzShowTime(): object | boolean {
+    return this._showTime;
+  }
   set nzShowTime(value: object | boolean) {
     this._showTime = typeof value === 'object' ? value : toBoolean(value);
   }
 
-  @Output() nzOnOk = new EventEmitter<CompatibleDate>();
+  @Output() readonly nzOnOk = new EventEmitter<CompatibleDate | null>();
 
-  get realShowToday(): boolean { // Range not support nzShowToday currently
+  get realShowToday(): boolean {
+    // Range not support nzShowToday currently
     return !this.isRange && this.nzShowToday;
   }
 
+  pickerStyle: object; // Final picker style that contains width fix corrections etc.
   extraFooter: TemplateRef<void> | string;
 
-  constructor(i18n: NzI18nService, private logger: LoggerService) {
-    super(i18n);
+  constructor(
+    i18n: NzI18nService,
+    cdr: ChangeDetectorRef,
+    dateHelper: DateHelperService,
+    noAnimation?: NzNoAnimationDirective
+  ) {
+    super(i18n, cdr, dateHelper, noAnimation);
   }
 
   ngOnInit(): void {
@@ -48,9 +73,13 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
     // Default format when it's empty
     if (!this.nzFormat) {
       if (this.showWeek) {
-        this.nzFormat = 'yyyy-ww'; // Format for week
+        this.nzFormat = this.dateHelper.relyOnDatePipe ? 'yyyy-ww' : 'YYYY-WW'; // Format for week
       } else {
-        this.nzFormat = this.nzShowTime ? 'yyyy-MM-dd HH:mm:ss' : 'yyyy-MM-dd';
+        if (this.dateHelper.relyOnDatePipe) {
+          this.nzFormat = this.nzShowTime ? 'yyyy-MM-dd HH:mm:ss' : 'yyyy-MM-dd';
+        } else {
+          this.nzFormat = this.nzShowTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD';
+        }
       }
     }
   }
@@ -60,6 +89,10 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
 
     if (changes.nzRenderExtraFooter) {
       this.extraFooter = valueFunctionProp(this.nzRenderExtraFooter);
+    }
+
+    if (changes.nzShowTime || changes.nzStyle) {
+      this.setFixedPickerStyle();
     }
   }
 
@@ -72,11 +105,20 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
     }
   }
 
+  // Emit nzOnCalendarChange when select date by nz-range-picker
+  onCalendarChange(value: CandyDate[]): void {
+    if (this.isRange) {
+      const rangeValue = value.map(x => x.nativeDate);
+      this.nzOnCalendarChange.emit(rangeValue);
+    }
+  }
+
   // Emitted when done with date selecting
   onResultOk(): void {
     if (this.isRange) {
-      if ((this.nzValue as CandyDate[]).length) {
-        this.nzOnOk.emit([ this.nzValue[ 0 ].nativeDate, this.nzValue[ 1 ].nativeDate ]);
+      const value = this.nzValue as CandyDate[];
+      if (value.length) {
+        this.nzOnOk.emit([value[0].nativeDate, value[1].nativeDate]);
       } else {
         this.nzOnOk.emit([]);
       }
@@ -92,5 +134,15 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
 
   onOpenChange(open: boolean): void {
     this.nzOnOpenChange.emit(open);
+  }
+
+  // Setup fixed style for picker
+  private setFixedPickerStyle(): void {
+    const showTimeFixes: { width?: string } = {};
+    if (this.nzShowTime) {
+      showTimeFixes.width = this.isRange ? '350px' : '195px';
+    }
+
+    this.pickerStyle = { ...showTimeFixes, ...this.nzStyle };
   }
 }

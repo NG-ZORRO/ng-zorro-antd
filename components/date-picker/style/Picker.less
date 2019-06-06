@@ -1,10 +1,10 @@
-@import "../../button/style/mixin";
+@import '../../button/style/mixin';
 
 .@{calendar-prefix-cls}-picker-container {
   .reset-component;
-  font-family: @font-family;
   position: absolute;
   z-index: @zindex-picker;
+  font-family: @font-family;
 
   &.slide-up-enter.slide-up-enter-active&-placement-topLeft,
   &.slide-up-enter.slide-up-enter-active&-placement-topRight,
@@ -36,10 +36,16 @@
   position: relative;
   display: inline-block;
   outline: none;
+  cursor: text;
   transition: opacity 0.3s;
 
   &-input {
     outline: none;
+  }
+
+  &-input.@{ant-prefix}-input-sm {
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
   &:hover &-input:not(.@{ant-prefix}-input-disabled) {
@@ -53,24 +59,26 @@
   &-clear,
   &-icon {
     position: absolute;
+    top: 50%;
+    right: @control-padding-horizontal;
+    z-index: 1;
     width: 14px;
     height: 14px;
-    right: @control-padding-horizontal;
-    top: 50%;
     margin-top: -7px;
-    line-height: 14px;
     font-size: @font-size-sm;
-    transition: all .3s;
+    line-height: 14px;
+    transition: all 0.3s;
     user-select: none;
   }
 
   &-clear {
-    opacity: 0;
-    z-index: 1;
+    z-index: 2;
     color: @disabled-color;
+    font-size: @font-size-base;
     background: @input-bg;
-    pointer-events: none;
     cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
     &:hover {
       color: @text-color-secondary;
     }
@@ -82,15 +90,10 @@
   }
 
   &-icon {
+    display: inline-block;
     color: @disabled-color;
-    &:after {
-      content: "\e6bb";
-      font-family: "anticon";
-      font-size: @font-size-base;
-      color: @disabled-color;
-      display: inline-block;
-      line-height: 1;
-    }
+    font-size: @font-size-base;
+    line-height: 1;
   }
 
   &-small &-clear,

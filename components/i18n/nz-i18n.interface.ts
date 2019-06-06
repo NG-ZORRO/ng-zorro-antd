@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 export interface NzPaginationI18nInterface {
   items_per_page: string;
   jump_to: string;
@@ -66,7 +74,6 @@ export interface NzI18nInterface {
     filterTitle: string;
     filterConfirm: string;
     filterReset: string;
-    emptyText: string;
     selectAll: string;
     selectInvert: string;
   };
@@ -81,13 +88,9 @@ export interface NzI18nInterface {
   };
   Transfer: {
     titles?: string[];
-    notFoundContent: string;
     searchPlaceholder: string;
     itemUnit: string;
     itemsUnit: string;
-  };
-  Select: {
-    notFoundContent: string;
   };
   Upload: {
     uploading: string;
@@ -95,4 +98,10 @@ export interface NzI18nInterface {
     uploadError: string;
     previewFile: string;
   };
+  Empty: {
+    description: string;
+  };
 }
+
+// tslint:disable-next-line:no-any
+export type DateLocale = any; // TODO: Implement this type definition when date-fns is stable

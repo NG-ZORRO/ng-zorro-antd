@@ -1,6 +1,8 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
+    "baseUrl": "./",
+    "rootDir": "./",
     "target": "es5",
     "module": "es2015",
     "sourceMap": false,
@@ -9,11 +11,13 @@
     "experimentalDecorators": true,
     "declaration": true,
     "outDir": "../release",
-    "lib": ["es2015", "dom"]
+    "lib": ["es2015", "dom"],
+    "paths": {
+      "ng-zorro-antd": ["./ng-zorro-antd.module"],
+      "ng-zorro-antd/*": ["./*"]
+    }
   },
-  "files": [
-    "./ng-zorro-antd.module.ts"
-  ],
+  "files": ["./ng-zorro-antd.module.ts"],
   "angularCompilerOptions": {
     "skipTemplateCodegen": true
   }

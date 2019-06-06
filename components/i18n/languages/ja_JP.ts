@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import Calendar from './calendar/ja_JP';
 import DatePicker from './date-picker/ja_JP';
 import Pagination from './pagination/ja_JP';
@@ -13,32 +21,30 @@ export default {
     filterTitle: 'メニューをフィルター',
     filterConfirm: 'OK',
     filterReset: 'リセット',
-    emptyText: 'データがありません',
     selectAll: 'すべてを選択',
-    selectInvert: '選択を反転',
+    selectInvert: '選択を反転'
   },
   Modal: {
     okText: 'OK',
     cancelText: 'キャンセル',
-    justOkText: 'OK',
+    justOkText: 'OK'
   },
   Popconfirm: {
     okText: 'OK',
-    cancelText: 'キャンセル',
+    cancelText: 'キャンセル'
   },
   Transfer: {
-    notFoundContent: '結果はありません',
     searchPlaceholder: 'ここを検索',
     itemUnit: 'アイテム',
-    itemsUnit: 'アイテム',
-  },
-  Select: {
-    notFoundContent: '結果はありません',
+    itemsUnit: 'アイテム'
   },
   Upload: {
     uploading: 'アップロード中...',
     removeFile: 'ファイルを削除',
     uploadError: 'アップロードエラー',
-    previewFile: 'ファイルをプレビュー',
+    previewFile: 'ファイルをプレビュー'
   },
+  Empty: {
+    description: 'データがありません'
+  }
 };

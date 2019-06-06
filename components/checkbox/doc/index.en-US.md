@@ -13,15 +13,23 @@ Checkbox.
 
 ## API
 
+### Import this Component Individually
+
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzCheckboxModule } from 'ng-zorro-antd';
+```
+
 ### [nz-checkbox]
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzAutoFocus]` | get focus when component mounted | boolean | false |
-| `[nzDisabled]` | Disable checkbox | boolean | false |
-| `[ngModel]` | Specifies whether the checkbox is selected, double binding | boolean | false |
-| `[nzIndeterminate]` | set the status of indeterminate，only affect the style | boolean | false |
-| `[nzValue]` | use for the callback of `nz-checkbox-wrapper` | string | - |
+| `[nzAutoFocus]` | get focus when component mounted | `boolean` | `false` |
+| `[nzDisabled]` | Disable checkbox | `boolean` | `false` |
+| `[ngModel]` | Specifies whether the checkbox is selected, double binding | `boolean` | `false` |
+| `[nzIndeterminate]` | set the status of indeterminate，only affect the style | `boolean` | `false` |
+| `[nzValue]` | use for the callback of `nz-checkbox-wrapper` | `string` | - |
 | `(ngModelChange)` | The callback function that is triggered when the state changes. | `EventEmitter<boolean>` | - |
 
 ### nz-checkbox-group
@@ -29,7 +37,7 @@ Checkbox.
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[ngModel]` | Specifies options, double binding |  `Array<{ label: string; value: string; checked?: boolean; }>` | `[]` |
-| `[nzDisabled]` | Disable all checkboxes | boolean | false |
+| `[nzDisabled]` | Disable all checkboxes | `boolean` | `false` |
 | `(ngModelChange)` | The callback function that is triggered when the state changes. | `EventEmitter<Array<{ label: string; value: string; checked?: boolean; }>>` | - |
 
 ### nz-checkbox-wrapper

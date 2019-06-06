@@ -1,0 +1,23 @@
+<ng-content select="nz-breadcrumb[nz-page-header-breadcrumb]"></ng-content>
+
+<div *ngIf="nzBackIcon !== null" (click)="onBack()" class="ant-page-header-back-icon">
+  <i *ngIf="isStringBackIcon" nz-icon [type]="nzBackIcon ? nzBackIcon : 'arrow-left'" theme="outline"></i>
+  <ng-container *ngIf="isTemplateRefBackIcon" [ngTemplateOutlet]="nzBackIcon"></ng-container>
+  <nz-divider nzType="vertical"></nz-divider>
+</div>
+
+<div class="ant-page-header-title-view">
+  <span class="ant-page-header-title-view-title" *ngIf="nzTitle">
+    <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+  </span>
+  <ng-content *ngIf="!nzTitle" select="nz-page-header-title, [nz-page-header-title]"></ng-content>
+  <span class="ant-page-header-title-view-sub-title" *ngIf="nzSubtitle">
+    <ng-container *nzStringTemplateOutlet="nzSubtitle">{{ nzSubtitle }}</ng-container>
+  </span>
+  <ng-content *ngIf="!nzSubtitle" select="nz-page-header-subtitle, [nz-page-header-subtitle]"></ng-content>
+  <ng-content select="nz-page-header-tags, [nz-page-header-tags]"></ng-content>
+  <ng-content select="nz-page-header-extra, [nz-page-header-extra]"></ng-content>
+</div>
+
+<ng-content select="nz-page-header-content, [nz-page-header-content]"></ng-content>
+<ng-content select="nz-page-header-footer, [nz-page-header-footer]"></ng-content>

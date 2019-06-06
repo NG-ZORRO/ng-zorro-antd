@@ -21,15 +21,16 @@ import { Component } from '@angular/core';
     </nz-button-group>
     <h4>With Icon</h4>
     <nz-button-group>
-      <button nz-button nzType="primary"><i class="anticon anticon-left"></i> Go back</button>
-      <button nz-button nzType="primary">Go forward<i class="anticon anticon-right"></i></button>
+      <button nz-button nzType="primary"><i nz-icon type="left"></i> Go back</button>
+      <button nz-button nzType="primary">Go forward<i nz-icon type="right"></i></button>
     </nz-button-group>
     <nz-button-group>
-      <button nz-button nzType="primary"><i class="anticon anticon-cloud"></i></button>
-      <button nz-button nzType="primary"><i class="anticon anticon-cloud-download"></i></button>
-    </nz-button-group>`,
-  styles  : [
-      `
+      <button nz-button nzType="primary"><i nz-icon type="cloud"></i></button>
+      <button nz-button nzType="primary"><i nz-icon type="cloud-download"></i></button>
+    </nz-button-group>
+  `,
+  styles: [
+    `
       h4 {
         margin: 16px 0;
         font-size: 14px;
@@ -52,5 +53,4 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class NzDemoButtonButtonGroupComponent {
-}
+export class NzDemoButtonButtonGroupComponent {}

@@ -1,38 +1,88 @@
-import { Directive, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import {
+  AfterContentInit,
+  ContentChildren,
+  Directive,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  Renderer2,
+  SimpleChanges
+} from '@angular/core';
+import { Subject } from 'rxjs';
+import { startWith, takeUntil } from 'rxjs/operators';
+
+import { InputBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';
+
+import { NzFormLabelComponent } from './nz-form-label.component';
 
 @Directive({
-  selector : '[nz-form]',
-  providers: [ NzUpdateHostClassService ]
+  selector: '[nz-form]',
+  exportAs: 'nzForm',
+  providers: [NzUpdateHostClassService]
 })
-export class NzFormDirective implements OnInit {
-  el: HTMLElement;
-  prefixCls = 'ant-form';
-  private _layout = 'horizontal';
+export class NzFormDirective implements OnInit, OnChanges, AfterContentInit, OnDestroy {
+  @Input() nzLayout = 'horizontal';
+  @Input() @InputBoolean() nzNoColon: boolean = false;
 
-  @Input()
-  set nzLayout(value: string) {
-    this._layout = value;
-    this.setClassMap();
-  }
+  @ContentChildren(NzFormLabelComponent, { descendants: true }) nzFormLabelComponent: QueryList<NzFormLabelComponent>;
 
-  get nzLayout(): string {
-    return this._layout;
-  }
+  destroy$ = new Subject();
 
   setClassMap(): void {
-    const classMap = {
-      [ `${this.prefixCls}` ]                 : true,
-      [ `${this.prefixCls}-${this.nzLayout}` ]: this.nzLayout
-    };
-    this.nzUpdateHostClassService.updateHostClass(this.el, classMap);
+    this.nzUpdateHostClassService.updateHostClass(this.elementRef.nativeElement, {
+      [`ant-form-${this.nzLayout}`]: this.nzLayout
+    });
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService) {
-    this.el = this.elementRef.nativeElement;
+  updateItemsDefaultColon(): void {
+    if (this.nzFormLabelComponent) {
+      this.nzFormLabelComponent.forEach(item => item.setDefaultNoColon(this.nzNoColon));
+    }
+  }
+
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    private nzUpdateHostClassService: NzUpdateHostClassService
+  ) {
+    this.renderer.addClass(elementRef.nativeElement, 'ant-form');
   }
 
   ngOnInit(): void {
     this.setClassMap();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.setClassMap();
+    if (changes.hasOwnProperty('nzNoColon')) {
+      this.updateItemsDefaultColon();
+    }
+  }
+
+  ngAfterContentInit(): void {
+    this.nzFormLabelComponent.changes
+      .pipe(
+        startWith(null),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.updateItemsDefaultColon();
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Observable } from 'rxjs';
 
 import { NzModalComponent } from './nz-modal.component';
@@ -6,7 +14,8 @@ import { NzModalComponent } from './nz-modal.component';
  * API class that public to users to handle the modal instance.
  * NzModalRef is aim to avoid accessing to the modal instance directly by users.
  */
-export abstract class NzModalRef<T = any, R = any> { // tslint:disable-line:no-any
+// tslint:disable-next-line:no-any
+export abstract class NzModalRef<T = any, R = any> {
   abstract afterOpen: Observable<void>;
   abstract afterClose: Observable<R>;
 

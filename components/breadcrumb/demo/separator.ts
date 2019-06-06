@@ -15,7 +15,7 @@ import { Component } from '@angular/core';
         An Application
       </nz-breadcrumb-item>
     </nz-breadcrumb>
-    <br>
+    <br />
     <h4>TemplateRef</h4>
     <nz-breadcrumb [nzSeparator]="iconTemplate">
       <nz-breadcrumb-item>
@@ -28,10 +28,10 @@ import { Component } from '@angular/core';
         An Application
       </nz-breadcrumb-item>
     </nz-breadcrumb>
-    <ng-template #iconTemplate><i class="anticon anticon-arrow-right"></i></ng-template>
+    <ng-template #iconTemplate><i nz-icon type="arrow-right"></i></ng-template>
   `,
-  styles  : [
-      `
+  styles: [
+    `
       h4:first-child {
         margin-top: 0;
       }
@@ -45,5 +45,4 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class NzDemoBreadcrumbSeparatorComponent {
-}
+export class NzDemoBreadcrumbSeparatorComponent {}

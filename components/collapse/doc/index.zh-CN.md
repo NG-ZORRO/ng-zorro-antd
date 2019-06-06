@@ -1,6 +1,6 @@
 ---
 category: Components
-type: Data Display
+type: 数据展示
 title: Collapse
 subtitle: 折叠面板
 cols: 1
@@ -15,19 +15,29 @@ cols: 1
 
 ## API
 
+### 单独引入此组件
+
+想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
+
+```ts
+import { NzCollapseModule } from 'ng-zorro-antd';
+```
+
 ### nz-collapse
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzAccordion]` | 是否每次只打开一个tab | boolean | false |
-| `[nzBordered]` | 是否有边框 | boolean | true |
+| `[nzAccordion]` | 是否每次只打开一个tab | `boolean` | `false` |
+| `[nzBordered]` | 是否有边框 | `boolean` | `true` |
 
 ### nz-collapse-panel
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzDisabled]` | 禁用后的面板展开与否将无法通过用户交互改变 | boolean | false |
-| `[nzHeader]` | 面板头内容 | string｜ `TemplateRef<void>` | 无 |
-| `[nzShowArrow]` | 是否展示箭头 | boolean | true |
-| `[nzActive]` | 面板是否展开，可双向绑定 | boolean | 无 |
-| `(nzActiveChange)` | 面板展开回调 | `EventEmitter<boolean>` | 无 |
+| `[nzDisabled]` | 禁用后的面板展开与否将无法通过用户交互改变 | `boolean` | `false` |
+| `[nzHeader]` | 面板头内容 | `string｜TemplateRef<void>` | - |
+| `[nzExpandedIcon]` | 自定义切换图标 | `string｜TemplateRef<void>` | - |
+| `[nzExtra]` | 自定义渲染每个面板右上角的内容 | `string｜TemplateRef<void>` | - |
+| `[nzShowArrow]` | 是否展示箭头 | `boolean` | `true` |
+| `[nzActive]` | 面板是否展开，可双向绑定 | `boolean` | - |
+| `(nzActiveChange)` | 面板展开回调 | `EventEmitter<boolean>` | - |

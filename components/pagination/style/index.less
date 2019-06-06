@@ -1,8 +1,8 @@
-@import "../../style/themes/default";
-@import "../../style/mixins/index";
-@import "../../input/style/mixin";
+@import '../../style/themes/default';
+@import '../../style/mixins/index';
+@import '../../input/style/mixin';
 
-@pagination-prefix-cls: ~"@{ant-prefix}-pagination";
+@pagination-prefix-cls: ~'@{ant-prefix}-pagination';
 
 .@{pagination-prefix-cls} {
   .reset-component;
@@ -14,59 +14,59 @@
     list-style: none;
   }
 
-  &:after {
-    content: " ";
+  &::after {
     display: block;
-    height: 0;
     clear: both;
+    height: 0;
     overflow: hidden;
     visibility: hidden;
+    content: ' ';
   }
 
   &-total-text {
     display: inline-block;
-    vertical-align: middle;
     height: @pagination-item-size;
-    line-height: @pagination-item-size - 2px;
     margin-right: 8px;
+    line-height: @pagination-item-size - 2px;
+    vertical-align: middle;
   }
 
   &-item {
-    cursor: pointer;
-    border-radius: @border-radius-base;
-    user-select: none;
+    display: inline-block;
     min-width: @pagination-item-size;
     height: @pagination-item-size;
-    line-height: @pagination-item-size - 2px;
-    text-align: center;
-    list-style: none;
-    display: inline-block;
-    vertical-align: middle;
-    border: @border-width-base @border-style-base @border-color-base;
-    background-color: @component-background;
     margin-right: 8px;
     font-family: @pagination-font-family;
+    line-height: @pagination-item-size - 2px;
+    text-align: center;
+    vertical-align: middle;
+    list-style: none;
+    background-color: @component-background;
+    border: @border-width-base @border-style-base @border-color-base;
+    border-radius: @border-radius-base;
     outline: 0;
+    cursor: pointer;
+    user-select: none;
 
     a {
-      text-decoration: none;
+      margin: 0 6px;
       color: @text-color;
       transition: none;
-      margin: 0 6px;
     }
 
     &:focus,
     &:hover {
-      transition: all .3s;
       border-color: @primary-color;
+      transition: all 0.3s;
       a {
         color: @primary-color;
       }
     }
 
     &-active {
-      border-color: @primary-color;
       font-weight: @pagination-font-weight-active;
+      background: @pagination-item-bg-active;
+      border-color: @primary-color;
 
       a {
         color: @primary-color;
@@ -87,40 +87,48 @@
   &-jump-prev,
   &-jump-next {
     outline: 0;
+    .@{pagination-prefix-cls}-item-container {
+      position: relative;
 
-    &:after {
-      content: "•••";
-      display: block;
-      letter-spacing: 2px;
-      color: @disabled-color;
-      text-align: center;
-    }
-
-    &:focus,
-    &:hover {
-      &:after {
+      .@{pagination-prefix-cls}-item-link-icon {
+        .iconfont-size-under-12px(12px);
         color: @primary-color;
-        .iconfont-size-under-12px(8px);
         letter-spacing: -1px;
-        font-family: "anticon";
+        opacity: 0;
+        transition: all 0.2s;
+        &-svg {
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          margin: auto;
+        }
+      }
+
+      .@{pagination-prefix-cls}-item-ellipsis {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: block;
+        margin: auto;
+        color: @disabled-color;
+        letter-spacing: 2px;
+        text-align: center;
+        text-indent: 0.13em;
+        opacity: 1;
+        transition: all 0.2s;
       }
     }
-  }
 
-  &-jump-prev {
     &:focus,
     &:hover {
-      &:after {
-        content: "\e620\e620";
+      .@{pagination-prefix-cls}-item-link-icon {
+        opacity: 1;
       }
-    }
-  }
-
-  &-jump-next {
-    &:focus,
-    &:hover {
-      &:after {
-        content: "\e61f\e61f";
+      .@{pagination-prefix-cls}-item-ellipsis {
+        opacity: 0;
       }
     }
   }
@@ -134,18 +142,18 @@
   &-next,
   &-jump-prev,
   &-jump-next {
-    font-family: @pagination-font-family;
-    cursor: pointer;
-    color: @text-color;
-    border-radius: @border-radius-base;
-    list-style: none;
+    display: inline-block;
     min-width: @pagination-item-size;
     height: @pagination-item-size;
+    color: @text-color;
+    font-family: @pagination-font-family;
     line-height: @pagination-item-size;
     text-align: center;
-    transition: all .3s;
-    display: inline-block;
     vertical-align: middle;
+    list-style: none;
+    border-radius: @border-radius-base;
+    cursor: pointer;
+    transition: all 0.3s;
   }
 
   &-prev,
@@ -162,41 +170,21 @@
     }
 
     .@{pagination-prefix-cls}-item-link {
-      border: @border-width-base @border-style-base @border-color-base;
+      display: block;
+      height: 100%;
+      font-size: 12px;
+      text-align: center;
       background-color: @component-background;
+      border: @border-width-base @border-style-base @border-color-base;
       border-radius: @border-radius-base;
       outline: none;
-      display: block;
-      transition: all .3s;
-
-      &:after {
-        font-size: 12px;
-        display: block;
-        height: @pagination-item-size - 2px;
-        font-family: "anticon";
-        text-align: center;
-        font-weight: 500;
-      }
+      transition: all 0.3s;
     }
 
     &:focus .@{pagination-prefix-cls}-item-link,
     &:hover .@{pagination-prefix-cls}-item-link {
-      border-color: @primary-color;
       color: @primary-color;
-    }
-  }
-
-  &-prev {
-    .@{pagination-prefix-cls}-item-link:after {
-      content: "\e620";
-      display: block;
-    }
-  }
-
-  &-next {
-    .@{pagination-prefix-cls}-item-link:after {
-      content: "\e61f";
-      display: block;
+      border-color: @primary-color;
     }
   }
 
@@ -207,8 +195,8 @@
       cursor: not-allowed;
       a,
       .@{pagination-prefix-cls}-item-link {
-        border-color: @border-color-base;
         color: @disabled-color;
+        border-color: @border-color-base;
         cursor: not-allowed;
       }
     }
@@ -220,24 +208,25 @@
 
   &-options {
     display: inline-block;
-    vertical-align: middle;
     margin-left: 16px;
+    vertical-align: middle;
 
     &-size-changer.@{ant-prefix}-select {
       display: inline-block;
+      width: auto;
       margin-right: 8px;
     }
 
     &-quick-jumper {
       display: inline-block;
-      vertical-align: top;
       height: @input-height-base;
       line-height: @input-height-base;
+      vertical-align: top;
 
       input {
         .input;
-        margin: 0 8px;
         width: 50px;
+        margin: 0 8px;
       }
     }
   }
@@ -248,9 +237,9 @@
     line-height: @pagination-item-size-sm;
     vertical-align: top;
     .@{pagination-prefix-cls}-item-link {
-      border: 0;
       height: @pagination-item-size-sm;
-      &:after {
+      border: 0;
+      &::after {
         height: @pagination-item-size-sm;
         line-height: @pagination-item-size-sm;
       }
@@ -259,20 +248,20 @@
 
   &-simple &-simple-pager {
     display: inline-block;
-    margin-right: 8px;
     height: @pagination-item-size-sm;
+    margin-right: 8px;
 
     input {
-      margin-right: 8px;
       box-sizing: border-box;
-      background-color: @component-background;
-      border-radius: @border-radius-base;
-      border: @border-width-base @border-style-base @border-color-base;
-      outline: none;
-      padding: 0 6px;
       height: 100%;
+      margin-right: 8px;
+      padding: 0 6px;
       text-align: center;
-      transition: border-color .3s;
+      background-color: @component-background;
+      border: @border-width-base @border-style-base @border-color-base;
+      border-radius: @border-radius-base;
+      outline: none;
+      transition: border-color 0.3s;
 
       &:hover {
         border-color: @primary-color;
@@ -287,9 +276,9 @@
   }
 
   &.mini &-item {
-    margin: 0;
     min-width: @pagination-item-size-sm;
     height: @pagination-item-size-sm;
+    margin: 0;
     line-height: @pagination-item-size-sm - 2px;
   }
 
@@ -300,17 +289,17 @@
 
   &.mini &-prev,
   &.mini &-next {
-    margin: 0;
     min-width: @pagination-item-size-sm;
     height: @pagination-item-size-sm;
+    margin: 0;
     line-height: @pagination-item-size-sm;
   }
 
   &.mini &-prev &-item-link,
   &.mini &-next &-item-link {
-    border-color: transparent;
     background: transparent;
-    &:after {
+    border-color: transparent;
+    &::after {
       height: @pagination-item-size-sm;
       line-height: @pagination-item-size-sm;
     }
@@ -319,8 +308,8 @@
   &.mini &-jump-prev,
   &.mini &-jump-next {
     height: @pagination-item-size-sm;
-    line-height: @pagination-item-size-sm;
     margin-right: 0;
+    line-height: @pagination-item-size-sm;
   }
 
   &.mini &-options {

@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 时间轴
-type: Data Display
+type: 数据展示
 title: Timeline
 ---
 
@@ -23,13 +23,24 @@ title: Timeline
 </nz-timeline>
 ```
 
+### 单独引入此组件
+
+想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
+
+```ts
+import { NzTimelineModule } from 'ng-zorro-antd';
+```
+
 ### nz-timeline
 
 时间轴。
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzPending]` | 指定最后一个幽灵节点是否存在或内容 | boolean｜string｜`TemplateRef<void>` | false |
+| `[nzPending]` | 指定最后一个幽灵节点是否存在或内容 | `string｜boolean｜TemplateRef<void>` | `false` |
+| `[nzPendingDot]` | 当最后一个幽灵节点存在時，指定其时间图点 | `string｜TemplateRef<void>` | `<i nz-icon type="loading"></i>` |
+| `[nzReverse]` | 节点排序 | `boolean` | `false` |
+| `[nzMode]` | 可以改变时间轴和内容的相对位置 | `'left'｜'alternate'｜'right'` | - |
 
 ### nz-timeline-item
 
@@ -37,5 +48,5 @@ title: Timeline
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzColor]` | 指定圆圈颜色 `blue, red, green`，或自定义的色值(CSS 颜色) | string | blue |
-| `[nzDot]` | 自定义时间轴点 | string｜`TemplateRef<void>` | - |
+| `[nzColor]` | 指定圆圈颜色 `blue, red, green`，或自定义的色值(CSS 颜色) | `string` | blue |
+| `[nzDot]` | 自定义时间轴点 | `string｜TemplateRef<void>` | - |

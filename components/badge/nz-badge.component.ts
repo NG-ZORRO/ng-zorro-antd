@@ -1,110 +1,72 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   Input,
-  NgZone,
+  OnChanges,
   OnInit,
   Renderer2,
-  ViewChild
+  SimpleChanges,
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
-
-import {
-  animate,
-  style,
-  transition,
-  trigger
-} from '@angular/animations';
-
-import { isEmpty } from '../core/util/check';
-import { toBoolean } from '../core/util/convert';
+import { isEmpty, zoomBadgeMotion, InputBoolean } from 'ng-zorro-antd/core';
 
 export type NzBadgeStatusType = 'success' | 'processing' | 'default' | 'error' | 'warning';
 
 @Component({
-  selector           : 'nz-badge',
+  selector: 'nz-badge',
+  exportAs: 'nzBadge',
   preserveWhitespaces: false,
-  animations         : [
-    trigger('enterLeave', [
-      transition('void => *', [
-        style({ opacity: 0 }),
-        animate('0.3s cubic-bezier(0.12, 0.4, 0.29, 1.46)')
-      ]),
-      transition('* => void', [
-        style({ opacity: 1 }),
-        animate('0.3s cubic-bezier(0.12, 0.4, 0.29, 1.46)')
-      ])
-    ])
-  ],
-  templateUrl        : './nz-badge.component.html',
-  host               : {
-    '[class.ant-badge]'       : 'true',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [zoomBadgeMotion],
+  templateUrl: './nz-badge.component.html',
+  host: {
     '[class.ant-badge-status]': 'nzStatus'
-  },
-  styles             : [
-    `
-      :host:not(.ant-badge-not-a-wrapper) .ant-badge-count {
-        position: absolute;
-        transform: translateX(50%);
-        right: 0;
-      }
-
-      :host .ant-badge-dot {
-        position: absolute;
-        transform: translateX(50%);
-        right: 0;
-      }
-    `
-  ]
+  }
 })
-export class NzBadgeComponent implements OnInit, AfterViewInit {
-  private _showDot = false;
-  private _showZero = false;
-  private _count: number;
-  maxNumberArray = [];
-  countArray = [];
-  countSingleArray = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
+export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges {
+  maxNumberArray: string[] = [];
+  countArray: number[] = [];
+  countSingleArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  colorArray = [
+    'pink',
+    'red',
+    'yellow',
+    'orange',
+    'cyan',
+    'green',
+    'blue',
+    'purple',
+    'geekblue',
+    'magenta',
+    'volcano',
+    'gold',
+    'lime'
+  ];
+  presetColor: string | null = null;
+  count: number;
   @ViewChild('contentElement') contentElement: ElementRef;
+  @Input() @InputBoolean() nzShowZero = false;
+  @Input() @InputBoolean() nzShowDot = true;
+  @Input() @InputBoolean() nzDot = false;
   @Input() nzOverflowCount = 99;
   @Input() nzText: string;
-  @Input() nzStyle: { [ key: string ]: string };
+  @Input() nzColor: string;
+  @Input() nzStyle: { [key: string]: string };
   @Input() nzStatus: NzBadgeStatusType;
-
-  @Input()
-  set nzShowZero(value: boolean) {
-    this._showZero = toBoolean(value);
-  }
-
-  get nzShowZero(): boolean {
-    return this._showZero;
-  }
-
-  @Input()
-  set nzDot(value: boolean) {
-    this._showDot = toBoolean(value);
-  }
-
-  get nzDot(): boolean {
-    return this._showDot;
-  }
-
-  @Input()
-  set nzCount(value: number) {
-    if (value < 0) {
-      this._count = 0;
-    } else {
-      this._count = value;
-    }
-    this.countArray = this._count.toString().split('');
-  }
-
-  get nzCount(): number {
-    return this._count;
-  }
-
-  get showSup(): boolean {
-    return this.nzDot || this.nzCount > 0 || ((this.nzCount === 0) && this.nzShowZero);
-  }
+  @Input() nzCount: number | TemplateRef<void>;
 
   checkContent(): void {
     if (isEmpty(this.contentElement.nativeElement)) {
@@ -114,15 +76,40 @@ export class NzBadgeComponent implements OnInit, AfterViewInit {
     }
   }
 
-  constructor(private zone: NgZone, private renderer: Renderer2, private elementRef: ElementRef) {
+  get showSup(): boolean {
+    return (this.nzShowDot && this.nzDot) || this.count > 0 || (this.count === 0 && this.nzShowZero);
+  }
 
+  generateMaxNumberArray(): void {
+    this.maxNumberArray = this.nzOverflowCount.toString().split('');
+  }
+
+  constructor(private renderer: Renderer2, private elementRef: ElementRef) {
+    renderer.addClass(elementRef.nativeElement, 'ant-badge');
   }
 
   ngOnInit(): void {
-    this.maxNumberArray = this.nzOverflowCount.toString().split('');
+    this.generateMaxNumberArray();
   }
 
   ngAfterViewInit(): void {
     this.checkContent();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const { nzOverflowCount, nzCount, nzColor } = changes;
+    if (nzCount && !(nzCount.currentValue instanceof TemplateRef)) {
+      this.count = Math.max(0, nzCount.currentValue);
+      this.countArray = this.count
+        .toString()
+        .split('')
+        .map(item => +item);
+    }
+    if (nzOverflowCount) {
+      this.generateMaxNumberArray();
+    }
+    if (nzColor) {
+      this.presetColor = this.colorArray.indexOf(this.nzColor) !== -1 ? this.nzColor : null;
+    }
   }
 }

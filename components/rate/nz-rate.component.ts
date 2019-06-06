@@ -1,67 +1,74 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import {
   forwardRef,
   AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
   Renderer2,
+  SimpleChanges,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { toBoolean } from '../core/util/convert';
+import { InputBoolean, NgClassType } from 'ng-zorro-antd/core';
 
 @Component({
-  selector           : 'nz-rate',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-rate',
+  exportAs: 'nzRate',
   preserveWhitespaces: false,
-  templateUrl        : './nz-rate.component.html',
-  providers          : [
+  templateUrl: './nz-rate.component.html',
+  providers: [
     {
-      provide    : NG_VALUE_ACCESSOR,
+      provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzRateComponent),
-      multi      : true
+      multi: true
     }
   ]
 })
-export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewInit {
-  private _allowClear = true;
-  private _allowHalf = false;
-  private _disabled = false;
+export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewInit, OnChanges {
+  @ViewChild('ulElement') private ulElement: ElementRef;
+
+  @Input() @InputBoolean() nzAllowClear: boolean = true;
+  @Input() @InputBoolean() nzAllowHalf: boolean = false;
+  @Input() @InputBoolean() nzDisabled: boolean = false;
+  @Input() @InputBoolean() nzAutoFocus: boolean = false;
+  @Input() nzCharacter: TemplateRef<void>;
+  @Input() nzTooltips: string[] = [];
+  @Output() readonly nzOnBlur = new EventEmitter<FocusEvent>();
+  @Output() readonly nzOnFocus = new EventEmitter<FocusEvent>();
+  @Output() readonly nzOnHoverChange = new EventEmitter<number>();
+  @Output() readonly nzOnKeyDown = new EventEmitter<KeyboardEvent>();
+
+  classMap: NgClassType;
+  hasHalf = false;
+  hoverValue = 0;
+  prefixCls = 'ant-rate';
+  innerPrefixCls = `${this.prefixCls}-star`;
+  isFocused = false;
+  isInit = false;
+  starArray: number[] = [];
+
   private _count = 5;
   private _value = 0;
-  private _autoFocus = false;
-  @Input() nzCharacter: TemplateRef<void>;
-  @Output() nzOnBlur = new EventEmitter<FocusEvent>();
-  @Output() nzOnFocus = new EventEmitter<FocusEvent>();
-  @Output() nzOnKeyDown = new EventEmitter<KeyboardEvent>();
-  @Output() nzOnHoverChange = new EventEmitter<number>();
-  @ViewChild('ulElement') private ulElement: ElementRef;
-  prefixCls = 'ant-rate';
-  isInit = false;
-  hasHalf = false;
-  innerPrefixCls = `${this.prefixCls}-star`;
-  classMap;
-  starArray: number[] = [];
-  hoverValue = 0;
-  isFocused = false;
-  floatReg: RegExp = /^\d+(\.\d+)?$/;
-
-  onChange: (value: number) => void = () => null;
-  onTouched: () => void = () => null;
-
-  @Input()
-  set nzAutoFocus(value: boolean) {
-    this._autoFocus = toBoolean(value);
-    this.updateAutoFocus();
-  }
-
-  get nzAutoFocus(): boolean {
-    return this._autoFocus;
-  }
 
   @Input()
   set nzCount(value: number) {
@@ -76,61 +83,25 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewI
     return this._count;
   }
 
-  @Input()
-  set nzAllowHalf(value: boolean) {
-    this._allowHalf = toBoolean(value);
-  }
-
-  get nzAllowHalf(): boolean {
-    return this._allowHalf;
-  }
-
-  @Input()
-  set nzAllowClear(value: boolean) {
-    this._allowClear = toBoolean(value);
-  }
-
-  get nzAllowClear(): boolean {
-    return this._allowClear;
-  }
-
   get nzValue(): number {
     return this._value;
   }
 
   set nzValue(input: number) {
-    let value = input;
-    if (this._value === value) {
+    if (this._value === input) {
       return;
     }
-    this._value = value;
-    if (this.floatReg.test(value.toString())) {
-      value += 0.5;
-      this.hasHalf = true;
-    }
-    this.hoverValue = value;
+
+    this._value = input;
+    this.hasHalf = !Number.isInteger(input);
+    this.hoverValue = Math.ceil(input);
   }
 
-  @Input()
-  set nzDisabled(value: boolean) {
-    this._disabled = toBoolean(value);
-    this.setClassMap();
-  }
+  constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef) {}
 
-  get nzDisabled(): boolean {
-    return this._disabled;
-  }
-
-  setClassMap(): void {
-    this.classMap = {
-      [ this.prefixCls ]              : true,
-      [ `${this.prefixCls}-disabled` ]: this.nzDisabled
-    };
-  }
-
-  updateAutoFocus(): void {
-    if (this.isInit && !this.nzDisabled) {
-      if (this.nzAutoFocus) {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.nzAutoFocus && !changes.nzAutoFocus.isFirstChange()) {
+      if (this.nzAutoFocus && !this.nzDisabled) {
         this.renderer.setAttribute(this.ulElement.nativeElement, 'autofocus', 'autofocus');
       } else {
         this.renderer.removeAttribute(this.ulElement.nativeElement, 'autofocus');
@@ -138,19 +109,22 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewI
     }
   }
 
-  clickRate(e: MouseEvent, index: number, isFull: boolean): void {
-    e.stopPropagation();
+  ngOnInit(): void {
+    this.updateStarArray();
+  }
+
+  ngAfterViewInit(): void {
+    this.isInit = true;
+  }
+
+  onItemClick(index: number, isHalf: boolean): void {
     if (this.nzDisabled) {
       return;
     }
-    this.hasHalf = !isFull && this.nzAllowHalf;
 
-    let actualValue = index + 1;
-    this.hoverValue = actualValue;
+    this.hoverValue = index + 1;
 
-    if (this.hasHalf) {
-      actualValue -= 0.5;
-    }
+    const actualValue = isHalf ? index + 0.5 : index + 1;
 
     if (this.nzValue === actualValue) {
       if (this.nzAllowClear) {
@@ -163,29 +137,19 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewI
     }
   }
 
-  hoverRate(e: MouseEvent, index: number, isFull: boolean): void {
-    e.stopPropagation();
-    if (this.nzDisabled) {
-      return;
-    }
-    const isHalf: boolean = !isFull && this.nzAllowHalf;
-    if (this.hoverValue === index + 1 && isHalf === this.hasHalf) {
+  onItemHover(index: number, isHalf: boolean): void {
+    if (this.nzDisabled || (this.hoverValue === index + 1 && isHalf === this.hasHalf)) {
       return;
     }
 
     this.hoverValue = index + 1;
-    this.nzOnHoverChange.emit(this.hoverValue);
     this.hasHalf = isHalf;
+    this.nzOnHoverChange.emit(this.hoverValue);
   }
 
-  leaveRate(e: MouseEvent): void {
-    e.stopPropagation();
-    let oldVal = this.nzValue;
-    if (this.floatReg.test(oldVal.toString())) {
-      oldVal += 0.5;
-      this.hasHalf = true;
-    }
-    this.hoverValue = oldVal;
+  onRateLeave(): void {
+    this.hasHalf = !Number.isInteger(this.nzValue);
+    this.hoverValue = Math.ceil(this.nzValue);
   }
 
   onFocus(e: FocusEvent): void {
@@ -207,47 +171,46 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewI
   }
 
   onKeyDown(e: KeyboardEvent): void {
-    const code = e.code;
-    if ((code === 'ArrowRight' || e.keyCode === 39) && (this.nzValue < this.nzCount)) {
-      if (this.nzAllowHalf) {
-        this.nzValue += 0.5;
-      } else {
-        this.nzValue += 1;
-      }
-      this.onChange(this.nzValue);
-    } else if ((code === 'ArrowLeft' || e.keyCode === 37) && (this.nzValue > 0)) {
-      if (this.nzAllowHalf) {
-        this.nzValue -= 0.5;
-      } else {
-        this.nzValue -= 1;
-      }
-      this.onChange(this.nzValue);
+    const oldVal = this.nzValue;
+
+    if (e.keyCode === RIGHT_ARROW && this.nzValue < this.nzCount) {
+      this.nzValue += this.nzAllowHalf ? 0.5 : 1;
+    } else if (e.keyCode === LEFT_ARROW && this.nzValue > 0) {
+      this.nzValue -= this.nzAllowHalf ? 0.5 : 1;
     }
-    this.nzOnKeyDown.emit(e);
-    e.preventDefault();
+
+    if (oldVal !== this.nzValue) {
+      this.onChange(this.nzValue);
+      this.nzOnKeyDown.emit(e);
+      this.cdr.markForCheck();
+    }
   }
 
   setClasses(i: number): object {
     return {
-      [ this.innerPrefixCls ]             : true,
-      [ `${this.innerPrefixCls}-full` ]   : (i + 1 < this.hoverValue) || (!this.hasHalf) && (i + 1 === this.hoverValue),
-      [ `${this.innerPrefixCls}-half` ]   : (this.hasHalf) && (i + 1 === this.hoverValue),
-      [ `${this.innerPrefixCls}-active` ] : (this.hasHalf) && (i + 1 === this.hoverValue),
-      [ `${this.innerPrefixCls}-zero` ]   : (i + 1 > this.hoverValue),
-      [ `${this.innerPrefixCls}-focused` ]: (this.hasHalf) && (i + 1 === this.hoverValue) && this.isFocused
+      [`${this.innerPrefixCls}-full`]: i + 1 < this.hoverValue || (!this.hasHalf && i + 1 === this.hoverValue),
+      [`${this.innerPrefixCls}-half`]: this.hasHalf && i + 1 === this.hoverValue,
+      [`${this.innerPrefixCls}-active`]: this.hasHalf && i + 1 === this.hoverValue,
+      [`${this.innerPrefixCls}-zero`]: i + 1 > this.hoverValue,
+      [`${this.innerPrefixCls}-focused`]: this.hasHalf && i + 1 === this.hoverValue && this.isFocused
     };
   }
 
-  updateStarArray(): void {
-    let index = 0;
-    this.starArray = [];
-    while (index < this.nzCount) {
-      this.starArray.push(index++);
-    }
+  private updateStarArray(): void {
+    this.starArray = Array(this.nzCount)
+      .fill(0)
+      .map((_, i) => i);
   }
+
+  // #region Implement `ControlValueAccessor`
 
   writeValue(value: number | null): void {
     this.nzValue = value || 0;
+    this.cdr.markForCheck();
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.nzDisabled = isDisabled;
   }
 
   registerOnChange(fn: (_: number) => void): void {
@@ -258,19 +221,8 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewI
     this.onTouched = fn;
   }
 
-  setDisabledState(isDisabled: boolean): void {
-    this.nzDisabled = isDisabled;
-  }
+  onChange: (value: number) => void = () => null;
+  onTouched: () => void = () => null;
 
-  constructor(private renderer: Renderer2) {
-  }
-
-  ngOnInit(): void {
-    this.setClassMap();
-    this.updateStarArray();
-  }
-
-  ngAfterViewInit(): void {
-    this.isInit = true;
-  }
+  // #endregion
 }

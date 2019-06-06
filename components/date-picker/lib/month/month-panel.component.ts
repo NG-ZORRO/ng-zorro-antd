@@ -1,28 +1,32 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 
-import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
-import { CandyDate } from '../candy-date';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+
+import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+import { CandyDate } from '../candy-date/candy-date';
 
 @Component({
-  selector: 'month-panel',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'month-panel', // tslint:disable-line:component-selector
+  exportAs: 'monthPanel',
   templateUrl: 'month-panel.component.html'
 })
-
-export class MonthPanelComponent implements OnInit {
+export class MonthPanelComponent {
   @Input() locale: NzCalendarI18nInterface;
-
   @Input() value: CandyDate;
-  @Output() valueChange = new EventEmitter<CandyDate>();
-
   @Input() disabledDate: (date: Date) => boolean;
 
-  @Output() yearPanelShow = new EventEmitter<void>();
+  @Output() readonly valueChange = new EventEmitter<CandyDate>();
+  @Output() readonly yearPanelShow = new EventEmitter<void>();
 
   prefixCls: string = 'ant-calendar-month-panel';
-
-  constructor() { }
-
-  ngOnInit(): void { }
 
   previousYear(): void {
     this.gotoYear(-1);
