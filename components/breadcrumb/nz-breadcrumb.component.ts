@@ -25,7 +25,7 @@ import { Subject } from 'rxjs';
 import { startWith } from 'rxjs/internal/operators/startWith';
 import { filter, takeUntil } from 'rxjs/operators';
 
-import { InputBoolean, NzLoggerFuncs } from 'ng-zorro-antd/core';
+import { getNzConsolePrefix, InputBoolean } from 'ng-zorro-antd/core';
 
 export const NZ_ROUTE_DATA_BREADCRUMB = 'breadcrumb';
 
@@ -107,9 +107,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
           this.cdr.markForCheck();
         });
     } catch (e) {
-      throw new Error(
-        `${NzLoggerFuncs.getNzConsolePrefix()} You should import RouterModule if you want to use 'NzAutoGenerate'.`
-      );
+      throw new Error(`${getNzConsolePrefix()} You should import RouterModule if you want to use 'NzAutoGenerate'.`);
     }
   }
 

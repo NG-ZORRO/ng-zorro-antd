@@ -47,7 +47,7 @@ import {
   UploadOutline,
   UpOutline
 } from '@ant-design/icons-angular/icons';
-import { NzLoggerFuncs } from 'ng-zorro-antd/core';
+import { warn } from 'ng-zorro-antd/core';
 
 export interface NzIconfontOption {
   scriptUrl: string;
@@ -105,15 +105,13 @@ export class NzIconService extends IconService {
 
   warnAPI(type: 'old' | 'cross' | 'vertical'): void {
     if (type === 'old') {
-      NzLoggerFuncs.warn(
-        `<i class="anticon"></i> would be deprecated in 9.0.0. Please use <i nz-icon nzType=""></i> API.`
-      );
+      warn(`<i class="anticon"></i> would be deprecated in 9.0.0. Please use <i nz-icon nzType=""></i> API.`);
     }
     if (type === 'cross') {
-      NzLoggerFuncs.warn(`'cross' icon is replaced by 'close' icon.`);
+      warn(`'cross' icon is replaced by 'close' icon.`);
     }
     if (type === 'vertical') {
-      NzLoggerFuncs.warn(`'verticle' is misspelled, would be corrected in the next major version.`);
+      warn(`'verticle' is misspelled, would be corrected in the next major version.`);
     }
   }
 
@@ -163,7 +161,7 @@ export class NzIconService extends IconService {
       if (this.defaultColor.startsWith('#')) {
         primaryColor = this.defaultColor;
       } else {
-        NzLoggerFuncs.warn('Twotone color must be a hex color!');
+        warn('Twotone color must be a hex color!');
       }
     }
     this.twoToneColor = { primaryColor };

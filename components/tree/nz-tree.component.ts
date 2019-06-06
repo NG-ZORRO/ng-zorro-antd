@@ -31,10 +31,10 @@ import { takeUntil } from 'rxjs/operators';
 import {
   isNotNil,
   toBoolean,
+  warnDeprecation,
   InputBoolean,
   NzFormatBeforeDropEvent,
   NzFormatEmitEvent,
-  NzLoggerFuncs,
   NzNoAnimationDirective,
   NzTreeBase,
   NzTreeBaseService,
@@ -94,7 +94,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   @Input()
   @InputBoolean()
   set nzDefaultExpandAll(value: boolean) {
-    NzLoggerFuncs.warnDeprecation(`'nzDefaultExpandAll' would be removed in 9.0.0. Please use 'nzExpandAll' instead.`);
+    warnDeprecation(`'nzDefaultExpandAll' would be removed in 9.0.0. Please use 'nzExpandAll' instead.`);
     this.nzExpandAll = value;
   }
 
@@ -126,9 +126,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
    */
   @Input()
   set nzDefaultExpandedKeys(value: string[]) {
-    NzLoggerFuncs.warnDeprecation(
-      `'nzDefaultExpandedKeys' would be removed in 9.0.0. Please use 'nzExpandedKeys' instead.`
-    );
+    warnDeprecation(`'nzDefaultExpandedKeys' would be removed in 9.0.0. Please use 'nzExpandedKeys' instead.`);
     this.nzDefaultSubject.next({ type: 'nzExpandedKeys', keys: value });
   }
 
@@ -137,9 +135,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
    */
   @Input()
   set nzDefaultSelectedKeys(value: string[]) {
-    NzLoggerFuncs.warnDeprecation(
-      `'nzDefaultSelectedKeys' would be removed in 9.0.0. Please use 'nzSelectedKeys' instead.`
-    );
+    warnDeprecation(`'nzDefaultSelectedKeys' would be removed in 9.0.0. Please use 'nzSelectedKeys' instead.`);
     this.nzDefaultSubject.next({ type: 'nzSelectedKeys', keys: value });
   }
 
@@ -148,9 +144,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
    */
   @Input()
   set nzDefaultCheckedKeys(value: string[]) {
-    NzLoggerFuncs.warnDeprecation(
-      `'nzDefaultCheckedKeys' would be removed in 9.0.0. Please use 'nzCheckedKeys' instead.`
-    );
+    warnDeprecation(`'nzDefaultCheckedKeys' would be removed in 9.0.0. Please use 'nzCheckedKeys' instead.`);
     this.nzDefaultSubject.next({ type: 'nzCheckedKeys', keys: value });
   }
 
@@ -176,9 +170,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
     if (isNotNil(value)) {
       this.nzSearchValueChange.emit(this.nzTreeService.formatEvent('search', null, null));
       this.nzOnSearchNode.emit(this.nzTreeService.formatEvent('search', null, null));
-      NzLoggerFuncs.warnDeprecation(
-        `'nzOnSearchNode' would be deprecated in 9.0.0. Please use 'nzSearchValueChange' instead.`
-      );
+      warnDeprecation(`'nzOnSearchNode' would be deprecated in 9.0.0. Please use 'nzSearchValueChange' instead.`);
     }
   }
 

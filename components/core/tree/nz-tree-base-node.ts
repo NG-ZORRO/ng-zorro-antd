@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NzLoggerFuncs } from 'ng-zorro-antd/core';
+import { warnDeprecation } from 'ng-zorro-antd/core';
 import { NzTreeNodeBaseComponent } from './nz-tree-base.definitions';
 import { NzTreeBaseService } from './nz-tree-base.service';
 
@@ -171,7 +171,7 @@ export class NzTreeNode {
    * @deprecated Maybe removed in next major version, use `isChecked` instead.
    */
   set isAllChecked(value: boolean) {
-    NzLoggerFuncs.warnDeprecation(`'isAllChecked' is going to be removed in 9.0.0. Please use 'isChecked' instead.`);
+    warnDeprecation(`'isAllChecked' is going to be removed in 9.0.0. Please use 'isChecked' instead.`);
     this._isAllChecked = value;
   }
 
@@ -251,7 +251,7 @@ export class NzTreeNode {
    * @deprecated Maybe removed in next major version, use `isChecked` instead.
    */
   public setChecked(checked: boolean = false, halfChecked: boolean = false): void {
-    NzLoggerFuncs.warnDeprecation(`'setChecked' is going to be removed in 9.0.0. Please use 'isChecked' instead.`);
+    warnDeprecation(`'setChecked' is going to be removed in 9.0.0. Please use 'isChecked' instead.`);
     this.origin.checked = checked;
     this.isChecked = checked;
     this.isAllChecked = checked;
@@ -262,7 +262,7 @@ export class NzTreeNode {
    * @deprecated Maybe removed in next major version, use `isExpanded` instead.
    */
   public setExpanded(value: boolean): void {
-    NzLoggerFuncs.warnDeprecation(`'setExpanded' is going to be removed in 9.0.0. Please use 'isExpanded' instead.`);
+    warnDeprecation(`'setExpanded' is going to be removed in 9.0.0. Please use 'isExpanded' instead.`);
     this.isExpanded = value;
   }
 
@@ -270,7 +270,7 @@ export class NzTreeNode {
    * @deprecated Maybe removed in next major version, use `isSelected` instead.
    */
   public setSelected(value: boolean): void {
-    NzLoggerFuncs.warnDeprecation(`'setSelected' is going to be removed in 9.0.0. Please use 'isExpanded' isSelected.`);
+    warnDeprecation(`'setSelected' is going to be removed in 9.0.0. Please use 'isExpanded' isSelected.`);
     if (this.isDisabled) {
       return;
     }

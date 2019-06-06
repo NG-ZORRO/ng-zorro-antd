@@ -28,9 +28,9 @@ import { filter, takeUntil } from 'rxjs/operators';
 
 import {
   collapseMotion,
+  warnDeprecation,
   InputBoolean,
   NzFormatBeforeDropEvent,
-  NzLoggerFuncs,
   NzNoAnimationDirective,
   NzTreeBaseService,
   NzTreeNode
@@ -78,9 +78,7 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
    */
   @Input()
   set nzDefaultExpandAll(value: boolean) {
-    NzLoggerFuncs.warnDeprecation(
-      `'nzDefaultExpandAll' is going to be removed in 9.0.0. Please use 'nzExpandAll' instead.`
-    );
+    warnDeprecation(`'nzDefaultExpandAll' is going to be removed in 9.0.0. Please use 'nzExpandAll' instead.`);
     this._nzExpandAll = value;
     if (value && this.nzTreeNode && !this.nzTreeNode.isLeaf) {
       this.nzTreeNode.isExpanded = true;

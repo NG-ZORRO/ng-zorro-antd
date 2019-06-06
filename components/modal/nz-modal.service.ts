@@ -11,7 +11,7 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { ComponentRef, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { IndexableObject, NzLoggerFuncs } from 'ng-zorro-antd/core';
+import { warn, IndexableObject } from 'ng-zorro-antd/core';
 
 import { NzModalControlService } from './nz-modal-control.service';
 import { NzModalRef } from './nz-modal-ref.class';
@@ -92,7 +92,7 @@ export class NzModalService {
 
   confirm<T>(options: ModalOptionsForService<T> = {}, confirmType: ConfirmType = 'confirm'): NzModalRef<T> {
     if ('nzFooter' in options) {
-      NzLoggerFuncs.warn(`The Confirm-Modal doesn't support "nzFooter", this property will be ignored.`);
+      warn(`The Confirm-Modal doesn't support "nzFooter", this property will be ignored.`);
     }
     if (!('nzWidth' in options)) {
       options.nzWidth = 416;
