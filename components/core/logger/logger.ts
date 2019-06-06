@@ -45,6 +45,7 @@ export const warnDeprecation = (...args: any[]) =>
 // Log should only be printed in dev mode.
 export const log = (...args: any[]) => {
   if (isDevMode()) {
+    // tslint:disable-next-line:no-console
     console.log(getNzConsolePrefix(), ...args);
   }
 };
