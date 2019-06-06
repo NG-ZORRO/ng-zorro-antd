@@ -84,7 +84,7 @@
     "no-irregular-whitespace": true,
     "no-magic-numbers": false,
     "no-misused-new": true,
-    "no-namespace": true,
+    "no-namespace": [true, "allow-declarations"],
     "no-non-null-assertion": false,
     "no-shadowed-variable": true,
     "no-sparse-arrays": true,
