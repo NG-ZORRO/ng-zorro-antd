@@ -169,5 +169,11 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, O
     if (changes.nzLoading) {
       this.updateIconDisplay(this.nzLoading);
     }
+    if (this.nzType === 'link') {
+      this.nzWave.disable();
+    } else if (!this.waveConfig || (this.waveConfig && this.waveConfig.disabled !== true)) {
+      // while NZ_WAVE_GLOBAL_CONFIG not configured, the default means waveConfig disabled is false, it should enable angin
+      this.nzWave.enable();
+    }
   }
 }
