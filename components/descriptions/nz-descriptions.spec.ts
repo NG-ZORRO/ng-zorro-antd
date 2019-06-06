@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NzDescriptionsComponent } from './nz-descriptions.component';
 import { NzDescriptionsModule } from './nz-descriptions.module';
 
 // tslint:disable-next-line no-any
@@ -114,8 +113,6 @@ describe('nz descriptions', () => {
   `
 })
 export class NzTestDescriptionsComponent {
-  @ViewChild(NzDescriptionsComponent)
-  descriptionComponent: NzDescriptionsComponent;
   bordered = false;
   colspanArray: number[] = [1, 1, 1];
   column: number | { [key: string]: number } = 3;
