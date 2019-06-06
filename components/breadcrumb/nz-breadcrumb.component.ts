@@ -107,7 +107,9 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
           this.cdr.markForCheck();
         });
     } catch (e) {
-      NzLoggerFuncs.error(`You should import RouterModule if you want to use 'NzAutoGenerate'.`);
+      throw new Error(
+        `${NzLoggerFuncs.getNzConsolePrefix()} You should import RouterModule if you want to use 'NzAutoGenerate'.`
+      );
     }
   }
 

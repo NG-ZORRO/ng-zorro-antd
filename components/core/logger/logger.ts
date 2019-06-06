@@ -11,12 +11,11 @@
 import { isDevMode } from '@angular/core';
 
 export namespace NzLoggerFuncs {
-  const isDev = isDevMode();
   const record: Record<string, boolean> = {};
 
   type ConsoleFunc = (...args: any) => void;
 
-  function getNzConsolePrefix(): string {
+  export function getNzConsolePrefix(): string {
     return '[NG-ZORRO]:';
   }
 
@@ -30,45 +29,25 @@ export namespace NzLoggerFuncs {
     }
   }
 
-  function revealStack(...args: any[]): void {
-    try {
-      throw new Error(...args);
-    } catch (x) {}
-  }
-
   function consoleCommonBehavior(consoleFunc: ConsoleFunc, ...args: any[]): void {
-    if (!isDev || !notRecorded(...args)) {
+    if (!isDevMode() || !notRecorded(...args)) {
       return;
     }
 
     consoleFunc(...args);
-    revealStack(...args);
   }
 
+  // Warning should only be printed in dev mode and only once.
   export const warn = (...args: any[]) =>
     consoleCommonBehavior((...arg: any[]) => console.warn(getNzConsolePrefix(), ...arg), ...args);
+
   export const warnDeprecation = (...args: any[]) =>
     consoleCommonBehavior((...arg: any[]) => console.error(getNzConsolePrefix(), 'deprecated:', ...arg), ...args);
-  export const log = (...args: any[]) =>
-    consoleCommonBehavior((...arg: any[]) => console.log(getNzConsolePrefix(), 'deprecated:', ...arg), ...args);
 
-  export const error = (...args: any[]) => console.error(getNzConsolePrefix(), ...args);
-
-  // export const log = isDev
-  //   ? (...args: any[]) => {
-  //     console.log(getNzConsolePrefix(), ...args);
-  //   }
-  //   : noop;
-  //
-  // export const info = isDev
-  //   ? (...args: any[]) => {
-  //     console.info(getNzConsolePrefix(), ...args);
-  //   }
-  //   : noop;
-  //
-  // export const debug = isDev
-  //   ? (...args: any[]) => {
-  //     console.debug(getNzConsolePrefix(), ...args);
-  //   }
-  //   : noop;
+  // Log should only be printed in dev mode.
+  export const log = (...args: any[]) => {
+    if (isDevMode()) {
+      console.log(getNzConsolePrefix(), ...args);
+    }
+  };
 }

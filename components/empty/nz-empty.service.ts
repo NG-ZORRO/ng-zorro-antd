@@ -36,7 +36,9 @@ export class NzEmptyService<T = any> {
     ) {
       this.userDefaultContent$.next(content);
     } else {
-      NzLoggerFuncs.error(`'useDefaultContent' expect 'string', 'templateRef' or 'component' but get ${content}`);
+      throw new Error(
+        `${NzLoggerFuncs.getNzConsolePrefix()} 'useDefaultContent' expect 'string', 'templateRef' or 'component' but get ${content}.`
+      );
     }
   }
 
