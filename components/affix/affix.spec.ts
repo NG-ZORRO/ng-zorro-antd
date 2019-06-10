@@ -437,7 +437,6 @@ describe('affix', () => {
 
   function setupInitialState(options: { offsetTop?: number } = {}): void {
     componentObject.offsetYTo(componentObject.elementRef(), options.offsetTop || startOffset);
-    // 20ms显示器的重绘频率
     tick(20);
     fixture.detectChanges();
     componentObject.emitScroll(window, 0);
