@@ -1233,7 +1233,7 @@ describe('upload', () => {
         expect(comp.options.customRequest).toHaveBeenCalled();
       });
 
-      it('should be warn "Must return Subscription type in [nzCustomRequest] property"', () => {
+      xit('should be warn "Must return Subscription type in [nzCustomRequest] property"', () => {
         let warnMsg = '';
         console.warn = jasmine.createSpy().and.callFake((...res: string[]) => (warnMsg = res.join(' ')));
         comp.options.customRequest = (() => {}) as any;
