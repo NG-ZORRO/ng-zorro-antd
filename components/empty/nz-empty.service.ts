@@ -9,7 +9,7 @@
 import { Inject, Injectable, Optional, TemplateRef, Type } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-import { getNzConsolePrefix } from 'ng-zorro-antd/core';
+import { PREFIX } from 'ng-zorro-antd/core';
 
 import { NzEmptyCustomContent, NZ_DEFAULT_EMPTY_CONTENT } from './nz-empty-config';
 
@@ -37,7 +37,7 @@ export class NzEmptyService<T = any> {
       this.userDefaultContent$.next(content);
     } else {
       throw new Error(
-        `${getNzConsolePrefix()} 'useDefaultContent' expect 'string', 'templateRef' or 'component' but get ${content}.`
+        `${PREFIX} 'useDefaultContent' expect 'string', 'templateRef' or 'component' but get ${content}.`
       );
     }
   }

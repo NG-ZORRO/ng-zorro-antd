@@ -11,10 +11,7 @@
 import { isDevMode } from '@angular/core';
 
 const record: Record<string, boolean> = {};
-
-export function getNzConsolePrefix(): string {
-  return '[NG-ZORRO]:';
-}
+export const PREFIX = '[NG-ZORRO]:';
 
 function notRecorded(...args: any[]): boolean {
   const asRecord = args.reduce((acc, c) => acc + c.toString(), '');
@@ -36,16 +33,15 @@ function consoleCommonBehavior(consoleFunc: (...args: any) => void, ...args: any
 }
 
 // Warning should only be printed in dev mode and only once.
-export const warn = (...args: any[]) =>
-  consoleCommonBehavior((...arg: any[]) => console.warn(getNzConsolePrefix(), ...arg), ...args);
+export const warn = (...args: any[]) => consoleCommonBehavior((...arg: any[]) => console.warn(PREFIX, ...arg), ...args);
 
 export const warnDeprecation = (...args: any[]) =>
-  consoleCommonBehavior((...arg: any[]) => console.error(getNzConsolePrefix(), 'deprecated:', ...arg), ...args);
+  consoleCommonBehavior((...arg: any[]) => console.error(PREFIX, 'deprecated:', ...arg), ...args);
 
 // Log should only be printed in dev mode.
 export const log = (...args: any[]) => {
   if (isDevMode()) {
     // tslint:disable-next-line:no-console
-    console.log(getNzConsolePrefix(), ...args);
+    console.log(PREFIX, ...args);
   }
 };
