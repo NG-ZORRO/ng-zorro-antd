@@ -1,0 +1,25 @@
+
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "lib": ["es2015", "dom"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "../../dist",
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitThis": true,
+    "noEmitOnError": true,
+    "noImplicitAny": true,
+    "target": "es5",
+    "types": [
+      "node"
+    ],
+    "baseUrl": "."
+  },
+  "files": [
+    "gulpfile.ts"
+  ]
+}
