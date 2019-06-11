@@ -27,7 +27,7 @@ function generateNav(componentsDocMap) {
     generateLanguageData(componentsDocMap[key], 'zh', reverseMap, key);
     generateLanguageData(componentsDocMap[key], 'en', reverseMap, key);
     const moduleName = capitalizeFirstLetter(camelCase(key));
-    routes += `  {'path': 'components/${key}', 'loadChildren': './${key}/index.module#NzDemo${moduleName}Module'},\n`;
+    routes += `  {'path': 'components/${key}', 'loadChildren': () => import('./${key}/index.module').then(m => m.NzDemo${moduleName}Module)},\n`;
   }
   return { reverseMap, routes };
 }

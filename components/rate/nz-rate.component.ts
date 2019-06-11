@@ -45,7 +45,7 @@ import { InputBoolean, NgClassType } from 'ng-zorro-antd/core';
   ]
 })
 export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewInit, OnChanges {
-  @ViewChild('ulElement') private ulElement: ElementRef;
+  @ViewChild('ulElement', { static: false }) private ulElement: ElementRef;
 
   @Input() @InputBoolean() nzAllowClear: boolean = true;
   @Input() @InputBoolean() nzAllowHalf: boolean = false;

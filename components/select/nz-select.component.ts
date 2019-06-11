@@ -101,9 +101,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   private _autoFocus = false;
   private isInit = false;
   private destroy$ = new Subject();
-  @ViewChild(CdkOverlayOrigin) cdkOverlayOrigin: CdkOverlayOrigin;
-  @ViewChild(CdkConnectedOverlay) cdkConnectedOverlay: CdkConnectedOverlay;
-  @ViewChild(NzSelectTopControlComponent) nzSelectTopControlComponent: NzSelectTopControlComponent;
+  @ViewChild(CdkOverlayOrigin, { static: false }) cdkOverlayOrigin: CdkOverlayOrigin;
+  @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay: CdkConnectedOverlay;
+  @ViewChild(NzSelectTopControlComponent, { static: true }) nzSelectTopControlComponent: NzSelectTopControlComponent;
   /** should move to nz-option-container when https://github.com/angular/angular/issues/20810 resolved **/
   @ContentChildren(NzOptionComponent) listOfNzOptionComponent: QueryList<NzOptionComponent>;
   @ContentChildren(NzOptionGroupComponent) listOfNzOptionGroupComponent: QueryList<NzOptionGroupComponent>;

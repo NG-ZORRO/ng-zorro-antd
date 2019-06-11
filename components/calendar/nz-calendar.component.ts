@@ -105,28 +105,28 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
     return !this.fullscreen;
   }
 
-  @ContentChild(DateCell, { read: TemplateRef })
+  @ContentChild(DateCell, { static: false, read: TemplateRef })
   set dateCellChild(value: TemplateRef<{ $implicit: Date }>) {
     if (value) {
       this.dateCell = value;
     }
   }
 
-  @ContentChild(DateFullCell, { read: TemplateRef })
+  @ContentChild(DateFullCell, { static: false, read: TemplateRef })
   set dateFullCellChild(value: TemplateRef<{ $implicit: Date }>) {
     if (value) {
       this.dateFullCell = value;
     }
   }
 
-  @ContentChild(MonthCell, { read: TemplateRef })
+  @ContentChild(MonthCell, { static: false, read: TemplateRef })
   set monthCellChild(value: TemplateRef<{ $implicit: Date }>) {
     if (value) {
       this.monthCell = value;
     }
   }
 
-  @ContentChild(MonthFullCell, { read: TemplateRef })
+  @ContentChild(MonthFullCell, { static: false, read: TemplateRef })
   set monthFullCellChild(value: TemplateRef<{ $implicit: Date }>) {
     if (value) {
       this.monthFullCell = value;

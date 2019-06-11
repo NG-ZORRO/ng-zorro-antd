@@ -475,6 +475,7 @@ describe('tree-select component', () => {
       treeSelect.nativeElement.click();
       fixture.detectChanges();
       flush();
+      fixture.detectChanges();
       expect(overlayContainerElement.querySelector('i.anticon.anticon-frown-o')).toBeTruthy();
     }));
   });
@@ -502,7 +503,7 @@ describe('tree-select component', () => {
   `
 })
 export class NzTestTreeSelectBasicComponent {
-  @ViewChild(NzTreeSelectComponent) nzSelectTreeComponent: NzTreeSelectComponent;
+  @ViewChild(NzTreeSelectComponent, { static: false }) nzSelectTreeComponent: NzTreeSelectComponent;
   expandKeys = ['1001', '10001'];
   value: string | string[] | null = '10001';
   size = 'default';
@@ -593,7 +594,7 @@ export class NzTestTreeSelectBasicComponent {
   `
 })
 export class NzTestTreeSelectCheckableComponent {
-  @ViewChild(NzTreeSelectComponent) nzSelectTreeComponent: NzTreeSelectComponent;
+  @ViewChild(NzTreeSelectComponent, { static: false }) nzSelectTreeComponent: NzTreeSelectComponent;
   expandKeys = ['1001', '10001'];
   value: string[] | null = ['1000122'];
   showSearch = false;

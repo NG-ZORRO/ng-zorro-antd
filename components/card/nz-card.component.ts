@@ -57,7 +57,7 @@ export class NzCardComponent {
   @Input() nzSize: 'default' | 'small' = 'default';
   @Input() nzTitle: string | TemplateRef<void>;
   @Input() nzExtra: string | TemplateRef<void>;
-  @ContentChild(NzCardTabComponent) tab: NzCardTabComponent;
+  @ContentChild(NzCardTabComponent, { static: false }) tab: NzCardTabComponent;
   @ContentChildren(NzCardGridDirective) grids: QueryList<NzCardGridDirective>;
 
   constructor(renderer: Renderer2, elementRef: ElementRef) {

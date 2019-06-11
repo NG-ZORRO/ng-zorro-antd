@@ -19,7 +19,7 @@ import { InputNumber } from 'ng-zorro-antd/core';
   preserveWhitespaces: false
 })
 export class NzDescriptionsItemComponent {
-  @ViewChild(TemplateRef) content: TemplateRef<void>;
+  @ViewChild(TemplateRef, { static: true }) content: TemplateRef<void>;
 
   @Input() @InputNumber() nzSpan = 1;
   @Input() nzTitle: string = '';

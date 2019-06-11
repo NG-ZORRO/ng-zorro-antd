@@ -95,9 +95,9 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
   ]
 })
 export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit, OnDestroy, ControlValueAccessor {
-  @ViewChild('input') input: ElementRef;
-  @ViewChild('menu') menu: ElementRef;
-  @ViewChild(CdkConnectedOverlay) overlay: CdkConnectedOverlay;
+  @ViewChild('input', { static: false }) input: ElementRef;
+  @ViewChild('menu', { static: false }) menu: ElementRef;
+  @ViewChild(CdkConnectedOverlay, { static: false }) overlay: CdkConnectedOverlay;
   @ViewChildren(NzCascaderOptionComponent) cascaderItems: QueryList<NzCascaderOptionComponent>;
 
   @Input() @InputBoolean() nzShowInput = true;

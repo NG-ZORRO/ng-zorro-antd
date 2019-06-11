@@ -194,5 +194,5 @@ describe('NzMessage', () => {
   `
 })
 export class NzTestMessageBasicComponent {
-  @ViewChild('contentTemplate') template: TemplateRef<void>;
+  @ViewChild('contentTemplate', { static: true }) template: TemplateRef<void>;
 }

@@ -85,10 +85,10 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit, OnChange
   @Output() readonly nzOnSelect: EventEmitter<string | {}> = new EventEmitter();
   @Output() readonly nzOnSearchChange: EventEmitter<MentionOnSearchTypes> = new EventEmitter();
 
-  @ContentChild(NzMentionTriggerDirective) trigger: NzMentionTriggerDirective;
-  @ViewChild(TemplateRef) suggestionsTemp: TemplateRef<void>;
+  @ContentChild(NzMentionTriggerDirective, { static: true }) trigger: NzMentionTriggerDirective;
+  @ViewChild(TemplateRef, { static: false }) suggestionsTemp: TemplateRef<void>;
 
-  @ContentChild(NzMentionSuggestionDirective, { read: TemplateRef })
+  @ContentChild(NzMentionSuggestionDirective, { static: false, read: TemplateRef })
   // tslint:disable-next-line:no-any
   set suggestionChild(value: TemplateRef<{ $implicit: any }>) {
     if (value) {

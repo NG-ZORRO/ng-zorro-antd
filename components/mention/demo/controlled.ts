@@ -30,7 +30,7 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from
 export class NzDemoMentionControlledComponent implements OnInit {
   suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご'];
   validateForm: FormGroup;
-  @ViewChild('mentions') mentionChild: any;
+  @ViewChild('mentions', { static: true }) mentionChild: any;
 
   get mention(): AbstractControl {
     return this.validateForm.get('mention')!;

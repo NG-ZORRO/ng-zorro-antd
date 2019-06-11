@@ -65,7 +65,7 @@ import { getValueTypeNotMatchError } from './nz-slider-error';
   templateUrl: './nz-slider.component.html'
 })
 export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChanges, OnDestroy {
-  @ViewChild('slider') slider: ElementRef;
+  @ViewChild('slider', { static: true }) slider: ElementRef<HTMLDivElement>;
 
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzDots: boolean = false;

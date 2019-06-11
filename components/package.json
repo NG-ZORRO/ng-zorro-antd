@@ -28,14 +28,14 @@
   },
   "dependencies": {
     "date-fns": "^1.29.0",
-    "@angular/cdk": "^7.0.0",
-    "@ant-design/icons-angular": "^2.1.0"
+    "@angular/cdk": "~8.0.0",
+    "@ant-design/icons-angular": "~8.0.0-beta.0"
   },
   "peerDependencies": {
-    "@angular/animations": "^7.0.0",
-    "@angular/cdk": "^7.3.0",
-    "@angular/common": "^7.0.0",
-    "@angular/core": "^7.0.0",
-    "@angular/forms": "^7.0.0"
+    "@angular/animations": "~8.0.0",
+    "@angular/cdk": "~8.0.0",
+    "@angular/common": "~8.0.0",
+    "@angular/core": "~8.0.0",
+    "@angular/forms": "~8.0.0"
   }
 }

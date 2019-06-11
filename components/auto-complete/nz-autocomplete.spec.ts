@@ -844,8 +844,8 @@ class NzTestSimpleAutocompleteComponent {
   inputControl = new FormControl();
   options: Array<string | number> = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
 
-  @ViewChild(NzAutocompleteComponent) panel: NzAutocompleteComponent;
-  @ViewChild(NzAutocompleteTriggerDirective) trigger: NzAutocompleteTriggerDirective;
+  @ViewChild(NzAutocompleteComponent, { static: false }) panel: NzAutocompleteComponent;
+  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger: NzAutocompleteTriggerDirective;
   @ViewChildren(NzAutocompleteOptionComponent) optionComponents: QueryList<NzAutocompleteOptionComponent>;
 
   constructor() {
@@ -880,8 +880,8 @@ class NzTestAutocompletePropertyComponent {
   overlayClassName = '';
   overlayStyle = {};
   options = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
-  @ViewChild(NzAutocompleteComponent) panel: NzAutocompleteComponent;
-  @ViewChild(NzAutocompleteTriggerDirective) trigger: NzAutocompleteTriggerDirective;
+  @ViewChild(NzAutocompleteComponent, { static: false }) panel: NzAutocompleteComponent;
+  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger: NzAutocompleteTriggerDirective;
 
   constructor() {}
 }
@@ -892,7 +892,7 @@ class NzTestAutocompletePropertyComponent {
   `
 })
 class NzTestAutocompleteWithoutPanelComponent {
-  @ViewChild(NzAutocompleteTriggerDirective) trigger: NzAutocompleteTriggerDirective;
+  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger: NzAutocompleteTriggerDirective;
 }
 
 @Component({
@@ -906,7 +906,7 @@ class NzTestAutocompleteWithoutPanelComponent {
 })
 class NzTestAutocompleteWithOnPushDelayComponent implements OnInit {
   options: string[] = [];
-  @ViewChild(NzAutocompleteTriggerDirective) trigger: NzAutocompleteTriggerDirective;
+  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger: NzAutocompleteTriggerDirective;
 
   ngOnInit(): void {
     setTimeout(() => {
@@ -975,7 +975,7 @@ class NzTestAutocompleteGroupComponent {
     }
   ];
 
-  @ViewChild(NzAutocompleteTriggerDirective) trigger: NzAutocompleteTriggerDirective;
+  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger: NzAutocompleteTriggerDirective;
 }
 
 @Component({
@@ -991,7 +991,7 @@ class NzTestAutocompleteGroupComponent {
 class NzTestAutocompleteWithFormComponent {
   form: FormGroup;
   options = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
-  @ViewChild(NzAutocompleteTriggerDirective) trigger: NzAutocompleteTriggerDirective;
+  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger: NzAutocompleteTriggerDirective;
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({ formControl: 'Burns' });

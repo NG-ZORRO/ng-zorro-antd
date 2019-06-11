@@ -51,7 +51,7 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
 
   @Output() readonly nzOnOpenChange = new EventEmitter<boolean>();
 
-  @ViewChild(NzPickerComponent) protected picker: NzPickerComponent;
+  @ViewChild(NzPickerComponent, { static: true }) protected picker: NzPickerComponent;
 
   isRange: boolean = false; // Indicate whether the value is a range value
 

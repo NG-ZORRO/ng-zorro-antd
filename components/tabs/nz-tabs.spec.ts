@@ -536,8 +536,8 @@ describe('tabs', () => {
 })
 export class NzTestTabsBasicComponent {
   add = false;
-  @ViewChild('extraTemplate') extraTemplate: TemplateRef<void>;
-  @ViewChild(NzTabSetComponent) nzTabSetComponent: NzTabSetComponent;
+  @ViewChild('extraTemplate', { static: false }) extraTemplate: TemplateRef<void>;
+  @ViewChild(NzTabSetComponent, { static: false }) nzTabSetComponent: NzTabSetComponent;
   selectedIndex = 0;
   selectedIndexChange = jasmine.createSpy('selectedIndex callback');
   selectChange = jasmine.createSpy('selectedIndex callback');

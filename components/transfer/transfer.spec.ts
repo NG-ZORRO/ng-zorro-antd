@@ -385,7 +385,7 @@ describe('transfer', () => {
   encapsulation: ViewEncapsulation.None
 })
 class TestTransferComponent implements OnInit {
-  @ViewChild('comp') comp: NzTransferComponent;
+  @ViewChild('comp', { static: false }) comp: NzTransferComponent;
   nzDataSource: any[] = [];
   nzDisabled = false;
   nzTitles = ['Source', 'Target'];
@@ -442,7 +442,7 @@ class TestTransferComponent implements OnInit {
   `
 })
 class TestTransferCustomRenderComponent implements OnInit {
-  @ViewChild('comp') comp: NzTransferComponent;
+  @ViewChild('comp', { static: false }) comp: NzTransferComponent;
   nzDataSource: Array<{ key: string; title: string; description: string; direction: string; icon: string }> = [];
 
   ngOnInit(): void {

@@ -136,7 +136,7 @@ describe('alert', () => {
   `
 })
 export class NzDemoTestBasicComponent {
-  @ViewChild('template') template: TemplateRef<void>;
+  @ViewChild('template', { static: false }) template: TemplateRef<void>;
   banner = false;
   closeable = false;
   closeText: string | TemplateRef<void>;

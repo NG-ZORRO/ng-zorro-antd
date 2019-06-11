@@ -42,7 +42,7 @@ export class NzOptionContainerComponent implements OnDestroy, OnInit {
   private destroy$ = new Subject();
   private lastScrollTop = 0;
   @ViewChildren(NzOptionLiComponent) listOfNzOptionLiComponent: QueryList<NzOptionLiComponent>;
-  @ViewChild('dropdownUl') dropdownUl: ElementRef;
+  @ViewChild('dropdownUl', { static: true }) dropdownUl: ElementRef<HTMLUListElement>;
   @Input() nzNotFoundContent: string;
   @Input() nzMenuItemSelectedIcon: TemplateRef<void>;
   @Output() readonly nzScrollToBottom = new EventEmitter<void>();

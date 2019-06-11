@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChil
 })
 export class NzHighlightComponent implements OnInit {
   _code: string;
-  @ViewChild('code') codeElement: ElementRef;
+  @ViewChild('code', { static: true }) codeElement: ElementRef;
   @Input() nzLanguage: string;
 
   @Input()

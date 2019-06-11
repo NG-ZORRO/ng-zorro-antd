@@ -59,7 +59,7 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, O
   readonly el: HTMLElement = this.elementRef.nativeElement;
   private iconElement: HTMLElement;
   private iconOnly = false;
-  @ViewChild('contentElement') contentElement: ElementRef;
+  @ViewChild('contentElement', { static: true }) contentElement: ElementRef;
   @ContentChildren(NzIconDirective, { read: ElementRef }) listOfIconElement: QueryList<ElementRef>;
   @HostBinding('attr.nz-wave') nzWave = new NzWaveDirective(
     this.ngZone,

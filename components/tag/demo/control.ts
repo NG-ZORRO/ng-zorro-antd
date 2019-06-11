@@ -38,7 +38,7 @@ export class NzDemoTagControlComponent {
   tags = ['Unremovable', 'Tag 2', 'Tag 3'];
   inputVisible = false;
   inputValue = '';
-  @ViewChild('inputElement') inputElement: ElementRef;
+  @ViewChild('inputElement', { static: false }) inputElement: ElementRef;
 
   handleClose(removedTag: {}): void {
     this.tags = this.tags.filter(tag => tag !== removedTag);

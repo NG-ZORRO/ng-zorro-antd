@@ -42,7 +42,7 @@ export class NzSelectTopControlComponent implements OnInit, OnDestroy {
   inputValue: string;
   isComposing = false;
   private destroy$ = new Subject();
-  @ViewChild('inputElement') inputElement: ElementRef;
+  @ViewChild('inputElement', { static: false }) inputElement: ElementRef;
   @Input() nzShowSearch = false;
   @Input() nzPlaceHolder: string;
   @Input() nzOpen = false;

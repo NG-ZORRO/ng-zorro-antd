@@ -774,8 +774,8 @@ describe('NzRangePickerComponent', () => {
 })
 class NzTestRangePickerComponent {
   useSuite: 1 | 2 | 3;
-  @ViewChild('tplDateRender') tplDateRender: TemplateRef<Date>;
-  @ViewChild('tplExtraFooter') tplExtraFooter: TemplateRef<void>;
+  @ViewChild('tplDateRender', { static: true }) tplDateRender: TemplateRef<Date>;
+  @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter: TemplateRef<void>;
 
   // --- Suite 1
   nzAllowClear: boolean;

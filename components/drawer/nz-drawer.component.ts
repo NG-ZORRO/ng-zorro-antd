@@ -81,9 +81,8 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
   @Output() readonly nzOnViewInit = new EventEmitter<void>();
   @Output() readonly nzOnClose = new EventEmitter<MouseEvent>();
 
-  @ViewChild('drawerTemplate') drawerTemplate: TemplateRef<{}>;
-  @ViewChild('contentTemplate') contentTemplate: TemplateRef<{}>;
-  @ViewChild(CdkPortalOutlet) bodyPortalOutlet: CdkPortalOutlet;
+  @ViewChild('drawerTemplate', { static: true }) drawerTemplate: TemplateRef<void>;
+  @ViewChild(CdkPortalOutlet, { static: false }) bodyPortalOutlet: CdkPortalOutlet;
 
   destroy$ = new Subject<void>();
   previouslyFocusedElement: HTMLElement;

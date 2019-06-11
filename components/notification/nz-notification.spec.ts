@@ -16,7 +16,7 @@ import { NzNotificationService } from './nz-notification.service';
   `
 })
 export class DemoAppComponent {
-  @ViewChild(TemplateRef) demoTemplateRef: TemplateRef<{}>;
+  @ViewChild(TemplateRef, { static: true }) demoTemplateRef: TemplateRef<{}>;
 }
 
 describe('NzNotification', () => {

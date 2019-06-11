@@ -82,8 +82,8 @@ import { NzCarouselTransformStrategy } from './strategies/transform-strategy';
 export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges {
   @ContentChildren(NzCarouselContentDirective) carouselContents: QueryList<NzCarouselContentDirective>;
 
-  @ViewChild('slickList') slickList: ElementRef;
-  @ViewChild('slickTrack') slickTrack: ElementRef;
+  @ViewChild('slickList', { static: false }) slickList: ElementRef;
+  @ViewChild('slickTrack', { static: false }) slickTrack: ElementRef;
 
   @Input() nzDotRender: TemplateRef<{ $implicit: number }>;
   @Input() nzEffect: NzCarouselEffects = 'scrollx';
