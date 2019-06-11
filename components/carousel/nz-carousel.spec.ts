@@ -34,7 +34,7 @@ import { NzCarouselOpacityStrategy } from './strategies/opacity-strategy';
   `
 })
 export class NzTestCarouselBasicComponent {
-  @ViewChild(NzCarouselComponent) nzCarouselComponent: NzCarouselComponent;
+  @ViewChild(NzCarouselComponent, { static: false }) nzCarouselComponent: NzCarouselComponent;
   dots = true;
   vertical = false;
   effect = 'scrollx';

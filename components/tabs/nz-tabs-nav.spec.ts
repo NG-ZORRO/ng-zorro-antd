@@ -180,7 +180,7 @@ class NzTestTabNavComponent {
   onNextClick = jasmine.createSpy('next click change');
   onPrevClick = jasmine.createSpy('pre click change');
 
-  @ViewChild(NzTabsNavComponent) nzTabsNavComponent: NzTabsNavComponent;
+  @ViewChild(NzTabsNavComponent, { static: true }) nzTabsNavComponent: NzTabsNavComponent;
 
   addTabsForScrolling(): void {
     this.tabs.push({ label: 'new' }, { label: 'new' }, { label: 'new' }, { label: 'new' });

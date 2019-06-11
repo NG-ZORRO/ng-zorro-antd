@@ -37,7 +37,7 @@ import { NgClassType } from 'ng-zorro-antd/core';
   }
 })
 export class NzStepComponent {
-  @ViewChild('processDotTemplate') processDotTemplate: TemplateRef<void>;
+  @ViewChild('processDotTemplate', { static: false }) processDotTemplate: TemplateRef<void>;
 
   @Input() nzTitle: string | TemplateRef<void>;
   @Input() nzDescription: string | TemplateRef<void>;

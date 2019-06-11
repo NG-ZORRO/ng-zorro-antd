@@ -46,7 +46,7 @@ export class NzEmptyComponent implements OnChanges, OnInit, OnDestroy {
   // tell if user actually pass something to <ng-content>.
   // See: https://github.com/angular/angular/issues/12530.
   // I can use a directive but this would expose the name `footer`.
-  // @ContentChild(TemplateRef) nzNotFoundFooter: TemplateRef<void>;
+  // @ContentChild(TemplateRef, {static: false}) nzNotFoundFooter: TemplateRef<void>;
 
   defaultSvg = this.sanitizer.bypassSecurityTrustResourceUrl(emptyImage);
   isContentString = false;

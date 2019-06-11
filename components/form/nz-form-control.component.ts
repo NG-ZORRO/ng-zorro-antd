@@ -56,7 +56,7 @@ export class NzFormControlComponent extends NzColDirective
   controlClassMap: NgClassType = {};
   iconType: string;
   validateControl: FormControl | NgModel | null;
-  @ContentChild(NgControl) defaultValidateControl: FormControlName;
+  @ContentChild(NgControl, { static: false }) defaultValidateControl: FormControlName;
 
   @Input()
   set nzHasFeedback(value: boolean) {

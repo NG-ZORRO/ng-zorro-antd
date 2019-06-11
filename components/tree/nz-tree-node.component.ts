@@ -44,7 +44,7 @@ import {
   animations: [collapseMotion]
 })
 export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
-  @ViewChild('dragElement') dragElement: ElementRef;
+  @ViewChild('dragElement', { static: false }) dragElement: ElementRef;
 
   /**
    * for global property

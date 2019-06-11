@@ -43,7 +43,9 @@ export class NzPageHeaderComponent implements OnInit, OnChanges {
   @Input() nzSubtitle: string | TemplateRef<void>;
   @Output() readonly nzBack = new EventEmitter<void>();
 
-  @ContentChild(NzPageHeaderFooterDirective) nzPageHeaderFooter: ElementRef<NzPageHeaderFooterDirective>;
+  @ContentChild(NzPageHeaderFooterDirective, { static: false }) nzPageHeaderFooter: ElementRef<
+    NzPageHeaderFooterDirective
+  >;
 
   constructor() {}
 

@@ -31,7 +31,7 @@ import { responsiveMap, Breakpoint, InputBoolean } from 'ng-zorro-antd/core';
 import { NzDescriptionsItemRenderProps, NzDescriptionsSize } from './nz-descriptions-definitions';
 import { NzDescriptionsItemComponent } from './nz-descriptions-item.component';
 
-const defaultColumnMap: { [size: string]: number } = {
+const defaultColumnMap: { [key in Breakpoint]: number } = {
   xxl: 3,
   xl: 3,
   lg: 3,
@@ -65,7 +65,7 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
   @ContentChildren(NzDescriptionsItemComponent) items: QueryList<NzDescriptionsItemComponent>;
 
   @Input() @InputBoolean() nzBordered = false;
-  @Input() nzColumn: number | { [key: string]: number } = defaultColumnMap;
+  @Input() nzColumn: number | { [key in Breakpoint]: number } = defaultColumnMap;
   @Input() nzSize: NzDescriptionsSize = 'default';
   @Input() nzTitle: string | TemplateRef<void> = '';
 
@@ -133,7 +133,7 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
     let width = 0;
 
     const column = (this.realColumn = this.getColumn());
-    const items: NzDescriptionsItemComponent[] = this.items.toArray();
+    const items = this.items.toArray();
     const matrix: NzDescriptionsItemRenderProps[][] = [];
     const flushRow = () => {
       matrix.push(currentRow);

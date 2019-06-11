@@ -58,7 +58,7 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
     }
   }
 
-  @ContentChild('nzTemplate') nzTemplate: TemplateRef<void>;
+  @ContentChild('nzTemplate', { static: false }) nzTemplate: TemplateRef<void>;
 
   constructor(
     public elementRef: ElementRef,

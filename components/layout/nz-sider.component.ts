@@ -70,7 +70,7 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() nzCollapsedWidth = 80;
   @Input() nzBreakpoint: NzBreakPoint;
   @Input() nzZeroTrigger: TemplateRef<void>;
-  @Input() @ViewChild('defaultTrigger') nzTrigger: TemplateRef<void>;
+  @Input() @ViewChild('defaultTrigger', { static: true }) nzTrigger: TemplateRef<void>;
   @Input() @InputBoolean() nzReverseArrow = false;
   @Input() @InputBoolean() nzCollapsible = false;
   @Input() @InputBoolean() nzCollapsed = false;

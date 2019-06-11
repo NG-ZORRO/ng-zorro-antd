@@ -258,8 +258,8 @@ class WaveContainerWithButtonComponent {
   isDestroyed = false;
   borderColor = 'rgb(0,255,0)';
   backgroundColor = 'rgb(255,255,255)';
-  @ViewChild('trigger') trigger: ElementRef<HTMLElement>;
-  @ViewChild(NzWaveDirective) wave: NzWaveDirective;
+  @ViewChild('trigger', { static: false }) trigger: ElementRef<HTMLElement>;
+  @ViewChild(NzWaveDirective, { static: false }) wave: NzWaveDirective;
 }
 
 @Component({
@@ -282,6 +282,6 @@ class WaveContainerWithExtraNodeComponent {
   isDestroyed = false;
   borderColor = 'rgb(0,255,0)';
   backgroundColor = 'rgb(255,255,255)';
-  @ViewChild('trigger') trigger: ElementRef<HTMLElement>;
-  @ViewChild(NzWaveDirective) wave: NzWaveDirective;
+  @ViewChild('trigger', { static: false }) trigger: ElementRef<HTMLElement>;
+  @ViewChild(NzWaveDirective, { static: false }) wave: NzWaveDirective;
 }

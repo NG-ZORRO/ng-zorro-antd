@@ -530,9 +530,9 @@ export class NzTestMenuHorizontalComponent {
   open = false;
   disabled = false;
   @ViewChildren(NzSubMenuComponent) subs: QueryList<NzSubMenuComponent>;
-  @ViewChild('menuitem', { read: ElementRef }) menuitem: ElementRef;
-  @ViewChild('menuitem1', { read: ElementRef }) menuitem1: ElementRef;
-  @ViewChild('disableditem', { read: ElementRef }) disableditem: ElementRef;
+  @ViewChild('menuitem', { static: false, read: ElementRef }) menuitem: ElementRef;
+  @ViewChild('menuitem1', { static: false, read: ElementRef }) menuitem1: ElementRef;
+  @ViewChild('disableditem', { static: false, read: ElementRef }) disableditem: ElementRef;
 }
 
 @Component({
@@ -554,8 +554,8 @@ export class NzTestMenuInlineComponent {
   disabled = false;
   collapse = false;
   submenuClassName = 'submenu';
-  @ViewChild(NzSubMenuComponent) subsmenu: NzSubMenuComponent;
-  @ViewChild('menuitem', { read: ElementRef }) menuitem: ElementRef;
+  @ViewChild(NzSubMenuComponent, { static: true }) subsmenu: NzSubMenuComponent;
+  @ViewChild('menuitem', { static: false, read: ElementRef }) menuitem: ElementRef;
 }
 
 @Component({

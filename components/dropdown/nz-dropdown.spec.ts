@@ -457,9 +457,9 @@ describe('dropdown', () => {
   styles: []
 })
 export class NzTestDropdownComponent {
-  @ViewChild(NzDropDownComponent) nzDropDownComponent: NzDropDownComponent;
-  @ViewChild(NzDropDownDirective) nzDropDownDirective: NzDropDownDirective;
-  @ViewChild(NzSubMenuComponent) nzSubMenuComponent: NzSubMenuComponent;
+  @ViewChild(NzDropDownComponent, { static: false }) nzDropDownComponent: NzDropDownComponent;
+  @ViewChild(NzDropDownDirective, { static: true }) nzDropDownDirective: NzDropDownDirective;
+  @ViewChild(NzSubMenuComponent, { static: false }) nzSubMenuComponent: NzSubMenuComponent;
   visible = false;
   selectable = true;
   itemSelected = false;
@@ -502,8 +502,8 @@ export class NzTestDropdownComponent {
   styles: []
 })
 export class NzTestDropdownButtonComponent {
-  @ViewChild(NzDropDownButtonComponent) nzDropDownButtonComponent: NzDropDownButtonComponent;
-  @ViewChild(NzSubMenuComponent) nzSubMenuComponent: NzSubMenuComponent;
+  @ViewChild(NzDropDownButtonComponent, { static: false }) nzDropDownButtonComponent: NzDropDownButtonComponent;
+  @ViewChild(NzSubMenuComponent, { static: false }) nzSubMenuComponent: NzSubMenuComponent;
   strIcon = true;
   disabled = false;
   visible = false;
@@ -562,7 +562,7 @@ export class NzTestDropdownWithButtonComponent {}
   `
 })
 export class NzTestDropdownContextmenuComponent {
-  @ViewChild('template') template: TemplateRef<void>;
+  @ViewChild('template', { static: true }) template: TemplateRef<void>;
 
   constructor(public nzDropdownService: NzDropdownService) {}
 }

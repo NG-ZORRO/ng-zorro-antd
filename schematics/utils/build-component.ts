@@ -15,15 +15,15 @@ import {
   mergeWith,
   move,
   noop,
-  template,
-  url,
   Rule,
   SchematicsException,
-  Tree
+  template,
+  Tree,
+  url
 } from '@angular-devkit/schematics';
 import { FileSystemSchematicContext } from '@angular-devkit/schematics/tools';
 import { getDefaultComponentOptions, getProjectFromWorkspace, ts } from '@angular/cdk/schematics';
-import { Schema as ComponentOptions } from '@schematics/angular/component/schema';
+import { Schema as ComponentOptions, Style } from '@schematics/angular/component/schema';
 import {
   addDeclarationToModule,
   addEntryComponentToModule,
@@ -211,9 +211,9 @@ export function buildComponent(options: ZorroComponentOptions,
     const schematicFilesPath = resolve(schematicPath, schematicFilesUrl);
 
     options.style = (
-      options.style && options.style !== 'css'
+      options.style && options.style !== Style.Css
         ? options.style : options.styleext
-    ) || 'css';
+    ) as Style || Style.Css;
     options.skipTests = options.skipTests || !options.spec;
 
     // Add the default component option values to the options if an option is not explicitly
@@ -251,7 +251,7 @@ export function buildComponent(options: ZorroComponentOptions,
     if (!supportedCssExtensions.includes(options.style!)) {
       // TODO: Cast is necessary as we can't use the Style enum which has been introduced
       // within CLI v7.3.0-rc.0. This would break the schematic for older CLI versions.
-      options.style = 'css';
+      options.style = Style.Css;
     }
 
     const classifyCovered = (name: string) => {

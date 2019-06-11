@@ -68,8 +68,8 @@ describe('nz-countdown', () => {
   `
 })
 export class NzTestCountdownComponent {
-  @ViewChild(NzCountdownComponent) countdown: NzCountdownComponent;
-  @ViewChild('tpl') tpl: TemplateRef<number>;
+  @ViewChild(NzCountdownComponent, { static: true }) countdown: NzCountdownComponent;
+  @ViewChild('tpl', { static: true }) tpl: TemplateRef<number>;
 
   format: string;
   value: number;

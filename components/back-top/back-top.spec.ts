@@ -202,7 +202,7 @@ describe('Component:nz-back-top', () => {
   `
 })
 class TestBackTopComponent {
-  @ViewChild(NzBackTopComponent)
+  @ViewChild(NzBackTopComponent, { static: true })
   nzBackTopComponent: NzBackTopComponent;
 }
 
@@ -217,7 +217,7 @@ class TestBackTopComponent {
   `
 })
 class TestBackTopTemplateComponent {
-  @ViewChild(NzBackTopComponent)
+  @ViewChild(NzBackTopComponent, { static: false })
   nzBackTopComponent: NzBackTopComponent;
 }
 

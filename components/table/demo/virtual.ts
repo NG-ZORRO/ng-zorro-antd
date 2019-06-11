@@ -58,7 +58,7 @@ import { takeUntil } from 'rxjs/operators';
   `
 })
 export class NzDemoTableVirtualComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('virtualTable') nzTableComponent: NzTableComponent;
+  @ViewChild('virtualTable', { static: false }) nzTableComponent: NzTableComponent;
   private destroy$ = new Subject();
   listOfData: any[] = [];
 

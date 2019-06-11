@@ -317,7 +317,7 @@ describe('pagination', () => {
   `
 })
 export class NzTestPaginationComponent {
-  @ViewChild(NzPaginationComponent) nzPaginationComponent: NzPaginationComponent;
+  @ViewChild(NzPaginationComponent, { static: false }) nzPaginationComponent: NzPaginationComponent;
   pageIndex = 1;
   pageSize = 10;
   total = 50;

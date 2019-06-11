@@ -21,7 +21,7 @@ NG-ZORRO 致力于提供给程序员**愉悦**的开发体验。
 
 ### 1. 安装脚手架工具
 
-> 使用 `@angular/cli` 前，务必确认 [Node.js](https://nodejs.org/en/) 已经升级到 v8.10 或以上，强烈建议升级至最新版本的 `@angular/cli`。
+> 使用 `@angular/cli` 前，务必确认 [Node.js](https://nodejs.org/en/) 已经升级到 v12.1 或以上，强烈建议升级至最新版本的 `@angular/cli`。
 > 如果你想了解更多CLI工具链的功能和命令，建议访问 [Angular CLI](https://github.com/angular/angular-cli) 了解更多。
 
 ```bash

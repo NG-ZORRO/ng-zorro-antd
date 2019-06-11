@@ -56,7 +56,7 @@ describe('nz-number', () => {
   `
 })
 export class NzTestNumberComponent {
-  @ViewChild('tpl') tpl: TemplateRef<void>;
+  @ViewChild('tpl', { static: true }) tpl: TemplateRef<void>;
 
   value = 1;
   template: TemplateRef<void>;
