@@ -75,17 +75,20 @@ describe('SelectService', () => {
     it('should updateListOfTagOption work', () => {
       service.listOfCachedSelectedOption = [
         { nzValue: `option_value_0`, nzLabel: `option_label_0` },
-        { nzValue: `option_value_miss`, nzLabel: `option_label_miss` }
+        { nzValue: `option_value_miss`, nzLabel: `option_label_miss` },
+        { nzValue: `option_value_a`, nzLabel: `option_label_a` }
         // tslint:disable-next-line: no-any
       ] as any;
-      service.listOfSelectedValue = [`option_value_1`, `option_value_miss_1`];
+      service.listOfSelectedValue = [`option_value_1`, `option_value_miss_1`, `option_value_a`];
       service.listOfTemplateOption = createListOfOption(3);
       service.updateListOfTagOption();
-      expect(service.listOfTagOption.length).toEqual(2);
+      expect(service.listOfTagOption.length).toEqual(3);
       expect(service.listOfTagOption[0].nzValue).toEqual('option_value_miss');
       expect(service.listOfTagOption[0].nzLabel).toEqual('option_label_miss');
-      expect(service.listOfTagOption[1].nzValue).toEqual('option_value_miss_1');
-      expect(service.listOfTagOption[1].nzLabel).toEqual('option_value_miss_1');
+      expect(service.listOfTagOption[1].nzValue).toEqual('option_value_a');
+      expect(service.listOfTagOption[1].nzLabel).toEqual('option_label_a');
+      expect(service.listOfTagOption[2].nzValue).toEqual('option_value_miss_1');
+      expect(service.listOfTagOption[2].nzLabel).toEqual('option_value_miss_1');
     });
     it('should updateAddTagOption work', () => {
       service.listOfSelectedValue = [`option_value_0`, `option_value_1`];
