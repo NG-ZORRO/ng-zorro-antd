@@ -103,6 +103,13 @@
                 <div class="footer-center">
                   <h2>{{language==='zh'?'社区':'Community'}}</h2>
                   <div>
+                    <a [href]="language === 'zh' ? 'https://ng.ant.design/blog' : 'https://ng.ant.design/blog/en'" target="_blank" rel="noopener noreferrer">
+                      <span>
+                        {{ language === 'zh' ? '博客' : 'Blog' }}
+                      </span>
+                    </a>
+                  </div>
+                  <div>
                     <a *ngIf="language==='zh'" href="https://zhuanlan.zhihu.com/100000" target="_blank" rel="noopener noreferrer"><span>知乎专栏</span></a>
                   </div>
                   <div>
