@@ -1,5 +1,5 @@
-import { parallel, series, task, watch } from 'gulp';
 import * as fs from 'fs-extra';
+import { parallel, series, task, watch } from 'gulp';
 import { join } from 'path';
 import { execNodeTask, execTask } from '../util/task-helpers';
 
@@ -91,7 +91,7 @@ task('start:site', series(
 /** Task that use source code to build ng-zorro-antd-doc project,
  * output not included issue-helper/iframe and prerender.
  */
-task('build:overview-site', series(
+task('build:simple-site', series(
   'init:site',
   'build:site-doc'
 ));
