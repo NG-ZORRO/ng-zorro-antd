@@ -26,6 +26,11 @@ export function execTask(binPath: string, args: string[], options: ExecTaskOptio
   return (done: (err?: string) => void) => {
     const env = {...process.env, ...options.env};
     const childProcess = child_process.spawn(binPath, args, {env});
+    // https://github.com/angular/angular-cli/issues/10922
+    // tslint:disable-next-line:no-any
+    (childProcess.stdout as any)._handle.setBlocking(true);
+    // tslint:disable-next-line:no-any
+    (childProcess.stdout as any)._handle.setBlocking(true);
     const stderrData: string[] = [];
 
     if (!options.silentStdout && !options.silent) {
