@@ -9,6 +9,17 @@ import './tasks/library';
 import './tasks/site';
 
 task('build:release', series(
+  'clean',
   'build:library',
   'build:release-site'
+));
+
+task('build:preview', series(
+  'clean',
+  'build:simple-site'
+));
+
+task('start:dev', series(
+  'clean',
+  'start:site'
 ));
