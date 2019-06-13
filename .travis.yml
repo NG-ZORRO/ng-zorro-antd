@@ -30,7 +30,7 @@ before_script:
   - npm install -g karma
 
 script:
-  - npm run $TASK
+  - travis_wait 30 npm run $TASK
   - |
     if [ "$TASK" = "test" ]; then
       cat ./coverage/lcov.info | ./node_modules/.bin/codecov
