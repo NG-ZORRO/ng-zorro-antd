@@ -38,6 +38,7 @@
     [class.ant-tabs-left-content]="nzTabPosition === 'left'"
     [class.ant-tabs-right-content]="nzTabPosition === 'right'"
     [class.ant-tabs-content-animated]="tabPaneAnimated"
+    [class.ant-tabs-card-content]="nzType === 'card'"
     [class.ant-tabs-content-no-animated]="!tabPaneAnimated"
     [style.margin-left.%]="(tabPositionMode === 'horizontal') && tabPaneAnimated && (-(nzSelectedIndex || 0 ) * 100)">
     <div nz-tab-body
