@@ -4,6 +4,7 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 import { buildConfig } from '../build-config';
 import { checkVersionNumber } from './parse-version';
+import { releaseSite } from './release-site';
 
 const read = require('readline-sync');
 
@@ -17,8 +18,6 @@ const log = {
 };
 
 /* The whole process */
-
-let releaseVersion: string;
 
 run();
 
@@ -46,8 +45,12 @@ function run(): void {
       fun: buildRelease
     },
     {
-      name: 'Push release',
-      fun: pushRelease
+      name: 'Push library release',
+      fun: pushLibraryRelease
+    },
+    {
+      name: 'Push site release',
+      fun: pushSiteRelease
     }
   ];
 
@@ -103,12 +106,11 @@ function getRemoteUrl(remote: string): string {
 function bumpVersion(): void {
   log.info('Updating version number...');
 
-  const packageJsonPath = path.join(buildConfig.componentsDir, 'package.json');
   const appComponentPath = path.join(buildConfig.scriptsDir, 'site/_site/doc/app/app.component.ts');
   const codeBoxPath = path.join(buildConfig.scriptsDir, 'site/_site/doc/app/share/nz-codebox/stack-blitz.ts');
-  const zorroVersionPath = path.join(buildConfig.componentsDir, 'version.ts');
-
+  const packageJsonPath = path.join(buildConfig.componentsDir, 'package.json');
   const packageJson = fs.readJsonSync(packageJsonPath);
+  const zorroVersionPath = path.join(buildConfig.componentsDir, 'version.ts');
   const currentVersion = packageJson.version;
   let versionNumberValid = false;
   let version;
@@ -117,7 +119,6 @@ function bumpVersion(): void {
     version = read.question(chalk.bgYellow.black('Please input the new version:') + '  ');
     if (checkVersionNumber(currentVersion, version)) {
       versionNumberValid = true;
-      releaseVersion = version;
     } else {
       log.error(`Your input ${version} is not after the current version ${currentVersion} or is unvalid. Please check it.`);
     }
@@ -174,12 +175,27 @@ function buildRelease(): void {
   log.info('pre-release completed!');
 }
 
-function pushRelease(): void {
+function pushLibraryRelease(): void {
+  const releaseVersion = getCurrentVersion();
   log.info('Checkout and push a new branch for publishing...');
   execSync(`git checkout -b publish-${releaseVersion}`);
   execSync('git add .');
   execSync(`git commit -m "release(${releaseVersion}): release ${releaseVersion}"`);
   execSync(`git push origin publish-${releaseVersion}`);
-  log.success('Please go to GitHub and make a pull request.');
-  log.success('Bye!');
+  log.success('Push library release completed!');
+  log.info('Please go to GitHub and make a pull request.');
+
+}
+
+function pushSiteRelease(): void {
+  log.info('Checkout and push a new branch to ng-zorro.github.io...');
+  releaseSite(getCurrentVersion());
+  log.success('Push site release completed!');
+  log.info('Please go to GitHub and make a pull request.');
+}
+
+function getCurrentVersion(): string {
+  const packageJsonPath = path.join(buildConfig.componentsDir, 'package.json');
+  const packageJson = fs.readJsonSync(packageJsonPath);
+  return packageJson.version;
 }

@@ -12,6 +12,7 @@ integration/**/*.ngsummary.json
 schematics/demo
 schematics/utils/create-custom-theme.ts
 schematics/utils/version-names.ts
+ng-zorro.github.io/
 
 # dependencies
 node_modules
