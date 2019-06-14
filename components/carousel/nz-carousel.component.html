@@ -13,7 +13,14 @@
     </div>
   </div>
   <!-- Render dots. -->
-  <ul class="slick-dots" *ngIf="nzDots">
+  <ul
+    class="slick-dots"
+    *ngIf="nzDots"
+    [class.slick-dots-top]="nzDotPosition === 'top'"
+    [class.slick-dots-bottom]="nzDotPosition === 'bottom'"
+    [class.slick-dots-left]="nzDotPosition === 'left'"
+    [class.slick-dots-right]="nzDotPosition === 'right'"
+  >
     <li
       *ngFor="let content of carouselContents; let i = index"
       [class.slick-active]="content.isActive"

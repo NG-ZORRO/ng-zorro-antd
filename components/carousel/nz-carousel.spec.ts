@@ -18,6 +18,7 @@ import { NzCarouselOpacityStrategy } from './strategies/opacity-strategy';
       [nzEffect]="effect"
       [nzVertical]="vertical"
       [nzDots]="dots"
+      [nzDotPosition]="dotPosition"
       [nzDotRender]="dotRender"
       [nzAutoPlay]="autoPlay"
       [nzAutoPlaySpeed]="autoPlaySpeed"
@@ -36,6 +37,7 @@ import { NzCarouselOpacityStrategy } from './strategies/opacity-strategy';
 export class NzTestCarouselBasicComponent {
   @ViewChild(NzCarouselComponent, { static: false }) nzCarouselComponent: NzCarouselComponent;
   dots = true;
+  dotPosition = 'bottom';
   vertical = false;
   effect = 'scrollx';
   array = [1, 2, 3, 4];
@@ -135,6 +137,7 @@ describe('carousel', () => {
       expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
     }));
 
+    // @deprecated 9.0.0
     it('should vertical work', () => {
       fixture.detectChanges();
 
@@ -146,6 +149,12 @@ describe('carousel', () => {
 
       expect(carouselWrapper.nativeElement.firstElementChild!.classList).toContain('slick-initialized');
       expect(carouselWrapper.nativeElement.firstElementChild!.classList).toContain('slick-slider');
+      expect(carouselWrapper.nativeElement.firstElementChild!.classList).toContain('slick-vertical');
+    });
+
+    it('should nzDotPosition work', () => {
+      testComponent.dotPosition = 'left';
+      fixture.detectChanges();
       expect(carouselWrapper.nativeElement.firstElementChild!.classList).toContain('slick-vertical');
     });
 
@@ -381,8 +390,9 @@ function tickMilliseconds<T>(fixture: ComponentFixture<T>, seconds: number = 1):
 
 /*
  * Swipe a carousel.
+ *
  * @param carousel: Carousel component.
- * @Distance: Positive to right. Nagetive to left.
+ * @param Distance: Positive to right. Negative to left.
  */
 function swipe(carousel: NzCarouselComponent, distance: number): void {
   carousel.pointerDown(new MouseEvent('mousedown', { clientX: 500, clientY: 0 }));
