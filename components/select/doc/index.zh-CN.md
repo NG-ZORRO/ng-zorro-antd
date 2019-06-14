@@ -46,7 +46,7 @@ import { NzSelectModule } from 'ng-zorro-antd';
 | `[nzFilterOption]` | 是否根据输入项进行筛选。当其为一个函数时，会接收 `inputValue` `option` 两个参数，当 `option` 符合筛选条件时，应返回 `true`，反之则返回 `false`。 | `(input?: string, option?: NzOptionComponent) => boolean;` | - |
 | `[nzMaxMultipleCount]` | 最多选中多少个标签| `number` | `Infinity` |
 | `[nzMode]` | 设置 nz-select 的模式 | `'multiple'｜'tags'｜'default'` | `'default'` |
-| `[nzNotFoundContent]` | 当下拉列表为空时显示的内容 | `string | TemplateRef<void>` | - |
+| `[nzNotFoundContent]` | 当下拉列表为空时显示的内容 | `string \| TemplateRef<void>` | - |
 | `[nzPlaceHolder]` | 选择框默认文字 | `string` | - |
 | `[nzShowArrow]` | 是否显示下拉小箭头 | `boolean` | `true` |
 | `[nzShowSearch]` | 使单选模式可搜索 | `boolean` | `false` |
