@@ -124,12 +124,13 @@ describe('tabs', () => {
       expect(titles[1].innerText).toBe('template');
     });
 
-    it('should content work', () => {
+    it('should content work', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
       fixture.detectChanges();
       const contents = tabs.nativeElement.querySelectorAll('.ant-tabs-tabpane');
       expect(contents[0].innerText).toBe('Content 1');
-      expect(contents[1].innerText).toBe('Content 2');
-    });
+    }));
 
     it('should selectedIndex work', fakeAsync(() => {
       fixture.detectChanges();

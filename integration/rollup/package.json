@@ -26,7 +26,6 @@
     "@angular/compiler": "file:lib/@angular/compiler",
     "@angular/core": "file:lib/@angular/core",
     "@angular/forms": "file:lib/@angular/forms",
-    "@angular/http": "file:lib/@angular/http",
     "@angular/platform-browser": "file:lib/@angular/platform-browser",
     "@angular/platform-browser-dynamic": "file:lib/@angular/platform-browser-dynamic",
     "@angular/router": "file:lib/@angular/router",
