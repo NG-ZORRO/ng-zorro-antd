@@ -63,7 +63,7 @@ task('site:replace-path', () => {
   // tslint:disable-next-line:no-any
   const tsconfig: any = fs.readJSONSync(tsconfigFile);
   tsconfig.compilerOptions.paths['ng-zorro-antd'] = ['../publish'];
-  tsconfig.compilerOptions.paths['ng-zorro-antd/*'] = ['../publish/*']
+  tsconfig.compilerOptions.paths['ng-zorro-antd/*'] = ['../publish/*'];
   return fs.writeJSON(tsconfigFile, tsconfig);
 });
 
