@@ -3,11 +3,11 @@ import * as gulp from 'gulp';
 const gulpClean = require('gulp-clean');
 const resolveBin = require('resolve-bin');
 
-export function cleanTask(glob: string | string[]) {
+export function cleanTask(glob: string | string[]): gulp.TaskFunction {
   return () => gulp.src(glob, { read: false, allowEmpty: true }).pipe(gulpClean(null));
 }
 
-export function execTask(binPath: string, args: string[]) {
+export function execTask(binPath: string, args: string[]): gulp.TaskFunction {
   return (done: (err?: string) => void) => {
     const env = {...process.env};
     // https://github.com/angular/angular-cli/issues/10922
@@ -28,9 +28,11 @@ export function execTask(binPath: string, args: string[]) {
   };
 }
 
-export function execNodeTask(packageName: string, executable: string | string[], args?: string[]) {
+export function execNodeTask(packageName: string, executable: string | string[], args?: string[]): gulp.TaskFunction {
   if (!args) {
+    // tslint:disable-next-line:no-parameter-reassignment
     args = executable as string[];
+    // tslint:disable-next-line:no-parameter-reassignment
     executable = '';
   }
 
