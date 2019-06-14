@@ -2,7 +2,6 @@ const path = require('path');
 
 const projectDir = __dirname;
 const tsconfigPath = path.join(projectDir, 'scripts/gulp/tsconfig.json');
-const tsconfig = require(tsconfigPath);
 
 if (projectDir.includes(' ')) {
   console.error('Error: Cannot run the build tasks if the project is ' +
