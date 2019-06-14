@@ -169,5 +169,10 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, O
     if (changes.nzLoading) {
       this.updateIconDisplay(this.nzLoading);
     }
+    if (changes.nzType && changes.nzType.currentValue === 'link') {
+      this.nzWave.disable();
+    } else {
+      this.nzWave.enable();
+    }
   }
 }

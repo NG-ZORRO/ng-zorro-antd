@@ -58,15 +58,21 @@ export class NzWaveDirective implements OnInit, OnDestroy {
   constructor(
     private ngZone: NgZone,
     private elementRef: ElementRef,
-    @Optional() @Inject(NZ_WAVE_GLOBAL_CONFIG) config: NzWaveConfig,
+    @Optional() @Inject(NZ_WAVE_GLOBAL_CONFIG) private config: NzWaveConfig,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) private animationType: string
   ) {
-    if (config && typeof config.disabled === 'boolean') {
-      this.waveDisabled = config.disabled;
+    this.waveDisabled = this.isConfigDisabled();
+  }
+
+  isConfigDisabled(): boolean {
+    let disabled = false;
+    if (this.config && typeof this.config.disabled === 'boolean') {
+      disabled = this.config.disabled;
     }
     if (this.animationType === 'NoopAnimations') {
-      this.waveDisabled = true;
+      disabled = true;
     }
+    return disabled;
   }
 
   ngOnDestroy(): void {
@@ -94,11 +100,10 @@ export class NzWaveDirective implements OnInit, OnDestroy {
   }
 
   enable(): void {
-    this.waveDisabled = false;
+    // config priority
+    this.waveDisabled = this.isConfigDisabled() || false;
     if (this.waveRenderer) {
       this.waveRenderer.bindTriggerEvent();
-    } else {
-      this.renderWaveIfEnabled();
     }
   }
 }
