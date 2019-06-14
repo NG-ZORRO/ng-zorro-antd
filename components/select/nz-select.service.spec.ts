@@ -81,11 +81,11 @@ describe('SelectService', () => {
       service.listOfSelectedValue = [`option_value_1`, `option_value_miss_1`];
       service.listOfTemplateOption = createListOfOption(3);
       service.updateListOfTagOption();
-      expect(service.listOfTagOption.length).toEqual(2);
-      expect(service.listOfTagOption[0].nzValue).toEqual('option_value_miss');
-      expect(service.listOfTagOption[0].nzLabel).toEqual('option_label_miss');
-      expect(service.listOfTagOption[1].nzValue).toEqual('option_value_miss_1');
-      expect(service.listOfTagOption[1].nzLabel).toEqual('option_value_miss_1');
+      expect(service.listOfTagAndTemplateOption.length).toEqual(4);
+      expect(service.listOfTagAndTemplateOption[0].nzValue).toEqual('option_value_0');
+      expect(service.listOfTagAndTemplateOption[0].nzLabel).toEqual('option_label_0');
+      expect(service.listOfTagAndTemplateOption[1].nzValue).toEqual('option_value_1');
+      expect(service.listOfTagAndTemplateOption[1].nzLabel).toEqual('option_label_1');
     });
     it('should updateAddTagOption work', () => {
       service.listOfSelectedValue = [`option_value_0`, `option_value_1`];
