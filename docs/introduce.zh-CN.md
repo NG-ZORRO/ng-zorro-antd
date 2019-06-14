@@ -83,7 +83,7 @@ $ ng add ng-zorro-antd
 
 在任何形式的参与前，请先阅读 [贡献者文档](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md)。如果你希望参与贡献，欢迎 [Pull Request](https://github.com/NG-ZORRO/ng-zorro-antd/pulls)，或给我们 [报告 Bug](http://ng.ant.design/issue-helper/#/en)。
 
-> 强烈推荐阅读 [《提问的智慧》](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way)(本指南不提供此项目的实际支持服务！)、[《如何向开源社区提问题》](https://github.com/seajs/seajs/issues/545) 和 [《如何有效地报告 Bug》](http://www.chiark.greenend.org.uk/%7Esgtatham/bugs-cn.html)、[《如何向开源项目提交无法解答的问题》](https://zhuanlan.zhihu.com/p/25795393)，更好的问题更容易获得帮助。
+> 强烈推荐阅读 [《提问的智慧》](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way)、[《如何向开源社区提问题》](https://github.com/seajs/seajs/issues/545) 和 [《如何有效地报告 Bug》](http://www.chiark.greenend.org.uk/%7Esgtatham/bugs-cn.html)、[《如何向开源项目提交无法解答的问题》](https://zhuanlan.zhihu.com/p/25795393)，更好的问题更容易获得帮助。
 
 ## 社区互助
 
@@ -96,4 +96,4 @@ $ ng add ng-zorro-antd
 3. [![Gitter](https://img.shields.io/gitter/room/ng-zorro/ng-zorro-antd.svg?style=flat-square)](https://gitter.im/ng-zorro/ng-zorro-antd)
 4. 加入钉钉 NG-ZORRO 自助服务群（中文）
 
-<img src="https://img.alicdn.com/tfs/TB1aYpsHAvoK1RjSZPfXXXPKFXa-750-990.jpg" width="300">
+<img src="https://img.alicdn.com/tfs/TB1aRk.clCw3KVjSZFlXXcJkFXa-750-990.jpg" width="300">
