@@ -383,7 +383,7 @@ export class NzTestButtonSearchComponent {}
 @Component({
   template: `
     <button nz-button nzType="primary" (click)="load()" [nzLoading]="loading">
-      <i nz-icon type="poweroff"></i> {{ 'Click me!' }}
+      <i nz-icon nzType="poweroff"></i> {{ 'Click me!' }}
     </button>
   `
 })
@@ -400,7 +400,7 @@ export class NzTestButtonBindingComponent {
   template: `
     <button nz-button>
       {{ title }}
-      <i nz-icon type="caret-down"></i>
+      <i nz-icon nzType="caret-down"></i>
     </button>
   `
 })

@@ -54,7 +54,7 @@ import { Component, OnInit } from '@angular/core';
                     <td>
                       <span class="table-operation">
                         <nz-dropdown>
-                          <a nz-dropdown class="operation"> Pause <i nz-icon type="down"></i> </a>
+                          <a nz-dropdown class="operation"> Pause <i nz-icon nzType="down"></i> </a>
                           <ul nz-menu>
                             <li nz-menu-item>
                               <a>Action 1</a>

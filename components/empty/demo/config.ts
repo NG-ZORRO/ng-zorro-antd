@@ -1,5 +1,5 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { NzEmptyService } from 'ng-zorro-antd';
+import { NzConfigService } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-empty-config',
@@ -41,7 +41,7 @@ import { NzEmptyService } from 'ng-zorro-antd';
 
     <ng-template #customTpl let-name>
       <div style="text-align: center;">
-        <i nz-icon type="smile" style="font-size: 20px;"></i>
+        <i nz-icon nzType="smile" style="font-size: 20px;"></i>
         <p>Data Not Found in {{ name }}</p>
       </div>
     </ng-template>
@@ -60,13 +60,13 @@ export class NzDemoEmptyConfigComponent {
 
   customize = false;
 
-  constructor(private nzEmptyService: NzEmptyService) {}
+  constructor(private nzConfigService: NzConfigService) {}
 
   onConfigChange(): void {
     if (this.customize) {
-      this.nzEmptyService.setDefaultContent(this.customTpl); // tslint:disable-line:no-any
+      this.nzConfigService.set('nzEmpty', { nzDefaultEmptyContent: this.customTpl });
     } else {
-      this.nzEmptyService.resetDefault();
+      this.nzConfigService.set('nzEmpty', { nzDefaultEmptyContent: undefined });
     }
   }
 }

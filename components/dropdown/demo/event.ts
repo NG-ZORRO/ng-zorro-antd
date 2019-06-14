@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-dropdown-event',
   template: `
     <nz-dropdown>
-      <a nz-dropdown> Hover me, Click menu item <i nz-icon type="down"></i> </a>
+      <a nz-dropdown> Hover me, Click menu item <i nz-icon nzType="down"></i> </a>
       <ul nz-menu>
         <li nz-menu-item (click)="log('1st menu item')">1st menu item</li>
         <li nz-menu-item (click)="log('2nd menu item')">2nd menu item</li>

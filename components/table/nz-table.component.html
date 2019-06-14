@@ -1,6 +1,6 @@
 <ng-template #renderItemTemplate let-type let-page="page">
-  <a class="ant-pagination-item-link" *ngIf="type==='pre'"><i nz-icon type="left"></i></a>
-  <a class="ant-pagination-item-link" *ngIf="type==='next'"><i nz-icon type="right"></i></a>
+  <a class="ant-pagination-item-link" *ngIf="type==='pre'"><i nz-icon nzType="left"></i></a>
+  <a class="ant-pagination-item-link" *ngIf="type==='next'"><i nz-icon nzType="right"></i></a>
   <a *ngIf="type=='page'">{{ page }}</a>
 </ng-template>
 <ng-template #colGroupTemplate>

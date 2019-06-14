@@ -232,8 +232,8 @@ describe('switch', () => {
 @Component({
   selector: 'nz-test-switch-basic',
   template: `
-    <ng-template #checkedChildrenTemplate><i nz-icon type="check"></i></ng-template>
-    <ng-template #unCheckedChildrenTemplate><i nz-icon type="closs"></i></ng-template>
+    <ng-template #checkedChildrenTemplate><i nz-icon nzType="check"></i></ng-template>
+    <ng-template #unCheckedChildrenTemplate><i nz-icon nzType="closs"></i></ng-template>
     <nz-switch
       [(ngModel)]="value"
       (ngModelChange)="modelChange($event)"
@@ -264,8 +264,8 @@ export class NzTestSwitchBasicComponent {
 @Component({
   selector: 'nz-test-switch-template',
   template: `
-    <ng-template #checkedChildrenTemplate><i nz-icon type="check"></i></ng-template>
-    <ng-template #unCheckedChildrenTemplate><i nz-icon type="close"></i></ng-template>
+    <ng-template #checkedChildrenTemplate><i nz-icon nzType="check"></i></ng-template>
+    <ng-template #unCheckedChildrenTemplate><i nz-icon nzType="close"></i></ng-template>
     <nz-switch [nzCheckedChildren]="checkedChildrenTemplate" [nzUnCheckedChildren]="unCheckedChildrenTemplate">
     </nz-switch>
   `

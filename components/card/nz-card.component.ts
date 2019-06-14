@@ -18,9 +18,11 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { InputBoolean } from 'ng-zorro-antd/core';
+import { InputBoolean, WithConfig } from 'ng-zorro-antd/core';
 import { NzCardGridDirective } from './nz-card-grid.directive';
 import { NzCardTabComponent } from './nz-card-tab.component';
+
+const componentName = 'nzCard';
 
 @Component({
   selector: 'nz-card',
@@ -54,7 +56,7 @@ export class NzCardComponent {
   @Input() nzCover: TemplateRef<void>;
   @Input() nzActions: Array<TemplateRef<void>> = [];
   @Input() nzType: string;
-  @Input() nzSize: 'default' | 'small' = 'default';
+  @Input() @WithConfig(componentName, 'default') nzSize: 'default' | 'small';
   @Input() nzTitle: string | TemplateRef<void>;
   @Input() nzExtra: string | TemplateRef<void>;
   @ContentChild(NzCardTabComponent, { static: false }) tab: NzCardTabComponent;

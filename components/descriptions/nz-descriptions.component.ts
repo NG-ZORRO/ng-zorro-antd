@@ -27,9 +27,11 @@ import {
 import { fromEvent, merge, Subject } from 'rxjs';
 import { auditTime, startWith, takeUntil } from 'rxjs/operators';
 
-import { responsiveMap, Breakpoint, InputBoolean } from 'ng-zorro-antd/core';
+import { responsiveMap, Breakpoint, InputBoolean, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
 import { NzDescriptionsItemRenderProps, NzDescriptionsSize } from './nz-descriptions-definitions';
 import { NzDescriptionsItemComponent } from './nz-descriptions-item.component';
+
+const componentName = 'nzDescriptions';
 
 const defaultColumnMap: { [key in Breakpoint]: number } = {
   xxl: 3,
@@ -64,9 +66,9 @@ const defaultColumnMap: { [key in Breakpoint]: number } = {
 export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterContentInit {
   @ContentChildren(NzDescriptionsItemComponent) items: QueryList<NzDescriptionsItemComponent>;
 
-  @Input() @InputBoolean() nzBordered = false;
-  @Input() nzColumn: number | { [key in Breakpoint]: number } = defaultColumnMap;
-  @Input() nzSize: NzDescriptionsSize = 'default';
+  @Input() @InputBoolean() @WithConfig(componentName, false) nzBordered: boolean;
+  @Input() @WithConfig(componentName, defaultColumnMap) nzColumn: number | { [key in Breakpoint]: number };
+  @Input() @WithConfig(componentName, 'default') nzSize: NzDescriptionsSize;
   @Input() nzTitle: string | TemplateRef<void> = '';
 
   itemMatrix: NzDescriptionsItemRenderProps[][] = [];
@@ -77,6 +79,7 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
   private resize$ = new Subject<void>();
 
   constructor(
+    public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
     private ngZone: NgZone,
     private mediaMatcher: MediaMatcher,

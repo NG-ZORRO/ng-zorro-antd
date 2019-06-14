@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-dropdown-trigger',
   template: `
     <nz-dropdown [nzTrigger]="'click'">
-      <a nz-dropdown> Click me <i nz-icon type="down"></i> </a>
+      <a nz-dropdown> Click me <i nz-icon nzType="down"></i> </a>
       <ul nz-menu>
         <li nz-menu-item>1st menu item</li>
         <li nz-menu-item>2nd menu item</li>

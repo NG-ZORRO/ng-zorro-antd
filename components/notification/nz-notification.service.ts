@@ -11,7 +11,7 @@ import { ApplicationRef, ComponentFactoryResolver, Injectable, Injector, Templat
 
 import { NzMessageBaseService } from 'ng-zorro-antd/message';
 
-import { NzNotificationConfig } from './nz-notification-config';
+import { NzNotificationConfigLegacy } from './nz-notification-config';
 import { NzNotificationContainerComponent } from './nz-notification-container.component';
 import { NzNotificationData, NzNotificationDataFilled, NzNotificationDataOptions } from './nz-notification.definitions';
 
@@ -21,7 +21,7 @@ import { NzNotificationData, NzNotificationDataFilled, NzNotificationDataOptions
 export class NzNotificationService extends NzMessageBaseService<
   NzNotificationContainerComponent,
   NzNotificationData,
-  NzNotificationConfig
+  NzNotificationConfigLegacy
 > {
   constructor(overlay: Overlay, injector: Injector, cfr: ComponentFactoryResolver, appRef: ApplicationRef) {
     super(overlay, NzNotificationContainerComponent, injector, cfr, appRef, 'notification-');

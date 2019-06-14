@@ -31,8 +31,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
         </nz-form-control>
       </nz-form-item>
     </form>
-    <ng-template #prefixUser><i nz-icon type="user"></i></ng-template>
-    <ng-template #prefixLock><i nz-icon type="lock"></i></ng-template>
+    <ng-template #prefixUser><i nz-icon nzType="user"></i></ng-template>
+    <ng-template #prefixLock><i nz-icon nzType="lock"></i></ng-template>
   `
 })
 export class NzDemoFormHorizontalLoginComponent implements OnInit {

@@ -39,7 +39,9 @@ import {
   DEFAULT_DROPDOWN_POSITIONS,
   InputBoolean,
   NgClassType,
-  NzNoAnimationDirective
+  NzConfigService,
+  NzNoAnimationDirective,
+  WithConfig
 } from 'ng-zorro-antd/core';
 
 import {
@@ -54,13 +56,15 @@ import {
 import { NzCascaderOptionComponent } from './nz-cascader-li.component';
 import { NzCascaderService } from './nz-cascader.service';
 
+const componentName = 'nzCascader';
+
 const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-cascader,[nz-cascader]',
-  exportAs: 'nzCascader',
+  exportAs: componentName,
   preserveWhitespaces: false,
   templateUrl: './nz-cascader.component.html',
   animations: [slideMotion],
@@ -112,7 +116,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   @Input() nzLabelRender: TemplateRef<void>;
   @Input() nzLabelProperty = 'label';
   @Input() nzNotFoundContent: string | TemplateRef<void>;
-  @Input() nzSize: NzCascaderSize = 'default';
+  @Input() @WithConfig(componentName, 'default') nzSize: NzCascaderSize;
   @Input() nzShowSearch: boolean | NzShowSearchOptions;
   @Input() nzPlaceHolder = 'Please select'; // TODO: i18n?
   @Input() nzMenuClassName: string;
@@ -199,6 +203,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
 
   constructor(
     public cascaderService: NzCascaderService,
+    public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
     elementRef: ElementRef,
     renderer: Renderer2,
@@ -246,6 +251,13 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
       this.inputString = '';
       this.dropdownWidthStyle = '';
     });
+
+    this.nzConfigService
+      .getConfigChangeEventForComponent(componentName)
+      .pipe(takeUntil(this.$destroy))
+      .subscribe(() => {
+        this.cdr.markForCheck();
+      });
   }
 
   ngOnDestroy(): void {

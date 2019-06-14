@@ -8,7 +8,7 @@
   (click)="clickSubMenuTitle()">
   <ng-content select="[title]"></ng-content>
   <span *ngIf="nzMenuService.isInDropDown; else notDropdownTpl" class="ant-dropdown-menu-submenu-arrow">
-    <i nz-icon type="right" class="anticon-right ant-dropdown-menu-submenu-arrow-icon"></i>
+    <i nz-icon nzType="right" class="anticon-right ant-dropdown-menu-submenu-arrow-icon"></i>
   </span>
   <ng-template #notDropdownTpl><i class="ant-menu-submenu-arrow"></i></ng-template>
 </div>

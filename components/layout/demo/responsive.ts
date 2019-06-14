@@ -14,16 +14,16 @@ import { Component } from '@angular/core';
         <div class="logo"></div>
         <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
           <li nz-menu-item>
-            <span><i nz-icon type="user"></i><span class="nav-text">nav 1</span></span>
+            <span><i nz-icon nzType="user"></i><span class="nav-text">nav 1</span></span>
           </li>
           <li nz-menu-item>
-            <span><i nz-icon type="video-camera"></i><span class="nav-text">nav 2</span></span>
+            <span><i nz-icon nzType="video-camera"></i><span class="nav-text">nav 2</span></span>
           </li>
           <li nz-menu-item>
-            <span><i nz-icon type="upload"></i><span class="nav-text">nav 3</span></span>
+            <span><i nz-icon nzType="upload"></i><span class="nav-text">nav 3</span></span>
           </li>
           <li nz-menu-item>
-            <span><i nz-icon type="user"></i><span class="nav-text">nav 4</span></span>
+            <span><i nz-icon nzType="user"></i><span class="nav-text">nav 4</span></span>
           </li>
         </ul>
       </nz-sider>
@@ -38,7 +38,7 @@ import { Component } from '@angular/core';
       </nz-layout>
     </nz-layout>
     <ng-template #zeroTrigger>
-      <i nz-icon type="menu-fold" theme="outline"></i>
+      <i nz-icon nzType="menu-fold" theme="outline"></i>
     </ng-template>
   `,
   styles: [

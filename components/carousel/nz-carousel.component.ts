@@ -34,7 +34,7 @@ import {
 } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
 
-import { isTouchEvent, InputBoolean, InputNumber } from 'ng-zorro-antd/core';
+import { isTouchEvent, InputBoolean, InputNumber, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
 import { takeUntil, throttleTime } from 'rxjs/operators';
 
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
@@ -48,6 +48,8 @@ import {
 import { NzCarouselBaseStrategy } from './strategies/base-strategy';
 import { NzCarouselOpacityStrategy } from './strategies/opacity-strategy';
 import { NzCarouselTransformStrategy } from './strategies/transform-strategy';
+
+const componentName = 'nzCarousel';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -86,12 +88,12 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   @ViewChild('slickTrack', { static: false }) slickTrack: ElementRef;
 
   @Input() nzDotRender: TemplateRef<{ $implicit: number }>;
-  @Input() nzEffect: NzCarouselEffects = 'scrollx';
-  @Input() @InputBoolean() nzEnableSwipe = true;
-  @Input() @InputBoolean() nzDots: boolean = true;
-  @Input() @InputBoolean() nzVertical: boolean = false;
-  @Input() @InputBoolean() nzAutoPlay = false;
-  @Input() @InputNumber() nzAutoPlaySpeed = 3000;
+  @Input() @WithConfig(componentName, 'scrollx') nzEffect: NzCarouselEffects;
+  @Input() @WithConfig(componentName, true) @InputBoolean() nzEnableSwipe: boolean;
+  @Input() @WithConfig(componentName, true) @InputBoolean() nzDots: boolean;
+  @Input() @WithConfig(componentName, false) @InputBoolean() nzVertical: boolean;
+  @Input() @WithConfig(componentName, false) @InputBoolean() nzAutoPlay: boolean;
+  @Input() @WithConfig(componentName, 3000) @InputNumber() nzAutoPlaySpeed: number;
   @Input() @InputNumber() nzTransitionSpeed = 500;
 
   @Output() readonly nzBeforeChange = new EventEmitter<FromToInterface>();
@@ -113,6 +115,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   private isDragging = false;
 
   constructor(
+    public nzConfigService: NzConfigService,
     elementRef: ElementRef,
     @Inject(DOCUMENT) document: any, // tslint:disable-line:no-any
     private renderer: Renderer2,

@@ -15,7 +15,7 @@ import { Component } from '@angular/core';
         <p>{{ panel.name }} content</p>
         <ng-template #expandedIcon let-active>
           {{ active }}
-          <i nz-icon type="caret-right" class="ant-collapse-arrow" [nzRotate]="p.nzActive ? 90 : -90"></i>
+          <i nz-icon nzType="caret-right" class="ant-collapse-arrow" [nzRotate]="p.nzActive ? 90 : -90"></i>
         </ng-template>
       </nz-collapse-panel>
     </nz-collapse>

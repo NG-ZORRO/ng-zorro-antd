@@ -436,7 +436,7 @@ describe('dropdown', () => {
       [nzOverlayClassName]="overlayClassName"
       [nzOverlayStyle]="overlayStyle"
     >
-      <a nz-dropdown> Hover me <i nz-icon type="down"></i> </a>
+      <a nz-dropdown> Hover me <i nz-icon nzType="down"></i> </a>
       <ul nz-menu [nzSelectable]="selectable">
         <li nz-menu-item [nzSelected]="itemSelected">
           <a>1st menu item</a>
@@ -517,7 +517,7 @@ export class NzTestDropdownButtonComponent {
   selector: 'nz-test-dropdown-with-button',
   template: `
     <nz-dropdown>
-      <button nz-button nz-dropdown><span>Button</span> <i nz-icon type="down"></i></button>
+      <button nz-button nz-dropdown><span>Button</span> <i nz-icon nzType="down"></i></button>
       <ul nz-menu>
         <li nz-menu-item>
           <a>1st menu item</a>

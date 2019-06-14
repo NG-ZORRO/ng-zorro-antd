@@ -19,7 +19,7 @@ import { NzDropdownContextComponent, NzDropdownService, NzFormatEmitEvent, NzTre
             <span class="folder-desc">created by {{ node?.origin?.author | lowercase }}</span>
           </span>
           <span *ngIf="node.isLeaf" (contextmenu)="contextMenu($event, contextTemplate)">
-            <i nz-icon type="file"></i>
+            <i nz-icon nzType="file"></i>
             <span class="file-name">{{ node.title }}</span>
             <span class="file-desc">modified by {{ node?.origin?.author | lowercase }}</span>
           </span>

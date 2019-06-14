@@ -16,7 +16,7 @@ import { Component } from '@angular/core';
       <nz-timeline-item [nzDot]="dotTemplate">Technical testing 2015-09-01</nz-timeline-item>
     </nz-timeline>
     <ng-template #dotTemplate>
-      <i nz-icon type="clock-circle-o" style="font-size: 16px;"></i>
+      <i nz-icon nzType="clock-circle-o" style="font-size: 16px;"></i>
     </ng-template>
   `
 })

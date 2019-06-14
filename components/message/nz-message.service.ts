@@ -16,8 +16,9 @@ import {
   TemplateRef,
   Type
 } from '@angular/core';
+import { warnDeprecation } from 'ng-zorro-antd/core';
 
-import { NzMessageConfig } from './nz-message-config';
+import { NzMessageConfigLegacy } from './nz-message-config';
 import { NzMessageContainerComponent } from './nz-message-container.component';
 import { NzMessageData, NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
 
@@ -26,7 +27,7 @@ let globalCounter = 0;
 export class NzMessageBaseService<
   ContainerClass extends NzMessageContainerComponent,
   MessageData,
-  MessageConfig extends NzMessageConfig
+  MessageConfig extends NzMessageConfigLegacy
 > {
   protected _container: ContainerClass;
 
@@ -63,7 +64,15 @@ export class NzMessageBaseService<
     return resultMessage;
   }
 
+  /**
+   * A proxy method that updates config to the container component.
+   *
+   * @deprecated 9.0.0 - This method will be removed in 9.0.0. Please use `NzConfigService` instead.
+   */
   config(config: MessageConfig): void {
+    warnDeprecation(
+      `'NzMessageService.config' is deprecated and will be removed in 9.0.0. Please use 'NzConfigService' instead.`
+    );
     this._container.setConfig(config);
   }
 
@@ -92,7 +101,7 @@ export class NzMessageBaseService<
 export class NzMessageService extends NzMessageBaseService<
   NzMessageContainerComponent,
   NzMessageData,
-  NzMessageConfig
+  NzMessageConfigLegacy
 > {
   constructor(overlay: Overlay, injector: Injector, cfr: ComponentFactoryResolver, appRef: ApplicationRef) {
     super(overlay, NzMessageContainerComponent, injector, cfr, appRef, 'message-');

@@ -29,8 +29,8 @@ import { NzCascaderModule } from 'ng-zorro-antd';
 
 ### nz-cascader
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
+| 参数 | 说明 | 类型 | 默认值 | 支持全局配置 |
+| --- | --- | --- | --- | --- |
 | `[ngModel]` | 指定选中项 | `any[]` | - |
 | `[nzAllowClear]` | 是否支持清除 | `boolean` | `true` |
 | `[nzAutoFocus]` | 是否自动聚焦，当存在输入框时 | `boolean` | `false` |
@@ -50,7 +50,7 @@ import { NzCascaderModule } from 'ng-zorro-antd';
 | `[nzShowArrow]` | 是否显示箭头 | `boolean` | `true` |
 | `[nzShowInput]` | 显示输入框 | `boolean` | `true` |
 | `[nzShowSearch]` | 是否支持搜索，默认情况下对 `label` 进行全匹配搜索，不能和 `[nzLoadData]` 同时使用 | `boolean｜NzShowSearchOptions` | `false` |
-| `[nzSize]` | 输入框大小，可选 `large` `default` `small` | `'large'｜'small'｜'default'` | `'default'` |
+| `[nzSize]` | 输入框大小，可选 `large` `default` `small` | `'large'｜'small'｜'default'` | `'default'` | ✅ |
 | `[nzValueProperty]` | 选项的实际值的属性名 | `string` | `'value'` |
 | `(ngModelChange)` | 值发生变化时触发 | `EventEmitter<any[]>` | - |
 | `(nzClear)` | 清空值时触发 | `EventEmitter<void>` | - |

@@ -18,7 +18,7 @@ import { Component } from '@angular/core';
       </nz-collapse-panel>
     </nz-collapse>
     <ng-template #extraTpl>
-      <i nz-icon nzType="setting"></i>
+      <i nz-icon nznzType="setting"></i>
     </ng-template>
   `,
   styles: []

@@ -28,8 +28,8 @@ import { NzCascaderModule } from 'ng-zorro-antd';
 
 ### nz-cascader
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
+| Property | Description | Type | Default | Global Config |
+| -------- | ----------- | ---- | ------- | --------------------- |
 | `[ngModel]` | selected value | `any[]` | - |
 | `[nzAllowClear]` | whether allow clear | `boolean` | `true` |
 | `[nzAutoFocus]` | whether auto focus the input box | `boolean` | `false` |
@@ -49,7 +49,7 @@ import { NzCascaderModule } from 'ng-zorro-antd';
 | `[nzShowArrow]` | Whether show arrow | `boolean` | `true` |
 | `[nzShowInput]` | Whether show input | `boolean` | `true` |
 | `[nzShowSearch]` | Whether support search. Cannot be used with `[nzLoadData]` at the same time | `boolean｜NzShowSearchOptions` | `false` |
-| `[nzSize]` | input size, one of `large` `default` `small` | `'large'｜'small'｜'default'` | `'default'` |
+| `[nzSize]` | input size, one of `large` `default` `small` | `'large'｜'small'｜'default'` | `'default'` | ✅ |
 | `[nzValueProperty]` | the value property name of options | `string` | `'value'` |
 | `(ngModelChange)` | Emit on values change | `EventEmitter<any[]>` | - |
 | `(nzClear)` | Emit on clear values | `EventEmitter<void>` | - |

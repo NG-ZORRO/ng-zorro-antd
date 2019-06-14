@@ -8,28 +8,28 @@ import { Component } from '@angular/core';
         <div class="logo"></div>
         <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'">
           <li nz-menu-item>
-            <span><i nz-icon type="file"></i><span class="nav-text">nav 1</span></span>
+            <span><i nz-icon nzType="file"></i><span class="nav-text">nav 1</span></span>
           </li>
           <li nz-menu-item>
-            <span><i nz-icon type="video-camera"></i><span class="nav-text">nav 2</span></span>
+            <span><i nz-icon nzType="video-camera"></i><span class="nav-text">nav 2</span></span>
           </li>
           <li nz-menu-item>
-            <span><i nz-icon type="upload"></i><span class="nav-text">nav 3</span></span>
+            <span><i nz-icon nzType="upload"></i><span class="nav-text">nav 3</span></span>
           </li>
           <li nz-menu-item>
-            <span><i nz-icon type="bar-chart"></i><span class="nav-text">nav 4</span></span>
+            <span><i nz-icon nzType="bar-chart"></i><span class="nav-text">nav 4</span></span>
           </li>
           <li nz-menu-item>
-            <span><i nz-icon type="cloud-o"></i><span class="nav-text">nav 5</span></span>
+            <span><i nz-icon nzType="cloud-o"></i><span class="nav-text">nav 5</span></span>
           </li>
           <li nz-menu-item>
-            <span><i nz-icon type="appstore-o"></i><span class="nav-text">nav 6</span></span>
+            <span><i nz-icon nzType="appstore-o"></i><span class="nav-text">nav 6</span></span>
           </li>
           <li nz-menu-item>
-            <span><i nz-icon type="team"></i><span class="nav-text">nav 7</span></span>
+            <span><i nz-icon nzType="team"></i><span class="nav-text">nav 7</span></span>
           </li>
           <li nz-menu-item>
-            <span><i nz-icon type="shop"></i><span class="nav-text">nav 8</span></span>
+            <span><i nz-icon nzType="shop"></i><span class="nav-text">nav 8</span></span>
           </li>
         </ul>
       </nz-sider>

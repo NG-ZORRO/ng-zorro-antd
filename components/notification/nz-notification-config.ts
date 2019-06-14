@@ -8,19 +8,22 @@
 
 import { InjectionToken } from '@angular/core';
 
-import { NzMessageConfig } from 'ng-zorro-antd/message';
+import { NzMessageConfigLegacy } from 'ng-zorro-antd/message';
 
-export interface NzNotificationConfig extends NzMessageConfig {
+/**
+ * @deprecated This interface would has been moved to `ng-zorro-antd/core`. Please migrate to that.
+ */
+export interface NzNotificationConfigLegacy extends NzMessageConfigLegacy {
   nzTop?: string | number;
   nzBottom?: string | number;
   nzPlacement?: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight' | string;
 }
 
-export const NZ_NOTIFICATION_DEFAULT_CONFIG = new InjectionToken<NzNotificationConfig>(
+export const NZ_NOTIFICATION_DEFAULT_CONFIG = new InjectionToken<NzNotificationConfigLegacy>(
   'NZ_NOTIFICATION_DEFAULT_CONFIG'
 );
 
-export const NZ_NOTIFICATION_CONFIG = new InjectionToken<NzNotificationConfig>('NZ_NOTIFICATION_CONFIG');
+export const NZ_NOTIFICATION_CONFIG = new InjectionToken<NzNotificationConfigLegacy>('NZ_NOTIFICATION_CONFIG');
 
 export const NZ_NOTIFICATION_DEFAULT_CONFIG_PROVIDER = {
   provide: NZ_NOTIFICATION_DEFAULT_CONFIG,

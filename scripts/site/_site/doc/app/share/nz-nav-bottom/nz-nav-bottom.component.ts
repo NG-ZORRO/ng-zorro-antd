@@ -9,12 +9,12 @@ import { ROUTER_LIST } from '../../router';
   template: `
     <section class="prev-next-nav">
       <a class="prev-page" *ngIf="index - 1 >= 0" [routerLink]="list[index - 1]?.path">
-        <i nz-icon type="left" class="footer-nav-icon-before"></i>{{ list[index - 1]?.label
-        }}<i nz-icon type="right" class="footer-nav-icon-after"></i>
+        <i nz-icon nzType="left" class="footer-nav-icon-before"></i>{{ list[index - 1]?.label
+        }}<i nz-icon nzType="right" class="footer-nav-icon-after"></i>
       </a>
       <a class="next-page" *ngIf="index + 1 < list?.length" [routerLink]="list[index + 1]?.path">
-        <i nz-icon type="left" class="footer-nav-icon-before"></i>{{ list[index + 1]?.label
-        }}<i nz-icon type="right" class="footer-nav-icon-after"></i>
+        <i nz-icon nzType="left" class="footer-nav-icon-before"></i>{{ list[index + 1]?.label
+        }}<i nz-icon nzType="right" class="footer-nav-icon-after"></i>
       </a>
     </section>
   `
