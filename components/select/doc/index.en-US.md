@@ -45,7 +45,7 @@ import { NzSelectModule } from 'ng-zorro-antd';
 | `[nzFilterOption]` | Filter options against it. The function will receive two arguments, `inputValue` and `option`, if the function returns `true`, the option will be included in the filtered set; Otherwise, it will be excluded. | `(input?: string, option?: NzOptionComponent) => boolean;` | - |
 | `[nzMaxMultipleCount]` |  Max selected option can be selected | `number` | `Infinity` |
 | `[nzMode]` | Set mode of Select | `'multiple'｜'tags'｜'default'` | `'default'` |
-| `[nzNotFoundContent]` | Specify content to show when no result matches.. | `string` | `'Not Found'` |
+| `[nzNotFoundContent]` | Specify content to show when no result matches.. | `string ｜ TemplateRef<void>` | `'Not Found'` |
 | `[nzPlaceHolder]` | Placeholder of select | `string` | - |
 | `[nzShowArrow]` | Whether to show the drop-down arrow | boolean | `true` |
 | `[nzShowSearch]` | Whether show search input in single mode. | `boolean` | `false` |
