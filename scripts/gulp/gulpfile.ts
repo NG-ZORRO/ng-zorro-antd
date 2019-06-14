@@ -16,7 +16,8 @@ task('build:release', series(
 
 task('build:preview', series(
   'clean',
-  'build:simple-site'
+  'build:simple-site',
+  'build:site-iframe'
 ));
 
 task('start:dev', series(
