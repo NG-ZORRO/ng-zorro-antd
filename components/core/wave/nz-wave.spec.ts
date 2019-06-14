@@ -185,13 +185,43 @@ describe('nz-wave extra', () => {
   });
 });
 
+describe('nz-wave NoopAnimationsModule', () => {
+  let fixture: ComponentFixture<WaveContainerWithButtonComponent>;
+  let waveRef: NzWaveDirective;
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [NzWaveModule, NoopAnimationsModule],
+      declarations: [WaveContainerWithButtonComponent]
+    });
+  });
+
+  describe('NoopAnimationsModule', () => {
+    beforeEach(() => {
+      fixture = TestBed.createComponent(WaveContainerWithButtonComponent);
+      fixture.detectChanges();
+      waveRef = fixture.componentInstance.wave;
+    });
+
+    it('should disable by NoopAnimationsModule ', () => {
+      expect(waveRef.disabled).toBe(true);
+      expect(waveRef.rendererRef).toBeFalsy();
+    });
+
+    it('should config priority', () => {
+      waveRef.enable();
+      expect(waveRef.disabled).toBe(true);
+      expect(waveRef.rendererRef).toBeFalsy();
+    });
+  });
+});
+
 describe('nz-wave disable/enable', () => {
   let fixture: ComponentFixture<WaveContainerWithButtonComponent>;
   let waveTarget: HTMLElement;
   let waveRef: NzWaveDirective;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [NzWaveModule, NoopAnimationsModule],
+      imports: [NzWaveModule],
       declarations: [WaveContainerWithButtonComponent]
     });
   });
@@ -202,19 +232,6 @@ describe('nz-wave disable/enable', () => {
       fixture.detectChanges();
       waveTarget = fixture.componentInstance.trigger.nativeElement;
       waveRef = fixture.componentInstance.wave;
-    });
-
-    it('should disable by NoopAnimationsModule ', () => {
-      expect(waveRef.disabled).toBe(true);
-      expect(waveRef.rendererRef).toBeFalsy();
-      waveRef.disable();
-      expect(waveRef.rendererRef).toBeFalsy();
-    });
-
-    it('should create waveRenderer when called enable', () => {
-      waveRef.enable();
-      expect(waveRef.disabled).toBe(false);
-      expect(waveRef.rendererRef).toBeTruthy();
     });
 
     it('should enable work', () => {
@@ -229,7 +246,6 @@ describe('nz-wave disable/enable', () => {
     it('should disable work', () => {
       waveRef.disable();
       expect(waveRef.disabled).toBe(true);
-      expect(waveRef.rendererRef).toBeFalsy();
       dispatchMouseEvent(waveTarget, 'click');
       expect(waveTarget.hasAttribute(WAVE_ATTRIBUTE_NAME)).toBe(false);
       expect(document.body.querySelector('style') === null).toBe(true);
