@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { ContentObserver } from '@angular/cdk/observers';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -25,7 +26,8 @@ import {
   Renderer2,
   SimpleChanges,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  ViewRef
 } from '@angular/core';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 
@@ -42,6 +44,8 @@ import {
   NZ_WAVE_GLOBAL_CONFIG
 } from 'ng-zorro-antd/core';
 import { NzIconDirective } from 'ng-zorro-antd/icon';
+import { Subject } from 'rxjs';
+import { startWith, takeUntil } from 'rxjs/operators';
 
 export type NzButtonType = 'primary' | 'dashed' | 'danger' | 'default' | 'link';
 export type NzButtonShape = 'circle' | 'round' | null;
@@ -59,6 +63,7 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, O
   readonly el: HTMLElement = this.elementRef.nativeElement;
   private iconElement: HTMLElement;
   private iconOnly = false;
+  private destroy$ = new Subject();
   @ViewChild('contentElement', { static: true }) contentElement: ElementRef;
   @ContentChildren(NzIconDirective, { read: ElementRef }) listOfIconElement: QueryList<ElementRef>;
   @HostBinding('attr.nz-wave') nzWave = new NzWaveDirective(
@@ -113,7 +118,9 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, O
     }
     this.setClassMap();
     this.updateIconDisplay(this.nzLoading);
-    this.cdr.detectChanges();
+    if (!(this.cdr as ViewRef).destroyed) {
+      this.cdr.detectChanges();
+    }
   }
 
   moveIcon(): void {
@@ -133,6 +140,7 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, O
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef,
     private renderer: Renderer2,
+    private contentObserver: ContentObserver,
     private nzUpdateHostClassService: NzUpdateHostClassService,
     private ngZone: NgZone,
     @Optional() @Inject(NZ_WAVE_GLOBAL_CONFIG) private waveConfig: NzWaveConfig,
@@ -142,7 +150,16 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, O
   }
 
   ngAfterContentInit(): void {
-    this.checkContent();
+    this.contentObserver
+      .observe(this.contentElement)
+      .pipe(
+        startWith(true),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        // https://github.com/NG-ZORRO/ng-zorro-antd/issues/3079
+        Promise.resolve().then(() => this.checkContent());
+      });
   }
 
   ngOnInit(): void {
@@ -151,6 +168,8 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, O
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.nzWave.ngOnDestroy();
   }
 

@@ -272,7 +272,7 @@ describe('dropdown', () => {
     });
     it('should click right trigger', () => {
       fixture.detectChanges();
-      const buttonItem = button.nativeElement.querySelector('.ant-btn-icon-only');
+      const buttonItem = button.nativeElement.querySelector('.ant-dropdown-trigger');
       expect(!!buttonItem.attributes.getNamedItem('disabled')).toBe(false);
       const clickCallback = jasmine.createSpy('click callback');
       testComponent.nzDropDownButtonComponent.visible$.subscribe(clickCallback);
