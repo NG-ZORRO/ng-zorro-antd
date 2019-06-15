@@ -1,4 +1,4 @@
-<span (cdkObserveContent)="checkContent()" #contentElement><ng-content></ng-content></span>
+<span #contentElement><ng-content></ng-content></span>
 <span class="ant-badge-status-dot ant-badge-status-{{nzStatus || presetColor}}"
       [style.background]="!presetColor && nzColor"
       *ngIf="nzStatus || nzColor"
@@ -16,7 +16,7 @@
       <span class="ant-scroll-number-only"
             *ngIf="count <= nzOverflowCount"
             [style.transform]="'translateY(' + (-countArray[i] * 100) + '%)'">
-          <ng-container *ngIf="(!nzDot)&&(countArray[i]!=null)">
+          <ng-container *ngIf="!nzDot && countArray[i] !== undefined">
             <p *ngFor="let p of countSingleArray" [class.current]="p === countArray[i]">{{ p }}</p>
           </ng-container>
       </span>
