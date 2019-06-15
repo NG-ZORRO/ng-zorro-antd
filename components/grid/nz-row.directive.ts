@@ -21,10 +21,9 @@ import {
 
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Platform } from '@angular/cdk/platform';
+import { responsiveMap, Breakpoint, IndexableObject, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 import { fromEvent, Subject } from 'rxjs';
 import { auditTime, takeUntil } from 'rxjs/operators';
-
-import { responsiveMap, Breakpoint, IndexableObject, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
 export type NzJustify = 'start' | 'end' | 'center' | 'space-around' | 'space-between';
 export type NzAlign = 'top' | 'middle' | 'bottom';

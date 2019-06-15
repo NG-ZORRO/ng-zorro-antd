@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { ContentObserver } from '@angular/cdk/observers';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -13,6 +14,7 @@ import {
   ElementRef,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Renderer2,
   SimpleChanges,
@@ -21,6 +23,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { isEmpty, zoomBadgeMotion, InputBoolean } from 'ng-zorro-antd/core';
+import { Subject } from 'rxjs';
+import { startWith, takeUntil } from 'rxjs/operators';
 
 export type NzBadgeStatusType = 'success' | 'processing' | 'default' | 'error' | 'warning';
 
@@ -36,7 +40,8 @@ export type NzBadgeStatusType = 'success' | 'processing' | 'default' | 'error' |
     '[class.ant-badge-status]': 'nzStatus'
   }
 })
-export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges {
+export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
+  private destroy$ = new Subject();
   maxNumberArray: string[] = [];
   countArray: number[] = [];
   countSingleArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -84,7 +89,7 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges {
     this.maxNumberArray = this.nzOverflowCount.toString().split('');
   }
 
-  constructor(private renderer: Renderer2, private elementRef: ElementRef) {
+  constructor(private renderer: Renderer2, private elementRef: ElementRef, private contentObserver: ContentObserver) {
     renderer.addClass(elementRef.nativeElement, 'ant-badge');
   }
 
@@ -93,7 +98,15 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngAfterViewInit(): void {
-    this.checkContent();
+    this.contentObserver
+      .observe(this.contentElement)
+      .pipe(
+        startWith(true),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.checkContent();
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -111,5 +124,10 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges {
     if (nzColor) {
       this.presetColor = this.colorArray.indexOf(this.nzColor) !== -1 ? this.nzColor : null;
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
