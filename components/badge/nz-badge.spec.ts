@@ -121,7 +121,6 @@ describe('badge', () => {
 });
 
 @Component({
-  selector: 'nz-test-badge-basic',
   template: `
     <nz-badge
       [nzCount]="count"
