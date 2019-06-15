@@ -13,6 +13,15 @@ timeline: true
 * Major version release is not included in this schedule for breaking change and new features.
 
 ---
+## 7.5.1
+`2019-06-14`
+
+### Bug Fixes
+
+* **button:** disable wave animation when the type is link ([#3545](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3545)) ([#3572](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3572)) ([1bb84fe](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1bb84fe)), closes [#3546](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3546)
+* **select:** fix select tag option display ([#3574](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3574)) ([d93fb66](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d93fb66)), closes [#3424](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3424) [#3563](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3563)
+
+
 ## 7.5.0
 `2019-06-05`
 
