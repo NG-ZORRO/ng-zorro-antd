@@ -55,7 +55,7 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
   isNgModel = false;
   onChange: (_: boolean) => void = () => null;
   onTouched: () => void = () => null;
-  @ViewChild('inputElement') inputElement: ElementRef;
+  @ViewChild('inputElement', { static: false }) inputElement: ElementRef;
   /* tslint:disable-next-line:no-any */
   @Input() nzValue: any;
   @Input() @InputBoolean() nzDisabled = false;

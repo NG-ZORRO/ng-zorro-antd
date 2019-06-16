@@ -47,7 +47,7 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   @Input() nzInTable = false;
   @Input() nzSize: 'default' | 'small' = 'default';
   @Input() nzPageSizeOptions = [10, 20, 30, 40];
-  @Input() @ViewChild('renderItemTemplate') nzItemRender: TemplateRef<{
+  @Input() @ViewChild('renderItemTemplate', { static: true }) nzItemRender: TemplateRef<{
     $implicit: 'page' | 'prev' | 'next';
     page: number;
   }>;

@@ -62,7 +62,7 @@ export class NzDemoTableEditCellComponent implements OnInit {
   i = 0;
   editId: string | null;
   listOfData: any[] = [];
-  @ViewChild(NzInputDirective, { read: ElementRef }) inputElement: ElementRef;
+  @ViewChild(NzInputDirective, { static: false, read: ElementRef }) inputElement: ElementRef;
 
   @HostListener('window:click', ['$event'])
   handleClick(e: MouseEvent): void {

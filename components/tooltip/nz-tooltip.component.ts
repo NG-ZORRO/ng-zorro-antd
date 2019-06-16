@@ -66,8 +66,8 @@ export class NzToolTipComponent implements OnChanges {
   overlayOrigin: CdkOverlayOrigin;
   visibleSource = new BehaviorSubject<boolean>(false);
   visible$: Observable<boolean> = this.visibleSource.asObservable();
-  @ViewChild('overlay') overlay: CdkConnectedOverlay;
-  @Input() @ContentChild('nzTemplate') nzTitle: string | TemplateRef<void> | null;
+  @ViewChild('overlay', { static: false }) overlay: CdkConnectedOverlay;
+  @Input() @ContentChild('nzTemplate', { static: true }) nzTitle: string | TemplateRef<void> | null;
   @Input() nzOverlayClassName = '';
   @Input() nzOverlayStyle: { [key: string]: string } = {};
   @Input() nzMouseEnterDelay = 0.15; // second

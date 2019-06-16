@@ -272,7 +272,7 @@ describe('dropdown', () => {
     });
     it('should click right trigger', () => {
       fixture.detectChanges();
-      const buttonItem = button.nativeElement.querySelector('.ant-btn-icon-only');
+      const buttonItem = button.nativeElement.querySelector('.ant-dropdown-trigger');
       expect(!!buttonItem.attributes.getNamedItem('disabled')).toBe(false);
       const clickCallback = jasmine.createSpy('click callback');
       testComponent.nzDropDownButtonComponent.visible$.subscribe(clickCallback);
@@ -281,6 +281,15 @@ describe('dropdown', () => {
       expect(testComponent.click).toHaveBeenCalledTimes(0);
       expect(clickCallback).toHaveBeenCalledTimes(1);
       expect(clickCallback).toHaveBeenCalledWith(true);
+    });
+    it('should icon work', () => {
+      fixture.detectChanges();
+      const rightIcon = button.nativeElement.querySelector('.ant-dropdown-trigger i') as HTMLElement;
+      expect(rightIcon.classList).toContain('anticon-down');
+      testComponent.strIcon = false;
+      fixture.detectChanges();
+      const rightButton = button.nativeElement.querySelector('.ant-dropdown-trigger') as HTMLButtonElement;
+      expect(rightButton.textContent).toContain('Expand');
     });
     it('should disabled work', () => {
       testComponent.disabled = true;
@@ -448,9 +457,9 @@ describe('dropdown', () => {
   styles: []
 })
 export class NzTestDropdownComponent {
-  @ViewChild(NzDropDownComponent) nzDropDownComponent: NzDropDownComponent;
-  @ViewChild(NzDropDownDirective) nzDropDownDirective: NzDropDownDirective;
-  @ViewChild(NzSubMenuComponent) nzSubMenuComponent: NzSubMenuComponent;
+  @ViewChild(NzDropDownComponent, { static: false }) nzDropDownComponent: NzDropDownComponent;
+  @ViewChild(NzDropDownDirective, { static: true }) nzDropDownDirective: NzDropDownDirective;
+  @ViewChild(NzSubMenuComponent, { static: false }) nzSubMenuComponent: NzSubMenuComponent;
   visible = false;
   selectable = true;
   itemSelected = false;
@@ -472,6 +481,7 @@ export class NzTestDropdownComponent {
       [nzPlacement]="placement"
       [nzDisabled]="disabled"
       [nzTrigger]="'click'"
+      [nzIcon]="strIcon ? 'down' : iconTemp"
       (nzVisibleChange)="visibleChange($event)"
     >
       DropDown
@@ -487,12 +497,14 @@ export class NzTestDropdownComponent {
         </li>
       </ul>
     </nz-dropdown-button>
+    <ng-template #iconTemp>Expand</ng-template>
   `,
   styles: []
 })
 export class NzTestDropdownButtonComponent {
-  @ViewChild(NzDropDownButtonComponent) nzDropDownButtonComponent: NzDropDownButtonComponent;
-  @ViewChild(NzSubMenuComponent) nzSubMenuComponent: NzSubMenuComponent;
+  @ViewChild(NzDropDownButtonComponent, { static: false }) nzDropDownButtonComponent: NzDropDownButtonComponent;
+  @ViewChild(NzSubMenuComponent, { static: false }) nzSubMenuComponent: NzSubMenuComponent;
+  strIcon = true;
   disabled = false;
   visible = false;
   placement = 'bottomLeft';
@@ -550,7 +562,7 @@ export class NzTestDropdownWithButtonComponent {}
   `
 })
 export class NzTestDropdownContextmenuComponent {
-  @ViewChild('template') template: TemplateRef<void>;
+  @ViewChild('template', { static: true }) template: TemplateRef<void>;
 
   constructor(public nzDropdownService: NzDropdownService) {}
 }

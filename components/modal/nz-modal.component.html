@@ -10,6 +10,7 @@
   ></div>
   <div
     (click)="onClickMask($event)"
+    (mouseup)="onDialogUp()"
     class="ant-modal-wrap {{ nzWrapClassName }}"
     [style.zIndex]="nzZIndex"
     [style.visibility]="hidden ? 'hidden' : null"
@@ -18,6 +19,7 @@
   >
     <div #modalContainer
       class="ant-modal {{ nzClassName }}"
+      (mousedown)="onMaskDialogDown()"
       [ngClass]="modalAnimationClassMap"
       [ngStyle]="nzStyle"
       [style.width]="nzWidth | toCssUnit"
@@ -100,7 +102,7 @@
           </ng-container>
         </span>
         <div class="ant-modal-confirm-content">
-          <ng-container>
+          <ng-container #bodyContainer>
             <ng-container *ngIf="!isComponent(nzContent)" [ngSwitch]="true">
               <ng-container *ngSwitchCase="isTemplateRef(nzContent)" [ngTemplateOutlet]="nzContent"></ng-container>
               <ng-container *ngSwitchCase="isNonEmptyString(nzContent)"><div [innerHTML]="nzContent"></div></ng-container>

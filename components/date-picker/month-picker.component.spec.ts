@@ -462,7 +462,7 @@ describe('NzMonthPickerComponent', () => {
 })
 class NzTestMonthPickerComponent {
   useSuite: 1 | 2 | 3 | 4;
-  @ViewChild('tplExtraFooter') tplExtraFooter: TemplateRef<void>;
+  @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter: TemplateRef<void>;
 
   // --- Suite 1
   nzAllowClear: boolean;

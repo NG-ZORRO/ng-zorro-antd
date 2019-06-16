@@ -14,6 +14,7 @@ import { Component } from '@angular/core';
     <button nz-button [nzSize]="size" nzType="default">Default</button>
     <button nz-button [nzSize]="size" nzType="dashed">Dashed</button>
     <button nz-button [nzSize]="size" nzType="danger">Danger</button>
+    <button nz-button [nzSize]="size" nzType="link">Link</button>
     <br />
     <button nz-button nzType="primary" [nzSize]="size" nzShape="circle"><i nz-icon type="download"></i></button>
     <button nz-button nzType="primary" [nzSize]="size" nzShape="round"><i nz-icon type="download"></i>Download</button>

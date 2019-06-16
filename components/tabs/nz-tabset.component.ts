@@ -78,8 +78,8 @@ export class NzTabSetComponent
   private tabLabelSubscription = Subscription.EMPTY;
   tabPositionMode: NzTabPositionMode = 'horizontal';
   @ContentChildren(NzTabComponent) listOfNzTabComponent: QueryList<NzTabComponent>;
-  @ViewChild(NzTabsNavComponent) nzTabsNavComponent: NzTabsNavComponent;
-  @ViewChild('tabContent') tabContent: ElementRef;
+  @ViewChild(NzTabsNavComponent, { static: false }) nzTabsNavComponent: NzTabsNavComponent;
+  @ViewChild('tabContent', { static: false }) tabContent: ElementRef;
   @Input() nzTabBarExtraContent: TemplateRef<void>;
   @Input() nzShowPagination = true;
   @Input() nzAnimated: NzAnimatedInterface | boolean = true;

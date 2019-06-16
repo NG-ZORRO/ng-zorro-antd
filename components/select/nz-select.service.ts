@@ -183,10 +183,15 @@ export class NzSelectService {
         value => !this.listOfTemplateOption.find(o => this.compareWith(o.nzValue, value))
       );
       this.listOfTagOption = listOfMissValue.map(value => {
-        const nzOptionComponent = new NzOptionComponent();
-        nzOptionComponent.nzValue = value;
-        nzOptionComponent.nzLabel = value;
-        return nzOptionComponent;
+        const cachedOption = this.listOfCachedSelectedOption.find(o => this.compareWith(o.nzValue, value));
+        if (cachedOption) {
+          return cachedOption;
+        } else {
+          const nzOptionComponent = new NzOptionComponent();
+          nzOptionComponent.nzValue = value;
+          nzOptionComponent.nzLabel = value;
+          return nzOptionComponent;
+        }
       });
       this.listOfTagAndTemplateOption = [...this.listOfTemplateOption.concat(this.listOfTagOption)];
     } else {

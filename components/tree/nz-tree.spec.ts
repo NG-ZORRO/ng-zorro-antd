@@ -670,7 +670,7 @@ describe('nz-tree', () => {
   `
 })
 export class NzTestTreeBasicControlledComponent {
-  @ViewChild('treeComponent') treeComponent: NzTreeComponent;
+  @ViewChild('treeComponent', { static: true }) treeComponent: NzTreeComponent;
   searchValue: string;
   multiple = true;
   expandAll = false;
@@ -755,7 +755,7 @@ export class NzTestTreeBasicControlledComponent {
   `
 })
 export class NzTestTreeDraggableComponent {
-  @ViewChild(NzTreeComponent) treeComponent: NzTreeComponent;
+  @ViewChild(NzTreeComponent, { static: true }) treeComponent: NzTreeComponent;
   nodes = [
     {
       title: '0-0',
@@ -851,7 +851,7 @@ export class NzTestTreeDraggableComponent {
   `
 })
 export class NzTestTreeOlderComponent implements OnInit {
-  @ViewChild(NzTreeComponent) treeComponent: NzTreeComponent;
+  @ViewChild(NzTreeComponent, { static: true }) treeComponent: NzTreeComponent;
   expandKeys = ['1001', '10001'];
   checkedKeys = ['10001'];
   selectedKeys = ['10001', '100011'];
@@ -954,7 +954,7 @@ export class NzTestTreeOlderComponent implements OnInit {
   `
 })
 class NzTestTreeCustomizedIconComponent {
-  @ViewChild('treeComponent') treeComponent: NzTreeComponent;
+  @ViewChild('treeComponent', { static: true }) treeComponent: NzTreeComponent;
   nodes = [
     {
       title: 'parent 1',

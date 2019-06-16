@@ -80,7 +80,7 @@ export class NzAffixComponent implements OnInit, OnDestroy {
 
   private timeout: number;
   private readonly events = ['resize', 'scroll', 'touchstart', 'touchmove', 'touchend', 'pageshow', 'load'];
-  @ViewChild('fixedEl') private fixedEl: ElementRef;
+  @ViewChild('fixedEl', { static: false }) private fixedEl: ElementRef;
 
   private readonly placeholderNode: HTMLElement;
 

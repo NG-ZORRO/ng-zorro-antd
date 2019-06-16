@@ -11,7 +11,7 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { ComponentRef, Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { NzDrawerOptions } from './nz-drawer-options';
+import { NzDrawerOptions, NzDrawerOptionsOfComponent } from './nz-drawer-options';
 import { NzDrawerRef } from './nz-drawer-ref';
 import { NzDrawerComponent } from './nz-drawer.component';
 
@@ -21,16 +21,25 @@ export class DrawerBuilderForService<R> {
   private unsubscribe$ = new Subject<void>();
 
   constructor(private overlay: Overlay, private options: NzDrawerOptions) {
+    /** pick {@link NzDrawerOptions.nzOnCancel} and omit this option */
+    const { nzOnCancel, ...componentOption } = this.options;
     this.createDrawer();
-    this.updateOptions(this.options);
+    this.updateOptions(componentOption);
     // Prevent repeatedly open drawer when tap focus element.
     this.drawerRef!.instance.savePreviouslyFocusedElement();
     this.drawerRef!.instance.nzOnViewInit.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.drawerRef!.instance.open();
     });
-
     this.drawerRef!.instance.nzOnClose.subscribe(() => {
-      this.drawerRef!.instance.close();
+      if (nzOnCancel) {
+        nzOnCancel().then(canClose => {
+          if (canClose !== false) {
+            this.drawerRef!.instance.close();
+          }
+        });
+      } else {
+        this.drawerRef!.instance.close();
+      }
     });
 
     this.drawerRef!.instance.afterClose.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
@@ -50,7 +59,7 @@ export class DrawerBuilderForService<R> {
     this.drawerRef = this.overlayRef.attach(new ComponentPortal(NzDrawerComponent));
   }
 
-  updateOptions(options: NzDrawerOptions): void {
+  updateOptions(options: NzDrawerOptionsOfComponent): void {
     Object.assign(this.drawerRef!.instance, options);
   }
 }

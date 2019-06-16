@@ -69,12 +69,13 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   minuteRange: ReadonlyArray<{ index: number; disabled: boolean }>;
   secondRange: ReadonlyArray<{ index: number; disabled: boolean }>;
   use12HoursRange: ReadonlyArray<{ index: number; value: string }>;
-  @ViewChild(NzTimeValueAccessorDirective) nzTimeValueAccessorDirective: NzTimeValueAccessorDirective;
+  @ViewChild(NzTimeValueAccessorDirective, { static: false })
+  nzTimeValueAccessorDirective: NzTimeValueAccessorDirective;
 
-  @ViewChild('hourListElement') hourListElement: DebugElement;
-  @ViewChild('minuteListElement') minuteListElement: DebugElement;
-  @ViewChild('secondListElement') secondListElement: DebugElement;
-  @ViewChild('use12HoursListElement') use12HoursListElement: DebugElement;
+  @ViewChild('hourListElement', { static: false }) hourListElement: DebugElement;
+  @ViewChild('minuteListElement', { static: false }) minuteListElement: DebugElement;
+  @ViewChild('secondListElement', { static: false }) secondListElement: DebugElement;
+  @ViewChild('use12HoursListElement', { static: false }) use12HoursListElement: DebugElement;
 
   @Input() nzInDatePicker: boolean = false; // If inside a date-picker, more diff works need to be done
   @Input() nzAddOn: TemplateRef<void>;

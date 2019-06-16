@@ -44,7 +44,7 @@ import {
   animations: [collapseMotion]
 })
 export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
-  @ViewChild('dragElement') dragElement: ElementRef;
+  @ViewChild('dragElement', { static: false }) dragElement: ElementRef;
 
   /**
    * for global property
@@ -52,14 +52,14 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzTreeNode: NzTreeNode;
   @Input() @InputBoolean() nzShowLine: boolean;
   @Input() @InputBoolean() nzShowExpand: boolean;
-  @Input() nzExpandedIcon: TemplateRef<{ $implicit: NzTreeNode }>;
   @Input() @InputBoolean() nzCheckable: boolean;
   @Input() @InputBoolean() nzAsyncData: boolean;
   @Input() @InputBoolean() nzHideUnMatched = false;
   @Input() @InputBoolean() nzNoAnimation = false;
   @Input() @InputBoolean() nzSelectMode = false;
   @Input() @InputBoolean() nzShowIcon = false;
-  @Input() nzTreeTemplate: TemplateRef<void>;
+  @Input() nzExpandedIcon: TemplateRef<{ $implicit: NzTreeNode }>;
+  @Input() nzTreeTemplate: TemplateRef<{ $implicit: NzTreeNode }>;
   @Input() nzBeforeDrop: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;
 
   @Input()

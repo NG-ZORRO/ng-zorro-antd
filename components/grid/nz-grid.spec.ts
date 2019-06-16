@@ -16,6 +16,9 @@ import { NzColDirective } from './nz-col.directive';
 import { NzGridModule } from './nz-grid.module';
 import { NzRowDirective } from './nz-row.directive';
 
+// tslint:disable-next-line no-any
+declare const viewport: any;
+
 describe('grid', () => {
   describe('basic', () => {
     let fixture: ComponentFixture<NzDemoGridBasicComponent>;
@@ -172,22 +175,32 @@ describe('grid', () => {
       expect(cols.slice(0, 4).every(col => col.nativeElement.classList.contains('gutter-row'))).toBe(true);
     });
 
-    it('should responsive work', () => {
-      // TODO: fake media query
-      fixture.detectChanges();
-      expect(rows[1].nativeElement.style.cssText).toBe('margin-left: -4px; margin-right: -4px;');
-      expect(
-        cols.slice(4, 8).every(col => col.nativeElement.style.cssText === 'padding-left: 4px; padding-right: 4px;')
-      ).toBe(true);
-      expect(cols.slice(4, 8).every(col => col.nativeElement.classList.contains('gutter-row'))).toBe(true);
+    it('should responsive work', fakeAsync(() => {
+      viewport.set(1000, 1000);
       window.dispatchEvent(new Event('resize'));
       fixture.detectChanges();
+      tick(100);
+      fixture.detectChanges();
+
+      expect(rows[1].nativeElement.style.cssText).toBe('margin-left: -16px; margin-right: -16px;');
+      expect(
+        cols.slice(4, 8).every(col => col.nativeElement.style.cssText === 'padding-left: 16px; padding-right: 16px;')
+      ).toBe(true);
+      expect(cols.slice(4, 8).every(col => col.nativeElement.classList.contains('gutter-row'))).toBe(true);
+
+      viewport.set(480, 480);
+      window.dispatchEvent(new Event('resize'));
+      fixture.detectChanges();
+      tick(100);
+      fixture.detectChanges();
       expect(rows[1].nativeElement.style.cssText).toBe('margin-left: -4px; margin-right: -4px;');
       expect(
         cols.slice(4, 8).every(col => col.nativeElement.style.cssText === 'padding-left: 4px; padding-right: 4px;')
       ).toBe(true);
       expect(cols.slice(4, 8).every(col => col.nativeElement.classList.contains('gutter-row'))).toBe(true);
-    });
+
+      viewport.reset();
+    }));
   });
 
   describe('offset', () => {

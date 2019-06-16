@@ -57,7 +57,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
       offsetY: 0
     }
   ];
-  @ViewChild('inputElement') inputRef: ElementRef;
+  @ViewChild('inputElement', { static: true }) inputRef: ElementRef<HTMLInputElement>;
   @Input() nzSize: string | null = null;
   @Input() nzHourStep = 1;
   @Input() nzMinuteStep = 1;

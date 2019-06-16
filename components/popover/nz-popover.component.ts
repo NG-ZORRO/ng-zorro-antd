@@ -40,9 +40,9 @@ import { NzToolTipComponent } from 'ng-zorro-antd/tooltip';
 export class NzPopoverComponent extends NzToolTipComponent {
   _prefix = 'ant-popover-placement';
 
-  /** Used to remove NzToolTipComponent @ContentChild('nzTemplate') */
-  @Input() @ContentChild('neverUsedTemplate') nzTitle: string | TemplateRef<void>;
-  @Input() @ContentChild('nzTemplate') nzContent: string | TemplateRef<void>;
+  /** Used to remove NzToolTipComponent @ContentChild('nzTemplate', {static: false}) */
+  @Input() @ContentChild('neverUsedTemplate', { static: true }) nzTitle: string | TemplateRef<void>;
+  @Input() @ContentChild('nzTemplate', { static: true }) nzContent: string | TemplateRef<void>;
 
   constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
     super(cdr, noAnimation);

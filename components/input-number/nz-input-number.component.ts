@@ -62,7 +62,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   onTouched: () => void = () => null;
   @Output() readonly nzBlur = new EventEmitter();
   @Output() readonly nzFocus = new EventEmitter();
-  @ViewChild('inputElement') inputElement: ElementRef;
+  @ViewChild('inputElement', { static: true }) inputElement: ElementRef<HTMLInputElement>;
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzMin: number = -Infinity;
   @Input() nzMax: number = Infinity;
@@ -91,7 +91,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
         .replace(/。/g, '.')
         .replace(/[^\w\.-]+/g, '')
     );
-    this.inputElement.nativeElement.value = this.actualValue;
+    this.inputElement.nativeElement.value = `${this.actualValue}`;
   }
 
   getCurrentValidValue(value: string | number): number {
@@ -281,7 +281,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     this.actualValue = value;
     const displayValue = isNotNil(this.nzFormatter(this.value)) ? this.nzFormatter(this.value) : '';
     this.displayValue = displayValue;
-    this.inputElement.nativeElement.value = displayValue;
+    this.inputElement.nativeElement.value = `${displayValue}`;
     this.disabledUp = this.disabledDown = false;
     if (value || value === 0) {
       const val = Number(value);

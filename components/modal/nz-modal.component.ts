@@ -9,7 +9,7 @@
 import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
 
 import { ESCAPE } from '@angular/cdk/keycodes';
-import { BlockScrollStrategy, Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { BlockScrollStrategy, Overlay, OverlayKeyboardDispatcher, OverlayRef } from '@angular/cdk/overlay';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
@@ -49,6 +49,7 @@ import { ModalButtonOptions, ModalOptions, ModalType, OnClickCallback } from './
 export const MODAL_ANIMATE_DURATION = 200; // Duration when perform animations (ms)
 
 type AnimationState = 'enter' | 'leave' | null;
+export const WRAP_CLASS_NAME = 'ant-modal-wrap';
 
 @Component({
   selector: 'nz-modal',
@@ -96,9 +97,9 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   @Output() readonly nzAfterClose = new EventEmitter<R>(); // Trigger when modal leave-animation over
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
-  @ViewChild('modalContainer') modalContainer: ElementRef;
-  @ViewChild('bodyContainer', { read: ViewContainerRef }) bodyContainer: ViewContainerRef;
-  @ViewChild('autoFocusButtonOk', { read: ElementRef }) autoFocusButtonOk: ElementRef; // Only aim to focus the ok button that needs to be auto focused
+  @ViewChild('modalContainer', { static: true }) modalContainer: ElementRef;
+  @ViewChild('bodyContainer', { static: false, read: ViewContainerRef }) bodyContainer: ViewContainerRef;
+  @ViewChild('autoFocusButtonOk', { static: false, read: ElementRef }) autoFocusButtonOk: ElementRef; // Only aim to focus the ok button that needs to be auto focused
 
   get afterOpen(): Observable<void> {
     // Observable alias for nzAfterOpen
@@ -168,11 +169,15 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   private previouslyFocusedElement: HTMLElement;
   private focusTrap: FocusTrap;
   private scrollStrategy: BlockScrollStrategy;
+  private overlayRef: OverlayRef;
+  private dialogMouseDown = false;
+  private timeoutId: number;
 
   [key: string]: any; // tslint:disable-line:no-any
 
   constructor(
     private overlay: Overlay,
+    private overlayKeyboardDispatcher: OverlayKeyboardDispatcher,
     private i18n: NzI18nService,
     private cfr: ComponentFactoryResolver,
     private elementRef: ElementRef,
@@ -192,10 +197,6 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
       this.locale = this.i18n.getLocaleData('Modal') as { okText: string; cancelText: string };
     });
 
-    fromEvent<KeyboardEvent>(this.document.body, 'keydown')
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(e => this.keydownListener(e));
-
     if (this.isComponent(this.nzContent)) {
       this.createDynamicComponent(this.nzContent as Type<T>); // Create component along without View
     }
@@ -209,9 +210,20 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
     this.container = typeof this.nzGetContainer === 'function' ? this.nzGetContainer() : this.nzGetContainer;
     if (this.container instanceof HTMLElement) {
       this.container.appendChild(this.elementRef.nativeElement);
+      fromEvent<KeyboardEvent>(this.document.body, 'keydown')
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(e => this.keydownListener(e));
     } else if (this.container instanceof OverlayRef) {
       // NOTE: only attach the dom to overlay, the view container is not changed actually
+      this.setOverlayRef(this.container);
       this.container.overlayElement.appendChild(this.elementRef.nativeElement);
+    }
+
+    if (this.overlayRef) {
+      this.overlayRef
+        .keydownEvents()
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(e => this.keydownListener(e));
     }
 
     // Register modal when afterOpen/afterClose is stable
@@ -251,6 +263,11 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
       this.unsubscribe$.next();
       this.unsubscribe$.complete();
     });
+    clearTimeout(this.timeoutId);
+  }
+
+  setOverlayRef(overlayRef: OverlayRef): void {
+    this.overlayRef = overlayRef;
   }
 
   keydownListener(event: KeyboardEvent): void {
@@ -296,12 +313,25 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
     return this.elementRef && this.elementRef.nativeElement;
   }
 
+  onMaskDialogDown(): void {
+    this.dialogMouseDown = true;
+  }
+
+  onDialogUp(): void {
+    if (this.dialogMouseDown) {
+      this.timeoutId = setTimeout(() => {
+        this.dialogMouseDown = false;
+      }, 0);
+    }
+  }
+
   onClickMask($event: MouseEvent): void {
     if (
       this.mask &&
       this.maskClosable &&
-      ($event.target as HTMLElement).classList.contains('ant-modal-wrap') &&
-      this.nzVisible
+      ($event.target as HTMLElement).classList.contains(WRAP_CLASS_NAME) &&
+      this.nzVisible &&
+      !this.dialogMouseDown
     ) {
       this.onClickOkCancel('cancel');
     }
@@ -361,6 +391,13 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
       this.scrollStrategy.enable();
       this.savePreviouslyFocusedElement();
       this.trapFocus();
+      if (this.container instanceof OverlayRef) {
+        this.overlayKeyboardDispatcher.add(this.overlayRef);
+      }
+    } else {
+      if (this.container instanceof OverlayRef) {
+        this.overlayKeyboardDispatcher.remove(this.overlayRef);
+      }
     }
 
     return Promise.resolve(animation ? this.animateTo(visible) : undefined).then(() => {

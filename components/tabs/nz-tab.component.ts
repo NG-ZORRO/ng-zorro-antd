@@ -40,8 +40,8 @@ export class NzTabComponent implements OnChanges, OnDestroy {
   origin: number | null = null;
   isActive = false;
   readonly stateChanges = new Subject<void>();
-  @ViewChild(TemplateRef) content: TemplateRef<void>;
-  @ContentChild(NzTabDirective, { read: TemplateRef }) template: TemplateRef<void>;
+  @ViewChild(TemplateRef, { static: true }) content: TemplateRef<void>;
+  @ContentChild(NzTabDirective, { static: false, read: TemplateRef }) template: TemplateRef<void>;
   @Input() nzTitle: string | TemplateRef<void>;
   @Input() @InputBoolean() nzForceRender = false;
   @Input() @InputBoolean() nzDisabled = false;

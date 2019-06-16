@@ -21,7 +21,7 @@ import { NzDrawerRef, NzDrawerService } from 'ng-zorro-antd';
   `
 })
 export class NzDemoDrawerServiceComponent {
-  @ViewChild('drawerTemplate') drawerTemplate: TemplateRef<{
+  @ViewChild('drawerTemplate', { static: false }) drawerTemplate: TemplateRef<{
     $implicit: { value: string };
     drawerRef: NzDrawerRef<any>;
   }>;

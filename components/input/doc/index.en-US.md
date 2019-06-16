@@ -36,8 +36,8 @@ All props of input supported by [w3c standards](https://www.w3schools.com/tags/t
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzAddonAfter]` | The label text displayed after (on the right side of) the input field. | `string｜TemplateRef<void>` | - |
-| `[nzAddonBefore]` | The label text displayed before (on the left side of) the input field. | `string｜TemplateRef<void>` | - |
+| `[nzAddOnAfter]` | The label text displayed after (on the right side of) the input field. | `string｜TemplateRef<void>` | - |
+| `[nzAddOnBefore]` | The label text displayed before (on the left side of) the input field. | `string｜TemplateRef<void>` | - |
 | `[nzPrefix]` | The prefix icon for the Input. | `string｜TemplateRef<void>` | - |
 | `[nzSuffix]` | The suffix icon for the Input. | `string｜TemplateRef<void>` | - |
 | `[nzCompact]` | Whether use compact style | `boolean` | `false` |

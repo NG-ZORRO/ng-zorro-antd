@@ -130,6 +130,8 @@ export class NzCascaderService implements OnDestroy {
     this.selectedOptions = [];
 
     if (first && this.cascaderComponent.nzLoadData && !hasValue) {
+      // Should also notify the component that value changes. Fix #3480.
+      this.$redraw.next();
       return;
     } else {
       initColumnWithIndex(0);

@@ -1279,7 +1279,7 @@ describe('upload', () => {
   `
 })
 class TestUploadComponent {
-  @ViewChild('upload') comp: NzUploadComponent;
+  @ViewChild('upload', { static: false }) comp: NzUploadComponent;
   show = true;
   nzType: UploadType = 'select';
   nzLimit = 0;
@@ -1344,7 +1344,7 @@ class TestUploadComponent {
   encapsulation: ViewEncapsulation.None
 })
 class TestUploadListComponent {
-  @ViewChild('list') comp: NzUploadListComponent;
+  @ViewChild('list', { static: false }) comp: NzUploadListComponent;
   listType: UploadListType = 'picture-card';
   items: any[] = [
     {
@@ -1388,7 +1388,7 @@ class TestUploadListComponent {
   `
 })
 class TestUploadBtnComponent {
-  @ViewChild('btn') comp: NzUploadBtnComponent;
+  @ViewChild('btn', { static: false }) comp: NzUploadBtnComponent;
   classes: string[] = ['test'];
   options: ZipButtonOptions = {
     disabled: false,

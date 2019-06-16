@@ -28,7 +28,7 @@ import { Subject } from 'rxjs';
 })
 export class NzOptionComponent implements OnChanges {
   changes = new Subject();
-  @ViewChild(TemplateRef) template: TemplateRef<void>;
+  @ViewChild(TemplateRef, { static: false }) template: TemplateRef<void>;
   @Input() nzLabel: string;
   // tslint:disable-next-line:no-any
   @Input() nzValue: any;

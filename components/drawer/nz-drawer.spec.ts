@@ -1,3 +1,4 @@
+import { ESCAPE } from '@angular/cdk/keycodes';
 import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
 
 import { async, fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -5,6 +6,7 @@ import { async, fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angu
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { dispatchKeyboardEvent } from 'ng-zorro-antd';
 import { NzDrawerRef } from './nz-drawer-ref';
 import { NzDrawerComponent } from './nz-drawer.component';
 import { NzDrawerModule } from './nz-drawer.module';
@@ -107,6 +109,15 @@ describe('NzDrawerComponent', () => {
     (overlayContainerElement.querySelector('.ant-drawer .ant-drawer-mask') as HTMLElement).click();
     fixture.detectChanges();
     expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
+  });
+
+  it('should be closed when ESC keydown', () => {
+    component.open();
+    fixture.detectChanges();
+    expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
+    dispatchKeyboardEvent(document.body, 'keydown', ESCAPE);
+    fixture.detectChanges();
+    expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(false);
   });
 
   it('should close when click mask', () => {
@@ -233,12 +244,7 @@ describe('NzDrawerComponent', () => {
     component.open();
     fixture.detectChanges();
     expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
-    expect((overlayContainerElement.querySelector('.ant-drawer .ant-drawer-mask') as HTMLElement).style.zIndex).toBe(
-      '1001'
-    );
-    expect(
-      (overlayContainerElement.querySelector('.ant-drawer .ant-drawer-content-wrapper') as HTMLElement).style.zIndex
-    ).toBe('1001');
+    expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).style.zIndex).toBe('1001');
   });
 
   it('should nzPlacement work', () => {
@@ -390,7 +396,7 @@ describe('NzDrawerService', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NzDrawerModule],
+      imports: [NzDrawerModule, NoopAnimationsModule],
       providers: [NzDrawerService],
       declarations: [NzTestDrawerWithServiceComponent, NzDrawerCustomComponent]
     });
@@ -436,12 +442,40 @@ describe('NzDrawerService', () => {
       nzContentParams: { value: 1 }
     });
     drawerRef.afterOpen.subscribe(openSpy);
-    drawerRef.afterOpen.subscribe(closeSpy);
+    drawerRef.afterClose.subscribe(closeSpy);
     fixture.detectChanges();
     expect(openSpy).not.toHaveBeenCalled();
     tick(300);
     expect(openSpy).toHaveBeenCalled();
     (overlayContainerElement.querySelector('.ant-drawer .close-btn') as HTMLElement).click();
+    fixture.detectChanges();
+    tick(300);
+    expect(closeSpy).toHaveBeenCalled();
+    fixture.detectChanges();
+  }));
+
+  it('should `nzOnCancel` work', fakeAsync(() => {
+    let canClose = false;
+    const openSpy = jasmine.createSpy('afterOpen spy');
+    const closeSpy = jasmine.createSpy('afterClose spy').and.returnValue(1);
+    const drawerRef = drawerService.create({
+      nzTitle: 'Service nzOnCancel',
+      nzContent: NzDrawerCustomComponent,
+      nzOnCancel: () => Promise.resolve(canClose)
+    });
+    drawerRef.afterOpen.subscribe(openSpy);
+    drawerRef.afterClose.subscribe(closeSpy);
+    fixture.detectChanges();
+    expect(openSpy).not.toHaveBeenCalled();
+    tick(300);
+    expect(openSpy).toHaveBeenCalled();
+    (overlayContainerElement.querySelector('.ant-drawer .ant-drawer-close') as HTMLElement).click();
+    fixture.detectChanges();
+    tick(300);
+    expect(closeSpy).not.toHaveBeenCalled();
+    fixture.detectChanges();
+    canClose = true;
+    (overlayContainerElement.querySelector('.ant-drawer .ant-drawer-close') as HTMLElement).click();
     fixture.detectChanges();
     tick(300);
     expect(closeSpy).toHaveBeenCalled();
@@ -492,9 +526,9 @@ class NzTestDrawerComponent {
   placement = 'left';
   offsetX = 0;
   offsetY = 0;
-  @ViewChild('customTitle') templateTitle: TemplateRef<void>;
+  @ViewChild('customTitle', { static: false }) templateTitle: TemplateRef<void>;
 
-  @ViewChild(NzDrawerComponent) drawerComponent: NzDrawerComponent;
+  @ViewChild(NzDrawerComponent, { static: false }) drawerComponent: NzDrawerComponent;
 
   open(): void {
     this.visible = true;
@@ -514,7 +548,10 @@ class NzTestDrawerComponent {
   `
 })
 class NzTestDrawerWithServiceComponent {
-  @ViewChild('drawerTemplate') drawerTemplate: TemplateRef<{ $implicit: number; drawerRef: NzDrawerRef }>;
+  @ViewChild('drawerTemplate', { static: false }) drawerTemplate: TemplateRef<{
+    $implicit: number;
+    drawerRef: NzDrawerRef;
+  }>;
   templateOpenSpy = jasmine.createSpy('template afterOpen spy');
   templateCloseSpy = jasmine.createSpy('template afterClose spy');
   templateDrawerRef: NzDrawerRef;

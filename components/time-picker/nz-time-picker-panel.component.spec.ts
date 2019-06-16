@@ -304,7 +304,7 @@ export class NzTestTimePanelComponent {
   secondStep = 1;
   minuteStep = 1;
   hourStep = 1;
-  @ViewChild(NzTimePickerPanelComponent) nzTimePickerPanelComponent: NzTimePickerPanelComponent;
+  @ViewChild(NzTimePickerPanelComponent, { static: false }) nzTimePickerPanelComponent: NzTimePickerPanelComponent;
   value: Date;
   openValue = new Date(0, 0, 0, 10, 11, 12);
   format: string | null = 'HH:mm:ss';
@@ -337,7 +337,7 @@ export class NzTestTimePanelDisabledComponent {
   minuteStep = 1;
   hourStep = 1;
   hideDisabledOptions = false;
-  @ViewChild(NzTimePickerPanelComponent) nzTimePickerPanelComponent: NzTimePickerPanelComponent;
+  @ViewChild(NzTimePickerPanelComponent, { static: false }) nzTimePickerPanelComponent: NzTimePickerPanelComponent;
   value = new Date(0, 0, 0, 0, 0, 0);
   openValue = new Date(0, 0, 0, 10, 11, 12);
   format = 'HH:mm:ss';
@@ -378,7 +378,7 @@ export class NzTestTimePanelDisabledComponent {
   styleUrls: ['../style/index.less', './style/index.less']
 })
 export class NzTest12HourTimePanelComponent {
-  @ViewChild(NzTimePickerPanelComponent) nzTimePickerPanelComponent: NzTimePickerPanelComponent;
+  @ViewChild(NzTimePickerPanelComponent, { static: false }) nzTimePickerPanelComponent: NzTimePickerPanelComponent;
   format = 'hh:mm:ss a';
   hourStep = 1;
   value: Date;
@@ -401,7 +401,7 @@ export class NzTest12HourTimePanelComponent {
   styleUrls: ['../style/index.less', './style/index.less']
 })
 export class NzTest12HourTimePanelDisabeledComponent {
-  @ViewChild(NzTimePickerPanelComponent) nzTimePickerPanelComponent: NzTimePickerPanelComponent;
+  @ViewChild(NzTimePickerPanelComponent, { static: false }) nzTimePickerPanelComponent: NzTimePickerPanelComponent;
   format = 'hh:mm:ss a';
   value = new Date(0, 0, 0, 1, 1, 1);
   disabledHours = (): number[] => [];

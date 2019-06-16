@@ -247,6 +247,7 @@ export class AppModule { }`;
     dependencies: {
       rxjs                               : '^6.3.3',
       '@angular/cdk'                     : '^7.0.0',
+      '@angular/compiler'                : '^7.0.0',
       '@angular/core'                    : '^7.0.0',
       '@angular/forms'                   : '^7.0.0',
       '@angular/http'                    : '^7.0.0',
@@ -260,7 +261,7 @@ export class AppModule { }`;
       'date-fns'                         : '^1.29.0',
       tslib                              : '^1.9.3',
       typescript                         : '~3.1.1',
-      'ng-zorro-antd': '^7.3.3'
+      'ng-zorro-antd': '^7.5.0'
     },
     tags        : [ 'stackblitz', 'sdk' ]
   };

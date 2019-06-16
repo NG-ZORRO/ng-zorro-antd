@@ -24,31 +24,11 @@ import { Platform } from '@angular/cdk/platform';
 import { fromEvent, Subject } from 'rxjs';
 import { auditTime, takeUntil } from 'rxjs/operators';
 
-import { IndexableObject, NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { responsiveMap, Breakpoint, IndexableObject, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
 export type NzJustify = 'start' | 'end' | 'center' | 'space-around' | 'space-between';
 export type NzAlign = 'top' | 'middle' | 'bottom';
 export type NzType = 'flex' | null;
-
-export enum Breakpoint {
-  'xxl',
-  'xl',
-  'lg',
-  'md',
-  'sm',
-  'xs'
-}
-
-export type BreakpointMap = { [index in keyof typeof Breakpoint]: string };
-
-const responsiveMap: BreakpointMap = {
-  xs: '(max-width: 575px)',
-  sm: '(min-width: 576px)',
-  md: '(min-width: 768px)',
-  lg: '(min-width: 992px)',
-  xl: '(min-width: 1200px)',
-  xxl: '(min-width: 1600px)'
-};
 
 @Directive({
   selector: '[nz-row],nz-row',
@@ -88,11 +68,11 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   }
 
   watchMedia(): void {
-    // @ts-ignore
-    Object.keys(responsiveMap).map((screen: Breakpoint) => {
-      const matchBelow = this.mediaMatcher.matchMedia(responsiveMap[screen]).matches;
+    Object.keys(responsiveMap).map((screen: string) => {
+      const castBP = screen as Breakpoint;
+      const matchBelow = this.mediaMatcher.matchMedia(responsiveMap[castBP]).matches;
       if (matchBelow) {
-        this.breakPoint = screen;
+        this.breakPoint = castBP;
       }
     });
     this.updateGutter();

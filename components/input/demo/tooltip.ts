@@ -34,7 +34,7 @@ export class NzDemoInputTooltipComponent {
   value = '';
   title = 'Input a number';
 
-  @ViewChild('inputElement') inputElement: ElementRef;
+  @ViewChild('inputElement', { static: false }) inputElement: ElementRef;
 
   onChange(value: string): void {
     this.updateValue(value);
