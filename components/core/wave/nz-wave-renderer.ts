@@ -14,16 +14,15 @@ export class NzWaveRenderer {
   private styleForPseudo: HTMLStyleElement | null;
   private extraNode: HTMLDivElement | null;
   private lastTime = 0;
-
+  private platform = new Platform();
+  clickHandler: () => void;
   get waveAttributeName(): string {
     return this.insertExtraNode ? 'ant-click-animating' : 'ant-click-animating-without-extra-node';
   }
 
   constructor(private triggerElement: HTMLElement, private ngZone: NgZone, private insertExtraNode: boolean) {
-    const platform = new Platform();
-    if (platform.isBrowser) {
-      this.bindTriggerEvent();
-    }
+    this.clickHandler = this.onClick.bind(this);
+    this.bindTriggerEvent();
   }
 
   onClick = (event: MouseEvent) => {
@@ -40,16 +39,19 @@ export class NzWaveRenderer {
   };
 
   bindTriggerEvent(): void {
-    this.ngZone.runOutsideAngular(() => {
-      if (this.triggerElement) {
-        this.triggerElement.addEventListener('click', this.onClick, true);
-      }
-    });
+    if (this.platform.isBrowser) {
+      this.ngZone.runOutsideAngular(() => {
+        this.removeTriggerEvent();
+        if (this.triggerElement) {
+          this.triggerElement.addEventListener('click', this.clickHandler, true);
+        }
+      });
+    }
   }
 
   removeTriggerEvent(): void {
     if (this.triggerElement) {
-      this.triggerElement.removeEventListener('click', this.onClick, true);
+      this.triggerElement.removeEventListener('click', this.clickHandler, true);
     }
   }
 

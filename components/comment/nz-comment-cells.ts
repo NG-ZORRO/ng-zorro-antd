@@ -8,6 +8,7 @@
 
 import { CdkPortalOutlet, TemplatePortal } from '@angular/cdk/portal';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ComponentFactoryResolver,
@@ -38,7 +39,7 @@ export class NzCommentContentDirective {}
   selector: '[nzCommentActionHost]',
   exportAs: 'nzCommentActionHost'
 })
-export class NzCommentActionHostDirective extends CdkPortalOutlet implements OnInit, OnDestroy {
+export class NzCommentActionHostDirective extends CdkPortalOutlet implements OnInit, OnDestroy, AfterViewInit {
   @Input() nzCommentActionHost: TemplatePortal | null;
 
   constructor(componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef) {
@@ -47,11 +48,14 @@ export class NzCommentActionHostDirective extends CdkPortalOutlet implements OnI
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.attach(this.nzCommentActionHost);
   }
 
   ngOnDestroy(): void {
     super.ngOnDestroy();
+  }
+
+  ngAfterViewInit(): void {
+    this.attach(this.nzCommentActionHost);
   }
 }
 
@@ -63,7 +67,7 @@ export class NzCommentActionHostDirective extends CdkPortalOutlet implements OnI
   template: '<ng-template><ng-content></ng-content></ng-template>'
 })
 export class NzCommentActionComponent implements OnInit {
-  @ViewChild(TemplateRef) implicitContent: TemplateRef<void>;
+  @ViewChild(TemplateRef, { static: true }) implicitContent: TemplateRef<void>;
   private contentPortal: TemplatePortal | null = null;
 
   get content(): TemplatePortal | null {

@@ -177,7 +177,7 @@ describe('avatar', () => {
   styleUrls: ['./style/index.less']
 })
 class TestAvatarComponent {
-  @ViewChild('comp') comp: NzAvatarComponent;
+  @ViewChild('comp', { static: false }) comp: NzAvatarComponent;
   nzShape = 'square';
   nzSize: string | number = 'large';
   nzIcon: string | null = 'anticon anticon-user';

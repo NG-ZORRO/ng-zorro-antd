@@ -23,6 +23,7 @@ import {
   NgZone,
   OnChanges,
   OnDestroy,
+  Optional,
   Output,
   QueryList,
   Renderer2,
@@ -34,10 +35,16 @@ import {
 import { fromEvent, Subject } from 'rxjs';
 
 import { isTouchEvent, InputBoolean, InputNumber } from 'ng-zorro-antd/core';
-import { take, takeUntil, throttleTime } from 'rxjs/operators';
+import { takeUntil, throttleTime } from 'rxjs/operators';
 
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
-import { FromToInterface, NzCarouselEffects, PointerVector } from './nz-carousel-definitions';
+import {
+  CarouselStrategyRegistryItem,
+  FromToInterface,
+  NzCarouselEffects,
+  NZ_CAROUSEL_CUSTOM_STRATEGIES,
+  PointerVector
+} from './nz-carousel-definitions';
 import { NzCarouselBaseStrategy } from './strategies/base-strategy';
 import { NzCarouselOpacityStrategy } from './strategies/opacity-strategy';
 import { NzCarouselTransformStrategy } from './strategies/transform-strategy';
@@ -75,8 +82,8 @@ import { NzCarouselTransformStrategy } from './strategies/transform-strategy';
 export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges {
   @ContentChildren(NzCarouselContentDirective) carouselContents: QueryList<NzCarouselContentDirective>;
 
-  @ViewChild('slickList') slickList: ElementRef;
-  @ViewChild('slickTrack') slickTrack: ElementRef;
+  @ViewChild('slickList', { static: false }) slickList: ElementRef;
+  @ViewChild('slickTrack', { static: false }) slickTrack: ElementRef;
 
   @Input() nzDotRender: TemplateRef<{ $implicit: number }>;
   @Input() nzEffect: NzCarouselEffects = 'scrollx';
@@ -111,7 +118,8 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     private ngZone: NgZone,
-    private platform: Platform
+    private platform: Platform,
+    @Optional() @Inject(NZ_CAROUSEL_CUSTOM_STRATEGIES) private customStrategies: CarouselStrategyRegistryItem[]
   ) {
     this.document = document;
     this.renderer.addClass(elementRef.nativeElement, 'ant-carousel');
@@ -131,7 +139,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
 
     this.carouselContents.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.markContentActive(0);
-      this.strategy.withCarouselContents(this.carouselContents);
+      this.syncStrategy();
     });
 
     this.ngZone.runOutsideAngular(() => {
@@ -141,13 +149,18 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
           throttleTime(16)
         )
         .subscribe(() => {
-          this.strategy.withCarouselContents(this.carouselContents);
+          this.syncStrategy();
         });
     });
 
-    this.ngZone.onStable.pipe(take(1)).subscribe(() => {
-      this.switchStrategy();
-      this.strategy.withCarouselContents(this.carouselContents);
+    this.switchStrategy();
+    this.markContentActive(0);
+    this.syncStrategy();
+
+    // If embedded in an entry component, it may do initial render at a inappropriate time.
+    // ngZone.onStable won't do this trick
+    Promise.resolve().then(() => {
+      this.syncStrategy();
     });
   }
 
@@ -156,6 +169,8 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
 
     if (nzEffect && !nzEffect.isFirstChange()) {
       this.switchStrategy();
+      this.markContentActive(0);
+      this.syncStrategy();
     }
 
     if (!this.nzAutoPlay || !this.nzAutoPlaySpeed) {
@@ -216,13 +231,18 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
       this.strategy.dispose();
     }
 
+    // Load custom strategies first.
+    const customStrategy = this.customStrategies ? this.customStrategies.find(s => s.name === this.nzEffect) : null;
+    if (customStrategy) {
+      // tslint:disable-next-line:no-any
+      this.strategy = new (customStrategy.strategy as any)(this, this.cdr, this.renderer);
+      return;
+    }
+
     this.strategy =
       this.nzEffect === 'scrollx'
         ? new NzCarouselTransformStrategy(this, this.cdr, this.renderer)
         : new NzCarouselOpacityStrategy(this, this.cdr, this.renderer);
-
-    this.markContentActive(0);
-    this.strategy.withCarouselContents(this.carouselContents);
   }
 
   private scheduleNextTransition(): void {
@@ -295,6 +315,12 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
       this.dispose();
     }
   };
+
+  private syncStrategy(): void {
+    if (this.strategy) {
+      this.strategy.withCarouselContents(this.carouselContents);
+    }
+  }
 
   private dispose(): void {
     this.document.removeEventListener('mousemove', this.pointerMove);

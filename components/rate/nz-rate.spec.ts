@@ -256,7 +256,7 @@ describe('rate', () => {
   `
 })
 export class NzTestRateBasicComponent {
-  @ViewChild(NzRateComponent) nzRateComponent: NzRateComponent;
+  @ViewChild(NzRateComponent, { static: false }) nzRateComponent: NzRateComponent;
   count = 5;
   autoFocus = false;
   allowHalf = false;

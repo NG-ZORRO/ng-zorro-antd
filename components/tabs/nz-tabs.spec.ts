@@ -124,12 +124,13 @@ describe('tabs', () => {
       expect(titles[1].innerText).toBe('template');
     });
 
-    it('should content work', () => {
+    it('should content work', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
       fixture.detectChanges();
       const contents = tabs.nativeElement.querySelectorAll('.ant-tabs-tabpane');
       expect(contents[0].innerText).toBe('Content 1');
-      expect(contents[1].innerText).toBe('Content 2');
-    });
+    }));
 
     it('should selectedIndex work', fakeAsync(() => {
       fixture.detectChanges();
@@ -536,8 +537,8 @@ describe('tabs', () => {
 })
 export class NzTestTabsBasicComponent {
   add = false;
-  @ViewChild('extraTemplate') extraTemplate: TemplateRef<void>;
-  @ViewChild(NzTabSetComponent) nzTabSetComponent: NzTabSetComponent;
+  @ViewChild('extraTemplate', { static: false }) extraTemplate: TemplateRef<void>;
+  @ViewChild(NzTabSetComponent, { static: false }) nzTabSetComponent: NzTabSetComponent;
   selectedIndex = 0;
   selectedIndexChange = jasmine.createSpy('selectedIndex callback');
   selectChange = jasmine.createSpy('selectedIndex callback');

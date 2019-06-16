@@ -51,7 +51,7 @@ export class NzAvatarComponent implements OnChanges {
   hasIcon: boolean = false;
   textStyles: {};
 
-  @ViewChild('textEl') textEl: ElementRef;
+  @ViewChild('textEl', { static: false }) textEl: ElementRef;
 
   private el: HTMLElement = this.elementRef.nativeElement;
   private prefixCls = 'ant-avatar';

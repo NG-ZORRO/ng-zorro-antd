@@ -18,6 +18,7 @@ import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzCommentModule } from 'ng-zorro-antd/comment';
 import { NzNoAnimationModule, NzWaveModule } from 'ng-zorro-antd/core';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
@@ -78,6 +79,7 @@ export * from 'ng-zorro-antd/collapse';
 export * from 'ng-zorro-antd/comment';
 export * from 'ng-zorro-antd/core';
 export * from 'ng-zorro-antd/date-picker';
+export * from 'ng-zorro-antd/descriptions';
 export * from 'ng-zorro-antd/divider';
 export * from 'ng-zorro-antd/drawer';
 export * from 'ng-zorro-antd/drawer';
@@ -185,7 +187,8 @@ export * from './version';
     NzNoAnimationModule,
     NzSkeletonModule,
     NzStatisticModule,
-    NzEmptyModule
+    NzEmptyModule,
+    NzDescriptionsModule
   ]
 })
 export class NgZorroAntdModule {

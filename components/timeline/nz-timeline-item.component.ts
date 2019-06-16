@@ -32,7 +32,7 @@ import { NzTimelineMode } from './nz-timeline.component';
   templateUrl: './nz-timeline-item.component.html'
 })
 export class NzTimelineItemComponent implements OnInit, OnChanges {
-  @ViewChild('liTemplate') liTemplate: ElementRef;
+  @ViewChild('liTemplate', { static: true }) liTemplate: ElementRef;
   @Input() nzColor: string = 'blue';
   @Input() nzDot: string | TemplateRef<void>;
 

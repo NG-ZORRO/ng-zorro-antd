@@ -47,18 +47,32 @@ export class NzWaveDirective implements OnInit, OnDestroy {
   private waveRenderer: NzWaveRenderer;
   private waveDisabled: boolean = false;
 
+  get disabled(): boolean {
+    return this.waveDisabled;
+  }
+
+  get rendererRef(): NzWaveRenderer {
+    return this.waveRenderer;
+  }
+
   constructor(
     private ngZone: NgZone,
     private elementRef: ElementRef,
-    @Optional() @Inject(NZ_WAVE_GLOBAL_CONFIG) config: NzWaveConfig,
+    @Optional() @Inject(NZ_WAVE_GLOBAL_CONFIG) private config: NzWaveConfig,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) private animationType: string
   ) {
-    if (config && typeof config.disabled === 'boolean') {
-      this.waveDisabled = config.disabled;
+    this.waveDisabled = this.isConfigDisabled();
+  }
+
+  isConfigDisabled(): boolean {
+    let disabled = false;
+    if (this.config && typeof this.config.disabled === 'boolean') {
+      disabled = this.config.disabled;
     }
     if (this.animationType === 'NoopAnimations') {
-      this.waveDisabled = true;
+      disabled = true;
     }
+    return disabled;
   }
 
   ngOnDestroy(): void {
@@ -74,6 +88,22 @@ export class NzWaveDirective implements OnInit, OnDestroy {
   renderWaveIfEnabled(): void {
     if (!this.waveDisabled && this.elementRef.nativeElement) {
       this.waveRenderer = new NzWaveRenderer(this.elementRef.nativeElement, this.ngZone, this.nzWaveExtraNode);
+    }
+  }
+
+  disable(): void {
+    this.waveDisabled = true;
+    if (this.waveRenderer) {
+      this.waveRenderer.removeTriggerEvent();
+      this.waveRenderer.removeStyleAndExtraNode();
+    }
+  }
+
+  enable(): void {
+    // config priority
+    this.waveDisabled = this.isConfigDisabled() || false;
+    if (this.waveRenderer) {
+      this.waveRenderer.bindTriggerEvent();
     }
   }
 }

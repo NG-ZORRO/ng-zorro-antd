@@ -38,7 +38,7 @@ import { NzSliderComponent } from './nz-slider.component';
   }
 })
 export class NzSliderHandleComponent implements OnChanges, OnDestroy {
-  @ViewChild(NzToolTipComponent) tooltip: NzToolTipComponent;
+  @ViewChild(NzToolTipComponent, { static: false }) tooltip: NzToolTipComponent;
 
   @Input() nzVertical: string;
   @Input() nzOffset: number;

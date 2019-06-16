@@ -242,7 +242,7 @@ describe('list', () => {
   `
 })
 class TestListComponent {
-  @ViewChild('comp') comp: NzListComponent;
+  @ViewChild('comp', { static: false }) comp: NzListComponent;
   nzItemLayout = 'horizontal';
   nzBordered = false;
   nzFooter = 'footer';
@@ -270,7 +270,7 @@ class TestListComponent {
   `
 })
 class TestListWithTemplateComponent {
-  @ViewChild('nzFooter') nzFooter: TemplateRef<void>;
+  @ViewChild('nzFooter', { static: false }) nzFooter: TemplateRef<void>;
 
   footer: string | TemplateRef<void> = 'footer with string';
 }

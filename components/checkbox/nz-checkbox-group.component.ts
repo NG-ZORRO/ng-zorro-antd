@@ -13,6 +13,7 @@ import {
   Component,
   ElementRef,
   Input,
+  OnDestroy,
   OnInit,
   Renderer2,
   ViewEncapsulation
@@ -42,7 +43,7 @@ export interface NzCheckBoxOptionInterface {
     }
   ]
 })
-export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit {
+export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, OnDestroy {
   // tslint:disable-next-line:no-any
   onChange: (value: any) => void = () => null;
   // tslint:disable-next-line:no-any
@@ -73,6 +74,10 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit {
         Promise.resolve().then(() => this.onTouched());
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.focusMonitor.stopMonitoring(this.elementRef);
   }
 
   writeValue(value: NzCheckBoxOptionInterface[]): void {

@@ -16,7 +16,7 @@
     (click)="setVisibleStateWhen(true,'click')"
     (mouseenter)="setVisibleStateWhen(true,'hover')"
     (mouseleave)="setVisibleStateWhen(false,'hover')">
-    <i nz-icon type="ellipsis"></i>
+    <ng-container *nzStringTemplateOutlet="nzIcon"><i nz-icon [type]="nzIcon"></i></ng-container>
   </button>
 </div>
 <ng-template

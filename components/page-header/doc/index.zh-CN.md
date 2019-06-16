@@ -30,7 +30,7 @@ import { NzPageHeaderModule } from 'ng-zorro-antd';
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzTitle]` | title 文字 | `string｜TemplateRef<void>` | - |
-| `[nzSubTitle]` | subTitle 文字 | `string｜TemplateRef<void>` | - |
+| `[nzSubtitle]` | subTitle 文字 | `string｜TemplateRef<void>` | - |
 | `[nzBackIcon]` | 自定义 back icon | `string｜TemplateRef<void>` | - |
 | `[nzBack]` | 返回按钮的点击事件 | `EventEmitter<void>` | - |
 
@@ -38,7 +38,7 @@ import { NzPageHeaderModule } from 'ng-zorro-antd';
 | 元素 | 说明 |
 | ----- | ----------- | ---- | ------------- |
 | `<nz-page-header-title>` | title 部分，`[nzTitle]` 优先级更高 |
-| `<nz-page-header-subtitle>` | subtitle 部分，`[nzSubTitle]` 优先级更高 |
+| `<nz-page-header-subtitle>` | subtitle 部分，`[nzSubtitle]` 优先级更高 |
 | `<nz-page-header-content>` | 内容部分 |
 | `<nz-page-header-footer>` | 底部部分 |
 | `<nz-page-header-tags>` |  title 旁的 tag 列表容器 |

@@ -20,6 +20,7 @@ import {
   Optional,
   Output,
   Self,
+  TemplateRef,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -67,8 +68,9 @@ import { NzMenuDropdownService } from './nz-menu-dropdown.service';
 export class NzDropDownButtonComponent extends NzDropDownComponent implements OnDestroy, AfterContentInit, OnChanges {
   @Input() nzSize = 'default';
   @Input() nzType = 'default';
+  @Input() nzIcon: string | TemplateRef<void> = 'ellipsis';
   @Output() readonly nzClick = new EventEmitter<MouseEvent>();
-  @ViewChild(NzDropDownDirective) nzDropDownDirective: NzDropDownDirective;
+  @ViewChild(NzDropDownDirective, { static: true }) nzDropDownDirective: NzDropDownDirective;
 
   constructor(
     cdr: ChangeDetectorRef,

@@ -97,9 +97,9 @@ export class NzAutocompleteComponent implements AfterViewInit, OnDestroy {
   @ViewChildren(NzAutocompleteOptionComponent) fromDataSourceOptions: QueryList<NzAutocompleteOptionComponent>;
 
   /** cdk-overlay */
-  @ViewChild(TemplateRef) template: TemplateRef<{}>;
-  @ViewChild('panel') panel: ElementRef;
-  @ViewChild('content') content: ElementRef;
+  @ViewChild(TemplateRef, { static: false }) template: TemplateRef<{}>;
+  @ViewChild('panel', { static: false }) panel: ElementRef;
+  @ViewChild('content', { static: false }) content: ElementRef;
 
   private activeItemIndex: number = -1;
   private selectionChangeSubscription = Subscription.EMPTY;
@@ -107,7 +107,7 @@ export class NzAutocompleteComponent implements AfterViewInit, OnDestroy {
   /** Options changes listener */
   readonly optionSelectionChanges: Observable<NzOptionSelectionChange> = defer(() => {
     if (this.options) {
-      return merge(...this.options.map(option => option.selectionChange));
+      return merge<NzOptionSelectionChange>(...this.options.map(option => option.selectionChange));
     }
     return this.ngZone.onStable.asObservable().pipe(
       take(1),

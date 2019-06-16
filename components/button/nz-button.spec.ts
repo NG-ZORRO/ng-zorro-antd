@@ -40,6 +40,7 @@ describe('button', () => {
       expect(buttons[1].nativeElement.classList.contains('ant-btn-default')).toBe(true);
       expect(buttons[2].nativeElement.classList.contains('ant-btn-dashed')).toBe(true);
       expect(buttons[3].nativeElement.classList.contains('ant-btn-danger')).toBe(true);
+      expect(buttons[4].nativeElement.classList.contains('ant-btn-link')).toBe(true);
     });
   });
 
@@ -115,10 +116,7 @@ describe('button', () => {
 
     it('should have correct style', () => {
       fixture.detectChanges();
-      expect(buttons[0].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
-      expect(buttons[1].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
-      expect(buttons[2].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
-      expect(buttons[3].nativeElement.classList.contains('ant-btn-background-ghost')).toBe(true);
+      expect(buttons.every(button => button.nativeElement.classList.contains('ant-btn-background-ghost'))).toBe(true);
     });
   });
 
@@ -139,14 +137,16 @@ describe('button', () => {
       buttons = fixture.debugElement.queryAll(By.directive(NzButtonComponent));
     });
 
-    it('should have correct style', () => {
+    it('should have correct style', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
       fixture.detectChanges();
       expect(buttons[0].nativeElement.classList.contains('ant-btn-icon-only')).toBe(true);
       expect(buttons[0].nativeElement.classList.contains('ant-btn-circle')).toBe(true);
       expect(buttons[1].nativeElement.classList.contains('ant-btn-icon-only')).toBe(false);
       expect(buttons[1].nativeElement.firstElementChild!.classList.contains('anticon-search')).toBe(true);
       expect(buttons[1].nativeElement.firstElementChild.style.cssText).toBe('display: inline-block;');
-    });
+    }));
   });
 
   describe('loading', () => {
@@ -192,6 +192,8 @@ describe('button', () => {
 
     it('should loading when click with icon', fakeAsync(() => {
       const button = buttons[3];
+      fixture.detectChanges();
+      tick();
       fixture.detectChanges();
       expect(button.nativeElement.classList.contains('ant-btn-loading')).toBe(false);
       expect(button.nativeElement.firstElementChild.querySelector('svg')).not.toBe(null);
@@ -299,11 +301,9 @@ describe('button', () => {
       expect(buttons[1].nativeElement.classList.contains('ant-btn-default')).toBe(true);
       expect(buttons[2].nativeElement.classList.contains('ant-btn-dashed')).toBe(true);
       expect(buttons[3].nativeElement.classList.contains('ant-btn-danger')).toBe(true);
+      expect(buttons[4].nativeElement.classList.contains('ant-btn-link')).toBe(true);
 
-      expect(buttons[0].nativeElement.classList.contains('ant-btn-block')).toBe(true);
-      expect(buttons[1].nativeElement.classList.contains('ant-btn-block')).toBe(true);
-      expect(buttons[2].nativeElement.classList.contains('ant-btn-block')).toBe(true);
-      expect(buttons[3].nativeElement.classList.contains('ant-btn-block')).toBe(true);
+      expect(buttons.every(button => button.nativeElement.classList.contains('ant-btn-block'))).toBe(true);
     });
   });
 
@@ -346,10 +346,33 @@ describe('button', () => {
       expect(button.nativeElement.querySelector('.anticon-poweroff').style.cssText).toBe('display: inline-block;');
     }));
   });
+  describe('with icon', () => {
+    let fixture: ComponentFixture<NzTestButtonWithIconComponent>;
+    let button: DebugElement;
+
+    beforeEach(async(() => {
+      TestBed.configureTestingModule({
+        imports: [NzButtonModule],
+        declarations: [NzTestButtonWithIconComponent],
+        providers: []
+      }).compileComponents();
+    }));
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestButtonWithIconComponent);
+      button = fixture.debugElement.query(By.directive(NzButtonComponent));
+    });
+
+    it('should have correct style', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      expect(button.nativeElement.firstElementChild.tagName).toBe('SPAN');
+    }));
+  });
 });
 
 @Component({
-  selector: 'nz-test-button-search',
   template: `
     <button nz-button nzSearch></button>
   `
@@ -358,7 +381,6 @@ export class NzTestButtonSearchComponent {}
 
 // https://github.com/NG-ZORRO/ng-zorro-antd/issues/2191
 @Component({
-  selector: 'nz-test-button-binding',
   template: `
     <button nz-button nzType="primary" (click)="load()" [nzLoading]="loading">
       <i nz-icon type="poweroff"></i> {{ 'Click me!' }}
@@ -372,4 +394,16 @@ export class NzTestButtonBindingComponent {
     this.loading = true;
     setTimeout(() => (this.loading = false), 5000);
   }
+}
+// https://github.com/NG-ZORRO/ng-zorro-antd/issues/3079
+@Component({
+  template: `
+    <button nz-button>
+      {{ title }}
+      <i nz-icon type="caret-down"></i>
+    </button>
+  `
+})
+export class NzTestButtonWithIconComponent {
+  title = 'button';
 }

@@ -12,7 +12,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzNoAnimationModule, NzOverlayModule } from 'ng-zorro-antd/core';
+import { NzAddOnModule, NzNoAnimationModule, NzOverlayModule } from 'ng-zorro-antd/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 
@@ -32,7 +32,8 @@ import { NzDropdownService } from './nz-dropdown.service';
     NzMenuModule,
     NzIconModule,
     NzNoAnimationModule,
-    NzOverlayModule
+    NzOverlayModule,
+    NzAddOnModule
   ],
   entryComponents: [NzDropdownContextComponent],
   declarations: [

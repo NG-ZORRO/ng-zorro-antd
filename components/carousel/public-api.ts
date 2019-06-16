@@ -9,3 +9,5 @@
 export * from './nz-carousel.module';
 export * from './nz-carousel.component';
 export * from './nz-carousel-content.directive';
+export * from './nz-carousel-definitions';
+export * from './strategies/base-strategy';

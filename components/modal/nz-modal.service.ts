@@ -32,6 +32,7 @@ export class ModalBuilderForService {
     }
 
     this.changeProps(options);
+    this.modalRef!.instance.setOverlayRef(this.overlayRef);
     this.modalRef!.instance.open();
     this.modalRef!.instance.nzAfterClose.subscribe(() => this.destroyModal()); // [NOTE] By default, close equals destroy when using as Service
   }

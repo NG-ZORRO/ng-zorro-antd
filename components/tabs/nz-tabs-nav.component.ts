@@ -62,10 +62,10 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
   tabLabelCount: number;
   scrollDistanceChanged: boolean;
   @ContentChildren(NzTabLabelDirective) listOfNzTabLabelDirective: QueryList<NzTabLabelDirective>;
-  @ViewChild(NzTabsInkBarDirective) nzTabsInkBarDirective: NzTabsInkBarDirective;
-  @ViewChild('navContainerElement') navContainerElement: ElementRef;
-  @ViewChild('navListElement') navListElement: ElementRef;
-  @ViewChild('scrollListElement') scrollListElement: ElementRef;
+  @ViewChild(NzTabsInkBarDirective, { static: true }) nzTabsInkBarDirective: NzTabsInkBarDirective;
+  @ViewChild('navContainerElement', { static: true }) navContainerElement: ElementRef<HTMLDivElement>;
+  @ViewChild('navListElement', { static: true }) navListElement: ElementRef<HTMLDivElement>;
+  @ViewChild('scrollListElement', { static: true }) scrollListElement: ElementRef<HTMLDivElement>;
   @Output() readonly nzOnNextClick = new EventEmitter<void>();
   @Output() readonly nzOnPrevClick = new EventEmitter<void>();
   @Input() nzTabBarExtraContent: TemplateRef<void>;

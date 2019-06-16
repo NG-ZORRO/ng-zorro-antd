@@ -24,7 +24,12 @@ describe('tree-select component', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [NzTreeSelectModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule],
-      declarations: [NzTestTreeSelectBasicComponent, NzTestTreeSelectCheckableComponent, NzTestTreeSelectFormComponent]
+      declarations: [
+        NzTestTreeSelectBasicComponent,
+        NzTestTreeSelectCheckableComponent,
+        NzTestTreeSelectFormComponent,
+        NzTestTreeSelectCustomizedIconComponent
+      ]
     });
     TestBed.compileComponents();
     inject([OverlayContainer], (oc: OverlayContainer) => {
@@ -458,6 +463,22 @@ describe('tree-select component', () => {
       expect(treeSelectComponent.nzDefaultExpandedKeys[0] === '1001').toBe(true);
     });
   });
+
+  describe('customized icon', () => {
+    let fixture: ComponentFixture<NzTestTreeSelectCustomizedIconComponent>;
+    let treeSelect: DebugElement;
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestTreeSelectCustomizedIconComponent);
+      treeSelect = fixture.debugElement.query(By.directive(NzTreeSelectComponent));
+    });
+    it('should display', fakeAsync(() => {
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('i.anticon.anticon-frown-o')).toBeTruthy();
+    }));
+  });
 });
 
 @Component({
@@ -482,7 +503,7 @@ describe('tree-select component', () => {
   `
 })
 export class NzTestTreeSelectBasicComponent {
-  @ViewChild(NzTreeSelectComponent) nzSelectTreeComponent: NzTreeSelectComponent;
+  @ViewChild(NzTreeSelectComponent, { static: false }) nzSelectTreeComponent: NzTreeSelectComponent;
   expandKeys = ['1001', '10001'];
   value: string | string[] | null = '10001';
   size = 'default';
@@ -573,7 +594,7 @@ export class NzTestTreeSelectBasicComponent {
   `
 })
 export class NzTestTreeSelectCheckableComponent {
-  @ViewChild(NzTreeSelectComponent) nzSelectTreeComponent: NzTreeSelectComponent;
+  @ViewChild(NzTreeSelectComponent, { static: false }) nzSelectTreeComponent: NzTreeSelectComponent;
   expandKeys = ['1001', '10001'];
   value: string[] | null = ['1000122'];
   showSearch = false;
@@ -682,4 +703,34 @@ export class NzTestTreeSelectFormComponent {
   setNull(): void {
     this.formGroup.get('select')!.reset(null);
   }
+}
+
+@Component({
+  selector: 'nz-test-tree-select-customized-icon',
+  template: `
+    <nz-tree-select [nzNodes]="nodes" [(ngModel)]="value">
+      <ng-template #nzTreeTemplate let-node>
+        <span> <i class="anticon anticon-frown-o"></i> {{ node.title }} </span>
+      </ng-template>
+    </nz-tree-select>
+  `
+})
+export class NzTestTreeSelectCustomizedIconComponent {
+  value: string;
+  nodes = [
+    new NzTreeNode({
+      title: 'root3',
+      key: '1003',
+      children: [
+        {
+          title: 'child3.1',
+          key: '10031'
+        },
+        {
+          title: 'child3.2',
+          key: '10032'
+        }
+      ]
+    })
+  ];
 }

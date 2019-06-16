@@ -34,10 +34,22 @@ import { NzBreadCrumbModule } from 'ng-zorro-antd';
 
 ```ts
 {
-  path: '/path',
+  path: 'path',
   component: SomeComponent,
   data: {
     breadcrumb: 'Display Name'
   }
+}
+```
+
+对于懒加载路由，应该在父层路由写 `data`：
+
+```ts
+{
+  path: 'first',
+  loadChildren: './first/first.module#FirstModule',
+  data: {
+    breadcrumb: 'First'
+  },
 }
 ```
