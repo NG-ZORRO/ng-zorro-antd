@@ -40,10 +40,8 @@ import {
   POSITION_MAP
 } from 'ng-zorro-antd/core';
 import { NzMenuDirective } from 'ng-zorro-antd/menu';
-
 import { NzDropDownDirective } from './nz-dropdown.directive';
 import { NzMenuDropdownService } from './nz-menu-dropdown.service';
-
 export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLeft' | 'topCenter' | 'topRight';
 
 export function menuServiceFactory(injector: Injector): NzMenuBaseService {
@@ -68,7 +66,7 @@ export function menuServiceFactory(injector: Injector): NzMenuBaseService {
   templateUrl: './nz-dropdown.component.html',
   styles: [
     `
-      .ant-dropdown {
+      :root .ant-dropdown {
         top: 100%;
         left: 0;
         position: relative;
@@ -111,7 +109,7 @@ export class NzDropDownComponent implements OnDestroy, AfterContentInit, OnChang
 
   startSubscribe(observable$: Observable<boolean>): void {
     const click$ = this.nzClickHide ? this.nzMenuDropdownService.menuItemClick$.pipe(mapTo(false)) : EMPTY;
-    combineLatest(merge(observable$, click$), this.nzMenuDropdownService.menuOpen$)
+    combineLatest([merge(observable$, click$), this.nzMenuDropdownService.menuOpen$])
       .pipe(
         map(value => value[0] || value[1]),
         debounceTime(50),
