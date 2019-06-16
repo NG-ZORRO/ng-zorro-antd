@@ -1,13 +1,9 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, DebugElement, NO_ERRORS_SCHEMA, TemplateRef, ViewChild } from '@angular/core';
 import { async, discardPeriodicTasks, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
-import { NzDemoLayoutBasicComponent } from './demo/basic';
-import { NzDemoLayoutCustomTriggerComponent } from './demo/custom-trigger';
-import { NzDemoLayoutResponsiveComponent } from './demo/responsive';
-import { NzDemoLayoutSideComponent } from './demo/side';
 import { NzContentComponent } from './nz-content.component';
 import { NzFooterComponent } from './nz-footer.component';
 import { NzHeaderComponent } from './nz-header.component';
@@ -17,7 +13,7 @@ import { NzSiderComponent } from './nz-sider.component';
 
 describe('layout', () => {
   describe('basic', () => {
-    let fixture: ComponentFixture<NzDemoLayoutBasicComponent>;
+    let fixture: ComponentFixture<NzLayoutBasicComponent>;
     let headers: DebugElement[];
     let contents: DebugElement[];
     let footers: DebugElement[];
@@ -27,13 +23,13 @@ describe('layout', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports: [NzLayoutModule],
-        declarations: [NzDemoLayoutBasicComponent],
+        declarations: [NzLayoutBasicComponent],
         providers: []
       }).compileComponents();
     }));
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzDemoLayoutBasicComponent);
+      fixture = TestBed.createComponent(NzLayoutBasicComponent);
       headers = fixture.debugElement.queryAll(By.directive(NzHeaderComponent));
       contents = fixture.debugElement.queryAll(By.directive(NzContentComponent));
       footers = fixture.debugElement.queryAll(By.directive(NzFooterComponent));
@@ -60,22 +56,22 @@ describe('layout', () => {
     });
   });
   describe('side', () => {
-    let fixture: ComponentFixture<NzDemoLayoutSideComponent>;
-    let testComponent: NzDemoLayoutSideComponent;
+    let fixture: ComponentFixture<NzLayoutSideComponent>;
+    let testComponent: NzLayoutSideComponent;
     let sider: DebugElement;
     let trigger: DebugElement;
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports: [NzLayoutModule],
-        declarations: [NzDemoLayoutSideComponent],
+        declarations: [NzLayoutSideComponent],
         providers: [],
         schemas: [NO_ERRORS_SCHEMA]
       }).compileComponents();
     }));
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzDemoLayoutSideComponent);
+      fixture = TestBed.createComponent(NzLayoutSideComponent);
       testComponent = fixture.debugElement.componentInstance;
       sider = fixture.debugElement.query(By.directive(NzSiderComponent));
     });
@@ -170,20 +166,20 @@ describe('layout', () => {
     });
   });
   describe('custom-trigger', () => {
-    let fixture: ComponentFixture<NzDemoLayoutCustomTriggerComponent>;
-    let testComponent: NzDemoLayoutCustomTriggerComponent;
+    let fixture: ComponentFixture<NzLayoutCustomTriggerComponent>;
+    let testComponent: NzLayoutCustomTriggerComponent;
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports: [NzLayoutModule, NzIconTestModule],
-        declarations: [NzDemoLayoutCustomTriggerComponent],
+        declarations: [NzLayoutCustomTriggerComponent],
         providers: [],
         schemas: [NO_ERRORS_SCHEMA]
       }).compileComponents();
     }));
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzDemoLayoutCustomTriggerComponent);
+      fixture = TestBed.createComponent(NzLayoutCustomTriggerComponent);
       testComponent = fixture.debugElement.componentInstance;
     });
     it('should not display trigger', () => {
@@ -200,7 +196,7 @@ describe('layout', () => {
     });
   });
   describe('responsive', () => {
-    let fixture: ComponentFixture<NzDemoLayoutResponsiveComponent>;
+    let fixture: ComponentFixture<NzLayoutResponsiveComponent>;
     let sider: DebugElement;
 
     class MatchMediaServiceSpy {
@@ -212,7 +208,7 @@ describe('layout', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports: [NzLayoutModule],
-        declarations: [NzDemoLayoutResponsiveComponent],
+        declarations: [NzLayoutResponsiveComponent],
         schemas: [NO_ERRORS_SCHEMA]
       })
         .overrideComponent(NzSiderComponent, {
@@ -224,7 +220,7 @@ describe('layout', () => {
     }));
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzDemoLayoutResponsiveComponent);
+      fixture = TestBed.createComponent(NzLayoutResponsiveComponent);
       sider = fixture.debugElement.query(By.directive(NzSiderComponent));
     });
 
@@ -239,8 +235,214 @@ describe('layout', () => {
         true
       );
       expect(
-        sider.nativeElement.querySelector('.ant-layout-sider-zero-width-trigger').firstElementChild.getAttribute('type')
+        sider.nativeElement
+          .querySelector('.ant-layout-sider-zero-width-trigger')
+          .firstElementChild.getAttribute('nzType')
       ).toBe('menu-fold');
     }));
   });
 });
+
+@Component({
+  template: `
+    <nz-layout>
+      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="triggerTemplate">
+        <div class="logo"></div>
+        <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
+          <li nz-submenu>
+            <span title><i nz-icon type="user"></i><span class="nav-text">User</span></span>
+            <ul>
+              <li nz-menu-item>Tom</li>
+              <li nz-menu-item>Bill</li>
+              <li nz-menu-item>Alex</li>
+            </ul>
+          </li>
+          <li nz-submenu>
+            <span title><i nz-icon type="team"></i><span class="nav-text">Team</span></span>
+            <ul>
+              <li nz-menu-item>Team 1</li>
+              <li nz-menu-item>Team 2</li>
+            </ul>
+          </li>
+          <li nz-menu-item>
+            <span><i nz-icon type="file"></i><span class="nav-text">File</span></span>
+          </li>
+        </ul>
+      </nz-sider>
+      <nz-layout>
+        <nz-header style="background: #fff; padding:0;">
+          <i
+            class="trigger"
+            nz-icon
+            [type]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+            (click)="isCollapsed = !isCollapsed"
+          ></i>
+        </nz-header>
+        <nz-content style="margin:0 16px;">
+          <nz-breadcrumb style="margin:16px 0;">
+            <nz-breadcrumb-item>User</nz-breadcrumb-item>
+            <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
+          </nz-breadcrumb>
+          <div style="padding:24px; background: #fff; min-height: 360px;">
+            Bill is a cat.
+          </div>
+        </nz-content>
+        <nz-footer style="text-align: center;">Ant Design ©2019 Implement By Angular</nz-footer>
+      </nz-layout>
+    </nz-layout>
+    <ng-template #trigger>
+      <i nz-icon type="up"></i>
+    </ng-template>
+  `
+})
+export class NzLayoutCustomTriggerComponent {
+  isCollapsed = false;
+  triggerTemplate: TemplateRef<void> | null = null;
+  @ViewChild('trigger', { static: true }) customTrigger: TemplateRef<void>;
+
+  /** custom trigger can be TemplateRef **/
+  changeTrigger(): void {
+    this.triggerTemplate = this.customTrigger;
+  }
+}
+
+@Component({
+  template: `
+    <nz-layout>
+      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzWidth]="width" [nzReverseArrow]="isReverseArrow">
+        <div class="logo"></div>
+        <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
+          <li nz-submenu>
+            <span title><i nz-icon type="user"></i><span class="nav-text">User</span></span>
+            <ul>
+              <li nz-menu-item>Tom</li>
+              <li nz-menu-item>Bill</li>
+              <li nz-menu-item>Alex</li>
+            </ul>
+          </li>
+          <li nz-submenu>
+            <span title><i nz-icon type="team"></i><span class="nav-text">Team</span></span>
+            <ul>
+              <li nz-menu-item>Team 1</li>
+              <li nz-menu-item>Team 2</li>
+            </ul>
+          </li>
+          <li nz-menu-item>
+            <span><i nz-icon type="file"></i><span class="nav-text">File</span></span>
+          </li>
+        </ul>
+      </nz-sider>
+      <nz-layout>
+        <nz-header style="background: #fff; padding:0;"></nz-header>
+        <nz-content style="margin:0 16px;">
+          <nz-breadcrumb style="margin:16px 0;">
+            <nz-breadcrumb-item>User</nz-breadcrumb-item>
+            <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
+          </nz-breadcrumb>
+          <div style="padding:24px; background: #fff; min-height: 360px;">
+            Bill is a cat.
+          </div>
+        </nz-content>
+        <nz-footer style="text-align: center;">Ant Design ©2019 Implement By Angular</nz-footer>
+      </nz-layout>
+    </nz-layout>
+  `,
+  styles: [
+    `
+      .logo {
+        height: 32px;
+        background: rgba(255, 255, 255, 0.2);
+        margin: 16px;
+      }
+    `
+  ]
+})
+export class NzLayoutSideComponent {
+  isCollapsed = false;
+  isReverseArrow = false;
+  width: string | number = '200px';
+}
+
+@Component({
+  template: `
+    <nz-layout>
+      <nz-sider
+        nzCollapsible
+        [(nzCollapsed)]="isCollapsed"
+        [nzBreakpoint]="'lg'"
+        [nzCollapsedWidth]="0"
+        [nzZeroTrigger]="zeroTrigger"
+      >
+        <div class="logo"></div>
+        <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
+          <li nz-menu-item>
+            <span><i nz-icon type="user"></i><span class="nav-text">nav 1</span></span>
+          </li>
+          <li nz-menu-item>
+            <span><i nz-icon type="video-camera"></i><span class="nav-text">nav 2</span></span>
+          </li>
+          <li nz-menu-item>
+            <span><i nz-icon type="upload"></i><span class="nav-text">nav 3</span></span>
+          </li>
+          <li nz-menu-item>
+            <span><i nz-icon type="user"></i><span class="nav-text">nav 4</span></span>
+          </li>
+        </ul>
+      </nz-sider>
+      <nz-layout>
+        <nz-header style="background: #fff; padding:0;"></nz-header>
+        <nz-content style="margin:24px 16px 0;">
+          <div style="padding:24px; background: #fff; min-height: 360px;">
+            Content
+          </div>
+        </nz-content>
+        <nz-footer style="text-align: center;">Ant Design ©2019 Implement By Angular</nz-footer>
+      </nz-layout>
+    </nz-layout>
+    <ng-template #zeroTrigger>
+      <i nz-icon nzType="menu-fold" nzTheme="outline"></i>
+    </ng-template>
+  `
+})
+export class NzLayoutResponsiveComponent {
+  isCollapsed = false;
+}
+
+@Component({
+  selector: 'nz-demo-layout-basic',
+  template: `
+    <nz-layout>
+      <nz-header>Header</nz-header>
+      <nz-content>Content</nz-content>
+      <nz-footer>Footer</nz-footer>
+    </nz-layout>
+
+    <nz-layout>
+      <nz-header>Header</nz-header>
+      <nz-layout>
+        <nz-sider>Sider</nz-sider>
+        <nz-content>Content</nz-content>
+      </nz-layout>
+      <nz-footer>Footer</nz-footer>
+    </nz-layout>
+
+    <nz-layout>
+      <nz-header>Header</nz-header>
+      <nz-layout>
+        <nz-content>Content</nz-content>
+        <nz-sider>Sider</nz-sider>
+      </nz-layout>
+      <nz-footer>Footer</nz-footer>
+    </nz-layout>
+
+    <nz-layout>
+      <nz-sider>Sider</nz-sider>
+      <nz-layout>
+        <nz-header>Header</nz-header>
+        <nz-content>Content</nz-content>
+        <nz-footer>Footer</nz-footer>
+      </nz-layout>
+    </nz-layout>
+  `
+})
+export class NzLayoutBasicComponent {}
