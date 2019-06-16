@@ -1,5 +1,22 @@
+<ng-template #defaultRenderList>
+  <ul *ngIf="stat.shownCount > 0" class="ant-transfer-list-content">
+    <div class="LazyLoad" *ngFor="let item of dataSource">
+      <li *ngIf="!item.hide" (click)="onItemSelect(item)"
+        class="ant-transfer-list-content-item" [ngClass]="{'ant-transfer-list-content-item-disabled': disabled || item.disabled}">
+        <label nz-checkbox [nzChecked]="item.checked" (nzCheckedChange)="onItemSelect(item)"
+          (click)="$event.stopPropagation()" [nzDisabled]="disabled || item.disabled">
+          <ng-container *ngIf="!render; else renderContainer">{{ item.title }}</ng-container>
+          <ng-template #renderContainer [ngTemplateOutlet]="render" [ngTemplateOutletContext]="{ $implicit: item }"></ng-template>
+        </label>
+      </li>
+    </div>
+  </ul>
+  <div *ngIf="stat.shownCount === 0" class="ant-transfer-list-body-not-found">
+    <nz-embed-empty [nzComponentName]="'transfer'" [specificContent]="notFoundContent"></nz-embed-empty>
+  </div>
+</ng-template>
 <div class="ant-transfer-list-header">
-  <label nz-checkbox [nzChecked]="stat.checkAll" (nzCheckedChange)="onHandleSelectAll($event)"
+  <label *ngIf="showSelectAll" nz-checkbox [nzChecked]="stat.checkAll" (nzCheckedChange)="onItemSelectAll($event)"
     [nzIndeterminate]="stat.checkHalf" [nzDisabled]="stat.shownCount == 0 || disabled">
   </label>
   <span class="ant-transfer-list-header-selected">
@@ -17,21 +34,18 @@
       [disabled]="disabled"
       [value]="filter"></div>
   </div>
-  <ul *ngIf="stat.shownCount > 0" class="ant-transfer-list-content">
-    <div class="LazyLoad" *ngFor="let item of dataSource">
-      <li *ngIf="!item._hiden" (click)="_handleSelect(item)"
-        class="ant-transfer-list-content-item" [ngClass]="{'ant-transfer-list-content-item-disabled': disabled || item.disabled}">
-        <label nz-checkbox [nzChecked]="item.checked" (nzCheckedChange)="_handleSelect(item)"
-          (click)="$event.stopPropagation()" [nzDisabled]="disabled || item.disabled">
-          <ng-container *ngIf="!render; else renderContainer">{{ item.title }}</ng-container>
-          <ng-template #renderContainer [ngTemplateOutlet]="render" [ngTemplateOutletContext]="{ $implicit: item }"></ng-template>
-        </label>
-      </li>
+  <ng-container *ngIf="renderList else defaultRenderList">
+    <div class="ant-transfer-list-body-customize-wrapper">
+      <ng-container *ngTemplateOutlet="renderList; context: {
+        $implicit: dataSource,
+        direction: direction,
+        disabled: disabled,
+        onItemSelectAll: onItemSelectAll,
+        onItemSelect: onItemSelect,
+        stat: stat
+      }"></ng-container>
     </div>
-  </ul>
-  <div *ngIf="stat.shownCount === 0" class="ant-transfer-list-body-not-found">
-    <nz-embed-empty [nzComponentName]="'transfer'" [specificContent]="notFoundContent"></nz-embed-empty>
-  </div>
+  </ng-container>
 </div>
 <div *ngIf="footer" class="ant-transfer-list-footer">
   <ng-template [ngTemplateOutlet]="footer" [ngTemplateOutletContext]="{ $implicit: direction }"></ng-template>
