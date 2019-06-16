@@ -55,6 +55,18 @@ describe('avatar', () => {
       expect(getType(dl)).toBe('image');
       tick();
     }));
+    it('#nzSrcSet', () => {
+      context.nzSrcSet = '1.png';
+      fixture.detectChanges();
+      const el = dl.query(By.css(`img`)).nativeElement as HTMLImageElement;
+      expect(el.srcset).toBe(context.nzSrcSet);
+    });
+    it('#nzAlt', () => {
+      context.nzAlt = 'alt';
+      fixture.detectChanges();
+      const el = dl.query(By.css(`img`)).nativeElement as HTMLImageElement;
+      expect(el.alt).toBe(context.nzAlt);
+    });
   });
 
   it('#nzIcon', () => {
@@ -126,7 +138,24 @@ describe('avatar', () => {
 
       context.nzIcon = 'user';
       fixture.detectChanges();
-      expect(hostStyle.fontSize === `${context.nzSize / 2}px`).toBe(true);
+      expect(hostStyle.fontSize === `calc(${context.nzSize / 2}px)`).toBe(true);
+    });
+
+    it('should be custom unit size', () => {
+      const size = `8vw`;
+      context.nzSize = size;
+      context.nzIcon = null;
+      context.nzSrc = null;
+      fixture.detectChanges();
+      const hostStyle = dl.nativeElement.querySelector('nz-avatar').style;
+      expect(hostStyle.height === size).toBe(true);
+      expect(hostStyle.width === size).toBe(true);
+      expect(hostStyle.lineHeight === size).toBe(true);
+      expect(hostStyle.fontSize === ``).toBe(true);
+
+      context.nzIcon = 'user';
+      fixture.detectChanges();
+      expect(hostStyle.fontSize === `calc(4vw)`).toBe(true);
     });
   });
 
@@ -172,6 +201,8 @@ describe('avatar', () => {
       [nzIcon]="nzIcon"
       [nzText]="nzText"
       [nzSrc]="nzSrc"
+      [nzSrcSet]="nzSrcSet"
+      [nzAlt]="nzAlt"
     ></nz-avatar>
   `,
   styleUrls: ['./style/index.less']
@@ -185,4 +216,6 @@ class TestAvatarComponent {
   nzSrc:
     | string
     | null = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg==`;
+  nzSrcSet: string;
+  nzAlt: string;
 }
