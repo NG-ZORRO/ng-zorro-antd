@@ -32,6 +32,9 @@ if (tags) {
 // Then we find all the tests.
 const context = require.context('./', true, /\.spec\.ts$/);
 // Filter specify file
-const specFiles = context.keys().filter((path: string) => filterRegExp.test(path));
+const specFiles = context.keys().filter((path: string) => {
+  console.log(filterRegExp);
+  return filterRegExp.test(path);
+});
 // And load the modules.
 specFiles.map(context);
