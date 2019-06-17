@@ -11,6 +11,6 @@ title:
 
 ## en-US
 
-There are four position available.
+There are four positions available.
 
 
