@@ -7,16 +7,15 @@ export function cleanTask(glob: string | string[]): gulp.TaskFunction {
   return () => gulp.src(glob, { read: false, allowEmpty: true }).pipe(gulpClean(null));
 }
 
-export function execTask(binPath: string, args: string[]): gulp.TaskFunction {
+export function execTask(binPath: string, args: string[], env: {} = {}): gulp.TaskFunction {
   return (done: (err?: string) => void) => {
-    const env = {...process.env};
     // https://github.com/angular/angular-cli/issues/10922
     // tslint:disable-next-line:no-any
     (process.stdout as any)._handle.setBlocking(true);
     // tslint:disable-next-line:no-any
     (process.stdout as any)._handle.setBlocking(true);
     const childProcess = child_process.spawn(binPath, args, {
-      env,
+      env: {...process.env, ...env},
       cwd: process.cwd(),
       stdio: "inherit"
     });
@@ -28,7 +27,7 @@ export function execTask(binPath: string, args: string[]): gulp.TaskFunction {
   };
 }
 
-export function execNodeTask(packageName: string, executable: string | string[], args?: string[]): gulp.TaskFunction {
+export function execNodeTask(packageName: string, executable: string | string[], args?: string[], env: {} = {}): gulp.TaskFunction {
   if (!args) {
     // tslint:disable-next-line:no-parameter-reassignment
     args = executable as string[];
@@ -43,7 +42,7 @@ export function execNodeTask(packageName: string, executable: string | string[],
       if (err) {
         done(err);
       } else {
-        execTask('node', ['--max_old_space_size=5120', binPath].concat(args!))(done);
+        execTask('node', ['--max_old_space_size=5120', binPath].concat(args!), env)(done);
       }
     });
   };

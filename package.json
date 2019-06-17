@@ -9,6 +9,7 @@
   "scripts": {
     "start": "gulp start:dev",
     "test": "ng test --watch=false --code-coverage",
+    "test:watch": "gulp test:watch --tags $tags",
     "build": "gulp build:release",
     "build:lib": "gulp build:library",
     "doc": "gulp build:preview",
@@ -81,6 +82,7 @@
     "less-plugin-clean-css": "^1.5.1",
     "lint-staged": "^8.1.5",
     "marked": "^0.6.2",
+    "minimist": "^1.2.0",
     "ng-packagr": "^5.2.0",
     "ngx-color": "^3.0.3",
     "node-prismjs": "^0.1.1",
