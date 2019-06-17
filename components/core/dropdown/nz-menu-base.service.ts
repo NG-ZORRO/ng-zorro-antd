@@ -7,7 +7,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { merge, BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 import { NzDirectionVHIType } from '../types';
 
@@ -18,7 +18,6 @@ export class NzMenuBaseService {
   theme$ = new Subject();
   mode$ = new BehaviorSubject<NzDirectionVHIType>('vertical');
   inlineIndent$ = new BehaviorSubject<number>(24);
-  check$ = merge(this.theme$, this.mode$, this.inlineIndent$);
   theme: 'light' | 'dark' = 'light';
   mode: NzDirectionVHIType = 'vertical';
   inlineIndent = 24;

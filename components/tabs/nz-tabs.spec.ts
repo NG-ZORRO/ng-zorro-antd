@@ -1,7 +1,7 @@
 import { Component, DebugElement, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NGStyleInterface } from 'ng-zorro-antd/core';
+import { NgStyleInterface } from 'ng-zorro-antd/core';
 
 import { NzTabsModule } from './nz-tabs.module';
 import { NzAnimatedInterface, NzTabSetComponent } from './nz-tabset.component';
@@ -545,7 +545,7 @@ export class NzTestTabsBasicComponent {
   animated: NzAnimatedInterface | boolean = true;
   size = 'default';
   tabBarExtraContent: TemplateRef<void>;
-  tabBarStyle: NGStyleInterface;
+  tabBarStyle: NgStyleInterface;
   tabPosition = 'top';
   type = 'line';
   tabBarGutter: number;

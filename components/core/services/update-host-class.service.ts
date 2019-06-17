@@ -13,7 +13,7 @@ import { NgClassInterface } from '../types/ng-class';
 @Injectable()
 export class NzUpdateHostClassService {
   private classMap = {};
-  private renderer: Renderer2;
+  readonly renderer: Renderer2;
 
   updateHostClass(el: HTMLElement, classMap: object): void {
     this.removeClass(el, this.classMap, this.renderer);

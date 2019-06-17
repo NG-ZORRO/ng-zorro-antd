@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { CdkConnectedOverlay, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
+import { ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -23,7 +23,6 @@ import {
   Output,
   Self,
   SimpleChanges,
-  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 
@@ -32,6 +31,7 @@ import { debounceTime, distinctUntilChanged, map, mapTo, takeUntil } from 'rxjs/
 
 import {
   slideMotion,
+  warnDeprecation,
   DEFAULT_DROPDOWN_POSITIONS,
   InputBoolean,
   NzDropdownHigherOrderServiceToken,
@@ -39,9 +39,9 @@ import {
   NzNoAnimationDirective,
   POSITION_MAP
 } from 'ng-zorro-antd/core';
-import { NzMenuDirective } from 'ng-zorro-antd/menu';
 import { NzDropDownDirective } from './nz-dropdown.directive';
 import { NzMenuDropdownService } from './nz-menu-dropdown.service';
+
 export type NzPlacement = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLeft' | 'topCenter' | 'topRight';
 
 export function menuServiceFactory(injector: Injector): NzMenuBaseService {
@@ -77,6 +77,9 @@ export function menuServiceFactory(injector: Injector): NzMenuBaseService {
     `
   ]
 })
+/**
+ * @deprecated Use `NzDropdownDirective` instead, will remove in 9.0.0.
+ */
 export class NzDropDownComponent implements OnDestroy, AfterContentInit, OnChanges {
   triggerWidth = 0;
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
@@ -84,8 +87,6 @@ export class NzDropDownComponent implements OnDestroy, AfterContentInit, OnChang
   visible$ = new Subject<boolean>();
   private destroy$ = new Subject<void>();
   @ContentChild(NzDropDownDirective, { static: false }) nzDropDownDirective: NzDropDownDirective;
-  @ContentChild(NzMenuDirective, { static: false }) nzMenuDirective: NzMenuDirective;
-  @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay: CdkConnectedOverlay;
   @Input() nzTrigger: 'click' | 'hover' = 'hover';
   @Input() nzOverlayClassName = '';
   @Input() nzOverlayStyle: { [key: string]: string } = {};
@@ -136,7 +137,11 @@ export class NzDropDownComponent implements OnDestroy, AfterContentInit, OnChang
     protected cdr: ChangeDetectorRef,
     private nzMenuDropdownService: NzMenuDropdownService,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
-  ) {}
+  ) {
+    warnDeprecation(
+      `'nz-dropdown' Component is going to be removed in 9.0.0. Please use 'nz-dropdown-menu' instead. Read https://ng.ant.design/components/dropdown/en`
+    );
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();

@@ -13,6 +13,6 @@ export interface NgClassInterface {
   [klass: string]: any; // tslint:disable-line:no-any
 }
 
-export interface NGStyleInterface {
+export interface NgStyleInterface {
   [klass: string]: any; // tslint:disable-line:no-any
 }

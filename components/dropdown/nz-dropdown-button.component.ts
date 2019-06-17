@@ -25,7 +25,12 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { slideMotion, NzDropdownHigherOrderServiceToken, NzNoAnimationDirective } from 'ng-zorro-antd/core';
+import {
+  slideMotion,
+  warnDeprecation,
+  NzDropdownHigherOrderServiceToken,
+  NzNoAnimationDirective
+} from 'ng-zorro-antd/core';
 
 import { menuServiceFactory, NzDropDownComponent } from './nz-dropdown.component';
 import { NzDropDownDirective } from './nz-dropdown.directive';
@@ -54,7 +59,7 @@ import { NzMenuDropdownService } from './nz-menu-dropdown.service';
         display: inline-block;
       }
 
-      .ant-dropdown {
+      :root .ant-dropdown {
         top: 100%;
         left: 0;
         position: relative;
@@ -65,6 +70,9 @@ import { NzMenuDropdownService } from './nz-menu-dropdown.service';
     `
   ]
 })
+/**
+ * @deprecated Use `NzDropdownDirective` instead, will remove in 9.0.0.
+ */
 export class NzDropDownButtonComponent extends NzDropDownComponent implements OnDestroy, AfterContentInit, OnChanges {
   @Input() nzSize = 'default';
   @Input() nzType = 'default';
@@ -78,6 +86,9 @@ export class NzDropDownButtonComponent extends NzDropDownComponent implements On
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     super(cdr, nzMenuDropdownService, noAnimation);
+    warnDeprecation(
+      `'nz-dropdown-button' Component is going to be removed in 9.0.0. Please use 'nz-dropdown-menu' instead. Read https://ng.ant.design/components/dropdown/en`
+    );
   }
 
   /** rewrite afterViewInit hook */

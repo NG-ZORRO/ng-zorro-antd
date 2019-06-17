@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { dispatchMouseEvent, NGStyleInterface } from 'ng-zorro-antd/core';
+import { dispatchMouseEvent, NgStyleInterface } from 'ng-zorro-antd/core';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
 import { NzDatePickerModule } from './date-picker.module';
@@ -431,10 +431,10 @@ class NzTestYearPickerComponent {
   nzDisabledDate: (d: Date) => boolean;
   nzLocale: any; // tslint:disable-line:no-any
   nzPlaceHolder: string;
-  nzPopupStyle: NGStyleInterface;
+  nzPopupStyle: NgStyleInterface;
   nzDropdownClassName: string;
   nzSize: string;
-  nzStyle: NGStyleInterface;
+  nzStyle: NgStyleInterface;
 
   nzOnOpenChange(): void {}
 

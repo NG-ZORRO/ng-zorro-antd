@@ -3,8 +3,11 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-dropdown-sub-menu',
   template: `
-    <nz-dropdown (nzVisibleChange)="change($event)">
-      <a nz-dropdown> Cascading menu <i nz-icon type="down"></i> </a>
+    <a nz-dropdown [nzDropdownMenu]="menu" (nzVisibleChange)="change($event)">
+      Cascading menu
+      <i nz-icon type="down"></i>
+    </a>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu>
         <li nz-menu-item>1st menu item</li>
         <li nz-menu-item>2nd menu item</li>
@@ -23,7 +26,7 @@ import { Component } from '@angular/core';
           </ul>
         </li>
       </ul>
-    </nz-dropdown>
+    </nz-dropdown-menu>
   `,
   styles: []
 })

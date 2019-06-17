@@ -25,7 +25,7 @@ import {
 import { fromEvent, Subscription } from 'rxjs';
 import { distinctUntilChanged, throttleTime } from 'rxjs/operators';
 
-import { toNumber, InputBoolean, InputNumber, NzScrollService, NGStyleInterface } from 'ng-zorro-antd/core';
+import { toNumber, InputBoolean, InputNumber, NgStyleInterface, NzScrollService } from 'ng-zorro-antd/core';
 
 import { NzAnchorLinkComponent } from './nz-anchor-link.component';
 
@@ -75,7 +75,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
   @Output() readonly nzScroll = new EventEmitter<NzAnchorLinkComponent>();
 
   visible = false;
-  wrapperStyle: NGStyleInterface = { 'max-height': '100vh' };
+  wrapperStyle: NgStyleInterface = { 'max-height': '100vh' };
 
   private links: NzAnchorLinkComponent[] = [];
   private animating = false;
