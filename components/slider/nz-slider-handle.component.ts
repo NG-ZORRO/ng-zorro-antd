@@ -19,7 +19,7 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { InputBoolean, NGStyleInterface } from 'ng-zorro-antd/core';
+import { InputBoolean, NgStyleInterface } from 'ng-zorro-antd/core';
 import { NzToolTipComponent } from 'ng-zorro-antd/tooltip';
 
 import { SliderShowTooltip } from './nz-slider-definitions';
@@ -48,7 +48,7 @@ export class NzSliderHandleComponent implements OnChanges, OnDestroy {
   @Input() @InputBoolean() nzActive = false;
 
   tooltipTitle: string;
-  style: NGStyleInterface = {};
+  style: NgStyleInterface = {};
 
   private hovers_ = new Subscription();
 

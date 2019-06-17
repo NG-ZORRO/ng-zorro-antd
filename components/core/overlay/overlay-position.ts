@@ -74,8 +74,8 @@ export const DEFAULT_TOOLTIP_POSITIONS = [POSITION_MAP.top, POSITION_MAP.right, 
 export const DEFAULT_DROPDOWN_POSITIONS = [
   POSITION_MAP.bottomLeft,
   POSITION_MAP.bottomRight,
-  POSITION_MAP.topLeft,
-  POSITION_MAP.topRight
+  POSITION_MAP.topRight,
+  POSITION_MAP.topLeft
 ];
 export const DEFAULT_SUBMENU_POSITIONS = [POSITION_MAP.rightTop, POSITION_MAP.leftTop];
 export const DEFAULT_CASCADER_POSITIONS = [

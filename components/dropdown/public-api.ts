@@ -14,3 +14,5 @@ export * from './nz-dropdown-button.component';
 export * from './nz-dropdown.module';
 export * from './nz-menu-dropdown.service';
 export * from './nz-dropdown-a.directive';
+export * from './nz-dropdown-menu.component';
+export * from './nz-context-menu.service';

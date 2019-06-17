@@ -25,8 +25,8 @@ import {
   shallowEqual,
   throttleByAnimationFrameDecorator,
   toNumber,
-  NzScrollService,
-  NGStyleInterface
+  NgStyleInterface,
+  NzScrollService
 } from 'ng-zorro-antd/core';
 
 @Component({
@@ -84,8 +84,8 @@ export class NzAffixComponent implements OnInit, OnDestroy {
 
   private readonly placeholderNode: HTMLElement;
 
-  private affixStyle: NGStyleInterface | undefined;
-  private placeholderStyle: NGStyleInterface | undefined;
+  private affixStyle: NgStyleInterface | undefined;
+  private placeholderStyle: NgStyleInterface | undefined;
   private _target: Element | Window | null = null;
   private _offsetTop: number | null;
   private _offsetBottom: number | null;
@@ -167,7 +167,7 @@ export class NzAffixComponent implements OnInit, OnDestroy {
       : ({ top: 0, left: 0, bottom: 0 } as ClientRect);
   }
 
-  private genStyle(affixStyle?: NGStyleInterface): string {
+  private genStyle(affixStyle?: NgStyleInterface): string {
     if (!affixStyle) {
       return '';
     }
@@ -179,7 +179,7 @@ export class NzAffixComponent implements OnInit, OnDestroy {
       .join(';');
   }
 
-  private setAffixStyle(e: Event, affixStyle?: NGStyleInterface): void {
+  private setAffixStyle(e: Event, affixStyle?: NgStyleInterface): void {
     const originalAffixStyle = this.affixStyle;
     const isWindow = this._target === window;
     if (e.type === 'scroll' && originalAffixStyle && affixStyle && isWindow) {
@@ -205,7 +205,7 @@ export class NzAffixComponent implements OnInit, OnDestroy {
     }
   }
 
-  private setPlaceholderStyle(placeholderStyle?: NGStyleInterface): void {
+  private setPlaceholderStyle(placeholderStyle?: NgStyleInterface): void {
     const originalPlaceholderStyle = this.placeholderStyle;
     if (shallowEqual(placeholderStyle, originalPlaceholderStyle)) {
       return;

@@ -9,7 +9,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import isSameDay from 'date-fns/is_same_day';
 
-import { dispatchKeyboardEvent, dispatchMouseEvent, NGStyleInterface } from 'ng-zorro-antd/core';
+import { dispatchKeyboardEvent, dispatchMouseEvent, NgStyleInterface } from 'ng-zorro-antd/core';
 import en_US from '../i18n/languages/en_US';
 
 import { NzI18nModule, NzI18nService } from 'ng-zorro-antd/i18n';
@@ -846,10 +846,10 @@ class NzTestDatePickerComponent {
   nzDisabledDate: (d: Date) => boolean;
   nzLocale: any; // tslint:disable-line:no-any
   nzPlaceHolder: string;
-  nzPopupStyle: NGStyleInterface;
+  nzPopupStyle: NgStyleInterface;
   nzDropdownClassName: string;
   nzSize: string;
-  nzStyle: NGStyleInterface;
+  nzStyle: NgStyleInterface;
 
   nzOnChange(): void {}
   nzOnCalendarChange(): void {}

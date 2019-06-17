@@ -149,11 +149,9 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   ) {}
 
   ngOnInit(): void {
-    combineLatest(this.nzSubmenuService.mode$, this.nzSubmenuService.open$)
+    combineLatest([this.nzSubmenuService.mode$, this.nzSubmenuService.open$])
       .pipe(takeUntil(this.destroy$))
-      .subscribe(data => {
-        const mode = data[0];
-        const open = data[1];
+      .subscribe(([mode, open]) => {
         if (open && mode === 'inline') {
           this.expandState = 'expanded';
         } else if (open && mode === 'horizontal') {
