@@ -53,6 +53,7 @@ export class NzCarouselTransformStrategy extends NzCarouselBaseStrategy {
       this.contents.forEach((content: NzCarouselContentDirective) => {
         this.renderer.setStyle(content.el, 'position', 'relative');
         this.renderer.setStyle(content.el, 'width', `${this.unitWidth}px`);
+        this.renderer.setStyle(content.el, 'height', `${this.unitHeight}px`);
       });
     }
   }
