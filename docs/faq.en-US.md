@@ -37,7 +37,7 @@ Issue is designed for maintainers and users to track the development process of 
 
 ### Where can I get help with Angular?
 
-You can checkout the official docs and Angular forums. A good trick is to search on Google using `[keywords] -angular` to prevent `angularjs`'s interference. For example, you can type in `angular ngmodel -angularjs` to learn more about `ngModel` without struggling in out-dated Angular.js things.
+You can checkout the official docs and Angular forums. A good trick is to search on Google using `[keywords] -angularjs` to prevent `angularjs`'s interference. For example, you can type in `angular ngmodel -angularjs` to learn more about `ngModel` without struggling in out-dated Angular.js things.
 
 ### Relationship between NG-ZORRO and Ant Design
 
