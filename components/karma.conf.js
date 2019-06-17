@@ -1,6 +1,7 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
+const tags = process.env && process.env['NG_TEST_TAGS'];
 module.exports = function(config) {
   config.set({
     basePath: '',
@@ -15,6 +16,7 @@ module.exports = function(config) {
       require('karma-viewport')
     ],
     client: {
+      args: [tags],
       clearContext: true // leave Jasmine Spec Runner output visible in browser
     },
     coverageIstanbulReporter: {
