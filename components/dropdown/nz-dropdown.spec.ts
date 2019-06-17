@@ -18,7 +18,7 @@ import { NzDropDownDirective } from './nz-dropdown.directive';
 import { NzDropDownModule } from './nz-dropdown.module';
 import { NzDropdownService } from './nz-dropdown.service';
 
-describe('dropdown', () => {
+describe('dropdown-deprecated', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
   const scrolledSubject = new Subject();

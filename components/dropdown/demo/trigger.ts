@@ -3,8 +3,11 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-dropdown-trigger',
   template: `
-    <nz-dropdown [nzTrigger]="'click'">
-      <a nz-dropdown> Click me <i nz-icon type="down"></i> </a>
+    <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
+      Click me
+      <i nz-icon type="down"></i>
+    </a>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu>
         <li nz-menu-item>1st menu item</li>
         <li nz-menu-item>2nd menu item</li>
@@ -25,8 +28,7 @@ import { Component } from '@angular/core';
           </ul>
         </li>
       </ul>
-    </nz-dropdown>
-  `,
-  styles: []
+    </nz-dropdown-menu>
+  `
 })
 export class NzDemoDropdownTriggerComponent {}

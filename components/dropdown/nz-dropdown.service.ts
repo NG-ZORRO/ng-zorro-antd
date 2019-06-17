@@ -16,15 +16,23 @@ import {
 } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { Injectable, TemplateRef } from '@angular/core';
+import { warnDeprecation } from 'ng-zorro-antd/core';
 import { fromEvent } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 import { NzDropdownContextComponent } from './nz-dropdown-context.component';
 
 @Injectable()
+/**
+ * @deprecated Use `NzContextMenuService` instead.
+ */
 export class NzDropdownService {
   private overlayRef: OverlayRef | null;
 
-  constructor(private overlay: Overlay) {}
+  constructor(private overlay: Overlay) {
+    warnDeprecation(
+      `'NzDropdownService' is going to be removed in 9.0.0. Please use 'NzContextMenuService' instead. Read https://ng.ant.design/components/dropdown/en`
+    );
+  }
 
   create($event: MouseEvent, templateRef: TemplateRef<void>): NzDropdownContextComponent {
     $event.preventDefault();

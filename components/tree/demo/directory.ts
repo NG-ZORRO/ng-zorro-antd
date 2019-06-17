@@ -1,24 +1,18 @@
-import { Component, TemplateRef } from '@angular/core';
-import { NzDropdownContextComponent, NzDropdownService, NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
+import { Component } from '@angular/core';
+import { NzContextMenuService, NzDropdownMenuComponent, NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-tree-directory',
   template: `
     <nz-tree [nzData]="nodes" (nzClick)="activeNode($event)" (nzDblClick)="openFolder($event)">
-      <ng-template #contextTemplate>
-        <ul nz-menu nzInDropDown>
-          <li nz-menu-item (click)="selectDropdown()">Action 1</li>
-          <li nz-menu-item (click)="selectDropdown()">Action 2</li>
-        </ul>
-      </ng-template>
       <ng-template #nzTreeTemplate let-node>
         <span class="custom-node" [class.active]="activedNode?.key === node.key">
-          <span *ngIf="!node.isLeaf" (contextmenu)="contextMenu($event, contextTemplate)">
+          <span *ngIf="!node.isLeaf" (contextmenu)="contextMenu($event, menu)">
             <i nz-icon [type]="node.isExpanded ? 'folder-open' : 'folder'" (click)="openFolder(node)"></i>
             <span class="folder-name">{{ node.title }}</span>
             <span class="folder-desc">created by {{ node?.origin?.author | lowercase }}</span>
           </span>
-          <span *ngIf="node.isLeaf" (contextmenu)="contextMenu($event, contextTemplate)">
+          <span *ngIf="node.isLeaf" (contextmenu)="contextMenu($event, menu)">
             <i nz-icon type="file"></i>
             <span class="file-name">{{ node.title }}</span>
             <span class="file-desc">modified by {{ node?.origin?.author | lowercase }}</span>
@@ -26,6 +20,12 @@ import { NzDropdownContextComponent, NzDropdownService, NzFormatEmitEvent, NzTre
         </span>
       </ng-template>
     </nz-tree>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item (click)="selectDropdown()">Action 1</li>
+        <li nz-menu-item (click)="selectDropdown()">Action 2</li>
+      </ul>
+    </nz-dropdown-menu>
   `,
   styles: [
     `
@@ -71,7 +71,6 @@ import { NzDropdownContextComponent, NzDropdownService, NzFormatEmitEvent, NzTre
   ]
 })
 export class NzDemoTreeDirectoryComponent {
-  dropdown: NzDropdownContextComponent;
   // actived node
   activedNode: NzTreeNode;
   nodes = [
@@ -112,14 +111,13 @@ export class NzDemoTreeDirectoryComponent {
     this.activedNode = data.node!;
   }
 
-  contextMenu($event: MouseEvent, template: TemplateRef<void>): void {
-    this.dropdown = this.nzDropdownService.create($event, template);
+  contextMenu($event: MouseEvent, menu: NzDropdownMenuComponent): void {
+    this.nzContextMenuService.create($event, menu);
   }
 
   selectDropdown(): void {
-    this.dropdown.close();
     // do something
   }
 
-  constructor(private nzDropdownService: NzDropdownService) {}
+  constructor(private nzContextMenuService: NzContextMenuService) {}
 }

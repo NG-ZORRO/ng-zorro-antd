@@ -53,8 +53,8 @@ import { Component, OnInit } from '@angular/core';
                     <td>{{ data.upgradeNum }}</td>
                     <td>
                       <span class="table-operation">
-                        <nz-dropdown>
-                          <a nz-dropdown class="operation"> Pause <i nz-icon type="down"></i> </a>
+                        <a nz-dropdown class="operation" [nzDropdownMenu]="menu"> Pause <i nz-icon type="down"></i> </a>
+                        <nz-dropdown-menu #menu="nzDropdownMenu">
                           <ul nz-menu>
                             <li nz-menu-item>
                               <a>Action 1</a>
@@ -63,7 +63,7 @@ import { Component, OnInit } from '@angular/core';
                               <a>Action 2</a>
                             </li>
                           </ul>
-                        </nz-dropdown>
+                        </nz-dropdown-menu>
                         <nz-divider nzType="vertical"></nz-divider>
                         <a class="operation">Stop</a>
                         <nz-divider nzType="vertical"></nz-divider>
