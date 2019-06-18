@@ -1234,13 +1234,11 @@ describe('upload', () => {
       });
 
       it('should be warn "Must return Subscription type in [nzCustomRequest] property"', () => {
-        const spy = spyOn(console, 'warn');
+        let warnMsg = '';
+        console.warn = jasmine.createSpy().and.callFake((...res: string[]) => (warnMsg = res.join(' ')));
         comp.options.customRequest = (() => {}) as any;
         comp.onChange(PNGSMALL as any);
-        expect(spy).toHaveBeenCalledWith(
-          `[NG-ZORRO]:`,
-          `Must return Subscription type in '[nzCustomRequest]' property`
-        );
+        expect(warnMsg).toContain(`Must return Subscription type in '[nzCustomRequest]' property`);
       });
     });
   });

@@ -7,10 +7,12 @@
  */
 
 // tslint:disable:no-any
+import { environment } from '../environments/environment';
 
 import { isDevMode } from '@angular/core';
 
 const record: Record<string, boolean> = {};
+
 export const PREFIX = '[NG-ZORRO]:';
 
 function notRecorded(...args: any[]): boolean {
@@ -25,11 +27,9 @@ function notRecorded(...args: any[]): boolean {
 }
 
 function consoleCommonBehavior(consoleFunc: (...args: any) => void, ...args: any[]): void {
-  if (!isDevMode() || !notRecorded(...args)) {
-    return;
+  if (environment.isTestMode || (isDevMode() && notRecorded(...args))) {
+    consoleFunc(...args);
   }
-
-  consoleFunc(...args);
 }
 
 // Warning should only be printed in dev mode and only once.
@@ -41,7 +41,6 @@ export const warnDeprecation = (...args: any[]) =>
 // Log should only be printed in dev mode.
 export const log = (...args: any[]) => {
   if (isDevMode()) {
-    // tslint:disable-next-line:no-console
     console.log(PREFIX, ...args);
   }
 };
