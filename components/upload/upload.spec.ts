@@ -1233,12 +1233,14 @@ describe('upload', () => {
         expect(comp.options.customRequest).toHaveBeenCalled();
       });
 
-      xit('should be warn "Must return Subscription type in [nzCustomRequest] property"', () => {
-        let warnMsg = '';
-        console.warn = jasmine.createSpy().and.callFake((...res: string[]) => (warnMsg = res.join(' ')));
+      it('should be warn "Must return Subscription type in [nzCustomRequest] property"', () => {
+        const spy = spyOn(console, 'warn');
         comp.options.customRequest = (() => {}) as any;
         comp.onChange(PNGSMALL as any);
-        expect(warnMsg).toContain(`Must return Subscription type`);
+        expect(spy).toHaveBeenCalledWith(
+          `[NG-ZORRO]:`,
+          `Must return Subscription type in '[nzCustomRequest]' property`
+        );
       });
     });
   });
