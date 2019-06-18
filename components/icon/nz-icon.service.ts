@@ -47,6 +47,7 @@ import {
   UploadOutline,
   UpOutline
 } from '@ant-design/icons-angular/icons';
+import { warn } from 'ng-zorro-antd/core';
 
 export interface NzIconfontOption {
   scriptUrl: string;
@@ -101,22 +102,16 @@ export const NZ_ICONS_USED_BY_ZORRO: IconDefinition[] = [
 })
 export class NzIconService extends IconService {
   private iconfontCache = new Set<string>();
-  private warnedAboutAPI = false;
-  private warnedAboutCross = false;
-  private warnedAboutVertical = false;
 
   warnAPI(type: 'old' | 'cross' | 'vertical'): void {
-    if (type === 'old' && !this.warnedAboutAPI) {
-      console.warn(`<i class="anticon"></i> would be deprecated soon. Please use <i nz-icon type=""></i> API.`);
-      this.warnedAboutAPI = true;
+    if (type === 'old') {
+      warn(`<i class="anticon"></i> would be deprecated in 9.0.0. Please use <i nz-icon nzType=""></i> API.`);
     }
-    if (type === 'cross' && !this.warnedAboutCross) {
-      console.warn(`'cross' icon is replaced by 'close' icon.`);
-      this.warnedAboutCross = true;
+    if (type === 'cross') {
+      warn(`'cross' icon is replaced by 'close' icon.`);
     }
-    if (type === 'vertical' && !this.warnedAboutVertical) {
-      console.warn(`'verticle' is misspelled, would be corrected in the next major version.`);
-      this.warnedAboutVertical = true;
+    if (type === 'vertical') {
+      warn(`'verticle' is misspelled, would be corrected in the next major version.`);
     }
   }
 
@@ -166,7 +161,7 @@ export class NzIconService extends IconService {
       if (this.defaultColor.startsWith('#')) {
         primaryColor = this.defaultColor;
       } else {
-        console.warn('[NG-ZORRO]: twotone color must be a hex color!');
+        warn('Twotone color must be a hex color!');
       }
     }
     this.twoToneColor = { primaryColor };

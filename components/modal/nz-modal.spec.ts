@@ -293,17 +293,14 @@ describe('modal testing (legacy)', () => {
     });
 
     it('boundary detection for options', fakeAsync(() => {
-      // @ts-ignore
-      const logger = instance.modalService.logger;
-      spyOn(logger, 'warn');
+      spyOn(console, 'warn');
 
       const tempModalId = generateUniqueId();
       const modalAgent = instance.createConfirm() as NzModalRef;
       const modalElement = modalAgent.getElement();
       modalElement.classList.add(tempModalId);
       fixture.detectChanges();
-      // nzFooter
-      expect(logger.warn).toHaveBeenCalled();
+      expect(console.warn).toHaveBeenCalled();
       // nzOnOk: close modal when clicked
       getButtonOk(modalElement).click();
       fixture.detectChanges();
