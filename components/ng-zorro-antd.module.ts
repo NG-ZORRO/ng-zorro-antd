@@ -16,7 +16,7 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzCommentModule } from 'ng-zorro-antd/comment';
-import { NzNoAnimationModule, NzWaveModule } from 'ng-zorro-antd/core';
+import { warnDeprecation, NzNoAnimationModule, NzWaveModule } from 'ng-zorro-antd/core';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
@@ -196,6 +196,9 @@ export class NgZorroAntdModule {
    * @deprecated Use `NgZorroAntdModule` instead.
    */
   static forRoot(): ModuleWithProviders {
+    warnDeprecation(
+      `'forRoot' is not recommended if you are using Angular 6.0.0+. This API is going to be removed in 9.0.0.`
+    );
     return {
       ngModule: NgZorroAntdModule
     };
