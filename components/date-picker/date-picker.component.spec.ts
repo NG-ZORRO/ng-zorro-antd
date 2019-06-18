@@ -12,6 +12,7 @@ import isSameDay from 'date-fns/is_same_day';
 import { dispatchKeyboardEvent, dispatchMouseEvent, NGStyleInterface } from 'ng-zorro-antd/core';
 import en_US from '../i18n/languages/en_US';
 
+import isBefore from 'date-fns/is_before';
 import { NzI18nModule, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzDatePickerModule } from './date-picker.module';
 
@@ -197,6 +198,38 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       const disabledCell = queryFromOverlay('tbody.ant-calendar-tbody td.ant-calendar-disabled-cell');
       expect(disabledCell.textContent!.trim()).toBe('15');
+    }));
+
+    it('should support month disabled by nzDisabledDate', fakeAsync(() => {
+      const compareDate = new Date('2018-11-15 00:00:00');
+      fixtureInstance.nzValue = new Date('2018-11-11 12:12:12');
+      fixtureInstance.nzDisabledDate = (current: Date) => isBefore(current, compareDate);
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      dispatchMouseEvent(queryFromOverlay('calendar-header .ant-calendar-month-select'), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      const allDisabledCells = overlayContainerElement.querySelectorAll(
+        'tbody.ant-calendar-month-panel-tbody tr td.ant-calendar-month-panel-cell-disabled'
+      );
+      const disabledCell = allDisabledCells[allDisabledCells.length - 1];
+      expect(disabledCell.textContent).toContain('11');
+    }));
+
+    it('should support year disabled by nzDisabledDate', fakeAsync(() => {
+      fixtureInstance.nzValue = new Date('2018-11-11 12:12:12');
+      fixtureInstance.nzDisabledDate = (current: Date) => current.getFullYear() === 2019;
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      dispatchMouseEvent(queryFromOverlay('calendar-header .ant-calendar-year-select'), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      const disabledCell = overlayContainerElement.querySelector(
+        'tbody.ant-calendar-year-panel-tbody tr td.ant-calendar-year-panel-cell-disabled'
+      )!;
+      expect(disabledCell.textContent).toContain('2019');
     }));
 
     it('should support nzLocale', () => {
