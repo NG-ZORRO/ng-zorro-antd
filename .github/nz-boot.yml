@@ -1,60 +1,109 @@
-assignOwner:
-  Affix: cipchk
-  Alert: vthinkxie
-  Anchor: cipchk
-  AutoComplete: hsuanxyz
-  Avatar: hsuanxyz
-  BackTop: cipchk
-  Badge: hsuanxyz
-  Breadcrumb: wendzhue
-  Button: vthinkxie
-  Empty: wendzhue
-  Calendar: wenqi73
-  Card: vthinkxie
-  Carousel: wendzhue
-  Cascader: wendzhue
-  Comment: hsuanxyz
-  Checkbox: vthinkxie
-  Collapse: vthinkxie
-  DatePicker: wenqi73
-  Divider: vthinkxie
-  Descriptions: wendzhue
-  Drawer: hsuanxyz
-  Dropdown: vthinkxie
-  Form: vthinkxie
-  Grid: vthinkxie
-  Icon: wendzhue
-  Input: vthinkxie
-  InputNumber: vthinkxie
-  Layout: vthinkxie
-  List: cipchk
-  Mention: hsuanxyz
-  Menu: vthinkxie
-  Message: wendzhue
-  Modal: hsuanxyz
-  Notification: wendzhue
-  PageHeader: hsuanxyz
-  Pagination: vthinkxie
-  Popconfirm: wendzhue
-  Popover: wendzhue
-  Progress: wendzhue
-  Radio: vthinkxie
-  Rate: wendzhue
-  Select: vthinkxie
-  Slider: wendzhue
-  Spin: vthinkxie
-  Statistic: wendzhue
-  Steps: hsuanxyz
-  Skeleton: wenqi73
-  Switch: vthinkxie
-  Table: vthinkxie
-  Tabs: vthinkxie
-  Tag: hsuanxyz
-  TimePicker: wenqi73
-  Timeline: wendzhue
-  Tooltip: wendzhue
-  Transfer: cipchk
-  Tree: simplejason
-  TreeSelect: hsuanxyz
-  Typography: hsuanxyz
-  Upload: cipchk
+issue:
+  labeledReplay:
+    - labels:
+        - Upgrade Deps
+      replay: |
+        Hello @{user}.
+        - If you use npm, please try `rm -rf node_modules && npm install` to upgrade all your deps.
+        - If you use yarn, you may need `yarn upgrade`.
+
+        <img src="https://cloud.githubusercontent.com/assets/465125/26667345/4bcc8f10-46d7-11e7-8c72-32a0c68ea7ca.jpg" width="500" height="300">
+    - labels:
+        - Usage
+        - Question
+      replay: |
+        Hello @{user}, we use GitHub issues to trace bugs or discuss plans of Ant Design.
+        So, please [don't ask usage questions](https://github.com/ant-design/ant-design/issues/2320) here.
+        You can try to ask questions on [Stack Overflow](http://stackoverflow.com/questions/tagged/ng-zorro-antd) or [Segment Fault](https://segmentfault.com/t/ng-zorro), then apply tag `ng-zorro-antd` or `ng-zorro` to your question.
+
+        你好 @{user}，Ant Design Issue 板块是用于 bug 反馈与需求讨论的地方。
+        请[勿询问如何使用的问题](https://github.com/ant-design/ant-design/issues/2320)
+        你可以试着在 [Stack Overflow](http://stackoverflow.com/questions/tagged/ng-zorro-antd) 或者 [Segment Fault](https://segmentfault.com/t/ng-zorro) 中提问（记得添加 `ng-zorro-antd` 或 `ng-zorro` 标签）。
+  translate:
+    replay: |
+      Translation of this issue:
+      ---
+      ## {title}
+
+      {body}
+  needReproduce:
+    label: Need Reproduce
+    afterLabel: Need More Info
+    replay: |
+      Hello @{user}. Please provide a online reproduction by forking this link https://stackblitz.com/edit/ng-zorro-antd-start or a minimal GitHub repository.
+      Issues labeled by `Need Reproduce` will be closed if no activities in 7 days.
+
+      你好 @{user}, 我们需要你提供一个在线的重现实例以便于我们帮你排查问题。你可以通过点击 [此处](https://stackblitz.com/edit/ng-zorro-antd-start) 创建一个 stackblitz 或者提供一个最小化的 GitHub 仓库
+      被标记为 `Need Reproduce` 的 issue 7 天内未跟进将会被自动关闭。
+  invalid:
+    mark: ng-zorro-issue-helper
+    labels: Invalid
+    replay: |
+      Hello @{user}, your issue has been closed because it does not conform to our issue requirements.
+      Please use the [Issue Helper](http://ng.ant.design/issue-helper/#/en) to create an issue, thank you!
+
+
+      你好 @{user}，为了能够进行高效沟通，我们对 issue 有一定的格式要求，你的 issue 因为不符合要求而被自动关闭。
+      你可以通过 [issue 助手](http://ng.ant.design/issue-helper/#/zh) 来创建 issue 以方便我们定位错误。谢谢配合！
+  assignOwner:
+    labelTemplate: 'Component: {component}'
+    components:
+      Affix: cipchk
+      Alert: vthinkxie
+      Anchor: cipchk
+      AutoComplete: hsuanxyz
+      Avatar: hsuanxyz
+      BackTop: cipchk
+      Badge: hsuanxyz
+      Breadcrumb: wendzhue
+      Button: vthinkxie
+      Empty: wendzhue
+      Calendar: wenqi73
+      Card: vthinkxie
+      Carousel: wendzhue
+      Cascader: wendzhue
+      Comment: hsuanxyz
+      Checkbox: vthinkxie
+      Collapse: vthinkxie
+      DatePicker: wenqi73
+      Divider: vthinkxie
+      Descriptions: wendzhue
+      Drawer: hsuanxyz
+      Dropdown: vthinkxie
+      Form: vthinkxie
+      Grid: vthinkxie
+      Icon: wendzhue
+      Input: vthinkxie
+      InputNumber: vthinkxie
+      Layout: vthinkxie
+      List: cipchk
+      Mention: hsuanxyz
+      Menu: vthinkxie
+      Message: wendzhue
+      Modal: hsuanxyz
+      Notification: wendzhue
+      PageHeader: hsuanxyz
+      Pagination: vthinkxie
+      Popconfirm: wendzhue
+      Popover: wendzhue
+      Progress: wendzhue
+      Radio: vthinkxie
+      Rate: wendzhue
+      Select: vthinkxie
+      Slider: wendzhue
+      Spin: vthinkxie
+      Statistic: wendzhue
+      Steps: hsuanxyz
+      Skeleton: wenqi73
+      Switch: vthinkxie
+      Table: vthinkxie
+      Tabs: vthinkxie
+      Tag: hsuanxyz
+      TimePicker: wenqi73
+      Timeline: wendzhue
+      Tooltip: wendzhue
+      Transfer: cipchk
+      Tree: simplejason
+      TreeSelect: hsuanxyz
+      Typography: hsuanxyz
+      Upload: cipchk
