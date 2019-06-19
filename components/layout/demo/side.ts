@@ -22,7 +22,7 @@ import { Component } from '@angular/core';
           </li>
           <li nz-menu-item>
             <i nz-icon nzType="file"></i>
-            File
+            <span>File</span>
           </li>
         </ul>
       </nz-sider>

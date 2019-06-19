@@ -4,11 +4,11 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-menu-inline',
   template: `
     <ul nz-menu nzMode="inline">
-      <li nz-submenu nzTitle="Navigation One" nzIcon="mail">
+      <li nz-submenu nzTitle="Navigation One" nzIcon="mail" nzOpen>
         <ul>
           <li nz-menu-group nzTitle="Item 1">
             <ul>
-              <li nz-menu-item>Option 1</li>
+              <li nz-menu-item nzSelected>Option 1</li>
               <li nz-menu-item>Option 2</li>
             </ul>
           </li>
