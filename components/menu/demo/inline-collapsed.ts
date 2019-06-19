@@ -4,11 +4,11 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-menu-inline-collapsed',
   template: `
     <div class="wrapper">
-      <button nz-button [nzType]="'primary'" (click)="toggleCollapsed()">
+      <button nz-button nzType="primary" (click)="toggleCollapsed()">
         <i nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
       </button>
-      <ul nz-menu [nzMode]="'inline'" nzTheme="dark" [nzInlineCollapsed]="isCollapsed">
-        <li nz-menu-item nz-tooltip nzPlacement="right" [nzTitle]="isCollapsed ? 'Navigation One' : ''">
+      <ul nz-menu nzMode="inline" nzTheme="dark" [nzInlineCollapsed]="isCollapsed">
+        <li nz-menu-item nz-tooltip nzPlacement="right" [nzTitle]="isCollapsed ? 'Navigation One' : ''" nzSelected>
           <i nz-icon nzType="mail"></i>
           <span>Navigation One</span>
         </li>

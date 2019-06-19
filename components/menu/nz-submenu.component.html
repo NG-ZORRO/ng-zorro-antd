@@ -7,7 +7,7 @@
      (mouseleave)="setMouseEnterState(false)"
      (click)="clickSubMenuTitle()">
   <i nz-icon [nzType]="nzIcon" *ngIf="nzIcon"></i>
-  <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+  <ng-container *nzStringTemplateOutlet="nzTitle"><span>{{ nzTitle }}</span></ng-container>
   <ng-content select="[title]" *ngIf="!nzTitle"></ng-content>
   <span *ngIf="nzMenuService.isInDropDown; else notDropdownTpl" class="ant-dropdown-menu-submenu-arrow">
     <i nz-icon nzType="right" class="anticon-right ant-dropdown-menu-submenu-arrow-icon"></i>

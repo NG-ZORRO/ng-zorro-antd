@@ -171,16 +171,15 @@
 
 <ng-template #sideOrDrawerTpl>
   <ul nz-menu [nzMode]="'inline'" class="aside-container menu-site" nzInlineIndent="40">
-    <li *ngFor="let intro of routerList.intro" nz-menu-item routerLinkActive="ant-menu-item-selected" [hidden]="intro.language !== language">
+    <li *ngFor="let intro of routerList.intro" nz-menu-item nzMatchRouter [hidden]="intro.language !== language">
       <a routerLink="{{intro.path}}">{{intro.label}}</a>
     </li>
-    <li nz-submenu nzOpen routerLinkActive="ant-menu-submenu-selected">
+    <li nz-submenu nzOpen>
       <span title><h4>Components</h4></span>
       <ul>
-        <li nz-menu-group *ngFor="let group of routerList.components" [hidden]="group.language !== language">
-          <span title>{{group.name}}</span>
+        <li nz-menu-group *ngFor="let group of routerList.components" [hidden]="group.language !== language" [nzTitle]="group.name">
           <ul>
-            <li nz-menu-item routerLinkActive="ant-menu-item-selected" *ngFor="let component of group.children">
+            <li nz-menu-item nzMatchRouter *ngFor="let component of group.children">
               <a routerLink="{{component.path}}">
                 <span>{{component.label}}</span><span class="chinese">{{component.zh}}</span>
               </a>

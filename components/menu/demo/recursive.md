@@ -1,5 +1,5 @@
 ---
-order: 6
+order: 7
 title:
     zh-CN: 递归生成菜单
     en-US: Recursive
