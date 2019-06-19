@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-menu-horizontal',
   template: `
     <ul nz-menu nzMode="horizontal">
-      <li nz-menu-item>
+      <li nz-menu-item nzSelected>
         <i nz-icon nzType="mail"></i>
         Navigation One
       </li>

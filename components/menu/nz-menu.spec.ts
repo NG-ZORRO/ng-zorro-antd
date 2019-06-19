@@ -18,8 +18,6 @@ import { Subject } from 'rxjs';
 import { dispatchFakeEvent } from 'ng-zorro-antd/core';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
-import { NzDemoMenuHorizontalComponent } from './demo/horizontal';
-import { NzDemoMenuInlineComponent } from './demo/inline';
 import { NzDemoMenuInlineCollapsedComponent } from './demo/inline-collapsed';
 import { NzDemoMenuSiderCurrentComponent } from './demo/sider-current';
 import { NzDemoMenuSwitchModeComponent } from './demo/switch-mode';
@@ -38,8 +36,8 @@ describe('menu', () => {
     TestBed.configureTestingModule({
       imports: [NzMenuModule, NoopAnimationsModule, NoopAnimationsModule, NzIconTestModule],
       declarations: [
-        NzDemoMenuHorizontalComponent,
-        NzDemoMenuInlineComponent,
+        NzTestBasicMenuHorizontalComponent,
+        NzTestBasicMenuInlineComponent,
         NzDemoMenuInlineCollapsedComponent,
         NzDemoMenuSiderCurrentComponent,
         NzDemoMenuThemeComponent,
@@ -69,12 +67,12 @@ describe('menu', () => {
   }));
   describe('demo', () => {
     describe('horizontal', () => {
-      let fixture: ComponentFixture<NzDemoMenuHorizontalComponent>;
+      let fixture: ComponentFixture<NzTestBasicMenuHorizontalComponent>;
       let items: DebugElement[];
       let submenu: DebugElement;
       let menu: DebugElement;
       beforeEach(() => {
-        fixture = TestBed.createComponent(NzDemoMenuHorizontalComponent);
+        fixture = TestBed.createComponent(NzTestBasicMenuHorizontalComponent);
         items = fixture.debugElement.queryAll(By.directive(NzMenuItemDirective));
         submenu = fixture.debugElement.query(By.directive(NzSubMenuComponent));
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
@@ -101,12 +99,12 @@ describe('menu', () => {
       });
     });
     describe('inline', () => {
-      let fixture: ComponentFixture<NzDemoMenuInlineComponent>;
+      let fixture: ComponentFixture<NzTestBasicMenuInlineComponent>;
       let items: DebugElement[];
       let submenus: DebugElement[];
       let menu: DebugElement;
       beforeEach(() => {
-        fixture = TestBed.createComponent(NzDemoMenuInlineComponent);
+        fixture = TestBed.createComponent(NzTestBasicMenuInlineComponent);
         items = fixture.debugElement.queryAll(By.directive(NzMenuItemDirective));
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
         submenus = fixture.debugElement.queryAll(By.directive(NzSubMenuComponent));
@@ -590,3 +588,99 @@ export class NzDemoMenuNgForComponent {
     }
   ];
 }
+
+@Component({
+  template: `
+    <ul nz-menu nzMode="horizontal">
+      <li nz-menu-item>
+        <i nz-icon nzType="mail"></i>
+        Navigation One
+      </li>
+      <li nz-menu-item nzDisabled>
+        <i nz-icon nzType="appstore"></i>
+        Navigation Two
+      </li>
+      <li nz-submenu nzTitle="Navigation Three - Submenu" nzIcon="setting">
+        <ul>
+          <li nz-menu-group nzTitle="Item 1">
+            <ul>
+              <li nz-menu-item>Option 1</li>
+              <li nz-menu-item>Option 2</li>
+            </ul>
+          </li>
+          <li nz-menu-group nzTitle="Item 2">
+            <ul>
+              <li nz-menu-item>Option 3</li>
+              <li nz-menu-item>Option 4</li>
+              <li nz-submenu nzTitle="Sub Menu">
+                <ul>
+                  <li nz-menu-item nzDisabled>Option 5</li>
+                  <li nz-menu-item>Option 6</li>
+                </ul>
+              </li>
+              <li nz-submenu nzDisabled nzTitle="Disabled Sub Menu">
+                <ul>
+                  <li nz-menu-item>Option 5</li>
+                  <li nz-menu-item>Option 6</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li nz-menu-item>
+        <a href="https://ng.ant.design" target="_blank" rel="noopener noreferrer">Navigation Four - Link</a>
+      </li>
+    </ul>
+  `
+})
+export class NzTestBasicMenuHorizontalComponent {}
+
+@Component({
+  template: `
+    <ul nz-menu nzMode="inline">
+      <li nz-submenu nzTitle="Navigation One" nzIcon="mail">
+        <ul>
+          <li nz-menu-group nzTitle="Item 1">
+            <ul>
+              <li nz-menu-item>Option 1</li>
+              <li nz-menu-item>Option 2</li>
+            </ul>
+          </li>
+          <li nz-menu-group nzTitle="Item 2">
+            <ul>
+              <li nz-menu-item>Option 3</li>
+              <li nz-menu-item>Option 4</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="Navigation Two" nzIcon="appstore">
+        <ul>
+          <li nz-menu-item>Option 5</li>
+          <li nz-menu-item>Option 6</li>
+          <li nz-submenu nzTitle="Submenu">
+            <ul>
+              <li nz-menu-item>Option 7</li>
+              <li nz-menu-item>Option 8</li>
+              <li nz-submenu nzTitle="Submenu">
+                <ul>
+                  <li nz-menu-item>Option 9</li>
+                  <li nz-menu-item>Option 10</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="Navigation Three" nzIcon="setting">
+        <ul>
+          <li nz-menu-item>Option 11</li>
+          <li nz-menu-item>Option 12</li>
+          <li nz-menu-item>Option 13</li>
+        </ul>
+      </li>
+    </ul>
+  `
+})
+export class NzTestBasicMenuInlineComponent {}

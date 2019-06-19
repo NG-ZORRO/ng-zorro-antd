@@ -55,6 +55,8 @@ import { NzMenuModule } from 'ng-zorro-antd';
 | --- | --- | --- | --- |
 | `[nzDisabled]` | 是否禁用 | `boolean` | `false` |
 | `[nzSelected]` | 是否被选中 | `boolean` | `false` |
+| `[nzMatchRouter]` | 是否根据 [routerLink](https://www.angular.cn/api/router/RouterLink) 自动设定 `nzSelected` | `boolean` | `false` |
+| `[nzMatchRouterExact]` | 是否路由完整精确匹配, 详见 [routerLinkActiveOptions](https://angular.io/api/router/RouterLinkActive#routerLinkActiveOptions) | `boolean` | `false` |
 
 ### [nz-submenu]
 
@@ -63,10 +65,10 @@ import { NzMenuModule } from 'ng-zorro-antd';
 ```html
 <li nz-submenu nzTitle="SubTitle" nzIcon="appstore"></li>
 
-<li nz-submenu><span title><i nz-icon nzType="appstore"></i>SubTitle</span></li>
+<li nz-submenu><span title><i nz-icon nzType="appstore"></i><span>SubTitle</span></span></li>
 
 <li nz-submenu [nzTitle]="titleTpl"></li>
-<ng-template #titleTpl><i nz-icon nzType="appstore"></i>SubTitle</ng-template>
+<ng-template #titleTpl><i nz-icon nzType="appstore"></i><span>SubTitle</span></ng-template>
 ```
 
 | 参数 | 说明 | 类型 | 默认值 |
@@ -86,10 +88,10 @@ import { NzMenuModule } from 'ng-zorro-antd';
 ```html
 <li nz-menu-group nzTitle="SubTitle" nzIcon="appstore"></li>
 
-<li nz-menu-group><span title><i nz-icon nzType="appstore"></i>SubTitle</span></li>
+<li nz-menu-group><span title><i nz-icon nzType="appstore"></i><span>SubTitle</span></span></li>
 
 <li nz-menu-group [nzTitle]="titleTpl"></li>
-<ng-template #titleTpl><i nz-icon nzType="appstore"></i>SubTitle</ng-template>
+<ng-template #titleTpl><i nz-icon nzType="appstore"></i><span>SubTitle</span></ng-template>
 ```
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |

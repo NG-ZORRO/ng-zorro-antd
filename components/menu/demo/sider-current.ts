@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-menu-sider-current',
   template: `
-    <ul nz-menu [nzMode]="'inline'" style="width: 240px;">
+    <ul nz-menu nzMode="inline" style="width: 240px;">
       <li
         nz-submenu
         [(nzOpen)]="openMap.sub1"

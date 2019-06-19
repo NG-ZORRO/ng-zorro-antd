@@ -7,6 +7,8 @@
  */
 
 import {
+  AfterContentInit,
+  ContentChildren,
   Directive,
   ElementRef,
   Input,
@@ -14,15 +16,14 @@ import {
   OnDestroy,
   OnInit,
   Optional,
+  QueryList,
   Renderer2,
   SimpleChanges
 } from '@angular/core';
-
-import { merge, EMPTY, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
+import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/router';
 import { isNotNil, InputBoolean, NzMenuBaseService, NzUpdateHostClassService } from 'ng-zorro-antd/core';
-
+import { merge, EMPTY, Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 import { NzSubmenuService } from './nz-submenu.service';
 
 @Directive({
@@ -33,14 +34,18 @@ import { NzSubmenuService } from './nz-submenu.service';
     '(click)': 'clickMenuItem($event)'
   }
 })
-export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy {
+export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterContentInit {
   private el: HTMLElement = this.elementRef.nativeElement;
   private destroy$ = new Subject();
   private originalPadding: number | null = null;
   selected$ = new Subject<boolean>();
-  @Input() nzPaddingLeft: number;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzSelected = false;
+  @Input() nzPaddingLeft: number;
+  @Input() @InputBoolean() nzMatchRouterExact = false;
+  @Input() @InputBoolean() nzMatchRouter = false;
+  @ContentChildren(RouterLink, { descendants: true }) listOfRouterLink: QueryList<RouterLink>;
+  @ContentChildren(RouterLinkWithHref, { descendants: true }) listOfRouterLinkWithHref: QueryList<RouterLinkWithHref>;
 
   /** clear all item selected status except this */
   clickMenuItem(e: MouseEvent): void {
@@ -70,13 +75,58 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy {
     this.setClassMap();
   }
 
+  private updateRouterActive(): void {
+    if (
+      !this.listOfRouterLink ||
+      !this.listOfRouterLinkWithHref ||
+      !this.router ||
+      !this.router.navigated ||
+      !this.nzMatchRouter
+    ) {
+      return;
+    }
+    Promise.resolve().then(() => {
+      const hasActiveLinks = this.hasActiveLinks();
+      if (this.nzSelected !== hasActiveLinks) {
+        this.nzSelected = hasActiveLinks;
+        this.setClassMap();
+      }
+    });
+  }
+
+  private hasActiveLinks(): boolean {
+    const isActiveCheckFn = this.isLinkActive(this.router!);
+    return (
+      (this.routerLink && isActiveCheckFn(this.routerLink)) ||
+      (this.routerLinkWithHref && isActiveCheckFn(this.routerLinkWithHref)) ||
+      this.listOfRouterLink.some(isActiveCheckFn) ||
+      this.listOfRouterLinkWithHref.some(isActiveCheckFn)
+    );
+  }
+
+  private isLinkActive(router: Router): (link: RouterLink | RouterLinkWithHref) => boolean {
+    return (link: RouterLink | RouterLinkWithHref) => router.isActive(link.urlTree, this.nzMatchRouterExact);
+  }
+
   constructor(
     private nzUpdateHostClassService: NzUpdateHostClassService,
     private nzMenuService: NzMenuBaseService,
     @Optional() private nzSubmenuService: NzSubmenuService,
     private renderer: Renderer2,
-    private elementRef: ElementRef
-  ) {}
+    private elementRef: ElementRef,
+    @Optional() private routerLink?: RouterLink,
+    @Optional() private routerLinkWithHref?: RouterLinkWithHref,
+    @Optional() private router?: Router
+  ) {
+    if (router) {
+      this.router!.events.pipe(
+        takeUntil(this.destroy$),
+        filter(e => e instanceof NavigationEnd)
+      ).subscribe(() => {
+        this.updateRouterActive();
+      });
+    }
+  }
 
   ngOnInit(): void {
     /** store origin padding in padding */
@@ -109,6 +159,12 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy {
         }
       });
     this.setClassMap();
+  }
+
+  ngAfterContentInit(): void {
+    this.listOfRouterLink.changes.pipe(takeUntil(this.destroy$)).subscribe(() => this.updateRouterActive());
+    this.listOfRouterLinkWithHref.changes.pipe(takeUntil(this.destroy$)).subscribe(() => this.updateRouterActive());
+    this.updateRouterActive();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
