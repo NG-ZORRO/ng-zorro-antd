@@ -1,8 +1,10 @@
 <ng-content select="nz-breadcrumb[nz-page-header-breadcrumb]"></ng-content>
 
-<div *ngIf="nzBackIcon !== null" (click)="onBack()" class="ant-page-header-back-icon">
-  <i *ngIf="isStringBackIcon" nz-icon [type]="nzBackIcon ? nzBackIcon : 'arrow-left'" theme="outline"></i>
-  <ng-container *ngIf="isTemplateRefBackIcon" [ngTemplateOutlet]="nzBackIcon"></ng-container>
+<div *ngIf="nzBackIcon !== null" (click)="onBack()" class="ant-page-header-back">
+  <div role="button" tabindex="0" class="ant-page-header-back-button">
+    <i *ngIf="isStringBackIcon" nz-icon [type]="nzBackIcon ? nzBackIcon : 'arrow-left'" theme="outline"></i>
+    <ng-container *ngIf="isTemplateRefBackIcon" [ngTemplateOutlet]="nzBackIcon"></ng-container>
+  </div>
   <nz-divider nzType="vertical"></nz-divider>
 </div>
 
