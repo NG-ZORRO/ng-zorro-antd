@@ -65,14 +65,14 @@ describe('NzPageHeaderComponent', () => {
     const fixture = TestBed.createComponent(NzDemoPageHeaderBasicComponent);
     const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
     fixture.detectChanges();
-    expect(pageHeader.nativeElement.querySelector('.ant-page-header-back-icon > i.anticon-arrow-left')).toBeTruthy();
+    expect(pageHeader.nativeElement.querySelector('.ant-page-header-back i.anticon-arrow-left')).toBeTruthy();
   });
 
   it('should does not have an default back icon', () => {
     const fixture = TestBed.createComponent(NzDemoPageHeaderContentComponent);
     const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
     fixture.detectChanges();
-    expect(pageHeader.nativeElement.querySelector('.ant-page-header-back-icon')).toBeFalsy();
+    expect(pageHeader.nativeElement.querySelector('.ant-page-header-back')).toBeFalsy();
   });
 
   it('should nzBack work', () => {
@@ -82,7 +82,7 @@ describe('NzPageHeaderComponent', () => {
     spyOn(context, 'onBack');
     fixture.detectChanges();
     expect(context.onBack).not.toHaveBeenCalled();
-    const back = pageHeader.nativeElement.querySelector('.ant-page-header-back-icon');
+    const back = pageHeader.nativeElement.querySelector('.ant-page-header-back');
     (back as HTMLElement).click();
     fixture.detectChanges();
     expect(context.onBack).toHaveBeenCalled();
