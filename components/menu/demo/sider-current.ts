@@ -4,18 +4,21 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-menu-sider-current',
   template: `
     <ul nz-menu [nzMode]="'inline'" style="width: 240px;">
-      <li nz-submenu [(nzOpen)]="openMap.sub1" (nzOpenChange)="openHandler('sub1')">
-        <span title><i nz-icon type="mail"></i> Navigation One</span>
+      <li
+        nz-submenu
+        [(nzOpen)]="openMap.sub1"
+        (nzOpenChange)="openHandler('sub1')"
+        nzTitle="Navigation One"
+        nzIcon="mail"
+      >
         <ul>
-          <li nz-menu-group>
-            <span title>Item 1</span>
+          <li nz-menu-group nzTitle="Item 1">
             <ul>
               <li nz-menu-item>Option 1</li>
               <li nz-menu-item>Option 2</li>
             </ul>
           </li>
-          <li nz-menu-group>
-            <span title>Item 2</span>
+          <li nz-menu-group nzTitle="Item 2">
             <ul>
               <li nz-menu-item>Option 3</li>
               <li nz-menu-item>Option 4</li>
@@ -23,13 +26,17 @@ import { Component } from '@angular/core';
           </li>
         </ul>
       </li>
-      <li nz-submenu [(nzOpen)]="openMap.sub2" (nzOpenChange)="openHandler('sub2')">
-        <span title><i nz-icon type="appstore"></i> Navigation Two</span>
+      <li
+        nz-submenu
+        [(nzOpen)]="openMap.sub2"
+        (nzOpenChange)="openHandler('sub2')"
+        nzTitle="Navigation Two"
+        nzIcon="appstore"
+      >
         <ul>
           <li nz-menu-item>Option 5</li>
           <li nz-menu-item>Option 6</li>
-          <li nz-submenu>
-            <span title>Submenu</span>
+          <li nz-submenu nzTitle="Submenu">
             <ul>
               <li nz-menu-item>Option 7</li>
               <li nz-menu-item>Option 8</li>
@@ -37,8 +44,13 @@ import { Component } from '@angular/core';
           </li>
         </ul>
       </li>
-      <li nz-submenu [(nzOpen)]="openMap.sub3" (nzOpenChange)="openHandler('sub3')">
-        <span title><i nz-icon type="setting"></i> Navigation Three</span>
+      <li
+        nz-submenu
+        [(nzOpen)]="openMap.sub3"
+        (nzOpenChange)="openHandler('sub3')"
+        nzTitle="Navigation Three"
+        nzIcon="setting"
+      >
         <ul>
           <li nz-menu-item>Option 9</li>
           <li nz-menu-item>Option 10</li>

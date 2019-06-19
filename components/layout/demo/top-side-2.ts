@@ -15,8 +15,7 @@ import { Component } from '@angular/core';
       <nz-layout>
         <nz-sider nzWidth="200px" nzTheme="light">
           <ul nz-menu nzMode="inline" class="sider-menu">
-            <li nz-submenu nzOpen>
-              <span title><i nz-icon nzType="user"></i>subnav 1</span>
+            <li nz-submenu nzOpen nzIcon="user" nzTitle="subnav 1">
               <ul>
                 <li nz-menu-item nzSelected>option1</li>
                 <li nz-menu-item>option2</li>
@@ -24,8 +23,7 @@ import { Component } from '@angular/core';
                 <li nz-menu-item>option4</li>
               </ul>
             </li>
-            <li nz-submenu>
-              <span title><i nz-icon nzType="laptop"></i>subnav 2</span>
+            <li nz-submenu nzTitle="subnav 2" nzIcon="laptop">
               <ul>
                 <li nz-menu-item>option5</li>
                 <li nz-menu-item>option6</li>
@@ -33,8 +31,7 @@ import { Component } from '@angular/core';
                 <li nz-menu-item>option8</li>
               </ul>
             </li>
-            <li nz-submenu>
-              <span title><i nz-icon nzType="notification"></i>subnav 3</span>
+            <li nz-submenu nzTitle="subnav 3" nzIcon="notification">
               <ul>
                 <li nz-menu-item>option9</li>
                 <li nz-menu-item>option10</li>
