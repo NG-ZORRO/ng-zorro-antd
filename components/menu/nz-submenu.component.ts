@@ -25,6 +25,7 @@ import {
   Output,
   QueryList,
   SimpleChanges,
+  TemplateRef,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -79,6 +80,8 @@ import { NzSubmenuService } from './nz-submenu.service';
 export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, OnChanges {
   @Input() nzMenuClassName: string;
   @Input() nzPaddingLeft: number;
+  @Input() nzTitle: string | TemplateRef<void>;
+  @Input() nzIcon: string;
   @Input() @InputBoolean() nzOpen = false;
   @Input() @InputBoolean() nzDisabled = false;
   @Output() readonly nzOpenChange: EventEmitter<boolean> = new EventEmitter();

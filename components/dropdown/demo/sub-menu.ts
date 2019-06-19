@@ -11,15 +11,13 @@ import { Component } from '@angular/core';
       <ul nz-menu>
         <li nz-menu-item>1st menu item</li>
         <li nz-menu-item>2nd menu item</li>
-        <li nz-submenu>
-          <span title>sub menu</span>
+        <li nz-submenu nzTitle="sub menu">
           <ul>
             <li nz-menu-item>3rd menu item</li>
             <li nz-menu-item>4th menu item</li>
           </ul>
         </li>
-        <li nz-submenu nzDisabled>
-          <span title>disabled sub menu</span>
+        <li nz-submenu nzDisabled nzTitle="disabled sub menu">
           <ul>
             <li nz-menu-item>3rd menu item</li>
             <li nz-menu-item>4th menu item</li>

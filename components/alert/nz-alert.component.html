@@ -13,7 +13,7 @@
   <ng-container *ngIf="nzShowIcon">
     <i class="ant-alert-icon" [ngClass]="nzIconType" *ngIf="nzIconType; else iconTemplate"></i>
     <ng-template #iconTemplate>
-      <i nz-icon class="ant-alert-icon" [type]="iconType" [theme]="iconTheme"></i>
+      <i nz-icon class="ant-alert-icon" [type]="iconType" [nzTheme]="iconTheme"></i>
     </ng-template>
   </ng-container>
   <span class="ant-alert-message" *ngIf="nzMessage">
