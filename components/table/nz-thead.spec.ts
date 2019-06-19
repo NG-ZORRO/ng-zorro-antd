@@ -54,6 +54,27 @@ describe('nz-thead', () => {
       expect(upButtons[1].querySelector('.ant-table-column-sorter-down').classList).toContain('on');
       expect(testComponent.sortChange).toHaveBeenCalledTimes(2);
     });
+
+    // Test for #3603
+    it('should support dynamic headers', () => {
+      testComponent.singleSort = true;
+      fixture.detectChanges();
+      expect(testComponent.sortChange).toHaveBeenCalledTimes(0);
+      let upButtons = table.nativeElement.querySelectorAll('.ant-table-column-sorters');
+      upButtons[2].click();
+      fixture.detectChanges();
+      expect(testComponent.sortChange).toHaveBeenCalledTimes(1);
+      upButtons[3].click();
+      fixture.detectChanges();
+      expect(testComponent.sortChange).toHaveBeenCalledTimes(2);
+
+      testComponent.columns = testComponent.columns.slice(0, 1);
+      fixture.detectChanges();
+      upButtons = table.nativeElement.querySelectorAll('.ant-table-column-sorters');
+      expect(upButtons.length).toBe(3);
+      upButtons[2].click();
+      expect(testComponent.sortChange).toHaveBeenCalledTimes(3);
+    });
   });
 });
 
@@ -64,6 +85,7 @@ describe('nz-thead', () => {
       <thead [nzSingleSort]="singleSort" (nzSortChange)="sortChange($event)">
         <th nzShowSort nzSortKey="first"></th>
         <th nzShowSort nzSortKey="second"></th>
+        <th nzShowSort *ngFor="let col of columns" [nzSortKey]="col"></th>
       </thead>
     </nz-table>
   `
@@ -71,4 +93,5 @@ describe('nz-thead', () => {
 export class NzTheadTestNzTableComponent {
   singleSort = false;
   sortChange = jasmine.createSpy('sort change');
+  columns = ['third', 'fourth'];
 }
