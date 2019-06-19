@@ -9,7 +9,6 @@
 // NOTE: Everything here should be **optional**.
 
 import { InjectionToken, TemplateRef, Type } from '@angular/core';
-import { NzCascaderService } from 'ng-zorro-antd/cascader';
 
 import { Breakpoint } from '../responsive/public-api';
 
@@ -20,7 +19,7 @@ export interface NzConfig {
   nzButton?: NzButtonConfig;
   nzCard?: NzCardConfig;
   nzCarousel?: NzCarouselConfig;
-  nzCascader?: NzCascaderService;
+  nzCascader?: NzCascaderConfig;
   nzDescriptions?: NzDescriptionsConfig;
   nzEmpty?: NzEmpty;
   nzIcon?: NzIconConfig;
