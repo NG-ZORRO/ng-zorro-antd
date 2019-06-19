@@ -26,7 +26,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { merge, Subject } from 'rxjs';
-import { flatMap, startWith, takeUntil } from 'rxjs/operators';
+import { startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 import { InputBoolean } from 'ng-zorro-antd/core';
 
@@ -62,7 +62,7 @@ export class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewI
     this.listOfNzThComponent.changes
       .pipe(
         startWith(true),
-        flatMap(() =>
+        switchMap(() =>
           merge<{ key: string; value: string }>(...this.listOfNzThComponent.map(th => th.nzSortChangeWithKey))
         ),
         takeUntil(this.destroy$)
