@@ -12,7 +12,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzNoAnimationModule } from 'ng-zorro-antd/core';
+import { NzAddOnModule, NzNoAnimationModule } from 'ng-zorro-antd/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzMenuDividerDirective } from './nz-menu-divider.directive';
@@ -22,7 +22,7 @@ import { NzMenuDirective } from './nz-menu.directive';
 import { NzSubMenuComponent } from './nz-submenu.component';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, NzButtonModule, OverlayModule, NzIconModule, NzNoAnimationModule],
+  imports: [CommonModule, FormsModule, NzButtonModule, OverlayModule, NzIconModule, NzNoAnimationModule, NzAddOnModule],
   declarations: [
     NzMenuDirective,
     NzMenuItemDirective,

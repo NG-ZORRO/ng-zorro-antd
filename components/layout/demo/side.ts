@@ -7,23 +7,22 @@ import { Component } from '@angular/core';
       <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" nzWidth="200px">
         <div class="logo"></div>
         <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-          <li nz-submenu>
-            <span title><i nz-icon nzType="user"></i><span>User</span></span>
+          <li nz-submenu nzTitle="User" nzIcon="user">
             <ul>
               <li nz-menu-item>Tom</li>
               <li nz-menu-item>Bill</li>
               <li nz-menu-item>Alex</li>
             </ul>
           </li>
-          <li nz-submenu>
-            <span title><i nz-icon nzType="team"></i><span>Team</span></span>
+          <li nz-submenu nzTitle="Team" nzIcon="team">
             <ul>
               <li nz-menu-item>Team 1</li>
               <li nz-menu-item>Team 2</li>
             </ul>
           </li>
           <li nz-menu-item>
-            <span><i nz-icon nzType="file"></i><span>File</span></span>
+            <i nz-icon nzType="file"></i>
+            File
           </li>
         </ul>
       </nz-sider>

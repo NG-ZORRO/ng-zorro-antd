@@ -8,28 +8,24 @@ import { Component } from '@angular/core';
       <ng-template #menuTpl let-menus>
         <ng-container *ngFor="let menu of menus">
           <li
+            *ngIf="!menu.children"
             nz-menu-item
             [nzPaddingLeft]="menu.level * 24"
-            *ngIf="!menu.children"
             [nzDisabled]="menu.disabled"
             [nzSelected]="menu.selected"
           >
-            <span title>
-              <i nz-icon [type]="menu.icon" *ngIf="menu.icon"></i>
-              <span>{{ menu.title }}</span>
-            </span>
+            <i nz-icon [type]="menu.icon" *ngIf="menu.icon"></i>
+            <span>{{ menu.title }}</span>
           </li>
           <li
+            *ngIf="menu.children"
             nz-submenu
             [nzPaddingLeft]="menu.level * 24"
-            *ngIf="menu.children"
             [nzOpen]="menu.open"
+            [nzTitle]="menu.title"
+            [nzIcon]="menu.icon"
             [nzDisabled]="menu.disabled"
           >
-            <span title>
-              <i nz-icon [type]="menu.icon" *ngIf="menu.icon"></i>
-              <span>{{ menu.title }}</span>
-            </span>
             <ul>
               <ng-container *ngTemplateOutlet="menuTpl; context: { $implicit: menu.children }"></ng-container>
             </ul>
