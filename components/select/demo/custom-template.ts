@@ -15,8 +15,7 @@ import { Component } from '@angular/core';
       <nz-option nzCustomContent nzLabel="Android" nzValue="android"><i nz-icon type="android"></i> Android</nz-option>
     </nz-select>
     <ng-template #custom let-selected>
-      <div>Label: {{ selected.nzLabel }}</div>
-      <div>Value: {{ selected.nzValue }}</div>
+      <span>Label: {{ selected.nzLabel }} Value: {{ selected.nzValue }}</span>
     </ng-template>
   `
 })
