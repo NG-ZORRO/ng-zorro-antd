@@ -6,23 +6,17 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   template: `
     <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
       <nz-form-item>
-        <nz-form-control>
-          <nz-input-group [nzPrefix]="prefixUser">
+        <nz-form-control nzErrorTip="Please input your username!">
+          <nz-input-group nzPrefixIcon="user">
             <input type="text" nz-input formControlName="userName" placeholder="Username" />
           </nz-input-group>
-          <nz-form-explain *ngIf="validateForm.get('userName')?.dirty && validateForm.get('userName')?.errors"
-            >Please input your username!</nz-form-explain
-          >
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-control>
-          <nz-input-group [nzPrefix]="prefixLock">
+        <nz-form-control nzErrorTip="Please input your Password!">
+          <nz-input-group nzPrefixIcon="lock">
             <input type="password" nz-input formControlName="password" placeholder="Password" />
           </nz-input-group>
-          <nz-form-explain *ngIf="validateForm.get('password')?.dirty && validateForm.get('password')?.errors"
-            >Please input your Password!</nz-form-explain
-          >
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -33,12 +27,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
           <a class="login-form-forgot" class="login-form-forgot">Forgot password</a>
           <button nz-button class="login-form-button" [nzType]="'primary'">Log in</button>
           Or
-          <a href="">register now!</a>
+          <a>register now!</a>
         </nz-form-control>
       </nz-form-item>
     </form>
-    <ng-template #prefixUser><i nz-icon type="user"></i></ng-template>
-    <ng-template #prefixLock><i nz-icon type="lock"></i></ng-template>
   `,
   styles: [
     `
