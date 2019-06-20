@@ -198,6 +198,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
         flatMap(() =>
           merge(this.listOfNzMenuItemDirective.changes, ...this.listOfNzMenuItemDirective.map(menu => menu.selected$))
         ),
+        startWith(true),
         map(() => this.listOfNzMenuItemDirective.some(e => e.nzSelected)),
         takeUntil(this.destroy$)
       )

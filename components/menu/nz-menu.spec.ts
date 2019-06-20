@@ -45,7 +45,8 @@ describe('menu', () => {
         NzTestMenuHorizontalComponent,
         NzTestMenuInlineComponent,
         NzDemoMenuNgForComponent,
-        NzTestNgIfMenuComponent
+        NzTestNgIfMenuComponent,
+        NzTestSubMenuSelectedComponent
       ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
@@ -490,6 +491,15 @@ describe('menu', () => {
         }).not.toThrowError();
       });
     });
+    describe('submenu default selected', () => {
+      it('should default selected active submenu', () => {
+        const fixture = TestBed.createComponent(NzTestSubMenuSelectedComponent);
+        fixture.detectChanges();
+        expect(fixture.debugElement.nativeElement.querySelector('.ant-menu-submenu').classList).toContain(
+          'ant-menu-submenu-selected'
+        );
+      });
+    });
   });
 });
 
@@ -712,3 +722,22 @@ export class NzTestNgIfMenuComponent {
   text = 'text';
   display = true;
 }
+
+// https://github.com/NG-ZORRO/ng-zorro-antd/issues/3345
+@Component({
+  template: `
+    <ul nz-menu nzMode="inline" nzTheme="dark" nzInlineCollapsed>
+      <li nz-menu-item nz-tooltip nzPlacement="right">
+        <i nz-icon nzType="mail"></i>
+        <span>Navigation One</span>
+      </li>
+      <li nz-submenu nzTitle="Navigation Two" nzIcon="appstore">
+        <ul>
+          <li nz-menu-item nzSelected>Option 5</li>
+          <li nz-menu-item>Option 6</li>
+        </ul>
+      </li>
+    </ul>
+  `
+})
+export class NzTestSubMenuSelectedComponent {}
