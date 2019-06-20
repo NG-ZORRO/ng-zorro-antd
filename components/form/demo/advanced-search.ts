@@ -26,7 +26,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
           <button nz-button (click)="resetForm()">Clear</button>
           <a style="margin-left:8px;font-size:12px;" (click)="toggleCollapse()">
             Collapse
-            <i nz-icon [type]="isCollapse ? 'down' : 'up'"></i>
+            <i nz-icon [nzType]="isCollapse ? 'down' : 'up'"></i>
           </a>
         </div>
       </div>

@@ -31,7 +31,7 @@
           [ngTemplateOutletContext]="{ $implicit: nzTreeNode }">
         </ng-template>
         <ng-container *ngIf="!isTemplateRef(nzExpandedIcon)">
-          <i *ngIf="isShowLineIcon" nz-icon [type]="isSwitcherOpen ? 'minus-square' : 'plus-square'" class="ant-tree-switcher-line-icon"></i>
+          <i *ngIf="isShowLineIcon" nz-icon [nzType]="isSwitcherOpen ? 'minus-square' : 'plus-square'" class="ant-tree-switcher-line-icon"></i>
           <i *ngIf="!isShowLineIcon" nz-icon nzType="file" class="ant-tree-switcher-line-icon"></i>
         </ng-container>
       </ng-container>

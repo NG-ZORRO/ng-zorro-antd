@@ -133,14 +133,12 @@
                     <span> - </span><span>{{language==='zh'?'企业级 Node 开发框架':'Enterprise Node Framework'}}</span>
                   </div>
                   <div style="margin-top: 20px;">
-                    <nz-popover [nzTrigger]="'click'" nzOverlayClassName="theme-color-content">
-                      <div class="theme-color" nz-popover>
-                        <div class="theme-color-value" [ngStyle]="{'background': color}"></div>
-                      </div>
-                      <ng-template #nzTemplate>
-                        <color-sketch [color]="color" (onChangeComplete)="changeColor($event)"></color-sketch>
-                      </ng-template>
-                    </nz-popover>
+                    <div class="theme-color" nz-popover nzTrigger="click" [nzContent]="nzTemplate" nzOverlayClassName="theme-color-content">
+                      <div class="theme-color-value" [ngStyle]="{'background': color}"></div>
+                    </div>
+                    <ng-template #nzTemplate>
+                      <color-sketch [color]="color" (onChangeComplete)="changeColor($event)"></color-sketch>
+                    </ng-template>
                   </div>
                 </div>
               </div>

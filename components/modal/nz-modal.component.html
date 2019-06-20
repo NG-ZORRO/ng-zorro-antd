@@ -94,7 +94,7 @@
   <div class="ant-modal-body" [ngStyle]="nzBodyStyle">
     <div class="ant-modal-confirm-body-wrapper">
       <div class="ant-modal-confirm-body">
-        <i nz-icon [type]="nzIconType"></i>
+        <i nz-icon [nzType]="nzIconType"></i>
         <span class="ant-modal-confirm-title">
           <ng-container [ngSwitch]="true">
             <ng-container *ngSwitchCase="isTemplateRef(nzTitle)" [ngTemplateOutlet]="nzTitle"></ng-container>

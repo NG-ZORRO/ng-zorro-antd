@@ -15,7 +15,7 @@ import { Component } from '@angular/core';
             [nzSelected]="menu.selected"
           >
             <span title>
-              <i nz-icon [type]="menu.icon" *ngIf="menu.icon"></i>
+              <i nz-icon [nzType]="menu.icon" *ngIf="menu.icon"></i>
               <span>{{ menu.title }}</span>
             </span>
           </li>
@@ -27,7 +27,7 @@ import { Component } from '@angular/core';
             [nzDisabled]="menu.disabled"
           >
             <span title>
-              <i nz-icon [type]="menu.icon" *ngIf="menu.icon"></i>
+              <i nz-icon [nzType]="menu.icon" *ngIf="menu.icon"></i>
               <span>{{ menu.title }}</span>
             </span>
             <ul>

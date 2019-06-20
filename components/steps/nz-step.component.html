@@ -6,7 +6,7 @@
     <span class="ant-steps-icon" *ngIf="(nzStatus === 'process' || nzStatus === 'wait') && !nzIcon">{{ index + 1 }}</span>
     <span class="ant-steps-icon" *ngIf="nzIcon">
       <ng-container *ngIf="isIconString; else iconTemplate">
-        <i nz-icon [type]="!oldAPIIcon && nzIcon" [ngClass]="oldAPIIcon && nzIcon"></i>
+        <i nz-icon [nzType]="!oldAPIIcon && nzIcon" [ngClass]="oldAPIIcon && nzIcon"></i>
       </ng-container>
       <ng-template #iconTemplate>
       <ng-template [ngTemplateOutlet]="nzIcon"></ng-template>

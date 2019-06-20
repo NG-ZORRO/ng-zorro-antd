@@ -14,6 +14,10 @@ import { Observable, Subject } from 'rxjs';
 import { filter, mapTo } from 'rxjs/operators';
 import { NzConfig, NZ_CONFIG } from './config';
 
+const isDefined = function(value?: any): boolean {
+  return value !== undefined;
+};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -79,11 +83,16 @@ export function WithConfig<T>(componentName: keyof NzConfig, innerDefaultValue?:
       get(): T {
         const originalValue =
           originalDescriptor && originalDescriptor.get ? originalDescriptor.get.bind(this)() : this[privatePropName];
-        // To every component that supports global config should have a public property called `nzConfigService` injected.
-        const config = this.nzConfigService.config[componentName];
-        const configValue = config ? config[propName] : undefined;
-        const defaultValue = configValue !== undefined ? configValue : innerDefaultValue;
-        return originalValue || defaultValue;
+
+        if (isDefined(originalValue)) {
+          return originalValue;
+        }
+
+        const componentConfig = this.nzConfigService.config[componentName];
+        const configValue = isDefined(componentConfig) ? componentConfig[propName] : undefined;
+        const defaultValue = isDefined(configValue) ? configValue : innerDefaultValue;
+
+        return defaultValue;
       },
       set(value?: T): void {
         if (originalDescriptor && originalDescriptor.set) {
