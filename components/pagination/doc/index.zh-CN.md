@@ -34,6 +34,7 @@ import { NzPaginationModule } from 'ng-zorro-antd';
 | `[nzTotal]` | 数据总数 | `number` | - |
 | `[nzPageIndex]` | 当前页数，可双向绑定 | `number` | `1` |
 | `[nzPageSize]` | 每页条数 ，可双向绑定| `number` | `10`|
+| `[nzDisabled]` | 是否禁用 | `boolean` | `false`|
 | `[nzShowQuickJumper]` | 是否可以快速跳转至某页 | `boolean` | `false` |
 | `[nzShowSizeChanger]` | 是否可以改变 `nzPageSize` | `boolean` | `false` |
 | `[nzSimple]` | 当添加该属性时，显示为简单分页 | `boolean` | - |
