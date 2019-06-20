@@ -6,77 +6,61 @@ import { Observable, Observer } from 'rxjs';
 @Component({
   selector: 'nz-demo-form-validate-reactive',
   template: `
-    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm($event, validateForm.value)">
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm(validateForm.value)">
       <nz-form-item>
         <nz-form-label [nzSpan]="7" nzRequired>Username</nz-form-label>
-        <nz-form-control [nzSpan]="12" nzHasFeedback>
+        <nz-form-control [nzSpan]="12" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="userErrorTpl">
           <input nz-input formControlName="userName" placeholder="async validate try to write JasonWood" />
-          <nz-form-explain
-            *ngIf="
-              (validateForm.get('userName')?.dirty && validateForm.get('userName')?.errors) ||
-              validateForm.get('userName')?.pending
-            "
-          >
-            <ng-container *ngIf="validateForm.get('userName')?.hasError('required')">
+          <ng-template #userErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">
               Please input your username!
             </ng-container>
-            <ng-container *ngIf="validateForm.get('userName')?.hasError('duplicated')">
+            <ng-container *ngIf="control.hasError('duplicated')">
               The username is redundant!
             </ng-container>
-            <ng-container *ngIf="validateForm.get('userName')?.pending">
-              Validating...
-            </ng-container>
-          </nz-form-explain>
+          </ng-template>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label [nzSpan]="7" nzRequired>E-mail</nz-form-label>
-        <nz-form-control [nzSpan]="12" nzHasFeedback>
+        <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="emailErrorTpl">
           <input nz-input formControlName="email" placeholder="email" type="email" />
-          <nz-form-explain *ngIf="validateForm.get('email')?.dirty && validateForm.get('email')?.errors">
-            <ng-container *ngIf="validateForm.get('email')?.hasError('email')">
+          <ng-template #emailErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('email')">
               The input is not valid E-mail!
             </ng-container>
-            <ng-container *ngIf="validateForm.get('email')?.hasError('required')">
+            <ng-container *ngIf="control.hasError('required')">
               Please input your E-mail!
             </ng-container>
-          </nz-form-explain>
+          </ng-template>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label [nzSpan]="7" nzRequired>Password</nz-form-label>
         <div>
-          <nz-form-control [nzSpan]="12" nzHasFeedback>
+          <nz-form-control [nzSpan]="12" nzHasFeedback nzErrorTip="Please input your password!">
             <input nz-input type="password" formControlName="password" (ngModelChange)="validateConfirmPassword()" />
-            <nz-form-explain
-              *ngIf="validateForm.get('password')?.dirty && validateForm.get('password')?.hasError('required')"
-              >Please input your password!</nz-form-explain
-            >
           </nz-form-control>
         </div>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label [nzSpan]="7" nzRequired>Confirm Password</nz-form-label>
-        <nz-form-control [nzSpan]="12" nzHasFeedback>
+        <nz-form-control [nzSpan]="12" nzHasFeedback [nzErrorTip]="passwordErrorTpl">
           <input nz-input type="password" formControlName="confirm" placeholder="confirm your password" />
-          <nz-form-explain *ngIf="validateForm.get('confirm')?.dirty && validateForm.get('confirm')?.errors">
-            <ng-container *ngIf="validateForm.get('confirm')?.hasError('required')">
+          <ng-template #passwordErrorTpl let-control>
+            <ng-container *ngIf="control.hasError('required')">
               Please confirm your password!
             </ng-container>
-            <ng-container *ngIf="validateForm.get('confirm')?.hasError('confirm')">
+            <ng-container *ngIf="control.hasError('confirm')">
               Password is inconsistent!
             </ng-container>
-          </nz-form-explain>
+          </ng-template>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label [nzSpan]="7" nzRequired>Comment</nz-form-label>
-        <nz-form-control [nzSpan]="12">
+        <nz-form-control [nzSpan]="12" nzErrorTip="Please write something here!">
           <textarea formControlName="comment" nz-input rows="2" placeholder="write any thing"></textarea>
-          <nz-form-explain
-            *ngIf="validateForm.get('comment')?.dirty && validateForm.get('comment')?.hasError('required')"
-            >Please write something here!</nz-form-explain
-          >
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -102,14 +86,14 @@ import { Observable, Observer } from 'rxjs';
 })
 export class NzDemoFormValidateReactiveComponent {
   validateForm: FormGroup;
-  submitForm = ($event: any, value: any) => {
-    $event.preventDefault();
+
+  submitForm(value: any): void {
     for (const key in this.validateForm.controls) {
       this.validateForm.controls[key].markAsDirty();
       this.validateForm.controls[key].updateValueAndValidity();
     }
     console.log(value);
-  };
+  }
 
   resetForm(e: MouseEvent): void {
     e.preventDefault();
@@ -128,6 +112,7 @@ export class NzDemoFormValidateReactiveComponent {
     new Observable((observer: Observer<ValidationErrors | null>) => {
       setTimeout(() => {
         if (control.value === 'JasonWood') {
+          // you have to return `{error: true}` to mark it as an error event
           observer.next({ error: true, duplicated: true });
         } else {
           observer.next(null);
@@ -138,7 +123,7 @@ export class NzDemoFormValidateReactiveComponent {
 
   confirmValidator = (control: FormControl): { [s: string]: boolean } => {
     if (!control.value) {
-      return { required: true };
+      return { error: true, required: true };
     } else if (control.value !== this.validateForm.controls.password.value) {
       return { confirm: true, error: true };
     }

@@ -7,6 +7,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsulation } from '@angular/core';
+import { warnDeprecation } from 'ng-zorro-antd/core';
 
 @Component({
   selector: 'nz-form-extra',
@@ -23,8 +24,14 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
     `
   ]
 })
+/**
+ * @deprecated Use `[nzExtra]` in `NzFormControlComponent` instead, will remove in 9.0.0.
+ */
 export class NzFormExtraComponent {
   constructor(public elementRef: ElementRef, private renderer: Renderer2) {
     this.renderer.addClass(this.elementRef.nativeElement, 'ant-form-extra');
+    warnDeprecation(
+      `'nz-form-extra' is going to be removed in 9.0.0. Use [nzExtra] in nz-form-control instead. Read https://ng.ant.design/components/form/en`
+    );
   }
 }

@@ -25,7 +25,7 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { startWith, takeUntil } from 'rxjs/operators';
 
 import { InputBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 import { NzRowDirective } from 'ng-zorro-antd/grid';
@@ -42,7 +42,7 @@ import { NzFormExplainComponent } from './nz-form-explain.component';
   providers: [NzUpdateHostClassService],
   templateUrl: './nz-form-item.component.html',
   host: {
-    '[class.ant-form-item-with-help]': 'listOfNzFormExplainComponent && (listOfNzFormExplainComponent.length > 0)'
+    '[class.ant-form-item-with-help]': 'withHelpClass'
   },
   styles: [
     `
@@ -55,9 +55,9 @@ import { NzFormExplainComponent } from './nz-form-explain.component';
 export class NzFormItemComponent extends NzRowDirective
   implements AfterContentInit, OnDestroy, OnChanges, OnInit, OnDestroy {
   @Input() @InputBoolean() nzFlex: boolean = false;
-
   @ContentChildren(NzFormExplainComponent, { descendants: true })
   listOfNzFormExplainComponent: QueryList<NzFormExplainComponent>;
+  withHelpClass = false;
 
   updateFlexStyle(): void {
     if (this.nzFlex) {
@@ -81,11 +81,15 @@ export class NzFormItemComponent extends NzRowDirective
   }
 
   ngAfterContentInit(): void {
-    if (this.listOfNzFormExplainComponent) {
-      this.listOfNzFormExplainComponent.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.listOfNzFormExplainComponent.changes
+      .pipe(
+        startWith(true),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.withHelpClass = this.listOfNzFormExplainComponent && this.listOfNzFormExplainComponent.length > 0;
         this.cdr.markForCheck();
       });
-    }
   }
 
   ngOnInit(): void {

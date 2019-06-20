@@ -6,7 +6,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
   template: `
     <form nz-form [formGroup]="validateForm" class="ant-advanced-search-form">
       <div nz-row [nzGutter]="24">
-        <div nz-col [nzSpan]="8" *ngFor="let control of controlArray" [style.display]="control.show ? 'block' : 'none'">
+        <div nz-col [nzSpan]="8" *ngFor="let control of controlArray" [hidden]="!control.show">
           <nz-form-item nzFlex>
             <nz-form-label [nzFor]="'field' + control.index">Field {{ control.index }}</nz-form-label>
             <nz-form-control>
@@ -21,10 +21,10 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
         </div>
       </div>
       <div nz-row>
-        <div nz-col [nzSpan]="24" style="text-align: right;">
+        <div nz-col [nzSpan]="24" class="search-area">
           <button nz-button [nzType]="'primary'">Search</button>
           <button nz-button (click)="resetForm()">Clear</button>
-          <a style="margin-left:8px;font-size:12px;" (click)="toggleCollapse()">
+          <a class="collapse" (click)="toggleCollapse()">
             Collapse
             <i nz-icon [type]="isCollapse ? 'down' : 'up'"></i>
           </a>
@@ -61,6 +61,15 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
       button {
         margin-left: 8px;
+      }
+
+      .collapse {
+        margin-left: 8px;
+        font-size: 12px;
+      }
+
+      .search-area {
+        text-align: right;
       }
     `
   ]
