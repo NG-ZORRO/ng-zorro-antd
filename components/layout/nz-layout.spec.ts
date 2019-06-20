@@ -239,7 +239,9 @@ describe('layout', () => {
         true
       );
       expect(
-        sider.nativeElement.querySelector('.ant-layout-sider-zero-width-trigger').firstElementChild.getAttribute('type')
+        sider.nativeElement
+          .querySelector('.ant-layout-sider-zero-width-trigger')
+          .firstElementChild.getAttribute('nztype')
       ).toBe('menu-fold');
     }));
   });
