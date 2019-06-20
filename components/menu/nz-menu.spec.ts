@@ -44,7 +44,8 @@ describe('menu', () => {
         NzDemoMenuSwitchModeComponent,
         NzTestMenuHorizontalComponent,
         NzTestMenuInlineComponent,
-        NzDemoMenuNgForComponent
+        NzDemoMenuNgForComponent,
+        NzTestNgIfMenuComponent
       ],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
@@ -477,7 +478,16 @@ describe('menu', () => {
     });
     describe('ng-for', () => {
       it('should ng for works fine', () => {
-        TestBed.createComponent(NzDemoMenuNgForComponent).detectChanges();
+        expect(() => {
+          TestBed.createComponent(NzDemoMenuNgForComponent).detectChanges();
+        }).not.toThrowError();
+      });
+    });
+    describe('ng-if', () => {
+      it('should ng if works fine', () => {
+        expect(() => {
+          TestBed.createComponent(NzTestNgIfMenuComponent).detectChanges();
+        }).not.toThrowError();
       });
     });
   });
@@ -684,3 +694,21 @@ export class NzTestBasicMenuHorizontalComponent {}
   `
 })
 export class NzTestBasicMenuInlineComponent {}
+
+// https://github.com/NG-ZORRO/ng-zorro-antd/issues/3023
+@Component({
+  template: `
+    <ul nz-menu nzMode="horizontal">
+      <li *ngIf="display" nz-submenu>
+        <span title>{{ text }}</span>
+        <ul>
+          <li nz-menu-item>item</li>
+        </ul>
+      </li>
+    </ul>
+  `
+})
+export class NzTestNgIfMenuComponent {
+  text = 'text';
+  display = true;
+}

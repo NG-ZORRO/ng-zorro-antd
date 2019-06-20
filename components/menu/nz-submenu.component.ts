@@ -168,11 +168,11 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
         this.overlayPositions =
           mode === 'horizontal' ? [POSITION_MAP.bottomLeft] : [POSITION_MAP.rightTop, POSITION_MAP.leftTop];
         if (open !== this.nzOpen) {
+          this.setTriggerWidth();
           this.nzOpen = open;
           this.nzOpenChange.emit(this.nzOpen);
         }
         this.setClassMap();
-        this.setTriggerWidth();
       });
     this.nzSubmenuService.menuOpen$.pipe(takeUntil(this.destroy$)).subscribe((data: boolean) => {
       this.nzMenuService.menuOpen$.next(data);
@@ -210,6 +210,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzOpen) {
       this.nzSubmenuService.setOpenState(this.nzOpen);
+      this.setTriggerWidth();
     }
     if (changes.nzDisabled) {
       this.nzSubmenuService.disabled = this.nzDisabled;
