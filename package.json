@@ -64,6 +64,8 @@
     "@angular/pwa": "^0.800.1",
     "@angular/router": "~8.0.0",
     "@angular/service-worker": "~8.0.0",
+    "@commitlint/cli": "^8.0.0",
+    "@commitlint/config-angular": "^8.0.0",
     "@nguniversal/module-map-ngfactory-loader": "^7.1.1",
     "@schematics/angular": "~8.0.1",
     "@stackblitz/sdk": "^1.1.1",
@@ -123,7 +125,7 @@
   },
   "husky": {
     "hooks": {
-      "commit-msg": "node ./scripts/git/commit-msg.js -E HUSKY_GIT_PARAMS",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-commit": "lint-staged"
     }
   }
