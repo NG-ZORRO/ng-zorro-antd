@@ -14,6 +14,7 @@ import { NgModule } from '@angular/core';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
+import { NzAddOnModule } from 'ng-zorro-antd/core';
 import { NzFormControlComponent } from './nz-form-control.component';
 import { NzFormExplainComponent } from './nz-form-explain.component';
 import { NzFormExtraComponent } from './nz-form-extra.component';
@@ -44,6 +45,6 @@ import { NzFormDirective } from './nz-form.directive';
     NzFormTextComponent,
     NzFormSplitComponent
   ],
-  imports: [CommonModule, NzGridModule, NzIconModule, LayoutModule, PlatformModule]
+  imports: [CommonModule, NzGridModule, NzIconModule, LayoutModule, PlatformModule, NzAddOnModule]
 })
 export class NzFormModule {}

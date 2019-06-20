@@ -20,21 +20,24 @@ import {
   OnInit,
   Optional,
   Renderer2,
+  TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 import { FormControl, FormControlName, NgControl, NgModel } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
-import { toBoolean, NgClassType, NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { helpMotion, toBoolean, NgClassType, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 import { NzColDirective, NzRowDirective } from 'ng-zorro-antd/grid';
-
 import { NzFormItemComponent } from './nz-form-item.component';
+
+export type NzFormControlStatusType = 'warning' | 'validating' | 'error' | 'success' | null;
 
 @Component({
   selector: 'nz-form-control',
   exportAs: 'nzFormControl',
   preserveWhitespaces: false,
+  animations: [helpMotion],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [NzUpdateHostClassService],
@@ -50,13 +53,18 @@ import { NzFormItemComponent } from './nz-form-item.component';
 export class NzFormControlComponent extends NzColDirective
   implements OnDestroy, OnInit, AfterContentInit, AfterViewInit, OnDestroy {
   private _hasFeedback = false;
-  validateChanges: Subscription | null;
-  validateString: string | null;
-  status: 'warning' | 'validating' | 'error' | 'success' | 'init';
+  private validateChanges: Subscription = Subscription.EMPTY;
+  private validateString: string | null;
+  validateControl: FormControl | NgModel | null;
+  status: NzFormControlStatusType = null;
   controlClassMap: NgClassType = {};
   iconType: string;
-  validateControl: FormControl | NgModel | null;
   @ContentChild(NgControl, { static: false }) defaultValidateControl: FormControlName;
+  @Input() nzSuccessTip: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
+  @Input() nzWarningTip: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
+  @Input() nzErrorTip: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
+  @Input() nzValidatingTip: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
+  @Input() nzExtra: string | TemplateRef<void>;
 
   @Input()
   set nzHasFeedback(value: boolean) {
@@ -86,10 +94,7 @@ export class NzFormControlComponent extends NzColDirective
   }
 
   removeSubscribe(): void {
-    if (this.validateChanges) {
-      this.validateChanges.unsubscribe();
-      this.validateChanges = null;
-    }
+    this.validateChanges.unsubscribe();
   }
 
   watchControl(): void {
@@ -127,8 +132,11 @@ export class NzFormControlComponent extends NzColDirective
       this.status = 'success';
       this.iconType = 'check-circle-fill';
     } else {
-      this.status = 'init';
+      this.status = null;
       this.iconType = '';
+    }
+    if (this.hasTips) {
+      this.nzFormItemComponent.withHelpClass = this.showInnerTip;
     }
     this.controlClassMap = {
       [`has-warning`]: this.status === 'warning',
@@ -139,10 +147,34 @@ export class NzFormControlComponent extends NzColDirective
     };
   }
 
+  get hasTips(): boolean {
+    return !!(this.nzSuccessTip || this.nzWarningTip || this.nzErrorTip || this.nzValidatingTip);
+  }
+
+  get showSuccessTip(): boolean {
+    return this.status === 'success' && !!this.nzSuccessTip;
+  }
+
+  get showWarningTip(): boolean {
+    return this.status === 'warning' && !!this.nzWarningTip;
+  }
+
+  get showErrorTip(): boolean {
+    return this.status === 'error' && !!this.nzErrorTip;
+  }
+
+  get showValidatingTip(): boolean {
+    return this.status === 'validating' && !!this.nzValidatingTip;
+  }
+
+  get showInnerTip(): boolean {
+    return this.showSuccessTip || this.showWarningTip || this.showErrorTip || this.showValidatingTip;
+  }
+
   constructor(
     nzUpdateHostClassService: NzUpdateHostClassService,
     elementRef: ElementRef,
-    @Optional() @Host() nzFormItemComponent: NzFormItemComponent,
+    @Optional() @Host() private nzFormItemComponent: NzFormItemComponent,
     @Optional() @Host() nzRowDirective: NzRowDirective,
     private cdr: ChangeDetectorRef,
     renderer: Renderer2
