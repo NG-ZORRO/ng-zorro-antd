@@ -33,6 +33,7 @@ import { NzPaginationModule } from 'ng-zorro-antd';
 | `[nzTotal]` | total number of data items | `number` | `0` |
 | `[nzPageIndex]` | current page number，double binding | `number` | `1` |
 | `[nzPageSize]` | number of data items per page, double binding | `number` | `10`|
+| `[nzDisabled]` | disable pagination | `boolean` | `false`|
 | `[nzShowQuickJumper]` | determine whether you can jump to pages directly | `boolean` | `false` |
 | `[nzShowSizeChanger]` | determine whether `nzPageSize` can be changed | `boolean` | `false` |
 | `[nzSimple]` | whether to use simple mode | `boolean` | - |
