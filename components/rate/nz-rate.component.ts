@@ -17,6 +17,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   Renderer2,
@@ -27,7 +28,11 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { InputBoolean, NgClassType } from 'ng-zorro-antd/core';
+import { InputBoolean, NgClassType, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+const componentName = 'nzRate';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -44,11 +49,11 @@ import { InputBoolean, NgClassType } from 'ng-zorro-antd/core';
     }
   ]
 })
-export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewInit, OnChanges {
+export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor, AfterViewInit, OnChanges {
   @ViewChild('ulElement', { static: false }) private ulElement: ElementRef;
 
-  @Input() @InputBoolean() nzAllowClear: boolean = true;
-  @Input() @InputBoolean() nzAllowHalf: boolean = false;
+  @Input() @WithConfig(componentName, true) @InputBoolean() nzAllowClear: boolean;
+  @Input() @WithConfig(componentName, false) @InputBoolean() nzAllowHalf: boolean;
   @Input() @InputBoolean() nzDisabled: boolean = false;
   @Input() @InputBoolean() nzAutoFocus: boolean = false;
   @Input() nzCharacter: TemplateRef<void>;
@@ -67,6 +72,7 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewI
   isInit = false;
   starArray: number[] = [];
 
+  private destroy$ = new Subject<void>();
   private _count = 5;
   private _value = 0;
 
@@ -97,7 +103,7 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewI
     this.hoverValue = Math.ceil(input);
   }
 
-  constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef) {}
+  constructor(public nzConfigService: NzConfigService, private renderer: Renderer2, private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzAutoFocus && !changes.nzAutoFocus.isFirstChange()) {
@@ -111,6 +117,16 @@ export class NzRateComponent implements OnInit, ControlValueAccessor, AfterViewI
 
   ngOnInit(): void {
     this.updateStarArray();
+
+    this.nzConfigService
+      .getConfigChangeEventForComponent(componentName)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.cdr.markForCheck());
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngAfterViewInit(): void {

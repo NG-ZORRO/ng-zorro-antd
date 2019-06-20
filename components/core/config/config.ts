@@ -26,6 +26,7 @@ export interface NzConfig {
   nzMessage?: NzMessageConfig;
   nzNotification?: NzNotificationConfig;
   nzProgress?: NzProgressConfig;
+  nzRate?: NzRateConfig;
 }
 
 export interface NzAffixConfig {
@@ -100,6 +101,11 @@ export interface NzProgressConfig {
   nzType?: 'line' | 'circle' | 'square';
   nzStrokeLinecap?: 'round' | 'square';
   nzStrokeColor?: string;
+}
+
+export interface NzRateConfig {
+  nzAllowClear?: boolean;
+  nzAllowHalf?: boolean;
 }
 
 /**
