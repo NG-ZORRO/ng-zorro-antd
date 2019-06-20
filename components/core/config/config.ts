@@ -27,6 +27,7 @@ export interface NzConfig {
   nzNotification?: NzNotificationConfig;
   nzProgress?: NzProgressConfig;
   nzRate?: NzRateConfig;
+  // nzTooltip?: NzTooltipConfig;
 }
 
 export interface NzAffixConfig {
@@ -107,6 +108,10 @@ export interface NzRateConfig {
   nzAllowClear?: boolean;
   nzAllowHalf?: boolean;
 }
+
+// export interface NzTooltipConfig {
+//   nzTrigger?: 'click' | 'focus' | 'hover';
+// }
 
 /**
  * User should provide an object implements this interface to set global configurations.

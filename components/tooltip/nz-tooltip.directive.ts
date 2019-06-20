@@ -117,7 +117,7 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
     } else {
       warnDeprecation(
         "Old usage that wraps a 'nz-tooltip' directive in a 'nz-tooltip' component is deprecated and will be removed in 9.0.0. " +
-          'Please refer to the official website for the latest API https://ng.ant.design/components/tooltip/en.'
+          "Please refer to the official website for the latest API https://ng.ant.design/components/tooltip/en. Samething to 'nz-popover' and 'nz-popconfirm'"
       );
     }
     this.tooltip.setOverlayOrigin(this);
