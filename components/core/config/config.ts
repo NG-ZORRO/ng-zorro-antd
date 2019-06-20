@@ -25,6 +25,7 @@ export interface NzConfig {
   nzIcon?: NzIconConfig;
   nzMessage?: NzMessageConfig;
   nzNotification?: NzNotificationConfig;
+  nzProgress?: NzProgressConfig;
 }
 
 export interface NzAffixConfig {
@@ -87,6 +88,18 @@ export interface NzNotificationConfig extends NzMessageConfig {
   nzTop?: string | number;
   nzBottom?: string | number;
   nzPlacement?: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight' | string;
+}
+
+export interface NzProgressConfig {
+  nzGapDegree?: number;
+  nzGapPosition?: 'top' | 'right' | 'bottom' | 'left';
+  nzShowInfo?: boolean;
+  nzStrokeSwitch?: number;
+  nzStrokeWidth?: number;
+  nzSize?: 'default' | 'small';
+  nzType?: 'line' | 'circle' | 'square';
+  nzStrokeLinecap?: 'round' | 'square';
+  nzStrokeColor?: string;
 }
 
 /**

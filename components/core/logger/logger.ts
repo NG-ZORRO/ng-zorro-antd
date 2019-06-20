@@ -36,7 +36,7 @@ function consoleCommonBehavior(consoleFunc: (...args: any) => void, ...args: any
 export const warn = (...args: any[]) => consoleCommonBehavior((...arg: any[]) => console.warn(PREFIX, ...arg), ...args);
 
 export const warnDeprecation = (...args: any[]) =>
-  consoleCommonBehavior((...arg: any[]) => console.error(PREFIX, 'deprecated:', ...arg), ...args);
+  consoleCommonBehavior((...arg: any[]) => console.error(PREFIX, 'DEPRECATED', ...arg), ...args);
 
 // Log should only be printed in dev mode.
 export const log = (...args: any[]) => {

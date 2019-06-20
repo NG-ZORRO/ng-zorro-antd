@@ -29,7 +29,7 @@ import {
 import { Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 
-import { isNotNil, NzNoAnimationDirective } from 'ng-zorro-antd/core';
+import { isNotNil, warnDeprecation, NzNoAnimationDirective } from 'ng-zorro-antd/core';
 
 import { NzToolTipComponent } from './nz-tooltip.component';
 
@@ -114,6 +114,11 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
         this.nzVisibleChange.emit(data);
       });
       this.subs_.add(visible_);
+    } else {
+      warnDeprecation(
+        "Old usage that wraps a 'nz-tooltip' directive in a 'nz-tooltip' component is deprecated and will be removed in 9.0.0. " +
+          'Please refer to the official website for the latest API https://ng.ant.design/components/tooltip/en.'
+      );
     }
     this.tooltip.setOverlayOrigin(this);
   }
