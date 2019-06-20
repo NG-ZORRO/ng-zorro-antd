@@ -198,6 +198,13 @@ describe('pagination', () => {
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
         expect(testComponent.pageIndex).toBe(5);
       });
+      it('should nzDisabled work', () => {
+        fixture.detectChanges();
+        testComponent.disabled = true;
+        fixture.detectChanges();
+        console.log(paginationElement.classList);
+        expect(paginationElement.classList.contains('ant-pagination-disabled')).toBe(true);
+      });
     });
     describe('simple mode', () => {
       beforeEach(() => {
@@ -303,6 +310,7 @@ describe('pagination', () => {
     <nz-pagination
       [nzSimple]="simple"
       [(nzPageIndex)]="pageIndex"
+      [nzDisabled]="disabled"
       (nzPageIndexChange)="pageIndexChange($event)"
       [(nzPageSize)]="pageSize"
       (nzPageSizeChange)="pageSizeChange($event)"
@@ -321,6 +329,7 @@ export class NzTestPaginationComponent {
   pageIndex = 1;
   pageSize = 10;
   total = 50;
+  disabled = false;
   pageIndexChange = jasmine.createSpy('pageIndexChange callback');
   pageSizeChange = jasmine.createSpy('pageSizeChange callback');
   showQuickJumper = false;

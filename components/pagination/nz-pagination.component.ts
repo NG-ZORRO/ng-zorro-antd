@@ -51,6 +51,7 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
     $implicit: 'page' | 'prev' | 'next';
     page: number;
   }>;
+  @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzShowSizeChanger = false;
   @Input() @InputBoolean() nzHideOnSinglePage = false;
   @Input() @InputBoolean() nzShowQuickJumper = false;
@@ -80,7 +81,7 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   jumpPage(index: number): void {
-    if (index !== this.nzPageIndex) {
+    if (index !== this.nzPageIndex && !this.nzDisabled) {
       const pageIndex = this.validatePageIndex(index);
       if (pageIndex !== this.nzPageIndex) {
         this.updatePageIndexValue(pageIndex);
