@@ -59,6 +59,7 @@ import { NzListModule } from 'ng-zorro-antd';
 | `[nzContent]` | content renderer | `string｜TemplateRef<void>` | - |
 | `[nzActions]` | The actions content of list item. If `itemLayout` is `vertical`, shows the content on bottom, otherwise shows content on the far right. | `Array<TemplateRef<void>>` | - |
 | `[nzExtra]` | The extra content of list item. If `itemLayout` is `vertical`, shows the content on right, otherwise shows content on the far right. | `TemplateRef<void>` | - |
+| `[nzNoFlex]` | Whether it's not `flex` layout rendering | `boolean` | `false` |
 
 ### nz-list-item-meta
 
