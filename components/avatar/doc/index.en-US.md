@@ -24,4 +24,6 @@ import { NzAvatarModule } from 'ng-zorro-antd';
 | `[nzShape]` | the shape of avatar | `'circle'｜'square'` | `'circle'` |
 | `[nzSize]` | the size of the avatar | `'large'｜'small'｜'default'｜number` | `'default'` |
 | `[nzSrc]` | the address of the image for an image avatar | `string` | - |
+| `[nzSrcSet]` | a list of sources to use for different screen resolutions | string | - |
+| `[nzAlt]` | This attribute defines the alternative text describing the image | string | - |
 | `[nzText]` | letter type avatar | `string` | - |
