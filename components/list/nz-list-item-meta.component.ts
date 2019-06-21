@@ -17,7 +17,7 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'nz-list-item-meta',
+  selector: 'nz-list-item-meta, [nz-list-item-meta]',
   exportAs: 'nzListItemMeta',
   templateUrl: './nz-list-item-meta.component.html',
   preserveWhitespaces: false,

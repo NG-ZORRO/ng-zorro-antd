@@ -7,3 +7,4 @@
  */
 
 export type NzDirectionVHIType = 'vertical' | 'horizontal' | 'inline';
+export type NzDirectionVHType = 'vertical' | 'horizontal';
