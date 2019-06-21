@@ -47,6 +47,9 @@ export type NzFormControlStatusType = 'warning' | 'validating' | 'error' | 'succ
       nz-form-control {
         display: block;
       }
+      form .has-feedback .ant-input-suffix i {
+        margin-right: 18px;
+      }
     `
   ]
 })
