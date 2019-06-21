@@ -39,6 +39,7 @@ export class NzTransferListComponent implements OnChanges, OnInit {
 
   @Input() direction = '';
   @Input() titleText = '';
+  @Input() showSelectAll = true;
 
   @Input() dataSource: TransferItem[] = [];
 
@@ -51,6 +52,7 @@ export class NzTransferListComponent implements OnChanges, OnInit {
   @Input() notFoundContent: string;
   @Input() filterOption: (inputValue: string, item: TransferItem) => boolean;
 
+  @Input() renderList: TemplateRef<void>;
   @Input() render: TemplateRef<void>;
   @Input() footer: TemplateRef<void>;
 
@@ -84,21 +86,30 @@ export class NzTransferListComponent implements OnChanges, OnInit {
     shownCount: 0
   };
 
-  onHandleSelectAll(status: boolean): void {
+  onItemSelect = (item: TransferItem) => {
+    if (this.disabled || item.disabled) {
+      return;
+    }
+    item.checked = !item.checked;
+    this.updateCheckStatus();
+    this.handleSelect.emit(item);
+  };
+
+  onItemSelectAll = (status: boolean) => {
     this.dataSource.forEach(item => {
-      if (!item.disabled && !item._hiden) {
+      if (!item.disabled && !item.hide) {
         item.checked = status;
       }
     });
 
     this.updateCheckStatus();
     this.handleSelectAll.emit(status);
-  }
+  };
 
   private updateCheckStatus(): void {
     const validCount = this.dataSource.filter(w => !w.disabled).length;
     this.stat.checkCount = this.dataSource.filter(w => w.checked && !w.disabled).length;
-    this.stat.shownCount = this.dataSource.filter(w => !w._hiden).length;
+    this.stat.shownCount = this.dataSource.filter(w => !w.hide).length;
     this.stat.checkAll = validCount > 0 && validCount === this.stat.checkCount;
     this.stat.checkHalf = this.stat.checkCount > 0 && !this.stat.checkAll;
   }
@@ -110,9 +121,9 @@ export class NzTransferListComponent implements OnChanges, OnInit {
   handleFilter(value: string): void {
     this.filter = value;
     this.dataSource.forEach(item => {
-      item._hiden = value.length > 0 && !this.matchFilter(value, item);
+      item.hide = value.length > 0 && !this.matchFilter(value, item);
     });
-    this.stat.shownCount = this.dataSource.filter(w => !w._hiden).length;
+    this.stat.shownCount = this.dataSource.filter(w => !w.hide).length;
     this.filterChange.emit({ direction: this.direction, value });
   }
 
@@ -148,14 +159,5 @@ export class NzTransferListComponent implements OnChanges, OnInit {
   markForCheck(): void {
     this.updateCheckStatus();
     this.cdr.markForCheck();
-  }
-
-  _handleSelect(item: TransferItem): void {
-    if (this.disabled || item.disabled) {
-      return;
-    }
-    item.checked = !item.checked;
-    this.updateCheckStatus();
-    this.handleSelect.emit(item);
   }
 }
