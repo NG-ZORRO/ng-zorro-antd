@@ -23,7 +23,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { FormControl, FormControlName, NgControl, NgModel } from '@angular/forms';
+import { FormControl, FormControlDirective, FormControlName, NgControl, NgModel } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
@@ -59,7 +59,7 @@ export class NzFormControlComponent extends NzColDirective
   status: NzFormControlStatusType = null;
   controlClassMap: NgClassType = {};
   iconType: string;
-  @ContentChild(NgControl, { static: false }) defaultValidateControl: FormControlName;
+  @ContentChild(NgControl, { static: false }) defaultValidateControl: FormControlName | FormControlDirective;
   @Input() nzSuccessTip: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
   @Input() nzWarningTip: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
   @Input() nzErrorTip: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
@@ -194,8 +194,12 @@ export class NzFormControlComponent extends NzColDirective
   }
 
   ngAfterContentInit(): void {
-    if (this.defaultValidateControl && !this.validateControl && !this.validateString) {
-      this.nzValidateStatus = this.defaultValidateControl;
+    if (!this.validateControl && !this.validateString) {
+      if (this.defaultValidateControl instanceof FormControlDirective) {
+        this.nzValidateStatus = this.defaultValidateControl.control;
+      } else {
+        this.nzValidateStatus = this.defaultValidateControl;
+      }
     }
   }
 
