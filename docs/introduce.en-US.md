@@ -73,6 +73,8 @@ $ npm install ng-zorro-antd
 - [Aliyun](http://www.aliyun.com/)
 - [Apache Flink](https://flink.apache.org/)
 - [ThoughtWorks](https://www.thoughtworks.com/)
+- [GongDao](https://www.gongdao.com/)
+- [QingFlow](https://qingflow.com/)
 
 > If your company or product uses ng-zorro-antd, let us know [here](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1142)!
 

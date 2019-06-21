@@ -76,6 +76,8 @@ $ ng add ng-zorro-antd
 - [阿里云](http://www.aliyun.com/)
 - [Apache Flink](https://flink.apache.org/)
 - [ThoughtWorks](https://www.thoughtworks.com/)
+- [共道科技](https://www.gongdao.com/)
+- [轻流](https://qingflow.com/)
 
 > 如果你的公司和产品使用了 NG-ZORRO，欢迎到 [这里](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1142) 留言。
 
