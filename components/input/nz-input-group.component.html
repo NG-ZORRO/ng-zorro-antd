@@ -27,7 +27,9 @@
     <ng-container *nzStringTemplateOutlet="nzSuffix">{{ nzSuffix }}</ng-container>
   </span>
 </ng-template>
-<ng-template [ngIf]="isGroup" *ngTemplateOutlet="contentTemplate"></ng-template>
+<ng-container *ngIf="isGroup">
+  <ng-template *ngTemplateOutlet="contentTemplate"></ng-template>
+</ng-container>
 <ng-template #contentTemplate>
   <ng-content></ng-content>
 </ng-template>
