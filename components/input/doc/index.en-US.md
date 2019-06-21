@@ -36,9 +36,9 @@ All props of input supported by [w3c standards](https://www.w3schools.com/tags/t
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzAddOnAfter]` | The label text displayed after (on the right side of) the input field. | `string｜TemplateRef<void>` | - |
-| `[nzAddOnBefore]` | The label text displayed before (on the left side of) the input field. | `string｜TemplateRef<void>` | - |
-| `[nzPrefix]` | The prefix icon for the Input. | `string｜TemplateRef<void>` | - |
-| `[nzSuffix]` | The suffix icon for the Input. | `string｜TemplateRef<void>` | - |
+| `[nzAddOnAfter]` | The label text displayed after (on the right side of) the input field, can work with `nzAddOnBefore` | `string｜TemplateRef<void>` | - |
+| `[nzAddOnBefore]` | The label text displayed before (on the left side of) the input field, can work with `nzAddOnAfter`   | `string｜TemplateRef<void>` | - |
+| `[nzPrefix]` | The prefix icon for the Input, can work with `nzSuffix` | `string｜TemplateRef<void>` | - |
+| `[nzSuffix]` | The suffix icon for the Input, can work with `nzPrefix` | `string｜TemplateRef<void>` | - |
 | `[nzCompact]` | Whether use compact style | `boolean` | `false` |
 | `[nzSize]` | The size of `nz-input-group` specifies the size of the included `nz-input` fields | `'large'｜'small'｜'default'` | `'default'` |
