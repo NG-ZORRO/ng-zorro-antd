@@ -29,13 +29,14 @@ import { NzTransferModule } from 'ng-zorro-antd';
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzDataSource]` | 数据源，其中若数据属性 `direction: 'right'` 将会被渲染到右边一栏中 | `TransferItem[]` | `[]` |
+| `[nzDataSource]` | 数据源，其中若数据属性 `direction: 'right'` 将会被渲染到右边一栏中或使用 `nzTargetKeys` | `TransferItem[]` | `[]` |
 | `[nzDisabled]` | 是否禁用 | `boolean` | `false` |
 | `[nzTitles]` | 标题集合，顺序从左至右 | `string[]` | `['', '']` |
 | `[nzOperations]` | 操作文案集合，顺序从下至上 | `string[]` | `['', '']` |
 | `[nzListStyle]` | 两个穿梭框的自定义样式，等同 `ngStyle` | `object` | - |
 | `[nzItemUnit]` | 单数单位 | `string` | `'项目'` |
 | `[nzItemsUnit]` | 复数单位 | `string` | `'项目'` |
+| `[nzRenderList]` | 自定义渲染列表，见示例 | `Array<TemplateRef<void>｜null>` | `[null, null]` |
 | `[nzRender]` | 每行数据渲染模板，见示例 | `TemplateRef<void>` | - |
 | `[nzFooter]` | 底部渲染模板，见示例 | `TemplateRef<void>` | - |
 | `[nzShowSearch]` | 是否显示搜索框 | `boolean` | `false` |
@@ -43,6 +44,7 @@ import { NzTransferModule } from 'ng-zorro-antd';
 | `[nzSearchPlaceholder]` | 搜索框的默认值 | `string` | `'请输入搜索内容'` |
 | `[nzNotFoundContent]` | 当列表为空时显示的内容 | `string` | `'列表为空'` |
 | `[nzCanMove]` | 穿梭时二次校验。**注意：** 穿梭组件内部始终只保留一份数据，二次校验过程中需取消穿梭项则直接删除该项；具体用法见示例。 | `(arg: TransferCanMove) => Observable<TransferItem[]>` | - |
+| `[nzTargetKeys]` | 显示在右侧框数据的 key 集合 | `string[]` | - |
 | `(nzChange)` | 选项在两栏之间转移时的回调函数 | `EventEmitter<TransferChange>` | - |
 | `(nzSearchChange)` | 搜索框内容时改变时的回调函数 | `EventEmitter<TransferSearchChange>` | - |
 | `(nzSelectChange)` | 选中项发生改变时的回调函数 | `EventEmitter<TransferSearchChange>` | - |
@@ -77,3 +79,13 @@ import { NzTransferModule } from 'ng-zorro-antd';
 | --- | --- | --- | --- |
 | direction | 数据方向 | `'left'｜'right'` | - |
 | value | 搜索关键词 | `string` | - |
+
+#### nzRenderList
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `direction`       | 渲染列表的方向   | `'left'｜'right'` | - |
+| `disabled`        |  是否禁用列表  | `boolean` | - |
+| `items`   | 过滤后的数据  | `TransferItem[]`   | - |
+| `onItemSelect`    | 勾选条目  | `(item: TransferItem) => void` | - |
+| `onItemSelectAll` | 勾选一组条目 | `(selected: boolean) => void` | - |
