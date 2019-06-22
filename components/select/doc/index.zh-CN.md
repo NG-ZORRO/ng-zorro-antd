@@ -42,6 +42,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzDropdownClassName]` | 下拉菜单的 className 属性 | `string` | - |
 | `[nzDropdownMatchSelectWidth]` | 下拉菜单和选择器同宽 | `boolean` | `true` |
 | `[nzDropdownStyle]` | 下拉菜单的 style 属性 | `object` | - |
+| `[nzCustomTemplate]` | 自定义选择框的Template内容 | `TemplateRef<{ $implicit: NzOptionComponent }>` | - |
 | `[nzServerSearch]` | 是否使用服务端搜索，当为 true 时，将不再在前端对 nz-option 进行过滤 | `boolean` | `false` |
 | `[nzFilterOption]` | 是否根据输入项进行筛选。当其为一个函数时，会接收 `inputValue` `option` 两个参数，当 `option` 符合筛选条件时，应返回 `true`，反之则返回 `false`。 | `(input?: string, option?: NzOptionComponent) => boolean;` | - |
 | `[nzMaxMultipleCount]` | 最多选中多少个标签| `number` | `Infinity` |
