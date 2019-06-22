@@ -286,7 +286,7 @@ export class NzTreeNode {
   }
 
   /**
-   * 支持按索引位置插入,叶子节点不可添加
+   * Support appending child nodes by position. Leaf node cannot be appended.
    */
   // tslint:disable-next-line:no-any
   public addChildren(children: any[], childPos: number = -1): void {

@@ -11,16 +11,16 @@ import { Observable, Subscription } from 'rxjs';
 
 import { IndexableObject } from 'ng-zorro-antd/core';
 
-/** 状态 */
+/** Status */
 export type UploadFileStatus = 'error' | 'success' | 'done' | 'uploading' | 'removed';
 
-/** 上传方式 */
+/** Uploading type. */
 export type UploadType = 'select' | 'drag';
 
-/** 上传列表的内建样式 */
+/** Built-in styles of the uploading list. */
 export type UploadListType = 'text' | 'picture' | 'picture-card';
 
-/** 文件对象 */
+/** File object. */
 export interface UploadFile {
   uid: string;
   size: number;
@@ -45,7 +45,7 @@ export interface UploadChangeParam {
   file: UploadFile;
   fileList: UploadFile[];
   event?: { percent: number };
-  /** 回调类型 */
+  /** Callback type. */
   type?: string;
 }
 

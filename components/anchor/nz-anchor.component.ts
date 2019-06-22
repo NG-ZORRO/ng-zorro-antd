@@ -123,8 +123,8 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
         distinctUntilChanged()
       )
       .subscribe(() => this.handleScroll());
-    // 浏览器在刷新时保持滚动位置，会倒置在dom未渲染完成时计算不正确，因此延迟重新计算
-    // 与之相对应可能会引起组件移除后依然触发 `handleScroll` 的 `detectChanges`
+    // Browser would maintain the scrolling position when refreshing.
+    // So we have to delay calculation in avoid of getting a incorrect result.
     setTimeout(() => this.handleScroll());
   }
 
