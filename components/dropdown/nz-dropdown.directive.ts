@@ -14,6 +14,7 @@ import {
   OverlayConfig,
   OverlayRef
 } from '@angular/cdk/overlay';
+import { Platform } from '@angular/cdk/platform';
 import { TemplatePortal } from '@angular/cdk/portal';
 import {
   AfterViewInit,
@@ -171,8 +172,10 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
   }
 
   private setTriggerWidth(): void {
-    const element = this.nzMatchWidthElement ? this.nzMatchWidthElement.nativeElement : this.el;
-    this.triggerWidth = element.getBoundingClientRect().width;
+    if (this.platform.isBrowser) {
+      const element = this.nzMatchWidthElement ? this.nzMatchWidthElement.nativeElement : this.el;
+      this.triggerWidth = element.getBoundingClientRect().width;
+    }
   }
 
   initActionSubscribe(): void {
@@ -221,6 +224,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
     public elementRef: ElementRef,
     private renderer: Renderer2,
     private overlay: Overlay,
+    private platform: Platform,
     private viewContainerRef: ViewContainerRef
   ) {
     renderer.addClass(elementRef.nativeElement, 'ant-dropdown-trigger');
