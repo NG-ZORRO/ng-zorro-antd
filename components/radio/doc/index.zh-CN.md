@@ -50,6 +50,8 @@ import { NzRadioModule } from 'ng-zorro-antd';
 
 ### [nz-radio]
 
+可以通过 `ViewChild` 等其他方式获取 `NzRadioComponent` 使用以下方法
+
 | 名称 | 描述 |
 | --- | --- |
 | blur() | 移除焦点 |
