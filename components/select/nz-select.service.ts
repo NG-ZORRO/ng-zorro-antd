@@ -321,6 +321,9 @@ export class NzSelectService {
   }
 
   onKeyDown(e: KeyboardEvent): void {
+    if (this.disabled) {
+      return;
+    }
     const keyCode = e.keyCode;
     const eventTarget = e.target as HTMLInputElement;
     const listOfFilteredOptionWithoutDisabled = this.listOfFilteredOption.filter(item => !item.nzDisabled);
