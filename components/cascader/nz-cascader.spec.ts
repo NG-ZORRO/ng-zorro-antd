@@ -311,7 +311,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       const optionEl = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第1列第1个
+      ) as HTMLElement; // The first option in the first column
       expect(optionEl.classList).not.toContain('ant-cascader-menu-item-active');
 
       testComponent.cascader.onOptionMouseEnter(option, 0, mouseenter);
@@ -806,10 +806,10 @@ describe('cascader', () => {
       fixture.detectChanges();
       const optionEl1 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第1列第1个
+      ) as HTMLElement; // The first option in the first column
       const optionEl2 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(2)'
-      ) as HTMLElement; // 第1列第2个
+      ) as HTMLElement; // The second option in the first column
 
       expect(optionEl1.classList).not.toContain('ant-cascader-menu-item-active');
       expect(optionEl2.classList).not.toContain('ant-cascader-menu-item-active');
@@ -829,17 +829,17 @@ describe('cascader', () => {
       expect(testComponent.cascader.menuVisible).toBe(true);
       (overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement).click(); // 第1列第1个
+      ) as HTMLElement).click(); // The first option in the first column
       fixture.detectChanges();
       expect(testComponent.cascader.menuVisible).toBe(true);
       (overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement).click(); // 第2列第1个
+      ) as HTMLElement).click(); // The first option in the second column
       fixture.detectChanges();
       expect(testComponent.cascader.menuVisible).toBe(true);
       (overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(3) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement).click(); // 第3列第1个
+      ) as HTMLElement).click(); // The first option in the third column
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
@@ -883,14 +883,14 @@ describe('cascader', () => {
       fixture.detectChanges();
       const itemEl1 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:last-child'
-      ) as HTMLElement; // 第1列最后1个
+      ) as HTMLElement; // The last of the fisrt column
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', UP_ARROW);
       fixture.detectChanges();
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       const itemEl2 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:first-child'
-      ) as HTMLElement; // 第1列第1个
+      ) as HTMLElement; // The first option in the first column
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', UP_ARROW);
       fixture.detectChanges();
@@ -903,7 +903,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       const itemEl1 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第1列第1个
+      ) as HTMLElement; // The first option in the first column
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', DOWN_ARROW);
       fixture.detectChanges();
@@ -919,25 +919,25 @@ describe('cascader', () => {
       fixture.detectChanges();
       let itemEl1 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第1列第1个
+      ) as HTMLElement; // The first option in the first column
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       let itemEl2 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第2列第1个
+      ) as HTMLElement; // The first option in the second column
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', RIGHT_ARROW);
       fixture.detectChanges();
       itemEl1 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第1列第1个
+      ) as HTMLElement; // The first option in the first column
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       itemEl2 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第2列第1个
+      ) as HTMLElement; // The first option in the second column
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       const itemEl3 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(3) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第3列第1个
+      ) as HTMLElement; // The first option in the third column
       expect(itemEl3.classList).toContain('ant-cascader-menu-item-active');
     }));
     it('should navigate left when press LEFT_ARROW', fakeAsync(() => {
@@ -951,13 +951,13 @@ describe('cascader', () => {
 
       const itemEl1 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第1列第1个
+      ) as HTMLElement; // The first option in the first column
       const itemEl2 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第2列第1个
+      ) as HTMLElement; // The first option in the second column
       const itemEl3 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(3) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第3列第1个
+      ) as HTMLElement; // The first option in the third column
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl3.classList).toContain('ant-cascader-menu-item-active');
@@ -1019,10 +1019,10 @@ describe('cascader', () => {
       fixture.detectChanges();
       const optionEl1 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第1列第1个
+      ) as HTMLElement; // The first option in the first column
       const optionEl2 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(2)'
-      ) as HTMLElement; // 第1列第2个
+      ) as HTMLElement; // The second option in the first column
 
       expect(optionEl1.classList).not.toContain('ant-cascader-menu-item-active');
       expect(optionEl2.classList).not.toContain('ant-cascader-menu-item-active');
@@ -1038,16 +1038,16 @@ describe('cascader', () => {
 
       const optionEl11 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第2列第1个
+      ) as HTMLElement; // The first option in the second column
       const optionEl12 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(2)'
-      ) as HTMLElement; // 第2列第1个
+      ) as HTMLElement; // The first option in the second column
       const optionEl13 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(3)'
-      ) as HTMLElement; // 第2列第1个
+      ) as HTMLElement; // The first option in the second column
       const optionEl14 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(4)'
-      ) as HTMLElement; // 第2列第1个
+      ) as HTMLElement; // The first option in the second column
       expect(optionEl11.classList).not.toContain('ant-cascader-menu-item-active');
       expect(optionEl12.classList).not.toContain('ant-cascader-menu-item-active');
       expect(optionEl13.classList).not.toContain('ant-cascader-menu-item-active');
@@ -1106,7 +1106,7 @@ describe('cascader', () => {
 
       const itemEl1 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第1列第1个
+      ) as HTMLElement; // The first option in the first column
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
 
       dispatchMouseEvent(itemEl1, 'mouseenter');
@@ -1116,7 +1116,7 @@ describe('cascader', () => {
       expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(2); // 2列
       const itemEl2 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第2列第1个
+      ) as HTMLElement; // The first option in the second column
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
       expect(testComponent.values).toBeNull(); // not select yet
@@ -1135,7 +1135,7 @@ describe('cascader', () => {
       expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(3); // 3列
       const itemEl3 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(3) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第3列第1个
+      ) as HTMLElement; // The first option in the third column
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
@@ -1187,7 +1187,7 @@ describe('cascader', () => {
 
       const itemEl2 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(2)'
-      ) as HTMLElement; // 第1列第1个
+      ) as HTMLElement; // The first option in the first column
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
 
       dispatchMouseEvent(itemEl2, 'mouseenter');
@@ -1218,7 +1218,7 @@ describe('cascader', () => {
 
       const itemEl1 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第1列第1个
+      ) as HTMLElement; // The first option in the first column
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
       itemEl1.click();
       fixture.detectChanges();
@@ -1232,7 +1232,7 @@ describe('cascader', () => {
 
       const itemEl2 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第2列第1个
+      ) as HTMLElement; // The first option in the second column
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
       itemEl2.click();
@@ -1249,7 +1249,7 @@ describe('cascader', () => {
 
       const itemEl3 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(3) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第3列第1个
+      ) as HTMLElement; // The first option in the third column
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
@@ -1283,7 +1283,7 @@ describe('cascader', () => {
 
       const itemEl1 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第1列第1个
+      ) as HTMLElement; // The first option in the first column
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
       dispatchMouseEvent(itemEl1, 'mouseenter');
       fixture.detectChanges();
@@ -1297,7 +1297,7 @@ describe('cascader', () => {
 
       const itemEl2 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第2列第1个
+      ) as HTMLElement; // The first option in the second column
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
       dispatchMouseEvent(itemEl2, 'mouseenter');
@@ -1313,7 +1313,7 @@ describe('cascader', () => {
 
       const itemEl3 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(3) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第3列第1个
+      ) as HTMLElement; // The first option in the third column
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
@@ -1350,10 +1350,10 @@ describe('cascader', () => {
 
       const itemEl1 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第1列第1个
+      ) as HTMLElement; // The first option in the first column
       const itemEl2 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(2)'
-      ) as HTMLElement; // 第1列第2个
+      ) as HTMLElement; // The second option in the first column
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
       itemEl2.click();
@@ -1685,7 +1685,7 @@ describe('cascader', () => {
 
       const itemEl1 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第1列第1个
+      ) as HTMLElement; // The first option in the first column
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
       itemEl1.click();
       fixture.detectChanges();
@@ -1697,7 +1697,7 @@ describe('cascader', () => {
 
       const itemEl2 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第2列第1个
+      ) as HTMLElement; // The first option in the second column
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
       itemEl2.click();
@@ -1710,7 +1710,7 @@ describe('cascader', () => {
 
       const itemEl3 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(3) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第3列第1个
+      ) as HTMLElement; // The first option in the third column
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
@@ -1756,21 +1756,21 @@ describe('cascader', () => {
       fixture.detectChanges();
       const itemEl1 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第1列第1个
+      ) as HTMLElement; // The first option in the first column
       itemEl1.click();
       fixture.detectChanges();
       tick(600);
       fixture.detectChanges();
       const itemEl2 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第2列第1个
+      ) as HTMLElement; // The first option in the second column
       itemEl2.click();
       fixture.detectChanges();
       tick(600);
       fixture.detectChanges();
       const itemEl3 = overlayContainerElement.querySelector(
         '.ant-cascader-menu:nth-child(3) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // 第3列第1个
+      ) as HTMLElement; // The first option in the third column
       itemEl3.click();
       fixture.detectChanges();
       tick(600);
