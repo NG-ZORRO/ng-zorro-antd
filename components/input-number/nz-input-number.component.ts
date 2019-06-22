@@ -70,6 +70,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   @Input() nzPrecision: number;
   @Input() nzPlaceHolder = '';
   @Input() nzStep = 1;
+  @Input() nzId: string;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAutoFocus = false;
   @Input() nzFormatter: (value: number) => string | number = value => value;

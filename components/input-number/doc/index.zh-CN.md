@@ -27,6 +27,8 @@ import { NzInputNumberModule } from 'ng-zorro-antd';
 
 ### nz-input-number
 
+在 `nz-input-number` 中输入的数值不会在输入时进行校验，而是在特定时机（回车键，上下键，失去焦点等）时才会校验后反馈到 `[ngModel]` 和 `(ngModelChange)` 中，否则输入 `-0.12` 或者 `1e10` 这种类型数据时，双向绑定的数据会永远是 `undefined`
+
 | 成员 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[ngModel]` | 当前值，可双向绑定 | `number｜string` ｜ `string` | - |
@@ -40,6 +42,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd';
 | `[nzSize]` | 输入框大小 | `'large'｜'small'｜'default'` | `'default'` |
 | `[nzStep]` | 每次改变步数，可以为小数 | `number｜string` | `1` |
 | `[nzPlaceHolder]` | 选择框默认文字 | `string` | - |
+| `[nzId]` | 组件内部 input 的 id 值 | `string` | - |
 | `(ngModelChange)` | 数值改变时回调 | `EventEmitter<number>` | - |
 | `(nzFocus)` | focus时回调 | `EventEmitter<void>` | - |
 | `(nzBlur)` | blur时回调 | `EventEmitter<void>` | - |
