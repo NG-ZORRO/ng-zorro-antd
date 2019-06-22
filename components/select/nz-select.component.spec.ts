@@ -289,6 +289,15 @@ describe('nz-select component', () => {
       fixture.detectChanges();
       expect(testComponent.selectedValue.length).toBe(0);
     }));
+    it('should custom template work', fakeAsync(() => {
+      fixture.detectChanges();
+      selectComponent.nzSelectService.updateListOfSelectedValue(['jack'], true);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      const selection = select.nativeElement.querySelector('.ant-select-selection') as HTMLElement;
+      expect(selection.innerText).toContain('Label: Jack\nValue: jack');
+    }));
   });
 
   describe('form', () => {
@@ -457,11 +466,15 @@ export class NzTestSelectDefaultComponent {
 
 @Component({
   template: `
-    <nz-select [(ngModel)]="selectedValue" [nzAllowClear]="true" [nzMode]="'tags'">
+    <nz-select [(ngModel)]="selectedValue" [nzAllowClear]="true" [nzMode]="'tags'" [nzCustomTemplate]="custom">
       <nz-option nzValue="jack" nzLabel="Jack"></nz-option>
       <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
       <nz-option nzValue="disabled" nzLabel="Disabled" nzDisabled nzCustomContent>Disabled</nz-option>
     </nz-select>
+    <ng-template #custom let-selected>
+      <div>Label: {{ selected.nzLabel }}</div>
+      <div>Value: {{ selected.nzValue }}</div>
+    </ng-template>
   `
 })
 export class NzTestSelectTagsComponent {
