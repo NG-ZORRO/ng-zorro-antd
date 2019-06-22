@@ -319,6 +319,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
         this.onTouched();
       }
       this.open = value;
+      this.nzSelectService.clearInput();
     });
     this.nzSelectService.check$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.cdr.markForCheck();
