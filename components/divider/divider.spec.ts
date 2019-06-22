@@ -60,7 +60,7 @@ describe('divider', () => {
   });
 
   describe('#nzOrientation', () => {
-    ['left', 'right'].forEach(type => {
+    ['center', 'left', 'right'].forEach(type => {
       it(`with ${type}`, () => {
         context.nzOrientation = type;
         fixture.detectChanges();

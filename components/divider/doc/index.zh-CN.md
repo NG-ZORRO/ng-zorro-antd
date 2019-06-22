@@ -29,4 +29,4 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 | `[nzDashed]` | 是否虚线 | `boolean` | `false` |
 | `[nzType]` | 水平还是垂直类型 | `'horizontal' \| 'vertical'` | `'horizontal'` |
 | `[nzText]` | 中间文字 | `string \| TemplateRef<void>` | - |
-| `[nzOrientation]` | 中间文字方向 | `'left' \| 'right'` | - |
+| `[nzOrientation]` | 中间文字方向 | `'center' \| 'left' \| 'right'` | `'center'` |

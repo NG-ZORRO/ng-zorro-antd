@@ -31,15 +31,14 @@ import { InputBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 export class NzDividerComponent implements OnChanges, OnInit {
   @Input() nzText: string | TemplateRef<void>;
   @Input() nzType: 'horizontal' | 'vertical' = 'horizontal';
-  @Input() nzOrientation: 'left' | 'right' | '' = '';
+  @Input() nzOrientation: 'left' | 'right' | 'center' = 'center';
   @Input() @InputBoolean() nzDashed = false;
 
   private setClass(): void {
-    const orientationPrefix = this.nzOrientation.length > 0 ? '-' + this.nzOrientation : this.nzOrientation;
     this.nzUpdateHostClassService.updateHostClass(this.elementRef.nativeElement, {
       ['ant-divider']: true,
       [`ant-divider-${this.nzType}`]: true,
-      [`ant-divider-with-text${orientationPrefix}`]: this.nzText,
+      [`ant-divider-with-text-${this.nzOrientation}`]: this.nzText,
       [`ant-divider-dashed`]: this.nzDashed
     });
   }

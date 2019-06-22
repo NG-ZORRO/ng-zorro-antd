@@ -28,4 +28,4 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 | `[nzDashed]` | whether line is dasded | `boolean` | `false` |
 | `[nzType]` | direction type of divider | `'horizontal' \| 'vertical'` | `'horizontal'` |
 | `[nzText]` | inner text of divider | `string \| TemplateRef<void>` | - |
-| `[nzOrientation]` | inner text orientation | `'left' \| 'right'` | - |
+| `[nzOrientation]` | inner text orientation | `'center' \| 'left' \| 'right'` | `'center'` |
