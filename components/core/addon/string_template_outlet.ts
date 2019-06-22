@@ -66,12 +66,30 @@ export class NzStringTemplateOutletDirective implements OnChanges {
     }
   }
 
+  // tslint:disable-next-line:no-any
+  private getType(value: string | TemplateRef<any>): 'template' | 'string' {
+    if (value instanceof TemplateRef) {
+      return 'template';
+    } else {
+      return 'string';
+    }
+  }
+
   private shouldRecreateView(changes: SimpleChanges): boolean {
     const { nzStringTemplateOutletContext, nzStringTemplateOutlet } = changes;
-    return (
-      !!nzStringTemplateOutlet ||
-      (nzStringTemplateOutletContext && this.hasContextShapeChanged(nzStringTemplateOutletContext))
-    );
+    let shouldOutletRecreate = false;
+    if (nzStringTemplateOutlet) {
+      if (nzStringTemplateOutlet.firstChange) {
+        shouldOutletRecreate = true;
+      } else {
+        const previousOutletType = this.getType(nzStringTemplateOutlet.previousValue);
+        const currentOutletType = this.getType(nzStringTemplateOutlet.currentValue);
+        shouldOutletRecreate = !(previousOutletType === 'string' && currentOutletType === 'string');
+      }
+    }
+    const shouldContextRecreate =
+      nzStringTemplateOutletContext && this.hasContextShapeChanged(nzStringTemplateOutletContext);
+    return shouldContextRecreate || shouldOutletRecreate;
   }
 
   private hasContextShapeChanged(ctxChange: SimpleChange): boolean {
@@ -102,7 +120,6 @@ export class NzStringTemplateOutletDirective implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     const recreateView = this.shouldRecreateView(changes);
-
     if (recreateView) {
       if (this.viewContainer) {
         this.viewContainer.clear();
