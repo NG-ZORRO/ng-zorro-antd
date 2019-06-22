@@ -12,15 +12,15 @@ Keyboard and mouse can be used for providing or changing data.
 - A user input in a form field is needed.
 - A search input is required.
 
-## API
-
-### Import this Component Individually
+## Import this Component Individually
 
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzInputModule } from 'ng-zorro-antd';
+import { NzInputModule } from 'ng-zorro-antd/input';
 ```
+
+## API
 
 ### [nz-input]
 

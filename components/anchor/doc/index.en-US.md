@@ -10,15 +10,15 @@ Hyperlinks to scroll on one page.
 
 For displaying anchor hyperlinks on page and jumping between them.
 
-## API
-
-### Import this Component Individually
+## Import this Component Individually
 
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzAnchorModule } from 'ng-zorro-antd';
+import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 ```
+
+## API
 
 ### nz-anchor
 

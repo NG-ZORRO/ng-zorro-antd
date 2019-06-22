@@ -12,15 +12,15 @@ title: Radio
 - 用于在多个备选项中选中单个状态。
 - 和 Select 的区别是，Radio 所有选项默认可见，方便用户在比较中选择，因此选项不宜过多。
 
-## API
-
-### 单独引入此组件
+## 单独引入此组件
 
 想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
 
 ```ts
-import { NzRadioModule } from 'ng-zorro-antd';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 ```
+
+## API
 
 ### [nz-radio] | [nz-radio-button]
 

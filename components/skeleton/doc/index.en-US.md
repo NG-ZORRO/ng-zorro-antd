@@ -12,15 +12,15 @@ Provide a placeholder at the place which need waiting for loading.
 - When resource need long time loading, like low network speed.
 - The component contains much information, such as List or Card.
 
-## API
-
-### Import this Component Individually
+## Import this Component Individually
 
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzSkeletonModule } from 'ng-zorro-antd';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 ```
+
+## API
 
 ### nz-skeleton
 

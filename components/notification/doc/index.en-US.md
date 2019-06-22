@@ -17,6 +17,14 @@ used in the following cases:
   about upcoming steps the user may have to follow.
 - A notification that is pushed by the application.
 
+## Import this Component Individually
+
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
+```
+
 ## How To Use
 
 Similar to `NzMessage`, if you want to modify the global default configuration, you can modify the value of provider `NZ_NOTIFICATION_CONFIG`.
@@ -36,14 +44,6 @@ The default global configuration is:
 ```
 
 ## API
-
-### Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
-```ts
-import { NzNotificationModule } from 'ng-zorro-antd';
-```
 
 ### NzNotificationService
 

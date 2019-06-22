@@ -11,6 +11,14 @@ title: Badge
 
 一般出现在通知图标或头像的右上角，用于显示需要处理的消息条数，通过醒目视觉形式吸引用户处理。
 
+## 单独引入此组件
+
+想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
+
+```ts
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+```
+
 ## API
 
 ```html
@@ -21,14 +29,6 @@ title: Badge
 
 ```html
 <nz-badge [nzCount]="5"></nz-badge>
-```
-
-### 单独引入此组件
-
-想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
-
-```ts
-import { NzBadgeModule } from 'ng-zorro-antd';
 ```
 
 ### nz-badge

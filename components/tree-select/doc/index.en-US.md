@@ -11,15 +11,15 @@ Tree selection control.
 `TreeSelect` is similar to `Select`, but the values are provided in a tree like structure.
 Any data whose entries are defined in a hierarchical manner is fit to use this control. Examples of such case may include a corporate hierarchy, a directory structure, and so on.
 
-## API
-
-### Import this Component Individually
+## Import this Component Individually
 
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzTreeSelectModule } from 'ng-zorro-antd';
+import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 ```
+
+## API
 
 ### nz-tree-select
 

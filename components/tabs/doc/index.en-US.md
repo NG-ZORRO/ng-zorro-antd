@@ -7,7 +7,7 @@ cols: 1
 
 Tabs make it easy to switch between different views.
 
-### When To Use
+## When To Use
 
 Ant Design has 3 types of Tabs for different situations.
 
@@ -15,15 +15,15 @@ Ant Design has 3 types of Tabs for different situations.
 - Normal Tabs: for functional aspects of a page.
 - [RadioButton](/components/radio/en/#components-radio-demo-radiobutton): for secondary tabs.
 
-## API
-
-### Import this Component Individually
+## Import this Component Individually
 
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzTabsModule } from 'ng-zorro-antd';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
 ```
+
+## API
 
 ### nz-tabset
 

@@ -12,15 +12,15 @@ A simple and compact dialog used for asking for user confirmation.
 
 The difference with the `confirm` modal dialog is that it's more lightweight than the static popped full-screen confirm modal.
 
-## API
-
-### Import this Component Individually
+## Import this Component Individually
 
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzPopconfirmModule } from 'ng-zorro-antd';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 ```
+
+## API
 
 ### [nz-popconfirm]
 

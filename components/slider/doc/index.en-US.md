@@ -10,15 +10,15 @@ A Slider component for displaying current value and intervals in range.
 
 To input a value in a range.
 
-## API
-
-### Import this Component Individually
+## Import this Component Individually
 
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzSliderModule } from 'ng-zorro-antd';
+import { NzSliderModule } from 'ng-zorro-antd/slider';
 ```
+
+## API
 
 ### nz-slider
 

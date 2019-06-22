@@ -11,6 +11,14 @@ subtitle: 日期选择框
 
 当用户需要输入一个日期，可以点击标准输入框，弹出日期面板进行选择。
 
+## 单独引入此组件
+
+想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
+
+```ts
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+```
+
 ## API
 
 **注意：**nz-date-picker 的部分 locale 来自于 Angular 自身的[国际化支持](https://angular.io/guide/i18n)，需要在 `app.module.ts` 文件中 引入相应的 Angular 语言包。
@@ -29,14 +37,6 @@ registerLocaleData(zh);
 - nz-week-picker
 
 **注意：** 所有输入输出日期对象均为 [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date)，你可以通过 [date-fns](https://date-fns.org/) 工具库获得你需要的数据。
-
-### 单独引入此组件
-
-想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
-
-```ts
-import { NzDatePickerModule } from 'ng-zorro-antd';
-```
 
 ### 共同的 API
 

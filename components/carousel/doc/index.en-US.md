@@ -12,15 +12,15 @@ A carousel component. Scales with its container.
 - When there is insufficient content space, it can be used to save space in the form of a revolving door.
 - Commonly used for a group of pictures/cards.
 
-## API
-
-### Import this Component Individually
+## Import this Component Individually
 
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzCarouselModule } from 'ng-zorro-antd';
+import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 ```
+
+## API
 
 ### nz-carousel
 

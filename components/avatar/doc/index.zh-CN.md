@@ -7,15 +7,15 @@ title: Avatar
 
 用来代表用户或事物，支持图片、图标或字符展示。
 
-## API
-
-### 单独引入此组件
+## 单独引入此组件
 
 想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
 
 ```ts
-import { NzAvatarModule } from 'ng-zorro-antd';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 ```
+
+## API
 
 ### nz-avatar
 
