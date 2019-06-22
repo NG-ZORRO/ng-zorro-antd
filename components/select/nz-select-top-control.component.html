@@ -21,12 +21,9 @@
       class="ant-select-selection-selected-value"
       [attr.title]="nzSelectService.listOfCachedSelectedOption[0]?.nzLabel"
       [ngStyle]="selectedValueStyle">
-      <ng-container *ngIf="nzCustomTemplate; else noTemplate">
-        <ng-template [ngTemplateOutlet]="nzCustomTemplate" [ngTemplateOutletContext]="{ $implicit: nzSelectService.listOfCachedSelectedOption[0] }"></ng-template>
+      <ng-container *nzStringTemplateOutlet="nzCustomTemplate; context: { $implicit: nzSelectService.listOfCachedSelectedOption[0] }">
+        <div class="ant-select-selection__choice__content">{{ nzSelectService.listOfCachedSelectedOption[0]?.nzLabel }}</div>
       </ng-container>
-      <ng-template #noTemplate>
-        {{ nzSelectService.listOfCachedSelectedOption[0]?.nzLabel }}
-      </ng-template>
     </div>
     <!--show search-->
     <div *ngIf="nzShowSearch"
@@ -45,12 +42,9 @@
         [attr.title]="option.nzLabel"
         [class.ant-select-selection__choice__disabled]="option.nzDisabled"
         class="ant-select-selection__choice">
-        <ng-container *ngIf="nzCustomTemplate; else defaultMultipleTemplate">
-          <ng-template [ngTemplateOutlet]="nzCustomTemplate" [ngTemplateOutletContext]="{ $implicit: nzSelectService.listOfCachedSelectedOption[index] }"></ng-template>
-        </ng-container>
-        <ng-template #defaultMultipleTemplate>
+        <ng-container *nzStringTemplateOutlet="nzCustomTemplate; context:{ $implicit: nzSelectService.listOfCachedSelectedOption[index] }">
           <div class="ant-select-selection__choice__content">{{ option.nzLabel }}</div>
-        </ng-template>
+        </ng-container>
         <span *ngIf="!option.nzDisabled"
           class="ant-select-selection__choice__remove"
           (mousedown)="$event.preventDefault()"
