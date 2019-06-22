@@ -48,6 +48,8 @@ radio group，wrap a group of `nz-radio`。
 
 ### [nz-radio]
 
+you can get `NzRadioComponent` via `ViewChild`
+
 | Name | Description |
 | ---- | ----------- |
 | blur() | remove focus |
