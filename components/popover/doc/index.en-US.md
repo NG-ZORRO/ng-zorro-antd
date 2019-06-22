@@ -26,8 +26,8 @@ import { NzPopoverModule } from 'ng-zorro-antd';
 
 | Param | Description | Type | Default value |
 | ----- | ----------- | ---- | ------------- |
-| nzTitle | Title of the card | `string｜TemplateRef<void>` | - |
-| nzTemplate | Used to define the content | `string｜TemplateRef<void>` | - |
+| nzTitle | Title of the card | `string \| TemplateRef<void>` | - |
+| nzTemplate | Used to define the content | `string \| TemplateRef<void>` | - |
 
 Consult [Tooltip's documentation](/components/tooltip/en#api) to find more APIs.
 

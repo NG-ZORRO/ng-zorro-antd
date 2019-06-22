@@ -25,22 +25,22 @@ import { NzEmptyModule } from 'ng-zorro-antd';
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzNotFoundImage]` | Customize image. Will tread as image url when string provided | `string` ｜ `TemplateRef<void>` | - |
-| `[nzNotFoundContent]` | Custom description | `string` ｜ `TemplateRef<void>` | - |
-| `[nzNotFoundFooter]` | Custom Footer | `string` ｜ `TemplateRef<void>` | - |
+| `[nzNotFoundImage]` | Customize image. Will tread as image url when string provided | `string`  \|  `TemplateRef<void>` | - |
+| `[nzNotFoundContent]` | Custom description | `string`  \|  `TemplateRef<void>` | - |
+| `[nzNotFoundFooter]` | Custom Footer | `string`  \|  `TemplateRef<void>` | - |
 
 ### NzEmptyService
 
 | Methods/Properties | Description | Parameters |
 | -------- | ----------- | ---- |
-| `setDefaultContent` | To set the default empty content. The parent component name would be passed to the template. | `TemplateRef<string>` ｜ `string` |
+| `setDefaultContent` | To set the default empty content. The parent component name would be passed to the template. | `TemplateRef<string>`  \|  `string` |
 | `resetDefault` | Reset default empty content | - |
 
 ### InjectionToken
 
 | Token | Description | Parameters |
 | ----- | --- | ---- |
-| `NZ_DEFAULT_EMPTY_CONTENT` | To provide a user default empty component | `Component` ｜ `string` |
+| `NZ_DEFAULT_EMPTY_CONTENT` | To provide a user default empty component | `Component`  \|  `string` |
 | `NZ_EMPTY_COMPONENT_NAME` | Would be injected to `NZ_DEFAULT_EMPTY_CONTENT`, telling that component its parent component's name | `string` |
 
 ### Global Customizable Empty Content

@@ -42,9 +42,9 @@ import { NzRadioModule } from 'ng-zorro-antd';
 | `[ngModel]` | 指定选中的 `nz-radio` 的 value 值 | `string` | - |
 | `[nzName]` | `nz-radio-group` 下所有 `input[type="radio"]` 的 `name` 属性 | `string` | - |
 | `[nzDisabled]` | 设定所有 `nz-radio` disable 状态 | `boolean` | `false` |
-| `[nzSize]` | 大小，只对按钮样式生效 | `'large'｜'small'｜'default'` | `'default'` |
+| `[nzSize]` | 大小，只对按钮样式生效 | `'large' \| 'small' \| 'default'` | `'default'` |
 | `(ngModelChange)` | 选中变化时回调 | `EventEmitter<boolean>` | - |
-| `[nzButtonStyle]` | RadioButton 的风格样式，目前有描边和填色两种风格 | `'outline'｜'solid'` | `'outline'` |
+| `[nzButtonStyle]` | RadioButton 的风格样式，目前有描边和填色两种风格 | `'outline' \| 'solid'` | `'outline'` |
 
 ## 方法
 

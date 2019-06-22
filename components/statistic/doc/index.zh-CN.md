@@ -26,22 +26,22 @@ import { NzStatisticModule } from 'ng-zorro-antd';
 
 | 参数 | 说明 | 类型 | 默认值 |
 | -------- | ----------- | ---- | ------- |
-| `[nzPrefix]` | 设置数值的前缀 | `string｜TemplateRef<void>` | - |
-| `[nzSuffix]` | 设置数值的后缀 | `string｜TemplateRef<void>` | - |
-| `[nzTitle]` | 数值的标题 | `string｜TemplateRef<void>` | - |
-| `[nzValue]` | 数值内容 | `string｜number` | - |
+| `[nzPrefix]` | 设置数值的前缀 | `string \| TemplateRef<void>` | - |
+| `[nzSuffix]` | 设置数值的后缀 | `string \| TemplateRef<void>` | - |
+| `[nzTitle]` | 数值的标题 | `string \| TemplateRef<void>` | - |
+| `[nzValue]` | 数值内容 | `string \| number` | - |
 | `[nzValueStyle]` | 设置数值的样式 | `Object` | - |
-| `[nzValueTemplate]` | 自定义数值展示 | `TemplateRef<{ $implicit: string｜number }>` | - |
+| `[nzValueTemplate]` | 自定义数值展示 | `TemplateRef<{ $implicit: string \| number }>` | - |
 
 ### nz-countdown
 
 | 参数 | 说明 | 类型 | 默认值 |
 | -------- | ----------- | ---- | ------- |
 | `[nzFormat]` | 格式化倒计时展示 | `string` | `"HH:mm:ss"` |
-| `[nzPrefix]` | 设置数值的前缀 | `string｜TemplateRef<void>` | - |
-| `[nzSuffix]` | 设置数值的后缀 | `string｜TemplateRef<void>` | - |
-| `[nzTitle]` | 数值的标题 | `string｜TemplateRef<void>` | - |
-| `[nzValue]` | 时间戳格式的目标时间 | `string｜number` | - |
+| `[nzPrefix]` | 设置数值的前缀 | `string \| TemplateRef<void>` | - |
+| `[nzSuffix]` | 设置数值的后缀 | `string \| TemplateRef<void>` | - |
+| `[nzTitle]` | 数值的标题 | `string \| TemplateRef<void>` | - |
+| `[nzValue]` | 时间戳格式的目标时间 | `string \| number` | - |
 | `[nzValueTemplate]` | 自定义时间展示 | `TemplateRef<{ $implicit: number }>` | - |
 
 ### nzFormat

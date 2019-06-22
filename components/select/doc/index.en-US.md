@@ -31,7 +31,7 @@ import { NzSelectModule } from 'ng-zorro-antd';
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[ngModel]` | Current selected nz-option value, double binding. | `any｜any[]` | - |
+| `[ngModel]` | Current selected nz-option value, double binding. | `any \| any[]` | - |
 | `[compareWith]` | Same as [SelectControlValueAccessor](https://angular.io/api/forms/SelectControlValueAccessor#caveat-option-selection) | `(o1: any, o2: any) => boolean` | `(o1: any, o2: any) => o1===o2` |
 | `[nzAutoClearSearchValue]` | Whether the current search will be cleared on selecting an item. Only applies when `mode` is set to `multiple` or `tags`. | `boolean` | `true` |
 | `[nzAllowClear]` | Show clear button. | `boolean` | `false` |
@@ -44,12 +44,12 @@ import { NzSelectModule } from 'ng-zorro-antd';
 | `[nzServerSearch]` | nz-option will not be filtered when set to true | `boolean` | `false` |
 | `[nzFilterOption]` | Filter options against it. The function will receive two arguments, `inputValue` and `option`, if the function returns `true`, the option will be included in the filtered set; Otherwise, it will be excluded. | `(input?: string, option?: NzOptionComponent) => boolean;` | - |
 | `[nzMaxMultipleCount]` |  Max selected option can be selected | `number` | `Infinity` |
-| `[nzMode]` | Set mode of Select | `'multiple'｜'tags'｜'default'` | `'default'` |
-| `[nzNotFoundContent]` | Specify content to show when no result matches.. | `string ｜ TemplateRef<void>` | `'Not Found'` |
+| `[nzMode]` | Set mode of Select | `'multiple' \| 'tags' \| 'default'` | `'default'` |
+| `[nzNotFoundContent]` | Specify content to show when no result matches.. | `string  \|  TemplateRef<void>` | `'Not Found'` |
 | `[nzPlaceHolder]` | Placeholder of select | `string` | - |
 | `[nzShowArrow]` | Whether to show the drop-down arrow | `boolean` | `true` |
 | `[nzShowSearch]` | Whether show search input in single mode. | `boolean` | `false` |
-| `[nzSize]` | Size of Select input | `'large'｜'small'｜'default'` | `'default'` |
+| `[nzSize]` | Size of Select input | `'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzSuffixIcon]` | The custom suffix icon | `TemplateRef<void>` | - |
 | `[nzRemoveIcon]` | The custom remove icon | `TemplateRef<void>` | - |
 | `[nzClearIcon]` | The custom clear icon | `TemplateRef<void>` | - |
@@ -78,7 +78,7 @@ import { NzSelectModule } from 'ng-zorro-antd';
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzLabel]` | Group label | `string｜TemplateRef<void>` | - |
+| `[nzLabel]` | Group label | `string \| TemplateRef<void>` | - |
 
 ## Methods
 

@@ -16,8 +16,8 @@ cols: 1
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| [nzAuthor] | 显示评论的作者 | `string｜TemplateRef<void>` | - |
-| [nzDatetime] | 展示时间描述 | `string｜TemplateRef<void>` | - |
+| [nzAuthor] | 显示评论的作者 | `string \| TemplateRef<void>` | - |
+| [nzDatetime] | 展示时间描述 | `string \| TemplateRef<void>` | - |
 
 ### 单独引入此组件
 

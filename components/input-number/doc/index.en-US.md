@@ -28,16 +28,16 @@ The value entered in `nz-input-number` will not be verified at the time of input
 
 | property | description | type | default |
 | -------- | ----------- | ---- | ------- |
-| `[ngModel]` | current value, double binding | `number｜string` ｜ `string` | - |
+| `[ngModel]` | current value, double binding | `number \| string`  \|  `string` | - |
 | `[nzAutoFocus]` | get focus when component mounted | `boolean` | `false` |
 | `[nzDisabled]` | disable the input | `boolean` | `false` |
 | `[nzMax]` | max value | `number` | `Infinity` |
 | `[nzMin]` | min value | `number` | `-Infinity` |
-| `[nzFormatter]` | Specifies the format of the value presented | `(value: number｜string) => string｜number` | - |
-| `[nzParser]` | Specifies the value extracted from nzFormatter | `(value: string) => string｜number` | - |
+| `[nzFormatter]` | Specifies the format of the value presented | `(value: number \| string) => string \| number` | - |
+| `[nzParser]` | Specifies the value extracted from nzFormatter | `(value: string) => string \| number` | - |
 | `[nzPrecision]` | precision of input value | `number` | - |
-| `[nzSize]` | width of input box | `'large'｜'small'｜'default'` | `'default'` |
-| `[nzStep]` | The number to which the current value is increased or decreased. It can be an integer or decimal. | `number｜string` | `1` |
+| `[nzSize]` | width of input box | `'large' \| 'small' \| 'default'` | `'default'` |
+| `[nzStep]` | The number to which the current value is increased or decreased. It can be an integer or decimal. | `number \| string` | `1` |
 | `[nzPlaceHolder]` | Placeholder of select | `string` | - |
 | `[nzId]` | input id attribute inside the component| `string` | - |
 | `(ngModelChange)` | The callback triggered when the value is changed | `EventEmitter<number>` | - |

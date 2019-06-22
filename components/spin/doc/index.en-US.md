@@ -26,7 +26,7 @@ import { NzSpinModule } from 'ng-zorro-antd';
 | -------- | ----------- | ---- | ------------- |
 | `[nzDelay]` | specifies a delay in milliseconds for loading state (prevent flush), unit: milliseconds | `number` | - |
 | `[nzIndicator]` | the spinning indicator | `TemplateRef<void>` | - |
-| `[nzSize]` | size of Spin | `'large'｜'small'｜'default'` | `'default'` |
+| `[nzSize]` | size of Spin | `'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzSpinning]` | whether Spin is spinning | `boolean` | `true` |
 | `[nzSimple]` | whether Spin has no children | `boolean` | `false` |
 | `[nzTip]` | customize description content when Spin has children | `string` | - |

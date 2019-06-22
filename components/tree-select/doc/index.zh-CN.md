@@ -34,7 +34,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd';
 | `[nzDropdownMatchSelectWidth]` | 下拉菜单和选择器同宽 | `boolean` | `true` |
 | `[nzDropdownStyle]` | 下拉菜单的样式 | `{ [key: string]: string; }` | - |
 | `[nzMultiple]` | 支持多选（当设置 nzCheckable 时自动变为true） | `boolean` | `false` |
-| `[nzSize]` | 选择框大小 | `'large'｜'small'｜'default'` | `'default'` |
+| `[nzSize]` | 选择框大小 | `'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzCheckable]` | 节点前添加 Checkbox 复选框 | `boolean` | `false` |
 | `[nzShowExpand]` | 节点前添加展开图标 | `boolean` | `true` |
 | `[nzShowLine]` | 是否展示连接线 | `boolean` | `false` |

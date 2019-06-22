@@ -50,7 +50,7 @@ import { NzMessageModule } from 'ng-zorro-antd';
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| content | 提示内容 | `string｜TemplateRef<void>` | - |
+| content | 提示内容 | `string \| TemplateRef<void>` | - |
 | options | 支持设置针对当前提示框的参数，见下方表格 | `object` | - |
 
 `options` 支持设置的参数如下：
@@ -73,7 +73,7 @@ import { NzMessageModule } from 'ng-zorro-antd';
 | nzMaxStack | 同一时间可展示的最大提示数量 | `number` | `8` |
 | nzPauseOnHover | 鼠标移上时禁止自动移除 | `boolean` | `true` |
 | nzAnimate | 开关动画效果 | `boolean` | `true` |
-| nzTop | 消息距离顶部的位置 | `number｜string` | `24` |
+| nzTop | 消息距离顶部的位置 | `number \| string` | `24` |
 
 ### NzMessageDataFilled
 

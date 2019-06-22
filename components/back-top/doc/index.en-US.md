@@ -30,6 +30,6 @@ import { NzBackTopModule } from 'ng-zorro-antd';
 | --- | --- | --- | --- |
 | `[nzTemplate]` | custom content | `TemplateRef<void>` | - |
 | `[nzVisibilityHeight]` | the `nz-back-top` button will not show until the scroll height reaches this value | `number` | `400` |
-| `[nzTarget]` | specifies the scrollable area dom node | `string｜Element` | `window` |
+| `[nzTarget]` | specifies the scrollable area dom node | `string \| Element` | `window` |
 | `(nzClick)` | a callback function, which can be executed when you click the button | `EventEmitter<boolean>` | - |
 

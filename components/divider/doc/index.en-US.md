@@ -26,6 +26,6 @@ import { NzDividerModule } from 'ng-zorro-antd';
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[nzDashed]` | whether line is dasded | `boolean` | `false` |
-| `[nzType]` | direction type of divider | `'horizontal'｜'vertical'` | `'horizontal'` |
-| `[nzText]` | inner text of divider | `string｜TemplateRef<void>` | - |
-| `[nzOrientation]` | inner text orientation | `'left'｜'right'` | - |
+| `[nzType]` | direction type of divider | `'horizontal' \| 'vertical'` | `'horizontal'` |
+| `[nzText]` | inner text of divider | `string \| TemplateRef<void>` | - |
+| `[nzOrientation]` | inner text orientation | `'left' \| 'right'` | - |

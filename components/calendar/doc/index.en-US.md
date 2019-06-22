@@ -49,11 +49,11 @@ import { NzCalendarModule } from 'ng-zorro-antd';
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[(ngModel)]` | (Two-way bindable) The current selected date | `Date` | current date |
-| `[(nzMode)]` | The display mode of the calendar (two-way bindable) | `'month'｜'year'` | `'month'` |
+| `[(nzMode)]` | The display mode of the calendar (two-way bindable) | `'month' \| 'year'` | `'month'` |
 | `[nzFullscreen]` | Whether to display in full-screen | `boolean` | `true` |
 | `[nzCard]` | Whether to not display in full-screen | `boolean` | `false` |
 | `[nzDateCell]` | (Contentable) Customize the display of the date cell, the template content will be appended to the cell | `TemplateRef<Date>` | - |
 | `[nzDateFullCell]` | (Contentable) Customize the display of the date cell, the template content will override the cell | `TemplateRef<Date>` | - |
 | `[nzMonthCell]` | (Contentable) Customize the display of the month cell, the template content will be appended to the cell | `TemplateRef<Date>` | - |
 | `[nzMonthFullCell]` | (Contentable) Customize the display of the month cell, the template content will override the cell | `TemplateRef<Date>` | - |
-| `(nzPanelChange)` | Callback for when panel changes | `EventEmitter<{ date: Date, mode: 'month'｜'year' }>` | - |
+| `(nzPanelChange)` | Callback for when panel changes | `EventEmitter<{ date: Date, mode: 'month' \| 'year' }>` | - |

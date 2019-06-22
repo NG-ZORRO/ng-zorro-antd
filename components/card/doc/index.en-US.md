@@ -33,12 +33,12 @@ import { NzCardModule } from 'ng-zorro-antd';
 | `[nzBodyStyle]` | Inline style to apply to the card content | `{ [key: string]: string }` | - |
 | `[nzBordered]` | Toggles rendering of the border around the card | `boolean` | `true` |
 | `[nzCover]` | Card cover | `TemplateRef<void>` | - |
-| `[nzExtra]` | Content to render in the top-right corner of the card | `string｜TemplateRef<void>` | - |
+| `[nzExtra]` | Content to render in the top-right corner of the card | `string \| TemplateRef<void>` | - |
 | `[nzHoverable]` | Lift up when hovering card | `boolean` | `false` |
 | `[nzLoading]` | Shows a loading indicator while the contents of the card are being fetched | `boolean` | `false` |
-| `[nzTitle]` | Card title | `string｜TemplateRef<void>` | - |
+| `[nzTitle]` | Card title | `string \| TemplateRef<void>` | - |
 | `[nzType]` | Card style type, can be set to `inner` or not set | `'inner'` | - |
-| `[nzSize]` | Size of card | `'default'｜'small'` | `'default'` |
+| `[nzSize]` | Size of card | `'default' \| 'small'` | `'default'` |
 
 
 ### nz-card-meta
@@ -46,8 +46,8 @@ import { NzCardModule } from 'ng-zorro-antd';
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[nzAvatar]` | avatar or icon | `TemplateRef<void>` | - |
-| `[nzDescription]` | description content | `string｜TemplateRef<void>` | - |
-| `[nzTitle]` | title content | `string｜TemplateRef<void>` | - |
+| `[nzDescription]` | description content | `string \| TemplateRef<void>` | - |
+| `[nzTitle]` | title content | `string \| TemplateRef<void>` | - |
 
 ### [nz-card-grid]
 Area for grid style card
