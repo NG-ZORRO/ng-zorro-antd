@@ -46,9 +46,9 @@ import { NzSelectModule } from 'ng-zorro-antd';
 | `[nzFilterOption]` | 是否根据输入项进行筛选。当其为一个函数时，会接收 `inputValue` `option` 两个参数，当 `option` 符合筛选条件时，应返回 `true`，反之则返回 `false`。 | `(input?: string, option?: NzOptionComponent) => boolean;` | - |
 | `[nzMaxMultipleCount]` | 最多选中多少个标签| `number` | `Infinity` |
 | `[nzMode]` | 设置 nz-select 的模式 | `'multiple'｜'tags'｜'default'` | `'default'` |
-| `[nzNotFoundContent]` | 当下拉列表为空时显示的内容 | `string` | - |
+| `[nzNotFoundContent]` | 当下拉列表为空时显示的内容 | `string \| TemplateRef<void>` | - |
 | `[nzPlaceHolder]` | 选择框默认文字 | `string` | - |
-| `[nzShowArrow]` | 是否显示下拉小箭头 | boolean | `true` |
+| `[nzShowArrow]` | 是否显示下拉小箭头 | `boolean` | `true` |
 | `[nzShowSearch]` | 使单选模式可搜索 | `boolean` | `false` |
 | `[nzSize]` | 选择框大小 | `'large'｜'small'｜'default'` | `'default'` |
 | `[nzSuffixIcon]` | 自定义的选择框后缀图标 | `TemplateRef<void>` | - |
@@ -56,9 +56,9 @@ import { NzSelectModule } from 'ng-zorro-antd';
 | `[nzClearIcon]` | 自定义的多选框清空图标 | `TemplateRef<void>` | - |
 | `[nzMenuItemSelectedIcon]` | 自定义当前选中的条目图标 | `TemplateRef<void>` | - |
 | `[nzTokenSeparators]` | 在 tags 和 multiple 模式下自动分词的分隔符 | `string[]` | `[]` |
-| `[nzLoading]` | 加载中状态 | boolean | `false` |
-| `[nzMaxTagCount]` | 最多显示多少个 tag | number | - |
-| `[nzMaxTagPlaceholder]` | 隐藏 tag 时显示的内容 | TemplateRef<{ $implicit: any[] }> | - |
+| `[nzLoading]` | 加载中状态 | `boolean` | `false` |
+| `[nzMaxTagCount]` | 最多显示多少个 tag | `number` | - |
+| `[nzMaxTagPlaceholder]` | 隐藏 tag 时显示的内容 | `TemplateRef<{ $implicit: any[] }>` | - |
 | `(ngModelChange)` | 选中的 nz-option 发生变化时，调用此函数 | `EventEmitter<any[]>` | - |
 | `(nzOpenChange)` | 下拉菜单打开状态变化回调 | `EventEmitter<boolean>` | - |
 | `(nzScrollToBottom)` | 下拉列表滚动到底部的回调 | `EventEmitter<void>` | - |
@@ -72,7 +72,7 @@ import { NzSelectModule } from 'ng-zorro-antd';
 | --- | --- | --- | --- |
 | `[nzDisabled]` | 是否禁用 | `boolean` | `false` |
 | `[nzLabel]` | 选中该 nz-option 后，nz-select 中显示的文字 | `string` | - |
-| `[nzValue]` | nz-select 中 ngModel 的值 | `any ` | - |
+| `[nzValue]` | nz-select 中 ngModel 的值 | `any` | - |
 | `[nzCustomContent]` | 是否自定义在下拉菜单中的Template内容，当为 true 时，nz-option 包裹的内容将直接渲染在下拉菜单中 | `boolean` | `false` |
 
 ### nz-option-group
