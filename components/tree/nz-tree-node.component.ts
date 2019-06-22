@@ -409,7 +409,7 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   /**
-   * 监听拖拽事件
+   * Listening to dragging events.
    */
   handDragEvent(): void {
     this.ngZone.runOutsideAngular(() => {
