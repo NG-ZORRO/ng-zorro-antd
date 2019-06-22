@@ -74,22 +74,22 @@ import { NzTableModule } from 'ng-zorro-antd';
 | `[nzPageIndex]` | 当前页码，可双向绑定 | `number` | - |
 | `[nzPageSize]` | 每页展示多少数据，可双向绑定 | `number` | - |
 | `[nzShowPagination]` | 是否显示分页器 | `boolean` | `true` |
-| `[nzPaginationPosition]` | 指定分页显示的位置 | `'top'｜'bottom'｜'both'` | `bottom` |
+| `[nzPaginationPosition]` | 指定分页显示的位置 | `'top' \| 'bottom' \| 'both'` | `bottom` |
 | `[nzBordered]` | 是否展示外边框和列边框 | `boolean` | `false` |
 | `[nzWidthConfig]` | 表头分组时指定每列宽度，与 `th` 的 `nzWidth` 不可混用 | `string[]` | - |
-| `[nzSize]` | 正常或迷你类型 | `'middle'｜'small'｜'default'` | `'default'` |
+| `[nzSize]` | 正常或迷你类型 | `'middle' \| 'small' \| 'default'` | `'default'` |
 | `[nzLoading]` | 页面是否加载中 | `boolean` | `false` |
 | `[nzLoadingIndicator]` | 加载指示符 | `TemplateRef<void>` | - |
 | `[nzLoadingDelay]` | 延迟显示加载效果的时间（防止闪烁） | `number` | `0` |
 | `[nzScroll]` | 横向或纵向支持滚动，也可用于指定滚动区域的宽高度：`{ x: "300px", y: "300px" }` | `object` | - |
-| `[nzTitle]` | 表格标题 | `string｜TemplateRef<void>` | - |
-| `[nzFooter]` | 表格尾部 | `string｜TemplateRef<void>` | - |
-| `[nzNoResult]` | 无数据时显示内容 | `string｜TemplateRef<void>` | - |
+| `[nzTitle]` | 表格标题 | `string \| TemplateRef<void>` | - |
+| `[nzFooter]` | 表格尾部 | `string \| TemplateRef<void>` | - |
+| `[nzNoResult]` | 无数据时显示内容 | `string \| TemplateRef<void>` | - |
 | `[nzPageSizeOptions]` | 页数选择器可选值 | `number[]` | `[ 10, 20, 30, 40, 50 ]` |
 | `[nzShowQuickJumper]` | 是否可以快速跳转至某页 | `boolean` | `false` |
 | `[nzShowSizeChanger]` | 是否可以改变 `nzPageSize` | `boolean` | `false` |
 | `[nzShowTotal]` | 用于显示数据总量和当前数据范围，用法参照 Pagination 组件 | `TemplateRef<{ $implicit: number, range: [ number, number ] }>` | - |
-| `[nzItemRender]` | 用于自定义页码的结构，用法参照 Pagination 组件 | `TemplateRef<{ $implicit: 'page'｜'prev'｜'next', page: number }>` | - |
+| `[nzItemRender]` | 用于自定义页码的结构，用法参照 Pagination 组件 | `TemplateRef<{ $implicit: 'page' \| 'prev' \| 'next', page: number }>` | - |
 | `[nzHideOnSinglePage]` | 只有一页时是否隐藏分页器 | `boolean` | `false` |
 | `[nzSimple]` | 当添加该属性时，显示为简单分页 | `boolean` | - |
 | `[nzVirtualScroll]` | 是否启用虚拟滚动模式，与 `[nzScroll]` 配合使用 | `boolean` | `false` |
@@ -125,8 +125,8 @@ import { NzTableModule } from 'ng-zorro-antd';
 | --- | --- | --- | --- |
 | `[nzShowSort]` | 是否显示排序 | `boolean` | - |
 | `[nzSortKey]` | 排序key，非受控模式使用，与 `thead` 中 `nzSortChange` 配合使用 | `string` | - |
-| `[nzSort]` | 当前排序状态，受控模式使用，可双向绑定 | 'descend'｜'ascend'｜null | null |
-| `(nzSortChange)` | 排序状态改变回调，受控模式使用 | `EventEmitter<'descend'｜'ascend'｜null>` | - |
+| `[nzSort]` | 当前排序状态，受控模式使用，可双向绑定 | 'descend' \| 'ascend' \| null | null |
+| `(nzSortChange)` | 排序状态改变回调，受控模式使用 | `EventEmitter<'descend' \| 'ascend' \| null>` | - |
 
 过滤属性
 
@@ -135,7 +135,7 @@ import { NzTableModule } from 'ng-zorro-antd';
 | `[nzShowFilter]` | 是否显示过滤 | `boolean` | - |
 | `[nzFilters]` | 过滤器内容, 显示数据 `text`，回调函数传出 `value`，设置 `byDefault` 以默认应用过滤规则 | `Array<{ text: string; value: any; byDefault?: boolean }>` | - |
 | `[nzFilterMultiple]` | 是否为多选过滤器 | `boolean` | `true` |
-| `(nzFilterChange)` | 过滤器内容选择的 value 数据回调 | `EventEmitter<any[]｜any>` | - |
+| `(nzFilterChange)` | 过滤器内容选择的 value 数据回调 | `EventEmitter<any[] \| any>` | - |
 
 样式属性
 
@@ -144,7 +144,7 @@ import { NzTableModule } from 'ng-zorro-antd';
 | `[nzWidth]` | 指定该列宽度，表头未分组时可用 | `string` | - |
 | `[nzLeft]` | 左侧距离，用于固定左侧列 | `string` | - |
 | `[nzRight]` | 右侧距离，用于固定右侧列 | `string` | - |
-| `[nzAlign]` | 设置列内容的对齐方式 | `'left'｜'right'｜'center'` | - |
+| `[nzAlign]` | 设置列内容的对齐方式 | `'left' \| 'right' \| 'center'` | - |
 
 其他
 
@@ -178,7 +178,7 @@ import { NzTableModule } from 'ng-zorro-antd';
 | --- | --- | --- | --- |
 | `[nzLeft]` | 左侧距离，用于固定左侧列 | `string` | - |
 | `[nzRight]` | 右侧距离，用于固定右侧列 | `string` | - |
-| `[nzAlign]` | 设置列内容的对齐方式 | `'left'｜'right'｜'center'` | - |
+| `[nzAlign]` | 设置列内容的对齐方式 | `'left' \| 'right' \| 'center'` | - |
 
 其他
 
@@ -192,7 +192,7 @@ import { NzTableModule } from 'ng-zorro-antd';
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzSingleSort]` | 是否单列排序模式，非受控排序下使用 | `boolean` | `false` |
-| `(nzSortChange)` | 排序改变时的回调函数，需要与 `th` 上的 `nzSortKey` 同时使用，非受控排序下使用 | `EventEmitter<{ nzSortKey: string, value: 'descend'｜'ascend'｜null }>` | - |
+| `(nzSortChange)` | 排序改变时的回调函数，需要与 `th` 上的 `nzSortKey` 同时使用，非受控排序下使用 | `EventEmitter<{ nzSortKey: string, value: 'descend' \| 'ascend' \| null }>` | - |
 
 
 ### tr

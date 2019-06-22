@@ -25,7 +25,7 @@ import { NzToolTipModule } from 'ng-zorro-antd';
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzTitle]` | The text shown in the tooltip | `string｜TemplateRef<void>` | - |
+| `[nzTitle]` | The text shown in the tooltip | `string \| TemplateRef<void>` | - |
 
 ### Common API
 
@@ -37,8 +37,8 @@ The following APIs are shared by `nz-tooltip`, `nz-popconfirm`, `nz-popover`.
 | `[nzMouseLeaveDelay]` | Delay in seconds, before tooltip is hidden on mouse leave | `number` | `0.1` |
 | `[nzOverlayClassName]` | Class name of the tooltip card | `string` | - |
 | `[nzOverlayStyle]` | Style of the tooltip card | `object` | - |
-| `[nzPlacement]` | The position of the tooltip relative to the target | `'top'｜'left'｜'right'｜'bottom'｜'topLeft'｜'topRight'｜'bottomLeft'｜'bottomRight'｜'leftTop'｜'leftBottom'｜'rightTop'｜'rightBottom'` | `'top'` |
-| `[nzTrigger]` | Tooltip trigger mode | `'click'｜'focus'｜'hover'` | `'hover'` |
+| `[nzPlacement]` | The position of the tooltip relative to the target | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
+| `[nzTrigger]` | Tooltip trigger mode | `'click' \| 'focus' \| 'hover'` | `'hover'` |
 | `[nzVisible]` | Whether the floating tooltip card is visible or not | `boolean` | `false` |
 | `(nzVisibleChange)` | Callback executed when visibility of the tooltip card is changed | `EventEmitter<boolean>` | - |
 

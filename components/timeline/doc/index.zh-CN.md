@@ -37,10 +37,10 @@ import { NzTimelineModule } from 'ng-zorro-antd';
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzPending]` | 指定最后一个幽灵节点是否存在或内容 | `string｜boolean｜TemplateRef<void>` | `false` |
-| `[nzPendingDot]` | 当最后一个幽灵节点存在時，指定其时间图点 | `string｜TemplateRef<void>` | `<i nz-icon type="loading"></i>` |
+| `[nzPending]` | 指定最后一个幽灵节点是否存在或内容 | `string \| boolean \| TemplateRef<void>` | `false` |
+| `[nzPendingDot]` | 当最后一个幽灵节点存在時，指定其时间图点 | `string \| TemplateRef<void>` | `<i nz-icon type="loading"></i>` |
 | `[nzReverse]` | 节点排序 | `boolean` | `false` |
-| `[nzMode]` | 可以改变时间轴和内容的相对位置 | `'left'｜'alternate'｜'right'` | - |
+| `[nzMode]` | 可以改变时间轴和内容的相对位置 | `'left' \| 'alternate' \| 'right'` | - |
 
 ### nz-timeline-item
 
@@ -49,4 +49,4 @@ import { NzTimelineModule } from 'ng-zorro-antd';
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzColor]` | 指定圆圈颜色 `blue, red, green`，或自定义的色值(CSS 颜色) | `string` | blue |
-| `[nzDot]` | 自定义时间轴点 | `string｜TemplateRef<void>` | - |
+| `[nzDot]` | 自定义时间轴点 | `string \| TemplateRef<void>` | - |

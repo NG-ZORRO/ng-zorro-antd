@@ -92,9 +92,9 @@ import { NzGridModule } from 'ng-zorro-antd';
 
 | 成员 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzAlign]` | flex 布局下的垂直对齐方式 | `'top'｜'middle'｜'bottom'` | `'top'` |
-| `[nzGutter]` | 栅格间隔，可以写成像素值或支持响应式的对象写法 `{ xs: 8, sm: 16, md: 24, lg: 32, xl: 32, xxl: 32 }` | `number｜object` | `0` |
-| `[nzJustify]` | flex 布局下的水平排列方式 | `'start'｜'end'｜'center'｜'space-around'｜'space-between'` | `'start'` |
+| `[nzAlign]` | flex 布局下的垂直对齐方式 | `'top' \| 'middle' \| 'bottom'` | `'top'` |
+| `[nzGutter]` | 栅格间隔，可以写成像素值或支持响应式的对象写法 `{ xs: 8, sm: 16, md: 24, lg: 32, xl: 32, xxl: 32 }` | `number \| object` | `0` |
+| `[nzJustify]` | flex 布局下的水平排列方式 | `'start' \| 'end' \| 'center' \| 'space-around' \| 'space-between'` | `'start'` |
 | `[nzType]` | 布局模式，可选 `flex`，[现代浏览器](http://caniuse.com/#search=flex) 下有效 | `'flex'` | - |
 
 ### [nz-col]
@@ -106,11 +106,11 @@ import { NzGridModule } from 'ng-zorro-antd';
 | `[nzPull]` | 栅格向左移动格数 | `number` | `0` |
 | `[nzPush]` | 栅格向右移动格数 | `number` | `0` |
 | `[nzSpan]` | 栅格占位格数，为 0 时相当于 `display: none` | `number` | - |
-| `[nzXs]` | `<576px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | `number｜object` | - |
-| `[nzSm]` | `≥576px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | `number｜object` | - |
-| `[nzMd]` | `≥768px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | `number｜object` | - |
-| `[nzLg]` | `≥992px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | `number｜object` | - |
-| `[nzXl]` | `≥1200px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | `number｜object` | - |
-| `[nzXXl]` | `≥1600px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | `number｜object` | - |
+| `[nzXs]` | `<576px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | `number \| object` | - |
+| `[nzSm]` | `≥576px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | `number \| object` | - |
+| `[nzMd]` | `≥768px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | `number \| object` | - |
+| `[nzLg]` | `≥992px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | `number \| object` | - |
+| `[nzXl]` | `≥1200px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | `number \| object` | - |
+| `[nzXXl]` | `≥1600px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | `number \| object` | - |
 
 响应式栅格的断点扩展自 [BootStrap 4 的规则](https://getbootstrap.com/docs/4.0/layout/overview/#responsive-breakpoints)（不包含链接里 `occasionally` 的部分)。

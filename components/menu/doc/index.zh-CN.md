@@ -44,9 +44,9 @@ import { NzMenuModule } from 'ng-zorro-antd';
 | --- | --- | --- | --- |
 | `[nzInlineCollapsed]` | inline 时菜单是否收起状态 | `boolean` | - |
 | `[nzInlineIndent]` | inline 模式的菜单缩进宽度 | `number` | `24` |
-| `[nzMode]` | 菜单类型，现在支持垂直、水平、和内嵌模式三种 | `'vertical'｜'horizontal'｜'inline'` | `'vertical'` |
+| `[nzMode]` | 菜单类型，现在支持垂直、水平、和内嵌模式三种 | `'vertical' \| 'horizontal' \| 'inline'` | `'vertical'` |
 | `[nzSelectable]` | 是否允许选中 | `boolean` | `true` |
-| `[nzTheme]` | 主题颜色 | `'light'｜'dark'` | `'light'` |
+| `[nzTheme]` | 主题颜色 | `'light' \| 'dark'` | `'light'` |
 | `(nzClick)` | 点击 nz-menu-item 输出属性 | `EventEmitter<NzMenuItemDirective>` | |
 
 ### [nz-menu-item]
@@ -75,7 +75,7 @@ import { NzMenuModule } from 'ng-zorro-antd';
 | --- | --- | --- | --- |
 | `[nzOpen]` | 是否展开，可双向绑定 | `boolean` | `false` |
 | `[nzDisabled]` | 是否禁用 | `boolean` | `false` |
-| `[nzTitle]` | 标题内容 | `string｜TemplateRef<void>` | - |
+| `[nzTitle]` | 标题内容 | `string \| TemplateRef<void>` | - |
 | `[nzIcon]` | 标题中 icon 类型 | `string` | - |
 | `[nzMenuClassName]` | 自定义子菜单容器类名 | `string` | - |
 | `(nzOpenChange)` | 展开回调 | `EventEmitter<boolean>` | - |
@@ -95,7 +95,7 @@ import { NzMenuModule } from 'ng-zorro-antd';
 ```
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzTitle]` | 标题内容 | `string｜TemplateRef<void>` | - |
+| `[nzTitle]` | 标题内容 | `string \| TemplateRef<void>` | - |
 
 ### [nz-menu-divider]
 

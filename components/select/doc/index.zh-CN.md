@@ -32,7 +32,7 @@ import { NzSelectModule } from 'ng-zorro-antd';
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[ngModel]` | 当前选中的 nz-option 的 nzValue 值，可双向绑定，当 `nzMode` 为 `multiple` 或 `tags` 时，ngModel 为数组 | `any｜any[]` | - |
+| `[ngModel]` | 当前选中的 nz-option 的 nzValue 值，可双向绑定，当 `nzMode` 为 `multiple` 或 `tags` 时，ngModel 为数组 | `any \| any[]` | - |
 | `[compareWith]` | 与 [SelectControlValueAccessor](https://angular.io/api/forms/SelectControlValueAccessor#caveat-option-selection) 相同 | `(o1: any, o2: any) => boolean` | `(o1: any, o2: any) => o1===o2` |
 | `[nzAutoClearSearchValue]` | 是否在选中项后清空搜索框，只在 `mode` 为 `multiple` 或 `tags` 时有效。 | boolean | `true` |
 | `[nzAllowClear]` | 支持清除 | `boolean` | `false` |
@@ -45,12 +45,12 @@ import { NzSelectModule } from 'ng-zorro-antd';
 | `[nzServerSearch]` | 是否使用服务端搜索，当为 true 时，将不再在前端对 nz-option 进行过滤 | `boolean` | `false` |
 | `[nzFilterOption]` | 是否根据输入项进行筛选。当其为一个函数时，会接收 `inputValue` `option` 两个参数，当 `option` 符合筛选条件时，应返回 `true`，反之则返回 `false`。 | `(input?: string, option?: NzOptionComponent) => boolean;` | - |
 | `[nzMaxMultipleCount]` | 最多选中多少个标签| `number` | `Infinity` |
-| `[nzMode]` | 设置 nz-select 的模式 | `'multiple'｜'tags'｜'default'` | `'default'` |
+| `[nzMode]` | 设置 nz-select 的模式 | `'multiple' \| 'tags' \| 'default'` | `'default'` |
 | `[nzNotFoundContent]` | 当下拉列表为空时显示的内容 | `string \| TemplateRef<void>` | - |
 | `[nzPlaceHolder]` | 选择框默认文字 | `string` | - |
 | `[nzShowArrow]` | 是否显示下拉小箭头 | `boolean` | `true` |
 | `[nzShowSearch]` | 使单选模式可搜索 | `boolean` | `false` |
-| `[nzSize]` | 选择框大小 | `'large'｜'small'｜'default'` | `'default'` |
+| `[nzSize]` | 选择框大小 | `'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzSuffixIcon]` | 自定义的选择框后缀图标 | `TemplateRef<void>` | - |
 | `[nzRemoveIcon]` | 自定义的多选框清除图标 | `TemplateRef<void>` | - |
 | `[nzClearIcon]` | 自定义的多选框清空图标 | `TemplateRef<void>` | - |
@@ -79,7 +79,7 @@ import { NzSelectModule } from 'ng-zorro-antd';
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzLabel]` | 组名 | `string｜TemplateRef<void>` | - |
+| `[nzLabel]` | 组名 | `string \| TemplateRef<void>` | - |
 
 
 ## 方法

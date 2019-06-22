@@ -27,6 +27,6 @@ import { NzDividerModule } from 'ng-zorro-antd';
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzDashed]` | 是否虚线 | `boolean` | `false` |
-| `[nzType]` | 水平还是垂直类型 | `'horizontal'｜'vertical'` | `'horizontal'` |
-| `[nzText]` | 中间文字 | `string｜TemplateRef<void>` | - |
-| `[nzOrientation]` | 中间文字方向 | `'left'｜'right'` | - |
+| `[nzType]` | 水平还是垂直类型 | `'horizontal' \| 'vertical'` | `'horizontal'` |
+| `[nzText]` | 中间文字 | `string \| TemplateRef<void>` | - |
+| `[nzOrientation]` | 中间文字方向 | `'left' \| 'right'` | - |

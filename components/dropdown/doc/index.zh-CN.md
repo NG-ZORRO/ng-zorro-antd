@@ -27,8 +27,8 @@ import { NzDropDownModule } from 'ng-zorro-antd';
 | --- | --- | --- | --- |
 | `[nzDropdownMenu]` | Dropdown 下拉菜单组件 | `NzDropdownMenuComponent` | - |
 | `[nzDisabled]` | 菜单是否禁用 | `boolean` | - |
-| `[nzPlacement]` | 菜单弹出位置 | `'bottomLeft'｜'bottomCenter'｜'bottomRight'｜'topLeft'｜'topCenter'｜'topRight'` | `'bottomLeft'` |
-| `[nzTrigger]` | 触发下拉的行为 | `'click'｜'hover'` | `'hover'` |
+| `[nzPlacement]` | 菜单弹出位置 | `'bottomLeft' \| 'bottomCenter' \| 'bottomRight' \| 'topLeft' \| 'topCenter' \| 'topRight'` | `'bottomLeft'` |
+| `[nzTrigger]` | 触发下拉的行为 | `'click' \| 'hover'` | `'hover'` |
 | `[nzClickHide]` | 点击后是否隐藏菜单 | `boolean` | `true` |
 | `[nzVisible]` | 菜单是否显示，可双向绑定 | `boolean` | - |
 | `[nzOverlayClassName]` | 下拉根元素的类名称 | `string` | - |

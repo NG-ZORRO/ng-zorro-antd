@@ -34,14 +34,14 @@ import { NzMentionModule } from 'ng-zorro-antd';
 
 | Property | Description | Type | Default |
 | --- | --- | --- | --- |
-| `[nzMentionTrigger]` | Trigger element **(required)** | `HTMLTextAreaElement｜HTMLInputElement` | - |
+| `[nzMentionTrigger]` | Trigger element **(required)** | `HTMLTextAreaElement \| HTMLInputElement` | - |
 | `[nzMentionSuggestion]` | Customize the suggestion template | `TemplateRef<any>` | - |
 | `[nzLoading]` | Loading mode | `boolean` | `false` |
 | `[nzNotFoundContent]` | Suggestion when suggestions empty | `string` | `'无匹配结果，轻敲空格完成输入'` |
-| `[nzPlacement]` | The position of the suggestion relative to the target, which can be one of top and bottom | `'button'｜'top'` | `'bottom'` |
-| `[nzPrefix]` | Character which will trigger Mention to show mention list | `string｜string[]` | `'@'` |
+| `[nzPlacement]` | The position of the suggestion relative to the target, which can be one of top and bottom | `'button' \| 'top'` | `'bottom'` |
+| `[nzPrefix]` | Character which will trigger Mention to show mention list | `string \| string[]` | `'@'` |
 | `[nzSuggestions]` | Suggestion content | `any[]` | `[]` |
-| `[nzValueWith]` | Function that maps an suggestion's value  | `(any) => string｜(value: string) => string` |
+| `[nzValueWith]` | Function that maps an suggestion's value  | `(any) => string \| (value: string) => string` |
 | `(nzOnSelect)` | Callback function called when select from suggestions | `EventEmitter<any>` | - |
 | `(onSearchChange)` | Callback function called when search content changes| `EventEmitter<MentionOnSearchTypes>` | - |
 

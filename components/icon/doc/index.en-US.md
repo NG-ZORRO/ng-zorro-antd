@@ -33,7 +33,7 @@ import { NzIconModule } from 'ng-zorro-antd';
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[nzType]` | Type of the ant design icon | `string` | - |
-| `[nzTheme]` | Type of the ant design icon | `'fill'｜'outline'｜'twotone'` | `'outline'` |
+| `[nzTheme]` | Type of the ant design icon | `'fill' \| 'outline' \| 'twotone'` | `'outline'` |
 | `[nzSpin]` | Rotate icon with animation | `boolean` | `false` |
 | `[nzTwotoneColor]` | Only support the two-tone icon. Specific the primary color. | `string (hex color)` | - |
 | `[nzIconfont]` | Type of the icon from iconfont | `string` | - |

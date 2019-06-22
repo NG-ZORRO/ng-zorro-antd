@@ -27,7 +27,7 @@ import { NzSpinModule } from 'ng-zorro-antd';
 | --- | --- | --- | --- |
 | `[nzDelay]` | 延迟显示加载效果的时间（防止闪烁），单位：毫秒 | `number` | - |
 | `[nzIndicator]` | 加载指示符 | `TemplateRef<void>` | - |
-| `[nzSize]` | 组件大小 | `'large'｜'small'｜'default'` | `'default'` |
+| `[nzSize]` | 组件大小 | `'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzSpinning]` | 是否旋转 | `boolean` | `true` |
 | `[nzSimple]` | 是否包裹元素 | `boolean` | `false` |
 | `[nzTip]` | 当作为包裹元素时，可以自定义描述文案 | `string` | - |
