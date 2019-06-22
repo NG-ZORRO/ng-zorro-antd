@@ -16,6 +16,8 @@
   [nzRemoveIcon]="nzRemoveIcon"
   [nzShowSearch]="nzShowSearch"
   [nzTokenSeparators]="nzTokenSeparators"
+  [class.ant-select-selection--single]="nzSelectService.isSingleMode"
+  [class.ant-select-selection--multiple]="nzSelectService.isMultipleOrTags"
   (keydown)="onKeyDown($event)">
 </div>
 <ng-template
