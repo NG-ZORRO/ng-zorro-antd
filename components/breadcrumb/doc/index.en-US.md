@@ -27,7 +27,7 @@ import { NzBreadCrumbModule } from 'ng-zorro-antd';
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzSeparator]` | Custom separator | `string｜TemplateRef<void>` | `'/'` |
+| `[nzSeparator]` | Custom separator | `string \| TemplateRef<void>` | `'/'` |
 | `[nzAutoGenerate]` | Auto generate breadcrumb | `boolean` | `false` |
 
 Using `[nzAutoGenerate]` by configuring `data` like this:

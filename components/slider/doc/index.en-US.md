@@ -31,10 +31,10 @@ import { NzSliderModule } from 'ng-zorro-antd';
 | `[nzMax]` | The maximum value the slider can slide to | `number` | `100` |
 | `[nzMin]` | The minimum value the slider can slide to. | `number` | `0` |
 | `[nzRange]` | dual thumb mode | `boolean` | `false` |
-| `[nzStep]` | The granularity the slider can step through values. Must greater than 0, and be divided by (max - min) . When  `marks` no null, `step` can be `null`. | `number｜null` | `1` |
+| `[nzStep]` | The granularity the slider can step through values. Must greater than 0, and be divided by (max - min) . When  `marks` no null, `step` can be `null`. | `number \| null` | `1` |
 | `[nzTipFormatter]` | Slider will pass its value to `tipFormatter`, and display its value in Tooltip, and hide Tooltip when return value is null. | `(value: number) => string` | - |
-| `[ngModel]` | The value of slider. When `range` is `false`, use `number`, otherwise, use `[number, number]` | `number｜number[]` | - |
+| `[ngModel]` | The value of slider. When `range` is `false`, use `number`, otherwise, use `[number, number]` | `number \| number[]` | - |
 | `[nzVertical]` | If true, the slider will be vertical. | `boolean` | `false` |
-| `[nzTooltipVisible]` | When set to `always` tooltips are always displayed. When set to `never` they are never displayed | `'default'｜'always'｜'never'` | `default` |
-| `(nzOnAfterChange)` | Fire when `onmouseup` is fired. | `EventEmitter<number[] ｜ number>` | - |
-| `(ngModelChange)` | Callback function that is fired when the user changes the slider's value. | `EventEmitter<number[] ｜ number>` | - |
+| `[nzTooltipVisible]` | When set to `always` tooltips are always displayed. When set to `never` they are never displayed | `'default' \| 'always' \| 'never'` | `default` |
+| `(nzOnAfterChange)` | Fire when `onmouseup` is fired. | `EventEmitter<number[]  \|  number>` | - |
+| `(ngModelChange)` | Callback function that is fired when the user changes the slider's value. | `EventEmitter<number[]  \|  number>` | - |

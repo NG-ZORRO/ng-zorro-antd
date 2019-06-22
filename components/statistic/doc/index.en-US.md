@@ -25,22 +25,22 @@ import { NzStatisticModule } from 'ng-zorro-antd';
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzPrefix]` | Prefix of Value | `string｜TemplateRef<void>` | - |
-| `[nzSuffix]` | Suffix of Value | `string｜TemplateRef<void>` | - |
-| `[nzTitle]` | Title | `string｜TemplateRef<void>` | - |
-| `[nzValue]` | Value | `string｜number` | - |
+| `[nzPrefix]` | Prefix of Value | `string \| TemplateRef<void>` | - |
+| `[nzSuffix]` | Suffix of Value | `string \| TemplateRef<void>` | - |
+| `[nzTitle]` | Title | `string \| TemplateRef<void>` | - |
+| `[nzValue]` | Value | `string \| number` | - |
 | `[nzValueStyle]` | Value CSS style | `Object` | - |
-| `[nzValueTemplate]` | Custom template to render a number | `TemplateRef<{ $implicit: string｜number }>` | - |
+| `[nzValueTemplate]` | Custom template to render a number | `TemplateRef<{ $implicit: string \| number }>` | - |
 
 ### nz-countdown
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[nzFormat]` | Format string  | `string` | `"HH:mm:ss"` |
-| `[nzPrefix]` | Prefix of Value | `string｜TemplateRef<void>` | - |
-| `[nzSuffix]` | Suffix of Value | `string｜TemplateRef<void>` | - |
-| `[nzTitle]` | Title | `string｜TemplateRef<void>` | - |
-| `[nzValue]` | Target time in timestamp form | `string｜number` | - |
+| `[nzPrefix]` | Prefix of Value | `string \| TemplateRef<void>` | - |
+| `[nzSuffix]` | Suffix of Value | `string \| TemplateRef<void>` | - |
+| `[nzTitle]` | Title | `string \| TemplateRef<void>` | - |
+| `[nzValue]` | Target time in timestamp form | `string \| number` | - |
 | `[nzValueTemplate]` | Custom template to render a time | `TemplateRef<{ $implicit: number }>` | - |
 
 ### nzFormat

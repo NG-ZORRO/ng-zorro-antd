@@ -26,22 +26,22 @@ import { NzEmptyModule } from 'ng-zorro-antd';
 
 | 参数 | 说明 | 类型 | 默认值 |
 | -------- | ----------- | ---- | ------- |
-| `[nzNotFoundImage]` | 设置显示图片，为 `string` 时表示自定义图片地址 | `string` ｜ `TemplateRef<void>` | - |
-| `[nzNotFoundContent]` | 自定义描述内容 | `string` ｜ `TemplateRef<void>` | - |
-| `[nzNotFoundFooter]` | 设置自定义 footer | `string` ｜ `TemplateRef<void>` | - |
+| `[nzNotFoundImage]` | 设置显示图片，为 `string` 时表示自定义图片地址 | `string`  \|  `TemplateRef<void>` | - |
+| `[nzNotFoundContent]` | 自定义描述内容 | `string`  \|  `TemplateRef<void>` | - |
+| `[nzNotFoundFooter]` | 设置自定义 footer | `string`  \|  `TemplateRef<void>` | - |
 
 ### NzEmptyService
 
 | 属性/方法 | 说明 | 参数 |
 | -------- | ----------- | ---- |
-| `setDefaultEmptyContent` | 设置全局空内容，空组件的父组件名称将会被传递给模板 | `TemplateRef<string>` ｜ `string` |
+| `setDefaultEmptyContent` | 设置全局空内容，空组件的父组件名称将会被传递给模板 | `TemplateRef<string>`  \|  `string` |
 | `resetDefault` | 重置默认空内容 | - |
 
 ### InjectionToken
 
 | Token | 说明 | 参数 |
 | ----- | --- | ---- |
-| `NZ_DEFAULT_EMPTY_CONTENT` | 提供一个用户自定义的空组件 | `Component` ｜ `string` |
+| `NZ_DEFAULT_EMPTY_CONTENT` | 提供一个用户自定义的空组件 | `Component`  \|  `string` |
 | `NZ_EMPTY_COMPONENT_NAME` | 将会被注入到 `NZ_DEFAULT_EMPTY_CONTENT` 中，告诉该组件其父组件的名称 | `string` |
 
 ### 全局自定义空组件

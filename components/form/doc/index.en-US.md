@@ -58,7 +58,7 @@ import { NzFormModule } from 'ng-zorro-antd';
 
 | Property | Description | Type | Default Value |
 | -------- | ----------- | ---- | ------------- |
-| `[nzLayout]`| Form layout | `'horizontal'｜'vertical'｜'inline'` | `'horizontal'` |
+| `[nzLayout]`| Form layout | `'horizontal' \| 'vertical' \| 'inline'` | `'horizontal'` |
 | `[nzNoColon]`| change default props `[nzNoColon]` value of `nz-form-label` | `boolean` | `false` |
 
 
@@ -94,13 +94,13 @@ A form consists of one or more form fields whose type includes input, textarea, 
 
 | Property | Description | Type | Default Value |
 | --- | --- | --- | --- |
-| `[nzValidateStatus]` | Will generate status based on the input `FormControl`, `NgModel` or string, the default value is the first `FormControl` or `NgModel` in `nz-form-control` | `'success'｜'warning'｜'error'｜'validating' ｜ FormControl ｜ NgModel` | first `FormControl` or `NgModel` in `nz-form-control` |
+| `[nzValidateStatus]` | Will generate status based on the input `FormControl`, `NgModel` or string, the default value is the first `FormControl` or `NgModel` in `nz-form-control` | `'success' \| 'warning' \| 'error' \| 'validating'  \|  FormControl  \|  NgModel` | first `FormControl` or `NgModel` in `nz-form-control` |
 | `[nzHasFeedback]`| Used with `nzValidateStatus`, this option specifies the validation status icon. Recommended to be used only with `Input`. | `boolean` | `false` |
-| `[nzExtra]`| The extra prompt message | `string ｜ TemplateRef<void>` | - |
-| `[nzSuccessTip]`| Tip display when validate success  | `string ｜ TemplateRef<{ $implicit: FormControl ｜ NgModel }>` | - |
-| `[nzWarningTip]`| Tip display when validate warning | `string ｜ TemplateRef<{ $implicit: FormControl ｜ NgModel }>` | - |
-| `[nzErrorTip]`| Tip display when validate error | `string ｜ TemplateRef<{ $implicit: FormControl ｜ NgModel }>` | - |
-| `[nzValidatingTip]`| Tip display when validating | `string ｜ TemplateRef<{ $implicit: FormControl ｜ NgModel }>` | - |
+| `[nzExtra]`| The extra prompt message | `string  \|  TemplateRef<void>` | - |
+| `[nzSuccessTip]`| Tip display when validate success  | `string  \|  TemplateRef<{ $implicit: FormControl  \|  NgModel }>` | - |
+| `[nzWarningTip]`| Tip display when validate warning | `string  \|  TemplateRef<{ $implicit: FormControl  \|  NgModel }>` | - |
+| `[nzErrorTip]`| Tip display when validate error | `string  \|  TemplateRef<{ $implicit: FormControl  \|  NgModel }>` | - |
+| `[nzValidatingTip]`| Tip display when validating | `string  \|  TemplateRef<{ $implicit: FormControl  \|  NgModel }>` | - |
 
 ### nz-form-split
 

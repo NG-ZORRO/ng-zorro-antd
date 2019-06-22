@@ -28,9 +28,9 @@ import { NzPageHeaderModule } from 'ng-zorro-antd';
 ### nz-page-header
 | Param | Description | Type | Default value |
 | ----- | ----------- | ---- | ------------- |
-| `[nzTitle]` | title string | `string｜TemplateRef<void>` | - |
-| `[nzSubtitle]` | subTitle string | `string｜TemplateRef<void>` | - |
-| `[nzBackIcon]` | custom back icon | `string｜TemplateRef<void>` | - |
+| `[nzTitle]` | title string | `string \| TemplateRef<void>` | - |
+| `[nzSubtitle]` | subTitle string | `string \| TemplateRef<void>` | - |
+| `[nzBackIcon]` | custom back icon | `string \| TemplateRef<void>` | - |
 | `(nzBack)` | back icon click event | `EventEmitter<void>` | - |
 
 ### Page header sections

@@ -38,10 +38,10 @@ import { NzCascaderModule } from 'ng-zorro-antd';
 | `[nzChangeOnSelect]` | 当此项为 true 时，点选每级菜单选项值都会发生变化，具体见上面的演示 | `boolean` | `false` |
 | `[nzColumnClassName]` | 自定义浮层列类名 | `string` | - |
 | `[nzDisabled]` | 禁用 | `boolean` | `false` |
-| `[nzExpandTrigger]` | 次级菜单的展开方式，可选 'click' 和 'hover' | `'click'｜'hover'` | `'click'` |
+| `[nzExpandTrigger]` | 次级菜单的展开方式，可选 'click' 和 'hover' | `'click' \| 'hover'` | `'click'` |
 | `[nzMenuClassName]` | 自定义浮层类名 | `string` | - |
 | `[nzMenuStyle]` | 自定义浮层样式 | `object` | - |
-| `[nzNotFoundContent]` | 当下拉列表为空时显示的内容 | `string｜TemplateRef<void>` | - |
+| `[nzNotFoundContent]` | 当下拉列表为空时显示的内容 | `string \| TemplateRef<void>` | - |
 | `[nzLabelProperty]` | 选项的显示值的属性名 | `string` | `'label'` |
 | `[nzLabelRender]` | 选择后展示的渲染模板 | `TemplateRef<any>` | - |
 | `[nzLoadData]` | 用于动态加载选项。如果提供了`ngModel`初始值，且未提供`nzOptions`值，则会立即触发动态加载。 | `(option: any, index?: index) => PromiseLike<any>` | - |
@@ -49,8 +49,8 @@ import { NzCascaderModule } from 'ng-zorro-antd';
 | `[nzPlaceHolder]` | 输入框占位文本 | `string` | `'请选择'` |
 | `[nzShowArrow]` | 是否显示箭头 | `boolean` | `true` |
 | `[nzShowInput]` | 显示输入框 | `boolean` | `true` |
-| `[nzShowSearch]` | 是否支持搜索，默认情况下对 `label` 进行全匹配搜索，不能和 `[nzLoadData]` 同时使用 | `boolean｜NzShowSearchOptions` | `false` |
-| `[nzSize]` | 输入框大小，可选 `large` `default` `small` | `'large'｜'small'｜'default'` | `'default'` |
+| `[nzShowSearch]` | 是否支持搜索，默认情况下对 `label` 进行全匹配搜索，不能和 `[nzLoadData]` 同时使用 | `boolean \| NzShowSearchOptions` | `false` |
+| `[nzSize]` | 输入框大小，可选 `large` `default` `small` | `'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzValueProperty]` | 选项的实际值的属性名 | `string` | `'value'` |
 | `(ngModelChange)` | 值发生变化时触发 | `EventEmitter<any[]>` | - |
 | `(nzClear)` | 清空值时触发 | `EventEmitter<void>` | - |

@@ -40,9 +40,9 @@ radio group，wrap a group of `nz-radio`。
 | `[ngModel]` | current selected `nz-radio` value, double binding | `string` | - |
 | `[nzName]` | The `name` property of all `input[type="radio"]` children | `string`  | - |
 | `[nzDisabled]` | Disable all radio buttons | `boolean` |  `false` |
-| `[nzSize]` | Size, only on radio style | `'large'｜'small'｜'default'` | `'default'` |
+| `[nzSize]` | Size, only on radio style | `'large' \| 'small' \| 'default'` | `'default'` |
 | `(ngModelChange)` | the callback function when current selected `nz-radio` value change | `EventEmitter<string>` | - |
-| `[nzButtonStyle]` | style type of radio button | `'outline'｜'solid'` | `'outline'` |
+| `[nzButtonStyle]` | style type of radio button | `'outline' \| 'solid'` | `'outline'` |
 
 ## Methods
 

@@ -27,8 +27,8 @@ import { NzPopoverModule } from 'ng-zorro-antd';
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzTitle]` | 卡片标题 | `string｜TemplateRef<void>` | - |
-| `[nzContent]` | 用于定义Content内容 | `string｜TemplateRef<void>` | - |
+| `[nzTitle]` | 卡片标题 | `string \| TemplateRef<void>` | - |
+| `[nzContent]` | 用于定义Content内容 | `string \| TemplateRef<void>` | - |
 
 更多属性请参考 [Tooltip](/components/tooltip/zh#api)。
 

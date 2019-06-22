@@ -36,7 +36,7 @@ import { NzTransferModule } from 'ng-zorro-antd';
 | `[nzListStyle]` | 两个穿梭框的自定义样式，等同 `ngStyle` | `object` | - |
 | `[nzItemUnit]` | 单数单位 | `string` | `'项目'` |
 | `[nzItemsUnit]` | 复数单位 | `string` | `'项目'` |
-| `[nzRenderList]` | 自定义渲染列表，见示例 | `Array<TemplateRef<void>｜null>` | `[null, null]` |
+| `[nzRenderList]` | 自定义渲染列表，见示例 | `Array<TemplateRef<void> \| null>` | `[null, null]` |
 | `[nzRender]` | 每行数据渲染模板，见示例 | `TemplateRef<void>` | - |
 | `[nzFooter]` | 底部渲染模板，见示例 | `TemplateRef<void>` | - |
 | `[nzShowSearch]` | 是否显示搜索框 | `boolean` | `false` |
@@ -54,7 +54,7 @@ import { NzTransferModule } from 'ng-zorro-antd';
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | title | 标题，用于显示及搜索关键字判断 | `string` | - |
-| direction | 指定数据方向，若指定 `right` 为右栏，其他情况为左栏 | `'left'｜'right'` | - |
+| direction | 指定数据方向，若指定 `right` 为右栏，其他情况为左栏 | `'left' \| 'right'` | - |
 | disabled | 指定checkbox为不可用状态 | `boolean` | `false` |
 | checked | 指定checkbox为选中状态 | `boolean` | `false` |
 
@@ -62,29 +62,29 @@ import { NzTransferModule } from 'ng-zorro-antd';
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| direction | 数据方向 | `'left'｜'right'` | - |
+| direction | 数据方向 | `'left' \| 'right'` | - |
 | list | 数据源 | `TransferItem[]` | `[]` |
 
 #### TransferChange
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| from | 数据方向 | `'left'｜'right'` | - |
-| to | 数据方向 | `'left'｜'right'` | - |
+| from | 数据方向 | `'left' \| 'right'` | - |
+| to | 数据方向 | `'left' \| 'right'` | - |
 | list | 数据源 | `TransferItem[]` | `[]` |
 
 #### TransferSearchChange
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| direction | 数据方向 | `'left'｜'right'` | - |
+| direction | 数据方向 | `'left' \| 'right'` | - |
 | value | 搜索关键词 | `string` | - |
 
 #### nzRenderList
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `direction`       | 渲染列表的方向   | `'left'｜'right'` | - |
+| `direction`       | 渲染列表的方向   | `'left' \| 'right'` | - |
 | `disabled`        |  是否禁用列表  | `boolean` | - |
 | `items`   | 过滤后的数据  | `TransferItem[]`   | - |
 | `onItemSelect`    | 勾选条目  | `(item: TransferItem) => void` | - |
