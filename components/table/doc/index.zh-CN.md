@@ -13,6 +13,14 @@ subtitle: 表格
 - 当有大量结构化的数据需要展现时；
 - 当需要对数据进行排序、搜索、分页、自定义操作等复杂行为时。
 
+## 单独引入此组件
+
+想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
+
+```ts
+import { NzTableModule } from 'ng-zorro-antd/table';
+```
+
 ## 如何使用
 
 Table 组件同时具备了易用性和高度可定制性
@@ -55,14 +63,6 @@ Table 组件同时具备了易用性和高度可定制性
 ```
 
 ## API
-
-### 单独引入此组件
-
-想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
-
-```ts
-import { NzTableModule } from 'ng-zorro-antd';
-```
 
 ### nz-table
 

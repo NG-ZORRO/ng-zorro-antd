@@ -11,15 +11,15 @@ Simple List.
 
 A list can be used to display content related to a single subject. The content can consist of multiple elements of varying type and size.
 
-## API
-
-### Import this Component Individually
+## Import this Component Individually
 
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzListModule } from 'ng-zorro-antd';
+import { NzListModule } from 'ng-zorro-antd/list';
 ```
+
+## API
 
 ### nz-list
 

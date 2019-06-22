@@ -10,15 +10,15 @@ To trigger an operation.
 
 A button means an operation (or a series of operations). Clicking a button will trigger corresponding business logic.
 
-## API
-
-### Import this Component Individually
+## Import this Component Individually
 
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzButtonModule } from 'ng-zorro-antd';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 ```
+
+## API
 
 ### [nz-button]
 

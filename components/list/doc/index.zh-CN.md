@@ -12,15 +12,15 @@ cols: 1
 
 最基础的列表展示，可承载文字、列表、图片、段落，常用于后台数据展示页面。
 
-## API
-
-### 单独引入此组件
+## 单独引入此组件
 
 想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
 
 ```ts
-import { NzListModule } from 'ng-zorro-antd';
+import { NzListModule } from 'ng-zorro-antd/list';
 ```
+
+## API
 
 ### nz-list
 

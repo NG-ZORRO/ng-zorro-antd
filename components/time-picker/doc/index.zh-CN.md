@@ -11,18 +11,18 @@ title: TimePicker
 
 当用户需要输入一个时间，可以点击标准输入框，弹出时间面板进行选择。
 
-## API
-
-```html
-<nz-time-picker [(ngModel)]="someTime"></nz-time-picker>
-```
-
-### 单独引入此组件
+## 单独引入此组件
 
 想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
 
 ```ts
-import { NzTimePickerModule } from 'ng-zorro-antd';
+import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
+```
+
+## API
+
+```html
+<nz-time-picker [(ngModel)]="someTime"></nz-time-picker>
 ```
 
 ### nz-time-picker

@@ -11,6 +11,15 @@ Container for displaying data in calendar form.
 
 When data is in the form of dates, such as schedules, timetables, prices calendar, lunar calendar. This component also supports Year/Month switch.
 
+## Import this Component Individually
+
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzCalendarModule } from 'ng-zorro-antd/calendar';
+```
+
+
 ## API
 
 **Note:** Some of Calendar's locale are coming from [Angular i18n](https://angular.io/guide/i18n), that should be provided in the file of `app.module.ts`.
@@ -34,14 +43,6 @@ registerLocaleData(en);
 </nz-calendar>
 <!-- Passing TemplateRef -->
 <ng-template #dateCellTpl let-date><span>{{ date | date:'d'}}</span></ng-template>
-```
-
-### Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
-```ts
-import { NzCalendarModule } from 'ng-zorro-antd';
 ```
 
 ### nz-calendar

@@ -12,18 +12,18 @@ subtitle: 页头
 
 当需要用户快速理解当前页面是什么以及它的功能时使用。
 
-## API
-
-```html
-<nz-page-header nzTitle="Page Title"></nz-page-header>
-```
-
-### 单独引入此组件
+## 单独引入此组件
 
 想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
 
 ```ts
-import { NzPageHeaderModule } from 'ng-zorro-antd';
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+```
+
+## API
+
+```html
+<nz-page-header nzTitle="Page Title"></nz-page-header>
 ```
 
 ### nz-page-header

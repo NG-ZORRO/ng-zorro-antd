@@ -13,16 +13,15 @@ cols: 1
 - 网络较慢，需要长时间等待加载处理的情况下。
 - 图文信息内容较多的列表/卡片中。
 
-
-## API
-
-### 单独引入此组件
+## 单独引入此组件
 
 想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
 
 ```ts
-import { NzSkeletonModule } from 'ng-zorro-antd';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 ```
+
+## API
 
 ### nz-skeleton
 

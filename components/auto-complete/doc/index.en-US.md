@@ -10,6 +10,14 @@ Autocomplete function of input field.
 
 When there is a need for autocomplete functionality.
 
+## Import this Component Individually
+
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
+```
+
 ## API
 
 ```html
@@ -24,14 +32,6 @@ When there is a need for autocomplete functionality.
   <nz-auto-option [nzValue]="'23456'">23456</nz-auto-option>
   <nz-auto-option [nzValue]="'34567'">34567</nz-auto-option>
 </nz-autocomplete>
-```
-
-### Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
-```ts
-import { NzAutocompleteModule } from 'ng-zorro-antd';
 ```
 
 ### [nzAutocomplete]

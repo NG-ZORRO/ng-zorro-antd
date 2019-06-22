@@ -12,20 +12,20 @@ title: Select
 - 弹出一个下拉菜单给用户选择操作，用于代替原生的选择器，或者需要一个更优雅的多选器时。
 - 当选项少时（少于 5 项），建议直接将选项平铺，使用 [Radio](/components/radio/zh) 是更好的选择。
 
+## 单独引入此组件
+
+想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
+
+```ts
+import { NzSelectModule } from 'ng-zorro-antd/select';
+```
+
 ## API
 
 ```html
 <nz-select>
   <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
 </nz-select>
-```
-
-### 单独引入此组件
-
-想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
-
-```ts
-import { NzSelectModule } from 'ng-zorro-antd';
 ```
 
 ### nz-select

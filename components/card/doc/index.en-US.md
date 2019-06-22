@@ -11,18 +11,18 @@ Simple rectangular container.
 
 A card can be used to display content related to a single subject. The content can consist of multiple elements of varying types and sizes.
 
-## API
-
-```html
-<nz-card nzTitle="卡片标题">卡片内容</nz-card>
-```
-
-### Import this Component Individually
+## Import this Component Individually
 
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzCardModule } from 'ng-zorro-antd';
+import { NzCardModule } from 'ng-zorro-antd/card';
+```
+
+## API
+
+```html
+<nz-card nzTitle="卡片标题">卡片内容</nz-card>
 ```
 
 ### nz-card

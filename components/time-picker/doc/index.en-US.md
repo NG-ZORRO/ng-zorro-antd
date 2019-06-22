@@ -10,18 +10,18 @@ To select/input a time.
 
 By clicking the input box, you can select a time from a popup panel.
 
-## API
-
-```html
-<nz-time-picker [(ngModel)]="someTime"></nz-time-picker>
-```
-
-### Import this Component Individually
+## Import this Component Individually
 
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzTimePickerModule } from 'ng-zorro-antd';
+import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
+```
+
+## API
+
+```html
+<nz-time-picker [(ngModel)]="someTime"></nz-time-picker>
 ```
 
 ### nz-time-picker

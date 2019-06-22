@@ -12,15 +12,15 @@ title: Input
 - 需要用户输入表单域内容时。
 - 提供组合型输入框，带搜索的输入框，还可以进行大小选择。
 
-## API
-
-### 单独引入此组件
+## 单独引入此组件
 
 想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
 
 ```ts
-import { NzInputModule } from 'ng-zorro-antd';
+import { NzInputModule } from 'ng-zorro-antd/input';
 ```
+
+## API
 
 ### [nz-input]
 
