@@ -24,6 +24,8 @@ import { NzInputNumberModule } from 'ng-zorro-antd';
 
 ### nz-input-number
 
+The value entered in `nz-input-number` will not be verified at the time of input, but will be fed back to `[ngModel]` and `(ngModelChange)` at a specific timing (Enter key, up and down keys, blur, etc.), otherwise input data such as `-0.12` or `1e10`, the `ngModel` will always be `undefined`.
+
 | property | description | type | default |
 | -------- | ----------- | ---- | ------- |
 | `[ngModel]` | current value, double binding | `number｜string` ｜ `string` | - |
@@ -37,6 +39,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd';
 | `[nzSize]` | width of input box | `'large'｜'small'｜'default'` | `'default'` |
 | `[nzStep]` | The number to which the current value is increased or decreased. It can be an integer or decimal. | `number｜string` | `1` |
 | `[nzPlaceHolder]` | Placeholder of select | `string` | - |
+| `[nzId]` | input id attribute inside the component| `string` | - |
 | `(ngModelChange)` | The callback triggered when the value is changed | `EventEmitter<number>` | - |
 | `(nzFocus)` | focus callback | `EventEmitter<void>` | - |
 | `(nzBlur)` | blur callback | `EventEmitter<void>` | - |
