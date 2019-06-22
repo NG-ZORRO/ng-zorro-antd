@@ -16,6 +16,7 @@ import { NzAddOnModule, NzNoAnimationModule, NzOverlayModule } from 'ng-zorro-an
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 
+import { PlatformModule } from '@angular/cdk/platform';
 import { NzContextMenuService } from './nz-context-menu.service';
 import { NzDropDownADirective } from './nz-dropdown-a.directive';
 import { NzDropDownButtonComponent } from './nz-dropdown-button.component';
@@ -33,6 +34,7 @@ import { NzDropdownService } from './nz-dropdown.service';
     NzButtonModule,
     NzMenuModule,
     NzIconModule,
+    PlatformModule,
     NzNoAnimationModule,
     NzOverlayModule,
     NzAddOnModule
