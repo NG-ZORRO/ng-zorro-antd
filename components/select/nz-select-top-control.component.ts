@@ -36,10 +36,7 @@ import { NzSelectService } from './nz-select.service';
   animations: [zoomMotion],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  templateUrl: './nz-select-top-control.component.html',
-  host: {
-    '[style.cursor]': 'nzShowSearch ? "inherit" : "pointer"'
-  }
+  templateUrl: './nz-select-top-control.component.html'
 })
 export class NzSelectTopControlComponent implements OnInit, OnDestroy {
   inputValue: string;
