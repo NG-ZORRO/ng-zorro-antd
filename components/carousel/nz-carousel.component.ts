@@ -10,6 +10,7 @@ import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
+  isDevMode,
   AfterContentInit,
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -39,9 +40,10 @@ import { takeUntil, throttleTime } from 'rxjs/operators';
 
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
 import {
-  CarouselStrategyRegistryItem,
   FromToInterface,
+  NzCarouselDotPosition,
   NzCarouselEffects,
+  NzCarouselStrategyRegistryItem,
   NZ_CAROUSEL_CUSTOM_STRATEGIES,
   PointerVector
 } from './nz-carousel-definitions';
@@ -57,7 +59,7 @@ import { NzCarouselTransformStrategy } from './strategies/transform-strategy';
   preserveWhitespaces: false,
   templateUrl: './nz-carousel.component.html',
   host: {
-    '[class.ant-carousel-vertical]': 'nzVertical'
+    '[class.ant-carousel-vertical]': 'vertical'
   },
   styles: [
     `
@@ -89,10 +91,38 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   @Input() nzEffect: NzCarouselEffects = 'scrollx';
   @Input() @InputBoolean() nzEnableSwipe = true;
   @Input() @InputBoolean() nzDots: boolean = true;
-  @Input() @InputBoolean() nzVertical: boolean = false;
   @Input() @InputBoolean() nzAutoPlay = false;
   @Input() @InputNumber() nzAutoPlaySpeed = 3000;
   @Input() @InputNumber() nzTransitionSpeed = 500;
+
+  @Input()
+  @InputBoolean()
+  get nzVertical(): boolean {
+    return this.vertical;
+  }
+
+  set nzVertical(value: boolean) {
+    if (isDevMode()) {
+      console.warn(`'nzVertical' is deprecated and will be removed in 9.0.0. Please use 'nzDotPosition' instead.`);
+    }
+    this.vertical = value;
+  }
+
+  @Input()
+  set nzDotPosition(value: NzCarouselDotPosition) {
+    this._dotPosition = value;
+    if (value === 'left' || value === 'right') {
+      this.vertical = true;
+    } else {
+      this.vertical = false;
+    }
+  }
+
+  get nzDotPosition(): NzCarouselDotPosition {
+    return this._dotPosition;
+  }
+
+  private _dotPosition: NzCarouselDotPosition = 'bottom';
 
   @Output() readonly nzBeforeChange = new EventEmitter<FromToInterface>();
   @Output() readonly nzAfterChange = new EventEmitter<number>();
@@ -102,6 +132,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   slickListEl: HTMLElement;
   slickTrackEl: HTMLElement;
   strategy: NzCarouselBaseStrategy;
+  vertical = false;
   transitionInProgress: number | null;
 
   private destroy$ = new Subject<void>();
@@ -114,12 +145,12 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
 
   constructor(
     elementRef: ElementRef,
-    @Inject(DOCUMENT) document: any, // tslint:disable-line:no-any
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     private ngZone: NgZone,
     private platform: Platform,
-    @Optional() @Inject(NZ_CAROUSEL_CUSTOM_STRATEGIES) private customStrategies: CarouselStrategyRegistryItem[]
+    @Inject(DOCUMENT) document: any, // tslint:disable-line:no-any
+    @Optional() @Inject(NZ_CAROUSEL_CUSTOM_STRATEGIES) private customStrategies: NzCarouselStrategyRegistryItem[]
   ) {
     this.document = document;
     this.renderer.addClass(elementRef.nativeElement, 'ant-carousel');
@@ -165,9 +196,15 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzEffect } = changes;
+    const { nzEffect, nzDotPosition } = changes;
 
     if (nzEffect && !nzEffect.isFirstChange()) {
+      this.switchStrategy();
+      this.markContentActive(0);
+      this.syncStrategy();
+    }
+
+    if (nzDotPosition && !nzDotPosition.isFirstChange()) {
       this.switchStrategy();
       this.markContentActive(0);
       this.syncStrategy();

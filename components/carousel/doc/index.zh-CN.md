@@ -25,17 +25,17 @@ import { NzCarouselModule } from 'ng-zorro-antd';
 
 ### nz-carousel
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `[nzAutoPlay]` | 是否自动切换 | `boolean` | `false` |
-| `[nzAutoPlaySpeed]` | 切换时间(毫秒)，当设置为0时不切换 | `number` | `3000` |
-| `[nzDotRender]` | Dot渲染模板 | `TemplateRef<{ $implicit: number }>` | - |
-| `[nzDots]` | 是否显示面板指示点 | `boolean` | `true` |
-| `[nzEffect]` | 动画效果函数，可取 `scrollx`, `fade` | `'scrollx'\|'fade'`|`'scrollx'` |
-| `[nzEnableSwipe]` | 是否支持手势划动切换 | `boolean` | `true` |
-| `[nzVertical]` | 垂直显示 | `boolean` | `false` |
-| `(nzAfterChange)` | 切换面板的回调 | `EventEmitter<number>` | - |
-| `(nzBeforeChange)` | 切换面板的回调 | `EventEmitter<{ from: number; to: number }>` | - |
+| 参数 | 说明 | 类型 | 默认值 | 版本 |
+| --- | --- | --- | --- | --- |
+| `[nzAutoPlay]` | 是否自动切换 | `boolean` | `false` | |
+| `[nzAutoPlaySpeed]` | 切换时间(毫秒)，当设置为0时不切换 | `number` | `3000` | |
+| `[nzDotRender]` | Dot渲染模板 | `TemplateRef<{ $implicit: number }>` | - | |
+| `[nzDotPosition]` | 面板指示点位置，可选 `top` `bottom` `left` `right` | `string` | `bottom` | 8.0.0 | |
+| `[nzDots]` | 是否显示面板指示点 | `boolean` | `true` | |
+| `[nzEffect]` | 动画效果函数，可取 `scrollx`, `fade` | `'scrollx'\|'fade'`|`'scrollx'` | |
+| `[nzEnableSwipe]` | 是否支持手势划动切换 | `boolean` | `true` | |
+| `(nzAfterChange)` | 切换面板的回调 | `EventEmitter<number>` | - | |
+| `(nzBeforeChange)` | 切换面板的回调 | `EventEmitter<{ from: number; to: number }>` | - | |
 
 #### 方法
 
