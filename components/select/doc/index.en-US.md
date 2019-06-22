@@ -41,6 +41,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzDropdownClassName]` | className of dropdown menu | `string` | - |
 | `[nzDropdownMatchSelectWidth]` | Whether dropdown's with is same with select. | `boolean` | `true` |
 | `[nzDropdownStyle]` | style of dropdown menu | `object` | - |
+| `[nzCustomTemplate]` | The custom template of select | `TemplateRef<{ $implicit: NzOptionComponent }>` | - |
 | `[nzServerSearch]` | nz-option will not be filtered when set to true | `boolean` | `false` |
 | `[nzFilterOption]` | Filter options against it. The function will receive two arguments, `inputValue` and `option`, if the function returns `true`, the option will be included in the filtered set; Otherwise, it will be excluded. | `(input?: string, option?: NzOptionComponent) => boolean;` | - |
 | `[nzMaxMultipleCount]` |  Max selected option can be selected | `number` | `Infinity` |

@@ -50,6 +50,7 @@ export class NzSelectTopControlComponent implements OnInit, OnDestroy {
   @Input() nzAllowClear = false;
   @Input() nzShowArrow = true;
   @Input() nzLoading = false;
+  @Input() nzCustomTemplate: TemplateRef<{ $implicit: NzOptionComponent }>;
   @Input() nzSuffixIcon: TemplateRef<void>;
   @Input() nzClearIcon: TemplateRef<void>;
   @Input() nzRemoveIcon: TemplateRef<void>;

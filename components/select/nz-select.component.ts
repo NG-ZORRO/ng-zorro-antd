@@ -123,6 +123,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @Input() nzPlaceHolder: string;
   @Input() nzMaxTagCount: number;
   @Input() nzDropdownRender: TemplateRef<void>;
+  @Input() nzCustomTemplate: TemplateRef<{ $implicit: NzOptionComponent }>;
   @Input() nzSuffixIcon: TemplateRef<void>;
   @Input() nzClearIcon: TemplateRef<void>;
   @Input() nzRemoveIcon: TemplateRef<void>;
