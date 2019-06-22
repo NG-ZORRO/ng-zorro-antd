@@ -11,15 +11,15 @@ Empty state placeholder.
 
 When there is no data provided, display for friendly tips.
 
-## API
-
-### Import this Component Individually
+## Import this Component Individually
 
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzEmptyModule } from 'ng-zorro-antd';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
 ```
+
+## API
 
 ### nz-empty
 

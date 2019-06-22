@@ -18,15 +18,15 @@ Semantic vector graphics.
 
 We are still adding two-tone icons right now, syncing to [antd](https://ant.design/components/icon-cn/#components-icon-demo-iconfont).
 
-## API
-
-### Import this Component Individually
+## Import this Component Individually
 
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzIconModule } from 'ng-zorro-antd';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 ```
+
+## API
 
 ### [nz-icon]
 

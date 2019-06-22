@@ -12,15 +12,15 @@ A content area which can be collapsed and expanded.
 - Can be used to group or hide complex regions to keep the page clean.
 - `Accordion` is a special kind of `Collapse`, which allows only one panel to be expanded at a time.
 
-## API
-
-### Import this Component Individually
+## Import this Component Individually
 
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzCollapseModule } from 'ng-zorro-antd';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 ```
+
+## API
 
 ### nz-collapse
 

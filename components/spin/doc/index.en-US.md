@@ -10,15 +10,15 @@ A spinner for displaying loading state of a page or a section.
 
 When part of the page is waiting for asynchronous data or during a rendering process, an appropriate loading animation can effectively alleviate users' inquietude.
 
-## API
-
-### Import this Component Individually
+## Import this Component Individually
 
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzSpinModule } from 'ng-zorro-antd';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 ```
+
+## API
 
 ### nz-spin
 

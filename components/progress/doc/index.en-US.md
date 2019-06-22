@@ -13,15 +13,15 @@ If it will take a long time to complete an operation, you can use `Progress` to 
 - When an operation will interrupt the current interface, or it needs to run in the background for more than 2 seconds.
 - When you need to display the completion percentage of an operation.
 
-## API
-
-### Import this Component Individually
+## Import this Component Individually
 
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzProgressModule } from 'ng-zorro-antd';
+import { NzProgressModule } from 'ng-zorro-antd/progress';
 ```
+
+## API
 
 ### nz-progress
 

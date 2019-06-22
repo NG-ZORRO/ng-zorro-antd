@@ -13,6 +13,14 @@ title: Message
 - 可提供成功、警告和错误等反馈信息。
 - 顶部居中显示并自动消失，是一种不打断用户操作的轻量级提示方式。
 
+## 单独引入此组件
+
+想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
+
+```ts
+import { NzMessageModule } from 'ng-zorro-antd/message';
+```
+
 ## 如何使用
 
 如果要修改全局默认配置，你可以设置提供商 `NZ_MESSAGE_CONFIG` 的值来修改。
@@ -29,14 +37,6 @@ title: Message
 ```
 
 ## API
-
-### 单独引入此组件
-
-想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
-
-```ts
-import { NzMessageModule } from 'ng-zorro-antd';
-```
 
 ### NzMessageService
 

@@ -13,18 +13,18 @@ subtitle: 级联选择
 - 从一个较大的数据集合中进行选择时，用多级分类进行分隔，方便选择。
 - 比起 Select 组件，可以在同一个浮层中完成选择，有较好的体验。
 
-## API
-
-```html
-<nz-cascader [nzOptions]="options" [(ngModel)]="values"></nz-cascader>
-```
-
-### 单独引入此组件
+## 单独引入此组件
 
 想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
 
 ```ts
-import { NzCascaderModule } from 'ng-zorro-antd';
+import { NzCascaderModule } from 'ng-zorro-antd/cascader';
+```
+
+## API
+
+```html
+<nz-cascader [nzOptions]="options" [(ngModel)]="values"></nz-cascader>
 ```
 
 ### nz-cascader

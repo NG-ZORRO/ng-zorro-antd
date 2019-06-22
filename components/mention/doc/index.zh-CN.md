@@ -11,6 +11,14 @@ title: Mention
 
 用于在输入中提及某人或某事，常用于发布、聊天或评论功能。
 
+## 单独引入此组件
+
+想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
+
+```ts
+import { NzMentionModule } from 'ng-zorro-antd/mention';
+```
+
 ## API
 
 ```html
@@ -21,14 +29,6 @@ title: Mention
     nzMentionTrigger>
   </textarea>
 </nz-mention>
-```
-
-### 单独引入此组件
-
-想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
-
-```ts
-import { NzMentionModule } from 'ng-zorro-antd';
 ```
 
 ### nz-mention

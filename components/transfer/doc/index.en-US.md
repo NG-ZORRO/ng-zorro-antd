@@ -13,15 +13,15 @@ Transfer the elements between two columns in an intuitive and efficient way.
 
 One or more elements can be selected from either column, one click on the proper 'direction' button, and the transfer is done. The left column is considered the 'source' and the right column is considered the 'target'. As you can see in the API description, these names are reflected in.
 
-## API
-
-### Import this Component Individually
+## Import this Component Individually
 
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzTransferModule } from 'ng-zorro-antd';
+import { NzTransferModule } from 'ng-zorro-antd/transfer';
 ```
+
+## API
 
 ### nz-transfer
 

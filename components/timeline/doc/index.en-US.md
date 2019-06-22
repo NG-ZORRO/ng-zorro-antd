@@ -11,6 +11,14 @@ Vertical display timeline.
 - When a series of information needs to be ordered by time (ascend or descend).
 - When you need a timeline to make a visual connection.
 
+## Import this Component Individually
+
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzTimelineModule } from 'ng-zorro-antd/timeline';
+```
+
 ## API
 
 ```html
@@ -20,14 +28,6 @@ Vertical display timeline.
   <nz-timeline-item>step3 2015-09-01</nz-timeline-item>
   <nz-timeline-item>step4 2015-09-01</nz-timeline-item>
 </nz-timeline>
-```
-
-### Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
-```ts
-import { NzTimelineModule } from 'ng-zorro-antd';
 ```
 
 ### nz-timeline

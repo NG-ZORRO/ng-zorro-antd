@@ -11,20 +11,20 @@ Select component to select value from options.
 - A dropdown menu for displaying choices - an elegant alternative to the native `<select>` element.
 - Utilizing [Radio](/components/radio/en) is recommended when there are fewer total options (less than 5).
 
+## Import this Component Individually
+
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzSelectModule } from 'ng-zorro-antd/select';
+```
+
 ## API
 
 ```html
 <nz-select>
   <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
 </nz-select>
-```
-
-### Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
-```ts
-import { NzSelectModule } from 'ng-zorro-antd';
 ```
 
 ### nz-select

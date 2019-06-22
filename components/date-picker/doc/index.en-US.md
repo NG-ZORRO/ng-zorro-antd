@@ -10,6 +10,14 @@ To select or input a date.
 
 By clicking the input box, you can select a date from a popup calendar.
 
+## Import this Component Individually
+
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+```
+
 ## API
 
 **Note:** Some of nz-date-picker's locale are coming from [Angular i18n](https://angular.io/guide/i18n), that should be provided in the file of `app.module.ts`.
@@ -29,14 +37,6 @@ There are four kinds of picker:
 - nz-week-picker
 
 **Note:** All input and output date objects are [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date), you can manpulate it with [date-fns](https://date-fns.org/).
-
-### Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
-```ts
-import { NzDatePickerModule } from 'ng-zorro-antd';
-```
 
 ### Common API
 

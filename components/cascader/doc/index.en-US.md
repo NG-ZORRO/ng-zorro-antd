@@ -12,18 +12,18 @@ Cascade selection box.
 - When selecting from a large data set, with multi-stage classification separated for easy selection.
 - Chooses cascade items in one float layer for better user experience.
 
-## API
-
-```html
-<nz-cascader [nzOptions]="options" [(ngModel)]="values"></nz-cascader>
-```
-
-### Import this Component Individually
+## Import this Component Individually
 
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzCascaderModule } from 'ng-zorro-antd';
+import { NzCascaderModule } from 'ng-zorro-antd/cascader';
+```
+
+## API
+
+```html
+<nz-cascader [nzOptions]="options" [(ngModel)]="values"></nz-cascader>
 ```
 
 ### nz-cascader

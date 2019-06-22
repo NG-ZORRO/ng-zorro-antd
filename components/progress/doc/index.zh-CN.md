@@ -14,15 +14,15 @@ title: Progress
 - 当一个操作会打断当前界面，或者需要在后台运行，且耗时可能超过2秒时；
 - 当需要显示一个操作完成的百分比时。
 
-## API
-
-### 单独引入此组件
+## 单独引入此组件
 
 想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
 
 ```ts
-import { NzProgressModule } from 'ng-zorro-antd';
+import { NzProgressModule } from 'ng-zorro-antd/progress';
 ```
+
+## API
 
 ### nz-progress
 

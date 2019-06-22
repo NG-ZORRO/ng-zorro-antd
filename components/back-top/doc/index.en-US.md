@@ -11,15 +11,15 @@ title: BackTop
 - When the page content is very long.
 - When you need to go back to the top very frequently in order to view the contents.
 
-## API
-
-### Import this Component Individually
+## Import this Component Individually
 
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzBackTopModule } from 'ng-zorro-antd';
+import { NzBackTopModule } from 'ng-zorro-antd/back-top';
 ```
+
+## API
 
 ### nz-back-top
 
