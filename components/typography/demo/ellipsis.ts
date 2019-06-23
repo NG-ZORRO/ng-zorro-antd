@@ -11,7 +11,7 @@ import { Component } from '@angular/core';
       design language for background applications, is refined by Ant UED Team.
     </p>
     <br />
-    <p nz-paragraph nzEllipsis [nzEllipsisRows]="3">
+    <p nz-paragraph nzEllipsis nzExpandable [nzEllipsisRows]="3">
       Ant Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a design
       language for background applications, is refined by Ant UED Team. Ant Design, a design language for background
       applications, is refined by Ant UED Team. Ant Design, a design language for background applications, is refined by

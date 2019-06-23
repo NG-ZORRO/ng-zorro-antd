@@ -1,18 +1,15 @@
-import { ENTER, ESCAPE } from '@angular/cdk/keycodes';
+import { ENTER } from '@angular/cdk/keycodes';
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { fakeAsync, flush, tick, ComponentFixture, TestBed } from '@angular/core/testing';
-import {
-  createKeyboardEvent,
-  dispatchEvent,
-  dispatchFakeEvent,
-  dispatchKeyboardEvent,
-  typeInElement
-} from 'ng-zorro-antd/core';
+import { createKeyboardEvent, dispatchFakeEvent, typeInElement } from 'ng-zorro-antd/core';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
+import { NzDemoTypographyEllipsisComponent } from './demo/ellipsis';
 import { NzTypographyComponent } from './nz-typography.component';
 import { NzTypographyModule } from './nz-typography.module';
+
+// declare const viewport: any;
 
 describe('typography', () => {
   let componentElement: HTMLElement;
@@ -20,7 +17,12 @@ describe('typography', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [CommonModule, NzTypographyModule, NzIconTestModule],
-      declarations: [NzTestTypographyComponent, NzTestTypographyCopyComponent, NzTestTypographyEditComponent]
+      declarations: [
+        NzTestTypographyComponent,
+        NzTestTypographyCopyComponent,
+        NzTestTypographyEditComponent,
+        NzDemoTypographyEllipsisComponent
+      ]
     }).compileComponents();
   });
 
@@ -69,7 +71,7 @@ describe('typography', () => {
     it('should copyable', () => {
       spyOn(testComponent, 'onCopy');
       const copyButtons = componentElement.querySelectorAll<HTMLButtonElement>('.ant-typography-copy');
-      expect(copyButtons.length).toBe(5);
+      expect(copyButtons.length).toBe(4);
       copyButtons.forEach((btn, i) => {
         btn.click();
         fixture.detectChanges();
@@ -112,6 +114,19 @@ describe('typography', () => {
       fixture.detectChanges();
     }));
 
+    it('should discard changes when Esc keydown', () => {
+      const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');
+      editButton!.click();
+      fixture.detectChanges();
+      expect(testComponent.str).toBe('This is an editable text.');
+      const textarea = componentElement.querySelector<HTMLTextAreaElement>('textarea')!;
+      typeInElement('test', textarea);
+      fixture.detectChanges();
+      testComponent.nzTypographyComponent.textEditRef.onCancel();
+      fixture.detectChanges();
+      expect(testComponent.str).toBe('This is an editable text.');
+    });
+
     it('should edit work', () => {
       const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');
       editButton!.click();
@@ -129,29 +144,43 @@ describe('typography', () => {
       const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');
       editButton!.click();
       fixture.detectChanges();
-      expect(testComponent.str).toBe('This is an editable text.');
       const textarea = componentElement.querySelector<HTMLTextAreaElement>('textarea')!;
       typeInElement('test', textarea);
       fixture.detectChanges();
       const event = createKeyboardEvent('keydown', ENTER, textarea);
-      Object.defineProperty(event, 'defaultPrevented', { get: () => true });
-      dispatchEvent(textarea, event);
+      testComponent.nzTypographyComponent.textEditRef.onEnter(event);
       fixture.detectChanges();
       expect(testComponent.str).toBe('test');
     });
+  });
 
-    it('should discard changes when Esc keydown', () => {
-      const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');
-      editButton!.click();
+  describe('ellipsis', () => {
+    let fixture: ComponentFixture<NzDemoTypographyEllipsisComponent>;
+    // let testComponent: NzDemoTypographyEllipsisComponent;
+
+    beforeEach(fakeAsync(() => {
+      fixture = TestBed.createComponent(NzDemoTypographyEllipsisComponent);
+      // testComponent = fixture.componentInstance;
+      componentElement = fixture.debugElement.nativeElement;
       fixture.detectChanges();
-      expect(testComponent.str).toBe('This is an editable text.');
-      const textarea = componentElement.querySelector<HTMLTextAreaElement>('textarea')!;
-      typeInElement('test', textarea);
+    }));
+
+    it('should ellipsis', fakeAsync(() => {
+      // viewport.set(800, 1000);
+      // dispatchFakeEvent(window, 'resize');
       fixture.detectChanges();
-      dispatchKeyboardEvent(textarea, 'keydown', ESCAPE, textarea);
+      tick();
+      componentElement.querySelectorAll('p').forEach(e => {
+        expect(e.classList).toContain('ant-typography-ellipsis');
+      });
+    }));
+
+    it('should css ellipsis', fakeAsync(() => {
       fixture.detectChanges();
-      expect(testComponent.str).toBe('This is an editable text.');
-    });
+      tick();
+      const element = componentElement.querySelectorAll('p')[0]!;
+      expect(element.classList).toContain('ant-typography-ellipsis-single-line');
+    }));
   });
 });
 
@@ -180,13 +209,10 @@ export class NzTestTypographyComponent {}
 @Component({
   selector: 'nz-test-typography-copy',
   template: `
-    <h4 nz-title nzCopyable class="test-copy-h4" (nzCopy)="onCopy($event)">Ant Design-0</h4>
-    <p nz-paragraph nzCopyable class="test-copy-p" (nzCopy)="onCopy($event)">Ant Design-1</p>
-    <span nz-text nzCopyable class="test-copy-text" (nzCopy)="onCopy($event)">Ant Design-2</span>
+    <h4 nz-title nzCopyable class="test-copy-h4" nzContent="Ant Design-0" (nzCopy)="onCopy($event)"></h4>
+    <p nz-paragraph nzCopyable class="test-copy-p" nzContent="Ant Design-1" (nzCopy)="onCopy($event)"></p>
+    <span nz-text nzCopyable class="test-copy-text" nzContent="Ant Design-2" (nzCopy)="onCopy($event)"></span>
     <span nz-text nzCopyable nzCopyText="Ant Design-3" class="test-copy-replace" (nzCopy)="onCopy($event)">Test</span>
-    <p nz-paragraph nzCopyable class="test-copy-html" (nzCopy)="onCopy($event)">
-      <span nz-text><mark>Ant Design</mark>-<code>4</code></span>
-    </p>
   `
 })
 export class NzTestTypographyCopyComponent {
@@ -198,11 +224,11 @@ export class NzTestTypographyCopyComponent {
 @Component({
   selector: 'nz-test-typography-edit',
   template: `
-    <p nz-paragraph nzEditable (nzChange)="onChange($event)">{{ str }}</p>
+    <p nz-paragraph nzEditable (nzChange)="onChange($event)" [nzContent]="str"></p>
   `
 })
 export class NzTestTypographyEditComponent {
-  @ViewChild(NzTypographyComponent, { static: true }) nzTypographyComponent: NzTypographyComponent;
+  @ViewChild(NzTypographyComponent, { static: false }) nzTypographyComponent: NzTypographyComponent;
   str = 'This is an editable text.';
   onChange = (text: string): void => {
     this.str = text;

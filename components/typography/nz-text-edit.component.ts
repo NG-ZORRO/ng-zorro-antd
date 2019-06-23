@@ -45,7 +45,8 @@ export class NzTextEditComponent implements OnInit, OnDestroy {
 
   beforeText: string;
   currentText: string;
-  constructor(public host: ElementRef, private cdr: ChangeDetectorRef, private i18n: NzI18nService) {}
+  nativeElement = this.host.nativeElement;
+  constructor(private host: ElementRef, private cdr: ChangeDetectorRef, private i18n: NzI18nService) {}
 
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
@@ -75,7 +76,6 @@ export class NzTextEditComponent implements OnInit, OnDestroy {
   onInput(event: Event): void {
     const target = event.target as HTMLTextAreaElement;
     this.currentText = target.value;
-    console.log(this.currentText);
   }
 
   onEnter(event: KeyboardEvent): void {

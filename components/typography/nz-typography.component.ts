@@ -76,8 +76,8 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   @Output() readonly nzCopy = new EventEmitter<string>();
   @Output() readonly nzExpand = new EventEmitter<void>();
 
-  @ViewChild(NzTextEditComponent, { static: false, read: ElementRef }) textEditRef: ElementRef<HTMLElement>;
-  @ViewChild(NzTextCopyComponent, { static: false, read: ElementRef }) textCopyRef: ElementRef<HTMLElement>;
+  @ViewChild(NzTextEditComponent, { static: false }) textEditRef: NzTextEditComponent;
+  @ViewChild(NzTextCopyComponent, { static: false }) textCopyRef: NzTextCopyComponent;
   @ViewChild('ellipsisContainer', { static: false }) ellipsisContainer: ElementRef<HTMLSpanElement>;
   @ViewChild('expandable', { static: false }) expandableBtn: ElementRef<HTMLSpanElement>;
   @ViewChild('contentTemplate', { static: false }) contentTemplate: TemplateRef<{ content: string }>;

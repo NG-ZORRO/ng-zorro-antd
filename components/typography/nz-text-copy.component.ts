@@ -36,13 +36,14 @@ export class NzTextCopyComponent implements OnInit, OnDestroy {
   copyId: number;
   // tslint:disable-next-line:no-any
   locale: any = {};
+  nativeElement = this.host.nativeElement;
   private destroy$ = new Subject();
 
   @Input() text: string;
   @Output() readonly textCopy = new EventEmitter<string>();
 
   constructor(
-    public host: ElementRef,
+    private host: ElementRef,
     private cdr: ChangeDetectorRef,
     private copyToClipboard: NzCopyToClipboardService,
     private i18n: NzI18nService

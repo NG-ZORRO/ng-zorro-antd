@@ -194,7 +194,7 @@ export function measure(
 
     if (type === ELEMENT_NODE) {
       // We don't split element, it will keep if whole element can be displayed.
-      appendChildNode(childNode);
+      // appendChildNode(childNode);
       if (inRange()) {
         return {
           finished: false,
