@@ -12,7 +12,7 @@
     "test:watch": "gulp test:watch --tags $tags",
     "build": "gulp build:release",
     "build:lib": "gulp build:library",
-    "doc": "gulp build:simple-site",
+    "doc": "node ./scripts/site/generate-site.js && node ./scripts/site/generateColorLess.js && node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --prod",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s --pkg components/package.json && node ./scripts/site/replace-scope-prefix.js",
     "format": "prettier --config ./.prettierrc --list-different \"component/**/*{.ts}\"",
     "stage-release": "ts-node --project scripts/release/tsconfig.json scripts/release/release.ts",
