@@ -1,7 +1,7 @@
-<ng-container *ngIf="!!menu; else noMenuTpl">
-  <span class="ant-breadcrumb-overlay-link" nz-dropdown [nzDropdownMenu]="menu">
+<ng-container *ngIf="!!nzOverlay; else noMenuTpl">
+  <span class="ant-breadcrumb-overlay-link" nz-dropdown [nzDropdownMenu]="nzOverlay">
     <ng-template [ngTemplateOutlet]="noMenuTpl"></ng-template>
-    <i *ngIf="!!menu" nz-icon nzType="down"></i>
+    <i *ngIf="!!nzOverlay" nz-icon nzType="down"></i>
   </span>
 </ng-container>
 

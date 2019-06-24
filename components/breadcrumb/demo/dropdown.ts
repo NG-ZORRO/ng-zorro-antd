@@ -10,7 +10,7 @@ import { Component } from '@angular/core';
       <nz-breadcrumb-item>
         <a>Component</a>
       </nz-breadcrumb-item>
-      <nz-breadcrumb-item [menu]="menu">
+      <nz-breadcrumb-item [nzOverlay]="menu">
         <a href>An Application</a>
       </nz-breadcrumb-item>
       <nz-breadcrumb-item>

@@ -7,6 +7,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
+
 import { NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
 
 import { NzBreadCrumbComponent } from './nz-breadcrumb.component';
@@ -34,7 +35,7 @@ export class NzBreadCrumbItemComponent {
   /**
    * Dropdown content of a breadcrumb item.
    */
-  @Input() menu?: NzDropdownMenuComponent;
+  @Input() nzOverlay?: NzDropdownMenuComponent;
 
   constructor(public nzBreadCrumbComponent: NzBreadCrumbComponent) {}
 }
