@@ -40,6 +40,7 @@
   <ng-template #scrollViewTpl>
     <cdk-virtual-scroll-viewport
       class="ant-table-body"
+      [hidden]="!data.length"
       [itemSize]="nzVirtualItemSize"
       [maxBufferPx]="nzVirtualMaxBufferPx"
       [minBufferPx]="nzVirtualMinBufferPx"
@@ -70,7 +71,7 @@
     [nzShowQuickJumper]="nzShowQuickJumper"
     [nzHideOnSinglePage]="nzHideOnSinglePage"
     [nzShowTotal]="nzShowTotal"
-    [nzSize]="(nzSize === 'middle' || nzSize=='small') ? 'small' : ''"
+    [nzSize]="nzSize === 'default' ? 'default' : 'small'"
     [nzPageSize]="nzPageSize"
     [nzTotal]="nzTotal"
     [nzSimple]="nzSimple"
