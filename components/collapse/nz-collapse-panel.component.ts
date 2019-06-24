@@ -13,7 +13,6 @@ import {
   ElementRef,
   EventEmitter,
   Host,
-  HostBinding,
   Input,
   OnDestroy,
   OnInit,
@@ -42,12 +41,14 @@ import { NzCollapseComponent } from './nz-collapse.component';
     `
   ],
   host: {
-    '[class.ant-collapse-no-arrow]': '!nzShowArrow'
+    '[class.ant-collapse-no-arrow]': '!nzShowArrow',
+    '[class.ant-collapse-item-active]': 'nzActive',
+    '[class.ant-collapse-item-disabled]': 'nzDisabled'
   }
 })
 export class NzCollapsePanelComponent implements OnInit, OnDestroy {
-  @Input() @InputBoolean() @HostBinding('class.ant-collapse-item-active') nzActive = false;
-  @Input() @InputBoolean() @HostBinding('class.ant-collapse-item-disabled') nzDisabled = false;
+  @Input() @InputBoolean() nzActive = false;
+  @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzShowArrow = true;
   @Input() nzExtra: string | TemplateRef<void>;
   @Input() nzHeader: string | TemplateRef<void>;

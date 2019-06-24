@@ -97,12 +97,12 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
 
   updateSortValue(): void {
     if (this.nzShowSort) {
-      if (this.nzSort === 'descend') {
-        this.setSortValue('ascend');
-      } else if (this.nzSort === 'ascend') {
+      if (this.nzSort === 'ascend') {
+        this.setSortValue('descend');
+      } else if (this.nzSort === 'descend') {
         this.setSortValue(null);
       } else {
-        this.setSortValue('descend');
+        this.setSortValue('ascend');
       }
     }
   }
