@@ -6,10 +6,19 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { forwardRef, Directive, ElementRef, EventEmitter, ExistingProvider, OnDestroy } from '@angular/core';
+import {
+  forwardRef,
+  AfterViewInit,
+  Directive,
+  ElementRef,
+  EventEmitter,
+  ExistingProvider,
+  OnDestroy
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { Mention } from './nz-mention.component';
+import { NzMentionService } from './nz-mention.service';
 
 export const NZ_MENTION_TRIGGER_ACCESSOR: ExistingProvider = {
   provide: NG_VALUE_ACCESSOR,
@@ -30,7 +39,7 @@ export const NZ_MENTION_TRIGGER_ACCESSOR: ExistingProvider = {
     '(click)': 'onClick.emit($event)'
   }
 })
-export class NzMentionTriggerDirective implements ControlValueAccessor, OnDestroy {
+export class NzMentionTriggerDirective implements ControlValueAccessor, OnDestroy, AfterViewInit {
   onChange: (value: string) => void;
   onTouched: () => void;
 
@@ -41,11 +50,7 @@ export class NzMentionTriggerDirective implements ControlValueAccessor, OnDestro
   readonly onClick: EventEmitter<MouseEvent> = new EventEmitter();
   value: string;
 
-  constructor(public el: ElementRef) {}
-
-  ngOnDestroy(): void {
-    this.completeEvents();
-  }
+  constructor(public el: ElementRef, private nzMentionService: NzMentionService) {}
 
   completeEvents(): void {
     this.onFocusin.complete();
@@ -89,5 +94,13 @@ export class NzMentionTriggerDirective implements ControlValueAccessor, OnDestro
 
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
+  }
+
+  ngAfterViewInit(): void {
+    this.nzMentionService.registerTrigger(this);
+  }
+
+  ngOnDestroy(): void {
+    this.completeEvents();
   }
 }

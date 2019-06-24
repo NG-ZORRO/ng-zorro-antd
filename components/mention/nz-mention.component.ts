@@ -19,7 +19,6 @@ import { TemplatePortal } from '@angular/cdk/portal';
 
 import { DOCUMENT } from '@angular/common';
 import {
-  AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -29,6 +28,7 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
   Optional,
   Output,
   SimpleChanges,
@@ -36,12 +36,14 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
+
 import { fromEvent, merge, Subscription } from 'rxjs';
 
 import { getCaretCoordinates, getMentions, DEFAULT_MENTION_POSITIONS, InputBoolean } from 'ng-zorro-antd/core';
 
 import { NzMentionSuggestionDirective } from './nz-mention-suggestions';
 import { NzMentionTriggerDirective } from './nz-mention-trigger';
+import { NzMentionService } from './nz-mention.service';
 
 export interface MentionOnSearchTypes {
   value: string;
@@ -62,6 +64,7 @@ export type MentionPlacement = 'top' | 'bottom';
   templateUrl: './nz-mention.component.html',
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [NzMentionService],
   styles: [
     `
       .ant-mention-dropdown {
@@ -75,7 +78,7 @@ export type MentionPlacement = 'top' | 'bottom';
     `
   ]
 })
-export class NzMentionComponent implements OnDestroy, AfterContentInit, OnChanges {
+export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
   @Input() nzValueWith: (value: any) => string = value => value; // tslint:disable-line:no-any
   @Input() nzPrefix: string | string[] = '@';
   @Input() @InputBoolean() nzLoading = false;
@@ -85,7 +88,7 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit, OnChange
   @Output() readonly nzOnSelect: EventEmitter<string | {}> = new EventEmitter();
   @Output() readonly nzOnSearchChange: EventEmitter<MentionOnSearchTypes> = new EventEmitter();
 
-  @ContentChild(NzMentionTriggerDirective, { static: true }) trigger: NzMentionTriggerDirective;
+  trigger: NzMentionTriggerDirective;
   @ViewChild(TemplateRef, { static: false }) suggestionsTemp: TemplateRef<void>;
 
   @ContentChild(NzMentionSuggestionDirective, { static: false, read: TemplateRef })
@@ -118,8 +121,18 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit, OnChange
     @Optional() @Inject(DOCUMENT) private ngDocument: any, // tslint:disable-line:no-any
     private changeDetectorRef: ChangeDetectorRef,
     private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef
+    private viewContainerRef: ViewContainerRef,
+    private nzMentionService: NzMentionService
   ) {}
+
+  ngOnInit(): void {
+    this.nzMentionService.triggerChanged().subscribe(trigger => {
+      this.trigger = trigger;
+      this.bindTriggerEvents();
+      this.closeDropdown();
+      this.overlayRef = null;
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.hasOwnProperty('nzSuggestions')) {
@@ -129,10 +142,6 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit, OnChange
         this.resetDropdown(false);
       }
     }
-  }
-
-  ngAfterContentInit(): void {
-    this.bindTriggerEvents();
   }
 
   ngOnDestroy(): void {
@@ -155,7 +164,7 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit, OnChange
   }
 
   getMentions(): string[] {
-    return getMentions(this.trigger.value, this.nzPrefix);
+    return this.trigger ? getMentions(this.trigger.value, this.nzPrefix) : [];
   }
 
   selectSuggestion(suggestion: string | {}): void {
@@ -296,7 +305,7 @@ export class NzMentionComponent implements OnDestroy, AfterContentInit, OnChange
       coordinates.top -
       this.triggerNativeElement.getBoundingClientRect().height -
       this.triggerNativeElement.scrollTop +
-      (this.nzPlacement === 'bottom' ? coordinates.height : 0);
+      (this.nzPlacement === 'bottom' ? coordinates.height - 11 : 0);
     const left = coordinates.left - this.triggerNativeElement.scrollLeft;
     this.positionStrategy.withDefaultOffsetX(left).withDefaultOffsetY(top);
     if (this.nzPlacement === 'bottom') {
