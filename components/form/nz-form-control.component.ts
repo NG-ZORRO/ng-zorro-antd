@@ -146,7 +146,7 @@ export class NzFormControlComponent extends NzColDirective
       [`is-validating`]: this.status === 'validating',
       [`has-error`]: this.status === 'error',
       [`has-success`]: this.status === 'success',
-      [`has-feedback`]: this.nzHasFeedback
+      [`has-feedback`]: this.nzHasFeedback && this.status
     };
   }
 
