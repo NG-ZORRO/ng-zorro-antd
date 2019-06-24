@@ -6,7 +6,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
+import { NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
 
 import { NzBreadCrumbComponent } from './nz-breadcrumb.component';
 
@@ -16,7 +17,7 @@ import { NzBreadCrumbComponent } from './nz-breadcrumb.component';
   selector: 'nz-breadcrumb-item',
   exportAs: 'nzBreadcrumbItem',
   preserveWhitespaces: false,
-  templateUrl: 'nz-breadcrumb-item.component.html',
+  templateUrl: './nz-breadcrumb-item.component.html',
   styles: [
     `
       nz-breadcrumb-item:last-child {
@@ -30,5 +31,10 @@ import { NzBreadCrumbComponent } from './nz-breadcrumb.component';
   ]
 })
 export class NzBreadCrumbItemComponent {
+  /**
+   * Dropdown content of a breadcrumb item.
+   */
+  @Input() menu?: NzDropdownMenuComponent;
+
   constructor(public nzBreadCrumbComponent: NzBreadCrumbComponent) {}
 }
