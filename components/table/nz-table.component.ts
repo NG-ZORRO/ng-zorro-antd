@@ -205,20 +205,18 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
   }
 
   updateFrontPaginationDataIfNeeded(isPageSizeOrDataChange: boolean = false): void {
-    let data: any[] = []; // tslint:disable-line:no-any
+    let data = this.nzData || [];
     if (this.nzFrontPagination) {
-      this.nzTotal = this.nzData.length;
+      this.nzTotal = data.length;
       if (isPageSizeOrDataChange) {
-        const maxPageIndex = Math.ceil(this.nzData.length / this.nzPageSize) || 1;
+        const maxPageIndex = Math.ceil(data.length / this.nzPageSize) || 1;
         const pageIndex = this.nzPageIndex > maxPageIndex ? maxPageIndex : this.nzPageIndex;
         if (pageIndex !== this.nzPageIndex) {
           this.nzPageIndex = pageIndex;
           Promise.resolve().then(() => this.nzPageIndexChange.emit(pageIndex));
         }
       }
-      data = this.nzData.slice((this.nzPageIndex - 1) * this.nzPageSize, this.nzPageIndex * this.nzPageSize);
-    } else {
-      data = this.nzData;
+      data = data.slice((this.nzPageIndex - 1) * this.nzPageSize, this.nzPageIndex * this.nzPageSize);
     }
     this.data = [...data];
     this.nzCurrentPageDataChange.next(this.data);
