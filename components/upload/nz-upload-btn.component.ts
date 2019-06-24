@@ -72,7 +72,9 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
 
   @HostListener('drop', ['$event'])
   @HostListener('dragover', ['$event'])
-  onFileDrop(e: DragEvent): void {
+  // skip safari bug
+  // tslint:disable-next-line:no-any
+  onFileDrop(e: any): void {
     if (this.options.disabled || e.type === 'dragover') {
       e.preventDefault();
       return;
