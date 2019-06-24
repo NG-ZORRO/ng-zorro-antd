@@ -32,11 +32,11 @@ describe('nz-thead', () => {
       upButtons[0].click();
       fixture.detectChanges();
       expect(testComponent.sortChange).toHaveBeenCalledTimes(1);
-      expect(upButtons[0].querySelector('.ant-table-column-sorter-down').classList).toContain('on');
+      expect(upButtons[0].querySelector('.ant-table-column-sorter-down').classList).toContain('off');
       upButtons[1].click();
       fixture.detectChanges();
-      expect(upButtons[0].querySelector('.ant-table-column-sorter-down').classList).toContain('on');
-      expect(upButtons[1].querySelector('.ant-table-column-sorter-down').classList).toContain('on');
+      expect(upButtons[0].querySelector('.ant-table-column-sorter-down').classList).toContain('off');
+      expect(upButtons[1].querySelector('.ant-table-column-sorter-down').classList).toContain('off');
       expect(testComponent.sortChange).toHaveBeenCalledTimes(2);
     });
     it('should singleSort change', () => {
@@ -47,11 +47,11 @@ describe('nz-thead', () => {
       upButtons[0].click();
       fixture.detectChanges();
       expect(testComponent.sortChange).toHaveBeenCalledTimes(1);
-      expect(upButtons[0].querySelector('.ant-table-column-sorter-down').classList).toContain('on');
+      expect(upButtons[0].querySelector('.ant-table-column-sorter-down').classList).toContain('off');
       upButtons[1].click();
       fixture.detectChanges();
       expect(upButtons[0].querySelector('.ant-table-column-sorter-down').classList).toContain('off');
-      expect(upButtons[1].querySelector('.ant-table-column-sorter-down').classList).toContain('on');
+      expect(upButtons[1].querySelector('.ant-table-column-sorter-down').classList).toContain('off');
       expect(testComponent.sortChange).toHaveBeenCalledTimes(2);
     });
 
