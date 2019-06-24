@@ -2,7 +2,7 @@
 order: 5
 title: 
   zh-CN: 带下拉菜单的面包屑
-  en-US: Configuring the Separator
+  en-US: Bread crumbs with drop down menu
 ---
 
 ## zh-CN
@@ -11,5 +11,5 @@ title:
 
 ## en-US
 
-The separator can be customized by setting the separator property: `nzSeparator`
+Breadcrumbs support drop down menu.
 
