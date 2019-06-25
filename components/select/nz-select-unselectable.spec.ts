@@ -28,7 +28,6 @@ describe('select unselectable', () => {
 });
 
 @Component({
-  selector: 'nz-test-select-unselectable',
   template: `
     <div nz-select-unselectable></div>
   `

@@ -409,7 +409,6 @@ export class NzLayoutResponsiveComponent {
 }
 
 @Component({
-  selector: 'nz-demo-layout-basic',
   template: `
     <nz-layout>
       <nz-header>Header</nz-header>

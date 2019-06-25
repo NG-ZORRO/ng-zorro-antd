@@ -106,7 +106,6 @@ describe('time-picker', () => {
 });
 
 @Component({
-  selector: 'nz-test-time-picker',
   template: `
     <nz-time-picker
       [nzAutoFocus]="autoFocus"

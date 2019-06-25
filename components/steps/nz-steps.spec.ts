@@ -364,7 +364,6 @@ describe('steps', () => {
 });
 
 @Component({
-  selector: 'nz-test-outer-steps',
   template: `
     <nz-steps
       [nzCurrent]="current"
@@ -399,7 +398,6 @@ export class NzTestOuterStepsComponent {
 }
 
 @Component({
-  selector: 'nz-test-inner-step-string',
   template: `
     <nz-steps [nzCurrent]="current">
       <nz-step [nzTitle]="title" [nzDescription]="description" [nzIcon]="icon" [nzStatus]="status"></nz-step>
@@ -423,7 +421,6 @@ export class NzTestInnerStepStringComponent {
 }
 
 @Component({
-  selector: 'nz-test-inner-step-template',
   template: `
     <nz-steps [nzCurrent]="1">
       <nz-step [nzTitle]="titleTemplate" [nzDescription]="descriptionTemplate" [nzIcon]="iconTemplate"></nz-step>
@@ -438,7 +435,6 @@ export class NzTestInnerStepStringComponent {
 export class NzTestInnerStepTemplateComponent {}
 
 @Component({
-  selector: 'nz-test-step-for',
   template: `
     <nz-steps>
       <nz-step *ngFor="let step of steps; trackBy: trackById"></nz-step>
@@ -458,7 +454,6 @@ export class NzTestStepForComponent {
 }
 
 @Component({
-  selector: 'nz-test-step-async',
   template: `
     <nz-steps [nzCurrent]="1">
       <nz-step *ngFor="let step of steps; trackBy: trackById"></nz-step>

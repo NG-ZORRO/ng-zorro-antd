@@ -47,7 +47,6 @@ describe('nz-tbody', () => {
 });
 
 @Component({
-  selector: 'nz-tbody-test-table',
   template: `
     <table>
       <tbody></tbody>
@@ -57,7 +56,6 @@ describe('nz-tbody', () => {
 export class NzTbodyTestTableComponent {}
 
 @Component({
-  selector: 'nz-tbody-test-nz-table',
   template: `
     <nz-table>
       <tbody></tbody>
