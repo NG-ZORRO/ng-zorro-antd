@@ -243,6 +243,11 @@ describe('pagination', () => {
         expect(testComponent.pageIndex).toBe(5);
       });
     });
+    it('should zero total hide all', () => {
+      testComponent.total = 0;
+      fixture.detectChanges();
+      expect(pagination.nativeElement.innerText).toEqual('');
+    });
     it('should be hidden pagination when total is 0 and nzHideOnSinglePage is true', () => {
       (testComponent as NzTestPaginationComponent).total = 0;
       (testComponent as NzTestPaginationComponent).hideOnSinglePage = true;

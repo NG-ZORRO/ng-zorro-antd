@@ -7,7 +7,7 @@
   </a>
   <a *ngIf="type=='page'">{{ page }}</a>
 </ng-template>
-<ng-container *ngIf="nzHideOnSinglePage && (nzTotal > nzPageSize) || !nzHideOnSinglePage">
+<ng-container *ngIf="(nzHideOnSinglePage && (nzTotal > nzPageSize)) || (nzTotal && !nzHideOnSinglePage)">
   <ul class="ant-pagination"
       [class.ant-table-pagination]="nzInTable"
       [class.ant-pagination-simple]="nzSimple"
