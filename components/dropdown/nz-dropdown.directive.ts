@@ -72,6 +72,11 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
   setDisabled(disabled: boolean): void {
     if (disabled) {
       this.renderer.setAttribute(this.el, 'disabled', '');
+      if (this.nzVisible) {
+        this.nzVisible = false;
+        this.nzVisibleChange.emit(this.nzVisible);
+        this.updateOverlayByVisible();
+      }
     } else {
       this.renderer.removeAttribute(this.el, 'disabled');
     }
