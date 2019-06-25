@@ -17,8 +17,7 @@ import { Component } from '@angular/core';
         <button nz-button nzType="primary" (click)="onClick()">Create Now</button>
       </ng-template>
     </nz-empty>
-  `,
-  styles: []
+  `
 })
 export class NzDemoEmptyCustomizeComponent {
   onClick(): void {

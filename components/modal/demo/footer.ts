@@ -31,8 +31,7 @@ import { Component } from '@angular/core';
         <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isConfirmLoading">Custom Submit</button>
       </ng-template>
     </nz-modal>
-  `,
-  styles: []
+  `
 })
 export class NzDemoModalFooterComponent {
   isVisible = false;

@@ -14,7 +14,6 @@ import { Component } from '@angular/core';
         Col
       </div>
     </div>
-  `,
-  styles: []
+  `
 })
 export class NzDemoGridResponsiveComponent {}

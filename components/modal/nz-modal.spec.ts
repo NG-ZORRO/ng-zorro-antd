@@ -765,8 +765,7 @@ class NzDemoModalWithInputComponent {
     >
       <p>content</p>
     </nz-modal>
-  `,
-  styles: []
+  `
 })
 class NzDemoModalAsyncComponent {
   isVisible = false;
@@ -793,8 +792,7 @@ class NzDemoModalAsyncComponent {
   selector: 'nz-demo-modal-confirm-promise',
   template: `
     <button nz-button nzType="info" (click)="showConfirm()">Confirm</button>
-  `,
-  styles: []
+  `
 })
 class NzDemoModalConfirmPromiseComponent {
   confirmModal: NzModalRef; // For testing by now

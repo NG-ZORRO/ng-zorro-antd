@@ -19,12 +19,11 @@ import { Component } from '@angular/core';
     </nz-breadcrumb>
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu nzSelectable>
-        <li nz-menu-item><a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">General</a></li>
-        <li nz-menu-item><a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">Layout</a></li>
-        <li nz-menu-item><a target="_blank" rel="noopener noreferrer" href="http://www.tmall.com/">Navigation</a></li>
+        <li nz-menu-item>General</li>
+        <li nz-menu-item>Layout</li>
+        <li nz-menu-item>Navigation</li>
       </ul>
     </nz-dropdown-menu>
-  `,
-  styles: []
+  `
 })
 export class NzDemoBreadcrumbDropdownComponent {}

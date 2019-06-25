@@ -24,7 +24,6 @@ import { Component } from '@angular/core';
         col-12 col-offset-6
       </div>
     </div>
-  `,
-  styles: []
+  `
 })
 export class NzDemoGridOffsetComponent {}

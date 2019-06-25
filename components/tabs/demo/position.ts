@@ -12,8 +12,7 @@ import { Component } from '@angular/core';
     <nz-tabset [nzTabPosition]="position" [nzType]="'line'">
       <nz-tab *ngFor="let tab of tabs" [nzTitle]="'Tab ' + tab"> Content of tab {{ tab }} </nz-tab>
     </nz-tabset>
-  `,
-  styles: []
+  `
 })
 export class NzDemoTabsPositionComponent {
   position = 'top';

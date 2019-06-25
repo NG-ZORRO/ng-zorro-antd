@@ -21,8 +21,7 @@ import { NzModalService } from 'ng-zorro-antd';
     </div>
     <br />
     <button nz-button nzType="info" (click)="showConfirm()">Confirm</button>
-  `,
-  styles: []
+  `
 })
 export class NzDemoModalLocaleComponent {
   isVisible = false;

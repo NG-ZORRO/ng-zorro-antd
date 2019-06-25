@@ -8,8 +8,7 @@ import { Component, OnInit } from '@angular/core';
         {{ i + 1 }} col-order-{{ order }}
       </div>
     </div>
-  `,
-  styles: []
+  `
 })
 export class NzDemoGridFlexOrderComponent implements OnInit {
   orderList = [1, 2, 3, 4];

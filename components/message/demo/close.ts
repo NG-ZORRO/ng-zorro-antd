@@ -6,8 +6,7 @@ import { concatMap } from 'rxjs/operators';
   selector: 'nz-demo-message-close',
   template: `
     <button nz-button [nzType]="'default'" (click)="startShowMessages()">Display a sequence of messages</button>
-  `,
-  styles: []
+  `
 })
 export class NzDemoMessageCloseComponent {
   constructor(private message: NzMessageService) {}

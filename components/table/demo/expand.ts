@@ -27,8 +27,7 @@ import { Component } from '@angular/core';
         </ng-template>
       </tbody>
     </nz-table>
-  `,
-  styles: []
+  `
 })
 export class NzDemoTableExpandComponent {
   mapOfExpandData: { [key: string]: boolean } = {};
