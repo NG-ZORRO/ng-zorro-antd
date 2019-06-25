@@ -65,7 +65,6 @@ describe('input-time', () => {
 });
 
 @Component({
-  selector: 'nz-test-time-input',
   template: `
     <input [(ngModel)]="value" [nzTime]="'HH:mm:ss'" />
   `

@@ -222,7 +222,6 @@ describe('input-group', () => {
 });
 
 @Component({
-  selector: 'nz-test-input-group-addon',
   template: `
     <nz-input-group [nzAddOnBefore]="beforeContent" [nzAddOnAfter]="afterContent" [nzSize]="size">
       <input type="text" nz-input />
@@ -240,7 +239,6 @@ export class NzTestInputGroupAddonComponent {
 }
 
 @Component({
-  selector: 'nz-test-input-group-affix',
   template: `
     <nz-input-group [nzPrefix]="beforeContent" [nzSuffix]="afterContent" [nzSize]="size">
       <input type="text" nz-input />
@@ -258,7 +256,6 @@ export class NzTestInputGroupAffixComponent {
 }
 
 @Component({
-  selector: 'nz-test-input-group-multiple',
   template: `
     <nz-input-group [nzCompact]="compact" [nzSearch]="search" [nzSize]="size">
       <input type="text" nz-input />
@@ -274,7 +271,6 @@ export class NzTestInputGroupMultipleComponent {
 
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1795 **/
 @Component({
-  selector: 'nz-test-input-group-mix',
   template: `
     <nz-input-group nzPrefixIcon="anticon anticon-user" nzAddOnAfter="@example.com">
       <input type="text" nz-input placeholder="邮箱地址" />
@@ -284,7 +280,6 @@ export class NzTestInputGroupMultipleComponent {
 export class NzTestInputGroupMixComponent {}
 
 @Component({
-  selector: 'nz-test-input-group-col',
   template: `
     <nz-input-group>
       <div nz-col nzSpan="4">

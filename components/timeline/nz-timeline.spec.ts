@@ -145,7 +145,6 @@ describe('timeline', () => {
 });
 
 @Component({
-  selector: 'nz-test-timeline-basic',
   template: `
     <ng-template #dotTemplate>template</ng-template>
     <nz-timeline [nzPending]="pending" [nzReverse]="reverse" [nzMode]="mode">
@@ -167,7 +166,6 @@ export class NzTestTimelineBasicComponent {
 }
 
 @Component({
-  selector: 'nz-test-timeline-custom-color',
   template: `
     <nz-timeline>
       <nz-timeline-item [nzColor]="'grey'">Create a services site 2015-09-01</nz-timeline-item>
@@ -180,7 +178,6 @@ export class NzTestTimelineBasicComponent {
 export class NzTestTimelineCustomColorComponent {}
 
 @Component({
-  selector: 'nz-test-timeline-pending',
   template: `
     <ng-template #pendingTemplate>template</ng-template>
     <nz-timeline [nzPending]="pendingTemplate">

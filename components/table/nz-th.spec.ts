@@ -307,7 +307,6 @@ describe('nz-th', () => {
 });
 
 @Component({
-  selector: 'nz-th-test-nz-table',
   template: `
     <nz-table *ngIf="!destroy">
       <th
@@ -362,7 +361,6 @@ export class NzThTestNzTableComponent {
 }
 
 @Component({
-  selector: 'nz-demo-table-default-filter',
   template: `
     <nz-table #filterTable [nzData]="displayData">
       <thead (nzSortChange)="sort($event)" nzSingleSort>
@@ -468,7 +466,6 @@ export class NzThTestTableDefaultFilterComponent {
 }
 
 @Component({
-  selector: 'nz-disable-th',
   template: `
     <th class="nz-disable-th" [nzShowCheckbox]="true"></th>
   `

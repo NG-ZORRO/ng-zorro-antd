@@ -643,7 +643,6 @@ describe('nz-tree', () => {
 });
 
 @Component({
-  selector: 'nz-test-tree-basic-controlled',
   template: `
     <nz-tree
       #treeComponent
@@ -737,7 +736,6 @@ export class NzTestTreeBasicControlledComponent {
 // -------------------------------------------
 
 @Component({
-  selector: 'nz-demo-tree-draggable',
   template: `
     <nz-tree
       nzBlockNode
@@ -837,7 +835,6 @@ export class NzTestTreeDraggableComponent {
 // | Testing Older Components
 // -------------------------------------------
 @Component({
-  selector: 'nz-test-older-tree',
   template: `
     <nz-tree
       [(ngModel)]="modelNodes"
@@ -944,7 +941,6 @@ export class NzTestTreeOlderComponent implements OnInit {
 }
 
 @Component({
-  selector: 'nz-demo-tree-customized-icon',
   template: `
     <nz-tree #treeComponent [nzData]="nodes" nzShowIcon="true" [nzExpandedIcon]="expandedIconTpl">
       <ng-template #expandedIconTpl let-node>

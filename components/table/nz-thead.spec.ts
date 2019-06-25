@@ -79,7 +79,6 @@ describe('nz-thead', () => {
 });
 
 @Component({
-  selector: 'nz-thead-test-nz-table',
   template: `
     <nz-table>
       <thead [nzSingleSort]="singleSort" (nzSortChange)="sortChange($event)">

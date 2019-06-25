@@ -2002,7 +2002,6 @@ const options4 = [
 const options5: any[] = []; // tslint:disable-line:no-any
 
 @Component({
-  selector: 'nz-demo-cascader-default',
   template: `
     <nz-cascader
       [nzOptions]="nzOptions"
@@ -2087,7 +2086,6 @@ export class NzDemoCascaderDefaultComponent {
 }
 
 @Component({
-  selector: 'nz-demo-cascader-load-data',
   template: `
     <nz-cascader
       [nzOptions]="nzOptions"

@@ -482,7 +482,6 @@ describe('tabs', () => {
 });
 
 @Component({
-  selector: 'nz-test-tabs-basic',
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['../style/index.less', './style/index.less'],
   template: `
@@ -567,7 +566,6 @@ export class NzTestTabsBasicComponent {
 
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1964 **/
 @Component({
-  selector: 'nz-test-tabs-tab-position-left',
   template: `
     <nz-tabset nzTabPosition="left">
       <nz-tab *ngFor="let tab of tabs" [nzTitle]="'Tab' + tab"> Content of tab {{ tab }} </nz-tab>

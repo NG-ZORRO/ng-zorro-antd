@@ -104,7 +104,6 @@ describe('nz descriptions', () => {
 });
 
 @Component({
-  selector: 'nz-test-descriptions',
   template: `
     <nz-descriptions [nzTitle]="title" [nzBordered]="bordered" [nzColumn]="column">
       <nz-descriptions-item *ngFor="let col of colspanArray; let i = index" [nzTitle]="'Title' + i" [nzSpan]="col">

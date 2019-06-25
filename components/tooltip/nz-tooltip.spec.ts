@@ -10,7 +10,6 @@ import { NzTooltipDirective } from './nz-tooltip.directive';
 import { NzToolTipModule } from './nz-tooltip.module';
 
 @Component({
-  selector: 'nz-tooltip-test-directive',
   template: `
     <a
       #titleString
@@ -48,7 +47,6 @@ export class NzTooltipTestDirectiveComponent {
 }
 
 @Component({
-  selector: 'nz-tooltip-test-wrapper',
   template: `
     <a #mostSimpleTrigger nz-tooltip="MOST-SIMPLE">Show</a>
     <nz-tooltip [nzTitle]="'NORMAL'" [nzTrigger]="'hover'"><span #normalTrigger nz-tooltip>Show</span></nz-tooltip>

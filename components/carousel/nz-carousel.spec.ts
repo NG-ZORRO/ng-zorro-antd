@@ -12,7 +12,6 @@ import { NzCarouselModule } from './nz-carousel.module';
 import { NzCarouselOpacityStrategy } from './strategies/opacity-strategy';
 
 @Component({
-  selector: 'nz-test-carousel-basic',
   template: `
     <nz-carousel
       [nzEffect]="effect"

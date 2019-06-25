@@ -91,7 +91,6 @@ describe('input', () => {
 });
 
 @Component({
-  selector: 'nz-test-input-with-input',
   template: `
     <input nz-input [nzSize]="size" [disabled]="disabled" />
   `
@@ -102,7 +101,6 @@ export class NzTestInputWithInputComponent {
 }
 
 @Component({
-  selector: 'nz-test-input-with-textarea',
   template: `
     <textarea nz-input></textarea>
   `
@@ -110,7 +108,6 @@ export class NzTestInputWithInputComponent {
 export class NzTestInputWithTextAreaComponent {}
 
 @Component({
-  selector: 'nz-test-input-form',
   template: `
     <form [formGroup]="formGroup">
       <input nz-input formControlName="input" />
