@@ -5,11 +5,11 @@ import { fakeAsync, flush, tick, ComponentFixture, TestBed } from '@angular/core
 import { createKeyboardEvent, dispatchFakeEvent, typeInElement } from 'ng-zorro-antd/core';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
-import { NzDemoTypographyEllipsisComponent } from './demo/ellipsis';
 import { NzTypographyComponent } from './nz-typography.component';
 import { NzTypographyModule } from './nz-typography.module';
 
-// declare const viewport: any;
+// tslint:disable-next-line no-any
+declare const viewport: any;
 
 describe('typography', () => {
   let componentElement: HTMLElement;
@@ -21,7 +21,7 @@ describe('typography', () => {
         NzTestTypographyComponent,
         NzTestTypographyCopyComponent,
         NzTestTypographyEditComponent,
-        NzDemoTypographyEllipsisComponent
+        NzTestTypographyEllipsisComponent
       ]
     }).compileComponents();
   });
@@ -140,6 +140,18 @@ describe('typography', () => {
       expect(testComponent.str).toBe('test');
     });
 
+    it('should edit focus', fakeAsync(() => {
+      const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');
+      editButton!.click();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      const textarea = componentElement.querySelector<HTMLTextAreaElement>('textarea')! as HTMLTextAreaElement;
+      expect(document.activeElement === textarea).toBe(true);
+      dispatchFakeEvent(textarea, 'blur');
+      fixture.detectChanges();
+    }));
+
     it('should apply changes when Enter keydown', () => {
       const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');
       editButton!.click();
@@ -155,31 +167,118 @@ describe('typography', () => {
   });
 
   describe('ellipsis', () => {
-    let fixture: ComponentFixture<NzDemoTypographyEllipsisComponent>;
-    // let testComponent: NzDemoTypographyEllipsisComponent;
+    let fixture: ComponentFixture<NzTestTypographyEllipsisComponent>;
+    let testComponent: NzTestTypographyEllipsisComponent;
 
     beforeEach(fakeAsync(() => {
-      fixture = TestBed.createComponent(NzDemoTypographyEllipsisComponent);
-      // testComponent = fixture.componentInstance;
+      viewport.set(1200, 1000);
+      fixture = TestBed.createComponent(NzTestTypographyEllipsisComponent);
+      testComponent = fixture.componentInstance;
       componentElement = fixture.debugElement.nativeElement;
+      fixture.detectChanges();
+      tick(16);
       fixture.detectChanges();
     }));
 
-    it('should ellipsis', fakeAsync(() => {
-      // viewport.set(800, 1000);
-      // dispatchFakeEvent(window, 'resize');
-      fixture.detectChanges();
-      tick();
+    it('should ellipsis work', fakeAsync(() => {
       componentElement.querySelectorAll('p').forEach(e => {
         expect(e.classList).toContain('ant-typography-ellipsis');
       });
     }));
 
     it('should css ellipsis', fakeAsync(() => {
+      const singleLine = componentElement.querySelector('.single')!;
+      const multipleLine = componentElement.querySelector('.multiple')!;
+      const dynamicContent = componentElement.querySelector('.dynamic')!;
+      expect(singleLine.classList).toContain('ant-typography-ellipsis-single-line');
+      expect(multipleLine.classList).toContain('ant-typography-ellipsis-multiple-line');
+      expect(dynamicContent.classList).toContain('ant-typography-ellipsis-multiple-line');
+      testComponent.expandable = true;
       fixture.detectChanges();
-      tick();
-      const element = componentElement.querySelectorAll('p')[0]!;
-      expect(element.classList).toContain('ant-typography-ellipsis-single-line');
+      expect(singleLine.classList).not.toContain('ant-typography-ellipsis-single-line');
+      expect(multipleLine.classList).not.toContain('ant-typography-ellipsis-multiple-line');
+      expect(dynamicContent.classList).not.toContain('ant-typography-ellipsis-multiple-line');
+    }));
+
+    it('should resize when content changed', fakeAsync(() => {
+      testComponent.expandable = true;
+      fixture.detectChanges();
+      tick(16);
+      fixture.detectChanges();
+      const dynamicContent = componentElement.querySelector('.dynamic')! as HTMLParagraphElement;
+      expect(dynamicContent.innerText.includes('...')).toBe(true);
+      testComponent.str = 'short content.';
+      fixture.detectChanges();
+      tick(16);
+      fixture.detectChanges();
+      expect(dynamicContent.innerText.includes('...')).toBe(false);
+    }));
+
+    it('should resize work', fakeAsync(() => {
+      testComponent.expandable = true;
+      fixture.detectChanges();
+      tick(16);
+      fixture.detectChanges();
+      componentElement.querySelectorAll('p').forEach(e => {
+        expect(e.innerText.includes('...')).toBe(true);
+      });
+      viewport.set(8000, 1000);
+      dispatchFakeEvent(window, 'resize');
+      fixture.detectChanges();
+      tick(32);
+      fixture.detectChanges();
+      componentElement.querySelectorAll('p').forEach(e => {
+        expect(e.innerText.includes('...')).toBe(false);
+      });
+      viewport.set(400, 1000);
+      dispatchFakeEvent(window, 'resize');
+      fixture.detectChanges();
+      tick(16);
+      viewport.set(800, 1000);
+      dispatchFakeEvent(window, 'resize');
+      fixture.detectChanges();
+      tick(32);
+      fixture.detectChanges();
+      componentElement.querySelectorAll('p').forEach(e => {
+        expect(e.innerText.includes('...')).toBe(true);
+      });
+    }));
+
+    it('should expandable', fakeAsync(() => {
+      testComponent.expandable = true;
+      fixture.detectChanges();
+      tick(16);
+      componentElement.querySelectorAll('p').forEach((e, i) => {
+        expect(e.classList).toContain('ant-typography-ellipsis');
+        const expandBtn = e.querySelector('.ant-typography-expand') as HTMLAnchorElement;
+        expect(expandBtn).toBeTruthy();
+        expandBtn!.click();
+        fixture.detectChanges();
+        expect(e.classList).not.toContain('ant-typography-ellipsis');
+        expect(testComponent.onExpand).toHaveBeenCalledTimes(i + 1);
+      });
+    }));
+
+    it('should not resize when is expanded', fakeAsync(() => {
+      testComponent.expandable = true;
+      fixture.detectChanges();
+      tick(16);
+      componentElement.querySelectorAll('p').forEach(e => {
+        const expandBtn = e.querySelector('.ant-typography-expand') as HTMLAnchorElement;
+        expandBtn!.click();
+        fixture.detectChanges();
+      });
+      testComponent.expandable = false;
+      fixture.detectChanges();
+      tick(16);
+      viewport.set(800, 1000);
+      dispatchFakeEvent(window, 'resize');
+      fixture.detectChanges();
+      tick(32);
+      fixture.detectChanges();
+      componentElement.querySelectorAll('p').forEach(e => {
+        expect(e.innerText.includes('...')).toBe(false);
+      });
     }));
   });
 });
@@ -233,4 +332,56 @@ export class NzTestTypographyEditComponent {
   onChange = (text: string): void => {
     this.str = text;
   };
+}
+
+@Component({
+  template: `
+    <p nz-paragraph nzEllipsis [nzExpandable]="expandable" (nzExpand)="onExpand()" class="single">
+      Ant Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a design
+      language for background applications, is refined by Ant UED Team. Ant Design, a design language for background
+      applications, is refined by Ant UED Team. Ant Design, a design language for background applications, is refined by
+      Ant UED Team. Ant Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a
+      design language for background applications, is refined by Ant UED Team.
+    </p>
+    <br />
+    <p
+      nz-paragraph
+      nzEllipsis
+      [nzExpandable]="expandable"
+      [nzEllipsisRows]="3"
+      (nzExpand)="onExpand()"
+      class="multiple"
+    >
+      Ant Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a design
+      language for background applications, is refined by Ant UED Team. Ant Design, a design language for background
+      applications, is refined by Ant UED Team. Ant Design, a design language for background applications, is refined by
+      Ant UED Team. Ant Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a
+      design language for background applications, is refined by Ant UED Team.
+    </p>
+    <p
+      nz-paragraph
+      nzEllipsis
+      [nzExpandable]="expandable"
+      [nzEllipsisRows]="2"
+      (nzExpand)="onExpand()"
+      [nzContent]="str"
+      class="dynamic"
+    ></p>
+  `,
+  styles: [
+    `
+      p {
+        line-height: 1.5;
+      }
+    `
+  ]
+})
+export class NzTestTypographyEllipsisComponent {
+  expandable = false;
+  onExpand = jasmine.createSpy('expand callback');
+
+  @ViewChild(NzTypographyComponent, { static: false }) nzTypographyComponent: NzTypographyComponent;
+  str = new Array(5)
+    .fill('Ant Design, a design language for background applications, is refined by Ant UED Team.')
+    .join('');
 }

@@ -24,6 +24,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzAutosizeDirective } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-text-edit',
@@ -42,6 +43,7 @@ export class NzTextEditComponent implements OnInit, OnDestroy {
   @Output() readonly startEditing = new EventEmitter<void>();
   @Output() readonly endEditing = new EventEmitter<string>();
   @ViewChild('textarea', { static: false }) textarea: ElementRef<HTMLTextAreaElement>;
+  @ViewChild(NzAutosizeDirective, { static: false }) autosizeDirective: NzAutosizeDirective;
 
   beforeText: string;
   currentText: string;
@@ -94,6 +96,7 @@ export class NzTextEditComponent implements OnInit, OnDestroy {
       if (this.textarea && this.textarea.nativeElement) {
         this.textarea.nativeElement.focus();
         this.textarea.nativeElement.value = this.currentText;
+        this.autosizeDirective.resizeToFitContent();
       }
     });
   }
