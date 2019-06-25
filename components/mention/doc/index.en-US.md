@@ -43,7 +43,7 @@ import { NzMentionModule } from 'ng-zorro-antd/mention';
 | `[nzSuggestions]` | Suggestion content | `any[]` | `[]` |
 | `[nzValueWith]` | Function that maps an suggestion's value  | `(any) => string \| (value: string) => string` |
 | `(nzOnSelect)` | Callback function called when select from suggestions | `EventEmitter<any>` | - |
-| `(onSearchChange)` | Callback function called when search content changes| `EventEmitter<MentionOnSearchTypes>` | - |
+| `(nzOnSearchChange)` | Callback function called when search content changes| `EventEmitter<MentionOnSearchTypes>` | - |
 
 #### Methods
 
