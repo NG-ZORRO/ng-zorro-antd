@@ -511,8 +511,7 @@ describe('NzDrawerService', () => {
       <p>Some contents...</p>
       <p>Some contents...</p>
     </nz-drawer>
-  `,
-  styles: []
+  `
 })
 class NzTestDrawerComponent {
   visible = false;

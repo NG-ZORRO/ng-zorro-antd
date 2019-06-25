@@ -24,8 +24,7 @@ import { Component, OnInit } from '@angular/core';
         {{ tab.content }}
       </nz-tab>
     </nz-tabset>
-  `,
-  styles: []
+  `
 })
 export class NzDemoTabsSlideComponent implements OnInit {
   tabs: any[] = [];

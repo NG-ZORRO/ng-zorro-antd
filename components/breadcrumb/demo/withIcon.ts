@@ -14,7 +14,6 @@ import { Component } from '@angular/core';
         Application
       </nz-breadcrumb-item>
     </nz-breadcrumb>
-  `,
-  styles: []
+  `
 })
 export class NzDemoBreadcrumbWithIconComponent {}

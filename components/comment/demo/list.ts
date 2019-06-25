@@ -15,8 +15,7 @@ import { addDays, distanceInWords } from 'date-fns';
         </nz-comment>
       </ng-template>
     </nz-list>
-  `,
-  styles: []
+  `
 })
 export class NzDemoCommentListComponent {
   data = [

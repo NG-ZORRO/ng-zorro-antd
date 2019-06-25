@@ -20,8 +20,7 @@ import { Component } from '@angular/core';
       [nzShowTotal]="totalTemplate"
     ></nz-pagination>
     <ng-template #totalTemplate let-total>Total {{ total }} items</ng-template>
-  `,
-  styles: []
+  `
 })
 export class NzDemoPaginationMiniComponent {
   current = 1;

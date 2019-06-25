@@ -6,8 +6,7 @@ import { Component } from '@angular/core';
     <nz-tabset [nzTabPosition]="'top'" [nzType]="'card'">
       <nz-tab *ngFor="let tab of tabs" [nzTitle]="'Tab' + tab"> Content of Tab Pane {{ tab }} </nz-tab>
     </nz-tabset>
-  `,
-  styles: []
+  `
 })
 export class NzDemoTabsCardComponent {
   tabs = [1, 2, 3];

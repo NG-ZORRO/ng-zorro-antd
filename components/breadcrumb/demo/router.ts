@@ -11,7 +11,6 @@ import { Component } from '@angular/core';
         Breadcrumb
       </nz-breadcrumb-item>
     </nz-breadcrumb>
-  `,
-  styles: []
+  `
 })
 export class NzDemoBreadcrumbRouterComponent {}

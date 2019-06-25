@@ -8,8 +8,7 @@ import { Component } from '@angular/core';
         <p>{{ panel.name }} content</p>
       </nz-collapse-panel>
     </nz-collapse>
-  `,
-  styles: []
+  `
 })
 export class NzDemoCollapseAccordionComponent {
   panels = [

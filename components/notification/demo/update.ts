@@ -7,8 +7,7 @@ import { NzNotificationService } from 'ng-zorro-antd';
     <button nz-button [nzType]="'primary'" (click)="createAutoUpdatingNotifications()">
       Open the notification box
     </button>
-  `,
-  styles: []
+  `
 })
 export class NzDemoNotificationUpdateComponent {
   constructor(private notification: NzNotificationService) {}

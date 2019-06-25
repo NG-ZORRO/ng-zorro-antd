@@ -565,8 +565,7 @@ export class NzTestMenuHorizontalComponent {
         </ul>
       </li>
     </ul>
-  `,
-  styles: []
+  `
 })
 export class NzTestMenuInlineComponent {
   disabled = false;
@@ -592,8 +591,7 @@ export class NzTestMenuInlineComponent {
         </ul>
       </li>
     </ul>
-  `,
-  styles: []
+  `
 })
 export class NzDemoMenuNgForComponent {
   menus = [

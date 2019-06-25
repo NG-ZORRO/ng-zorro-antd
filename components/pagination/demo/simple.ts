@@ -4,7 +4,6 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-pagination-simple',
   template: `
     <nz-pagination [nzPageIndex]="2" [nzTotal]="50" nzSimple></nz-pagination>
-  `,
-  styles: []
+  `
 })
 export class NzDemoPaginationSimpleComponent {}

@@ -14,8 +14,7 @@ import { Component } from '@angular/core';
         <li nz-menu-item (click)="visible = false">Clicking me will close the menu</li>
       </ul>
     </nz-dropdown-menu>
-  `,
-  styles: []
+  `
 })
 export class NzDemoDropdownOverlayVisibleComponent {
   visible = false;

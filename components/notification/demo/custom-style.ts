@@ -5,8 +5,7 @@ import { NzNotificationService } from 'ng-zorro-antd';
   selector: 'nz-demo-notification-custom-style',
   template: `
     <button nz-button [nzType]="'primary'" (click)="createBasicNotification()">Open the notification box</button>
-  `,
-  styles: []
+  `
 })
 export class NzDemoNotificationCustomStyleComponent {
   constructor(private notification: NzNotificationService) {}

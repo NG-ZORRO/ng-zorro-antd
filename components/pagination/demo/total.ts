@@ -10,7 +10,6 @@ import { Component } from '@angular/core';
     <ng-template #rangeTemplate let-range="range" let-total>
       {{ range[0] }}-{{ range[1] }} of {{ total }} items
     </ng-template>
-  `,
-  styles: []
+  `
 })
 export class NzDemoPaginationTotalComponent {}
