@@ -259,7 +259,6 @@ describe('nz icon twotone color injection', () => {
 });
 
 @Component({
-  selector: 'nz-test-icon-extensions',
   template: `
     <i nz-icon [nzType]="type" [nzTheme]="theme" [nzSpin]="spin" [nzRotate]="rotate"></i>
     <i nz-icon [nzType]="'loading'" [nzTheme]="theme"></i>
@@ -275,7 +274,6 @@ export class NzTestIconExtensionsComponent {
 }
 
 @Component({
-  selector: 'nz-test-icon-prefix',
   template: `
     <i nz-icon [nzType]="'question-circle'" [nzTheme]="'fill'"></i>
   `
@@ -283,7 +281,6 @@ export class NzTestIconExtensionsComponent {
 export class NzTestIconPrefixComponent {}
 
 @Component({
-  selector: 'nz-test-icon-custom',
   template: `
     <i nz-icon style="color: hotpink;">
       <svg>
@@ -297,7 +294,6 @@ export class NzTestIconPrefixComponent {}
 export class NzTestIconCustomComponent {}
 
 @Component({
-  selector: 'nz-test-icon-iconfont',
   template: `
     <i nz-icon [nzIconfont]="'icon-tuichu'"></i>
     <i nz-icon [nzIconfont]="'icon-facebook'"></i>
@@ -313,7 +309,6 @@ export class NzTestIconIconfontComponent {
 }
 
 @Component({
-  selector: 'nz-test-icon-old-api',
   template: `
     <i class="anticon anticon-question"></i>
     <i class="anticon anticon-verticle"></i>

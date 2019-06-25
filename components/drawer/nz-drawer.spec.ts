@@ -483,7 +483,6 @@ describe('NzDrawerService', () => {
 });
 
 @Component({
-  selector: 'nz-test-drawer',
   template: `
     <button (click)="open()">Open</button>
     <ng-template #customTitle>
@@ -539,7 +538,6 @@ class NzTestDrawerComponent {
 }
 
 @Component({
-  selector: 'nz-test-drawer-with-service',
   template: `
     <ng-template #drawerTemplate>
       <span>Template</span>
@@ -569,7 +567,6 @@ class NzTestDrawerWithServiceComponent {
 }
 
 @Component({
-  selector: 'nz-drawer-custom-component',
   template: `
     <div>
       <p>Custom Component</p>

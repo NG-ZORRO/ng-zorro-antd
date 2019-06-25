@@ -285,7 +285,6 @@ describe('time-picker-panel', () => {
 });
 
 @Component({
-  selector: 'nz-test-time-panel',
   encapsulation: ViewEncapsulation.None,
   template: `
     <nz-time-picker-panel
@@ -311,7 +310,6 @@ export class NzTestTimePanelComponent {
 }
 
 @Component({
-  selector: 'nz-test-time-panel-disabled',
   encapsulation: ViewEncapsulation.None,
   template: `
     <nz-time-picker-panel
@@ -363,7 +361,6 @@ export class NzTestTimePanelDisabledComponent {
   }
 }
 @Component({
-  selector: 'nz-test-12-hour-time-panel',
   encapsulation: ViewEncapsulation.None,
   template: `
     <nz-time-picker-panel
@@ -385,7 +382,6 @@ export class NzTest12HourTimePanelComponent {
   openValue = new Date(0, 0, 0, 0, 0, 0);
 }
 @Component({
-  selector: 'nz-test-12-hour-time-panel',
   encapsulation: ViewEncapsulation.None,
   template: `
     <nz-time-picker-panel

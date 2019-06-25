@@ -172,7 +172,6 @@ describe('collapse', () => {
 });
 
 @Component({
-  selector: 'nz-test-collapse-basic',
   template: `
     <ng-template #headerTemplate>template</ng-template>
     <nz-collapse [nzAccordion]="accordion" [nzBordered]="bordered">
@@ -206,7 +205,6 @@ export class NzTestCollapseBasicComponent {
 }
 
 @Component({
-  selector: 'nz-test-collapse-template',
   template: `
     <ng-template #headerTemplate>template</ng-template>
     <nz-collapse>
@@ -219,7 +217,6 @@ export class NzTestCollapseBasicComponent {
 export class NzTestCollapseTemplateComponent {}
 
 @Component({
-  selector: 'nz-test-collapse-icon',
   template: `
     <nz-collapse>
       <nz-collapse-panel>

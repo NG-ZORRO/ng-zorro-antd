@@ -316,7 +316,6 @@ describe('nz-table', () => {
 });
 
 @Component({
-  selector: 'nz-test-table-basic',
   template: `
     <nz-table
       #dynamicTable
@@ -408,7 +407,6 @@ export class NzTestTableBasicComponent implements OnInit {
 }
 
 @Component({
-  selector: 'nz-test-table-scroll',
   template: `
     <div style="display: block;" [style.width.px]="width">
       <nz-table #nzTable [nzData]="dataSet" [nzPageSize]="10" [nzScroll]="{ x: '600px', y: '240px' }">

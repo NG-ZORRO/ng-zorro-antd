@@ -230,7 +230,6 @@ describe('switch', () => {
 });
 
 @Component({
-  selector: 'nz-test-switch-basic',
   template: `
     <ng-template #checkedChildrenTemplate><i nz-icon type="check"></i></ng-template>
     <ng-template #unCheckedChildrenTemplate><i nz-icon type="closs"></i></ng-template>
@@ -262,7 +261,6 @@ export class NzTestSwitchBasicComponent {
 }
 
 @Component({
-  selector: 'nz-test-switch-template',
   template: `
     <ng-template #checkedChildrenTemplate><i nz-icon type="check"></i></ng-template>
     <ng-template #unCheckedChildrenTemplate><i nz-icon type="close"></i></ng-template>
@@ -273,7 +271,6 @@ export class NzTestSwitchBasicComponent {
 export class NzTestSwitchTemplateComponent {}
 
 @Component({
-  selector: 'nz-test-switch-form',
   template: `
     <form [formGroup]="formGroup">
       <nz-switch formControlName="switchValue"></nz-switch>

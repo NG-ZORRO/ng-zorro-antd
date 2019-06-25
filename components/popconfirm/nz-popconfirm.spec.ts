@@ -277,7 +277,6 @@ describe('NzPopconfirm', () => {
 });
 
 @Component({
-  selector: 'nz-popconfirm-test-new',
   template: `
     <a
       nz-popconfirm
@@ -325,7 +324,6 @@ export class NzpopconfirmTestNewComponent {
 }
 
 @Component({
-  selector: 'nz-popconfirm-test-wrapper',
   template: `
     <nz-popconfirm [nzOkType]="nzOkType" [nzTitle]="'NORMAL'" [nzTrigger]="'hover'">
       <span #normalTrigger nz-popconfirm>Show</span>

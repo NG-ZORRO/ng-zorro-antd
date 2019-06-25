@@ -751,7 +751,6 @@ class NzDemoModalWithInputComponent {
 }
 
 @Component({
-  selector: 'nz-demo-modal-async',
   template: `
     <button nz-button nzType="primary" (click)="showModal()">
       <span>show modal</span>
@@ -789,7 +788,6 @@ class NzDemoModalAsyncComponent {
 }
 
 @Component({
-  selector: 'nz-demo-modal-confirm-promise',
   template: `
     <button nz-button nzType="info" (click)="showConfirm()">Confirm</button>
   `
@@ -954,7 +952,6 @@ export class TestConfirmCustomComponent {
 class TestCssUnitPipeComponent {}
 
 @Component({
-  selector: 'nz-modal-by-service',
   template: `
     <nz-modal [(nzVisible)]="nonServiceModalVisible" nzWrapClassName="__NON_SERVICE_ID_SUFFIX__"></nz-modal>
   `,

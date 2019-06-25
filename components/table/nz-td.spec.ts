@@ -187,7 +187,6 @@ describe('nz-td', () => {
 });
 
 @Component({
-  selector: 'nz-test-td',
   template: `
     <td
       [nzShowCheckbox]="showCheckbox"
@@ -219,7 +218,6 @@ export class NzTestTdComponent {
 }
 
 @Component({
-  selector: 'nz-disable-td',
   template: `
     <td class="nz-disable-td" [nzShowCheckbox]="true"></td>
   `

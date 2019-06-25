@@ -58,7 +58,6 @@ describe('nz-countdown', () => {
 });
 
 @Component({
-  selector: 'nz-test',
   template: `
     <nz-countdown [nzTitle]="'Countdown'" [nzValue]="value" [nzFormat]="format" [nzValueTemplate]="template">
     </nz-countdown>

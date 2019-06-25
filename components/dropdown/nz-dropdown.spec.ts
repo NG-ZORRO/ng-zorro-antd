@@ -424,7 +424,6 @@ describe('dropdown-deprecated', () => {
 });
 
 @Component({
-  selector: 'nz-test-dropdown',
   template: `
     <nz-dropdown
       [(nzVisible)]="visible"
@@ -472,7 +471,6 @@ export class NzTestDropdownComponent {
 }
 
 @Component({
-  selector: 'nz-test-dropdown-button',
   template: `
     <nz-dropdown-button
       (nzClick)="click($event)"
@@ -512,7 +510,6 @@ export class NzTestDropdownButtonComponent {
 }
 
 @Component({
-  selector: 'nz-test-dropdown-with-button',
   template: `
     <nz-dropdown>
       <button nz-button nz-dropdown><span>Button</span> <i nz-icon type="down"></i></button>
@@ -533,7 +530,6 @@ export class NzTestDropdownButtonComponent {
 export class NzTestDropdownWithButtonComponent {}
 
 @Component({
-  selector: 'nz-test-dropdown-contextmenu',
   template: `
     <ng-template #template>
       <ul nz-menu nzInDropDown>

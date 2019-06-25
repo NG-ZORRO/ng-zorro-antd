@@ -504,7 +504,6 @@ describe('menu', () => {
 });
 
 @Component({
-  selector: 'nz-test-menu-horizontal',
   template: `
     <ul nz-menu [nzMode]="'horizontal'">
       <li nz-submenu nzMenuClassName="submenu" [nzOpen]="open" [style.width.px]="width">
@@ -554,7 +553,6 @@ export class NzTestMenuHorizontalComponent {
 }
 
 @Component({
-  selector: 'nz-test-menu-inline',
   template: `
     <ul nz-menu [nzMode]="'inline'" [nzInlineCollapsed]="collapse">
       <li nz-submenu [nzMenuClassName]="submenuClassName" [nzDisabled]="disabled">
@@ -576,7 +574,6 @@ export class NzTestMenuInlineComponent {
 }
 
 @Component({
-  selector: 'nz-demo-menu-ngfor',
   template: `
     <ul nz-menu [nzMode]="'inline'" style="width: 240px;">
       <li *ngFor="let l1 of menus" nz-submenu>

@@ -305,7 +305,6 @@ describe('radio', () => {
 });
 
 @Component({
-  selector: 'nz-test-radio-single',
   template: `
     <label
       nz-radio
@@ -326,7 +325,6 @@ export class NzTestRadioSingleComponent {
 }
 
 @Component({
-  selector: 'nz-test-radio-button',
   template: `
     <label nz-radio-button>Radio</label>
   `
@@ -334,7 +332,6 @@ export class NzTestRadioSingleComponent {
 export class NzTestRadioButtonComponent {}
 
 @Component({
-  selector: 'nz-test-radio-group',
   template: `
     <nz-radio-group
       [(ngModel)]="value"
@@ -361,7 +358,6 @@ export class NzTestRadioGroupComponent {
 }
 
 @Component({
-  selector: 'nz-test-radio-form',
   template: `
     <form [formGroup]="formGroup">
       <label nz-radio formControlName="radio"></label>
@@ -383,7 +379,6 @@ export class NzTestRadioFormComponent {
 }
 
 @Component({
-  selector: 'nz-test-radio-group-form',
   template: `
     <form [formGroup]="formGroup">
       <nz-radio-group formControlName="radioGroup">
@@ -413,7 +408,6 @@ export class NzTestRadioGroupFormComponent {
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1734 **/
 
 @Component({
-  selector: 'nz-test-radio-group-disabled',
   template: `
     <nz-radio-group [(ngModel)]="value" [nzName]="name" [nzDisabled]="disabled" [nzSize]="size">
       <label nz-radio-button nzValue="A">A</label>
@@ -433,7 +427,6 @@ export class NzTestRadioGroupDisabledComponent {
 
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1735 **/
 @Component({
-  selector: 'nz-test-radio-group-disabled-form',
   template: `
     <form nz-form [formGroup]="validateForm">
       <nz-radio-group formControlName="radio">
@@ -456,7 +449,6 @@ export class NzTestRadioGroupDisabledFormComponent implements OnInit {
 }
 
 @Component({
-  selector: 'nz-test-radui-group-solid',
   template: `
     <nz-radio-group [(ngModel)]="value" [nzButtonStyle]="'solid'">
       <label nz-radio-button nzValue="A">A</label>

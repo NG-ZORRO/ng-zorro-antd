@@ -153,7 +153,6 @@ describe('tabs nav', () => {
 });
 
 @Component({
-  selector: 'nz-test-tab-nav',
   template: `
     <div [dir]="dir" style="width: 130px;">
       <div

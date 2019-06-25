@@ -88,6 +88,10 @@
     "no-non-null-assertion": false,
     "no-shadowed-variable": true,
     "no-sparse-arrays": true,
+    "no-selector": [
+      true,
+      "components/**/*.spec.ts"
+    ],
     "no-string-literal": true,
     "no-string-throw": true,
     "no-switch-case-fall-through": true,

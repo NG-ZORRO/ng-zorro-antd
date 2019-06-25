@@ -305,7 +305,6 @@ describe('pagination', () => {
 });
 
 @Component({
-  selector: `nz-test-pagination`,
   template: `
     <nz-pagination
       [nzSimple]="simple"
@@ -341,7 +340,6 @@ export class NzTestPaginationComponent {
 }
 
 @Component({
-  selector: `nz-test-pagination-render`,
   template: `
     <nz-pagination [nzPageIndex]="1" [nzTotal]="50" [nzItemRender]="renderItemTemplate"></nz-pagination>
     <ng-template #renderItemTemplate let-type let-page="page">
@@ -354,7 +352,6 @@ export class NzTestPaginationComponent {
 export class NzTestPaginationRenderComponent {}
 
 @Component({
-  selector: `nz-test-pagination-total`,
   template: `
     <nz-pagination
       [(nzPageIndex)]="pageIndex"

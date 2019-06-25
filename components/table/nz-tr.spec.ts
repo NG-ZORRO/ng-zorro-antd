@@ -63,7 +63,6 @@ describe('nz-tr', () => {
 });
 
 @Component({
-  selector: 'nz-tr-test-table',
   template: `
     <table>
       <tr></tr>
@@ -73,7 +72,6 @@ describe('nz-tr', () => {
 export class NzTrTestTableComponent {}
 
 @Component({
-  selector: 'nz-tr-test-nz-table',
   template: `
     <nz-table>
       <tr [nzExpand]="expand"></tr>
