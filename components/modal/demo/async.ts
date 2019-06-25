@@ -15,8 +15,7 @@ import { Component } from '@angular/core';
     >
       <p>Modal Content</p>
     </nz-modal>
-  `,
-  styles: []
+  `
 })
 export class NzDemoModalAsyncComponent {
   isVisible = false;

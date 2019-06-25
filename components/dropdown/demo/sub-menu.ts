@@ -25,8 +25,7 @@ import { Component } from '@angular/core';
         </li>
       </ul>
     </nz-dropdown-menu>
-  `,
-  styles: []
+  `
 })
 export class NzDemoDropdownSubMenuComponent {
   change(value: boolean): void {

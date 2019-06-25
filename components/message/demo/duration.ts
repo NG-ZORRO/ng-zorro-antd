@@ -5,8 +5,7 @@ import { NzMessageService } from 'ng-zorro-antd';
   selector: 'nz-demo-message-duration',
   template: `
     <button nz-button [nzType]="'default'" (click)="createBasicMessage()">Customized display duration</button>
-  `,
-  styles: []
+  `
 })
 export class NzDemoMessageDurationComponent {
   createBasicMessage(): void {

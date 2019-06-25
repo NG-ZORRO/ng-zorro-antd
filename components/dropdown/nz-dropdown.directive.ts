@@ -145,10 +145,10 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
     if (!this.dropdownOpen) {
       const overlayRef = this.createOverlay();
       const overlayConfig = overlayRef.getConfig();
+      this.nzDropdownMenu.setValue('open', true);
       this.setPosition(overlayConfig.positionStrategy as FlexibleConnectedPositionStrategy);
       overlayRef.attach(this.getPortal());
       this.dropdownOpen = true;
-      this.nzDropdownMenu.setValue('open', true);
     }
   }
 

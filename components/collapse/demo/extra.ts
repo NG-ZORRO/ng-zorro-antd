@@ -20,8 +20,7 @@ import { Component } from '@angular/core';
     <ng-template #extraTpl>
       <i nz-icon nzType="setting"></i>
     </ng-template>
-  `,
-  styles: []
+  `
 })
 export class NzDemoCollapseExtraComponent {
   panels = [

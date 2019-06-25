@@ -33,8 +33,7 @@ import { Component } from '@angular/core';
         </ng-container>
       </ng-template>
     </ul>
-  `,
-  styles: []
+  `
 })
 export class NzDemoMenuRecursiveComponent {
   mode = false;

@@ -58,8 +58,7 @@ import { Component } from '@angular/core';
         </ul>
       </li>
     </ul>
-  `,
-  styles: []
+  `
 })
 export class NzDemoMenuSiderCurrentComponent {
   openMap: { [name: string]: boolean } = {

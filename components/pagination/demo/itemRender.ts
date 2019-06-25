@@ -9,7 +9,6 @@ import { Component } from '@angular/core';
       <a *ngIf="type === 'next'">Next</a>
       <a *ngIf="type === 'page'">{{ page }}</a>
     </ng-template>
-  `,
-  styles: []
+  `
 })
 export class NzDemoPaginationItemRenderComponent {}

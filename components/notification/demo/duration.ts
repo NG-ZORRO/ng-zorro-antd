@@ -5,8 +5,7 @@ import { NzNotificationService } from 'ng-zorro-antd';
   selector: 'nz-demo-notification-duration',
   template: `
     <button nz-button [nzType]="'primary'" (click)="createBasicNotification()">Open the notification box</button>
-  `,
-  styles: []
+  `
 })
 export class NzDemoNotificationDurationComponent {
   createBasicNotification(): void {

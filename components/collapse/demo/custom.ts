@@ -19,8 +19,7 @@ import { Component } from '@angular/core';
         </ng-template>
       </nz-collapse-panel>
     </nz-collapse>
-  `,
-  styles: []
+  `
 })
 export class NzDemoCollapseCustomComponent {
   panels = [

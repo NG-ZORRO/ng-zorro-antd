@@ -14,8 +14,7 @@ import { Component } from '@angular/core';
         Content of {{ tab }}
       </nz-tab>
     </nz-tabset>
-  `,
-  styles: []
+  `
 })
 export class NzDemoTabsCustomAddTriggerComponent {
   index = 0;

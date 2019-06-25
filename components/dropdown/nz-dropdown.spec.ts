@@ -453,8 +453,7 @@ describe('dropdown-deprecated', () => {
         </li>
       </ul>
     </nz-dropdown>
-  `,
-  styles: []
+  `
 })
 export class NzTestDropdownComponent {
   @ViewChild(NzDropDownComponent, { static: false }) nzDropDownComponent: NzDropDownComponent;
@@ -498,8 +497,7 @@ export class NzTestDropdownComponent {
       </ul>
     </nz-dropdown-button>
     <ng-template #iconTemp>Expand</ng-template>
-  `,
-  styles: []
+  `
 })
 export class NzTestDropdownButtonComponent {
   @ViewChild(NzDropDownButtonComponent, { static: false }) nzDropDownButtonComponent: NzDropDownButtonComponent;
@@ -530,8 +528,7 @@ export class NzTestDropdownButtonComponent {
         </li>
       </ul>
     </nz-dropdown>
-  `,
-  styles: []
+  `
 })
 export class NzTestDropdownWithButtonComponent {}
 
