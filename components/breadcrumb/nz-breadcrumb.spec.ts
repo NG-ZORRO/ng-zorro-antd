@@ -5,7 +5,8 @@ import { By } from '@angular/platform-browser';
 import { Router, Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-// import { dispatchMouseEvent } from 'ng-zorro-antd/core';
+import { NzDemoBreadcrumbDropdownComponent } from 'ng-zorro-antd/breadcrumb/demo/dropdown';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzDemoBreadcrumbBasicComponent } from './demo/basic';
@@ -43,6 +44,31 @@ describe('breadcrumb', () => {
         true
       );
       expect(breadcrumb.nativeElement.classList.contains('ant-breadcrumb')).toBe(true);
+    });
+  });
+
+  describe('dropdown', () => {
+    let fixture: ComponentFixture<NzDemoBreadcrumbDropdownComponent>;
+    let items: DebugElement[];
+
+    beforeEach(async(() => {
+      TestBed.configureTestingModule({
+        imports: [NzBreadCrumbModule, NzDropDownModule],
+        declarations: [NzDemoBreadcrumbDropdownComponent],
+        providers: []
+      }).compileComponents();
+    }));
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzDemoBreadcrumbDropdownComponent);
+      items = fixture.debugElement.queryAll(By.directive(NzBreadCrumbItemComponent));
+    });
+
+    it('should dropdown work', () => {
+      fixture.detectChanges();
+
+      const dropdownElement = items[2];
+      expect((dropdownElement.nativeElement as HTMLElement).querySelector('.ant-dropdown-trigger')).not.toBe(null);
     });
   });
 
