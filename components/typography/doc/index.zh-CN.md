@@ -27,5 +27,5 @@ cols: 1
 | `[nzDisabled]` | 禁用文本 | `boolean` | `false` |
 | `[nzEllipsisRows]` | 自动溢出省略时省略行数 | `number` | `1` |
 | `[nzType]` | 文本类型 | `'secondary'｜'warning'｜'danger'` | - |
-| `(onChange)` | 当用户提交编辑内容时触发 | `EventEmitter<string>` | - |
+| `(nzChange)` | 当用户提交编辑内容时触发 | `EventEmitter<string>` | - |
 | `(nzExpand)` | 展开省略文本时触发 | `EventEmitter<void>` | - |
