@@ -154,6 +154,32 @@ describe('mention', () => {
       expect(overlayContainerElement.textContent).toEqual('');
       expect(textarea.value).toEqual('@angular ');
     }));
+
+    it('should support switch trigger', fakeAsync(() => {
+      fixture.componentInstance.inputTrigger = true;
+      fixture.detectChanges();
+      const input = fixture.debugElement.query(By.css('input')).nativeElement;
+      const mention = fixture.componentInstance.mention;
+
+      expect(fixture.debugElement.query(By.css('textarea'))).toBeFalsy();
+      expect(input).toBeTruthy();
+
+      input.value = '@a';
+      fixture.detectChanges();
+      dispatchFakeEvent(input, 'click');
+      fixture.detectChanges();
+      flush();
+
+      expect(mention.isOpen).toBe(true);
+
+      const option = overlayContainerElement.querySelector('.ant-mention-dropdown-item') as HTMLElement;
+      option.click();
+      fixture.detectChanges();
+
+      tick(500);
+      expect(mention.isOpen).toBe(false);
+      expect(overlayContainerElement.textContent).toEqual('');
+    }));
   });
 
   describe('keyboard events', () => {
@@ -434,13 +460,21 @@ describe('mention', () => {
 @Component({
   template: `
     <nz-mention [nzSuggestions]="suggestions">
-      <textarea nz-input [nzAutosize]="{ minRows: 4, maxRows: 4 }" [(ngModel)]="inputValue" nzMentionTrigger>
+      <textarea
+        *ngIf="!inputTrigger"
+        nz-input
+        [nzAutosize]="{ minRows: 4, maxRows: 4 }"
+        [(ngModel)]="inputValue"
+        nzMentionTrigger
+      >
       </textarea>
+      <input *ngIf="inputTrigger" nz-input [(ngModel)]="inputValue" nzMentionTrigger />
     </nz-mention>
   `
 })
 class NzTestSimpleMentionComponent {
   inputValue: string = '@angular';
+  inputTrigger = false;
   suggestions = ['angular', 'ant-design', 'mention', '中文', 'にほんご'];
   @ViewChild(NzMentionComponent, { static: false }) mention: NzMentionComponent;
   @ViewChild(NzMentionTriggerDirective, { static: false }) trigger: NzMentionTriggerDirective;
