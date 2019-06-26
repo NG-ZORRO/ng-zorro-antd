@@ -219,6 +219,8 @@ describe('typography', () => {
       fixture.detectChanges();
       tick(16);
       fixture.detectChanges();
+      tick(16);
+      fixture.detectChanges();
       componentElement.querySelectorAll('p').forEach(e => {
         expect(e.innerText.includes('...')).toBe(true);
       });
