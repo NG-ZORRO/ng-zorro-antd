@@ -27,5 +27,5 @@ Basic text writing, including headings, body text, lists, and more.
 | `[nzExpandable]` | Expandable when ellipsis | `boolean` | `false` |
 | `[nzEllipsisRows]` | Line number | `number` | `1` |
 | `[nzType]` | Content type | `'secondary'｜'warning'｜'danger'` | - |
-| `(nzChange)` | Trigger when user edit the content | `EventEmitter<string>` | - |
-| `(nzExpand)` | Trigger when user expanded the content | `EventEmitter<void>` | - |
+| `(nzContentChange)` | Trigger when user edit the content | `EventEmitter<string>` | - |
+| `(nzExpandChange)` | Trigger when user expanded the content | `EventEmitter<void>` | - |

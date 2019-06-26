@@ -120,8 +120,9 @@ export function measure(
   }
 
   if (inRange()) {
+    const text = ellipsisContainer.innerHTML;
     ellipsisContainer.removeChild(container);
-    return { contentNodes, text: ellipsisContainer.innerHTML, ellipsis: false };
+    return { contentNodes, text, ellipsis: false };
   }
 
   // We should clone the childNode since they're controlled by React and we can't reuse it without warning

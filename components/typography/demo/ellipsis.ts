@@ -25,7 +25,7 @@ import { Component } from '@angular/core';
       nzEditable
       [nzEllipsisRows]="2"
       [nzContent]="dynamicContent"
-      (nzChange)="onChange($event)"
+      (nzContentChange)="onChange($event)"
     ></p>
   `,
   styles: []

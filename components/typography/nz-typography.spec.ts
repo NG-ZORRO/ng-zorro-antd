@@ -249,6 +249,10 @@ describe('typography', () => {
 
     it('should expandable', fakeAsync(() => {
       testComponent.expandable = true;
+      viewport.set(400, 1000);
+      dispatchFakeEvent(window, 'resize');
+      fixture.detectChanges();
+      tick(16);
       fixture.detectChanges();
       tick(16);
       componentElement.querySelectorAll('p').forEach((e, i) => {
@@ -264,6 +268,10 @@ describe('typography', () => {
 
     it('should not resize when is expanded', fakeAsync(() => {
       testComponent.expandable = true;
+      viewport.set(400, 1000);
+      dispatchFakeEvent(window, 'resize');
+      fixture.detectChanges();
+      tick(16);
       fixture.detectChanges();
       tick(16);
       componentElement.querySelectorAll('p').forEach(e => {
@@ -326,7 +334,7 @@ export class NzTestTypographyCopyComponent {
 @Component({
   selector: 'nz-test-typography-edit',
   template: `
-    <p nz-paragraph nzEditable (nzChange)="onChange($event)" [nzContent]="str"></p>
+    <p nz-paragraph nzEditable (nzContentChange)="onChange($event)" [nzContent]="str"></p>
   `
 })
 export class NzTestTypographyEditComponent {
@@ -339,7 +347,7 @@ export class NzTestTypographyEditComponent {
 
 @Component({
   template: `
-    <p nz-paragraph nzEllipsis [nzExpandable]="expandable" (nzExpand)="onExpand()" class="single">
+    <p nz-paragraph nzEllipsis [nzExpandable]="expandable" (nzExpandChange)="onExpand()" class="single">
       Ant Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a design
       language for background applications, is refined by Ant UED Team. Ant Design, a design language for background
       applications, is refined by Ant UED Team. Ant Design, a design language for background applications, is refined by
@@ -352,7 +360,7 @@ export class NzTestTypographyEditComponent {
       nzEllipsis
       [nzExpandable]="expandable"
       [nzEllipsisRows]="3"
-      (nzExpand)="onExpand()"
+      (nzExpandChange)="onExpand()"
       class="multiple"
     >
       Ant Design, a design language for background applications, is refined by Ant UED Team. Ant Design, a design
@@ -366,7 +374,7 @@ export class NzTestTypographyEditComponent {
       nzEllipsis
       [nzExpandable]="expandable"
       [nzEllipsisRows]="2"
-      (nzExpand)="onExpand()"
+      (nzExpandChange)="onExpand()"
       [nzContent]="str"
       class="dynamic"
     ></p>

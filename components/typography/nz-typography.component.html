@@ -10,7 +10,7 @@
   <ng-container *ngIf="nzEllipsis && !expanded && (nzEllipsisRows > 1 || nzExpandable)">
     <span #ellipsisContainer></span>
     <ng-container *ngIf="isEllipsis">{{ellipsisStr}}</ng-container>
-    <a #expandable *ngIf="nzExpandable" class="ant-typography-expand" (click)="onExpand()">{{locale?.expand}}</a>
+    <a #expandable *ngIf="nzExpandable && isEllipsis" class="ant-typography-expand" (click)="onExpand()">{{locale?.expand}}</a>
   </ng-container>
 </ng-container>
 

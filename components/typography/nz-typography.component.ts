@@ -41,6 +41,7 @@ import { NzTextEditComponent } from './nz-text-edit.component';
 @Component({
   selector: `
   nz-typography,
+  [nz-typography],
   p[nz-paragraph],
   span[nz-text],
   h1[nz-title], h2[nz-title], h3[nz-title], h4[nz-title]
@@ -72,9 +73,9 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   @Input() nzEllipsisRows = 1;
   @Input() nzType: 'secondary' | 'warning' | 'danger' | undefined;
   @Input() nzCopyText: string | undefined;
-  @Output() readonly nzChange = new EventEmitter<string>();
+  @Output() readonly nzContentChange = new EventEmitter<string>();
   @Output() readonly nzCopy = new EventEmitter<string>();
-  @Output() readonly nzExpand = new EventEmitter<void>();
+  @Output() readonly nzExpandChange = new EventEmitter<void>();
 
   @ViewChild(NzTextEditComponent, { static: false }) textEditRef: NzTextEditComponent;
   @ViewChild(NzTextCopyComponent, { static: false }) textCopyRef: NzTextCopyComponent;
@@ -123,13 +124,13 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
 
   onEndEditing(text: string): void {
     this.editing = false;
-    this.nzChange.emit(text);
+    this.nzContentChange.emit(text);
     this.resizeOnNextFrameIfNeed();
   }
 
   onExpand(): void {
     this.expanded = true;
-    this.nzExpand.emit();
+    this.nzExpandChange.emit();
   }
 
   canUseCSSEllipsis(): boolean {
@@ -184,6 +185,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
     );
 
     removeView();
+
     if (this.ellipsisText !== text || this.isEllipsis !== ellipsis) {
       this.ellipsisText = text;
       this.isEllipsis = ellipsis;
@@ -192,7 +194,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
         this.renderer.removeChild(ellipsisContainerNativeElement, ellipsisContainerNativeElement.firstChild);
       }
       contentNodes.forEach(n => {
-        this.renderer.appendChild(ellipsisContainerNativeElement, n);
+        this.renderer.appendChild(ellipsisContainerNativeElement, n.cloneNode(true));
       });
       this.cdr.markForCheck();
     }
