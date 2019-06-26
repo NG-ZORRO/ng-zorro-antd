@@ -59,6 +59,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzTransferModule } from 'ng-zorro-antd/transfer';
 import { NzTreeModule } from 'ng-zorro-antd/tree';
 import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 
 export * from 'ng-zorro-antd/affix';
@@ -122,6 +123,7 @@ export * from 'ng-zorro-antd/tooltip';
 export * from 'ng-zorro-antd/transfer';
 export * from 'ng-zorro-antd/tree-select';
 export * from 'ng-zorro-antd/tree';
+export * from 'ng-zorro-antd/typography';
 export * from 'ng-zorro-antd/upload';
 
 export * from './version';
@@ -188,7 +190,8 @@ export * from './version';
     NzSkeletonModule,
     NzStatisticModule,
     NzEmptyModule,
-    NzDescriptionsModule
+    NzDescriptionsModule,
+    NzTypographyModule
   ]
 })
 export class NgZorroAntdModule {

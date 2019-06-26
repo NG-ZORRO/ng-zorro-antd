@@ -1,0 +1,11 @@
+<nz-tooltip [nzTitle]="copied ? locale?.copied : locale?.copy">
+  <button
+    nz-tooltip
+    nz-trans-button
+    class="ant-typography-copy"
+    [class.ant-typography-copy-success]="copied"
+    (click)="onClick()">
+    <i nz-icon [type]="copied ? 'check' : 'copy'"></i>
+  </button>
+</nz-tooltip>
+
