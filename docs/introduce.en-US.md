@@ -71,10 +71,15 @@ $ npm install ng-zorro-antd
 
 - [Alibaba](http://www.alibaba.com/)
 - [Aliyun](http://www.aliyun.com/)
-- [Apache Flink](https://flink.apache.org/)
 - [ThoughtWorks](https://www.thoughtworks.com/)
+- [Ververica](https://www.ververica.com/)
+- [Apache Flink](https://flink.apache.org/)
+- [Process Automation Group](http://pag.company/)
+- [AISINOCO](http://www.aisino.com/)
 - [GongDao](https://www.gongdao.com/)
-- [QingFlow](https://qingflow.com/)
+- [UC Express](http://www.uce.cn/)
+- [Qingflow](https://qingflow.com/)
+- [Southern Institute of Technology](https://www.sit.ac.nz/)
 
 > If your company or product uses ng-zorro-antd, let us know [here](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1142)!
 

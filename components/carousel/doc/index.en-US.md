@@ -52,4 +52,4 @@ import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 
 ### Customizing transition effects
 
-From version `7.5.0`, you can provide strategies that extends `NzCarouselBaseStrategy` to implement custom transition effects.
+You can provide strategies that extends `NzCarouselBaseStrategy` to implement custom transition effects.
