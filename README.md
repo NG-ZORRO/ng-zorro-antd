@@ -21,6 +21,7 @@ An enterprise-class UI components based on Ant Design and Angular.
 [![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE)
 [![Gitter](https://img.shields.io/gitter/room/ng-zorro/ng-zorro-antd.svg?style=flat-square)](https://gitter.im/ng-zorro/ng-zorro-antd)
 [![extension-for-VSCode](https://img.shields.io/badge/extension%20for-VSCode-blue.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=cipchk.ng-zorro-vscode)
+[![Twitter](https://img.shields.io/badge/Twitter-NG--ZORRO-blue.svg?style=flat-square&logo=twitter)](https://twitter.com/NG_ZORRO)
 
 </div>
 
@@ -149,8 +150,15 @@ As always, we encourage experienced users to help those who are not familiar wit
 
 - [Alibaba](http://www.alibaba.com/)
 - [Aliyun](http://www.aliyun.com/)
-- [Apache Flink](https://flink.apache.org/)
 - [ThoughtWorks](https://www.thoughtworks.com/)
+- [Ververica](https://www.ververica.com/)
+- [Apache Flink](https://flink.apache.org/)
+- [Process Automation Group](http://pag.company/)
+- [AISINOCO](http://www.aisino.com/)
+- [GongDao](https://www.gongdao.com/)
+- [UC Express](http://www.uce.cn/)
+- [Qingflow](https://qingflow.com/)
+- [Southern Institute of Technology](https://www.sit.ac.nz/)
 
 > If your company or product uses NG-ZORRO, let us know [here](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1142)!
 
