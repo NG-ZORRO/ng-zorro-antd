@@ -44,7 +44,7 @@ import { NzMentionModule } from 'ng-zorro-antd/mention';
 | `[nzSuggestions]` | 建议内容 | `any[]` | `[]` |
 | `[nzValueWith]` | 建议选项的取值方法  | `(any) => string \| (value: string) => string` |
 | `(nzOnSelect)` | 下拉框选择建议时回调 | `EventEmitter<any>` | - |
-| `(onSearchChange)` | 输入框中 @ 变化时回调 | `EventEmitter<MentionOnSearchTypes>` | - |
+| `(nzOnSearchChange)` | 输入框中 @ 变化时回调 | `EventEmitter<MentionOnSearchTypes>` | - |
 
 #### 方法
 
