@@ -46,5 +46,8 @@ export default {
   },
   Empty: {
     description: '無此資料'
+  },
+  PageHeader: {
+    back: '返回'
   }
 };

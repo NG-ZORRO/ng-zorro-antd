@@ -46,5 +46,11 @@ export default {
   },
   Empty: {
     description: 'Veri Yok'
+  },
+  Text: {
+    edit: 'düzenle',
+    copy: 'kopyala',
+    copied: 'kopyalandı',
+    expand: 'genişlet'
   }
 };
