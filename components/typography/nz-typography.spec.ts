@@ -216,10 +216,11 @@ describe('typography', () => {
 
     it('should resize work', fakeAsync(() => {
       testComponent.expandable = true;
-      fixture.detectChanges();
+      viewport.set(400, 1000);
+      dispatchFakeEvent(window, 'resize');
       tick(16);
       fixture.detectChanges();
-      tick(16);
+      tick(32);
       fixture.detectChanges();
       componentElement.querySelectorAll('p').forEach(e => {
         expect(e.innerText.includes('...')).toBe(true);
