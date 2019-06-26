@@ -53,4 +53,4 @@ import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 
 ### 自定义切换效果
 
-从 `7.5.0` 版本开始，你可以提供自定义的切换效果，切换效果应当继承 `NzCarouselBaseStrategy` 类（默认的两种切换效果同样基于该类）。
+你可以提供自定义的切换效果，切换效果应当继承 `NzCarouselBaseStrategy` 类（默认的两种切换效果同样基于该类）。
