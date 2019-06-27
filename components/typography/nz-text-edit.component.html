@@ -4,7 +4,7 @@
     nz-trans-button
     class="ant-typography-edit"
     (click)="onClick()">
-    <i nz-icon type="edit"></i>
+    <i nz-icon nzType="edit"></i>
   </button>
 </nz-tooltip>
 <ng-container *ngIf="editing">
@@ -17,6 +17,6 @@
     (keydown.enter)="onEnter($event)">
   </textarea>
   <button nz-trans-button class="ant-typography-edit-content-confirm" (click)="confirm()">
-    <i nz-icon type="enter"></i>
+    <i nz-icon nzType="enter"></i>
   </button>
 </ng-container>

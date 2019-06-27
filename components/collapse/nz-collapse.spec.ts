@@ -229,7 +229,7 @@ export class NzTestCollapseTemplateComponent {}
         <p>Panel01</p>
       </nz-collapse-panel>
       <ng-template #expandedIcon>
-        <i nz-icon type="caret-right" class="ant-collapse-arrow"></i>
+        <i nz-icon nzType="caret-right" class="ant-collapse-arrow"></i>
       </ng-template>
     </nz-collapse>
   `

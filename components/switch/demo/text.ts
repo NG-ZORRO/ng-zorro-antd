@@ -12,8 +12,8 @@ import { Component } from '@angular/core';
       [nzCheckedChildren]="checkedTemplate"
       [nzUnCheckedChildren]="unCheckedTemplate"
     ></nz-switch>
-    <ng-template #checkedTemplate><i nz-icon type="check"></i></ng-template>
-    <ng-template #unCheckedTemplate><i nz-icon type="close"></i></ng-template>
+    <ng-template #checkedTemplate><i nz-icon nzType="check"></i></ng-template>
+    <ng-template #unCheckedTemplate><i nz-icon nzType="close"></i></ng-template>
   `,
   styles: [
     `

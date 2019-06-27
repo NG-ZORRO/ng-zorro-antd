@@ -11,9 +11,9 @@
   <ng-template [ngTemplateOutlet]="nzTrigger"></ng-template>
 </div>
 <ng-template #defaultTrigger>
-  <i nz-icon [type]="nzCollapsed ? 'right' : 'left'" *ngIf="!nzReverseArrow"></i>
-  <i nz-icon [type]="nzCollapsed ? 'left' : 'right'" *ngIf="nzReverseArrow"></i>
+  <i nz-icon [nzType]="nzCollapsed ? 'right' : 'left'" *ngIf="!nzReverseArrow"></i>
+  <i nz-icon [nzType]="nzCollapsed ? 'left' : 'right'" *ngIf="nzReverseArrow"></i>
 </ng-template>
 <ng-template #zeroTrigger>
-  <i nz-icon type="bars"></i>
+  <i nz-icon nzType="bars"></i>
 </ng-template>

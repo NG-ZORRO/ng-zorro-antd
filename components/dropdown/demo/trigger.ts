@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
       Click me
-      <i nz-icon type="down"></i>
+      <i nz-icon nzType="down"></i>
     </a>
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu>

@@ -52,7 +52,7 @@ export class NzTooltipTestDirectiveComponent {
     <nz-tooltip [nzTitle]="'NORMAL'" [nzTrigger]="'hover'"><span #normalTrigger nz-tooltip>Show</span></nz-tooltip>
     <nz-tooltip>
       <button #templateTrigger nz-tooltip>Show</button>
-      <ng-template #nzTemplate><i nz-icon type="file"></i> <span>Show with icon</span></ng-template>
+      <ng-template #nzTemplate><i nz-icon nzType="file"></i> <span>Show with icon</span></ng-template>
     </nz-tooltip>
     <nz-tooltip nzTitle="FOCUS" [nzTrigger]="'focus'"><span #focusTrigger nz-tooltip>Show</span></nz-tooltip>
     <nz-tooltip nzTitle="CLICK" nzTrigger="click"><span #clickTrigger nz-tooltip>Show</span></nz-tooltip>

@@ -105,7 +105,7 @@ describe('spin', () => {
 
 @Component({
   template: `
-    <ng-template #indicatorTemplate><i nz-icon type="loading" style="font-size: 24px;"></i> </ng-template>
+    <ng-template #indicatorTemplate><i nz-icon nzType="loading" style="font-size: 24px;"></i> </ng-template>
     <nz-spin
       [nzTip]="tip"
       [nzSize]="size"

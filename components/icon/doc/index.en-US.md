@@ -7,11 +7,6 @@ hasPageDemo: true
 
 Semantic vector graphics.
 
-<blockquote style="border-color: orange;">
-<p><strong>If the icon cannot be displayed or the console has an error, please run the following command to fix it <code>ng g ng-zorro-antd:fix-icon</code>.</strong></p>
-<p>See <a href="/components/icon/en#static-loading-and-dynamic-loading">Static loading and dynamic loading</a> for details.</p>
-</blockquote>
-
 ## List of icons
 
 > Click the icon and copy the code.
@@ -72,13 +67,13 @@ You can join in [this dicussion of Ant Design](https://github.com/ant-design/ant
 NG-ZORRO hadn't provided an icon component. Instead, icon based on font files was provided. In `1.7.0`, we make this new directive compatible to old API. If you make no changes to your existing code, old icons would be dynamically loaded as `outline` icons. But the best pratice is always to use `nz-icon` directive and specify the `theme` prop.
 
 ```html
-<i nz-icon [type]="'star'" [theme]="'fill'"></i>
+<i nz-icon [nzType]="'star'" [theme]="'fill'"></i>
 ```
 
 All the icons will be rendered to `<svg>`, and styles and classes applied to `<i>` would work.
 
 ```html
-<i nz-icon [type]="'message'" style="font-size: 16px; color: #08c;"></i>
+<i nz-icon [nzType]="'message'" style="font-size: 16px; color: #08c;"></i>
 ```
 
 ### Static loading and dynamic loading

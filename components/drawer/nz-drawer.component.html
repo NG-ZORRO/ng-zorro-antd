@@ -24,7 +24,7 @@
             </div>
           </div>
           <button *ngIf="nzClosable" (click)="closeClick()" aria-label="Close" class="ant-drawer-close">
-            <span class="ant-drawer-close-x"><i nz-icon type="close"></i></span>
+            <span class="ant-drawer-close-x"><i nz-icon nzType="close"></i></span>
           </button>
           <div class="ant-drawer-body" [ngStyle]="nzBodyStyle">
             <ng-template cdkPortalOutlet></ng-template>

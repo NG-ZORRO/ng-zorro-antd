@@ -281,7 +281,7 @@ const newIconNames: string[] = [
       <h3>{{ localeObj[category] }}</h3>
       <ul class="anticons-list">
         <li *ngFor="let icon of displayedNames[i].icons; trackBy: trackByFn" (click)="onIconClick($event, icon)">
-          <i nz-icon [type]="icon" [theme]="currentTheme"></i>
+          <i nz-icon [nzType]="icon" [theme]="currentTheme"></i>
           <span class="anticon-class">
             <nz-badge *ngIf="isNewIcon(icon); else notNewTpl" nzDot>
               {{ icon }}

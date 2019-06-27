@@ -5,7 +5,7 @@
     </ng-container>
     <ng-template #thumbUrlCheck>
       <i *ngIf="!file.thumbUrl && !file.url; else thumbTpl"
-        class="ant-upload-list-item-thumbnail" nz-icon nzType="picture" theme="twotone"></i>
+        class="ant-upload-list-item-thumbnail" nz-icon nzType="picture" nzTheme="twotone"></i>
     </ng-template>
     <ng-template #thumbTpl>
       <a class="ant-upload-list-item-thumbnail" target="_blank" rel="noopener noreferrer"
@@ -14,7 +14,7 @@
         <img *ngIf="isImageUrl(file); else noThumbTpl" [src]="file.thumbUrl || file.url" [attr.alt]="file.name" />
       </a>
     </ng-template>
-    <ng-template #noThumbTpl><i class="ant-upload-list-item-icon" nz-icon nzType="file" theme="twotone"></i></ng-template>
+    <ng-template #noThumbTpl><i class="ant-upload-list-item-icon" nz-icon nzType="file" nzTheme="twotone"></i></ng-template>
     <ng-template #noPicTpl><i nz-icon [nzType]="file.status === 'uploading' ? 'loading' : 'paper-clip'"></i></ng-template>
   </ng-template>
   <ng-template #preview>
