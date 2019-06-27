@@ -28,6 +28,7 @@ import {
   Renderer2,
   SimpleChanges,
   TemplateRef,
+  TrackByFunction,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -87,6 +88,7 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
   @Input() @InputNumber() nzVirtualItemSize = 0;
   @Input() @InputNumber() nzVirtualMaxBufferPx = 200;
   @Input() @InputNumber() nzVirtualMinBufferPx = 100;
+  @Input() nzVirtualForTrackBy: TrackByFunction<T> | undefined;
   @Input() nzLoadingDelay = 0;
   @Input() nzLoadingIndicator: TemplateRef<void>;
   @Input() nzTotal = 0;
