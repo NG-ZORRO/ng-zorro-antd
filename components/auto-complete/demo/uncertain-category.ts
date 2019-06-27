@@ -16,7 +16,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
       </nz-input-group>
       <ng-template #suffixIconButton>
         <button nz-button nzType="primary" nzSize="large" nzSearch>
-          <i nz-icon type="search" theme="outline"></i>
+          <i nz-icon nzType="search" nzTheme="outline"></i>
         </button>
       </ng-template>
       <nz-autocomplete #auto>

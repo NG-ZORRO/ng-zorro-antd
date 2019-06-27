@@ -206,7 +206,7 @@ describe('transfer', () => {
     });
 
     it('#nzRenderList', () => {
-      instance.nzRenderList = [ instance.renderListTpl, instance.renderListTpl ];
+      instance.nzRenderList = [instance.renderListTpl, instance.renderListTpl];
       fixture.detectChanges();
       expect(dl.queryAll(By.css('.ant-transfer-customize-list')).length).toBe(1);
       expect(dl.queryAll(By.css('.transfer-renderList')).length).toBe(2);
@@ -460,16 +460,28 @@ class TestTransferComponent implements OnInit {
 @Component({
   template: `
     <nz-transfer #comp nzShowSearch [nzRender]="render" [nzDataSource]="nzDataSource">
-      <ng-template #render let-item> <i nz-icon type="{{ item.icon }}"></i> {{ item.title }} </ng-template>
+      <ng-template #render let-item> <i nz-icon nzType="{{ item.icon }}"></i> {{ item.title }} </ng-template>
     </nz-transfer>
   `
 })
 class TestTransferCustomRenderComponent implements OnInit {
   @ViewChild('comp', { static: false }) comp: NzTransferComponent;
-  nzDataSource: Array<{ key: string; title: string; description: string; direction: TransferDirection; icon: string }> = [];
+  nzDataSource: Array<{
+    key: string;
+    title: string;
+    description: string;
+    direction: TransferDirection;
+    icon: string;
+  }> = [];
 
   ngOnInit(): void {
-    const ret: Array<{ key: string; title: string; description: string; direction: TransferDirection; icon: string }> = [];
+    const ret: Array<{
+      key: string;
+      title: string;
+      description: string;
+      direction: TransferDirection;
+      icon: string;
+    }> = [];
     for (let i = 0; i < COUNT; i++) {
       ret.push({
         key: i.toString(),

@@ -28,7 +28,7 @@ import { Component } from '@angular/core';
         An Application
       </nz-breadcrumb-item>
     </nz-breadcrumb>
-    <ng-template #iconTemplate><i nz-icon type="arrow-right"></i></ng-template>
+    <ng-template #iconTemplate><i nz-icon nzType="arrow-right"></i></ng-template>
   `,
   styles: [
     `

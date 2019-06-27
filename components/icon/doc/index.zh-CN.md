@@ -8,10 +8,6 @@ hasPageDemo: true
 
 语义化的矢量图形。
 
-<blockquote style="border-color: orange;">
-<p><strong>如遇图标无法显示或控制台出现相关错误，请在项目下执行 <code>ng g ng-zorro-antd:fix-icon</code> 命令修复。</strong></p>
-<p>详情请查看 <a href="/components/icon/zh#%E9%9D%99%E6%80%81%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD">静态加载与动态加载</a> 部分。</p>
-</blockquote>
 
 ## 图标列表
 
@@ -73,13 +69,13 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 NG-ZORRO 之前并没有图标组件，而是提供了基于字体文件的解决方案。新版本中我们提供了旧 API 兼容，如果你不修改既有的代码，所有的图标都会被动态加载成 `outline` 主题的图标，而最佳实践是使用新的指令 `nz-icon` 并传入 `theme` 以明确图标的主题风格，例如：
 
 ```html
-<i nz-icon [type]="'star'" [theme]="'fill'"></i>
+<i nz-icon [nzType]="'star'" [theme]="'fill'"></i>
 ```
 
 所有的图标都会以 `<svg>` 标签渲染，但是你还是可以用之前对 i 标签设置的样式和类来控制 svg 的样式，例如：
 
 ```html
-<i nz-icon [type]="'message'" style="font-size: 16px; color: #08c;"></i>
+<i nz-icon [nzType]="'message'" style="font-size: 16px; color: #08c;"></i>
 ```
 
 ### 静态加载与动态加载

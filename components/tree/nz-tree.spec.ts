@@ -944,7 +944,7 @@ export class NzTestTreeOlderComponent implements OnInit {
   template: `
     <nz-tree #treeComponent [nzData]="nodes" nzShowIcon="true" [nzExpandedIcon]="expandedIconTpl">
       <ng-template #expandedIconTpl let-node>
-        <i nz-icon [type]="'arrow-down'" class="ant-tree-switcher-icon"></i>
+        <i nz-icon [nzType]="'arrow-down'" class="ant-tree-switcher-icon"></i>
       </ng-template>
     </nz-tree>
   `

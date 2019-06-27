@@ -8,8 +8,8 @@ import { Component } from '@angular/core';
         <a class="head-example"></a>
       </nz-badge>
       <nz-button-group>
-        <button nz-button (click)="minCount()"><i nz-icon type="minus"></i></button>
-        <button nz-button (click)="addCount()"><i nz-icon type="plus"></i></button>
+        <button nz-button (click)="minCount()"><i nz-icon nzType="minus"></i></button>
+        <button nz-button (click)="addCount()"><i nz-icon nzType="plus"></i></button>
       </nz-button-group>
     </div>
 

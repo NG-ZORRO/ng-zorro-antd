@@ -2,7 +2,7 @@
   <span class="ant-form-item-children">
     <ng-content></ng-content>
     <span class="ant-form-item-children-icon">
-      <i *ngIf="nzHasFeedback && iconType" nz-icon [type]="iconType"></i>
+      <i *ngIf="nzHasFeedback && iconType" nz-icon [nzType]="iconType"></i>
     </span>
   </span>
   <div class="ant-form-explain" *ngIf="showSuccessTip || showWarningTip || showErrorTip || showValidatingTip">

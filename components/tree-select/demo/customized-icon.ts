@@ -14,7 +14,7 @@ import { Component } from '@angular/core';
     >
       <ng-template #nzTreeTemplate let-node>
         <span class="ant-tree-node-content-wrapper" [class.ant-tree-node-selected]="node.isSelected">
-          <span> <i nz-icon [type]="node.isExpanded ? 'folder-open' : 'folder'"></i> {{ node.title }} </span>
+          <span> <i nz-icon [nzType]="node.isExpanded ? 'folder-open' : 'folder'"></i> {{ node.title }} </span>
         </span>
       </ng-template>
     </nz-tree-select>
