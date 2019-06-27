@@ -6,6 +6,21 @@ import { NzDescriptionsModule } from './nz-descriptions.module';
 // tslint:disable-next-line no-any
 declare const viewport: any;
 
+@Component({
+  template: `
+    <nz-descriptions [nzTitle]="title" [nzBordered]="bordered" [nzColumn]="column">
+      <nz-descriptions-item *ngFor="let col of colspanArray; let i = index" [nzTitle]="'Title' + i" [nzSpan]="col">
+      </nz-descriptions-item>
+    </nz-descriptions>
+  `
+})
+export class NzTestDescriptionsComponent {
+  bordered = false;
+  colspanArray: number[] = [1, 1, 1];
+  column: number | { [key: string]: number } = 3;
+  title = 'Title';
+}
+
 describe('nz descriptions', () => {
   let testComponent: NzTestDescriptionsComponent;
   let componentElement: HTMLElement;
@@ -53,8 +68,8 @@ describe('nz descriptions', () => {
       rows = componentElement.querySelectorAll('.ant-descriptions-row');
       expect(rows.length).toBe(3);
       expect(spyOnWarn).toHaveBeenCalledTimes(2);
-      expect(spyOnWarn).toHaveBeenCalledWith('"nzColumn" is 3 but we have row length 5');
-      expect(spyOnWarn).toHaveBeenCalledWith('"nzColumn" is 3 but we have row length 6');
+      expect(spyOnWarn).toHaveBeenCalledWith('[NG-ZORRO]:', '"nzColumn" is 3 but we have row length 5');
+      expect(spyOnWarn).toHaveBeenCalledWith('[NG-ZORRO]:', '"nzColumn" is 3 but we have row length 6');
 
       testComponent.column = 5;
       testComponent.colspanArray = [1, 2, 3];
@@ -62,7 +77,7 @@ describe('nz descriptions', () => {
       rows = componentElement.querySelectorAll('.ant-descriptions-row');
       expect(rows.length).toBe(1);
       expect(spyOnWarn).toHaveBeenCalledTimes(4);
-      expect(spyOnWarn).toHaveBeenCalledWith('"nzColumn" is 5 but we have row length 6');
+      expect(spyOnWarn).toHaveBeenCalledWith('[NG-ZORRO]:', '"nzColumn" is 5 but we have row length 6');
 
       testComponent.colspanArray = [1, 2, 2];
       fixture.detectChanges();
@@ -83,17 +98,17 @@ describe('nz descriptions', () => {
 
       viewport.set(1024, 1024);
       window.dispatchEvent(new Event('resize'));
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       tick(1000);
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       rows = componentElement.querySelectorAll('.ant-descriptions-row');
       expect(rows.length).toBe(3);
 
       viewport.set(320, 320);
       window.dispatchEvent(new Event('resize'));
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
       tick(1000);
-      fixture.autoDetectChanges();
+      fixture.detectChanges();
 
       rows = componentElement.querySelectorAll('.ant-descriptions-row');
       expect(rows.length).toBe(7);
@@ -102,18 +117,3 @@ describe('nz descriptions', () => {
     }));
   });
 });
-
-@Component({
-  template: `
-    <nz-descriptions [nzTitle]="title" [nzBordered]="bordered" [nzColumn]="column">
-      <nz-descriptions-item *ngFor="let col of colspanArray; let i = index" [nzTitle]="'Title' + i" [nzSpan]="col">
-      </nz-descriptions-item>
-    </nz-descriptions>
-  `
-})
-export class NzTestDescriptionsComponent {
-  bordered = false;
-  colspanArray: number[] = [1, 1, 1];
-  column: number | { [key: string]: number } = 3;
-  title = 'Title';
-}
