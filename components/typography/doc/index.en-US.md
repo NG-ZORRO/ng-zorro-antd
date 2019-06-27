@@ -14,7 +14,9 @@ Basic text writing, including headings, body text, lists, and more.
 
 ## API
 
-### nz-typography
+### [nz-typography]
+
+> `p[nz-paragraph]`, `span[nz-text]`, `h1[nz-title]`, `h2[nz-title]`, `h3[nz-title]`, `h4[nz-title]` are used in the same way as the `[nz-typography]`
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |

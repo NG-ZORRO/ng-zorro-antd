@@ -6,8 +6,7 @@ import { Component } from '@angular/core';
     <p nz-paragraph nzEditable [(nzContent)]="str"></p>
     <p nz-paragraph nzCopyable nzContent="This is a copyable text."></p>
     <p nz-paragraph nzCopyable nzCopyText="Hello, Ant Design!">Replace copy text.</p>
-  `,
-  styles: []
+  `
 })
 export class NzDemoTypographyInteractiveComponent {
   str = 'This is an editable text.';

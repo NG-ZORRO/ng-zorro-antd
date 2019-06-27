@@ -14,7 +14,9 @@ cols: 1
 
 ## API
 
-### nz-typography
+### [nz-typography]
+
+> `p[nz-paragraph]`, `span[nz-text]`, `h1[nz-title]`, `h2[nz-title]`, `h3[nz-title]`, `h4[nz-title]` 的使用方法与 `[nz-typography]` 相同
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
