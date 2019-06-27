@@ -43,4 +43,81 @@ Here is an example of `theme.less`
 ```
 
 
+### Customize in webpack
+
+Angular CLI provide [custom-webpack-builder](https://www.npmjs.com/package/@angular-builders/custom-webpack), you can modify the less variable via adjust the [less-loader](https://github.com/webpack-contrib/less-loader) options in webpack.
+
+1. Import `ng-zorro-antd.less` in `angular.json`
+
+```json
+{
+  "styles": [
+    "node_modules/ng-zorro-antd/ng-zorro-antd.less"
+  ]
+}
+```
+
+2. Install `@angular-builders/custom-webpack` builder
+
+```bash
+npm i -D @angular-builders/custom-webpack
+```
+
+3. create `extra-webpack.config.js`
+
+```javascript
+module.exports = {
+  module: {
+    rules: [
+      {
+        test   : /\.less$/,
+        loader: 'less-loader',
+        options: {
+          modifyVars: { // modify theme variable
+            'primary-color': '#1DA57A',
+            'link-color': '#1DA57A',
+            'border-radius-base': '2px'
+          },
+          javascriptEnabled: true
+        }
+      }
+    ]
+  }
+};
+
+```
+
+4. Customize builder in `angular.json`
+
+```diff
+  "architect": {
+    "build": {
+-     "builder": "@angular-devkit/build-angular:browser",
++     "builder": "@angular-builders/custom-webpack:browser",
+      "options": {
++        "customWebpackConfig": {
++          "path": "./extra-webpack.config.js",
++          "mergeStrategies": {
++            "module.rules": "append"
++          },
++          "replaceDuplicatePlugins": true
++        }
+        ...
+      },
+      ...
+    },
+    "serve": {
+-      "builder": "@angular-devkit/build-angular:dev-server",
++      "builder": "@angular-builders/custom-webpack:dev-server",
+       ...
+    }
+    ...
+  }
+```
+You can get more information about custom-webpack builder following the articles
+
+* [Angular Builder Document](https://www.npmjs.com/package/@angular-builders/custom-webpack)
+* [Angular CLI: Custom webpack Config](https://alligator.io/angular/custom-webpack-config/)
+* [Customize Webpack Configuration in Your Angular Application](https://netbasal.com/customize-webpack-configuration-in-your-angular-application-d09683f6bd22)
+
 All less vars can be checked [here](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/scripts/site/_site/doc/theme.less) is a sample of theme define file.
