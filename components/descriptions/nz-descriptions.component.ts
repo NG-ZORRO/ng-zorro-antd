@@ -27,7 +27,7 @@ import {
 import { fromEvent, merge, Subject } from 'rxjs';
 import { auditTime, startWith, takeUntil } from 'rxjs/operators';
 
-import { responsiveMap, Breakpoint, InputBoolean } from 'ng-zorro-antd/core';
+import { responsiveMap, warn, Breakpoint, InputBoolean } from 'ng-zorro-antd/core';
 import { NzDescriptionsItemRenderProps, NzDescriptionsSize } from './nz-descriptions-definitions';
 import { NzDescriptionsItemComponent } from './nz-descriptions-item.component';
 
@@ -152,7 +152,7 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
       // Warn user about that.
       if (width >= column) {
         if (width > column && isDevMode()) {
-          console.warn(`"nzColumn" is ${column} but we have row length ${width}`);
+          warn(`"nzColumn" is ${column} but we have row length ${width}`);
         }
         flushRow();
       }
