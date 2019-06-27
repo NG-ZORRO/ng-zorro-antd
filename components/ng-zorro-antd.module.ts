@@ -16,7 +16,7 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzCommentModule } from 'ng-zorro-antd/comment';
-import { warnDeprecation, NzNoAnimationModule, NzWaveModule } from 'ng-zorro-antd/core';
+import { warnDeprecation, NzNoAnimationModule, NzWaveModule, NzTransButtonModule } from 'ng-zorro-antd/core';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
@@ -160,6 +160,7 @@ export * from './version';
     NzCardModule,
     NzAvatarModule,
     NzTimelineModule,
+    NzTransButtonModule,
     NzTransferModule,
     NzCarouselModule,
     NzCollapseModule,

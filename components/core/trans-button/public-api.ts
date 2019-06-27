@@ -6,4 +6,5 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+export { NzTransButtonModule } from './nz-trans-button.module';
 export { NzTransButtonDirective } from './nz-trans-button.directive';

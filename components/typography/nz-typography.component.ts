@@ -125,7 +125,9 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   onEndEditing(text: string): void {
     this.editing = false;
     this.nzContentChange.emit(text);
-    this.resizeOnNextFrameIfNeed();
+    if (this.nzContent === text) {
+      this.renderOnNextFrame();
+    }
   }
 
   onExpand(): void {
@@ -144,7 +146,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
     }
   }
 
-  resizeOnNextFrameIfNeed(): void {
+  renderOnNextFrame(): void {
     cancelRequestAnimationFrame(this.rfaId);
     if (!this.viewInit || !this.nzEllipsis || this.nzEllipsisRows < 0 || this.expanded || !this.platform.isBrowser) {
       return;
@@ -186,32 +188,30 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
 
     removeView();
 
-    if (this.ellipsisText !== text || this.isEllipsis !== ellipsis) {
-      this.ellipsisText = text;
-      this.isEllipsis = ellipsis;
-      const ellipsisContainerNativeElement = this.ellipsisContainer.nativeElement;
-      while (ellipsisContainerNativeElement.firstChild) {
-        this.renderer.removeChild(ellipsisContainerNativeElement, ellipsisContainerNativeElement.firstChild);
-      }
-      contentNodes.forEach(n => {
-        this.renderer.appendChild(ellipsisContainerNativeElement, n.cloneNode(true));
-      });
-      this.cdr.markForCheck();
+    this.ellipsisText = text;
+    this.isEllipsis = ellipsis;
+    const ellipsisContainerNativeElement = this.ellipsisContainer.nativeElement;
+    while (ellipsisContainerNativeElement.firstChild) {
+      this.renderer.removeChild(ellipsisContainerNativeElement, ellipsisContainerNativeElement.firstChild);
     }
+    contentNodes.forEach(n => {
+      this.renderer.appendChild(ellipsisContainerNativeElement, n.cloneNode(true));
+    });
+    this.cdr.markForCheck();
   }
 
-  private resizeAndSubscribeWindowResize(): void {
+  private renderAndSubscribeWindowResize(): void {
     if (this.platform.isBrowser) {
       this.windowResizeSubscription.unsubscribe();
       this.cssEllipsis = this.canUseCSSEllipsis();
-      this.resizeOnNextFrameIfNeed();
+      this.renderOnNextFrame();
       this.ngZone.runOutsideAngular(() => {
         this.windowResizeSubscription = fromEvent(window, 'resize')
           .pipe(
             auditTime(16),
             takeUntil(this.destroy$)
           )
-          .subscribe(() => this.resizeOnNextFrameIfNeed());
+          .subscribe(() => this.renderOnNextFrame());
       });
     }
   }
@@ -225,7 +225,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
 
   ngAfterViewInit(): void {
     this.viewInit = true;
-    this.resizeAndSubscribeWindowResize();
+    this.renderAndSubscribeWindowResize();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -235,7 +235,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
         if (this.expanded) {
           this.windowResizeSubscription.unsubscribe();
         } else {
-          this.resizeAndSubscribeWindowResize();
+          this.renderAndSubscribeWindowResize();
         }
       }
     }
