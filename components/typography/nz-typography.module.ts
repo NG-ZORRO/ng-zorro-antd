@@ -9,7 +9,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { NzTransButtonDirective } from 'ng-zorro-antd/core';
+import { NzTransButtonModule } from 'ng-zorro-antd/core';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -20,8 +20,8 @@ import { NzTextEditComponent } from './nz-text-edit.component';
 import { NzTypographyComponent } from './nz-typography.component';
 
 @NgModule({
-  imports: [CommonModule, NzIconModule, NzToolTipModule, NzInputModule, NzI18nModule],
-  exports: [NzTypographyComponent, NzTextCopyComponent, NzTextEditComponent, NzTransButtonDirective],
-  declarations: [NzTypographyComponent, NzTextCopyComponent, NzTextEditComponent, NzTransButtonDirective]
+  imports: [CommonModule, NzIconModule, NzToolTipModule, NzInputModule, NzI18nModule, NzTransButtonModule],
+  exports: [NzTypographyComponent, NzTextCopyComponent, NzTextEditComponent],
+  declarations: [NzTypographyComponent, NzTextCopyComponent, NzTextEditComponent]
 })
 export class NzTypographyModule {}
