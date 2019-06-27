@@ -22,7 +22,7 @@ import { isNotNil, InputBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'td:not(.nz-disable-td)',
+  selector: 'td:not(.nz-disable-td):not([mat-cell])',
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [NzUpdateHostClassService],
   preserveWhitespaces: false,

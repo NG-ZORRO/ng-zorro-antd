@@ -39,7 +39,7 @@ export interface NzThItemInterface {
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'th:not(.nz-disable-th)',
+  selector: 'th:not(.nz-disable-th):not([mat-sort-header]):not([mat-header-cell])',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

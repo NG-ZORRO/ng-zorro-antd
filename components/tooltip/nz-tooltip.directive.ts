@@ -169,6 +169,7 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
   protected updateCompValue(key: string, value: any): void {
     if (this.isDynamicTooltip && isNotNil(value)) {
       this.tooltip[key] = value;
+      this.tooltip.setClassMap();
       Promise.resolve().then(() => {
         this.tooltip.updatePosition();
       });

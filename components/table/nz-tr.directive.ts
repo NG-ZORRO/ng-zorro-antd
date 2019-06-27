@@ -12,7 +12,7 @@ import { NzTableComponent } from './nz-table.component';
 
 @Directive({
   // tslint:disable-next-line:directive-selector
-  selector: 'tr',
+  selector: 'tr:not([mat-row]):not([mat-header-row])',
   host: {
     '[class.ant-table-row]': 'nzTableComponent'
   }
