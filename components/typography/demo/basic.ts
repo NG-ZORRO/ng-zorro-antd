@@ -28,7 +28,7 @@ import { Component } from '@angular/core';
         and <span nz-text><code>Axure</code></span
         >), to help people create their product prototypes beautifully and efficiently.
       </p>
-      <nz-typography>
+      <article nz-typography>
         <ul>
           <li>
             <a href="/docs/spec/proximity">Principles</a>
@@ -40,7 +40,7 @@ import { Component } from '@angular/core';
             <a href="/docs/resource/download">Resource Download</a>
           </li>
         </ul>
-      </nz-typography>
+      </article>
       <nz-divider></nz-divider>
       <h1 nz-title>介绍</h1>
       <p nz-paragraph>
@@ -63,7 +63,7 @@ import { Component } from '@angular/core';
         <span nz-text><code>Axure</code></span
         >），来帮助业务快速设计出高质 量的产品原型。
       </p>
-      <nz-typography>
+      <article nz-typography>
         <ul>
           <li>
             <a href="/docs/spec/proximity">设计原则</a>
@@ -75,9 +75,8 @@ import { Component } from '@angular/core';
             <a href="/docs/resource/download">设计资源</a>
           </li>
         </ul>
-      </nz-typography>
+      </article>
     </article>
-  `,
-  styles: []
+  `
 })
 export class NzDemoTypographyBasicComponent {}
