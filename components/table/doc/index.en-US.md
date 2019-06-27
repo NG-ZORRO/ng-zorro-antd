@@ -96,6 +96,7 @@ The data passed to `[nzData]` will be export with [Template Context](https://ang
 | `[nzVirtualItemSize]` | The size of the items in the list, same as [cdk itemSize](https://material.angular.io/cdk/scrolling/api) | `number` | `0` |
 | `[nzVirtualMaxBufferPx]` | The number of pixels worth of buffer to render for when rendering new items, same as [cdk maxBufferPx](https://material.angular.io/cdk/scrolling/api) | `number` | `200` |
 | `[nzVirtualMinBufferPx]` | The minimum amount of buffer rendered beyond the viewport (in pixels),same as [cdk minBufferPx](https://material.angular.io/cdk/scrolling/api) | `number` | `100` |
+| `[nzVirtualForTrackBy]` | The TrackByFunction to use for tracking changes. | `TrackByFunction<T>` | - |
 | `(nzPageIndexChange)` | pageIndex change callback | `EventEmitter<number>` | - |
 | `(nzPageSizeChange)` | pageSize change callback | `EventEmitter<number>` | - |
 | `(nzCurrentPageDataChange)` | current pageData change callback | `EventEmitter<any[]>` | - |

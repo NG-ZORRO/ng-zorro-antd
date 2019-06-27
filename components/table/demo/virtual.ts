@@ -3,6 +3,13 @@ import { NzTableComponent } from 'ng-zorro-antd';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+export interface VirtualDataInterface {
+  index: number;
+  name: string;
+  age: number;
+  address: string;
+}
+
 @Component({
   selector: 'nz-demo-table-virtual',
   template: `
@@ -14,6 +21,7 @@ import { takeUntil } from 'rxjs/operators';
       nzVirtualScroll
       [nzVirtualItemSize]="54"
       [nzData]="listOfData"
+      [nzVirtualForTrackBy]="trackByIndex"
       [nzFrontPagination]="false"
       [nzShowPagination]="false"
       [nzScroll]="{ x: '1300px', y: '240px' }"
@@ -60,27 +68,33 @@ import { takeUntil } from 'rxjs/operators';
 export class NzDemoTableVirtualComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('virtualTable', { static: false }) nzTableComponent: NzTableComponent;
   private destroy$ = new Subject();
-  listOfData: any[] = [];
+  listOfData: VirtualDataInterface[] = [];
 
   scrollToIndex(index: number): void {
     this.nzTableComponent.cdkVirtualScrollViewport.scrollToIndex(index);
   }
 
+  trackByIndex(_: number, data: VirtualDataInterface): number {
+    return data.index;
+  }
+
   ngOnInit(): void {
+    const data = [];
     for (let i = 0; i < 20000; i++) {
-      this.listOfData.push({
+      data.push({
         index: i,
         name: `Edward King`,
         age: 32,
         address: `London`
       });
     }
+    this.listOfData = data;
   }
 
   ngAfterViewInit(): void {
     this.nzTableComponent.cdkVirtualScrollViewport.scrolledIndexChange
       .pipe(takeUntil(this.destroy$))
-      .subscribe(data => {
+      .subscribe((data: number) => {
         console.log('scroll index to', data);
       });
   }

@@ -48,7 +48,7 @@
       <table [class.ant-table-fixed]="nzScroll.x" [style.width]="nzScroll.x">
         <ng-template [ngIf]="nzVirtualScroll" [ngTemplateOutlet]="headerTemplate"></ng-template>
         <tbody>
-          <ng-container *cdkVirtualFor="let item of data; let i = index">
+          <ng-container *cdkVirtualFor="let item of data; let i = index; trackBy:nzVirtualForTrackBy;">
             <ng-template [ngTemplateOutlet]="nzVirtualScrollDirective?.templateRef" [ngTemplateOutletContext]="{$implicit:item, index:i}"></ng-template>
           </ng-container>
         </tbody>
