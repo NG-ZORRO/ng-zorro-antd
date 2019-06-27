@@ -27,8 +27,7 @@ import { Component } from '@angular/core';
       [nzContent]="dynamicContent"
       (nzContentChange)="onChange($event)"
     ></p>
-  `,
-  styles: []
+  `
 })
 export class NzDemoTypographyEllipsisComponent {
   dynamicContent = `Ant Design, a design language for background applications, is refined by Ant UED Team.
