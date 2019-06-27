@@ -41,7 +41,7 @@ import { NzEmptyService } from 'ng-zorro-antd';
 
     <ng-template #customTpl let-name>
       <div style="text-align: center;">
-        <i nz-icon type="smile" style="font-size: 20px;"></i>
+        <i nz-icon nzType="smile" style="font-size: 20px;"></i>
         <p>Data Not Found in {{ name }}</p>
       </div>
     </ng-template>

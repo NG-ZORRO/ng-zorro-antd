@@ -250,7 +250,7 @@ describe('layout', () => {
         <div class="logo"></div>
         <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
           <li nz-submenu>
-            <span title><i nz-icon type="user"></i><span class="nav-text">User</span></span>
+            <span title><i nz-icon nzType="user"></i><span class="nav-text">User</span></span>
             <ul>
               <li nz-menu-item>Tom</li>
               <li nz-menu-item>Bill</li>
@@ -258,14 +258,14 @@ describe('layout', () => {
             </ul>
           </li>
           <li nz-submenu>
-            <span title><i nz-icon type="team"></i><span class="nav-text">Team</span></span>
+            <span title><i nz-icon nzType="team"></i><span class="nav-text">Team</span></span>
             <ul>
               <li nz-menu-item>Team 1</li>
               <li nz-menu-item>Team 2</li>
             </ul>
           </li>
           <li nz-menu-item>
-            <span><i nz-icon type="file"></i><span class="nav-text">File</span></span>
+            <span><i nz-icon nzType="file"></i><span class="nav-text">File</span></span>
           </li>
         </ul>
       </nz-sider>
@@ -291,7 +291,7 @@ describe('layout', () => {
       </nz-layout>
     </nz-layout>
     <ng-template #trigger>
-      <i nz-icon type="up"></i>
+      <i nz-icon nzType="up"></i>
     </ng-template>
   `
 })
@@ -313,7 +313,7 @@ export class NzLayoutCustomTriggerComponent {
         <div class="logo"></div>
         <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
           <li nz-submenu>
-            <span title><i nz-icon type="user"></i><span class="nav-text">User</span></span>
+            <span title><i nz-icon nzType="user"></i><span class="nav-text">User</span></span>
             <ul>
               <li nz-menu-item>Tom</li>
               <li nz-menu-item>Bill</li>
@@ -321,14 +321,14 @@ export class NzLayoutCustomTriggerComponent {
             </ul>
           </li>
           <li nz-submenu>
-            <span title><i nz-icon type="team"></i><span class="nav-text">Team</span></span>
+            <span title><i nz-icon nzType="team"></i><span class="nav-text">Team</span></span>
             <ul>
               <li nz-menu-item>Team 1</li>
               <li nz-menu-item>Team 2</li>
             </ul>
           </li>
           <li nz-menu-item>
-            <span><i nz-icon type="file"></i><span class="nav-text">File</span></span>
+            <span><i nz-icon nzType="file"></i><span class="nav-text">File</span></span>
           </li>
         </ul>
       </nz-sider>
@@ -376,16 +376,16 @@ export class NzLayoutSideComponent {
         <div class="logo"></div>
         <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
           <li nz-menu-item>
-            <span><i nz-icon type="user"></i><span class="nav-text">nav 1</span></span>
+            <span><i nz-icon nzType="user"></i><span class="nav-text">nav 1</span></span>
           </li>
           <li nz-menu-item>
-            <span><i nz-icon type="video-camera"></i><span class="nav-text">nav 2</span></span>
+            <span><i nz-icon nzType="video-camera"></i><span class="nav-text">nav 2</span></span>
           </li>
           <li nz-menu-item>
-            <span><i nz-icon type="upload"></i><span class="nav-text">nav 3</span></span>
+            <span><i nz-icon nzType="upload"></i><span class="nav-text">nav 3</span></span>
           </li>
           <li nz-menu-item>
-            <span><i nz-icon type="user"></i><span class="nav-text">nav 4</span></span>
+            <span><i nz-icon nzType="user"></i><span class="nav-text">nav 4</span></span>
           </li>
         </ul>
       </nz-sider>

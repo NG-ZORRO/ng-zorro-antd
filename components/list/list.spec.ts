@@ -279,7 +279,7 @@ class TestListWithTemplateComponent {
   template: `
     <nz-list id="item-string">
       <nz-list-item [nzContent]="'content'" [nzActions]="[action]" [nzExtra]="extra" [nzNoFlex]="noFlex">
-        <ng-template #action><i nz-icon type="star-o" style="margin-right: 8px;"></i> 156</ng-template>
+        <ng-template #action><i nz-icon nzType="star-o" style="margin-right: 8px;"></i> 156</ng-template>
         <ng-template #extra>
           <img
             width="272"

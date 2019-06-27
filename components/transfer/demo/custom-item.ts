@@ -11,7 +11,7 @@ import { NzMessageService } from 'ng-zorro-antd';
       (nzSelectChange)="select($event)"
       (nzChange)="change($event)"
     >
-      <ng-template #render let-item> <i nz-icon type="{{ item.icon }}"></i> {{ item.title }} </ng-template>
+      <ng-template #render let-item> <i nz-icon nzType="{{ item.icon }}"></i> {{ item.title }} </ng-template>
     </nz-transfer>
   `
 })

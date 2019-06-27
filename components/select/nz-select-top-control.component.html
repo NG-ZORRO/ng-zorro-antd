@@ -49,7 +49,7 @@
           class="ant-select-selection__choice__remove"
           (mousedown)="$event.preventDefault()"
           (click)="removeSelectedValue(option, $event)">
-          <i nz-icon type="close" class="ant-select-remove-icon" *ngIf="!nzRemoveIcon; else nzRemoveIcon"></i>
+          <i nz-icon nzType="close" class="ant-select-remove-icon" *ngIf="!nzRemoveIcon; else nzRemoveIcon"></i>
         </span>
       </li>
     </ng-container>
@@ -79,11 +79,11 @@
   nz-select-unselectable
   (mousedown)="$event.preventDefault()"
   (click)="onClearSelection($event)">
-    <i nz-icon type="close-circle" theme="fill" *ngIf="!nzClearIcon; else nzClearIcon" class="ant-select-close-icon"></i>
+    <i nz-icon nzType="close-circle" nzTheme="fill" *ngIf="!nzClearIcon; else nzClearIcon" class="ant-select-close-icon"></i>
   </span>
 <span class="ant-select-arrow" nz-select-unselectable *ngIf="nzShowArrow">
-  <i nz-icon type="loading" *ngIf="nzLoading; else defaultArrow"></i>
+  <i nz-icon nzType="loading" *ngIf="nzLoading; else defaultArrow"></i>
   <ng-template #defaultArrow>
-    <i nz-icon type="down" class="ant-select-arrow-icon" *ngIf="!nzSuffixIcon; else nzSuffixIcon"></i>
+    <i nz-icon nzType="down" class="ant-select-arrow-icon" *ngIf="!nzSuffixIcon; else nzSuffixIcon"></i>
   </ng-template>
 </span>

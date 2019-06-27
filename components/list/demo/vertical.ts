@@ -12,9 +12,9 @@ import { Component, OnInit } from '@angular/core';
     >
       <ng-template #item let-item>
         <nz-list-item [nzContent]="item.content" [nzActions]="[starAction, likeAction, msgAction]" [nzExtra]="extra">
-          <ng-template #starAction><i nz-icon type="star-o" style="margin-right: 8px;"></i> 156</ng-template>
-          <ng-template #likeAction><i nz-icon type="like-o" style="margin-right: 8px;"></i> 156</ng-template>
-          <ng-template #msgAction><i nz-icon type="message" style="margin-right: 8px;"></i> 2</ng-template>
+          <ng-template #starAction><i nz-icon nzType="star-o" style="margin-right: 8px;"></i> 156</ng-template>
+          <ng-template #likeAction><i nz-icon nzType="like-o" style="margin-right: 8px;"></i> 156</ng-template>
+          <ng-template #msgAction><i nz-icon nzType="message" style="margin-right: 8px;"></i> 2</ng-template>
           <nz-list-item-meta [nzAvatar]="item.avatar" [nzTitle]="nzTitle" [nzDescription]="item.description">
             <ng-template #nzTitle
               ><a href="{{ item.href }}">{{ item.title }}</a></ng-template

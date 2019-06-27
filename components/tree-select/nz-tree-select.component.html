@@ -115,7 +115,7 @@
                <span *ngIf="!node.isDisabled" class="ant-select-selection__choice__remove"
                  (mousedown)="$event.preventDefault()"
                  (click)="removeSelected(node, true, $event)">
-                 <i nz-icon type="close" class="ant-select-remove-icon"></i>
+                 <i nz-icon nzType="close" class="ant-select-remove-icon"></i>
                </span>
           <span class="ant-select-selection__choice__content">{{ nzDisplayWith(node) }}</span>
         </li>
@@ -143,9 +143,9 @@
   <span *ngIf="nzAllowClear" class="ant-select-selection__clear"
     (mousedown)="$event.preventDefault()"
     (click)="onClearSelection($event)">
-    <i nz-icon type="close-circle" class="ant-select-clear-icon" theme="fill"></i>
+    <i nz-icon nzType="close-circle" class="ant-select-clear-icon" nzTheme="fill"></i>
   </span>
   <span *ngIf="!isMultiple" class="ant-select-arrow">
-    <i nz-icon type="down" class="ant-select-arrow-icon"></i>
+    <i nz-icon nzType="down" class="ant-select-arrow-icon"></i>
   </span>
 </div>

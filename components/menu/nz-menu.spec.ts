@@ -507,7 +507,7 @@ describe('menu', () => {
   template: `
     <ul nz-menu [nzMode]="'horizontal'">
       <li nz-submenu nzMenuClassName="submenu" [nzOpen]="open" [style.width.px]="width">
-        <span title><i nz-icon type="setting"></i> Navigation Three - Submenu</span>
+        <span title><i nz-icon nzType="setting"></i> Navigation Three - Submenu</span>
         <ul>
           <li nz-menu-group>
             <span title>Item 1</span>
@@ -556,7 +556,7 @@ export class NzTestMenuHorizontalComponent {
   template: `
     <ul nz-menu [nzMode]="'inline'" [nzInlineCollapsed]="collapse">
       <li nz-submenu [nzMenuClassName]="submenuClassName" [nzDisabled]="disabled">
-        <span title><i nz-icon type="mail"></i> Navigation One</span>
+        <span title><i nz-icon nzType="mail"></i> Navigation One</span>
         <ul>
           <li nz-menu-item style="padding-left:0px;">Option 1</li>
           <li nz-menu-item>Option 2</li>
@@ -577,7 +577,7 @@ export class NzTestMenuInlineComponent {
   template: `
     <ul nz-menu [nzMode]="'inline'" style="width: 240px;">
       <li *ngFor="let l1 of menus" nz-submenu>
-        <span title><i nz-icon type="appstore"></i> {{ l1.text }}</span>
+        <span title><i nz-icon nzType="appstore"></i> {{ l1.text }}</span>
         <ul>
           <li *ngFor="let l2 of l1.children" nz-submenu>
             <span title>{{ l2.text }}</span>

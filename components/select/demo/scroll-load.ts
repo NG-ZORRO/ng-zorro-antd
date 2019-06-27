@@ -15,7 +15,7 @@ import { map } from 'rxjs/operators';
     >
       <nz-option *ngFor="let o of optionList" [nzValue]="o" [nzLabel]="o"></nz-option>
       <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
-        <i nz-icon type="loading" class="loading-icon"></i> Loading Data...
+        <i nz-icon nzType="loading" class="loading-icon"></i> Loading Data...
       </nz-option>
     </nz-select>
   `,
