@@ -12,11 +12,21 @@
       "factory": "./ng-add/setup-project/index",
       "schema": "./ng-add/schema.json"
     },
-    "boot-page": {
+    "blank": {
       "description": "Set up boot page",
       "private": true,
-      "factory": "./ng-generate/boot-page/index",
-      "schema": "./ng-generate/boot-page/schema.json"
+      "factory": "./ng-generate/blank/index",
+      "schema": "./ng-generate/blank/schema.json"
+    },
+    "sidemenu": {
+      "description": "Add Sidebar Navigation Layout in your project.",
+      "factory": "./ng-generate/side-menu/index",
+      "schema": "./ng-generate/side-menu/schema.json"
+    },
+    "topnav": {
+      "description": "Add Top Navigation Layout in your project.",
+      "factory": "./ng-generate/topnav/index",
+      "schema": "./ng-generate/topnav/schema.json"
     },
     "add-icon-assets": {
       "description": "Add icon assets into CLI config",
