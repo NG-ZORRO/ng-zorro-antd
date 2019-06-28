@@ -29,7 +29,7 @@ import {
 import { Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 
-import { isNotNil, warnDeprecation, NzNoAnimationDirective } from 'ng-zorro-antd/core';
+import { isNotNil, NzNoAnimationDirective } from 'ng-zorro-antd/core';
 
 import { NzToolTipComponent } from './nz-tooltip.component';
 
