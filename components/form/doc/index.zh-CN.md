@@ -52,7 +52,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 
 ## API
 
-### nz-form
+### [nz-form]
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
