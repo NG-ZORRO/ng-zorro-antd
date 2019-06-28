@@ -1,6 +1,6 @@
 ---
 category: Components
-type: Feedback
+type: 反馈
 title: Result
 subtitle: 结果
 cols: 1
