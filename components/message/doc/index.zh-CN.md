@@ -13,6 +13,14 @@ title: Message
 - 可提供成功、警告和错误等反馈信息。
 - 顶部居中显示并自动消失，是一种不打断用户操作的轻量级提示方式。
 
+## 单独引入此组件
+
+想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
+
+```ts
+import { NzMessageModule } from 'ng-zorro-antd/message';
+```
+
 ## 如何使用
 
 如果要修改全局默认配置，你可以设置提供商 `NZ_MESSAGE_CONFIG` 的值来修改。
@@ -30,14 +38,6 @@ title: Message
 
 ## API
 
-### 单独引入此组件
-
-想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
-
-```ts
-import { NzMessageModule } from 'ng-zorro-antd';
-```
-
 ### NzMessageService
 
 组件提供了一些服务方法，使用方式和参数如下：
@@ -50,7 +50,7 @@ import { NzMessageModule } from 'ng-zorro-antd';
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| content | 提示内容 | `string｜TemplateRef<void>` | - |
+| content | 提示内容 | `string \| TemplateRef<void>` | - |
 | options | 支持设置针对当前提示框的参数，见下方表格 | `object` | - |
 
 `options` 支持设置的参数如下：
@@ -73,7 +73,7 @@ import { NzMessageModule } from 'ng-zorro-antd';
 | nzMaxStack | 同一时间可展示的最大提示数量 | `number` | `8` |
 | nzPauseOnHover | 鼠标移上时禁止自动移除 | `boolean` | `true` |
 | nzAnimate | 开关动画效果 | `boolean` | `true` |
-| nzTop | 消息距离顶部的位置 | `number｜string` | `24` |
+| nzTop | 消息距离顶部的位置 | `number \| string` | `24` |
 
 ### NzMessageDataFilled
 

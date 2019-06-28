@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   template: `
     <nz-tree [nzData]="nodes" nzShowIcon [nzExpandedIcon]="expandedIconTpl">
       <ng-template #expandedIconTpl let-node>
-        <i nz-icon [type]="node.origin.icon" class="ant-tree-switcher-icon"></i>
+        <i nz-icon [nzType]="node.origin.icon" class="ant-tree-switcher-icon"></i>
       </ng-template>
     </nz-tree>
     <nz-tree [nzData]="nodes" nzShowIcon [nzExpandedIcon]="mutiExpandedIconTpl">
@@ -16,7 +16,7 @@ import { Component, OnInit } from '@angular/core';
           [type]="node.isExpanded ? 'folder-open' : 'folder'"
           class="ant-tree-switcher-line-icon"
         ></i>
-        <i *ngIf="node.origin.isLeaf" nz-icon type="file" class="ant-tree-switcher-line-icon"></i>
+        <i *ngIf="node.origin.isLeaf" nz-icon nzType="file" class="ant-tree-switcher-line-icon"></i>
       </ng-template>
     </nz-tree>
   `

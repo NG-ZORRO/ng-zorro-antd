@@ -13,21 +13,21 @@ title: Breadcrumb
 - 当需要告知用户『你在哪里』时；
 - 当需要向上导航的功能时。
 
-## API
-
-### 单独引入此组件
+## 单独引入此组件
 
 想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
 
 ```ts
-import { NzBreadCrumbModule } from 'ng-zorro-antd';
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 ```
+
+## API
 
 ### nz-breadcrumb
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzSeparator]` | 分隔符自定义 | `string｜TemplateRef<void>` | `'/'` |
+| `[nzSeparator]` | 分隔符自定义 | `string \| TemplateRef<void>` | `'/'` |
 | `[nzAutoGenerate]` | 自动生成 Breadcrumb | `boolean` | `false` |
 
 使用 `[nzAutoGenerate]` 时，需要在路由类中定义 `data`:

@@ -293,17 +293,14 @@ describe('modal testing (legacy)', () => {
     });
 
     it('boundary detection for options', fakeAsync(() => {
-      // @ts-ignore
-      const logger = instance.modalService.logger;
-      spyOn(logger, 'warn');
+      spyOn(console, 'warn');
 
       const tempModalId = generateUniqueId();
       const modalAgent = instance.createConfirm() as NzModalRef;
       const modalElement = modalAgent.getElement();
       modalElement.classList.add(tempModalId);
       fixture.detectChanges();
-      // nzFooter
-      expect(logger.warn).toHaveBeenCalled();
+      expect(console.warn).toHaveBeenCalled();
       // nzOnOk: close modal when clicked
       getButtonOk(modalElement).click();
       fixture.detectChanges();
@@ -754,7 +751,6 @@ class NzDemoModalWithInputComponent {
 }
 
 @Component({
-  selector: 'nz-demo-modal-async',
   template: `
     <button nz-button nzType="primary" (click)="showModal()">
       <span>show modal</span>
@@ -768,8 +764,7 @@ class NzDemoModalWithInputComponent {
     >
       <p>content</p>
     </nz-modal>
-  `,
-  styles: []
+  `
 })
 class NzDemoModalAsyncComponent {
   isVisible = false;
@@ -793,11 +788,9 @@ class NzDemoModalAsyncComponent {
 }
 
 @Component({
-  selector: 'nz-demo-modal-confirm-promise',
   template: `
     <button nz-button nzType="info" (click)="showConfirm()">Confirm</button>
-  `,
-  styles: []
+  `
 })
 class NzDemoModalConfirmPromiseComponent {
   confirmModal: NzModalRef; // For testing by now
@@ -959,7 +952,6 @@ export class TestConfirmCustomComponent {
 class TestCssUnitPipeComponent {}
 
 @Component({
-  selector: 'nz-modal-by-service',
   template: `
     <nz-modal [(nzVisible)]="nonServiceModalVisible" nzWrapClassName="__NON_SERVICE_ID_SUFFIX__"></nz-modal>
   `,

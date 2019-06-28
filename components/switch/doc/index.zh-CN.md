@@ -12,25 +12,25 @@ title: Switch
 - 需要表示开关状态/两种状态之间的切换时；
 - 和 `checkbox`的区别是，切换 `switch` 会直接触发状态改变，而 `checkbox` 一般用于状态标记，需要和提交操作配合。
 
-## API
-
-### 单独引入此组件
+## 单独引入此组件
 
 想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
 
 ```ts
-import { NzSwitchModule } from 'ng-zorro-antd';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
 ```
+
+## API
 
 ### nz-switch
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[ngModel]` | 指定当前是否选中，可双向绑定 | `boolean` | `false` |
-| `[nzCheckedChildren]` | 选中时的内容 | `string｜TemplateRef<void>` | - |
-| `[nzUnCheckedChildren]` | 非选中时的内容 | `string｜TemplateRef<void>` | - |
+| `[nzCheckedChildren]` | 选中时的内容 | `string \| TemplateRef<void>` | - |
+| `[nzUnCheckedChildren]` | 非选中时的内容 | `string \| TemplateRef<void>` | - |
 | `[nzDisabled]` | disable 状态 | `boolean` | `false` |
-| `[nzSize]` | 开关大小，可选值：`default` `small` | `'small'｜'default'` | `'default'` |
+| `[nzSize]` | 开关大小，可选值：`default` `small` | `'small' \| 'default'` | `'default'` |
 | `[nzLoading]` | 加载中的开关 | `boolean` | `false` |
 | `[nzControl]` | 是否完全由用户控制状态 | `boolean` | `false` |
 | `(ngModelChange)` | 当前是否选中的回调 | `EventEmitter<boolean>` | `false` |

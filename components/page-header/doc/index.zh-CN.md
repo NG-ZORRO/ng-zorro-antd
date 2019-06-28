@@ -12,26 +12,26 @@ subtitle: 页头
 
 当需要用户快速理解当前页面是什么以及它的功能时使用。
 
+## 单独引入此组件
+
+想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
+
+```ts
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+```
+
 ## API
 
 ```html
 <nz-page-header nzTitle="Page Title"></nz-page-header>
 ```
 
-### 单独引入此组件
-
-想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
-
-```ts
-import { NzPageHeaderModule } from 'ng-zorro-antd';
-```
-
 ### nz-page-header
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzTitle]` | title 文字 | `string｜TemplateRef<void>` | - |
-| `[nzSubtitle]` | subTitle 文字 | `string｜TemplateRef<void>` | - |
-| `[nzBackIcon]` | 自定义 back icon | `string｜TemplateRef<void>` | - |
+| `[nzTitle]` | title 文字 | `string \| TemplateRef<void>` | - |
+| `[nzSubtitle]` | subTitle 文字 | `string \| TemplateRef<void>` | - |
+| `[nzBackIcon]` | 自定义 back icon | `string \| TemplateRef<void>` | - |
 | `[nzBack]` | 返回按钮的点击事件 | `EventEmitter<void>` | - |
 
 ### Page header 组成部分

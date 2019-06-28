@@ -9,13 +9,12 @@ import { Component } from '@angular/core';
     <nz-tabset [nzType]="'card'" [nzSelectedIndex]="index">
       <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate">
         <ng-template #titleTemplate>
-          <div>{{ tab }}<i nz-icon type="close" class="ant-tabs-close-x" (click)="closeTab(tab)"></i></div>
+          <div>{{ tab }}<i nz-icon nzType="close" class="ant-tabs-close-x" (click)="closeTab(tab)"></i></div>
         </ng-template>
         Content of {{ tab }}
       </nz-tab>
     </nz-tabset>
-  `,
-  styles: []
+  `
 })
 export class NzDemoTabsCustomAddTriggerComponent {
   index = 0;

@@ -118,7 +118,6 @@ describe('alert', () => {
 });
 
 @Component({
-  selector: 'nz-test-alert-basic',
   template: `
     <ng-template #template>template</ng-template>
     <nz-alert
@@ -149,7 +148,6 @@ export class NzDemoTestBasicComponent {
 }
 
 @Component({
-  selector: 'nz-test-alert-banner',
   template: `
     <nz-alert nzBanner> </nz-alert>
   `

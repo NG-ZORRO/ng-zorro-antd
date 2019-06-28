@@ -12,43 +12,43 @@ Provide a placeholder at the place which need waiting for loading.
 - When resource need long time loading, like low network speed.
 - The component contains much information, such as List or Card.
 
-## API
-
-### Import this Component Individually
+## Import this Component Individually
 
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzSkeletonModule } from 'ng-zorro-antd';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 ```
+
+## API
 
 ### nz-skeleton
 
 | Property | Description | Type | Default |
 | --- | --- | --- | --- |
 | `[nzActive]` | Show animation effect | `boolean` | `false` |
-| `[nzAvatar]` | Show avatar placeholder | `boolean｜NzSkeletonAvatar` | `false` |
+| `[nzAvatar]` | Show avatar placeholder | `boolean \| NzSkeletonAvatar` | `false` |
 | `[nzLoading]` | Display the skeleton when `true` | `boolean` | - |
-| `[nzParagraph]` | Show paragraph placeholder | `boolean｜NzSkeletonParagraph` | `true` |
-| `[nzTitle]` | Show title placeholder | `boolean｜NzSkeletonTitle` | `true` |
+| `[nzParagraph]` | Show paragraph placeholder | `boolean \| NzSkeletonParagraph` | `true` |
+| `[nzTitle]` | Show title placeholder | `boolean \| NzSkeletonTitle` | `true` |
 
 
 ### NzSkeletonAvatar
 
 | Property | Description | Type | Default |
 | --- | --- | --- | --- |
-| `size` | Set the size of avatar | `'large'｜'small'｜'default'` | - |
-| `shape` | Set the shape of avatar | `'circle'｜'square'` | - |
+| `size` | Set the size of avatar | `'large' \| 'small' \| 'default'` | - |
+| `shape` | Set the shape of avatar | `'circle' \| 'square'` | - |
 
 ### NzSkeletonTitle
 
 | Property | Description | Type | Default |
 | --- | --- | --- | --- |
-| `width` | Set the width of title | `number｜string` | - |
+| `width` | Set the width of title | `number \| string` | - |
 
 ### NzSkeletonParagraph
 
 | Property | Description | Type | Default |
 | --- | --- | --- | --- |
 | `rows` | Set the row count of paragraph | `number` | - |
-| `width` | Set the width of paragraph. When width is an Array, it can set the width of each row. Otherwise only set the last row width | `number｜string｜Array<number｜string>` | - |
+| `width` | Set the width of paragraph. When width is an Array, it can set the width of each row. Otherwise only set the last row width | `number \| string \| Array<number \| string>` | - |

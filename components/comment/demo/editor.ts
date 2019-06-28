@@ -27,8 +27,7 @@ import { distanceInWords } from 'date-fns';
         </nz-form-item>
       </nz-comment-content>
     </nz-comment>
-  `,
-  styles: []
+  `
 })
 export class NzDemoCommentEditorComponent {
   data: any[] = [];

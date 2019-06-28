@@ -26,7 +26,6 @@ import { Component } from '@angular/core';
         <div nz-col nzSpan="4"><p class="height-80">col-4</p></div>
       </div>
     </div>
-  `,
-  styles: []
+  `
 })
 export class NzDemoGridFlexAlignComponent {}

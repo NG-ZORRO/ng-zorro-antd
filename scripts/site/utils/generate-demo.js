@@ -156,6 +156,7 @@ function generateToc(language, name, demoMap) {
     );
   }
   linkArray.sort((pre, next) => pre.order - next.order);
+  linkArray.push({ content: `<nz-link nzHref="#api" nzTitle="API"></nz-link>` });
   const links = linkArray.map(link => link.content).join('');
   return `<nz-affix class="toc-affix" [nzOffsetTop]="16">
     <nz-anchor [nzAffix]="false" nzShowInkInFixed (nzClick)="goLink($event)">

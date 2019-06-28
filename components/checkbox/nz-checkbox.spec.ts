@@ -303,7 +303,6 @@ describe('checkbox', () => {
 });
 
 @Component({
-  selector: 'nz-test-checkbox-single',
   template: `
     <label
       nz-checkbox
@@ -326,7 +325,6 @@ export class NzTestCheckboxSingleComponent {
 }
 
 @Component({
-  selector: 'nz-test-checkbox-group',
   template: `
     <nz-checkbox-group
       [nzDisabled]="disabled"
@@ -346,7 +344,6 @@ export class NzTestCheckboxGroupComponent {
 }
 
 @Component({
-  selector: 'nz-test-checkbox-wrapper',
   template: `
     <nz-checkbox-wrapper (nzOnChange)="onChange($event)">
       <div><label nz-checkbox nzValue="A" [ngModel]="true">A</label></div>
@@ -362,7 +359,6 @@ export class NzTestCheckboxWrapperComponent {
 }
 
 @Component({
-  selector: 'nz-test-checkbox-form',
   template: `
     <form [formGroup]="formGroup">
       <label nz-checkbox formControlName="checkbox"></label>
@@ -384,7 +380,6 @@ export class NzTestCheckboxFormComponent {
 }
 
 @Component({
-  selector: 'nz-test-checkbox-group-form',
   template: `
     <form [formGroup]="formGroup">
       <nz-checkbox-group formControlName="checkboxGroup"></nz-checkbox-group>

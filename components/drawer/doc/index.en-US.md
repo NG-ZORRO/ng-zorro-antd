@@ -13,15 +13,15 @@ A Drawer is a panel that is typically overlaid on top of a page and slides in fr
 * Processing subtasks. When subtasks are too heavy for Popover and we still want to keep the subtasks in the context of the main task, Drawer comes very handy.
 * When a same Form is needed in multiple places.
 
-## API
-
-### Import this Component Individually
+## Import this Component Individually
 
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzDrawerModule } from 'ng-zorro-antd';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 ```
+
+## API
 
 ### nz-drawer
 
@@ -32,11 +32,11 @@ import { NzDrawerModule } from 'ng-zorro-antd';
 | `[nzMaskClosable]` | Clicking on the mask (area outside the Drawer) to close the Drawer or not. | `boolean` | `true` |
 | `[nzMaskStyle]` | Style for Drawer's mask element. | `object` | `{}` |
 | `[nzBodyStyle]` | Body style for drawer body element. Such as height, padding etc. | `object` | `{}` |
-| `[nzTitle]` | The title for Drawer. | `string｜TemplateRef<void>` | - |
+| `[nzTitle]` | The title for Drawer. | `string \| TemplateRef<void>` | - |
 | `[nzVisible]` | Whether the Drawer dialog is visible or not. | `boolean` | `false` |
-| `[nzPlacement]` | The placement of the Drawer. | `'top'｜'right'｜'bottom'｜'left'` | `'right'` |
-| `[nzWidth]` | Width of the Drawer dialog, only when placement is `'right'` or `'left'`.  | `number｜string` | `256` |
-| `[nzHeight]` | Height of the Drawer dialog, only when placement is `'top'` or `'bottom'`.  | `number｜string` | `256` |
+| `[nzPlacement]` | The placement of the Drawer. | `'top' \| 'right' \| 'bottom' \| 'left'` | `'right'` |
+| `[nzWidth]` | Width of the Drawer dialog, only when placement is `'right'` or `'left'`.  | `number \| string` | `256` |
+| `[nzHeight]` | Height of the Drawer dialog, only when placement is `'top'` or `'bottom'`.  | `number \| string` | `256` |
 | `[nzOffsetX]` | The the X coordinate offset(px), only when placement is `'right'` or `'left'`. | `number` | `0` |
 | `[nzOffsetY]` | The the Y coordinate offset(px), only when placement is `'top'` or `'bottom'`. | `number` | `0` |
 | `[nzWrapClassName]` | The class name of the container of the Drawer dialog. | `string` | - |
@@ -53,7 +53,7 @@ import { NzDrawerModule } from 'ng-zorro-antd';
 
 | Params | Description | Type | Default |
 | --- | --- | --- | --- |
-| nzContent |  The drawer body content. | `TemplateRef<{ $implicit: D, drawerRef: NzDrawerRef }>｜Type<T>` | - |
+| nzContent |  The drawer body content. | `TemplateRef<{ $implicit: D, drawerRef: NzDrawerRef }> \| Type<T>` | - |
 | nzContentParams | The component inputs the param / The Template context. | `D` | - |
 | nzClosable | Whether a close (x) button is visible on top right of the Drawer dialog or not. | `boolean` | `true` |
 | nzOnCancel | Execute when click on the mask or the upper cancel button, This function returns a promise, which is automatically closed when the execution is complete or the promise ends (return false to prevent closing) | `() => Promise<any>` | - |
@@ -61,12 +61,12 @@ import { NzDrawerModule } from 'ng-zorro-antd';
 | nzMask | Whether to show mask or not. | `boolean` | `true` |
 | nzMaskStyle | Style for Drawer's mask element. | `object` | `{}` |
 | nzBodyStyle | Body style for modal body element. Such as height, padding etc. | `object` | `{}` |
-| nzTitle | The title for Drawer. | `string｜TemplateRef<void>` | - |
-| nzWidth |  Width of the Drawer dialog.  | `number｜string` | `256` |
-| nzHeight | Height of the Drawer dialog, only when placement is `'top'` or `'bottom'`.  | `number｜string` | `256` |
+| nzTitle | The title for Drawer. | `string \| TemplateRef<void>` | - |
+| nzWidth |  Width of the Drawer dialog.  | `number \| string` | `256` |
+| nzHeight | Height of the Drawer dialog, only when placement is `'top'` or `'bottom'`.  | `number \| string` | `256` |
 | nzWrapClassName | The class name of the container of the Drawer dialog. | `string` | - |
 | nzZIndex| The `z-index` of the Drawer. | `number` | `1000` |
-| nzPlacement | The placement of the Drawer. | `'top'｜'right'｜'bottom'｜'left'` | `'right'` |
+| nzPlacement | The placement of the Drawer. | `'top' \| 'right' \| 'bottom' \| 'left'` | `'right'` |
 | nzOffsetX | The the X coordinate offset(px). | `number` | `0` |
 | nzOffsetY | The the Y coordinate offset(px), only when placement is `'top'` or `'bottom'`. | `number` | `0` |
 
@@ -89,11 +89,11 @@ import { NzDrawerModule } from 'ng-zorro-antd';
 | nzMask | Whether to show mask or not. | `boolean` | `true` |
 | nzMaskStyle | Style for Drawer's mask element. | `object` | `{}` |
 | nzBodyStyle | Body style for modal body element. Such as height, padding etc. | `object` | `{}` |
-| nzTitle | The title for Drawer. | `string｜TemplateRef<void>` | - |
-| nzWidth |  Width of the Drawer dialog.  | `number｜string` | `256` |
-| nzHeight | Height of the Drawer dialog, only when placement is `'top'` or `'bottom'`.  | `number｜string` | `256` |
+| nzTitle | The title for Drawer. | `string \| TemplateRef<void>` | - |
+| nzWidth |  Width of the Drawer dialog.  | `number \| string` | `256` |
+| nzHeight | Height of the Drawer dialog, only when placement is `'top'` or `'bottom'`.  | `number \| string` | `256` |
 | nzWrapClassName | The class name of the container of the Drawer dialog. | `string` | - |
 | nzZIndex| The `z-index` of the Drawer. | `number` | `1000` |
-| nzPlacement | The placement of the Drawer. | `'top'｜'right'｜'bottom'｜'left'` | `'right'` |
+| nzPlacement | The placement of the Drawer. | `'top' \| 'right' \| 'bottom' \| 'left'` | `'right'` |
 | nzOffsetX | The the X coordinate offset(px). | `number` | `0` |
 | nzOffsetY | The the Y coordinate offset(px), only when placement is `'top'` or `'bottom'`. | `number` | `0` |

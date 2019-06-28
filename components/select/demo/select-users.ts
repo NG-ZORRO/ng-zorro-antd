@@ -20,7 +20,7 @@ import { debounceTime, map, switchMap } from 'rxjs/operators';
         <nz-option *ngIf="!isLoading" [nzValue]="o" [nzLabel]="o"></nz-option>
       </ng-container>
       <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
-        <i nz-icon type="loading" class="loading-icon"></i> Loading Data...
+        <i nz-icon nzType="loading" class="loading-icon"></i> Loading Data...
       </nz-option>
     </nz-select>
   `,

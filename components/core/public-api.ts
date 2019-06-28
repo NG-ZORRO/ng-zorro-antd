@@ -22,3 +22,4 @@ export * from './wave/public-api';
 export * from './dropdown/public-api';
 export * from './logger/public-api';
 export * from './responsive/public-api';
+export * from './trans-button/public-api';

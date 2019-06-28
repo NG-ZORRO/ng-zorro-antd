@@ -3,7 +3,7 @@ import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testin
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { NGStyleInterface } from 'ng-zorro-antd/core';
+import { NgStyleInterface } from 'ng-zorro-antd/core';
 
 import { NzBadgeComponent } from './nz-badge.component';
 import { NzBadgeModule } from './nz-badge.module';
@@ -121,7 +121,6 @@ describe('badge', () => {
 });
 
 @Component({
-  selector: 'nz-test-badge-basic',
   template: `
     <nz-badge
       [nzCount]="count"
@@ -143,6 +142,6 @@ export class NzTestBadgeBasicComponent {
   overflow = 20;
   showZero = false;
   status: string;
-  style: NGStyleInterface;
+  style: NgStyleInterface;
   text: string;
 }

@@ -23,7 +23,7 @@
     <i *ngIf="clearIconVisible"
       nz-icon
       type="close-circle"
-      theme="fill"
+      nzTheme="fill"
       class="ant-cascader-picker-clear"
       (click)="clearSelection($event)"></i>
     <i *ngIf="nzShowArrow && !isLoading"
@@ -32,7 +32,7 @@
       class="ant-cascader-picker-arrow"
       [class.ant-cascader-picker-arrow-expand]="menuVisible">
     </i>
-    <i *ngIf="isLoading" nz-icon type="loading" class="ant-cascader-picker-arrow"></i>
+    <i *ngIf="isLoading" nz-icon nzType="loading" class="ant-cascader-picker-arrow"></i>
     <span
       class="ant-cascader-picker-label"
       [class.ant-cascader-show-search]="!!nzShowSearch"

@@ -51,5 +51,14 @@ export default {
   },
   Empty: {
     description: '暂无数据'
+  },
+  Text: {
+    edit: '编辑',
+    copy: '复制',
+    copied: '复制成功',
+    expand: '展开'
+  },
+  PageHeader: {
+    back: '返回'
   }
 };

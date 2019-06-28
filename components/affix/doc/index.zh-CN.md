@@ -13,15 +13,16 @@ title: Affix
 
 页面可视范围过小时，慎用此功能以免遮挡页面内容。
 
-## API
-
-### 单独引入此组件
+## 单独引入此组件
 
 想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
 
 ```ts
-import { NzAffixModule } from 'ng-zorro-antd';
+import { NzAffixModule } from 'ng-zorro-antd/affix';
 ```
+
+## API
+
 
 ### nz-affix
 
@@ -29,7 +30,7 @@ import { NzAffixModule } from 'ng-zorro-antd';
 | --- | --- | --- | --- |
 | `[nzOffsetBottom]` | 距离窗口底部达到指定偏移量后触发 | `number` | - |
 | `[nzOffsetTop]` | 距离窗口顶部达到指定偏移量后触发 | `number` | `0` |
-| `[nzTarget]` | 设置 `nz-affix` 需要监听其滚动事件的元素，值为一个返回对应 DOM 元素的函数 | `string｜HTMLElement` | `window` |
+| `[nzTarget]` | 设置 `nz-affix` 需要监听其滚动事件的元素，值为一个返回对应 DOM 元素的函数 | `string \| HTMLElement` | `window` |
 | `(nzChange)` | 固定状态改变时触发的回调函数 | `EventEmitter<boolean>` | - |
 
 **注意：**`nz-affix` 内的元素不要使用绝对定位，如需要绝对定位的效果，可以直接设置 `nz-affix` 为绝对定位：

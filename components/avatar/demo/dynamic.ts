@@ -15,8 +15,7 @@ const colorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
     <button nz-button [nzType]="'dashed'" (click)="change()" style="margin-left: 16px; vertical-align: middle;">
       <span>Change</span>
     </button>
-  `,
-  styles: []
+  `
 })
 export class NzDemoAvatarDynamicComponent {
   text: string = userList[3];

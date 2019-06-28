@@ -244,7 +244,9 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
 
   private dragState: string;
 
-  fileDrop(e: DragEvent): void {
+  // skip safari bug
+  // tslint:disable-next-line:no-any
+  fileDrop(e: any): void {
     if (e.type === this.dragState) {
       return;
     }

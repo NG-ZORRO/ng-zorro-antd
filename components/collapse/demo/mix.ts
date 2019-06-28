@@ -22,8 +22,7 @@ import { Component } from '@angular/core';
         </div>
       </nz-collapse-panel>
     </nz-collapse>
-  `,
-  styles: []
+  `
 })
 export class NzDemoCollapseMixComponent {
   panels = [

@@ -48,7 +48,6 @@ describe('nz time range pipeline', () => {
 });
 
 @Component({
-  selector: 'nz-test-statistic',
   template: `
     {{ diff | nzTimeRange: format }}
   `

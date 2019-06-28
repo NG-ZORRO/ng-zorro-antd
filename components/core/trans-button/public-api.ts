@@ -6,7 +6,5 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-// tslint:disable-next-line:no-any
-export function getEmptyContentTypeError(content: any): Error {
-  return TypeError(`[NG-ZORRO]: useDefaultContent expect 'string', 'templateRef' or 'component' but get ${content}`);
-}
+export { NzTransButtonModule } from './nz-trans-button.module';
+export { NzTransButtonDirective } from './nz-trans-button.directive';

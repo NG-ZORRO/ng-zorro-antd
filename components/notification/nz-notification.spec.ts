@@ -10,7 +10,6 @@ import { NzNotificationModule } from './nz-notification.module';
 import { NzNotificationService } from './nz-notification.service';
 
 @Component({
-  selector: 'nz-demo-app-component',
   template: `
     <ng-template let-data="data">{{ 'test template content' }}{{ data }}</ng-template>
   `

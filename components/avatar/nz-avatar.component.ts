@@ -43,6 +43,8 @@ export class NzAvatarComponent implements OnChanges {
   @Input() nzSize: NzAvatarSize = 'default';
   @Input() nzText: string;
   @Input() nzSrc: string;
+  @Input() nzSrcSet: string;
+  @Input() nzAlt: string;
   @Input() nzIcon: string;
 
   oldAPIIcon = true; // Make the user defined icon compatible to old API. Should be removed in 2.0.
@@ -133,14 +135,12 @@ export class NzAvatarComponent implements OnChanges {
   }
 
   private setSizeStyle(): void {
-    if (typeof this.nzSize === 'string') {
-      return;
-    }
-    this.renderer.setStyle(this.el, 'width', `${this.nzSize}px`);
-    this.renderer.setStyle(this.el, 'height', `${this.nzSize}px`);
-    this.renderer.setStyle(this.el, 'line-height', `${this.nzSize}px`);
+    const size = typeof this.nzSize === 'string' ? this.nzSize : `${this.nzSize}px`;
+    this.renderer.setStyle(this.el, 'width', size);
+    this.renderer.setStyle(this.el, 'height', size);
+    this.renderer.setStyle(this.el, 'line-height', size);
     if (this.hasIcon) {
-      this.renderer.setStyle(this.el, 'font-size', `${this.nzSize / 2}px`);
+      this.renderer.setStyle(this.el, 'font-size', `calc(${size} / 2)`);
     }
   }
 }

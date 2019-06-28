@@ -3,33 +3,29 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-menu-recursive',
   template: `
-    <ul nz-menu [nzMode]="'inline'" style="width: 240px;">
+    <ul nz-menu nzMode="inline" style="width: 240px;">
       <ng-container *ngTemplateOutlet="menuTpl; context: { $implicit: menus }"></ng-container>
       <ng-template #menuTpl let-menus>
         <ng-container *ngFor="let menu of menus">
           <li
+            *ngIf="!menu.children"
             nz-menu-item
             [nzPaddingLeft]="menu.level * 24"
-            *ngIf="!menu.children"
             [nzDisabled]="menu.disabled"
             [nzSelected]="menu.selected"
           >
-            <span title>
-              <i nz-icon [type]="menu.icon" *ngIf="menu.icon"></i>
-              <span>{{ menu.title }}</span>
-            </span>
+            <i nz-icon [nzType]="menu.icon" *ngIf="menu.icon"></i>
+            <span>{{ menu.title }}</span>
           </li>
           <li
+            *ngIf="menu.children"
             nz-submenu
             [nzPaddingLeft]="menu.level * 24"
-            *ngIf="menu.children"
             [nzOpen]="menu.open"
+            [nzTitle]="menu.title"
+            [nzIcon]="menu.icon"
             [nzDisabled]="menu.disabled"
           >
-            <span title>
-              <i nz-icon [type]="menu.icon" *ngIf="menu.icon"></i>
-              <span>{{ menu.title }}</span>
-            </span>
             <ul>
               <ng-container *ngTemplateOutlet="menuTpl; context: { $implicit: menu.children }"></ng-container>
             </ul>
@@ -37,8 +33,7 @@ import { Component } from '@angular/core';
         </ng-container>
       </ng-template>
     </ul>
-  `,
-  styles: []
+  `
 })
 export class NzDemoMenuRecursiveComponent {
   mode = false;

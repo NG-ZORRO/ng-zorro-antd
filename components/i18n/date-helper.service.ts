@@ -11,6 +11,7 @@ import { Inject, Injectable, Injector, Optional } from '@angular/core';
 import fnsFormat from 'date-fns/format';
 import fnsGetISOWeek from 'date-fns/get_iso_week';
 import fnsParse from 'date-fns/parse';
+
 import { mergeDateConfig, NzDateConfig, NZ_DATE_CONFIG } from './date-config';
 import { NzI18nService } from './nz-i18n.service';
 
@@ -81,9 +82,9 @@ export class DateHelperByDateFns extends DateHelperService {
 
 /**
  * DateHelper that handles date formats with angular's date-pipe
- * [BUG] Use DatePipe may cause non-standard week bug, see: https://github.com/NG-ZORRO/ng-zorro-antd/issues/2406
  *
- * @deprecated Maybe removed in next major version due to this serious bug
+ * @see https://github.com/NG-ZORRO/ng-zorro-antd/issues/2406 - DatePipe may cause non-standard week bug, see:
+ *
  */
 export class DateHelperByDatePipe extends DateHelperService {
   constructor(i18n: NzI18nService, @Optional() @Inject(NZ_DATE_CONFIG) config: NzDateConfig) {

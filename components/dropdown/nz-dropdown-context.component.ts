@@ -15,11 +15,9 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { slideMotion } from 'ng-zorro-antd/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
-import { slideMotion } from 'ng-zorro-antd/core';
-
 import { NzDropdownService } from './nz-dropdown.service';
 import { NzMenuDropdownService } from './nz-menu-dropdown.service';
 
@@ -49,6 +47,9 @@ import { NzMenuDropdownService } from './nz-menu-dropdown.service';
     `
   ]
 })
+/**
+ * @deprecated Use `NzDropdownMenuComponent` instead, will remove in 9.0.0.
+ */
 export class NzDropdownContextComponent implements OnDestroy {
   open = true;
   templateRef: TemplateRef<void>;

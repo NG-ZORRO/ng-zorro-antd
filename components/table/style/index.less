@@ -22,7 +22,10 @@
   }
 
   &-empty &-body {
-    overflow: auto !important;
+    // https://github.com/ant-design/ant-design/issues/11135
+    overflow-x: auto !important;
+    // https://github.com/ant-design/ant-design/issues/17175
+    overflow-y: hidden !important;
   }
 
   table {
@@ -395,11 +398,13 @@
   &-placeholder {
     position: relative;
     z-index: 1;
+    margin-top: -1px;
     padding: @table-padding-vertical @table-padding-horizontal;
     color: @disabled-color;
     font-size: @font-size-base;
     text-align: center;
     background: @component-background;
+    border-top: @border-width-base @border-style-base @border-color-split;
     border-bottom: @border-width-base @border-style-base @border-color-split;
     border-radius: 0 0 @border-radius-base @border-radius-base;
     .@{iconfont-css-prefix} {
@@ -599,7 +604,8 @@
     opacity: 0.9999;
 
     &::-webkit-scrollbar {
-      border-bottom: 1px solid @border-color-split;
+      border: 1px solid @border-color-split;
+      border-width: 0 0 1px 0;
     }
   }
 
@@ -610,6 +616,17 @@
     scrollbar-color: transparent transparent;
     &::-webkit-scrollbar {
       background-color: transparent;
+    }
+  }
+
+  // optimize header style of borderd table after hide extra scrollbar
+  &-bordered&-fixed-header &-scroll &-header {
+    &::-webkit-scrollbar {
+      border: 1px solid @border-color-split;
+      border-width: 1px 1px 1px 0;
+    }
+    &.@{table-prefix-cls}-hide-scrollbar .@{table-prefix-cls}-thead > tr > th:last-child {
+      border-right-color: transparent;
     }
   }
 

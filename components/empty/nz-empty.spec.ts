@@ -291,7 +291,6 @@ describe('nz-empty', () => {
 });
 
 @Component({
-  selector: 'nz-empty-test-basic',
   template: `
     <nz-empty [nzNotFoundImage]="image" [nzNotFoundContent]="content" [nzNotFoundFooter]="footer">
       <ng-template #imageTpl>Image</ng-template>
@@ -311,7 +310,6 @@ export class NzEmptyTestBasicComponent {
 }
 
 @Component({
-  selector: 'nz-empty-test-service',
   template: `
     <nz-list [nzDataSource]="[]" [nzNoResult]="noResult"></nz-list>
     <ng-template #tpl let-component>
@@ -336,6 +334,7 @@ export class NzEmptyTestServiceComponent {
 }
 
 @Component({
+  // tslint:disable-next-line:no-selector
   selector: 'nz-empty-test-custom',
   template: `
     <div>I'm in component {{ name }}</div>

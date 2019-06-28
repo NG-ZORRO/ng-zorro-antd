@@ -12,15 +12,15 @@ A simple and compact dialog used for asking for user confirmation.
 
 The difference with the `confirm` modal dialog is that it's more lightweight than the static popped full-screen confirm modal.
 
-## API
-
-### Import this Component Individually
+## Import this Component Individually
 
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzPopconfirmModule } from 'ng-zorro-antd';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 ```
+
+## API
 
 ### [nz-popconfirm]
 
@@ -28,10 +28,10 @@ import { NzPopconfirmModule } from 'ng-zorro-antd';
 | ----- | ----------- | ---- | ------------- |
 | `[nzCancelText]` | Text of the Cancel button | `string` | `'Cancel'` |
 | `[nzOkText]` | Text of the Confirm button | `string` | `'Confirm'` |
-| `[nzOkType]` | Button `type` of the Confirm button | `'primary'｜'ghost'｜'dashed'｜'danger'｜'default'` | `'primary'` |
-| `[nzTitle]` | Title of the confirmation box | `string｜TemplateRef<void>` | - |
+| `[nzOkType]` | Button `type` of the Confirm button | `'primary' \| 'ghost' \| 'dashed' \| 'danger' \| 'default'` | `'primary'` |
+| `[nzTitle]` | Title of the confirmation box | `string \| TemplateRef<void>` | - |
 | `[nzCondition]` | Whether to directly emit `onConfirm` without showing Popconfirm | `boolean` | `false` |
-| `[nzIcon]` | Customize icon of confirmation  | `string｜TemplateRef<void>` | - |
+| `[nzIcon]` | Customize icon of confirmation  | `string \| TemplateRef<void>` | - |
 | `(nzOnCancel)` | Callback of cancel | `EventEmitter<void>` | - |
 | `(nzOnConfirm)` | Callback of confirmation | `EventEmitter<void>` | - |
 

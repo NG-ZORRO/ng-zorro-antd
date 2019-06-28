@@ -482,7 +482,6 @@ describe('tree-select component', () => {
 });
 
 @Component({
-  selector: 'nz-test-tree-select-basic',
   template: `
     <nz-tree-select
       style="width:250px;position: relative;display: block;"
@@ -579,7 +578,6 @@ export class NzTestTreeSelectBasicComponent {
 }
 
 @Component({
-  selector: 'nz-test-tree-select-checkable',
   template: `
     <nz-tree-select
       style="width: 250px"
@@ -664,7 +662,6 @@ export class NzTestTreeSelectCheckableComponent {
 }
 
 @Component({
-  selector: 'nz-test-tree-select-form',
   template: `
     <form [formGroup]="formGroup">
       <nz-tree-select formControlName="select" style="width: 250px" [nzNodes]="nodes"> </nz-tree-select>
@@ -706,7 +703,6 @@ export class NzTestTreeSelectFormComponent {
 }
 
 @Component({
-  selector: 'nz-test-tree-select-customized-icon',
   template: `
     <nz-tree-select [nzNodes]="nodes" [(ngModel)]="value">
       <ng-template #nzTreeTemplate let-node>

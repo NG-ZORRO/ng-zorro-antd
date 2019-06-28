@@ -175,6 +175,4 @@ export function createDebugEle(element: HTMLInputElement | HTMLTextAreaElement, 
     element.scrollLeft +
     window.pageXOffset +
     coordinates.left}px`;
-  console.log(rect.style.top);
-  console.log(rect.style.left);
 }

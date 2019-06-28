@@ -9,7 +9,7 @@
     [class.ant-tabs-tab-btn-disabled]="disableScrollBefore"
     [class.ant-tabs-tab-arrow-show]="showPaginationControls">
     <span class="ant-tabs-tab-prev-icon">
-      <i nz-icon [type]="nzPositionMode === 'horizontal' ? 'left' : 'up'" class="ant-tabs-tab-prev-icon-target"></i>
+      <i nz-icon [nzType]="nzPositionMode === 'horizontal' ? 'left' : 'up'" class="ant-tabs-tab-prev-icon-target"></i>
     </span>
   </span>
   <span class="ant-tabs-tab-next"
@@ -17,7 +17,7 @@
     [class.ant-tabs-tab-btn-disabled]="disableScrollAfter"
     [class.ant-tabs-tab-arrow-show]="showPaginationControls">
     <span class="ant-tabs-tab-next-icon">
-      <i nz-icon [type]="nzPositionMode === 'horizontal' ? 'right' : 'down'" class="ant-tabs-tab-next-icon-target"></i>
+      <i nz-icon [nzType]="nzPositionMode === 'horizontal' ? 'right' : 'down'" class="ant-tabs-tab-next-icon-target"></i>
     </span>
   </span>
   <div class="ant-tabs-nav-wrap">

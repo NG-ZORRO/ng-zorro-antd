@@ -1,7 +1,7 @@
 import { Component, DebugElement, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NGStyleInterface } from 'ng-zorro-antd/core';
+import { NgStyleInterface } from 'ng-zorro-antd/core';
 
 import { NzTabsModule } from './nz-tabs.module';
 import { NzAnimatedInterface, NzTabSetComponent } from './nz-tabset.component';
@@ -482,7 +482,6 @@ describe('tabs', () => {
 });
 
 @Component({
-  selector: 'nz-test-tabs-basic',
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['../style/index.less', './style/index.less'],
   template: `
@@ -545,7 +544,7 @@ export class NzTestTabsBasicComponent {
   animated: NzAnimatedInterface | boolean = true;
   size = 'default';
   tabBarExtraContent: TemplateRef<void>;
-  tabBarStyle: NGStyleInterface;
+  tabBarStyle: NgStyleInterface;
   tabPosition = 'top';
   type = 'line';
   tabBarGutter: number;
@@ -567,7 +566,6 @@ export class NzTestTabsBasicComponent {
 
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1964 **/
 @Component({
-  selector: 'nz-test-tabs-tab-position-left',
   template: `
     <nz-tabset nzTabPosition="left">
       <nz-tab *ngFor="let tab of tabs" [nzTitle]="'Tab' + tab"> Content of tab {{ tab }} </nz-tab>

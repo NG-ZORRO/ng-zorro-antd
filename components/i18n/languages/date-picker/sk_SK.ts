@@ -9,7 +9,6 @@
 import CalendarLocale from '../calendar/sk_SK';
 import TimePickerLocale from '../time-picker/sk_SK';
 
-// 统一合并为完整的 Locale
 const locale = {
   lang: {
     placeholder: 'Vybrať dátum',

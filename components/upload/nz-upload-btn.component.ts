@@ -23,7 +23,7 @@ import {
 import { of, Observable, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { warn, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
 import { UploadFile, UploadXHRArgs, ZipButtonOptions } from './interface';
 
@@ -72,7 +72,9 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
 
   @HostListener('drop', ['$event'])
   @HostListener('dragover', ['$event'])
-  onFileDrop(e: DragEvent): void {
+  // skip safari bug
+  // tslint:disable-next-line:no-any
+  onFileDrop(e: any): void {
     if (this.options.disabled || e.type === 'dragover') {
       e.preventDefault();
       return;
@@ -180,7 +182,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
         });
       },
       e => {
-        console.warn(`Unhandled upload filter error`, e);
+        warn(`Unhandled upload filter error`, e);
       }
     );
   }
@@ -202,7 +204,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
           }
         },
         e => {
-          console.warn(`Unhandled upload beforeUpload error`, e);
+          warn(`Unhandled upload beforeUpload error`, e);
         }
       );
     } else if (before !== false) {
@@ -246,7 +248,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     };
     const req$ = (opt.customRequest || this.xhr).call(this, args);
     if (!(req$ instanceof Subscription)) {
-      console.warn(`Must return Subscription type in '[nzCustomRequest]' property`);
+      warn(`Must return Subscription type in '[nzCustomRequest]' property`);
     }
     this.reqs[uid] = req$;
     opt.onStart!(file);

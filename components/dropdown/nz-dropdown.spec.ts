@@ -18,7 +18,7 @@ import { NzDropDownDirective } from './nz-dropdown.directive';
 import { NzDropDownModule } from './nz-dropdown.module';
 import { NzDropdownService } from './nz-dropdown.service';
 
-describe('dropdown', () => {
+describe('dropdown-deprecated', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
   const scrolledSubject = new Subject();
@@ -424,7 +424,6 @@ describe('dropdown', () => {
 });
 
 @Component({
-  selector: 'nz-test-dropdown',
   template: `
     <nz-dropdown
       [(nzVisible)]="visible"
@@ -436,7 +435,7 @@ describe('dropdown', () => {
       [nzOverlayClassName]="overlayClassName"
       [nzOverlayStyle]="overlayStyle"
     >
-      <a nz-dropdown> Hover me <i nz-icon type="down"></i> </a>
+      <a nz-dropdown> Hover me <i nz-icon nzType="down"></i> </a>
       <ul nz-menu [nzSelectable]="selectable">
         <li nz-menu-item [nzSelected]="itemSelected">
           <a>1st menu item</a>
@@ -453,8 +452,7 @@ describe('dropdown', () => {
         </li>
       </ul>
     </nz-dropdown>
-  `,
-  styles: []
+  `
 })
 export class NzTestDropdownComponent {
   @ViewChild(NzDropDownComponent, { static: false }) nzDropDownComponent: NzDropDownComponent;
@@ -473,7 +471,6 @@ export class NzTestDropdownComponent {
 }
 
 @Component({
-  selector: 'nz-test-dropdown-button',
   template: `
     <nz-dropdown-button
       (nzClick)="click($event)"
@@ -498,8 +495,7 @@ export class NzTestDropdownComponent {
       </ul>
     </nz-dropdown-button>
     <ng-template #iconTemp>Expand</ng-template>
-  `,
-  styles: []
+  `
 })
 export class NzTestDropdownButtonComponent {
   @ViewChild(NzDropDownButtonComponent, { static: false }) nzDropDownButtonComponent: NzDropDownButtonComponent;
@@ -514,10 +510,9 @@ export class NzTestDropdownButtonComponent {
 }
 
 @Component({
-  selector: 'nz-test-dropdown-with-button',
   template: `
     <nz-dropdown>
-      <button nz-button nz-dropdown><span>Button</span> <i nz-icon type="down"></i></button>
+      <button nz-button nz-dropdown><span>Button</span> <i nz-icon nzType="down"></i></button>
       <ul nz-menu>
         <li nz-menu-item>
           <a>1st menu item</a>
@@ -530,13 +525,11 @@ export class NzTestDropdownButtonComponent {
         </li>
       </ul>
     </nz-dropdown>
-  `,
-  styles: []
+  `
 })
 export class NzTestDropdownWithButtonComponent {}
 
 @Component({
-  selector: 'nz-test-dropdown-contextmenu',
   template: `
     <ng-template #template>
       <ul nz-menu nzInDropDown>

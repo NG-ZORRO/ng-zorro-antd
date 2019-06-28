@@ -46,5 +46,14 @@ export default {
   },
   Empty: {
     description: 'No hay datos'
+  },
+  Text: {
+    edit: 'editar',
+    copy: 'copiar',
+    copied: 'copiado',
+    expand: 'expandir'
+  },
+  PageHeader: {
+    back: 'volver'
   }
 };

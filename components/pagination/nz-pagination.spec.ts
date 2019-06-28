@@ -198,6 +198,13 @@ describe('pagination', () => {
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
         expect(testComponent.pageIndex).toBe(5);
       });
+      it('should nzDisabled work', () => {
+        fixture.detectChanges();
+        testComponent.disabled = true;
+        fixture.detectChanges();
+        console.log(paginationElement.classList);
+        expect(paginationElement.classList.contains('ant-pagination-disabled')).toBe(true);
+      });
     });
     describe('simple mode', () => {
       beforeEach(() => {
@@ -235,6 +242,11 @@ describe('pagination', () => {
         expect(input.value).toBe('5');
         expect(testComponent.pageIndex).toBe(5);
       });
+    });
+    it('should zero total hide all', () => {
+      testComponent.total = 0;
+      fixture.detectChanges();
+      expect(pagination.nativeElement.innerText).toEqual('');
     });
     it('should be hidden pagination when total is 0 and nzHideOnSinglePage is true', () => {
       (testComponent as NzTestPaginationComponent).total = 0;
@@ -298,11 +310,11 @@ describe('pagination', () => {
 });
 
 @Component({
-  selector: `nz-test-pagination`,
   template: `
     <nz-pagination
       [nzSimple]="simple"
       [(nzPageIndex)]="pageIndex"
+      [nzDisabled]="disabled"
       (nzPageIndexChange)="pageIndexChange($event)"
       [(nzPageSize)]="pageSize"
       (nzPageSizeChange)="pageSizeChange($event)"
@@ -321,6 +333,7 @@ export class NzTestPaginationComponent {
   pageIndex = 1;
   pageSize = 10;
   total = 50;
+  disabled = false;
   pageIndexChange = jasmine.createSpy('pageIndexChange callback');
   pageSizeChange = jasmine.createSpy('pageSizeChange callback');
   showQuickJumper = false;
@@ -332,7 +345,6 @@ export class NzTestPaginationComponent {
 }
 
 @Component({
-  selector: `nz-test-pagination-render`,
   template: `
     <nz-pagination [nzPageIndex]="1" [nzTotal]="50" [nzItemRender]="renderItemTemplate"></nz-pagination>
     <ng-template #renderItemTemplate let-type let-page="page">
@@ -345,7 +357,6 @@ export class NzTestPaginationComponent {
 export class NzTestPaginationRenderComponent {}
 
 @Component({
-  selector: `nz-test-pagination-total`,
   template: `
     <nz-pagination
       [(nzPageIndex)]="pageIndex"

@@ -13,27 +13,28 @@ Transfer the elements between two columns in an intuitive and efficient way.
 
 One or more elements can be selected from either column, one click on the proper 'direction' button, and the transfer is done. The left column is considered the 'source' and the right column is considered the 'target'. As you can see in the API description, these names are reflected in.
 
-## API
-
-### Import this Component Individually
+## Import this Component Individually
 
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzTransferModule } from 'ng-zorro-antd';
+import { NzTransferModule } from 'ng-zorro-antd/transfer';
 ```
+
+## API
 
 ### nz-transfer
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzDataSource]` | Used for setting the source data. Except the elements whose keys are `direction: 'right'` prop. | `TransferItem[]` | `[]` |
+| `[nzDataSource]` | Used for setting the source data. Except the elements whose keys are `direction: 'right'` prop , or using `nzTargetKeys` prop. | `TransferItem[]` | `[]` |
 | `[nzDisabled]` | Whether disabled transfer | `boolean` | `false` |
 | `[nzTitles]` | A set of titles that are sorted from left to right. | `string[]` | `['', '']` |
 | `[nzOperations]` | A set of operations that are sorted from bottom to top. | `string[]` | `['', '']` |
 | `[nzListStyle]` | A custom CSS style used for rendering the transfer columns. equal `ngStyle` | `object` | - |
 | `[nzItemUnit]` | single unit | `string` | `'item'` |
 | `[nzItemsUnit]` | multiple unit | `string` | `'items'` |
+| `[nzRenderList]` | Customize render list, please refer to the case. | `Array<TemplateRef<void> \| null>` | `[null, null]` |
 | `[nzRender]` | The function to generate the item shown on a column. please refer to the case. | `TemplateRef<void>` | - |
 | `[nzFooter]` | A function used for rendering the footer. please refer to the case. | `TemplateRef<void>` | - |
 | `[nzShowSearch]` | If included, a search box is shown on each column. | `boolean` | `false` |
@@ -41,6 +42,7 @@ import { NzTransferModule } from 'ng-zorro-antd';
 | `[nzSearchPlaceholder]` | The hint text of the search box. | `string` | `'Search here'` |
 | `[nzNotFoundContent]` | Text to display when a column is empty. | `string` | `'The list is empty'` |
 | `[nzCanMove]` | Two verification when transfer choice box. please refer to the case. | `(arg: TransferCanMove) => Observable<TransferItem[]>` | - |
+| `[nzTargetKeys]` | A set of keys of elements that are listed on the right column. | `string[]` | - |
 | `(nzChange)` | A callback function that is executed when the transfer between columns is complete. | `EventEmitter<TransferChange>` | - |
 | `(nzSearchChange)` | A callback function which is executed when search field are changed | `EventEmitter<TransferSearchChange>` | - |
 | `(nzSelectChange)` | A callback function which is executed when selected items are changed. | `EventEmitter<TransferSearchChange>` | - |
@@ -50,7 +52,7 @@ import { NzTransferModule } from 'ng-zorro-antd';
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | title | Used to display and search keyword | `string` | - |
-| direction | Used for setting the source data. Except the elements whose keys are `direction: 'right'` prop. | `'left'｜'right'` | - |
+| direction | Used for setting the source data. Except the elements whose keys are `direction: 'right'` prop. | `'left' \| 'right'` | - |
 | disabled | specifies whether the checkbox is disabled | `boolean` | `false` |
 | checked | specifies whether the checkbox is selected | `boolean` | `false` |
 
@@ -58,20 +60,30 @@ import { NzTransferModule } from 'ng-zorro-antd';
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| direction | data direction | `'left'｜'right'` | - |
+| direction | data direction | `'left' \| 'right'` | - |
 | list | Used for setting the source data. | `TransferItem[]` | `[]` |
 
 #### TransferChange
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| from | data direction | `'left'｜'right'` | - |
-| to | data direction | `'left'｜'right'` | - |
+| from | data direction | `'left' \| 'right'` | - |
+| to | data direction | `'left' \| 'right'` | - |
 | list | Used for setting the source data. | `TransferItem[]` | `[]` |
 
 #### TransferSearchChange
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| direction | data direction | `'left'｜'right'` | - |
+| direction | data direction | `'left' \| 'right'` | - |
 | value | Search keyword | `string` | - |
+
+#### nzRenderList
+
+| Property | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
+| `direction`       | List render direction   | `'left' \| 'right'` | - |
+| `disabled`        | Disable list or not     | `boolean` | - |
+| `items`   | Filtered items          | `TransferItem[]`  | - |
+| `onItemSelect`    | Select item             | `(item: TransferItem) => void` | - |
+| `onItemSelectAll` | Select a group of items | `(selected: boolean) => void` | - |

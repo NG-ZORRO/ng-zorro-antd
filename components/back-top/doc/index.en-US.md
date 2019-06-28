@@ -11,15 +11,15 @@ title: BackTop
 - When the page content is very long.
 - When you need to go back to the top very frequently in order to view the contents.
 
-## API
-
-### Import this Component Individually
+## Import this Component Individually
 
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzBackTopModule } from 'ng-zorro-antd';
+import { NzBackTopModule } from 'ng-zorro-antd/back-top';
 ```
+
+## API
 
 ### nz-back-top
 
@@ -30,6 +30,6 @@ import { NzBackTopModule } from 'ng-zorro-antd';
 | --- | --- | --- | --- |
 | `[nzTemplate]` | custom content | `TemplateRef<void>` | - |
 | `[nzVisibilityHeight]` | the `nz-back-top` button will not show until the scroll height reaches this value | `number` | `400` |
-| `[nzTarget]` | specifies the scrollable area dom node | `string｜Element` | `window` |
+| `[nzTarget]` | specifies the scrollable area dom node | `string \| Element` | `window` |
 | `(nzClick)` | a callback function, which can be executed when you click the button | `EventEmitter<boolean>` | - |
 

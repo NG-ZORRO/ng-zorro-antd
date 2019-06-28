@@ -6,11 +6,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { LOGGER_SERVICE_PROVIDER, NZ_LOGGER_STATE } from './logger.service';
+import { NzTransButtonDirective } from './nz-trans-button.directive';
 
 @NgModule({
-  providers: [{ provide: NZ_LOGGER_STATE, useValue: false }, LOGGER_SERVICE_PROVIDER]
+  declarations: [NzTransButtonDirective],
+  exports: [NzTransButtonDirective],
+  imports: [CommonModule]
 })
-export class LoggerModule {}
+export class NzTransButtonModule {}

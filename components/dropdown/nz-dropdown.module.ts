@@ -16,9 +16,12 @@ import { NzAddOnModule, NzNoAnimationModule, NzOverlayModule } from 'ng-zorro-an
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 
+import { PlatformModule } from '@angular/cdk/platform';
+import { NzContextMenuService } from './nz-context-menu.service';
 import { NzDropDownADirective } from './nz-dropdown-a.directive';
 import { NzDropDownButtonComponent } from './nz-dropdown-button.component';
 import { NzDropdownContextComponent } from './nz-dropdown-context.component';
+import { NzDropdownMenuComponent } from './nz-dropdown-menu.component';
 import { NzDropDownComponent } from './nz-dropdown.component';
 import { NzDropDownDirective } from './nz-dropdown.directive';
 import { NzDropdownService } from './nz-dropdown.service';
@@ -31,19 +34,28 @@ import { NzDropdownService } from './nz-dropdown.service';
     NzButtonModule,
     NzMenuModule,
     NzIconModule,
+    PlatformModule,
     NzNoAnimationModule,
     NzOverlayModule,
     NzAddOnModule
   ],
-  entryComponents: [NzDropdownContextComponent],
+  entryComponents: [NzDropdownContextComponent, NzDropdownMenuComponent],
   declarations: [
     NzDropDownComponent,
     NzDropDownButtonComponent,
     NzDropDownDirective,
     NzDropDownADirective,
-    NzDropdownContextComponent
+    NzDropdownContextComponent,
+    NzDropdownMenuComponent
   ],
-  exports: [NzMenuModule, NzDropDownComponent, NzDropDownButtonComponent, NzDropDownDirective, NzDropDownADirective],
-  providers: [NzDropdownService]
+  exports: [
+    NzMenuModule,
+    NzDropDownComponent,
+    NzDropDownButtonComponent,
+    NzDropDownDirective,
+    NzDropDownADirective,
+    NzDropdownMenuComponent
+  ],
+  providers: [NzDropdownService, NzContextMenuService]
 })
 export class NzDropDownModule {}

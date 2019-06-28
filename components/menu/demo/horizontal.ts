@@ -3,33 +3,34 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-menu-horizontal',
   template: `
-    <ul nz-menu [nzMode]="'horizontal'">
-      <li nz-menu-item><i nz-icon type="mail"></i> Navigation One</li>
-      <li nz-menu-item nzDisabled><i nz-icon type="appstore"></i> Navigation Two</li>
-      <li nz-submenu>
-        <span title><i nz-icon type="setting"></i> Navigation Three - Submenu</span>
+    <ul nz-menu nzMode="horizontal">
+      <li nz-menu-item nzSelected>
+        <i nz-icon nzType="mail"></i>
+        Navigation One
+      </li>
+      <li nz-menu-item nzDisabled>
+        <i nz-icon nzType="appstore"></i>
+        Navigation Two
+      </li>
+      <li nz-submenu nzTitle="Navigation Three - Submenu" nzIcon="setting">
         <ul>
-          <li nz-menu-group>
-            <span title>Item 1</span>
+          <li nz-menu-group nzTitle="Item 1">
             <ul>
               <li nz-menu-item>Option 1</li>
               <li nz-menu-item>Option 2</li>
             </ul>
           </li>
-          <li nz-menu-group>
-            <span title>Item 2</span>
+          <li nz-menu-group nzTitle="Item 2">
             <ul>
               <li nz-menu-item>Option 3</li>
               <li nz-menu-item>Option 4</li>
-              <li nz-submenu>
-                <span title>Sub Menu</span>
+              <li nz-submenu nzTitle="Sub Menu">
                 <ul>
                   <li nz-menu-item nzDisabled>Option 5</li>
                   <li nz-menu-item>Option 6</li>
                 </ul>
               </li>
-              <li nz-submenu nzDisabled>
-                <span title>Disabled Sub Menu</span>
+              <li nz-submenu nzDisabled nzTitle="Disabled Sub Menu">
                 <ul>
                   <li nz-menu-item>Option 5</li>
                   <li nz-menu-item>Option 6</li>

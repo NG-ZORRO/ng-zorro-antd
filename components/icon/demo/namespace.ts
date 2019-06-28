@@ -8,7 +8,7 @@ const ngZorroIconLiteral =
   selector: 'nz-demo-icon-namespace',
   template: `
     <div class="icons-list">
-      <i nz-icon type="ng-zorro:antd"></i>
+      <i nz-icon nzType="ng-zorro:antd"></i>
     </div>
   `,
   styles: [

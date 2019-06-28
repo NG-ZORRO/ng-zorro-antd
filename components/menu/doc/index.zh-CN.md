@@ -14,26 +14,28 @@ subtitle: 导航菜单
 
 更多布局和导航的使用可以参考：[通用布局](/components/layout/zh)。
 
-## API
-
-```html
-<ul nz-menu>
-  <li nz-menu-item>菜单项</li>
-  <li nz-submenu>
-    <span title>子菜单</span>
-    <ul>
-      <li nz-menu-item>子菜单项</li>
-    </ul>
-  </li>
-</ul>
-```
-
-### 单独引入此组件
+## 单独引入此组件
 
 想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
 
 ```ts
-import { NzMenuModule } from 'ng-zorro-antd';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+```
+
+## API
+
+```html
+<ul nz-menu>
+  <li nz-menu-item>Menu 1</li>
+  <li nz-menu-item>Menu 2</li>
+  <li nz-submenu nzTitle="SubMenu Title">
+    <ul>
+      <li nz-menu-item>SubMenu Item 1</li>
+      <li nz-menu-item>SubMenu Item 2</li>
+      <li nz-menu-item>SubMenu Item 3</li>
+    </ul>
+  </li>
+</ul>
 ```
 
 ### [nz-menu]
@@ -42,9 +44,9 @@ import { NzMenuModule } from 'ng-zorro-antd';
 | --- | --- | --- | --- |
 | `[nzInlineCollapsed]` | inline 时菜单是否收起状态 | `boolean` | - |
 | `[nzInlineIndent]` | inline 模式的菜单缩进宽度 | `number` | `24` |
-| `[nzMode]` | 菜单类型，现在支持垂直、水平、和内嵌模式三种 | `'vertical'｜'horizontal'｜'inline'` | `'vertical'` |
+| `[nzMode]` | 菜单类型，现在支持垂直、水平、和内嵌模式三种 | `'vertical' \| 'horizontal' \| 'inline'` | `'vertical'` |
 | `[nzSelectable]` | 是否允许选中 | `boolean` | `true` |
-| `[nzTheme]` | 主题颜色 | `'light'｜'dark'` | `'light'` |
+| `[nzTheme]` | 主题颜色 | `'light' \| 'dark'` | `'light'` |
 | `(nzClick)` | 点击 nz-menu-item 输出属性 | `EventEmitter<NzMenuItemDirective>` | |
 
 ### [nz-menu-item]
@@ -53,23 +55,47 @@ import { NzMenuModule } from 'ng-zorro-antd';
 | --- | --- | --- | --- |
 | `[nzDisabled]` | 是否禁用 | `boolean` | `false` |
 | `[nzSelected]` | 是否被选中 | `boolean` | `false` |
+| `[nzMatchRouter]` | 是否根据 [routerLink](https://www.angular.cn/api/router/RouterLink) 自动设定 `nzSelected` | `boolean` | `false` |
+| `[nzMatchRouterExact]` | 是否路由完整精确匹配, 详见 [routerLinkActiveOptions](https://angular.io/api/router/RouterLinkActive#routerLinkActiveOptions) | `boolean` | `false` |
 
 ### [nz-submenu]
 
-使用 `title` 标识符来标定子菜单标题部分
+你可以使用以下三种方式来定义 `nz-submenu` 的标题
+
+```html
+<li nz-submenu nzTitle="SubTitle" nzIcon="appstore"></li>
+
+<li nz-submenu><span title><i nz-icon nzType="appstore"></i><span>SubTitle</span></span></li>
+
+<li nz-submenu [nzTitle]="titleTpl"></li>
+<ng-template #titleTpl><i nz-icon nzType="appstore"></i><span>SubTitle</span></ng-template>
+```
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzOpen]` | 是否展开，可双向绑定 | `boolean` | `false` |
 | `[nzDisabled]` | 是否禁用 | `boolean` | `false` |
+| `[nzTitle]` | 标题内容 | `string \| TemplateRef<void>` | - |
+| `[nzIcon]` | 标题中 icon 类型 | `string` | - |
 | `[nzMenuClassName]` | 自定义子菜单容器类名 | `string` | - |
 | `(nzOpenChange)` | 展开回调 | `EventEmitter<boolean>` | - |
 
 
 ### [nz-menu-group]
 
-使用 `title` 标识符来标定标题部分
+你可以使用以下三种方式来定义 `nz-menu-group` 的标题
 
+```html
+<li nz-menu-group nzTitle="SubTitle" nzIcon="appstore"></li>
+
+<li nz-menu-group><span title><i nz-icon nzType="appstore"></i><span>SubTitle</span></span></li>
+
+<li nz-menu-group [nzTitle]="titleTpl"></li>
+<ng-template #titleTpl><i nz-icon nzType="appstore"></i><span>SubTitle</span></ng-template>
+```
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `[nzTitle]` | 标题内容 | `string \| TemplateRef<void>` | - |
 
 ### [nz-menu-divider]
 

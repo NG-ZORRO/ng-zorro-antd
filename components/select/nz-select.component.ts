@@ -123,6 +123,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @Input() nzPlaceHolder: string;
   @Input() nzMaxTagCount: number;
   @Input() nzDropdownRender: TemplateRef<void>;
+  @Input() nzCustomTemplate: TemplateRef<{ $implicit: NzOptionComponent }>;
   @Input() nzSuffixIcon: TemplateRef<void>;
   @Input() nzClearIcon: TemplateRef<void>;
   @Input() nzRemoveIcon: TemplateRef<void>;
@@ -319,6 +320,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
         this.onTouched();
       }
       this.open = value;
+      this.nzSelectService.clearInput();
     });
     this.nzSelectService.check$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.cdr.markForCheck();

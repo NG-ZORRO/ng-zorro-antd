@@ -12,18 +12,18 @@ cols: 1
 
 最基础的卡片容器，可承载文字、列表、图片、段落，常用于后台概览页面。
 
-## API
-
-```html
-<nz-card nzTitle="卡片标题">卡片内容</nz-card>
-```
-
-### 单独引入此组件
+## 单独引入此组件
 
 想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
 
 ```ts
-import { NzCardModule } from 'ng-zorro-antd';
+import { NzCardModule } from 'ng-zorro-antd/card';
+```
+
+## API
+
+```html
+<nz-card nzTitle="卡片标题">卡片内容</nz-card>
 ```
 
 ### nz-card
@@ -34,20 +34,20 @@ import { NzCardModule } from 'ng-zorro-antd';
 | `[nzBodyStyle]` | 内容区域自定义样式 | `{ [key: string]: string }` | - |
 | `[nzBordered]` | 是否有边框 | `boolean` | `true` |
 | `[nzCover]` | 卡片封面 | `TemplateRef<void>` | - |
-| `[nzExtra]` | 卡片右上角的操作区域 | `string｜TemplateRef<void>` | - |
+| `[nzExtra]` | 卡片右上角的操作区域 | `string \| TemplateRef<void>` | - |
 | `[nzHoverable]` | 鼠标移过时可浮起 | `boolean` | `false` |
 | `[nzLoading]` | 当卡片内容还在加载中时，可以用 loading 展示一个占位 | `boolean` | `false` |
-| `[nzTitle]` | 卡片标题 | `string｜TemplateRef<void>` | - |
+| `[nzTitle]` | 卡片标题 | `string \| TemplateRef<void>` | - |
 | `[nzType]` | 卡片类型，可设置为 `inner` 或 不设置 | `'inner'` | - |
-| `[nzSize]` | 卡片的尺寸 | `'default'｜'small'` | `'default'` |
+| `[nzSize]` | 卡片的尺寸 | `'default' \| 'small'` | `'default'` |
 
 ### nz-card-meta
 
 | 参数 | 说明 | 类型 | 默认值 |
 | -------- | ----------- | ---- | ------- |
 | `[nzAvatar]` | 头像/图标 | `TemplateRef<void>` | - |
-| `[nzDescription]` | 描述内容 | `string｜TemplateRef<void>` | - |
-| `[nzTitle]` | 标题内容 | `string｜TemplateRef<void>` | - |
+| `[nzDescription]` | 描述内容 | `string \| TemplateRef<void>` | - |
+| `[nzTitle]` | 标题内容 | `string \| TemplateRef<void>` | - |
 
 
 ### [nz-card-grid]

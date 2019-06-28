@@ -7,16 +7,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
     <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
       <nz-form-item>
         <nz-form-label [nzSpan]="5" nzRequired nzFor="note">Note</nz-form-label>
-        <nz-form-control [nzSpan]="12">
+        <nz-form-control [nzSpan]="12" nzErrorTip="Please input your username!">
           <input id="note" type="text" nz-input formControlName="note" />
-          <nz-form-explain *ngIf="validateForm.get('note')?.dirty && validateForm.get('note')?.errors"
-            >Please input your username!</nz-form-explain
-          >
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label [nzSpan]="5" nzFor="gender" nzRequired>Gender</nz-form-label>
-        <nz-form-control [nzSpan]="12">
+        <nz-form-control [nzSpan]="12" nzErrorTip="Please select your gender!">
           <nz-select
             id="gender"
             formControlName="gender"
@@ -26,9 +23,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
             <nz-option nzValue="male" nzLabel="male"></nz-option>
             <nz-option nzValue="female" nzLabel="female"></nz-option>
           </nz-select>
-          <nz-form-explain *ngIf="validateForm.get('gender')?.dirty && validateForm.get('gender')?.errors"
-            >Please select your gender!</nz-form-explain
-          >
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>

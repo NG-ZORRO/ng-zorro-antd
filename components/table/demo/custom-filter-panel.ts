@@ -8,22 +8,19 @@ import { Component } from '@angular/core';
         <tr>
           <th nzCustomFilter>
             Name
-            <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
-              <i
-                nz-icon
-                nzType="search"
-                class="ant-table-filter-icon"
-                [class.ant-table-filter-open]="dropdown.nzVisible"
-                nz-dropdown
-              ></i>
-              <div class="search-box">
-                <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue" />
-                <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
-                  Search
-                </button>
-                <button nz-button nzSize="small" (click)="reset()">Reset</button>
-              </div>
-            </nz-dropdown>
+            <i
+              class="ant-table-filter-icon"
+              nz-icon
+              nz-dropdown
+              #dropdown="nzDropdown"
+              nzType="search"
+              [nzDropdownMenu]="menu"
+              [class.ant-table-filter-open]="dropdown.nzVisible"
+              nzTrigger="click"
+              nzPlacement="bottomRight"
+              [nzClickHide]="false"
+              nzTableFilter
+            ></i>
           </th>
           <th>Age</th>
           <th nzShowFilter [nzFilters]="listOfFilterAddress" (nzFilterChange)="filterAddressChange($event)">Address</th>
@@ -37,6 +34,15 @@ import { Component } from '@angular/core';
         </tr>
       </tbody>
     </nz-table>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <div class="search-box">
+        <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue" />
+        <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+          Search
+        </button>
+        <button nz-button nzSize="small" (click)="reset()">Reset</button>
+      </div>
+    </nz-dropdown-menu>
   `,
   styles: [
     `

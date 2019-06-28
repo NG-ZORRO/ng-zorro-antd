@@ -186,7 +186,6 @@ describe('NzMessage', () => {
 });
 
 @Component({
-  selector: 'nz-demo-app-component',
   template: `
     <ng-template #contentTemplate>
       Content in template

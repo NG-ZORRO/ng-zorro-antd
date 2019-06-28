@@ -52,11 +52,7 @@ export class NzSelectService {
   searchValue = '';
   isShowNotFound = false;
   // open
-  open$ = this.openRaw$.pipe(
-    distinctUntilChanged(),
-    share(),
-    tap(() => this.clearInput())
-  );
+  open$ = this.openRaw$.pipe(distinctUntilChanged());
   activatedOption: NzOptionComponent | null;
   activatedOption$ = new ReplaySubject<NzOptionComponent | null>(1);
   listOfSelectedValue$ = this.listOfSelectedValueWithEmit$.pipe(map(data => data.value));
@@ -103,7 +99,7 @@ export class NzSelectService {
   // display in top control
   listOfCachedSelectedOption: NzOptionComponent[] = [];
   // selected value or ViewChildren change
-  valueOrOption$ = combineLatest(this.listOfSelectedValue$, this.mapOfTemplateOption$).pipe(
+  valueOrOption$ = combineLatest([this.listOfSelectedValue$, this.mapOfTemplateOption$]).pipe(
     tap(data => {
       this.listOfSelectedValue = data[0];
       this.listOfNzOptionComponent = data[1].listOfNzOptionComponent;
@@ -321,6 +317,9 @@ export class NzSelectService {
   }
 
   onKeyDown(e: KeyboardEvent): void {
+    if (this.disabled) {
+      return;
+    }
     const keyCode = e.keyCode;
     const eventTarget = e.target as HTMLInputElement;
     const listOfFilteredOptionWithoutDisabled = this.listOfFilteredOption.filter(item => !item.nzDisabled);

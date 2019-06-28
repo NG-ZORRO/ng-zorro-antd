@@ -20,8 +20,7 @@ import { Component } from '@angular/core';
     </ng-template>
 
     <ng-template [ngTemplateOutlet]="commentTemplateRef" [ngTemplateOutletContext]="{ comment: data }"> </ng-template>
-  `,
-  styles: []
+  `
 })
 export class NzDemoCommentNestedComponent {
   data = {

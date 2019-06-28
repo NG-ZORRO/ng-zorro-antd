@@ -288,7 +288,6 @@ describe('progress', () => {
 });
 
 @Component({
-  selector: 'nz-test-progress-line',
   template: `
     <nz-progress
       [nzSize]="size"
@@ -317,7 +316,6 @@ export class NzTestProgressLineComponent {
 }
 
 @Component({
-  selector: 'nz-test-progress-dashboard',
   template: `
     <nz-progress
       nzType="dashboard"
@@ -343,7 +341,6 @@ export class NzTestProgressDashBoardComponent {
 }
 
 @Component({
-  selector: 'nz-test-progress-circle',
   template: `
     <nz-progress
       nzType="circle"

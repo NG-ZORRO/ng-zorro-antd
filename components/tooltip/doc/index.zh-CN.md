@@ -13,21 +13,21 @@ title: Tooltip
 
 可用来代替系统默认的 `title` 提示，提供一个`按钮/文字/操作`的文案解释。
 
-## API
-
-### 单独引入此组件
+## 单独引入此组件
 
 想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
 
 ```ts
-import { NzToolTipModule } from 'ng-zorro-antd';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 ```
+
+## API
 
 ### [nz-tooltip]
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzTitle]` | 提示文字 | `string｜TemplateRef<void>` | - |
+| `[nzTitle]` | 提示文字 | `string \| TemplateRef<void>` | - |
 
 ### 共同的 API
 
@@ -39,8 +39,8 @@ import { NzToolTipModule } from 'ng-zorro-antd';
 | `[nzMouseLeaveDelay]` | 鼠标移出后延时多少才隐藏 Tooltip，单位：秒 | `number` | `0.1` |
 | `[nzOverlayClassName]` | 卡片类名 | `string` | - |
 | `[nzOverlayStyle]` | 卡片样式 | `object` | - |
-| `[nzPlacement]` | 气泡框位置 | `'top'｜'left'｜'right'｜'bottom'｜'topLeft'｜'topRight'｜'bottomLeft'｜'bottomRight'｜'leftTop'｜'leftBottom'｜'rightTop'｜'rightBottom'` | `'top'` |
-| `[nzTrigger]` | 触发行为，可选 `hover/focus/click` | `'click'｜'focus'｜'hover'` | `'hover'` |
+| `[nzPlacement]` | 气泡框位置 | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
+| `[nzTrigger]` | 触发行为，可选 `hover/focus/click` | `'click' \| 'focus' \| 'hover'` | `'hover'` |
 | `[nzVisible]` | 用于手动控制浮层显隐 | `boolean` | `false` |
 | `(nzVisibleChange)` | 显示隐藏的回调 | `EventEmitter<boolean>` | - |
 

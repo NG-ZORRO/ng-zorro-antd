@@ -16,7 +16,7 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzCommentModule } from 'ng-zorro-antd/comment';
-import { NzNoAnimationModule, NzWaveModule } from 'ng-zorro-antd/core';
+import { warnDeprecation, NzNoAnimationModule, NzTransButtonModule, NzWaveModule } from 'ng-zorro-antd/core';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
@@ -59,6 +59,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzTransferModule } from 'ng-zorro-antd/transfer';
 import { NzTreeModule } from 'ng-zorro-antd/tree';
 import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 
 export * from 'ng-zorro-antd/affix';
@@ -122,6 +123,7 @@ export * from 'ng-zorro-antd/tooltip';
 export * from 'ng-zorro-antd/transfer';
 export * from 'ng-zorro-antd/tree-select';
 export * from 'ng-zorro-antd/tree';
+export * from 'ng-zorro-antd/typography';
 export * from 'ng-zorro-antd/upload';
 
 export * from './version';
@@ -158,6 +160,7 @@ export * from './version';
     NzCardModule,
     NzAvatarModule,
     NzTimelineModule,
+    NzTransButtonModule,
     NzTransferModule,
     NzCarouselModule,
     NzCollapseModule,
@@ -188,7 +191,8 @@ export * from './version';
     NzSkeletonModule,
     NzStatisticModule,
     NzEmptyModule,
-    NzDescriptionsModule
+    NzDescriptionsModule,
+    NzTypographyModule
   ]
 })
 export class NgZorroAntdModule {
@@ -196,6 +200,9 @@ export class NgZorroAntdModule {
    * @deprecated Use `NgZorroAntdModule` instead.
    */
   static forRoot(): ModuleWithProviders {
+    warnDeprecation(
+      `'forRoot' is not recommended if you are using Angular 6.0.0+. This API is going to be removed in 9.0.0.`
+    );
     return {
       ngModule: NgZorroAntdModule
     };

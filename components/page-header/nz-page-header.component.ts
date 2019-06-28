@@ -32,7 +32,18 @@ import { NzPageHeaderFooterDirective } from './nz-page-header-cells';
   host: {
     class: 'ant-page-header',
     '[class.ant-page-header-has-footer]': 'nzPageHeaderFooter'
-  }
+  },
+  styles: [
+    `
+      .ant-page-header-back-button {
+        border: 0px;
+        background: transparent;
+        padding: 0px;
+        line-height: inherit;
+        display: inline-block;
+      }
+    `
+  ]
 })
 export class NzPageHeaderComponent implements OnInit, OnChanges {
   isTemplateRefBackIcon = false;

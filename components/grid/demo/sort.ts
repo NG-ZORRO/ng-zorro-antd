@@ -11,7 +11,6 @@ import { Component } from '@angular/core';
         col-6 col-pull-18
       </div>
     </div>
-  `,
-  styles: []
+  `
 })
 export class NzDemoGridSortComponent {}

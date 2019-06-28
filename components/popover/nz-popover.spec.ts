@@ -191,7 +191,6 @@ describe('NzPopover', () => {
 });
 
 @Component({
-  selector: 'nz-popover-test-new',
   template: `
     <a #stringPopover nz-popover nzTitle="title-string" nzContent="content-string">Show</a>
     <a #templatePopover nz-popover [nzTitle]="templateTitle" [nzContent]="templateContent">Show</a>
@@ -219,13 +218,12 @@ export class NzPopoverTestNewComponent {
 }
 
 @Component({
-  selector: 'nz-popover-test-wrapper',
   template: `
     <nz-popover [nzTitle]="'NORMAL'" [nzTrigger]="'hover'"><span #normalTrigger nz-popover>Show</span></nz-popover>
 
     <nz-popover>
       <button #templateTrigger nz-popover>Show</button>
-      <ng-template #nzTemplate> <i nz-icon type="file"></i> <span>Show with icon</span> </ng-template>
+      <ng-template #nzTemplate> <i nz-icon nzType="file"></i> <span>Show with icon</span> </ng-template>
     </nz-popover>
 
     <nz-popover nzTitle="FOCUS" [nzTrigger]="'focus'"><span #focusTrigger nz-popover>Show</span></nz-popover>

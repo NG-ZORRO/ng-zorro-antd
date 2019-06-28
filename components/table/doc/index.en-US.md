@@ -12,6 +12,14 @@ A table displays rows of data.
 - To display a collection of structured data.
 - To sort, search, paginate, filter data.
 
+## Import this Component Individually
+
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzTableModule } from 'ng-zorro-antd/table';
+```
+
 ## How To Use
 
 The Table component is both easy to use and highly customizable.
@@ -55,14 +63,6 @@ The data passed to `[nzData]` will be export with [Template Context](https://ang
 
 ## API
 
-### Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
-```ts
-import { NzTableModule } from 'ng-zorro-antd';
-```
-
 ### nz-table
 
 | Property | Description | Type | Default |
@@ -73,22 +73,22 @@ import { NzTableModule } from 'ng-zorro-antd';
 | `[nzPageIndex]` | pageIndex , double binding | `number` | - |
 | `[nzPageSize]` | pageSize, double binding | `number` | - |
 | `[nzShowPagination]` | Whether show pagination component in bottom of the table | `boolean` | `true` |
-| `[nzPaginationPosition]` | Specify the position of Pagination | `'top'｜'bottom'｜'both'` | `bottom` |
+| `[nzPaginationPosition]` | Specify the position of Pagination | `'top' \| 'bottom' \| 'both'` | `bottom` |
 | `[nzBordered]` | Whether to show all table borders | `boolean` | `false` |
 | `[nzWidthConfig]` | Set col width can not used with `nzWidth` of `th` | `string[]` | - |
-| `[nzSize]` | Size of table | `'middle'｜'small'｜'default'` | `'default'` |
+| `[nzSize]` | Size of table | `'middle' \| 'small' \| 'default'` | `'default'` |
 | `[nzLoading]` | Loading status of table | `boolean` | `false` |
 | `[nzLoadingIndicator]` | the spinning indicator | `TemplateRef<void>` | - |
 | `[nzLoadingDelay]` | Specifies a delay in milliseconds for loading state (prevent flush) | `number` | `0` |
 | `[nzScroll]` | Whether table can be scrolled in x/y direction, `x` or `y` can be a string that indicates the width and height of table body | `object` | - |
-| `[nzTitle]` | Table title renderer | `string｜TemplateRef<void>` | - |
-| `[nzFooter]` | Table footer renderer | `string｜TemplateRef<void>` | - |
-| `[nzNoResult]` | Custom no result content | `string｜TemplateRef<void>` | - |
+| `[nzTitle]` | Table title renderer | `string \| TemplateRef<void>` | - |
+| `[nzFooter]` | Table footer renderer | `string \| TemplateRef<void>` | - |
+| `[nzNoResult]` | Custom no result content | `string \| TemplateRef<void>` | - |
 | `[nzPageSizeOptions]` | Specify the sizeChanger options | `number[]` | `[10, 20, 30, 40]` |
 | `[nzShowQuickJumper]` | Determine whether you can jump to pages directly | `boolean` | `false` |
 | `[nzShowSizeChanger]` | Determine whether `nzPageSize` can be changed | `boolean` | `false` |
 | `[nzShowTotal]` | To display Pagination total number and range, same as Pagination	 | `TemplateRef<{ $implicit: number, range: [ number, number ] }>` | - |
-| `[nzItemRender]` | to customize Pagination item, same as Pagination | `TemplateRef<{ $implicit: 'page'｜'prev'｜'next', page: number }>` | - |
+| `[nzItemRender]` | to customize Pagination item, same as Pagination | `TemplateRef<{ $implicit: 'page' \| 'prev' \| 'next', page: number }>` | - |
 | `[nzHideOnSinglePage]` | Whether to hide pager on single page | `boolean` | `false` |
 | `[nzSimple]` | whether to use simple mode | `boolean` | - |
 | `[nzTemplateMode]` | template mode，no need to pass data to `nzData` | `boolean` | `false` |
@@ -96,6 +96,7 @@ import { NzTableModule } from 'ng-zorro-antd';
 | `[nzVirtualItemSize]` | The size of the items in the list, same as [cdk itemSize](https://material.angular.io/cdk/scrolling/api) | `number` | `0` |
 | `[nzVirtualMaxBufferPx]` | The number of pixels worth of buffer to render for when rendering new items, same as [cdk maxBufferPx](https://material.angular.io/cdk/scrolling/api) | `number` | `200` |
 | `[nzVirtualMinBufferPx]` | The minimum amount of buffer rendered beyond the viewport (in pixels),same as [cdk minBufferPx](https://material.angular.io/cdk/scrolling/api) | `number` | `100` |
+| `[nzVirtualForTrackBy]` | The TrackByFunction to use for tracking changes. | `TrackByFunction<T>` | - |
 | `(nzPageIndexChange)` | pageIndex change callback | `EventEmitter<number>` | - |
 | `(nzPageSizeChange)` | pageSize change callback | `EventEmitter<number>` | - |
 | `(nzCurrentPageDataChange)` | current pageData change callback | `EventEmitter<any[]>` | - |
@@ -127,7 +128,7 @@ Filter property
 | `[nzShowFilter]` | Whether show filter | `boolean` | - |
 | `[nzFilters]` | Filter options,  `text`, and `value` for callback, `byDefault` to enable filter by default | `Array<{ text: string; value: any; byDefault?: boolean }>` | - |
 | `[nzFilterMultiple]` | Whether filter multiple mode | `boolean` | `true` |
-| `(nzFilterChange)` | Filter change callback `value` | `EventEmitter<any[]｜any>` | - |
+| `(nzFilterChange)` | Filter change callback `value` | `EventEmitter<any[] \| any>` | - |
 
 
 Style property
@@ -137,7 +138,7 @@ Style property
 | `[nzWidth]` | Specify the column width, can not used when grouping columns | `string` | - |
 | `[nzLeft]` | Left pixels, used to fixed column to left | `string` | - |
 | `[nzRight]` | Right pixels, used to fixed column to right | `string` | - |
-| `[nzAlign]` | Specify how content is aligned | `'left'｜'right'｜'center'` | - |
+| `[nzAlign]` | Specify how content is aligned | `'left' \| 'right' \| 'center'` | - |
 
 Other property
 
@@ -171,7 +172,7 @@ Style property
 | -------- | ----------- | ---- | ------- |
 | `[nzLeft]` | Left pixels, used to fixed column to left | `string` | - |
 | `[nzRight]` | Right pixels, used to fixed column to right | `string` | - |
-| `[nzAlign]` | Specify how content is aligned | `'left'｜'right'｜'center'` | - |
+| `[nzAlign]` | Specify how content is aligned | `'left' \| 'right' \| 'center'` | - |
 
 Other property
 
@@ -184,7 +185,7 @@ Other property
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[nzSingleSort]` | Whether single column sort mode | `boolean` | `false` |
-| `(nzSortChange)` | sort change callback，should used with `nzSortKey` of `th` | `EventEmitter<{ nzSortKey: string, value: 'descend'｜'ascend'｜null }>` | - |
+| `(nzSortChange)` | sort change callback，should used with `nzSortKey` of `th` | `EventEmitter<{ nzSortKey: string, value: 'descend' \| 'ascend' \| null }>` | - |
 
 ### tr
 

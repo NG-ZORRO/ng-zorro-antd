@@ -24,7 +24,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { isNotNil, InputBoolean } from 'ng-zorro-antd/core';
-import { NzDropDownComponent } from 'ng-zorro-antd/dropdown';
+import { NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
 import { NzI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 /* tslint:disable-next-line:no-any */
@@ -39,7 +39,7 @@ export interface NzThItemInterface {
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'th:not(.nz-disable-th)',
+  selector: 'th:not(.nz-disable-th):not([mat-sort-header]):not([mat-header-cell])',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -69,7 +69,7 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
   nzWidthChange$ = new Subject();
   private destroy$ = new Subject();
   private hasDefaultFilter = false;
-  @ViewChild(NzDropDownComponent, { static: false }) nzDropDownComponent: NzDropDownComponent;
+  @ViewChild(NzDropdownMenuComponent, { static: false }) nzDropdownMenuComponent: NzDropdownMenuComponent;
   /* tslint:disable-next-line:no-any */
   @Input() nzSelections: Array<{ text: string; onSelect(...args: any[]): any }> = [];
   @Input() nzChecked = false;
@@ -97,12 +97,12 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
 
   updateSortValue(): void {
     if (this.nzShowSort) {
-      if (this.nzSort === 'descend') {
-        this.setSortValue('ascend');
-      } else if (this.nzSort === 'ascend') {
+      if (this.nzSort === 'ascend') {
+        this.setSortValue('descend');
+      } else if (this.nzSort === 'descend') {
         this.setSortValue(null);
       } else {
-        this.setSortValue('descend');
+        this.setSortValue('ascend');
       }
     }
   }
@@ -155,7 +155,7 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   hideDropDown(): void {
-    this.nzDropDownComponent.setVisibleStateWhen(false);
+    this.nzDropdownMenuComponent.setVisibleStateWhen(false);
     this.filterVisible = false;
   }
 

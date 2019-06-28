@@ -311,7 +311,6 @@ export class NzTreeBaseService implements OnDestroy {
    */
   conductUp(node: NzTreeNode): void {
     const parentNode = node.getParentNode();
-    // 全禁用节点不选中
     if (parentNode) {
       if (!isCheckDisabled(parentNode)) {
         if (parentNode.children.every(child => isCheckDisabled(child) || (!child.isHalfChecked && child.isChecked))) {
@@ -487,7 +486,7 @@ export class NzTreeBaseService implements OnDestroy {
           }
         } else {
           const targetIndex = this.rootNodes.indexOf(targetNode) + tIndex;
-          // 根节点插入
+          // Insert root node.
           this.rootNodes.splice(targetIndex, 0, this.selectedNode);
           this.rootNodes[targetIndex].parentNode = null;
           this.rootNodes[targetIndex].level = 0;

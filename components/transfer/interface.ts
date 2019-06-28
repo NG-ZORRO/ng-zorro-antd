@@ -6,34 +6,36 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+export type TransferDirection = 'left' | 'right';
+
 export interface TransferItem {
   title: string;
-  direction?: 'left' | 'right';
+  direction?: TransferDirection;
   disabled?: boolean;
   checked?: boolean;
-  _hiden?: boolean;
+  hide?: boolean;
   // tslint:disable-next-line:no-any
   [key: string]: any;
 }
 
 export interface TransferCanMove {
-  direction: string;
+  direction: TransferDirection;
   list: TransferItem[];
 }
 
 export interface TransferChange {
-  from: string;
-  to: string;
+  from: TransferDirection;
+  to: TransferDirection;
   list: TransferItem[];
 }
 
 export interface TransferSearchChange {
-  direction: string;
+  direction: TransferDirection;
   value: string;
 }
 
 export interface TransferSelectChange {
-  direction: string;
+  direction: TransferDirection;
   checked: boolean;
   list: TransferItem[];
   item?: TransferItem;

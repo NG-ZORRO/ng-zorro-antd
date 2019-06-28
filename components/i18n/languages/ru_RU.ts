@@ -46,5 +46,14 @@ export default {
   },
   Empty: {
     description: 'Нет данных'
+  },
+  Text: {
+    edit: 'редактировать',
+    copy: 'копировать',
+    copied: 'скопировано',
+    expand: 'раскрыть'
+  },
+  PageHeader: {
+    back: 'назад'
   }
 };

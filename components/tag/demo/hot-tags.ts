@@ -14,8 +14,7 @@ const tagsFromServer = ['Movie', 'Books', 'Music', 'Sports'];
     >
       {{ tag }}
     </nz-tag>
-  `,
-  styles: []
+  `
 })
 export class NzDemoTagHotTagsComponent {
   hotTags = tagsFromServer;

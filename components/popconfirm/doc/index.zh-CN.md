@@ -13,15 +13,15 @@ title: Popconfirm
 
 和 `confirm` 弹出的全屏居中模态对话框相比，交互形式更轻量。
 
-## API
-
-### 单独引入此组件
+## 单独引入此组件
 
 想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
 
 ```ts
-import { NzPopconfirmModule } from 'ng-zorro-antd';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 ```
+
+## API
 
 ### [nz-popconfirm]
 
@@ -29,10 +29,10 @@ import { NzPopconfirmModule } from 'ng-zorro-antd';
 | --- | --- | --- | --- |
 | `[nzCancelText]` | 取消按钮文字 | `string` | `'取消'` |
 | `[nzOkText]` | 确认按钮文字 | `string` | `'确定'` |
-| `[nzOkType]` | 确认按钮类型 | `'primary'｜'ghost'｜'dashed'｜'danger'｜'default'` | `'primary'` |
-| `[nzTitle]` | 确认框的描述 | `string｜TemplateRef<void>` | - |
+| `[nzOkType]` | 确认按钮类型 | `'primary' \| 'ghost' \| 'dashed' \| 'danger' \| 'default'` | `'primary'` |
+| `[nzTitle]` | 确认框的描述 | `string \| TemplateRef<void>` | - |
 | `[nzCondition]` | 是否直接触发 `nzOnConfirm` 而不弹出框 | `boolean` | `false` |
-| `[nzIcon]` | 自定义弹出框的 icon  | `string｜TemplateRef<void>` | - |
+| `[nzIcon]` | 自定义弹出框的 icon  | `string \| TemplateRef<void>` | - |
 | `(nzOnCancel)` | 点击取消的回调 | `EventEmitter<void>` | - |
 | `(nzOnConfirm)` | 点击确认的回调 | `EventEmitter<void>` | - |
 

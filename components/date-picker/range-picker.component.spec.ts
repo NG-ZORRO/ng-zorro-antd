@@ -9,7 +9,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import differenceInDays from 'date-fns/difference_in_days';
 import isSameDay from 'date-fns/is_same_day';
 
-import { dispatchMouseEvent, NGStyleInterface } from 'ng-zorro-antd/core';
+import { dispatchMouseEvent, NgStyleInterface } from 'ng-zorro-antd/core';
 
 import { NzDatePickerModule } from './date-picker.module';
 import { CandyDate } from './lib/candy-date/candy-date';
@@ -785,10 +785,10 @@ class NzTestRangePickerComponent {
   nzDisabledDate: (d: Date) => boolean;
   nzLocale: any; // tslint:disable-line:no-any
   nzPlaceHolder: string[];
-  nzPopupStyle: NGStyleInterface;
+  nzPopupStyle: NgStyleInterface;
   nzDropdownClassName: string;
   nzSize: string;
-  nzStyle: NGStyleInterface;
+  nzStyle: NgStyleInterface;
   nzOnOpenChange(): void {}
   modelValue: Array<Date | null>;
   modelValueChange(): void {}

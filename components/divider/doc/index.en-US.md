@@ -11,21 +11,21 @@ A divider line separates different content.
 - Divide sections of article.
 - Divide inline text and links such as the operation column of table.
 
-## API
-
-### Import this Component Individually
+## Import this Component Individually
 
 You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
 
 ```ts
-import { NzDividerModule } from 'ng-zorro-antd';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
 ```
+
+## API
 
 ### nz-divider
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[nzDashed]` | whether line is dasded | `boolean` | `false` |
-| `[nzType]` | direction type of divider | `'horizontal'｜'vertical'` | `'horizontal'` |
-| `[nzText]` | inner text of divider | `string｜TemplateRef<void>` | - |
-| `[nzOrientation]` | inner text orientation | `'left'｜'right'` | - |
+| `[nzType]` | direction type of divider | `'horizontal' \| 'vertical'` | `'horizontal'` |
+| `[nzText]` | inner text of divider | `string \| TemplateRef<void>` | - |
+| `[nzOrientation]` | inner text orientation | `'center' \| 'left' \| 'right'` | `'center'` |

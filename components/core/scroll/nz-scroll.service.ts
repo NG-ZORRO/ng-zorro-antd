@@ -32,7 +32,7 @@ export class NzScrollService {
     this.doc = doc;
   }
 
-  /** 设置 `el` 滚动条位置 */
+  /** Set the position of the scroll bar of `el`. */
   setScrollTop(el: Element | Window, topValue: number = 0): void {
     if (el === window) {
       this.doc.body.scrollTop = topValue;
@@ -42,7 +42,7 @@ export class NzScrollService {
     }
   }
 
-  /** 获取 `el` 相对于视窗距离 */
+  /** Get position of `el` against window. */
   getOffset(el: Element): { top: number; left: number } {
     const ret = {
       top: 0,
@@ -65,7 +65,7 @@ export class NzScrollService {
     return ret;
   }
 
-  /** 获取 `el` 滚动条位置 */
+  /** Get the position of the scoll bar of `el`. */
   // TODO: remove '| Window' as the fallback already happens here
   getScroll(el?: Element | Window, top: boolean = true): number {
     const target = el ? el : window;
@@ -81,12 +81,12 @@ export class NzScrollService {
   }
 
   /**
-   * 使用动画形式将 `el` 滚动至某位置
+   * Scroll `el` to some position with animation.
    *
-   * @param containerEl 容器，默认 `window`
-   * @param targetTopValue 滚动至目标 `top` 值，默认：0，相当于顶部
-   * @param easing 动作算法，默认：`easeInOutCubic`
-   * @param callback 动画结束后回调
+   * @param containerEl container, `window` by default
+   * @param targetTopValue Scroll to `top`, 0 by default
+   * @param easing Transition curve, `easeInOutCubic` by default
+   * @param callback callback invoked when transition is done
    */
   scrollTo(containerEl: Element | Window, targetTopValue: number = 0, easing?: EasyingFn, callback?: () => void): void {
     const target = containerEl ? containerEl : window;

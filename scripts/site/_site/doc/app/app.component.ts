@@ -242,7 +242,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         map(() => window.innerWidth)
       )
       .subscribe(width => {
-        const showDrawer = width <= 768;
+        const showDrawer = width <= 995;
         if (this.showDrawer !== showDrawer) {
           this.showDrawer = showDrawer;
         }

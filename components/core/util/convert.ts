@@ -8,6 +8,7 @@
 
 import { coerceBooleanProperty, coerceCssPixelValue, _isNumberValue } from '@angular/cdk/coercion';
 
+import { warn } from '../logger/logger';
 import { FunctionProp } from '../types/common-wrap';
 
 export function toBoolean(value: boolean | string): boolean {
@@ -39,7 +40,7 @@ function propDecoratorFactory<T, D>(name: string, fallback: (v: T) => D): (targe
     const privatePropName = `$$__${propName}`;
 
     if (Object.prototype.hasOwnProperty.call(target, privatePropName)) {
-      console.warn(`The prop "${privatePropName}" is already exist, it will be overrided by ${name} decorator.`);
+      warn(`The prop "${privatePropName}" is already exist, it will be overrided by ${name} decorator.`);
     }
 
     Object.defineProperty(target, privatePropName, {

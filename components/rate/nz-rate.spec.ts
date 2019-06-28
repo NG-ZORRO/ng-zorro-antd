@@ -237,7 +237,6 @@ describe('rate', () => {
 });
 
 @Component({
-  selector: 'nz-test-rate-basic',
   template: `
     <nz-rate
       [(ngModel)]="value"
@@ -271,7 +270,6 @@ export class NzTestRateBasicComponent {
 }
 
 @Component({
-  selector: 'nz-test-rate-form',
   template: `
     <form [formGroup]="formGroup">
       <nz-rate formControlName="rate"></nz-rate>
