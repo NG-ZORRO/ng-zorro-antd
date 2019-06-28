@@ -295,7 +295,6 @@ describe('typography', () => {
 });
 
 @Component({
-  selector: 'nz-test-typography',
   template: `
     <h1 nz-title>h1. Ant Design</h1>
     <h2 nz-title>h2. Ant Design</h2>
@@ -317,7 +316,6 @@ describe('typography', () => {
 export class NzTestTypographyComponent {}
 
 @Component({
-  selector: 'nz-test-typography-copy',
   template: `
     <h4 nz-title nzCopyable class="test-copy-h4" nzContent="Ant Design-0" (nzCopy)="onCopy($event)"></h4>
     <p nz-paragraph nzCopyable class="test-copy-p" nzContent="Ant Design-1" (nzCopy)="onCopy($event)"></p>
@@ -332,7 +330,6 @@ export class NzTestTypographyCopyComponent {
 }
 
 @Component({
-  selector: 'nz-test-typography-edit',
   template: `
     <p nz-paragraph nzEditable (nzContentChange)="onChange($event)" [nzContent]="str"></p>
   `

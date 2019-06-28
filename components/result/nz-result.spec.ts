@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzIconModule } from '../icon';
@@ -8,16 +8,36 @@ import { NzIconModule } from '../icon';
 import { NzResultComponent } from './nz-result.component';
 import { NzResultModule } from './nz-result.module';
 
+@Component({
+  template: `
+    <nz-result [nzIcon]="icon" [nzTitle]="title" [nzSubTitle]="subtitle" [nzExtra]="extra">
+      <i nz-icon nz-result-icon type="up" theme="outline"></i>
+      <div nz-result-title>Content Title</div>
+      <nz-result-subtitle>Content Subtitle</nz-result-subtitle>
+      <nz-result-content>
+        Content
+      </nz-result-content>
+      <nz-result-extra>Content Extra</nz-result-extra>
+    </nz-result>
+  `
+})
+export class NzTestResultBasicComponent {
+  icon?: string = 'success';
+  title?: string = 'Title';
+  subtitle?: string = 'Subtitle';
+  extra?: string = 'Extra';
+}
+
 describe('nz-result', () => {
-  let fixture;
-  let testComponent;
-  let resultEl;
+  let fixture: ComponentFixture<NzTestResultBasicComponent>;
+  let testComponent: NzTestResultBasicComponent;
+  let resultEl: DebugElement;
 
   describe('basic', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports     : [ CommonModule, NzResultModule, NzIconModule ],
-        declarations: [ NzTestResultBasicComponent ]
+        imports: [CommonModule, NzResultModule, NzIconModule],
+        declarations: [NzTestResultBasicComponent]
       }).compileComponents();
 
       fixture = TestBed.createComponent(NzTestResultBasicComponent);
@@ -65,31 +85,4 @@ describe('nz-result', () => {
       expect(extraView.innerText).toBe('Content Extra');
     });
   });
-
 });
-
-@Component({
-  selector: 'nz-test-result-basic',
-  template: `
-    <nz-result
-      [nzIcon]="icon"
-      [nzTitle]="title"
-      [nzSubTitle]="subtitle"
-      [nzExtra]="extra"
-    >
-      <i nz-icon nz-result-icon type="up" theme="outline"></i>
-      <div nz-result-title>Content Title</div>
-      <nz-result-subtitle>Content Subtitle</nz-result-subtitle>
-      <nz-result-content>
-        Content
-      </nz-result-content>
-      <nz-result-extra>Content Extra</nz-result-extra>
-    </nz-result>
-  `
-})
-export class NzTestResultBasicComponent {
-  icon = 'success';
-  title = 'Title';
-  subtitle = 'Subtitle';
-  extra = 'Extra';
-}
