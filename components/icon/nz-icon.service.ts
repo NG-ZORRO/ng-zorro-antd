@@ -114,10 +114,10 @@ export class NzIconService extends IconService {
       );
     }
     if (type === 'cross') {
-      warnDeprecation(`'cross' icon is replaced by 'close' icon.`);
+      warnDeprecation(`'cross' icon is replaced by 'close' icon. This auto correction would be removed in 9.0.0.`);
     }
     if (type === 'vertical') {
-      warnDeprecation(`'verticle' is misspelled, would be corrected ('vertical') in the next major version.`);
+      warnDeprecation(`'verticle' is misspelled. Please use 'vertical'. This misspell would be fixed in 9.0.0.`);
     }
   }
 
