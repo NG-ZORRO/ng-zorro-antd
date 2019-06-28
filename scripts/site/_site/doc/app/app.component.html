@@ -67,13 +67,21 @@
           <nz-option *ngFor="let version of oldVersionList" [nzLabel]="version" [nzValue]="version"></nz-option>
           <nz-option [nzLabel]="currentVersion" [nzValue]="currentVersion"></nz-option>
         </nz-select>
-        <ul nz-menu [nzMode]="'horizontal'" id="nav">
+        <ul nz-menu [nzMode]="'horizontal'" id="nav" [nzSelectable]="false">
           <li nz-menu-item nzSelected>
-            <a routerLink="/doc/introduce/zh" *ngIf="language=='zh'">
+            <a *ngIf="language=='zh'">
               <span>组件</span>
             </a>
-            <a routerLink="/doc/introduce/en" *ngIf="language=='en'">
+            <a *ngIf="language=='en'">
               <span>Components</span>
+            </a>
+          </li>
+          <li nz-menu-item [nzSelected]="false">
+            <a href="https://ng.ant.design/blog/" *ngIf="language=='zh'" target="_blank">
+              <span>开发者博客</span>
+            </a>
+            <a href="https://ng.ant.design/blog/en" *ngIf="language=='en'" target="_blank">
+              <span>Blog</span>
             </a>
           </li>
         </ul>
@@ -142,19 +150,6 @@
                     <span>Vue</span>
                   </div>
                   <div>
-                    <a target="_blank " href="https://github.com/websemantics/awesome-ant-design">
-                      <span>Kitchen</span>
-                    </a>
-                    <span> - </span>
-                    <span>{{ language === 'zh' ? 'Sketch 工具集' : '' }}</span>
-                  </div>
-                  <div>
-                    <a target="_blank "
-                       [href]="language === 'zh' ? 'https://ant.design/docs/spec/download-cn' : 'https://ant.design/docs/spec/download'">
-                      <span>{{ language === 'zh' ? '设计资源下载' : 'Download Design Resources' }}</span>
-                    </a>
-                  </div>
-                  <div>
                     <a href="https://angular.cn" target="_blank" rel="noopener noreferrer">Angular</a>
                   </div>
                   <div>
@@ -175,7 +170,7 @@
                        href="https://ng.ant.design/blog"
                        target="_blank"
                        rel="noopener noreferrer"><span>
-                      {{language === 'zh' ? '博客' : 'Blog'}}
+                      {{language === 'zh' ? '开发者博客' : 'Blog'}}
                     </span>
                     </a>
                   </div>
@@ -199,13 +194,6 @@
                     <a href="https://medium.com/ng-zorro" target="_blank" rel="noopener noreferrer">
                       <span><i nz-icon nzType="medium" style="margin-right: 4px;"></i>Medium</span>
                     </a>
-                  </div>
-                  <div>
-                    <a href="http://seeconf.alipay.com/" target="_blank" rel="noopener noreferrer">
-                      <span>See Conf</span>
-                    </a>
-                    <span> - </span>
-                    <span>{{ language === 'zh' ? '蚂蚁体验科技大会' : 'Seeking Experience & Engineering Conference' }}</span>
                   </div>
                 </div>
               </div>

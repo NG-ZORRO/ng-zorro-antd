@@ -31,13 +31,13 @@ Ant Design 的 Angular 实现，开发和服务于企业级后台产品。
 ## ✨ 特性
 
 - 提炼自企业级中后台产品的交互语言和视觉风格。
-- 开箱即用的高质量 Angular 组件。
+- 开箱即用的高质量 Angular 组件，与 Angular 保持同步升级。
 - 使用 TypeScript 构建，提供完整的类型定义文件。
-- 全链路开发和设计工具体系。
+- 支持 OnPush 模式，性能卓越。
 
 ## 🖥 支持环境
 
-- Angular `^7.0.0`
+- Angular `^8.0.0`
 - 支持服务端渲染
 - 现代浏览器，以及 Internet Explorer 11+ （使用 [polyfills](https://angular.io/guide/browser-support)）
 - [Electron](http://electron.atom.io/)
@@ -158,7 +158,7 @@ $ npm run site:start
 - [Process Automation Group](http://pag.company/)
 - [Southern Institute of Technology](https://www.sit.ac.nz/)
 
-> 如果你的公司和产品使用了 NG-ZORRO，欢迎到 [这里](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1142) 留言。
+> 我们在这里列出了部分使用者，如果你的公司和产品使用了 NG-ZORRO，欢迎到 [这里](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1142) 留言。
 
 ## ☀️ 授权协议
 
