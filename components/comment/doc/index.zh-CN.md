@@ -22,12 +22,15 @@ import { NzCommentModule } from 'ng-zorro-antd/comment';
 
 ## API
 
+### nz-comment
+
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | [nzAuthor] | 显示评论的作者 | `string \| TemplateRef<void>` | - |
 | [nzDatetime] | 展示时间描述 | `string \| TemplateRef<void>` | - |
 
 ### 评论组成部分
+
 | 元素 | 说明 |
 | ----- | ----------- |
 | `<nz-avatar nz-comment-avatar>` | 要显示为评论头像的元素 |
