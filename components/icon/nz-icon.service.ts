@@ -110,14 +110,14 @@ export class NzIconService extends IconService {
   warnAPI(type: 'old' | 'cross' | 'vertical'): void {
     if (type === 'old') {
       warnDeprecation(
-        `<i class="anticon"></i> would be deprecated in 9.0.0. Please use <i nz-icon nzType=""></i> API.`
+        `'<i class="anticon"></i>' would be deprecated in 9.0.0. Please use '<i nz-icon nzType=""></i>' API. Please refer https://ng.ant.design/components/icon/en.`
       );
     }
     if (type === 'cross') {
       warnDeprecation(`'cross' icon is replaced by 'close' icon.`);
     }
     if (type === 'vertical') {
-      warnDeprecation(`'verticle' is misspelled, would be corrected in the next major version.`);
+      warnDeprecation(`'verticle' is misspelled, would be corrected ('vertical') in the next major version.`);
     }
   }
 
