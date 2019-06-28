@@ -49,7 +49,7 @@ import {
   UploadOutline,
   UpOutline
 } from '@ant-design/icons-angular/icons';
-import { warn } from 'ng-zorro-antd/core';
+import { warn, warnDeprecation } from 'ng-zorro-antd/core';
 
 export interface NzIconfontOption {
   scriptUrl: string;
@@ -109,13 +109,15 @@ export class NzIconService extends IconService {
 
   warnAPI(type: 'old' | 'cross' | 'vertical'): void {
     if (type === 'old') {
-      warn(`<i class="anticon"></i> would be deprecated in 9.0.0. Please use <i nz-icon nzType=""></i> API.`);
+      warnDeprecation(
+        `'<i class="anticon"></i>' would be deprecated in 9.0.0. Please use '<i nz-icon nzType=""></i>' API. Please refer https://ng.ant.design/components/icon/en.`
+      );
     }
     if (type === 'cross') {
-      warn(`'cross' icon is replaced by 'close' icon.`);
+      warnDeprecation(`'cross' icon is replaced by 'close' icon. This auto correction would be removed in 9.0.0.`);
     }
     if (type === 'vertical') {
-      warn(`'verticle' is misspelled, would be corrected in the next major version.`);
+      warnDeprecation(`'verticle' is misspelled. Please use 'vertical'. This misspell would be fixed in 9.0.0.`);
     }
   }
 
