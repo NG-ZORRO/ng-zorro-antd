@@ -1,6 +1,10 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
+    "downlevelIteration": true,
+    "module": "esnext",
+    "importHelpers": true,
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -8,9 +12,9 @@
     "allowSyntheticDefaultImports": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es5",
+    "target": "es2015",
     "typeRoots": ["node_modules/@types/!(node)"],
-    "lib": ["es2017", "dom"],
+    "lib": ["es2018", "dom"],
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "noImplicitAny": true,
