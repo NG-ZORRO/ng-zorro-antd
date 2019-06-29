@@ -44,8 +44,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   language = 'zh';
-  oldVersionList = [ '0.5.x', '0.6.x', '0.7.x', '1.8.x' ];
-  currentVersion = '7.5.0';
+  oldVersionList = [ '0.5.x', '0.6.x', '0.7.x', '1.8.x', '7.5.x' ];
+  currentVersion = '8.0.0';
 
   @ViewChild('searchInput', { static: false }) searchInput: ElementRef<HTMLInputElement>;
 

@@ -36,10 +36,11 @@ English | [简体中文](README-zh_CN.md)
 - A set of high-quality Angular components out of the box.
 - Written in TypeScript with predictable static types.
 - The whole package of development and design resources and tools.
+- Support OnPush mode, high performance.
 
 ## 🖥 Environment Support
 
-* Angular `^7.0.0`
+* Angular `^8.0.0`
 * Server-side Rendering
 * Modern browsers and Internet Explorer 11+ (with [polyfills](https://angular.io/guide/browser-support))
 * [Electron](http://electron.atom.io/)
@@ -160,7 +161,7 @@ As always, we encourage experienced users to help those who are not familiar wit
 - [Qingflow](https://qingflow.com/)
 - [Southern Institute of Technology](https://www.sit.ac.nz/)
 
-> If your company or product uses NG-ZORRO, let us know [here](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1142)!
+> We list some users here, if your company or product uses NG-ZORRO, let us know [here](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1142)!
 
 ## ☀️ License
 

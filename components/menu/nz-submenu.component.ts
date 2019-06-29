@@ -60,17 +60,17 @@ import { NzSubmenuService } from './nz-submenu.service';
   templateUrl: './nz-submenu.component.html',
   styles: [
     `
-      .ant-menu-submenu-placement-bottomLeft {
+      :root .ant-menu-submenu.ant-menu-submenu-placement-bottomLeft {
         top: 6px;
         position: relative;
       }
 
-      .ant-menu-submenu-placement-rightTop {
+      :root .ant-menu-submenu.ant-menu-submenu-placement-rightTop {
         left: 4px;
         position: relative;
       }
 
-      .ant-menu-submenu-placement-leftTop {
+      :root .ant-menu-submenu.ant-menu-submenu-placement-leftTop {
         right: 4px;
         position: relative;
       }

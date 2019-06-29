@@ -44,8 +44,10 @@ $ ng new PROJECT-NAME
 
 ```bash
 $ cd PROJECT-NAME
-$ ng add ng-zorro-antd --i18n=en_US
+$ ng add ng-zorro-antd
 ```
+
+<img style="display: block; border-radius: 4px; box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.2);" src="https://img.alicdn.com/tfs/TB19fFHdkxz61VjSZFtXXaDSVXa-680-243.svg">
 
 ### 4. Development & Debugging
 
