@@ -13,26 +13,26 @@
     [nzOption]="nzSelectService.addedTagOption">
   </li>
   <li nz-option-li
-    *ngFor="let option of nzSelectService.listOfNzOptionComponent | nzFilterOption : nzSelectService.searchValue : nzSelectService.filterOption : nzSelectService.serverSearch; trackBy: trackValue"
+    *ngFor="let option of nzSelectService.listOfNzOptionComponent | nzFilterOption : nzSelectService.searchValue : nzSelectService.filterOption : nzSelectService.serverSearch : nzSelectService.isHideSelectedOptions : nzSelectService.listOfSelectedValue : nzSelectService.compareWith; trackBy: trackValue"
     [nzMenuItemSelectedIcon]="nzMenuItemSelectedIcon"
     [nzOption]="option">
   </li>
   <li class="ant-select-dropdown-menu-item-group"
-    *ngFor="let group of nzSelectService.listOfNzOptionGroupComponent | nzFilterGroupOption : nzSelectService.searchValue : nzSelectService.filterOption :nzSelectService.serverSearch; trackBy: trackLabel">
+    *ngFor="let group of nzSelectService.listOfNzOptionGroupComponent | nzFilterGroupOption : nzSelectService.searchValue : nzSelectService.filterOption : nzSelectService.serverSearch : nzSelectService.isHideSelectedOptions : nzSelectService.listOfSelectedValue : nzSelectService.compareWith; trackBy: trackLabel">
     <div class="ant-select-dropdown-menu-item-group-title"
       [attr.title]="group.isLabelString ? group.nzLabel : ''">
       <ng-container *nzStringTemplateOutlet="group.nzLabel"> {{group.nzLabel}} </ng-container>
     </div>
     <ul class="ant-select-dropdown-menu-item-group-list">
       <li nz-option-li
-        *ngFor="let option of group.listOfNzOptionComponent | nzFilterOption : nzSelectService.searchValue : nzSelectService.filterOption :nzSelectService.serverSearch; trackBy: trackValue"
+        *ngFor="let option of group.listOfNzOptionComponent | nzFilterOption : nzSelectService.searchValue : nzSelectService.filterOption : nzSelectService.serverSearch : nzSelectService.isHideSelectedOptions : nzSelectService.listOfSelectedValue : nzSelectService.compareWith; trackBy: trackValue"
         [nzMenuItemSelectedIcon]="nzMenuItemSelectedIcon"
         [nzOption]="option">
       </li>
     </ul>
   </li>
   <li nz-option-li
-    *ngFor="let option of nzSelectService.listOfTagOption | nzFilterOption : nzSelectService.searchValue : nzSelectService.filterOption : nzSelectService.serverSearch; trackBy: trackValue "
+    *ngFor="let option of nzSelectService.listOfTagOption | nzFilterOption : nzSelectService.searchValue : nzSelectService.filterOption : nzSelectService.serverSearch : nzSelectService.isHideSelectedOptions : nzSelectService.listOfSelectedValue : nzSelectService.compareWith; trackBy: trackValue "
     [nzMenuItemSelectedIcon]="nzMenuItemSelectedIcon"
     [nzOption]="option">
   </li>

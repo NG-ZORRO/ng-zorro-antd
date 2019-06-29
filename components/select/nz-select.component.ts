@@ -132,6 +132,10 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @Input() nzTokenSeparators: string[] = [];
   // tslint:disable-next-line:no-any
   @Input() nzMaxTagPlaceholder: TemplateRef<{ $implicit: any[] }>;
+  @Input()
+  set nzHideSelectedOptions(value: boolean) {
+    this.nzSelectService.isHideSelectedOptions = toBoolean(value);
+  }
 
   @Input()
   set nzAutoClearSearchValue(value: boolean) {

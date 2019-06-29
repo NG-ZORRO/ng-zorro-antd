@@ -18,12 +18,19 @@ export class NzFilterOptionPipe implements PipeTransform {
     options: NzOptionComponent[],
     searchValue: string,
     filterOption: TFilterOption,
-    serverSearch: boolean
+    serverSearch: boolean,
+    isHideSelectedOptions: boolean, // tslint:disable-next-line:no-any
+    listOfSelectedValue: any[], // tslint:disable-next-line:no-any
+    compareWith: (o1: any, o2: any) => boolean
   ): NzOptionComponent[] {
+    if (isHideSelectedOptions && listOfSelectedValue.length > 0) {
+      // tslint:disable-next-line:no-parameter-reassignment
+      options = options.filter(o => !listOfSelectedValue.some(v => compareWith(v, o.nzValue)));
+    }
     if (serverSearch || !searchValue) {
       return options;
     } else {
-      return (options as NzOptionComponent[]).filter(o => filterOption(searchValue, o));
+      return options.filter(o => filterOption(searchValue, o));
     }
   }
 }
@@ -34,12 +41,21 @@ export class NzFilterGroupOptionPipe implements PipeTransform {
     groups: NzOptionGroupComponent[],
     searchValue: string,
     filterOption: TFilterOption,
-    serverSearch: boolean
+    serverSearch: boolean,
+    isHideSelectedOptions: boolean, // tslint:disable-next-line:no-any
+    listOfSelectedValue: any[], // tslint:disable-next-line:no-any
+    compareWith: (o1: any, o2: any) => boolean
   ): NzOptionGroupComponent[] {
+    if (isHideSelectedOptions && listOfSelectedValue.length > 0) {
+      // tslint:disable-next-line:no-parameter-reassignment
+      groups = groups.filter(g => {
+        return g.listOfNzOptionComponent.filter(o => !listOfSelectedValue.some(v => compareWith(v, o.nzValue))).length;
+      });
+    }
     if (serverSearch || !searchValue) {
       return groups;
     } else {
-      return (groups as NzOptionGroupComponent[]).filter(g => {
+      return groups.filter(g => {
         return g.listOfNzOptionComponent.some(o => filterOption(searchValue, o));
       });
     }

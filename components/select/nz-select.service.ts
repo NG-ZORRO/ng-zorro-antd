@@ -20,6 +20,7 @@ import { defaultFilterOption, NzFilterOptionPipe, TFilterOption } from './nz-opt
 @Injectable()
 export class NzSelectService {
   // Input params
+  isHideSelectedOptions = false;
   autoClearSearchValue = true;
   serverSearch = false;
   filterOption: TFilterOption = defaultFilterOption;
@@ -214,7 +215,10 @@ export class NzSelectService {
       this.listOfTagAndTemplateOption,
       this.searchValue,
       this.filterOption,
-      this.serverSearch
+      this.serverSearch,
+      this.isHideSelectedOptions,
+      this.listOfSelectedValue,
+      this.compareWith
     );
     this.listOfFilteredOption = this.addedTagOption
       ? [this.addedTagOption, ...listOfFilteredOption]
