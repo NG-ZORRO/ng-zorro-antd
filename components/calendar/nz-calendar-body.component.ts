@@ -81,18 +81,18 @@ export type Date1 = string | Date;
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  selector: 'nz-calendar',
-  exportAs: 'nzCalendar',
-  templateUrl: './nz-calendar.component.html',
-  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzCalendarComponent), multi: true }]
+  selector: 'nz-calendar-body',
+  exportAs: 'nzCalendarBody',
+  templateUrl: './nz-calendar-body.component.html'
 })
-export class NzCalendarComponent implements ControlValueAccessor, OnInit {
-  @Input() nzMode: ModeType = 'month';
+export class NzCalendarBodyComponent implements ControlValueAccessor, OnInit {
+  @Input() mode: ModeType = 'month';
   @Input() showWeek: boolean = false;
   @Input() selectedValue: Date1[]; // Range ONLY
   @Input() hoverValue: Date1[]; // Range ONLY
+  @Input() activeDate: Date = new Date();
 
-  @Output() readonly nzModeChange: EventEmitter<ModeType> = new EventEmitter();
+  @Output() readonly modeChange: EventEmitter<ModeType> = new EventEmitter();
   @Output() readonly nzPanelChange: EventEmitter<{ date: Date; mode: ModeType }> = new EventEmitter();
 
   @Output() readonly nzSelectChange: EventEmitter<Date> = new EventEmitter();
@@ -161,7 +161,6 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
   daysInWeek: DayCellContext[] = [];
   monthsInYear: MonthCellContext[] = [];
   dateMatrix: any[] = [];
-  activeDate: Date = new Date();
   currentDateRow: number = -1;
   currentDateCol: number = -1;
   activeDateRow: number = -1;
@@ -197,7 +196,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
   }
 
   onModeChange(mode: ModeType): void {
-    this.nzModeChange.emit(mode);
+    this.modeChange.emit(mode);
     this.nzPanelChange.emit({ date: this.activeDate, mode });
   }
 

@@ -14,6 +14,7 @@ import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 
+import { NzCalendarBodyComponent } from './nz-calendar-body.component';
 import {
   NzDateCellDirective,
   NzDateFullCellDirective,
@@ -30,7 +31,8 @@ import { NzCalendarComponent } from './nz-calendar.component';
     NzDateCellDirective,
     NzDateFullCellDirective,
     NzMonthCellDirective,
-    NzMonthFullCellDirective
+    NzMonthFullCellDirective,
+    NzCalendarBodyComponent
   ],
   exports: [
     NzCalendarComponent,
