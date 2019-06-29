@@ -9,6 +9,7 @@
   "scripts": {
     "build-iframe": "node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --project=ng-zorro-antd-iframe --prod --base-href ./",
     "build-site": "node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --prod",
+    "build-site-es5": "node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng build --configuration es5",
     "build-site-server": "node --max_old_space_size=5120 ./node_modules/@angular/cli/bin/ng run ng-zorro-antd-doc:server:production",
     "build:client-and-server-bundles": "npm run build-site && npm run build-site-server",
     "build:docs": "npm run build:client-and-server-bundles && npm run build:prerender && npm run build-iframe && npm run helper",
@@ -16,7 +17,7 @@
     "compile:prerender": "tsc -p scripts/prerender/tsconfig.json",
     "generate:prerender": "cd dist && node prerender && node sitemap",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s --pkg components/package.json && node ./scripts/site/replace-scope-prefix.js",
-    "doc": "npm run site:init && npm run build-site",
+    "doc": "npm run site:init && npm run build-site-es5",
     "format:check": "prettier --config ./.prettierrc --list-different \"component/**/*{.ts}\"",
     "generate": "ng build ng-zorro-antd-lib",
     "helper": "bash ./scripts/release-helper.sh",

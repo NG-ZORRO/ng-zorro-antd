@@ -245,12 +245,11 @@ export class AppModule { }`;
     description : 'Created with <3 by the StackBlitz SDK!',
     template    : 'angular-cli',
     dependencies: {
-      rxjs                               : '~6.5.2',
+      'rxjs'                             : '~6.5.2',
       '@angular/cdk'                     : '^8.0.0',
       '@angular/compiler'                : '^8.0.0',
       '@angular/core'                    : '^8.0.0',
       '@angular/forms'                   : '^8.0.0',
-      '@angular/http'                    : '^8.0.0',
       '@angular/language-service'        : '^8.0.0',
       '@angular/platform-browser'        : '^8.0.0',
       '@angular/platform-browser-dynamic': '^8.0.0',
@@ -259,9 +258,7 @@ export class AppModule { }`;
       '@angular/animations'              : '^8.0.0',
       '@ant-design/icons-angular'        : '^8.0.0',
       'date-fns'                         : '^1.30.1',
-      tslib                              : '^1.9.3',
-      typescript                         : '~3.4.5',
-      'ng-zorro-antd': '^7.5.0'
+      'ng-zorro-antd': '^8.0.0'
     },
     tags        : [ 'stackblitz', 'sdk' ]
   };
