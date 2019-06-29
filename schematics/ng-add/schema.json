@@ -16,11 +16,6 @@
       "default": false,
       "description": "Do not add ng-zorro-antd dependencies to package.json (e.g., --skipPackageJson)"
     },
-    "bootPage": {
-      "type": "boolean",
-      "default": true,
-      "description": "Set up boot page."
-    },
     "dynamicIcon": {
       "type": "boolean",
       "default": false,
@@ -117,6 +112,19 @@
           "uk_UA",
           "vi_VN",
           "zh_TW"
+        ]
+      }
+    },
+    "template": {
+      "type": "string",
+      "default": "blank",
+      "description": "Create an Angular project with using preset template.",
+      "x-prompt": {
+        "message": "Choose template to create project:",
+        "type": "list",
+        "items": [
+          "blank",
+          "sidemenu"
         ]
       }
     },

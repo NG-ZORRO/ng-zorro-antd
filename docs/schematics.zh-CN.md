@@ -7,35 +7,13 @@ title: 脚手架
 
 ## 项目初始化
 
-自动完成 `ng-zorro-antd` 的初始化配置，包括引入国际化文件，导入模块，引入样式文件等工作。
+在项目下运行命令 `ng add ng-zorro-antd` 跟随选项便可完成初始化配置，包括引入国际化文件，导入模块，引入样式文件等工作。
 
-### 命令
+<img style="display: block; border-radius: 4px; box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.2);" src="https://img.alicdn.com/tfs/TB19fFHdkxz61VjSZFtXXaDSVXa-680-243.svg">
 
-```bash
-ng add ng-zorro-antd [options]
-```
+同时你可以通过选择预设的模板创建一个 Angular 项目，并在此基础上进行开发。
 
-### 参数
-
-***--theme***
-
-`ng-zorro-antd` 会在 `src` 目录下生成 `theme.less` 的主题配置文件
-
-详细的配置可以在[自定义主题](/docs/customize-theme/zh)中查看。
-
-***--locale***
-
-初始化配置时增加 `--locale=[语言]` 参数，`ng-zorro-antd` 会自动引入支持的语言包以及 Angular 对应的 [i18n 文件](https://angular.io/guide/i18n)
-
-默认的国际化配置为中文(zh_CN)，详细的可配置选项可以在[国际化](/docs/i18n/zh)中查看。
-
-***--animations***
-
-启用 `BrowserAnimationsModule`
-
-***--gestures***
-
-安装 `hammerjs` 并引入为项目添加手势支持
+<img style="display: block; border-radius: 4px; box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.2); max-width: 680px;" src="https://img.alicdn.com/tfs/TB1IC0TeEWF3KVjSZPhXXXclXXa-2000-1078.png">
 
 ## 生成组件
 
@@ -52,53 +30,3 @@ ng g ng-zorro-antd:[schematic] <name> [options]
 ```bash
 ng g ng-zorro-antd:form-normal-login login
 ```
-
-### 参数
-
-***--entry-component***
-
-组件是否在模块的 `entryComponents` 声明
-
-***--export***
-
-组件是否在模块的 `exports` 声明
-
-***--flat***
-
-指定是否创建目录
-
-***--inline-style (-s)***
-
-指定是否使用行内样式
-
-***--inline-template (-t)***
-
-指定是否使用行内模版
-
-***--module (-m)***
-
-指定声明的模块
-
-***--prefix (-p)***
-
-组件选择器前缀
-
-***--project***
-
-指定声明到的项目名
-
-***--selector***
-
-组件的选择器名称
-
-***--skip-import***
-
-指定是否跳过模块引入
-
-***--spec***
-
-指定是否生成 `.spec` 测试文件
-
-***--styleext***
-
-指定样式文件扩展名
