@@ -1,6 +1,6 @@
 ---
 order: 10
-title: Contributing to NG-ZORRO
+title: How to Contribute
 ---
 
 The following is a set of guidelines for contributing to NG ZORRO. Please spend several minutes in reading these guidelines before you create an issue or pull request.
