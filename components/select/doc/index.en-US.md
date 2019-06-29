@@ -59,6 +59,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzLoading]` | indicate loading state | `boolean` | false |
 | `[nzMaxTagCount]` | Max tag count to show| `number` | - |
 | `[nzMaxTagPlaceholder]` | Placeholder for not showing tags | `TemplateRef<{ $implicit: any[] }>` | - |
+| `[nzHideSelectedOptions]` | Hide already selected options in the dropdown | `boolean` | `false` | - |
 | `(ngModelChange)` | Current selected nz-option value change callback. | `EventEmitter<any[]>` | - |
 | `(nzOpenChange)` | dropdown expand change callback | `EventEmitter<boolean>` | `false` |
 | `(nzScrollToBottom)` | Called when dropdown scrolls to bottom | `EventEmitter<void>` | - |

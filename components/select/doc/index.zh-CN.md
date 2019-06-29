@@ -60,6 +60,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzLoading]` | 加载中状态 | `boolean` | `false` |
 | `[nzMaxTagCount]` | 最多显示多少个 tag | `number` | - |
 | `[nzMaxTagPlaceholder]` | 隐藏 tag 时显示的内容 | `TemplateRef<{ $implicit: any[] }>` | - |
+| `[nzHideSelectedOptions]` | 隐藏下拉列表中已选择的选项 | `boolean` | `false` | - |
 | `(ngModelChange)` | 选中的 nz-option 发生变化时，调用此函数 | `EventEmitter<any[]>` | - |
 | `(nzOpenChange)` | 下拉菜单打开状态变化回调 | `EventEmitter<boolean>` | - |
 | `(nzScrollToBottom)` | 下拉列表滚动到底部的回调 | `EventEmitter<void>` | - |

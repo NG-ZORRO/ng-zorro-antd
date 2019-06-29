@@ -20,6 +20,11 @@ function generateGroupOption(label: string, value: NzOptionComponent[]): NzOptio
   return optionGroup;
 }
 
+// tslint:disable-next-line:no-any
+function compareWith(o1: any, o2: any): boolean {
+  return o1 === o2;
+}
+
 describe('nz-option pipe', () => {
   describe('NzFilterOptionPipe', () => {
     let pipe: NzFilterOptionPipe;
@@ -32,12 +37,12 @@ describe('nz-option pipe', () => {
       }
     });
     it('should return correct value with inputValue', () => {
-      const result = pipe.transform(listOfOption, '9', defaultFilterOption, false);
+      const result = pipe.transform(listOfOption, '9', defaultFilterOption, false, false, [], compareWith);
       expect(result[0].nzLabel).toBe('label9');
       expect(result.length).toBe(1);
     });
     it('should return correct value with null option', () => {
-      const result = pipe.transform([new NzOptionComponent()], 'a', defaultFilterOption, false);
+      const result = pipe.transform([new NzOptionComponent()], 'a', defaultFilterOption, false, false, [], compareWith);
       expect(result.length).toBe(0);
     });
     it('should return correct value with filterOption', () => {
@@ -48,17 +53,29 @@ describe('nz-option pipe', () => {
           return false;
         }
       };
-      const result = pipe.transform(listOfOption, '9', filterOption, false);
+      const result = pipe.transform(listOfOption, '9', filterOption, false, false, [], compareWith);
       expect(result[0].nzLabel).toBe('label8');
       expect(result.length).toBe(1);
     });
     it('should return correct value without inputValue', () => {
-      const result = pipe.transform(listOfOption, '', defaultFilterOption, false);
+      const result = pipe.transform(listOfOption, '', defaultFilterOption, false, false, [], compareWith);
       expect(result.length).toBe(10);
     });
     it('should return correct value with serverSearch', () => {
-      const result = pipe.transform(listOfOption, 'absd', defaultFilterOption, true);
+      const result = pipe.transform(listOfOption, 'absd', defaultFilterOption, true, false, [], compareWith);
       expect(result.length).toBe(10);
+    });
+    it('should return correct value with hide selected options', () => {
+      const result = pipe.transform(
+        listOfOption,
+        '',
+        defaultFilterOption,
+        false,
+        true,
+        ['value1', 'value2'],
+        compareWith
+      );
+      expect(result.length).toBe(8);
     });
   });
   describe('NzFilterGroupOptionPipe', () => {
@@ -72,10 +89,10 @@ describe('nz-option pipe', () => {
       ];
     });
     it('should return correct value with inputValue', () => {
-      const result01 = pipe.transform(listOfGroupOption, 'a', defaultFilterOption, false);
+      const result01 = pipe.transform(listOfGroupOption, 'a', defaultFilterOption, false, false, [], compareWith);
       expect(result01[0].nzLabel).toBe('g1');
       expect(result01.length).toBe(1);
-      const result02 = pipe.transform(listOfGroupOption, 'b', defaultFilterOption, false);
+      const result02 = pipe.transform(listOfGroupOption, 'b', defaultFilterOption, false, false, [], compareWith);
       expect(result02.length).toBe(2);
     });
     it('should return correct value with filterOption', () => {
@@ -86,17 +103,21 @@ describe('nz-option pipe', () => {
           return false;
         }
       };
-      const result = pipe.transform(listOfGroupOption, 'a', filterOption, false);
+      const result = pipe.transform(listOfGroupOption, 'a', filterOption, false, false, [], compareWith);
       expect(result[0].nzLabel).toBe('g2');
       expect(result.length).toBe(1);
     });
     it('should return correct value without inputValue', () => {
-      const result = pipe.transform(listOfGroupOption, '', defaultFilterOption, false);
+      const result = pipe.transform(listOfGroupOption, '', defaultFilterOption, false, false, [], compareWith);
       expect(result.length).toBe(2);
     });
     it('should return correct value with serverSearch', () => {
-      const result = pipe.transform(listOfGroupOption, 'absd', defaultFilterOption, true);
+      const result = pipe.transform(listOfGroupOption, 'absd', defaultFilterOption, true, false, [], compareWith);
       expect(result.length).toBe(2);
+    });
+    it('should return correct value with hide selected options', () => {
+      const result = pipe.transform(listOfGroupOption, '', defaultFilterOption, false, true, ['a', 'b'], compareWith);
+      expect(result.length).toBe(1);
     });
   });
 });
