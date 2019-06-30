@@ -95,6 +95,7 @@
     "less-plugin-clean-css": "^1.5.1",
     "lint-staged": "^8.1.5",
     "marked": "^0.6.2",
+    "monaco-editor": "^0.17.1",
     "ng-packagr": "^5.2.0",
     "ngx-color": "^3.0.3",
     "node-prismjs": "^0.1.1",
