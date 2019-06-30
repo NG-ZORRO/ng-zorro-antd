@@ -22,8 +22,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { startWith } from 'rxjs/internal/operators/startWith';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, takeUntil, startWith } from 'rxjs/operators';
 
 import { InputBoolean, PREFIX } from 'ng-zorro-antd/core';
 
