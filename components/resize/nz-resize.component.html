@@ -1,0 +1,16 @@
+<div #trigger
+     class="ant-resize"
+     [class.ant-resize-dotted]="nzLazy && isDragging && canMove"
+     [class.ant-resize-vertical]="nzMode === 'vertical'"
+     [class.ant-resize-horizontal]="nzMode === 'horizontal'"
+     [class.ant-resize-show-border]="nzShowBorder || (nzLazy && isDragging)"
+     [class.ant-resize-can-move]="canMove && !nzHidden"
+     [style.left.px]="nzMode === 'vertical' ? left : 0"
+     [style.top.px]="nzMode === 'horizontal' ? top : 0"
+     (mousedown)="startDragging()">
+  <div class="ant-resize-handler"
+       *ngIf="!nzHidden && canMove">
+    <i nz-icon
+       nzType="ellipsis"></i>
+  </div>
+</div>

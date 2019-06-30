@@ -23,7 +23,7 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
 
 ### nz-rate
 
-| Property | Description | type | Default |
+| Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[nzAllowClear]` | whether to allow clear when click again | `boolean` | `true` |
 | `[nzAllowHalf]` | whether to allow semi selection | `boolean` | `false` |

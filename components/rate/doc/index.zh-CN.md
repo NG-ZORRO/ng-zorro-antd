@@ -2,7 +2,7 @@
 category: Components
 subtitle: 评分
 type: 数据录入
-title: Rate
+title: Resize
 ---
 
 评分组件。
