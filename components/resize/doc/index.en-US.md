@@ -20,7 +20,7 @@ import { NzResizeModule } from 'ng-zorro-antd/resize';
 
 ## API
 
-### nz-rate
+### nz-resize
 
 | Property | Description | Type | Default |
 | --- | --- | --- | --- |

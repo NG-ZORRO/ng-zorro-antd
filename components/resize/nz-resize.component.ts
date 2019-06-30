@@ -165,7 +165,6 @@ export class NzResizeComponent implements OnInit, OnChanges {
 
     const offsetTop = getOffsetTop();
     const newTop = e.pageY - offsetTop;
-    console.log(newTop, e, e.pageX, offsetTop);
     return ensureNumInRange(newTop, [this.nzMin, this.nzMax]);
   }
 }
