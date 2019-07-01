@@ -13,6 +13,16 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 8.0.1
+`2019-07-01`
+
+### Bug Fixes
+
+* **tree:** 修复错误的 Warning ([#3692](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3692)) ([637c334](https://github.com/NG-ZORRO/ng-zorro-antd/commit/637c334))
+* **breadcrumb:** 修复 rxjs 的引用错误 ([fe28a0d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fe28a0d))
+* **schematics:** 修复生成 sidemenu 模板时缺少的 routing 模块 ([#3695](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3695)) ([fdcef82](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fdcef82))
+
+
 ## 8.0.0
 `2019-06-29`
 
