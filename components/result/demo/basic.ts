@@ -55,9 +55,7 @@ const statusMap: { [key: string]: StatusMap } = {
         <button *ngSwitchCase="'404'" nz-button type="primary">Back Home</button>
         <button *ngSwitchCase="'500'" nz-button type="primary">Back Home</button>
         <ng-container *ngSwitchCase="'success'">
-          <button nz-button nzType="primary">
-            Go Console</button
-          >,
+          <button nz-button nzType="primary">Go Console</button>
           <button nz-button>Buy Again</button>
         </ng-container>
         <button *ngSwitchCase="'info'" nz-button type="primary">Go Console</button>

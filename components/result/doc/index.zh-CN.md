@@ -32,7 +32,7 @@ import { NzResultModule } from 'ng-zorro-antd/result';
 | `nzIcon`     | 自定义 icon                | `TemplateRef<void>` \| `string`                                                   | -        |
 | `nzExtra`    | 操作区域                   | `TemplateRef<void>` \| `string`                                                   | -        |
 
-### nz-result 组成部分
+### 子元素
 
 你可以在 nz-result 中加入如下指令，它们的优先级低于上面的参数。
 
