@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
 import { NzResultStatusType } from 'ng-zorro-antd/result';
 
-const statusMap = {
+interface StatusMap {
+  title: string;
+  subTitle?: string;
+  extra: string;
+}
+
+const statusMap: { [key: string]: StatusMap } = {
   '403': {
     title: '403',
     subTitle: 'Sorry, you are not authorized to access this page.',
