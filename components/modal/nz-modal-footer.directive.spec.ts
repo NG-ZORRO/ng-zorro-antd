@@ -1,32 +1,36 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component } from '@angular/core';
-import { async, fakeAsync, inject, tick, TestBed, ComponentFixture } from '@angular/core/testing';
+import { async, fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
+
 import { NzModalModule } from './nz-modal.module';
+import { NzModalService } from './nz-modal.service';
 
 describe('modal footer directive', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
-  let fixture: ComponentFixture<TestDirectiveFooterInTemplateComponent>;
-  let testComponent: TestDirectiveFooterInTemplateComponent;
+  let fixture: ComponentFixture<TestDirectiveFooterComponent>;
+  let testComponent: TestDirectiveFooterComponent;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzModalModule, NoopAnimationsModule ],
-      declarations: [ TestDirectiveFooterInTemplateComponent ],
-      providers   : [ NzMeasureScrollbarService ]
+      imports: [NzModalModule, NoopAnimationsModule],
+      declarations: [TestDirectiveFooterComponent],
+      providers: [NzMeasureScrollbarService, NzModalService]
     });
+
     TestBed.compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TestDirectiveFooterInTemplateComponent);
+    fixture = TestBed.createComponent(TestDirectiveFooterComponent);
     testComponent = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  beforeEach(inject([ OverlayContainer ], (oc: OverlayContainer) => {
+  beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
     overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
   }));
@@ -40,18 +44,18 @@ describe('modal footer directive', () => {
     tick(1000);
   }));
 
-  it('should work in template', () => {
+  it('should work with template', () => {
     testComponent.showModal();
     fixture.detectChanges();
     expect(testComponent.isVisible).toBe(true);
-    const cancelBtn: HTMLButtonElement = overlayContainerElement
-    .querySelector('.ant-modal .ant-modal-footer button.cancel-btn') as HTMLButtonElement;
+    const cancelBtn: HTMLButtonElement = overlayContainerElement.querySelector(
+      '.ant-modal #btn-template'
+    ) as HTMLButtonElement;
     expect(cancelBtn).toBeTruthy();
     cancelBtn.click();
     fixture.detectChanges();
     expect(testComponent.isVisible).toBe(false);
   });
-
 });
 
 @Component({
@@ -61,15 +65,15 @@ describe('modal footer directive', () => {
         <p>Modal Content</p>
       </div>
       <div *nzModalFooter>
-        <button class="cancel-btn" nz-button nzType="default" (click)="handleCancel()">Custom Callback</button>
+        <button id="btn-template" nz-button nzType="default" (click)="handleCancel()">Custom Callback</button>
       </div>
-    </nz-modal>`
+    </nz-modal>
+  `
 })
-class TestDirectiveFooterInTemplateComponent {
+class TestDirectiveFooterComponent {
   isVisible = false;
 
-  constructor() {
-  }
+  constructor() {}
 
   handleCancel(): void {
     this.isVisible = false;

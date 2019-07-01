@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Directive, Optional, TemplateRef } from '@angular/core';
 import { NzModalRef } from './nz-modal-ref.class';
 
@@ -5,13 +13,9 @@ import { NzModalRef } from './nz-modal-ref.class';
   selector: '[nzModalFooter]'
 })
 export class NzModalFooterDirective {
-
-  constructor(@Optional() private nzModalRef: NzModalRef,
-              // tslint:disable-next-line:no-any
-              public templateRef: TemplateRef<any>) {
+  constructor(@Optional() private nzModalRef: NzModalRef, public templateRef: TemplateRef<{}>) {
     if (this.nzModalRef) {
-      this.nzModalRef.getInstance().nzFooter = this.templateRef;
+      this.nzModalRef.getInstance().setFooterWithTemplate(this.templateRef);
     }
   }
-
 }
