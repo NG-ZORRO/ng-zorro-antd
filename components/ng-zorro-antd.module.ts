@@ -126,7 +126,7 @@ export * from 'ng-zorro-antd/tree';
 export * from 'ng-zorro-antd/typography';
 export * from 'ng-zorro-antd/upload';
 
-export * from './version';
+export * from 'ng-zorro-antd/version';
 
 @NgModule({
   exports: [
