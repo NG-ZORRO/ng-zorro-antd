@@ -13,6 +13,16 @@ timeline: true
 * Major version release is not included in this schedule for breaking change and new features.
 
 ---
+## 8.0.1
+`2019-07-01`
+
+### Bug Fixes
+
+* **tree:** fix warning bug ([#3692](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3692)) ([637c334](https://github.com/NG-ZORRO/ng-zorro-antd/commit/637c334))
+* **breadcrumb:** fix warning startWith operators ([fe28a0d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fe28a0d))
+* **schematics:** missing routing module in sidemenu template ([#3695](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3695)) ([fdcef82](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fdcef82))
+
+
 ## 8.0.0
 `2019-06-29`
 
