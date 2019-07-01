@@ -95,6 +95,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   @InputBoolean()
   set nzDefaultExpandAll(value: boolean) {
     warnDeprecation(`'nzDefaultExpandAll' would be removed in 9.0.0. Please use 'nzExpandAll' instead.`);
+    this.nzExpandAll = value;
     this._nzDefaultExpandAll = value;
   }
 
@@ -171,8 +172,11 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
     this.nzTreeService.searchExpand(value);
     if (isNotNil(value)) {
       this.nzSearchValueChange.emit(this.nzTreeService.formatEvent('search', null, null));
+      /**
+       * @deprecated 9.0.0 - use `nzOnSearchNode` instead.
+       * Hide warning, need remove next version
+       */
       this.nzOnSearchNode.emit(this.nzTreeService.formatEvent('search', null, null));
-      warnDeprecation(`'nzOnSearchNode' would be deprecated in 9.0.0. Please use 'nzSearchValueChange' instead.`);
     }
   }
 
