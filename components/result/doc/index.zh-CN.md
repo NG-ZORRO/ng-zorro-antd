@@ -12,31 +12,34 @@ cols: 1
 
 当有重要操作需告知用户处理结果，且反馈内容较为复杂时使用。
 
+## 单独引入此组件
+
+想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
+
+```ts
+import { NzResultModule } from 'ng-zorro-antd/result';
+```
+
 ## API
 
 ### nz-result
 
-| 参数 | 说明 | 类型 | 默认值 |
-| -------- | ----------- | ---- | ------- |
-| `[nzIcon]` | 展示在顶部的 icon  | `NzResultIcon｜TemplateRef<void>` | - |
-| `[nzTitle]` | 标题 | `string｜TemplateRef<void>` | - |
-| `[nzSubtitle]` | 副标题 | `string｜TemplateRef<void>` | - |
-| `[nzExtra]` | 附加内容，通常是一个可交互的区域 | `string｜TemplateRef<void>` | - |
+| 属性         | 说明                       | 类型                                                                              | 默认值   |
+| ------------ | -------------------------- | --------------------------------------------------------------------------------- | -------- |
+| `nzTitle`    | 标题                       | `TemplateRef<void>` \| `string`                                                   | -        |
+| `nzSubTitle` | 副标题                     | `TemplateRef<void>` \| `string`                                                   | -        |
+| `nzStatus`   | 结果的状态，决定图标和颜色 | `'success' \| 'error' \| 'info' \| 'warning'\| '404' \| '403' \| '500'` \| 'info' | `'info'` |
+| `nzIcon`     | 自定义 icon                | `TemplateRef<void>` \| `string`                                                   | -        |
+| `nzExtra`    | 操作区域                   | `TemplateRef<void>` \| `string`                                                   | -        |
 
-### Nz result 组成部分
+### nz-result 组成部分
 
-当向 `nz-result` 传入相应的参数时，以下元素将会不生效。
+你可以在 nz-result 中加入如下指令，它们的优先级低于上面的参数。
 
-| 元素 | 说明 |
-| ------- | ----------- |
-| `[nz-result-icon]` | A big icon displayed on the top |
-| `nz-result-title, [nz-result-title]` | Title |
-| `nz-result-subtitle, [nz-result-subtitle]` | Subtitle |
-| `nz-result-content, [nz-result-content]` | Contents, for detailed explanations |
-| `nz-result-extra, [nz-result-extra]` | Extra content, usually an operating area |
-
-### NzResultIcon
-
-```ts
-export type NzResultIcon = 'success' | 'error' | 'info' | 'warning'`;
-```
+| 元素                                     | 说明                     |
+| ---------------------------------------- | ------------------------ |
+| `i[nz-result-icon], div[nz-result-icon]` | 在顶部展示的大图标       |
+| `div[nz-result-title]`                   | 标题                     |
+| `div[nz-result-subtitle]`                | 副标题                   |
+| `div[nz-result-content]`                 | 内容，可以展示详细的信息 |
+| `div[nz-result-extra]`                   | 操作区域                 |

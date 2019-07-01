@@ -9,67 +9,76 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   Input,
   OnChanges,
-  SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { NgClassInterface } from 'ng-zorro-antd';
+import { NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
-export type NzResultIcon = 'success' | 'error' | 'info' | 'warning';
+export type NzResultIconType = 'success' | 'error' | 'info' | 'warning';
+export type NzExceptionStatusType = '404' | '500' | '403';
+export type NzResultStatusType = NzExceptionStatusType | NzResultIconType;
 
-export const IconMap = {
+const IconMap = {
   success: 'check-circle',
   error: 'close-circle',
   info: 'exclamation-circle',
   warning: 'warning'
 };
+const ExceptionStatus = ['404', '500', '403'];
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-result',
   templateUrl: './nz-result.component.html',
-  host: {
-    class: 'ant-result'
-  },
+  providers: [NzUpdateHostClassService],
   styles: [
     `
-      nz-result,
-      nz-result-title,
-      nz-result-subtitle,
-      nz-result-extra,
-      nz-result-content {
+      nz-result {
         display: block;
       }
     `
   ]
 })
 export class NzResultComponent implements OnChanges {
-  @Input() nzIcon: NzResultIcon | TemplateRef<void>;
+  @Input() nzIcon?: string | TemplateRef<void>;
   @Input() nzTitle: string | TemplateRef<void>;
-  @Input() nzSubTitle: string | TemplateRef<void>;
-  @Input() nzExtra: string | TemplateRef<void>;
+  @Input() nzStatus: NzResultStatusType = 'info';
+  @Input() nzSubTitle?: string | TemplateRef<void>;
+  @Input() nzExtra?: string | TemplateRef<void>;
 
-  iconName?: string = '';
-  iconCls: NgClassInterface = {};
+  icon?: string | TemplateRef<void>;
+  isException = false;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    const { nzIcon } = changes;
+  constructor(private nzUpdateHostClassService: NzUpdateHostClassService, private elementRef: ElementRef) {}
 
-    if (nzIcon) {
-      this.setResultIcon(nzIcon.currentValue);
-    }
+  ngOnChanges(): void {
+    this.setStatusIcon();
+    this.setClassMap();
   }
 
-  private setResultIcon(icon: NzResultIcon | TemplateRef<void>): void {
-    if (typeof icon === 'string') {
-      this.iconName = IconMap[icon];
-      this.iconCls = { [icon]: true };
-    } else {
-      this.iconName = '';
-      this.iconCls = {};
-    }
+  private setStatusIcon(): void {
+    const icon = this.nzIcon;
+
+    this.isException = ExceptionStatus.indexOf(this.nzStatus) !== -1;
+    this.icon = icon
+      ? typeof icon === 'string'
+        ? IconMap[icon as NzResultIconType] || icon
+        : icon
+      : this.isException
+      ? undefined
+      : IconMap[this.nzStatus as NzResultIconType];
+  }
+
+  private setClassMap(): void {
+    const prefix = 'ant-result';
+
+    this.nzUpdateHostClassService.updateHostClass(this.elementRef.nativeElement, {
+      [prefix]: true,
+      [`${prefix}-${this.nzStatus}`]: true
+    });
   }
 }
