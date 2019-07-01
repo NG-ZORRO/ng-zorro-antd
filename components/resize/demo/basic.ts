@@ -4,10 +4,12 @@ import { NzResizePosition } from 'ng-zorro-antd/resize';
 @Component({
   selector: 'nz-demo-resize-basic',
   template: `
+    <div style="margin-bottom: 4px;">Hidden: <nz-switch [(ngModel)]="hidden"></nz-switch></div>
     <div class="horizontal-box" #base>
       <div class="left-content" [style.width.px]="left">Left</div>
       <div class="right-content">Right</div>
-      <nz-resize [nzLeft]="left" [nzBaseElement]="base" (nzResizeChange)="onResizeChange($event)"> </nz-resize>
+      <nz-resize [nzLeft]="left" [nzBaseElement]="base" [nzHidden]="hidden" (nzResizeChange)="onResizeChange($event)">
+      </nz-resize>
     </div>
   `,
   styles: [
@@ -42,6 +44,7 @@ import { NzResizePosition } from 'ng-zorro-antd/resize';
 })
 export class NzDemoResizeBasicComponent {
   left = 60;
+  hidden = false;
 
   onResizeChange(pos: Required<NzResizePosition>): void {
     this.left = pos.left;
