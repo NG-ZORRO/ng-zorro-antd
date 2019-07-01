@@ -39,7 +39,8 @@ rootDir.forEach(componentName => {
     }
   }
   const componentDirPath = path.join(rootPath, componentName);
-  if (componentName === 'style' || componentName === 'core' || componentName === 'locale' || componentName === 'i18n') {
+  const excludes = ['style', 'core', 'locale', 'i18n', 'version'];
+  if (excludes.includes(componentName)) {
     return;
   }
   if (fs.statSync(componentDirPath).isDirectory()) {

@@ -16,6 +16,7 @@ import { takeUntil } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { AppService } from '../../app.service';
 import { stackBlitzConfiguration } from './stack-blitz';
+import { VERSION } from 'ng-zorro-antd/version'
 
 @Component({
   selector       : 'nz-code-box',
@@ -113,7 +114,7 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
   }
 
   openOnStackBlitz() {
-    sdk.openProject(stackBlitzConfiguration(this.nzComponentName, this.nzRawCode, this.nzSelector));
+    sdk.openProject(stackBlitzConfiguration(this.nzComponentName, this.nzRawCode, this.nzSelector, VERSION.full));
   }
 
   check() {

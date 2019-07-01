@@ -25,7 +25,7 @@
     "integration-rollup": "npm run generate && cd integration/rollup && npm run integration",
     "integration-webpack": "npm run generate && cd integration/webpack && npm run integration",
     "integration": "npm run generate && bash ./integration-test.sh",
-    "lint": "tslint -c tslint.json 'components/**/!(demo|testing)/!(polyfills).ts' --fix",
+    "lint": "tslint -c tslint.json 'components/**/!(demo|testing)/!(polyfills).ts'",
     "migration-styles": "node ./scripts/build/migration-styles.js",
     "ng": "ng",
     "postgenerate": "node scripts/build/compile-styles.js && cp README.md publish/README.md && npm run migration-styles && npm run schematic:generate",
