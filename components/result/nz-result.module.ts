@@ -12,6 +12,10 @@ import { NgModule } from '@angular/core';
 import { NzAddOnModule } from 'ng-zorro-antd/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
+import { NzResultNotFoundComponent } from './partial/not-found';
+import { NzResultServerErrorComponent } from './partial/server-error.component';
+import { NzResultUnauthorizedComponent } from './partial/unauthorized';
+
 import {
   NzResultContentDirective,
   NzResultExtraDirective,
@@ -20,6 +24,8 @@ import {
   NzResultTitleDirective
 } from './nz-result-cells';
 import { NzResultComponent } from './nz-result.component';
+
+const partial = [NzResultNotFoundComponent, NzResultServerErrorComponent, NzResultUnauthorizedComponent];
 
 const cellDirectives = [
   NzResultContentDirective,
@@ -31,7 +37,7 @@ const cellDirectives = [
 
 @NgModule({
   imports: [CommonModule, NzAddOnModule, NzIconModule],
-  declarations: [NzResultComponent, ...cellDirectives],
+  declarations: [NzResultComponent, ...cellDirectives, ...partial],
   exports: [NzResultComponent, ...cellDirectives]
 })
 export class NzResultModule {}

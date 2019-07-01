@@ -9,31 +9,31 @@
 import { Directive } from '@angular/core';
 
 @Directive({
-  selector: 'nz-result-title, [nz-result-title]',
+  selector: 'div[nz-result-title]',
   exportAs: 'nzResultTitle',
   host: {
-    class: 'ant-result-title-view-title'
+    class: 'ant-result-title'
   }
 })
 export class NzResultTitleDirective {}
 
 @Directive({
-  selector: 'nz-result-subtitle, [nz-result-subtitle]',
+  selector: 'div[nz-result-subtitle]',
   exportAs: 'nzResultSubtitle',
   host: {
-    class: 'ant-result-title-view-subtitle'
+    class: 'ant-result-subtitle'
   }
 })
 export class NzResultSubtitleDirective {}
 
 @Directive({
-  selector: '[nz-result-icon]',
+  selector: 'i[nz-result-icon], div[nz-result-icon]',
   exportAs: 'nzResultIcon'
 })
 export class NzResultIconDirective {}
 
 @Directive({
-  selector: 'nz-result-content, [nz-result-content]',
+  selector: 'div[nz-result-content]',
   exportAs: 'nzResultContent',
   host: {
     class: 'ant-result-content'
@@ -42,10 +42,10 @@ export class NzResultIconDirective {}
 export class NzResultContentDirective {}
 
 @Directive({
-  selector: 'nz-result-extra, [nz-result-extra]',
+  selector: 'div[nz-result-extra]',
   exportAs: 'nzResultExtra',
   host: {
-    class: 'ant-result-extra-view'
+    class: 'ant-result-extra'
   }
 })
 export class NzResultExtraDirective {}
