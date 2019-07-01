@@ -68,7 +68,7 @@ describe('nz-result', () => {
 
       const iconView = resultEl.nativeElement.querySelector('.ant-result-icon');
       const titleView = resultEl.nativeElement.querySelector('.ant-result-title');
-      const subTitleView = resultEl.nativeElement.querySelector('.mmitant-result-subtitle');
+      const subTitleView = resultEl.nativeElement.querySelector('.ant-result-subtitle');
       const contentView = resultEl.nativeElement.querySelector('.ant-result-content');
       const extraView = resultEl.nativeElement.querySelector('.ant-result-extra');
 
