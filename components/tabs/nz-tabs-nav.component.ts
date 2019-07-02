@@ -277,12 +277,25 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
   get viewWidthHeightPix(): number {
     let PAGINATION_PIX = 0;
     if (this.showPaginationControls) {
-      PAGINATION_PIX = 64;
+      PAGINATION_PIX = this.navContainerScrollPaddingPix;
     }
     if (this.nzPositionMode === 'horizontal') {
       return this.navContainerElement.nativeElement.offsetWidth - PAGINATION_PIX;
     } else {
       return this.navContainerElement.nativeElement.offsetHeight - PAGINATION_PIX;
+    }
+  }
+
+  get navContainerScrollPaddingPix(): number {
+    const navContainer = this.navContainerElement.nativeElement;
+    // tslint:disable: no-any
+    const originStyle: CSSStyleDeclaration = window.getComputedStyle
+      ? window.getComputedStyle(navContainer)
+      : (navContainer as any).currentStyle; // currentStyle for IE < 9
+    if (this.nzPositionMode === 'horizontal') {
+      return this.pxToNumber(originStyle.paddingLeft) + this.pxToNumber(originStyle.paddingRight);
+    } else {
+      return this.pxToNumber(originStyle.paddingTop) + this.pxToNumber(originStyle.paddingBottom);
     }
   }
 
@@ -316,5 +329,13 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
         this.nzTabsInkBarDirective.alignToElement(selectedLabelWrapper);
       }
     }
+  }
+
+  pxToNumber(value: string | null): number {
+    if (!value) {
+      return 0;
+    }
+    const match = value.match(/^\d*(\.\d*)?/);
+    return match ? Number(match[0]) : 0;
   }
 }
