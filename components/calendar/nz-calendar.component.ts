@@ -40,7 +40,7 @@ import startOfYear from 'date-fns/start_of_year';
 import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { isAfter, isBefore, isToday } from 'date-fns';
-import { CandyDate } from 'ng-zorro-antd';
+import { warnDeprecation, InputBoolean } from 'ng-zorro-antd/core';
 import {
   // NzDateCellDirective as DateCell,
   NzDateCellDirective,
@@ -64,7 +64,7 @@ export interface DateCell {
   isSelectedEndDate?: boolean;
   isInRange?: boolean;
   classMap?: object;
-  onClick(date: CandyDate): void;
+  onClick(date: any): void;
   onMouseEnter(): void;
 }
 
@@ -106,35 +106,26 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
 
   // compatible for date-table
   // TODO:
-  @Input() @ContentChild(NzDateCellDirective, { static: false, read: TemplateRef }) nzDateCell: TemplateRef<{
-    $implicit: Date;
-  }>;
+  @Input()
+  @ContentChild(NzDateCellDirective, { static: false, read: TemplateRef })
+  nzDateCell: TemplateRef<{ $implicit: Date }>;
 
   @Input()
-  set nzDateFullCell(value: TemplateRef<{ $implicit: Date }>) {
-    this.dateFullCell = value;
-  }
+  @ContentChild('nzMonthCell', { static: false, read: TemplateRef })
+  nzMonthCell: TemplateRef<{ $implicit: Date }>;
 
   @Input()
-  set nzMonthCell(value: TemplateRef<{ $implicit: Date }>) {
-    this.monthCell = value;
-  }
+  @ContentChild('nzDateFullCell', { static: false, read: TemplateRef })
+  nzDateFullCell: TemplateRef<{ $implicit: Date }>;
 
-  @Input()
-  set nzMonthFullCell(value: TemplateRef<{ $implicit: Date }>) {
-    this.monthFullCell = value;
-  }
+  @Input() @InputBoolean() nzFullscreen: boolean;
 
-  @Input()
-  set nzFullscreen(value: boolean) {
-    this.fullscreen = coerceBooleanProperty(value);
-  }
-  get nzFullscreen(): boolean {
-    return this.fullscreen;
-  }
-
+  /**
+   * @deprecated use `[nzFullscreen]` instead.
+   */
   @Input()
   set nzCard(value: boolean) {
+    warnDeprecation(`'nzCard' is going to be removed in 9.0.0. Please use 'nzFullscreen' instead.`);
     this.fullscreen = !coerceBooleanProperty(value);
   }
   get nzCard(): boolean {
@@ -201,20 +192,18 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
     this.nzPanelChange.emit({ date: this.activeDate, mode });
   }
 
-  onDateSelect(date: Date): void {
-    this.updateDate(date);
-    this.nzSelectChange.emit(date);
-  }
-
   onYearSelect(year: number): void {
-    const date = setYear(this.activeDate, year);
-    this.updateDate(date);
-    this.nzSelectChange.emit(date);
+    this.activeDate = setYear(this.activeDate, year);
+    this.nzSelectChange.emit(this.activeDate);
   }
 
   onMonthSelect(month: number): void {
-    const date = setMonth(this.activeDate, month);
-    this.updateDate(date);
+    this.activeDate = setMonth(this.activeDate, month);
+    this.nzSelectChange.emit(this.activeDate);
+  }
+
+  onDateSelect(date: Date): void {
+    this.updateDate(date, true);
     this.nzSelectChange.emit(date);
   }
 

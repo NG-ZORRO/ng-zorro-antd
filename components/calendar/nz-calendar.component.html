@@ -3,4 +3,4 @@
                     (yearChange)="onYearSelect($event)" (monthChange)="onMonthSelect($event)">
 </nz-calendar-header>
 
-<nz-calendar-body [(mode)]="nzMode" [activeDate]="activeDate"></nz-calendar-body>
+<nz-calendar-body [(mode)]="nzMode" [activeDate]="activeDate" [dateFullCell]="nzDateFullCell" [dateCell]="nzDateCell" [monthCell]="nzMonthCell" [monthFullCell]="nzMonthFullCell" (selectChange)="activeDate=$event"></nz-calendar-body>

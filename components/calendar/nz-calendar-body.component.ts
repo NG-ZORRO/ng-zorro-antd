@@ -6,7 +6,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import {
   forwardRef,
   ChangeDetectionStrategy,
@@ -16,8 +15,10 @@ import {
   EventEmitter,
   HostBinding,
   Input,
+  OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
@@ -41,6 +42,7 @@ import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { isAfter, isBefore, isToday } from 'date-fns';
 import { CandyDate } from 'ng-zorro-antd';
+import { InputBoolean } from 'ng-zorro-antd/core';
 import {
   // NzDateCellDirective as DateCell,
   NzDateCellDirective,
@@ -85,61 +87,29 @@ export type Date1 = string | Date;
   exportAs: 'nzCalendarBody',
   templateUrl: './nz-calendar-body.component.html'
 })
-export class NzCalendarBodyComponent implements ControlValueAccessor, OnInit {
+export class NzCalendarBodyComponent implements ControlValueAccessor, OnInit, OnChanges {
   @Input() mode: ModeType = 'month';
   @Input() showWeek: boolean = false;
   @Input() selectedValue: Date1[]; // Range ONLY
   @Input() hoverValue: Date1[]; // Range ONLY
-  @Input() activeDate: Date = new Date();
+  @Input() value: Date = new Date();
+  @Input() activeDate: Date;
 
   @Output() readonly modeChange: EventEmitter<ModeType> = new EventEmitter();
   @Output() readonly nzPanelChange: EventEmitter<{ date: Date; mode: ModeType }> = new EventEmitter();
 
-  @Output() readonly nzSelectChange: EventEmitter<Date> = new EventEmitter();
-
-  @Input() set nzValue(value: Date) {
-    this.updateDate(value, false);
-  }
+  @Output() readonly selectChange: EventEmitter<Date> = new EventEmitter();
   @Output() readonly nzValueChange: EventEmitter<Date> = new EventEmitter();
-
   @Output() readonly dayHover = new EventEmitter<Date>();
 
   // compatible for date-table
   // TODO:
-  @Input() @ContentChild(NzDateCellDirective, { static: false, read: TemplateRef }) nzDateCell: TemplateRef<{
-    $implicit: Date;
-  }>;
+  @Input() dateCell: TemplateRef<{ $implicit: Date }>;
+  @Input() dateFullCell: TemplateRef<{ $implicit: Date }>;
+  @Input() monthCell: TemplateRef<{ $implicit: Date }>;
+  @Input() monthFullCell: TemplateRef<{ $implicit: Date }>;
 
-  @Input()
-  set nzDateFullCell(value: TemplateRef<{ $implicit: Date }>) {
-    this.dateFullCell = value;
-  }
-
-  @Input()
-  set nzMonthCell(value: TemplateRef<{ $implicit: Date }>) {
-    this.monthCell = value;
-  }
-
-  @Input()
-  set nzMonthFullCell(value: TemplateRef<{ $implicit: Date }>) {
-    this.monthFullCell = value;
-  }
-
-  @Input()
-  set nzFullscreen(value: boolean) {
-    this.fullscreen = coerceBooleanProperty(value);
-  }
-  get nzFullscreen(): boolean {
-    return this.fullscreen;
-  }
-
-  @Input()
-  set nzCard(value: boolean) {
-    this.fullscreen = !coerceBooleanProperty(value);
-  }
-  get nzCard(): boolean {
-    return !this.fullscreen;
-  }
+  @Input() @InputBoolean() @HostBinding('class.ant-fullcalendar--fullscreen') fullscreen: boolean = true;
 
   @ContentChild(MonthCell, { static: false, read: TemplateRef })
   set monthCellChild(value: TemplateRef<{ $implicit: Date }>) {
@@ -155,9 +125,6 @@ export class NzCalendarBodyComponent implements ControlValueAccessor, OnInit {
     }
   }
 
-  @HostBinding('class.ant-fullcalendar--fullscreen')
-  fullscreen = true;
-
   daysInWeek: DayCellContext[] = [];
   monthsInYear: MonthCellContext[] = [];
   dateMatrix: any[] = [];
@@ -169,10 +136,11 @@ export class NzCalendarBodyComponent implements ControlValueAccessor, OnInit {
   currentMonthCol: number = -1;
   activeMonthRow: number = -1;
   activeMonthCol: number = -1;
-  dateCell: TemplateRef<{ $implicit: Date }> | null = null;
-  dateFullCell: TemplateRef<{ $implicit: Date }> | null = null;
-  monthCell: TemplateRef<{ $implicit: Date }> | null = null;
-  monthFullCell: TemplateRef<{ $implicit: Date }> | null = null;
+  previousDate: Date;
+  // dateCell: TemplateRef<{ $implicit: Date }> | null = null;
+  // dateFullCell: TemplateRef<{ $implicit: Date }> | null = null;
+  // monthCell: TemplateRef<{ $implicit: Date }> | null = null;
+  // monthFullCell: TemplateRef<{ $implicit: Date }> | null = null;
   prefixCls: string = 'ant-fullcalendar';
 
   private currentDate = new Date();
@@ -195,26 +163,25 @@ export class NzCalendarBodyComponent implements ControlValueAccessor, OnInit {
     this.calculateActiveMonth();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.activeDate) {
+      this.updateDate(changes.activeDate.currentValue);
+    }
+  }
+
   onModeChange(mode: ModeType): void {
     this.modeChange.emit(mode);
     this.nzPanelChange.emit({ date: this.activeDate, mode });
   }
 
-  onDateSelect(date: Date): void {
-    this.updateDate(date);
-    this.nzSelectChange.emit(date);
-  }
-
-  onYearSelect(year: number): void {
-    const date = setYear(this.activeDate, year);
-    this.updateDate(date);
-    this.nzSelectChange.emit(date);
-  }
-
   onMonthSelect(month: number): void {
-    const date = setMonth(this.activeDate, month);
-    this.updateDate(date);
-    this.nzSelectChange.emit(date);
+    this.activeDate = setMonth(this.activeDate, month);
+    this.selectChange.emit(this.activeDate);
+  }
+
+  onDateSelect(date: Date): void {
+    this.updateDate(date, true);
+    this.selectChange.emit(date);
   }
 
   writeValue(value: Date | null): void {
@@ -231,11 +198,11 @@ export class NzCalendarBodyComponent implements ControlValueAccessor, OnInit {
   }
 
   private updateDate(date: Date, touched: boolean = true): void {
-    const dayChanged = !isSameDay(date, this.activeDate);
-    const monthChanged = !isSameMonth(date, this.activeDate);
-    const yearChanged = !isSameYear(date, this.activeDate);
+    const dayChanged = !isSameDay(date, this.previousDate);
+    const monthChanged = !isSameMonth(date, this.previousDate);
+    const yearChanged = !isSameYear(date, this.previousDate);
 
-    this.activeDate = date;
+    this.previousDate = this.activeDate = date;
 
     if (dayChanged) {
       this.calculateActiveDate();
@@ -253,6 +220,7 @@ export class NzCalendarBodyComponent implements ControlValueAccessor, OnInit {
       this.onChangeFn(date);
       this.onTouchFn();
       this.nzValueChange.emit(date);
+      this.value = date;
     }
   }
 
@@ -311,7 +279,7 @@ export class NzCalendarBodyComponent implements ControlValueAccessor, OnInit {
           isDisabled: false,
           isToday: false,
           title: title,
-          customContent: this.nzDateCell, // Customized content
+          customContent: this.dateCell, // Customized content
           content: `${date.getDate()}`,
           onClick: () => this.onDateSelect(date),
           onMouseEnter: () => this.dayHover.emit(cell.value)
