@@ -1,3 +1,8 @@
+<a name="8.0.2"></a>
+## [8.0.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.0.1...8.0.2) (2019-07-03)
+
+Fix the dependencies version ranges.
+
 ## [8.0.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.0.0...8.0.1) (2019-07-01)
 
 
