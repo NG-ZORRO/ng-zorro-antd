@@ -28,10 +28,10 @@ import {
 
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Platform } from '@angular/cdk/platform';
-import { fromEvent, Subject } from 'rxjs';
-import { auditTime, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { finalize, takeUntil } from 'rxjs/operators';
 
-import { toCssPixel, InputBoolean } from 'ng-zorro-antd/core';
+import { toCssPixel, InputBoolean, NzDomEventService } from 'ng-zorro-antd/core';
 
 import { NzLayoutComponent } from './nz-layout.component';
 
@@ -124,6 +124,7 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
     private ngZone: NgZone,
     private platform: Platform,
     private cdr: ChangeDetectorRef,
+    private de: NzDomEventService,
     renderer: Renderer2,
     elementRef: ElementRef
   ) {
@@ -139,14 +140,13 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     if (this.platform.isBrowser) {
       Promise.resolve().then(() => this.watchMatchMedia());
-      this.ngZone.runOutsideAngular(() => {
-        fromEvent(window, 'resize')
-          .pipe(
-            auditTime(16),
-            takeUntil(this.destroy$)
-          )
-          .subscribe(() => this.watchMatchMedia());
-      });
+      this.de
+        .registerResizeListener()
+        .pipe(
+          takeUntil(this.destroy$),
+          finalize(() => this.de.unregisterResizeListener())
+        )
+        .subscribe(() => this.watchMatchMedia());
     }
   }
 

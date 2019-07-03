@@ -21,7 +21,6 @@ import {
   EventEmitter,
   Inject,
   Input,
-  NgZone,
   OnChanges,
   OnDestroy,
   Optional,
@@ -33,10 +32,10 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
-import { isTouchEvent, InputBoolean, InputNumber } from 'ng-zorro-antd/core';
-import { takeUntil, throttleTime } from 'rxjs/operators';
+import { isTouchEvent, InputBoolean, InputNumber, NzDomEventService } from 'ng-zorro-antd/core';
+import { finalize, takeUntil } from 'rxjs/operators';
 
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
 import {
@@ -147,8 +146,8 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     elementRef: ElementRef,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
-    private ngZone: NgZone,
     private platform: Platform,
+    private de: NzDomEventService,
     @Inject(DOCUMENT) document: any, // tslint:disable-line:no-any
     @Optional() @Inject(NZ_CAROUSEL_CUSTOM_STRATEGIES) private customStrategies: NzCarouselStrategyRegistryItem[]
   ) {
@@ -173,16 +172,15 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
       this.syncStrategy();
     });
 
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent(window, 'resize')
-        .pipe(
-          takeUntil(this.destroy$),
-          throttleTime(16)
-        )
-        .subscribe(() => {
-          this.syncStrategy();
-        });
-    });
+    this.de
+      .registerResizeListener()
+      .pipe(
+        takeUntil(this.destroy$),
+        finalize(() => this.de.unregisterResizeListener())
+      )
+      .subscribe(() => {
+        this.syncStrategy();
+      });
 
     this.switchStrategy();
     this.markContentActive(0);

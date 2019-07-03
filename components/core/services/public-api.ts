@@ -11,3 +11,4 @@ export * from './nz-measure-scrollbar.service.module';
 export * from './update-host-class.service';
 export * from './nz-copy-to-clipboard.service';
 export * from './nz-copy-to-clipboard.service.module';
+export * from './nz-dom-event.service';
