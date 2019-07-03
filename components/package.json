@@ -1,6 +1,6 @@
 {
   "name": "ng-zorro-antd",
-  "version": "8.0.1",
+  "version": "8.0.2",
   "license": "MIT",
   "description": "An enterprise-class UI components based on Ant Design and Angular",
   "schematics": "./schematics/collection.json",
@@ -28,14 +28,14 @@
   },
   "dependencies": {
     "date-fns": "^1.30.1",
-    "@angular/cdk": "~8.0.0",
+    "@angular/cdk": "^8.0.0",
     "@ant-design/icons-angular": "^8.0.0"
   },
   "peerDependencies": {
-    "@angular/animations": "~8.0.0",
-    "@angular/cdk": "~8.0.0",
-    "@angular/common": "~8.0.0",
-    "@angular/core": "~8.0.0",
-    "@angular/forms": "~8.0.0"
+    "@angular/animations": "^8.0.0",
+    "@angular/cdk": "^8.0.0",
+    "@angular/common": "^8.0.0",
+    "@angular/core": "^8.0.0",
+    "@angular/forms": "^8.0.0"
   }
 }
