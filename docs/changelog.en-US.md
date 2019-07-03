@@ -13,6 +13,13 @@ timeline: true
 * Major version release is not included in this schedule for breaking change and new features.
 
 ---
+
+## 8.0.2
+`2019-07-03`
+
+Fix the dependencies version ranges.
+
+
 ## 8.0.1
 `2019-07-01`
 
