@@ -28,7 +28,7 @@
       [disabled]="tab.nzDisabled"
       (click)="clickLabel(i,tab.nzDisabled)"
       *ngFor="let tab of listOfNzTabComponent; let i = index">
-      <ng-container *nzStringTemplateOutlet="tab.nzTitle">{{ tab.nzTitle }}</ng-container>
+      <ng-container *nzStringTemplateOutlet="tab.nzTitle || tab.title">{{ tab.nzTitle }}</ng-container>
     </div>
   </div>
   <div #tabContent

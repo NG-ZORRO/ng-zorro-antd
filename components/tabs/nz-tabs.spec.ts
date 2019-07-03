@@ -1,6 +1,10 @@
+import { CommonModule } from '@angular/common';
 import { Component, DebugElement, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { fakeAsync, flush, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { Router, Routes } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+
 import { NgStyleInterface } from 'ng-zorro-antd/core';
 
 import { NzTabsModule } from './nz-tabs.module';
@@ -481,6 +485,67 @@ describe('tabs', () => {
   });
 });
 
+describe('link router', () => {
+  let fixture: ComponentFixture<NzTestTabsLinkRouterComponent>;
+  let tabs: DebugElement;
+  let router: Router;
+
+  describe('basic', () => {
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [CommonModule, NzTabsModule, RouterTestingModule.withRoutes(routes)],
+        declarations: [NzTestTabsLinkRouterComponent]
+      }).compileComponents();
+
+      fixture = TestBed.createComponent(NzTestTabsLinkRouterComponent);
+      fixture.detectChanges();
+
+      tabs = fixture.debugElement.query(By.directive(NzTabSetComponent));
+    });
+
+    it('should child route mode works', fakeAsync(() => {
+      fixture.ngZone!.run(() => {
+        router = TestBed.get(Router);
+        router.initialNavigation();
+
+        fixture.detectChanges();
+        expect((tabs.componentInstance as NzTabSetComponent).nzSelectedIndex).toBe(0);
+
+        router.navigate(['.', 'two']);
+        fixture.detectChanges();
+        tick(200);
+        fixture.detectChanges();
+        expect((tabs.componentInstance as NzTabSetComponent).nzSelectedIndex).toBe(1);
+
+        flush();
+        // const titles = tabs.nativeElement.querySelectorAll('.ant-tabs-tab');
+        // titles[0].click();
+        // fixture.detectChanges();
+        // tick(200);
+        // fixture.detectChanges();
+        // expect(location.path()).toBe('/');
+      });
+    }));
+  });
+
+  describe('throw error', () => {
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [NzTabsModule],
+        declarations: [NzTestTabsLinkRouterComponent]
+      });
+    });
+
+    it('should raise error when routerModule is not imported', () => {
+      expect(() => {
+        TestBed.compileComponents();
+        fixture = TestBed.createComponent(NzTestTabsLinkRouterComponent);
+        fixture.detectChanges();
+      }).toThrowError();
+    });
+  });
+});
+
 @Component({
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['../style/index.less', './style/index.less'],
@@ -575,3 +640,37 @@ export class NzTestTabsBasicComponent {
 export class NzTestTabsTabPositionLeftComponent {
   tabs = [1, 2, 3];
 }
+
+@Component({
+  template: `
+    <nz-tabset nzLinkRouter>
+      <nz-tab nzTitle="default">
+        <a nz-tab-link [routerLink]="['.']">One</a>
+        One
+      </nz-tab>
+      <nz-tab nzTitle="two">
+        <a nz-tab-link [routerLink]="['.', 'two']">Two</a>
+        Two
+      </nz-tab>
+    </nz-tabset>
+    <router-outlet></router-outlet>
+  `
+})
+export class NzTestTabsLinkRouterComponent {}
+
+const routes: Routes = [
+  {
+    path: '',
+    component: NzTestTabsLinkRouterComponent,
+    data: {
+      path: ''
+    }
+  },
+  {
+    path: 'two',
+    component: NzTestTabsLinkRouterComponent,
+    data: {
+      path: 'two'
+    }
+  }
+];
