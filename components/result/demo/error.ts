@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'nz-demo-result-complex',
+  selector: 'nz-demo-result-error',
   template: `
     <nz-result
       nzTitle="Submission Failed"
@@ -28,4 +28,4 @@ import { Component } from '@angular/core';
     </nz-result>
   `
 })
-export class NzDemoResultComplexComponent {}
+export class NzDemoResultErrorComponent {}
