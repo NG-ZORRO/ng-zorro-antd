@@ -31,7 +31,7 @@ import {
 import { fromEvent, merge, of as observableOf, Subscription } from 'rxjs';
 import { auditTime, startWith } from 'rxjs/operators';
 
-import { InputBoolean } from 'ng-zorro-antd/core';
+import { pxToNumber, InputBoolean } from 'ng-zorro-antd/core';
 
 import { NzTabLabelDirective } from './nz-tab-label.directive';
 import { NzTabsInkBarDirective } from './nz-tabs-ink-bar.directive';
@@ -113,6 +113,7 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
     // will fire even if the text content didn't change which is inefficient and is prone
     // to infinite loops if a poorly constructed expression is passed in (see #14249).
     if (textContent !== this.currentTextContent) {
+      this.currentTextContent = textContent;
       this.ngZone.run(() => {
         if (this.nzShowPagination) {
           this.updatePagination();
@@ -293,9 +294,9 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
       ? window.getComputedStyle(navContainer)
       : (navContainer as any).currentStyle; // currentStyle for IE < 9
     if (this.nzPositionMode === 'horizontal') {
-      return this.pxToNumber(originStyle.paddingLeft) + this.pxToNumber(originStyle.paddingRight);
+      return pxToNumber(originStyle.paddingLeft) + pxToNumber(originStyle.paddingRight);
     } else {
-      return this.pxToNumber(originStyle.paddingTop) + this.pxToNumber(originStyle.paddingBottom);
+      return pxToNumber(originStyle.paddingTop) + pxToNumber(originStyle.paddingBottom);
     }
   }
 
@@ -329,13 +330,5 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
         this.nzTabsInkBarDirective.alignToElement(selectedLabelWrapper);
       }
     }
-  }
-
-  pxToNumber(value: string | null): number {
-    if (!value) {
-      return 0;
-    }
-    const match = value.match(/^\d*(\.\d*)?/);
-    return match ? Number(match[0]) : 0;
   }
 }
