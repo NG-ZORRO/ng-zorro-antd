@@ -19,9 +19,9 @@ export class NzFilterOptionPipe implements PipeTransform {
     searchValue: string,
     filterOption: TFilterOption,
     serverSearch: boolean,
-    isHideSelectedOptions: boolean, // tslint:disable-next-line:no-any
-    listOfSelectedValue: any[], // tslint:disable-next-line:no-any
-    compareWith: (o1: any, o2: any) => boolean
+    isHideSelectedOptions: boolean,
+    listOfSelectedValue: any[], // tslint:disable-line:no-any
+    compareWith: (o1: any, o2: any) => boolean // tslint:disable-line:no-any
   ): NzOptionComponent[] {
     if (isHideSelectedOptions && listOfSelectedValue.length > 0) {
       // tslint:disable-next-line:no-parameter-reassignment
@@ -42,9 +42,9 @@ export class NzFilterGroupOptionPipe implements PipeTransform {
     searchValue: string,
     filterOption: TFilterOption,
     serverSearch: boolean,
-    isHideSelectedOptions: boolean, // tslint:disable-next-line:no-any
-    listOfSelectedValue: any[], // tslint:disable-next-line:no-any
-    compareWith: (o1: any, o2: any) => boolean
+    isHideSelectedOptions: boolean,
+    listOfSelectedValue: any[], // tslint:disable-line:no-any
+    compareWith: (o1: any, o2: any) => boolean // tslint:disable-line:no-any
   ): NzOptionGroupComponent[] {
     if (isHideSelectedOptions && listOfSelectedValue.length > 0) {
       // tslint:disable-next-line:no-parameter-reassignment

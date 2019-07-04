@@ -246,7 +246,27 @@ describe('nz-select component', () => {
       fixture.detectChanges();
       expect(testComponent.open).toBe(false);
     }));
+    it('should hide already selected options work', fakeAsync(() => {
+      fixture.detectChanges();
+      select.nativeElement.click();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelectorAll('li').length).toBe(3);
+      fixture.detectChanges();
+      overlayContainerElement.querySelector('li')!.click();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      testComponent.isHideSelectedOptions = true;
+      select.nativeElement.click();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelectorAll('li').length).toBe(2);
+    }));
   });
+
   describe('tags', () => {
     let fixture: ComponentFixture<NzTestSelectTagsComponent>;
     let testComponent: NzTestSelectTagsComponent;
@@ -428,6 +448,7 @@ describe('nz-select component', () => {
       [nzCustomTemplate]="custom"
       (nzOnSearch)="onSearch($event)"
       [nzPlaceHolder]="placeholder"
+      [nzHideSelectedOptions]="isHideSelectedOptions"
     >
       <nz-option nzValue="jack" nzLabel="Jack"></nz-option>
       <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
@@ -462,6 +483,7 @@ export class NzTestSelectDefaultComponent {
       return false;
     }
   };
+  isHideSelectedOptions = false;
 }
 
 @Component({
