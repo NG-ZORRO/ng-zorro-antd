@@ -6,12 +6,12 @@ import { Component, OnInit } from '@angular/core';
     <nz-tree-select
       style="width: 250px"
       nzPlaceHolder="Please select"
+      [(ngModel)]="value"
       [nzMaxTagCount]="3"
       [nzMaxTagPlaceholder]="omittedPlaceHolder"
       [nzNodes]="nodes"
       [nzDefaultExpandAll]="true"
       [nzAllowClear]="false"
-      [(ngModel)]="value"
       [nzMultiple]="true"
       (ngModelChange)="onChange($event)"
     >

@@ -29,8 +29,8 @@ import { NzTooltipTrigger } from '../nz-tooltip.definitions';
  * Tooltip component. Also the base component for legacy components.
  */
 export abstract class NzTooltipBaseComponent {
-  nzTitle: NzTSType | null = null;
-  nzContent: NzTSType | null = null;
+  nzTitle: NzTSType | null;
+  nzContent: NzTSType | null;
   nzVisible: boolean;
   nzPlacement: string;
   nzOverlayClassName: string;
@@ -38,6 +38,8 @@ export abstract class NzTooltipBaseComponent {
   nzMouseEnterDelay: number;
   nzMouseLeaveDelay: number;
   nzTrigger: NzTooltipTrigger;
+  nzTitleTemplate: TemplateRef<void>;
+  nzContentTemplate: TemplateRef<void>;
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
@@ -51,6 +53,14 @@ export abstract class NzTooltipBaseComponent {
   _positions: ConnectionPositionPair[] = [...DEFAULT_TOOLTIP_POSITIONS];
   _placement = 'top';
   _trigger: NzTooltipTrigger = 'hover';
+
+  get content(): string | TemplateRef<void> | null {
+    return this.nzContent !== undefined ? this.nzContent : this.nzContentTemplate;
+  }
+
+  get title(): string | TemplateRef<void> | null {
+    return this.nzTitle !== undefined ? this.nzTitle : this.nzTitleTemplate;
+  }
 
   constructor(public cdr: ChangeDetectorRef, public noAnimation?: NzNoAnimationDirective) {}
 
@@ -113,10 +123,10 @@ export abstract class NzTooltipBaseComponent {
   }
 
   private isTitleEmpty(): boolean {
-    return this.nzTitle instanceof TemplateRef ? false : this.nzTitle === '' || !isNotNil(this.nzTitle);
+    return this.title instanceof TemplateRef ? false : this.title === '' || !isNotNil(this.title);
   }
 
   private isContentEmpty(): boolean {
-    return this.nzContent instanceof TemplateRef ? false : this.nzContent === '' || !isNotNil(this.nzContent);
+    return this.content instanceof TemplateRef ? false : this.content === '' || !isNotNil(this.content);
   }
 }

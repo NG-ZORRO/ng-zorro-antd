@@ -19,6 +19,7 @@
     "annotateForClosureCompiler": true,
     "fullTemplateTypeCheck": true,
     "strictMetadataEmit": true,
-    "strictInjectionParameters":true
+    "strictInjectionParameters":true,
+    "enableIvy": false
   }
 }

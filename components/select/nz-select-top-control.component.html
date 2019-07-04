@@ -38,6 +38,7 @@
   <ul *ngIf="nzSelectService.isMultipleOrTags">
     <ng-container *ngFor="let option of nzSelectService.listOfCachedSelectedOption | slice: 0 : nzMaxTagCount;trackBy:trackValue; let index = index">
       <li [@zoomMotion]
+        [@.disabled]="noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         [attr.title]="option.nzLabel"
         [class.ant-select-selection__choice__disabled]="option.nzDisabled"
@@ -55,6 +56,7 @@
     </ng-container>
     <li *ngIf="nzSelectService.listOfCachedSelectedOption.length > nzMaxTagCount"
       [@zoomMotion]
+      [@.disabled]="noAnimation?.nzNoAnimation"
       [nzNoAnimation]="noAnimation?.nzNoAnimation"
       class="ant-select-selection__choice">
       <div class="ant-select-selection__choice__content">

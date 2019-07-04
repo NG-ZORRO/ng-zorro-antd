@@ -110,7 +110,6 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
       this.createDraggingObservables();
     }
     this.toggleDragDisabled(this.nzDisabled);
-
     if (this.getValue() === null) {
       this.setValue(this.formatValue(null));
     }

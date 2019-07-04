@@ -8,8 +8,11 @@
   },
   "scripts": {
     "start": "gulp start:dev",
+    "start-ivy": "gulp start-ivy:dev",
     "test": "ng test --watch=false --code-coverage",
+    "test-ivy": "ng test --watch=false --configuration ivy",
     "test:watch": "gulp test:watch --tags $tags",
+    "test-ivy:watch": "gulp test-ivy:watch --tags $tags",
     "test:schematics": "gulp build:schematics && gulp test:schematics",
     "build": "gulp build:release",
     "build:lib": "gulp build:library",

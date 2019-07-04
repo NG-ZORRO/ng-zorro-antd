@@ -13,17 +13,18 @@
   <div class="ant-popover"
     [ngClass]="_classMap"
     [ngStyle]="nzOverlayStyle"
+    [@.disabled]="noAnimation?.nzNoAnimation"
     [nzNoAnimation]="noAnimation?.nzNoAnimation"
     [@zoomBigMotion]="'active'">
     <div class="ant-popover-content">
       <div class="ant-popover-arrow"></div>
       <div class="ant-popover-inner" role="tooltip">
         <div>
-          <div class="ant-popover-title" *ngIf="nzTitle">
-            <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+          <div class="ant-popover-title" *ngIf="title">
+            <ng-container *nzStringTemplateOutlet="title">{{ title }}</ng-container>
           </div>
           <div class="ant-popover-inner-content">
-            <ng-container *nzStringTemplateOutlet="nzContent">{{ nzContent }}</ng-container>
+            <ng-container *nzStringTemplateOutlet="content">{{ content }}</ng-container>
           </div>
         </div>
       </div>

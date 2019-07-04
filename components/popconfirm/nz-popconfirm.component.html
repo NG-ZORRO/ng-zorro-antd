@@ -13,6 +13,7 @@
   <div class="ant-popover"
     [ngClass]="_classMap"
     [ngStyle]="nzOverlayStyle"
+    [@.disabled]="noAnimation?.nzNoAnimation"
     [nzNoAnimation]="noAnimation?.nzNoAnimation"
     [@zoomBigMotion]="'active'">
     <div class="ant-popover-content">
@@ -21,11 +22,11 @@
         <div>
           <div class="ant-popover-inner-content">
             <div class="ant-popover-message">
-              <ng-container *nzStringTemplateOutlet="nzTitle">
+              <ng-container *nzStringTemplateOutlet="title">
                 <ng-container *nzStringTemplateOutlet="nzIcon">
                   <i nz-icon [nzType]="nzIcon || 'exclamation-circle'" nzTheme="fill"></i>
                 </ng-container>
-                <div class="ant-popover-message-title">{{ nzTitle }}</div>
+                <div class="ant-popover-message-title">{{ title }}</div>
               </ng-container>
             </div>
             <div class="ant-popover-buttons">

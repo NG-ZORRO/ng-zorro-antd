@@ -91,6 +91,7 @@
       *ngFor="let node of nzTreeNode.getChildren()"
       [nzTreeNode]="node"
       [nzShowExpand]="nzShowExpand"
+      [@.disabled]="noAnimation?.nzNoAnimation"
       [nzNoAnimation]="noAnimation?.nzNoAnimation"
       [nzSelectMode]="nzSelectMode"
       [nzShowLine]="nzShowLine"

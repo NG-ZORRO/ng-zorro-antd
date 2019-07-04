@@ -2,7 +2,16 @@ import { Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
-import { ChangeDetectionStrategy, Component, NgZone, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  NgZone,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
 import { async, fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -816,6 +825,7 @@ describe('auto-complete', () => {
         Promise.resolve().then(() => {
           fixture.detectChanges();
           flush();
+          fixture.detectChanges();
           const panel = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
           expect(panel.classList).not.toContain('ant-select-dropdown-hidden');
         });
@@ -910,9 +920,12 @@ class NzTestAutocompleteWithOnPushDelayComponent implements OnInit {
   options: string[] = [];
   @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger: NzAutocompleteTriggerDirective;
 
+  constructor(private cdr: ChangeDetectorRef) {}
+
   ngOnInit(): void {
     setTimeout(() => {
       this.options = ['One'];
+      this.cdr.markForCheck();
     }, 1000);
   }
 }

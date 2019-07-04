@@ -16,10 +16,7 @@ const DISABLED_CLASSNAME = 'nz-animate-disabled';
 
 @Directive({
   selector: '[nzNoAnimation]',
-  exportAs: 'nzNoAnimation',
-  host: {
-    '[@.disabled]': 'nzNoAnimation'
-  }
+  exportAs: 'nzNoAnimation'
 })
 export class NzNoAnimationDirective implements OnChanges, AfterViewInit {
   @Input() @InputBoolean() nzNoAnimation: boolean = false;

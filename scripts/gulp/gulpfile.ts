@@ -25,3 +25,8 @@ task('start:dev', series(
   'clean',
   'start:site'
 ));
+
+task('start-ivy:dev', series(
+  'clean',
+  'start-ivy:site'
+));
