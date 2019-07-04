@@ -46,35 +46,14 @@ export const NZ_AFFIX_DEFAULT_SCROLL_TIME = 20;
 })
 export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() nzTarget: string | Element | Window;
-
-  @Input()
-  set nzOffsetTop(value: number | null) {
-    if (value === undefined || value === null) {
-      return;
-    }
-    this._offsetTop = toNumber(value, null);
-    this.updatePosition({} as Event);
-  }
-
-  get nzOffsetTop(): number | null {
-    return this._offsetTop;
-  }
-
-  @Input()
-  set nzOffsetBottom(value: number) {
-    if (typeof value === 'undefined') {
-      return;
-    }
-    this._offsetBottom = toNumber(value, null);
-    this.updatePosition({} as Event);
-  }
-
+  @Input() nzOffsetTop: number | null;
+  @Input() nzOffsetBottom: number | null;
   @Output() readonly nzChange = new EventEmitter<boolean>();
+  @ViewChild('fixedEl', { static: true }) private fixedEl: ElementRef<HTMLDivElement>;
 
   private timeout: number;
   private scroll$: Subscription | null = null;
   private readonly events = ['resize', 'scroll', 'touchstart', 'touchmove', 'touchend', 'pageshow', 'load'];
-  @ViewChild('fixedEl', { static: true }) private fixedEl: ElementRef<HTMLDivElement>;
   private readonly placeholderNode: HTMLElement;
   private affixStyle: NgStyleInterface | undefined;
   private placeholderStyle: NgStyleInterface | undefined;
@@ -98,6 +77,20 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes.nzOffsetTop) {
+      const value = changes.nzOffsetTop.currentValue;
+      if (value !== undefined && value !== null) {
+        this._offsetTop = toNumber(value, null);
+        this.updatePosition({} as Event);
+      }
+    }
+    if (changes.nzOffsetBottom) {
+      const value = changes.nzOffsetBottom.currentValue;
+      if (value !== undefined) {
+        this._offsetBottom = toNumber(value, null);
+        this.updatePosition({} as Event);
+      }
+    }
     if (changes.nzTarget) {
       this.registerListeners();
     }
@@ -232,7 +225,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
     }
     const targetNode = this.target as (HTMLElement | Window);
     // Backwards support
-    let offsetTop = this.nzOffsetTop;
+    let offsetTop = this._offsetTop;
     const scrollTop = this.scrollSrv.getScroll(targetNode!, true);
     const elemOffset = this.getOffset(this.placeholderNode, targetNode!);
     const fixedNode = this.fixedEl.nativeElement;

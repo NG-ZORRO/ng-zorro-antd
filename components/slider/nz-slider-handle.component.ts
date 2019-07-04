@@ -119,5 +119,6 @@ export class NzSliderHandleComponent implements OnChanges, OnDestroy {
 
   private updateStyle(): void {
     this.style[this.nzVertical ? 'bottom' : 'left'] = `${this.nzOffset}%`;
+    this.cdr.markForCheck();
   }
 }

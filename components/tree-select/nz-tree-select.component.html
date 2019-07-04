@@ -24,6 +24,7 @@
   (positionChange)="onPositionChange($event)">
   <div class="ant-select-dropdown ant-select-tree-dropdown"
     [@slideMotion]="nzOpen ? dropDownPosition : 'void'"
+    [@.disabled]="noAnimation?.nzNoAnimation"
     [nzNoAnimation]="noAnimation?.nzNoAnimation"
     [class.ant-select-dropdown--single]="!nzMultiple"
     [class.ant-select-dropdown--multiple]="nzMultiple"
@@ -49,7 +50,7 @@
       [nzExpandedKeys]="expandedKeys"
       [nzCheckedKeys]="nzCheckable ? value : []"
       [nzSelectedKeys]="!nzCheckable ? value : []"
-      [nzTreeTemplate]="nzTreeTemplate"
+      [nzTreeTemplate]="treeTemplate"
       (nzExpandChange)="onExpandedKeysChange($event)"
       (nzClick)="nzTreeClick.emit($event)"
       (nzCheckedKeysChange)="updateSelectedNodes()"
@@ -109,6 +110,7 @@
       <ng-container *ngFor="let node of selectedNodes | slice: 0 : nzMaxTagCount; trackBy:trackValue">
         <li
           [@zoomMotion]
+          [@.disabled]="noAnimation?.nzNoAnimation"
           [nzNoAnimation]="noAnimation?.nzNoAnimation"
           [attr.title]="nzDisplayWith(node)"
           [class.ant-select-selection__choice__disabled]="node.isDisabled"

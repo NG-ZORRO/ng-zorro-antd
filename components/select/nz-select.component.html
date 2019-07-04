@@ -3,6 +3,7 @@
   tabindex="0"
   class="ant-select-selection"
   [nzOpen]="open"
+  [@.disabled]="noAnimation?.nzNoAnimation"
   [nzNoAnimation]="noAnimation?.nzNoAnimation"
   [nzMaxTagPlaceholder]="nzMaxTagPlaceholder"
   [nzPlaceHolder]="nzPlaceHolder"
@@ -39,6 +40,7 @@
     [class.ant-select-dropdown-placement-topLeft]="dropDownPosition === 'top'"
     [nzClassListAdd]="[nzDropdownClassName]"
     [@slideMotion]="dropDownPosition"
+    [@.disabled]="noAnimation?.nzNoAnimation"
     [nzNoAnimation]="noAnimation?.nzNoAnimation"
     [ngStyle]="nzDropdownStyle">
     <div nz-option-container

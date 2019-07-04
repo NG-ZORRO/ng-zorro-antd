@@ -4,10 +4,10 @@ import { Component, OnInit } from '@angular/core';
   selector: 'nz-demo-select-automatic-tokenization',
   template: `
     <nz-select
+      [(ngModel)]="listOfTagOptions"
       nzMode="tags"
       [nzTokenSeparators]="[',']"
       style="width: 100%;"
-      [(ngModel)]="listOfTagOptions"
       nzPlaceHolder="automatic tokenization"
     >
       <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"> </nz-option>

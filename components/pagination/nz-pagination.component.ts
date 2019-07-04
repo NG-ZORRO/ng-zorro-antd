@@ -27,6 +27,11 @@ import { takeUntil } from 'rxjs/operators';
 import { isInteger, toNumber, InputBoolean, InputNumber } from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
+export interface PaginationItemRenderContext {
+  $implicit: 'page' | 'prev' | 'next';
+  page: number;
+}
+
 @Component({
   selector: 'nz-pagination',
   exportAs: 'nzPagination',
@@ -47,10 +52,13 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   @Input() nzInTable = false;
   @Input() nzSize: 'default' | 'small' = 'default';
   @Input() nzPageSizeOptions = [10, 20, 30, 40];
-  @Input() @ViewChild('renderItemTemplate', { static: true }) nzItemRender: TemplateRef<{
-    $implicit: 'page' | 'prev' | 'next';
-    page: number;
-  }>;
+
+  @Input() nzItemRender: TemplateRef<PaginationItemRenderContext>;
+  @ViewChild('renderItemTemplate', { static: true }) nzItemRenderChild: TemplateRef<PaginationItemRenderContext>;
+  get itemRender(): TemplateRef<PaginationItemRenderContext> {
+    return this.nzItemRender || this.nzItemRenderChild;
+  }
+
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzShowSizeChanger = false;
   @Input() @InputBoolean() nzHideOnSinglePage = false;

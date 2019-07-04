@@ -14,6 +14,7 @@ import {
   Host,
   Input,
   Optional,
+  TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 
@@ -44,7 +45,8 @@ import { NzTooltipBaseComponentLegacy } from './base/nz-tooltip-base-legacy.comp
   ]
 })
 export class NzToolTipComponent extends NzTooltipBaseComponentLegacy {
-  @Input() @ContentChild('nzTemplate', { static: true }) nzTitle: NzTSType | null;
+  @Input() nzTitle: NzTSType | null;
+  @ContentChild('nzTemplate', { static: true }) nzTitleTemplate: TemplateRef<void>;
 
   constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
     super(cdr);
