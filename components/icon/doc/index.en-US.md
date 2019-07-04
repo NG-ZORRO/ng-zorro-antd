@@ -32,7 +32,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 | `[nzSpin]` | Rotate icon with animation | `boolean` | `false` |
 | `[nzTwotoneColor]` | Only support the two-tone icon. Specific the primary color. | `string (hex color)` | - |
 | `[nzIconfont]` | Type of the icon from iconfont | `string` | - |
-| `[nzRotate]` | Rotate degrees (since 7.0.0) | `number` | - |
+| `[nzRotate]` | Rotate degrees | `number` | - |
 
 <blockquote style="border-color: red;"><p><strong>API that is not started with nz and old API that is based on icon class names would be deprecated in 8.0.0. Please migrate.</strong></p></blockquote>
 
@@ -55,7 +55,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 
 ### SVG icons
 
-After `1.7.0` version，we synced to Ant Design `3.9.x` and replaced font icons with svg icons which bring benefits below:
+We synced to Ant Design and replaced font icons with svg icons which bring benefits below:
 
 - Complete offline usage of icon, no dependency of alipay cdn font icon file and no more empty square during downloading.
 - Much more display accuracy in lower-level screens.
@@ -64,7 +64,7 @@ After `1.7.0` version，we synced to Ant Design `3.9.x` and replaced font icons 
 
 You can join in [this dicussion of Ant Design](https://github.com/ant-design/ant-design/issues/10353).
 
-NG-ZORRO hadn't provided an icon component. Instead, icon based on font files was provided. In `1.7.0`, we make this new directive compatible to old API. If you make no changes to your existing code, old icons would be dynamically loaded as `outline` icons. But the best pratice is always to use `nz-icon` directive and specify the `theme` prop.
+NG-ZORRO hadn't provided an icon component. Instead, icon based on font files was provided. We make this new directive compatible to old API. If you make no changes to your existing code, old icons would be dynamically loaded as `outline` icons. But the best pratice is always to use `nz-icon` directive and specify the `theme` prop.
 
 ```html
 <i nz-icon [nzType]="'star'" [theme]="'fill'"></i>
@@ -134,8 +134,6 @@ Dynamic importing. This way would not increase your bundle's size. When NG-ZORRO
 }
 ```
 
-We provide a schematic to fix this. Just simply run `ng g ng-zorro-antd:fix-icon` and we would add this config above for you!
-
 You can call `changeAssetsSource()` of `NzIconService` to change the location of your icon assets, so that you can deploy these icon assets to cdn. The parameter you passed would be add in front of `assets/`.
 
 Let's assume that you deploy static assets under `https://mycdn.somecdn.com/icons/assets`. You can call `changeAssetsSource('https://mycdn.somecdn.com/icons')` to tell NG-ZORRO that all your resources are located there.
@@ -176,7 +174,7 @@ See [iconfont.cn](http://iconfont.cn/help/detail?spm=a313x.7781069.1998910419.15
 
 ### Namespace
 
-After `7.0.0-rc.4`, we introduced namespace so you could add your own icons in a convenient way. When you wan to render an icon, you could assign `type` `namespace:name`. Dynamic importing and static importing are both supported.
+We introduced namespace so you could add your own icons in a convenient way. When you wan to render an icon, you could assign `type` `namespace:name`. Dynamic importing and static importing are both supported.
 
 Static importing. Invoke `addIconLiteral` of `NzIconService`.
 

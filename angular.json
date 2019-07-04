@@ -29,11 +29,31 @@
                 "output": "/assets/"
               }
             ],
-            "styles": ["site/doc/styles.less"],
-            "es5BrowserSupport": true
+            "styles": [
+              "site/doc/styles.less"
+            ]
           },
           "configurations": {
             "production": {
+              "fileReplacements": [
+                {
+                  "replace": "./site/doc/environments/environment.ts",
+                  "with": "./site/doc/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "serviceWorker": true
+            },
+            "es5": {
+              "tsConfig": "./site/doc/tsconfig.es5.json",
               "fileReplacements": [
                 {
                   "replace": "./site/doc/environments/environment.ts",
@@ -85,8 +105,12 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["site/doc/tsconfig.app.json"],
-            "exclude": ["**/node_modules/**"]
+            "tsConfig": [
+              "site/doc/tsconfig.app.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
@@ -111,8 +135,9 @@
                 "output": "/assets/"
               }
             ],
-            "styles": ["components/ng-zorro-antd.less"],
-            "es5BrowserSupport": true
+            "styles": [
+              "components/ng-zorro-antd.less"
+            ]
           },
           "configurations": {
             "production": {
@@ -149,8 +174,12 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": ["site/iframe/tsconfig.app.json"],
-            "exclude": ["**/node_modules/**"]
+            "tsConfig": [
+              "site/iframe/tsconfig.app.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
