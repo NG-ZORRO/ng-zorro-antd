@@ -20,10 +20,10 @@
       <div class="ant-popover-inner" role="tooltip">
         <div>
           <div class="ant-popover-title" *ngIf="nzTitle">
-            <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+            <ng-container *nzStringTemplateOutlet="title">{{ title }}</ng-container>
           </div>
           <div class="ant-popover-inner-content">
-            <ng-container *nzStringTemplateOutlet="nzContent">{{ nzContent }}</ng-container>
+            <ng-container *nzStringTemplateOutlet="content">{{ content }}</ng-container>
           </div>
         </div>
       </div>

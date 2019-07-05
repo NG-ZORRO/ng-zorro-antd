@@ -49,7 +49,7 @@
       [nzExpandedKeys]="expandedKeys"
       [nzCheckedKeys]="nzCheckable ? value : []"
       [nzSelectedKeys]="!nzCheckable ? value : []"
-      [nzTreeTemplate]="nzTreeTemplate"
+      [nzTreeTemplate]="treeTemplate"
       (nzExpandChange)="onExpandedKeysChange($event)"
       (nzClick)="nzTreeClick.emit($event)"
       (nzCheckedKeysChange)="updateSelectedNodes()"

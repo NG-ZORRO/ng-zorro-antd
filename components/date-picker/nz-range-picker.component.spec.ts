@@ -275,10 +275,8 @@ describe('NzRangePickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(nzOnCalendarChange).toHaveBeenCalled();
-      // @ts-ignore
-      // tslint:disable-next-line:no-any
-      let result = nzOnCalendarChange.calls.allArgs()[0][0] as any;
-      expect(result[0].getDate()).toBe(+leftText);
+      let result = (nzOnCalendarChange.calls.allArgs()[0] as Date[][])[0];
+      expect((result[0] as Date).getDate()).toBe(+leftText);
       const right = getFirstCell('right');
       const rightText = right.textContent!.trim();
       dispatchMouseEvent(right, 'click');
@@ -286,10 +284,9 @@ describe('NzRangePickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(nzOnCalendarChange).toHaveBeenCalled();
-      // @ts-ignore
-      result = nzOnCalendarChange.calls.allArgs()[1][0];
-      expect(result[0].getDate()).toBe(+leftText);
-      expect(result[1].getDate()).toBe(+rightText);
+      result = (nzOnCalendarChange.calls.allArgs()[1] as Date[][])[0];
+      expect((result[0] as Date).getDate()).toBe(+leftText);
+      expect((result[1] as Date).getDate()).toBe(+rightText);
     }));
 
     it('should support nzOnChange', fakeAsync(() => {
@@ -311,11 +308,9 @@ describe('NzRangePickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(nzOnChange).toHaveBeenCalled();
-      // @ts-ignore
-      // tslint:disable-next-line:no-any
-      const result = nzOnChange.calls.allArgs()[0][0] as any;
-      expect(result[0].getDate()).toBe(+leftText);
-      expect(result[1].getDate()).toBe(+rightText);
+      const result = (nzOnChange.calls.allArgs()[0] as Date[][])[0];
+      expect((result[0] as Date).getDate()).toBe(+leftText);
+      expect((result[1] as Date).getDate()).toBe(+rightText);
     }));
   }); // /general api testing
 
@@ -681,9 +676,7 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       expect(nzOnChange).toHaveBeenCalled();
-      // @ts-ignore
-      // tslint:disable-next-line:no-any
-      const result = nzOnChange.calls.allArgs()[0][0] as any;
+      const result = (nzOnChange.calls.allArgs()[0] as Date[][])[0];
       expect(result[0].getDate()).toBe(11);
       expect(result[1].getDate()).toBe(12);
     }));
