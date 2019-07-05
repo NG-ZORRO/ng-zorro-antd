@@ -8,7 +8,7 @@ title: Resources
 Category | Recommended Components
 ---------|-----------------------
 Scaffold  |[NG ALAIN](http://ng-alain.com/)
-Dev Kit|[Component Dev Kit](http://ng-alain.com/)
+Dev Kit|[Component Dev Kit](https://material.angular.io/cdk/categories)
 Charts |[NGX-CHARTS](https://swimlane.github.io/ngx-charts/)
 Dag |[NGX-CHARTS-DAG](https://swimlane.github.io/ngx-graph/)
 CLI |[Angular CLI](https://cli.angular.io/)

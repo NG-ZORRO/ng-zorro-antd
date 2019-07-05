@@ -12,7 +12,7 @@ title: 资源推荐
 类型 | 名称 | 描述
 ----|----|--------
 脚手架|[NG ALAIN](http://ng-alain.com/) | 社区开发的基于 `ng-zorro-antd` 的 Admin 系统解决方案
-工具库|[Component Dev Kit](http://ng-alain.com/) | Angular 官方的提供的组件库工具，包含拖拽、浮层、虚拟滚动等大量功能
+工具库|[Component Dev Kit](https://material.angular.io/cdk/categories) | Angular 官方的提供的组件库工具，包含拖拽、浮层、虚拟滚动等大量功能
 可视化|[NGX-CHARTS](https://swimlane.github.io/ngx-charts/) | 基于 D3 的Angular 可视化组件库
 可视化|[NGX-CHARTS-DAG](https://swimlane.github.io/ngx-graph/) | 基于 Dagre 的有向无环图可视化组件库
 无线端|[NG-ZORRO-MOBILE](http://ng.mobile.ant.design/) | Ant Design Mobile 设计规范的 Angular 实现
