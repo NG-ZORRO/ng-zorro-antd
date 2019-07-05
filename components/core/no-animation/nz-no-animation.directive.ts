@@ -7,7 +7,17 @@
  */
 
 import { coerceElement } from '@angular/cdk/coercion';
-import { AfterViewInit, Directive, ElementRef, Inject, Input, OnChanges, Optional, Renderer2 } from '@angular/core';
+import {
+  AfterViewInit,
+  Directive,
+  ElementRef,
+  // HostBinding,
+  Inject,
+  Input,
+  OnChanges,
+  Optional,
+  Renderer2
+} from '@angular/core';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 
 import { InputBoolean } from '../util/convert';
@@ -16,14 +26,16 @@ const DISABLED_CLASSNAME = 'nz-animate-disabled';
 
 @Directive({
   selector: '[nzNoAnimation]',
-  exportAs: 'nzNoAnimation',
-  host: {
-    '[@.disabled]': 'nzNoAnimation'
-  }
+  exportAs: 'nzNoAnimation'
 })
 export class NzNoAnimationDirective implements OnChanges, AfterViewInit {
   @Input() @InputBoolean() nzNoAnimation: boolean = false;
 
+  // TODO ivy
+  // @HostBinding('@.disabled')
+  // get noAnimation(): boolean {
+  //   return this.nzNoAnimation
+  // }
   constructor(
     private element: ElementRef,
     private renderer: Renderer2,
