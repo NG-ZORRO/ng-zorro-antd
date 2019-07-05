@@ -1,5 +1,5 @@
 ---
-order: 6
+order: 7
 title: 动画开关
 ---
 
@@ -24,7 +24,7 @@ NG-ZORRO 允许开发者关闭动画效果，您可以通过添加对应指令�
 
 ```HTML
 <nz-modal nzNoAnimation></nz-modal>
-<ul nz-menu nzNoAnimation></nz-menu>
+<ul nz-menu nzNoAnimation></ul>
 <nz-form-explain [nzNoAnimation]="true"></nz-form-explain>
 ```
 

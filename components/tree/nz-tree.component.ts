@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   forwardRef,
   ChangeDetectionStrategy,
@@ -17,110 +25,129 @@ import {
   TemplateRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable, ReplaySubject, Subscription } from 'rxjs';
-import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
-import { isNotNil } from '../core/util/check';
-import { InputBoolean } from '../core/util/convert';
-import { NzTreeSelectService } from '../tree-select/nz-tree-select.service';
-import { NzFormatBeforeDropEvent, NzFormatEmitEvent } from '../tree/interface';
-import { NzTreeBaseService } from './nz-tree-base.service';
-import { NzTreeNode } from './nz-tree-node';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import {
+  isNotNil,
+  toBoolean,
+  warnDeprecation,
+  InputBoolean,
+  NzFormatBeforeDropEvent,
+  NzFormatEmitEvent,
+  NzNoAnimationDirective,
+  NzTreeBase,
+  NzTreeBaseService,
+  NzTreeHigherOrderServiceToken,
+  NzTreeNode
+} from 'ng-zorro-antd/core';
+
 import { NzTreeService } from './nz-tree.service';
 
-export function NzTreeServiceFactory(treeSelectService: NzTreeSelectService, treeService: NzTreeService): NzTreeBaseService {
-  return treeSelectService ? treeSelectService : treeService;
+export function NzTreeServiceFactory(
+  higherOrderService: NzTreeBaseService,
+  treeService: NzTreeService
+): NzTreeBaseService {
+  return higherOrderService ? higherOrderService : treeService;
 }
 
 @Component({
-  selector       : 'nz-tree',
-  templateUrl    : './nz-tree.component.html',
+  selector: 'nz-tree',
+  exportAs: 'nzTree',
+  templateUrl: './nz-tree.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers      : [
+  providers: [
     NzTreeService,
     {
-      provide   : NzTreeBaseService,
+      provide: NzTreeBaseService,
       useFactory: NzTreeServiceFactory,
-      deps      : [
-        [
-          new SkipSelf(),
-          new Optional(),
-          NzTreeSelectService
-        ],
-        NzTreeService
-      ]
+      deps: [[new SkipSelf(), new Optional(), NzTreeHigherOrderServiceToken], NzTreeService]
     },
     {
-      provide    : NG_VALUE_ACCESSOR,
+      provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzTreeComponent),
-      multi      : true
+      multi: true
     }
   ]
 })
-
-export class NzTreeComponent implements OnInit, OnChanges, OnDestroy, ControlValueAccessor {
+export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, ControlValueAccessor, OnChanges {
   @Input() @InputBoolean() nzShowIcon = false;
-  @Input() @InputBoolean() nzShowLine = false;
-  @Input() @InputBoolean() nzCheckStrictly = false;
-  @Input() @InputBoolean() nzCheckable = false;
   @Input() @InputBoolean() nzShowExpand = true;
+  @Input() @InputBoolean() nzShowLine = false;
+  @Input() nzExpandedIcon: TemplateRef<{ $implicit: NzTreeNode }>;
+  @Input() @InputBoolean() nzCheckable = false;
   @Input() @InputBoolean() nzAsyncData = false;
   @Input() @InputBoolean() nzDraggable = false;
-  @Input() @InputBoolean() nzMultiple = false;
-  @Input() @InputBoolean() nzExpandAll: boolean = false;
+
   @Input() @InputBoolean() nzHideUnMatched = false;
   @Input() @InputBoolean() nzSelectMode = false;
+  @Input() @InputBoolean() nzCheckStrictly = false;
+  @Input() @InputBoolean() nzBlockNode = false;
+
+  @Input() @ContentChild('nzTreeTemplate', { static: true }) nzTreeTemplate: TemplateRef<{ $implicit: NzTreeNode }>;
+
+  @Input() @InputBoolean() nzExpandAll = false;
+
   /**
-   * @deprecated use
-   * nzExpandAll instead
+   * @deprecated 9.0.0 use `nzExpandAll` instead.
    */
-  @Input() @InputBoolean() nzDefaultExpandAll: boolean = false;
+  @Input()
+  @InputBoolean()
+  set nzDefaultExpandAll(value: boolean) {
+    warnDeprecation(`'nzDefaultExpandAll' would be removed in 9.0.0. Please use 'nzExpandAll' instead.`);
+    this.nzExpandAll = value;
+    this._nzDefaultExpandAll = value;
+  }
+
+  get nzDefaultExpandAll(): boolean {
+    return this._nzDefaultExpandAll;
+  }
+
+  private _nzDefaultExpandAll = false;
+
   @Input() nzBeforeDrop: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;
+
+  @Input()
+  @InputBoolean()
+  set nzMultiple(value: boolean) {
+    this._nzMultiple = toBoolean(value);
+    this.nzTreeService.isMultiple = toBoolean(value);
+  }
+
+  get nzMultiple(): boolean {
+    return this._nzMultiple;
+  }
 
   @Input()
   // tslint:disable-next-line:no-any
   set nzData(value: any[]) {
-    if (Array.isArray(value)) {
-      if (!this.nzTreeService.isArrayOfNzTreeNode(value)) {
-        // has not been new NzTreeNode
-        this.nzNodes = value.map(item => (new NzTreeNode(item, null, this.nzTreeService)));
-      } else {
-        this.nzNodes = value.map(item => (new NzTreeNode({ ...item.origin }, null, this.nzTreeService)));
-      }
-      this.nzTreeService.isCheckStrictly = this.nzCheckStrictly;
-      this.nzTreeService.isMultiple = this.nzMultiple;
-      this.nzTreeService.initTree(this.nzNodes);
-      this.cdr.markForCheck();
-    } else {
-      if (value !== null) {
-        console.warn('ngModel only accepts an array and must be not empty');
-      }
-    }
+    this.initNzData(value);
   }
 
   /**
-   * @deprecated use
-   * nzExpandedKeys instead
+   * @deprecated 9.0.0 - use `nzExpandedKeys` instead.
    */
   @Input()
   set nzDefaultExpandedKeys(value: string[]) {
+    warnDeprecation(`'nzDefaultExpandedKeys' would be removed in 9.0.0. Please use 'nzExpandedKeys' instead.`);
     this.nzDefaultSubject.next({ type: 'nzExpandedKeys', keys: value });
   }
 
   /**
-   * @deprecated use
-   * nzSelectedKeys instead
+   * @deprecated 9.0.0 - use `nzSelectedKeys` instead.
    */
   @Input()
   set nzDefaultSelectedKeys(value: string[]) {
+    warnDeprecation(`'nzDefaultSelectedKeys' would be removed in 9.0.0. Please use 'nzSelectedKeys' instead.`);
     this.nzDefaultSubject.next({ type: 'nzSelectedKeys', keys: value });
   }
 
   /**
-   * @deprecated use
-   * nzCheckedKeys instead
+   * @deprecated 9.0.0 - use `nzCheckedKeys` instead.
    */
   @Input()
   set nzDefaultCheckedKeys(value: string[]) {
+    warnDeprecation(`'nzDefaultCheckedKeys' would be removed in 9.0.0. Please use 'nzCheckedKeys' instead.`);
     this.nzDefaultSubject.next({ type: 'nzCheckedKeys', keys: value });
   }
 
@@ -145,6 +172,10 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy, ControlVal
     this.nzTreeService.searchExpand(value);
     if (isNotNil(value)) {
       this.nzSearchValueChange.emit(this.nzTreeService.formatEvent('search', null, null));
+      /**
+       * @deprecated 9.0.0 - use `nzOnSearchNode` instead.
+       * Hide warning, need remove next version
+       */
       this.nzOnSearchNode.emit(this.nzTreeService.formatEvent('search', null, null));
     }
   }
@@ -153,115 +184,60 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy, ControlVal
     return this._searchValue;
   }
 
-  // model bind
+  /**
+   * To render nodes if root is changed.
+   */
+  get nzNodes(): NzTreeNode[] {
+    return this.nzTreeService.rootNodes;
+  }
+
   @Output() readonly nzExpandedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
   @Output() readonly nzSelectedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
   @Output() readonly nzCheckedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
 
-  @Output() readonly nzSearchValueChange: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly nzSearchValueChange = new EventEmitter<NzFormatEmitEvent>();
+
   /**
-   * @deprecated use
-   * nzSearchValueChange instead
+   * @deprecated use `nzSearchValueChange` instead.
    */
-  @Output() readonly nzOnSearchNode: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly nzOnSearchNode = new EventEmitter<NzFormatEmitEvent>();
 
-  @Output() readonly nzClick: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() readonly nzDblClick: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() readonly nzContextMenu: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() readonly nzCheckBoxChange: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() readonly nzExpandChange: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
+  @Output() readonly nzClick = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzDblClick = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzContextMenu = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzCheckBoxChange = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzExpandChange = new EventEmitter<NzFormatEmitEvent>();
 
-  @Output() readonly nzOnDragStart: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() readonly nzOnDragEnter: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() readonly nzOnDragOver: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() readonly nzOnDragLeave: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() readonly nzOnDrop: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  @Output() readonly nzOnDragEnd: EventEmitter<NzFormatEmitEvent> = new EventEmitter();
-  // tslint:disable-next-line:no-any
-  @ContentChild('nzTreeTemplate') nzTreeTemplate: TemplateRef<any>;
-  _searchValue = null;
-  nzDefaultSubject = new ReplaySubject<{ type: string, keys: string[] }>(6);
-  nzDefaultSubscription: Subscription;
-  nzNodes: NzTreeNode[] = [];
+  @Output() readonly nzOnDragStart = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzOnDragEnter = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzOnDragOver = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzOnDragLeave = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzOnDrop = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzOnDragEnd = new EventEmitter<NzFormatEmitEvent>();
+
+  _searchValue: string;
+  _nzMultiple: boolean = false;
+  nzDefaultSubject = new ReplaySubject<{ type: string; keys: string[] }>(6);
+  destroy$ = new Subject();
   prefixCls = 'ant-tree';
   classMap = {};
 
   onChange: (value: NzTreeNode[]) => void = () => null;
   onTouched: () => void = () => null;
 
-  trackByFn = (_index: number, item: NzTreeNode) => {
-    return item.key;
-  }
-
-  getTreeNodes(): NzTreeNode[] {
-    return this.nzNodes;
-  }
-
-  getTreeNodeByKey(key: string): NzTreeNode {
-    let targetNode = null;
-    const getNode = (node: NzTreeNode): boolean => {
-      if (node.key === key) {
-        targetNode = node;
-        // break every
-        return false;
-      } else {
-        node.getChildren().every(n => {
-          return getNode(n);
-        });
-      }
-      return true;
-    };
-    this.nzNodes.every(n => {
-      return getNode(n);
-    });
-    return targetNode;
-  }
-
-  /**
-   * public function
-   */
-  getCheckedNodeList(): NzTreeNode[] {
-    return this.nzTreeService.getCheckedNodeList();
-  }
-
-  getSelectedNodeList(): NzTreeNode[] {
-    return this.nzTreeService.getSelectedNodeList();
-  }
-
-  getHalfCheckedNodeList(): NzTreeNode[] {
-    return this.nzTreeService.getHalfCheckedNodeList();
-  }
-
-  getExpandedNodeList(): NzTreeNode[] {
-    return this.nzTreeService.getExpandedNodeList();
-  }
-
-  getMatchedNodeList(): NzTreeNode[] {
-    return this.nzTreeService.getMatchedNodeList();
-  }
-
   setClassMap(): void {
     this.classMap = {
-      [ this.prefixCls ]               : true,
-      [ this.prefixCls + '-show-line' ]: this.nzShowLine,
-      [ `${this.prefixCls}-icon-hide` ]: !this.nzShowIcon,
-      [ 'draggable-tree' ]             : this.nzDraggable,
-      [ 'ant-select-tree' ]            : this.nzSelectMode
+      [this.prefixCls]: true,
+      [this.prefixCls + '-show-line']: this.nzShowLine,
+      [`${this.prefixCls}-icon-hide`]: !this.nzShowIcon,
+      [`${this.prefixCls}-block-node`]: this.nzBlockNode,
+      ['draggable-tree']: this.nzDraggable,
+      ['ant-select-tree']: this.nzSelectMode
     };
   }
 
   writeValue(value: NzTreeNode[]): void {
-    if (Array.isArray(value)) {
-      this.nzNodes = value.map(item => (new NzTreeNode({ ...item.origin }, null, this.nzTreeService)));
-      this.nzTreeService.isCheckStrictly = this.nzCheckStrictly;
-      this.nzTreeService.isMultiple = this.nzMultiple;
-      this.nzTreeService.initTree(this.nzNodes);
-      this.cdr.markForCheck();
-    } else {
-      if (value !== null) {
-        console.warn('ngModel only accepts an array and should be not empty');
-      }
-    }
+    this.initNzData(value);
   }
 
   registerOnChange(fn: (_: NzTreeNode[]) => void): void {
@@ -272,15 +248,26 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy, ControlVal
     this.onTouched = fn;
   }
 
+  // tslint:disable-next-line:no-any
+  initNzData(value: any[]): void {
+    if (Array.isArray(value)) {
+      this.nzTreeService.isCheckStrictly = this.nzCheckStrictly;
+      this.nzTreeService.isMultiple = this.nzMultiple;
+      this.nzTreeService.initTree(this.coerceTreeNodes(value));
+    }
+  }
+
   constructor(
-    public nzTreeService: NzTreeBaseService,
+    nzTreeService: NzTreeBaseService,
     private cdr: ChangeDetectorRef,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+  ) {
+    super(nzTreeService);
   }
 
   ngOnInit(): void {
     this.setClassMap();
-    this.nzDefaultSubscription = this.nzDefaultSubject.subscribe((data: { type: string, keys: string[] }) => {
+    this.nzDefaultSubject.pipe(takeUntil(this.destroy$)).subscribe((data: { type: string; keys: string[] }) => {
       if (!data || !data.keys) {
         return;
       }
@@ -300,21 +287,60 @@ export class NzTreeComponent implements OnInit, OnChanges, OnDestroy, ControlVal
       }
       this.cdr.markForCheck();
     });
+    this.nzTreeService
+      .eventTriggerChanged()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(data => {
+        switch (data.eventName) {
+          case 'expand':
+            this.nzExpandChange.emit(data);
+            break;
+          case 'click':
+            this.nzClick.emit(data);
+            break;
+          case 'check':
+            this.nzCheckBoxChange.emit(data);
+            break;
+          case 'dblclick':
+            this.nzDblClick.emit(data);
+            break;
+          case 'contextmenu':
+            this.nzContextMenu.emit(data);
+            break;
+          // drag drop
+          case 'dragstart':
+            this.nzOnDragStart.emit(data);
+            break;
+          case 'dragenter':
+            this.nzOnDragEnter.emit(data);
+            break;
+          case 'dragover':
+            this.nzOnDragOver.emit(data);
+            break;
+          case 'dragleave':
+            this.nzOnDragLeave.emit(data);
+            break;
+          case 'drop':
+            this.nzOnDrop.emit(data);
+            break;
+          case 'dragend':
+            this.nzOnDragEnd.emit(data);
+            break;
+        }
+      });
   }
 
-  ngOnChanges(changes: { [ propertyName: string ]: SimpleChange }): void {
+  ngOnChanges(changes: { [propertyName: string]: SimpleChange }): void {
     if (changes.nzCheckStrictly) {
-      this.nzTreeService.isCheckStrictly = changes.nzCheckStrictly.currentValue;
+      this.nzTreeService.isCheckStrictly = toBoolean(changes.nzCheckStrictly.currentValue);
     }
     if (changes.nzMultiple) {
-      this.nzTreeService.isMultiple = changes.nzMultiple.currentValue;
+      this.nzTreeService.isMultiple = toBoolean(changes.nzMultiple.currentValue);
     }
   }
 
   ngOnDestroy(): void {
-    if (this.nzDefaultSubscription) {
-      this.nzDefaultSubscription.unsubscribe();
-      this.nzDefaultSubscription = null;
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

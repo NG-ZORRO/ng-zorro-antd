@@ -1,10 +1,18 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 export { NzI18nModule } from './nz-i18n.module';
 export { NzI18nService } from './nz-i18n.service';
 export { NZ_DATE_CONFIG, NzDateConfig } from './date-config';
-export { DateHelperService } from './date-helper.service';
-
 export * from './nz-i18n.interface';
 export * from './nz-i18n.token';
+export * from './date-helper.service';
+export * from './nz-i18n.pipe';
 
 export { default as ar_EG } from './languages/ar_EG';
 export { default as bg_BG } from './languages/bg_BG';

@@ -1,14 +1,21 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { InjectionToken } from '@angular/core';
 
 export interface NzMessageConfig {
-  // For all messages as default config (can override when dynamically created)
-  nzDuration?: number;
-  nzPauseOnHover?: boolean;
   nzAnimate?: boolean;
-  // For message container only
+  nzDuration?: number;
   nzMaxStack?: number;
-  /* tslint:disable-next-line:no-any */
-  [index: string]: any;
+  nzPauseOnHover?: boolean;
+  nzTop?: number | string;
+
+  [index: string]: any; // tslint:disable-line:no-any
 }
 
 export const NZ_MESSAGE_DEFAULT_CONFIG = new InjectionToken<NzMessageConfig>('NZ_MESSAGE_DEFAULT_CONFIG');
@@ -16,11 +23,12 @@ export const NZ_MESSAGE_DEFAULT_CONFIG = new InjectionToken<NzMessageConfig>('NZ
 export const NZ_MESSAGE_CONFIG = new InjectionToken<NzMessageConfig>('NZ_MESSAGE_CONFIG');
 
 export const NZ_MESSAGE_DEFAULT_CONFIG_PROVIDER = {
-  provide : NZ_MESSAGE_DEFAULT_CONFIG,
+  provide: NZ_MESSAGE_DEFAULT_CONFIG,
   useValue: {
-    nzDuration    : 3000,
-    nzAnimate     : true,
+    nzAnimate: true,
+    nzDuration: 3000,
+    nzMaxStack: 7,
     nzPauseOnHover: true,
-    nzMaxStack    : 7
+    nzTop: 24
   }
 };

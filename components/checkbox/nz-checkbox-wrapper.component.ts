@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,11 +19,12 @@ import {
 import { NzCheckboxComponent } from './nz-checkbox.component';
 
 @Component({
-  selector           : 'nz-checkbox-wrapper',
+  selector: 'nz-checkbox-wrapper',
+  exportAs: 'nzCheckboxWrapper',
   preserveWhitespaces: false,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  templateUrl        : './nz-checkbox-wrapper.component.html'
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  templateUrl: './nz-checkbox-wrapper.component.html'
 })
 export class NzCheckboxWrapperComponent {
   @Output() readonly nzOnChange = new EventEmitter<string[]>();

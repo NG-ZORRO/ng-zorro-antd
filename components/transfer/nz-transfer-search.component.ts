@@ -1,14 +1,31 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, Output, ViewEncapsulation } from '@angular/core';
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  ViewEncapsulation
+} from '@angular/core';
 
 @Component({
-  selector           : '[nz-transfer-search]',
+  selector: '[nz-transfer-search]',
+  exportAs: 'nzTransferSearch',
   preserveWhitespaces: false,
-  templateUrl        : './nz-transfer-search.component.html',
-  encapsulation      : ViewEncapsulation.None,
-  changeDetection    : ChangeDetectionStrategy.OnPush
+  templateUrl: './nz-transfer-search.component.html',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzTransferSearchComponent implements OnChanges {
-
   // region: fields
 
   @Input() placeholder: string;
@@ -16,7 +33,7 @@ export class NzTransferSearchComponent implements OnChanges {
   @Input() disabled: boolean;
 
   @Output() readonly valueChanged = new EventEmitter<string>();
-  @Output() readonly valueClear = new EventEmitter();
+  @Output() readonly valueClear = new EventEmitter<void>();
 
   // endregion
 
@@ -28,7 +45,7 @@ export class NzTransferSearchComponent implements OnChanges {
 
   _clear(): void {
     if (this.disabled) {
-      return ;
+      return;
     }
     this.value = '';
     this.valueClear.emit();
@@ -37,5 +54,4 @@ export class NzTransferSearchComponent implements OnChanges {
   ngOnChanges(): void {
     this.cdr.detectChanges();
   }
-
 }

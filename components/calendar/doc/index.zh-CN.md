@@ -1,6 +1,6 @@
 ---
 category: Components
-type: Data Display
+type: 数据展示
 subtitle: 日历
 cols: 1
 title: Calendar
@@ -11,6 +11,14 @@ title: Calendar
 ## 何时使用
 
 当数据是日期或按照日期划分时，例如日程、课表、价格日历等，农历等。目前支持年/月切换。
+
+## 单独引入此组件
+
+想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
+
+```ts
+import { NzCalendarModule } from 'ng-zorro-antd/calendar';
+```
 
 ## API
 
@@ -34,7 +42,7 @@ registerLocaleData(zh);
   <div *dateCell>Foo</div>
 </nz-calendar>
 <!-- 传入 TemplateRef 的方式 -->
-<ng-template #dateCellTpl>Bar</ng-template>
+<ng-template #dateCellTpl let-date><span>{{ date | date:'d'}}</span></ng-template>
 ```
 
 ### nz-calendar
@@ -42,12 +50,12 @@ registerLocaleData(zh);
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[(ngModel)]` | （可双向绑定）展示日期 | `Date` | 当前日期 |
-| `[(nzMode)]` | （可双向绑定）显示模式 | `'month'｜'year'` | `'month'` |
+| `[(nzMode)]` | （可双向绑定）显示模式 | `'month' \| 'year'` | `'month'` |
 | `[nzFullscreen]` | 是否全屏显示 | `boolean` | `true` |
 | `[nzCard]` | 是否不全屏显示 | `boolean` | `false` |
 | `[nzDateCell]` | （可作为内容）自定义渲染日期单元格，模版内容会被追加到单元格 | `TemplateRef<Date>` | - |
 | `[nzDateFullCell]` | （可作为内容）自定义渲染日期单元格，模版内容覆盖单元格 | `TemplateRef<Date>` | - |
 | `[nzMonthCell]` | （可作为内容）自定义渲染月单元格，模版内容会被追加到单元格 | `TemplateRef<Date>` | - |
 | `[nzMonthFullCell]` | （可作为内容）自定义渲染月单元格，模版内容覆盖单元格 | `TemplateRef<Date>` | - |
-| `(nzPanelChange)` | 面板变化的回调 | `EventEmitter<{ date: Date, mode: 'month'｜'year' }>` | - |
+| `(nzPanelChange)` | 面板变化的回调 | `EventEmitter<{ date: Date, mode: 'month' \| 'year' }>` | - |
 | `(nzSelectChange)` | 选择日期的回调 | `EventEmitter<Date>` | - |

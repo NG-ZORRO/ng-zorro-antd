@@ -1,3 +1,5 @@
-<label [attr.for]="nzFor" [class.ant-form-item-required]="nzRequired">
+<label [attr.for]="nzFor"
+  [class.ant-form-item-no-colon]="noColon === 'default' ? defaultNoColon : nzNoColon"
+  [class.ant-form-item-required]="nzRequired">
   <ng-content></ng-content>
 </label>

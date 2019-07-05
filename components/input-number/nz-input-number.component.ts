@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { DOWN_ARROW, ENTER, UP_ARROW } from '@angular/cdk/keycodes';
 import {
@@ -19,27 +27,26 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NzSizeLDSType } from '../core/types/size';
 
-import { isNotNil } from '../core/util/check';
-import { InputBoolean } from '../core/util/convert';
+import { isNotNil, InputBoolean, NzSizeLDSType } from 'ng-zorro-antd/core';
 
 @Component({
-  selector       : 'nz-input-number',
-  templateUrl    : './nz-input-number.component.html',
-  providers      : [
+  selector: 'nz-input-number',
+  exportAs: 'nzInputNumber',
+  templateUrl: './nz-input-number.component.html',
+  providers: [
     {
-      provide    : NG_VALUE_ACCESSOR,
+      provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzInputNumberComponent),
-      multi      : true
+      multi: true
     }
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation  : ViewEncapsulation.None,
-  host           : {
-    '[class.ant-input-number-focused]' : 'isFocused',
-    '[class.ant-input-number-lg]'      : `nzSize === 'large'`,
-    '[class.ant-input-number-sm]'      : `nzSize === 'small'`,
+  encapsulation: ViewEncapsulation.None,
+  host: {
+    '[class.ant-input-number-focused]': 'isFocused',
+    '[class.ant-input-number-lg]': `nzSize === 'large'`,
+    '[class.ant-input-number-sm]': `nzSize === 'small'`,
     '[class.ant-input-number-disabled]': 'nzDisabled'
   }
 })
@@ -55,17 +62,20 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   onTouched: () => void = () => null;
   @Output() readonly nzBlur = new EventEmitter();
   @Output() readonly nzFocus = new EventEmitter();
-  @ViewChild('inputElement') inputElement: ElementRef;
+  @ViewChild('inputElement', { static: true }) inputElement: ElementRef<HTMLInputElement>;
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzMin: number = -Infinity;
   @Input() nzMax: number = Infinity;
-  @Input() nzParser = (value) => value;
+  @Input() nzParser = (value: any) => value; // tslint:disable-line:no-any
   @Input() nzPrecision: number;
   @Input() nzPlaceHolder = '';
   @Input() nzStep = 1;
+  @Input() nzId: string;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAutoFocus = false;
-  @Input() nzFormatter: (value: number) => string | number = (value) => value;
+  @Input() nzFormatter: (value: number) => string | number = value => value;
+
+  [property: string]: any; // tslint:disable-line:no-any
 
   updateAutoFocus(): void {
     if (this.nzAutoFocus) {
@@ -76,8 +86,13 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   }
 
   onModelChange(value: string): void {
-    this.actualValue = this.nzParser(value.trim().replace(/。/g, '.').replace(/[^\w\.-]+/g, ''));
-    this.inputElement.nativeElement.value = this.actualValue;
+    this.actualValue = this.nzParser(
+      value
+        .trim()
+        .replace(/。/g, '.')
+        .replace(/[^\w\.-]+/g, '')
+    );
+    this.inputElement.nativeElement.value = `${this.actualValue}`;
   }
 
   getCurrentValidValue(value: string | number): number {
@@ -98,11 +113,11 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
       isNaN(num as number) ||
       num === '' ||
       num === null ||
-      (num && num.toString().indexOf('.') === num.toString().length - 1)
+      !!(num && num.toString().indexOf('.') === num.toString().length - 1)
     );
   }
 
-  getValidValue(value: string | number): string | number {
+  getValidValue(value?: string | number): string | number | undefined {
     let val = parseFloat(value as string);
     // https://github.com/ant-design/ant-design/issues/7358
     if (isNaN(val)) {
@@ -205,9 +220,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     const precision = Math.abs(this.getMaxPrecision(val, rat));
     let result;
     if (typeof val === 'number') {
-      result =
-        ((precisionFactor * val + precisionFactor * this.nzStep * rat) /
-          precisionFactor).toFixed(precision);
+      result = ((precisionFactor * val + precisionFactor * this.nzStep * rat) / precisionFactor).toFixed(precision);
     } else {
       result = this.nzMin === -Infinity ? this.nzStep : this.nzMin;
     }
@@ -219,9 +232,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     const precision = Math.abs(this.getMaxPrecision(val, rat));
     let result;
     if (typeof val === 'number') {
-      result =
-        ((precisionFactor * val - precisionFactor * this.nzStep * rat) /
-          precisionFactor).toFixed(precision);
+      result = ((precisionFactor * val - precisionFactor * this.nzStep * rat) / precisionFactor).toFixed(precision);
     } else {
       result = this.nzMin === -Infinity ? -this.nzStep : this.nzMin;
     }
@@ -235,7 +246,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
       return;
     }
     const value = this.getCurrentValidValue(this.actualValue) || 0;
-    let val;
+    let val = 0;
     if (type === 'up') {
       val = this.upStep(value, ratio);
     } else if (type === 'down') {
@@ -253,7 +264,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
       return;
     }
     this.autoStepTimer = setTimeout(() => {
-      this[ type ](e, ratio, true);
+      this[type](e, ratio, true);
     }, 600);
   }
 
@@ -264,14 +275,14 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   }
 
   setValue(value: number, emit: boolean): void {
-    if (emit && (`${this.value}` !== `${value}`)) {
+    if (emit && `${this.value}` !== `${value}`) {
       this.onChange(value);
     }
     this.value = value;
     this.actualValue = value;
     const displayValue = isNotNil(this.nzFormatter(this.value)) ? this.nzFormatter(this.value) : '';
     this.displayValue = displayValue;
-    this.inputElement.nativeElement.value = displayValue;
+    this.inputElement.nativeElement.value = `${displayValue}`;
     this.disabledUp = this.disabledDown = false;
     if (value || value === 0) {
       const val = Number(value);
@@ -282,7 +293,6 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
         this.disabledDown = true;
       }
     }
-
   }
 
   onKeyDown(e: KeyboardEvent): void {
@@ -329,16 +339,23 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     this.inputElement.nativeElement.blur();
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    private cdr: ChangeDetectorRef,
+    private focusMonitor: FocusMonitor
+  ) {
     renderer.addClass(elementRef.nativeElement, 'ant-input-number');
   }
 
   ngOnInit(): void {
     this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
       if (!focusOrigin) {
+        this.onBlur();
         this.nzBlur.emit();
         Promise.resolve().then(() => this.onTouched());
       } else {
+        this.onFocus();
         this.nzFocus.emit();
       }
     });

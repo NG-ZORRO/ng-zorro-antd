@@ -5,11 +5,10 @@ import { NzModalService } from 'ng-zorro-antd';
   selector: 'nz-demo-modal-manual',
   template: `
     <button nz-button (click)="success()">Success</button>
-  `,
-  styles: []
+  `
 })
 export class NzDemoModalManualComponent {
-  constructor(private modalService: NzModalService) { }
+  constructor(private modalService: NzModalService) {}
 
   success(): void {
     const modal = this.modalService.success({

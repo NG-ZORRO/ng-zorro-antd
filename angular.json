@@ -18,22 +18,20 @@
             "polyfills": "./site/doc/polyfills.ts",
             "assets": [
               "site/doc/assets",
+              "site/doc/manifest.json",
               "site/doc/favicon.ico",
               "site/doc/404.html",
+              "site/doc/google854eb8b183564acb.html",
+              "site/doc/robots.txt",
               {
                 "glob": "**/*",
                 "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
                 "output": "/assets/"
-              },
-              "site/doc/manifest.json"
+              }
             ],
             "styles": [
               "site/doc/styles.less"
-            ],
-            "scripts": [
-              "node_modules/hammerjs/hammer.min.js"
-            ],
-            "es5BrowserSupport": true
+            ]
           },
           "configurations": {
             "production": {
@@ -53,6 +51,43 @@
               "vendorChunk": false,
               "buildOptimizer": true,
               "serviceWorker": true
+            },
+            "es5": {
+              "tsConfig": "./site/doc/tsconfig.es5.json",
+              "fileReplacements": [
+                {
+                  "replace": "./site/doc/environments/environment.ts",
+                  "with": "./site/doc/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "serviceWorker": true
+            }
+          }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/server",
+            "main": "./site/doc/main.server.ts",
+            "tsConfig": "./site/doc/tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "./site/doc/environments/environment.ts",
+                  "with": "./site/doc/environments/environment.prod.ts"
+                }
+              ]
             }
           }
         },
@@ -102,8 +137,7 @@
             ],
             "styles": [
               "components/ng-zorro-antd.less"
-            ],
-            "es5BrowserSupport": true
+            ]
           },
           "configurations": {
             "production": {
@@ -170,6 +204,12 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
+            "fileReplacements": [
+              {
+                "replace": "components/core/environments/environment.ts",
+                "with": "components/core/environments/environment.test.ts"
+              }
+            ],
             "main": "components/test.ts",
             "karmaConfig": "components/karma.conf.js",
             "polyfills": "components/polyfills.ts",

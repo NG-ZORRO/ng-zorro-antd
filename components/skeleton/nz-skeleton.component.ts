@@ -1,7 +1,16 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component, ElementRef,
+  Component,
+  ElementRef,
   Input,
   OnChanges,
   OnInit,
@@ -10,17 +19,18 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { toCssPixel } from '../core/util';
+import { toCssPixel } from 'ng-zorro-antd/core';
 import { AvatarShape, AvatarSize, NzSkeletonAvatar, NzSkeletonParagraph, NzSkeletonTitle } from './nz-skeleton.type';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation  : ViewEncapsulation.None,
-  selector       : 'nz-skeleton',
-  templateUrl    : './nz-skeleton.component.html',
-  host           : {
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-skeleton',
+  exportAs: 'nzSkeleton',
+  templateUrl: './nz-skeleton.component.html',
+  host: {
     '[class.ant-skeleton-with-avatar]': '!!nzAvatar',
-    '[class.ant-skeleton-active]'     : 'nzActive'
+    '[class.ant-skeleton-active]': 'nzActive'
   }
 })
 export class NzSkeletonComponent implements OnInit, OnChanges {
@@ -47,7 +57,7 @@ export class NzSkeletonComponent implements OnInit, OnChanges {
   private getTitleProps(): NzSkeletonTitle {
     const hasAvatar: boolean = !!this.nzAvatar;
     const hasParagraph: boolean = !!this.nzParagraph;
-    let width: string;
+    let width = '';
     if (!hasAvatar && hasParagraph) {
       width = '38%';
     } else if (hasAvatar && hasParagraph) {
@@ -57,7 +67,7 @@ export class NzSkeletonComponent implements OnInit, OnChanges {
   }
 
   private getAvatarProps(): NzSkeletonAvatar {
-    const shape: AvatarShape = (!!this.nzTitle && !this.nzParagraph) ? 'square' : 'circle';
+    const shape: AvatarShape = !!this.nzTitle && !this.nzParagraph ? 'square' : 'circle';
     const size: AvatarSize = 'large';
     return { shape, size, ...this.getProps(this.nzAvatar) };
   }
@@ -85,12 +95,12 @@ export class NzSkeletonComponent implements OnInit, OnChanges {
 
   private getWidthList(): Array<number | string> {
     const { width, rows } = this.paragraph;
-    let widthList = [];
+    let widthList: Array<string | number> = [];
     if (width && Array.isArray(width)) {
       widthList = width;
     } else if (width && !Array.isArray(width)) {
       widthList = [];
-      widthList[ rows - 1 ] = width;
+      widthList[rows! - 1] = width;
     }
     return widthList;
   }
@@ -99,7 +109,7 @@ export class NzSkeletonComponent implements OnInit, OnChanges {
     this.title = this.getTitleProps();
     this.avatar = this.getAvatarProps();
     this.paragraph = this.getParagraphProps();
-    this.rowsList = [ ...Array(this.paragraph.rows) ];
+    this.rowsList = [...Array(this.paragraph.rows)];
     this.widthList = this.getWidthList();
     this.cdr.markForCheck();
   }

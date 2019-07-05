@@ -1,36 +1,48 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { ComponentRef, Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { NzDrawerOptions } from './nz-drawer-options';
+import { NzDrawerOptions, NzDrawerOptionsOfComponent } from './nz-drawer-options';
 import { NzDrawerRef } from './nz-drawer-ref';
 import { NzDrawerComponent } from './nz-drawer.component';
 
 export class DrawerBuilderForService<R> {
-  private drawerRef: ComponentRef<NzDrawerComponent>;
+  private drawerRef: ComponentRef<NzDrawerComponent> | null;
   private overlayRef: OverlayRef;
   private unsubscribe$ = new Subject<void>();
 
   constructor(private overlay: Overlay, private options: NzDrawerOptions) {
+    /** pick {@link NzDrawerOptions.nzOnCancel} and omit this option */
+    const { nzOnCancel, ...componentOption } = this.options;
     this.createDrawer();
-    this.updateOptions(this.options);
+    this.updateOptions(componentOption);
     // Prevent repeatedly open drawer when tap focus element.
-    this.drawerRef.instance.savePreviouslyFocusedElement();
-    this.drawerRef.instance.nzOnViewInit
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(() => {
-      this.drawerRef.instance.open();
+    this.drawerRef!.instance.savePreviouslyFocusedElement();
+    this.drawerRef!.instance.nzOnViewInit.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+      this.drawerRef!.instance.open();
+    });
+    this.drawerRef!.instance.nzOnClose.subscribe(() => {
+      if (nzOnCancel) {
+        nzOnCancel().then(canClose => {
+          if (canClose !== false) {
+            this.drawerRef!.instance.close();
+          }
+        });
+      } else {
+        this.drawerRef!.instance.close();
+      }
     });
 
-    this.drawerRef.instance.nzOnClose
-    .subscribe(() => {
-      this.drawerRef.instance.close();
-    });
-
-    this.drawerRef.instance.afterClose
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(() => {
+    this.drawerRef!.instance.afterClose.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.overlayRef.dispose();
       this.drawerRef = null;
       this.unsubscribe$.next();
@@ -39,7 +51,7 @@ export class DrawerBuilderForService<R> {
   }
 
   getInstance(): NzDrawerRef<R> {
-    return this.drawerRef && this.drawerRef.instance;
+    return this.drawerRef! && this.drawerRef!.instance;
   }
 
   createDrawer(): void {
@@ -47,16 +59,14 @@ export class DrawerBuilderForService<R> {
     this.drawerRef = this.overlayRef.attach(new ComponentPortal(NzDrawerComponent));
   }
 
-  updateOptions(options: NzDrawerOptions): void {
-    Object.assign(this.drawerRef.instance, options);
+  updateOptions(options: NzDrawerOptionsOfComponent): void {
+    Object.assign(this.drawerRef!.instance, options);
   }
 }
 
-@Injectable({ providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class NzDrawerService {
-
-  constructor(private overlay: Overlay) {
-  }
+  constructor(private overlay: Overlay) {}
 
   // tslint:disable-next-line:no-any
   create<T = any, D = any, R = any>(options: NzDrawerOptions<T, D>): NzDrawerRef<R> {

@@ -1,127 +1,127 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
-import {
-  NzDropdownContextComponent,
-  NzDropdownService,
-  NzFormatEmitEvent,
-  NzTreeComponent,
-  NzTreeNode
-} from 'ng-zorro-antd';
+import { Component } from '@angular/core';
+import { NzContextMenuService, NzDropdownMenuComponent, NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
 
 @Component({
   selector: 'nz-demo-tree-directory',
   template: `
     <nz-tree
-      #treeCom
       [nzData]="nodes"
-      (nzClick)="activeNode($event)">
-      <ng-template #contextTemplate>
-        <ul nz-menu nzInDropDown>
-          <li nz-menu-item (click)="selectDropdown('file')">新建文件</li>
-          <li nz-menu-item (click)="selectDropdown('folder')">新建文件夹</li>
-        </ul>
-      </ng-template>
-      <ng-template #nzTreeTemplate let-node>
-        <span class="custom-node" [class.active]="activedNode?.key===node.key">
-          <span *ngIf="!node.isLeaf" (contextmenu)="contextMenu($event,contextTemplate)">
-            <i nz-icon [type]="node.isExpanded ? 'folder-open' : 'folder'" (click)="openFolder(node)"></i>
-            <span class="folder-name">{{node.title}}</span>
-            <span class="folder-desc">created by {{node?.origin?.author | lowercase}}</span>
-          </span>
-          <span *ngIf="node.isLeaf">
-            <i nz-icon type="file"></i>
-            <span class="file-name">{{node.title}}</span>
-            <span class="file-desc">modified by {{node?.origin?.author | lowercase}}</span>
-          </span>
+      (nzClick)="activeNode($event)"
+      (nzDblClick)="openFolder($event)"
+      [nzTreeTemplate]="nzTreeTemplate"
+    ></nz-tree>
+    <ng-template #nzTreeTemplate let-node>
+      <span class="custom-node" [class.active]="activedNode?.key === node.key">
+        <span *ngIf="!node.isLeaf" (contextmenu)="contextMenu($event, menu)">
+          <i nz-icon [nzType]="node.isExpanded ? 'folder-open' : 'folder'" (click)="openFolder(node)"></i>
+          <span class="folder-name">{{ node.title }}</span>
+          <span class="folder-desc">created by {{ node?.origin?.author | lowercase }}</span>
         </span>
-      </ng-template>
-    </nz-tree>`,
-  styles: [`
-    :host ::ng-deep .ant-tree {
-      overflow: hidden;
-      margin: 0 -24px;
-      padding: 0 24px;
-    }
+        <span *ngIf="node.isLeaf" (contextmenu)="contextMenu($event, menu)">
+          <i nz-icon nzType="file"></i>
+          <span class="file-name">{{ node.title }}</span>
+          <span class="file-desc">modified by {{ node?.origin?.author | lowercase }}</span>
+        </span>
+      </span>
+    </ng-template>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu>
+        <li nz-menu-item (click)="selectDropdown()">Action 1</li>
+        <li nz-menu-item (click)="selectDropdown()">Action 2</li>
+      </ul>
+    </nz-dropdown-menu>
+  `,
+  styles: [
+    `
+      :host ::ng-deep .ant-tree {
+        overflow: hidden;
+        margin: 0 -24px;
+        padding: 0 24px;
+      }
 
-    :host ::ng-deep .ant-tree li {
-      padding: 4px 0 0 0;
-    }
+      :host ::ng-deep .ant-tree li {
+        padding: 4px 0 0 0;
+      }
 
-    .custom-node {
-      cursor: pointer;
-      line-height: 24px;
-      margin-left: 4px;
-      display: inline-block;
-      margin: 0 -1000px;
-      padding: 0 1000px;
-    }
+      .custom-node {
+        cursor: pointer;
+        line-height: 24px;
+        margin-left: 4px;
+        display: inline-block;
+        margin: 0 -1000px;
+        padding: 0 1000px;
+      }
 
-    .active {
-      background: #1890FF;
-      color: #fff;
-    }
+      .active {
+        background: #1890ff;
+        color: #fff;
+      }
 
-    .file-name, .folder-name {
-      margin-left: 4px;
-    }
+      .file-name,
+      .folder-name {
+        margin-left: 4px;
+      }
 
-    .file-desc, .folder-desc {
-      padding: 0 8px;
-      display: inline-block;
-      background: #87CEFF;
-      color: #FFFFFF;
-      position: relative;
-      left: 12px;
-    }
-  `]
+      .file-desc,
+      .folder-desc {
+        padding: 0 8px;
+        display: inline-block;
+        background: #87ceff;
+        color: #ffffff;
+        position: relative;
+        left: 12px;
+      }
+    `
+  ]
 })
-
 export class NzDemoTreeDirectoryComponent {
-  @ViewChild('treeCom') treeCom: NzTreeComponent;
-  dropdown: NzDropdownContextComponent;
   // actived node
   activedNode: NzTreeNode;
-  nodes = [{
-    title: 'parent 0',
-    key: '100',
-    author: 'NG ZORRO',
-    expanded: true,
-    children: [
-      {title: 'leaf 0-0', key: '1000', author: 'NG ZORRO', isLeaf: true},
-      {title: 'leaf 0-1', key: '1001', author: 'NG ZORRO', isLeaf: true}
-    ]
-  }, {
-    title: 'parent 1',
-    key: '101',
-    author: 'NG ZORRO',
-    children: [
-      {title: 'leaf 1-0', key: '1010', author: 'NG ZORRO', isLeaf: true},
-      {title: 'leaf 1-1', key: '1011', author: 'NG ZORRO', isLeaf: true}
-    ]
-  }];
+  nodes = [
+    {
+      title: 'parent 0',
+      key: '100',
+      author: 'NG ZORRO',
+      expanded: true,
+      children: [
+        { title: 'leaf 0-0', key: '1000', author: 'NG ZORRO', isLeaf: true },
+        { title: 'leaf 0-1', key: '1001', author: 'NG ZORRO', isLeaf: true }
+      ]
+    },
+    {
+      title: 'parent 1',
+      key: '101',
+      author: 'NG ZORRO',
+      children: [
+        { title: 'leaf 1-0', key: '1010', author: 'NG ZORRO', isLeaf: true },
+        { title: 'leaf 1-1', key: '1011', author: 'NG ZORRO', isLeaf: true }
+      ]
+    }
+  ];
 
-  openFolder(data: NzTreeNode | NzFormatEmitEvent): void {
+  openFolder(data: NzTreeNode | Required<NzFormatEmitEvent>): void {
     // do something if u want
     if (data instanceof NzTreeNode) {
-      data.setExpanded(!data.isExpanded);
+      data.isExpanded = !data.isExpanded;
     } else {
-      data.node.setExpanded(!data.node.isExpanded);
+      const node = data.node;
+      if (node) {
+        node.isExpanded = !node.isExpanded;
+      }
     }
   }
 
   activeNode(data: NzFormatEmitEvent): void {
-    data.node.setExpanded(true);
-    this.activedNode = data.node;
+    this.activedNode = data.node!;
   }
 
-  contextMenu($event: MouseEvent, template: TemplateRef<void>): void {
-    this.dropdown = this.nzDropdownService.create($event, template);
+  contextMenu($event: MouseEvent, menu: NzDropdownMenuComponent): void {
+    this.nzContextMenuService.create($event, menu);
   }
 
-  selectDropdown(_type: string): void {
-    this.dropdown.close();
+  selectDropdown(): void {
     // do something
   }
 
-  constructor(private nzDropdownService: NzDropdownService) {
-  }
+  constructor(private nzContextMenuService: NzContextMenuService) {}
 }

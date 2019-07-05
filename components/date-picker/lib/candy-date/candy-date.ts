@@ -1,8 +1,17 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import addMonths from 'date-fns/add_months';
 import addYears from 'date-fns/add_years';
 import endOfMonth from 'date-fns/end_of_month';
 import setDay from 'date-fns/set_day';
 import setMonth from 'date-fns/set_month';
+import { IndexableObject } from 'ng-zorro-antd/core';
 
 /**
  * Wrapping kind APIs for date operating and unify
@@ -10,7 +19,7 @@ import setMonth from 'date-fns/set_month';
  * NOTE: most APIs are based on local time other than customized locale id (this needs tobe support in future)
  * TODO: support format() against to angular's core API
  */
-export class CandyDate {
+export class CandyDate implements IndexableObject {
   nativeDate: Date;
   // locale: string; // Custom specified locale ID
 
@@ -133,14 +142,16 @@ export class CandyDate {
     return this.setDate(this.getDate() + amount);
   }
 
-  endOf(grain: 'month'): CandyDate {
+  endOf(grain: 'month'): CandyDate | null {
     switch (grain) {
-      case 'month': return new CandyDate(endOfMonth(this.nativeDate));
+      case 'month':
+        return new CandyDate(endOfMonth(this.nativeDate));
     }
     return null;
   }
 
-  isSame(date: CandyDate | Date, grain: CandyDateCompareGrain): boolean { // TODO: Precipitate into a function "compare()"
+  isSame(date: CandyDate | Date, grain: CandyDateCompareGrain): boolean {
+    // TODO: Precipitate into a function "compare()"
     if (date) {
       const left = this.toNativeDate();
       const right = this.toNativeDate(date);
@@ -148,36 +159,44 @@ export class CandyDate {
         case 'year':
           return left.getFullYear() === right.getFullYear();
         case 'month':
-          return left.getFullYear() === right.getFullYear()
-            && left.getMonth() === right.getMonth();
+          return left.getFullYear() === right.getFullYear() && left.getMonth() === right.getMonth();
         case 'day':
-          return left.getFullYear() === right.getFullYear()
-            && left.getMonth() === right.getMonth()
-            && left.getDate() === right.getDate();
+          return (
+            left.getFullYear() === right.getFullYear() &&
+            left.getMonth() === right.getMonth() &&
+            left.getDate() === right.getDate()
+          );
         case 'hour':
-          return left.getFullYear() === right.getFullYear()
-            && left.getMonth() === right.getMonth()
-            && left.getDate() === right.getDate()
-            && left.getHours() === right.getHours();
+          return (
+            left.getFullYear() === right.getFullYear() &&
+            left.getMonth() === right.getMonth() &&
+            left.getDate() === right.getDate() &&
+            left.getHours() === right.getHours()
+          );
         case 'minute':
-          return left.getFullYear() === right.getFullYear()
-            && left.getMonth() === right.getMonth()
-            && left.getDate() === right.getDate()
-            && left.getHours() === right.getHours()
-            && left.getMinutes() === right.getMinutes();
+          return (
+            left.getFullYear() === right.getFullYear() &&
+            left.getMonth() === right.getMonth() &&
+            left.getDate() === right.getDate() &&
+            left.getHours() === right.getHours() &&
+            left.getMinutes() === right.getMinutes()
+          );
         case 'second':
-          return left.getFullYear() === right.getFullYear()
-            && left.getMonth() === right.getMonth()
-            && left.getDate() === right.getDate()
-            && left.getHours() === right.getHours()
-            && left.getMinutes() === right.getMinutes()
-            && left.getSeconds() === right.getSeconds();
+          return (
+            left.getFullYear() === right.getFullYear() &&
+            left.getMonth() === right.getMonth() &&
+            left.getDate() === right.getDate() &&
+            left.getHours() === right.getHours() &&
+            left.getMinutes() === right.getMinutes() &&
+            left.getSeconds() === right.getSeconds()
+          );
       }
     }
     return false;
   }
 
-  isAfter(date: CandyDate | Date, grain: CandyDateCompareGrain): boolean { // TODO: Precipitate into a function "compare()"
+  isAfter(date: CandyDate | Date | null, grain: CandyDateCompareGrain): boolean {
+    // TODO: Precipitate into a function "compare()"
     if (date) {
       const left = this.toNativeDate();
       const right = this.toNativeDate(date);
@@ -185,36 +204,77 @@ export class CandyDate {
         case 'year':
           return left.getFullYear() > right.getFullYear();
         case 'month':
-          return (left.getFullYear() > right.getFullYear())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() > right.getMonth());
+          return (
+            left.getFullYear() > right.getFullYear() ||
+            (left.getFullYear() === right.getFullYear() && left.getMonth() > right.getMonth())
+          );
         case 'day':
-          return (left.getFullYear() > right.getFullYear())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() > right.getMonth())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() === right.getMonth() && left.getDate() > right.getDate());
+          return (
+            left.getFullYear() > right.getFullYear() ||
+            (left.getFullYear() === right.getFullYear() && left.getMonth() > right.getMonth()) ||
+            (left.getFullYear() === right.getFullYear() &&
+              left.getMonth() === right.getMonth() &&
+              left.getDate() > right.getDate())
+          );
         case 'hour':
-          return (left.getFullYear() > right.getFullYear())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() > right.getMonth())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() === right.getMonth() && left.getDate() > right.getDate())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() === right.getMonth() && left.getDate() === right.getDate() && left.getHours() > right.getHours());
+          return (
+            left.getFullYear() > right.getFullYear() ||
+            (left.getFullYear() === right.getFullYear() && left.getMonth() > right.getMonth()) ||
+            (left.getFullYear() === right.getFullYear() &&
+              left.getMonth() === right.getMonth() &&
+              left.getDate() > right.getDate()) ||
+            (left.getFullYear() === right.getFullYear() &&
+              left.getMonth() === right.getMonth() &&
+              left.getDate() === right.getDate() &&
+              left.getHours() > right.getHours())
+          );
         case 'minute':
-          return (left.getFullYear() > right.getFullYear())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() > right.getMonth())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() === right.getMonth() && left.getDate() > right.getDate())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() === right.getMonth() && left.getDate() === right.getDate() && left.getHours() > right.getHours())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() === right.getMonth() && left.getDate() === right.getDate() && left.getHours() === right.getHours() && left.getMinutes() > right.getMinutes());
+          return (
+            left.getFullYear() > right.getFullYear() ||
+            (left.getFullYear() === right.getFullYear() && left.getMonth() > right.getMonth()) ||
+            (left.getFullYear() === right.getFullYear() &&
+              left.getMonth() === right.getMonth() &&
+              left.getDate() > right.getDate()) ||
+            (left.getFullYear() === right.getFullYear() &&
+              left.getMonth() === right.getMonth() &&
+              left.getDate() === right.getDate() &&
+              left.getHours() > right.getHours()) ||
+            (left.getFullYear() === right.getFullYear() &&
+              left.getMonth() === right.getMonth() &&
+              left.getDate() === right.getDate() &&
+              left.getHours() === right.getHours() &&
+              left.getMinutes() > right.getMinutes())
+          );
         case 'second':
-          return (left.getFullYear() > right.getFullYear())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() > right.getMonth())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() === right.getMonth() && left.getDate() > right.getDate())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() === right.getMonth() && left.getDate() === right.getDate() && left.getHours() > right.getHours())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() === right.getMonth() && left.getDate() === right.getDate() && left.getHours() === right.getHours() && left.getMinutes() > right.getMinutes())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() === right.getMonth() && left.getDate() === right.getDate() && left.getHours() === right.getHours() && left.getMinutes() === right.getMinutes() && left.getSeconds() > right.getSeconds());
+          return (
+            left.getFullYear() > right.getFullYear() ||
+            (left.getFullYear() === right.getFullYear() && left.getMonth() > right.getMonth()) ||
+            (left.getFullYear() === right.getFullYear() &&
+              left.getMonth() === right.getMonth() &&
+              left.getDate() > right.getDate()) ||
+            (left.getFullYear() === right.getFullYear() &&
+              left.getMonth() === right.getMonth() &&
+              left.getDate() === right.getDate() &&
+              left.getHours() > right.getHours()) ||
+            (left.getFullYear() === right.getFullYear() &&
+              left.getMonth() === right.getMonth() &&
+              left.getDate() === right.getDate() &&
+              left.getHours() === right.getHours() &&
+              left.getMinutes() > right.getMinutes()) ||
+            (left.getFullYear() === right.getFullYear() &&
+              left.getMonth() === right.getMonth() &&
+              left.getDate() === right.getDate() &&
+              left.getHours() === right.getHours() &&
+              left.getMinutes() === right.getMinutes() &&
+              left.getSeconds() > right.getSeconds())
+          );
       }
     }
     return false;
   }
 
-  isBefore(date: CandyDate | Date, grain: CandyDateCompareGrain): boolean { // TODO: Precipitate into a function "compare()"
+  // TODO: Precipitate into a function "compare()"
+  isBefore(date: CandyDate | Date | null, grain: CandyDateCompareGrain): boolean {
     if (date) {
       const left = this.toNativeDate();
       const right = this.toNativeDate(date);
@@ -222,30 +282,70 @@ export class CandyDate {
         case 'year':
           return left.getFullYear() < right.getFullYear();
         case 'month':
-          return (left.getFullYear() < right.getFullYear())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() < right.getMonth());
+          return (
+            left.getFullYear() < right.getFullYear() ||
+            (left.getFullYear() === right.getFullYear() && left.getMonth() < right.getMonth())
+          );
         case 'day':
-          return (left.getFullYear() < right.getFullYear())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() < right.getMonth())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() === right.getMonth() && left.getDate() < right.getDate());
+          return (
+            left.getFullYear() < right.getFullYear() ||
+            (left.getFullYear() === right.getFullYear() && left.getMonth() < right.getMonth()) ||
+            (left.getFullYear() === right.getFullYear() &&
+              left.getMonth() === right.getMonth() &&
+              left.getDate() < right.getDate())
+          );
         case 'hour':
-          return (left.getFullYear() < right.getFullYear())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() < right.getMonth())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() === right.getMonth() && left.getDate() < right.getDate())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() === right.getMonth() && left.getDate() === right.getDate() && left.getHours() < right.getHours());
+          return (
+            left.getFullYear() < right.getFullYear() ||
+            (left.getFullYear() === right.getFullYear() && left.getMonth() < right.getMonth()) ||
+            (left.getFullYear() === right.getFullYear() &&
+              left.getMonth() === right.getMonth() &&
+              left.getDate() < right.getDate()) ||
+            (left.getFullYear() === right.getFullYear() &&
+              left.getMonth() === right.getMonth() &&
+              left.getDate() === right.getDate() &&
+              left.getHours() < right.getHours())
+          );
         case 'minute':
-          return (left.getFullYear() < right.getFullYear())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() < right.getMonth())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() === right.getMonth() && left.getDate() < right.getDate())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() === right.getMonth() && left.getDate() === right.getDate() && left.getHours() < right.getHours())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() === right.getMonth() && left.getDate() === right.getDate() && left.getHours() === right.getHours() && left.getMinutes() < right.getMinutes());
+          return (
+            left.getFullYear() < right.getFullYear() ||
+            (left.getFullYear() === right.getFullYear() && left.getMonth() < right.getMonth()) ||
+            (left.getFullYear() === right.getFullYear() &&
+              left.getMonth() === right.getMonth() &&
+              left.getDate() < right.getDate()) ||
+            (left.getFullYear() === right.getFullYear() &&
+              left.getMonth() === right.getMonth() &&
+              left.getDate() === right.getDate() &&
+              left.getHours() < right.getHours()) ||
+            (left.getFullYear() === right.getFullYear() &&
+              left.getMonth() === right.getMonth() &&
+              left.getDate() === right.getDate() &&
+              left.getHours() === right.getHours() &&
+              left.getMinutes() < right.getMinutes())
+          );
         case 'second':
-          return (left.getFullYear() < right.getFullYear())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() < right.getMonth())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() === right.getMonth() && left.getDate() < right.getDate())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() === right.getMonth() && left.getDate() === right.getDate() && left.getHours() < right.getHours())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() === right.getMonth() && left.getDate() === right.getDate() && left.getHours() === right.getHours() && left.getMinutes() < right.getMinutes())
-            || (left.getFullYear() === right.getFullYear() && left.getMonth() === right.getMonth() && left.getDate() === right.getDate() && left.getHours() === right.getHours() && left.getMinutes() === right.getMinutes() && left.getSeconds() < right.getSeconds());
+          return (
+            left.getFullYear() < right.getFullYear() ||
+            (left.getFullYear() === right.getFullYear() && left.getMonth() < right.getMonth()) ||
+            (left.getFullYear() === right.getFullYear() &&
+              left.getMonth() === right.getMonth() &&
+              left.getDate() < right.getDate()) ||
+            (left.getFullYear() === right.getFullYear() &&
+              left.getMonth() === right.getMonth() &&
+              left.getDate() === right.getDate() &&
+              left.getHours() < right.getHours()) ||
+            (left.getFullYear() === right.getFullYear() &&
+              left.getMonth() === right.getMonth() &&
+              left.getDate() === right.getDate() &&
+              left.getHours() === right.getHours() &&
+              left.getMinutes() < right.getMinutes()) ||
+            (left.getFullYear() === right.getFullYear() &&
+              left.getMonth() === right.getMonth() &&
+              left.getDate() === right.getDate() &&
+              left.getHours() === right.getHours() &&
+              left.getMinutes() === right.getMinutes() &&
+              left.getSeconds() < right.getSeconds())
+          );
       }
     }
     return false;

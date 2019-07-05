@@ -15,8 +15,8 @@ import { Component } from '@angular/core';
     <ng-template #extraTemplate>
       <a>More</a>
     </ng-template>
-    <br>
-    <br>
+    <br />
+    <br />
     <nz-card style="width: 100%;">
       <nz-card-tab>
         <nz-tabset nzSize="large" [(nzSelectedIndex)]="index2">

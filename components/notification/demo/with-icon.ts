@@ -9,7 +9,7 @@ import { NzNotificationService } from 'ng-zorro-antd';
     <button nz-button (click)="createNotification('warning')">Warning</button>
     <button nz-button (click)="createNotification('error')">Error</button>
   `,
-  styles  : [
+  styles: [
     `
       button {
         margin-right: 1em;
@@ -19,10 +19,12 @@ import { NzNotificationService } from 'ng-zorro-antd';
 })
 export class NzDemoNotificationWithIconComponent {
   createNotification(type: string): void {
-    this.notification.create(type, 'Notification Title',
-      'This is the content of the notification. This is the content of the notification. This is the content of the notification.');
+    this.notification.create(
+      type,
+      'Notification Title',
+      'This is the content of the notification. This is the content of the notification. This is the content of the notification.'
+    );
   }
 
-  constructor(private notification: NzNotificationService) {
-  }
+  constructor(private notification: NzNotificationService) {}
 }

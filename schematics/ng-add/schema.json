@@ -115,6 +115,19 @@
         ]
       }
     },
+    "template": {
+      "type": "string",
+      "default": "blank",
+      "description": "Create an Angular project with using preset template.",
+      "x-prompt": {
+        "message": "Choose template to create project:",
+        "type": "list",
+        "items": [
+          "blank",
+          "sidemenu"
+        ]
+      }
+    },
     "gestures": {
       "type": "boolean",
       "default": false,
@@ -124,12 +137,6 @@
       "type": "boolean",
       "default": true,
       "description": "Whether Angular browser animations should be set up."
-    },
-    "bootPage": {
-      "type": "boolean",
-      "default": true,
-      "description": "Whether boot page should be set up.",
-      "x-prompt": "Set up the boot page"
     }
   },
   "required": []

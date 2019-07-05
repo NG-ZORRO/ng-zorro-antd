@@ -1,7 +1,7 @@
 <ng-template #tplOriginContent><ng-content></ng-content></ng-template> <!-- Compatible: the <ng-content> can appear only once -->
 
 <div [nzNoAnimation]="nzNoAnimation">
-  <div *ngIf="nzMask"
+  <div *ngIf="mask"
     class="ant-modal-mask"
     [ngClass]="maskAnimationClassMap"
     [class.ant-modal-mask-hidden]="hidden"
@@ -10,14 +10,16 @@
   ></div>
   <div
     (click)="onClickMask($event)"
+    (mouseup)="onDialogUp()"
     class="ant-modal-wrap {{ nzWrapClassName }}"
     [style.zIndex]="nzZIndex"
-    [style.display]="hidden ? 'none' : ''"
+    [style.visibility]="hidden ? 'hidden' : null"
     tabindex="-1"
     role="dialog"
   >
     <div #modalContainer
       class="ant-modal {{ nzClassName }}"
+      (mousedown)="onMaskDialogDown()"
       [ngClass]="modalAnimationClassMap"
       [ngStyle]="nzStyle"
       [style.width]="nzWidth | toCssUnit"
@@ -27,16 +29,15 @@
       <div class="ant-modal-content">
         <button *ngIf="nzClosable" (click)="onClickCloseBtn()" class="ant-modal-close" aria-label="Close">
           <span class="ant-modal-close-x">
-            <i nz-icon type="close" class="ant-modal-close-icon"></i>
+            <i nz-icon nzType="close" class="ant-modal-close-icon"></i>
           </span>
         </button>
-        <ng-container [ngSwitch]="true">
+        <ng-container *ngIf="!hidden" [ngSwitch]="true">
           <ng-container *ngSwitchCase="isModalType('default')" [ngTemplateOutlet]="tplContentDefault"></ng-container>
           <ng-container *ngSwitchCase="isModalType('confirm')" [ngTemplateOutlet]="tplContentConfirm"></ng-container>
         </ng-container>
       </div>
     </div>
-    <div tabindex="0" style="width: 0px; height: 0px; overflow: hidden;">sentinel</div>
   </div>
 </div>
 
@@ -93,7 +94,7 @@
   <div class="ant-modal-body" [ngStyle]="nzBodyStyle">
     <div class="ant-modal-confirm-body-wrapper">
       <div class="ant-modal-confirm-body">
-        <i nz-icon [type]="nzIconType"></i>
+        <i nz-icon [nzType]="nzIconType"></i>
         <span class="ant-modal-confirm-title">
           <ng-container [ngSwitch]="true">
             <ng-container *ngSwitchCase="isTemplateRef(nzTitle)" [ngTemplateOutlet]="nzTitle"></ng-container>

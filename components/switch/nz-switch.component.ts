@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
 import {
@@ -8,42 +16,45 @@ import {
   Component,
   ElementRef,
   Input,
+  OnDestroy,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NzSizeDSType } from '../core/types/size';
 
-import { InputBoolean } from '../core/util/convert';
+import { InputBoolean, NzSizeDSType } from 'ng-zorro-antd/core';
 
 @Component({
-  selector           : 'nz-switch',
+  selector: 'nz-switch',
+  exportAs: 'nzSwitch',
   preserveWhitespaces: false,
-  templateUrl        : './nz-switch.component.html',
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  providers          : [
+  templateUrl: './nz-switch.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  providers: [
     {
-      provide    : NG_VALUE_ACCESSOR,
+      provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzSwitchComponent),
-      multi      : true
+      multi: true
     }
   ],
-  host               : {
+  host: {
     '(click)': 'hostClick($event)'
   },
-  styles             : [ `
-    nz-switch {
-      display: inline-block;
-    }`
+  styles: [
+    `
+      nz-switch {
+        display: inline-block;
+      }
+    `
   ]
 })
-export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit {
+export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, OnDestroy {
   checked = false;
   onChange: (value: boolean) => void = () => null;
   onTouched: () => void = () => null;
-  @ViewChild('switchElement') private switchElement: ElementRef;
+  @ViewChild('switchElement', { static: false }) private switchElement: ElementRef;
   @Input() @InputBoolean() nzLoading = false;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzControl = false;
@@ -88,8 +99,7 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit {
     this.switchElement.nativeElement.blur();
   }
 
-  constructor(private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {
-  }
+  constructor(private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {}
 
   ngAfterViewInit(): void {
     this.focusMonitor.monitor(this.switchElement.nativeElement, true).subscribe(focusOrigin => {
@@ -102,6 +112,10 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit {
         Promise.resolve().then(() => this.onTouched());
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.focusMonitor.stopMonitoring(this.switchElement.nativeElement);
   }
 
   writeValue(value: boolean): void {

@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { CdkOverlayOrigin, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
   AfterViewInit,
@@ -7,49 +15,49 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
   Renderer2,
+  SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { slideMotion } from '../core/animation/slide';
-import { NzUpdateHostClassService as UpdateCls } from '../core/services/update-host-class.service';
-import { isNotNil } from '../core/util/check';
-import { toBoolean } from '../core/util/convert';
+
+import { isNotNil, slideMotion, toBoolean, NzUpdateHostClassService as UpdateCls } from 'ng-zorro-antd/core';
 
 @Component({
-  encapsulation  : ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  selector       : 'nz-time-picker',
-  templateUrl    : './nz-time-picker.component.html',
-  animations     : [ slideMotion ],
-  providers      : [
-    UpdateCls,
-    { provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }
-  ]
+  selector: 'nz-time-picker',
+  exportAs: 'nzTimePicker',
+  templateUrl: './nz-time-picker.component.html',
+  animations: [slideMotion],
+  providers: [UpdateCls, { provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }]
 })
-export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit {
+export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
   private _disabled = false;
   private _value: Date | null = null;
   private _allowEmpty = true;
   private _autoFocus = false;
-  private _onChange: (value: Date) => void;
+  private _onChange: (value: Date | null) => void;
   private _onTouched: () => void;
   private _hideDisabledOptions = false;
   isInit = false;
   origin: CdkOverlayOrigin;
-  overlayPositions: ConnectionPositionPair[] = [ {
-    originX : 'start',
-    originY : 'top',
-    overlayX: 'end',
-    overlayY: 'top',
-    offsetX : 0,
-    offsetY : 0
-  } ];
-  @ViewChild('inputElement') inputRef: ElementRef;
+  overlayPositions: ConnectionPositionPair[] = [
+    {
+      originX: 'start',
+      originY: 'top',
+      overlayX: 'end',
+      overlayY: 'top',
+      offsetX: 0,
+      offsetY: 0
+    }
+  ];
+  @ViewChild('inputElement', { static: true }) inputRef: ElementRef<HTMLInputElement>;
   @Input() nzSize: string | null = null;
   @Input() nzHourStep = 1;
   @Input() nzMinuteStep = 1;
@@ -64,6 +72,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input() nzDisabledSeconds: (hour: number, minute: number) => number[];
   @Input() nzFormat = 'HH:mm:ss';
   @Input() nzOpen = false;
+  @Input() nzUse12Hours = false;
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
 
   @Input()
@@ -152,8 +161,8 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
   private setClassMap(): void {
     this.updateCls.updateHostClass(this.element.nativeElement, {
-      [ `ant-time-picker` ]               : true,
-      [ `ant-time-picker-${this.nzSize}` ]: isNotNil(this.nzSize)
+      [`ant-time-picker`]: true,
+      [`ant-time-picker-${this.nzSize}`]: isNotNil(this.nzSize)
     });
   }
 
@@ -169,15 +178,23 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     }
   }
 
-  constructor(private element: ElementRef,
-              private renderer: Renderer2,
-              private updateCls: UpdateCls,
-              private cdr: ChangeDetectorRef) {
-  }
+  constructor(
+    private element: ElementRef,
+    private renderer: Renderer2,
+    private updateCls: UpdateCls,
+    public cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.setClassMap();
     this.origin = new CdkOverlayOrigin(this.element);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const { nzUse12Hours, nzFormat } = changes;
+    if (nzUse12Hours && !nzUse12Hours.previousValue && nzUse12Hours.currentValue && !nzFormat) {
+      this.nzFormat = 'h:mm:ss a';
+    }
   }
 
   ngAfterViewInit(): void {
@@ -190,7 +207,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     this.cdr.markForCheck();
   }
 
-  registerOnChange(fn: (time: Date) => void): void {
+  registerOnChange(fn: (time: Date | null) => void): void {
     this._onChange = fn;
   }
 

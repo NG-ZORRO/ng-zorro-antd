@@ -1,14 +1,23 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { OverlayRef } from '@angular/cdk/overlay';
 import { EventEmitter, TemplateRef, Type } from '@angular/core';
 
-export type OnClickCallback<T> = ((instance: T) => (false | void | {}) | Promise<false | void | {}>);
+export type OnClickCallback<T> = (instance: T) => (false | void | {}) | Promise<false | void | {}>;
 
 export type ModalType = 'default' | 'confirm'; // Different modal styles we have supported
 
 export type ConfirmType = 'confirm' | 'info' | 'success' | 'error' | 'warning'; // Subtypes of Confirm Modal
 
 // Public options for using by service
-export interface ModalOptions<T = any, R = any> { // tslint:disable-line:no-any
+// tslint:disable-next-line:no-any
+export interface ModalOptions<T = any, R = any> {
   nzModalType?: ModalType;
   nzVisible?: boolean;
   nzZIndex?: number;
@@ -26,31 +35,33 @@ export interface ModalOptions<T = any, R = any> { // tslint:disable-line:no-any
   nzMaskClosable?: boolean;
   nzMaskStyle?: object;
   nzBodyStyle?: object;
-  nzFooter?: string | TemplateRef<{}> | Array<ModalButtonOptions<T>>; // Default Modal ONLY
+  nzFooter?: string | TemplateRef<{}> | Array<ModalButtonOptions<T>> | null; // Default Modal ONLY
   nzGetContainer?: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef); // STATIC
   nzAfterOpen?: EventEmitter<void>;
   nzAfterClose?: EventEmitter<R>;
 
   // --- Predefined OK & Cancel buttons
-  nzOkText?: string;
+  nzOkText?: string | null;
   nzOkType?: string;
   nzOkLoading?: boolean;
   nzOkDisabled?: boolean;
   nzCancelDisabled?: boolean;
   nzOnOk?: EventEmitter<T> | OnClickCallback<T>; // Mixed using ng's Input/Output (Should care of "this" when using OnClickCallback)
-  nzCancelText?: string;
+  nzCancelText?: string | null;
   nzCancelLoading?: boolean;
   nzNoAnimation?: boolean;
   nzOnCancel?: EventEmitter<T> | OnClickCallback<T>; // Mixed using ng's Input/Output (Should care of "this" when using OnClickCallback)
 }
 
 // tslint:disable-next-line:no-any
-export interface ModalOptionsForService<T = any> extends ModalOptions<T> { // Limitations for using by service
+export interface ModalOptionsForService<T = any> extends ModalOptions<T> {
+  // Limitations for using by service
   nzOnOk?: OnClickCallback<T>;
   nzOnCancel?: OnClickCallback<T>;
 }
 
-export interface ModalButtonOptions<T = any> { // tslint:disable-line:no-any
+// tslint:disable-next-line:no-any
+export interface ModalButtonOptions<T = any> {
   label: string;
   type?: string;
   shape?: string;
@@ -62,5 +73,8 @@ export interface ModalButtonOptions<T = any> { // tslint:disable-line:no-any
   show?: boolean | ((this: ModalButtonOptions<T>, contentComponentInstance?: T) => boolean);
   loading?: boolean | ((this: ModalButtonOptions<T>, contentComponentInstance?: T) => boolean); // This prop CAN'T use with autoLoading=true
   disabled?: boolean | ((this: ModalButtonOptions<T>, contentComponentInstance?: T) => boolean);
-  onClick?(this: ModalButtonOptions<T>, contentComponentInstance?: T): (void | {}) | Promise<(void | {})>;
+  onClick?(this: ModalButtonOptions<T>, contentComponentInstance?: T): (void | {}) | Promise<void | {}>;
+
+  // tslint:disable-next-line:no-any
+  [key: string]: any;
 }

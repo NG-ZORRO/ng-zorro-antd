@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -8,35 +16,33 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { NgClassType } from '../core/types/ng-class';
-import { NzSizeLDSType } from '../core/types/size';
-import { InputBoolean } from '../core/util/convert';
+import { InputBoolean, NgClassType, NzSizeLDSType } from 'ng-zorro-antd/core';
 import { NzInputDirective } from './nz-input.directive';
 
 @Component({
-  selector           : 'nz-input-group',
+  selector: 'nz-input-group',
+  exportAs: 'nzInputGroup',
   preserveWhitespaces: false,
-  encapsulation      : ViewEncapsulation.None,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  templateUrl        : './nz-input-group.component.html',
-  host               : {
-    '[class.ant-input-group-compact]'      : 'nzCompact',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './nz-input-group.component.html',
+  host: {
+    '[class.ant-input-group-compact]': 'nzCompact',
     '[class.ant-input-search-enter-button]': 'nzSearch',
-    '[class.ant-input-search]'             : 'nzSearch',
-    '[class.ant-input-search-sm]'          : 'isSmallSearch',
-    '[class.ant-input-affix-wrapper]'      : 'isAffixWrapper',
-    '[class.ant-input-group-wrapper]'      : 'isAddOn',
-    '[class.ant-input-group]'              : 'isGroup',
-    '[class.ant-input-group-lg]'           : 'isLargeGroup',
-    '[class.ant-input-group-wrapper-lg]'   : 'isLargeGroupWrapper',
-    '[class.ant-input-affix-wrapper-lg]'   : 'isLargeAffix',
-    '[class.ant-input-search-lg]'          : 'isLargeSearch',
-    '[class.ant-input-group-sm]'           : 'isSmallGroup',
-    '[class.ant-input-affix-wrapper-sm]'   : 'isSmallAffix',
-    '[class.ant-input-group-wrapper-sm]'   : 'isSmallGroupWrapper'
+    '[class.ant-input-search]': 'nzSearch',
+    '[class.ant-input-search-sm]': 'isSmallSearch',
+    '[class.ant-input-affix-wrapper]': 'isAffixWrapper',
+    '[class.ant-input-group-wrapper]': 'isAddOn',
+    '[class.ant-input-group]': 'isGroup',
+    '[class.ant-input-group-lg]': 'isLargeGroup',
+    '[class.ant-input-group-wrapper-lg]': 'isLargeGroupWrapper',
+    '[class.ant-input-affix-wrapper-lg]': 'isLargeAffix',
+    '[class.ant-input-search-lg]': 'isLargeSearch',
+    '[class.ant-input-group-sm]': 'isSmallGroup',
+    '[class.ant-input-affix-wrapper-sm]': 'isSmallAffix',
+    '[class.ant-input-group-wrapper-sm]': 'isSmallGroupWrapper'
   }
 })
-
 export class NzInputGroupComponent implements AfterContentInit {
   @ContentChildren(NzInputDirective) listOfNzInputDirective: QueryList<NzInputDirective>;
   private _size: NzSizeLDSType = 'default';
@@ -69,7 +75,7 @@ export class NzInputGroupComponent implements AfterContentInit {
   }
 
   get isAffix(): boolean {
-    return (!!(this.nzSuffix || this.nzPrefix || this.nzPrefixIcon || this.nzSuffixIcon));
+    return !!(this.nzSuffix || this.nzPrefix || this.nzPrefixIcon || this.nzSuffixIcon);
   }
 
   get isAddOn(): boolean {
@@ -81,7 +87,7 @@ export class NzInputGroupComponent implements AfterContentInit {
   }
 
   get isGroup(): boolean {
-    return (!this.isAffix) && (!this.isAddOn);
+    return !this.isAffix && !this.isAddOn;
   }
 
   get isLargeGroup(): boolean {
@@ -118,7 +124,7 @@ export class NzInputGroupComponent implements AfterContentInit {
 
   updateChildrenInputSize(): void {
     if (this.listOfNzInputDirective) {
-      this.listOfNzInputDirective.forEach(item => item.nzSize = this.nzSize);
+      this.listOfNzInputDirective.forEach(item => (item.nzSize = this.nzSize));
     }
   }
 

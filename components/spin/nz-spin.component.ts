@@ -1,27 +1,40 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
-  Input, OnChanges, OnDestroy, OnInit, SimpleChanges,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { NzSizeLDSType } from '../core/types/size';
 
-import { InputBoolean, InputNumber } from '../core/util/convert';
+import { InputBoolean, InputNumber, NzSizeLDSType } from 'ng-zorro-antd/core';
 
 @Component({
-  selector           : 'nz-spin',
+  selector: 'nz-spin',
+  exportAs: 'nzSpin',
   preserveWhitespaces: false,
-  encapsulation      : ViewEncapsulation.None,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  templateUrl        : './nz-spin.component.html',
-  host               : {
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './nz-spin.component.html',
+  host: {
     '[class.ant-spin-nested-loading]': '!nzSimple'
   },
-  styles             : [
-      `
+  styles: [
+    `
       nz-spin {
         display: block;
       }
@@ -35,10 +48,10 @@ export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
   @Input() @InputNumber() nzDelay = 0;
   @Input() @InputBoolean() nzSimple = false;
   @Input() @InputBoolean() nzSpinning = true;
+  loading = true;
   private spinning$ = new BehaviorSubject(this.nzSpinning);
   private loading$: Observable<boolean> = this.spinning$.pipe(debounceTime(this.nzDelay));
-  private loading_: Subscription;
-  loading = true;
+  private loading_: Subscription | null;
 
   subscribeLoading(): void {
     this.unsubscribeLoading();
@@ -55,8 +68,7 @@ export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
     }
   }
 
-  constructor(private cdr: ChangeDetectorRef) {
-  }
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.subscribeLoading();

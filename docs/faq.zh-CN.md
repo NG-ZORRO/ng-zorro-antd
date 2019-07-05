@@ -1,11 +1,7 @@
 ---
-order: 8
+order: 9
 title: 常见问题
 ---
-
-### 为什么不提供模块单独引入
-
-事实上，从 `ng-zorro-antd` 的第一个版本开始，所有的 `ng-zorro-antd` 代码就完全由 TypeScript 编写，打包时会根据代码中使用的模块 Tree Shaking，未使用的模块并不会打包进生成的应用中，因此单模块引入是没有必要的，更多可以参考[这篇文章](https://blog.kevinyang.net/2018/11/20/ng-treeshaking/)。
 
 ### 有些特性为什么不会被支持
 
@@ -13,7 +9,7 @@ title: 常见问题
 
 ### 打包出来的文件太大
 
-首先请确定使用了 `ng build --prod` 正确的方式进行了打包，如果除 `ng-zorro-antd` 之外还引入了其他第三方组件库，你可以通过 `ng build --prod --sourcemaps` 命令生成 sourcemap 文件后，再通过 source-map-explorer 检查每个模块所占用的体积，具体操作可以参考[官方文档](https://angular.io/guide/deployment#inspect-the-bundles)。
+首先请确定使用了 `ng build --prod` 正确的方式进行了打包，如果除 `ng-zorro-antd` 之外还引入了其他第三方组件库，你可以通过 `ng build --prod --sourceMap=true` 命令生成 sourcemap 文件后，再通过 source-map-explorer 检查每个模块所占用的体积，具体操作可以参考[官方文档](https://angular.io/guide/deployment#inspect-the-bundles)。
 
 ### 浏览器兼容性问题
 

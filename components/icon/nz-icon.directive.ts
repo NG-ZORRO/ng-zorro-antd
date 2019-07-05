@@ -1,3 +1,12 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { Platform } from '@angular/cdk/platform';
 import {
   AfterContentChecked,
   Directive,
@@ -10,22 +19,22 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { IconDirective, ThemeType } from '@ant-design/icons-angular';
-import { InputBoolean } from '../core/util';
+import { InputBoolean } from 'ng-zorro-antd/core';
 import { NzIconService } from './nz-icon.service';
 
 const iconTypeRE = /^anticon\-\w/;
 
-const getIconTypeClass = (className: string): { name: string, index: number } => {
+const getIconTypeClass = (className: string): { name: string; index: number } | undefined => {
   if (!className) {
     return undefined;
   } else {
     const classArr = className.split(/\s/);
-    const index = classArr.findIndex((cls => cls !== 'anticon' && cls !== 'anticon-spin' && !!cls.match(iconTypeRE)));
-    return index === -1 ? undefined : { name: classArr[ index ], index };
+    const index = classArr.findIndex(cls => cls !== 'anticon' && cls !== 'anticon-spin' && !!cls.match(iconTypeRE));
+    return index === -1 ? undefined : { name: classArr[index], index };
   }
 };
 
-const normalizeType = (rawType: string): { type: string, crossError: boolean, verticalError: boolean } => {
+const normalizeType = (rawType: string): { type: string; crossError: boolean; verticalError: boolean } => {
   const ret = { type: rawType, crossError: false, verticalError: false };
   ret.type = rawType ? rawType.replace('anticon-', '') : '';
   if (ret.type.includes('verticle')) {
@@ -52,16 +61,27 @@ const normalizeType = (rawType: string): { type: string, crossError: boolean, ve
  * - properties that not started with `nz`.
  */
 @Directive({
-  selector: 'i.anticon, [nz-icon]'
+  selector: 'i.anticon, [nz-icon]',
+  exportAs: 'nzIcon'
 })
 export class NzIconDirective extends IconDirective implements OnInit, OnChanges, OnDestroy, AfterContentChecked {
   /** Properties with `nz` prefix. */
-  @Input() @InputBoolean() set nzSpin(value: boolean) { this.spin = value; }
+  @Input() @InputBoolean() set nzSpin(value: boolean) {
+    this.spin = value;
+  }
   @Input() nzRotate: number = 0;
-  @Input() set nzType(value: string) { this.type = value; }
-  @Input() set nzTheme(value: ThemeType) { this.theme = value; }
-  @Input() set nzTwotoneColor(value: string) { this.twoToneColor = value; }
-  @Input() set nzIconfont(value: string) { this.iconfont = value; }
+  @Input() set nzType(value: string) {
+    this.type = value;
+  }
+  @Input() set nzTheme(value: ThemeType) {
+    this.theme = value;
+  }
+  @Input() set nzTwotoneColor(value: string) {
+    this.twoToneColor = value;
+  }
+  @Input() set nzIconfont(value: string) {
+    this.iconfont = value;
+  }
 
   /** @deprecated 8.0.0 avoid exposing low layer API. */
   @Input() spin = false;
@@ -98,14 +118,13 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     if (!oldAPI) {
       this.setClassName();
     }
-    this._changeIcon()
-      .then(svg => {
-        this.setSVGData(svg);
-        if (!oldAPI && svg) {
-          this.handleSpin(svg);
-          this.handleRotate(svg);
-        }
-      });
+    this._changeIcon().then(svg => {
+      this.setSVGData(svg);
+      if (!oldAPI && svg) {
+        this.handleSpin(svg);
+        this.handleRotate(svg);
+      }
+    });
   }
 
   private classChangeHandler(className: string): void {
@@ -154,14 +173,19 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     }
   }
 
-  private setSVGData(svg: SVGElement): void {
+  private setSVGData(svg: SVGElement | null): void {
     if (typeof this.type === 'string' && svg) {
       this.renderer.setAttribute(svg, 'data-icon', this.type);
       this.renderer.setAttribute(svg, 'aria-hidden', 'true');
     }
   }
 
-  constructor(public iconService: NzIconService, public elementRef: ElementRef, public renderer: Renderer2) {
+  constructor(
+    public iconService: NzIconService,
+    public elementRef: ElementRef,
+    public renderer: Renderer2,
+    private platform: Platform
+  ) {
     super(iconService, elementRef, renderer);
   }
 
@@ -183,13 +207,15 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
       this.iconService.warnAPI('old');
       // Get `type` from `className`. If not, initial rendering would be missed.
       this.classChangeHandler(this.el.className);
-      // Add `class` mutation observer.
-      this.classNameObserver = new MutationObserver((mutations: MutationRecord[]) => {
-        mutations
-          .filter((mutation: MutationRecord) => mutation.attributeName === 'class')
-          .forEach((mutation: MutationRecord) => this.classChangeHandler((mutation.target as HTMLElement).className));
-      });
-      this.classNameObserver.observe(this.el, { attributes: true });
+      if (this.platform.isBrowser) {
+        // Add `class` mutation observer.
+        this.classNameObserver = new MutationObserver((mutations: MutationRecord[]) => {
+          mutations
+            .filter((mutation: MutationRecord) => mutation.attributeName === 'class')
+            .forEach((mutation: MutationRecord) => this.classChangeHandler((mutation.target as HTMLElement).className));
+        });
+        this.classNameObserver.observe(this.el, { attributes: true });
+      }
     }
     // If `classList` does not contain `anticon`, add it before other class names.
     if (!this.el.classList.contains('anticon')) {
@@ -211,7 +237,7 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     let length = children.length;
     if (!this.type && children.length) {
       while (length--) {
-        const child = children[ length ];
+        const child = children[length];
         if (child.tagName.toLowerCase() === 'svg') {
           this.iconService.normalizeSvgElement(child as SVGElement);
         }

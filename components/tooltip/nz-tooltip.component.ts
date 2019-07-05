@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { AnimationEvent } from '@angular/animations';
 import {
   CdkConnectedOverlay,
@@ -21,39 +29,47 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { zoomBigMotion } from '../core/animation/zoom';
-import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
-import { getPlacementName, DEFAULT_TOOLTIP_POSITIONS, POSITION_MAP } from '../core/overlay/overlay-position';
-import { isNotNil } from '../core/util/check';
-import { toBoolean } from '../core/util/convert';
+
+import {
+  getPlacementName,
+  isNotNil,
+  toBoolean,
+  zoomBigMotion,
+  DEFAULT_TOOLTIP_POSITIONS,
+  NzNoAnimationDirective,
+  POSITION_MAP
+} from 'ng-zorro-antd/core';
 
 @Component({
-  selector           : 'nz-tooltip',
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  animations         : [ zoomBigMotion ],
-  templateUrl        : './nz-tooltip.component.html',
+  selector: 'nz-tooltip',
+  exportAs: 'nzTooltipComponent',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  animations: [zoomBigMotion],
+  templateUrl: './nz-tooltip.component.html',
   preserveWhitespaces: false,
-  styles             : [ `
-    .ant-tooltip {
-      position: relative;
-    }
-  ` ]
+  styles: [
+    `
+      .ant-tooltip {
+        position: relative;
+      }
+    `
+  ]
 })
 export class NzToolTipComponent implements OnChanges {
   _hasBackdrop = false;
   _prefix = 'ant-tooltip-placement';
-  _positions: ConnectionPositionPair[] = [ ...DEFAULT_TOOLTIP_POSITIONS ];
+  _positions: ConnectionPositionPair[] = [...DEFAULT_TOOLTIP_POSITIONS];
   _classMap = {};
   _placement = 'top';
   _trigger = 'hover';
   overlayOrigin: CdkOverlayOrigin;
   visibleSource = new BehaviorSubject<boolean>(false);
   visible$: Observable<boolean> = this.visibleSource.asObservable();
-  @ViewChild('overlay') overlay: CdkConnectedOverlay;
-  @Input() @ContentChild('nzTemplate') nzTitle: string | TemplateRef<void>;
+  @ViewChild('overlay', { static: false }) overlay: CdkConnectedOverlay;
+  @Input() @ContentChild('nzTemplate', { static: true }) nzTitle: string | TemplateRef<void> | null;
   @Input() nzOverlayClassName = '';
-  @Input() nzOverlayStyle: { [ key: string ]: string } = {};
+  @Input() nzOverlayStyle: { [key: string]: string } = {};
   @Input() nzMouseEnterDelay = 0.15; // second
   @Input() nzMouseLeaveDelay = 0.1; // second
 
@@ -84,7 +100,7 @@ export class NzToolTipComponent implements OnChanges {
   set nzPlacement(value: string) {
     if (value !== this._placement) {
       this._placement = value;
-      this._positions = [ POSITION_MAP[ this.nzPlacement ], ...this._positions ];
+      this._positions = [POSITION_MAP[this.nzPlacement], ...this._positions];
     }
   }
 
@@ -94,8 +110,9 @@ export class NzToolTipComponent implements OnChanges {
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
-  constructor(public cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
-  }
+  [property: string]: any; // tslint:disable-line:no-any
+
+  constructor(public cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {}
 
   ngOnChanges(): void {
     Promise.resolve().then(() => {
@@ -111,7 +128,7 @@ export class NzToolTipComponent implements OnChanges {
   }
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
-    this.nzPlacement = getPlacementName(position);
+    this.nzPlacement = getPlacementName(position)!;
     this.setClassMap();
     this.cdr.detectChanges(); // TODO: performance?
   }
@@ -137,8 +154,8 @@ export class NzToolTipComponent implements OnChanges {
 
   setClassMap(): void {
     this._classMap = {
-      [ this.nzOverlayClassName ]             : true,
-      [ `${this._prefix}-${this._placement}` ]: true
+      [this.nzOverlayClassName]: true,
+      [`${this._prefix}-${this._placement}`]: true
     };
   }
 
@@ -147,6 +164,6 @@ export class NzToolTipComponent implements OnChanges {
   }
 
   protected isContentEmpty(): boolean {
-    return this.nzTitle instanceof TemplateRef ? false : (this.nzTitle === '' || !isNotNil(this.nzTitle));
+    return this.nzTitle instanceof TemplateRef ? false : this.nzTitle === '' || !isNotNil(this.nzTitle);
   }
 }

@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   AfterViewInit,
   ComponentFactory,
@@ -21,13 +29,14 @@ import {
 import { Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 
-import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
-import { isNotNil } from '../core/util/check';
+import { isNotNil, NzNoAnimationDirective } from 'ng-zorro-antd/core';
+
 import { NzToolTipComponent } from './nz-tooltip.component';
 
 @Directive({
   selector: '[nz-tooltip]',
-  host    : {
+  exportAs: 'nzTooltip',
+  host: {
     '[class.ant-tooltip-open]': 'isTooltipOpen'
   }
 })
@@ -35,7 +44,7 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
   // [NOTE] Here hard coded, and nzTitle used only under NzTooltipDirective currently.
   isTooltipOpen: boolean = false;
   isDynamicTooltip = false; // Indicate whether current tooltip is dynamic created
-  delayTimer: number; // Timer for delay enter/leave
+  delayTimer: number | null; // Timer for delay enter/leave
   visible: boolean;
   factory: ComponentFactory<NzToolTipComponent> = this.resolver.resolveComponentFactory(NzToolTipComponent);
 
@@ -53,12 +62,13 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
   ];
 
   protected subs_ = new Subscription();
+  protected listeners: Array<() => void> = [];
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
-  @Input('nz-tooltip') nzTitle: string | TemplateRef<void>;
+  @Input('nz-tooltip') nzTitle: string | TemplateRef<void> | null;
 
-  @Input('nzTitle') set setTitle(title: string | TemplateRef<void>) {
+  @Input('nzTitle') set setTitle(title: string | TemplateRef<void> | null) {
     this.nzTitle = title;
   }
 
@@ -66,10 +76,12 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
   @Input() nzMouseEnterDelay: number;
   @Input() nzMouseLeaveDelay: number;
   @Input() nzOverlayClassName: string;
-  @Input() nzOverlayStyle: { [ key: string ]: string };
+  @Input() nzOverlayStyle: { [key: string]: string };
   @Input() nzTrigger: string;
   @Input() nzVisible: boolean;
   @Input() nzPlacement: string;
+
+  [property: string]: any; // tslint:disable-line:no-any
 
   constructor(
     public elementRef: ElementRef,
@@ -78,8 +90,7 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
     public renderer: Renderer2,
     @Optional() public tooltip: NzToolTipComponent,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
-  ) {
-  }
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     this.updateProxies(changes);
@@ -92,9 +103,12 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
       this.tooltip = tooltipComponent.instance;
       this.tooltip.noAnimation = this.noAnimation;
       // Remove element when use directive https://github.com/NG-ZORRO/ng-zorro-antd/issues/1967
-      this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), tooltipComponent.location.nativeElement);
+      this.renderer.removeChild(
+        this.renderer.parentNode(this.elementRef.nativeElement),
+        tooltipComponent.location.nativeElement
+      );
       this.isDynamicTooltip = true;
-      this.needProxyProperties.forEach(property => this.updateCompValue(property, this[ property ]));
+      this.needProxyProperties.forEach(property => this.updateCompValue(property, this[property]));
       const visible_ = this.tooltip.nzVisibleChange.pipe(distinctUntilChanged()).subscribe(data => {
         this.visible = data;
         this.nzVisibleChange.emit(data);
@@ -106,35 +120,59 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
 
   ngAfterViewInit(): void {
     if (this.tooltip.nzTrigger === 'hover') {
-      let overlayElement;
-      this.renderer.listen(this.elementRef.nativeElement, 'mouseenter', () => this.delayEnterLeave(true, true, this.tooltip.nzMouseEnterDelay));
-      this.renderer.listen(this.elementRef.nativeElement, 'mouseleave', () => {
+      let overlayElement: HTMLElement;
+      const listenerMouseEnter = this.renderer.listen(this.elementRef.nativeElement, 'mouseenter', () =>
+        this.delayEnterLeave(true, true, this.tooltip.nzMouseEnterDelay)
+      );
+      this.listeners.push(listenerMouseEnter);
+
+      const listenerMouseLeave = this.renderer.listen(this.elementRef.nativeElement, 'mouseleave', () => {
         this.delayEnterLeave(true, false, this.tooltip.nzMouseLeaveDelay);
-        if (this.tooltip.overlay.overlayRef && !overlayElement) { // NOTE: we bind events under "mouseleave" due to the overlayRef is only created after the overlay was completely shown up
+        if (this.tooltip.overlay.overlayRef && !overlayElement) {
+          // NOTE: we bind events under "mouseleave" due to the overlayRef is only created after the overlay was completely shown up
           overlayElement = this.tooltip.overlay.overlayRef.overlayElement;
-          this.renderer.listen(overlayElement, 'mouseenter', () => this.delayEnterLeave(false, true));
-          this.renderer.listen(overlayElement, 'mouseleave', () => this.delayEnterLeave(false, false));
+          const listenerOverlayMouseEnter = this.renderer.listen(overlayElement, 'mouseenter', () =>
+            this.delayEnterLeave(false, true)
+          );
+          this.listeners.push(listenerOverlayMouseEnter);
+
+          const listenerOverlayMouseLeave = this.renderer.listen(overlayElement, 'mouseleave', () =>
+            this.delayEnterLeave(false, false)
+          );
+          this.listeners.push(listenerOverlayMouseLeave);
         }
       });
+      this.listeners.push(listenerMouseLeave);
     } else if (this.tooltip.nzTrigger === 'focus') {
-      this.renderer.listen(this.elementRef.nativeElement, 'focus', () => this.show());
-      this.renderer.listen(this.elementRef.nativeElement, 'blur', () => this.hide());
+      const listenerFocus = this.renderer.listen(this.elementRef.nativeElement, 'focus', () => this.show());
+      this.listeners.push(listenerFocus);
+
+      const listenerBlur = this.renderer.listen(this.elementRef.nativeElement, 'blur', () => this.hide());
+      this.listeners.push(listenerBlur);
     } else if (this.tooltip.nzTrigger === 'click') {
-      this.renderer.listen(this.elementRef.nativeElement, 'click', (e) => {
+      const listenerClick = this.renderer.listen(this.elementRef.nativeElement, 'click', e => {
         e.preventDefault();
         this.show();
       });
+      this.listeners.push(listenerClick);
     }
   }
 
   ngOnDestroy(): void {
     this.subs_.unsubscribe();
+    this.listeners.forEach(listener => {
+      listener();
+    });
   }
 
   // tslint:disable-next-line:no-any
   protected updateCompValue(key: string, value: any): void {
     if (this.isDynamicTooltip && isNotNil(value)) {
-      this.tooltip[ key ] = value;
+      this.tooltip[key] = value;
+      this.tooltip.setClassMap();
+      Promise.resolve().then(() => {
+        this.tooltip.updatePosition();
+      });
     }
   }
 
@@ -149,7 +187,8 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
   }
 
   private delayEnterLeave(isOrigin: boolean, isEnter: boolean, delay: number = -1): void {
-    if (this.delayTimer) { // Clear timer during the delay time
+    if (this.delayTimer) {
+      // Clear timer during the delay time
       clearTimeout(this.delayTimer);
       this.delayTimer = null;
     } else if (delay > 0) {
@@ -169,7 +208,7 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
   private updateProxies(changes: SimpleChanges): void {
     if (this.tooltip) {
       Object.keys(changes).forEach(key => {
-        const change = changes[ key ];
+        const change = changes[key];
         if (change) {
           this.updateCompValue(key, change.currentValue);
         }
@@ -179,6 +218,8 @@ export class NzTooltipDirective implements AfterViewInit, OnChanges, OnInit, OnD
         this.nzTitle = changes.setTitle.currentValue;
         this.updateCompValue('nzTitle', changes.setTitle.currentValue);
       }
+
+      this.tooltip.cdr.markForCheck(); // Manually trigger change detection of component.
     }
   }
 }

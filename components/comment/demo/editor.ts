@@ -9,7 +9,7 @@ import { distanceInWords } from 'date-fns';
         <nz-comment [nzAuthor]="item.author" [nzDatetime]="item.displayTime">
           <nz-avatar nz-comment-avatar nzIcon="user" [nzSrc]="item.avatar"></nz-avatar>
           <nz-comment-content>
-            <p>{{item.content}}</p>
+            <p>{{ item.content }}</p>
           </nz-comment-content>
         </nz-comment>
       </ng-template>
@@ -27,11 +27,10 @@ import { distanceInWords } from 'date-fns';
         </nz-form-item>
       </nz-comment-content>
     </nz-comment>
-  `,
-  styles  : []
+  `
 })
 export class NzDemoCommentEditorComponent {
-  data = [];
+  data: any[] = [];
   submitting = false;
   user = {
     author: 'Han Solo',
@@ -45,12 +44,15 @@ export class NzDemoCommentEditorComponent {
     this.inputValue = '';
     setTimeout(() => {
       this.submitting = false;
-      this.data = [...this.data, {
-        ...this.user,
-        content,
-        datetime: new Date(),
-        displayTime: distanceInWords(new Date(), new Date())
-      }].map(e => {
+      this.data = [
+        ...this.data,
+        {
+          ...this.user,
+          content,
+          datetime: new Date(),
+          displayTime: distanceInWords(new Date(), new Date())
+        }
+      ].map(e => {
         return {
           ...e,
           displayTime: distanceInWords(new Date(), e.datetime)
@@ -58,5 +60,4 @@ export class NzDemoCommentEditorComponent {
       });
     }, 800);
   }
-
 }

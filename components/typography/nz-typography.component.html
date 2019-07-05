@@ -1,0 +1,25 @@
+<ng-template #contentTemplate let-content="content">
+  <ng-content *ngIf="!content"></ng-content>
+  {{content}}
+</ng-template>
+
+<ng-container *ngIf="!editing">
+  <ng-container *ngIf="expanded || (!nzExpandable && nzEllipsisRows === 1) || canCssEllipsis">
+    <ng-template [ngTemplateOutlet]="contentTemplate" [ngTemplateOutletContext]="{ content: nzContent}"></ng-template>
+  </ng-container>
+  <ng-container *ngIf="nzEllipsis && !expanded && (nzEllipsisRows > 1 || nzExpandable)">
+    <span #ellipsisContainer></span>
+    <ng-container *ngIf="isEllipsis">{{ellipsisStr}}</ng-container>
+    <a #expandable *ngIf="nzExpandable && isEllipsis" class="ant-typography-expand" (click)="onExpand()">{{locale?.expand}}</a>
+  </ng-container>
+</ng-container>
+
+<nz-text-edit
+  *ngIf="nzEditable"
+  [text]="nzContent"
+  (endEditing)="onEndEditing($event)"
+  (startEditing)="onStartEditing()">
+</nz-text-edit>
+
+<nz-text-copy *ngIf="nzCopyable && !editing" [text]="copyText" (textCopy)="onTextCopy($event)"></nz-text-copy>
+

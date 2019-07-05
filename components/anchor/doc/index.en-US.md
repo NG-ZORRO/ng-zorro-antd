@@ -10,6 +10,14 @@ Hyperlinks to scroll on one page.
 
 For displaying anchor hyperlinks on page and jumping between them.
 
+## Import this Component Individually
+
+You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
+
+```ts
+import { NzAnchorModule } from 'ng-zorro-antd/anchor';
+```
+
 ## API
 
 ### nz-anchor
@@ -21,7 +29,7 @@ For displaying anchor hyperlinks on page and jumping between them.
 | `[nzOffsetBottom]` | Pixels to offset from bottom when calculating position of scroll | `number` | - |
 | `[nzOffsetTop]` | Pixels to offset from top when calculating position of scroll | `number` | `0` |
 | `[nzShowInkInFixed]` | Whether show ink-balls in Fixed mode | `boolean` | `false` |
-| `[nzTarget]` | Scrolling container | `string｜HTMLElement` | `window` |
+| `[nzTarget]` | Scrolling container | `string \| HTMLElement` | `window` |
 | `(nzClick)` | Click of Anchor item | `EventEmitter<string>` | - |
 | `(nzScroll)` | The scroll function that is triggered when scrolling to an anchor. | `EventEmitter<NzAnchorLinkComponent>` | - |
 
@@ -30,4 +38,4 @@ For displaying anchor hyperlinks on page and jumping between them.
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[nzHref]` | target of hyperlink | `string` | - |
-| `[nzTitle]` | content of  hyperlink | `string｜TemplateRef<void>` | - |
+| `[nzTitle]` | content of  hyperlink | `string \| TemplateRef<void>` | - |

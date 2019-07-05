@@ -1,8 +1,3 @@
-<ng-template #contentTpl>
-  <div *ngIf="nzContent" class="ant-list-item-content" [ngClass]="{'ant-list-item-content-single': metas.length < 1}">
-    <ng-container *nzStringTemplateOutlet="nzContent">{{ nzContent }}</ng-container>
-  </div>
-</ng-template>
 <ng-template #actionsTpl>
   <ul *ngIf="nzActions?.length > 0" class="ant-list-item-action">
     <li *ngFor="let i of nzActions; let last=last;">
@@ -11,16 +6,23 @@
     </li>
   </ul>
 </ng-template>
-<ng-template #mainTpl>
+<ng-template #contentTpl>
   <ng-content></ng-content>
+  <ng-container *ngIf="nzContent">
+    <ng-container *nzStringTemplateOutlet="nzContent">{{ nzContent }}</ng-container>
+  </ng-container>
+</ng-template>
+<ng-template #simpleTpl>
   <ng-template [ngTemplateOutlet]="contentTpl"></ng-template>
+  <ng-template [ngTemplateOutlet]="nzExtra"></ng-template>
   <ng-template [ngTemplateOutlet]="actionsTpl"></ng-template>
 </ng-template>
-<div *ngIf="nzExtra; else mainTpl" class="ant-list-item-extra-wrap">
+<ng-container *ngIf="isVerticalAndExtra; else simpleTpl">
   <div class="ant-list-item-main">
-    <ng-template [ngTemplateOutlet]="mainTpl"></ng-template>
+    <ng-template [ngTemplateOutlet]="contentTpl"></ng-template>
+    <ng-template [ngTemplateOutlet]="actionsTpl"></ng-template>
   </div>
   <div class="ant-list-item-extra">
     <ng-template [ngTemplateOutlet]="nzExtra"></ng-template>
   </div>
-</div>
+</ng-container>

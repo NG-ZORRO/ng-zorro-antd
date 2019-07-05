@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -15,9 +23,7 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { NgClassType } from '../core/types/ng-class';
-import { NzSizeDSType } from '../core/types/size';
-import { toBoolean } from '../core/util/convert';
+import { toBoolean, NgClassType, NzSizeDSType } from 'ng-zorro-antd/core';
 
 import { NzStepComponent } from './nz-step.component';
 
@@ -25,11 +31,12 @@ export type NzDirectionType = 'horizontal' | 'vertical';
 export type NzStatusType = 'wait' | 'process' | 'finish' | 'error';
 
 @Component({
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
-  selector           : 'nz-steps',
-  templateUrl        : './nz-steps.component.html'
+  selector: 'nz-steps',
+  exportAs: 'nzSteps',
+  templateUrl: './nz-steps.component.html'
 })
 export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterContentInit {
   @ContentChildren(NzStepComponent) steps: QueryList<NzStepComponent>;
@@ -42,7 +49,7 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
   @Input() nzStatus: NzStatusType = 'process';
 
   @Input()
-  set nzProgressDot(value: boolean | TemplateRef<{ $implicit: TemplateRef<void>, status: string, index: number }>) {
+  set nzProgressDot(value: boolean | TemplateRef<{ $implicit: TemplateRef<void>; status: string; index: number }>) {
     if (value instanceof TemplateRef) {
       this.showProcessDot = true;
       this.customProcessDotTemplate = value;
@@ -52,7 +59,7 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
     this.updateChildrenSteps();
   }
   showProcessDot = false;
-  customProcessDotTemplate: TemplateRef<{ $implicit: TemplateRef<void>, status: string, index: number }>;
+  customProcessDotTemplate: TemplateRef<{ $implicit: TemplateRef<void>; status: string; index: number }>;
 
   classMap: NgClassType;
 
@@ -80,7 +87,9 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
   ngAfterContentInit(): void {
     this.updateChildrenSteps();
     if (this.steps) {
-      this.steps.changes.pipe(takeUntil(this.destroy$)).subscribe(this.updateChildrenSteps);
+      this.steps.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
+        this.updateChildrenSteps();
+      });
     }
   }
 
@@ -98,7 +107,7 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
           step.index = index + this.nzStartIndex;
           step.currentIndex = this.nzCurrent;
           step.last = length === index + 1;
-          step.detectChanges();
+          step.markForCheck();
         });
       });
     }
@@ -106,11 +115,12 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
 
   private setClassMap(): void {
     this.classMap = {
-      [ `ant-steps-${this.nzDirection}` ]: true,
-      [ `ant-steps-label-horizontal` ]   : this.nzDirection === 'horizontal',
-      [ `ant-steps-label-vertical` ]     : (this.showProcessDot || this.nzLabelPlacement === 'vertical') && this.nzDirection === 'horizontal',
-      [ `ant-steps-dot` ]                : this.showProcessDot,
-      [ 'ant-steps-small' ]              : this.nzSize === 'small'
+      [`ant-steps-${this.nzDirection}`]: true,
+      [`ant-steps-label-horizontal`]: this.nzDirection === 'horizontal',
+      [`ant-steps-label-vertical`]:
+        (this.showProcessDot || this.nzLabelPlacement === 'vertical') && this.nzDirection === 'horizontal',
+      [`ant-steps-dot`]: this.showProcessDot,
+      ['ant-steps-small']: this.nzSize === 'small'
     };
   }
 }

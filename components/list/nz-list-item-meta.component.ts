@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,21 +17,21 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector           : 'nz-list-item-meta',
-  templateUrl        : './nz-list-item-meta.component.html',
+  selector: 'nz-list-item-meta, [nz-list-item-meta]',
+  exportAs: 'nzListItemMeta',
+  templateUrl: './nz-list-item-meta.component.html',
   preserveWhitespaces: false,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class NzListItemMetaComponent {
-
   avatarStr = '';
   avatarTpl: TemplateRef<void>;
 
   @Input()
   set nzAvatar(value: string | TemplateRef<void>) {
     if (value instanceof TemplateRef) {
-      this.avatarStr = null;
+      this.avatarStr = '';
       this.avatarTpl = value;
     } else {
       this.avatarStr = value;

@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -11,25 +19,26 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { InputBoolean } from '../core/util/convert';
-import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
+import { InputBoolean, NgStyleInterface } from 'ng-zorro-antd/core';
+import { NzToolTipComponent } from 'ng-zorro-antd/tooltip';
 
 import { SliderShowTooltip } from './nz-slider-definitions';
 import { NzSliderComponent } from './nz-slider.component';
 
 @Component({
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  selector           : 'nz-slider-handle',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-slider-handle',
+  exportAs: 'nzSliderHandle',
   preserveWhitespaces: false,
-  templateUrl        : './nz-slider-handle.component.html',
-  host               : {
+  templateUrl: './nz-slider-handle.component.html',
+  host: {
     '(mouseenter)': 'enterHandle()',
     '(mouseleave)': 'leaveHandle()'
   }
 })
 export class NzSliderHandleComponent implements OnChanges, OnDestroy {
-  @ViewChild(NzToolTipComponent) tooltip: NzToolTipComponent;
+  @ViewChild(NzToolTipComponent, { static: false }) tooltip: NzToolTipComponent;
 
   @Input() nzVertical: string;
   @Input() nzOffset: number;
@@ -39,15 +48,11 @@ export class NzSliderHandleComponent implements OnChanges, OnDestroy {
   @Input() @InputBoolean() nzActive = false;
 
   tooltipTitle: string;
-  style: object = {};
+  style: NgStyleInterface = {};
 
   private hovers_ = new Subscription();
 
-  constructor(
-    private sliderComponent: NzSliderComponent,
-    private cdr: ChangeDetectorRef
-  ) {
-  }
+  constructor(private sliderComponent: NzSliderComponent, private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzOffset, nzValue, nzActive, nzTooltipVisible } = changes;
@@ -81,14 +86,14 @@ export class NzSliderHandleComponent implements OnChanges, OnDestroy {
       this.updateTooltipPosition();
       this.cdr.detectChanges();
     }
-  }
+  };
 
   leaveHandle = () => {
     if (!this.sliderComponent.isDragging) {
       this.toggleTooltip(false);
       this.cdr.detectChanges();
     }
-  }
+  };
 
   private toggleTooltip(show: boolean, force: boolean = false): void {
     if (!force && (this.nzTooltipVisible !== 'default' || !this.tooltip)) {
@@ -113,6 +118,6 @@ export class NzSliderHandleComponent implements OnChanges, OnDestroy {
   }
 
   private updateStyle(): void {
-    this.style[ this.nzVertical ? 'bottom' : 'left' ] = `${this.nzOffset}%`;
+    this.style[this.nzVertical ? 'bottom' : 'left'] = `${this.nzOffset}%`;
   }
 }

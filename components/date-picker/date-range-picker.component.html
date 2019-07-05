@@ -21,6 +21,7 @@
     (panelModeChange)="nzOnPanelChange.emit($event)"
     [value]="nzValue"
     (valueChange)="onValueChange($event)"
+    (calendarChange)="onCalendarChange($event)"
     [locale]="nzLocale?.lang"
     [showToday]="realShowToday"
     [showTime]="nzShowTime"

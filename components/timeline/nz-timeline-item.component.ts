@@ -1,9 +1,18 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
-  Input, OnChanges,
+  Input,
+  OnChanges,
   OnInit,
   Renderer2,
   SimpleChanges,
@@ -15,14 +24,15 @@ import {
 import { NzTimelineMode } from './nz-timeline.component';
 
 @Component({
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
-  selector           : 'nz-timeline-item, [nz-timeline-item]',
-  templateUrl        : './nz-timeline-item.component.html'
+  selector: 'nz-timeline-item, [nz-timeline-item]',
+  exportAs: 'nzTimelineItem',
+  templateUrl: './nz-timeline-item.component.html'
 })
 export class NzTimelineItemComponent implements OnInit, OnChanges {
-  @ViewChild('liTemplate') liTemplate: ElementRef;
+  @ViewChild('liTemplate', { static: true }) liTemplate: ElementRef;
   @Input() nzColor: string = 'blue';
   @Input() nzDot: string | TemplateRef<void>;
 
@@ -46,7 +56,7 @@ export class NzTimelineItemComponent implements OnInit, OnChanges {
   }
 
   private tryUpdateCustomColor(): void {
-    const defaultColors = [ 'blue', 'red', 'green' ];
+    const defaultColors = ['blue', 'red', 'green'];
     const circle = this.liTemplate.nativeElement.querySelector('.ant-timeline-item-head');
     if (defaultColors.indexOf(this.nzColor) === -1) {
       this.renderer.setStyle(circle, 'border-color', this.nzColor);

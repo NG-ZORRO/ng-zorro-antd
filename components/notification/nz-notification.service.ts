@@ -1,7 +1,15 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Overlay } from '@angular/cdk/overlay';
 import { ApplicationRef, ComponentFactoryResolver, Injectable, Injector, TemplateRef } from '@angular/core';
 
-import { NzMessageBaseService } from '../message/nz-message.service';
+import { NzMessageBaseService } from 'ng-zorro-antd/message';
 
 import { NzNotificationConfig } from './nz-notification-config';
 import { NzNotificationContainerComponent } from './nz-notification-container.component';
@@ -10,14 +18,12 @@ import { NzNotificationData, NzNotificationDataFilled, NzNotificationDataOptions
 @Injectable({
   providedIn: 'root'
 })
-export class NzNotificationService extends NzMessageBaseService<NzNotificationContainerComponent, NzNotificationData, NzNotificationConfig> {
-
-  constructor(
-    overlay: Overlay,
-    injector: Injector,
-    cfr: ComponentFactoryResolver,
-    appRef: ApplicationRef
-  ) {
+export class NzNotificationService extends NzMessageBaseService<
+  NzNotificationContainerComponent,
+  NzNotificationData,
+  NzNotificationConfig
+> {
+  constructor(overlay: Overlay, injector: Injector, cfr: ComponentFactoryResolver, appRef: ApplicationRef) {
     super(overlay, NzNotificationContainerComponent, injector, cfr, appRef, 'notification-');
   }
 
@@ -42,7 +48,12 @@ export class NzNotificationService extends NzMessageBaseService<NzNotificationCo
     return this.createMessage({ type: 'blank', title, content }, options) as NzNotificationDataFilled;
   }
 
-  create(type: 'success' | 'info' | 'warning' | 'error' | 'blank' | string, title: string, content: string, options?: NzNotificationDataOptions): NzNotificationDataFilled {
+  create(
+    type: 'success' | 'info' | 'warning' | 'error' | 'blank' | string,
+    title: string,
+    content: string,
+    options?: NzNotificationDataOptions
+  ): NzNotificationDataFilled {
     return this.createMessage({ type, title, content }, options) as NzNotificationDataFilled;
   }
 

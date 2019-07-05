@@ -1,3 +1,12 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { Platform } from '@angular/cdk/platform';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -17,9 +26,10 @@ import { NzStatisticComponent } from './nz-statistic.component';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation  : ViewEncapsulation.None,
-  selector       : 'nz-countdown',
-  templateUrl    : './nz-countdown.component.html'
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-countdown',
+  exportAs: 'nzCountdown',
+  templateUrl: './nz-countdown.component.html'
 })
 export class NzCountdownComponent extends NzStatisticComponent implements OnInit, OnChanges, OnDestroy {
   /** @override */
@@ -28,9 +38,9 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
   diff: number;
 
   private target: number;
-  private updater_: Subscription;
+  private updater_: Subscription | null;
 
-  constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone) {
+  constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone, private platform: Platform) {
     super();
   }
 
@@ -61,13 +71,15 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
   }
 
   startTimer(): void {
-    this.ngZone.runOutsideAngular(() => {
-      this.stopTimer();
-      this.updater_ = interval(REFRESH_INTERVAL).subscribe(() => {
-        this.updateValue();
-        this.cdr.detectChanges();
+    if (this.platform.isBrowser) {
+      this.ngZone.runOutsideAngular(() => {
+        this.stopTimer();
+        this.updater_ = interval(REFRESH_INTERVAL).subscribe(() => {
+          this.updateValue();
+          this.cdr.detectChanges();
+        });
       });
-    });
+    }
   }
 
   stopTimer(): void {

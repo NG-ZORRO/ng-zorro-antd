@@ -1,19 +1,28 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
-import { InputBoolean } from '../core/util/convert';
+import { InputBoolean } from 'ng-zorro-antd/core';
 
 import { isConfigAObject, DisplayedMark, ExtendedMark, Mark } from './nz-slider-definitions';
 
 @Component({
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
-  selector           : 'nz-slider-marks',
-  templateUrl        : './nz-slider-marks.component.html'
+  selector: 'nz-slider-marks',
+  exportAs: 'nzSliderMarks',
+  templateUrl: './nz-slider-marks.component.html'
 })
 export class NzSliderMarksComponent implements OnChanges {
-  @Input() nzLowerBound: number = null;
-  @Input() nzUpperBound: number = null;
+  @Input() nzLowerBound: number | null = null;
+  @Input() nzUpperBound: number | null = null;
   @Input() nzMarksArray: ExtendedMark[];
   @Input() nzMin: number;
   @Input() nzMax: number;
@@ -54,22 +63,22 @@ export class NzSliderMarksComponent implements OnChanges {
     });
   }
 
-  private buildStyles(value: number, range: number, config: Mark): { [ key: string ]: string } {
+  private buildStyles(value: number, range: number, config: Mark): { [key: string]: string } {
     let style;
 
     if (this.nzVertical) {
       style = {
         marginBottom: '-50%',
-        bottom      : `${(value - this.nzMin) / range * 100}%`
+        bottom: `${((value - this.nzMin) / range) * 100}%`
       };
     } else {
       const marksCount = this.nzMarksArray.length;
       const unit = 100 / (marksCount - 1);
       const markWidth = unit * 0.9;
       style = {
-        width     : `${markWidth}%`,
+        width: `${markWidth}%`,
         marginLeft: `${-markWidth / 2}%`,
-        left      : `${(value - this.nzMin) / range * 100}%`
+        left: `${((value - this.nzMin) / range) * 100}%`
       };
     }
 
@@ -86,7 +95,7 @@ export class NzSliderMarksComponent implements OnChanges {
         const value = mark.value;
         const isActive =
           (!this.nzIncluded && value === this.nzUpperBound) ||
-          (this.nzIncluded && value <= this.nzUpperBound && value >= this.nzLowerBound);
+          (this.nzIncluded && value <= this.nzUpperBound! && value >= this.nzLowerBound!);
 
         mark.active = isActive;
       });

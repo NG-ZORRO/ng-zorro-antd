@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 export default {
   // Options.jsx
   items_per_page: '/ sivu',
@@ -11,5 +19,5 @@ export default {
   prev_5: 'Edelliset 5 sivua',
   next_5: 'Seuraavat 5 sivua',
   prev_3: 'Edelliset 3 sivua',
-  next_3: 'Seuraavat 3 sivua',
+  next_3: 'Seuraavat 3 sivua'
 };

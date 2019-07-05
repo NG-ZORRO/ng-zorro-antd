@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 时间选择框
-type: Data Entry
+type: 数据录入
 title: TimePicker
 ---
 
@@ -10,6 +10,14 @@ title: TimePicker
 ## 何时使用
 
 当用户需要输入一个时间，可以点击标准输入框，弹出时间面板进行选择。
+
+## 单独引入此组件
+
+想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
+
+```ts
+import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
+```
 
 ## API
 
@@ -39,6 +47,7 @@ title: TimePicker
 | `[nzOpen]` | 面板是否打开，可双向绑定 | `boolean` | `false` |
 | `[nzPlaceHolder]` | 没有值的时候显示的内容 | `string` | `"请选择时间"` |
 | `[nzPopupClassName]` | 弹出层类名 | `string` | `''` |
+| `[nzUse12Hours]` | 使用12小时制，为true时format默认为`h:mm:ss a` | `boolean` | `false` |
 | `(ngModelChange)` | 时间发生变化的回调 | `EventEmitter<Date>` | - |
 | `(nzOpenChange)` | 面板打开/关闭时的回调 | `EventEmitter<boolean>` | - |
 

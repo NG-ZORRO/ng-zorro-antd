@@ -1,28 +1,23 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { NzAddOnModule } from '../core/addon/addon.module';
-import { NzNoAnimationModule } from '../core/no-animation/nz-no-animation.module';
-import { NzIconModule } from '../icon/nz-icon.module';
+
+import { NzAddOnModule, NzNoAnimationModule } from 'ng-zorro-antd/core';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
 import { NzTreeNodeComponent } from './nz-tree-node.component';
 import { NzTreeComponent } from './nz-tree.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    NzIconModule,
-    NzNoAnimationModule,
-    NzAddOnModule
-  ],
-  declarations: [
-    NzTreeComponent,
-    NzTreeNodeComponent
-  ],
-  exports: [
-    NzTreeComponent,
-    NzTreeNodeComponent
-  ]
+  imports: [CommonModule, NzAddOnModule, NzIconModule, NzNoAnimationModule],
+  declarations: [NzTreeComponent, NzTreeNodeComponent],
+  exports: [NzTreeComponent, NzTreeNodeComponent]
 })
-
-export class NzTreeModule {
-
-}
+export class NzTreeModule {}

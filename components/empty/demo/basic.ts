@@ -3,8 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-empty-basic',
   template: `
-    <nz-empty></nz-empty>`,
-  styles  : []
+    <nz-empty></nz-empty>
+  `
 })
-export class NzDemoEmptyBasicComponent {
-}
+export class NzDemoEmptyBasicComponent {}

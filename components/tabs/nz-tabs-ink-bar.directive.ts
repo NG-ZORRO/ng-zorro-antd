@@ -1,25 +1,31 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Directive, ElementRef, Input, NgZone, Renderer2 } from '@angular/core';
 
-import { InputBoolean } from '../core/util/convert';
+import { InputBoolean } from 'ng-zorro-antd/core';
 
 import { NzTabPositionMode } from './nz-tabset.component';
 
 @Directive({
   selector: '[nz-tabs-ink-bar]',
-  host    : {
-    '[class.ant-tabs-ink-bar-animated]'   : 'nzAnimated',
+  exportAs: 'nzTabsInkBar',
+  host: {
+    '[class.ant-tabs-ink-bar-animated]': 'nzAnimated',
     '[class.ant-tabs-ink-bar-no-animated]': '!nzAnimated'
   }
 })
 export class NzTabsInkBarDirective {
-
   @Input() @InputBoolean() nzAnimated = false;
 
   @Input() nzPositionMode: NzTabPositionMode = 'horizontal';
 
-  constructor(private renderer: Renderer2,
-              private elementRef: ElementRef,
-              private ngZone: NgZone) {
+  constructor(private renderer: Renderer2, private elementRef: ElementRef, private ngZone: NgZone) {
     renderer.addClass(elementRef.nativeElement, 'ant-tabs-ink-bar');
   }
 
@@ -37,17 +43,21 @@ export class NzTabsInkBarDirective {
     /** when horizontal remove height style and add transform left **/
     if (this.nzPositionMode === 'horizontal') {
       this.renderer.removeStyle(this.elementRef.nativeElement, 'height');
-      this.renderer.setStyle(this.elementRef.nativeElement, 'transform',
-        `translate3d(${this.getLeftPosition(element)}, 0px, 0px)`);
-      this.renderer.setStyle(this.elementRef.nativeElement, 'width',
-        this.getElementWidth(element));
+      this.renderer.setStyle(
+        this.elementRef.nativeElement,
+        'transform',
+        `translate3d(${this.getLeftPosition(element)}, 0px, 0px)`
+      );
+      this.renderer.setStyle(this.elementRef.nativeElement, 'width', this.getElementWidth(element));
     } else {
       /** when vertical remove width style and add transform top **/
       this.renderer.removeStyle(this.elementRef.nativeElement, 'width');
-      this.renderer.setStyle(this.elementRef.nativeElement, 'transform',
-        `translate3d(0px, ${this.getTopPosition(element)}, 0px)`);
-      this.renderer.setStyle(this.elementRef.nativeElement, 'height',
-        this.getElementHeight(element));
+      this.renderer.setStyle(
+        this.elementRef.nativeElement,
+        'transform',
+        `translate3d(0px, ${this.getTopPosition(element)}, 0px)`
+      );
+      this.renderer.setStyle(this.elementRef.nativeElement, 'height', this.getElementHeight(element));
     }
   }
 

@@ -1,23 +1,25 @@
-import { Component } from '@angular/core';
-import { fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { Component, DebugElement } from '@angular/core';
+import { fakeAsync, flush, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NzCheckboxModule } from '../checkbox';
-import { createFakeEvent } from '../core/testing';
+
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { createFakeEvent } from 'ng-zorro-antd/core';
+
 import { NzTdComponent } from './nz-td.component';
 
 describe('nz-td', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzCheckboxModule, FormsModule ],
-      declarations: [ NzTestTdComponent, NzTdComponent ]
+      imports: [NzCheckboxModule, FormsModule],
+      declarations: [NzTestTdComponent, NzTdComponent]
     });
     TestBed.compileComponents();
   }));
   describe('basic nz-td', () => {
-    let fixture;
-    let testComponent;
-    let td;
+    let fixture: ComponentFixture<NzTestTdComponent>;
+    let testComponent: NzTestTdComponent;
+    let td: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTdComponent);
       fixture.detectChanges();
@@ -38,13 +40,17 @@ describe('nz-td', () => {
     it('should checked work', fakeAsync(() => {
       testComponent.showCheckbox = true;
       fixture.detectChanges();
-      expect(td.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild.classList).not.toContain('ant-checkbox-checked');
+      expect(td.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild!.classList).not.toContain(
+        'ant-checkbox-checked'
+      );
       testComponent.checked = true;
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
       expect(testComponent.checked).toBe(true);
-      expect(td.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild.classList).toContain('ant-checkbox-checked');
+      expect(td.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild!.classList).toContain(
+        'ant-checkbox-checked'
+      );
       expect(testComponent.checkedChange).toHaveBeenCalledTimes(0);
     }));
     it('should disabled work', () => {
@@ -53,12 +59,20 @@ describe('nz-td', () => {
       testComponent.disabled = true;
       fixture.detectChanges();
       expect(testComponent.checked).toBe(false);
-      expect(td.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild.classList.contains('ant-checkbox-checked')).toBe(false);
+      expect(
+        td.nativeElement
+          .querySelector('.ant-checkbox-wrapper')
+          .firstElementChild!.classList.contains('ant-checkbox-checked')
+      ).toBe(false);
       expect(testComponent.checkedChange).toHaveBeenCalledTimes(0);
       td.nativeElement.querySelector('.ant-checkbox-wrapper').click();
       fixture.detectChanges();
       expect(testComponent.checked).toBe(false);
-      expect(td.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild.classList.contains('ant-checkbox-checked')).toBe(false);
+      expect(
+        td.nativeElement
+          .querySelector('.ant-checkbox-wrapper')
+          .firstElementChild!.classList.contains('ant-checkbox-checked')
+      ).toBe(false);
       expect(testComponent.checkedChange).toHaveBeenCalledTimes(0);
     });
     it('should indeterminate work', () => {
@@ -67,10 +81,18 @@ describe('nz-td', () => {
       fixture.detectChanges();
       testComponent.indeterminate = true;
       fixture.detectChanges();
-      expect(td.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild.classList.contains('ant-checkbox-indeterminate')).toBe(true);
+      expect(
+        td.nativeElement
+          .querySelector('.ant-checkbox-wrapper')
+          .firstElementChild!.classList.contains('ant-checkbox-indeterminate')
+      ).toBe(true);
       testComponent.checked = true;
       fixture.detectChanges();
-      expect(td.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild.classList.contains('ant-checkbox-indeterminate')).toBe(true);
+      expect(
+        td.nativeElement
+          .querySelector('.ant-checkbox-wrapper')
+          .firstElementChild!.classList.contains('ant-checkbox-indeterminate')
+      ).toBe(true);
     });
     it('should showExpand work', () => {
       fixture.detectChanges();
@@ -86,20 +108,28 @@ describe('nz-td', () => {
     it('should expand work', () => {
       testComponent.showExpand = true;
       fixture.detectChanges();
-      expect(td.nativeElement.querySelector('.ant-table-row-expand-icon').classList).toContain('ant-table-row-collapsed');
+      expect(td.nativeElement.querySelector('.ant-table-row-expand-icon').classList).toContain(
+        'ant-table-row-collapsed'
+      );
       testComponent.expand = true;
       fixture.detectChanges();
-      expect(td.nativeElement.querySelector('.ant-table-row-expand-icon').classList).toContain('ant-table-row-expanded');
+      expect(td.nativeElement.querySelector('.ant-table-row-expand-icon').classList).toContain(
+        'ant-table-row-expanded'
+      );
       expect(testComponent.expandChange).toHaveBeenCalledTimes(0);
     });
     it('should click expand work', () => {
       testComponent.showExpand = true;
       fixture.detectChanges();
-      expect(td.nativeElement.querySelector('.ant-table-row-expand-icon').classList).toContain('ant-table-row-collapsed');
+      expect(td.nativeElement.querySelector('.ant-table-row-expand-icon').classList).toContain(
+        'ant-table-row-collapsed'
+      );
       td.nativeElement.querySelector('.ant-table-row-expand-icon').click();
       fixture.detectChanges();
       expect(testComponent.expand).toBe(true);
-      expect(td.nativeElement.querySelector('.ant-table-row-expand-icon').classList).toContain('ant-table-row-expanded');
+      expect(td.nativeElement.querySelector('.ant-table-row-expand-icon').classList).toContain(
+        'ant-table-row-expanded'
+      );
       expect(testComponent.expandChange).toHaveBeenCalledTimes(1);
     });
     it('should click expand event stopPropagation', () => {
@@ -149,7 +179,7 @@ describe('nz-td', () => {
     it('should be throw error when use specific class name', () => {
       expect(() => {
         TestBed.configureTestingModule({
-          declarations: [ NzTestDisableTdComponent ]
+          declarations: [NzTestDisableTdComponent]
         }).createComponent(NzTestDisableTdComponent);
       }).toThrow();
     });
@@ -157,7 +187,6 @@ describe('nz-td', () => {
 });
 
 @Component({
-  selector: 'nz-test-td',
   template: `
     <td
       [nzShowCheckbox]="showCheckbox"
@@ -170,7 +199,9 @@ describe('nz-td', () => {
       (nzExpandChange)="expandChange($event)"
       [nzIndentSize]="indentSize"
       [nzLeft]="left"
-      [nzRight]="right"></td>`
+      [nzRight]="right"
+    ></td>
+  `
 })
 export class NzTestTdComponent {
   showCheckbox = false;
@@ -181,16 +212,14 @@ export class NzTestTdComponent {
   showExpand = false;
   expand = false;
   expandChange = jasmine.createSpy('expand change');
-  indentSize;
-  left;
-  right;
+  indentSize: number;
+  left: string | number;
+  right: string | number;
 }
 
 @Component({
-  selector: 'nz-disable-td',
   template: `
     <td class="nz-disable-td" [nzShowCheckbox]="true"></td>
   `
 })
-export class NzTestDisableTdComponent {
-}
+export class NzTestDisableTdComponent {}

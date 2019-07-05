@@ -1,18 +1,36 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 
-import { DateHelperByDatePipe, DateHelperService } from '../../../i18n/date-helper.service';
-import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewEncapsulation
+} from '@angular/core';
+
+import { DateHelperByDatePipe, DateHelperService, NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+
 import { PanelMode } from '../../standard-types';
-import { CandyDate } from '../candy-date';
+import { CandyDate } from '../candy-date/candy-date';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'calendar-header',
+  exportAs: 'calendarHeader',
   templateUrl: 'calendar-header.component.html'
 })
-
 export class CalendarHeaderComponent implements OnInit, OnChanges {
   @Input() locale: NzCalendarI18nInterface;
   @Input() enablePrev: boolean = true;
@@ -36,7 +54,7 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
 
   private yearToMonth: boolean = false; // Indicate whether should change to month panel when current is year panel (if referer=month, it should show month panel when choosed a year)
 
-  constructor(private dateHelper: DateHelperService) { }
+  constructor(private dateHelper: DateHelperService) {}
 
   ngOnInit(): void {
     if (!this.value) {
@@ -134,14 +152,14 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
     year = {
       className: `${this.prefixCls}-year-select`,
       title: this.locale.yearSelect,
-      onClick: () => this.showTimePicker ? null : this.changePanel('year'),
+      onClick: () => (this.showTimePicker ? null : this.changePanel('year')),
       label: this.formatDateTime(yearFormat)
     };
 
     month = {
       className: `${this.prefixCls}-month-select`,
       title: this.locale.monthSelect,
-      onClick: () => this.showTimePicker ? null : this.changeToMonthPanel(),
+      onClick: () => (this.showTimePicker ? null : this.changeToMonthPanel()),
       label: this.formatDateTime(this.locale.monthFormat || 'MMM')
     };
 
@@ -160,9 +178,9 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
     let result: YearMonthDaySelector[];
 
     if (this.locale.monthBeforeYear) {
-      result = [ month, day, year ];
+      result = [month, day!, year];
     } else {
-      result = [ year, month, day ];
+      result = [year, month, day!];
     }
 
     return result.filter(selector => !!selector);

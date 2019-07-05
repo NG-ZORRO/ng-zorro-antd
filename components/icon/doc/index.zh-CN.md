@@ -1,23 +1,27 @@
 ---
 category: Components
 subtitle: 图标
-type: General
+type: 通用
 title: Icon
 hasPageDemo: true
 ---
 
 语义化的矢量图形。
 
-<blockquote style="border-color: orange;">
-<p><strong>如遇图标无法显示或控制台出现相关错误，请在项目下执行 <code>ng g ng-zorro-antd:fix-icon</code> 命令修复。</strong></p>
-<p>详情请查看 <a href="/components/icon/zh#%E9%9D%99%E6%80%81%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD">静态加载与动态加载</a> 部分。</p>
-</blockquote>
 
 ## 图标列表
 
 > 点击图标即可复制代码
 
 新版图标可能略有缺失，我们将与 [Ant Design](https://ant.design/components/icon-cn/#components-icon-demo-iconfont) 同步保持图标的更新。
+
+## 单独引入此组件
+
+想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
+
+```ts
+import { NzIconModule } from 'ng-zorro-antd/icon';
+```
 
 ## API
 
@@ -30,7 +34,7 @@ hasPageDemo: true
 | `[nzSpin]`       | 是否有旋转动画                                          | `boolean`                    | `false` |
 | `[nzTwotoneColor]` | 仅适用双色图标，设置双色图标的主要颜色，仅对当前 icon 生效   | `string (十六进制颜色)`      | -         |
 | `[nzIconfont]`     | 指定来自 IconFont 的图标类型                                 | string                       | -         |
-| `[nzRotate]` | 图标旋转角度（7.0.0 开始支持） | `number` | - |
+| `[nzRotate]` | 图标旋转角度 | `number` | - |
 
 <blockquote style="border-color: red;"><p><strong>不加上 nz 前缀的 API，以及原使用 icon 类名的 API 将会在 8.0.0 及之后不被支持，请及时迁移。</strong></p></blockquote>
 
@@ -53,7 +57,7 @@ hasPageDemo: true
 
 ### SVG 图标
 
-从 `1.7.0` 版本开始，我们与 Ant Design `3.9.x` 同步，使用了 svg 图标替换了原先的 font 图标，从而带来了以下优势：
+我们与 Ant Design 同步，使用了 svg 图标替换了原先的 font 图标，从而带来了以下优势：
 
 - 完全离线化使用，不需要从支付宝 cdn 下载字体文件，图标不会因为网络问题呈现方块，同时还支持本地部署。
 - 在低端设备上 SVG 有更好的清晰度。
@@ -65,13 +69,13 @@ hasPageDemo: true
 NG-ZORRO 之前并没有图标组件，而是提供了基于字体文件的解决方案。新版本中我们提供了旧 API 兼容，如果你不修改既有的代码，所有的图标都会被动态加载成 `outline` 主题的图标，而最佳实践是使用新的指令 `nz-icon` 并传入 `theme` 以明确图标的主题风格，例如：
 
 ```html
-<i nz-icon [type]="'star'" [theme]="'fill'"></i>
+<i nz-icon [nzType]="'star'" [theme]="'fill'"></i>
 ```
 
 所有的图标都会以 `<svg>` 标签渲染，但是你还是可以用之前对 i 标签设置的样式和类来控制 svg 的样式，例如：
 
 ```html
-<i nz-icon [type]="'message'" style="font-size: 16px; color: #08c;"></i>
+<i nz-icon [nzType]="'message'" style="font-size: 16px; color: #08c;"></i>
 ```
 
 ### 静态加载与动态加载
@@ -132,8 +136,6 @@ export class AppModule {
 }
 ```
 
-我们为你提供了一条指令，升级到 1.7.0 之后，执行 `ng g ng-zorro-antd:fix-icon` 命令，就会自动添加以上配置。
-
 你可以通过 `NzIconService` 的 `changeAssetsSource()` 方法来修改图标资源的位置，这样你就可以部署这些资源到 cdn 上。你的参数会被直接添加到 `assets/` 的前面。
 
 例如，你在 `https://mycdn.somecdn.com/icons/assets` 目录下部署了静态资源文件，那么你就可以通过调用 `changeAssetsSource('https://mycdn.somecdn.com/icons')`，来告诉 NG-ZORRO 从这个位置动态加载图标资源。
@@ -148,7 +150,7 @@ export class AppModule {
 
 ### 自定义 font 图标
 
-从 `1.7.0` 版本开始，我们提供了一个 `fetchFromIconfont` 方法，方便开发者调用在 iconfont.cn 上自行管理的图标。
+我们提供了一个 `fetchFromIconfont` 方法，方便开发者调用在 iconfont.cn 上自行管理的图标。
 
 ```ts
 this._iconService.fetchFromIconfont({
@@ -174,7 +176,7 @@ this._iconService.fetchFromIconfont({
 
 ### 命名空间
 
-从 `7.0.0-rc.4` 版本开始提供命名空间功能，用户可以使用该功能方便地添加自己的 icon。在渲染一个自定义 icon 时，只需要将 `type` 指定为 `namespace:name` 的形式，icon 组件就会在用户自行添加的图标中进行检索并渲染。同时支持静态和动态引入。
+用户可以使用该功能方便地添加自己的 icon。在渲染一个自定义 icon 时，只需要将 `type` 指定为 `namespace:name` 的形式，icon 组件就会在用户自行添加的图标中进行检索并渲染。同时支持静态和动态引入。
 
 静态引入，只需要调用 `NzIconService` 的 `addIconLiteral` 方法即可。
 

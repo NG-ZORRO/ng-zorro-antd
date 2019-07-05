@@ -6,16 +6,19 @@ import { filter } from 'rxjs/operators';
 @Component({
   selector: 'nz-demo-upload-manually',
   template: `
-  <nz-upload
-    [(nzFileList)]="fileList"
-    [nzBeforeUpload]="beforeUpload">
-    <button nz-button>
-      <i nz-icon type="upload"></i><span>Select File</span>
+    <nz-upload [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload">
+      <button nz-button><i nz-icon nzType="upload"></i><span>Select File</span></button>
+    </nz-upload>
+    <button
+      nz-button
+      [nzType]="'primary'"
+      [nzLoading]="uploading"
+      (click)="handleUpload()"
+      [disabled]="fileList.length == 0"
+      style="margin-top: 16px"
+    >
+      {{ uploading ? 'Uploading' : 'Start Upload' }}
     </button>
-  </nz-upload>
-  <button nz-button [nzType]="'primary'" [nzLoading]="uploading" (click)="handleUpload()" [disabled]="fileList.length == 0" style="margin-top: 16px">
-    {{ uploading ? 'Uploading' : 'Start Upload' }}
-  </button>
   `
 })
 export class NzDemoUploadManuallyComponent {
@@ -27,7 +30,7 @@ export class NzDemoUploadManuallyComponent {
   beforeUpload = (file: UploadFile): boolean => {
     this.fileList = this.fileList.concat(file);
     return false;
-  }
+  };
 
   handleUpload(): void {
     const formData = new FormData();

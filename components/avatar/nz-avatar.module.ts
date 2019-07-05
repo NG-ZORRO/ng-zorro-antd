@@ -1,13 +1,20 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { NzIconModule } from '../icon/nz-icon.module';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzAvatarComponent } from './nz-avatar.component';
 
 @NgModule({
-  declarations: [ NzAvatarComponent ],
-  exports     : [ NzAvatarComponent ],
-  imports     : [ CommonModule, NzIconModule ]
+  declarations: [NzAvatarComponent],
+  exports: [NzAvatarComponent],
+  imports: [CommonModule, NzIconModule]
 })
-export class NzAvatarModule {
-}
+export class NzAvatarModule {}

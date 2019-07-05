@@ -1,16 +1,22 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { BACKSPACE } from '@angular/cdk/keycodes';
-import {
-  CdkConnectedOverlay,
-  CdkOverlayOrigin,
-  ConnectedOverlayPositionChange
-} from '@angular/cdk/overlay';
+import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
 import {
   forwardRef,
   ChangeDetectorRef,
   Component,
+  ContentChild,
   ElementRef,
   EventEmitter,
   Host,
+  Injector,
   Input,
   OnChanges,
   OnDestroy,
@@ -18,82 +24,100 @@ import {
   Optional,
   Output,
   Renderer2,
+  Self,
   SimpleChanges,
   TemplateRef,
   ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import {
-  merge,
-  of as observableOf,
-  Subscription
-} from 'rxjs';
+import { merge, of as observableOf, Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
-import { slideMotion } from '../core/animation/slide';
-import { zoomMotion } from '../core/animation/zoom';
-import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
-import { NzSizeLDSType } from '../core/types/size';
-import { InputBoolean } from '../core/util/convert';
-import { NzFormatEmitEvent } from '../tree/interface';
-import { NzTreeNode, NzTreeNodeOptions } from '../tree/nz-tree-node';
-import { NzTreeComponent } from '../tree/nz-tree.component';
+import {
+  isNotNil,
+  slideMotion,
+  zoomMotion,
+  InputBoolean,
+  NzFormatEmitEvent,
+  NzNoAnimationDirective,
+  NzSizeLDSType,
+  NzTreeBase,
+  NzTreeBaseService,
+  NzTreeHigherOrderServiceToken,
+  NzTreeNode,
+  NzTreeNodeOptions
+} from 'ng-zorro-antd/core';
+import { NzTreeComponent } from 'ng-zorro-antd/tree';
+
 import { NzTreeSelectService } from './nz-tree-select.service';
 
+export function higherOrderServiceFactory(injector: Injector): NzTreeBaseService {
+  return injector.get(NzTreeSelectService);
+}
+
 @Component({
-  selector   : 'nz-tree-select',
-  animations : [ slideMotion, zoomMotion ],
+  selector: 'nz-tree-select',
+  exportAs: 'nzTreeSelect',
+  animations: [slideMotion, zoomMotion],
   templateUrl: './nz-tree-select.component.html',
-  providers  : [
+  providers: [
     NzTreeSelectService,
     {
-      provide    : NG_VALUE_ACCESSOR,
+      provide: NzTreeHigherOrderServiceToken,
+      useFactory: higherOrderServiceFactory,
+      deps: [[new Self(), Injector]]
+    },
+    {
+      provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzTreeSelectComponent),
-      multi      : true
+      multi: true
     }
   ],
-  host       : {
-    '[class.ant-select-lg]'         : 'nzSize==="large"',
-    '[class.ant-select-sm]'         : 'nzSize==="small"',
-    '[class.ant-select-enabled]'    : '!nzDisabled',
-    '[class.ant-select-disabled]'   : 'nzDisabled',
+  host: {
+    '[class.ant-select-lg]': 'nzSize==="large"',
+    '[class.ant-select-sm]': 'nzSize==="small"',
+    '[class.ant-select-enabled]': '!nzDisabled',
+    '[class.ant-select-disabled]': 'nzDisabled',
     '[class.ant-select-allow-clear]': 'nzAllowClear',
-    '[class.ant-select-open]'       : 'nzOpen',
-    '(click)'                       : 'trigger()'
+    '[class.ant-select-open]': 'nzOpen',
+    '(click)': 'trigger()'
   },
-  styles     : [ `
-    .ant-select-dropdown {
-      top: 100%;
-      left: 0;
-      position: relative;
-      width: 100%;
-      margin-top: 4px;
-      margin-bottom: 4px;
-      overflow: auto;
-    }
-  ` ]
+  styles: [
+    `
+      .ant-select-dropdown {
+        top: 100%;
+        left: 0;
+        position: relative;
+        width: 100%;
+        margin-top: 4px;
+        margin-bottom: 4px;
+        overflow: auto;
+      }
+    `
+  ]
 })
-export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
-
+export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
   @Input() @InputBoolean() nzAllowClear = true;
   @Input() @InputBoolean() nzShowExpand = true;
+  @Input() @InputBoolean() nzShowLine = false;
   @Input() @InputBoolean() nzDropdownMatchSelectWidth = true;
   @Input() @InputBoolean() nzCheckable = false;
+  @Input() @InputBoolean() nzShowIcon = false;
   @Input() @InputBoolean() nzShowSearch = false;
   @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzShowLine = false;
   @Input() @InputBoolean() nzAsyncData = false;
   @Input() @InputBoolean() nzMultiple = false;
   @Input() @InputBoolean() nzDefaultExpandAll = false;
+  @Input() nzExpandedIcon: TemplateRef<{ $implicit: NzTreeNode }>;
   @Input() nzNotFoundContent: string;
   @Input() nzNodes: Array<NzTreeNode | NzTreeNodeOptions> = [];
   @Input() nzOpen = false;
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzPlaceHolder = '';
-  @Input() nzDropdownStyle: { [ key: string ]: string; };
+  @Input() nzDropdownStyle: { [key: string]: string };
   @Input() nzDefaultExpandedKeys: string[] = [];
-  @Input() nzDisplayWith: (node: NzTreeNode) => string = (node: NzTreeNode) => node.title;
+  @Input() nzDisplayWith: (node: NzTreeNode) => string | undefined = (node: NzTreeNode) => node.title;
   @Input() nzMaxTagCount: number;
   @Input() nzMaxTagPlaceholder: TemplateRef<{ $implicit: NzTreeNode[] }>;
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
@@ -103,10 +127,12 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
   @Output() readonly nzTreeClick = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzTreeCheckBoxChange = new EventEmitter<NzFormatEmitEvent>();
 
-  @ViewChild('inputElement') inputElement: ElementRef;
-  @ViewChild('treeRef') treeRef: NzTreeComponent;
-  @ViewChild(CdkOverlayOrigin) cdkOverlayOrigin: CdkOverlayOrigin;
-  @ViewChild(CdkConnectedOverlay) cdkConnectedOverlay: CdkConnectedOverlay;
+  @ViewChild('inputElement', { static: false }) inputElement: ElementRef<HTMLInputElement>;
+  @ViewChild('treeRef', { static: false }) treeRef: NzTreeComponent;
+  @ViewChild(CdkOverlayOrigin, { static: true }) cdkOverlayOrigin: CdkOverlayOrigin;
+  @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay: CdkConnectedOverlay;
+
+  @Input() @ContentChild('nzTreeTemplate', { static: true }) nzTreeTemplate: TemplateRef<{ $implicit: NzTreeNode }>;
 
   triggerWidth: number;
   isComposing = false;
@@ -118,7 +144,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
   selectedNodes: NzTreeNode[] = [];
   value: string[] = [];
 
-  onChange: (value: string[] | string) => void;
+  onChange: (value: string[] | string | null) => void;
   onTouched: () => void = () => null;
 
   get placeHolderDisplay(): string {
@@ -133,7 +159,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
     return this.nzMultiple || this.nzCheckable;
   }
 
-  get selectedValueDisplay(): { [ key: string ]: string } {
+  get selectedValueDisplay(): { [key: string]: string } {
     let showSelectedValue = false;
     let opacity = 1;
     if (!this.nzShowSearch) {
@@ -155,11 +181,13 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
   }
 
   constructor(
+    nzTreeService: NzTreeSelectService,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
-    private nzTreeService: NzTreeSelectService,
     private elementRef: ElementRef,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+  ) {
+    super(nzTreeService);
     this.renderer.addClass(this.elementRef.nativeElement, 'ant-select');
   }
 
@@ -186,11 +214,11 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
   }
 
   writeValue(value: string[] | string): void {
-    if (value) {
+    if (isNotNil(value)) {
       if (this.isMultiple && Array.isArray(value)) {
         this.value = value;
       } else {
-        this.value = [ (value as string) ];
+        this.value = [value as string];
       }
       this.updateSelectedNodes(true);
     } else {
@@ -203,7 +231,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
     this.cdr.markForCheck();
   }
 
-  registerOnChange(fn: (_: string[] | string) => void): void {
+  registerOnChange(fn: (_: string[] | string | null) => void): void {
     this.onChange = fn;
   }
 
@@ -241,18 +269,14 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
   onKeyDownInput(e: KeyboardEvent): void {
     const keyCode = e.keyCode;
     const eventTarget = e.target as HTMLInputElement;
-    if (
-      this.isMultiple &&
-      !eventTarget.value &&
-      keyCode === BACKSPACE
-    ) {
+    if (this.isMultiple && !eventTarget.value && keyCode === BACKSPACE) {
       e.preventDefault();
       if (this.selectedNodes.length) {
-        const removeNode = this.selectedNodes[ this.selectedNodes.length - 1 ];
+        const removeNode = this.selectedNodes[this.selectedNodes.length - 1];
         this.removeSelected(removeNode);
-        this.nzTreeService.$statusChange.next({
-          'eventName': 'removeSelect',
-          'node'     : removeNode
+        this.nzTreeService!.triggerEventChange$!.next({
+          eventName: 'removeSelect',
+          node: removeNode
         });
       }
     }
@@ -260,7 +284,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
 
   onExpandedKeysChange(value: NzFormatEmitEvent): void {
     this.nzExpandChange.emit(value);
-    this.nzDefaultExpandedKeys = [ ...value.keys ];
+    this.nzDefaultExpandedKeys = [...value.keys!];
   }
 
   setInputValue(value: string): void {
@@ -274,7 +298,6 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
     node.isChecked = false;
     if (this.nzCheckable) {
       this.nzTreeService.conduct(node);
-      this.nzTreeService.setCheckedNodeList(node);
     } else {
       this.nzTreeService.setSelectedNodeList(node, this.nzMultiple);
     }
@@ -301,18 +324,18 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
     return merge(
       this.nzTreeClick.pipe(
         tap((event: NzFormatEmitEvent) => {
-          const node = event.node;
+          const node = event.node!;
           if (this.nzCheckable && !node.isDisabled && !node.isDisableCheckbox) {
             node.isChecked = !node.isChecked;
             this.nzTreeService.conduct(node);
-            this.nzTreeService.setCheckedNodeList(node);
           }
           if (this.nzCheckable) {
             node.isSelected = false;
           }
         }),
         filter((event: NzFormatEmitEvent) => {
-          return this.nzCheckable ? (!event.node.isDisabled && !event.node.isDisableCheckbox) : !event.node.isDisabled;
+          const node = event.node!;
+          return this.nzCheckable ? !node.isDisabled && !node.isDisableCheckbox : !node.isDisabled;
         })
       ),
       this.nzCheckable ? this.nzTreeCheckBoxChange : observableOf(),
@@ -320,8 +343,8 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
       this.nzRemoved
     ).subscribe(() => {
       this.updateSelectedNodes();
-      const value = this.selectedNodes.map(node => node.key);
-      this.value = [ ...value ];
+      const value = this.selectedNodes.map(node => node.key!);
+      this.value = [...value];
       if (this.nzShowSearch || this.isMultiple) {
         this.inputValue = '';
         this.isNotFound = false;
@@ -332,21 +355,15 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
         this.updatePosition();
       } else {
         this.closeDropDown();
-        this.onChange(value.length ? value[ 0 ] : null);
+        this.onChange(value.length ? value[0] : null);
       }
-
     });
   }
 
   updateSelectedNodes(init: boolean = false): void {
     if (init) {
-      let nodes;
-      if (!this.nzTreeService.isArrayOfNzTreeNode(this.nzNodes)) {
-        // has not been new NzTreeNode
-        nodes = this.nzNodes.map(item => (new NzTreeNode(item, null, this.nzTreeService)));
-      } else {
-        nodes = this.nzNodes.map(item => (new NzTreeNode({ ...item.origin }, null, this.nzTreeService)));
-      }
+      const nodes = this.coerceTreeNodes(this.nzNodes);
+      this.nzTreeService.isMultiple = this.isMultiple;
       this.nzTreeService.initTree(nodes);
       if (this.nzCheckable) {
         this.nzTreeService.calcCheckedKeys(this.value, nodes);
@@ -354,7 +371,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
         this.nzTreeService.calcSelectedKeys(this.value, nodes, this.isMultiple);
       }
     }
-    this.selectedNodes = [ ...(this.nzCheckable ? this.nzTreeService.getCheckedNodeList() : this.nzTreeService.getSelectedNodeList()) ];
+    this.selectedNodes = [...(this.nzCheckable ? this.getCheckedNodeList() : this.getSelectedNodeList())];
   }
 
   updatePosition(): void {
@@ -372,7 +389,11 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
   updateInputWidth(): void {
     if (this.isMultiple && this.inputElement) {
       if (this.inputValue || this.isComposing) {
-        this.renderer.setStyle(this.inputElement.nativeElement, 'width', `${this.inputElement.nativeElement.scrollWidth}px`);
+        this.renderer.setStyle(
+          this.inputElement.nativeElement,
+          'width',
+          `${this.inputElement.nativeElement.scrollWidth}px`
+        );
       } else {
         this.renderer.removeStyle(this.inputElement.nativeElement, 'width');
       }
@@ -390,9 +411,7 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
 
   setSearchValues($event: NzFormatEmitEvent): void {
     Promise.resolve().then(() => {
-      this.isNotFound = (this.nzShowSearch || this.isMultiple)
-        && this.inputValue
-        && $event.matchedKeys.length === 0;
+      this.isNotFound = (this.nzShowSearch || this.isMultiple) && !!this.inputValue && $event.matchedKeys!.length === 0;
     });
   }
 
@@ -401,6 +420,6 @@ export class NzTreeSelectComponent implements ControlValueAccessor, OnInit, OnDe
   }
 
   trackValue(_index: number, option: NzTreeNode): string {
-    return option.key;
+    return option.key!;
   }
 }

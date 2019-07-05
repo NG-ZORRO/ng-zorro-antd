@@ -12,6 +12,7 @@ NG-ZORRO
 
 An enterprise-class UI components based on Ant Design and Angular.
 
+[![CodeFactor](https://www.codefactor.io/repository/github/ng-zorro/ng-zorro-antd/badge?style=flat-square)](https://www.codefactor.io/repository/github/ng-zorro/ng-zorro-antd)
 [![Travis branch](https://img.shields.io/travis/NG-ZORRO/ng-zorro-antd/master.svg?style=flat-square)](https://travis-ci.org/NG-ZORRO/ng-zorro-antd)
 [![Codecov](https://img.shields.io/codecov/c/github/NG-ZORRO/ng-zorro-antd.svg?style=flat-square)](https://codecov.io/gh/NG-ZORRO/ng-zorro-antd)
 [![GitHub Release Date](https://img.shields.io/github/release-date/NG-ZORRO/ng-zorro-antd.svg?style=flat-square)](https://github.com/NG-ZORRO/ng-zorro-antd/releases)
@@ -20,6 +21,7 @@ An enterprise-class UI components based on Ant Design and Angular.
 [![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE)
 [![Gitter](https://img.shields.io/gitter/room/ng-zorro/ng-zorro-antd.svg?style=flat-square)](https://gitter.im/ng-zorro/ng-zorro-antd)
 [![extension-for-VSCode](https://img.shields.io/badge/extension%20for-VSCode-blue.svg?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=cipchk.ng-zorro-vscode)
+[![Twitter](https://img.shields.io/badge/Twitter-NG--ZORRO-blue.svg?style=flat-square&logo=twitter)](https://twitter.com/NG_ZORRO)
 
 </div>
 
@@ -34,10 +36,12 @@ English | [简体中文](README-zh_CN.md)
 - A set of high-quality Angular components out of the box.
 - Written in TypeScript with predictable static types.
 - The whole package of development and design resources and tools.
+- Support OnPush mode, high performance.
 
 ## 🖥 Environment Support
 
-* Angular `^7.0.0`
+* Angular `^8.0.0`
+* Server-side Rendering
 * Modern browsers and Internet Explorer 11+ (with [polyfills](https://angular.io/guide/browser-support))
 * [Electron](http://electron.atom.io/)
 
@@ -84,7 +88,7 @@ export class AppModule {
 }
 ```
 
-> `@angular/cli` users won't have to worried about things below but it's good to know.
+> `@angular/cli` users won't have to worry about the things below but it's good to know.
 
 And import style and SVG icon assets file link in `angular.json`.
 
@@ -124,7 +128,7 @@ Browser would open automatically.
 
 ## 🗺 Road Map
 
-Check [this issue](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2025) to read our plans for later 2018.
+Check [this issue](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2025) to read our plans for 2019.
 
 ## 🤝 Contributing
 
@@ -135,6 +139,7 @@ We welcome all contributions. Please read our [CONTRIBUTING.md](https://github.c
 
 > If you're new to posting issues, we ask that you read [*How To Ask Questions The Smart Way*](http://www.catb.org/~esr/faqs/smart-questions.html) (**This guide does not provide actual support services for this project!**), [How to Ask a Question in Open Source Community](https://github.com/seajs/seajs/issues/545) and [How to Report Bugs Effectively](http://www.chiark.greenend.org.uk/~sgtatham/bugs.html) prior to posting. Well written bug reports help us help you!
 
+[![Let's fund issues in this repository](https://issuehunt.io/static/embed/issuehunt-button-v1.svg)](https://issuehunt.io/r/NG-ZORRO/ng-zorro-antd)
 
 ## ❓ Help from the Community
 
@@ -146,8 +151,17 @@ As always, we encourage experienced users to help those who are not familiar wit
 
 - [Alibaba](http://www.alibaba.com/)
 - [Aliyun](http://www.aliyun.com/)
+- [ThoughtWorks](https://www.thoughtworks.com/)
+- [Ververica](https://www.ververica.com/)
+- [Apache Flink](https://flink.apache.org/)
+- [Process Automation Group](http://pag.company/)
+- [AISINOCO](http://www.aisino.com/)
+- [GongDao](https://www.gongdao.com/)
+- [UC Express](http://www.uce.cn/)
+- [Qingflow](https://qingflow.com/)
+- [Southern Institute of Technology](https://www.sit.ac.nz/)
 
-> If your company or product uses NG-ZORRO, let us know [here](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1142)!
+> We list some users here, if your company or product uses NG-ZORRO, let us know [here](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1142)!
 
 ## ☀️ License
 

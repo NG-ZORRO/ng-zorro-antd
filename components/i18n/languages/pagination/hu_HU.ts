@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 export default {
   // Options.jsx
   items_per_page: '/ oldal', // '/ page',
@@ -11,5 +19,5 @@ export default {
   prev_5: 'Előző 5 oldal', // 'Previous 5 Pages',
   next_5: 'Következő 5 oldal', // 'Next 5 Pages',
   prev_3: 'Előző 3 oldal', // 'Previous 3 Pages',
-  next_3: 'Következő 3 oldal', // 'Next 3 Pages',
+  next_3: 'Következő 3 oldal' // 'Next 3 Pages',
 };

@@ -1,12 +1,28 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 
-import { FunctionProp } from '../../../core/types/common-wrap';
-import { isNonEmptyString, isTemplateRef } from '../../../core/util/check';
-import { valueFunctionProp } from '../../../core/util/convert';
-import { DateHelperByDatePipe, DateHelperService } from '../../../i18n/date-helper.service';
-import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
-import { NzI18nService } from '../../../i18n/nz-i18n.service';
-import { CandyDate } from '../candy-date';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChange,
+  SimpleChanges,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
+
+import { isNonEmptyString, isTemplateRef, valueFunctionProp, FunctionProp } from 'ng-zorro-antd/core';
+import { DateHelperByDatePipe, DateHelperService, NzCalendarI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import { CandyDate } from '../candy-date/candy-date';
 
 const DATE_ROW_NUM = 6;
 const DATE_COL_NUM = 7;
@@ -16,9 +32,9 @@ const DATE_COL_NUM = 7;
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'date-table',
+  exportAs: 'dateTable',
   templateUrl: 'date-table.component.html'
 })
-
 export class DateTableComponent implements OnInit, OnChanges {
   @Input() locale: NzCalendarI18nInterface;
   @Input() selectedValue: CandyDate[]; // Range ONLY
@@ -40,15 +56,16 @@ export class DateTableComponent implements OnInit, OnChanges {
   isTemplateRef = isTemplateRef;
   isNonEmptyString = isNonEmptyString;
 
-  constructor(private i18n: NzI18nService, private dateHelper: DateHelperService) { }
+  constructor(private i18n: NzI18nService, private dateHelper: DateHelperService) {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.isDateRealChange(changes.value) ||
-        this.isDateRealChange(changes.selectedValue) ||
-        this.isDateRealChange(changes.hoverValue)) {
-
+    if (
+      this.isDateRealChange(changes.value) ||
+      this.isDateRealChange(changes.selectedValue) ||
+      this.isDateRealChange(changes.hoverValue)
+    ) {
       this.render();
     }
   }
@@ -58,9 +75,11 @@ export class DateTableComponent implements OnInit, OnChanges {
       const previousValue: CandyDate | CandyDate[] = change.previousValue;
       const currentValue: CandyDate | CandyDate[] = change.currentValue;
       if (Array.isArray(currentValue)) {
-        return !Array.isArray(previousValue) ||
+        return (
+          !Array.isArray(previousValue) ||
           currentValue.length !== previousValue.length ||
-          currentValue.some((value, index) => !this.isSameDate(previousValue[index], value));
+          currentValue.some((value, index) => !this.isSameDate(previousValue[index], value))
+        );
       } else {
         return !this.isSameDate(previousValue as CandyDate, currentValue);
       }
@@ -88,10 +107,10 @@ export class DateTableComponent implements OnInit, OnChanges {
   private makeHeadWeekDays(): WeekDayLabel[] {
     const weekDays: WeekDayLabel[] = [];
     const firstDayOfWeek = this.dateHelper.getFirstDayOfWeek();
-    for (let colIndex = 0; colIndex < DATE_COL_NUM; colIndex ++) {
+    for (let colIndex = 0; colIndex < DATE_COL_NUM; colIndex++) {
       const day = (firstDayOfWeek + colIndex) % DATE_COL_NUM;
       const tempDate = this.value.setDay(day);
-      weekDays[ colIndex ] = {
+      weekDays[colIndex] = {
         short: this.dateHelper.format(tempDate.nativeDate, this.dateHelper.relyOnDatePipe ? 'E' : 'ddd'), // eg. Tue
         veryShort: this.dateHelper.format(tempDate.nativeDate, this.getVeryShortWeekFormat()) // eg. Tu
       };
@@ -101,7 +120,12 @@ export class DateTableComponent implements OnInit, OnChanges {
 
   private getVeryShortWeekFormat(): string {
     if (this.dateHelper.relyOnDatePipe) {
-      return this.i18n.getLocaleId().toLowerCase().indexOf('zh') === 0 ? 'EEEEE' : 'EEEEEE'; // Use extreme short for chinese
+      return this.i18n
+        .getLocaleId()
+        .toLowerCase()
+        .indexOf('zh') === 0
+        ? 'EEEEE'
+        : 'EEEEEE'; // Use extreme short for chinese
     }
     return 'dd';
   }
@@ -114,15 +138,15 @@ export class DateTableComponent implements OnInit, OnChanges {
     const firstDateToShow = firstDateOfMonth.addDays(0 - firstDateOffset);
 
     let increased = 0;
-    for (let rowIndex = 0; rowIndex < DATE_ROW_NUM; rowIndex ++) {
-      const week: WeekRow = weekRows[rowIndex] = {
+    for (let rowIndex = 0; rowIndex < DATE_ROW_NUM; rowIndex++) {
+      const week: WeekRow = (weekRows[rowIndex] = {
         isActive: false,
         isCurrent: false,
         dateCells: []
-      };
+      });
 
-      for (let colIndex = 0; colIndex < DATE_COL_NUM; colIndex ++) {
-        const current = firstDateToShow.addDays(increased ++);
+      for (let colIndex = 0; colIndex < DATE_COL_NUM; colIndex++) {
+        const current = firstDateToShow.addDays(increased++);
         const isBeforeMonthYear = this.isBeforeMonthYear(current, this.value);
         const isAfterMonthYear = this.isAfterMonthYear(current, this.value);
         const cell: DateCell = {
@@ -146,7 +170,8 @@ export class DateTableComponent implements OnInit, OnChanges {
           week.isCurrent = true;
         }
 
-        if (Array.isArray(this.selectedValue) && !isBeforeMonthYear && !isAfterMonthYear) { // Range selections
+        if (Array.isArray(this.selectedValue) && !isBeforeMonthYear && !isAfterMonthYear) {
+          // Range selections
           const rangeValue = this.hoverValue && this.hoverValue.length ? this.hoverValue : this.selectedValue;
           const start = rangeValue[0];
           const end = rangeValue[1];

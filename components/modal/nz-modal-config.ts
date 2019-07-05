@@ -1,17 +1,15 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { InjectionToken } from '@angular/core';
 
-export const NZ_MODAL_DEFAULT_CONFIG: NzModalConfig = {
-  autoBodyPadding: true
-};
-
-export const NZ_MODAL_CONFIG = new InjectionToken<NzModalConfig>('NzModalConfig', {
-  providedIn: 'root',
-  factory: () => NZ_MODAL_DEFAULT_CONFIG // Default config
-});
-
 export interface NzModalConfig {
-  /**
-   * @deprecated used {@link BlockScrollStrategy} instead.
-   */
-  autoBodyPadding?: boolean; // Whether add the padding-right and overflow to body automatically to play smoothly
+  nzMask?: boolean;
+  nzMaskClosable?: boolean;
 }
+export const NZ_MODAL_CONFIG = new InjectionToken<NzModalConfig>('NZ_MODAL_CONFIG');

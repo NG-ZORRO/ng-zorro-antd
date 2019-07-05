@@ -10,14 +10,16 @@ import { NzNotificationService } from 'ng-zorro-antd';
       <button nz-button nzType="small">Cut It!</button>
     </ng-template>
   `,
-  styles  : [
-    `button {
-      margin-top: 8px;
-    }`
+  styles: [
+    `
+      button {
+        margin-top: 8px;
+      }
+    `
   ]
 })
 export class NzDemoNotificationTemplateComponent {
-  @ViewChild(TemplateRef) template: TemplateRef<{}>;
+  @ViewChild(TemplateRef, { static: false }) template: TemplateRef<{}>;
 
   ninja(): void {
     const fruits = [
@@ -31,6 +33,5 @@ export class NzDemoNotificationTemplateComponent {
     });
   }
 
-  constructor(private notificationService: NzNotificationService) {
-  }
+  constructor(private notificationService: NzNotificationService) {}
 }

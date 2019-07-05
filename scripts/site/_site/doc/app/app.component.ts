@@ -1,21 +1,23 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  HostListener,
-  NgZone,
-  OnInit,
-  ViewChild
-} from '@angular/core';
+import { Platform } from '@angular/cdk/platform';
+import { AfterViewInit, Component, ElementRef, HostListener, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
-import { en_US, NzI18nService, NzMessageService, zh_CN } from 'ng-zorro-antd';
+import { en_US, zh_CN, NzI18nService, NzMessageService } from 'ng-zorro-antd';
 import { fromEvent } from 'rxjs';
 import { debounceTime, map, startWith } from 'rxjs/operators';
 import { environment } from '../environments/environment';
+import { AppService } from './app.service';
 import { ROUTER_LIST } from './router';
 
+// tslint:disable-next-line:no-any
 declare const docsearch: any;
+
+interface DocPageMeta {
+  path: string;
+  label: string;
+  order?: number;
+  zh: string;
+}
 
 @Component({
   selector   : 'app-root',
@@ -29,52 +31,52 @@ export class AppComponent implements OnInit, AfterViewInit {
   showDrawer = false;
   isDrawerOpen = false;
   routerList = ROUTER_LIST;
-  componentList = [];
+  componentList: DocPageMeta[] = [];
   searchComponent = null;
-  docsearch = null;
+  // tslint:disable-next-line:no-any
+  docsearch: any = null;
 
   get useDocsearch(): boolean {
+    if (!this.platform.isBrowser) {
+      return false;
+    }
     return window && window.location.href.indexOf('/version') === -1;
   }
 
   language = 'zh';
-  oldVersionList = [
-    '0.5.x',
-    '0.6.x',
-    '0.7.x',
-    '1.8.x'
-  ];
-  currentVersion = '7.0.0';
+  oldVersionList = [ '0.5.x', '0.6.x', '0.7.x', '1.8.x', '7.5.x' ];
+  currentVersion = '8.0.2';
 
-  @ViewChild('searchInput') searchInput: ElementRef<HTMLInputElement>;
+  @ViewChild('searchInput', { static: false }) searchInput: ElementRef<HTMLInputElement>;
 
-  switchLanguage(language) {
+  switchLanguage(language: string): void {
     const url = this.router.url.split('/');
     url.splice(-1);
+    // tslint:disable-next-line:prefer-template
     this.router.navigateByUrl(url.join('/') + '/' + language);
   }
 
-  toggleMenu(): void {
-    if (this.showDrawer) {
-
-    }
-  }
-
   constructor(
+    private appService: AppService,
     private router: Router,
     private title: Title,
     private nzI18nService: NzI18nService,
     private msg: NzMessageService,
-    private ngZone: NgZone) {
+    private ngZone: NgZone,
+    private platform: Platform
+  ) {
   }
 
-  navigateToPage(url) {
+  navigateToPage(url: string): void {
     if (url) {
       this.router.navigateByUrl(url);
     }
   }
 
-  navigateToVersion(version) {
+  navigateToVersion(version: string): void {
+    if (!this.platform.isBrowser) {
+      return;
+    }
     if (version !== this.currentVersion) {
       window.location.href = window.location.origin + `/version/` + version;
     } else {
@@ -87,38 +89,49 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.routerList.components.forEach(group => {
       this.componentList = this.componentList.concat([ ...group.children ]);
     });
+
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         const currentDemoComponent = this.componentList.find(component => `/${component.path}` === this.router.url);
+
         if (currentDemoComponent) {
           this.title.setTitle(`${currentDemoComponent.zh} ${currentDemoComponent.label} - NG-ZORRO`);
         }
+
         const currentIntroComponent = this.routerList.intro.find(component => `/${component.path}` === this.router.url);
         if (currentIntroComponent) {
           this.title.setTitle(`${currentIntroComponent.label} - NG-ZORRO`);
         }
+
         if (this.router.url !== '/' + this.searchComponent) {
           this.searchComponent = null;
         }
+
         this.language = this.router.url.split('/')[ this.router.url.split('/').length - 1 ].split('#')[ 0 ];
+        this.appService.language$.next(this.language);
         this.nzI18nService.setLocale(this.language === 'en' ? en_US : zh_CN);
 
         if (this.docsearch) {
-          this.docsearch.algoliaOptions = { hitsPerPage: 5, facetFilters: [`tags:${this.language}`] };
+          this.docsearch!.algoliaOptions = { hitsPerPage: 5, facetFilters: [ `tags:${this.language}` ] };
         }
 
-        if (environment.production) {
+        if (environment.production && this.platform.isBrowser) {
           window.scrollTo(0, 0);
         }
+
         setTimeout(() => {
           const toc = this.router.parseUrl(this.router.url).fragment || '';
           if (toc) {
-            document.querySelector(`#${toc}`).scrollIntoView();
+            if (this.platform.isBrowser) {
+              document.querySelector(`#${toc}`)!.scrollIntoView();
+            }
           }
         }, 200);
       }
     });
+
     this.initColor();
+    this.detectLanguage();
   }
 
   ngAfterViewInit(): void {
@@ -132,24 +145,26 @@ export class AppComponent implements OnInit, AfterViewInit {
   initDocsearch() {
     this.loadScript('https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js').then(() => {
       this.docsearch = docsearch({
-        appId: 'PO5D2PCS2I',
-        apiKey: 'cda01b4d7172b1582a2911ef08519f62',
-        indexName: 'dev_ng_zorro',
-        inputSelector: '#search-box input',
-        algoliaOptions: { hitsPerPage: 5, facetFilters: [`tags:${this.language}`] },
-        transformData(hits) {
-          hits.forEach((hit) => {
+        appId         : 'BH4D9OD16A',
+        apiKey        : '9f7d9d6527ff52ec484e90bb1f256971',
+        indexName     : 'ng_zorro',
+        inputSelector : '#search-box input',
+        algoliaOptions: { hitsPerPage: 5, facetFilters: [ `tags:${this.language}` ] },
+        transformData(hits: any) {
+          // tslint:disable-line:no-any
+          hits.forEach((hit: any) => {
+            // tslint:disable-line:no-any
             hit.url = hit.url.replace('ng.ant.design', location.host);
             hit.url = hit.url.replace('https:', location.protocol);
           });
           return hits;
         },
-        debug: false
+        debug         : false
       });
     });
   }
 
-  @HostListener('document:keyup.s', ['$event'])
+  @HostListener('document:keyup.s', [ '$event' ])
   onKeyUp(event: KeyboardEvent) {
     if (this.useDocsearch && this.searchInput && this.searchInput.nativeElement && event.target === document.body) {
       this.searchInput.nativeElement.focus();
@@ -158,19 +173,30 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   // region: color
   color = `#1890ff`;
+
   initColor() {
+    if (!this.platform.isBrowser) {
+      return
+    }
     const node = document.createElement('link');
     node.rel = 'stylesheet/less';
     node.type = 'text/css';
     node.href = '/assets/color.less';
-    document.getElementsByTagName('head')[0].appendChild(node);
+    document.getElementsByTagName('head')[ 0 ].appendChild(node);
   }
+
   lessLoaded = false;
+
   changeColor(res: any) {
+    if (!this.platform.isBrowser) {
+      return;
+    }
     const changeColor = () => {
-      (window as any).less.modifyVars({
+      (window as any).less
+      .modifyVars({
         '@primary-color': res.color.hex
-      }).then(() => {
+      })
+      .then(() => {
         this.msg.success(`应用成功`);
         this.color = res.color.hex;
         window.scrollTo(0, 0);
@@ -199,23 +225,41 @@ export class AppComponent implements OnInit, AfterViewInit {
       script.src = src;
       script.onload = resolve;
       script.onerror = reject;
-      document.head.appendChild(script);
+      document.head!.appendChild(script);
     });
   }
 
   // endregion
   private addWindowWidthListener(): void {
+    if (!this.platform.isBrowser) {
+      return;
+    }
     this.ngZone.runOutsideAngular(() => {
-      fromEvent(window, 'resize').pipe(
+      fromEvent(window, 'resize')
+      .pipe(
         startWith(true),
         debounceTime(50),
         map(() => window.innerWidth)
-      ).subscribe(width => {
-        const showDrawer = width <= 768;
+      )
+      .subscribe(width => {
+        const showDrawer = width <= 995;
         if (this.showDrawer !== showDrawer) {
           this.showDrawer = showDrawer;
         }
       });
     });
+  }
+
+  private detectLanguage(): void {
+    if (!this.platform.isBrowser) {
+      return;
+    }
+    const language = navigator.language.toLowerCase();
+    const pathname = location.pathname;
+    const hasLanguage = pathname.match(/(en|zh)(\/?)$/);
+    if (language === 'zh-cn' && !hasLanguage) {
+      this.nzI18nService.setLocale(zh_CN);
+      this.router.navigate([ 'docs', 'introduce', 'zh' ]);
+    }
   }
 }

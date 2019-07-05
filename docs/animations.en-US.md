@@ -1,5 +1,5 @@
 ---
-order: 6
+order: 7
 title: Animations Switch
 ---
 
@@ -25,7 +25,7 @@ Add the nzNoAnimation property to the component that wants to close the animatio
 
 ```HTML
 <nz-modal nzNoAnimation></nz-modal>
-<ul nz-menu nzNoAnimation></nz-menu>
+<ul nz-menu nzNoAnimation></ul>
 <nz-form-explain [nzNoAnimation]="true"></nz-form-explain>
 ```
 

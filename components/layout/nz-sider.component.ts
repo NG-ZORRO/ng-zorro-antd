@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -22,68 +30,67 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { Platform } from '@angular/cdk/platform';
 import { fromEvent, Subject } from 'rxjs';
 import { auditTime, takeUntil } from 'rxjs/operators';
-import { InputBoolean } from '../core/util/convert';
+
+import { toCssPixel, InputBoolean } from 'ng-zorro-antd/core';
+
 import { NzLayoutComponent } from './nz-layout.component';
 
 export type NzBreakPoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 
 @Component({
-  selector           : 'nz-sider',
+  selector: 'nz-sider',
+  exportAs: 'nzSider',
   preserveWhitespaces: false,
-  encapsulation      : ViewEncapsulation.None,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  templateUrl        : './nz-sider.component.html',
-  host               : {
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './nz-sider.component.html',
+  host: {
     '[class.ant-layout-sider-zero-width]': 'nzCollapsed && nzCollapsedWidth === 0',
-    '[class.ant-layout-sider-light]'     : `nzTheme === 'light'`,
-    '[class.ant-layout-sider-collapsed]' : 'nzCollapsed',
-    '[style.flex]'                       : 'flexSetting',
-    '[style.max-width.px]'               : 'widthSetting',
-    '[style.min-width.px]'               : 'widthSetting',
-    '[style.width.px]'                   : 'widthSetting'
+    '[class.ant-layout-sider-light]': `nzTheme === 'light'`,
+    '[class.ant-layout-sider-collapsed]': 'nzCollapsed',
+    '[style.flex]': 'flexSetting',
+    '[style.max-width]': 'widthSetting',
+    '[style.min-width]': 'widthSetting',
+    '[style.width]': 'widthSetting'
   }
 })
 export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
   private below = false;
   private destroy$ = new Subject();
   private dimensionMap = {
-    xs : '480px',
-    sm : '576px',
-    md : '768px',
-    lg : '992px',
-    xl : '1200px',
+    xs: '480px',
+    sm: '576px',
+    md: '768px',
+    lg: '992px',
+    xl: '1200px',
     xxl: '1600px'
   };
-  @Input() nzWidth = 200;
+  @Input() nzWidth: string | number = 200;
   @Input() nzTheme: 'light' | 'dark' = 'dark';
   @Input() nzCollapsedWidth = 80;
   @Input() nzBreakpoint: NzBreakPoint;
   @Input() nzZeroTrigger: TemplateRef<void>;
-  @Input() @ViewChild('defaultTrigger') nzTrigger: TemplateRef<void>;
+  @Input() @ViewChild('defaultTrigger', { static: true }) nzTrigger: TemplateRef<void>;
   @Input() @InputBoolean() nzReverseArrow = false;
   @Input() @InputBoolean() nzCollapsible = false;
   @Input() @InputBoolean() nzCollapsed = false;
   @Output() readonly nzCollapsedChange = new EventEmitter();
 
   get flexSetting(): string {
-    if (this.nzCollapsed) {
-      return `0 0 ${this.nzCollapsedWidth}px`;
-    } else {
-      return `0 0 ${this.nzWidth}px`;
-    }
+    return `0 0 ${this.widthSetting}`;
   }
 
-  get widthSetting(): number {
+  get widthSetting(): string {
     if (this.nzCollapsed) {
-      return this.nzCollapsedWidth;
+      return `${this.nzCollapsedWidth}px`;
     } else {
-      return this.nzWidth;
+      return toCssPixel(this.nzWidth);
     }
   }
 
   watchMatchMedia(): void {
     if (this.nzBreakpoint) {
-      const matchBelow = this.mediaMatcher.matchMedia(`(max-width: ${this.dimensionMap[ this.nzBreakpoint ]})`).matches;
+      const matchBelow = this.mediaMatcher.matchMedia(`(max-width: ${this.dimensionMap[this.nzBreakpoint]})`).matches;
       this.below = matchBelow;
       this.nzCollapsed = matchBelow;
       this.nzCollapsedChange.emit(matchBelow);
@@ -99,14 +106,27 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   get isZeroTrigger(): boolean {
-    return this.nzCollapsible && this.nzTrigger && this.nzCollapsedWidth === 0 && ((this.nzBreakpoint && this.below) || (!this.nzBreakpoint));
+    return (
+      this.nzCollapsible &&
+      this.nzTrigger &&
+      this.nzCollapsedWidth === 0 &&
+      ((this.nzBreakpoint && this.below) || !this.nzBreakpoint)
+    );
   }
 
   get isSiderTrigger(): boolean {
     return this.nzCollapsible && this.nzTrigger && this.nzCollapsedWidth !== 0;
   }
 
-  constructor(@Optional() @Host() private nzLayoutComponent: NzLayoutComponent, private mediaMatcher: MediaMatcher, private ngZone: NgZone, private platform: Platform, private cdr: ChangeDetectorRef, renderer: Renderer2, elementRef: ElementRef) {
+  constructor(
+    @Optional() @Host() private nzLayoutComponent: NzLayoutComponent,
+    private mediaMatcher: MediaMatcher,
+    private ngZone: NgZone,
+    private platform: Platform,
+    private cdr: ChangeDetectorRef,
+    renderer: Renderer2,
+    elementRef: ElementRef
+  ) {
     renderer.addClass(elementRef.nativeElement, 'ant-layout-sider');
   }
 
@@ -121,8 +141,11 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
       Promise.resolve().then(() => this.watchMatchMedia());
       this.ngZone.runOutsideAngular(() => {
         fromEvent(window, 'resize')
-        .pipe(auditTime(16), takeUntil(this.destroy$))
-        .subscribe(() => this.watchMatchMedia());
+          .pipe(
+            auditTime(16),
+            takeUntil(this.destroy$)
+          )
+          .subscribe(() => this.watchMatchMedia());
       });
     }
   }
@@ -134,5 +157,4 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
       this.nzLayoutComponent.destroySider();
     }
   }
-
 }

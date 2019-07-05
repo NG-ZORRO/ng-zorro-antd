@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 export type Mark = string | MarkObj;
 
 export interface MarkObj {
@@ -6,7 +14,7 @@ export interface MarkObj {
 }
 
 export class Marks {
-  [ key: number ]: Mark;
+  [key: number]: Mark;
 }
 
 /**
@@ -40,8 +48,8 @@ export type SliderShowTooltip = 'always' | 'never' | 'default';
 export type SliderValue = number[] | number;
 
 export interface SliderHandler {
-  offset: number;
-  value: number;
+  offset: number | null;
+  value: number | null;
   active: boolean;
 }
 

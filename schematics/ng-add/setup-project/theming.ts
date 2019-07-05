@@ -1,5 +1,4 @@
 import { normalize } from '@angular-devkit/core';
-import { WorkspaceProject, WorkspaceSchema } from '@angular-devkit/core/src/workspace';
 import { SchematicsException, Tree } from '@angular-devkit/schematics';
 import {
   getProjectFromWorkspace,
@@ -8,6 +7,7 @@ import {
 } from '@angular/cdk/schematics';
 import { InsertChange } from '@schematics/angular/utility/change';
 import { getWorkspace } from '@schematics/angular/utility/config';
+import { ProjectType, WorkspaceProject, WorkspaceSchema } from '@schematics/angular/utility/workspace-models';
 import chalk from 'chalk';
 import { join } from 'path';
 import { createCustomTheme } from '../../utils/create-custom-theme';
@@ -27,7 +27,7 @@ const defaultTargetBuilders = {
 export function addThemeToAppStyles(options: Schema): (host: Tree) => Tree {
   return function (host: Tree): Tree {
     const workspace = getWorkspace(host);
-    const project = getProjectFromWorkspace(workspace, options.project);
+    const project = getProjectFromWorkspace(workspace, options.project) as WorkspaceProject<ProjectType.Application>;
 
     if (options.theme) {
       insertCustomTheme(project, options.project, host, workspace);

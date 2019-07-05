@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,22 +17,20 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
 
-import { isNotNil } from '../core/util/check';
-import { InputBoolean } from '../core/util/convert';
+import { isNotNil, InputBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector           : 'td:not(.nz-disable-td)',
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  providers          : [ NzUpdateHostClassService ],
+  selector: 'td:not(.nz-disable-td):not([mat-cell])',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [NzUpdateHostClassService],
   preserveWhitespaces: false,
-  encapsulation      : ViewEncapsulation.None,
-  templateUrl        : './nz-td.component.html',
-  host               : {
-    '[style.left]'      : 'nzLeft',
-    '[style.right]'     : 'nzRight',
+  encapsulation: ViewEncapsulation.None,
+  templateUrl: './nz-td.component.html',
+  host: {
+    '[style.left]': 'nzLeft',
+    '[style.right]': 'nzRight',
     '[style.text-align]': 'nzAlign'
   }
 })
@@ -50,15 +56,14 @@ export class NzTdComponent implements OnChanges {
 
   setClassMap(): void {
     this.nzUpdateHostClassService.updateHostClass(this.elementRef.nativeElement, {
-      [ `ant-table-row-expand-icon-cell` ]: this.nzShowExpand && !isNotNil(this.nzIndentSize),
-      [ `ant-table-selection-column` ]    : this.nzShowCheckbox,
-      [ `ant-table-td-left-sticky` ]      : isNotNil(this.nzLeft),
-      [ `ant-table-td-right-sticky` ]     : isNotNil(this.nzRight)
+      [`ant-table-row-expand-icon-cell`]: this.nzShowExpand && !isNotNil(this.nzIndentSize),
+      [`ant-table-selection-column`]: this.nzShowCheckbox,
+      [`ant-table-td-left-sticky`]: isNotNil(this.nzLeft),
+      [`ant-table-td-right-sticky`]: isNotNil(this.nzRight)
     });
   }
 
-  constructor(private elementRef: ElementRef, private nzUpdateHostClassService: NzUpdateHostClassService) {
-  }
+  constructor(private elementRef: ElementRef, private nzUpdateHostClassService: NzUpdateHostClassService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzIndentSize || changes.nzShowExpand || changes.nzShowCheckbox || changes.nzRight || changes.nzLeft) {

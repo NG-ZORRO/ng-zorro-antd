@@ -1,11 +1,7 @@
 ---
-order: 8
+order: 9
 title: FAQ
 ---
-
-### Why individually importing is not supported?
-
-In fact, from the first version of `ng-zorro-antd`, all its code is written in TypeScript. Tree Shaking strategy is used to reduce the size of your bundle and unused modules would not be bundled. Consequently, individually importing is unnecessary.
 
 ### Why some features are not supported?
 
@@ -13,7 +9,7 @@ In fact, from the first version of `ng-zorro-antd`, all its code is written in T
 
 ### The bundle is too big in size
 
-Please make sure you use `ng build --prod` correctly to compile. If other third-party component kits other than `ng-zorro-antd` are imported, you could generate a sourcemap file using this command `ng build --prod --sourcemaps` to check every dependency's bundled size. You can check [this link](https://angular.io/guide/deployment#inspect-the-bundles) for further instructions.
+Please make sure you use `ng build --prod` correctly to compile. If other third-party component kits other than `ng-zorro-antd` are imported, you could generate a sourcemap file using this command `ng build --prod --sourceMap=true` to check every dependency's bundled size. You can check [this link](https://angular.io/guide/deployment#inspect-the-bundles) for further instructions.
 
 ###  Browser compatibility
 
@@ -41,7 +37,7 @@ Issue is designed for maintainers and users to track the development process of 
 
 ### Where can I get help with Angular?
 
-You can checkout the official docs and Angular forums. A good trick is to search on Google using `[keywords] -angular` to prevent `angularjs`'s interference. For example, you can type in `angular ngmodel -angularjs` to learn more about `ngModel` without struggling in out-dated Angular.js things.
+You can checkout the official docs and Angular forums. A good trick is to search on Google using `[keywords] -angularjs` to prevent `angularjs`'s interference. For example, you can type in `angular ngmodel -angularjs` to learn more about `ngModel` without struggling in out-dated Angular.js things.
 
 ### Relationship between NG-ZORRO and Ant Design
 

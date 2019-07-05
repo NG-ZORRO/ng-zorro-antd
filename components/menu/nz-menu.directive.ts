@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   AfterContentInit,
   ContentChildren,
@@ -14,46 +22,43 @@ import {
   SimpleChanges,
   SkipSelf
 } from '@angular/core';
+
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
-import { NzDirectionVHIType } from '../core/types/direction';
-import { InputBoolean } from '../core/util/convert';
-import { NzMenuDropdownService } from '../dropdown/nz-menu-dropdown.service';
+
+import {
+  InputBoolean,
+  NzDirectionVHIType,
+  NzDropdownHigherOrderServiceToken,
+  NzMenuBaseService,
+  NzUpdateHostClassService
+} from 'ng-zorro-antd/core';
+
 import { NzMenuItemDirective } from './nz-menu-item.directive';
-import { NzMenuMenuService } from './nz-menu-menu.service';
+import { NzMenuServiceFactory } from './nz-menu.resolver';
 import { NzMenuService } from './nz-menu.service';
 import { NzSubMenuComponent } from './nz-submenu.component';
 
-export function NzMenuFactory(dropService: NzMenuDropdownService, menuService: NzMenuMenuService): NzMenuService {
-  return dropService ? dropService : menuService;
-}
-
 @Directive({
-  selector : '[nz-menu]',
+  selector: '[nz-menu]',
+  exportAs: 'nzMenu',
   providers: [
     NzUpdateHostClassService,
-    NzMenuMenuService,
+    NzMenuService,
     {
-      provide   : NzMenuService,
-      useFactory: NzMenuFactory,
-      deps      : [
-        [
-          new SkipSelf(),
-          new Optional(),
-          NzMenuDropdownService
-        ],
-        NzMenuMenuService
-      ]
+      provide: NzMenuBaseService,
+      useFactory: NzMenuServiceFactory,
+      deps: [[new SkipSelf(), new Optional(), NzDropdownHigherOrderServiceToken], NzMenuService]
     }
   ]
 })
-
 export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnDestroy {
   private destroy$ = new Subject();
   private cacheMode: NzDirectionVHIType;
   private listOfOpenedNzSubMenuComponent: NzSubMenuComponent[] = [];
-  @ContentChildren(NzMenuItemDirective, { descendants: true }) listOfNzMenuItemDirective: QueryList<NzMenuItemDirective>;
+  @ContentChildren(NzMenuItemDirective, { descendants: true }) listOfNzMenuItemDirective: QueryList<
+    NzMenuItemDirective
+  >;
   @ContentChildren(NzSubMenuComponent, { descendants: true }) listOfNzSubMenuComponent: QueryList<NzSubMenuComponent>;
   @Input() nzInlineIndent = 24;
   @Input() nzTheme: 'light' | 'dark' = 'light';
@@ -81,25 +86,23 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
   setClassMap(): void {
     const prefixName = this.nzMenuService.isInDropDown ? 'ant-dropdown-menu' : 'ant-menu';
     this.nzUpdateHostClassService.updateHostClass(this.elementRef.nativeElement, {
-      [ `${prefixName}` ]                 : true,
-      [ `${prefixName}-root` ]            : true,
-      [ `${prefixName}-${this.nzTheme}` ] : true,
-      [ `${prefixName}-${this.nzMode}` ]  : true,
-      [ `${prefixName}-inline-collapsed` ]: this.nzInlineCollapsed
+      [`${prefixName}`]: true,
+      [`${prefixName}-root`]: true,
+      [`${prefixName}-${this.nzTheme}`]: true,
+      [`${prefixName}-${this.nzMode}`]: true,
+      [`${prefixName}-inline-collapsed`]: this.nzInlineCollapsed
     });
   }
 
-  constructor(public elementRef: ElementRef,
-              private nzMenuService: NzMenuService,
-              private nzUpdateHostClassService: NzUpdateHostClassService) {
-
-  }
+  constructor(
+    public elementRef: ElementRef,
+    private nzMenuService: NzMenuBaseService,
+    private nzUpdateHostClassService: NzUpdateHostClassService
+  ) {}
 
   ngOnInit(): void {
     this.setClassMap();
-    this.nzMenuService.menuItemClick$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(menu => {
+    this.nzMenuService.menuItemClick$.pipe(takeUntil(this.destroy$)).subscribe(menu => {
       this.nzClick.emit(menu);
       if (this.nzSelectable) {
         this.listOfNzMenuItemDirective.forEach(item => item.setSelectedState(item === menu));

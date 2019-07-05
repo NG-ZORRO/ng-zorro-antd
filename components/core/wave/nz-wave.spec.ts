@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { dispatchMouseEvent } from '../testing';
 import { NzWaveDirective } from './nz-wave.directive';
 import { NzWaveModule } from './nz-wave.module';
@@ -8,22 +9,18 @@ const WAVE_ATTRIBUTE_NAME = 'ant-click-animating-without-extra-node';
 const WAVE_ATTRIBUTE_NAME_EXTRA_NODE = 'ant-click-animating';
 const EXTRA_NODE_CLASS_NAME = '.ant-click-animating-node';
 
-describe('nz-wave', () => {
-  let fixture: ComponentFixture<WaveContainerWithButtonComponent | WaveContainerWithExtraNodeComponent>;
+describe('nz-wave base', () => {
+  let fixture: ComponentFixture<WaveContainerWithButtonComponent>;
   let waveTarget: HTMLElement;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [NzWaveModule],
-      declarations: [
-        WaveContainerWithButtonComponent,
-        WaveContainerWithExtraNodeComponent
-      ]
+      declarations: [WaveContainerWithButtonComponent]
     });
   });
 
   describe('basic wave', () => {
-
     beforeEach(() => {
       fixture = TestBed.createComponent(WaveContainerWithButtonComponent);
       fixture.detectChanges();
@@ -56,7 +53,7 @@ describe('nz-wave', () => {
     });
 
     it('should not create wave on click when disabled', () => {
-      (fixture.componentInstance as WaveContainerWithButtonComponent).disabled = true;
+      fixture.componentInstance.disabled = true;
       fixture.detectChanges();
       dispatchMouseEvent(waveTarget, 'click');
       expect(waveTarget.hasAttribute(WAVE_ATTRIBUTE_NAME)).toBe(false);
@@ -83,7 +80,7 @@ describe('nz-wave', () => {
       fixture.componentInstance.backgroundColor = 'rgb(255, 0, 0)';
       fixture.detectChanges();
       dispatchMouseEvent(waveTarget, 'click');
-      const style: string = document.body.querySelector('style').innerText;
+      const style: string = document.body.querySelector('style')!.innerText;
       expect(style.includes(fixture.componentInstance.borderColor)).toBe(true);
     });
 
@@ -105,9 +102,20 @@ describe('nz-wave', () => {
       expect(document.body.querySelector('style') !== null).toBe(false);
     });
   });
+});
+
+describe('nz-wave extra', () => {
+  let fixture: ComponentFixture<WaveContainerWithExtraNodeComponent>;
+  let waveTarget: HTMLElement;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [NzWaveModule],
+      declarations: [WaveContainerWithExtraNodeComponent]
+    });
+  });
 
   describe('extra node wave', () => {
-
     beforeEach(() => {
       fixture = TestBed.createComponent(WaveContainerWithExtraNodeComponent);
       fixture.detectChanges();
@@ -151,7 +159,7 @@ describe('nz-wave', () => {
       fixture.componentInstance.backgroundColor = 'rgb(255, 0, 0)';
       fixture.detectChanges();
       dispatchMouseEvent(waveTarget, 'click');
-      const style: string = document.body.querySelector('style').innerText;
+      const style: string = document.body.querySelector('style')!.innerText;
       expect(style.includes(fixture.componentInstance.borderColor)).toBe(true);
     });
 
@@ -173,25 +181,91 @@ describe('nz-wave', () => {
 
       expect(document.body.querySelector('style') !== null).toBe(false);
       expect(waveTarget.querySelector(EXTRA_NODE_CLASS_NAME) !== null).toBe(false);
-
     });
+  });
+});
 
+describe('nz-wave NoopAnimationsModule', () => {
+  let fixture: ComponentFixture<WaveContainerWithButtonComponent>;
+  let waveRef: NzWaveDirective;
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [NzWaveModule, NoopAnimationsModule],
+      declarations: [WaveContainerWithButtonComponent]
+    });
   });
 
+  describe('NoopAnimationsModule', () => {
+    beforeEach(() => {
+      fixture = TestBed.createComponent(WaveContainerWithButtonComponent);
+      fixture.detectChanges();
+      waveRef = fixture.componentInstance.wave;
+    });
+
+    it('should disable by NoopAnimationsModule ', () => {
+      expect(waveRef.disabled).toBe(true);
+      expect(waveRef.rendererRef).toBeFalsy();
+    });
+
+    it('should config priority', () => {
+      waveRef.enable();
+      expect(waveRef.disabled).toBe(true);
+      expect(waveRef.rendererRef).toBeFalsy();
+    });
+  });
+});
+
+describe('nz-wave disable/enable', () => {
+  let fixture: ComponentFixture<WaveContainerWithButtonComponent>;
+  let waveTarget: HTMLElement;
+  let waveRef: NzWaveDirective;
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [NzWaveModule],
+      declarations: [WaveContainerWithButtonComponent]
+    });
+  });
+
+  describe('disable/enable', () => {
+    beforeEach(() => {
+      fixture = TestBed.createComponent(WaveContainerWithButtonComponent);
+      fixture.detectChanges();
+      waveTarget = fixture.componentInstance.trigger.nativeElement;
+      waveRef = fixture.componentInstance.wave;
+    });
+
+    it('should enable work', () => {
+      waveRef.enable();
+      expect(waveRef.disabled).toBe(false);
+      expect(waveRef.rendererRef).toBeTruthy();
+      dispatchMouseEvent(waveTarget, 'click');
+      expect(waveTarget.hasAttribute(WAVE_ATTRIBUTE_NAME)).toBe(true);
+      expect(document.body.querySelector('style') !== null).toBe(true);
+    });
+
+    it('should disable work', () => {
+      waveRef.disable();
+      expect(waveRef.disabled).toBe(true);
+      dispatchMouseEvent(waveTarget, 'click');
+      expect(waveTarget.hasAttribute(WAVE_ATTRIBUTE_NAME)).toBe(false);
+      expect(document.body.querySelector('style') === null).toBe(true);
+    });
+  });
 });
 
 @Component({
   template: `
-  <button
-    #trigger
-    nz-wave
-    *ngIf="!isDestroyed"
-    [disabled]="disabled"
-    [class.disabled]="disabledClass"
-    [style.border-color]="borderColor"
-    [style.background-color]="backgroundColor">
-    Button
-  </button>
+    <button
+      #trigger
+      nz-wave
+      *ngIf="!isDestroyed"
+      [disabled]="disabled"
+      [class.disabled]="disabledClass"
+      [style.border-color]="borderColor"
+      [style.background-color]="backgroundColor"
+    >
+      Button
+    </button>
   `
 })
 class WaveContainerWithButtonComponent {
@@ -200,22 +274,23 @@ class WaveContainerWithButtonComponent {
   isDestroyed = false;
   borderColor = 'rgb(0,255,0)';
   backgroundColor = 'rgb(255,255,255)';
-  @ViewChild('trigger') trigger: ElementRef<HTMLElement>;
-  @ViewChild(NzWaveDirective) wave: NzWaveDirective;
+  @ViewChild('trigger', { static: false }) trigger: ElementRef<HTMLElement>;
+  @ViewChild(NzWaveDirective, { static: false }) wave: NzWaveDirective;
 }
 
 @Component({
   template: `
-  <div
-    #trigger
-    nz-wave
-    *ngIf="!isDestroyed"
-    [nzWaveExtraNode]="true"
-    [class.disabled]="disabledClass"
-    [style.border-color]="borderColor"
-    [style.background-color]="backgroundColor">
-    <button>Button</button>
-  </div>
+    <div
+      #trigger
+      nz-wave
+      *ngIf="!isDestroyed"
+      [nzWaveExtraNode]="true"
+      [class.disabled]="disabledClass"
+      [style.border-color]="borderColor"
+      [style.background-color]="backgroundColor"
+    >
+      <button>Button</button>
+    </div>
   `
 })
 class WaveContainerWithExtraNodeComponent {
@@ -223,6 +298,6 @@ class WaveContainerWithExtraNodeComponent {
   isDestroyed = false;
   borderColor = 'rgb(0,255,0)';
   backgroundColor = 'rgb(255,255,255)';
-  @ViewChild('trigger') trigger: ElementRef<HTMLElement>;
-  @ViewChild(NzWaveDirective) wave: NzWaveDirective;
+  @ViewChild('trigger', { static: false }) trigger: ElementRef<HTMLElement>;
+  @ViewChild(NzWaveDirective, { static: false }) wave: NzWaveDirective;
 }

@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 多选框
-type: Data Entry
+type: 数据录入
 title: Checkbox
 ---
 
@@ -11,6 +11,14 @@ title: Checkbox
 
 - 在一组可选项中进行多项选择时；
 - 单独使用可以表示两种状态之间的切换，和 `switch` 类似。区别在于切换 `switch` 会直接触发状态改变，而 `checkbox` 一般用于状态标记，需要和提交操作配合。
+
+## 单独引入此组件
+
+想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
+
+```ts
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+```
 
 ## API
 

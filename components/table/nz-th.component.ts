@@ -1,10 +1,20 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
-  OnChanges, OnDestroy, OnInit,
+  OnChanges,
+  OnDestroy,
+  OnInit,
   Output,
   SimpleChanges,
   ViewChild,
@@ -12,11 +22,10 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { isNotNil } from '../core/util/check';
-import { InputBoolean } from '../core/util/convert';
-import { NzDropDownComponent } from '../dropdown/nz-dropdown.component';
-import { NzI18nInterface } from '../i18n/nz-i18n.interface';
-import { NzI18nService } from '../i18n/nz-i18n.service';
+
+import { isNotNil, InputBoolean } from 'ng-zorro-antd/core';
+import { NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
+import { NzI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 /* tslint:disable-next-line:no-any */
 export type NzThFilterType = Array<{ text: string; value: any; byDefault?: boolean }>;
@@ -30,24 +39,24 @@ export interface NzThItemInterface {
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector           : 'th:not(.nz-disable-th)',
+  selector: 'th:not(.nz-disable-th):not([mat-sort-header]):not([mat-header-cell])',
   preserveWhitespaces: false,
-  encapsulation      : ViewEncapsulation.None,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  templateUrl        : './nz-th.component.html',
-  host               : {
-    '[class.ant-table-column-has-actions]'     : 'nzShowFilter || nzShowSort || nzCustomFilter',
-    '[class.ant-table-column-has-filters]'     : 'nzShowFilter || nzCustomFilter',
-    '[class.ant-table-column-has-sorters]'     : 'nzShowSort',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './nz-th.component.html',
+  host: {
+    '[class.ant-table-column-has-actions]': 'nzShowFilter || nzShowSort || nzCustomFilter',
+    '[class.ant-table-column-has-filters]': 'nzShowFilter || nzCustomFilter',
+    '[class.ant-table-column-has-sorters]': 'nzShowSort',
     '[class.ant-table-selection-column-custom]': 'nzShowRowSelection',
-    '[class.ant-table-selection-column]'       : 'nzShowCheckbox',
-    '[class.ant-table-expand-icon-th]'         : 'nzExpand',
-    '[class.ant-table-th-left-sticky]'         : 'nzLeft',
-    '[class.ant-table-th-right-sticky]'        : 'nzRight',
-    '[class.ant-table-column-sort]'            : `nzSort === 'descend' || nzSort === 'ascend'`,
-    '[style.left]'                             : 'nzLeft',
-    '[style.right]'                            : 'nzRight',
-    '[style.text-align]'                       : 'nzAlign'
+    '[class.ant-table-selection-column]': 'nzShowCheckbox',
+    '[class.ant-table-expand-icon-th]': 'nzExpand',
+    '[class.ant-table-th-left-sticky]': 'nzLeft',
+    '[class.ant-table-th-right-sticky]': 'nzRight',
+    '[class.ant-table-column-sort]': `nzSort === 'descend' || nzSort === 'ascend'`,
+    '[style.left]': 'nzLeft',
+    '[style.right]': 'nzRight',
+    '[style.text-align]': 'nzAlign'
   }
 })
 export class NzThComponent implements OnChanges, OnInit, OnDestroy {
@@ -60,9 +69,9 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
   nzWidthChange$ = new Subject();
   private destroy$ = new Subject();
   private hasDefaultFilter = false;
-  @ViewChild(NzDropDownComponent) nzDropDownComponent: NzDropDownComponent;
+  @ViewChild(NzDropdownMenuComponent, { static: false }) nzDropdownMenuComponent: NzDropdownMenuComponent;
   /* tslint:disable-next-line:no-any */
-  @Input() nzSelections: Array<{ text: string, onSelect(...args: any[]): any; }> = [];
+  @Input() nzSelections: Array<{ text: string; onSelect(...args: any[]): any }> = [];
   @Input() nzChecked = false;
   @Input() nzDisabled = false;
   @Input() nzIndeterminate = false;
@@ -72,7 +81,7 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzLeft: string;
   @Input() nzRight: string;
   @Input() nzAlign: 'left' | 'right' | 'center';
-  @Input() nzSort: 'ascend' | 'descend' = null;
+  @Input() nzSort: 'ascend' | 'descend' | null = null;
   @Input() nzFilters: NzThFilterType = [];
   @Input() @InputBoolean() nzExpand = false;
   @Input() @InputBoolean() nzShowCheckbox = false;
@@ -81,24 +90,24 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
   @Input() @InputBoolean() nzShowFilter = false;
   @Input() @InputBoolean() nzShowRowSelection = false;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
-  @Output() readonly nzSortChange = new EventEmitter<string>();
-  @Output() readonly nzSortChangeWithKey = new EventEmitter<{ key: string, value: string }>();
+  @Output() readonly nzSortChange = new EventEmitter<string | null>();
+  @Output() readonly nzSortChangeWithKey = new EventEmitter<{ key: string; value: string | null }>();
   /* tslint:disable-next-line:no-any */
   @Output() readonly nzFilterChange = new EventEmitter<any[] | any>();
 
   updateSortValue(): void {
     if (this.nzShowSort) {
-      if (this.nzSort === 'descend') {
-        this.setSortValue('ascend');
-      } else if (this.nzSort === 'ascend') {
+      if (this.nzSort === 'ascend') {
+        this.setSortValue('descend');
+      } else if (this.nzSort === 'descend') {
         this.setSortValue(null);
       } else {
-        this.setSortValue('descend');
+        this.setSortValue('ascend');
       }
     }
   }
 
-  setSortValue(value: 'ascend' | 'descend'): void {
+  setSortValue(value: 'ascend' | 'descend' | null): void {
     this.nzSort = value;
     this.nzSortChangeWithKey.emit({ key: this.nzSortKey, value: this.nzSort });
     this.nzSortChange.emit(this.nzSort);
@@ -129,14 +138,11 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
     } else {
       this.nzFilterChange.emit(this.filterValue);
     }
-    this.hideDropDown();
   }
 
   reset(): void {
     this.initMultipleFilterList(true);
     this.initSingleFilterList(true);
-    this.search();
-    this.hideDropDown();
     this.hasFilterValue = false;
   }
 
@@ -145,11 +151,11 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   checkSingle(filter: NzThItemInterface): void {
-    this.singleFilterList.forEach(item => item.checked = item === filter);
+    this.singleFilterList.forEach(item => (item.checked = item === filter));
   }
 
   hideDropDown(): void {
-    this.nzDropDownComponent.setVisibleStateWhen(false);
+    this.nzDropdownMenuComponent.setVisibleStateWhen(false);
     this.filterVisible = false;
   }
 
@@ -193,8 +199,7 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
     this.cdr.markForCheck();
   }
 
-  constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService) {
-  }
+  constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService) {}
 
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {

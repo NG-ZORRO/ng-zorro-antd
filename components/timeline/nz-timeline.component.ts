@@ -1,3 +1,12 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { Platform } from '@angular/cdk/platform';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -18,22 +27,24 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { reverseChildNodes } from '../core/util/dom';
+import { reverseChildNodes } from 'ng-zorro-antd/core';
+
 import { NzTimelineItemComponent } from './nz-timeline-item.component';
 
 export type NzTimelineMode = 'left' | 'alternate' | 'right';
 
 @Component({
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
-  selector           : 'nz-timeline',
-  templateUrl        : './nz-timeline.component.html'
+  selector: 'nz-timeline',
+  exportAs: 'nzTimeline',
+  templateUrl: './nz-timeline.component.html'
 })
 export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestroy {
-  @ViewChild('timeline') timeline: ElementRef<HTMLElement>;
+  @ViewChild('timeline', { static: false }) timeline: ElementRef<HTMLElement>;
   @ContentChildren(NzTimelineItemComponent) listOfTimeLine: QueryList<NzTimelineItemComponent>;
-  @ContentChild('pending') _pendingContent: TemplateRef<void>;
+  @ContentChild('pending', { static: false }) _pendingContent: TemplateRef<void>;
 
   @Input() nzMode: NzTimelineMode;
   @Input() nzPending: string | boolean | TemplateRef<void>;
@@ -44,7 +55,7 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
 
   private destroy$ = new Subject<void>();
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private platform: Platform) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const modeChanges = changes.nzMode;
@@ -54,7 +65,11 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
     if (modeChanges && (modeChanges.previousValue !== modeChanges.currentValue || modeChanges.isFirstChange())) {
       this.updateChildren();
     }
-    if (reverseChanges && reverseChanges.previousValue !== reverseChanges.currentValue && !reverseChanges.isFirstChange()) {
+    if (
+      reverseChanges &&
+      reverseChanges.previousValue !== reverseChanges.currentValue &&
+      !reverseChanges.isFirstChange()
+    ) {
       this.reverseChildTimelineDots();
     }
     if (pendingChanges) {
@@ -81,11 +96,14 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
       const length = this.listOfTimeLine.length;
       this.listOfTimeLine.toArray().forEach((item, index) => {
         item.isLast = !this.nzReverse ? index === length - 1 : index === 0;
-        item.position = this.nzMode === 'left' || !this.nzMode
-          ? undefined
-          : this.nzMode === 'right'
+        item.position =
+          this.nzMode === 'left' || !this.nzMode
+            ? undefined
+            : this.nzMode === 'right'
             ? 'right'
-            : this.nzMode === 'alternate' && index % 2 === 0 ? 'left' : 'right';
+            : this.nzMode === 'alternate' && index % 2 === 0
+            ? 'left'
+            : 'right';
         item.detectChanges();
       });
       this.cdr.markForCheck();
@@ -93,7 +111,9 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
   }
 
   private reverseChildTimelineDots(): void {
-    reverseChildNodes(this.timeline.nativeElement as HTMLElement);
-    this.updateChildren();
+    if (this.platform.isBrowser) {
+      reverseChildNodes(this.timeline.nativeElement as HTMLElement);
+      this.updateChildren();
+    }
   }
 }

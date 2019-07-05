@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -7,39 +15,37 @@ import {
   OnInit,
   ViewEncapsulation
 } from '@angular/core';
-import { moveUpMotion } from '../core/animation/move';
+
+import { moveUpMotion } from 'ng-zorro-antd/core';
+
 import { NzMessageContainerComponent } from './nz-message-container.component';
 import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
 
 @Component({
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  selector           : 'nz-message',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-message',
+  exportAs: 'nzMessage',
   preserveWhitespaces: false,
-  animations         : [ moveUpMotion ],
-  templateUrl        : './nz-message.component.html'
+  animations: [moveUpMotion],
+  templateUrl: './nz-message.component.html'
 })
 export class NzMessageComponent implements OnInit, OnDestroy {
-
   @Input() nzMessage: NzMessageDataFilled;
   @Input() nzIndex: number;
 
-  protected _options: NzMessageDataOptions; // Shortcut reference to nzMessage.options
+  protected _options: Required<NzMessageDataOptions>;
 
-  // For auto erasing(destroy) self
-  private _autoErase: boolean; // Whether record timeout to auto destroy self
-  private _eraseTimer: number = null;
+  private _autoErase: boolean; // Whether to set a timeout to destroy itself.
+  private _eraseTimer: number | null = null;
   private _eraseTimingStart: number;
-  private _eraseTTL: number; // Time to live
+  private _eraseTTL: number; // Time to live.
 
-  constructor(
-    private _messageContainer: NzMessageContainerComponent,
-    protected cdr: ChangeDetectorRef
-  ) {
-  }
+  constructor(private _messageContainer: NzMessageContainerComponent, protected cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this._options = this.nzMessage.options;
+    // `NzMessageContainer` does its job so all properties cannot be undefined.
+    this._options = this.nzMessage.options as Required<NzMessageDataOptions>;
 
     if (this._options.nzAnimate) {
       this.nzMessage.state = 'enter';
@@ -96,8 +102,7 @@ export class NzMessageComponent implements OnInit, OnDestroy {
 
   private _startEraseTimeout(): void {
     if (this._eraseTTL > 0) {
-      this._clearEraseTimeout(); // To prevent calling _startEraseTimeout() more times to create more timer
-      // TODO: `window` should be removed in milestone II
+      this._clearEraseTimeout();
       this._eraseTimer = setTimeout(() => this._destroy(), this._eraseTTL);
       this._eraseTimingStart = Date.now();
     } else {

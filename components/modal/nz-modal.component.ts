@@ -1,7 +1,15 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
 
 import { ESCAPE } from '@angular/cdk/keycodes';
-import { BlockScrollStrategy, Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { BlockScrollStrategy, Overlay, OverlayKeyboardDispatcher, OverlayRef } from '@angular/cdk/overlay';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
@@ -18,6 +26,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -29,11 +38,10 @@ import {
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { InputBoolean } from '../core/util/convert';
-import { isPromise } from '../core/util/is-promise';
-import { NzI18nService } from '../i18n/nz-i18n.service';
-import ModalUtil from './modal-util';
-import { NzModalConfig, NZ_MODAL_CONFIG, NZ_MODAL_DEFAULT_CONFIG } from './nz-modal-config';
+import { getElementOffset, isPromise, InputBoolean } from 'ng-zorro-antd/core';
+import { NzI18nService } from 'ng-zorro-antd/i18n';
+
+import { NzModalConfig, NZ_MODAL_CONFIG } from './nz-modal-config';
 import { NzModalControlService } from './nz-modal-control.service';
 import { NzModalRef } from './nz-modal-ref.class';
 import { ModalButtonOptions, ModalOptions, ModalType, OnClickCallback } from './nz-modal.type';
@@ -41,30 +49,32 @@ import { ModalButtonOptions, ModalOptions, ModalType, OnClickCallback } from './
 export const MODAL_ANIMATE_DURATION = 200; // Duration when perform animations (ms)
 
 type AnimationState = 'enter' | 'leave' | null;
+export const WRAP_CLASS_NAME = 'ant-modal-wrap';
 
 @Component({
-  selector   : 'nz-modal',
+  selector: 'nz-modal',
+  exportAs: 'nzModal',
   templateUrl: './nz-modal.component.html',
   // Using OnPush for modal caused footer can not to detect changes. we can fix it when 8.x.
   changeDetection: ChangeDetectionStrategy.Default
 })
 
 // tslint:disable-next-line:no-any
-export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> implements OnInit, OnChanges, AfterViewInit, OnDestroy, ModalOptions<T> {
-
+export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
+  implements OnInit, OnChanges, AfterViewInit, OnDestroy, ModalOptions<T> {
   @Input() @InputBoolean() nzVisible: boolean = false;
   @Input() @InputBoolean() nzClosable: boolean = true;
-  @Input() @InputBoolean() nzMask: boolean = true;
-  @Input() @InputBoolean() nzMaskClosable: boolean = true;
   @Input() @InputBoolean() nzOkLoading: boolean = false;
   @Input() @InputBoolean() nzOkDisabled: boolean = false;
   @Input() @InputBoolean() nzCancelDisabled: boolean = false;
   @Input() @InputBoolean() nzCancelLoading: boolean = false;
   @Input() @InputBoolean() nzKeyboard: boolean = true;
   @Input() @InputBoolean() nzNoAnimation = false;
+  @Input() @InputBoolean() nzMask: boolean;
+  @Input() @InputBoolean() nzMaskClosable: boolean;
   @Input() nzContent: string | TemplateRef<{}> | Type<T>; // [STATIC] If not specified, will use <ng-content>
   @Input() nzComponentParams: T; // [STATIC] ONLY avaliable when nzContent is a component
-  @Input() nzFooter: string | TemplateRef<{}> | Array<ModalButtonOptions<T>>; // [STATIC] Default Modal ONLY
+  @Input() nzFooter: string | TemplateRef<{}> | Array<ModalButtonOptions<T>> | null; // [STATIC] Default Modal ONLY
   @Input() nzGetContainer: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef) = () => this.overlay.create(); // [STATIC]
   @Input() nzZIndex: number = 1000;
   @Input() nzWidth: number | string = 520;
@@ -74,8 +84,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   @Input() nzTitle: string | TemplateRef<{}>;
   @Input() nzMaskStyle: object;
   @Input() nzBodyStyle: object;
-  @Input() nzOkText: string;
-  @Input() nzCancelText: string;
+  @Input() nzOkText: string | null;
+  @Input() nzCancelText: string | null;
   @Input() nzOkType = 'primary';
   @Input() nzIconType: string = 'question-circle'; // Confirm Modal ONLY
   @Input() nzModalType: ModalType = 'default';
@@ -87,33 +97,69 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   @Output() readonly nzAfterClose = new EventEmitter<R>(); // Trigger when modal leave-animation over
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
-  @ViewChild('modalContainer') modalContainer: ElementRef;
-  @ViewChild('bodyContainer', { read: ViewContainerRef }) bodyContainer: ViewContainerRef;
-  @ViewChild('autoFocusButtonOk', { read: ElementRef }) autoFocusButtonOk: ElementRef; // Only aim to focus the ok button that needs to be auto focused
+  @ViewChild('modalContainer', { static: true }) modalContainer: ElementRef;
+  @ViewChild('bodyContainer', { static: false, read: ViewContainerRef }) bodyContainer: ViewContainerRef;
+  @ViewChild('autoFocusButtonOk', { static: false, read: ElementRef }) autoFocusButtonOk: ElementRef; // Only aim to focus the ok button that needs to be auto focused
 
-  get afterOpen(): Observable<void> { // Observable alias for nzAfterOpen
+  get afterOpen(): Observable<void> {
+    // Observable alias for nzAfterOpen
     return this.nzAfterOpen.asObservable();
   }
 
-  get afterClose(): Observable<R> { // Observable alias for nzAfterClose
+  get afterClose(): Observable<R> {
+    // Observable alias for nzAfterClose
     return this.nzAfterClose.asObservable();
   }
 
   get cancelText(): string {
-    return this.nzCancelText || this.locale.cancelText;
+    return this.nzCancelText || this.locale.cancelText!;
   }
 
   get okText(): string {
-    return this.nzOkText || this.locale.okText;
+    return this.nzOkText || this.locale.okText!;
   }
 
   get hidden(): boolean {
     return !this.nzVisible && !this.animationState;
   } // Indicate whether this dialog should hidden
 
-  locale: { okText?: string, cancelText?: string } = {};
-  maskAnimationClassMap: object;
-  modalAnimationClassMap: object;
+  /**
+   * @description
+   * The calculated highest weight of mask value
+   *
+   * Weight of different mask input:
+   * component default value < global configuration < component input value
+   */
+  get mask(): boolean {
+    if (this.nzMask != null) {
+      return this.nzMask;
+    } else if (this.nzModalGlobalConfig && this.nzModalGlobalConfig.nzMask != null) {
+      return this.nzModalGlobalConfig.nzMask;
+    } else {
+      return true;
+    }
+  }
+
+  /**
+   * @description
+   * The calculated highest weight of maskClosable value
+   *
+   * Weight of different maskClosable input:
+   * component default value < global configuration < component input value
+   */
+  get maskClosable(): boolean {
+    if (this.nzMaskClosable != null) {
+      return this.nzMaskClosable;
+    } else if (this.nzModalGlobalConfig && this.nzModalGlobalConfig.nzMaskClosable != null) {
+      return this.nzModalGlobalConfig.nzMaskClosable;
+    } else {
+      return true;
+    }
+  }
+
+  locale: { okText?: string; cancelText?: string } = {};
+  maskAnimationClassMap: object | null;
+  modalAnimationClassMap: object | null;
   transformOrigin = '0px 0px 0px'; // The origin point that animation based on
 
   private contentComponentRef: ComponentRef<T>; // Handle the reference when using nzContent as Component
@@ -123,9 +169,15 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   private previouslyFocusedElement: HTMLElement;
   private focusTrap: FocusTrap;
   private scrollStrategy: BlockScrollStrategy;
+  private overlayRef: OverlayRef;
+  private dialogMouseDown = false;
+  private timeoutId: number;
+
+  [key: string]: any; // tslint:disable-line:no-any
 
   constructor(
     private overlay: Overlay,
+    private overlayKeyboardDispatcher: OverlayKeyboardDispatcher,
     private i18n: NzI18nService,
     private cfr: ComponentFactoryResolver,
     private elementRef: ElementRef,
@@ -133,27 +185,24 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     private modalControl: NzModalControlService,
     private focusTrapFactory: FocusTrapFactory,
     private cdr: ChangeDetectorRef,
-    @Inject(NZ_MODAL_CONFIG) private config: NzModalConfig,
-    @Inject(DOCUMENT) private document: any) { // tslint:disable-line:no-any
-
+    @Optional() @Inject(NZ_MODAL_CONFIG) private nzModalGlobalConfig: NzModalConfig,
+    @Inject(DOCUMENT) private document: any // tslint:disable-line:no-any
+  ) {
     super();
-
-    this.config = this.mergeDefaultConfig(this.config);
     this.scrollStrategy = this.overlay.scrollStrategies.block();
   }
 
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
-      this.locale = this.i18n.getLocaleData('Modal') as { okText: string, cancelText: string };
+      this.locale = this.i18n.getLocaleData('Modal') as { okText: string; cancelText: string };
     });
-
-    fromEvent<KeyboardEvent>(this.document.body, 'keydown').pipe(takeUntil(this.unsubscribe$)).subscribe(e => this.keydownListener(e));
 
     if (this.isComponent(this.nzContent)) {
       this.createDynamicComponent(this.nzContent as Type<T>); // Create component along without View
     }
 
-    if (this.isModalButtons(this.nzFooter)) { // Setup default button options
+    if (this.isModalButtons(this.nzFooter)) {
+      // Setup default button options
       this.nzFooter = this.formatModalButtons(this.nzFooter as Array<ModalButtonOptions<T>>);
     }
 
@@ -161,8 +210,20 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     this.container = typeof this.nzGetContainer === 'function' ? this.nzGetContainer() : this.nzGetContainer;
     if (this.container instanceof HTMLElement) {
       this.container.appendChild(this.elementRef.nativeElement);
-    } else if (this.container instanceof OverlayRef) { // NOTE: only attach the dom to overlay, the view container is not changed actually
+      fromEvent<KeyboardEvent>(this.document.body, 'keydown')
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(e => this.keydownListener(e));
+    } else if (this.container instanceof OverlayRef) {
+      // NOTE: only attach the dom to overlay, the view container is not changed actually
+      this.setOverlayRef(this.container);
       this.container.overlayElement.appendChild(this.elementRef.nativeElement);
+    }
+
+    if (this.overlayRef) {
+      this.overlayRef
+        .keydownEvents()
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(e => this.keydownListener(e));
     }
 
     // Register modal when afterOpen/afterClose is stable
@@ -202,6 +263,11 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
       this.unsubscribe$.next();
       this.unsubscribe$.complete();
     });
+    clearTimeout(this.timeoutId);
+  }
+
+  setOverlayRef(overlayRef: OverlayRef): void {
+    this.overlayRef = overlayRef;
   }
 
   keydownListener(event: KeyboardEvent): void {
@@ -218,7 +284,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     this.changeVisibleFromInside(false, result);
   }
 
-  destroy(result?: R): void { // Destroy equals Close
+  destroy(result?: R): void {
+    // Destroy equals Close
     this.close(result);
   }
 
@@ -246,12 +313,25 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     return this.elementRef && this.elementRef.nativeElement;
   }
 
+  onMaskDialogDown(): void {
+    this.dialogMouseDown = true;
+  }
+
+  onDialogUp(): void {
+    if (this.dialogMouseDown) {
+      this.timeoutId = setTimeout(() => {
+        this.dialogMouseDown = false;
+      }, 0);
+    }
+  }
+
   onClickMask($event: MouseEvent): void {
     if (
-      this.nzMask &&
-      this.nzMaskClosable &&
-      ($event.target as HTMLElement).classList.contains('ant-modal-wrap') &&
-      this.nzVisible
+      this.mask &&
+      this.maskClosable &&
+      ($event.target as HTMLElement).classList.contains(WRAP_CLASS_NAME) &&
+      this.nzVisible &&
+      !this.dialogMouseDown
     ) {
       this.onClickOkCancel('cancel');
     }
@@ -268,17 +348,17 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   }
 
   public onClickOkCancel(type: 'ok' | 'cancel'): void {
-    const trigger = { 'ok': this.nzOnOk, 'cancel': this.nzOnCancel }[ type ];
-    const loadingKey = { 'ok': 'nzOkLoading', 'cancel': 'nzCancelLoading' }[ type ];
+    const trigger = { ok: this.nzOnOk, cancel: this.nzOnCancel }[type];
+    const loadingKey = { ok: 'nzOkLoading', cancel: 'nzCancelLoading' }[type];
     if (trigger instanceof EventEmitter) {
       trigger.emit(this.getContentComponent());
     } else if (typeof trigger === 'function') {
       const result = trigger(this.getContentComponent());
-      const caseClose = (doClose: boolean | void | {}) => (doClose !== false) && this.close(doClose as R); // Users can return "false" to prevent closing by default
+      const caseClose = (doClose: boolean | void | {}) => doClose !== false && this.close(doClose as R); // Users can return "false" to prevent closing by default
       if (isPromise(result)) {
-        this[ loadingKey ] = true;
-        const handleThen = (doClose) => {
-          this[ loadingKey ] = false;
+        this[loadingKey] = true;
+        const handleThen = (doClose: boolean | void | {}) => {
+          this[loadingKey] = false;
           caseClose(doClose);
         };
         (result as Promise<void>).then(handleThen).catch(handleThen);
@@ -300,21 +380,28 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     return value instanceof Type;
   }
 
-  public isModalButtons(value: {}): boolean {
+  public isModalButtons(value: string | TemplateRef<{}> | Array<ModalButtonOptions<T>> | null): boolean {
     return Array.isArray(value) && value.length > 0;
   }
 
   // Do rest things when visible state changed
   private handleVisibleStateChange(visible: boolean, animation: boolean = true, closeResult?: R): Promise<void> {
-    if (visible) { // Hide scrollbar at the first time when shown up
+    if (visible) {
+      // Hide scrollbar at the first time when shown up
       this.scrollStrategy.enable();
       this.savePreviouslyFocusedElement();
       this.trapFocus();
+      if (this.container instanceof OverlayRef) {
+        this.overlayKeyboardDispatcher.add(this.overlayRef);
+      }
+    } else {
+      if (this.container instanceof OverlayRef) {
+        this.overlayKeyboardDispatcher.remove(this.overlayRef);
+      }
     }
 
-    return Promise
-    .resolve(animation && this.animateTo(visible))
-    .then(() => { // Emit open/close event after animations over
+    return Promise.resolve(animation ? this.animateTo(visible) : undefined).then(() => {
+      // Emit open/close event after animations over
       if (visible) {
         this.nzAfterOpen.emit();
       } else {
@@ -329,8 +416,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
 
   // Lookup a button's property, if the prop is a function, call & then return the result, otherwise, return itself.
   public getButtonCallableProp(options: ModalButtonOptions<T>, prop: string): {} {
-    const value = options[ prop ];
-    const args = [];
+    const value = options[prop];
+    const args: T[] = [];
     if (this.contentComponentRef) {
       args.push(this.contentComponentRef.instance);
     }
@@ -342,7 +429,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     const result = this.getButtonCallableProp(button, 'onClick'); // Call onClick directly
     if (isPromise(result)) {
       button.loading = true;
-      (result as Promise<{}>).then(() => button.loading = false).catch(() => button.loading = false);
+      (result as Promise<{}>).then(() => (button.loading = false)).catch(() => (button.loading = false));
     }
   }
 
@@ -361,12 +448,12 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
     this.animationState = state;
     if (state) {
       this.maskAnimationClassMap = {
-        [ `fade-${state}` ]       : true,
-        [ `fade-${state}-active` ]: true
+        [`fade-${state}`]: true,
+        [`fade-${state}-active`]: true
       };
       this.modalAnimationClassMap = {
-        [ `zoom-${state}` ]       : true,
-        [ `zoom-${state}-active` ]: true
+        [`zoom-${state}`]: true,
+        [`zoom-${state}-active`]: true
       };
     } else {
       this.maskAnimationClassMap = this.modalAnimationClassMap = null;
@@ -374,19 +461,26 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   }
 
   private animateTo(isVisible: boolean): Promise<void> {
-    if (isVisible) { // Figure out the lastest click position when shows up
+    if (isVisible) {
+      // Figure out the lastest click position when shows up
       setTimeout(() => this.updateTransformOrigin()); // [NOTE] Using timeout due to the document.click event is fired later than visible change, so if not postponed to next event-loop, we can't get the lastest click position
     }
 
     this.changeAnimationState(isVisible ? 'enter' : 'leave');
-    return new Promise((resolve) => setTimeout(() => { // Return when animation is over
-      this.changeAnimationState(null);
-      resolve();
-    }, this.nzNoAnimation ? 0 : MODAL_ANIMATE_DURATION));
+    return new Promise(resolve =>
+      setTimeout(
+        () => {
+          // Return when animation is over
+          this.changeAnimationState(null);
+          resolve();
+        },
+        this.nzNoAnimation ? 0 : MODAL_ANIMATE_DURATION
+      )
+    );
   }
 
   private formatModalButtons(buttons: Array<ModalButtonOptions<T>>): Array<ModalButtonOptions<T>> {
-    return buttons.map((button) => {
+    return buttons.map(button => {
       return {
         ...{
           type: 'default',
@@ -408,8 +502,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   private createDynamicComponent(component: Type<T>): void {
     const factory = this.cfr.resolveComponentFactory(component);
     const childInjector = Injector.create({
-      providers: [ { provide: NzModalRef, useValue: this } ],
-      parent   : this.viewContainer.parentInjector
+      providers: [{ provide: NzModalRef, useValue: this }],
+      parent: this.viewContainer.parentInjector
     });
     this.contentComponentRef = factory.create(childInjector);
     if (this.nzComponentParams) {
@@ -422,14 +516,13 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R> impleme
   // Update transform-origin to the last click position on document
   private updateTransformOrigin(): void {
     const modalElement = this.modalContainer.nativeElement as HTMLElement;
-    const lastPosition = ModalUtil.getLastClickPosition();
-    if (lastPosition) {
-      this.transformOrigin = `${lastPosition.x - modalElement.offsetLeft}px ${lastPosition.y - modalElement.offsetTop}px 0px`;
+    if (this.previouslyFocusedElement) {
+      const previouslyDOMRect = this.previouslyFocusedElement.getBoundingClientRect();
+      const lastPosition = getElementOffset(this.previouslyFocusedElement);
+      const x = lastPosition.left + previouslyDOMRect.width / 2;
+      const y = lastPosition.top + previouslyDOMRect.height / 2;
+      this.transformOrigin = `${x - modalElement.offsetLeft}px ${y - modalElement.offsetTop}px 0px`;
     }
-  }
-
-  private mergeDefaultConfig(config: NzModalConfig): NzModalConfig {
-    return { ...NZ_MODAL_DEFAULT_CONFIG, ...config };
   }
 
   private savePreviouslyFocusedElement(): void {

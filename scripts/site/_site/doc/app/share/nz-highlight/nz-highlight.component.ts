@@ -7,8 +7,8 @@ import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChil
   `
 })
 export class NzHighlightComponent implements OnInit {
-  _code;
-  @ViewChild('code') codeElement: ElementRef;
+  _code: string;
+  @ViewChild('code', { static: true }) codeElement: ElementRef;
   @Input() nzLanguage: string;
 
   @Input()
@@ -20,9 +20,7 @@ export class NzHighlightComponent implements OnInit {
     this._code = decodeURIComponent(value).trim();
   }
 
-  constructor() {
-  }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 }

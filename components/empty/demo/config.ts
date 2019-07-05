@@ -8,7 +8,8 @@ import { NzEmptyService } from 'ng-zorro-antd';
       [nzUnCheckedChildren]="'default'"
       [nzCheckedChildren]="'customize'"
       [(ngModel)]="customize"
-      (ngModelChange)="onConfigChange()">
+      (ngModelChange)="onConfigChange()"
+    >
     </nz-switch>
 
     <nz-divider></nz-divider>
@@ -28,10 +29,10 @@ import { NzEmptyService } from 'ng-zorro-antd';
     <h3>Table</h3>
     <nz-table>
       <thead>
-      <tr>
-        <th>Title</th>
-        <th>Age</th>
-      </tr>
+        <tr>
+          <th>Title</th>
+          <th>Age</th>
+        </tr>
       </thead>
     </nz-table>
 
@@ -40,24 +41,26 @@ import { NzEmptyService } from 'ng-zorro-antd';
 
     <ng-template #customTpl let-name>
       <div style="text-align: center;">
-        <i nz-icon type="smile" style="font-size: 20px;"></i>
+        <i nz-icon nzType="smile" style="font-size: 20px;"></i>
         <p>Data Not Found in {{ name }}</p>
       </div>
     </ng-template>
   `,
-  styles  : [ `h3 {
-    font-size: inherit;
-    margin: 16px 0 8px 0;
-  }`
+  styles: [
+    `
+      h3 {
+        font-size: inherit;
+        margin: 16px 0 8px 0;
+      }
+    `
   ]
 })
 export class NzDemoEmptyConfigComponent {
-  @ViewChild('customTpl') customTpl: TemplateRef<any>; // tslint:disable-line:no-any
+  @ViewChild('customTpl', { static: false }) customTpl: TemplateRef<any>; // tslint:disable-line:no-any
 
   customize = false;
 
-  constructor(private nzEmptyService: NzEmptyService) {
-  }
+  constructor(private nzEmptyService: NzEmptyService) {}
 
   onConfigChange(): void {
     if (this.customize) {

@@ -1,19 +1,38 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Optional, ViewEncapsulation } from '@angular/core';
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  Optional,
+  ViewEncapsulation
+} from '@angular/core';
 import { Subject } from 'rxjs';
+
+import { toCssPixel } from 'ng-zorro-antd/core';
 
 import { NzMessageConfig, NZ_MESSAGE_CONFIG, NZ_MESSAGE_DEFAULT_CONFIG } from './nz-message-config';
 import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
 
 @Component({
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  selector           : 'nz-message-container',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-message-container',
+  exportAs: 'nzMessageContainer',
   preserveWhitespaces: false,
-  templateUrl        : './nz-message-container.component.html'
+  templateUrl: './nz-message-container.component.html'
 })
 export class NzMessageContainerComponent {
   messages: NzMessageDataFilled[] = [];
-  config: NzMessageConfig = {};
+  config: Required<NzMessageConfig>;
+  top: string | null;
 
   constructor(
     protected cdr: ChangeDetectorRef,
@@ -25,6 +44,8 @@ export class NzMessageContainerComponent {
 
   setConfig(config: NzMessageConfig): void {
     this.config = { ...this.config, ...config };
+    this.top = toCssPixel(this.config.nzTop);
+    this.cdr.markForCheck();
   }
 
   /**
@@ -51,10 +72,11 @@ export class NzMessageContainerComponent {
       if (message.messageId === messageId) {
         this.messages.splice(index, 1);
         this.cdr.detectChanges();
-        message.onClose.next(userAction);
-        message.onClose.complete();
+        message.onClose!.next(userAction);
+        message.onClose!.complete();
         return true;
       }
+      return false;
     });
   }
 
@@ -70,10 +92,10 @@ export class NzMessageContainerComponent {
    * Merge default options and custom message options
    * @param options
    */
-  protected _mergeMessageOptions(options: NzMessageDataOptions): NzMessageDataOptions {
+  protected _mergeMessageOptions(options?: NzMessageDataOptions): NzMessageDataOptions {
     const defaultOptions: NzMessageDataOptions = {
-      nzDuration    : this.config.nzDuration,
-      nzAnimate     : this.config.nzAnimate,
+      nzDuration: this.config.nzDuration,
+      nzAnimate: this.config.nzAnimate,
       nzPauseOnHover: this.config.nzPauseOnHover
     };
     return { ...defaultOptions, ...options };

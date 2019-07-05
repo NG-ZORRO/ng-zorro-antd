@@ -11,7 +11,8 @@ title:
 
 1. `nzValidateStatus`: 校验状态，默认自动从 `nz-form-control` 中的 `NgControl` 获得校验状态，也可以手动指定为特定的 `NgControl`。
 2. `nzHasFeedback`：用于给输入框添加反馈图标。
-3. `nz-form-explain`：设置校验文案。
+3. `nzSuccessTip` `nzWarningTip` `nzErrorTip` `nzValidatingTip`：设置不同状态校验文案。
+> 当同一种状态下存在多种提示情况时，`nzSuccessTip` `nzWarningTip` `nzErrorTip` `nzValidatingTip` 均支持传入 `TemplateRef<{ $implicit: FormControl }` 类型，可以通过[模板变量]((https://www.angular.cn/guide/template-syntax))导出 `FormControl` 后用于切换不同的提示信息。
 
 ## en-US
 
@@ -19,4 +20,5 @@ We provide properties like `nzValidateStatus` `nzHasFeedback` in `nz-form-contro
 
 1. `nzValidateStatus`: validate status of form components, the default status comes from the `NgControl` in `nz-form-control`, you can set other `NgControl` to it.
 2. `nzHasFeedback`: display feed icon of input control
-3. `nz-form-explain`: display validate message.
+3. `nzSuccessTip` `nzWarningTip` `nzErrorTip` `nzValidatingTip`：display validate message。
+> When there are multiple tips in the same state, `nzSuccessTip` `nzWarningTip` `nzErrorTip` `nzValidatingTip` supports the passing `TemplateRef<{ $implicit: FormControl }` type, which can be used to switch tips after exporting `FormControl` via the [template syntax](https://angular.io/guide/template-syntax).

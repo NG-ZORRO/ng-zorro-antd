@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -23,16 +31,18 @@ import { NzOptionComponent } from './nz-option.component';
 import { NzSelectService } from './nz-select.service';
 
 @Component({
-  selector           : '[nz-option-container]',
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
+  selector: '[nz-option-container]',
+  exportAs: 'nzOptionContainer',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
-  templateUrl        : './nz-option-container.component.html'
+  templateUrl: './nz-option-container.component.html'
 })
 export class NzOptionContainerComponent implements OnDestroy, OnInit {
   private destroy$ = new Subject();
+  private lastScrollTop = 0;
   @ViewChildren(NzOptionLiComponent) listOfNzOptionLiComponent: QueryList<NzOptionLiComponent>;
-  @ViewChild('dropdownUl') dropdownUl: ElementRef;
+  @ViewChild('dropdownUl', { static: true }) dropdownUl: ElementRef<HTMLUListElement>;
   @Input() nzNotFoundContent: string;
   @Input() nzMenuItemSelectedIcon: TemplateRef<void>;
   @Output() readonly nzScrollToBottom = new EventEmitter<void>();
@@ -41,14 +51,14 @@ export class NzOptionContainerComponent implements OnDestroy, OnInit {
     // delay after open
     setTimeout(() => {
       if (this.listOfNzOptionLiComponent && this.listOfNzOptionLiComponent.length && option) {
-        const targetOption = this.listOfNzOptionLiComponent.find(
-          o => this.nzSelectService.compareWith(o.nzOption.nzValue, option.nzValue)
+        const targetOption = this.listOfNzOptionLiComponent.find(o =>
+          this.nzSelectService.compareWith(o.nzOption.nzValue, option.nzValue)
         );
-        /* tslint:disable-next-line:no-string-literal */
-        if (targetOption && targetOption.el && targetOption.el[ 'scrollIntoViewIfNeeded' ]) {
-          /* tslint:disable-next-line:no-string-literal */
-          targetOption.el[ 'scrollIntoViewIfNeeded' ](false);
+        /* tslint:disable:no-any */
+        if (targetOption && targetOption.el && (targetOption.el as any).scrollIntoViewIfNeeded) {
+          (targetOption.el as any).scrollIntoViewIfNeeded(false);
         }
+        /* tslint:enable:no-any */
       }
     });
   }
@@ -62,33 +72,29 @@ export class NzOptionContainerComponent implements OnDestroy, OnInit {
     return option.nzValue;
   }
 
-  constructor(public nzSelectService: NzSelectService, private cdr: ChangeDetectorRef, private ngZone: NgZone) {
-  }
+  constructor(public nzSelectService: NzSelectService, private cdr: ChangeDetectorRef, private ngZone: NgZone) {}
 
   ngOnInit(): void {
-    this.nzSelectService.activatedOption$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe((option) => {
-      this.scrollIntoViewIfNeeded(option);
+    this.nzSelectService.activatedOption$.pipe(takeUntil(this.destroy$)).subscribe(option => {
+      this.scrollIntoViewIfNeeded(option!);
     });
-    this.nzSelectService.check$.pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(() => {
+    this.nzSelectService.check$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.cdr.markForCheck();
     });
     this.ngZone.runOutsideAngular(() => {
       const ul = this.dropdownUl.nativeElement;
-      fromEvent<MouseEvent>(ul, 'scroll').pipe(
-        takeUntil(this.destroy$)
-      ).subscribe(e => {
-        e.preventDefault();
-        e.stopPropagation();
-        if (ul && (ul.scrollHeight < (ul.clientHeight + ul.scrollTop + 10))) {
-          this.ngZone.run(() => {
-            this.nzScrollToBottom.emit();
-          });
-        }
-      });
+      fromEvent<MouseEvent>(ul, 'scroll')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(e => {
+          e.preventDefault();
+          e.stopPropagation();
+          if (ul && ul.scrollTop > this.lastScrollTop && ul.scrollHeight < ul.clientHeight + ul.scrollTop + 10) {
+            this.lastScrollTop = ul.scrollTop;
+            this.ngZone.run(() => {
+              this.nzScrollToBottom.emit();
+            });
+          }
+        });
     });
   }
 

@@ -9,11 +9,9 @@ import { Component } from '@angular/core';
     </nz-tag>
     <nz-tag nzMode="closeable" (nzOnClose)="onClose()" (nzAfterClose)="afterClose()">Tag 2</nz-tag>
     <nz-tag nzMode="closeable" (nzOnClose)="preventDefault($event)">Prevent Default</nz-tag>
-  `,
-  styles  : []
+  `
 })
 export class NzDemoTagBasicComponent {
-
   onClose(): void {
     console.log('tag was closed.');
   }

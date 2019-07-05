@@ -1,20 +1,20 @@
 <input
-  type="text"
+  #inputElement
+  nzType="text"
   [nzTime]="nzFormat"
   class="ant-time-picker-input"
   [placeholder]="nzPlaceHolder || ('TimePicker.placeholder' | nzI18n)"
   [(ngModel)]="value"
   readonly="readonly"
-  (click)="open()"
-  #inputElement>
+  (click)="open()">
 <span class="ant-time-picker-icon">
-  <i nz-icon type="clock-circle"></i>
+  <i nz-icon nzType="clock-circle"></i>
 </span>
 <i
   *ngIf="nzAllowEmpty && value"
   nz-icon
-  type="close-circle"
-  theme="fill"
+  nzType="close-circle"
+  nzTheme="fill"
   class="anticon anticon-close-circle ant-time-picker-clear"
   tabindex="-1"
   [attr.aria-label]="nzClearText"
@@ -44,6 +44,7 @@
     [nzDisabledSeconds]="nzDisabledSeconds"
     [nzPlaceHolder]="nzPlaceHolder || ('TimePicker.placeholder' | nzI18n)"
     [nzHideDisabledOptions]="nzHideDisabledOptions"
+    [nzUse12Hours]="nzUse12Hours"
     [nzDefaultOpenValue]="nzDefaultOpenValue"
     [nzAddOn]="nzAddOn"
     [opened]="nzOpen"

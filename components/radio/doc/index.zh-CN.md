@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 单选框
-type: Data Entry
+type: 数据录入
 title: Radio
 ---
 
@@ -11,6 +11,14 @@ title: Radio
 
 - 用于在多个备选项中选中单个状态。
 - 和 Select 的区别是，Radio 所有选项默认可见，方便用户在比较中选择，因此选项不宜过多。
+
+## 单独引入此组件
+
+想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
+
+```ts
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+```
 
 ## API
 
@@ -34,13 +42,15 @@ title: Radio
 | `[ngModel]` | 指定选中的 `nz-radio` 的 value 值 | `string` | - |
 | `[nzName]` | `nz-radio-group` 下所有 `input[type="radio"]` 的 `name` 属性 | `string` | - |
 | `[nzDisabled]` | 设定所有 `nz-radio` disable 状态 | `boolean` | `false` |
-| `[nzSize]` | 大小，只对按钮样式生效 | `'large'｜'small'｜'default'` | `'default'` |
+| `[nzSize]` | 大小，只对按钮样式生效 | `'large' \| 'small' \| 'default'` | `'default'` |
 | `(ngModelChange)` | 选中变化时回调 | `EventEmitter<boolean>` | - |
-| `[nzButtonStyle]` | RadioButton 的风格样式，目前有描边和填色两种风格 | `'outline'｜'solid'` | `'outline'` |
+| `[nzButtonStyle]` | RadioButton 的风格样式，目前有描边和填色两种风格 | `'outline' \| 'solid'` | `'outline'` |
 
 ## 方法
 
 ### [nz-radio]
+
+可以通过 `ViewChild` 等其他方式获取 `NzRadioComponent` 使用以下方法
 
 | 名称 | 描述 |
 | --- | --- |

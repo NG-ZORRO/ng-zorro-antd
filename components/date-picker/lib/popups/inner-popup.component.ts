@@ -1,18 +1,37 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 
-import { FunctionProp } from '../../../core/types/common-wrap';
-import { NzCalendarI18nInterface } from '../../../i18n/nz-i18n.interface';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
+
+import { FunctionProp } from 'ng-zorro-antd/core';
+import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import { DisabledDateFn, PanelMode } from '../../standard-types';
-import { CandyDate } from '../candy-date';
+import { CandyDate } from '../candy-date/candy-date';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'inner-popup',
+  exportAs: 'innerPopup',
   templateUrl: 'inner-popup.component.html'
 })
-
 export class InnerPopupComponent implements OnInit, OnChanges {
   @Input() showWeek: boolean;
 
@@ -39,9 +58,9 @@ export class InnerPopupComponent implements OnInit, OnChanges {
 
   prefixCls: string = 'ant-calendar';
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.value && !this.value) {
@@ -55,7 +74,7 @@ export class InnerPopupComponent implements OnInit, OnChanges {
 
   // The value real changed to outside
   onSelectDate(date: CandyDate | Date): void {
-    const value  = date instanceof CandyDate ? date : new CandyDate(date);
+    const value = date instanceof CandyDate ? date : new CandyDate(date);
     this.selectDate.emit(value);
   }
 }

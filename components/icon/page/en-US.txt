@@ -5,5 +5,6 @@
   edit: 'Editor Icons',
   data: 'Data Icons',
   other: 'Application Icons',
-  logo: 'Brand and Logos'
+  logo: 'Brand and Logos',
+  search: 'Search icon here. Click icon to copy code.'
 }

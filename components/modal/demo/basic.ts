@@ -9,8 +9,7 @@ import { Component } from '@angular/core';
       <p>Content two</p>
       <p>Content three</p>
     </nz-modal>
-  `,
-  styles: []
+  `
 })
 export class NzDemoModalBasicComponent {
   isVisible = false;

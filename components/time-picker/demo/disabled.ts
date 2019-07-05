@@ -6,5 +6,4 @@ import { Component } from '@angular/core';
     <nz-time-picker nzDisabled></nz-time-picker>
   `
 })
-export class NzDemoTimePickerDisabledComponent {
-}
+export class NzDemoTimePickerDisabledComponent {}

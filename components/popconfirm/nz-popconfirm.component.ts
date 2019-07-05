@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -10,23 +18,25 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { zoomBigMotion } from '../core/animation/zoom';
-import { NzNoAnimationDirective } from '../core/no-animation/nz-no-animation.directive';
-import { InputBoolean } from '../core/util/convert';
-import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
+
+import { zoomBigMotion, InputBoolean, NzNoAnimationDirective } from 'ng-zorro-antd/core';
+import { NzToolTipComponent } from 'ng-zorro-antd/tooltip';
 
 @Component({
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  encapsulation      : ViewEncapsulation.None,
-  selector           : 'nz-popconfirm',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-popconfirm',
+  exportAs: 'nzPopconfirmComponent',
   preserveWhitespaces: false,
-  animations         : [ zoomBigMotion ],
-  templateUrl        : './nz-popconfirm.component.html',
-  styles             : [ `
-    .ant-popover {
-      position: relative;
-    }
-  ` ]
+  animations: [zoomBigMotion],
+  templateUrl: './nz-popconfirm.component.html',
+  styles: [
+    `
+      .ant-popover {
+        position: relative;
+      }
+    `
+  ]
 })
 export class NzPopconfirmComponent extends NzToolTipComponent {
   _prefix = 'ant-popover-placement';
