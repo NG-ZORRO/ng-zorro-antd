@@ -199,7 +199,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   ngOnDestroy(): void {
     this.isDestroy = true;
     this.closeDropDown();
-    this.selectionChangeSubscription.unsubscribe();
+    if (this.selectionChangeSubscription) {
+      this.selectionChangeSubscription.unsubscribe();
+    }
   }
 
   setDisabledState(isDisabled: boolean): void {
