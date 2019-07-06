@@ -5,7 +5,16 @@
 </div>
 
 <ng-template #monthModeTable>
-  <table class="ant-fullcalendar-table" cellspacing="0" role="grid">
+  <date-table
+    [prefixCls]="'ant-fullcalendar'"
+    [value]="value"
+    [activeDate]="activeDate"
+    [dateRender]="dateCell"
+    [selectedValue]="selectedValue"
+    (valueChange)="onDateSelect($event)"
+  ></date-table>
+
+  <!-- <table class="ant-fullcalendar-table" cellspacing="0" role="grid">
     <thead>
       <tr role="row">
         <th *ngFor="let day of daysInWeek" class="ant-fullcalendar-column-header" role="columnheader" [title]="day.title">
@@ -33,7 +42,7 @@
         </td>
       </tr>
     </tbody>
-  </table>
+  </table> -->
 </ng-template>
 
 <ng-template #yearModeTable>

@@ -1,6 +1,72 @@
-<nz-calendar-header [fullscreen]="fullscreen" [activeDate]="activeDate"
-                    [(mode)]="nzMode" (modeChange)="onModeChange($event)"
-                    (yearChange)="onYearSelect($event)" (monthChange)="onMonthSelect($event)">
+<nz-calendar-header [fullscreen]="fullscreen" [activeDate]="activeDate" [(mode)]="nzMode"
+  (modeChange)="onModeChange($event)" (yearChange)="onYearSelect($event)" (monthChange)="onMonthSelect($event)">
 </nz-calendar-header>
 
-<nz-calendar-body [(mode)]="nzMode" [activeDate]="activeDate" [dateFullCell]="nzDateFullCell" [dateCell]="nzDateCell" [monthCell]="nzMonthCell" [monthFullCell]="nzMonthFullCell" (selectChange)="activeDate=$event"></nz-calendar-body>
+<div class="ant-fullcalendar ant-fullcalendar-full" [ngClass]="fullscreen ? 'ant-fullcalendar-fullscreen' : ''">
+  <div class="ant-fullcalendar-calendar-body">
+    <ng-container *ngIf="nzMode === 'month' then monthModeTable else yearModeTable"></ng-container>
+  </div>
+</div>
+
+<ng-template #monthModeTable>
+  <date-table [prefixCls]="'ant-fullcalendar'" [value]="activeDate" [dateRender]="nzDateCell"
+    [selectedValue]="selectedValue" (valueChange)="onDateSelect($event)"></date-table>
+
+  <!-- <table class="ant-fullcalendar-table" cellspacing="0" role="grid">
+          <thead>
+            <tr role="row">
+              <th *ngFor="let day of daysInWeek" class="ant-fullcalendar-column-header" role="columnheader" [title]="day.title">
+                <span class="ant-fullcalendar-column-header-inner">{{ day.label }}</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="{{prefixCls}}-tbody">
+            <tr *ngFor="let week of dateMatrix; index as row">
+              <td *ngFor="let day of week.dateCells; index as col" role="gridcell" [title]="day.title"
+                  [ngClass]="day.classMap"
+                  [class.ant-fullcalendar-selected-day]="isSameDay(day.value, value)"
+                  (click)="onDateSelect(day.value)">
+                  <div class="{{prefixCls}}-date">
+                    <ng-container *ngIf="dateFullCell else defaultCell">
+                      <ng-container *ngTemplateOutlet="dateFullCell; context: {$implicit: day.value}"></ng-container>
+                    </ng-container>
+                    <ng-template #defaultCell>
+                      <div class="{{prefixCls}}-value">{{ day.label }}</div>
+                      <div *ngIf="dateCell" class="{{prefixCls}}-content">
+                        <ng-container *ngTemplateOutlet="dateCell; context: {$implicit: day.value}"></ng-container>
+                      </div>
+                    </ng-template>
+                  </div>
+              </td>
+            </tr>
+          </tbody>
+        </table> -->
+</ng-template>
+
+<ng-template #yearModeTable>
+  <table class="ant-fullcalendar-month-panel-table" cellspacing="0" role="grid">
+    <tbody class="ant-fullcalendar-month-panel-tbody">
+      <tr *ngFor="let row of [0, 1, 2, 3]" role="row">
+        <td *ngFor="let col of [0, 1, 2]" role="gridcell" [title]="monthsInYear[row * 3 + col].title"
+          class="ant-fullcalendar-month-panel-cell"
+          [class.ant-fullcalendar-month-panel-current-cell]="row === currentMonthRow && col === currentMonthCol"
+          [class.ant-fullcalendar-month-panel-selected-cell]="row === activeMonthRow && col === activeMonthCol"
+          (click)="onMonthSelect(row * 3 + col)">
+          <div class="ant-fullcalendar-month">
+            <ng-container *ngIf="nzMonthFullCell else defaultCell">
+              <ng-container *ngTemplateOutlet="nzMonthFullCell; context: {$implicit: monthsInYear[row * 3 + col].start}">
+              </ng-container>
+            </ng-container>
+            <ng-template #defaultCell>
+              <div class="ant-fullcalendar-value">{{ monthsInYear[row * 3 + col].label }}</div>
+              <div *ngIf="nzMonthCell" class="ant-fullcalendar-content">
+                <ng-container *ngTemplateOutlet="nzMonthCell; context: {$implicit: monthsInYear[row * 3 + col].start}">
+                </ng-container>
+              </div>
+            </ng-template>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>

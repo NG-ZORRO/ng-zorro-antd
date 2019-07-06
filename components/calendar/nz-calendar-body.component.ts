@@ -111,20 +111,6 @@ export class NzCalendarBodyComponent implements ControlValueAccessor, OnInit, On
 
   @Input() @InputBoolean() @HostBinding('class.ant-fullcalendar--fullscreen') fullscreen: boolean = true;
 
-  @ContentChild(MonthCell, { static: false, read: TemplateRef })
-  set monthCellChild(value: TemplateRef<{ $implicit: Date }>) {
-    if (value) {
-      this.monthCell = value;
-    }
-  }
-
-  @ContentChild(MonthFullCell, { static: false, read: TemplateRef })
-  set monthFullCellChild(value: TemplateRef<{ $implicit: Date }>) {
-    if (value) {
-      this.monthFullCell = value;
-    }
-  }
-
   daysInWeek: DayCellContext[] = [];
   monthsInYear: MonthCellContext[] = [];
   dateMatrix: any[] = [];
@@ -180,7 +166,6 @@ export class NzCalendarBodyComponent implements ControlValueAccessor, OnInit, On
   }
 
   onDateSelect(date: Date): void {
-    this.updateDate(date, true);
     this.selectChange.emit(date);
   }
 
