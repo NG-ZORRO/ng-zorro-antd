@@ -9,7 +9,7 @@
 </div>
 
 <ng-template #monthModeTable>
-  <date-table [prefixCls]="'ant-fullcalendar'" [value]="activeDate" [dateRender]="nzDateCell"
+  <date-table [prefixCls]="'ant-fullcalendar'" [value]="activeDate" [calendarDateCell]="nzDateCell" [calendarDateFullCell]="nzDateFullCell"
     [selectedValue]="selectedValue" (valueChange)="onDateSelect($event)"></date-table>
 
   <!-- <table class="ant-fullcalendar-table" cellspacing="0" role="grid">

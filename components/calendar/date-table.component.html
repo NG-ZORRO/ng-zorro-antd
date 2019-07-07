@@ -40,7 +40,15 @@
                 [attr.aria-selected]="cell.isSelected"
                 [attr.aria-disabled]="cell.isDisabled"
               >
-                {{ cell.content }}
+                <ng-container *ngIf="calendarDateFullCell else defaultCell">
+                  <ng-container *ngTemplateOutlet="calendarDateFullCell; context: {$implicit: cell.value}"></ng-container>
+                </ng-container>
+                <ng-template #defaultCell>
+                  <div class="{{ prefixCls }}-value">{{ cell.content }}</div>
+                  <div *ngIf="calendarDateCell" class="{{prefixCls}}-content">
+                    <ng-container *ngTemplateOutlet="calendarDateCell; context: {$implicit: cell.value}"></ng-container>
+                  </div>
+                </ng-template>
               </div>
             </ng-container>
           </ng-container>

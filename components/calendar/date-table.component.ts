@@ -20,7 +20,17 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { addDays, differenceInCalendarMonths, isAfter, isBefore, isSameDay, isToday, setDay, startOfMonth, startOfWeek } from 'date-fns';
+import {
+  addDays,
+  differenceInCalendarMonths,
+  isAfter,
+  isBefore,
+  isSameDay,
+  isToday,
+  setDay,
+  startOfMonth,
+  startOfWeek
+} from 'date-fns';
 import { isNonEmptyString, isTemplateRef, valueFunctionProp, FunctionProp } from 'ng-zorro-antd/core';
 import { DateHelperByDatePipe, DateHelperService, NzCalendarI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
@@ -57,15 +67,16 @@ export class DateTableComponent implements OnInit, OnChanges {
   }
 
   @Input() activeDate: Date;
-  @Output() readonly valueChange = new EventEmitter<Date>();
-
   @Input() showWeek: boolean = false;
   @Input() disabledDate: (d: Date) => boolean;
   // @Input() dateRender: FunctionProp<TemplateRef<Date> | string>; // Customize date content while rendering
   // TODO:
   @Input() dateRender: TemplateRef<Date> | string;
+  @Input() calendarDateCell: TemplateRef<{ $implicit: Date }>;
+  @Input() calendarDateFullCell: TemplateRef<{ $implicit: Date }>;
 
   @Output() readonly dayHover = new EventEmitter<Date>(); // Emitted when hover on a day by mouse enter
+  @Output() readonly valueChange = new EventEmitter<Date>();
 
   constructor(private i18n: NzI18nService, private dateHelper: DateHelperService) {}
 

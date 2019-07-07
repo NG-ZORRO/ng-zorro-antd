@@ -113,11 +113,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
 
   @Output() readonly nzModeChange: EventEmitter<ModeType> = new EventEmitter();
   @Output() readonly nzPanelChange: EventEmitter<{ date: Date; mode: ModeType }> = new EventEmitter();
-
   @Output() readonly nzSelectChange: EventEmitter<Date> = new EventEmitter();
-
-  @Output() readonly nzValueChange: EventEmitter<Date> = new EventEmitter();
-
   @Output() readonly dayHover = new EventEmitter<Date>();
 
   // compatible for date-table
@@ -176,19 +172,23 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
   }
 
   onYearSelect(year: number): void {
-    this.activeDate = setYear(this.activeDate, year);
+    const date = setYear(this.activeDate, year);
+    this.updateDate(date);
   }
 
   onMonthSelect(month: number): void {
-    this.activeDate = setMonth(this.activeDate, month);
+    const date = setMonth(this.activeDate, month);
+    this.updateDate(date);
   }
 
   onDateSelect(date: Date): void {
-    this.nzSelectChange.emit(date);
+    this.value = date;
+    this.updateDate(date);
   }
 
   writeValue(value: Date | null): void {
     this.value = value;
+    this.updateDate(value || new Date(), false);
     this.cdr.markForCheck();
   }
 
@@ -222,106 +222,13 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
     }
   }
 
-  private setUpDateMatrix(): void {
-    const DATE_ROW_NUM = 6;
-    this.dateMatrix = [];
-    // const monthStart = startOfMonth(this.activeDate);
-    // const monthEnd = endOfMonth(this.activeDate);
-    // const weekDiff =
-    //   differenceInCalendarWeeks(monthEnd, monthStart, { weekStartsOn: this.dateHelper.getFirstDayOfWeek() }) + 2;
+  private updateDate(date: Date, touched: boolean = true): void {
+    this.activeDate = date;
 
-    for (let week = 0; week < DATE_ROW_NUM; week++) {
-      const row: WeekRow = {
-        isActive: false,
-        isCurrent: false,
-        dateCells: []
-      };
-      const weekStart = addDays(this.calendarStart, week * 7);
-
-      for (let day = 0; day < 7; day++) {
-        const date = addDays(weekStart, day);
-        // const monthDiff = differenceInCalendarMonths(date, this.activeDate);
-        const dateFormat = this.dateHelper.relyOnDatePipe
-          ? 'longDate'
-          : this.i18n.getLocaleData('DatePicker.lang.dateFormat', 'YYYY-MM-DD');
-        const title = this.dateHelper.format(date, dateFormat);
-        const label = this.dateHelper.format(date, this.dateHelper.relyOnDatePipe ? 'dd' : 'DD');
-        // const rel = monthDiff === 0 ? 'current' : monthDiff < 0 ? 'last' : 'next';
-
-        const cell: DateCell = {
-          value: date,
-          label: label,
-          isSelected: false,
-          isDisabled: false,
-          isToday: false,
-          title: title,
-          customContent: this.nzDateCell, // Customized content
-          content: `${date.getDate()}`,
-          onClick: () => this.onDateSelect(date),
-          onMouseEnter: () => this.dayHover.emit(cell.value)
-        };
-
-        if (this.showWeek && !row.weekNum) {
-          row.weekNum = this.dateHelper.getISOWeek(date);
-        }
-
-        if (isToday(date)) {
-          cell.isToday = true;
-          row.isCurrent = true;
-        }
-
-        if (Array.isArray(this.selectedValue) && differenceInCalendarMonths(date, this.activeDate) === 0) {
-          // Range selections
-          const rangeValue = this.hoverValue && this.hoverValue.length ? this.hoverValue : this.selectedValue;
-          const start = rangeValue[0];
-          const end = rangeValue[1];
-          if (start) {
-            if (isSameDay(start, date)) {
-              cell.isSelectedStartDate = true;
-              cell.isSelected = true;
-              row.isActive = true;
-            }
-            if (end) {
-              if (isSameDay(end, date)) {
-                cell.isSelectedEndDate = true;
-                cell.isSelected = true;
-                row.isActive = true;
-              } else if (isAfter(start, date) && isBefore(end, date)) {
-                cell.isInRange = true;
-              }
-            }
-          }
-        } else if (isSameDay(date, this.activeDate)) {
-          cell.isSelected = true;
-          row.isActive = true;
-        }
-
-        // if (this.disabledDate && this.disabledDate(current.nativeDate)) {
-        //   cell.isDisabled = true;
-        // }
-
-        cell.classMap = {
-          [`${this.prefixCls}-cell`]: true,
-          // [`${this.prefixCls}-selected-date`]: false,
-          [`${this.prefixCls}-today`]: cell.isToday,
-          [`${this.prefixCls}-last-month-cell`]: differenceInCalendarMonths(date, this.activeDate) < 0,
-          [`${this.prefixCls}-next-month-btn-day`]: differenceInCalendarMonths(date, this.activeDate) > 0,
-          // [`${this.prefixCls}-selected-day`]: isSameDay(date, this.activeDate),
-          [`${this.prefixCls}-disabled-cell`]: cell.isDisabled,
-          [`${this.prefixCls}-selected-start-date`]: !!cell.isSelectedStartDate,
-          [`${this.prefixCls}-selected-end-date`]: !!cell.isSelectedEndDate,
-          [`${this.prefixCls}-in-range-cell`]: !!cell.isInRange
-        };
-
-        row.dateCells.push(cell);
-      }
-
-      row.classMap = {
-        [`${this.prefixCls}-current-week`]: row.isCurrent,
-        [`${this.prefixCls}-active-week`]: row.isActive
-      };
-
-      this.dateMatrix.push(row);
+    if (touched) {
+      this.onChangeFn(date);
+      this.onTouchFn();
+      this.nzSelectChange.emit(date);
     }
   }
 
