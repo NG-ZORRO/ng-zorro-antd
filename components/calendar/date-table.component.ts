@@ -20,19 +20,9 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import {
-  addDays,
-  differenceInCalendarMonths,
-  isAfter,
-  isBefore,
-  isSameDay,
-  isToday,
-  setDay,
-  startOfMonth,
-  startOfWeek
-} from 'date-fns';
-import { isNonEmptyString, isTemplateRef, valueFunctionProp, FunctionProp } from 'ng-zorro-antd/core';
-import { DateHelperByDatePipe, DateHelperService, NzCalendarI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import { DateHelperService, NzCalendarI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import { CandyDate } from 'ng-zorro-antd/date-picker/lib/candy-date/candy-date';
+import { valueFunctionProp, FunctionProp } from 'ng-zorro-antd/core';
 
 const DATE_ROW_NUM = 6;
 const DATE_COL_NUM = 7;
@@ -46,43 +36,36 @@ const DATE_COL_NUM = 7;
   templateUrl: 'date-table.component.html'
 })
 export class DateTableComponent implements OnInit, OnChanges {
-  _value: Date;
+  _value: CandyDate;
   headWeekDays: WeekDayLabel[];
   weekRows: WeekRow[];
 
-  isTemplateRef = isTemplateRef;
-  isNonEmptyString = isNonEmptyString;
   @Input() prefixCls: string = 'ant-calendar';
   @Input() locale: NzCalendarI18nInterface;
-  @Input() selectedValue: Date[]; // Range ONLY
-  @Input() hoverValue: Date[]; // Range ONLY
+  @Input() selectedValue: CandyDate[]; // Range ONLY
+  @Input() hoverValue: CandyDate[]; // Range ONLY
 
   @Input()
-  set value(date: Date) {
+  set value(date: CandyDate) {
     this._value = this.activeDate = date;
   }
 
-  get value(): Date {
+  get value(): CandyDate {
     return this._value;
   }
 
-  @Input() activeDate: Date;
+  @Input() activeDate: CandyDate;
   @Input() showWeek: boolean = false;
   @Input() disabledDate: (d: Date) => boolean;
-  // @Input() dateRender: FunctionProp<TemplateRef<Date> | string>; // Customize date content while rendering
+  // @Input() dateRender: FunctionProp<TemplateRef<CandyDate> | string>; // Customize date content while rendering
   // TODO:
-  @Input() dateRender: TemplateRef<Date> | string;
-  @Input() calendarDateCell: TemplateRef<{ $implicit: Date }>;
-  @Input() calendarDateFullCell: TemplateRef<{ $implicit: Date }>;
+  @Input() dateCellRender: FunctionProp<TemplateRef<Date> | string>;
+  @Input() dateFullCellRender: FunctionProp<TemplateRef<Date> | string>;
 
-  @Output() readonly dayHover = new EventEmitter<Date>(); // Emitted when hover on a day by mouse enter
-  @Output() readonly valueChange = new EventEmitter<Date>();
+  @Output() readonly dayHover = new EventEmitter<CandyDate>(); // Emitted when hover on a day by mouse enter
+  @Output() readonly valueChange = new EventEmitter<CandyDate>();
 
   constructor(private i18n: NzI18nService, private dateHelper: DateHelperService) {}
-
-  private get calendarStart(): Date {
-    return startOfWeek(startOfMonth(this.activeDate), { weekStartsOn: this.dateHelper.getFirstDayOfWeek() });
-  }
 
   ngOnInit(): void {}
 
@@ -99,19 +82,23 @@ export class DateTableComponent implements OnInit, OnChanges {
 
   private isDateRealChange(change: SimpleChange): boolean {
     if (change) {
-      const previousValue: Date | Date[] = change.previousValue;
-      const currentValue: Date | Date[] = change.currentValue;
+      const previousValue: CandyDate | CandyDate[] = change.previousValue;
+      const currentValue: CandyDate | CandyDate[] = change.currentValue;
       if (Array.isArray(currentValue)) {
         return (
           !Array.isArray(previousValue) ||
           currentValue.length !== previousValue.length ||
-          currentValue.some((value, index) => !isSameDay(previousValue[index], value))
+          currentValue.some((value, index) => !previousValue[index].isSameDay(value))
         );
       } else {
-        return !isSameDay(previousValue as Date, currentValue);
+        return !this.isSameDate(previousValue as CandyDate, currentValue);
       }
     }
     return false;
+  }
+
+  private isSameDate(left: CandyDate, right: CandyDate): boolean {
+    return (!left && !right) || (left && right && right.isSameDay(left));
   }
 
   private render(): void {
@@ -121,7 +108,7 @@ export class DateTableComponent implements OnInit, OnChanges {
     }
   }
 
-  private changeValueFromInside(value: Date): void {
+  private changeValueFromInside(value: CandyDate): void {
     if (this.value !== value) {
       this.activeDate = value;
       this.valueChange.emit(value);
@@ -134,10 +121,10 @@ export class DateTableComponent implements OnInit, OnChanges {
     for (let colIndex = 0; colIndex < DATE_COL_NUM; colIndex++) {
       const day = (firstDayOfWeek + colIndex) % DATE_COL_NUM;
       // TODO:
-      const tempDate = setDay(this.value, day, { weekStartsOn: 1 });
+      const tempDate = this.value.setDay(day, { weekStartsOn: 1 });
       weekDays[colIndex] = {
-        short: this.dateHelper.format(tempDate, this.dateHelper.relyOnDatePipe ? 'E' : 'ddd'), // eg. Tue
-        veryShort: this.dateHelper.format(tempDate, this.getVeryShortWeekFormat()) // eg. Tu
+        short: this.dateHelper.format(tempDate.nativeDate, this.dateHelper.relyOnDatePipe ? 'E' : 'ddd'), // eg. Tue
+        veryShort: this.dateHelper.format(tempDate.nativeDate, this.getVeryShortWeekFormat()) // eg. Tu
       };
     }
     return weekDays;
@@ -167,77 +154,78 @@ export class DateTableComponent implements OnInit, OnChanges {
         isCurrent: false,
         dateCells: []
       };
-      const weekStart = addDays(this.calendarStart, week * 7);
+      const weekStart = this.activeDate.calendarStart().addDays(week * 7);
 
       for (let day = 0; day < 7; day++) {
-        const date = addDays(weekStart, day);
+        const date = weekStart.addDays(day);
         // const monthDiff = differenceInCalendarMonths(date, this.activeDate);
         const dateFormat = this.dateHelper.relyOnDatePipe
           ? 'longDate'
           : this.i18n.getLocaleData('DatePicker.lang.dateFormat', 'YYYY-MM-DD');
-        const title = this.dateHelper.format(date, dateFormat);
-        const label = this.dateHelper.format(date, this.dateHelper.relyOnDatePipe ? 'dd' : 'DD');
+        const title = this.dateHelper.format(date.nativeDate, dateFormat);
+        const label = this.dateHelper.format(date.nativeDate, this.dateHelper.relyOnDatePipe ? 'dd' : 'DD');
         // const rel = monthDiff === 0 ? 'current' : monthDiff < 0 ? 'last' : 'next';
 
         const cell: DateCell = {
-          value: date,
+          value: date.nativeDate,
           label: label,
           isSelected: false,
           isDisabled: false,
           isToday: false,
           title: title,
-          customContent: this.dateRender, // Customized content
+          dateCellRender: valueFunctionProp(this.dateCellRender, date), // Customized content
+          dateFullCellRender: valueFunctionProp(this.dateFullCellRender, date),
           content: `${date.getDate()}`,
           onClick: () => this.changeValueFromInside(date),
-          onMouseEnter: () => this.dayHover.emit(cell.value)
+          onMouseEnter: () => this.dayHover.emit(date)
         };
 
         if (this.showWeek && !row.weekNum) {
-          row.weekNum = this.dateHelper.getISOWeek(date);
+          row.weekNum = this.dateHelper.getISOWeek(date.nativeDate);
         }
 
-        if (isToday(date)) {
+        if (date.isToday()) {
           cell.isToday = true;
           row.isCurrent = true;
         }
 
-        if (Array.isArray(this.selectedValue) && differenceInCalendarMonths(date, this.activeDate) === 0) {
+        if (Array.isArray(this.selectedValue) && date.isSameMonth(this.activeDate)) {
           // Range selections
           const rangeValue = this.hoverValue && this.hoverValue.length ? this.hoverValue : this.selectedValue;
           const start = rangeValue[0];
           const end = rangeValue[1];
           if (start) {
-            if (isSameDay(start, date)) {
+            if (start.isSameDay(date)) {
               cell.isSelectedStartDate = true;
               cell.isSelected = true;
               row.isActive = true;
             }
             if (end) {
-              if (isSameDay(end, date)) {
+              if (end.isSameDay(date)) {
                 cell.isSelectedEndDate = true;
                 cell.isSelected = true;
                 row.isActive = true;
-              } else if (isAfter(start, date) && isBefore(end, date)) {
+              } else if (date.isAfterDay(start) && date.isBeforeDay(end)) {
                 cell.isInRange = true;
               }
             }
           }
-        } else if (isSameDay(date, this.activeDate)) {
+        } else if (date.isSameDay(this.value)) {
           cell.isSelected = true;
           row.isActive = true;
         }
 
-        // if (this.disabledDate && this.disabledDate(current.nativeDate)) {
-        //   cell.isDisabled = true;
-        // }
+        if (this.disabledDate && this.disabledDate(date.nativeDate)) {
+          cell.isDisabled = true;
+        }
 
         cell.classMap = {
           [`${this.prefixCls}-cell`]: true,
           // [`${this.prefixCls}-selected-date`]: false,
           [`${this.prefixCls}-today`]: cell.isToday,
-          [`${this.prefixCls}-last-month-cell`]: differenceInCalendarMonths(date, this.activeDate) < 0,
-          [`${this.prefixCls}-next-month-btn-day`]: differenceInCalendarMonths(date, this.activeDate) > 0,
-          [`${this.prefixCls}-selected-day`]: isSameDay(date, this.activeDate),
+          [`${this.prefixCls}-last-month-cell`]: date.isBeforeMonth(this.activeDate),
+          [`${this.prefixCls}-next-month-btn-day`]: date.isAfterMonth(this.activeDate),
+          [`${this.prefixCls}-selected-day`]: cell.isSelected,
           [`${this.prefixCls}-disabled-cell`]: cell.isDisabled,
           [`${this.prefixCls}-selected-start-date`]: !!cell.isSelectedStartDate,
           [`${this.prefixCls}-selected-end-date`]: !!cell.isSelectedEndDate,
@@ -258,7 +246,7 @@ export class DateTableComponent implements OnInit, OnChanges {
     return weekRows;
   }
 
-  // private getDateTitle(date: Date): string {
+  // private getDateTitle(date: CandyDate): string {
   //   // NOTE: Compat for DatePipe formatting rules
   //   let dateFormat: string = (this.locale && this.locale.dateFormat) || 'YYYY-MM-DD';
   //   if (this.dateHelper.relyOnDatePipe) {
@@ -277,7 +265,8 @@ export interface DateCell {
   value: Date;
   label: string;
   title: string;
-  customContent: TemplateRef<Date> | string;
+  dateCellRender: TemplateRef<Date> | string;
+  dateFullCellRender: TemplateRef<Date> | string;
   content: string;
   isSelected?: boolean;
   isToday?: boolean;
@@ -286,7 +275,7 @@ export interface DateCell {
   isSelectedEndDate?: boolean;
   isInRange?: boolean;
   classMap?: object;
-  onClick(date: Date): void;
+  onClick(date: CandyDate): void;
   onMouseEnter(): void;
 }
 

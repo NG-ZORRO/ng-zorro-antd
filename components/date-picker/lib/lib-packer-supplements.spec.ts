@@ -9,9 +9,8 @@ import { AbstractPickerComponent } from '../abstract-picker.component';
 import { CalendarHeaderComponent } from './calendar/calendar-header.component';
 import { TodayButtonComponent } from './calendar/today-button.component';
 import { CandyDate } from './candy-date/candy-date';
-import { DateTableComponent } from './date/date-table.component';
 import { LibPackerModule } from './lib-packer.module';
-import { MonthTableComponent } from './month/month-table.component';
+import { MonthTableComponent } from './../../calendar/month-table.component';
 import { DateRangePopupComponent } from './popups/date-range-popup.component';
 import { YearPanelComponent } from './year/year-panel.component';
 
@@ -96,20 +95,20 @@ describe('Coverage supplements', () => {
     });
   }); // /TodayButton
 
-  describe('DateTable', () => {
-    beforeEach(() => {
-      componentInstance = new DateTableComponent(i18n, dateHelper);
-    });
+  // describe('DateTable', () => {
+  //   beforeEach(() => {
+  //     componentInstance = new DateTableComponent(i18n, dateHelper);
+  //   });
 
-    it('should cover untouched branches', () => {
-      componentInstance.value = new CandyDate('2018-11-11');
-      componentInstance.showWeek = true;
-      const weekRows = componentInstance.makeWeekRows();
-      expect(weekRows.length > 0).toBeTruthy();
+  //   it('should cover untouched branches', () => {
+  //     componentInstance.value = new CandyDate('2018-11-11');
+  //     componentInstance.showWeek = true;
+  //     const weekRows = componentInstance.makeWeekRows();
+  //     expect(weekRows.length > 0).toBeTruthy();
 
-      expect(componentInstance.isBeforeMonthYear(new CandyDate('2018-11'), new CandyDate('2019-11'))).toBeTruthy();
-    });
-  }); // /DateTable
+  //     expect(componentInstance.isBeforeMonthYear(new CandyDate('2018-11'), new CandyDate('2019-11'))).toBeTruthy();
+  //   });
+  // }); // /DateTable
 
   describe('MonthTable', () => {
     beforeEach(() => {

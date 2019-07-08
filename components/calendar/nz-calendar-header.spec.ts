@@ -10,6 +10,7 @@ import { NzRadioGroupComponent as RadioGroup, NzRadioModule } from '../radio/ind
 import { NzSelectComponent as Select } from '../select/nz-select.component';
 import { NzSelectModule } from '../select/nz-select.module';
 import { NzCalendarHeaderComponent, NzCalendarHeaderComponent as CalendarHeader } from './nz-calendar-header.component';
+import { CandyDate } from '../date-picker/lib/candy-date/candy-date';
 
 registerLocaleData(zh);
 
@@ -206,7 +207,7 @@ class NzTestCalendarHeaderFullscreenComponent {
   `
 })
 class NzTestCalendarHeaderActiveDateComponent {
-  activeDate = new Date(2001, 1, 3);
+  activeDate = new CandyDate(new Date(2001, 1, 3));
 }
 
 @Component({
