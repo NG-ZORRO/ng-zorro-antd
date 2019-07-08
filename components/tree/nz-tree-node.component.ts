@@ -275,6 +275,13 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
         this.nzTreeNode.isLoading = true;
       }
       this.nzTreeNode.isExpanded = !this.nzTreeNode.isExpanded;
+      const nzTreeNodeChildren = this.nzTreeNode.getChildren();
+      for (const child of nzTreeNodeChildren) {
+        if (child.isMatched) {
+          this.nzTreeNode.isMatched = true;
+          break;
+        }
+      }
       const eventNext = this.nzTreeService.formatEvent('expand', this.nzTreeNode, event);
       this.nzTreeService!.triggerEventChange$!.next(eventNext);
     }
