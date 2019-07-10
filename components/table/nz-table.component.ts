@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { isDataSource, CollectionViewer, ListRange } from '@angular/cdk/collections';
 import { Platform } from '@angular/cdk/platform';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import {
@@ -32,12 +33,16 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent, merge, EMPTY, Subject } from 'rxjs';
-import { flatMap, startWith, takeUntil } from 'rxjs/operators';
 
 import { measureScrollbar, InputBoolean, InputNumber, NzSizeMDSType } from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
+import { fromEvent, merge, EMPTY, Subject } from 'rxjs';
+import { flatMap, startWith, takeUntil } from 'rxjs/operators';
 
+import { NzArrayDataSource } from './nz-array-data-source';
+import { NzDataSource } from './nz-data-source';
+import { NzDetachedDataSource } from './nz-detached-data-source';
+import { NzEmptyDataSource } from './nz-empty-data-source';
 import { NzThComponent } from './nz-th.component';
 import { NzTheadComponent } from './nz-thead.component';
 import { NzVirtualScrollDirective } from './nz-virtual-scroll.directive';
@@ -49,25 +54,28 @@ import { NzVirtualScrollDirective } from './nz-virtual-scroll.directive';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   templateUrl: './nz-table.component.html',
+  styleUrls: ['./nz-table.component.less'],
   host: {
     '[class.ant-table-empty]': 'data.length === 0'
-  },
-  styles: [
-    `
-      nz-table {
-        display: block;
-      }
-
-      cdk-virtual-scroll-viewport.ant-table-body {
-        overflow-y: scroll;
-      }
-    `
-  ]
+  }
 })
 // tslint:disable-next-line no-any
-export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestroy, OnChanges, AfterContentInit {
-  /** public data for ngFor tr */
-  data: T[] = [];
+export class NzTableComponent<T = any>
+  implements OnInit, AfterViewInit, OnDestroy, OnChanges, AfterContentInit, CollectionViewer {
+  /**
+   * This Subject will be used to interact with the {@link data} DataSource
+   * in case front-end pagination is enabled.
+   */
+  readonly viewChange = new Subject<ListRange>();
+
+  /**
+   * Table data can be inputted as a simple array, or a DataSource.
+   * In case it is inputted as array, we'll wrap it in a custom
+   * {@link NzDataSource}, which will give as the ability to display
+   * all data, and to paginate correctly if front-end pagination is enabled.
+   */
+  data: NzDataSource<T> = NzEmptyDataSource.INSTANCE;
+
   locale: any = {}; // tslint:disable-line:no-any
   nzTheadComponent: NzTheadComponent;
   lastScrollLeft = 0;
@@ -98,7 +106,7 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
   @Input() nzWidthConfig: string[] = [];
   @Input() nzPageIndex = 1;
   @Input() nzPageSize = 10;
-  @Input() nzData: T[] = [];
+  @Input() nzData: T[] | NzDataSource<T> = [];
   @Input() nzPaginationPosition: 'top' | 'bottom' | 'both' = 'bottom';
   @Input() nzScroll: { x?: string | null; y?: string | null } = { x: null, y: null };
   @Input() @ViewChild('renderItemTemplate', { static: true }) nzItemRender: TemplateRef<{
@@ -213,21 +221,24 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
   }
 
   updateFrontPaginationDataIfNeeded(isPageSizeOrDataChange: boolean = false): void {
-    let data = this.nzData || [];
     if (this.nzFrontPagination) {
-      this.nzTotal = data.length;
+      this.nzTotal = this.data.length;
+
       if (isPageSizeOrDataChange) {
-        const maxPageIndex = Math.ceil(data.length / this.nzPageSize) || 1;
+        const maxPageIndex = Math.ceil(this.nzTotal / this.nzPageSize) || 1;
         const pageIndex = this.nzPageIndex > maxPageIndex ? maxPageIndex : this.nzPageIndex;
         if (pageIndex !== this.nzPageIndex) {
           this.nzPageIndex = pageIndex;
           Promise.resolve().then(() => this.nzPageIndexChange.emit(pageIndex));
         }
       }
-      data = data.slice((this.nzPageIndex - 1) * this.nzPageSize, this.nzPageIndex * this.nzPageSize);
+
+      // Notify the DataSource we need to display a specific range of records
+      this.viewChange.next({
+        start: (this.nzPageIndex - 1) * this.nzPageSize,
+        end: this.nzPageIndex * this.nzPageSize
+      });
     }
-    this.data = [...data];
-    this.nzCurrentPageDataChange.next(this.data);
   }
 
   constructor(
@@ -249,6 +260,10 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes.nzData || changes.nzFrontPagination) {
+      this.handleDataChange(this.nzData);
+    }
+
     if (changes.nzScroll) {
       if (changes.nzScroll.currentValue) {
         this.nzScroll = changes.nzScroll.currentValue;
@@ -258,6 +273,7 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
       this.fitScrollBar();
       this.setScrollPositionClassName();
     }
+
     if (changes.nzPageIndex || changes.nzPageSize || changes.nzFrontPagination || changes.nzData) {
       this.updateFrontPaginationDataIfNeeded(!!(changes.nzPageSize || changes.nzData));
     }
@@ -306,5 +322,27 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  private handleDataChange(nzData?: T[] | NzDataSource<T>): void {
+    if (isDataSource(nzData)) {
+      this.isIteratorOverriddenOrThrow(nzData);
+      this.data = nzData;
+    } else {
+      this.data = new NzArrayDataSource(nzData || [], !this.nzFrontPagination);
+    }
+
+    if (this.nzFrontPagination) {
+      this.data = new NzDetachedDataSource(this, this.data);
+      this.data.connect(this).subscribe({
+        next: data => this.nzCurrentPageDataChange.emit(data as T[])
+      });
+    }
+  }
+
+  private isIteratorOverriddenOrThrow(nzData: NzDataSource<T>): void {
+    if (!this.nzVirtualScroll && nzData[Symbol.iterator] === NzDataSource.prototype[Symbol.iterator]) {
+      throw new Error('Iterable must be overridden. No data will be displayed');
+    }
   }
 }

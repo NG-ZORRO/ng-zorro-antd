@@ -68,7 +68,7 @@ Table 组件同时具备了易用性和高度可定制性
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzData]` | 数据数组 | `any[]` | - |
+| `[nzData]` | 数据数组, TODO | `any[]` - `DataSource` | - |
 | `[nzFrontPagination]` | 是否在前端对数据进行分页，如果在服务器分页数据或者需要在前端显示全部数据时传入 false | `boolean` | `true` |
 | `[nzTotal]` | 当前总数据，在服务器渲染时需要传入 | `number` | - |
 | `[nzPageIndex]` | 当前页码，可双向绑定 | `number` | - |

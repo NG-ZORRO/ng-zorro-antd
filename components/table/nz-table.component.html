@@ -37,24 +37,39 @@
       <ng-content></ng-content>
     </table>
   </div>
+
   <ng-template #scrollViewTpl>
     <cdk-virtual-scroll-viewport
+      #cdkViewPort
       class="ant-table-body"
-      [hidden]="!data.length"
+      [hidden]="cdkViewPort.getDataLength() === 0"
       [itemSize]="nzVirtualItemSize"
       [maxBufferPx]="nzVirtualMaxBufferPx"
       [minBufferPx]="nzVirtualMinBufferPx"
-      [style.height]="nzScroll.y">
+      [style.height]="nzScroll.y"
+    >
       <table [class.ant-table-fixed]="nzScroll.x" [style.width]="nzScroll.x">
         <ng-template [ngIf]="nzVirtualScroll" [ngTemplateOutlet]="headerTemplate"></ng-template>
         <tbody>
-          <ng-container *cdkVirtualFor="let item of data; let i = index; trackBy:nzVirtualForTrackBy;">
-            <ng-template [ngTemplateOutlet]="nzVirtualScrollDirective?.templateRef" [ngTemplateOutletContext]="{$implicit:item, index:i}"></ng-template>
+          <!--
+            The CdkVirtualForOf Directive is able to accept both a static array
+            and an Angular CDK DataSource instance. The DataSource can be leveraged
+            to provide an infinite-like scrolling behavior with remote data, by "asking"
+            for new records on the fly.
+          -->
+          <ng-container
+            *cdkVirtualFor="let item of data; let i = index; trackBy: nzVirtualForTrackBy;"
+          >
+            <ng-template
+              [ngTemplateOutlet]="item ? nzVirtualScrollDirective?.templateRef : loading"
+              [ngTemplateOutletContext]="{ $implicit: item, index: i }"
+            ></ng-template>
           </ng-container>
         </tbody>
       </table>
     </cdk-virtual-scroll-viewport>
   </ng-template>
+
   <div class="ant-table-placeholder" *ngIf="data.length === 0 && !nzLoading && !nzTemplateMode">
     <nz-embed-empty [nzComponentName]="'table'" [specificContent]="nzNoResult"></nz-embed-empty>
   </div>
@@ -62,6 +77,18 @@
     <ng-container *nzStringTemplateOutlet="nzFooter">{{ nzFooter }}</ng-container>
   </div>
 </ng-template>
+
+<!--
+  Template used in place of the user-defined columns while an item
+  hasn't been loaded via the CdkVirtualFor Directive.
+  colSpan="999" is a "trick" to have the only td always span all columns.
+-->
+<ng-template #loading>
+  <tr class="virtual-loading">
+    <td colSpan="999"><div></div></td>
+  </tr>
+</ng-template>
+
 <ng-template #paginationTemplate>
   <nz-pagination *ngIf="nzShowPagination && data.length"
     [nzInTable]="true"

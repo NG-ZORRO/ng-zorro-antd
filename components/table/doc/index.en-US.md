@@ -67,7 +67,7 @@ The data passed to `[nzData]` will be export with [Template Context](https://ang
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzData]` | Data record array to be displayed | `any[]` | - |
+| `[nzData]` | Data record array to be displayed, or an `NzDataSource` instance | `T[]` \| `NzDataSource<T>` | - |
 | `[nzFrontPagination]` | Whether paginate data in front side，should set to `false` if you want to paginate data in server side or display all data in table | `boolean` | `true` |
 | `[nzTotal]` | Total data count, should set when `nzServerRender` is true | `number` | - |
 | `[nzPageIndex]` | pageIndex , double binding | `number` | - |
@@ -198,10 +198,25 @@ Other property
 
 virtual scroll directive work with `ng-template`, type: `TemplateRef<{ $implicit: any, index: number }>`.
 
+### NzDataSource    
+
+An extension of the Angular CDK `DataSource` class.  
+Historically, in non-virtual mode, table's `tr`s are created by getting the `data` property from the `NzTableComponent` instance.
+
+```
+<tr *ngFor="let item of tableInstance.data">
+  ...
+</tr>
+```
+
+With the introduction of a `DataSource` as input, we still need to provide backward compatibility for simple arrays.  
+Thus, `NzDataSource` is enhanced by also implementing `Iterable`, allowing the use of `*ngFor` and other Directives which accept `Iterable`s.  
+
+If you still submit an array as input, an internal implementation of this class is used, and nothing is required on your side. 
 
 ## Note
 
-According to [Angular documentation](https://angular.io/guide/lifecycle-hooks#onchanges)，developers should not use `push` or `splice` to change the data passed to `nzData`
+According to [Angular documentation](https://angular.io/guide/lifecycle-hooks#onchanges), developers should not use `push` or `splice` to change the data passed to `nzData`
 
 
 ```typescript

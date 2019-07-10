@@ -1,5 +1,5 @@
 ---
-order: 25
+order: 27
 title:
   en-US: Template
   zh-CN: 模板用法

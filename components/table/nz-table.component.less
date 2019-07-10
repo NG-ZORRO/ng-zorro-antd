@@ -1,0 +1,27 @@
+@import '../style/themes/index';
+
+nz-table {
+  display: block;
+}
+
+cdk-virtual-scroll-viewport.ant-table-body {
+  overflow-y: scroll;
+}
+
+.virtual-loading {
+  div:before {
+    content: '.';
+    visibility: hidden;
+  }
+
+  div {
+    animation: 1.4s infinite ant-skeleton-loading;
+    background: linear-gradient(
+      90deg,
+      @skeleton-color 25%,
+      shade(@skeleton-color, 5%) 37%,
+      @skeleton-color 63%
+    );
+    background-size: 400% 100%;
+  }
+}
