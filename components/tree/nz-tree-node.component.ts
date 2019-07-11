@@ -174,7 +174,11 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
 
   get displayStyle(): string {
     // to hide unmatched nodes
-    return this.nzSearchValue && this.nzHideUnMatched && !this.nzTreeNode.isMatched && !this.nzTreeNode.isExpanded
+    return this.nzSearchValue &&
+      this.nzHideUnMatched &&
+      !this.nzTreeNode.isMatched &&
+      !this.nzTreeNode.isExpanded &&
+      this.nzTreeNode.shouldHide
       ? 'none'
       : '';
   }
@@ -277,8 +281,8 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
       this.nzTreeNode.isExpanded = !this.nzTreeNode.isExpanded;
       const nzTreeNodeChildren = this.nzTreeNode.getChildren();
       for (const child of nzTreeNodeChildren) {
-        if (child.isMatched) {
-          this.nzTreeNode.isMatched = true;
+        if (child.shouldHide) {
+          this.nzTreeNode.shouldHide = true;
           break;
         }
       }

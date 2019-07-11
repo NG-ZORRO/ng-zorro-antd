@@ -49,6 +49,7 @@ export class NzTreeNode {
   private _isHalfChecked: boolean;
   private _isSelected: boolean;
   private _isLoading: boolean;
+  private _shouldHide: boolean;
   isMatched: boolean;
 
   service: NzTreeBaseService | null;
@@ -219,6 +220,14 @@ export class NzTreeNode {
     this._isExpanded = value;
     this.origin.expanded = value;
     this.afterValueChange('isExpanded');
+  }
+
+  get shouldHide(): boolean {
+    return this._shouldHide;
+  }
+
+  set shouldHide(value: boolean) {
+    this._shouldHide = value;
   }
 
   get isSelected(): boolean {
