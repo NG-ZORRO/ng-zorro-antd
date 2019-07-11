@@ -71,6 +71,9 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 
+import { NzResizableModule } from 'ng-zorro-antd/resizable';
+export * from 'ng-zorro-antd/resizable';
+
 export * from 'ng-zorro-antd/affix';
 export * from 'ng-zorro-antd/alert';
 export * from 'ng-zorro-antd/anchor';
@@ -181,6 +184,7 @@ export * from 'ng-zorro-antd/version';
     NzProgressModule,
     NzRadioModule,
     NzRateModule,
+    NzResizableModule,
     NzResultModule,
     NzSelectModule,
     NzSkeletonModule,

@@ -76,7 +76,9 @@ module.exports = function generateRoutes(showCaseTargetPath, componentsDocMap, d
     '反馈'          : 5,
     Localization  : 6,
     Other         : 7,
-    '其他'          : 7
+    '其他'          : 7,
+    Experimental    : 8,
+    '实验性组件'     : 8
   };
   components.sort((pre, next) => {
     return sortMap[pre.name] - sortMap[next.name];
