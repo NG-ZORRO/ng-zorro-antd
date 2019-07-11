@@ -13,6 +13,7 @@ import fnsGetISOWeek from 'date-fns/get_iso_week';
 import fnsParse from 'date-fns/parse';
 
 import { mergeDateConfig, NzDateConfig, NZ_DATE_CONFIG } from './date-config';
+import { DateHelperServiceModule } from './date-helper.service.module';
 import { NzI18nService } from './nz-i18n.service';
 
 export function DATE_HELPER_SERVICE_FACTORY(injector: Injector, config: NzDateConfig): DateHelperService {
@@ -25,7 +26,7 @@ export function DATE_HELPER_SERVICE_FACTORY(injector: Injector, config: NzDateCo
  * Compatibility: compact for original usage by default which using DatePipe
  */
 @Injectable({
-  providedIn: 'root',
+  providedIn: DateHelperServiceModule,
   useFactory: DATE_HELPER_SERVICE_FACTORY,
   deps: [Injector, [new Optional(), NZ_DATE_CONFIG]]
 })

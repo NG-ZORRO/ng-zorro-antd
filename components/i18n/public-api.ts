@@ -8,10 +8,12 @@
 
 export { NzI18nModule } from './nz-i18n.module';
 export { NzI18nService } from './nz-i18n.service';
+export * from './nz-i18n.service.module';
 export { NZ_DATE_CONFIG, NzDateConfig } from './date-config';
 export * from './nz-i18n.interface';
 export * from './nz-i18n.token';
 export * from './date-helper.service';
+export * from './date-helper.service.module';
 export * from './nz-i18n.pipe';
 
 export { default as ar_EG } from './languages/ar_EG';

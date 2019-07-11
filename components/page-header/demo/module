@@ -1,0 +1,6 @@
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
+
+export const moduleList = [ NzPageHeaderModule, NzTagModule, NzTabsModule, NzBreadCrumbModule ];

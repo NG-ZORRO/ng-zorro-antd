@@ -1,0 +1,3 @@
+import { NzRateModule } from 'ng-zorro-antd/rate';
+
+export const moduleList = [ NzRateModule ];

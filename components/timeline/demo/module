@@ -1,0 +1,4 @@
+import { NzTimelineModule } from 'ng-zorro-antd/timeline';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+
+export const moduleList = [ NzTimelineModule, NzButtonModule ];

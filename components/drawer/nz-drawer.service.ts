@@ -14,6 +14,7 @@ import { takeUntil } from 'rxjs/operators';
 import { NzDrawerOptions, NzDrawerOptionsOfComponent } from './nz-drawer-options';
 import { NzDrawerRef } from './nz-drawer-ref';
 import { NzDrawerComponent } from './nz-drawer.component';
+import { NzDrawerServiceModule } from './nz-drawer.service.module';
 
 export class DrawerBuilderForService<R> {
   private drawerRef: ComponentRef<NzDrawerComponent> | null;
@@ -64,7 +65,7 @@ export class DrawerBuilderForService<R> {
   }
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: NzDrawerServiceModule })
 export class NzDrawerService {
   constructor(private overlay: Overlay) {}
 

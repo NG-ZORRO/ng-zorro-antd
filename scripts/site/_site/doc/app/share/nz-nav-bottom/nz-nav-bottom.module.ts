@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NgZorroAntdModule } from 'ng-zorro-antd';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzNavBottomComponent } from './nz-nav-bottom.component';
 
 @NgModule({
-  imports: [CommonModule, RouterModule, NgZorroAntdModule],
+  imports: [CommonModule, RouterModule, NzIconModule],
   declarations: [NzNavBottomComponent],
   exports: [NzNavBottomComponent]
 })
