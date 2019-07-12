@@ -201,7 +201,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     this.closeDropDown();
     if (this.selectionChangeSubscription) {
       this.selectionChangeSubscription.unsubscribe();
-    }
+    }else {}
   }
 
   setDisabledState(isDisabled: boolean): void {
