@@ -16,6 +16,8 @@ import {
   OnInit,
   Output
 } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { NzResizableService } from './nz-resizable.service';
 
@@ -46,12 +48,14 @@ export class NzResizeHandleMouseDownEvent {
 export class NzResizeHandleComponent implements OnInit, OnDestroy {
   @Input() nzDirection: NzResizeDirection = 'bottomRight';
   @Output() readonly nzMouseDown = new EventEmitter<NzResizeHandleMouseDownEvent>();
+
   entered = false;
+  private destroy$ = new Subject<void>();
 
   constructor(private nzResizableService: NzResizableService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.nzResizableService.mouseEntered$.asObservable().subscribe(entered => {
+    this.nzResizableService.mouseEntered$.pipe(takeUntil(this.destroy$)).subscribe(entered => {
       this.entered = entered;
       this.cdr.markForCheck();
     });
@@ -61,5 +65,8 @@ export class NzResizeHandleComponent implements OnInit, OnDestroy {
     this.nzResizableService.handleMouseDown$.next(new NzResizeHandleMouseDownEvent(this.nzDirection, $event));
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

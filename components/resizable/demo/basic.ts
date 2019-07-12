@@ -3,7 +3,17 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-resizable-basic',
   template: `
-    <div class="box" nz-resizable (nzResize)="onResize($event)" [style.height.px]="height" [style.width.px]="width">
+    <div
+      class="box"
+      nz-resizable
+      [nzMaxWidth]="600"
+      [nzMinWidth]="80"
+      [nzMaxHeight]="200"
+      [nzMinHeight]="80"
+      [style.height.px]="height"
+      [style.width.px]="width"
+      (nzResize)="onResize($event)"
+    >
       <nz-resize-handles></nz-resize-handles>
       content
     </div>

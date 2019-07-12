@@ -72,6 +72,7 @@ The Component styles only contain the necessary positional properties and simple
 
 - `.nz-resizable` The `nz-resizable` component namespace
 - `.nz-resizable-resizing` This class name that is added to `nz-resizable` while resizing
+- `.nz-resizable-preview` The ghost element's class name when enable preview
 - `.nz-resizable-handle-box-hover` This class name that is added to `nz-resize-handle` while mouse hover on  `nz-resizable`
 - `.nz-resizable-handle` The `nz-resize-handle` component namespace and directions class name
     * `.nz-resizable-handle-top`

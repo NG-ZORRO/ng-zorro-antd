@@ -73,6 +73,7 @@ const DEFAULT_RESIZE_DIRECTION: NzResizeDirection[] = ['bottomRight', 'topRight'
 
 - `.nz-resizable` `nz-resizable` 组件命名空间
 - `.nz-resizable-resizing` 正在调整尺寸时被添加到  `nz-resizable` 上
+- `.nz-resizable-preview` 开启预览时幽灵元素的类名
 - `.nz-resizable-handle-box-hover` 当鼠标悬停在 `nz-resizable` 上时被添加到 ` nz-resize-handle` 上。
 - `.nz-resizable-handle` 调整手柄命名空间及各方向类名
     * `.nz-resizable-handle-top`

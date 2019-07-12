@@ -12,12 +12,12 @@ import { Component } from '@angular/core';
         [nzMinColumn]="3"
         [nzMaxColumn]="20"
         [nzGridColumnCount]="24"
-        [nzSpan]="basicCol"
+        [nzSpan]="col"
       >
         <nz-resize-handles [nzDirections]="['right']"></nz-resize-handles>
-        col-{{ basicCol }}
+        col-{{ col }}
       </div>
-      <div class="col right" nz-col [nzSpan]="24 - basicCol">col-{{ 24 - basicCol }}</div>
+      <div class="col right" nz-col [nzSpan]="24 - col">col-{{ 24 - col }}</div>
     </div>
   `,
   styles: [
@@ -40,12 +40,13 @@ import { Component } from '@angular/core';
   ]
 })
 export class NzDemoResizableGridComponent {
-  basicCol = 8;
+  col = 8;
   id = -1;
 
   onResize({ col }: { col: number }): void {
+    cancelAnimationFrame(this.id);
     this.id = requestAnimationFrame(() => {
-      this.basicCol = col;
+      this.col = col;
     });
   }
 }
