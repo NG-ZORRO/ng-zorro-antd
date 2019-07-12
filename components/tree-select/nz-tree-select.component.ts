@@ -187,6 +187,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     private elementRef: ElementRef,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
+    this.selectionChangeSubcription = Subscription.EMPTY
     super(nzTreeService);
     this.renderer.addClass(this.elementRef.nativeElement, 'ant-select');
   }
@@ -199,9 +200,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   ngOnDestroy(): void {
     this.isDestroy = true;
     this.closeDropDown();
-    if (this.selectionChangeSubscription) {
-      this.selectionChangeSubscription.unsubscribe();
-    }else {}
+    this.selectionChangeSubscription.unsubscribe();
   }
 
   setDisabledState(isDisabled: boolean): void {
