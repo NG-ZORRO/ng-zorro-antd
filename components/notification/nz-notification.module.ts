@@ -14,12 +14,12 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NZ_NOTIFICATION_DEFAULT_CONFIG_PROVIDER } from './nz-notification-config';
 import { NzNotificationContainerComponent } from './nz-notification-container.component';
 import { NzNotificationComponent } from './nz-notification.component';
-import { NzNotificationService } from './nz-notification.service';
+import { NzNotificationServiceModule } from './nz-notification.service.module';
 
 @NgModule({
-  imports: [CommonModule, OverlayModule, NzIconModule],
+  imports: [CommonModule, OverlayModule, NzIconModule, NzNotificationServiceModule],
   declarations: [NzNotificationComponent, NzNotificationContainerComponent],
-  providers: [NZ_NOTIFICATION_DEFAULT_CONFIG_PROVIDER, NzNotificationService],
+  providers: [NZ_NOTIFICATION_DEFAULT_CONFIG_PROVIDER],
   entryComponents: [NzNotificationContainerComponent]
 })
 export class NzNotificationModule {}

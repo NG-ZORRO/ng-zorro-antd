@@ -68,6 +68,10 @@ rootDir.forEach(componentName => {
           // copy ts file to site->${component} folder
           fs.writeFileSync(path.join(showCaseComponentPath, demo), demoMap[nameKey].ts);
         }
+        if (demo === 'module') {
+          const data = String(fs.readFileSync(path.join(demoDirPath, demo)));
+          fs.writeFileSync(path.join(showCaseComponentPath, 'module.ts'), data);
+        }
       });
     }
 
@@ -96,7 +100,7 @@ rootDir.forEach(componentName => {
 
     // handle components->${component}->doc folder
     const result = {
-      name : componentName,
+      name: componentName,
       docZh: parseDocMdUtil(fs.readFileSync(path.join(componentDirPath, 'doc/index.zh-CN.md')), `components/${componentName}/doc/index.zh-CN.md`),
       docEn: parseDocMdUtil(fs.readFileSync(path.join(componentDirPath, 'doc/index.en-US.md')), `components/${componentName}/doc/index.en-US.md`),
       demoMap,

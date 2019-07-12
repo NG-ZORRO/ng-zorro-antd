@@ -1,0 +1,5 @@
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+
+export const moduleList = [ NzAvatarModule, NzBadgeModule, NzButtonModule ];

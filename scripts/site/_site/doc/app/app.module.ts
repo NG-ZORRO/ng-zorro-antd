@@ -7,7 +7,18 @@ import { PreloadAllModules, RouterModule } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { IconDefinition } from '@ant-design/icons-angular';
 import { LeftOutline, RightOutline } from '@ant-design/icons-angular/icons';
-import { NgZorroAntdModule, NZ_ICON_DEFAULT_TWOTONE_COLOR, NZ_ICONS } from 'ng-zorro-antd';
+import {
+  NzButtonModule,
+  NzI18nModule,
+  NzIconModule,
+  NzInputModule,
+  NzMenuModule,
+  NzMessageModule,
+  NzPopoverModule,
+  NzSelectModule,
+  NZ_ICON_DEFAULT_TWOTONE_COLOR,
+  NZ_ICONS
+} from 'ng-zorro-antd';
 
 import { environment } from '../environments/environment';
 import { DEMOComponent } from './_demo/demo.component';
@@ -24,8 +35,15 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline];
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
+    NzMenuModule,
+    NzI18nModule,
+    NzSelectModule,
+    NzMessageModule,
+    NzPopoverModule,
+    NzButtonModule,
+    NzInputModule,
+    NzIconModule,
     ShareModule,
-    NgZorroAntdModule,
     HttpClientJsonpModule,
     RouterModule.forRoot(routes, environment.production ? { preloadingStrategy: PreloadAllModules } : {}),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
@@ -37,4 +55,5 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline];
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+}

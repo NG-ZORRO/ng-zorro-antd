@@ -1,0 +1,3 @@
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+
+export const moduleList = [ NzRadioModule ];

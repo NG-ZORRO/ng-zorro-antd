@@ -33,7 +33,6 @@
   },
   "peerDependencies": {
     "@angular/animations": "^8.0.0",
-    "@angular/cdk": "^8.0.0",
     "@angular/common": "^8.0.0",
     "@angular/core": "^8.0.0",
     "@angular/forms": "^8.0.0"

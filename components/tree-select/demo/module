@@ -1,0 +1,4 @@
+import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+
+export const moduleList = [ NzTreeSelectModule, NzIconModule ];

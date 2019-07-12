@@ -1,0 +1,4 @@
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzSliderModule } from 'ng-zorro-antd/slider';
+
+export const moduleList = [ NzGridModule, NzSliderModule ];

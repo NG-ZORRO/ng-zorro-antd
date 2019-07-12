@@ -10,9 +10,10 @@ import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 import { IndexableObject } from '../types/indexable';
 import { isNotNil } from '../util/check';
+import { NzMeasureScrollbarServiceModule } from './nz-measure-scrollbar.service.module';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: NzMeasureScrollbarServiceModule
 })
 export class NzMeasureScrollbarService {
   private _scrollbarWidth: number;

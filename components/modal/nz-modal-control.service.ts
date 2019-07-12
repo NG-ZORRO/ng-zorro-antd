@@ -9,6 +9,7 @@
 import { Injectable, Optional, SkipSelf } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 
+import { NzModalControlServiceModule } from './nz-modal-control.service.module';
 import { NzModalRef } from './nz-modal-ref.class';
 
 interface RegisteredMeta {
@@ -17,7 +18,9 @@ interface RegisteredMeta {
   afterCloseSubscription: Subscription;
 }
 
-@Injectable()
+@Injectable({
+  providedIn: NzModalControlServiceModule
+})
 export class NzModalControlService {
   // Track singleton afterAllClose through over the injection tree
   get afterAllClose(): Subject<void> {

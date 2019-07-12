@@ -37,7 +37,6 @@ import { NzYearPickerComponent } from './year-picker.component';
     HeaderPickerComponent,
     DateRangePickerComponent,
     NzPickerComponent,
-
     NzDatePickerComponent,
     NzMonthPickerComponent,
     NzYearPickerComponent,
