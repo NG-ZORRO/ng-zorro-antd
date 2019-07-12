@@ -1,0 +1,3 @@
+import { NzTagModule } from 'ng-zorro-antd/tag';
+
+export const moduleList = [ NzTagModule ];

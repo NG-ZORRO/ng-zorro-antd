@@ -15,13 +15,20 @@ import { NzAddOnModule, NzNoAnimationModule } from 'ng-zorro-antd/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzDrawerComponent } from './nz-drawer.component';
-import { NzDrawerService } from './nz-drawer.service';
+import { NzDrawerServiceModule } from './nz-drawer.service.module';
 
 @NgModule({
-  imports: [CommonModule, OverlayModule, PortalModule, NzIconModule, NzAddOnModule, NzNoAnimationModule],
+  imports: [
+    CommonModule,
+    OverlayModule,
+    PortalModule,
+    NzIconModule,
+    NzAddOnModule,
+    NzNoAnimationModule,
+    NzDrawerServiceModule
+  ],
   exports: [NzDrawerComponent],
   declarations: [NzDrawerComponent],
-  entryComponents: [NzDrawerComponent],
-  providers: [NzDrawerService]
+  entryComponents: [NzDrawerComponent]
 })
 export class NzDrawerModule {}

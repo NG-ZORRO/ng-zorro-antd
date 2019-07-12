@@ -8,8 +8,10 @@
 
 import { NgModule } from '@angular/core';
 import { NzIconDirective } from './nz-icon.directive';
+import { NzIconServiceModule } from './nz-icon.service.module';
 
 @NgModule({
+  imports: [NzIconServiceModule],
   exports: [NzIconDirective],
   declarations: [NzIconDirective]
 })

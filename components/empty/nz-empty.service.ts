@@ -12,9 +12,10 @@ import { BehaviorSubject } from 'rxjs';
 import { PREFIX } from 'ng-zorro-antd/core';
 
 import { NzEmptyCustomContent, NZ_DEFAULT_EMPTY_CONTENT } from './nz-empty-config';
+import { NzEmptyServiceModule } from './nz-empty.service.module';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: NzEmptyServiceModule
 })
 // tslint:disable-next-line:no-any
 export class NzEmptyService<T = any> {

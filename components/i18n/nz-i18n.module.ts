@@ -8,9 +8,12 @@
 
 import { NgModule } from '@angular/core';
 
+import { DateHelperServiceModule } from './date-helper.service.module';
 import { NzI18nPipe } from './nz-i18n.pipe';
+import { NzI18nServiceModule } from './nz-i18n.service.module';
 
 @NgModule({
+  imports: [DateHelperServiceModule, NzI18nServiceModule],
   declarations: [NzI18nPipe],
   exports: [NzI18nPipe]
 })
