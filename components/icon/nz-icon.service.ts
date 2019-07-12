@@ -150,12 +150,12 @@ export class NzIconService extends IconService {
   }
 
   constructor(
-    rendererFactory: RendererFactory2,
-    @Optional() @Inject(NZ_ICONS) private icons: IconDefinition[],
-    @Optional() @Inject(NZ_ICON_DEFAULT_TWOTONE_COLOR) private defaultColor: string,
-    @Optional() handler: HttpBackend,
+    protected rendererFactory: RendererFactory2,
+    @Optional() protected handler: HttpBackend,
     // tslint:disable-next-line:no-any
-    @Optional() @Inject(DOCUMENT) document: any
+    @Optional() @Inject(DOCUMENT) protected document: any,
+    @Optional() @Inject(NZ_ICONS) private icons: IconDefinition[],
+    @Optional() @Inject(NZ_ICON_DEFAULT_TWOTONE_COLOR) private defaultColor: string
   ) {
     super(rendererFactory, handler, document);
 
