@@ -140,7 +140,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   isNotFound = false;
   inputValue = '';
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
-  selectionChangeSubscription: Subscription;
+  selectionChangeSubscription: Subscription = Subscription.EMPTY;
   selectedNodes: NzTreeNode[] = [];
   value: string[] = [];
 
@@ -187,7 +187,6 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     private elementRef: ElementRef,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
-    this.selectionChangeSubcription = Subscription.EMPTY
     super(nzTreeService);
     this.renderer.addClass(this.elementRef.nativeElement, 'ant-select');
   }
