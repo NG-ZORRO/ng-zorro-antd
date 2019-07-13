@@ -15,10 +15,9 @@ import { NzI18nModule } from 'ng-zorro-antd/i18n';
 
 import { NzEmbedEmptyComponent } from './nz-embed-empty.component';
 import { NzEmptyComponent } from './nz-empty.component';
-import { NzEmptyServiceModule } from './nz-empty.service.module';
 
 @NgModule({
-  imports: [CommonModule, PortalModule, NzAddOnModule, NzI18nModule, NzEmptyServiceModule],
+  imports: [CommonModule, PortalModule, NzAddOnModule, NzI18nModule],
   declarations: [NzEmptyComponent, NzEmbedEmptyComponent],
   exports: [NzEmptyComponent, NzEmbedEmptyComponent]
 })

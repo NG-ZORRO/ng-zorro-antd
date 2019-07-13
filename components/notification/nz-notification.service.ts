@@ -14,10 +14,9 @@ import { NzMessageBaseService } from 'ng-zorro-antd/message';
 import { NzNotificationConfig } from './nz-notification-config';
 import { NzNotificationContainerComponent } from './nz-notification-container.component';
 import { NzNotificationData, NzNotificationDataFilled, NzNotificationDataOptions } from './nz-notification.definitions';
-import { NzNotificationServiceModule } from './nz-notification.service.module';
 
 @Injectable({
-  providedIn: NzNotificationServiceModule
+  providedIn: 'root'
 })
 export class NzNotificationService extends NzMessageBaseService<
   NzNotificationContainerComponent,

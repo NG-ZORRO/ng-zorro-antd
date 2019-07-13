@@ -50,7 +50,6 @@ import {
   UpOutline
 } from '@ant-design/icons-angular/icons';
 import { warn, warnDeprecation } from 'ng-zorro-antd/core';
-import { NzIconServiceModule } from './nz-icon.service.module';
 
 export interface NzIconfontOption {
   scriptUrl: string;
@@ -103,7 +102,7 @@ export const NZ_ICONS_USED_BY_ZORRO: IconDefinition[] = [
  * It should be a global singleton, otherwise registered icons could not be found.
  */
 @Injectable({
-  providedIn: NzIconServiceModule
+  providedIn: 'root'
 })
 export class NzIconService extends IconService {
   private iconfontCache = new Set<string>();
