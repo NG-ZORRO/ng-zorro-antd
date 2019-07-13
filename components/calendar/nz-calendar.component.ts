@@ -21,21 +21,17 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import addDays from 'date-fns/add_days';
-import startOfMonth from 'date-fns/start_of_month';
-import startOfWeek from 'date-fns/start_of_week';
 
 import { toBoolean, warnDeprecation, CandyDate, InputBoolean } from 'ng-zorro-antd/core';
-import { DateHelperService } from 'ng-zorro-antd/i18n';
 import {
-  // NzDateCellDirective as DateCell,
-  NzDateCellDirective,
-  NzDateFullCellDirective,
-  NzMonthCellDirective,
-  NzMonthFullCellDirective
+  NzDateCellDirective as DateCell,
+  NzDateFullCellDirective as DateFullCell,
+  NzMonthCellDirective as MonthCell,
+  NzMonthFullCellDirective as MonthFullCell
 } from './nz-calendar-cells';
 
 export type ModeType = 'month' | 'year';
+export type DateTemplate = TemplateRef<{ $implicit: Date }>;
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -46,8 +42,6 @@ export type ModeType = 'month' | 'year';
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzCalendarComponent), multi: true }]
 })
 export class NzCalendarComponent implements ControlValueAccessor, OnInit {
-  daysInWeek: DayCellContext[] = [];
-  monthsInYear: MonthCellContext[] = [];
   activeDate: CandyDate = new CandyDate();
   prefixCls: string = 'ant-fullcalendar';
 
@@ -67,33 +61,29 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
 
   /**
    * Cannot use @Input and @ContentChild on one variable
-   * because { static: false } will make @Input property get delay
+   * because { static: false } will make @Input property get delayed
    **/
-  @Input() nzDateCell: TemplateRef<{ $implicit: Date }>;
-  @ContentChild(NzDateCellDirective, { static: false, read: TemplateRef })
-  nzDateCellChild: TemplateRef<{ $implicit: Date }>;
-  get dateCell(): TemplateRef<{ $implicit: Date }> {
+  @Input() nzDateCell: DateTemplate;
+  @ContentChild(DateCell, { static: false, read: TemplateRef }) nzDateCellChild: DateTemplate;
+  get dateCell(): DateTemplate {
     return this.nzDateCell || this.nzDateCellChild;
   }
 
-  @Input() nzDateFullCell: TemplateRef<{ $implicit: Date }>;
-  @ContentChild(NzDateFullCellDirective, { static: false, read: TemplateRef })
-  nzDateFullCellChild: TemplateRef<{ $implicit: Date }>;
-  get dateFullCell(): TemplateRef<{ $implicit: Date }> {
+  @Input() nzDateFullCell: DateTemplate;
+  @ContentChild(DateFullCell, { static: false, read: TemplateRef }) nzDateFullCellChild: DateTemplate;
+  get dateFullCell(): DateTemplate {
     return this.nzDateFullCell || this.nzDateFullCellChild;
   }
 
-  @Input() nzMonthCell: TemplateRef<{ $implicit: Date }>;
-  @ContentChild(NzMonthCellDirective, { static: false, read: TemplateRef })
-  nzMonthCellChild: TemplateRef<{ $implicit: Date }>;
-  get monthCell(): TemplateRef<{ $implicit: Date }> {
+  @Input() nzMonthCell: DateTemplate;
+  @ContentChild(MonthCell, { static: false, read: TemplateRef }) nzMonthCellChild: DateTemplate;
+  get monthCell(): DateTemplate {
     return this.nzMonthCell || this.nzMonthCellChild;
   }
 
-  @Input() nzMonthFullCell: TemplateRef<{ $implicit: Date }>;
-  @ContentChild(NzMonthFullCellDirective, { static: false, read: TemplateRef })
-  nzMonthFullCellChild: TemplateRef<{ $implicit: Date }>;
-  get monthFullCell(): TemplateRef<{ $implicit: Date }> {
+  @Input() nzMonthFullCell: DateTemplate;
+  @ContentChild(MonthFullCell, { static: false, read: TemplateRef }) nzMonthFullCellChild: DateTemplate;
+  get monthFullCell(): DateTemplate {
     return this.nzMonthFullCell || this.nzMonthFullCellChild;
   }
 
@@ -114,12 +104,9 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
     return !this.nzFullscreen;
   }
 
-  constructor(private cdr: ChangeDetectorRef, private dateHelper: DateHelperService) {}
+  constructor(private cdr: ChangeDetectorRef) {}
 
-  ngOnInit(): void {
-    this.setUpDaysInWeek();
-    this.setUpMonthsInYear();
-  }
+  ngOnInit(): void {}
 
   onModeChange(mode: ModeType): void {
     this.nzModeChange.emit(mode);
@@ -155,28 +142,6 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
     this.onTouchFn = fn;
   }
 
-  private setUpDaysInWeek(): void {
-    this.daysInWeek = [];
-    const weekStart = startOfWeek(this.activeDate.nativeDate, { weekStartsOn: this.dateHelper.getFirstDayOfWeek() });
-    for (let i = 0; i < 7; i++) {
-      const date = addDays(weekStart, i);
-      const title = this.dateHelper.format(date, this.dateHelper.relyOnDatePipe ? 'E' : 'ddd');
-      const label = this.dateHelper.format(date, this.dateHelper.relyOnDatePipe ? 'EEEEEE' : 'dd');
-      this.daysInWeek.push({ title, label });
-    }
-  }
-
-  private setUpMonthsInYear(): void {
-    this.monthsInYear = [];
-    for (let i = 0; i < 12; i++) {
-      const date = this.activeDate.setMonth(i);
-      const title = this.dateHelper.format(date.nativeDate, 'MMM');
-      const label = this.dateHelper.format(date.nativeDate, 'MMM');
-      const start = startOfMonth(date.nativeDate);
-      this.monthsInYear.push({ title, label, start });
-    }
-  }
-
   private updateDate(date: CandyDate, touched: boolean = true): void {
     this.activeDate = date;
 
@@ -187,37 +152,4 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
       this.nzValueChange.emit(date.nativeDate);
     }
   }
-
-  // private calculateCurrentDate(): void {
-  //   if (isThisMonth(this.activeDate)) {
-  //     this.currentDateRow = differenceInCalendarWeeks(this.currentDate, this.calendarStart, {
-  //       weekStartsOn: this.dateHelper.getFirstDayOfWeek()
-  //     });
-  //     this.currentDateCol = differenceInCalendarDays(
-  //       this.currentDate,
-  //       addDays(this.calendarStart, this.currentDateRow * 7)
-  //     );
-  //   } else {
-  //     this.currentDateRow = -1;
-  //     this.currentDateCol = -1;
-  //   }
-  // }
-}
-
-export interface DayCellContext {
-  title: string;
-  label: string;
-}
-
-export interface MonthCellContext {
-  title: string;
-  label: string;
-  start: Date;
-}
-
-export interface DateCellContext {
-  title: string;
-  label: string;
-  rel: 'last' | 'current' | 'next';
-  value: Date;
 }

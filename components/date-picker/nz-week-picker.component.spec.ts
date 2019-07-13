@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core';
-import { NzDatePickerModule } from './date-picker.module';
+import { NzDatePickerModule } from './nz-date-picker.module';
 
 describe('NzWeekPickerComponent', () => {
   let fixture: ComponentFixture<NzTestWeekPickerComponent>;

@@ -11,7 +11,7 @@ import isBefore from 'date-fns/is_before';
 import { dispatchMouseEvent, NgStyleInterface } from 'ng-zorro-antd/core';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
-import { NzDatePickerModule } from './date-picker.module';
+import { NzDatePickerModule } from './nz-date-picker.module';
 
 registerLocaleData(zh);
 
@@ -238,6 +238,7 @@ describe('NzMonthPickerComponent', () => {
       expect(nzOnOpenChange).toHaveBeenCalledWith(false);
       expect(nzOnOpenChange).toHaveBeenCalledTimes(2);
     });
+
     it('should support nzValue', fakeAsync(() => {
       fixtureInstance.nzValue = new Date('2018-11-22');
       fixture.detectChanges();
@@ -354,6 +355,22 @@ describe('NzMonthPickerComponent', () => {
       fixtureInstance.nzRenderExtraFooter = 'TEST_EXTRA_FOOTER_STRING';
       fixture.detectChanges();
       expect(overlayContainerElement.textContent!.indexOf(fixtureInstance.nzRenderExtraFooter) > -1).toBeTruthy();
+    }));
+
+    it('should support selected month active', fakeAsync(() => {
+      fixtureInstance.nzValue = new Date('2019-7-13 15:10:00');
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+
+      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      const activeMonthElement = overlayContainerElement.querySelector(
+        'tbody.ant-calendar-month-panel-tbody tr td.ant-calendar-month-panel-selected-cell a.ant-calendar-month-panel-month'
+      );
+      expect(activeMonthElement!.textContent).toContain('7月');
     }));
   }); // /specified date picker testing
 

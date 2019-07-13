@@ -34,6 +34,7 @@ import { IndexableObject } from '../types';
 
 export type CandyDateCompareGrain = 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second';
 
+export type CandyDateType = CandyDate | Date | null;
 /**
  * Wrapping kind APIs for date operating and unify
  * NOTE: every new API return new CandyDate object without side effects to the former Date object
@@ -158,7 +159,7 @@ export class CandyDate implements IndexableObject {
     return this.setDate(this.getDate() + amount);
   }
 
-  isSame(date: CandyDate | Date, grain: CandyDateCompareGrain = 'day'): boolean {
+  isSame(date: CandyDateType, grain: CandyDateCompareGrain = 'day'): boolean {
     let fn;
     switch (grain) {
       case 'year':
@@ -186,31 +187,32 @@ export class CandyDate implements IndexableObject {
     return fn(this.nativeDate, this.toNativeDate(date));
   }
 
-  isSameYear(date: CandyDate | Date): boolean {
+  isSameYear(date: CandyDateType): boolean {
     return this.isSame(date, 'year');
   }
 
-  isSameMonth(date: CandyDate | Date): boolean {
+  isSameMonth(date: CandyDateType): boolean {
     return this.isSame(date, 'month');
   }
 
-  isSameDay(date: CandyDate | Date): boolean {
+  isSameDay(date: CandyDateType): boolean {
     return this.isSame(date, 'day');
   }
 
-  isSameHour(date: CandyDate | Date): boolean {
+  isSameHour(date: CandyDateType): boolean {
     return this.isSame(date, 'hour');
   }
 
-  isSameMinute(date: CandyDate | Date): boolean {
+  isSameMinute(date: CandyDateType): boolean {
     return this.isSame(date, 'minute');
   }
 
-  isSameSecond(date: CandyDate | Date): boolean {
+  isSameSecond(date: CandyDateType): boolean {
     return this.isSame(date, 'second');
   }
 
-  compare(date: CandyDate | Date, grain: CandyDateCompareGrain = 'day', isBefore: boolean = true): boolean {
+  compare(date: CandyDateType, grain: CandyDateCompareGrain = 'day', isBefore: boolean = true): boolean {
+    if (date === null) { return false; }
     let fn;
     switch (grain) {
       case 'year':
@@ -240,52 +242,52 @@ export class CandyDate implements IndexableObject {
       : fn(this.nativeDate, this.toNativeDate(date)) > 0;
   }
 
-  isBeforeYear(date: CandyDate | Date): boolean {
+  isBeforeYear(date: CandyDateType): boolean {
     return this.compare(date, 'year');
   }
 
-  isBeforeMonth(date: CandyDate | Date): boolean {
+  isBeforeMonth(date: CandyDateType): boolean {
     return this.compare(date, 'month');
   }
 
-  isBeforeDay(date: CandyDate | Date): boolean {
+  isBeforeDay(date: CandyDateType): boolean {
     return this.compare(date, 'day');
   }
 
-  isBeforeHour(date: CandyDate | Date): boolean {
+  isBeforeHour(date: CandyDateType): boolean {
     return this.compare(date, 'hour');
   }
 
-  isBeforeMinute(date: CandyDate | Date): boolean {
+  isBeforeMinute(date: CandyDateType): boolean {
     return this.compare(date, 'minute');
   }
 
-  isBeforeSecond(date: CandyDate | Date): boolean {
+  isBeforeSecond(date: CandyDateType): boolean {
     return this.compare(date, 'second');
   }
 
   // TODO: isBefore
-  isAfterYear(date: CandyDate | Date): boolean {
+  isAfterYear(date: CandyDateType): boolean {
     return this.compare(date, 'year', false);
   }
 
-  isAfterMonth(date: CandyDate | Date): boolean {
+  isAfterMonth(date: CandyDateType): boolean {
     return this.compare(date, 'month', false);
   }
 
-  isAfterDay(date: CandyDate | Date): boolean {
+  isAfterDay(date: CandyDateType): boolean {
     return this.compare(date, 'day', false);
   }
 
-  isAfterHour(date: CandyDate | Date): boolean {
+  isAfterHour(date: CandyDateType): boolean {
     return this.compare(date, 'hour', false);
   }
 
-  isAfterMinute(date: CandyDate | Date): boolean {
+  isAfterMinute(date: CandyDateType): boolean {
     return this.compare(date, 'minute', false);
   }
 
-  isAfterSecond(date: CandyDate | Date): boolean {
+  isAfterSecond(date: CandyDateType): boolean {
     return this.compare(date, 'second', false);
   }
 

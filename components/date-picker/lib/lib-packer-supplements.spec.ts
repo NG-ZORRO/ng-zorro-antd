@@ -3,6 +3,7 @@ import zh from '@angular/common/locales/zh';
 
 import { fakeAsync, inject, TestBed } from '@angular/core/testing';
 
+import { DateTableComponent } from '../../calendar/date-table.component';
 import { CandyDate } from '../../core';
 import { DateHelperService } from '../../i18n/date-helper.service';
 import { NzI18nService } from '../../i18n/nz-i18n.service';
@@ -95,20 +96,19 @@ describe('Coverage supplements', () => {
     });
   }); // /TodayButton
 
-  // describe('DateTable', () => {
-  //   beforeEach(() => {
-  //     componentInstance = new DateTableComponent(i18n, dateHelper);
-  //   });
+  // TODO: Unit test of date-table and month-table
+  describe('DateTable', () => {
+    beforeEach(() => {
+      componentInstance = new DateTableComponent(i18n, dateHelper);
+    });
 
-  //   it('should cover untouched branches', () => {
-  //     componentInstance.value = new CandyDate('2018-11-11');
-  //     componentInstance.showWeek = true;
-  //     const weekRows = componentInstance.makeWeekRows();
-  //     expect(weekRows.length > 0).toBeTruthy();
-
-  //     expect(componentInstance.isBeforeMonthYear(new CandyDate('2018-11'), new CandyDate('2019-11'))).toBeTruthy();
-  //   });
-  // }); // /DateTable
+    it('should cover untouched branches', () => {
+      componentInstance.value = new CandyDate('2018-11-11');
+      componentInstance.showWeek = true;
+      const weekRows = componentInstance.makeWeekRows();
+      expect(weekRows.length > 0).toBeTruthy();
+    });
+  }); // /DateTable
 
   describe('MonthTable', () => {
     beforeEach(() => {

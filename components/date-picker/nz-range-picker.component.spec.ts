@@ -12,7 +12,7 @@ import isSameDay from 'date-fns/is_same_day';
 import { dispatchMouseEvent, NgStyleInterface } from 'ng-zorro-antd/core';
 
 import { CandyDate } from '../core';
-import { NzDatePickerModule } from './date-picker.module';
+import { NzDatePickerModule } from './nz-date-picker.module';
 
 registerLocaleData(zh);
 

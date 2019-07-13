@@ -56,8 +56,6 @@ export class DateTableComponent implements OnInit, OnChanges {
   @Input() activeDate: CandyDate;
   @Input() showWeek: boolean = false;
   @Input() disabledDate: (d: Date) => boolean;
-  // @Input() dateRender: FunctionProp<TemplateRef<CandyDate> | string>; // Customize date content while rendering
-  // TODO:
   @Input() dateCellRender: FunctionProp<TemplateRef<Date> | string>;
   @Input() dateFullCellRender: FunctionProp<TemplateRef<Date> | string>;
 
@@ -119,8 +117,7 @@ export class DateTableComponent implements OnInit, OnChanges {
     const firstDayOfWeek = this.dateHelper.getFirstDayOfWeek();
     for (let colIndex = 0; colIndex < DATE_COL_NUM; colIndex++) {
       const day = (firstDayOfWeek + colIndex) % DATE_COL_NUM;
-      // TODO:
-      const tempDate = this.value.setDay(day, { weekStartsOn: 1 });
+      const tempDate = this.value.setDay(day, { weekStartsOn: this.dateHelper.getFirstDayOfWeek() });
       weekDays[colIndex] = {
         short: this.dateHelper.format(tempDate.nativeDate, this.dateHelper.relyOnDatePipe ? 'E' : 'ddd'), // eg. Tue
         veryShort: this.dateHelper.format(tempDate.nativeDate, this.getVeryShortWeekFormat()) // eg. Tu
