@@ -8,7 +8,6 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { NzAddOnModule } from 'ng-zorro-antd/core';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -21,6 +20,6 @@ import { NzInputDirective } from './nz-input.directive';
 @NgModule({
   declarations: [NzInputDirective, NzInputGroupComponent, NzAutosizeDirective],
   exports: [NzInputDirective, NzInputGroupComponent, NzAutosizeDirective],
-  imports: [CommonModule, FormsModule, NzIconModule, PlatformModule, NzAddOnModule]
+  imports: [CommonModule, NzIconModule, PlatformModule, NzAddOnModule]
 })
 export class NzInputModule {}
