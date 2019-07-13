@@ -44,11 +44,13 @@ export class NzContextMenuService {
   }
 
   close(): void {
-    this.overlayRef.detach();
-    this.setOpenState(false);
-    this.clickOutsideSubscription.unsubscribe();
-    this.clickMenuSubscription.unsubscribe();
-    this.positionSubscription.unsubscribe();
+    if (this.overlayRef) {
+      this.overlayRef.detach();
+      this.setOpenState(false);
+      this.clickOutsideSubscription.unsubscribe();
+      this.clickMenuSubscription.unsubscribe();
+      this.positionSubscription.unsubscribe();
+    }
   }
 
   private handleClickOutside(): void {
