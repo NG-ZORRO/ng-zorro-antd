@@ -89,7 +89,7 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
       const hasActiveLinks = this.hasActiveLinks();
       if (this.nzSelected !== hasActiveLinks) {
         this.nzSelected = hasActiveLinks;
-        this.setClassMap();
+        this.setSelectedState(this.nzSelected);
       }
     });
   }
