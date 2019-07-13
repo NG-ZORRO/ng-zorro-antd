@@ -9,6 +9,7 @@
 import { DOCUMENT } from '@angular/common';
 import { HttpBackend } from '@angular/common/http';
 import { Inject, Injectable, InjectionToken, Optional, RendererFactory2 } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { IconDefinition, IconService } from '@ant-design/icons-angular';
 import {
   BarsOutline,
@@ -151,13 +152,14 @@ export class NzIconService extends IconService {
 
   constructor(
     rendererFactory: RendererFactory2,
+    sanitizer: DomSanitizer,
     @Optional() @Inject(NZ_ICONS) private icons: IconDefinition[],
     @Optional() @Inject(NZ_ICON_DEFAULT_TWOTONE_COLOR) private defaultColor: string,
     @Optional() handler: HttpBackend,
     // tslint:disable-next-line:no-any
     @Optional() @Inject(DOCUMENT) document: any
   ) {
-    super(rendererFactory, handler, document);
+    super(rendererFactory, handler, document, sanitizer);
 
     this.addIcon(...NZ_ICONS_USED_BY_ZORRO, ...(this.icons || []));
 
