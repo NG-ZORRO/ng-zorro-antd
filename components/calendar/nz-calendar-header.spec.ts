@@ -5,12 +5,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { CandyDate } from '../core';
 import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzRadioGroupComponent as RadioGroup, NzRadioModule } from '../radio/index';
 import { NzSelectComponent as Select } from '../select/nz-select.component';
 import { NzSelectModule } from '../select/nz-select.module';
 import { NzCalendarHeaderComponent, NzCalendarHeaderComponent as CalendarHeader } from './nz-calendar-header.component';
-import { CandyDate } from '../date-picker/lib/candy-date/candy-date';
 
 registerLocaleData(zh);
 

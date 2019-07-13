@@ -7,8 +7,7 @@
  */
 
 import { TemplateRef } from '@angular/core';
-
-import { CandyDate } from './lib/candy-date/candy-date';
+import { CandyDate } from 'ng-zorro-antd/core';
 
 export type PickerResult = PickerResultSingle | PickerResultRange;
 

@@ -25,7 +25,7 @@ import addDays from 'date-fns/add_days';
 import startOfMonth from 'date-fns/start_of_month';
 import startOfWeek from 'date-fns/start_of_week';
 
-import { CandyDate } from 'ng-zorro-antd/date-picker/lib/candy-date/candy-date';
+import { toBoolean, warnDeprecation, CandyDate, InputBoolean } from 'ng-zorro-antd/core';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 import {
   // NzDateCellDirective as DateCell,
@@ -34,36 +34,8 @@ import {
   NzMonthCellDirective,
   NzMonthFullCellDirective
 } from './nz-calendar-cells';
-import { InputBoolean, warnDeprecation, toBoolean } from 'ng-zorro-antd/core';
 
 export type ModeType = 'month' | 'year';
-
-export interface DateCell {
-  value: Date; // CandyDate before
-  label: string; // day
-  title: string;
-  customContent: TemplateRef<{ $implicit: Date }> | string;
-  content: string;
-  isSelected?: boolean;
-  isToday?: boolean;
-  isDisabled?: boolean;
-  isSelectedStartDate?: boolean;
-  isSelectedEndDate?: boolean;
-  isInRange?: boolean;
-  classMap?: object;
-  onClick(date: any): void;
-  onMouseEnter(): void;
-}
-
-export interface WeekRow {
-  isCurrent?: boolean; // Is the week that today stays in
-  isActive?: boolean; // Is the week that current setting date stays in
-  weekNum?: number;
-  classMap?: object;
-  dateCells: DateCell[];
-}
-
-export type Date1 = string | Date;
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -108,7 +80,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
   @ContentChild(NzDateFullCellDirective, { static: false, read: TemplateRef })
   nzDateFullCellChild: TemplateRef<{ $implicit: Date }>;
   get dateFullCell(): TemplateRef<{ $implicit: Date }> {
-    return this.nzDateFullCell || this.nzDateFullCellChild
+    return this.nzDateFullCell || this.nzDateFullCellChild;
   }
 
   @Input() nzMonthCell: TemplateRef<{ $implicit: Date }>;

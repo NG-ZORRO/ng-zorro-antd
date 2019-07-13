@@ -3,14 +3,14 @@ import zh from '@angular/common/locales/zh';
 
 import { fakeAsync, inject, TestBed } from '@angular/core/testing';
 
+import { CandyDate } from '../../core';
 import { DateHelperService } from '../../i18n/date-helper.service';
 import { NzI18nService } from '../../i18n/nz-i18n.service';
 import { AbstractPickerComponent } from '../abstract-picker.component';
+import { MonthTableComponent } from './../../calendar/month-table.component';
 import { CalendarHeaderComponent } from './calendar/calendar-header.component';
 import { TodayButtonComponent } from './calendar/today-button.component';
-import { CandyDate } from './candy-date/candy-date';
 import { LibPackerModule } from './lib-packer.module';
-import { MonthTableComponent } from './../../calendar/month-table.component';
 import { DateRangePopupComponent } from './popups/date-range-popup.component';
 import { YearPanelComponent } from './year/year-panel.component';
 

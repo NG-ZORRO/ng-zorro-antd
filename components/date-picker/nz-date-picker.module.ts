@@ -15,14 +15,14 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { LibPackerModule } from './lib/lib-packer.module';
 
-import { NzDatePickerComponent } from './date-picker.component';
 import { DateRangePickerComponent } from './date-range-picker.component';
 import { HeaderPickerComponent } from './header-picker.component';
-import { NzMonthPickerComponent } from './month-picker.component';
+import { NzDatePickerComponent } from './nz-date-picker.component';
+import { NzMonthPickerComponent } from './nz-month-picker.component';
+import { NzRangePickerComponent } from './nz-range-picker.component';
+import { NzWeekPickerComponent } from './nz-week-picker.component';
+import { NzYearPickerComponent } from './nz-year-picker.component';
 import { NzPickerComponent } from './picker.component';
-import { NzRangePickerComponent } from './range-picker.component';
-import { NzWeekPickerComponent } from './week-picker.component';
-import { NzYearPickerComponent } from './year-picker.component';
 
 @NgModule({
   imports: [CommonModule, OverlayModule, LibPackerModule, NzIconModule, NzOverlayModule, NzNoAnimationModule],

@@ -15,9 +15,8 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
+import { CandyDate } from 'ng-zorro-antd/core';
 import { DateHelperService, NzI18nService as I18n } from 'ng-zorro-antd/i18n';
-import { CandyDate } from 'ng-zorro-antd/date-picker/lib/candy-date/candy-date';
-
 
 @Component({
   encapsulation: ViewEncapsulation.None,

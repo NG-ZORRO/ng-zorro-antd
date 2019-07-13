@@ -6,12 +6,31 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { differenceInCalendarDays, differenceInCalendarMonths, differenceInCalendarYears, differenceInHours, differenceInMinutes, differenceInSeconds, isSameDay, isSameHour, isSameMinute, isSameMonth, isSameSecond, isSameYear, isToday, isValid, setYear, startOfWeek, startOfMonth } from 'date-fns';
+import {
+  differenceInCalendarDays,
+  differenceInCalendarMonths,
+  differenceInCalendarYears,
+  differenceInHours,
+  differenceInMinutes,
+  differenceInSeconds,
+  isSameDay,
+  isSameHour,
+  isSameMinute,
+  isSameMonth,
+  isSameSecond,
+  isSameYear,
+  isToday,
+  isValid,
+  setYear,
+  startOfMonth,
+  startOfWeek
+} from 'date-fns';
 import addMonths from 'date-fns/add_months';
 import addYears from 'date-fns/add_years';
 import setDay from 'date-fns/set_day';
 import setMonth from 'date-fns/set_month';
-import { IndexableObject, warn } from 'ng-zorro-antd/core';
+import { warn } from '../logger';
+import { IndexableObject } from '../types';
 
 export type CandyDateCompareGrain = 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second';
 
@@ -25,18 +44,15 @@ export class CandyDate implements IndexableObject {
   nativeDate: Date;
   // locale: string; // Custom specified locale ID
 
-// tslint:disable-next-line: no-any
   constructor(date?: Date | string | number) {
     if (date) {
       if (date instanceof Date) {
         this.nativeDate = date;
+      } else if (typeof date === 'string' || typeof date === 'number') {
+        warn('The string type is not recommended for date-picker, use "Date" type');
+        this.nativeDate = new Date(date);
       } else {
-        if (isValid(new Date(date))) {
-          this.nativeDate = new Date(date);
-          warn('The string type is not recommended for date-picker, use "Date" type');
-        } else {
-          throw new Error('The input date type is not supported ("Date" is now recommended)');
-        }
+        throw new Error('The input date type is not supported ("Date" is now recommended)');
       }
     } else {
       this.nativeDate = new Date();
@@ -219,7 +235,9 @@ export class CandyDate implements IndexableObject {
         fn = differenceInCalendarDays;
         break;
     }
-    return isBefore ? fn(this.nativeDate, this.toNativeDate(date)) < 0 : fn(this.nativeDate, this.toNativeDate(date)) > 0;
+    return isBefore
+      ? fn(this.nativeDate, this.toNativeDate(date)) < 0
+      : fn(this.nativeDate, this.toNativeDate(date)) > 0;
   }
 
   isBeforeYear(date: CandyDate | Date): boolean {
@@ -280,7 +298,7 @@ export class CandyDate implements IndexableObject {
     return isValid(this.nativeDate);
   }
 
-// tslint:disable-next-line: no-any
+  // tslint:disable-next-line: no-any
   private toNativeDate(date: any): Date {
     return date instanceof CandyDate ? date.nativeDate : date;
   }

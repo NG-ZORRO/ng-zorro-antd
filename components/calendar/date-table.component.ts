@@ -20,9 +20,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
+import { valueFunctionProp, CandyDate, FunctionProp } from 'ng-zorro-antd/core';
 import { DateHelperService, NzCalendarI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
-import { CandyDate } from 'ng-zorro-antd/date-picker/lib/candy-date/candy-date';
-import { valueFunctionProp, FunctionProp } from 'ng-zorro-antd/core';
 
 const DATE_ROW_NUM = 6;
 const DATE_COL_NUM = 7;
@@ -144,10 +143,7 @@ export class DateTableComponent implements OnInit, OnChanges {
 
   private makeWeekRows(): WeekRow[] {
     const weekRows: WeekRow[] = [];
-    // const monthStart = startOfMonth(this.activeDate);
-    // const monthEnd = endOfMonth(this.activeDate);
-    // const weekDiff =
-    //   differenceInCalendarWeeks(monthEnd, monthStart, { weekStartsOn: this.dateHelper.getFirstDayOfWeek() }) + 2;
+
     for (let week = 0; week < DATE_ROW_NUM; week++) {
       const row: WeekRow = {
         isActive: false,
@@ -245,15 +241,6 @@ export class DateTableComponent implements OnInit, OnChanges {
 
     return weekRows;
   }
-
-  // private getDateTitle(date: CandyDate): string {
-  //   // NOTE: Compat for DatePipe formatting rules
-  //   let dateFormat: string = (this.locale && this.locale.dateFormat) || 'YYYY-MM-DD';
-  //   if (this.dateHelper.relyOnDatePipe) {
-  //     dateFormat = (this.dateHelper as DateHelperByDatePipe).transCompatFormat(dateFormat);
-  //   }
-  //   return this.dateHelper.format(date.nativeDate, dateFormat);
-  // }
 }
 
 export interface WeekDayLabel {

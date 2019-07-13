@@ -5,11 +5,11 @@ import { async, fakeAsync, flush, ComponentFixture, TestBed } from '@angular/cor
 import { FormsModule, NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { CandyDate } from 'ng-zorro-antd/core';
 import { NZ_DATE_CONFIG } from '../i18n/date-config';
 import { NzCalendarHeaderComponent as CalendarHeader } from './nz-calendar-header.component';
 import { NzCalendarComponent as Calendar } from './nz-calendar.component';
 import { NzCalendarModule } from './nz-calendar.module';
-import { CandyDate } from '../date-picker/lib/candy-date/candy-date';
 
 registerLocaleData(zh);
 

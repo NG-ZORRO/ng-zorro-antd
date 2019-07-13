@@ -15,12 +15,12 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  ViewEncapsulation,
-  TemplateRef
+  TemplateRef,
+  ViewEncapsulation
 } from '@angular/core';
 
+import { CandyDate } from 'ng-zorro-antd/core';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
-import { CandyDate } from 'ng-zorro-antd/date-picker/lib/candy-date/candy-date';
 
 const MAX_ROW = 4;
 const MAX_COL = 3;
@@ -36,8 +36,8 @@ const MAX_COL = 3;
 export class MonthTableComponent implements OnInit, OnChanges {
   @Input() value: CandyDate;
   @Input() prefixCls: string = 'ant-fullcalendar';
-  @Input() monthCellRender: TemplateRef<{$implicit: Date}>;
-  @Input() monthFullCellRender: TemplateRef<{$implicit: Date}>;
+  @Input() monthCellRender: TemplateRef<{ $implicit: Date }>;
+  @Input() monthFullCellRender: TemplateRef<{ $implicit: Date }>;
   @Output() readonly valueChange = new EventEmitter<CandyDate>();
 
   @Input() disabledDate: (date: Date) => boolean;
