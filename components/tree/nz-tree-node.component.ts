@@ -178,7 +178,7 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
       this.nzHideUnMatched &&
       !this.nzTreeNode.isMatched &&
       !this.nzTreeNode.isExpanded &&
-      this.nzTreeNode.shouldHide
+      this.nzTreeNode.canHide
       ? 'none'
       : '';
   }
@@ -281,8 +281,8 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
       this.nzTreeNode.isExpanded = !this.nzTreeNode.isExpanded;
       const nzTreeNodeChildren = this.nzTreeNode.getChildren();
       for (const child of nzTreeNodeChildren) {
-        if (child.shouldHide) {
-          this.nzTreeNode.shouldHide = true;
+        if (child.canHide) {
+          this.nzTreeNode.canHide = true;
           break;
         }
       }
