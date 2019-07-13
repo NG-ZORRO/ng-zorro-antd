@@ -20,7 +20,6 @@ import {
 import { NzMessageConfig } from './nz-message-config';
 import { NzMessageContainerComponent } from './nz-message-container.component';
 import { NzMessageData, NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
-import { NzMessageServiceModule } from './nz-message.service.module';
 
 let globalCounter = 0;
 
@@ -88,7 +87,7 @@ export class NzMessageBaseService<
 }
 
 @Injectable({
-  providedIn: NzMessageServiceModule
+  providedIn: 'root'
 })
 export class NzMessageService extends NzMessageBaseService<
   NzMessageContainerComponent,

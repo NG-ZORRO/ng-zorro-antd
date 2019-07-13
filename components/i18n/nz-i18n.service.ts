@@ -13,11 +13,10 @@ import { IndexableObject } from 'ng-zorro-antd/core';
 
 import zh_CN from './languages/zh_CN';
 import { DateLocale, NzI18nInterface } from './nz-i18n.interface';
-import { NzI18nServiceModule } from './nz-i18n.service.module';
 import { NZ_DATE_LOCALE, NZ_I18N } from './nz-i18n.token';
 
 @Injectable({
-  providedIn: NzI18nServiceModule
+  providedIn: 'root'
 })
 export class NzI18nService {
   private _locale: NzI18nInterface;
