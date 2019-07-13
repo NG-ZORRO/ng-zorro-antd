@@ -6,9 +6,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, ElementRef, Input, Optional, Renderer2, Self } from '@angular/core';
-import { NgControl } from '@angular/forms';
-import { toBoolean, NzSizeLDSType } from 'ng-zorro-antd/core';
+import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
+import { InputBoolean, NzSizeLDSType } from 'ng-zorro-antd/core';
 
 @Directive({
   selector: '[nz-input]',
@@ -20,22 +19,10 @@ import { toBoolean, NzSizeLDSType } from 'ng-zorro-antd/core';
   }
 })
 export class NzInputDirective {
-  private _disabled = false;
   @Input() nzSize: NzSizeLDSType = 'default';
+  @Input() @InputBoolean() disabled = false;
 
-  @Input()
-  set disabled(value: boolean) {
-    this._disabled = toBoolean(value);
-  }
-
-  get disabled(): boolean {
-    if (this.ngControl && this.ngControl.disabled !== null) {
-      return this.ngControl.disabled;
-    }
-    return this._disabled;
-  }
-
-  constructor(@Optional() @Self() public ngControl: NgControl, renderer: Renderer2, elementRef: ElementRef) {
+  constructor(renderer: Renderer2, elementRef: ElementRef) {
     renderer.addClass(elementRef.nativeElement, 'ant-input');
   }
 }
