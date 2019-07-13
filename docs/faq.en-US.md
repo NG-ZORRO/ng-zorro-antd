@@ -3,6 +3,8 @@ order: 9
 title: FAQ
 ---
 
+<blockquote style="border-color: #faad14;"><p>For more questions please search <a href="https://github.com/NG-ZORRO/ng-zorro-antd/issues?q=is%3Aopen+is%3Aissue+label%3A%22%3Aquestion%3A+FAQ%22" target="_blank">issues with FAQ tag</a>.</p></blockquote>
+
 ### Why some features are not supported?
 
 `ng-zorro-antd` is an implementation of Ant Design for Angular, which means only features supported by Ant Design would be implemented by `ng-zorro-antd`.
