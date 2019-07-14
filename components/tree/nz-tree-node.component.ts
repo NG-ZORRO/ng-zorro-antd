@@ -279,15 +279,31 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
         this.nzTreeNode.isLoading = true;
       }
       this.nzTreeNode.isExpanded = !this.nzTreeNode.isExpanded;
-      const nzTreeNodeChildren = this.nzTreeNode.getChildren();
-      for (const child of nzTreeNodeChildren) {
-        if (child.canHide) {
-          this.nzTreeNode.canHide = true;
-          break;
-        }
+      if (this.nzTreeNode.isMatched) {
+        this.setDisplayForParentNodes(this.nzTreeNode);
       }
+      this.setDisplayForChildNodes(this.nzTreeNode);
       const eventNext = this.nzTreeService.formatEvent('expand', this.nzTreeNode, event);
       this.nzTreeService!.triggerEventChange$!.next(eventNext);
+    }
+  }
+
+  private setDisplayForChildNodes(parentNode: NzTreeNode): void {
+    const { children } = parentNode;
+    if (children.length > 0) {
+      children.map(node => {
+        const canHide = !node.isMatched;
+        node.canHide = canHide;
+        this.setDisplayForChildNodes(node);
+      });
+    }
+  }
+
+  private setDisplayForParentNodes(targetNode: NzTreeNode): void {
+    const parentNode = targetNode.getParentNode();
+    if (parentNode) {
+      parentNode.canHide = false;
+      this.setDisplayForParentNodes(parentNode);
     }
   }
 
