@@ -576,7 +576,7 @@ describe('nz-tree', () => {
       expect(treeInstance).toBeTruthy();
     });
 
-    fit('parent tree-node should not disappear when children contains searchValue', fakeAsync(() => {
+    it('parent tree-node should not disappear when children contains searchValue', fakeAsync(() => {
       fixture.detectChanges();
       fixture.componentInstance.checkedKeys = [...fixture.componentInstance.checkedKeys];
       fixture.componentInstance.expandKeys = [...fixture.componentInstance.expandKeys];
