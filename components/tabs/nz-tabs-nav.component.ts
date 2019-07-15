@@ -8,6 +8,7 @@
 
 /** code from https://github.com/angular/material2 */
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Platform } from '@angular/cdk/platform';
 import {
   AfterContentChecked,
   AfterContentInit,
@@ -104,6 +105,7 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
     private ngZone: NgZone,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
+    private platform: Platform,
     @Optional() private dir: Directionality
   ) {}
 
@@ -288,15 +290,19 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
   }
 
   get navContainerScrollPaddingPix(): number {
-    const navContainer = this.navContainerElement.nativeElement;
-    // tslint:disable: no-any
-    const originStyle: CSSStyleDeclaration = window.getComputedStyle
-      ? window.getComputedStyle(navContainer)
-      : (navContainer as any).currentStyle; // currentStyle for IE < 9
-    if (this.nzPositionMode === 'horizontal') {
-      return pxToNumber(originStyle.paddingLeft) + pxToNumber(originStyle.paddingRight);
+    if (this.platform.isBrowser) {
+      const navContainer = this.navContainerElement.nativeElement;
+      // tslint:disable: no-any
+      const originStyle: CSSStyleDeclaration = window.getComputedStyle
+        ? window.getComputedStyle(navContainer)
+        : (navContainer as any).currentStyle; // currentStyle for IE < 9
+      if (this.nzPositionMode === 'horizontal') {
+        return pxToNumber(originStyle.paddingLeft) + pxToNumber(originStyle.paddingRight);
+      } else {
+        return pxToNumber(originStyle.paddingTop) + pxToNumber(originStyle.paddingBottom);
+      }
     } else {
-      return pxToNumber(originStyle.paddingTop) + pxToNumber(originStyle.paddingBottom);
+      return 0;
     }
   }
 
