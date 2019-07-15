@@ -6,54 +6,64 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable, NgZone, Renderer2 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { auditTime } from 'rxjs/operators';
+
+interface Listener {
+  handler(e: Event): void;
+  unsubscribe?(): void;
+  countOfListeners: number;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class NzDomEventService {
-  private countOfResizeListener = 0;
   private readonly resizeSource = new Subject<void>();
-  private readonly domEventListeners = new Map<
-    string,
-    {
-      handler(event: Event): void;
-    }
-  >();
+  private readonly domEventListeners = new Map<string, Listener>();
 
-  constructor(private ngZone: NgZone) {}
+  constructor(private ngZone: NgZone, private renderer: Renderer2) {}
 
   registerResizeListener(): Observable<void> {
-    this.countOfResizeListener += 1;
-
-    if (this.countOfResizeListener === 1) {
+    if (!this.domEventListeners.has('resize')) {
       this.domEventListeners.set('resize', {
         handler: (): void => {
           this.resizeSource.next();
-        }
-      });
-
-      this.ngZone.runOutsideAngular(() => {
-        this.domEventListeners.forEach((config, name) => {
-          window.addEventListener(name, config.handler);
-        });
+        },
+        countOfListeners: 0
       });
     }
+
+    const listener = this.domEventListeners.get('resize')!;
+    this.tryToStartListener(listener);
 
     return this.resizeSource.pipe(auditTime(16));
   }
 
   unregisterResizeListener(): void {
-    this.countOfResizeListener -= 1;
+    if (!this.domEventListeners.has('resize')) {
+      return;
+    }
 
-    if (this.countOfResizeListener === 0) {
-      this.domEventListeners.forEach((config, name) => {
-        window.removeEventListener(name, config.handler);
-      });
+    const listener = this.domEventListeners.get('resize')!;
+    this.tryToStopListener(listener);
+  }
 
-      this.domEventListeners.clear();
+  private tryToStartListener(l: Listener): void {
+    this.ngZone.runOutsideAngular(() => {
+      l.countOfListeners += 1;
+      if (l.countOfListeners === 1) {
+        l.unsubscribe = this.renderer.listen('window', name, l.handler);
+      }
+    });
+  }
+
+  private tryToStopListener(l: Listener): void {
+    l.countOfListeners -= 1;
+    if (l.countOfListeners === 0) {
+      l.unsubscribe!();
+      l.unsubscribe = undefined;
     }
   }
 }
