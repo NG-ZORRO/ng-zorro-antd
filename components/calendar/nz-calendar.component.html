@@ -15,5 +15,5 @@
 
 <ng-template #yearModeTable>
   <month-table [prefixCls]="prefixCls" [value]="activeDate" [monthCellRender]="monthCell"
-    [monthFullCellRender]="monthFullCell" (valueChange)="updateDate($event)"></month-table>
+    [monthFullCellRender]="monthFullCell" (valueChange)="onDateSelect($event)"></month-table>
 </ng-template>

@@ -16,14 +16,16 @@ describe('candy-date coverage supplements', () => {
   it('support isSame', () => {
     expect(date.isSame(new CandyDate('2018'), 'year')).toBeTruthy();
 
+    expect(date.isSameMonth(new CandyDate('2018-5-5 12:00:00'))).toBeTruthy();
+
     expect(date.isSame(new CandyDate('2018-5-5 12:00:00'), 'hour')).toBeTruthy();
-    expect(date.isSame(new CandyDate('2019-5-5 12:00:00'), 'hour')).toBeFalsy();
+    expect(date.isSameHour(new CandyDate('2019-5-5 12:00:00'))).toBeFalsy();
 
     expect(date.isSame(new CandyDate('2018-5-5 12:12:00'), 'minute')).toBeTruthy();
-    expect(date.isSame(new CandyDate('2019-5-5 12:12:00'), 'minute')).toBeFalsy();
+    expect(date.isSameMinute(new CandyDate('2019-5-5 12:12:00'))).toBeFalsy();
 
     expect(date.isSame(new CandyDate('2018-5-5 12:12:12'), 'second')).toBeTruthy();
-    expect(date.isSame(new CandyDate('2019-5-5 12:12:12'), 'second')).toBeFalsy();
+    expect(date.isSameSecond(new CandyDate('2019-5-5 12:12:12'))).toBeFalsy();
   });
 
   it('support isAfter', () => {
@@ -33,6 +35,8 @@ describe('candy-date coverage supplements', () => {
 
     expect(date.isAfterMonth(new CandyDate('2000-5-5 12:12:12'))).toBeTruthy();
     expect(date.isAfterMonth(new CandyDate('2018-4-5 12:12:12'))).toBeTruthy();
+
+    expect(date.isAfterDay(new CandyDate('2018-5-5 11:12:12'))).toBeTruthy();
 
     expect(date.isAfterHour(new CandyDate('2000-5-5 12:12:12'))).toBeTruthy();
     expect(date.isAfterHour(new CandyDate('2018-4-5 12:12:12'))).toBeTruthy();
@@ -60,6 +64,8 @@ describe('candy-date coverage supplements', () => {
 
     expect(date.isBeforeMonth(new CandyDate('2100-5-5 12:12:12'))).toBeTruthy();
     expect(date.isBeforeMonth(new CandyDate('2018-6-5 12:12:12'))).toBeTruthy();
+
+    expect(date.isBeforeDay(new CandyDate('2018-6-5 12:12:12'))).toBeTruthy();
 
     expect(date.isBeforeHour(new CandyDate('2100-5-5 12:12:12'))).toBeTruthy();
     expect(date.isBeforeHour(new CandyDate('2018-6-5 12:12:12'))).toBeTruthy();
