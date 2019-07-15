@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Injectable, NgZone, Renderer2 } from '@angular/core';
+import { Injectable, NgZone, Renderer2, RendererFactory2 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { auditTime } from 'rxjs/operators';
 
@@ -22,8 +22,11 @@ interface Listener {
 export class NzDomEventService {
   private readonly resizeSource = new Subject<void>();
   private readonly domEventListeners = new Map<string, Listener>();
+  private renderer: Renderer2;
 
-  constructor(private ngZone: NgZone, private renderer: Renderer2) {}
+  constructor(private ngZone: NgZone, private rendererFactory2: RendererFactory2) {
+    this.renderer = this.rendererFactory2.createRenderer(null, null);
+  }
 
   registerResizeListener(): Observable<void> {
     if (!this.domEventListeners.has('resize')) {
