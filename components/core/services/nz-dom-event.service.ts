@@ -16,7 +16,7 @@ import { auditTime } from 'rxjs/operators';
 export class NzDomEventService {
   private countOfResizeListener = 0;
   private readonly resizeSource = new Subject<void>();
-  private readonly resizeListeners = new Map<
+  private readonly domEventListeners = new Map<
     string,
     {
       handler(event: Event): void;
@@ -29,14 +29,14 @@ export class NzDomEventService {
     this.countOfResizeListener += 1;
 
     if (this.countOfResizeListener === 1) {
-      this.resizeListeners.set('resize', {
-        handler: (_event: Event): void => {
+      this.domEventListeners.set('resize', {
+        handler: (): void => {
           this.resizeSource.next();
         }
       });
 
       this.ngZone.runOutsideAngular(() => {
-        this.resizeListeners.forEach((config, name) => {
+        this.domEventListeners.forEach((config, name) => {
           window.addEventListener(name, config.handler);
         });
       });
@@ -49,11 +49,11 @@ export class NzDomEventService {
     this.countOfResizeListener -= 1;
 
     if (this.countOfResizeListener === 0) {
-      this.resizeListeners.forEach((config, name) => {
+      this.domEventListeners.forEach((config, name) => {
         window.removeEventListener(name, config.handler);
       });
 
-      this.resizeListeners.clear();
+      this.domEventListeners.clear();
     }
   }
 }

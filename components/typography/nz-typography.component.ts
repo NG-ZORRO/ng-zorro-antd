@@ -117,7 +117,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
     private renderer: Renderer2,
     private platform: Platform,
     private i18n: NzI18nService,
-    private de: NzDomEventService
+    private nzDomEventService: NzDomEventService
   ) {}
 
   onTextCopy(text: string): void {
@@ -211,11 +211,11 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
       this.windowResizeSubscription.unsubscribe();
       this.cssEllipsis = this.canUseCSSEllipsis();
       this.renderOnNextFrame();
-      this.windowResizeSubscription = this.de
+      this.windowResizeSubscription = this.nzDomEventService
         .registerResizeListener()
         .pipe(
           takeUntil(this.destroy$),
-          finalize(() => this.de.unregisterResizeListener())
+          finalize(() => this.nzDomEventService.unregisterResizeListener())
         )
         .subscribe(() => this.renderOnNextFrame());
     }

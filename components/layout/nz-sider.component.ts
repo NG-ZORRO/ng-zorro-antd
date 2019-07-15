@@ -124,7 +124,7 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
     private ngZone: NgZone,
     private platform: Platform,
     private cdr: ChangeDetectorRef,
-    private de: NzDomEventService,
+    private nzDomEventService: NzDomEventService,
     renderer: Renderer2,
     elementRef: ElementRef
   ) {
@@ -140,11 +140,11 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     if (this.platform.isBrowser) {
       Promise.resolve().then(() => this.watchMatchMedia());
-      this.de
+      this.nzDomEventService
         .registerResizeListener()
         .pipe(
           takeUntil(this.destroy$),
-          finalize(() => this.de.unregisterResizeListener())
+          finalize(() => this.nzDomEventService.unregisterResizeListener())
         )
         .subscribe(() => this.watchMatchMedia());
     }

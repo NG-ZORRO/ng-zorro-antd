@@ -74,10 +74,10 @@ export class NzFormItemComponent extends NzRowDirective
     mediaMatcher: MediaMatcher,
     ngZone: NgZone,
     platform: Platform,
-    de: NzDomEventService,
+    nzDomEventService: NzDomEventService,
     private cdr: ChangeDetectorRef
   ) {
-    super(elementRef, renderer, nzUpdateHostClassService, mediaMatcher, ngZone, platform, de);
+    super(elementRef, renderer, nzUpdateHostClassService, mediaMatcher, ngZone, platform, nzDomEventService);
     renderer.addClass(elementRef.nativeElement, 'ant-form-item');
   }
 

@@ -180,17 +180,17 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
     private elementRef: ElementRef,
     private ngZone: NgZone,
     private platform: Platform,
-    private de: NzDomEventService
+    private nzDomEventService: NzDomEventService
   ) {}
 
   ngAfterViewInit(): void {
     if (this.nzAutosize && this.platform.isBrowser) {
       this.resizeToFitContent();
-      this.de
+      this.nzDomEventService
         .registerResizeListener()
         .pipe(
           takeUntil(this.destroy$),
-          finalize(() => this.de.unregisterResizeListener())
+          finalize(() => this.nzDomEventService.unregisterResizeListener())
         )
         .subscribe(() => this.resizeToFitContent(true));
     }

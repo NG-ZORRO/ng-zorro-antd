@@ -79,7 +79,7 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
     private cdr: ChangeDetectorRef,
     private mediaMatcher: MediaMatcher,
     private platform: Platform,
-    private de: NzDomEventService
+    private nzDomEventService: NzDomEventService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -103,11 +103,11 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
       });
 
     if (this.platform.isBrowser) {
-      this.de
+      this.nzDomEventService
         .registerResizeListener()
         .pipe(
           takeUntil(this.destroy$),
-          finalize(() => this.de.unregisterResizeListener())
+          finalize(() => this.nzDomEventService.unregisterResizeListener())
         )
         .subscribe(() => {
           this.resize$.next();

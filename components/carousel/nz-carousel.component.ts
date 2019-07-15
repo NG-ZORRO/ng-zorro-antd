@@ -147,7 +147,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     private platform: Platform,
-    private de: NzDomEventService,
+    private nzDomEventService: NzDomEventService,
     @Inject(DOCUMENT) document: any, // tslint:disable-line:no-any
     @Optional() @Inject(NZ_CAROUSEL_CUSTOM_STRATEGIES) private customStrategies: NzCarouselStrategyRegistryItem[]
   ) {
@@ -172,11 +172,11 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
       this.syncStrategy();
     });
 
-    this.de
+    this.nzDomEventService
       .registerResizeListener()
       .pipe(
         takeUntil(this.destroy$),
-        finalize(() => this.de.unregisterResizeListener())
+        finalize(() => this.nzDomEventService.unregisterResizeListener())
       )
       .subscribe(() => {
         this.syncStrategy();

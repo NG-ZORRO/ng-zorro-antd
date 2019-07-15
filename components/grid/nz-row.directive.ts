@@ -101,7 +101,7 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
     public mediaMatcher: MediaMatcher,
     public ngZone: NgZone,
     public platform: Platform,
-    private de: NzDomEventService
+    private nzDomEventService: NzDomEventService
   ) {}
 
   ngOnInit(): void {
@@ -120,11 +120,11 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
 
   ngAfterViewInit(): void {
     if (this.platform.isBrowser) {
-      this.de
+      this.nzDomEventService
         .registerResizeListener()
         .pipe(
           takeUntil(this.destroy$),
-          finalize(() => this.de.unregisterResizeListener())
+          finalize(() => this.nzDomEventService.unregisterResizeListener())
         )
         .subscribe(() => this.watchMedia());
     }

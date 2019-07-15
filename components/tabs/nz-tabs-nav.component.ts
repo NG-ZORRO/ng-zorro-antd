@@ -105,7 +105,7 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
     private ngZone: NgZone,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
-    private de: NzDomEventService,
+    private nzDomEventService: NzDomEventService,
     @Optional() private dir: Directionality
   ) {}
 
@@ -166,9 +166,9 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
       const dirChange = this.dir ? this.dir.change : observableOf(null);
       const resize =
         typeof window !== 'undefined'
-          ? this.de.registerResizeListener().pipe(
+          ? this.nzDomEventService.registerResizeListener().pipe(
               takeUntil(this.destroy$),
-              finalize(() => this.de.unregisterResizeListener())
+              finalize(() => this.nzDomEventService.unregisterResizeListener())
             )
           : observableOf(null);
       return merge(dirChange, resize)
