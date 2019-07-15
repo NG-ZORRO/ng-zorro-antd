@@ -9,14 +9,15 @@
 import { Overlay } from '@angular/cdk/overlay';
 import { ApplicationRef, ComponentFactoryResolver, Injectable, Injector, TemplateRef } from '@angular/core';
 
-import { NzMessageBaseService } from 'ng-zorro-antd/message';
+import { NzMessageBaseService } from 'ng-zorro-antd/core';
 
 import { NzNotificationConfig } from './nz-notification-config';
 import { NzNotificationContainerComponent } from './nz-notification-container.component';
 import { NzNotificationData, NzNotificationDataFilled, NzNotificationDataOptions } from './nz-notification.definitions';
+import { NzNotificationServiceModule } from './nz-notification.service.module';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: NzNotificationServiceModule
 })
 export class NzNotificationService extends NzMessageBaseService<
   NzNotificationContainerComponent,
