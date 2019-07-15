@@ -42,7 +42,7 @@ export function execNodeTask(packageName: string, executable: string | string[],
       if (err) {
         done(err);
       } else {
-        execTask('node', ['--max_old_space_size=8000', binPath].concat(args!), env)(done);
+        execTask('node', ['--max_old_space_size=5120', binPath].concat(args!), env)(done);
       }
     });
   };
