@@ -51,6 +51,13 @@ task('build:site-doc', execNodeTask(
   [ 'build', '--project=ng-zorro-antd-doc', '--prod' ]
 ));
 
+/** Run `ng build --prod --project=ng-zorro-antd-doc --configuration es5` */
+task('build:site-doc-es5', execNodeTask(
+  '@angular/cli',
+  'ng',
+  [ 'build', '--project=ng-zorro-antd-doc', '--prod', '--configuration=es5' ]
+));
+
 /** Run `ng build --prod --base-href ./ --project=ng-zorro-antd-iframe` */
 task('build:site-iframe', execNodeTask(
   '@angular/cli',
