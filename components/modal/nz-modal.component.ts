@@ -86,7 +86,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   @Input() nzBodyStyle: object;
   @Input() nzOkText: string | null;
   @Input() nzCancelText: string | null;
-  @Input() nzOkType = 'primary';
+  @Input() nzOkType: string = 'primary';
   @Input() nzIconType: string = 'question-circle'; // Confirm Modal ONLY
   @Input() nzModalType: ModalType = 'default';
 

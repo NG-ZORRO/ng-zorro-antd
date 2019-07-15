@@ -317,6 +317,17 @@ describe('modal testing (legacy)', () => {
       ids.forEach(id => expectModalDestroyed(id, false));
     }));
 
+    it('should disable buttons', fakeAsync(() => {
+      const modalRef = instance.createDisabledModal();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      const buttons = modalRef.getElement().querySelectorAll('.ant-modal-confirm-btns button') as NodeListOf<
+        HTMLButtonElement
+      >;
+      buttons.forEach(button => expect(button.disabled).toBe(true));
+    }));
+
     it('should render content with component', fakeAsync(() => {
       const modalRef = instance.createCustomContentWithComponent();
       const modalElement = modalRef.getElement();
@@ -929,6 +940,13 @@ export class TestConfirmModalComponent {
   createCustomContentWithComponent(): NzModalRef {
     return this.modalService.confirm({
       nzContent: TestConfirmCustomComponent
+    });
+  }
+
+  createDisabledModal(): NzModalRef {
+    return this.modalService.confirm({
+      nzCancelDisabled: true,
+      nzOkDisabled: true
     });
   }
 }
