@@ -23,7 +23,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { merge, Subject } from 'rxjs';
-import { finalize, startWith, takeUntil } from 'rxjs/operators';
+import { auditTime, finalize, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 import { responsiveMap, warn, Breakpoint, InputBoolean, NzDomEventService } from 'ng-zorro-antd/core';
 import { NzDescriptionsItemRenderProps, NzDescriptionsSize } from './nz-descriptions-definitions';
@@ -88,14 +88,23 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
   }
 
   ngAfterContentInit(): void {
-    merge(
-      this.items.changes.pipe(
-        startWith(this.items),
-        takeUntil(this.destroy$)
-      ),
-      this.resize$
-    )
+    const contentChange$ = this.items.changes.pipe(
+      startWith(this.items),
+      takeUntil(this.destroy$)
+    );
+
+    merge(contentChange$, this.resize$)
       .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.prepareMatrix();
+        this.cdr.markForCheck();
+      });
+
+    contentChange$
+      .pipe(
+        switchMap(() => merge(...this.items.map(i => i.inputChange$)).pipe(auditTime(16))),
+        takeUntil(this.destroy$)
+      )
       .subscribe(() => {
         this.prepareMatrix();
         this.cdr.markForCheck();
@@ -108,9 +117,7 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
           takeUntil(this.destroy$),
           finalize(() => this.nzDomEventService.unregisterResizeListener())
         )
-        .subscribe(() => {
-          this.resize$.next();
-        });
+        .subscribe(() => this.resize$.next());
     }
   }
 
