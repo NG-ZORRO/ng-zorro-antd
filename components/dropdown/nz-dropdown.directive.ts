@@ -60,6 +60,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
   @Input() nzDropdownMenu: NzDropdownMenuComponent;
   @Input() nzTrigger: 'click' | 'hover' = 'hover';
   @Input() nzMatchWidthElement: ElementRef;
+  @Input() @InputBoolean() nzBackdrop = true;
   @Input() @InputBoolean() nzClickHide = true;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzVisible = false;
@@ -89,7 +90,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
         .flexibleConnectedTo(this.el)
         .withLockedPosition(),
       minWidth: this.triggerWidth,
-      hasBackdrop: this.nzTrigger === 'click',
+      hasBackdrop: this.nzBackdrop && this.nzTrigger === 'click',
       scrollStrategy: this.overlay.scrollStrategies.reposition()
     });
   }
