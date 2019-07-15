@@ -1,20 +1,40 @@
 // This file is required by karma.conf.js and loads recursively all the .spec and framework files
 
+// tslint:disable-next-line:no-import-side-effect
 import 'zone.js/dist/zone-testing';
+
 import { getTestBed } from '@angular/core/testing';
 import {
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting
+  platformBrowserDynamicTesting,
+  BrowserDynamicTestingModule
 } from '@angular/platform-browser-dynamic/testing';
 
+// tslint:disable-next-line:no-any
+declare const __karma__: any;
+// tslint:disable-next-line:no-any
 declare const require: any;
 
+const tags = __karma__.config.args[0];
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting()
 );
+
+let filterRegExp: RegExp;
+
+if (tags) {
+  filterRegExp = new RegExp(`(${tags})\\.spec\\.ts$`);
+} else {
+  filterRegExp = /\.spec\.ts$/;
+}
+
 // Then we find all the tests.
 const context = require.context('./', true, /\.spec\.ts$/);
+// Filter specify file
+const specFiles = context.keys().filter((path: string) => {
+  console.log(filterRegExp);
+  return filterRegExp.test(path);
+});
 // And load the modules.
-context.keys().map(context);
+specFiles.map(context);

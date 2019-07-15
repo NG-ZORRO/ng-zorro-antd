@@ -13,4 +13,8 @@ const options = {
   outputFilePath: path.join(__dirname, '../../site/doc/assets/color.less'),
 };
 
-generateTheme(options);
+if (require.main === module) {
+  generateTheme(options);
+}
+
+module.exports = () => generateTheme(options);
