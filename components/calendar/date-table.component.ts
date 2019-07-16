@@ -142,22 +142,21 @@ export class DateTableComponent implements OnInit, OnChanges {
     const weekRows: WeekRow[] = [];
 
     for (let week = 0; week < DATE_ROW_NUM; week++) {
+      const weekStart = this.activeDate.calendarStart().addDays(week * 7);
       const row: WeekRow = {
         isActive: false,
         isCurrent: false,
-        dateCells: []
+        dateCells: [],
+        year: weekStart.getYear()
       };
-      const weekStart = this.activeDate.calendarStart().addDays(week * 7);
 
       for (let day = 0; day < 7; day++) {
         const date = weekStart.addDays(day);
-        // const monthDiff = differenceInCalendarMonths(date, this.activeDate);
         const dateFormat = this.dateHelper.relyOnDatePipe
           ? 'longDate'
           : this.i18n.getLocaleData('DatePicker.lang.dateFormat', 'YYYY-MM-DD');
         const title = this.dateHelper.format(date.nativeDate, dateFormat);
         const label = this.dateHelper.format(date.nativeDate, this.dateHelper.relyOnDatePipe ? 'dd' : 'DD');
-        // const rel = monthDiff === 0 ? 'current' : monthDiff < 0 ? 'last' : 'next';
 
         const cell: DateCell = {
           value: date.nativeDate,
@@ -214,7 +213,6 @@ export class DateTableComponent implements OnInit, OnChanges {
 
         cell.classMap = {
           [`${this.prefixCls}-cell`]: true,
-          // [`${this.prefixCls}-selected-date`]: false,
           [`${this.prefixCls}-today`]: cell.isToday,
           [`${this.prefixCls}-last-month-cell`]: date.isBeforeMonth(this.activeDate),
           [`${this.prefixCls}-next-month-btn-day`]: date.isAfterMonth(this.activeDate),
@@ -237,6 +235,14 @@ export class DateTableComponent implements OnInit, OnChanges {
     }
 
     return weekRows;
+  }
+
+  trackByDateFn(_index: number, item: DateCell): string {
+    return `${item.title}`;
+  }
+
+  trackByWeekFn(_index: number, item: WeekRow): string {
+    return `${item.year}-${item.weekNum}`;
   }
 }
 
@@ -267,6 +273,7 @@ export interface WeekRow {
   isCurrent?: boolean; // Is the week that today stays in
   isActive?: boolean; // Is the week that current setting date stays in
   weekNum?: number;
+  year?: number;
   classMap?: object;
   dateCells: DateCell[];
 }

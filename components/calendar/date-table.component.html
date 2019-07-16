@@ -11,11 +11,11 @@
     </tr>
   </thead>
   <tbody class="{{ prefixCls }}-tbody">
-    <tr *ngFor="let row of weekRows" [ngClass]="row.classMap" role="row">
+    <tr *ngFor="let row of weekRows;trackBy:trackByWeekFn" [ngClass]="row.classMap" role="row">
       <td *ngIf="row.weekNum" role="gridcell" class="{{ prefixCls }}-week-number-cell">
         {{ row.weekNum }}
       </td>
-      <td *ngFor="let cell of row.dateCells" title="{{ cell.title }}" role="gridcell" [ngClass]="cell.classMap"
+      <td *ngFor="let cell of row.dateCells;trackBy:trackByDateFn" title="{{ cell.title }}" role="gridcell" [ngClass]="cell.classMap"
         (click)="cell.isDisabled ? null : cell.onClick()" (mouseenter)="cell.isDisabled ? null : cell.onMouseEnter()"
         date-table-cell [prefixCls]="prefixCls" [cell]="cell">
       </td>

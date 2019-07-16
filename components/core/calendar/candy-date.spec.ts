@@ -36,7 +36,7 @@ describe('candy-date coverage supplements', () => {
     expect(date.isAfterMonth(new CandyDate('2000-5-5 12:12:12'))).toBeTruthy();
     expect(date.isAfterMonth(new CandyDate('2018-4-5 12:12:12'))).toBeTruthy();
 
-    expect(date.isAfterDay(new CandyDate('2018-5-5 11:12:12'))).toBeTruthy();
+    expect(date.isAfterDay(new CandyDate('2018-5-4 11:12:12'))).toBeTruthy();
 
     expect(date.isAfterHour(new CandyDate('2000-5-5 12:12:12'))).toBeTruthy();
     expect(date.isAfterHour(new CandyDate('2018-4-5 12:12:12'))).toBeTruthy();
