@@ -1,16 +1,13 @@
-<div *ngIf="nzTitle"
-     class="ant-descriptions-title">
+<div *ngIf="nzTitle" class="ant-descriptions-title">
   <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
 </div>
 <div class="ant-descriptions-view">
   <table>
     <tbody>
-      <tr class="ant-descriptions-row"
-          *ngFor="let row of itemMatrix; let i = index">
+      <tr class="ant-descriptions-row" *ngFor="let row of itemMatrix; let i = index">
         <ng-container *ngFor="let item of row; let isLast = last">
           <ng-container *ngIf="!nzBordered">
-            <td class="ant-descriptions-item"
-                [colSpan]="isLast ? (realColumn - (row.length - 1)) * 2 - 1 : item.span">
+            <td class="ant-descriptions-item" [colSpan]="item.span">
               <span class="ant-descriptions-item-label">{{ item.title }}</span>
               <span class="ant-descriptions-item-content">
                 <ng-template [ngTemplateOutlet]="item.content"></ng-template>
@@ -18,10 +15,8 @@
             </td>
           </ng-container>
           <ng-container *ngIf="nzBordered">
-            <td class="ant-descriptions-item-label"
-                *nzStringTemplateOutlet="item.title">{{ item.title }}</td>
-            <td class="ant-descriptions-item-content"
-                [colSpan]="isLast ? (realColumn - (row.length - 1)) * 2 - 1 : item.span">
+            <td class="ant-descriptions-item-label" *nzStringTemplateOutlet="item.title">{{ item.title }}</td>
+            <td class="ant-descriptions-item-content" [colSpan]="isLast ? item.span * 2 - 1 : item.span">
               <ng-template [ngTemplateOutlet]="item.content"></ng-template>
             </td>
           </ng-container>
