@@ -20,7 +20,6 @@ export class DemoAppComponent {
 
 describe('NzNotification', () => {
   let notificationService: NzNotificationService;
-  let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
   let fixture: ComponentFixture<DemoAppComponent>;
 
@@ -36,12 +35,13 @@ describe('NzNotification', () => {
 
   beforeEach(inject([NzNotificationService, OverlayContainer], (n: NzNotificationService, oc: OverlayContainer) => {
     notificationService = n;
-    overlayContainer = oc;
-    overlayContainerElement = oc.getContainerElement();
+    if (!overlayContainerElement) {
+      overlayContainerElement = oc.getContainerElement();
+    }
   }));
 
   afterEach(() => {
-    overlayContainer.ngOnDestroy();
+    notificationService.remove();
   });
 
   beforeEach(() => {
