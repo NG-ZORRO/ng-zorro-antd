@@ -26,7 +26,7 @@ import { merge, Subject } from 'rxjs';
 import { auditTime, finalize, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 import { responsiveMap, warn, Breakpoint, InputBoolean, NzDomEventService } from 'ng-zorro-antd/core';
-import { NzDescriptionsItemRenderProps, NzDescriptionsSize } from './nz-descriptions-definitions';
+import { NzDescriptionsItemRenderProps, NzDescriptionsLayout, NzDescriptionsSize } from './nz-descriptions-definitions';
 import { NzDescriptionsItemComponent } from './nz-descriptions-item.component';
 
 const defaultColumnMap: { [key in Breakpoint]: number } = {
@@ -63,6 +63,7 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
   @ContentChildren(NzDescriptionsItemComponent) items: QueryList<NzDescriptionsItemComponent>;
 
   @Input() @InputBoolean() nzBordered = false;
+  @Input() nzLayout: NzDescriptionsLayout = 'horizontal';
   @Input() nzColumn: number | { [key in Breakpoint]: number } = defaultColumnMap;
   @Input() nzSize: NzDescriptionsSize = 'default';
   @Input() nzTitle: string | TemplateRef<void> = '';
