@@ -8,12 +8,12 @@
   <nz-divider nzType="vertical"></nz-divider>
 </div>
 
-<div class="ant-page-header-title-view">
-  <span class="ant-page-header-title-view-title" *ngIf="nzTitle">
+<div class="ant-page-header-heading">
+  <span class="ant-page-header-heading-title" *ngIf="nzTitle">
     <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
   </span>
   <ng-content *ngIf="!nzTitle" select="nz-page-header-title, [nz-page-header-title]"></ng-content>
-  <span class="ant-page-header-title-view-sub-title" *ngIf="nzSubtitle">
+  <span class="ant-page-header-heading-sub-title" *ngIf="nzSubtitle">
     <ng-container *nzStringTemplateOutlet="nzSubtitle">{{ nzSubtitle }}</ng-container>
   </span>
   <ng-content *ngIf="!nzSubtitle" select="nz-page-header-subtitle, [nz-page-header-subtitle]"></ng-content>
