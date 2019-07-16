@@ -21,9 +21,15 @@ import {
 
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Platform } from '@angular/cdk/platform';
-import { responsiveMap, Breakpoint, IndexableObject, NzUpdateHostClassService } from 'ng-zorro-antd/core';
-import { fromEvent, Subject } from 'rxjs';
-import { auditTime, takeUntil } from 'rxjs/operators';
+import {
+  responsiveMap,
+  Breakpoint,
+  IndexableObject,
+  NzDomEventService,
+  NzUpdateHostClassService
+} from 'ng-zorro-antd/core';
+import { Subject } from 'rxjs';
+import { finalize, takeUntil } from 'rxjs/operators';
 
 export type NzJustify = 'start' | 'end' | 'center' | 'space-around' | 'space-between';
 export type NzAlign = 'top' | 'middle' | 'bottom';
@@ -94,7 +100,8 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
     public nzUpdateHostClassService: NzUpdateHostClassService,
     public mediaMatcher: MediaMatcher,
     public ngZone: NgZone,
-    public platform: Platform
+    public platform: Platform,
+    private nzDomEventService: NzDomEventService
   ) {}
 
   ngOnInit(): void {
@@ -113,14 +120,13 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
 
   ngAfterViewInit(): void {
     if (this.platform.isBrowser) {
-      this.ngZone.runOutsideAngular(() => {
-        fromEvent(window, 'resize')
-          .pipe(
-            auditTime(16),
-            takeUntil(this.destroy$)
-          )
-          .subscribe(() => this.watchMedia());
-      });
+      this.nzDomEventService
+        .registerResizeListener()
+        .pipe(
+          takeUntil(this.destroy$),
+          finalize(() => this.nzDomEventService.unregisterResizeListener())
+        )
+        .subscribe(() => this.watchMedia());
     }
   }
 

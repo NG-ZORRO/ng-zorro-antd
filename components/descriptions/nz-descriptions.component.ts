@@ -9,14 +9,12 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Platform } from '@angular/cdk/platform';
 import {
-  isDevMode,
   AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChildren,
   Input,
-  NgZone,
   OnChanges,
   OnDestroy,
   QueryList,
@@ -24,10 +22,10 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent, merge, Subject } from 'rxjs';
-import { auditTime, startWith, takeUntil } from 'rxjs/operators';
+import { merge, Subject } from 'rxjs';
+import { finalize, startWith, takeUntil } from 'rxjs/operators';
 
-import { responsiveMap, warn, Breakpoint, InputBoolean } from 'ng-zorro-antd/core';
+import { responsiveMap, warn, Breakpoint, InputBoolean, NzDomEventService } from 'ng-zorro-antd/core';
 import { NzDescriptionsItemRenderProps, NzDescriptionsSize } from './nz-descriptions-definitions';
 import { NzDescriptionsItemComponent } from './nz-descriptions-item.component';
 
@@ -78,9 +76,9 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
 
   constructor(
     private cdr: ChangeDetectorRef,
-    private ngZone: NgZone,
     private mediaMatcher: MediaMatcher,
-    private platform: Platform
+    private platform: Platform,
+    private nzDomEventService: NzDomEventService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -104,18 +102,15 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
       });
 
     if (this.platform.isBrowser) {
-      this.ngZone.runOutsideAngular(() => {
-        fromEvent(window, 'resize')
-          .pipe(
-            auditTime(16),
-            takeUntil(this.destroy$)
-          )
-          .subscribe(() => {
-            this.ngZone.run(() => {
-              this.resize$.next();
-            });
-          });
-      });
+      this.nzDomEventService
+        .registerResizeListener()
+        .pipe(
+          takeUntil(this.destroy$),
+          finalize(() => this.nzDomEventService.unregisterResizeListener())
+        )
+        .subscribe(() => {
+          this.resize$.next();
+        });
     }
   }
 
@@ -151,7 +146,7 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
       // item should take all the space left. This logic is implemented in the template.
       // Warn user about that.
       if (width >= column) {
-        if (width > column && isDevMode()) {
+        if (width > column) {
           warn(`"nzColumn" is ${column} but we have row length ${width}`);
         }
         flushRow();
