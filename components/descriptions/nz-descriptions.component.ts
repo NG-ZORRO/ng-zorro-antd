@@ -93,18 +93,12 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
       takeUntil(this.destroy$)
     );
 
-    merge(contentChange$, this.resize$)
+    merge(
+      contentChange$,
+      contentChange$.pipe(switchMap(() => merge(...this.items.map(i => i.inputChange$)).pipe(auditTime(16)))),
+      this.resize$
+    )
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        this.prepareMatrix();
-        this.cdr.markForCheck();
-      });
-
-    contentChange$
-      .pipe(
-        switchMap(() => merge(...this.items.map(i => i.inputChange$)).pipe(auditTime(16))),
-        takeUntil(this.destroy$)
-      )
       .subscribe(() => {
         this.prepareMatrix();
         this.cdr.markForCheck();
