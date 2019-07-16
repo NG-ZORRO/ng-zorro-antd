@@ -9,7 +9,7 @@ declare const viewport: any;
 @Component({
   template: `
     <nz-descriptions [nzTitle]="title" [nzBordered]="bordered" [nzColumn]="column">
-      <nz-descriptions-item *ngFor="let col of colspanArray; let i = index" [nzTitle]="'Title' + i" [nzSpan]="col">
+      <nz-descriptions-item *ngFor="let col of colspanArray; let i = index" [nzTitle]="itemTitle + i" [nzSpan]="col">
       </nz-descriptions-item>
     </nz-descriptions>
   `
@@ -19,6 +19,7 @@ export class NzTestDescriptionsComponent {
   colspanArray: number[] = [1, 1, 1];
   column: number | { [key: string]: number } = 3;
   title = 'Title';
+  itemTitle = 'Item Title ';
 }
 
 describe('nz descriptions', () => {
@@ -122,6 +123,19 @@ describe('nz descriptions', () => {
       expect(rows.length).toBe(7);
 
       viewport.reset();
+    }));
+
+    // fix #3795
+    it('should change to use content work', fakeAsync(() => {
+      let firstTitle = componentElement.querySelector('.ant-descriptions-item-label') as HTMLSpanElement;
+      expect(firstTitle.innerText).toBe('Item Title 0');
+
+      testComponent.itemTitle = 'Item ';
+      fixture.detectChanges();
+      tick(16);
+      fixture.detectChanges();
+      firstTitle = componentElement.querySelector('.ant-descriptions-item-label') as HTMLSpanElement;
+      expect(firstTitle.innerText).toBe('Item 0');
     }));
   });
 });
