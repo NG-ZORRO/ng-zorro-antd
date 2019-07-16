@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+export * from './nz-message-base.service';
 export * from './nz-message.service';
 export * from './nz-message.service.module';
 export * from './nz-message.module';

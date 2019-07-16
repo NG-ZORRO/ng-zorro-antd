@@ -8,13 +8,10 @@
 
 import { Overlay } from '@angular/cdk/overlay';
 import { ApplicationRef, ComponentFactoryResolver, EmbeddedViewRef, Injector, Type } from '@angular/core';
-import {
-  NzMessageConfig,
-  NzMessageContainerComponent,
-  NzMessageData,
-  NzMessageDataFilled,
-  NzMessageDataOptions
-} from 'ng-zorro-antd';
+
+import { NzMessageConfig } from './nz-message-config';
+import { NzMessageContainerComponent } from './nz-message-container.component';
+import { NzMessageData, NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
 
 let globalCounter = 0;
 const containerMap = new Map<string, NzMessageContainerComponent>();

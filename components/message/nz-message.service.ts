@@ -9,8 +9,7 @@
 import { Overlay } from '@angular/cdk/overlay';
 import { ApplicationRef, ComponentFactoryResolver, Injectable, Injector, TemplateRef } from '@angular/core';
 
-import { NzMessageBaseService } from 'ng-zorro-antd/core';
-
+import { NzMessageBaseService } from './nz-message-base.service';
 import { NzMessageConfig } from './nz-message-config';
 import { NzMessageContainerComponent } from './nz-message-container.component';
 import { NzMessageData, NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
