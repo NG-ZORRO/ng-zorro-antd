@@ -11,7 +11,6 @@ import { NzMessageService } from './nz-message.service';
 
 describe('NzMessage', () => {
   let messageService: NzMessageService;
-  let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
   let fixture: ComponentFixture<NzTestMessageBasicComponent>;
   let testComponent: NzTestMessageBasicComponent;
@@ -28,12 +27,13 @@ describe('NzMessage', () => {
 
   beforeEach(inject([NzMessageService, OverlayContainer], (m: NzMessageService, oc: OverlayContainer) => {
     messageService = m;
-    overlayContainer = oc;
-    overlayContainerElement = oc.getContainerElement();
+    if (!overlayContainerElement) {
+      overlayContainerElement = oc.getContainerElement();
+    }
   }));
 
   afterEach(() => {
-    overlayContainer.ngOnDestroy();
+    messageService.remove();
   });
 
   beforeEach(() => {
@@ -44,6 +44,7 @@ describe('NzMessage', () => {
   it('should open a message box with success', () => {
     messageService.success('SUCCESS');
     fixture.detectChanges();
+    console.log(overlayContainerElement.textContent);
 
     expect((overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement).style.zIndex).toBe('1010');
     expect(overlayContainerElement.textContent).toContain('SUCCESS');
@@ -53,7 +54,6 @@ describe('NzMessage', () => {
   it('should open a message box with error', () => {
     messageService.error('ERROR');
     fixture.detectChanges();
-
     expect(overlayContainerElement.textContent).toContain('ERROR');
     expect(overlayContainerElement.querySelector('.anticon-close-circle')).not.toBeNull();
   });
@@ -123,6 +123,9 @@ describe('NzMessage', () => {
 
     messageService.remove(filledMessage.messageId);
     fixture.detectChanges();
+    filledMessage!.onClose!.subscribe(() => {
+      console.log(1);
+    });
     expect(overlayContainerElement.textContent).not.toContain('SUCCESS');
   }));
 
@@ -163,15 +166,16 @@ describe('NzMessage', () => {
   }));
 
   it('should emit event when message close', fakeAsync(() => {
-    let onCloseFlag = false;
+    messageService.config({ nzDuration: 2000 });
+    const closeSpy = jasmine.createSpy('message closed');
     const msg = messageService.create('loading', 'CLOSE');
-    msg.onClose!.subscribe(() => {
-      onCloseFlag = true;
-    });
-
+    const messageId = msg.messageId;
+    msg.onClose!.subscribe(closeSpy);
     fixture.detectChanges();
-    tick(50000);
-    expect(onCloseFlag).toBeTruthy();
+    messageService.remove(messageId);
+    tick(2000);
+    fixture.detectChanges();
+    expect(closeSpy).toHaveBeenCalledTimes(1);
   }));
 
   it('should container top to configured', fakeAsync(() => {

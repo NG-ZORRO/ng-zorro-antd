@@ -25,7 +25,7 @@ export class NzMessageService extends NzMessageBaseService<
   NzMessageConfig
 > {
   constructor(overlay: Overlay, injector: Injector, cfr: ComponentFactoryResolver, appRef: ApplicationRef) {
-    super(overlay, NzMessageContainerComponent, injector, cfr, appRef, 'message-');
+    super(overlay, NzMessageContainerComponent, injector, cfr, appRef, 'message');
   }
 
   // Shortcut methods
