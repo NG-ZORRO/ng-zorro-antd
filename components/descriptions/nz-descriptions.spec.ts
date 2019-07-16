@@ -83,6 +83,14 @@ describe('nz descriptions', () => {
       fixture.detectChanges();
       rows = componentElement.querySelectorAll('.ant-descriptions-row');
       expect(rows.length).toBe(1);
+
+      // Should the last fill the rest space.
+      testComponent.colspanArray = [1, 1];
+      fixture.detectChanges();
+      rows = componentElement.querySelectorAll('.ant-descriptions-row');
+      const tds = componentElement.querySelectorAll('.ant-descriptions-item');
+      expect(rows.length).toBe(1);
+      expect((tds[1] as HTMLTableDataCellElement).colSpan).toBe(4);
     });
 
     it('should responsive work', fakeAsync(() => {

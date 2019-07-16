@@ -129,6 +129,7 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
 
     const column = (this.realColumn = this.getColumn());
     const items = this.items.toArray();
+    const length = items.length;
     const matrix: NzDescriptionsItemRenderProps[][] = [];
     const flushRow = () => {
       matrix.push(currentRow);
@@ -136,10 +137,10 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
       width = 0;
     };
 
-    items.forEach(item => {
+    for (let i = 0; i < length; i++) {
+      const item = items[i];
       const { nzTitle: title, content, nzSpan: span } = item;
 
-      currentRow.push({ title, content, span });
       width += span;
 
       // If the last item make the row's length exceeds `nzColumn`, the last
@@ -149,12 +150,14 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
         if (width > column) {
           warn(`"nzColumn" is ${column} but we have row length ${width}`);
         }
+        currentRow.push({ title, content, span: column - (width - span) });
         flushRow();
+      } else if (i === length - 1) {
+        currentRow.push({ title, content, span: column - (width - span) });
+        flushRow();
+      } else {
+        currentRow.push({ title, content, span });
       }
-    });
-
-    if (currentRow.length) {
-      flushRow();
     }
 
     this.itemMatrix = matrix;
