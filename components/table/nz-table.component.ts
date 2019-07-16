@@ -35,7 +35,7 @@ import {
 import { fromEvent, merge, EMPTY, Subject } from 'rxjs';
 import { flatMap, startWith, takeUntil } from 'rxjs/operators';
 
-import { InputBoolean, InputNumber, NzMeasureScrollbarService, NzSizeMDSType } from 'ng-zorro-antd/core';
+import { measureScrollbar, InputBoolean, InputNumber, NzSizeMDSType } from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { NzThComponent } from './nz-th.component';
@@ -196,13 +196,19 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
   }
 
   fitScrollBar(): void {
-    const scrollbarWidth = this.nzMeasureScrollbarService.scrollBarWidth;
-    if (scrollbarWidth) {
-      this.headerBottomStyle = {
-        marginBottom: `-${scrollbarWidth}px`,
-        paddingBottom: `0px`
-      };
-      this.cdr.markForCheck();
+    if (this.nzScroll.y) {
+      const scrollbarWidth = measureScrollbar('vertical');
+      const scrollbarWidthOfHeader = measureScrollbar('horizontal', 'ant-table');
+      // Add negative margin bottom for scroll bar overflow bug
+      if (scrollbarWidthOfHeader > 0) {
+        this.headerBottomStyle = {
+          marginBottom: `-${scrollbarWidthOfHeader}px`,
+          paddingBottom: '0px',
+          overflowX: 'scroll',
+          overflowY: `${scrollbarWidth === 0 ? 'hidden' : 'scroll'}`
+        };
+        this.cdr.markForCheck();
+      }
     }
   }
 
@@ -228,7 +234,6 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
     private renderer: Renderer2,
     private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
-    private nzMeasureScrollbarService: NzMeasureScrollbarService,
     private i18n: NzI18nService,
     private platform: Platform,
     elementRef: ElementRef
