@@ -39,7 +39,7 @@ export class NzDomEventService {
     }
 
     const listener = this.domEventListeners.get('resize')!;
-    this.tryToStartListener(listener);
+    this.tryToStartListener(listener, 'resize');
 
     return this.resizeSource.pipe(auditTime(16));
   }
@@ -53,9 +53,9 @@ export class NzDomEventService {
     this.tryToStopListener(listener);
   }
 
-  private tryToStartListener(l: Listener): void {
+  private tryToStartListener(l: Listener, name: string): void {
+    l.countOfListeners += 1;
     this.ngZone.runOutsideAngular(() => {
-      l.countOfListeners += 1;
       if (l.countOfListeners === 1) {
         l.unsubscribe = this.renderer.listen('window', name, l.handler);
       }

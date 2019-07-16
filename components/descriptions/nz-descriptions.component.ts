@@ -9,7 +9,6 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Platform } from '@angular/cdk/platform';
 import {
-  isDevMode,
   AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -147,7 +146,7 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
       // item should take all the space left. This logic is implemented in the template.
       // Warn user about that.
       if (width >= column) {
-        if (width > column && isDevMode()) {
+        if (width > column) {
           warn(`"nzColumn" is ${column} but we have row length ${width}`);
         }
         flushRow();

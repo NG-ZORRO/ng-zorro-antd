@@ -10,7 +10,6 @@ import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
-  isDevMode,
   AfterContentInit,
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -34,7 +33,7 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { isTouchEvent, InputBoolean, InputNumber, NzDomEventService } from 'ng-zorro-antd/core';
+import { isTouchEvent, warnDeprecation, InputBoolean, InputNumber, NzDomEventService } from 'ng-zorro-antd/core';
 import { finalize, takeUntil } from 'rxjs/operators';
 
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
@@ -101,9 +100,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   }
 
   set nzVertical(value: boolean) {
-    if (isDevMode()) {
-      console.warn(`'nzVertical' is deprecated and will be removed in 9.0.0. Please use 'nzDotPosition' instead.`);
-    }
+    warnDeprecation(`'nzVertical' is deprecated and will be removed in 9.0.0. Please use 'nzDotPosition' instead.`);
     this.vertical = value;
   }
 
