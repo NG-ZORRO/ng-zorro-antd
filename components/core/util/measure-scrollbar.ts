@@ -5,18 +5,18 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+let scrollbarVerticalSize: number;
+let scrollbarHorizontalSize: number;
+
+// Measure scrollbar width for padding body during modal show/hide
+const scrollbarMeasure = {
+  position: 'absolute',
+  top: '-9999px',
+  width: '50px',
+  height: '50px'
+};
 
 export function measureScrollbar(direction: 'vertical' | 'horizontal' = 'vertical', prefix: string = 'ant'): number {
-  let scrollbarVerticalSize;
-  let scrollbarHorizontalSize;
-
-  // Measure scrollbar width for padding body during modal show/hide
-  const scrollbarMeasure = {
-    position: 'absolute',
-    top: '-9999px',
-    width: '50px',
-    height: '50px'
-  };
   if (typeof document === 'undefined' || typeof window === 'undefined') {
     return 0;
   }
