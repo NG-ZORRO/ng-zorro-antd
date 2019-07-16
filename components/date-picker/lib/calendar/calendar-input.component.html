@@ -5,6 +5,7 @@
       placeholder="{{ placeholder || locale.dateSelect }}"
       value="{{ toReadableInput(value) }}"
       (keyup)="onInputKeyup($event)"
+      #inputElement
     />
   </div>
   <a class="{{ prefixCls }}-clear-btn" role="button" title="{{ locale.clear }}">

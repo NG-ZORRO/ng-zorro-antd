@@ -58,6 +58,15 @@ describe('NzYearPickerComponent', () => {
       expect(getPickerContainer()).toBeNull();
     }));
 
+    it('should open on enter', fakeAsync(() => {
+      fixture.detectChanges();
+      getPickerTriggerWrapper().dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).not.toBeNull();
+    }));
+
     it('should support nzAllowClear and work properly', fakeAsync(() => {
       const clearBtnSelector = By.css('nz-picker i.ant-calendar-picker-clear');
       const initial = (fixtureInstance.nzValue = new Date());

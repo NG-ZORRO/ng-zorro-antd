@@ -5,6 +5,7 @@
   [ngStyle]="style"
   tabindex="0"
   (click)="onClickInputBox()"
+  (keyup.enter)="onClickInputBox()"
 >
   <!-- Content of single picker -->
   <ng-container *ngIf="!isRange">
