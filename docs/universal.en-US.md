@@ -8,7 +8,7 @@ title: Server-side Rendering
 <p>You can also start your project with <a href="https://angular.cn/guide/universal" target="_blank">NG-ZORRO/ng-zorro-universal-starter</a>.</p>
 </blockquote>
 
-This guide is based on the popular [Express](https://expressjs.com/) framework.n
+This guide is based on the popular [Express](https://expressjs.com/) framework.
 
 ## Installation dependence
 
