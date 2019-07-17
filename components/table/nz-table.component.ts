@@ -255,6 +255,7 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
       } else {
         this.nzScroll = { x: null, y: null };
       }
+      this.fitScrollBar();
       this.setScrollPositionClassName();
     }
     if (changes.nzPageIndex || changes.nzPageSize || changes.nzFrontPagination || changes.nzData) {
