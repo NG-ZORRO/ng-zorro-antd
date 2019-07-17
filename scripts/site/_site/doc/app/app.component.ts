@@ -2,7 +2,7 @@ import { Platform } from '@angular/cdk/platform';
 import { AfterViewInit, Component, ElementRef, HostListener, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
-import { en_US, zh_CN, NzI18nService, NzMessageService } from 'ng-zorro-antd';
+import { en_US, zh_CN, NzI18nService, NzMessageService, VERSION } from 'ng-zorro-antd';
 import { fromEvent } from 'rxjs';
 import { debounceTime, map, startWith } from 'rxjs/operators';
 import { environment } from '../environments/environment';
@@ -45,7 +45,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   language = 'zh';
   oldVersionList = [ '0.5.x', '0.6.x', '0.7.x', '1.8.x', '7.5.x' ];
-  currentVersion = '8.0.3';
+  currentVersion = VERSION.full;
 
   @ViewChild('searchInput', { static: false }) searchInput: ElementRef<HTMLInputElement>;
 

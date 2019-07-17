@@ -40,7 +40,7 @@ function generate(target) {
       }
     }
     const componentDirPath = path.join(rootPath, componentName);
-    if (componentName === 'style' || componentName === 'core' || componentName === 'locale' || componentName === 'i18n') {
+    if (componentName === 'style' || componentName === 'core' || componentName === 'locale' || componentName === 'i18n' || componentName === 'version') {
       return;
     }
     if (fs.statSync(componentDirPath).isDirectory()) {
