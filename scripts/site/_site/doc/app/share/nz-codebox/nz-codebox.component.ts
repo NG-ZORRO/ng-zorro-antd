@@ -11,12 +11,13 @@ import {
 } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import sdk from '@stackblitz/sdk';
+import { VERSION } from 'ng-zorro-antd'
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { AppService } from '../../app.service';
 import { stackBlitzConfiguration } from './stack-blitz';
-import { VERSION } from 'ng-zorro-antd'
+
 @Component({
   selector       : 'nz-code-box',
   encapsulation  : ViewEncapsulation.None,
