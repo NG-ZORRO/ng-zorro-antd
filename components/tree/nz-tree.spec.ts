@@ -589,6 +589,19 @@ describe('nz-tree', () => {
       expect(treeElement.querySelectorAll('.ant-tree-icon-hide')[0].children.length).toBe(3);
     }));
 
+    it('parent tree-node should not disappear when children contains searchValue and target node matched', fakeAsync(() => {
+      fixture.detectChanges();
+      fixture.componentInstance.checkedKeys = [...fixture.componentInstance.checkedKeys];
+      fixture.componentInstance.expandKeys = [...fixture.componentInstance.expandKeys];
+      fixture.componentInstance.selectedKeys = [...fixture.componentInstance.selectedKeys];
+      fixture.componentInstance.searchValue = '10001';
+      fixture.detectChanges();
+      const targetNode = treeElement.querySelectorAll('.ant-tree-switcher_open')[1];
+      dispatchMouseEvent(targetNode, 'click');
+      fixture.detectChanges();
+      expect(treeElement.querySelectorAll('.ant-tree-switcher_close').length).toEqual(9);
+    }));
+
     it('should get correctly nodes', () => {
       fixture.detectChanges();
       fixture.componentInstance.checkedKeys = [...fixture.componentInstance.checkedKeys];
