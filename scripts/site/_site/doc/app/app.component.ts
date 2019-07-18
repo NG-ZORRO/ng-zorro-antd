@@ -107,7 +107,11 @@ export class AppComponent implements OnInit, AfterViewInit {
           this.searchComponent = null;
         }
 
-        this.language = this.router.url.split('/')[ this.router.url.split('/').length - 1 ].split('#')[ 0 ];
+        this.language = this.router.url
+          .split('/')[this.router.url.split('/').length - 1]
+          .split('#')[0]
+          .split('?')[0];
+
         this.appService.language$.next(this.language);
         this.nzI18nService.setLocale(this.language === 'en' ? en_US : zh_CN);
 

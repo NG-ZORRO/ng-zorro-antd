@@ -14,6 +14,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzTabBodyComponent } from './nz-tab-body.component';
 import { NzTabLabelDirective } from './nz-tab-label.directive';
+import { NzTabLinkDirective } from './nz-tab-link.directive';
 import { NzTabComponent } from './nz-tab.component';
 import { NzTabDirective } from './nz-tab.directive';
 import { NzTabsInkBarDirective } from './nz-tabs-ink-bar.directive';
@@ -28,7 +29,8 @@ import { NzTabSetComponent } from './nz-tabset.component';
     NzTabsNavComponent,
     NzTabLabelDirective,
     NzTabsInkBarDirective,
-    NzTabBodyComponent
+    NzTabBodyComponent,
+    NzTabLinkDirective
   ],
   exports: [
     NzTabComponent,
@@ -37,7 +39,8 @@ import { NzTabSetComponent } from './nz-tabset.component';
     NzTabsNavComponent,
     NzTabLabelDirective,
     NzTabsInkBarDirective,
-    NzTabBodyComponent
+    NzTabBodyComponent,
+    NzTabLinkDirective
   ],
   imports: [CommonModule, ObserversModule, NzIconModule, NzAddOnModule]
 })
