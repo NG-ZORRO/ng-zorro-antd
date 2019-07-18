@@ -14,3 +14,4 @@ export * from './nz-tabs.module';
 export * from './nz-tabs-nav.component';
 export * from './nz-tabset.component';
 export * from './nz-tab.directive';
+export * from './nz-tab-link.directive';

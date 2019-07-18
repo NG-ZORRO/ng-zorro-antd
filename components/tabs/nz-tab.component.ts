@@ -25,6 +25,8 @@ import {
 import { Subject } from 'rxjs';
 
 import { InputBoolean } from 'ng-zorro-antd/core';
+
+import { NzTabLinkDirective } from './nz-tab-link.directive';
 import { NzTabDirective } from './nz-tab.directive';
 
 @Component({
@@ -40,9 +42,12 @@ export class NzTabComponent implements OnChanges, OnDestroy {
   origin: number | null = null;
   isActive = false;
   readonly stateChanges = new Subject<void>();
-  @ViewChild(TemplateRef, { static: true }) content: TemplateRef<void>;
+  @ViewChild('bodyTpl', { static: true }) content: TemplateRef<void>;
+  @ViewChild('titleTpl', { static: true }) title: TemplateRef<void>;
   @ContentChild(NzTabDirective, { static: false, read: TemplateRef }) template: TemplateRef<void>;
+  @ContentChild(NzTabLinkDirective, { static: false }) linkDirective: NzTabLinkDirective;
   @Input() nzTitle: string | TemplateRef<void>;
+  @Input() nzRouterIdentifier: string;
   @Input() @InputBoolean() nzForceRender = false;
   @Input() @InputBoolean() nzDisabled = false;
   @Output() readonly nzClick = new EventEmitter<void>();
