@@ -1,4 +1,4 @@
-export const stackBlitzConfiguration = (componentName: string, appComponentCode: string, selector: string) => {
+export const stackBlitzConfiguration = (componentName: string, appComponentCode: string, selector: string, version: string) => {
   const mainCode = `import './polyfills';
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
@@ -258,7 +258,7 @@ export class AppModule { }`;
       '@angular/animations'              : '^8.0.0',
       '@ant-design/icons-angular'        : '^8.0.0',
       'date-fns'                         : '^1.30.1',
-      'ng-zorro-antd': '^8.0.3'
+      'ng-zorro-antd':  `^${version}`
     },
     tags        : [ 'stackblitz', 'sdk' ]
   };
