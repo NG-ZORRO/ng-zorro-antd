@@ -81,6 +81,7 @@ $ npm install ng-zorro-antd
 - [UC Express](http://www.uce.cn/)
 - [Qingflow](https://qingflow.com/)
 - [Southern Institute of Technology](https://www.sit.ac.nz/)
+- [Hapify (Dynamic boilerplates tool)](https://hub.hapify.io/)
 
 > We list some users here, if your company or product uses ng-zorro-antd, let us know [here](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1142)!
 
