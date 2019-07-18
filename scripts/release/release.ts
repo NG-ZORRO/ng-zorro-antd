@@ -106,11 +106,9 @@ function getRemoteUrl(remote: string): string {
 function bumpVersion(): void {
   log.info('Updating version number...');
 
-  const appComponentPath = path.join(buildConfig.scriptsDir, 'site/_site/doc/app/app.component.ts');
-  const codeBoxPath = path.join(buildConfig.scriptsDir, 'site/_site/doc/app/share/nz-codebox/stack-blitz.ts');
   const packageJsonPath = path.join(buildConfig.componentsDir, 'package.json');
   const packageJson = fs.readJsonSync(packageJsonPath);
-  const zorroVersionPath = path.join(buildConfig.componentsDir, 'version.ts');
+  const zorroVersionPath = path.join(buildConfig.componentsDir, 'version', 'version.ts');
   const currentVersion = packageJson.version;
   let versionNumberValid = false;
   let version;
@@ -125,13 +123,6 @@ function bumpVersion(): void {
   }
 
   fs.writeJsonSync(packageJsonPath, {...packageJson, version: version}, {spaces: 2});
-  fs.writeFileSync(appComponentPath,
-    fs.readFileSync(appComponentPath, 'utf-8')
-    .replace(/currentVersion = '.+';/g, `currentVersion = '${version}';`)
-  );
-  fs.writeFileSync(codeBoxPath,
-    fs.readFileSync(codeBoxPath, 'utf-8').replace(/'ng-zorro-antd'\s*: '.+'/g, `'ng-zorro-antd': '^${version}'`)
-  );
   fs.writeFileSync(zorroVersionPath,
     fs.readFileSync(zorroVersionPath, 'utf-8')
     .replace(/Version\('.+'\);/g, `Version('${version}');`)
