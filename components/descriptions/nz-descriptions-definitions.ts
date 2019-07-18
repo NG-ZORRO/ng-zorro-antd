@@ -10,6 +10,8 @@ import { TemplateRef } from '@angular/core';
 
 export type NzDescriptionsSize = 'default' | 'middle' | 'small';
 
+export type NzDescriptionsLayout = 'horizontal' | 'vertical';
+
 export interface NzDescriptionsItemRenderProps {
   title: string | TemplateRef<void>;
   span: number;
