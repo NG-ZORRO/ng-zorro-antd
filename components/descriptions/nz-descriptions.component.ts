@@ -47,9 +47,9 @@ const defaultColumnMap: { [key in Breakpoint]: number } = {
   preserveWhitespaces: false,
   host: {
     class: 'ant-descriptions',
-    '[class.bordered]': 'nzBordered',
-    '[class.middle]': 'nzSize === "middle"',
-    '[class.small]': 'nzSize === "small"'
+    '[class.ant-descriptions-bordered]': 'nzBordered',
+    '[class.ant-descriptions-middle]': 'nzSize === "middle"',
+    '[class.ant-descriptions-small]': 'nzSize === "small"'
   },
   styles: [
     `
