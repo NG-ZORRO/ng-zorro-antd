@@ -22,7 +22,8 @@ export default {
     filterConfirm: 'Aplicar',
     filterReset: 'Reiniciar',
     selectAll: 'Selecionar página atual',
-    selectInvert: 'Inverter seleção'
+    selectInvert: 'Inverter seleção',
+    sortTitle: 'Ordenação'
   },
   Modal: {
     okText: 'OK',
