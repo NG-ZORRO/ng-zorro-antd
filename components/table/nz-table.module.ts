@@ -5,12 +5,11 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-
+import { PlatformModule } from '@angular/cdk/platform';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzAddOnModule } from 'ng-zorro-antd/core';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
@@ -57,6 +56,7 @@ import { NzVirtualScrollDirective } from './nz-virtual-scroll.directive';
     NzCheckboxModule,
     NzDropDownModule,
     CommonModule,
+    PlatformModule,
     NzPaginationModule,
     NzSpinModule,
     NzI18nModule,
