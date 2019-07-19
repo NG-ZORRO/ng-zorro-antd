@@ -18,7 +18,7 @@
     "stage-release": "ts-node --project scripts/release/tsconfig.json scripts/release/release.ts",
     "ng": "ng",
     "gulp": "gulp",
-    "lint": "tslint -c tslint.json 'components/**/!(demo|testing)/!(polyfills).ts' --fix",
+    "lint": "tslint -c tslint.json 'components/**/!(demo|testing)/!(polyfills).ts'",
     "integration-cli": "npm run build:lib && cd integration/angular-cli && npm run integration",
     "integration-rollup": "npm run build:lib&& cd integration/rollup && npm run integration",
     "integration-webpack": "npm run build:lib && cd integration/webpack && npm run integration",
