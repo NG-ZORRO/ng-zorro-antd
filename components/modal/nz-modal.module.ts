@@ -15,9 +15,9 @@ import { NzNoAnimationModule } from 'ng-zorro-antd/core';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-import { NzModalControlService } from './nz-modal-control.service';
-import { NzModalFooterDirective } from './nz-modal-footer.directive';
+import { CssUnitPipe } from './css-unit.pipe';
 import { NzModalControlServiceModule } from './nz-modal-control.service.module';
+import { NzModalFooterDirective } from './nz-modal-footer.directive';
 import { NzModalComponent } from './nz-modal.component';
 import { NzModalServiceModule } from './nz-modal.service.module';
 
