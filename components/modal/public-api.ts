@@ -7,6 +7,7 @@
  */
 
 export { NzModalComponent } from './nz-modal.component';
+export { NzModalFooterDirective } from './nz-modal-footer.directive';
 export { NzModalRef } from './nz-modal-ref.class';
 export { NzModalModule } from './nz-modal.module';
 export { NzModalService } from './nz-modal.service';

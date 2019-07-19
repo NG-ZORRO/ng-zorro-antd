@@ -179,3 +179,21 @@ nzFooter: [{
 ```
 
 以上配置项也可在运行态实时改变，来触发按钮行为改变。
+
+### [nzModalFooter]
+
+另一种自定义页脚按钮的方式。
+
+```html
+<div *nzModalFooter>
+  <button nz-button nzType="default" (click)="handleCancel()">Custom Callback</button>
+  <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isConfirmLoading">Custom Submit</button>
+</div>
+
+<!-- or -->
+
+<ng-template [nzModalFooter]>
+  <button nz-button nzType="default" (click)="handleCancel()">Custom Callback</button>
+  <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isConfirmLoading">Custom Submit</button>
+</ng-template>
+```
