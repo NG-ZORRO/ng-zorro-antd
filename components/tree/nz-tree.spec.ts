@@ -576,6 +576,29 @@ describe('nz-tree', () => {
       expect(treeInstance).toBeTruthy();
     });
 
+    it('parent tree-node should not disappear when children contains searchValue', fakeAsync(() => {
+      fixture.detectChanges();
+      fixture.componentInstance.checkedKeys = [...fixture.componentInstance.checkedKeys];
+      fixture.componentInstance.expandKeys = [...fixture.componentInstance.expandKeys];
+      fixture.componentInstance.selectedKeys = [...fixture.componentInstance.selectedKeys];
+      fixture.componentInstance.searchValue = '100011';
+      fixture.detectChanges();
+      let targetNode = treeElement.querySelectorAll('.ant-tree-switcher_open')[0];
+      dispatchMouseEvent(targetNode, 'click');
+      fixture.detectChanges();
+      expect(treeElement.querySelectorAll('.ant-tree-icon-hide')[0].children.length).toBe(3);
+
+      fixture.componentInstance.checkedKeys = [...fixture.componentInstance.checkedKeys];
+      fixture.componentInstance.expandKeys = [...fixture.componentInstance.expandKeys];
+      fixture.componentInstance.selectedKeys = [...fixture.componentInstance.selectedKeys];
+      fixture.componentInstance.searchValue = '10001';
+      fixture.detectChanges();
+      targetNode = treeElement.querySelectorAll('.ant-tree-switcher_open')[1];
+      dispatchMouseEvent(targetNode, 'click');
+      fixture.detectChanges();
+      expect(treeElement.querySelectorAll('.ant-tree-switcher_close').length).toEqual(9);
+    }));
+
     it('should get correctly nodes', () => {
       fixture.detectChanges();
       fixture.componentInstance.checkedKeys = [...fixture.componentInstance.checkedKeys];
@@ -843,6 +866,7 @@ export class NzTestTreeDraggableComponent {
       [nzDefaultCheckedKeys]="checkedKeys"
       [nzDefaultSelectedKeys]="selectedKeys"
       [nzDefaultExpandAll]="expandDefault"
+      (nzExpandChange)="nzEvent()"
     >
     </nz-tree>
   `
@@ -856,6 +880,8 @@ export class NzTestTreeOlderComponent implements OnInit {
   expandDefault = false;
   searchValue = '';
   modelNodes: NzTreeNode[];
+
+  nzEvent(): void {}
 
   ngOnInit(): void {
     this.modelNodes = [
