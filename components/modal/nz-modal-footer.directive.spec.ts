@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { async, fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NzMeasureScrollbarService } from '../core/services/nz-measure-scrollbar.service';
 
 import { NzModalModule } from './nz-modal.module';
 import { NzModalService } from './nz-modal.service';
@@ -18,7 +17,7 @@ describe('modal footer directive', () => {
     TestBed.configureTestingModule({
       imports: [NzModalModule, NoopAnimationsModule],
       declarations: [TestDirectiveFooterComponent],
-      providers: [NzMeasureScrollbarService, NzModalService]
+      providers: [NzModalService]
     });
 
     TestBed.compileComponents();
