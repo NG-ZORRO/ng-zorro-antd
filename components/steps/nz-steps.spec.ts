@@ -415,7 +415,7 @@ export class NzTestInnerStepStringComponent {
   @ViewChild('iconTemplate', { static: false }) iconTemplate: TemplateRef<void>;
   status = 'process';
   current = 1;
-  icon = 'anticon anticon-user';
+  icon = 'user';
   title = 'title';
   description = 'description';
 }
