@@ -212,7 +212,9 @@ export class CandyDate implements IndexableObject {
   }
 
   compare(date: CandyDateType, grain: CandyDateCompareGrain = 'day', isBefore: boolean = true): boolean {
-    if (date === null) { return false; }
+    if (date === null) {
+      return false;
+    }
     let fn;
     switch (grain) {
       case 'year':

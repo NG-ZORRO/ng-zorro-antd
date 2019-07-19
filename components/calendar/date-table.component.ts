@@ -107,20 +107,18 @@ export class DateTableComponent implements OnInit, OnChanges {
 
   private changeValueFromInside(value: CandyDate): void {
     if (this.value !== value) {
-      this.activeDate = value;
       this.valueChange.emit(value);
     }
   }
 
   private makeHeadWeekDays(): WeekDayLabel[] {
     const weekDays: WeekDayLabel[] = [];
-    const firstDayOfWeek = this.dateHelper.getFirstDayOfWeek();
+    const start = this.activeDate.calendarStart({ weekStartsOn: this.dateHelper.getFirstDayOfWeek() });
     for (let colIndex = 0; colIndex < DATE_COL_NUM; colIndex++) {
-      const day = (firstDayOfWeek + colIndex) % DATE_COL_NUM;
-      const tempDate = this.value.setDay(day, { weekStartsOn: this.dateHelper.getFirstDayOfWeek() });
+      const day = start.addDays(colIndex);
       weekDays[colIndex] = {
-        short: this.dateHelper.format(tempDate.nativeDate, this.dateHelper.relyOnDatePipe ? 'E' : 'ddd'), // eg. Tue
-        veryShort: this.dateHelper.format(tempDate.nativeDate, this.getVeryShortWeekFormat()) // eg. Tu
+        short: this.dateHelper.format(day.nativeDate, this.dateHelper.relyOnDatePipe ? 'E' : 'ddd'), // eg. Tue
+        veryShort: this.dateHelper.format(day.nativeDate, this.getVeryShortWeekFormat()) // eg. Tu
       };
     }
     return weekDays;
@@ -140,9 +138,10 @@ export class DateTableComponent implements OnInit, OnChanges {
 
   private makeWeekRows(): WeekRow[] {
     const weekRows: WeekRow[] = [];
+    const firstDayOfMonth = this.activeDate.calendarStart({ weekStartsOn: this.dateHelper.getFirstDayOfWeek() });
 
     for (let week = 0; week < DATE_ROW_NUM; week++) {
-      const weekStart = this.activeDate.calendarStart().addDays(week * 7);
+      const weekStart = firstDayOfMonth.addDays(week * 7);
       const row: WeekRow = {
         isActive: false,
         isCurrent: false,
