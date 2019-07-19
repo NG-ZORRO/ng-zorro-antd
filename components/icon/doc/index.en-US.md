@@ -32,8 +32,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 | `[nzIconfont]` | Type of the icon from iconfont | `string` | - |
 | `[nzRotate]` | Rotate degrees | `number` | - |
 
-<blockquote style="border-color: red;"><p><strong>API that is not started with nz and old API that is based on icon class names would be deprecated in 9.0.0. Please migrate.</strong></p></blockquote>
-
 ### NzIconService
 
 | Methods/Properties | Description | Parameters |

@@ -110,18 +110,28 @@ export class NzIconService extends IconService {
 
   private iconfontCache = new Set<string>();
 
-  warnAPI(type: 'old' | 'cross' | 'vertical'): void {
-    if (type === 'old') {
-      warnDeprecation(
-        `'<i class="anticon"></i>' would be deprecated in 9.0.0. Please use '<i nz-icon nzType=""></i>' API. Please refer https://ng.ant.design/components/icon/en.`
-      );
+  constructor(
+    rendererFactory: RendererFactory2,
+    sanitizer: DomSanitizer,
+    @Optional() @Inject(NZ_ICONS) private icons: IconDefinition[],
+    @Optional() @Inject(NZ_ICON_DEFAULT_TWOTONE_COLOR) private defaultColor: string,
+    @Optional() handler: HttpBackend,
+    // tslint:disable-next-line:no-any
+    @Optional() @Inject(DOCUMENT) document: any
+  ) {
+    super(rendererFactory, handler, document, sanitizer);
+
+    this.addIcon(...NZ_ICONS_USED_BY_ZORRO, ...(this.icons || []));
+
+    let primaryColor = DEFAULT_TWOTONE_COLOR;
+    if (this.defaultColor) {
+      if (this.defaultColor.startsWith('#')) {
+        primaryColor = this.defaultColor;
+      } else {
+        warn('Twotone color must be a hex color!');
+      }
     }
-    if (type === 'cross') {
-      warnDeprecation(`'cross' icon is replaced by 'close' icon. This auto correction would be removed in 9.0.0.`);
-    }
-    if (type === 'vertical') {
-      warnDeprecation(`'verticle' is misspelled. Please use 'vertical'. This misspell would be fixed in 9.0.0.`);
-    }
+    this.twoToneColor = { primaryColor };
   }
 
   normalizeSvgElement(svg: SVGElement): void {
