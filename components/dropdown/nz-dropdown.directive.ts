@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { hasModifierKey, ESCAPE } from '@angular/cdk/keycodes';
 import {
   ConnectedPosition,
   ConnectionPositionPair,
@@ -31,7 +32,7 @@ import {
 } from '@angular/core';
 import { DEFAULT_DROPDOWN_POSITIONS, InputBoolean, POSITION_MAP } from 'ng-zorro-antd/core';
 import { combineLatest, fromEvent, merge, EMPTY, Observable, Subject, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, mapTo, takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, mapTo, takeUntil, tap } from 'rxjs/operators';
 import { NzDropdownMenuComponent, NzPlacementType } from './nz-dropdown-menu.component';
 
 @Directive({
@@ -90,7 +91,8 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
         .flexibleConnectedTo(this.el)
         .withLockedPosition(),
       minWidth: this.triggerWidth,
-      hasBackdrop: this.nzBackdrop && this.nzTrigger === 'click',
+      hasBackdrop: this.nzTrigger === 'click',
+      backdropClass: this.nzBackdrop ? undefined : 'nz-overlay-transparent-backdrop',
       scrollStrategy: this.overlay.scrollStrategies.reposition()
     });
   }
@@ -133,7 +135,11 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
 
   private subscribeOverlayEvent(overlayRef: OverlayRef): void {
     this.overlaySubscription.unsubscribe();
-    this.overlaySubscription = merge(overlayRef.backdropClick(), overlayRef.detachments())
+    this.overlaySubscription = merge(
+      overlayRef.backdropClick(),
+      overlayRef.detachments(),
+      overlayRef.keydownEvents().pipe(filter(e => e.keyCode === ESCAPE && !hasModifierKey(e)))
+    )
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.nzDropdownMenu.setVisibleStateWhen(false);
