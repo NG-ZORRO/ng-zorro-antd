@@ -7,7 +7,7 @@
  */
 
 const locale = {
-    placeholder: 'Vælg tid'
-  };
+  placeholder: 'Vælg tid'
+};
 
 export default locale;

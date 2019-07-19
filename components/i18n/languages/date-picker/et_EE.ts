@@ -9,6 +9,7 @@
 import CalendarLocale from '../calendar/et_EE';
 import TimePickerLocale from '../time-picker/et_EE';
 
+// 统一合并为完整的 Locale
 const locale = {
   lang: {
     placeholder: 'Vali kuupäev',
