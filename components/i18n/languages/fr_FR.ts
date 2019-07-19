@@ -42,7 +42,7 @@ export default {
     uploading: 'Téléversement en cours...',
     removeFile: 'Supprimer',
     uploadError: 'Erreur de téléversement',
-    previewFile: 'Afficher l\'aperçu du fichier'
+    previewFile: "Afficher l'aperçu du fichier"
   },
   Empty: {
     description: 'Aucune donnée'

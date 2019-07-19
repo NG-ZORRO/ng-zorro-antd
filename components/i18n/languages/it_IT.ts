@@ -17,6 +17,9 @@ export default {
   DatePicker,
   TimePicker,
   Calendar,
+  global: {
+    placeholder: 'Selezionare'
+  },
   Table: {
     filterTitle: 'Menù Filtro',
     filterConfirm: 'OK',
@@ -36,7 +39,7 @@ export default {
   },
   Transfer: {
     searchPlaceholder: 'Cerca qui',
-    itemUnit: 'articolo',
+    itemUnit: 'elemento',
     itemsUnit: 'elementi'
   },
   Upload: {
@@ -47,6 +50,9 @@ export default {
   },
   Empty: {
     description: 'Nessun dato'
+  },
+  Icon: {
+    icon: 'icona'
   },
   Text: {
     edit: 'modifica',

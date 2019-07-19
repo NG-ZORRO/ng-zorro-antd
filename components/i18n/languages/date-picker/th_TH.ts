@@ -11,12 +11,14 @@ import TimePickerLocale from '../time-picker/th_TH';
 
 // Merge into a locale object
 const locale = {
-  lang            : {
-    placeholder     : 'เลือกวันที่',
-    rangePlaceholder: [ 'วันเริ่มต้น', 'วันสิ้นสุด' ],
+  lang: {
+    placeholder: 'เลือกวันที่',
+    rangePlaceholder: ['วันเริ่มต้น', 'วันสิ้นสุด'],
     ...CalendarLocale
   },
-  timePickerLocale: { ...TimePickerLocale }
+  timePickerLocale: {
+    ...TimePickerLocale
+  }
 };
 
 // All settings at:
