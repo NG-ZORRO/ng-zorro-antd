@@ -53,7 +53,8 @@ NG ZORRO 团队会关注所有的 pull request，我们会 review 以及合并�
 
 在你 clone 了 `ng-zorro-antd`  的代码并且使用 `npm install` 安装完依赖后，你还可以运行下面几个常用的命令：
 
-1. `npm run site:start` 在本地运行 `NG-ZORRO` 的网站。
+1. `npm start` 在本地运行 `NG-ZORRO` 的网站。
 2. `npm run lint` 检查代码风格。
-3. `npm run test` 运行测试。
-4. `npm run generate` 构建 `ng-zorro-antd` 到 `publish` 目录。
+3. `npm test` 运行测试。
+3. `npm run test:watch [name]` 运行某文件测试，并监视变化。
+4. `npm run build:lib` 构建 `ng-zorro-antd` 到 `publish` 目录。

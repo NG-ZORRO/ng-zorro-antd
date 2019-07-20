@@ -52,8 +52,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 
 ## API
 
-### nz-form
-
+### [nz-form]
 
 | Property | Description | Type | Default Value |
 | -------- | ----------- | ---- | ------------- |

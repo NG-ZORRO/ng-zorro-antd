@@ -1,6 +1,6 @@
 ---
 order: 10
-title: Contributing to NG-ZORRO
+title: How to Contribute
 ---
 
 The following is a set of guidelines for contributing to NG ZORRO. Please spend several minutes in reading these guidelines before you create an issue or pull request.
@@ -53,7 +53,8 @@ The core team is monitoring for pull requests. We will review your pull request 
 
 After cloning `ng-zorro-antd`, run `npm install` to fetch its dependencies. Then, you can run several commands:
 
-1. `npm run site:start` runs NG-ZORRO website locally.
+1. `npm start` runs NG-ZORRO website locally.
 2. `npm run lint` checks the code style.
 3. `npm test` runs the complete test suite.
-4. `npm run generate` creates build of `ng-zorro-antd`.
+3. `npm run test:watch [name]` run some test file and watch changes.
+4. `npm run build:lib` creates build of `ng-zorro-antd`.

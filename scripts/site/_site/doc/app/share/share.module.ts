@@ -4,7 +4,10 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { NgZorroAntdModule, NzButtonModule } from 'ng-zorro-antd';
+import { NzAffixModule } from 'ng-zorro-antd/affix';
+import { NzAnchorModule } from 'ng-zorro-antd/anchor';
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { ColorSketchModule } from 'ngx-color/sketch';
 import { NzCodeBoxModule } from './nz-codebox/nz-codebox.module';
 import { NzGithubBtnModule } from './nz-github-btn/nz-github-btn.module';
@@ -17,11 +20,14 @@ import { NzNavBottomModule } from './nz-nav-bottom/nz-nav-bottom.module';
     FormsModule,
     RouterModule,
     ReactiveFormsModule,
-    NgZorroAntdModule,
     NzCodeBoxModule,
     NzHighlightModule,
     NzNavBottomModule,
     NzGithubBtnModule,
+    NzToolTipModule,
+    NzAnchorModule,
+    NzAffixModule,
+    NzGridModule,
     // third libs
     ColorSketchModule,
     DragDropModule
@@ -31,16 +37,19 @@ import { NzNavBottomModule } from './nz-nav-bottom/nz-nav-bottom.module';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    NgZorroAntdModule,
-    NzButtonModule, // Hack to prevent https://github.com/ng-packagr/ng-packagr/issues/594
     NzCodeBoxModule,
     NzHighlightModule,
+    NzAnchorModule,
+    NzAffixModule,
     NzNavBottomModule,
     NzGithubBtnModule,
+    NzGridModule,
+    NzToolTipModule,
     // third libs
     ScrollingModule,
     ColorSketchModule,
     DragDropModule
   ]
 })
-export class ShareModule {}
+export class ShareModule {
+}

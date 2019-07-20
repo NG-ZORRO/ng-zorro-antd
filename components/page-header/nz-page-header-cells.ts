@@ -12,7 +12,7 @@ import { Directive } from '@angular/core';
   selector: 'nz-page-header-title, [nz-page-header-title]',
   exportAs: 'nzPageHeaderTitle',
   host: {
-    class: 'ant-page-header-title-view-title'
+    class: 'ant-page-header-heading-title'
   }
 })
 export class NzPageHeaderTitleDirective {}
@@ -21,7 +21,7 @@ export class NzPageHeaderTitleDirective {}
   selector: 'nz-page-header-subtitle, [nz-page-header-subtitle]',
   exportAs: 'nzPageHeaderSubtitle',
   host: {
-    class: 'ant-page-header-title-view-sub-title'
+    class: 'ant-page-header-heading-sub-title'
   }
 })
 export class NzPageHeaderSubtitleDirective {}
@@ -30,7 +30,7 @@ export class NzPageHeaderSubtitleDirective {}
   selector: 'nz-page-header-content, [nz-page-header-content]',
   exportAs: 'nzPageHeaderContent',
   host: {
-    class: 'ant-page-header-content-view'
+    class: 'ant-page-header-content'
   }
 })
 export class NzPageHeaderContentDirective {}
@@ -39,7 +39,7 @@ export class NzPageHeaderContentDirective {}
   selector: 'nz-page-header-tags, [nz-page-header-tags]',
   exportAs: 'nzPageHeaderTags',
   host: {
-    class: 'ant-page-header-title-view-tags'
+    class: 'ant-page-header-heading-tags'
   }
 })
 export class NzPageHeaderTagDirective {}
@@ -48,7 +48,7 @@ export class NzPageHeaderTagDirective {}
   selector: 'nz-page-header-extra, [nz-page-header-extra]',
   exportAs: 'nzPageHeaderExtra',
   host: {
-    class: 'ant-page-header-title-view-extra'
+    class: 'ant-page-header-heading-extra'
   }
 })
 export class NzPageHeaderExtraDirective {}

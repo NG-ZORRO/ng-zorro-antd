@@ -15,7 +15,7 @@ We are using [Less](http://lesscss.org/) as the development language for styling
 
 ### Customize theme with schematics
 
-Run `ng add ng-zorro-antd --theme`，then modified the file `src/theme.less`.
+Run `ng add ng-zorro-antd`, set up custom theme file, then modified the file `src/theme.less`.
 
 ### Without schematics
 

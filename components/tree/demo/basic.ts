@@ -63,9 +63,7 @@ export class NzDemoTreeBasicComponent implements OnInit, AfterViewInit {
     console.log(keys, this.nzTreeComponent.getSelectedNodeList());
   }
 
-  ngOnInit(): void {
-    // TODO something
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     // get node by key: '10011'

@@ -36,7 +36,7 @@ export default {
   Transfer: {
     searchPlaceholder: 'Cercar aquí',
     itemUnit: 'element',
-    itemsUnit: 'elements'
+    itemsUnit: 'element'
   },
   Upload: {
     uploading: 'Pujant...',

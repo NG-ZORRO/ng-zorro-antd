@@ -39,6 +39,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | `[nzTabBarGutter]` | The gap between tabs | `number` | - |
 | `[nzHideAll]` | Whether hide all tabs | `boolean` | `false` |
 | `[nzShowPagination]` | Whether show pre or next button when exceed display area | `boolean` | `true` |
+| `[nzLinkRouter]` | Link with Angular router. It supports child mode and query param mode | `boolean` | `false` ||
 | `(nzSelectedIndexChange)` | Current tab's index change callback | `EventEmitter<number>` | - |
 | `(nzSelectChange)` | Current tab's change callback | `EventEmitter<{nzSelectedIndex: number,tab: NzTabComponent}>` | - |
 | `(nzOnNextClick)` | Callback executed when next button is clicked | `EventEmitter<void>` | - |
@@ -58,3 +59,11 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 ### [nz-tab]
 
 Tab contents can be lazy loaded by declaring the body in a `ng-template` with the `[nz-tab]` attribute.
+
+### nz-tab-link
+
+Show a link in tab's head. Used in router link mode.
+
+### Link Router
+
+This make the tabs component changes `nzSelectedIndex` with Angular route. You must use `nz-tab-link` instead of `[nzTitle]` in this situation.

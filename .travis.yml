@@ -5,7 +5,7 @@ node_js:
   - '10.9.0'
 
 env:
-  - TASK=pre-release
+  - TASK=build
   - TASK=test
   - TASK=lint
   - TASK=integration-cli

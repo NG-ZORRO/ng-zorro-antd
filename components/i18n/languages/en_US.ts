@@ -52,6 +52,9 @@ export default {
   Empty: {
     description: 'No Data'
   },
+  Icon: {
+    icon: 'icon'
+  },
   Text: {
     edit: 'edit',
     copy: 'copy',

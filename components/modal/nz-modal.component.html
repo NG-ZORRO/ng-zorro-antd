@@ -112,10 +112,20 @@
         </div>
       </div>
       <div class="ant-modal-confirm-btns">
-        <button nz-button *ngIf="nzCancelText!==null" (click)="onClickOkCancel('cancel')" [nzLoading]="nzCancelLoading">
+        <button *ngIf="nzCancelText!==null"
+          nz-button
+          (click)="onClickOkCancel('cancel')"
+          [nzLoading]="nzCancelLoading"
+          [disabled]="nzCancelDisabled">
           {{ cancelText }}
         </button>
-        <button *ngIf="nzOkText!==null" #autoFocusButtonOk nz-button [nzType]="nzOkType" (click)="onClickOkCancel('ok')" [nzLoading]="nzOkLoading">
+        <button #autoFocusButtonOk
+          *ngIf="nzOkText!==null"
+          nz-button
+          (click)="onClickOkCancel('ok')"
+          [nzType]="nzOkType"
+          [nzLoading]="nzOkLoading"
+          [disabled]="nzOkDisabled">
           {{ okText }}
         </button>
       </div>

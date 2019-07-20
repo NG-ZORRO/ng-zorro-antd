@@ -9,14 +9,12 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Platform } from '@angular/cdk/platform';
 import {
-  isDevMode,
   AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChildren,
   Input,
-  NgZone,
   OnChanges,
   OnDestroy,
   QueryList,
@@ -24,11 +22,11 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent, merge, Subject } from 'rxjs';
-import { auditTime, startWith, takeUntil } from 'rxjs/operators';
+import { merge, Subject } from 'rxjs';
+import { auditTime, finalize, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
-import { responsiveMap, warn, Breakpoint, InputBoolean } from 'ng-zorro-antd/core';
-import { NzDescriptionsItemRenderProps, NzDescriptionsSize } from './nz-descriptions-definitions';
+import { responsiveMap, warn, Breakpoint, InputBoolean, NzDomEventService } from 'ng-zorro-antd/core';
+import { NzDescriptionsItemRenderProps, NzDescriptionsLayout, NzDescriptionsSize } from './nz-descriptions-definitions';
 import { NzDescriptionsItemComponent } from './nz-descriptions-item.component';
 
 const defaultColumnMap: { [key in Breakpoint]: number } = {
@@ -49,9 +47,9 @@ const defaultColumnMap: { [key in Breakpoint]: number } = {
   preserveWhitespaces: false,
   host: {
     class: 'ant-descriptions',
-    '[class.bordered]': 'nzBordered',
-    '[class.middle]': 'nzSize === "middle"',
-    '[class.small]': 'nzSize === "small"'
+    '[class.ant-descriptions-bordered]': 'nzBordered',
+    '[class.ant-descriptions-middle]': 'nzSize === "middle"',
+    '[class.ant-descriptions-small]': 'nzSize === "small"'
   },
   styles: [
     `
@@ -65,6 +63,7 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
   @ContentChildren(NzDescriptionsItemComponent) items: QueryList<NzDescriptionsItemComponent>;
 
   @Input() @InputBoolean() nzBordered = false;
+  @Input() nzLayout: NzDescriptionsLayout = 'horizontal';
   @Input() nzColumn: number | { [key in Breakpoint]: number } = defaultColumnMap;
   @Input() nzSize: NzDescriptionsSize = 'default';
   @Input() nzTitle: string | TemplateRef<void> = '';
@@ -78,9 +77,9 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
 
   constructor(
     private cdr: ChangeDetectorRef,
-    private ngZone: NgZone,
     private mediaMatcher: MediaMatcher,
-    private platform: Platform
+    private platform: Platform,
+    private nzDomEventService: NzDomEventService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -90,11 +89,14 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
   }
 
   ngAfterContentInit(): void {
+    const contentChange$ = this.items.changes.pipe(
+      startWith(this.items),
+      takeUntil(this.destroy$)
+    );
+
     merge(
-      this.items.changes.pipe(
-        startWith(this.items),
-        takeUntil(this.destroy$)
-      ),
+      contentChange$,
+      contentChange$.pipe(switchMap(() => merge(...this.items.map(i => i.inputChange$)).pipe(auditTime(16)))),
       this.resize$
     )
       .pipe(takeUntil(this.destroy$))
@@ -104,18 +106,13 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
       });
 
     if (this.platform.isBrowser) {
-      this.ngZone.runOutsideAngular(() => {
-        fromEvent(window, 'resize')
-          .pipe(
-            auditTime(16),
-            takeUntil(this.destroy$)
-          )
-          .subscribe(() => {
-            this.ngZone.run(() => {
-              this.resize$.next();
-            });
-          });
-      });
+      this.nzDomEventService
+        .registerResizeListener()
+        .pipe(
+          takeUntil(this.destroy$),
+          finalize(() => this.nzDomEventService.unregisterResizeListener())
+        )
+        .subscribe(() => this.resize$.next());
     }
   }
 
@@ -134,6 +131,7 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
 
     const column = (this.realColumn = this.getColumn());
     const items = this.items.toArray();
+    const length = items.length;
     const matrix: NzDescriptionsItemRenderProps[][] = [];
     const flushRow = () => {
       matrix.push(currentRow);
@@ -141,25 +139,27 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
       width = 0;
     };
 
-    items.forEach(item => {
+    for (let i = 0; i < length; i++) {
+      const item = items[i];
       const { nzTitle: title, content, nzSpan: span } = item;
 
-      currentRow.push({ title, content, span });
       width += span;
 
       // If the last item make the row's length exceeds `nzColumn`, the last
       // item should take all the space left. This logic is implemented in the template.
       // Warn user about that.
       if (width >= column) {
-        if (width > column && isDevMode()) {
+        if (width > column) {
           warn(`"nzColumn" is ${column} but we have row length ${width}`);
         }
+        currentRow.push({ title, content, span: column - (width - span) });
         flushRow();
+      } else if (i === length - 1) {
+        currentRow.push({ title, content, span: column - (width - span) });
+        flushRow();
+      } else {
+        currentRow.push({ title, content, span });
       }
-    });
-
-    if (currentRow.length) {
-      flushRow();
     }
 
     this.itemMatrix = matrix;

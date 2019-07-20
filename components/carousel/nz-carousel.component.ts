@@ -10,7 +10,6 @@ import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
-  isDevMode,
   AfterContentInit,
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -21,7 +20,6 @@ import {
   EventEmitter,
   Inject,
   Input,
-  NgZone,
   OnChanges,
   OnDestroy,
   Optional,
@@ -33,10 +31,10 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
-import { isTouchEvent, InputBoolean, InputNumber } from 'ng-zorro-antd/core';
-import { takeUntil, throttleTime } from 'rxjs/operators';
+import { isTouchEvent, warnDeprecation, InputBoolean, InputNumber, NzDomEventService } from 'ng-zorro-antd/core';
+import { finalize, takeUntil } from 'rxjs/operators';
 
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
 import {
@@ -102,9 +100,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   }
 
   set nzVertical(value: boolean) {
-    if (isDevMode()) {
-      console.warn(`'nzVertical' is deprecated and will be removed in 9.0.0. Please use 'nzDotPosition' instead.`);
-    }
+    warnDeprecation(`'nzVertical' is deprecated and will be removed in 9.0.0. Please use 'nzDotPosition' instead.`);
     this.vertical = value;
   }
 
@@ -147,8 +143,8 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     elementRef: ElementRef,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
-    private ngZone: NgZone,
     private platform: Platform,
+    private nzDomEventService: NzDomEventService,
     @Inject(DOCUMENT) document: any, // tslint:disable-line:no-any
     @Optional() @Inject(NZ_CAROUSEL_CUSTOM_STRATEGIES) private customStrategies: NzCarouselStrategyRegistryItem[]
   ) {
@@ -173,16 +169,15 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
       this.syncStrategy();
     });
 
-    this.ngZone.runOutsideAngular(() => {
-      fromEvent(window, 'resize')
-        .pipe(
-          takeUntil(this.destroy$),
-          throttleTime(16)
-        )
-        .subscribe(() => {
-          this.syncStrategy();
-        });
-    });
+    this.nzDomEventService
+      .registerResizeListener()
+      .pipe(
+        takeUntil(this.destroy$),
+        finalize(() => this.nzDomEventService.unregisterResizeListener())
+      )
+      .subscribe(() => {
+        this.syncStrategy();
+      });
 
     this.switchStrategy();
     this.markContentActive(0);

@@ -20,8 +20,11 @@ import { warnDeprecation } from 'ng-zorro-antd/core';
 import { fromEvent } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 import { NzDropdownContextComponent } from './nz-dropdown-context.component';
+import { NzDropdownServiceModule } from './nz-dropdown.service.module';
 
-@Injectable()
+@Injectable({
+  providedIn: NzDropdownServiceModule
+})
 /**
  * @deprecated Use `NzContextMenuService` instead.
  */

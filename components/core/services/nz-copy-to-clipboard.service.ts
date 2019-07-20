@@ -8,9 +8,10 @@
 
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
+import { NzCopyToClipboardServiceModule } from './nz-copy-to-clipboard.service.module';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: NzCopyToClipboardServiceModule
 })
 export class NzCopyToClipboardService {
   // tslint:disable-next-line:no-any

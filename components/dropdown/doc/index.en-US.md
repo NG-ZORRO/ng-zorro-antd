@@ -30,6 +30,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 | `[nzTrigger]` | the trigger mode which executes the drop-down action | `'click' \| 'hover'` | `'hover'` |
 | `[nzClickHide]` | whether hide menu when click | `boolean` | `true` |
 | `[nzVisible]` | whether the dropdown menu is visible, double binding | `boolean` | - |
+| `[nzBackdrop]` | whether the dropdown has a backdrop when `nzTrigger` is `click` | `boolean` | `true` |
 | `[nzOverlayClassName]` | Class name of the dropdown root element | `string` | - |
 | `[nzOverlayStyle]` | Style of the dropdown root element | `object` | - |
 | `(nzVisibleChange)` | a callback function takes an argument: `nzVisible`, is executed when the visible state is changed | `EventEmitter<boolean>` | - |

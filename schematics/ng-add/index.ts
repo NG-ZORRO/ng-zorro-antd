@@ -17,8 +17,9 @@ export default function(options: Schema): Rule {
 
     context.addTask(new RunSchematicTask('ng-add-setup-project', options), [installTaskId]);
 
-    if (options.bootPage) {
-      context.addTask(new RunSchematicTask('boot-page', options));
+    if (options.template) {
+      context.addTask(new RunSchematicTask(options.template, options));
     }
+
   };
 }

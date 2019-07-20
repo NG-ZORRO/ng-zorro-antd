@@ -1,0 +1,9 @@
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzCascaderModule } from 'ng-zorro-antd/cascader';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+
+export const moduleList = [ NzInputModule, NzSelectModule, NzCascaderModule, NzInputNumberModule, NzDatePickerModule, NzIconModule, NzToolTipModule ];

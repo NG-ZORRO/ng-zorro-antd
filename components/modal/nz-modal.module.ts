@@ -16,15 +16,24 @@ import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { CssUnitPipe } from './css-unit.pipe';
-import { NzModalControlService } from './nz-modal-control.service';
+import { NzModalControlServiceModule } from './nz-modal-control.service.module';
+import { NzModalFooterDirective } from './nz-modal-footer.directive';
 import { NzModalComponent } from './nz-modal.component';
-import { NzModalService } from './nz-modal.service';
+import { NzModalServiceModule } from './nz-modal.service.module';
 
 @NgModule({
-  imports: [CommonModule, OverlayModule, NzI18nModule, NzButtonModule, NzIconModule, NzNoAnimationModule],
-  exports: [NzModalComponent],
-  declarations: [NzModalComponent, CssUnitPipe],
-  entryComponents: [NzModalComponent],
-  providers: [NzModalControlService, NzModalService]
+  imports: [
+    CommonModule,
+    OverlayModule,
+    NzI18nModule,
+    NzButtonModule,
+    NzIconModule,
+    NzNoAnimationModule,
+    NzModalServiceModule,
+    NzModalControlServiceModule
+  ],
+  exports: [NzModalComponent, NzModalFooterDirective],
+  declarations: [NzModalComponent, NzModalFooterDirective, CssUnitPipe],
+  entryComponents: [NzModalComponent]
 })
 export class NzModalModule {}

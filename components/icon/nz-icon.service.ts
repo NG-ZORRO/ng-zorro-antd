@@ -49,7 +49,7 @@ import {
   UploadOutline,
   UpOutline
 } from '@ant-design/icons-angular/icons';
-import { warn } from 'ng-zorro-antd/core';
+import { warn, warnDeprecation } from 'ng-zorro-antd/core';
 
 export interface NzIconfontOption {
   scriptUrl: string;
@@ -109,13 +109,15 @@ export class NzIconService extends IconService {
 
   warnAPI(type: 'old' | 'cross' | 'vertical'): void {
     if (type === 'old') {
-      warn(`<i class="anticon"></i> would be deprecated in 9.0.0. Please use <i nz-icon nzType=""></i> API.`);
+      warnDeprecation(
+        `'<i class="anticon"></i>' would be deprecated in 9.0.0. Please use '<i nz-icon nzType=""></i>' API. Please refer https://ng.ant.design/components/icon/en.`
+      );
     }
     if (type === 'cross') {
-      warn(`'cross' icon is replaced by 'close' icon.`);
+      warnDeprecation(`'cross' icon is replaced by 'close' icon. This auto correction would be removed in 9.0.0.`);
     }
     if (type === 'vertical') {
-      warn(`'verticle' is misspelled, would be corrected in the next major version.`);
+      warnDeprecation(`'verticle' is misspelled. Please use 'vertical'. This misspell would be fixed in 9.0.0.`);
     }
   }
 
@@ -134,11 +136,11 @@ export class NzIconService extends IconService {
 
   fetchFromIconfont(opt: NzIconfontOption): void {
     const { scriptUrl } = opt;
-    if (this.document && !this.iconfontCache.has(scriptUrl)) {
+    if (this._document && !this.iconfontCache.has(scriptUrl)) {
       const script = this._renderer.createElement('script');
       this._renderer.setAttribute(script, 'src', scriptUrl);
       this._renderer.setAttribute(script, 'data-namespace', scriptUrl.replace(/^(https?|http):/g, ''));
-      this._renderer.appendChild(this.document.body, script);
+      this._renderer.appendChild(this._document.body, script);
       this.iconfontCache.add(scriptUrl);
     }
   }
@@ -148,13 +150,13 @@ export class NzIconService extends IconService {
   }
 
   constructor(
-    protected rendererFactory: RendererFactory2,
-    protected sanitizer: DomSanitizer,
-    @Optional() protected handler: HttpBackend,
-    // tslint:disable-next-line:no-any
-    @Optional() @Inject(DOCUMENT) protected document: any,
+    rendererFactory: RendererFactory2,
+    sanitizer: DomSanitizer,
     @Optional() @Inject(NZ_ICONS) private icons: IconDefinition[],
-    @Optional() @Inject(NZ_ICON_DEFAULT_TWOTONE_COLOR) private defaultColor: string
+    @Optional() @Inject(NZ_ICON_DEFAULT_TWOTONE_COLOR) private defaultColor: string,
+    @Optional() handler: HttpBackend,
+    // tslint:disable-next-line:no-any
+    @Optional() @Inject(DOCUMENT) document: any
   ) {
     super(rendererFactory, handler, document, sanitizer);
 

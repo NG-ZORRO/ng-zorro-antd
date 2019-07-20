@@ -14,7 +14,7 @@ Ant Design 的样式使用了 [Less](http://lesscss.org/) 作为开发语言，�
 
 ### 初始化项目时定制主题
 
-在初始化项目时 `ng add ng-zorro-antd --theme` 即可自动配置好自定义主题的相关文件，修改 `src/theme.less` 文件内容就可以自定义主题。
+在初始化项目时 `ng add ng-zorro-antd` 时选择自定义主题即可自动配置好自定义主题的相关文件，修改 `src/theme.less` 文件内容就可以自定义主题。
 
 ### 手动修改
 

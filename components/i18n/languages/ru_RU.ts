@@ -22,7 +22,8 @@ export default {
     filterConfirm: 'OK',
     filterReset: 'Сбросить',
     selectAll: 'Выбрать всё',
-    selectInvert: 'Инвертировать выбор'
+    selectInvert: 'Инвертировать выбор',
+    sortTitle: 'Сортировка'
   },
   Modal: {
     okText: 'OK',

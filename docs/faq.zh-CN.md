@@ -3,6 +3,8 @@ order: 9
 title: 常见问题
 ---
 
+<blockquote style="border-color: #faad14;"><p>更多常见问题请搜索<a href="https://github.com/NG-ZORRO/ng-zorro-antd/issues?q=is%3Aopen+is%3Aissue+label%3A%22%3Aquestion%3A+FAQ%22" target="_blank">标有 FAQ 的 issue</a>。</p></blockquote>
+
 ### 有些特性为什么不会被支持
 
 `ng-zorro-antd` 是 Angular 版本 Ant Design 的实现，这意味着只有 Ant Design 支持的交互、功能 才会被 `ng-zorro-antd` 实现。
@@ -25,7 +27,7 @@ title: 常见问题
 
 ### Expression Changed After It Has Been Checked Error 错误
 
-Angular 下常见错误，[这篇文章](https://blog.angularindepth.com/everything-you-need-to-know-about-the-expressionchangedafterithasbeencheckederror-error-e3fd9ce7dbb4) 会帮助你理解原因。
+Angular 下常见错误，[这篇文章](https://blog.angularindepth.com/everything-you-need-to-know-about-the-expressionchangedafterithasbeencheckederror-error-e3fd9ce7dbb4)会帮助你理解原因。
 
 ### Can't bind to 'formGroup' since it isn't a known property of 'form'
 

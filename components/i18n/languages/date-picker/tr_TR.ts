@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import CalendarLocale from '../calendar/en_US';
+import CalendarLocale from '../calendar/tr_TR';
 import TimePickerLocale from '../time-picker/tr_TR';
 
 // Merge into a locale object
