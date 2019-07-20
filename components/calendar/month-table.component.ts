@@ -34,7 +34,7 @@ const MAX_COL = 3;
   templateUrl: 'month-table.component.html'
 })
 export class MonthTableComponent implements OnInit, OnChanges {
-  @Input() value: CandyDate;
+  @Input() value: CandyDate = new CandyDate();
   @Input() prefixCls: string = 'ant-fullcalendar';
   @Input() monthCellRender: TemplateRef<{ $implicit: Date }>;
   @Input() monthFullCellRender: TemplateRef<{ $implicit: Date }>;
@@ -54,8 +54,12 @@ export class MonthTableComponent implements OnInit, OnChanges {
     }
   }
 
-  trackPanelMonth(_index: number, monthData: PanelMonthData): number {
-    return monthData.month;
+  trackYear(_index: number): number {
+    return this.value ? this.value.getYear() : _index;
+  }
+
+  trackPanelMonth(_index: number, monthData: PanelMonthData): string {
+    return monthData.content;
   }
 
   private render(): void {
