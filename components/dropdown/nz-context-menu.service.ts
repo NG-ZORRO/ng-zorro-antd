@@ -18,9 +18,12 @@ import { TemplatePortal } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
+import { NzContextMenuServiceModule } from './nz-context-menu.service.module';
 import { NzDropdownMenuComponent } from './nz-dropdown-menu.component';
 
-@Injectable()
+@Injectable({
+  providedIn: NzContextMenuServiceModule
+})
 export class NzContextMenuService {
   private overlayRef: OverlayRef;
   private nzDropdownMenuComponent: NzDropdownMenuComponent;
@@ -41,11 +44,13 @@ export class NzContextMenuService {
   }
 
   close(): void {
-    this.overlayRef.detach();
-    this.setOpenState(false);
-    this.clickOutsideSubscription.unsubscribe();
-    this.clickMenuSubscription.unsubscribe();
-    this.positionSubscription.unsubscribe();
+    if (this.overlayRef) {
+      this.overlayRef.detach();
+      this.setOpenState(false);
+      this.clickOutsideSubscription.unsubscribe();
+      this.clickMenuSubscription.unsubscribe();
+      this.positionSubscription.unsubscribe();
+    }
   }
 
   private handleClickOutside(): void {

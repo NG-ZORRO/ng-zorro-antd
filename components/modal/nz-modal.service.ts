@@ -16,6 +16,7 @@ import { warn, IndexableObject } from 'ng-zorro-antd/core';
 import { NzModalControlService } from './nz-modal-control.service';
 import { NzModalRef } from './nz-modal-ref.class';
 import { NzModalComponent } from './nz-modal.component';
+import { NzModalServiceModule } from './nz-modal.service.module';
 import { ConfirmType, ModalOptions, ModalOptionsForService } from './nz-modal.type';
 
 // A builder used for managing service creating modals
@@ -61,7 +62,9 @@ export class ModalBuilderForService {
   }
 }
 
-@Injectable()
+@Injectable({
+  providedIn: NzModalServiceModule
+})
 export class NzModalService {
   // Track of the current close modals (we assume invisible is close this time)
   get openModals(): NzModalRef[] {

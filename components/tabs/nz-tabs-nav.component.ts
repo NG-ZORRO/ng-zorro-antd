@@ -29,10 +29,10 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent, merge, of as observableOf, Subscription } from 'rxjs';
-import { auditTime, startWith } from 'rxjs/operators';
-
+import { merge, of as observableOf, Subject, Subscription } from 'rxjs';
+import { finalize, startWith, takeUntil } from 'rxjs/operators';
 import { pxToNumber, InputBoolean } from 'ng-zorro-antd/core';
+import { InputBoolean, NzDomEventService } from 'ng-zorro-antd/core';
 
 import { NzTabLabelDirective } from './nz-tab-label.directive';
 import { NzTabsInkBarDirective } from './nz-tabs-ink-bar.directive';
@@ -55,6 +55,7 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
   private _selectedIndex = 0;
   /** Cached text content of the header. */
   private currentTextContent: string;
+  private destroy$ = new Subject<void>();
   showPaginationControls = false;
   disableScrollAfter = true;
   disableScrollBefore = true;
@@ -106,6 +107,7 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     private platform: Platform,
+    private nzDomEventService: NzDomEventService,
     @Optional() private dir: Directionality
   ) {}
 
@@ -166,7 +168,12 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
     this.realignInkBar = this.ngZone.runOutsideAngular(() => {
       const dirChange = this.dir ? this.dir.change : observableOf(null);
       const resize =
-        typeof window !== 'undefined' ? fromEvent(window, 'resize').pipe(auditTime(10)) : observableOf(null);
+        typeof window !== 'undefined'
+          ? this.nzDomEventService.registerResizeListener().pipe(
+              takeUntil(this.destroy$),
+              finalize(() => this.nzDomEventService.unregisterResizeListener())
+            )
+          : observableOf(null);
       return merge(dirChange, resize)
         .pipe(startWith(null))
         .subscribe(() => {
@@ -179,6 +186,9 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+
     if (this.realignInkBar) {
       this.realignInkBar.unsubscribe();
     }

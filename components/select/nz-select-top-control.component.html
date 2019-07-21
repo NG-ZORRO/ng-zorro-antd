@@ -22,7 +22,7 @@
       [attr.title]="nzSelectService.listOfCachedSelectedOption[0]?.nzLabel"
       [ngStyle]="selectedValueStyle">
       <ng-container *nzStringTemplateOutlet="nzCustomTemplate; context: { $implicit: nzSelectService.listOfCachedSelectedOption[0] }">
-        <div class="ant-select-selection__choice__content">{{ nzSelectService.listOfCachedSelectedOption[0]?.nzLabel }}</div>
+        <ng-container>{{ nzSelectService.listOfCachedSelectedOption[0]?.nzLabel }}</ng-container>
       </ng-container>
     </div>
     <!--show search-->

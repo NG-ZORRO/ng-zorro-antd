@@ -22,6 +22,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   QueryList,
   Renderer2,
@@ -30,9 +31,11 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { merge, Subscription } from 'rxjs';
+import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/router';
+import { merge, Subject, Subscription } from 'rxjs';
 
-import { toNumber, NzSizeLDSType, NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { toNumber, InputBoolean, NzSizeLDSType, NzUpdateHostClassService, PREFIX } from 'ng-zorro-antd/core';
+import { filter, startWith, takeUntil } from 'rxjs/operators';
 
 import { NzTabComponent } from './nz-tab.component';
 import { NzTabsNavComponent } from './nz-tabs-nav.component';
@@ -76,6 +79,9 @@ export class NzTabSetComponent
   private tabsSubscription = Subscription.EMPTY;
   /** Subscription to changes in the tab labels. */
   private tabLabelSubscription = Subscription.EMPTY;
+
+  private destroy$ = new Subject<void>();
+
   tabPositionMode: NzTabPositionMode = 'horizontal';
   @ContentChildren(NzTabComponent) listOfNzTabComponent: QueryList<NzTabComponent>;
   @ViewChild(NzTabsNavComponent, { static: false }) nzTabsNavComponent: NzTabsNavComponent;
@@ -89,6 +95,10 @@ export class NzTabSetComponent
   @Input() nzTabBarGutter: number;
   @Input() nzTabBarStyle: { [key: string]: string };
   @Input() nzType: NzTabType = 'line';
+
+  @Input() @InputBoolean() nzLinkRouter = false;
+  @Input() nzQueryParam: string;
+
   @Output() readonly nzOnNextClick = new EventEmitter<void>();
   @Output() readonly nzOnPrevClick = new EventEmitter<void>();
   @Output() readonly nzSelectChange: EventEmitter<NzTabChangeEvent> = new EventEmitter<NzTabChangeEvent>(true);
@@ -144,8 +154,9 @@ export class NzTabSetComponent
 
   clickLabel(index: number, disabled: boolean): void {
     if (!disabled) {
+      const tabs = this.listOfNzTabComponent.toArray();
       this.nzSelectedIndex = index;
-      this.listOfNzTabComponent.toArray()[index].nzClick.emit();
+      tabs[index].nzClick.emit();
     }
   }
 
@@ -185,7 +196,8 @@ export class NzTabSetComponent
     private renderer: Renderer2,
     private nzUpdateHostClassService: NzUpdateHostClassService,
     private elementRef: ElementRef,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    @Optional() private router: Router
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -289,5 +301,45 @@ export class NzTabSetComponent
 
   ngAfterViewInit(): void {
     this.setPosition(this.nzTabPosition);
+
+    if (this.nzLinkRouter) {
+      if (!this.router) {
+        throw new Error(`${PREFIX} you should import 'RouterModule' if you want to use 'nzLinkRouter'!`);
+      }
+
+      this.router.events
+        .pipe(
+          takeUntil(this.destroy$),
+          filter(e => e instanceof NavigationEnd),
+          startWith(true)
+        )
+        .subscribe(() => {
+          this.updateRouterActive();
+        });
+    }
+  }
+
+  private updateRouterActive(): void {
+    if (this.router.navigated) {
+      const index = this.findShouldActiveTabIndex();
+      if (index !== this._selectedIndex && index !== -1) {
+        this.nzSelectedIndex = index;
+        this.nzSelectedIndexChange.next(index);
+      }
+    }
+  }
+
+  private findShouldActiveTabIndex(): number {
+    const tabs = this.listOfNzTabComponent.toArray();
+    const isActive = this.isLinkActive(this.router);
+
+    return tabs.findIndex(tab => {
+      const c = tab.linkDirective;
+      return c ? isActive(c.routerLink) || isActive(c.routerLinkWithHref) : false;
+    });
+  }
+
+  private isLinkActive(router: Router): (link?: RouterLink | RouterLinkWithHref) => boolean {
+    return (link?: RouterLink | RouterLinkWithHref) => (link ? router.isActive(link.urlTree, true) : false);
   }
 }

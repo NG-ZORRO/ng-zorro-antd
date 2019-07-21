@@ -1,0 +1,4 @@
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+
+export const moduleList = [ NzTypographyModule, NzDividerModule ];

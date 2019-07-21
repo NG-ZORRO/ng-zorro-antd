@@ -27,7 +27,7 @@ import {
 } from '@angular/core';
 import { startWith, takeUntil } from 'rxjs/operators';
 
-import { InputBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { InputBoolean, NzDomEventService, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 import { NzRowDirective } from 'ng-zorro-antd/grid';
 
 import { NzFormExplainComponent } from './nz-form-explain.component';
@@ -74,9 +74,10 @@ export class NzFormItemComponent extends NzRowDirective
     mediaMatcher: MediaMatcher,
     ngZone: NgZone,
     platform: Platform,
+    nzDomEventService: NzDomEventService,
     private cdr: ChangeDetectorRef
   ) {
-    super(elementRef, renderer, nzUpdateHostClassService, mediaMatcher, ngZone, platform);
+    super(elementRef, renderer, nzUpdateHostClassService, mediaMatcher, ngZone, platform, nzDomEventService);
     renderer.addClass(elementRef.nativeElement, 'ant-form-item');
   }
 
@@ -94,6 +95,7 @@ export class NzFormItemComponent extends NzRowDirective
 
   ngOnInit(): void {
     super.ngOnInit();
+
     this.updateFlexStyle();
   }
 

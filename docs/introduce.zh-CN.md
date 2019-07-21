@@ -84,6 +84,7 @@ $ ng add ng-zorro-antd
 - [Apache Flink](https://flink.apache.org/)
 - [Process Automation Group](http://pag.company/)
 - [Southern Institute of Technology](https://www.sit.ac.nz/)
+- [Hapify (Dynamic boilerplates tool)](https://hub.hapify.io/)
 
 > 这里列出了部分使用者，如果你的公司和产品使用了 NG-ZORRO，欢迎到 [这里](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1142) 留言。
 

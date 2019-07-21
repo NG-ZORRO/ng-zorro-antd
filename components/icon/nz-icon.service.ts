@@ -136,11 +136,11 @@ export class NzIconService extends IconService {
 
   fetchFromIconfont(opt: NzIconfontOption): void {
     const { scriptUrl } = opt;
-    if (this.document && !this.iconfontCache.has(scriptUrl)) {
+    if (this._document && !this.iconfontCache.has(scriptUrl)) {
       const script = this._renderer.createElement('script');
       this._renderer.setAttribute(script, 'src', scriptUrl);
       this._renderer.setAttribute(script, 'data-namespace', scriptUrl.replace(/^(https?|http):/g, ''));
-      this._renderer.appendChild(this.document.body, script);
+      this._renderer.appendChild(this._document.body, script);
       this.iconfontCache.add(scriptUrl);
     }
   }
@@ -150,13 +150,13 @@ export class NzIconService extends IconService {
   }
 
   constructor(
-    protected rendererFactory: RendererFactory2,
-    protected sanitizer: DomSanitizer,
-    @Optional() protected handler: HttpBackend,
-    // tslint:disable-next-line:no-any
-    @Optional() @Inject(DOCUMENT) protected document: any,
+    rendererFactory: RendererFactory2,
+    sanitizer: DomSanitizer,
     @Optional() @Inject(NZ_ICONS) private icons: IconDefinition[],
-    @Optional() @Inject(NZ_ICON_DEFAULT_TWOTONE_COLOR) private defaultColor: string
+    @Optional() @Inject(NZ_ICON_DEFAULT_TWOTONE_COLOR) private defaultColor: string,
+    @Optional() handler: HttpBackend,
+    // tslint:disable-next-line:no-any
+    @Optional() @Inject(DOCUMENT) document: any
   ) {
     super(rendererFactory, handler, document, sanitizer);
 

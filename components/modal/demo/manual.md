@@ -1,5 +1,5 @@
 ---
-order: 7
+order: 8
 title:
   zh-CN: 手动移除
   en-US: Manual to destroy

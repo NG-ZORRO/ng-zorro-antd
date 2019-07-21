@@ -95,6 +95,23 @@ describe('dropdown', () => {
       );
     }).not.toThrowError();
   }));
+  it('should backdrop be disabled', fakeAsync(() => {
+    const fixture = createComponent(NzTestDropdownComponent, [], []);
+    fixture.componentInstance.trigger = 'click';
+    fixture.componentInstance.backdrop = false;
+    fixture.detectChanges();
+
+    expect(() => {
+      const dropdownElement = fixture.debugElement.query(By.directive(NzDropDownDirective)).nativeElement;
+      dispatchFakeEvent(dropdownElement, 'mouseenter');
+      fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
+
+      const backdrop = overlayContainerElement.querySelector('.cdk-overlay-backdrop');
+      expect(backdrop).toBeNull();
+    }).not.toThrowError();
+  }));
   it('should nzOverlayClassName and nzOverlayStyle work', fakeAsync(() => {
     const fixture = createComponent(NzTestDropdownComponent, [], []);
     fixture.detectChanges();
@@ -152,6 +169,7 @@ describe('dropdown', () => {
       [nzTrigger]="trigger"
       [nzDisabled]="disabled"
       [nzPlacement]="placement"
+      [nzBackdrop]="backdrop"
       [nzOverlayClassName]="className"
       [nzOverlayStyle]="overlayStyle"
       >Trigger
@@ -166,6 +184,7 @@ describe('dropdown', () => {
   `
 })
 export class NzTestDropdownComponent {
+  backdrop = true;
   trigger = 'hover';
   placement = 'bottomLeft';
   disabled = false;

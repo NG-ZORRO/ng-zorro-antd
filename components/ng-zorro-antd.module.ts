@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { ModuleWithProviders, NgModule } from '@angular/core';
 
 import { NzAffixModule } from 'ng-zorro-antd/affix';
@@ -43,6 +51,7 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzProgressModule } from 'ng-zorro-antd/progress';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzRateModule } from 'ng-zorro-antd/rate';
+import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
@@ -83,15 +92,14 @@ export * from 'ng-zorro-antd/date-picker';
 export * from 'ng-zorro-antd/descriptions';
 export * from 'ng-zorro-antd/divider';
 export * from 'ng-zorro-antd/drawer';
-export * from 'ng-zorro-antd/drawer';
 export * from 'ng-zorro-antd/dropdown';
 export * from 'ng-zorro-antd/empty';
 export * from 'ng-zorro-antd/form';
 export * from 'ng-zorro-antd/grid';
 export * from 'ng-zorro-antd/i18n';
 export * from 'ng-zorro-antd/icon';
-export * from 'ng-zorro-antd/input-number';
 export * from 'ng-zorro-antd/input';
+export * from 'ng-zorro-antd/input-number';
 export * from 'ng-zorro-antd/layout';
 export * from 'ng-zorro-antd/list';
 export * from 'ng-zorro-antd/mention';
@@ -106,6 +114,7 @@ export * from 'ng-zorro-antd/popover';
 export * from 'ng-zorro-antd/progress';
 export * from 'ng-zorro-antd/radio';
 export * from 'ng-zorro-antd/rate';
+export * from 'ng-zorro-antd/result';
 export * from 'ng-zorro-antd/select';
 export * from 'ng-zorro-antd/skeleton';
 export * from 'ng-zorro-antd/slider';
@@ -117,82 +126,82 @@ export * from 'ng-zorro-antd/table';
 export * from 'ng-zorro-antd/tabs';
 export * from 'ng-zorro-antd/tag';
 export * from 'ng-zorro-antd/time-picker';
-export * from 'ng-zorro-antd/time-picker';
 export * from 'ng-zorro-antd/timeline';
 export * from 'ng-zorro-antd/tooltip';
 export * from 'ng-zorro-antd/transfer';
-export * from 'ng-zorro-antd/tree-select';
 export * from 'ng-zorro-antd/tree';
+export * from 'ng-zorro-antd/tree-select';
 export * from 'ng-zorro-antd/typography';
 export * from 'ng-zorro-antd/upload';
 
-export * from './version';
+export * from 'ng-zorro-antd/version';
 
 @NgModule({
   exports: [
-    NzButtonModule,
-    NzCalendarModule,
-    NzGridModule,
-    NzSwitchModule,
-    NzSelectModule,
-    NzMenuModule,
-    NzMentionModule,
-    NzAnchorModule,
     NzAffixModule,
-    NzDropDownModule,
-    NzLayoutModule,
-    NzBreadCrumbModule,
-    NzPaginationModule,
-    NzStepsModule,
-    NzInputModule,
-    NzCheckboxModule,
-    NzInputNumberModule,
-    NzSliderModule,
-    NzRateModule,
-    NzBadgeModule,
-    NzRadioModule,
     NzAlertModule,
-    NzSpinModule,
-    NzPageHeaderModule,
-    NzProgressModule,
-    NzTabsModule,
-    NzIconModule,
-    NzCardModule,
+    NzAnchorModule,
+    NzAutocompleteModule,
     NzAvatarModule,
-    NzTimelineModule,
-    NzTransButtonModule,
-    NzTransferModule,
+    NzBackTopModule,
+    NzBadgeModule,
+    NzButtonModule,
+    NzBreadCrumbModule,
+    NzCalendarModule,
+    NzCardModule,
     NzCarouselModule,
+    NzCascaderModule,
+    NzCheckboxModule,
     NzCollapseModule,
     NzCommentModule,
-    NzTableModule,
     NzDatePickerModule,
+    NzDescriptionsModule,
     NzDividerModule,
     NzDrawerModule,
+    NzDropDownModule,
+    NzEmptyModule,
     NzFormModule,
-    NzListModule,
+    NzGridModule,
     NzI18nModule,
-    NzUploadModule,
-    NzAutocompleteModule,
-    NzTagModule,
+    NzIconModule,
+    NzInputModule,
+    NzInputNumberModule,
+    NzLayoutModule,
+    NzListModule,
+    NzMentionModule,
+    NzMenuModule,
     NzMessageModule,
-    NzNotificationModule,
-    NzPopoverModule,
-    NzToolTipModule,
-    NzPopconfirmModule,
     NzModalModule,
-    NzBackTopModule,
-    NzCascaderModule,
+    NzNoAnimationModule,
+    NzNotificationModule,
+    NzPageHeaderModule,
+    NzPaginationModule,
+    NzPopconfirmModule,
+    NzPopoverModule,
+    NzProgressModule,
+    NzRadioModule,
+    NzRateModule,
+    NzResultModule,
+    NzSelectModule,
+    NzSkeletonModule,
+    NzSliderModule,
+    NzSpinModule,
+    NzStatisticModule,
+    NzStepsModule,
+    NzSwitchModule,
+    NzTableModule,
+    NzTabsModule,
+    NzTagModule,
+    NzTimePickerModule,
+    NzTimelineModule,
+    NzToolTipModule,
+    NzTransButtonModule,
+    NzTransferModule,
     NzTreeModule,
     NzTreeSelectModule,
-    NzTimePickerModule,
-    NzWaveModule,
-    NzNoAnimationModule,
-    NzSkeletonModule,
-    NzStatisticModule,
-    NzEmptyModule,
-    NzDescriptionsModule,
-    NzTypographyModule
+    NzTypographyModule,
+    NzUploadModule,
+    NzWaveModule
   ]
 })
 export class NgZorroAntdModule {

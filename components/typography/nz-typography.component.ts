@@ -16,7 +16,6 @@ import {
   EmbeddedViewRef,
   EventEmitter,
   Input,
-  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -29,10 +28,17 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { fromEvent, Subject, Subscription } from 'rxjs';
-import { auditTime, takeUntil } from 'rxjs/operators';
+import { Subject, Subscription } from 'rxjs';
+import { finalize, takeUntil } from 'rxjs/operators';
 
-import { cancelRequestAnimationFrame, isStyleSupport, measure, reqAnimFrame, InputBoolean } from 'ng-zorro-antd/core';
+import {
+  cancelRequestAnimationFrame,
+  isStyleSupport,
+  measure,
+  reqAnimFrame,
+  InputBoolean,
+  NzDomEventService
+} from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { NzTextCopyComponent } from './nz-text-copy.component';
@@ -109,9 +115,9 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
     private cdr: ChangeDetectorRef,
     private viewContainerRef: ViewContainerRef,
     private renderer: Renderer2,
-    private ngZone: NgZone,
     private platform: Platform,
-    private i18n: NzI18nService
+    private i18n: NzI18nService,
+    private nzDomEventService: NzDomEventService
   ) {}
 
   onTextCopy(text: string): void {
@@ -205,14 +211,13 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
       this.windowResizeSubscription.unsubscribe();
       this.cssEllipsis = this.canUseCSSEllipsis();
       this.renderOnNextFrame();
-      this.ngZone.runOutsideAngular(() => {
-        this.windowResizeSubscription = fromEvent(window, 'resize')
-          .pipe(
-            auditTime(16),
-            takeUntil(this.destroy$)
-          )
-          .subscribe(() => this.renderOnNextFrame());
-      });
+      this.windowResizeSubscription = this.nzDomEventService
+        .registerResizeListener()
+        .pipe(
+          takeUntil(this.destroy$),
+          finalize(() => this.nzDomEventService.unregisterResizeListener())
+        )
+        .subscribe(() => this.renderOnNextFrame());
     }
   }
 

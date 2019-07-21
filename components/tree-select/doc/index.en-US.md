@@ -34,6 +34,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 | `[nzDropdownMatchSelectWidth]` | Determine whether the dropdown menu and the select input are the same width | `boolean` | `true` |
 | `[nzDropdownStyle]` | To set the style of the dropdown menu | `object` | - |
 | `[nzMultiple]` | Support multiple or not, will be `true` when enable `nzCheckable`. | `boolean` | `false` |
+| `[nzHideUnMatched]` | Hide unmatched nodes while searching | `boolean` | `false` |
 | `[nzSize]` | To set the size of the select input | `'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzCheckable]` | Whether to show checkbox on the treeNodes | `boolean` | `false` |
 | `[nzShowExpand]` | Show a Expand Icon before the treeNodes | `boolean` | `true` |

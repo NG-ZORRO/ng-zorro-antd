@@ -180,3 +180,21 @@ nzFooter: [{
 ```
 
 The above configuration items can also be changed in real-time to trigger the button behavior change.
+
+### [nzModalFooter]
+
+Another way to customize the footer button.
+
+```html
+<div *nzModalFooter>
+  <button nz-button nzType="default" (click)="handleCancel()">Custom Callback</button>
+  <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isConfirmLoading">Custom Submit</button>
+</div>
+
+<!-- or -->
+
+<ng-template [nzModalFooter]>
+  <button nz-button nzType="default" (click)="handleCancel()">Custom Callback</button>
+  <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isConfirmLoading">Custom Submit</button>
+</ng-template>
+```

@@ -6,9 +6,19 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 
 import { InputNumber } from 'ng-zorro-antd/core';
+import { Subject } from 'rxjs';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -18,9 +28,19 @@ import { InputNumber } from 'ng-zorro-antd/core';
   exportAs: 'nzDescriptionsItem',
   preserveWhitespaces: false
 })
-export class NzDescriptionsItemComponent {
+export class NzDescriptionsItemComponent implements OnChanges, OnDestroy {
   @ViewChild(TemplateRef, { static: true }) content: TemplateRef<void>;
 
   @Input() @InputNumber() nzSpan = 1;
   @Input() nzTitle: string = '';
+
+  readonly inputChange$ = new Subject<void>();
+
+  ngOnChanges(): void {
+    this.inputChange$.next();
+  }
+
+  ngOnDestroy(): void {
+    this.inputChange$.complete();
+  }
 }

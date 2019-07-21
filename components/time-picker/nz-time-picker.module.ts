@@ -22,7 +22,6 @@ import { NzTimeValueAccessorDirective } from './nz-time-value-accessor.directive
 @NgModule({
   declarations: [NzTimePickerComponent, NzTimePickerPanelComponent, NzTimeValueAccessorDirective],
   exports: [NzTimePickerPanelComponent, NzTimePickerComponent],
-  imports: [CommonModule, FormsModule, NzI18nModule, OverlayModule, NzIconModule, NzOverlayModule],
-  entryComponents: []
+  imports: [CommonModule, FormsModule, NzI18nModule, OverlayModule, NzIconModule, NzOverlayModule]
 })
 export class NzTimePickerModule {}
