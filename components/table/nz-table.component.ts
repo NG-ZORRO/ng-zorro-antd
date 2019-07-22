@@ -35,7 +35,14 @@ import {
 import { fromEvent, merge, EMPTY, Subject } from 'rxjs';
 import { flatMap, startWith, takeUntil } from 'rxjs/operators';
 
-import { measureScrollbar, InputBoolean, InputNumber, NzSizeMDSType } from 'ng-zorro-antd/core';
+import {
+  measureScrollbar,
+  InputBoolean,
+  InputNumber,
+  NzConfigService,
+  NzSizeMDSType,
+  WithConfig
+} from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
 
@@ -82,7 +89,7 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
   @ViewChild(CdkVirtualScrollViewport, { static: false, read: CdkVirtualScrollViewport })
   cdkVirtualScrollViewport: CdkVirtualScrollViewport;
   @ContentChild(NzVirtualScrollDirective, { static: false }) nzVirtualScrollDirective: NzVirtualScrollDirective;
-  @Input() nzSize: NzSizeMDSType = 'default';
+  @Input() @WithConfig('default') nzSize: NzSizeMDSType;
   @Input() nzShowTotal: TemplateRef<{ $implicit: number; range: [number, number] }>;
   @Input() nzPageSizeOptions = [10, 20, 30, 40, 50];
   @Input() @InputBoolean() nzVirtualScroll = false;
@@ -110,13 +117,13 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
   }
   @Input() @InputBoolean() nzFrontPagination = true;
   @Input() @InputBoolean() nzTemplateMode = false;
-  @Input() @InputBoolean() nzBordered = false;
+  @Input() @WithConfig(false) @InputBoolean() nzBordered: boolean;
   @Input() @InputBoolean() nzShowPagination = true;
   @Input() @InputBoolean() nzLoading = false;
-  @Input() @InputBoolean() nzShowSizeChanger = false;
-  @Input() @InputBoolean() nzHideOnSinglePage = false;
-  @Input() @InputBoolean() nzShowQuickJumper = false;
-  @Input() @InputBoolean() nzSimple = false;
+  @Input() @WithConfig(false) @InputBoolean() nzShowSizeChanger: boolean;
+  @Input() @WithConfig(false) @InputBoolean() nzHideOnSinglePage: boolean;
+  @Input() @WithConfig(false) @InputBoolean() nzShowQuickJumper: boolean;
+  @Input() @WithConfig(false) @InputBoolean() nzSimple: boolean;
   @Output() readonly nzPageSizeChange: EventEmitter<number> = new EventEmitter();
   @Output() readonly nzPageIndexChange: EventEmitter<number> = new EventEmitter();
   /* tslint:disable-next-line:no-any */
@@ -234,6 +241,7 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
   }
 
   constructor(
+    public nzConfigService: NzConfigService,
     private renderer: Renderer2,
     private ngZone: NgZone,
     private cdr: ChangeDetectorRef,

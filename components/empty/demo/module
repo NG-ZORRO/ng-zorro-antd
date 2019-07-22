@@ -8,5 +8,18 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { NzTransferModule } from 'ng-zorro-antd/transfer';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
-export const moduleList = [ NzEmptyModule,NzSwitchModule, NzCascaderModule, NzDividerModule, NzTreeSelectModule, NzSelectModule, NzTableModule, NzTransferModule, NzListModule, NzButtonModule ];
+export const moduleList = [
+  NzEmptyModule,
+  NzIconModule,
+  NzSwitchModule,
+  NzCascaderModule,
+  NzDividerModule,
+  NzTreeSelectModule,
+  NzSelectModule,
+  NzTableModule,
+  NzTransferModule,
+  NzListModule,
+  NzButtonModule
+];

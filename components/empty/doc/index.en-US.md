@@ -29,12 +29,13 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
 | `[nzNotFoundContent]` | Custom description | `string`  \|  `TemplateRef<void>` | - |
 | `[nzNotFoundFooter]` | Custom Footer | `string`  \|  `TemplateRef<void>` | - |
 
-### NzEmptyService
+### `NZ_CONFIG`
 
-| Methods/Properties | Description | Parameters |
-| -------- | ----------- | ---- |
-| `setDefaultContent` | To set the default empty content. The parent component name would be passed to the template. | `TemplateRef<string>`  \|  `string` |
-| `resetDefault` | Reset default empty content | - |
+The `nzEmpty` interface has properties as follows:
+
+| Properties | Description | Type |
+| ----- | --- | ---- |
+| `nzDefaultEmptyContent` | User default empty component. You can restore the system default empty content by providing `undefined` | `Type<any>\|TemplateRef<string>\|string\|undefined` |
 
 ### InjectionToken
 
@@ -45,5 +46,5 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
 
 ### Global Customizable Empty Content
 
-You may notice or used some inputs like `nzNotFoundContent` in some components. Now they would use `Empty` component. And you can even render a user default empty component, either by providing a `NZ_DEFAULT_EMPTY_CONTENT` in your root module or invoke `setDefaultEmptyContent`.
+You may notice or used some inputs like `nzNotFoundContent` in some components. Now they would use `Empty` component. So you can provide `nzDefaultEmptyContent` to customize them.
 

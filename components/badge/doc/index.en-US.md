@@ -32,13 +32,13 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
 
 ### nz-badge
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| `[nzColor]` | Customize Badge dot color | string | - |
+| Property | Description | Type | Default | Global Config |
+| -------- | ----------- | ---- | ------- | ------------- |
+| `[nzColor]` | Customize Badge dot color | string | - | ✅ |
 | `[nzCount]` | Number to show in badge | `number \| TemplateRef<void>` | - |
 | `[nzDot]` | Whether to display a red dot instead of `count` | `boolean` | `false` |
 | `[nzShowDot]` | Whether to display the red dot | `boolean` | `true` |
-| `[nzOverflowCount]` | Max count to show | `number` | `99` |
+| `[nzOverflowCount]` | Max count to show | `number` | `99` | ✅ |
 | `[nzShowZero]` | Whether to show badge when `count` is zero | `boolean` | `false` |
 | `[nzStatus]` | Set `nz-badge` as a status dot | `'success' \| 'processing' \| 'default' \| 'error' \| 'warning'` | - |
 | `[nzText]` | If `nzStatus` is set, `text` sets the display text of the status `dot` | `string` | - |

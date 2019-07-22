@@ -24,7 +24,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { isEmpty, zoomBadgeMotion, InputBoolean } from 'ng-zorro-antd/core';
+import { isEmpty, zoomBadgeMotion, InputBoolean, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
 import { startWith, take, takeUntil } from 'rxjs/operators';
 
@@ -67,12 +67,12 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   presetColor: string | null = null;
   count: number;
   @ViewChild('contentElement', { static: false }) contentElement: ElementRef;
-  @Input() @InputBoolean() nzShowZero = false;
+  @Input() @InputBoolean() nzShowZero: boolean = false;
   @Input() @InputBoolean() nzShowDot = true;
   @Input() @InputBoolean() nzDot = false;
-  @Input() nzOverflowCount = 99;
+  @Input() @WithConfig(99) nzOverflowCount: number;
   @Input() nzText: string;
-  @Input() nzColor: string;
+  @Input() @WithConfig() nzColor: string;
   @Input() nzTitle: string;
   @Input() nzStyle: { [key: string]: string };
   @Input() nzStatus: NzBadgeStatusType;
@@ -97,6 +97,7 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   }
 
   constructor(
+    public nzConfigService: NzConfigService,
     private renderer: Renderer2,
     private elementRef: ElementRef,
     private contentObserver: ContentObserver,

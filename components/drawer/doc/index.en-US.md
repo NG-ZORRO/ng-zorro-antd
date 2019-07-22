@@ -25,11 +25,11 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 
 ### nz-drawer
 
-| Props | Description | Type | Default |
-| --- | --- | --- | --- |
+| Props | Description | Type | Default | Global Config |
+| --- | --- | --- | --- | --- |
 | `[nzClosable]` | Whether a close (x) button is visible on top right of the Drawer dialog or not. | `boolean` | `true` |
-| `[nzMask]` | Whether to show mask or not. | `boolean` | `true` |
-| `[nzMaskClosable]` | Clicking on the mask (area outside the Drawer) to close the Drawer or not. | `boolean` | `true` |
+| `[nzMask]` | Whether to show mask or not. | `boolean` | `true` | ✅ |
+| `[nzMaskClosable]` | Clicking on the mask (area outside the Drawer) to close the Drawer or not. | `boolean` | `true` | ✅ |
 | `[nzKeyboard]` | Whether support press esc to close | `boolean` | `true` |
 | `[nzMaskStyle]` | Style for Drawer's mask element. | `object` | `{}` |
 | `[nzBodyStyle]` | Body style for drawer body element. Such as height, padding etc. | `object` | `{}` |

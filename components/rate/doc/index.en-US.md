@@ -23,10 +23,10 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
 
 ### nz-rate
 
-| Property | Description | type | Default |
-| -------- | ----------- | ---- | ------- |
-| `[nzAllowClear]` | whether to allow clear when click again | `boolean` | `true` |
-| `[nzAllowHalf]` | whether to allow semi selection | `boolean` | `false` |
+| Property | Description | type | Default | Global Config |
+| -------- | ----------- | ---- | ------- | ------------- |
+| `[nzAllowClear]` | whether to allow clear when click again | `boolean` | `true` | ✅ |
+| `[nzAllowHalf]` | whether to allow semi selection | `boolean` | `false` | ✅ |
 | `[nzAutoFocus]` | get focus when component mounted | `boolean` | `false` |
 | `[nzCharacter]` | custom character of rate | `TemplateRef<void>` | `<i nz-icon nzType="star"></i>` |
 | `[nzCount]` | star count | `number` | `5` |

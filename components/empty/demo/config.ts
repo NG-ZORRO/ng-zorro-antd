@@ -1,5 +1,5 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { NzEmptyService } from 'ng-zorro-antd/empty';
+import { NzConfigService } from 'ng-zorro-antd/core';
 
 @Component({
   selector: 'nz-demo-empty-config',
@@ -60,13 +60,13 @@ export class NzDemoEmptyConfigComponent {
 
   customize = false;
 
-  constructor(private nzEmptyService: NzEmptyService) {}
+  constructor(private nzConfigService: NzConfigService) {}
 
   onConfigChange(): void {
     if (this.customize) {
-      this.nzEmptyService.setDefaultContent(this.customTpl); // tslint:disable-line:no-any
+      this.nzConfigService.set('empty', { nzDefaultEmptyContent: this.customTpl });
     } else {
-      this.nzEmptyService.resetDefault();
+      this.nzConfigService.set('empty', { nzDefaultEmptyContent: undefined });
     }
   }
 }

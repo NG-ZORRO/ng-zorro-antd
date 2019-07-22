@@ -37,7 +37,10 @@ import {
   measure,
   reqAnimFrame,
   InputBoolean,
-  NzDomEventService
+  InputNumber,
+  NzConfigService,
+  NzDomEventService,
+  WithConfig
 } from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
@@ -77,7 +80,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   @Input() @InputBoolean() nzExpandable = false;
   @Input() @InputBoolean() nzEllipsis = false;
   @Input() nzContent: string;
-  @Input() nzEllipsisRows = 1;
+  @Input() @WithConfig(1) @InputNumber() nzEllipsisRows: number;
   @Input() nzType: 'secondary' | 'warning' | 'danger' | undefined;
   @Input() nzCopyText: string | undefined;
   @Output() readonly nzContentChange = new EventEmitter<string>();
@@ -112,6 +115,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   }
 
   constructor(
+    public nzConfigService: NzConfigService,
     private host: ElementRef<HTMLElement>,
     private cdr: ChangeDetectorRef,
     private viewContainerRef: ViewContainerRef,

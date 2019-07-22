@@ -24,10 +24,10 @@ import { NzRateModule } from 'ng-zorro-antd/rate';
 
 ### nz-rate
 
-| 属性 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `[nzAllowClear]` | 是否允许再次点击后清除 | `boolean` | `true` |
-| `[nzAllowHalf]` | 是否允许半选 | `boolean` | `false` |
+| 属性 | 说明 | 类型 | 默认值 | 支持全局配置 |
+| --- | --- | --- | --- | --- |
+| `[nzAllowClear]` | 是否允许再次点击后清除 | `boolean` | `true` | ✅ |
+| `[nzAllowHalf]` | 是否允许半选 | `boolean` | `false` | ✅ |
 | `[nzAutoFocus]` | 自动获取焦点 | `boolean` | `false` |
 | `[nzCharacter]` | 自定义字符 | `TemplateRef<void>` | `<i nz-icon nzType="star"></i>` |
 | `[nzCount]` | star 总数 | `number` | `5` |

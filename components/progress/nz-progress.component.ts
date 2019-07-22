@@ -8,7 +8,7 @@
 
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
-import { isNotNil, InputNumber, NgStyleInterface } from 'ng-zorro-antd/core';
+import { isNotNil, InputNumber, NgStyleInterface, WithConfig } from 'ng-zorro-antd/core';
 
 import { handleLinearGradient } from './nz-progress-utils';
 import {
@@ -30,6 +30,11 @@ const statusColorMap = new Map([['normal', '#108ee9'], ['exception', '#ff5500'],
 
 const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
 
+export type NzProgressGapPositionType = 'top' | 'bottom' | 'left' | 'right';
+export type NzProgressStatusType = 'success' | 'exception' | 'active' | 'normal';
+export type NzProgressTypeType = 'line' | 'circle' | 'dashboard';
+export type NzProgressStrokeLinecapType = 'round' | 'square';
+
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -39,19 +44,19 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
   templateUrl: './nz-progress.component.html'
 })
 export class NzProgressComponent implements OnChanges {
-  @Input() nzShowInfo = true;
+  @Input() @WithConfig(true) nzShowInfo = true;
   @Input() nzWidth = 132;
-  @Input() nzSize: string;
+  @Input() @WithConfig() nzStrokeColor: NzProgressStrokeColorType;
+  @Input() @WithConfig('default') nzSize: 'default' | 'small';
   @Input() nzFormat?: NzProgressFormatter;
   @Input() @InputNumber() nzSuccessPercent?: number;
   @Input() @InputNumber() nzPercent: number = 0;
-  @Input() @InputNumber() nzStrokeWidth: number;
-  @Input() @InputNumber() nzGapDegree: number;
-  @Input() nzStrokeColor: NzProgressStrokeColorType;
+  @Input() @WithConfig() @InputNumber() nzStrokeWidth: number;
+  @Input() @WithConfig() @InputNumber() nzGapDegree: number;
   @Input() nzStatus: NzProgressStatusType;
   @Input() nzType: NzProgressTypeType = 'line';
-  @Input() nzGapPosition?: NzProgressGapPositionType;
-  @Input() nzStrokeLinecap: NzProgressStrokeLinecapType = 'round';
+  @Input() @WithConfig('top') nzGapPosition: NzProgressGapPositionType;
+  @Input() @WithConfig('round') nzStrokeLinecap: NzProgressStrokeLinecapType;
 
   /** Gradient style when `nzType` is `line`. */
   lineGradient: string | null = null;

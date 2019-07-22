@@ -3,7 +3,7 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { dispatchMouseEvent } from 'ng-zorro-antd/core';
+import { dispatchMouseEvent, NzConfigService } from 'ng-zorro-antd/core';
 
 import { NZ_MESSAGE_CONFIG } from './nz-message-config';
 import { NzMessageModule } from './nz-message.module';
@@ -14,6 +14,7 @@ describe('NzMessage', () => {
   let overlayContainerElement: HTMLElement;
   let fixture: ComponentFixture<NzTestMessageBasicComponent>;
   let testComponent: NzTestMessageBasicComponent;
+  let nzConfigService: NzConfigService;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
@@ -30,6 +31,10 @@ describe('NzMessage', () => {
     if (!overlayContainerElement) {
       overlayContainerElement = oc.getContainerElement();
     }
+  }));
+
+  beforeEach(inject([NzConfigService], (c: NzConfigService) => {
+    nzConfigService = c;
   }));
 
   afterEach(() => {
@@ -156,11 +161,22 @@ describe('NzMessage', () => {
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');
   }));
 
+  /**
+   * @deprecated This test is going to be removed in 9.0.0
+   */
   it('should reset default config dynamically', fakeAsync(() => {
     messageService.config({ nzDuration: 0 });
     messageService.create('loading', 'EXISTS');
     fixture.detectChanges();
-    tick(1000);
+    tick(10000);
+    expect(overlayContainerElement.textContent).toContain('EXISTS');
+  }));
+
+  it('should reset default config from config service', fakeAsync(() => {
+    nzConfigService.set('message', { nzDuration: 0 });
+    messageService.create('loading', 'EXISTS');
+    fixture.detectChanges();
+    tick(10000);
     expect(overlayContainerElement.textContent).toContain('EXISTS');
   }));
 
