@@ -303,11 +303,23 @@
   > span:first-child:not(:last-child) > .@{btnClassName} {
     border-top-left-radius: @btn-border-radius-base;
     border-bottom-left-radius: @btn-border-radius-base;
+    [dir="rtl"] & {
+      border-top-right-radius: @btn-border-radius-base;
+      border-bottom-right-radius: @btn-border-radius-base;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
   }
   > .@{btnClassName}:last-child:not(:first-child),
   > span:last-child:not(:first-child) > .@{btnClassName} {
     border-top-right-radius: @btn-border-radius-base;
     border-bottom-right-radius: @btn-border-radius-base;
+    [dir="rtl"] & {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border-top-left-radius: @btn-border-radius-base;
+      border-bottom-left-radius: @btn-border-radius-base;
+    }
   }
   &-sm {
     > .@{btnClassName}:only-child {
