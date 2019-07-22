@@ -54,8 +54,35 @@ export const NZ_AFFIX_DEFAULT_SCROLL_TIME = 20;
 })
 export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() nzTarget: string | Element | Window;
-  @Input() nzOffsetTop: number | null;
-  @Input() nzOffsetBottom: number | null;
+
+  @Input()
+  @WithConfig<number | null>()
+  set nzOffsetTop(value: number | null) {
+    if (value === undefined || value === null) {
+      return;
+    }
+    this._offsetTop = toNumber(value, null);
+    this.updatePosition({} as Event);
+  }
+
+  get nzOffsetTop(): number | null {
+    return this._offsetTop;
+  }
+
+  private _offsetTop: number | null;
+
+  @Input()
+  @WithConfig<number>()
+  set nzOffsetBottom(value: number) {
+    if (typeof value === 'undefined') {
+      return;
+    }
+    this._offsetBottom = toNumber(value, null);
+    this.updatePosition({} as Event);
+  }
+
+  private _offsetBottom: number | null;
+
   @Output() readonly nzChange = new EventEmitter<boolean>();
   @ViewChild('fixedEl', { static: true }) private fixedEl: ElementRef<HTMLDivElement>;
 

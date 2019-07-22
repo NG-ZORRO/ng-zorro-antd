@@ -47,6 +47,7 @@ import {
 })
 export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
   private _value: Date | null = null;
+  private _autoFocus = false;
   private _onChange: (value: Date | null) => void;
   private _onTouched: () => void;
   isInit = false;
@@ -80,7 +81,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
 
   @Input() @InputBoolean() nzHideDisabledOptions = false;
-  @Input() @InputBoolean() nzAllowEmpty = true;
+  @Input() @WithConfig(true) @InputBoolean() nzAllowEmpty: boolean;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAutoFocus = false;
 
