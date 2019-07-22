@@ -232,8 +232,8 @@ export function buildComponent(options: ZorroComponentOptions,
     options.module = findModuleFromOptions(host, options);
 
     const parsedPath = parseName(options.path!, options.name);
-    const source = readIntoSourceFile(host, options.module);
-    if (options.classnameWithModule) {
+    if (options.classnameWithModule && !options.skipImport && options.module) {
+      const source = readIntoSourceFile(host, options.module);
       modulePrefix = getModuleClassnamePrefix(source);
     }
 
