@@ -258,7 +258,7 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * @param event
    */
-  @HostListener('contextmenu', ['$event'])
+  @HostListener('contextf', ['$event'])
   nzContextMenu(event: MouseEvent): void {
     event.preventDefault();
     event.stopPropagation();

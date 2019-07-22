@@ -24,7 +24,7 @@ import { NzContextMenuService, NzDropdownMenuComponent, NzFormatEmitEvent, NzTre
         </span>
       </span>
     </ng-template>
-    <nz-dropdown-menu #menu="nzDropdownMenu">
+    <nz-dropdown-menu #menu="nzDropdownMenu" [nzPlacement]="bottomLeft">
       <ul nz-menu>
         <li nz-menu-item (click)="selectDropdown()">Action 1</li>
         <li nz-menu-item (click)="selectDropdown()">Action 2</li>
@@ -61,7 +61,11 @@ import { NzContextMenuService, NzDropdownMenuComponent, NzFormatEmitEvent, NzTre
       .folder-name {
         margin-left: 4px;
       }
-
+      [dir='rtl'] .folder-name,
+      [dir='rtl'] .file-name {
+        margin-left: 0;
+        margin-right: 4px;
+      }
       .file-desc,
       .folder-desc {
         padding: 0 8px;
