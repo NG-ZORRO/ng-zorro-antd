@@ -13,7 +13,10 @@ const print = console.log;
 const log = {
   info: (msg: string) => print(chalk.bgBlue.black(' INFO\t'), chalk.blue(msg)),
   warn: (msg: string) => print(chalk.bgYellow.black(' WARN\t'), chalk.yellow(msg)),
-  error: (msg: string) => print(chalk.bgRed.black(' ERROR\t'), chalk.red(msg)),
+  error: (msg: string) => {
+    print(chalk.bgRed.black(' ERROR\t'), chalk.red(msg));
+    process.exit(1);
+  },
   success: (msg: string) => print(chalk.bgGreen.black(' SUCCESS\t'), chalk.green(msg))
 };
 
@@ -22,11 +25,6 @@ const log = {
 run();
 
 function run(): void {
-  if (hasUncommittedChanges()) {
-    log.error('Current working tree has changes which are not committed. ' +
-      'Please make sure your working tree is clean.');
-    return;
-  }
   const stages = [
     {
       name: 'Fetch upstream',
@@ -131,6 +129,11 @@ function bumpVersion(): void {
 }
 
 function fetchUpstream(): void {
+  if (hasUncommittedChanges()) {
+    log.error('Current working tree has changes which are not committed. ' +
+      'Please make sure your working tree is clean.');
+    return;
+  }
   log.info('Fetching upstream...');
   const remoteName = getUpstreamRemoteName();
   if (!remoteName) {
@@ -138,7 +141,7 @@ function fetchUpstream(): void {
     return;
   }
   execSync('git checkout master');
-  execSync(`git pull ${remoteName} master`);
+  execSync(`git pull ${remoteName} master -f`);
   execSync(`git fetch ${remoteName} master --prune --tags`);
   log.success('Older versions fetched!');
 }

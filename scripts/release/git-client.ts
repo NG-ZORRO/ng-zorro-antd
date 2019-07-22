@@ -27,8 +27,8 @@ export class GitClient {
     return this.spawnGitProcess(['checkout', '-b', branchName]).status === 0;
   }
 
-  pushBranchToRemote(branchName: string, remoteName: string = this.remoteGitUrl): boolean {
-    return this.spawnGitProcess(['push', remoteName, branchName]).status === 0;
+  pushBranchToRemote(branchName: string, force: boolean = false, remoteName: string = this.remoteGitUrl): boolean {
+    return this.spawnGitProcess(['push', remoteName, branchName, `${force && '-f'}`]).status === 0;
   }
-  
+
 }
