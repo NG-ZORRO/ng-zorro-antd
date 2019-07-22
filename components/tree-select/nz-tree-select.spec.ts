@@ -11,7 +11,8 @@ import {
   dispatchFakeEvent,
   dispatchMouseEvent,
   typeInElement,
-  NzTreeNode
+  NzTreeNode,
+  NzTreeNodeOptions
 } from 'ng-zorro-antd/core';
 
 import { NzTreeSelectComponent } from './nz-tree-select.component';
@@ -246,6 +247,26 @@ describe('tree-select component', () => {
       expect(maxTagPlaceholderElement.innerText.trim()).toBe(
         `+ ${testComponent.value.length - testComponent.maxTagCount} ...`
       );
+    }));
+
+    it('should set selectable', fakeAsync(() => {
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      expect(treeSelectComponent.nzOpen).toBe(true);
+      let node = overlayContainerElement.querySelector('nz-tree-node')!;
+      dispatchMouseEvent(node, 'click');
+      fixture.detectChanges();
+      flush();
+      expect(treeSelectComponent.nzOpen).toBe(false);
+      testComponent.nodes[0].selectable = false;
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      expect(treeSelectComponent.nzOpen).toBe(true);
+      node = overlayContainerElement.querySelector('nz-tree-node')!;
+      dispatchMouseEvent(node, 'click');
+      fixture.detectChanges();
+      flush();
+      expect(treeSelectComponent.nzOpen).toBe(true);
     }));
   });
 
@@ -486,7 +507,7 @@ describe('tree-select component', () => {
     <nz-tree-select
       style="width:250px;position: relative;display: block;"
       nzPlaceHolder="Please select"
-      [nzDefaultExpandedKeys]="expandKeys"
+      [nzExpandedKeys]="expandKeys"
       [nzNodes]="nodes"
       [(ngModel)]="value"
       [nzSize]="size"
@@ -512,7 +533,7 @@ export class NzTestTreeSelectBasicComponent {
   dropdownMatchSelectWidth = true;
   multiple = false;
   maxTagCount = Infinity;
-  nodes = [
+  nodes: NzTreeNodeOptions[] = [
     {
       title: 'root1',
       key: '1001',
