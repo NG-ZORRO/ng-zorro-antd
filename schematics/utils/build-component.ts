@@ -9,13 +9,13 @@
 import { strings, template as interpolateTemplate } from '@angular-devkit/core';
 import {
   apply,
+  applyTemplates,
   branchAndMerge,
   chain,
   filter,
   mergeWith,
   move,
   noop,
-  template,
   url,
   Rule,
   SchematicsException,
@@ -279,13 +279,13 @@ export function buildComponent(options: ZorroComponentOptions,
     }
 
     const templateSource = apply(url(schematicFilesUrl), [
-      options.skipTests ? filter(path => !path.endsWith('.spec.ts')) : noop(),
-      options.inlineStyle ? filter(path => !path.endsWith('.__style__')) : noop(),
-      options.inlineTemplate ? filter(path => !path.endsWith('.html')) : noop(),
+      options.skipTests ? filter(path => !path.endsWith('.spec.ts.template')) : noop(),
+      options.inlineStyle ? filter(path => !path.endsWith('.__style__.template')) : noop(),
+      options.inlineTemplate ? filter(path => !path.endsWith('.html.template')) : noop(),
       // Treat the template options as any, because the type definition for the template options
       // is made unnecessarily explicit. Every type of object can be used in the EJS template.
       // tslint:disable-next-line no-any
-      template({ indentTextContent, resolvedFiles, ...baseTemplateContext } as any),
+      applyTemplates({ indentTextContent, resolvedFiles, ...baseTemplateContext } as any),
       // TODO(devversion): figure out why we cannot just remove the first parameter
       // See for example: angular-cli#schematics/angular/component/index.ts#L160
       // tslint:disable-next-line no-any
