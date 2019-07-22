@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import {
@@ -93,7 +94,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   @ContentChildren(NzMenuItemDirective, { descendants: true })
   listOfNzMenuItemDirective: QueryList<NzMenuItemDirective>;
 
-  placement = 'rightTop';
+  placement = 'leftTop';
   triggerWidth: number;
   expandState = 'collapsed';
   overlayPositions = [...DEFAULT_SUBMENU_POSITIONS];
@@ -148,7 +149,8 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
     public nzSubmenuService: NzSubmenuService,
     private nzUpdateHostClassService: NzUpdateHostClassService,
     private platform: Platform,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
+    @Optional() private dir: Directionality
   ) {}
 
   ngOnInit(): void {
@@ -165,8 +167,13 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
           this.isMouseHover = false;
           this.expandState = 'collapsed';
         }
-        this.overlayPositions =
-          mode === 'horizontal' ? [POSITION_MAP.bottomLeft] : [POSITION_MAP.rightTop, POSITION_MAP.leftTop];
+        console.log(this.getLayoutDirection());
+        if (this.getLayoutDirection() === 'ltr') {
+          this.overlayPositions =
+            mode === 'horizontal' ? [POSITION_MAP.bottomLeft] : [POSITION_MAP.rightTop, POSITION_MAP.leftTop];
+        } else {
+          this.overlayPositions = mode === 'horizontal' ? [POSITION_MAP.bottomRight] : [POSITION_MAP.leftTop];
+        }
         if (open !== this.nzOpen) {
           this.setTriggerWidth();
           this.nzOpen = open;
@@ -218,7 +225,9 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
       this.setClassMap();
     }
   }
-
+  getLayoutDirection(): Direction {
+    return this.dir && this.dir.value === 'rtl' ? 'rtl' : 'ltr';
+  }
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

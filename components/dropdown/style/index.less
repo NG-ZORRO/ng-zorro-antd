@@ -45,7 +45,13 @@
   &-menu-hidden {
     display: none;
   }
-
+  [dir="rtl"] &-menu {
+    text-align: right;
+  }
+  &-menu {
+    background: red;
+    border: 1px solid yellow;
+  }
   &-menu {
     position: relative;
     margin: 0;
@@ -59,6 +65,7 @@
     box-shadow: @box-shadow-base;
     -webkit-transform: translate3d(0, 0, 0);
 
+    
     &-item-group-title {
       padding: 5px @control-padding-horizontal;
       color: @text-color-secondary;
@@ -136,11 +143,21 @@
           font-style: normal;
           .iconfont-size-under-12px(10px);
         }
+        
+        [dir="rtl"] & {
+          left: @padding-xs;
+          right: auto;
+        }
       }
     }
 
     &-submenu-title {
       padding-right: 26px;
+
+      [dir="rtl"] & {
+        padding-right: @control-padding-horizontal;
+        padding-left: 26px;
+      }
     }
 
     &-submenu-vertical {
