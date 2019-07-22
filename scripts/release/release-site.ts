@@ -31,7 +31,7 @@ export function releaseSite(version: string): boolean {
 
   git.stageAllChanges();
   git.createNewCommit(`release: ${version}`);
-  const pushed = git.pushBranchToRemote(branchName);
+  const pushed = git.pushBranchToRemote(branchName, true);
   removeSync(docDir);
   return pushed;
 }
