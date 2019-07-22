@@ -29,10 +29,9 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { pxToNumber, InputBoolean, NzDomEventService } from 'ng-zorro-antd/core';
 import { merge, of as observableOf, Subject, Subscription } from 'rxjs';
 import { finalize, startWith, takeUntil } from 'rxjs/operators';
-import { pxToNumber, InputBoolean } from 'ng-zorro-antd/core';
-import { InputBoolean, NzDomEventService } from 'ng-zorro-antd/core';
 
 import { NzTabLabelDirective } from './nz-tab-label.directive';
 import { NzTabsInkBarDirective } from './nz-tabs-ink-bar.directive';
