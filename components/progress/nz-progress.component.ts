@@ -11,12 +11,22 @@ import {
   Component,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
 
-import { isNotNil, InputNumber } from 'ng-zorro-antd/core';
+import {
+  isNotNil,
+  trimComponentName,
+  InputNumber,
+  NgStyleInterface,
+  NzConfigService,
+  WithConfig
+} from 'ng-zorro-antd/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 export type NzProgressGapPositionType = 'top' | 'bottom' | 'left' | 'right';
 export type NzProgressStatusType = 'success' | 'exception' | 'active' | 'normal';
@@ -31,23 +41,24 @@ export type NzProgressStrokeLinecapType = 'round' | 'square';
   preserveWhitespaces: false,
   templateUrl: './nz-progress.component.html'
 })
-export class NzProgressComponent implements OnInit, OnChanges {
-  @Input() nzShowInfo = true;
+// TODO(wendzhue): refactor to deal with default values.
+export class NzProgressComponent implements OnInit, OnChanges, OnDestroy {
+  @Input() @WithConfig(true) nzShowInfo: boolean;
   @Input() nzWidth = 132;
-  @Input() nzStrokeColor: string;
-  @Input() nzSize: string;
+  @Input() @WithConfig() nzStrokeColor: string;
+  @Input() @WithConfig('default') nzSize: 'default' | 'small';
   @Input() nzFormat?: (percent: number) => string;
   @Input() @InputNumber() nzSuccessPercent?: number;
   @Input() @InputNumber() nzPercent: number;
-  @Input() @InputNumber() nzStrokeWidth: number;
-  @Input() @InputNumber() nzGapDegree: number;
+  @Input() @WithConfig() @InputNumber() nzStrokeWidth: number;
+  @Input() @WithConfig() @InputNumber() nzGapDegree: number;
   @Input() nzStatus: NzProgressStatusType;
   @Input() nzType: NzProgressTypeType = 'line';
-  @Input() nzGapPosition?: NzProgressGapPositionType;
-  @Input() nzStrokeLinecap: NzProgressStrokeLinecapType = 'round';
+  @Input() @WithConfig('top') nzGapPosition: NzProgressGapPositionType;
+  @Input() @WithConfig('round') nzStrokeLinecap: NzProgressStrokeLinecapType;
 
-  trailPathStyle: { [key: string]: string };
-  strokePathStyle: { [key: string]: string };
+  trailPathStyle: NgStyleInterface;
+  strokePathStyle: NgStyleInterface;
   pathString: string;
   icon: string;
   statusColorMap: { [key: string]: string } = {
@@ -57,6 +68,7 @@ export class NzProgressComponent implements OnInit, OnChanges {
   };
 
   private cachedStatus: NzProgressStatusType = 'normal';
+  private destroy$ = new Subject<void>();
   private inferredStatus: NzProgressStatusType = 'normal';
   private inferredStrokeWidth: number = 8;
   private inferredGapPosition: string;
@@ -78,9 +90,21 @@ export class NzProgressComponent implements OnInit, OnChanges {
     return this.nzType === 'circle' || this.nzType === 'dashboard';
   }
 
+  constructor(public nzConfigService: NzConfigService) {}
+
   ngOnInit(): void {
     this.updatePathStyles();
     this.updateIcon();
+
+    this.nzConfigService
+      .getConfigChangeEventForComponent(trimComponentName(this.constructor.name))
+      .pipe(takeUntil(this.destroy$.asObservable()))
+      .subscribe(() => this.updatePathStyles());
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

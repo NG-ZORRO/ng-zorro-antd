@@ -19,11 +19,11 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 
 ### nz-avatar
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
+| 参数 | 说明 | 类型 | 默认值 | 全局配置 |
+| --- | --- | --- | --- | --- |
 | `[nzIcon]` | 设置头像的图标类型，参考 `Icon` | `string` | - |
-| `[nzShape]` | 指定头像的形状 | `'circle' \| 'square'` | `'circle'` |
-| `[nzSize]` | 设置头像的大小 | `'large' \| 'small' \| 'default' \| number` | `'default'` |
+| `[nzShape]` | 指定头像的形状 | `'circle' \| 'square'` | `'circle'` | ✅ |
+| `[nzSize]` | 设置头像的大小 | `'large' \| 'small' \| 'default' \| number` | `'default'` | ✅ |
 | `[nzSrc]` | 图片类头像的资源地址 | `string` | - |
 | `[nzSrcSet]` | 设置图片类头像响应式资源地址 | string | - |
 | `[nzAlt]` | 图像无法显示时的替代文本 | string | - |

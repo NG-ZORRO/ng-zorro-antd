@@ -32,9 +32,17 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { Subject } from 'rxjs';
-
-import { isTouchEvent, warnDeprecation, InputBoolean, InputNumber, NzDomEventService } from 'ng-zorro-antd/core';
 import { finalize, takeUntil } from 'rxjs/operators';
+
+import {
+  isTouchEvent,
+  warnDeprecation,
+  InputBoolean,
+  InputNumber,
+  NzConfigService,
+  NzDomEventService,
+  WithConfig
+} from 'ng-zorro-antd/core';
 
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
 import {
@@ -86,11 +94,11 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   @ViewChild('slickTrack', { static: false }) slickTrack: ElementRef;
 
   @Input() nzDotRender: TemplateRef<{ $implicit: number }>;
-  @Input() nzEffect: NzCarouselEffects = 'scrollx';
-  @Input() @InputBoolean() nzEnableSwipe = true;
-  @Input() @InputBoolean() nzDots: boolean = true;
-  @Input() @InputBoolean() nzAutoPlay = false;
-  @Input() @InputNumber() nzAutoPlaySpeed = 3000;
+  @Input() @WithConfig('scrollx') nzEffect: NzCarouselEffects;
+  @Input() @WithConfig(true) @InputBoolean() nzEnableSwipe: boolean;
+  @Input() @WithConfig(true) @InputBoolean() nzDots: boolean;
+  @Input() @WithConfig(false) @InputBoolean() nzAutoPlay: boolean;
+  @Input() @WithConfig(3000) @InputNumber() nzAutoPlaySpeed: number;
   @Input() @InputNumber() nzTransitionSpeed = 500;
 
   @Input()
@@ -105,6 +113,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   }
 
   @Input()
+  @WithConfig('bottom')
   set nzDotPosition(value: NzCarouselDotPosition) {
     this._dotPosition = value;
     if (value === 'left' || value === 'right') {
@@ -118,7 +127,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     return this._dotPosition;
   }
 
-  private _dotPosition: NzCarouselDotPosition = 'bottom';
+  private _dotPosition: NzCarouselDotPosition;
 
   @Output() readonly nzBeforeChange = new EventEmitter<FromToInterface>();
   @Output() readonly nzAfterChange = new EventEmitter<number>();
@@ -140,6 +149,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   private isDragging = false;
 
   constructor(
+    public nzConfigService: NzConfigService,
     elementRef: ElementRef,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,

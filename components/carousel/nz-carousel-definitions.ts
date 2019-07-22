@@ -11,7 +11,7 @@ import { NzCarouselContentDirective } from './nz-carousel-content.directive';
 import { NzCarouselBaseStrategy } from './strategies/base-strategy';
 
 export type NzCarouselEffects = 'fade' | 'scrollx' | string;
-export type NzCarouselDotPosition = 'top' | 'bottom' | 'left' | 'right';
+export type NzCarouselDotPosition = 'top' | 'bottom' | 'left' | 'right' | string;
 
 export interface NzCarouselComponentAsSource {
   carouselContents: QueryList<NzCarouselContentDirective>;

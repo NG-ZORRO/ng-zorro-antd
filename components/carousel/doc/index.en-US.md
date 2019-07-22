@@ -24,17 +24,17 @@ import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 
 ### nz-carousel
 
-| Property | Description | Type | Default | Version since |
+| Property | Description | Type | Default | Global Config |
 | -------- | ----------- | ---- | ------- | ------------- |
-| `[nzAutoPlay]` | Whether to scroll automatically | `boolean` | `false` | |
-| `[nzAutoPlaySpeed]` | Duration (milliseconds), does not scroll when set to 0 | `number` | `3000` | |
-| `[nzDotRender]` | Dot render template | `TemplateRef<{ $implicit: number }>` | - | |
-| `[nzDotPosition]` | The position of the dots, which can be one of `top` `bottom` `left` `right` | `string` | `bottom` | 8.0.0 |
-| `[nzDots]` | Whether to show the dots at the bottom of the gallery | `boolean` | `true` | |
-| `[nzEffect]` | Transition effect | `'scrollx'\|'fade'` | `'scrollx'` | |
-| `[nzEnableSwipe]` | Whether to support swipe gesture | `boolean` | `true` | |
-| `(nzAfterChange)` | Callback function called after the current index changes | `EventEmitter<number>` | - | |
-| `(nzBeforeChange)` | Callback function called before the current index changes | `EventEmitter{ from: number; to: number }>` | |
+| `[nzAutoPlay]` | Whether to scroll automatically | `boolean` | `false` | ✅ |
+| `[nzAutoPlaySpeed]` | Duration (milliseconds), does not scroll when set to 0 | `number` | `3000` | ✅ |
+| `[nzDotRender]` | Dot render template | `TemplateRef<{ $implicit: number }>` | - |
+| `[nzDotPosition]` | The position of the dots, which can be one of `top` `bottom` `left` `right` | `string` | `bottom` | ✅ |
+| `[nzDots]` | Whether to show the dots at the bottom of the gallery | `boolean` | `true` | ✅ |
+| `[nzEffect]` | Transition effect | `'scrollx'\|'fade'` | `'scrollx'` | ✅ |
+| `[nzEnableSwipe]` | Whether to support swipe gesture | `boolean` | `true` | ✅ |
+| `(nzAfterChange)` | Callback function called after the current index changes | `EventEmitter<number>` | - |
+| `(nzBeforeChange)` | Callback function called before the current index changes | `EventEmitter{ from: number; to: number }>` | - |
 
 #### Methods
 

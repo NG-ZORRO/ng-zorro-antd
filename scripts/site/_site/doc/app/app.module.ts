@@ -16,7 +16,7 @@ import {
   NzMessageModule,
   NzPopoverModule,
   NzSelectModule,
-  NZ_ICON_DEFAULT_TWOTONE_COLOR,
+  NZ_CONFIG,
   NZ_ICONS
 } from 'ng-zorro-antd';
 
@@ -51,7 +51,7 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline];
   providers: [
     Title,
     { provide: NZ_ICONS, useValue: icons },
-    { provide: NZ_ICON_DEFAULT_TWOTONE_COLOR, useValue: '#1890ff' }
+    { provide: NZ_CONFIG, useValue: { icon: { nzTwotoneColor: '#1890ff' } }}
   ],
   bootstrap: [AppComponent]
 })

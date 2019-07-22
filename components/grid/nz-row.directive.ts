@@ -23,8 +23,9 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { Platform } from '@angular/cdk/platform';
 import {
   responsiveMap,
-  Breakpoint,
   IndexableObject,
+  NzAlignType,
+  NzBreakPoint,
   NzDomEventService,
   NzUpdateHostClassService
 } from 'ng-zorro-antd/core';
@@ -32,8 +33,7 @@ import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 
 export type NzJustify = 'start' | 'end' | 'center' | 'space-around' | 'space-between';
-export type NzAlign = 'top' | 'middle' | 'bottom';
-export type NzType = 'flex' | null;
+export type NzGridType = 'flex' | null;
 
 @Directive({
   selector: '[nz-row],nz-row',
@@ -41,13 +41,13 @@ export type NzType = 'flex' | null;
   providers: [NzUpdateHostClassService]
 })
 export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestroy {
-  @Input() nzType: NzType;
-  @Input() nzAlign: NzAlign = 'top';
+  @Input() nzType: NzGridType;
+  @Input() nzAlign: NzAlignType = 'top';
   @Input() nzJustify: NzJustify = 'start';
   @Input() nzGutter: number | IndexableObject;
   private el: HTMLElement = this.elementRef.nativeElement;
   private prefixCls = 'ant-row';
-  private breakPoint: Breakpoint;
+  private breakPoint: NzBreakPoint;
   actualGutter: number;
   actualGutter$ = new Subject<number>();
   destroy$ = new Subject();
@@ -74,7 +74,7 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
 
   watchMedia(): void {
     Object.keys(responsiveMap).map((screen: string) => {
-      const castBP = screen as Breakpoint;
+      const castBP = screen as NzBreakPoint;
       const matchBelow = this.mediaMatcher.matchMedia(responsiveMap[castBP]).matches;
       if (matchBelow) {
         this.breakPoint = castBP;

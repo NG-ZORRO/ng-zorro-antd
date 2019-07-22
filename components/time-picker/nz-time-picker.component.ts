@@ -26,7 +26,15 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { isNotNil, slideMotion, InputBoolean, NzUpdateHostClassService as UpdateCls } from 'ng-zorro-antd/core';
+import {
+  isNotNil,
+  slideMotion,
+  toBoolean,
+  InputBoolean,
+  NzConfigService,
+  NzUpdateHostClassService as UpdateCls,
+  WithConfig
+} from 'ng-zorro-antd/core';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -39,6 +47,7 @@ import { isNotNil, slideMotion, InputBoolean, NzUpdateHostClassService as Update
 })
 export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
   private _value: Date | null = null;
+  private _autoFocus = false;
   private _onChange: (value: Date | null) => void;
   private _onTouched: () => void;
   isInit = false;
@@ -55,24 +64,24 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   ];
   @ViewChild('inputElement', { static: true }) inputRef: ElementRef<HTMLInputElement>;
   @Input() nzSize: string | null = null;
-  @Input() nzHourStep = 1;
-  @Input() nzMinuteStep = 1;
-  @Input() nzSecondStep = 1;
-  @Input() nzClearText = 'clear';
-  @Input() nzPopupClassName = '';
+  @Input() @WithConfig(1) nzHourStep: number;
+  @Input() @WithConfig(1) nzMinuteStep: number;
+  @Input() @WithConfig(1) nzSecondStep: number;
+  @Input() @WithConfig('clear') nzClearText: string;
+  @Input() @WithConfig() nzPopupClassName: string;
   @Input() nzPlaceHolder = '';
   @Input() nzAddOn: TemplateRef<void>;
   @Input() nzDefaultOpenValue = new Date();
   @Input() nzDisabledHours: () => number[];
   @Input() nzDisabledMinutes: (hour: number) => number[];
   @Input() nzDisabledSeconds: (hour: number, minute: number) => number[];
-  @Input() nzFormat = 'HH:mm:ss';
+  @Input() @WithConfig('HH:mm:ss') nzFormat: string;
   @Input() nzOpen = false;
-  @Input() nzUse12Hours = false;
+  @Input() @WithConfig(false) @InputBoolean() nzUse12Hours: boolean;
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
 
   @Input() @InputBoolean() nzHideDisabledOptions = false;
-  @Input() @InputBoolean() nzAllowEmpty = true;
+  @Input() @WithConfig(true) @InputBoolean() nzAllowEmpty: boolean;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAutoFocus = false;
 
@@ -138,6 +147,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   constructor(
+    public nzConfigService: NzConfigService,
     private element: ElementRef,
     private renderer: Renderer2,
     private updateCls: UpdateCls,
