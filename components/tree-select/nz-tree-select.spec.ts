@@ -465,6 +465,7 @@ describe('tree-select component', () => {
       treeSelect.nativeElement.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzDefaultExpandedKeys.length === 0).toBe(true);
+      expect(treeSelectComponent.nzExpandedKeys.length === 0).toBe(true);
       expect(treeSelectComponent.nzOpen).toBe(true);
       let targetSwitcher = overlayContainerElement.querySelector('.ant-select-tree-switcher')!;
       expect(targetSwitcher.classList.contains('ant-select-tree-switcher_close')).toBe(true);
@@ -473,6 +474,7 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       expect(targetSwitcher.classList.contains('ant-select-tree-switcher_open')).toBe(true);
       expect(treeSelectComponent.nzDefaultExpandedKeys[0] === '1001').toBe(true);
+      expect(treeSelectComponent.nzExpandedKeys[0] === '1001').toBe(true);
       treeSelect.nativeElement.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(false);
@@ -482,6 +484,7 @@ describe('tree-select component', () => {
       expect(treeSelectComponent.nzOpen).toBe(true);
       expect(targetSwitcher.classList.contains('ant-select-tree-switcher_open')).toBe(true);
       expect(treeSelectComponent.nzDefaultExpandedKeys[0] === '1001').toBe(true);
+      expect(treeSelectComponent.nzExpandedKeys[0] === '1001').toBe(true);
     });
   });
 
