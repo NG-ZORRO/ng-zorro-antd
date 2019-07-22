@@ -15,11 +15,11 @@ import {
   mergeWith,
   move,
   noop,
+  template,
+  url,
   Rule,
   SchematicsException,
-  template,
-  Tree,
-  url
+  Tree
 } from '@angular-devkit/schematics';
 import { FileSystemSchematicContext } from '@angular-devkit/schematics/tools';
 import { getDefaultComponentOptions, getProjectFromWorkspace, ts } from '@angular/cdk/schematics';
