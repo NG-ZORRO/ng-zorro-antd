@@ -10,7 +10,7 @@
   <ng-container *nzStringTemplateOutlet="nzTitle"><span>{{ nzTitle }}</span></ng-container>
   <ng-content select="[title]" *ngIf="!nzTitle"></ng-content>
   <span *ngIf="nzMenuService.isInDropDown; else notDropdownTpl" class="ant-dropdown-menu-submenu-arrow">
-    <i nz-icon nzType="right" class="anticon-right ant-dropdown-menu-submenu-arrow-icon"></i>
+    <i nz-icon [nzType]="getLayoutDirection() == 'rtl' ? 'left' : 'right' " class="anticon-right ant-dropdown-menu-submenu-arrow-icon"></i>
   </span>
   <ng-template #notDropdownTpl>
     <i class="ant-menu-submenu-arrow"></i>

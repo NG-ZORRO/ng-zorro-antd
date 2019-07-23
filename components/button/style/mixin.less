@@ -282,6 +282,10 @@
   & + .@{btnClassName},
   & + & {
     margin-left: -1px;
+    [dir="rtl"] &{
+    margin-left: auto;
+    margin-right: -1px;
+    }
   }
   .@{btnClassName}-primary + .@{btnClassName}:not(.@{btnClassName}-primary):not([disabled]) {
     border-left-color: transparent;

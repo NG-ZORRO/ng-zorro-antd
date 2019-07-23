@@ -61,6 +61,9 @@ import { Component } from '@angular/core';
       nz-button-group {
         margin-right: 8px;
       }
+      [dir='rtl'] nz-button-group {
+        margin-right: 8px;
+      }
     `
   ]
 })
