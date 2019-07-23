@@ -149,8 +149,8 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
     public nzSubmenuService: NzSubmenuService,
     private nzUpdateHostClassService: NzUpdateHostClassService,
     private platform: Platform,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective,
-    @Optional() private dir: Directionality
+    @Optional() private dir: Directionality,
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {}
 
   ngOnInit(): void {
@@ -167,12 +167,12 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
           this.isMouseHover = false;
           this.expandState = 'collapsed';
         }
-        console.log(this.getLayoutDirection());
         if (this.getLayoutDirection() === 'ltr') {
           this.overlayPositions =
             mode === 'horizontal' ? [POSITION_MAP.bottomLeft] : [POSITION_MAP.rightTop, POSITION_MAP.leftTop];
         } else {
-          this.overlayPositions = mode === 'horizontal' ? [POSITION_MAP.bottomRight] : [POSITION_MAP.leftTop];
+          this.overlayPositions =
+            mode === 'horizontal' ? [POSITION_MAP.bottomLeft] : [POSITION_MAP.rightTop, POSITION_MAP.leftTop];
         }
         if (open !== this.nzOpen) {
           this.setTriggerWidth();

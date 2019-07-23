@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   ContentChildren,
@@ -114,6 +115,7 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
     @Optional() private nzSubmenuService: NzSubmenuService,
     private renderer: Renderer2,
     private elementRef: ElementRef,
+    @Optional() private dir: Directionality,
     @Optional() private routerLink?: RouterLink,
     @Optional() private routerLinkWithHref?: RouterLinkWithHref,
     @Optional() private router?: Router
@@ -152,10 +154,14 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
         } else {
           padding = this.originalPadding;
         }
+        let paddingName = 'padding-left';
+        if (this.getLayoutDirection() === 'rtl') {
+          paddingName = 'padding-right';
+        }
         if (padding) {
-          this.renderer.setStyle(this.el, 'padding-left', `${padding}px`);
+          this.renderer.setStyle(this.el, paddingName, `${padding}px`);
         } else {
-          this.renderer.removeStyle(this.el, 'padding-left');
+          this.renderer.removeStyle(this.el, paddingName);
         }
       });
     this.setClassMap();
@@ -176,6 +182,9 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
     }
   }
 
+  getLayoutDirection(): Direction {
+    return this.dir && this.dir.value === 'rtl' ? 'rtl' : 'ltr';
+  }
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

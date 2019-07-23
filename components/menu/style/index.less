@@ -116,6 +116,11 @@
   &-vertical,
   &-vertical-left {
     border-right: @border-width-base @border-style-base @border-color-split;
+    [dir="rtl"] & {
+      
+    border-right: none;
+    border-left: @border-width-base @border-style-base @border-color-split;
+    }
   }
   &-vertical-right {
     border-left: @border-width-base @border-style-base @border-color-split;
@@ -165,6 +170,11 @@
       + span {
         opacity: 1;
         transition: opacity 0.3s @ease-in-out, width 0.3s @ease-in-out;
+      }
+      
+      [dir="rtl"] & {
+        margin-right: auto;
+        margin-left: 10px;
       }
     }
   }
@@ -241,6 +251,10 @@
         &::after {
           transform: rotate(-45deg) translateY(2px);
         }
+        [dir="rtl"] & {
+          right: auto;
+          left: 16px;
+        }
       }
       > .@{menu-prefix-cls}-submenu-title:hover .@{menu-prefix-cls}-submenu-arrow {
         &::after,
@@ -250,6 +264,24 @@
       }
     }
 
+    &-vertical,
+    &-vertical-left,
+    &-vertical-right {
+      > .@{menu-prefix-cls}-submenu-title .@{menu-prefix-cls}-submenu-arrow {
+        &::before {
+          transform: rotate(45deg) translateY(-2px);
+          [dir="rtl"] & {
+            transform: rotate(-45deg) translateY(-2px);
+          }
+        }
+        &::after {
+          transform: rotate(-45deg) translateY(2px);
+          [dir="rtl"] & {
+            transform: rotate(45deg) translateY(2px);
+          }
+        }
+      }
+    }
     &-inline > .@{menu-prefix-cls}-submenu-title .@{menu-prefix-cls}-submenu-arrow {
       &::before {
         transform: rotate(-45deg) translateX(2px);
