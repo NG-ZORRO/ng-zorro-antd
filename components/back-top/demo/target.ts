@@ -27,6 +27,10 @@ import { Component } from '@angular/core';
         right: 150px;
       }
 
+      :host ::ng-deep [dir='rtl'] .long-div .ant-back-top {
+        right: auto;
+        left: 150px;
+      }
       :host ::ng-deep strong {
         color: rgba(64, 64, 64, 0.6);
       }
