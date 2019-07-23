@@ -6,6 +6,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -15,6 +24,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -160,7 +170,10 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
     return this.nzPageSizeOptions.indexOf(this.nzPageSize) === -1;
   }
 
-  constructor(private i18n: NzI18nService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private i18n: NzI18nService,
+    private cdr: ChangeDetectorRef,
+    @Optional() private dir: Directionality) {}
 
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.$destroy)).subscribe(() => {
@@ -178,5 +191,11 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
     if (changes.nzTotal || changes.nzPageSize || changes.nzPageIndex) {
       this.buildIndexes();
     }
+  }
+  getLayoutDirection(): Direction {
+    return this.dir && this.dir.value === 'rtl' ? 'rtl' : 'ltr';
+  }
+  isRtlLayout(): boolean {
+    return this.getLayoutDirection() === 'rtl';
   }
 }

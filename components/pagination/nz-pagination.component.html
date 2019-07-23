@@ -1,9 +1,9 @@
 <ng-template #renderItemTemplate let-type let-page="page">
   <a class="ant-pagination-item-link" *ngIf="type==='pre'">
-    <i nz-icon nzType="left"></i>
+    <i nz-icon [nzType]="isRtlLayout() ? 'right' : 'left'"></i>
   </a>
   <a class="ant-pagination-item-link" *ngIf="type==='next'">
-    <i nz-icon nzType="right"></i>
+    <i nz-icon [nzType]="isRtlLayout() ? 'left' : 'right'"></i>
   </a>
   <a *ngIf="type=='page'">{{ page }}</a>
 </ng-template>
@@ -79,7 +79,7 @@
           *ngIf="(lastIndex > 9) && (nzPageIndex + 3 < lastIndex)">
         <a class="ant-pagination-item-link">
           <div class="ant-pagination-item-container">
-            <i nz-icon nzType="double-right" class="ant-pagination-item-link-icon"></i>
+            <i nz-icon [nzType]="isRtlLayout() ? 'double-left' : 'double-right'" class="ant-pagination-item-link-icon"></i>
             <span class="ant-pagination-item-ellipsis">•••</span>
           </div>
         </a>
