@@ -6,12 +6,21 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+import { Direction, Directionality } from '@angular/cdk/bidi'
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
+  Optional,
   Renderer2,
   ViewEncapsulation
 } from '@angular/core';
@@ -42,7 +51,8 @@ export class NzCascaderOptionComponent {
     private sanitizer: DomSanitizer,
     private cdr: ChangeDetectorRef,
     elementRef: ElementRef,
-    renderer: Renderer2
+    renderer: Renderer2,
+    @Optional() private dir: Directionality
   ) {
     renderer.addClass(elementRef.nativeElement, 'ant-cascader-menu-item');
   }
@@ -59,8 +69,13 @@ export class NzCascaderOptionComponent {
 
     return this.sanitizer.bypassSecurityTrustHtml(replaceStr);
   }
-
   markForCheck(): void {
     this.cdr.markForCheck();
+  }
+  getLayoutDirection(): Direction {
+    return this.dir.value === 'rtl' ? 'rtl' : 'ltr';
+  }
+  isRtlLayout(): boolean {
+    return this.getLayoutDirection() === 'rtl';
   }
 }

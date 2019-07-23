@@ -5,5 +5,5 @@
 <span
   *ngIf="!option.isLeaf || option.children && option.children.length || option.loading"
   class="ant-cascader-menu-item-expand-icon">
-  <i nz-icon [nzType]="option.loading ? 'loading' : 'right'"></i>
+  <i nz-icon [nzType]="option.loading ? 'loading' : isRtlLayout() ? 'left' : 'right'"></i>
 </span>
