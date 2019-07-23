@@ -33,6 +33,10 @@ import { Component } from '@angular/core';
         float: left;
       }
 
+      [dir='rtl'] .logo {
+        margin: 16px 0 16px 30px;
+        float: right;
+      }
       [nz-menu] {
         line-height: 64px;
       }
