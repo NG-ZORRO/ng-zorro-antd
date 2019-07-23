@@ -54,6 +54,11 @@ ul.toc > li {
     overflow: auto;
     max-height: ~"calc(100vh - 16px)";
   }
+  
+  [dir="rtl"] &{
+    right: auto;
+    left: 20px;
+  }
 }
 
 .toc-affix-bottom {
@@ -62,5 +67,10 @@ ul.toc > li {
   right: 20px;
   .ant-affix {
     background: #fff;
+  }
+  
+  [dir="rtl"] &{
+    right: auto;
+    left: 20px;
   }
 }

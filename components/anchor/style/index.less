@@ -14,6 +14,13 @@
     padding-left: 4px;
     overflow: auto;
     background-color: @component-background;
+    
+    [dir="rtl"] &{
+      margin-left: 0;
+      padding-left: 0;
+      margin-right: -4px;
+      padding-right: 4px;
+    }
   }
 
   &-ink {
@@ -45,6 +52,10 @@
         display: inline-block;
       }
     }
+    [dir="rtl"] &{
+      left: auto;
+      right: auto;
+    }
   }
 
   &.fixed &-ink &-ink-ball {
@@ -72,6 +83,9 @@
 
     &-active > &-title {
       color: @primary-color;
+    }
+    [dir="rtl"] &{
+      padding: 7px 16px 7px 0;
     }
   }
 
