@@ -63,7 +63,7 @@ import { Component } from '@angular/core';
         placeholder="~"
         style="width: 30px; border-left: 0px; pointer-events: none; background-color: rgb(255, 255, 255);"
       />
-      <input type="text" nz-input placeholder="Maximum" style="width: 100px; text-align: center; border-left: 0px;" />
+      <input type="text" nz-input placeholder="Maximum" style="width: 100px; text-align: center;" />
     </nz-input-group>
     <br />
     <nz-input-group nzCompact>

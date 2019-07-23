@@ -202,7 +202,11 @@
   &-addon:first-child {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
-
+    [dir="rtl"] & {
+      border-radius: @border-radius-base;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
     // Reset Select's style in addon
     .@{ant-prefix}-select .@{ant-prefix}-select-selection {
       border-top-right-radius: 0;
@@ -224,9 +228,17 @@
 
   &-addon:first-child {
     border-right: 0;
+    [dir="rtl"] & {
+      border-right: @border-width-base @border-style-base @input-border-color;
+      border-left: 0;
+    }
   }
   &-addon:last-child {
     border-left: 0;
+    [dir="rtl"] & {
+      border-left: @border-width-base @border-style-base @input-border-color;
+      border-right: 0;
+    }
   }
 
   > .@{inputClass}:last-child,
@@ -234,6 +246,11 @@
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 
+    [dir="rtl"] & {
+      border-radius: @border-radius-base;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
     // Reset Select's style in addon
     .@{ant-prefix}-select .@{ant-prefix}-select-selection {
       border-top-left-radius: 0;
@@ -328,6 +345,12 @@
     & > .@{ant-prefix}-time-picker:first-child .@{ant-prefix}-time-picker-input {
       border-top-left-radius: @border-radius-base;
       border-bottom-left-radius: @border-radius-base;
+      [dir="rtl"] & {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-top-right-radius: @border-radius-base;
+        border-bottom-right-radius: @border-radius-base;
+      }
     }
 
     & > *:last-child,
@@ -341,6 +364,14 @@
       border-right-width: @border-width-base;
       border-top-right-radius: @border-radius-base;
       border-bottom-right-radius: @border-radius-base;
+      [dir="rtl"] & {
+        border-right-width: 0;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-left-width: @border-width-base;
+        border-top-left-radius: @border-radius-base;
+        border-bottom-left-radius: @border-radius-base;
+      }
     }
 
     // https://github.com/ant-design/ant-design/issues/12493
@@ -380,17 +411,39 @@
 
   .@{inputClass}-prefix {
     left: @input-padding-horizontal-base + 1px;
+    [dir="rtl"] &{
+      left:auto;
+      right: @input-padding-horizontal-base + 1px;
+    }
   }
 
   .@{inputClass}-suffix {
-    right: @input-padding-horizontal-base + 1px;
+    
+    [dir="ltr"] &{
+      right: @input-padding-horizontal-base + 1px;
+    }
+    [dir="rtl"] &{
+      left: @input-padding-horizontal-base + 1px;
+    }
   }
 
   .@{inputClass}:not(:first-child) {
-    padding-left: @input-padding-horizontal-base + @input-affix-width;
+    [dir="ltr"] &{
+      padding-left: @input-padding-horizontal-base + @input-affix-width;
+    }
+    [dir="rtl"] &{
+      padding-left: 0;
+      padding-right: @input-padding-horizontal-base + @input-affix-width;
+    }
   }
 
   .@{inputClass}:not(:last-child) {
-    padding-right: @input-padding-horizontal-base + @input-affix-width;
+    
+    [dir="ltr"] &{
+      padding-right: @input-padding-horizontal-base + @input-affix-width;
+    }
+    [dir="rtl"] &{
+      padding-left: @input-padding-horizontal-base + @input-affix-width;
+    }
   }
 }
