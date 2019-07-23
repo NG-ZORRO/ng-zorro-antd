@@ -6,6 +6,11 @@
     &-icon {
       float: left;
       margin-right: 16px;
+      [dir="rtl"] & {
+        float: right;
+        margin-right: 0;
+        margin-left: 16px;
+      }
     }
     &-content {
       display: block;
@@ -31,6 +36,10 @@
       width: 1px;
       height: 100%;
     }
+    [dir="rtl"] & {
+      left: auto;
+      right: 16px;
+    }
   }
 
   > .@{steps-prefix-cls}-item:not(:last-child) > .@{steps-prefix-cls}-item-tail {
@@ -51,6 +60,10 @@
       top: 0;
       left: 12px;
       padding: @steps-small-icon-size + 6px 0 6px;
+      [dir="rtl"] & {
+        left: auto;
+        right: 12px;
+      }
     }
     .@{steps-prefix-cls}-item-title {
       line-height: @steps-small-icon-size;
