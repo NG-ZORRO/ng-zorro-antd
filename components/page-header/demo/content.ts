@@ -80,6 +80,9 @@ import { Component } from '@angular/core';
       .content-link a img {
         margin-right: 8px;
       }
+      [dir='rtl'] .content-link a img {
+        margin-right: 8px;
+      }
 
       .extra-content {
         min-width: 240px;

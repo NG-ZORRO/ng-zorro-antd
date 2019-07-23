@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -15,6 +16,7 @@ import {
   Input,
   OnChanges,
   OnInit,
+  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -58,7 +60,7 @@ export class NzPageHeaderComponent implements OnInit, OnChanges {
     NzPageHeaderFooterDirective
   >;
 
-  constructor() {}
+  constructor(@Optional() private dir: Directionality) {}
 
   ngOnInit(): void {}
 
@@ -69,6 +71,9 @@ export class NzPageHeaderComponent implements OnInit, OnChanges {
     }
   }
 
+  getLayoutDirection(): Direction {
+    return this.dir && this.dir.value === 'rtl' ? 'rtl' : 'ltr';
+  }
   onBack(): void {
     this.nzBack.emit();
   }
