@@ -4,7 +4,7 @@ import { buildConfig } from '../build-config';
 
 const srcPath = path.join(buildConfig.projectDir, `schematics`);
 const targetPath = path.join(buildConfig.publishDir, `schematics`);
-const copyFilter = (p: string) => (/files\/__path__/.test(p) || !/.+\.ts/.test(p) || /.template$/.test(p));
+const copyFilter = (p: string) => (/files(\/|\\)__path__/.test(p) || !/.+\.ts/.test(p) || /.template$/.test(p));
 
 function mergeDemoCollection(): void {
   const demoCollectionPath = path.resolve(targetPath, `demo/collection.json`);
