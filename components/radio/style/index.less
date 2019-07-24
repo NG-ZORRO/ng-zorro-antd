@@ -23,6 +23,11 @@
   margin-right: 8px;
   white-space: nowrap;
   cursor: pointer;
+
+  [dir = 'rtl'] & {
+    margin-left: 8px;
+    margin-right: 0;
+  }
 }
 
 .@{radio-prefix-cls} {
@@ -203,10 +208,18 @@ span.@{radio-prefix-cls} + * {
   &:first-child {
     border-left: @border-width-base @border-style-base @border-color-base;
     border-radius: @border-radius-base 0 0 @border-radius-base;
+
+    [dir='rtl'] & {
+      border-radius: 0 @border-radius-base @border-radius-base  0;
+    }
   }
 
   &:last-child {
     border-radius: 0 @border-radius-base @border-radius-base 0;
+    
+    [dir='rtl'] & {
+      border-radius: @border-radius-base 0 0 @border-radius-base;
+    }
   }
 
   &:first-child:last-child {
