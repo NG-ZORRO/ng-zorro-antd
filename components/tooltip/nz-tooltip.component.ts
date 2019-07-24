@@ -130,7 +130,7 @@ export class NzToolTipComponent implements OnChanges {
   onPositionChange(position: ConnectedOverlayPositionChange): void {
     this._placement = getPlacementName(position)!;
     this.setClassMap();
-    this.cdr.markForCheck(); // TODO: performance?
+    this.cdr.detectChanges(); // TODO: performance?
   }
 
   show(): void {
