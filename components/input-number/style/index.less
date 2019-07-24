@@ -85,6 +85,9 @@
       margin: 0;
       -webkit-appearance: none;
     }
+    [dir='rtl'] & {
+      text-align: right;
+    }
   }
 
   &-lg {
@@ -128,6 +131,13 @@
         min-width: auto;
         margin-right: 0;
       }
+    }
+    [dir='rtl'] & {
+      border-radius: @border-radius-base 0 0 @border-radius-base;
+      border-right: @border-width-base @border-style-base @border-color-base;
+      border-left: none;
+      right: auto;
+      left:0;
     }
   }
 

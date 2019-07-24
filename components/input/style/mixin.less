@@ -24,12 +24,20 @@
   border-right-width: @border-width-base !important;
   outline: 0;
   box-shadow: @input-outline-offset @outline-blur-size @outline-width fade(@color, 20%);
+  [dir= 'rtl'] & {
+    border-left-width: @border-width-base !important;
+    border-right-width: 0;
+  }
 }
 
 // == when hoverd
 .hover(@color: @input-hover-border-color) {
   border-color: ~`colorPalette('@{color}', 5) `;
   border-right-width: @border-width-base !important;
+  [dir= 'rtl'] & {
+    border-left-width: @border-width-base !important;
+    border-right-width: 0;
+  }
 }
 
 .disabled() {
