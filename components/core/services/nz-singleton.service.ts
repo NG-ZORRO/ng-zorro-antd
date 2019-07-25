@@ -10,10 +10,14 @@
 
 import { Injectable } from '@angular/core';
 
+import { environment } from '../environments/environment';
+
 interface SingletonRegistryItem {
   refCount: number;
   target: any;
 }
+
+const testRegistry = new Map<string, SingletonRegistryItem>();
 
 /**
  * Some singletons should have lifecycle that is same to Angular's. This service make sure that
@@ -23,7 +27,11 @@ interface SingletonRegistryItem {
   providedIn: 'root'
 })
 export class NzSingletonService {
-  private singletonRegistry = new Map<string, SingletonRegistryItem>();
+  private get singletonRegistry(): Map<string, SingletonRegistryItem> {
+    return environment.isTestMode ? testRegistry : this._singletonRegistry;
+  }
+
+  private _singletonRegistry = new Map<string, SingletonRegistryItem>();
 
   registerSingletonWithKey(key: string, target: any): void {
     const alreadyHas = this.singletonRegistry.has(key);
