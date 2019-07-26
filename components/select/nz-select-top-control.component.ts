@@ -64,6 +64,10 @@ export class NzSelectTopControlComponent implements OnInit, OnDestroy {
   }
 
   setInputValue(value: string): void {
+    /** fix clear value https://github.com/NG-ZORRO/ng-zorro-antd/issues/3825 **/
+    if (this.inputElement && !value) {
+      this.inputElement.nativeElement.value = value;
+    }
     this.inputValue = value;
     this.updateWidth();
     this.nzSelectService.updateSearchValue(value);
