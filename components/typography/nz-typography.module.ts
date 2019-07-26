@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-
+import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
@@ -29,7 +29,7 @@ import { NzTypographyComponent } from './nz-typography.component';
     NzTransButtonModule,
     NzCopyToClipboardServiceModule
   ],
-  exports: [NzTypographyComponent, NzTextCopyComponent, NzTextEditComponent],
+  exports: [NzTypographyComponent, NzTextCopyComponent, NzTextEditComponent, PlatformModule],
   declarations: [NzTypographyComponent, NzTextCopyComponent, NzTextEditComponent]
 })
 export class NzTypographyModule {}

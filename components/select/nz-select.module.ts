@@ -5,12 +5,11 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-
 import { OverlayModule } from '@angular/cdk/overlay';
+import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
 import { NzAddOnModule, NzNoAnimationModule, NzOverlayModule } from 'ng-zorro-antd/core';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
@@ -30,6 +29,7 @@ import { NzSelectComponent } from './nz-select.component';
     CommonModule,
     NzI18nModule,
     FormsModule,
+    PlatformModule,
     OverlayModule,
     NzIconModule,
     NzAddOnModule,
