@@ -1,0 +1,24 @@
+<table class="{{ prefixCls }}-table" cellSpacing="0" role="grid">
+  <thead>
+    <tr role="row">
+      <th *ngIf="showWeek" role="columnheader" class="{{ prefixCls }}-column-header {{ prefixCls }}-week-number-header">
+        <span class="{{ prefixCls }}-column-header-inner">x</span>
+      </th>
+      <th *ngFor="let cell of headWeekDays" role="columnheader" title="{{ cell.short }}"
+        class="{{ prefixCls }}-column-header">
+        <span class="{{ prefixCls }}-column-header-inner">{{ cell.veryShort }}</span>
+      </th>
+    </tr>
+  </thead>
+  <tbody class="{{ prefixCls }}-tbody">
+    <tr *ngFor="let row of weekRows;trackBy:trackByWeekFn" [ngClass]="row.classMap" role="row">
+      <td *ngIf="row.weekNum" role="gridcell" class="{{ prefixCls }}-week-number-cell">
+        {{ row.weekNum }}
+      </td>
+      <td *ngFor="let cell of row.dateCells;trackBy:trackByDateFn" title="{{ cell.title }}" role="gridcell" [ngClass]="cell.classMap"
+        (click)="cell.isDisabled ? null : cell.onClick()" (mouseenter)="cell.isDisabled ? null : cell.onMouseEnter()"
+        date-table-cell [prefixCls]="prefixCls" [cell]="cell">
+      </td>
+    </tr>
+  </tbody>
+</table>

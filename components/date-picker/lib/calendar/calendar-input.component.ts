@@ -16,8 +16,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
+import { CandyDate } from 'ng-zorro-antd/core';
 import { DateHelperService, NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
-import { CandyDate } from '../candy-date/candy-date';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -66,7 +66,7 @@ export class CalendarInputComponent implements OnInit {
     const date = new CandyDate(input);
 
     this.invalidInputClass = '';
-    if (date.isInvalid() || input !== this.toReadableInput(date)) {
+    if (!date.isValid() || input !== this.toReadableInput(date)) {
       // Should also match the input format exactly
       this.invalidInputClass = `${this.prefixCls}-input-invalid`;
       return null;

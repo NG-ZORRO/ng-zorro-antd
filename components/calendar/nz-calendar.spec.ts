@@ -5,6 +5,7 @@ import { async, fakeAsync, flush, ComponentFixture, TestBed } from '@angular/cor
 import { FormsModule, NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { CandyDate } from 'ng-zorro-antd/core';
 import { NZ_DATE_CONFIG } from '../i18n/date-config';
 import { NzCalendarHeaderComponent as CalendarHeader } from './nz-calendar-header.component';
 import { NzCalendarComponent as Calendar } from './nz-calendar.component';
@@ -110,7 +111,7 @@ describe('Calendar', () => {
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[0];
       const header = host.query(By.directive(CalendarHeader)).injector.get(CalendarHeader);
 
-      expect(header.activeDate.getFullYear()).toBe(now.getFullYear());
+      expect(header.activeDate.getYear()).toBe(now.getFullYear());
       expect(header.activeDate.getMonth()).toBe(now.getMonth());
       expect(header.activeDate.getDate()).toBe(now.getDate());
     });
@@ -121,9 +122,9 @@ describe('Calendar', () => {
 
       const calendar = fixture.debugElement.queryAll(By.directive(Calendar))[1].injector.get(Calendar);
 
-      expect(calendar.activeDate).toBe(component.date0);
+      expect(calendar.activeDate.nativeDate).toBe(component.date0);
 
-      calendar.onDateSelect(now);
+      calendar.onDateSelect(new CandyDate(now));
       fixture.detectChanges();
 
       expect(component.date0).toBe(now);
@@ -140,7 +141,7 @@ describe('Calendar', () => {
       flush();
       fixture.detectChanges();
 
-      expect(calendar.activeDate).toBe(component.date1);
+      expect(calendar.activeDate.nativeDate).toBe(component.date1);
 
       model.viewToModelUpdate(now);
       fixture.detectChanges();
@@ -222,7 +223,7 @@ describe('Calendar', () => {
       const cells = host.queryAll(By.css('td'));
       const current = cells[10];
 
-      expect(current.nativeElement.className).toContain('ant-fullcalendar-month-panel-selected-cell');
+      expect(current.nativeElement.className).toContain('ant-fullcalendar-month-panel-selected-cell ng-star-inserted');
     });
   });
 

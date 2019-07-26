@@ -1,0 +1,30 @@
+<ng-container [ngSwitch]="prefixCls">
+  <ng-container *ngSwitchCase="'ant-calendar'">
+    <ng-container [ngSwitch]="true">
+      <ng-container *ngSwitchCase="isTemplateRef(cell.dateCellRender)">
+        <ng-container *ngTemplateOutlet="cell.dateCellRender; context: { $implicit: cell.value }"></ng-container>
+      </ng-container>
+      <ng-container *ngSwitchCase="isNonEmptyString(cell.dateCellRender)">
+        <span [innerHTML]="cell.dateCellRender"></span>
+      </ng-container>
+      <ng-container *ngSwitchDefault>
+        <div class="{{ prefixCls }}-date" [attr.aria-selected]="cell.isSelected" [attr.aria-disabled]="cell.isDisabled">
+          {{ cell.content }}
+        </div>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngSwitchCase="'ant-fullcalendar'">
+    <div class="ant-fullcalendar-date">
+      <ng-container *ngIf="cell.dateFullCellRender else defaultCell">
+        <ng-container *ngTemplateOutlet="cell.dateFullCellRender; context: {$implicit: cell.value}"></ng-container>
+      </ng-container>
+      <ng-template #defaultCell>
+        <div class="{{ prefixCls }}-value">{{ cell.content }}</div>
+        <div *ngIf="cell.dateCellRender" class="{{ prefixCls }}-content">
+          <ng-container *ngTemplateOutlet="cell.dateCellRender; context: {$implicit: cell.value}"></ng-container>
+        </div>
+      </ng-template>
+    </div>
+  </ng-container>
+</ng-container>
