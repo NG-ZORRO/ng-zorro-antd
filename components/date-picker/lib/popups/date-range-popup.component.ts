@@ -19,7 +19,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { FunctionProp } from 'ng-zorro-antd/core';
+import { CandyDate, FunctionProp } from 'ng-zorro-antd/core';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import {
   DisabledDateFn,
@@ -30,7 +30,6 @@ import {
   PresetRanges,
   SupportTimeOptions
 } from '../../standard-types';
-import { CandyDate } from '../candy-date/candy-date';
 import { getTimeConfig, isAllowedDate } from '../util';
 
 @Component({
@@ -138,7 +137,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     if (this.isRange && this.selectedValue[0] && !this.selectedValue[1]) {
       // When right value is selected, don't do hover
       const base = this.selectedValue[0]; // Use the left of selected value as the base to decide later hoverValue
-      if (base.isBefore(value, 'day')) {
+      if (base.isBeforeDay(value)) {
         this.hoverValue = [base, value];
       } else {
         this.hoverValue = [value, base];
@@ -400,7 +399,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     if (Array.isArray(value)) {
       const [start, end] = value;
       const grain = this.hasTimePicker ? 'second' : 'day';
-      return start && end && (start.isBefore(end, grain) || start.isSame(end, grain));
+      return start && end && (start.compare(end, grain) || start.isSame(end, grain));
     }
     return false;
   }
@@ -408,7 +407,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   private normalizeRangeValue(value: CandyDate[]): CandyDate[] {
     const [start, end] = value;
     const newStart = start || new CandyDate();
-    const newEnd = end && end.isSame(newStart, 'month') ? end.addMonths(1) : end || newStart.addMonths(1);
+    const newEnd = end && end.isSameMonth(newStart) ? end.addMonths(1) : end || newStart.addMonths(1);
     return [newStart, newEnd];
   }
 
@@ -420,7 +419,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   private sortRangeValue(key: 'selectedValue'): void {
     if (Array.isArray(this[key])) {
       const [start, end] = this[key];
-      if (start && end && start.isAfter(end, 'day')) {
+      if (start && end && start.isAfterDay(end)) {
         this[key] = [end, start];
       }
     }

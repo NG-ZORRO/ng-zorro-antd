@@ -1,0 +1,29 @@
+<table class="{{ prefixCls }}-month-panel-table" cellSpacing="0" role="grid">
+  <tbody class="{{ prefixCls }}-month-panel-tbody">
+    <tr *ngFor="let row of panelMonths; trackBy: trackYear" role="row">
+      <td *ngFor="let monthCell of row; trackBy: trackPanelMonth" role="gridcell" title="{{ monthCell.title }}"
+        (click)="monthCell.disabled ? null : monthCell.onClick()" [ngClass]="monthCell.classMap">
+        <ng-container [ngSwitch]="prefixCls">
+          <ng-container *ngSwitchCase="'ant-fullcalendar'">
+            <div class="{{ prefixCls }}-month">
+              <ng-container *ngIf="monthFullCellRender else defaultCell">
+                <ng-container *ngTemplateOutlet="monthFullCellRender; context: { $implicit: monthCell.value }">
+                </ng-container>
+              </ng-container>
+              <ng-template #defaultCell>
+                <div class="{{prefixCls}}-value">{{ monthCell.content }}</div>
+                <div *ngIf="monthCellRender" class="{{prefixCls}}-content">
+                  <ng-container *ngTemplateOutlet="monthCellRender; context: { $implicit: monthCell.value }">
+                  </ng-container>
+                </div>
+              </ng-template>
+            </div>
+          </ng-container>
+          <ng-container *ngSwitchCase="'ant-calendar'">
+            <a class="{{ prefixCls }}-month-panel-month">{{ monthCell.content }}</a>
+          </ng-container>
+        </ng-container>
+      </td>
+    </tr>
+  </tbody>
+</table>

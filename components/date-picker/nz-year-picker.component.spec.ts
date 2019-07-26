@@ -1,23 +1,18 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { registerLocaleData } from '@angular/common';
-import zh from '@angular/common/locales/zh';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import isBefore from 'date-fns/is_before';
 
 import { dispatchMouseEvent, NgStyleInterface } from 'ng-zorro-antd/core';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
-import { NzDatePickerModule } from './date-picker.module';
+import { NzDatePickerModule } from './nz-date-picker.module';
 
-registerLocaleData(zh);
-
-describe('NzMonthPickerComponent', () => {
-  let fixture: ComponentFixture<NzTestMonthPickerComponent>;
-  let fixtureInstance: NzTestMonthPickerComponent;
+describe('NzYearPickerComponent', () => {
+  let fixture: ComponentFixture<NzTestYearPickerComponent>;
+  let fixtureInstance: NzTestYearPickerComponent;
   let debugElement: DebugElement;
   let overlayContainerElement: HTMLElement;
 
@@ -25,14 +20,14 @@ describe('NzMonthPickerComponent', () => {
     TestBed.configureTestingModule({
       imports: [FormsModule, NoopAnimationsModule, NzDatePickerModule, NzInputModule],
       providers: [],
-      declarations: [NzTestMonthPickerComponent]
+      declarations: [NzTestYearPickerComponent]
     });
 
     TestBed.compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NzTestMonthPickerComponent);
+    fixture = TestBed.createComponent(NzTestYearPickerComponent);
     fixtureInstance = fixture.componentInstance;
     debugElement = fixture.debugElement;
   });
@@ -159,9 +154,8 @@ describe('NzMonthPickerComponent', () => {
 
     it('should support nzDisabledDate', fakeAsync(() => {
       fixture.detectChanges();
-      const compareDate = new Date('2018-11-15 00:00:00');
       fixtureInstance.nzValue = new Date('2018-11-11 12:12:12');
-      fixtureInstance.nzDisabledDate = (current: Date) => isBefore(current, compareDate);
+      fixtureInstance.nzDisabledDate = (current: Date) => current.getFullYear() === 2013;
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
@@ -170,11 +164,10 @@ describe('NzMonthPickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      const allDisabledCells = overlayContainerElement.querySelectorAll(
-        'tbody.ant-calendar-month-panel-tbody tr td.ant-calendar-month-panel-cell-disabled'
-      );
-      const disabledCell = allDisabledCells[allDisabledCells.length - 1];
-      expect(disabledCell.textContent).toContain('11');
+      const disabledCell = overlayContainerElement.querySelector(
+        'tbody.ant-calendar-year-panel-tbody tr td.ant-calendar-year-panel-cell-disabled'
+      )!;
+      expect(disabledCell.textContent).toContain('2013');
     }));
 
     it('should support nzLocale', () => {
@@ -247,7 +240,7 @@ describe('NzMonthPickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(getSelectedMonthCell().textContent).toContain('11');
+      expect(getSelectedYearCell().textContent).toContain('2018');
     }));
 
     it('should support nzOnChange', fakeAsync(() => {
@@ -259,7 +252,7 @@ describe('NzMonthPickerComponent', () => {
       tick(500);
       fixture.detectChanges();
 
-      const cell = getFirstMonthCell(); // Use the first cell
+      const cell = getSecondYearCell(); // Use the second cell
       const cellText = cell.textContent!.trim();
       dispatchMouseEvent(cell, 'click');
       fixture.detectChanges();
@@ -267,54 +260,18 @@ describe('NzMonthPickerComponent', () => {
       fixture.detectChanges();
       expect(nzOnChange).toHaveBeenCalled();
       const result = nzOnChange.calls.allArgs()[0][0];
-      expect(result.getMonth() + 1).toBe(parseInt(cellText, 10));
+      expect(result.getFullYear()).toBe(parseInt(cellText, 10));
     }));
   }); // /general api testing
 
   describe('panel switch and move forward/afterward', () => {
     beforeEach(() => (fixtureInstance.useSuite = 1));
 
-    it('should support year panel changes', fakeAsync(() => {
-      fixtureInstance.nzValue = new Date('2018-11');
-      fixture.detectChanges();
-      openPickerByClickTrigger();
-      // Click year select to show year panel
-      dispatchMouseEvent(queryFromOverlay('.ant-calendar-month-panel-year-select'), 'click');
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
-      expect(queryFromOverlay('.ant-calendar-year-panel')).toBeDefined();
-      expect(queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent).toContain('2010');
-      expect(queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent).toContain('2019');
-      // Goto previous year
-      dispatchMouseEvent(queryFromOverlay('.ant-calendar-year-panel-prev-decade-btn'), 'click');
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
-      expect(queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent).toContain('2000');
-      expect(queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent).toContain('2009');
-      // Goto next year * 2
-      dispatchMouseEvent(queryFromOverlay('.ant-calendar-year-panel-next-decade-btn'), 'click');
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
-      dispatchMouseEvent(queryFromOverlay('.ant-calendar-year-panel-next-decade-btn'), 'click');
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
-      expect(queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent).toContain('2020');
-      expect(queryFromOverlay('.ant-calendar-year-panel-decade-select-content').textContent).toContain('2029');
-    }));
-
     it('should support decade panel changes', fakeAsync(() => {
       fixtureInstance.nzValue = new Date('2018-11');
       fixture.detectChanges();
       openPickerByClickTrigger();
       // Click to show decade panel
-      dispatchMouseEvent(queryFromOverlay('.ant-calendar-month-panel-year-select'), 'click');
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-year-panel-decade-select'), 'click');
       fixture.detectChanges();
       tick(500);
@@ -365,16 +322,16 @@ describe('NzMonthPickerComponent', () => {
       fixture.detectChanges();
       flush(); // Wait writeValue() tobe done
       fixture.detectChanges();
-      expect(getSelectedMonthCell().textContent).toContain('11');
+      expect(getSelectedYearCell().textContent).toContain('2018');
 
       // Click the first cell to change ngModel
-      const cell = getFirstMonthCell();
+      const cell = getSecondYearCell();
       const cellText = cell.textContent!.trim();
       dispatchMouseEvent(cell, 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(fixtureInstance.modelValue.getMonth() + 1).toBe(parseInt(cellText, 10));
+      expect(fixtureInstance.modelValue.getFullYear()).toBe(parseInt(cellText, 10));
     }));
   });
 
@@ -396,14 +353,16 @@ describe('NzMonthPickerComponent', () => {
     return queryFromOverlay('.ant-calendar-picker-container') as HTMLElement;
   }
 
-  function getSelectedMonthCell(): HTMLElement {
+  function getSelectedYearCell(): HTMLElement {
     return queryFromOverlay(
-      'tbody.ant-calendar-month-panel-tbody td.ant-calendar-month-panel-selected-cell'
+      'tbody.ant-calendar-year-panel-tbody td.ant-calendar-year-panel-selected-cell'
     ) as HTMLElement;
   }
 
-  function getFirstMonthCell(): HTMLElement {
-    return queryFromOverlay('tbody.ant-calendar-month-panel-tbody td.ant-calendar-month-panel-cell') as HTMLElement;
+  function getSecondYearCell(): HTMLElement {
+    return queryFromOverlay(
+      'tbody.ant-calendar-year-panel-tbody td.ant-calendar-year-panel-cell:nth-child(2)'
+    ) as HTMLElement;
   }
 
   function queryFromOverlay(selector: string): HTMLElement {
@@ -422,13 +381,13 @@ describe('NzMonthPickerComponent', () => {
   template: `
     <ng-container [ngSwitch]="useSuite">
       <!-- Suite 1 -->
-      <nz-month-picker
+      <nz-year-picker
         *ngSwitchCase="1"
         [nzAllowClear]="nzAllowClear"
         [nzAutoFocus]="nzAutoFocus"
         [nzDisabled]="nzDisabled"
-        [nzClassName]="nzClassName"
         [nzDisabledDate]="nzDisabledDate"
+        [nzClassName]="nzClassName"
         [nzLocale]="nzLocale"
         [nzPlaceHolder]="nzPlaceHolder"
         [nzPopupStyle]="nzPopupStyle"
@@ -440,27 +399,27 @@ describe('NzMonthPickerComponent', () => {
         [ngModel]="nzValue"
         (ngModelChange)="nzOnChange($event)"
         [nzRenderExtraFooter]="nzRenderExtraFooter"
-      ></nz-month-picker>
+      ></nz-year-picker>
       <ng-template #tplExtraFooter>
         TEST_EXTRA_FOOTER
       </ng-template>
 
       <!-- Suite 2 -->
       <!-- use another picker to avoid nzOpen's side-effects beacuse nzOpen act as "true" if used -->
-      <nz-month-picker *ngSwitchCase="2" [nzOpen]="nzOpen"></nz-month-picker>
+      <nz-year-picker *ngSwitchCase="2" [nzOpen]="nzOpen"></nz-year-picker>
 
       <!-- Suite 3 -->
-      <nz-month-picker *ngSwitchCase="3" nzOpen [(ngModel)]="modelValue"></nz-month-picker>
+      <nz-year-picker *ngSwitchCase="3" nzOpen [(ngModel)]="modelValue"></nz-year-picker>
 
       <!-- Suite 4 -->
       <nz-input-group *ngSwitchCase="4" nzCompact>
-        <nz-month-picker style="width: 200px;"></nz-month-picker>
+        <nz-year-picker style="width: 200px;"></nz-year-picker>
         <input nz-input type="text" style="width: 200px;" />
       </nz-input-group>
     </ng-container>
   `
 })
-class NzTestMonthPickerComponent {
+class NzTestYearPickerComponent {
   useSuite: 1 | 2 | 3 | 4;
   @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter: TemplateRef<void>;
 

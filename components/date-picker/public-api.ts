@@ -6,12 +6,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export { CandyDate } from './lib/candy-date/candy-date';
 export { PickerResult, PickerResultSingle, PickerResultRange, PresetRanges, PanelMode } from './standard-types';
 
-export { NzDatePickerModule } from './date-picker.module';
-export { NzDatePickerComponent } from './date-picker.component';
-export { NzRangePickerComponent } from './range-picker.component';
-export { NzMonthPickerComponent } from './month-picker.component';
-export { NzWeekPickerComponent } from './week-picker.component';
-export { NzYearPickerComponent } from './year-picker.component';
+export { NzDatePickerModule } from './nz-date-picker.module';
+export { NzDatePickerComponent } from './nz-date-picker.component';
+export { NzRangePickerComponent } from './nz-range-picker.component';
+export { NzMonthPickerComponent } from './nz-month-picker.component';
+export { NzWeekPickerComponent } from './nz-week-picker.component';
+export { NzYearPickerComponent } from './nz-year-picker.component';
