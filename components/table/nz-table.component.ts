@@ -54,7 +54,6 @@ import { NzVirtualScrollDirective } from './nz-virtual-scroll.directive';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   templateUrl: './nz-table.component.html',
-  styleUrls: ['./nz-table.component.less'],
   host: {
     '[class.ant-table-empty]': 'data.length === 0'
   }

@@ -1,4 +1,5 @@
-@import "./size";
+@import '../../style/themes/index';
+@import './size';
 
 @table-prefix-cls: ~'@{ant-prefix}-table';
 @table-td-cls: ~'@{table-prefix-cls}-td';
@@ -9,6 +10,8 @@
 @table-td-right-cls: ~'@{table-td-cls}-right';
 
 nz-table {
+  display: block;
+
   .@{table-prefix-cls} {
     table {
       border-collapse: separate;
@@ -42,6 +45,28 @@ nz-table {
   tr > th:first-child.@{table-th-left-cls}-sticky,
   tr > td:first-child.@{table-td-left-cls}-sticky {
     border-left: @border-width-base @border-style-base @border-color-split;
+  }
+}
+
+.@{table-prefix-cls}-body {
+  cdk-virtual-scroll-viewport& {
+    overflow-y: scroll;
+  }
+
+  .virtual-loading div {
+    &:before {
+      content: '.';
+      visibility: hidden;
+    }
+
+    animation: 1.4s infinite ant-skeleton-loading;
+    background: linear-gradient(
+      90deg,
+      @skeleton-color 25%,
+      shade(@skeleton-color, 5%) 37%,
+      @skeleton-color 63%
+    );
+    background-size: 400% 100%;
   }
 }
 
