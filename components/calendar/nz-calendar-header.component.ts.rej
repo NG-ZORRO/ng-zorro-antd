@@ -1,0 +1,4 @@
+diff a/components/calendar/nz-calendar-header.component.ts b/components/calendar/nz-calendar-header.component.ts	(rejected hunks)
+@@ -106 +106 @@ export class NzCalendarHeaderComponent implements OnInit {
+-      const dateInMonth =  this.activeDate.clone().month(i);
++      const dateInMonth = this.activeDate.clone().month(i);

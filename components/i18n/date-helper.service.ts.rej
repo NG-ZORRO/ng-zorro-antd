@@ -1,0 +1,4 @@
+diff a/components/i18n/date-helper.service.ts b/components/i18n/date-helper.service.ts	(rejected hunks)
+@@ -57 +56 @@ export class DateHelperByDatePipe extends DateHelperService {
+-      this.i18n.getDateLocale()
++      this.i18n.getDateLocale();

@@ -1,0 +1,16 @@
+diff a/components/date-picker/lib/candy-date/candy-date.ts b/components/date-picker/lib/candy-date/candy-date.ts	(rejected hunks)
+@@ -26 +26 @@ export class CandyDate implements IndexableObject {
+-        this._moment = moment(date)
++      this._moment = moment(date);
+@@ -28 +28 @@ export class CandyDate implements IndexableObject {
+-      this._moment = moment()
++      this._moment = moment();
+@@ -31 +31 @@ export class CandyDate implements IndexableObject {
+-    //dateLocale = 'fa';
++    // dateLocale = 'fa';
+@@ -96 +95 @@ export class CandyDate implements IndexableObject {
+-      hour:   hour,
++      hour: hour,
+@@ -99 +98 @@ export class CandyDate implements IndexableObject {
+-  });
++    });

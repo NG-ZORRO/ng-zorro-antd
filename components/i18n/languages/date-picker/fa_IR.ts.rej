@@ -1,0 +1,10 @@
+diff a/components/i18n/languages/date-picker/fa_IR.ts b/components/i18n/languages/date-picker/fa_IR.ts	(rejected hunks)
+@@ -22,4 +22,4 @@ const locale = {
+-  dateFormat: "YYYY/MM/DD",
+-  dateTimeFormat: "YYYY/MM/DD HH:mm:ss",
+-  weekFormat: "YYYY-wo",
+-  monthFormat: "YYYY/MM"
++  dateFormat: 'YYYY/MM/DD',
++  dateTimeFormat: 'YYYY/MM/DD HH:mm:ss',
++  weekFormat: 'YYYY-wo',
++  monthFormat: 'YYYY/MM'

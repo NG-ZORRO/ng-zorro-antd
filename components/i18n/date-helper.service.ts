@@ -6,6 +6,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Inject, Injectable, Injector, Optional } from '@angular/core';
 import { mergeDateConfig, NzDateConfig, NZ_DATE_CONFIG } from './date-config';
 import { NzI18nService } from './nz-i18n.service';
@@ -32,7 +40,6 @@ export abstract class DateHelperService {
     this.config = mergeDateConfig(this.config);
   }
   abstract getFirstDayOfWeek(): WeekDayIndex;
-
   parseTime(text: string): Moment | undefined {
     if (!text) {
       return;

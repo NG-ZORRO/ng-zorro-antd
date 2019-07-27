@@ -1,0 +1,11 @@
+diff a/components/date-picker/lib/lib-packer-supplements.spec.ts b/components/date-picker/lib/lib-packer-supplements.spec.ts	(rejected hunks)
+@@ -31,6 +31,3 @@ describe('Coverage supplements', () => {
+-  beforeEach(inject(
+-    [NzI18nService],
+-    (i18nService: NzI18nService) => {
+-      i18n = i18nService;
+-    }
+-  ));
++  beforeEach(inject([NzI18nService], (i18nService: NzI18nService) => {
++    i18n = i18nService;
++  }));

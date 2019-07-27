@@ -44,7 +44,6 @@ export class CandyDate implements IndexableObject {
   // ---------------------------------------------------------------------
   // | Native shortcuts
   // ---------------------------------------------------------------------
-
   getYear(): number {
     return this._moment.year();
   }

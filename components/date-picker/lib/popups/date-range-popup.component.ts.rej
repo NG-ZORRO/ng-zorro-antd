@@ -1,0 +1,5 @@
+diff a/components/date-picker/lib/popups/date-range-popup.component.ts b/components/date-picker/lib/popups/date-range-popup.component.ts	(rejected hunks)
+@@ -413 +413,2 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
+-    const newEnd = end && end.isSame(newStart, 'month') ? end.clone().addMonths(1) : end || newStart.clone().addMonths(1);
++    const newEnd =
++      end && end.isSame(newStart, 'month') ? end.clone().addMonths(1) : end || newStart.clone().addMonths(1);

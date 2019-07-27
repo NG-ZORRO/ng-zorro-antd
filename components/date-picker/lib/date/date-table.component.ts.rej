@@ -1,0 +1,46 @@
+diff a/components/date-picker/lib/date/date-table.component.ts b/components/date-picker/lib/date/date-table.component.ts	(rejected hunks)
+@@ -30 +30 @@ import { NzCalendarI18nInterface, WeekDayIndex } from 'ng-zorro-antd/i18n';
+-import { mergeDateConfig, NzDateConfig , NZ_DATE_CONFIG } from '../../../i18n/date-config';
++import { mergeDateConfig, NzDateConfig, NZ_DATE_CONFIG } from '../../../i18n/date-config';
+@@ -62 +62 @@ export class DateTableComponent implements OnInit, OnChanges {
+-  headWeekDays: {[key: string]: WeekDayLabel};
++  headWeekDays: { [key: string]: WeekDayLabel };
+@@ -124,4 +124,7 @@ export class DateTableComponent implements OnInit, OnChanges {
+-    return daysArr.reduce((map, day, index) => {
+-      map[index] = day;
+-      return map;
+-    }, {} as { [key: number]: string });
++    return daysArr.reduce(
++      (map, day, index) => {
++        map[index] = day;
++        return map;
++      },
++      {} as { [key: number]: string }
++    );
+@@ -130,9 +133,12 @@ export class DateTableComponent implements OnInit, OnChanges {
+-    const weekdayNames: { [key: string]: Moment } = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'].reduce((acc, d, i) => {
+-      const m = moment();
+-      if (locale) {
+-        m.locale(locale);
+-      }
+-      m.day(i);
+-      acc[d] = m;
+-      return acc;
+-    }, {} as { [key: string]: Moment });
++    const weekdayNames: { [key: string]: Moment } = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'].reduce(
++      (acc, d, i) => {
++        const m = moment();
++        if (locale) {
++          m.locale(locale);
++        }
++        m.day(i);
++        acc[d] = m;
++        return acc;
++      },
++      {} as { [key: string]: Moment }
++    );
+@@ -158,2 +164,2 @@ export class DateTableComponent implements OnInit, OnChanges {
+-  private makeHeadWeekDays(): {[key: string]: WeekDayLabel} {
+-    const weekDays: {[key: string]: WeekDayLabel} = {};
++  private makeHeadWeekDays(): { [key: string]: WeekDayLabel } {
++    const weekDays: { [key: string]: WeekDayLabel } = {};

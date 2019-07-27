@@ -1,0 +1,29 @@
+diff a/components/date-picker/demo/basic.ts b/components/date-picker/demo/basic.ts	(rejected hunks)
+@@ -10 +10,2 @@ import { Moment } from 'jalali-moment';
+-    <nz-month-picker [nzDateLocale]="dateLocale"
++    <nz-month-picker
++      [nzDateLocale]="dateLocale"
+@@ -16 +17,6 @@ import { Moment } from 'jalali-moment';
+-    <nz-year-picker [nzDateLocale]="dateLocale" [(ngModel)]="date" (ngModelChange)="onChange($event)" nzPlaceHolder="Select year"></nz-year-picker>
++    <nz-year-picker
++      [nzDateLocale]="dateLocale"
++      [(ngModel)]="date"
++      (ngModelChange)="onChange($event)"
++      nzPlaceHolder="Select year"
++    ></nz-year-picker>
+@@ -18 +24,6 @@ import { Moment } from 'jalali-moment';
+-    <nz-range-picker [nzDateLocale]="dateLocale" [(ngModel)]="dateRange" (ngModelChange)="onChange($event)" nzShowTime></nz-range-picker>
++    <nz-range-picker
++      [nzDateLocale]="dateLocale"
++      [(ngModel)]="dateRange"
++      (ngModelChange)="onChange($event)"
++      nzShowTime
++    ></nz-range-picker>
+@@ -20 +31,6 @@ import { Moment } from 'jalali-moment';
+-    <nz-week-picker [nzDateLocale]="dateLocale" [(ngModel)]="date" (ngModelChange)="getWeek($event)" nzPlaceHolder="Select week"></nz-week-picker>
++    <nz-week-picker
++      [nzDateLocale]="dateLocale"
++      [(ngModel)]="date"
++      (ngModelChange)="getWeek($event)"
++      nzPlaceHolder="Select week"
++    ></nz-week-picker>

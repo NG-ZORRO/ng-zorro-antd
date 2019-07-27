@@ -1,0 +1,4 @@
+diff a/components/date-picker/lib/calendar/today-button.component.ts b/components/date-picker/lib/calendar/today-button.component.ts	(rejected hunks)
+@@ -55 +55 @@ export class TodayButtonComponent implements OnInit, OnChanges {
+-      this.title =  this.now._moment.format(dateFormat);
++      this.title = this.now._moment.format(dateFormat);

@@ -1,0 +1,25 @@
+diff a/components/calendar/nz-calendar.component.ts b/components/calendar/nz-calendar.component.ts	(rejected hunks)
+@@ -149 +149,4 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
+-    return  this.activeDate.clone().startOf('month').startOf('week');
++    return this.activeDate
++      .clone()
++      .startOf('month')
++      .startOf('week');
+@@ -255 +258 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
+-      const weekStart =  this.calendarStart.clone().add( week * 7, 'days');
++      const weekStart = this.calendarStart.clone().add(week * 7, 'days');
+@@ -259,2 +262,2 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
+-        const monthDiff = date.diff(this.activeDate , 'months');
+-        const dateFormat =  this.i18n.getLocaleData('DatePicker.lang.dateFormat', 'YYYY/MM/DD');
++        const monthDiff = date.diff(this.activeDate, 'months');
++        const dateFormat = this.i18n.getLocaleData('DatePicker.lang.dateFormat', 'YYYY/MM/DD');
+@@ -272,2 +275,2 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
+-      this.currentDateRow = this.currentDate.diff(this.calendarStart , 'weeks');
+-      this.currentDateCol = this.currentDate.diff(this.calendarStart.clone().add(this.currentDateRow * 7 , 'days'));
++      this.currentDateRow = this.currentDate.diff(this.calendarStart, 'weeks');
++      this.currentDateCol = this.currentDate.diff(this.calendarStart.clone().add(this.currentDateRow * 7, 'days'));
+@@ -281,2 +284,2 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
+-    this.activeDateRow = this.activeDate.diff(this.calendarStart , 'weeks');
+-    this.activeDateCol =  this.activeDate.diff(this.calendarStart.clone().add(this.activeDateRow * 7 , 'days'));
++    this.activeDateRow = this.activeDate.diff(this.calendarStart, 'weeks');
++    this.activeDateCol = this.activeDate.diff(this.calendarStart.clone().add(this.activeDateRow * 7, 'days'));

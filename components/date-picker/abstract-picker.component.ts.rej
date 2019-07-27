@@ -1,0 +1,17 @@
+diff a/components/date-picker/abstract-picker.component.ts b/components/date-picker/abstract-picker.component.ts	(rejected hunks)
+@@ -104 +104 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
+-      this.setDateLocale()
++      this.setDateLocale();
+@@ -190 +190 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
+-        this.nzValue = (this.nzValue as CandyDate).setLocale(this.nzDateLocale);
++      this.nzValue = (this.nzValue as CandyDate).setLocale(this.nzDateLocale);
+@@ -194,3 +194,3 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
+-        for (const v in this.nzValue) {
+-            this.nzValue[v] = (this.nzValue[v] as CandyDate).setLocale(this.nzDateLocale);
+-        }
++      for (const v in this.nzValue) {
++        this.nzValue[v] = (this.nzValue[v] as CandyDate).setLocale(this.nzDateLocale);
++      }
+@@ -218 +218 @@ export type CompatibleValue = CandyDate | CandyDate[];
+-export type CompatibleDate =  Moment | Moment[];
++export type CompatibleDate = Moment | Moment[];

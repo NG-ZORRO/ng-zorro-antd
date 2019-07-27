@@ -1,0 +1,11 @@
+diff a/components/date-picker/date-range-picker.component.ts b/components/date-picker/date-range-picker.component.ts	(rejected hunks)
+@@ -61,5 +61 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
+-  constructor(
+-    i18n: NzI18nService,
+-    cdr: ChangeDetectorRef,
+-    noAnimation?: NzNoAnimationDirective
+-  ) {
++  constructor(i18n: NzI18nService, cdr: ChangeDetectorRef, noAnimation?: NzNoAnimationDirective) {
+@@ -77 +73 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
+-          this.nzFormat = this.nzShowTime ? 'YYYY/MM/DD HH:mm:ss' : 'YYYY/MM/DD';
++        this.nzFormat = this.nzShowTime ? 'YYYY/MM/DD HH:mm:ss' : 'YYYY/MM/DD';

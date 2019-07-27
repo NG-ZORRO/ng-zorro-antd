@@ -1,0 +1,8 @@
+diff a/components/date-picker/header-picker.component.ts b/components/date-picker/header-picker.component.ts	(rejected hunks)
+@@ -38,5 +38 @@ export class HeaderPickerComponent extends AbstractPickerComponent implements On
+-  constructor(
+-    i18n: NzI18nService,
+-    cdr: ChangeDetectorRef,
+-    noAnimation?: NzNoAnimationDirective
+-  ) {
++  constructor(i18n: NzI18nService, cdr: ChangeDetectorRef, noAnimation?: NzNoAnimationDirective) {
