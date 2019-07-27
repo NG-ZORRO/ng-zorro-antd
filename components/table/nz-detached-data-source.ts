@@ -20,7 +20,7 @@ export class NzDetachedDataSource<T> extends NzDataSource<T> {
   private readonly data$ = this.source$.asObservable().pipe(shareReplay(1));
   private readonly subscription = new Subscription();
 
-  constructor(table: NzTableComponent, readonly dataSource: NzDataSource<T>) {
+  constructor(table: NzTableComponent<T>, readonly dataSource: NzDataSource<T>) {
     super();
     this.subscription.add(
       this.dataSource.connect(table).subscribe({
