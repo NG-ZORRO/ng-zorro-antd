@@ -11,13 +11,15 @@ import { AppModule } from './app.module';
 // Import the require modules
 import { HttpClientModule } from '@angular/common/http';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { en_US, NzI18nModule, NZ_I18N } from 'ng-zorro-antd/i18n';
+import { en_US, fa_IR, NzI18nModule, NZ_I18N } from 'ng-zorro-antd/i18n';
 import * as AllIcons from '@ant-design/icons-angular/icons';
 import zh from '@angular/common/locales/zh';
 import en from '@angular/common/locales/en';
+import fa from '@angular/common/locales/fa';
 
 registerLocaleData(zh, 'zh-cn');
 registerLocaleData(en);
+registerLocaleData(fa);
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
 };
@@ -37,6 +39,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
   bootstrap: [AppComponent],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
+    { provide: NZ_I18N, useValue: fa_IR },
     { provide: NZ_ICONS, useValue: icons }
   ]
 })

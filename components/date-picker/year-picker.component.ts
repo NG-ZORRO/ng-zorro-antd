@@ -21,7 +21,7 @@ import {
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core';
-import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { HeaderPickerComponent, SupportHeaderPanel } from './header-picker.component';
 
@@ -40,19 +40,18 @@ import { HeaderPickerComponent, SupportHeaderPanel } from './header-picker.compo
   ]
 })
 export class NzYearPickerComponent extends HeaderPickerComponent {
-  @Input() nzFormat: string = 'yyyy';
+  @Input() nzFormat: string = 'YYYY';
 
   endPanelMode: SupportHeaderPanel = 'year';
 
   constructor(
     i18n: NzI18nService,
     cdr: ChangeDetectorRef,
-    dateHelper: DateHelperService,
     renderer: Renderer2,
     elementRef: ElementRef,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
-    super(i18n, cdr, dateHelper, noAnimation);
+    super(i18n, cdr, noAnimation);
     renderer.addClass(elementRef.nativeElement, 'ant-calendar-picker');
   }
 }

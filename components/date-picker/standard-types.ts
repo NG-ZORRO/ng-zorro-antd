@@ -10,6 +10,7 @@ import { TemplateRef } from '@angular/core';
 
 import { CandyDate } from './lib/candy-date/candy-date';
 
+import { Moment } from 'jalali-moment';
 // The common result data format (the range-picker's props can be result as array)
 export interface PickerResultSingle {
   date: CandyDate;
@@ -21,7 +22,7 @@ export interface PickerResultRange {
 }
 export type PickerResult = PickerResultSingle | PickerResultRange;
 
-export type DisabledDateFn = (d: Date) => boolean;
+export type DisabledDateFn = (d: Moment) => boolean;
 
 export type DisabledTimePartial = 'start' | 'end';
 
@@ -31,7 +32,7 @@ export interface DisabledTimeConfig {
   nzDisabledSeconds(hour: number, minute: number): number[];
 }
 
-export type DisabledTimeFn = (current: Date | Date[], partial?: DisabledTimePartial) => DisabledTimeConfig;
+export type DisabledTimeFn = (current: Moment | Moment[], partial?: DisabledTimePartial) => DisabledTimeConfig;
 
 export interface SupportTimeOptions {
   nzFormat?: string;
@@ -42,12 +43,12 @@ export interface SupportTimeOptions {
   nzDisabledMinutes?(hour: number): number[];
   nzDisabledSeconds?(hour: number, minute: number): number[];
   nzHideDisabledOptions?: boolean;
-  nzDefaultOpenValue?: Date;
+  nzDefaultOpenValue?: Moment;
   nzAddOn?: TemplateRef<void>;
 }
 
 export interface PresetRanges {
-  [key: string]: Date[] | (() => Date[]);
+  [key: string]: Moment[] | (() => Moment[]);
 }
 
 export type PanelMode = 'decade' | 'year' | 'month' | 'date' | 'time';

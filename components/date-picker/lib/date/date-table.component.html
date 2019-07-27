@@ -1,16 +1,17 @@
+
 <table class="{{ prefixCls }}-table" cellSpacing="0" role="grid">
   <thead>
     <tr role="row">
       <th *ngIf="showWeek" role="columnheader" class="{{ prefixCls }}-column-header {{ prefixCls }}-week-number-header">
         <span class="{{ prefixCls }}-column-header-inner">x</span>
       </th>
-      <th *ngFor="let cell of headWeekDays"
-        role="columnheader"
-        title="{{ cell.short }}"
-        class="{{ prefixCls }}-column-header"
-      >
-        <span class="{{ prefixCls }}-column-header-inner">{{ cell.veryShort }}</span>
-      </th>
+      <th *ngFor="let key of objectKeys(headWeekDays)"
+      role="columnheader"
+      title="{{ headWeekDays[key].short }}"
+      class="{{ prefixCls }}-column-header"
+    >
+      <span class="{{ prefixCls }}-column-header-inner">{{  headWeekDays[key].veryShort }}</span>
+    </th>
     </tr>
   </thead>
   <tbody class="{{ prefixCls }}-tbody">

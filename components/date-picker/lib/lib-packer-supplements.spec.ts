@@ -3,7 +3,6 @@ import zh from '@angular/common/locales/zh';
 
 import { fakeAsync, inject, TestBed } from '@angular/core/testing';
 
-import { DateHelperService } from '../../i18n/date-helper.service';
 import { NzI18nService } from '../../i18n/nz-i18n.service';
 import { AbstractPickerComponent } from '../abstract-picker.component';
 import { CalendarHeaderComponent } from './calendar/calendar-header.component';
@@ -19,7 +18,6 @@ registerLocaleData(zh);
 
 describe('Coverage supplements', () => {
   let componentInstance: any; // tslint:disable-line:no-any
-  let dateHelper: DateHelperService;
   let i18n: NzI18nService;
 
   beforeEach(fakeAsync(() => {
@@ -30,17 +28,13 @@ describe('Coverage supplements', () => {
     TestBed.compileComponents();
   }));
 
-  beforeEach(inject(
-    [NzI18nService, DateHelperService],
-    (i18nService: NzI18nService, dateHelperService: DateHelperService) => {
-      dateHelper = dateHelperService;
-      i18n = i18nService;
-    }
-  ));
+  beforeEach(inject([NzI18nService], (i18nService: NzI18nService) => {
+    i18n = i18nService;
+  }));
 
   describe('CalendarHeader', () => {
     beforeEach(() => {
-      componentInstance = new CalendarHeaderComponent(dateHelper);
+      componentInstance = new CalendarHeaderComponent();
     });
 
     it('should not render if no relative changes', () => {
@@ -86,7 +80,7 @@ describe('Coverage supplements', () => {
 
   describe('TodayButton', () => {
     beforeEach(() => {
-      componentInstance = new TodayButtonComponent(dateHelper);
+      componentInstance = new TodayButtonComponent();
     });
 
     it('should cover untouched branches', () => {
@@ -98,7 +92,7 @@ describe('Coverage supplements', () => {
 
   describe('DateTable', () => {
     beforeEach(() => {
-      componentInstance = new DateTableComponent(i18n, dateHelper);
+      componentInstance = new DateTableComponent(i18n);
     });
 
     it('should cover untouched branches', () => {
@@ -113,7 +107,7 @@ describe('Coverage supplements', () => {
 
   describe('MonthTable', () => {
     beforeEach(() => {
-      componentInstance = new MonthTableComponent(dateHelper);
+      componentInstance = new MonthTableComponent();
     });
 
     it('should cover untouched branches', () => {

@@ -8,6 +8,7 @@
 
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 
+import { Moment } from 'jalali-moment';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import { CandyDate } from '../candy-date/candy-date';
 
@@ -20,8 +21,9 @@ import { CandyDate } from '../candy-date/candy-date';
 })
 export class MonthPanelComponent {
   @Input() locale: NzCalendarI18nInterface;
+  @Input() dateLocale: string;
   @Input() value: CandyDate;
-  @Input() disabledDate: (date: Date) => boolean;
+  @Input() disabledDate: (date: Moment) => boolean;
 
   @Output() readonly valueChange = new EventEmitter<CandyDate>();
   @Output() readonly yearPanelShow = new EventEmitter<void>();

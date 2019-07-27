@@ -22,7 +22,7 @@ const defaultDisabledTime: DisabledTimeConfig = {
 };
 
 export function getTimeConfig(value: CandyDate, disabledTime: DisabledTimeFn): DisabledTimeConfig {
-  let disabledTimeConfig = disabledTime ? disabledTime(value && value.nativeDate) : ({} as DisabledTimeConfig);
+  let disabledTimeConfig = disabledTime ? disabledTime(value && value._moment) : ({} as DisabledTimeConfig);
   disabledTimeConfig = {
     ...defaultDisabledTime,
     ...disabledTimeConfig
@@ -59,7 +59,7 @@ export function isTimeValid(value: CandyDate, disabledTime: DisabledTimeFn): boo
 
 export function isAllowedDate(value: CandyDate, disabledDate?: DisabledDateFn, disabledTime?: DisabledTimeFn): boolean {
   if (disabledDate) {
-    if (disabledDate(value.nativeDate)) {
+    if (disabledDate(value._moment)) {
       return false;
     }
   }

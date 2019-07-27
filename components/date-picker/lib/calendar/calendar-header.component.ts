@@ -18,7 +18,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { DateHelperByDatePipe, DateHelperService, NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 
 import { PanelMode } from '../../standard-types';
 import { CandyDate } from '../candy-date/candy-date';
@@ -33,6 +33,7 @@ import { CandyDate } from '../candy-date/candy-date';
 })
 export class CalendarHeaderComponent implements OnInit, OnChanges {
   @Input() locale: NzCalendarI18nInterface;
+  @Input() dateLocale: string;
   @Input() enablePrev: boolean = true;
   @Input() enableNext: boolean = true;
   @Input() disabledMonth: (date: Date) => boolean;
@@ -54,11 +55,11 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
 
   private yearToMonth: boolean = false; // Indicate whether should change to month panel when current is year panel (if referer=month, it should show month panel when choosed a year)
 
-  constructor(private dateHelper: DateHelperService) {}
+  constructor() {}
 
   ngOnInit(): void {
     if (!this.value) {
-      this.value = new CandyDate(); // Show today by default
+      this.value = new CandyDate(new Date(), this.dateLocale); // Show today by default
     }
   }
 
@@ -136,7 +137,7 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
   }
 
   private formatDateTime(localeFormat: string): string {
-    return this.dateHelper.format(this.value.nativeDate, localeFormat);
+    return this.value._moment.format(localeFormat);
   }
 
   private createYearMonthDaySelectors(): YearMonthDaySelector[] {
@@ -145,10 +146,7 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
     let day: YearMonthDaySelector;
 
     // NOTE: Compat for DatePipe formatting rules
-    let yearFormat: string = this.locale.yearFormat;
-    if (this.dateHelper.relyOnDatePipe) {
-      yearFormat = (this.dateHelper as DateHelperByDatePipe).transCompatFormat(yearFormat);
-    }
+    const yearFormat: string = this.locale.yearFormat;
     year = {
       className: `${this.prefixCls}-year-select`,
       title: this.locale.yearSelect,
@@ -164,10 +162,7 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
     };
 
     // NOTE: Compat for DatePipe formatting rules
-    let dayFormat: string = this.locale.dayFormat;
-    if (this.dateHelper.relyOnDatePipe) {
-      dayFormat = (this.dateHelper as DateHelperByDatePipe).transCompatFormat(dayFormat);
-    }
+    const dayFormat: string = this.locale.dayFormat;
     if (this.showTimePicker) {
       day = {
         className: `${this.prefixCls}-day-select`,

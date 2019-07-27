@@ -33,7 +33,7 @@ const MAX_COL = 3;
 })
 export class DecadePanelComponent implements OnChanges {
   @Input() locale: NzCalendarI18nInterface;
-
+  @Input() dateLocale: string;
   @Input() value: CandyDate;
   @Output() readonly valueChange = new EventEmitter<CandyDate>();
 
@@ -69,6 +69,7 @@ export class DecadePanelComponent implements OnChanges {
 
   private render(): void {
     if (this.value) {
+      this.value.setLocale(this.dateLocale);
       this.panelDecades = this.makePanelDecades();
     }
   }

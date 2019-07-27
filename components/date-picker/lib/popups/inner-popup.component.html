@@ -4,6 +4,7 @@
   [(value)]="value"
   (valueChange)="headerChange.emit($event)"
   [locale]="locale"
+  [dateLocale]="dateLocale"
   [showTimePicker]="showTimePicker"
   [enablePrev]="enablePrev"
   [enableNext]="enableNext"
@@ -31,6 +32,7 @@
 <div class="{{ prefixCls }}-body">
   <date-table
     [locale]="locale"
+    [dateLocale]="dateLocale"
     [showWeek]="showWeek"
     [value]="value"
     (valueChange)="onSelectDate($event)"

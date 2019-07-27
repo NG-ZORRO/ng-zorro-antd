@@ -17,8 +17,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
+import { Moment } from 'jalali-moment';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
-
 import { CandyDate } from '../candy-date/candy-date';
 
 const MAX_ROW = 4;
@@ -46,10 +46,11 @@ const MAX_COL = 3;
 export class YearPanelComponent implements OnChanges {
   @Input() locale: NzCalendarI18nInterface;
 
+  @Input() dateLocale: string;
   @Input() value: CandyDate;
   @Output() readonly valueChange = new EventEmitter<CandyDate>();
 
-  @Input() disabledDate: (date: Date) => boolean;
+  @Input() disabledDate: (date: Moment) => boolean;
 
   @Output() readonly decadePanelShow = new EventEmitter<void>();
 
@@ -117,7 +118,7 @@ export class YearPanelComponent implements OnChanges {
       for (let colIndex = 0; colIndex < MAX_COL; colIndex++) {
         const year = previousYear + index;
         const content = String(year);
-        const disabled = this.disabledDate ? this.disabledDate(this.value.setYear(year).nativeDate) : false;
+        const disabled = this.disabledDate ? this.disabledDate(this.value.setYear(year)._moment) : false;
 
         const cell: PanelYearData = (years[rowIndex][colIndex] = {
           disabled,

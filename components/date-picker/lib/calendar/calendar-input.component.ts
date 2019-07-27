@@ -16,9 +16,9 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { DateHelperService, NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+import { Moment } from 'jalali-moment';
+import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import { CandyDate } from '../candy-date/candy-date';
-
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -29,9 +29,10 @@ import { CandyDate } from '../candy-date/candy-date';
 })
 export class CalendarInputComponent implements OnInit {
   @Input() locale: NzCalendarI18nInterface;
+  @Input() dateLocale: string;
   @Input() format: string;
   @Input() placeholder: string;
-  @Input() disabledDate: (d: Date) => boolean;
+  @Input() disabledDate: (d: Moment) => boolean;
 
   @Input() value: CandyDate;
   @Output() readonly valueChange = new EventEmitter<CandyDate>();
@@ -39,14 +40,18 @@ export class CalendarInputComponent implements OnInit {
   prefixCls: string = 'ant-calendar';
   invalidInputClass: string = '';
 
-  constructor(private dateHelper: DateHelperService) {}
+  constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.value) {
+      this.value.setLocale(this.dateLocale);
+    }
+  }
 
   onInputKeyup(event: Event): void {
     const date = this.checkValidInputDate(event);
 
-    if (!date || (this.disabledDate && this.disabledDate(date.nativeDate))) {
+    if (!date || (this.disabledDate && this.disabledDate(date._moment))) {
       return;
     }
 
@@ -58,12 +63,12 @@ export class CalendarInputComponent implements OnInit {
   }
 
   toReadableInput(value: CandyDate): string {
-    return value ? this.dateHelper.format(value.nativeDate, this.format) : '';
+    return value ? value._moment.format(this.format) : '';
   }
 
   private checkValidInputDate(event: Event): CandyDate | null {
     const input = (event.target as HTMLInputElement).value;
-    const date = new CandyDate(input);
+    const date = new CandyDate(input, this.dateLocale);
 
     this.invalidInputClass = '';
     if (date.isInvalid() || input !== this.toReadableInput(date)) {

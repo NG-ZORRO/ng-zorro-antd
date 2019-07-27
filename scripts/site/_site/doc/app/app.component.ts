@@ -2,7 +2,7 @@ import { Platform } from '@angular/cdk/platform';
 import { AfterViewInit, Component, ElementRef, HostListener, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
-import { en_US, zh_CN, NzI18nService, NzMessageService, VERSION } from 'ng-zorro-antd';
+import { en_US, fa_IR, zh_CN, NzI18nService, NzMessageService, VERSION } from 'ng-zorro-antd';
 import { fromEvent } from 'rxjs';
 import { debounceTime, map, startWith } from 'rxjs/operators';
 import { environment } from '../environments/environment';
@@ -43,7 +43,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     return window && window.location.href.indexOf('/version') === -1;
   }
 
-  language = 'zh';
+  language = 'en';
   oldVersionList = [ '0.5.x', '0.6.x', '0.7.x', '1.8.x', '7.5.x' ];
   currentVersion = VERSION.full;
 
@@ -113,7 +113,17 @@ export class AppComponent implements OnInit, AfterViewInit {
           .split('?')[0];
 
         this.appService.language$.next(this.language);
-        this.nzI18nService.setLocale(this.language === 'en' ? en_US : zh_CN);
+        switch (this.language) {
+            case 'en':
+                this.nzI18nService.setLocale(en_US);
+                break;
+            case 'fa':
+                this.nzI18nService.setLocale(fa_IR);
+                break;
+            case 'zh':
+                this.nzI18nService.setLocale(zh_CN);
+                break;
+        }
 
         if (this.docsearch) {
           this.docsearch!.algoliaOptions = { hitsPerPage: 5, facetFilters: [ `tags:${this.language}` ] };
@@ -261,9 +271,9 @@ export class AppComponent implements OnInit, AfterViewInit {
     const language = navigator.language.toLowerCase();
     const pathname = location.pathname;
     const hasLanguage = pathname.match(/(en|zh)(\/?)$/);
-    if (language === 'zh-cn' && !hasLanguage) {
-      this.nzI18nService.setLocale(zh_CN);
-      this.router.navigate([ 'docs', 'introduce', 'zh' ]);
+    if (language === 'en' && !hasLanguage) {
+      this.nzI18nService.setLocale(en_US);
+      this.router.navigate([ 'docs', 'introduce', 'en' ]);
     }
   }
 }

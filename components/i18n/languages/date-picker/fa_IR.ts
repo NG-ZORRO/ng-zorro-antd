@@ -18,7 +18,11 @@ const locale = {
   },
   timePickerLocale: {
     ...TimePickerLocale
-  }
+  },
+  dateFormat: 'YYYY/MM/DD',
+  dateTimeFormat: 'YYYY/MM/DD HH:mm:ss',
+  weekFormat: 'YYYY-wo',
+  monthFormat: 'YYYY/MM'
 };
 
 // All settings at:

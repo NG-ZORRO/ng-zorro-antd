@@ -27,7 +27,6 @@ import {
 } from '@angular/core';
 
 import { slideMotion } from 'ng-zorro-antd/core';
-import { DateHelperService } from 'ng-zorro-antd/i18n';
 
 import { CandyDate } from './lib/candy-date/candy-date';
 
@@ -101,7 +100,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
     return this.isOpenHandledByUser() ? !!this.open : this.overlayOpen;
   }
 
-  constructor(private dateHelper: DateHelperService, private changeDetector: ChangeDetectorRef) {}
+  constructor(private changeDetector: ChangeDetectorRef) {}
 
   ngOnInit(): void {}
 
@@ -178,7 +177,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
     } else {
       value = this.value as CandyDate;
     }
-    return value ? this.dateHelper.format(value.nativeDate, this.format) : null;
+    return value ? value._moment.format(this.format) : null;
   }
 
   getPartTypeIndex(partType: RangePartType): number {

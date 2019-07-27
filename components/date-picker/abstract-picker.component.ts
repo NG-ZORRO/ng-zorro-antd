@@ -21,8 +21,9 @@ import { ControlValueAccessor } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { Moment } from 'jalali-moment';
 import { InputBoolean, NzNoAnimationDirective } from 'ng-zorro-antd/core';
-import { DateHelperService, NzDatePickerI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzDatePickerI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { CandyDate } from './lib/candy-date/candy-date';
 import { NzPickerComponent } from './picker.component';
@@ -39,8 +40,9 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   @Input() @InputBoolean() nzDisabled: boolean = false;
   @Input() @InputBoolean() nzOpen: boolean;
   @Input() nzClassName: string;
-  @Input() nzDisabledDate: (d: Date) => boolean;
+  @Input() nzDisabledDate: (d: Moment) => boolean;
   @Input() nzLocale: NzDatePickerI18nInterface;
+  @Input() nzDateLocale: string;
   @Input() nzPlaceHolder: string | string[];
   @Input() nzPopupStyle: object = POPUP_STYLE_PATCH;
   @Input() nzDropdownClassName: string;
@@ -69,7 +71,6 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   constructor(
     protected i18n: NzI18nService,
     protected cdr: ChangeDetectorRef,
-    protected dateHelper: DateHelperService,
     public noAnimation?: NzNoAnimationDirective
   ) {}
 
@@ -98,6 +99,10 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
       // The nzLocale is currently handled by user
       this.setDefaultPlaceHolder();
     }
+
+    if (changes.nzDateLocale) {
+      this.setDateLocale();
+    }
   }
 
   ngOnDestroy(): void {
@@ -118,13 +123,13 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
     if (this.isRange) {
       const vAsRange = this.nzValue as CandyDate[];
       if (vAsRange.length) {
-        this.onChangeFn([vAsRange[0].nativeDate, vAsRange[1].nativeDate]);
+        this.onChangeFn([vAsRange[0]._moment, vAsRange[1]._moment]);
       } else {
         this.onChangeFn([]);
       }
     } else {
       if (this.nzValue) {
-        this.onChangeFn((this.nzValue as CandyDate).nativeDate);
+        this.onChangeFn((this.nzValue as CandyDate)._moment);
       } else {
         this.onChangeFn(null);
       }
@@ -178,6 +183,19 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
     this.setDefaultPlaceHolder();
     this.cdr.markForCheck();
   }
+  private setDateLocale(): void {
+    this.cdr.markForCheck();
+    if (this.nzValue && this.nzValue instanceof CandyDate) {
+      // Update current value of picker to target locale;
+      this.nzValue = (this.nzValue as CandyDate).setLocale(this.nzDateLocale);
+    }
+    if (this.nzValue && Array.isArray(this.nzValue)) {
+      // Update current value of picker to target locale;
+      for (const v in this.nzValue) {
+        this.nzValue[v] = (this.nzValue[v] as CandyDate).setLocale(this.nzDateLocale);
+      }
+    }
+  }
 
   private setDefaultPlaceHolder(): void {
     if (!this.isCustomPlaceHolder && this.nzLocale) {
@@ -188,13 +206,13 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   // Safe way of setting value with default
   private setValue(value: CompatibleDate): void {
     if (this.isRange) {
-      this.nzValue = value ? (value as Date[]).map(val => new CandyDate(val)) : [];
+      this.nzValue = value ? (value as Moment[]).map(val => new CandyDate(val, this.nzDateLocale)) : [];
     } else {
-      this.nzValue = value ? new CandyDate(value as Date) : null;
+      this.nzValue = value ? new CandyDate(value as Moment, this.nzDateLocale) : null;
     }
   }
 }
 
 export type CompatibleValue = CandyDate | CandyDate[];
 
-export type CompatibleDate = Date | Date[];
+export type CompatibleDate = Moment | Moment[];

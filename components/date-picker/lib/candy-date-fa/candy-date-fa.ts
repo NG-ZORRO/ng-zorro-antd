@@ -6,11 +6,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import * as momentNs from 'jalali-moment';
-// tslint:disable-next-line:no-duplicate-imports
-import { Moment } from 'jalali-moment';
+import moment from 'jalali-moment';
 import { IndexableObject } from 'ng-zorro-antd/core';
-const moment = momentNs;
 /**
  * Wrapping kind APIs for date operating and unify
  * NOTE: every new API return new CandyDate object without side effects to the former Date object
@@ -18,18 +15,23 @@ const moment = momentNs;
  * TODO: support format() against to angular's core API
  */
 export class CandyDate implements IndexableObject {
-  _moment: Moment;
+  _moment: moment.Moment;
+  _locale: string;
   // locale: string; // Custom specified locale ID
 
-  constructor(date?: Moment | Date | string, private dateLocale: string = 'en') {
+  constructor(date?: moment.Moment | Date | string, locale: string = 'en') {
+    // if (!(this instanceof CandyDate)) {
+    //   return new CandyDate(date);
+    // }
+    this._moment = moment();
+    this._locale = locale;
+    this._moment.locale(this._locale);
     if (date) {
       this._moment = moment(date);
     } else {
-      this._moment = moment();
+      this._moment = moment(new Date());
     }
-    // tslint:disable-no-parameter-reassignment
-    // dateLocale = 'fa';
-    this._moment.locale(dateLocale);
+    console.log(this._moment.format());
   }
 
   // getLocale(): string {
@@ -54,7 +56,7 @@ export class CandyDate implements IndexableObject {
   }
 
   getDay(): number {
-    return this._moment.day();
+    return this._moment.weekday();
   }
 
   getTime(): number {
@@ -86,7 +88,7 @@ export class CandyDate implements IndexableObject {
   // ---------------------------------------------------------------------
 
   clone(): CandyDate {
-    return new CandyDate(this._moment, this.dateLocale);
+    return new CandyDate(this._moment, this._locale);
   }
 
   setHms(hour: number, minute: number, second: number): CandyDate {
@@ -96,58 +98,55 @@ export class CandyDate implements IndexableObject {
       minute: minute,
       second: second
     });
-    return new CandyDate(date, this.dateLocale);
+    return new CandyDate(date, this._locale);
   }
 
   setYear(year: number): CandyDate {
     this._moment.year(year);
-    return new CandyDate(this._moment, this.dateLocale);
+    return new CandyDate(this._moment, this._locale);
   }
 
   addYears(amount: number): CandyDate {
     this._moment.add(amount, 'years');
-    return new CandyDate(this._moment, this.dateLocale);
+    return new CandyDate(this._moment, this._locale);
   }
 
   // NOTE: month starts from 0
   setMonth(month: number): CandyDate {
     this._moment.month(month);
-    return new CandyDate(this._moment, this.dateLocale);
+    return new CandyDate(this._moment, this._locale);
   }
 
   addMonths(amount: number): CandyDate {
     this._moment.add(amount, 'months');
-    return new CandyDate(this._moment, this.dateLocale);
+    return new CandyDate(this._moment, this._locale);
   }
 
   setDay(day: number): CandyDate {
-    this._moment.day(day);
-    return new CandyDate(this._moment, this.dateLocale);
+    this._moment.weekday(day);
+    return new CandyDate(this._moment, this._locale);
   }
 
   setDate(amount: number): CandyDate {
     this._moment.date(amount);
-    return new CandyDate(this._moment, this.dateLocale);
+    return new CandyDate(this._moment, this._locale);
   }
 
-  setLocale(locale: string): CandyDate {
-    return new CandyDate(this._moment, locale);
-  }
   addDays(amount: number): CandyDate {
     this._moment.add(amount, 'days');
-    return new CandyDate(this._moment, this.dateLocale);
+    return new CandyDate(this._moment, this._locale);
   }
 
   endOf(grain: 'month'): CandyDate | null {
     switch (grain) {
       case 'month':
         this._moment.endOf('month');
-        return new CandyDate(this._moment, this.dateLocale);
+        return new CandyDate(this._moment, this._locale);
     }
     return null;
   }
 
-  isSame(date: Moment | CandyDate | Date, grain: CandyDateCompareGrain): boolean {
+  isSame(date: moment.Moment | CandyDate | Date, grain: CandyDateCompareGrain): boolean {
     // TODO: Precipitate into a function "compare()"
     if (date) {
       const left = this.toMoment();
@@ -157,7 +156,7 @@ export class CandyDate implements IndexableObject {
     return false;
   }
 
-  isAfter(date: Moment | CandyDate | Date | null, grain: CandyDateCompareGrain): boolean {
+  isAfter(date: moment.Moment | CandyDate | Date | null, grain: CandyDateCompareGrain): boolean {
     // TODO: Precipitate into a function "compare()"
     if (date) {
       const left = this.toMoment();
@@ -168,7 +167,7 @@ export class CandyDate implements IndexableObject {
   }
 
   // TODO: Precipitate into a function "compare()"
-  isBefore(date: Moment | CandyDate | Date | null, grain: CandyDateCompareGrain): boolean {
+  isBefore(date: moment.Moment | CandyDate | Date | null, grain: CandyDateCompareGrain): boolean {
     // TODO: Precipitate into a function "compare()"
     if (date) {
       const left = this.toMoment();
@@ -187,7 +186,7 @@ export class CandyDate implements IndexableObject {
     return isNaN(this._moment.valueOf());
   }
 
-  private toMoment(date: Moment | CandyDate | Date = this): Moment {
+  private toMoment(date: moment.Moment | CandyDate | Date = this): moment.Moment {
     return date instanceof CandyDate ? date._moment : moment(date);
   }
 

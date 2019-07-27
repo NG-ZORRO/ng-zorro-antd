@@ -36,6 +36,7 @@ export class InnerPopupComponent implements OnInit, OnChanges {
   @Input() showWeek: boolean;
 
   @Input() locale: NzCalendarI18nInterface;
+  @Input() dateLocale: string;
   @Input() showTimePicker: boolean;
   // tslint:disable-next-line:no-any
   @Input() timeOptions: any;
@@ -60,21 +61,23 @@ export class InnerPopupComponent implements OnInit, OnChanges {
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.value._moment.locale(this.dateLocale);
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.value && !this.value) {
-      this.value = new CandyDate();
+      this.value = new CandyDate(new Date(), this.dateLocale);
     }
   }
 
   onSelectTime(date: Date): void {
-    this.selectTime.emit(new CandyDate(date));
+    this.selectTime.emit(new CandyDate(date, this.dateLocale));
   }
 
   // The value real changed to outside
   onSelectDate(date: CandyDate | Date): void {
-    const value = date instanceof CandyDate ? date : new CandyDate(date);
+    const value = date instanceof CandyDate ? date : new CandyDate(date, this.dateLocale);
     this.selectDate.emit(value);
   }
 }

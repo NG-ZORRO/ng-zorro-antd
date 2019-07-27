@@ -8,5 +8,5 @@ export const routes: Routes = [
   ...DEMO_ROUTES,
   { path: 'docs', loadChildren: () => import('./docs/index.module').then(m => m.NzDocsModule)},
   { path: 'demo', component: DEMOComponent },
-  { path: '**', redirectTo: '/docs/introduce/zh', pathMatch: 'full' }
+  { path: '**', redirectTo: '/docs/introduce/en', pathMatch: 'full' }
 ];

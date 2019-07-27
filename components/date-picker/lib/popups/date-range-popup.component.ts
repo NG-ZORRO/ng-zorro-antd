@@ -19,6 +19,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
+import { Moment } from 'jalali-moment';
 import { FunctionProp } from 'ng-zorro-antd/core';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import {
@@ -46,6 +47,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   @Input() showWeek: boolean;
 
   @Input() locale: NzCalendarI18nInterface;
+  @Input() dateLocale: string;
   @Input() format: string;
   @Input() placeholder: string | string[];
   @Input() disabledDate: DisabledDateFn;
@@ -54,7 +56,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   @Input() showTime: SupportTimeOptions | boolean;
   @Input() extraFooter: TemplateRef<void> | string;
   @Input() ranges: PresetRanges;
-  @Input() dateRender: FunctionProp<TemplateRef<Date> | string>;
+  @Input() dateRender: FunctionProp<TemplateRef<Moment> | string>;
   @Input() popupStyle: object;
   @Input() dropdownClassName: string;
 
@@ -137,7 +139,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   onDayHover(value: CandyDate): void {
     if (this.isRange && this.selectedValue[0] && !this.selectedValue[1]) {
       // When right value is selected, don't do hover
-      const base = this.selectedValue[0]; // Use the left of selected value as the base to decide later hoverValue
+      const base = this.selectedValue[0].clone(); // Use the left of selected value as the base to decide later hoverValue
       if (base.isBefore(value, 'day')) {
         this.hoverValue = [base, value];
       } else {
@@ -169,7 +171,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
       newValue[index] = this.overrideHms(value, newValue[index])!;
       this.setValue(newValue);
     } else {
-      this.setValue(this.overrideHms(value, (this.value as CandyDate) || new CandyDate())!); // If not select a date currently, use today
+      this.setValue(this.overrideHms(value, (this.value as CandyDate) || new CandyDate(new Date(), this.dateLocale))!); // If not select a date currently, use today
     }
   }
 
@@ -260,11 +262,11 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     return this.selectedValue && !!this.selectedValue[1] && !!this.selectedValue[0];
   }
 
-  disabledStartTime = (value: Date | Date[]): DisabledTimeConfig => {
+  disabledStartTime = (value: Moment | Moment[]): DisabledTimeConfig => {
     return this.disabledTime && this.disabledTime(value, 'start');
   };
 
-  disabledEndTime = (value: Date | Date[]): DisabledTimeConfig => {
+  disabledEndTime = (value: Moment | Moment[]): DisabledTimeConfig => {
     return this.disabledTime && this.disabledTime(value, 'end');
   };
 
@@ -312,7 +314,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
 
   onClickPresetRange(val: PresetRanges[keyof PresetRanges]): void {
     const value = typeof val === 'function' ? val() : val;
-    this.setValue([new CandyDate(value[0]), new CandyDate(value[1])]);
+    this.setValue([new CandyDate(value[0], this.dateLocale), new CandyDate(value[1], this.dateLocale)]);
     this.resultOk.emit();
   }
 
@@ -322,7 +324,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
 
   onHoverPresetRange(val: PresetRanges[keyof PresetRanges]): void {
     if (typeof val !== 'function') {
-      this.hoverValue = [new CandyDate(val[0]), new CandyDate(val[1])];
+      this.hoverValue = [new CandyDate(val[0], this.dateLocale), new CandyDate(val[1], this.dateLocale)];
     }
   }
 
@@ -407,8 +409,9 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
 
   private normalizeRangeValue(value: CandyDate[]): CandyDate[] {
     const [start, end] = value;
-    const newStart = start || new CandyDate();
-    const newEnd = end && end.isSame(newStart, 'month') ? end.addMonths(1) : end || newStart.addMonths(1);
+    const newStart = start || new CandyDate(new Date(), this.dateLocale);
+    const newEnd =
+      end && end.isSame(newStart, 'month') ? end.clone().addMonths(1) : end || newStart.clone().addMonths(1);
     return [newStart, newEnd];
   }
 

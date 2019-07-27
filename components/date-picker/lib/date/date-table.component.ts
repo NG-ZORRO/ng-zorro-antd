@@ -10,9 +10,11 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  Inject,
   Input,
   OnChanges,
   OnInit,
+  Optional,
   Output,
   SimpleChange,
   SimpleChanges,
@@ -20,10 +22,15 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
+import * as momentNs from 'jalali-moment';
+// tslint:disable-next-line:no-duplicate-imports
+import { Moment } from 'jalali-moment';
 import { isNonEmptyString, isTemplateRef, valueFunctionProp, FunctionProp } from 'ng-zorro-antd/core';
-import { DateHelperByDatePipe, DateHelperService, NzCalendarI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzCalendarI18nInterface, WeekDayIndex } from 'ng-zorro-antd/i18n';
+import { mergeDateConfig, NzDateConfig, NZ_DATE_CONFIG } from '../../../i18n/date-config';
 import { CandyDate } from '../candy-date/candy-date';
-
+import { WeekDayLabel } from '../date/date-table.component';
+const moment = momentNs;
 const DATE_ROW_NUM = 6;
 const DATE_COL_NUM = 7;
 
@@ -37,6 +44,7 @@ const DATE_COL_NUM = 7;
 })
 export class DateTableComponent implements OnInit, OnChanges {
   @Input() locale: NzCalendarI18nInterface;
+  @Input() dateLocale: string;
   @Input() selectedValue: CandyDate[]; // Range ONLY
   @Input() hoverValue: CandyDate[]; // Range ONLY
 
@@ -44,28 +52,35 @@ export class DateTableComponent implements OnInit, OnChanges {
   @Output() readonly valueChange = new EventEmitter<CandyDate>();
 
   @Input() showWeek: boolean;
-  @Input() disabledDate: (d: Date) => boolean;
-  @Input() dateRender: FunctionProp<TemplateRef<Date> | string>; // Customize date content while rendering
+  @Input() disabledDate: (d: CandyDate) => boolean;
+  @Input() dateRender: FunctionProp<TemplateRef<CandyDate> | string>; // Customize date content while rendering
 
   @Output() readonly dayHover = new EventEmitter<CandyDate>(); // Emitted when hover on a day by mouse enter
 
+  objectKeys = Object.keys;
   prefixCls: string = 'ant-calendar';
-  headWeekDays: WeekDayLabel[];
+  headWeekDays: { [key: string]: WeekDayLabel };
   weekRows: WeekRow[];
 
   isTemplateRef = isTemplateRef;
   isNonEmptyString = isNonEmptyString;
+  private readonly DAYS = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
 
-  constructor(private i18n: NzI18nService, private dateHelper: DateHelperService) {}
-
-  ngOnInit(): void {}
+  constructor(@Optional() @Inject(NZ_DATE_CONFIG) protected dateConfig: NzDateConfig) {
+    this.dateConfig = mergeDateConfig(this.dateConfig);
+  }
+  ngOnInit(): void {
+    this.value._moment.locale(this.dateLocale);
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.render();
     if (
       this.isDateRealChange(changes.value) ||
       this.isDateRealChange(changes.selectedValue) ||
       this.isDateRealChange(changes.hoverValue)
     ) {
+      // this.value._moment.locale(this.dateLocale);
       this.render();
     }
   }
@@ -104,38 +119,67 @@ export class DateTableComponent implements OnInit, OnChanges {
     }
   }
 
-  private makeHeadWeekDays(): WeekDayLabel[] {
-    const weekDays: WeekDayLabel[] = [];
-    const firstDayOfWeek = this.dateHelper.getFirstDayOfWeek();
-    for (let colIndex = 0; colIndex < DATE_COL_NUM; colIndex++) {
-      const day = (firstDayOfWeek + colIndex) % DATE_COL_NUM;
-      const tempDate = this.value.setDay(day);
-      weekDays[colIndex] = {
-        short: this.dateHelper.format(tempDate.nativeDate, this.dateHelper.relyOnDatePipe ? 'E' : 'ddd'), // eg. Tue
-        veryShort: this.dateHelper.format(tempDate.nativeDate, this.getVeryShortWeekFormat()) // eg. Tu
+  generateDaysMap(firstDayOfWeek: WeekDayIndex): { [key: number]: string } {
+    const daysArr = this.DAYS.slice(firstDayOfWeek, 7).concat(this.DAYS.slice(0, firstDayOfWeek));
+    return daysArr.reduce(
+      (map, day, index) => {
+        map[index] = day;
+        return map;
+      },
+      {} as { [key: number]: string }
+    );
+  }
+  generateWeekdays(firstDayOfWeek: WeekDayIndex, locale?: string): { [key: string]: Moment } {
+    const weekdayNames: { [key: string]: Moment } = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'].reduce(
+      (acc, d, i) => {
+        const m = moment();
+        if (locale) {
+          m.locale(locale);
+        }
+        m.day(i);
+        acc[d] = m;
+        return acc;
+      },
+      {} as { [key: string]: Moment }
+    );
+
+    const weekdays: { [key: string]: Moment } = {};
+    const daysMap = this.generateDaysMap(firstDayOfWeek);
+
+    for (const dayKey in daysMap) {
+      if (daysMap.hasOwnProperty(dayKey)) {
+        const day = daysMap[dayKey];
+        weekdays[day] = weekdayNames[daysMap[Number(dayKey)]];
+      }
+    }
+    return weekdays;
+  }
+
+  getWeekdayName(weekday: Moment, format: string = 'dd'): string {
+    return weekday.format(format);
+  }
+  getfirstDayOfWeek(): WeekDayIndex {
+    return this.dateConfig.firstDayOfWeek == null ? 1 : this.dateConfig.firstDayOfWeek;
+  }
+  private makeHeadWeekDays(): { [key: string]: WeekDayLabel } {
+    const weekDays: { [key: string]: WeekDayLabel } = {};
+    const firstDayOfWeek = this.getfirstDayOfWeek();
+    const weekdaysMoment = this.generateWeekdays(firstDayOfWeek, this.dateLocale);
+    for (const i in weekdaysMoment) {
+      weekDays[i] = {
+        short: this.getWeekdayName(weekdaysMoment[i]),
+        veryShort: this.getWeekdayName(weekdaysMoment[i])
       };
     }
     return weekDays;
   }
 
-  private getVeryShortWeekFormat(): string {
-    if (this.dateHelper.relyOnDatePipe) {
-      return this.i18n
-        .getLocaleId()
-        .toLowerCase()
-        .indexOf('zh') === 0
-        ? 'EEEEE'
-        : 'EEEEEE'; // Use extreme short for chinese
-    }
-    return 'dd';
-  }
-
   private makeWeekRows(): WeekRow[] {
     const weekRows: WeekRow[] = [];
-    const firstDayOfWeek = this.dateHelper.getFirstDayOfWeek();
-    const firstDateOfMonth = this.value.setDate(1);
+    const firstDayOfWeek = this.getfirstDayOfWeek();
+    const firstDateOfMonth = this.value.clone().setDate(1);
     const firstDateOffset = (firstDateOfMonth.getDay() + 7 - firstDayOfWeek) % 7;
-    const firstDateToShow = firstDateOfMonth.addDays(0 - firstDateOffset);
+    const firstDateToShow = firstDateOfMonth.clone().addDays(0 - firstDateOffset);
 
     let increased = 0;
     for (let rowIndex = 0; rowIndex < DATE_ROW_NUM; rowIndex++) {
@@ -146,7 +190,7 @@ export class DateTableComponent implements OnInit, OnChanges {
       });
 
       for (let colIndex = 0; colIndex < DATE_COL_NUM; colIndex++) {
-        const current = firstDateToShow.addDays(increased++);
+        const current = firstDateToShow.clone().addDays(increased++);
         const isBeforeMonthYear = this.isBeforeMonthYear(current, this.value);
         const isAfterMonthYear = this.isAfterMonthYear(current, this.value);
         const cell: DateCell = {
@@ -196,7 +240,7 @@ export class DateTableComponent implements OnInit, OnChanges {
           week.isActive = true;
         }
 
-        if (this.disabledDate && this.disabledDate(current.nativeDate)) {
+        if (this.disabledDate && this.disabledDate(current)) {
           cell.isDisabled = true;
         }
 
@@ -226,15 +270,12 @@ export class DateTableComponent implements OnInit, OnChanges {
 
   private getDateTitle(date: CandyDate): string {
     // NOTE: Compat for DatePipe formatting rules
-    let dateFormat: string = (this.locale && this.locale.dateFormat) || 'YYYY-MM-DD';
-    if (this.dateHelper.relyOnDatePipe) {
-      dateFormat = (this.dateHelper as DateHelperByDatePipe).transCompatFormat(dateFormat);
-    }
-    return this.dateHelper.format(date.nativeDate, dateFormat);
+    const dateFormat: string = (this.locale && this.locale.dateFormat) || 'YYYY/MM/DD';
+    return date._moment.format(dateFormat);
   }
 
   private getWeekNum(date: CandyDate): number {
-    return this.dateHelper.getISOWeek(date.nativeDate);
+    return date._moment.isoWeek();
   }
 
   private isBeforeMonthYear(current: CandyDate, target: CandyDate): boolean {
@@ -260,7 +301,7 @@ export interface WeekDayLabel {
 export interface DateCell {
   value: CandyDate;
   title: string;
-  customContent: TemplateRef<Date> | string;
+  customContent: TemplateRef<CandyDate> | string;
   content: string;
   isSelected?: boolean;
   isToday?: boolean;

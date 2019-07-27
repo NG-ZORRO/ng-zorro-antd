@@ -75,6 +75,10 @@
     line-height: 14px;
     transition: all 0.3s;
     user-select: none;
+    [dir="rtl"] &{
+      right: auto;
+      left: @control-padding-horizontal;
+    }
   }
 
   &-clear {
@@ -105,5 +109,9 @@
   &-small &-clear,
   &-small &-icon {
     right: @control-padding-horizontal-sm;
+    [dir="rtl"] &{
+      right: auto;
+      left: @control-padding-horizontal-sm;
+    }
   }
 }

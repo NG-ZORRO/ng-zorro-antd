@@ -11,7 +11,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 import { IndexableObject } from 'ng-zorro-antd/core';
 
-import zh_CN from './languages/zh_CN';
+import en_US from './languages/en_US';
 import { DateLocale, NzI18nInterface } from './nz-i18n.interface';
 import { NZ_DATE_LOCALE, NZ_I18N } from './nz-i18n.token';
 
@@ -31,7 +31,7 @@ export class NzI18nService {
     @Optional() @Inject(NZ_I18N) locale: NzI18nInterface,
     @Optional() @Inject(NZ_DATE_LOCALE) dateLocale: DateLocale
   ) {
-    this.setLocale(locale || zh_CN);
+    this.setLocale(locale || en_US);
     this.setDateLocale(dateLocale || null);
   }
 

@@ -15,8 +15,11 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
-import setMonth from 'date-fns/set_month';
-import { DateHelperService, NzI18nService as I18n } from 'ng-zorro-antd/i18n';
+import * as momentNs from 'jalali-moment';
+// tslint:disable-next-line:no-duplicate-imports
+import { Moment } from 'jalali-moment';
+const moment = momentNs;
+import { NzI18nService as I18n } from 'ng-zorro-antd/i18n';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -36,30 +39,30 @@ export class NzCalendarHeaderComponent implements OnInit {
   @Input() fullscreen: boolean = true;
 
   @Input()
-  set activeDate(value: Date) {
+  set activeDate(value: Moment) {
     this._activeDate = value;
     this.setUpYears();
   }
 
-  get activeDate(): Date {
+  get activeDate(): Moment {
     return this._activeDate;
   }
 
   @Output() readonly yearChange: EventEmitter<number> = new EventEmitter();
   @Output() readonly monthChange: EventEmitter<number> = new EventEmitter();
 
-  _activeDate = new Date();
+  _activeDate: Moment = moment();
   yearOffset: number = 10;
   yearTotal: number = 20;
   years: Array<{ label: string; value: number }>;
   months: Array<{ label: string; value: number }>;
 
   get activeYear(): number {
-    return this.activeDate.getFullYear();
+    return this.activeDate.year();
   }
 
   get activeMonth(): number {
-    return this.activeDate.getMonth();
+    return this.activeDate.month();
   }
 
   get size(): string {
@@ -74,7 +77,7 @@ export class NzCalendarHeaderComponent implements OnInit {
     return this.i18n.getLocale().Calendar.month;
   }
 
-  constructor(private i18n: I18n, private dateHelper: DateHelperService) {}
+  constructor(private i18n: I18n) {}
 
   ngOnInit(): void {
     this.setUpYears();
@@ -100,8 +103,8 @@ export class NzCalendarHeaderComponent implements OnInit {
     this.months = [];
 
     for (let i = 0; i < 12; i++) {
-      const dateInMonth = setMonth(this.activeDate, i);
-      const monthText = this.dateHelper.format(dateInMonth, 'MMM');
+      const dateInMonth = this.activeDate.clone().month(i);
+      const monthText = dateInMonth.format('MMM');
       this.months.push({ label: monthText, value: i });
     }
   }

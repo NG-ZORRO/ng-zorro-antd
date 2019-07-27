@@ -18,9 +18,9 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { DateHelperByDatePipe, DateHelperService, NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+import { Moment } from 'jalali-moment';
+import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import { CandyDate } from '../candy-date/candy-date';
-
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,7 +32,7 @@ import { CandyDate } from '../candy-date/candy-date';
 export class TodayButtonComponent implements OnInit, OnChanges {
   @Input() locale: NzCalendarI18nInterface;
   @Input() hasTimePicker: boolean = false;
-  @Input() disabledDate: (d: Date) => boolean;
+  @Input() disabledDate: (d: Moment) => boolean;
 
   @Output() readonly clickToday = new EventEmitter<CandyDate>();
 
@@ -42,21 +42,17 @@ export class TodayButtonComponent implements OnInit, OnChanges {
 
   private now: CandyDate = new CandyDate();
 
-  constructor(private dateHelper: DateHelperService) {}
+  constructor() {}
 
   ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.disabledDate) {
-      this.isDisabled = this.disabledDate && this.disabledDate(this.now.nativeDate);
+      this.isDisabled = this.disabledDate && this.disabledDate(this.now._moment);
     }
     if (changes.locale) {
-      // NOTE: Compat for DatePipe formatting rules
-      let dateFormat: string = this.locale.dateFormat;
-      if (this.dateHelper.relyOnDatePipe) {
-        dateFormat = (this.dateHelper as DateHelperByDatePipe).transCompatFormat(dateFormat);
-      }
-      this.title = this.dateHelper.format(this.now.nativeDate, dateFormat);
+      const dateFormat: string = this.locale.dateFormat;
+      this.title = this.now._moment.format(dateFormat);
     }
   }
 

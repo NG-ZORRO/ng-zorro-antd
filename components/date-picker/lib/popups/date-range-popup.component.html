@@ -31,6 +31,7 @@
     [value]="getValue(partType)"
     (valueChange)="changeValue($event, partType)"
     [locale]="locale"
+    [dateLocale]="dateLocale"
     [disabledDate]="disabledDate"
     [format]="format"
     [placeholder]="getPlaceholder(partType)"
@@ -41,6 +42,7 @@
   <inner-popup
     [showWeek]="showWeek"
     [locale]="locale"
+    [dateLocale]="dateLocale"
     [showTimePicker]="hasTimePicker && showTimePicker"
     [timeOptions]="getTimeOptions(partType)"
     [panelMode]="getPanelMode(partType)"
