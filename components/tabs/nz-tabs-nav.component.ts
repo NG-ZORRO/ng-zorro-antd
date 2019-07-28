@@ -8,6 +8,7 @@
 
 /** code from https://github.com/angular/material2 */
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Platform } from '@angular/cdk/platform';
 import {
   AfterContentChecked,
   AfterContentInit,
@@ -28,10 +29,9 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { pxToNumber, InputBoolean, NzDomEventService } from 'ng-zorro-antd/core';
 import { merge, of as observableOf, Subject, Subscription } from 'rxjs';
 import { finalize, startWith, takeUntil } from 'rxjs/operators';
-
-import { InputBoolean, NzDomEventService } from 'ng-zorro-antd/core';
 
 import { NzTabLabelDirective } from './nz-tab-label.directive';
 import { NzTabsInkBarDirective } from './nz-tabs-ink-bar.directive';
@@ -105,6 +105,7 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
     private ngZone: NgZone,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
+    private platform: Platform,
     private nzDomEventService: NzDomEventService,
     @Optional() private dir: Directionality
   ) {}
@@ -115,6 +116,7 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
     // will fire even if the text content didn't change which is inefficient and is prone
     // to infinite loops if a poorly constructed expression is passed in (see #14249).
     if (textContent !== this.currentTextContent) {
+      this.currentTextContent = textContent;
       this.ngZone.run(() => {
         if (this.nzShowPagination) {
           this.updatePagination();
@@ -287,12 +289,29 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
   get viewWidthHeightPix(): number {
     let PAGINATION_PIX = 0;
     if (this.showPaginationControls) {
-      PAGINATION_PIX = 64;
+      PAGINATION_PIX = this.navContainerScrollPaddingPix;
     }
     if (this.nzPositionMode === 'horizontal') {
       return this.navContainerElement.nativeElement.offsetWidth - PAGINATION_PIX;
     } else {
       return this.navContainerElement.nativeElement.offsetHeight - PAGINATION_PIX;
+    }
+  }
+
+  get navContainerScrollPaddingPix(): number {
+    if (this.platform.isBrowser) {
+      const navContainer = this.navContainerElement.nativeElement;
+      // tslint:disable: no-any
+      const originStyle: CSSStyleDeclaration = window.getComputedStyle
+        ? window.getComputedStyle(navContainer)
+        : (navContainer as any).currentStyle; // currentStyle for IE < 9
+      if (this.nzPositionMode === 'horizontal') {
+        return pxToNumber(originStyle.paddingLeft) + pxToNumber(originStyle.paddingRight);
+      } else {
+        return pxToNumber(originStyle.paddingTop) + pxToNumber(originStyle.paddingBottom);
+      }
+    } else {
+      return 0;
     }
   }
 
