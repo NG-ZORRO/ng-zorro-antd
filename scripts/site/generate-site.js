@@ -50,17 +50,21 @@ function generate(target) {
 
       // handle components->${component}->demo folder
       const demoDirPath = path.join(componentDirPath, 'demo');
-      const demoMap = {};
+      let demoMap = {};
+      let onlyNameKey = '';
       if (fs.existsSync(demoDirPath)) {
         const demoDir = fs.readdirSync(demoDirPath);
         demoDir.forEach(demo => {
+          const nameKey = nameWithoutSuffixUtil(demo);
           if (/.md$/.test(demo)) {
-            const nameKey = nameWithoutSuffixUtil(demo);
             const demoMarkDownFile = fs.readFileSync(path.join(demoDirPath, demo));
             demoMap[nameKey] = parseDemoMdUtil(demoMarkDownFile);
             demoMap[nameKey]['name'] = `NzDemo${camelCase(capitalizeFirstLetter(componentName))}${camelCase(capitalizeFirstLetter(nameKey))}Component`;
             demoMap[nameKey]['enCode'] = generateCodeBox(componentName, demoMap[nameKey]['name'], nameKey, demoMap[nameKey].meta.title['en-US'], demoMap[nameKey].en, demoMap[nameKey].meta.iframe);
             demoMap[nameKey]['zhCode'] = generateCodeBox(componentName, demoMap[nameKey]['name'], nameKey, demoMap[nameKey].meta.title['zh-CN'], demoMap[nameKey].zh, demoMap[nameKey].meta.iframe);
+            if (demoMap[nameKey].meta['only']) {
+              onlyNameKey = nameKey;
+            }
           }
           if (/.ts$/.test(demo)) {
             const nameKey = nameWithoutSuffixUtil(demo);
@@ -96,6 +100,10 @@ function generate(target) {
         });
         pageDemo.enCode = pageDemo.raw.replace(/locale;/g, enLocale);
         pageDemo.zhCode = pageDemo.raw.replace(/locale;/g, zhLocale);
+      }
+
+      if (onlyNameKey) {
+        demoMap = { [onlyNameKey]: demoMap[onlyNameKey] };
       }
 
       // handle components->${component}->doc folder
