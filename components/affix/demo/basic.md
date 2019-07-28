@@ -1,4 +1,5 @@
 ---
+only: true
 order: 0
 title:
   zh-CN: 基本
