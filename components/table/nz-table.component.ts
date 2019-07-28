@@ -324,24 +324,24 @@ export class NzTableComponent<T = any>
   }
 
   private handleDataChange(nzData?: T[] | NzDataSource<T>): void {
-    if (isDataSource(nzData)) {
-      this.isIteratorOverriddenOrThrow(nzData);
-      this.data = nzData;
-    } else {
-      this.data = new NzArrayDataSource(nzData || [], !this.nzFrontPagination);
-    }
+    this.data =
+      isDataSource(nzData) && this.isIteratorOverriddenOrThrow(nzData)
+        ? nzData
+        : new NzArrayDataSource<T>(nzData || [], !this.nzFrontPagination);
 
     if (this.nzFrontPagination) {
-      this.data = new NzDetachedDataSource(this, this.data);
-      this.data.connect(this).subscribe({
+      this.data = new NzDetachedDataSource<T>(this, this.data);
+      (this.data as NzDetachedDataSource<T>).connect().subscribe({
         next: data => this.nzCurrentPageDataChange.emit(data as T[])
       });
     }
   }
 
-  private isIteratorOverriddenOrThrow(nzData: NzDataSource<T>): void {
+  private isIteratorOverriddenOrThrow(nzData: NzDataSource<T>): nzData is NzDataSource<T> | never {
     if (!this.nzVirtualScroll && nzData[Symbol.iterator] === NzDataSource.prototype[Symbol.iterator]) {
       throw new Error('Iterable must be overridden. No data will be displayed');
     }
+
+    return true;
   }
 }
