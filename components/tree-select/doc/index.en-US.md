@@ -42,7 +42,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 | `[nzAsyncData]` | Load data asynchronously (should be used with NzTreeNode.addChildren(...)) | `boolean` | `false` |
 | `[nzNodes]` | Data of the treeNodes | `NzTreeNodeOptions[]` | `[]` |
 | `[nzDefaultExpandAll]` | Whether to expand all treeNodes by default | `boolean` | `false` |
-| `[nzDefaultExpandedKeys]` | Default expanded treeNodes | `string[]` | - |
+| `[nzExpandedKeys]` | Default expanded treeNodes | `string[]` | - |
 | `[nzDisplayWith]` | How to display the selected node value in the trigger | `(node: NzTreeNode) => string` | `(node: NzTreeNode) => node.title` |
 | `[nzMaxTagCount]` | Max tag count to show| number | - |
 | `[nzMaxTagPlaceholder]` | Placeholder for not showing tags | TemplateRef<{ $implicit: NzTreeNode[] }> | - |
