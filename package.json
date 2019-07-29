@@ -22,7 +22,8 @@
     "integration-cli": "npm run build:lib && cd integration/angular-cli && npm run integration",
     "integration-rollup": "npm run build:lib&& cd integration/rollup && npm run integration",
     "integration-webpack": "npm run build:lib && cd integration/webpack && npm run integration",
-    "integration": "npm run build:lib && bash ./integration-test.sh"
+    "integration": "npm run build:lib && bash ./integration-test.sh",
+    "install": "npm run build"
   },
   "dependencies": {
     "@angular/cdk": "^8.0.0",
