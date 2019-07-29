@@ -1,4 +1,5 @@
 ---
+only: true
 order: 9
 title:
   zh-CN: Block 按钮
