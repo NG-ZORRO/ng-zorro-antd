@@ -1,3 +1,15 @@
+<a name="8.1.2"></a>
+## [8.1.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.1.1...8.1.2) (2019-07-29)
+
+
+### Bug Fixes
+
+* **slider:** change mark style in horizontal mode ([#3879](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3879)) ([e6a6221](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e6a6221)), closes [#3876](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3876)
+* **tree-select:** should not close when the selectable is false ([#3843](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3843)) ([329ec22](https://github.com/NG-ZORRO/ng-zorro-antd/commit/329ec22)), closes [#3833](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3833)
+* **schematics:** fix template files suffix ([#3884](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3884)) ([5b4714f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5b4714f))
+
+
+
 <a name="8.1.1"></a>
 ## [8.1.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.1.0...8.1.1) (2019-07-29)
 
