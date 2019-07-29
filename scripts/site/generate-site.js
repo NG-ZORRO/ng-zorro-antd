@@ -61,9 +61,12 @@ function handleWithDemoMap({ demoPaths, componentName, nameKey: originNameKey, s
       if (!originNameKey) {
         nameKey = nameWithoutSuffixUtil(filePath);
       }
+      if (originNameKey && !filePath.includes(originNameKey) && filePath !== 'module') {
+        return;
+      }
       if (/.md$/.test(filePath)) {
         const demoMarkDownFile = fs.readFileSync(path.join(currentDemoPath, filePath));
-        demoMap[nameKey] = parseDemoMdUtil(demoMarkDownFile)
+        demoMap[nameKey] = parseDemoMdUtil(demoMarkDownFile);
         demoMap[nameKey]['name'] = `NzDemo${camelCase(capitalizeFirstLetter(componentName))}${camelCase(capitalizeFirstLetter(nameKey))}Component`;
         demoMap[nameKey]['enCode'] = generateCodeBox(componentName, demoMap[nameKey]['name'], nameKey, demoMap[nameKey].meta.title['en-US'], demoMap[nameKey].en, demoMap[nameKey].meta.iframe);
         demoMap[nameKey]['zhCode'] = generateCodeBox(componentName, demoMap[nameKey]['name'], nameKey, demoMap[nameKey].meta.title['zh-CN'], demoMap[nameKey].zh, demoMap[nameKey].meta.iframe);
