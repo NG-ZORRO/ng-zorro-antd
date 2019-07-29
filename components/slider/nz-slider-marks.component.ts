@@ -8,7 +8,7 @@
 
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
-import { InputBoolean } from 'ng-zorro-antd/core';
+import { InputBoolean, NgStyleInterface } from 'ng-zorro-antd/core';
 
 import { isConfigAObject, DisplayedMark, ExtendedMark, Mark } from './nz-slider-definitions';
 
@@ -49,7 +49,7 @@ export class NzSliderMarksComponent implements OnChanges {
 
     this.marks = this.nzMarksArray.map(mark => {
       const { value, offset, config } = mark;
-      const style = this.buildStyles(value, range, config);
+      const style = this.getMarkStyles(value, range, config);
       const label = isConfigAObject(config) ? config.label : config;
 
       return {
@@ -63,7 +63,7 @@ export class NzSliderMarksComponent implements OnChanges {
     });
   }
 
-  private buildStyles(value: number, range: number, config: Mark): { [key: string]: string } {
+  private getMarkStyles(value: number, range: number, config: Mark): NgStyleInterface {
     let style;
 
     if (this.nzVertical) {
@@ -72,12 +72,8 @@ export class NzSliderMarksComponent implements OnChanges {
         bottom: `${((value - this.nzMin) / range) * 100}%`
       };
     } else {
-      const marksCount = this.nzMarksArray.length;
-      const unit = 100 / (marksCount - 1);
-      const markWidth = unit * 0.9;
       style = {
-        width: `${markWidth}%`,
-        marginLeft: `${-markWidth / 2}%`,
+        transform: `translate3d(-50%, 0, 0)`,
         left: `${((value - this.nzMin) / range) * 100}%`
       };
     }
