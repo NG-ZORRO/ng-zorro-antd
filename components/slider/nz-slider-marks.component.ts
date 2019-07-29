@@ -29,7 +29,6 @@ export class NzSliderMarksComponent implements OnChanges {
   @Input() @InputBoolean() nzVertical = false;
   @Input() @InputBoolean() nzIncluded = false;
 
-  /** @internal */
   marks: DisplayedMark[];
 
   ngOnChanges(changes: SimpleChanges): void {
