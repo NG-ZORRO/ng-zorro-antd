@@ -2,7 +2,7 @@
 order: 0
 title:
   zh-CN: 水平登录栏
-  en-US: Horizontal Login Form
+  en-US: Inline Login Form
 ---
 
 ## zh-CN
@@ -11,4 +11,4 @@ title:
 
 ## en-US
 
-Horizontal login form is often used in navigation bar.
+Inline login form is often used in navigation bar.
