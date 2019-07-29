@@ -48,27 +48,36 @@ function isOnlyMode(rootPath) {
   return result;
 }
 
-function handleWithDemoMap({ currentDemoPath, componentName, nameKey, showCaseComponentPath }) {
-  const demoDir = fs.readdirSync(currentDemoPath);
+function handleWithDemoMap({ demoPaths, componentName, nameKey: originNameKey, showCaseComponentPath }) {
   const demoMap = {};
-  fs.mkdirSync(showCaseComponentPath);
-  demoDir.map(filePath => {
-    if (/.md$/.test(filePath)) {
-      const demoMarkDownFile = fs.readFileSync(path.join(currentDemoPath, filePath));
-      demoMap[nameKey] = parseDemoMdUtil(demoMarkDownFile)
-      demoMap[nameKey]['name'] = `NzDemo${camelCase(capitalizeFirstLetter(componentName))}${camelCase(capitalizeFirstLetter(nameKey))}Component`;
-      demoMap[nameKey]['enCode'] = generateCodeBox(componentName, demoMap[nameKey]['name'], nameKey, demoMap[nameKey].meta.title['en-US'], demoMap[nameKey].en, demoMap[nameKey].meta.iframe);
-      demoMap[nameKey]['zhCode'] = generateCodeBox(componentName, demoMap[nameKey]['name'], nameKey, demoMap[nameKey].meta.title['zh-CN'], demoMap[nameKey].zh, demoMap[nameKey].meta.iframe);
-    }
-    if (/.ts$/.test(filePath)) {
-      demoMap[nameKey].ts = String(fs.readFileSync(path.join(currentDemoPath, filePath)));
-      // copy ts file to site->${component} folder
-      fs.writeFileSync(path.join(showCaseComponentPath, filePath), demoMap[nameKey].ts);
-    }
-    if (filePath === 'module') {
-      const data = String(fs.readFileSync(path.join(currentDemoPath, filePath)));
-      fs.writeFileSync(path.join(showCaseComponentPath, 'module.ts'), data);
-    }
+  demoPaths.map(currentDemoPath => {
+    const demoDir = fs.readdirSync(currentDemoPath);
+    fs.ensureDirSync(showCaseComponentPath);
+    let nameKey = originNameKey;
+    demoDir.map(filePath => {
+      if (path.basename(currentDemoPath.replace('demo', '')) !== componentName) {
+        return;
+      }
+      if (!originNameKey) {
+        nameKey = nameWithoutSuffixUtil(filePath);
+      }
+      if (/.md$/.test(filePath)) {
+        const demoMarkDownFile = fs.readFileSync(path.join(currentDemoPath, filePath));
+        demoMap[nameKey] = parseDemoMdUtil(demoMarkDownFile)
+        demoMap[nameKey]['name'] = `NzDemo${camelCase(capitalizeFirstLetter(componentName))}${camelCase(capitalizeFirstLetter(nameKey))}Component`;
+        demoMap[nameKey]['enCode'] = generateCodeBox(componentName, demoMap[nameKey]['name'], nameKey, demoMap[nameKey].meta.title['en-US'], demoMap[nameKey].en, demoMap[nameKey].meta.iframe);
+        demoMap[nameKey]['zhCode'] = generateCodeBox(componentName, demoMap[nameKey]['name'], nameKey, demoMap[nameKey].meta.title['zh-CN'], demoMap[nameKey].zh, demoMap[nameKey].meta.iframe);
+      }
+      if (/.ts$/.test(filePath)) {
+        demoMap[nameKey].ts = String(fs.readFileSync(path.join(currentDemoPath, filePath)));
+        // copy ts file to site->${component} folder
+        fs.writeFileSync(path.join(showCaseComponentPath, filePath), demoMap[nameKey].ts);
+      }
+      if (filePath === 'module') {
+        const data = String(fs.readFileSync(path.join(currentDemoPath, filePath)));
+        fs.writeFileSync(path.join(showCaseComponentPath, 'module.ts'), data);
+      }
+    });
   });
   return demoMap;
 }
@@ -99,6 +108,19 @@ function handleWithPageDemo({ componentDirPath }) {
   return pageDemo;
 }
 
+function switchGenerateDemo({ componentName, componentDirPath, demoMap, showCaseTargetPath, pageDemo }) {
+  const docZh = parseDocMdUtil(fs.readFileSync(path.join(componentDirPath, 'doc/index.zh-CN.md')), `components/${componentName}/doc/index.zh-CN.md`);
+  const docEn = parseDocMdUtil(fs.readFileSync(path.join(componentDirPath, 'doc/index.en-US.md')), `components/${componentName}/doc/index.en-US.md`);
+  generateDemo(path.join(showCaseTargetPath, componentName), {
+    name: componentName,
+    docZh,
+    docEn,
+    demoMap,
+    pageDemo,
+  });
+  return { docZh, docEn };
+}
+
 function generate(target) {
   const isSyncSpecific = target && (target !== 'init');
   if (!target) {
@@ -114,77 +136,39 @@ function generate(target) {
   const iframeTargetPath = `${showCasePath}/iframe/app/`;
 // read components folder
   const rootPath = path.resolve(__dirname, '../../components');
-  const rootDir = fs.readdirSync(rootPath);
   let { status, onlyComponentName, onlyNameKey } = isOnlyMode(rootPath);
   const componentsDocMap = {};
   let componentsMap = {};
-  let pageDemo = '';
   let demoMap = {};
 
   if (status) {
-    const showCaseComponentPath = path.join(showCaseTargetPath, onlyComponentName);
     const componentDirPath = path.join(rootPath, onlyComponentName);
-    pageDemo = handleWithPageDemo({ componentDirPath });
-    demoMap = handleWithDemoMap({ currentDemoPath: path.join(componentDirPath, 'demo'), componentName: onlyComponentName, nameKey: onlyNameKey, showCaseComponentPath });
+    const pageDemo = handleWithPageDemo({ componentDirPath });;
+    const showCaseComponentPath = path.join(showCaseTargetPath, onlyComponentName);
+    demoMap = handleWithDemoMap({ demoPaths: [path.join(componentDirPath, 'demo')], componentName: onlyComponentName, nameKey: onlyNameKey, showCaseComponentPath });
     componentsMap = { [onlyComponentName]: demoMap };
-    const docZh = parseDocMdUtil(fs.readFileSync(path.join(componentDirPath, 'doc/index.zh-CN.md')), `components/${onlyComponentName}/doc/index.zh-CN.md`);
-    const docEn = parseDocMdUtil(fs.readFileSync(path.join(componentDirPath, 'doc/index.en-US.md')), `components/${onlyComponentName}/doc/index.en-US.md`);
-    generateDemo(path.join(showCaseTargetPath, onlyComponentName), {
-      name: onlyComponentName,
-      docZh,
-      docEn,
-      demoMap,
-      pageDemo,
-    });
+    const { docZh, docEn } = switchGenerateDemo({ componentName: onlyComponentName, componentDirPath, demoMap, showCaseTargetPath, pageDemo, componentsDocMap });
     componentsDocMap[onlyComponentName] = { zh: docZh.meta, en: docEn.meta };
   } else {
-
+    const rootDir = fs.readdirSync(rootPath).filter(componentName => componentName !== 'style' && componentName !== 'core' && componentName !== 'locale' && componentName !== 'i18n' && componentName !== 'version').filter(componentName => fs.statSync(path.join(rootPath, componentName)).isDirectory());
+    const demoPaths = [];
+    rootDir.map(componentName => {
+      if (fs.statSync(path.join(rootPath, componentName)).isDirectory()) {
+        demoPaths.push(path.join(rootPath, componentName, 'demo'));
+      }
+    });
+    rootDir.forEach(componentName => {
+      const componentDirPath = path.join(rootPath, componentName);
+      const pageDemo = handleWithPageDemo({ componentDirPath });
+      const showCaseComponentPath = path.join(showCaseTargetPath, componentName);
+      demoMap = handleWithDemoMap({ demoPaths, componentName, showCaseComponentPath });
+      componentsMap[componentName] = demoMap;
+      const { docZh, docEn } = switchGenerateDemo({ componentName, componentDirPath, demoMap, showCaseTargetPath, pageDemo, componentsDocMap });
+      componentsDocMap[componentName] = { zh: docZh.meta, en: docEn.meta };
+    });
   }
 
-  // rootDir.forEach(componentName => {
-  //   if (isSyncSpecific) {
-  //     if (componentName !== target) {
-  //       return;
-  //     }
-  //   }
-  //   const componentDirPath = path.join(rootPath, componentName);
-  //   if (componentName === 'style' || componentName === 'core' || componentName === 'locale' || componentName === 'i18n' || componentName === 'version') {
-  //     return;
-  //   }
-  //   if (fs.statSync(componentDirPath).isDirectory()) {
-  //     // create site/doc/app->${component} folder
-  //     const showCaseComponentPath = path.join(showCaseTargetPath, status ? onlyComponentName : componentName);
-  //     fs.mkdirSync(showCaseComponentPath);
-  //     // let { demoMap, pageDemo } = prepareForGenerateDemo({ componentDirPath: onlyComponentName, rootDir: rootPath, showCaseComponentPath });
-  //     const pageDemo = handleWithPageDemo({ componentDirPath });
-  //     let demoMap = handleWithDemoMap();
-
-  //     if (status) {
-  //       demoMap = demoMap[onlyNameKey];
-  //       componentsMap = { [onlyComponentName]: { [onlyNameKey]: demoMap } };
-  //       generateDemo(path.join(showCaseTargetPath, onlyComponentName), {
-  //         name: onlyComponentName,
-  //         docZh: parseDocMdUtil(fs.readFileSync(path.join(rootPath, onlyComponentName, 'doc/index.zh-CN.md')), `components/${onlyComponentName}/doc/index.zh-CN.md`),
-  //         docEn: parseDocMdUtil(fs.readFileSync(path.join(rootPath, onlyComponentName, 'doc/index.en-US.md')), `components/${onlyComponentName}/doc/index.en-US.md`),
-  //         demoMap: { [onlyNameKey]: demoMap },
-  //       });
-  //     } else {
-  //       // handle components->${component}->doc folder
-  //       const result = {
-  //         name: componentName,
-  //         docZh: parseDocMdUtil(fs.readFileSync(path.join(componentDirPath, 'doc/index.zh-CN.md')), `components/${componentName}/doc/index.zh-CN.md`),
-  //         docEn: parseDocMdUtil(fs.readFileSync(path.join(componentDirPath, 'doc/index.en-US.md')), `components/${componentName}/doc/index.en-US.md`),
-  //         demoMap,
-  //         pageDemo
-  //       };
-  //       componentsDocMap[componentName] = { zh: result.docZh.meta, en: result.docEn.meta };
-  //       componentsMap[componentName] = demoMap;
-  //       generateDemo(showCaseComponentPath, result);
-  //     }
-  //   }
-  // });
-
-// handle iframe folder
+  // handle iframe folder
   generateIframe(iframeTargetPath, componentsMap);
 
   if (!isSyncSpecific) {
