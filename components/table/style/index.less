@@ -28,11 +28,13 @@
     overflow-y: hidden !important;
   }
 
+  // https://github.com/ant-design/ant-design/issues/17611
   table {
     width: 100%;
     text-align: left;
     border-radius: @table-border-radius-base @table-border-radius-base 0 0;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
   }
 
   &-thead > tr > th {
@@ -471,6 +473,10 @@
       overflow: hidden;
     }
 
+    .@{ant-prefix}-checkbox-wrapper + span {
+      padding-left: 8px;
+    }
+
     > .@{ant-prefix}-dropdown-menu > .@{ant-prefix}-dropdown-menu-item:last-child,
     > .@{ant-prefix}-dropdown-menu
       > .@{ant-prefix}-dropdown-menu-submenu:last-child
@@ -638,7 +644,10 @@
       border: 1px solid @border-color-split;
       border-width: 1px 1px 1px 0;
     }
-    &.@{table-prefix-cls}-hide-scrollbar .@{table-prefix-cls}-thead > tr > th:last-child {
+    &.@{table-prefix-cls}-hide-scrollbar
+      .@{table-prefix-cls}-thead
+      > tr:only-child
+      > th:last-child {
       border-right-color: transparent;
     }
   }
@@ -740,10 +749,9 @@
 
 /**
 * Another fix of Firefox:
-* - https://github.com/ant-design/ant-design/issues/12628
-* - https://github.com/ant-design/ant-design/issues/12628
 */
 @supports (-moz-appearance: meterbar) {
+  // https://github.com/ant-design/ant-design/issues/12628
   .@{table-prefix-cls}-thead > tr > th.@{table-prefix-cls}-column-has-actions {
     background-clip: padding-box;
   }
