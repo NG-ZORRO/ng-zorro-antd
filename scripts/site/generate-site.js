@@ -143,7 +143,7 @@ function generate(target) {
 
   if (status) {
     const componentDirPath = path.join(rootPath, onlyComponentName);
-    const pageDemo = handleWithPageDemo({ componentDirPath });;
+    const pageDemo = handleWithPageDemo({ componentDirPath });
     const showCaseComponentPath = path.join(showCaseTargetPath, onlyComponentName);
     demoMap = handleWithDemoMap({ demoPaths: [path.join(componentDirPath, 'demo')], componentName: onlyComponentName, nameKey: onlyNameKey, showCaseComponentPath });
     componentsMap = { [onlyComponentName]: demoMap };
