@@ -32,9 +32,14 @@ function generateNav(componentsDocMap) {
   return { reverseMap, routes };
 }
 
-module.exports = function generateRoutes(showCaseTargetPath, componentsDocMap, docsMeta) {
+module.exports = function generateRoutes(showCaseTargetPath, componentsDocMap, docsMeta, isOnly) {
   let intro = [];
   let components = [];
+
+  if (isOnly) {
+    docsMeta = { introduce: docsMeta.introduce };
+  }
+
   for (const key in docsMeta) {
     intro.push({
       path    : `docs/${key}/en`,
@@ -51,6 +56,7 @@ module.exports = function generateRoutes(showCaseTargetPath, componentsDocMap, d
   }
   intro.sort((pre, next) => pre.order - next.order);
   fs.writeFileSync(path.join(showCaseTargetPath, `intros.json`), JSON.stringify(intro, null, 2));
+
   const navData = generateNav(componentsDocMap);
   const routes = navData.routes;
   for (const key in navData.reverseMap) {
@@ -83,5 +89,4 @@ module.exports = function generateRoutes(showCaseTargetPath, componentsDocMap, d
   });
   const fileContent = templateRouter.replace(/{{intro}}/g, JSON.stringify(intro, null, 2)).replace(/{{components}}/g, JSON.stringify(components, null, 2)).replace(/{{routes}}/g, routes);
   fs.writeFileSync(path.join(showCaseTargetPath, `router.ts`), fileContent);
-
 };

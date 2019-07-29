@@ -190,7 +190,7 @@ function generate(target) {
     });
 
     generateDocs(showCaseTargetPath, docsMap);
-    generateRoutes(showCaseTargetPath, componentsDocMap, docsMeta);
+    generateRoutes(showCaseTargetPath, componentsDocMap, docsMeta, status);
   }
 }
 
