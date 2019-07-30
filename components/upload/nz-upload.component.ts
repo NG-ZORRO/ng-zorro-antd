@@ -46,7 +46,10 @@ import { NzUploadListComponent } from './nz-upload-list.component';
   templateUrl: './nz-upload.component.html',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '[class.ant-upload-picture-card-wrapper]': 'nzListType === "picture-card"'
+  }
 })
 export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   private i18n$: Subscription;

@@ -1,3 +1,4 @@
 import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 
-export const moduleList = [ NzRadioModule ];
+export const moduleList = [ NzRadioModule, NzButtonModule ];
