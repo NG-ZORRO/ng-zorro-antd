@@ -40,15 +40,17 @@ import {
   warnDeprecation,
   zoomMotion,
   InputBoolean,
-  NzFormatEmitEvent,
   NzNoAnimationDirective,
-  NzSizeLDSType,
+  NzSizeLDSType
+} from 'ng-zorro-antd/core';
+import {
+  NzFormatEmitEvent,
   NzTreeBase,
   NzTreeBaseService,
   NzTreeHigherOrderServiceToken,
   NzTreeNode,
   NzTreeNodeOptions
-} from 'ng-zorro-antd/core';
+} from 'ng-zorro-antd/core/tree';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
 
 import { NzTreeSelectService } from './nz-tree-select.service';

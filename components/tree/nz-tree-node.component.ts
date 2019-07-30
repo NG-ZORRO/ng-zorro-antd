@@ -26,15 +26,8 @@ import {
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
-import {
-  collapseMotion,
-  warnDeprecation,
-  InputBoolean,
-  NzFormatBeforeDropEvent,
-  NzNoAnimationDirective,
-  NzTreeBaseService,
-  NzTreeNode
-} from 'ng-zorro-antd/core';
+import { collapseMotion, warnDeprecation, InputBoolean, NzNoAnimationDirective } from 'ng-zorro-antd/core';
+import { NzFormatBeforeDropEvent, NzTreeBaseService, NzTreeNode } from 'ng-zorro-antd/core/tree';
 
 @Component({
   selector: 'nz-tree-node',

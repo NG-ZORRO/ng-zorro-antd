@@ -28,19 +28,15 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { isNotNil, toBoolean, warnDeprecation, InputBoolean, NzNoAnimationDirective } from 'ng-zorro-antd/core';
 import {
-  isNotNil,
-  toBoolean,
-  warnDeprecation,
-  InputBoolean,
   NzFormatBeforeDropEvent,
   NzFormatEmitEvent,
-  NzNoAnimationDirective,
   NzTreeBase,
   NzTreeBaseService,
   NzTreeHigherOrderServiceToken,
   NzTreeNode
-} from 'ng-zorro-antd/core';
+} from 'ng-zorro-antd/core/tree';
 
 import { NzTreeService } from './nz-tree.service';
 
