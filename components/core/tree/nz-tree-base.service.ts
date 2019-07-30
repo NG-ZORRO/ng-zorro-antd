@@ -9,7 +9,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
-import { isNotNil } from '../util';
+import { isNotNil } from 'ng-zorro-antd/core';
 
 import { NzTreeNode } from './nz-tree-base-node';
 import { isCheckDisabled, isInArray } from './nz-tree-base-util';

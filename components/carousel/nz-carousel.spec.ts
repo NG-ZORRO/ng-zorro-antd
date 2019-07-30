@@ -3,7 +3,7 @@ import { Component, DebugElement, ViewChild } from '@angular/core';
 import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { dispatchKeyboardEvent } from 'ng-zorro-antd/core';
+import { dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
 import { NZ_CAROUSEL_CUSTOM_STRATEGIES } from './nz-carousel-definitions';

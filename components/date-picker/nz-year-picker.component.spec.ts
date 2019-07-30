@@ -5,7 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { dispatchMouseEvent, NgStyleInterface } from 'ng-zorro-antd/core';
+import { NgStyleInterface } from 'ng-zorro-antd/core';
+import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
 import { NzDatePickerModule } from './nz-date-picker.module';

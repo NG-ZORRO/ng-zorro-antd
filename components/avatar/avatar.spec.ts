@@ -1,7 +1,7 @@
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { createFakeEvent } from 'ng-zorro-antd/core';
+import { createFakeEvent } from 'ng-zorro-antd/core/testing';
 
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 

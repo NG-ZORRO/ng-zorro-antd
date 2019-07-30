@@ -3,7 +3,7 @@ import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ReplaySubject, Subject } from 'rxjs';
 
-import { dispatchFakeEvent } from 'ng-zorro-antd/core';
+import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
 
 import { NzOptionLiComponent } from './nz-option-li.component';
 import { NzOptionComponent } from './nz-option.component';

@@ -6,9 +6,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Injectable } from '@angular/core';
-
-import { NzTreeBaseService } from 'ng-zorro-antd/core/tree';
-
-@Injectable()
-export class NzTreeSelectService extends NzTreeBaseService {}
+export * from './nz-time-range.pipe';
+export * from './nz-css-unit.pipe';
+export * from './nz-pipe.module';

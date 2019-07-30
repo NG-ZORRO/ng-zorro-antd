@@ -133,8 +133,8 @@ export * from 'ng-zorro-antd/tree';
 export * from 'ng-zorro-antd/tree-select';
 export * from 'ng-zorro-antd/typography';
 export * from 'ng-zorro-antd/upload';
-
 export * from 'ng-zorro-antd/version';
+export { NzTreeNode } from 'ng-zorro-antd/core/tree';
 
 @NgModule({
   exports: [

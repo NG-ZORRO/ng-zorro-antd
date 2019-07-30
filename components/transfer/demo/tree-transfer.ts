@@ -1,6 +1,6 @@
 // tslint:disable: no-any
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
-import { NzTreeNode } from 'ng-zorro-antd/core';
+import { NzTreeNode } from 'ng-zorro-antd/core/tree';
 import { TransferChange, TransferItem } from 'ng-zorro-antd/transfer';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
 

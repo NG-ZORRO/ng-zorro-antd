@@ -23,7 +23,12 @@ import { async, fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { createFakeEvent, createMouseEvent, dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core';
+import {
+  createFakeEvent,
+  createMouseEvent,
+  dispatchKeyboardEvent,
+  dispatchMouseEvent
+} from 'ng-zorro-antd/core/testing';
 
 import { CascaderOption, NzShowSearchOptions } from './nz-cascader-definitions';
 import { NzCascaderComponent } from './nz-cascader.component';

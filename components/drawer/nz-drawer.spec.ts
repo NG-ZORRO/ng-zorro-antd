@@ -4,9 +4,7 @@ import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
 import { async, fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
-import { dispatchKeyboardEvent } from 'ng-zorro-antd/core';
-
+import { dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import { NzDrawerRef } from './nz-drawer-ref';
 import { NzDrawerComponent } from './nz-drawer.component';
 import { NzDrawerModule } from './nz-drawer.module';

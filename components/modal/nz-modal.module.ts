@@ -12,10 +12,10 @@ import { NgModule } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzAddOnModule, NzNoAnimationModule } from 'ng-zorro-antd/core';
+import { NzPipeModule } from 'ng-zorro-antd/core/pipe';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-import { CssUnitPipe } from './css-unit.pipe';
 import { NzModalControlServiceModule } from './nz-modal-control.service.module';
 import { NzModalFooterDirective } from './nz-modal-footer.directive';
 import { NzModalComponent } from './nz-modal.component';
@@ -31,10 +31,11 @@ import { NzModalServiceModule } from './nz-modal.service.module';
     NzIconModule,
     NzNoAnimationModule,
     NzModalServiceModule,
-    NzModalControlServiceModule
+    NzModalControlServiceModule,
+    NzPipeModule
   ],
   exports: [NzModalComponent, NzModalFooterDirective],
-  declarations: [NzModalComponent, NzModalFooterDirective, CssUnitPipe],
+  declarations: [NzModalComponent, NzModalFooterDirective],
   entryComponents: [NzModalComponent]
 })
 export class NzModalModule {}

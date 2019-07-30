@@ -2,9 +2,11 @@
 import { fakeAsync, tick, TestBed, ComponentFixture } from '@angular/core/testing';
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
+
+import { NzScrollService } from 'ng-zorro-antd/core';
+
 import { NzAnchorModule } from './nz-anchor.module';
 import { NzAnchorComponent } from './nz-anchor.component';
-import { NzScrollService } from 'ng-zorro-antd/core';
 
 const throttleTime = 51;
 

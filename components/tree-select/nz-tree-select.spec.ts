@@ -11,9 +11,9 @@ import {
   dispatchFakeEvent,
   dispatchMouseEvent,
   typeInElement,
-  MockNgZone,
-  NzTreeNode, NzTreeNodeOptions
-} from 'ng-zorro-antd/core';
+  MockNgZone
+} from 'ng-zorro-antd/core/testing';
+import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
 
 import { NzTreeSelectComponent } from './nz-tree-select.component';
 import { NzTreeSelectModule } from './nz-tree-select.module';
