@@ -33,7 +33,7 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { isTouchEvent, warnDeprecation, InputBoolean, InputNumber, NzDomEventService } from 'ng-zorro-antd/core';
+import { isTouchEvent, InputBoolean, InputNumber, NzDomEventService } from 'ng-zorro-antd/core';
 import { finalize, takeUntil } from 'rxjs/operators';
 
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
@@ -92,17 +92,6 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   @Input() @InputBoolean() nzAutoPlay = false;
   @Input() @InputNumber() nzAutoPlaySpeed = 3000;
   @Input() @InputNumber() nzTransitionSpeed = 500;
-
-  @Input()
-  @InputBoolean()
-  get nzVertical(): boolean {
-    return this.vertical;
-  }
-
-  set nzVertical(value: boolean) {
-    warnDeprecation(`'nzVertical' is deprecated and will be removed in 9.0.0. Please use 'nzDotPosition' instead.`);
-    this.vertical = value;
-  }
 
   @Input()
   set nzDotPosition(value: NzCarouselDotPosition) {
