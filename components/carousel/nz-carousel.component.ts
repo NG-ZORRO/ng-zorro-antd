@@ -103,17 +103,6 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   @Input() @InputNumber() nzTransitionSpeed = 500;
 
   @Input()
-  @InputBoolean()
-  get nzVertical(): boolean {
-    return this.vertical;
-  }
-
-  set nzVertical(value: boolean) {
-    warnDeprecation(`'nzVertical' is deprecated and will be removed in 9.0.0. Please use 'nzDotPosition' instead.`);
-    this.vertical = value;
-  }
-
-  @Input()
   @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'bottom')
   set nzDotPosition(value: NzCarouselDotPosition) {
     this._dotPosition = value;
@@ -314,7 +303,6 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
 
   /**
    * Drag carousel.
-   * @param event
    */
   pointerDown = (event: TouchEvent | MouseEvent) => {
     if (!this.isDragging && !this.isTransiting && this.nzEnableSwipe) {
