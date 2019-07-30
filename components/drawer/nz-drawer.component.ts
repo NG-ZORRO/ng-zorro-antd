@@ -58,6 +58,7 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
   @Input() @InputBoolean() nzMaskClosable = true;
   @Input() @InputBoolean() nzMask = true;
   @Input() @InputBoolean() nzNoAnimation = false;
+  @Input() @InputBoolean() nzKeyboard: boolean = true;
   @Input() nzTitle: string | TemplateRef<{}>;
   @Input() nzPlacement: NzDrawerPlacement = 'right';
   @Input() nzMaskStyle: object = {};
@@ -265,7 +266,7 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
       this.overlayRef!.keydownEvents()
         .pipe(takeUntil(this.destroy$))
         .subscribe((event: KeyboardEvent) => {
-          if (event.keyCode === ESCAPE && this.isOpen) {
+          if (event.keyCode === ESCAPE && this.isOpen && this.nzKeyboard) {
             this.nzOnClose.emit();
           }
         });
