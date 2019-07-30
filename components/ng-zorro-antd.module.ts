@@ -88,6 +88,7 @@ export * from 'ng-zorro-antd/checkbox';
 export * from 'ng-zorro-antd/collapse';
 export * from 'ng-zorro-antd/comment';
 export * from 'ng-zorro-antd/core';
+export * from 'ng-zorro-antd/core/tree';
 export * from 'ng-zorro-antd/date-picker';
 export * from 'ng-zorro-antd/descriptions';
 export * from 'ng-zorro-antd/divider';
