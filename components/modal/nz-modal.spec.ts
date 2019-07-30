@@ -9,7 +9,7 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NzButtonComponent, NzButtonModule } from 'ng-zorro-antd/button';
-import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core';
+import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import en_US from '../i18n/languages/en_US';

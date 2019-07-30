@@ -4,7 +4,7 @@ import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/cor
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { dispatchMouseEvent } from 'ng-zorro-antd/core';
+import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NzDatePickerModule } from './nz-date-picker.module';
 
 describe('NzWeekPickerComponent', () => {

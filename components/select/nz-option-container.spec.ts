@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ReplaySubject, Subject } from 'rxjs';
 
-import { dispatchFakeEvent } from 'ng-zorro-antd/core';
+import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
 
 import { NzOptionContainerComponent } from './nz-option-container.component';
 import { NzOptionGroupComponent } from './nz-option-group.component';

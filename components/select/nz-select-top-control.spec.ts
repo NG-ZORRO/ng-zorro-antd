@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
-import { dispatchFakeEvent } from 'ng-zorro-antd/core';
+import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
 
 import { createListOfOption } from './nz-option-container.spec';
 import { NzSelectTopControlComponent } from './nz-select-top-control.component';

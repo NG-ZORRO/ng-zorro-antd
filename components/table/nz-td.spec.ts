@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
-import { createFakeEvent } from 'ng-zorro-antd/core';
+import { createFakeEvent } from 'ng-zorro-antd/core/testing';
 
 import { NzTdComponent } from './nz-td.component';
 

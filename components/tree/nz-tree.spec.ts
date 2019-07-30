@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of, Observable } from 'rxjs';
 
-import { dispatchMouseEvent, dispatchTouchEvent } from 'ng-zorro-antd/core';
+import { dispatchMouseEvent, dispatchTouchEvent } from 'ng-zorro-antd/core/testing';
 import { NzTreeBaseService, NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 

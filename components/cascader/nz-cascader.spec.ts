@@ -29,7 +29,7 @@ import {
   dispatchEvent,
   dispatchKeyboardEvent,
   dispatchMouseEvent
-} from 'ng-zorro-antd/core';
+} from 'ng-zorro-antd/core/testing';
 
 import { CascaderOption, NzShowSearchOptions } from './nz-cascader-definitions';
 import { NzCascaderComponent } from './nz-cascader.component';

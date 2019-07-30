@@ -6,7 +6,7 @@ import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angul
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { createKeyboardEvent, dispatchFakeEvent, dispatchMouseEvent, typeInElement } from 'ng-zorro-antd/core';
+import { createKeyboardEvent, dispatchFakeEvent, dispatchMouseEvent, typeInElement } from 'ng-zorro-antd/core/testing';
 import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
 
 import { NzTreeSelectComponent } from './nz-tree-select.component';
