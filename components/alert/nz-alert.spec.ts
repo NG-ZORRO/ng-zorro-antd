@@ -85,7 +85,7 @@ describe('alert', () => {
     it('should iconType work', () => {
       fixture.detectChanges();
       testComponent.showIcon = true;
-      testComponent.iconType = 'anticon anticon-lock';
+      testComponent.iconType = 'lock';
       fixture.detectChanges();
       expect(alert.nativeElement.querySelector('.ant-alert-icon').classList).toContain('anticon');
       expect(alert.nativeElement.querySelector('.ant-alert-icon').classList).toContain('anticon-lock');
