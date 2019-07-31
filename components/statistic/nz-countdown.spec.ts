@@ -27,7 +27,7 @@ export class NzTestCountdownComponent {
   format: string;
   value: number;
   template: TemplateRef<number>;
-  finished = false;
+  finished = 0;
 
   resetTimerWithFormat(format: string): void {
     this.format = format;
@@ -40,7 +40,7 @@ export class NzTestCountdownComponent {
   }
 
   onFinish(): void {
-    this.finished = true;
+    this.finished += 1;
   }
 }
 
@@ -96,14 +96,12 @@ describe('nz-countdown', () => {
 
     it('should stop timer and emit event', fakeAsync(() => {
       const nearTime = new Date().getTime() + 1000 * 2;
-      const spyOnStop = spyOn(testComponent.countdown, 'stopTimer');
       testComponent.value = nearTime;
 
       fixture.detectChanges();
       tick(3000);
       fixture.detectChanges();
-      expect(spyOnStop).toHaveBeenCalledTimes(1);
-      expect(testComponent.finished).toBeTruthy();
+      expect(testComponent.finished).toBe(1);
     }));
   });
 });
