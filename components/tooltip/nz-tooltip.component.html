@@ -3,8 +3,8 @@
   #overlay="cdkConnectedOverlay"
   cdkConnectedOverlay
   nzConnectedOverlay
-  [cdkConnectedOverlayOrigin]="overlayOrigin"
-  [cdkConnectedOverlayOpen]="visible$ | async"
+  [cdkConnectedOverlayOrigin]="origin"
+  [cdkConnectedOverlayOpen]="_visible"
   [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"
   [cdkConnectedOverlayPositions]="_positions"
   (backdropClick)="hide()"
@@ -15,8 +15,7 @@
     [ngClass]="_classMap"
     [ngStyle]="nzOverlayStyle"
     [nzNoAnimation]="noAnimation?.nzNoAnimation"
-    [@zoomBigMotion]="'active'"
-    (@zoomBigMotion.done)="_afterVisibilityAnimation($event)">
+    [@zoomBigMotion]="'active'">
     <div class="ant-tooltip-content">
       <div class="ant-tooltip-arrow"></div>
       <div class="ant-tooltip-inner">
