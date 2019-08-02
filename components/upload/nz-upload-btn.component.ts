@@ -277,7 +277,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
       headers: new HttpHeaders(args.headers)
     });
     return this.http.request(req).subscribe(
-      (event: HttpEvent<{}>) => {
+      (event: HttpEvent<unknown>) => {
         if (event.type === HttpEventType.UploadProgress) {
           if (event.total! > 0) {
             // tslint:disable-next-line:no-any
