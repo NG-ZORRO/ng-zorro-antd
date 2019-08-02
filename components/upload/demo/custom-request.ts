@@ -26,7 +26,7 @@ export class NzDemoUploadCustomRequestComponent {
     });
     // Always returns a `Subscription` object. nz-upload would automatically unsubscribe it at correct time.
     return this.http.request(req).subscribe(
-      (event: HttpEvent<{}>) => {
+      (event: HttpEvent<unknown>) => {
         if (event.type === HttpEventType.UploadProgress) {
           if (event.total! > 0) {
             // tslint:disable-next-line:no-any
