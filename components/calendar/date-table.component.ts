@@ -111,10 +111,7 @@ export class DateTableComponent implements OnInit, OnChanges {
       .setYear(value.getYear())
       .setMonth(value.getMonth())
       .setDate(value.getDate());
-
-    if (this.value !== newValue) {
-      this.valueChange.emit(newValue);
-    }
+    this.valueChange.emit(newValue);
   }
 
   private makeHeadWeekDays(): WeekDayLabel[] {
