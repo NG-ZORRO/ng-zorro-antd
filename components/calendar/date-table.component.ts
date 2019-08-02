@@ -106,8 +106,14 @@ export class DateTableComponent implements OnInit, OnChanges {
   }
 
   private changeValueFromInside(value: CandyDate): void {
-    if (this.value !== value) {
-      this.valueChange.emit(value);
+    // Only change date not change time
+    const newValue = this.value
+      .setYear(value.getYear())
+      .setMonth(value.getMonth())
+      .setDate(value.getDate());
+
+    if (this.value !== newValue) {
+      this.valueChange.emit(newValue);
     }
   }
 
