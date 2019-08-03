@@ -15,7 +15,7 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
-import setMonth from 'date-fns/set_month';
+import { CandyDate } from 'ng-zorro-antd/core';
 import { DateHelperService, NzI18nService as I18n } from 'ng-zorro-antd/i18n';
 
 @Component({
@@ -31,31 +31,23 @@ import { DateHelperService, NzI18nService as I18n } from 'ng-zorro-antd/i18n';
 })
 export class NzCalendarHeaderComponent implements OnInit {
   @Input() mode: 'month' | 'year' = 'month';
-  @Output() readonly modeChange: EventEmitter<'month' | 'year'> = new EventEmitter();
-
   @Input() fullscreen: boolean = true;
 
-  @Input()
-  set activeDate(value: Date) {
-    this._activeDate = value;
-    this.setUpYears();
-  }
+  @Output() readonly modeChange: EventEmitter<'month' | 'year'> = new EventEmitter();
 
-  get activeDate(): Date {
-    return this._activeDate;
-  }
+  @Input() activeDate: CandyDate = new CandyDate();
 
   @Output() readonly yearChange: EventEmitter<number> = new EventEmitter();
   @Output() readonly monthChange: EventEmitter<number> = new EventEmitter();
+  // @Output() readonly valueChange: EventEmitter<CandyDate> = new EventEmitter();
 
-  _activeDate = new Date();
   yearOffset: number = 10;
   yearTotal: number = 20;
   years: Array<{ label: string; value: number }>;
   months: Array<{ label: string; value: number }>;
 
   get activeYear(): number {
-    return this.activeDate.getFullYear();
+    return this.activeDate.getYear();
   }
 
   get activeMonth(): number {
@@ -100,8 +92,8 @@ export class NzCalendarHeaderComponent implements OnInit {
     this.months = [];
 
     for (let i = 0; i < 12; i++) {
-      const dateInMonth = setMonth(this.activeDate, i);
-      const monthText = this.dateHelper.format(dateInMonth, 'MMM');
+      const dateInMonth = this.activeDate.setMonth(i);
+      const monthText = this.dateHelper.format(dateInMonth.nativeDate, 'MMM');
       this.months.push({ label: monthText, value: i });
     }
   }

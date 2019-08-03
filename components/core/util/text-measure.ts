@@ -25,7 +25,7 @@ const wrapperStyle = {
   lineHeight: 'inherit'
 };
 
-function pxToNumber(value: string | null): number {
+export function pxToNumber(value: string | null): number {
   if (!value) {
     return 0;
   }

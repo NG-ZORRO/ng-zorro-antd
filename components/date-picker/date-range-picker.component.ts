@@ -18,11 +18,17 @@ import {
   TemplateRef
 } from '@angular/core';
 
-import { toBoolean, valueFunctionProp, FunctionProp, InputBoolean, NzNoAnimationDirective } from 'ng-zorro-antd/core';
+import {
+  toBoolean,
+  valueFunctionProp,
+  CandyDate,
+  FunctionProp,
+  InputBoolean,
+  NzNoAnimationDirective
+} from 'ng-zorro-antd/core';
 import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { AbstractPickerComponent, CompatibleDate } from './abstract-picker.component';
-import { CandyDate } from './lib/candy-date/candy-date';
 import { DisabledTimeFn, PanelMode, PresetRanges } from './standard-types';
 
 @Component({

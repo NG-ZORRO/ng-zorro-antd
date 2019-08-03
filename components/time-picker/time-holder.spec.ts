@@ -1,7 +1,7 @@
 import { TimeHolder } from './time-holder';
 
 function mathSecondRound(value: Date): number {
-  return Math.round(value.getTime() / 1000);
+  return Math.floor(value.getTime() / 1000);
 }
 
 describe('time holder', () => {

@@ -58,6 +58,7 @@ export class NzFormItemComponent extends NzRowDirective
   @ContentChildren(NzFormExplainComponent, { descendants: true })
   listOfNzFormExplainComponent: QueryList<NzFormExplainComponent>;
   withHelpClass = false;
+  tipsMode = false;
 
   updateFlexStyle(): void {
     if (this.nzFlex) {
@@ -65,6 +66,12 @@ export class NzFormItemComponent extends NzRowDirective
     } else {
       this.renderer.removeStyle(this.elementRef.nativeElement, 'display');
     }
+  }
+
+  setWithHelpViaTips(value: boolean): void {
+    this.tipsMode = true;
+    this.withHelpClass = value;
+    this.cdr.markForCheck();
   }
 
   constructor(
@@ -82,15 +89,17 @@ export class NzFormItemComponent extends NzRowDirective
   }
 
   ngAfterContentInit(): void {
-    this.listOfNzFormExplainComponent.changes
-      .pipe(
-        startWith(true),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(() => {
-        this.withHelpClass = this.listOfNzFormExplainComponent && this.listOfNzFormExplainComponent.length > 0;
-        this.cdr.markForCheck();
-      });
+    if (!this.tipsMode) {
+      this.listOfNzFormExplainComponent.changes
+        .pipe(
+          startWith(true),
+          takeUntil(this.destroy$)
+        )
+        .subscribe(() => {
+          this.withHelpClass = this.listOfNzFormExplainComponent && this.listOfNzFormExplainComponent.length > 0;
+          this.cdr.markForCheck();
+        });
+    }
   }
 
   ngOnInit(): void {

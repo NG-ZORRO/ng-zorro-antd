@@ -110,10 +110,10 @@ function createSchematic(demoComponent: DemoMeta): void {
   schemaJson.title = `NG-ZORRO ${demoComponent.demoName} ${demoComponent.componentName}`;
   fs.outputJsonSync(schemaPath, schemaJson);
 
-  fs.outputFileSync(`${filesPath}/__name@dasherize__.component.__style__`, demoComponent.styles);
-  fs.outputFileSync(`${filesPath}/__name@dasherize__.component.html`, demoComponent.template);
-  fs.outputFileSync(`${filesPath}/__name@dasherize__.component.spec.ts`, TEST_FILE_CONTENT);
-  fs.outputFileSync(`${filesPath}/__name@dasherize__.component.ts`, replaceTemplate(demoComponent));
+  fs.outputFileSync(`${filesPath}/__name@dasherize__.component.__style__.template`, demoComponent.styles);
+  fs.outputFileSync(`${filesPath}/__name@dasherize__.component.html.template`, demoComponent.template);
+  fs.outputFileSync(`${filesPath}/__name@dasherize__.component.spec.ts.template`, TEST_FILE_CONTENT);
+  fs.outputFileSync(`${filesPath}/__name@dasherize__.component.ts.template`, replaceTemplate(demoComponent));
 
   const collectionJson = fs.readJsonSync(collectionPath, { throws: false }) || {schematics: {}};
   collectionJson.schematics = {

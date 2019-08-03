@@ -3,15 +3,15 @@ import zh from '@angular/common/locales/zh';
 
 import { fakeAsync, inject, TestBed } from '@angular/core/testing';
 
+import { DateTableComponent } from '../../calendar/date-table.component';
+import { CandyDate } from '../../core';
 import { DateHelperService } from '../../i18n/date-helper.service';
 import { NzI18nService } from '../../i18n/nz-i18n.service';
 import { AbstractPickerComponent } from '../abstract-picker.component';
+import { MonthTableComponent } from './../../calendar/month-table.component';
 import { CalendarHeaderComponent } from './calendar/calendar-header.component';
 import { TodayButtonComponent } from './calendar/today-button.component';
-import { CandyDate } from './candy-date/candy-date';
-import { DateTableComponent } from './date/date-table.component';
 import { LibPackerModule } from './lib-packer.module';
-import { MonthTableComponent } from './month/month-table.component';
 import { DateRangePopupComponent } from './popups/date-range-popup.component';
 import { YearPanelComponent } from './year/year-panel.component';
 
@@ -96,6 +96,7 @@ describe('Coverage supplements', () => {
     });
   }); // /TodayButton
 
+  // TODO: Unit test of date-table and month-table
   describe('DateTable', () => {
     beforeEach(() => {
       componentInstance = new DateTableComponent(i18n, dateHelper);
@@ -106,8 +107,6 @@ describe('Coverage supplements', () => {
       componentInstance.showWeek = true;
       const weekRows = componentInstance.makeWeekRows();
       expect(weekRows.length > 0).toBeTruthy();
-
-      expect(componentInstance.isBeforeMonthYear(new CandyDate('2018-11'), new CandyDate('2019-11'))).toBeTruthy();
     });
   }); // /DateTable
 

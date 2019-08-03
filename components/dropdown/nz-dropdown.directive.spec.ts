@@ -1,9 +1,10 @@
+import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, Provider, Type } from '@angular/core';
 import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { dispatchFakeEvent } from '../core/testing';
+import { dispatchFakeEvent, dispatchKeyboardEvent } from '../core/testing';
 import { NzMenuModule } from '../menu/nz-menu.module';
 import { NzDropDownDirective } from './nz-dropdown.directive';
 import { NzDropDownModule } from './nz-dropdown.module';
@@ -95,21 +96,76 @@ describe('dropdown', () => {
       );
     }).not.toThrowError();
   }));
-  it('should backdrop be disabled', fakeAsync(() => {
+
+  describe('when nzBackdrop=false', () => {
+    let fixture: ComponentFixture<NzTestDropdownComponent>;
+
+    beforeEach(() => {
+      fixture = createComponent(NzTestDropdownComponent, [], []);
+      fixture.componentInstance.backdrop = false;
+    });
+
+    it('backdrop should be invisible if nzTrigger=click', fakeAsync(() => {
+      fixture.componentInstance.trigger = 'click';
+      fixture.detectChanges();
+
+      expect(() => {
+        const dropdownElement = fixture.debugElement.query(By.directive(NzDropDownDirective)).nativeElement;
+        dispatchFakeEvent(dropdownElement, 'click');
+
+        tick(1000);
+        fixture.detectChanges();
+
+        const backdrop = overlayContainerElement.querySelector('.nz-overlay-transparent-backdrop');
+        expect(backdrop).not.toBeNull();
+      }).not.toThrowError();
+    }));
+
+    it('should disappear if invisible backdrop clicked if nzTrigger=click', fakeAsync(() => {
+      fixture.componentInstance.trigger = 'click';
+      fixture.detectChanges();
+
+      expect(() => {
+        const dropdownElement = fixture.debugElement.query(By.directive(NzDropDownDirective)).nativeElement;
+        dispatchFakeEvent(dropdownElement, 'click');
+
+        tick(1000);
+        fixture.detectChanges();
+
+        const backdrop = overlayContainerElement.querySelector('.nz-overlay-transparent-backdrop');
+        expect(backdrop).not.toBeNull();
+
+        dispatchFakeEvent(backdrop as Element, 'click');
+        tick(1000);
+        fixture.detectChanges();
+
+        const nullBackdrop = overlayContainerElement.querySelector('.cdk-overlay-backdrop');
+        expect(nullBackdrop).toBeNull();
+      }).not.toThrowError();
+    }));
+  });
+
+  it('should disappear if Escape pressed', fakeAsync(() => {
     const fixture = createComponent(NzTestDropdownComponent, [], []);
     fixture.componentInstance.trigger = 'click';
-    fixture.componentInstance.backdrop = false;
     fixture.detectChanges();
 
     expect(() => {
       const dropdownElement = fixture.debugElement.query(By.directive(NzDropDownDirective)).nativeElement;
-      dispatchFakeEvent(dropdownElement, 'mouseenter');
-      fixture.detectChanges();
+
+      dispatchFakeEvent(dropdownElement, 'click');
       tick(1000);
       fixture.detectChanges();
 
       const backdrop = overlayContainerElement.querySelector('.cdk-overlay-backdrop');
-      expect(backdrop).toBeNull();
+      expect(backdrop).not.toBeNull();
+
+      dispatchKeyboardEvent(document.body, 'keydown', ESCAPE);
+      tick(1000);
+      fixture.detectChanges();
+
+      const nullBackdrop = overlayContainerElement.querySelector('.cdk-overlay-backdrop');
+      expect(nullBackdrop).toBeNull();
     }).not.toThrowError();
   }));
   it('should nzOverlayClassName and nzOverlayStyle work', fakeAsync(() => {

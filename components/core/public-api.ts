@@ -10,7 +10,7 @@ export * from './addon/public-api';
 export * from './animation/public-api';
 export * from './no-animation/public-api';
 export * from './overlay/public-api';
-export * from './overlay/public-api';
+export * from './time/public-api';
 export * from './polyfill/public-api';
 export * from './scroll/public-api';
 export * from './services/public-api';

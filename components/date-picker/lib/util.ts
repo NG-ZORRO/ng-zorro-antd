@@ -6,8 +6,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { CandyDate } from 'ng-zorro-antd/core';
 import { DisabledDateFn, DisabledTimeConfig, DisabledTimeFn } from '../standard-types';
-import { CandyDate } from './candy-date/candy-date';
 
 const defaultDisabledTime: DisabledTimeConfig = {
   nzDisabledHours(): number[] {

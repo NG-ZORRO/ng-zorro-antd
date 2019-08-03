@@ -1,7 +1,8 @@
 <label nz-checkbox
-  *ngFor="let option of options; trackBy:trackByOption"
-  [nzDisabled]="option.disabled || nzDisabled"
-  [(nzChecked)]="option.checked"
-  (nzCheckedChange)="onOptionChange()">
+       class="ant-checkbox-group-item"
+       *ngFor="let option of options; trackBy:trackByOption"
+       [nzDisabled]="option.disabled || nzDisabled"
+       [(nzChecked)]="option.checked"
+       (nzCheckedChange)="onOptionChange()">
   <span>{{ option.label }}</span>
 </label>

@@ -24,16 +24,15 @@ import { OkButtonComponent } from './calendar/ok-button.component';
 import { TimePickerButtonComponent } from './calendar/time-picker-button.component';
 import { TodayButtonComponent } from './calendar/today-button.component';
 
-import { DateTableComponent } from './date/date-table.component';
+import { NzCalendarModule } from 'ng-zorro-antd/calendar';
 import { DecadePanelComponent } from './decade/decade-panel.component';
 import { MonthPanelComponent } from './month/month-panel.component';
-import { MonthTableComponent } from './month/month-table.component';
 import { DateRangePopupComponent } from './popups/date-range-popup.component';
 import { InnerPopupComponent } from './popups/inner-popup.component';
 import { YearPanelComponent } from './year/year-panel.component';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, NzI18nModule, NzTimePickerModule],
+  imports: [CommonModule, FormsModule, NzI18nModule, NzTimePickerModule, NzCalendarModule],
   exports: [
     CalendarHeaderComponent,
     CalendarInputComponent,
@@ -42,13 +41,12 @@ import { YearPanelComponent } from './year/year-panel.component';
     TimePickerButtonComponent,
     TodayButtonComponent,
 
-    DateTableComponent,
     YearPanelComponent,
     MonthPanelComponent,
-    MonthTableComponent,
     DecadePanelComponent,
     InnerPopupComponent,
     DateRangePopupComponent
+
   ],
   declarations: [
     CalendarHeaderComponent,
@@ -58,10 +56,8 @@ import { YearPanelComponent } from './year/year-panel.component';
     TimePickerButtonComponent,
     TodayButtonComponent,
 
-    DateTableComponent,
     YearPanelComponent,
     MonthPanelComponent,
-    MonthTableComponent,
     DecadePanelComponent,
     InnerPopupComponent,
     DateRangePopupComponent

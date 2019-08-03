@@ -139,7 +139,7 @@ export class NzFormControlComponent extends NzColDirective
       this.iconType = '';
     }
     if (this.hasTips) {
-      this.nzFormItemComponent.withHelpClass = this.showInnerTip;
+      this.nzFormItemComponent.setWithHelpViaTips(this.showErrorTip);
     }
     this.controlClassMap = {
       [`has-warning`]: this.status === 'warning',

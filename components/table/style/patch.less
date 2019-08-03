@@ -8,15 +8,6 @@
 @table-td-left-cls: ~'@{table-td-cls}-left';
 @table-td-right-cls: ~'@{table-td-cls}-right';
 
-nz-table {
-  .@{table-prefix-cls} {
-    table {
-      border-collapse: separate;
-      border-spacing: 0;
-    }
-  }
-}
-
 .box-shadow-left() {
   .@{table-th-right-cls}-sticky,
   .@{table-td-right-cls}-sticky {
@@ -159,6 +150,12 @@ nz-table {
       > .@{table-prefix-cls}-thead > tr > th {
         &.@{table-th-left-cls}-sticky,
         &.@{table-th-right-cls}-sticky {
+          background: @component-background;
+        }
+      }
+      > .@{table-prefix-cls}-tbody > tr > td {
+        &.@{table-td-left-cls}-sticky,
+        &.@{table-td-right-cls}-sticky {
           background: @component-background;
         }
       }
