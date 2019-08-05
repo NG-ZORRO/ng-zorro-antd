@@ -6,10 +6,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import Calendar from '../calendar//ta_IN';
-import DatePicker from '../date-picker/ta_IN';
-import Pagination from '../pagination/ta_IN';
-import TimePicker from '../time-picker/ta_IN';
+import Calendar from './calendar//ta_IN';
+import DatePicker from './date-picker/ta_IN';
+import Pagination from './pagination/ta_IN';
+import TimePicker from './time-picker/ta_IN';
 
 export default {
   locale: 'ta',
