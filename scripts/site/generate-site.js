@@ -124,7 +124,7 @@ function switchGenerateDemo({ componentName, componentDirPath, demoMap, showCase
   return { docZh, docEn };
 }
 
-function generate(target) {
+function generate(target, targetDemoPath) {
   const isSyncSpecific = target && (target !== 'init');
   if (!target) {
     fs.removeSync(`${showCasePath}/doc`);
@@ -137,13 +137,14 @@ function generate(target) {
   }
   const showCaseTargetPath = `${showCasePath}/doc/app/`;
   const iframeTargetPath = `${showCasePath}/iframe/app/`;
-// read components folder
+  // read components folder
   const rootPath = path.resolve(__dirname, '../../components');
   let { status, onlyComponentName, onlyNameKey } = isOnlyMode(rootPath);
   const componentsDocMap = {};
   let componentsMap = {};
   let demoMap = {};
 
+  // metadata in markdown with `only: true`
   if (status) {
     const componentDirPath = path.join(rootPath, onlyComponentName);
     const pageDemo = handleWithPageDemo({ componentDirPath });
@@ -152,6 +153,15 @@ function generate(target) {
     componentsMap = { [onlyComponentName]: demoMap };
     const { docZh, docEn } = switchGenerateDemo({ componentName: onlyComponentName, componentDirPath, demoMap, showCaseTargetPath, pageDemo, componentsDocMap });
     componentsDocMap[onlyComponentName] = { zh: docZh.meta, en: docEn.meta };
+  } else if (targetDemoPath) { // run script like npm run start button/demo/ghost.md
+    const cName = targetDemoPath.split('/')[0];
+    const componentDirPath = path.join(rootPath, cName);
+    const pageDemo = handleWithPageDemo({ componentDirPath });
+    const showCaseComponentPath = path.join(showCaseTargetPath, cName);
+    demoMap = handleWithDemoMap({ demoPaths: [path.join(componentDirPath, 'demo')], componentName: cName, nameKey: path.basename(targetDemoPath, '.md'), showCaseComponentPath });
+    componentsMap = { [cName]: demoMap };
+    const { docZh, docEn } = switchGenerateDemo({ componentName: cName, componentDirPath, demoMap, showCaseTargetPath, pageDemo, componentsDocMap });
+    componentsDocMap[cName] = { zh: docZh.meta, en: docEn.meta };
   } else {
     const rootDir = fs.readdirSync(rootPath).filter(componentName => componentName !== 'style' && componentName !== 'core' && componentName !== 'locale' && componentName !== 'i18n' && componentName !== 'version').filter(componentName => fs.statSync(path.join(rootPath, componentName)).isDirectory());
     const demoPaths = [];
@@ -193,7 +203,7 @@ function generate(target) {
     });
 
     generateDocs(showCaseTargetPath, docsMap);
-    generateRoutes(showCaseTargetPath, componentsDocMap, docsMeta, status);
+    generateRoutes(showCaseTargetPath, componentsDocMap, docsMeta, !!(status || targetDemoPath));
   }
 }
 

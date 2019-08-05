@@ -7,7 +7,7 @@
     "node": ">=10.9.0"
   },
   "scripts": {
-    "start": "gulp start:dev",
+    "start": "gulp start:dev --target $target",
     "test": "ng test --watch=false --code-coverage",
     "test:watch": "gulp test:watch --tags $tags",
     "build": "gulp build:release",
