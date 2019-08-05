@@ -10,7 +10,7 @@
           <ng-container *ngFor="let item of row; let isLast = last">
             <!-- Horizontal & NOT Bordered -->
             <ng-container *ngIf="!nzBordered">
-              <td class="ant-descriptions-item" [colSpan]="item.span">
+              <td class="ant-descriptions-item" [class.ant-descriptions-item-colon]="nzColon" [colSpan]="item.span">
                 <span class="ant-descriptions-item-label">{{ item.title }}</span>
                 <span class="ant-descriptions-item-content">
                   <ng-template [ngTemplateOutlet]="item.content"></ng-template>
@@ -34,7 +34,7 @@
           <ng-container *ngFor="let row of itemMatrix; let i = index">
             <tr class="ant-descriptions-row">
               <ng-container *ngFor="let item of row; let isLast = last">
-                <td class="ant-descriptions-item" [colSpan]="item.span">
+                <td class="ant-descriptions-item" [class.ant-descriptions-item-colon]="nzColon" [colSpan]="item.span">
                   <span class="ant-descriptions-item-label">{{ item.title }}</span>
                 </td>
               </ng-container>
