@@ -7,4 +7,5 @@
  */
 
 export * from './nz-progress.module';
-export * from './nz-progress.component';
+export { NzProgressComponent } from './nz-progress.component';
+export * from './nz-progress.definitions';
