@@ -6,5 +6,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import ms_MY from '../date-picker/ms_MY';
-export default ms_MY;
+const locale = {
+  placeholder: 'Sila pilih masa'
+};
+
+export default locale;
