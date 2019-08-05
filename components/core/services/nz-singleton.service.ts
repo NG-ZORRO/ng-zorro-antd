@@ -35,8 +35,8 @@ export class NzSingletonService {
   }
 
   /**
-   * This registry is used to register singleton in dev env.
-   * So that singletons get destroyed when hot module reloads happened.
+   * This registry is used to register singleton in dev mode.
+   * So that singletons get destroyed when hot module reload happens.
    *
    * This works in prod mode too but with no specific effect.
    */
