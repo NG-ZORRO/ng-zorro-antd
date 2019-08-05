@@ -6,14 +6,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import CalendarLocale from '../calendar/ms_MY';
-import TimePickerLocale from '../time-picker/ms_MY';
+import CalendarLocale from '../calendar/ta_IN';
+import TimePickerLocale from '../time-picker/ta_IN';
 
 // Merge into a locale object
 const locale = {
   lang: {
-    placeholder: 'Pilih tarikh',
-    rangePlaceholder: ['Tarikh mula', 'Tarikh akhir'],
+    placeholder: 'தேதியைத் தேர்ந்தெடுக்கவும்',
+    rangePlaceholder: ['தொடக்க தேதி', 'கடைசி தேதி'],
     ...CalendarLocale
   },
   timePickerLocale: {
