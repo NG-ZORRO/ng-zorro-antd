@@ -26,7 +26,6 @@ import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 | -------- | ----------- | ---- | ------- |
 | `[nzAffix]` | Fixed mode of Anchor | `boolean` | `true` |
 | `[nzBounds]` | Bounding distance of anchor area, unit: px | `number` | `5` |
-| `[nzOffsetBottom]` | Pixels to offset from bottom when calculating position of scroll | `number` | - |
 | `[nzOffsetTop]` | Pixels to offset from top when calculating position of scroll | `number` | `0` |
 | `[nzShowInkInFixed]` | Whether show ink-balls in Fixed mode | `boolean` | `false` |
 | `[nzTarget]` | Scrolling container | `string \| HTMLElement` | `window` |
