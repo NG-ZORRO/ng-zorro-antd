@@ -2,7 +2,7 @@ import * as fs from 'fs-extra';
 import { parallel, series, task, watch } from 'gulp';
 import { join } from 'path';
 import { execNodeTask, execTask } from '../util/task-helpers';
-
+const detectPort = require('detect-port');
 import { buildConfig } from '../../build-config';
 
 const siteGenerate = require('../../site/generate-site');
@@ -38,11 +38,15 @@ task('init:site', done => {
 });
 
 /** Run `ng serve --port 0` */
-task('serve:site', execNodeTask(
-  '@angular/cli',
-  'ng',
-  [ 'serve', '--port', '0' ]
-));
+task('serve:site', done => {
+  detectPort(4200).then((port: number) => {
+    execNodeTask(
+      '@angular/cli',
+      'ng',
+      [ 'serve', '--port', port === 4200 ? '4200' : '0' ]
+    )(done);
+  });
+});
 
 /** Run `ng build --prod --project=ng-zorro-antd-doc` */
 task('build:site-doc', execNodeTask(
