@@ -43,6 +43,7 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
 | `[nzSize]` | 指定大小，目前支持普通（`default`）和迷你（`small`） | `'small' \| 'default'` | `'default'` |
 | `[nzStatus]` | 指定当前步骤的状态，可选 `wait` `process` `finish` `error` | `'wait' \| 'process' \| 'finish' \| 'error'` | `'process'` |
 | `[nzStartIndex]` | 指定起始位置的序号 | `number` | `0` |
+| `(nzIndexChange)` | 点击单个步骤时触发的事件 | `number` | - |
 
 ### nz-step
 
