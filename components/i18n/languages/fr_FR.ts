@@ -46,5 +46,11 @@ export default {
   },
   Empty: {
     description: 'Aucune donnée'
+  },
+  Text: {
+    edit: 'éditer',
+    copy: 'copier',
+    copied: 'copie effectuée',
+    expand: 'développer'
   }
 };

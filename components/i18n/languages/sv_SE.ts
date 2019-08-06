@@ -38,5 +38,11 @@ export default {
   },
   Empty: {
     description: 'Ingen information'
+  },
+  Text: {
+    edit: 'editera',
+    copy: 'kopiera',
+    copied: 'kopierad',
+    expand: 'expandera'
   }
 };
