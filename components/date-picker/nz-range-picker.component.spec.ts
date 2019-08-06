@@ -66,6 +66,32 @@ describe('NzRangePickerComponent', () => {
       expect(getPickerContainer()).toBeNull();
     }));
 
+    it('should focus on the trigger after a click outside', fakeAsync(() => {
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerTrigger().matches(':focus-within')).toBeTruthy();
+    }));
+
+    it('should open on enter', fakeAsync(() => {
+      fixture.detectChanges();
+      getPickerTriggerWrapper().dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).not.toBeNull();
+    }));
+
+    it('should open by click and focus on left inner calendar input', fakeAsync(() => {
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      expect(document.activeElement).toEqual(queryFromOverlay('.ant-calendar-range-left input.ant-calendar-input'));
+    }));
+
     it('should support nzAllowClear and work properly', fakeAsync(() => {
       const clearBtnSelector = By.css('nz-picker i.ant-calendar-picker-clear');
       const initial = (fixtureInstance.modelValue = [new Date(), new Date()]);
@@ -643,10 +669,10 @@ describe('NzRangePickerComponent', () => {
       const rightInput = queryFromOverlay('.ant-calendar-range-right input.ant-calendar-input') as HTMLInputElement;
 
       leftInput.value = '2018-11-11';
-      leftInput.dispatchEvent(new KeyboardEvent('keyup'));
+      leftInput.dispatchEvent(new KeyboardEvent('keyup', {key: 'Enter'}));
       fixture.detectChanges();
       rightInput.value = '2018-12-12';
-      rightInput.dispatchEvent(new KeyboardEvent('keyup'));
+      rightInput.dispatchEvent(new KeyboardEvent('keyup', {key: 'Enter'}));
       fixture.detectChanges();
       tick(500);
       expect(nzOnChange).toHaveBeenCalled();
