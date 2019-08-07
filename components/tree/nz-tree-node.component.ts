@@ -27,7 +27,7 @@ import { fromEvent, Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import {
-  collapseMotion,
+  treeCollapseMotion,
   warnDeprecation,
   InputBoolean,
   NzFormatBeforeDropEvent,
@@ -42,7 +42,7 @@ import {
   templateUrl: './nz-tree-node.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
-  animations: [collapseMotion]
+  animations: [treeCollapseMotion]
 })
 export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('dragElement', { static: false }) dragElement: ElementRef;

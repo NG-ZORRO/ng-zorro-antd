@@ -187,6 +187,9 @@
     }
   }
   &-child-tree {
+    // The overflow of the collapse animation in edge and IE is invalid
+    overflow: hidden;
+
     // https://github.com/ant-design/ant-design/issues/14958
     > li {
       // Provide additional padding between top child node and parent node
