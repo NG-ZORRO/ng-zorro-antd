@@ -1,5 +1,6 @@
+// TypeScript config file that matches all source files in the project. This file is read by
+// IDEs and TSLint. For IDEs it ensures that `experimentalDecorator` warnings are not showing up.
 {
-  "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
     "downlevelIteration": true,
@@ -21,6 +22,7 @@
     "noImplicitThis": true,
     "skipLibCheck": true,
     "strictFunctionTypes": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "types": ["jasmine"]
   }
 }
