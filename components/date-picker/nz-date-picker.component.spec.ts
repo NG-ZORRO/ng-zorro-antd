@@ -642,6 +642,20 @@ describe('NzDatePickerComponent', () => {
       expect((queryFromOverlay('input.ant-calendar-input') as HTMLInputElement).value).toBe('2018-11-11 00:22:33');
     }));
 
+    it('should not reset time', fakeAsync(() => {
+      fixtureInstance.nzValue = new Date('2019-08-02 13:03:33');
+      fixtureInstance.nzShowTime = true;
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      dispatchMouseEvent(queryFromOverlay('.ant-calendar-cell > .ant-calendar-date'), 'click');
+
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect((queryFromOverlay('input.ant-calendar-input') as HTMLInputElement).value).toBe('2019-07-29 13:03:33');
+    }));
+
     it('should support nzShowTime.nzFormat', fakeAsync(() => {
       fixtureInstance.nzShowTime = { nzFormat: 'HH:mm' };
       fixture.detectChanges();
