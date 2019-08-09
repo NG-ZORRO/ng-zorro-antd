@@ -42,6 +42,7 @@ import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 | `[nzTitle]` | Title | `string \| TemplateRef<void>` | - |
 | `[nzValue]` | Target time in timestamp form | `string \| number` | - |
 | `[nzValueTemplate]` | Custom template to render a time | `TemplateRef<{ $implicit: number }>` | - |
+| `(nzCountdownFinish)` | Emit when countdown finishes | `void` | - |
 
 ### nzFormat
 
