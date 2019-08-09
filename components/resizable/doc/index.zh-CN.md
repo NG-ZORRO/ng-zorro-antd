@@ -1,9 +1,10 @@
 ---
 category: Components
-type: 实验性组件
+type: 布局
 title: Resizable
 subtitle: 调整尺寸
 cols: 1
+experimental: true
 ---
 
 调整元素尺寸。

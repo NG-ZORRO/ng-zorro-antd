@@ -1,8 +1,9 @@
 ---
 category: Components
-type: Experimental
+type: Layout
 title: Resizable
 cols: 1
+experimental: true
 ---
 
 Resize element.

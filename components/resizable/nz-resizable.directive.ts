@@ -60,11 +60,11 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
   @Output() readonly nzResizeStart = new EventEmitter<NzResizeEvent>();
 
   resizing = false;
-  elRect: ClientRect | DOMRect;
-  currentHandleEvent: NzResizeHandleMouseDownEvent;
-  ghostElement: HTMLDivElement | null;
-  el: HTMLElement;
-  sizeCache: NzResizeEvent | null;
+  private elRect: ClientRect | DOMRect;
+  private currentHandleEvent: NzResizeHandleMouseDownEvent;
+  private ghostElement: HTMLDivElement | null;
+  private el: HTMLElement;
+  private sizeCache: NzResizeEvent | null;
   private destroy$ = new Subject<void>();
 
   constructor(

@@ -30,6 +30,7 @@ export class AppComponent implements OnInit, AfterViewInit {
    **/
   showDrawer = false;
   isDrawerOpen = false;
+  isExperimental = false;
   routerList = ROUTER_LIST;
   componentList: DocPageMeta[] = [];
   searchComponent = null;
@@ -73,6 +74,15 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
 
+  setExperimental(isExperimental: boolean): void {
+    this.isExperimental = isExperimental;
+    if (isExperimental) {
+      this.router.navigateByUrl(`/docs/experimental/${this.language}`);
+    } else {
+      this.router.navigateByUrl(`/docs/introduce/${this.language}`);
+    }
+  }
+
   navigateToVersion(version: string): void {
     if (!this.platform.isBrowser) {
       return;
@@ -106,12 +116,11 @@ export class AppComponent implements OnInit, AfterViewInit {
         if (this.router.url !== '/' + this.searchComponent) {
           this.searchComponent = null;
         }
-
+        this.isExperimental = this.router.url.search('experimental') !== -1;
         this.language = this.router.url
           .split('/')[this.router.url.split('/').length - 1]
           .split('#')[0]
           .split('?')[0];
-
         this.appService.language$.next(this.language);
         this.nzI18nService.setLocale(this.language === 'en' ? en_US : zh_CN);
 
