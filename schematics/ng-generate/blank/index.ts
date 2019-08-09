@@ -2,7 +2,7 @@ import { Rule, Tree } from '@angular-devkit/schematics';
 import { getProjectFromWorkspace } from '@angular/cdk/schematics';
 import { getWorkspace } from '@schematics/angular/utility/config';
 import chalk from 'chalk';
-import { statSync as fsStatSync } from 'fs';
+import { existsSync, statSync as fsStatSync } from 'fs';
 import { Schema } from './schema';
 
 const bootPageHTML = `<!-- NG-ZORRO -->
@@ -24,8 +24,12 @@ export default function(options: Schema): Rule {
       );
       return;
     }
-    const stat = fsStatSync(appHTMLFile);
-    if (stat.mtimeMs === stat.ctimeMs) {
+    if (existsSync(appHTMLFile)) {
+      const stat = fsStatSync(appHTMLFile);
+      if (stat.mtimeMs === stat.ctimeMs) {
+        host.overwrite(appHTMLFile, bootPageHTML);
+      }
+    } else {
       host.overwrite(appHTMLFile, bootPageHTML);
     }
 
