@@ -16,7 +16,6 @@ export * from './is-promise';
 export * from './number';
 export * from './scroll-into-view-if-needed';
 export * from './textarea-caret-position';
-export * from './throttleByAnimationFrame';
 export * from './style-checke';
 export * from './text-measure';
 export * from './measure-scrollbar';

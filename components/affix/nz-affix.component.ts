@@ -6,28 +6,29 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Platform } from '@angular/cdk/platform';
+import { supportsScrollBehavior, Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
   EventEmitter,
   Inject,
   Input,
+  NgZone,
+  OnChanges,
   OnDestroy,
-  OnInit,
   Output,
+  SimpleChanges,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import {
-  shallowEqual,
-  throttleByAnimationFrameDecorator,
-  toNumber,
-  NgStyleInterface,
-  NzScrollService
-} from 'ng-zorro-antd/core';
+import { shallowEqual, toNumber, NgStyleInterface, NzScrollService } from 'ng-zorro-antd/core';
+import { fromEvent, merge, Subscription } from 'rxjs';
+import { auditTime } from 'rxjs/operators';
+
+export const NZ_AFFIX_DEFAULT_SCROLL_TIME = 20;
 
 @Component({
   selector: 'nz-affix',
@@ -43,16 +44,8 @@ import {
   ],
   encapsulation: ViewEncapsulation.None
 })
-export class NzAffixComponent implements OnInit, OnDestroy {
-  @Input()
-  set nzTarget(value: string | Element | Window) {
-    if (this.platform.isBrowser) {
-      this.clearEventListeners();
-      this._target = typeof value === 'string' ? this.doc.querySelector(value) : value || window;
-      this.setTargetEventListeners();
-      this.updatePosition({} as Event);
-    }
-  }
+export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
+  @Input() nzTarget: string | Element | Window;
 
   @Input()
   set nzOffsetTop(value: number | null) {
@@ -79,42 +72,43 @@ export class NzAffixComponent implements OnInit, OnDestroy {
   @Output() readonly nzChange = new EventEmitter<boolean>();
 
   private timeout: number;
+  private scroll$: Subscription | null = null;
   private readonly events = ['resize', 'scroll', 'touchstart', 'touchmove', 'touchend', 'pageshow', 'load'];
-  @ViewChild('fixedEl', { static: false }) private fixedEl: ElementRef;
-
+  @ViewChild('fixedEl', { static: true }) private fixedEl: ElementRef<HTMLDivElement>;
   private readonly placeholderNode: HTMLElement;
-
   private affixStyle: NgStyleInterface | undefined;
   private placeholderStyle: NgStyleInterface | undefined;
-  private _target: Element | Window | null = null;
   private _offsetTop: number | null;
   private _offsetBottom: number | null;
+
+  private get target(): Element | Window {
+    const el = this.nzTarget;
+    return (typeof el === 'string' ? this.doc.querySelector(el) : el) || window;
+  }
 
   constructor(
     _el: ElementRef,
     private scrollSrv: NzScrollService,
     // tslint:disable-next-line:no-any
     @Inject(DOCUMENT) private doc: any,
+    private ngZone: NgZone,
     private platform: Platform
   ) {
     this.placeholderNode = _el.nativeElement;
-    if (this.platform.isBrowser) {
-      this._target = window;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.nzTarget) {
+      this.registerListeners();
     }
   }
 
-  ngOnInit(): void {
-    this.timeout = setTimeout(() => {
-      this.setTargetEventListeners();
-      this.updatePosition({} as Event);
-    });
+  ngAfterViewInit(): void {
+    this.registerListeners();
   }
 
   ngOnDestroy(): void {
-    this.clearEventListeners();
-    clearTimeout(this.timeout);
-    // tslint:disable-next-line:no-any
-    (this.updatePosition as any).cancel();
+    this.removeListeners();
   }
 
   getOffset(
@@ -144,21 +138,25 @@ export class NzAffixComponent implements OnInit, OnDestroy {
     };
   }
 
-  private setTargetEventListeners(): void {
-    this.clearEventListeners();
-    if (this.platform.isBrowser) {
-      this.events.forEach((eventName: string) => {
-        this._target!.addEventListener(eventName, this.updatePosition, false);
-      });
+  private registerListeners(): void {
+    if (!supportsScrollBehavior()) {
+      return;
     }
+    this.removeListeners();
+    this.scroll$ = this.ngZone.runOutsideAngular(() => {
+      return merge(...this.events.map(evName => fromEvent(this.target, evName)))
+        .pipe(auditTime(NZ_AFFIX_DEFAULT_SCROLL_TIME))
+        .subscribe(e => this.updatePosition(e));
+    });
+    this.timeout = setTimeout(() => this.updatePosition({} as Event));
   }
 
-  private clearEventListeners(): void {
-    if (this.platform.isBrowser) {
-      this.events.forEach(eventName => {
-        this._target!.removeEventListener(eventName, this.updatePosition, false);
-      });
+  private removeListeners(): void {
+    if (!this.scroll$) {
+      return;
     }
+    clearTimeout(this.timeout);
+    this.scroll$.unsubscribe();
   }
 
   private getTargetRect(target: Element | Window | undefined): ClientRect {
@@ -181,7 +179,7 @@ export class NzAffixComponent implements OnInit, OnDestroy {
 
   private setAffixStyle(e: Event, affixStyle?: NgStyleInterface): void {
     const originalAffixStyle = this.affixStyle;
-    const isWindow = this._target === window;
+    const isWindow = this.target === window;
     if (e.type === 'scroll' && originalAffixStyle && affixStyle && isWindow) {
       return;
     }
@@ -190,7 +188,7 @@ export class NzAffixComponent implements OnInit, OnDestroy {
     }
 
     const fixed = !!affixStyle;
-    const wrapEl = this.fixedEl.nativeElement as HTMLElement;
+    const wrapEl = this.fixedEl.nativeElement;
     wrapEl.style.cssText = this.genStyle(affixStyle);
     this.affixStyle = affixStyle;
     const cls = 'ant-affix';
@@ -228,17 +226,16 @@ export class NzAffixComponent implements OnInit, OnDestroy {
     this.setPlaceholderStyle(styleObj);
   }
 
-  @throttleByAnimationFrameDecorator()
   updatePosition(e: Event): void {
     if (!this.platform.isBrowser) {
       return;
     }
-    const targetNode = this._target as (HTMLElement | Window);
+    const targetNode = this.target as (HTMLElement | Window);
     // Backwards support
     let offsetTop = this.nzOffsetTop;
     const scrollTop = this.scrollSrv.getScroll(targetNode!, true);
     const elemOffset = this.getOffset(this.placeholderNode, targetNode!);
-    const fixedNode = this.fixedEl.nativeElement as HTMLElement;
+    const fixedNode = this.fixedEl.nativeElement;
     const elemSize = {
       width: fixedNode.offsetWidth,
       height: fixedNode.offsetHeight
