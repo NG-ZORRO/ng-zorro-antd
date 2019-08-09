@@ -1,5 +1,6 @@
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
 
-export const moduleList = [ NzStepsModule, NzPopoverModule, NzButtonModule ];
+export const moduleList = [ NzStepsModule, NzPopoverModule, NzButtonModule, NzDividerModule ];

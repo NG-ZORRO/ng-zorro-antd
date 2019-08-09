@@ -42,6 +42,7 @@ The whole of the step bar.
 | `[nzSize]` | To specify the size of the step bar, `default` and `small` are currently supported | `'small' \| 'default'` | `'default'` |
 | `[nzStatus]` | To specify the status of current step, can be set to one of the following values: `wait` `process` `finish` `error` | `'wait' \| 'process' \| 'finish' \| 'error'` | `'process'` |
 | `[nzStartIndex]` | To specify the starting number | `number` | `0` |
+| `(nzIndexChange)` | Trigger event when step click | `number` | - |
 
 ### nz-step
 
