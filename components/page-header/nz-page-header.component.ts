@@ -20,6 +20,8 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+
+import { Location } from '@angular/common';
 import { NzPageHeaderFooterDirective } from './nz-page-header-cells';
 
 @Component({
@@ -58,7 +60,7 @@ export class NzPageHeaderComponent implements OnInit, OnChanges {
     NzPageHeaderFooterDirective
   >;
 
-  constructor() {}
+  constructor(private location: Location) {}
 
   ngOnInit(): void {}
 
@@ -70,6 +72,10 @@ export class NzPageHeaderComponent implements OnInit, OnChanges {
   }
 
   onBack(): void {
-    this.nzBack.emit();
+    if (this.nzBack.observers.length) {
+      this.nzBack.emit();
+    } else {
+      this.location.back();
+    }
   }
 }
