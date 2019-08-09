@@ -120,6 +120,18 @@ describe('NzDrawerComponent', () => {
     expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(false);
   });
 
+  it('should disabled ESC keydown', () => {
+    component.open();
+    component.drawerComponent.nzKeyboard = false;
+    fixture.detectChanges();
+    expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
+    dispatchKeyboardEvent(document.body, 'keydown', ESCAPE);
+    fixture.detectChanges();
+    expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
+    component.close();
+    fixture.detectChanges();
+  });
+
   it('should close when click mask', () => {
     component.maskClosable = true;
     component.open();
