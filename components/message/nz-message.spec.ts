@@ -44,7 +44,6 @@ describe('NzMessage', () => {
   it('should open a message box with success', () => {
     messageService.success('SUCCESS');
     fixture.detectChanges();
-    console.log(overlayContainerElement.textContent);
 
     expect((overlayContainerElement.querySelector('.cdk-overlay-pane') as HTMLElement).style.zIndex).toBe('1010');
     expect(overlayContainerElement.textContent).toContain('SUCCESS');

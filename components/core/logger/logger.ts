@@ -7,9 +7,9 @@
  */
 
 // tslint:disable:no-any
-import { environment } from '../environments/environment';
-
 import { isDevMode } from '@angular/core';
+
+import { environment } from '../environments/environment';
 
 const record: Record<string, boolean> = {};
 
