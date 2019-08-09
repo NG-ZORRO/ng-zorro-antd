@@ -20,7 +20,7 @@ import {
   Renderer2
 } from '@angular/core';
 
-import { InputBoolean } from 'ng-zorro-antd/core';
+import { ensureInBounds, InputBoolean } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -128,45 +128,28 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
     let maxWidth = Infinity;
     let minWidth = this.nzMinWidth;
     let maxHeight = Infinity;
+    let boundWidth = Infinity;
+    let boundHeight = Infinity;
     if (this.nzBounds === 'parent') {
       const parent = this.renderer.parentNode(this.el);
       if (parent instanceof HTMLElement) {
         const parentRect = parent.getBoundingClientRect();
-        maxWidth = this.nzMaxWidth
-          ? this.nzMaxWidth < parentRect.width
-            ? this.nzMaxWidth
-            : parentRect.width
-          : parentRect.width;
-        maxHeight = this.nzMaxHeight
-          ? this.nzMaxHeight < parentRect.height
-            ? this.nzMaxHeight
-            : parentRect.height
-          : parentRect.height;
+        boundWidth = parentRect.width;
+        boundHeight = parentRect.height;
       }
     } else if (this.nzBounds === 'window') {
       if (typeof window !== 'undefined') {
-        const windowWidth = window.innerWidth;
-        const windowHeight = window.innerHeight;
-        maxWidth = this.nzMaxWidth ? (this.nzMaxWidth < windowWidth ? this.nzMaxWidth : windowWidth) : windowWidth;
-        maxHeight = this.nzMaxHeight
-          ? this.nzMaxHeight < windowHeight
-            ? this.nzMaxHeight
-            : windowHeight
-          : windowHeight;
+        boundWidth = window.innerWidth;
+        boundHeight = window.innerHeight;
       }
     } else if (this.nzBounds && this.nzBounds.nativeElement && this.nzBounds.nativeElement instanceof HTMLElement) {
       const boundsRect = this.nzBounds.nativeElement.getBoundingClientRect();
-      maxWidth = this.nzMaxWidth
-        ? this.nzMaxWidth < boundsRect.width
-          ? this.nzMaxWidth
-          : boundsRect.width
-        : boundsRect.width;
-      maxHeight = this.nzMaxHeight
-        ? this.nzMaxHeight < boundsRect.height
-          ? this.nzMaxHeight
-          : boundsRect.height
-        : boundsRect.height;
+      boundWidth = boundsRect.width;
+      boundHeight = boundsRect.height;
     }
+
+    maxWidth = ensureInBounds(this.nzMaxWidth, boundWidth);
+    maxHeight = ensureInBounds(this.nzMaxHeight, boundHeight);
 
     if (this.nzGridColumnCount !== -1) {
       spanWidth = maxWidth / this.nzGridColumnCount;

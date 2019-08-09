@@ -19,3 +19,4 @@ export * from './textarea-caret-position';
 export * from './style-checke';
 export * from './text-measure';
 export * from './measure-scrollbar';
+export * from './ensure-in-bounds';
