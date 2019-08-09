@@ -28,3 +28,4 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 | `[nzSrcSet]` | 设置图片类头像响应式资源地址 | string | - |
 | `[nzAlt]` | 图像无法显示时的替代文本 | string | - |
 | `[nzText]` | 文本类头像 | `string` | - |
+| `(nzError)` | 图片加载失败的事件，调用 `preventDefault` 方法会阻止组件默认的 fallback 行为 | `EventEmitter<Event>` | - |

@@ -27,3 +27,4 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 | `[nzSrcSet]` | a list of sources to use for different screen resolutions | string | - |
 | `[nzAlt]` | This attribute defines the alternative text describing the image | string | - |
 | `[nzText]` | letter type avatar | `string` | - |
+| `(nzError)` | handler when img load error, call the `preventDefault` method to prevent default fallback behavior | `EventEmitter<Event>` | - |
