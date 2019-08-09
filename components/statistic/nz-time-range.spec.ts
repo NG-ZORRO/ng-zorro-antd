@@ -3,6 +3,16 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NzStatisticModule } from './nz-statistic.module';
 
+@Component({
+  template: `
+    {{ diff | nzTimeRange: format }}
+  `
+})
+export class NzTestTimeRangeComponent {
+  diff = 1000 * 60 * 60 * 24 * 2 + 1000 * 30;
+  format = 'HH:mm:ss';
+}
+
 describe('nz time range pipeline', () => {
   let fixture: ComponentFixture<NzTestTimeRangeComponent>;
   let testComponent: NzTestTimeRangeComponent;
@@ -46,13 +56,3 @@ describe('nz time range pipeline', () => {
     });
   });
 });
-
-@Component({
-  template: `
-    {{ diff | nzTimeRange: format }}
-  `
-})
-export class NzTestTimeRangeComponent {
-  diff = 1000 * 60 * 60 * 24 * 2 + 1000 * 30;
-  format = 'HH:mm:ss';
-}

@@ -11,11 +11,13 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  EventEmitter,
   Input,
   NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
+  Output,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
@@ -34,6 +36,7 @@ import { NzStatisticComponent } from './nz-statistic.component';
 export class NzCountdownComponent extends NzStatisticComponent implements OnInit, OnChanges, OnDestroy {
   /** @override */
   @Input() nzFormat: string = 'HH:mm:ss';
+  @Output() readonly nzCountdownFinish = new EventEmitter<void>();
 
   diff: number;
 
@@ -97,6 +100,7 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
 
     if (this.diff === 0) {
       this.stopTimer();
+      this.nzCountdownFinish.next();
     }
   }
 }
