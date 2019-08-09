@@ -12,8 +12,10 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnChanges,
+  Output,
   Renderer2,
   SimpleChanges,
   ViewChild,
@@ -46,6 +48,7 @@ export class NzAvatarComponent implements OnChanges {
   @Input() nzSrcSet: string;
   @Input() nzAlt: string;
   @Input() nzIcon: string;
+  @Output() readonly nzError = new EventEmitter<Event>();
 
   oldAPIIcon = true; // Make the user defined icon compatible to old API. Should be removed in 2.0.
   hasText: boolean = false;
@@ -80,17 +83,20 @@ export class NzAvatarComponent implements OnChanges {
     return this;
   }
 
-  imgError(): void {
-    this.hasSrc = false;
-    this.hasIcon = false;
-    this.hasText = false;
-    if (this.nzIcon) {
-      this.hasIcon = true;
-    } else if (this.nzText) {
-      this.hasText = true;
+  imgError($event: Event): void {
+    this.nzError.emit($event);
+    if (!$event.defaultPrevented) {
+      this.hasSrc = false;
+      this.hasIcon = false;
+      this.hasText = false;
+      if (this.nzIcon) {
+        this.hasIcon = true;
+      } else if (this.nzText) {
+        this.hasText = true;
+      }
+      this.setClass().notifyCalc();
+      this.setSizeStyle();
     }
-    this.setClass().notifyCalc();
-    this.setSizeStyle();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
