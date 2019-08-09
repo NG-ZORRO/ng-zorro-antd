@@ -8,6 +8,7 @@
 
 import { Overlay } from '@angular/cdk/overlay';
 import { ApplicationRef, ComponentFactoryResolver, Injectable, Injector, TemplateRef } from '@angular/core';
+import { NzSingletonService } from 'ng-zorro-antd/core';
 
 import { NzMessageBaseService } from './nz-message-base.service';
 import { NzMessageConfig } from './nz-message-config';
@@ -23,8 +24,14 @@ export class NzMessageService extends NzMessageBaseService<
   NzMessageData,
   NzMessageConfig
 > {
-  constructor(overlay: Overlay, injector: Injector, cfr: ComponentFactoryResolver, appRef: ApplicationRef) {
-    super(overlay, NzMessageContainerComponent, injector, cfr, appRef, 'message');
+  constructor(
+    nzSingletonService: NzSingletonService,
+    overlay: Overlay,
+    injector: Injector,
+    cfr: ComponentFactoryResolver,
+    appRef: ApplicationRef
+  ) {
+    super(nzSingletonService, overlay, NzMessageContainerComponent, injector, cfr, appRef, 'message');
   }
 
   // Shortcut methods
