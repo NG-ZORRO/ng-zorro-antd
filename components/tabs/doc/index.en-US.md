@@ -39,7 +39,8 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | `[nzTabBarGutter]` | The gap between tabs | `number` | - |
 | `[nzHideAll]` | Whether hide all tabs | `boolean` | `false` |
 | `[nzShowPagination]` | Whether show pre or next button when exceed display area | `boolean` | `true` |
-| `[nzLinkRouter]` | Link with Angular router. It supports child mode and query param mode | `boolean` | `false` ||
+| `[nzLinkRouter]` | Link with Angular router. It supports child mode and query param mode | `boolean` | `false` |
+| `[nzLinkExact]` | Use exact routing matching | `boolean` | `true` |
 | `(nzSelectedIndexChange)` | Current tab's index change callback | `EventEmitter<number>` | - |
 | `(nzSelectChange)` | Current tab's change callback | `EventEmitter<{nzSelectedIndex: number,tab: NzTabComponent}>` | - |
 | `(nzOnNextClick)` | Callback executed when next button is clicked | `EventEmitter<void>` | - |
