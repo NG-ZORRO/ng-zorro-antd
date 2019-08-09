@@ -35,6 +35,8 @@
     "@angular/animations": "^8.0.0",
     "@angular/common": "^8.0.0",
     "@angular/core": "^8.0.0",
-    "@angular/forms": "^8.0.0"
+    "@angular/platform-browser": "^8.0.0",
+    "@angular/router": "^8.0.0",
+    "rxjs": "^6.5.2"
   }
 }
