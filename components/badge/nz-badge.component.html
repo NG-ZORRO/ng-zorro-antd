@@ -6,8 +6,9 @@
 <span class="ant-badge-status-text" *ngIf="nzStatus || nzColor">{{ nzText }}</span>
 <ng-container *nzStringTemplateOutlet="nzCount">
   <sup class="ant-scroll-number"
-       *ngIf="showSup"
-       @zoomBadgeMotion
+       *ngIf="showSup && viewInit"
+       [@.disabled]="notWrapper"
+       [@zoomBadgeMotion]
        [ngStyle]="nzStyle"
        [class.ant-badge-count]="!nzDot"
        [class.ant-badge-dot]="nzDot"
