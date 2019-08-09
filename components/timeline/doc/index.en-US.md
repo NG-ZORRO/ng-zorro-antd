@@ -47,5 +47,5 @@ Node of timeline
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzColor]` | Set the circle's color to `blue`, `red`, `green` or other custom colors (css color) | `string` | `blue` |
+| `[nzColor]` | Set the circle's color to `'blue' \| 'red' \| 'green' \| 'gray'` or other custom colors (css color) | `string` | `blue` |
 | `[nzDot]` | Customize timeline dot | `string \| TemplateRef<void>` | - |
