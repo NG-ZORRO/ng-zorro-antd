@@ -29,6 +29,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | `[nzClosable]` | 是否显示右上角的关闭按钮 | `boolean` | `true` |
 | `[nzMaskClosable]` | 点击蒙层是否允许关闭 | `boolean` | `true` |
 | `[nzMask]` | 是否展示遮罩 | `boolean` | `true` |
+| `[nzKeyboard]` | 是否支持键盘esc关闭 | `boolean` | `true` |
 | `[nzMaskStyle]` | 遮罩样式 | `object` | `{}` |
 | `[nzBodyStyle]` | Drawer body 样式 | `object` | `{}` |
 | `[nzTitle]` | 标题 | `string \| TemplateRef<void>` | - |
@@ -58,6 +59,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | nzClosable | 是否显示右上角的关闭按钮 | `boolean` | `true` |
 | nzMaskClosable | 点击蒙层是否允许关闭 | `boolean` | `true` |
 | nzMask | 是否展示遮罩 | `boolean` | `true` |
+| nzKeyboard | 是否支持键盘esc关闭 | `boolean` | `true` |
 | nzMaskStyle | 遮罩样式 | `object` | `{}` |
 | nzBodyStyle | Modal body 样式 | `object` | `{}` |
 | nzTitle | 标题 | `string \| TemplateRef<void>` | - |
@@ -84,16 +86,17 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | --- | --- | --- |
 | afterOpen | 打开之后的回调 | `Observable<void>` |
 | afterClose | 关闭之后的回调 | `Observable<R>` |
-| nzClosable | 是否显示右上角的关闭按钮 | `boolean` | `true` |
-| nzMaskClosable | 点击蒙层是否允许关闭 | `boolean` | `true` |
-| nzMask | 是否展示遮罩 | `boolean` | `true` |
-| nzMaskStyle | 遮罩样式 | `object` | `{}` |
-| nzBodyStyle | Modal body 样式 | `object` | `{}` |
-| nzTitle | 标题 | `string \| TemplateRef<void>` | - |
-| nzWidth | 宽度 | `number \| string` | `256` |
-| nzHeight | 高度, 只在方向为 `'top'`或`'bottom'` 时生效 | `number \| string` | `256` |
-| nzWrapClassName | 对话框外层容器的类名 | `string` | - |
-| nzZIndex| 设置 Drawer 的 `z-index` | `number` | `1000` |
-| nzPlacement | 抽屉的方向 | `'top' \| 'right' \| 'bottom' \| 'left'` | `'right'` |
-| nzOffsetX | x 坐标移量(px) | `number` | `0` |
-| nzOffsetY | y 坐标移量(px), 高度, 只在方向为 `'top'`或`'bottom'` 时生效 | `number` | `0` |
+| nzClosable | 是否显示右上角的关闭按钮 | `boolean` |
+| nzMaskClosable | 点击蒙层是否允许关闭 | `boolean` |
+| nzMask | 是否展示遮罩 | `boolean` |
+| nzMaskStyle | 遮罩样式 | `object` |
+| nzKeyboard | 是否支持键盘esc关闭 | `boolean` |
+| nzBodyStyle | Modal body 样式 | `object` |
+| nzTitle | 标题 | `string \| TemplateRef<void>` |
+| nzWidth | 宽度 | `number \| string` |
+| nzHeight | 高度, 只在方向为 `'top'`或`'bottom'` 时生效 | `number \| string` |
+| nzWrapClassName | 对话框外层容器的类名 | `string` |
+| nzZIndex| 设置 Drawer 的 `z-index` | `number` |
+| nzPlacement | 抽屉的方向 | `'top' \| 'right' \| 'bottom' \| 'left'` |
+| nzOffsetX | x 坐标移量(px) | `number` |
+| nzOffsetY | y 坐标移量(px), 高度, 只在方向为 `'top'`或`'bottom'` 时生效 | `number` |

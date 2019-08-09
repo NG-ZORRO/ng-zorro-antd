@@ -20,6 +20,7 @@ export abstract class NzDrawerRef<R = any> {
   abstract nzClosable: boolean;
   abstract nzNoAnimation: boolean;
   abstract nzMaskClosable: boolean;
+  abstract nzKeyboard: boolean;
   abstract nzMask: boolean;
   abstract nzTitle: string | TemplateRef<{}>;
   abstract nzPlacement: NzDrawerPlacement;
