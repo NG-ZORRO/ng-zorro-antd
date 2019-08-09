@@ -3,13 +3,15 @@ import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testin
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
+import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
 import { NzAlertComponent } from './nz-alert.component';
 import { NzAlertModule } from './nz-alert.module';
 
 describe('alert', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzAlertModule, NoopAnimationsModule],
+      imports: [NzAlertModule, NoopAnimationsModule, NzIconTestModule],
       declarations: [NzDemoTestBasicComponent, NzDemoTestBannerComponent]
     });
     TestBed.compileComponents();

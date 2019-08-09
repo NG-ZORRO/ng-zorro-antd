@@ -11,10 +11,7 @@
   [@slideAlertMotion]
   (@slideAlertMotion.done)="onFadeAnimationDone()">
   <ng-container *ngIf="nzShowIcon">
-    <i class="ant-alert-icon" [ngClass]="nzIconType" *ngIf="nzIconType; else iconTemplate"></i>
-    <ng-template #iconTemplate>
-      <i nz-icon class="ant-alert-icon" [nzType]="iconType" [nzTheme]="iconTheme"></i>
-    </ng-template>
+    <i class="ant-alert-icon" nz-icon [nzType]="iconType" [nzTheme]="iconTheme"></i>
   </ng-container>
   <span class="ant-alert-message" *ngIf="nzMessage">
     <ng-container *nzStringTemplateOutlet="nzMessage">{{ nzMessage }}</ng-container>

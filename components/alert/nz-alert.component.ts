@@ -36,11 +36,6 @@ import { slideAlertMotion, InputBoolean, NgClassType } from 'ng-zorro-antd/core'
   ]
 })
 export class NzAlertComponent implements OnChanges {
-  destroy = false;
-  iconType = 'info-circle';
-  iconTheme = 'fill';
-  private isTypeSet = false;
-  private isShowIconSet = false;
   @Input() nzCloseText: string | TemplateRef<void>;
   @Input() nzIconType: NgClassType;
   @Input() nzMessage: string | TemplateRef<void>;
@@ -50,6 +45,17 @@ export class NzAlertComponent implements OnChanges {
   @Input() @InputBoolean() nzShowIcon = false;
   @Input() @InputBoolean() nzBanner = false;
   @Output() readonly nzOnClose = new EventEmitter<boolean>();
+
+  get iconType(): NgClassType {
+    return this.nzIconType || this.inferredIconType;
+  }
+
+  destroy = false;
+  iconTheme = 'fill';
+
+  private isTypeSet = false;
+  private isShowIconSet = false;
+  private inferredIconType: string = 'info-circle';
 
   closeAlert(): void {
     this.destroy = true;
@@ -64,16 +70,16 @@ export class NzAlertComponent implements OnChanges {
   updateIconClassMap(): void {
     switch (this.nzType) {
       case 'error':
-        this.iconType = 'close-circle';
+        this.inferredIconType = 'close-circle';
         break;
       case 'success':
-        this.iconType = 'check-circle';
+        this.inferredIconType = 'check-circle';
         break;
       case 'info':
-        this.iconType = 'info-circle';
+        this.inferredIconType = 'info-circle';
         break;
       case 'warning':
-        this.iconType = 'exclamation-circle';
+        this.inferredIconType = 'exclamation-circle';
         break;
     }
     this.iconTheme = this.nzDescription ? 'outline' : 'fill';
