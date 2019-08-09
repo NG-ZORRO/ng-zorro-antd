@@ -83,7 +83,10 @@ export class NzWaveRenderer {
         this.styleForPseudo = document.createElement('style');
       }
 
-      this.styleForPseudo.innerHTML = `[ant-click-animating-without-extra-node]:after { border-color: ${waveColor}; }`;
+      this.styleForPseudo.innerHTML = `
+      [ant-click-animating-without-extra-node='true']::after, .ant-click-animating-node {
+        --antd-wave-shadow-color: ${waveColor};
+      }`;
       document.body.appendChild(this.styleForPseudo);
     }
 
