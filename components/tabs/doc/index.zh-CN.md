@@ -42,7 +42,8 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | `[nzTabBarGutter]` | tabs 之间的间隙 | `number` | - |
 | `[nzHideAll]` | 是否隐藏所有tab内容 | `boolean` | `false` |
 | `[nzShowPagination]` | 是否超出范围时显示pre和next按钮 | `boolean` | `true` |
-| `[nzLinkRouter]` | 与 Angular 路由联动 | `boolean` | `false` ||
+| `[nzLinkRouter]` | 与 Angular 路由联动 | `boolean` | `false` |
+| `[nzLinkExact]` | 以严格匹配模式确定联动的路由 | `boolean` | `true` |
 | `(nzSelectedIndexChange)` | 当前激活 tab 面板的 序列号变更回调函数 | `EventEmitter<number>` | - |
 | `(nzSelectChange)` | 当前激活 tab 面板变更回调函数 | `EventEmitter<{nzSelectedIndex: number,tab: NzTabComponent}>` | - |
 | `(nzOnNextClick)` | next 按钮被点击的回调 | `EventEmitter<void>` | - |
