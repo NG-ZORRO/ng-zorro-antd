@@ -146,7 +146,7 @@ describe('Coverage supplements', () => {
 
       // sortRangeValue
       componentInstance.selectedValue = [end, start];
-      componentInstance.sortRangeValue('selectedValue');
+      componentInstance.sortRangeValue();
       expect(componentInstance.selectedValue[0].getDate()).toBe(11);
     });
   }); // /DateRangePopup

@@ -669,16 +669,34 @@ describe('NzRangePickerComponent', () => {
       const rightInput = queryFromOverlay('.ant-calendar-range-right input.ant-calendar-input') as HTMLInputElement;
 
       leftInput.value = '2018-11-11';
-      leftInput.dispatchEvent(new KeyboardEvent('keyup', {key: 'Enter'}));
+      leftInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
       fixture.detectChanges();
       rightInput.value = '2018-12-12';
-      rightInput.dispatchEvent(new KeyboardEvent('keyup', {key: 'Enter'}));
+      rightInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
       fixture.detectChanges();
       tick(500);
       expect(nzOnChange).toHaveBeenCalled();
       const result = nzOnChange.calls.allArgs()[0][0];
       expect(result[0].getDate()).toBe(11);
       expect(result[1].getDate()).toBe(12);
+    }));
+
+    it('should auto sort range value when start is after end', fakeAsync(() => {
+      const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      const leftInput = queryFromOverlay('.ant-calendar-range-left input.ant-calendar-input') as HTMLInputElement;
+      const rightInput = queryFromOverlay('.ant-calendar-range-right input.ant-calendar-input') as HTMLInputElement;
+      leftInput.value = '2019-08-10';
+      leftInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+      fixture.detectChanges();
+      rightInput.value = '2018-02-06';
+      rightInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+      fixture.detectChanges();
+      tick(500);
+      const result = nzOnChange.calls.allArgs()[0][0];
+      expect(result[0].getMonth()).toBe(2);
+      expect(result[1].getMonth()).toBe(8);
     }));
   }); // /specified date picker testing
 
