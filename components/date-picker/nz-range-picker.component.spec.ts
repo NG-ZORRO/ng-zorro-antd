@@ -695,8 +695,8 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       const result = nzOnChange.calls.allArgs()[0][0];
-      expect(result[0].getMonth()).toBe(2);
-      expect(result[1].getMonth()).toBe(8);
+      expect(result[0].getDate()).toBe(6);
+      expect(result[1].getDate()).toBe(10);
     }));
   }); // /specified date picker testing
 
