@@ -20,10 +20,12 @@ getTestBed().initTestEnvironment(
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting()
 );
+jasmine.getEnv().allowRespy(true);
 
 let filterRegExp: RegExp;
 
-if (tags) {
+// skip webstorm arg
+if (tags && tags.indexOf('--') === -1) {
   filterRegExp = new RegExp(`(${tags})\\.spec\\.ts$`);
 } else {
   filterRegExp = /\.spec\.ts$/;

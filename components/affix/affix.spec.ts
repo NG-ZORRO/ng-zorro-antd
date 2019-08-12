@@ -475,7 +475,8 @@ describe('affix-extra', () => {
       left: 5,
       width: 200,
       height: 20
-    });
+      // tslint:disable-next-line:no-any
+    } as any);
     window.dispatchEvent(new Event('scroll'));
     tick(30);
     fixture.detectChanges();
