@@ -276,7 +276,9 @@ describe('NzMonthPickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(nzOnChange).toHaveBeenCalled();
-      const result = nzOnChange.calls.allArgs()[0][0];
+      // @ts-ignore
+      // tslint:disable-next-line:no-any
+      const result = nzOnChange.calls.allArgs()[0][0] as any;
       expect(result.getMonth() + 1).toBe(parseInt(cellText, 10));
     }));
   }); // /general api testing
@@ -489,7 +491,7 @@ describe('NzMonthPickerComponent', () => {
 class NzTestMonthPickerComponent {
   useSuite: 1 | 2 | 3 | 4;
   @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter: TemplateRef<void>;
-
+  nzDefaultValue: Date = new Date();
   // --- Suite 1
   nzAllowClear: boolean;
   nzAutoFocus: boolean;

@@ -60,7 +60,7 @@ describe('nz descriptions', () => {
 
     it('should render spans correctly', () => {
       const spyOnWarn = spyOn(console, 'warn');
-
+      spyOnWarn.calls.reset();
       rows = componentElement.querySelectorAll('.ant-descriptions-row');
       expect(rows.length).toBe(1);
 
@@ -92,6 +92,7 @@ describe('nz descriptions', () => {
       const tds = componentElement.querySelectorAll('.ant-descriptions-item');
       expect(rows.length).toBe(1);
       expect((tds[1] as HTMLTableDataCellElement).colSpan).toBe(4);
+      spyOnWarn.calls.reset();
     });
 
     it('should responsive work', fakeAsync(() => {

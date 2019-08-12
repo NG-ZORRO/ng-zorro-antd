@@ -1091,6 +1091,7 @@ describe('upload', () => {
           fixture.detectChanges();
         });
         it('[onClick]', () => {
+          // @ts-ignore
           spyOn(instance.comp, 'file');
           expect(instance.comp.file).not.toHaveBeenCalled();
           instance.comp.onClick();
@@ -1169,8 +1170,11 @@ describe('upload', () => {
       });
 
       it('should uploading a png file', fakeAsync(() => {
+        // @ts-ignore
         spyOn(comp.options, 'onStart');
+        // @ts-ignore
         spyOn(comp.options, 'onProgress');
+        // @ts-ignore
         spyOn(comp.options, 'onSuccess');
         comp.onChange(PNGSMALL as any);
         tick(1);
@@ -1195,6 +1199,7 @@ describe('upload', () => {
       }));
 
       it('should filter size', () => {
+        // @ts-ignore
         spyOn(comp.options, 'onStart');
         comp.options.filters = [
           {
@@ -1207,7 +1212,9 @@ describe('upload', () => {
       });
 
       it('should be no request when beforeUpload is false', () => {
+        // @ts-ignore
         spyOn(comp.options, 'beforeUpload').and.returnValue(false);
+        // @ts-ignore
         spyOn(comp.options, 'onStart');
         comp.onChange(PNGSMALL as any);
         expect(comp.options.beforeUpload).toHaveBeenCalled();
@@ -1215,8 +1222,11 @@ describe('upload', () => {
       });
 
       it('should error when request error', fakeAsync(() => {
+        // @ts-ignore
         spyOn(comp.options, 'onStart');
+        // @ts-ignore
         spyOn(comp.options, 'onSuccess');
+        // @ts-ignore
         spyOn(comp.options, 'onError');
         comp.onChange(PNGSMALL as any);
         tick(1);
@@ -1228,6 +1238,7 @@ describe('upload', () => {
 
       it('should custom request', () => {
         comp.options.customRequest = () => of(true).subscribe(() => {});
+        // @ts-ignore
         spyOn(comp.options, 'customRequest');
         comp.onChange(PNGSMALL as any);
         expect(comp.options.customRequest).toHaveBeenCalled();

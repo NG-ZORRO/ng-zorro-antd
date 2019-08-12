@@ -311,8 +311,10 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
 
   onClickPresetRange(val: PresetRanges[keyof PresetRanges]): void {
     const value = typeof val === 'function' ? val() : val;
-    this.setValue([new CandyDate(value[0]), new CandyDate(value[1])]);
-    this.resultOk.emit();
+    if (value) {
+      this.setValue([new CandyDate(value[0]), new CandyDate(value[1])]);
+      this.resultOk.emit();
+    }
   }
 
   onPresetRangeMouseLeave(): void {
