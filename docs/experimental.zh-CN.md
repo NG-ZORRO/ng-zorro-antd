@@ -10,7 +10,7 @@ NG-ZORRO 实验性功能是指已发布但不稳定或者还未准备好用于�
 
 ### 使用实验性功能
 
-引入你想使用功能的 `NgModule`，然后像正常组件一样使用它。
+引入你想使用功能的 `NgModule` 和样式，然后像正常组件一样使用它。
 
 ```ts
   import { NzResizableModule } from 'ng-zorro-antd/resizable';
@@ -19,4 +19,8 @@ NG-ZORRO 实验性功能是指已发布但不稳定或者还未准备好用于�
     imports: [ NzResizableModule ]
   })
   export class SomeModule {}
+```
+
+```less
+@import "node_modules/ng-zorro-antd/resizable/style/entry.less"
 ```
