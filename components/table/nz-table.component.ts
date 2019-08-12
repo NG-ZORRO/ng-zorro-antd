@@ -50,7 +50,7 @@ import { NzVirtualScrollDirective } from './nz-virtual-scroll.directive';
   encapsulation: ViewEncapsulation.None,
   templateUrl: './nz-table.component.html',
   host: {
-    '[class.ant-table-empty]': 'data.length === 0'
+    '[class.ant-table-empty]': 'data.length === 0 && !nzTemplateMode'
   },
   styles: [
     `
