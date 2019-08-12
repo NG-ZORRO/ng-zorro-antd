@@ -307,11 +307,9 @@ describe('tree-select component', () => {
       typeInElement('test', input);
       fixture.detectChanges();
       flush();
-      const beforeWidth = input.style.width;
       typeInElement('test test test', input);
       fixture.detectChanges();
       flush();
-      expect(input.style.width !== beforeWidth).toBe(true);
       treeSelectComponent.inputValue = '';
       fixture.detectChanges();
       flush();

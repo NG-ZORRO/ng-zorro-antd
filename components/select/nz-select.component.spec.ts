@@ -289,10 +289,11 @@ describe('nz-select component', () => {
       fixture.detectChanges();
       expect(testComponent.selectedValue.length).toBe(0);
     }));
-    it('should custom template work', fakeAsync(() => {
+    it('should custom display template work', fakeAsync(() => {
       fixture.detectChanges();
       selectComponent.nzSelectService.updateListOfSelectedValue(['jack'], true);
       fixture.detectChanges();
+      tick(1000);
       flush();
       fixture.detectChanges();
       const selection = select.nativeElement.querySelector('.ant-select-selection') as HTMLElement;
