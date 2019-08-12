@@ -268,7 +268,9 @@ describe('NzYearPickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(nzOnChange).toHaveBeenCalled();
-      const result = nzOnChange.calls.allArgs()[0][0];
+      // @ts-ignore
+      // tslint:disable-next-line:no-any
+      const result = nzOnChange.calls.allArgs()[0][0] as any;
       expect(result.getFullYear()).toBe(parseInt(cellText, 10));
     }));
   }); // /general api testing

@@ -23,7 +23,6 @@ import { NzModalModule } from './nz-modal.module';
 import { NzModalService } from './nz-modal.service';
 
 let counter = 0;
-
 describe('modal testing (legacy)', () => {
   describe('demo-async', () => {
     let fixture: ComponentFixture<NzDemoModalAsyncComponent>;
@@ -136,7 +135,7 @@ describe('modal testing (legacy)', () => {
     });
 
     it('should correctly render all basic props', fakeAsync(() => {
-      spyOn(console, 'log');
+      const spy = spyOn(console, 'log');
 
       // [Hack] Codes that can't be covered by normal operations
       // @ts-ignore
@@ -174,10 +173,11 @@ describe('modal testing (legacy)', () => {
       flush();
       expect(console.log).toHaveBeenCalledWith('click ok');
       expectModalDestroyed(tempModalId, false); // shouldn't destroy when ok button returns false
+      spy.calls.reset();
     })); // /basic props
 
     it('should be closed when clicking cancel button', fakeAsync(() => {
-      spyOn(console, 'log');
+      const spy = spyOn(console, 'log');
       // change and click mask
       modalInstance.nzMask = true;
       // should show mask
@@ -197,6 +197,7 @@ describe('modal testing (legacy)', () => {
       flush();
       fixture.detectChanges();
       expectModalDestroyed(tempModalId, true); // should be destroyed
+      spy.calls.reset();
     }));
 
     it('should be closed when clicking ESC', fakeAsync(() => {
@@ -288,7 +289,7 @@ describe('modal testing (legacy)', () => {
     });
 
     it('boundary detection for options', fakeAsync(() => {
-      spyOn(console, 'warn');
+      const spy = spyOn(console, 'warn');
 
       const tempModalId = generateUniqueId();
       const modalAgent = instance.createConfirm() as NzModalRef;
@@ -302,6 +303,7 @@ describe('modal testing (legacy)', () => {
       flush();
       fixture.detectChanges();
       expectModalDestroyed(tempModalId, true);
+      spy.calls.reset();
     }));
 
     it('should render other confirm modals', fakeAsync(() => {
