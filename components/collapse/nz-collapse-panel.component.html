@@ -5,7 +5,7 @@
     </ng-container>
   </ng-container>
   <ng-container *nzStringTemplateOutlet="nzHeader">{{ nzHeader }}</ng-container>
-  <div class="ant-collapse-extra" *ngIf="nzExtra">
+  <div class="ant-collapse-extra" *ngIf="nzExtra" (click)="$event.stopPropagation()">
     <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
   </div>
 </div>
