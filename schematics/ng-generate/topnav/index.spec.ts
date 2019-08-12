@@ -10,7 +10,7 @@ describe('top-nav schematic', () => {
 
   beforeEach(async () => {
     runner = new SchematicTestRunner('schematics', require.resolve('../../collection.json'));
-    appTree = await createTestApp(runner, {name: 'ng-zorro-top-nav-top-nav'});
+    appTree = await createTestApp(runner, {name: 'ng-zorro-top-nav'});
   });
 
   it('should create top-nav files', async () => {
