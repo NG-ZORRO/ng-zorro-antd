@@ -52,6 +52,7 @@ export class NzAlertComponent implements OnChanges {
 
   destroy = false;
   iconTheme = 'fill';
+  isIconTypeObject = false;
 
   private isTypeSet = false;
   private isShowIconSet = false;
@@ -86,16 +87,20 @@ export class NzAlertComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzShowIcon, nzDescription, nzType, nzBanner } = changes;
+    const { nzShowIcon, nzDescription, nzType, nzBanner, nzIconType } = changes;
+
     if (nzShowIcon) {
       this.isShowIconSet = true;
     }
+
     if (nzDescription || nzType) {
       this.updateIconClassMap();
     }
+
     if (nzType) {
       this.isTypeSet = true;
     }
+
     if (nzBanner) {
       if (!this.isTypeSet) {
         this.nzType = 'warning';
@@ -103,6 +108,10 @@ export class NzAlertComponent implements OnChanges {
       if (!this.isShowIconSet) {
         this.nzShowIcon = true;
       }
+    }
+
+    if (nzIconType) {
+      this.isIconTypeObject = typeof nzIconType.currentValue === 'object';
     }
   }
 }
