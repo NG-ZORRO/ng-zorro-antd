@@ -46,7 +46,7 @@ interface NzResizeEvent {
 
 ### nz-resize-handle
 
-定义调整手柄及方向
+定义调整手柄及方向。
 
 ```ts
 type NzResizeDirection = 'top' | 'right' | 'bottom' | 'left' | 'topRight' | 'bottomRight' | 'bottomLeft' | 'topLeft';
@@ -58,7 +58,7 @@ type NzResizeDirection = 'top' | 'right' | 'bottom' | 'left' | 'topRight' | 'bot
 
 ### nz-resize-handles
 
-定义调整手柄的快捷组件
+定义调整手柄的快捷组件。
 
 ```ts
 const DEFAULT_RESIZE_DIRECTION: NzResizeDirection[] = ['bottomRight', 'topRight', 'bottomLeft', 'topLeft', 'bottom', 'right', 'top', 'left'];
