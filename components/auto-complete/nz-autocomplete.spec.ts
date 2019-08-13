@@ -750,7 +750,8 @@ describe('auto-complete', () => {
       fixture.componentInstance.trigger.openPanel();
       fixture.detectChanges();
       flush();
-
+      tick(1000);
+      fixture.detectChanges();
       const position = fixture.componentInstance.trigger.nzAutocomplete.dropDownPosition;
       expect(position).toEqual('bottom');
     }));
