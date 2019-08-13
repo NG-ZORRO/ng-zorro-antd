@@ -9,6 +9,7 @@
 import { Platform } from '@angular/cdk/platform';
 import {
   forwardRef,
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -64,7 +65,7 @@ import { getValueTypeNotMatchError } from './nz-slider-error';
   ],
   templateUrl: './nz-slider.component.html'
 })
-export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChanges, OnDestroy {
+export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChanges, OnDestroy, AfterViewInit {
   @ViewChild('slider', { static: true }) slider: ElementRef<HTMLDivElement>;
 
   @Input() @InputBoolean() nzDisabled = false;
@@ -110,10 +111,13 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
       this.createDraggingObservables();
     }
     this.toggleDragDisabled(this.nzDisabled);
-
     if (this.getValue() === null) {
       this.setValue(this.formatValue(null));
     }
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {});
   }
 
   ngOnChanges(changes: SimpleChanges): void {

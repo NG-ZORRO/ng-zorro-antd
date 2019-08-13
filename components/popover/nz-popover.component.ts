@@ -14,6 +14,7 @@ import {
   Host,
   Input,
   Optional,
+  TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 
