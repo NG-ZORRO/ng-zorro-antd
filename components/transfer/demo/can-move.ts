@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TransferCanMove, TransferItem } from 'ng-zorro-antd';
+import { TransferCanMove, TransferItem } from 'ng-zorro-antd/transfer';
 import { of, Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
 

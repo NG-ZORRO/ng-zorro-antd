@@ -1,5 +1,5 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
-import { NzInputDirective } from 'ng-zorro-antd';
+import { NzInputDirective } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-demo-table-edit-cell',
