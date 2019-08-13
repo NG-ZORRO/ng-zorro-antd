@@ -85,7 +85,7 @@
     "less": "^3.9.0",
     "less-plugin-clean-css": "^1.5.1",
     "lint-staged": "^8.1.5",
-    "marked": "^0.6.2",
+    "marked": "^0.7.0",
     "minimist": "^1.2.0",
     "ng-packagr": "^5.4.3",
     "ngx-color": "^3.0.3",
