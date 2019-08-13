@@ -135,29 +135,30 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
       this.updateChangedProperties(changes);
     }
 
-    if (changes.nzTitle) {
-      warnDeprecation(
-        `'nzTitle' of 'nz-tooltip' is deprecated and will be removed in 10.0.0. Please use 'nzTooltipTitle' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
-      );
-    }
+    // TODO: enable these warning in 9.0.0.
+    // if (changes.nzTitle) {
+    //   warnDeprecation(
+    //     `'nzTitle' of 'nz-tooltip' is deprecated and will be removed in 10.0.0. Please use 'nzTooltipTitle' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
+    //   );
+    // }
 
-    if (changes.nzContent) {
-      warnDeprecation(
-        `'nzContent' of 'nz-popover' is deprecated and will be removed in 10.0.0. Please use 'nzPopoverContent' instead.`
-      );
-    }
+    // if (changes.nzContent) {
+    //   warnDeprecation(
+    //     `'nzContent' of 'nz-popover' is deprecated and will be removed in 10.0.0. Please use 'nzPopoverContent' instead.`
+    //   );
+    // }
 
-    if (changes.nzPlacement) {
-      warnDeprecation(
-        `'nzPlacement' of 'nz-tooltip' is deprecated and will be removed in 10.0.0. Please use 'nzTooltipContent' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
-      );
-    }
+    // if (changes.nzPlacement) {
+    //   warnDeprecation(
+    //     `'nzPlacement' of 'nz-tooltip' is deprecated and will be removed in 10.0.0. Please use 'nzTooltipContent' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
+    //   );
+    // }
 
-    if (changes.nzTrigger) {
-      warnDeprecation(
-        `'nzTrigger' of 'nz-tooltip' is deprecated and will be removed in 10.0.0. Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
-      );
-    }
+    // if (changes.nzTrigger) {
+    //   warnDeprecation(
+    //     `'nzTrigger' of 'nz-tooltip' is deprecated and will be removed in 10.0.0. Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
+    //   );
+    // }
   }
 
   ngOnInit(): void {
@@ -165,7 +166,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
       this.createDynamicTooltipComponent();
     } else {
       warnDeprecation(
-        `'<nz-tooltip></nz-tooltip>', '<nz-popover></nz-popover>' and '<nz-popconfirm></nz-popconfirm>' is deprecated and will be removed in 9.0.0. Refer: https://ng.ant.design/components/tooltip/zh`
+        `'<nz-tooltip></nz-tooltip>', '<nz-popover></nz-popover>' and '<nz-popconfirm></nz-popconfirm>' is deprecated and will be removed in 9.0.0. Refer: https://ng.ant.design/components/tooltip/zh .`
       );
       this.tooltip = this._tooltip;
     }
