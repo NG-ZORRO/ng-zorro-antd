@@ -7,18 +7,7 @@
  */
 
 import { CdkConnectedOverlay } from '@angular/cdk/overlay';
-import {
-  ChangeDetectorRef,
-  ContentChild,
-  EventEmitter,
-  Host,
-  Input,
-  OnChanges,
-  Optional,
-  Output,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
+import { ChangeDetectorRef, EventEmitter, Host, Input, OnChanges, Optional, Output, ViewChild } from '@angular/core';
 import { toBoolean, NgStyleInterface, NzNoAnimationDirective, POSITION_MAP } from 'ng-zorro-antd/core';
 
 import { NzTooltipTrigger } from '../nz-tooltip.definitions';
@@ -42,7 +31,6 @@ import { NzTooltipBaseComponent } from './nz-tooltip-base.component';
 export class NzTooltipBaseComponentLegacy extends NzTooltipBaseComponent implements OnChanges {
   @ViewChild('overlay', { static: false }) overlay: CdkConnectedOverlay;
 
-  @Input() @ContentChild('nzTemplate', { static: true }) contentTitle: string | TemplateRef<void> | null;
   @Input() nzOverlayClassName = '';
   @Input() nzOverlayStyle: NgStyleInterface = {};
   @Input() nzMouseEnterDelay = 0.15; // second
