@@ -6,12 +6,15 @@
   <table>
     <tbody>
       <ng-container *ngIf="nzLayout === 'horizontal'">
-        <tr class="ant-descriptions-row" *ngFor="let row of itemMatrix; let i = index">
+        <tr class="ant-descriptions-row"
+            *ngFor="let row of itemMatrix; let i = index">
           <ng-container *ngFor="let item of row; let isLast = last">
             <!-- Horizontal & NOT Bordered -->
             <ng-container *ngIf="!nzBordered">
-              <td class="ant-descriptions-item" [colSpan]="item.span">
-                <span class="ant-descriptions-item-label">{{ item.title }}</span>
+              <td class="ant-descriptions-item"
+                  [colSpan]="item.span">
+                <span class="ant-descriptions-item-label"
+                      [class.ant-descriptions-item-colon]="nzColon">{{ item.title }}</span>
                 <span class="ant-descriptions-item-content">
                   <ng-template [ngTemplateOutlet]="item.content"></ng-template>
                 </span>
@@ -19,8 +22,10 @@
             </ng-container>
             <!-- Horizontal & Bordered -->
             <ng-container *ngIf="nzBordered">
-              <td class="ant-descriptions-item-label" *nzStringTemplateOutlet="item.title">{{ item.title }}</td>
-              <td class="ant-descriptions-item-content" [colSpan]="isLast ? item.span * 2 - 1 : item.span">
+              <td class="ant-descriptions-item-label"
+                  *nzStringTemplateOutlet="item.title">{{ item.title }}</td>
+              <td class="ant-descriptions-item-content"
+                  [colSpan]="isLast ? item.span * 2 - 1 : item.span">
                 <ng-template [ngTemplateOutlet]="item.content"></ng-template>
               </td>
             </ng-container>
@@ -34,14 +39,17 @@
           <ng-container *ngFor="let row of itemMatrix; let i = index">
             <tr class="ant-descriptions-row">
               <ng-container *ngFor="let item of row; let isLast = last">
-                <td class="ant-descriptions-item" [colSpan]="item.span">
-                  <span class="ant-descriptions-item-label">{{ item.title }}</span>
+                <td class="ant-descriptions-item"
+                    [colSpan]="item.span">
+                  <span class="ant-descriptions-item-label"
+                        [class.ant-descriptions-item-colon]="nzColon">{{ item.title }}</span>
                 </td>
               </ng-container>
             </tr>
             <tr class="ant-descriptions-row">
               <ng-container *ngFor="let item of row; let isLast = last">
-                <td class="ant-descriptions-item" [colSpan]="item.span">
+                <td class="ant-descriptions-item"
+                    [colSpan]="item.span">
                   <span class="ant-descriptions-item-content">
                     <ng-template [ngTemplateOutlet]="item.content"></ng-template>
                   </span>
@@ -55,14 +63,16 @@
           <ng-container *ngFor="let row of itemMatrix; let i = index">
             <tr class="ant-descriptions-row">
               <ng-container *ngFor="let item of row; let isLast = last">
-                <td class="ant-descriptions-item-label" [colSpan]="item.span">
+                <td class="ant-descriptions-item-label"
+                    [colSpan]="item.span">
                   {{ item.title }}
                 </td>
               </ng-container>
             </tr>
             <tr class="ant-descriptions-row">
               <ng-container *ngFor="let item of row; let isLast = last">
-                <td class="ant-descriptions-item-content" [colSpan]="item.span">
+                <td class="ant-descriptions-item-content"
+                    [colSpan]="item.span">
                   <ng-template [ngTemplateOutlet]="item.content"></ng-template>
                 </td>
               </ng-container>
