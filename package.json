@@ -97,7 +97,7 @@
     "remark": "^10.0.1",
     "resolve-bin": "^0.4.0",
     "rxjs": "^6.5.2",
-    "sitemap": "^2.1.0",
+    "sitemap": "^4.0.1",
     "ts-node": "^7.0.0",
     "tsickle": ">=0.34.0",
     "tslib": "^1.9.0",
