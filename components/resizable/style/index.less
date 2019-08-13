@@ -1,0 +1,87 @@
+@resizable-prefix-cls: ~'nz-resizable';
+
+.@{resizable-prefix-cls} {
+  &-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 8;
+    border: 1px dashed #d1d1d1;
+  }
+  &-handle {
+    position: absolute;
+    user-select: none;
+    z-index: 9;
+    &-top {
+      width: 100%;
+      height: 10px;
+      top: -5px;
+      left: 0;
+    }
+    &-right {
+      width: 10px;
+      height: 100%;
+      top: 0;
+      right: -5px;
+    }
+    &-bottom {
+      width: 100%;
+      height: 10px;
+      bottom: -5px;
+      left: 0;
+    }
+    &-left {
+      width: 10px;
+      height: 100%;
+      top: 0;
+      left: -5px;
+    }
+    &-topRight {
+      width: 20px;
+      height: 20px;
+      top: -5px;
+      right: -5px;
+      z-index: 10;
+    }
+    &-bottomRight {
+      width: 20px;
+      height: 20px;
+      right: -5px;
+      bottom: -5px;
+      z-index: 10;
+    }
+    &-bottomLeft {
+      width: 20px;
+      height: 20px;
+      bottom: -5px;
+      left: -5px;
+      z-index: 10;
+    }
+    &-topLeft {
+      width: 20px;
+      height: 20px;
+      top: -5px;
+      left: -5px;
+      z-index: 10;
+    }
+  }
+
+  &:not(.@{resizable-prefix-cls}-resizing) {
+    .@{resizable-prefix-cls}-handle {
+      &-top, &-bottom {
+        cursor: row-resize;
+      }
+      &-right, &-left {
+        cursor: col-resize;
+      }
+      &-bottomRight, &-topLeft {
+        cursor: nwse-resize;
+      }
+      &-bottomLeft, &-topRight {
+        cursor: nesw-resize;
+      }
+
+    }
+  }
+}
+
