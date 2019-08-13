@@ -73,9 +73,11 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   @Input() nzOverflowCount = 99;
   @Input() nzText: string;
   @Input() nzColor: string;
+  @Input() nzTitle: string;
   @Input() nzStyle: { [key: string]: string };
   @Input() nzStatus: NzBadgeStatusType;
   @Input() nzCount: number | TemplateRef<void>;
+  @Input() nzOffset: [number, number];
 
   checkContent(): void {
     this.notWrapper = isEmpty(this.contentElement.nativeElement);
