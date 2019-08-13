@@ -10,6 +10,7 @@
        [@.disabled]="notWrapper"
        [@zoomBadgeMotion]
        [ngStyle]="nzStyle"
+       [attr.title]="nzTitle || nzCount"
        [class.ant-badge-count]="!nzDot"
        [class.ant-badge-dot]="nzDot"
        [class.ant-badge-multiple-words]="countArray.length>=2">
