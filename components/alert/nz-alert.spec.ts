@@ -3,13 +3,15 @@ import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testin
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
+import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
 import { NzAlertComponent } from './nz-alert.component';
 import { NzAlertModule } from './nz-alert.module';
 
 describe('alert', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzAlertModule, NoopAnimationsModule],
+      imports: [NzAlertModule, NoopAnimationsModule, NzIconTestModule],
       declarations: [NzDemoTestBasicComponent, NzDemoTestBannerComponent]
     });
     TestBed.compileComponents();
@@ -85,7 +87,7 @@ describe('alert', () => {
     it('should iconType work', () => {
       fixture.detectChanges();
       testComponent.showIcon = true;
-      testComponent.iconType = 'anticon anticon-lock';
+      testComponent.iconType = 'lock';
       fixture.detectChanges();
       expect(alert.nativeElement.querySelector('.ant-alert-icon').classList).toContain('anticon');
       expect(alert.nativeElement.querySelector('.ant-alert-icon').classList).toContain('anticon-lock');
