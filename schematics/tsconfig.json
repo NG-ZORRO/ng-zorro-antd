@@ -19,7 +19,6 @@
   ],
   "exclude": [
     "**/*.component.ts",
-    "**/*spec*",
     "template/**/*",
     "**/files/**/*"
   ]
