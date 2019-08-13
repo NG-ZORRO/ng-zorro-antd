@@ -88,7 +88,7 @@
     "marked": "^0.6.2",
     "minimist": "^1.2.0",
     "ng-packagr": "^5.4.3",
-    "ngx-color": "^3.0.3",
+    "ngx-color": "^4.0.0",
     "node-prismjs": "^0.1.1",
     "prettier": "^1.16.4",
     "prismjs": "^1.10.0",
