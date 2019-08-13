@@ -29,6 +29,7 @@ import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 | `[nzBordered]` | Whether to display the border | `boolean` | `false` |
 | `[nzColumn]` | The number of `nz-descriptions-item` in a row. It could be a number or a object like `{ xs: 8, sm: 16, md: 24}` | `number\|object` | `{ xxl: 3, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }` |
 | `[nzSize]` | Set the size of the list. Only works when `nzBordered` is set | `'default' \| 'middle' \| 'small'` | `'default'` |
+| `[nzColon]` | Show colon after title | `boolean` | `true` |
 
 ### nz-descriptions-item
 
