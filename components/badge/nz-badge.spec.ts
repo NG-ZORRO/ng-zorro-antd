@@ -47,6 +47,24 @@ describe('badge', () => {
       expect(badgeElement.nativeElement.querySelectorAll('.current')[1].innerText).toBe('0');
     });
 
+    it('should title work', () => {
+      testComponent.overflow = 99;
+      testComponent.count = 1000;
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.querySelector('sup').getAttribute('title')).toBe('1000');
+      testComponent.title = 'test';
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.querySelector('sup').getAttribute('title')).toBe('test');
+    });
+
+    it('should offset work', () => {
+      testComponent.offset = [10, 10];
+      fixture.detectChanges();
+      const style = getComputedStyle(badgeElement.nativeElement.querySelector('sup'));
+      expect(style.right).toBe('-10px');
+      expect(style.marginTop).toBe('10px');
+    });
+
     it('should overflow work', () => {
       testComponent.overflow = 4;
       fixture.detectChanges();
@@ -130,6 +148,8 @@ describe('badge', () => {
       [nzOverflowCount]="overflow"
       [nzStyle]="style"
       [nzDot]="dot"
+      [nzOffset]="offset"
+      [nzTitle]="title"
     >
       <a *ngIf="inner"></a>
     </nz-badge>
@@ -144,4 +164,6 @@ export class NzTestBadgeBasicComponent {
   status: string;
   style: NgStyleInterface;
   text: string;
+  title: string;
+  offset: [number, number];
 }
