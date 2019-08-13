@@ -117,6 +117,6 @@ export abstract class NzTooltipBaseComponent {
   }
 
   private isContentEmpty(): boolean {
-    return this.nzTitle instanceof TemplateRef ? false : this.nzTitle === '' || !isNotNil(this.nzTitle);
+    return this.nzContent instanceof TemplateRef ? false : this.nzContent === '' || !isNotNil(this.nzContent);
   }
 }
