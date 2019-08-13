@@ -13,7 +13,7 @@ import { Component, OnInit } from '@angular/core';
         <i
           *ngIf="!node.origin.isLeaf"
           nz-icon
-          [type]="node.isExpanded ? 'folder-open' : 'folder'"
+          [nzType]="node.isExpanded ? 'folder-open' : 'folder'"
           class="ant-tree-switcher-line-icon"
         ></i>
         <i *ngIf="node.origin.isLeaf" nz-icon nzType="file" class="ant-tree-switcher-line-icon"></i>

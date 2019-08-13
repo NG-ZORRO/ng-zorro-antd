@@ -274,7 +274,7 @@ describe('layout', () => {
           <i
             class="trigger"
             nz-icon
-            [type]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+            [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
             (click)="isCollapsed = !isCollapsed"
           ></i>
         </nz-header>

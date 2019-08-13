@@ -17,12 +17,12 @@
           <i
             *ngIf="!isTemplateRef(nzExpandedIcon)"
             nz-icon
-            type="caret-down"
+            nzType="caret-down"
             [class.ant-select-switcher-icon]="nzSelectMode"
             [class.ant-tree-switcher-icon]="!nzSelectMode">
           </i>
         </ng-container>
-        <i *ngIf="nzTreeNode.isLoading" nz-icon nzType="loading" [spin]="true" class="ant-tree-switcher-loading-icon"></i>
+        <i *ngIf="nzTreeNode.isLoading" nz-icon nzType="loading" [nzSpin]="true" class="ant-tree-switcher-loading-icon"></i>
       </ng-container>
       <ng-container *ngIf="nzShowLine">
         <ng-template
@@ -60,7 +60,7 @@
         [ngClass]="nzNodeContentLoadingClass">
         <span
           [ngClass]="nzNodeContentIconClass">
-          <i nz-icon *ngIf="nzIcon" [type]="nzIcon"></i>
+          <i nz-icon *ngIf="nzIcon" [nzType]="nzIcon"></i>
         </span>
       </span>
       <span class="ant-tree-title">
