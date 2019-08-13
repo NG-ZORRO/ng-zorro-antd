@@ -6,7 +6,7 @@ import { NzMessageService } from 'ng-zorro-antd';
   template: `
     <a
       nz-popconfirm
-      nzTitle="Are you sure?"
+      nzPopconfirmTitle="Are you sure?"
       nzOkText="ok"
       nzCancelText="cancel"
       (nzOnConfirm)="confirm()"

@@ -6,10 +6,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './common-wrap';
-export * from './direction';
-export * from './drop-down-position';
-export * from './indexable';
-export * from './ng-class';
-export * from './size';
-export * from './template';
+import { TemplateRef } from '@angular/core';
+
+/**
+ * A joined type of string and `TemplateRef<void>`.
+ */
+export type NzTSType = string | TemplateRef<void>;

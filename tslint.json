@@ -14,7 +14,6 @@
     "use-view-encapsulation": false,
     "no-attribute-parameter-decorator": true,
     "no-output-named-after-standard-event": true,
-    "no-input-rename": true,
     "no-output-rename": true,
     "no-output-on-prefix": true,
     "no-forward-ref": false,
