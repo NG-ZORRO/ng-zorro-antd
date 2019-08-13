@@ -1,7 +1,7 @@
 /* entryComponents: NzDrawerCustomComponent */
 
 import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
-import { NzDrawerRef, NzDrawerService } from 'ng-zorro-antd';
+import { NzDrawerRef, NzDrawerService } from 'ng-zorro-antd/drawer';
 
 @Component({
   selector: 'nz-demo-drawer-service',

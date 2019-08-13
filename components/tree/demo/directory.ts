@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NzContextMenuService, NzDropdownMenuComponent, NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
+import { NzContextMenuService, NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
+import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/core';
 
 @Component({
   selector: 'nz-demo-tree-directory',

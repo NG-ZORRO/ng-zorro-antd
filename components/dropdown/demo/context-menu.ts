@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NzContextMenuService, NzDropdownMenuComponent } from 'ng-zorro-antd';
+import { NzContextMenuService, NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
 
 @Component({
   selector: 'nz-demo-dropdown-context-menu',

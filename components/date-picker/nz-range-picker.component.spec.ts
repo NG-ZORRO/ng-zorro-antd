@@ -701,8 +701,11 @@ describe('NzRangePickerComponent', () => {
       rightInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
       fixture.detectChanges();
       tick(500);
+      // @ts-ignore
       const result = nzOnChange.calls.allArgs()[0][0];
+      // @ts-ignore
       expect(result[0].getDate()).toBe(6);
+      // @ts-ignore
       expect(result[1].getDate()).toBe(10);
     }));
   }); // /specified date picker testing
