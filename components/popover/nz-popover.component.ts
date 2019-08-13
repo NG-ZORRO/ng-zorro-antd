@@ -45,8 +45,11 @@ import { NzTooltipBaseComponentLegacy, NzToolTipComponent } from 'ng-zorro-antd/
 export class NzPopoverComponent extends NzToolTipComponent {
   _prefix = 'ant-popover-placement';
 
-  @Input() @ContentChild('neverUsedTemplate', { static: true }) nzPopoverTitle: NzTSType;
-  @Input() @ContentChild('nzTemplate', { static: true }) nzPopoverContent: NzTSType;
+  /**
+   * Use `neverUsedTemplate` to force `nzTemplate` to be catched by `nzPopoverContent`.
+   */
+  @Input() @ContentChild('neverUsedTemplate', { static: true }) nzTitle: NzTSType;
+  @Input() @ContentChild('nzTemplate', { static: true }) nzContent: NzTSType;
 
   constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
     super(cdr, noAnimation);
