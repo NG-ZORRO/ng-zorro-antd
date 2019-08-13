@@ -1,9 +1,10 @@
 ---
 category: Components
 subtitle: 代码编辑器
-type: 进阶
+type: 数据录入
 title: Code Editor
 cols: 1
+experimental: true
 ---
 
 monaco editor 组件。
@@ -11,14 +12,6 @@ monaco editor 组件。
 ## 何时使用
 
 - 需要在网页上渲染 monaco editor 时使用。
-
-## 单独引入此组件
-
-想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
-
-```ts
-import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
-```
 
 ## API
 

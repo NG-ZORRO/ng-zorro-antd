@@ -1,8 +1,9 @@
 ---
 category: Components
-type: Plus
+type: Date Entry
 title: Code Editor
 cols: 1
+experimental: true
 ---
 
 Support monaco editor in Angular.
@@ -10,14 +11,6 @@ Support monaco editor in Angular.
 ## When To Use
 
 - When you want to use monaco editor in Angular.
-
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
-```ts
-import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
-```
 
 ## API
 
