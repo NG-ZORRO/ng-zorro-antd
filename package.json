@@ -94,7 +94,7 @@
     "prismjs": "^1.10.0",
     "protractor": "~5.4.0",
     "readline-sync": "^1.4.9",
-    "remark": "^10.0.1",
+    "remark": "^11.0.1",
     "resolve-bin": "^0.4.0",
     "rxjs": "^6.5.2",
     "sitemap": "^2.1.0",
