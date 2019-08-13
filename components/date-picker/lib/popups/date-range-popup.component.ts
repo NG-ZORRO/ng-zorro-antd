@@ -177,6 +177,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
       const index = this.getPartTypeIndex(partType);
       this.selectedValue[index] = value;
       if (this.isValidRange(this.selectedValue)) {
+        this.sortRangeValue();
         this.valueForRangeShow = this.normalizeRangeValue(this.selectedValue);
         this.setValue(this.cloneRangeDate(this.selectedValue));
       }
@@ -196,8 +197,8 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
       } else if (left && !right) {
         // If one of them is empty, assign the other one and sort, then set the final values
         this.clearHoverValue(); // Clean up
-        this.setRangeValue('selectedValue', 'right', value);
-        this.sortRangeValue('selectedValue'); // Sort
+        this.setRangeValue('right', value);
+        this.sortRangeValue(); // Sort
         this.valueForRangeShow = this.normalizeRangeValue(this.selectedValue);
         this.setValue(this.cloneRangeDate(this.selectedValue));
         this.calendarChange.emit(this.cloneRangeDate(this.selectedValue));
@@ -400,8 +401,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   private isValidRange(value: CandyDate[]): boolean {
     if (Array.isArray(value)) {
       const [start, end] = value;
-      const grain = this.hasTimePicker ? 'second' : 'day';
-      return start && end && (start.compare(end, grain) || start.isSame(end, grain));
+      return !!(start && end);
     }
     return false;
   }
@@ -418,18 +418,18 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   // }
 
   // Sort a range value (accurate to second)
-  private sortRangeValue(key: 'selectedValue'): void {
-    if (Array.isArray(this[key])) {
-      const [start, end] = this[key];
-      if (start && end && start.isAfterDay(end)) {
-        this[key] = [end, start];
+  private sortRangeValue(): void {
+    if (Array.isArray(this.selectedValue)) {
+      const [start, end] = this.selectedValue;
+      if (start && end && start.isAfterSecond(end)) {
+        this.selectedValue = [end, start];
       }
     }
   }
 
   // Renew and set a range value to trigger sub-component's change detection
-  private setRangeValue(key: 'value' | 'selectedValue', partType: RangePartType, value: CandyDate): void {
-    const ref = (this[key] = this.cloneRangeDate(this[key] as CandyDate[]));
+  private setRangeValue(partType: RangePartType, value: CandyDate): void {
+    const ref = (this.selectedValue = this.cloneRangeDate(this.selectedValue as CandyDate[]));
     ref[this.getPartTypeIndex(partType)] = value;
   }
 
