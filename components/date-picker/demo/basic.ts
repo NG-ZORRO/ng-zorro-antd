@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import getISOWeek from 'date-fns/get_iso_week';
-import { en_US, zh_CN, NzI18nService } from 'ng-zorro-antd';
+import { en_US, zh_CN, NzI18nService } from 'ng-zorro-antd/i18n';
 
 @Component({
   selector: 'nz-demo-date-picker-basic',

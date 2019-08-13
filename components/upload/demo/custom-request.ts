@@ -1,6 +1,6 @@
 import { HttpClient, HttpEvent, HttpEventType, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { UploadXHRArgs } from 'ng-zorro-antd';
+import { UploadXHRArgs } from 'ng-zorro-antd/upload';
 import { forkJoin } from 'rxjs';
 
 @Component({

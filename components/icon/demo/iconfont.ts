@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NzIconService } from 'ng-zorro-antd';
+import { NzIconService } from 'ng-zorro-antd/icon';
 
 @Component({
   selector: 'nz-demo-icon-iconfont',

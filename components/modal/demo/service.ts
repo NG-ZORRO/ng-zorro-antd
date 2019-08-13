@@ -1,7 +1,7 @@
 /* entryComponents: NzModalCustomComponent */
 
 import { Component, Input, TemplateRef } from '@angular/core';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'nz-demo-modal-service',

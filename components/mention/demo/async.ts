@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { MentionOnSearchTypes } from 'ng-zorro-antd';
+import { MentionOnSearchTypes } from 'ng-zorro-antd/mention';
 
 @Component({
   selector: 'nz-demo-mention-async',
