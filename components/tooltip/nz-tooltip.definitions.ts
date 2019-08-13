@@ -6,10 +6,4 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './common-wrap';
-export * from './direction';
-export * from './drop-down-position';
-export * from './indexable';
-export * from './ng-class';
-export * from './size';
-export * from './template';
+export type NzTooltipTrigger = 'click' | 'focus' | 'hover' | null;

@@ -9,9 +9,15 @@ import { Component } from '@angular/core';
         <p>Content</p>
       </div>
     </ng-template>
-    <button nz-button nz-popover nzTitle="Title" [nzContent]="contentTemplate" nzTrigger="click">Click me</button>
-    <button nz-button nz-popover nzTitle="Title" [nzContent]="contentTemplate" nzTrigger="hover">Hover me</button>
-    <button nz-button nz-popover nzTitle="Title" [nzContent]="contentTemplate" nzTrigger="focus">Focus me</button>
+    <button nz-button nz-popover nzPopoverTitle="Title" [nzPopoverContent]="contentTemplate" nzPopoverTrigger="click">
+      Click me
+    </button>
+    <button nz-button nz-popover nzPopoverTitle="Title" [nzPopoverContent]="contentTemplate" nzPopoverTrigger="hover">
+      Hover me
+    </button>
+    <button nz-button nz-popover nzPopoverTitle="Title" [nzPopoverContent]="contentTemplate" nzPopoverTrigger="focus">
+      Focus me
+    </button>
   `,
   styles: [
     `

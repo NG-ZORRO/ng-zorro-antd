@@ -7,11 +7,11 @@ import { Component } from '@angular/core';
       nz-button
       nzType="primary"
       nz-popover
-      nzTitle="Title"
+      nzPopoverTitle="Title"
       [(nzVisible)]="visible"
       (nzVisibleChange)="change($event)"
-      nzTrigger="click"
-      [nzContent]="contentTemplate"
+      nzPopoverTrigger="click"
+      [nzPopoverContent]="contentTemplate"
     >
       Click me
     </button>

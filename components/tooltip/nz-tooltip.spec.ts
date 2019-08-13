@@ -36,19 +36,25 @@ import { NzToolTipModule } from './nz-tooltip.module';
   `
 })
 export class NzTooltipTestDirectiveComponent {
+
   @ViewChild('titleString', { static: false }) titleString: ElementRef;
+
   @ViewChild('titleString', { static: false, read: NzTooltipDirective })
   titleStringNzTooltipDirective: NzTooltipDirective;
+
   @ViewChild('titleTemplate', { static: false }) titleTemplate: ElementRef;
+
   @ViewChild('titleTemplate', { static: false, read: NzTooltipDirective })
   titleTemplateNzTooltipDirective: NzTooltipDirective;
+
   @ViewChild('inBtnGroup', { static: false }) inBtnGroup: ElementRef;
   title = 'title-string';
+
 }
 
 @Component({
   template: `
-    <a #mostSimpleTrigger nz-tooltip="MOST-SIMPLE">Show</a>
+    <a #mostSimpleTrigger nz-tooltip="MOST-SIMPLE" (nzVisibleChange)="onVisibleChange()">Show</a>
     <nz-tooltip [nzTitle]="'NORMAL'" [nzTrigger]="'hover'"><span #normalTrigger nz-tooltip>Show</span></nz-tooltip>
     <nz-tooltip>
       <button #templateTrigger nz-tooltip>Show</button>
@@ -68,6 +74,11 @@ export class NzTooltipTestWrapperComponent {
   @ViewChild('templateTrigger', { static: false }) templateTrigger: ElementRef;
   @ViewChild('visibleTrigger', { static: false }) visibleTrigger: ElementRef;
   visible: boolean;
+  visibleTogglingCount = 0;
+
+  onVisibleChange(): void {
+    this.visibleTogglingCount += 1;
+  }
 }
 
 describe('NzTooltip', () => {
@@ -109,7 +120,10 @@ describe('NzTooltip', () => {
 
       dispatchMouseEvent(triggerElement, 'mouseenter');
       waitingForTooltipToggling(fixture);
+      dispatchMouseEvent(triggerElement, 'mouseenter');
+      fixture.detectChanges();
       expect(overlayContainerElement.textContent).toContain(title);
+      expect(component.visibleTogglingCount).toBe(1); // It it's visible. Should not change state again.
 
       const overlayElement = component.mostSimpleDirective.tooltip.overlay.overlayRef.overlayElement;
 
@@ -137,7 +151,6 @@ describe('NzTooltip', () => {
 
       dispatchMouseEvent(triggerElement, 'mouseleave');
       waitingForTooltipToggling(fixture);
-      tick();
       expect(overlayContainerElement.textContent).not.toContain(title);
     }));
 

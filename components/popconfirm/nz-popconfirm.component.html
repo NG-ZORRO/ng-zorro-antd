@@ -3,19 +3,18 @@
   #overlay="cdkConnectedOverlay"
   cdkConnectedOverlay
   nzConnectedOverlay
-  [cdkConnectedOverlayOrigin]="overlayOrigin"
+  [cdkConnectedOverlayOrigin]="origin"
   [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"
   (backdropClick)="hide()"
   (detach)="hide()"
   (positionChange)="onPositionChange($event)"
   [cdkConnectedOverlayPositions]="_positions"
-  [cdkConnectedOverlayOpen]="visible$ | async">
+  [cdkConnectedOverlayOpen]="_visible">
   <div class="ant-popover"
     [ngClass]="_classMap"
     [ngStyle]="nzOverlayStyle"
     [nzNoAnimation]="noAnimation?.nzNoAnimation"
-    [@zoomBigMotion]="'active'"
-    (@zoomBigMotion.done)="_afterVisibilityAnimation($event)">
+    [@zoomBigMotion]="'active'">
     <div class="ant-popover-content">
       <div class="ant-popover-arrow"></div>
       <div class="ant-popover-inner">

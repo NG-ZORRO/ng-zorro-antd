@@ -6,7 +6,7 @@ import { NzMessageService } from 'ng-zorro-antd';
   template: `
     <a
       nz-popconfirm
-      nzTitle="Are you sure delete this task?"
+      nzPopconfirmTitle="Are you sure delete this task?"
       [nzCondition]="switchValue"
       (nzOnConfirm)="confirm()"
       (nzOnCancel)="cancel()"
