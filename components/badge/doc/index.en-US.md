@@ -42,3 +42,5 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
 | `[nzShowZero]` | Whether to show badge when `count` is zero | `boolean` | `false` |
 | `[nzStatus]` | Set `nz-badge` as a status dot | `'success' \| 'processing' \| 'default' \| 'error' \| 'warning'` | - |
 | `[nzText]` | If `nzStatus` is set, `text` sets the display text of the status `dot` | `string` | - |
+| `[nzTitle]` | Text to show when hovering over the badge（Only Non-standalone) | `string` | `nzCount` |
+| `[nzOffset]` | set offset of the badge dot, like[x, y] (Only Non-standalone) | `[number, number]` | - |
