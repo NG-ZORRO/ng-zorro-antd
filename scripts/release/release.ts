@@ -78,11 +78,12 @@ function getUpstreamRemoteName(): string | null {
     {
       encoding: 'utf-8'
     });
-  const names: string[] = output.stdout.split('\n').map((e: string) => e.trim());
+  // tslint:disable-next-line:no-any
+  const names: string[] = (output.stdout as any).split('\n').map((e: string) => e.trim());
   // tslint:disable-next-line:prefer-for-of
   for (let i = 0; i < names.length; i++) {
     const url = getRemoteUrl(names[i]);
-    if (url.search('github.com/NG-ZORRO/ng-zorro-antd') !== -1) {
+    if (url.search(/github\.com(\/|:)NG-ZORRO\/ng-zorro-antd/) !== -1) {
       return names[i];
     }
   }
@@ -95,7 +96,8 @@ function getRemoteUrl(remote: string): string {
     {
       encoding: 'utf-8'
     });
-  return output.stdout.trim();
+  // tslint:disable-next-line:no-any
+  return (output.stdout as any).trim();
 }
 
 /**
