@@ -18,7 +18,8 @@ import { Component } from '@angular/core';
       </nz-collapse-panel>
     </nz-collapse>
     <ng-template #extraTpl>
-      <i nz-icon nzType="setting"></i>
+      <!-- You can use stopPropagation if you don't want the panel to toggle -->
+      <i nz-icon nzType="setting" (click)="$event.stopPropagation()"></i>
     </ng-template>
   `
 })
