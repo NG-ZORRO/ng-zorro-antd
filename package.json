@@ -46,7 +46,7 @@
     "@angular/platform-browser": "^8.2.0",
     "@angular/platform-browser-dynamic": "^8.2.0",
     "@angular/platform-server": "^8.2.0",
-    "@angular/pwa": "^0.800.1",
+    "@angular/pwa": "^0.802.1",
     "@angular/router": "^8.2.0",
     "@angular/service-worker": "^8.2.0",
     "@commitlint/cli": "^8.0.0",
