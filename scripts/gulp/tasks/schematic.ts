@@ -46,3 +46,10 @@ task('build:schematics', series(
   'schematics:copy-resources',
   'clean:schematics'
 ));
+
+/** Test the schematics */
+task('test:schematics', execNodeTask(
+  'jasmine',
+  'jasmine',
+  [ 'publish/schematics/**/*.spec.js' ]
+));
