@@ -59,7 +59,7 @@
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/less": "^3.0.0",
-    "@types/node": "~8.9.4",
+    "@types/node": "~12.7.1",
     "antd-theme-generator": "^1.1.7",
     "chalk": "^2.4.1",
     "classlist.js": "^1.1.20150312",
