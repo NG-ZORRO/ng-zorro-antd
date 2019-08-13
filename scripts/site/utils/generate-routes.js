@@ -8,10 +8,12 @@ function generateLanguageData(itemData, language, reverseMap, key) {
   const subtitle = itemData[language].subtitle || '';
   const title = itemData[language].title;
   const type = itemData[language].type;
+  const experimental = itemData[language].experimental;
   const content = {
     label: title,
-    path : `components/${key}/${language}`,
-    zh   : subtitle
+    path : `${experimental ? 'experimental' : 'components'}/${key}/${language}`,
+    zh   : subtitle,
+    experimental: !!experimental
   };
   if (!reverseMap[type]) {
     reverseMap[type] = { list: [content], language };
@@ -27,7 +29,8 @@ function generateNav(componentsDocMap) {
     generateLanguageData(componentsDocMap[key], 'zh', reverseMap, key);
     generateLanguageData(componentsDocMap[key], 'en', reverseMap, key);
     const moduleName = capitalizeFirstLetter(camelCase(key));
-    routes += `  {'path': 'components/${key}', 'loadChildren': () => import('./${key}/index.module').then(m => m.NzDemo${moduleName}Module)},\n`;
+    const experimental = componentsDocMap[key]['zh'].experimental || componentsDocMap[key]['en'].experimental;
+    routes += `  {'path': '${experimental ? 'experimental' : 'components'}/${key}', 'loadChildren': () => import('./${key}/index.module').then(m => m.NzDemo${moduleName}Module)},\n`;
   }
   return { reverseMap, routes };
 }
@@ -40,13 +43,15 @@ module.exports = function generateRoutes(showCaseTargetPath, componentsDocMap, d
       path    : `docs/${key}/en`,
       label   : docsMeta[key].en.title,
       language: 'en',
-      order   : docsMeta[key].en.order
+      order   : docsMeta[key].en.order,
+      experimental   : !!docsMeta[key].en.experimental
     });
     intro.push({
       path    : `docs/${key}/zh`,
       label   : docsMeta[key].zh.title,
       language: 'zh',
-      order   : docsMeta[key].zh.order
+      order   : docsMeta[key].zh.order,
+      experimental   : !!docsMeta[key].zh.experimental
     });
   }
   intro.sort((pre, next) => pre.order - next.order);
@@ -57,7 +62,8 @@ module.exports = function generateRoutes(showCaseTargetPath, componentsDocMap, d
     components.push({
       name    : key,
       language: navData.reverseMap[key].language,
-      children: navData.reverseMap[key].list
+      children: navData.reverseMap[key].list.filter(item => !item.experimental),
+      experimentalChildren: navData.reverseMap[key].list.filter(item => item.experimental)
     });
   }
 
