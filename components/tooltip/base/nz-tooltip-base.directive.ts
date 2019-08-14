@@ -22,7 +22,7 @@ import {
   SimpleChanges,
   ViewContainerRef
 } from '@angular/core';
-import { isNotNil, warnDeprecation, NgStyleInterface, NzNoAnimationDirective, NzTSType } from 'ng-zorro-antd/core';
+import { warnDeprecation, NgStyleInterface, NzNoAnimationDirective, NzTSType } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
@@ -54,7 +54,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
    * @deprecated 9.0.0. This is deprecated and going to be removed in 9.0.0.
    * Please use a more specific API. Like `nzTooltipTrigger`.
    */
-  @Input() nzTrigger: NzTooltipTrigger;
+  @Input() nzTrigger: NzTooltipTrigger = 'hover';
 
   /**
    * @deprecated 9.0.0. This is deprecated and going to be removed in 9.0.0.
@@ -135,6 +135,11 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
       this.updateChangedProperties(changes);
     }
 
+    if (changes.nzTrigger && !changes.nzTrigger.isFirstChange) {
+      this.clearTriggerListeners();
+      this.registerTriggers();
+    }
+
     // TODO: enable these warning in 9.0.0.
     // if (changes.nzTitle) {
     //   warnDeprecation(
@@ -188,6 +193,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
   }
 
   ngOnDestroy(): void {
+    this.clearTriggerListeners();
     this.$destroy.next();
     this.$destroy.complete();
   }
@@ -227,7 +233,6 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
     this.updateChangedProperties(this.needProxyProperties);
   }
 
-  // TODO: support changing trigger.
   protected registerTriggers(): void {
     // When the method gets invoked, all properties has been synced to the dynamic component.
     // After removing the old API, we can just check the directive's own `nzTrigger`.
@@ -313,7 +318,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
 
   // tslint:disable-next-line no-any
   private updateComponentValue(key: string, value: any): void {
-    if (isNotNil(value)) {
+    if (value !== undefined) {
       // @ts-ignore
       this.tooltip[key] = value;
     }
@@ -333,5 +338,9 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
       // (may caused by the fade-out animation).
       isEnter && isOrigin ? this.show() : this.hide();
     }
+  }
+
+  private clearTriggerListeners(): void {
+    this.triggerUnlisteners.forEach(c => c());
   }
 }
