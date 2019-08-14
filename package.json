@@ -87,7 +87,7 @@
     "lint-staged": "^8.1.5",
     "marked": "^0.6.2",
     "minimist": "^1.2.0",
-    "ng-packagr": "^5.4.3",
+    "ng-packagr": "5.4.3",
     "monaco-editor": "^0.17.1",
     "ngx-color": "^3.0.3",
     "node-prismjs": "^0.1.1",
