@@ -17,36 +17,15 @@ import { Component } from '@angular/core';
       <nz-page-header-content>
         <div class="wrap">
           <div nz-row class="content padding">
-            <div nz-col nzSpan="12">
-              <div class="description">
-                <span class="term">Created</span>
-                <p class="detail">Lili Qu</p>
-              </div>
-            </div>
-            <div nz-col nzSpan="12">
-              <div class="description">
-                <span class="term">Association</span>
-                <a>421421</a>
-              </div>
-            </div>
-            <div nz-col nzSpan="12">
-              <div class="description">
-                <span class="term">Creation Time</span>
-                <p class="detail">2017-01-10</p>
-              </div>
-            </div>
-            <div nz-col nzSpan="12">
-              <div class="description">
-                <span class="term">Effective Time</span>
-                <p class="detail">2017-01-10</p>
-              </div>
-            </div>
-            <div nz-col nzSpan="12">
-              <div class="description">
-                <span class="term">Remarks</span>
-                <p class="detail">Gonghu Road, Xihu District, Hangzhou, Zhejiang, China</p>
-              </div>
-            </div>
+            <nz-descriptions [nzColumn]="2">
+              <nz-descriptions-item nzTitle="Created" [nzSpan]="1">Lili Qu</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Association" [nzSpan]="1"><a>421421</a></nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Creation Time" [nzSpan]="1">2017-01-10</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Effective Time" [nzSpan]="1">2017-10-10</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Remarks" [nzSpan]="2">
+                Gonghu Road, Xihu District, Hangzhou, Zhejiang, China
+              </nz-descriptions-item>
+            </nz-descriptions>
           </div>
           <div nz-row class="extra-content">
             <div nz-col nzSpan="12">
@@ -84,36 +63,6 @@ import { Component } from '@angular/core';
 
       .content.padding {
         padding-left: 40px;
-      }
-
-      .content p {
-        margin-bottom: 8px;
-      }
-
-      .content .description {
-        display: table;
-      }
-
-      .description .term {
-        display: table-cell;
-        margin-right: 8px;
-        padding-bottom: 8px;
-        white-space: nowrap;
-        line-height: 20px;
-      }
-
-      .description .term:after {
-        position: relative;
-        top: -0.5px;
-        margin: 0 8px 0 2px;
-        content: ':';
-      }
-
-      .description .detail {
-        display: table-cell;
-        padding-bottom: 8px;
-        width: 100%;
-        line-height: 20px;
       }
 
       .extra-content {
