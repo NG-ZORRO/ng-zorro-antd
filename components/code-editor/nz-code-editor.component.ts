@@ -99,7 +99,9 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(): void {
-    this.editorInstance.dispose();
+    if (this.editorInstance) {
+      this.editorInstance.dispose();
+    }
 
     this.destroy$.next();
     this.destroy$.complete();
