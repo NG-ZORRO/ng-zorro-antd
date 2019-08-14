@@ -748,6 +748,7 @@ describe('auto-complete', () => {
 
     it('should use bottom positioning by default', fakeAsync(() => {
       fixture.componentInstance.trigger.openPanel();
+      zone.simulateZoneExit();
       fixture.detectChanges();
       flush();
       tick(1000);
