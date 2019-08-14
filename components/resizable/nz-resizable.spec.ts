@@ -91,10 +91,10 @@ describe('resizable', () => {
           y: rect.bottom + 200
         }
       );
+      zone.simulateZoneExit();
+      fixture.detectChanges();
       fixture.detectChanges();
       tick(16);
-      fixture.detectChanges();
-      zone.simulateZoneExit();
       fixture.detectChanges();
       expect(testComponent.width).toBe(600);
       expect(testComponent.height).toBe(200);
@@ -373,6 +373,8 @@ describe('resizable', () => {
           y: rect.bottom
         }
       );
+      zone.simulateZoneExit();
+      fixture.detectChanges();
       fixture.detectChanges();
       tick(16);
       fixture.detectChanges();
