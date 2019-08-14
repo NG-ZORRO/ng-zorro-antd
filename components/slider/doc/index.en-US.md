@@ -36,5 +36,6 @@ import { NzSliderModule } from 'ng-zorro-antd/slider';
 | `[ngModel]` | The value of slider. When `range` is `false`, use `number`, otherwise, use `[number, number]` | `number \| number[]` | - |
 | `[nzVertical]` | If true, the slider will be vertical. | `boolean` | `false` |
 | `[nzTooltipVisible]` | When set to `always` tooltips are always displayed. When set to `never` they are never displayed | `'default' \| 'always' \| 'never'` | `default` |
+| `[nzTooltipPlacement]` | Set the default placement of Tooltip | `string` | | 
 | `(nzOnAfterChange)` | Fire when `onmouseup` is fired. | `EventEmitter<number[]  \|  number>` | - |
 | `(ngModelChange)` | Callback function that is fired when the user changes the slider's value. | `EventEmitter<number[]  \|  number>` | - |

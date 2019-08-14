@@ -1,8 +1,10 @@
-<nz-tooltip
-  *ngIf="nzTipFormatter !== null && nzTooltipVisible !== 'never'"
-  [nzTitle]="tooltipTitle"
-  [nzTrigger]="null">
-  <!--TODO(wendzhue): [IVY] nz-tooltip[ngStyle] not work in ivy-->
-  <div nz-tooltip class="ant-slider-handle" [ngStyle]="style"></div>
-</nz-tooltip>
-<div *ngIf="nzTipFormatter === null || nzTooltipVisible === 'never'" class="ant-slider-handle" [ngStyle]="style"></div>
+<div nz-tooltip
+     *ngIf="nzTipFormatter !== null && nzTooltipVisible !== 'never'"
+     class="ant-slider-handle"
+     [ngStyle]="style"
+     [nzTitle]="tooltipTitle"
+     [nzTrigger]="null"
+     [nzPlacement]="nzTooltipPlacement"></div>
+<div *ngIf="nzTipFormatter === null || nzTooltipVisible === 'never'"
+     class="ant-slider-handle"
+     [ngStyle]="style"></div>
