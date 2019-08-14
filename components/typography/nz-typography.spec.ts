@@ -290,6 +290,7 @@ describe('typography', () => {
       componentElement.querySelectorAll('p').forEach(e => {
         expect(e.innerText.includes('...')).toBe(false);
       });
+      viewport.reset();
     }));
   });
 });
