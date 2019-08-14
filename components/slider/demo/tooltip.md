@@ -9,8 +9,10 @@ title:
 
 当 `nzTooltipVisible` 为 `always` 时，将始终显示 ToolTip，为 `never` 时反之则始终不显示，即使在拖动、移入时也是如此。
 
+通过 `nzTooltipPlacement` 来改变 tooltip 的位置。
+
 ## en-US
 
 When `nzTooltipVisible` is `always`, Tooltip will show always. And set to `never`, tooltip would never show, even when user is dragging or hovering.
 
-
+Change the tooltip's position by `nzTooltipPlacement`.

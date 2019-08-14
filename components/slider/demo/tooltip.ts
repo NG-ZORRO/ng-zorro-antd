@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <nz-slider [nzTooltipVisible]="'always'"></nz-slider>
     <nz-slider [nzTooltipVisible]="'never'"></nz-slider>
+    <nz-slider [nzTooltipPlacement]="'bottom'"></nz-slider>
   `
 })
 export class NzDemoSliderTooltipComponent {}
