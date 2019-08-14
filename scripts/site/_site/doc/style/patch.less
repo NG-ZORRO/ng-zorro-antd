@@ -80,8 +80,27 @@ span.ant-component-decs {
     display: none;
   }
 
-  #nav, .hide-menu {
+  .hide-menu {
     display: none;
+  }
+
+  .popover-menu {
+    .ant-popover-inner {
+      overflow: hidden;
+      .ant-popover-inner-content {
+        padding: 0;
+        .ant-btn {
+          margin: 16px 8% 0 8px;
+        }
+        .ant-select {
+          display: block;
+          width: 60%;
+        }
+        .version {
+          margin: 16px auto;
+        }
+      }
+    }
   }
 }
 
