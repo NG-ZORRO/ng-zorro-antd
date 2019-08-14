@@ -1,6 +1,6 @@
 import { BACKSPACE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { Component, DebugElement, NgZone, ViewChild } from '@angular/core';
 import { async, fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -11,8 +11,8 @@ import {
   dispatchFakeEvent,
   dispatchMouseEvent,
   typeInElement,
-  NzTreeNode,
-  NzTreeNodeOptions
+  MockNgZone,
+  NzTreeNode, NzTreeNodeOptions
 } from 'ng-zorro-antd/core';
 
 import { NzTreeSelectComponent } from './nz-tree-select.component';
@@ -21,6 +21,7 @@ import { NzTreeSelectModule } from './nz-tree-select.module';
 describe('tree-select component', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
+  let zone: MockNgZone;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -30,6 +31,15 @@ describe('tree-select component', () => {
         NzTestTreeSelectCheckableComponent,
         NzTestTreeSelectFormComponent,
         NzTestTreeSelectCustomizedIconComponent
+      ],
+      providers: [
+        {
+          provide: NgZone,
+          useFactory: () => {
+            zone = new MockNgZone();
+            return zone;
+          }
+        }
       ]
     });
     TestBed.compileComponents();
@@ -316,6 +326,8 @@ describe('tree-select component', () => {
       typeInElement('', input);
       fixture.detectChanges();
       flush();
+      zone.simulateZoneExit();
+      fixture.detectChanges();
       expect(input.style.width === '').toBe(true);
     }));
 
