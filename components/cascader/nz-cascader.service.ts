@@ -162,13 +162,13 @@ export class NzCascaderService implements OnDestroy {
    * Try to set a option as activated.
    * @param option Cascader option
    * @param columnIndex Of which column this option is in
-   * @param select Select
+   * @param performSelect Select
    * @param loadingChildren Try to load children asynchronously.
    */
   setOptionActivated(
     option: CascaderOption,
     columnIndex: number,
-    select: boolean = false,
+    performSelect: boolean = false,
     loadingChildren: boolean = true
   ): void {
     if (option.disabled) {
@@ -193,15 +193,35 @@ export class NzCascaderService implements OnDestroy {
     }
 
     // Actually perform selection to make an options not only activated but also selected.
-    if (select) {
+    if (performSelect) {
       this.setOptionSelected(option, columnIndex);
     }
 
     this.$redraw.next();
   }
 
+  setOptionSelected(option: CascaderOption, index: number): void {
+    const changeOn = this.cascaderComponent.nzChangeOn;
+    const shouldPerformSelection = (o: CascaderOption, i: number): boolean => {
+      return typeof changeOn === 'function' ? changeOn(o, i) : false;
+    };
+
+    if (option.isLeaf || this.cascaderComponent.nzChangeOnSelect || shouldPerformSelection(option, index)) {
+      this.selectedOptions = [...this.activatedOptions];
+      this.prepareEmitValue();
+      this.$redraw.next();
+      this.$optionSelected.next({ option, index });
+    }
+  }
+
+  setOptionDeactivatedSinceColumn(column: number): void {
+    this.dropBehindActivatedOptions(column - 1);
+    this.dropBehindColumns(column);
+    this.$redraw.next();
+  }
+
   /**
-   * Set a searching option as activated, finishing up things.
+   * Set a searching option as selected, finishing up things.
    * @param option
    */
   setSearchOptionSelected(option: CascaderSearchOption): void {
@@ -302,20 +322,6 @@ export class NzCascaderService implements OnDestroy {
       this.columns = [...this.columnsSnapshot];
       this.syncOptions();
       this.$redraw.next();
-    }
-  }
-
-  setOptionSelected(option: CascaderOption, index: number): void {
-    const changeOn = this.cascaderComponent.nzChangeOn;
-    const shouldPerformSelection = (o: CascaderOption, i: number): boolean => {
-      return typeof changeOn === 'function' ? changeOn(o, i) : false;
-    };
-
-    if (option.isLeaf || this.cascaderComponent.nzChangeOnSelect || shouldPerformSelection(option, index)) {
-      this.selectedOptions = [...this.activatedOptions];
-      this.prepareEmitValue();
-      this.$redraw.next();
-      this.$optionSelected.next({ option, index });
     }
   }
 

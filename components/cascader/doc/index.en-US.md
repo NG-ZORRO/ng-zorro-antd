@@ -33,7 +33,7 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 | `[ngModel]` | selected value | `any[]` | - |
 | `[nzAllowClear]` | whether allow clear | `boolean` | `true` |
 | `[nzAutoFocus]` | whether auto focus the input box | `boolean` | `false` |
-| `[nzChangeOn]` | change value on each selection if this function return `true` | `function(option: any, index: number) => boolean` | - |
+| `[nzChangeOn]` | change value on each selection if this function return `true` | `(option: any, index: number) => boolean` | - |
 | `[nzChangeOnSelect]` | change value on each selection if set to true, see above demo for details | `boolean` | `false` |
 | `[nzColumnClassName]` | additional className of column in the popup overlay | `string` | - |
 | `[nzDisabled]` | whether disabled select | `boolean` | `false` |
@@ -54,8 +54,7 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 | `(ngModelChange)` | Emit on values change | `EventEmitter<any[]>` | - |
 | `(nzClear)` | Emit on clear values | `EventEmitter<void>` | - |
 | `(nzVisibleChange)` | Emit on popup menu visible or hide | `EventEmitter<boolean>` | - |
-| `(nzSelect)` | Emit on select | `EventEmitter<{option: any, index: number}>` | - |
-| `(nzSelectionChange)` | Emit on selection change | `EventEmitter<any[]>` | - |
+| `(nzSelectionChange)` | Emit on values change | `EventEmitter<CascaderOption[]>` | - |
 
 When `nzShowSearch` is an object it should implements `NzShowSearchOptions`：
 
