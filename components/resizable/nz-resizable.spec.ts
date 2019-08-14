@@ -1,8 +1,8 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, NgZone, ViewChild } from '@angular/core';
 import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { dispatchMouseEvent } from 'ng-zorro-antd/core';
+import { dispatchMouseEvent, MockNgZone } from 'ng-zorro-antd/core';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
@@ -17,6 +17,8 @@ import { NzResizableModule } from './nz-resizable.module';
 import { DEFAULT_RESIZE_DIRECTION } from './nz-resize-handles.component';
 
 describe('resizable', () => {
+  let zone: MockNgZone;
+
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports: [NzResizableModule, NzIconTestModule, NzGridModule],
@@ -27,6 +29,15 @@ describe('resizable', () => {
         NzDemoResizablePreviewComponent,
         NzDemoResizableGridComponent,
         NzTestResizableBoundsComponent
+      ],
+      providers: [
+        {
+          provide: NgZone,
+          useFactory: () => {
+            zone = new MockNgZone();
+            return zone;
+          }
+        }
       ]
     }).compileComponents();
   }));
@@ -82,6 +93,8 @@ describe('resizable', () => {
       );
       fixture.detectChanges();
       tick(16);
+      fixture.detectChanges();
+      zone.simulateZoneExit();
       fixture.detectChanges();
       expect(testComponent.width).toBe(600);
       expect(testComponent.height).toBe(200);
@@ -362,6 +375,8 @@ describe('resizable', () => {
       );
       fixture.detectChanges();
       tick(16);
+      fixture.detectChanges();
+      zone.simulateZoneExit();
       fixture.detectChanges();
       expect(testComponent.width).toBeGreaterThanOrEqual(600);
     }));
