@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   template: `
     <nz-tree-select
       style="width: 250px"
-      [nzDefaultExpandedKeys]="expandKeys"
+      [nzExpandedKeys]="expandKeys"
       [nzNodes]="nodes"
       nzShowSearch
       nzPlaceHolder="Please select"
