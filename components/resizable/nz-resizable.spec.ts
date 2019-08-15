@@ -2,7 +2,7 @@ import { Component, ElementRef, NgZone, ViewChild } from '@angular/core';
 import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { dispatchMouseEvent, MockNgZone } from 'ng-zorro-antd/core';
+import { dispatchMouseEvent, dispatchTouchEvent, MockNgZone } from 'ng-zorro-antd/core';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
@@ -80,7 +80,7 @@ describe('resizable', () => {
     it('should maximum size work', fakeAsync(() => {
       const rect = resizableEle.getBoundingClientRect();
       const handel = resizableEle.querySelector('.nz-resizable-handle-bottomRight') as HTMLElement;
-      moveTrigger(
+      mouseMoveTrigger(
         handel,
         {
           x: rect.right,
@@ -103,7 +103,7 @@ describe('resizable', () => {
     it('should minimum size work', fakeAsync(() => {
       const rect = resizableEle.getBoundingClientRect();
       const handel = resizableEle.querySelector('.nz-resizable-handle-bottomRight') as HTMLElement;
-      moveTrigger(
+      mouseMoveTrigger(
         handel,
         {
           x: rect.right,
@@ -133,6 +133,26 @@ describe('resizable', () => {
         expect(testComponent.height).toBe(200);
       });
 
+      it('should touch event work', fakeAsync(() => {
+        const handle = resizableEle.querySelector('.nz-resizable-handle-top') as HTMLElement;
+        touchMoveTrigger(
+          handle,
+          {
+            x: rect.left,
+            y: rect.top
+          },
+          {
+            x: rect.left,
+            y: rect.top + 100
+          }
+        );
+        fixture.detectChanges();
+        tick(16);
+        fixture.detectChanges();
+        expect(testComponent.height).toBeLessThanOrEqual(200);
+        expect(testComponent.height).toBeGreaterThanOrEqual(100);
+      }));
+
       /**
        *  +---↓---+
        *  |       |
@@ -140,7 +160,7 @@ describe('resizable', () => {
        */
       it('top', fakeAsync(() => {
         const handle = resizableEle.querySelector('.nz-resizable-handle-top') as HTMLElement;
-        moveTrigger(
+        mouseMoveTrigger(
           handle,
           {
             x: rect.left,
@@ -165,7 +185,7 @@ describe('resizable', () => {
        */
       it('bottom', fakeAsync(() => {
         const handle = resizableEle.querySelector('.nz-resizable-handle-bottom') as HTMLElement;
-        moveTrigger(
+        mouseMoveTrigger(
           handle,
           {
             x: rect.left,
@@ -190,7 +210,7 @@ describe('resizable', () => {
        */
       it('left', fakeAsync(() => {
         const handle = resizableEle.querySelector('.nz-resizable-handle-left') as HTMLElement;
-        moveTrigger(
+        mouseMoveTrigger(
           handle,
           {
             x: rect.left,
@@ -215,7 +235,7 @@ describe('resizable', () => {
        */
       it('right', fakeAsync(() => {
         const handle = resizableEle.querySelector('.nz-resizable-handle-right') as HTMLElement;
-        moveTrigger(
+        mouseMoveTrigger(
           handle,
           {
             x: rect.right,
@@ -240,7 +260,7 @@ describe('resizable', () => {
        */
       it('topRight', fakeAsync(() => {
         const handle = resizableEle.querySelector('.nz-resizable-handle-topRight') as HTMLElement;
-        moveTrigger(
+        mouseMoveTrigger(
           handle,
           {
             x: rect.right,
@@ -267,7 +287,7 @@ describe('resizable', () => {
        */
       it('topLeft', fakeAsync(() => {
         const handle = resizableEle.querySelector('.nz-resizable-handle-topLeft') as HTMLElement;
-        moveTrigger(
+        mouseMoveTrigger(
           handle,
           {
             x: rect.left,
@@ -294,7 +314,7 @@ describe('resizable', () => {
        */
       it('bottomRight', fakeAsync(() => {
         const handle = resizableEle.querySelector('.nz-resizable-handle-bottomRight') as HTMLElement;
-        moveTrigger(
+        mouseMoveTrigger(
           handle,
           {
             x: rect.right,
@@ -321,7 +341,7 @@ describe('resizable', () => {
        */
       it('bottomLeft', fakeAsync(() => {
         const handle = resizableEle.querySelector('.nz-resizable-handle-bottomLeft') as HTMLElement;
-        moveTrigger(
+        mouseMoveTrigger(
           handle,
           {
             x: rect.left,
@@ -362,7 +382,7 @@ describe('resizable', () => {
       expect(rightHandel.querySelector('.right-wrap')).toBeTruthy();
 
       const rect = resizableEle.getBoundingClientRect();
-      moveTrigger(
+      mouseMoveTrigger(
         bottomRightHandel,
         {
           x: rect.right,
@@ -402,7 +422,7 @@ describe('resizable', () => {
       const topHandel = resizableEle.querySelector('.nz-resizable-handle-top') as HTMLElement;
       const bottomRightHandel = resizableEle.querySelector('.nz-resizable-handle-bottomRight') as HTMLElement;
       const ratio = testComponent.width / testComponent.height;
-      moveTrigger(
+      mouseMoveTrigger(
         leftHandel,
         {
           x: rect.right,
@@ -416,7 +436,7 @@ describe('resizable', () => {
       fixture.detectChanges();
       tick(16);
       fixture.detectChanges();
-      moveTrigger(
+      mouseMoveTrigger(
         bottomRightHandel,
         {
           x: rect.right,
@@ -430,7 +450,7 @@ describe('resizable', () => {
       fixture.detectChanges();
       tick(16);
       fixture.detectChanges();
-      moveTrigger(
+      mouseMoveTrigger(
         topHandel,
         {
           x: rect.right,
@@ -488,7 +508,7 @@ describe('resizable', () => {
     it('should grid work', fakeAsync(() => {
       const rect = resizableEle.getBoundingClientRect();
       const handle = resizableEle.querySelector('.nz-resizable-handle-right') as HTMLElement;
-      moveTrigger(
+      mouseMoveTrigger(
         handle,
         {
           x: rect.right,
@@ -503,7 +523,7 @@ describe('resizable', () => {
       tick(16);
       fixture.detectChanges();
       expect(testComponent.col).toBe(3);
-      moveTrigger(
+      mouseMoveTrigger(
         handle,
         {
           x: rect.right,
@@ -536,7 +556,7 @@ describe('resizable', () => {
     it('should parent bounds work', fakeAsync(() => {
       const rect = resizableEle.getBoundingClientRect();
       const handle = resizableEle.querySelector('.nz-resizable-handle-bottomRight') as HTMLElement;
-      moveTrigger(
+      mouseMoveTrigger(
         handle,
         {
           x: rect.right,
@@ -559,7 +579,7 @@ describe('resizable', () => {
       testComponent.bounds = testComponent.boxRef;
       fixture.detectChanges();
       const handle = resizableEle.querySelector('.nz-resizable-handle-bottomRight') as HTMLElement;
-      moveTrigger(
+      mouseMoveTrigger(
         handle,
         {
           x: rect.right,
@@ -582,7 +602,7 @@ describe('resizable', () => {
       testComponent.bounds = 'window';
       fixture.detectChanges();
       const handle = resizableEle.querySelector('.nz-resizable-handle-bottomRight') as HTMLElement;
-      moveTrigger(
+      mouseMoveTrigger(
         handle,
         {
           x: rect.right,
@@ -601,7 +621,7 @@ describe('resizable', () => {
       testComponent.maxHeight = window.innerHeight * 2;
       testComponent.maxWidth = window.innerWidth * 2;
       fixture.detectChanges();
-      moveTrigger(
+      mouseMoveTrigger(
         handle,
         {
           x: rect.right,
@@ -621,10 +641,16 @@ describe('resizable', () => {
   });
 });
 
-function moveTrigger(el: HTMLElement, from: { x: number; y: number }, to: { x: number; y: number }): void {
+function mouseMoveTrigger(el: HTMLElement, from: { x: number; y: number }, to: { x: number; y: number }): void {
   dispatchMouseEvent(el, 'mousedown', from.x, from.y);
   dispatchMouseEvent(window.document, 'mousemove', to.x, to.y);
   dispatchMouseEvent(window.document, 'mouseup');
+}
+
+function touchMoveTrigger(el: HTMLElement, from: { x: number; y: number }, to: { x: number; y: number }): void {
+  dispatchTouchEvent(el, 'touchstart', from.x, from.y);
+  dispatchTouchEvent(window.document, 'touchmove', to.x, to.y);
+  dispatchTouchEvent(window.document, 'touchend');
 }
 
 @Component({
