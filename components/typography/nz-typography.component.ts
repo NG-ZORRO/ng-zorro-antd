@@ -52,6 +52,7 @@ import { NzTextEditComponent } from './nz-text-edit.component';
   span[nz-text],
   h1[nz-title], h2[nz-title], h3[nz-title], h4[nz-title]
   `,
+  exportAs: 'nzTypography',
   templateUrl: './nz-typography.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

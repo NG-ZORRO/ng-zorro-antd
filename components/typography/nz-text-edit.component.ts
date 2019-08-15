@@ -28,6 +28,7 @@ import { NzAutosizeDirective } from 'ng-zorro-antd/input';
 
 @Component({
   selector: 'nz-text-edit',
+  exportAs: 'nzTextEdit',
   templateUrl: './nz-text-edit.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

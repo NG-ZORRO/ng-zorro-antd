@@ -37,6 +37,7 @@ export class NzResizeHandleMouseDownEvent {
 
 @Component({
   selector: 'nz-resize-handle, [nz-resize-handle]',
+  exportAs: 'nzResizeHandle',
   templateUrl: './nz-resize-handle.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {

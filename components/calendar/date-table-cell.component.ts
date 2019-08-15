@@ -13,6 +13,7 @@ import { DateCell } from './date-table.component';
 @Component({
   // tslint:disable-next-line: component-selector
   selector: '[date-table-cell]',
+  exportAs: 'dateTableCell',
   templateUrl: './date-table-cell.component.html',
   styles: []
 })
