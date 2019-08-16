@@ -225,13 +225,14 @@ describe('NzDatePickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
-      expect(queryFromOverlay('.cdk-overlay-backdrop')).toBeNull();
+      expect(queryFromOverlay('.cdk-overlay-backdrop')).not.toBeNull();
 
       fixtureInstance.nzOpen = false;
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
       expect(getPickerContainer()).toBeNull();
+      expect(queryFromOverlay('.cdk-overlay-backdrop')).toBeNull();
     }));
 
     it('should support nzClassName', () => {

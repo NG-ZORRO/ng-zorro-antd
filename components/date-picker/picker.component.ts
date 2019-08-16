@@ -20,8 +20,10 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -37,10 +39,10 @@ import { DateHelperService } from 'ng-zorro-antd/i18n';
   animations: [slideMotion],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NzPickerComponent implements OnInit, AfterViewInit {
+export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() noAnimation: boolean = false;
   @Input() isRange: boolean = false;
-  @Input() open: boolean | undefined = undefined;
+  @Input() open: boolean = false;
   @Input() disabled: boolean;
   @Input() placeholder: string | string[];
   @Input() allowClear: boolean;
@@ -59,7 +61,6 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
 
   prefixCls = 'ant-calendar';
   animationOpenState = false;
-  overlayOpen: boolean = false; // Available when "open"=undefined
   overlayOffsetY: number = 0;
   overlayOffsetX: number = -2;
   overlayPositions: ConnectionPositionPair[] = [
@@ -94,14 +95,17 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
   currentPositionX: 'start' | 'end' = 'start';
   currentPositionY: 'top' | 'bottom' = 'top';
 
-  get realOpenState(): boolean {
-    // The value that really decide the open state of overlay
-    return this.isOpenHandledByUser() ? !!this.open : this.overlayOpen;
-  }
-
   constructor(private dateHelper: DateHelperService, private changeDetector: ChangeDetectorRef) {}
 
   ngOnInit(): void {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.open) {
+      if (changes.open.currentValue === true) {
+        this.updatePosition();
+      }
+    }
+  }
 
   ngAfterViewInit(): void {
     if (this.autoFocus) {
@@ -122,27 +126,23 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
 
   // Show overlay content
   showOverlay(): void {
-    if (!this.realOpenState) {
-      this.overlayOpen = true;
-      this.openChange.emit(this.overlayOpen);
-      setTimeout(() => {
-        if (this.cdkConnectedOverlay && this.cdkConnectedOverlay.overlayRef) {
-          this.cdkConnectedOverlay.overlayRef.updatePosition();
-        }
-      });
+    if (!this.open) {
+      this.open = true;
+      this.openChange.emit(this.open);
+      this.updatePosition();
     }
   }
 
   hideOverlay(): void {
-    if (this.realOpenState) {
-      this.overlayOpen = false;
-      this.openChange.emit(this.overlayOpen);
+    if (this.open) {
+      this.open = false;
+      this.openChange.emit(this.open);
       this.focus();
     }
   }
 
   onClickInputBox(): void {
-    if (!this.disabled && !this.isOpenHandledByUser()) {
+    if (!this.disabled) {
       this.showOverlay();
     }
   }
@@ -202,19 +202,22 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // Whether open state is permanently controlled by user himself
-  isOpenHandledByUser(): boolean {
-    return this.open !== undefined;
-  }
-
   animationStart(): void {
-    if (this.realOpenState) {
+    if (this.open) {
       this.animationOpenState = true;
     }
   }
 
   animationDone(): void {
-    this.animationOpenState = this.realOpenState;
+    this.animationOpenState = this.open;
+  }
+
+  updatePosition(): void {
+    setTimeout(() => {
+      if (this.cdkConnectedOverlay && this.cdkConnectedOverlay.overlayRef) {
+        this.cdkConnectedOverlay.overlayRef.updatePosition();
+      }
+    });
   }
 }
 

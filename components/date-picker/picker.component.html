@@ -72,8 +72,8 @@
   cdkConnectedOverlay
   nzConnectedOverlay
   [cdkConnectedOverlayOrigin]="origin"
-  [cdkConnectedOverlayOpen]="realOpenState"
-  [cdkConnectedOverlayHasBackdrop]="!isOpenHandledByUser()"
+  [cdkConnectedOverlayOpen]="open"
+  [cdkConnectedOverlayHasBackdrop]="true"
   [cdkConnectedOverlayPositions]="overlayPositions"
   (positionChange)="onPositionChange($event)"
   (backdropClick)="onClickBackdrop()"
