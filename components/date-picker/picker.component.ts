@@ -100,10 +100,8 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges {
   ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.open) {
-      if (changes.open.currentValue === true) {
-        this.updatePosition();
-      }
+    if (changes.open && changes.open.currentValue === true) {
+      this.updatePosition();
     }
   }
 
