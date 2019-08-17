@@ -354,7 +354,7 @@ describe('NzDatePickerComponent', () => {
       dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
 
-      expect(nzOnOpenChange).not.toHaveBeenCalledWith(true);
+      expect(nzOnOpenChange).toHaveBeenCalledWith(true);
     });
 
     it('should support nzValue', fakeAsync(() => {
@@ -836,6 +836,8 @@ describe('NzDatePickerComponent', () => {
       const cell = getFirstCell();
       const cellText = cell.textContent!.trim();
       dispatchMouseEvent(cell, 'click');
+      fixture.detectChanges();
+      flush();
       fixture.detectChanges();
       expect(fixtureInstance.modelValue.getDate()).toBe(+cellText);
     }));

@@ -2,7 +2,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -149,7 +149,7 @@ describe('NzRangePickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
-      expect(queryFromOverlay('.cdk-overlay-backdrop')).toBeNull();
+      expect(queryFromOverlay('.cdk-overlay-backdrop')).not.toBeNull();
 
       fixtureInstance.nzOpen = false;
       fixture.detectChanges();
@@ -716,7 +716,7 @@ describe('NzRangePickerComponent', () => {
     it('should specified date provide by "modelValue" be choosed', fakeAsync(() => {
       fixtureInstance.modelValue = [new Date('2018-11-11'), new Date('2018-12-12')];
       fixture.detectChanges();
-      tick(); // Wait writeValue() tobe done
+      flush(); // Wait writeValue() tobe done
       fixture.detectChanges();
       expect(getFirstSelectedDayCell().textContent!.trim()).toBe('11');
 
@@ -729,6 +729,7 @@ describe('NzRangePickerComponent', () => {
       const rightText = right.textContent!.trim();
       dispatchMouseEvent(right, 'click');
       fixture.detectChanges();
+      flush();
       expect(fixtureInstance.modelValue[0]!.getDate()).toBe(+leftText);
       expect(fixtureInstance.modelValue[1]!.getDate()).toBe(+rightText);
     }));

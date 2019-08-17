@@ -131,7 +131,7 @@ describe('NzYearPickerComponent', () => {
         tick(500);
         fixture.detectChanges();
         expect(getPickerContainer()).not.toBeNull();
-        expect(queryFromOverlay('.cdk-overlay-backdrop')).toBeNull();
+        expect(queryFromOverlay('.cdk-overlay-backdrop')).not.toBeNull();
         // dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
         // expect(getPickerContainer()).not.toBeNull();
 
