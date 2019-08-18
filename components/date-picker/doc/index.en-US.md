@@ -64,7 +64,7 @@ The following APIs are shared by nz-date-picker, nz-year-picker, nz-month-picker
 | Name | Description |
 | ---- | ----------- |
 | open() | open calendar panel |
-| close() | close calendar panel|
+| close() | close calendar panel |
 
 ### nz-date-picker
 
