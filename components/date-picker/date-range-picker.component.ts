@@ -107,7 +107,7 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
     super.onValueChange(value);
 
     if (!this.nzShowTime) {
-      this.closeOverlay();
+      this.close();
     }
   }
 
@@ -135,7 +135,7 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
         this.nzOnOk.emit(null);
       }
     }
-    this.closeOverlay();
+    this.close();
   }
 
   onOpenChange(open: boolean): void {

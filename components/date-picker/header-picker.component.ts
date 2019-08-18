@@ -73,7 +73,7 @@ export class HeaderPickerComponent extends AbstractPickerComponent implements On
     if (this.endPanelMode === mode) {
       super.onValueChange(value);
 
-      this.closeOverlay();
+      this.close();
     }
   }
 

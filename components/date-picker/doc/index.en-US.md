@@ -32,15 +32,16 @@ registerLocaleData(en);
 There are four kinds of picker:
 
 - nz-date-picker
+- nz-year-picker
 - nz-month-picker
-- nz-range-picker
 - nz-week-picker
+- nz-range-picker
 
 **Note:** All input and output date objects are [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date), you can manpulate it with [date-fns](https://date-fns.org/).
 
 ### Common API
 
-The following APIs are shared by nz-date-picker, nz-month-picker, nz-range-picker, nz-week-picker.
+The following APIs are shared by nz-date-picker, nz-year-picker, nz-month-picker, nz-week-picker, nz-range-picker.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
@@ -57,6 +58,13 @@ The following APIs are shared by nz-date-picker, nz-month-picker, nz-range-picke
 | `[nzSize]` | determine the size of the input box, the height of `large` and `small`, are 40px and 24px respectively, while default size is 32px | `'large' \| 'small'` | - |
 | `[nzStyle]` | to customize the style of the input box | `object` | `{}` |
 | `(nzOnOpenChange)` | a callback emitter, can be executed whether the popup calendar is popped up or closed | `EventEmitter<boolean>` | - |
+
+### Common Methods
+
+| Name | Description |
+| ---- | ----------- |
+| open() | open calendar panel |
+| close() | close calendar panel|
 
 ### nz-date-picker
 

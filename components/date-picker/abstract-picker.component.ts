@@ -104,7 +104,11 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
     this.destroyed$.complete();
   }
 
-  closeOverlay(): void {
+  open(): void {
+    this.picker.showOverlay();
+  }
+
+  close(): void {
     this.picker.hideOverlay();
   }
 

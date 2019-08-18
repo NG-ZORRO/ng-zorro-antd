@@ -13,6 +13,7 @@ import { dispatchKeyboardEvent, dispatchMouseEvent, NgStyleInterface } from 'ng-
 import en_US from '../i18n/languages/en_US';
 
 import { NzI18nModule, NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzDatePickerComponent } from './nz-date-picker.component';
 import { NzDatePickerModule } from './nz-date-picker.module';
 
 registerLocaleData(zh);
@@ -65,6 +66,21 @@ describe('NzDatePickerComponent', () => {
       expect(getPickerContainer()).not.toBeNull();
 
       dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).toBeNull();
+    }));
+
+    it('should open and close method work', fakeAsync(() => {
+      fixture.detectChanges();
+      fixtureInstance.datePicker.open();
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).not.toBeNull();
+
+      fixtureInstance.datePicker.close();
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -926,6 +942,8 @@ describe('NzDatePickerComponent', () => {
 })
 class NzTestDatePickerComponent {
   useSuite: 1 | 2 | 3;
+
+  @ViewChild(NzDatePickerComponent, { static: false }) datePicker: NzDatePickerComponent;
   @ViewChild('tplDateRender', { static: true }) tplDateRender: TemplateRef<Date>;
   @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter: TemplateRef<void>;
 

@@ -32,15 +32,16 @@ registerLocaleData(zh);
 日期类组件包括以下四种形式。
 
 - nz-date-picker
+- nz-year-picker
 - nz-month-picker
-- nz-range-picker
 - nz-week-picker
+- nz-range-picker
 
 **注意：** 所有输入输出日期对象均为 [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date)，你可以通过 [date-fns](https://date-fns.org/) 工具库获得你需要的数据。
 
 ### 共同的 API
 
-以下 API 为 nz-date-picker、nz-month-picker、nz-range-picker, nz-week-picker 共享的 API。
+以下 API 为 nz-date-picker、nz-year-picker、nz-month-picker、nz-week-picker、nz-range-picker 共享的 API。
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
@@ -57,6 +58,13 @@ registerLocaleData(zh);
 | `[nzSize]` | 输入框大小，`large` 高度为 40px，`small` 为 24px，默认是 32px | `'large' \| 'small'` | - |
 | `[nzStyle]` | 自定义输入框样式 | `object` | `{}` |
 | `(nzOnOpenChange)` | 弹出日历和关闭日历的回调 | `EventEmitter<boolean>` | - |
+
+### 共同的方法
+
+| 名称 | 描述 |
+| ---- | ----------- |
+| open() | 打开日历弹层 |
+| close() | 关闭日历弹层 |
 
 ### nz-date-picker
 
