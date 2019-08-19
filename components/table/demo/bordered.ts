@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-bordered',
   template: `
-    <nz-table #borderedTable nzBordered nzFooter="Footer" nzTitle="Header" [nzData]="dataSet">
+    <nz-table #borderedTable nzBordered nzFooter="Footer" nzTitle="Header" nzSize="small" [nzData]="dataSet">
       <thead>
         <tr>
           <th>Name</th>

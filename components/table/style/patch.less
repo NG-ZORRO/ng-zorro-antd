@@ -139,6 +139,12 @@ nz-table {
 }
 
 .@{table-prefix-cls}-small {
+  &.@{table-prefix-cls}-bordered {	
+    .@{table-prefix-cls}-footer {
+      border-right: none;
+    }
+  }
+
   > .@{table-prefix-cls}-content {
     > .@{table-prefix-cls}-scroll > .@{table-prefix-cls}-header > table,
     > .@{table-prefix-cls}-scroll > .@{table-prefix-cls}-body > table,
