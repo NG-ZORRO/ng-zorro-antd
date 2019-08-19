@@ -52,6 +52,7 @@ declare const monaco: any;
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-code-editor',
+  exportAs: 'nzCodeEditor',
   templateUrl: './nz-code-editor.component.html',
   host: {
     '[class.ant-code-editor]': 'true'

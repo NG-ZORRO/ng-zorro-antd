@@ -33,6 +33,7 @@ const ExceptionStatus = ['404', '500', '403'];
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-result',
+  exportAs: 'nzResult',
   templateUrl: './nz-result.component.html',
   providers: [NzUpdateHostClassService],
   styles: [
