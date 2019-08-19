@@ -26,6 +26,7 @@ import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'nz-text-copy',
+  exportAs: 'nzTextCopy',
   templateUrl: './nz-text-copy.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

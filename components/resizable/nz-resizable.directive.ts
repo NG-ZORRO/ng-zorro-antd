@@ -36,6 +36,7 @@ export interface NzResizeEvent {
 
 @Directive({
   selector: '[nz-resizable]',
+  exportAs: 'nzResizable',
   providers: [NzResizableService],
   host: {
     '[class.nz-resizable]': 'true',

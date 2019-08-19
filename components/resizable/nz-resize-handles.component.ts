@@ -23,6 +23,7 @@ export const DEFAULT_RESIZE_DIRECTION: NzResizeDirection[] = [
 
 @Component({
   selector: 'nz-resize-handles',
+  exportAs: 'nzResizeHandles',
   templateUrl: './nz-resize-handles.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })

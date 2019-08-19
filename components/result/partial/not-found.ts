@@ -12,6 +12,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-result-not-found',
+  exportAs: 'nzResultNotFound',
   template: `
     <svg width="252" height="294">
       <defs>
