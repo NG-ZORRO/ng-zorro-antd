@@ -179,6 +179,9 @@ describe('typography', () => {
       tick(16);
       fixture.detectChanges();
     }));
+    afterEach(fakeAsync(() => {
+      viewport.reset();
+    }));
 
     it('should ellipsis work', fakeAsync(() => {
       componentElement.querySelectorAll('p').forEach(e => {
@@ -245,6 +248,7 @@ describe('typography', () => {
       componentElement.querySelectorAll('p').forEach(e => {
         expect(e.innerText.includes('...')).toBe(true);
       });
+      viewport.reset();
     }));
 
     it('should expandable', fakeAsync(() => {
@@ -264,6 +268,7 @@ describe('typography', () => {
         expect(e.classList).not.toContain('ant-typography-ellipsis');
         expect(testComponent.onExpand).toHaveBeenCalledTimes(i + 1);
       });
+      viewport.reset();
     }));
 
     it('should not resize when is expanded', fakeAsync(() => {

@@ -61,6 +61,9 @@ describe('affix', () => {
     debugElement = fixture.debugElement;
     componentObject.wrap().id = 'wrap';
   }));
+  afterEach(fakeAsync(() => {
+    setupInitialState();
+  }));
 
   describe('[default]', () => {
     it('recreate bug https://github.com/NG-ZORRO/ng-zorro-antd/issues/671', fakeAsync(() => {
