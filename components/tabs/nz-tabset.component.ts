@@ -323,10 +323,11 @@ export class NzTabSetComponent
   private updateRouterActive(): void {
     if (this.router.navigated) {
       const index = this.findShouldActiveTabIndex();
-      if (index !== this._selectedIndex && index !== -1) {
+      if (index !== this._selectedIndex) {
         this.nzSelectedIndex = index;
         this.nzSelectedIndexChange.next(index);
       }
+      this.nzHideAll = index === -1;
     }
   }
 
