@@ -844,9 +844,7 @@ describe('cascader', () => {
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', UP_ARROW);
       fixture.detectChanges();
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
-      const itemEl2 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:first-child'
-      ) as HTMLElement;
+      const itemEl2 = getItemAtColumnAndRow(1, 1)!;
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', UP_ARROW);
       fixture.detectChanges();
