@@ -4,7 +4,7 @@
        [ngStyle]="nzOverlayStyle"
        [@slideMotion]="dropDownPosition"
        [@.disabled]="noAnimation?.nzNoAnimation"
-[nzNoAnimation]="noAnimation?.nzNoAnimation"
+       [nzNoAnimation]="noAnimation?.nzNoAnimation"
        (mouseenter)="setVisibleStateWhen(true,'hover')"
        (mouseleave)="setVisibleStateWhen(false,'hover')">
     <div [class.ant-table-filter-dropdown]="nzTableFilter">

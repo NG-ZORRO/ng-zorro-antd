@@ -63,7 +63,7 @@
     [ngClass]="menuCls"
     [ngStyle]="nzMenuStyle"
     [@.disabled]="noAnimation?.nzNoAnimation"
-[nzNoAnimation]="noAnimation?.nzNoAnimation"
+    [nzNoAnimation]="noAnimation?.nzNoAnimation"
     [@slideMotion]="dropDownPosition"
     (mouseleave)="onTriggerMouseLeave($event)">
     <ul *ngFor="let options of cascaderService.columns; let i = index;" class="ant-cascader-menu"

@@ -46,19 +46,19 @@ export const NZ_AFFIX_DEFAULT_SCROLL_TIME = 20;
 })
 export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() nzTarget: string | Element | Window;
-  @Input() nzOffsetTop: number;
-  @Input() nzOffsetBottom: number;
+  @Input() nzOffsetTop: number | null;
+  @Input() nzOffsetBottom: number | null;
   @Output() readonly nzChange = new EventEmitter<boolean>();
-
   @ViewChild('fixedEl', { static: true }) private fixedEl: ElementRef<HTMLDivElement>;
+
   private timeout: number;
   private scroll$: Subscription | null = null;
   private readonly events = ['resize', 'scroll', 'touchstart', 'touchmove', 'touchend', 'pageshow', 'load'];
   private readonly placeholderNode: HTMLElement;
   private affixStyle: NgStyleInterface | undefined;
   private placeholderStyle: NgStyleInterface | undefined;
-  private offsetTop: number | null;
-  private offsetBottom: number | null;
+  private _offsetTop: number | null;
+  private _offsetBottom: number | null;
 
   private get target(): Element | Window {
     const el = this.nzTarget;
@@ -77,24 +77,22 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzTarget) {
-      this.registerListeners();
-    }
     if (changes.nzOffsetTop) {
       const value = changes.nzOffsetTop.currentValue;
-      if (value === undefined || value === null) {
-        return;
+      if (value !== undefined && value !== null) {
+        this._offsetTop = toNumber(value, null);
+        this.updatePosition({} as Event);
       }
-      this.offsetTop = toNumber(value, null);
-      this.updatePosition({} as Event);
     }
     if (changes.nzOffsetBottom) {
       const value = changes.nzOffsetBottom.currentValue;
-      if (typeof value === 'undefined') {
-        return;
+      if (value !== undefined) {
+        this._offsetBottom = toNumber(value, null);
+        this.updatePosition({} as Event);
       }
-      this.offsetBottom = toNumber(value, null);
-      this.updatePosition({} as Event);
+    }
+    if (changes.nzTarget) {
+      this.registerListeners();
     }
   }
 
@@ -227,7 +225,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
     }
     const targetNode = this.target as (HTMLElement | Window);
     // Backwards support
-    let offsetTop = this.offsetTop;
+    let offsetTop = this._offsetTop;
     const scrollTop = this.scrollSrv.getScroll(targetNode!, true);
     const elemOffset = this.getOffset(this.placeholderNode, targetNode!);
     const fixedNode = this.fixedEl.nativeElement;
@@ -240,12 +238,12 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
       bottom: false
     };
     // Default to `offsetTop=0`.
-    if (typeof offsetTop !== 'number' && typeof this.offsetBottom !== 'number') {
+    if (typeof offsetTop !== 'number' && typeof this._offsetBottom !== 'number') {
       offsetMode.top = true;
       offsetTop = 0;
     } else {
       offsetMode.top = typeof offsetTop === 'number';
-      offsetMode.bottom = typeof this.offsetBottom === 'number';
+      offsetMode.bottom = typeof this._offsetBottom === 'number';
     }
     const targetRect = this.getTargetRect(targetNode as Window);
     const targetInnerHeight = (targetNode as Window).innerHeight || (targetNode as HTMLElement).clientHeight;
@@ -264,14 +262,14 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
         height: elemSize.height
       });
     } else if (
-      scrollTop <= elemOffset.top + elemSize.height + (this.offsetBottom as number) - targetInnerHeight &&
+      scrollTop <= elemOffset.top + elemSize.height + (this._offsetBottom as number) - targetInnerHeight &&
       offsetMode.bottom
     ) {
       const targetBottomOffet = targetNode === window ? 0 : window.innerHeight - targetRect.bottom;
       const width = elemOffset.width;
       this.setAffixStyle(e, {
         position: 'fixed',
-        bottom: targetBottomOffet + (this.offsetBottom as number),
+        bottom: targetBottomOffet + (this._offsetBottom as number),
         left: targetRect.left + elemOffset.left,
         width
       });

@@ -50,10 +50,10 @@ export class NzPopoverComponent extends NzToolTipComponent {
    * Use `neverUsedTemplate` to force `nzTemplate` to be catched by `nzPopoverContent`.
    */
   @Input() nzTitle: NzTSType;
-  @ContentChild('neverUsedTemplate', { static: true }) neverUsedTemplate: TemplateRef<void>;
+  @ContentChild('neverUsedTemplate', { static: true }) nzTitleTemplate: TemplateRef<void>;
 
   @Input() nzContent: NzTSType;
-  @ContentChild('nzTemplate', { static: true }) nzTemplate: TemplateRef<void>;
+  @ContentChild('nzTemplate', { static: true }) nzContentTemplate: TemplateRef<void>;
 
   constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
     super(cdr, noAnimation);
