@@ -51,15 +51,9 @@ export class NzPopoverComponent extends NzToolTipComponent {
    */
   @Input() nzTitle: NzTSType;
   @ContentChild('neverUsedTemplate', { static: true }) neverUsedTemplate: TemplateRef<void>;
-  get title(): string | TemplateRef<void> {
-    return this.nzTitle || this.neverUsedTemplate;
-  }
 
   @Input() nzContent: NzTSType;
   @ContentChild('nzTemplate', { static: true }) nzTemplate: TemplateRef<void>;
-  get content(): string | TemplateRef<void> {
-    return this.nzContent || this.nzTemplate;
-  }
 
   constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
     super(cdr, noAnimation);

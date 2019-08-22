@@ -79,7 +79,7 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() nzTrigger: TemplateRef<void>;
   @ViewChild('defaultTrigger', { static: true }) defaultTrigger: TemplateRef<void>;
   get trigger(): TemplateRef<void> {
-    return this.nzTrigger || this.defaultTrigger;
+    return this.nzTrigger !== undefined ? this.nzTrigger : this.defaultTrigger;
   }
 
   get flexSetting(): string {

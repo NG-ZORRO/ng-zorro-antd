@@ -54,12 +54,12 @@ export abstract class NzTooltipBaseComponent {
   _placement = 'top';
   _trigger: NzTooltipTrigger = 'hover';
 
-  get content(): string | TemplateRef<void> {
-    return this.nzContent || this.nzContentTemplate;
+  get content(): string | TemplateRef<void> | null {
+    return this.nzContent !== undefined ? this.nzContent : this.nzContentTemplate;
   }
 
-  get title(): string | TemplateRef<void> {
-    return this.nzTitle || this.nzTitleTemplate;
+  get title(): string | TemplateRef<void> | null {
+    return this.nzTitle !== undefined ? this.nzTitle : this.nzTitleTemplate;
   }
 
   constructor(public cdr: ChangeDetectorRef, public noAnimation?: NzNoAnimationDirective) {}

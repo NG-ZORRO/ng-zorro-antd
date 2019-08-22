@@ -193,7 +193,7 @@ describe('cascader', () => {
       expect(testComponent.cascader.menuVisible).toBe(false);
       expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(2);
     }));
-    it('should mouse hover toggle open', () => {
+    it('should mouse hover toggle open', fakeAsync(() => {
       fixture.detectChanges();
       testComponent.nzTriggerAction = 'hover';
       fixture.detectChanges();
@@ -275,7 +275,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(testComponent.cascader.menuVisible).toBe(false);
       expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(2);
-    });
+    }));
     it('should mouse hover toggle open immediately', fakeAsync(() => {
       fixture.detectChanges();
       testComponent.nzTriggerAction = ['hover'];
