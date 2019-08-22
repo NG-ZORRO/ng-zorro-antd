@@ -29,8 +29,8 @@ import { NzTooltipTrigger } from '../nz-tooltip.definitions';
  * Tooltip component. Also the base component for legacy components.
  */
 export abstract class NzTooltipBaseComponent {
-  nzTitle: NzTSType | null = null;
-  nzContent: NzTSType | null = null;
+  nzTitle: NzTSType | null;
+  nzContent: NzTSType | null;
   nzVisible: boolean;
   nzPlacement: string;
   nzOverlayClassName: string;
