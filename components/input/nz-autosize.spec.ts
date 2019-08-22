@@ -39,7 +39,7 @@ describe('autoresize', () => {
         textarea = fixture.debugElement.query(By.directive(NzAutosizeDirective)).nativeElement;
         autosize = fixture.debugElement.query(By.directive(NzAutosizeDirective)).injector.get(NzAutosizeDirective);
       });
-      xit('should resize the textarea based on its ngModel', fakeAsync(() => {
+      it('should resize the textarea based on its ngModel', fakeAsync(() => {
         let previousHeight = textarea.clientHeight;
         testComponent.value = `
     Once upon a midnight dreary, while I pondered, weak and weary,

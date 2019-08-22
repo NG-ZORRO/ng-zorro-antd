@@ -77,7 +77,7 @@ describe('affix', () => {
       fixture.detectChanges();
 
       expect(componentObject.wrap().offsetTop !== defaultOffsetTop).toBe(true);
-
+      setupInitialState();
       discardPeriodicTasks();
     }));
 
@@ -91,7 +91,7 @@ describe('affix', () => {
         emitScroll(window, defaultOffsetTop + startOffset - 1);
 
         expect(componentObject.wrap().offsetTop !== defaultOffsetTop).toBe(true);
-
+        setupInitialState();
         discardPeriodicTasks();
       }));
     });
@@ -101,7 +101,7 @@ describe('affix', () => {
         setupInitialState();
         emitScroll(window, defaultOffsetTop + startOffset + 1);
         expect(componentObject.wrap().offsetTop).toBe(defaultOffsetTop);
-
+        setupInitialState();
         discardPeriodicTasks();
       }));
 
@@ -118,7 +118,7 @@ describe('affix', () => {
           emitScroll(window, defaultOffsetTop + startOffset + 1);
 
           expect(componentObject.wrap().offsetLeft).toBe(100);
-
+          setupInitialState();
           discardPeriodicTasks();
         }));
       });
@@ -129,7 +129,7 @@ describe('affix', () => {
           emitScroll(window, defaultOffsetTop + startOffset + 1);
 
           expect(componentObject.wrap().offsetTop).toBe(defaultOffsetTop);
-
+          setupInitialState();
           discardPeriodicTasks();
         }));
       }
@@ -141,6 +141,7 @@ describe('affix', () => {
       componentObject.emitEvent(window, new Event('resize'));
       tick(20);
       fixture.detectChanges();
+      setupInitialState();
       discardPeriodicTasks();
     }));
   });
@@ -162,7 +163,7 @@ describe('affix', () => {
       fixture.detectChanges();
 
       expect(componentObject.elementRef().style.width).toBe(`100px`);
-
+      setupInitialState();
       discardPeriodicTasks();
     }));
 
@@ -179,6 +180,7 @@ describe('affix', () => {
       tick(20);
       fixture.detectChanges();
       expect(componentObject.elementRef().style.width).toBe(`${componentObject.elementRef().offsetWidth}px`);
+      setupInitialState();
       discardPeriodicTasks();
     }));
   });
@@ -207,6 +209,7 @@ describe('affix', () => {
         emitScroll(window, 2);
 
         expect(componentObject.wrap().offsetTop).toBe(offsetTop);
+        emitScroll(window, 0);
 
         discardPeriodicTasks();
       }));
@@ -218,6 +221,7 @@ describe('affix', () => {
       emitScroll(window, 2);
 
       expect(componentObject.wrap().offsetTop).toBe(offsetTop);
+      emitScroll(window, 0);
 
       discardPeriodicTasks();
     }));
@@ -239,8 +243,9 @@ describe('affix', () => {
           emitScroll(target, 5000);
           const wrapEl = componentObject.wrap();
           expect(+wrapEl.style.bottom!.replace('px', '')).toBe(0);
+          emitScroll(window, 0);
 
-          discardPeriodicTasks();
+          setupInitialState();
         }));
       });
     });
@@ -257,7 +262,7 @@ describe('affix', () => {
           emitScroll(target, 0);
           const wrapEl = componentObject.wrap();
           expect(+wrapEl.style.bottom!.replace('px', '')).toBeGreaterThan(0);
-
+          setupInitialState();
           discardPeriodicTasks();
         }));
       });
@@ -268,7 +273,7 @@ describe('affix', () => {
           emitScroll(target, 5000);
           const wrapEl = componentObject.wrap();
           expect(+wrapEl.style.bottom!.replace('px', '')).toBe(0);
-
+          setupInitialState();
           discardPeriodicTasks();
         }));
       });
@@ -289,7 +294,7 @@ describe('affix', () => {
         emitScroll(window, defaultOffsetTop + startOffset + 1);
 
         expect(componentObject.elementRef().offsetTop !== defaultOffsetTop).toBe(true);
-
+        emitScroll(window, 0);
         discardPeriodicTasks();
       }));
     });
@@ -300,7 +305,7 @@ describe('affix', () => {
         emitScroll(target, defaultOffsetTop + startOffset - 1);
 
         expect(componentObject.elementRef().offsetTop !== defaultOffsetTop).toBe(true);
-
+        setupInitialState();
         discardPeriodicTasks();
       }));
     });
@@ -311,7 +316,7 @@ describe('affix', () => {
         emitScroll(target, defaultOffsetTop + startOffset + 1);
 
         expect(componentObject.elementRef().offsetTop !== defaultOffsetTop).toBe(true);
-
+        setupInitialState();
         discardPeriodicTasks();
       }));
     });
@@ -350,7 +355,7 @@ describe('affix', () => {
       emitScroll(window, defaultOffsetTop + startOffset - 1);
 
       expect(changeValue).toBe(false);
-
+      setupInitialState();
       discardPeriodicTasks();
     }));
   });

@@ -16,6 +16,9 @@ module.exports = function(config) {
       require('karma-viewport')
     ],
     client: {
+      jasmine: {
+        random: false
+      },
       clearContext: true, // leave Jasmine Spec Runner output visible in browser
       ...tags && { args: [tags] }
     },
