@@ -14,7 +14,8 @@ const urls = Array.from(new Set(ROUTES.filter(r => r !== '/').map(r => r.replace
       links: [{ lang: 'en', url: `${r}/en` }, { lang: 'zh', url: `${r}/zh` }]
     };
   }
-);
+// tslint:disable-next-line:no-any
+) as any;
 
 const sitemapInstance = sitemap.createSitemap({
   hostname: 'https://ng.ant.design',

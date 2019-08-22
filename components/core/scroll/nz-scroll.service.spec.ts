@@ -45,7 +45,7 @@ describe('NzScrollService', () => {
     it(`should scroll to window ${TOP} x`, () => {
       scrollService.setScrollTop(window, TOP);
       expect(document.body.scrollTop).toBe(TOP);
-      scrollService.setScrollTop(window, TOP);
+      scrollService.setScrollTop(window, 0);
     });
 
     it(`should scroll to dom element ${TOP} x`, () => {
