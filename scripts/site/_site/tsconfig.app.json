@@ -20,6 +20,6 @@
     "fullTemplateTypeCheck": true,
     "strictMetadataEmit": true,
     "strictInjectionParameters":true,
-    "enableIvy": true
+    "enableIvy": false
   }
 }

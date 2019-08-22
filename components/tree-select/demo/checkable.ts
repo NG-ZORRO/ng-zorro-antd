@@ -5,12 +5,12 @@ import { Component, OnInit } from '@angular/core';
   template: `
     <nz-tree-select
       style="width: 250px"
+      [(ngModel)]="value"
       [nzNodes]="nodes"
+      (ngModelChange)="onChange($event)"
       nzShowSearch
       nzCheckable
       nzPlaceHolder="Please select"
-      [(ngModel)]="value"
-      (ngModelChange)="onChange($event)"
     >
     </nz-tree-select>
   `

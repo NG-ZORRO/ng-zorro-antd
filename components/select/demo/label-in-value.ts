@@ -7,8 +7,8 @@ import { Component } from '@angular/core';
     <br />
     <nz-select
       style="width: 120px;"
-      [compareWith]="compareFn"
       [(ngModel)]="selectedValue"
+      [compareWith]="compareFn"
       (ngModelChange)="log($event)"
       nzAllowClear
       nzPlaceHolder="Choose"

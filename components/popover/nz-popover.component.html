@@ -13,7 +13,8 @@
   <div class="ant-popover"
     [ngClass]="_classMap"
     [ngStyle]="nzOverlayStyle"
-    [nzNoAnimation]="noAnimation?.nzNoAnimation"
+    [@.disabled]="noAnimation?.nzNoAnimation"
+[nzNoAnimation]="noAnimation?.nzNoAnimation"
     [@zoomBigMotion]="'active'">
     <div class="ant-popover-content">
       <div class="ant-popover-arrow"></div>

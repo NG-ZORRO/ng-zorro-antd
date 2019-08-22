@@ -31,7 +31,8 @@
   (positionChange)="onPositionChange($event)"
   [cdkConnectedOverlayOpen]="nzVisible">
   <div class="{{'ant-dropdown ant-dropdown-placement-'+nzPlacement}}"
-    [nzNoAnimation]="noAnimation?.nzNoAnimation"
+    [@.disabled]="noAnimation?.nzNoAnimation"
+[nzNoAnimation]="noAnimation?.nzNoAnimation"
     [@slideMotion]="dropDownPosition"
     (mouseenter)="setVisibleStateWhen(true,'hover')"
     (mouseleave)="setVisibleStateWhen(false,'hover')"

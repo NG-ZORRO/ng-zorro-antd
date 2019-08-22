@@ -14,7 +14,8 @@
     class="ant-tooltip"
     [ngClass]="_classMap"
     [ngStyle]="nzOverlayStyle"
-    [nzNoAnimation]="noAnimation?.nzNoAnimation"
+[@.disabled]="noAnimation?.nzNoAnimation"
+[nzNoAnimation]="noAnimation?.nzNoAnimation"
     [@zoomBigMotion]="'active'">
     <div class="ant-tooltip-content">
       <div class="ant-tooltip-arrow"></div>

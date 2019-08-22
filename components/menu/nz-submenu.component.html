@@ -18,7 +18,8 @@
 </div>
 <ul *ngIf="nzMenuService.mode === 'inline'"
     [@collapseMotion]="expandState"
-    [nzNoAnimation]="noAnimation?.nzNoAnimation"
+    [@.disabled]="noAnimation?.nzNoAnimation"
+[nzNoAnimation]="noAnimation?.nzNoAnimation"
     [ngClass]="nzMenuClassName"
     class="ant-menu ant-menu-inline ant-menu-sub">
   <ng-template [ngTemplateOutlet]="subMenuTemplate"></ng-template>
@@ -32,7 +33,8 @@
   <div class="ant-menu-submenu ant-menu-submenu-popup"
        [@slideMotion]="expandState"
        [@zoomBigMotion]="expandState"
-       [nzNoAnimation]="noAnimation?.nzNoAnimation"
+       [@.disabled]="noAnimation?.nzNoAnimation"
+[nzNoAnimation]="noAnimation?.nzNoAnimation"
        [class.ant-menu-light]="nzMenuService.theme === 'light'"
        [class.ant-menu-dark]="nzMenuService.theme === 'dark'"
        [class.ant-menu-submenu-placement-bottomLeft]="nzSubmenuService.mode === 'horizontal'"
