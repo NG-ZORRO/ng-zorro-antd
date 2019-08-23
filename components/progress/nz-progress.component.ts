@@ -10,6 +10,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, Vi
 
 import { isNotNil, InputNumber, NgStyleInterface } from 'ng-zorro-antd/core';
 
+import { handleLinearGradient } from './nz-progress-utils';
 import {
   NzProgressCirclePath,
   NzProgressColorGradient,
@@ -20,7 +21,6 @@ import {
   NzProgressStrokeLinecapType,
   NzProgressTypeType
 } from './nz-progress.definitions';
-import { handleLinearGradient } from './nz-progress.utils';
 
 let gradientIdSeed = 0;
 
