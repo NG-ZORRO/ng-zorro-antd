@@ -1251,6 +1251,7 @@ describe('cascader', () => {
       expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(1); // 1列
     }));
 
+    // fix #3914
     it('should drop selected items and columns if a leaf node is hovered', fakeAsync(() => {
       testComponent.nzExpandTrigger = 'hover';
       fixture.detectChanges();
@@ -2112,6 +2113,7 @@ const options5: any[] = []; // tslint:disable-line:no-any
       [nzChangeOnSelect]="nzChangeOnSelect"
       (ngModelChange)="onValueChanges($event)"
       (nzVisibleChange)="onVisibleChange($event)"
+      (nzSelect)="onSelect($event)"
     >
     </nz-cascader>
 
@@ -2167,6 +2169,8 @@ export class NzDemoCascaderDefaultComponent {
   clearSelection(): void {
     this.cascader.clearSelection();
   }
+
+  onSelect(_d: { option: CascaderOption; index: number }): void {}
 }
 
 @Component({
