@@ -29,24 +29,16 @@ import { inNextTick, warn, InputBoolean } from 'ng-zorro-antd/core';
 import { JoinedEditorOption, NzEditorMode } from './nz-code-editor.definitions';
 import { NzCodeEditorService } from './nz-code-editor.service';
 
-// Avoid import monaco-editor. Otherwise importing `NgZorroAntdModule` would lead to force installation of monaco editor.
+// Import types from monaco editor.
+import { editor } from 'monaco-editor';
+import IEditor = editor.IEditor;
+import IDiffEditor = editor.IDiffEditor;
+import ITextModel = editor.ITextModel;
+import IEditorConstructionOptions = editor.IEditorConstructionOptions;
+import IDiffEditorConstructionOptions = editor.IDiffEditorConstructionOptions;
 
-// import { editor } from 'monaco-editor';
-// import IEditor = editor.IEditor;
-// import IDiffEditor = editor.IDiffEditor;
-// import ITextModel = editor.ITextModel;
-// import IEditorConstructionOptions = editor.IEditorConstructionOptions;
-// import IDiffEditorConstructionOptions = editor.IDiffEditorConstructionOptions;
-
-// tslint:disable no-any
-type IEditor = any;
-type IDiffEditor = any;
-type ITextModel = any;
-type IEditorConstructionOptions = any;
-type IDiffEditorConstructionOptions = any;
-
+// tslint:disable-next-line no-any
 declare const monaco: any;
-// tslint:enable no-any
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
