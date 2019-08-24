@@ -25,9 +25,9 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzTooltipTitle]` | The text shown in the tooltip | `string \| TemplateRef<void>` | - |
-| `[nzTooltipTrigger]` | Tooltip trigger mode | `'click' \| 'focus' \| 'hover'` | `'hover'` |
-| `[nzTooltipPlacement]` | The position of the tooltip relative to the target | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
+| `[nzTitle]` | The text shown in the tooltip | `string \| TemplateRef<void>` | - |
+| `[nzTrigger]` | Tooltip trigger mode | `'click' \| 'focus' \| 'hover'` | `'hover'` |
+| `[nzPlacement]` | The position of the tooltip relative to the target | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
 
 
 ### Common API

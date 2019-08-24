@@ -27,9 +27,9 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzPopconfirmTitle]` | 确认框的描述 | `string \| TemplateRef<void>` | - |
-| `[nzPopconfirmTrigger]` | 触发行为 | `'click' \| 'focus' \| 'hover'` | `'hover'` |
-| `[nzPopconfirmPlacement]` | 气泡框位置 | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
+| `[nzTitle]` | 确认框的描述 | `string \| TemplateRef<void>` | - |
+| `[nzTrigger]` | 触发行为 | `'click' \| 'focus' \| 'hover'` | `'hover'` |
+| `[nzPlacement]` | 气泡框位置 | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
 | `[nzCancelText]` | 取消按钮文字 | `string` | `'取消'` |
 | `[nzOkText]` | 确认按钮文字 | `string` | `'确定'` |
 | `[nzOkType]` | 确认按钮类型 | `'primary' \| 'ghost' \| 'dashed' \| 'danger' \| 'default'` | `'primary'` |

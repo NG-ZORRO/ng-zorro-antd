@@ -27,10 +27,10 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzPopoverTitle]` | 标题 | `string \| TemplateRef<void>` | - |
-| `[nzPopoverContent]` | 用于定义内容 | `string \| TemplateRef<void>` | - |
-| `[nzPopoverTrigger]` | 触发行为 | `'click' \| 'focus' \| 'hover'` | `'hover'` |
-| `[nzPopoverPlacement]` | 气泡框位置 | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
+| `[nzTitle]` | 标题 | `string \| TemplateRef<void>` | - |
+| `[nzContent]` | 用于定义内容 | `string \| TemplateRef<void>` | - |
+| `[nzTrigger]` | 触发行为 | `'click' \| 'focus' \| 'hover'` | `'hover'` |
+| `[nzPlacement]` | 气泡框位置 | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
 
 更多属性请参考 [Tooltip](/components/tooltip/zh#api)。
 
