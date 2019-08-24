@@ -26,10 +26,12 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 
 | Param | Description | Type | Default value |
 | ----- | ----------- | ---- | ------------- |
+| `[nzPopconfirmTitle]` | Title of the confirmation box | `string \| TemplateRef<void>` | - |
+| `[nzPopconfirmTrigger]` | Popconfirm trigger mode | `'click' \| 'focus' \| 'hover'` | `'hover'` |
+| `[nzPopconfirmPlacement]` | The position of the popconfirm relative to the target | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
 | `[nzCancelText]` | Text of the Cancel button | `string` | `'Cancel'` |
 | `[nzOkText]` | Text of the Confirm button | `string` | `'Confirm'` |
 | `[nzOkType]` | Button `type` of the Confirm button | `'primary' \| 'ghost' \| 'dashed' \| 'danger' \| 'default'` | `'primary'` |
-| `[nzTitle]` | Title of the confirmation box | `string \| TemplateRef<void>` | - |
 | `[nzCondition]` | Whether to directly emit `onConfirm` without showing Popconfirm | `boolean` | `false` |
 | `[nzIcon]` | Customize icon of confirmation  | `string \| TemplateRef<void>` | - |
 | `(nzOnCancel)` | Callback of cancel | `EventEmitter<void>` | - |

@@ -28,7 +28,6 @@ import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 | --- | --- | --- | --- |
 | `[nzAffix]` | 固定模式 | `boolean` | `true` |
 | `[nzBounds]` | 锚点区域边界，单位：px | `number` | `5` |
-| `[nzOffsetBottom]` | 距离窗口底部达到指定偏移量后触发 | `number` | - |
 | `[nzOffsetTop]` | 距离窗口顶部达到指定偏移量后触发 | `number` | - |
 | `[nzShowInkInFixed]` | 固定模式是否显示小圆点 | `boolean` | `false` |
 | `[nzTarget]` | 指定滚动的容器 | `string \| HTMLElement` | `window` |

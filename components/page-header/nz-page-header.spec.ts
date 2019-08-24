@@ -1,6 +1,8 @@
+import { Location } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { RouterTestingModule } from '@angular/router/testing';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { NzDemoPageHeaderActionsComponent } from './demo/actions';
 import { NzDemoPageHeaderBasicComponent } from './demo/basic';
@@ -11,9 +13,10 @@ import { NzPageHeaderComponent } from './nz-page-header.component';
 import { NzPageHeaderModule } from './nz-page-header.module';
 
 describe('NzPageHeaderComponent', () => {
+  let location: Location;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NzPageHeaderModule, NzIconTestModule],
+      imports: [NzPageHeaderModule, NzIconTestModule, RouterTestingModule],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [
         NzDemoPageHeaderBasicComponent,
@@ -22,6 +25,7 @@ describe('NzPageHeaderComponent', () => {
         NzDemoPageHeaderActionsComponent
       ]
     }).compileComponents();
+    location = TestBed.get(Location);
   }));
 
   it('should basic work', () => {
@@ -38,6 +42,18 @@ describe('NzPageHeaderComponent', () => {
     const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
     fixture.detectChanges();
     expect(pageHeader.nativeElement.querySelector('nz-breadcrumb[nz-page-header-breadcrumb]')).toBeTruthy();
+  });
+
+  it('should default call location back when nzBack not has observers', () => {
+    const fixture = TestBed.createComponent(NzDemoPageHeaderBreadcrumbComponent);
+    const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
+    spyOn(location, 'back');
+    fixture.detectChanges();
+    expect(location.back).not.toHaveBeenCalled();
+    const back = pageHeader.nativeElement.querySelector('.ant-page-header-back');
+    (back as HTMLElement).click();
+    fixture.detectChanges();
+    expect(location.back).toHaveBeenCalled();
   });
 
   it('should content work', () => {

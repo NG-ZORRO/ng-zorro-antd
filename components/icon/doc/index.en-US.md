@@ -84,7 +84,7 @@ Static loading. By registering icons to `AppModule` you load icons statically.
 
 ```ts
 import { IconDefinition } from '@ant-design/icons-angular';
-import { NgZorroAntdModule, NZ_ICON_DEFAULT_TWOTONE_COLOR, NZ_ICONS } from 'ng-zorro-antd';
+import { NzIconModule, NZ_ICON_DEFAULT_TWOTONE_COLOR, NZ_ICONS } from 'ng-zorro-antd/icon';
 
 // Import what you need. RECOMMENDED. ✔️
 import { AccountBookFill, AlertFill, AlertOutline } from '@ant-design/icons-angular/icons';
@@ -103,14 +103,14 @@ const icons: IconDefinition[] = [ AccountBookFill, AlertOutline, AlertFill ];
   declarations: [
     AppComponent
   ],
-  imports     : [
-    NgZorroAntdModule,
+  imports: [
+    NzIconModule,
   ],
-  providers   : [
+  providers: [
     { provide: NZ_ICON_DEFAULT_TWOTONE_COLOR, useValue: '#00ff00' }, // If not provided, Ant Design's official blue would be used
     { provide: NZ_ICONS, useValue: icons }
   ],
-  bootstrap   : [ AppComponent ]
+  bootstrap: [ AppComponent ]
 })
 export class AppModule {
 }

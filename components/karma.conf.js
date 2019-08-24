@@ -16,8 +16,11 @@ module.exports = function(config) {
       require('karma-viewport')
     ],
     client: {
-      args: [tags],
-      clearContext: true // leave Jasmine Spec Runner output visible in browser
+      jasmine: {
+        random: false
+      },
+      clearContext: true, // leave Jasmine Spec Runner output visible in browser
+      ...tags && { args: [tags] }
     },
     coverageIstanbulReporter: {
       dir: require('path').join(__dirname, '../coverage'),

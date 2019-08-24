@@ -272,7 +272,7 @@ export class NzTestInputGroupMultipleComponent {
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1795 **/
 @Component({
   template: `
-    <nz-input-group nzPrefixIcon="anticon anticon-user" nzAddOnAfter="@example.com">
+    <nz-input-group nzPrefixIcon="user" nzAddOnAfter="@example.com">
       <input type="text" nz-input placeholder="邮箱地址" />
     </nz-input-group>
   `

@@ -1,6 +1,7 @@
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { createFakeEvent } from 'ng-zorro-antd/core';
 
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
@@ -38,15 +39,36 @@ describe('avatar', () => {
       expect(context).not.toBeNull();
     });
     it('should tolerate error src', fakeAsync(() => {
+      const event = createFakeEvent('error');
       expect(getType(dl)).toBe('image');
       expect(context.comp.hasSrc).toBe(true);
       // Manually dispatch error.
       context.nzSrc = '';
-      context.comp.imgError();
+      context.comp.imgError(event);
       tick();
       fixture.detectChanges();
       expect(getType(dl)).toBe('icon');
       expect(context.comp.hasSrc).toBe(false);
+      context.nzSrc =
+        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg==';
+      tick();
+      fixture.detectChanges();
+      expect(context.comp.hasSrc).toBe(true);
+      expect(getType(dl)).toBe('image');
+      tick();
+    }));
+    it('should prevent default fallback when error src', fakeAsync(() => {
+      const event = createFakeEvent('error');
+      event.preventDefault();
+      expect(getType(dl)).toBe('image');
+      expect(context.comp.hasSrc).toBe(true);
+      // Manually dispatch error.
+      context.nzSrc = 'Invalid image src';
+      context.comp.imgError(event);
+      tick();
+      fixture.detectChanges();
+      expect(getType(dl)).toBe('image');
+      expect(context.comp.hasSrc).toBe(true);
       context.nzSrc =
         'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg==';
       tick();
@@ -164,27 +186,30 @@ describe('avatar', () => {
       expect(getType(dl)).toBe('image');
     });
     it('should be show icon when image loaded error and icon exists', fakeAsync(() => {
+      const event = createFakeEvent('error');
       expect(getType(dl)).toBe('image');
-      context.comp.imgError();
+      context.comp.imgError(event);
       tick();
       fixture.detectChanges();
       expect(getType(dl)).toBe('icon');
     }));
     it('should be show text when image loaded error and icon not exists', fakeAsync(() => {
+      const event = createFakeEvent('error');
       expect(getType(dl)).toBe('image');
       context.nzIcon = null;
       fixture.detectChanges();
-      context.comp.imgError();
+      context.comp.imgError(event);
       tick();
       fixture.detectChanges();
       expect(getType(dl)).toBe('text');
     }));
     it('should be show empty when image loaded error and icon & text not exists', fakeAsync(() => {
+      const event = createFakeEvent('error');
       expect(getType(dl)).toBe('image');
       context.nzIcon = null;
       context.nzText = null;
       fixture.detectChanges();
-      context.comp.imgError();
+      context.comp.imgError(event);
       tick();
       fixture.detectChanges();
       expect(getType(dl)).toBe('');

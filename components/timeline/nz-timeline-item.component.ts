@@ -23,6 +23,8 @@ import {
 
 import { NzTimelineMode } from './nz-timeline.component';
 
+export type NzTimelineItemColor = 'red' | 'blue' | 'green' | 'gray' | string;
+
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -33,7 +35,7 @@ import { NzTimelineMode } from './nz-timeline.component';
 })
 export class NzTimelineItemComponent implements OnInit, OnChanges {
   @ViewChild('liTemplate', { static: true }) liTemplate: ElementRef;
-  @Input() nzColor: string = 'blue';
+  @Input() nzColor: NzTimelineItemColor = 'blue';
   @Input() nzDot: string | TemplateRef<void>;
 
   isLast = false;
@@ -56,7 +58,7 @@ export class NzTimelineItemComponent implements OnInit, OnChanges {
   }
 
   private tryUpdateCustomColor(): void {
-    const defaultColors = ['blue', 'red', 'green'];
+    const defaultColors = ['blue', 'red', 'green', 'gray'];
     const circle = this.liTemplate.nativeElement.querySelector('.ant-timeline-item-head');
     if (defaultColors.indexOf(this.nzColor) === -1) {
       this.renderer.setStyle(circle, 'border-color', this.nzColor);

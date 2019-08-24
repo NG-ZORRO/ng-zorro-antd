@@ -9,7 +9,8 @@
 import { Directive, ElementRef, Renderer2 } from '@angular/core';
 
 @Directive({
-  selector: 'a[nz-dropdown]'
+  selector: 'a[nz-dropdown]',
+  exportAs: 'nzDropdown'
 })
 export class NzDropDownADirective {
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {

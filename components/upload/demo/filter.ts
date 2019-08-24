@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NzMessageService, UploadFile, UploadFilter } from 'ng-zorro-antd';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { UploadFile, UploadFilter } from 'ng-zorro-antd/upload';
 import { Observable, Observer } from 'rxjs';
 
 @Component({

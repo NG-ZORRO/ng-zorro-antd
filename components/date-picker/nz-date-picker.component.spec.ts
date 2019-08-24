@@ -71,6 +71,62 @@ describe('NzDatePickerComponent', () => {
       expect(getPickerContainer()).toBeNull();
     }));
 
+    it('should focus on the trigger after a click outside', fakeAsync(() => {
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(document.activeElement).toEqual(getPickerTrigger());
+    }));
+
+    it('should open on enter', fakeAsync(() => {
+      fixture.detectChanges();
+      getPickerTriggerWrapper().dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).not.toBeNull();
+    }));
+
+    it('should open by click and focus on inner calendar input', fakeAsync(() => {
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      expect(document.activeElement).toEqual(queryFromOverlay('input.ant-calendar-input'));
+    }));
+
+    it('should open by click, focus on inner calendar input, and submit on enter', fakeAsync(() => {
+      fixtureInstance.nzValue = new Date();
+      fixture.detectChanges();
+      // Do it 2 times to normalize the value of the element.
+      const action = () => {
+        openPickerByClickTrigger();
+        expect(document.activeElement).toEqual(queryFromOverlay('input.ant-calendar-input'));
+        queryFromOverlay('input.ant-calendar-input').dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+        fixture.detectChanges();
+        tick(500);
+        fixture.detectChanges();
+        expect(getPickerContainer()).toBeNull();
+      };
+      action();
+      action();
+    }));
+
+    it('should not submit with invalid input', fakeAsync(() => {
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      const input = queryFromOverlay('input.ant-calendar-input') as HTMLInputElement;
+      input.value = 'invalid input';
+      fixture.detectChanges();
+      input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).not.toBeNull();
+    }));
+
     it('should support changing language at runtime', fakeAsync(() => {
       fixture.detectChanges();
       expect(getPickerTrigger().placeholder).toBe('请选择日期');
@@ -197,6 +253,21 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       const disabledCell = queryFromOverlay('tbody.ant-calendar-tbody td.ant-calendar-disabled-cell');
       expect(disabledCell.textContent!.trim()).toBe('15');
+      const input = queryFromOverlay('input.ant-calendar-input') as HTMLInputElement;
+      const submit = (date: string) => {
+        input.value = date;
+        fixture.detectChanges();
+        input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+        fixture.detectChanges();
+        tick(500);
+        fixture.detectChanges();
+      };
+      // Should fail to submit a disabled date
+      submit('2018-11-15');
+      expect(getPickerContainer()).not.toBeNull();
+      // But it should be fine to submit an enabled date
+      submit('2018-11-11');
+      expect(getPickerContainer()).toBeNull();
     }));
 
     it('should support nzLocale', () => {
@@ -313,8 +384,10 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       expect(nzOnChange).toHaveBeenCalled();
       expect(nzOnCalendarChange).not.toHaveBeenCalled();
-      const result = nzOnChange.calls.allArgs()[0][0];
-      expect(result.getDate()).toBe(+cellText);
+      // @ts-ignore
+      // tslint:disable-next-line:no-any
+      const result = nzOnChange.calls.allArgs()[0][0] as any;
+      expect(result!.getDate()).toBe(+cellText);
     }));
   });
 
@@ -571,6 +644,20 @@ describe('NzDatePickerComponent', () => {
       expect((queryFromOverlay('input.ant-calendar-input') as HTMLInputElement).value).toBe('2018-11-11 00:22:33');
     }));
 
+    it('should not reset time', fakeAsync(() => {
+      fixtureInstance.nzValue = new Date('2019-08-02 13:03:33');
+      fixtureInstance.nzShowTime = true;
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      dispatchMouseEvent(queryFromOverlay('.ant-calendar-cell > .ant-calendar-date'), 'click');
+
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect((queryFromOverlay('input.ant-calendar-input') as HTMLInputElement).value).toBe('2019-07-29 13:03:33');
+    }));
+
     it('should support nzShowTime.nzFormat', fakeAsync(() => {
       fixtureInstance.nzShowTime = { nzFormat: 'HH:mm' };
       fixture.detectChanges();
@@ -658,7 +745,9 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      const result = nzOnChange.calls.allArgs()[0][0];
+      // @ts-ignore
+      // tslint:disable-next-line:no-any
+      const result = nzOnChange.calls.allArgs()[0][0] as any;
       expect(isSameDay(new Date(), result)).toBeTruthy();
       expect(queryFromOverlay('.ant-calendar-picker-container')).toBeFalsy(); // Should closed
     }));
@@ -719,13 +808,15 @@ describe('NzDatePickerComponent', () => {
 
       // Correct inputing
       input.value = '2018-11-22';
-      input.dispatchEvent(new KeyboardEvent('keyup'));
+      input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
       // dispatchKeyboardEvent(input, 'keyup', ENTER); // Not working?
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
       expect(nzOnChange).toHaveBeenCalled();
-      const result = nzOnChange.calls.allArgs()[0][0];
+      // @ts-ignore
+      // tslint:disable-next-line:no-any
+      const result = nzOnChange.calls.allArgs()[0][0] as any;
       expect(result.getDate()).toBe(22);
     }));
   }); // /specified date picker testing

@@ -14,6 +14,8 @@ Run `ng add ng-zorro-antd` in your project directory, and follow the options to 
 
 You can choose a preset template to create your project, then develop on this basis code.
 
+<img style="display: block; border-radius: 4px; box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.2); max-width: 680px;" src="https://img.alicdn.com/tfs/TB1IC0TeEWF3KVjSZPhXXXclXXa-2000-1078.png">
+
 ### Command
 
 ```bash

@@ -43,3 +43,5 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
 | `[nzShowZero]` | 当数值为 0 时，是否展示 Badge | `boolean` | `false` |
 | `[nzStatus]` | 设置 `nz-badge` 为状态点 | `'success' \| 'processing' \| 'default' \| 'error' \| 'warning'` | - |
 | `[nzText]` | 在设置了 `nzStatus` 的前提下有效，设置状态点的文本 | `string` | - |
+| `[nzTitle]` | 设置鼠标放在状态点上时显示的文字（非独立使用时) | `string` | `nzCount` |
+| `[nzOffset]` | 设置状态点的位置偏移，格式为 [x, y] (非独立使用时) | `[number, number]` | - |

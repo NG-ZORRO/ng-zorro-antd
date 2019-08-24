@@ -121,7 +121,7 @@ describe('timeline', () => {
 
     it('should support custom color', () => {
       fixture.detectChanges();
-      expect(items[0].nativeElement.querySelector('.ant-timeline-item-head').style.borderColor).toBe('grey');
+      expect(items[0].nativeElement.querySelector('.ant-timeline-item-head').style.borderColor).toBe('cyan');
       expect(items[1].nativeElement.querySelector('.ant-timeline-item-head').style.borderColor).toBe('rgb(200, 0, 0)');
       expect(items[2].nativeElement.querySelector('.ant-timeline-item-head').style.borderColor).toBe(
         'rgb(120, 18, 65)'
@@ -168,7 +168,7 @@ export class NzTestTimelineBasicComponent {
 @Component({
   template: `
     <nz-timeline>
-      <nz-timeline-item [nzColor]="'grey'">Create a services site 2015-09-01</nz-timeline-item>
+      <nz-timeline-item [nzColor]="'cyan'">Create a services site 2015-09-01</nz-timeline-item>
       <nz-timeline-item [nzColor]="'rgb(200, 0, 0)'">Solve initial network problems 2015-09-01</nz-timeline-item>
       <nz-timeline-item [nzColor]="'#781241'">Technical testing 2015-09-01</nz-timeline-item>
       <nz-timeline-item [nzColor]="'red'">Network problems being solved 2015-09-01</nz-timeline-item>

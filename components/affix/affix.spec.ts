@@ -61,6 +61,9 @@ describe('affix', () => {
     debugElement = fixture.debugElement;
     componentObject.wrap().id = 'wrap';
   }));
+  afterEach(fakeAsync(() => {
+    setupInitialState();
+  }));
 
   describe('[default]', () => {
     it('recreate bug https://github.com/NG-ZORRO/ng-zorro-antd/issues/671', fakeAsync(() => {
@@ -74,7 +77,7 @@ describe('affix', () => {
       fixture.detectChanges();
 
       expect(componentObject.wrap().offsetTop !== defaultOffsetTop).toBe(true);
-
+      setupInitialState();
       discardPeriodicTasks();
     }));
 
@@ -88,7 +91,7 @@ describe('affix', () => {
         emitScroll(window, defaultOffsetTop + startOffset - 1);
 
         expect(componentObject.wrap().offsetTop !== defaultOffsetTop).toBe(true);
-
+        setupInitialState();
         discardPeriodicTasks();
       }));
     });
@@ -98,7 +101,7 @@ describe('affix', () => {
         setupInitialState();
         emitScroll(window, defaultOffsetTop + startOffset + 1);
         expect(componentObject.wrap().offsetTop).toBe(defaultOffsetTop);
-
+        setupInitialState();
         discardPeriodicTasks();
       }));
 
@@ -115,7 +118,7 @@ describe('affix', () => {
           emitScroll(window, defaultOffsetTop + startOffset + 1);
 
           expect(componentObject.wrap().offsetLeft).toBe(100);
-
+          setupInitialState();
           discardPeriodicTasks();
         }));
       });
@@ -126,7 +129,7 @@ describe('affix', () => {
           emitScroll(window, defaultOffsetTop + startOffset + 1);
 
           expect(componentObject.wrap().offsetTop).toBe(defaultOffsetTop);
-
+          setupInitialState();
           discardPeriodicTasks();
         }));
       }
@@ -138,6 +141,7 @@ describe('affix', () => {
       componentObject.emitEvent(window, new Event('resize'));
       tick(20);
       fixture.detectChanges();
+      setupInitialState();
       discardPeriodicTasks();
     }));
   });
@@ -159,7 +163,7 @@ describe('affix', () => {
       fixture.detectChanges();
 
       expect(componentObject.elementRef().style.width).toBe(`100px`);
-
+      setupInitialState();
       discardPeriodicTasks();
     }));
 
@@ -176,6 +180,7 @@ describe('affix', () => {
       tick(20);
       fixture.detectChanges();
       expect(componentObject.elementRef().style.width).toBe(`${componentObject.elementRef().offsetWidth}px`);
+      setupInitialState();
       discardPeriodicTasks();
     }));
   });
@@ -204,6 +209,7 @@ describe('affix', () => {
         emitScroll(window, 2);
 
         expect(componentObject.wrap().offsetTop).toBe(offsetTop);
+        emitScroll(window, 0);
 
         discardPeriodicTasks();
       }));
@@ -215,6 +221,7 @@ describe('affix', () => {
       emitScroll(window, 2);
 
       expect(componentObject.wrap().offsetTop).toBe(offsetTop);
+      emitScroll(window, 0);
 
       discardPeriodicTasks();
     }));
@@ -236,8 +243,9 @@ describe('affix', () => {
           emitScroll(target, 5000);
           const wrapEl = componentObject.wrap();
           expect(+wrapEl.style.bottom!.replace('px', '')).toBe(0);
+          emitScroll(window, 0);
 
-          discardPeriodicTasks();
+          setupInitialState();
         }));
       });
     });
@@ -254,7 +262,7 @@ describe('affix', () => {
           emitScroll(target, 0);
           const wrapEl = componentObject.wrap();
           expect(+wrapEl.style.bottom!.replace('px', '')).toBeGreaterThan(0);
-
+          setupInitialState();
           discardPeriodicTasks();
         }));
       });
@@ -265,7 +273,7 @@ describe('affix', () => {
           emitScroll(target, 5000);
           const wrapEl = componentObject.wrap();
           expect(+wrapEl.style.bottom!.replace('px', '')).toBe(0);
-
+          setupInitialState();
           discardPeriodicTasks();
         }));
       });
@@ -286,7 +294,7 @@ describe('affix', () => {
         emitScroll(window, defaultOffsetTop + startOffset + 1);
 
         expect(componentObject.elementRef().offsetTop !== defaultOffsetTop).toBe(true);
-
+        emitScroll(window, 0);
         discardPeriodicTasks();
       }));
     });
@@ -297,7 +305,7 @@ describe('affix', () => {
         emitScroll(target, defaultOffsetTop + startOffset - 1);
 
         expect(componentObject.elementRef().offsetTop !== defaultOffsetTop).toBe(true);
-
+        setupInitialState();
         discardPeriodicTasks();
       }));
     });
@@ -308,28 +316,20 @@ describe('affix', () => {
         emitScroll(target, defaultOffsetTop + startOffset + 1);
 
         expect(componentObject.elementRef().offsetTop !== defaultOffsetTop).toBe(true);
-
+        setupInitialState();
         discardPeriodicTasks();
       }));
     });
 
-    it('should be re-register listener', () => {
-      spyOn(component, 'updatePosition');
-      expect(component.updatePosition).not.toHaveBeenCalled();
-      fixture.detectChanges();
-      context.fakeTarget = window;
-      fixture.detectChanges();
-      expect(component.updatePosition).toHaveBeenCalled();
-    });
-
-    it('should be a string value', () => {
+    it('should be a string value', fakeAsync(() => {
       spyOn(component, 'updatePosition');
       expect(component.updatePosition).not.toHaveBeenCalled();
       fixture.detectChanges();
       context.fakeTarget = '#target';
       fixture.detectChanges();
+      tick();
       expect(component.updatePosition).toHaveBeenCalled();
-    });
+    }));
   });
 
   describe('(nzChange)', () => {
@@ -355,7 +355,7 @@ describe('affix', () => {
       emitScroll(window, defaultOffsetTop + startOffset - 1);
 
       expect(changeValue).toBe(false);
-
+      setupInitialState();
       discardPeriodicTasks();
     }));
   });
@@ -483,7 +483,8 @@ describe('affix-extra', () => {
       left: 5,
       width: 200,
       height: 20
-    });
+      // tslint:disable-next-line:no-any
+    } as any);
     window.dispatchEvent(new Event('scroll'));
     tick(30);
     fixture.detectChanges();

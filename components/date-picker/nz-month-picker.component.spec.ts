@@ -63,6 +63,15 @@ describe('NzMonthPickerComponent', () => {
       expect(getPickerContainer()).toBeNull();
     }));
 
+    it('should open on enter', fakeAsync(() => {
+      fixture.detectChanges();
+      getPickerTriggerWrapper().dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).not.toBeNull();
+    }));
+
     it('should support nzAllowClear and work properly', fakeAsync(() => {
       const clearBtnSelector = By.css('nz-picker i.ant-calendar-picker-clear');
       const initial = (fixtureInstance.nzValue = new Date());
@@ -267,7 +276,9 @@ describe('NzMonthPickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(nzOnChange).toHaveBeenCalled();
-      const result = nzOnChange.calls.allArgs()[0][0];
+      // @ts-ignore
+      // tslint:disable-next-line:no-any
+      const result = nzOnChange.calls.allArgs()[0][0] as any;
       expect(result.getMonth() + 1).toBe(parseInt(cellText, 10));
     }));
   }); // /general api testing
@@ -480,7 +491,7 @@ describe('NzMonthPickerComponent', () => {
 class NzTestMonthPickerComponent {
   useSuite: 1 | 2 | 3 | 4;
   @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter: TemplateRef<void>;
-
+  nzDefaultValue: Date = new Date();
   // --- Suite 1
   nzAllowClear: boolean;
   nzAutoFocus: boolean;

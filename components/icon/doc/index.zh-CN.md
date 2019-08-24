@@ -86,7 +86,7 @@ NG-ZORRO 之前并没有图标组件，而是提供了基于字体文件的解�
 
 ```ts
 import { IconDefinition } from '@ant-design/icons-angular';
-import { NgZorroAntdModule, NZ_ICON_DEFAULT_TWOTONE_COLOR, NZ_ICONS } from 'ng-zorro-antd';
+import { NzIconModule, NZ_ICON_DEFAULT_TWOTONE_COLOR, NZ_ICONS } from 'ng-zorro-antd/icon';
 
 // 引入你需要的图标，比如你需要 fill 主题的 AccountBook Alert 和 outline 主题的 Alert，推荐 ✔️
 import { AccountBookFill, AlertFill, AlertOutline } from '@ant-design/icons-angular/icons';
@@ -105,14 +105,14 @@ const icons: IconDefinition[] = [ AccountBookFill, AlertOutline, AlertFill ];
   declarations: [
     AppComponent
   ],
-  imports     : [
-    NgZorroAntdModule,
+  imports: [
+    NzIconModule,
   ],
-  providers   : [
+  providers: [
     { provide: NZ_ICON_DEFAULT_TWOTONE_COLOR, useValue: '#00ff00' }, // 不提供的话，即为 Ant Design 的主题蓝色
     { provide: NZ_ICONS, useValue: icons }
   ],
-  bootstrap   : [ AppComponent ]
+  bootstrap: [ AppComponent ]
 })
 export class AppModule {
 }

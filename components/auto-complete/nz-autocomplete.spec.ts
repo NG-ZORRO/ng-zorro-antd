@@ -748,9 +748,11 @@ describe('auto-complete', () => {
 
     it('should use bottom positioning by default', fakeAsync(() => {
       fixture.componentInstance.trigger.openPanel();
+      zone.simulateZoneExit();
       fixture.detectChanges();
       flush();
-
+      tick(1000);
+      fixture.detectChanges();
       const position = fixture.componentInstance.trigger.nzAutocomplete.dropDownPosition;
       expect(position).toEqual('bottom');
     }));

@@ -22,13 +22,13 @@
       (change)="$event.stopPropagation()">
     <i *ngIf="clearIconVisible"
       nz-icon
-      type="close-circle"
+      nzType="close-circle"
       nzTheme="fill"
       class="ant-cascader-picker-clear"
       (click)="clearSelection($event)"></i>
     <i *ngIf="nzShowArrow && !isLoading"
       nz-icon
-      type="down"
+      nzType="down"
       class="ant-cascader-picker-arrow"
       [class.ant-cascader-picker-arrow-expand]="menuVisible">
     </i>

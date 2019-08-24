@@ -1,6 +1,7 @@
 import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { NzMessageService, UploadFile } from 'ng-zorro-antd';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { UploadFile } from 'ng-zorro-antd/upload';
 import { filter } from 'rxjs/operators';
 
 @Component({

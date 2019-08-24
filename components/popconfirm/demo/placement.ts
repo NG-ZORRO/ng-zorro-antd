@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'nz-demo-popconfirm-placement',
@@ -7,30 +7,30 @@ import { NzMessageService } from 'ng-zorro-antd';
     <div style="margin-left: 60px">
       <button
         nz-popconfirm
-        nzTitle="Are you sure delete this task?"
+        nzPopconfirmTitle="Are you sure delete this task?"
         (nzOnConfirm)="confirm()"
         (nzOnCancel)="cancel()"
-        nzPlacement="topLeft"
+        nzPopconfirmPlacement="topLeft"
         nz-button
       >
         TL
       </button>
       <button
         nz-popconfirm
-        nzTitle="Are you sure delete this task?"
+        nzPopconfirmTitle="Are you sure delete this task?"
         (nzOnConfirm)="confirm()"
         (nzOnCancel)="cancel()"
-        nzPlacement="top"
+        nzPopconfirmPlacement="top"
         nz-button
       >
         Top
       </button>
       <button
         nz-popconfirm
-        nzTitle="Are you sure delete this task?"
+        nzPopconfirmTitle="Are you sure delete this task?"
         (nzOnConfirm)="confirm()"
         (nzOnCancel)="cancel()"
-        nzPlacement="topRight"
+        nzPopconfirmPlacement="topRight"
         nz-button
       >
         TR
@@ -39,30 +39,30 @@ import { NzMessageService } from 'ng-zorro-antd';
     <div style="width: 60px; float: left;">
       <button
         nz-popconfirm
-        nzTitle="Are you sure delete this task?"
+        nzPopconfirmTitle="Are you sure delete this task?"
         (nzOnConfirm)="confirm()"
         (nzOnCancel)="cancel()"
-        nzPlacement="leftTop"
+        nzPopconfirmPlacement="leftTop"
         nz-button
       >
         LT
       </button>
       <button
         nz-popconfirm
-        nzTitle="Are you sure delete this task?"
+        nzPopconfirmTitle="Are you sure delete this task?"
         (nzOnConfirm)="confirm()"
         (nzOnCancel)="cancel()"
-        nzPlacement="left"
+        nzPopconfirmPlacement="left"
         nz-button
       >
         Left
       </button>
       <button
         nz-popconfirm
-        nzTitle="Are you sure delete this task?"
+        nzPopconfirmTitle="Are you sure delete this task?"
         (nzOnConfirm)="confirm()"
         (nzOnCancel)="cancel()"
-        nzPlacement="leftBottom"
+        nzPopconfirmPlacement="leftBottom"
         nz-button
       >
         LB
@@ -71,30 +71,30 @@ import { NzMessageService } from 'ng-zorro-antd';
     <div style="width: 60px; margin-left: 252px;">
       <button
         nz-popconfirm
-        nzTitle="Are you sure delete this task?"
+        nzPopconfirmTitle="Are you sure delete this task?"
         (nzOnConfirm)="confirm()"
         (nzOnCancel)="cancel()"
-        nzPlacement="rightTop"
+        nzPopconfirmPlacement="rightTop"
         nz-button
       >
         RT
       </button>
       <button
         nz-popconfirm
-        nzTitle="Are you sure delete this task?"
+        nzPopconfirmTitle="Are you sure delete this task?"
         (nzOnConfirm)="confirm()"
         (nzOnCancel)="cancel()"
-        nzPlacement="right"
+        nzPopconfirmPlacement="right"
         nz-button
       >
         Right
       </button>
       <button
         nz-popconfirm
-        nzTitle="Are you sure delete this task?"
+        nzPopconfirmTitle="Are you sure delete this task?"
         (nzOnConfirm)="confirm()"
         (nzOnCancel)="cancel()"
-        nzPlacement="rightBottom"
+        nzPopconfirmPlacement="rightBottom"
         nz-button
       >
         RB
@@ -103,30 +103,30 @@ import { NzMessageService } from 'ng-zorro-antd';
     <div style="margin-left: 60px; clear: both;">
       <button
         nz-popconfirm
-        nzTitle="Are you sure delete this task?"
+        nzPopconfirmTitle="Are you sure delete this task?"
         (nzOnConfirm)="confirm()"
         (nzOnCancel)="cancel()"
-        nzPlacement="bottomLeft"
+        nzPopconfirmPlacement="bottomLeft"
         nz-button
       >
         BL
       </button>
       <button
         nz-popconfirm
-        nzTitle="Are you sure delete this task?"
+        nzPopconfirmTitle="Are you sure delete this task?"
         (nzOnConfirm)="confirm()"
         (nzOnCancel)="cancel()"
-        nzPlacement="bottom"
+        nzPopconfirmPlacement="bottom"
         nz-button
       >
         Bottom
       </button>
       <button
         nz-popconfirm
-        nzTitle="Are you sure delete this task?"
+        nzPopconfirmTitle="Are you sure delete this task?"
         (nzOnConfirm)="confirm()"
         (nzOnCancel)="cancel()"
-        nzPlacement="bottomRight"
+        nzPopconfirmPlacement="bottomRight"
         nz-button
       >
         BR

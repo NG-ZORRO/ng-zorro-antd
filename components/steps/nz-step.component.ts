@@ -12,6 +12,7 @@ import {
   Component,
   ElementRef,
   Input,
+  OnDestroy,
   Renderer2,
   TemplateRef,
   ViewChild,
@@ -19,6 +20,7 @@ import {
 } from '@angular/core';
 
 import { NgClassType } from 'ng-zorro-antd/core';
+import { Subject } from 'rxjs';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,10 +35,12 @@ import { NgClassType } from 'ng-zorro-antd/core';
     '[class.ant-steps-item-finish]': 'nzStatus === "finish"',
     '[class.ant-steps-item-error]': 'nzStatus === "error"',
     '[class.ant-steps-custom]': '!!nzIcon',
-    '[class.ant-steps-next-error]': '(outStatus === "error") && (currentIndex === index + 1)'
+    '[class.ant-steps-next-error]': '(outStatus === "error") && (currentIndex === index + 1)',
+    '[attr.role]': 'clickable ? "button" : null',
+    '(click)': 'onClick()'
   }
 })
-export class NzStepComponent {
+export class NzStepComponent implements OnDestroy {
   @ViewChild('processDotTemplate', { static: false }) processDotTemplate: TemplateRef<void>;
 
   @Input() nzTitle: string | TemplateRef<void>;
@@ -80,6 +84,8 @@ export class NzStepComponent {
   last = false;
   outStatus = 'process';
   showProcessDot = false;
+  clickable = false;
+  click$ = new Subject<number>();
 
   get currentIndex(): number {
     return this._currentIndex;
@@ -98,7 +104,17 @@ export class NzStepComponent {
     renderer.addClass(elementRef.nativeElement, 'ant-steps-item');
   }
 
+  onClick(): void {
+    if (this.clickable && this.currentIndex !== this.index) {
+      this.click$.next(this.index);
+    }
+  }
+
   markForCheck(): void {
     this.cdr.markForCheck();
+  }
+
+  ngOnDestroy(): void {
+    this.click$.complete();
   }
 }

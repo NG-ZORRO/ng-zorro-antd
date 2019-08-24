@@ -43,6 +43,7 @@ import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 | `[nzTitle]` | 数值的标题 | `string \| TemplateRef<void>` | - |
 | `[nzValue]` | 时间戳格式的目标时间 | `string \| number` | - |
 | `[nzValueTemplate]` | 自定义时间展示 | `TemplateRef<{ $implicit: number }>` | - |
+| `(nzCountdownFinish)` | 当倒计时完成时发出事件 | `void` | - |
 
 ### nzFormat
 

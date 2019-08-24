@@ -67,6 +67,7 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
   @Input() nzColumn: number | { [key in Breakpoint]: number } = defaultColumnMap;
   @Input() nzSize: NzDescriptionsSize = 'default';
   @Input() nzTitle: string | TemplateRef<void> = '';
+  @Input() @InputBoolean() nzColon: boolean = true;
 
   itemMatrix: NzDescriptionsItemRenderProps[][] = [];
 

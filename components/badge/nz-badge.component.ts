@@ -10,9 +10,11 @@ import { ContentObserver } from '@angular/cdk/observers';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
+  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -24,7 +26,7 @@ import {
 } from '@angular/core';
 import { isEmpty, zoomBadgeMotion, InputBoolean } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
-import { startWith, takeUntil } from 'rxjs/operators';
+import { startWith, take, takeUntil } from 'rxjs/operators';
 
 export type NzBadgeStatusType = 'success' | 'processing' | 'default' | 'error' | 'warning';
 
@@ -42,6 +44,8 @@ export type NzBadgeStatusType = 'success' | 'processing' | 'default' | 'error' |
 })
 export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   private destroy$ = new Subject();
+  notWrapper = true;
+  viewInit = false;
   maxNumberArray: string[] = [];
   countArray: number[] = [];
   countSingleArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -69,12 +73,15 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   @Input() nzOverflowCount = 99;
   @Input() nzText: string;
   @Input() nzColor: string;
+  @Input() nzTitle: string;
   @Input() nzStyle: { [key: string]: string };
   @Input() nzStatus: NzBadgeStatusType;
   @Input() nzCount: number | TemplateRef<void>;
+  @Input() nzOffset: [number, number];
 
   checkContent(): void {
-    if (isEmpty(this.contentElement.nativeElement)) {
+    this.notWrapper = isEmpty(this.contentElement.nativeElement);
+    if (this.notWrapper) {
       this.renderer.addClass(this.elementRef.nativeElement, 'ant-badge-not-a-wrapper');
     } else {
       this.renderer.removeClass(this.elementRef.nativeElement, 'ant-badge-not-a-wrapper');
@@ -89,7 +96,13 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     this.maxNumberArray = this.nzOverflowCount.toString().split('');
   }
 
-  constructor(private renderer: Renderer2, private elementRef: ElementRef, private contentObserver: ContentObserver) {
+  constructor(
+    private renderer: Renderer2,
+    private elementRef: ElementRef,
+    private contentObserver: ContentObserver,
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone
+  ) {
     renderer.addClass(elementRef.nativeElement, 'ant-badge');
   }
 
@@ -98,6 +111,11 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   }
 
   ngAfterViewInit(): void {
+    this.ngZone.onStable.pipe(take(1)).subscribe(() => {
+      this.viewInit = true;
+      this.cdr.markForCheck();
+    });
+
     this.contentObserver
       .observe(this.contentElement)
       .pipe(

@@ -66,6 +66,32 @@ describe('NzRangePickerComponent', () => {
       expect(getPickerContainer()).toBeNull();
     }));
 
+    it('should focus on the trigger after a click outside', fakeAsync(() => {
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerTrigger().matches(':focus-within')).toBeTruthy();
+    }));
+
+    it('should open on enter', fakeAsync(() => {
+      fixture.detectChanges();
+      getPickerTriggerWrapper().dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).not.toBeNull();
+    }));
+
+    it('should open by click and focus on left inner calendar input', fakeAsync(() => {
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      expect(document.activeElement).toEqual(queryFromOverlay('.ant-calendar-range-left input.ant-calendar-input'));
+    }));
+
     it('should support nzAllowClear and work properly', fakeAsync(() => {
       const clearBtnSelector = By.css('nz-picker i.ant-calendar-picker-clear');
       const initial = (fixtureInstance.modelValue = [new Date(), new Date()]);
@@ -249,7 +275,9 @@ describe('NzRangePickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(nzOnCalendarChange).toHaveBeenCalled();
-      let result = nzOnCalendarChange.calls.allArgs()[0][0];
+      // @ts-ignore
+      // tslint:disable-next-line:no-any
+      let result = nzOnCalendarChange.calls.allArgs()[0][0] as any;
       expect(result[0].getDate()).toBe(+leftText);
       const right = getFirstCell('right');
       const rightText = right.textContent!.trim();
@@ -258,6 +286,7 @@ describe('NzRangePickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(nzOnCalendarChange).toHaveBeenCalled();
+      // @ts-ignore
       result = nzOnCalendarChange.calls.allArgs()[1][0];
       expect(result[0].getDate()).toBe(+leftText);
       expect(result[1].getDate()).toBe(+rightText);
@@ -282,7 +311,9 @@ describe('NzRangePickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(nzOnChange).toHaveBeenCalled();
-      const result = nzOnChange.calls.allArgs()[0][0];
+      // @ts-ignore
+      // tslint:disable-next-line:no-any
+      const result = nzOnChange.calls.allArgs()[0][0] as any;
       expect(result[0].getDate()).toBe(+leftText);
       expect(result[1].getDate()).toBe(+rightText);
     }));
@@ -643,16 +674,39 @@ describe('NzRangePickerComponent', () => {
       const rightInput = queryFromOverlay('.ant-calendar-range-right input.ant-calendar-input') as HTMLInputElement;
 
       leftInput.value = '2018-11-11';
-      leftInput.dispatchEvent(new KeyboardEvent('keyup'));
+      leftInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
       fixture.detectChanges();
       rightInput.value = '2018-12-12';
-      rightInput.dispatchEvent(new KeyboardEvent('keyup'));
+      rightInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
       fixture.detectChanges();
       tick(500);
       expect(nzOnChange).toHaveBeenCalled();
-      const result = nzOnChange.calls.allArgs()[0][0];
+      // @ts-ignore
+      // tslint:disable-next-line:no-any
+      const result = nzOnChange.calls.allArgs()[0][0] as any;
       expect(result[0].getDate()).toBe(11);
       expect(result[1].getDate()).toBe(12);
+    }));
+
+    it('should auto sort range value when start is after end', fakeAsync(() => {
+      const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      const leftInput = queryFromOverlay('.ant-calendar-range-left input.ant-calendar-input') as HTMLInputElement;
+      const rightInput = queryFromOverlay('.ant-calendar-range-right input.ant-calendar-input') as HTMLInputElement;
+      leftInput.value = '2019-08-10';
+      leftInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+      fixture.detectChanges();
+      rightInput.value = '2018-02-06';
+      rightInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+      fixture.detectChanges();
+      tick(500);
+      // @ts-ignore
+      const result = nzOnChange.calls.allArgs()[0][0];
+      // @ts-ignore
+      expect(result[0].getDate()).toBe(6);
+      // @ts-ignore
+      expect(result[1].getDate()).toBe(10);
     }));
   }); // /specified date picker testing
 

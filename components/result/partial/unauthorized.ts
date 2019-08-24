@@ -12,6 +12,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-result-unauthorized',
+  exportAs: 'nzResultUnauthorized',
   template: `
     <svg width="251" height="294">
       <g fill="none" fillRule="evenodd">

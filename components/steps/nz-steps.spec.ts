@@ -10,7 +10,9 @@ import {
 import { async, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { NzDemoStepsClickableComponent } from './demo/clickable';
 
 import { NzStepComponent } from './nz-step.component';
 import { NzStepsComponent } from './nz-steps.component';
@@ -19,9 +21,10 @@ import { NzStepsModule } from './nz-steps.module';
 describe('steps', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NzStepsModule, NzIconTestModule],
+      imports: [NzStepsModule, NzIconTestModule, NzDividerModule],
       declarations: [
         NzTestOuterStepsComponent,
+        NzDemoStepsClickableComponent,
         NzTestInnerStepStringComponent,
         NzTestInnerStepTemplateComponent,
         NzTestStepForComponent,
@@ -361,6 +364,47 @@ describe('steps', () => {
       expect(innerSteps[2].nativeElement.querySelector('.ant-steps-icon').innerText.trim()).toBe('3');
     }));
   });
+  describe('step clickable', () => {
+    let fixture: ComponentFixture<NzDemoStepsClickableComponent>;
+    let testComponent: NzDemoStepsClickableComponent;
+    let innerSteps: DebugElement[];
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzDemoStepsClickableComponent);
+      testComponent = fixture.debugElement.componentInstance;
+      innerSteps = fixture.debugElement.queryAll(By.directive(NzStepComponent));
+    });
+    it('should clickable', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      innerSteps
+        .map(step => step.nativeElement)
+        .forEach((e: HTMLElement) => {
+          expect(e.getAttribute('role')).toBe('button');
+        });
+    }));
+
+    it('should output work', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      spyOn(testComponent, 'onIndexChange');
+      innerSteps[1].nativeElement.click();
+      fixture.detectChanges();
+      expect(testComponent.onIndexChange).toHaveBeenCalledWith(1);
+    }));
+
+    it("should can't click when status is process", fakeAsync(() => {
+      testComponent.index = 0;
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      spyOn(testComponent, 'onIndexChange');
+      innerSteps[0].nativeElement.click();
+      fixture.detectChanges();
+      expect(testComponent.onIndexChange).not.toHaveBeenCalled();
+    }));
+  });
 });
 
 @Component({
@@ -415,7 +459,7 @@ export class NzTestInnerStepStringComponent {
   @ViewChild('iconTemplate', { static: false }) iconTemplate: TemplateRef<void>;
   status = 'process';
   current = 1;
-  icon = 'anticon anticon-user';
+  icon = 'user';
   title = 'title';
   description = 'description';
 }

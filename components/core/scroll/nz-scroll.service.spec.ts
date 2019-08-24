@@ -45,12 +45,14 @@ describe('NzScrollService', () => {
     it(`should scroll to window ${TOP} x`, () => {
       scrollService.setScrollTop(window, TOP);
       expect(document.body.scrollTop).toBe(TOP);
+      scrollService.setScrollTop(window, 0);
     });
 
     it(`should scroll to dom element ${TOP} x`, () => {
       let el: Element = new MockElement() as any;
       scrollService.setScrollTop(el, TOP);
       expect(el.scrollTop).toBe(TOP);
+      scrollService.setScrollTop(el, 0);
     });
   });
 });

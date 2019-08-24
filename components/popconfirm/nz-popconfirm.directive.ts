@@ -22,10 +22,10 @@ import {
   ViewContainerRef
 } from '@angular/core';
 
-import { distinctUntilChanged } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
-import { InputBoolean, NzNoAnimationDirective } from 'ng-zorro-antd/core';
-import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
+import { InputBoolean, NzNoAnimationDirective, NzTSType } from 'ng-zorro-antd/core';
+import { NzTooltipBaseDirective, NzTooltipTrigger } from 'ng-zorro-antd/tooltip';
 
 import { NzPopconfirmComponent } from './nz-popconfirm.component';
 
@@ -33,29 +33,14 @@ import { NzPopconfirmComponent } from './nz-popconfirm.component';
   selector: '[nz-popconfirm]',
   exportAs: 'nzPopconfirm',
   host: {
-    '[class.ant-popover-open]': 'isTooltipOpen'
+    '[class.ant-popover-open]': 'isTooltipComponentVisible'
   }
 })
-export class NzPopconfirmDirective extends NzTooltipDirective implements OnInit {
-  factory: ComponentFactory<NzPopconfirmComponent> = this.resolver.resolveComponentFactory(NzPopconfirmComponent);
-
-  protected needProxyProperties = [
-    'nzTitle',
-    'nzContent',
-    'nzOverlayClassName',
-    'nzOverlayStyle',
-    'nzMouseEnterDelay',
-    'nzMouseLeaveDelay',
-    'nzVisible',
-    'nzTrigger',
-    'nzPlacement',
-    'nzOkText',
-    'nzOkType',
-    'nzCancelText',
-    'nzCondition',
-    'nzIcon'
-  ];
-
+export class NzPopconfirmDirective extends NzTooltipBaseDirective implements OnInit {
+  @Input('nzPopconfirmTitle') specificTitle: NzTSType;
+  @Input('nz-popconfirm') directiveNameTitle: NzTSType | null;
+  @Input('nzPopconfirmTrigger') specificTrigger: NzTooltipTrigger;
+  @Input('nzPopconfirmPlacement') specificPlacement: string;
   @Input() nzOkText: string;
   @Input() nzOkType: string;
   @Input() nzCancelText: string;
@@ -63,6 +48,23 @@ export class NzPopconfirmDirective extends NzTooltipDirective implements OnInit 
   @Input() @InputBoolean() nzCondition: boolean;
   @Output() readonly nzOnCancel = new EventEmitter<void>();
   @Output() readonly nzOnConfirm = new EventEmitter<void>();
+
+  componentFactory: ComponentFactory<NzPopconfirmComponent> = this.resolver.resolveComponentFactory(
+    NzPopconfirmComponent
+  );
+
+  protected needProxyProperties = [
+    'nzOverlayClassName',
+    'nzOverlayStyle',
+    'nzMouseEnterDelay',
+    'nzMouseLeaveDelay',
+    'nzVisible',
+    'nzOkText',
+    'nzOkType',
+    'nzCancelText',
+    'nzCondition',
+    'nzIcon'
+  ];
 
   constructor(
     elementRef: ElementRef,
@@ -75,32 +77,17 @@ export class NzPopconfirmDirective extends NzTooltipDirective implements OnInit 
     super(elementRef, hostView, resolver, renderer, tooltip, noAnimation);
   }
 
-  ngOnInit(): void {
-    if (!this.tooltip) {
-      const tooltipComponent = this.hostView.createComponent(this.factory);
-      this.tooltip = tooltipComponent.instance;
-      this.tooltip.noAnimation = this.noAnimation;
-      // Remove element when use directive https://github.com/NG-ZORRO/ng-zorro-antd/issues/1967
-      this.renderer.removeChild(
-        this.renderer.parentNode(this.elementRef.nativeElement),
-        tooltipComponent.location.nativeElement
-      );
-      this.isDynamicTooltip = true;
-      this.needProxyProperties.forEach(property => this.updateCompValue(property, this[property]));
-      const visible_ = this.tooltip.nzVisibleChange.pipe(distinctUntilChanged()).subscribe(data => {
-        this.visible = data;
-        this.nzVisibleChange.emit(data);
-      });
-      const cancel_ = (this.tooltip as NzPopconfirmComponent).nzOnCancel.subscribe(() => {
-        this.nzOnCancel.emit();
-      });
-      const confirm_ = (this.tooltip as NzPopconfirmComponent).nzOnConfirm.subscribe(() => {
-        this.nzOnConfirm.emit();
-      });
-      this.subs_.add(visible_);
-      this.subs_.add(cancel_);
-      this.subs_.add(confirm_);
-    }
-    this.tooltip.setOverlayOrigin(this);
+  /**
+   * @override
+   */
+  protected createDynamicTooltipComponent(): void {
+    super.createDynamicTooltipComponent();
+
+    (this.tooltip as NzPopconfirmComponent).nzOnCancel.pipe(takeUntil(this.$destroy)).subscribe(() => {
+      this.nzOnCancel.emit();
+    });
+    (this.tooltip as NzPopconfirmComponent).nzOnConfirm.pipe(takeUntil(this.$destroy)).subscribe(() => {
+      this.nzOnConfirm.emit();
+    });
   }
 }

@@ -1,0 +1,7 @@
+<div class="ant-code-editor-loading" *ngIf="nzLoading">
+  <nz-spin></nz-spin>
+</div>
+
+<div class="ant-code-editor-toolkit" *ngIf="nzToolkit">
+  <ng-template [ngTemplateOutlet]="nzToolkit"></ng-template>
+</div>
