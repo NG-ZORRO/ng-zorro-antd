@@ -21,7 +21,6 @@ export enum NzCodeEditorLoadingStatus {
   LOADED = 'LOADED'
 }
 
-// TODO: move to config service in the future
 export interface NzCodeEditorConfig {
   assetsRoot?: string | SafeUrl;
   defaultEditorOption?: JoinedEditorOption;
