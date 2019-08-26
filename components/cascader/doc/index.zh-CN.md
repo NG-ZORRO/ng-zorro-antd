@@ -34,7 +34,7 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 | `[ngModel]` | 指定选中项 | `any[]` | - |
 | `[nzAllowClear]` | 是否支持清除 | `boolean` | `true` |
 | `[nzAutoFocus]` | 是否自动聚焦，当存在输入框时 | `boolean` | `false` |
-| `[nzChangeOn]` | 点击父级菜单选项时，可通过该函数判断是否允许值的变化 | `function(option: any, index: number) => boolean` | - |
+| `[nzChangeOn]` | 点击父级菜单选项时，可通过该函数判断是否允许值的变化 | `(option: any, index: number) => boolean` | - |
 | `[nzChangeOnSelect]` | 当此项为 true 时，点选每级菜单选项值都会发生变化，具体见上面的演示 | `boolean` | `false` |
 | `[nzColumnClassName]` | 自定义浮层列类名 | `string` | - |
 | `[nzDisabled]` | 禁用 | `boolean` | `false` |
@@ -53,10 +53,8 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 | `[nzSize]` | 输入框大小，可选 `large` `default` `small` | `'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzValueProperty]` | 选项的实际值的属性名 | `string` | `'value'` |
 | `(ngModelChange)` | 值发生变化时触发 | `EventEmitter<any[]>` | - |
-| `(nzClear)` | 清空值时触发 | `EventEmitter<void>` | - |
 | `(nzVisibleChange)` | 菜单浮层的显示/隐藏 | `EventEmitter<boolean>` | - |
-| `(nzSelect)` | 选中菜单选项时触发 | `EventEmitter<{option: any, index: number}>` | - |
-| `(nzSelectionChange)` | 选中菜单选项时触发 | `EventEmitter<any[]>` |- |
+| `(nzSelectionChange)` | 值发生变化时触发 | `EventEmitter<CascaderOption[]>` |- |
 
 `nzShowSearch` 为对象时需遵守 `NzShowSearchOptions` 接口：
 
