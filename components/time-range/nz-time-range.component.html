@@ -1,0 +1,43 @@
+<!-- Range selections -->
+<nz-radio-group class="ant-time-range-ranges"
+                nzSize="small"
+                [(ngModel)]="range">
+  <label nz-radio-button
+         *ngFor="let range of nzRanges"
+         [nzValue]="range"
+         (click)="selectRange(range)">{{
+    range | nzTimeRange
+  }}</label>
+  <label nz-radio-button
+         *ngIf="derivedRange !== null"
+         [nzValue]="derivedRange"
+         (click)="selectRange(derivedRange)">
+    {{ derivedRange | nzTimeRange }}
+  </label>
+</nz-radio-group>
+
+<div class="ant-time-range-picker">
+  <nz-range-picker [nzDisabled]="nzAutoRefresh"
+                   [nzAllowClear]="false"
+                   [(ngModel)]="datePickerRange"
+                   [nzSize]="'small'"
+                   [nzShowTime]="{ nzFormat: 'HH:mm:ss' }"
+                   [nzPlaceHolder]="['Start Time', 'End Time']"
+                   (nzOnOk)="onRangePickerChange($event)">
+  </nz-range-picker>
+</div>
+
+<div class="ant-time-range-actions">
+  <button nz-button
+          nzSize="small"
+          (click)="refreshCurrentRange()"
+          [disabled]="nzAutoRefresh">
+    Refresh
+  </button>
+  <button *ngIf="nzShowAutoRefresh"
+          nz-button
+          nzSize="small"
+          (click)="toggleAutoRefresh()">
+    {{ nzAutoRefresh ? 'Disabled Auto Refresh' : 'Enable Auto Refresh' }}
+  </button>
+</div>

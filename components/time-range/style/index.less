@@ -1,0 +1,15 @@
+@import "../../style/themes/index";
+@import "../../style/mixins/index";
+
+@time-range-prefix-cls: ~'@{ant-prefix}-time-range';
+
+.@{time-range-prefix-cls} {
+  &-picker, &-ranges, &-actions {
+    float: left;
+    margin-right: 8px;
+  }
+
+  &-actions > button:not(:last-of-type) {
+    margin-right: 8px;
+  }
+}
