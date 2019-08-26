@@ -31,6 +31,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 | `[nzTooltipTrigger]` | 触发行为，可选 `hover/focus/click` | `'click' \| 'focus' \| 'hover'` | `'hover'` |
 | `[nzTooltipPlacement]` | 气泡框位置 | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
 
+> 从 8.2.0 版本开始，以上 API 对应的无前缀 API，如 `nzTitle` 已被废除，请及时迁移。
 
 ### 共同的 API
 

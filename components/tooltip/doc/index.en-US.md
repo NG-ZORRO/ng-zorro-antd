@@ -29,6 +29,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 | `[nzTooltipTrigger]` | Tooltip trigger mode | `'click' \| 'focus' \| 'hover'` | `'hover'` |
 | `[nzTooltipPlacement]` | The position of the tooltip relative to the target | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
 
+> From version 8.2.0, API without prefix above, e.g `nzTitle` is deprecated, please upgrade as soon as possible.
 
 ### Common API
 

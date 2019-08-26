@@ -32,6 +32,8 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 | `[nzPopoverTrigger]` | 触发行为 | `'click' \| 'focus' \| 'hover'` | `'hover'` |
 | `[nzPopoverPlacement]` | 气泡框位置 | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
 
+> 从 8.2.0 版本开始，以上 API 对应的无前缀 API，如 `nzTitle` 已被废除，请及时迁移。
+
 更多属性请参考 [Tooltip](/components/tooltip/zh#api)。
 
 ## 注意
