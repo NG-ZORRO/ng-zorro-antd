@@ -131,12 +131,15 @@
 
 .@{table-prefix-cls}-small {
   &.@{table-prefix-cls}-bordered {
-    .@{table-prefix-cls}-thead > tr > th:last-child,
-    .@{table-prefix-cls}-tbody > tr > td:last-child {
+    .@{table-prefix-cls}-thead > tr > th:last-child {
       border-right: @border-width-base @border-style-base @border-color-split;
     }
-    .@{table-prefix-cls}-thead > tr:first-child > th:last-child,
-    .@{table-prefix-cls}-tbody > tr:first-child > td:last-child {
+
+    .@{table-prefix-cls}-thead > tr:first-child > th:last-child {
+      border-right: none;
+    }
+    
+    .@{table-prefix-cls}-footer {
       border-right: none;
     }
   }
