@@ -3,5 +3,8 @@
     "lib": {
       "entryFile": "public-api.ts"
     }
+  },
+  "peerDependencies": {
+    "monaco-editor": "^0.14.0"
   }
 }
