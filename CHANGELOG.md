@@ -1,3 +1,18 @@
+<a name="8.2.1"></a>
+## [8.2.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.2.0...8.2.1) (2019-08-26)
+
+
+### Bug Fixes
+
+* **cascader:** fix column is not dropped in hover mode ([#3916](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3916)) ([906849b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/906849b))
+* **code-editor:** fix destroying error when editor is not initialized ([#4002](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4002)) ([a35fb09](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a35fb09))
+* **code-editor:** remove overflow styles ([#4016](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4016)) ([ab832d9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ab832d9))
+* **descriptions:** fix colspan calcuation in horizontal bordered ([#4014](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4014)) ([345712f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/345712f))
+* **table:** fix border-right of small size and bordered table ([#4027](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4027)) ([a3bd531](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a3bd531))
+* **tabs:** fix tabs still shows when no route is matched ([#4034](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4034)) ([7ca0a52](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7ca0a52))
+
+
+
 <a name="8.2.0"></a>
 # [8.2.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.1.2...8.2.0) (2019-08-13)
 
