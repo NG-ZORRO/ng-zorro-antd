@@ -52,6 +52,7 @@
     "@angular/pwa": "^0.803.0",
     "@angular/router": "^8.2.3",
     "@angular/service-worker": "^8.2.3",
+    "@antv/g2": "^3.5.8-beta.1",
     "@commitlint/cli": "^8.1.0",
     "@commitlint/config-angular": "^8.1.0",
     "@nguniversal/module-map-ngfactory-loader": "^8.1.1",
