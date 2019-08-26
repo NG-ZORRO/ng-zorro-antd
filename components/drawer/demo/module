@@ -8,5 +8,6 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 
-export const moduleList = [ NzDrawerModule, NzButtonModule, NzFormModule, NzInputModule, NzDatePickerModule, NzSelectModule, NzTagModule, NzListModule, NzRadioModule, NzDividerModule ];
+export const moduleList = [ NzDrawerModule, NzButtonModule, NzFormModule, NzInputModule, NzDatePickerModule, NzSelectModule, NzTagModule, NzListModule, NzRadioModule, NzDividerModule, NzDescriptionsModule ];

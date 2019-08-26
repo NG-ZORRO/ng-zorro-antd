@@ -45,7 +45,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
               nz-icon
               nz-tooltip
               nzTitle="What do you want other to call you"
-              type="question-circle"
+              nzType="question-circle"
               nzTheme="outline"
             ></i>
           </span>
