@@ -29,6 +29,11 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 | `[nzPopconfirmTitle]` | Title of the confirmation box | `string \| TemplateRef<void>` | - |
 | `[nzPopconfirmTrigger]` | Popconfirm trigger mode | `'click' \| 'focus' \| 'hover'` | `'hover'` |
 | `[nzPopconfirmPlacement]` | The position of the popconfirm relative to the target | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
+
+> From version 8.2.0, API without prefix above, e.g `nzTitle` is deprecated, please upgrade as soon as possible.
+
+| Param | Description | Type | Default value |
+| ----- | ----------- | ---- | ------------- |
 | `[nzCancelText]` | Text of the Cancel button | `string` | `'Cancel'` |
 | `[nzOkText]` | Text of the Confirm button | `string` | `'Confirm'` |
 | `[nzOkType]` | Button `type` of the Confirm button | `'primary' \| 'ghost' \| 'dashed' \| 'danger' \| 'default'` | `'primary'` |
