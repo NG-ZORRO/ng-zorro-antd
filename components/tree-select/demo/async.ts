@@ -7,7 +7,7 @@ import { NzFormatEmitEvent } from 'ng-zorro-antd/core';
     <nz-tree-select
       style="width: 250px"
       nzPlaceHolder="Please select"
-      [nzDefaultExpandedKeys]="expandKeys"
+      [nzExpandedKeys]="expandKeys"
       [nzDropdownMatchSelectWidth]="true"
       [nzDropdownStyle]="{ 'max-height': '300px' }"
       [(ngModel)]="value"
