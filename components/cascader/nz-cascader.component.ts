@@ -36,8 +36,8 @@ import { startWith, takeUntil } from 'rxjs/operators';
 import {
   slideMotion,
   toArray,
-  warnDeprecation,
   trimComponentName,
+  warnDeprecation,
   DEFAULT_DROPDOWN_POSITIONS,
   InputBoolean,
   NgClassType,
