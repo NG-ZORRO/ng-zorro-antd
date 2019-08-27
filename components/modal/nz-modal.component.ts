@@ -84,6 +84,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   @Input() nzClassName: string;
   @Input() nzStyle: object;
   @Input() nzTitle: string | TemplateRef<{}>;
+  @Input() nzCloseIcon: string | TemplateRef<void> = 'close';
   @Input() nzMaskStyle: object;
   @Input() nzBodyStyle: object;
   @Input() nzOkText: string | null;

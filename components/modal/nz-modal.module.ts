@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzNoAnimationModule } from 'ng-zorro-antd/core';
+import { NzAddOnModule, NzNoAnimationModule } from 'ng-zorro-antd/core';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -25,6 +25,7 @@ import { NzModalServiceModule } from './nz-modal.service.module';
   imports: [
     CommonModule,
     OverlayModule,
+    NzAddOnModule,
     NzI18nModule,
     NzButtonModule,
     NzIconModule,
