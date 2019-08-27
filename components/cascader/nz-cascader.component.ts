@@ -38,7 +38,6 @@ import {
   toArray,
   trimComponentName,
   warnDeprecation,
-  trimComponentName,
   DEFAULT_DROPDOWN_POSITIONS,
   InputBoolean,
   NgClassType,
