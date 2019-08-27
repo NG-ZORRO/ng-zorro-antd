@@ -88,7 +88,7 @@ task('build:site-issue-helper', execTask(
 
 /** Build all site projects to the output directory. */
 task('build:site', series(
-  'build:site-doc',
+  process.env.CI ? 'build:site-doc-es5' : 'build:site-doc',
   'build:site-iframe',
   'build:site-issue-helper'
 ));
