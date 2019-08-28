@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NzStatisticModule } from './nz-statistic.module';
+import { NzStatisticModule } from '../../statistic/nz-statistic.module';
 
 @Component({
   template: `
