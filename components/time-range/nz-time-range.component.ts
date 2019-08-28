@@ -130,7 +130,7 @@ export class NzTimeRangeComponent implements OnChanges, OnInit, OnDestroy {
     this.stopTime = e[1].getTime();
     this.range = this.stopTime - this.startTime;
 
-    if (!this.nzRanges.includes(this.range)) {
+    if (this.nzRanges.indexOf(this.range) !== -1) {
       this.derivedRange = this.range;
     } else {
       this.derivedRange = null;
