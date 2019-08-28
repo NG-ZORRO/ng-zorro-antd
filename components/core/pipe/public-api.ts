@@ -8,3 +8,4 @@
 
 export * from './nz-pipe.module';
 export * from './nz-time-range.pipe';
+export * from './nz-css-unit.pipe';
