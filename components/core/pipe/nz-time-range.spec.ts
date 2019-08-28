@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { NzPipeModule } from 'ng-zorro-antd/core/pipe';
 import { NzStatisticModule } from '../../statistic/nz-statistic.module';
 
 @Component({
@@ -20,7 +22,7 @@ describe('nz time range pipeline', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CommonModule, NzStatisticModule],
+      imports: [CommonModule, NzStatisticModule, NzPipeModule],
       declarations: [NzTestTimeRangeComponent]
     }).compileComponents();
   });

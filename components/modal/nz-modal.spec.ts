@@ -960,9 +960,9 @@ export class TestConfirmCustomComponent {
 @Component({
   template: `
     <div
-      [style.width]="100 | NzCssUnitPipe"
-      [style.height]="'100px' | NzCssUnitPipe"
-      [style.top]="100 | NzCssUnitPipe: 'pt'"
+      [style.width]="100 | nzToCssUnit"
+      [style.height]="'100px' | nzToCssUnit"
+      [style.top]="100 | nzToCssUnit: 'pt'"
     ></div>
   `
 })
