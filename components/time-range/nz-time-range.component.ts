@@ -65,7 +65,7 @@ export class NzTimeRangeComponent implements OnChanges, OnInit, OnDestroy {
   range: number;
 
   /** A pair of start time and stop time. */
-  datePickerRange: [Date, Date] | Date[];
+  datepickerTimes: [Date, Date] | Date[];
 
   /** If user use the date-picker to select a range, then there would be a new label for it. */
   derivedRange: number | null = null;
@@ -78,13 +78,19 @@ export class NzTimeRangeComponent implements OnChanges, OnInit, OnDestroy {
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzRange } = changes;
+    const { nzRange, nzAutoRefresh } = changes;
 
     if (nzRange && !nzRange.isFirstChange()) {
-      if (this.nzRanges.indexOf(this.nzRange) === -1) {
-        this.derivedRange = this.nzRange;
+      if (this.nzRanges.indexOf(nzRange.currentValue) === -1) {
+        this.derivedRange = nzRange.currentValue;
       }
-      this.selectRange(this.nzRange, true);
+      this.range = nzRange.currentValue;
+      this.recalcCurrentTime();
+      this.emitTimeChange();
+    }
+
+    if (nzAutoRefresh) {
+      this.setAutoRefresh(nzAutoRefresh.currentValue);
     }
   }
 
@@ -92,40 +98,27 @@ export class NzTimeRangeComponent implements OnChanges, OnInit, OnDestroy {
     if (!this.nzRange) {
       this.nzRange = this.nzRanges[0];
     }
-    this.range = this.nzRanges[0];
-    this.refreshCurrentRange();
 
-    if (this.nzAutoRefresh) {
-      this.createAutoRefresher();
-    }
+    this.range = this.nzRange;
+
+    this.refreshTimeWithCurrentRange();
   }
 
   ngOnDestroy(): void {
     this.clearAutoRefresher();
   }
 
-  selectRange(range: number, silent: boolean = false): void {
+  onRangeSelect(range: number): void {
     this.range = range;
     this.derivedRange = null;
 
-    this.rebuildCurrentRange();
-    this.cdr.markForCheck();
-
-    // If this method is called with `silent` to be true, this method is called because of
-    // programmatic changes.
-    if (!silent) {
-      this.emitRangeChange();
-    }
-  }
-
-  refreshCurrentRange(): void {
-    this.rebuildCurrentRange();
-    this.cdr.markForCheck();
+    this.recalcCurrentTime();
     this.emitRangeChange();
+    this.cdr.markForCheck();
   }
 
   onRangePickerChange(e: [Date, Date]): void {
-    this.datePickerRange = e;
+    this.datepickerTimes = e;
     this.startTime = e[0].getTime();
     this.stopTime = e[1].getTime();
     this.range = this.stopTime - this.startTime;
@@ -139,11 +132,21 @@ export class NzTimeRangeComponent implements OnChanges, OnInit, OnDestroy {
     this.emitRangeChange();
   }
 
-  toggleAutoRefresh(): void {
+  refreshTimeWithCurrentRange(): void {
+    this.recalcCurrentTime();
+    this.emitTimeChange();
+
+    this.cdr.markForCheck();
+  }
+
+  onToggleAutoRefresh(): void {
     this.nzAutoRefresh = !this.nzAutoRefresh;
     this.nzAutoRefreshChange.emit(this.nzAutoRefresh);
+    this.setAutoRefresh(this.nzAutoRefresh);
+  }
 
-    if (this.nzAutoRefresh) {
+  private setAutoRefresh(enable: boolean): void {
+    if (enable) {
       this.createAutoRefresher();
     } else {
       this.clearAutoRefresher();
@@ -154,7 +157,7 @@ export class NzTimeRangeComponent implements OnChanges, OnInit, OnDestroy {
     this.clearAutoRefresher();
 
     this.autoRefreshTimer_ = interval(this.nzAutoRefreshInterval).subscribe(() => {
-      this.refreshCurrentRange();
+      this.refreshTimeWithCurrentRange();
     });
   }
 
@@ -164,15 +167,19 @@ export class NzTimeRangeComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
-  private rebuildCurrentRange(): void {
+  private recalcCurrentTime(): void {
     const stopTime = (this.stopTime = getCurrentTime());
     const startTime = (this.startTime = stopTime - this.range);
 
-    this.datePickerRange = [new Date(startTime), new Date(stopTime)];
+    this.datepickerTimes = [new Date(startTime), new Date(stopTime)];
   }
 
   private emitRangeChange(): void {
     this.nzRangeChange.emit(this.range);
+    this.emitTimeChange(); // If range is changed, then should emit time change as well.
+  }
+
+  private emitTimeChange(): void {
     this.nzTimeRangeChange.emit({
       start: new Date(this.startTime),
       stop: new Date(this.stopTime),
