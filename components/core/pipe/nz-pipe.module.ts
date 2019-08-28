@@ -9,11 +9,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
+import { NzToCssUnitPipe } from './nz-css-unit.pipe';
 import { NzTimeRangePipe } from './nz-time-range.pipe';
 
 @NgModule({
   imports: [CommonModule],
-  exports: [NzTimeRangePipe],
-  declarations: [NzTimeRangePipe]
+  exports: [NzTimeRangePipe, NzToCssUnitPipe],
+  declarations: [NzTimeRangePipe, NzToCssUnitPipe]
 })
 export class NzPipeModule {}
