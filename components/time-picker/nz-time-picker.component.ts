@@ -29,7 +29,6 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
   isNotNil,
   slideMotion,
-  toBoolean,
   InputBoolean,
   NzConfigService,
   NzUpdateHostClassService as UpdateCls,
@@ -47,7 +46,6 @@ import {
 })
 export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
   private _value: Date | null = null;
-  private _autoFocus = false;
   private _onChange: (value: Date | null) => void;
   private _onTouched: () => void;
   isInit = false;
