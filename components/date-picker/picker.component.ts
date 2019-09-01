@@ -20,8 +20,10 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -37,7 +39,7 @@ import { DateHelperService } from 'ng-zorro-antd/i18n';
   animations: [slideMotion],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NzPickerComponent implements OnInit, AfterViewInit {
+export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() noAnimation: boolean = false;
   @Input() isRange: boolean = false;
   @Input() open: boolean | undefined = undefined;
@@ -99,9 +101,18 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
     return this.isOpenHandledByUser() ? !!this.open : this.overlayOpen;
   }
 
-  constructor(private dateHelper: DateHelperService, private changeDetector: ChangeDetectorRef) {}
+  constructor(
+    private dateHelper: DateHelperService,
+    private changeDetector: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.open && changes.open.currentValue === true) {
+      this.updatePosition();
+    }
+  }
 
   ngAfterViewInit(): void {
     if (this.autoFocus) {
@@ -125,11 +136,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
     if (!this.realOpenState) {
       this.overlayOpen = true;
       this.openChange.emit(this.overlayOpen);
-      setTimeout(() => {
-        if (this.cdkConnectedOverlay && this.cdkConnectedOverlay.overlayRef) {
-          this.cdkConnectedOverlay.overlayRef.updatePosition();
-        }
-      });
+      this.updatePosition();
     }
   }
 
@@ -215,6 +222,14 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
 
   animationDone(): void {
     this.animationOpenState = this.realOpenState;
+  }
+
+  updatePosition(): void {
+    setTimeout(() => {
+      if (this.cdkConnectedOverlay && this.cdkConnectedOverlay.overlayRef) {
+        this.cdkConnectedOverlay.overlayRef.updatePosition();
+      }
+    });
   }
 }
 
