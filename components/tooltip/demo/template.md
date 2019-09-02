@@ -7,9 +7,9 @@ title:
 
 ## zh-CN
 
-`nzTitle` 可以传入 `TemplateRef<void>` 模板渲染。
+`nzTooltipTitle` 可以传入 `TemplateRef<void>` 模板渲染。
 
 ## en-US
 
-`nzTitle` accept the type of `TemplateRef<void>`
+`nzTooltipTitle` accept the type of `TemplateRef<void>`
 
