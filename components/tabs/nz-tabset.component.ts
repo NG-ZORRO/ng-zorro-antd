@@ -316,6 +316,7 @@ export class NzTabSetComponent
         )
         .subscribe(() => {
           this.updateRouterActive();
+          this.cdr.markForCheck();
         });
     }
   }
