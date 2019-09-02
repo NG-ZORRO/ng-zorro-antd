@@ -18,7 +18,6 @@ addons:
       - google-chrome
     packages:
       - google-chrome-stable
-      - google-chrome-beta
 
 before_install:
   - export DISPLAY=:99.0
