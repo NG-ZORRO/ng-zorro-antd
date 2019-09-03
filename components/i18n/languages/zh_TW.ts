@@ -19,7 +19,7 @@ export default {
   Calendar,
   // locales for all comoponents
   global: {
-    placeholder: '请选择'
+    placeholder: '請選擇'
   },
   Table: {
     filterTitle: '篩選器',
