@@ -38,6 +38,7 @@ export default {
     cancelText: 'Отмена'
   },
   Transfer: {
+    titles: ['', ''],
     searchPlaceholder: 'Поиск',
     itemUnit: 'элем.',
     itemsUnit: 'элем.'
@@ -50,6 +51,9 @@ export default {
   },
   Empty: {
     description: 'Нет данных'
+  },
+  Icon: {
+    icon: 'иконка'
   },
   Text: {
     edit: 'редактировать',
