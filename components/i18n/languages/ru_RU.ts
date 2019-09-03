@@ -17,6 +17,9 @@ export default {
   DatePicker,
   TimePicker,
   Calendar,
+  global: {
+    placeholder: 'Пожалуйста, выберите'
+  },
   Table: {
     filterTitle: 'Фильтр',
     filterConfirm: 'OK',
