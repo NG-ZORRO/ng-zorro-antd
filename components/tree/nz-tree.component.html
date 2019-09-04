@@ -17,7 +17,8 @@
       [nzBeforeDrop]="nzBeforeDrop"
       [nzExpandAll]="nzExpandAll"
       [nzShowIcon]="nzShowIcon"
-      [nzTreeTemplate]="nzTreeTemplate"
+      [nzTreeTemplate]="treeTemplate"
+      [@.disabled]="noAnimation?.nzNoAnimation"
       [nzNoAnimation]="noAnimation?.nzNoAnimation">
     </nz-tree-node>
   </ng-container>

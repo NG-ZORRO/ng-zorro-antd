@@ -57,7 +57,7 @@ describe('time-picker-panel', () => {
       expect(testComponent.nzTimePickerPanelComponent.enabledColumns).toBe(2);
     });
     it('should default open value work', fakeAsync(() => {
-      testComponent.nzTimePickerPanelComponent.opened = true;
+      testComponent.opened = true;
       fixture.detectChanges();
       tick(1000);
       fixture.detectChanges();
@@ -294,12 +294,14 @@ describe('time-picker-panel', () => {
       [nzSecondStep]="secondStep"
       [nzMinuteStep]="minuteStep"
       [nzHourStep]="hourStep"
+      [opened]="opened"
     >
     </nz-time-picker-panel>
   `,
   styleUrls: ['../style/index.less', './style/index.less']
 })
 export class NzTestTimePanelComponent {
+  opened = false;
   secondStep = 1;
   minuteStep = 1;
   hourStep = 1;

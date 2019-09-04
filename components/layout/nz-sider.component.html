@@ -8,7 +8,7 @@
   *ngIf="isSiderTrigger"
   (click)="toggleCollapse()"
   [style.width]="widthSetting">
-  <ng-template [ngTemplateOutlet]="nzTrigger"></ng-template>
+  <ng-template [ngTemplateOutlet]="trigger"></ng-template>
 </div>
 <ng-template #defaultTrigger>
   <i nz-icon [nzType]="nzCollapsed ? 'right' : 'left'" *ngIf="!nzReverseArrow"></i>

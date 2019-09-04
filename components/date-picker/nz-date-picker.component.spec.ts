@@ -384,10 +384,8 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       expect(nzOnChange).toHaveBeenCalled();
       expect(nzOnCalendarChange).not.toHaveBeenCalled();
-      // @ts-ignore
-      // tslint:disable-next-line:no-any
-      const result = nzOnChange.calls.allArgs()[0][0] as any;
-      expect(result!.getDate()).toBe(+cellText);
+      const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
+      expect(result.getDate()).toBe(+cellText);
     }));
   });
 
@@ -745,9 +743,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      // @ts-ignore
-      // tslint:disable-next-line:no-any
-      const result = nzOnChange.calls.allArgs()[0][0] as any;
+      const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
       expect(isSameDay(new Date(), result)).toBeTruthy();
       expect(queryFromOverlay('.ant-calendar-picker-container')).toBeFalsy(); // Should closed
     }));
@@ -814,9 +810,7 @@ describe('NzDatePickerComponent', () => {
       flush();
       fixture.detectChanges();
       expect(nzOnChange).toHaveBeenCalled();
-      // @ts-ignore
-      // tslint:disable-next-line:no-any
-      const result = nzOnChange.calls.allArgs()[0][0] as any;
+      const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
       expect(result.getDate()).toBe(22);
     }));
   }); // /specified date picker testing

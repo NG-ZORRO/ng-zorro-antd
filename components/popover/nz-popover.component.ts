@@ -14,6 +14,7 @@ import {
   Host,
   Input,
   Optional,
+  TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 
@@ -48,8 +49,11 @@ export class NzPopoverComponent extends NzToolTipComponent {
   /**
    * Use `neverUsedTemplate` to force `nzTemplate` to be catched by `nzPopoverContent`.
    */
-  @Input() @ContentChild('neverUsedTemplate', { static: true }) nzTitle: NzTSType;
-  @Input() @ContentChild('nzTemplate', { static: true }) nzContent: NzTSType;
+  @Input() nzTitle: NzTSType;
+  @ContentChild('neverUsedTemplate', { static: true }) nzTitleTemplate: TemplateRef<void>;
+
+  @Input() nzContent: NzTSType;
+  @ContentChild('nzTemplate', { static: true }) nzContentTemplate: TemplateRef<void>;
 
   constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
     super(cdr, noAnimation);

@@ -1091,8 +1091,7 @@ describe('upload', () => {
           fixture.detectChanges();
         });
         it('[onClick]', () => {
-          // @ts-ignore
-          spyOn(instance.comp, 'file');
+          spyOn<any>(instance.comp, 'file');
           expect(instance.comp.file).not.toHaveBeenCalled();
           instance.comp.onClick();
           expect(instance.comp.file).not.toHaveBeenCalled();
@@ -1170,12 +1169,9 @@ describe('upload', () => {
       });
 
       it('should uploading a png file', fakeAsync(() => {
-        // @ts-ignore
-        spyOn(comp.options, 'onStart');
-        // @ts-ignore
-        spyOn(comp.options, 'onProgress');
-        // @ts-ignore
-        spyOn(comp.options, 'onSuccess');
+        spyOn<any>(comp.options, 'onStart');
+        spyOn<any>(comp.options, 'onProgress');
+        spyOn<any>(comp.options, 'onSuccess');
         comp.onChange(PNGSMALL as any);
         tick(1);
         const req = http.expectOne('/test');
@@ -1199,8 +1195,7 @@ describe('upload', () => {
       }));
 
       it('should filter size', () => {
-        // @ts-ignore
-        spyOn(comp.options, 'onStart');
+        spyOn<any>(comp.options, 'onStart');
         comp.options.filters = [
           {
             name: '',
@@ -1212,22 +1207,17 @@ describe('upload', () => {
       });
 
       it('should be no request when beforeUpload is false', () => {
-        // @ts-ignore
-        spyOn(comp.options, 'beforeUpload').and.returnValue(false);
-        // @ts-ignore
-        spyOn(comp.options, 'onStart');
+        spyOn<any>(comp.options, 'beforeUpload').and.returnValue(false);
+        spyOn<any>(comp.options, 'onStart');
         comp.onChange(PNGSMALL as any);
         expect(comp.options.beforeUpload).toHaveBeenCalled();
         expect(comp.options.onStart).not.toHaveBeenCalled();
       });
 
       it('should error when request error', fakeAsync(() => {
-        // @ts-ignore
-        spyOn(comp.options, 'onStart');
-        // @ts-ignore
-        spyOn(comp.options, 'onSuccess');
-        // @ts-ignore
-        spyOn(comp.options, 'onError');
+        spyOn<any>(comp.options, 'onStart');
+        spyOn<any>(comp.options, 'onSuccess');
+        spyOn<any>(comp.options, 'onError');
         comp.onChange(PNGSMALL as any);
         tick(1);
         http.expectOne('/test').error({ status: 403 } as any);
@@ -1238,8 +1228,7 @@ describe('upload', () => {
 
       it('should custom request', () => {
         comp.options.customRequest = () => of(true).subscribe(() => {});
-        // @ts-ignore
-        spyOn(comp.options, 'customRequest');
+        spyOn<any>(comp.options, 'customRequest');
         comp.onChange(PNGSMALL as any);
         expect(comp.options.customRequest).toHaveBeenCalled();
       });

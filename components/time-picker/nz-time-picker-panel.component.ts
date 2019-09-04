@@ -56,8 +56,6 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   private _disabledHours: () => number[];
   private _disabledMinutes: (hour: number) => number[];
   private _disabledSeconds: (hour: number, minute: number) => number[];
-  private _defaultOpenValue = new Date();
-  private _opened = false;
   private _allowEmpty = true;
   prefixCls: string = 'ant-time-picker-panel';
   time = new TimeHolder();
@@ -69,10 +67,11 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   minuteRange: ReadonlyArray<{ index: number; disabled: boolean }>;
   secondRange: ReadonlyArray<{ index: number; disabled: boolean }>;
   use12HoursRange: ReadonlyArray<{ index: number; value: string }>;
-  @ViewChild(NzTimeValueAccessorDirective, { static: false })
   nzTimeValueAccessorDirective: NzTimeValueAccessorDirective;
 
-  @ViewChild('hourListElement', { static: false }) hourListElement: DebugElement;
+  @ViewChild(NzTimeValueAccessorDirective, { static: false })
+  @ViewChild('hourListElement', { static: false })
+  hourListElement: DebugElement;
   @ViewChild('minuteListElement', { static: false }) minuteListElement: DebugElement;
   @ViewChild('secondListElement', { static: false }) secondListElement: DebugElement;
   @ViewChild('use12HoursListElement', { static: false }) use12HoursListElement: DebugElement;
@@ -83,6 +82,8 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   @Input() nzClearText: string;
   @Input() nzPlaceHolder: string;
   @Input() @InputBoolean() nzUse12Hours = false;
+  @Input() opened = false;
+  @Input() nzDefaultOpenValue = new Date();
 
   @Input()
   set nzAllowEmpty(value: boolean) {
@@ -93,31 +94,6 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   get nzAllowEmpty(): boolean {
     return this._allowEmpty;
-  }
-
-  @Input()
-  set opened(value: boolean) {
-    this._opened = value;
-    if (this.opened) {
-      this.initPosition();
-      this.selectInputRange();
-    }
-  }
-
-  get opened(): boolean {
-    return this._opened;
-  }
-
-  @Input()
-  set nzDefaultOpenValue(value: Date) {
-    if (isNotNil(value)) {
-      this._defaultOpenValue = value;
-      this.time.setDefaultOpenValue(this.nzDefaultOpenValue);
-    }
-  }
-
-  get nzDefaultOpenValue(): Date {
-    return this._defaultOpenValue;
   }
 
   @Input()
@@ -499,10 +475,20 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzUse12Hours } = changes;
+    const { nzUse12Hours, opened, nzDefaultOpenValue } = changes;
     if (nzUse12Hours && !nzUse12Hours.previousValue && nzUse12Hours.currentValue) {
       this.build12Hours();
       this.enabledColumns++;
+    }
+    if (opened && opened.currentValue) {
+      this.initPosition();
+      this.selectInputRange();
+    }
+    if (nzDefaultOpenValue) {
+      const value: Date = nzDefaultOpenValue.currentValue;
+      if (isNotNil(value)) {
+        this.time.setDefaultOpenValue(this.nzDefaultOpenValue);
+      }
     }
   }
 
