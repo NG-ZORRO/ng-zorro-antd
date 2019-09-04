@@ -15,7 +15,7 @@
     "sourceMap": true,
     "strictFunctionTypes": true,
     "stripInternal": true,
-    "target": "es2015",
+    "target": "es2015"
   },
   "angularCompilerOptions": {
     "annotateForClosureCompiler": true,

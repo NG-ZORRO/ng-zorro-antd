@@ -83,10 +83,13 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   @Input() @InputBoolean() nzSelectMode = false;
   @Input() @InputBoolean() nzCheckStrictly = false;
   @Input() @InputBoolean() nzBlockNode = false;
-
-  @Input() @ContentChild('nzTreeTemplate', { static: true }) nzTreeTemplate: TemplateRef<{ $implicit: NzTreeNode }>;
-
   @Input() @InputBoolean() nzExpandAll = false;
+
+  @Input() nzTreeTemplate: TemplateRef<{ $implicit: NzTreeNode }>;
+  @ContentChild('nzTreeTemplate', { static: true }) nzTreeTemplateChild: TemplateRef<{ $implicit: NzTreeNode }>;
+  get treeTemplate(): TemplateRef<{ $implicit: NzTreeNode }> {
+    return this.nzTreeTemplate || this.nzTreeTemplateChild;
+  }
 
   /**
    * @deprecated 9.0.0 use `nzExpandAll` instead.

@@ -2,5 +2,6 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { FormsModule } from '@angular/forms';
 
-export const moduleList = [ NzSelectModule, NzDividerModule, NzRadioModule, NzIconModule ];
+export const moduleList = [ FormsModule, NzSelectModule, NzDividerModule, NzRadioModule, NzIconModule ];

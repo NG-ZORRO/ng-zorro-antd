@@ -6,6 +6,7 @@
     "downlevelIteration": true,
     "module": "esnext",
     "importHelpers": true,
+    "rootDir": ".",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,

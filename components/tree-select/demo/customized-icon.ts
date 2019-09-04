@@ -3,13 +3,13 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-tree-select-customized-icon',
   template: `
-    <nz-tree-select style="width: 250px" [nzNodes]="nodes" [(ngModel)]="value" nzPlaceHolder="Please select" nzShowIcon>
+    <nz-tree-select style="width: 250px" [(ngModel)]="value" [nzNodes]="nodes" nzPlaceHolder="Please select" nzShowIcon>
     </nz-tree-select>
     <br />
     <nz-tree-select
       style="width: 250px; margin-top: 20px;"
-      [nzNodes]="nodes"
       [(ngModel)]="value"
+      [nzNodes]="nodes"
       nzPlaceHolder="Please select"
     >
       <ng-template #nzTreeTemplate let-node>

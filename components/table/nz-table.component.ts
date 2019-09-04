@@ -37,6 +37,7 @@ import { flatMap, startWith, takeUntil } from 'rxjs/operators';
 
 import { measureScrollbar, InputBoolean, InputNumber, NzSizeMDSType } from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
+import { PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
 
 import { NzThComponent } from './nz-th.component';
 import { NzTheadComponent } from './nz-thead.component';
@@ -101,10 +102,12 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
   @Input() nzData: T[] = [];
   @Input() nzPaginationPosition: 'top' | 'bottom' | 'both' = 'bottom';
   @Input() nzScroll: { x?: string | null; y?: string | null } = { x: null, y: null };
-  @Input() @ViewChild('renderItemTemplate', { static: true }) nzItemRender: TemplateRef<{
-    $implicit: 'page' | 'prev' | 'next';
-    page: number;
-  }>;
+
+  @Input() nzItemRender: TemplateRef<PaginationItemRenderContext>;
+  @ViewChild('renderItemTemplate', { static: true }) itemRenderChild: TemplateRef<PaginationItemRenderContext>;
+  get itemRender(): TemplateRef<PaginationItemRenderContext> {
+    return this.nzItemRender || this.itemRenderChild;
+  }
   @Input() @InputBoolean() nzFrontPagination = true;
   @Input() @InputBoolean() nzTemplateMode = false;
   @Input() @InputBoolean() nzBordered = false;
