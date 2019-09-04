@@ -1,7 +1,4 @@
-<ng-container *ngIf="highlightText">
-  <span [innerHTML]="renderHighlightString(getOptionLabel())"></span>
-</ng-container>
-<ng-container *ngIf="!highlightText">{{ getOptionLabel() }}</ng-container>
+<span [innerHTML]="optionLabel | nzHighlight: highlightText: 'g': 'ant-cascader-menu-item-keyword'"></span>
 <span
   *ngIf="!option.isLeaf || option.children && option.children.length || option.loading"
   class="ant-cascader-menu-item-expand-icon">
