@@ -17,12 +17,16 @@ export default {
   DatePicker,
   TimePicker,
   Calendar,
+  global: {
+    placeholder: 'Seleccioni'
+  },
   Table: {
     filterTitle: 'Filtrar Menu',
     filterConfirm: 'OK',
     filterReset: 'Restablir',
     selectAll: 'Seleccionar tot',
-    selectInvert: 'Invertir selecció'
+    selectInvert: 'Invertir selecció',
+    sortTitle: 'Ordenar'
   },
   Modal: {
     okText: 'Acceptar',
@@ -46,5 +50,17 @@ export default {
   },
   Empty: {
     description: 'No hi ha dades'
+  },
+  Icon: {
+    icon: 'ícona'
+  },
+  Text: {
+    edit: 'editar',
+    copy: 'copiar',
+    copied: 'copiat',
+    expand: 'expandir'
+  },
+  PageHeader: {
+    back: 'tornar'
   }
 };
