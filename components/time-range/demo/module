@@ -1,0 +1,3 @@
+import { NzTimeRangeModule } from 'ng-zorro-antd/time-range';
+
+export const moduleList = [ NzTimeRangeModule ];
