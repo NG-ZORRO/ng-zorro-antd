@@ -594,9 +594,12 @@ describe('cascader', () => {
       control.writeValue([]);
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(0);
+      control.writeValue(0);
+      fixture.detectChanges();
+      expect(control.getSubmitValue().length).toBe(1);
       control.writeValue('');
       fixture.detectChanges();
-      expect(control.getSubmitValue().length).toBe(0);
+      expect(control.getSubmitValue().length).toBe(1);
       control.writeValue(['zhejiang']);
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(1);
@@ -660,9 +663,12 @@ describe('cascader', () => {
       control.writeValue([]);
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(0);
+      control.writeValue(0);
+      fixture.detectChanges();
+      expect(control.getSubmitValue().length).toBe(1);
       control.writeValue('');
       fixture.detectChanges();
-      expect(control.getSubmitValue().length).toBe(0);
+      expect(control.getSubmitValue().length).toBe(1);
       control.writeValue(['zhejiang']);
       fixture.detectChanges();
       expect(control.getSubmitValue().length).toBe(1);
