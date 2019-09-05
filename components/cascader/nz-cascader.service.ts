@@ -9,7 +9,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 
-import { arraysEqual } from 'ng-zorro-antd/core';
+import { arraysEqual, isNotNil } from 'ng-zorro-antd/core';
 
 import {
   isShowSearchObject,
@@ -93,7 +93,7 @@ export class NzCascaderService implements OnDestroy {
       const activatedOptionSetter = () => {
         const currentValue = values[columnIndex];
 
-        if (!currentValue) {
+        if (!isNotNil(currentValue)) {
           this.$redraw.next();
           return;
         }
