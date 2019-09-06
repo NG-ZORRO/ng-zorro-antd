@@ -15,7 +15,6 @@ import {
   Renderer2,
   ViewEncapsulation
 } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 import { CascaderOption } from './nz-cascader-definitions';
 
@@ -26,7 +25,7 @@ import { CascaderOption } from './nz-cascader-definitions';
   exportAs: 'nzCascaderOption',
   templateUrl: './nz-cascader-li.component.html',
   host: {
-    '[attr.title]': 'option.title || getOptionLabel()',
+    '[attr.title]': 'option.title || optionLabel',
     '[class.ant-cascader-menu-item-active]': 'activated',
     '[class.ant-cascader-menu-item-expand]': '!option.isLeaf',
     '[class.ant-cascader-menu-item-disabled]': 'option.disabled'
@@ -38,26 +37,12 @@ export class NzCascaderOptionComponent {
   @Input() highlightText: string;
   @Input() nzLabelProperty = 'label';
 
-  constructor(
-    private sanitizer: DomSanitizer,
-    private cdr: ChangeDetectorRef,
-    elementRef: ElementRef,
-    renderer: Renderer2
-  ) {
+  constructor(private cdr: ChangeDetectorRef, elementRef: ElementRef, renderer: Renderer2) {
     renderer.addClass(elementRef.nativeElement, 'ant-cascader-menu-item');
   }
 
-  getOptionLabel(): string {
-    return this.option ? this.option[this.nzLabelProperty] : '';
-  }
-
-  renderHighlightString(str: string): SafeHtml {
-    const replaceStr = str.replace(
-      new RegExp(this.highlightText, 'g'),
-      `<span class="ant-cascader-menu-item-keyword">${this.highlightText}</span>`
-    );
-
-    return this.sanitizer.bypassSecurityTrustHtml(replaceStr);
+  get optionLabel(): string {
+    return this.option[this.nzLabelProperty];
   }
 
   markForCheck(): void {
