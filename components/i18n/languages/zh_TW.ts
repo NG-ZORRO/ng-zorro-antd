@@ -17,6 +17,10 @@ export default {
   DatePicker,
   TimePicker,
   Calendar,
+  // locales for all comoponents
+  global: {
+    placeholder: '請選擇'
+  },
   Table: {
     filterTitle: '篩選器',
     filterConfirm: '確 定',
@@ -46,6 +50,15 @@ export default {
   },
   Empty: {
     description: '無此資料'
+  },
+  Icon: {
+    icon: '圖標'
+  },
+  Text: {
+    edit: '編輯',
+    copy: '複製',
+    copied: '複製成功',
+    expand: '展開'
   },
   PageHeader: {
     back: '返回'

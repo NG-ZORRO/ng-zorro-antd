@@ -76,7 +76,7 @@ export interface NzI18nInterface {
   DatePicker: NzDatePickerI18nInterface;
   TimePicker: NzTimePickerI18nInterface;
   Calendar: NzCalendarI18nInterface;
-  global: NzGlobalI18nInterface;
+  global?: NzGlobalI18nInterface;
   Table: {
     filterTitle: string;
     filterConfirm: string;
@@ -107,6 +107,14 @@ export interface NzI18nInterface {
   };
   Empty: {
     description: string;
+  };
+  // TODO: make this required in the future.
+  // Temporarily optional to make sure not break anything.
+  Text?: {
+    edit: string;
+    copy: string;
+    copied: string;
+    expand: string;
   };
 }
 
