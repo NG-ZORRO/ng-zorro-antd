@@ -52,6 +52,7 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 | nzOkType          | 确认按钮类型。<i>与button的type类型值一致</i> | `string` | primary |
 | nzStyle           | 可用于设置浮层的样式，调整浮层位置等 | `object` | - |
 | nzTitle           | 标题。<i>留空表示不展示标题。TemplateRef的使用方法可参考案例</i> | string<br>TemplateRef | - |
+| nzCloseIcon       | 自定义关闭图标 | `string\|TemplateRef<void>` | - |
 | nzVisible         | 对话框是否可见。<i>当以 `<nz-modal>` 标签使用时，请务必使用双向绑定，例如：`[(nzVisible)]="visible"`</i> | `boolean` | `false` |
 | nzWidth           | 宽度。<i>使用数字时，默认单位为px</i> | string<br>number | 520 |
 | nzClassName       | 对话框的类名 | `string` | - |

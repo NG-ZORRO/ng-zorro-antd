@@ -50,6 +50,7 @@ The dialog is currently divided into 2 modes, `normal mode` and `confirm box mod
 | nzOkText          | Text of the OK button. <i>Set to null to show no ok button (this value is invalid if the nzFooter parameter is used in normal mode)</i> | `string` | OK |
 | nzOkType          | Button type of the OK button. <i>Consistent with the type of the `nz-button`.</i> | `string` | primary |
 | nzStyle           | Style of floating layer, typically used at least for adjusting the position. | `object` | - |
+| nzCloseIcon       | Custom close icon | `string\|TemplateRef<void>` | - |
 | nzTitle           | The modal dialog's title. <i>Leave blank to show no title. The usage of TemplateRef can refer to the case</i> | string / TemplateRef | - |
 | nzVisible         | Whether the modal dialog is visible or not. <i>When using the `<nz-modal>` tag, be sure to use two-way binding, for example: `[(nzVisible)]="visible"`.</i> | `boolean` | `false` |
 | nzWidth           | Width of the modal dialog. <i>When using numbers, the default unit is `px`</i> | string<br>number | 520 |

@@ -29,7 +29,9 @@
       <div class="ant-modal-content">
         <button *ngIf="nzClosable" (click)="onClickCloseBtn()" class="ant-modal-close" aria-label="Close">
           <span class="ant-modal-close-x">
-            <i nz-icon nzType="close" class="ant-modal-close-icon"></i>
+            <ng-container *nzStringTemplateOutlet="nzCloseIcon">
+              <i nz-icon [nzType]="nzCloseIcon" class="ant-modal-close-icon"></i>
+            </ng-container>
           </span>
         </button>
         <ng-container *ngIf="!hidden" [ngSwitch]="true">
