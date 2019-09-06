@@ -74,13 +74,16 @@ export class NzDemoCodeEditorComplexComponent {
 }
 
 console.log(flatten(['1', 2, [[3]]]))`;
+  private document: Document;
 
   // tslint:disable-next-line no-any
-  constructor(@Inject(DOCUMENT) private document: any, private renderer: Renderer2) {}
+  constructor(@Inject(DOCUMENT) document: any, private renderer: Renderer2) {
+    this.document = document;
+  }
 
   toggleFullScreen(): void {
     this.fullScreen = !this.fullScreen;
-    this.renderer.setStyle((this.document as Document).body, 'overflow-y', this.fullScreen ? 'hidden' : null);
+    this.renderer.setStyle(this.document.body, 'overflow-y', this.fullScreen ? 'hidden' : null);
     this.editorComponent.layout();
     this.tooltip.hide();
   }
