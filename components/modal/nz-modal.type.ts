@@ -27,6 +27,7 @@ export interface ModalOptions<T = any, R = any> {
   nzStyle?: object;
   nzIconType?: string; // Confirm Modal ONLY
   nzTitle?: string | TemplateRef<{}>;
+  nzCloseIcon?: string | TemplateRef<void>;
   nzContent?: string | TemplateRef<{}> | Type<T>;
   nzComponentParams?: Partial<T>;
   nzClosable?: boolean;

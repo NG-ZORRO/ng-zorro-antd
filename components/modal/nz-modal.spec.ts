@@ -431,7 +431,6 @@ describe('global config', () => {
     inputFixture.detectChanges();
     nativeElement!.click();
     inputFixture.detectChanges();
-    console.log(inputFixture.debugElement.nativeElement);
     expectModalHidden(inputFixture.debugElement.query(By.css('nz-modal')).nativeElement, true);
   }));
 });
@@ -443,7 +442,7 @@ describe('NzModal', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, NzModalModule],
+      imports: [NoopAnimationsModule, NzModalModule, NzIconTestModule],
       declarations: [NzDemoModalBasicComponent, NzDemoModalMaskComponent, ModalByServiceComponent]
     });
 
@@ -476,6 +475,17 @@ describe('NzModal', () => {
       tick(1000);
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).not.toContain('BASIC_MODAL_TITLE');
+    }));
+
+    it('should custom close icon work', fakeAsync(() => {
+      fixture.componentInstance.modalAvailable = true;
+      fixture.componentInstance.icon = 'close-square';
+      fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
+      const closeIcon = overlayContainerElement.querySelector('.ant-modal-close-icon') as HTMLElement;
+      expect(closeIcon).toBeTruthy();
+      expect(closeIcon.classList).toContain('anticon-close-square');
     }));
   });
 
@@ -721,13 +731,14 @@ describe('NzModal', () => {
 
 @Component({
   template: `
-    <nz-modal *ngIf="modalAvailable" nzVisible nzTitle="BASIC_MODAL_TITLE">
+    <nz-modal *ngIf="modalAvailable" nzVisible nzTitle="BASIC_MODAL_TITLE" [nzCloseIcon]="icon">
       <p>content</p>
     </nz-modal>
   `
 })
 class NzDemoModalBasicComponent {
   modalAvailable = true;
+  icon = 'close';
 }
 
 @Component({
