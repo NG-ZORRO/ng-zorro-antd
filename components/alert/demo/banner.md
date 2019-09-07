@@ -9,7 +9,7 @@ title:
 
 ## zh-CN
 
-页面顶部通告形式，默认有图标且`nzType` 为 'warning'。
+页面顶部通告形式，默认有图标且 `nzType` 为 `'warning'`。
 
 ## en-US
 

@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-自定义目录树(使用nzTreeTemplate实现，支持右键)。
+自定义目录树(使用 `nzTreeTemplate` 实现，支持右键)。
 
 ## en-US
 
-Customize directory tree(with nzTreeTemplate, supported contextmenu).
+Customize directory tree(with `nzTreeTemplate`, supported contextmenu).
