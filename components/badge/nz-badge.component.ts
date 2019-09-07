@@ -14,7 +14,6 @@ import {
   Component,
   ElementRef,
   Input,
-  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -26,7 +25,7 @@ import {
 } from '@angular/core';
 import { isEmpty, zoomBadgeMotion, InputBoolean } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
-import { startWith, take, takeUntil } from 'rxjs/operators';
+import { startWith, takeUntil } from 'rxjs/operators';
 
 export type NzBadgeStatusType = 'success' | 'processing' | 'default' | 'error' | 'warning';
 
@@ -100,8 +99,7 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     private renderer: Renderer2,
     private elementRef: ElementRef,
     private contentObserver: ContentObserver,
-    private cdr: ChangeDetectorRef,
-    private ngZone: NgZone
+    private cdr: ChangeDetectorRef
   ) {
     renderer.addClass(elementRef.nativeElement, 'ant-badge');
   }
@@ -111,7 +109,7 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   }
 
   ngAfterViewInit(): void {
-    this.ngZone.onStable.pipe(take(1)).subscribe(() => {
+    Promise.resolve().then(() => {
       this.viewInit = true;
       this.cdr.markForCheck();
     });
