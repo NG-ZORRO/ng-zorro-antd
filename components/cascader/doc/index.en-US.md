@@ -43,6 +43,7 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 | `[nzNotFoundContent]` | Specify content to show when no result matches. | `string\|TemplateRef<void>` | - |
 | `[nzLabelProperty]` | the label property name of options | `string` | `'label'` |
 | `[nzLabelRender]` | render template of displaying selected options | `TemplateRef<any>` | - |
+| `[nzOptionRender]` | render template of cascader options | `TemplateRef<{ $implicit: CascaderOption, index: number }>` | |
 | `[nzLoadData]` | To load option lazily. If setting `ngModel` with an array value and `nzOptions` is not setting, lazy load will be call immediately | `(option: any, index?: index) => PromiseLike<any>` | - |
 | `[nzOptions]` | data options of cascade | `object[]` | - |
 | `[nzPlaceHolder]` | input placeholder | `string` | `'Please select'` |

@@ -73,7 +73,9 @@
       <li
         nz-cascader-option
         *ngFor="let option of options"
+        [columnIndex]="i"
         [nzLabelProperty]="nzLabelProperty"
+        [optionTemplate]="nzOptionRender"
         [activated]="isOptionActivated(option, i)"
         [highlightText]="inSearchingMode ? inputValue : ''"
         [option]="option"

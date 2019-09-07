@@ -13,6 +13,7 @@ import {
   ElementRef,
   Input,
   Renderer2,
+  TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 
@@ -32,10 +33,12 @@ import { CascaderOption } from './nz-cascader-definitions';
   }
 })
 export class NzCascaderOptionComponent {
+  @Input() optionTemplate: TemplateRef<CascaderOption> | null = null;
   @Input() option: CascaderOption;
   @Input() activated = false;
   @Input() highlightText: string;
   @Input() nzLabelProperty = 'label';
+  @Input() columnIndex: number;
 
   constructor(private cdr: ChangeDetectorRef, elementRef: ElementRef, renderer: Renderer2) {
     renderer.addClass(elementRef.nativeElement, 'ant-cascader-menu-item');

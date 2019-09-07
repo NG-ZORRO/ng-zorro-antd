@@ -41,6 +41,7 @@ import {
   DEFAULT_DROPDOWN_POSITIONS,
   InputBoolean,
   NgClassType,
+  NgStyleInterface,
   NzConfigService,
   NzNoAnimationDirective,
   WithConfig
@@ -105,6 +106,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   @ViewChild(CdkConnectedOverlay, { static: false }) overlay: CdkConnectedOverlay;
   @ViewChildren(NzCascaderOptionComponent) cascaderItems: QueryList<NzCascaderOptionComponent>;
 
+  @Input() nzOptionRender: TemplateRef<{ $implicit: CascaderOption; index: number }> | null = null;
   @Input() @InputBoolean() nzShowInput = true;
   @Input() @InputBoolean() nzShowArrow = true;
   @Input() @InputBoolean() nzAllowClear = true;
@@ -121,7 +123,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   @Input() nzShowSearch: boolean | NzShowSearchOptions;
   @Input() nzPlaceHolder: string;
   @Input() nzMenuClassName: string;
-  @Input() nzMenuStyle: { [key: string]: string };
+  @Input() nzMenuStyle: NgStyleInterface;
   @Input() nzMouseEnterDelay: number = 150; // ms
   @Input() nzMouseLeaveDelay: number = 150; // ms
   @Input() nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[] = ['click'] as NzCascaderTriggerType[];
