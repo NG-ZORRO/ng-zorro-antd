@@ -45,7 +45,11 @@ export class NzAvatarComponent implements OnChanges {
   @Input() nzSize: NzAvatarSize = 'default';
   @Input() nzText: string;
   @Input() nzSrc: string;
-  @Input() nzSrcSet: string;
+  /**
+   * @description
+   * <img> tag has been discarded, so it will not produce any effect.
+   */
+  @Input() _nzSrcSet: string;
   @Input() nzAlt: string;
   @Input() nzIcon: string;
   @Output() readonly nzError = new EventEmitter<Event>();
@@ -76,13 +80,17 @@ export class NzAvatarComponent implements OnChanges {
       [`${this.prefixCls}-${this.sizeMap[this.nzSize]}`]: this.sizeMap[this.nzSize],
       [`${this.prefixCls}-${this.nzShape}`]: this.nzShape,
       [`${this.prefixCls}-icon`]: this.nzIcon,
-      [`${this.prefixCls}-image`]: this.hasSrc, // downgrade after image error
+      [`${this.prefixCls}-image`]: this.hasSrc // downgrade after image error
     };
     this.updateHostClassService.updateHostClass(this.el, classMap);
     this.cd.detectChanges();
     return this;
   }
 
+  /**
+   * We keep this method and the <img> tag in order to preserve the handling when the load fails.
+   * @param $event
+   */
   imgError($event: Event): void {
     this.nzError.emit($event);
     if (!$event.defaultPrevented) {
@@ -146,7 +154,7 @@ export class NzAvatarComponent implements OnChanges {
     this.renderer.setStyle(this.el, 'height', size);
     this.renderer.setStyle(this.el, 'line-height', size);
     if (this.hasSrc) {
-      this.renderer.setStyle(this.el, 'background-image', 'url('+this.nzSrc+')');
+      this.renderer.setStyle(this.el, 'background-image', 'url(' + this.nzSrc + ')');
       this.renderer.setStyle(this.el, 'background-size', 'cover');
       this.renderer.setStyle(this.el, 'background-position', 'center');
     }

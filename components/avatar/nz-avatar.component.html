@@ -1,2 +1,3 @@
 <i nz-icon *ngIf="nzIcon && hasIcon" [nzType]="!oldAPIIcon && nzIcon" [ngClass]="oldAPIIcon && nzIcon"></i>
+<img style="display: none" *ngIf="nzSrc && hasSrc" [src]="nzSrc" [attr.alt]="nzAlt" (error)="imgError($event)"/>
 <span class="ant-avatar-string" #textEl [ngStyle]="textStyles" *ngIf="nzText && hasText">{{ nzText }}</span>
