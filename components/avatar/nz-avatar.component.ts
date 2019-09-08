@@ -154,7 +154,7 @@ export class NzAvatarComponent implements OnChanges {
     this.renderer.setStyle(this.el, 'height', size);
     this.renderer.setStyle(this.el, 'line-height', size);
     if (this.hasSrc) {
-      this.renderer.setStyle(this.el, 'background-image', 'url(' + this.nzSrc + ')');
+      this.renderer.setStyle(this.el, 'background-image', `url(${this.nzSrc})`);
       this.renderer.setStyle(this.el, 'background-size', 'cover');
       this.renderer.setStyle(this.el, 'background-position', 'center');
     }
