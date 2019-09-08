@@ -76,7 +76,7 @@ export class NzAvatarComponent implements OnChanges {
       [`${this.prefixCls}-${this.sizeMap[this.nzSize]}`]: this.sizeMap[this.nzSize],
       [`${this.prefixCls}-${this.nzShape}`]: this.nzShape,
       [`${this.prefixCls}-icon`]: this.nzIcon,
-      [`${this.prefixCls}-image`]: this.hasSrc // downgrade after image error
+      [`${this.prefixCls}-image`]: this.hasSrc, // downgrade after image error
     };
     this.updateHostClassService.updateHostClass(this.el, classMap);
     this.cd.detectChanges();
@@ -104,7 +104,7 @@ export class NzAvatarComponent implements OnChanges {
       this.oldAPIIcon = changes.nzIcon.currentValue.indexOf('anticon') > -1;
     }
     this.hasText = !this.nzSrc && !!this.nzText;
-    this.hasIcon = !this.nzSrc && !!this.nzIcon;
+    this.hasIcon = !this.nzSrc && !!this.nzIcon && !this.hasText;
     this.hasSrc = !!this.nzSrc;
 
     this.setClass().notifyCalc();
@@ -145,6 +145,11 @@ export class NzAvatarComponent implements OnChanges {
     this.renderer.setStyle(this.el, 'width', size);
     this.renderer.setStyle(this.el, 'height', size);
     this.renderer.setStyle(this.el, 'line-height', size);
+    if (this.hasSrc) {
+      this.renderer.setStyle(this.el, 'background-image', 'url('+this.nzSrc+')');
+      this.renderer.setStyle(this.el, 'background-size', 'cover');
+      this.renderer.setStyle(this.el, 'background-position', 'center');
+    }
     if (this.hasIcon) {
       this.renderer.setStyle(this.el, 'font-size', `calc(${size} / 2)`);
     }
