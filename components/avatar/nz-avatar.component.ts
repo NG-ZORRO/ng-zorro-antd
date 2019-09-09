@@ -45,11 +45,7 @@ export class NzAvatarComponent implements OnChanges {
   @Input() nzSize: NzAvatarSize = 'default';
   @Input() nzText: string;
   @Input() nzSrc: string;
-  /**
-   * @description
-   * <img> tag has been discarded, so it will not produce any effect.
-   */
-  @Input() _nzSrcSet: string;
+  @Input() nzSrcSet: string;
   @Input() nzAlt: string;
   @Input() nzIcon: string;
   @Output() readonly nzError = new EventEmitter<Event>();
@@ -58,9 +54,28 @@ export class NzAvatarComponent implements OnChanges {
   hasText: boolean = false;
   hasSrc: boolean = true;
   hasIcon: boolean = false;
-  textStyles: {};
+  textStyles: { [key: string]: string };
+  imgStyles = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)'
+  };
 
   @ViewChild('textEl', { static: false }) textEl: ElementRef;
+  @ViewChild('imgEl', { static: false }) set imgEl(el: ElementRef) {
+    if (el) {
+      const img = el.ElementRef as HTMLImageElement;
+      if (img.clientHeight > img.clientWidth) {
+        this.renderer.setStyle(el, 'width', '100%');
+      } else if (img.clientWidth > img.clientHeight) {
+        this.renderer.setStyle(el, 'height', '100%');
+      } else {
+        this.renderer.setStyle(el, 'width', '100%');
+        this.renderer.setStyle(el, 'height', '100%');
+      }
+    }
+  }
 
   private el: HTMLElement = this.elementRef.nativeElement;
   private prefixCls = 'ant-avatar';
@@ -72,7 +87,8 @@ export class NzAvatarComponent implements OnChanges {
     private updateHostClassService: NzUpdateHostClassService,
     private renderer: Renderer2,
     private platform: Platform
-  ) {}
+  ) {
+  }
 
   setClass(): this {
     const classMap = {
@@ -153,11 +169,6 @@ export class NzAvatarComponent implements OnChanges {
     this.renderer.setStyle(this.el, 'width', size);
     this.renderer.setStyle(this.el, 'height', size);
     this.renderer.setStyle(this.el, 'line-height', size);
-    if (this.hasSrc) {
-      this.renderer.setStyle(this.el, 'background-image', `url(${this.nzSrc})`);
-      this.renderer.setStyle(this.el, 'background-size', 'cover');
-      this.renderer.setStyle(this.el, 'background-position', 'center');
-    }
     if (this.hasIcon) {
       this.renderer.setStyle(this.el, 'font-size', `calc(${size} / 2)`);
     }

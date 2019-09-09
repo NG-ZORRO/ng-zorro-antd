@@ -1,3 +1,19 @@
-<i nz-icon *ngIf="nzIcon && hasIcon" [nzType]="!oldAPIIcon && nzIcon" [ngClass]="oldAPIIcon && nzIcon"></i>
-<img style="display: none" *ngIf="nzSrc && hasSrc" [src]="nzSrc" [attr.alt]="nzAlt" (error)="imgError($event)"/>
-<span class="ant-avatar-string" #textEl [ngStyle]="textStyles" *ngIf="nzText && hasText">{{ nzText }}</span>
+<i *ngIf="nzIcon && hasIcon"
+   [ngClass]="oldAPIIcon && nzIcon"
+   [nzType]="!oldAPIIcon && nzIcon"
+   nz-icon></i>
+
+<img #imgEl
+     (error)="imgError($event)"
+     *ngIf="nzSrc && hasSrc"
+     [attr.alt]="nzAlt"
+     [attr.srcset]="nzSrcSet"
+     [ngStyle]="imgStyles"
+     [src]="nzSrc"/>
+
+<span #textEl
+      *ngIf="nzText && hasText"
+      [ngStyle]="textStyles"
+      class="ant-avatar-string">
+  {{ nzText }}
+</span>
