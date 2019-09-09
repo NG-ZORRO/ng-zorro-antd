@@ -23,13 +23,7 @@ import { async, fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import {
-  createFakeEvent,
-  createMouseEvent,
-  dispatchEvent,
-  dispatchKeyboardEvent,
-  dispatchMouseEvent
-} from 'ng-zorro-antd/core';
+import { createFakeEvent, createMouseEvent, dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core';
 
 import { CascaderOption, NzShowSearchOptions } from './nz-cascader-definitions';
 import { NzCascaderComponent } from './nz-cascader.component';
@@ -39,10 +33,34 @@ describe('cascader', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
 
+  function getItemAtColumnAndRow(column: number, row: number): HTMLElement | null {
+    if (row === -1) {
+      return overlayContainerElement.querySelector(
+        `.ant-cascader-menu:nth-child(${column}) .ant-cascader-menu-item:last-child`
+      );
+    }
+
+    return overlayContainerElement.querySelector(
+      `.ant-cascader-menu:nth-child(${column}) .ant-cascader-menu-item:nth-child(${row})`
+    );
+  }
+
+  function getAllColumns(): NodeListOf<Element> {
+    return overlayContainerElement.querySelectorAll(`.ant-cascader-menu`);
+  }
+
   describe('default', () => {
     let fixture: ComponentFixture<NzDemoCascaderDefaultComponent>;
     let cascader: DebugElement;
     let testComponent: NzDemoCascaderDefaultComponent;
+
+    function getLabelText(): string {
+      return cascader.nativeElement.querySelector('.ant-cascader-picker-label').innerText;
+    }
+
+    function getInputEl(): HTMLElement {
+      return cascader.nativeElement.querySelector('input')!;
+    }
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
@@ -75,17 +93,15 @@ describe('cascader', () => {
 
     it('should have input', () => {
       fixture.detectChanges();
-      const input: HTMLElement = cascader.nativeElement.querySelector('.ant-cascader-input');
-      expect(input).toBeDefined();
-      expect(input.getAttribute('placeholder')).toBe('please select');
+      expect(getInputEl()).toBeDefined();
+      expect(getInputEl().getAttribute('placeholder')).toBe('please select');
     });
 
     it('should input change event stopPropagation', () => {
       fixture.detectChanges();
-      const input: HTMLElement = cascader.nativeElement.querySelector('.ant-cascader-input');
       const fakeInputChangeEvent = createFakeEvent('change', true, true);
       spyOn(fakeInputChangeEvent, 'stopPropagation');
-      input.dispatchEvent(fakeInputChangeEvent);
+      getInputEl().dispatchEvent(fakeInputChangeEvent);
       fixture.detectChanges();
       expect(fakeInputChangeEvent.stopPropagation).toHaveBeenCalled();
     });
@@ -101,18 +117,16 @@ describe('cascader', () => {
       const placeholder = 'placeholder test';
       testComponent.nzPlaceHolder = placeholder;
       fixture.detectChanges();
-      const input: HTMLElement = cascader.nativeElement.querySelector('.ant-cascader-input');
-      expect(input.getAttribute('placeholder')).toBe(placeholder);
+      expect(getInputEl().getAttribute('placeholder')).toBe(placeholder);
     });
 
     it('should size work', () => {
       testComponent.nzSize = 'small';
       fixture.detectChanges();
-      const input: HTMLElement = cascader.nativeElement.querySelector('.ant-cascader-input');
-      expect(input.classList).toContain('ant-input-sm');
+      expect(getInputEl().classList).toContain('ant-input-sm');
       testComponent.nzSize = 'large';
       fixture.detectChanges();
-      expect(input.classList).toContain('ant-input-lg');
+      expect(getInputEl().classList).toContain('ant-input-lg');
     });
 
     it('should value and label property work', fakeAsync(() => {
@@ -120,15 +134,13 @@ describe('cascader', () => {
       testComponent.nzValueProperty = 'id';
       testComponent.nzLabelProperty = 'name';
       fixture.detectChanges();
-      expect(cascader.nativeElement.querySelector('.ant-cascader-picker-label').innerText).toBe('');
+      expect(getLabelText()).toBe('');
       expect(testComponent.cascader.getSubmitValue().join(',')).toBe('');
       testComponent.values = [1, 2, 3];
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(cascader.nativeElement.querySelector('.ant-cascader-picker-label').innerText).toBe(
-        'Zhejiang / Hangzhou / West Lake'
-      );
+      expect(getLabelText()).toBe('Zhejiang / Hangzhou / West Lake');
       expect(testComponent.cascader.getSubmitValue().join(',')).toBe('1,2,3');
     }));
 
@@ -136,15 +148,13 @@ describe('cascader', () => {
       testComponent.nzValueProperty = null;
       testComponent.nzLabelProperty = null;
       fixture.detectChanges();
-      expect(cascader.nativeElement.querySelector('.ant-cascader-picker-label').innerText).toBe('');
+      expect(getLabelText()).toBe('');
       expect(testComponent.cascader.getSubmitValue().join(',')).toBe('');
       testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(cascader.nativeElement.querySelector('.ant-cascader-picker-label').innerText).toBe(
-        'Zhejiang / Hangzhou / West Lake'
-      );
+      expect(getLabelText()).toBe('Zhejiang / Hangzhou / West Lake');
       expect(testComponent.cascader.getSubmitValue().join(',')).toBe('zhejiang,hangzhou,xihu');
     }));
 
@@ -212,69 +222,7 @@ describe('cascader', () => {
       expect(testComponent.cascader.menuVisible).toBe(true);
       expect(testComponent.onVisibleChange).toHaveBeenCalledTimes(1);
 
-      const mouseleave = createMouseEvent('mouseleave');
-      mouseleave.initMouseEvent(
-        'mouseleave',
-        false /* canBubble */,
-        false /* cancelable */,
-        window /* view */,
-        0 /* detail */,
-        0 /* screenX */,
-        0 /* screenY */,
-        0 /* clientX */,
-        0 /* clientY */,
-        false /* ctrlKey */,
-        false /* altKey */,
-        false /* shiftKey */,
-        false /* metaKey */,
-        0 /* button */,
-        overlayContainerElement.querySelector('.ant-cascader-menu') /* relatedTarget */
-      );
-      dispatchEvent(cascader.nativeElement, mouseleave);
-      tick(300);
-      fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible).toBe(true);
-
-      mouseleave.initMouseEvent(
-        'mouseleave',
-        false /* canBubble */,
-        false /* cancelable */,
-        window /* view */,
-        0 /* detail */,
-        0 /* screenX */,
-        0 /* screenY */,
-        0 /* clientX */,
-        0 /* clientY */,
-        false /* ctrlKey */,
-        false /* altKey */,
-        false /* shiftKey */,
-        false /* metaKey */,
-        0 /* button */,
-        cascader.nativeElement /* relatedTarget */
-      );
-      dispatchEvent(cascader.nativeElement, mouseleave);
-      tick(300);
-      fixture.detectChanges();
-      expect(testComponent.cascader.menuVisible).toBe(true);
-
-      mouseleave.initMouseEvent(
-        'mouseleave',
-        false /* canBubble */,
-        false /* cancelable */,
-        window /* view */,
-        0 /* detail */,
-        0 /* screenX */,
-        0 /* screenY */,
-        0 /* clientX */,
-        0 /* clientY */,
-        false /* ctrlKey */,
-        false /* altKey */,
-        false /* shiftKey */,
-        false /* metaKey */,
-        0 /* button */,
-        document.body /* relatedTarget */
-      );
-      dispatchEvent(cascader.nativeElement, mouseleave);
+      dispatchMouseEvent(cascader.nativeElement, 'mouseleave');
       tick(300);
       fixture.detectChanges();
       flush();
@@ -317,9 +265,7 @@ describe('cascader', () => {
       expect(testComponent.cascader.menuVisible).toBe(true);
       flush();
       fixture.detectChanges();
-      const optionEl = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the first column
+      const optionEl = getItemAtColumnAndRow(1, 1)!;
       expect(optionEl.classList).not.toContain('ant-cascader-menu-item-active');
 
       testComponent.cascader.onOptionMouseEnter(option, 0, mouseenter);
@@ -446,10 +392,10 @@ describe('cascader', () => {
       testComponent.nzShowInput = true;
       testComponent.nzAutoFocus = true;
       fixture.detectChanges();
-      expect(cascader.nativeElement.querySelector('input').getAttribute('autofocus')).toBe('autofocus');
+      expect(getInputEl().getAttribute('autofocus')).toBe('autofocus');
       testComponent.nzAutoFocus = false;
       fixture.detectChanges();
-      expect(cascader.nativeElement.querySelector('input').getAttribute('autofocus')).toBe(null);
+      expect(getInputEl().getAttribute('autofocus')).toBe(null);
     });
 
     it('should input focus and blur work', fakeAsync(() => {
@@ -458,18 +404,18 @@ describe('cascader', () => {
 
       fixture.detectChanges();
       expect(cascader.nativeElement.classList).not.toContain('ant-cascader-focused');
-      cascader.nativeElement.querySelector('input').dispatchEvent(fakeInputFocusEvent);
+      getInputEl().dispatchEvent(fakeInputFocusEvent);
       fixture.detectChanges();
       expect(cascader.nativeElement.classList).toContain('ant-cascader-focused');
-      cascader.nativeElement.querySelector('input').dispatchEvent(fakeInputBlurEvent);
+      getInputEl().dispatchEvent(fakeInputBlurEvent);
       fixture.detectChanges();
       expect(cascader.nativeElement.classList).not.toContain('ant-cascader-focused');
 
       testComponent.cascader.setMenuVisible(true);
-      cascader.nativeElement.querySelector('input').dispatchEvent(fakeInputFocusEvent);
+      getInputEl().dispatchEvent(fakeInputFocusEvent);
       fixture.detectChanges();
       expect(cascader.nativeElement.classList).toContain('ant-cascader-focused');
-      cascader.nativeElement.querySelector('input').dispatchEvent(fakeInputBlurEvent);
+      getInputEl().dispatchEvent(fakeInputBlurEvent);
       fixture.detectChanges();
       expect(cascader.nativeElement.classList).toContain('ant-cascader-focused');
     }));
@@ -478,13 +424,13 @@ describe('cascader', () => {
       testComponent.nzShowInput = true;
       cascader.nativeElement.click();
       fixture.detectChanges();
-      expect(cascader.nativeElement.querySelector('input') === document.activeElement).toBe(false);
+      expect(getInputEl() === document.activeElement).toBe(false);
       testComponent.cascader.focus();
       fixture.detectChanges();
-      expect(cascader.nativeElement.querySelector('input') === document.activeElement).toBe(true);
+      expect(getInputEl() === document.activeElement).toBe(true);
       testComponent.cascader.blur();
       fixture.detectChanges();
-      expect(cascader.nativeElement.querySelector('input') === document.activeElement).toBe(false);
+      expect(getInputEl() === document.activeElement).toBe(false);
     });
 
     it('should focus and blur function work 2', () => {
@@ -547,27 +493,23 @@ describe('cascader', () => {
 
     it('should create label work', fakeAsync(() => {
       fixture.detectChanges();
-      expect(cascader.nativeElement.querySelector('.ant-cascader-picker-label').innerText).toBe('');
+      expect(getLabelText()).toBe('');
       testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(cascader.nativeElement.querySelector('.ant-cascader-picker-label').innerText).toBe(
-        'Zhejiang / Hangzhou / West Lake'
-      );
+      expect(getLabelText()).toBe('Zhejiang / Hangzhou / West Lake');
     }));
 
     it('should label template work', fakeAsync(() => {
       fixture.detectChanges();
-      expect(cascader.nativeElement.querySelector('.ant-cascader-picker-label').innerText).toBe('');
+      expect(getLabelText()).toBe('');
       testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
       testComponent.nzLabelRender = testComponent.renderTpl;
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(cascader.nativeElement.querySelector('.ant-cascader-picker-label').innerText.trim()).toBe(
-        'Zhejiang | Hangzhou | West Lake'
-      );
+      expect(getLabelText().trim()).toBe('Zhejiang | Hangzhou | West Lake');
       // fix clear
       testComponent.clearSelection();
       testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
@@ -575,9 +517,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(cascader.nativeElement.querySelector('.ant-cascader-picker-label').innerText.trim()).toBe(
-        'Zhejiang | Hangzhou | West Lake'
-      );
+      expect(getLabelText().trim()).toBe('Zhejiang | Hangzhou | West Lake');
     }));
 
     it('should write value work', fakeAsync(() => {
@@ -719,46 +659,45 @@ describe('cascader', () => {
 
     it('should click option to expand', () => {
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(0); // 0列：未显示菜单
+      expect(getAllColumns().length).toBe(0); // 0列：未显示菜单
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(1); // 1列
+      expect(getAllColumns().length).toBe(1);
       const itemEl1 = overlayContainerElement.querySelector('.ant-cascader-menu')!.firstElementChild as HTMLElement;
+
       itemEl1.click();
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(2); // 2列
-      const col2 = overlayContainerElement.querySelectorAll('.ant-cascader-menu').item(1);
+      expect(getAllColumns().length).toBe(2);
+      const col2 = getAllColumns().item(1);
       const itemEl2 = col2.firstElementChild as HTMLElement;
+
       itemEl2.click();
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(3); // 3列
+      expect(getAllColumns().length).toBe(3);
     });
 
     it('should click option to change column count', () => {
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(0); // 0列：未显示菜单
+      expect(getAllColumns().length).toBe(0); // 0列：未显示菜单
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(1); // 1列
-      const itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement;
+      expect(getAllColumns().length).toBe(1);
+      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
+
       itemEl1.click();
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(2); // 2列
-      const itemEl2 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement;
+      expect(getAllColumns().length).toBe(2);
+      const itemEl2 = getItemAtColumnAndRow(2, 1)!;
+
       itemEl2.click();
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(3); // 3列
+      expect(getAllColumns().length).toBe(3);
 
-      const itemEl3 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(2)'
-      ) as HTMLElement;
+      const itemEl3 = getItemAtColumnAndRow(1, 2)!;
+
       itemEl3.click();
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(2); // 2列
+      expect(getAllColumns().length).toBe(2);
     });
 
     it('should click option to change column count 2', fakeAsync(() => {
@@ -769,17 +708,12 @@ describe('cascader', () => {
       flush(); // wait for cdk-overlay to open
       fixture.detectChanges();
       expect(testComponent.cascader.menuVisible).toBe(true);
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(3); // 3列
+      expect(getAllColumns().length).toBe(3);
 
-      const itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement;
-      const itemEl2 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement;
-      const itemEl3 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(3) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement;
+      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
+      const itemEl2 = getItemAtColumnAndRow(2, 1)!;
+      const itemEl3 = getItemAtColumnAndRow(3, 1)!;
+
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl3.classList).toContain('ant-cascader-menu-item-active');
@@ -790,15 +724,14 @@ describe('cascader', () => {
       fixture.detectChanges();
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(3);
+      expect(getAllColumns().length).toBe(3);
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
       expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
       expect(testComponent.values!.join(',')).toBe('zhejiang,hangzhou,xihu');
 
-      const itemEl4 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(2)'
-      ) as HTMLElement;
+      const itemEl4 = getItemAtColumnAndRow(2, 2)!;
+
       itemEl4.click(); // 选中一个叶子
       fixture.detectChanges();
       tick(300);
@@ -814,27 +747,22 @@ describe('cascader', () => {
       fixture.detectChanges();
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(1); // 1列
-      const itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement;
+      expect(getAllColumns().length).toBe(1);
+      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
+
       itemEl1.click();
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(2); // 2列
-      let itemEl21 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement;
+      expect(getAllColumns().length).toBe(2);
+      let itemEl21 = getItemAtColumnAndRow(2, 1)!;
       expect(itemEl21.innerText.trim()).toBe('Hangzhou');
 
-      const itemEl2 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(2)'
-      ) as HTMLElement;
+      const itemEl2 = getItemAtColumnAndRow(1, 2)!;
+
       itemEl2.click();
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(2); // 2列
-      itemEl21 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement;
+      expect(getAllColumns().length).toBe(2);
+
+      itemEl21 = getItemAtColumnAndRow(2, 1)!;
       expect(itemEl21.innerText.trim()).toBe('Nanjing');
     });
 
@@ -843,12 +771,8 @@ describe('cascader', () => {
       fixture.detectChanges();
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      const optionEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the first column
-      const optionEl2 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(2)'
-      ) as HTMLElement; // The second option in the first column
+      const optionEl1 = getItemAtColumnAndRow(1, 1)!;
+      const optionEl2 = getItemAtColumnAndRow(1, 2)!;
 
       expect(optionEl1.classList).not.toContain('ant-cascader-menu-item-active');
       expect(optionEl2.classList).not.toContain('ant-cascader-menu-item-active');
@@ -867,26 +791,20 @@ describe('cascader', () => {
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
       expect(testComponent.cascader.menuVisible).toBe(true);
-      (overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement).click(); // The first option in the first column
+      getItemAtColumnAndRow(1, 1)!.click();
       fixture.detectChanges();
       expect(testComponent.cascader.menuVisible).toBe(true);
-      (overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement).click(); // The first option in the second column
+      getItemAtColumnAndRow(2, 1)!.click();
       fixture.detectChanges();
       expect(testComponent.cascader.menuVisible).toBe(true);
-      (overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(3) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement).click(); // The first option in the third column
+      getItemAtColumnAndRow(3, 1)!.click();
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      flush(); // wait for cdk-overlay to close
+      flush();
       fixture.detectChanges();
       expect(testComponent.cascader.menuVisible).toBe(false);
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(0);
+      expect(getAllColumns().length).toBe(0);
     }));
 
     it('should open menu when press DOWN_ARROW', fakeAsync(() => {
@@ -916,7 +834,7 @@ describe('cascader', () => {
       expect(testComponent.cascader.menuVisible).toBe(true);
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', ESCAPE);
       fixture.detectChanges();
-      flush(); // wait for cdk-overlay to close
+      flush();
       fixture.detectChanges();
       expect(testComponent.cascader.menuVisible).toBe(false);
     }));
@@ -932,9 +850,7 @@ describe('cascader', () => {
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', UP_ARROW);
       fixture.detectChanges();
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
-      const itemEl2 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:first-child'
-      ) as HTMLElement; // The first option in the first column
+      const itemEl2 = getItemAtColumnAndRow(1, 1)!;
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', UP_ARROW);
       fixture.detectChanges();
@@ -946,9 +862,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      const itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the first column
+      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', DOWN_ARROW);
       fixture.detectChanges();
@@ -963,27 +877,19 @@ describe('cascader', () => {
       fixture.detectChanges();
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', RIGHT_ARROW);
       fixture.detectChanges();
-      let itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the first column
+      let itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
-      let itemEl2 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the second column
+      let itemEl2 = getItemAtColumnAndRow(2, 1)!;
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', RIGHT_ARROW);
       fixture.detectChanges();
-      itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the first column
+
+      itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
-      itemEl2 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the second column
+
+      itemEl2 = getItemAtColumnAndRow(2, 1)!;
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
-      const itemEl3 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(3) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the third column
+      const itemEl3 = getItemAtColumnAndRow(3, 1)!;
       expect(itemEl3.classList).toContain('ant-cascader-menu-item-active');
     }));
 
@@ -994,17 +900,11 @@ describe('cascader', () => {
       fixture.detectChanges();
       flush(); // wait for cdk-overlay to open
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(3); // 3列
+      expect(getAllColumns().length).toBe(3);
 
-      const itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the first column
-      const itemEl2 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the second column
-      const itemEl3 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(3) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the third column
+      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
+      const itemEl2 = getItemAtColumnAndRow(2, 1)!;
+      const itemEl3 = getItemAtColumnAndRow(3, 1)!;
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl3.classList).toContain('ant-cascader-menu-item-active');
@@ -1056,7 +956,7 @@ describe('cascader', () => {
       expect(testComponent.values![0]).toBe('zhejiang');
       expect(testComponent.values![1]).toBe('hangzhou');
       expect(testComponent.values![2]).toBe('xihu');
-      flush(); // wait for cdk-overlay to close
+      flush();
       fixture.detectChanges();
       expect(testComponent.cascader.menuVisible).toBe(false);
     }));
@@ -1066,12 +966,8 @@ describe('cascader', () => {
       fixture.detectChanges();
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      const optionEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the first column
-      const optionEl2 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(2)'
-      ) as HTMLElement; // The second option in the first column
+      const optionEl1 = getItemAtColumnAndRow(1, 1)!;
+      const optionEl2 = getItemAtColumnAndRow(1, 2)!;
 
       expect(optionEl1.classList).not.toContain('ant-cascader-menu-item-active');
       expect(optionEl2.classList).not.toContain('ant-cascader-menu-item-active');
@@ -1085,18 +981,10 @@ describe('cascader', () => {
       expect(optionEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(optionEl2.classList).not.toContain('ant-cascader-menu-item-active');
 
-      const optionEl11 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the second column
-      const optionEl12 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(2)'
-      ) as HTMLElement; // The first option in the second column
-      const optionEl13 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(3)'
-      ) as HTMLElement; // The first option in the second column
-      const optionEl14 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(4)'
-      ) as HTMLElement; // The first option in the second column
+      const optionEl11 = getItemAtColumnAndRow(2, 1)!;
+      const optionEl12 = getItemAtColumnAndRow(2, 2)!;
+      const optionEl13 = getItemAtColumnAndRow(2, 3)!;
+      const optionEl14 = getItemAtColumnAndRow(2, 4)!;
       expect(optionEl11.classList).not.toContain('ant-cascader-menu-item-active');
       expect(optionEl12.classList).not.toContain('ant-cascader-menu-item-active');
       expect(optionEl13.classList).not.toContain('ant-cascader-menu-item-active');
@@ -1147,34 +1035,30 @@ describe('cascader', () => {
     it('should expand option on hover', fakeAsync(() => {
       testComponent.nzExpandTrigger = 'hover';
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(0); // 0列
+      expect(getAllColumns().length).toBe(0); // 0列
       expect(testComponent.values).toBeNull(); // not select yet
 
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(1); // 1列
+      expect(getAllColumns().length).toBe(1);
       expect(testComponent.values).toBeNull(); // not select yet
 
-      const itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the first column
+      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
 
       dispatchMouseEvent(itemEl1, 'mouseenter');
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(2); // 2列
-      const itemEl2 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the second column
+      expect(getAllColumns().length).toBe(2);
+      const itemEl2 = getItemAtColumnAndRow(2, 1)!;
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
       expect(testComponent.values).toBeNull(); // not select yet
 
       dispatchMouseEvent(itemEl1, 'mouseleave');
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(2); // 2列
+      expect(getAllColumns().length).toBe(2);
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
       expect(testComponent.values).toBeNull(); // not select yet
@@ -1183,10 +1067,8 @@ describe('cascader', () => {
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(3); // 3列
-      const itemEl3 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(3) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the third column
+      expect(getAllColumns().length).toBe(3);
+      const itemEl3 = getItemAtColumnAndRow(3, 1)!;
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
@@ -1194,7 +1076,7 @@ describe('cascader', () => {
 
       dispatchMouseEvent(itemEl2, 'mouseleave');
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(3); // 3列
+      expect(getAllColumns().length).toBe(3);
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
@@ -1204,7 +1086,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(3); // 3列
+      expect(getAllColumns().length).toBe(3);
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
@@ -1219,9 +1101,9 @@ describe('cascader', () => {
       expect(testComponent.values![0]).toBe('zhejiang');
       expect(testComponent.values![1]).toBe('hangzhou');
       expect(testComponent.values![2]).toBe('xihu');
-      flush(); // wait for cdk-overlay to close
+      flush();
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(0); // 0列
+      expect(getAllColumns().length).toBe(0); // 0列
       expect(testComponent.cascader.menuVisible).toBe(false);
     }));
 
@@ -1229,17 +1111,15 @@ describe('cascader', () => {
       testComponent.nzExpandTrigger = 'hover';
       testComponent.nzOptions = options2;
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(0); // 0列
+      expect(getAllColumns().length).toBe(0); // 0列
       expect(testComponent.values).toBeNull(); // not select yet
 
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(1); // 1列
+      expect(getAllColumns().length).toBe(1);
       expect(testComponent.values).toBeNull(); // not select yet
 
-      const itemEl2 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(2)'
-      ) as HTMLElement; // The first option in the first column
+      const itemEl2 = getItemAtColumnAndRow(1, 2)!;
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
 
       dispatchMouseEvent(itemEl2, 'mouseenter');
@@ -1247,14 +1127,14 @@ describe('cascader', () => {
       tick(200);
       fixture.detectChanges();
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(1); // 1列
+      expect(getAllColumns().length).toBe(1);
 
       dispatchMouseEvent(itemEl2, 'mouseleave');
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(1); // 1列
+      expect(getAllColumns().length).toBe(1);
     }));
 
     // fix #3914
@@ -1285,51 +1165,48 @@ describe('cascader', () => {
       testComponent.nzChangeOnSelect = true;
       fixture.detectChanges();
       expect(testComponent.values).toBeNull();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(0); // 0列
+      expect(getAllColumns().length).toBe(0); // 0列
       expect(testComponent.values).toBeNull(); // not select yet
 
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(1); // 1列
+      expect(getAllColumns().length).toBe(1);
       expect(testComponent.values).toBeNull(); // not select yet
 
-      const itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the first column
+      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
+
       itemEl1.click();
       fixture.detectChanges();
 
       expect(testComponent.cascader.menuVisible).toBe(true);
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(2); // 2列
+      expect(getAllColumns().length).toBe(2);
       expect(testComponent.values).toBeDefined();
       expect(testComponent.values!.length).toBe(1);
       expect(testComponent.values![0]).toBe('zhejiang');
 
-      const itemEl2 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the second column
+      const itemEl2 = getItemAtColumnAndRow(2, 1)!;
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
+
       itemEl2.click();
       fixture.detectChanges();
 
       expect(testComponent.cascader.menuVisible).toBe(true);
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(3); // 3列
+      expect(getAllColumns().length).toBe(3);
       expect(testComponent.values).toBeDefined();
       expect(testComponent.values!.length).toBe(2);
       expect(testComponent.values![0]).toBe('zhejiang');
       expect(testComponent.values![1]).toBe('hangzhou');
 
-      const itemEl3 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(3) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the third column
+      const itemEl3 = getItemAtColumnAndRow(3, 1)!;
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
+
       itemEl3.click();
       fixture.detectChanges();
       tick(200);
@@ -1340,9 +1217,9 @@ describe('cascader', () => {
       expect(testComponent.values![0]).toBe('zhejiang');
       expect(testComponent.values![1]).toBe('hangzhou');
       expect(testComponent.values![2]).toBe('xihu');
-      flush(); // wait for cdk-overlay to close
+      flush();
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(0); // 0列
+      expect(getAllColumns().length).toBe(0); // 0列
       expect(testComponent.cascader.menuVisible).toBe(false);
     }));
 
@@ -1351,17 +1228,15 @@ describe('cascader', () => {
       testComponent.nzExpandTrigger = 'hover';
       fixture.detectChanges();
       expect(testComponent.values).toBeNull();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(0); // 0列
+      expect(getAllColumns().length).toBe(0); // 0列
       expect(testComponent.values).toBeNull(); // not select yet
 
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(1); // 1列
+      expect(getAllColumns().length).toBe(1);
       expect(testComponent.values).toBeNull(); // not select yet
 
-      const itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the first column
+      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
       dispatchMouseEvent(itemEl1, 'mouseenter');
       fixture.detectChanges();
@@ -1370,12 +1245,10 @@ describe('cascader', () => {
 
       expect(testComponent.cascader.menuVisible).toBe(true);
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(2); // 2列
+      expect(getAllColumns().length).toBe(2);
       expect(testComponent.values).toBeNull(); // mouseenter does not trigger selection
 
-      const itemEl2 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the second column
+      const itemEl2 = getItemAtColumnAndRow(2, 1)!;
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
       dispatchMouseEvent(itemEl2, 'mouseenter');
@@ -1386,12 +1259,10 @@ describe('cascader', () => {
       expect(testComponent.cascader.menuVisible).toBe(true);
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(3); // 3列
+      expect(getAllColumns().length).toBe(3);
       expect(testComponent.values).toBeNull(); // mouseenter does not trigger selection
 
-      const itemEl3 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(3) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the third column
+      const itemEl3 = getItemAtColumnAndRow(3, 1)!;
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
@@ -1412,9 +1283,9 @@ describe('cascader', () => {
       expect(testComponent.values![0]).toBe('zhejiang');
       expect(testComponent.values![1]).toBe('hangzhou');
       expect(testComponent.values![2]).toBe('xihu');
-      flush(); // wait for cdk-overlay to close
+      flush();
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(0); // 0列
+      expect(getAllColumns().length).toBe(0); // 0列
       expect(testComponent.cascader.menuVisible).toBe(false);
     }));
 
@@ -1424,22 +1295,20 @@ describe('cascader', () => {
       expect(testComponent.values).toBeNull();
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(1); // 1列
+      expect(getAllColumns().length).toBe(1);
       expect(testComponent.values).toBeNull(); // not select yet
 
-      const itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the first column
-      const itemEl2 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(2)'
-      ) as HTMLElement; // The second option in the first column
+      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
+      const itemEl2 = getItemAtColumnAndRow(1, 2)!;
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
+
       itemEl2.click();
       fixture.detectChanges();
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       expect(testComponent.values).toBeNull(); // not select yet
+
       itemEl1.click();
       fixture.detectChanges();
       tick(200);
@@ -1491,11 +1360,10 @@ describe('cascader', () => {
       testComponent.cascader.inputValue = 'o';
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      const itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement;
+      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(testComponent.cascader.inSearchingMode).toBe(true);
       expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
+
       itemEl1.click();
       fixture.detectChanges();
       flush();
@@ -1517,9 +1385,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(testComponent.cascader.menuVisible).toBe(true);
       expect(testComponent.cascader.inSearchingMode).toBe(true);
-      let itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement;
+      let itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
       testComponent.cascader.inputValue = '';
       fixture.detectChanges();
@@ -1527,9 +1393,8 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(testComponent.cascader.menuVisible).toBe(true);
       expect(testComponent.cascader.inSearchingMode).toBe(false);
-      itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement;
+
+      itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(itemEl1.innerText).toBe('Zhejiang');
     }));
 
@@ -1542,11 +1407,10 @@ describe('cascader', () => {
       testComponent.cascader.inputValue = 'o';
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      const itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement;
+      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(testComponent.cascader.inSearchingMode).toBe(true);
       expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
+
       itemEl1.click();
       fixture.detectChanges();
       flush();
@@ -1567,11 +1431,10 @@ describe('cascader', () => {
       testComponent.cascader.inputValue = 'o';
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      const itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement;
+      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(testComponent.cascader.inSearchingMode).toBe(true);
       expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
+
       itemEl1.click();
       fixture.detectChanges();
       flush();
@@ -1594,11 +1457,10 @@ describe('cascader', () => {
       testComponent.cascader.inputValue = 'o';
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      const itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement;
+      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(testComponent.cascader.inSearchingMode).toBe(true);
       expect(itemEl1.innerText).toBe('Jiangsu / Nanjing / Zhong Hua Men');
+
       itemEl1.click();
       fixture.detectChanges();
       flush();
@@ -1615,11 +1477,10 @@ describe('cascader', () => {
       testComponent.cascader.inputValue = 'o';
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      const itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement;
+      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
       expect(testComponent.cascader.cascaderService.columns[0][0].disabled).toBe(true);
+
       itemEl1.click();
       tick(300);
       fixture.detectChanges();
@@ -1646,12 +1507,8 @@ describe('cascader', () => {
       testComponent.cascader.inputValue = 'o';
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      const itemEl2 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(2)'
-      ) as HTMLElement;
-      const itemEl4 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(4)'
-      ) as HTMLElement;
+      const itemEl2 = getItemAtColumnAndRow(1, 2)!;
+      const itemEl4 = getItemAtColumnAndRow(1, 4)!;
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', DOWN_ARROW);
       fixture.detectChanges();
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
@@ -1674,9 +1531,7 @@ describe('cascader', () => {
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', LEFT_ARROW);
-      const itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement;
+      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
       fixture.detectChanges();
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
       dispatchKeyboardEvent(cascader.nativeElement, 'keydown', RIGHT_ARROW);
@@ -1696,9 +1551,7 @@ describe('cascader', () => {
       testComponent.cascader.inputValue = 'Roo';
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      const itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement;
+      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(testComponent.cascader.inSearchingMode).toBe(true);
       expect(itemEl1.innerText.trim()).toBe('暂无数据');
       flush();
@@ -1711,17 +1564,14 @@ describe('cascader', () => {
       testComponent.cascader.inputValue = 'o';
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
-      let itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement;
+      let itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(testComponent.cascader.inSearchingMode).toBe(true);
       expect(itemEl1.innerText).toBe('Zhejiang / Hangzhou / West Lake');
       testComponent.nzOptions = options2;
       fixture.detectChanges();
       expect(testComponent.cascader.inSearchingMode).toBe(true);
-      itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement;
+
+      itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(itemEl1.innerText).toBe('Option1 / Option11');
     });
   });
@@ -1760,56 +1610,53 @@ describe('cascader', () => {
 
       fixture.detectChanges();
       expect(testComponent.values).toBeNull();
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(0); // 0列
+      expect(getAllColumns().length).toBe(0); // 0列
       expect(testComponent.values).toBeNull(); // not select yet
       expect(testComponent.addCallTimes).toHaveBeenCalledTimes(0);
 
       testComponent.cascader.setMenuVisible(true);
       fixture.detectChanges();
       expect(testComponent.addCallTimes).toHaveBeenCalledTimes(1);
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(0); // 0列
+      expect(getAllColumns().length).toBe(0); // 0列
       tick(1000); // wait for first row to load finish
       fixture.detectChanges();
 
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(1); // 1列
+      expect(getAllColumns().length).toBe(1);
       expect(testComponent.values).toBeNull(); // not select yet
 
-      const itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the first column
+      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(itemEl1.classList).not.toContain('ant-cascader-menu-item-active');
+
       itemEl1.click();
       fixture.detectChanges();
       tick(600);
       fixture.detectChanges();
       expect(testComponent.addCallTimes).toHaveBeenCalledTimes(2);
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(2); // 2列
+      expect(getAllColumns().length).toBe(2);
       expect(testComponent.values).toBeNull(); // not select yet
 
-      const itemEl2 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the second column
+      const itemEl2 = getItemAtColumnAndRow(2, 1)!;
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).not.toContain('ant-cascader-menu-item-active');
+
       itemEl2.click();
       fixture.detectChanges();
       tick(600);
       fixture.detectChanges();
       expect(testComponent.addCallTimes).toHaveBeenCalledTimes(3);
-      expect(overlayContainerElement.querySelectorAll('.ant-cascader-menu').length).toBe(3); // 3列
+      expect(getAllColumns().length).toBe(3);
       expect(testComponent.values).toBeNull(); // not select yet
 
-      const itemEl3 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(3) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the third column
+      const itemEl3 = getItemAtColumnAndRow(3, 1)!;
       expect(itemEl1.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl2.classList).toContain('ant-cascader-menu-item-active');
       expect(itemEl3.classList).not.toContain('ant-cascader-menu-item-active');
+
       itemEl3.click();
       fixture.detectChanges();
       tick(600);
       fixture.detectChanges();
-      flush(); // wait for cdk-overlay to close
+      flush();
       fixture.detectChanges();
       expect(testComponent.addCallTimes).toHaveBeenCalledTimes(4);
       expect(testComponent.values).toBeNull(); // not select yet
@@ -1818,7 +1665,7 @@ describe('cascader', () => {
       fixture.detectChanges();
       tick(600);
       fixture.detectChanges();
-      flush(); // wait for cdk-overlay to close
+      flush();
       fixture.detectChanges();
       expect(testComponent.addCallTimes).toHaveBeenCalledTimes(4);
       expect(testComponent.values).toBeDefined();
@@ -1845,34 +1692,32 @@ describe('cascader', () => {
       fixture.detectChanges();
       tick(1000); // wait for first row to load finish
       fixture.detectChanges();
-      const itemEl1 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(1) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the first column
+      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
+
       itemEl1.click();
       fixture.detectChanges();
       tick(600);
       fixture.detectChanges();
-      const itemEl2 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(2) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the second column
+      const itemEl2 = getItemAtColumnAndRow(2, 1)!;
+
       itemEl2.click();
       fixture.detectChanges();
       tick(600);
       fixture.detectChanges();
-      const itemEl3 = overlayContainerElement.querySelector(
-        '.ant-cascader-menu:nth-child(3) .ant-cascader-menu-item:nth-child(1)'
-      ) as HTMLElement; // The first option in the third column
+      const itemEl3 = getItemAtColumnAndRow(3, 1)!;
+
       itemEl3.click();
       fixture.detectChanges();
       tick(600);
       fixture.detectChanges();
-      flush(); // wait for cdk-overlay to close
+      flush();
       fixture.detectChanges();
+
       itemEl3.click(); // re-click again, this time it is a leaf
       fixture.detectChanges();
       tick(600);
       fixture.detectChanges();
-      flush(); // wait for cdk-overlay to close
+      flush();
       fixture.detectChanges();
       cascader.nativeElement.querySelector('.ant-cascader-picker-clear').click();
       testComponent.cascader.setMenuVisible(true);
