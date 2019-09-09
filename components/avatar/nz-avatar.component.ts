@@ -65,7 +65,7 @@ export class NzAvatarComponent implements OnChanges {
   @ViewChild('textEl', { static: false }) textEl: ElementRef;
   @ViewChild('imgEl', { static: false }) set imgEl(el: ElementRef) {
     if (el) {
-      const img = el.ElementRef as HTMLImageElement;
+      const img = el.nativeElement as HTMLImageElement;
       if (img.clientHeight > img.clientWidth) {
         this.renderer.setStyle(el, 'width', '100%');
       } else if (img.clientWidth > img.clientHeight) {
