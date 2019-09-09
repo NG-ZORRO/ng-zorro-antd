@@ -8,19 +8,23 @@
 
 import { InjectionToken } from '@angular/core';
 
-export interface NzMessageConfig {
+/**
+ * @deprecated This interface has been removed to `ng-zorro-antd/core`. Please migrate to that.
+ */
+export interface NzMessageConfigLegacy {
   nzAnimate?: boolean;
   nzDuration?: number;
   nzMaxStack?: number;
   nzPauseOnHover?: boolean;
   nzTop?: number | string;
-
-  [index: string]: any; // tslint:disable-line:no-any
 }
 
-export const NZ_MESSAGE_DEFAULT_CONFIG = new InjectionToken<NzMessageConfig>('NZ_MESSAGE_DEFAULT_CONFIG');
+export const NZ_MESSAGE_DEFAULT_CONFIG = new InjectionToken<NzMessageConfigLegacy>('NZ_MESSAGE_DEFAULT_CONFIG');
 
-export const NZ_MESSAGE_CONFIG = new InjectionToken<NzMessageConfig>('NZ_MESSAGE_CONFIG');
+/**
+ * @deprecated 9.0.0 - Injection token 'NZ_MESSAGE_CONFIG' is deprecated and will be removed in 9.0.0. Please use 'NzConfigService' instead.
+ */
+export const NZ_MESSAGE_CONFIG = new InjectionToken<NzMessageConfigLegacy>('NZ_MESSAGE_CONFIG');
 
 export const NZ_MESSAGE_DEFAULT_CONFIG_PROVIDER = {
   provide: NZ_MESSAGE_DEFAULT_CONFIG,

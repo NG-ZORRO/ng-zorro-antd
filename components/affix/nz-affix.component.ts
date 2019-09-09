@@ -24,9 +24,17 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { shallowEqual, toNumber, NgStyleInterface, NzScrollService } from 'ng-zorro-antd/core';
 import { fromEvent, merge, Subscription } from 'rxjs';
 import { auditTime } from 'rxjs/operators';
+
+import {
+  shallowEqual,
+  toNumber,
+  NgStyleInterface,
+  NzConfigService,
+  NzScrollService,
+  WithConfig
+} from 'ng-zorro-antd/core';
 
 export const NZ_AFFIX_DEFAULT_SCROLL_TIME = 20;
 
@@ -46,8 +54,35 @@ export const NZ_AFFIX_DEFAULT_SCROLL_TIME = 20;
 })
 export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() nzTarget: string | Element | Window;
-  @Input() nzOffsetTop: number | null;
-  @Input() nzOffsetBottom: number | null;
+
+  @Input()
+  @WithConfig<number | null>()
+  set nzOffsetTop(value: number | null) {
+    if (value === undefined || value === null) {
+      return;
+    }
+    this._offsetTop = toNumber(value, null);
+    this.updatePosition({} as Event);
+  }
+
+  get nzOffsetTop(): number | null {
+    return this._offsetTop;
+  }
+
+  private _offsetTop: number | null;
+
+  @Input()
+  @WithConfig<number>()
+  set nzOffsetBottom(value: number) {
+    if (typeof value === 'undefined') {
+      return;
+    }
+    this._offsetBottom = toNumber(value, null);
+    this.updatePosition({} as Event);
+  }
+
+  private _offsetBottom: number | null;
+
   @Output() readonly nzChange = new EventEmitter<boolean>();
   @ViewChild('fixedEl', { static: true }) private fixedEl: ElementRef<HTMLDivElement>;
 
@@ -57,8 +92,6 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
   private readonly placeholderNode: HTMLElement;
   private affixStyle: NgStyleInterface | undefined;
   private placeholderStyle: NgStyleInterface | undefined;
-  private _offsetTop: number | null;
-  private _offsetBottom: number | null;
 
   private get target(): Element | Window {
     const el = this.nzTarget;
@@ -67,6 +100,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   constructor(
     _el: ElementRef,
+    public nzConfigService: NzConfigService,
     private scrollSrv: NzScrollService,
     // tslint:disable-next-line:no-any
     @Inject(DOCUMENT) private doc: any,

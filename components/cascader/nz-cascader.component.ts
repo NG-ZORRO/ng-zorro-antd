@@ -36,11 +36,14 @@ import { startWith, takeUntil } from 'rxjs/operators';
 import {
   slideMotion,
   toArray,
+  trimComponentName,
   warnDeprecation,
   DEFAULT_DROPDOWN_POSITIONS,
   InputBoolean,
   NgClassType,
-  NzNoAnimationDirective
+  NzConfigService,
+  NzNoAnimationDirective,
+  WithConfig
 } from 'ng-zorro-antd/core';
 
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
@@ -114,7 +117,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   @Input() nzLabelRender: TemplateRef<void>;
   @Input() nzLabelProperty = 'label';
   @Input() nzNotFoundContent: string | TemplateRef<void>;
-  @Input() nzSize: NzCascaderSize = 'default';
+  @Input() @WithConfig('default') nzSize: NzCascaderSize;
   @Input() nzShowSearch: boolean | NzShowSearchOptions;
   @Input() nzPlaceHolder: string;
   @Input() nzMenuClassName: string;
@@ -209,6 +212,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   constructor(
     public cascaderService: NzCascaderService,
     private i18nService: NzI18nService,
+    public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
     elementRef: ElementRef,
     renderer: Renderer2,
@@ -265,6 +269,13 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
       )
       .subscribe(() => {
         this.setLocale();
+      });
+
+    this.nzConfigService
+      .getConfigChangeEventForComponent(trimComponentName(this.constructor.name))
+      .pipe(takeUntil(this.$destroy))
+      .subscribe(() => {
+        this.cdr.markForCheck();
       });
 
     if (this.nzSelect.observers.length > 0) {

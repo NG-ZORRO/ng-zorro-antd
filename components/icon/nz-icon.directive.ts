@@ -20,6 +20,8 @@ import {
 } from '@angular/core';
 import { IconDirective, ThemeType } from '@ant-design/icons-angular';
 import { warnDeprecation, InputBoolean } from 'ng-zorro-antd/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { NzIconService } from './nz-icon.service';
 
 const iconTypeRE = /^anticon\-\w/;
@@ -65,20 +67,26 @@ const normalizeType = (rawType: string): { type: string; crossError: boolean; ve
   exportAs: 'nzIcon'
 })
 export class NzIconDirective extends IconDirective implements OnInit, OnChanges, OnDestroy, AfterContentChecked {
-  /** Properties with `nz` prefix. */
-  @Input() @InputBoolean() set nzSpin(value: boolean) {
+  @Input()
+  @InputBoolean()
+  set nzSpin(value: boolean) {
     this.spin = value;
   }
+
   @Input() nzRotate: number = 0;
+
   @Input() set nzType(value: string) {
     this.type = value;
   }
+
   @Input() set nzTheme(value: ThemeType) {
     this.theme = value;
   }
+
   @Input() set nzTwotoneColor(value: string) {
     this.twoToneColor = value;
   }
+
   @Input() set nzIconfont(value: string) {
     this.iconfont = value;
   }
@@ -108,6 +116,7 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
 
   private classNameObserver: MutationObserver;
   private el = this.elementRef.nativeElement;
+  private destroy$ = new Subject<void>();
   private _type: string;
 
   /**
@@ -192,6 +201,12 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
   ngOnChanges(changes: SimpleChanges): void {
     const { type, nzType, nzTwotoneColor, twoToneColor, spin, nzSpin, theme, nzTheme, nzRotate } = changes;
 
+    if (type && !nzType) {
+      warnDeprecation(
+        `APIs for Icon without 'nz' prefix are deprecated and will be removed in 9.0.0! Please check icons with this type: '${type.currentValue}'.`
+      );
+    }
+
     if (type || nzType || nzTwotoneColor || twoToneColor || spin || nzSpin || theme || nzTheme) {
       this.changeIcon2();
     } else if (nzRotate) {
@@ -227,12 +242,24 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     if (!this.el.classList.contains('anticon')) {
       this.renderer.setAttribute(this.el, 'class', `anticon ${this.el.className}`.trim());
     }
+
+    this.iconService.configUpdated$
+      .asObservable()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        if (this.type) {
+          this.changeIcon2();
+        }
+      });
   }
 
   ngOnDestroy(): void {
     if (this.classNameObserver) {
       this.classNameObserver.disconnect();
     }
+
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   /**

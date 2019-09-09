@@ -33,13 +33,15 @@ import {
   toBoolean,
   warnDeprecation,
   InputBoolean,
+  NzConfigService,
   NzFormatBeforeDropEvent,
   NzFormatEmitEvent,
   NzNoAnimationDirective,
   NzTreeBase,
   NzTreeBaseService,
   NzTreeHigherOrderServiceToken,
-  NzTreeNode
+  NzTreeNode,
+  WithConfig
 } from 'ng-zorro-antd/core';
 
 import { NzTreeService } from './nz-tree.service';
@@ -71,18 +73,18 @@ export function NzTreeServiceFactory(
   ]
 })
 export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, ControlValueAccessor, OnChanges {
-  @Input() @InputBoolean() nzShowIcon = false;
-  @Input() @InputBoolean() nzShowExpand = true;
+  @Input() @InputBoolean() @WithConfig(false) nzShowIcon: boolean;
+  @Input() @InputBoolean() nzShowExpand: boolean = true;
   @Input() @InputBoolean() nzShowLine = false;
   @Input() nzExpandedIcon: TemplateRef<{ $implicit: NzTreeNode }>;
   @Input() @InputBoolean() nzCheckable = false;
   @Input() @InputBoolean() nzAsyncData = false;
-  @Input() @InputBoolean() nzDraggable = false;
+  @Input() @InputBoolean() nzDraggable: boolean = false;
 
-  @Input() @InputBoolean() nzHideUnMatched = false;
+  @Input() @InputBoolean() @WithConfig(false) nzHideUnMatched: boolean;
   @Input() @InputBoolean() nzSelectMode = false;
   @Input() @InputBoolean() nzCheckStrictly = false;
-  @Input() @InputBoolean() nzBlockNode = false;
+  @Input() @WithConfig(false) @InputBoolean() nzBlockNode: boolean;
   @Input() @InputBoolean() nzExpandAll = false;
 
   @Input() nzTreeTemplate: TemplateRef<{ $implicit: NzTreeNode }>;
@@ -262,6 +264,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
 
   constructor(
     nzTreeService: NzTreeBaseService,
+    public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {

@@ -34,7 +34,16 @@ import {
 import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/router';
 import { merge, Subject, Subscription } from 'rxjs';
 
-import { toNumber, InputBoolean, NzSizeLDSType, NzUpdateHostClassService, PREFIX } from 'ng-zorro-antd/core';
+import {
+  toNumber,
+  InputBoolean,
+  NzConfigService,
+  NzFourDirectionType,
+  NzSizeLDSType,
+  NzUpdateHostClassService,
+  PREFIX,
+  WithConfig
+} from 'ng-zorro-antd/core';
 import { filter, startWith, takeUntil } from 'rxjs/operators';
 
 import { NzTabComponent } from './nz-tab.component';
@@ -50,7 +59,7 @@ export class NzTabChangeEvent {
   tab: NzTabComponent;
 }
 
-export type NzTabPosition = 'top' | 'bottom' | 'left' | 'right';
+export type NzTabPosition = NzFourDirectionType;
 export type NzTabPositionMode = 'horizontal' | 'vertical';
 export type NzTabType = 'line' | 'card';
 
@@ -88,14 +97,14 @@ export class NzTabSetComponent
   @ViewChild('tabContent', { static: false }) tabContent: ElementRef;
 
   @Input() nzTabBarExtraContent: TemplateRef<void>;
-  @Input() nzShowPagination = true;
-  @Input() nzAnimated: NzAnimatedInterface | boolean = true;
+  @Input() @WithConfig(true) nzShowPagination: boolean;
+  @Input() @WithConfig(true) nzAnimated: NzAnimatedInterface | boolean;
   @Input() nzHideAll = false;
   @Input() nzTabPosition: NzTabPosition = 'top';
-  @Input() nzSize: NzSizeLDSType = 'default';
-  @Input() nzTabBarGutter: number;
+  @Input() @WithConfig('default') nzSize: NzSizeLDSType;
+  @Input() @WithConfig() nzTabBarGutter: number;
   @Input() nzTabBarStyle: { [key: string]: string };
-  @Input() nzType: NzTabType = 'line';
+  @Input() @WithConfig('line') nzType: NzTabType;
 
   @Input() @InputBoolean() nzLinkRouter = false;
   @Input() @InputBoolean() nzLinkExact = true;
@@ -194,6 +203,7 @@ export class NzTabSetComponent
   }
 
   constructor(
+    public nzConfigService: NzConfigService,
     private renderer: Renderer2,
     private nzUpdateHostClassService: NzUpdateHostClassService,
     private elementRef: ElementRef,

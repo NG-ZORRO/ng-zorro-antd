@@ -17,7 +17,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { slideAlertMotion, InputBoolean, NgClassType } from 'ng-zorro-antd/core';
+import { slideAlertMotion, InputBoolean, NgClassType, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
 
 @Component({
   selector: 'nz-alert',
@@ -41,8 +41,8 @@ export class NzAlertComponent implements OnChanges {
   @Input() nzMessage: string | TemplateRef<void>;
   @Input() nzDescription: string | TemplateRef<void>;
   @Input() nzType: 'success' | 'info' | 'warning' | 'error' = 'info';
-  @Input() @InputBoolean() nzCloseable = false;
-  @Input() @InputBoolean() nzShowIcon = false;
+  @Input() @WithConfig(false) @InputBoolean() nzCloseable: boolean;
+  @Input() @WithConfig(false) @InputBoolean() nzShowIcon: boolean;
   @Input() @InputBoolean() nzBanner = false;
   @Output() readonly nzOnClose = new EventEmitter<boolean>();
 
@@ -57,6 +57,8 @@ export class NzAlertComponent implements OnChanges {
   private isTypeSet = false;
   private isShowIconSet = false;
   private inferredIconType: string = 'info-circle';
+
+  constructor(public nzConfigService: NzConfigService) {}
 
   closeAlert(): void {
     this.destroy = true;

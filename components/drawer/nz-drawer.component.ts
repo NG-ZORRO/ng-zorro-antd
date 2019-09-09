@@ -36,7 +36,7 @@ import { CdkPortalOutlet, ComponentPortal, PortalInjector, TemplatePortal } from
 
 import { Observable, Subject } from 'rxjs';
 
-import { toCssPixel, InputBoolean } from 'ng-zorro-antd/core';
+import { toCssPixel, InputBoolean, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
 import { takeUntil } from 'rxjs/operators';
 import { NzDrawerOptionsOfComponent, NzDrawerPlacement } from './nz-drawer-options';
 import { NzDrawerRef } from './nz-drawer-ref';
@@ -54,9 +54,9 @@ export const DRAWER_ANIMATE_DURATION = 300;
 export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
   implements OnInit, OnDestroy, AfterViewInit, OnChanges, NzDrawerOptionsOfComponent {
   @Input() nzContent: TemplateRef<{ $implicit: D; drawerRef: NzDrawerRef<R> }> | Type<T>;
-  @Input() @InputBoolean() nzClosable = true;
-  @Input() @InputBoolean() nzMaskClosable = true;
-  @Input() @InputBoolean() nzMask = true;
+  @Input() @InputBoolean() nzClosable: boolean = true;
+  @Input() @WithConfig(true) @InputBoolean() nzMaskClosable: boolean;
+  @Input() @WithConfig(true) @InputBoolean() nzMask: boolean;
   @Input() @InputBoolean() nzNoAnimation = false;
   @Input() @InputBoolean() nzKeyboard: boolean = true;
   @Input() nzTitle: string | TemplateRef<{}>;
@@ -160,6 +160,7 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
   constructor(
     // tslint:disable-next-line:no-any
     @Optional() @Inject(DOCUMENT) private document: any,
+    public nzConfigService: NzConfigService,
     private renderer: Renderer2,
     private overlay: Overlay,
     private injector: Injector,

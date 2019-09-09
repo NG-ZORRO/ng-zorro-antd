@@ -31,11 +31,9 @@ import { Platform } from '@angular/cdk/platform';
 import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 
-import { toCssPixel, InputBoolean, NzDomEventService } from 'ng-zorro-antd/core';
+import { toCssPixel, InputBoolean, NzBreakPoint, NzDomEventService } from 'ng-zorro-antd/core';
 
 import { NzLayoutComponent } from './nz-layout.component';
-
-export type NzBreakPoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 
 @Component({
   selector: 'nz-sider',

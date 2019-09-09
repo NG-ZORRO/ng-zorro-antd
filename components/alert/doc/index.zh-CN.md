@@ -24,14 +24,14 @@ import { NzAlertModule } from 'ng-zorro-antd/alert';
 
 ### nz-alert
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
+| 参数 | 说明 | 类型 | 默认值 | 全局配置 |
+| --- | --- | --- | --- | --- |
 | `[nzBanner]` | 是否用作顶部公告 | `boolean` | `false` |
-| `[nzCloseable]` | 默认不显示关闭按钮 | `boolean` | - |
+| `[nzCloseable]` | 默认不显示关闭按钮 | `boolean` | - | ✅ |
 | `[nzCloseText]` | 自定义关闭按钮 | `string \| TemplateRef<void>` | - |
 | `[nzDescription]` | 警告提示的辅助性文字介绍 | `string \| TemplateRef<void>` | - |
 | `[nzMessage]` | 警告提示内容 | `string \| TemplateRef<void>` | - |
-| `[nzShowIcon]` | 是否显示辅助图标，`nzBanner` 模式下默认值为 `true` | `boolean` | `false` |
+| `[nzShowIcon]` | 是否显示辅助图标，`nzBanner` 模式下默认值为 `true` | `boolean` | `false` | ✅ |
 | `[nzIconType]` | 自定义图标类型，`nzShowIcon` 为 `true` 时有效 | `string \| string[] \| Set<string> \| { [klass: string]: any; }` | - |
 | `[nzType]` | 指定警告提示的样式，`nzBanner` 模式下默认值为 `'warning'` | `'success' \| 'info' \| 'warning' \| 'error'` | `'info'` |
 | `(nzOnClose)` | 关闭时触发的回调函数 | `EventEmitter<void>` | - |

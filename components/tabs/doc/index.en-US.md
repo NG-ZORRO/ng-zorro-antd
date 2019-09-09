@@ -27,19 +27,19 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 ### nz-tabset
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
+| Property | Description | Type | Default | Global Config |
+| -------- | ----------- | ---- | ------- | ------------- |
 | `[nzSelectedIndex]` | Current tab's index | `number` | - |
-| `[nzAnimated]` | Whether to change tabs with animation. Only works while `nzTabPosition="top" \| "bottom"` | `boolean \| {inkBar:boolean, tabPane:boolean}` | `true`, `false` when `type="card"` |
-| `[nzSize]` | preset tab bar size | `'large' \| 'small' \| 'default'` | `'default'` |
+| `[nzAnimated]` | Whether to change tabs with animation. Only works while `nzTabPosition="top" \| "bottom"` | `boolean \| {inkBar:boolean, tabPane:boolean}` | `true`, `false` when `type="card"` | ✅ |
+| `[nzSize]` | preset tab bar size | `'large' \| 'small' \| 'default'` | `'default'` | ✅ |
 | `[nzTabBarExtraContent]` | Extra content in tab bar | `TemplateRef<void>` | - |
 | `[nzTabBarStyle]` | Tab bar style object | `object` | - |
-| `[nzTabPosition]` | Position of tabs | `'top' \| 'right' \| 'bottom' \| 'left'` | `'top'` |
-| `[nzType]` | Basic style of tabs | `'line' \| 'card'` | `'line'` |
-| `[nzTabBarGutter]` | The gap between tabs | `number` | - |
+| `[nzTabPosition]` | Position of tabs | `'top' \| 'right' \| 'bottom' \| 'left'` | `'top'` | |
+| `[nzType]` | Basic style of tabs | `'line' \| 'card'` | `'line'` | ✅ |
+| `[nzTabBarGutter]` | The gap between tabs | `number` | - | ✅ |
 | `[nzHideAll]` | Whether hide all tabs | `boolean` | `false` |
-| `[nzShowPagination]` | Whether show pre or next button when exceed display area | `boolean` | `true` |
-| `[nzLinkRouter]` | Link with Angular router. It supports child mode and query param mode | `boolean` | `false` |
+| `[nzShowPagination]` | Whether show pre or next button when exceed display area | `boolean` | `true` | ✅ |
+| `[nzLinkRouter]` | Link with Angular router. It supports child mode and query param mode | `boolean` | `false` ||
 | `[nzLinkExact]` | Use exact routing matching | `boolean` | `true` |
 | `(nzSelectedIndexChange)` | Current tab's index change callback | `EventEmitter<number>` | - |
 | `(nzSelectChange)` | Current tab's change callback | `EventEmitter<{nzSelectedIndex: number,tab: NzTabComponent}>` | - |

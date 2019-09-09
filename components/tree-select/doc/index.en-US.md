@@ -23,22 +23,22 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 
 ### nz-tree-select
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
+| Property | Description | Type | Default | Global Config |
+| -------- | ----------- | ---- | ------- | ------------- |
 | `[nzAllowClear]` | Whether allow clear | `boolean` | `false` |
 | `[nzPlaceHolder]` | Placeholder of the select input | `string` | - |
 | `[nzDisabled]` | Disabled or not | `boolean` | `false` |
 | `[nzShowIcon]` | Shows the icon before a TreeNode's title. There is no default style | `boolean` | `false` |
-| `[nzShowSearch]` | Whether to display a search input in the dropdown menu(valid only in the single mode) | `boolean` | `false` |
+| `[nzShowSearch]` | Whether to display a search input in the dropdown menu(valid only in the single mode) | `boolean` | `false` | ✅ |
 | `[nzNotFoundContent]` | Specify content to show when no result matches. | `string` | - |
-| `[nzDropdownMatchSelectWidth]` | Determine whether the dropdown menu and the select input are the same width | `boolean` | `true` |
+| `[nzDropdownMatchSelectWidth]` | Determine whether the dropdown menu and the select input are the same width | `boolean` | `true` | ✅ |
 | `[nzDropdownStyle]` | To set the style of the dropdown menu | `object` | - |
 | `[nzMultiple]` | Support multiple or not, will be `true` when enable `nzCheckable`. | `boolean` | `false` |
-| `[nzHideUnMatched]` | Hide unmatched nodes while searching | `boolean` | `false` |
-| `[nzSize]` | To set the size of the select input | `'large' \| 'small' \| 'default'` | `'default'` |
+| `[nzHideUnMatched]` | Hide unmatched nodes while searching | `boolean` | `false` | ✅ |
+| `[nzSize]` | To set the size of the select input | `'large' \| 'small' \| 'default'` | `'default'` | ✅ |
 | `[nzCheckable]` | Whether to show checkbox on the treeNodes | `boolean` | `false` |
-| `[nzShowExpand]` | Show a Expand Icon before the treeNodes | `boolean` | `true` |
-| `[nzShowLine]` | Shows a connecting line | `boolean` | `false` |
+| `[nzShowExpand]` | Show a Expand Icon before the treeNodes | `boolean` | `true` | |
+| `[nzShowLine]` | Shows a connecting line | `boolean` | `false` | |
 | `[nzAsyncData]` | Load data asynchronously (should be used with NzTreeNode.addChildren(...)) | `boolean` | `false` |
 | `[nzNodes]` | Data of the treeNodes | `NzTreeNodeOptions[]` | `[]` |
 | `[nzDefaultExpandAll]` | Whether to expand all treeNodes by default | `boolean` | `false` |
