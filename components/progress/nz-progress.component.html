@@ -62,7 +62,7 @@
             [attr.stroke-width]="strokeWidth"
             [attr.d]="pathString"
             [ngStyle]="trailPathStyle"></path>
-      <path *ngFor="let p of progressCirclePath"
+      <path *ngFor="let p of progressCirclePath; trackBy: trackByFn"
             class="ant-progress-circle-path"
             fill-opacity="0"
             [attr.d]="pathString"

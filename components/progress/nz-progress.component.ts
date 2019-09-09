@@ -74,6 +74,8 @@ export class NzProgressComponent implements OnChanges {
 
   icon: string;
 
+  trackByFn = (index: number) => `${index}`;
+
   get formatter(): NzProgressFormatter {
     return this.nzFormat || defaultFormatter;
   }
