@@ -103,10 +103,6 @@ export class NzAvatarComponent implements OnChanges {
     return this;
   }
 
-  /**
-   * We keep this method and the <img> tag in order to preserve the handling when the load fails.
-   * @param $event
-   */
   imgError($event: Event): void {
     this.nzError.emit($event);
     if (!$event.defaultPrevented) {
