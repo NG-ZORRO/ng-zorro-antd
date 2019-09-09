@@ -35,6 +35,7 @@ The whole of the step bar.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
+| `[nzType]` | type of steps, can be set to one of the following values: `default`, `navigation` | `'default' \| 'navigation'` | `default` |
 | `[nzCurrent]` | To set the current step, counting from 0. You can overwrite this state by using `nzStatus` of `nz-step` | `number` | `0` |
 | `[nzDirection]` | To specify the direction of the step bar, `horizontal` and `vertical` are currently supported | `'vertical' \| 'horizontal'` | `horizontal` |
 | `[nzLabelPlacement]` | Support vertical title and description | `'vertical' \| 'horizontal'` | `horizontal` |
@@ -54,3 +55,5 @@ A single step in the step bar.
 | `[nzIcon]` | icon of the step, optional property | `string \| string[] \| Set<string> \| { [klass: string]: any; }`  \|  `TemplateRef<void>` | - |
 | `[nzStatus]` | to specify the status. It will be automatically set by `nzCurrent` of `nz-steps` if not configured. Optional values are: `wait` `process` `finish` `error` | `'wait' \| 'process' \| 'finish' \| 'error'` | `'wait'` |
 | `[nzTitle]` | title of the step | `string \| TemplateRef<void>` | - |
+| `[nzSubtitle]` | subTitle of the step | `string \| TemplateRef<void>` | - |
+| `[nzDisabled]` | disable click | `boolean` | `false` |

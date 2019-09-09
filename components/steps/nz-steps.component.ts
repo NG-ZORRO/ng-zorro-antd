@@ -46,6 +46,7 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
   @Input() nzCurrent = 0;
   @Input() nzDirection: NzDirectionType = 'horizontal';
   @Input() nzLabelPlacement: 'horizontal' | 'vertical' = 'horizontal';
+  @Input() nzType: 'default' | 'navigation' = 'default';
   @Input() nzSize: NzSizeDSType = 'default';
   @Input() nzStartIndex = 0;
   @Input() nzStatus: NzStatusType = 'process';
@@ -139,7 +140,8 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
       [`ant-steps-label-vertical`]:
         (this.showProcessDot || this.nzLabelPlacement === 'vertical') && this.nzDirection === 'horizontal',
       [`ant-steps-dot`]: this.showProcessDot,
-      ['ant-steps-small']: this.nzSize === 'small'
+      ['ant-steps-small']: this.nzSize === 'small',
+      ['ant-steps-navigation']: this.nzType === 'navigation'
     };
   }
 }
