@@ -54,13 +54,13 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
    * @deprecated 9.0.0. This is deprecated and going to be removed in 9.0.0.
    * Please use a more specific API. Like `nzTooltipTrigger`.
    */
-  @Input() nzTrigger: NzTooltipTrigger;
+  @Input() nzTrigger: NzTooltipTrigger = 'hover';
 
   /**
    * @deprecated 9.0.0. This is deprecated and going to be removed in 9.0.0.
    * Please use a more specific API. Like `nzTooltipPlacement`.
    */
-  @Input() nzPlacement: string;
+  @Input() nzPlacement: string = 'top';
 
   @Input() nzMouseEnterDelay: number;
   @Input() nzMouseLeaveDelay: number;
@@ -227,13 +227,14 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
     this.updateChangedProperties(this.needProxyProperties);
   }
 
-  // TODO: support changing trigger.
   protected registerTriggers(): void {
     // When the method gets invoked, all properties has been synced to the dynamic component.
     // After removing the old API, we can just check the directive's own `nzTrigger`.
     const el = this.elementRef.nativeElement;
 
-    if (this.tooltip.nzTrigger === 'hover') {
+    const trigger = this.isDynamicTooltip ? this.trigger : this.tooltip.nzTrigger;
+
+    if (trigger === 'hover') {
       let overlayElement: HTMLElement;
       this.triggerUnlisteners.push(
         this.renderer.listen(el, 'mouseenter', () => {
@@ -258,10 +259,10 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
           }
         })
       );
-    } else if (this.tooltip.nzTrigger === 'focus') {
+    } else if (trigger === 'focus') {
       this.triggerUnlisteners.push(this.renderer.listen(el, 'focus', () => this.show()));
       this.triggerUnlisteners.push(this.renderer.listen(el, 'blur', () => this.hide()));
-    } else if (this.tooltip.nzTrigger === 'click') {
+    } else if (trigger === 'click') {
       this.triggerUnlisteners.push(
         this.renderer.listen(el, 'click', e => {
           e.preventDefault();
