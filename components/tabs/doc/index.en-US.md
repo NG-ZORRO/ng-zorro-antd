@@ -34,7 +34,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | `[nzSize]` | preset tab bar size | `'large' \| 'small' \| 'default'` | `'default'` | ✅ |
 | `[nzTabBarExtraContent]` | Extra content in tab bar | `TemplateRef<void>` | - |
 | `[nzTabBarStyle]` | Tab bar style object | `object` | - |
-| `[nzTabPosition]` | Position of tabs | `'top' \| 'right' \| 'bottom' \| 'left'` | `'top'` | ✅ |
+| `[nzTabPosition]` | Position of tabs | `'top' \| 'right' \| 'bottom' \| 'left'` | `'top'` | |
 | `[nzType]` | Basic style of tabs | `'line' \| 'card'` | `'line'` | ✅ |
 | `[nzTabBarGutter]` | The gap between tabs | `number` | - | ✅ |
 | `[nzHideAll]` | Whether hide all tabs | `boolean` | `false` |

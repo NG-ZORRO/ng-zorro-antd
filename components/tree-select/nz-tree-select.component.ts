@@ -102,8 +102,8 @@ export function higherOrderServiceFactory(injector: Injector): NzTreeBaseService
 })
 export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
   @Input() @InputBoolean() nzAllowClear: boolean = true;
-  @Input() @InputBoolean() @WithConfig(true) nzShowExpand: boolean;
-  @Input() @InputBoolean() @WithConfig(false) nzShowLine: boolean;
+  @Input() @InputBoolean() nzShowExpand: boolean = true;
+  @Input() @InputBoolean() nzShowLine: boolean = false;
   @Input() @InputBoolean() @WithConfig(true) nzDropdownMatchSelectWidth: boolean;
   @Input() @InputBoolean() nzCheckable: boolean = false;
   @Input() @InputBoolean() @WithConfig(false) nzHideUnMatched: boolean;

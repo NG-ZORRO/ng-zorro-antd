@@ -77,7 +77,7 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, O
   @Input() @InputBoolean() nzSearch: boolean = false;
   @Input() @InputBoolean() nzLoading: boolean = false;
   @Input() nzType: NzButtonType = 'default';
-  @Input() @WithConfig(null) nzShape: NzButtonShape;
+  @Input() nzShape: NzButtonShape = null;
   @Input() @WithConfig('default') nzSize: NzSizeLDSType;
 
   readonly el: HTMLElement = this.elementRef.nativeElement;

@@ -37,7 +37,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | `[nzSize]` | 大小，提供 `large` `default` 和 `small` 三种大小 | `'large' \| 'small' \| 'default'` | `'default'` | ✅ |
 | `[nzTabBarExtraContent]` | tab bar 上额外的元素 | `TemplateRef<void>` | - |
 | `[nzTabBarStyle]` | tab bar 的样式对象 | `object` | - |
-| `[nzTabPosition]` | 页签位置，可选值有 `top` `right` `bottom` `left` | `'top' \| 'right' \| 'bottom' \| 'left'` | `'top'` | ✅ |
+| `[nzTabPosition]` | 页签位置，可选值有 `top` `right` `bottom` `left` | `'top' \| 'right' \| 'bottom' \| 'left'` | `'top'` | |
 | `[nzType]` | 页签的基本样式，可选 `line`、`card` 类型 | `'line' \| 'card'` | `'line'` | ✅ |
 | `[nzTabBarGutter]` | tabs 之间的间隙 | `number` | - | ✅ |
 | `[nzHideAll]` | 是否隐藏所有tab内容 | `boolean` | `false` |

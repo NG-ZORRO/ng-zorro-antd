@@ -80,7 +80,6 @@ export interface BadgeConfig {
 }
 
 export interface ButtonConfig {
-  nzShape?: 'circle' | 'round';
   nzSize?: 'large' | 'default' | 'small';
 }
 
@@ -201,7 +200,6 @@ export interface TabsConfig {
         tabPane: boolean;
       };
   nzSize?: NzSizeLDSType;
-  nzTabPosition?: NzFourDirectionType;
   nzType?: 'line' | 'card';
   nzTabBarGutter?: number;
   nzShowPagination?: boolean;
@@ -220,8 +218,6 @@ export interface TimePickerConfig {
 
 export interface TreeConfig {
   nzBlockNode?: boolean;
-  nzShowExpand?: boolean;
-  nzShowLine?: boolean;
   nzShowIcon?: boolean;
   nzHideUnMatched?: boolean;
 }
@@ -232,7 +228,6 @@ export interface TreeSelectConfig {
   nzDropdownMatchSelectWidth?: boolean;
   nzHideUnMatched?: boolean;
   nzSize?: 'large' | 'small' | 'default';
-  nzShowExpand?: boolean;
 }
 
 export interface TypographyConfig {

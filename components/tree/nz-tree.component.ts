@@ -74,7 +74,7 @@ export function NzTreeServiceFactory(
 })
 export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, ControlValueAccessor, OnChanges {
   @Input() @InputBoolean() @WithConfig(false) nzShowIcon: boolean;
-  @Input() @InputBoolean() @WithConfig(true) nzShowExpand: boolean;
+  @Input() @InputBoolean() nzShowExpand: boolean = true;
   @Input() @InputBoolean() nzShowLine = false;
   @Input() nzExpandedIcon: TemplateRef<{ $implicit: NzTreeNode }>;
   @Input() @InputBoolean() nzCheckable = false;

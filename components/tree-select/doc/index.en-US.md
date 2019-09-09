@@ -37,8 +37,8 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 | `[nzHideUnMatched]` | Hide unmatched nodes while searching | `boolean` | `false` | ✅ |
 | `[nzSize]` | To set the size of the select input | `'large' \| 'small' \| 'default'` | `'default'` | ✅ |
 | `[nzCheckable]` | Whether to show checkbox on the treeNodes | `boolean` | `false` |
-| `[nzShowExpand]` | Show a Expand Icon before the treeNodes | `boolean` | `true` | ✅ |
-| `[nzShowLine]` | Shows a connecting line | `boolean` | `false` | ✅ |
+| `[nzShowExpand]` | Show a Expand Icon before the treeNodes | `boolean` | `true` | |
+| `[nzShowLine]` | Shows a connecting line | `boolean` | `false` | |
 | `[nzAsyncData]` | Load data asynchronously (should be used with NzTreeNode.addChildren(...)) | `boolean` | `false` |
 | `[nzNodes]` | Data of the treeNodes | `NzTreeNodeOptions[]` | `[]` |
 | `[nzDefaultExpandAll]` | Whether to expand all treeNodes by default | `boolean` | `false` |

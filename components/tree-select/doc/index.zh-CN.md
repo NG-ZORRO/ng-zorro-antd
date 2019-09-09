@@ -37,8 +37,8 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 | `[nzHideUnMatched]` | 搜索隐藏未匹配的节点 | `boolean` | `false` | ✅ |
 | `[nzSize]` | 选择框大小 | `'large' \| 'small' \| 'default'` | `'default'` | ✅ |
 | `[nzCheckable]` | 节点前添加 Checkbox 复选框 | `boolean` | `false` |
-| `[nzShowExpand]` | 节点前添加展开图标 | `boolean` | `true` | ✅ |
-| `[nzShowLine]` | 是否展示连接线 | `boolean` | `false` | ✅ |
+| `[nzShowExpand]` | 节点前添加展开图标 | `boolean` | `true` | |
+| `[nzShowLine]` | 是否展示连接线 | `boolean` | `false` | |
 | `[nzAsyncData]` | 是否异步加载(显示加载状态) | `boolean` | `false` |
 | `[nzNodes]` | treeNodes 数据 | `NzTreeNodeOptions[]` | `[]` |
 | `[nzDefaultExpandAll]` | 默认展开所有树节点 | `boolean` | `false` |
