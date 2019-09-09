@@ -3,7 +3,7 @@ order: 7
 title: 全局配置项
 ---
 
-从 8.2.0 版本开始，我们给众多组件添加了**全局配置**功能，你可以通过全局配置来定义组件的默认行为，从而减少在模板中需要写的代码（让你的代码更加清爽），还能实现类似于切换主题的功能。
+从 8.3.0 版本开始，我们给众多组件添加了**全局配置**功能，你可以通过全局配置来定义组件的默认行为，从而减少在模板中需要写的代码（让你的代码更加清爽），还能实现类似于切换主题的功能。
 
 <blockquote style="border-color: red;"><p><strong>之前各组件单独提供的注入令牌将会在 ng-zorro-antd 9.x 版本中移除，请及时迁移！</strong></p></blockquote>
 
@@ -50,13 +50,13 @@ export class ChangeZorroConfigComponent {
   constructor(private nzConfigService: NzConfigService) {}
 
   onChangeConfig() {
-    // 爷爷：这个好！
+    // 爷爷：我就喜欢大号字！
     this.nzConfigService.set('button', { nzSize: 'large' })
   }
 }
 ```
 
-所改变的组件实例都会响应这些改变。
+所有的组件实例都会响应这些改变（只要它们没有被单独赋值）。
 
 ## 全局配置项的优先级
 
