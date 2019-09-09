@@ -113,7 +113,6 @@ export class NzProgressComponent implements OnChanges {
 
     if (nzPercent || nzSuccessPercent) {
       const fillAll = parseInt(this.nzPercent.toString(), 10) >= 100;
-      console.log(this.nzSuccessPercent);
       if (fillAll) {
         if ((isNotNil(this.nzSuccessPercent) && this.nzSuccessPercent! >= 100) || this.nzSuccessPercent === undefined) {
           this.inferredStatus = 'success';
