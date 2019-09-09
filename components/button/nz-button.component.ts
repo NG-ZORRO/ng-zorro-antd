@@ -35,13 +35,16 @@ import {
   findFirstNotEmptyNode,
   findLastNotEmptyNode,
   isEmpty,
+  trimComponentName,
   InputBoolean,
+  NzConfigService,
   NzSizeLDSType,
   NzSizeMap,
   NzUpdateHostClassService,
   NzWaveConfig,
   NzWaveDirective,
-  NZ_WAVE_GLOBAL_CONFIG
+  NZ_WAVE_GLOBAL_CONFIG,
+  WithConfig
 } from 'ng-zorro-antd/core';
 import { NzIconDirective } from 'ng-zorro-antd/icon';
 import { Subject } from 'rxjs';
@@ -60,10 +63,6 @@ export type NzButtonShape = 'circle' | 'round' | null;
   templateUrl: './nz-button.component.html'
 })
 export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, OnChanges {
-  readonly el: HTMLElement = this.elementRef.nativeElement;
-  private iconElement: HTMLElement;
-  private iconOnly = false;
-  private destroy$ = new Subject();
   @ViewChild('contentElement', { static: true }) contentElement: ElementRef;
   @ContentChildren(NzIconDirective, { read: ElementRef }) listOfIconElement: QueryList<ElementRef>;
   @HostBinding('attr.nz-wave') nzWave = new NzWaveDirective(
@@ -72,13 +71,20 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, O
     this.waveConfig,
     this.animationType
   );
-  @Input() @InputBoolean() nzBlock = false;
-  @Input() @InputBoolean() nzGhost = false;
-  @Input() @InputBoolean() nzSearch = false;
-  @Input() @InputBoolean() nzLoading = false;
+
+  @Input() @InputBoolean() nzBlock: boolean = false;
+  @Input() @InputBoolean() nzGhost: boolean = false;
+  @Input() @InputBoolean() nzSearch: boolean = false;
+  @Input() @InputBoolean() nzLoading: boolean = false;
   @Input() nzType: NzButtonType = 'default';
   @Input() nzShape: NzButtonShape = null;
-  @Input() nzSize: NzSizeLDSType = 'default';
+  @Input() @WithConfig('default') nzSize: NzSizeLDSType;
+
+  readonly el: HTMLElement = this.elementRef.nativeElement;
+
+  private iconElement: HTMLElement;
+  private iconOnly = false;
+  private destroy$ = new Subject<void>();
 
   /** temp solution since no method add classMap to host https://github.com/angular/angular/issues/7289 */
   setClassMap(): void {
@@ -143,10 +149,18 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, O
     private contentObserver: ContentObserver,
     private nzUpdateHostClassService: NzUpdateHostClassService,
     private ngZone: NgZone,
+    public nzConfigService: NzConfigService,
     @Optional() @Inject(NZ_WAVE_GLOBAL_CONFIG) private waveConfig: NzWaveConfig,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) private animationType: string
   ) {
     this.renderer.addClass(elementRef.nativeElement, 'ant-btn');
+    this.nzConfigService
+      .getConfigChangeEventForComponent(trimComponentName(this.constructor.name))
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.setClassMap();
+        this.cdr.markForCheck();
+      });
   }
 
   ngAfterContentInit(): void {

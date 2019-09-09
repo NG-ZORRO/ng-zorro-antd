@@ -31,8 +31,8 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 
 对话框当前分为2种模式，`普通模式` 和 `确认框模式`（即`Confirm`对话框，通过调用`confirm/info/success/error/warning`弹出），两种模式对API的支持程度稍有不同。
 
-| 参数 | 说明 | 类型 | 默认值 |
-|----|----|----|----|
+| 参数 | 说明 | 类型 | 默认值 | 全局配置 |
+| --- | --- | --- | --- | --- |
 | nzAfterOpen      | Modal 打开后的回调 | EventEmitter | - |
 | nzAfterClose      | Modal 完全关闭后的回调，可监听close/destroy方法传入的参数 | EventEmitter | - |
 | nzBodyStyle       | Modal body 样式 | `object` | - |
@@ -45,8 +45,8 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 | nzFooter          | 底部内容。<i>1. 仅在普通模式下有效。<br>2. 可通过传入 ModalButtonOptions 来最大程度自定义按钮（详见案例或下方说明）。<br>3. 当不需要底部时，可以设为 null</i> | string<br>TemplateRef<br>ModalButtonOptions | 默认的确定取消按钮 |
 | nzGetContainer    | 指定 Modal 挂载的 HTML 节点 | HTMLElement<br>() => HTMLElement| 默认容器 |
 | nzKeyboard        | 是否支持键盘esc关闭 | `boolean` | `true` |
-| nzMask            | 是否展示遮罩 | `boolean` | `true` |
-| nzMaskClosable    | 点击蒙层是否允许关闭 | `boolean` | `true` |
+| nzMask            | 是否展示遮罩 | `boolean` | `true` | ✅ |
+| nzMaskClosable    | 点击蒙层是否允许关闭 | `boolean` | `true` | ✅ |
 | nzMaskStyle       | 遮罩样式 | `object` | - |
 | nzOkText          | 确认按钮文字。<i>设为 null 表示不显示确认按钮（若在普通模式下使用了 nzFooter 参数，则该值无效）</i> | `string` | 确定 |
 | nzOkType          | 确认按钮类型。<i>与button的type类型值一致</i> | `string` | primary |
@@ -129,30 +129,7 @@ constructor(modal: NzModalService) {
 | triggerOk()               | 手动触发nzOnOk |
 | triggerCancel()           | 手动触发nzOnCancel |
 
-
-### 全局配置
-
-全局配置（NZ_MODAL_CONFIG）
-如果要进行全局默认配置，你可以设置提供商 `NZ_MODAL_CONFIG` 的值来实现。
-（如：在你的模块的`providers`中加入 `{ provide: NZ_MODAL_CONFIG, useValue: { nzMask: false }}`，`NZ_MODAL_CONFIG` 可以从 `ng-zorro-antd` 中导入）
-
-全局配置，组件默认值，组件层级配置之间的权重如下：
-
-组件层级配置 > 全局配置 > 组件默认值
-
-当前支持的全局配置
-```ts
-{
-    provide: NZ_MODAL_CONFIG,
-    useValue: {
-        nzMask?: boolean; // 是否展示遮罩
-        nzMaskClosable?: boolean; // 点击蒙层是否允许关闭
-    }
-}
-```
-注：全局配置并无默认值，因为nzMask和nzMaskClosable默认值存在于组件中
-
-#### ModalButtonOptions（用于自定义底部按钮）
+### ModalButtonOptions（用于自定义底部按钮）
 
 可将此类型数组传入 `nzFooter`，用于自定义底部按钮。
 

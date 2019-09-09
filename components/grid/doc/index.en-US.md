@@ -91,12 +91,12 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 
 ### [nz-row]
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| `[nzAlign]` | the vertical alignment of the flex layout | `'top' \| 'middle' \| 'bottom'` | `'top'` |
-| `[nzGutter]` | spacing between grids, could be a number or a object like `{ xs: 8, sm: 16, md: 24, lg: 32, xl: 32, xxl: 32 }` | `number \| object` | `0` |
-| `[nzJustify]` | horizontal arrangement of the flex layout | `'start' \| 'end' \| 'center' \| 'space-around' \| 'space-between'` | `'start'` |
-| `[nzType]` | layout mode, optional `flex`, [browser support](http://caniuse.com/#search=flex) | `'flex'` | - |
+| Property | Description | Type | Default | Global Config |
+| -------- | ----------- | ---- | ------- | ------------- |
+| `[nzAlign]` | the vertical alignment of the flex layout | `'top'\|'middle'\|'bottom'` | `'top'` | ✅ |
+| `[nzGutter]` | spacing between grids, could be a number or a object like `{ xs: 8, sm: 16, md: 24, lg: 32, xl: 32, xxl: 32 }` | `number\|object` | `0` | ✅ |
+| `[nzJustify]` | horizontal arrangement of the flex layout | `'start'\|'end'\|'center'\|'space-around'\|'space-between'` | `'start'` | ✅ |
+| `[nzType]` | layout mode, optional `flex`, [browser support](http://caniuse.com/#search=flex) | `'flex'` | - | ✅ |
 
 ### [nz-col]
 

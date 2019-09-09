@@ -90,12 +90,12 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 
 ### [nz-row]
 
-| 成员 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `[nzAlign]` | flex 布局下的垂直对齐方式 | `'top' \| 'middle' \| 'bottom'` | `'top'` |
-| `[nzGutter]` | 栅格间隔，可以写成像素值或支持响应式的对象写法 `{ xs: 8, sm: 16, md: 24, lg: 32, xl: 32, xxl: 32 }` | `number \| object` | `0` |
-| `[nzJustify]` | flex 布局下的水平排列方式 | `'start' \| 'end' \| 'center' \| 'space-around' \| 'space-between'` | `'start'` |
-| `[nzType]` | 布局模式，可选 `flex`，[现代浏览器](http://caniuse.com/#search=flex) 下有效 | `'flex'` | - |
+| 成员 | 说明 | 类型 | 默认值 | 全局配置 |
+| --- | --- | --- | --- | --- |
+| `[nzAlign]` | flex 布局下的垂直对齐方式 | `'top' \| 'middle' \| 'bottom'` | `'top'` | ✅ |
+| `[nzGutter]` | 栅格间隔，可以写成像素值或支持响应式的对象写法 `{ xs: 8, sm: 16, md: 24, lg: 32, xl: 32, xxl: 32 }` | `number \| object` | `0` | ✅ |
+| `[nzJustify]` | flex 布局下的水平排列方式 | `'start' \| 'end' \| 'center' \| 'space-around' \| 'space-between'` | `'start'` | ✅ |
+| `[nzType]` | 布局模式，可选 `flex`，[现代浏览器](http://caniuse.com/#search=flex) 下有效 | `'flex'` | - | ✅ |
 
 ### [nz-col]
 

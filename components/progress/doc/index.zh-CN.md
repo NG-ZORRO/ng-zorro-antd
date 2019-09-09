@@ -31,10 +31,10 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
 | `[nzType]` | 类型 | `'line' \| 'circle' \| 'dashboard'` | `'line'` |
 | `[nzFormat]` | 内容的模板函数 | `(percent: number) => string` | `percent => percent + '%'` |
 | `[nzPercent]` | 百分比 | `number` | `0` |
-| `[nzShowInfo]` | 是否显示进度数值或状态图标 | `boolean` | `true` |
+| `[nzShowInfo]` | 是否显示进度数值或状态图标 | `boolean` | `true` | ✅ |
 | `[nzStatus]` | 状态 | `'success' \| 'exception' \| 'active' \| 'normal'` | - |
-| `[nzStrokeLinecap]` | 进度条端点形状 | `'round' \| 'square'` | `'round'` |
-| `[nzStrokeColor]` | 进度条颜色，传入对象时为渐变 | `string \| { from: string; to: string: direction: string; [percent: string]: string }` | - |
+| `[nzStrokeLinecap]` | 进度条端点形状 | `'round' \| 'square'` | `'round'` | ✅ |
+| `[nzStrokeColor]` | 进度条颜色，传入对象时为渐变 | `string \| { from: string; to: string: direction: string; [percent: string]: string }` | - | ✅ |
 | `[nzSuccessPercent]` | 已完成的分段百分比 | `number` | 0 |
 
 ### `nzType="line"`
@@ -48,13 +48,13 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
 | 属性 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzWidth]` | 圆形进度条画布宽度，单位 px | `number` | `132` |
-| `[nzStrokeWidth]` | 圆形进度条线的宽度，单位是进度条画布宽度的百分比 | `number` | `6` |
+| `[nzStrokeWidth]` | 圆形进度条线的宽度，单位是进度条画布宽度的百分比 | `number` | `6` | ✅ |
 
 ### `nzType="dashboard"`
 
 | 属性 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzWidth]` | 仪表盘进度条画布宽度，单位 px | `number` | `132` |
-| `[nzStrokeWidth]` | 仪表盘进度条线的宽度，单位是进度条画布宽度的百分比 | `number` | `6` |
-| `[nzGapDegree]` | 仪表盘进度条缺口角度，可取值 0 ~ 360 | `number` | `0` |
-| `[nzGapPosition]` | 仪表盘进度条缺口位置 | `'top' \| 'right' \| 'bottom' \| 'left'` | `'top'` |
+| `[nzStrokeWidth]` | 仪表盘进度条线的宽度，单位是进度条画布宽度的百分比 | `number` | `6` | ✅ |
+| `[nzGapDegree]` | 仪表盘进度条缺口角度，可取值 0 ~ 360 | `number` | `0` | ✅ |
+| `[nzGapPosition]` | 仪表盘进度条缺口位置 | `'top' \| 'right' \| 'bottom' \| 'left'` | `'top'` | ✅ |

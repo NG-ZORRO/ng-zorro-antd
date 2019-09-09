@@ -65,8 +65,8 @@ The data passed to `[nzData]` will be export with [Template Context](https://ang
 
 ### nz-table
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
+| Property | Description | Type | Default | Global Config |
+| -------- | ----------- | ---- | ------- | ------------- |
 | `[nzData]` | Data record array to be displayed | `any[]` | - |
 | `[nzFrontPagination]` | Whether paginate data in front side，should set to `false` if you want to paginate data in server side or display all data in table | `boolean` | `true` |
 | `[nzTotal]` | Total data count, should set when `nzServerRender` is true | `number` | - |
@@ -74,9 +74,9 @@ The data passed to `[nzData]` will be export with [Template Context](https://ang
 | `[nzPageSize]` | pageSize, double binding | `number` | - |
 | `[nzShowPagination]` | Whether show pagination component in bottom of the table | `boolean` | `true` |
 | `[nzPaginationPosition]` | Specify the position of Pagination | `'top' \| 'bottom' \| 'both'` | `bottom` |
-| `[nzBordered]` | Whether to show all table borders | `boolean` | `false` |
+| `[nzBordered]` | Whether to show all table borders | `boolean` | `false` | ✅ |
 | `[nzWidthConfig]` | Set col width can not used with `nzWidth` of `th` | `string[]` | - |
-| `[nzSize]` | Size of table | `'middle' \| 'small' \| 'default'` | `'default'` |
+| `[nzSize]` | Size of table | `'middle' \| 'small' \| 'default'` | `'default'` | ✅ |
 | `[nzLoading]` | Loading status of table | `boolean` | `false` |
 | `[nzLoadingIndicator]` | the spinning indicator | `TemplateRef<void>` | - |
 | `[nzLoadingDelay]` | Specifies a delay in milliseconds for loading state (prevent flush) | `number` | `0` |
@@ -85,12 +85,12 @@ The data passed to `[nzData]` will be export with [Template Context](https://ang
 | `[nzFooter]` | Table footer renderer | `string \| TemplateRef<void>` | - |
 | `[nzNoResult]` | Custom no result content | `string \| TemplateRef<void>` | - |
 | `[nzPageSizeOptions]` | Specify the sizeChanger options | `number[]` | `[10, 20, 30, 40]` |
-| `[nzShowQuickJumper]` | Determine whether you can jump to pages directly | `boolean` | `false` |
-| `[nzShowSizeChanger]` | Determine whether `nzPageSize` can be changed | `boolean` | `false` |
+| `[nzShowQuickJumper]` | Determine whether you can jump to pages directly | `boolean` | `false` | ✅ |
+| `[nzShowSizeChanger]` | Determine whether `nzPageSize` can be changed | `boolean` | `false` | ✅ |
 | `[nzShowTotal]` | To display Pagination total number and range, same as Pagination	 | `TemplateRef<{ $implicit: number, range: [ number, number ] }>` | - |
 | `[nzItemRender]` | to customize Pagination item, same as Pagination | `TemplateRef<{ $implicit: 'page' \| 'prev' \| 'next', page: number }>` | - |
 | `[nzHideOnSinglePage]` | Whether to hide pager on single page | `boolean` | `false` |
-| `[nzSimple]` | whether to use simple mode | `boolean` | - |
+| `[nzSimple]` | whether to use simple mode | `boolean` | - | ✅ |
 | `[nzTemplateMode]` | template mode，no need to pass data to `nzData` | `boolean` | `false` |
 | `[nzVirtualScroll]` | Enable virtual scroll mode，work with `[nzScroll]` | `boolean` | `false` |
 | `[nzVirtualItemSize]` | The size of the items in the list, same as [cdk itemSize](https://material.angular.io/cdk/scrolling/api) | `number` | `0` |

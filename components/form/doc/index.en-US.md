@@ -54,10 +54,10 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 
 ### [nz-form]
 
-| Property | Description | Type | Default Value |
-| -------- | ----------- | ---- | ------------- |
+| Property | Description | Type | Default Value | Global Config |
+| -------- | ----------- | ---- | ------------- | ------------- |
 | `[nzLayout]`| Form layout | `'horizontal' \| 'vertical' \| 'inline'` | `'horizontal'` |
-| `[nzNoColon]`| change default props `[nzNoColon]` value of `nz-form-label` | `boolean` | `false` |
+| `[nzNoColon]`| change default props `[nzNoColon]` value of `nz-form-label` | `boolean` | `false` | ✅ |
 
 
 ### nz-form-item

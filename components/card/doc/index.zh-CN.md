@@ -28,18 +28,18 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 
 ### nz-card
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
+| 参数 | 说明 | 类型 | 默认值 | 支持全局配置 |
+| --- | --- | --- | --- | --- |
 | `[nzActions]` | 卡片操作组，位置在卡片底部 | `Array<TemplateRef<void>>` | - |
 | `[nzBodyStyle]` | 内容区域自定义样式 | `{ [key: string]: string }` | - |
-| `[nzBordered]` | 是否有边框 | `boolean` | `true` |
+| `[nzBordered]` | 是否有边框 | `boolean` | `true` | ✅ |
 | `[nzCover]` | 卡片封面 | `TemplateRef<void>` | - |
-| `[nzExtra]` | 卡片右上角的操作区域 | `string \| TemplateRef<void>` | - |
-| `[nzHoverable]` | 鼠标移过时可浮起 | `boolean` | `false` |
+| `[nzExtra]` | 卡片右上角的操作区域 | `string\|TemplateRef<void>` | - |
+| `[nzHoverable]` | 鼠标移过时可浮起 | `boolean` | `false` | ✅ |
 | `[nzLoading]` | 当卡片内容还在加载中时，可以用 loading 展示一个占位 | `boolean` | `false` |
-| `[nzTitle]` | 卡片标题 | `string \| TemplateRef<void>` | - |
+| `[nzTitle]` | 卡片标题 | `string\|TemplateRef<void>` | - |
 | `[nzType]` | 卡片类型，可设置为 `inner` 或 不设置 | `'inner'` | - |
-| `[nzSize]` | 卡片的尺寸 | `'default' \| 'small'` | `'default'` |
+| `[nzSize]` | 卡片的尺寸 | `'default'\|'small'` | `'default'` | ✅ |
 
 ### nz-card-meta
 

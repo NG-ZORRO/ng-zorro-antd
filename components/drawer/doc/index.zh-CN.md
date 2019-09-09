@@ -24,13 +24,13 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 
 ### nz-drawer
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
+| 参数 | 说明 | 类型 | 默认值 | 全局配置 |
+| --- | --- | --- | --- | --- |
 | `[nzClosable]` | 是否显示右上角的关闭按钮 | `boolean` | `true` |
-| `[nzMaskClosable]` | 点击蒙层是否允许关闭 | `boolean` | `true` |
-| `[nzMask]` | 是否展示遮罩 | `boolean` | `true` |
-| `[nzKeyboard]` | 是否支持键盘esc关闭 | `boolean` | `true` |
+| `[nzMaskClosable]` | 点击蒙层是否允许关闭 | `boolean` | `true` | ✅ |
+| `[nzMask]` | 是否展示遮罩 | `boolean` | `true` | ✅ |
 | `[nzMaskStyle]` | 遮罩样式 | `object` | `{}` |
+| `[nzKeyboard]` | 是否支持键盘 esc 关闭 | `boolean` | `true` |
 | `[nzBodyStyle]` | Drawer body 样式 | `object` | `{}` |
 | `[nzTitle]` | 标题 | `string \| TemplateRef<void>` | - |
 | `[nzVisible]` | Drawer 是否可见 | `boolean` | - |

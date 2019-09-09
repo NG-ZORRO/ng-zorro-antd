@@ -20,19 +20,19 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 
 ### nz-tree
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
+| Property | Description | Type | Default | Global Config |
+| -------- | ----------- | ---- | ------- | ------------- |
 | `[nzData]` | Tree data (Reference NzTreeNode) | `NzTreeNodeOptions[] \| NzTreeNode[]` | `[]` |
-| `[nzBlockNode]` | Whether treeNode fill remaining horizontal space | `boolean` | `false` |
+| `[nzBlockNode]` | Whether treeNode fill remaining horizontal space | `boolean` | `false` | ✅ |
 | `[nzCheckable]` | Adds a Checkbox before the treeNodes| `boolean` | `false` |
-| `[nzShowExpand]` | Show a Expand Icon before the treeNodes | `boolean` | `true` |
-| `[nzShowLine]` | Shows a connecting line | `boolean` | `false` |
+| `[nzShowExpand]` | Show a Expand Icon before the treeNodes | `boolean` | `true` | |
+| `[nzShowLine]` | Shows a connecting line | `boolean` | `false` | |
 | `[nzExpandedIcon]` | Customize an expand icon | `TemplateRef<{ $implicit: NzTreeNode }>` | - |
-| `[nzShowIcon]` | Shows the icon before a TreeNode's title. There is no default style | `boolean` | `false` |
+| `[nzShowIcon]` | Shows the icon before a TreeNode's title. There is no default style | `boolean` | `false` | ✅ |
 | `[nzAsyncData]` | Load data asynchronously (should be used with NzTreeNode.addChildren(...)) | `boolean` | `false` |
 | `[nzDraggable]` | Specifies whether this Tree is draggable (IE > 8) | `boolean` | `false` |
 | `[nzMultiple]` | Allows selecting multiple treeNodes | `boolean` | `false` |
-| `[nzHideUnMatched]` | Hide unmatched nodes while searching | `boolean` | `false` |
+| `[nzHideUnMatched]` | Hide unmatched nodes while searching | `boolean` | `false` | ✅ |
 | `[nzCheckStrictly]` | Check treeNode precisely; parent treeNode and children treeNodes are not associated | `boolean` | `false` |
 | `[nzExpandAll]` | Whether to expand all treeNodes | `boolean` | `false` |
 | `[nzExpandedKeys]` | Specify the keys of the default expanded treeNodes | `string[]` | `[]` |
