@@ -36,7 +36,7 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzType]` | 步骤条类型，有 `default` 和 `navigation` 两种 | `string` | `default` |
+| `[nzType]` | 步骤条类型，有 `default` 和 `navigation` 两种 | `'default' \| 'navigation'` | `default` |
 | `[nzCurrent]` | 指定当前步骤，从 0 开始记数。在子 `nz-step` 元素中，可以通过 `nzStatus` 属性覆盖状态 | `number` | `0` |
 | `[nzDirection]` | 指定步骤条方向。目前支持水平（`horizontal`）和竖直（`vertical`）两种方向 | `'vertical' \| 'horizontal'` | `horizontal` |
 | `[nzLabelPlacement]` | 指定标签放置位置，默认水平放图标右侧，可选 `vertical` 放图标下方 | `'vertical' \| 'horizontal'` | `horizontal` |

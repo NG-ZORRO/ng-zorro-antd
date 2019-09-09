@@ -35,7 +35,7 @@ The whole of the step bar.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzType]` | type of steps, can be set to one of the following values: `default`, `navigation` | `string` | `default` |
+| `[nzType]` | type of steps, can be set to one of the following values: `default`, `navigation` | `'default' \| 'navigation'` | `default` |
 | `[nzCurrent]` | To set the current step, counting from 0. You can overwrite this state by using `nzStatus` of `nz-step` | `number` | `0` |
 | `[nzDirection]` | To specify the direction of the step bar, `horizontal` and `vertical` are currently supported | `'vertical' \| 'horizontal'` | `horizontal` |
 | `[nzLabelPlacement]` | Support vertical title and description | `'vertical' \| 'horizontal'` | `horizontal` |
