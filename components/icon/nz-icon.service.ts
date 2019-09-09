@@ -110,6 +110,20 @@ export class NzIconService extends IconService {
 
   private iconfontCache = new Set<string>();
 
+  warnAPI(type: 'old' | 'cross' | 'vertical'): void {
+    if (type === 'old') {
+      warnDeprecation(
+        `'<i class="anticon"></i>' would be deprecated in 9.0.0. Please use '<i nz-icon nzType=""></i>' API. Please refer https://ng.ant.design/components/icon/en.`
+      );
+    }
+    if (type === 'cross') {
+      warnDeprecation(`'cross' icon is replaced by 'close' icon. This auto correction would be removed in 9.0.0.`);
+    }
+    if (type === 'vertical') {
+      warnDeprecation(`'verticle' is misspelled. Please use 'vertical'. This misspell would be fixed in 9.0.0.`);
+    }
+  }
+
   normalizeSvgElement(svg: SVGElement): void {
     if (!svg.getAttribute('viewBox')) {
       this._renderer.setAttribute(svg, 'viewBox', '0 0 1024 1024');
@@ -139,9 +153,9 @@ export class NzIconService extends IconService {
   }
 
   constructor(
+    public nzConfigService: NzConfigService,
     rendererFactory: RendererFactory2,
     sanitizer: DomSanitizer,
-    protected nzConfigService: NzConfigService,
     @Optional() handler: HttpBackend,
     // tslint:disable-next-line:no-any
     @Optional() @Inject(DOCUMENT) _document: any,
@@ -161,9 +175,9 @@ export class NzIconService extends IconService {
     if (legacyDefaultTwotoneColor) {
       warnDeprecation(`'NZ_ICON_DEFAULT_TWOTONE_COLOR' is deprecated and will be removed in 9.0.0. Please use 'NZ_CONFIG' instead!`);
     }
-
     this.configDefaultTwotoneColor();
     this.configDefaultTheme();
+    this.configJsonpLoading();
   }
 
   private onConfigChange(): void {
@@ -194,6 +208,14 @@ export class NzIconService extends IconService {
     }
 
     this.twoToneColor = { primaryColor };
+  }
+
+  private configJsonpLoading(): void {
+    const iconConfog = this.getConfig();
+
+    if (iconConfog && iconConfog.nzUseJsonpLoading) {
+      this.useJsonpLoading();
+    }
   }
 
   private getConfig(): IconConfig {

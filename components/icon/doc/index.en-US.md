@@ -132,7 +132,7 @@ Please call this in component's constructor or `AppInitService`.
 
 ### Set Default TwoTone Color
 
-When using the two-tone icons, you provide a global configuration like `{ nzIcon: { nzTwotoneColor: 'xxx' } }` via `NzConfigService` or call corresponding `set` method to change two default twotone color.
+When using the two-tone icons, you provide a global configuration like `{ icon: { nzTwotoneColor: 'xxx' } }` via `NzConfigService` or call corresponding `set` method to change two default twotone color.
 
 ### Custom Font Icon
 
@@ -169,6 +169,10 @@ We introduced namespace so you could add your own icons in a convenient way. Whe
 Static importing. Invoke `addIconLiteral` of `NzIconService`.
 
 Dynamic importing. Make sure that you have put your SVG resources in dir like `assets/${namespace}`. For example, if you have a `panda` icon and in `zoo` namespace, you should put `panda.svg` in `assets/zoo`.
+
+### jsonp like loading
+
+Some CDN would restrict cross-domain requests. If you use a CDN which does that, you can enable jsonp-like loading by configuring `{ icon: { nzUseJsonpLoading: true } }` globally.
 
 ## FAQ
 

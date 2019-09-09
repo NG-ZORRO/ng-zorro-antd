@@ -134,7 +134,7 @@ export class AppModule {
 
 ### 双色图标主色
 
-对于双色图标，可以通过提供全局配置 `{ nzIcon: { nzTwotoneColor: 'xxx' } }` 或 `NzConfigService` 的对应方法修改来全局设置图标主色。
+对于双色图标，可以通过提供全局配置 `{ icon: { nzTwotoneColor: 'xxx' } }` 或 `NzConfigService` 的对应方法修改来全局设置图标主色。
 
 ### 自定义 font 图标
 
@@ -169,6 +169,10 @@ this._iconService.fetchFromIconfont({
 静态引入，只需要调用 `NzIconService` 的 `addIconLiteral` 方法即可。
 
 动态引入，只需要保证 SVG 资源文件放到了相应的目录，即 `assets/${namespace}` 即可。例如你在 `zoo` 命名空间下有一个 `panda` 图标，你需要做的就是将 `panda.svg` 放到 `assets/zoo` 目录底下。
+
+### 类 jsonp 加载
+
+有些 CDN 可能存在跨域限制，这时你就可以启用类 jsonp 加载，通过全局配置 `{ icon: { nzUseJsonpLoading: true } }` 即可。
 
 ## 常见问题
 

@@ -11,7 +11,7 @@ import {
   RightOutline
 } from '@ant-design/icons-angular/icons';
 
-import { NzConfigService } from 'ng-zorro-antd/core';
+import { NzConfigService, NZ_CONFIG } from 'ng-zorro-antd/core';
 
 import { NzIconDirective } from './nz-icon.directive';
 import { NzIconModule } from './nz-icon.module';
@@ -141,6 +141,47 @@ describe('nz icon', () => {
         expect(icons[2].nativeElement.innerHTML).toContain('xlink:href="#icon-twitter"');
       });
     }));
+  });
+});
+
+describe('global config', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [CommonModule, NzIconModule],
+      declarations: [NzTestIconGlobalConfigComponent],
+      providers: [
+        {
+          provide: NZ_CONFIG,
+          useValue: {
+            icon: {
+              nzUseJsonpLoading: true
+            }
+          }
+        }
+      ]
+    });
+  });
+
+  describe('global config', () => {
+    let fixture: ComponentFixture<NzTestIconGlobalConfigComponent>;
+    let icons: DebugElement[];
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestIconGlobalConfigComponent);
+      icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
+    });
+
+    it('should jsonp loading work', done => {
+      fixture.detectChanges();
+
+      setTimeout(() => {
+        fixture.detectChanges();
+        const iconElement = icons[0].nativeElement;
+        const svgElement = iconElement.firstElementChild;
+        expect(svgElement.tagName).toBe('svg');
+        done();
+      }, 200);
+    });
   });
 });
 
@@ -275,3 +316,19 @@ export class NzTestIconIconfontComponent {
     });
   }
 }
+
+@Component({
+  template: `
+    <i class="anticon anticon-question"></i>
+    <i class="anticon anticon-verticle"></i>
+    <i class="anticon anticon-cross"></i>
+  `
+})
+export class NzTestIconOldApiComponent {}
+
+@Component({
+  template: `
+    <i nz-icon nzType="home"></i>
+  `
+})
+export class NzTestIconGlobalConfigComponent {}

@@ -152,6 +152,7 @@ export interface GridConfig {
 }
 
 export interface IconConfig {
+  nzUseJsonpLoading?: boolean;
   nzTheme?: 'fill' | 'outline' | 'twotone';
   nzTwotoneColor?: string;
 }
