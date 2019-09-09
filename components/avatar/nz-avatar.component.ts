@@ -127,8 +127,9 @@ export class NzAvatarComponent implements OnChanges {
     if (changes.hasOwnProperty('nzIcon') && changes.nzIcon.currentValue) {
       this.oldAPIIcon = changes.nzIcon.currentValue.indexOf('anticon') > -1;
     }
-    this.hasText = !this.nzSrc && !!this.nzText;
-    this.hasIcon = !this.nzSrc && !!this.nzIcon && !this.hasText;
+    this.hasIcon = !this.nzSrc && !!this.nzIcon;
+    // It's looks like the icon's priority is higher than text
+    this.hasText = !this.nzSrc && !!this.nzText && !this.hasIcon;
     this.hasSrc = !!this.nzSrc;
 
     this.setClass().notifyCalc();
