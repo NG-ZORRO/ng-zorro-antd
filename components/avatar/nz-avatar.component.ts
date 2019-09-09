@@ -67,12 +67,12 @@ export class NzAvatarComponent implements OnChanges {
     if (el) {
       const img = el.nativeElement as HTMLImageElement;
       if (img.clientHeight > img.clientWidth) {
-        this.renderer.setStyle(el, 'width', '100%');
+        this.renderer.setStyle(img, 'width', '100%');
       } else if (img.clientWidth > img.clientHeight) {
-        this.renderer.setStyle(el, 'height', '100%');
+        this.renderer.setStyle(img, 'height', '100%');
       } else {
-        this.renderer.setStyle(el, 'width', '100%');
-        this.renderer.setStyle(el, 'height', '100%');
+        this.renderer.setStyle(img, 'width', '100%');
+        this.renderer.setStyle(img, 'height', '100%');
       }
     }
   }
