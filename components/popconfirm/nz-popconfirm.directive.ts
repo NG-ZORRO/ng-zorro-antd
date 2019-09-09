@@ -46,6 +46,13 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective implements OnI
   @Input() nzCancelText: string;
   @Input() nzIcon: string | TemplateRef<void>;
   @Input() @InputBoolean() nzCondition: boolean;
+
+  /**
+   * @deprecated 9.0.0. This is deprecated and going to be removed in 9.0.0.
+   * Please use a more specific API. Like `nzTooltipTrigger`.
+   */
+  @Input() nzTrigger: NzTooltipTrigger = 'click';
+
   @Output() readonly nzOnCancel = new EventEmitter<void>();
   @Output() readonly nzOnConfirm = new EventEmitter<void>();
 
