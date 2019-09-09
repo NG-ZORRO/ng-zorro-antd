@@ -42,7 +42,7 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
 | -------- | ----------- | ---- | ------- |
 | `[nzStrokeWidth]` | to set the width of the progress bar, unit: `px` | `number` | `8` |
 
-### `nzType="circle"
+### `nzType="circle"`
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |

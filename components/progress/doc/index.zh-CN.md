@@ -43,7 +43,7 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
 | --- | --- | --- | --- |
 | `[nzStrokeWidth]` | 进度条线的宽度，单位 px | `number` | `8` |
 
-### `nzType="circle"
+### `nzType="circle"`
 
 | 属性 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
