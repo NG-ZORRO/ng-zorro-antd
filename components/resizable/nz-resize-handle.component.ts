@@ -32,7 +32,7 @@ export type NzResizeDirection =
   | 'topLeft';
 
 export class NzResizeHandleMouseDownEvent {
-  constructor(public direction: NzResizeDirection, public mouseEvent: MouseEvent) {}
+  constructor(public direction: NzResizeDirection, public mouseEvent: MouseEvent | TouchEvent) {}
 }
 
 @Component({
@@ -43,7 +43,8 @@ export class NzResizeHandleMouseDownEvent {
   host: {
     '[class]': '"nz-resizable-handle nz-resizable-handle-" + nzDirection',
     '[class.nz-resizable-handle-box-hover]': 'entered',
-    '(mousedown)': 'onMousedown($event)'
+    '(mousedown)': 'onMousedown($event)',
+    '(touchstart)': 'onMousedown($event)'
   }
 })
 export class NzResizeHandleComponent implements OnInit, OnDestroy {
@@ -62,8 +63,8 @@ export class NzResizeHandleComponent implements OnInit, OnDestroy {
     });
   }
 
-  onMousedown($event: MouseEvent): void {
-    this.nzResizableService.handleMouseDown$.next(new NzResizeHandleMouseDownEvent(this.nzDirection, $event));
+  onMousedown(event: MouseEvent | TouchEvent): void {
+    this.nzResizableService.handleMouseDown$.next(new NzResizeHandleMouseDownEvent(this.nzDirection, event));
   }
 
   ngOnDestroy(): void {
