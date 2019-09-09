@@ -8,7 +8,7 @@
 
 import { InjectionToken, TemplateRef, Type } from '@angular/core';
 
-import { NzAlignType, NzFourDirectionType, NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType } from '../types';
+import { NzAlignType, NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType } from '../types';
 
 import { BreakpointMap, NzBreakpoint } from '../responsive/public-api';
 
