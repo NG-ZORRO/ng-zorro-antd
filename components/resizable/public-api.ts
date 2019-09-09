@@ -11,3 +11,4 @@ export * from './nz-resizable.directive';
 export * from './nz-resizable.service';
 export * from './nz-resize-handles.component';
 export * from './nz-resize-handle.component';
+export * from './nz-resizable-utils';
