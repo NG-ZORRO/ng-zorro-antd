@@ -6,10 +6,28 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  ViewEncapsulation
+} from '@angular/core';
 
-import { isNotNil, InputNumber, NgStyleInterface, WithConfig } from 'ng-zorro-antd/core';
+import {
+  isNotNil,
+  trimComponentName,
+  InputNumber,
+  NgStyleInterface,
+  NzConfigService,
+  WithConfig
+} from 'ng-zorro-antd/core';
 
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { handleLinearGradient } from './nz-progress-utils';
 import {
   NzProgressCirclePath,
@@ -43,8 +61,8 @@ export type NzProgressStrokeLinecapType = 'round' | 'square';
   preserveWhitespaces: false,
   templateUrl: './nz-progress.component.html'
 })
-export class NzProgressComponent implements OnChanges {
-  @Input() @WithConfig(true) nzShowInfo = true;
+export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
+  @Input() @WithConfig(true) nzShowInfo: boolean;
   @Input() nzWidth = 132;
   @Input() @WithConfig() nzStrokeColor: NzProgressStrokeColorType;
   @Input() @WithConfig('default') nzSize: 'default' | 'small';
@@ -99,6 +117,9 @@ export class NzProgressComponent implements OnChanges {
 
   private cachedStatus: NzProgressStatusType = 'normal';
   private inferredStatus: NzProgressStatusType = 'normal';
+  private destroy$ = new Subject<void>();
+
+  constructor(public nzConfigService: NzConfigService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const {
@@ -135,11 +156,25 @@ export class NzProgressComponent implements OnChanges {
       this.setStrokeColor();
     }
 
-    if (this.isCircleStyle) {
-      if (nzGapPosition || nzStrokeLinecap || nzGapDegree || nzType || nzPercent || nzStrokeColor) {
-        this.getCirclePaths();
-      }
+    if (nzGapPosition || nzStrokeLinecap || nzGapDegree || nzType || nzPercent || nzStrokeColor) {
+      this.getCirclePaths();
     }
+  }
+
+  ngOnInit(): void {
+    this.nzConfigService
+      .getConfigChangeEventForComponent(trimComponentName(this.constructor.name))
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.updateIcon();
+        this.setStrokeColor();
+        this.getCirclePaths();
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private updateIcon(): void {
@@ -151,6 +186,10 @@ export class NzProgressComponent implements OnChanges {
    * Calculate paths when the type is circle or dashboard.
    */
   private getCirclePaths(): void {
+    if (!this.isCircleStyle) {
+      return;
+    }
+
     const values = isNotNil(this.nzSuccessPercent) ? [this.nzSuccessPercent!, this.nzPercent] : [this.nzPercent];
 
     // Calculate shared styles.
