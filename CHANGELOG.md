@@ -1,3 +1,32 @@
+<a name="8.3.0"></a>
+# [8.3.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.2.1...8.3.0) (2019-09-09)
+
+
+### Bug Fixes
+
+* **cascader:** support falsy value expect for undefined and null ([#4119](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4119)) ([0cb44ac](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0cb44ac)), closes [#4110](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4110)
+* **editor:** fix type any ([#4105](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4105)) ([bd720fb](https://github.com/NG-ZORRO/ng-zorro-antd/commit/bd720fb)), closes [#4099](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4099)
+* **i18n:** fix i18n interface and Traditional Chinese ([#4102](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4102)) ([bb9e89f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/bb9e89f)), closes [#4080](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4080)
+* **i18n:** fix Russian i18n file ([f267bdd](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f267bdd))
+* **i18n:** missing catalan translations added ([#4116](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4116)) ([c530c74](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c530c74))
+* **tabs:** fix selected index not updated ([#4094](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4094)) ([1e76e37](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1e76e37)), closes [#3873](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3873)
+
+
+### Features
+
+* ***:** support global config ([#3613](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3613)) ([6eb041a](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6eb041a))
+* **i18n:** support for Romanian locale ([#4068](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4068)) ([207e178](https://github.com/NG-ZORRO/ng-zorro-antd/commit/207e178))
+* **modal:** support for custom close icons ([#4072](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4072)) ([06b895e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/06b895e))
+* **progress:** support nzTooltipPlacement ([#4007](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4007)) ([d6a2968](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d6a2968))
+* **steps:** support navigation type and nzDisable nzSubtitle ([#4064](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4064)) ([272dc98](https://github.com/NG-ZORRO/ng-zorro-antd/commit/272dc98)), closes [#3931](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3931)
+
+
+### Performance Improvements
+
+* **resizable:** listen document events when resizing start ([#4021](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4021)) ([66afcf0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/66afcf0))
+
+
+
 <a name="8.2.1"></a>
 ## [8.2.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.2.0...8.2.1) (2019-08-26)
 
