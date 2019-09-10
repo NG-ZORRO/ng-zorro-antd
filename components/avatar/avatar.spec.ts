@@ -47,7 +47,8 @@ describe('avatar', () => {
       context.comp.imgError(event);
       tick();
       fixture.detectChanges();
-      expect(getType(dl)).toBe('icon');
+      // Text priority is higher than Icon
+      expect(getType(dl)).toBe('text');
       expect(context.comp.hasSrc).toBe(false);
       context.nzSrc =
         'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg==';

@@ -90,10 +90,10 @@ export class NzAvatarComponent implements OnChanges {
       this.hasSrc = false;
       this.hasIcon = false;
       this.hasText = false;
-      if (this.nzIcon) {
-        this.hasIcon = true;
-      } else if (this.nzText) {
+      if (this.nzText) {
         this.hasText = true;
+      } else if (this.nzIcon) {
+        this.hasIcon = true;
       }
       this.setClass().notifyCalc();
       this.setSizeStyle();
@@ -104,8 +104,12 @@ export class NzAvatarComponent implements OnChanges {
     if (changes.hasOwnProperty('nzIcon') && changes.nzIcon.currentValue) {
       this.oldAPIIcon = changes.nzIcon.currentValue.indexOf('anticon') > -1;
     }
+    /**
+     * If both text and icon are set, the text should be displayed first.
+     * image > text > icon
+     */
     this.hasText = !this.nzSrc && !!this.nzText;
-    this.hasIcon = !this.nzSrc && !!this.nzIcon;
+    this.hasIcon = !this.nzSrc && !!this.nzIcon && !this.hasText;
     this.hasSrc = !!this.nzSrc;
 
     this.setClass().notifyCalc();
