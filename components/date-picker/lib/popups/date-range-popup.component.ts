@@ -19,7 +19,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { CandyDate, FunctionProp } from 'ng-zorro-antd/core';
+import { warn, CandyDate, FunctionProp } from 'ng-zorro-antd/core';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import {
   DisabledDateFn,
@@ -172,17 +172,17 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     }
   }
 
-  changeValue(value: CandyDate, partType?: RangePartType): void {
+  changeValue(value: CandyDate, emitValue: boolean = true, partType?: RangePartType): void {
     if (this.isRange) {
-      const index = this.getPartTypeIndex(partType);
-      this.selectedValue[index] = value;
-      if (this.isValidRange(this.selectedValue)) {
-        this.sortRangeValue();
-        this.valueForRangeShow = this.normalizeRangeValue(this.selectedValue);
-        this.setValue(this.cloneRangeDate(this.selectedValue));
+      // const index = this.getPartTypeIndex(partType);
+      let newRangeValue = partType === 'left' ? [value, this.selectedValue[1]] : [this.selectedValue[0], value];
+      if (this.isValidRange(newRangeValue)) {
+        newRangeValue = this.sortRangeValue(newRangeValue);
+        this.valueForRangeShow = this.normalizeRangeValue(newRangeValue);
+        this.setValue(this.cloneRangeDate(newRangeValue), emitValue);
       }
     } else {
-      this.setValue(value);
+      this.setValue(value, emitValue);
     }
   }
 
@@ -198,7 +198,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
         // If one of them is empty, assign the other one and sort, then set the final values
         this.clearHoverValue(); // Clean up
         this.setRangeValue('right', value);
-        this.sortRangeValue(); // Sort
+        this.selectedValue = this.sortRangeValue(this.selectedValue); // Sort
         this.valueForRangeShow = this.normalizeRangeValue(this.selectedValue);
         this.setValue(this.cloneRangeDate(this.selectedValue));
         this.calendarChange.emit(this.cloneRangeDate(this.selectedValue));
@@ -372,9 +372,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   }
 
   // Set value and trigger change event
-  private setValue(value: CandyDate | CandyDate[]): void {
-    const newValue = value;
-
+  private setValue(value: CandyDate | CandyDate[], emitValue: boolean = true): void {
     // TODO: Sync original time (NOTE: this should take more care of beacuse it may depend on many change sources)
     // if (this.isRange) {
     //   // TODO: Sync time
@@ -384,9 +382,13 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     //   }
     // }
 
-    this.value = newValue;
-    this.valueChange.emit(this.value);
-
+    this.value = value;
+    if (this.isRange) {
+      this.selectedValue = value as CandyDate[];
+    }
+    if (emitValue) {
+      this.valueChange.emit(this.value);
+    }
     this.buildTimeOptions();
   }
 
@@ -418,13 +420,15 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   // }
 
   // Sort a range value (accurate to second)
-  private sortRangeValue(): void {
-    if (Array.isArray(this.selectedValue)) {
-      const [start, end] = this.selectedValue;
-      if (start && end && start.isAfterSecond(end)) {
-        this.selectedValue = [end, start];
-      }
+  private sortRangeValue(rangeValue: CandyDate[]): CandyDate[] {
+    let result: CandyDate[] = [];
+    if (Array.isArray(rangeValue)) {
+      const [start, end] = rangeValue;
+      result = start && end && start.isAfterSecond(end) ? [end, start] : [start, end];
+    } else {
+      warn(`Type of value should be Array, now is ${typeof rangeValue}`);
     }
+    return result;
   }
 
   // Renew and set a range value to trigger sub-component's change detection

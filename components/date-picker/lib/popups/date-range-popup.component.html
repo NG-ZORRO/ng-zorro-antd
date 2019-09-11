@@ -29,7 +29,8 @@
 <ng-template #tplCalendarInput let-partType="partType">
   <calendar-input
     [value]="getValue(partType)"
-    (valueChange)="changeValue($event, partType)"
+    (valueChange)="changeValue($event, true, partType)"
+    (inputValueChange)="changeValue($event, false, partType)"
     [locale]="locale"
     [disabledDate]="disabledDate"
     [format]="format"
