@@ -67,9 +67,9 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   minuteRange: ReadonlyArray<{ index: number; disabled: boolean }>;
   secondRange: ReadonlyArray<{ index: number; disabled: boolean }>;
   use12HoursRange: ReadonlyArray<{ index: number; value: string }>;
-  nzTimeValueAccessorDirective: NzTimeValueAccessorDirective;
 
   @ViewChild(NzTimeValueAccessorDirective, { static: false })
+  nzTimeValueAccessorDirective: NzTimeValueAccessorDirective;
   @ViewChild('hourListElement', { static: false })
   hourListElement: DebugElement;
   @ViewChild('minuteListElement', { static: false }) minuteListElement: DebugElement;
