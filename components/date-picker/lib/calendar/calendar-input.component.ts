@@ -10,16 +10,15 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  EventEmitter,
   Input,
   OnInit,
-  Output,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 
 import { CandyDate } from 'ng-zorro-antd/core';
 import { DateHelperService, NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+import { DateRangePopupComponent } from '../popups/date-range-popup.component';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -33,18 +32,18 @@ export class CalendarInputComponent implements OnInit {
   @Input() locale: NzCalendarI18nInterface;
   @Input() format: string;
   @Input() placeholder: string;
+  @Input() partType: 'left' | 'right' | undefined;
   @Input() disabledDate: (d: Date) => boolean;
 
   @Input() value: CandyDate;
   @Input() autoFocus: boolean;
-  @Output() readonly valueChange = new EventEmitter<CandyDate>();
-  @Output() readonly inputValueChange = new EventEmitter<CandyDate>();
+  // @Output() readonly valueChange = new EventEmitter<CandyDate>();
   @ViewChild('inputElement', { static: true }) inputRef: ElementRef;
 
   prefixCls: string = 'ant-calendar';
   invalidInputClass: string = '';
 
-  constructor(private dateHelper: DateHelperService) {}
+  constructor(private dateHelper: DateHelperService, private parent: DateRangePopupComponent) {}
 
   ngOnInit(): void {
     if (this.autoFocus) {
@@ -52,7 +51,7 @@ export class CalendarInputComponent implements OnInit {
     }
   }
 
-  onInputKeyup(event: KeyboardEvent): void {
+  onInputKeyup(event: KeyboardEvent, isEnter: boolean = false): void {
     const date = this.checkValidInputDate(event);
 
     if (!date || (this.disabledDate && this.disabledDate(date.nativeDate))) {
@@ -60,11 +59,7 @@ export class CalendarInputComponent implements OnInit {
     }
 
     this.value = date;
-    if (event.key === 'Enter') {
-      this.valueChange.emit(date);
-    } else {
-      this.inputValueChange.emit(date);
-    }
+    this.parent.changeValueFromInput(date, isEnter, this.partType);
   }
 
   toReadableInput(value: CandyDate): string {
@@ -76,6 +71,7 @@ export class CalendarInputComponent implements OnInit {
     const date = new CandyDate(input);
 
     this.invalidInputClass = '';
+    // TODO: should support time picker input
     if (!date.isValid() || input !== this.toReadableInput(date)) {
       // Should also match the input format exactly
       this.invalidInputClass = `${this.prefixCls}-input-invalid`;

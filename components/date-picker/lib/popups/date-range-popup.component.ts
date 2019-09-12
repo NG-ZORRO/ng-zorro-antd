@@ -128,7 +128,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     // } else {
     if (!this.isRange) {
       this.value = null; // Clear current value to not sync time by next step
-      this.changeValue(value);
+      this.changeValueFromSelect(value);
     }
     this.closePickerPanel();
   }
@@ -172,17 +172,20 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     }
   }
 
-  changeValue(value: CandyDate, emitValue: boolean = true, partType?: RangePartType): void {
+  changeValueFromInput(value: CandyDate, isEnter: boolean = true, partType?: RangePartType): void {
     if (this.isRange) {
-      // const index = this.getPartTypeIndex(partType);
       let newRangeValue = partType === 'left' ? [value, this.selectedValue[1]] : [this.selectedValue[0], value];
-      if (this.isValidRange(newRangeValue)) {
+      const isValidRange = this.isValidRange(newRangeValue);
+      if (isValidRange) {
         newRangeValue = this.sortRangeValue(newRangeValue);
         this.valueForRangeShow = this.normalizeRangeValue(newRangeValue);
-        this.setValue(this.cloneRangeDate(newRangeValue), emitValue);
       }
+      // ? Why Can not use follow code
+      // this.selectedValue[index] = value;
+      this.selectedValue = this.cloneRangeDate(newRangeValue);
+      this.setValue(this.cloneRangeDate(newRangeValue), isEnter && isValidRange);
     } else {
-      this.setValue(value, emitValue);
+      this.setValue(value, isEnter);
     }
   }
 
@@ -383,9 +386,6 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     // }
 
     this.value = value;
-    if (this.isRange) {
-      this.selectedValue = value as CandyDate[];
-    }
     if (emitValue) {
       this.valueChange.emit(this.value);
     }

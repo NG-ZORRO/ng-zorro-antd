@@ -85,7 +85,10 @@ export class DateTableComponent implements OnInit, OnChanges {
         return (
           !Array.isArray(previousValue) ||
           currentValue.length !== previousValue.length ||
-          currentValue.some((value, index) => !previousValue[index].isSameDay(value))
+          currentValue.some((value, index) => {
+            const previousCandyDate = previousValue[index];
+            return previousCandyDate ? !previousCandyDate.isSameDay(value) : previousCandyDate !== value;
+          })
         );
       } else {
         return !this.isSameDate(previousValue as CandyDate, currentValue);
