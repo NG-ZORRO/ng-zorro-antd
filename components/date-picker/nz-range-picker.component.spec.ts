@@ -9,7 +9,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import differenceInDays from 'date-fns/difference_in_days';
 import isSameDay from 'date-fns/is_same_day';
 
-import { dispatchMouseEvent, NgStyleInterface } from 'ng-zorro-antd/core';
+import { dispatchMouseEvent, typeInElement, NgStyleInterface } from 'ng-zorro-antd/core';
 
 import { CandyDate } from '../core';
 import { NzDatePickerModule } from './nz-date-picker.module';
@@ -668,11 +668,10 @@ describe('NzRangePickerComponent', () => {
       const leftInput = queryFromOverlay('.ant-calendar-range-left input.ant-calendar-input') as HTMLInputElement;
       const rightInput = queryFromOverlay('.ant-calendar-range-right input.ant-calendar-input') as HTMLInputElement;
 
-      leftInput.value = '2018-11-11';
-      leftInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+      typeInElement('2018-11-11', leftInput);
       fixture.detectChanges();
-      rightInput.value = '2018-12-12';
-      rightInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+      typeInElement('2018-12-12', rightInput);
+      rightInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -691,16 +690,14 @@ describe('NzRangePickerComponent', () => {
       const leftInput = queryFromOverlay('.ant-calendar-range-left input.ant-calendar-input') as HTMLInputElement;
       const rightInput = queryFromOverlay('.ant-calendar-range-right input.ant-calendar-input') as HTMLInputElement;
 
-      leftInput.value = '2019-11-05';
-      leftInput.dispatchEvent(new Event('input'));
+      typeInElement('2019-11-05', leftInput);
       fixture.detectChanges();
       // value should be change
       expect(getFirstSelectedDayCell().textContent!.trim()).toBe('5');
-      rightInput.value = '2019-12-08';
-      rightInput.dispatchEvent(new Event('input'));
+      typeInElement('2019-12-08', rightInput);
       fixture.detectChanges();
       tick(500);
-      expect(queryFromOverlay('.ant-calendar-range-right .ant-calendar-month-select').textContent).toContain('12');
+      expect(getSecondSelectedDayCell().textContent!.trim()).toBe('8');
       dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
       fixture.detectChanges();
       tick(500);
@@ -708,25 +705,16 @@ describe('NzRangePickerComponent', () => {
     }));
 
     it('should auto sort range value when start is after end', fakeAsync(() => {
-      const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
       fixture.detectChanges();
       openPickerByClickTrigger();
       const leftInput = queryFromOverlay('.ant-calendar-range-left input.ant-calendar-input') as HTMLInputElement;
       const rightInput = queryFromOverlay('.ant-calendar-range-right input.ant-calendar-input') as HTMLInputElement;
-      leftInput.value = '2019-08-10';
-      // trigger keyup event
-      leftInput.dispatchEvent(new Event('input'));
+      typeInElement('2019-08-10', leftInput);
       fixture.detectChanges();
-      rightInput.value = '2018-02-06';
-      rightInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+      typeInElement('2018-02-06', rightInput);
       fixture.detectChanges();
-      tick(500);
-      // @ts-ignore
-      const result = nzOnChange.calls.allArgs()[0][0];
-      // @ts-ignore
-      expect(result[0].getDate()).toBe(6);
-      // @ts-ignore
-      expect(result[1].getDate()).toBe(10);
+      expect(leftInput.value).toBe('2018-02-06');
+      expect(rightInput.value).toBe('2019-08-10');
     }));
   }); // /specified date picker testing
 
@@ -777,7 +765,15 @@ describe('NzRangePickerComponent', () => {
   }
 
   function getFirstSelectedDayCell(): HTMLElement {
-    return queryFromOverlay('tbody.ant-calendar-tbody td.ant-calendar-selected-day') as HTMLElement;
+    return queryFromOverlay(
+      '.ant-calendar-range-left tbody.ant-calendar-tbody td.ant-calendar-selected-day'
+    ) as HTMLElement;
+  }
+
+  function getSecondSelectedDayCell(): HTMLElement {
+    return queryFromOverlay(
+      '.ant-calendar-range-right tbody.ant-calendar-tbody td.ant-calendar-selected-day'
+    ) as HTMLElement;
   }
 
   function getFirstCell(partial: 'left' | 'right'): HTMLElement {

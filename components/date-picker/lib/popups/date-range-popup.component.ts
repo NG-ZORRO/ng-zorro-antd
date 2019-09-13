@@ -19,7 +19,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { warn, CandyDate, FunctionProp } from 'ng-zorro-antd/core';
+import { CandyDate, FunctionProp } from 'ng-zorro-antd/core';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import {
   DisabledDateFn,
@@ -421,14 +421,11 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
 
   // Sort a range value (accurate to second)
   private sortRangeValue(rangeValue: CandyDate[]): CandyDate[] {
-    let result: CandyDate[] = [];
     if (Array.isArray(rangeValue)) {
       const [start, end] = rangeValue;
-      result = start && end && start.isAfterSecond(end) ? [end, start] : [start, end];
-    } else {
-      warn(`Type of value should be Array, now is ${typeof rangeValue}`);
+      return start && end && start.isAfterSecond(end) ? [end, start] : [start, end];
     }
-    return result;
+    return rangeValue;
   }
 
   // Renew and set a range value to trigger sub-component's change detection

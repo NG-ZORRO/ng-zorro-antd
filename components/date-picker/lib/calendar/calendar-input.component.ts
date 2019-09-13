@@ -37,7 +37,6 @@ export class CalendarInputComponent implements OnInit {
 
   @Input() value: CandyDate;
   @Input() autoFocus: boolean;
-  // @Output() readonly valueChange = new EventEmitter<CandyDate>();
   @ViewChild('inputElement', { static: true }) inputRef: ElementRef;
 
   prefixCls: string = 'ant-calendar';
