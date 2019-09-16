@@ -63,6 +63,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   @Output() readonly calendarChange = new EventEmitter<CandyDate | CandyDate[]>();
   @Input() value: CandyDate | CandyDate[] | null;
   @Output() readonly valueChange = new EventEmitter<CandyDate | CandyDate[]>();
+  @Output() readonly inputChange = new EventEmitter<CandyDate | CandyDate[]>();
 
   @Output() readonly resultOk = new EventEmitter<void>(); // Emitted when done with date selecting
   @Output() readonly closePicker = new EventEmitter<void>(); // Notify outside to close the picker panel
@@ -183,9 +184,9 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
       // ? Why Can not use follow code
       // this.selectedValue[index] = value;
       this.selectedValue = this.cloneRangeDate(newRangeValue);
-      this.setValue(this.cloneRangeDate(newRangeValue), isEnter && isValidRange);
+      this.setValueFromInput(this.cloneRangeDate(newRangeValue), isEnter && isValidRange);
     } else {
-      this.setValue(value, isEnter);
+      this.setValueFromInput(value, isEnter);
     }
   }
 
@@ -374,8 +375,16 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     return { ...origin, ...getTimeConfig(value, disabledTimeFn) };
   }
 
+  private setValueFromInput(value: CandyDate | CandyDate[], emitValueByEnter: boolean = true): void {
+    this.value = value;
+    if (emitValueByEnter) {
+      this.inputChange.emit(this.value);
+    }
+    this.buildTimeOptions();
+  }
+
   // Set value and trigger change event
-  private setValue(value: CandyDate | CandyDate[], emitValue: boolean = true): void {
+  private setValue(value: CandyDate | CandyDate[]): void {
     // TODO: Sync original time (NOTE: this should take more care of beacuse it may depend on many change sources)
     // if (this.isRange) {
     //   // TODO: Sync time
@@ -384,11 +393,8 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     //     newValue = this.overrideHms(this.value as CandyDate, newValue as CandyDate);
     //   }
     // }
-
     this.value = value;
-    if (emitValue) {
-      this.valueChange.emit(this.value);
-    }
+    this.valueChange.emit(this.value);
     this.buildTimeOptions();
   }
 

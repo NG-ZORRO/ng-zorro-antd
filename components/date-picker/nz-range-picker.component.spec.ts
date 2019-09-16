@@ -398,9 +398,7 @@ describe('NzRangePickerComponent', () => {
         'click'
       );
       fixture.detectChanges();
-      expect((queryFromOverlay('.ant-calendar-range-left input.ant-calendar-input') as HTMLInputElement).value).toBe(
-        '2018-11-11 00:22:33'
-      );
+      expect(getPickerPanelLeftInput().value).toBe('2018-11-11 00:22:33');
     }));
 
     it('should support nzShowTime.nzFormat', fakeAsync(() => {
@@ -665,8 +663,8 @@ describe('NzRangePickerComponent', () => {
       const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
       fixture.detectChanges();
       openPickerByClickTrigger();
-      const leftInput = queryFromOverlay('.ant-calendar-range-left input.ant-calendar-input') as HTMLInputElement;
-      const rightInput = queryFromOverlay('.ant-calendar-range-right input.ant-calendar-input') as HTMLInputElement;
+      const leftInput = getPickerPanelLeftInput();
+      const rightInput = getPickerPanelRightInput();
 
       typeInElement('2018-11-11', leftInput);
       fixture.detectChanges();
@@ -681,14 +679,33 @@ describe('NzRangePickerComponent', () => {
       expect(result[1].getDate()).toBe(12);
     }));
 
+    it('should custom input time range', fakeAsync(() => {
+      const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
+      fixtureInstance.modelValue = [new Date('2019-11-11 11:22:33'), new Date('2019-12-12 11:22:33')];
+      fixtureInstance.nzShowTime = true;
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      const leftInput = getPickerPanelLeftInput();
+      const rightInput = getPickerPanelRightInput();
+      const newDateString = ['2019-09-15 11:08:22', '2020-10-10 11:08:22'];
+      typeInElement(newDateString[0], leftInput);
+      fixture.detectChanges();
+      typeInElement(newDateString[1], rightInput);
+      rightInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
+      fixture.detectChanges();
+      tick(500);
+      expect(nzOnChange).toHaveBeenCalledWith([new Date(newDateString[0]), new Date(newDateString[1])]);
+    }));
+
     it('should not change value when click ESC', fakeAsync(() => {
       fixtureInstance.modelValue = [new Date('2018-09-11'), new Date('2020-09-12')];
       fixture.detectChanges();
       tick(); // Wait writeValue() tobe done
       fixture.detectChanges();
       openPickerByClickTrigger();
-      const leftInput = queryFromOverlay('.ant-calendar-range-left input.ant-calendar-input') as HTMLInputElement;
-      const rightInput = queryFromOverlay('.ant-calendar-range-right input.ant-calendar-input') as HTMLInputElement;
+      const leftInput = getPickerPanelLeftInput();
+      const rightInput = getPickerPanelRightInput();
 
       typeInElement('2019-11-05', leftInput);
       fixture.detectChanges();
@@ -701,14 +718,14 @@ describe('NzRangePickerComponent', () => {
       dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
       fixture.detectChanges();
       tick(500);
-      expect(getRangePickerFirstInput()!.value).toBe('2018-09-11');
+      expect(getRangePickerLeftInput()!.value).toBe('2018-09-11');
     }));
 
     it('should auto sort range value when start is after end', fakeAsync(() => {
       fixture.detectChanges();
       openPickerByClickTrigger();
-      const leftInput = queryFromOverlay('.ant-calendar-range-left input.ant-calendar-input') as HTMLInputElement;
-      const rightInput = queryFromOverlay('.ant-calendar-range-right input.ant-calendar-input') as HTMLInputElement;
+      const leftInput = getPickerPanelLeftInput();
+      const rightInput = getPickerPanelRightInput();
       typeInElement('2019-08-10', leftInput);
       fixture.detectChanges();
       typeInElement('2018-02-06', rightInput);
@@ -752,7 +769,7 @@ describe('NzRangePickerComponent', () => {
     return debugElement.query(By.css('nz-picker .ant-calendar-picker-input')).nativeElement as HTMLInputElement;
   }
 
-  function getRangePickerFirstInput(): HTMLInputElement {
+  function getRangePickerLeftInput(): HTMLInputElement {
     return debugElement.query(By.css('nz-picker .ant-calendar-range-picker-input')).nativeElement as HTMLInputElement;
   }
 
@@ -762,6 +779,14 @@ describe('NzRangePickerComponent', () => {
 
   function getPickerContainer(): HTMLElement {
     return queryFromOverlay('.ant-calendar-picker-container') as HTMLElement;
+  }
+
+  function getPickerPanelLeftInput(): HTMLInputElement {
+    return queryFromOverlay('.ant-calendar-range-left input.ant-calendar-input') as HTMLInputElement;
+  }
+
+  function getPickerPanelRightInput(): HTMLInputElement {
+    return queryFromOverlay('.ant-calendar-range-right input.ant-calendar-input') as HTMLInputElement;
   }
 
   function getFirstSelectedDayCell(): HTMLElement {
