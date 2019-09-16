@@ -70,7 +70,6 @@ export class CalendarInputComponent implements OnInit {
     const date = new CandyDate(input);
 
     this.invalidInputClass = '';
-    // TODO: should support time picker input
     if (!date.isValid() || input !== this.toReadableInput(date)) {
       // Should also match the input format exactly
       this.invalidInputClass = `${this.prefixCls}-input-invalid`;
