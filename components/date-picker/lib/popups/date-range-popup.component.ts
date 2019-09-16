@@ -22,6 +22,7 @@ import {
 import { CandyDate, FunctionProp } from 'ng-zorro-antd/core';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import {
+  CompatibleValue,
   DisabledDateFn,
   DisabledTimeConfig,
   DisabledTimeFn,
@@ -58,14 +59,14 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   @Input() dropdownClassName: string;
 
   @Input() panelMode: PanelMode | PanelMode[];
+  @Input() value: CompatibleValue;
+
   @Output() readonly panelModeChange = new EventEmitter<PanelMode | PanelMode[]>();
+  @Output() readonly calendarChange = new EventEmitter<CompatibleValue>();
+  @Output() readonly valueChange = new EventEmitter<CompatibleValue>();
+  @Output() readonly inputChange = new EventEmitter<CompatibleValue>();
 
-  @Output() readonly calendarChange = new EventEmitter<CandyDate | CandyDate[]>();
-  @Input() value: CandyDate | CandyDate[] | null;
-  @Output() readonly valueChange = new EventEmitter<CandyDate | CandyDate[]>();
-  @Output() readonly inputChange = new EventEmitter<CandyDate | CandyDate[]>();
-
-  @Output() readonly resultOk = new EventEmitter<void>(); // Emitted when done with date selecting
+  @Output() readonly resultOk = new EventEmitter<CompatibleValue>(); // Emitted when done with date selecting
   @Output() readonly closePicker = new EventEmitter<void>(); // Notify outside to close the picker panel
 
   prefixCls: string = 'ant-calendar';
@@ -123,12 +124,18 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     this.panelModeChange.emit(show ? 'time' : 'date');
   }
 
+  onClickOk(): void {
+    this.setValue(this.value);
+    this.resultOk.emit();
+  }
+
   onClickToday(value: CandyDate): void {
     // if (this.isRange) { // Show today is not support by range
     //   throw new Error('"nzShowToday" is not support for "RangePicker"!');
     // } else {
     if (!this.isRange) {
-      this.value = null; // Clear current value to not sync time by next step
+      // tslint:disable-next-line: no-any
+      this.value = null as any; // Clear current value to not sync time by next step
       this.changeValueFromSelect(value);
     }
     this.closePickerPanel();
@@ -375,17 +382,17 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     return { ...origin, ...getTimeConfig(value, disabledTimeFn) };
   }
 
-  private setValueFromInput(value: CandyDate | CandyDate[], emitValueByEnter: boolean = true): void {
+  private setValueFromInput(value: CompatibleValue, emitValue: boolean = true): void {
     this.value = value;
-    if (emitValueByEnter) {
+    if (emitValue) {
       this.inputChange.emit(this.value);
     }
     this.buildTimeOptions();
   }
 
   // Set value and trigger change event
-  private setValue(value: CandyDate | CandyDate[]): void {
-    // TODO: Sync original time (NOTE: this should take more care of beacuse it may depend on many change sources)
+  private setValue(value: CompatibleValue): void {
+    // TODO: Sync original time (NOTE: this should take more care of because it may depend on many change sources)
     // if (this.isRange) {
     //   // TODO: Sync time
     // } else {

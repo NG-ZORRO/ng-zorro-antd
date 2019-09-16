@@ -72,7 +72,7 @@
     [rangeQuickSelector]="ranges ? tplRangeQuickSelector : null"
     [(showTimePicker)]="showTimePicker"
     (showTimePickerChange)="onShowTimePickerChange($event)"
-    (clickOk)="resultOk.emit()"
+    (clickOk)="onClickOk()"
     (clickToday)="onClickToday($event)"
   ></calendar-footer>
 </ng-template>

@@ -28,8 +28,8 @@ import {
 } from 'ng-zorro-antd/core';
 import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
 
-import { AbstractPickerComponent, CompatibleDate } from './abstract-picker.component';
-import { DisabledTimeFn, PanelMode, PresetRanges } from './standard-types';
+import { AbstractPickerComponent } from './abstract-picker.component';
+import { CompatibleDate, DisabledTimeFn, PanelMode, PresetRanges } from './standard-types';
 
 @Component({
   template: `` // Just for rollup
