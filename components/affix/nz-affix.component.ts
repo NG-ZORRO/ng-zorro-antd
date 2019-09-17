@@ -133,7 +133,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
     this.scroll$.unsubscribe();
   }
 
-  private getOffset(element: Element, target: Element | Window | undefined): SimpleRect {
+  getOffset(element: Element, target: Element | Window | undefined): SimpleRect {
     const elemRect = element.getBoundingClientRect();
     const targetRect = this.getTargetRect(target!);
 
