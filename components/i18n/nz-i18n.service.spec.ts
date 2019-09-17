@@ -4,7 +4,6 @@ import { inject, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Subscription } from 'rxjs';
 import en_US from './languages/en_US';
 import zh_CN from './languages/zh_CN';
-
 import { NzI18nInterface } from './nz-i18n.interface';
 import { NzI18nModule } from './nz-i18n.module';
 import { NzI18nService } from './nz-i18n.service';
@@ -38,7 +37,7 @@ describe('i18n service', () => {
 
     it('should trigger changed when set different lang', () => {
       const spy = spyOn(testComponent, 'updateLocale');
-      expect(spy).toHaveBeenCalledTimes(0);
+      expect(spy).not.toHaveBeenCalled();
       srv.setLocale(en_US);
       expect(spy).toHaveBeenCalledTimes(1);
     });
