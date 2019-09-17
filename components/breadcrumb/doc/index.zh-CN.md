@@ -29,7 +29,7 @@ import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 | --- | --- | --- | --- |
 | `[nzSeparator]` | 分隔符自定义 | `string \| TemplateRef<void>` | `'/'` |
 | `[nzAutoGenerate]` | 自动生成 Breadcrumb | `boolean` | `false` |
-| `[nzRouteDataBreadcrumbLabel]` | 自定义 route data breadcrumb 属性名, `nzAutoGenerate` 为 `true` 时才生效 | `string` | `'breadcrumb'` |
+| `[nzRouteLabel]` | 自定义 route data 属性名称, `nzAutoGenerate` 为 `true` 时才生效 | `string` | `'breadcrumb'` |
 
 使用 `[nzAutoGenerate]` 时，需要在路由类中定义 `data`:
 
@@ -55,10 +55,10 @@ import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 }
 ```
 
-使用 `[nzRouteDataBreadcrumbLabel]` 自定义`data`格式:
+使用 `nzRouteLabel` 自定义路由属性名称:
 
 ```html
-<nz-breadcrumb [nzAutoGenerate]="true" [nzRouteDataBreadcrumbLabel]="'customBreadcrumb'"></nz-breadcrumb>
+<nz-breadcrumb [nzAutoGenerate]="true" [nzRouteLabel]="'customBreadcrumb'"></nz-breadcrumb>
 ```
 
 ```ts

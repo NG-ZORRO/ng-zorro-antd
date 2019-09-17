@@ -50,7 +50,7 @@ export interface BreadcrumbOption {
 export class NzBreadCrumbComponent implements OnInit, OnDestroy {
   @Input() @InputBoolean() nzAutoGenerate = false;
   @Input() nzSeparator: string | TemplateRef<void> = '/';
-  @Input() nzRouteDataBreadcrumbLabel: string = 'breadcrumb';
+  @Input() nzRouteLabel: string = 'breadcrumb';
 
   breadcrumbs: BreadcrumbOption[] | undefined = [];
 
@@ -125,7 +125,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
         // Parse this layer and generate a breadcrumb item.
         const routeURL: string = child.snapshot.url.map(segment => segment.path).join('/');
         const nextUrl = url + `/${routeURL}`;
-        const breadcrumbLabel = child.snapshot.data[this.nzRouteDataBreadcrumbLabel];
+        const breadcrumbLabel = child.snapshot.data[this.nzRouteLabel];
         // If have data, go to generate a breadcrumb for it.
         if (routeURL && breadcrumbLabel) {
           const breadcrumb: BreadcrumbOption = {

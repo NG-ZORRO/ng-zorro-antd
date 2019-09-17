@@ -29,7 +29,7 @@ import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 | -------- | ----------- | ---- | ------- |
 | `[nzSeparator]` | Custom separator | `string \| TemplateRef<void>` | `'/'` |
 | `[nzAutoGenerate]` | Auto generate breadcrumb | `boolean` | `false` |
-| `[nzRouteDataBreadcrumbLabel]` | Custom route Data breadcrumb config label, used with `nzAutoGenerate` is `true` | `string` | `'breadcrumb'` |
+| `[nzRouteLabel]` | Name of property that determines displayed text in routing config. It should be used when `nzAutoGenerate` is `true` | `string` | `'breadcrumb'` |
 
 Using `[nzAutoGenerate]` by configuring `data` like this:
 
@@ -55,10 +55,10 @@ For lazy loading moduels, you should write `data` in parent module like this:
 }
 ```
 
-use `[nzRouteDataBreadcrumbLabel]` to custom `data` breadcrumb label:
+use `nzRouteLabel` to custom `data` breadcrumb label:
 
 ```html
-<nz-breadcrumb [nzAutoGenerate]="true" [nzRouteDataBreadcrumbLabel]="'customBreadcrumb'"></nz-breadcrumb>
+<nz-breadcrumb [nzAutoGenerate]="true" [nzRouteLabel]="'customBreadcrumb'"></nz-breadcrumb>
 ```
 
 ```ts
