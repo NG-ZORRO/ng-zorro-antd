@@ -79,22 +79,24 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
   private placeholderStyle?: NgStyleInterface;
   private scroll$: Subscription = Subscription.EMPTY;
   private timeout?: number;
+  private document: Document;
 
   private get target(): Element | Window {
     const el = this.nzTarget;
-    return (typeof el === 'string' ? this.doc.querySelector(el) : el) || window;
+    return (typeof el === 'string' ? this.document.querySelector(el) : el) || window;
   }
 
   constructor(
     el: ElementRef,
+    @Inject(DOCUMENT) doc: any, // tslint:disable-line no-any
     public nzConfigService: NzConfigService,
     private scrollSrv: NzScrollService,
     private ngZone: NgZone,
-    private platform: Platform,
-    @Inject(DOCUMENT) private doc: Document
+    private platform: Platform
   ) {
     // The wrapper would stay at the original position as a placeholder.
     this.placeholderNode = el.nativeElement;
+    this.document = doc;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -138,7 +140,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
     const scrollTop = this.scrollSrv.getScroll(target, true);
     const scrollLeft = this.scrollSrv.getScroll(target, false);
 
-    const docElem = this.doc.body;
+    const docElem = this.document.body;
     const clientTop = docElem.clientTop || 0;
     const clientLeft = docElem.clientLeft || 0;
 
