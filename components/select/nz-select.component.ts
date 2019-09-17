@@ -273,7 +273,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     this.value = value;
     let listValue: any[] = []; // tslint:disable-line:no-any
     if (isNotNil(value)) {
-      if (Array.isArray(value)) {
+      if (this.nzSelectService.isMultipleOrTags) {
         listValue = value;
       } else {
         listValue = [value];
