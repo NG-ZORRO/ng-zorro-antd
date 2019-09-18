@@ -34,6 +34,7 @@ import {
   NzProgressColorGradient,
   NzProgressFormatter,
   NzProgressGapPositionType,
+  NzProgressGradientProgress,
   NzProgressStatusType,
   NzProgressStrokeColorType,
   NzProgressStrokeLinecapType,
@@ -42,10 +43,12 @@ import {
 
 let gradientIdSeed = 0;
 
+function stripPercentToNumber(percent: string): number {
+  return +percent.replace('%', '');
+}
+
 const statusIconNameMap = new Map([['success', 'check'], ['exception', 'close']]);
-
 const statusColorMap = new Map([['normal', '#108ee9'], ['exception', '#ff5500'], ['success', '#87d068']]);
-
 const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
 
 export type NzProgressGapPositionType = 'top' | 'bottom' | 'left' | 'right';
@@ -90,6 +93,8 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
 
   /** Paths to rendered in the template. */
   progressCirclePath: NzProgressCirclePath[] = [];
+
+  progressCircleGradient: Array<{ offset: string; color: string }>;
 
   trailPathStyle: NgStyleInterface;
 
@@ -260,6 +265,10 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
     const isGradient = (this.isGradient = !!color && typeof color !== 'string');
     if (isGradient && !this.isCircleStyle) {
       this.lineGradient = handleLinearGradient(color as NzProgressColorGradient);
+    } else if (this.isCircleStyle) {
+      this.progressCircleGradient = Object.keys(this.nzStrokeColor)
+        .sort((a, b) => stripPercentToNumber(a) - stripPercentToNumber(b))
+        .map((key: string) => ({ offset: key, color: (this.nzStrokeColor as NzProgressGradientProgress)[key] }));
     } else {
       this.lineGradient = null;
     }
