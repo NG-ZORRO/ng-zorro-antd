@@ -13,6 +13,6 @@ describe('progress util functions', () => {
     expect(gradientOne[0].color).toBe('test10');
     expect(gradientOne[0].offset).toBe('10%');
     expect(gradientOne[1].color).toBe('test20');
-    expect(gradientOne[1].color).toBe('20%');
+    expect(gradientOne[1].offset).toBe('20%');
   });
 });
