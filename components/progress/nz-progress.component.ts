@@ -85,7 +85,7 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   /** Paths to rendered in the template. */
   progressCirclePath: NzProgressCirclePath[] = [];
 
-  progressCircleGradient: Array<{ offset: string; color: string }>;
+  circleGradient: Array<{ offset: string; color: string }>;
 
   trailPathStyle: NgStyleInterface;
 
@@ -257,10 +257,10 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
     if (isGradient && !this.isCircleStyle) {
       this.lineGradient = handleLinearGradient(color as NzProgressColorGradient);
     } else if (isGradient && this.isCircleStyle) {
-      this.progressCircleGradient = handleCircleGradient(this.nzStrokeColor as NzProgressGradientProgress);
+      this.circleGradient = handleCircleGradient(this.nzStrokeColor as NzProgressGradientProgress);
     } else {
       this.lineGradient = null;
-      this.progressCircleGradient = [];
+      this.circleGradient = [];
     }
   }
 }
