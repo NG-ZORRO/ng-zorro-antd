@@ -28,7 +28,7 @@ import {
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { handleLinearGradient } from './nz-progress-utils';
+import { handleCircleGradient, handleLinearGradient } from './nz-progress-utils';
 import {
   NzProgressCirclePath,
   NzProgressColorGradient,
@@ -43,18 +43,9 @@ import {
 
 let gradientIdSeed = 0;
 
-function stripPercentToNumber(percent: string): number {
-  return +percent.replace('%', '');
-}
-
 const statusIconNameMap = new Map([['success', 'check'], ['exception', 'close']]);
 const statusColorMap = new Map([['normal', '#108ee9'], ['exception', '#ff5500'], ['success', '#87d068']]);
 const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
-
-export type NzProgressGapPositionType = 'top' | 'bottom' | 'left' | 'right';
-export type NzProgressStatusType = 'success' | 'exception' | 'active' | 'normal';
-export type NzProgressTypeType = 'line' | 'circle' | 'dashboard';
-export type NzProgressStrokeLinecapType = 'round' | 'square';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -265,12 +256,11 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
     const isGradient = (this.isGradient = !!color && typeof color !== 'string');
     if (isGradient && !this.isCircleStyle) {
       this.lineGradient = handleLinearGradient(color as NzProgressColorGradient);
-    } else if (this.isCircleStyle) {
-      this.progressCircleGradient = Object.keys(this.nzStrokeColor)
-        .sort((a, b) => stripPercentToNumber(a) - stripPercentToNumber(b))
-        .map((key: string) => ({ offset: key, color: (this.nzStrokeColor as NzProgressGradientProgress)[key] }));
+    } else if (isGradient && this.isCircleStyle) {
+      this.progressCircleGradient = handleCircleGradient(this.nzStrokeColor as NzProgressGradientProgress);
     } else {
       this.lineGradient = null;
+      this.progressCircleGradient = [];
     }
   }
 }
