@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'nz-demo-input-number-size',
+  selector: 'nz-demo-input-number-precision',
   template: `
     <nz-input-number [(ngModel)]="demoValue" [nzPrecision]="precision" nzPlaceHolder="round"></nz-input-number>
     <nz-input-number
