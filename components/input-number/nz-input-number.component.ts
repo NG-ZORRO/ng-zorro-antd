@@ -141,10 +141,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     if (isNotNil(this.nzPrecision) && ~numStr.indexOf('.')) {
       if (this.nzPrecisionMode === 'floor') {
         const numSplit = numStr.split('.');
-        numSplit[1] = numSplit[1].slice(0, this.nzPrecision || 0);
-        if (!numSplit[1]) {
-          return Number(numSplit[0]);
-        }
+        numSplit[1] = numSplit[1].slice(0, this.nzPrecision);
         return Number(numSplit.join('.'));
       }
       return Number(Number(num).toFixed(this.nzPrecision));

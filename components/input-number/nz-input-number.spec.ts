@@ -292,6 +292,11 @@ describe('input number', () => {
       testComponent.nzInputNumberComponent.onBlur();
       fixture.detectChanges();
       expect(testComponent.value).toBe(1);
+      testComponent.nzInputNumberComponent.onModelChange('1.0099');
+      fixture.detectChanges();
+      testComponent.nzInputNumberComponent.onBlur();
+      fixture.detectChanges();
+      expect(testComponent.value).toBe(1);
 
       testComponent.precisionMode = 'floor';
       testComponent.nzInputNumberComponent.onModelChange('0.991');
