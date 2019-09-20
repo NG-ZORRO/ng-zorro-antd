@@ -213,13 +213,15 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
     this.scrollStrategy = this.overlay.scrollStrategies.block();
 
     if (this.nzModalGlobalConfig) {
-      warnDeprecation('`NZ_MODAL_CONFIG` has been deprecated and will be removed in 9.0.0. Please use global config instead.')
+      warnDeprecation(
+        '`NZ_MODAL_CONFIG` has been deprecated and will be removed in 9.0.0. Please use global config instead.'
+      );
     }
   }
 
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
-      this.locale = this.i18n.getLocaleData('Modal') as { okText: string; cancelText: string };
+      this.locale = this.i18n.getLocaleData('Modal');
     });
 
     if (this.isComponent(this.nzContent)) {

@@ -49,9 +49,17 @@ describe('i18n service', () => {
       expect(spy).not.toHaveBeenCalled();
     });
 
-    it('should fallback to en_US when locale for a component is not provided', () => {
+    it('should warn when locale for a component is not provided', () => {
+      const spy = spyOn(console, 'warn');
       srv.setLocale({ locale: 'not_existing_language' } as any); // tslint:disable-line no-any
-      expect(srv.getLocaleData('global.placeholder')).toBe(en_US.global.placeholder);
+      expect(srv.getLocaleData('global.placeholder')).toBeTruthy();
+      expect(spy).toHaveBeenCalledWith(
+        '[NG-ZORRO]:',
+        `Missing translations for "global.placeholder" in language "not_existing_language".
+You can use "NzI18nService.setLocale" as a temporary fix.
+Welcome to submit a pull request to help us optimize the translations!
+https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md`
+      );
     });
   });
 });

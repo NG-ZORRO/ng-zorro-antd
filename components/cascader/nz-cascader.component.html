@@ -11,7 +11,7 @@
       [class.ant-cascader-input-lg]="nzSize === 'large'"
       [class.ant-cascader-input-sm]="nzSize === 'small'"
       [attr.autoComplete]="'off'"
-      [attr.placeholder]="showPlaceholder ? (nzPlaceHolder || locale.placeholder ) : null"
+      [attr.placeholder]="showPlaceholder ? (nzPlaceHolder || locale?.placeholder ) : null"
       [attr.autofocus]="nzAutoFocus ? 'autofocus' : null"
       [readonly]="!nzShowSearch"
       [disabled]="nzDisabled"
