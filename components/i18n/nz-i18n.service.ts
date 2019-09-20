@@ -11,6 +11,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 import { IndexableObject } from 'ng-zorro-antd/core';
 
+import en_US from './languages/en_US';
 import zh_CN from './languages/zh_CN';
 import { DateLocale, NzI18nInterface } from './nz-i18n.interface';
 import { NZ_DATE_LOCALE, NZ_I18N } from './nz-i18n.token';
@@ -85,9 +86,9 @@ export class NzI18nService {
    * @param defaultValue default value if the result is not "truthy"
    */
   // tslint:disable-next-line:no-any
-  getLocaleData(path?: string, defaultValue?: any): any {
+  getLocaleData(path: string, defaultValue?: any): any {
     const result = path ? this._getObjectPath(this._locale, path) : this._locale;
-    return result || defaultValue;
+    return result || defaultValue || this._getObjectPath(en_US, path); // Use English as fallback.
   }
 
   // tslint:disable-next-line:no-any
