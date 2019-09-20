@@ -71,7 +71,7 @@ export abstract class NzTooltipBaseComponent {
 
     if (!this.isTitleEmpty() || !this.isContentEmpty()) {
       this.nzVisible = true;
-      this.nzVisibleChange.next(true);
+      this.nzVisibleChange.emit(true);
       this.cdr.detectChanges();
     }
   }
@@ -82,7 +82,7 @@ export abstract class NzTooltipBaseComponent {
     }
 
     this.nzVisible = false;
-    this.nzVisibleChange.next(false);
+    this.nzVisibleChange.emit(false);
     this.cdr.detectChanges();
   }
 
