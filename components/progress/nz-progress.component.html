@@ -51,9 +51,9 @@
                         y1="0%"
                         x2="0%"
                         y2="0%">
-          <stop *ngFor="let i of nzStrokeColor | keyvalue;"
-                [attr.offset]="i.key"
-                [attr.stop-color]="i.value"></stop>
+          <stop *ngFor="let i of circleGradient;"
+                [attr.offset]="i.offset"
+                [attr.stop-color]="i.color"></stop>
         </linearGradient>
       </defs>
       <path class="ant-progress-circle-trail"
