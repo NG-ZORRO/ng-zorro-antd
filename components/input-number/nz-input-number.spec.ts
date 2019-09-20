@@ -281,7 +281,7 @@ describe('input number', () => {
       fixture.detectChanges();
       expect(testComponent.value).toBe(1);
 
-      testComponent.precisionMode = 'round';
+      testComponent.precisionMode = 'toFixed';
       testComponent.nzInputNumberComponent.onModelChange('0.991');
       fixture.detectChanges();
       testComponent.nzInputNumberComponent.onBlur();
@@ -298,7 +298,7 @@ describe('input number', () => {
       fixture.detectChanges();
       expect(testComponent.value).toBe(1);
 
-      testComponent.precisionMode = 'floor';
+      testComponent.precisionMode = 'cut';
       testComponent.nzInputNumberComponent.onModelChange('0.991');
       fixture.detectChanges();
       testComponent.nzInputNumberComponent.onBlur();
@@ -309,6 +309,18 @@ describe('input number', () => {
       testComponent.nzInputNumberComponent.onBlur();
       fixture.detectChanges();
       expect(testComponent.value).toBe(0.99);
+
+      testComponent.precisionMode = value => +Number(value).toFixed(2);
+      testComponent.nzInputNumberComponent.onModelChange('0.991');
+      fixture.detectChanges();
+      testComponent.nzInputNumberComponent.onBlur();
+      fixture.detectChanges();
+      expect(testComponent.value).toBe(0.99);
+      testComponent.nzInputNumberComponent.onModelChange('0.998');
+      fixture.detectChanges();
+      testComponent.nzInputNumberComponent.onBlur();
+      fixture.detectChanges();
+      expect(testComponent.value).toBe(1);
     });
     it('should nzStep work', () => {
       testComponent.step = 2;
@@ -512,7 +524,7 @@ export class NzTestInputNumberBasicComponent {
   placeholder = 'placeholder';
   step = 1;
   precision?: number = 2;
-  precisionMode: 'round' | 'floor';
+  precisionMode: 'cut' | 'toFixed' | ((value: number | string, precision?: number) => number);
   formatter = (value: number) => (value !== null ? `${value}` : '');
   parser = (value: number) => value;
   modelChange = jasmine.createSpy('change callback');
