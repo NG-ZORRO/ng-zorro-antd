@@ -66,7 +66,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   @Output() readonly valueChange = new EventEmitter<CompatibleValue>();
   @Output() readonly inputChange = new EventEmitter<CompatibleValue>();
 
-  @Output() readonly resultOk = new EventEmitter<CompatibleValue>(); // Emitted when done with date selecting
+  @Output() readonly resultOk = new EventEmitter<void>(); // Emitted when done with date selecting
   @Output() readonly closePicker = new EventEmitter<void>(); // Notify outside to close the picker panel
 
   prefixCls: string = 'ant-calendar';
