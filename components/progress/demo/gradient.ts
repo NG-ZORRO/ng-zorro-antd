@@ -12,7 +12,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
     <nz-progress
       nzType="circle"
       [nzPercent]="90"
-      [nzStrokeColor]="{ '0%': '#108ee9', '100%': '#87d068' }"
+      [nzStrokeColor]="{ '0%': '#108ee9', '50%': '#2db7f5', '100%': '#87d068' }"
     ></nz-progress>
     <nz-progress
       nzType="dashboard"
