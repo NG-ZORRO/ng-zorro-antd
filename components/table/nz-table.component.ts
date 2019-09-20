@@ -237,7 +237,7 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
       data = data.slice((this.nzPageIndex - 1) * this.nzPageSize, this.nzPageIndex * this.nzPageSize);
     }
     this.data = [...data];
-    this.nzCurrentPageDataChange.next(this.data);
+    this.nzCurrentPageDataChange.emit(this.data);
   }
 
   constructor(
