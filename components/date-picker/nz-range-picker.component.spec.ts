@@ -235,9 +235,11 @@ describe('NzRangePickerComponent', () => {
     });
 
     it('should support nzStyle', () => {
-      fixtureInstance.nzStyle = { color: 'blue' };
+      fixtureInstance.nzStyle = { color: 'blue', width: '100%' };
       fixture.detectChanges();
+      const componentElement = debugElement.query(By.css('nz-range-picker')).nativeElement as HTMLElement;
       expect(getPicker().style.color).toBe('blue');
+      expect(componentElement.style.width).toBe('100%');
     });
 
     it('should support nzOnOpenChange', fakeAsync(() => {

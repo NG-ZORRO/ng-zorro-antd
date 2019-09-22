@@ -9,6 +9,7 @@
 import {
   ChangeDetectorRef,
   EventEmitter,
+  HostBinding,
   Input,
   OnChanges,
   OnDestroy,
@@ -21,7 +22,7 @@ import { ControlValueAccessor } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { CandyDate, InputBoolean, NzNoAnimationDirective } from 'ng-zorro-antd/core';
+import { CandyDate, IndexableObject, InputBoolean, NzNoAnimationDirective } from 'ng-zorro-antd/core';
 import { DateHelperService, NzDatePickerI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { NzPickerComponent } from './picker.component';
@@ -45,13 +46,15 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   @Input() nzPopupStyle: object = POPUP_STYLE_PATCH;
   @Input() nzDropdownClassName: string;
   @Input() nzSize: 'large' | 'small';
-  @Input() nzStyle: object;
+  @Input() nzStyle: IndexableObject;
   @Input() nzFormat: string;
   @Input() nzValue: CompatibleValue | null;
 
   @Output() readonly nzOnOpenChange = new EventEmitter<boolean>();
 
   @ViewChild(NzPickerComponent, { static: true }) protected picker: NzPickerComponent;
+
+  @HostBinding('style.width') width: string;
 
   isRange: boolean = false; // Indicate whether the value is a range value
 
@@ -97,6 +100,10 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
     if (changes.nzLocale) {
       // The nzLocale is currently handled by user
       this.setDefaultPlaceHolder();
+    }
+
+    if (changes.nzStyle && changes.nzStyle.currentValue) {
+      this.width = this.nzStyle.width;
     }
   }
 
