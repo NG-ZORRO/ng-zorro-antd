@@ -10,15 +10,16 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 
 import { CandyDate } from 'ng-zorro-antd/core';
 import { DateHelperService, NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
-import { DateRangePopupComponent } from '../popups/date-range-popup.component';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -32,17 +33,18 @@ export class CalendarInputComponent implements OnInit {
   @Input() locale: NzCalendarI18nInterface;
   @Input() format: string;
   @Input() placeholder: string;
-  @Input() partType: 'left' | 'right' | undefined;
   @Input() disabledDate: (d: Date) => boolean;
 
   @Input() value: CandyDate;
   @Input() autoFocus: boolean;
   @ViewChild('inputElement', { static: true }) inputRef: ElementRef;
 
+  @Output() readonly valueChange = new EventEmitter<{ date: CandyDate; isEnter: boolean }>();
+
   prefixCls: string = 'ant-calendar';
   invalidInputClass: string = '';
 
-  constructor(private dateHelper: DateHelperService, private parent: DateRangePopupComponent) {}
+  constructor(private dateHelper: DateHelperService) {}
 
   ngOnInit(): void {
     if (this.autoFocus) {
@@ -58,7 +60,7 @@ export class CalendarInputComponent implements OnInit {
     }
 
     this.value = date;
-    this.parent.changeValueFromInput(date, isEnter, this.partType);
+    this.valueChange.emit({ date, isEnter });
   }
 
   toReadableInput(value: CandyDate): string {

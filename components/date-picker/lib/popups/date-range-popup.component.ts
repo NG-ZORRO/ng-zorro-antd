@@ -19,7 +19,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { CandyDate, FunctionProp } from 'ng-zorro-antd/core';
+import { sortRangeValue, CandyDate, FunctionProp } from 'ng-zorro-antd/core';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import {
   CompatibleValue,
@@ -180,20 +180,21 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     }
   }
 
-  changeValueFromInput(value: CandyDate, isEnter: boolean = true, partType?: RangePartType): void {
+  changeValueFromInput(value: { date: CandyDate; isEnter: boolean }, partType?: RangePartType): void {
+    const { date, isEnter } = value;
     if (this.isRange) {
-      let newRangeValue = partType === 'left' ? [value, this.selectedValue[1]] : [this.selectedValue[0], value];
+      let newRangeValue = partType === 'left' ? [date, this.selectedValue[1]] : [this.selectedValue[0], date];
       const isValidRange = this.isValidRange(newRangeValue);
       if (isValidRange) {
-        newRangeValue = this.sortRangeValue(newRangeValue);
+        newRangeValue = sortRangeValue(newRangeValue);
         this.valueForRangeShow = this.normalizeRangeValue(newRangeValue);
       }
       // ? Why Can not use follow code
-      // this.selectedValue[index] = value;
+      // this.selectedValue[index] = date;
       this.selectedValue = this.cloneRangeDate(newRangeValue);
       this.setValueFromInput(this.cloneRangeDate(newRangeValue), isEnter && isValidRange);
     } else {
-      this.setValueFromInput(value, isEnter);
+      this.setValueFromInput(date, isEnter);
     }
   }
 
@@ -209,7 +210,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
         // If one of them is empty, assign the other one and sort, then set the final values
         this.clearHoverValue(); // Clean up
         this.setRangeValue('right', value);
-        this.selectedValue = this.sortRangeValue(this.selectedValue); // Sort
+        this.selectedValue = sortRangeValue(this.selectedValue); // Sort
         this.valueForRangeShow = this.normalizeRangeValue(this.selectedValue);
         this.setValue(this.cloneRangeDate(this.selectedValue));
         this.calendarChange.emit(this.cloneRangeDate(this.selectedValue));
@@ -431,15 +432,6 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   // private isEmptyRangeValue(value: CandyDate[]): boolean {
   //   return !value || !Array.isArray(value) || value.every((val) => !val);
   // }
-
-  // Sort a range value (accurate to second)
-  private sortRangeValue(rangeValue: CandyDate[]): CandyDate[] {
-    if (Array.isArray(rangeValue)) {
-      const [start, end] = rangeValue;
-      return start && end && start.isAfterSecond(end) ? [end, start] : [start, end];
-    }
-    return rangeValue;
-  }
 
   // Renew and set a range value to trigger sub-component's change detection
   private setRangeValue(partType: RangePartType, value: CandyDate): void {
