@@ -61,7 +61,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 用于右键弹出下拉菜单，具体参见示例
 
-| 参数 | 说明 | 参数 | 返回 |
+| 方法/属性 | 说明 | 参数 | 返回 |
 | --- | --- | --- | --- |
 | create | 创建右键菜单 | `($event:MouseEvent, menu:NzDropdownMenuComponent)` | - |
 | close | 关闭右键菜单 | - | - |
