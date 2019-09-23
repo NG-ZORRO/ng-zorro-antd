@@ -10,7 +10,6 @@ import { Component } from '@angular/core';
       (ngModelChange)="onChange($event)"
       (nzOnOk)="onOk($event)"
     ></nz-date-picker>
-    <br />
     <nz-range-picker
       [nzShowTime]="{ nzFormat: 'HH:mm' }"
       nzFormat="yyyy-MM-dd HH:mm"
@@ -22,10 +21,7 @@ import { Component } from '@angular/core';
   styles: [
     `
       nz-date-picker,
-      nz-month-picker,
-      nz-year-picker,
-      nz-range-picker,
-      nz-week-picker {
+      nz-range-picker {
         display: block;
         margin: 0 8px 12px 0;
       }

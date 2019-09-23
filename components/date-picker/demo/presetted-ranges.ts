@@ -5,7 +5,6 @@ import endOfMonth from 'date-fns/end_of_month';
   selector: 'nz-demo-date-picker-presetted-ranges',
   template: `
     <nz-range-picker [nzRanges]="ranges1" ngModel (ngModelChange)="onChange($event)"></nz-range-picker>
-    <br />
     <nz-range-picker
       [nzRanges]="ranges1"
       nzShowTime
@@ -16,11 +15,7 @@ import endOfMonth from 'date-fns/end_of_month';
   `,
   styles: [
     `
-      nz-date-picker,
-      nz-month-picker,
-      nz-year-picker,
-      nz-range-picker,
-      nz-week-picker {
+      nz-range-picker {
         display: block;
         margin: 0 8px 12px 0;
       }

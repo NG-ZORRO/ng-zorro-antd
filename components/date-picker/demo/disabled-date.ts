@@ -12,11 +12,8 @@ import setHours from 'date-fns/set_hours';
       [nzShowTime]="{ nzDefaultOpenValue: timeDefaultValue }"
     >
     </nz-date-picker>
-    <br />
     <nz-month-picker [nzDisabledDate]="disabledDate" nzPlaceHolder="Select month"></nz-month-picker>
-    <br />
     <nz-year-picker [nzDisabledDate]="disabledDate"></nz-year-picker>
-    <br />
     <nz-range-picker
       [nzDisabledDate]="disabledDate"
       [nzDisabledTime]="disabledRangeTime"
@@ -29,8 +26,7 @@ import setHours from 'date-fns/set_hours';
       nz-date-picker,
       nz-month-picker,
       nz-year-picker,
-      nz-range-picker,
-      nz-week-picker {
+      nz-range-picker {
         display: block;
         margin: 0 8px 12px 0;
       }
