@@ -9,9 +9,8 @@
 import { Inject, Injectable, Optional } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { IndexableObject } from 'ng-zorro-antd/core';
+import { warn, IndexableObject } from 'ng-zorro-antd/core';
 
-import en_US from './languages/en_US';
 import zh_CN from './languages/zh_CN';
 import { DateLocale, NzI18nInterface } from './nz-i18n.interface';
 import { NZ_DATE_LOCALE, NZ_I18N } from './nz-i18n.token';
@@ -53,7 +52,9 @@ export class NzI18nService {
 
   /**
    * Set/Change current locale globally throughout the WHOLE application
-   * [NOTE] If called at runtime, rendered interface may not change along with the locale change (because this do not trigger another render schedule)
+   * NOTE: If called at runtime, rendered interface may not change along with the locale change,
+   * because this do not trigger another render schedule.
+   *
    * @param locale The translating letters
    */
   setLocale(locale: NzI18nInterface): void {
@@ -88,7 +89,15 @@ export class NzI18nService {
   // tslint:disable-next-line:no-any
   getLocaleData(path: string, defaultValue?: any): any {
     const result = path ? this._getObjectPath(this._locale, path) : this._locale;
-    return result || defaultValue || this._getObjectPath(en_US, path); // Use English as fallback.
+
+    if (!result && !defaultValue) {
+      warn(`Missing translations for "${path}" in language "${this._locale.locale}".
+You can use "NzI18nService.setLocale" as a temporary fix.
+Welcome to submit a pull request to help us optimize the translations!
+https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md`);
+    }
+
+    return result || defaultValue || {};
   }
 
   // tslint:disable-next-line:no-any
