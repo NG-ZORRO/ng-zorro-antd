@@ -8,6 +8,7 @@
 
 import {
   ChangeDetectorRef,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -21,7 +22,7 @@ import { ControlValueAccessor } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { CandyDate, InputBoolean, NzNoAnimationDirective } from 'ng-zorro-antd/core';
+import { CandyDate, InputBoolean, NzNoAnimationDirective, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 import { DateHelperService, NzDatePickerI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { NzPickerComponent } from './picker.component';
@@ -54,6 +55,7 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   @ViewChild(NzPickerComponent, { static: true }) protected picker: NzPickerComponent;
 
   isRange: boolean = false; // Indicate whether the value is a range value
+  prefixCls = 'ant-calendar';
 
   get realOpenState(): boolean {
     return this.picker.animationOpenState;
@@ -70,6 +72,8 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
     protected i18n: NzI18nService,
     protected cdr: ChangeDetectorRef,
     protected dateHelper: DateHelperService,
+    protected updateHostClassService: NzUpdateHostClassService,
+    protected el: ElementRef,
     public noAnimation?: NzNoAnimationDirective
   ) {}
 
@@ -97,6 +101,22 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
     if (changes.nzLocale) {
       // The nzLocale is currently handled by user
       this.setDefaultPlaceHolder();
+    }
+
+    if ( changes.nzSize) {
+      const classMap = {
+        [`${this.prefixCls}-picker`]: true,
+        [`${this.prefixCls}-picker-${this.nzSize}`]: true
+      };
+      this.updateHostClassService.updateHostClass(this.el.nativeElement, classMap);
+    }
+
+    if ( changes.nzClassName) {
+      const classMap = {
+        [`${this.prefixCls}-picker`]: true,
+        [`${this.prefixCls}-picker-${this.nzSize}`]: true
+      };
+      this.updateHostClassService.updateHostClass(this.el.nativeElement, classMap);
     }
   }
 
@@ -167,6 +187,8 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
     this.nzDisabled = disabled;
     this.cdr.markForCheck();
   }
+
+  updateHostClass(): void {}
 
   // ------------------------------------------------------------------------
   // | Internal methods

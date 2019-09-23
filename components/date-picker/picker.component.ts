@@ -30,10 +30,17 @@ import { DateHelperService } from 'ng-zorro-antd/i18n';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
-  selector: 'nz-picker',
+  selector: '[nz-picker]',
   exportAs: 'nzPicker',
   templateUrl: './picker.component.html',
   animations: [slideMotion],
+  host: {
+    '[class]': 'prefixCls + "-picker" + " " + (size ? prefixCls + "-picker-" + size : "") + " " + className',
+    '[style]': 'style',
+    tabindex: '0',
+    '(click)': 'onClickInputBox()',
+    '(keyup.enter)': 'onClickInputBox()'
+  },
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzPickerComponent implements AfterViewInit {
@@ -52,11 +59,11 @@ export class NzPickerComponent implements AfterViewInit {
   @Output() readonly valueChange = new EventEmitter<CandyDate | CandyDate[] | null>();
   @Output() readonly openChange = new EventEmitter<boolean>(); // Emitted when overlay's open state change
 
-  @ViewChild('origin', { static: false }) origin: CdkOverlayOrigin;
   @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay: CdkConnectedOverlay;
   @ViewChild('pickerInput', { static: false }) pickerInput: ElementRef;
 
   prefixCls = 'ant-calendar';
+  origin: CdkOverlayOrigin;
   animationOpenState = false;
   overlayOpen: boolean = false; // Available when "open"=undefined
   overlayOffsetY: number = 0;
@@ -98,7 +105,9 @@ export class NzPickerComponent implements AfterViewInit {
     return this.isOpenHandledByUser() ? !!this.open : this.overlayOpen;
   }
 
-  constructor(private dateHelper: DateHelperService, private changeDetector: ChangeDetectorRef) {}
+  constructor(private dateHelper: DateHelperService, private changeDetector: ChangeDetectorRef, el: ElementRef) {
+    this.origin = new CdkOverlayOrigin(el);
+  }
 
   ngAfterViewInit(): void {
     if (this.autoFocus) {

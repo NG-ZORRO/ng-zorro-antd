@@ -1,4 +1,4 @@
-<span
+<!-- <span
   cdkOverlayOrigin
   #origin="cdkOverlayOrigin"
   class="{{ prefixCls }}-picker {{ size ? prefixCls + '-picker-' + size : '' }} {{ className }}"
@@ -6,7 +6,7 @@
   tabindex="0"
   (click)="onClickInputBox()"
   (keyup.enter)="onClickInputBox()"
->
+> -->
   <!-- Content of single picker -->
   <ng-container *ngIf="!isRange">
     <input
@@ -39,7 +39,7 @@
       <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
     </span>
   </ng-container>
-</span>
+<!-- </span> -->
 
 <!-- Input for Range ONLY -->
 <ng-template #tplRangeInput let-partType="partType">

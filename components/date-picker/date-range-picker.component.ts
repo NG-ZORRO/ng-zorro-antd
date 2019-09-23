@@ -24,7 +24,8 @@ import {
   CandyDate,
   FunctionProp,
   InputBoolean,
-  NzNoAnimationDirective
+  NzNoAnimationDirective,
+  NzUpdateHostClassService
 } from 'ng-zorro-antd/core';
 import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
 
@@ -32,7 +33,8 @@ import { AbstractPickerComponent } from './abstract-picker.component';
 import { CompatibleDate, DisabledTimeFn, PanelMode, PresetRanges } from './standard-types';
 
 @Component({
-  template: `` // Just for rollup
+  template: ``, // Just for rollup
+  providers: [NzUpdateHostClassService]
 })
 export class DateRangePickerComponent extends AbstractPickerComponent implements OnInit, OnChanges {
   showWeek: boolean = false; // Should show as week picker
