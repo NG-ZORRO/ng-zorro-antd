@@ -23,7 +23,12 @@ import { en_US, zh_CN, NzI18nService } from 'ng-zorro-antd/i18n';
   `,
   styles: [
     `
-      :host ::ng-deep .ant-calendar-picker {
+      nz-date-picker,
+      nz-month-picker,
+      nz-year-picker,
+      nz-range-picker,
+      nz-week-picker {
+        display: block;
         margin: 0 8px 12px 0;
       }
     `
