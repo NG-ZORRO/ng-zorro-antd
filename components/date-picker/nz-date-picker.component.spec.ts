@@ -237,7 +237,7 @@ describe('NzDatePickerComponent', () => {
     it('should support nzClassName', () => {
       const className = (fixtureInstance.nzClassName = 'my-test-class');
       fixture.detectChanges();
-      const picker = debugElement.queryAll(By.css('.ant-calendar-picker'))[1].nativeElement as HTMLElement;
+      const picker = debugElement.query(By.css('.ant-calendar-picker')).nativeElement as HTMLElement;
       expect(picker.classList.contains(className)).toBeTruthy();
     });
 
@@ -314,11 +314,9 @@ describe('NzDatePickerComponent', () => {
     });
 
     it('should support nzStyle', () => {
-      fixtureInstance.nzStyle = { color: 'blue', width: '100%' };
+      fixtureInstance.nzStyle = { color: 'blue' };
       fixture.detectChanges();
-      const componentElement = debugElement.query(By.css('nz-date-picker')).nativeElement as HTMLElement;
       expect(getPicker().style.color).toBe('blue');
-      expect(componentElement.style.width).toBe('100%');
     });
 
     it('should support nzOnOpenChange', () => {
