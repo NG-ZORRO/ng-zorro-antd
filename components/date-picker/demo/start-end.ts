@@ -27,7 +27,7 @@ import { Component } from '@angular/core';
   `,
   styles: [
     `
-      nz-date-picker {
+      :host ::ng-deep .ant-calendar-picker {
         margin: 0 8px 12px 0;
       }
     `

@@ -9,7 +9,6 @@
 import {
   ChangeDetectorRef,
   EventEmitter,
-  HostBinding,
   Input,
   OnChanges,
   OnDestroy,
@@ -53,8 +52,6 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   @Output() readonly nzOnOpenChange = new EventEmitter<boolean>();
 
   @ViewChild(NzPickerComponent, { static: true }) protected picker: NzPickerComponent;
-
-  @HostBinding('style.width') width: string;
 
   isRange: boolean = false; // Indicate whether the value is a range value
 
@@ -100,10 +97,6 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
     if (changes.nzLocale) {
       // The nzLocale is currently handled by user
       this.setDefaultPlaceHolder();
-    }
-
-    if (changes.nzStyle && changes.nzStyle.currentValue) {
-      this.width = this.nzStyle.width;
     }
   }
 
