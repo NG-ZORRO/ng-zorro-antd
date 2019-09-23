@@ -25,6 +25,7 @@ import { CandyDate, InputBoolean, NzNoAnimationDirective } from 'ng-zorro-antd/c
 import { DateHelperService, NzDatePickerI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { NzPickerComponent } from './picker.component';
+import { CompatibleDate, CompatibleValue } from './standard-types';
 
 const POPUP_STYLE_PATCH = { position: 'relative' }; // Aim to override antd's style to support overlay's position strategy (position:absolute will cause it not working beacuse the overlay can't get the height/width of it's content)
 
@@ -193,7 +194,3 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
     }
   }
 }
-
-export type CompatibleValue = CandyDate | CandyDate[];
-
-export type CompatibleDate = Date | Date[];
