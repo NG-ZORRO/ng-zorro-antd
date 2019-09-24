@@ -9,11 +9,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
+import { NzHumanizeDurationPipe } from './humanize/public-api';
 import { NzToCssUnitPipe } from './nz-css-unit.pipe';
 import { NzTimeRangePipe } from './nz-time-range.pipe';
 
 @NgModule({
-  imports: [CommonModule],
+  imports: [CommonModule, NzHumanizeDurationPipe],
   exports: [NzTimeRangePipe, NzToCssUnitPipe],
   declarations: [NzTimeRangePipe, NzToCssUnitPipe]
 })
