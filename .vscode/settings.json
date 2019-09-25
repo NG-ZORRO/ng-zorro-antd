@@ -1,0 +1,16 @@
+{
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/publish": true,
+    "**/coverage": true,
+    "**/dist": true,
+    "**/site": true,
+  },
+  "workbench.colorCustomizations": {
+    "titleBar.activeBackground": "#1890ff",
+    "titleBar.inactiveBackground": "#1890ff99",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveForeground": "#e7e7e799"
+  },
+  "peacock.color": "#1890ff"
+}
