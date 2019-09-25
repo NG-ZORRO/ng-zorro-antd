@@ -60,6 +60,7 @@
     "@types/less": "^3.0.0",
     "@types/node": "^12.11.1",
     "@types/parse5": "^5.0.2",
+    "@ant-design/dark-theme": "^1.0.3",
     "antd-theme-generator": "^1.1.7",
     "bundlesize": "^0.18.0",
     "chalk": "^2.4.2",

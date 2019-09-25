@@ -36,7 +36,8 @@
               }
             ],
             "styles": [
-              "site/doc/styles.less"
+              "site/doc/light.css",
+              "site/doc/dark.css"
             ]
           },
           "configurations": {
