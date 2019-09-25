@@ -178,6 +178,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
 
   handleInput(event: KeyboardEvent): void {
     const target = event.target as HTMLInputElement;
+    const document = this.document as Document;
     let value: number | string | null = target.value;
 
     if (target.type === 'number') {
