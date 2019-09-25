@@ -423,6 +423,29 @@ describe('auto-complete', () => {
       flush();
       expect(fixture.componentInstance.inputControl.touched).toBe(true);
     }));
+
+    it('should be able to re-type the same value when it is reset while open', fakeAsync(() => {
+      fixture.componentInstance.trigger.openPanel();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+
+      typeInElement('Burns', input);
+      flush();
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.inputControl.value).toBe('Burns');
+
+      fixture.componentInstance.inputControl.setValue('');
+      fixture.detectChanges();
+      expect(input.value).toBe('');
+
+      typeInElement('Burns', input);
+      flush();
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.inputControl.value).toBe('Burns');
+    }));
   });
 
   describe('form', () => {

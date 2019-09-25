@@ -180,13 +180,17 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     const target = event.target as HTMLInputElement;
     let value: number | string | null = target.value;
 
-    if (this.canOpen() && document.activeElement === target && this.previousValue !== value) {
-      if (target.type === 'number') {
-        value = value === '' ? null : parseFloat(value);
-      }
+    if (target.type === 'number') {
+      value = value === '' ? null : parseFloat(value);
+    }
 
+    if (this.previousValue !== value) {
+      this.previousValue = value;
       this._onChange(value);
-      this.openPanel();
+
+      if (this.canOpen() && document.activeElement === event.target) {
+        this.openPanel();
+      }
     }
   }
 
@@ -345,6 +349,9 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
 
   private setTriggerValue(value: string | number | null): void {
     this.elementRef.nativeElement.value = value || '';
+    if (!this.nzAutocomplete.nzBackfill) {
+      this.previousValue = value;
+    }
   }
 
   private doBackfill(): void {
