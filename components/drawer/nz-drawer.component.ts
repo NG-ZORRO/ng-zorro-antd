@@ -38,6 +38,7 @@ import { Observable, Subject } from 'rxjs';
 
 import { toCssPixel, InputBoolean, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
 import { takeUntil } from 'rxjs/operators';
+import { NzDrawerControlService } from './nz-drawer-control.service';
 import { NzDrawerOptionsOfComponent, NzDrawerPlacement } from './nz-drawer-options';
 import { NzDrawerRef } from './nz-drawer-ref';
 
@@ -167,7 +168,8 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
     private changeDetectorRef: ChangeDetectorRef,
     private focusTrapFactory: FocusTrapFactory,
     private viewContainerRef: ViewContainerRef,
-    private overlayKeyboardDispatcher: OverlayKeyboardDispatcher
+    private overlayKeyboardDispatcher: OverlayKeyboardDispatcher,
+    private drawerControl: NzDrawerControlService
   ) {
     super();
   }
@@ -177,6 +179,7 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
     this.updateOverlayStyle();
     this.updateBodyOverflow();
     this.templateContext = { $implicit: this.nzContentParams, drawerRef: this as NzDrawerRef<R> };
+    this.drawerControl.registerDrawer(this);
     this.changeDetectorRef.detectChanges();
   }
 
@@ -199,6 +202,7 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
   }
 
   ngOnDestroy(): void {
+    this.drawerControl.deregisterModal(this);
     this.destroy$.next();
     this.destroy$.complete();
     this.disposeOverlay();

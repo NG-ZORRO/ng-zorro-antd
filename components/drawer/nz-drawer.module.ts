@@ -14,6 +14,7 @@ import { NgModule } from '@angular/core';
 import { NzAddOnModule, NzNoAnimationModule } from 'ng-zorro-antd/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
+import { NzDrawerControlServiceModule } from './nz-drawer-control.service.module';
 import { NzDrawerComponent } from './nz-drawer.component';
 import { NzDrawerServiceModule } from './nz-drawer.service.module';
 
@@ -25,7 +26,8 @@ import { NzDrawerServiceModule } from './nz-drawer.service.module';
     NzIconModule,
     NzAddOnModule,
     NzNoAnimationModule,
-    NzDrawerServiceModule
+    NzDrawerServiceModule,
+    NzDrawerControlServiceModule
   ],
   exports: [NzDrawerComponent],
   declarations: [NzDrawerComponent],

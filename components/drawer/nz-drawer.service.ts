@@ -11,6 +11,7 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { ComponentRef, Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { NzDrawerControlService } from './nz-drawer-control.service';
 import { NzDrawerOptions, NzDrawerOptionsOfComponent } from './nz-drawer-options';
 import { NzDrawerRef } from './nz-drawer-ref';
 import { NzDrawerComponent } from './nz-drawer.component';
@@ -67,10 +68,14 @@ export class DrawerBuilderForService<R> {
 
 @Injectable({ providedIn: NzDrawerServiceModule })
 export class NzDrawerService {
-  constructor(private overlay: Overlay) {}
+  constructor(private overlay: Overlay, private drawerControl: NzDrawerControlService) {}
 
   // tslint:disable-next-line:no-any
   create<T = any, D = any, R = any>(options: NzDrawerOptions<T, D>): NzDrawerRef<R> {
     return new DrawerBuilderForService<R>(this.overlay, options).getInstance();
+  }
+
+  closeAll(): void {
+    this.drawerControl.closeAll();
   }
 }
