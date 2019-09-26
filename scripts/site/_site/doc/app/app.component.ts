@@ -49,7 +49,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   searchComponent = null;
   // tslint:disable-next-line:no-any
   docsearch: any = null;
-
+  darkTheme = false;
   get useDocsearch(): boolean {
     if (!this.platform.isBrowser) {
       return false;
@@ -83,6 +83,39 @@ export class AppComponent implements OnInit, AfterViewInit {
     // tslint:disable-next-line:no-any
     @Inject(DOCUMENT) private document: any
   ) {
+  }
+
+  initTheme() {
+    if (!this.platform.isBrowser) {
+      return;
+    }
+    const theme = localStorage.getItem('site-theme');
+    if (theme) {
+      this.onThemeChange(true);
+    }
+  }
+
+  onThemeChange(isDark: boolean): void {
+    if (!this.platform.isBrowser) {
+      return;
+    }
+    this.darkTheme = isDark;
+    if (!isDark) {
+      const dom = document.getElementById('theme-style');
+      if (dom) {
+        dom.remove();
+      }
+      localStorage.removeItem('site-theme');
+    } else {
+      const style = document.createElement('link');
+      style.type = 'text/css';
+      style.rel = 'stylesheet';
+      style.id = 'theme-style';
+      style.href = '/assets/dark.css';
+
+      localStorage.setItem('site-theme', 'dark');
+      document.body.append(style);
+    }
   }
 
   navigateToPage(url: string): void {
@@ -135,9 +168,9 @@ export class AppComponent implements OnInit, AfterViewInit {
         }
         this.isExperimental = this.router.url.search('experimental') !== -1;
         this.language = this.router.url
-          .split('/')[this.router.url.split('/').length - 1]
-          .split('#')[0]
-          .split('?')[0];
+        .split('/')[this.router.url.split('/').length - 1]
+        .split('#')[0]
+        .split('?')[0];
         this.appService.language$.next(this.language);
         this.nzI18nService.setLocale(this.language === 'en' ? en_US : zh_CN);
         this.updateDocMetaAndLocale();
@@ -161,6 +194,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     });
 
     this.initColor();
+    this.initTheme();
     this.detectLanguage();
   }
 

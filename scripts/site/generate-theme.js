@@ -9,12 +9,16 @@ const darkContent = `
 @import '${themePath}';
 `;
 
-less.render(darkContent, {
-  javascriptEnabled: true,
-  plugins: [new LessPluginCleanCSS({ advanced: true })],
-  modifyVars: darkTheme.default
-}).then(data => {
-  fs.writeFileSync(path.join(__dirname, '../../site/doc/assets/dark.css'), data.css);
-}).catch(e => {
-  console.log(e);
-});
+function generateTheme() {
+  return less.render(darkContent, {
+    javascriptEnabled: true,
+    plugins: [new LessPluginCleanCSS({ advanced: true })],
+    modifyVars: darkTheme.default
+  }).then(data => {
+    fs.writeFileSync(path.join(__dirname, '../../site/doc/assets/dark.css'), data.css);
+  }).catch(e => {
+    console.log(e);
+  });
+}
+
+module.exports = () => generateTheme();

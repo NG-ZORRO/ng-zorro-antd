@@ -280,6 +280,13 @@
                     <ng-template #colorTpl>
                       <color-sketch [color]="color" (onChangeComplete)="changeColor($event)"></color-sketch>
                     </ng-template>
+                    <br>
+                    <nz-switch style="margin-top: 20px;"
+                      [ngModel]="darkTheme"
+                      (ngModelChange)="onThemeChange($event)"
+                      nzCheckedChildren="dark"
+                      nzUnCheckedChildren="light">
+                    </nz-switch>
                   </div>
                 </div>
               </div>
