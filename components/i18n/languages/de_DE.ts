@@ -24,8 +24,8 @@ export default {
     filterTitle: 'Filter-Menü',
     filterConfirm: 'OK',
     filterReset: 'Zurücksetzen',
-    selectAll: 'Selektiere Alle',
-    selectInvert: 'Selektion Invertieren',
+    selectAll: 'Alle auswählen',
+    selectInvert: 'Auswahl Invertieren',
     sortTitle: 'Sortieren'
   },
   Modal: {
