@@ -1,7 +1,7 @@
 import { Injector } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-import enDateLocale from 'date-fns/locale/en';
+import { enUS } from 'date-fns/locale';
 import { NZ_DATE_CONFIG } from './date-config';
 import { DateHelperByDatePipe, DateHelperService } from './date-helper.service';
 import en_US from './languages/en_US';
@@ -41,7 +41,7 @@ describe('DateHelperService', () => {
     beforeEach(() => {
       injector = TestBed.configureTestingModule({
         imports: [NzI18nModule],
-        providers: [{ provide: NZ_DATE_LOCALE, useValue: enDateLocale }]
+        providers: [{ provide: NZ_DATE_LOCALE, useValue: enUS }]
       });
 
       dateHelper = injector.get(DateHelperService);
@@ -53,7 +53,8 @@ describe('DateHelperService', () => {
 
     it('should do formatting correctly', () => {
       const date = new Date('2018-12-31 12:11:10');
-      expect(dateHelper.format(date, 'YYYY-MM-DD')).toBe('2018-12-31');
+      // After updating to 2.x, use yyyy instead of YYYY.
+      expect(dateHelper.format(date, 'yyyy-MM-DD')).toBe('2018-12-31');
       expect(dateHelper.format(date, 'WW')).toBe('01'); // ISO week
     });
   });

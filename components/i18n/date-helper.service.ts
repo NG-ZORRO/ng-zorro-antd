@@ -8,9 +8,7 @@
 
 import { formatDate } from '@angular/common';
 import { Inject, Injectable, Injector, Optional } from '@angular/core';
-import fnsFormat from 'date-fns/format';
-import fnsGetISOWeek from 'date-fns/get_iso_week';
-import fnsParse from 'date-fns/parse';
+import { format, getISOWeek, parseISO } from 'date-fns';
 
 import { mergeDateConfig, NZ_DATE_CONFIG, NzDateConfig } from './date-config';
 import { NzI18nService } from './nz-i18n.service';
@@ -44,14 +42,14 @@ export abstract class DateHelperService {
     if (!text) {
       return;
     }
-    return fnsParse(text);
+    return parseISO(text);
   }
 
   parseTime(text: string): Date | undefined {
     if (!text) {
       return;
     }
-    return fnsParse(`1970-01-01 ${text}`);
+    return parseISO(`1970-01-01 ${text}`);
   }
 }
 
@@ -60,7 +58,7 @@ export abstract class DateHelperService {
  */
 export class DateHelperByDateFns extends DateHelperService {
   getISOWeek(date: Date): number {
-    return fnsGetISOWeek(date);
+    return getISOWeek(date);
   }
 
   // TODO: Use date-fns's "weekStartsOn" to support different locale when "config.firstDayOfWeek" is null
@@ -76,7 +74,7 @@ export class DateHelperByDateFns extends DateHelperService {
    * @param formatStr format string
    */
   format(date: Date | null, formatStr: string): string {
-    return date ? fnsFormat(date, formatStr, { locale: this.i18n.getDateLocale() }) : '';
+    return date ? format(date, formatStr, { locale: this.i18n.getDateLocale() }) : '';
   }
 }
 
@@ -115,12 +113,12 @@ export class DateHelperByDatePipe extends DateHelperService {
    * Each format docs as below:
    * @link https://momentjs.com/docs/#/displaying/format/
    * @link https://angular.io/api/common/DatePipe#description
-   * @param format input format pattern
+   * @param toFormat input format pattern
    */
-  transCompatFormat(format: string): string {
+  transCompatFormat(toFormat: string): string {
     return (
-      format &&
-      format
+      toFormat &&
+      toFormat
         .replace(/Y/g, 'y') // only support y, yy, yyy, yyyy
         .replace(/D/g, 'd')
     ); // d, dd represent of D, DD for momentjs, others are not support
