@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NzFormatEmitEvent, NzTreeNodeOptions } from 'ng-zorro-antd/core';
 
 @Component({
@@ -7,7 +7,7 @@ import { NzFormatEmitEvent, NzTreeNodeOptions } from 'ng-zorro-antd/core';
     <nz-tree [nzData]="nodes" nzAsyncData (nzClick)="nzEvent($event)" (nzExpandChange)="nzEvent($event)"> </nz-tree>
   `
 })
-export class NzDemoTreeDynamicComponent implements OnInit {
+export class NzDemoTreeDynamicComponent {
   nodes = [
     { title: 'Expand to load', key: '0' },
     { title: 'Expand to load', key: '1' },
@@ -39,6 +39,4 @@ export class NzDemoTreeDynamicComponent implements OnInit {
       );
     });
   }
-
-  ngOnInit(): void {}
 }
