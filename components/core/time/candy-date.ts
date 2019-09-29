@@ -7,6 +7,8 @@
  */
 
 import {
+  addMonths,
+  addYears,
   differenceInCalendarDays,
   differenceInCalendarMonths,
   differenceInCalendarYears,
@@ -21,17 +23,16 @@ import {
   isSameYear,
   isToday,
   isValid,
+  setDay,
+  setMonth,
   setYear,
   startOfMonth,
   startOfWeek
 } from 'date-fns';
-import addMonths from 'date-fns/add_months';
-import addYears from 'date-fns/add_years';
-import setDay from 'date-fns/set_day';
-import setMonth from 'date-fns/set_month';
 import { warn } from '../logger';
 import { IndexableObject } from '../types';
 
+export type CandyDateDayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 export type CandyDateCompareGrain = 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second';
 export type CandyDateType = CandyDate | Date | null;
 
@@ -76,7 +77,7 @@ export class CandyDate implements IndexableObject {
   //   return this;
   // }
 
-  calendarStart(options?: { weekStartsOn: number | undefined }): CandyDate {
+  calendarStart(options?: { weekStartsOn: CandyDateDayOfWeek | undefined }): CandyDate {
     return new CandyDate(startOfWeek(startOfMonth(this.nativeDate), options));
   }
 
@@ -152,7 +153,7 @@ export class CandyDate implements IndexableObject {
     return new CandyDate(addMonths(this.nativeDate, amount));
   }
 
-  setDay(day: number, options?: { weekStartsOn: number }): CandyDate {
+  setDay(day: number, options?: { weekStartsOn: CandyDateDayOfWeek }): CandyDate {
     return new CandyDate(setDay(this.nativeDate, day, options));
   }
 

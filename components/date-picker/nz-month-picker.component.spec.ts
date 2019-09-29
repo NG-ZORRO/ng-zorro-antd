@@ -6,7 +6,7 @@ import { fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angu
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import isBefore from 'date-fns/is_before';
+import { isBefore } from 'date-fns';
 
 import { dispatchMouseEvent, NgStyleInterface } from 'ng-zorro-antd/core';
 import { NzInputModule } from 'ng-zorro-antd/input';

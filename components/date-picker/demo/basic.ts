@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import getISOWeek from 'date-fns/get_iso_week';
+import { getISOWeek } from 'date-fns';
 import { en_US, zh_CN, NzI18nService } from 'ng-zorro-antd/i18n';
 
 @Component({
