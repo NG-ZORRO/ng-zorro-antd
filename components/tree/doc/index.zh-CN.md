@@ -35,6 +35,7 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 | `[nzMultiple]` | 支持点选多个节点（节点本身） | `boolean` | `false` |
 | `[nzHideUnMatched]` | 搜索隐藏未匹配的节点 | `boolean` | `false` | ✅ |
 | `[nzCheckStrictly]` | checkable 状态下节点选择完全受控（父子节点选中状态不再关联） | `boolean` | `false` |
+| `[nzTreeTemplate]` | 自定义节点 | `TemplateRef<{ $implicit: NzTreeNode }>` | - |
 | `[nzExpandAll]` | 默认展开所有树节点 | `boolean` | `false` |
 | `[nzExpandedKeys]` | 展开指定的树节点 | `string[]` | `[]` |
 | `[nzCheckedKeys]` | 指定选中复选框的树节点 | `string[]` | `[]` |
