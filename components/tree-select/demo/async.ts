@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NzFormatEmitEvent } from 'ng-zorro-antd/core';
 
 @Component({
@@ -18,7 +18,7 @@ import { NzFormatEmitEvent } from 'ng-zorro-antd/core';
     </nz-tree-select>
   `
 })
-export class NzDemoTreeSelectAsyncComponent implements OnInit {
+export class NzDemoTreeSelectAsyncComponent {
   expandKeys = ['0-0'];
   value: string;
   nodes = [
@@ -67,6 +67,4 @@ export class NzDemoTreeSelectAsyncComponent implements OnInit {
       );
     });
   }
-
-  ngOnInit(): void {}
 }

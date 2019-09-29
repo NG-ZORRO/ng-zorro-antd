@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NzFormatEmitEvent } from 'ng-zorro-antd/core';
 
 @Component({
@@ -18,7 +18,7 @@ import { NzFormatEmitEvent } from 'ng-zorro-antd/core';
     </nz-tree>
   `
 })
-export class NzDemoTreeBasicControlledComponent implements OnInit {
+export class NzDemoTreeBasicControlledComponent {
   defaultCheckedKeys = ['0-0-0'];
   defaultSelectedKeys = ['0-0-0'];
   defaultExpandedKeys = ['0-0', '0-0-0', '0-0-1'];
@@ -73,6 +73,4 @@ export class NzDemoTreeBasicControlledComponent implements OnInit {
   nzEvent(event: NzFormatEmitEvent): void {
     console.log(event);
   }
-
-  ngOnInit(): void {}
 }
