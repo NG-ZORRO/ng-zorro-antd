@@ -257,7 +257,7 @@ export class AppModule { }`;
       '@angular/router'                  : '^8.0.0',
       '@angular/animations'              : '^8.0.0',
       '@ant-design/icons-angular'        : '^8.0.0',
-      'date-fns'                         : '^2。4.1',
+      'date-fns'                         : '^2.4.1',
       'ng-zorro-antd':  `^${version}`
     },
     tags        : [ 'stackblitz', 'sdk' ]
