@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TransferItem } from 'ng-zorro-antd/transfer';
 
 @Component({
   selector: 'nz-demo-transfer-basic',
@@ -18,8 +19,7 @@ import { Component, OnInit } from '@angular/core';
   `
 })
 export class NzDemoTransferBasicComponent implements OnInit {
-  // tslint:disable-next-line:no-any
-  list: any[] = [];
+  list: TransferItem[] = [];
   disabled = false;
 
   ngOnInit(): void {

@@ -34,8 +34,8 @@ import { en_US, zh_CN, NzI18nService } from 'ng-zorro-antd/i18n';
   ]
 })
 export class NzDemoDatePickerBasicComponent {
-  date = null; // new Date();
-  dateRange = []; // [ new Date(), addDays(new Date(), 3) ];
+  date = null;
+  dateRange = [];
   isEnglish = false;
 
   constructor(private i18n: NzI18nService) {}

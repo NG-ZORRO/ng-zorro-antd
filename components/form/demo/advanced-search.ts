@@ -76,7 +76,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 })
 export class NzDemoFormAdvancedSearchComponent implements OnInit {
   validateForm: FormGroup;
-  controlArray: any[] = [];
+  controlArray: Array<{ index: number; show: boolean }> = [];
   isCollapse = true;
 
   toggleCollapse(): void {

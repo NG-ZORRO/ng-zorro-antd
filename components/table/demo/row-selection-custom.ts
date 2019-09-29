@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
+interface ItemData {
+  id: number;
+  name: string;
+  age: number;
+  address: string;
+}
+
 @Component({
   selector: 'nz-demo-table-row-selection-custom',
   template: `
@@ -60,11 +67,11 @@ export class NzDemoTableRowSelectionCustomComponent implements OnInit {
   ];
   isAllDisplayDataChecked = false;
   isIndeterminate = false;
-  listOfDisplayData: any[] = [];
-  listOfAllData: any[] = [];
+  listOfDisplayData: ItemData[] = [];
+  listOfAllData: ItemData[] = [];
   mapOfCheckedId: { [key: string]: boolean } = {};
 
-  currentPageDataChange($event: Array<{ id: number; name: string; age: number; address: string }>): void {
+  currentPageDataChange($event: ItemData[]): void {
     this.listOfDisplayData = $event;
     this.refreshStatus();
   }

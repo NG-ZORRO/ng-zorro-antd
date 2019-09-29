@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
+interface ItemData {
+  id: string;
+  name: string;
+  age: number;
+  address: string;
+}
+
 @Component({
   selector: 'nz-demo-table-edit-row',
   template: `
@@ -62,8 +69,8 @@ import { Component, OnInit } from '@angular/core';
   ]
 })
 export class NzDemoTableEditRowComponent implements OnInit {
-  editCache: { [key: string]: any } = {};
-  listOfData: any[] = [];
+  editCache: { [key: string]: { edit: boolean; data: ItemData } } = {};
+  listOfData: ItemData[] = [];
 
   startEdit(id: string): void {
     this.editCache[id].edit = true;

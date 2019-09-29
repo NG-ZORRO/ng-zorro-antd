@@ -40,8 +40,6 @@ export class NzDemoSelectScrollLoadComponent implements OnInit {
       })
     );
 
-  // tslint:enable:no-any
-
   loadMore(): void {
     this.isLoading = true;
     this.getRandomNameList.subscribe(data => {

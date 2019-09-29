@@ -1,4 +1,3 @@
-// tslint:disable: no-any
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { NzTreeNode } from 'ng-zorro-antd/core';
 import { TransferChange, TransferItem } from 'ng-zorro-antd/transfer';
@@ -38,7 +37,7 @@ import { NzTreeComponent } from 'ng-zorro-antd/tree';
 })
 export class NzDemoTransferTreeTransferComponent {
   @ViewChild('tree', { static: true }) tree: NzTreeComponent;
-  list: any[] = [
+  list: TransferItem[] = [
     { id: 1, parentid: 0, title: 'parent 1' },
     { id: 2, parentid: 1, title: 'leaf 1-1', disabled: true, isLeaf: true },
     { id: 3, parentid: 1, title: 'leaf 1-2', isLeaf: true }
@@ -48,6 +47,7 @@ export class NzDemoTransferTreeTransferComponent {
 
   private generateTree(arr: TransferItem[]): TransferItem[] {
     const tree: TransferItem[] = [];
+    // tslint:disable-next-line:no-any
     const mappedArr: any = {};
     let arrElem: TransferItem;
     let mappedElem: TransferItem;
@@ -85,7 +85,7 @@ export class NzDemoTransferTreeTransferComponent {
       }
     }
     const item = this.list.find(w => w.id === node.origin.id);
-    onItemSelect(item);
+    onItemSelect(item!);
   }
 
   change(ret: TransferChange): void {

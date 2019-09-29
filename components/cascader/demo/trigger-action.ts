@@ -1,5 +1,5 @@
-// tslint:disable:no-any
 import { Component } from '@angular/core';
+import { CascaderOption } from 'ng-zorro-antd/cascader';
 
 const options = [
   {
@@ -64,10 +64,10 @@ const options = [
   ]
 })
 export class NzDemoCascaderTriggerActionComponent {
-  nzOptions = options;
-  values: any[] | null = null;
+  nzOptions: CascaderOption[] = options;
+  values: string[] | null = null;
 
-  onChanges(values: any): void {
+  onChanges(values: string[]): void {
     console.log(values, this.values);
   }
 }

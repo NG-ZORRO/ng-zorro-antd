@@ -9,4 +9,15 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
-export const moduleList = [ NzFormModule, NzButtonModule, NzIconModule, NzSelectModule, NzInputModule, NzRadioModule, NzDatePickerModule, NzTimePickerModule, NzInputNumberModule, NzCheckboxModule ];
+export const moduleList = [
+  NzFormModule,
+  NzButtonModule,
+  NzIconModule,
+  NzSelectModule,
+  NzInputModule,
+  NzRadioModule,
+  NzDatePickerModule,
+  NzTimePickerModule,
+  NzInputNumberModule,
+  NzCheckboxModule
+];

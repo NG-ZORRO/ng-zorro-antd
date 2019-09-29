@@ -3,11 +3,12 @@ import { Component, OnInit } from '@angular/core';
 export interface TreeNodeInterface {
   key: number;
   name: string;
-  age: number;
-  level: number;
-  expand: boolean;
-  address: string;
+  age?: number;
+  level?: number;
+  expand?: boolean;
+  address?: string;
   children?: TreeNodeInterface[];
+  parent?: TreeNodeInterface;
 }
 
 @Component({
@@ -43,7 +44,7 @@ export interface TreeNodeInterface {
   `
 })
 export class NzDemoTableExpandChildrenComponent implements OnInit {
-  listOfMapData = [
+  listOfMapData: TreeNodeInterface[] = [
     {
       key: 1,
       name: 'John Brown sr.',
@@ -123,18 +124,18 @@ export class NzDemoTableExpandChildrenComponent implements OnInit {
     }
   }
 
-  convertTreeToList(root: object): TreeNodeInterface[] {
-    const stack: any[] = [];
-    const array: any[] = [];
+  convertTreeToList(root: TreeNodeInterface): TreeNodeInterface[] {
+    const stack: TreeNodeInterface[] = [];
+    const array: TreeNodeInterface[] = [];
     const hashMap = {};
     stack.push({ ...root, level: 0, expand: false });
 
     while (stack.length !== 0) {
-      const node = stack.pop();
+      const node = stack.pop()!;
       this.visitNode(node, hashMap, array);
       if (node.children) {
         for (let i = node.children.length - 1; i >= 0; i--) {
-          stack.push({ ...node.children[i], level: node.level + 1, expand: false, parent: node });
+          stack.push({ ...node.children[i], level: node.level! + 1, expand: false, parent: node });
         }
       }
     }
@@ -142,7 +143,7 @@ export class NzDemoTableExpandChildrenComponent implements OnInit {
     return array;
   }
 
-  visitNode(node: TreeNodeInterface, hashMap: { [key: string]: any }, array: TreeNodeInterface[]): void {
+  visitNode(node: TreeNodeInterface, hashMap: { [key: string]: boolean }, array: TreeNodeInterface[]): void {
     if (!hashMap[node.key]) {
       hashMap[node.key] = true;
       array.push(node);

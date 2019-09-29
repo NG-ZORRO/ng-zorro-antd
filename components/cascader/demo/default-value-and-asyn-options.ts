@@ -1,5 +1,5 @@
-// tslint:disable:no-any
 import { Component, OnInit } from '@angular/core';
+import { CascaderOption } from 'ng-zorro-antd/cascader';
 
 const options = [
   {
@@ -57,10 +57,10 @@ const options = [
   ]
 })
 export class NzDemoCascaderDefaultValueAndAsynOptionsComponent implements OnInit {
-  nzOptions: any[] | null = null;
-  values: any[] = ['zhejiang', 'hangzhou', 'xihu'];
+  nzOptions: CascaderOption[] | null = null;
+  values: string[] = ['zhejiang', 'hangzhou', 'xihu'];
 
-  onChanges(values: any): void {
+  onChanges(values: string[]): void {
     console.log(values, this.values);
   }
 

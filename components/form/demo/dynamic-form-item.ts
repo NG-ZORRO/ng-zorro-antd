@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'nz-demo-form-dynamic-form-item',
@@ -101,10 +101,6 @@ export class NzDemoFormDynamicFormItemComponent implements OnInit {
       console.log(this.listOfControl);
       this.validateForm.removeControl(i.controlInstance);
     }
-  }
-
-  getFormControl(name: string): AbstractControl {
-    return this.validateForm.controls[name];
   }
 
   submitForm(): void {

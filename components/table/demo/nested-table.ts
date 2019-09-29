@@ -1,5 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 
+interface ParentItemData {
+  key: number;
+  name: string;
+  platform: string;
+  version: string;
+  upgradeNum: number | string;
+  creator: string;
+  createdAt: string;
+  expand: boolean;
+}
+
+interface ChildrenItemData {
+  key: number;
+  name: string;
+  date: string;
+  upgradeNum: string;
+}
+
 @Component({
   selector: 'nz-demo-table-nested-table',
   template: `
@@ -83,8 +101,8 @@ import { Component, OnInit } from '@angular/core';
   `
 })
 export class NzDemoTableNestedTableComponent implements OnInit {
-  listOfParentData: any[] = [];
-  listOfChildrenData: any[] = [];
+  listOfParentData: ParentItemData[] = [];
+  listOfChildrenData: ChildrenItemData[] = [];
 
   ngOnInit(): void {
     for (let i = 0; i < 3; ++i) {
