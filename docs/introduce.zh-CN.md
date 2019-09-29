@@ -80,6 +80,7 @@ $ ng add ng-zorro-antd
 - [优速快递](http://www.uce.cn/)
 - [轻流](https://qingflow.com/)
 - [航天信息股份有限公司](http://www.aisino.com/)
+- [达观数据](http://datagrand.com/)
 - [Ververica](https://www.ververica.com/)
 - [Apache Flink](https://flink.apache.org/)
 - [Process Automation Group](http://pag.company/)
