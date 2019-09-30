@@ -7,10 +7,10 @@
  */
 
 export { PickerResult, PickerResultSingle, PickerResultRange, PresetRanges, PanelMode } from './standard-types';
-
 export { NzDatePickerModule } from './nz-date-picker.module';
-export { NzDatePickerComponent } from './nz-date-picker.component';
-export { NzRangePickerComponent } from './nz-range-picker.component';
-export { NzMonthPickerComponent } from './nz-month-picker.component';
-export { NzWeekPickerComponent } from './nz-week-picker.component';
-export { NzYearPickerComponent } from './nz-year-picker.component';
+
+export { NzDatePickerComponent as θnzDatePickerComponent } from './nz-date-picker.component';
+export { NzRangePickerComponent as θnzRangePickerComponent } from './nz-range-picker.component';
+export { NzMonthPickerComponent as θnzMonthPickerComponent } from './nz-month-picker.component';
+export { NzWeekPickerComponent as θnzWeekPickerComponent } from './nz-week-picker.component';
+export { NzYearPickerComponent as θnzYearPickerComponent } from './nz-year-picker.component';
