@@ -12,7 +12,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -33,7 +32,7 @@ const MAX_COL = 3;
   exportAs: 'monthTable',
   templateUrl: 'month-table.component.html'
 })
-export class MonthTableComponent implements OnInit, OnChanges {
+export class MonthTableComponent implements OnChanges {
   @Input() value: CandyDate = new CandyDate();
   @Input() prefixCls: string = 'ant-fullcalendar';
   @Input() monthCellRender: TemplateRef<{ $implicit: Date }>;
@@ -45,8 +44,6 @@ export class MonthTableComponent implements OnInit, OnChanges {
   panelMonths: PanelMonthData[][];
 
   constructor(private dateHelper: DateHelperService) {}
-
-  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.value || changes.disabledDate) {

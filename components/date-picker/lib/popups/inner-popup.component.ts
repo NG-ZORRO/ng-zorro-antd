@@ -12,7 +12,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -31,7 +30,7 @@ import { DisabledDateFn, PanelMode } from '../../standard-types';
   exportAs: 'innerPopup',
   templateUrl: 'inner-popup.component.html'
 })
-export class InnerPopupComponent implements OnInit, OnChanges {
+export class InnerPopupComponent implements OnChanges {
   @Input() showWeek: boolean;
 
   @Input() locale: NzCalendarI18nInterface;
@@ -58,8 +57,6 @@ export class InnerPopupComponent implements OnInit, OnChanges {
   prefixCls: string = 'ant-calendar';
 
   constructor() {}
-
-  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.value && !this.value) {

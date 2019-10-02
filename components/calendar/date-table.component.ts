@@ -12,7 +12,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   SimpleChange,
   SimpleChanges,
@@ -34,7 +33,7 @@ const DATE_COL_NUM = 7;
   exportAs: 'dateTable',
   templateUrl: 'date-table.component.html'
 })
-export class DateTableComponent implements OnInit, OnChanges {
+export class DateTableComponent implements OnChanges {
   _value: CandyDate;
   headWeekDays: WeekDayLabel[];
   weekRows: WeekRow[];
@@ -63,8 +62,6 @@ export class DateTableComponent implements OnInit, OnChanges {
   @Output() readonly valueChange = new EventEmitter<CandyDate>();
 
   constructor(private i18n: NzI18nService, private dateHelper: DateHelperService) {}
-
-  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (
