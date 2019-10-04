@@ -48,6 +48,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | 方法名 | 说明 | 参数 | 返回 |
 | --- | --- | --- | --- |
 | create | 创建并打开一个 Drawer | `NzDrawerOptions<T, D, R>`| `NzDrawerRef<R>` |
+| closeAll | 关闭所有抽屉 | - | void |
 
 ### NzDrawerOptions
 
