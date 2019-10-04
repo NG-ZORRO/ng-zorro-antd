@@ -68,6 +68,11 @@ export class DrawerBuilderForService<R> {
 
 @Injectable({ providedIn: NzDrawerServiceModule })
 export class NzDrawerService {
+  // Track of the current close drawers (we assume invisible is close this time)
+  get openDrawers(): NzDrawerRef[] {
+    return this.drawerControl.openDrawers;
+  }
+
   constructor(private overlay: Overlay, private drawerControl: NzDrawerControlService) {}
 
   // tslint:disable-next-line:no-any

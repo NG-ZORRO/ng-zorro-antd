@@ -12,3 +12,5 @@ export * from './nz-drawer.service';
 export * from './nz-drawer.service.module';
 export * from './nz-drawer-options';
 export * from './nz-drawer-ref';
+export * from './nz-drawer-control.service';
+export * from './nz-drawer-control.service.module';

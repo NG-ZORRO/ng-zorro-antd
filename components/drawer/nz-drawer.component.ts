@@ -192,19 +192,14 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.hasOwnProperty('nzVisible')) {
-      const value = changes.nzVisible.currentValue;
-      if (value) {
-        this.open();
-      } else {
-        this.close();
-      }
+      this.handleVisibleStateChange(this.isOpen);
     }
   }
 
   ngOnDestroy(): void {
-    this.drawerControl.deregisterModal(this);
     this.destroy$.next();
     this.destroy$.complete();
+    this.drawerControl.deregisterDrawer(this);
     this.disposeOverlay();
   }
 
@@ -213,29 +208,11 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
   }
 
   close(result?: R): void {
-    this.isOpen = false;
-    this.updateOverlayStyle();
-    this.overlayKeyboardDispatcher.remove(this.overlayRef!);
-    this.changeDetectorRef.detectChanges();
-    setTimeout(() => {
-      this.updateBodyOverflow();
-      this.restoreFocus();
-      this.nzAfterClose.next(result);
-      this.nzAfterClose.complete();
-    }, this.getAnimationDuration());
+    this.changeVisibleFromInside(false, result);
   }
 
   open(): void {
-    this.isOpen = true;
-    this.overlayKeyboardDispatcher.add(this.overlayRef!);
-    this.updateOverlayStyle();
-    this.updateBodyOverflow();
-    this.savePreviouslyFocusedElement();
-    this.trapFocus();
-    this.changeDetectorRef.detectChanges();
-    setTimeout(() => {
-      this.nzAfterOpen.next();
-    }, this.getAnimationDuration());
+    this.changeVisibleFromInside(true);
   }
 
   closeClick(): void {
@@ -245,6 +222,36 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
   maskClick(): void {
     if (this.nzMaskClosable && this.nzMask) {
       this.nzOnClose.emit();
+    }
+  }
+
+  private changeVisibleFromInside(visible: boolean, closeResult?: R): void {
+    if (this.isOpen !== visible) {
+      this.isOpen = visible;
+      this.handleVisibleStateChange(visible, closeResult);
+    }
+  }
+
+  private handleVisibleStateChange(visible: boolean, closeResult?: R): void {
+    if (visible) {
+      this.overlayKeyboardDispatcher.add(this.overlayRef!);
+      this.updateOverlayStyle();
+      this.updateBodyOverflow();
+      this.savePreviouslyFocusedElement();
+      this.trapFocus();
+      this.changeDetectorRef.detectChanges();
+      setTimeout(() => {
+        this.nzAfterOpen.next();
+      }, this.getAnimationDuration());
+    } else {
+      this.updateOverlayStyle();
+      this.overlayKeyboardDispatcher.remove(this.overlayRef!);
+      this.changeDetectorRef.detectChanges();
+      setTimeout(() => {
+        this.updateBodyOverflow();
+        this.restoreFocus();
+        this.nzAfterClose.next(closeResult);
+      }, this.getAnimationDuration());
     }
   }
 

@@ -410,7 +410,7 @@ describe('NzDrawerService', () => {
     TestBed.configureTestingModule({
       imports: [NzDrawerModule, NoopAnimationsModule],
       providers: [NzDrawerService],
-      declarations: [NzTestDrawerWithServiceComponent, NzDrawerCustomComponent]
+      declarations: [NzTestDrawerWithServiceComponent, NzDrawerCustomComponent, NzTestDrawerComponent]
     });
     TestBed.overrideModule(BrowserDynamicTestingModule, {
       set: { entryComponents: [NzDrawerCustomComponent] }
@@ -491,6 +491,20 @@ describe('NzDrawerService', () => {
     fixture.detectChanges();
     tick(300);
     expect(closeSpy).toHaveBeenCalled();
+  }));
+
+  it('should close all opened drawers', fakeAsync(() => {
+    const nonServiceFixture = TestBed.createComponent(NzTestDrawerComponent);
+    const nonServiceDrawerComponent = nonServiceFixture.componentInstance;
+    nonServiceDrawerComponent.visible = true;
+    drawerService.create({ nzWrapClassName: 'service-drawer' });
+    nonServiceFixture.detectChanges();
+    tick(600);
+    expect(drawerService.openDrawers.length).toBe(2);
+    drawerService.closeAll();
+    nonServiceFixture.detectChanges();
+    tick(600);
+    expect(drawerService.openDrawers.length).toBe(0);
   }));
 });
 
