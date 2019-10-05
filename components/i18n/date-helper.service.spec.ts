@@ -1,7 +1,8 @@
 import { Injector } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-import { enUS } from 'date-fns/locale';
+import * as enUS from 'date-fns/locale/en';
+
 import { NZ_DATE_CONFIG } from './date-config';
 import { DateHelperByDatePipe, DateHelperService } from './date-helper.service';
 import en_US from './languages/en_US';
