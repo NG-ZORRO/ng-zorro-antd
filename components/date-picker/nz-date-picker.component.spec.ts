@@ -167,7 +167,7 @@ describe('NzDatePickerComponent', () => {
       expect(getPickerContainer()).not.toBeNull();
     }));
 
-    it('should support nzAllowClear and work properly', fakeAsync(() => {
+    fit('should support nzAllowClear and work properly', fakeAsync(() => {
       const clearBtnSelector = By.css('nz-picker i.ant-calendar-picker-clear');
       const initial = (fixtureInstance.nzValue = new Date());
       fixtureInstance.nzAllowClear = false;
