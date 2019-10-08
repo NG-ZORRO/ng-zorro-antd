@@ -51,6 +51,10 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 
 
 ### [nz-card-grid]
+| 参数 | 说明 | 类型 | 默认值 | 支持全局配置 |
+| --- | --- | --- | --- | --- |
+| `[nzHoverable]` | 鼠标移过时可浮起 | `boolean` | `true` | - |
+
 分隔卡片内容区域
 
 ### nz-card-tab

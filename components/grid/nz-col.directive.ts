@@ -56,6 +56,7 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   /** temp solution since no method add classMap to host https://github.com/angular/angular/issues/7289*/
   setClassMap(): void {
     const classMap = {
+      [`${this.prefixCls}`]: true,
       [`${this.prefixCls}-${this.nzSpan}`]: isNotNil(this.nzSpan),
       [`${this.prefixCls}-order-${this.nzOrder}`]: isNotNil(this.nzOrder),
       [`${this.prefixCls}-offset-${this.nzOffset}`]: isNotNil(this.nzOffset),

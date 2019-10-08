@@ -1,7 +1,6 @@
 <ng-container *ngIf="nzLoading">
-  <div class="ant-skeleton-header">
+  <div class="ant-skeleton-header" *ngIf="!!nzAvatar">
     <span
-      *ngIf="!!nzAvatar"
       class="ant-skeleton-avatar"
       [class.ant-skeleton-avatar-lg]="avatar.size === 'large'"
       [class.ant-skeleton-avatar-sm]="avatar.size === 'small'"

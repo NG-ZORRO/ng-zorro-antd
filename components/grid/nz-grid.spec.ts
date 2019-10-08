@@ -223,11 +223,11 @@ describe('grid', () => {
     it('should have correct style', () => {
       fixture.detectChanges();
       expect(rows.every(row => row.nativeElement.classList.contains('ant-row'))).toBe(true);
-      expect(cols[0].nativeElement.className).toBe('ant-col-8');
-      expect(cols[1].nativeElement.className).toBe('ant-col-8 ant-col-offset-8');
-      expect(cols[2].nativeElement.className).toBe('ant-col-6 ant-col-offset-6');
-      expect(cols[3].nativeElement.className).toBe('ant-col-6 ant-col-offset-6');
-      expect(cols[4].nativeElement.className).toBe('ant-col-12 ant-col-offset-6');
+      expect(cols[0].nativeElement.className).toBe('ant-col ant-col-8');
+      expect(cols[1].nativeElement.className).toBe('ant-col ant-col-8 ant-col-offset-8');
+      expect(cols[2].nativeElement.className).toBe('ant-col ant-col-6 ant-col-offset-6');
+      expect(cols[3].nativeElement.className).toBe('ant-col ant-col-6 ant-col-offset-6');
+      expect(cols[4].nativeElement.className).toBe('ant-col ant-col-12 ant-col-offset-6');
     });
   });
 
@@ -250,11 +250,15 @@ describe('grid', () => {
 
     it('should have correct style', () => {
       fixture.detectChanges();
-      expect(cols[0].nativeElement.className).toBe('ant-col-xs-2 ant-col-sm-4 ant-col-md-6 ant-col-lg-8 ant-col-xl-10');
-      expect(cols[1].nativeElement.className).toBe(
-        'ant-col-xs-20 ant-col-sm-16 ant-col-md-12 ant-col-lg-8 ant-col-xl-4'
+      expect(cols[0].nativeElement.className).toBe(
+        'ant-col ant-col-xs-2 ant-col-sm-4 ant-col-md-6 ant-col-lg-8 ant-col-xl-10'
       );
-      expect(cols[2].nativeElement.className).toBe('ant-col-xs-2 ant-col-sm-4 ant-col-md-6 ant-col-lg-8 ant-col-xl-10');
+      expect(cols[1].nativeElement.className).toBe(
+        'ant-col ant-col-xs-20 ant-col-sm-16 ant-col-md-12 ant-col-lg-8 ant-col-xl-4'
+      );
+      expect(cols[2].nativeElement.className).toBe(
+        'ant-col ant-col-xs-2 ant-col-sm-4 ant-col-md-6 ant-col-lg-8 ant-col-xl-10'
+      );
     });
   });
 
@@ -276,11 +280,15 @@ describe('grid', () => {
     });
     it('should have correct style', () => {
       fixture.detectChanges();
-      expect(cols[0].nativeElement.className).toBe('ant-col-xs-5 ant-col-xs-offset-1 ant-col-lg-6 ant-col-lg-offset-2');
-      expect(cols[1].nativeElement.className).toBe(
-        'ant-col-xs-11 ant-col-xs-offset-1 ant-col-lg-6 ant-col-lg-offset-2'
+      expect(cols[0].nativeElement.className).toBe(
+        'ant-col ant-col-xs-5 ant-col-xs-offset-1 ant-col-lg-6 ant-col-lg-offset-2'
       );
-      expect(cols[2].nativeElement.className).toBe('ant-col-xs-5 ant-col-xs-offset-1 ant-col-lg-6 ant-col-lg-offset-2');
+      expect(cols[1].nativeElement.className).toBe(
+        'ant-col ant-col-xs-11 ant-col-xs-offset-1 ant-col-lg-6 ant-col-lg-offset-2'
+      );
+      expect(cols[2].nativeElement.className).toBe(
+        'ant-col ant-col-xs-5 ant-col-xs-offset-1 ant-col-lg-6 ant-col-lg-offset-2'
+      );
     });
   });
 
@@ -303,8 +311,8 @@ describe('grid', () => {
 
     it('should have correct style', () => {
       fixture.detectChanges();
-      expect(cols[0].nativeElement.className).toBe('ant-col-18 ant-col-push-6');
-      expect(cols[1].nativeElement.className).toBe('ant-col-6 ant-col-pull-18');
+      expect(cols[0].nativeElement.className).toBe('ant-col ant-col-18 ant-col-push-6');
+      expect(cols[1].nativeElement.className).toBe('ant-col ant-col-6 ant-col-pull-18');
     });
   });
 
