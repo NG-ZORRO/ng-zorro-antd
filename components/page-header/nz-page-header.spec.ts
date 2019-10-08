@@ -3,11 +3,13 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { NzDemoPageHeaderActionsComponent } from './demo/actions';
 import { NzDemoPageHeaderBasicComponent } from './demo/basic';
 import { NzDemoPageHeaderBreadcrumbComponent } from './demo/breadcrumb';
 import { NzDemoPageHeaderContentComponent } from './demo/content';
+import { NzDemoPageHeaderResponsiveComponent } from './demo/responsive';
 
 import { NzPageHeaderComponent } from './nz-page-header.component';
 import { NzPageHeaderModule } from './nz-page-header.module';
@@ -16,13 +18,14 @@ describe('NzPageHeaderComponent', () => {
   let location: Location;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NzPageHeaderModule, NzIconTestModule, RouterTestingModule],
+      imports: [NzPageHeaderModule, NzDropDownModule, NzIconTestModule, RouterTestingModule],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [
         NzDemoPageHeaderBasicComponent,
         NzDemoPageHeaderBreadcrumbComponent,
         NzDemoPageHeaderContentComponent,
-        NzDemoPageHeaderActionsComponent
+        NzDemoPageHeaderActionsComponent,
+        NzDemoPageHeaderResponsiveComponent
       ]
     }).compileComponents();
     location = TestBed.get(Location);
@@ -45,7 +48,7 @@ describe('NzPageHeaderComponent', () => {
   });
 
   it('should default call location back when nzBack not has observers', () => {
-    const fixture = TestBed.createComponent(NzDemoPageHeaderBreadcrumbComponent);
+    const fixture = TestBed.createComponent(NzDemoPageHeaderResponsiveComponent);
     const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
     spyOn(location, 'back');
     fixture.detectChanges();
@@ -66,13 +69,26 @@ describe('NzPageHeaderComponent', () => {
   });
 
   it('should actions work', () => {
-    const fixture = TestBed.createComponent(NzDemoPageHeaderActionsComponent);
+    const fixture = TestBed.createComponent(NzDemoPageHeaderContentComponent);
+    const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
+    fixture.detectChanges();
+    expect(pageHeader.nativeElement.querySelector('nz-page-header-extra.ant-page-header-heading-extra')).toBeTruthy();
+    expect(pageHeader.nativeElement.querySelector('nz-page-header-tags.ant-page-header-heading-tags')).toBeTruthy();
+  });
+
+  it('should footer work', () => {
+    const fixture = TestBed.createComponent(NzDemoPageHeaderResponsiveComponent);
     const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
     fixture.detectChanges();
     expect(pageHeader.nativeElement.classList).toContain('ant-page-header-has-footer');
-    expect(pageHeader.nativeElement.querySelector('nz-page-header-extra.ant-page-header-heading-extra')).toBeTruthy();
-    expect(pageHeader.nativeElement.querySelector('nz-page-header-tags.ant-page-header-heading-tags')).toBeTruthy();
     expect(pageHeader.nativeElement.querySelector('nz-page-header-footer.ant-page-header-footer')).toBeTruthy();
+  });
+
+  it('should avatar work', () => {
+    const fixture = TestBed.createComponent(NzDemoPageHeaderContentComponent);
+    const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
+    fixture.detectChanges();
+    expect(pageHeader.nativeElement.querySelector('nz-avatar[nz-page-header-avatar]')).toBeTruthy();
   });
 
   it('should have an default back icon', () => {
