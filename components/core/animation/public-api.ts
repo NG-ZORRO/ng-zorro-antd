@@ -14,3 +14,4 @@ export * from './move';
 export * from './notification';
 export * from './slide';
 export * from './zoom';
+export * from './make-animation';

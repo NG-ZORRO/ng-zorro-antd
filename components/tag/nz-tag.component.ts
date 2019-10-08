@@ -15,7 +15,7 @@ import {
   OnChanges,
   OnInit,
   Output,
-  Renderer2,
+  // Renderer2,
   ViewEncapsulation
 } from '@angular/core';
 
@@ -77,12 +77,12 @@ export class NzTagComponent implements OnInit, OnChanges {
     this.nzOnClose.emit(e);
     this.nzAfterClose.emit();
     if (!e.defaultPrevented) {
-      this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), this.elementRef.nativeElement);
+      // this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), this.elementRef.nativeElement);
     }
   }
 
   constructor(
-    private renderer: Renderer2,
+    // private renderer: Renderer2,
     private elementRef: ElementRef,
     private nzUpdateHostClassService: NzUpdateHostClassService
   ) {

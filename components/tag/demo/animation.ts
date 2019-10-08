@@ -16,7 +16,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
     ])
   ],
   template: `
-    <nz-tag @tagAnimation *ngFor="let tag of tags; let i = index" nzMode="closeable" (nzOnClose)="handleClose(tag)">
+    <nz-tag *ngFor="let tag of tags; let i = index" @tagAnimation (nzOnClose)="handleClose(tag)" nzMode="closeable">
       {{ sliceTagName(tag) }}
     </nz-tag>
     <nz-tag *ngIf="!inputVisible" class="editable-tag" (click)="showInput()">
@@ -49,7 +49,7 @@ export class NzDemoTagAnimationComponent {
   inputValue = '';
   @ViewChild('inputElement', { static: false }) inputElement: ElementRef;
 
-  handleClose(removedTag: {}): void {
+  handleClose(removedTag: string): void {
     this.tags = this.tags.filter(tag => tag !== removedTag);
   }
 
