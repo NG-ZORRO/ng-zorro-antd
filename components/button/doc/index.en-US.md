@@ -22,6 +22,8 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 
 ### [nz-button]
 
+> Note：nz-button is Directive, it accepts all props which native button [support](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button).
+
 To get a customized button, just set `nzType`/`nzShape`/`nzSize`/`nzLoading`/`disabled`.
 
 | Property | Description | Type | Default | Global Config |

@@ -3,30 +3,28 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-dropdown-dropdown-button',
   template: `
-    <div style="height: 28px;">
-      <nz-button-group>
-        <button nz-button (click)="log()">DropDown</button>
-        <button nz-button nz-dropdown [nzDropdownMenu]="menu1" nzPlacement="bottomRight">
-          <i nz-icon nzType="ellipsis"></i>
-        </button>
-      </nz-button-group>
-      <nz-button-group>
-        <button nz-button (click)="log()">DropDown</button>
-        <button nz-button nz-dropdown [nzDropdownMenu]="menu2" nzPlacement="bottomRight">
-          <i nz-icon nzType="user"></i>
-        </button>
-      </nz-button-group>
-      <nz-button-group>
-        <button nz-button disabled>DropDown</button>
-        <button nz-button disabled nz-dropdown [nzDropdownMenu]="menu3" nzPlacement="bottomRight">
-          <i nz-icon nzType="ellipsis"></i>
-        </button>
-      </nz-button-group>
-      <button nz-button nz-dropdown [nzDropdownMenu]="menu4">
-        Button
-        <i nz-icon nzType="down"></i>
+    <nz-button-group>
+      <button nz-button (click)="log()">DropDown</button>
+      <button nz-button nz-dropdown [nzDropdownMenu]="menu1" nzPlacement="bottomRight">
+        <i nz-icon nzType="ellipsis"></i>
       </button>
-    </div>
+    </nz-button-group>
+    <nz-button-group>
+      <button nz-button (click)="log()">DropDown</button>
+      <button nz-button nz-dropdown [nzDropdownMenu]="menu2" nzPlacement="bottomRight">
+        <i nz-icon nzType="user"></i>
+      </button>
+    </nz-button-group>
+    <nz-button-group>
+      <button nz-button disabled>DropDown</button>
+      <button nz-button disabled nz-dropdown [nzDropdownMenu]="menu3" nzPlacement="bottomRight">
+        <i nz-icon nzType="ellipsis"></i>
+      </button>
+    </nz-button-group>
+    <button nz-button nz-dropdown [nzDropdownMenu]="menu4">
+      Button
+      <i nz-icon nzType="down"></i>
+    </button>
     <nz-dropdown-menu #menu1="nzDropdownMenu">
       <ul nz-menu>
         <li nz-menu-item>menu1 1st menu item</li>
@@ -59,7 +57,7 @@ import { Component } from '@angular/core';
   styles: [
     `
       nz-button-group {
-        margin-right: 8px;
+        margin: 0 8px 8px 0;
       }
     `
   ]
