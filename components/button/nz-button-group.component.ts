@@ -20,6 +20,7 @@ import { NzSizeLDSType, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 })
 export class NzButtonGroupComponent implements OnInit {
   private _size: NzSizeLDSType;
+  isInDropdown = false;
 
   @Input()
   get nzSize(): NzSizeLDSType {
@@ -37,6 +38,7 @@ export class NzButtonGroupComponent implements OnInit {
     const prefixCls = 'ant-btn-group';
     const classMap = {
       [prefixCls]: true,
+      [`ant-dropdown-button`]: this.isInDropdown,
       [`${prefixCls}-lg`]: this.nzSize === 'large',
       [`${prefixCls}-sm`]: this.nzSize === 'small'
     };

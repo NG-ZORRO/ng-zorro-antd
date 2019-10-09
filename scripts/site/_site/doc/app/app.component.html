@@ -319,7 +319,13 @@
     </ng-container>
 
     <li nz-submenu nzOpen>
-      <span title><h4>{{isExperimental ? 'Experiments' : 'Components'}}</h4></span>
+      <span title>
+        <h4 *ngIf="isExperimental">'Experiments'</h4>
+        <h4 *ngIf="!isExperimental">
+          {{language=='en' ? 'Components' : '组件'}}
+          <span class="menu-antd-components-count">63</span>
+        </h4>
+      </span>
       <ul>
         <li nz-menu-group
           *ngFor="let group of routerList.components"

@@ -50,6 +50,11 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 | `[nzTitle]` | title content | `string\|TemplateRef<void>` | - |
 
 ### [nz-card-grid]
+
+| Property | Description | Type | Default | Global Config |
+| -------- | ----------- | ---- | ------- | ------------- |
+| `[nzHoverable]` | Lift up when hovering card | `boolean` | `true` | - |
+
 Area for grid style card
 
 ### nz-card-tab
