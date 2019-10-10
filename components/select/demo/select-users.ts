@@ -7,13 +7,12 @@ import { debounceTime, map, switchMap } from 'rxjs/operators';
   selector: 'nz-demo-select-select-users',
   template: `
     <nz-select
-      style="width: 100%;"
       nzMode="multiple"
-      [(ngModel)]="selectedUser"
       nzPlaceHolder="Select users"
       nzAllowClear
       nzShowSearch
-      [nzServerSearch]="true"
+      nzServerSearch
+      [(ngModel)]="selectedUser"
       (nzOnSearch)="onSearch($event)"
     >
       <ng-container *ngFor="let o of optionList">
@@ -26,6 +25,10 @@ import { debounceTime, map, switchMap } from 'rxjs/operators';
   `,
   styles: [
     `
+      nz-select {
+        width: 100%;
+      }
+
       .loading-icon {
         margin-right: 8px;
       }
