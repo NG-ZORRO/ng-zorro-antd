@@ -270,6 +270,18 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
         })
       );
       // Hiding would be triggered by the component itself.
+    } else if (trigger === 'ellipsisHover') {
+      // auto display tooltip when text cut by ellipsis
+      const listenerEllipsisHoverIn = this.renderer.listen(el, 'mouseenter', () => {
+        const offsetParam = el[`offsetWidth`];
+        const scrollParam = el[`scrollWidth`];
+        if (offsetParam < scrollParam) {
+          this.show();
+        }
+      })
+      this.triggerUnlisteners.push(listenerEllipsisHoverIn);
+      const listenerEllipsisHoverOut = this.renderer.listen(el, 'mouseleave', () => this.hide());
+      this.triggerUnlisteners.push(listenerEllipsisHoverOut);
     } // else do nothing because user wants to control the visibility programmatically.
   }
 
