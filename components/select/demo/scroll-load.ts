@@ -6,13 +6,7 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'nz-demo-select-scroll-load',
   template: `
-    <nz-select
-      style="width: 100%;"
-      [(ngModel)]="selectedUser"
-      (nzScrollToBottom)="loadMore()"
-      nzPlaceHolder="Select users"
-      nzAllowClear
-    >
+    <nz-select [(ngModel)]="selectedUser" (nzScrollToBottom)="loadMore()" nzPlaceHolder="Select users" nzAllowClear>
       <nz-option *ngFor="let o of optionList" [nzValue]="o" [nzLabel]="o"></nz-option>
       <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
         <i nz-icon nzType="loading" class="loading-icon"></i> Loading Data...
@@ -21,6 +15,10 @@ import { map } from 'rxjs/operators';
   `,
   styles: [
     `
+      nz-select {
+        width: 100%;
+      }
+
       .loading-icon {
         margin-right: 8px;
       }
@@ -41,6 +39,7 @@ export class NzDemoSelectScrollLoadComponent implements OnInit {
         return list.map((item: any) => `${item.name.first}`);
       })
     );
+
   // tslint:enable:no-any
 
   loadMore(): void {

@@ -4,10 +4,10 @@
     class="ant-select-search__field"
     (compositionstart)="isComposing = true"
     (compositionend)="isComposing = false"
-    (input)="updateWidth()"
     [ngModel]="inputValue"
     (ngModelChange)="setInputValue($event)"
     [disabled]="nzSelectService.disabled">
+  <span #mirrorElement class="ant-select-search__field__mirror"></span>
 </ng-template>
 <div class="ant-select-selection__rendered">
   <div *ngIf="nzPlaceHolder"
@@ -30,7 +30,6 @@
       class="ant-select-search ant-select-search--inline" [style.display]="nzOpen ? 'block' : 'none'">
       <div class="ant-select-search__field__wrap">
         <ng-template [ngTemplateOutlet]="inputTemplate"></ng-template>
-        <span class="ant-select-search__field__mirror">{{inputValue}}&nbsp;</span>
       </div>
     </div>
   </ng-container>

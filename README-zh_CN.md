@@ -157,6 +157,7 @@ $ npm run site:start
 - [Ververica](https://www.ververica.com/)
 - [Apache Flink](https://flink.apache.org/)
 - [Process Automation Group](http://pag.company/)
+- [ScentBird](https://www.scentbird.com/)
 - [Southern Institute of Technology](https://www.sit.ac.nz/)
 - [Hapify (Dynamic boilerplates tool)](https://hub.hapify.io/)
 
