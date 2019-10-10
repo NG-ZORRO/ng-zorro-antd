@@ -12,8 +12,8 @@ Replace `BrowserAnimationsModule` with 'NoopAnimationsModule` in the your module
 
 ```ts
 @NgModule({
-  imports     : [
-   ...,
+  imports: [
+   ...
    NoopAnimationsModule
   ]
 })
@@ -21,7 +21,21 @@ Replace `BrowserAnimationsModule` with 'NoopAnimationsModule` in the your module
 
 ### In Templates
 
-Add the nzNoAnimation property to the component that wants to close the animation.
+
+Import `NzNoAnimationModule` module.
+
+```ts
+import { NzNoAnimationModule } from 'ng-zorro-antd/core';
+
+@NgModule({
+  imports: [
+  ...
+   NzNoAnimationModule
+  ]
+})
+```
+
+Add the `nzNoAnimation` directive to the component that wants to close the animation.
 
 ```HTML
 <nz-modal nzNoAnimation></nz-modal>
