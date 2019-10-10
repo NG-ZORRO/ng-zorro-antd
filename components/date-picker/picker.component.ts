@@ -20,7 +20,6 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  OnInit,
   Output,
   ViewChild,
   ViewEncapsulation
@@ -37,7 +36,7 @@ import { DateHelperService } from 'ng-zorro-antd/i18n';
   animations: [slideMotion],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NzPickerComponent implements OnInit, AfterViewInit {
+export class NzPickerComponent implements AfterViewInit {
   @Input() noAnimation: boolean = false;
   @Input() isRange: boolean = false;
   @Input() open: boolean | undefined = undefined;
@@ -100,8 +99,6 @@ export class NzPickerComponent implements OnInit, AfterViewInit {
   }
 
   constructor(private dateHelper: DateHelperService, private changeDetector: ChangeDetectorRef) {}
-
-  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     if (this.autoFocus) {

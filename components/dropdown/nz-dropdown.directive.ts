@@ -22,14 +22,17 @@ import {
   Directive,
   ElementRef,
   EventEmitter,
+  Host,
   Input,
   OnChanges,
   OnDestroy,
+  Optional,
   Output,
   Renderer2,
   SimpleChanges,
   ViewContainerRef
 } from '@angular/core';
+import { NzButtonComponent, NzButtonGroupComponent } from 'ng-zorro-antd/button';
 import { DEFAULT_DROPDOWN_POSITIONS, InputBoolean, POSITION_MAP } from 'ng-zorro-antd/core';
 import { combineLatest, fromEvent, merge, EMPTY, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, mapTo, takeUntil, tap } from 'rxjs/operators';
@@ -237,9 +240,17 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
     private renderer: Renderer2,
     private overlay: Overlay,
     private platform: Platform,
+    @Optional() @Host() private nzButtonComponent: NzButtonComponent,
+    @Optional() private nzButtonGroupComponent: NzButtonGroupComponent,
     private viewContainerRef: ViewContainerRef
   ) {
     renderer.addClass(elementRef.nativeElement, 'ant-dropdown-trigger');
+    if (this.nzButtonComponent) {
+      this.nzButtonComponent.isInDropdown = true;
+    }
+    if (this.nzButtonGroupComponent) {
+      this.nzButtonGroupComponent.isInDropdown = true;
+    }
   }
 
   ngAfterViewInit(): void {

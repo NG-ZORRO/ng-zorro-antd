@@ -143,9 +143,9 @@ describe('button', () => {
       fixture.detectChanges();
       expect(buttons[0].nativeElement.classList.contains('ant-btn-icon-only')).toBe(true);
       expect(buttons[0].nativeElement.classList.contains('ant-btn-circle')).toBe(true);
-      expect(buttons[1].nativeElement.classList.contains('ant-btn-icon-only')).toBe(false);
-      expect(buttons[1].nativeElement.firstElementChild!.classList.contains('anticon-search')).toBe(true);
-      expect(buttons[1].nativeElement.firstElementChild.style.cssText).toBe('display: inline-block;');
+      expect(buttons[2].nativeElement.classList.contains('ant-btn-icon-only')).toBe(false);
+      expect(buttons[2].nativeElement.firstElementChild!.classList.contains('anticon-search')).toBe(true);
+      expect(buttons[2].nativeElement.firstElementChild.style.cssText).toBe('display: inline-block;');
     }));
   });
 

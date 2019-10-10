@@ -6,7 +6,9 @@
 <ng-template #colGroupTemplate>
   <colgroup>
     <col [style.width]="width" [style.minWidth]="width" *ngFor="let width of nzWidthConfig">
-    <col [style.width]="th.nzWidth" [style.minWidth]="th.nzWidth" *ngFor="let th of listOfNzThComponent">
+    <ng-container *ngFor="let th of listOfNzThComponent">
+      <col [style.width]="th.nzWidth" [style.minWidth]="th.nzWidth" *ngIf="th.nzWidth">
+    </ng-container>
   </colgroup>
 </ng-template>
 <ng-template #headerTemplate>
@@ -19,7 +21,7 @@
   <div #tableHeaderElement
     *ngIf="nzScroll.y"
     [ngStyle]="headerBottomStyle"
-    class="ant-table-header">
+    class="ant-table-header ant-table-hide-scrollbar">
     <table [class.ant-table-fixed]="nzScroll.x" [style.width]="nzScroll.x">
       <ng-template [ngTemplateOutlet]="colGroupTemplate"></ng-template>
       <thead class="ant-table-thead" *ngIf="nzScroll.y">

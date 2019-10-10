@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-隐藏下拉列表中已选择的选项。
+通过 `nzHide` 隐藏下拉列表中已选择的选项。
 
 ## en-US
 
-Hide already selected options in the dropdown.
+Hide already selected options in the dropdown via `nzHide`.

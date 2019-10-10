@@ -100,7 +100,7 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
 
     if (this.diff === 0) {
       this.stopTimer();
-      this.nzCountdownFinish.next();
+      this.nzCountdownFinish.emit();
     }
   }
 }

@@ -336,7 +336,7 @@ export class NzTabSetComponent
       const index = this.findShouldActiveTabIndex();
       if (index !== this._selectedIndex) {
         this.nzSelectedIndex = index;
-        this.nzSelectedIndexChange.next(index);
+        this.nzSelectedIndexChange.emit(index);
       }
       this.nzHideAll = index === -1;
     }

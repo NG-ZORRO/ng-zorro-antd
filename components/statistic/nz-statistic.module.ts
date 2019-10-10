@@ -8,16 +8,15 @@
 import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { NzAddOnModule } from 'ng-zorro-antd/core';
+import { NzAddOnModule, NzPipesModule } from 'ng-zorro-antd/core';
 
 import { NzCountdownComponent } from './nz-countdown.component';
 import { NzStatisticNumberComponent } from './nz-statistic-number.component';
 import { NzStatisticComponent } from './nz-statistic.component';
-import { NzTimeRangePipe } from './nz-time-range.pipe';
 
 @NgModule({
-  imports: [CommonModule, PlatformModule, NzAddOnModule],
-  declarations: [NzStatisticComponent, NzCountdownComponent, NzStatisticNumberComponent, NzTimeRangePipe],
-  exports: [NzStatisticComponent, NzCountdownComponent, NzStatisticNumberComponent, NzTimeRangePipe]
+  imports: [CommonModule, PlatformModule, NzAddOnModule, NzPipesModule],
+  declarations: [NzStatisticComponent, NzCountdownComponent, NzStatisticNumberComponent],
+  exports: [NzStatisticComponent, NzCountdownComponent, NzStatisticNumberComponent]
 })
 export class NzStatisticModule {}

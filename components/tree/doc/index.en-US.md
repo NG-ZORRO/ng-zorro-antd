@@ -34,6 +34,7 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 | `[nzMultiple]` | Allows selecting multiple treeNodes | `boolean` | `false` |
 | `[nzHideUnMatched]` | Hide unmatched nodes while searching | `boolean` | `false` | ✅ |
 | `[nzCheckStrictly]` | Check treeNode precisely; parent treeNode and children treeNodes are not associated | `boolean` | `false` |
+| `[nzTreeTemplate]` | Custom Nodes | `TemplateRef<{ $implicit: NzTreeNode }>` | - |
 | `[nzExpandAll]` | Whether to expand all treeNodes | `boolean` | `false` |
 | `[nzExpandedKeys]` | Specify the keys of the default expanded treeNodes | `string[]` | `[]` |
 | `[nzCheckedKeys]` | Specifies the keys of the default checked treeNodes | `string[]` | `[]` |

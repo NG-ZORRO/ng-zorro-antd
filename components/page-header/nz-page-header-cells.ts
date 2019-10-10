@@ -67,3 +67,9 @@ export class NzPageHeaderFooterDirective {}
   exportAs: 'nzPageHeaderBreadcrumb'
 })
 export class NzPageHeaderBreadcrumbDirective {}
+
+@Directive({
+  selector: 'nz-avatar[nz-page-header-avatar]',
+  exportAs: 'nzPageHeaderAvatar'
+})
+export class NzPageHeaderAvatarDirective {}

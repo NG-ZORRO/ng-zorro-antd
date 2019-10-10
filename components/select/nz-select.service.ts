@@ -101,9 +101,10 @@ export class NzSelectService {
   // selected value or ViewChildren change
   valueOrOption$ = combineLatest([this.listOfSelectedValue$, this.mapOfTemplateOption$]).pipe(
     tap(data => {
-      this.listOfSelectedValue = data[0];
-      this.listOfNzOptionComponent = data[1].listOfNzOptionComponent;
-      this.listOfNzOptionGroupComponent = data[1].listOfNzOptionGroupComponent;
+      const [listOfSelectedValue, mapOfTemplateOption] = data;
+      this.listOfSelectedValue = listOfSelectedValue;
+      this.listOfNzOptionComponent = mapOfTemplateOption.listOfNzOptionComponent;
+      this.listOfNzOptionGroupComponent = mapOfTemplateOption.listOfNzOptionGroupComponent;
       this.listOfTemplateOption = this.listOfNzOptionComponent.concat(
         this.listOfNzOptionGroupComponent.reduce(
           (pre, cur) => [...pre, ...cur.listOfNzOptionComponent.toArray()],

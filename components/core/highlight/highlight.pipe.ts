@@ -36,18 +36,18 @@ function encodeEntities(value: string): string {
   pure: true
 })
 export class NzHighlightPipe implements PipeTransform {
-  transform(value: string, highlightValue: string, flags?: string, klass?: string): string | null {
-    // Make it to display HTML string
-    const encodedValue = encodeEntities(value);
+  private UNIQUE_WRAPPERS: [string, string] = ['##==-open_tag-==##', '##==-close_tag-==##'];
 
+  transform(value: string, highlightValue: string, flags?: string, klass?: string): string | null {
     if (!highlightValue) {
-      return encodedValue;
+      return value;
     }
 
-    const encodedHighlightValue = encodeEntities(highlightValue);
-
     // Escapes regex keyword to interpret these characters literally
-    const searchValue = new RegExp(encodedHighlightValue.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$&'), flags);
-    return encodedValue.replace(searchValue, str => `<span${klass ? ` class="${klass}"` : ''}>${str}</span>`);
+    const searchValue = new RegExp(highlightValue.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$&'), flags);
+    const wrapValue = value.replace(searchValue, `${this.UNIQUE_WRAPPERS[0]}$&${this.UNIQUE_WRAPPERS[1]}`);
+    return encodeEntities(wrapValue)
+      .replace(new RegExp(this.UNIQUE_WRAPPERS[0], 'g'), klass ? `<span class="${klass}">` : '<span>')
+      .replace(new RegExp(this.UNIQUE_WRAPPERS[1], 'g'), '</span>');
   }
 }

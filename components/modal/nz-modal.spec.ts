@@ -10,11 +10,11 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NzButtonComponent, NzButtonModule } from 'ng-zorro-antd/button';
 import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core';
+import { NzToCssUnitPipe } from 'ng-zorro-antd/core/pipe/nz-css-unit.pipe';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import en_US from '../i18n/languages/en_US';
 
-import { CssUnitPipe } from './css-unit.pipe';
 import { NZ_MODAL_CONFIG } from './nz-modal-config';
 import { NzModalControlService } from './nz-modal-control.service';
 import { NzModalRef } from './nz-modal-ref.class';
@@ -344,7 +344,7 @@ describe('modal testing (legacy)', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports: [NoopAnimationsModule],
-        declarations: [CssUnitPipe, TestCssUnitPipeComponent]
+        declarations: [NzToCssUnitPipe, TestCssUnitPipeComponent]
       }).compileComponents();
     }));
 
@@ -970,7 +970,11 @@ export class TestConfirmCustomComponent {
 
 @Component({
   template: `
-    <div [style.width]="100 | toCssUnit" [style.height]="'100px' | toCssUnit" [style.top]="100 | toCssUnit: 'pt'"></div>
+    <div
+      [style.width]="100 | nzToCssUnit"
+      [style.height]="'100px' | nzToCssUnit"
+      [style.top]="100 | nzToCssUnit: 'pt'"
+    ></div>
   `
 })
 class TestCssUnitPipeComponent {}

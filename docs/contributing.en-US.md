@@ -30,7 +30,7 @@ Working on your first Pull Request? You can learn how from these resources:
 * [How to Contribute to Open Source](https://opensource.guide/how-to-contribute/)
 * [First Contributions](https://github.com/firstcontributions/first-contributions)
 
-To help you get your feet wet and get you familiar with our contribution process, we have a list of [good first issues](https://github.com/NG-ZORRO/ng-zorro-antd/labels/good%20first%20issue) that contain bugs or small features that have a relatively limited scope. This is a great place to get started.
+To help you get your feet wet and get you familiar with our contribution process, we have a list of [Good First Issue](https://github.com/NG-ZORRO/ng-zorro-antd/labels/good%20first%20issue) that contain bugs or small features that have a relatively limited scope. This is a great place to get started.
 
 If you decide to fix an issue, please be sure to check the comment thread in case somebody is already working on a fix. If nobody is working on it at the moment, please leave a comment stating that you intend to work on it so other people don’t accidentally duplicate your effort.
 
@@ -40,21 +40,23 @@ If somebody claims an issue but doesn’t follow up for more than two weeks, it�
 
 The core team is monitoring for pull requests. We will review your pull request and either merge it, request changes to it, or close it with an explanation.
 
-**Before submitting a pull request**, please make sure the following is done:
+**Before submitting a pull request**, please make sure the followings are done:
 
 1. Run `npm install` in the repository root.
 2. If you’ve fixed a bug or added code that should be tested, add tests!
-3. Ensure the test suite passes (npm run test).
-4. Make sure your code lints (npm run lint). Tip: Lint runs automatically when you `git commit`.
+3. Make sure the test suite passes (`npm run test`).
+4. Make sure your code lints (`npm run lint`).
 5. Make sure rebase your code to keep the history clean.
 6. Make sure your commit message meet the [guidelines](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md#-commit-message-guidelines)
 
 ## Development Workflow
 
-After cloning `ng-zorro-antd`, run `npm install` to fetch its dependencies. Then, you can run several commands:
+After cloning `ng-zorro-antd` and running `npm install` to fetch its dependencies, you can run the following commands:
 
-1. `npm start` runs NG-ZORRO website locally.
-2. `npm run lint` checks the code style.
-3. `npm test` runs the complete test suite.
-3. `npm run test:watch [name]` run some test file and watch changes.
-4. `npm run build:lib` creates build of `ng-zorro-antd`.
+* `npm start` runs NG-ZORRO website locally.
+* `npm run lint` checks the code style.
+* `npm test` runs the complete test suite.
+* `npm run test:watch [name]` run some test file and watch changes.
+* `npm run build:lib` creates build of `ng-zorro-antd`.
+
+If you running into problems while developing ng-zorro-antd, you can refer to our [developement guide](https://github.com/NG-ZORRO/ng-zorro-antd/wiki/Development-Guide) on GitHub.

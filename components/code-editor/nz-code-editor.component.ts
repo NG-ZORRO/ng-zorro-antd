@@ -135,7 +135,7 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
         this.setValueEmitter();
       }
 
-      this.nzEditorInitialized.next(this.editorInstance);
+      this.nzEditorInitialized.emit(this.editorInstance);
     });
   }
 
