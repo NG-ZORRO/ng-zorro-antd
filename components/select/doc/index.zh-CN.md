@@ -74,6 +74,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzDisabled]` | 是否禁用 | `boolean` | `false` |
 | `[nzLabel]` | 选中该 nz-option 后，nz-select 中显示的文字 | `string` | - |
 | `[nzValue]` | nz-select 中 ngModel 的值 | `any` | - |
+| `[nzHide]` | 是否在选项列表中隐藏改选项 | `boolean` | `false` |
 | `[nzCustomContent]` | 是否自定义在下拉菜单中的Template内容，当为 true 时，nz-option 包裹的内容将直接渲染在下拉菜单中 | `boolean` | `false` |
 
 ### nz-option-group
