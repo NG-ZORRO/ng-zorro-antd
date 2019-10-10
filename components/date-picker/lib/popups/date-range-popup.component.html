@@ -29,7 +29,7 @@
 <ng-template #tplCalendarInput let-partType="partType">
   <calendar-input
     [value]="getValue(partType)"
-    (valueChange)="changeValue($event, partType)"
+    (valueChange)="changeValueFromInput($event, partType)"
     [locale]="locale"
     [disabledDate]="disabledDate"
     [format]="format"
@@ -72,7 +72,7 @@
     [rangeQuickSelector]="ranges ? tplRangeQuickSelector : null"
     [(showTimePicker)]="showTimePicker"
     (showTimePickerChange)="onShowTimePickerChange($event)"
-    (clickOk)="resultOk.emit()"
+    (clickOk)="onClickOk()"
     (clickToday)="onClickToday($event)"
   ></calendar-footer>
 </ng-template>

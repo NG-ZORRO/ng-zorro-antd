@@ -4,7 +4,7 @@ import zh from '@angular/common/locales/zh';
 import { fakeAsync, inject, TestBed } from '@angular/core/testing';
 
 import { DateTableComponent } from '../../calendar/date-table.component';
-import { CandyDate } from '../../core';
+import { sortRangeValue, CandyDate } from '../../core';
 import { DateHelperService } from '../../i18n/date-helper.service';
 import { NzI18nService } from '../../i18n/nz-i18n.service';
 import { AbstractPickerComponent } from '../abstract-picker.component';
@@ -146,7 +146,7 @@ describe('Coverage supplements', () => {
 
       // sortRangeValue
       componentInstance.selectedValue = [end, start];
-      componentInstance.sortRangeValue();
+      componentInstance.selectedValue = sortRangeValue(componentInstance.selectedValue);
       expect(componentInstance.selectedValue[0].getDate()).toBe(11);
     });
   }); // /DateRangePopup

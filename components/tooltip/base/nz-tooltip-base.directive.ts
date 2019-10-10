@@ -178,7 +178,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
       )
       .subscribe((visible: boolean) => {
         this.isTooltipComponentVisible = visible;
-        this.nzVisibleChange.next(visible);
+        this.nzVisibleChange.emit(visible);
       });
     this.tooltip.setOverlayOrigin(this as CdkOverlayOrigin);
   }

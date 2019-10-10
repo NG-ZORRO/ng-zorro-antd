@@ -28,12 +28,13 @@ import {
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { handleLinearGradient } from './nz-progress-utils';
+import { handleCircleGradient, handleLinearGradient } from './nz-progress-utils';
 import {
   NzProgressCirclePath,
   NzProgressColorGradient,
   NzProgressFormatter,
   NzProgressGapPositionType,
+  NzProgressGradientProgress,
   NzProgressStatusType,
   NzProgressStrokeColorType,
   NzProgressStrokeLinecapType,
@@ -43,15 +44,8 @@ import {
 let gradientIdSeed = 0;
 
 const statusIconNameMap = new Map([['success', 'check'], ['exception', 'close']]);
-
 const statusColorMap = new Map([['normal', '#108ee9'], ['exception', '#ff5500'], ['success', '#87d068']]);
-
 const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
-
-export type NzProgressGapPositionType = 'top' | 'bottom' | 'left' | 'right';
-export type NzProgressStatusType = 'success' | 'exception' | 'active' | 'normal';
-export type NzProgressTypeType = 'line' | 'circle' | 'dashboard';
-export type NzProgressStrokeLinecapType = 'round' | 'square';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -90,6 +84,8 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
 
   /** Paths to rendered in the template. */
   progressCirclePath: NzProgressCirclePath[] = [];
+
+  circleGradient: Array<{ offset: string; color: string }>;
 
   trailPathStyle: NgStyleInterface;
 
@@ -260,8 +256,11 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
     const isGradient = (this.isGradient = !!color && typeof color !== 'string');
     if (isGradient && !this.isCircleStyle) {
       this.lineGradient = handleLinearGradient(color as NzProgressColorGradient);
+    } else if (isGradient && this.isCircleStyle) {
+      this.circleGradient = handleCircleGradient(this.nzStrokeColor as NzProgressGradientProgress);
     } else {
       this.lineGradient = null;
+      this.circleGradient = [];
     }
   }
 }

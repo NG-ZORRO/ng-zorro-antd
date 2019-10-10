@@ -4,7 +4,8 @@
       class="{{ prefixCls }}-input {{ invalidInputClass }}"
       placeholder="{{ placeholder || locale.dateSelect }}"
       value="{{ toReadableInput(value) }}"
-      (keyup)="onInputKeyup($event)"
+      (input)="onInputKeyup($event)"
+      (keyup.enter)="onInputKeyup($event, true)"
       #inputElement
     />
   </div>

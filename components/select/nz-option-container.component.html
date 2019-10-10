@@ -12,11 +12,13 @@
     [nzMenuItemSelectedIcon]="nzMenuItemSelectedIcon"
     [nzOption]="nzSelectService.addedTagOption">
   </li>
-  <li nz-option-li
-    *ngFor="let option of nzSelectService.listOfNzOptionComponent | nzFilterOption : nzSelectService.searchValue : nzSelectService.filterOption : nzSelectService.serverSearch; trackBy: trackValue"
-    [nzMenuItemSelectedIcon]="nzMenuItemSelectedIcon"
-    [nzOption]="option">
-  </li>
+  <ng-container *ngFor="let option of nzSelectService.listOfNzOptionComponent | nzFilterOption : nzSelectService.searchValue : nzSelectService.filterOption : nzSelectService.serverSearch; trackBy: trackValue">
+    <li nz-option-li
+      *ngIf="!option.nzHide"
+      [nzMenuItemSelectedIcon]="nzMenuItemSelectedIcon"
+      [nzOption]="option">
+    </li>
+  </ng-container>
   <li class="ant-select-dropdown-menu-item-group"
     *ngFor="let group of nzSelectService.listOfNzOptionGroupComponent | nzFilterGroupOption : nzSelectService.searchValue : nzSelectService.filterOption :nzSelectService.serverSearch; trackBy: trackLabel">
     <div class="ant-select-dropdown-menu-item-group-title"
@@ -24,11 +26,13 @@
       <ng-container *nzStringTemplateOutlet="group.nzLabel"> {{group.nzLabel}} </ng-container>
     </div>
     <ul class="ant-select-dropdown-menu-item-group-list">
-      <li nz-option-li
-        *ngFor="let option of group.listOfNzOptionComponent | nzFilterOption : nzSelectService.searchValue : nzSelectService.filterOption :nzSelectService.serverSearch; trackBy: trackValue"
-        [nzMenuItemSelectedIcon]="nzMenuItemSelectedIcon"
-        [nzOption]="option">
-      </li>
+      <ng-container *ngFor="let option of group.listOfNzOptionComponent | nzFilterOption : nzSelectService.searchValue : nzSelectService.filterOption :nzSelectService.serverSearch; trackBy: trackValue">
+        <li nz-option-li
+          *ngIf="!option.nzHide"
+          [nzMenuItemSelectedIcon]="nzMenuItemSelectedIcon"
+          [nzOption]="option">
+        </li>
+      </ng-container>
     </ul>
   </li>
   <li nz-option-li

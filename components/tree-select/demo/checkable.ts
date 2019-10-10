@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-tree-select-checkable',
@@ -15,7 +15,7 @@ import { Component, OnInit } from '@angular/core';
     </nz-tree-select>
   `
 })
-export class NzDemoTreeSelectCheckableComponent implements OnInit {
+export class NzDemoTreeSelectCheckableComponent {
   value: string[] = ['0-0-0'];
   nodes = [
     {
@@ -61,6 +61,4 @@ export class NzDemoTreeSelectCheckableComponent implements OnInit {
   onChange($event: string[]): void {
     console.log($event);
   }
-
-  ngOnInit(): void {}
 }

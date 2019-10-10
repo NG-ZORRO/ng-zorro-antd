@@ -10,7 +10,7 @@ import { Component } from '@angular/core';
       [(ngModel)]="listOfSelectedValue"
     >
       <ng-container *ngFor="let option of listOfOption">
-        <nz-option [nzLabel]="option" [nzValue]="option" *ngIf="isNotSelected(option)"></nz-option>
+        <nz-option [nzLabel]="option" [nzValue]="option" [nzHide]="!isNotSelected(option)"></nz-option>
       </ng-container>
     </nz-select>
   `

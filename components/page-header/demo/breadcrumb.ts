@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-page-header-breadcrumb',
   template: `
-    <nz-page-header nzBackIcon nzTitle="Title">
+    <nz-page-header nzTitle="Title">
       <nz-breadcrumb nz-page-header-breadcrumb>
         <nz-breadcrumb-item>First-level Menu</nz-breadcrumb-item>
         <nz-breadcrumb-item>

@@ -33,8 +33,15 @@ import { warn } from '../logger';
 import { IndexableObject } from '../types';
 
 export type CandyDateCompareGrain = 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second';
-
 export type CandyDateType = CandyDate | Date | null;
+
+export function sortRangeValue(rangeValue: CandyDate[]): CandyDate[] {
+  if (Array.isArray(rangeValue)) {
+    const [start, end] = rangeValue;
+    return start && end && start.isAfterSecond(end) ? [end, start] : [start, end];
+  }
+  return rangeValue;
+}
 /**
  * Wrapping kind APIs for date operating and unify
  * NOTE: every new API return new CandyDate object without side effects to the former Date object

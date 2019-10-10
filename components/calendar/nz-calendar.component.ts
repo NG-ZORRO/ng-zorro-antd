@@ -15,7 +15,6 @@ import {
   EventEmitter,
   HostBinding,
   Input,
-  OnInit,
   Output,
   TemplateRef,
   ViewEncapsulation
@@ -41,7 +40,7 @@ export type DateTemplate = TemplateRef<{ $implicit: Date }>;
   templateUrl: './nz-calendar.component.html',
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzCalendarComponent), multi: true }]
 })
-export class NzCalendarComponent implements ControlValueAccessor, OnInit {
+export class NzCalendarComponent implements ControlValueAccessor {
   activeDate: CandyDate = new CandyDate();
   prefixCls: string = 'ant-fullcalendar';
 
@@ -105,8 +104,6 @@ export class NzCalendarComponent implements ControlValueAccessor, OnInit {
   }
 
   constructor(private cdr: ChangeDetectorRef) {}
-
-  ngOnInit(): void {}
 
   onModeChange(mode: ModeType): void {
     this.nzModeChange.emit(mode);

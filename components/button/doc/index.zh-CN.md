@@ -23,6 +23,8 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 
 ### [nz-button]
 
+> 注意：nz-button 是一个 Directive，除以下表格之外还支持例如 disabled 等原生 button 的[所有属性](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/button)。
+
 通过设置 Button 的属性来产生不同的按钮样式，推荐顺序为：`nzType` -> `nzShape` -> `nzSize` -> `nzLoading` -> `disabled`
 
 按钮的属性说明如下：
