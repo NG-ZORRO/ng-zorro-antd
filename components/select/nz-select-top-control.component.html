@@ -42,6 +42,7 @@
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         [attr.title]="option.nzLabel"
         [class.ant-select-selection__choice__disabled]="option.nzDisabled"
+        (@zoomMotion.done)="animationEnd()"
         class="ant-select-selection__choice">
         <ng-container *nzStringTemplateOutlet="nzCustomTemplate; context:{ $implicit: nzSelectService.listOfCachedSelectedOption[index] }">
           <div class="ant-select-selection__choice__content">{{ option.nzLabel }}</div>
@@ -58,6 +59,7 @@
       [@zoomMotion]
       [@.disabled]="noAnimation?.nzNoAnimation"
       [nzNoAnimation]="noAnimation?.nzNoAnimation"
+      (@zoomMotion.done)="animationEnd()"
       class="ant-select-selection__choice">
       <div class="ant-select-selection__choice__content">
         <ng-container *ngIf="nzMaxTagPlaceholder">
