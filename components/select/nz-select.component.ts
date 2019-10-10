@@ -297,6 +297,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   ngOnInit(): void {
+    this.nzSelectService.animationEvent$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.updateCdkConnectedOverlayPositions());
     this.nzSelectService.searchValue$.pipe(takeUntil(this.destroy$)).subscribe(data => {
       this.nzOnSearch.emit(data);
       this.updateCdkConnectedOverlayPositions();
@@ -305,7 +308,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
       if (this.value !== modelValue) {
         this.value = modelValue;
         this.onChange(this.value);
-        this.updateCdkConnectedOverlayPositions();
       }
     });
     this.nzSelectService.open$.pipe(takeUntil(this.destroy$)).subscribe(value => {

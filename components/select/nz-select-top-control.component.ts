@@ -129,6 +129,10 @@ export class NzSelectTopControlComponent implements OnInit, OnDestroy {
     e.stopPropagation();
   }
 
+  animationEnd(): void {
+    this.nzSelectService.animationEvent$.next();
+  }
+
   constructor(
     private renderer: Renderer2,
     public nzSelectService: NzSelectService,
