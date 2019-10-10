@@ -6,7 +6,6 @@ import { Component, OnInit } from '@angular/core';
     <nz-select
       [nzMaxTagCount]="3"
       [nzMaxTagPlaceholder]="tagPlaceHolder"
-      style="width: 100%"
       nzMode="multiple"
       nzPlaceHolder="Please select"
       [(ngModel)]="listOfSelectedValue"
@@ -14,7 +13,14 @@ import { Component, OnInit } from '@angular/core';
       <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
     </nz-select>
     <ng-template #tagPlaceHolder let-selectedList> and {{ selectedList.length }} more selected </ng-template>
-  `
+  `,
+  styles: [
+    `
+      nz-select {
+        width: 100%;
+      }
+    `
+  ]
 })
 export class NzDemoSelectMultipleComponent implements OnInit {
   listOfOption: Array<{ label: string; value: string }> = [];

@@ -1,5 +1,5 @@
 import { Component, DebugElement } from '@angular/core';
-import { fakeAsync, flush, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
@@ -68,22 +68,6 @@ describe('nz-select top control', () => {
       expect(setInputSpy).toHaveBeenCalledTimes(1);
       expect(setInputSpy).toHaveBeenCalledWith('');
     });
-    it('should input work', fakeAsync(() => {
-      fixture.detectChanges();
-      const inputEl = tc.nativeElement.querySelector('.ant-select-search__field');
-      inputEl.value = 'test';
-      dispatchFakeEvent(inputEl, 'input');
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
-      expect(Math.floor(inputEl.scrollWidth / 10)).toBe(Math.floor(parseInt(inputEl.style.width, 10) / 10));
-      inputEl.value = '';
-      dispatchFakeEvent(inputEl, 'input');
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
-      expect(inputEl.style.width).toBe('');
-    }));
     it('should selectedValueDisplay', () => {
       fixture.detectChanges();
       tcComponent.nzShowSearch = false;
