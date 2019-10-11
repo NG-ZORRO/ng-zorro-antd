@@ -180,6 +180,7 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzLeft]` | 左侧距离，用于固定左侧列 | `string` | - |
 | `[nzRight]` | 右侧距离，用于固定右侧列 | `string` | - |
 | `[nzAlign]` | 设置列内容的对齐方式 | `'left' \| 'right' \| 'center'` | - |
+| `[nzBreakWord]` | 是否折行显示 | `boolean` | `false` |
 
 其他
 
