@@ -139,6 +139,7 @@ Style property
 | `[nzLeft]` | Left pixels, used to fixed column to left | `string` | - |
 | `[nzRight]` | Right pixels, used to fixed column to right | `string` | - |
 | `[nzAlign]` | Specify how content is aligned | `'left' \| 'right' \| 'center'` | - |
+| `[nzBreakWord]` | Whether insert line breaks within words | `boolean` | `false` |
 
 Other property
 
