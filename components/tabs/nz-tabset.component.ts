@@ -308,6 +308,8 @@ export class NzTabSetComponent
   ngOnDestroy(): void {
     this.tabsSubscription.unsubscribe();
     this.tabLabelSubscription.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngAfterViewInit(): void {
