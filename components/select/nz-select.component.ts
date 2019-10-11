@@ -6,7 +6,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { FocusMonitor } from '@angular/cdk/a11y';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import {
@@ -98,12 +97,12 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
   triggerWidth: number;
   private _disabled = false;
-  private _autoFocus = false;
   private isInit = false;
   private destroy$ = new Subject();
   @ViewChild(CdkOverlayOrigin, { static: false }) cdkOverlayOrigin: CdkOverlayOrigin;
   @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay: CdkConnectedOverlay;
   @ViewChild(NzSelectTopControlComponent, { static: true }) nzSelectTopControlComponent: NzSelectTopControlComponent;
+  @ViewChild(NzSelectTopControlComponent, { static: true, read: ElementRef }) nzSelectTopControlElement: ElementRef;
   /** should move to nz-option-container when https://github.com/angular/angular/issues/20810 resolved **/
   @ContentChildren(NzOptionComponent) listOfNzOptionComponent: QueryList<NzOptionComponent>;
   @ContentChildren(NzOptionGroupComponent) listOfNzOptionGroupComponent: QueryList<NzOptionGroupComponent>;
@@ -120,6 +119,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @Input() @InputBoolean() nzAllowClear = false;
   @Input() @InputBoolean() nzShowSearch = false;
   @Input() @InputBoolean() nzLoading = false;
+  @Input() @InputBoolean() nzAutoFocus = false;
   @Input() nzPlaceHolder: string;
   @Input() nzMaxTagCount: number;
   @Input() nzDropdownRender: TemplateRef<void>;
@@ -166,16 +166,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   @Input()
-  set nzAutoFocus(value: boolean) {
-    this._autoFocus = toBoolean(value);
-    this.updateAutoFocus();
-  }
-
-  get nzAutoFocus(): boolean {
-    return this._autoFocus;
-  }
-
-  @Input()
   set nzOpen(value: boolean) {
     this.open = value;
     this.nzSelectService.setOpenState(value);
@@ -195,32 +185,34 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     return this._disabled;
   }
 
+  get nzSelectTopControlDOM(): HTMLElement {
+    return this.nzSelectTopControlElement && this.nzSelectTopControlElement.nativeElement;
+  }
+
   updateAutoFocus(): void {
-    if (this.nzSelectTopControlComponent.inputElement) {
-      if (this.nzAutoFocus) {
-        this.renderer.setAttribute(
-          this.nzSelectTopControlComponent.inputElement.nativeElement,
-          'autofocus',
-          'autofocus'
-        );
-      } else {
-        this.renderer.removeAttribute(this.nzSelectTopControlComponent.inputElement.nativeElement, 'autofocus');
-      }
+    if (this.nzSelectTopControlDOM && this.nzAutoFocus) {
+      this.nzSelectTopControlDOM.focus();
     }
   }
 
   focus(): void {
-    if (this.nzSelectTopControlComponent.inputElement) {
-      this.focusMonitor.focusVia(this.nzSelectTopControlComponent.inputElement, 'keyboard');
-      this.nzFocus.emit();
+    if (this.nzSelectTopControlDOM) {
+      this.nzSelectTopControlDOM.focus();
     }
   }
 
   blur(): void {
-    if (this.nzSelectTopControlComponent.inputElement) {
-      this.nzSelectTopControlComponent.inputElement.nativeElement.blur();
-      this.nzBlur.emit();
+    if (this.nzSelectTopControlDOM) {
+      this.nzSelectTopControlDOM.blur();
     }
+  }
+
+  onFocus(): void {
+    this.nzFocus.emit();
+  }
+
+  onBlur(): void {
+    this.nzBlur.emit();
   }
 
   onKeyDown(event: KeyboardEvent): void {
@@ -256,10 +248,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   constructor(
-    private renderer: Renderer2,
+    renderer: Renderer2,
     public nzSelectService: NzSelectService,
     private cdr: ChangeDetectorRef,
-    private focusMonitor: FocusMonitor,
     private platform: Platform,
     elementRef: ElementRef,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
@@ -331,6 +322,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
 
   ngAfterViewInit(): void {
     this.updateCdkConnectedOverlayStatus();
+    this.updateAutoFocus();
     this.isInit = true;
   }
 
