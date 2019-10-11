@@ -7,6 +7,7 @@
  */
 
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -24,7 +25,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { filter, map, pairwise, takeUntil } from 'rxjs/operators';
 import { NzOptionGroupComponent } from './nz-option-group.component';
 import { NzOptionLiComponent } from './nz-option-li.component';
 import { NzOptionComponent } from './nz-option.component';
@@ -38,7 +39,7 @@ import { NzSelectService } from './nz-select.service';
   preserveWhitespaces: false,
   templateUrl: './nz-option-container.component.html'
 })
-export class NzOptionContainerComponent implements OnDestroy, OnInit {
+export class NzOptionContainerComponent implements OnDestroy, OnInit, AfterViewInit {
   private destroy$ = new Subject();
   private lastScrollTop = 0;
   @ViewChildren(NzOptionLiComponent) listOfNzOptionLiComponent: QueryList<NzOptionLiComponent>;
@@ -54,11 +55,10 @@ export class NzOptionContainerComponent implements OnDestroy, OnInit {
         const targetOption = this.listOfNzOptionLiComponent.find(o =>
           this.nzSelectService.compareWith(o.nzOption.nzValue, option.nzValue)
         );
-        /* tslint:disable:no-any */
+        // tslint:disable:no-any
         if (targetOption && targetOption.el && (targetOption.el as any).scrollIntoViewIfNeeded) {
           (targetOption.el as any).scrollIntoViewIfNeeded(false);
         }
-        /* tslint:enable:no-any */
       }
     });
   }
@@ -96,6 +96,17 @@ export class NzOptionContainerComponent implements OnDestroy, OnInit {
           }
         });
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.listOfNzOptionLiComponent.changes
+      .pipe(
+        map(list => list.length),
+        pairwise(),
+        filter(([before, after]) => after < before),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => (this.lastScrollTop = 0));
   }
 
   ngOnDestroy(): void {
