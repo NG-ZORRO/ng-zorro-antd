@@ -19,6 +19,8 @@
   [nzTokenSeparators]="nzTokenSeparators"
   [class.ant-select-selection--single]="nzSelectService.isSingleMode"
   [class.ant-select-selection--multiple]="nzSelectService.isMultipleOrTags"
+  (focus)="onFocus()"
+  (blur)="onBlur()"
   (keydown)="onKeyDown($event)">
 </div>
 <ng-template
