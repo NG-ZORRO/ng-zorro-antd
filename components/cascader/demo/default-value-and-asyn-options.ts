@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CascaderOption } from 'ng-zorro-antd/cascader';
+import { NzCascaderOption } from 'ng-zorro-antd/cascader';
 
 const options = [
   {
@@ -57,7 +57,7 @@ const options = [
   ]
 })
 export class NzDemoCascaderDefaultValueAndAsynOptionsComponent implements OnInit {
-  nzOptions: CascaderOption[] | null = null;
+  nzOptions: NzCascaderOption[] | null = null;
   values: string[] = ['zhejiang', 'hangzhou', 'xihu'];
 
   onChanges(values: string[]): void {

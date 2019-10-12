@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CascaderOption } from 'ng-zorro-antd/cascader';
+import { NzCascaderOption } from 'ng-zorro-antd/cascader';
 
 const options = [
   {
@@ -72,14 +72,14 @@ const options = [
   ]
 })
 export class NzDemoCascaderCustomFieldNamesComponent {
-  nzOptions: CascaderOption[] = options;
+  nzOptions: NzCascaderOption[] = options;
   values: string[] | null = null;
 
   onChanges(values: string[]): void {
     console.log(values, this.values);
   }
 
-  validate(option: CascaderOption, _index: number): boolean {
+  validate(option: NzCascaderOption, _index: number): boolean {
     const value = option.value as string;
     return ['hangzhou', 'xihu', 'nanjing', 'zhonghuamen'].indexOf(value) >= 0;
   }

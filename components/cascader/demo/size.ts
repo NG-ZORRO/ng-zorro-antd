@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CascaderOption } from 'ng-zorro-antd/cascader';
+import { NzCascaderOption } from 'ng-zorro-antd/cascader';
 
 const options = [
   {
@@ -62,7 +62,7 @@ const options = [
   ]
 })
 export class NzDemoCascaderSizeComponent {
-  nzOptions: CascaderOption[] = options;
+  nzOptions: NzCascaderOption[] = options;
   value1: string[] | null = null;
   value2: string[] | null = null;
   value3: string[] | null = null;

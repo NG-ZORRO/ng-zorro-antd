@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CascaderOption } from 'ng-zorro-antd/cascader';
+import { NzCascaderOption } from 'ng-zorro-antd/cascader';
 
 const options = [
   {
@@ -66,7 +66,7 @@ const options = [
   ]
 })
 export class NzDemoCascaderTriggerComponent {
-  nzOptions: CascaderOption[] = options;
+  nzOptions: NzCascaderOption[] = options;
   values: string[] | null = null;
   text = 'Unselect';
 
@@ -74,7 +74,7 @@ export class NzDemoCascaderTriggerComponent {
     console.log(values, this.values);
   }
 
-  onSelectionChange(selectedOptions: CascaderOption[]): void {
+  onSelectionChange(selectedOptions: NzCascaderOption[]): void {
     this.text = selectedOptions.map(o => o.label).join(', ');
   }
 }

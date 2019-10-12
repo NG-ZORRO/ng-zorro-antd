@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CascaderOption } from 'ng-zorro-antd/cascader';
+import { NzCascaderOption } from 'ng-zorro-antd/cascader';
 
 const options = [
   {
@@ -105,7 +105,7 @@ const otherOptions = [
   ]
 })
 export class NzDemoCascaderSearchComponent implements OnInit {
-  nzOptions: CascaderOption[] | null = null;
+  nzOptions: NzCascaderOption[] | null = null;
   values: string[] | null = null;
 
   ngOnInit(): void {

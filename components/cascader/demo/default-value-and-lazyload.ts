@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CascaderOption } from 'ng-zorro-antd/cascader';
+import { NzCascaderOption } from 'ng-zorro-antd/cascader';
 
 const provinces = [
   {
@@ -70,7 +70,7 @@ export class NzDemoCascaderDefaultValueAndLazyloadComponent {
   }
 
   /** load data async execute by `nzLoadData` method */
-  loadData(node: CascaderOption, index: number): PromiseLike<void> {
+  loadData(node: NzCascaderOption, index: number): PromiseLike<void> {
     return new Promise(resolve => {
       setTimeout(() => {
         if (index < 0) {

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CascaderOption } from 'ng-zorro-antd/cascader';
+import { NzCascaderOption } from 'ng-zorro-antd/cascader';
 
 const options = [
   {
@@ -77,14 +77,14 @@ const options = [
   ]
 })
 export class NzDemoCascaderCustomRenderComponent {
-  nzOptions: CascaderOption[] = options;
+  nzOptions: NzCascaderOption[] = options;
   values: string[] | null = null;
 
   onChanges(values: string[]): void {
     console.log(values, this.values);
   }
 
-  handleAreaClick(e: Event, label: string, option: CascaderOption): void {
+  handleAreaClick(e: Event, label: string, option: NzCascaderOption): void {
     e.preventDefault();
     e.stopPropagation();
     console.log('clicked "', label, '"', option);

@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { CascaderOption } from 'ng-zorro-antd/cascader';
+import { NzCascaderOption } from 'ng-zorro-antd/cascader';
 import { Subscription } from 'rxjs';
 
 const options = [
@@ -69,7 +69,7 @@ const options = [
 })
 export class NzDemoCascaderReactiveFormComponent implements OnDestroy {
   form: FormGroup;
-  nzOptions: CascaderOption[] = options;
+  nzOptions: NzCascaderOption[] = options;
   changeSubscription: Subscription;
   constructor(private fb: FormBuilder) {
     this.createForm();
