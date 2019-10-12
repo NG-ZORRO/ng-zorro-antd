@@ -43,6 +43,7 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 | `[nzNotFoundContent]` | Specify content to show when no result matches. | `string\|TemplateRef<void>` | - |
 | `[nzLabelProperty]` | the label property name of options | `string` | `'label'` |
 | `[nzLabelRender]` | render template of displaying selected options | `TemplateRef<any>` | - |
+| `[nzOptionRender]` | render template of cascader options | `TemplateRef<{ $implicit: NzCascaderOption, index: number }>` | |
 | `[nzLoadData]` | To load option lazily. If setting `ngModel` with an array value and `nzOptions` is not setting, lazy load will be call immediately | `(option: any, index?: index) => PromiseLike<any>` | - |
 | `[nzOptions]` | data options of cascade | `object[]` | - |
 | `[nzPlaceHolder]` | input placeholder | `string` | `'Please select'` |
@@ -54,14 +55,14 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 | `(ngModelChange)` | Emit on values change | `EventEmitter<any[]>` | - |
 | `(nzClear)` | Emit on clear values | `EventEmitter<void>` | - |
 | `(nzVisibleChange)` | Emit on popup menu visible or hide | `EventEmitter<boolean>` | - |
-| `(nzSelectionChange)` | Emit on values change | `EventEmitter<CascaderOption[]>` | - |
+| `(nzSelectionChange)` | Emit on values change | `EventEmitter<NzCascaderOption[]>` | - |
 
 When `nzShowSearch` is an object it should implements `NzShowSearchOptions`：
 
 | Params | Explanation | Type | Default |
 | --- | --- | --- | --- |
-| `filter` | Optional. Be aware that all non-leaf CascaderOptions would be filtered | `(inputValue: string, path: CascaderOption[]): boolean` | - |
-| `sorter` | Optional | `(a: CascaderOption[], b: CascaderOption[], inputValue: string): number` | - |
+| `filter` | Optional. Be aware that all non-leaf CascaderOptions would be filtered | `(inputValue: string, path: NzCascaderOption[]): boolean` | - |
+| `sorter` | Optional | `(a: NzCascaderOption[], b: NzCascaderOption[], inputValue: string): number` | - |
 
 #### Methods
 

@@ -44,6 +44,7 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 | `[nzNotFoundContent]` | 当下拉列表为空时显示的内容 | `string\|TemplateRef<void>` | - |
 | `[nzLabelProperty]` | 选项的显示值的属性名 | `string` | `'label'` |
 | `[nzLabelRender]` | 选择后展示的渲染模板 | `TemplateRef<any>` | - |
+| `[nzOptionRender]` | 选项的渲染模板 | `TemplateRef<{ $implicit: NzCascaderOption, index: number }>` | | 
 | `[nzLoadData]` | 用于动态加载选项。如果提供了`ngModel`初始值，且未提供`nzOptions`值，则会立即触发动态加载。 | `(option: any, index?: index) => PromiseLike<any>` | - |
 | `[nzOptions]` | 可选项数据源 | `object[]` | - |
 | `[nzPlaceHolder]` | 输入框占位文本 | `string` | `'请选择'` |
@@ -54,14 +55,14 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 | `[nzValueProperty]` | 选项的实际值的属性名 | `string` | `'value'` |
 | `(ngModelChange)` | 值发生变化时触发 | `EventEmitter<any[]>` | - |
 | `(nzVisibleChange)` | 菜单浮层的显示/隐藏 | `EventEmitter<boolean>` | - |
-| `(nzSelectionChange)` | 值发生变化时触发 | `EventEmitter<CascaderOption[]>` |- |
+| `(nzSelectionChange)` | 值发生变化时触发 | `EventEmitter<NzCascaderOption[]>` |- |
 
 `nzShowSearch` 为对象时需遵守 `NzShowSearchOptions` 接口：
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `filter` | 可选，选择是否保留选项的过滤函数，每级菜单的选项都会被匹配 | `(inputValue: string, path: CascaderOption[]): boolean` | - |
-| `sorter` | 可选，按照到每个最终选项的路径进行排序，默认按照原始数据的顺序 | `(a: CascaderOption[], b: CascaderOption[], inputValue: string): number` | - |
+| `filter` | 可选，选择是否保留选项的过滤函数，每级菜单的选项都会被匹配 | `(inputValue: string, path: NzCascaderOption[]): boolean` | - |
+| `sorter` | 可选，按照到每个最终选项的路径进行排序，默认按照原始数据的顺序 | `(a: NzCascaderOption[], b: NzCascaderOption[], inputValue: string): number` | - |
 
 #### 方法
 

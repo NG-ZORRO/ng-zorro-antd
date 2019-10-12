@@ -10,9 +10,12 @@ export type NzCascaderExpandTrigger = 'click' | 'hover';
 export type NzCascaderTriggerType = 'click' | 'hover';
 export type NzCascaderSize = 'small' | 'large' | 'default';
 
-export type NzCascaderFilter = (searchValue: string, path: CascaderOption[]) => boolean;
-export type NzCascaderSorter = (a: CascaderOption[], b: CascaderOption[], inputValue: string) => number;
+export type NzCascaderFilter = (searchValue: string, path: NzCascaderOption[]) => boolean;
+export type NzCascaderSorter = (a: NzCascaderOption[], b: NzCascaderOption[], inputValue: string) => number;
 
+/**
+ * @deprecated Use the prefixed version.
+ */
 export interface CascaderOption {
   value?: any; // tslint:disable-line:no-any
   label?: string;
@@ -20,15 +23,22 @@ export interface CascaderOption {
   disabled?: boolean;
   loading?: boolean;
   isLeaf?: boolean;
-  parent?: CascaderOption;
-  children?: CascaderOption[];
+  parent?: NzCascaderOption;
+  children?: NzCascaderOption[];
 
   [key: string]: any; // tslint:disable-line:no-any
 }
 
-export interface CascaderSearchOption extends CascaderOption {
-  path: CascaderOption[];
+export type NzCascaderOption = CascaderOption;
+
+/**
+ * @deprecated Use the prefixed version.
+ */
+export interface CascaderSearchOption extends NzCascaderOption {
+  path: NzCascaderOption[];
 }
+
+export type NzCascaderSearchOption = CascaderSearchOption;
 
 export interface NzShowSearchOptions {
   filter?: NzCascaderFilter;
@@ -50,8 +60,8 @@ export interface NzCascaderComponentAsSource {
   nzValueProperty: string;
   nzChangeOnSelect: boolean;
 
-  nzChangeOn?(option: CascaderOption, level: number): boolean;
+  nzChangeOn?(option: NzCascaderOption, level: number): boolean;
 
   // tslint:disable-next-line:no-any
-  nzLoadData?(node: CascaderOption, index?: number): PromiseLike<any>;
+  nzLoadData?(node: NzCascaderOption, index?: number): PromiseLike<any>;
 }
