@@ -2,14 +2,14 @@
 <ng-container *ngIf="!isRange">
   <input #pickerInput class="{{ prefixCls }}-picker-input ant-input" [class.ant-input-lg]="size === 'large'"
     [class.ant-input-sm]="size === 'small'" [class.ant-input-disabled]="disabled" [disabled]="disabled" readonly
-    value="{{ getReadableValue() }}" placeholder="{{ getPlaceholder() }}" />
+    value="{{ getReadableValue() }}" placeholder="{{ getPlaceholder() }}" [ngStyle]="style"/>
   <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
 </ng-container>
 
 <!-- Content of range picker -->
 <ng-container *ngIf="isRange">
   <span #pickerInput class="{{ prefixCls }}-picker-input ant-input" [class.ant-input-lg]="size === 'large'"
-    [class.ant-input-sm]="size === 'small'" [class.ant-input-disabled]="disabled">
+    [class.ant-input-sm]="size === 'small'" [class.ant-input-disabled]="disabled" [ngStyle]="style">
     <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'left' }"></ng-container>
     <span class="{{ prefixCls }}-range-picker-separator"> ~ </span>
     <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'right' }"></ng-container>

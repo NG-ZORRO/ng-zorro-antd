@@ -235,6 +235,7 @@ describe('NzMonthPickerComponent', () => {
       fixtureInstance.nzStyle = { color: 'blue' };
       fixture.detectChanges();
       expect(getPickerTrigger(debugElement).style.color).toBe('blue');
+      expect(getPickerInput(debugElement).style.color).toBe('blue');
     });
 
     it('should support nzOnOpenChange', () => {

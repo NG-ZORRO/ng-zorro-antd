@@ -14,7 +14,7 @@ import { dispatchMouseEvent, typeInElement, NgStyleInterface, NzUpdateHostClassS
 import { CandyDate } from '../core';
 import { NzDatePickerModule } from './nz-date-picker.module';
 import { NzPickerComponent } from './picker.component';
-import { getPickerAbstract, getPickerTrigger, getRangePickerLeftInput } from './test-util';
+import { getPickerAbstract, getPickerInput, getPickerTrigger, getRangePickerLeftInput } from './test-util';
 
 registerLocaleData(zh);
 
@@ -240,6 +240,7 @@ describe('NzRangePickerComponent', () => {
       fixtureInstance.nzStyle = { color: 'blue' };
       fixture.detectChanges();
       expect(getPickerTrigger(debugElement).style.color).toBe('blue');
+      expect(getPickerInput(debugElement).style.color).toBe('blue');
     });
 
     it('should support nzOnOpenChange', fakeAsync(() => {

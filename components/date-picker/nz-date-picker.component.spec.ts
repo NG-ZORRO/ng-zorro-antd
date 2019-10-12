@@ -326,6 +326,7 @@ describe('NzDatePickerComponent', () => {
       fixtureInstance.nzStyle = { color: 'blue' };
       fixture.detectChanges();
       expect(getPickerTriggerWrapper().style.color).toBe('blue');
+      expect(getPickerInput(debugElement).style.color).toBe('blue');
     });
 
     it('should support nzOnOpenChange', () => {
