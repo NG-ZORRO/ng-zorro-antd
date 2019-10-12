@@ -106,11 +106,11 @@
                    [ngModel]="nzPageSize"
                    (ngModelChange)="onPageSizeChange($event)">
           <nz-option *ngFor="let option of nzPageSizeOptions"
-                     [nzLabel]="option + locale.items_per_page"
+                     [nzLabel]="option + ' ' + locale.items_per_page"
                      [nzValue]="option">
           </nz-option>
           <nz-option *ngIf="showAddOption"
-                     [nzLabel]="nzPageSize + locale.items_per_page"
+                     [nzLabel]="nzPageSize + ' ' + locale.items_per_page"
                      [nzValue]="nzPageSize">
           </nz-option>
         </nz-select>
