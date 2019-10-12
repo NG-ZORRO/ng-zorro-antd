@@ -9,10 +9,12 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import differenceInDays from 'date-fns/difference_in_days';
 import isSameDay from 'date-fns/is_same_day';
 
-import { dispatchMouseEvent, typeInElement, NgStyleInterface } from 'ng-zorro-antd/core';
+import { dispatchMouseEvent, typeInElement, NgStyleInterface, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
 import { CandyDate } from '../core';
 import { NzDatePickerModule } from './nz-date-picker.module';
+import { NzPickerComponent } from './picker.component';
+import { getPickerAbstract, getPickerTrigger, getRangePickerLeftInput } from './test-util';
 
 registerLocaleData(zh);
 
@@ -26,7 +28,7 @@ describe('NzRangePickerComponent', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, NoopAnimationsModule, NzDatePickerModule],
-      providers: [],
+      providers: [NzUpdateHostClassService],
       declarations: [NzTestRangePickerComponent]
     });
 
@@ -53,7 +55,7 @@ describe('NzRangePickerComponent', () => {
 
     it('should open by click and close by click at outside', fakeAsync(() => {
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
+      dispatchMouseEvent(getPickerTrigger(debugElement), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -74,12 +76,12 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(getPickerTrigger().matches(':focus-within')).toBeTruthy();
+      expect(getPickerTrigger(debugElement).matches(':focus-within')).toBeTruthy();
     }));
 
     it('should open on enter', fakeAsync(() => {
       fixture.detectChanges();
-      getPickerTriggerWrapper().dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
+      getPickerTrigger(debugElement).dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -93,7 +95,7 @@ describe('NzRangePickerComponent', () => {
     }));
 
     it('should support nzAllowClear and work properly', fakeAsync(() => {
-      const clearBtnSelector = By.css('nz-picker i.ant-calendar-picker-clear');
+      const clearBtnSelector = By.css('div i.ant-calendar-picker-clear');
       const initial = (fixtureInstance.modelValue = [new Date(), new Date()]);
       fixtureInstance.nzAllowClear = false;
       fixture.detectChanges();
@@ -116,7 +118,7 @@ describe('NzRangePickerComponent', () => {
     it('should support nzAutoFocus', () => {
       fixtureInstance.nzAutoFocus = true;
       fixture.detectChanges();
-      expect(getPickerTrigger().querySelector('input:first-child') === document.activeElement).toBeTruthy();
+      expect(getPickerTrigger(debugElement).querySelector('input:first-child') === document.activeElement).toBeTruthy();
     });
 
     it('should support nzDisabled', fakeAsync(() => {
@@ -126,14 +128,14 @@ describe('NzRangePickerComponent', () => {
 
       fixtureInstance.nzDisabled = true;
       fixture.detectChanges();
-      expect(debugElement.query(By.css('nz-picker .ant-input-disabled'))).toBeDefined();
-      expect(debugElement.query(By.css('nz-picker i.ant-calendar-picker-clear'))).toBeNull();
+      expect(debugElement.query(By.css('div .ant-input-disabled'))).toBeDefined();
+      expect(debugElement.query(By.css('div i.ant-calendar-picker-clear'))).toBeNull();
 
       fixtureInstance.nzDisabled = false;
       tick();
       fixture.detectChanges();
-      expect(debugElement.query(By.css('nz-picker .ant-input-disabled'))).toBeNull();
-      expect(debugElement.query(By.css('nz-picker i.ant-calendar-picker-clear'))).toBeDefined();
+      expect(debugElement.query(By.css('div .ant-input-disabled'))).toBeNull();
+      expect(debugElement.query(By.css('div i.ant-calendar-picker-clear'))).toBeDefined();
     }));
 
     it('should support nzOpen if assigned', fakeAsync(() => {
@@ -161,7 +163,7 @@ describe('NzRangePickerComponent', () => {
     it('should support nzClassName', () => {
       const className = (fixtureInstance.nzClassName = 'my-test-class');
       fixture.detectChanges();
-      const picker = debugElement.queryAll(By.css('.ant-calendar-picker'))[1].nativeElement as HTMLElement;
+      const picker = debugElement.query(By.directive(NzPickerComponent)).nativeElement as HTMLElement;
       expect(picker.classList.contains(className)).toBeTruthy();
     });
 
@@ -172,7 +174,7 @@ describe('NzRangePickerComponent', () => {
       fixtureInstance.nzDisabledDate = (current: Date) => isSameDay(current, compareDate);
       fixture.detectChanges();
 
-      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
+      dispatchMouseEvent(getPickerTrigger(debugElement), 'click');
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
@@ -187,7 +189,7 @@ describe('NzRangePickerComponent', () => {
       fixtureInstance.nzLocale = { lang: { rangePlaceholder: [featureKey, 'End'] } };
       fixture.detectChanges();
       expect(
-        getPickerTrigger()
+        getPickerTrigger(debugElement)
           .querySelector('input:nth-of-type(1)')!
           .getAttribute('placeholder')
       ).toBe(featureKey);
@@ -198,7 +200,7 @@ describe('NzRangePickerComponent', () => {
       fixtureInstance.nzPlaceHolder = ['Start', featureKey];
       fixture.detectChanges();
       expect(
-        getPickerTrigger()
+        getPickerTrigger(debugElement)
           .querySelector('input:nth-of-type(2)')!
           .getAttribute('placeholder')
       ).toBe(featureKey);
@@ -207,7 +209,7 @@ describe('NzRangePickerComponent', () => {
     it('should support nzPopupStyle', fakeAsync(() => {
       fixtureInstance.nzPopupStyle = { color: 'red' };
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
+      dispatchMouseEvent(getPickerTrigger(debugElement), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -217,7 +219,7 @@ describe('NzRangePickerComponent', () => {
     it('should support nzDropdownClassName', fakeAsync(() => {
       const keyCls = (fixtureInstance.nzDropdownClassName = 'my-test-class');
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
+      dispatchMouseEvent(getPickerTrigger(debugElement), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -237,13 +239,13 @@ describe('NzRangePickerComponent', () => {
     it('should support nzStyle', () => {
       fixtureInstance.nzStyle = { color: 'blue' };
       fixture.detectChanges();
-      expect(getPicker().style.color).toBe('blue');
+      expect(getPickerTrigger(debugElement).style.color).toBe('blue');
     });
 
     it('should support nzOnOpenChange', fakeAsync(() => {
       const nzOnOpenChange = spyOn(fixtureInstance, 'nzOnOpenChange');
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
+      dispatchMouseEvent(getPickerTrigger(debugElement), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -718,7 +720,7 @@ describe('NzRangePickerComponent', () => {
       dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
       fixture.detectChanges();
       tick(500);
-      expect(getRangePickerLeftInput()!.value).toBe('2018-09-11');
+      expect(getRangePickerLeftInput(debugElement).value).toBe('2018-09-11');
     }));
 
     it('should auto sort range value when start is after end', fakeAsync(() => {
@@ -762,19 +764,7 @@ describe('NzRangePickerComponent', () => {
   ////////////
 
   function getPicker(): HTMLElement {
-    return debugElement.query(By.css('nz-picker .ant-calendar-picker')).nativeElement as HTMLElement;
-  }
-
-  function getPickerTrigger(): HTMLInputElement {
-    return debugElement.query(By.css('nz-picker .ant-calendar-picker-input')).nativeElement as HTMLInputElement;
-  }
-
-  function getRangePickerLeftInput(): HTMLInputElement {
-    return debugElement.query(By.css('nz-picker .ant-calendar-range-picker-input')).nativeElement as HTMLInputElement;
-  }
-
-  function getPickerTriggerWrapper(): HTMLInputElement {
-    return debugElement.query(By.css('nz-picker .ant-calendar-picker')).nativeElement as HTMLInputElement;
+    return getPickerAbstract(debugElement);
   }
 
   function getPickerContainer(): HTMLElement {
@@ -817,7 +807,7 @@ describe('NzRangePickerComponent', () => {
   }
 
   function openPickerByClickTrigger(): void {
-    dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
+    dispatchMouseEvent(getPickerTrigger(debugElement), 'click');
     fixture.detectChanges();
     tick(500);
     fixture.detectChanges();

@@ -1,11 +1,12 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement } from '@angular/core';
 import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
+// import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { dispatchMouseEvent } from 'ng-zorro-antd/core';
+import { dispatchMouseEvent, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 import { NzDatePickerModule } from './nz-date-picker.module';
+import { getPickerInput } from './test-util';
 
 describe('NzWeekPickerComponent', () => {
   let fixture: ComponentFixture<NzTestWeekPickerComponent>;
@@ -17,6 +18,7 @@ describe('NzWeekPickerComponent', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports: [NoopAnimationsModule, NzDatePickerModule],
+      providers: [NzUpdateHostClassService],
       declarations: [NzTestWeekPickerComponent]
     });
 
@@ -51,7 +53,7 @@ describe('NzWeekPickerComponent', () => {
   ////////////
 
   function getPickerTrigger(): HTMLInputElement {
-    return debugElement.query(By.css('nz-picker input.ant-calendar-picker-input')).nativeElement as HTMLInputElement;
+    return getPickerInput(debugElement);
   }
 
   function queryFromOverlay(selector: string): HTMLElement {

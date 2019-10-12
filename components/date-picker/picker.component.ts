@@ -35,8 +35,6 @@ import { DateHelperService } from 'ng-zorro-antd/i18n';
   templateUrl: './picker.component.html',
   animations: [slideMotion],
   host: {
-    '[class]': 'prefixCls + "-picker" + " " + (size ? prefixCls + "-picker-" + size : "") + " " + className',
-    '[style]': 'style',
     tabindex: '0',
     '(click)': 'onClickInputBox()',
     '(keyup.enter)': 'onClickInputBox()'

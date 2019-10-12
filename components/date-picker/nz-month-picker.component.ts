@@ -20,7 +20,7 @@ import {
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { NzNoAnimationDirective } from 'ng-zorro-antd/core';
+import { NzNoAnimationDirective, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { HeaderPickerComponent, SupportHeaderPanel } from './header-picker.component';
@@ -50,9 +50,10 @@ export class NzMonthPickerComponent extends HeaderPickerComponent {
     dateHelper: DateHelperService,
     renderer: Renderer2,
     elementRef: ElementRef,
+    updateClassService: NzUpdateHostClassService,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
-    super(i18n, cdr, dateHelper, noAnimation);
+    super(i18n, cdr, dateHelper, updateClassService, elementRef, noAnimation);
     renderer.addClass(elementRef.nativeElement, 'ant-calendar-picker');
   }
 }

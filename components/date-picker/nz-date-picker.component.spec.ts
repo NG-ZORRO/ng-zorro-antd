@@ -9,11 +9,19 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import isSameDay from 'date-fns/is_same_day';
 
-import { dispatchKeyboardEvent, dispatchMouseEvent, typeInElement, NgStyleInterface } from 'ng-zorro-antd/core';
+import {
+  dispatchKeyboardEvent,
+  dispatchMouseEvent,
+  typeInElement,
+  NgStyleInterface,
+  NzUpdateHostClassService
+} from 'ng-zorro-antd/core';
 import en_US from '../i18n/languages/en_US';
 
 import { NzI18nModule, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzDatePickerModule } from './nz-date-picker.module';
+import { NzPickerComponent } from './picker.component';
+import { getPickerAbstract, getPickerInput, getPickerTrigger } from './test-util';
 
 registerLocaleData(zh);
 
@@ -30,6 +38,7 @@ describe('NzDatePickerComponent', () => {
       imports: [FormsModule, NoopAnimationsModule, NzDatePickerModule, NzI18nModule],
       providers: [
         // { provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 1 } }
+        NzUpdateHostClassService
       ],
       declarations: [NzTestDatePickerComponent]
     });
@@ -79,7 +88,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(document.activeElement).toEqual(getPickerTrigger());
+      expect(document.activeElement).toEqual(getPickerInput(debugElement));
     }));
 
     it('should open on enter', fakeAsync(() => {
@@ -129,11 +138,11 @@ describe('NzDatePickerComponent', () => {
 
     it('should support changing language at runtime', fakeAsync(() => {
       fixture.detectChanges();
-      expect(getPickerTrigger().placeholder).toBe('请选择日期');
+      expect(getPickerInput(debugElement).placeholder).toBe('请选择日期');
       i18nService.setLocale(en_US);
       // i18nService.setDateLocale(en);
       fixture.detectChanges();
-      expect(getPickerTrigger().placeholder).toBe('Select date');
+      expect(getPickerInput(debugElement).placeholder).toBe('Select date');
 
       dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
       fixture.detectChanges();
@@ -168,7 +177,7 @@ describe('NzDatePickerComponent', () => {
     }));
 
     it('should support nzAllowClear and work properly', fakeAsync(() => {
-      const clearBtnSelector = By.css('nz-picker i.ant-calendar-picker-clear');
+      const clearBtnSelector = By.css('div i.ant-calendar-picker-clear');
       const initial = (fixtureInstance.nzValue = new Date());
       fixtureInstance.nzAllowClear = false;
       fixture.detectChanges();
@@ -191,7 +200,7 @@ describe('NzDatePickerComponent', () => {
     it('should support nzAutoFocus', () => {
       fixtureInstance.nzAutoFocus = true;
       fixture.detectChanges();
-      expect(getPickerTrigger() === document.activeElement).toBeTruthy();
+      expect(getPickerInput(debugElement) === document.activeElement).toBeTruthy();
     });
 
     it('should support nzDisabled', fakeAsync(() => {
@@ -203,14 +212,14 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(debugElement.query(By.css('nz-picker .ant-input-disabled'))).toBeDefined();
-      expect(debugElement.query(By.css('nz-picker i.ant-calendar-picker-clear'))).toBeNull();
+      expect(debugElement.query(By.css('div .ant-input-disabled'))).toBeDefined();
+      expect(debugElement.query(By.css('div i.ant-calendar-picker-clear'))).toBeNull();
 
       fixtureInstance.nzDisabled = false;
       tick(500);
       fixture.detectChanges();
-      expect(debugElement.query(By.css('nz-picker .ant-input-disabled'))).toBeNull();
-      expect(debugElement.query(By.css('nz-picker i.ant-calendar-picker-clear'))).toBeDefined();
+      expect(debugElement.query(By.css('div .ant-input-disabled'))).toBeNull();
+      expect(debugElement.query(By.css('div i.ant-calendar-picker-clear'))).toBeDefined();
     }));
 
     it('should support nzOpen if assigned', fakeAsync(() => {
@@ -237,7 +246,7 @@ describe('NzDatePickerComponent', () => {
     it('should support nzClassName', () => {
       const className = (fixtureInstance.nzClassName = 'my-test-class');
       fixture.detectChanges();
-      const picker = debugElement.queryAll(By.css('.ant-calendar-picker'))[1].nativeElement as HTMLElement;
+      const picker = debugElement.query(By.directive(NzPickerComponent)).nativeElement as HTMLElement;
       expect(picker.classList.contains(className)).toBeTruthy();
     });
 
@@ -274,13 +283,13 @@ describe('NzDatePickerComponent', () => {
       const featureKey = 'TEST_PLACEHOLDER';
       fixtureInstance.nzLocale = { lang: { placeholder: featureKey } };
       fixture.detectChanges();
-      expect(getPickerTrigger().getAttribute('placeholder')).toBe(featureKey);
+      expect(getPickerInput(debugElement).getAttribute('placeholder')).toBe(featureKey);
     });
 
     it('should support nzPlaceHolder', () => {
       const featureKey = (fixtureInstance.nzPlaceHolder = 'TEST_PLACEHOLDER');
       fixture.detectChanges();
-      expect(getPickerTrigger().getAttribute('placeholder')).toBe(featureKey);
+      expect(getPickerInput(debugElement).getAttribute('placeholder')).toBe(featureKey);
     });
 
     it('should support nzPopupStyle', fakeAsync(() => {
@@ -316,7 +325,7 @@ describe('NzDatePickerComponent', () => {
     it('should support nzStyle', () => {
       fixtureInstance.nzStyle = { color: 'blue' };
       fixture.detectChanges();
-      expect(getPicker().style.color).toBe('blue');
+      expect(getPickerTriggerWrapper().style.color).toBe('blue');
     });
 
     it('should support nzOnOpenChange', () => {
@@ -836,15 +845,11 @@ describe('NzDatePickerComponent', () => {
   ////////////
 
   function getPicker(): HTMLElement {
-    return debugElement.query(By.css('nz-picker .ant-calendar-picker')).nativeElement as HTMLElement;
+    return getPickerAbstract(debugElement);
   }
 
-  function getPickerTrigger(): HTMLInputElement {
-    return debugElement.query(By.css('nz-picker input.ant-calendar-picker-input')).nativeElement as HTMLInputElement;
-  }
-
-  function getPickerTriggerWrapper(): HTMLInputElement {
-    return debugElement.query(By.css('nz-picker .ant-calendar-picker')).nativeElement as HTMLInputElement;
+  function getPickerTriggerWrapper(): HTMLElement {
+    return getPickerTrigger(debugElement);
   }
 
   function getPickerContainer(): HTMLElement {

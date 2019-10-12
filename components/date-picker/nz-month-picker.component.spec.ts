@@ -8,10 +8,12 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import isBefore from 'date-fns/is_before';
 
-import { dispatchMouseEvent, NgStyleInterface } from 'ng-zorro-antd/core';
+import { dispatchMouseEvent, NgStyleInterface, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
 import { NzDatePickerModule } from './nz-date-picker.module';
+import { NzPickerComponent } from './picker.component';
+import { getPickerAbstract, getPickerInput, getPickerTrigger } from './test-util';
 
 registerLocaleData(zh);
 
@@ -24,7 +26,7 @@ describe('NzMonthPickerComponent', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, NoopAnimationsModule, NzDatePickerModule, NzInputModule],
-      providers: [],
+      providers: [NzUpdateHostClassService],
       declarations: [NzTestMonthPickerComponent]
     });
 
@@ -50,7 +52,7 @@ describe('NzMonthPickerComponent', () => {
 
     it('should open by click and close by click at outside', fakeAsync(() => {
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
+      dispatchMouseEvent(getPickerTrigger(debugElement), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -65,7 +67,7 @@ describe('NzMonthPickerComponent', () => {
 
     it('should open on enter', fakeAsync(() => {
       fixture.detectChanges();
-      getPickerTriggerWrapper().dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
+      getPickerTrigger(debugElement).dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -73,7 +75,7 @@ describe('NzMonthPickerComponent', () => {
     }));
 
     it('should support nzAllowClear and work properly', fakeAsync(() => {
-      const clearBtnSelector = By.css('nz-picker i.ant-calendar-picker-clear');
+      const clearBtnSelector = By.css('div i.ant-calendar-picker-clear');
       const initial = (fixtureInstance.nzValue = new Date());
       fixtureInstance.nzAllowClear = false;
       fixture.detectChanges();
@@ -101,7 +103,7 @@ describe('NzMonthPickerComponent', () => {
     it('should support nzAutoFocus', () => {
       fixtureInstance.nzAutoFocus = true;
       fixture.detectChanges();
-      expect(getPickerTrigger() === document.activeElement).toBeTruthy();
+      expect(getPickerInput(debugElement) === document.activeElement).toBeTruthy();
     });
 
     it('should support nzDisabled', fakeAsync(() => {
@@ -113,15 +115,15 @@ describe('NzMonthPickerComponent', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(debugElement.query(By.css('nz-picker .ant-input-disabled'))).toBeDefined();
-      expect(debugElement.query(By.css('nz-picker i.ant-calendar-picker-clear'))).toBeNull();
+      expect(debugElement.query(By.css('div .ant-input-disabled'))).toBeDefined();
+      expect(debugElement.query(By.css('div i.ant-calendar-picker-clear'))).toBeNull();
 
       fixtureInstance.nzDisabled = false;
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(debugElement.query(By.css('nz-picker .ant-input-disabled'))).toBeNull();
-      expect(debugElement.query(By.css('nz-picker i.ant-calendar-picker-clear'))).toBeDefined();
+      expect(debugElement.query(By.css('div .ant-input-disabled'))).toBeNull();
+      expect(debugElement.query(By.css('div i.ant-calendar-picker-clear'))).toBeDefined();
     }));
 
     it('should support nzOpen if assigned', fakeAsync(() => {
@@ -151,7 +153,7 @@ describe('NzMonthPickerComponent', () => {
     it('should support nzClassName', () => {
       const className = (fixtureInstance.nzClassName = 'my-test-class');
       fixture.detectChanges();
-      const picker = debugElement.queryAll(By.css('.ant-calendar-picker'))[1].nativeElement as HTMLElement;
+      const picker = debugElement.query(By.directive(NzPickerComponent)).nativeElement as HTMLElement;
       expect(picker.classList.contains(className)).toBeTruthy();
     });
 
@@ -175,7 +177,7 @@ describe('NzMonthPickerComponent', () => {
       flush();
       fixture.detectChanges();
 
-      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
+      dispatchMouseEvent(getPickerTrigger(debugElement), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -190,19 +192,19 @@ describe('NzMonthPickerComponent', () => {
       const featureKey = 'TEST_PLACEHOLDER';
       fixtureInstance.nzLocale = { lang: { placeholder: featureKey } };
       fixture.detectChanges();
-      expect(getPickerTrigger().getAttribute('placeholder')).toBe(featureKey);
+      expect(getPickerInput(debugElement).getAttribute('placeholder')).toBe(featureKey);
     });
 
     it('should support nzPlaceHolder', () => {
       const featureKey = (fixtureInstance.nzPlaceHolder = 'TEST_PLACEHOLDER');
       fixture.detectChanges();
-      expect(getPickerTrigger().getAttribute('placeholder')).toBe(featureKey);
+      expect(getPickerInput(debugElement).getAttribute('placeholder')).toBe(featureKey);
     });
 
     it('should support nzPopupStyle', fakeAsync(() => {
       fixtureInstance.nzPopupStyle = { color: 'red' };
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
+      dispatchMouseEvent(getPickerTrigger(debugElement), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -212,7 +214,7 @@ describe('NzMonthPickerComponent', () => {
     it('should support nzDropdownClassName', fakeAsync(() => {
       const keyCls = (fixtureInstance.nzDropdownClassName = 'my-test-class');
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
+      dispatchMouseEvent(getPickerTrigger(debugElement), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -232,13 +234,13 @@ describe('NzMonthPickerComponent', () => {
     it('should support nzStyle', () => {
       fixtureInstance.nzStyle = { color: 'blue' };
       fixture.detectChanges();
-      expect(getPicker().style.color).toBe('blue');
+      expect(getPickerTrigger(debugElement).style.color).toBe('blue');
     });
 
     it('should support nzOnOpenChange', () => {
       const nzOnOpenChange = spyOn(fixtureInstance, 'nzOnOpenChange');
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
+      dispatchMouseEvent(getPickerTrigger(debugElement), 'click');
       fixture.detectChanges();
       expect(nzOnOpenChange).toHaveBeenCalledWith(true);
 
@@ -253,7 +255,7 @@ describe('NzMonthPickerComponent', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
+      dispatchMouseEvent(getPickerTrigger(debugElement), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -264,7 +266,7 @@ describe('NzMonthPickerComponent', () => {
       fixtureInstance.nzValue = new Date('2018-11');
       const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
+      dispatchMouseEvent(getPickerTrigger(debugElement), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -372,7 +374,7 @@ describe('NzMonthPickerComponent', () => {
       flush();
       fixture.detectChanges();
 
-      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
+      dispatchMouseEvent(getPickerTrigger(debugElement), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -407,15 +409,7 @@ describe('NzMonthPickerComponent', () => {
   ////////////
 
   function getPicker(): HTMLElement {
-    return debugElement.query(By.css('nz-picker .ant-calendar-picker')).nativeElement as HTMLElement;
-  }
-
-  function getPickerTrigger(): HTMLInputElement {
-    return debugElement.query(By.css('nz-picker input.ant-calendar-picker-input')).nativeElement as HTMLInputElement;
-  }
-
-  function getPickerTriggerWrapper(): HTMLInputElement {
-    return debugElement.query(By.css('nz-picker .ant-calendar-picker')).nativeElement as HTMLInputElement;
+    return getPickerAbstract(debugElement);
   }
 
   function getPickerContainer(): HTMLElement {
@@ -437,7 +431,7 @@ describe('NzMonthPickerComponent', () => {
   }
 
   function openPickerByClickTrigger(): void {
-    dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
+    dispatchMouseEvent(getPickerTrigger(debugElement), 'click');
     fixture.detectChanges();
     tick(500);
     fixture.detectChanges();

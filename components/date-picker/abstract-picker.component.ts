@@ -22,7 +22,13 @@ import { ControlValueAccessor } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { CandyDate, InputBoolean, NzNoAnimationDirective, NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import {
+  warnDeprecation,
+  CandyDate,
+  InputBoolean,
+  NzNoAnimationDirective,
+  NzUpdateHostClassService
+} from 'ng-zorro-antd/core';
 import { DateHelperService, NzDatePickerI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { NzPickerComponent } from './picker.component';
@@ -39,6 +45,7 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   @Input() @InputBoolean() nzAutoFocus: boolean = false;
   @Input() @InputBoolean() nzDisabled: boolean = false;
   @Input() @InputBoolean() nzOpen: boolean;
+  // deprecated in 9.0.0
   @Input() nzClassName: string;
   @Input() nzDisabledDate: (d: Date) => boolean;
   @Input() nzLocale: NzDatePickerI18nInterface;
@@ -103,20 +110,18 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
       this.setDefaultPlaceHolder();
     }
 
-    if ( changes.nzSize) {
+    if (changes.nzSize) {
+      const size = changes.nzSize.currentValue;
       const classMap = {
         [`${this.prefixCls}-picker`]: true,
-        [`${this.prefixCls}-picker-${this.nzSize}`]: true
+        [`${this.prefixCls}-picker-large`]: size === 'large',
+        [`${this.prefixCls}-picker-small`]: size === 'small'
       };
       this.updateHostClassService.updateHostClass(this.el.nativeElement, classMap);
     }
 
-    if ( changes.nzClassName) {
-      const classMap = {
-        [`${this.prefixCls}-picker`]: true,
-        [`${this.prefixCls}-picker-${this.nzSize}`]: true
-      };
-      this.updateHostClassService.updateHostClass(this.el.nativeElement, classMap);
+    if (changes.nzClassName) {
+      warnDeprecation(`'nzClassName' is deprecated and would be removed in 9.0.0.`);
     }
   }
 

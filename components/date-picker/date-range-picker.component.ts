@@ -9,6 +9,7 @@
 import {
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -70,9 +71,11 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
     i18n: NzI18nService,
     cdr: ChangeDetectorRef,
     dateHelper: DateHelperService,
+    updateHostClassService: NzUpdateHostClassService,
+    el: ElementRef,
     noAnimation?: NzNoAnimationDirective
   ) {
-    super(i18n, cdr, dateHelper, noAnimation);
+    super(i18n, cdr, dateHelper, updateHostClassService, el, noAnimation);
   }
 
   ngOnInit(): void {

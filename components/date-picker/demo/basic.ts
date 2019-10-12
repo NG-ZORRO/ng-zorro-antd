@@ -5,7 +5,11 @@ import { en_US, zh_CN, NzI18nService } from 'ng-zorro-antd/i18n';
 @Component({
   selector: 'nz-demo-date-picker-basic',
   template: `
-    <nz-date-picker [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-date-picker>
+    <nz-date-picker
+      [nzStyle]="{ color: 'blue' }"
+      [(ngModel)]="date"
+      (ngModelChange)="onChange($event)"
+    ></nz-date-picker>
     <br />
     <nz-month-picker
       [(ngModel)]="date"

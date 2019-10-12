@@ -1,4 +1,5 @@
-<nz-picker
+<div
+  nz-picker
   [isRange]="false"
   [value]="nzValue"
   (valueChange)="onValueChange($event)"
@@ -7,7 +8,8 @@
   [format]="nzFormat"
   [allowClear]="nzAllowClear"
   [autoFocus]="nzAutoFocus"
-  [className]="nzClassName"
+  [ngClass]="nzClassName"
+  [ngStyle]="nzStyle"
   [placeholder]="nzPlaceHolder"
   [size]="nzSize"
   [style]="nzStyle"
@@ -37,4 +39,4 @@
       </div>
     </div>
   </div>
-</nz-picker>
+</div>
