@@ -112,9 +112,11 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
 
   @Input() nzItemRender: TemplateRef<PaginationItemRenderContext>;
   @ViewChild('renderItemTemplate', { static: true }) itemRenderChild: TemplateRef<PaginationItemRenderContext>;
+
   get itemRender(): TemplateRef<PaginationItemRenderContext> {
     return this.nzItemRender || this.itemRenderChild;
   }
+
   @Input() @InputBoolean() nzFrontPagination = true;
   @Input() @InputBoolean() nzTemplateMode = false;
   @Input() @WithConfig(false) @InputBoolean() nzBordered: boolean;
@@ -268,6 +270,11 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
       }
       this.fitScrollBar();
       this.setScrollPositionClassName();
+    }
+    if (changes.nzData) {
+      if (this.platform.isBrowser) {
+        setTimeout(() => this.setScrollPositionClassName());
+      }
     }
     if (changes.nzPageIndex || changes.nzPageSize || changes.nzFrontPagination || changes.nzData) {
       this.updateFrontPaginationDataIfNeeded(!!(changes.nzPageSize || changes.nzData));
