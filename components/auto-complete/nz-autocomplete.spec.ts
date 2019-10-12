@@ -97,6 +97,13 @@ describe('auto-complete', () => {
       expect(overlayContainerElement.textContent).toContain('Burns Bay Road');
     });
 
+    it('should open the panel when type', () => {
+      expect(fixture.componentInstance.trigger.panelOpen).toBe(false);
+      typeInElement('value', input);
+      fixture.detectChanges();
+      expect(fixture.componentInstance.trigger.panelOpen).toBe(true);
+    });
+
     it('should not open the panel on focus if the input is readonly', fakeAsync(() => {
       const trigger = fixture.componentInstance.trigger;
       input.readOnly = true;
@@ -411,6 +418,12 @@ describe('auto-complete', () => {
       flush();
 
       expect(fixture.componentInstance.inputControl.value).toBe(200);
+
+      typeInElement('', input);
+      fixture.detectChanges();
+      flush();
+
+      expect(fixture.componentInstance.inputControl.value).toBe(null);
     }));
 
     it('should mark the autocomplete control as touched on blur', fakeAsync(() => {
@@ -422,6 +435,29 @@ describe('auto-complete', () => {
       fixture.detectChanges();
       flush();
       expect(fixture.componentInstance.inputControl.touched).toBe(true);
+    }));
+
+    it('should be able to re-type the same value when it is reset while open', fakeAsync(() => {
+      fixture.componentInstance.trigger.openPanel();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+
+      typeInElement('Burns', input);
+      flush();
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.inputControl.value).toBe('Burns');
+
+      fixture.componentInstance.inputControl.setValue('');
+      fixture.detectChanges();
+      expect(input.value).toBe('');
+
+      typeInElement('Burns', input);
+      flush();
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.inputControl.value).toBe('Burns');
     }));
   });
 
