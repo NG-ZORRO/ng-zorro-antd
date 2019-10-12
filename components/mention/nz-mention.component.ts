@@ -311,7 +311,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
       coordinates.top -
       this.triggerNativeElement.getBoundingClientRect().height -
       this.triggerNativeElement.scrollTop +
-      (this.nzPlacement === 'bottom' ? coordinates.height - 11 : 0);
+      (this.nzPlacement === 'bottom' ? coordinates.height - 6 : -6);
     const left = coordinates.left - this.triggerNativeElement.scrollLeft;
     this.positionStrategy.withDefaultOffsetX(left).withDefaultOffsetY(top);
     if (this.nzPlacement === 'bottom') {
