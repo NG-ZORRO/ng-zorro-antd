@@ -25,7 +25,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { createFakeEvent, createMouseEvent, dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core';
 
-import { CascaderOption, NzShowSearchOptions } from './nz-cascader-definitions';
+import { NzCascaderOption, NzShowSearchOptions } from './nz-cascader-definitions';
 import { NzCascaderComponent } from './nz-cascader.component';
 import { NzCascaderModule } from './nz-cascader.module';
 
@@ -1423,7 +1423,7 @@ describe('cascader', () => {
 
     it('should support custom filter', fakeAsync(() => {
       testComponent.nzShowSearch = {
-        filter(inputValue: string, path: CascaderOption[]): boolean {
+        filter(inputValue: string, path: NzCascaderOption[]): boolean {
           return path.some(p => p.label!.indexOf(inputValue) !== -1);
         }
       } as NzShowSearchOptions;
@@ -1447,7 +1447,7 @@ describe('cascader', () => {
 
     it('should support custom sorter', fakeAsync(() => {
       testComponent.nzShowSearch = {
-        sorter(a: CascaderOption[], b: CascaderOption[], _inputValue: string): number {
+        sorter(a: NzCascaderOption[], b: NzCascaderOption[], _inputValue: string): number {
           const l1 = a[0].label;
           const l2 = b[0].label; // all reversed, just to be sure it works
           return ('' + l1).localeCompare(l2!);
@@ -2021,7 +2021,7 @@ export class NzDemoCascaderDefaultComponent {
     this.cascader.clearSelection();
   }
 
-  onSelect(_d: { option: CascaderOption; index: number }): void {}
+  onSelect(_d: { option: NzCascaderOption; index: number }): void {}
 }
 
 @Component({
