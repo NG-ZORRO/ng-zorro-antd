@@ -39,7 +39,13 @@ import {
 
 import { fromEvent, merge, Subscription } from 'rxjs';
 
-import { getCaretCoordinates, getMentions, DEFAULT_MENTION_POSITIONS, InputBoolean } from 'ng-zorro-antd/core';
+import {
+  getCaretCoordinates,
+  getMentions,
+  DEFAULT_MENTION_BOTTOM_POSITIONS,
+  DEFAULT_MENTION_TOP_POSITIONS,
+  InputBoolean
+} from 'ng-zorro-antd/core';
 
 import { NzMentionSuggestionDirective } from './nz-mention-suggestions';
 import { NzMentionTriggerDirective } from './nz-mention-trigger';
@@ -305,14 +311,14 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
       coordinates.top -
       this.triggerNativeElement.getBoundingClientRect().height -
       this.triggerNativeElement.scrollTop +
-      (this.nzPlacement === 'bottom' ? coordinates.height - 11 : 0);
+      (this.nzPlacement === 'bottom' ? coordinates.height - 6 : -6);
     const left = coordinates.left - this.triggerNativeElement.scrollLeft;
     this.positionStrategy.withDefaultOffsetX(left).withDefaultOffsetY(top);
     if (this.nzPlacement === 'bottom') {
-      this.positionStrategy.withPositions([DEFAULT_MENTION_POSITIONS[0]]);
+      this.positionStrategy.withPositions([...DEFAULT_MENTION_BOTTOM_POSITIONS]);
     }
     if (this.nzPlacement === 'top') {
-      this.positionStrategy.withPositions([DEFAULT_MENTION_POSITIONS[1]]);
+      this.positionStrategy.withPositions([...DEFAULT_MENTION_TOP_POSITIONS]);
     }
     this.positionStrategy.apply();
   }
