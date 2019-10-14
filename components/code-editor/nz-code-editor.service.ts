@@ -13,7 +13,7 @@ import { map, tap } from 'rxjs/operators';
 
 import { PREFIX } from 'ng-zorro-antd/core';
 import {
-  JoinedEditorOption,
+  JoinedEditorOptions,
   NzCodeEditorConfig,
   NzCodeEditorLoadingStatus,
   NZ_CODE_EDITOR_CONFIG
@@ -40,9 +40,9 @@ export class NzCodeEditorService {
   private firstEditorInitialized = false;
   private loaded$ = new Subject<boolean>();
   private loadingStatus = NzCodeEditorLoadingStatus.UNLOAD;
-  private option: JoinedEditorOption;
+  private option: JoinedEditorOptions;
 
-  option$ = new BehaviorSubject<JoinedEditorOption>(this.option);
+  option$ = new BehaviorSubject<JoinedEditorOptions>(this.option);
 
   constructor(
     @Inject(NZ_CODE_EDITOR_CONFIG) private config: NzCodeEditorConfig,
@@ -53,7 +53,7 @@ export class NzCodeEditorService {
   }
 
   // TODO: use config service later.
-  updateDefaultOption(option: JoinedEditorOption): void {
+  updateDefaultOption(option: JoinedEditorOptions): void {
     this.option = { ...this.option, ...option };
     this.option$.next(this.option);
 
@@ -62,7 +62,7 @@ export class NzCodeEditorService {
     }
   }
 
-  requestToInit(): Observable<JoinedEditorOption> {
+  requestToInit(): Observable<JoinedEditorOptions> {
     if (this.loadingStatus === NzCodeEditorLoadingStatus.LOADED) {
       this.onInit();
       return observableOf(this.getLatestOption());
@@ -123,7 +123,7 @@ export class NzCodeEditorService {
     tryTriggerFunc(this.config.onLoad)();
   }
 
-  private getLatestOption(): JoinedEditorOption {
+  private getLatestOption(): JoinedEditorOptions {
     return { ...this.option };
   }
 }
