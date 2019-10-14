@@ -11,6 +11,7 @@ import {
   AfterViewInit,
   ComponentFactory,
   ComponentFactoryResolver,
+  ComponentRef,
   ElementRef,
   EventEmitter,
   Input,
@@ -37,6 +38,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
   specificContent?: NzTSType | null;
   specificTrigger?: NzTooltipTrigger;
   specificPlacement?: string;
+  tooltipRef: ComponentRef<NzTooltipBaseComponent>;
 
   /**
    * @deprecated 9.0.0. This is deprecated and going to be removed in 9.0.0.
@@ -190,6 +192,9 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
   ngOnDestroy(): void {
     this.$destroy.next();
     this.$destroy.complete();
+    if (this.tooltipRef) {
+      this.tooltipRef.destroy();
+    }
   }
 
   show(): void {
@@ -215,12 +220,12 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
   protected createDynamicTooltipComponent(): void {
     this.isDynamicTooltip = true;
 
-    const tooltipRef = this.hostView.createComponent(this.componentFactory);
+    this.tooltipRef = this.hostView.createComponent(this.componentFactory);
 
-    this.tooltip = tooltipRef.instance;
+    this.tooltip = this.tooltipRef.instance;
     this.renderer.removeChild(
       this.renderer.parentNode(this.elementRef.nativeElement),
-      tooltipRef.location.nativeElement
+      this.tooltipRef.location.nativeElement
     ); // Remove the component's DOM because it should be in the overlay container.
 
     // If the tooltip component is dynamically created, we should set its origin before updating properties to
