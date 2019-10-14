@@ -169,6 +169,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
         `'<nz-tooltip></nz-tooltip>', '<nz-popover></nz-popover>' and '<nz-popconfirm></nz-popconfirm>' is deprecated and will be removed in 9.0.0. Refer: https://ng.ant.design/components/tooltip/zh .`
       );
       this.tooltip = this._tooltip;
+      this.tooltip.setOverlayOrigin(this as CdkOverlayOrigin);
     }
 
     this.tooltip.nzVisibleChange
@@ -180,7 +181,6 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
         this.isTooltipComponentVisible = visible;
         this.nzVisibleChange.emit(visible);
       });
-    this.tooltip.setOverlayOrigin(this as CdkOverlayOrigin);
   }
 
   ngAfterViewInit(): void {
@@ -223,6 +223,9 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
       tooltipRef.location.nativeElement
     ); // Remove the component's DOM because it should be in the overlay container.
 
+    // If the tooltip component is dynamically created, we should set its origin before updating properties to
+    // the component.
+    this.tooltip.setOverlayOrigin(this as CdkOverlayOrigin);
     // Update all properties to the component.
     this.updateChangedProperties(this.needProxyProperties);
   }
