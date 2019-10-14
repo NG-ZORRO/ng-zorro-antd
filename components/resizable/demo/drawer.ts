@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NzResizeEvent } from 'ng-zorro-antd/resizable';
 
 @Component({
   selector: 'nz-demo-resizable-drawer',
@@ -46,10 +47,10 @@ export class NzDemoResizableDrawerComponent {
   visible = false;
   id = -1;
 
-  onResize({ width }: { width: number }): void {
+  onResize({ width }: NzResizeEvent): void {
     cancelAnimationFrame(this.id);
     this.id = requestAnimationFrame(() => {
-      this.width = width;
+      this.width = width!;
     });
   }
 

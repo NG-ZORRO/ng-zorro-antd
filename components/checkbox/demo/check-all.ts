@@ -46,10 +46,10 @@ export class NzDemoCheckboxCheckAllComponent {
   }
 
   updateSingleChecked(): void {
-    if (this.checkOptionsOne.every(item => item.checked === false)) {
+    if (this.checkOptionsOne.every(item => !item.checked)) {
       this.allChecked = false;
       this.indeterminate = false;
-    } else if (this.checkOptionsOne.every(item => item.checked === true)) {
+    } else if (this.checkOptionsOne.every(item => item.checked)) {
       this.allChecked = true;
       this.indeterminate = false;
     } else {

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NzFormatEmitEvent } from 'ng-zorro-antd/core';
+import { NzFormatEmitEvent, NzTreeNodeOptions } from 'ng-zorro-antd/core';
 
 @Component({
   selector: 'nz-demo-tree-select-async',
@@ -46,7 +46,7 @@ export class NzDemoTreeSelectAsyncComponent {
     }
   ];
 
-  onExpandChange(e: Required<NzFormatEmitEvent>): void {
+  onExpandChange(e: NzFormatEmitEvent): void {
     const node = e.node;
     if (node && node.getChildren().length === 0 && node.isExpanded) {
       this.loadNode().then(data => {
@@ -55,7 +55,7 @@ export class NzDemoTreeSelectAsyncComponent {
     }
   }
 
-  loadNode(): Promise<any[]> {
+  loadNode(): Promise<NzTreeNodeOptions[]> {
     return new Promise(resolve => {
       setTimeout(
         () =>

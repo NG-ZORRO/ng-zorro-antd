@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NzResizeEvent } from 'ng-zorro-antd/resizable';
 
 @Component({
   selector: 'nz-demo-resizable-preview',
@@ -35,8 +36,8 @@ export class NzDemoResizablePreviewComponent {
   width = 400;
   height = 200;
 
-  onResize({ width, height }: { width: number; height: number }): void {
-    this.width = width;
-    this.height = height;
+  onResize({ width, height }: NzResizeEvent): void {
+    this.width = width!;
+    this.height = height!;
   }
 }

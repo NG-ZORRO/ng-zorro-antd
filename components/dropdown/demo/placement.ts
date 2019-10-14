@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NzPlacementType } from 'ng-zorro-antd/dropdown';
 
 @Component({
   selector: 'nz-demo-dropdown-placement',
@@ -26,5 +27,5 @@ import { Component } from '@angular/core';
   ]
 })
 export class NzDemoDropdownPlacementComponent {
-  listOfPosition = ['bottomLeft', 'bottomCenter', 'bottomRight', 'topLeft', 'topCenter', 'topRight'];
+  listOfPosition: NzPlacementType[] = ['bottomLeft', 'bottomCenter', 'bottomRight', 'topLeft', 'topCenter', 'topRight'];
 }

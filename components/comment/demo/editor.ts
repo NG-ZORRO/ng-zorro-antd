@@ -30,6 +30,7 @@ import { distanceInWords } from 'date-fns';
   `
 })
 export class NzDemoCommentEditorComponent {
+  // tslint:disable-next-line:no-any
   data: any[] = [];
   submitting = false;
   user = {

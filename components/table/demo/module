@@ -9,4 +9,15 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-export const moduleList = [ NzTableModule, NzDividerModule, NzDropDownModule, NzSwitchModule, NzFormModule, NzRadioModule, NzBadgeModule, NzButtonModule, NzInputModule, NzIconModule ];
+export const moduleList = [
+  NzTableModule,
+  NzDividerModule,
+  NzDropDownModule,
+  NzSwitchModule,
+  NzFormModule,
+  NzRadioModule,
+  NzBadgeModule,
+  NzButtonModule,
+  NzInputModule,
+  NzIconModule
+];

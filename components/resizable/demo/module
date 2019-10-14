@@ -7,4 +7,13 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-export const moduleList = [ NzResizableModule, NzButtonModule, NzFormModule, NzDrawerModule, NzGridModule, NzTableModule, NzLayoutModule, NzIconModule ];
+export const moduleList = [
+  NzResizableModule,
+  NzButtonModule,
+  NzFormModule,
+  NzDrawerModule,
+  NzGridModule,
+  NzTableModule,
+  NzLayoutModule,
+  NzIconModule
+];
