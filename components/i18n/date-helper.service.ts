@@ -75,8 +75,8 @@ export class DateHelperByDateFns extends DateHelperService {
    * @param date Date
    * @param formatStr format string
    */
-  format(date: Date, formatStr: string): string {
-    return fnsFormat(date, formatStr, { locale: this.i18n.getDateLocale() });
+  format(date: Date | null, formatStr: string): string {
+    return date ? fnsFormat(date, formatStr, { locale: this.i18n.getDateLocale() }) : '';
   }
 }
 
@@ -103,7 +103,7 @@ export class DateHelperByDatePipe extends DateHelperService {
     return this.config.firstDayOfWeek;
   }
 
-  format(date: Date, formatStr: string): string {
+  format(date: Date | null, formatStr: string): string {
     return date ? formatDate(date, formatStr, this.i18n.getLocaleId())! : '';
   }
 
