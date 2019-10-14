@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NzResizeEvent } from 'ng-zorro-antd/resizable';
 
 @Component({
   selector: 'nz-demo-resizable-customize',
@@ -58,11 +59,11 @@ export class NzDemoResizableCustomizeComponent {
   height = 200;
   id = -1;
 
-  onResize({ width, height }: { width: number; height: number }): void {
+  onResize({ width, height }: NzResizeEvent): void {
     cancelAnimationFrame(this.id);
     this.id = requestAnimationFrame(() => {
-      this.width = width;
-      this.height = height;
+      this.width = width!;
+      this.height = height!;
     });
   }
 }

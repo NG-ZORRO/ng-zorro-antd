@@ -16,7 +16,7 @@ import { delay } from 'rxjs/operators';
   `
 })
 export class NzDemoTransferCanMoveComponent implements OnInit {
-  list: Array<{ key: string; title: string; disabled: boolean; direction?: string }> = [];
+  list: TransferItem[] = [];
 
   ngOnInit(): void {
     for (let i = 0; i < 20; i++) {

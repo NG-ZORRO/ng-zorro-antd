@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'nz-demo-spin-delayAndDebounce',
+  selector: 'nz-demo-spin-delay-and-debounce',
   template: `
     <nz-spin [nzSpinning]="isSpinning" [nzDelay]="500">
       <nz-alert

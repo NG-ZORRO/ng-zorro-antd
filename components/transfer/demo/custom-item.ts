@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { TransferItem } from 'ng-zorro-antd/transfer';
 
 @Component({
   selector: 'nz-demo-transfer-custom-item',
@@ -16,20 +17,20 @@ import { NzMessageService } from 'ng-zorro-antd/message';
   `
 })
 export class NzDemoTransferCustomItemComponent implements OnInit {
-  list: Array<{ key: string; title: string; description: string; direction: string; icon: string }> = [];
+  list: Array<TransferItem & { description: string; icon: string }> = [];
 
   ngOnInit(): void {
     this.getData();
   }
 
   getData(): void {
-    const ret: Array<{ key: string; title: string; description: string; direction: string; icon: string }> = [];
+    const ret: Array<TransferItem & { description: string; icon: string }> = [];
     for (let i = 0; i < 20; i++) {
       ret.push({
         key: i.toString(),
         title: `content${i + 1}`,
         description: `description of content${i + 1}`,
-        direction: Math.random() * 2 > 1 ? 'right' : '',
+        direction: Math.random() * 2 > 1 ? 'right' : undefined,
         icon: `frown-o`
       });
     }

@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
+interface ItemData {
+  name: string;
+  age: number;
+  address: string;
+}
+
 @Component({
   selector: 'nz-demo-table-fixed-columns-header',
   template: `
@@ -40,7 +46,7 @@ import { Component, OnInit } from '@angular/core';
   `
 })
 export class NzDemoTableFixedColumnsHeaderComponent implements OnInit {
-  listOfData: any[] = [];
+  listOfData: ItemData[] = [];
 
   ngOnInit(): void {
     for (let i = 0; i < 100; i++) {

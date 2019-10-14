@@ -5,6 +5,7 @@ interface Data {
   age: number;
   address: string;
 
+  // tslint:disable-next-line:no-any
   [key: string]: any;
 }
 
@@ -91,7 +92,7 @@ export class NzDemoTableResetFilterComponent {
     }
   ];
   listOfDisplayData = [...this.listOfData];
-  mapOfSort: { [key: string]: any } = {
+  mapOfSort: { [key: string]: string | null } = {
     name: null,
     age: null,
     address: null

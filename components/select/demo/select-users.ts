@@ -50,7 +50,7 @@ export class NzDemoSelectSelectUsersComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    // tslint:disable-next-line:no-any
+    // tslint:disable:no-any
     const getRandomNameList = (name: string) =>
       this.http
         .get(`${this.randomUserUrl}`)

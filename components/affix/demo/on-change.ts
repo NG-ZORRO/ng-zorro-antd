@@ -11,7 +11,7 @@ import { Component } from '@angular/core';
   `
 })
 export class NzDemoAffixOnChangeComponent {
-  onChange(status: boolean) {
+  onChange(status: boolean): void {
     console.log(status);
   }
 }
