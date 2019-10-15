@@ -1,6 +1,6 @@
 {
   "name": "ng-zorro-antd",
-  "version": "8.3.1",
+  "version": "8.4.0",
   "license": "MIT",
   "description": "An enterprise-class UI components based on Ant Design and Angular",
   "schematics": "./schematics/collection.json",
@@ -37,6 +37,6 @@
     "@angular/core": "^8.0.0",
     "@angular/platform-browser": "^8.0.0",
     "@angular/router": "^8.0.0",
-    "rxjs": "^6.5.2"
+    "rxjs": "^6.4.0"
   }
 }
