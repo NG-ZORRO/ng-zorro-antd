@@ -8,4 +8,4 @@
 
 import { Version } from '@angular/core';
 
-export const VERSION = new Version('8.3.1');
+export const VERSION = new Version('8.4.0');
