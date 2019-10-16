@@ -31,7 +31,7 @@ import { NzPageHeaderFooterDirective } from './nz-page-header-cells';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
-    class: 'ant-page-header',
+    class: 'ant-page-header ant-page-header-ghost',
     '[class.ant-page-header-has-footer]': 'nzPageHeaderFooter'
   },
   styles: [
