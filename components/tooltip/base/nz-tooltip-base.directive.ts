@@ -239,7 +239,6 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
     // When the method gets invoked, all properties has been synced to the dynamic component.
     // After removing the old API, we can just check the directive's own `nzTrigger`.
     const el = this.elementRef.nativeElement;
-
     const trigger = this.isDynamicTooltip ? this.trigger : this.tooltip.nzTrigger;
 
     if (trigger === 'hover') {
@@ -277,8 +276,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
           this.show();
         })
       );
-      // Hiding would be triggered by the component itself.
-    } // else do nothing because user wants to control the visibility programmatically.
+    } // Else do nothing because user wants to control the visibility programmatically.
   }
 
   /**
