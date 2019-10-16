@@ -2,7 +2,7 @@
 order: 20
 title:
   zh-CN: 前端搜索
-  en-US: Select with font-end search
+  en-US: Select with front-end search
 ---
 
 ## zh-CN
