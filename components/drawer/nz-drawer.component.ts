@@ -70,15 +70,7 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
   @Input() nzZIndex = 1000;
   @Input() nzOffsetX = 0;
   @Input() nzOffsetY = 0;
-
-  @Input()
-  set nzVisible(value: boolean) {
-    this.isOpen = value;
-  }
-
-  get nzVisible(): boolean {
-    return this.isOpen;
-  }
+  @Input() nzVisible = false;
 
   @Output() readonly nzOnViewInit = new EventEmitter<void>();
   @Output() readonly nzOnClose = new EventEmitter<MouseEvent>();
@@ -92,14 +84,14 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
   overlayRef: OverlayRef | null;
   portal: TemplatePortal;
   focusTrap: FocusTrap;
-  isOpen = false;
+  createByService = false;
   templateContext: { $implicit: D | undefined; drawerRef: NzDrawerRef<R> } = {
     $implicit: undefined,
     drawerRef: this as NzDrawerRef<R>
   };
 
   get offsetTransform(): string | null {
-    if (!this.isOpen || this.nzOffsetX + this.nzOffsetY === 0) {
+    if (!this.nzVisible || this.nzOffsetX + this.nzOffsetY === 0) {
       return null;
     }
     switch (this.nzPlacement) {
@@ -115,7 +107,7 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
   }
 
   get transform(): string | null {
-    if (this.isOpen) {
+    if (this.nzVisible) {
       return null;
     }
 
@@ -192,15 +184,17 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.hasOwnProperty('nzVisible')) {
-      this.handleVisibleStateChange(this.isOpen);
+      this.handleVisibleStateChange(this.nzVisible);
     }
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-    this.drawerControl.deregisterDrawer(this);
-    this.disposeOverlay();
+    this.changeVisibleFromInside(false).then(() => {
+      this.drawerControl.deregisterDrawer(this);
+      this.destroy$.next();
+      this.destroy$.complete();
+      this.disposeOverlay();
+    });
   }
 
   private getAnimationDuration(): number {
@@ -209,6 +203,10 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
 
   close(result?: R): void {
     this.changeVisibleFromInside(false, result);
+    // if (this.createByService) {
+    // } else {
+    //   this.nzOnClose.emit();
+    // }
   }
 
   open(): void {
@@ -225,34 +223,38 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
     }
   }
 
-  private changeVisibleFromInside(visible: boolean, closeResult?: R): void {
-    if (this.isOpen !== visible) {
-      this.isOpen = visible;
-      this.handleVisibleStateChange(visible, closeResult);
+  private changeVisibleFromInside(visible: boolean, closeResult?: R): Promise<void> {
+    if (this.nzVisible !== visible) {
+      this.nzVisible = visible;
+      return this.handleVisibleStateChange(visible, closeResult);
     }
+    return Promise.resolve();
   }
 
-  private handleVisibleStateChange(visible: boolean, closeResult?: R): void {
+  private handleVisibleStateChange(visible: boolean, closeResult?: R): Promise<void> {
     if (visible) {
       this.overlayKeyboardDispatcher.add(this.overlayRef!);
       this.updateOverlayStyle();
       this.updateBodyOverflow();
       this.savePreviouslyFocusedElement();
       this.trapFocus();
-      this.changeDetectorRef.detectChanges();
-      setTimeout(() => {
-        this.nzAfterOpen.next();
-      }, this.getAnimationDuration());
     } else {
       this.updateOverlayStyle();
       this.overlayKeyboardDispatcher.remove(this.overlayRef!);
-      this.changeDetectorRef.detectChanges();
-      setTimeout(() => {
+    }
+
+    return new Promise(resolve => {
+      setTimeout(() => resolve(), this.getAnimationDuration());
+    }).then(() => {
+      if (visible) {
+        this.nzAfterOpen.next();
+      } else {
+        this.nzAfterClose.next(closeResult);
         this.updateBodyOverflow();
         this.restoreFocus();
-        this.nzAfterClose.next(closeResult);
-      }, this.getAnimationDuration());
-    }
+        this.changeDetectorRef.markForCheck();
+      }
+    });
   }
 
   private attachBodyContent(): void {
@@ -278,7 +280,7 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
       this.overlayRef!.keydownEvents()
         .pipe(takeUntil(this.destroy$))
         .subscribe((event: KeyboardEvent) => {
-          if (event.keyCode === ESCAPE && this.isOpen && this.nzKeyboard) {
+          if (event.keyCode === ESCAPE && this.nzVisible && this.nzKeyboard) {
             this.nzOnClose.emit();
           }
         });
@@ -301,13 +303,13 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
 
   private updateOverlayStyle(): void {
     if (this.overlayRef && this.overlayRef.overlayElement) {
-      this.renderer.setStyle(this.overlayRef.overlayElement, 'pointer-events', this.isOpen ? 'auto' : 'none');
+      this.renderer.setStyle(this.overlayRef.overlayElement, 'pointer-events', this.nzVisible ? 'auto' : 'none');
     }
   }
 
   private updateBodyOverflow(): void {
     if (this.overlayRef) {
-      if (this.isOpen) {
+      if (this.nzVisible) {
         this.overlayRef.getConfig().scrollStrategy!.enable();
       } else {
         this.overlayRef.getConfig().scrollStrategy!.disable();

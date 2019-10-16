@@ -399,7 +399,7 @@ describe('NzDrawerComponent', () => {
   });
 });
 
-describe('NzDrawerService', () => {
+fdescribe('NzDrawerService', () => {
   let component: NzTestDrawerWithServiceComponent;
   let fixture: ComponentFixture<NzTestDrawerWithServiceComponent>;
   let overlayContainer: OverlayContainer;
@@ -410,7 +410,7 @@ describe('NzDrawerService', () => {
     TestBed.configureTestingModule({
       imports: [NzDrawerModule, NoopAnimationsModule],
       providers: [NzDrawerService],
-      declarations: [NzTestDrawerWithServiceComponent, NzDrawerCustomComponent, NzTestDrawerComponent]
+      declarations: [NzTestDrawerWithServiceComponent, NzDrawerCustomComponent, NonServiceDrawerComponent]
     });
     TestBed.overrideModule(BrowserDynamicTestingModule, {
       set: { entryComponents: [NzDrawerCustomComponent] }
@@ -493,20 +493,47 @@ describe('NzDrawerService', () => {
     expect(closeSpy).toHaveBeenCalled();
   }));
 
-  it('should close all opened drawers', fakeAsync(() => {
-    const nonServiceFixture = TestBed.createComponent(NzTestDrawerComponent);
-    const nonServiceDrawerComponent = nonServiceFixture.componentInstance;
-    nonServiceDrawerComponent.visible = true;
-    drawerService.create({ nzWrapClassName: 'service-drawer' });
-    nonServiceFixture.detectChanges();
-    tick(600);
-    expect(drawerService.openDrawers.length).toBe(2);
-    drawerService.closeAll();
-    nonServiceFixture.detectChanges();
-    tick(600);
-    expect(drawerService.openDrawers.length).toBe(0);
-  }));
+  describe('extra methods', () => {
+    let nonServiceFixture: ComponentFixture<NonServiceDrawerComponent>;
+    let nonoServiceComponent: NonServiceDrawerComponent;
+
+    beforeEach(() => {
+      nonServiceFixture = TestBed.createComponent(NonServiceDrawerComponent);
+      nonoServiceComponent = nonServiceFixture.componentInstance;
+    });
+
+    afterEach(fakeAsync(() => {
+      nonoServiceComponent.close();
+      nonServiceFixture.detectChanges();
+      tick(1000);
+    }));
+
+    it('should close all opened drawers', fakeAsync(() => {
+      nonoServiceComponent.visible = true;
+      drawerService.create({ nzWrapClassName: 'service-drawer' });
+      nonServiceFixture.detectChanges();
+      tick(600);
+      expect(drawerService.openDrawers.length).toBe(2);
+      drawerService.closeAll();
+      nonServiceFixture.detectChanges();
+      tick(600);
+      expect(drawerService.openDrawers.length).toBe(0);
+    }));
+  });
 });
+
+@Component({
+  template: `
+    <nz-drawer [nzVisible]="visible" (nzOnClose)="close()"></nz-drawer>
+  `
+})
+export class NonServiceDrawerComponent {
+  visible = false;
+
+  close(): void {
+    this.visible = false;
+  }
+}
 
 @Component({
   template: `

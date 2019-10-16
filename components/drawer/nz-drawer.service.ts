@@ -62,7 +62,7 @@ export class DrawerBuilderForService<R> {
   }
 
   updateOptions(options: NzDrawerOptionsOfComponent): void {
-    Object.assign(this.drawerRef!.instance, options);
+    Object.assign(this.drawerRef!.instance, { ...options, createByService: true });
   }
 }
 

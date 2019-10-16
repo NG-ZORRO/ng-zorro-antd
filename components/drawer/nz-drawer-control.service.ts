@@ -14,10 +14,19 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Injectable, Optional, SkipSelf } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { NzDrawerControlServiceModule } from './nz-drawer-control.service.module';
 import { NzDrawerRef } from './nz-drawer-ref';
+import { NzDrawerComponent } from './nz-drawer.component';
 
 interface RegisteredMeta {
   drawerRef: NzDrawerRef;
@@ -76,7 +85,12 @@ export class NzDrawerControlService {
     let i = this.openDrawers.length;
 
     while (i--) {
-      this.openDrawers[i].close();
+      const openDrawer = this.openDrawers[i] as NzDrawerComponent;
+      if (openDrawer.createByService) {
+        openDrawer.close();
+      } else {
+        openDrawer.nzOnClose.emit();
+      }
     }
   }
 }
