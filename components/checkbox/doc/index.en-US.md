@@ -27,6 +27,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 | -------- | ----------- | ---- | ------- |
 | `[nzAutoFocus]` | get focus when component mounted | `boolean` | `false` |
 | `[nzDisabled]` | Disable checkbox | `boolean` | `false` |
+| `[nzChecked]` | Default checkbox state | `boolean` | `false` |
 | `[ngModel]` | Specifies whether the checkbox is selected, double binding | `boolean` | `false` |
 | `[nzIndeterminate]` | set the status of indeterminate，only affect the style | `boolean` | `false` |
 | `[nzValue]` | use for the callback of `nz-checkbox-wrapper` | `string` | - |

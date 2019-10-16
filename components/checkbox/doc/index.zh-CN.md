@@ -28,6 +28,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 | --- | --- | --- | --- |
 | `[nzAutoFocus]` | 自动获取焦点 | `boolean` | `false` |
 | `[nzDisabled]` | 设定 disable 状态 | `boolean` | `false` |
+| `[nzChecked]` | 设定默认 check 状态 | `boolean` | `false` |
 | `[ngModel]` | 指定当前是否选中，可双向绑定 | `boolean` | `false` |
 | `[nzIndeterminate]` | 设置 indeterminate 状态，只负责样式控制 | `boolean` | `false` |
 | `[nzValue]` | 仅与 `nz-checkbox-wrapper` 的选中回调配合使用 | `string` | - |
