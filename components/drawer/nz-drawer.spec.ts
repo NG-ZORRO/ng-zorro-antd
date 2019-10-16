@@ -399,7 +399,7 @@ describe('NzDrawerComponent', () => {
   });
 });
 
-fdescribe('NzDrawerService', () => {
+describe('NzDrawerService', () => {
   let component: NzTestDrawerWithServiceComponent;
   let fixture: ComponentFixture<NzTestDrawerWithServiceComponent>;
   let overlayContainer: OverlayContainer;
