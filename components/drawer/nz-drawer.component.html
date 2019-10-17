@@ -18,7 +18,9 @@
         <div class="ant-drawer-wrapper-body"
           [style.overflow]="isLeftOrRight ? 'auto' : null"
           [style.height]="isLeftOrRight ? '100%' : null">
-          <div *ngIf="nzTitle || nzClosable" class="ant-drawer-header">
+          <div *ngIf="nzTitle || nzClosable"
+            [class.ant-drawer-header]="!!nzTitle"
+            [class.ant-drawer-header-no-title]="!!nzTitle">
             <div *ngIf="nzTitle" class="ant-drawer-title">
               <ng-container *nzStringTemplateOutlet="nzTitle"><div [innerHTML]="nzTitle"></div></ng-container>
             </div>
