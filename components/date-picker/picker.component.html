@@ -82,7 +82,6 @@
   <div
     [nzNoAnimation]="noAnimation"
     [@slideMotion]="dropdownAnimation"
-    (@slideMotion.start)="animationStart()"
     (@slideMotion.done)="animationDone()"
     style="position: relative;"
     [style.left]="currentPositionX === 'start' ? '-2px' : '2px'"

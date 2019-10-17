@@ -48,7 +48,7 @@ export class CalendarInputComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.autoFocus) {
-      this.inputRef.nativeElement.focus();
+      setTimeout(() => this.inputRef.nativeElement.focus());
     }
   }
 
