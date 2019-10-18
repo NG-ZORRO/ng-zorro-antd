@@ -12,7 +12,6 @@ import {
   Directive,
   ElementRef,
   EventEmitter,
-  HostListener,
   Input,
   NgZone,
   OnDestroy,
@@ -24,6 +23,7 @@ import { ensureInBounds, InputBoolean } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { getEventWithPoint } from './nz-resizable-utils';
 import { NzResizableService } from './nz-resizable.service';
 import { NzResizeHandleMouseDownEvent } from './nz-resize-handle.component';
 
@@ -31,7 +31,7 @@ export interface NzResizeEvent {
   width?: number;
   height?: number;
   col?: number;
-  mouseEvent?: MouseEvent;
+  mouseEvent?: MouseEvent | TouchEvent;
 }
 
 @Directive({
@@ -62,7 +62,7 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
 
   resizing = false;
   private elRect: ClientRect | DOMRect;
-  private currentHandleEvent: NzResizeHandleMouseDownEvent;
+  private currentHandleEvent: NzResizeHandleMouseDownEvent | null;
   private ghostElement: HTMLDivElement | null;
   private el: HTMLElement;
   private sizeCache: NzResizeEvent | null;
@@ -71,12 +71,13 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
   constructor(
     private elementRef: ElementRef<HTMLElement>,
     private renderer: Renderer2,
-    private ngZone: NgZone,
     private nzResizableService: NzResizableService,
-    private platform: Platform
+    private platform: Platform,
+    private ngZone: NgZone
   ) {
     this.nzResizableService.handleMouseDown$.pipe(takeUntil(this.destroy$)).subscribe(event => {
       this.resizing = true;
+      this.nzResizableService.startResizing(event.mouseEvent);
       this.currentHandleEvent = event;
       this.setCursor();
       this.nzResizeStart.emit({
@@ -84,24 +85,18 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
       });
       this.elRect = this.el.getBoundingClientRect();
     });
-  }
 
-  @HostListener('document:mouseup', ['$event'])
-  onMouseup($event: MouseEvent): void {
-    this.ngZone.runOutsideAngular(() => {
+    this.nzResizableService.documentMouseUp$.pipe(takeUntil(this.destroy$)).subscribe(event => {
       if (this.resizing) {
         this.resizing = false;
         this.nzResizableService.documentMouseUp$.next();
-        this.endResize($event);
+        this.endResize(event);
       }
     });
-  }
 
-  @HostListener('document:mousemove', ['$event'])
-  onMousemove($event: MouseEvent): void {
-    this.ngZone.runOutsideAngular(() => {
+    this.nzResizableService.documentMouseMove$.pipe(takeUntil(this.destroy$)).subscribe(event => {
       if (this.resizing) {
-        this.resize($event);
+        this.resize(event);
       }
     });
   }
@@ -124,11 +119,11 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
   calcSize(width: number, height: number, ratio: number): NzResizeEvent {
     let newWidth: number;
     let newHeight: number;
+    let maxWidth: number;
+    let maxHeight: number;
     let col = 0;
     let spanWidth = 0;
-    let maxWidth = Infinity;
     let minWidth = this.nzMinWidth;
-    let maxHeight = Infinity;
     let boundWidth = Infinity;
     let boundHeight = Infinity;
     if (this.nzBounds === 'parent') {
@@ -159,7 +154,7 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
     }
 
     if (ratio !== -1) {
-      if (/(left|right)/i.test(this.currentHandleEvent.direction)) {
+      if (/(left|right)/i.test(this.currentHandleEvent!.direction)) {
         newWidth = Math.min(Math.max(width, minWidth), maxWidth);
         newHeight = Math.min(Math.max(newWidth / ratio, this.nzMinHeight), maxHeight);
         if (newHeight >= maxHeight || newHeight <= this.nzMinHeight) {
@@ -190,7 +185,7 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
   }
 
   setCursor(): void {
-    switch (this.currentHandleEvent.direction) {
+    switch (this.currentHandleEvent!.direction) {
       case 'left':
       case 'right':
         this.renderer.setStyle(document.body, 'cursor', 'col-resize');
@@ -211,52 +206,56 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
     this.renderer.setStyle(document.body, 'user-select', 'none');
   }
 
-  resize($event: MouseEvent): void {
+  resize(event: MouseEvent | TouchEvent): void {
     const elRect = this.elRect;
+    const resizeEvent = getEventWithPoint(event);
+    const handleEvent = getEventWithPoint(this.currentHandleEvent!.mouseEvent);
     let width = elRect.width;
     let height = elRect.height;
     const ratio = this.nzLockAspectRatio ? width / height : -1;
-    switch (this.currentHandleEvent.direction) {
+    switch (this.currentHandleEvent!.direction) {
       case 'bottomRight':
-        width = $event.clientX - elRect.left;
-        height = $event.clientY - elRect.top;
+        width = resizeEvent.clientX - elRect.left;
+        height = resizeEvent.clientY - elRect.top;
         break;
       case 'bottomLeft':
-        width = elRect.width + this.currentHandleEvent.mouseEvent.clientX - $event.clientX;
-        height = $event.clientY - elRect.top;
+        width = elRect.width + handleEvent.clientX - resizeEvent.clientX;
+        height = resizeEvent.clientY - elRect.top;
         break;
       case 'topRight':
-        width = $event.clientX - elRect.left;
-        height = elRect.height + this.currentHandleEvent.mouseEvent.clientY - $event.clientY;
+        width = resizeEvent.clientX - elRect.left;
+        height = elRect.height + handleEvent.clientY - resizeEvent.clientY;
         break;
       case 'topLeft':
-        width = elRect.width + this.currentHandleEvent.mouseEvent.clientX - $event.clientX;
-        height = elRect.height + this.currentHandleEvent.mouseEvent.clientY - $event.clientY;
+        width = elRect.width + handleEvent.clientX - resizeEvent.clientX;
+        height = elRect.height + handleEvent.clientY - resizeEvent.clientY;
         break;
       case 'top':
-        height = elRect.height + this.currentHandleEvent.mouseEvent.clientY - $event.clientY;
+        height = elRect.height + handleEvent.clientY - resizeEvent.clientY;
         break;
       case 'right':
-        width = $event.clientX - elRect.left;
+        width = resizeEvent.clientX - elRect.left;
         break;
       case 'bottom':
-        height = $event.clientY - elRect.top;
+        height = resizeEvent.clientY - elRect.top;
         break;
       case 'left':
-        width = elRect.width + this.currentHandleEvent.mouseEvent.clientX - $event.clientX;
+        width = elRect.width + handleEvent.clientX - resizeEvent.clientX;
     }
     const size = this.calcSize(width, height, ratio);
     this.sizeCache = { ...size };
-    this.nzResize.emit({
-      ...size,
-      mouseEvent: $event
+    this.ngZone.run(() => {
+      this.nzResize.emit({
+        ...size,
+        mouseEvent: event
+      });
     });
     if (this.nzPreview) {
       this.previewResize(size);
     }
   }
 
-  endResize($event: MouseEvent): void {
+  endResize(event: MouseEvent | TouchEvent): void {
     this.renderer.setStyle(document.body, 'cursor', '');
     this.renderer.setStyle(document.body, 'user-select', '');
     this.removeGhostElement();
@@ -266,11 +265,14 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
           width: this.elRect.width,
           height: this.elRect.height
         };
-    this.nzResizeEnd.emit({
-      ...size,
-      mouseEvent: $event
+    this.ngZone.run(() => {
+      this.nzResizeEnd.emit({
+        ...size,
+        mouseEvent: event
+      });
     });
     this.sizeCache = null;
+    this.currentHandleEvent = null;
   }
 
   previewResize({ width, height }: NzResizeEvent): void {

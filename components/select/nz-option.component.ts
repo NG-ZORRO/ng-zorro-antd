@@ -33,6 +33,7 @@ export class NzOptionComponent implements OnChanges {
   // tslint:disable-next-line:no-any
   @Input() nzValue: any;
   @Input() @InputBoolean() nzDisabled = false;
+  @Input() @InputBoolean() nzHide = false;
   @Input() @InputBoolean() nzCustomContent = false;
 
   ngOnChanges(): void {

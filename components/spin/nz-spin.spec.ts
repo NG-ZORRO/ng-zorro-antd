@@ -4,6 +4,7 @@ import { By } from '@angular/platform-browser';
 
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
+import { NzConfigService } from 'ng-zorro-antd/core';
 import { NzSpinComponent } from './nz-spin.component';
 import { NzSpinModule } from './nz-spin.module';
 
@@ -15,16 +16,19 @@ describe('spin', () => {
     });
     TestBed.compileComponents();
   }));
+
   describe('spin basic', () => {
     let fixture: ComponentFixture<NzTestSpinBasicComponent>;
     let testComponent: NzTestSpinBasicComponent;
     let spin: DebugElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestSpinBasicComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       spin = fixture.debugElement.query(By.directive(NzSpinComponent));
     });
+
     it('should className correct', fakeAsync(() => {
       fixture.detectChanges();
       tick(1000);
@@ -32,6 +36,7 @@ describe('spin', () => {
       console.log(spin.nativeElement);
       expect(spin.nativeElement.querySelector('.ant-spin').firstElementChild!.classList).toContain('ant-spin-dot');
     }));
+
     it('should size work', fakeAsync(() => {
       fixture.detectChanges();
       tick();
@@ -43,6 +48,7 @@ describe('spin', () => {
       fixture.detectChanges();
       expect(spin.nativeElement.querySelector('.ant-spin').classList).toContain('ant-spin-lg');
     }));
+
     it('should spinning work', fakeAsync(() => {
       fixture.detectChanges();
       tick();
@@ -58,14 +64,27 @@ describe('spin', () => {
       fixture.detectChanges();
       expect(spin.nativeElement.querySelector('.ant-spin')).toBeDefined();
     }));
+
     it('should indicator work', () => {
       fixture.detectChanges();
       expect(spin.nativeElement.querySelector('.ant-spin-dot')).toBeDefined();
+
       testComponent.indicator = testComponent.indicatorTemplate;
       fixture.detectChanges();
       expect(spin.nativeElement.querySelector('.ant-spin-dot')).toBeNull();
       expect(spin.nativeElement.querySelector('.anticon-loading')).toBeDefined();
     });
+
+    it('should global config indicator work', () => {
+      fixture.detectChanges();
+      expect(spin.nativeElement.querySelector('.ant-spin-dot')).toBeDefined();
+
+      testComponent.nzConfigService.set('spin', { nzIndicator: testComponent.indicatorTemplate });
+      fixture.detectChanges();
+      expect(spin.nativeElement.querySelector('.ant-spin-dot')).toBeNull();
+      expect(spin.nativeElement.querySelector('.anticon-loading')).toBeDefined();
+    })
+
     it('should delay work', fakeAsync(() => {
       fixture.detectChanges();
       tick();
@@ -81,6 +100,7 @@ describe('spin', () => {
       fixture.detectChanges();
       expect(spin.nativeElement.querySelector('.ant-spin')).toBeNull();
     }));
+
     it('should wrapper work', fakeAsync(() => {
       fixture.detectChanges();
       tick();
@@ -91,6 +111,7 @@ describe('spin', () => {
       fixture.detectChanges();
       expect(spin.nativeElement.querySelector('.ant-spin-container')).toBeNull();
     }));
+
     it('should tip work', fakeAsync(() => {
       fixture.detectChanges();
       tick();
@@ -120,10 +141,13 @@ describe('spin', () => {
 })
 export class NzTestSpinBasicComponent {
   @ViewChild('indicatorTemplate', { static: false }) indicatorTemplate: TemplateRef<void>;
+
   size = 'default';
   delay = 0;
   spinning = true;
   indicator: TemplateRef<void>;
   tip: string;
   simple = false;
+
+  constructor(public nzConfigService: NzConfigService) {}
 }

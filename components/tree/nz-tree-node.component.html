@@ -63,15 +63,7 @@
           <i nz-icon *ngIf="nzIcon" [nzType]="nzIcon"></i>
         </span>
       </span>
-      <span class="ant-tree-title">
-        <ng-container *ngIf="nzTreeNode.isMatched">
-          <span>
-            {{highlightKeys[0]}}<span class="font-highlight">{{nzSearchValue}}</span>{{highlightKeys[1]}}
-          </span>
-        </ng-container>
-        <ng-container *ngIf="!nzTreeNode.isMatched">
-          {{nzTreeNode.title}}
-        </ng-container>
+      <span class="ant-tree-title" [innerHTML]="nzTreeNode.title | nzHighlight: nzSearchValue: '' : 'font-highlight'">
       </span>
     </span>
   </ng-container>
@@ -81,16 +73,18 @@
   </ng-template>
 
   <ul
+    *ngIf="nzTreeNode.isExpanded"
     role="group"
     class="ant-tree-child-tree"
     [class.ant-tree-child-tree-open]="!nzSelectMode || nzTreeNode.isExpanded"
     data-expanded="true"
     [@.disabled]="noAnimation?.nzNoAnimation"
-    [@collapseMotion]="nzTreeNode.isExpanded ? 'expanded' : 'collapsed'">
+    @treeCollapseMotion>
     <nz-tree-node
       *ngFor="let node of nzTreeNode.getChildren()"
       [nzTreeNode]="node"
       [nzShowExpand]="nzShowExpand"
+      [@.disabled]="noAnimation?.nzNoAnimation"
       [nzNoAnimation]="noAnimation?.nzNoAnimation"
       [nzSelectMode]="nzSelectMode"
       [nzShowLine]="nzShowLine"

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { NzFormatEmitEvent, NzTreeNodeOptions } from 'ng-zorro-antd/core';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
 
@@ -19,7 +19,7 @@ import { NzTreeComponent } from 'ng-zorro-antd/tree';
     </nz-tree>
   `
 })
-export class NzDemoTreeBasicComponent implements OnInit, AfterViewInit {
+export class NzDemoTreeBasicComponent implements AfterViewInit {
   @ViewChild('nzTreeComponent', { static: false }) nzTreeComponent: NzTreeComponent;
   defaultCheckedKeys = ['10020'];
   defaultSelectedKeys = ['10010'];
@@ -63,8 +63,6 @@ export class NzDemoTreeBasicComponent implements OnInit, AfterViewInit {
   nzSelect(keys: string[]): void {
     console.log(keys, this.nzTreeComponent.getSelectedNodeList());
   }
-
-  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     // get node by key: '10011'

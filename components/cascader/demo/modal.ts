@@ -1,5 +1,5 @@
-// tslint:disable:no-any
 import { Component } from '@angular/core';
+import { NzCascaderOption } from 'ng-zorro-antd/cascader';
 
 const options = [
   {
@@ -66,11 +66,11 @@ const options = [
   ]
 })
 export class NzDemoCascaderModalComponent {
-  nzOptions = options;
-  values: any[] | null = null;
+  nzOptions: NzCascaderOption[] = options;
+  values: string[] | null = null;
   isVisible = false;
 
-  onChanges(values: any): void {
+  onChanges(values: string[]): void {
     console.log(values, this.values);
   }
 

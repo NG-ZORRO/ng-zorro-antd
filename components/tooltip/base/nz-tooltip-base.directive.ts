@@ -11,6 +11,7 @@ import {
   AfterViewInit,
   ComponentFactory,
   ComponentFactoryResolver,
+  ComponentRef,
   ElementRef,
   EventEmitter,
   Input,
@@ -37,6 +38,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
   specificContent?: NzTSType | null;
   specificTrigger?: NzTooltipTrigger;
   specificPlacement?: string;
+  tooltipRef: ComponentRef<NzTooltipBaseComponent>;
 
   /**
    * @deprecated 9.0.0. This is deprecated and going to be removed in 9.0.0.
@@ -54,13 +56,13 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
    * @deprecated 9.0.0. This is deprecated and going to be removed in 9.0.0.
    * Please use a more specific API. Like `nzTooltipTrigger`.
    */
-  @Input() nzTrigger: NzTooltipTrigger;
+  @Input() nzTrigger: NzTooltipTrigger = 'hover';
 
   /**
    * @deprecated 9.0.0. This is deprecated and going to be removed in 9.0.0.
    * Please use a more specific API. Like `nzTooltipPlacement`.
    */
-  @Input() nzPlacement: string;
+  @Input() nzPlacement: string = 'top';
 
   @Input() nzMouseEnterDelay: number;
   @Input() nzMouseLeaveDelay: number;
@@ -169,6 +171,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
         `'<nz-tooltip></nz-tooltip>', '<nz-popover></nz-popover>' and '<nz-popconfirm></nz-popconfirm>' is deprecated and will be removed in 9.0.0. Refer: https://ng.ant.design/components/tooltip/zh .`
       );
       this.tooltip = this._tooltip;
+      this.tooltip.setOverlayOrigin(this as CdkOverlayOrigin);
     }
 
     this.tooltip.nzVisibleChange
@@ -178,9 +181,8 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
       )
       .subscribe((visible: boolean) => {
         this.isTooltipComponentVisible = visible;
-        this.nzVisibleChange.next(visible);
+        this.nzVisibleChange.emit(visible);
       });
-    this.tooltip.setOverlayOrigin(this as CdkOverlayOrigin);
   }
 
   ngAfterViewInit(): void {
@@ -190,6 +192,9 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
   ngOnDestroy(): void {
     this.$destroy.next();
     this.$destroy.complete();
+    if (this.tooltipRef) {
+      this.tooltipRef.destroy();
+    }
   }
 
   show(): void {
@@ -215,25 +220,28 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
   protected createDynamicTooltipComponent(): void {
     this.isDynamicTooltip = true;
 
-    const tooltipRef = this.hostView.createComponent(this.componentFactory);
+    this.tooltipRef = this.hostView.createComponent(this.componentFactory);
 
-    this.tooltip = tooltipRef.instance;
+    this.tooltip = this.tooltipRef.instance;
     this.renderer.removeChild(
       this.renderer.parentNode(this.elementRef.nativeElement),
-      tooltipRef.location.nativeElement
+      this.tooltipRef.location.nativeElement
     ); // Remove the component's DOM because it should be in the overlay container.
 
+    // If the tooltip component is dynamically created, we should set its origin before updating properties to
+    // the component.
+    this.tooltip.setOverlayOrigin(this as CdkOverlayOrigin);
     // Update all properties to the component.
     this.updateChangedProperties(this.needProxyProperties);
   }
 
-  // TODO: support changing trigger.
   protected registerTriggers(): void {
     // When the method gets invoked, all properties has been synced to the dynamic component.
     // After removing the old API, we can just check the directive's own `nzTrigger`.
     const el = this.elementRef.nativeElement;
+    const trigger = this.isDynamicTooltip ? this.trigger : this.tooltip.nzTrigger;
 
-    if (this.tooltip.nzTrigger === 'hover') {
+    if (trigger === 'hover') {
       let overlayElement: HTMLElement;
       this.triggerUnlisteners.push(
         this.renderer.listen(el, 'mouseenter', () => {
@@ -258,18 +266,17 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
           }
         })
       );
-    } else if (this.tooltip.nzTrigger === 'focus') {
+    } else if (trigger === 'focus') {
       this.triggerUnlisteners.push(this.renderer.listen(el, 'focus', () => this.show()));
       this.triggerUnlisteners.push(this.renderer.listen(el, 'blur', () => this.hide()));
-    } else if (this.tooltip.nzTrigger === 'click') {
+    } else if (trigger === 'click') {
       this.triggerUnlisteners.push(
         this.renderer.listen(el, 'click', e => {
           e.preventDefault();
           this.show();
         })
       );
-      // Hiding would be triggered by the component itself.
-    } // else do nothing because user wants to control the visibility programmatically.
+    } // Else do nothing because user wants to control the visibility programmatically.
   }
 
   /**

@@ -10,10 +10,10 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { NzAddOnModule } from 'ng-zorro-antd/core';
-import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import {
+  NzPageHeaderAvatarDirective,
   NzPageHeaderBreadcrumbDirective,
   NzPageHeaderContentDirective,
   NzPageHeaderExtraDirective,
@@ -31,12 +31,13 @@ const NzPageHeaderCells = [
   NzPageHeaderTagDirective,
   NzPageHeaderExtraDirective,
   NzPageHeaderFooterDirective,
-  NzPageHeaderBreadcrumbDirective
+  NzPageHeaderBreadcrumbDirective,
+  NzPageHeaderAvatarDirective
 ];
 
 @NgModule({
-  imports: [CommonModule, NzAddOnModule, NzIconModule, NzDividerModule],
-  exports: [NzPageHeaderComponent, ...NzPageHeaderCells],
-  declarations: [NzPageHeaderComponent, ...NzPageHeaderCells]
+  imports: [CommonModule, NzAddOnModule, NzIconModule],
+  exports: [NzPageHeaderComponent, NzPageHeaderCells],
+  declarations: [NzPageHeaderComponent, NzPageHeaderCells]
 })
 export class NzPageHeaderModule {}

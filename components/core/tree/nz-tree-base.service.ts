@@ -374,6 +374,7 @@ export class NzTreeBaseService implements OnDestroy {
       } else {
         n.isMatched = false;
       }
+      n.canHide = !n.isMatched;
       n.children.forEach(child => {
         searchChild(child);
       });

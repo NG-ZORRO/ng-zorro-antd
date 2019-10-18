@@ -5,18 +5,24 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-select-search-box',
   template: `
     <nz-select
-      style="width: 200px;"
       nzShowSearch
       nzServerSearch
       nzPlaceHolder="input search text"
+      [(ngModel)]="selectedValue"
       [nzShowArrow]="false"
       [nzFilterOption]="nzFilterOption"
-      [(ngModel)]="selectedValue"
       (nzOnSearch)="search($event)"
     >
       <nz-option *ngFor="let o of listOfOption" [nzLabel]="o.text" [nzValue]="o.value"> </nz-option>
     </nz-select>
-  `
+  `,
+  styles: [
+    `
+      nz-select {
+        width: 200px;
+      }
+    `
+  ]
 })
 export class NzDemoSelectSearchBoxComponent {
   selectedValue = null;

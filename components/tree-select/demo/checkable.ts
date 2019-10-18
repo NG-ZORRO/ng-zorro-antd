@@ -1,21 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-tree-select-checkable',
   template: `
     <nz-tree-select
       style="width: 250px"
+      [(ngModel)]="value"
       [nzNodes]="nodes"
+      (ngModelChange)="onChange($event)"
       nzShowSearch
       nzCheckable
       nzPlaceHolder="Please select"
-      [(ngModel)]="value"
-      (ngModelChange)="onChange($event)"
     >
     </nz-tree-select>
   `
 })
-export class NzDemoTreeSelectCheckableComponent implements OnInit {
+export class NzDemoTreeSelectCheckableComponent {
   value: string[] = ['0-0-0'];
   nodes = [
     {
@@ -61,6 +61,4 @@ export class NzDemoTreeSelectCheckableComponent implements OnInit {
   onChange($event: string[]): void {
     console.log($event);
   }
-
-  ngOnInit(): void {}
 }

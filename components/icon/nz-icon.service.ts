@@ -49,15 +49,19 @@ import {
   UploadOutline,
   UpOutline
 } from '@ant-design/icons-angular/icons';
-import { warn, warnDeprecation } from 'ng-zorro-antd/core';
+import { trimComponentName, warn, warnDeprecation, IconConfig, NzConfigService } from 'ng-zorro-antd/core';
+import { Subject } from 'rxjs';
 
 export interface NzIconfontOption {
   scriptUrl: string;
 }
 
 export const NZ_ICONS = new InjectionToken('nz_icons');
+
 export const NZ_ICON_DEFAULT_TWOTONE_COLOR = new InjectionToken('nz_icon_default_twotone_color');
+
 export const DEFAULT_TWOTONE_COLOR = '#1890ff';
+
 export const NZ_ICONS_USED_BY_ZORRO: IconDefinition[] = [
   BarsOutline,
   CalendarOutline,
@@ -105,6 +109,8 @@ export const NZ_ICONS_USED_BY_ZORRO: IconDefinition[] = [
   providedIn: 'root'
 })
 export class NzIconService extends IconService {
+  configUpdated$ = new Subject<void>();
+
   private iconfontCache = new Set<string>();
 
   warnAPI(type: 'old' | 'cross' | 'vertical'): void {
@@ -152,24 +158,64 @@ export class NzIconService extends IconService {
   constructor(
     rendererFactory: RendererFactory2,
     sanitizer: DomSanitizer,
-    @Optional() @Inject(NZ_ICONS) private icons: IconDefinition[],
-    @Optional() @Inject(NZ_ICON_DEFAULT_TWOTONE_COLOR) private defaultColor: string,
+    protected nzConfigService: NzConfigService,
     @Optional() handler: HttpBackend,
     // tslint:disable-next-line:no-any
-    @Optional() @Inject(DOCUMENT) document: any
+    @Optional() @Inject(DOCUMENT) _document: any,
+    @Optional() @Inject(NZ_ICONS) icons?: IconDefinition[],
+    /**
+     * @deprecated
+     * @inner
+     */
+    @Optional() @Inject(NZ_ICON_DEFAULT_TWOTONE_COLOR) private legacyDefaultTwotoneColor?: string
   ) {
-    super(rendererFactory, handler, document, sanitizer);
+    super(rendererFactory, handler, _document, sanitizer);
 
-    this.addIcon(...NZ_ICONS_USED_BY_ZORRO, ...(this.icons || []));
+    this.onConfigChange();
+
+    this.addIcon(...NZ_ICONS_USED_BY_ZORRO, ...(icons || []));
+
+    if (legacyDefaultTwotoneColor) {
+      warnDeprecation(
+        `'NZ_ICON_DEFAULT_TWOTONE_COLOR' is deprecated and will be removed in 9.0.0. Please use 'NZ_CONFIG' instead!`
+      );
+    }
+    this.configDefaultTwotoneColor();
+
+    this.configDefaultTheme();
+  }
+
+  private onConfigChange(): void {
+    this.nzConfigService.getConfigChangeEventForComponent(trimComponentName(this.constructor.name)).subscribe(() => {
+      this.configDefaultTwotoneColor();
+      this.configDefaultTheme();
+      this.configUpdated$.next();
+    });
+  }
+
+  private configDefaultTheme(): void {
+    const iconConfig = this.getConfig();
+    this.defaultTheme = iconConfig.nzTheme || 'outline';
+  }
+
+  private configDefaultTwotoneColor(): void {
+    const iconConfig = this.getConfig();
+    const defaultTwotoneColor = iconConfig.nzTwotoneColor || this.legacyDefaultTwotoneColor;
 
     let primaryColor = DEFAULT_TWOTONE_COLOR;
-    if (this.defaultColor) {
-      if (this.defaultColor.startsWith('#')) {
-        primaryColor = this.defaultColor;
+
+    if (defaultTwotoneColor) {
+      if (defaultTwotoneColor.startsWith('#')) {
+        primaryColor = defaultTwotoneColor;
       } else {
         warn('Twotone color must be a hex color!');
       }
     }
+
     this.twoToneColor = { primaryColor };
+  }
+
+  private getConfig(): IconConfig {
+    return (this.nzConfigService.getConfigForComponent(trimComponentName(this.constructor.name)) as IconConfig) || {};
   }
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { UploadChangeParam } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'nz-demo-upload-drag',
@@ -23,8 +24,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 })
 export class NzDemoUploadDragComponent {
   constructor(private msg: NzMessageService) {}
-  // tslint:disable-next-line:no-any
-  handleChange({ file, fileList }: { [key: string]: any }): void {
+  handleChange({ file, fileList }: UploadChangeParam): void {
     const status = file.status;
     if (status !== 'uploading') {
       console.log(file, fileList);

@@ -44,12 +44,13 @@ The dialog is currently divided into 2 modes, `normal mode` and `confirm box mod
 | nzFooter          | Footer content, set as footer=null when you don't need default buttons. <i>1. Only valid in normal mode.<br>2. You can customize the buttons to the maximum extent by passing a `ModalButtonOptions` configuration (see the case or the instructions below).</i> | string<br>TemplateRef<br>ModalButtonOptions | OK and Cancel buttons |
 | nzGetContainer    | The mount node for Modal | HTMLElement / () => HTMLElement| A default container |
 | nzKeyboard        | Whether support press esc to close | `boolean` | `true` |
-| nzMask            | Whether show mask or not. | `boolean` | `true` |
-| nzMaskClosable    | Whether to close the modal dialog when the mask (area outside the modal) is clicked | `boolean` | `true` |
+| nzMask            | Whether show mask or not. | `boolean` | `true` | ✅ |
+| nzMaskClosable    | Whether to close the modal dialog when the mask (area outside the modal) is clicked | `boolean` | `true` | ✅ |
 | nzMaskStyle       | Style for modal's mask element. | `object` | - |
 | nzOkText          | Text of the OK button. <i>Set to null to show no ok button (this value is invalid if the nzFooter parameter is used in normal mode)</i> | `string` | OK |
 | nzOkType          | Button type of the OK button. <i>Consistent with the type of the `nz-button`.</i> | `string` | primary |
 | nzStyle           | Style of floating layer, typically used at least for adjusting the position. | `object` | - |
+| nzCloseIcon       | Custom close icon | `string\|TemplateRef<void>` | - |
 | nzTitle           | The modal dialog's title. <i>Leave blank to show no title. The usage of TemplateRef can refer to the case</i> | string / TemplateRef | - |
 | nzVisible         | Whether the modal dialog is visible or not. <i>When using the `<nz-modal>` tag, be sure to use two-way binding, for example: `[(nzVisible)]="visible"`.</i> | `boolean` | `false` |
 | nzWidth           | Width of the modal dialog. <i>When using numbers, the default unit is `px`</i> | string<br>number | 520 |
@@ -128,31 +129,7 @@ The dialog created by the service method `NzModalService.xxx()` will return a `N
 | triggerOk()               | Manually trigger nzOnOk |
 | triggerCancel()           | Manually trigger nzOnCancel |
 
-
-###  Global Configuration
-
-Global Configuration（NZ_MODAL_CONFIG）
-
-if your want to set global configuration, you can use the value of provide `NZ_MODAL_CONFIG` to accomplish it.
-(eg, add `{ provide: NZ_MODAL_CONFIG, useValue: { nzMask: false }}` to `providers` of your module, you can import `NZ_MODAL_CONFIG` from `ng-zorro-antd`)
-
-The weight of global configuration, component default value, component input value:
-
-component input value > global configuration > component default value
-
-supported global configuration item
-```ts
-{
-    provide: NZ_MODAL_CONFIG,
-    useValue: {
-        nzMask?: boolean; // Whether show mask or not.
-        nzMaskClosable?: boolean; // Whether to close the modal dialog when the mask (area outside the modal) is clicked
-    }
-}
-```
-> Note: global configuration does not have default value which component has it.
-
-#### ModalButtonOptions (used to customize the bottom button)
+### ModalButtonOptions (used to customize the bottom button)
 
 An array of `ModalButtonOptions` type can be passed to `nzFooter` for custom bottom buttons.
 

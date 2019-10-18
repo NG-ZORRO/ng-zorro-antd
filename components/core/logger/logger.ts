@@ -35,8 +35,14 @@ function consoleCommonBehavior(consoleFunc: (...args: any) => void, ...args: any
 // Warning should only be printed in dev mode and only once.
 export const warn = (...args: any[]) => consoleCommonBehavior((...arg: any[]) => console.warn(PREFIX, ...arg), ...args);
 
-export const warnDeprecation = (...args: any[]) =>
-  consoleCommonBehavior((...arg: any[]) => console.error(PREFIX, 'deprecated:', ...arg), ...args);
+export const warnDeprecation = (...args: any[]) => {
+  if (!environment.isTestMode) {
+    const stack = new Error().stack;
+    return consoleCommonBehavior((...arg: any[]) => console.warn(PREFIX, 'deprecated:', ...arg, stack), ...args);
+  } else {
+    return () => {};
+  }
+};
 
 // Log should only be printed in dev mode.
 export const log = (...args: any[]) => {

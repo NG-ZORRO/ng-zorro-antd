@@ -35,8 +35,16 @@ import {
 import { fromEvent, merge, EMPTY, Subject } from 'rxjs';
 import { flatMap, startWith, takeUntil } from 'rxjs/operators';
 
-import { measureScrollbar, InputBoolean, InputNumber, NzSizeMDSType } from 'ng-zorro-antd/core';
+import {
+  measureScrollbar,
+  InputBoolean,
+  InputNumber,
+  NzConfigService,
+  NzSizeMDSType,
+  WithConfig
+} from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
+import { PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
 
 import { NzThComponent } from './nz-th.component';
 import { NzTheadComponent } from './nz-thead.component';
@@ -81,7 +89,7 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
   @ViewChild(CdkVirtualScrollViewport, { static: false, read: CdkVirtualScrollViewport })
   cdkVirtualScrollViewport: CdkVirtualScrollViewport;
   @ContentChild(NzVirtualScrollDirective, { static: false }) nzVirtualScrollDirective: NzVirtualScrollDirective;
-  @Input() nzSize: NzSizeMDSType = 'default';
+  @Input() @WithConfig('default') nzSize: NzSizeMDSType;
   @Input() nzShowTotal: TemplateRef<{ $implicit: number; range: [number, number] }>;
   @Input() nzPageSizeOptions = [10, 20, 30, 40, 50];
   @Input() @InputBoolean() nzVirtualScroll = false;
@@ -101,19 +109,23 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
   @Input() nzData: T[] = [];
   @Input() nzPaginationPosition: 'top' | 'bottom' | 'both' = 'bottom';
   @Input() nzScroll: { x?: string | null; y?: string | null } = { x: null, y: null };
-  @Input() @ViewChild('renderItemTemplate', { static: true }) nzItemRender: TemplateRef<{
-    $implicit: 'page' | 'prev' | 'next';
-    page: number;
-  }>;
+
+  @Input() nzItemRender: TemplateRef<PaginationItemRenderContext>;
+  @ViewChild('renderItemTemplate', { static: true }) itemRenderChild: TemplateRef<PaginationItemRenderContext>;
+
+  get itemRender(): TemplateRef<PaginationItemRenderContext> {
+    return this.nzItemRender || this.itemRenderChild;
+  }
+
   @Input() @InputBoolean() nzFrontPagination = true;
   @Input() @InputBoolean() nzTemplateMode = false;
-  @Input() @InputBoolean() nzBordered = false;
+  @Input() @WithConfig(false) @InputBoolean() nzBordered: boolean;
   @Input() @InputBoolean() nzShowPagination = true;
   @Input() @InputBoolean() nzLoading = false;
-  @Input() @InputBoolean() nzShowSizeChanger = false;
-  @Input() @InputBoolean() nzHideOnSinglePage = false;
-  @Input() @InputBoolean() nzShowQuickJumper = false;
-  @Input() @InputBoolean() nzSimple = false;
+  @Input() @WithConfig(false) @InputBoolean() nzShowSizeChanger: boolean;
+  @Input() @WithConfig(false) @InputBoolean() nzHideOnSinglePage: boolean;
+  @Input() @WithConfig(false) @InputBoolean() nzShowQuickJumper: boolean;
+  @Input() @WithConfig(false) @InputBoolean() nzSimple: boolean;
   @Output() readonly nzPageSizeChange: EventEmitter<number> = new EventEmitter();
   @Output() readonly nzPageIndexChange: EventEmitter<number> = new EventEmitter();
   /* tslint:disable-next-line:no-any */
@@ -227,10 +239,11 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
       data = data.slice((this.nzPageIndex - 1) * this.nzPageSize, this.nzPageIndex * this.nzPageSize);
     }
     this.data = [...data];
-    this.nzCurrentPageDataChange.next(this.data);
+    this.nzCurrentPageDataChange.emit(this.data);
   }
 
   constructor(
+    public nzConfigService: NzConfigService,
     private renderer: Renderer2,
     private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
@@ -257,6 +270,11 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
       }
       this.fitScrollBar();
       this.setScrollPositionClassName();
+    }
+    if (changes.nzData) {
+      if (this.platform.isBrowser) {
+        setTimeout(() => this.setScrollPositionClassName());
+      }
     }
     if (changes.nzPageIndex || changes.nzPageSize || changes.nzFrontPagination || changes.nzData) {
       this.updateFrontPaginationDataIfNeeded(!!(changes.nzPageSize || changes.nzData));

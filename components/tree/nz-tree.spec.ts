@@ -161,6 +161,9 @@ describe('nz-tree', () => {
 
     it('test click event', fakeAsync(() => {
       fixture.detectChanges();
+      // To avoid *ngIf to hide nodes
+      treeInstance.expandAll = true;
+      fixture.detectChanges();
       const clickSpy = spyOn(treeInstance, 'nzEvent');
       // click 0-0-0 to select
       let targetNode = treeElement.querySelectorAll('nz-tree-node')[1];
@@ -224,6 +227,9 @@ describe('nz-tree', () => {
 
     it('test check event', fakeAsync(() => {
       fixture.detectChanges();
+      // To avoid *ngIf to hide nodes
+      treeInstance.expandAll = true;
+      fixture.detectChanges();
       // uncheck 0-0-0
       let targetNode = treeElement.querySelectorAll('.ant-tree-checkbox')[1];
       expect(fixture.componentInstance.treeComponent.getCheckedNodeList().length).toEqual(1);
@@ -243,6 +249,8 @@ describe('nz-tree', () => {
 
     it('test check event with nzCheckStrictly', fakeAsync(() => {
       fixture.detectChanges();
+      // To avoid *ngIf to hide nodes
+      treeInstance.expandAll = true;
       treeInstance.checkStrictly = true;
       treeInstance.nodes = [
         {
@@ -281,6 +289,9 @@ describe('nz-tree', () => {
 
     it('test contextmenu event', fakeAsync(() => {
       fixture.detectChanges();
+      // To avoid *ngIf to hide nodes
+      treeInstance.expandAll = true;
+      fixture.detectChanges();
       const clickSpy = spyOn(treeInstance, 'nzEvent');
       // contextmenu 0-0-0
       const targetNode = treeElement.querySelectorAll('nz-tree-node')[1];
@@ -290,6 +301,9 @@ describe('nz-tree', () => {
     }));
 
     it('test disabled node check event', fakeAsync(() => {
+      fixture.detectChanges();
+      // To avoid *ngIf to hide nodes
+      treeInstance.expandAll = true;
       fixture.detectChanges();
       const clickSpy = spyOn(treeInstance, 'nzEvent');
       // contextmenu 0-0-0
@@ -315,6 +329,11 @@ describe('nz-tree', () => {
       fixture.detectChanges();
       // matched node's parent node will be expanded
       expect(fixture.componentInstance.treeComponent.getExpandedNodeList().length).toEqual(4);
+
+      // Notice *ngIf, should expand all nodes
+      // To avoid *ngIf to hide nodes
+      treeInstance.expandAll = true;
+      fixture.detectChanges();
       expect(fixture.componentInstance.treeComponent.getMatchedNodeList().length).toEqual(11);
       expect(treeElement.querySelectorAll('.font-highlight').length).toEqual(11);
     }));
@@ -375,6 +394,7 @@ describe('nz-tree', () => {
       fixture.detectChanges();
       expect(treeElement.querySelectorAll("[title='0-0-reset']").length).toEqual(1);
       node.isDisabled = true;
+      fixture.componentInstance.expandAll = true;
       fixture.detectChanges();
       expect(
         treeElement.querySelector('.ant-tree-treenode-disabled')!.querySelectorAll("[title='0-0-reset']").length
@@ -632,6 +652,8 @@ describe('nz-tree', () => {
       // test selectable false and click it
       node = fixture.componentInstance.treeComponent.getTreeNodeByKey('1001');
       node!.isSelectable = false;
+      fixture.detectChanges();
+      fixture.componentInstance.expandDefault = true;
       fixture.detectChanges();
       // add nzTreeNode children to clear loading state, root click will not change
       const targetNode = treeElement.querySelectorAll('li')[0];

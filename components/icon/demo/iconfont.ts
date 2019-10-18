@@ -20,8 +20,8 @@ import { NzIconService } from 'ng-zorro-antd/icon';
   ]
 })
 export class NzDemoIconIconfontComponent {
-  constructor(private _iconService: NzIconService) {
-    this._iconService.fetchFromIconfont({
+  constructor(private iconService: NzIconService) {
+    this.iconService.fetchFromIconfont({
       scriptUrl: 'https://at.alicdn.com/t/font_8d5l8fzk5b87iudi.js'
     });
   }

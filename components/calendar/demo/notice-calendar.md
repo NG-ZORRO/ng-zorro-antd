@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-一个复杂的应用示例，用 `dateCell` 和 `monthCell` 模版来自定义需要渲染的数据。
+一个复杂的应用示例，用 `nzDateCell` 和 `nzMonthCell` 模版来自定义需要渲染的数据。
 
 ## en-US
 
-This component can be rendered by using `dateCell` and `monthCell` with the data you need.
+This component can be rendered by using `nzDateCell` and `nzMonthCell` with the data you need.

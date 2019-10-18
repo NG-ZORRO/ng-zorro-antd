@@ -26,7 +26,14 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { isNotNil, slideMotion, toBoolean, NzUpdateHostClassService as UpdateCls } from 'ng-zorro-antd/core';
+import {
+  isNotNil,
+  slideMotion,
+  InputBoolean,
+  NzConfigService,
+  NzUpdateHostClassService as UpdateCls,
+  WithConfig
+} from 'ng-zorro-antd/core';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -38,13 +45,9 @@ import { isNotNil, slideMotion, toBoolean, NzUpdateHostClassService as UpdateCls
   providers: [UpdateCls, { provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }]
 })
 export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
-  private _disabled = false;
   private _value: Date | null = null;
-  private _allowEmpty = true;
-  private _autoFocus = false;
   private _onChange: (value: Date | null) => void;
   private _onTouched: () => void;
-  private _hideDisabledOptions = false;
   isInit = false;
   origin: CdkOverlayOrigin;
   overlayPositions: ConnectionPositionPair[] = [
@@ -59,64 +62,26 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   ];
   @ViewChild('inputElement', { static: true }) inputRef: ElementRef<HTMLInputElement>;
   @Input() nzSize: string | null = null;
-  @Input() nzHourStep = 1;
-  @Input() nzMinuteStep = 1;
-  @Input() nzSecondStep = 1;
-  @Input() nzClearText = 'clear';
-  @Input() nzPopupClassName = '';
+  @Input() @WithConfig(1) nzHourStep: number;
+  @Input() @WithConfig(1) nzMinuteStep: number;
+  @Input() @WithConfig(1) nzSecondStep: number;
+  @Input() @WithConfig('clear') nzClearText: string;
+  @Input() @WithConfig() nzPopupClassName: string;
   @Input() nzPlaceHolder = '';
   @Input() nzAddOn: TemplateRef<void>;
   @Input() nzDefaultOpenValue = new Date();
   @Input() nzDisabledHours: () => number[];
   @Input() nzDisabledMinutes: (hour: number) => number[];
   @Input() nzDisabledSeconds: (hour: number, minute: number) => number[];
-  @Input() nzFormat = 'HH:mm:ss';
+  @Input() @WithConfig('HH:mm:ss') nzFormat: string;
   @Input() nzOpen = false;
-  @Input() nzUse12Hours = false;
+  @Input() @WithConfig(false) @InputBoolean() nzUse12Hours: boolean;
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
 
-  @Input()
-  set nzHideDisabledOptions(value: boolean) {
-    this._hideDisabledOptions = toBoolean(value);
-  }
-
-  get nzHideDisabledOptions(): boolean {
-    return this._hideDisabledOptions;
-  }
-
-  @Input()
-  set nzAllowEmpty(value: boolean) {
-    this._allowEmpty = toBoolean(value);
-  }
-
-  get nzAllowEmpty(): boolean {
-    return this._allowEmpty;
-  }
-
-  @Input()
-  set nzAutoFocus(value: boolean) {
-    this._autoFocus = toBoolean(value);
-    this.updateAutoFocus();
-  }
-
-  get nzAutoFocus(): boolean {
-    return this._autoFocus;
-  }
-
-  @Input()
-  set nzDisabled(value: boolean | string) {
-    this._disabled = toBoolean(value);
-    const input = this.inputRef.nativeElement as HTMLInputElement;
-    if (this._disabled) {
-      this.renderer.setAttribute(input, 'disabled', '');
-    } else {
-      this.renderer.removeAttribute(input, 'disabled');
-    }
-  }
-
-  get nzDisabled(): boolean | string {
-    return this._disabled;
-  }
+  @Input() @InputBoolean() nzHideDisabledOptions = false;
+  @Input() @WithConfig(true) @InputBoolean() nzAllowEmpty: boolean;
+  @Input() @InputBoolean() nzDisabled = false;
+  @Input() @InputBoolean() nzAutoFocus = false;
 
   set value(value: Date | null) {
     this._value = value;
@@ -142,6 +107,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
   close(): void {
     this.nzOpen = false;
+    this.cdr.markForCheck();
     this.nzOpenChange.emit(this.nzOpen);
   }
 
@@ -179,6 +145,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   constructor(
+    public nzConfigService: NzConfigService,
     private element: ElementRef,
     private renderer: Renderer2,
     private updateCls: UpdateCls,
@@ -191,9 +158,21 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzUse12Hours, nzFormat } = changes;
+    const { nzUse12Hours, nzFormat, nzDisabled, nzAutoFocus } = changes;
     if (nzUse12Hours && !nzUse12Hours.previousValue && nzUse12Hours.currentValue && !nzFormat) {
       this.nzFormat = 'h:mm:ss a';
+    }
+    if (nzDisabled) {
+      const value = nzDisabled.currentValue;
+      const input = this.inputRef.nativeElement as HTMLInputElement;
+      if (value) {
+        this.renderer.setAttribute(input, 'disabled', '');
+      } else {
+        this.renderer.removeAttribute(input, 'disabled');
+      }
+    }
+    if (nzAutoFocus) {
+      this.updateAutoFocus();
     }
   }
 

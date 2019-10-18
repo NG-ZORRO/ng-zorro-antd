@@ -36,10 +36,11 @@ import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 ### Page header sections
 | Element | Description |
 | ----- | ----------- | ---- | ------------- |
-| `<nz-page-header-title>` | Title section |
-| `<nz-page-header-subtitle>` | Subtitle section, `[nzTitle]` has high priority |
-| `<nz-page-header-content>` | Content section, `[nzSubtitle]` has high priority |
-| `<nz-page-header-footer>` | Footer section |
-| `<nz-page-header-tags>` |  Tags container after the title |
-| `<nz-page-header-extra>` | Operating area, at the end of the line of the title line |
-| `<nz-breadcrumb nz-page-header-breadcrumb>` | Breadcrumb section |
+| `nz-page-header-title` | Title section |
+| `nz-page-header-subtitle` | Subtitle section, `[nzTitle]` has high priority |
+| `nz-page-header-content` | Content section, `[nzSubtitle]` has high priority |
+| `nz-page-header-footer` | Footer section |
+| `nz-page-header-tags` |  Tags container after the title |
+| `nz-page-header-extra` | Operating area, at the end of the line of the title line |
+| `nz-breadcrumb[nz-page-header-breadcrumb]` | Breadcrumb section |
+| `nz-avatar[nz-page-header-avatar]` | Avatar section |

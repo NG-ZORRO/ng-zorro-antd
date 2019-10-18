@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { NzFormatEmitEvent } from 'ng-zorro-antd/core';
+import { Component } from '@angular/core';
+import { NzFormatEmitEvent, NzTreeNodeOptions } from 'ng-zorro-antd/core';
 
 @Component({
   selector: 'nz-demo-tree-select-async',
@@ -7,10 +7,10 @@ import { NzFormatEmitEvent } from 'ng-zorro-antd/core';
     <nz-tree-select
       style="width: 250px"
       nzPlaceHolder="Please select"
-      [nzDefaultExpandedKeys]="expandKeys"
+      [nzExpandedKeys]="expandKeys"
+      [(ngModel)]="value"
       [nzDropdownMatchSelectWidth]="true"
       [nzDropdownStyle]="{ 'max-height': '300px' }"
-      [(ngModel)]="value"
       [nzNodes]="nodes"
       [nzAsyncData]="true"
       (nzExpandChange)="onExpandChange($event)"
@@ -18,7 +18,7 @@ import { NzFormatEmitEvent } from 'ng-zorro-antd/core';
     </nz-tree-select>
   `
 })
-export class NzDemoTreeSelectAsyncComponent implements OnInit {
+export class NzDemoTreeSelectAsyncComponent {
   expandKeys = ['0-0'];
   value: string;
   nodes = [
@@ -46,7 +46,7 @@ export class NzDemoTreeSelectAsyncComponent implements OnInit {
     }
   ];
 
-  onExpandChange(e: Required<NzFormatEmitEvent>): void {
+  onExpandChange(e: NzFormatEmitEvent): void {
     const node = e.node;
     if (node && node.getChildren().length === 0 && node.isExpanded) {
       this.loadNode().then(data => {
@@ -55,7 +55,7 @@ export class NzDemoTreeSelectAsyncComponent implements OnInit {
     }
   }
 
-  loadNode(): Promise<any[]> {
+  loadNode(): Promise<NzTreeNodeOptions[]> {
     return new Promise(resolve => {
       setTimeout(
         () =>
@@ -67,6 +67,4 @@ export class NzDemoTreeSelectAsyncComponent implements OnInit {
       );
     });
   }
-
-  ngOnInit(): void {}
 }

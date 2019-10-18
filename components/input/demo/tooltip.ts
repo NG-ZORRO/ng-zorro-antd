@@ -12,9 +12,9 @@ import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/co
       nzTrigger="focus"
       nzPlacement="topLeft"
       nzOverlayClassName="numeric-input"
+      [ngModel]="value"
       [nzTitle]="title"
       placeholder="Input a number"
-      [ngModel]="value"
       (ngModelChange)="onChange($event)"
       (blur)="onBlur()"
     />

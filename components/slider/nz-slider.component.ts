@@ -42,7 +42,7 @@ import {
 import {
   isValueARange,
   ExtendedMark,
-  Marks,
+  NzMarks,
   SliderHandler,
   SliderShowTooltip,
   SliderValue
@@ -73,11 +73,12 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   @Input() @InputBoolean() nzRange: boolean = false;
   @Input() @InputBoolean() nzVertical: boolean = false;
   @Input() nzDefaultValue: SliderValue | null = null;
-  @Input() nzMarks: Marks | null = null;
+  @Input() nzMarks: NzMarks | null = null;
   @Input() nzMax = 100;
   @Input() nzMin = 0;
   @Input() nzStep = 1;
   @Input() nzTooltipVisible: SliderShowTooltip = 'default';
+  @Input() nzTooltipPlacement: string = 'top';
   @Input() nzTipFormatter: (value: number) => string;
 
   @Output() readonly nzOnAfterChange = new EventEmitter<SliderValue>();
@@ -110,7 +111,6 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
       this.createDraggingObservables();
     }
     this.toggleDragDisabled(this.nzDisabled);
-
     if (this.getValue() === null) {
       this.setValue(this.formatValue(null));
     }
@@ -462,7 +462,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
       .map(() => ({ offset: null, value: null, active: false }));
   }
 
-  private generateMarkItems(marks: Marks): ExtendedMark[] | null {
+  private generateMarkItems(marks: NzMarks): ExtendedMark[] | null {
     const marksArray: ExtendedMark[] = [];
     for (const key in marks) {
       const mark = marks[key];

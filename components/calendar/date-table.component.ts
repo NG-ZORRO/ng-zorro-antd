@@ -12,7 +12,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   SimpleChange,
   SimpleChanges,
@@ -34,7 +33,7 @@ const DATE_COL_NUM = 7;
   exportAs: 'dateTable',
   templateUrl: 'date-table.component.html'
 })
-export class DateTableComponent implements OnInit, OnChanges {
+export class DateTableComponent implements OnChanges {
   _value: CandyDate;
   headWeekDays: WeekDayLabel[];
   weekRows: WeekRow[];
@@ -64,8 +63,6 @@ export class DateTableComponent implements OnInit, OnChanges {
 
   constructor(private i18n: NzI18nService, private dateHelper: DateHelperService) {}
 
-  ngOnInit(): void {}
-
   ngOnChanges(changes: SimpleChanges): void {
     if (
       this.isDateRealChange(changes.activeDate) ||
@@ -85,7 +82,12 @@ export class DateTableComponent implements OnInit, OnChanges {
         return (
           !Array.isArray(previousValue) ||
           currentValue.length !== previousValue.length ||
-          currentValue.some((value, index) => !previousValue[index].isSameDay(value))
+          currentValue.some((value, index) => {
+            const previousCandyDate = previousValue[index];
+            return previousCandyDate instanceof CandyDate
+              ? previousCandyDate.isSameDay(value)
+              : previousCandyDate !== value;
+          })
         );
       } else {
         return !this.isSameDate(previousValue as CandyDate, currentValue);

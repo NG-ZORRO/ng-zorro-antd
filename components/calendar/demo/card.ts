@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <div [ngStyle]="{ width: '300px', border: '1px solid #d9d9d9', borderRadius: '4px' }">
       <nz-calendar
-        nzCard
+        [nzFullscreen]="false"
         (nzSelectChange)="onValueChange($event)"
         (nzPanelChange)="onPanelChange($event)"
       ></nz-calendar>

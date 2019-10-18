@@ -1,5 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 
+interface ItemData {
+  name: string;
+  age: number | string;
+  address: string;
+  checked: boolean;
+  expand: boolean;
+  description: string;
+  disabled?: boolean;
+}
+
 @Component({
   selector: 'nz-demo-table-dynamic-settings',
   template: `
@@ -146,7 +156,8 @@ import { Component, OnInit } from '@angular/core';
   ]
 })
 export class NzDemoTableDynamicSettingsComponent implements OnInit {
-  listOfData: any[] = [];
+  listOfData: ItemData[] = [];
+  displayData: ItemData[] = [];
   bordered = false;
   loading = false;
   sizeChanger = false;
@@ -160,21 +171,11 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
   checkbox = true;
   allChecked = false;
   indeterminate = false;
-  displayData: any[] = [];
   simple = false;
   noResult = false;
   position = 'bottom';
 
-  currentPageDataChange(
-    $event: Array<{
-      name: string;
-      age: number;
-      address: string;
-      checked: boolean;
-      expand: boolean;
-      description: string;
-    }>
-  ): void {
+  currentPageDataChange($event: ItemData[]): void {
     this.displayData = $event;
     this.refreshStatus();
   }

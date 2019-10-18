@@ -6,4 +6,4 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './break-point';
+export * from './nz-breakpoint';

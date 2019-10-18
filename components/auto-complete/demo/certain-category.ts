@@ -1,5 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
 
+export interface AutocompleteOptionGroups {
+  title: string;
+  count?: number;
+  children?: AutocompleteOptionGroups[];
+}
+
 @Component({
   selector: 'nz-demo-auto-complete-certain-category',
   encapsulation: ViewEncapsulation.None,
@@ -50,9 +56,9 @@ import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@
 })
 export class NzDemoAutoCompleteCertainCategoryComponent implements OnInit {
   inputValue: string;
-  optionGroups: any[];
+  optionGroups: AutocompleteOptionGroups[];
 
-  onChange(value: any): void {
+  onChange(value: string): void {
     console.log(value);
   }
 

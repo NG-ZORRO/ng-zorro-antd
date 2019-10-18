@@ -39,7 +39,14 @@ import {
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { getElementOffset, isPromise, InputBoolean } from 'ng-zorro-antd/core';
+import {
+  getElementOffset,
+  isPromise,
+  warnDeprecation,
+  InputBoolean,
+  NzConfigService,
+  WithConfig
+} from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { NzModalConfig, NZ_MODAL_CONFIG } from './nz-modal-config';
@@ -72,8 +79,11 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   @Input() @InputBoolean() nzCancelLoading: boolean = false;
   @Input() @InputBoolean() nzKeyboard: boolean = true;
   @Input() @InputBoolean() nzNoAnimation = false;
-  @Input() @InputBoolean() nzMask: boolean;
-  @Input() @InputBoolean() nzMaskClosable: boolean;
+
+  // TODO(hsuanxyz): add default value once old API is deprecated.
+  @Input() @WithConfig() @InputBoolean() nzMask: boolean;
+  @Input() @WithConfig() @InputBoolean() nzMaskClosable: boolean;
+
   @Input() nzContent: string | TemplateRef<{}> | Type<T>; // [STATIC] If not specified, will use <ng-content>
   @Input() nzComponentParams: T; // [STATIC] ONLY avaliable when nzContent is a component
   @Input() nzFooter: string | TemplateRef<{}> | Array<ModalButtonOptions<T>> | null; // [STATIC] Default Modal ONLY
@@ -84,6 +94,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   @Input() nzClassName: string;
   @Input() nzStyle: object;
   @Input() nzTitle: string | TemplateRef<{}>;
+  @Input() nzCloseIcon: string | TemplateRef<void> = 'close';
   @Input() nzMaskStyle: object;
   @Input() nzBodyStyle: object;
   @Input() nzOkText: string | null;
@@ -185,6 +196,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   [key: string]: any; // tslint:disable-line:no-any
 
   constructor(
+    public nzConfigService: NzConfigService,
     private overlay: Overlay,
     private overlayKeyboardDispatcher: OverlayKeyboardDispatcher,
     private i18n: NzI18nService,
@@ -199,11 +211,17 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   ) {
     super();
     this.scrollStrategy = this.overlay.scrollStrategies.block();
+
+    if (this.nzModalGlobalConfig) {
+      warnDeprecation(
+        '`NZ_MODAL_CONFIG` has been deprecated and will be removed in 9.0.0. Please use global config instead.'
+      );
+    }
   }
 
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
-      this.locale = this.i18n.getLocaleData('Modal') as { okText: string; cancelText: string };
+      this.locale = this.i18n.getLocaleData('Modal');
     });
 
     if (this.isComponent(this.nzContent)) {

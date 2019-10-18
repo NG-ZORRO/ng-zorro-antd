@@ -13,6 +13,8 @@ export interface MarkObj {
   label: string;
 }
 
+export type NzMarks = Marks;
+
 export class Marks {
   [key: number]: Mark;
 }

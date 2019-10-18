@@ -31,11 +31,9 @@ import { Platform } from '@angular/cdk/platform';
 import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 
-import { toCssPixel, InputBoolean, NzDomEventService } from 'ng-zorro-antd/core';
+import { toCssPixel, InputBoolean, NzBreakPoint, NzDomEventService } from 'ng-zorro-antd/core';
 
 import { NzLayoutComponent } from './nz-layout.component';
-
-export type NzBreakPoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 
 @Component({
   selector: 'nz-sider',
@@ -65,16 +63,22 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
     xl: '1200px',
     xxl: '1600px'
   };
+
+  @Output() readonly nzCollapsedChange = new EventEmitter();
+
   @Input() nzWidth: string | number = 200;
   @Input() nzTheme: 'light' | 'dark' = 'dark';
   @Input() nzCollapsedWidth = 80;
   @Input() nzBreakpoint: NzBreakPoint;
   @Input() nzZeroTrigger: TemplateRef<void>;
-  @Input() @ViewChild('defaultTrigger', { static: true }) nzTrigger: TemplateRef<void>;
   @Input() @InputBoolean() nzReverseArrow = false;
   @Input() @InputBoolean() nzCollapsible = false;
   @Input() @InputBoolean() nzCollapsed = false;
-  @Output() readonly nzCollapsedChange = new EventEmitter();
+  @Input() nzTrigger: TemplateRef<void>;
+  @ViewChild('defaultTrigger', { static: true }) defaultTrigger: TemplateRef<void>;
+  get trigger(): TemplateRef<void> {
+    return this.nzTrigger !== undefined ? this.nzTrigger : this.defaultTrigger;
+  }
 
   get flexSetting(): string {
     return `0 0 ${this.widthSetting}`;
@@ -108,14 +112,14 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
   get isZeroTrigger(): boolean {
     return (
       this.nzCollapsible &&
-      this.nzTrigger &&
+      this.trigger &&
       this.nzCollapsedWidth === 0 &&
       ((this.nzBreakpoint && this.below) || !this.nzBreakpoint)
     );
   }
 
   get isSiderTrigger(): boolean {
-    return this.nzCollapsible && this.nzTrigger && this.nzCollapsedWidth !== 0;
+    return this.nzCollapsible && this.trigger && this.nzCollapsedWidth !== 0;
   }
 
   constructor(

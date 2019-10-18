@@ -23,7 +23,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { InputBoolean, NzSizeDSType } from 'ng-zorro-antd/core';
+import { InputBoolean, NzConfigService, NzSizeDSType, WithConfig } from 'ng-zorro-antd/core';
 
 @Component({
   selector: 'nz-switch',
@@ -60,7 +60,7 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
   @Input() @InputBoolean() nzControl = false;
   @Input() nzCheckedChildren: string | TemplateRef<void>;
   @Input() nzUnCheckedChildren: string | TemplateRef<void>;
-  @Input() nzSize: NzSizeDSType;
+  @Input() @WithConfig('default') nzSize: NzSizeDSType;
 
   hostClick(e: MouseEvent): void {
     e.preventDefault();
@@ -99,7 +99,11 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
     this.switchElement.nativeElement.blur();
   }
 
-  constructor(private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {}
+  constructor(
+    public nzConfigService: NzConfigService,
+    private cdr: ChangeDetectorRef,
+    private focusMonitor: FocusMonitor
+  ) {}
 
   ngAfterViewInit(): void {
     this.focusMonitor.monitor(this.switchElement.nativeElement, true).subscribe(focusOrigin => {

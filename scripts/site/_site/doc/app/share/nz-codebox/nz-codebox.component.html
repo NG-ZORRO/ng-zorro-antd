@@ -27,7 +27,7 @@
     </div>
     <div class="code-box-actions">
       <i
-        [nzTitle]="language==='zh' ? '在 StackBlitz 上打开':'Edit On StackBlitz'"
+        [nzTooltipTitle]="language==='zh' ? '在 StackBlitz 上打开':'Edit On StackBlitz'"
         nz-tooltip
         nz-icon
         nzType="thunderbolt"
@@ -36,7 +36,7 @@
         (click)="openOnStackBlitz()"
       ></i>
       <i
-        [nzTitle]="language==='zh'? '复制代码' : 'Copy Code'"
+        [nzTooltipTitle]="language==='zh'? '复制代码' : 'Copy Code'"
         nz-tooltip
         nz-icon
         [nzType]="copied ? 'check' : 'snippets'"
@@ -45,7 +45,7 @@
         (click)="copyCode(nzRawCode)"
       ></i>
       <i
-        [nzTitle]="language==='zh'? '复制生成代码命令' : 'Copy Generate Command'"
+        [nzTooltipTitle]="language==='zh'? '复制生成代码命令' : 'Copy Generate Command'"
         *ngIf="nzGenerateCommand"
         nz-tooltip
         nz-icon
@@ -54,7 +54,7 @@
         [class.ant-tooltip-open]="commandCopied"
         (click)="copyGenerateCommand(nzGenerateCommand)"
       ></i>
-      <span class="code-expand-icon" [nzTitle]="nzExpanded ? (language==='zh'? '收起代码' : 'Hide Code') : (language==='zh'? '显示代码' : 'Show Code')" nz-tooltip (click)="nzExpanded = !nzExpanded">
+      <span class="code-expand-icon" [nzTooltipTitle]="nzExpanded ? (language==='zh'? '收起代码' : 'Hide Code') : (language==='zh'? '显示代码' : 'Show Code')" nz-tooltip (click)="nzExpanded = !nzExpanded">
         <img
           alt="expand code"
           src="https://gw.alipayobjects.com/zos/rmsportal/wSAkBuJFbdxsosKKpqyq.svg"

@@ -37,8 +37,9 @@ export class CalendarInputComponent implements OnInit {
 
   @Input() value: CandyDate;
   @Input() autoFocus: boolean;
-  @Output() readonly valueChange = new EventEmitter<CandyDate>();
   @ViewChild('inputElement', { static: true }) inputRef: ElementRef;
+
+  @Output() readonly valueChange = new EventEmitter<{ date: CandyDate; isEnter: boolean }>();
 
   prefixCls: string = 'ant-calendar';
   invalidInputClass: string = '';
@@ -51,17 +52,15 @@ export class CalendarInputComponent implements OnInit {
     }
   }
 
-  onInputKeyup(event: KeyboardEvent): void {
+  onInputKeyup(event: KeyboardEvent, isEnter: boolean = false): void {
     const date = this.checkValidInputDate(event);
 
     if (!date || (this.disabledDate && this.disabledDate(date.nativeDate))) {
       return;
     }
 
-    if (event.key === 'Enter') {
-      this.value = date;
-      this.valueChange.emit(this.value);
-    }
+    this.value = date;
+    this.valueChange.emit({ date, isEnter });
   }
 
   toReadableInput(value: CandyDate): string {

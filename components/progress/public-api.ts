@@ -6,5 +6,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-progress.module';
-export * from './nz-progress.component';
+export { NzProgressModule } from './nz-progress.module';
+export { NzProgressComponent } from './nz-progress.component';
+export * from './nz-progress.definitions';

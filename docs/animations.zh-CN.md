@@ -1,5 +1,5 @@
 ---
-order: 7
+order: 8
 title: 动画开关
 ---
 
@@ -11,8 +11,8 @@ NG-ZORRO 允许开发者关闭动画效果，您可以通过添加对应指令�
 
 ```ts
 @NgModule({
-  imports     : [
-   ...,
+  imports: [
+   ...
    NoopAnimationsModule
   ]
 })
@@ -20,7 +20,20 @@ NG-ZORRO 允许开发者关闭动画效果，您可以通过添加对应指令�
 
 ### 在模版中关闭
 
-在想关闭动画的组件上添加 nzNoAnimation 属性。
+引入 `NzNoAnimationModule` 模块。
+
+```ts
+import { NzNoAnimationModule } from 'ng-zorro-antd/core';
+
+@NgModule({
+  imports: [
+  ...
+   NzNoAnimationModule
+  ]
+})
+```
+
+在想关闭动画的组件上添加 `nzNoAnimation` 指令。
 
 ```HTML
 <nz-modal nzNoAnimation></nz-modal>

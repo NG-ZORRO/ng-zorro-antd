@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NzFormatEmitEvent } from 'ng-zorro-antd/core';
 
 @Component({
@@ -27,7 +27,7 @@ import { NzFormatEmitEvent } from 'ng-zorro-antd/core';
     `
   ]
 })
-export class NzDemoTreeSearchComponent implements OnInit {
+export class NzDemoTreeSearchComponent {
   searchValue = '';
 
   nodes = [
@@ -79,6 +79,4 @@ export class NzDemoTreeSearchComponent implements OnInit {
   nzEvent(event: NzFormatEmitEvent): void {
     console.log(event);
   }
-
-  ngOnInit(): void {}
 }

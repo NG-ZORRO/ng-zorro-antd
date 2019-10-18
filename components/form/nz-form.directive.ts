@@ -22,7 +22,7 @@ import {
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
-import { InputBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { InputBoolean, NzConfigService, NzUpdateHostClassService, WithConfig } from 'ng-zorro-antd/core';
 
 import { NzFormLabelComponent } from './nz-form-label.component';
 
@@ -33,7 +33,7 @@ import { NzFormLabelComponent } from './nz-form-label.component';
 })
 export class NzFormDirective implements OnInit, OnChanges, AfterContentInit, OnDestroy {
   @Input() nzLayout = 'horizontal';
-  @Input() @InputBoolean() nzNoColon: boolean = false;
+  @Input() @WithConfig(false) @InputBoolean() nzNoColon: boolean;
 
   @ContentChildren(NzFormLabelComponent, { descendants: true }) nzFormLabelComponent: QueryList<NzFormLabelComponent>;
 
@@ -52,6 +52,7 @@ export class NzFormDirective implements OnInit, OnChanges, AfterContentInit, OnD
   }
 
   constructor(
+    public nzConfigService: NzConfigService,
     private elementRef: ElementRef,
     private renderer: Renderer2,
     private nzUpdateHostClassService: NzUpdateHostClassService

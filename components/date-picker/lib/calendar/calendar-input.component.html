@@ -4,11 +4,10 @@
       class="{{ prefixCls }}-input {{ invalidInputClass }}"
       placeholder="{{ placeholder || locale.dateSelect }}"
       value="{{ toReadableInput(value) }}"
-      (keyup)="onInputKeyup($event)"
+      (input)="onInputKeyup($event)"
+      (keyup.enter)="onInputKeyup($event, true)"
       #inputElement
     />
   </div>
-  <a class="{{ prefixCls }}-clear-btn" role="button" title="{{ locale.clear }}">
-    <!--<i nz-icon nzType="close"></i>-->
-  </a>
+  <a class="{{ prefixCls }}-clear-btn" role="button" title="{{ locale.clear }}"></a>
 </div>

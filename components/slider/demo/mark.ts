@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NzMarks } from 'ng-zorro-antd/slider';
 
 @Component({
   selector: 'nz-demo-slider-mark',
@@ -30,7 +31,7 @@ import { Component } from '@angular/core';
   ]
 })
 export class NzDemoSliderMarkComponent {
-  marks: any = {
+  marks: NzMarks = {
     0: '0°C',
     26: '26°C',
     37: '37°C',
@@ -42,7 +43,7 @@ export class NzDemoSliderMarkComponent {
     }
   };
 
-  changeMarks() {
+  changeMarks(): void {
     this.marks = {
       20: '20%',
       99: '99%'

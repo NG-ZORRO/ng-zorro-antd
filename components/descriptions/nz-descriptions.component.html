@@ -25,7 +25,7 @@
               <td class="ant-descriptions-item-label"
                   *nzStringTemplateOutlet="item.title">{{ item.title }}</td>
               <td class="ant-descriptions-item-content"
-                  [colSpan]="isLast ? item.span * 2 - 1 : item.span">
+                  [colSpan]="item.span * 2 - 1">
                 <ng-template [ngTemplateOutlet]="item.content"></ng-template>
               </td>
             </ng-container>

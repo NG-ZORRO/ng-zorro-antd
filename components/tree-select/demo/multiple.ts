@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-tree-select-multiple',
@@ -6,12 +6,12 @@ import { Component, OnInit } from '@angular/core';
     <nz-tree-select
       style="width: 250px"
       nzPlaceHolder="Please select"
+      [(ngModel)]="value"
       [nzMaxTagCount]="3"
       [nzMaxTagPlaceholder]="omittedPlaceHolder"
       [nzNodes]="nodes"
       [nzDefaultExpandAll]="true"
       [nzAllowClear]="false"
-      [(ngModel)]="value"
       [nzMultiple]="true"
       (ngModelChange)="onChange($event)"
     >
@@ -19,7 +19,7 @@ import { Component, OnInit } from '@angular/core';
     <ng-template #omittedPlaceHolder let-omittedValues> and {{ omittedValues.length }} more... </ng-template>
   `
 })
-export class NzDemoTreeSelectMultipleComponent implements OnInit {
+export class NzDemoTreeSelectMultipleComponent {
   value: string[] = [];
   nodes = [
     {
@@ -46,6 +46,4 @@ export class NzDemoTreeSelectMultipleComponent implements OnInit {
   onChange($event: string[]): void {
     console.log($event);
   }
-
-  ngOnInit(): void {}
 }

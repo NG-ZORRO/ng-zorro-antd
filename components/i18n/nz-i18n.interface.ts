@@ -21,18 +21,13 @@ export interface NzPaginationI18nInterface {
   next_3: string;
 }
 
+export interface NzGlobalI18nInterface {
+  placeholder: string;
+}
+
 export interface NzDatePickerI18nInterface {
   lang: NzDatePickerLangI18nInterface;
   timePickerLocale: NzTimePickerI18nInterface;
-}
-
-export interface NzDatePickerLangI18nInterface extends NzCalendarI18nInterface {
-  placeholder: string;
-  rangePlaceholder: string[];
-}
-
-export interface NzTimePickerI18nInterface {
-  placeholder: string;
 }
 
 export interface NzCalendarI18nInterface {
@@ -64,12 +59,24 @@ export interface NzCalendarI18nInterface {
   nextCentury: string;
 }
 
+export interface NzDatePickerLangI18nInterface extends NzCalendarI18nInterface {
+  placeholder: string;
+  rangePlaceholder: string[];
+}
+
+export interface NzTimePickerI18nInterface {
+  placeholder: string;
+}
+
+export type NzCascaderI18nInterface = NzGlobalI18nInterface;
+
 export interface NzI18nInterface {
   locale: string;
   Pagination: NzPaginationI18nInterface;
   DatePicker: NzDatePickerI18nInterface;
   TimePicker: NzTimePickerI18nInterface;
   Calendar: NzCalendarI18nInterface;
+  global?: NzGlobalI18nInterface;
   Table: {
     filterTitle: string;
     filterConfirm: string;
@@ -100,6 +107,14 @@ export interface NzI18nInterface {
   };
   Empty: {
     description: string;
+  };
+  // TODO: make this required in the future.
+  // Temporarily optional to make sure not break anything.
+  Text?: {
+    edit: string;
+    copy: string;
+    copied: string;
+    expand: string;
   };
 }
 

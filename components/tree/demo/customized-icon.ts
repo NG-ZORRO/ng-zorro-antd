@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-tree-customized-icon',
@@ -21,7 +21,7 @@ import { Component, OnInit } from '@angular/core';
     </nz-tree>
   `
 })
-export class NzDemoTreeCustomizedIconComponent implements OnInit {
+export class NzDemoTreeCustomizedIconComponent {
   nodes = [
     {
       title: 'parent 1',
@@ -34,6 +34,4 @@ export class NzDemoTreeCustomizedIconComponent implements OnInit {
       ]
     }
   ];
-
-  ngOnInit(): void {}
 }

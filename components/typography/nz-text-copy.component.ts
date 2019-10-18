@@ -59,6 +59,8 @@ export class NzTextCopyComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     clearTimeout(this.copyId);
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   onClick(): void {

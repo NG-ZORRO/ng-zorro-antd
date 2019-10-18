@@ -11,7 +11,7 @@ import { ApplicationRef, ComponentFactoryResolver, Injectable, Injector, Templat
 import { NzSingletonService } from 'ng-zorro-antd/core';
 
 import { NzMessageBaseService } from './nz-message-base.service';
-import { NzMessageConfig } from './nz-message-config';
+import { NzMessageConfigLegacy } from './nz-message-config';
 import { NzMessageContainerComponent } from './nz-message-container.component';
 import { NzMessageData, NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
 import { NzMessageServiceModule } from './nz-message.service.module';
@@ -22,7 +22,7 @@ import { NzMessageServiceModule } from './nz-message.service.module';
 export class NzMessageService extends NzMessageBaseService<
   NzMessageContainerComponent,
   NzMessageData,
-  NzMessageConfig
+  NzMessageConfigLegacy
 > {
   constructor(
     nzSingletonService: NzSingletonService,

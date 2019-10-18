@@ -169,7 +169,7 @@ describe('nz-th', () => {
     });
     it('should width work', () => {
       fixture.detectChanges();
-      expect(table.nativeElement.querySelector('col').style.width).toBe('');
+      expect(table.nativeElement.querySelector('col')).toBe(null);
       testComponent.width = '200px';
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('col').style.width).toBe('200px');

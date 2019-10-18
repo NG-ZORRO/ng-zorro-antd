@@ -9,7 +9,7 @@
 import { Inject, Injectable, Optional, TemplateRef, Type } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-import { PREFIX } from 'ng-zorro-antd/core';
+import { warnDeprecation, NzConfigService, PREFIX } from 'ng-zorro-antd/core';
 
 import { NzEmptyCustomContent, NZ_DEFAULT_EMPTY_CONTENT } from './nz-empty-config';
 
@@ -20,13 +20,32 @@ import { NzEmptyCustomContent, NZ_DEFAULT_EMPTY_CONTENT } from './nz-empty-confi
 export class NzEmptyService<T = any> {
   userDefaultContent$ = new BehaviorSubject<NzEmptyCustomContent | undefined>(undefined);
 
-  constructor(@Inject(NZ_DEFAULT_EMPTY_CONTENT) @Optional() private defaultEmptyContent: Type<T>) {
-    if (this.defaultEmptyContent) {
-      this.userDefaultContent$.next(this.defaultEmptyContent);
+  constructor(
+    private nzConfigService: NzConfigService,
+    @Inject(NZ_DEFAULT_EMPTY_CONTENT) @Optional() private legacyDefaultEmptyContent: Type<T>
+  ) {
+    if (legacyDefaultEmptyContent) {
+      warnDeprecation(
+        `'NZ_DEFAULT_EMPTY_CONTENT' is deprecated and would be removed in 9.0.0. Please migrate to 'NZ_CONFIG'.`
+      );
     }
+
+    const userDefaultEmptyContent = this.getUserDefaultEmptyContent();
+
+    if (userDefaultEmptyContent) {
+      this.userDefaultContent$.next(userDefaultEmptyContent);
+    }
+
+    this.nzConfigService.getConfigChangeEventForComponent('empty').subscribe(() => {
+      this.userDefaultContent$.next(this.getUserDefaultEmptyContent());
+    });
   }
 
   setDefaultContent(content?: NzEmptyCustomContent): void {
+    warnDeprecation(
+      `'setDefaultContent' is deprecated and would be removed in 9.0.0. Please migrate to 'NzConfigService'.`
+    );
+
     if (
       typeof content === 'string' ||
       content === undefined ||
@@ -43,6 +62,16 @@ export class NzEmptyService<T = any> {
   }
 
   resetDefault(): void {
+    warnDeprecation(
+      `'resetDefault' is deprecated and would be removed in 9.0.0. Please migrate to 'NzConfigService' and provide an 'undefined'.`
+    );
     this.userDefaultContent$.next(undefined);
+  }
+
+  private getUserDefaultEmptyContent(): Type<T> | TemplateRef<string> | string {
+    return (
+      (this.nzConfigService.getConfigForComponent('empty') || {}).nzDefaultEmptyContent ||
+      this.legacyDefaultEmptyContent
+    );
   }
 }

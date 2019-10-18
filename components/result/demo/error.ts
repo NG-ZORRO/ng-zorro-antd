@@ -16,7 +16,7 @@ import { Component } from '@angular/core';
             Your account has been frozen <a>Thaw immediately &gt;</a>
           </p>
           <p nz-paragraph>
-            <i nz-icon type="close-circle"></i>
+            <i nz-icon nzType="close-circle"></i>
             Your account is not yet eligible to apply <a>Apply immediately &gt;</a>
           </p>
         </div>

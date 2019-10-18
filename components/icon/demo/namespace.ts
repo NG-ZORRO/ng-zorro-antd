@@ -21,7 +21,7 @@ const ngZorroIconLiteral =
   ]
 })
 export class NzDemoIconNamespaceComponent {
-  constructor(private _iconService: NzIconService) {
-    this._iconService.addIconLiteral('ng-zorro:antd', ngZorroIconLiteral);
+  constructor(private iconService: NzIconService) {
+    this.iconService.addIconLiteral('ng-zorro:antd', ngZorroIconLiteral);
   }
 }

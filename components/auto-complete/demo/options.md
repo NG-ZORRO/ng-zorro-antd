@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-也可以直接传 `nz-option` 作为 `nz-autocomplete` 的 Content，而非使用 `nzDataSource`。
+也可以直接传 `nz-auto-option` 作为 `nz-autocomplete` 的 Content，而非使用 `nzDataSource`。
 
 ## en-US
 
-You could pass `nz-option` as Content of `nz-autocomplete`, instead of using nzDataSource`.
+You could pass `nz-auto-option` as Content of `nz-autocomplete`, instead of using nzDataSource`.

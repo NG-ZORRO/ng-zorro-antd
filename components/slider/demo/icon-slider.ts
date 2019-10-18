@@ -61,7 +61,7 @@ export class NzDemoSliderIconSliderComponent implements OnInit {
     this.sliderValue = 0;
   }
 
-  highlightIcon() {
+  highlightIcon(): void {
     const lower = this._sliderValue >= this.mid;
     this.preHighLight = !lower;
     this.nextHighLight = lower;

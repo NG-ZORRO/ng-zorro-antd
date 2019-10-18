@@ -1,6 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, Renderer2, ViewChild } from '@angular/core';
 import { NzCodeEditorComponent } from 'ng-zorro-antd/code-editor';
+import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-demo-code-editor-complex',
@@ -21,6 +22,8 @@ import { NzCodeEditorComponent } from 'ng-zorro-antd/code-editor';
       <i
         nz-icon
         [class.active]="fullScreen"
+        nz-tooltip
+        nzTooltipTitle="Toggle Fullscreen"
         [nzType]="fullScreen ? 'fullscreen-exit' : 'fullscreen'"
         (click)="toggleFullScreen()"
       ></i>
@@ -46,6 +49,7 @@ import { NzCodeEditorComponent } from 'ng-zorro-antd/code-editor';
 })
 export class NzDemoCodeEditorComplexComponent {
   @ViewChild(NzCodeEditorComponent, { static: false }) editorComponent: NzCodeEditorComponent;
+  @ViewChild(NzTooltipDirective, { static: false }) tooltip: NzTooltipDirective;
 
   loading = true;
   fullScreen = false;
@@ -70,13 +74,17 @@ export class NzDemoCodeEditorComplexComponent {
 }
 
 console.log(flatten(['1', 2, [[3]]]))`;
+  private document: Document;
 
   // tslint:disable-next-line no-any
-  constructor(@Inject(DOCUMENT) private document: any, private renderer: Renderer2) {}
+  constructor(@Inject(DOCUMENT) document: any, private renderer: Renderer2) {
+    this.document = document;
+  }
 
   toggleFullScreen(): void {
     this.fullScreen = !this.fullScreen;
-    this.renderer.setStyle((this.document as Document).body, 'overflow-y', this.fullScreen ? 'hidden' : null);
+    this.renderer.setStyle(this.document.body, 'overflow-y', this.fullScreen ? 'hidden' : null);
     this.editorComponent.layout();
+    this.tooltip.hide();
   }
 }

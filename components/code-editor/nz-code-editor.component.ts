@@ -26,27 +26,17 @@ import { debounceTime, distinctUntilChanged, filter, map, takeUntil } from 'rxjs
 
 import { inNextTick, warn, InputBoolean } from 'ng-zorro-antd/core';
 
-import { JoinedEditorOption, NzEditorMode } from './nz-code-editor.definitions';
+import { DiffEditorOptions, EditorOptions, JoinedEditorOptions, NzEditorMode } from './nz-code-editor.definitions';
 import { NzCodeEditorService } from './nz-code-editor.service';
 
-// Avoid import monaco-editor. Otherwise importing `NgZorroAntdModule` would lead to force installation of monaco editor.
+// Import types from monaco editor.
+import { editor } from 'monaco-editor';
+import IEditor = editor.IEditor;
+import IDiffEditor = editor.IDiffEditor;
+import ITextModel = editor.ITextModel;
 
-// import { editor } from 'monaco-editor';
-// import IEditor = editor.IEditor;
-// import IDiffEditor = editor.IDiffEditor;
-// import ITextModel = editor.ITextModel;
-// import IEditorConstructionOptions = editor.IEditorConstructionOptions;
-// import IDiffEditorConstructionOptions = editor.IDiffEditorConstructionOptions;
-
-// tslint:disable no-any
-type IEditor = any;
-type IDiffEditor = any;
-type ITextModel = any;
-type IEditorConstructionOptions = any;
-type IDiffEditorConstructionOptions = any;
-
+// tslint:disable-next-line no-any
 declare const monaco: any;
-// tslint:enable no-any
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -72,18 +62,18 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
   @Input() @InputBoolean() nzFullControl = false;
   @Input() nzToolkit: TemplateRef<void>;
 
-  @Input() set nzEditorOption(value: JoinedEditorOption) {
+  @Input() set nzEditorOption(value: JoinedEditorOptions) {
     this.editorOption$.next(value);
   }
 
   @Output() readonly nzEditorInitialized = new EventEmitter<IEditor | IDiffEditor>();
 
-  editorOptionCached: JoinedEditorOption = {};
+  editorOptionCached: JoinedEditorOptions = {};
 
   private readonly el: HTMLElement;
   private destroy$ = new Subject<void>();
   private resize$ = new Subject<void>();
-  private editorOption$ = new BehaviorSubject<JoinedEditorOption>({});
+  private editorOption$ = new BehaviorSubject<JoinedEditorOptions>({});
   private editorInstance: IEditor | IDiffEditor;
   private value = '';
   private modelSet = false;
@@ -131,7 +121,7 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
     this.resize$.next();
   }
 
-  private setup(option: JoinedEditorOption): void {
+  private setup(option: JoinedEditorOptions): void {
     inNextTick().subscribe(() => {
       this.editorOptionCached = option;
       this.registerOptionChanges();
@@ -143,7 +133,7 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
         this.setValueEmitter();
       }
 
-      this.nzEditorInitialized.next(this.editorInstance);
+      this.nzEditorInitialized.emit(this.editorInstance);
     });
   }
 
@@ -166,7 +156,7 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
         this.nzEditorMode === 'normal'
           ? monaco.editor.create(this.el, { ...this.editorOptionCached })
           : monaco.editor.createDiffEditor(this.el, {
-              ...(this.editorOptionCached as IDiffEditorConstructionOptions)
+              ...(this.editorOptionCached as DiffEditorOptions)
             });
     });
   }
@@ -214,7 +204,7 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
         (this.editorInstance.getModel() as ITextModel).setValue(this.value);
       } else {
         (this.editorInstance as IEditor).setModel(
-          monaco.editor.createModel(this.value, (this.editorOptionCached as IEditorConstructionOptions).language)
+          monaco.editor.createModel(this.value, (this.editorOptionCached as EditorOptions).language)
         );
         this.modelSet = true;
       }
@@ -224,7 +214,7 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
         model.modified.setValue(this.value);
         model.original.setValue(this.nzOriginalText);
       } else {
-        const language = (this.editorOptionCached as IEditorConstructionOptions).language;
+        const language = (this.editorOptionCached as EditorOptions).language;
         (this.editorInstance as IDiffEditor).setModel({
           original: monaco.editor.createModel(this.value, language),
           modified: monaco.editor.createModel(this.nzOriginalText, language)

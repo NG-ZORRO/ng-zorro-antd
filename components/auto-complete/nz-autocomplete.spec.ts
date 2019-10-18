@@ -2,7 +2,16 @@ import { Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
-import { ChangeDetectionStrategy, Component, NgZone, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  NgZone,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
 import { async, fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -86,6 +95,13 @@ describe('auto-complete', () => {
 
       expect(fixture.componentInstance.trigger.panelOpen).toBe(true);
       expect(overlayContainerElement.textContent).toContain('Burns Bay Road');
+    });
+
+    it('should open the panel when type', () => {
+      expect(fixture.componentInstance.trigger.panelOpen).toBe(false);
+      typeInElement('value', input);
+      fixture.detectChanges();
+      expect(fixture.componentInstance.trigger.panelOpen).toBe(true);
     });
 
     it('should not open the panel on focus if the input is readonly', fakeAsync(() => {
@@ -402,6 +418,12 @@ describe('auto-complete', () => {
       flush();
 
       expect(fixture.componentInstance.inputControl.value).toBe(200);
+
+      typeInElement('', input);
+      fixture.detectChanges();
+      flush();
+
+      expect(fixture.componentInstance.inputControl.value).toBe(null);
     }));
 
     it('should mark the autocomplete control as touched on blur', fakeAsync(() => {
@@ -413,6 +435,29 @@ describe('auto-complete', () => {
       fixture.detectChanges();
       flush();
       expect(fixture.componentInstance.inputControl.touched).toBe(true);
+    }));
+
+    it('should be able to re-type the same value when it is reset while open', fakeAsync(() => {
+      fixture.componentInstance.trigger.openPanel();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+
+      typeInElement('Burns', input);
+      flush();
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.inputControl.value).toBe('Burns');
+
+      fixture.componentInstance.inputControl.setValue('');
+      fixture.detectChanges();
+      expect(input.value).toBe('');
+
+      typeInElement('Burns', input);
+      flush();
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.inputControl.value).toBe('Burns');
     }));
   });
 
@@ -816,6 +861,7 @@ describe('auto-complete', () => {
         Promise.resolve().then(() => {
           fixture.detectChanges();
           flush();
+          fixture.detectChanges();
           const panel = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
           expect(panel.classList).not.toContain('ant-select-dropdown-hidden');
         });
@@ -910,9 +956,12 @@ class NzTestAutocompleteWithOnPushDelayComponent implements OnInit {
   options: string[] = [];
   @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger: NzAutocompleteTriggerDirective;
 
+  constructor(private cdr: ChangeDetectorRef) {}
+
   ngOnInit(): void {
     setTimeout(() => {
       this.options = ['One'];
+      this.cdr.markForCheck();
     }, 1000);
   }
 }

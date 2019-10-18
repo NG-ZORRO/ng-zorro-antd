@@ -21,7 +21,7 @@ import { distanceInWords } from 'date-fns';
           nz-tooltip
           nzTitle="Like"
           nz-icon
-          type="like"
+          nzType="like"
           [theme]="likes > 0 ? 'twotone' : 'outline'"
           (click)="like()"
         ></i>
@@ -32,7 +32,7 @@ import { distanceInWords } from 'date-fns';
           nz-tooltip
           nzTitle="Dislike"
           nz-icon
-          type="dislike"
+          nzType="dislike"
           [theme]="dislikes > 0 ? 'twotone' : 'outline'"
           (click)="dislike()"
         ></i>

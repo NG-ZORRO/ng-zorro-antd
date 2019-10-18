@@ -57,6 +57,9 @@
               "buildOptimizer": true,
               "serviceWorker": true
             },
+            "ivy": {
+              "tsConfig": "./site/doc/tsconfig-ivy.server.json"
+            },
             "es5": {
               "tsConfig": "./site/doc/tsconfig.es5.json",
               "fileReplacements": [
@@ -104,6 +107,9 @@
           "configurations": {
             "production": {
               "browserTarget": "ng-zorro-antd-doc:build:production"
+            },
+            "ivy": {
+              "browserTarget": "ng-zorro-antd-doc:build:ivy"
             }
           }
         },
@@ -227,6 +233,11 @@
             "polyfills": "components/polyfills.ts",
             "tsConfig": "components/tsconfig.spec.json",
             "scripts": []
+          },
+          "configurations": {
+            "ivy": {
+              "tsConfig": "components/tsconfig-ivy.spec.json"
+            }
           }
         }
       }

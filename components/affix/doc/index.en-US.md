@@ -24,10 +24,10 @@ import { NzAffixModule } from 'ng-zorro-antd/affix';
 
 ### nz-affix
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| `[nzOffsetBottom]` | Pixels to offset from bottom when calculating position of scroll | `number` | - |
-| `[nzOffsetTop]` | Pixels to offset from top when calculating position of scroll | `number` | `0` |
+| Property | Description | Type | Default | Global Config |
+| -------- | ----------- | ---- | ------- | ------------- |
+| `[nzOffsetBottom]` | Pixels to offset from bottom when calculating position of scroll | `number` | - | ✅ |
+| `[nzOffsetTop]` | Pixels to offset from top when calculating position of scroll | `number` | `0` | ✅ |
 | `[nzTarget]` | specifies the scrollable area dom node | `string \| HTMLElement` | `window` |
 | `(nzChange)` | Callback for when affix state is changed | `EventEmitter<boolean>` | - |
 

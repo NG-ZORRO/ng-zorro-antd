@@ -24,12 +24,12 @@ import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 
 ### nz-anchor
 
-| 成员 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
+| 成员 | 说明 | 类型 | 默认值 | 全局配置 |
+| --- | --- | --- | --- | --- |
 | `[nzAffix]` | 固定模式 | `boolean` | `true` |
-| `[nzBounds]` | 锚点区域边界，单位：px | `number` | `5` |
-| `[nzOffsetTop]` | 距离窗口顶部达到指定偏移量后触发 | `number` | - |
-| `[nzShowInkInFixed]` | 固定模式是否显示小圆点 | `boolean` | `false` |
+| `[nzBounds]` | 锚点区域边界，单位：px | `number` | `5` | ✅ |
+| `[nzOffsetTop]` | 距离窗口顶部达到指定偏移量后触发 | `number` | - | ✅ |
+| `[nzShowInkInFixed]` | 固定模式是否显示小圆点 | `boolean` | `false` | ✅ |
 | `[nzTarget]` | 指定滚动的容器 | `string \| HTMLElement` | `window` |
 | `(nzClick)` | 点击项触发 | `EventEmitter<string>` | - |
 | `(nzScroll)` | 滚动至某锚点时触发 | `EventEmitter<NzAnchorLinkComponent>` | - |

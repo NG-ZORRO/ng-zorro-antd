@@ -27,7 +27,7 @@ import { fromEvent, Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import {
-  collapseMotion,
+  treeCollapseMotion,
   warnDeprecation,
   InputBoolean,
   NzFormatBeforeDropEvent,
@@ -42,7 +42,7 @@ import {
   templateUrl: './nz-tree-node.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
-  animations: [collapseMotion]
+  animations: [treeCollapseMotion]
 })
 export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('dragElement', { static: false }) dragElement: ElementRef;
@@ -62,6 +62,7 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzExpandedIcon: TemplateRef<{ $implicit: NzTreeNode }>;
   @Input() nzTreeTemplate: TemplateRef<{ $implicit: NzTreeNode }>;
   @Input() nzBeforeDrop: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;
+  @Input() nzSearchValue = '';
 
   @Input()
   set nzDraggable(value: boolean) {
@@ -102,27 +103,8 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
     return this._nzExpandAll;
   }
 
-  @Input()
-  set nzSearchValue(value: string) {
-    this.highlightKeys = [];
-    if (value && this.nzTreeNode.title!.includes(value)) {
-      // match the search value
-      const index = this.nzTreeNode.title.indexOf(value);
-      this.highlightKeys = [
-        this.nzTreeNode.title.slice(0, index),
-        this.nzTreeNode.title.slice(index + value.length, this.nzTreeNode.title.length)
-      ];
-    }
-    this._searchValue = value;
-  }
-
-  get nzSearchValue(): string {
-    return this._searchValue;
-  }
-
   // default var
   prefixCls = 'ant-tree';
-  highlightKeys: string[] = [];
   nzNodeClass = {};
   nzNodeSwitcherClass = {};
   nzNodeContentClass = {};
@@ -144,7 +126,6 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * default set
    */
-  _searchValue = '';
   _nzDraggable = false;
   _nzExpandAll = false;
 

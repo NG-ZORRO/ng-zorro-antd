@@ -19,7 +19,7 @@ import { defaultFilterOption, NzFilterOptionPipe, TFilterOption } from './nz-opt
 
 @Injectable()
 export class NzSelectService {
-  // Input params
+  /** Input params **/
   autoClearSearchValue = true;
   serverSearch = false;
   filterOption: TFilterOption = defaultFilterOption;
@@ -28,13 +28,13 @@ export class NzSelectService {
   disabled = false;
   // tslint:disable-next-line:no-any
   compareWith = (o1: any, o2: any) => o1 === o2;
-  // selectedValueChanged should emit ngModelChange or not
+  /** selectedValueChanged should emit ngModelChange or not **/
   // tslint:disable-next-line:no-any
   private listOfSelectedValueWithEmit$ = new BehaviorSubject<{ value: any[]; emit: boolean }>({
     value: [],
     emit: false
   });
-  // ContentChildren Change
+  /** ContentChildren Change **/
   private mapOfTemplateOption$ = new BehaviorSubject<{
     listOfNzOptionComponent: NzOptionComponent[];
     listOfNzOptionGroupComponent: NzOptionGroupComponent[];
@@ -42,7 +42,7 @@ export class NzSelectService {
     listOfNzOptionComponent: [],
     listOfNzOptionGroupComponent: []
   });
-  // searchValue Change
+  /** searchValue Change **/
   private searchValueRaw$ = new BehaviorSubject<string>('');
   private listOfFilteredOption: NzOptionComponent[] = [];
   private openRaw$ = new Subject<boolean>();
@@ -51,7 +51,9 @@ export class NzSelectService {
   clearInput$ = new Subject<boolean>();
   searchValue = '';
   isShowNotFound = false;
-  // open
+  /** animation event **/
+  animationEvent$ = new Subject();
+  /** open event **/
   open$ = this.openRaw$.pipe(distinctUntilChanged());
   activatedOption: NzOptionComponent | null;
   activatedOption$ = new ReplaySubject<NzOptionComponent | null>(1);
@@ -85,25 +87,26 @@ export class NzSelectService {
   );
   // tslint:disable-next-line:no-any
   listOfSelectedValue: any[] = [];
-  // flat ViewChildren
+  /** flat ViewChildren **/
   listOfTemplateOption: NzOptionComponent[] = [];
-  // tag option
+  /** tag option **/
   listOfTagOption: NzOptionComponent[] = [];
-  // tag option concat template option
+  /** tag option concat template option **/
   listOfTagAndTemplateOption: NzOptionComponent[] = [];
-  // ViewChildren
+  /** ViewChildren **/
   listOfNzOptionComponent: NzOptionComponent[] = [];
   listOfNzOptionGroupComponent: NzOptionGroupComponent[] = [];
-  // click or enter add tag option
+  /** click or enter add tag option **/
   addedTagOption: NzOptionComponent | null;
-  // display in top control
+  /** display in top control **/
   listOfCachedSelectedOption: NzOptionComponent[] = [];
-  // selected value or ViewChildren change
+  /** selected value or ViewChildren change **/
   valueOrOption$ = combineLatest([this.listOfSelectedValue$, this.mapOfTemplateOption$]).pipe(
     tap(data => {
-      this.listOfSelectedValue = data[0];
-      this.listOfNzOptionComponent = data[1].listOfNzOptionComponent;
-      this.listOfNzOptionGroupComponent = data[1].listOfNzOptionGroupComponent;
+      const [listOfSelectedValue, mapOfTemplateOption] = data;
+      this.listOfSelectedValue = listOfSelectedValue;
+      this.listOfNzOptionComponent = mapOfTemplateOption.listOfNzOptionComponent;
+      this.listOfNzOptionGroupComponent = mapOfTemplateOption.listOfNzOptionGroupComponent;
       this.listOfTemplateOption = this.listOfNzOptionComponent.concat(
         this.listOfNzOptionGroupComponent.reduce(
           (pre, cur) => [...pre, ...cur.listOfNzOptionComponent.toArray()],
@@ -237,7 +240,7 @@ export class NzSelectService {
   }
 
   tokenSeparate(inputValue: string, tokenSeparators: string[]): void {
-    // auto tokenSeparators
+    /** auto tokenSeparators **/
     if (
       inputValue &&
       inputValue.length &&

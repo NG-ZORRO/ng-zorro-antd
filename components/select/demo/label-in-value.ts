@@ -6,16 +6,22 @@ import { Component } from '@angular/core';
     <p>The selected option's age is {{ selectedValue?.age }}</p>
     <br />
     <nz-select
-      style="width: 120px;"
-      [compareWith]="compareFn"
       [(ngModel)]="selectedValue"
+      [compareWith]="compareFn"
       (ngModelChange)="log($event)"
       nzAllowClear
       nzPlaceHolder="Choose"
     >
       <nz-option *ngFor="let option of optionList" [nzValue]="option" [nzLabel]="option.label"></nz-option>
     </nz-select>
-  `
+  `,
+  styles: [
+    `
+      nz-select {
+        width: 120px;
+      }
+    `
+  ]
 })
 export class NzDemoSelectLabelInValueComponent {
   optionList = [{ label: 'Lucy', value: 'lucy', age: 20 }, { label: 'Jack', value: 'jack', age: 22 }];
