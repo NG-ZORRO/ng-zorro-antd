@@ -35,7 +35,86 @@ export class AppModule {}
 
 These global configuration would be injected into a service named `NzConfigService` and gets stored.
 
-## Dynamically Chaing Configs
+### Provide Template Instances
+
+Being global configuration's entries may accept `TemplateRef<T>` instances, we need a way to create
+them at application start-up, or, we have to submit them via `NzConfigService`.
+
+The simpler approach is via `NzConfigService` in the root Component.
+
+```typescript
+export class AppComponent implements OnInit {
+  @ViewChild('nzIndicatorTpl', { static: true })
+  nzIndicator!: TemplateRef<void>;
+
+  constructor(private readonly nzConfigService: NzConfigService) {}
+
+  ngOnInit(): void {
+    this.nzConfigService.set('spin', { nzIndicator: this.nzIndicator });
+  }
+}
+```
+
+However this causes the configuration to be spread around.<br>
+To solve that, at `NgModule` level we can use a `FactoryProvider` instead of a `ValueProvider` (shown above).
+
+```typescript
+// The module-level Component which contains template references.
+// Exporting is required for AOT compatibility
+@Component({
+  template: `
+    <ng-template #nzIndicatorTpl>
+      <span class="ant-spin-dot">
+        <i nz-icon [nzType]="'loading'"></i>
+      </span>
+    </ng-template>
+  `
+})
+export class GlobalTemplatesComponent {
+  @ViewChild('nzIndicatorTpl', { static: true })
+  nzIndicator!: TemplateRef<void>;
+}
+
+// The Factory function
+const nzConfigFactory = (
+  injector: Injector,
+  resolver: ComponentFactoryResolver
+): NzConfig => {
+  const factory = resolver.resolveComponentFactory(GlobalTemplatesComponent);
+  const { nzIndicator } = factory.create(injector).instance;
+  return {
+    spin: {
+      nzIndicator
+    }
+  };
+};
+
+@NgModule({
+  imports: [...],
+  declarations: [
+    AppComponent,
+    GlobalTemplatesComponent,
+    ...
+  ],
+  providers: [
+    { // The FactoryProvider
+      provide: NZ_CONFIG,
+      useFactory: nzConfigFactory,
+      deps: [Injector, ComponentFactoryResolver]
+    },
+    ...
+  ],
+  entryComponents: [
+    // Must be present here to be resolved by ComponentFactoryResolver.
+    // Using Ivy it is not required
+    GlobalTemplatesComponent,
+    ...
+  ]
+})
+export class AppModule {}
+```
+
+## Dynamically Change Configurations
 
 You can change the global config of a specific component by calling the `set` method of `NzConfigService`. For example, if you want to make all buttons to be barge in size by default, you should:
 
