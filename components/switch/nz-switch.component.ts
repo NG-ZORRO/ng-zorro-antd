@@ -60,7 +60,7 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
   @Input() @InputBoolean() nzControl = false;
   @Input() nzCheckedChildren: string | TemplateRef<void>;
   @Input() nzUnCheckedChildren: string | TemplateRef<void>;
-  @Input() @WithConfig('default') nzSize: NzSizeDSType;
+  @Input() @WithConfig('switch', 'default') nzSize: NzSizeDSType;
 
   hostClick(e: MouseEvent): void {
     e.preventDefault();

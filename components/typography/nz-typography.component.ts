@@ -80,7 +80,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   @Input() @InputBoolean() nzExpandable = false;
   @Input() @InputBoolean() nzEllipsis = false;
   @Input() nzContent: string;
-  @Input() @WithConfig(1) @InputNumber() nzEllipsisRows: number;
+  @Input() @WithConfig('typography', 1) @InputNumber() nzEllipsisRows: number;
   @Input() nzType: 'secondary' | 'warning' | 'danger' | undefined;
   @Input() nzCopyText: string | undefined;
   @Output() readonly nzContentChange = new EventEmitter<string>();

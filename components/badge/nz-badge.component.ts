@@ -30,6 +30,8 @@ import { startWith, take, takeUntil } from 'rxjs/operators';
 
 export type NzBadgeStatusType = 'success' | 'processing' | 'default' | 'error' | 'warning';
 
+const NZ_CONFIG_COMPONENT_NAME = 'backTop';
+
 @Component({
   selector: 'nz-badge',
   exportAs: 'nzBadge',
@@ -70,9 +72,9 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   @Input() @InputBoolean() nzShowZero: boolean = false;
   @Input() @InputBoolean() nzShowDot = true;
   @Input() @InputBoolean() nzDot = false;
-  @Input() @WithConfig(99) nzOverflowCount: number;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 99) nzOverflowCount: number;
   @Input() nzText: string;
-  @Input() @WithConfig() nzColor: string;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzColor: string;
   @Input() nzTitle: string;
   @Input() nzStyle: { [key: string]: string };
   @Input() nzStatus: NzBadgeStatusType;
