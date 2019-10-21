@@ -6,8 +6,8 @@
 <ng-template #colGroupTemplate>
   <colgroup>
     <col [style.width]="width" [style.minWidth]="width" *ngFor="let width of nzWidthConfig">
-    <ng-container *ngFor="let th of listOfNzThComponent">
-      <col [style.width]="th.nzWidth" [style.minWidth]="th.nzWidth" *ngIf="th.nzWidth">
+    <ng-container *ngIf="!nzWidthConfig.length">
+      <col [style.width]="th.nzWidth" [style.minWidth]="th.nzWidth" *ngFor="let th of listOfNzThComponent">
     </ng-container>
   </colgroup>
 </ng-template>

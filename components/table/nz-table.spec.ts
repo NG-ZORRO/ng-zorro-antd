@@ -180,7 +180,7 @@ describe('nz-table', () => {
     });
     it('should width config', () => {
       fixture.detectChanges();
-      expect(table.nativeElement.querySelectorAll('col').length).toBe(0);
+      expect(table.nativeElement.querySelectorAll('col').length).toBe(4);
       testComponent.widthConfig = ['100px', '50px'];
       fixture.detectChanges();
       expect(table.nativeElement.querySelectorAll('col')[0].style.width).toBe('100px');
