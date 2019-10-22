@@ -37,8 +37,7 @@ These global configuration would be injected into a service named `NzConfigServi
 
 ### Provide Template Instances
 
-Being global configuration's entries may accept `TemplateRef<T>` instances, we need a way to create
-them at application start-up, or, we have to submit them via `NzConfigService`.
+Being global configuration's entries may accept `TemplateRef<T>` instances, we need a way to create them at application start-up, or, we have to submit them via `NzConfigService`.
 
 The simpler approach is via `NzConfigService` in the root Component.
 
@@ -55,7 +54,8 @@ export class AppComponent implements OnInit {
 }
 ```
 
-However this causes the configuration to be spread around.<br>
+However this causes the configuration to be spread around.
+
 To solve that, at `NgModule` level we can use a `FactoryProvider` instead of a `ValueProvider` (shown above).
 
 ```typescript
@@ -90,25 +90,22 @@ const nzConfigFactory = (
 };
 
 @NgModule({
-  imports: [...],
+  imports: [],
   declarations: [
     AppComponent,
-    GlobalTemplatesComponent,
-    ...
+    GlobalTemplatesComponent
   ],
   providers: [
     { // The FactoryProvider
       provide: NZ_CONFIG,
       useFactory: nzConfigFactory,
       deps: [Injector, ComponentFactoryResolver]
-    },
-    ...
+    }
   ],
   entryComponents: [
     // Must be present here to be resolved by ComponentFactoryResolver.
     // Using Ivy it is not required
-    GlobalTemplatesComponent,
-    ...
+    GlobalTemplatesComponent
   ]
 })
 export class AppModule {}
