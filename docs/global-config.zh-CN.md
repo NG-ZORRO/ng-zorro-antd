@@ -36,7 +36,83 @@ export class AppModule {}
 
 这些全局配置项将会被注入 `NzConfigService` 当中并保存。
 
-## 动态变更
+### 提供模板
+
+一些组件支持传递模板 `TemplateRef<T>` 作为默认参数，我们来了解一下如何做到这一点。
+
+最简单的方式是在应用的根组件中调用 `NzConfigService` 的相关方法：
+
+```typescript
+export class AppComponent implements OnInit {
+  @ViewChild('nzIndicatorTpl', { static: true })
+  nzIndicator!: TemplateRef<void>;
+
+  constructor(private readonly nzConfigService: NzConfigService) {}
+
+  ngOnInit(): void {
+    this.nzConfigService.set('spin', { nzIndicator: this.nzIndicator });
+  }
+}
+```
+
+然而这种方式可能会让你的 AppComponent 相当臃肿，并违反关注分离原则。
+
+因此，当你的项目比较大时，我们建议你使用一个 `FactoryProvider`，如下所示：
+
+```typescript
+// The module-level Component which contains template references.
+// Exporting is required for AOT compatibility
+@Component({
+  template: `
+    <ng-template #nzIndicatorTpl>
+      <span class="ant-spin-dot">
+        <i nz-icon [nzType]="'loading'"></i>
+      </span>
+    </ng-template>
+  `
+})
+export class GlobalTemplatesComponent {
+  @ViewChild('nzIndicatorTpl', { static: true })
+  nzIndicator!: TemplateRef<void>;
+}
+
+// The Factory function
+const nzConfigFactory = (
+  injector: Injector,
+  resolver: ComponentFactoryResolver
+): NzConfig => {
+  const factory = resolver.resolveComponentFactory(GlobalTemplatesComponent);
+  const { nzIndicator } = factory.create(injector).instance;
+  return {
+    spin: {
+      nzIndicator
+    }
+  };
+};
+
+@NgModule({
+  imports: [...],
+  declarations: [
+    AppComponent,
+    GlobalTemplatesComponent
+  ],
+  providers: [
+    { // The FactoryProvider
+      provide: NZ_CONFIG,
+      useFactory: nzConfigFactory,
+      deps: [Injector, ComponentFactoryResolver]
+    }
+  ],
+  entryComponents: [
+    // Must be present here to be resolved by ComponentFactoryResolver.
+    // Using Ivy it is not required
+    GlobalTemplatesComponent
+  ]
+})
+export class AppModule {}
+```
+
+## 动态变更全局配置
 
 你可以通过调用 `NzConfigService` 的 `set` 方法来改变某个组件的全局配置项，例如：
 
