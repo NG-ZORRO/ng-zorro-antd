@@ -77,7 +77,7 @@ export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
     this.subscribeLoading();
 
     this.nzConfigService
-      .getConfigChangeEventForComponent('spin')
+      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => this.cdr.markForCheck());
   }

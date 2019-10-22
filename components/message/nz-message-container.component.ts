@@ -22,6 +22,8 @@ import { toCssPixel, warnDeprecation, NzConfigService } from 'ng-zorro-antd/core
 import { NzMessageConfigLegacy, NZ_MESSAGE_CONFIG, NZ_MESSAGE_DEFAULT_CONFIG } from './nz-message-config';
 import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
 
+const NZ_CONFIG_COMPONENT_NAME = 'message';
+
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -100,14 +102,14 @@ export class NzMessageContainerComponent implements OnInit {
   }
 
   protected subscribeConfigChange(): void {
-    this.nzConfigService.getConfigChangeEventForComponent('message').subscribe(() => this.setConfig());
+    this.nzConfigService.getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME).subscribe(() => this.setConfig());
   }
 
   protected mergeMessageConfig(config?: NzMessageConfigLegacy): Required<NzMessageConfigLegacy> {
     return {
       ...this.config,
       ...config,
-      ...this.nzConfigService.getConfigForComponent('message')
+      ...this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME)
     };
   }
 

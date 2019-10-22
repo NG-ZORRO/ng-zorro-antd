@@ -26,6 +26,8 @@ import {
 } from './nz-notification-config';
 import { NzNotificationDataFilled, NzNotificationDataOptions } from './nz-notification.definitions';
 
+const NZ_CONFIG_COMPONENT_NAME = 'notification';
+
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -64,7 +66,7 @@ export class NzNotificationContainerComponent extends NzMessageContainerComponen
     const newConfig = (this.config = {
       ...this.config,
       ...config,
-      ...this.nzConfigService.getConfigForComponent('notification')
+      ...this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME)
     });
     const placement = this.config.nzPlacement;
 
@@ -104,7 +106,7 @@ export class NzNotificationContainerComponent extends NzMessageContainerComponen
    * @override
    */
   protected subscribeConfigChange(): void {
-    this.nzConfigService.getConfigChangeEventForComponent('notification').subscribe(() => this.setConfig());
+    this.nzConfigService.getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME).subscribe(() => this.setConfig());
   }
 
   private replaceNotification(old: NzNotificationDataFilled, _new: NzNotificationDataFilled): void {
