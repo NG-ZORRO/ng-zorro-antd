@@ -25,24 +25,6 @@ You can get more detail [here](/docs/getting-started/en#import-a-component-indiv
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
 ```
 
-## How To Use
-
-Similar to `NzMessage`, if you want to modify the global default configuration, you can modify the value of provider `NZ_NOTIFICATION_CONFIG`.
-(Example: Add `{ provide: NZ_NOTIFICATION_CONFIG, useValue: { nzDuration: 3000 }}` to `providers` of your module, `NZ_NOTIFICATION_CONFIG` can be imported from `ng-zorro-antd`)
-
-The default global configuration is:
-```js
-{
-  nzTop         : '24px',
-  nzBottom      : '24px',
-  nzPlacement   : 'topRight',
-  nzDuration    : 4500,
-  nzMaxStack    : 7,
-  nzPauseOnHover: true,
-  nzAnimate     : true
- }
-```
-
 ## API
 
 ### NzNotificationService
@@ -77,9 +59,11 @@ Methods for destruction are also provided:
 
 - `NzNotificationService.remove(id)` // Remove the notification with the specified id. When the id is empty, remove all notifications (the notification id is returned by the above method)
 
-### Global configuration (NZ_MESSAGE_CONFIG)
+### Global Configuration
 
-| 参数 | 说明 | 类型 | 默认值 |
+You can use `NzConfigService` to configure this component globally.
+
+| Parameter | Description | Type | Default |
 | --- | --- | --- | --- |
 | nzDuration | Duration (milliseconds), does not disappear when set to 0 | `number` | 4500 |
 | nzMaxStack | The maximum number of notifications that can be displayed at the same time | `number` | 8 |

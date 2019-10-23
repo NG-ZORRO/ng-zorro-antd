@@ -21,21 +21,6 @@ title: Message
 import { NzMessageModule } from 'ng-zorro-antd/message';
 ```
 
-## 如何使用
-
-如果要修改全局默认配置，你可以设置提供商 `NZ_MESSAGE_CONFIG` 的值来修改。
-（如：在你的模块的`providers`中加入 `{ provide: NZ_MESSAGE_CONFIG, useValue: { nzDuration: 3000 }}`，`NZ_MESSAGE_CONFIG` 可以从 `ng-zorro-antd` 中导入）
-
-默认全局配置为：
-```js
-{
-  nzDuration: 3000,
-  nzMaxStack: 7,
-  nzPauseOnHover: true,
-  nzAnimate: true
-}
-```
-
 ## API
 
 ### NzMessageService
@@ -65,12 +50,14 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 
 - `NzMessageService.remove(id)` // 移除特定id的消息，当id为空时，移除所有消息（该消息id通过上述方法返回值中得到）
 
-### 全局配置（NZ_MESSAGE_CONFIG）
+### 全局配置
+
+可以通过 `NzConfigService` 进行全局配置，详情请见文档中“全局配置项”章节。
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzDuration | 持续时间(毫秒)，当设置为0时不消失 | `number` | `3000` |
-| nzMaxStack | 同一时间可展示的最大提示数量 | `number` | `8` |
+| nzDuration | 持续时间(毫秒)，当设置为 0 时不消失 | `number` | `3000` |
+| nzMaxStack | 同一时间可展示的最大提示数量 | `number` | `7` |
 | nzPauseOnHover | 鼠标移上时禁止自动移除 | `boolean` | `true` |
 | nzAnimate | 开关动画效果 | `boolean` | `true` |
 | nzTop | 消息距离顶部的位置 | `number \| string` | `24` |
@@ -83,4 +70,4 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 export interface NzMessageDataFilled {
   onClose: Subject<false>; // 当 message 关闭时它会派发一个事件
 }
-```
+``` 
