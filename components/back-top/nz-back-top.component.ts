@@ -26,6 +26,8 @@ import { fadeMotion, InputNumber, NzConfigService, NzScrollService, WithConfig }
 import { fromEvent, Subscription } from 'rxjs';
 import { distinctUntilChanged, throttleTime } from 'rxjs/operators';
 
+const NZ_CONFIG_COMPONENT_NAME = 'backTop';
+
 @Component({
   selector: 'nz-back-top',
   exportAs: 'nzBackTop',
@@ -42,7 +44,7 @@ export class NzBackTopComponent implements OnInit, OnDestroy {
   visible: boolean = false;
 
   @Input() nzTemplate: TemplateRef<void>;
-  @Input() @WithConfig(400) @InputNumber() nzVisibilityHeight: number;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 400) @InputNumber() nzVisibilityHeight: number;
 
   @Input()
   set nzTarget(el: string | HTMLElement) {

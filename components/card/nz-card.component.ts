@@ -22,6 +22,8 @@ import { InputBoolean, NzConfigService, NzSizeDSType, WithConfig } from 'ng-zorr
 import { NzCardGridDirective } from './nz-card-grid.directive';
 import { NzCardTabComponent } from './nz-card-tab.component';
 
+const NZ_CONFIG_COMPONENT_NAME = 'card';
+
 @Component({
   selector: 'nz-card',
   exportAs: 'nzCard',
@@ -47,14 +49,14 @@ import { NzCardTabComponent } from './nz-card-tab.component';
   }
 })
 export class NzCardComponent {
-  @Input() @WithConfig(true) @InputBoolean() nzBordered: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzBordered: boolean;
   @Input() @InputBoolean() nzLoading = false;
-  @Input() @WithConfig(false) @InputBoolean() nzHoverable: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzHoverable: boolean;
   @Input() nzBodyStyle: { [key: string]: string };
   @Input() nzCover: TemplateRef<void>;
   @Input() nzActions: Array<TemplateRef<void>> = [];
   @Input() nzType: string;
-  @Input() @WithConfig('default') nzSize: NzSizeDSType;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzSizeDSType;
   @Input() nzTitle: string | TemplateRef<void>;
   @Input() nzExtra: string | TemplateRef<void>;
   @ContentChild(NzCardTabComponent, { static: false }) tab: NzCardTabComponent;

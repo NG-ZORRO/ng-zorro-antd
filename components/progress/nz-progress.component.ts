@@ -17,14 +17,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import {
-  isNotNil,
-  trimComponentName,
-  InputNumber,
-  NgStyleInterface,
-  NzConfigService,
-  WithConfig
-} from 'ng-zorro-antd/core';
+import { isNotNil, InputNumber, NgStyleInterface, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -43,6 +36,7 @@ import {
 
 let gradientIdSeed = 0;
 
+const NZ_CONFIG_COMPONENT_NAME = 'progress';
 const statusIconNameMap = new Map([['success', 'check'], ['exception', 'close']]);
 const statusColorMap = new Map([['normal', '#108ee9'], ['exception', '#ff5500'], ['success', '#87d068']]);
 const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
@@ -56,19 +50,19 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
   templateUrl: './nz-progress.component.html'
 })
 export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
-  @Input() @WithConfig(true) nzShowInfo: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) nzShowInfo: boolean;
   @Input() nzWidth = 132;
-  @Input() @WithConfig() nzStrokeColor: NzProgressStrokeColorType;
-  @Input() @WithConfig('default') nzSize: 'default' | 'small';
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzStrokeColor: NzProgressStrokeColorType;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: 'default' | 'small';
   @Input() nzFormat?: NzProgressFormatter;
   @Input() @InputNumber() nzSuccessPercent?: number;
   @Input() @InputNumber() nzPercent: number = 0;
-  @Input() @WithConfig() @InputNumber() nzStrokeWidth: number;
-  @Input() @WithConfig() @InputNumber() nzGapDegree: number;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputNumber() nzStrokeWidth: number;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputNumber() nzGapDegree: number;
   @Input() nzStatus: NzProgressStatusType;
   @Input() nzType: NzProgressTypeType = 'line';
-  @Input() @WithConfig('top') nzGapPosition: NzProgressGapPositionType;
-  @Input() @WithConfig('round') nzStrokeLinecap: NzProgressStrokeLinecapType;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'top') nzGapPosition: NzProgressGapPositionType;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'round') nzStrokeLinecap: NzProgressStrokeLinecapType;
 
   /** Gradient style when `nzType` is `line`. */
   lineGradient: string | null = null;
@@ -159,7 +153,7 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.nzConfigService
-      .getConfigChangeEventForComponent(trimComponentName(this.constructor.name))
+      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.updateIcon();
