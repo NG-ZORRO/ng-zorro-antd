@@ -50,6 +50,8 @@ import { NzThComponent } from './nz-th.component';
 import { NzTheadComponent } from './nz-thead.component';
 import { NzVirtualScrollDirective } from './nz-virtual-scroll.directive';
 
+const NZ_CONFIG_COMPONENT_NAME = 'table';
+
 @Component({
   selector: 'nz-table',
   exportAs: 'nzTable',
@@ -89,7 +91,7 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
   @ViewChild(CdkVirtualScrollViewport, { static: false, read: CdkVirtualScrollViewport })
   cdkVirtualScrollViewport: CdkVirtualScrollViewport;
   @ContentChild(NzVirtualScrollDirective, { static: false }) nzVirtualScrollDirective: NzVirtualScrollDirective;
-  @Input() @WithConfig('default') nzSize: NzSizeMDSType;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzSizeMDSType;
   @Input() nzShowTotal: TemplateRef<{ $implicit: number; range: [number, number] }>;
   @Input() nzPageSizeOptions = [10, 20, 30, 40, 50];
   @Input() @InputBoolean() nzVirtualScroll = false;
@@ -119,13 +121,13 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
 
   @Input() @InputBoolean() nzFrontPagination = true;
   @Input() @InputBoolean() nzTemplateMode = false;
-  @Input() @WithConfig(false) @InputBoolean() nzBordered: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzBordered: boolean;
   @Input() @InputBoolean() nzShowPagination = true;
   @Input() @InputBoolean() nzLoading = false;
-  @Input() @WithConfig(false) @InputBoolean() nzShowSizeChanger: boolean;
-  @Input() @WithConfig(false) @InputBoolean() nzHideOnSinglePage: boolean;
-  @Input() @WithConfig(false) @InputBoolean() nzShowQuickJumper: boolean;
-  @Input() @WithConfig(false) @InputBoolean() nzSimple: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzShowSizeChanger: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzHideOnSinglePage: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzShowQuickJumper: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzSimple: boolean;
   @Output() readonly nzPageSizeChange: EventEmitter<number> = new EventEmitter();
   @Output() readonly nzPageIndexChange: EventEmitter<number> = new EventEmitter();
   /* tslint:disable-next-line:no-any */

@@ -21,14 +21,9 @@ import {
 import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
-import {
-  trimComponentName,
-  InputBoolean,
-  InputNumber,
-  NzConfigService,
-  NzSizeLDSType,
-  WithConfig
-} from 'ng-zorro-antd/core';
+import { InputBoolean, InputNumber, NzConfigService, NzSizeLDSType, WithConfig } from 'ng-zorro-antd/core';
+
+const NZ_CONFIG_COMPONENT_NAME = 'spin';
 
 @Component({
   selector: 'nz-spin',
@@ -49,7 +44,7 @@ import {
   ]
 })
 export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
-  @Input() @WithConfig() nzIndicator: TemplateRef<void>;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzIndicator: TemplateRef<void>;
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzTip: string;
   @Input() @InputNumber() nzDelay = 0;
@@ -82,7 +77,7 @@ export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
     this.subscribeLoading();
 
     this.nzConfigService
-      .getConfigChangeEventForComponent(trimComponentName(this.constructor.name))
+      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => this.cdr.markForCheck());
   }

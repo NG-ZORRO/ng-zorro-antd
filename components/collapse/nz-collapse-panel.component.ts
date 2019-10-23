@@ -26,6 +26,8 @@ import { collapseMotion, InputBoolean, NzConfigService, WithConfig } from 'ng-zo
 
 import { NzCollapseComponent } from './nz-collapse.component';
 
+const NZ_CONFIG_COMPONENT_NAME = 'collapsePanel';
+
 @Component({
   selector: 'nz-collapse-panel',
   exportAs: 'nzCollapsePanel',
@@ -49,7 +51,7 @@ import { NzCollapseComponent } from './nz-collapse.component';
 export class NzCollapsePanelComponent implements OnInit, OnDestroy {
   @Input() @InputBoolean() nzActive = false;
   @Input() @InputBoolean() nzDisabled = false;
-  @Input() @WithConfig(true) @InputBoolean() nzShowArrow: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzShowArrow: boolean;
   @Input() nzExtra: string | TemplateRef<void>;
   @Input() nzHeader: string | TemplateRef<void>;
   @Input() nzExpandedIcon: string | TemplateRef<void>;

@@ -26,6 +26,8 @@ import { InputBoolean, NzConfigService, NzUpdateHostClassService, WithConfig } f
 
 import { NzFormLabelComponent } from './nz-form-label.component';
 
+const NZ_CONFIG_COMPONENT_NAME = 'form';
+
 @Directive({
   selector: '[nz-form]',
   exportAs: 'nzForm',
@@ -33,7 +35,7 @@ import { NzFormLabelComponent } from './nz-form-label.component';
 })
 export class NzFormDirective implements OnInit, OnChanges, AfterContentInit, OnDestroy {
   @Input() nzLayout = 'horizontal';
-  @Input() @WithConfig(false) @InputBoolean() nzNoColon: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzNoColon: boolean;
 
   @ContentChildren(NzFormLabelComponent, { descendants: true }) nzFormLabelComponent: QueryList<NzFormLabelComponent>;
 

@@ -37,6 +37,7 @@ import {
 import { NzDescriptionsItemRenderProps, NzDescriptionsLayout, NzDescriptionsSize } from './nz-descriptions-definitions';
 import { NzDescriptionsItemComponent } from './nz-descriptions-item.component';
 
+const NZ_CONFIG_COMPONENT_NAME = 'descriptions';
 const defaultColumnMap: { [key in NzBreakpoint]: number } = {
   xxl: 3,
   xl: 3,
@@ -70,12 +71,12 @@ const defaultColumnMap: { [key in NzBreakpoint]: number } = {
 export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterContentInit {
   @ContentChildren(NzDescriptionsItemComponent) items: QueryList<NzDescriptionsItemComponent>;
 
-  @Input() @InputBoolean() @WithConfig(false) nzBordered: boolean;
+  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) nzBordered: boolean;
   @Input() nzLayout: NzDescriptionsLayout = 'horizontal';
-  @Input() @WithConfig(defaultColumnMap) nzColumn: number | { [key in NzBreakpoint]: number };
-  @Input() @WithConfig('default') nzSize: NzDescriptionsSize;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, defaultColumnMap) nzColumn: number | { [key in NzBreakpoint]: number };
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzDescriptionsSize;
   @Input() nzTitle: string | TemplateRef<void> = '';
-  @Input() @WithConfig(true) @InputBoolean() nzColon: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzColon: boolean;
 
   itemMatrix: NzDescriptionsItemRenderProps[][] = [];
 
