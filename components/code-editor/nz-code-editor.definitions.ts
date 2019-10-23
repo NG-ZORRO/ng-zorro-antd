@@ -27,6 +27,8 @@ export enum NzCodeEditorLoadingStatus {
 export interface NzCodeEditorConfig {
   assetsRoot?: string | SafeUrl;
   defaultEditorOption?: JoinedEditorOptions;
+  useStaticLoading?: boolean;
+
   onLoad?(): void;
   onFirstEditorInit?(): void;
   onInit?(): void;

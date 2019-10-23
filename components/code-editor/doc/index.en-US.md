@@ -63,4 +63,14 @@ You can inject an object that implements `NzCodeEditorConfig` with the injection
 | `onLoad` | The hook invoked when the resource of monaco editor is loaded. At this moment and afterwards the global variable `monaco` is usable | `() => void` | - |
 | `onFirstEditorInit` | The hook invoked when the first monaco editor is initialized | `() => void` | - |
 | `onInit` | The hook invoked every time a monaco editor is initialized | `() => void`  | - |
+| `useStaticLoading` | Load monaco editor statically | `boolean` | `false` |
 
+## Static Loading
+
+Sometimes you need to load AMD module dynamically. But since monaco editor's loader patches `window[require]`, you can not use AMD loader like requireJS. In this situation you need to enable static loading.
+
+With help of [monaco-editor-webpack-plguin](https://github.com/microsoft/monaco-editor-webpack-plugin) by Microsoft, you can do that in a convenient way.
+
+1. Please inject a `NZ_CODE_EDITOR_CONFIG` with `useStaticLoading` to be `true`.
+2. Create a webpack.partial.js file, and config monaco-editor-webpack-loader.
+3. Use [ngx-build-plus](https://github.com/manfredsteyer/ngx-build-plus) to load this webpack config.

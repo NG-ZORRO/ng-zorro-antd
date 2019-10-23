@@ -25,6 +25,7 @@ export interface NzConfig {
   card?: CardConfig;
   carousel?: CarouselConfig;
   cascader?: CascaderConfig;
+  codeEditor?: CodeEditorConfig;
   collapse?: CollapseConfig;
   collapsePanel?: CollapsePanelConfig;
   descriptions?: DescriptionsConfig;
@@ -82,6 +83,10 @@ export interface BadgeConfig {
 
 export interface ButtonConfig {
   nzSize?: 'large' | 'default' | 'small';
+}
+
+export interface CodeEditorConfig {
+  nzUseWebpackLoading?: boolean;
 }
 
 export interface CardConfig {
