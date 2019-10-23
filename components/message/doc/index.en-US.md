@@ -51,7 +51,7 @@ Methods for destruction are also provided:
 
 ### Global Configuration
 
-You can use `NzConfigService` to configure this component globally.
+You can use `NzConfigService` to configure this component globally. Please check the Global Configuration chapter for more information.
 
 | Argument | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |

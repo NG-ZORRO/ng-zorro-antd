@@ -21,8 +21,6 @@ title: Message
 import { NzMessageModule } from 'ng-zorro-antd/message';
 ```
 
-## 如何使用
-
 ## API
 
 ### NzMessageService
@@ -54,11 +52,11 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 
 ### 全局配置
 
-可以通过 `NzConfigService` 进行全局配置。
+可以通过 `NzConfigService` 进行全局配置，详情请见文档中“全局配置项”章节。
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzDuration | 持续时间(毫秒)，当设置为0时不消失 | `number` | `3000` |
+| nzDuration | 持续时间(毫秒)，当设置为 0 时不消失 | `number` | `3000` |
 | nzMaxStack | 同一时间可展示的最大提示数量 | `number` | `7` |
 | nzPauseOnHover | 鼠标移上时禁止自动移除 | `boolean` | `true` |
 | nzAnimate | 开关动画效果 | `boolean` | `true` |
