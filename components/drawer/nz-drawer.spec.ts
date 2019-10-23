@@ -168,7 +168,7 @@ describe('NzDrawerComponent', () => {
     component.open();
     fixture.detectChanges();
     expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
-    expect(overlayContainerElement.querySelector('.ant-drawer .ant-drawer-header')).toBe(null);
+    expect(overlayContainerElement.querySelector('.ant-drawer .ant-drawer-title')).toBe(null);
   });
 
   it('should support string title', () => {
