@@ -10,9 +10,8 @@ import { InjectionToken, TemplateRef, Type } from '@angular/core';
 
 import { NzAlignType, NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType } from '../types';
 
+import { SafeUrl } from '@angular/platform-browser';
 import { BreakpointMap, NzBreakpoint } from '../responsive/public-api';
-
-// TODO: generate config files if custom build can be used.
 
 export interface NzConfig {
   affix?: AffixConfig;
@@ -86,7 +85,13 @@ export interface ButtonConfig {
 }
 
 export interface CodeEditorConfig {
-  nzUseWebpackLoading?: boolean;
+  assetsRoot?: string | SafeUrl;
+  defaultEditorOption?: any; // tslint:disable-line no-any
+  useStaticLoading?: boolean;
+
+  onLoad?(): void;
+  onFirstEditorInit?(): void;
+  onInit?(): void;
 }
 
 export interface CardConfig {

@@ -3,7 +3,7 @@ order: 7
 title: Global Configuration
 ---
 
-From version 8.3.0, we add support of **global configuration** to many components. You can define the default behavior of the component through global configuration, thus reducing the code that needs to be written in the template, and implement feature that is similar to switching themes.
+From version 8.3.0, we add support of **global configuration** to many components. You can define the default behavior of the component through global configuration, thus reducing the code that needs to be written in the template, and support changing global config at runtime.
 
 <blockquote style="border-color: red;"><p><strong>The injection tokens provided by components previously will be removed in the 9.x versions. Please migrate to the new API <code>NZ_CONFIG</code>.</strong></p></blockquote>
 

@@ -7,11 +7,11 @@
  */
 
 import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, Optional } from '@angular/core';
 import { of as observableOf, BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
-import { warn, NzConfigService, PREFIX } from 'ng-zorro-antd/core';
+import { warn, warnDeprecation, NzConfigService, PREFIX } from 'ng-zorro-antd/core';
 import {
   JoinedEditorOptions,
   NzCodeEditorConfig,
@@ -21,6 +21,8 @@ import {
 
 // tslint:disable-next-line no-any
 declare const monaco: any;
+
+const NZ_CONFIG_COMPONENT_NAME = 'codeEditor';
 
 // tslint:disable no-any
 function tryTriggerFunc(fn?: (...args: any[]) => any): (...args: any) => void {
@@ -41,20 +43,43 @@ export class NzCodeEditorService {
   private loaded$ = new Subject<boolean>();
   private loadingStatus = NzCodeEditorLoadingStatus.UNLOAD;
   private option: JoinedEditorOptions;
+  private config: NzCodeEditorConfig;
 
   option$ = new BehaviorSubject<JoinedEditorOptions>(this.option);
 
   constructor(
-    @Inject(NZ_CODE_EDITOR_CONFIG) private readonly config: NzCodeEditorConfig,
+    private readonly nzConfigService: NzConfigService,
     @Inject(DOCUMENT) _document: any, // tslint:disable-line no-any
-    private readonly nzConfigService: NzConfigService
+    @Inject(NZ_CODE_EDITOR_CONFIG) @Optional() config?: NzCodeEditorConfig
   ) {
+    const globalConfig = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME);
+
+    if (config) {
+      warnDeprecation(
+        `'NZ_CODE_EDITOR_CONFIG' is deprecated and will be removed in next minor version. Please use 'NzConfigService' instead.`
+      );
+    }
+
     this.document = _document;
-    this.option = this.config.defaultEditorOption || {};
+    this.option = { ...(this.config || {}).defaultEditorOption, ...(globalConfig || {}).defaultEditorOption };
+
+    this.nzConfigService.getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME).subscribe(() => {
+      const newGlobalConfig = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME);
+      if (newGlobalConfig) {
+        this._updateDefaultOption(newGlobalConfig.defaultEditorOption);
+      }
+    });
   }
 
-  // TODO: use config service later.
   updateDefaultOption(option: JoinedEditorOptions): void {
+    warnDeprecation(
+      `'updateDefaultOption' is deprecated and will be removed in next minor version. Please use 'set' of 'NzConfigService' instead.`
+    );
+
+    this._updateDefaultOption(option);
+  }
+
+  private _updateDefaultOption(option: JoinedEditorOptions): void {
     this.option = { ...this.option, ...option };
     this.option$.next(this.option);
 
