@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
           <th nzCustomFilter>
             Name
             <i
+              nz-th-extra
               class="ant-table-filter-icon"
               nz-icon
               nz-dropdown

@@ -319,7 +319,13 @@
     </ng-container>
 
     <li nz-submenu nzOpen>
-      <span title><h4>{{isExperimental ? 'Experiments' : 'Components'}}</h4></span>
+      <span title>
+        <h4 *ngIf="isExperimental">'Experiments'</h4>
+        <h4 *ngIf="!isExperimental">
+          {{language=='en' ? 'Components' : '组件'}}
+          <span class="menu-antd-components-count">63</span>
+        </h4>
+      </span>
       <ul>
         <li nz-menu-group
           *ngFor="let group of routerList.components"
@@ -368,6 +374,13 @@
       </a>
       <a href="https://ng.ant.design/blog/en" *ngIf="language=='en'" target="_blank">
         <span>Blog</span>
+      </a>
+    </li>
+    <li nz-menu-item *ngIf="language=='zh'">
+      <a href="https://ng-china.org" target="_blank">
+        <nz-badge nzDot>
+          <a>2019 ngChina 开发者大会</a>
+        </nz-badge>
       </a>
     </li>
   </ul>

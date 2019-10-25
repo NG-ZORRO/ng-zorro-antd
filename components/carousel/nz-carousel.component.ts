@@ -57,6 +57,8 @@ import { NzCarouselBaseStrategy } from './strategies/base-strategy';
 import { NzCarouselOpacityStrategy } from './strategies/opacity-strategy';
 import { NzCarouselTransformStrategy } from './strategies/transform-strategy';
 
+const NZ_CONFIG_COMPONENT_NAME = 'carousel';
+
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -94,11 +96,11 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   @ViewChild('slickTrack', { static: false }) slickTrack: ElementRef;
 
   @Input() nzDotRender: TemplateRef<{ $implicit: number }>;
-  @Input() @WithConfig('scrollx') nzEffect: NzCarouselEffects;
-  @Input() @WithConfig(true) @InputBoolean() nzEnableSwipe: boolean;
-  @Input() @WithConfig(true) @InputBoolean() nzDots: boolean;
-  @Input() @WithConfig(false) @InputBoolean() nzAutoPlay: boolean;
-  @Input() @WithConfig(3000) @InputNumber() nzAutoPlaySpeed: number;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'scrollx') nzEffect: NzCarouselEffects;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzEnableSwipe: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzDots: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzAutoPlay: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 3000) @InputNumber() nzAutoPlaySpeed: number;
   @Input() @InputNumber() nzTransitionSpeed = 500;
 
   @Input()
@@ -113,7 +115,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   }
 
   @Input()
-  @WithConfig('bottom')
+  @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'bottom')
   set nzDotPosition(value: NzCarouselDotPosition) {
     this._dotPosition = value;
     if (value === 'left' || value === 'right') {

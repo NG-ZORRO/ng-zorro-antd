@@ -35,7 +35,6 @@ import {
   findFirstNotEmptyNode,
   findLastNotEmptyNode,
   isEmpty,
-  trimComponentName,
   InputBoolean,
   NzConfigService,
   NzSizeLDSType,
@@ -52,6 +51,8 @@ import { startWith, takeUntil } from 'rxjs/operators';
 
 export type NzButtonType = 'primary' | 'dashed' | 'danger' | 'default' | 'link';
 export type NzButtonShape = 'circle' | 'round' | null;
+
+const NZ_CONFIG_COMPONENT_NAME = 'button';
 
 @Component({
   selector: '[nz-button]',
@@ -78,10 +79,10 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, O
   @Input() @InputBoolean() nzLoading: boolean = false;
   @Input() nzType: NzButtonType = 'default';
   @Input() nzShape: NzButtonShape = null;
-  @Input() @WithConfig('default') nzSize: NzSizeLDSType;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzSizeLDSType;
 
   readonly el: HTMLElement = this.elementRef.nativeElement;
-
+  isInDropdown = false;
   private iconElement: HTMLElement;
   private iconOnly = false;
   private destroy$ = new Subject<void>();
@@ -95,7 +96,7 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, O
       [`${prefixCls}-${this.nzShape}`]: this.nzShape,
       [`${prefixCls}-${sizeMap[this.nzSize]}`]: sizeMap[this.nzSize],
       [`${prefixCls}-loading`]: this.nzLoading,
-      [`${prefixCls}-icon-only`]: this.iconOnly,
+      [`${prefixCls}-icon-only`]: this.iconOnly && !this.nzSearch && !this.isInDropdown,
       [`${prefixCls}-background-ghost`]: this.nzGhost,
       [`${prefixCls}-block`]: this.nzBlock,
       [`ant-input-search-button`]: this.nzSearch
@@ -155,7 +156,7 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, O
   ) {
     this.renderer.addClass(elementRef.nativeElement, 'ant-btn');
     this.nzConfigService
-      .getConfigChangeEventForComponent(trimComponentName(this.constructor.name))
+      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.setClassMap();

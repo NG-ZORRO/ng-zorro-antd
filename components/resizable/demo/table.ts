@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NzResizeEvent } from 'ng-zorro-antd/resizable';
 
 @Component({
   selector: 'nz-demo-resizable-table',
@@ -92,7 +93,7 @@ export class NzDemoResizableTableComponent {
       address: 'Sidney No. 1 Lake Park'
     }
   ];
-  onResize({ width }: { width: number }, col: string): void {
+  onResize({ width }: NzResizeEvent, col: string): void {
     this.cols = this.cols.map(e => (e.title === col ? { ...e, width: `${width}px` } : e));
   }
 }

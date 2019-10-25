@@ -18,10 +18,12 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
-import { InputBoolean, InputNumber, NzSizeLDSType } from 'ng-zorro-antd/core';
+import { InputBoolean, InputNumber, NzConfigService, NzSizeLDSType, WithConfig } from 'ng-zorro-antd/core';
+
+const NZ_CONFIG_COMPONENT_NAME = 'spin';
 
 @Component({
   selector: 'nz-spin',
@@ -42,13 +44,14 @@ import { InputBoolean, InputNumber, NzSizeLDSType } from 'ng-zorro-antd/core';
   ]
 })
 export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
-  @Input() nzIndicator: TemplateRef<void>;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzIndicator: TemplateRef<void>;
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzTip: string;
   @Input() @InputNumber() nzDelay = 0;
   @Input() @InputBoolean() nzSimple = false;
   @Input() @InputBoolean() nzSpinning = true;
   loading = true;
+  private destroy$ = new Subject<void>();
   private spinning$ = new BehaviorSubject(this.nzSpinning);
   private loading$: Observable<boolean> = this.spinning$.pipe(debounceTime(this.nzDelay));
   private loading_: Subscription | null;
@@ -68,10 +71,15 @@ export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
     }
   }
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.subscribeLoading();
+
+    this.nzConfigService
+      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.cdr.markForCheck());
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -88,6 +96,8 @@ export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.unsubscribeLoading();
   }
 }

@@ -9,28 +9,29 @@ import { Component, OnInit } from '@angular/core';
       <label nz-radio-button nzValue="small"><span>Small</span></label>
     </nz-radio-group>
     <br /><br />
-    <nz-select style="width: 200px;" [(ngModel)]="singleValue" [nzSize]="size">
+    <nz-select [(ngModel)]="singleValue" [nzSize]="size">
       <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
     </nz-select>
     <br /><br />
-    <nz-select style="width: 200px;" [(ngModel)]="singleValue" [nzSize]="size" nzShowSearch>
+    <nz-select [(ngModel)]="singleValue" [nzSize]="size" nzShowSearch>
       <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
     </nz-select>
     <br /><br />
-    <nz-select
-      style="width: 100%"
-      [(ngModel)]="multipleValue"
-      [nzSize]="size"
-      nzMode="multiple"
-      nzPlaceHolder="Please select"
-    >
+    <nz-select [(ngModel)]="multipleValue" [nzSize]="size" nzMode="multiple" nzPlaceHolder="Please select">
       <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
     </nz-select>
     <br /><br />
-    <nz-select style="width: 100%" [(ngModel)]="tagValue" [nzSize]="size" nzMode="tags" nzPlaceHolder="Please select">
+    <nz-select [(ngModel)]="tagValue" [nzSize]="size" nzMode="tags" nzPlaceHolder="Please select">
       <nz-option *ngFor="let option of listOfOption" [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
     </nz-select>
-  `
+  `,
+  styles: [
+    `
+      nz-select {
+        width: 100%;
+      }
+    `
+  ]
 })
 export class NzDemoSelectSizeComponent implements OnInit {
   listOfOption: Array<{ label: string; value: string }> = [];

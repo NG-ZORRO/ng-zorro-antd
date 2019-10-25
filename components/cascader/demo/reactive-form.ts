@@ -1,6 +1,7 @@
-// tslint:disable:no-any
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnDestroy } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { NzCascaderOption } from 'ng-zorro-antd/cascader';
+import { Subscription } from 'rxjs';
 
 const options = [
   {
@@ -48,7 +49,7 @@ const options = [
   selector: 'nz-demo-cascader-reactive-form',
   template: `
     <form [formGroup]="form" novalidate>
-      <nz-cascader [nzOptions]="nzOptions" (nzChange)="onChanges($event)" [formControlName]="'name'"> </nz-cascader>
+      <nz-cascader [nzOptions]="nzOptions" [formControlName]="'name'"> </nz-cascader>
     </form>
     <br />
     <button nz-button (click)="reset()">Reset</button>
@@ -66,12 +67,16 @@ const options = [
     `
   ]
 })
-export class NzDemoCascaderReactiveFormComponent {
+export class NzDemoCascaderReactiveFormComponent implements OnDestroy {
   form: FormGroup;
-  nzOptions = options;
-
+  nzOptions: NzCascaderOption[] = options;
+  changeSubscription: Subscription;
   constructor(private fb: FormBuilder) {
     this.createForm();
+    const control = this.form.get('name') as FormControl;
+    this.changeSubscription = control.valueChanges.subscribe(data => {
+      this.onChanges(data);
+    });
   }
 
   private createForm(): void {
@@ -89,7 +94,11 @@ export class NzDemoCascaderReactiveFormComponent {
     console.log(this.form.value);
   }
 
-  onChanges(values: any): void {
+  onChanges(values: string[]): void {
     console.log(values);
+  }
+
+  ngOnDestroy(): void {
+    this.changeSubscription.unsubscribe();
   }
 }

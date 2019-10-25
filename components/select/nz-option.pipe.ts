@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform, QueryList } from '@angular/core';
 import { NzOptionGroupComponent } from './nz-option-group.component';
 import { NzOptionComponent } from './nz-option.component';
 
@@ -15,13 +15,13 @@ export type TFilterOption = (input: string, option: NzOptionComponent) => boolea
 @Pipe({ name: 'nzFilterOption' })
 export class NzFilterOptionPipe implements PipeTransform {
   transform(
-    options: NzOptionComponent[],
+    options: NzOptionComponent[] | QueryList<NzOptionComponent>,
     searchValue: string,
     filterOption: TFilterOption,
     serverSearch: boolean
   ): NzOptionComponent[] {
     if (serverSearch || !searchValue) {
-      return options;
+      return options as NzOptionComponent[];
     } else {
       return (options as NzOptionComponent[]).filter(o => filterOption(searchValue, o));
     }

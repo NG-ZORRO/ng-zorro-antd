@@ -62,8 +62,7 @@ import { TransferItem } from 'ng-zorro-antd/transfer';
   `
 })
 export class NzDemoTransferTableTransferComponent implements OnInit {
-  // tslint:disable-next-line:no-any
-  list: any[] = [];
+  list: TransferItem[] = [];
   disabled = false;
   showSearch = false;
 

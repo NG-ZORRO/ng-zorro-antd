@@ -53,6 +53,8 @@ export function NzTreeServiceFactory(
   return higherOrderService ? higherOrderService : treeService;
 }
 
+const NZ_CONFIG_COMPONENT_NAME = 'tree';
+
 @Component({
   selector: 'nz-tree',
   exportAs: 'nzTree',
@@ -73,7 +75,7 @@ export function NzTreeServiceFactory(
   ]
 })
 export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, ControlValueAccessor, OnChanges {
-  @Input() @InputBoolean() @WithConfig(false) nzShowIcon: boolean;
+  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) nzShowIcon: boolean;
   @Input() @InputBoolean() nzShowExpand: boolean = true;
   @Input() @InputBoolean() nzShowLine = false;
   @Input() nzExpandedIcon: TemplateRef<{ $implicit: NzTreeNode }>;
@@ -81,10 +83,10 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   @Input() @InputBoolean() nzAsyncData = false;
   @Input() @InputBoolean() nzDraggable: boolean = false;
 
-  @Input() @InputBoolean() @WithConfig(false) nzHideUnMatched: boolean;
+  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) nzHideUnMatched: boolean;
   @Input() @InputBoolean() nzSelectMode = false;
   @Input() @InputBoolean() nzCheckStrictly = false;
-  @Input() @WithConfig(false) @InputBoolean() nzBlockNode: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzBlockNode: boolean;
   @Input() @InputBoolean() nzExpandAll = false;
 
   @Input() nzTreeTemplate: TemplateRef<{ $implicit: NzTreeNode }>;

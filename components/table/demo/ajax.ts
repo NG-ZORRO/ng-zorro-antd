@@ -2,6 +2,18 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Injectable, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
+interface ItemData {
+  gender: string;
+  name: Name;
+  email: string;
+}
+
+interface Name {
+  title: string;
+  first: string;
+  last: string;
+}
+
 @Injectable()
 export class RandomUserService {
   randomUserUrl = 'https://api.randomuser.me/';
@@ -12,7 +24,7 @@ export class RandomUserService {
     sortField: string,
     sortOrder: string,
     genders: string[]
-  ): Observable<{}> {
+  ): Observable<{ results: ItemData[] }> {
     let params = new HttpParams()
       .append('page', `${pageIndex}`)
       .append('results', `${pageSize}`)
@@ -21,7 +33,7 @@ export class RandomUserService {
     genders.forEach(gender => {
       params = params.append('gender', gender);
     });
-    return this.http.get(`${this.randomUserUrl}`, {
+    return this.http.get<{ results: ItemData[] }>(`${this.randomUserUrl}`, {
       params
     });
   }
@@ -66,7 +78,7 @@ export class NzDemoTableAjaxComponent implements OnInit {
   pageIndex = 1;
   pageSize = 10;
   total = 1;
-  listOfData = [];
+  listOfData: ItemData[] = [];
   loading = true;
   sortValue: string | null = null;
   sortKey: string | null = null;
@@ -88,7 +100,7 @@ export class NzDemoTableAjaxComponent implements OnInit {
     this.loading = true;
     this.randomUserService
       .getUsers(this.pageIndex, this.pageSize, this.sortKey!, this.sortValue!, this.searchGenderList)
-      .subscribe((data: any) => {
+      .subscribe(data => {
         this.loading = false;
         this.total = 200;
         this.listOfData = data.results;

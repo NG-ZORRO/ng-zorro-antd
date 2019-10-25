@@ -24,7 +24,9 @@ export class NzDemoAvatarDynamicComponent {
   change(): void {
     let idx = userList.indexOf(this.text);
     ++idx;
-    if (idx === userList.length) idx = 0;
+    if (idx === userList.length) {
+      idx = 0;
+    }
     this.text = userList[idx];
     this.color = colorList[idx];
   }

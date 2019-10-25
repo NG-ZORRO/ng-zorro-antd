@@ -1,8 +1,19 @@
-// tslint:disable:no-any
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+
+interface ItemData {
+  gender: string;
+  name: Name;
+  email: string;
+}
+
+interface Name {
+  title: string;
+  first: string;
+  last: string;
+}
 
 @Component({
   selector: 'nz-demo-list-infinite-load',
@@ -48,19 +59,19 @@ export class NzDemoListInfiniteLoadComponent {
   constructor(private http: HttpClient) {}
 }
 
-class MyDataSource extends DataSource<string | undefined> {
+class MyDataSource extends DataSource<ItemData> {
   private length = 100000;
   private pageSize = 10;
-  private cachedData = Array.from<any>({ length: this.length });
+  private cachedData = Array.from<ItemData>({ length: this.length });
   private fetchedPages = new Set<number>();
-  private dataStream = new BehaviorSubject<any[]>(this.cachedData);
+  private dataStream = new BehaviorSubject<ItemData[]>(this.cachedData);
   private subscription = new Subscription();
 
   constructor(private http: HttpClient) {
     super();
   }
 
-  connect(collectionViewer: CollectionViewer): Observable<any[]> {
+  connect(collectionViewer: CollectionViewer): Observable<ItemData[]> {
     this.subscription.add(
       collectionViewer.viewChange.subscribe(range => {
         const startPage = this.getPageForIndex(range.start);
@@ -88,8 +99,10 @@ class MyDataSource extends DataSource<string | undefined> {
     this.fetchedPages.add(page);
 
     this.http
-      .get(`https://randomuser.me/api/?results=${this.pageSize}&inc=name,gender,email,nat&noinfo`)
-      .subscribe((res: any) => {
+      .get<{ results: ItemData[] }>(
+        `https://randomuser.me/api/?results=${this.pageSize}&inc=name,gender,email,nat&noinfo`
+      )
+      .subscribe(res => {
         this.cachedData.splice(page * this.pageSize, this.pageSize, ...res.results);
         this.dataStream.next(this.cachedData);
       });

@@ -6,4 +6,12 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzTreeModule } from 'ng-zorro-antd/tree';
 
-export const moduleList = [ NzTransferModule, NzButtonModule, NzSwitchModule, NzIconModule, NzTableModule, NzTagModule, NzTreeModule ];
+export const moduleList = [
+  NzTransferModule,
+  NzButtonModule,
+  NzSwitchModule,
+  NzIconModule,
+  NzTableModule,
+  NzTagModule,
+  NzTreeModule
+];

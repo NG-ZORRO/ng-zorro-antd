@@ -20,7 +20,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { fadeMotion, InputBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { fadeMotion, warnDeprecation, InputBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
 @Component({
   selector: 'nz-tag',
@@ -33,6 +33,7 @@ import { fadeMotion, InputBoolean, NzUpdateHostClassService } from 'ng-zorro-ant
   encapsulation: ViewEncapsulation.None,
   host: {
     '[@fadeMotion]': '',
+    '[@.disabled]': 'nzNoAnimation',
     '(@fadeMotion.done)': 'afterAnimation($event)',
     '(click)': 'updateCheckedStatus()',
     '[style.background-color]': 'presetColor? null : nzColor'
@@ -42,8 +43,8 @@ export class NzTagComponent implements OnInit, OnChanges {
   presetColor = false;
   @Input() nzMode: 'default' | 'closeable' | 'checkable' = 'default';
   @Input() nzColor: string;
-  @Input() @InputBoolean() nzChecked: boolean = false;
-  @Input() @InputBoolean() nzNoAnimation: boolean = false;
+  @Input() @InputBoolean() nzChecked = false;
+  @Input() @InputBoolean() nzNoAnimation = false;
   @Output() readonly nzAfterClose = new EventEmitter<void>();
   @Output() readonly nzOnClose = new EventEmitter<MouseEvent>();
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
@@ -87,6 +88,9 @@ export class NzTagComponent implements OnInit, OnChanges {
   afterAnimation(e: AnimationEvent): void {
     if (e.toState === 'void') {
       this.nzAfterClose.emit();
+      if (this.nzAfterClose.observers.length) {
+        warnDeprecation(`'(nzAfterClose)' Output is going to be removed in 9.0.0. Please use '(nzOnClose)' instead.`);
+      }
     }
   }
 

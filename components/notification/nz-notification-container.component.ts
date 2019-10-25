@@ -16,7 +16,7 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { toCssPixel, trimComponentName, warnDeprecation, NzConfigService } from 'ng-zorro-antd/core';
+import { toCssPixel, warnDeprecation, NzConfigService } from 'ng-zorro-antd/core';
 import { NzMessageContainerComponent } from 'ng-zorro-antd/message';
 
 import {
@@ -25,6 +25,8 @@ import {
   NZ_NOTIFICATION_DEFAULT_CONFIG
 } from './nz-notification-config';
 import { NzNotificationDataFilled, NzNotificationDataOptions } from './nz-notification.definitions';
+
+const NZ_CONFIG_COMPONENT_NAME = 'notification';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -64,7 +66,7 @@ export class NzNotificationContainerComponent extends NzMessageContainerComponen
     const newConfig = (this.config = {
       ...this.config,
       ...config,
-      ...this.nzConfigService.getConfigForComponent(trimComponentName(this.constructor.name))
+      ...this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME)
     });
     const placement = this.config.nzPlacement;
 
@@ -104,9 +106,7 @@ export class NzNotificationContainerComponent extends NzMessageContainerComponen
    * @override
    */
   protected subscribeConfigChange(): void {
-    this.nzConfigService
-      .getConfigChangeEventForComponent(trimComponentName(this.constructor.name))
-      .subscribe(() => this.setConfig());
+    this.nzConfigService.getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME).subscribe(() => this.setConfig());
   }
 
   private replaceNotification(old: NzNotificationDataFilled, _new: NzNotificationDataFilled): void {

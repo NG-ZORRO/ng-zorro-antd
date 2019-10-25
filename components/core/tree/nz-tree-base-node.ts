@@ -150,7 +150,7 @@ export class NzTreeNode {
 
   set isLeaf(value: boolean) {
     this._isLeaf = value;
-    // this.update();
+    this.update();
   }
 
   get isChecked(): boolean {

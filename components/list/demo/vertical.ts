@@ -1,5 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 
+interface ItemData {
+  href: string;
+  title: string;
+  avatar: string;
+  description: string;
+  content: string;
+}
+
 @Component({
   selector: 'nz-demo-list-vertical',
   template: `
@@ -35,8 +43,7 @@ import { Component, OnInit } from '@angular/core';
   `
 })
 export class NzDemoListVerticalComponent implements OnInit {
-  // tslint:disable-next-line:no-any
-  data: any[] = [];
+  data: ItemData[] = [];
 
   ngOnInit(): void {
     this.loadData(1);
@@ -50,7 +57,8 @@ export class NzDemoListVerticalComponent implements OnInit {
         avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
         description: 'Ant Design, a design language for background applications, is refined by Ant UED Team.',
         content:
-          'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.'
+          'We supply a series of design principles, practical patterns and high quality design resources ' +
+          '(Sketch and Axure), to help people create their product prototypes beautifully and efficiently.'
       };
     });
   }

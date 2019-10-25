@@ -33,11 +33,12 @@ export interface NzConfig {
   form?: FormConfig;
   grid?: GridConfig;
   icon?: IconConfig;
-  modal?: ModalConfig;
   message?: MessageConfig;
+  modal?: ModalConfig;
   notification?: NotificationConfig;
   progress?: ProgressConfig;
   rate?: RateConfig;
+  spin?: SpinConfig;
   switch?: SwitchConfig;
   table?: TableConfig;
   tabs?: TabsConfig;
@@ -177,6 +178,10 @@ export interface ProgressConfig {
 export interface RateConfig {
   nzAllowClear?: boolean;
   nzAllowHalf?: boolean;
+}
+
+export interface SpinConfig {
+  nzIndicator?: TemplateRef<void>;
 }
 
 export interface SwitchConfig {

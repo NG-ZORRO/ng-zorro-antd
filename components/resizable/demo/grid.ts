@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NzResizeEvent } from 'ng-zorro-antd/resizable';
 
 @Component({
   selector: 'nz-demo-resizable-grid',
@@ -43,10 +44,10 @@ export class NzDemoResizableGridComponent {
   col = 8;
   id = -1;
 
-  onResize({ col }: { col: number }): void {
+  onResize({ col }: NzResizeEvent): void {
     cancelAnimationFrame(this.id);
     this.id = requestAnimationFrame(() => {
-      this.col = col;
+      this.col = col!;
     });
   }
 }

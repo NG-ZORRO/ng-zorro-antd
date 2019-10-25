@@ -112,27 +112,17 @@ describe('nz-select component', () => {
       expect(testComponent.open).toBe(false);
       expect(testComponent.openChange).toHaveBeenCalledTimes(0);
     }));
-    it('should autofocus work', () => {
-      testComponent.showSearch = true;
-      fixture.detectChanges();
-      testComponent.autoFocus = true;
-      fixture.detectChanges();
-      expect(select.nativeElement.querySelector('input').attributes.getNamedItem('autofocus').name).toBe('autofocus');
-      testComponent.autoFocus = false;
-      fixture.detectChanges();
-      expect(select.nativeElement.querySelector('input').attributes.getNamedItem('autofocus')).toBe(null);
-    });
     it('should focus and blur function work', () => {
       testComponent.showSearch = true;
       select.nativeElement.click();
       fixture.detectChanges();
-      expect(select.nativeElement.querySelector('input') === document.activeElement).toBe(false);
-      selectComponent.focus();
-      fixture.detectChanges();
-      expect(select.nativeElement.querySelector('input') === document.activeElement).toBe(true);
+      expect(select.nativeElement.querySelector('.ant-select-selection') === document.activeElement).toBe(true);
       selectComponent.blur();
       fixture.detectChanges();
-      expect(select.nativeElement.querySelector('input') === document.activeElement).toBe(false);
+      expect(select.nativeElement.querySelector('.ant-select-selection') === document.activeElement).toBe(false);
+      selectComponent.focus();
+      fixture.detectChanges();
+      expect(select.nativeElement.querySelector('.ant-select-selection') === document.activeElement).toBe(true);
     });
     it('should dropdown class work', () => {
       fixture.detectChanges();

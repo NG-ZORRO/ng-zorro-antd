@@ -14,7 +14,7 @@ import { Component } from '@angular/core';
   ]
 })
 export class NzDemoPageHeaderBasicComponent {
-  onBack() {
+  onBack(): void {
     console.log('onBack');
   }
 }

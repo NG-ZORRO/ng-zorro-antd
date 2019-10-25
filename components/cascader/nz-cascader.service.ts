@@ -13,10 +13,10 @@ import { arraysEqual, isNotNil } from 'ng-zorro-antd/core';
 
 import {
   isShowSearchObject,
-  CascaderOption,
-  CascaderSearchOption,
   NzCascaderComponentAsSource,
-  NzCascaderFilter
+  NzCascaderFilter,
+  NzCascaderOption,
+  NzCascaderSearchOption
 } from './nz-cascader-definitions';
 import { isChildOption, isParentOption } from './nz-cascader-utils';
 
@@ -26,16 +26,16 @@ import { isChildOption, isParentOption } from './nz-cascader-utils';
 @Injectable()
 export class NzCascaderService implements OnDestroy {
   /** Activated options in each column. */
-  activatedOptions: CascaderOption[] = [];
+  activatedOptions: NzCascaderOption[] = [];
 
   /** An array to store cascader items arranged in different layers. */
-  columns: CascaderOption[][] = [[]];
+  columns: NzCascaderOption[][] = [[]];
 
   /** If user has entered searching mode. */
   inSearchingMode = false;
 
   /** Selected options would be output to user. */
-  selectedOptions: CascaderOption[] = [];
+  selectedOptions: NzCascaderOption[] = [];
 
   values: any[] = []; // tslint:disable-line:no-any
 
@@ -52,7 +52,7 @@ export class NzCascaderService implements OnDestroy {
    * Emit true if a leaf options is selected.
    */
   readonly $optionSelected = new Subject<{
-    option: CascaderOption;
+    option: NzCascaderOption;
     index: number;
   } | null>();
 
@@ -63,15 +63,15 @@ export class NzCascaderService implements OnDestroy {
   readonly $quitSearching = new Subject<void>();
 
   /** To hold columns before entering searching mode. */
-  private columnsSnapshot: CascaderOption[][] = [[]];
+  private columnsSnapshot: NzCascaderOption[][] = [[]];
 
   /** To hold activated options before entering searching mode. */
-  private activatedOptionsSnapshot: CascaderOption[] = [];
+  private activatedOptionsSnapshot: NzCascaderOption[] = [];
 
   private cascaderComponent: NzCascaderComponentAsSource;
 
   /** Return cascader options in the first layer. */
-  get nzOptions(): CascaderOption[] {
+  get nzOptions(): NzCascaderOption[] {
     return this.columns[0];
   }
 
@@ -148,7 +148,7 @@ export class NzCascaderService implements OnDestroy {
   /**
    * Reset all options. Rebuild searching options if in searching mode.
    */
-  withOptions(options: CascaderOption[] | null): void {
+  withOptions(options: NzCascaderOption[] | null): void {
     this.columnsSnapshot = this.columns = options && options.length ? [options] : [];
 
     if (this.inSearchingMode) {
@@ -166,7 +166,7 @@ export class NzCascaderService implements OnDestroy {
    * @param loadingChildren Try to load children asynchronously.
    */
   setOptionActivated(
-    option: CascaderOption,
+    option: NzCascaderOption,
     columnIndex: number,
     performSelect: boolean = false,
     loadingChildren: boolean = true
@@ -200,9 +200,9 @@ export class NzCascaderService implements OnDestroy {
     this.$redraw.next();
   }
 
-  setOptionSelected(option: CascaderOption, index: number): void {
+  setOptionSelected(option: NzCascaderOption, index: number): void {
     const changeOn = this.cascaderComponent.nzChangeOn;
-    const shouldPerformSelection = (o: CascaderOption, i: number): boolean => {
+    const shouldPerformSelection = (o: NzCascaderOption, i: number): boolean => {
       return typeof changeOn === 'function' ? changeOn(o, i) : false;
     };
 
@@ -224,7 +224,7 @@ export class NzCascaderService implements OnDestroy {
    * Set a searching option as selected, finishing up things.
    * @param option
    */
-  setSearchOptionSelected(option: CascaderSearchOption): void {
+  setSearchOptionSelected(option: NzCascaderSearchOption): void {
     this.activatedOptions = [option];
     this.selectedOptions = [...option.path];
     this.prepareEmitValue();
@@ -246,8 +246,8 @@ export class NzCascaderService implements OnDestroy {
    * @param searchValue The string user wants to search.
    */
   prepareSearchOptions(searchValue: string): void {
-    const results: CascaderOption[] = []; // Search results only have one layer.
-    const path: CascaderOption[] = [];
+    const results: NzCascaderOption[] = []; // Search results only have one layer.
+    const path: NzCascaderOption[] = [];
     const defaultFilter: NzCascaderFilter = (i, p) => {
       return p.some(o => {
         const label = this.getOptionLabel(o);
@@ -257,12 +257,12 @@ export class NzCascaderService implements OnDestroy {
     const showSearch = this.cascaderComponent.nzShowSearch;
     const filter = isShowSearchObject(showSearch) && showSearch.filter ? showSearch.filter : defaultFilter;
     const sorter = isShowSearchObject(showSearch) && showSearch.sorter ? showSearch.sorter : null;
-    const loopChild = (node: CascaderOption, forceDisabled = false) => {
+    const loopChild = (node: NzCascaderOption, forceDisabled = false) => {
       path.push(node);
       const cPath = Array.from(path);
       if (filter(searchValue, cPath)) {
         const disabled = forceDisabled || node.disabled;
-        const option: CascaderSearchOption = {
+        const option: NzCascaderSearchOption = {
           disabled,
           isLeaf: true,
           path: cPath,
@@ -272,7 +272,7 @@ export class NzCascaderService implements OnDestroy {
       }
       path.pop();
     };
-    const loopParent = (node: CascaderOption, forceDisabled = false) => {
+    const loopParent = (node: NzCascaderOption, forceDisabled = false) => {
       const disabled = forceDisabled || node.disabled;
       path.push(node);
       node.children!.forEach(sNode => {
@@ -338,12 +338,12 @@ export class NzCascaderService implements OnDestroy {
     this.$optionSelected.next(null);
   }
 
-  getOptionLabel(o: CascaderOption): string {
+  getOptionLabel(o: NzCascaderOption): string {
     return o[this.cascaderComponent.nzLabelProperty || 'label'] as string;
   }
 
   // tslint:disable-next-line:no-any
-  getOptionValue(o: CascaderOption): any {
+  getOptionValue(o: NzCascaderOption): any {
     return o[this.cascaderComponent.nzValueProperty || 'value'];
   }
 
@@ -352,7 +352,7 @@ export class NzCascaderService implements OnDestroy {
    * @param options Options to insert
    * @param columnIndex Position
    */
-  private setColumnData(options: CascaderOption[], columnIndex: number, parent: CascaderOption): void {
+  private setColumnData(options: NzCascaderOption[], columnIndex: number, parent: NzCascaderOption): void {
     const existingOptions = this.columns[columnIndex];
     if (!arraysEqual(existingOptions, options)) {
       options.forEach(o => (o.parent = parent));
@@ -386,7 +386,7 @@ export class NzCascaderService implements OnDestroy {
    * Load children of an option asynchronously.
    */
   loadChildren(
-    option: CascaderOption | any, // tslint:disable-line:no-any
+    option: NzCascaderOption | any, // tslint:disable-line:no-any
     columnIndex: number,
     success?: VoidFunction,
     failure?: VoidFunction
@@ -434,8 +434,8 @@ export class NzCascaderService implements OnDestroy {
    */
   private findOptionWithValue(
     columnIndex: number,
-    value: CascaderOption | any // tslint:disable-line:no-any
-  ): CascaderOption | null {
+    value: NzCascaderOption | any // tslint:disable-line:no-any
+  ): NzCascaderOption | null {
     const targetColumn = this.columns[columnIndex];
     if (targetColumn) {
       const v = typeof value === 'object' ? this.getOptionValue(value) : value;
