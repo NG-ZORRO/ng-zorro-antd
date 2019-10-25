@@ -126,7 +126,7 @@ export class DateTableComponent implements OnChanges, OnInit {
     for (let colIndex = 0; colIndex < DATE_COL_NUM; colIndex++) {
       const day = start.addDays(colIndex);
       weekDays[colIndex] = {
-        short: this.dateHelper.format(day.nativeDate, this.dateHelper.relyOnDatePipe ? 'E' : 'ddd'), // eg. Tue
+        short: this.dateHelper.format(day.nativeDate, this.dateHelper.relyOnDatePipe ? 'E' : 'iii'), // eg. Tue
         veryShort: this.dateHelper.format(day.nativeDate, this.getVeryShortWeekFormat()) // eg. Tu
       };
     }

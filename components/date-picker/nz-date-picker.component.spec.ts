@@ -388,6 +388,23 @@ describe('NzDatePickerComponent', () => {
       const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
       expect(result.getDate()).toBe(+cellText);
     }));
+
+    it('should nzFormat parse input value', fakeAsync(() => {
+      const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+      fixtureInstance.nzFormat = 'dd.MM.yyyy';
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      const input = queryFromOverlay('.ant-calendar-date-input-wrap input.ant-calendar-input') as HTMLInputElement;
+      typeInElement('25.10.2019', input);
+      fixture.detectChanges();
+      input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+      fixture.detectChanges();
+      flush();
+      const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
+      expect(result.getFullYear()).toBe(2019);
+      expect(result.getMonth() + 1).toBe(10);
+      expect(result.getDate()).toBe(25);
+    }));
   });
 
   describe('panel switch and move forward/afterward', () => {
@@ -879,6 +896,7 @@ describe('NzDatePickerComponent', () => {
         [nzDisabled]="nzDisabled"
         [nzClassName]="nzClassName"
         [nzDisabledDate]="nzDisabledDate"
+        [nzFormat]="nzFormat"
         [nzLocale]="nzLocale"
         [nzPlaceHolder]="nzPlaceHolder"
         [nzPopupStyle]="nzPopupStyle"
@@ -924,6 +942,7 @@ class NzTestDatePickerComponent {
   nzAutoFocus: boolean;
   nzDisabled: boolean;
   nzClassName: string;
+  nzFormat: string;
   nzDisabledDate: (d: Date) => boolean;
   nzLocale: any; // tslint:disable-line:no-any
   nzPlaceHolder: string;
@@ -936,7 +955,7 @@ class NzTestDatePickerComponent {
   nzOnCalendarChange(): void {}
   nzOnOpenChange(): void {}
 
-  nzValue: Date | null;
+  nzValue: Date | null | string;
 
   nzDateRender: any; // tslint:disable-line:no-any
   nzShowTime: boolean | object = false;

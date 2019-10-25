@@ -69,7 +69,7 @@ export class CalendarInputComponent implements OnInit {
 
   private checkValidInputDate(event: Event): CandyDate | null {
     const input = (event.target as HTMLInputElement).value;
-    const date = new CandyDate(input);
+    const date = new CandyDate(this.dateHelper.parseDate(input, this.format));
 
     this.invalidInputClass = '';
     if (!date.isValid() || input !== this.toReadableInput(date)) {

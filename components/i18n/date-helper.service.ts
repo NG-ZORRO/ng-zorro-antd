@@ -8,7 +8,7 @@
 
 import { formatDate } from '@angular/common';
 import { Inject, Injectable, Injector, Optional } from '@angular/core';
-import { format, getISOWeek, parseISO } from 'date-fns';
+import { format, getISOWeek, parse, parseISO } from 'date-fns';
 
 import { mergeDateConfig, NZ_DATE_CONFIG, NzDateConfig } from './date-config';
 import { NzI18nService } from './nz-i18n.service';
@@ -38,11 +38,8 @@ export abstract class DateHelperService {
   abstract getFirstDayOfWeek(): WeekDayIndex;
   abstract format(date: Date, formatStr: string): string;
 
-  parseDate(text: string): Date | undefined {
-    if (!text) {
-      return;
-    }
-    return parseISO(text);
+  parseDate(text: string, formatStr: string): Date {
+    return parse(text, formatStr, new Date());
   }
 
   parseTime(text: string): Date | undefined {
