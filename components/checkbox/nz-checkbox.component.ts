@@ -56,7 +56,7 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnChan
   // tslint:disable-next-line:no-any
   onTouched: () => any = () => null;
   @ViewChild('inputElement', { static: true }) private inputElement: ElementRef;
-  @ViewChild('contentElement', { static: false }) private contentElement: ElementRef;
+  @ViewChild('contentElement') private contentElement: ElementRef;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   @Input() nzValue: string;
   @Input() @InputBoolean() nzAutoFocus = false;

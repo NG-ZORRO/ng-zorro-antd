@@ -333,7 +333,7 @@ describe('nz-th', () => {
   `
 })
 export class NzThTestNzTableComponent {
-  @ViewChild(NzThComponent, { static: false }) nzThComponent: NzThComponent;
+  @ViewChild(NzThComponent) nzThComponent: NzThComponent;
   destroy = false;
   showCheckbox = false;
   checked = false;
@@ -428,7 +428,7 @@ export class NzThTestTableDefaultFilterComponent {
   ];
   displayData: Array<{ name: string; age: number; address: string; [key: string]: string | number }> = [];
 
-  @ViewChild(NzThComponent, { static: false }) nzThComponent: NzThComponent;
+  @ViewChild(NzThComponent) nzThComponent: NzThComponent;
 
   sort(sort: { key: string; value: string }): void {
     this.sortName = sort.key;

@@ -153,10 +153,10 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Output() readonly nzTreeClick = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzTreeCheckBoxChange = new EventEmitter<NzFormatEmitEvent>();
 
-  @ViewChild('inputElement', { static: false }) inputElement: ElementRef<HTMLInputElement>;
-  @ViewChild('treeRef', { static: false }) treeRef: NzTreeComponent;
+  @ViewChild('inputElement') inputElement: ElementRef<HTMLInputElement>;
+  @ViewChild('treeRef') treeRef: NzTreeComponent;
   @ViewChild(CdkOverlayOrigin, { static: true }) cdkOverlayOrigin: CdkOverlayOrigin;
-  @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay: CdkConnectedOverlay;
+  @ViewChild(CdkConnectedOverlay) cdkConnectedOverlay: CdkConnectedOverlay;
 
   @Input() nzTreeTemplate: TemplateRef<{ $implicit: NzTreeNode }>;
   @ContentChild('nzTreeTemplate', { static: true }) nzTreeTemplateChild: TemplateRef<{ $implicit: NzTreeNode }>;

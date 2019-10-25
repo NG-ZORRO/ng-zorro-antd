@@ -59,7 +59,7 @@ export class NzCardComponent {
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzSizeDSType;
   @Input() nzTitle: string | TemplateRef<void>;
   @Input() nzExtra: string | TemplateRef<void>;
-  @ContentChild(NzCardTabComponent, { static: false }) tab: NzCardTabComponent;
+  @ContentChild(NzCardTabComponent) tab: NzCardTabComponent;
   @ContentChildren(NzCardGridDirective) grids: QueryList<NzCardGridDirective>;
 
   constructor(public nzConfigService: NzConfigService, renderer: Renderer2, elementRef: ElementRef) {

@@ -12,6 +12,7 @@ import {
   ComponentFactory,
   ComponentFactoryResolver,
   ComponentRef,
+  Directive,
   ElementRef,
   EventEmitter,
   Input,
@@ -31,6 +32,7 @@ import { NzTooltipTrigger } from '../nz-tooltip.definitions';
 import { NzTooltipBaseComponentLegacy } from './nz-tooltip-base-legacy.component';
 import { NzTooltipBaseComponent } from './nz-tooltip-base.component';
 
+@Directive()
 export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDestroy, AfterViewInit {
   directiveNameTitle?: NzTSType | null;
   specificTitle?: NzTSType | null;

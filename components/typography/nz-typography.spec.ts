@@ -339,7 +339,7 @@ export class NzTestTypographyCopyComponent {
   `
 })
 export class NzTestTypographyEditComponent {
-  @ViewChild(NzTypographyComponent, { static: false }) nzTypographyComponent: NzTypographyComponent;
+  @ViewChild(NzTypographyComponent) nzTypographyComponent: NzTypographyComponent;
   str = 'This is an editable text.';
   onChange = (text: string): void => {
     this.str = text;
@@ -392,7 +392,7 @@ export class NzTestTypographyEllipsisComponent {
   expandable = false;
   onExpand = jasmine.createSpy('expand callback');
 
-  @ViewChild(NzTypographyComponent, { static: false }) nzTypographyComponent: NzTypographyComponent;
+  @ViewChild(NzTypographyComponent) nzTypographyComponent: NzTypographyComponent;
   str = new Array(5)
     .fill('Ant Design, a design language for background applications, is refined by Ant UED Team.')
     .join('');

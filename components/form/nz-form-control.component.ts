@@ -62,7 +62,7 @@ export class NzFormControlComponent extends NzColDirective
   status: NzFormControlStatusType = null;
   controlClassMap: NgClassType = {};
   iconType: string;
-  @ContentChild(NgControl, { static: false }) defaultValidateControl: FormControlName | FormControlDirective;
+  @ContentChild(NgControl) defaultValidateControl: FormControlName | FormControlDirective;
   @Input() nzSuccessTip: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
   @Input() nzWarningTip: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
   @Input() nzErrorTip: string | TemplateRef<{ $implicit: FormControl | NgModel }>;

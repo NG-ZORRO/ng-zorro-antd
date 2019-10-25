@@ -455,9 +455,9 @@ describe('dropdown-deprecated', () => {
   `
 })
 export class NzTestDropdownComponent {
-  @ViewChild(NzDropDownComponent, { static: false }) nzDropDownComponent: NzDropDownComponent;
+  @ViewChild(NzDropDownComponent) nzDropDownComponent: NzDropDownComponent;
   @ViewChild(NzDropDownDirective, { static: true }) nzDropDownDirective: NzDropDownDirective;
-  @ViewChild(NzSubMenuComponent, { static: false }) nzSubMenuComponent: NzSubMenuComponent;
+  @ViewChild(NzSubMenuComponent) nzSubMenuComponent: NzSubMenuComponent;
   visible = false;
   selectable = true;
   itemSelected = false;
@@ -498,8 +498,8 @@ export class NzTestDropdownComponent {
   `
 })
 export class NzTestDropdownButtonComponent {
-  @ViewChild(NzDropDownButtonComponent, { static: false }) nzDropDownButtonComponent: NzDropDownButtonComponent;
-  @ViewChild(NzSubMenuComponent, { static: false }) nzSubMenuComponent: NzSubMenuComponent;
+  @ViewChild(NzDropDownButtonComponent) nzDropDownButtonComponent: NzDropDownButtonComponent;
+  @ViewChild(NzSubMenuComponent) nzSubMenuComponent: NzSubMenuComponent;
   strIcon = true;
   disabled = false;
   visible = false;

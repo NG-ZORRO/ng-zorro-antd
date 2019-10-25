@@ -54,7 +54,7 @@ const sharpMatcherRegx = /#([^#]+)$/;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzAnchorComponent implements OnDestroy, AfterViewInit {
-  @ViewChild('ink', { static: false }) private ink: ElementRef;
+  @ViewChild('ink') private ink: ElementRef;
 
   @Input() @InputBoolean() nzAffix = true;
 

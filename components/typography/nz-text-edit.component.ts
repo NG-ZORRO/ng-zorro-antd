@@ -43,8 +43,8 @@ export class NzTextEditComponent implements OnInit, OnDestroy {
   @Input() text: string;
   @Output() readonly startEditing = new EventEmitter<void>();
   @Output() readonly endEditing = new EventEmitter<string>();
-  @ViewChild('textarea', { static: false }) textarea: ElementRef<HTMLTextAreaElement>;
-  @ViewChild(NzAutosizeDirective, { static: false }) autosizeDirective: NzAutosizeDirective;
+  @ViewChild('textarea') textarea: ElementRef<HTMLTextAreaElement>;
+  @ViewChild(NzAutosizeDirective) autosizeDirective: NzAutosizeDirective;
 
   beforeText: string;
   currentText: string;

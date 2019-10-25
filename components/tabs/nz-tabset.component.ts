@@ -95,8 +95,8 @@ export class NzTabSetComponent
 
   tabPositionMode: NzTabPositionMode = 'horizontal';
   @ContentChildren(NzTabComponent) listOfNzTabComponent: QueryList<NzTabComponent>;
-  @ViewChild(NzTabsNavComponent, { static: false }) nzTabsNavComponent: NzTabsNavComponent;
-  @ViewChild('tabContent', { static: false }) tabContent: ElementRef;
+  @ViewChild(NzTabsNavComponent) nzTabsNavComponent: NzTabsNavComponent;
+  @ViewChild('tabContent') tabContent: ElementRef;
 
   @Input() nzTabBarExtraContent: TemplateRef<void>;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) nzShowPagination: boolean;

@@ -42,11 +42,11 @@ widget: <nz-github-btn></nz-github-btn>
 
 ## 当前版本
 
-[![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
+- 稳定版: [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 
 ## 支持 Angular 版本
 
-目前支持 Angular `^8.0.0` 版本。
+目前支持 Angular `^9.0.0-rc.1` 版本。
 
 ## 设计规范
 

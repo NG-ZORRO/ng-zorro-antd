@@ -42,8 +42,8 @@ export class NzSelectTopControlComponent implements OnInit, OnDestroy {
   inputValue: string;
   isComposing = false;
   private destroy$ = new Subject();
-  @ViewChild('inputElement', { static: false }) inputElement: ElementRef;
-  @ViewChild('mirrorElement', { static: false }) mirrorElement: ElementRef;
+  @ViewChild('inputElement') inputElement: ElementRef;
+  @ViewChild('mirrorElement') mirrorElement: ElementRef;
   @Input() nzShowSearch = false;
   @Input() nzPlaceHolder: string;
   @Input() nzOpen = false;

@@ -68,7 +68,7 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   ];
   presetColor: string | null = null;
   count: number;
-  @ViewChild('contentElement', { static: false }) contentElement: ElementRef;
+  @ViewChild('contentElement') contentElement: ElementRef;
   @Input() @InputBoolean() nzShowZero: boolean = false;
   @Input() @InputBoolean() nzShowDot = true;
   @Input() @InputBoolean() nzDot = false;

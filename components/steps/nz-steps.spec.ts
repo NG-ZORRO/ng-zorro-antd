@@ -506,7 +506,7 @@ describe('steps', () => {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzTestOuterStepsComponent {
-  @ViewChild('progressTemplate', { static: false }) progressTemplate: TemplateRef<void>;
+  @ViewChild('progressTemplate') progressTemplate: TemplateRef<void>;
   current = 0;
   direction = 'horizontal';
   labelPlacement = 'horizontal';
@@ -531,9 +531,9 @@ export class NzTestOuterStepsComponent {
   `
 })
 export class NzTestInnerStepStringComponent {
-  @ViewChild('titleTemplate', { static: false }) titleTemplate: TemplateRef<void>;
-  @ViewChild('descriptionTemplate', { static: false }) descriptionTemplate: TemplateRef<void>;
-  @ViewChild('iconTemplate', { static: false }) iconTemplate: TemplateRef<void>;
+  @ViewChild('titleTemplate') titleTemplate: TemplateRef<void>;
+  @ViewChild('descriptionTemplate') descriptionTemplate: TemplateRef<void>;
+  @ViewChild('iconTemplate') iconTemplate: TemplateRef<void>;
   status = 'process';
   current = 1;
   icon = 'user';

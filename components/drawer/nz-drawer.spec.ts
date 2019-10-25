@@ -536,9 +536,9 @@ class NzTestDrawerComponent {
   placement = 'left';
   offsetX = 0;
   offsetY = 0;
-  @ViewChild('customTitle', { static: false }) templateTitle: TemplateRef<void>;
+  @ViewChild('customTitle') templateTitle: TemplateRef<void>;
 
-  @ViewChild(NzDrawerComponent, { static: false }) drawerComponent: NzDrawerComponent;
+  @ViewChild(NzDrawerComponent) drawerComponent: NzDrawerComponent;
 
   open(): void {
     this.visible = true;
@@ -557,7 +557,7 @@ class NzTestDrawerComponent {
   `
 })
 class NzTestDrawerWithServiceComponent {
-  @ViewChild('drawerTemplate', { static: false }) drawerTemplate: TemplateRef<{
+  @ViewChild('drawerTemplate') drawerTemplate: TemplateRef<{
     $implicit: number;
     drawerRef: NzDrawerRef;
   }>;

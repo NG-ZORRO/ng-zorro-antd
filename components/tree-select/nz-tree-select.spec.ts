@@ -12,7 +12,8 @@ import {
   dispatchMouseEvent,
   typeInElement,
   MockNgZone,
-  NzTreeNode, NzTreeNodeOptions
+  NzTreeNode,
+  NzTreeNodeOptions
 } from 'ng-zorro-antd/core';
 
 import { NzTreeSelectComponent } from './nz-tree-select.component';
@@ -536,7 +537,7 @@ describe('tree-select component', () => {
   `
 })
 export class NzTestTreeSelectBasicComponent {
-  @ViewChild(NzTreeSelectComponent, { static: false }) nzSelectTreeComponent: NzTreeSelectComponent;
+  @ViewChild(NzTreeSelectComponent) nzSelectTreeComponent: NzTreeSelectComponent;
   expandKeys = ['1001', '10001'];
   value: string | string[] | null = '10001';
   size = 'default';
@@ -626,7 +627,7 @@ export class NzTestTreeSelectBasicComponent {
   `
 })
 export class NzTestTreeSelectCheckableComponent {
-  @ViewChild(NzTreeSelectComponent, { static: false }) nzSelectTreeComponent: NzTreeSelectComponent;
+  @ViewChild(NzTreeSelectComponent) nzSelectTreeComponent: NzTreeSelectComponent;
   expandKeys = ['1001', '10001'];
   value: string[] | null = ['1000122'];
   showSearch = false;

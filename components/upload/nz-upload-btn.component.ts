@@ -44,7 +44,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
   private inited = false;
   private destroy = false;
 
-  @ViewChild('file', { static: false }) file: ElementRef;
+  @ViewChild('file') file: ElementRef;
 
   // #region fields
   @Input() classes: {} = {};

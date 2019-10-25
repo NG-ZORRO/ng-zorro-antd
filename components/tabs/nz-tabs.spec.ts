@@ -601,8 +601,8 @@ describe('link router', () => {
 })
 export class NzTestTabsBasicComponent {
   add = false;
-  @ViewChild('extraTemplate', { static: false }) extraTemplate: TemplateRef<void>;
-  @ViewChild(NzTabSetComponent, { static: false }) nzTabSetComponent: NzTabSetComponent;
+  @ViewChild('extraTemplate') extraTemplate: TemplateRef<void>;
+  @ViewChild(NzTabSetComponent) nzTabSetComponent: NzTabSetComponent;
   selectedIndex = 0;
   selectedIndexChange = jasmine.createSpy('selectedIndex callback');
   selectChange = jasmine.createSpy('selectedIndex callback');

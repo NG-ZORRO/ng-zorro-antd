@@ -92,8 +92,8 @@ const NZ_CONFIG_COMPONENT_NAME = 'carousel';
 export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges {
   @ContentChildren(NzCarouselContentDirective) carouselContents: QueryList<NzCarouselContentDirective>;
 
-  @ViewChild('slickList', { static: false }) slickList: ElementRef;
-  @ViewChild('slickTrack', { static: false }) slickTrack: ElementRef;
+  @ViewChild('slickList') slickList: ElementRef;
+  @ViewChild('slickTrack') slickTrack: ElementRef;
 
   @Input() nzDotRender: TemplateRef<{ $implicit: number }>;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'scrollx') nzEffect: NzCarouselEffects;

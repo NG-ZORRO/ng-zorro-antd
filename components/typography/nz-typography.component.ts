@@ -89,11 +89,11 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   @Output() readonly nzCopy = new EventEmitter<string>();
   @Output() readonly nzExpandChange = new EventEmitter<void>();
 
-  @ViewChild(NzTextEditComponent, { static: false }) textEditRef: NzTextEditComponent;
-  @ViewChild(NzTextCopyComponent, { static: false }) textCopyRef: NzTextCopyComponent;
-  @ViewChild('ellipsisContainer', { static: false }) ellipsisContainer: ElementRef<HTMLSpanElement>;
-  @ViewChild('expandable', { static: false }) expandableBtn: ElementRef<HTMLSpanElement>;
-  @ViewChild('contentTemplate', { static: false }) contentTemplate: TemplateRef<{ content: string }>;
+  @ViewChild(NzTextEditComponent) textEditRef: NzTextEditComponent;
+  @ViewChild(NzTextCopyComponent) textCopyRef: NzTextCopyComponent;
+  @ViewChild('ellipsisContainer') ellipsisContainer: ElementRef<HTMLSpanElement>;
+  @ViewChild('expandable') expandableBtn: ElementRef<HTMLSpanElement>;
+  @ViewChild('contentTemplate') contentTemplate: TemplateRef<{ content: string }>;
 
   // tslint:disable-next-line:no-any
   locale: any = {};

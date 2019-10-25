@@ -53,8 +53,8 @@ import { NzUploadListComponent } from './nz-upload-list.component';
 })
 export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   private i18n$: Subscription;
-  @ViewChild('uploadComp', { static: false }) uploadComp: NzUploadBtnComponent;
-  @ViewChild('listComp', { static: false }) listComp: NzUploadListComponent;
+  @ViewChild('uploadComp') uploadComp: NzUploadBtnComponent;
+  @ViewChild('listComp') listComp: NzUploadListComponent;
   // tslint:disable-next-line:no-any
   locale: any = {};
 

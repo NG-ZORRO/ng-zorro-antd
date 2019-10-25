@@ -36,20 +36,18 @@ import { NzToolTipModule } from './nz-tooltip.module';
   `
 })
 export class NzTooltipTestDirectiveComponent {
+  @ViewChild('titleString') titleString: ElementRef;
 
-  @ViewChild('titleString', { static: false }) titleString: ElementRef;
-
-  @ViewChild('titleString', { static: false, read: NzTooltipDirective })
+  @ViewChild('titleString', { read: NzTooltipDirective })
   titleStringNzTooltipDirective: NzTooltipDirective;
 
-  @ViewChild('titleTemplate', { static: false }) titleTemplate: ElementRef;
+  @ViewChild('titleTemplate') titleTemplate: ElementRef;
 
-  @ViewChild('titleTemplate', { static: false, read: NzTooltipDirective })
+  @ViewChild('titleTemplate', { read: NzTooltipDirective })
   titleTemplateNzTooltipDirective: NzTooltipDirective;
 
-  @ViewChild('inBtnGroup', { static: false }) inBtnGroup: ElementRef;
+  @ViewChild('inBtnGroup') inBtnGroup: ElementRef;
   title = 'title-string';
-
 }
 
 @Component({
@@ -66,13 +64,13 @@ export class NzTooltipTestDirectiveComponent {
   `
 })
 export class NzTooltipTestWrapperComponent {
-  @ViewChild('clickTrigger', { static: false }) clickTrigger: ElementRef;
-  @ViewChild('focusTrigger', { static: false }) focusTrigger: ElementRef;
-  @ViewChild('mostSimpleTrigger', { static: false, read: NzTooltipDirective }) mostSimpleDirective: NzTooltipDirective;
-  @ViewChild('mostSimpleTrigger', { static: false }) mostSimpleTrigger: ElementRef;
-  @ViewChild('normalTrigger', { static: false }) normalTrigger: ElementRef;
-  @ViewChild('templateTrigger', { static: false }) templateTrigger: ElementRef;
-  @ViewChild('visibleTrigger', { static: false }) visibleTrigger: ElementRef;
+  @ViewChild('clickTrigger') clickTrigger: ElementRef;
+  @ViewChild('focusTrigger') focusTrigger: ElementRef;
+  @ViewChild('mostSimpleTrigger', { read: NzTooltipDirective }) mostSimpleDirective: NzTooltipDirective;
+  @ViewChild('mostSimpleTrigger') mostSimpleTrigger: ElementRef;
+  @ViewChild('normalTrigger') normalTrigger: ElementRef;
+  @ViewChild('templateTrigger') templateTrigger: ElementRef;
+  @ViewChild('visibleTrigger') visibleTrigger: ElementRef;
   visible: boolean;
   visibleTogglingCount = 0;
 

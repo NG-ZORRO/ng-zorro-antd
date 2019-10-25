@@ -86,7 +86,7 @@ export class NzDropDownComponent implements OnDestroy, AfterContentInit, OnChang
   positions: ConnectionPositionPair[] = [...DEFAULT_DROPDOWN_POSITIONS];
   visible$ = new Subject<boolean>();
   private destroy$ = new Subject<void>();
-  @ContentChild(NzDropDownDirective, { static: false }) nzDropDownDirective: NzDropDownDirective;
+  @ContentChild(NzDropDownDirective) nzDropDownDirective: NzDropDownDirective;
   @Input() nzTrigger: 'click' | 'hover' = 'hover';
   @Input() nzOverlayClassName = '';
   @Input() nzOverlayStyle: { [key: string]: string } = {};

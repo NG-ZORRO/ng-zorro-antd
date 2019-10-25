@@ -97,9 +97,9 @@ export class NzAutocompleteComponent implements AfterViewInit, OnDestroy {
   @ViewChildren(NzAutocompleteOptionComponent) fromDataSourceOptions: QueryList<NzAutocompleteOptionComponent>;
 
   /** cdk-overlay */
-  @ViewChild(TemplateRef, { static: false }) template: TemplateRef<{}>;
-  @ViewChild('panel', { static: false }) panel: ElementRef;
-  @ViewChild('content', { static: false }) content: ElementRef;
+  @ViewChild(TemplateRef) template: TemplateRef<{}>;
+  @ViewChild('panel') panel: ElementRef;
+  @ViewChild('content') content: ElementRef;
 
   private activeItemIndex: number = -1;
   private selectionChangeSubscription = Subscription.EMPTY;

@@ -50,7 +50,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'rate';
   ]
 })
 export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor, AfterViewInit, OnChanges {
-  @ViewChild('ulElement', { static: false }) private ulElement: ElementRef;
+  @ViewChild('ulElement') private ulElement: ElementRef;
 
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzAllowClear: boolean;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzAllowHalf: boolean;

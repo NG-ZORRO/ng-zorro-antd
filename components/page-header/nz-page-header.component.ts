@@ -55,9 +55,7 @@ export class NzPageHeaderComponent implements OnChanges {
   @Input() nzSubtitle: string | TemplateRef<void>;
   @Output() readonly nzBack = new EventEmitter<void>();
 
-  @ContentChild(NzPageHeaderFooterDirective, { static: false }) nzPageHeaderFooter: ElementRef<
-    NzPageHeaderFooterDirective
-  >;
+  @ContentChild(NzPageHeaderFooterDirective) nzPageHeaderFooter: ElementRef<NzPageHeaderFooterDirective>;
 
   constructor(private location: Location) {}
 

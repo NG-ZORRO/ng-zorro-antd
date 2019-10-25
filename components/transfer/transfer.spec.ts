@@ -405,8 +405,8 @@ describe('transfer', () => {
   encapsulation: ViewEncapsulation.None
 })
 class TestTransferComponent implements OnInit {
-  @ViewChild('comp', { static: false }) comp: NzTransferComponent;
-  @ViewChild('renderList', { static: false }) renderListTpl: TemplateRef<void>;
+  @ViewChild('comp') comp: NzTransferComponent;
+  @ViewChild('renderList') renderListTpl: TemplateRef<void>;
   nzDataSource: any[] = [];
   nzRenderList: Array<TemplateRef<void> | null> = [null, null];
   nzDisabled = false;
@@ -465,7 +465,7 @@ class TestTransferComponent implements OnInit {
   `
 })
 class TestTransferCustomRenderComponent implements OnInit {
-  @ViewChild('comp', { static: false }) comp: NzTransferComponent;
+  @ViewChild('comp') comp: NzTransferComponent;
   nzDataSource: Array<{
     key: string;
     title: string;

@@ -41,11 +41,11 @@ Following the Ant Design specification, we developed a Angular UI library `ng-zo
 
 ## Version
 
-[![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
+- Stable: [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 
 ## Angular Support
 
-Now Supports Angular `^8.0.0`.
+Now Supports Angular `^9.0.0-rc.1`.
 
 ## Design Specification
 

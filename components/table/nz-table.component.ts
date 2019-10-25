@@ -84,13 +84,13 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
   headerBottomStyle = {};
   private destroy$ = new Subject<void>();
   @ContentChildren(NzThComponent, { descendants: true }) listOfNzThComponent: QueryList<NzThComponent>;
-  @ViewChild('tableHeaderElement', { static: false, read: ElementRef }) tableHeaderElement: ElementRef;
-  @ViewChild('tableBodyElement', { static: false, read: ElementRef }) tableBodyElement: ElementRef;
-  @ViewChild('tableMainElement', { static: false, read: ElementRef }) tableMainElement: ElementRef;
-  @ViewChild(CdkVirtualScrollViewport, { static: false, read: ElementRef }) cdkVirtualScrollElement: ElementRef;
-  @ViewChild(CdkVirtualScrollViewport, { static: false, read: CdkVirtualScrollViewport })
+  @ViewChild('tableHeaderElement', { read: ElementRef }) tableHeaderElement: ElementRef;
+  @ViewChild('tableBodyElement', { read: ElementRef }) tableBodyElement: ElementRef;
+  @ViewChild('tableMainElement', { read: ElementRef }) tableMainElement: ElementRef;
+  @ViewChild(CdkVirtualScrollViewport, { read: ElementRef }) cdkVirtualScrollElement: ElementRef;
+  @ViewChild(CdkVirtualScrollViewport, { read: CdkVirtualScrollViewport })
   cdkVirtualScrollViewport: CdkVirtualScrollViewport;
-  @ContentChild(NzVirtualScrollDirective, { static: false }) nzVirtualScrollDirective: NzVirtualScrollDirective;
+  @ContentChild(NzVirtualScrollDirective) nzVirtualScrollDirective: NzVirtualScrollDirective;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzSizeMDSType;
   @Input() nzShowTotal: TemplateRef<{ $implicit: number; range: [number, number] }>;
   @Input() nzPageSizeOptions = [10, 20, 30, 40, 50];

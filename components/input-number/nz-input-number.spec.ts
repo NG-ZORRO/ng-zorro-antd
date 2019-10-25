@@ -465,7 +465,7 @@ describe('input number', () => {
   `
 })
 export class NzTestInputNumberBasicComponent {
-  @ViewChild(NzInputNumberComponent, { static: false }) nzInputNumberComponent: NzInputNumberComponent;
+  @ViewChild(NzInputNumberComponent) nzInputNumberComponent: NzInputNumberComponent;
   value?: number | string;
   autofocus = false;
   disabled = false;

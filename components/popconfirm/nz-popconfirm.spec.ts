@@ -319,10 +319,10 @@ export class NzpopconfirmTestNewComponent {
   cancel = jasmine.createSpy('cancel');
   condition = false;
   icon: string | undefined = undefined;
-  @ViewChild('stringTemplate', { static: false }) stringTemplate: ElementRef;
-  @ViewChild('templateTemplate', { static: false }) templateTemplate: ElementRef;
-  @ViewChild('inBtnGroup', { static: false }) inBtnGroup: ElementRef;
-  @ViewChild('iconTemplate', { static: false }) iconTemplate: ElementRef;
+  @ViewChild('stringTemplate') stringTemplate: ElementRef;
+  @ViewChild('templateTemplate') templateTemplate: ElementRef;
+  @ViewChild('inBtnGroup') inBtnGroup: ElementRef;
+  @ViewChild('iconTemplate') iconTemplate: ElementRef;
 }
 
 @Component({
@@ -357,19 +357,19 @@ export class NzpopconfirmTestNewComponent {
 export class NzpopconfirmTestWrapperComponent {
   nzOkType = 'primary';
 
-  @ViewChild('normalTrigger', { static: false }) normalTrigger: ElementRef;
+  @ViewChild('normalTrigger') normalTrigger: ElementRef;
 
-  @ViewChild('templateTrigger', { static: false }) templateTrigger: ElementRef;
+  @ViewChild('templateTrigger') templateTrigger: ElementRef;
 
-  @ViewChild('focusTrigger', { static: false }) focusTrigger: ElementRef;
+  @ViewChild('focusTrigger') focusTrigger: ElementRef;
 
-  @ViewChild('clickTrigger', { static: false }) clickTrigger: ElementRef;
+  @ViewChild('clickTrigger') clickTrigger: ElementRef;
 
   visible: boolean;
-  @ViewChild('visibleTrigger', { static: false }) visibleTrigger: ElementRef;
+  @ViewChild('visibleTrigger') visibleTrigger: ElementRef;
 
   executeCondition: boolean;
-  @ViewChild('executeTrigger', { static: false }) executeTrigger: ElementRef;
+  @ViewChild('executeTrigger') executeTrigger: ElementRef;
 
   onConfirm(): void {}
 

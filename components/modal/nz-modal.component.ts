@@ -113,10 +113,10 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
   @ViewChild('modalContainer', { static: true }) modalContainer: ElementRef;
-  @ViewChild('bodyContainer', { static: false, read: ViewContainerRef }) bodyContainer: ViewContainerRef;
-  @ViewChild('autoFocusButtonOk', { static: false, read: ElementRef }) autoFocusButtonOk: ElementRef; // Only aim to focus the ok button that needs to be auto focused
+  @ViewChild('bodyContainer', { read: ViewContainerRef }) bodyContainer: ViewContainerRef;
+  @ViewChild('autoFocusButtonOk', { read: ElementRef }) autoFocusButtonOk: ElementRef; // Only aim to focus the ok button that needs to be auto focused
 
-  @ContentChild(NzModalFooterDirective, { static: false })
+  @ContentChild(NzModalFooterDirective)
   set modalFooter(value: NzModalFooterDirective) {
     if (value && value.templateRef) {
       this.setFooterWithTemplate(value.templateRef);

@@ -52,9 +52,9 @@ export class NzPickerComponent implements AfterViewInit {
   @Output() readonly valueChange = new EventEmitter<CandyDate | CandyDate[] | null>();
   @Output() readonly openChange = new EventEmitter<boolean>(); // Emitted when overlay's open state change
 
-  @ViewChild('origin', { static: false }) origin: CdkOverlayOrigin;
-  @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay: CdkConnectedOverlay;
-  @ViewChild('pickerInput', { static: false }) pickerInput: ElementRef;
+  @ViewChild('origin') origin: CdkOverlayOrigin;
+  @ViewChild(CdkConnectedOverlay) cdkConnectedOverlay: CdkConnectedOverlay;
+  @ViewChild('pickerInput') pickerInput: ElementRef;
 
   prefixCls = 'ant-calendar';
   animationOpenState = false;

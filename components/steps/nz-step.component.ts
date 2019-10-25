@@ -41,7 +41,7 @@ import { Subject } from 'rxjs';
   }
 })
 export class NzStepComponent implements OnDestroy {
-  @ViewChild('processDotTemplate', { static: false }) processDotTemplate: TemplateRef<void>;
+  @ViewChild('processDotTemplate') processDotTemplate: TemplateRef<void>;
 
   @Input() nzTitle: string | TemplateRef<void>;
   @Input() nzSubtitle: string | TemplateRef<void>;

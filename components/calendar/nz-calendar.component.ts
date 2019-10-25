@@ -63,25 +63,25 @@ export class NzCalendarComponent implements ControlValueAccessor {
    * because { static: false } will make @Input property get delayed
    **/
   @Input() nzDateCell: DateTemplate;
-  @ContentChild(DateCell, { static: false, read: TemplateRef }) nzDateCellChild: DateTemplate;
+  @ContentChild(DateCell, { read: TemplateRef }) nzDateCellChild: DateTemplate;
   get dateCell(): DateTemplate {
     return this.nzDateCell || this.nzDateCellChild;
   }
 
   @Input() nzDateFullCell: DateTemplate;
-  @ContentChild(DateFullCell, { static: false, read: TemplateRef }) nzDateFullCellChild: DateTemplate;
+  @ContentChild(DateFullCell, { read: TemplateRef }) nzDateFullCellChild: DateTemplate;
   get dateFullCell(): DateTemplate {
     return this.nzDateFullCell || this.nzDateFullCellChild;
   }
 
   @Input() nzMonthCell: DateTemplate;
-  @ContentChild(MonthCell, { static: false, read: TemplateRef }) nzMonthCellChild: DateTemplate;
+  @ContentChild(MonthCell, { read: TemplateRef }) nzMonthCellChild: DateTemplate;
   get monthCell(): DateTemplate {
     return this.nzMonthCell || this.nzMonthCellChild;
   }
 
   @Input() nzMonthFullCell: DateTemplate;
-  @ContentChild(MonthFullCell, { static: false, read: TemplateRef }) nzMonthFullCellChild: DateTemplate;
+  @ContentChild(MonthFullCell, { read: TemplateRef }) nzMonthFullCellChild: DateTemplate;
   get monthFullCell(): DateTemplate {
     return this.nzMonthFullCell || this.nzMonthFullCellChild;
   }

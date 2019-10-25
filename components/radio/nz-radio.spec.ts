@@ -317,7 +317,7 @@ describe('radio', () => {
   `
 })
 export class NzTestRadioSingleComponent {
-  @ViewChild(NzRadioComponent, { static: false }) nzRadioComponent: NzRadioComponent;
+  @ViewChild(NzRadioComponent) nzRadioComponent: NzRadioComponent;
   value = false;
   autoFocus = false;
   disabled = false;

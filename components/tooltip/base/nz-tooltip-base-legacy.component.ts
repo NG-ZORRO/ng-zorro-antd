@@ -29,7 +29,7 @@ import { NzTooltipBaseComponent } from './nz-tooltip-base.component';
  * ```
  */
 export class NzTooltipBaseComponentLegacy extends NzTooltipBaseComponent implements OnChanges {
-  @ViewChild('overlay', { static: false }) overlay: CdkConnectedOverlay;
+  @ViewChild('overlay') overlay: CdkConnectedOverlay;
 
   @Input() nzOverlayClassName = '';
   @Input() nzOverlayStyle: NgStyleInterface = {};

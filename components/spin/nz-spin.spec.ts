@@ -83,7 +83,7 @@ describe('spin', () => {
       fixture.detectChanges();
       expect(spin.nativeElement.querySelector('.ant-spin-dot')).toBeNull();
       expect(spin.nativeElement.querySelector('.anticon-loading')).toBeDefined();
-    })
+    });
 
     it('should delay work', fakeAsync(() => {
       fixture.detectChanges();
@@ -140,7 +140,7 @@ describe('spin', () => {
   `
 })
 export class NzTestSpinBasicComponent {
-  @ViewChild('indicatorTemplate', { static: false }) indicatorTemplate: TemplateRef<void>;
+  @ViewChild('indicatorTemplate') indicatorTemplate: TemplateRef<void>;
 
   size = 'default';
   delay = 0;

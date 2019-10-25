@@ -125,5 +125,5 @@ export class NzTestTimePickerComponent {
   date = new Date();
   disabled = false;
   use12Hours = false;
-  @ViewChild(NzTimePickerComponent, { static: false }) nzTimePickerComponent: NzTimePickerComponent;
+  @ViewChild(NzTimePickerComponent) nzTimePickerComponent: NzTimePickerComponent;
 }
