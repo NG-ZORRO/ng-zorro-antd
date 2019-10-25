@@ -288,6 +288,18 @@ describe('modal testing (legacy)', () => {
       instance = fixture.debugElement.componentInstance;
     });
 
+    it('should click mask is closable', fakeAsync(() => {
+      const modalRef = instance.createMaskClosableConfirm();
+      const modalElement = modalRef.getElement();
+      fixture.detectChanges();
+      expect(modalRef.getInstance().nzMaskClosable).toBe(true);
+      const maskElement = modalElement.querySelector('.ant-modal-wrap') as HTMLDivElement;
+      maskElement!.click();
+      flush();
+      fixture.detectChanges();
+      expect(instance.maskClosedSpy).toHaveBeenCalled();
+    }));
+
     it('boundary detection for options', fakeAsync(() => {
       const spy = spyOn(console, 'warn');
 
@@ -919,6 +931,7 @@ export class TestVaryServiceCustomComponent {
   template: ``
 })
 export class TestConfirmModalComponent {
+  maskClosedSpy = jasmine.createSpy();
   constructor(public modalService: NzModalService) {}
 
   createConfirm(): NzModalRef {
@@ -929,6 +942,15 @@ export class TestConfirmModalComponent {
     return this.modalService.confirm({
       nzFooter: 'should warning',
       nzOkText: 'close'
+    });
+  }
+
+  createMaskClosableConfirm(): NzModalRef {
+    return this.modalService.confirm({
+      nzMaskClosable: true,
+      nzOnCancel: () => {
+        this.maskClosedSpy();
+      }
     });
   }
 
