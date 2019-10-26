@@ -37,6 +37,8 @@ English | [简体中文](README-zh_CN.md)
 - Written in TypeScript with predictable static types.
 - The whole package of development and design resources and tools.
 - Support OnPush mode, high performance.
+- Support Customize theme.
+- Support import Component individually.
 
 ## 🖥 Environment Support
 
