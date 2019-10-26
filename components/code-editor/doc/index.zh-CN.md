@@ -15,7 +15,7 @@ monaco editor 组件。
 
 ## API
 
-使用该组件之前，需要加载 monaco editor 本身的资源。你可以通过 Angular CLI 提供的配置项将这些资源添加到 assets 目录下。例子，在 `angular.json` 中添加：
+如果你使用动态加载的引入方式，你就需要在运行时加载 monaco editor 本身的资源。在 `angular.json` 中添加：
 
 ```diff
 "assets": [
@@ -27,7 +27,7 @@ monaco editor 组件。
 ],
 ```
 
-或者通过修改配置项中的 `assetsRoot` 指定资源位置。
+> 如果你使用静态加载，你就无需修改 angular.json 文件。详见下文。
 
 另外别忘记安装 monaco editor：
 
@@ -74,4 +74,6 @@ npm install monaco-editor
 
 1. 在注入 code editor 组件的全局配置项时，请启用 `useStaticLoading`
 2. 创建一个 webpack.partial.js 文件，根据插件文档进行相应的配置
-3. 使用 [ngx-build-plus](https://github.com/manfredsteyer/ngx-build-plus) 在打包时加载这个 webpack 配置
+3. 使用自定义脚本加载器，例如 [ngx-build-plus](https://github.com/manfredsteyer/ngx-build-plus) 在打包时加载这个 webpack 配置
+
+使用静态加载时，你无需在 angular.json 文件中注册 monaco editor 的资源。
