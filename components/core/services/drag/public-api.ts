@@ -6,5 +6,4 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export { NzDragServiceModule } from './nz-drag.service.module';
 export { NzDragService } from './nz-drag.service';

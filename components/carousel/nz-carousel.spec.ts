@@ -256,7 +256,7 @@ describe('carousel', () => {
     }));
 
     it('should prevent swipes that are not long enough', fakeAsync(() => {
-      swipe(testComponent.nzCarouselComponent, 2);
+      swipe(testComponent.nzCarouselComponent, 57);
       tickMilliseconds(fixture, 700);
       expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
     }));

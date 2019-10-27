@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Subject, Subscription } from 'rxjs';
 
-import { NzDragService, NzDragServiceModule } from 'ng-zorro-antd/core';
+import { NzDragService } from 'ng-zorro-antd/core';
 import { createMouseEvent, createTouchEvent, dispatchMouseEvent, dispatchTouchEvent } from 'ng-zorro-antd/core/testing';
 
 @Component({
@@ -33,7 +33,6 @@ describe('drag service', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [NzDragServiceModule],
       declarations: [NzTestDragServiceComponent]
     });
 

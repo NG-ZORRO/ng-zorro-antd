@@ -332,7 +332,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
           if (this.nzEnableSwipe && this.isDragging) {
             const xDelta = this.pointerDelta ? this.pointerDelta.x : 0;
 
-            // Switch to another slide if delta is third of the width.
+            // Switch to another slide if delta is bigger than third of the width.
             if (Math.abs(xDelta) > this.gestureRect!.width / 3) {
               this.goTo(xDelta > 0 ? this.activeIndex - 1 : this.activeIndex + 1);
             } else {

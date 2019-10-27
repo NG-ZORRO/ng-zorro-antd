@@ -6,12 +6,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Injectable, OnDestroy, Renderer2, RendererFactory2 } from '@angular/core';
+import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { filter, finalize, map } from 'rxjs/operators';
 
 import { getEventPosition } from '../../util/dom';
-import { NzDragServiceModule } from './nz-drag.service.module';
 
 interface Point {
   x: number;
@@ -38,9 +37,9 @@ function getPagePosition(event: MouseEvent | TouchEvent): Point {
  * This module provide a global dragging service to other components.
  */
 @Injectable({
-  providedIn: NzDragServiceModule
+  providedIn: 'root'
 })
-export class NzDragService implements OnDestroy {
+export class NzDragService {
   private awaitingSequence = false;
   private draggingThreshold = 5;
   private currentDraggingSequence: Subject<MouseEvent | Touch> | null = null;
@@ -50,10 +49,6 @@ export class NzDragService implements OnDestroy {
 
   constructor(rendererFactory2: RendererFactory2) {
     this.renderer = rendererFactory2.createRenderer(null, null);
-  }
-
-  ngOnDestroy(): void {
-    this.unregisterDraggingHandler();
   }
 
   requestDraggingSequence(event: MouseEvent | TouchEvent): Observable<Delta> {
