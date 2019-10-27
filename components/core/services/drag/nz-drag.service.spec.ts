@@ -49,6 +49,9 @@ describe('drag service', () => {
     beforeEach(() => {
       completed = false;
       dragged = false;
+
+      complete_ = component.complete$.subscribe(() => (completed = true));
+      drag_ = component.drag$.subscribe(() => (dragged = true));
     });
 
     afterEach(() => {
@@ -62,9 +65,6 @@ describe('drag service', () => {
     });
 
     it('should mousedown work', fakeAsync(() => {
-      drag_ = component.drag$.subscribe(() => (dragged = true));
-      complete_ = component.complete$.subscribe(() => (completed = true));
-
       component.drag(createMouseEvent('mousedown', 0, 0));
       dispatchMouseEvent(document, 'mousemove', 100, 0);
 
@@ -76,9 +76,6 @@ describe('drag service', () => {
     }));
 
     it('should touchdown work', fakeAsync(() => {
-      drag_ = component.drag$.subscribe(() => (dragged = true));
-      complete_ = component.complete$.subscribe(() => (completed = true));
-
       component.drag(createTouchEvent('touchdown') as TouchEvent);
       dispatchTouchEvent(document, 'touchmove', 100, 0);
 
@@ -90,9 +87,6 @@ describe('drag service', () => {
     }));
 
     it('should close previous drag sequence', () => {
-      drag_ = component.drag$.subscribe(() => (dragged = true));
-      complete_ = component.complete$.subscribe(() => (completed = true));
-
       component.drag(createMouseEvent('mousedown', 0, 0));
       component.drag(createMouseEvent('mousedown', 0, 0));
 
@@ -100,10 +94,7 @@ describe('drag service', () => {
       expect(dragged).toBeFalsy();
     });
 
-    it('should threshold word', fakeAsync(() => {
-      drag_ = component.drag$.subscribe(() => (dragged = true));
-      complete_ = component.complete$.subscribe(() => (completed = true));
-
+    it('should threshold work', fakeAsync(() => {
       component.drag(createMouseEvent('mousedown', 0, 0));
       dispatchMouseEvent(document, 'mousemove', 4, 0);
 
