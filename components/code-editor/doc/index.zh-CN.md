@@ -74,6 +74,6 @@ npm install monaco-editor
 
 1. 在注入 code editor 组件的全局配置项时，请启用 `useStaticLoading`
 2. 创建一个 webpack.partial.js 文件，根据插件文档进行相应的配置
-3. 使用自定义脚本加载器，例如 [ngx-build-plus](https://github.com/manfredsteyer/ngx-build-plus) 在打包时加载这个 webpack 配置
+3. 使用自定义脚本加载器，例如 [ngx-build-plus](https://github.com/manfredsteyer/ngx-build-plus)，在打包时加载这个 webpack 配置
 
 使用静态加载时，你无需在 angular.json 文件中注册 monaco editor 的资源。
