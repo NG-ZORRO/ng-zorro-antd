@@ -6,9 +6,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
+import { Injectable, OnDestroy, Renderer2, RendererFactory2 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { auditTime, filter, finalize, map } from 'rxjs/operators';
+import { filter, finalize, map } from 'rxjs/operators';
 
 import { getEventPosition } from '../../util/dom';
 import { NzDragServiceModule } from './nz-drag.service.module';
@@ -40,7 +40,7 @@ function getPagePosition(event: MouseEvent | TouchEvent): Point {
 @Injectable({
   providedIn: NzDragServiceModule
 })
-export class NzDragService {
+export class NzDragService implements OnDestroy {
   private awaitingSequence = false;
   private draggingThreshold = 5;
   private currentDraggingSequence: Subject<MouseEvent | Touch> | null = null;
@@ -50,6 +50,10 @@ export class NzDragService {
 
   constructor(rendererFactory2: RendererFactory2) {
     this.renderer = rendererFactory2.createRenderer(null, null);
+  }
+
+  ngOnDestroy(): void {
+    this.unregisterDraggingHandler();
   }
 
   requestDraggingSequence(event: MouseEvent | TouchEvent): Observable<Delta> {
@@ -69,7 +73,6 @@ export class NzDragService {
     this.awaitingSequence = false;
 
     return this.currentDraggingSequence.pipe(
-      auditTime(16),
       map((e: MouseEvent | Touch) => {
         return {
           x: e.pageX - this.currentStartingPoint!.x,
