@@ -55,12 +55,19 @@ export class InnerPopupComponent implements OnChanges {
   @Output() readonly dayHover = new EventEmitter<CandyDate>(); // Emitted when hover on a day by mouse enter
 
   prefixCls: string = 'ant-calendar';
+  timePanelDate: Date | null;
 
   constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.value && !this.value) {
-      this.value = new CandyDate();
+    if (changes.value) {
+      if (this.value) {
+        this.timePanelDate = this.value.nativeDate;
+      } else {
+        // nzDefaultOpenValue only works when time panel doesn't has value
+        this.timePanelDate = null;
+        this.value = new CandyDate();
+      }
     }
   }
 

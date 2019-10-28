@@ -10,9 +10,10 @@
 ></calendar-header>
 
 <ng-container *ngIf="showTimePicker && timeOptions">
+  <!-- use [opened] to trigger time panel `initPosition()` -->
   <nz-time-picker-panel
     [nzInDatePicker]="true"
-    [ngModel]="value.nativeDate"
+    [ngModel]="timePanelDate"
     (ngModelChange)="onSelectTime($event)"
     [format]="timeOptions.nzFormat"
     [nzHourStep]="timeOptions.nzHourStep"
@@ -25,6 +26,7 @@
     [nzDefaultOpenValue]="timeOptions.nzDefaultOpenValue"
     [nzUse12Hours]="timeOptions.nzUse12Hours"
     [nzAddOn]="timeOptions.nzAddOn"
+    [opened]="showTimePicker && timeOptions"
   ></nz-time-picker-panel>
 </ng-container>
 
