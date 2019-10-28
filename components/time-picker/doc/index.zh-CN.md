@@ -34,7 +34,7 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 | `[nzAllowEmpty]` | 是否展示清除按钮 | `boolean` | `true` | ✅ |
 | `[nzAutoFocus]` | 自动获取焦点 | `boolean` | `false` |
 | `[nzClearText]` | 清除按钮的提示文案 | `string` | `'clear'` | ✅ |
-| `[nzDefaultOpenValue]` | 设置面板打开时默认选中的值 | `Date` | `new Date()` |
+| `[nzDefaultOpenValue]` | 当 `[ngModel]` 不存在时，可以设置面板打开时默认选中的值 | `Date` | `new Date()` |
 | `[nzDisabled]` | 禁用全部操作 | `boolean` | `false` |
 | `[nzDisabledHours]` | 禁止选择部分小时选项 | `() => number[]` | - |
 | `[nzDisabledMinutes]` | 禁止选择部分分钟选项 | `(hour: number) => number[]` | - |

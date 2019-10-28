@@ -642,7 +642,7 @@ describe('NzDatePickerComponent', () => {
       expect((queryFromOverlay('input.ant-calendar-input') as HTMLInputElement).value).toBe('2018-11-11 00:22:33');
     }));
 
-    it('should support nzDefaultOpenValue in nzShowTime', fakeAsync(() => {
+    it('should support nzShowTime.nzDefaultOpenValue', fakeAsync(() => {
       fixtureInstance.nzValue = null;
       fixtureInstance.nzShowTime = { nzDefaultOpenValue: new Date(0, 0, 0, 0, 1, 2) };
       fixture.detectChanges();
@@ -651,11 +651,8 @@ describe('NzDatePickerComponent', () => {
       // Open time picker panel
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-time-picker-btn'), 'click');
       fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      console.log(overlayContainerElement);
       const listOfSelectedLi = overlayContainerElement.querySelectorAll(
         '.ant-calendar-time-picker-select-option-selected'
       );
