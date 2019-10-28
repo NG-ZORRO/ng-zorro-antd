@@ -1,6 +1,6 @@
 ---
 category: Components
-type: Date Entry
+type: Data Entry
 title: Code Editor
 cols: 1
 experimental: true
