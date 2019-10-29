@@ -12,7 +12,7 @@ import {
 } from './data';
 
 /** Upgrade data that will be used for the NG-ZORRO ng-update schematic. */
-export const materialUpgradeData: RuleUpgradeData = {
+export const ruleUpgradeData: RuleUpgradeData = {
   attributeSelectors,
   classNames,
   constructorChecks,
