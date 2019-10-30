@@ -166,8 +166,11 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   private setLocale(): void {
     this.nzLocale = this.i18n.getLocaleData('DatePicker', {});
     this.setDefaultPlaceHolder();
+    this.setFormat();
     this.cdr.markForCheck();
   }
+
+  private setFormat(): void {}
 
   private setDefaultPlaceHolder(): void {
     if (!this.isCustomPlaceHolder && this.nzLocale) {

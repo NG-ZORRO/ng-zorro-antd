@@ -18,7 +18,7 @@ import {
 } from '@angular/core';
 
 import { CandyDate } from 'ng-zorro-antd/core';
-import { DateHelperByDatePipe, DateHelperService, NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+import { DateHelperService, NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -48,12 +48,7 @@ export class TodayButtonComponent implements OnChanges {
       this.isDisabled = this.disabledDate && this.disabledDate(this.now.nativeDate);
     }
     if (changes.locale) {
-      // NOTE: Compat for DatePipe formatting rules
-      let dateFormat: string = this.locale.dateFormat;
-      if (this.dateHelper.relyOnDatePipe) {
-        dateFormat = (this.dateHelper as DateHelperByDatePipe).transCompatFormat(dateFormat);
-      }
-      this.title = this.dateHelper.format(this.now.nativeDate, dateFormat);
+      this.title = this.dateHelper.format(this.now.nativeDate, this.locale.dateFormat);
     }
   }
 

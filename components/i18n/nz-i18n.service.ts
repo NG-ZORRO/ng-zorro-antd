@@ -11,8 +11,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 import { IndexableObject, warn } from 'ng-zorro-antd/core';
 
+import { Locale } from 'date-fns';
 import zh_CN from './languages/zh_CN';
-import { DateLocale, NzI18nInterface } from './nz-i18n.interface';
+import { NzI18nInterface } from './nz-i18n.interface';
 import { NZ_DATE_LOCALE, NZ_I18N } from './nz-i18n.token';
 
 @Injectable({
@@ -21,13 +22,16 @@ import { NZ_DATE_LOCALE, NZ_I18N } from './nz-i18n.token';
 export class NzI18nService {
   private _locale: NzI18nInterface;
   private _change = new BehaviorSubject<NzI18nInterface>(this._locale);
-  private dateLocale: DateLocale;
+  private dateLocale: Locale;
 
   get localeChange(): Observable<NzI18nInterface> {
     return this._change.asObservable();
   }
 
-  constructor(@Optional() @Inject(NZ_I18N) locale: NzI18nInterface, @Optional() @Inject(NZ_DATE_LOCALE) dateLocale: DateLocale) {
+  constructor(
+    @Optional() @Inject(NZ_I18N) locale: NzI18nInterface,
+    @Optional() @Inject(NZ_DATE_LOCALE) dateLocale: Locale
+  ) {
     this.setLocale(locale || zh_CN);
     this.setDateLocale(dateLocale || null);
   }
@@ -70,11 +74,11 @@ export class NzI18nService {
     return this._locale ? this._locale.locale : '';
   }
 
-  setDateLocale(dateLocale: DateLocale): void {
+  setDateLocale(dateLocale: Locale): void {
     this.dateLocale = dateLocale;
   }
 
-  getDateLocale(): DateLocale {
+  getDateLocale(): Locale {
     return this.dateLocale;
   }
 

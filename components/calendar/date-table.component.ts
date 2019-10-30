@@ -125,8 +125,9 @@ export class DateTableComponent implements OnChanges, OnInit {
     const start = this.activeDate.calendarStart({ weekStartsOn: this.dateHelper.getFirstDayOfWeek() });
     for (let colIndex = 0; colIndex < DATE_COL_NUM; colIndex++) {
       const day = start.addDays(colIndex);
+      // Angular and date-fns 2.x both support `E` as week day
       weekDays[colIndex] = {
-        short: this.dateHelper.format(day.nativeDate, this.dateHelper.relyOnDatePipe ? 'E' : 'iii'), // eg. Tue
+        short: this.dateHelper.format(day.nativeDate, 'E'), // eg. Tue
         veryShort: this.dateHelper.format(day.nativeDate, this.getVeryShortWeekFormat()) // eg. Tu
       };
     }
@@ -134,15 +135,12 @@ export class DateTableComponent implements OnChanges, OnInit {
   }
 
   private getVeryShortWeekFormat(): string {
-    if (this.dateHelper.relyOnDatePipe) {
-      return this.i18n
-        .getLocaleId()
-        .toLowerCase()
-        .indexOf('zh') === 0
-        ? 'EEEEE'
-        : 'EEEEEE'; // Use extreme short for chinese
-    }
-    return 'dd';
+    return this.i18n
+      .getLocaleId()
+      .toLowerCase()
+      .indexOf('zh') === 0
+      ? 'EEEEE'
+      : 'EEEEEE'; // Use extreme short for chinese
   }
 
   private makeWeekRows(): WeekRow[] {
@@ -160,11 +158,12 @@ export class DateTableComponent implements OnChanges, OnInit {
 
       for (let day = 0; day < 7; day++) {
         const date = weekStart.addDays(day);
+        // TODO: use unified format
         const dateFormat = this.dateHelper.relyOnDatePipe
           ? 'longDate'
           : this.i18n.getLocaleData('DatePicker.lang.dateFormat', 'YYYY-MM-DD');
         const title = this.dateHelper.format(date.nativeDate, dateFormat);
-        const label = this.dateHelper.format(date.nativeDate, this.dateHelper.relyOnDatePipe ? 'dd' : 'DD');
+        const label = this.dateHelper.format(date.nativeDate, 'dd');
 
         const cell: DateCell = {
           value: date.nativeDate,

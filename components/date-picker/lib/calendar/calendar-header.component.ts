@@ -18,7 +18,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { DateHelperByDatePipe, DateHelperService, NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+import { DateHelperService, NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 
 import { CandyDate } from 'ng-zorro-antd/core';
 import { PanelMode } from '../../standard-types';
@@ -144,17 +144,11 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
     let year: YearMonthDaySelector;
     let month: YearMonthDaySelector;
     let day: YearMonthDaySelector;
-
-    // NOTE: Compat for DatePipe formatting rules
-    let yearFormat: string = this.locale.yearFormat;
-    if (this.dateHelper.relyOnDatePipe) {
-      yearFormat = (this.dateHelper as DateHelperByDatePipe).transCompatFormat(yearFormat);
-    }
     year = {
       className: `${this.prefixCls}-year-select`,
       title: this.locale.yearSelect,
       onClick: () => (this.showTimePicker ? null : this.changePanel('year')),
-      label: this.formatDateTime(yearFormat)
+      label: this.formatDateTime(this.locale.yearFormat)
     };
 
     month = {
@@ -163,16 +157,10 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
       onClick: () => (this.showTimePicker ? null : this.changeToMonthPanel()),
       label: this.formatDateTime(this.locale.monthFormat || 'MMM')
     };
-
-    // NOTE: Compat for DatePipe formatting rules
-    let dayFormat: string = this.locale.dayFormat;
-    if (this.dateHelper.relyOnDatePipe) {
-      dayFormat = (this.dateHelper as DateHelperByDatePipe).transCompatFormat(dayFormat);
-    }
     if (this.showTimePicker) {
       day = {
         className: `${this.prefixCls}-day-select`,
-        label: this.formatDateTime(dayFormat)
+        label: this.formatDateTime(this.locale.dayFormat)
       };
     }
 

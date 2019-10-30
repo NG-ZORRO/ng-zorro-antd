@@ -54,8 +54,7 @@ describe('DateHelperService', () => {
 
     it('should do formatting correctly', () => {
       const date = new Date('2018-12-31 12:11:10');
-      // After updating to 2.x, use yyyy instead of YYYY.
-      expect(dateHelper.format(date, 'yyyy-MM-dd')).toBe('2018-12-31');
+      expect(dateHelper.format(date, 'YYYY-MM-dd')).toBe('2018-12-31');
       expect(dateHelper.format(date, 'II')).toBe('01'); // ISO week
     });
   });

@@ -19,6 +19,7 @@ import { CompatibleDate, DisabledTimeFn, PanelMode, PresetRanges } from './stand
 })
 export class DateRangePickerComponent extends AbstractPickerComponent implements OnInit, OnChanges {
   showWeek: boolean = false; // Should show as week picker
+  defaultFormat: string;
 
   @Input() nzDateRender: FunctionProp<TemplateRef<Date> | string>;
   @Input() nzDisabledTime: DisabledTimeFn;
@@ -53,19 +54,7 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
 
   ngOnInit(): void {
     super.ngOnInit();
-
-    // Default format when it's empty
-    if (!this.nzFormat) {
-      if (this.showWeek) {
-        this.nzFormat = this.dateHelper.relyOnDatePipe ? 'yyyy-ww' : 'YYYY-WW'; // Format for week
-      } else {
-        if (this.dateHelper.relyOnDatePipe) {
-          this.nzFormat = this.nzShowTime ? 'yyyy-MM-dd HH:mm:ss' : 'yyyy-MM-dd';
-        } else {
-          this.nzFormat = this.nzShowTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD';
-        }
-      }
-    }
+    this.setFormat();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -77,6 +66,18 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
 
     if (changes.nzShowTime || changes.nzStyle) {
       this.setFixedPickerStyle();
+    }
+  }
+
+  private setFormat(): void {
+    // Default format when it's empty
+    if (this.showWeek) {
+      // TODO: Complete weekFormat in every locale file
+      this.defaultFormat = this.i18n.getLocaleData('DatePicker.lang.weekFormat', 'yyyy-ww'); // Format for week
+    } else {
+      this.defaultFormat = this.nzShowTime
+        ? this.i18n.getLocaleData('DatePicker.lang.dateTimeFormat', 'yyyy-MM-dd HH:mm:ss')
+        : this.i18n.getLocaleData('DatePicker.lang.dateFormat', 'yyyy-MM-dd');
     }
   }
 

@@ -12,7 +12,9 @@ import { isSameDay } from 'date-fns';
 import { dispatchKeyboardEvent, dispatchMouseEvent, NgStyleInterface, typeInElement } from 'ng-zorro-antd/core';
 import en_US from '../i18n/languages/en_US';
 
-import { NzI18nModule, NzI18nService } from 'ng-zorro-antd/i18n';
+import { enUS } from 'date-fns/locale';
+import { NzI18nModule, NzI18nService, NZ_DATE_LOCALE } from 'ng-zorro-antd/i18n';
+import { NzDatePickerComponent } from './nz-date-picker.component';
 import { NzDatePickerModule } from './nz-date-picker.module';
 
 registerLocaleData(zh);
@@ -885,6 +887,32 @@ describe('NzDatePickerComponent', () => {
   }
 });
 
+describe('date-fns testing', () => {
+  let fixture: ComponentFixture<NzTestDatePickerComponent>;
+  let fixtureInstance: NzTestDatePickerComponent;
+
+  beforeEach(fakeAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [FormsModule, NoopAnimationsModule, NzDatePickerModule, NzI18nModule],
+      providers: [{ provide: NZ_DATE_LOCALE, useValue: enUS }],
+      declarations: [NzTestDatePickerComponent]
+    });
+    TestBed.compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(NzTestDatePickerComponent);
+    fixtureInstance = fixture.componentInstance;
+    fixtureInstance.useSuite = 1;
+  });
+
+  it('should nzFormat has default value', fakeAsync(() => {
+    fixtureInstance.nzShowTime = true;
+    fixture.detectChanges();
+    expect(fixtureInstance.datePickerComp.nzFormat).toBe('MMM d, y h:mm:ss a');
+  }));
+});
+
 @Component({
   template: `
     <ng-container [ngSwitch]="useSuite">
@@ -936,7 +964,7 @@ class NzTestDatePickerComponent {
   useSuite: 1 | 2 | 3;
   @ViewChild('tplDateRender', { static: true }) tplDateRender: TemplateRef<Date>;
   @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter: TemplateRef<void>;
-
+  @ViewChild(NzDatePickerComponent, { static: false }) datePickerComp: NzDatePickerComponent;
   // --- Suite 1
   nzAllowClear: boolean;
   nzAutoFocus: boolean;

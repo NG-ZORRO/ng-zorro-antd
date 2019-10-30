@@ -39,7 +39,7 @@ export abstract class DateHelperService {
   abstract format(date: Date, formatStr: string): string;
 
   parseDate(text: string, formatStr: string): Date {
-    return parse(text, formatStr, new Date());
+    return parse(text, transCompatFormat(formatStr), new Date());
   }
 
   parseTime(text: string): Date | undefined {
@@ -70,8 +70,9 @@ export class DateHelperByDateFns extends DateHelperService {
    * @param date Date
    * @param formatStr format string
    */
-  format(date: Date | null, formatStr: string): string {
-    return date ? format(date, formatStr, { locale: this.i18n.getDateLocale() }) : '';
+
+  format(date: Date, formatStr: string): string {
+    return date ? format(date, transCompatFormat(formatStr), { locale: this.i18n.getDateLocale() }) : '';
   }
 }
 
@@ -99,29 +100,26 @@ export class DateHelperByDatePipe extends DateHelperService {
   }
 
   format(date: Date | null, formatStr: string): string {
-    return date ? formatDate(date, formatStr, this.i18n.getLocaleId())! : '';
-  }
-
-  /**
-   * Compatible translate the moment-like format pattern to angular's pattern
-   * Why? For now, we need to support the existing language formats in AntD, and AntD uses the default temporal syntax.
-   *
-   * TODO: compare and complete all format patterns
-   * Each format docs as below:
-   * @link https://momentjs.com/docs/#/displaying/format/
-   * @link https://angular.io/api/common/DatePipe#description
-   * @param toFormat input format pattern
-   */
-  transCompatFormat(toFormat: string): string {
-    return (
-      toFormat &&
-      toFormat
-        .replace(/Y/g, 'y') // only support y, yy, yyy, yyyy
-        .replace(/D/g, 'd')
-    ); // d, dd represent of D, DD for momentjs, others are not support
+    return date ? formatDate(date, transCompatFormat(formatStr), this.i18n.getLocaleId())! : '';
   }
 }
 
 ////////////
 
 export type WeekDayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+
+/**
+ * Compatible translate the format pattern to pattern which angular and date-fns can recognize
+ * Why? For now, we need to support the existing language formats in AntD, and AntD uses the default temporal syntax.
+ *
+ * TODO: compare and complete all format patterns
+ * Each format docs as below:
+ * @link https://date-fns.org/v2.6.0/docs/format
+ * @link https://angular.io/api/common/DatePipe#description
+ * @param toFormat input format pattern
+ */
+export function transCompatFormat(toFormat: string): string {
+  return (
+    toFormat && toFormat.replace(/Y/g, 'y').replace(/D/g, 'd') // d, dd represent of D, DD for date-fns and angular
+  );
+}

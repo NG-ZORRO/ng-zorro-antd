@@ -22,5 +22,5 @@ import { Component } from '@angular/core';
 })
 export class NzDemoDatePickerFormatComponent {
   dateFormat = 'dd.MM.yyyy';
-  monthFormat = 'MM-yyyy';
+  monthFormat = 'MM.yyyy';
 }

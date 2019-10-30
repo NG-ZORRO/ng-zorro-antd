@@ -117,6 +117,3 @@ export interface NzI18nInterface {
     expand: string;
   };
 }
-
-// tslint:disable-next-line:no-any
-export type DateLocale = any; // TODO: Implement this type definition when date-fns is stable
