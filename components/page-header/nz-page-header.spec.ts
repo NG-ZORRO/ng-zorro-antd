@@ -44,6 +44,7 @@ describe('NzPageHeaderComponent', () => {
     const fixture = TestBed.createComponent(NzDemoPageHeaderBreadcrumbComponent);
     const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
     fixture.detectChanges();
+    expect(pageHeader.nativeElement.classList).toContain('has-breadcrumb');
     expect(pageHeader.nativeElement.querySelector('nz-breadcrumb[nz-page-header-breadcrumb]')).toBeTruthy();
   });
 
@@ -80,7 +81,7 @@ describe('NzPageHeaderComponent', () => {
     const fixture = TestBed.createComponent(NzDemoPageHeaderResponsiveComponent);
     const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
     fixture.detectChanges();
-    expect(pageHeader.nativeElement.classList).toContain('ant-page-header-has-footer');
+    expect(pageHeader.nativeElement.classList).toContain('has-footer');
     expect(pageHeader.nativeElement.querySelector('nz-page-header-footer.ant-page-header-footer')).toBeTruthy();
   });
 
