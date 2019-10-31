@@ -54,10 +54,12 @@ export class NzAutocompleteOptionComponent {
 
   constructor(private changeDetectorRef: ChangeDetectorRef, private element: ElementRef) {}
 
-  select(): void {
+  select(emit: boolean = true): void {
     this.selected = true;
     this.changeDetectorRef.markForCheck();
-    this.emitSelectionChangeEvent();
+    if (emit) {
+      this.emitSelectionChangeEvent();
+    }
   }
 
   deselect(): void {

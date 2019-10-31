@@ -26,6 +26,7 @@ import {
   ExistingProvider,
   Inject,
   Input,
+  NgZone,
   OnDestroy,
   Optional,
   ViewContainerRef
@@ -33,7 +34,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { fromEvent, merge, Subscription } from 'rxjs';
-import { delay, distinct, map } from 'rxjs/operators';
+import { delay, distinct, map, take, tap } from 'rxjs/operators';
 
 import { NzAutocompleteOptionComponent } from './nz-autocomplete-option.component';
 import { NzAutocompleteComponent } from './nz-autocomplete.component';
@@ -92,8 +93,9 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
 
   constructor(
     private elementRef: ElementRef,
-    private _overlay: Overlay,
+    private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
+    private ngZone: NgZone,
     // tslint:disable-next-line:no-any
     @Optional() @Inject(DOCUMENT) private document: any
   ) {}
@@ -124,6 +126,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   openPanel(): void {
     this.previousValue = this.elementRef.nativeElement.value;
     this.attachOverlay();
+    this.updateStatus();
   }
 
   closePanel(): void {
@@ -210,8 +213,16 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
    * Subscription data source changes event
    */
   private subscribeOptionsChange(): Subscription {
-    return this.nzAutocomplete.options.changes.pipe(delay(0)).subscribe(() => {
+    const firstStable = this.ngZone.onStable.asObservable().pipe(take(1));
+    const optionChanges = this.nzAutocomplete.options.changes.pipe(
+      tap(() => this.positionStrategy.reapplyLastPosition()),
+      delay(0)
+    );
+    return merge(firstStable, optionChanges).subscribe(() => {
       this.resetActiveItem();
+      if (this.panelOpen) {
+        this.overlayRef!.updatePosition();
+      }
     });
   }
 
@@ -252,10 +263,11 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     return this.positionStrategy.positionChanges
       .pipe(
         map((position: ConnectedOverlayPositionChange) => position.connectionPair.originY),
-        distinct()
+        distinct(),
+        delay(0)
       )
       .subscribe((position: VerticalConnectionPos) => {
-        this.nzAutocomplete.dropDownPosition = position;
+        this.nzAutocomplete.updatePosition(position);
       });
   }
 
@@ -269,7 +281,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     }
 
     if (!this.overlayRef) {
-      this.overlayRef = this._overlay.create(this.getOverlayConfig());
+      this.overlayRef = this.overlay.create(this.getOverlayConfig());
     }
 
     if (this.overlayRef && !this.overlayRef.hasAttached()) {
@@ -279,15 +291,14 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
       this.overlayBackdropClickSubscription = this.subscribeOverlayBackdropClick();
       this.optionsChangeSubscription = this.subscribeOptionsChange();
     }
-
     this.nzAutocomplete.isOpen = this.panelOpen = true;
+  }
+
+  private updateStatus(): void {
+    if (this.overlayRef) {
+      this.overlayRef.updateSize({ width: this.nzAutocomplete.nzWidth || this.getHostWidth() });
+    }
     this.nzAutocomplete.setVisibility();
-    this.overlayRef.updateSize({ width: this.nzAutocomplete.nzWidth || this.getHostWidth() });
-    setTimeout(() => {
-      if (this.overlayRef) {
-        this.overlayRef.updatePosition();
-      }
-    }, 150);
     this.resetActiveItem();
     if (this.activeOption) {
       this.activeOption.scrollIntoViewIfNeeded();
@@ -303,7 +314,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   private getOverlayConfig(): OverlayConfig {
     return new OverlayConfig({
       positionStrategy: this.getOverlayPosition(),
-      scrollStrategy: this._overlay.scrollStrategies.reposition(),
+      scrollStrategy: this.overlay.scrollStrategies.reposition(),
       // default host element width
       width: this.nzAutocomplete.nzWidth || this.getHostWidth()
     });
@@ -322,19 +333,21 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
       new ConnectionPositionPair({ originX: 'start', originY: 'bottom' }, { overlayX: 'start', overlayY: 'top' }),
       new ConnectionPositionPair({ originX: 'start', originY: 'top' }, { overlayX: 'start', overlayY: 'bottom' })
     ];
-    this.positionStrategy = this._overlay
+    this.positionStrategy = this.overlay
       .position()
       .flexibleConnectedTo(this.getConnectedElement())
-      .withPositions(positions)
       .withFlexibleDimensions(false)
-      .withPush(false);
+      .withPush(false)
+      .withPositions(positions);
     return this.positionStrategy;
   }
 
   private resetActiveItem(): void {
-    const index = this.nzAutocomplete.getOptionIndex(this.nzAutocomplete.activeItem);
-    if (this.nzAutocomplete.activeItem && index !== -1) {
+    const index = this.nzAutocomplete.getOptionIndex(this.previousValue);
+    this.nzAutocomplete.clearSelectedOptions(null, true);
+    if (index !== -1) {
       this.nzAutocomplete.setActiveItem(index);
+      this.nzAutocomplete.activeItem.select(false);
     } else {
       this.nzAutocomplete.setActiveItem(this.nzAutocomplete.nzDefaultActiveFirstOption ? 0 : -1);
     }
