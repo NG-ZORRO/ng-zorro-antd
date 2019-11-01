@@ -12,7 +12,8 @@ import {
   dispatchMouseEvent,
   typeInElement,
   MockNgZone,
-  NzTreeNode, NzTreeNodeOptions
+  NzTreeNode,
+  NzTreeNodeOptions
 } from 'ng-zorro-antd/core';
 
 import { NzTreeSelectComponent } from './nz-tree-select.component';
@@ -345,6 +346,27 @@ describe('tree-select component', () => {
       expect(testComponent.nzSelectTreeComponent.value.length).toBe(0);
     }));
 
+    it('should not check strictly work', fakeAsync(() => {
+      fixture.detectChanges();
+      testComponent.value = ['1001', '10001', '100012'];
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      expect(testComponent.nzSelectTreeComponent.selectedNodes.length).toBe(1);
+    }));
+
+    it('should check strictly work', fakeAsync(() => {
+      fixture.detectChanges();
+      testComponent.checkStrictly = true;
+      testComponent.value = ['1001', '10001', '100012'];
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      expect(testComponent.nzSelectTreeComponent.selectedNodes.length).toBe(3);
+      testComponent.checkStrictly = false;
+      fixture.detectChanges();
+    }));
+
     it('should remove checked when press backs', fakeAsync(() => {
       treeSelect.nativeElement.click();
       fixture.detectChanges();
@@ -620,6 +642,7 @@ export class NzTestTreeSelectBasicComponent {
       [nzNodes]="nodes"
       [nzShowSearch]="showSearch"
       [nzCheckable]="true"
+      [nzCheckStrictly]="checkStrictly"
       [(ngModel)]="value"
     >
     </nz-tree-select>
@@ -630,6 +653,7 @@ export class NzTestTreeSelectCheckableComponent {
   expandKeys = ['1001', '10001'];
   value: string[] | null = ['1000122'];
   showSearch = false;
+  checkStrictly = false;
   nodes = [
     {
       title: 'root1',
