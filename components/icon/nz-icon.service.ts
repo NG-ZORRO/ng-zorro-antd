@@ -110,30 +110,6 @@ export class NzIconService extends IconService {
 
   private iconfontCache = new Set<string>();
 
-  constructor(
-    rendererFactory: RendererFactory2,
-    sanitizer: DomSanitizer,
-    @Optional() @Inject(NZ_ICONS) private icons: IconDefinition[],
-    @Optional() @Inject(NZ_ICON_DEFAULT_TWOTONE_COLOR) private defaultColor: string,
-    @Optional() handler: HttpBackend,
-    // tslint:disable-next-line:no-any
-    @Optional() @Inject(DOCUMENT) document: any
-  ) {
-    super(rendererFactory, handler, document, sanitizer);
-
-    this.addIcon(...NZ_ICONS_USED_BY_ZORRO, ...(this.icons || []));
-
-    let primaryColor = DEFAULT_TWOTONE_COLOR;
-    if (this.defaultColor) {
-      if (this.defaultColor.startsWith('#')) {
-        primaryColor = this.defaultColor;
-      } else {
-        warn('Twotone color must be a hex color!');
-      }
-    }
-    this.twoToneColor = { primaryColor };
-  }
-
   normalizeSvgElement(svg: SVGElement): void {
     if (!svg.getAttribute('viewBox')) {
       this._renderer.setAttribute(svg, 'viewBox', '0 0 1024 1024');
@@ -187,8 +163,8 @@ export class NzIconService extends IconService {
         `'NZ_ICON_DEFAULT_TWOTONE_COLOR' is deprecated and will be removed in 9.0.0. Please use 'NZ_CONFIG' instead!`
       );
     }
-    this.configDefaultTwotoneColor();
 
+    this.configDefaultTwotoneColor();
     this.configDefaultTheme();
   }
 
