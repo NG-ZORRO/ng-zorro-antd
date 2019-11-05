@@ -28,7 +28,6 @@ import { Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 import { NzTooltipTrigger } from '../nz-tooltip.definitions';
-import { NzTooltipBaseComponentLegacy } from './nz-tooltip-base-legacy.component';
 import { NzTooltipBaseComponent } from './nz-tooltip-base.component';
 
 export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDestroy, AfterViewInit {
@@ -105,18 +104,11 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
+  isTooltipComponentVisible = false;
   tooltip: NzTooltipBaseComponent;
 
-  isTooltipComponentVisible = false;
-
-  /**
-   * @deprecated 9.0.0. Tooltips would always be dynamic in 9.0.0.
-   */
-  protected isDynamicTooltip = false;
-
+  protected readonly $destroy = new Subject<void>();
   protected readonly triggerUnlisteners: Array<() => void> = [];
-
-  protected $destroy = new Subject<void>();
 
   private delayTimer?: number;
 
@@ -125,10 +117,6 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
     protected hostView: ViewContainerRef,
     protected resolver: ComponentFactoryResolver,
     protected renderer: Renderer2,
-    /**
-     * @deprecated 9.0.0. This will always be `null`.
-     */
-    protected _tooltip?: NzTooltipBaseComponentLegacy,
     protected noAnimation?: NzNoAnimationDirective
   ) {}
 
@@ -140,47 +128,37 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
       this.registerTriggers();
     }
 
-    if (this.tooltip && this.isDynamicTooltip) {
+    if (this.tooltip) {
       this.updateChangedProperties(changes);
     }
 
-    // TODO: enable these warning in 9.0.0.
-    // if (changes.nzTitle) {
-    //   warnDeprecation(
-    //     `'nzTitle' of 'nz-tooltip' is deprecated and will be removed in 10.0.0. Please use 'nzTooltipTitle' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
-    //   );
-    // }
+    if (changes.nzTitle) {
+      warnDeprecation(
+        `'nzTitle' of 'nz-tooltip' is deprecated and will be removed in 10.0.0. Please use 'nzTooltipTitle' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
+      );
+    }
 
-    // if (changes.nzContent) {
-    //   warnDeprecation(
-    //     `'nzContent' of 'nz-popover' is deprecated and will be removed in 10.0.0. Please use 'nzPopoverContent' instead.`
-    //   );
-    // }
+    if (changes.nzContent) {
+      warnDeprecation(
+        `'nzContent' of 'nz-popover' is deprecated and will be removed in 10.0.0. Please use 'nzPopoverContent' instead.`
+      );
+    }
 
-    // if (changes.nzPlacement) {
-    //   warnDeprecation(
-    //     `'nzPlacement' of 'nz-tooltip' is deprecated and will be removed in 10.0.0. Please use 'nzTooltipContent' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
-    //   );
-    // }
+    if (changes.nzPlacement) {
+      warnDeprecation(
+        `'nzPlacement' of 'nz-tooltip' is deprecated and will be removed in 10.0.0. Please use 'nzTooltipContent' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
+      );
+    }
 
-    // if (changes.nzTrigger) {
-    //   warnDeprecation(
-    //     `'nzTrigger' of 'nz-tooltip' is deprecated and will be removed in 10.0.0. Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
-    //   );
-    // }
+    if (changes.nzTrigger) {
+      warnDeprecation(
+        `'nzTrigger' of 'nz-tooltip' is deprecated and will be removed in 10.0.0. Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
+      );
+    }
   }
 
   ngOnInit(): void {
-    if (!this._tooltip) {
-      this.createDynamicTooltipComponent();
-    } else {
-      warnDeprecation(
-        `'<nz-tooltip></nz-tooltip>', '<nz-popover></nz-popover>' and '<nz-popconfirm></nz-popconfirm>' is deprecated and will be removed in 9.0.0. Refer: https://ng.ant.design/components/tooltip/zh .`
-      );
-      this.tooltip = this._tooltip;
-      this.tooltip.setOverlayOrigin(this as CdkOverlayOrigin);
-    }
-
+    this.createTooltipComponent();
     this.tooltip.nzVisibleChange
       .pipe(
         distinctUntilChanged(),
@@ -203,6 +181,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
     // Clear toggling timer. Issue #3875 #4317 #4386
     this.clearTogglingTimer();
     this.removeTriggerListeners();
+    this.disposeTooltipComponent();
 
     if (this.tooltipRef) {
       this.tooltipRef.destroy();
@@ -221,7 +200,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
    * Force the component to update its position.
    */
   updatePosition(): void {
-    if (this.tooltip && this.isDynamicTooltip) {
+    if (this.tooltip) {
       this.tooltip.updatePosition();
     }
   }
@@ -229,9 +208,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
   /**
    * Create a dynamic tooltip component. This method can be override.
    */
-  protected createDynamicTooltipComponent(): void {
-    this.isDynamicTooltip = true;
-
+  protected createTooltipComponent(): void {
     this.tooltipRef = this.hostView.createComponent(this.componentFactory);
 
     this.tooltip = this.tooltipRef.instance;
@@ -251,7 +228,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
     // When the method gets invoked, all properties has been synced to the dynamic component.
     // After removing the old API, we can just check the directive's own `nzTrigger`.
     const el = this.elementRef.nativeElement;
-    const trigger = this.isDynamicTooltip ? this.trigger : this.tooltip.nzTrigger;
+    const trigger = this.trigger;
 
     this.removeTriggerListeners();
 
@@ -298,10 +275,10 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
    */
   protected updateChangedProperties(propertiesOrChanges: string[] | SimpleChanges): void {
     const isArray = Array.isArray(propertiesOrChanges);
-    const keys_ = isArray ? (propertiesOrChanges as string[]) : Object.keys(propertiesOrChanges);
+    const keys = isArray ? (propertiesOrChanges as string[]) : Object.keys(propertiesOrChanges);
 
     // tslint:disable-next-line no-any
-    keys_.forEach((property: any) => {
+    keys.forEach((property: any) => {
       if (this.needProxyProperties.indexOf(property) !== -1) {
         // @ts-ignore
         this.updateComponentValue(property, this[property]);
@@ -365,5 +342,9 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
       clearTimeout(this.delayTimer);
       this.delayTimer = undefined;
     }
+  }
+
+  private disposeTooltipComponent(): void {
+    this.tooltip.dispose();
   }
 }
