@@ -320,7 +320,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
 
   // tslint:disable-next-line no-any
   private updateComponentValue(key: string, value: any): void {
-    if (typeof value !== undefined) {
+    if (typeof value !== 'undefined') {
       // @ts-ignore
       this.tooltip[key] = value;
     }
