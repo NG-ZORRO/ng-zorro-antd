@@ -23,7 +23,7 @@ import {
   SimpleChanges,
   ViewContainerRef
 } from '@angular/core';
-import { isNotNil, warnDeprecation, NgStyleInterface, NzNoAnimationDirective, NzTSType } from 'ng-zorro-antd/core';
+import { warnDeprecation, NgStyleInterface, NzNoAnimationDirective, NzTSType } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
