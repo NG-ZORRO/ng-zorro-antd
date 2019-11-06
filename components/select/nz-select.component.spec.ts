@@ -273,6 +273,10 @@ describe('nz-select component', () => {
       expect(testComponent.selectedValue).toBe('lucy');
       select.nativeElement.click();
       fixture.detectChanges();
+      dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', UP_ARROW);
+      fixture.detectChanges();
+      dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', DOWN_ARROW);
+      fixture.detectChanges();
       dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', DOWN_ARROW);
       fixture.detectChanges();
       dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', ENTER);
