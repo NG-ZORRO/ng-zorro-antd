@@ -21,7 +21,7 @@ import {
 } from '@angular/core';
 
 import { Location } from '@angular/common';
-import { NzPageHeaderFooterDirective } from './nz-page-header-cells';
+import { NzPageHeaderBreadcrumbDirective, NzPageHeaderFooterDirective } from './nz-page-header-cells';
 
 @Component({
   selector: 'nz-page-header',
@@ -32,7 +32,8 @@ import { NzPageHeaderFooterDirective } from './nz-page-header-cells';
   encapsulation: ViewEncapsulation.None,
   host: {
     class: 'ant-page-header ant-page-header-ghost',
-    '[class.ant-page-header-has-footer]': 'nzPageHeaderFooter'
+    '[class.has-footer]': 'nzPageHeaderFooter',
+    '[class.has-breadcrumb]': 'nzPageHeaderBreadcrumb'
   },
   styles: [
     `
@@ -57,6 +58,10 @@ export class NzPageHeaderComponent implements OnChanges {
 
   @ContentChild(NzPageHeaderFooterDirective, { static: false }) nzPageHeaderFooter: ElementRef<
     NzPageHeaderFooterDirective
+  >;
+
+  @ContentChild(NzPageHeaderBreadcrumbDirective, { static: false }) nzPageHeaderBreadcrumb: ElementRef<
+    NzPageHeaderBreadcrumbDirective
   >;
 
   constructor(private location: Location) {}
