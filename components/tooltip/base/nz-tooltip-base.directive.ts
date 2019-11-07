@@ -199,6 +199,8 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
   ngOnDestroy(): void {
     this.$destroy.next();
     this.$destroy.complete();
+    this.removeTriggerListeners();
+
     if (this.tooltipRef) {
       this.tooltipRef.destroy();
     }
