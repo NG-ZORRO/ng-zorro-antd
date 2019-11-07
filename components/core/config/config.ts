@@ -10,9 +10,8 @@ import { InjectionToken, TemplateRef, Type } from '@angular/core';
 
 import { NzAlignType, NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType } from '../types';
 
+import { SafeUrl } from '@angular/platform-browser';
 import { BreakpointMap, NzBreakpoint } from '../responsive/public-api';
-
-// TODO: generate config files if custom build can be used.
 
 export interface NzConfig {
   affix?: AffixConfig;
@@ -25,6 +24,7 @@ export interface NzConfig {
   card?: CardConfig;
   carousel?: CarouselConfig;
   cascader?: CascaderConfig;
+  codeEditor?: CodeEditorConfig;
   collapse?: CollapseConfig;
   collapsePanel?: CollapsePanelConfig;
   descriptions?: DescriptionsConfig;
@@ -82,6 +82,16 @@ export interface BadgeConfig {
 
 export interface ButtonConfig {
   nzSize?: 'large' | 'default' | 'small';
+}
+
+export interface CodeEditorConfig {
+  assetsRoot?: string | SafeUrl;
+  defaultEditorOption?: any; // tslint:disable-line no-any
+  useStaticLoading?: boolean;
+
+  onLoad?(): void;
+  onFirstEditorInit?(): void;
+  onInit?(): void;
 }
 
 export interface CardConfig {

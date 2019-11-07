@@ -14,7 +14,7 @@ Support monaco editor in Angular.
 
 ## API
 
-Before using this component, you should load resources of monaco editor itself. You can load these resources with Angular CLI. Write this configuration in angular.json:
+If you would like to load monaco dynamically, you will need assets of monaco editor itself. You can do that load by adding these lines in angular.json:
 
 ```diff
 "assets": [
@@ -26,7 +26,7 @@ Before using this component, you should load resources of monaco editor itself. 
 ],
 ```
 
-Or you can provide an `assetsRoot` to determine where should the component load resources of monaco editor.
+> If you are going to use static loading (which we will explain in detail at the bottom of this page), you don't need to modify angular.json file.
 
 And don't forget to install `monaco-editor`.
 
@@ -63,4 +63,16 @@ You can inject an object that implements `NzCodeEditorConfig` with the injection
 | `onLoad` | The hook invoked when the resource of monaco editor is loaded. At this moment and afterwards the global variable `monaco` is usable | `() => void` | - |
 | `onFirstEditorInit` | The hook invoked when the first monaco editor is initialized | `() => void` | - |
 | `onInit` | The hook invoked every time a monaco editor is initialized | `() => void`  | - |
+| `useStaticLoading` | Load monaco editor statically | `boolean` | `false` |
 
+## Static Loading
+
+Sometimes you need to load AMD module dynamically. But since monaco editor's loader patches `window[require]`, you can not use AMD loader like requireJS. In this situation you need to enable static loading.
+
+With help of [monaco-editor-webpack-plguin](https://github.com/microsoft/monaco-editor-webpack-plugin) by Microsoft, you can do that in a convenient way.
+
+1. Please inject a `NZ_CODE_EDITOR_CONFIG` with `useStaticLoading` to be `true`.
+2. Create a webpack.partial.js file, and config monaco-editor-webpack-loader.
+3. Use custom webpack loader like [ngx-build-plus](https://github.com/manfredsteyer/ngx-build-plus) to load this webpack config.
+
+If you use static loading, you should not add assets of monaco editor to your project by modifying angular.json file.

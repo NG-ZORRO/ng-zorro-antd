@@ -7,11 +7,11 @@
  */
 
 import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
+import { Inject, Injectable, Optional } from '@angular/core';
 import { of as observableOf, BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
-import { PREFIX } from 'ng-zorro-antd/core';
+import { warn, warnDeprecation, NzConfigService, PREFIX } from 'ng-zorro-antd/core';
 import {
   JoinedEditorOptions,
   NzCodeEditorConfig,
@@ -21,6 +21,8 @@ import {
 
 // tslint:disable-next-line no-any
 declare const monaco: any;
+
+const NZ_CONFIG_COMPONENT_NAME = 'codeEditor';
 
 // tslint:disable no-any
 function tryTriggerFunc(fn?: (...args: any[]) => any): (...args: any) => void {
@@ -41,19 +43,43 @@ export class NzCodeEditorService {
   private loaded$ = new Subject<boolean>();
   private loadingStatus = NzCodeEditorLoadingStatus.UNLOAD;
   private option: JoinedEditorOptions;
+  private config: NzCodeEditorConfig;
 
   option$ = new BehaviorSubject<JoinedEditorOptions>(this.option);
 
   constructor(
-    @Inject(NZ_CODE_EDITOR_CONFIG) private config: NzCodeEditorConfig,
-    @Inject(DOCUMENT) _document: any // tslint:disable-line no-any
+    private readonly nzConfigService: NzConfigService,
+    @Inject(DOCUMENT) _document: any, // tslint:disable-line no-any
+    @Inject(NZ_CODE_EDITOR_CONFIG) @Optional() config?: NzCodeEditorConfig
   ) {
+    const globalConfig = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME);
+
+    if (config) {
+      warnDeprecation(
+        `'NZ_CODE_EDITOR_CONFIG' is deprecated and will be removed in next minor version. Please use 'NzConfigService' instead.`
+      );
+    }
+
     this.document = _document;
-    this.option = this.config.defaultEditorOption || {};
+    this.option = { ...(this.config || {}).defaultEditorOption, ...(globalConfig || {}).defaultEditorOption };
+
+    this.nzConfigService.getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME).subscribe(() => {
+      const newGlobalConfig = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME);
+      if (newGlobalConfig) {
+        this._updateDefaultOption(newGlobalConfig.defaultEditorOption);
+      }
+    });
   }
 
-  // TODO: use config service later.
   updateDefaultOption(option: JoinedEditorOptions): void {
+    warnDeprecation(
+      `'updateDefaultOption' is deprecated and will be removed in next minor version. Please use 'set' of 'NzConfigService' instead.`
+    );
+
+    this._updateDefaultOption(option);
+  }
+
+  private _updateDefaultOption(option: JoinedEditorOptions): void {
     this.option = { ...this.option, ...option };
     this.option$.next(this.option);
 
@@ -69,7 +95,15 @@ export class NzCodeEditorService {
     }
 
     if (this.loadingStatus === NzCodeEditorLoadingStatus.UNLOAD) {
-      this.loadMonacoScript();
+      if (this.config.useStaticLoading && typeof monaco === 'undefined') {
+        warn(
+          'You choose to use static loading but it seems that you forget ' +
+            'to config webpack plugin correctly. Please refer to our official website' +
+            'for more details about static loading.'
+        );
+      } else {
+        this.loadMonacoScript();
+      }
     }
 
     return this.loaded$.asObservable().pipe(
@@ -79,6 +113,11 @@ export class NzCodeEditorService {
   }
 
   private loadMonacoScript(): void {
+    if (this.config.useStaticLoading) {
+      this.onLoad();
+      return;
+    }
+
     if (this.loadingStatus === NzCodeEditorLoadingStatus.LOADING) {
       return;
     }
@@ -97,9 +136,6 @@ export class NzCodeEditorService {
         paths: { vs }
       });
       windowAsAny.require(['vs/editor/editor.main'], () => {
-        this.loadingStatus = NzCodeEditorLoadingStatus.LOADED;
-        this.loaded$.next(true);
-        this.loaded$.complete();
         this.onLoad();
       });
     };
@@ -110,6 +146,14 @@ export class NzCodeEditorService {
     this.document.documentElement.appendChild(loadScript);
   }
 
+  private onLoad(): void {
+    this.loadingStatus = NzCodeEditorLoadingStatus.LOADED;
+    this.loaded$.next(true);
+    this.loaded$.complete();
+
+    tryTriggerFunc(this.config.onLoad)();
+  }
+
   private onInit(): void {
     if (!this.firstEditorInitialized) {
       this.firstEditorInitialized = true;
@@ -117,10 +161,6 @@ export class NzCodeEditorService {
     }
 
     tryTriggerFunc(this.config.onInit)();
-  }
-
-  private onLoad(): void {
-    tryTriggerFunc(this.config.onLoad)();
   }
 
   private getLatestOption(): JoinedEditorOptions {
