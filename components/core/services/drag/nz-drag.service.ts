@@ -10,7 +10,7 @@ import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { filter, finalize, map } from 'rxjs/operators';
 
-import { getEventPosition } from '../../util/dom';
+import { getEventPosition, isTouchEvent } from '../../util/dom';
 
 interface Point {
   x: number;
@@ -40,7 +40,6 @@ function getPagePosition(event: MouseEvent | TouchEvent): Point {
   providedIn: 'root'
 })
 export class NzDragService {
-  private awaitingSequence = false;
   private draggingThreshold = 5;
   private currentDraggingSequence: Subject<MouseEvent | Touch> | null = null;
   private currentStartingPoint: Point | null = null;
@@ -53,10 +52,8 @@ export class NzDragService {
 
   requestDraggingSequence(event: MouseEvent | TouchEvent): Observable<Delta> {
     if (!this.handleRegistry.size) {
-      this.registerDraggingHandler();
+      this.registerDraggingHandler(isTouchEvent(event));
     }
-
-    this.awaitingSequence = true;
 
     // Complete last dragging sequence if a new target is dragged.
     if (this.currentDraggingSequence) {
@@ -65,7 +62,6 @@ export class NzDragService {
 
     this.currentStartingPoint = getPagePosition(event);
     this.currentDraggingSequence = new Subject<MouseEvent | Touch>();
-    this.awaitingSequence = false;
 
     return this.currentDraggingSequence.pipe(
       map((e: MouseEvent | Touch) => {
@@ -79,47 +75,41 @@ export class NzDragService {
     );
   }
 
-  private registerDraggingHandler(): void {
-    this.handleRegistry.add({
-      teardown: this.renderer.listen('document', 'mousemove', e => {
-        if (this.currentDraggingSequence) {
-          this.currentDraggingSequence.next(e);
-        }
-      })
-    });
-    this.handleRegistry.add({
-      teardown: this.renderer.listen('document', 'mouseup', () => {
-        if (this.currentDraggingSequence) {
-          this.currentDraggingSequence.complete();
-        }
-      })
-    });
-    this.handleRegistry.add({
-      teardown: this.renderer.listen('document', 'touchmove', (e: TouchEvent) => {
-        if (this.currentDraggingSequence) {
-          this.currentDraggingSequence.next(e.touches[0] || e.changedTouches[0]);
-        }
-      })
-    });
-    this.handleRegistry.add({
-      teardown: this.renderer.listen('document', 'touchend', () => {
-        if (this.currentDraggingSequence) {
-          this.currentDraggingSequence.complete();
-        }
-      })
-    });
-  }
-
-  private unregisterDraggingHandler(): void {
-    this.handleRegistry.forEach(r => r.teardown());
-    this.handleRegistry.clear();
+  private registerDraggingHandler(isTouch: boolean): void {
+    if (isTouch) {
+      this.handleRegistry.add({
+        teardown: this.renderer.listen('document', 'touchmove', (e: TouchEvent) => {
+          if (this.currentDraggingSequence) {
+            this.currentDraggingSequence.next(e.touches[0] || e.changedTouches[0]);
+          }
+        })
+      });
+      this.handleRegistry.add({
+        teardown: this.renderer.listen('document', 'touchend', () => {
+          if (this.currentDraggingSequence) {
+            this.currentDraggingSequence.complete();
+          }
+        })
+      });
+    } else {
+      this.handleRegistry.add({
+        teardown: this.renderer.listen('document', 'mousemove', e => {
+          if (this.currentDraggingSequence) {
+            this.currentDraggingSequence.next(e);
+          }
+        })
+      });
+      this.handleRegistry.add({
+        teardown: this.renderer.listen('document', 'mouseup', () => {
+          if (this.currentDraggingSequence) {
+            this.currentDraggingSequence.complete();
+          }
+        })
+      });
+    }
   }
 
   private teardownDraggingSequence(): void {
     this.currentDraggingSequence = null;
-
-    if (!this.awaitingSequence) {
-      this.unregisterDraggingHandler();
-    }
   }
 }
