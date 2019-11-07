@@ -396,13 +396,15 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     if (init) {
       const nodes = this.coerceTreeNodes(this.nzNodes);
       this.nzTreeService.isMultiple = this.isMultiple;
+      this.nzTreeService.isCheckStrictly = this.nzCheckStrictly;
       this.nzTreeService.initTree(nodes);
       if (this.nzCheckable) {
-        this.nzTreeService.calcCheckedKeys(this.value, nodes);
+        this.nzTreeService.calcCheckedKeys(this.value, nodes, this.nzCheckStrictly);
       } else {
         this.nzTreeService.calcSelectedKeys(this.value, nodes, this.isMultiple);
       }
     }
+
     this.selectedNodes = [...(this.nzCheckable ? this.getCheckedNodeList() : this.getSelectedNodeList())];
   }
 

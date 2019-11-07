@@ -30,7 +30,6 @@ import { takeUntil } from 'rxjs/operators';
 
 import {
   isNotNil,
-  toBoolean,
   warnDeprecation,
   InputBoolean,
   NzConfigService,
@@ -114,16 +113,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
 
   @Input() nzBeforeDrop: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;
 
-  @Input()
-  @InputBoolean()
-  set nzMultiple(value: boolean) {
-    this._nzMultiple = toBoolean(value);
-    this.nzTreeService.isMultiple = toBoolean(value);
-  }
-
-  get nzMultiple(): boolean {
-    return this._nzMultiple;
-  }
+  @Input() @InputBoolean() nzMultiple = false;
 
   @Input()
   // tslint:disable-next-line:no-any
@@ -223,7 +213,6 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   @Output() readonly nzOnDragEnd = new EventEmitter<NzFormatEmitEvent>();
 
   _searchValue: string;
-  _nzMultiple: boolean = false;
   nzDefaultSubject = new ReplaySubject<{ type: string; keys: string[] }>(6);
   destroy$ = new Subject();
   prefixCls = 'ant-tree';
@@ -340,10 +329,10 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
 
   ngOnChanges(changes: { [propertyName: string]: SimpleChange }): void {
     if (changes.nzCheckStrictly) {
-      this.nzTreeService.isCheckStrictly = toBoolean(changes.nzCheckStrictly.currentValue);
+      this.nzTreeService.isCheckStrictly = this.nzCheckStrictly;
     }
     if (changes.nzMultiple) {
-      this.nzTreeService.isMultiple = toBoolean(changes.nzMultiple.currentValue);
+      this.nzTreeService.isMultiple = this.nzMultiple;
     }
   }
 
