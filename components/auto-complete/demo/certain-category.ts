@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 export interface AutocompleteOptionGroups {
   title: string;
@@ -9,7 +9,6 @@ export interface AutocompleteOptionGroups {
 @Component({
   selector: 'nz-demo-auto-complete-certain-category',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="example-input">
       <nz-input-group nzSize="large" [nzSuffix]="suffixIcon">
@@ -58,7 +57,7 @@ export class NzDemoAutoCompleteCertainCategoryComponent implements OnInit {
   inputValue: string;
   optionGroups: AutocompleteOptionGroups[];
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor() {}
 
   onChange(value: string): void {
     console.log(value);
@@ -103,7 +102,6 @@ export class NzDemoAutoCompleteCertainCategoryComponent implements OnInit {
           ]
         }
       ];
-      this.cdr.markForCheck();
     }, 1000);
   }
 }
