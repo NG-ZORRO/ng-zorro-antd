@@ -23,7 +23,7 @@ import {
   SimpleChanges,
   ViewContainerRef
 } from '@angular/core';
-import { isNotNil, warnDeprecation, NgStyleInterface, NzNoAnimationDirective, NzTSType } from 'ng-zorro-antd/core';
+import { warnDeprecation, NgStyleInterface, NzNoAnimationDirective, NzTSType } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
@@ -331,7 +331,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
 
   // tslint:disable-next-line no-any
   private updateComponentValue(key: string, value: any): void {
-    if (isNotNil(value)) {
+    if (typeof value !== 'undefined') {
       // @ts-ignore
       this.tooltip[key] = value;
     }
