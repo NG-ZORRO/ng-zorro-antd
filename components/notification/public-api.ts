@@ -6,7 +6,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-notification-config';
 export * from './nz-notification.component';
 export * from './nz-notification.module';
 export * from './nz-notification.definitions';
