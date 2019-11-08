@@ -36,6 +36,7 @@ export interface NzConfig {
   message?: MessageConfig;
   modal?: ModalConfig;
   notification?: NotificationConfig;
+  pageHeader?: PageHeaderConfig;
   progress?: ProgressConfig;
   rate?: RateConfig;
   spin?: SpinConfig;
@@ -172,6 +173,10 @@ export interface NotificationConfig extends MessageConfig {
   nzTop?: string | number;
   nzBottom?: string | number;
   nzPlacement?: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight' | string;
+}
+
+export interface PageHeaderConfig {
+  nzGhost: boolean;
 }
 
 export interface ProgressConfig {
