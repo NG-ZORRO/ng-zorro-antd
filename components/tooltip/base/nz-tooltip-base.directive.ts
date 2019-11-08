@@ -199,6 +199,10 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
   ngOnDestroy(): void {
     this.$destroy.next();
     this.$destroy.complete();
+
+    // Clear toggling timer. Issue #3875 #4317 #4386
+    this.hide();
+    this.clearTogglingTimer();
     this.removeTriggerListeners();
 
     if (this.tooltipRef) {
@@ -338,10 +342,9 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
   }
 
   private delayEnterLeave(isOrigin: boolean, isEnter: boolean, delay: number = -1): void {
-    if (this.delayTimer) {
-      clearTimeout(this.delayTimer);
-      this.delayTimer = undefined;
-    } else if (delay > 0) {
+    this.clearTogglingTimer();
+
+    if (delay > 0) {
       this.delayTimer = setTimeout(() => {
         this.delayTimer = undefined;
         isEnter ? this.show() : this.hide();
@@ -356,5 +359,12 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
   private removeTriggerListeners(): void {
     this.triggerUnlisteners.forEach(cancel => cancel());
     this.triggerUnlisteners.length = 0;
+  }
+
+  private clearTogglingTimer(): void {
+    if (this.delayTimer) {
+      clearTimeout(this.delayTimer);
+      this.delayTimer = undefined;
+    }
   }
 }
