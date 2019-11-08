@@ -1,4 +1,4 @@
-<div *ngFor="let file of items" class="ant-upload-list-item ant-upload-list-item-{{file.status}}" @itemState>
+<div *ngFor="let file of items" class="ant-upload-list-item ant-upload-list-item-{{file.status}} ant-upload-list-item-list-type-{{listType}}" @itemState>
   <ng-template #icon>
     <ng-container *ngIf="showPic; else noPicTpl">
       <div *ngIf="listType === 'picture-card' && file.status === 'uploading'; else thumbUrlCheck" class="ant-upload-list-item-uploading-text">{{ locale.uploading }}</div>
@@ -26,6 +26,9 @@
       <span (click)="handlePreview(file, $event)" class="ant-upload-list-item-name" title="{{ file.name }}">{{ file.name }}</span>
     </ng-template>
   </ng-template>
+  <ng-template #remove>
+    <i *ngIf="icons.showRemoveIcon" (click)="handleRemove(file, $event)" nz-icon nzType="delete" title="{{ locale.removeFile }}"></i>
+  </ng-template>
   <div class="ant-upload-list-item-info">
     <span *ngIf="file.status === 'error'" nz-tooltip [nzTitle]="file.message">
       <ng-template [ngTemplateOutlet]="icon"></ng-template>
@@ -36,7 +39,7 @@
       <ng-template [ngTemplateOutlet]="preview"></ng-template>
     </span>
   </div>
-  <ng-container *ngIf="listType === 'picture-card' && file.status !== 'uploading'; else close">
+  <ng-container *ngIf="listType === 'picture-card' && file.status !== 'uploading'; else remove">
     <span class="ant-upload-list-item-actions">
       <a *ngIf="showPreview(file)" [href]="file.thumbUrl || file.url"
         target="_blank" rel="noopener noreferrer"
@@ -45,12 +48,9 @@
         (click)="handlePreview(file, $event)">
           <i nz-icon nzType="eye-o"></i>
       </a>
-      <i *ngIf="icons.showRemoveIcon" (click)="handleRemove(file, $event)" nz-icon nzType="delete" title="{{ locale.removeFile }}"></i>
+      <ng-template [ngTemplateOutlet]="remove"></ng-template>
     </span>
   </ng-container>
-  <ng-template #close>
-    <i *ngIf="icons.showRemoveIcon" (click)="handleRemove(file, $event)" nz-icon nzType="close" title="{{ locale.removeFile }}"></i>
-  </ng-template>
   <div *ngIf="file.status === 'uploading'" class="ant-upload-list-item-progress">
     <nz-progress [nzPercent]="file.percent" [nzShowInfo]="false" [nzStrokeWidth]="2"></nz-progress>
   </div>

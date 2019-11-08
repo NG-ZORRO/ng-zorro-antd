@@ -52,23 +52,27 @@ export interface UploadChangeParam {
 export interface ShowUploadListInterface {
   showRemoveIcon?: boolean;
   showPreviewIcon?: boolean;
+  showDownloadIcon?: boolean;
   hidePreviewIconInNonImage?: boolean;
 }
+
+export type UploadTransformFileType = string | Blob | File | Observable<string | Blob | File>;
 
 export interface ZipButtonOptions {
   disabled?: boolean;
   accept?: string | string[];
-  action?: string;
+  action?: string | ((file: UploadFile) => string | Observable<string>);
   directory?: boolean;
   openFileDialogOnClick?: boolean;
   beforeUpload?: (file: UploadFile, fileList: UploadFile[]) => boolean | Observable<any>;
   customRequest?: (item: any) => Subscription;
-  data?: {} | ((file: UploadFile) => {});
-  headers?: {} | ((file: UploadFile) => {});
+  data?: {} | ((file: UploadFile) => {} | Observable<{}>);
+  headers?: {} | ((file: UploadFile) => {} | Observable<{}>);
   name?: string;
   multiple?: boolean;
   withCredentials?: boolean;
   filters?: UploadFilter[];
+  transformFile?: (file: UploadFile) => UploadTransformFileType;
   onStart?: (file: UploadFile) => void;
   onProgress?: (e: any, file: UploadFile) => void;
   onSuccess?: (ret: any, file: UploadFile, xhr: any) => void;
@@ -85,6 +89,7 @@ export interface UploadXHRArgs {
   name?: string;
   headers?: IndexableObject;
   file: UploadFile;
+  postFile: string | Blob | File | UploadFile;
   data?: IndexableObject;
   withCredentials?: boolean;
   onProgress?: (e: any, file: UploadFile) => void;

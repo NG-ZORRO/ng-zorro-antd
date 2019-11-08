@@ -33,6 +33,7 @@ import {
   UploadFile,
   UploadFilter,
   UploadListType,
+  UploadTransformFileType,
   UploadType,
   UploadXHRArgs,
   ZipButtonOptions
@@ -66,16 +67,16 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() nzFileType: string;
   @Input() nzAccept: string | string[];
-  @Input() nzAction: string;
+  @Input() nzAction: string | ((file: UploadFile) => string | Observable<string>);
   @Input() @InputBoolean() nzDirectory = false;
   @Input() @InputBoolean() nzOpenFileDialogOnClick = true;
   @Input() nzBeforeUpload: (file: UploadFile, fileList: UploadFile[]) => boolean | Observable<boolean>;
   @Input() nzCustomRequest: (item: UploadXHRArgs) => Subscription;
-  @Input() nzData: {} | ((file: UploadFile) => {});
+  @Input() nzData: {} | ((file: UploadFile) => {} | Observable<{}>);
   @Input() nzFilter: UploadFilter[] = [];
   @Input() nzFileList: UploadFile[] = [];
   @Input() @InputBoolean() nzDisabled = false;
-  @Input() nzHeaders: {} | ((file: UploadFile) => {});
+  @Input() nzHeaders: {} | ((file: UploadFile) => {} | Observable<{}>);
   @Input() nzListType: UploadListType = 'text';
   @Input() @InputBoolean() nzMultiple = false;
   @Input() nzName = 'file';
@@ -96,6 +97,8 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() nzRemove: (file: UploadFile) => boolean | Observable<boolean>;
   @Input() nzPreview: (file: UploadFile) => void;
+  @Input() nzTransformFile: (file: UploadFile) => UploadTransformFileType;
+  @Input() nzDownload: (file: UploadFile) => void;
 
   @Output() readonly nzChange: EventEmitter<UploadChangeParam> = new EventEmitter<UploadChangeParam>();
   @Output() readonly nzFileListChange: EventEmitter<UploadFile[]> = new EventEmitter<UploadFile[]>();
@@ -145,6 +148,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
       multiple: this.nzMultiple,
       withCredentials: this.nzWithCredentials,
       filters,
+      transformFile: this.nzTransformFile,
       onStart: this.onStart,
       onProgress: this.onProgress,
       onSuccess: this.onSuccess,

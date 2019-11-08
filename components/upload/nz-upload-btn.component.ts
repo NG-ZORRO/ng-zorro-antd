@@ -21,7 +21,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { of, Observable, Subscription } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 import { warn, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
@@ -216,20 +216,17 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     if (this.destroy) {
       return;
     }
+    let process$: Observable<string | Blob | File | UploadFile> = of(file);
     const opt = this.options;
     const { uid } = file;
-    let { data, headers } = opt;
-    if (typeof data === 'function') {
-      data = (data as (file: UploadFile) => {})(file);
-    }
-    if (typeof headers === 'function') {
-      headers = (headers as (file: UploadFile) => {})(file);
-    }
+    const { action, data, headers, transformFile } = opt;
+
     const args: UploadXHRArgs = {
-      action: opt.action,
+      action: typeof action === 'string' ? action : '',
       name: opt.name,
       headers,
       file,
+      postFile: file,
       data,
       withCredentials: opt.withCredentials,
       onProgress: opt.onProgress
@@ -246,23 +243,81 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
         opt.onError!(xhr, file);
       }
     };
-    const req$ = (opt.customRequest || this.xhr).call(this, args);
-    if (!(req$ instanceof Subscription)) {
-      warn(`Must return Subscription type in '[nzCustomRequest]' property`);
+
+    if (typeof action === 'function') {
+      const actionResult = (action as (file: UploadFile) => string | Observable<string>)(file);
+      if (actionResult instanceof Observable) {
+        process$ = process$.pipe(
+          switchMap(() => actionResult),
+          map(res => {
+            args.action = res;
+            return file;
+          })
+        );
+      } else {
+        args.action = actionResult;
+      }
     }
-    this.reqs[uid] = req$;
-    opt.onStart!(file);
+
+    if (typeof transformFile === 'function') {
+      const transformResult = transformFile(file);
+      process$ = process$.pipe(
+        switchMap(() => (transformResult instanceof Observable ? transformResult : of(transformResult)))
+      );
+    }
+
+    if (typeof data === 'function') {
+      const dataResult = (data as (file: UploadFile) => {} | Observable<{}>)(file);
+      if (dataResult instanceof Observable) {
+        process$ = process$.pipe(
+          switchMap(() => dataResult),
+          map(res => {
+            args.data = res;
+            return file;
+          })
+        );
+      } else {
+        args.data = dataResult;
+      }
+    }
+
+    if (typeof headers === 'function') {
+      const headersResult = (headers as (file: UploadFile) => {} | Observable<{}>)(file);
+      if (headersResult instanceof Observable) {
+        process$ = process$.pipe(
+          switchMap(() => headersResult),
+          map(res => {
+            args.headers = res;
+            return file;
+          })
+        );
+      } else {
+        args.headers = headersResult;
+      }
+    }
+
+    process$.subscribe(newFile => {
+      args.postFile = newFile;
+      const req$ = (opt.customRequest || this.xhr).call(this, args);
+      if (!(req$ instanceof Subscription)) {
+        warn(`Must return Subscription type in '[nzCustomRequest]' property`);
+      }
+      this.reqs[uid] = req$;
+      opt.onStart!(file);
+    });
   }
 
   private xhr(args: UploadXHRArgs): Subscription {
     const formData = new FormData();
-    // tslint:disable-next-line:no-any
-    formData.append(args.name!, args.file as any);
+
     if (args.data) {
       Object.keys(args.data).map(key => {
         formData.append(key, args.data![key]);
       });
     }
+    // tslint:disable-next-line:no-any
+    formData.append(args.name!, args.postFile as any);
+
     if (!args.headers) {
       args.headers = {};
     }

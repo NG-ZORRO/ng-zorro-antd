@@ -22,6 +22,7 @@ import {
   UploadFile,
   UploadFilter,
   UploadListType,
+  UploadTransformFileType,
   UploadType,
   ZipButtonOptions
 } from './interface';
@@ -106,7 +107,7 @@ describe('upload', () => {
       it('should be upload a file', () => {
         expect(instance._nzChange).toBeUndefined();
         pageObject.postFile(FILE);
-        const req = httpMock.expectOne(instance.nzAction);
+        const req = httpMock.expectOne(instance.nzAction as string);
         pageObject.expectChange();
         req.flush({});
         pageObject.expectChange('success');
@@ -115,7 +116,7 @@ describe('upload', () => {
 
       it('should notify progress when upload a large file', () => {
         pageObject.postLarge();
-        const req = httpMock.expectOne(instance.nzAction);
+        const req = httpMock.expectOne(instance.nzAction as string);
         req.event({ type: 1, loaded: 0, total: 0 });
         pageObject.expectChange('progress');
         req.event({ type: 1, loaded: 10, total: 100 });
@@ -129,7 +130,7 @@ describe('upload', () => {
 
       it('should be error when using 404 http', () => {
         pageObject.postLarge();
-        const req = httpMock.expectOne(instance.nzAction);
+        const req = httpMock.expectOne(instance.nzAction as string);
         req.error(new ErrorEvent('network'), { status: 404, statusText: 'not found' });
         pageObject.expectChange('error');
         httpMock.verify();
@@ -162,7 +163,7 @@ describe('upload', () => {
 
       it('should be abort when user canceled', () => {
         pageObject.postLarge();
-        const req = httpMock.expectOne(instance.nzAction);
+        const req = httpMock.expectOne(instance.nzAction as string);
         req.event({ type: 1, loaded: 10, total: 100 });
         pageObject.expectLength(1);
         pageObject.getByCss('.anticon-close').nativeElement.click();
@@ -229,6 +230,25 @@ describe('upload', () => {
     });
 
     describe('property', () => {
+      describe('[nzActive]', () => {
+        it('shoule be return string when is function', () => {
+          const url = `/new-url`;
+          instance.nzAction = () => url;
+          fixture.detectChanges();
+          pageObject.postSmall();
+          const req = httpMock.expectOne(() => true);
+          expect(req.request.url).toBe(url);
+        });
+        it('shoule be return Observable when is function', () => {
+          const url = `/new-url-with-observalbe`;
+          instance.nzAction = () => of(url);
+          fixture.detectChanges();
+          pageObject.postSmall();
+          const req = httpMock.expectOne(() => true);
+          expect(req.request.url).toBe(url);
+        });
+      });
+
       describe('[nzData]', () => {
         it('should custom form data vis function', () => {
           instance.nzData = () => {
@@ -236,17 +256,27 @@ describe('upload', () => {
           };
           fixture.detectChanges();
           pageObject.postSmall();
-          const req = httpMock.expectOne(instance.nzAction);
+          const req = httpMock.expectOne(instance.nzAction as string);
           expect((req.request.body as FormData).get('a')).toBe('1');
           req.flush({});
           httpMock.verify();
         });
 
-        it('should custom form data vis object', () => {
+        it('should custom form data via object', () => {
           instance.nzData = { a: 1 };
           fixture.detectChanges();
           pageObject.postSmall();
-          const req = httpMock.expectOne(instance.nzAction);
+          const req = httpMock.expectOne(instance.nzAction as string);
+          expect((req.request.body as FormData).get('a')).toBe('1');
+          req.flush({});
+          httpMock.verify();
+        });
+
+        it('shoule custom form data via Observable', () => {
+          instance.nzData = () => of({ a: 1 });
+          fixture.detectChanges();
+          pageObject.postSmall();
+          const req = httpMock.expectOne(instance.nzAction as string);
           expect((req.request.body as FormData).get('a')).toBe('1');
           req.flush({});
           httpMock.verify();
@@ -274,7 +304,7 @@ describe('upload', () => {
           };
           fixture.detectChanges();
           pageObject.postSmall();
-          const req = httpMock.expectOne(instance.nzAction);
+          const req = httpMock.expectOne(instance.nzAction as string);
           expect(req.request.headers.get('a')).toBe('1');
           req.flush({});
           httpMock.verify();
@@ -284,7 +314,17 @@ describe('upload', () => {
           instance.nzHeaders = { a: '1' };
           fixture.detectChanges();
           pageObject.postSmall();
-          const req = httpMock.expectOne(instance.nzAction);
+          const req = httpMock.expectOne(instance.nzAction as string);
+          expect(req.request.headers.get('a')).toBe('1');
+          req.flush({});
+          httpMock.verify();
+        });
+
+        it('should custom form data vis Observable', () => {
+          instance.nzHeaders = () => of({ a: '1' });
+          fixture.detectChanges();
+          pageObject.postSmall();
+          const req = httpMock.expectOne(instance.nzAction as string);
           expect(req.request.headers.get('a')).toBe('1');
           req.flush({});
           httpMock.verify();
@@ -294,6 +334,27 @@ describe('upload', () => {
           instance.nzHeaders = null;
           fixture.detectChanges();
           pageObject.postSmall().expectChange();
+        });
+      });
+
+      describe('[nzTransformFile]', () => {
+        it('should be from small to big', () => {
+          instance.nzTransformFile = () => new File([`1`], `1.png`);
+          fixture.detectChanges();
+          pageObject.postLarge();
+          const req = httpMock.expectOne(instance.nzAction as string);
+          expect((req.request.body.get('file') as UploadFile).size).toBe(1);
+          req.flush({});
+          httpMock.verify();
+        });
+        it('should return Observable', () => {
+          instance.nzTransformFile = () => of(new File([`123`], `1.png`));
+          fixture.detectChanges();
+          pageObject.postLarge();
+          const req = httpMock.expectOne(instance.nzAction as string);
+          expect((req.request.body.get('file') as UploadFile).size).toBe(3);
+          req.flush({});
+          httpMock.verify();
         });
       });
 
@@ -333,7 +394,7 @@ describe('upload', () => {
         instance.nzWithCredentials = true;
         fixture.detectChanges();
         pageObject.postSmall();
-        const req = httpMock.expectOne(instance.nzAction);
+        const req = httpMock.expectOne(instance.nzAction as string);
         expect(req.request.withCredentials).toBe(true);
         req.flush({});
         httpMock.verify();
@@ -501,7 +562,7 @@ describe('upload', () => {
         fixture.detectChanges();
         expect(instance._nzChange).toBeUndefined();
         pageObject.postFile(FILE);
-        const req = httpMock.expectOne(instance.nzAction);
+        const req = httpMock.expectOne(instance.nzAction as string);
         pageObject.expectChange();
         req.flush({});
         pageObject.expectChange('success');
@@ -599,7 +660,7 @@ describe('upload', () => {
     describe('CORS', () => {
       it('should be auto setting [X-Requested-With]', () => {
         pageObject.postSmall();
-        const req = httpMock.expectOne(instance.nzAction);
+        const req = httpMock.expectOne(instance.nzAction as string);
         expect(req.request.headers.get('X-Requested-With')).toBe('XMLHttpRequest');
         req.flush({});
         httpMock.verify();
@@ -610,7 +671,7 @@ describe('upload', () => {
         };
         fixture.detectChanges();
         pageObject.postSmall();
-        const req = httpMock.expectOne(instance.nzAction);
+        const req = httpMock.expectOne(instance.nzAction as string);
         expect(req.request.headers.has('X-Requested-With')).toBe(false);
         req.flush({});
         httpMock.verify();
@@ -1271,6 +1332,7 @@ describe('upload', () => {
       [nzPreview]="onPreview"
       [nzRemove]="onRemove"
       [nzDirectory]="directory"
+      [nzTransformFile]="nzTransformFile"
       (nzFileListChange)="nzFileListChange($event)"
       (nzChange)="nzChange($event)"
     >
@@ -1286,7 +1348,7 @@ class TestUploadComponent {
   nzSize = 0;
   nzFileType: any;
   nzAccept = 'image/png';
-  nzAction = '/upload';
+  nzAction: string | ((file: UploadFile) => string | Observable<string>) = '/upload';
   _beforeUpload = false;
   _beforeUploadList: UploadFile[] = [];
   beforeUpload: any = (_file: UploadFile, fileList: UploadFile[]): any => {
@@ -1306,6 +1368,7 @@ class TestUploadComponent {
   nzShowUploadList: boolean | ShowUploadListInterface = true;
   nzShowButton = true;
   nzWithCredentials = false;
+  nzTransformFile: (file: UploadFile) => UploadTransformFileType;
   _onPreview = false;
   onPreview = (): void => {
     this._onPreview = true;

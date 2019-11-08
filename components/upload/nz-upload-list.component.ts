@@ -66,6 +66,7 @@ export class NzUploadListComponent implements OnChanges {
   @Input() icons: ShowUploadListInterface;
   @Input() onPreview: (file: UploadFile) => void;
   @Input() onRemove: (file: UploadFile) => void;
+  @Input() onDownload: (file: UploadFile) => void;
 
   // #endregion
 
@@ -172,6 +173,14 @@ export class NzUploadListComponent implements OnChanges {
       this.onRemove(file);
     }
     return;
+  }
+
+  handleDownload(file: UploadFile): void {
+    if (typeof this.onDownload === 'function') {
+      this.onDownload(file);
+    } else if (file.url) {
+      window.open(file.url);
+    }
   }
 
   // #endregion
