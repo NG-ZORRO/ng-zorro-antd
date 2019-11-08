@@ -158,6 +158,7 @@ $ npm run site:start
 - [达观数据](http://datagrand.com/)
 - [Ververica](https://www.ververica.com/)
 - [Apache Flink](https://flink.apache.org/)
+- [Apache Zeppelin](http://zeppelin.apache.org/)
 - [Process Automation Group](http://pag.company/)
 - [ScentBird](https://www.scentbird.com/)
 - [Southern Institute of Technology](https://www.sit.ac.nz/)
