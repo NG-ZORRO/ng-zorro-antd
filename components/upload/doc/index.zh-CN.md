@@ -52,6 +52,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 | `[nzWithCredentials]` | 上传请求时是否携带 cookie | `boolean` | `false` |
 | `[nzOpenFileDialogOnClick]` | 点击打开文件对话框 | `boolean` | `true` |
 | `[nzPreview]` | 点击文件链接或预览图标时的回调；注意：务必使用 `=>` 定义处理方法。 | `(file: UploadFile) => void` | - |
+| `[nzPreviewFile]` | 自定义文件预览逻辑；注意：务必使用 `=>` 定义处理方法。 | `(file: UploadFile) => Observable<dataURL: string>` | - |
 | `[nzRemove]` | 点击移除文件时的回调，返回值为 false 时不移除。支持返回 `Observable` 对象；注意：务必使用 `=>` 定义处理方法。 | `(file: UploadFile) => boolean \| Observable<boolean>` | - |
 | `(nzChange)` | 上传文件改变时的状态 | `EventEmitter<UploadChangeParam>` | - |
 | `nzDownload`   | 点击下载文件时的回调，如果没有指定，则默认跳转到文件 url 对应的标签页 | `(file: UploadFile) => void` | 跳转新标签页 |

@@ -49,7 +49,8 @@ export default {
     uploading: 'Se transferă...',
     removeFile: 'Înlătură fișierul',
     uploadError: 'Eroare la upload',
-    previewFile: 'Previzualizare fișier'
+    previewFile: 'Previzualizare fișier',
+    downloadFile: 'Descărcare fișier'
   },
   Empty: {
     description: 'Fără date'

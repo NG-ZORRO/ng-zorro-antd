@@ -42,7 +42,8 @@ export default {
     uploading: 'Качване...',
     removeFile: 'Премахване',
     uploadError: 'Грешка при качването',
-    previewFile: 'Преглед'
+    previewFile: 'Преглед',
+    downloadFile: 'Свали файл'
   },
   Empty: {
     description: 'Няма данни'

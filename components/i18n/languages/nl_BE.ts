@@ -42,7 +42,8 @@ export default {
     uploading: 'Uploaden...',
     removeFile: 'Bestand verwijderen',
     uploadError: 'Upload fout',
-    previewFile: 'Preview bestand'
+    previewFile: 'Preview bestand',
+    downloadFile: 'Download bestand'
   },
   Empty: {
     description: 'Geen gegevens'

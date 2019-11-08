@@ -46,7 +46,8 @@ export default {
     uploading: '正在上傳...',
     removeFile: '刪除檔案',
     uploadError: '上傳失敗',
-    previewFile: '檔案預覽'
+    previewFile: '檔案預覽',
+    downloadFile: '下载文件'
   },
   Empty: {
     description: '無此資料'

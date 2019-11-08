@@ -97,6 +97,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() nzRemove: (file: UploadFile) => boolean | Observable<boolean>;
   @Input() nzPreview: (file: UploadFile) => void;
+  @Input() nzPreviewFile: (file: UploadFile) => Observable<string>;
   @Input() nzTransformFile: (file: UploadFile) => UploadTransformFileType;
   @Input() nzDownload: (file: UploadFile) => void;
 
@@ -110,7 +111,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
       this.nzShowUploadList = {
         showPreviewIcon: true,
         showRemoveIcon: true,
-        hidePreviewIconInNonImage: false
+        showDownloadIcon: true
       };
     }
     // filters

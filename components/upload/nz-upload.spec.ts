@@ -166,7 +166,7 @@ describe('upload', () => {
         const req = httpMock.expectOne(instance.nzAction as string);
         req.event({ type: 1, loaded: 10, total: 100 });
         pageObject.expectLength(1);
-        pageObject.getByCss('.anticon-close').nativeElement.click();
+        pageObject.getByCss('.anticon-delete').nativeElement.click();
         fixture.detectChanges();
         pageObject.expectLength(0);
         httpMock.verify();
@@ -184,7 +184,7 @@ describe('upload', () => {
         ];
         fixture.detectChanges();
         pageObject.expectLength(1);
-        pageObject.getByCss('.anticon-close').nativeElement.click();
+        pageObject.getByCss('.anticon-delete').nativeElement.click();
         fixture.detectChanges();
         pageObject.expectLength(0);
       });
@@ -224,7 +224,7 @@ describe('upload', () => {
         fixture.detectChanges();
         injector.get(NzI18nService).setLocale(en_US);
         fixture.detectChanges();
-        const removeFileText = (pageObject.getByCss('.anticon-close').nativeElement as HTMLElement).title;
+        const removeFileText = (pageObject.getByCss('.anticon-delete').nativeElement as HTMLElement).title;
         expect(removeFileText).toBe(en_US.Upload.removeFile);
       });
     });
@@ -378,7 +378,7 @@ describe('upload', () => {
           ] as any[];
           fixture.detectChanges();
           expect(instance._onRemove).toBe(false);
-          dl.query(By.css('.anticon-close')).nativeElement.click();
+          dl.query(By.css('.anticon-delete')).nativeElement.click();
           expect(instance._onRemove).toBe(true);
         });
       });
@@ -599,41 +599,41 @@ describe('upload', () => {
         it('should be return a Observable', () => {
           instance.onRemove = () => of(false);
           fixture.detectChanges();
-          expect(dl.queryAll(By.css('.anticon-close')).length).toBe(INITCOUNT);
-          dl.query(By.css('.anticon-close')).nativeElement.click();
-          expect(dl.queryAll(By.css('.anticon-close')).length).toBe(INITCOUNT);
+          expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(INITCOUNT);
+          dl.query(By.css('.anticon-delete')).nativeElement.click();
+          expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(INITCOUNT);
         });
         it('should be return a Observable includes a delay operation', (done: () => void) => {
           const DELAY = 20;
           instance.onRemove = () => of(true).pipe(delay(DELAY));
           fixture.detectChanges();
-          expect(dl.queryAll(By.css('.anticon-close')).length).toBe(INITCOUNT);
-          dl.query(By.css('.anticon-close')).nativeElement.click();
+          expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(INITCOUNT);
+          dl.query(By.css('.anticon-delete')).nativeElement.click();
           setTimeout(() => {
-            expect(dl.queryAll(By.css('.anticon-close')).length).toBe(INITCOUNT - 1);
+            expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(INITCOUNT - 1);
             done();
           }, DELAY + 1);
         });
         it('should be return a truth value', () => {
           instance.onRemove = () => true;
           fixture.detectChanges();
-          expect(dl.queryAll(By.css('.anticon-close')).length).toBe(INITCOUNT);
-          dl.query(By.css('.anticon-close')).nativeElement.click();
-          expect(dl.queryAll(By.css('.anticon-close')).length).toBe(INITCOUNT - 1);
+          expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(INITCOUNT);
+          dl.query(By.css('.anticon-delete')).nativeElement.click();
+          expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(INITCOUNT - 1);
         });
         it('should be return a falsy value', () => {
           instance.onRemove = () => false;
           fixture.detectChanges();
-          expect(dl.queryAll(By.css('.anticon-close')).length).toBe(INITCOUNT);
-          dl.query(By.css('.anticon-close')).nativeElement.click();
-          expect(dl.queryAll(By.css('.anticon-close')).length).toBe(INITCOUNT);
+          expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(INITCOUNT);
+          dl.query(By.css('.anticon-delete')).nativeElement.click();
+          expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(INITCOUNT);
         });
         it('should be with null', () => {
           instance.onRemove = null;
           fixture.detectChanges();
-          expect(dl.queryAll(By.css('.anticon-close')).length).toBe(INITCOUNT);
-          dl.query(By.css('.anticon-close')).nativeElement.click();
-          expect(dl.queryAll(By.css('.anticon-close')).length).toBe(INITCOUNT - 1);
+          expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(INITCOUNT);
+          dl.query(By.css('.anticon-delete')).nativeElement.click();
+          expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(INITCOUNT - 1);
         });
       });
 
@@ -810,32 +810,6 @@ describe('upload', () => {
         expect(actions.length).toBe(0);
         expect(instance._onRemove).toBe(false);
       });
-      it('should be hide preview when is invalid image url', fakeAsync(() => {
-        instance.icons = {
-          showPreviewIcon: true,
-          showRemoveIcon: true,
-          hidePreviewIconInNonImage: false
-        };
-        instance.items = [{ url: '1.pdf' }];
-        fixture.detectChanges();
-        tick();
-        fixture.detectChanges();
-        const actions = dl.queryAll(By.css('.ant-upload-list-item-actions a'));
-        expect(actions.length).toBe(1);
-      }));
-      it('should be hide preview when is invalid image url', fakeAsync(() => {
-        instance.icons = {
-          showPreviewIcon: true,
-          showRemoveIcon: true,
-          hidePreviewIconInNonImage: true
-        };
-        instance.items = [{ url: '1.pdf' }];
-        fixture.detectChanges();
-        tick();
-        fixture.detectChanges();
-        const actions = dl.queryAll(By.css('.ant-upload-list-item-actions a'));
-        expect(actions.length).toBe(0);
-      }));
     });
 
     describe('[onPreview]', () => {
@@ -906,7 +880,7 @@ describe('upload', () => {
     describe('[isImageUrl]', () => {
       describe('via image type', () => {
         it('should be true when file object type value is a valid image', () => {
-          expect(instance.comp.isImageUrl({ type: 'image' } as any)).toBe(true);
+          expect(instance.comp.isImageUrl({ type: 'image/' } as any)).toBe(true);
         });
       });
       describe('via thumbUrl or url', () => {
@@ -933,32 +907,53 @@ describe('upload', () => {
     });
 
     describe('[genThumb]', () => {
-      class MockFR {
-        result = '1';
+      class MockImage {
+        width = 1;
+        height = 2;
 
-        onloadend(): void {}
+        onload(): void {}
 
-        readAsDataURL(): void {
-          this.onloadend();
+        set src(_: string) {
+          this.onload();
         }
       }
+      it('should be generate thumb when is valid image data', fakeAsync(() => {
+        spyOn(window as any, 'Image').and.returnValue(new MockImage());
 
-      it('should be generate thumb when is valid image data', () => {
-        spyOn(window as any, 'FileReader').and.returnValue(new MockFR());
         instance.listType = 'picture';
-        instance.items = [{ originFileObj: new File([''], '1.png', { type: 'image' }), thgitumbUrl: undefined }];
+        instance.items = [{ originFileObj: new File([''], '1.png', { type: 'image/' }), thgitumbUrl: undefined }];
         fixture.detectChanges();
-        expect(instance.items[0].thumbUrl).toBe('1');
-      });
+        tick();
+        expect(instance.items[0].thumbUrl.length).toBeGreaterThan(1);
+      }));
+      it('should be generate thumb when width greater than height', fakeAsync(() => {
+        spyOn(window as any, 'Image').and.callFake(() => {
+          const img = new MockImage();
+          img.width = 2;
+          img.height = 1;
+          return img;
+        });
+
+        instance.listType = 'picture';
+        instance.items = [{ originFileObj: new File([''], '1.png', { type: 'image/' }), thgitumbUrl: undefined }];
+        fixture.detectChanges();
+        tick();
+        expect(instance.items[0].thumbUrl.length).toBeGreaterThan(1);
+      }));
       it('should be ingore thumb when is invalid image data', () => {
-        const mockFR = new MockFR();
-        mockFR.result = '';
-        spyOn(window as any, 'FileReader').and.returnValue(mockFR);
         instance.listType = 'picture';
         instance.items = [{ originFileObj: new File([''], '1.pdf', { type: 'pdf' }), thumbUrl: undefined }];
         fixture.detectChanges();
         expect(instance.items[0].thumbUrl).toBe('');
       });
+      it('should be customize preview file', fakeAsync(() => {
+        instance.previewFile = () => of('11');
+        instance.listType = 'picture';
+        instance.items = [{ originFileObj: new File([''], '1.png', { type: 'image/' }), thgitumbUrl: undefined }];
+        fixture.detectChanges();
+        tick();
+        expect(instance.items[0].thumbUrl).toBe('11');
+      }));
     });
   });
 
@@ -1330,6 +1325,7 @@ describe('upload', () => {
       [nzShowButton]="nzShowButton"
       [nzWithCredentials]="nzWithCredentials"
       [nzPreview]="onPreview"
+      [nzPreviewFile]="previewFile"
       [nzRemove]="onRemove"
       [nzDirectory]="directory"
       [nzTransformFile]="nzTransformFile"
@@ -1373,6 +1369,7 @@ class TestUploadComponent {
   onPreview = (): void => {
     this._onPreview = true;
   };
+  previewFile: (file: UploadFile) => Observable<string>;
   _onRemove = false;
   onRemove: null | ((file: UploadFile) => boolean | Observable<boolean>) = (): boolean => {
     this._onRemove = true;
@@ -1401,6 +1398,7 @@ class TestUploadComponent {
       [items]="items"
       [icons]="icons"
       [onPreview]="onPreview"
+      [previewFile]="previewFile"
       [onRemove]="onRemove"
     ></nz-upload-list>
   `,
@@ -1439,6 +1437,7 @@ class TestUploadListComponent {
   onPreview: VoidFunction | null = (): void => {
     this._onPreview = true;
   };
+  previewFile: (file: UploadFile) => Observable<string>;
   _onRemove = false;
   onRemove: any = (): void => {
     this._onRemove = true;

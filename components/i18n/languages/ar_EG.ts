@@ -45,7 +45,8 @@ export default {
     uploading: 'جاري الرفع...',
     removeFile: 'احذف الملف',
     uploadError: 'مشكلة فى الرفع',
-    previewFile: 'استعرض الملف'
+    previewFile: 'استعرض الملف',
+    downloadFile: 'تحميل الملف'
   },
   Empty: {
     description: 'لا توجد بيانات'

@@ -8,19 +8,27 @@
 
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Platform } from '@angular/cdk/platform';
+import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
+  Inject,
   Input,
+  NgZone,
   OnChanges,
   ViewEncapsulation
 } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import { NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { NgClassType, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
 import { ShowUploadListInterface, UploadFile, UploadListType } from './interface';
+
+const isImageFileType = (type: string): boolean => !!type && type.indexOf('image/') === 0;
+
+const MEASURE_SIZE = 200;
 
 @Component({
   selector: 'nz-upload-list',
@@ -41,11 +49,23 @@ import { ShowUploadListInterface, UploadFile, UploadListType } from './interface
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzUploadListComponent implements OnChanges {
-  private imageTypes = ['image', 'webp', 'png', 'svg', 'gif', 'jpg', 'jpeg', 'bmp'];
   private _items: UploadFile[];
 
   get showPic(): boolean {
     return this.listType === 'picture' || this.listType === 'picture-card';
+  }
+
+  getIconType(file: UploadFile): string {
+    if (!this.showPic) {
+      return '';
+    }
+    if (this.listType === 'picture-card' && file.status === 'uploading') {
+      return 'loading';
+    } else if (!file.thumbUrl && !file.url) {
+      return 'thumbnail';
+    } else {
+      return 'default';
+    }
   }
 
   // #region fields
@@ -67,6 +87,7 @@ export class NzUploadListComponent implements OnChanges {
   @Input() onPreview: (file: UploadFile) => void;
   @Input() onRemove: (file: UploadFile) => void;
   @Input() onDownload: (file: UploadFile) => void;
+  @Input() previewFile: (file: UploadFile) => Observable<string>;
 
   // #endregion
 
@@ -94,7 +115,7 @@ export class NzUploadListComponent implements OnChanges {
   }
 
   isImageUrl(file: UploadFile): boolean {
-    if (~this.imageTypes.indexOf(file.type)) {
+    if (isImageFileType(file.type)) {
       return true;
     }
     const url: string = (file.thumbUrl || file.url || '') as string;
@@ -102,7 +123,7 @@ export class NzUploadListComponent implements OnChanges {
       return false;
     }
     const extension = this.extname(url);
-    if (/^data:image\//.test(url) || /(webp|svg|png|gif|jpg|jpeg|bmp)$/i.test(extension)) {
+    if (/^data:image\//.test(url) || /(webp|svg|png|gif|jpg|jpeg|jfif|bmp|dpg)$/i.test(extension)) {
       return true;
     } else if (/^data:/.test(url)) {
       // other file types of base64
@@ -114,14 +135,47 @@ export class NzUploadListComponent implements OnChanges {
     return true;
   }
 
-  private previewFile(file: File | Blob, callback: (dataUrl: string) => void): void {
-    if (file.type && this.imageTypes.indexOf(file.type) === -1) {
-      callback('');
-    }
-    const reader = new FileReader();
-    // https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL
-    reader.onloadend = () => callback(reader.result as string);
-    reader.readAsDataURL(file);
+  private previewImage(file: File | Blob): Promise<string> {
+    return new Promise(resolve => {
+      if (!isImageFileType(file.type)) {
+        resolve('');
+        return;
+      }
+      this.ngZone.runOutsideAngular(() => {
+        const canvas = this.doc.createElement('canvas');
+        canvas.width = MEASURE_SIZE;
+        canvas.height = MEASURE_SIZE;
+        canvas.style.cssText = `position: fixed; left: 0; top: 0; width: ${MEASURE_SIZE}px; height: ${MEASURE_SIZE}px; z-index: 9999; display: none;`;
+        this.doc.body.appendChild(canvas);
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        img.onload = () => {
+          const { width, height } = img;
+
+          let drawWidth = MEASURE_SIZE;
+          let drawHeight = MEASURE_SIZE;
+          let offsetX = 0;
+          let offsetY = 0;
+
+          if (width < height) {
+            drawHeight = height * (MEASURE_SIZE / width);
+            offsetY = -(drawHeight - drawWidth) / 2;
+          } else {
+            drawWidth = width * (MEASURE_SIZE / height);
+            offsetX = -(drawWidth - drawHeight) / 2;
+          }
+
+          try {
+            ctx!.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+          } catch {}
+          const dataURL = canvas.toDataURL();
+          this.doc.body.removeChild(canvas);
+
+          resolve(dataURL);
+        };
+        img.src = window.URL.createObjectURL(file);
+      });
+    });
   }
 
   private genThumb(): void {
@@ -143,19 +197,25 @@ export class NzUploadListComponent implements OnChanges {
       .filter(file => file.originFileObj instanceof File && file.thumbUrl === undefined)
       .forEach(file => {
         file.thumbUrl = '';
-        this.previewFile(file.originFileObj!, (previewDataUrl: string) => {
-          file.thumbUrl = previewDataUrl;
-          this.detectChanges();
-        });
+        (this.previewFile ? this.previewFile(file).toPromise() : this.previewImage(file.originFileObj!)).then(
+          dataUrl => {
+            file.thumbUrl = dataUrl;
+            this.detectChanges();
+          }
+        );
       });
   }
 
-  showPreview(file: UploadFile): boolean {
-    const { showPreviewIcon, hidePreviewIconInNonImage } = this.icons;
-    if (!showPreviewIcon) {
-      return false;
-    }
-    return this.isImageUrl(file) ? true : !hidePreviewIconInNonImage;
+  listItemNameClass(file: UploadFile): NgClassType {
+    const count = [this.showDownload(file), this.icons.showRemoveIcon].filter(x => x).length;
+    return {
+      [`${this.prefixCls}-item-name`]: true,
+      [`${this.prefixCls}-item-name-icon-count-${count}`]: true
+    };
+  }
+
+  showDownload(file: UploadFile): boolean {
+    return this.icons.showDownloadIcon && file.status === 'done' ? true : false;
   }
 
   handlePreview(file: UploadFile, e: Event): void {
@@ -189,6 +249,8 @@ export class NzUploadListComponent implements OnChanges {
     private el: ElementRef,
     private cdr: ChangeDetectorRef,
     private updateHostClassService: NzUpdateHostClassService,
+    @Inject(DOCUMENT) private doc: any, // tslint:disable-line no-any
+    private ngZone: NgZone,
     private platform: Platform
   ) {}
 

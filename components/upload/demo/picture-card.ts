@@ -10,7 +10,6 @@ import { UploadFile } from 'ng-zorro-antd/upload';
         nzListType="picture-card"
         [(nzFileList)]="fileList"
         [nzShowButton]="fileList.length < 3"
-        [nzShowUploadList]="showUploadList"
         [nzPreview]="handlePreview"
       >
         <i nz-icon nzType="plus"></i>
@@ -42,11 +41,6 @@ import { UploadFile } from 'ng-zorro-antd/upload';
   ]
 })
 export class NzDemoUploadPictureCardComponent {
-  showUploadList = {
-    showPreviewIcon: true,
-    showRemoveIcon: true,
-    hidePreviewIconInNonImage: true
-  };
   fileList = [
     {
       uid: -1,

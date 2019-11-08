@@ -53,7 +53,6 @@ export interface ShowUploadListInterface {
   showRemoveIcon?: boolean;
   showPreviewIcon?: boolean;
   showDownloadIcon?: boolean;
-  hidePreviewIconInNonImage?: boolean;
 }
 
 export type UploadTransformFileType = string | Blob | File | Observable<string | Blob | File>;

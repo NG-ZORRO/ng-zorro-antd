@@ -42,7 +42,8 @@ export default {
     uploading: 'Slanje...',
     removeFile: 'Ukloni fajl',
     uploadError: 'Greška prilikom slanja',
-    previewFile: 'Pogledaj fajl'
+    previewFile: 'Pogledaj fajl',
+    downloadFile: 'Preuzmi datoteku'
   },
   Empty: {
     description: 'Nema podataka'

@@ -1,33 +1,52 @@
-<div *ngFor="let file of items" class="ant-upload-list-item ant-upload-list-item-{{file.status}} ant-upload-list-item-list-type-{{listType}}" @itemState>
+<div *ngFor="let file of items" class="ant-upload-list-item ant-upload-list-item-{{file.status}} ant-upload-list-item-list-type-{{listType}}" [attr.data-key]="file.key" @itemState>
   <ng-template #icon>
-    <ng-container *ngIf="showPic; else noPicTpl">
-      <div *ngIf="listType === 'picture-card' && file.status === 'uploading'; else thumbUrlCheck" class="ant-upload-list-item-uploading-text">{{ locale.uploading }}</div>
-    </ng-container>
-    <ng-template #thumbUrlCheck>
-      <i *ngIf="!file.thumbUrl && !file.url; else thumbTpl"
-        class="ant-upload-list-item-thumbnail" nz-icon nzType="picture" nzTheme="twotone"></i>
-    </ng-template>
-    <ng-template #thumbTpl>
-      <a class="ant-upload-list-item-thumbnail" target="_blank" rel="noopener noreferrer"
-        [href]="file.thumbUrl || file.url"
+    <ng-container [ngSwitch]="getIconType(file)">
+      <div *ngSwitchCase="'loading'" class="ant-upload-list-item-uploading-text">{{ locale.uploading }}</div>
+      <i *ngSwitchCase="'thumbnail'" class="ant-upload-list-item-thumbnail" nz-icon nzType="picture" nzTheme="twotone"></i>
+      <a *ngSwitchCase="'default'" class="ant-upload-list-item-thumbnail" target="_blank" rel="noopener noreferrer"
+        [href]="file.url || file.thumbUrl"
         (click)="handlePreview(file, $event)">
-        <img *ngIf="isImageUrl(file); else noThumbTpl" [src]="file.thumbUrl || file.url" [attr.alt]="file.name" />
+        <img *ngIf="isImageUrl(file); else noImageThumbTpl" class="ant-upload-list-item-image"
+            [src]="file.thumbUrl || file.url"
+            [attr.alt]="file.name" />
       </a>
+      <i *ngSwitchDefault nz-icon [nzType]="file.status === 'uploading' ? 'loading' : 'paper-clip'"></i>
+    </ng-container>
+    <ng-template #noImageThumbTpl>
+      <i class="ant-upload-list-item-icon" nz-icon nzType="file" nzTheme="twotone"></i>
     </ng-template>
-    <ng-template #noThumbTpl><i class="ant-upload-list-item-icon" nz-icon nzType="file" nzTheme="twotone"></i></ng-template>
-    <ng-template #noPicTpl><i nz-icon [nzType]="file.status === 'uploading' ? 'loading' : 'paper-clip'"></i></ng-template>
+  </ng-template>
+  <ng-template #downloadOrDelete>
+    <span *ngIf="listType !== 'picture-card'"
+          class="ant-upload-list-item-card-actions {{ listType === 'picture' ? 'picture' : '' }}">
+      <a *ngIf="showDownload(file)" title="{{ locale.downloadFile }}">
+        <ng-template [ngTemplateOutlet]="downloadIcon"></ng-template>
+      </a>
+      <a *ngIf="icons.showRemoveIcon" title="{{ locale.removeFile }}">
+        <ng-template [ngTemplateOutlet]="removeIcon"></ng-template>
+      </a>
+    </span>
   </ng-template>
   <ng-template #preview>
-    <ng-container *ngIf="file.url; else prevText">
-      <a [href]="file.thumbUrl || file.url" target="_blank" rel="noopener noreferrer" [attr.download]="file.linkProps && file.linkProps.download"
-        (click)="handlePreview(file, $event)" class="ant-upload-list-item-name" title="{{ file.name }}">{{ file.name }}</a>
-    </ng-container>
-    <ng-template #prevText>
-      <span (click)="handlePreview(file, $event)" class="ant-upload-list-item-name" title="{{ file.name }}">{{ file.name }}</span>
-    </ng-template>
+    <a *ngIf="file.url"
+        target="_blank"
+        rel="noopener noreferrer"
+        [ngClass]="listItemNameClass(file)"
+        title="{{ file.name }}"
+        [href]="file.url"
+        [attr.download]="file.linkProps && file.linkProps.download"
+        (click)="handlePreview(file, $event)">{{ file.name }}</a>
+    <span *ngIf="!file.url"
+        [ngClass]="listItemNameClass(file)"
+        title="{{ file.name }}"
+        (click)="handlePreview(file, $event)">{{ file.name }}</span>
+    <ng-template [ngTemplateOutlet]="downloadOrDelete"></ng-template>
   </ng-template>
-  <ng-template #remove>
+  <ng-template #removeIcon>
     <i *ngIf="icons.showRemoveIcon" (click)="handleRemove(file, $event)" nz-icon nzType="delete" title="{{ locale.removeFile }}"></i>
+  </ng-template>
+  <ng-template #downloadIcon>
+    <i *ngIf="showDownload(file)" (click)="handleDownload(file)" nz-icon nzType="download" title="{{ locale.downloadFile }}"></i>
   </ng-template>
   <div class="ant-upload-list-item-info">
     <span *ngIf="file.status === 'error'" nz-tooltip [nzTitle]="file.message">
@@ -39,19 +58,20 @@
       <ng-template [ngTemplateOutlet]="preview"></ng-template>
     </span>
   </div>
-  <ng-container *ngIf="listType === 'picture-card' && file.status !== 'uploading'; else remove">
-    <span class="ant-upload-list-item-actions">
-      <a *ngIf="showPreview(file)" [href]="file.thumbUrl || file.url"
-        target="_blank" rel="noopener noreferrer"
-        title="{{ locale.previewFile }}"
-        [ngStyle]="!(file.url || file.thumbUrl) && {'opacity': .5, 'pointer-events': 'none'}"
-        (click)="handlePreview(file, $event)">
-          <i nz-icon nzType="eye-o"></i>
-      </a>
-      <ng-template [ngTemplateOutlet]="remove"></ng-template>
-    </span>
-  </ng-container>
+  <span *ngIf="listType === 'picture-card' && file.status !== 'uploading'" class="ant-upload-list-item-actions">
+    <a *ngIf="icons.showPreviewIcon"
+      [href]="file.url || file.thumbUrl"
+      target="_blank"
+      rel="noopener noreferrer"
+      title="{{ locale.previewFile }}"
+      [ngStyle]="!(file.url || file.thumbUrl) && {'opacity': .5, 'pointer-events': 'none'}"
+      (click)="handlePreview(file, $event)">
+        <i nz-icon nzType="eye-o"></i>
+    </a>
+    <ng-template [ngTemplateOutlet]="downloadIcon"></ng-template>
+    <ng-template [ngTemplateOutlet]="removeIcon"></ng-template>
+  </span>
   <div *ngIf="file.status === 'uploading'" class="ant-upload-list-item-progress">
-    <nz-progress [nzPercent]="file.percent" [nzShowInfo]="false" [nzStrokeWidth]="2"></nz-progress>
+    <nz-progress [nzPercent]="file.percent" nzType="line" [nzShowInfo]="false" [nzStrokeWidth]="2"></nz-progress>
   </div>
 </div>

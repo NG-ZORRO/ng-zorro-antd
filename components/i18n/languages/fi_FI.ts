@@ -43,7 +43,8 @@ export default {
     uploading: 'Lähetetään...',
     removeFile: 'Poista tiedosto',
     uploadError: 'Virhe lähetyksessä',
-    previewFile: 'Esikatsele tiedostoa'
+    previewFile: 'Esikatsele tiedostoa',
+    downloadFile: 'Lataa tiedosto'
   },
   Empty: {
     description: 'Ei kohteita'
