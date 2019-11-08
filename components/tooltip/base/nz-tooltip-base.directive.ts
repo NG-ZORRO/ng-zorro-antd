@@ -114,7 +114,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
    */
   protected isDynamicTooltip = false;
 
-  protected triggerUnlisteners: Array<() => void> = [];
+  protected readonly triggerUnlisteners: Array<() => void> = [];
 
   protected $destroy = new Subject<void>();
 
@@ -133,6 +133,13 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
+    const { nzTrigger, specificTrigger } = changes;
+    const trigger = specificTrigger || nzTrigger;
+
+    if (trigger && !trigger.isFirstChange()) {
+      this.registerTriggers();
+    }
+
     if (this.tooltip && this.isDynamicTooltip) {
       this.updateChangedProperties(changes);
     }
@@ -192,6 +199,8 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
   ngOnDestroy(): void {
     this.$destroy.next();
     this.$destroy.complete();
+    this.removeTriggerListeners();
+
     if (this.tooltipRef) {
       this.tooltipRef.destroy();
     }
@@ -240,6 +249,8 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
     // After removing the old API, we can just check the directive's own `nzTrigger`.
     const el = this.elementRef.nativeElement;
     const trigger = this.isDynamicTooltip ? this.trigger : this.tooltip.nzTrigger;
+
+    this.removeTriggerListeners();
 
     if (trigger === 'hover') {
       let overlayElement: HTMLElement;
@@ -340,5 +351,10 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
       // (may caused by the fade-out animation).
       isEnter && isOrigin ? this.show() : this.hide();
     }
+  }
+
+  private removeTriggerListeners(): void {
+    this.triggerUnlisteners.forEach(cancel => cancel());
+    this.triggerUnlisteners.length = 0;
   }
 }
