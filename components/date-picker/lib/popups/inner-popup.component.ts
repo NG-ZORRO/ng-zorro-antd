@@ -11,9 +11,7 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnChanges,
   Output,
-  SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
@@ -30,7 +28,7 @@ import { DisabledDateFn, PanelMode } from '../../standard-types';
   exportAs: 'innerPopup',
   templateUrl: 'inner-popup.component.html'
 })
-export class InnerPopupComponent implements OnChanges {
+export class InnerPopupComponent {
   @Input() showWeek: boolean;
 
   @Input() locale: NzCalendarI18nInterface;
@@ -55,20 +53,6 @@ export class InnerPopupComponent implements OnChanges {
   @Output() readonly dayHover = new EventEmitter<CandyDate>(); // Emitted when hover on a day by mouse enter
 
   prefixCls: string = 'ant-calendar';
-  timePanelDate: Date | null = null;
-
-  constructor() {}
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.value) {
-      if (this.value instanceof CandyDate) {
-        this.timePanelDate = this.value.nativeDate;
-      } else {
-        this.timePanelDate = null;
-        this.value = new CandyDate();
-      }
-    }
-  }
 
   onSelectTime(date: Date): void {
     this.selectTime.emit(new CandyDate(date));
