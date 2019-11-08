@@ -24,7 +24,7 @@ import { NzToolTipModule } from './nz-tooltip.module';
     >
       Show
     </a>
-    <a #titleTemplate nz-tooltip [nzTitle]="template">Show</a>
+    <a #titleTemplate nz-tooltip [nzTitle]="template" [nzTrigger]="trigger">Show</a>
     <ng-template #template>
       title-template
     </ng-template>
@@ -36,7 +36,6 @@ import { NzToolTipModule } from './nz-tooltip.module';
   `
 })
 export class NzTooltipTestDirectiveComponent {
-
   @ViewChild('titleString', { static: false }) titleString: ElementRef;
 
   @ViewChild('titleString', { static: false, read: NzTooltipDirective })
@@ -50,6 +49,7 @@ export class NzTooltipTestDirectiveComponent {
   @ViewChild('inBtnGroup', { static: false }) inBtnGroup: ElementRef;
   title = 'title-string';
 
+  trigger: string | null = 'hover';
 }
 
 @Component({
@@ -281,6 +281,26 @@ describe('NzTooltip', () => {
       fixture.detectChanges();
       expect(tooltipComponent.nzTitle).toBe('changed!');
       expect(overlayContainerElement.textContent).toContain('changed!');
+    }));
+
+    it('should support changing trigger', fakeAsync(() => {
+      const featureKey = 'title-template';
+      const triggerElement = component.titleTemplate.nativeElement;
+
+      dispatchMouseEvent(triggerElement, 'mouseenter');
+      waitingForTooltipToggling(fixture);
+      expect(overlayContainerElement.textContent).toContain(featureKey);
+
+      dispatchMouseEvent(triggerElement, 'mouseleave');
+      waitingForTooltipToggling(fixture);
+      expect(overlayContainerElement.textContent).not.toContain(featureKey);
+
+      component.trigger = null;
+      fixture.detectChanges();
+
+      dispatchMouseEvent(triggerElement, 'mouseenter');
+      waitingForTooltipToggling(fixture);
+      expect(overlayContainerElement.textContent).not.toContain(featureKey);
     }));
   });
 });
