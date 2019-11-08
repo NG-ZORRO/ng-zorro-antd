@@ -24,6 +24,8 @@ import { Location } from '@angular/common';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core';
 import { NzPageHeaderBreadcrumbDirective, NzPageHeaderFooterDirective } from './nz-page-header-cells';
 
+const NZ_CONFIG_COMPONENT_NAME = 'pageHeader';
+
 @Component({
   selector: 'nz-page-header',
   exportAs: 'nzPageHeader',
@@ -56,7 +58,7 @@ export class NzPageHeaderComponent implements OnChanges {
   @Input() nzBackIcon: string | TemplateRef<void> | null = null;
   @Input() nzTitle: string | TemplateRef<void>;
   @Input() nzSubtitle: string | TemplateRef<void>;
-  @Input() @WithConfig('pageHeader', true) nzGhost: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) nzGhost: boolean;
   @Output() readonly nzBack = new EventEmitter<void>();
 
   @ContentChild(NzPageHeaderFooterDirective, { static: false }) nzPageHeaderFooter: ElementRef<
