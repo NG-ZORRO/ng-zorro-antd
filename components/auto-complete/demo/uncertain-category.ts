@@ -10,7 +10,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
           placeholder="input here"
           nz-input
           [(ngModel)]="inputValue"
-          (ngModelChange)="onChange($event)"
+          (input)="onChange($event)"
           [nzAutocomplete]="auto"
         />
       </nz-input-group>
@@ -20,22 +20,35 @@ import { Component, ViewEncapsulation } from '@angular/core';
         </button>
       </ng-template>
       <nz-autocomplete #auto>
-        <nz-auto-option *ngFor="let option of options" [nzValue]="option.category">
-          {{ option.value }} 在
-          <a [href]="'https://s.taobao.com/search?q=' + option.query" target="_blank" rel="noopener noreferrer">
+        <nz-auto-option class="global-search-item" *ngFor="let option of options" [nzValue]="option.category">
+          Found {{ option.value }} on
+          <a
+            class="global-search-item-desc"
+            [href]="'https://s.taobao.com/search?q=' + option.value"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {{ option.category }}
           </a>
-          区块中
-          <span class="global-search-item-count">约 {{ option.count }} 个结果</span>
+          <span class="global-search-item-count">{{ option.count }} results</span>
         </nz-auto-option>
       </nz-autocomplete>
     </div>
   `,
   styles: [
     `
+      .global-search-item {
+        display: flex;
+      }
+
+      .global-search-item-desc {
+        flex: auto;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+
       .global-search-item-count {
-        position: absolute;
-        right: 16px;
+        flex: none;
       }
     `
   ]
@@ -44,8 +57,9 @@ export class NzDemoAutoCompleteUncertainCategoryComponent {
   inputValue: string;
   options: Array<{ value: string; category: string; count: number }> = [];
 
-  onChange(value: string): void {
-    this.options = new Array(this.getRandomInt(15, 5))
+  onChange(e: Event): void {
+    const value = (e.target as HTMLInputElement).value;
+    this.options = new Array(this.getRandomInt(5, 15))
       .join('.')
       .split('.')
       .map((_item, idx) => ({
