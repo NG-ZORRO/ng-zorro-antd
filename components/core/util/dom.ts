@@ -77,6 +77,10 @@ export function isTouchEvent(event: MouseEvent | TouchEvent): event is TouchEven
   return event.type.startsWith('touch');
 }
 
+export function getEventPosition(event: MouseEvent | TouchEvent): MouseEvent | Touch {
+  return isTouchEvent(event) ? event.touches[0] || event.changedTouches[0] : event;
+}
+
 export interface MouseTouchObserverConfig {
   end: string;
   move: string;

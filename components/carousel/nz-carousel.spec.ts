@@ -3,7 +3,7 @@ import { Component, DebugElement, ViewChild } from '@angular/core';
 import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { dispatchKeyboardEvent } from 'ng-zorro-antd/core';
+import { dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
 import { NZ_CAROUSEL_CUSTOM_STRATEGIES } from './nz-carousel-definitions';
@@ -240,6 +240,7 @@ describe('carousel', () => {
       expect(resizeSpy).toHaveBeenCalledTimes(1);
     }));
 
+    // TODO(wendzhue): no idea why this stops working with auditTime
     it('should support swiping to switch', fakeAsync(() => {
       swipe(testComponent.nzCarouselComponent, 500);
       tickMilliseconds(fixture, 700);
@@ -255,88 +256,81 @@ describe('carousel', () => {
     }));
 
     it('should prevent swipes that are not long enough', fakeAsync(() => {
-      swipe(testComponent.nzCarouselComponent, 2);
+      swipe(testComponent.nzCarouselComponent, 57);
       tickMilliseconds(fixture, 700);
       expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
+    }));
+
+    it('should disable dragging during transitioning', fakeAsync(() => {
+      tickMilliseconds(fixture, 700);
+      testComponent.nzCarouselComponent.goTo(1);
+      swipe(testComponent.nzCarouselComponent, 500);
+      tickMilliseconds(fixture, 700);
+      expect(carouselContents[1].nativeElement.classList).toContain('slick-active');
     }));
   });
 
   describe('strategies', () => {
     let fixture: ComponentFixture<NzTestCarouselBasicComponent>;
     let testComponent: NzTestCarouselBasicComponent;
-    let carouselContents: DebugElement[];
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCarouselBasicComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
-      carouselContents = fixture.debugElement.queryAll(By.directive(NzCarouselContentDirective));
     });
 
     describe('transform strategy', () => {
-      it('should set transform', fakeAsync(() => {
+      it('horizontal transform', fakeAsync(() => {
         expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).toBe(`translate3d(0px, 0px, 0px)`);
 
-        swipe(testComponent.nzCarouselComponent, 500);
+        testComponent.nzCarouselComponent.next();
+        tickMilliseconds(fixture, 700);
         expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).not.toBe(`translate3d(0px, 0px, 0px)`);
 
+        testComponent.nzCarouselComponent.pre();
         tickMilliseconds(fixture, 700);
-
-        swipe(testComponent.nzCarouselComponent, -500);
         expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).toBe(`translate3d(0px, 0px, 0px)`);
-        tickMilliseconds(fixture, 700);
 
         // From first to last.
-        swipe(testComponent.nzCarouselComponent, -500);
-        expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).not.toBe(`translate3d(0px, 0px, 0px)`);
+        testComponent.nzCarouselComponent.pre();
         tickMilliseconds(fixture, 700);
         expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).not.toBe(`translate3d(0px, 0px, 0px)`);
 
         // From last to first.
-        swipe(testComponent.nzCarouselComponent, 500);
-        expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).not.toBe(`translate3d(0px, 0px, 0px)`);
+        testComponent.nzCarouselComponent.next();
         tickMilliseconds(fixture, 700);
         expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).toBe(`translate3d(0px, 0px, 0px)`);
       }));
 
-      it('vertical', fakeAsync(() => {
+      it('vertical transform', fakeAsync(() => {
         testComponent.vertical = true;
         fixture.detectChanges();
 
         expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).toBe(`translate3d(0px, 0px, 0px)`);
 
-        swipe(testComponent.nzCarouselComponent, 500);
+        testComponent.nzCarouselComponent.next();
+        tickMilliseconds(fixture, 700);
         expect(testComponent.nzCarouselComponent.el.style.transform).not.toBe(`translate3d(0px, 0px, 0px)`);
-        tickMilliseconds(fixture, 700);
 
-        swipe(testComponent.nzCarouselComponent, -500);
-        expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).toBe(`translate3d(0px, 0px, 0px)`);
+        testComponent.nzCarouselComponent.pre();
         tickMilliseconds(fixture, 700);
+        expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).toBe(`translate3d(0px, 0px, 0px)`);
 
         // From first to last.
-        swipe(testComponent.nzCarouselComponent, -500);
-        expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).not.toBe(`translate3d(0px, 0px, 0px)`);
+        testComponent.nzCarouselComponent.pre();
         tickMilliseconds(fixture, 700);
         expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).not.toBe(`translate3d(0px, 0px, 0px)`);
 
         // From last to first.
-        swipe(testComponent.nzCarouselComponent, 500);
-        expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).not.toBe(`translate3d(0px, 0px, 0px)`);
+        testComponent.nzCarouselComponent.next();
         tickMilliseconds(fixture, 700);
         expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).toBe(`translate3d(0px, 0px, 0px)`);
-      }));
-
-      it('should disable dragging during transitioning', fakeAsync(() => {
-        tickMilliseconds(fixture, 700);
-        testComponent.nzCarouselComponent.goTo(1);
-        swipe(testComponent.nzCarouselComponent, 500);
-        tickMilliseconds(fixture, 700);
-        expect(carouselContents[1].nativeElement.classList).toContain('slick-active');
       }));
     });
 
     // Already covered in components specs.
-    describe('opacity strategy', () => {});
+    // describe('opacity strategy', () => {});
   });
 });
 
@@ -394,7 +388,13 @@ function tickMilliseconds<T>(fixture: ComponentFixture<T>, seconds: number = 1):
  * @param Distance: Positive to right. Negative to left.
  */
 function swipe(carousel: NzCarouselComponent, distance: number): void {
-  carousel.pointerDown(new MouseEvent('mousedown', { clientX: 500, clientY: 0 }));
-  carousel.pointerMove(new MouseEvent('mousemove', { clientX: 500 - distance, clientY: 0 }));
-  carousel.pointerUp();
+  carousel.pointerDown(
+    new MouseEvent('mousedown', {
+      clientX: 500,
+      clientY: 0
+    })
+  );
+
+  dispatchMouseEvent(document, 'mousemove', 500 - distance, 0);
+  dispatchMouseEvent(document, 'mouseup');
 }
