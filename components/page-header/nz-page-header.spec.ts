@@ -5,10 +5,12 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
 import { NzDemoPageHeaderActionsComponent } from './demo/actions';
 import { NzDemoPageHeaderBasicComponent } from './demo/basic';
 import { NzDemoPageHeaderBreadcrumbComponent } from './demo/breadcrumb';
 import { NzDemoPageHeaderContentComponent } from './demo/content';
+import { NzDemoPageHeaderGhostComponent } from './demo/ghost';
 import { NzDemoPageHeaderResponsiveComponent } from './demo/responsive';
 
 import { NzPageHeaderComponent } from './nz-page-header.component';
@@ -25,7 +27,8 @@ describe('NzPageHeaderComponent', () => {
         NzDemoPageHeaderBreadcrumbComponent,
         NzDemoPageHeaderContentComponent,
         NzDemoPageHeaderActionsComponent,
-        NzDemoPageHeaderResponsiveComponent
+        NzDemoPageHeaderResponsiveComponent,
+        NzDemoPageHeaderGhostComponent
       ]
     }).compileComponents();
     location = TestBed.get(Location);
@@ -36,8 +39,17 @@ describe('NzPageHeaderComponent', () => {
     const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
     fixture.detectChanges();
     expect(pageHeader.nativeElement.classList).toContain('ant-page-header');
+    expect(pageHeader.nativeElement.classList).toContain('ant-page-header-ghost');
     expect(pageHeader.nativeElement.querySelector('.ant-page-header-heading-title')).toBeTruthy();
     expect(pageHeader.nativeElement.querySelector('.ant-page-header-heading-sub-title')).toBeTruthy();
+  });
+
+  it('should ghost work', () => {
+    const fixture = TestBed.createComponent(NzDemoPageHeaderGhostComponent);
+    const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
+    fixture.detectChanges();
+    expect(pageHeader.nativeElement.classList).toContain('ant-page-header');
+    expect(pageHeader.nativeElement.classList).not.toContain('ant-page-header-ghost');
   });
 
   it('should breadcrumb work', () => {
