@@ -325,18 +325,22 @@ export class NzSelectService {
     }
     const keyCode = e.keyCode;
     const eventTarget = e.target as HTMLInputElement;
-    const listOfFilteredOptionWithoutDisabled = this.listOfFilteredOption.filter(item => !item.nzDisabled);
-    const activatedIndex = listOfFilteredOptionWithoutDisabled.findIndex(item => item === this.activatedOption);
+    const listOfFilteredOptionWithoutDisabledOrHidden = this.listOfFilteredOption.filter(
+      item => !item.nzDisabled && !item.nzHide
+    );
+    const activatedIndex = listOfFilteredOptionWithoutDisabledOrHidden.findIndex(item => item === this.activatedOption);
     switch (keyCode) {
       case UP_ARROW:
         e.preventDefault();
-        const preIndex = activatedIndex > 0 ? activatedIndex - 1 : listOfFilteredOptionWithoutDisabled.length - 1;
-        this.updateActivatedOption(listOfFilteredOptionWithoutDisabled[preIndex]);
+        const preIndex =
+          activatedIndex > 0 ? activatedIndex - 1 : listOfFilteredOptionWithoutDisabledOrHidden.length - 1;
+        this.updateActivatedOption(listOfFilteredOptionWithoutDisabledOrHidden[preIndex]);
         break;
       case DOWN_ARROW:
         e.preventDefault();
-        const nextIndex = activatedIndex < listOfFilteredOptionWithoutDisabled.length - 1 ? activatedIndex + 1 : 0;
-        this.updateActivatedOption(listOfFilteredOptionWithoutDisabled[nextIndex]);
+        const nextIndex =
+          activatedIndex < listOfFilteredOptionWithoutDisabledOrHidden.length - 1 ? activatedIndex + 1 : 0;
+        this.updateActivatedOption(listOfFilteredOptionWithoutDisabledOrHidden[nextIndex]);
         if (!this.disabled && !this.open) {
           this.setOpenState(true);
         }
