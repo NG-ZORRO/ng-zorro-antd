@@ -63,7 +63,21 @@ export class NzTooltipTestDirectiveComponent {
     <nz-tooltip nzTitle="FOCUS" [nzTrigger]="'focus'"><span #focusTrigger nz-tooltip>Show</span></nz-tooltip>
     <nz-tooltip nzTitle="CLICK" nzTrigger="click"><span #clickTrigger nz-tooltip>Show</span></nz-tooltip>
     <nz-tooltip nzTitle="VISIBLE" [(nzVisible)]="visible"><span #visibleTrigger nz-tooltip>Show</span></nz-tooltip>
-  `
+    <nz-tooltip nzTitle="ELLIPSISHOVER" nzTrigger="ellipsisHover"
+      ><span #ellipsisHoverTrigger nz-tooltip class="ellipsis">Ellipsis Hover show</span></nz-tooltip
+    >
+  `,
+  styles: [
+    `
+      .ellipsis {
+        display: inline-block;
+        width: 10px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    `
+  ]
 })
 export class NzTooltipTestWrapperComponent {
   @ViewChild('clickTrigger', { static: false }) clickTrigger: ElementRef;
@@ -73,6 +87,7 @@ export class NzTooltipTestWrapperComponent {
   @ViewChild('normalTrigger', { static: false }) normalTrigger: ElementRef;
   @ViewChild('templateTrigger', { static: false }) templateTrigger: ElementRef;
   @ViewChild('visibleTrigger', { static: false }) visibleTrigger: ElementRef;
+  @ViewChild('ellipsisHoverTrigger', { static: false }) ellipsisHoverTrigger: ElementRef;
   visible: boolean;
   visibleTogglingCount = 0;
 
@@ -184,6 +199,27 @@ describe('NzTooltip', () => {
       expect(overlayContainerElement.textContent).toContain(featureKey);
 
       dispatchMouseEvent(overlayContainerElement.querySelector('.cdk-overlay-backdrop')!, 'click');
+      waitingForTooltipToggling(fixture);
+      expect(overlayContainerElement.textContent).not.toContain(featureKey);
+    }));
+
+    it('should show/hide tooltip by ellipsis hover if text too long', fakeAsync(() => {
+      const featureKey = 'ELLIPSISHOVER';
+      const triggerElement = component.ellipsisHoverTrigger.nativeElement;
+      dispatchMouseEvent(triggerElement, 'mouseenter');
+      waitingForTooltipToggling(fixture);
+      expect(overlayContainerElement.textContent).toContain(featureKey);
+
+      dispatchMouseEvent(triggerElement, 'mouseleave');
+      waitingForTooltipToggling(fixture);
+      expect(overlayContainerElement.textContent).not.toContain(featureKey);
+    }));
+
+    it('should not show tooltip by ellipsis hover if text not too long', fakeAsync(() => {
+      const featureKey = 'ELLIPSISHOVER';
+      const triggerElement = component.ellipsisHoverTrigger.nativeElement;
+      triggerElement.style.width = '500px';
+      dispatchMouseEvent(triggerElement, 'mouseenter');
       waitingForTooltipToggling(fixture);
       expect(overlayContainerElement.textContent).not.toContain(featureKey);
     }));

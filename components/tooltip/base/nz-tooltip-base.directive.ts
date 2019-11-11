@@ -208,6 +208,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
     if (this.tooltipRef) {
       this.tooltipRef.destroy();
     }
+    this.unRegisterTriggers();
   }
 
   show(): void {
@@ -246,6 +247,10 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
     this.tooltip.setOverlayOrigin(this as CdkOverlayOrigin);
     // Update all properties to the component.
     this.updateChangedProperties(this.needProxyProperties);
+  }
+
+  protected unRegisterTriggers(): void {
+    this.triggerUnlisteners.forEach(unlisten => unlisten());
   }
 
   protected registerTriggers(): void {
@@ -299,7 +304,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
         if (offsetParam < scrollParam) {
           this.show();
         }
-      })
+      });
       this.triggerUnlisteners.push(listenerEllipsisHoverIn);
       const listenerEllipsisHoverOut = this.renderer.listen(el, 'mouseleave', () => this.hide());
       this.triggerUnlisteners.push(listenerEllipsisHoverOut);
