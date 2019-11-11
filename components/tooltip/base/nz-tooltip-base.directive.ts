@@ -342,9 +342,9 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
   }
 
   private delayEnterLeave(isOrigin: boolean, isEnter: boolean, delay: number = -1): void {
-    this.clearTogglingTimer();
-
-    if (delay > 0) {
+    if (this.delayTimer) {
+      this.clearTogglingTimer();
+    } else if (delay > 0) {
       this.delayTimer = setTimeout(() => {
         this.delayTimer = undefined;
         isEnter ? this.show() : this.hide();
