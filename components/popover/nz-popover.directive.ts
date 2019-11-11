@@ -34,7 +34,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   @Input('nzPopoverTitle') specificTitle: NzTSType;
   @Input('nzPopoverContent') specificContent: NzTSType;
   @Input('nz-popover') directiveNameTitle: NzTSType | null;
-  @Input('nzPopoverTrigger') specificTrigger: NzTooltipTrigger;
+  @Input('nzPopoverTrigger') specificTrigger: NzTooltipTrigger | null;
   @Input('nzPopoverPlacement') specificPlacement: string;
 
   componentFactory: ComponentFactory<NzPopoverComponent> = this.resolver.resolveComponentFactory(NzPopoverComponent);

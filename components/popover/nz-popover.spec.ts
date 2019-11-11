@@ -76,6 +76,24 @@ describe('NzPopover', () => {
       expect(overlayContainerElement.querySelector('.anticon-file')).not.toBeNull();
     }));
 
+    it('should not show tooltip with nullable trigger', fakeAsync(() => {
+      const featureKey = 'NULLABLE';
+      const triggerElement = component.nullableTrigger.nativeElement;
+
+      dispatchMouseEvent(triggerElement, 'click');
+      tick(100);
+      fixture.detectChanges();
+      dispatchMouseEvent(triggerElement, 'focus');
+      tick(100);
+      fixture.detectChanges();
+      dispatchMouseEvent(triggerElement, 'mouseenter');
+      tick(100);
+      fixture.detectChanges();
+
+      tick();
+      expect(overlayContainerElement.textContent).not.toContain(featureKey);
+    }));
+
     it('should show/hide tooltip by focus', fakeAsync(() => {
       const featureKey = 'FOCUS';
       const triggerElement = component.focusTrigger.nativeElement;
@@ -226,6 +244,8 @@ export class NzPopoverTestNewComponent {
       <ng-template #nzTemplate> <i nz-icon nzType="file"></i> <span>Show with icon</span> </ng-template>
     </nz-popover>
 
+    <nz-popover nzTitle="NULLABLE" [nzTrigger]="null"><span #nullableTrigger nz-popover>Show</span></nz-popover>
+
     <nz-popover nzTitle="FOCUS" [nzTrigger]="'focus'"><span #focusTrigger nz-popover>Show</span></nz-popover>
 
     <nz-popover nzTitle="CLICK" nzTrigger="click"><span #clickTrigger nz-popover>Show</span></nz-popover>
@@ -235,6 +255,8 @@ export class NzPopoverTestNewComponent {
 })
 export class NzPopoverTestWrapperComponent {
   @ViewChild('normalTrigger', { static: false }) normalTrigger: ElementRef;
+
+  @ViewChild('nullableTrigger', { static: false }) nullableTrigger: ElementRef;
 
   @ViewChild('templateTrigger', { static: false }) templateTrigger: ElementRef;
 

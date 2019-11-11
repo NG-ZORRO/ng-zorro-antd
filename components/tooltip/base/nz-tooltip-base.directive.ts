@@ -36,7 +36,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
   specificTitle?: NzTSType | null;
   directiveNameContent?: NzTSType | null;
   specificContent?: NzTSType | null;
-  specificTrigger?: NzTooltipTrigger;
+  specificTrigger?: NzTooltipTrigger | null;
   specificPlacement?: string;
   tooltipRef: ComponentRef<NzTooltipBaseComponent>;
 
@@ -90,8 +90,8 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
     return this.specificPlacement || this.nzPlacement;
   }
 
-  protected get trigger(): NzTooltipTrigger {
-    return this.specificTrigger || this.nzTrigger;
+  protected get trigger(): NzTooltipTrigger | null {
+    return this.specificTrigger !== undefined ? this.specificTrigger : this.nzTrigger;
   }
 
   protected needProxyProperties = [
@@ -182,10 +182,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
     }
 
     this.tooltip.nzVisibleChange
-      .pipe(
-        distinctUntilChanged(),
-        takeUntil(this.$destroy)
-      )
+      .pipe(distinctUntilChanged(), takeUntil(this.$destroy))
       .subscribe((visible: boolean) => {
         this.isTooltipComponentVisible = visible;
         this.nzVisibleChange.emit(visible);

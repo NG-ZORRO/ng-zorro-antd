@@ -39,7 +39,7 @@ import { NzPopconfirmComponent } from './nz-popconfirm.component';
 export class NzPopconfirmDirective extends NzTooltipBaseDirective implements OnInit {
   @Input('nzPopconfirmTitle') specificTitle: NzTSType;
   @Input('nz-popconfirm') directiveNameTitle: NzTSType | null;
-  @Input('nzPopconfirmTrigger') specificTrigger: NzTooltipTrigger;
+  @Input('nzPopconfirmTrigger') specificTrigger: NzTooltipTrigger | null;
   @Input('nzPopconfirmPlacement') specificPlacement: string;
   @Input() nzOkText: string;
   @Input() nzOkType: string;

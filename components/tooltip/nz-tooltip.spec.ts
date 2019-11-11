@@ -55,7 +55,8 @@ export class NzTooltipTestDirectiveComponent {
 @Component({
   template: `
     <a #mostSimpleTrigger nz-tooltip="MOST-SIMPLE" (nzVisibleChange)="onVisibleChange()">Show</a>
-    <nz-tooltip [nzTitle]="'NORMAL'" [nzTrigger]="'hover'"><span #normalTrigger nz-tooltip>Show</span></nz-tooltip>
+    <nz-tooltip nzTitle="NORMAL" [nzTrigger]="'hover'"><span #normalTrigger nz-tooltip>Show</span></nz-tooltip>
+    <nz-tooltip nzTitle="NULLABLE" [nzTrigger]="null"><span #nullableTrigger nz-tooltip>Show</span></nz-tooltip>
     <nz-tooltip>
       <button #templateTrigger nz-tooltip>Show</button>
       <ng-template #nzTemplate><i nz-icon nzType="file"></i> <span>Show with icon</span></ng-template>
@@ -71,6 +72,7 @@ export class NzTooltipTestWrapperComponent {
   @ViewChild('mostSimpleTrigger', { static: false, read: NzTooltipDirective }) mostSimpleDirective: NzTooltipDirective;
   @ViewChild('mostSimpleTrigger', { static: false }) mostSimpleTrigger: ElementRef;
   @ViewChild('normalTrigger', { static: false }) normalTrigger: ElementRef;
+  @ViewChild('nullableTrigger', { static: false }) nullableTrigger: ElementRef;
   @ViewChild('templateTrigger', { static: false }) templateTrigger: ElementRef;
   @ViewChild('visibleTrigger', { static: false }) visibleTrigger: ElementRef;
   visible: boolean;
@@ -152,6 +154,20 @@ describe('NzTooltip', () => {
       dispatchMouseEvent(triggerElement, 'mouseleave');
       waitingForTooltipToggling(fixture);
       expect(overlayContainerElement.textContent).not.toContain(title);
+    }));
+
+    it('should not show tooltip with nullable trigger', fakeAsync(() => {
+      const featureKey = 'NULLABLE';
+      const triggerElement = component.nullableTrigger.nativeElement;
+
+      dispatchMouseEvent(triggerElement, 'mouseenter');
+      waitingForTooltipToggling(fixture);
+      dispatchMouseEvent(triggerElement, 'focus');
+      waitingForTooltipToggling(fixture);
+      dispatchMouseEvent(triggerElement, 'click');
+      waitingForTooltipToggling(fixture);
+
+      expect(overlayContainerElement.textContent).not.toContain(featureKey);
     }));
 
     it('should show tooltip with custom template', fakeAsync(() => {
