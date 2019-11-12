@@ -391,9 +391,6 @@ describe('NzDrawerComponent', () => {
     component.open();
     fixture.detectChanges();
     expect(
-      (overlayContainerElement.querySelector('.ant-drawer .ant-drawer-wrapper-body') as HTMLElement).style.overflow
-    ).toBe('auto');
-    expect(
       (overlayContainerElement.querySelector('.ant-drawer .ant-drawer-wrapper-body') as HTMLElement).style.height
     ).toBe('100%');
   });
