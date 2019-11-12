@@ -118,24 +118,6 @@ describe('NzPopconfirm', () => {
       expect(overlayContainerElement.textContent).not.toContain(featureKey);
     }));
 
-    it('should not show tooltip with nullable trigger', fakeAsync(() => {
-      const featureKey = 'NULLABLE';
-      const triggerElement = component.nullableTrigger.nativeElement;
-
-      dispatchMouseEvent(triggerElement, 'click');
-      tick(100);
-      fixture.detectChanges();
-      dispatchMouseEvent(triggerElement, 'focus');
-      tick(100);
-      fixture.detectChanges();
-      dispatchMouseEvent(triggerElement, 'mouseenter');
-      tick(100);
-      fixture.detectChanges();
-
-      tick();
-      expect(overlayContainerElement.textContent).not.toContain(featureKey);
-    }));
-
     it('should show/hide by nzVisible change', fakeAsync(() => {
       const featureKey = 'VISIBLE';
       component.visible = true;
@@ -354,10 +336,6 @@ export class NzpopconfirmTestNewComponent {
       <ng-template #nzTemplate> <i nz-icon nzType="file"></i> <span>Show with icon</span> </ng-template>
     </nz-popconfirm>
 
-    <nz-popconfirm nzTitle="NULLABLE" [nzTrigger]="null"
-      ><span #nullableTrigger nz-popconfirm>Show</span></nz-popconfirm
-    >
-
     <nz-popconfirm nzTitle="FOCUS" [nzTrigger]="'focus'"><span #focusTrigger nz-popconfirm>Show</span></nz-popconfirm>
 
     <nz-popconfirm nzTitle="CLICK" nzTrigger="click"><span #clickTrigger nz-popconfirm>Show</span></nz-popconfirm>
@@ -382,8 +360,6 @@ export class NzpopconfirmTestWrapperComponent {
   @ViewChild('normalTrigger', { static: false }) normalTrigger: ElementRef;
 
   @ViewChild('templateTrigger', { static: false }) templateTrigger: ElementRef;
-
-  @ViewChild('nullableTrigger', { static: false }) nullableTrigger: ElementRef;
 
   @ViewChild('focusTrigger', { static: false }) focusTrigger: ElementRef;
 
