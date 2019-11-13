@@ -201,7 +201,6 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
     this.$destroy.complete();
 
     // Clear toggling timer. Issue #3875 #4317 #4386
-    this.hide();
     this.clearTogglingTimer();
     this.removeTriggerListeners();
 
