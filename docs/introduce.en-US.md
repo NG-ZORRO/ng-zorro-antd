@@ -30,6 +30,8 @@ Following the Ant Design specification, we developed a Angular UI library `ng-zo
 - A set of high-quality Angular components out of the box.
 - Written in TypeScript with complete defined types.
 - Support OnPush mode, high performance.
+- Support Customize theme.
+- Support import Component individually.
 
 ## Environment Support
 

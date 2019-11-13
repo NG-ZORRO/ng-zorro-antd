@@ -31,6 +31,8 @@ import {
   WithConfig
 } from 'ng-zorro-antd/core';
 
+const NZ_CONFIG_COMPONENT_NAME = 'avatar';
+
 @Component({
   selector: 'nz-avatar',
   exportAs: 'nzAvatar',
@@ -41,8 +43,8 @@ import {
   encapsulation: ViewEncapsulation.None
 })
 export class NzAvatarComponent implements OnChanges {
-  @Input() @WithConfig('circle') nzShape: NzShapeSCType;
-  @Input() @WithConfig('default') nzSize: NzSizeLDSType | number;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'circle') nzShape: NzShapeSCType;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzSizeLDSType | number;
   @Input() nzText: string;
   @Input() nzSrc: string;
   @Input() nzSrcSet: string;

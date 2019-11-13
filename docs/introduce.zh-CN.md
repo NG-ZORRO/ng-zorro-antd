@@ -31,6 +31,8 @@ widget: <nz-github-btn></nz-github-btn>
 - 开箱即用的高质量 Angular 组件，与 Angular 保持同步升级。
 - 使用 TypeScript 构建，提供完整的类型定义文件。
 - 支持 OnPush 模式，性能卓越。
+- 支持自定义主题。
+- 支持使用单独某个组件。
 
 ## 支持环境
 

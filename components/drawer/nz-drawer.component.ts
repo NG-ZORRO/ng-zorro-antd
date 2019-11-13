@@ -43,6 +43,8 @@ import { NzDrawerRef } from './nz-drawer-ref';
 
 export const DRAWER_ANIMATE_DURATION = 300;
 
+const NZ_CONFIG_COMPONENT_NAME = 'drawer';
+
 @Component({
   selector: 'nz-drawer',
   exportAs: 'nzDrawer',
@@ -55,8 +57,8 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
   implements OnInit, OnDestroy, AfterViewInit, OnChanges, NzDrawerOptionsOfComponent {
   @Input() nzContent: TemplateRef<{ $implicit: D; drawerRef: NzDrawerRef<R> }> | Type<T>;
   @Input() @InputBoolean() nzClosable: boolean = true;
-  @Input() @WithConfig(true) @InputBoolean() nzMaskClosable: boolean;
-  @Input() @WithConfig(true) @InputBoolean() nzMask: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzMaskClosable: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzMask: boolean;
   @Input() @InputBoolean() nzNoAnimation = false;
   @Input() @InputBoolean() nzKeyboard: boolean = true;
   @Input() nzTitle: string | TemplateRef<{}>;

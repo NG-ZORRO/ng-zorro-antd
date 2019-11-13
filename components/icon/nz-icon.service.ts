@@ -49,7 +49,7 @@ import {
   UploadOutline,
   UpOutline
 } from '@ant-design/icons-angular/icons';
-import { trimComponentName, warn, warnDeprecation, IconConfig, NzConfigService } from 'ng-zorro-antd/core';
+import { warn, warnDeprecation, IconConfig, NzConfigService } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
 
 export interface NzIconfontOption {
@@ -57,11 +57,8 @@ export interface NzIconfontOption {
 }
 
 export const NZ_ICONS = new InjectionToken('nz_icons');
-
 export const NZ_ICON_DEFAULT_TWOTONE_COLOR = new InjectionToken('nz_icon_default_twotone_color');
-
 export const DEFAULT_TWOTONE_COLOR = '#1890ff';
-
 export const NZ_ICONS_USED_BY_ZORRO: IconDefinition[] = [
   BarsOutline,
   CalendarOutline,
@@ -186,7 +183,7 @@ export class NzIconService extends IconService {
   }
 
   private onConfigChange(): void {
-    this.nzConfigService.getConfigChangeEventForComponent(trimComponentName(this.constructor.name)).subscribe(() => {
+    this.nzConfigService.getConfigChangeEventForComponent('icon').subscribe(() => {
       this.configDefaultTwotoneColor();
       this.configDefaultTheme();
       this.configUpdated$.next();
@@ -216,6 +213,6 @@ export class NzIconService extends IconService {
   }
 
   private getConfig(): IconConfig {
-    return (this.nzConfigService.getConfigForComponent(trimComponentName(this.constructor.name)) as IconConfig) || {};
+    return this.nzConfigService.getConfigForComponent('icon') || {};
   }
 }

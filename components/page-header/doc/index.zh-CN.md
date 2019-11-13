@@ -27,12 +27,13 @@ import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 ```
 
 ### nz-page-header
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `[nzTitle]` | title 文字 | `string \| TemplateRef<void>` | - |
-| `[nzSubtitle]` | subTitle 文字 | `string \| TemplateRef<void>` | - |
-| `[nzBackIcon]` | 自定义 back icon | `string \| TemplateRef<void>` | - |
-| `(nzBack)` | 返回按钮的点击事件 | `EventEmitter<void>` | 未订阅该事件时默认调用 [Location[back]](https://angular.cn/api/common/Location#back) |
+| 参数 | 说明 | 类型 | 默认值 | 全局配置 |
+| --- | --- | --- | --- | --- |
+| `[nzGhost]` | 使背景色透明 | `boolean` | `true` | ✅ |
+| `[nzTitle]` | title 文字 | `string \| TemplateRef<void>` | - | - |
+| `[nzSubtitle]` | subTitle 文字 | `string \| TemplateRef<void>` | - | - |
+| `[nzBackIcon]` | 自定义 back icon | `string \| TemplateRef<void>` | - | - |
+| `(nzBack)` | 返回按钮的点击事件 | `EventEmitter<void>` | 未订阅该事件时默认调用 [Location[back]](https://angular.cn/api/common/Location#back) | - |
 
 ### Page header 组成部分
 | 元素 | 说明 |

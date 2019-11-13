@@ -36,7 +36,6 @@ import { startWith, takeUntil } from 'rxjs/operators';
 import {
   slideMotion,
   toArray,
-  trimComponentName,
   warnDeprecation,
   DEFAULT_DROPDOWN_POSITIONS,
   InputBoolean,
@@ -60,6 +59,7 @@ import {
 import { NzCascaderOptionComponent } from './nz-cascader-li.component';
 import { NzCascaderService } from './nz-cascader.service';
 
+const NZ_CONFIG_COMPONENT_NAME = 'cascader';
 const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
 
 @Component({
@@ -119,7 +119,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   @Input() nzLabelRender: TemplateRef<void>;
   @Input() nzLabelProperty = 'label';
   @Input() nzNotFoundContent: string | TemplateRef<void>;
-  @Input() @WithConfig('default') nzSize: NzCascaderSize;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzCascaderSize;
   @Input() nzShowSearch: boolean | NzShowSearchOptions;
   @Input() nzPlaceHolder: string;
   @Input() nzMenuClassName: string;
@@ -274,7 +274,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
       });
 
     this.nzConfigService
-      .getConfigChangeEventForComponent(trimComponentName(this.constructor.name))
+      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
       .pipe(takeUntil(this.$destroy))
       .subscribe(() => {
         this.cdr.markForCheck();

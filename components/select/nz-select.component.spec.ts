@@ -253,6 +253,38 @@ describe('nz-select component', () => {
       fixture.detectChanges();
       expect(testComponent.open).toBe(false);
     }));
+    it('should skip disabled or hidden options on keydown events', fakeAsync(() => {
+      fixture.detectChanges();
+      select.nativeElement.click();
+      fixture.detectChanges();
+      overlayContainerElement.querySelector('li')!.click();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.selectedValue).toBe('jack');
+      select.nativeElement.click();
+      fixture.detectChanges();
+      dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', UP_ARROW);
+      fixture.detectChanges();
+      dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', ENTER);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.selectedValue).toBe('lucy');
+      select.nativeElement.click();
+      fixture.detectChanges();
+      dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', UP_ARROW);
+      fixture.detectChanges();
+      dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', DOWN_ARROW);
+      fixture.detectChanges();
+      dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', DOWN_ARROW);
+      fixture.detectChanges();
+      dispatchKeyboardEvent(select.nativeElement.querySelector('.ant-select-selection'), 'keydown', ENTER);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(testComponent.selectedValue).toBe('jack');
+    }));
   });
   describe('tags', () => {
     let fixture: ComponentFixture<NzTestSelectTagsComponent>;
@@ -440,6 +472,8 @@ describe('nz-select component', () => {
       <nz-option nzValue="jack" nzLabel="Jack"></nz-option>
       <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
       <nz-option nzValue="disabled" nzLabel="Disabled" nzDisabled></nz-option>
+      <nz-option nzValue="hidden" nzLabel="Hidden" nzHide></nz-option>
+      <nz-option nzValue="disabledAndHidden" nzLabel="DisabledAndHidden" nzDisabled nzHide></nz-option>
     </nz-select>
     <ng-template #custom let-selected>
       <div>Label: {{ selected.nzLabel }}</div>

@@ -42,6 +42,7 @@ interface Section {
   top: number;
 }
 
+const NZ_CONFIG_COMPONENT_NAME = 'anchor';
 const sharpMatcherRegx = /#([^#]+)$/;
 
 @Component({
@@ -56,11 +57,19 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
   @ViewChild('ink', { static: false }) private ink: ElementRef;
 
   @Input() @InputBoolean() nzAffix = true;
-  @Input() @WithConfig(false) @InputBoolean() nzShowInkInFixed: boolean;
-  @Input() @WithConfig(5) @InputNumber() nzBounds: number;
 
   @Input()
-  @WithConfig<number>()
+  @WithConfig(NZ_CONFIG_COMPONENT_NAME, false)
+  @InputBoolean()
+  nzShowInkInFixed: boolean;
+
+  @Input()
+  @WithConfig(NZ_CONFIG_COMPONENT_NAME, 5)
+  @InputNumber()
+  nzBounds: number;
+
+  @Input()
+  @WithConfig<number>(NZ_CONFIG_COMPONENT_NAME)
   set nzOffsetTop(value: number) {
     this._offsetTop = toNumber(value, 0);
     this.wrapperStyle = {

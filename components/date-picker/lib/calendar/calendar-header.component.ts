@@ -60,6 +60,7 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
     if (!this.value) {
       this.value = new CandyDate(); // Show today by default
     }
+    this.render();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -18,14 +18,16 @@
         <div class="ant-drawer-wrapper-body"
           [style.overflow]="isLeftOrRight ? 'auto' : null"
           [style.height]="isLeftOrRight ? '100%' : null">
-          <div *ngIf="nzTitle" class="ant-drawer-header">
-            <div class="ant-drawer-title">
+          <div *ngIf="nzTitle || nzClosable"
+            [class.ant-drawer-header]="!!nzTitle"
+            [class.ant-drawer-header-no-title]="!!nzTitle">
+            <div *ngIf="nzTitle" class="ant-drawer-title">
               <ng-container *nzStringTemplateOutlet="nzTitle"><div [innerHTML]="nzTitle"></div></ng-container>
             </div>
+            <button *ngIf="nzClosable" (click)="closeClick()" aria-label="Close" class="ant-drawer-close">
+              <i nz-icon nzType="close"></i>
+            </button>
           </div>
-          <button *ngIf="nzClosable" (click)="closeClick()" aria-label="Close" class="ant-drawer-close">
-            <span class="ant-drawer-close-x"><i nz-icon nzType="close"></i></span>
-          </button>
           <div class="ant-drawer-body" [ngStyle]="nzBodyStyle">
             <ng-template cdkPortalOutlet></ng-template>
             <ng-container *ngIf="isTemplateRef(nzContent)">

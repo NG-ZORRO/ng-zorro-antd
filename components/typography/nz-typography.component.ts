@@ -47,6 +47,8 @@ import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzTextCopyComponent } from './nz-text-copy.component';
 import { NzTextEditComponent } from './nz-text-edit.component';
 
+const NZ_CONFIG_COMPONENT_NAME = 'typography';
+
 @Component({
   selector: `
   nz-typography,
@@ -80,7 +82,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   @Input() @InputBoolean() nzExpandable = false;
   @Input() @InputBoolean() nzEllipsis = false;
   @Input() nzContent: string;
-  @Input() @WithConfig(1) @InputNumber() nzEllipsisRows: number;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 1) @InputNumber() nzEllipsisRows: number;
   @Input() nzType: 'secondary' | 'warning' | 'danger' | undefined;
   @Input() nzCopyText: string | undefined;
   @Output() readonly nzContentChange = new EventEmitter<string>();

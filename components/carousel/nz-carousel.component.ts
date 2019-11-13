@@ -8,7 +8,6 @@
 
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Platform } from '@angular/cdk/platform';
-import { DOCUMENT } from '@angular/common';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -35,12 +34,12 @@ import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 
 import {
-  isTouchEvent,
   warnDeprecation,
   InputBoolean,
   InputNumber,
   NzConfigService,
   NzDomEventService,
+  NzDragService,
   WithConfig
 } from 'ng-zorro-antd/core';
 
@@ -56,6 +55,8 @@ import {
 import { NzCarouselBaseStrategy } from './strategies/base-strategy';
 import { NzCarouselOpacityStrategy } from './strategies/opacity-strategy';
 import { NzCarouselTransformStrategy } from './strategies/transform-strategy';
+
+const NZ_CONFIG_COMPONENT_NAME = 'carousel';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -94,11 +95,11 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   @ViewChild('slickTrack', { static: false }) slickTrack: ElementRef;
 
   @Input() nzDotRender: TemplateRef<{ $implicit: number }>;
-  @Input() @WithConfig('scrollx') nzEffect: NzCarouselEffects;
-  @Input() @WithConfig(true) @InputBoolean() nzEnableSwipe: boolean;
-  @Input() @WithConfig(true) @InputBoolean() nzDots: boolean;
-  @Input() @WithConfig(false) @InputBoolean() nzAutoPlay: boolean;
-  @Input() @WithConfig(3000) @InputNumber() nzAutoPlaySpeed: number;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'scrollx') nzEffect: NzCarouselEffects;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzEnableSwipe: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzDots: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzAutoPlay: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 3000) @InputNumber() nzAutoPlaySpeed: number;
   @Input() @InputNumber() nzTransitionSpeed = 500;
 
   @Input()
@@ -113,7 +114,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   }
 
   @Input()
-  @WithConfig('bottom')
+  @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'bottom')
   set nzDotPosition(value: NzCarouselDotPosition) {
     this._dotPosition = value;
     if (value === 'left' || value === 'right') {
@@ -141,24 +142,21 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   transitionInProgress: number | null;
 
   private destroy$ = new Subject<void>();
-  private document: Document;
   private gestureRect: ClientRect | null = null;
   private pointerDelta: PointerVector | null = null;
-  private pointerPosition: PointerVector | null = null;
   private isTransiting = false;
   private isDragging = false;
 
   constructor(
-    public nzConfigService: NzConfigService,
     elementRef: ElementRef,
-    private renderer: Renderer2,
-    private cdr: ChangeDetectorRef,
-    private platform: Platform,
-    private nzDomEventService: NzDomEventService,
-    @Inject(DOCUMENT) document: any, // tslint:disable-line:no-any
+    public readonly nzConfigService: NzConfigService,
+    private readonly renderer: Renderer2,
+    private readonly cdr: ChangeDetectorRef,
+    private readonly platform: Platform,
+    private readonly nzDomEventService: NzDomEventService,
+    private readonly nzDragService: NzDragService,
     @Optional() @Inject(NZ_CAROUSEL_CUSTOM_STRATEGIES) private customStrategies: NzCarouselStrategyRegistryItem[]
   ) {
-    this.document = document;
     this.renderer.addClass(elementRef.nativeElement, 'ant-carousel');
     this.el = elementRef.nativeElement;
   }
@@ -227,7 +225,6 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     if (this.strategy) {
       this.strategy.dispose();
     }
-    this.dispose();
 
     this.destroy$.next();
     this.destroy$.complete();
@@ -315,46 +312,40 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     this.cdr.markForCheck();
   }
 
+  /**
+   * Drag carousel.
+   * @param event
+   */
   pointerDown = (event: TouchEvent | MouseEvent) => {
     if (!this.isDragging && !this.isTransiting && this.nzEnableSwipe) {
-      const point = isTouchEvent(event) ? event.touches[0] || event.changedTouches[0] : event;
-      this.isDragging = true;
       this.clearScheduledTransition();
       this.gestureRect = this.slickListEl.getBoundingClientRect();
-      this.pointerPosition = { x: point.clientX, y: point.clientY };
 
-      this.document.addEventListener('mousemove', this.pointerMove);
-      this.document.addEventListener('touchmove', this.pointerMove);
-      this.document.addEventListener('mouseup', this.pointerUp);
-      this.document.addEventListener('touchend', this.pointerUp);
-    }
-  };
+      this.nzDragService.requestDraggingSequence(event).subscribe(
+        delta => {
+          this.pointerDelta = delta;
+          this.isDragging = true;
+          this.strategy.dragging(this.pointerDelta);
+        },
+        () => {},
+        () => {
+          if (this.nzEnableSwipe && this.isDragging) {
+            const xDelta = this.pointerDelta ? this.pointerDelta.x : 0;
 
-  pointerMove = (event: TouchEvent | MouseEvent) => {
-    if (this.isDragging) {
-      const point = isTouchEvent(event) ? event.touches[0] || event.changedTouches[0] : event;
-      this.pointerDelta = { x: point.clientX - this.pointerPosition!.x, y: point.clientY - this.pointerPosition!.y };
-      if (Math.abs(this.pointerDelta.x) > 5) {
-        this.strategy.dragging(this.pointerDelta);
-      }
-    }
-  };
+            // Switch to another slide if delta is bigger than third of the width.
+            if (Math.abs(xDelta) > this.gestureRect!.width / 3) {
+              this.goTo(xDelta > 0 ? this.activeIndex - 1 : this.activeIndex + 1);
+            } else {
+              this.goTo(this.activeIndex);
+            }
 
-  pointerUp = () => {
-    if (this.isDragging && this.nzEnableSwipe) {
-      const delta = this.pointerDelta ? this.pointerDelta.x : 0;
+            this.gestureRect = null;
+            this.pointerDelta = null;
+          }
 
-      // Switch to another slide if delta is third of the width.
-      if (Math.abs(delta) > this.gestureRect!.width / 3) {
-        this.goTo(delta > 0 ? this.activeIndex - 1 : this.activeIndex + 1);
-      } else {
-        this.goTo(this.activeIndex);
-      }
-
-      this.gestureRect = null;
-      this.pointerDelta = null;
-      this.isDragging = false;
-      this.dispose();
+          this.isDragging = false;
+        }
+      );
     }
   };
 
@@ -362,12 +353,5 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     if (this.strategy) {
       this.strategy.withCarouselContents(this.carouselContents);
     }
-  }
-
-  private dispose(): void {
-    this.document.removeEventListener('mousemove', this.pointerMove);
-    this.document.removeEventListener('touchmove', this.pointerMove);
-    this.document.removeEventListener('touchend', this.pointerMove);
-    this.document.removeEventListener('mouseup', this.pointerMove);
   }
 }

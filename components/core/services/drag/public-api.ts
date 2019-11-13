@@ -6,6 +6,4 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Version } from '@angular/core';
-
-export const VERSION = new Version('8.5.0');
+export { NzDragService } from './nz-drag.service';

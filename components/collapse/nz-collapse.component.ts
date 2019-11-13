@@ -12,6 +12,8 @@ import { InputBoolean, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
 
 import { NzCollapsePanelComponent } from './nz-collapse-panel.component';
 
+const NZ_CONFIG_COMPONENT_NAME = 'collapse';
+
 @Component({
   selector: 'nz-collapse',
   exportAs: 'nzCollapse',
@@ -28,8 +30,8 @@ import { NzCollapsePanelComponent } from './nz-collapse-panel.component';
 })
 export class NzCollapseComponent {
   private listOfNzCollapsePanelComponent: NzCollapsePanelComponent[] = [];
-  @Input() @WithConfig(false) @InputBoolean() nzAccordion: boolean;
-  @Input() @WithConfig(true) @InputBoolean() nzBordered: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzAccordion: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzBordered: boolean;
 
   constructor(public nzConfigService: NzConfigService) {}
 

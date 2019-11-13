@@ -23,7 +23,7 @@ import {
   SimpleChanges,
   ViewContainerRef
 } from '@angular/core';
-import { isNotNil, warnDeprecation, NgStyleInterface, NzNoAnimationDirective, NzTSType } from 'ng-zorro-antd/core';
+import { warnDeprecation, NgStyleInterface, NzNoAnimationDirective, NzTSType } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
@@ -114,7 +114,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
    */
   protected isDynamicTooltip = false;
 
-  protected triggerUnlisteners: Array<() => void> = [];
+  protected readonly triggerUnlisteners: Array<() => void> = [];
 
   protected $destroy = new Subject<void>();
 
@@ -133,6 +133,13 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
+    const { nzTrigger, specificTrigger } = changes;
+    const trigger = specificTrigger || nzTrigger;
+
+    if (trigger && !trigger.isFirstChange()) {
+      this.registerTriggers();
+    }
+
     if (this.tooltip && this.isDynamicTooltip) {
       this.updateChangedProperties(changes);
     }
@@ -192,6 +199,12 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
   ngOnDestroy(): void {
     this.$destroy.next();
     this.$destroy.complete();
+
+    // Clear toggling timer. Issue #3875 #4317 #4386
+    this.hide();
+    this.clearTogglingTimer();
+    this.removeTriggerListeners();
+
     if (this.tooltipRef) {
       this.tooltipRef.destroy();
     }
@@ -240,6 +253,8 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
     // After removing the old API, we can just check the directive's own `nzTrigger`.
     const el = this.elementRef.nativeElement;
     const trigger = this.isDynamicTooltip ? this.trigger : this.tooltip.nzTrigger;
+
+    this.removeTriggerListeners();
 
     if (trigger === 'hover') {
       let overlayElement: HTMLElement;
@@ -320,17 +335,16 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
 
   // tslint:disable-next-line no-any
   private updateComponentValue(key: string, value: any): void {
-    if (isNotNil(value)) {
+    if (typeof value !== 'undefined') {
       // @ts-ignore
       this.tooltip[key] = value;
     }
   }
 
   private delayEnterLeave(isOrigin: boolean, isEnter: boolean, delay: number = -1): void {
-    if (this.delayTimer) {
-      clearTimeout(this.delayTimer);
-      this.delayTimer = undefined;
-    } else if (delay > 0) {
+    this.clearTogglingTimer();
+
+    if (delay > 0) {
       this.delayTimer = setTimeout(() => {
         this.delayTimer = undefined;
         isEnter ? this.show() : this.hide();
@@ -339,6 +353,18 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
       // `isOrigin` is used due to the tooltip will not hide immediately
       // (may caused by the fade-out animation).
       isEnter && isOrigin ? this.show() : this.hide();
+    }
+  }
+
+  private removeTriggerListeners(): void {
+    this.triggerUnlisteners.forEach(cancel => cancel());
+    this.triggerUnlisteners.length = 0;
+  }
+
+  private clearTogglingTimer(): void {
+    if (this.delayTimer) {
+      clearTimeout(this.delayTimer);
+      this.delayTimer = undefined;
     }
   }
 }

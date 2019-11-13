@@ -52,28 +52,14 @@ export class NzConfigService {
 // tslint:disable:no-invalid-this
 // tslint:disable:no-any
 
-const lowercaseFirstLetter = (s: string): string => {
-  return s.charAt(0).toLowerCase() + s.slice(1);
-};
-
-export const trimComponentName = (componentName: string): NzConfigKey => {
-  return lowercaseFirstLetter(
-    componentName
-      .replace('Nz', '')
-      .replace(/(Component|Directive|Service|ContainerComponent)$/g, '')
-      .toLowerCase()
-  ) as NzConfigKey;
-};
-
 /**
  * This decorator is used to decorate properties. If a property is decorated, it would try to load default value from
  * config.
  */
 // tslint:disable-next-line:typedef
-export function WithConfig<T>(innerDefaultValue?: T) {
+export function WithConfig<T>(componentName: NzConfigKey, innerDefaultValue?: T) {
   return function ConfigDecorator(target: any, propName: any, originalDescriptor?: TypedPropertyDescriptor<T>): any {
     const privatePropName = `$$__assignedValue__${propName}`;
-    const componentName = trimComponentName(target.constructor.name) as NzConfigKey;
 
     if (Object.prototype.hasOwnProperty.call(target, privatePropName)) {
       console.warn(

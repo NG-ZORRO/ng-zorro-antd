@@ -25,6 +25,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { InputBoolean, NzConfigService, NzSizeDSType, WithConfig } from 'ng-zorro-antd/core';
 
+const NZ_CONFIG_COMPONENT_NAME = 'switch';
+
 @Component({
   selector: 'nz-switch',
   exportAs: 'nzSwitch',
@@ -60,7 +62,7 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
   @Input() @InputBoolean() nzControl = false;
   @Input() nzCheckedChildren: string | TemplateRef<void>;
   @Input() nzUnCheckedChildren: string | TemplateRef<void>;
-  @Input() @WithConfig('default') nzSize: NzSizeDSType;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzSizeDSType;
 
   hostClick(e: MouseEvent): void {
     e.preventDefault();

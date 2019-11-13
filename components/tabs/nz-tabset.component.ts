@@ -63,6 +63,8 @@ export type NzTabPosition = NzFourDirectionType;
 export type NzTabPositionMode = 'horizontal' | 'vertical';
 export type NzTabType = 'line' | 'card';
 
+const NZ_CONFIG_COMPONENT_NAME = 'tabs';
+
 @Component({
   selector: 'nz-tabset',
   exportAs: 'nzTabset',
@@ -97,14 +99,14 @@ export class NzTabSetComponent
   @ViewChild('tabContent', { static: false }) tabContent: ElementRef;
 
   @Input() nzTabBarExtraContent: TemplateRef<void>;
-  @Input() @WithConfig(true) nzShowPagination: boolean;
-  @Input() @WithConfig(true) nzAnimated: NzAnimatedInterface | boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) nzShowPagination: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) nzAnimated: NzAnimatedInterface | boolean;
   @Input() nzHideAll = false;
   @Input() nzTabPosition: NzTabPosition = 'top';
-  @Input() @WithConfig('default') nzSize: NzSizeLDSType;
-  @Input() @WithConfig() nzTabBarGutter: number;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzSizeLDSType;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzTabBarGutter: number;
   @Input() nzTabBarStyle: { [key: string]: string };
-  @Input() @WithConfig('line') nzType: NzTabType;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'line') nzType: NzTabType;
 
   @Input() @InputBoolean() nzLinkRouter = false;
   @Input() @InputBoolean() nzLinkExact = true;

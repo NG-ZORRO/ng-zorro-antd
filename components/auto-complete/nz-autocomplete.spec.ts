@@ -302,12 +302,14 @@ describe('auto-complete', () => {
       componentInstance.trigger.openPanel();
       fixture.detectChanges();
       flush();
+      tick(100);
 
       expect(componentInstance.trigger.panelOpen).toBe(true);
+      flush();
+      fixture.detectChanges();
 
       componentInstance.trigger.handleKeydown(DOWN_ARROW_EVENT);
       fixture.detectChanges();
-      flush();
 
       expect(input.value).toBe('Burns Bay Road');
     }));
@@ -440,12 +442,10 @@ describe('auto-complete', () => {
     it('should be able to re-type the same value when it is reset while open', fakeAsync(() => {
       fixture.componentInstance.trigger.openPanel();
       fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
 
       typeInElement('Burns', input);
-      flush();
       fixture.detectChanges();
+      tick();
 
       expect(fixture.componentInstance.inputControl.value).toBe('Burns');
 
@@ -454,8 +454,8 @@ describe('auto-complete', () => {
       expect(input.value).toBe('');
 
       typeInElement('Burns', input);
-      flush();
       fixture.detectChanges();
+      tick();
 
       expect(fixture.componentInstance.inputControl.value).toBe('Burns');
     }));
@@ -802,7 +802,7 @@ describe('auto-complete', () => {
       expect(position).toEqual('bottom');
     }));
 
-    it('should reposition the panel on scroll', () => {
+    it('should reposition the panel on scroll', fakeAsync(() => {
       const spacer = document.createElement('div');
 
       spacer.style.height = '1000px';
@@ -821,11 +821,11 @@ describe('auto-complete', () => {
       window.scroll(0, 100);
       scrolledSubject.next();
       fixture.detectChanges();
-
+      tick();
       expect(autocomplete.dropDownPosition).toEqual('bottom');
 
       document.body.removeChild(spacer);
-    });
+    }));
   });
 
   describe('misc', () => {

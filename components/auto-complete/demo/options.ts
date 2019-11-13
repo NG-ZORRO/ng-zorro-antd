@@ -9,7 +9,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
         placeholder="input here"
         nz-input
         [(ngModel)]="inputValue"
-        (ngModelChange)="onChange($event)"
+        (input)="onInput($event)"
         [nzAutocomplete]="auto"
       />
       <nz-autocomplete #auto>
@@ -22,7 +22,8 @@ export class NzDemoAutoCompleteOptionsComponent {
   inputValue: string;
   options: string[] = [];
 
-  onChange(value: string): void {
+  onInput(e: Event): void {
+    const value = (e.target as HTMLInputElement).value;
     if (!value || value.indexOf('@') >= 0) {
       this.options = [];
     } else {
