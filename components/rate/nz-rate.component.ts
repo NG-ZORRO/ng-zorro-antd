@@ -27,10 +27,12 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-
-import { trimComponentName, InputBoolean, NgClassType, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+import { InputBoolean, NgClassType, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
+
+const NZ_CONFIG_COMPONENT_NAME = 'rate';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -50,8 +52,8 @@ import { takeUntil } from 'rxjs/operators';
 export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor, AfterViewInit, OnChanges {
   @ViewChild('ulElement', { static: false }) private ulElement: ElementRef;
 
-  @Input() @WithConfig(true) @InputBoolean() nzAllowClear: boolean;
-  @Input() @WithConfig(false) @InputBoolean() nzAllowHalf: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzAllowClear: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzAllowHalf: boolean;
   @Input() @InputBoolean() nzDisabled: boolean = false;
   @Input() @InputBoolean() nzAutoFocus: boolean = false;
   @Input() nzCharacter: TemplateRef<void>;
@@ -117,7 +119,7 @@ export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor,
     this.updateStarArray();
 
     this.nzConfigService
-      .getConfigChangeEventForComponent(trimComponentName(this.constructor.name))
+      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => this.cdr.markForCheck());
   }

@@ -19,6 +19,8 @@ import {
 } from '@angular/core';
 import { slideAlertMotion, InputBoolean, NgClassType, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
 
+const NZ_CONFIG_COMPONENT_NAME = 'alert';
+
 @Component({
   selector: 'nz-alert',
   exportAs: 'nzAlert',
@@ -41,8 +43,8 @@ export class NzAlertComponent implements OnChanges {
   @Input() nzMessage: string | TemplateRef<void>;
   @Input() nzDescription: string | TemplateRef<void>;
   @Input() nzType: 'success' | 'info' | 'warning' | 'error' = 'info';
-  @Input() @WithConfig(false) @InputBoolean() nzCloseable: boolean;
-  @Input() @WithConfig(false) @InputBoolean() nzShowIcon: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzCloseable: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzShowIcon: boolean;
   @Input() @InputBoolean() nzBanner = false;
   @Output() readonly nzOnClose = new EventEmitter<boolean>();
 

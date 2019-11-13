@@ -7,6 +7,7 @@
  */
 
 import {
+  AfterContentInit,
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -29,7 +30,7 @@ import {
 import { defer, merge, Observable, Subscription } from 'rxjs';
 import { filter, switchMap, take } from 'rxjs/operators';
 
-import { slideMotion, InputBoolean, NzDropDownPosition, NzNoAnimationDirective } from 'ng-zorro-antd/core';
+import { slideMotion, CompareWith, InputBoolean, NzDropDownPosition, NzNoAnimationDirective } from 'ng-zorro-antd/core';
 
 import { NzAutocompleteOptionComponent, NzOptionSelectionChange } from './nz-autocomplete-option.component';
 
@@ -61,18 +62,19 @@ export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | n
     `
   ]
 })
-export class NzAutocompleteComponent implements AfterViewInit, OnDestroy {
+export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit, OnDestroy {
   @Input() nzWidth: number;
   @Input() nzOverlayClassName = '';
   @Input() nzOverlayStyle: { [key: string]: string } = {};
   @Input() @InputBoolean() nzDefaultActiveFirstOption = true;
   @Input() @InputBoolean() nzBackfill = false;
+  @Input() compareWith: CompareWith = (o1, o2) => o1 === o2;
   @Input() nzDataSource: AutocompleteDataSource;
   @Output() readonly selectionChange: EventEmitter<NzAutocompleteOptionComponent> = new EventEmitter<
     NzAutocompleteOptionComponent
   >();
 
-  showPanel: boolean = false;
+  showPanel: boolean = true;
   isOpen: boolean = false;
   activeItem: NzAutocompleteOptionComponent;
   dropDownPosition: NzDropDownPosition = 'bottom';
@@ -121,8 +123,16 @@ export class NzAutocompleteComponent implements AfterViewInit, OnDestroy {
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {}
 
+  ngAfterContentInit(): void {
+    if (!this.nzDataSource) {
+      this.optionsInit();
+    }
+  }
+
   ngAfterViewInit(): void {
-    this.optionsInit();
+    if (this.nzDataSource) {
+      this.optionsInit();
+    }
   }
 
   ngOnDestroy(): void {
@@ -156,17 +166,22 @@ export class NzAutocompleteComponent implements AfterViewInit, OnDestroy {
     this.setActiveItem(previousIndex);
   }
 
-  getOptionIndex(option?: NzAutocompleteOptionComponent): number {
+  // tslint:disable-next-line:no-any
+  getOptionIndex(value: any): number {
     return this.options.reduce((result: number, current: NzAutocompleteOptionComponent, index: number) => {
-      return result === -1 ? (option === current ? index : -1) : result;
+      return result === -1 ? (this.compareWith(value, current.nzValue) ? index : -1) : result;
     }, -1)!;
+  }
+
+  updatePosition(position: NzDropDownPosition): void {
+    this.dropDownPosition = position;
+    this.changeDetectorRef.markForCheck();
   }
 
   private optionsInit(): void {
     this.setVisibility();
     this.subscribeOptionChanges();
     const changes = this.nzDataSource ? this.fromDataSourceOptions.changes : this.fromContentOptions.changes;
-
     // async
     this.dataSourceChangeSubscription = changes.subscribe(e => {
       if (!e.dirty && this.isOpen) {
@@ -179,7 +194,7 @@ export class NzAutocompleteComponent implements AfterViewInit, OnDestroy {
   /**
    * Clear the status of options
    */
-  private clearSelectedOptions(skip?: NzAutocompleteOptionComponent, deselect: boolean = false): void {
+  clearSelectedOptions(skip?: NzAutocompleteOptionComponent | null, deselect: boolean = false): void {
     this.options.forEach(option => {
       if (option !== skip) {
         if (deselect) {
@@ -198,7 +213,7 @@ export class NzAutocompleteComponent implements AfterViewInit, OnDestroy {
         event.source.select();
         event.source.setActiveStyles();
         this.activeItem = event.source;
-        this.activeItemIndex = this.getOptionIndex(this.activeItem);
+        this.activeItemIndex = this.getOptionIndex(this.activeItem.nzValue);
         this.clearSelectedOptions(event.source, true);
         this.selectionChange.emit(event.source);
       });

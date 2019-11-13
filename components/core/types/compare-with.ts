@@ -6,6 +6,5 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Version } from '@angular/core';
-
-export const VERSION = new Version('8.5.0');
+// tslint:disable-next-line:no-any
+export type CompareWith = (o1: any, o2: any) => boolean;

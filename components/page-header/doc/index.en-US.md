@@ -26,12 +26,13 @@ import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 ```
 
 ### nz-page-header
-| Param | Description | Type | Default value |
-| ----- | ----------- | ---- | ------------- |
-| `[nzTitle]` | Title string | `string \| TemplateRef<void>` | - |
-| `[nzSubtitle]` | SubTitle string | `string \| TemplateRef<void>` | - |
-| `[nzBackIcon]` | Custom back icon | `string \| TemplateRef<void>` | - |
-| `(nzBack)` | Back icon click event | `EventEmitter<void>` | Call [Location[back]](https://angular.io/api/common/Location#back) when the event not subscribed |
+| Param | Description | Type | Default value | Global Config |
+| ----- | ----------- | ---- | ------------- | ------------- |
+| `[nzGhost]` | Make background transparent | `boolean` | `true` | ✅ |
+| `[nzTitle]` | Title string | `string \| TemplateRef<void>` | - | - |
+| `[nzSubtitle]` | SubTitle string | `string \| TemplateRef<void>` | - | - |
+| `[nzBackIcon]` | Custom back icon | `string \| TemplateRef<void>` | - | - |
+| `(nzBack)` | Back icon click event | `EventEmitter<void>` | Call [Location[back]](https://angular.io/api/common/Location#back) when the event not subscribed | - |
 
 ### Page header sections
 | Element | Description |

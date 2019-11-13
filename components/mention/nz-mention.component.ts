@@ -329,7 +329,11 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
       fromEvent<TouchEvent>(this.ngDocument, 'touchend')
     ).subscribe((event: MouseEvent | TouchEvent) => {
       const clickTarget = event.target as HTMLElement;
-      if (clickTarget !== this.trigger.el.nativeElement && this.isOpen) {
+      if (
+        this.isOpen &&
+        clickTarget !== this.trigger.el.nativeElement &&
+        (!!this.overlayRef && !this.overlayRef.overlayElement.contains(clickTarget))
+      ) {
         this.closeDropdown();
       }
     });

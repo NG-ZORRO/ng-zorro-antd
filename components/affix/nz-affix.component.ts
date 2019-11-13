@@ -46,6 +46,7 @@ interface SimpleRect {
   bottom?: number;
 }
 
+const NZ_CONFIG_COMPONENT_NAME = 'affix';
 const NZ_AFFIX_CLS_PREFIX = 'ant-affix';
 const NZ_AFFIX_DEFAULT_SCROLL_TIME = 20;
 const NZ_AFFIX_RESPOND_EVENTS = ['resize', 'scroll', 'touchstart', 'touchmove', 'touchend', 'pageshow', 'load'];
@@ -68,8 +69,16 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
   @ViewChild('fixedEl', { static: true }) private fixedEl: ElementRef<HTMLDivElement>;
 
   @Input() nzTarget: string | Element | Window;
-  @Input() @WithConfig<number | null>(0) @InputNumber() nzOffsetTop: null | number;
-  @Input() @WithConfig<number | null>(null) @InputNumber() nzOffsetBottom: null | number;
+
+  @Input()
+  @WithConfig<number | null>(NZ_CONFIG_COMPONENT_NAME, 0)
+  @InputNumber()
+  nzOffsetTop: null | number;
+
+  @Input()
+  @WithConfig<number | null>(NZ_CONFIG_COMPONENT_NAME, null)
+  @InputNumber()
+  nzOffsetBottom: null | number;
 
   @Output() readonly nzChange = new EventEmitter<boolean>();
 
@@ -153,7 +162,13 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   private getTargetRect(target: Element | Window): SimpleRect {
-    return !isTargetWindow(target) ? target.getBoundingClientRect() : { top: 0, left: 0, bottom: 0 };
+    return !isTargetWindow(target)
+      ? target.getBoundingClientRect()
+      : {
+          top: 0,
+          left: 0,
+          bottom: 0
+        };
   }
 
   private setAffixStyle(e: Event, affixStyle?: NgStyleInterface): void {
@@ -196,7 +211,10 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
     }
     this.placeholderNode.style.cssText = '';
     this.placeholderStyle = undefined;
-    const styleObj = { width: this.placeholderNode.offsetWidth, height: this.fixedEl.nativeElement.offsetHeight };
+    const styleObj = {
+      width: this.placeholderNode.offsetWidth,
+      height: this.fixedEl.nativeElement.offsetHeight
+    };
     this.setAffixStyle(e, {
       ...this.affixStyle,
       ...styleObj
@@ -269,7 +287,10 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
         this.affixStyle.position === 'fixed' &&
         this.placeholderNode.offsetWidth
       ) {
-        this.setAffixStyle(e, { ...this.affixStyle, width: this.placeholderNode.offsetWidth });
+        this.setAffixStyle(e, {
+          ...this.affixStyle,
+          width: this.placeholderNode.offsetWidth
+        });
       } else {
         this.setAffixStyle(e);
       }

@@ -20,7 +20,9 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   Output,
+  SimpleChanges,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -36,7 +38,7 @@ import { DateHelperService } from 'ng-zorro-antd/i18n';
   animations: [slideMotion],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NzPickerComponent implements AfterViewInit {
+export class NzPickerComponent implements AfterViewInit, OnChanges {
   @Input() noAnimation: boolean = false;
   @Input() isRange: boolean = false;
   @Input() open: boolean | undefined = undefined;
@@ -106,6 +108,12 @@ export class NzPickerComponent implements AfterViewInit {
     }
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.open) {
+      this.animationStart();
+    }
+  }
+
   focus(): void {
     if (this.isRange) {
       const firstInput = (this.pickerInput.nativeElement as HTMLElement).querySelector(
@@ -121,6 +129,7 @@ export class NzPickerComponent implements AfterViewInit {
   showOverlay(): void {
     if (!this.realOpenState) {
       this.overlayOpen = true;
+      this.animationStart();
       this.openChange.emit(this.overlayOpen);
       setTimeout(() => {
         if (this.cdkConnectedOverlay && this.cdkConnectedOverlay.overlayRef) {
@@ -211,7 +220,9 @@ export class NzPickerComponent implements AfterViewInit {
   }
 
   animationDone(): void {
-    this.animationOpenState = this.realOpenState;
+    if (!this.realOpenState) {
+      this.animationOpenState = false;
+    }
   }
 }
 

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 export interface AutocompleteOptionGroups {
   title: string;
@@ -9,7 +9,6 @@ export interface AutocompleteOptionGroups {
 @Component({
   selector: 'nz-demo-auto-complete-certain-category',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="example-input">
       <nz-input-group nzSize="large" [nzSuffix]="suffixIcon">
@@ -32,7 +31,7 @@ export interface AutocompleteOptionGroups {
               <a class="more-link" href="https://www.google.com/search?q=ng+zorro" target="_blank">更多</a>
             </span>
           </ng-template>
-          <nz-auto-option *ngFor="let option of group.children" [nzLabel]="option.title" [nzValue]="option">
+          <nz-auto-option *ngFor="let option of group.children" [nzLabel]="option.title" [nzValue]="option.title">
             {{ option.title }}
             <span class="certain-search-item-count">{{ option.count }} 人 关注</span>
           </nz-auto-option>
@@ -57,6 +56,8 @@ export interface AutocompleteOptionGroups {
 export class NzDemoAutoCompleteCertainCategoryComponent implements OnInit {
   inputValue: string;
   optionGroups: AutocompleteOptionGroups[];
+
+  constructor() {}
 
   onChange(value: string): void {
     console.log(value);

@@ -35,6 +35,8 @@ import {
   WithConfig
 } from 'ng-zorro-antd/core';
 
+const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
+
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -62,24 +64,24 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   ];
   @ViewChild('inputElement', { static: true }) inputRef: ElementRef<HTMLInputElement>;
   @Input() nzSize: string | null = null;
-  @Input() @WithConfig(1) nzHourStep: number;
-  @Input() @WithConfig(1) nzMinuteStep: number;
-  @Input() @WithConfig(1) nzSecondStep: number;
-  @Input() @WithConfig('clear') nzClearText: string;
-  @Input() @WithConfig() nzPopupClassName: string;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 1) nzHourStep: number;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 1) nzMinuteStep: number;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 1) nzSecondStep: number;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'clear') nzClearText: string;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzPopupClassName: string;
   @Input() nzPlaceHolder = '';
   @Input() nzAddOn: TemplateRef<void>;
   @Input() nzDefaultOpenValue = new Date();
   @Input() nzDisabledHours: () => number[];
   @Input() nzDisabledMinutes: (hour: number) => number[];
   @Input() nzDisabledSeconds: (hour: number, minute: number) => number[];
-  @Input() @WithConfig('HH:mm:ss') nzFormat: string;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'HH:mm:ss') nzFormat: string;
   @Input() nzOpen = false;
-  @Input() @WithConfig(false) @InputBoolean() nzUse12Hours: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzUse12Hours: boolean;
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
 
   @Input() @InputBoolean() nzHideDisabledOptions = false;
-  @Input() @WithConfig(true) @InputBoolean() nzAllowEmpty: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzAllowEmpty: boolean;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAutoFocus = false;
 

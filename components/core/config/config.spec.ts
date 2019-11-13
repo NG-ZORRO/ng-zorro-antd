@@ -9,7 +9,7 @@ import { NzConfigService, NZ_CONFIG, WithConfig } from 'ng-zorro-antd/core';
   template: ''
 })
 export class NzGlobalConfigTestBindTwiceComponent {
-  @WithConfig('b') @WithConfig('a') v: string;
+  @WithConfig('button', 'b') @WithConfig('button', 'a') v: string;
 
   constructor(public nzConfigService: NzConfigService) {}
 }

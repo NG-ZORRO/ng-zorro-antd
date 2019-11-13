@@ -21,7 +21,10 @@ import {
 } from '@angular/core';
 
 import { Location } from '@angular/common';
-import { NzPageHeaderFooterDirective } from './nz-page-header-cells';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core';
+import { NzPageHeaderBreadcrumbDirective, NzPageHeaderFooterDirective } from './nz-page-header-cells';
+
+const NZ_CONFIG_COMPONENT_NAME = 'pageHeader';
 
 @Component({
   selector: 'nz-page-header',
@@ -32,7 +35,9 @@ import { NzPageHeaderFooterDirective } from './nz-page-header-cells';
   encapsulation: ViewEncapsulation.None,
   host: {
     class: 'ant-page-header',
-    '[class.ant-page-header-has-footer]': 'nzPageHeaderFooter'
+    '[class.has-footer]': 'nzPageHeaderFooter',
+    '[class.ant-page-header-ghost]': 'nzGhost',
+    '[class.has-breadcrumb]': 'nzPageHeaderBreadcrumb'
   },
   styles: [
     `
@@ -53,13 +58,18 @@ export class NzPageHeaderComponent implements OnChanges {
   @Input() nzBackIcon: string | TemplateRef<void> | null = null;
   @Input() nzTitle: string | TemplateRef<void>;
   @Input() nzSubtitle: string | TemplateRef<void>;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) nzGhost: boolean;
   @Output() readonly nzBack = new EventEmitter<void>();
 
   @ContentChild(NzPageHeaderFooterDirective, { static: false }) nzPageHeaderFooter: ElementRef<
     NzPageHeaderFooterDirective
   >;
 
-  constructor(private location: Location) {}
+  @ContentChild(NzPageHeaderBreadcrumbDirective, { static: false }) nzPageHeaderBreadcrumb: ElementRef<
+    NzPageHeaderBreadcrumbDirective
+  >;
+
+  constructor(private location: Location, public nzConfigService: NzConfigService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.hasOwnProperty('nzBackIcon')) {

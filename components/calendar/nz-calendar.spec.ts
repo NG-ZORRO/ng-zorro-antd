@@ -223,7 +223,7 @@ describe('Calendar', () => {
       const cells = host.queryAll(By.css('td'));
       const current = cells[10];
 
-      expect(current.nativeElement.className).toContain('ant-fullcalendar-month-panel-selected-cell ng-star-inserted');
+      expect(current.nativeElement.className).toContain('ant-fullcalendar-month-panel-selected-cell');
     });
   });
 

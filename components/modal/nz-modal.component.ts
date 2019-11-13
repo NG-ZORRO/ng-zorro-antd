@@ -56,9 +56,11 @@ import { NzModalRef } from './nz-modal-ref.class';
 import { ModalButtonOptions, ModalOptions, ModalType, OnClickCallback } from './nz-modal.type';
 
 export const MODAL_ANIMATE_DURATION = 200; // Duration when perform animations (ms)
+export const WRAP_CLASS_NAME = 'ant-modal-wrap';
 
 type AnimationState = 'enter' | 'leave' | null;
-export const WRAP_CLASS_NAME = 'ant-modal-wrap';
+
+const NZ_CONFIG_COMPONENT_NAME = 'modal';
 
 @Component({
   selector: 'nz-modal',
@@ -81,8 +83,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   @Input() @InputBoolean() nzNoAnimation = false;
 
   // TODO(hsuanxyz): add default value once old API is deprecated.
-  @Input() @WithConfig() @InputBoolean() nzMask: boolean;
-  @Input() @WithConfig() @InputBoolean() nzMaskClosable: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzMask: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzMaskClosable: boolean;
 
   @Input() nzContent: string | TemplateRef<{}> | Type<T>; // [STATIC] If not specified, will use <ng-content>
   @Input() nzComponentParams: T; // [STATIC] ONLY avaliable when nzContent is a component

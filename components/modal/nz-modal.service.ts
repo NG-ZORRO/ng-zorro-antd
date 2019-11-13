@@ -100,6 +100,9 @@ export class NzModalService {
     if (!('nzWidth' in options)) {
       options.nzWidth = 416;
     }
+    if (!('nzMaskClosable' in options)) {
+      options.nzMaskClosable = false;
+    }
     if (typeof options.nzOnOk !== 'function') {
       // NOTE: only support function currently by calling confirm()
       options.nzOnOk = () => {}; // Leave a empty function to close this modal by default
@@ -107,7 +110,6 @@ export class NzModalService {
 
     options.nzModalType = 'confirm';
     options.nzClassName = `ant-modal-confirm ant-modal-confirm-${confirmType} ${options.nzClassName || ''}`;
-    options.nzMaskClosable = false;
     return this.create(options);
   }
 
