@@ -15,7 +15,17 @@ monaco editor 组件。
 
 ## API
 
-如果你使用动态加载的引入方式，你就需要在运行时加载 monaco editor 本身的资源。在 `angular.json` 中添加：
+别忘记先安装 monaco editor：
+
+```sh
+npm install monaco-editor
+```
+
+### 动态加载
+
+如果你使用动态加载，你就需要在运行时加载 monaco editor 本身的资源。
+
+在 angular.json 中添加：
 
 ```diff
 "assets": [
@@ -27,13 +37,23 @@ monaco editor 组件。
 ],
 ```
 
-> 如果你使用静态加载，你就无需修改 angular.json 文件。详见下文。
+这样就 OK 了！CodeEditor 组件在需要加载 monaco editor 时自动去 /assets/vs/ 目录下查询。
 
-另外别忘记安装 monaco editor：
+如果你的静态资源都部署在 CDN 上，你就无须修改 angular.json 文件，但你必须配置 `NZ_CODE_EDITOR_CONFIG` 下的 `assetsRoot` 项。例如你将 monaco editor 的资源放置在了 https://mycdn.com/assets/vs ，你就需要传递 `{ assetsRoot: 'https://mycdn.com/assets' }` 。
 
-```sh
-npm install monaco-editor
-```
+> 如果你使用静态加载，你就无需修改 angular.json 文件，详见下文。
+
+### 静态加载
+
+有时候你可能需要在运行时加载 AMD module，但 monaco editor 的加载文件 loader.js patch 了 `window[require]` 属性，导致你无法使用 requireJS 等模块加载库，这时，你可以启用静态加载功能。
+
+方法是使用 Microsoft 提供的 [monaco-editor-webpack-plugin](https://github.com/microsoft/monaco-editor-webpack-plugin) 插件。
+
+1. 在注入 code editor 组件的全局配置项时，请启用 `useStaticLoading` 。
+2. 创建一个 webpack.partial.js 文件，根据插件文档进行相应的配置。
+3. 使用自定义脚本加载器，例如 [ngx-build-plus](https://github.com/manfredsteyer/ngx-build-plus)，在打包时加载这个 webpack 配置。
+
+使用静态加载时，你无需在 angular.json 文件中注册 monaco editor 的资源。
 
 ### nz-code-editor
 
@@ -65,15 +85,3 @@ npm install monaco-editor
 | `onFirstEditorInit` | 当第一个编辑器请求初始化时触发的钩子 | `() => void` | - |
 | `onInit` | 每个编辑器请求初始化时触发的钩子  | `() => void`  | - |
 | `useStaticLoading` | 使用静态加载 | `boolean` | `false` |
-
-## 静态加载
-
-有时候你可能需要动态加载 AMD module，但 monaco editor 的加载文件 loader.js patch 了 `window[require]` 对象，导致你无法使用 requireJS 等模块加载库，这时，你可以启用静态加载功能。
-
-方法是使用 Microsoft 提供的 [monaco-editor-webpack-plugin](https://github.com/microsoft/monaco-editor-webpack-plugin) 插件。
-
-1. 在注入 code editor 组件的全局配置项时，请启用 `useStaticLoading`
-2. 创建一个 webpack.partial.js 文件，根据插件文档进行相应的配置
-3. 使用自定义脚本加载器，例如 [ngx-build-plus](https://github.com/manfredsteyer/ngx-build-plus)，在打包时加载这个 webpack 配置
-
-使用静态加载时，你无需在 angular.json 文件中注册 monaco editor 的资源。
