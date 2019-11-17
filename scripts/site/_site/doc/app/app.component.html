@@ -320,10 +320,10 @@
 
     <li nz-submenu nzOpen>
       <span title>
-        <h4 *ngIf="isExperimental">'Experiments'</h4>
-        <h4 *ngIf="!isExperimental">
+        <h4>
           {{language=='en' ? 'Components' : '组件'}}
-          <span class="menu-antd-components-count">63</span>
+          <span *ngIf="!isExperimental" class="menu-antd-components-count">63</span>
+          <span *ngIf="isExperimental"  class="menu-antd-components-count">2</span>
         </h4>
       </span>
       <ul>
