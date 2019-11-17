@@ -61,7 +61,8 @@ export class NzCodeEditorService {
     }
 
     this.document = _document;
-    this.option = { ...(this.config || {}).defaultEditorOption, ...(globalConfig || {}).defaultEditorOption };
+    this.config = { ...config, ...globalConfig };
+    this.option = this.config.defaultEditorOption || {};
 
     this.nzConfigService.getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME).subscribe(() => {
       const newGlobalConfig = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME);
