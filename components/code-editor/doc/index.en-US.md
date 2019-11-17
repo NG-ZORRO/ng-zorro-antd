@@ -14,7 +14,15 @@ Support monaco editor in Angular.
 
 ## API
 
-If you would like to load monaco dynamically, you will need assets of monaco editor itself. You can do that load by adding these lines in angular.json:
+Install `monaco-editor` in your project first:
+
+```sh
+npm install monaco-editor
+```
+
+### Dynamic Loading
+
+If you would like to load monaco dynamically (which means you load resources of monaco editor right before you would like to use it), you will need to register assets of monaco editor itself. You can do that by adding these lines in angular.json file:
 
 ```diff
 "assets": [
@@ -26,13 +34,21 @@ If you would like to load monaco dynamically, you will need assets of monaco edi
 ],
 ```
 
+If you deploy resources of monaco editor on CDN, you won't need to modift angular.json. Instead, you should a `NZ_CONFIG_EDITOR_CONFIG` with `assetsRoot` property set. For example, you put resources of monaco editor on https://mycdn.com/assets/vs, you should provide `{ assets: 'https://mycdn.com/assets/vs' }`.
+
 > If you are going to use static loading (which we will explain in detail at the bottom of this page), you don't need to modify angular.json file.
 
-And don't forget to install `monaco-editor`.
+### Static Loading
 
-```sh
-npm install monaco-editor
-```
+Sometimes you need to load AMD module dynamically. But since monaco editor's loader patches `window[require]`, you can not use AMD loader like requireJS. In this situation you need to enable static loading.
+
+With help of [monaco-editor-webpack-plguin](https://github.com/microsoft/monaco-editor-webpack-plugin) by Microsoft, you can do that in a convenient way.
+
+1. Please inject a `NZ_CODE_EDITOR_CONFIG` with `useStaticLoading` to be `true`.
+2. Create a webpack.partial.js file, and config monaco-editor-webpack-loader.
+3. Use custom webpack loader like [ngx-build-plus](https://github.com/manfredsteyer/ngx-build-plus) to load this webpack config.
+
+If you use static loading, you should not add assets of monaco editor to your project by modifying angular.json file.
 
 ### nz-code-editor
 
@@ -64,15 +80,3 @@ You can inject an object that implements `NzCodeEditorConfig` with the injection
 | `onFirstEditorInit` | The hook invoked when the first monaco editor is initialized | `() => void` | - |
 | `onInit` | The hook invoked every time a monaco editor is initialized | `() => void`  | - |
 | `useStaticLoading` | Load monaco editor statically | `boolean` | `false` |
-
-## Static Loading
-
-Sometimes you need to load AMD module dynamically. But since monaco editor's loader patches `window[require]`, you can not use AMD loader like requireJS. In this situation you need to enable static loading.
-
-With help of [monaco-editor-webpack-plguin](https://github.com/microsoft/monaco-editor-webpack-plugin) by Microsoft, you can do that in a convenient way.
-
-1. Please inject a `NZ_CODE_EDITOR_CONFIG` with `useStaticLoading` to be `true`.
-2. Create a webpack.partial.js file, and config monaco-editor-webpack-loader.
-3. Use custom webpack loader like [ngx-build-plus](https://github.com/manfredsteyer/ngx-build-plus) to load this webpack config.
-
-If you use static loading, you should not add assets of monaco editor to your project by modifying angular.json file.
