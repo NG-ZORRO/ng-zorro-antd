@@ -359,7 +359,10 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
           const node = event.node!;
           if (this.nzCheckable && !node.isDisabled && !node.isDisableCheckbox) {
             node.isChecked = !node.isChecked;
-            this.nzTreeService.conduct(node);
+            node.isHalfChecked = false;
+            if (!this.nzCheckStrictly) {
+              this.nzTreeService.conduct(node);
+            }
           }
           if (this.nzCheckable) {
             node.isSelected = false;
