@@ -434,12 +434,11 @@ export class NzCascaderService implements OnDestroy {
    */
   private findOptionWithValue(
     columnIndex: number,
-    value: NzCascaderOption | any // tslint:disable-line:no-any
+    value: any // tslint:disable-line:no-any
   ): NzCascaderOption | null {
     const targetColumn = this.columns[columnIndex];
     if (targetColumn) {
-      const v = typeof value === 'object' ? this.getOptionValue(value) : value;
-      return targetColumn.find(o => v === this.getOptionValue(o))!;
+      return targetColumn.find(o => value === this.getOptionValue(o))!;
     }
     return null;
   }
