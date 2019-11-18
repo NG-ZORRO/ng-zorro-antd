@@ -10,13 +10,11 @@ import { TemplateRef, Type } from '@angular/core';
 
 import { IndexableObject } from '../types/indexable';
 
-// tslint:disable-next-line:no-any
-export function isNotNil(value: any): boolean {
+export function isNotNil<T>(value: T): value is NonNullable<T> {
   return typeof value !== 'undefined' && value !== null;
 }
 
-// tslint:disable-next-line:no-any
-export function isNil(value: any): value is null | undefined {
+export function isNil(value: unknown): value is null | undefined {
   return typeof value === 'undefined' || value === null;
 }
 
