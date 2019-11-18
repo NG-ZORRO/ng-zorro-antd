@@ -14,6 +14,16 @@ timeline: true
 
 ---
 
+## 8.5.1
+`2019-11-18`
+
+### Bug Fixes
+
+* **code-editor:** 修复 config 取值错误，优化相关文档 ([#4436](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4436)) ([5283a32](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5283a32))
+* **drawer:** 修复 `nzPlacement` 为 `top/bottom` 时内容超出无法滚动问题 ([#4423](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4423)) ([9451de5](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9451de5)), closes [#4354](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4354)
+* **tooltip:** 修复鼠标移出到弹出层时被隐藏的问题 ([#4418](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4418)) ([a6b5901](https://github.com/NG-ZORRO/ng-zorro-antd/commit/a6b5901)), closes [#4417](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4417)
+* **tree-select:** 修复 strict 模式下点击 label 错误关联问题 ([#4424](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4424)) ([7a11124](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7a11124)), closes [#4422](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4422)
+
 
 ## 8.5.0
 `2019-11-08`
