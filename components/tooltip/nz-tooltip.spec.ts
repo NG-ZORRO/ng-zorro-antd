@@ -24,15 +24,15 @@ import { NzToolTipModule } from './nz-tooltip.module';
       [nzMouseLeaveDelay]="0.1"
       (nzVisibleChange)="onVisibleChange()"
     >
-      Hover Tooltip
+      Hover
     </a>
 
-    <a #titleTemplate nz-tooltip nzTooltipTrigger="click" [nzTitle]="template" [nzTrigger]="trigger">
-      Click Tooltip
+    <a #titleTemplate nz-tooltip [nzTitle]="template" [nzTooltipTrigger]="trigger">
+      Click
     </a>
 
     <a #focusTooltip nz-tooltip nzTooltipTrigger="focus" nzTitle="focus">
-      Hover Tooltip
+      Focus
     </a>
 
     <a
@@ -68,7 +68,7 @@ export class NzTooltipTestComponent {
 
   @ViewChild('focusTooltip', { static: false }) focusTemplate: ElementRef;
 
-  trigger: string | null = 'hover';
+  trigger: string | null = 'click';
 
   @ViewChild('inBtnGroup', { static: false }) inBtnGroup: ElementRef;
 
@@ -109,6 +109,10 @@ describe('NzTooltip', () => {
     fixture.detectChanges();
     tick(500);
     fixture.detectChanges();
+  }
+
+  function getTooltipBackdropElement(): HTMLElement {
+    return overlayContainerElement.querySelector('.cdk-overlay-backdrop') as HTMLElement;
   }
 
   beforeEach(() => {
@@ -160,7 +164,7 @@ describe('NzTooltip', () => {
       waitingForTooltipToggling();
       expect(overlayContainerElement.textContent).toContain(title);
 
-      dispatchMouseEvent(overlayContainerElement.querySelector('.cdk-overlay-backdrop')!, 'click');
+      dispatchMouseEvent(getTooltipBackdropElement(), 'click');
       waitingForTooltipToggling();
       expect(overlayContainerElement.textContent).not.toContain(title);
     }));
@@ -229,11 +233,11 @@ describe('NzTooltip', () => {
       const featureKey = 'title-template';
       const triggerElement = component.titleTemplate.nativeElement;
 
-      dispatchMouseEvent(triggerElement, 'mouseenter');
+      dispatchMouseEvent(triggerElement, 'click');
       waitingForTooltipToggling();
       expect(overlayContainerElement.textContent).toContain(featureKey);
 
-      dispatchMouseEvent(triggerElement, 'mouseleave');
+      dispatchMouseEvent(getTooltipBackdropElement(), 'click');
       waitingForTooltipToggling();
       expect(overlayContainerElement.textContent).not.toContain(featureKey);
 

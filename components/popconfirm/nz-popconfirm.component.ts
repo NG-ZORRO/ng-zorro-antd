@@ -11,6 +11,7 @@ import {
   ChangeDetectorRef,
   Component,
   Host,
+  OnDestroy,
   Optional,
   TemplateRef,
   ViewEncapsulation
@@ -36,7 +37,7 @@ import { Subject } from 'rxjs';
     `
   ]
 })
-export class NzPopconfirmComponent extends NzToolTipComponent {
+export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestroy {
   nzCancelText: string;
   nzCondition = false;
   nzIcon: string | TemplateRef<void>;
@@ -55,8 +56,8 @@ export class NzPopconfirmComponent extends NzToolTipComponent {
     super(cdr, noAnimation);
   }
 
-  dispose(): void {
-    super.dispose();
+  ngOnDestroy(): void {
+    super.ngOnDestroy();
 
     this.nzOnCancel.complete();
     this.nzOnConfirm.complete();

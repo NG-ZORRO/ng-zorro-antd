@@ -12,7 +12,7 @@ import {
   ConnectedOverlayPositionChange,
   ConnectionPositionPair
 } from '@angular/cdk/overlay';
-import { ChangeDetectorRef, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import {
@@ -29,7 +29,7 @@ import {
 
 import { NzTooltipTrigger } from '../nz-tooltip.definitions';
 
-export abstract class NzTooltipBaseComponent {
+export abstract class NzTooltipBaseComponent implements OnDestroy {
   @ViewChild('overlay', { static: false }) overlay: CdkConnectedOverlay;
 
   nzVisibleChange = new Subject<boolean>();
@@ -95,6 +95,10 @@ export abstract class NzTooltipBaseComponent {
 
   constructor(public cdr: ChangeDetectorRef, public noAnimation?: NzNoAnimationDirective) {}
 
+  ngOnDestroy(): void {
+    this.nzVisibleChange.complete();
+  }
+
   show(): void {
     if (this.nzVisible) {
       return;
@@ -151,10 +155,6 @@ export abstract class NzTooltipBaseComponent {
   setOverlayOrigin(origin: CdkOverlayOrigin): void {
     this.origin = origin;
     this.cdr.markForCheck();
-  }
-
-  dispose(): void {
-    this.nzVisibleChange.complete();
   }
 
   private isTitleEmpty(): boolean {

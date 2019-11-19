@@ -11,7 +11,6 @@ import {
   AfterViewInit,
   ComponentFactory,
   ComponentFactoryResolver,
-  ComponentRef,
   ElementRef,
   EventEmitter,
   Input,
@@ -37,7 +36,6 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
   specificContent?: NzTSType | null;
   specificTrigger?: NzTooltipTrigger;
   specificPlacement?: string;
-  tooltipRef: ComponentRef<NzTooltipBaseComponent>;
 
   /**
    * @deprecated 9.0.0. This is deprecated and going to be removed in 9.0.0.
@@ -90,7 +88,8 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
   }
 
   protected get trigger(): NzTooltipTrigger {
-    return this.specificTrigger || this.nzTrigger;
+    // NzTooltipTrigger can be null.
+    return typeof this.specificTrigger !== 'undefined' ? this.specificTrigger : this.nzTrigger;
   }
 
   protected needProxyProperties = [
@@ -108,7 +107,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
   tooltip: NzTooltipBaseComponent;
 
   protected readonly $destroy = new Subject<void>();
-  protected readonly triggerUnlisteners: Array<() => void> = [];
+  protected readonly triggerDisposables: Array<() => void> = [];
 
   private delayTimer?: number;
 
@@ -181,11 +180,6 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
     // Clear toggling timer. Issue #3875 #4317 #4386
     this.clearTogglingTimer();
     this.removeTriggerListeners();
-    this.disposeTooltipComponent();
-
-    if (this.tooltipRef) {
-      this.tooltipRef.destroy();
-    }
   }
 
   show(): void {
@@ -209,12 +203,12 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
    * Create a dynamic tooltip component. This method can be override.
    */
   protected createTooltipComponent(): void {
-    this.tooltipRef = this.hostView.createComponent(this.componentFactory);
+    const tooltipRef = this.hostView.createComponent(this.componentFactory);
 
-    this.tooltip = this.tooltipRef.instance;
+    this.tooltip = tooltipRef.instance;
     this.renderer.removeChild(
       this.renderer.parentNode(this.elementRef.nativeElement),
-      this.tooltipRef.location.nativeElement
+      tooltipRef.location.nativeElement
     ); // Remove the component's DOM because it should be in the overlay container.
 
     // If the tooltip component is dynamically created, we should set its origin before updating properties to
@@ -234,22 +228,22 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
 
     if (trigger === 'hover') {
       let overlayElement: HTMLElement;
-      this.triggerUnlisteners.push(
+      this.triggerDisposables.push(
         this.renderer.listen(el, 'mouseenter', () => {
           this.delayEnterLeave(true, true, this.tooltip.nzMouseEnterDelay);
         })
       );
-      this.triggerUnlisteners.push(
+      this.triggerDisposables.push(
         this.renderer.listen(el, 'mouseleave', () => {
           this.delayEnterLeave(true, false, this.tooltip.nzMouseLeaveDelay);
           if (this.tooltip.overlay.overlayRef && !overlayElement) {
             overlayElement = this.tooltip.overlay.overlayRef.overlayElement;
-            this.triggerUnlisteners.push(
+            this.triggerDisposables.push(
               this.renderer.listen(overlayElement, 'mouseenter', () => {
                 this.delayEnterLeave(false, true);
               })
             );
-            this.triggerUnlisteners.push(
+            this.triggerDisposables.push(
               this.renderer.listen(overlayElement, 'mouseleave', () => {
                 this.delayEnterLeave(false, false);
               })
@@ -258,10 +252,10 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
         })
       );
     } else if (trigger === 'focus') {
-      this.triggerUnlisteners.push(this.renderer.listen(el, 'focus', () => this.show()));
-      this.triggerUnlisteners.push(this.renderer.listen(el, 'blur', () => this.hide()));
+      this.triggerDisposables.push(this.renderer.listen(el, 'focus', () => this.show()));
+      this.triggerDisposables.push(this.renderer.listen(el, 'blur', () => this.hide()));
     } else if (trigger === 'click') {
-      this.triggerUnlisteners.push(
+      this.triggerDisposables.push(
         this.renderer.listen(el, 'click', e => {
           e.preventDefault();
           this.show();
@@ -333,8 +327,8 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
   }
 
   private removeTriggerListeners(): void {
-    this.triggerUnlisteners.forEach(cancel => cancel());
-    this.triggerUnlisteners.length = 0;
+    this.triggerDisposables.forEach(dispose => dispose());
+    this.triggerDisposables.length = 0;
   }
 
   private clearTogglingTimer(): void {
@@ -342,9 +336,5 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
       clearTimeout(this.delayTimer);
       this.delayTimer = undefined;
     }
-  }
-
-  private disposeTooltipComponent(): void {
-    this.tooltip.dispose();
   }
 }
