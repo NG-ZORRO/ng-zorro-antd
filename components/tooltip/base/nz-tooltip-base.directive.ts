@@ -206,15 +206,14 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
     const tooltipRef = this.hostView.createComponent(this.componentFactory);
 
     this.tooltip = tooltipRef.instance;
+
+    // Remove the component's DOM because it should be in the overlay container.
     this.renderer.removeChild(
       this.renderer.parentNode(this.elementRef.nativeElement),
       tooltipRef.location.nativeElement
-    ); // Remove the component's DOM because it should be in the overlay container.
-
-    // If the tooltip component is dynamically created, we should set its origin before updating properties to
-    // the component.
+    );
     this.tooltip.setOverlayOrigin(this as CdkOverlayOrigin);
-    // Update all properties to the component.
+
     this.updateChangedProperties(this.needProxyProperties);
   }
 

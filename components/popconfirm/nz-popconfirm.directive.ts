@@ -48,7 +48,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective implements OnI
   @Input() @InputBoolean() nzCondition: boolean;
 
   /**
-   * @deprecated 9.0.0. This is deprecated and going to be removed in 9.0.0.
+   * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
    * Please use a more specific API. Like `nzTooltipTrigger`.
    */
   @Input() nzTrigger: NzTooltipTrigger = 'click';

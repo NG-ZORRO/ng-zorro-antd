@@ -22,10 +22,10 @@
       nzType="menu"
       class="nav-phone-icon"
       nz-popover
-      nzPlacement="bottomRight"
+      nzPopoverPlacement="bottomRight"
       nzOverlayClassName="popover-menu"
-      [nzContent]="languageAndVersionTpl"
-      [nzTrigger]="'click'">
+      [nzPopoverContent]="languageAndVersionTpl"
+      [nzPopoverTrigger]="'click'">
     </i>
     <div nz-row>
       <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8" [nzLg]="5" [nzXl]="5" [nzXXl]="4">
@@ -272,9 +272,9 @@
                   <div style="margin-top: 20px;">
                     <div class="theme-color"
                       nz-popover
-                      [nzTrigger]="'click'"
+                      [nzPopoverTrigger]="'click'"
                       nzOverlayClassName="theme-color-content"
-                      [nzContent]="colorTpl">
+                      [nzPopoverContent]="colorTpl">
                       <div class="theme-color-value" [ngStyle]="{'background': color}"></div>
                     </div>
                     <ng-template #colorTpl>

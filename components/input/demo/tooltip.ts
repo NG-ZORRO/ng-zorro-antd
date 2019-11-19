@@ -9,7 +9,7 @@ import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/co
       style="width: 120px"
       nz-input
       nz-tooltip
-      nzTrigger="focus"
+      nzTooltipTrigger="focus"
       nzPlacement="topLeft"
       nzOverlayClassName="numeric-input"
       [ngModel]="value"
