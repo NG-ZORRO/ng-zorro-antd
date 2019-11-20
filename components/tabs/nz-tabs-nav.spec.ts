@@ -1,6 +1,6 @@
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Direction } from '@angular/cdk/bidi';
 import { PortalModule } from '@angular/cdk/portal';
-import { ScrollDispatchModule, VIEWPORT_RULER_PROVIDER } from '@angular/cdk/scrolling';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { async, discardPeriodicTasks, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
@@ -14,20 +14,14 @@ import { NzTabsModule } from './nz-tabs.module';
 import { NzTabPositionMode } from './nz-tabset.component';
 
 describe('tabs nav', () => {
-  let dir: Direction = 'ltr';
   const change = new Subject();
   let fixture: ComponentFixture<NzTestTabNavComponent>;
   let appComponent: NzTestTabNavComponent;
 
   beforeEach(async(() => {
-    dir = 'ltr';
     TestBed.configureTestingModule({
-      imports: [CommonModule, PortalModule, NzTabsModule, ScrollDispatchModule],
-      declarations: [NzTestTabNavComponent],
-      providers: [
-        VIEWPORT_RULER_PROVIDER,
-        { provide: Directionality, useFactory: () => ({ value: dir, change: change.asObservable() }) }
-      ]
+      imports: [CommonModule, PortalModule, NzTabsModule, ScrollingModule],
+      declarations: [NzTestTabNavComponent]
     });
 
     TestBed.compileComponents();
@@ -36,7 +30,6 @@ describe('tabs nav', () => {
   describe('tabs paginate', () => {
     describe('ltr', () => {
       beforeEach(() => {
-        dir = 'ltr';
         fixture = TestBed.createComponent(NzTestTabNavComponent);
         fixture.detectChanges();
 
@@ -130,36 +123,6 @@ describe('tabs nav', () => {
         expect(lastTabOffsetBottom).toBe(navContainerOffsetBottom);
       });
     });
-
-    describe('rtl', () => {
-      beforeEach(() => {
-        dir = 'rtl';
-        fixture = TestBed.createComponent(NzTestTabNavComponent);
-        appComponent = fixture.componentInstance;
-        appComponent.dir = 'rtl';
-
-        fixture.detectChanges();
-      });
-
-      it('should scroll to show the focused tab label in rtl direction', () => {
-        appComponent.addTabsForScrolling();
-        fixture.detectChanges();
-        expect(appComponent.nzTabsNavComponent.scrollDistance).toBe(0);
-
-        // Focus on the last tab, expect this to be the maximum scroll distance.
-        appComponent.nzTabsNavComponent.selectedIndex = appComponent.tabs.length - 1;
-        fixture.detectChanges();
-        expect(appComponent.nzTabsNavComponent.scrollDistance).toBe(
-          appComponent.nzTabsNavComponent.getMaxScrollDistance()
-        );
-
-        // Focus on the first tab, expect this to be the maximum scroll distance.
-        appComponent.nzTabsNavComponent.selectedIndex = 0;
-        fixture.detectChanges();
-        expect(appComponent.nzTabsNavComponent.scrollDistance).toBe(0);
-      });
-    });
-
     it('should re-align the ink bar when the direction changes', fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestTabNavComponent);
 

@@ -345,7 +345,9 @@ describe('mention', () => {
       flush();
 
       fixture.componentInstance.trigger.onKeydown.emit(ENTER_EVENT);
+      // TODO: ivy fix
       expect(ENTER_EVENT.defaultPrevented).toBe(true);
+      // expect(false).toBe(true);
     }));
 
     it('should not prevent the default enter action for a closed dropdown', () => {
@@ -354,7 +356,9 @@ describe('mention', () => {
       dispatchFakeEvent(textarea, 'click');
       fixture.detectChanges();
       fixture.componentInstance.trigger.onKeydown.emit(ENTER_EVENT);
+      // TODO: ivy fix
       expect(ENTER_EVENT.defaultPrevented).toBe(false);
+      // expect(true).toBe(false);
     });
 
     it('should close the dropdown when tabbing', fakeAsync(() => {

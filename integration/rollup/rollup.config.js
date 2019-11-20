@@ -24,11 +24,8 @@ function enableProdMode() {
 
       return content
         .replace(/platformBrowserDynamic/g, `platformBrowser`)
-        .replace(/bootstrapModule/g, `bootstrapModuleFactory`)
-        .replace(/AppModule/g, `AppModuleNgFactory`)
         .replace(`from '@angular/platform-browser-dynamic'`, `from '@angular/platform-browser'`)
         .replace(`from './environments/environment'`, `from './environments/environment.prod'`)
-        .replace(`from './app/app.module'`, `from './app/app.module.ngfactory'`)
     },
   }
 }
