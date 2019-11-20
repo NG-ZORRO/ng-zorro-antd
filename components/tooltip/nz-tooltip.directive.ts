@@ -20,7 +20,7 @@ import {
 
 import { NzNoAnimationDirective, NzTSType } from 'ng-zorro-antd/core';
 
-import { NzTooltipBaseDirective } from './base/nz-tooltip-base.directive';
+import { NzTooltipBaseDirective } from './nz-tooltip-base.directive';
 import { NzToolTipComponent } from './nz-tooltip.component';
 import { NzTooltipTrigger } from './nz-tooltip.definitions';
 

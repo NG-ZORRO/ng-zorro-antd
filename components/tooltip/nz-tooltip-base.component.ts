@@ -27,7 +27,7 @@ import {
   POSITION_MAP
 } from 'ng-zorro-antd/core';
 
-import { NzTooltipTrigger } from '../nz-tooltip.definitions';
+import { NzTooltipTrigger } from './nz-tooltip.definitions';
 
 export abstract class NzTooltipBaseComponent implements OnDestroy {
   @ViewChild('overlay', { static: false }) overlay: CdkConnectedOverlay;
@@ -104,7 +104,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
       return;
     }
 
-    if (!this.isTitleEmpty() || !this.isContentEmpty()) {
+    if (!this.isEmpty()) {
       this.nzVisible = true;
       this.nzVisibleChange.next(true);
       this.cdr.detectChanges();
@@ -157,16 +157,12 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
     this.cdr.markForCheck();
   }
 
-  private isTitleEmpty(): boolean {
-    return isEmpty(this.title);
-  }
-
-  private isContentEmpty(): boolean {
-    return isEmpty(this.content);
-  }
+  /**
+   * Empty tooltip cannot be openned.
+   */
+  protected abstract isEmpty(): boolean;
 }
 
-// tslint:disable-next-line no-any
-function isEmpty(value: any): boolean {
+export function isTooltipEmpty(value: string | TemplateRef<void> | null): boolean {
   return value instanceof TemplateRef ? false : value === '' || !isNotNil(value);
 }

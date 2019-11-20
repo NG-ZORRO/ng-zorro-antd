@@ -26,8 +26,8 @@ import { warnDeprecation, NgStyleInterface, NzNoAnimationDirective, NzTSType } f
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
-import { NzTooltipTrigger } from '../nz-tooltip.definitions';
 import { NzTooltipBaseComponent } from './nz-tooltip-base.component';
+import { NzTooltipTrigger } from './nz-tooltip.definitions';
 
 export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDestroy, AfterViewInit {
   directiveNameTitle?: NzTSType | null;

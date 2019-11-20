@@ -16,7 +16,7 @@ import {
 } from '@angular/core';
 
 import { zoomBigMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core';
-import { NzToolTipComponent } from 'ng-zorro-antd/tooltip';
+import { isTooltipEmpty, NzToolTipComponent } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-popover',
@@ -39,5 +39,9 @@ export class NzPopoverComponent extends NzToolTipComponent {
 
   constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
     super(cdr, noAnimation);
+  }
+
+  protected isEmpty(): boolean {
+    return isTooltipEmpty(this.title) && isTooltipEmpty(this.content);
   }
 }

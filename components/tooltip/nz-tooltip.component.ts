@@ -20,7 +20,7 @@ import {
 
 import { zoomBigMotion, NzNoAnimationDirective, NzTSType } from 'ng-zorro-antd/core';
 
-import { NzTooltipBaseComponent } from './base';
+import { isTooltipEmpty, NzTooltipBaseComponent } from './nz-tooltip-base.component';
 
 @Component({
   selector: 'nz-tooltip',
@@ -44,5 +44,9 @@ export class NzToolTipComponent extends NzTooltipBaseComponent {
 
   constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
     super(cdr);
+  }
+
+  protected isEmpty(): boolean {
+    return isTooltipEmpty(this.title);
   }
 }
