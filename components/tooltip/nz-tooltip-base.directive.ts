@@ -133,25 +133,29 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
 
     if (changes.nzTitle) {
       warnDeprecation(
-        `'nzTitle' of 'nz-tooltip' is deprecated and will be removed in 10.0.0. Please use 'nzTooltipTitle' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
+        `'nzTitle' of 'nz-tooltip' is deprecated and will be removed in 10.0.0.
+Please use 'nzTooltipTitle' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
       );
     }
 
     if (changes.nzContent) {
       warnDeprecation(
-        `'nzContent' of 'nz-popover' is deprecated and will be removed in 10.0.0. Please use 'nzPopoverContent' instead.`
+        `'nzContent' of 'nz-popover' is deprecated and will be removed in 10.0.0.
+Please use 'nzPopoverContent' instead.`
       );
     }
 
     if (changes.nzPlacement) {
       warnDeprecation(
-        `'nzPlacement' of 'nz-tooltip' is deprecated and will be removed in 10.0.0. Please use 'nzTooltipContent' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
+        `'nzPlacement' of 'nz-tooltip' is deprecated and will be removed in 10.0.0.
+Please use 'nzTooltipContent' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
       );
     }
 
     if (changes.nzTrigger) {
       warnDeprecation(
-        `'nzTrigger' of 'nz-tooltip' is deprecated and will be removed in 10.0.0. Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
+        `'nzTrigger' of 'nz-tooltip' is deprecated and will be removed in 10.0.0.
+Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
       );
     }
   }
