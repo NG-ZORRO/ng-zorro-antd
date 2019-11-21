@@ -1,0 +1,3 @@
+import { NzG2Module } from 'ng-zorro-antd/g2';
+
+export const moduleList = [ NzG2Module ];
