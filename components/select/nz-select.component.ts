@@ -198,12 +198,14 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   focus(): void {
     if (this.nzSelectTopControlDOM) {
       this.nzSelectTopControlDOM.focus();
+      this.onFocus();
     }
   }
 
   blur(): void {
     if (this.nzSelectTopControlDOM) {
       this.nzSelectTopControlDOM.blur();
+      this.onBlur();
     }
   }
 

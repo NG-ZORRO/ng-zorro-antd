@@ -119,10 +119,12 @@ describe('nz-select component', () => {
       expect(select.nativeElement.querySelector('.ant-select-selection') === document.activeElement).toBe(true);
       selectComponent.blur();
       fixture.detectChanges();
+      expect(testComponent.onBlur).toHaveBeenCalled();
       expect(select.nativeElement.querySelector('.ant-select-selection') === document.activeElement).toBe(false);
       selectComponent.focus();
       fixture.detectChanges();
       expect(select.nativeElement.querySelector('.ant-select-selection') === document.activeElement).toBe(true);
+      expect(testComponent.onFocus).toHaveBeenCalled();
     });
     it('should dropdown class work', () => {
       fixture.detectChanges();
@@ -467,6 +469,8 @@ describe('nz-select component', () => {
       [nzDropdownClassName]="'test-class'"
       [nzCustomTemplate]="custom"
       (nzOnSearch)="onSearch($event)"
+      (nzBlur)="onBlur()"
+      (nzFocus)="onFocus()"
       [nzPlaceHolder]="placeholder"
     >
       <nz-option nzValue="jack" nzLabel="Jack"></nz-option>
@@ -497,6 +501,8 @@ export class NzTestSelectDefaultComponent {
   dropdownMatchSelectWidth = true;
   openChange = jasmine.createSpy('open change');
   dropdownStyle = { height: '120px' };
+  onBlur = jasmine.createSpy('on blur');
+  onFocus = jasmine.createSpy('on focus');
   nzFilterOption = (input: string, option: NzOptionComponent) => {
     if (option && option.nzLabel) {
       return option.nzLabel.toLowerCase().indexOf(input.toLowerCase()) > -1;
