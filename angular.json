@@ -57,6 +57,9 @@
               "buildOptimizer": true,
               "serviceWorker": true,
               "ngswConfigPath": "ngsw-config.json"
+            },
+            "es5": {
+              "tsConfig": "./site/doc/tsconfig.es5.json"
             }
           }
         },
@@ -189,6 +192,11 @@
           "options": {
             "tsConfig": "components/tsconfig.lib.json",
             "project": "components/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "components/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {

@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@angular/cdk": "^9.0.0-rc.2",
-    "@ant-design/icons-angular": "^8.0.3",
+    "@ant-design/icons-angular": "^9.0.0-rc.4",
     "date-fns": "^1.30.1"
   },
   "devDependencies": {
@@ -98,7 +98,6 @@
     "rxjs": "~6.5.3",
     "sitemap": "^4.1.1",
     "ts-node": "~8.3.0",
-    "tslib": "^1.10.0",
     "tslint": "~5.18.0",
     "typescript": "~3.6.4",
     "yaml-front-matter": "^4.0.0",

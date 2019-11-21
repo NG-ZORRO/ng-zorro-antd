@@ -3,7 +3,6 @@ dist: trusty
 language: node_js
 node_js:
   - '12.13.1'
-
 env:
   - TASK=build
   - TASK=test
@@ -23,10 +22,14 @@ before_script:
   - export NG_CLI_ANALYTICS=ci
   - npm install -g @angular/cli@next
   - npm install -g karma
+  - npm install -g surge
 
 script:
   - npm run $TASK
   - |
     if [ "$TASK" = "test" ]; then
       cat ./coverage/lcov.info | ./node_modules/.bin/codecov
+    fi
+    if [ "$TASK" = "build" ]; then
+      bash ./scripts/surge.sh
     fi

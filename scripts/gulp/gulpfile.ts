@@ -18,7 +18,7 @@ task('build:release', series(
 task('build:preview', series(
   'clean',
   'init:site',
-  'build:site'
+  'build:site-doc-es5'
 ));
 
 task('start:dev', series(
