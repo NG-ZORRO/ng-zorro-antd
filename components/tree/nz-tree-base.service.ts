@@ -385,6 +385,28 @@ export class NzTreeBaseService implements OnDestroy {
   }
 
   /**
+   * Checks that the children of the current node contain matched nodes
+   */
+  hasMatchedChildNode(node: NzTreeNode): boolean {
+    let m = false;
+    if (node.isMatched) {
+      return true;
+    } else {
+      if (node.children && node.children.length) {
+        for (const child of node.children) {
+          m = this.hasMatchedChildNode(child);
+          if (m) {
+            break;
+          }
+        }
+        return m;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  /**
    * flush after delete node
    */
   afterRemove(node: NzTreeNode, removeSelf: boolean = true): void {

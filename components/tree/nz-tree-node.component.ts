@@ -159,7 +159,8 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
 
   get displayStyle(): string {
     // to hide unmatched nodes
-    return (this.nzSearchValue && this.nzHideUnMatched && !this.nzTreeNode.isMatched && !this.nzTreeNode.isExpanded) ? 'none' : '';
+    const hasMatchedNode = this.nzTreeService.hasMatchedChildNode(this.nzTreeNode);
+    return (this.nzSearchValue && this.nzHideUnMatched && !this.nzTreeNode.isMatched && !hasMatchedNode && !this.nzTreeNode.isExpanded ) ? 'none' : '';
   }
 
   /**
