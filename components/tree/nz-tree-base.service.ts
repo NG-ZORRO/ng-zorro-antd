@@ -193,7 +193,7 @@ export class NzTreeBaseService implements OnDestroy {
       }
     } else {
       if (node.isSelected && index === -1) {
-        this.selectedNodeList = [ node ];
+        this.selectedNodeList = [node];
       }
     }
     index = this.selectedNodeList.findIndex(n => node.key === n.key);
@@ -377,8 +377,36 @@ export class NzTreeBaseService implements OnDestroy {
         searchChild(child);
       });
     };
+    // Checks that the children of the current node contain matched nodes
+    const hasMatchedChildNode = (node: NzTreeNode): boolean => {
+      let m = false;
+      if (node.isMatched) {
+        return true;
+      } else {
+        if (node.children && node.children.length) {
+          for (const child of node.children) {
+            m = hasMatchedChildNode(child);
+            if (m) {
+              break;
+            }
+          }
+          return m;
+        } else {
+          return false;
+        }
+      }
+    };
+
+    const checkMatchedChildNode = (node: NzTreeNode) => {
+      node.hasMatchedChildNode = hasMatchedChildNode(node);
+      node.children.forEach(child => {
+        checkMatchedChildNode(child);
+      });
+    };
+
     this.rootNodes.forEach(child => {
       searchChild(child);
+      checkMatchedChildNode(child);
     });
     // expand matched keys
     this.calcExpandedKeys(expandedKeys, this.rootNodes);
@@ -387,21 +415,16 @@ export class NzTreeBaseService implements OnDestroy {
   /**
    * Checks that the children of the current node contain matched nodes
    */
-  hasMatchedChildNode(node: NzTreeNode): boolean {
-    let m = false;
+  checkMatchedChildNode(node: NzTreeNode): void {
     if (node.isMatched) {
-      return true;
+      node.hasMatchedChildNode = true;
     } else {
       if (node.children && node.children.length) {
         for (const child of node.children) {
-          m = this.hasMatchedChildNode(child);
-          if (m) {
-            break;
-          }
+          this.checkMatchedChildNode(child);
         }
-        return m;
       } else {
-        return false;
+        node.hasMatchedChildNode = false;
       }
     }
   }
@@ -504,14 +527,14 @@ export class NzTreeBaseService implements OnDestroy {
     }
     switch (dragPos) {
       case 0:
-        targetNode.addChildren([ this.selectedNode ]);
+        targetNode.addChildren([this.selectedNode]);
         this.resetNodeLevel(targetNode);
         break;
       case -1:
       case 1:
         const tIndex = dragPos === 1 ? 1 : 0;
         if (targetParent) {
-          targetParent.addChildren([ this.selectedNode ], targetParent.children.indexOf(targetNode) + tIndex);
+          targetParent.addChildren([this.selectedNode], targetParent.children.indexOf(targetNode) + tIndex);
           const parent = this.selectedNode.getParentNode();
           if (parent) {
             this.resetNodeLevel(parent);
@@ -520,8 +543,8 @@ export class NzTreeBaseService implements OnDestroy {
           const targetIndex = this.rootNodes.indexOf(targetNode) + tIndex;
           // 根节点插入
           this.rootNodes.splice(targetIndex, 0, this.selectedNode!);
-          this.rootNodes[ targetIndex ].parentNode = undefined;
-          this.rootNodes[ targetIndex ].level = 0;
+          this.rootNodes[targetIndex].parentNode = undefined;
+          this.rootNodes[targetIndex].level = 0;
         }
         break;
     }
@@ -544,8 +567,8 @@ export class NzTreeBaseService implements OnDestroy {
   formatEvent(eventName: string, node?: NzTreeNode, event?: MouseEvent | DragEvent): NzFormatEmitEvent {
     const emitStructure = {
       'eventName': eventName,
-      'node'     : node || undefined,
-      'event'    : event || undefined
+      'node': node || undefined,
+      'event': event || undefined
     };
     switch (eventName) {
       case 'dragstart':

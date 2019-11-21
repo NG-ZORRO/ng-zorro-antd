@@ -15,7 +15,7 @@ export interface NzTreeNodeOptions {
   children?: NzTreeNodeOptions[];
 
   // tslint:disable-next-line:no-any
-  [ key: string ]: any;
+  [key: string]: any;
 }
 
 export class NzTreeNode {
@@ -41,6 +41,7 @@ export class NzTreeNode {
 
   component: NzTreeNodeComponent;
   isMatched: boolean;
+  hasMatchedChildNode: boolean;
 
   get treeService(): NzTreeBaseService | undefined {
     if (this._service) {
@@ -71,6 +72,7 @@ export class NzTreeNode {
     this._isExpanded = option.isLeaf ? false : (option.expanded || false);
     this._isHalfChecked = false;
     this._isSelected = (!option.disabled && option.selected) || false;
+    this._hasMatchedChildNode = false;
     this._isLoading = false;
     this.isMatched = false;
 
@@ -273,7 +275,7 @@ export class NzTreeNode {
       this.isLoading = false;
       this.treeService!.triggerEventChange$!.next({
         'eventName': 'addChildren',
-        'node'     : this
+        'node': this
       });
     }
   }
