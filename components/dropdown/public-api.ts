@@ -6,12 +6,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-dropdown-context.component';
-export * from './nz-dropdown.component';
 export * from './nz-dropdown.directive';
-export * from './nz-dropdown.service';
 export * from './nz-dropdown.service.module';
-export * from './nz-dropdown-button.component';
 export * from './nz-dropdown.module';
 export * from './nz-menu-dropdown.service';
 export * from './nz-dropdown-a.directive';

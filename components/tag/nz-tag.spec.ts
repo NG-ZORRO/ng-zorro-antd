@@ -57,8 +57,7 @@ describe('tag', () => {
       tick(1000);
       fixture.detectChanges();
       expect(testComponent.afterClose).toHaveBeenCalledTimes(1);
-      tag = fixture.debugElement.query(By.directive(NzTagComponent));
-      expect(tag).toBeNull();
+      expect(fixture.nativeElement.querySelector('nz-tag')).toBeFalsy();
     }));
     it('should color work', () => {
       fixture.detectChanges();

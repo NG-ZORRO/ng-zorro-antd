@@ -381,9 +381,11 @@ describe('input number', () => {
     it('should update value immediately after formatter changed', () => {
       const newFormatter = (v: number) => `${v} %`;
       const initValue = 1;
-      testComponent.nzInputNumberComponent.onModelChange(`${initValue}`);
+      const component = testComponent.nzInputNumberComponent;
+      component.onModelChange(`${initValue}`);
       fixture.detectChanges();
-      testComponent.formatter = newFormatter;
+      component.nzFormatter = newFormatter;
+      component.setValue(component.getCurrentValidValue(component.actualValue), true);
       fixture.detectChanges();
       expect(inputElement.value).toBe(newFormatter(initValue));
     });

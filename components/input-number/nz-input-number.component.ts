@@ -52,7 +52,7 @@ import { isNotNil, InputBoolean, NzSizeLDSType } from 'ng-zorro-antd/core';
 })
 export class NzInputNumberComponent implements ControlValueAccessor, AfterViewInit, OnChanges, OnInit, OnDestroy {
   private autoStepTimer: number;
-  private actualValue: string | number;
+  public actualValue: string | number;
   private value: string | number;
   displayValue: string | number;
   isFocused = false;
