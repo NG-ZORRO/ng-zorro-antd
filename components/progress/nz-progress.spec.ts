@@ -34,9 +34,12 @@ describe('progress', () => {
 
     it('should className correct', () => {
       fixture.detectChanges();
-      expect(progress.nativeElement.firstElementChild.className).toBe(
-        'ant-progress ant-progress-status-normal ant-progress-line ant-progress-show-info'
-      );
+
+      const classNames = progress.nativeElement.firstElementChild.className;
+      expect(classNames).toContain('ant-progress');
+      expect(classNames).toContain('ant-progress-status-normal');
+      expect(classNames).toContain('ant-progress-line');
+      expect(classNames).toContain('ant-progress-show-info');
     });
 
     it('should percent work', () => {
@@ -182,9 +185,12 @@ describe('progress', () => {
 
     it('should className correct', () => {
       fixture.detectChanges();
-      expect(progress.nativeElement.firstElementChild.className).toBe(
-        'ant-progress ant-progress-status-normal ant-progress-show-info ant-progress-circle'
-      );
+
+      const classNames = progress.nativeElement.firstElementChild.className;
+      expect(classNames).toContain('ant-progress');
+      expect(classNames).toContain('ant-progress-status-normal');
+      expect(classNames).toContain('ant-progress-circle');
+      expect(classNames).toContain('ant-progress-show-info');
     });
 
     it('should format work', () => {
@@ -219,15 +225,24 @@ describe('progress', () => {
     });
 
     it('should width work', () => {
+      let styleText = '';
+
+      function getStyleText(): void {
+        styleText = progress.nativeElement.querySelector('.ant-progress-inner').style.cssText;
+      }
+
       fixture.detectChanges();
-      expect(progress.nativeElement.querySelector('.ant-progress-inner').style.cssText).toBe(
-        'width: 132px; height: 132px; font-size: 25.8px;'
-      );
+      getStyleText();
+      expect(styleText).toContain('width: 132px;');
+      expect(styleText).toContain('height: 132px;');
+      expect(styleText).toContain('font-size: 25.8px;');
+
       testComponent.width = 100;
       fixture.detectChanges();
-      expect(progress.nativeElement.querySelector('.ant-progress-inner').style.cssText).toBe(
-        'width: 100px; height: 100px; font-size: 21px;'
-      );
+      getStyleText();
+      expect(styleText).toContain('width: 100px;');
+      expect(styleText).toContain('height: 100px;');
+      expect(styleText).toContain('font-size: 21px;');
     });
 
     it('should strokeWidth work', () => {
@@ -271,9 +286,12 @@ describe('progress', () => {
 
     it('should className correct', () => {
       fixture.detectChanges();
-      expect(progress.nativeElement.firstElementChild.className).toBe(
-        'ant-progress ant-progress-status-normal ant-progress-show-info ant-progress-circle'
-      );
+
+      const classNames = progress.nativeElement.firstElementChild.className;
+      expect(classNames).toContain('ant-progress');
+      expect(classNames).toContain('ant-progress-status-normal');
+      expect(classNames).toContain('ant-progress-circle');
+      expect(classNames).toContain('ant-progress-show-info');
     });
 
     it('should gapDegree work', () => {

@@ -259,11 +259,6 @@ describe('NzPopconfirm', () => {
       tick();
       expect(overlayContainerElement.querySelector('.ant-popover-message-title')).toBeNull();
     }));
-    it('should not create element', fakeAsync(() => {
-      fixture.detectChanges();
-      const triggerElement = component.inBtnGroup.nativeElement;
-      expect(triggerElement.nextSibling.tagName).toBe('BUTTON');
-    }));
     it('should support custom icon', fakeAsync(() => {
       component.icon = 'question-circle';
       const triggerElement = component.iconTemplate.nativeElement;

@@ -181,12 +181,6 @@ describe('NzPopover', () => {
       expect(overlayContainerElement.querySelector('.ant-popover-title')).toBeNull();
       expect(overlayContainerElement.querySelector('.ant-popover-inner-content')).toBeNull();
     }));
-
-    it('should not create element', fakeAsync(() => {
-      fixture.detectChanges();
-      const triggerElement = component.inBtnGroup.nativeElement;
-      expect(triggerElement.nextSibling.tagName).toBe('BUTTON');
-    }));
   });
 });
 
