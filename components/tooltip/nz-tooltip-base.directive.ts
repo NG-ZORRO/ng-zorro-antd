@@ -38,25 +38,25 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
   specificPlacement?: string;
 
   /**
-   * @deprecated 9.0.0. This is deprecated and going to be removed in 9.0.0.
+   * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
    * Please use a more specific API. Like `nzTooltipTitle`.
    */
   @Input() nzTitle: NzTSType | null;
 
   /**
-   * @deprecated 9.0.0. This is deprecated and going to be removed in 9.0.0.
+   * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
    * Please use a more specific API. Like `nzPopoverContent`.
    */
   @Input() nzContent: NzTSType | null;
 
   /**
-   * @deprecated 9.0.0. This is deprecated and going to be removed in 9.0.0.
+   * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
    * Please use a more specific API. Like `nzTooltipTrigger`.
    */
   @Input() nzTrigger: NzTooltipTrigger = 'hover';
 
   /**
-   * @deprecated 9.0.0. This is deprecated and going to be removed in 9.0.0.
+   * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
    * Please use a more specific API. Like `nzTooltipPlacement`.
    */
   @Input() nzPlacement: string = 'top';
