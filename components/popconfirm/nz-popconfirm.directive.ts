@@ -48,7 +48,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective implements OnI
   @Input() @InputBoolean() nzCondition: boolean;
 
   /**
-   * @deprecated 9.0.0. This is deprecated and going to be removed in 9.0.0.
+   * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
    * Please use a more specific API. Like `nzTooltipTrigger`.
    */
   @Input() nzTrigger: NzTooltipTrigger = 'click';
@@ -56,11 +56,11 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective implements OnI
   @Output() readonly nzOnCancel = new EventEmitter<void>();
   @Output() readonly nzOnConfirm = new EventEmitter<void>();
 
-  componentFactory: ComponentFactory<NzPopconfirmComponent> = this.resolver.resolveComponentFactory(
+  protected readonly componentFactory: ComponentFactory<NzPopconfirmComponent> = this.resolver.resolveComponentFactory(
     NzPopconfirmComponent
   );
 
-  protected needProxyProperties = [
+  protected readonly needProxyProperties = [
     'nzOverlayClassName',
     'nzOverlayStyle',
     'nzMouseEnterDelay',
@@ -78,17 +78,16 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective implements OnI
     hostView: ViewContainerRef,
     resolver: ComponentFactoryResolver,
     renderer: Renderer2,
-    @Optional() tooltip: NzPopconfirmComponent,
-    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+    @Host() @Optional() noAnimation?: NzNoAnimationDirective
   ) {
-    super(elementRef, hostView, resolver, renderer, tooltip, noAnimation);
+    super(elementRef, hostView, resolver, renderer, noAnimation);
   }
 
   /**
    * @override
    */
-  protected createDynamicTooltipComponent(): void {
-    super.createDynamicTooltipComponent();
+  protected createTooltipComponent(): void {
+    super.createTooltipComponent();
 
     (this.tooltip as NzPopconfirmComponent).nzOnCancel.pipe(takeUntil(this.$destroy)).subscribe(() => {
       this.nzOnCancel.emit();

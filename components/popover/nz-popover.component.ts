@@ -10,16 +10,13 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ContentChild,
   Host,
-  Input,
   Optional,
-  TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 
-import { zoomBigMotion, NzNoAnimationDirective, NzTSType } from 'ng-zorro-antd/core';
-import { NzTooltipBaseComponentLegacy, NzToolTipComponent } from 'ng-zorro-antd/tooltip';
+import { zoomBigMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core';
+import { isTooltipEmpty, NzToolTipComponent } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'nz-popover',
@@ -28,12 +25,6 @@ import { NzTooltipBaseComponentLegacy, NzToolTipComponent } from 'ng-zorro-antd/
   templateUrl: './nz-popover.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  providers: [
-    {
-      provide: NzTooltipBaseComponentLegacy,
-      useExisting: NzPopoverComponent
-    }
-  ],
   preserveWhitespaces: false,
   styles: [
     `
@@ -46,16 +37,11 @@ import { NzTooltipBaseComponentLegacy, NzToolTipComponent } from 'ng-zorro-antd/
 export class NzPopoverComponent extends NzToolTipComponent {
   _prefix = 'ant-popover-placement';
 
-  /**
-   * Use `neverUsedTemplate` to force `nzTemplate` to be catched by `nzPopoverContent`.
-   */
-  @Input() nzTitle: NzTSType;
-  @ContentChild('neverUsedTemplate', { static: true }) nzTitleTemplate: TemplateRef<void>;
-
-  @Input() nzContent: NzTSType;
-  @ContentChild('nzTemplate', { static: true }) nzContentTemplate: TemplateRef<void>;
-
   constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
     super(cdr, noAnimation);
+  }
+
+  protected isEmpty(): boolean {
+    return isTooltipEmpty(this.title) && isTooltipEmpty(this.content);
   }
 }

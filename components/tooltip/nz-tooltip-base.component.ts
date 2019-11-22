@@ -12,47 +12,78 @@ import {
   ConnectedOverlayPositionChange,
   ConnectionPositionPair
 } from '@angular/cdk/overlay';
-import { ChangeDetectorRef, EventEmitter, Output, TemplateRef } from '@angular/core';
+import { ChangeDetectorRef, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
+import { Subject } from 'rxjs';
+
 import {
   getPlacementName,
   isNotNil,
+  toBoolean,
   DEFAULT_TOOLTIP_POSITIONS,
   NgClassInterface,
   NgStyleInterface,
   NzNoAnimationDirective,
-  NzTSType
+  NzTSType,
+  POSITION_MAP
 } from 'ng-zorro-antd/core';
 
-import { NzTooltipTrigger } from '../nz-tooltip.definitions';
+import { NzTooltipTrigger } from './nz-tooltip.definitions';
 
-/**
- * Tooltip component. Also the base component for legacy components.
- */
-export abstract class NzTooltipBaseComponent {
+export abstract class NzTooltipBaseComponent implements OnDestroy {
+  @ViewChild('overlay', { static: false }) overlay: CdkConnectedOverlay;
+
+  nzVisibleChange = new Subject<boolean>();
   nzTitle: NzTSType | null;
   nzContent: NzTSType | null;
-  nzVisible: boolean;
-  nzPlacement: string;
   nzOverlayClassName: string;
-  nzOverlayStyle: NgStyleInterface;
-  nzMouseEnterDelay: number;
-  nzMouseLeaveDelay: number;
-  nzTrigger: NzTooltipTrigger;
-  nzTitleTemplate: TemplateRef<void>;
+  nzOverlayStyle: NgStyleInterface = {};
+  nzMouseEnterDelay: number = 0.15;
+  nzMouseLeaveDelay: number = 0.1;
+
+  set nzVisible(value: boolean) {
+    const visible = toBoolean(value);
+    if (this._visible !== visible) {
+      this._visible = visible;
+    }
+  }
+
+  get nzVisible(): boolean {
+    return this._visible;
+  }
+
+  _visible = false;
+
+  set nzTrigger(value: NzTooltipTrigger) {
+    this._trigger = value;
+    this._hasBackdrop = this._trigger === 'click';
+  }
+
+  get nzTrigger(): NzTooltipTrigger {
+    return this._trigger;
+  }
+
+  protected _trigger: NzTooltipTrigger = 'hover';
+
+  set nzPlacement(value: string) {
+    if (value !== this.preferredPlacement) {
+      this.preferredPlacement = value;
+      this._positions = [POSITION_MAP[this.nzPlacement], ...this._positions];
+    }
+  }
+
+  get nzPlacement(): string {
+    return this.preferredPlacement;
+  }
+
   nzContentTemplate: TemplateRef<void>;
-
-  @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
-
-  overlay: CdkConnectedOverlay;
+  nzTitleTemplate: TemplateRef<void>;
   origin: CdkOverlayOrigin;
+  preferredPlacement = 'top';
 
   _classMap: NgClassInterface = {};
   _hasBackdrop = false;
   _prefix = 'ant-tooltip-placement';
-  _visible = false;
   _positions: ConnectionPositionPair[] = [...DEFAULT_TOOLTIP_POSITIONS];
-  _placement = 'top';
-  _trigger: NzTooltipTrigger = 'hover';
 
   get content(): string | TemplateRef<void> | null {
     return this.nzContent !== undefined ? this.nzContent : this.nzContentTemplate;
@@ -64,14 +95,18 @@ export abstract class NzTooltipBaseComponent {
 
   constructor(public cdr: ChangeDetectorRef, public noAnimation?: NzNoAnimationDirective) {}
 
+  ngOnDestroy(): void {
+    this.nzVisibleChange.complete();
+  }
+
   show(): void {
     if (this.nzVisible) {
       return;
     }
 
-    if (!this.isTitleEmpty() || !this.isContentEmpty()) {
+    if (!this.isEmpty()) {
       this.nzVisible = true;
-      this.nzVisibleChange.emit(true);
+      this.nzVisibleChange.next(true);
       this.cdr.detectChanges();
     }
   }
@@ -82,7 +117,7 @@ export abstract class NzTooltipBaseComponent {
     }
 
     this.nzVisible = false;
-    this.nzVisibleChange.emit(false);
+    this.nzVisibleChange.next(false);
     this.cdr.detectChanges();
   }
 
@@ -105,7 +140,7 @@ export abstract class NzTooltipBaseComponent {
   }
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
-    this._placement = getPlacementName(position)!;
+    this.preferredPlacement = getPlacementName(position)!;
     this.setClassMap();
     this.cdr.detectChanges();
   }
@@ -113,7 +148,7 @@ export abstract class NzTooltipBaseComponent {
   setClassMap(): void {
     this._classMap = {
       [this.nzOverlayClassName]: true,
-      [`${this._prefix}-${this._placement}`]: true
+      [`${this._prefix}-${this.preferredPlacement}`]: true
     };
   }
 
@@ -122,11 +157,12 @@ export abstract class NzTooltipBaseComponent {
     this.cdr.markForCheck();
   }
 
-  private isTitleEmpty(): boolean {
-    return this.title instanceof TemplateRef ? false : this.title === '' || !isNotNil(this.title);
-  }
+  /**
+   * Empty tooltip cannot be openned.
+   */
+  protected abstract isEmpty(): boolean;
+}
 
-  private isContentEmpty(): boolean {
-    return this.content instanceof TemplateRef ? false : this.content === '' || !isNotNil(this.content);
-  }
+export function isTooltipEmpty(value: string | TemplateRef<void> | null): boolean {
+  return value instanceof TemplateRef ? false : value === '' || !isNotNil(value);
 }
