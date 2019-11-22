@@ -21,7 +21,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { toBoolean, warnDeprecation, CandyDate, InputBoolean } from 'ng-zorro-antd/core';
+import { CandyDate, InputBoolean } from 'ng-zorro-antd/core';
 import {
   NzDateCellDirective as DateCell,
   NzDateFullCellDirective as DateFullCell,
