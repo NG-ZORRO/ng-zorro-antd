@@ -53,3 +53,10 @@ task('test:schematics', execNodeTask(
   'jasmine',
   [ 'publish/schematics/**/*.spec.js' ]
 ));
+
+/** Test the ng-update schematics */
+task('test:schematics-update', execNodeTask(
+  'jasmine',
+  'jasmine',
+  [ 'publish/schematics/ng-update/**/*.spec.js' ]
+));
