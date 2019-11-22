@@ -256,17 +256,6 @@ describe('Calendar', () => {
       expect(header.fullscreen).toBe(false);
     });
 
-    it('should update fullscreen by nzCard', () => {
-      component.card = true;
-
-      fixture.detectChanges();
-
-      const host = fixture.debugElement.queryAll(By.directive(Calendar))[2];
-      const header = host.query(By.directive(CalendarHeader)).injector.get(CalendarHeader);
-
-      expect(header.fullscreen).toBe(false);
-    });
-
     it('should support imperative access', () => {
       component.fullscreen = false;
 
@@ -275,7 +264,6 @@ describe('Calendar', () => {
       const calendar = fixture.debugElement.queryAll(By.directive(Calendar))[1].injector.get(Calendar);
 
       expect(calendar.nzFullscreen).toBe(false);
-      expect(calendar.nzCard).toBe(true);
     });
   });
 
@@ -452,7 +440,6 @@ class NzTestCalendarValueComponent {
   template: `
     <nz-calendar></nz-calendar>
     <nz-calendar [nzFullscreen]="fullscreen"></nz-calendar>
-    <nz-calendar [nzCard]="card"></nz-calendar>
   `
 })
 class NzTestCalendarFullscreenComponent {
