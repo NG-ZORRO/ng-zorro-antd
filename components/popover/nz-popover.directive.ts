@@ -44,9 +44,8 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
     hostView: ViewContainerRef,
     resolver: ComponentFactoryResolver,
     renderer: Renderer2,
-    @Optional() tooltip: NzPopoverComponent,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
-    super(elementRef, hostView, resolver, renderer, tooltip, noAnimation);
+    super(elementRef, hostView, resolver, renderer, noAnimation);
   }
 }

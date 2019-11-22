@@ -20,8 +20,7 @@ import {
 
 import { NzNoAnimationDirective, NzTSType } from 'ng-zorro-antd/core';
 
-import { NzTooltipBaseComponentLegacy } from './base/nz-tooltip-base-legacy.component';
-import { NzTooltipBaseDirective } from './base/nz-tooltip-base.directive';
+import { NzTooltipBaseDirective } from './nz-tooltip-base.directive';
 import { NzToolTipComponent } from './nz-tooltip.component';
 import { NzTooltipTrigger } from './nz-tooltip.definitions';
 
@@ -53,9 +52,8 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
     hostView: ViewContainerRef,
     resolver: ComponentFactoryResolver,
     renderer: Renderer2,
-    @Optional() _tooltip?: NzTooltipBaseComponentLegacy,
     @Host() @Optional() noAnimation?: NzNoAnimationDirective
   ) {
-    super(elementRef, hostView, resolver, renderer, _tooltip, noAnimation);
+    super(elementRef, hostView, resolver, renderer, noAnimation);
   }
 }

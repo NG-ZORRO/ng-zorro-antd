@@ -10,17 +10,16 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   Host,
-  Input,
+  OnDestroy,
   Optional,
-  Output,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 
-import { zoomBigMotion, InputBoolean, NzNoAnimationDirective } from 'ng-zorro-antd/core';
-import { NzTooltipBaseComponentLegacy, NzTooltipTrigger, NzToolTipComponent } from 'ng-zorro-antd/tooltip';
+import { zoomBigMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core';
+import { NzTooltipTrigger, NzToolTipComponent } from 'ng-zorro-antd/tooltip';
+import { Subject } from 'rxjs';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -30,12 +29,6 @@ import { NzTooltipBaseComponentLegacy, NzTooltipTrigger, NzToolTipComponent } fr
   preserveWhitespaces: false,
   animations: [zoomBigMotion],
   templateUrl: './nz-popconfirm.component.html',
-  providers: [
-    {
-      provide: NzTooltipBaseComponentLegacy,
-      useExisting: NzPopconfirmComponent
-    }
-  ],
   styles: [
     `
       .ant-popover {
@@ -44,22 +37,30 @@ import { NzTooltipBaseComponentLegacy, NzTooltipTrigger, NzToolTipComponent } fr
     `
   ]
 })
-export class NzPopconfirmComponent extends NzToolTipComponent {
-  @Input() nzOkText: string;
-  @Input() nzOkType: string = 'primary';
-  @Input() nzCancelText: string;
-  @Input() @InputBoolean() nzCondition = false;
-  @Input() nzIcon: string | TemplateRef<void>;
+export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestroy {
+  nzCancelText: string;
+  nzCondition = false;
+  nzIcon: string | TemplateRef<void>;
+  nzOkText: string;
+  nzOkType: string = 'primary';
 
-  @Output() readonly nzOnCancel: EventEmitter<void> = new EventEmitter();
-  @Output() readonly nzOnConfirm: EventEmitter<void> = new EventEmitter();
+  readonly nzOnCancel = new Subject<void>();
+  readonly nzOnConfirm = new Subject<void>();
+
+  protected _trigger: NzTooltipTrigger = 'click';
 
   _prefix = 'ant-popover-placement';
-  _trigger: NzTooltipTrigger = 'click';
   _hasBackdrop = true;
 
   constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
     super(cdr, noAnimation);
+  }
+
+  ngOnDestroy(): void {
+    super.ngOnDestroy();
+
+    this.nzOnCancel.complete();
+    this.nzOnConfirm.complete();
   }
 
   show(): void {
@@ -71,12 +72,12 @@ export class NzPopconfirmComponent extends NzToolTipComponent {
   }
 
   onCancel(): void {
-    this.nzOnCancel.emit();
+    this.nzOnCancel.next();
     super.hide();
   }
 
   onConfirm(): void {
-    this.nzOnConfirm.emit();
+    this.nzOnConfirm.next();
     super.hide();
   }
 }
