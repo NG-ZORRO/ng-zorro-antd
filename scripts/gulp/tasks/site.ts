@@ -48,17 +48,6 @@ task('serve:site', done => {
   });
 });
 
-/** Run `ng serve --configuration ivy` */
-task('serve-ivy:site', done => {
-  detectPort(4200).then((port: number) => {
-    execNodeTask(
-      '@angular/cli',
-      'ng',
-      [ 'serve', '--port', port === 4200 ? '4200' : '0', '--configuration=ivy' ]
-    )(done);
-  });
-});
-
 /** Run `ng build --prod --project=ng-zorro-antd-doc` */
 task('build:site-doc', execNodeTask(
   '@angular/cli',
@@ -98,8 +87,8 @@ task('build:site-issue-helper', execTask(
 ));
 
 /** Build all site projects to the output directory. */
-task('build:site', series(
-  process.env.CI ? 'build:site-doc-es5' : 'build:site-doc',
+task('build:site', process.env.CI ? series('build:site-doc', 'build:site-iframe') : series(
+  'build:site-doc',
   'build:site-iframe',
   'build:site-issue-helper'
 ));
@@ -108,12 +97,6 @@ task('build:site', series(
 task('start:site', series(
   'init:site',
   parallel('watch:site', 'serve:site')
-));
-
-/** Init site directory, and start watch and ng-serve */
-task('start-ivy:site', series(
-  'init:site',
-  parallel('watch:site', 'serve-ivy:site')
 ));
 
 /** Task that use source code to build ng-zorro-antd-doc project,

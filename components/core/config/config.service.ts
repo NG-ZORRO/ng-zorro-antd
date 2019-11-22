@@ -61,12 +61,6 @@ export function WithConfig<T>(componentName: NzConfigKey, innerDefaultValue?: T)
   return function ConfigDecorator(target: any, propName: any, originalDescriptor?: TypedPropertyDescriptor<T>): any {
     const privatePropName = `$$__assignedValue__${propName}`;
 
-    if (Object.prototype.hasOwnProperty.call(target, privatePropName)) {
-      console.warn(
-        `The prop "${privatePropName}" is already exist, it will be override by ${componentName} decorator.`
-      );
-    }
-
     Object.defineProperty(target, privatePropName, {
       configurable: true,
       writable: true,

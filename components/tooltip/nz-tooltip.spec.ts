@@ -265,7 +265,8 @@ describe('NzTooltip', () => {
     it('should not create element', fakeAsync(() => {
       fixture.detectChanges();
       const triggerElement = component.inBtnGroup.nativeElement;
-      expect(triggerElement.nextSibling.tagName).toBe('BUTTON');
+      // There's a <!--container--> element created by Ivy.
+      expect(triggerElement.nextSibling.nextSibling.tagName).toBe('BUTTON');
     }));
 
     it('should set `setTitle` proxy to `nzTitle`', fakeAsync(() => {

@@ -80,10 +80,10 @@ describe('nz-form-control', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(formControls[0].nativeElement.querySelector('.ant-form-item-control').className).toBe(
+      expect(formControls[0].nativeElement.querySelector('.ant-form-item-control').className).toContain(
         'ant-form-item-control'
       );
-      expect(formControls[1].nativeElement.querySelector('.ant-form-item-control').className).toBe(
+      expect(formControls[1].nativeElement.querySelector('.ant-form-item-control').className).toContain(
         'ant-form-item-control'
       );
     }));

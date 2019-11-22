@@ -30,14 +30,15 @@
     "zone.js": "file:lib/zone.js"
   },
   "devDependencies": {
-    "@angular-devkit/build-optimizer": "~0.800.0",
+    "@angular-devkit/build-optimizer": "~0.900.0-rc.2",
     "@angular/cli": "file:lib/@angular/cli",
     "@angular/compiler-cli": "file:lib/@angular/compiler-cli",
-    "@ngtools/webpack": "~8.0.0",
+    "@ngtools/webpack": "~9.0.0-rc.2",
     "html-webpack-plugin": "^3.2.0",
     "typescript": "file:lib/typescript",
     "terser-webpack-plugin": "^1.1.0",
     "webpack": "^4.35.0",
     "webpack-cli": "^3.3.5",
-    "webpack-dev-server": "^3.7.2"  }
+    "webpack-dev-server": "^3.7.2"
+  }
 }
