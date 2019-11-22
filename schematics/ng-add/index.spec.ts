@@ -130,20 +130,12 @@ describe('ng-add schematic', () => {
     addModuleImportToRootModule(
       appTree, 'NoopAnimationsModule', '@angular/platform-browser/animations', project);
 
-    spyOn(console, 'log');
-
     const tree = await runner.runSchematicAsync('ng-add-setup-project', {animations: true}, appTree).toPromise();
     const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
 
     expect(fileContent).toContain('NoopAnimationsModule');
     expect(fileContent).not.toContain('BrowserAnimationsModule');
 
-    expect(console.log)
-    .toHaveBeenCalledWith(
-      jasmine.stringMatching(
-        /Could not set up ".+BrowserAnimationsModule.+" because ".+NoopAnimationsModule.+" is already imported./
-      )
-    );
   });
 
   it('should not add NoopAnimationsModule if BrowserAnimationsModule is set up', async () => {
@@ -177,20 +169,12 @@ describe('ng-add schematic', () => {
   });
 
   it('should have a deprecation `--i18n` warning', async () => {
-    spyOn(console, 'log');
-
     const tree = await runner.runSchematicAsync('ng-add-setup-project', {i18n: 'zh_CN'}, appTree).toPromise();
     const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
 
     expect(fileContent).toContain('{ provide: NZ_I18N, useValue: zh_CN }');
     expect(fileContent).toContain('registerLocaleData(zh)');
 
-    expect(console.log)
-    .toHaveBeenCalledWith(
-      jasmine.stringMatching(
-        /.+WARN.+ .+--i18n.+ option will be deprecated, use .+--locale.+ instead/
-      )
-    );
   });
 
   it('should not add locale id if locale id is set up', async () => {
