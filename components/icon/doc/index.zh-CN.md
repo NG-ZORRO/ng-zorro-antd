@@ -34,8 +34,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 | `[nzIconfont]` | 指定来自 IconFont 的图标类型 | string | - |
 | `[nzRotate]` | 图标旋转角度（7.0.0 开始支持） | `number` | - |
 
-<blockquote style="border-color: red;"><p><strong>不加上 nz 前缀的 API，以及原使用 icon 类名的 API 将会在 9.0.0 及之后不被支持，请及时迁移。</strong></p></blockquote>
-
 ### NzIconService
 
 | 方法/属性 | 说明 | 参数 |

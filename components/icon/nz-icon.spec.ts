@@ -21,13 +21,7 @@ describe('nz icon', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [CommonModule, NzIconModule],
-      declarations: [
-        NzTestIconExtensionsComponent,
-        NzTestIconCustomComponent,
-        NzTestIconIconfontComponent,
-        NzTestIconOldApiComponent,
-        NzTestIconPrefixComponent
-      ],
+      declarations: [NzTestIconExtensionsComponent, NzTestIconCustomComponent, NzTestIconIconfontComponent],
       providers: [
         {
           provide: NZ_ICONS,
@@ -97,21 +91,6 @@ describe('nz icon', () => {
       expect(icons[1].nativeElement.firstChild.classList.contains('anticon-spin')).toBe(true);
     }));
 
-    it('should type support old API', () => {
-      testComponent.type = 'anticon anticon-cross';
-      fixture.detectChanges();
-      expect(icons[0].nativeElement.className).toContain('anticon');
-      expect(icons[0].nativeElement.className).toContain('anticon-close');
-      expect(icons[0].nativeElement.innerHTML).toContain('svg');
-
-      // An invalid type should not affect the actual type.
-      testComponent.type = 'anticon';
-      fixture.detectChanges();
-      expect(icons[0].nativeElement.className).toContain('anticon');
-      expect(icons[0].nativeElement.className).toContain('anticon-close');
-      expect(icons[0].nativeElement.innerHTML).toContain('svg');
-    });
-
     it('should rotate work', fakeAsync(() => {
       fixture.detectChanges();
       tick(1000);
@@ -171,45 +150,6 @@ describe('nz icon', () => {
         expect(icons[2].nativeElement.innerHTML).toContain('xlink:href="#icon-twitter"');
       });
     }));
-  });
-
-  /**
-   * @deprecated Would be removed in 9.0.0.
-   */
-  describe('old api', () => {
-    let fixture: ComponentFixture<NzTestIconOldApiComponent>;
-    let icons: DebugElement[];
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestIconOldApiComponent);
-      icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
-    });
-
-    it('should be compatible to old API', () => {
-      fixture.detectChanges();
-      expect(icons[0].nativeElement.className).toContain('anticon');
-      expect(icons[0].nativeElement.innerHTML).toContain('svg');
-    });
-  });
-
-  /**
-   * @deprecated Would be removed in 9.0.0.
-   */
-  describe('prefix', () => {
-    let fixture: ComponentFixture<NzTestIconPrefixComponent>;
-    let icons: DebugElement[];
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestIconPrefixComponent);
-      icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
-    });
-
-    it('should prefixes work', () => {
-      fixture.detectChanges();
-      expect(icons[0].nativeElement.className).toContain('anticon');
-      expect(icons[0].nativeElement.className).toContain('anticon-question');
-      expect(icons[0].nativeElement.innerHTML).toContain('svg');
-    });
   });
 });
 
@@ -319,13 +259,6 @@ export class NzTestIconExtensionsComponent {
 
 @Component({
   template: `
-    <i nz-icon [nzType]="'question-circle'" [nzTheme]="'fill'"></i>
-  `
-})
-export class NzTestIconPrefixComponent {}
-
-@Component({
-  template: `
     <i nz-icon style="color: hotpink;">
       <svg>
         <path
@@ -351,12 +284,3 @@ export class NzTestIconIconfontComponent {
     });
   }
 }
-
-@Component({
-  template: `
-    <i class="anticon anticon-question"></i>
-    <i class="anticon anticon-verticle"></i>
-    <i class="anticon anticon-cross"></i>
-  `
-})
-export class NzTestIconOldApiComponent {}
