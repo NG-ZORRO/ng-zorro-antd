@@ -86,8 +86,14 @@ task('build:site-issue-helper', execTask(
   [issueHelperScriptFile]
 ));
 
+/** calc bundle size **/
+task('build:bundle-size', execTask(
+  'npx',
+  ['bundlesize']
+));
+
 /** Build all site projects to the output directory. */
-task('build:site', process.env.CI ? series('build:site-doc', 'build:site-iframe') : series(
+task('build:site', process.env.CI ? series('build:site-doc', 'build:bundle-size', 'build:site-iframe') : series(
   'build:site-doc',
   'build:site-iframe',
   'build:site-issue-helper'
