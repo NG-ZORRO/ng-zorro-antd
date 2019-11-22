@@ -3,16 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzButtonComponent, NzButtonModule } from 'ng-zorro-antd/button';
-import { NzConfigService, NZ_CONFIG, WithConfig } from 'ng-zorro-antd/core';
-
-@Component({
-  template: ''
-})
-export class NzGlobalConfigTestBindTwiceComponent {
-  @WithConfig('button', 'b') @WithConfig('button', 'a') v: string;
-
-  constructor(public nzConfigService: NzConfigService) {}
-}
+import { NzConfigService, NZ_CONFIG } from 'ng-zorro-antd/core';
 
 @Component({
   template: `
@@ -30,20 +21,6 @@ describe('nz global config', () => {
   let testComponent: NzGlobalConfigTestBasicComponent;
   let button: DebugElement;
   let buttonEl: HTMLButtonElement;
-
-  describe('decorator', () => {
-    beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        declarations: [NzGlobalConfigTestBindTwiceComponent]
-      }).compileComponents();
-    }));
-
-    it('should not decorate a property twice', () => {
-      expect(() => {
-        TestBed.createComponent(NzGlobalConfigTestBasicComponent);
-      }).toThrowError();
-    });
-  });
 
   describe('without config', () => {
     beforeEach(async(() => {

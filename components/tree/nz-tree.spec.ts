@@ -431,18 +431,19 @@ describe('nz-tree', () => {
 
     it('test drag event', fakeAsync(() => {
       fixture.detectChanges();
-      const dragStartSpy = spyOn(treeInstance, 'onDragStart');
-      const dragEnterSpy = spyOn(treeInstance, 'onDragEnter');
-      const dragOverSpy = spyOn(treeInstance, 'onDragOver');
-      const dragLeaveSpy = spyOn(treeInstance, 'onDragLeave');
-      const dropSpy = spyOn(treeInstance, 'onDrop');
-      const dragEndSpy = spyOn(treeInstance, 'onDragEnd');
+      // make sure spyOn to execute real functions
+      const dragStartSpy = spyOn(treeInstance, 'onDragStart').and.callThrough();
+      const dragEnterSpy = spyOn(treeInstance, 'onDragEnter').and.callThrough();
+      const dragOverSpy = spyOn(treeInstance, 'onDragOver').and.callThrough();
+      const dragLeaveSpy = spyOn(treeInstance, 'onDragLeave').and.callThrough();
+      const dropSpy = spyOn(treeInstance, 'onDrop').and.callThrough();
+      const dragEndSpy = spyOn(treeInstance, 'onDragEnd').and.callThrough();
       let dragNode = treeElement.querySelector("[title='0-1']") as HTMLElement;
       let dropNode = treeElement.querySelector("[title='0-0']") as HTMLElement;
       let passNode = treeElement.querySelector("[title='0-0-0']") as HTMLElement;
 
-      dispatchTouchEvent(dragNode, 'dragstart');
-      dispatchTouchEvent(dropNode, 'dragenter');
+      dispatchMouseEvent(dragNode, 'dragstart');
+      dispatchMouseEvent(dropNode, 'dragenter');
       fixture.detectChanges();
 
       // drag - dragenter
@@ -454,37 +455,37 @@ describe('nz-tree', () => {
       expect(dragEnterSpy).toHaveBeenCalledTimes(1);
 
       // dragover
-      dispatchTouchEvent(passNode, 'dragover');
-      fixture.detectChanges();
+      dispatchMouseEvent(passNode, 'dragover');
+      // fixture.detectChanges();
       passNode = treeElement.querySelector("[title='0-0-0']") as HTMLElement;
-      expect(passNode.parentElement!.classList).toContain('drag-over');
+      expect(passNode.parentElement!.classList).toContain('drag-over-gap-top');
       expect(dragOverSpy).toHaveBeenCalledTimes(1);
 
       // dragleave
-      dispatchTouchEvent(passNode, 'dragleave');
+      dispatchMouseEvent(passNode, 'dragleave');
       fixture.detectChanges();
       passNode = treeElement.querySelector("[title='0-0-0']") as HTMLElement;
-      expect(passNode.parentElement!.classList.contains('drag-over')).toEqual(false);
+      expect(passNode.parentElement!.classList.contains('drag-over-gap-top')).toEqual(false);
       expect(dragLeaveSpy).toHaveBeenCalledTimes(1);
 
       // drop 0-1 to 0-0
-      dispatchTouchEvent(dropNode, 'drop');
+      dispatchMouseEvent(dropNode, 'drop');
       fixture.detectChanges();
       dropNode = treeElement.querySelector("[title='0-0']") as HTMLElement;
       expect(dropSpy).toHaveBeenCalledTimes(1);
       expect(dropNode.parentElement!.querySelector("[title='0-1']")).toBeDefined();
 
       // dragend
-      dispatchTouchEvent(dropNode, 'dragend');
+      dispatchMouseEvent(dropNode, 'dragend');
       fixture.detectChanges();
       expect(dragEndSpy).toHaveBeenCalledTimes(1);
 
       // drag 0-0 child node to 0-1
       dragNode = treeElement.querySelector("[title='0-0-0']") as HTMLElement;
       dropNode = treeElement.querySelector("[title='0-1']") as HTMLElement;
-      dispatchTouchEvent(dragNode, 'dragstart');
-      dispatchTouchEvent(dropNode, 'dragover');
-      dispatchTouchEvent(dropNode, 'drop');
+      dispatchMouseEvent(dragNode, 'dragstart');
+      dispatchMouseEvent(dropNode, 'dragover');
+      dispatchMouseEvent(dropNode, 'drop');
       fixture.detectChanges();
       dropNode = treeElement.querySelector("[title='0-1']") as HTMLElement;
       expect(dropSpy).toHaveBeenCalledTimes(2);
@@ -495,19 +496,22 @@ describe('nz-tree', () => {
     it('test drag drop with dragPos', () => {
       // init selected node
       let treeNodes = treeInstance.treeComponent.getTreeNodes();
+      treeService = treeNodes[1].treeService;
+
       const dragNode = treeElement.querySelectorAll('li')[1]; // 0-0-0
+      treeService!.setSelectedNode(treeInstance.treeComponent.getTreeNodeByKey('000')!); // set 0-0-0
       dispatchTouchEvent(dragNode, 'dragstart');
       fixture.detectChanges();
       // drop 0-0-0 to 0-0 pre
       let targetNode = treeNodes[0]; // 0-0
 
-      treeService = treeNodes[1].treeService;
       treeService!.dropAndApply(targetNode, -1);
       // get treeNodes again
       treeNodes = treeInstance.treeComponent.getTreeNodes();
       // now ['0-0-0', '0-0', '0-1', '0-2']
       expect(treeNodes[0].title).toEqual('0-0-0');
       expect(treeNodes[0].level).toEqual(0);
+
       fixture.detectChanges();
       // drop 0-0-0 to 0-0-1 next
       treeService!.selectedNode = treeNodes[0];
@@ -542,17 +546,17 @@ describe('nz-tree', () => {
       expect(dropSpy).toHaveBeenCalledTimes(0);
       expect(dropNode.parentElement!.querySelector("[title='0-1']")).toBeNull();
       // dragend
-      dispatchTouchEvent(dropNode, 'dragend');
+      dispatchMouseEvent(dropNode, 'dragend');
       fixture.detectChanges();
       expect(dragEndSpy).toHaveBeenCalledTimes(1);
       // drop to itself
-      dispatchTouchEvent(dragNode, 'dragstart');
-      dispatchTouchEvent(dragNode, 'dragover');
-      dispatchTouchEvent(dragNode, 'drop');
+      dispatchMouseEvent(dragNode, 'dragstart');
+      dispatchMouseEvent(dragNode, 'dragover');
+      dispatchMouseEvent(dragNode, 'drop');
       fixture.detectChanges();
       expect(dropSpy).toHaveBeenCalledTimes(0);
       // dragend
-      dispatchTouchEvent(dropNode, 'dragend');
+      dispatchMouseEvent(dropNode, 'dragend');
       fixture.detectChanges();
       expect(dragEndSpy).toHaveBeenCalledTimes(2);
     }));
@@ -603,7 +607,7 @@ describe('nz-tree', () => {
       fixture.componentInstance.selectedKeys = [...fixture.componentInstance.selectedKeys];
       fixture.componentInstance.searchValue = '100011';
       fixture.detectChanges();
-      let targetNode = treeElement.querySelectorAll('.ant-tree-switcher_open')[0];
+      const targetNode = treeElement.querySelectorAll('.ant-tree-switcher_open')[0];
       dispatchMouseEvent(targetNode, 'click');
       fixture.detectChanges();
       expect(treeElement.querySelectorAll('.ant-tree-icon-hide')[0].children.length).toBe(3);
@@ -611,12 +615,13 @@ describe('nz-tree', () => {
       fixture.componentInstance.checkedKeys = [...fixture.componentInstance.checkedKeys];
       fixture.componentInstance.expandKeys = [...fixture.componentInstance.expandKeys];
       fixture.componentInstance.selectedKeys = [...fixture.componentInstance.selectedKeys];
-      fixture.componentInstance.searchValue = '10001';
+      fixture.componentInstance.searchValue = '10001'; // Both root1 and its child nodes will be opened
       fixture.detectChanges();
-      targetNode = treeElement.querySelectorAll('.ant-tree-switcher_open')[1];
-      dispatchMouseEvent(targetNode, 'click');
-      fixture.detectChanges();
-      expect(treeElement.querySelectorAll('.ant-tree-switcher_close').length).toEqual(9);
+      // I'm confused why I added this line to collapse an opened node before, ignore it
+      // targetNode = treeElement.querySelectorAll('.ant-tree-switcher_open')[1];
+      // dispatchMouseEvent(targetNode, 'click');
+      // fixture.detectChanges();
+      expect(treeElement.querySelectorAll('.ant-tree-switcher_close').length).toEqual(8);
     }));
 
     it('should get correctly nodes', () => {
@@ -723,6 +728,7 @@ export class NzTestTreeBasicControlledComponent {
   defaultCheckedKeys = ['0-0-0'];
   defaultSelectedKeys = ['0-0-0-0'];
   defaultExpandedKeys = ['0-0-0', '0-0-1'];
+  expandedIcon = '';
 
   nodes: NzTreeNodeOptions[] | NzTreeNode[] = [
     {

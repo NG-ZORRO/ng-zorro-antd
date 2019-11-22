@@ -16,6 +16,7 @@
             "main": "./site/doc/main.ts",
             "tsConfig": "./site/doc/tsconfig.app.json",
             "polyfills": "./site/doc/polyfills.ts",
+            "aot": true,
             "assets": [
               "site/doc/assets",
               "site/doc/manifest.json",
@@ -51,33 +52,14 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "serviceWorker": true
-            },
-            "ivy": {
-              "tsConfig": "./site/doc/tsconfig-ivy.server.json"
+              "serviceWorker": true,
+              "ngswConfigPath": "ngsw-config.json"
             },
             "es5": {
-              "tsConfig": "./site/doc/tsconfig.es5.json",
-              "fileReplacements": [
-                {
-                  "replace": "./site/doc/environments/environment.ts",
-                  "with": "./site/doc/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "serviceWorker": true
+              "tsConfig": "./site/doc/tsconfig.es5.json"
             }
           }
         },
@@ -138,6 +120,7 @@
             "index": "./site/iframe/index.html",
             "main": "./site/iframe/main.ts",
             "tsConfig": "./site/iframe/tsconfig.app.json",
+            "aot": true,
             "polyfills": "./site/iframe/polyfills.ts",
             "assets": [
               {
@@ -163,7 +146,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -210,6 +192,11 @@
           "options": {
             "tsConfig": "components/tsconfig.lib.json",
             "project": "components/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "components/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -233,11 +220,6 @@
             "polyfills": "components/polyfills.ts",
             "tsConfig": "components/tsconfig.spec.json",
             "scripts": []
-          },
-          "configurations": {
-            "ivy": {
-              "tsConfig": "components/tsconfig-ivy.spec.json"
-            }
           }
         }
       }

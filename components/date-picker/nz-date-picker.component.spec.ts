@@ -101,6 +101,7 @@ describe('NzDatePickerComponent', () => {
       fixtureInstance.nzValue = new Date();
       fixture.detectChanges();
       // Do it 2 times to normalize the value of the element.
+      // Also Check whether input is focused when we continuous open panel
       const action = () => {
         openPickerByClickTrigger();
         expect(document.activeElement).toEqual(queryFromOverlay('input.ant-calendar-input'));

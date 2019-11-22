@@ -72,7 +72,7 @@ export class NzOptionContainerComponent implements OnDestroy, OnInit, AfterViewI
     return option.nzValue;
   }
 
-  constructor(public nzSelectService: NzSelectService, private cdr: ChangeDetectorRef, private ngZone: NgZone) {}
+  constructor(public nzSelectService: NzSelectService, public cdr: ChangeDetectorRef, private ngZone: NgZone) {}
 
   ngOnInit(): void {
     this.nzSelectService.activatedOption$.pipe(takeUntil(this.destroy$)).subscribe(option => {

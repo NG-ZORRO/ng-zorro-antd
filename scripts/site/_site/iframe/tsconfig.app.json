@@ -1,6 +1,7 @@
 {
   "extends": "../tsconfig.app.json",
-  "include": [
-    "../iframe/**/*"
+  "files": [
+    "./main.ts",
+    "./polyfills.ts"
   ]
 }

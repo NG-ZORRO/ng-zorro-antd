@@ -222,6 +222,7 @@ export class NzPickerComponent implements AfterViewInit, OnChanges {
   animationDone(): void {
     if (!this.realOpenState) {
       this.animationOpenState = false;
+      this.changeDetector.markForCheck();
     }
   }
 }
