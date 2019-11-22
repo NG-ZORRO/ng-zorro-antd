@@ -91,18 +91,6 @@ export class NzCalendarComponent implements ControlValueAccessor {
   @HostBinding('class.ant-fullcalendar--fullscreen')
   nzFullscreen: boolean = true;
 
-  /**
-   * @deprecated use `[nzFullscreen]` instead.
-   */
-  @Input()
-  set nzCard(value: boolean) {
-    warnDeprecation(`'nzCard' is going to be removed in 9.0.0. Please use 'nzFullscreen' instead.`);
-    this.nzFullscreen = !toBoolean(value);
-  }
-  get nzCard(): boolean {
-    return !this.nzFullscreen;
-  }
-
   constructor(private cdr: ChangeDetectorRef) {}
 
   onModeChange(mode: ModeType): void {
