@@ -21,7 +21,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { toBoolean, warnDeprecation, CandyDate, InputBoolean } from 'ng-zorro-antd/core';
+import { CandyDate, InputBoolean } from 'ng-zorro-antd/core';
 import {
   NzDateCellDirective as DateCell,
   NzDateFullCellDirective as DateFullCell,
@@ -90,18 +90,6 @@ export class NzCalendarComponent implements ControlValueAccessor {
   @InputBoolean()
   @HostBinding('class.ant-fullcalendar--fullscreen')
   nzFullscreen: boolean = true;
-
-  /**
-   * @deprecated use `[nzFullscreen]` instead.
-   */
-  @Input()
-  set nzCard(value: boolean) {
-    warnDeprecation(`'nzCard' is going to be removed in 9.0.0. Please use 'nzFullscreen' instead.`);
-    this.nzFullscreen = !toBoolean(value);
-  }
-  get nzCard(): boolean {
-    return !this.nzFullscreen;
-  }
 
   constructor(private cdr: ChangeDetectorRef) {}
 
