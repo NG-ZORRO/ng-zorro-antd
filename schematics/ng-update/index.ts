@@ -2,6 +2,8 @@ import { Rule } from '@angular-devkit/schematics';
 import { createUpgradeRule, TargetVersion } from '@angular/cdk/schematics';
 import chalk from 'chalk';
 import { ruleUpgradeData } from './upgrade-data';
+import { DropdownClassRule } from './upgrade-rules/checks/dropdown-class-rule';
+import { DropdownTemplateRule } from './upgrade-rules/checks/dropdown-template-rule';
 import { TooltipLikeTemplateRule } from './upgrade-rules/checks/tooltip-like-template-rule';
 
 /** Entry point for the migration schematics with target of NG-ZORRO v7 */
@@ -12,7 +14,11 @@ export function updateToV7(): Rule {
 /** Entry point for the migration schematics with target of NG-ZORRO v9 */
 export function updateToV9(): Rule {
   return createUpgradeRule(
-    TargetVersion.V9, [TooltipLikeTemplateRule], ruleUpgradeData, postUpdate);
+    TargetVersion.V9, [
+      TooltipLikeTemplateRule,
+      DropdownTemplateRule,
+      DropdownClassRule
+    ], ruleUpgradeData, postUpdate);
 }
 
 /** Post-update schematic to be called when update is finished. */
