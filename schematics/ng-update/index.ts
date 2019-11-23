@@ -3,9 +3,11 @@ import { createUpgradeRule, TargetVersion } from '@angular/cdk/schematics';
 import chalk from 'chalk';
 import { ruleUpgradeData } from './upgrade-data';
 import { CalendarTemplateRule } from './upgrade-rules/checks/calendar-input-rule';
+import { CarouselTemplateRule } from "./upgrade-rules/checks/carousel-like-template-rule";
 import { DropdownClassRule } from './upgrade-rules/checks/dropdown-class-rule';
 import { DropdownTemplateRule } from './upgrade-rules/checks/dropdown-template-rule';
 import { IconTemplateRule } from './upgrade-rules/checks/icon-template-rule';
+import { InjectionTokenRule } from "./upgrade-rules/checks/injection-token-rule";
 import { TooltipLikeTemplateRule } from './upgrade-rules/checks/tooltip-like-template-rule';
 
 /** Entry point for the migration schematics with target of NG-ZORRO v7 */
@@ -22,7 +24,9 @@ export function updateToV9(): Rule {
       DropdownTemplateRule,
       DropdownClassRule,
       IconTemplateRule,
-      CalendarTemplateRule
+      CalendarTemplateRule,
+      CarouselTemplateRule,
+      InjectionTokenRule
     ],
     ruleUpgradeData,
     postUpdate
