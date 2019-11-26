@@ -21,7 +21,7 @@
     "gulp": "gulp",
     "lint": "tslint -c tslint.json 'components/**/!(testing)/!(polyfills).ts'",
     "integration-cli": "npm run build:lib && cd integration/angular-cli && npm run integration",
-    "integration-rollup": "npm run build:lib&& cd integration/rollup && npm run integration",
+    "integration-rollup": "npm run build:lib && cd integration/rollup && npm run integration",
     "integration-webpack": "npm run build:lib && cd integration/webpack && npm run integration",
     "integration": "npm run build:lib && bash ./integration-test.sh"
   },
@@ -103,6 +103,7 @@
     "sitemap": "^4.1.1",
     "ts-node": "~8.3.0",
     "tslint": "~5.18.0",
+    "tsickle": "^0.37.1",
     "typescript": "~3.6.4",
     "yaml-front-matter": "^4.0.0",
     "zone.js": "~0.10.2"
