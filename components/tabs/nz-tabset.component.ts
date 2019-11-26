@@ -32,10 +32,11 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/router';
-import { merge, Subject, Subscription } from 'rxjs';
+import { merge, Observable, Subject, Subscription } from 'rxjs';
 
 import {
   toNumber,
+  wrapIntoObservable,
   InputBoolean,
   NzConfigService,
   NzFourDirectionType,
@@ -44,7 +45,7 @@ import {
   PREFIX,
   WithConfig
 } from 'ng-zorro-antd/core';
-import { filter, startWith, takeUntil } from 'rxjs/operators';
+import { filter, first, startWith, takeUntil } from 'rxjs/operators';
 
 import { NzTabComponent } from './nz-tab.component';
 import { NzTabsNavComponent } from './nz-tabs-nav.component';
@@ -58,6 +59,8 @@ export class NzTabChangeEvent {
   index: number;
   tab: NzTabComponent;
 }
+
+export type NzCanChangeFn = (fromIndex: number, toIndex: number) => Observable<boolean> | Promise<boolean> | boolean;
 
 export type NzTabPosition = NzFourDirectionType;
 export type NzTabPositionMode = 'horizontal' | 'vertical';
@@ -110,6 +113,7 @@ export class NzTabSetComponent
 
   @Input() @InputBoolean() nzLinkRouter = false;
   @Input() @InputBoolean() nzLinkExact = true;
+  @Input() nzCanChange: NzCanChangeFn | null = null;
 
   @Output() readonly nzOnNextClick = new EventEmitter<void>();
   @Output() readonly nzOnPrevClick = new EventEmitter<void>();
@@ -167,9 +171,32 @@ export class NzTabSetComponent
   clickLabel(index: number, disabled: boolean): void {
     if (!disabled) {
       const tabs = this.listOfNzTabComponent.toArray();
-      this.nzSelectedIndex = index;
-      tabs[index].nzClick.emit();
+      if (this.nzSelectedIndex && this.nzSelectedIndex !== index) {
+        this.changeHandler(index, tabs);
+      } else {
+        this.emitClickEvent(index, tabs);
+      }
     }
+  }
+
+  private changeHandler(index: number, tabs: NzTabComponent[]): void {
+    const currSelectedTab = tabs[this.nzSelectedIndex!];
+    let observable: Observable<boolean> | null = null;
+    if (typeof currSelectedTab.nzCanDeactivate === 'function') {
+      observable = wrapIntoObservable(currSelectedTab.nzCanDeactivate());
+    } else if (typeof this.nzCanChange === 'function') {
+      observable = wrapIntoObservable(this.nzCanChange(this.nzSelectedIndex!, index));
+    }
+    if (observable) {
+      observable.pipe(first()).subscribe(canChange => canChange && this.emitClickEvent(index, tabs));
+    } else {
+      this.emitClickEvent(index, tabs);
+    }
+  }
+
+  private emitClickEvent(index: number, tabs: NzTabComponent[]): void {
+    this.nzSelectedIndex = index;
+    tabs[index].nzClick.emit();
   }
 
   createChangeEvent(index: number): NzTabChangeEvent {

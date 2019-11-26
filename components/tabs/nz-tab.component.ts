@@ -22,12 +22,14 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { InputBoolean } from 'ng-zorro-antd/core';
 
 import { NzTabLinkDirective } from './nz-tab-link.directive';
 import { NzTabDirective } from './nz-tab.directive';
+
+export type NzCanDeactivateFn = () => Observable<boolean> | Promise<boolean> | boolean;
 
 @Component({
   selector: 'nz-tab',
@@ -50,6 +52,7 @@ export class NzTabComponent implements OnChanges, OnDestroy {
   @Input() nzRouterIdentifier: string;
   @Input() @InputBoolean() nzForceRender = false;
   @Input() @InputBoolean() nzDisabled = false;
+  @Input() nzCanDeactivate: NzCanDeactivateFn | null = null;
   @Output() readonly nzClick = new EventEmitter<void>();
   @Output() readonly nzSelect = new EventEmitter<void>();
   @Output() readonly nzDeselect = new EventEmitter<void>();
