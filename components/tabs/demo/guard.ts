@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { Observable } from 'rxjs';
 
@@ -16,7 +16,8 @@ import { Observable } from 'rxjs';
         Content of Tab Pane 3
       </nz-tab>
     </nz-tabset>
-  `
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzDemoTabsGuardComponent {
   constructor(private modal: NzModalService) {}

@@ -171,7 +171,7 @@ export class NzTabSetComponent
   clickLabel(index: number, disabled: boolean): void {
     if (!disabled) {
       const tabs = this.listOfNzTabComponent.toArray();
-      if (this.nzSelectedIndex && this.nzSelectedIndex !== index) {
+      if (this.nzSelectedIndex !== null && this.nzSelectedIndex !== index) {
         this.changeHandler(index, tabs);
       } else {
         this.emitClickEvent(index, tabs);
@@ -197,6 +197,7 @@ export class NzTabSetComponent
   private emitClickEvent(index: number, tabs: NzTabComponent[]): void {
     this.nzSelectedIndex = index;
     tabs[index].nzClick.emit();
+    this.cdr.markForCheck();
   }
 
   createChangeEvent(index: number): NzTabChangeEvent {
