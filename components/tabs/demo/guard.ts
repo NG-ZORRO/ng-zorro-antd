@@ -6,32 +6,27 @@ import { Observable } from 'rxjs';
   selector: 'nz-demo-tabs-guard',
   template: `
     <nz-tabset [nzCanChange]="canChange">
-      <nz-tab nzTitle="Tab 1">
-        Content of Tab Pane 1
-      </nz-tab>
-      <nz-tab nzTitle="Tab 2">
-        Content of Tab Pane 2
-      </nz-tab>
-      <nz-tab nzTitle="Tab 3" [nzCanDeactivate]="canDeactivate">
-        Content of Tab Pane 3
-      </nz-tab>
+      <nz-tab *ngFor="let tab of tabs" [nzTitle]="'Tab' + tab"> Content of tab {{ tab }} </nz-tab>
     </nz-tabset>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzDemoTabsGuardComponent {
+  tabs = [1, 2, 3, 4];
   constructor(private modal: NzModalService) {}
 
   canChange = (fromIndex: number, toIndex: number) => {
-    console.log(fromIndex, toIndex);
-    if (toIndex === 0) {
-      return true;
+    switch (fromIndex) {
+      case 0:
+        return toIndex === 1;
+      case 1:
+        return Promise.resolve(toIndex === 2);
+      case 2:
+        return this.confirm();
+      default:
+        return true;
     }
-
-    return this.confirm();
   };
-
-  canDeactivate = () => this.confirm();
 
   private confirm(): Observable<boolean> {
     return new Observable(observer => {

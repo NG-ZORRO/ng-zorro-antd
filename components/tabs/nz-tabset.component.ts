@@ -45,7 +45,7 @@ import {
   PREFIX,
   WithConfig
 } from 'ng-zorro-antd/core';
-import { filter, first, startWith, takeUntil } from 'rxjs/operators';
+import { filter, first, startWith, takeUntil, tap } from 'rxjs/operators';
 
 import { NzTabComponent } from './nz-tab.component';
 import { NzTabsNavComponent } from './nz-tabs-nav.component';
@@ -170,31 +170,19 @@ export class NzTabSetComponent
 
   clickLabel(index: number, disabled: boolean): void {
     if (!disabled) {
-      const tabs = this.listOfNzTabComponent.toArray();
-      if (this.nzSelectedIndex !== null && this.nzSelectedIndex !== index) {
-        this.changeHandler(index, tabs);
+      if (this.nzSelectedIndex !== null && this.nzSelectedIndex !== index && typeof this.nzCanChange === 'function') {
+        const observable = wrapIntoObservable(this.nzCanChange(this.nzSelectedIndex, index));
+        observable
+          .pipe(first(), tap(console.error), takeUntil(this.destroy$))
+          .subscribe(canChange => canChange && this.emitClickEvent(index));
       } else {
-        this.emitClickEvent(index, tabs);
+        this.emitClickEvent(index);
       }
     }
   }
 
-  private changeHandler(index: number, tabs: NzTabComponent[]): void {
-    const currSelectedTab = tabs[this.nzSelectedIndex!];
-    let observable: Observable<boolean> | null = null;
-    if (typeof currSelectedTab.nzCanDeactivate === 'function') {
-      observable = wrapIntoObservable(currSelectedTab.nzCanDeactivate());
-    } else if (typeof this.nzCanChange === 'function') {
-      observable = wrapIntoObservable(this.nzCanChange(this.nzSelectedIndex!, index));
-    }
-    if (observable) {
-      observable.pipe(first()).subscribe(canChange => canChange && this.emitClickEvent(index, tabs));
-    } else {
-      this.emitClickEvent(index, tabs);
-    }
-  }
-
-  private emitClickEvent(index: number, tabs: NzTabComponent[]): void {
+  private emitClickEvent(index: number): void {
+    const tabs = this.listOfNzTabComponent.toArray();
     this.nzSelectedIndex = index;
     tabs[index].nzClick.emit();
     this.cdr.markForCheck();
