@@ -482,7 +482,6 @@ describe('tabs', () => {
           case 0:
             return toIndex === 1;
           case 1:
-            console.error(toIndex);
             return Promise.resolve(toIndex === 2);
           case 2:
             return of(toIndex === 0);
