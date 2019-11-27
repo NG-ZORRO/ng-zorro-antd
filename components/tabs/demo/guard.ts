@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { NzCanChangeFn } from 'ng-zorro-antd/tabs';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzTabsCanDeactivateFn } from 'ng-zorro-antd/tabs';
 import { Observable } from 'rxjs';
 
 @Component({
   selector: 'nz-demo-tabs-guard',
   template: `
-    <nz-tabset [nzCanChange]="canChange">
+    <nz-tabset [nzCanDeactivate]="canDeactivate">
       <nz-tab *ngFor="let tab of tabs" [nzTitle]="'Tab' + tab"> Content of tab {{ tab }} </nz-tab>
     </nz-tabset>
   `,
@@ -16,7 +16,7 @@ export class NzDemoTabsGuardComponent {
   tabs = [1, 2, 3, 4];
   constructor(private modal: NzModalService) {}
 
-  canChange: NzCanChangeFn = (fromIndex: number, toIndex: number) => {
+  canDeactivate: NzTabsCanDeactivateFn = (fromIndex: number, toIndex: number) => {
     switch (fromIndex) {
       case 0:
         return toIndex === 1;

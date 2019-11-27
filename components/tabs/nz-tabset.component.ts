@@ -45,7 +45,7 @@ import {
   PREFIX,
   WithConfig
 } from 'ng-zorro-antd/core';
-import { filter, first, startWith, takeUntil, tap } from 'rxjs/operators';
+import { filter, first, startWith, takeUntil } from 'rxjs/operators';
 
 import { NzTabComponent } from './nz-tab.component';
 import { NzTabsNavComponent } from './nz-tabs-nav.component';
@@ -60,7 +60,10 @@ export class NzTabChangeEvent {
   tab: NzTabComponent;
 }
 
-export type NzCanChangeFn = (fromIndex: number, toIndex: number) => Observable<boolean> | Promise<boolean> | boolean;
+export type NzTabsCanDeactivateFn = (
+  fromIndex: number,
+  toIndex: number
+) => Observable<boolean> | Promise<boolean> | boolean;
 
 export type NzTabPosition = NzFourDirectionType;
 export type NzTabPositionMode = 'horizontal' | 'vertical';
@@ -113,7 +116,7 @@ export class NzTabSetComponent
 
   @Input() @InputBoolean() nzLinkRouter = false;
   @Input() @InputBoolean() nzLinkExact = true;
-  @Input() nzCanChange: NzCanChangeFn | null = null;
+  @Input() nzCanDeactivate: NzTabsCanDeactivateFn | null = null;
 
   @Output() readonly nzOnNextClick = new EventEmitter<void>();
   @Output() readonly nzOnPrevClick = new EventEmitter<void>();
@@ -170,10 +173,14 @@ export class NzTabSetComponent
 
   clickLabel(index: number, disabled: boolean): void {
     if (!disabled) {
-      if (this.nzSelectedIndex !== null && this.nzSelectedIndex !== index && typeof this.nzCanChange === 'function') {
-        const observable = wrapIntoObservable(this.nzCanChange(this.nzSelectedIndex, index));
+      if (
+        this.nzSelectedIndex !== null &&
+        this.nzSelectedIndex !== index &&
+        typeof this.nzCanDeactivate === 'function'
+      ) {
+        const observable = wrapIntoObservable(this.nzCanDeactivate(this.nzSelectedIndex, index));
         observable
-          .pipe(first(), tap(console.error), takeUntil(this.destroy$))
+          .pipe(first(), takeUntil(this.destroy$))
           .subscribe(canChange => canChange && this.emitClickEvent(index));
       } else {
         this.emitClickEvent(index);

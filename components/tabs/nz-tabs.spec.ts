@@ -9,7 +9,7 @@ import { NgStyleInterface } from 'ng-zorro-antd/core';
 
 import { of } from 'rxjs';
 import { NzTabsModule } from './nz-tabs.module';
-import { NzAnimatedInterface, NzCanChangeFn, NzTabSetComponent } from './nz-tabset.component';
+import { NzAnimatedInterface, NzTabsCanDeactivateFn, NzTabSetComponent } from './nz-tabset.component';
 
 describe('tabs', () => {
   beforeEach(fakeAsync(() => {
@@ -477,7 +477,7 @@ describe('tabs', () => {
       fixture.detectChanges();
       testComponent.add = true;
       // O => 1 => 2 => 0
-      testComponent.canChange = (fromIndex: number, toIndex: number) => {
+      testComponent.canDeactivate = (fromIndex: number, toIndex: number) => {
         switch (fromIndex) {
           case 0:
             return toIndex === 1;
@@ -683,7 +683,7 @@ describe('link router', () => {
         [nzType]="type"
         [nzTabBarGutter]="tabBarGutter"
         [nzHideAll]="hideAll"
-        [nzCanChange]="canChange"
+        [nzCanDeactivate]="canDeactivate"
       >
         <nz-tab
           nzTitle="title"
@@ -747,7 +747,7 @@ export class NzTestTabsBasicComponent {
   deselect02 = jasmine.createSpy('deselect02 callback');
   array = [];
 
-  canChange: NzCanChangeFn | null = null;
+  canDeactivate: NzTabsCanDeactivateFn | null = null;
 }
 
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1964 **/
