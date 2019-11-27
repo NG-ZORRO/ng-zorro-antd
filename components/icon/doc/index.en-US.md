@@ -9,7 +9,7 @@ Semantic vector graphics.
 
 ## List of icons
 
-We are still adding icons right now, syncing to [antd](https://ant.design/components/icon-cn/#components-icon-demo-iconfont).
+We are still adding icons right now, syncing to [antd](https://ant.design/components/icon/).
 
 ## Import this Component Individually
 
