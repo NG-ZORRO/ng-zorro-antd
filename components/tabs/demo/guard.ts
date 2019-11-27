@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { NzCanChangeFn } from 'ng-zorro-antd/tabs';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { Observable } from 'rxjs';
 
@@ -15,7 +16,7 @@ export class NzDemoTabsGuardComponent {
   tabs = [1, 2, 3, 4];
   constructor(private modal: NzModalService) {}
 
-  canChange = (fromIndex: number, toIndex: number) => {
+  canChange: NzCanChangeFn = (fromIndex: number, toIndex: number) => {
     switch (fromIndex) {
       case 0:
         return toIndex === 1;
@@ -31,7 +32,7 @@ export class NzDemoTabsGuardComponent {
   private confirm(): Observable<boolean> {
     return new Observable(observer => {
       this.modal.confirm({
-        nzTitle: '确定离开当前标签？',
+        nzTitle: 'Are you sure you want to leave this tab?',
         nzOnOk: () => {
           observer.next(true);
           observer.complete();
