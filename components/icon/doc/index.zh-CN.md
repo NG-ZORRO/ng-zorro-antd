@@ -11,7 +11,7 @@ hasPageDemo: true
 
 ## 图标列表
 
-新版图标可能略有缺失，我们将与 [Ant Design](https://ant.design/components/icon-cn/#components-icon-demo-iconfont) 同步保持图标的更新。
+新版图标可能略有缺失，我们将与 [Ant Design](https://ant.design/components/icon-cn/) 同步保持图标的更新。
 
 ## 单独引入此组件
 
