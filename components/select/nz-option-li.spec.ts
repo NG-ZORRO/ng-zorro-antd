@@ -50,19 +50,6 @@ describe('select option li', () => {
       fixture.detectChanges();
       expect(liComponent.selected).toBe(false);
     });
-    it('should active work', () => {
-      fixture.detectChanges();
-      expect(liComponent.active).toBe(false);
-      const option01 = new NzOptionComponent();
-      option01.nzLabel = '01_label';
-      option01.nzValue = '01_value';
-      nzSelectService.activatedOption$.next(option01);
-      fixture.detectChanges();
-      expect(liComponent.active).toBe(true);
-      nzSelectService.activatedOption$.next(null);
-      fixture.detectChanges();
-      expect(liComponent.active).toBe(false);
-    });
     it('should destroy piped', () => {
       fixture.detectChanges();
       // @ts-ignore

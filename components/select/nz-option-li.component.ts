@@ -35,7 +35,6 @@ import { NzSelectService } from './nz-select.service';
   host: {
     '[class.ant-select-dropdown-menu-item-selected]': 'selected && !nzOption.nzDisabled',
     '[class.ant-select-dropdown-menu-item-disabled]': 'nzOption.nzDisabled',
-    '[class.ant-select-dropdown-menu-item-active]': 'active && !nzOption.nzDisabled',
     '[attr.unselectable]': '"unselectable"',
     '[style.user-select]': '"none"',
     '(click)': 'clickOption()',
@@ -45,7 +44,6 @@ import { NzSelectService } from './nz-select.service';
 export class NzOptionLiComponent implements OnInit, OnDestroy {
   el: HTMLElement = this.elementRef.nativeElement;
   selected = false;
-  active = false;
   destroy$ = new Subject();
   @Input() nzOption: NzOptionComponent;
   @Input() nzMenuItemSelectedIcon: TemplateRef<void>;
@@ -68,12 +66,7 @@ export class NzOptionLiComponent implements OnInit, OnDestroy {
       this.selected = isNotNil(list.find(v => this.nzSelectService.compareWith(v, this.nzOption.nzValue)));
       this.cdr.markForCheck();
     });
-    this.nzSelectService.activatedOption$.pipe(takeUntil(this.destroy$)).subscribe(option => {
-      if (option) {
-        this.active = this.nzSelectService.compareWith(option.nzValue, this.nzOption.nzValue);
-      } else {
-        this.active = false;
-      }
+    this.nzSelectService.activatedOption$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.cdr.markForCheck();
     });
   }
