@@ -216,12 +216,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
       this.syncStrategy();
     }
 
-    if (nzAutoPlaySpeed) {
-      console.log('a');
-    }
-
     if (nzAutoPlaySpeed && !nzAutoPlaySpeed.isFirstChange()) {
-      console.log('should change!');
       this.autoPlayChange$.next();
     }
   }
@@ -277,7 +272,6 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     merge(manualTransitions$, timer$)
       .pipe(takeUntil(this.destroy$))
       .subscribe(direction => this.goTo(direction));
-    // manualTransitions$.pipe(takeUntil(this.destroy$)).subscribe((direction) => this.goTo(direction));
   }
 
   private setupDot(): Observable<number> {
@@ -306,7 +300,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     );
     const move$ = (startEvent: MouseEvent | TouchEvent) =>
       this.nzDragService.requestDraggingSequence(startEvent).pipe(
-        observeOn(animationFrameScheduler), // performance
+        observeOn(animationFrameScheduler),
         tap(delta => {
           this.strategy.dragging(delta);
         }), // do animation here
@@ -328,16 +322,13 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
       startWith(true),
       map(() => this.nzAutoPlaySpeed),
       switchMap(speed =>
-        interval(speed)
-          .pipe(
-            takeUntil(manualTransitions$),
-            repeatWhen(self => self),
-            filter(() => this.nzAutoPlay),
-            map(() => this.activeIndex + 1)
-          )
-          .pipe(finalize(() => console.log('I am removed')))
-      ),
-      finalize(() => console.log('I am alsooooooo removed'))
+        interval(speed).pipe(
+          takeUntil(manualTransitions$),
+          repeatWhen(self => self),
+          filter(() => this.nzAutoPlay),
+          map(() => this.activeIndex + 1)
+        )
+      )
     );
   }
 
