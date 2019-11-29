@@ -213,9 +213,10 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
       } else {
         const language = (this.editorOptionCached as EditorOptions).language;
         (this.editorInstance as IDiffEditor).setModel({
-          original: monaco.editor.createModel(this.value, language),
-          modified: monaco.editor.createModel(this.nzOriginalText, language)
+          original: monaco.editor.createModel(this.nzOriginalText, language),
+          modified: monaco.editor.createModel(this.value, language)
         });
+        this.modelSet = true;
       }
     }
   }
