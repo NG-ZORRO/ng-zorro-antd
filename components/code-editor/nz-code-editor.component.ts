@@ -164,10 +164,7 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
   private registerResizeChange(): void {
     this.ngZone.runOutsideAngular(() => {
       fromEvent(window, 'resize')
-        .pipe(
-          debounceTime(300),
-          takeUntil(this.destroy$)
-        )
+        .pipe(debounceTime(300), takeUntil(this.destroy$))
         .subscribe(() => {
           this.layout();
         });
@@ -216,9 +213,10 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
       } else {
         const language = (this.editorOptionCached as EditorOptions).language;
         (this.editorInstance as IDiffEditor).setModel({
-          original: monaco.editor.createModel(this.value, language),
-          modified: monaco.editor.createModel(this.nzOriginalText, language)
+          original: monaco.editor.createModel(this.nzOriginalText, language),
+          modified: monaco.editor.createModel(this.value, language)
         });
+        this.modelSet = true;
       }
     }
   }
