@@ -3,9 +3,6 @@
     #slickList
     class="slick-list"
     tabindex="-1"
-    (keydown)="onKeyDown($event)"
-    (mousedown)="pointerDown($event)"
-    (touchstart)="pointerDown($event)"
   >
     <!-- Render carousel items. -->
     <div class="slick-track" #slickTrack>
@@ -24,7 +21,7 @@
     <li
       *ngFor="let content of carouselContents; let i = index"
       [class.slick-active]="content.isActive"
-      (click)="goTo(i)"
+      (click)="dotClick$.next(i)"
     >
       <ng-template [ngTemplateOutlet]="nzDotRender || renderDotTemplate" [ngTemplateOutletContext]="{ $implicit: i }">
       </ng-template>

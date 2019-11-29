@@ -1,6 +1,6 @@
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { fakeAsync, flush, tick, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
@@ -59,6 +59,7 @@ describe('carousel', () => {
     let fixture: ComponentFixture<NzTestCarouselBasicComponent>;
     let testComponent: NzTestCarouselBasicComponent;
     let carouselWrapper: DebugElement;
+    let carouselElement: HTMLDivElement;
     let carouselContents: DebugElement[];
 
     beforeEach(() => {
@@ -66,6 +67,7 @@ describe('carousel', () => {
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       carouselWrapper = fixture.debugElement.query(By.directive(NzCarouselComponent));
+      carouselElement = carouselWrapper.nativeElement.querySelector('.slick-list');
       carouselContents = fixture.debugElement.queryAll(By.directive(NzCarouselContentDirective));
     });
 
@@ -212,7 +214,7 @@ describe('carousel', () => {
       tick(1000 + 10);
       fixture.detectChanges();
       expect(carouselContents[1].nativeElement.classList).toContain('slick-active');
-      testComponent.autoPlaySpeed = 0;
+      testComponent.autoPlay = false;
       fixture.detectChanges();
       tick(2000 + 10);
       fixture.detectChanges();
@@ -240,23 +242,22 @@ describe('carousel', () => {
       expect(resizeSpy).toHaveBeenCalledTimes(1);
     }));
 
-    // TODO(wendzhue): no idea why this stops working with auditTime
     it('should support swiping to switch', fakeAsync(() => {
-      swipe(testComponent.nzCarouselComponent, 500);
+      swipe(carouselElement, 500);
       tickMilliseconds(fixture, 700);
       expect(carouselContents[0].nativeElement.classList).not.toContain('slick-active');
       expect(carouselContents[1].nativeElement.classList).toContain('slick-active');
 
-      swipe(testComponent.nzCarouselComponent, -500);
+      swipe(carouselElement, -500);
       tickMilliseconds(fixture, 700);
-      swipe(testComponent.nzCarouselComponent, -500);
+      swipe(carouselElement, -500);
       tickMilliseconds(fixture, 700);
       expect(carouselContents[0].nativeElement.classList).not.toContain('slick-active');
       expect(carouselContents[3].nativeElement.classList).toContain('slick-active');
     }));
 
     it('should prevent swipes that are not long enough', fakeAsync(() => {
-      swipe(testComponent.nzCarouselComponent, 57);
+      swipe(carouselElement, 57);
       tickMilliseconds(fixture, 700);
       expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
     }));
@@ -264,7 +265,7 @@ describe('carousel', () => {
     it('should disable dragging during transitioning', fakeAsync(() => {
       tickMilliseconds(fixture, 700);
       testComponent.nzCarouselComponent.goTo(1);
-      swipe(testComponent.nzCarouselComponent, 500);
+      swipe(carouselElement, 500);
       tickMilliseconds(fixture, 700);
       expect(carouselContents[1].nativeElement.classList).toContain('slick-active');
     }));
@@ -387,14 +388,8 @@ function tickMilliseconds<T>(fixture: ComponentFixture<T>, seconds: number = 1):
  * @param carousel: Carousel component.
  * @param Distance: Positive to right. Negative to left.
  */
-function swipe(carousel: NzCarouselComponent, distance: number): void {
-  carousel.pointerDown(
-    new MouseEvent('mousedown', {
-      clientX: 500,
-      clientY: 0
-    })
-  );
-
+function swipe(carouselEl: HTMLDivElement, distance: number): void {
+  dispatchMouseEvent(carouselEl, 'mousedown', 500, 0);
   dispatchMouseEvent(document, 'mousemove', 500 - distance, 0);
   dispatchMouseEvent(document, 'mouseup');
 }

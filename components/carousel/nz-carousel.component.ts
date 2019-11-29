@@ -30,8 +30,20 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { animationFrameScheduler, fromEvent, interval, merge, Observable, Subject } from 'rxjs';
+import {
+  filter,
+  finalize,
+  map,
+  observeOn,
+  repeatWhen,
+  share,
+  startWith,
+  switchMap,
+  takeLast,
+  takeUntil,
+  tap
+} from 'rxjs/operators';
 
 import {
   warnDeprecation,
@@ -49,8 +61,7 @@ import {
   NzCarouselDotPosition,
   NzCarouselEffects,
   NzCarouselStrategyRegistryItem,
-  NZ_CAROUSEL_CUSTOM_STRATEGIES,
-  PointerVector
+  NZ_CAROUSEL_CUSTOM_STRATEGIES
 } from './nz-carousel-definitions';
 import { NzCarouselBaseStrategy } from './strategies/base-strategy';
 import { NzCarouselOpacityStrategy } from './strategies/opacity-strategy';
@@ -140,12 +151,12 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   strategy: NzCarouselBaseStrategy;
   vertical = false;
   transitionInProgress: number | null;
+  dotClick$ = new Subject<number>();
 
   private destroy$ = new Subject<void>();
+  private autoPlayChange$ = new Subject<void>();
   private gestureRect: ClientRect | null = null;
-  private pointerDelta: PointerVector | null = null;
   private isTransiting = false;
-  private isDragging = false;
 
   constructor(
     elementRef: ElementRef,
@@ -169,37 +180,29 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     if (!this.platform.isBrowser) {
       return;
     }
+
     this.slickListEl = this.slickList.nativeElement;
     this.slickTrackEl = this.slickTrack.nativeElement;
 
-    this.carouselContents.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.markContentActive(0);
-      this.syncStrategy();
-    });
+    this.setupStream();
+    this.setupResize();
+    this.setupContentChange();
 
-    this.nzDomEventService
-      .registerResizeListener()
-      .pipe(
-        takeUntil(this.destroy$),
-        finalize(() => this.nzDomEventService.unregisterResizeListener())
-      )
-      .subscribe(() => {
-        this.syncStrategy();
-      });
-
+    // Init.
     this.switchStrategy();
     this.markContentActive(0);
     this.syncStrategy();
 
     // If embedded in an entry component, it may do initial render at a inappropriate time.
-    // ngZone.onStable won't do this trick
+    // ngZone.onStable won't do this trick.
+    // TODO(wendzhue): what if it's inside a DOM-unstable component like Modal?
     Promise.resolve().then(() => {
       this.syncStrategy();
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzEffect, nzDotPosition } = changes;
+    const { nzEffect, nzDotPosition, nzAutoPlaySpeed } = changes;
 
     if (nzEffect && !nzEffect.isFirstChange()) {
       this.switchStrategy();
@@ -213,42 +216,46 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
       this.syncStrategy();
     }
 
-    if (!this.nzAutoPlay || !this.nzAutoPlaySpeed) {
-      this.clearScheduledTransition();
-    } else {
-      this.scheduleNextTransition();
+    if (nzAutoPlaySpeed) {
+      console.log('a');
+    }
+
+    if (nzAutoPlaySpeed && !nzAutoPlaySpeed.isFirstChange()) {
+      console.log('should change!');
+      this.autoPlayChange$.next();
     }
   }
 
   ngOnDestroy(): void {
-    this.clearScheduledTransition();
+    // this.clearScheduledTransition();
     if (this.strategy) {
       this.strategy.dispose();
     }
 
     this.destroy$.next();
     this.destroy$.complete();
+    this.dotClick$.complete();
+    this.autoPlayChange$.complete();
   }
 
-  onKeyDown(e: KeyboardEvent): void {
-    if (e.keyCode === LEFT_ARROW) {
-      e.preventDefault();
-      this.pre();
-    } else if (e.keyCode === RIGHT_ARROW) {
-      this.next();
-      e.preventDefault();
-    }
-  }
-
-  next(): void {
+  /**
+   * Expose for developers to programmatically set activeIndex.
+   */
+  public next(): void {
     this.goTo(this.activeIndex + 1);
   }
 
-  pre(): void {
+  /**
+   * Expose for developers to programmatically set activeIndex.
+   */
+  public pre(): void {
     this.goTo(this.activeIndex - 1);
   }
 
-  goTo(index: number): void {
+  /**
+   * Expose for developers to programmatically set activeIndex.
+   */
+  public goTo(index: number): void {
     if (this.carouselContents && this.carouselContents.length && !this.isTransiting) {
       const length = this.carouselContents.length;
       const from = this.activeIndex;
@@ -256,13 +263,101 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
       this.isTransiting = true;
       this.nzBeforeChange.emit({ from, to });
       this.strategy.switch(this.activeIndex, index).subscribe(() => {
-        this.scheduleNextTransition();
         this.nzAfterChange.emit(index);
         this.isTransiting = false;
       });
       this.markContentActive(to);
       this.cdr.markForCheck();
     }
+  }
+
+  private setupStream(): void {
+    const manualTransitions$ = merge(this.setupKeyboard(), this.setupSwipe(), this.setupDot()).pipe(share());
+    const timer$ = this.setupTimer(manualTransitions$);
+    merge(manualTransitions$, timer$)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(direction => this.goTo(direction));
+    // manualTransitions$.pipe(takeUntil(this.destroy$)).subscribe((direction) => this.goTo(direction));
+  }
+
+  private setupDot(): Observable<number> {
+    return this.dotClick$;
+  }
+
+  private setupKeyboard(): Observable<number> {
+    const carouselElement = this.slickListEl;
+    const leftArrow$ = fromEvent(carouselElement, 'keydown').pipe(
+      filter((event: Event) => (event as KeyboardEvent).keyCode === LEFT_ARROW),
+      tap(e => e.preventDefault()),
+      map(() => this.activeIndex - 1)
+    );
+    const rightArrow$ = fromEvent(carouselElement, 'keydown').pipe(
+      filter((event: Event) => (event as KeyboardEvent).keyCode === RIGHT_ARROW),
+      tap(e => e.preventDefault()),
+      map(() => this.activeIndex + 1)
+    );
+    return merge(leftArrow$, rightArrow$);
+  }
+
+  private setupSwipe(): Observable<number> {
+    const carouselElement = this.slickListEl;
+    const start$ = merge(fromEvent(carouselElement, 'mousedown'), fromEvent(carouselElement, 'touchdown')).pipe(
+      tap(() => (this.gestureRect = this.slickListEl.getBoundingClientRect()))
+    );
+    const move$ = (startEvent: MouseEvent | TouchEvent) =>
+      this.nzDragService.requestDraggingSequence(startEvent).pipe(
+        observeOn(animationFrameScheduler), // performance
+        tap(delta => {
+          this.strategy.dragging(delta);
+        }), // do animation here
+        takeLast(1)
+      );
+    return start$.pipe(
+      switchMap(startEvent => move$(startEvent as TouchEvent | MouseEvent)),
+      map(delta => {
+        const xDelta = delta.x;
+        const direction = Math.abs(xDelta) > this.gestureRect!.width / 3 ? (xDelta > 0 ? -1 : 1) : 0;
+        return this.activeIndex + direction;
+      }),
+      tap(() => (this.gestureRect = null))
+    );
+  }
+
+  private setupTimer(manualTransitions$: Observable<number>): Observable<number> {
+    return this.autoPlayChange$.pipe(
+      startWith(true),
+      map(() => this.nzAutoPlaySpeed),
+      switchMap(speed =>
+        interval(speed)
+          .pipe(
+            takeUntil(manualTransitions$),
+            repeatWhen(self => self),
+            filter(() => this.nzAutoPlay),
+            map(() => this.activeIndex + 1)
+          )
+          .pipe(finalize(() => console.log('I am removed')))
+      ),
+      finalize(() => console.log('I am alsooooooo removed'))
+    );
+  }
+
+  private setupResize(): void {
+    this.nzDomEventService
+      .registerResizeListener()
+      .pipe(
+        takeUntil(this.destroy$),
+        finalize(() => this.nzDomEventService.unregisterResizeListener())
+      )
+      .subscribe(() => {
+        this.syncStrategy();
+      });
+  }
+
+  private setupContentChange(): void {
+    this.carouselContents.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.markContentActive(0);
+      this.syncStrategy();
+    });
   }
 
   private switchStrategy(): void {
@@ -284,22 +379,6 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
         : new NzCarouselOpacityStrategy(this, this.cdr, this.renderer);
   }
 
-  private scheduleNextTransition(): void {
-    this.clearScheduledTransition();
-    if (this.nzAutoPlay && this.nzAutoPlaySpeed > 0 && this.platform.isBrowser) {
-      this.transitionInProgress = setTimeout(() => {
-        this.goTo(this.activeIndex + 1);
-      }, this.nzAutoPlaySpeed);
-    }
-  }
-
-  private clearScheduledTransition(): void {
-    if (this.transitionInProgress) {
-      clearTimeout(this.transitionInProgress);
-      this.transitionInProgress = null;
-    }
-  }
-
   private markContentActive(index: number): void {
     this.activeIndex = index;
 
@@ -311,43 +390,6 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
 
     this.cdr.markForCheck();
   }
-
-  /**
-   * Drag carousel.
-   * @param event
-   */
-  pointerDown = (event: TouchEvent | MouseEvent) => {
-    if (!this.isDragging && !this.isTransiting && this.nzEnableSwipe) {
-      this.clearScheduledTransition();
-      this.gestureRect = this.slickListEl.getBoundingClientRect();
-
-      this.nzDragService.requestDraggingSequence(event).subscribe(
-        delta => {
-          this.pointerDelta = delta;
-          this.isDragging = true;
-          this.strategy.dragging(this.pointerDelta);
-        },
-        () => {},
-        () => {
-          if (this.nzEnableSwipe && this.isDragging) {
-            const xDelta = this.pointerDelta ? this.pointerDelta.x : 0;
-
-            // Switch to another slide if delta is bigger than third of the width.
-            if (Math.abs(xDelta) > this.gestureRect!.width / 3) {
-              this.goTo(xDelta > 0 ? this.activeIndex - 1 : this.activeIndex + 1);
-            } else {
-              this.goTo(this.activeIndex);
-            }
-
-            this.gestureRect = null;
-            this.pointerDelta = null;
-          }
-
-          this.isDragging = false;
-        }
-      );
-    }
-  };
 
   private syncStrategy(): void {
     if (this.strategy) {
