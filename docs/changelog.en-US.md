@@ -14,6 +14,14 @@ timeline: true
 
 ---
 
+## 8.5.2
+`2019-11-29`
+
+### Bug Fixes
+
+* **code-editor:** fix wrong initialization with diff mode ([#4485](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4485)) ([7ef8c63](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7ef8c63))
+
+
 ## 8.5.1
 `2019-11-18`
 

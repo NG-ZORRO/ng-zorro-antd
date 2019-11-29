@@ -1,3 +1,13 @@
+<a name="8.5.2"></a>
+## [8.5.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.5.1...8.5.2) (2019-11-29)
+
+
+### Bug Fixes
+
+* **code-editor:** fix wrong initialization with diff mode ([#4485](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4485)) ([7ef8c63](https://github.com/NG-ZORRO/ng-zorro-antd/commit/7ef8c63))
+
+
+
 <a name="8.5.1"></a>
 ## [8.5.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.5.0...8.5.1) (2019-11-18)
 
