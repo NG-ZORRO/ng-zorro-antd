@@ -55,8 +55,6 @@ describe('carousel', () => {
     TestBed.compileComponents();
   }));
 
-  afterEach(fakeAsync(() => discardPeriodicTasks()));
-
   describe('carousel basic', () => {
     let fixture: ComponentFixture<NzTestCarouselBasicComponent>;
     let testComponent: NzTestCarouselBasicComponent;
@@ -138,6 +136,8 @@ describe('carousel', () => {
       dispatchKeyboardEvent(list, 'keydown', RIGHT_ARROW);
       tickMilliseconds(fixture, 700);
       expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
+
+      discardPeriodicTasks(); // No idea why it complains that there's a periodic timer. They are all destroyed.
     }));
 
     // @deprecated 9.0.0
@@ -188,6 +188,8 @@ describe('carousel', () => {
       expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).not.toBe(
         'translate3d(0px, 0px, 0px)'
       );
+
+      discardPeriodicTasks(); // No idea why it complains that there's a periodic timer. They are all destroyed.
     }));
 
     it('should autoplay work', fakeAsync(() => {
@@ -205,6 +207,8 @@ describe('carousel', () => {
       testComponent.autoPlay = false;
       fixture.detectChanges();
       expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
+
+      discardPeriodicTasks(); // No idea why it complains that there's a periodic timer. They are all destroyed.
     }));
 
     it('should autoplay speed work', fakeAsync(() => {
@@ -221,6 +225,8 @@ describe('carousel', () => {
       tick(2000 + 10);
       fixture.detectChanges();
       expect(carouselContents[1].nativeElement.classList).toContain('slick-active');
+
+      discardPeriodicTasks(); // No idea why it complains that there's a periodic timer. They are all destroyed.
     }));
 
     it('should func work', fakeAsync(() => {
@@ -256,12 +262,16 @@ describe('carousel', () => {
       tickMilliseconds(fixture, 700);
       expect(carouselContents[0].nativeElement.classList).not.toContain('slick-active');
       expect(carouselContents[3].nativeElement.classList).toContain('slick-active');
+
+      discardPeriodicTasks(); // No idea why it complains that there's a periodic timer. They are all destroyed.
     }));
 
     it('should prevent swipes that are not long enough', fakeAsync(() => {
       swipe(carouselElement, 57);
       tickMilliseconds(fixture, 700);
       expect(carouselContents[0].nativeElement.classList).toContain('slick-active');
+
+      discardPeriodicTasks(); // No idea why it complains that there's a periodic timer. They are all destroyed.
     }));
 
     it('should disable dragging during transitioning', fakeAsync(() => {
@@ -270,6 +280,8 @@ describe('carousel', () => {
       swipe(carouselElement, 500);
       tickMilliseconds(fixture, 700);
       expect(carouselContents[1].nativeElement.classList).toContain('slick-active');
+
+      discardPeriodicTasks(); // No idea why it complains that there's a periodic timer. They are all destroyed.
     }));
   });
 
@@ -375,6 +387,8 @@ describe('carousel custom strategies', () => {
     carouselWrapper.nativeElement.querySelector('.slick-dots').lastElementChild.click();
     tickMilliseconds(fixture, 700);
     expect(carouselWrapper.nativeElement.querySelector('.slick-track').style.transform).toBe('');
+
+    discardPeriodicTasks(); // No idea why it complains that there's a periodic timer. They are all destroyed.
   }));
 });
 

@@ -155,6 +155,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
 
   private destroy$ = new Subject<void>();
   private autoPlayChange$ = new Subject<void>();
+  private transitionEnd$ = new Subject<void>();
   private gestureRect: ClientRect | null = null;
   private isTransiting = false;
 
@@ -202,7 +203,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzEffect, nzDotPosition, nzAutoPlaySpeed } = changes;
+    const { nzEffect, nzDotPosition, nzAutoPlaySpeed, nzAutoPlay } = changes;
 
     if (nzEffect && !nzEffect.isFirstChange()) {
       this.switchStrategy();
@@ -216,13 +217,13 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
       this.syncStrategy();
     }
 
-    if (nzAutoPlaySpeed && !nzAutoPlaySpeed.isFirstChange()) {
+    const autoPlay = nzAutoPlay || nzAutoPlaySpeed;
+    if (autoPlay && !autoPlay.isFirstChange()) {
       this.autoPlayChange$.next();
     }
   }
 
   ngOnDestroy(): void {
-    // this.clearScheduledTransition();
     if (this.strategy) {
       this.strategy.dispose();
     }
@@ -231,6 +232,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     this.destroy$.complete();
     this.dotClick$.complete();
     this.autoPlayChange$.complete();
+    this.transitionEnd$.complete();
   }
 
   /**
@@ -259,6 +261,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
       this.nzBeforeChange.emit({ from, to });
       this.strategy.switch(this.activeIndex, index).subscribe(() => {
         this.nzAfterChange.emit(index);
+        this.transitionEnd$.next();
         this.isTransiting = false;
       });
       this.markContentActive(to);
@@ -324,13 +327,11 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
       switchMap(speed =>
         interval(speed).pipe(
           takeUntil(manualTransitions$),
-          repeatWhen(self => self),
           filter(() => this.nzAutoPlay),
-          map(() => this.activeIndex + 1),
-          finalize(() => console.log('destroyed'))
+          repeatWhen(self => self),
+          map(() => this.activeIndex + 1)
         )
-      ),
-      finalize(() => console.log('all destroyed!'))
+      )
     );
   }
 
