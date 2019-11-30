@@ -326,9 +326,11 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
           takeUntil(manualTransitions$),
           repeatWhen(self => self),
           filter(() => this.nzAutoPlay),
-          map(() => this.activeIndex + 1)
+          map(() => this.activeIndex + 1),
+          finalize(() => console.log('destroyed'))
         )
-      )
+      ),
+      finalize(() => console.log('all destroyed!'))
     );
   }
 
