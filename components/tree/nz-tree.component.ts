@@ -37,6 +37,7 @@ import {
   NzNoAnimationDirective,
   NzTreeBase,
   NzTreeBaseService,
+  NzTreeFilterOption,
   NzTreeHigherOrderServiceToken,
   NzTreeNode,
   warnDeprecation,
@@ -176,6 +177,11 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
 
   get nzSearchValue(): string {
     return this._searchValue;
+  }
+
+  @Input()
+  set nzFilterOption(value: NzTreeFilterOption) {
+    this.nzTreeService.filterOption = value;
   }
 
   /**

@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-可搜索的树。
+可搜索的树。可通过 `[nzFilterOption]` 自定义搜索。
 
 ## en-US
 
-Searchable Tree.
+Searchable Tree. Can Customize Search Function with `[nzFilterOption]`.

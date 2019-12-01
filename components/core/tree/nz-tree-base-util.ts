@@ -8,6 +8,16 @@
 
 import { NzTreeNode } from './nz-tree-base-node';
 
+export type NzTreeFilterOption = (inputValue: string, option: NzTreeNode) => boolean;
+
+export function nzTreedefaultFilterOption(inputValue: string, option: NzTreeNode): boolean {
+  if (inputValue && option.title) {
+    return option.title.indexOf(inputValue) > -1;
+  } else {
+    return false;
+  }
+}
+
 export function isCheckDisabled(node: NzTreeNode): boolean {
   const { isDisabled, isDisableCheckbox } = node;
   return !!(isDisabled || isDisableCheckbox);
