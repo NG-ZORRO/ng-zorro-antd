@@ -22,7 +22,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { slideMotion, CandyDate } from 'ng-zorro-antd/core';
+import { CandyDate, slideMotion } from 'ng-zorro-antd/core';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 
 @Component({

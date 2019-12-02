@@ -25,7 +25,7 @@ import {
 import { fromEvent, Subscription } from 'rxjs';
 import { distinctUntilChanged, throttleTime } from 'rxjs/operators';
 
-import { toNumber, InputBoolean, InputNumber, NgStyleInterface, NzConfigService, NzScrollService, WithConfig } from 'ng-zorro-antd/core';
+import { InputBoolean, InputNumber, NgStyleInterface, NzConfigService, NzScrollService, toNumber, WithConfig } from 'ng-zorro-antd/core';
 
 import { NzAnchorLinkComponent } from './nz-anchor-link.component';
 

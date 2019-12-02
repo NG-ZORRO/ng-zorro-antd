@@ -9,7 +9,6 @@
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import {
-  forwardRef,
   AfterContentInit,
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -18,6 +17,7 @@ import {
   ContentChildren,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Host,
   Input,
   OnDestroy,
@@ -31,10 +31,10 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { merge, EMPTY, Subject } from 'rxjs';
+import { EMPTY, merge, Subject } from 'rxjs';
 import { flatMap, startWith, takeUntil } from 'rxjs/operators';
 
-import { isNotNil, slideMotion, toBoolean, InputBoolean, NzNoAnimationDirective, NzSizeLDSType } from 'ng-zorro-antd/core';
+import { InputBoolean, isNotNil, NzNoAnimationDirective, NzSizeLDSType, slideMotion, toBoolean } from 'ng-zorro-antd/core';
 
 import { NzOptionGroupComponent } from './nz-option-group.component';
 import { NzOptionComponent } from './nz-option.component';

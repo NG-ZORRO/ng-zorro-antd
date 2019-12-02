@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { hasModifierKey, ESCAPE } from '@angular/cdk/keycodes';
+import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
 import {
   ConnectedPosition,
   ConnectionPositionPair,
@@ -34,7 +34,7 @@ import {
 } from '@angular/core';
 import { NzButtonComponent, NzButtonGroupComponent } from 'ng-zorro-antd/button';
 import { DEFAULT_DROPDOWN_POSITIONS, InputBoolean, POSITION_MAP } from 'ng-zorro-antd/core';
-import { combineLatest, fromEvent, merge, EMPTY, Observable, Subject, Subscription } from 'rxjs';
+import { combineLatest, EMPTY, fromEvent, merge, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, mapTo, takeUntil, tap } from 'rxjs/operators';
 import { NzDropdownMenuComponent, NzPlacementType } from './nz-dropdown-menu.component';
 

@@ -9,12 +9,12 @@
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { CdkConnectedOverlay, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
-  forwardRef,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Host,
   HostListener,
   Input,
@@ -34,15 +34,15 @@ import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
 import {
-  slideMotion,
-  toArray,
-  warnDeprecation,
   DEFAULT_DROPDOWN_POSITIONS,
   InputBoolean,
   NgClassType,
   NgStyleInterface,
   NzConfigService,
   NzNoAnimationDirective,
+  slideMotion,
+  toArray,
+  warnDeprecation,
   WithConfig
 } from 'ng-zorro-antd/core';
 

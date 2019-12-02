@@ -7,13 +7,13 @@
  */
 
 import {
-  forwardRef,
   AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChildren,
   ElementRef,
+  forwardRef,
   Input,
   OnChanges,
   OnDestroy,
@@ -26,7 +26,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { merge, Subject, Subscription } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
-import { isNotNil, InputBoolean, NzSizeLDSType } from 'ng-zorro-antd/core';
+import { InputBoolean, isNotNil, NzSizeLDSType } from 'ng-zorro-antd/core';
 
 import { NzRadioComponent } from './nz-radio.component';
 

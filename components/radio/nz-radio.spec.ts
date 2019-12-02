@@ -1,6 +1,6 @@
 import { Component, DebugElement, OnInit, ViewChild } from '@angular/core';
-import { fakeAsync, flush, tick, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { NzRadioButtonComponent } from './nz-radio-button.component';

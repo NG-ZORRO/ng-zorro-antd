@@ -9,7 +9,7 @@
 import { Inject, Injectable, Optional } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { warn, IndexableObject } from 'ng-zorro-antd/core';
+import { IndexableObject, warn } from 'ng-zorro-antd/core';
 
 import zh_CN from './languages/zh_CN';
 import { DateLocale, NzI18nInterface } from './nz-i18n.interface';

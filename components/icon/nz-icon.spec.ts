@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, DebugElement } from '@angular/core';
-import { async, fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import {
   LeftOutline,
@@ -15,7 +15,7 @@ import { NzConfigService } from 'ng-zorro-antd/core';
 
 import { NzIconDirective } from './nz-icon.directive';
 import { NzIconModule } from './nz-icon.module';
-import { NzIconService, NZ_ICON_DEFAULT_TWOTONE_COLOR, NZ_ICONS } from './nz-icon.service';
+import { NZ_ICON_DEFAULT_TWOTONE_COLOR, NZ_ICONS, NzIconService } from './nz-icon.service';
 
 describe('nz icon', () => {
   beforeEach(() => {

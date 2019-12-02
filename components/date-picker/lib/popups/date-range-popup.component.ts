@@ -19,7 +19,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { sortRangeValue, CandyDate, FunctionProp } from 'ng-zorro-antd/core';
+import { CandyDate, FunctionProp, sortRangeValue } from 'ng-zorro-antd/core';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import {
   CompatibleValue,

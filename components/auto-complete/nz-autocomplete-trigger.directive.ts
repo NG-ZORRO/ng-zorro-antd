@@ -20,10 +20,10 @@ import {
 import { TemplatePortal } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
 import {
-  forwardRef,
   Directive,
   ElementRef,
   ExistingProvider,
+  forwardRef,
   Inject,
   Input,
   NgZone,

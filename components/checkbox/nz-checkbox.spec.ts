@@ -1,6 +1,6 @@
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { fakeAsync, flush, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { NzCheckboxGroupComponent } from './nz-checkbox-group.component';

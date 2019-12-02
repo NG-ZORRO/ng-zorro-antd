@@ -11,7 +11,7 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { ComponentRef, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { warn, IndexableObject } from 'ng-zorro-antd/core';
+import { IndexableObject, warn } from 'ng-zorro-antd/core';
 
 import { NzModalControlService } from './nz-modal-control.service';
 import { NzModalRef } from './nz-modal-ref.class';

@@ -30,7 +30,7 @@ import {
 import { defer, merge, Observable, Subscription } from 'rxjs';
 import { filter, switchMap, take } from 'rxjs/operators';
 
-import { slideMotion, CompareWith, InputBoolean, NzDropDownPosition, NzNoAnimationDirective } from 'ng-zorro-antd/core';
+import { CompareWith, InputBoolean, NzDropDownPosition, NzNoAnimationDirective, slideMotion } from 'ng-zorro-antd/core';
 
 import { NzAutocompleteOptionComponent, NzOptionSelectionChange } from './nz-autocomplete-option.component';
 

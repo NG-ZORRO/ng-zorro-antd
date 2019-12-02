@@ -9,12 +9,12 @@
 import { BACKSPACE } from '@angular/cdk/keycodes';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
 import {
-  forwardRef,
   ChangeDetectorRef,
   Component,
   ContentChild,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Host,
   Injector,
   Input,
@@ -35,11 +35,8 @@ import { merge, of as observableOf, Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
 import {
-  isNotNil,
-  slideMotion,
-  warnDeprecation,
-  zoomMotion,
   InputBoolean,
+  isNotNil,
   NzConfigService,
   NzFormatEmitEvent,
   NzNoAnimationDirective,
@@ -49,7 +46,10 @@ import {
   NzTreeHigherOrderServiceToken,
   NzTreeNode,
   NzTreeNodeOptions,
-  WithConfig
+  slideMotion,
+  warnDeprecation,
+  WithConfig,
+  zoomMotion
 } from 'ng-zorro-antd/core';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
 

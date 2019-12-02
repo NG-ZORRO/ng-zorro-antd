@@ -8,7 +8,7 @@
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Host, Optional, ViewEncapsulation } from '@angular/core';
 
-import { zoomBigMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core';
+import { NzNoAnimationDirective, zoomBigMotion } from 'ng-zorro-antd/core';
 import { isTooltipEmpty, NzToolTipComponent } from 'ng-zorro-antd/tooltip';
 
 @Component({

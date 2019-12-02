@@ -25,7 +25,7 @@ import {
 import { merge, Subject } from 'rxjs';
 import { auditTime, finalize, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
-import { responsiveMap, warn, InputBoolean, NzBreakpoint, NzConfigService, NzDomEventService, WithConfig } from 'ng-zorro-antd/core';
+import { InputBoolean, NzBreakpoint, NzConfigService, NzDomEventService, responsiveMap, warn, WithConfig } from 'ng-zorro-antd/core';
 import { NzDescriptionsItemRenderProps, NzDescriptionsLayout, NzDescriptionsSize } from './nz-descriptions-definitions';
 import { NzDescriptionsItemComponent } from './nz-descriptions-item.component';
 

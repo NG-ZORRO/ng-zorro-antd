@@ -8,7 +8,7 @@
 
 import { Overlay } from '@angular/cdk/overlay';
 import { ApplicationRef, ComponentFactoryResolver, EmbeddedViewRef, Injector, Type } from '@angular/core';
-import { warnDeprecation, NzSingletonService } from 'ng-zorro-antd/core';
+import { NzSingletonService, warnDeprecation } from 'ng-zorro-antd/core';
 
 import { NzMessageConfigLegacy } from './nz-message-config';
 import { NzMessageContainerComponent } from './nz-message-container.component';

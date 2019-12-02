@@ -25,7 +25,7 @@ import {
 import { merge, Subject, Subscription } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
-import { toBoolean, NgClassType, NzSizeDSType } from 'ng-zorro-antd/core';
+import { NgClassType, NzSizeDSType, toBoolean } from 'ng-zorro-antd/core';
 
 import { NzStepComponent } from './nz-step.component';
 

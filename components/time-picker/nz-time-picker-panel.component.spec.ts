@@ -1,5 +1,5 @@
 import { Component, DebugElement, NO_ERRORS_SCHEMA, ViewChild, ViewEncapsulation } from '@angular/core';
-import { async, fakeAsync, flush, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NzI18nModule } from '../i18n/nz-i18n.module';

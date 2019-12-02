@@ -13,7 +13,7 @@ import { Observable, Subject } from 'rxjs';
 
 import { filter, mapTo } from 'rxjs/operators';
 
-import { NzConfig, NzConfigKey, NZ_CONFIG } from './config';
+import { NZ_CONFIG, NzConfig, NzConfigKey } from './config';
 
 const isDefined = function(value?: any): boolean {
   return value !== undefined;

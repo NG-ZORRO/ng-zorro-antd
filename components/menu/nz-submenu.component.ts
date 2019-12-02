@@ -35,15 +35,15 @@ import { flatMap, map, startWith, takeUntil } from 'rxjs/operators';
 
 import {
   collapseMotion,
-  getPlacementName,
-  slideMotion,
-  zoomBigMotion,
   DEFAULT_SUBMENU_POSITIONS,
+  getPlacementName,
   InputBoolean,
   NzMenuBaseService,
   NzNoAnimationDirective,
   NzUpdateHostClassService,
-  POSITION_MAP
+  POSITION_MAP,
+  slideMotion,
+  zoomBigMotion
 } from 'ng-zorro-antd/core';
 
 import { NzMenuItemDirective } from './nz-menu-item.directive';

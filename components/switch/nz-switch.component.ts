@@ -9,12 +9,12 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
 import {
-  forwardRef,
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
+  forwardRef,
   Input,
   OnDestroy,
   TemplateRef,

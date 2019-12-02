@@ -24,7 +24,7 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzCommentModule } from 'ng-zorro-antd/comment';
-import { warnDeprecation, NzNoAnimationModule, NzTransButtonModule, NzWaveModule } from 'ng-zorro-antd/core';
+import { NzNoAnimationModule, NzTransButtonModule, NzWaveModule, warnDeprecation } from 'ng-zorro-antd/core';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { NzDividerModule } from 'ng-zorro-antd/divider';

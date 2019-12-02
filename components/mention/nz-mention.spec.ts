@@ -3,13 +3,13 @@ import { DOWN_ARROW, ENTER, ESCAPE, RIGHT_ARROW, TAB, UP_ARROW } from '@angular/
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import { Component, NgZone, ViewChild } from '@angular/core';
-import { async, fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
-import { createKeyboardEvent, dispatchFakeEvent, dispatchKeyboardEvent, typeInElement, MockNgZone } from 'ng-zorro-antd/core';
+import { createKeyboardEvent, dispatchFakeEvent, dispatchKeyboardEvent, MockNgZone, typeInElement } from 'ng-zorro-antd/core';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzInputModule } from '../input';

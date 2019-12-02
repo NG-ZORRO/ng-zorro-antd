@@ -2,14 +2,14 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import differenceInDays from 'date-fns/difference_in_days';
 import isSameDay from 'date-fns/is_same_day';
 
-import { dispatchMouseEvent, typeInElement, NgStyleInterface } from 'ng-zorro-antd/core';
+import { dispatchMouseEvent, NgStyleInterface, typeInElement } from 'ng-zorro-antd/core';
 
 import { CandyDate } from '../core';
 import { NzDatePickerModule } from './nz-date-picker.module';

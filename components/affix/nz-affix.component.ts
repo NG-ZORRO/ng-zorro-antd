@@ -24,18 +24,18 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent, merge, Subscription } from 'rxjs';
-import { auditTime } from 'rxjs/operators';
 
 import {
   getStyleAsText,
-  shallowEqual,
   InputNumber,
   NgStyleInterface,
   NzConfigService,
   NzScrollService,
+  shallowEqual,
   WithConfig
 } from 'ng-zorro-antd/core';
+import { fromEvent, merge, Subscription } from 'rxjs';
+import { auditTime } from 'rxjs/operators';
 import { isTargetWindow } from './utils';
 
 interface SimpleRect {

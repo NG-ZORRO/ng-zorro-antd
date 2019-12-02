@@ -25,7 +25,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { of, Observable, Subject } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { InputBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';

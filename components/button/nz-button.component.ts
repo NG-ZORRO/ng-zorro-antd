@@ -34,15 +34,15 @@ import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 import {
   findFirstNotEmptyNode,
   findLastNotEmptyNode,
-  isEmpty,
   InputBoolean,
+  isEmpty,
+  NZ_WAVE_GLOBAL_CONFIG,
   NzConfigService,
   NzSizeLDSType,
   NzSizeMap,
   NzUpdateHostClassService,
   NzWaveConfig,
   NzWaveDirective,
-  NZ_WAVE_GLOBAL_CONFIG,
   WithConfig
 } from 'ng-zorro-antd/core';
 import { NzIconDirective } from 'ng-zorro-antd/icon';

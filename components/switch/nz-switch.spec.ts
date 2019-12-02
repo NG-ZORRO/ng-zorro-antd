@@ -1,7 +1,7 @@
 import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { fakeAsync, flush, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { dispatchKeyboardEvent } from 'ng-zorro-antd/core';

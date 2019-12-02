@@ -11,15 +11,15 @@ import { ChangeDetectorRef, OnDestroy, TemplateRef, ViewChild } from '@angular/c
 import { Subject } from 'rxjs';
 
 import {
+  DEFAULT_TOOLTIP_POSITIONS,
   getPlacementName,
   isNotNil,
-  toBoolean,
-  DEFAULT_TOOLTIP_POSITIONS,
   NgClassInterface,
   NgStyleInterface,
   NzNoAnimationDirective,
   NzTSType,
-  POSITION_MAP
+  POSITION_MAP,
+  toBoolean
 } from 'ng-zorro-antd/core';
 
 import { NzTooltipTrigger } from './nz-tooltip.definitions';

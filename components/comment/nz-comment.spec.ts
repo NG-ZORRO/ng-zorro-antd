@@ -1,5 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, fakeAsync, tick, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzListModule } from '../list';
 import { NzDemoCommentBasicComponent } from './demo/basic';

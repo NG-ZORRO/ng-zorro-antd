@@ -35,13 +35,13 @@ import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/
 import { merge, Subject, Subscription } from 'rxjs';
 
 import {
-  toNumber,
   InputBoolean,
   NzConfigService,
   NzFourDirectionType,
   NzSizeLDSType,
   NzUpdateHostClassService,
   PREFIX,
+  toNumber,
   WithConfig
 } from 'ng-zorro-antd/core';
 import { filter, startWith, takeUntil } from 'rxjs/operators';

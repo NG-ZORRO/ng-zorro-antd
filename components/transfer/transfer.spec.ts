@@ -1,9 +1,9 @@
 // tslint:disable:no-any no-parameter-reassignment
 import { Component, DebugElement, Injector, OnInit, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { of, Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';

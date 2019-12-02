@@ -26,7 +26,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { isNotNil, reqAnimFrame, InputBoolean, NzUpdateHostClassService as UpdateCls } from 'ng-zorro-antd/core';
+import { InputBoolean, isNotNil, NzUpdateHostClassService as UpdateCls, reqAnimFrame } from 'ng-zorro-antd/core';
 
 import { NzTimeValueAccessorDirective } from './nz-time-value-accessor.directive';
 import { TimeHolder } from './time-holder';

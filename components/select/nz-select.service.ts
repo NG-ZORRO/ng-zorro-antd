@@ -8,7 +8,7 @@
 
 import { BACKSPACE, DOWN_ARROW, ENTER, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { Injectable } from '@angular/core';
-import { combineLatest, merge, BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, merge, ReplaySubject, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map, share, skip, tap } from 'rxjs/operators';
 
 import { isNil, isNotNil } from 'ng-zorro-antd/core';

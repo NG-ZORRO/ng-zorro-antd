@@ -9,13 +9,13 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { DOWN_ARROW, ENTER, UP_ARROW } from '@angular/cdk/keycodes';
 import {
-  forwardRef,
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Input,
   OnChanges,
   OnDestroy,
@@ -28,7 +28,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { isNotNil, InputBoolean, NzSizeLDSType } from 'ng-zorro-antd/core';
+import { InputBoolean, isNotNil, NzSizeLDSType } from 'ng-zorro-antd/core';
 
 @Component({
   selector: 'nz-input-number',

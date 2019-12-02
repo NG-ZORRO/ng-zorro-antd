@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { inject, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 
 import { Subscription } from 'rxjs';
 import en_US from './languages/en_US';

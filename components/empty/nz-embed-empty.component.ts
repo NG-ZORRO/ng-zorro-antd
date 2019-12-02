@@ -25,7 +25,7 @@ import {
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 
-import { simpleEmptyImage, NzEmptyCustomContent, NzEmptySize, NZ_EMPTY_COMPONENT_NAME } from './nz-empty-config';
+import { NZ_EMPTY_COMPONENT_NAME, NzEmptyCustomContent, NzEmptySize, simpleEmptyImage } from './nz-empty-config';
 import { NzEmptyService } from './nz-empty.service';
 
 @Component({

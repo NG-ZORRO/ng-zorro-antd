@@ -1,7 +1,7 @@
 import { ENTER } from '@angular/cdk/keycodes';
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
-import { fakeAsync, flush, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { createKeyboardEvent, dispatchFakeEvent, typeInElement } from 'ng-zorro-antd/core';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 

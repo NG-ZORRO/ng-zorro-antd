@@ -106,8 +106,8 @@
     "ordered-imports": [
       true,
       {
-        "import-sources-order": "lowercase-last",
-        "named-imports-order": "lowercase-first"
+        "import-sources-order": "case-insensitive",
+        "named-imports-order": "case-insensitive"
       }
     ],
     "prefer-conditional-expression": false,

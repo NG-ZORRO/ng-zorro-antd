@@ -20,7 +20,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { valueFunctionProp, CandyDate, FunctionProp } from 'ng-zorro-antd/core';
+import { CandyDate, FunctionProp, valueFunctionProp } from 'ng-zorro-antd/core';
 import { DateHelperService, NzCalendarI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 const DATE_ROW_NUM = 6;

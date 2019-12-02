@@ -2,7 +2,7 @@ import { Directionality } from '@angular/cdk/bidi';
 import { ConnectedOverlayPositionChange, OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import { Component, DebugElement, ElementRef, NO_ERRORS_SCHEMA, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { async, fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';

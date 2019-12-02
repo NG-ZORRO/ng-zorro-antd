@@ -1,6 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component } from '@angular/core';
-import { async, fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 

@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { forwardRef, AfterViewInit, Directive, ElementRef, EventEmitter, ExistingProvider, OnDestroy } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, EventEmitter, ExistingProvider, forwardRef, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { Mention } from './nz-mention.component';

@@ -8,7 +8,7 @@
 
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewEncapsulation } from '@angular/core';
 
-import { isNonEmptyString, isTemplateRef, CandyDate } from 'ng-zorro-antd/core';
+import { CandyDate, isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 
 @Component({

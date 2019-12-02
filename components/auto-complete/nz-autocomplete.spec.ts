@@ -3,13 +3,13 @@ import { DOWN_ARROW, ENTER, ESCAPE, TAB, UP_ARROW } from '@angular/cdk/keycodes'
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { async, fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { async, ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 
-import { createKeyboardEvent, dispatchFakeEvent, dispatchKeyboardEvent, typeInElement, MockNgZone } from 'ng-zorro-antd/core';
+import { createKeyboardEvent, dispatchFakeEvent, dispatchKeyboardEvent, MockNgZone, typeInElement } from 'ng-zorro-antd/core';
 
 import { NzAutocompleteComponent, NzAutocompleteModule, NzAutocompleteOptionComponent, NzAutocompleteTriggerDirective } from './index';
 import { getNzAutocompleteMissingPanelError } from './nz-autocomplete-trigger.directive';

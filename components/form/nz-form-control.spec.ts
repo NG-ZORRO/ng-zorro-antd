@@ -1,6 +1,6 @@
 import { Component, DebugElement } from '@angular/core';
-import { fakeAsync, flush, tick, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, FormBuilder, FormControl, FormControlName, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { FormBuilder, FormControl, FormControlName, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzFormControlComponent } from './nz-form-control.component';

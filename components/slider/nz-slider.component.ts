@@ -8,12 +8,12 @@
 
 import { Platform } from '@angular/cdk/platform';
 import {
-  forwardRef,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Input,
   OnChanges,
   OnDestroy,
@@ -33,13 +33,13 @@ import {
   getElementOffset,
   getPercent,
   getPrecision,
-  shallowCopyArray,
-  silentEvent,
   InputBoolean,
-  MouseTouchObserverConfig
+  MouseTouchObserverConfig,
+  shallowCopyArray,
+  silentEvent
 } from 'ng-zorro-antd/core';
 
-import { isValueARange, ExtendedMark, NzMarks, SliderHandler, SliderShowTooltip, SliderValue } from './nz-slider-definitions';
+import { ExtendedMark, isValueARange, NzMarks, SliderHandler, SliderShowTooltip, SliderValue } from './nz-slider-definitions';
 import { getValueTypeNotMatchError } from './nz-slider-error';
 
 @Component({

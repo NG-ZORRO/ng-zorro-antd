@@ -8,10 +8,10 @@
 
 import { FocusMonitor } from '@angular/cdk/a11y';
 import {
-  forwardRef,
   ChangeDetectorRef,
   Component,
   ElementRef,
+  forwardRef,
   Input,
   OnDestroy,
   OnInit,

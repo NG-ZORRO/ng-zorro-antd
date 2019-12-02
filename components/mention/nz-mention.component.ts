@@ -40,10 +40,10 @@ import {
 import { fromEvent, merge, Subscription } from 'rxjs';
 
 import {
-  getCaretCoordinates,
-  getMentions,
   DEFAULT_MENTION_BOTTOM_POSITIONS,
   DEFAULT_MENTION_TOP_POSITIONS,
+  getCaretCoordinates,
+  getMentions,
   InputBoolean
 } from 'ng-zorro-antd/core';
 

@@ -21,8 +21,8 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/router';
-import { isNotNil, InputBoolean, NzMenuBaseService, NzUpdateHostClassService } from 'ng-zorro-antd/core';
-import { merge, EMPTY, Subject } from 'rxjs';
+import { InputBoolean, isNotNil, NzMenuBaseService, NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { EMPTY, merge, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { NzSubmenuService } from './nz-submenu.service';
 

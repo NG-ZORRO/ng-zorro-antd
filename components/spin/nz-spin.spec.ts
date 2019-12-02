@@ -1,5 +1,5 @@
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';

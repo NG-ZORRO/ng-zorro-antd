@@ -8,7 +8,7 @@
 
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
-import { isNotNil, InputNumber, NgStyleInterface, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
+import { InputNumber, isNotNil, NgStyleInterface, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

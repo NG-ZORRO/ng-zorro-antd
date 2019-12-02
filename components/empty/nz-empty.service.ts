@@ -9,9 +9,9 @@
 import { Inject, Injectable, Optional, TemplateRef, Type } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-import { warnDeprecation, NzConfigService, PREFIX } from 'ng-zorro-antd/core';
+import { NzConfigService, PREFIX, warnDeprecation } from 'ng-zorro-antd/core';
 
-import { NzEmptyCustomContent, NZ_DEFAULT_EMPTY_CONTENT } from './nz-empty-config';
+import { NZ_DEFAULT_EMPTY_CONTENT, NzEmptyCustomContent } from './nz-empty-config';
 
 @Injectable({
   providedIn: 'root'

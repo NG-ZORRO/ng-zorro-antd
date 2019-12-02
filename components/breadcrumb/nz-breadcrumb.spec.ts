@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, DebugElement } from '@angular/core';
-import { async, fakeAsync, flush, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router, Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';

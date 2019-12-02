@@ -2,11 +2,11 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Component, DebugElement, Injector, ViewChild, ViewEncapsulation } from '@angular/core';
-import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { of, throwError, Observable, Observer } from 'rxjs';
+import { Observable, Observer, of, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';

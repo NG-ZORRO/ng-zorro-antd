@@ -32,10 +32,10 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent, merge, EMPTY, Subject } from 'rxjs';
+import { EMPTY, fromEvent, merge, Subject } from 'rxjs';
 import { flatMap, startWith, takeUntil } from 'rxjs/operators';
 
-import { measureScrollbar, InputBoolean, InputNumber, NzConfigService, NzSizeMDSType, WithConfig } from 'ng-zorro-antd/core';
+import { InputBoolean, InputNumber, measureScrollbar, NzConfigService, NzSizeMDSType, WithConfig } from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
 

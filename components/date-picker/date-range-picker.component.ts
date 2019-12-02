@@ -8,7 +8,7 @@
 
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef } from '@angular/core';
 
-import { toBoolean, valueFunctionProp, CandyDate, FunctionProp, InputBoolean, NzNoAnimationDirective } from 'ng-zorro-antd/core';
+import { CandyDate, FunctionProp, InputBoolean, NzNoAnimationDirective, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core';
 import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { AbstractPickerComponent } from './abstract-picker.component';

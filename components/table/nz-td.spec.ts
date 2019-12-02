@@ -1,5 +1,5 @@
 import { Component, DebugElement } from '@angular/core';
-import { fakeAsync, flush, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 

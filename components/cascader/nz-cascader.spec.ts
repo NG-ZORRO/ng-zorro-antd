@@ -19,7 +19,7 @@ import {
 } from '@angular/cdk/keycodes';
 import { ConnectedOverlayPositionChange, OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { async, fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
