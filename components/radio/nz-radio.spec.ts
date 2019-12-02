@@ -306,12 +306,7 @@ describe('radio', () => {
 
 @Component({
   template: `
-    <label
-      nz-radio
-      [(ngModel)]="value"
-      (ngModelChange)="modelChange($event)"
-      [nzDisabled]="disabled"
-      [nzAutoFocus]="autoFocus"
+    <label nz-radio [(ngModel)]="value" (ngModelChange)="modelChange($event)" [nzDisabled]="disabled" [nzAutoFocus]="autoFocus"
       >Radio</label
     >
   `
@@ -333,13 +328,7 @@ export class NzTestRadioButtonComponent {}
 
 @Component({
   template: `
-    <nz-radio-group
-      [(ngModel)]="value"
-      [nzName]="name"
-      [nzDisabled]="disabled"
-      (ngModelChange)="modelChange($event)"
-      [nzSize]="size"
-    >
+    <nz-radio-group [(ngModel)]="value" [nzName]="name" [nzDisabled]="disabled" (ngModelChange)="modelChange($event)" [nzSize]="size">
       <ng-container [ngClass]>
         <label nz-radio-button nzValue="A">A</label>
         <label nz-radio-button nzValue="B">B</label>

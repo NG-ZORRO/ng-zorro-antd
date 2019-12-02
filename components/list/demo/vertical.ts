@@ -11,13 +11,7 @@ interface ItemData {
 @Component({
   selector: 'nz-demo-list-vertical',
   template: `
-    <nz-list
-      [nzDataSource]="data"
-      [nzItemLayout]="'vertical'"
-      [nzRenderItem]="item"
-      [nzPagination]="pagination"
-      [nzFooter]="footer"
-    >
+    <nz-list [nzDataSource]="data" [nzItemLayout]="'vertical'" [nzRenderItem]="item" [nzPagination]="pagination" [nzFooter]="footer">
       <ng-template #item let-item>
         <nz-list-item [nzContent]="item.content" [nzActions]="[starAction, likeAction, msgAction]" [nzExtra]="extra">
           <ng-template #starAction><i nz-icon nzType="star-o" style="margin-right: 8px;"></i> 156</ng-template>

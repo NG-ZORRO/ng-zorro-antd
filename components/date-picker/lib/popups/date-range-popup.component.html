@@ -1,10 +1,16 @@
 <div
   class="{{ prefixCls }}-picker-container {{ dropdownClassName }} {{ prefixCls }}-picker-container-placement-bottomLeft"
-  [ngStyle]="popupStyle">
-
-  <div class="{{ prefixCls }} {{ showWeek ? prefixCls + '-week-number': '' }} {{ hasTimePicker ? prefixCls + '-time' : '' }} {{ isRange ? prefixCls + '-range' : '' }}" tabindex="0">
+  [ngStyle]="popupStyle"
+>
+  <div
+    class="{{ prefixCls }} {{ showWeek ? prefixCls + '-week-number' : '' }} {{ hasTimePicker ? prefixCls + '-time' : '' }} {{
+      isRange ? prefixCls + '-range' : ''
+    }}"
+    tabindex="0"
+  >
     <div class="{{ prefixCls }}-panel">
-      <ng-container *ngIf="!isRange"> <!-- Single ONLY -->
+      <ng-container *ngIf="!isRange">
+        <!-- Single ONLY -->
         <ng-container *ngTemplateOutlet="tplCalendarInput"></ng-container>
       </ng-container>
       <div class="{{ prefixCls }}-date-panel">
@@ -15,11 +21,13 @@
           <ng-container *ngTemplateOutlet="tplRangePart; context: { partType: 'right' }"></ng-container>
         </ng-container>
 
-        <ng-container *ngIf="!isRange"> <!-- Single ONLY -->
+        <ng-container *ngIf="!isRange">
+          <!-- Single ONLY -->
           <ng-container *ngTemplateOutlet="tplFooter"></ng-container>
         </ng-container>
       </div>
-      <ng-container *ngIf="isRange"> <!-- Range ONLY -->
+      <ng-container *ngIf="isRange">
+        <!-- Range ONLY -->
         <ng-container *ngTemplateOutlet="tplFooter"></ng-container>
       </ng-container>
     </div>
@@ -94,9 +102,11 @@
 
 <!-- Range ONLY: Range Quick Selector -->
 <ng-template #tplRangeQuickSelector>
-  <a *ngFor="let name of getObjectKeys(ranges)"
+  <a
+    *ngFor="let name of getObjectKeys(ranges)"
     (click)="onClickPresetRange(ranges[name])"
     (mouseenter)="onHoverPresetRange(ranges[name])"
     (mouseleave)="onPresetRangeMouseLeave()"
-  >{{ name }}</a>
+    >{{ name }}</a
+  >
 </ng-template>

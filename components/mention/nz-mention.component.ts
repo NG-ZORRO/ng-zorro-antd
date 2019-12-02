@@ -286,12 +286,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
       const startPos = value.lastIndexOf(prefix[i], selectionStart);
       const endPos = value.indexOf(' ', selectionStart) > -1 ? value.indexOf(' ', selectionStart) : value.length;
       const mention = value.substring(startPos, endPos);
-      if (
-        (startPos > 0 && value[startPos - 1] !== ' ') ||
-        startPos < 0 ||
-        mention.includes(prefix[i], 1) ||
-        mention.includes(' ')
-      ) {
+      if ((startPos > 0 && value[startPos - 1] !== ' ') || startPos < 0 || mention.includes(prefix[i], 1) || mention.includes(' ')) {
         this.cursorMention = null;
         this.cursorMentionStart = -1;
         this.cursorMentionEnd = -1;
@@ -332,7 +327,8 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
       if (
         this.isOpen &&
         clickTarget !== this.trigger.el.nativeElement &&
-        (!!this.overlayRef && !this.overlayRef.overlayElement.contains(clickTarget))
+        !!this.overlayRef &&
+        !this.overlayRef.overlayElement.contains(clickTarget)
       ) {
         this.closeDropdown();
       }

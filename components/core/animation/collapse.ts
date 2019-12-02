@@ -20,10 +20,7 @@ export const collapseMotion: AnimationTriggerMetadata = trigger('collapseMotion'
 ]);
 
 export const treeCollapseMotion: AnimationTriggerMetadata = trigger('treeCollapseMotion', [
-  transition(':leave', [
-    style({ overflow: 'hidden' }),
-    animate(`150ms ${AnimationCurves.EASE_IN_OUT}`, style({ height: 0 }))
-  ]),
+  transition(':leave', [style({ overflow: 'hidden' }), animate(`150ms ${AnimationCurves.EASE_IN_OUT}`, style({ height: 0 }))]),
   transition(':enter', [
     style({ overflow: 'hidden', height: 0 }),
     animate(`150ms ${AnimationCurves.EASE_IN_OUT}`, style({ overflow: 'hidden', height: '*' }))

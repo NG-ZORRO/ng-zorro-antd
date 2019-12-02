@@ -264,10 +264,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
         width,
         height: elemSize.height
       });
-    } else if (
-      scrollTop <= elemOffset.top + elemSize.height + (this.nzOffsetBottom as number) - targetInnerHeight &&
-      offsetMode.bottom
-    ) {
+    } else if (scrollTop <= elemOffset.top + elemSize.height + (this.nzOffsetBottom as number) - targetInnerHeight && offsetMode.bottom) {
       const targetBottomOffet = targetNode === window ? 0 : window.innerHeight - targetRect.bottom!;
       const width = elemOffset.width;
       this.setAffixStyle(e, {
@@ -281,12 +278,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
         height: elemOffset.height
       });
     } else {
-      if (
-        e.type === 'resize' &&
-        this.affixStyle &&
-        this.affixStyle.position === 'fixed' &&
-        this.placeholderNode.offsetWidth
-      ) {
+      if (e.type === 'resize' && this.affixStyle && this.affixStyle.position === 'fixed' && this.placeholderNode.offsetWidth) {
         this.setAffixStyle(e, {
           ...this.affixStyle,
           width: this.placeholderNode.offsetWidth

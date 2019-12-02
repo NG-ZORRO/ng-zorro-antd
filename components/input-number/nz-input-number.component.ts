@@ -109,12 +109,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
 
   // '1.' '1x' 'xx' '' => are not complete numbers
   isNotCompleteNumber(num: string | number): boolean {
-    return (
-      isNaN(num as number) ||
-      num === '' ||
-      num === null ||
-      !!(num && num.toString().indexOf('.') === num.toString().length - 1)
-    );
+    return isNaN(num as number) || num === '' || num === null || !!(num && num.toString().indexOf('.') === num.toString().length - 1);
   }
 
   getValidValue(value?: string | number): string | number | undefined {

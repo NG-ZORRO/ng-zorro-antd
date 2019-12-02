@@ -81,9 +81,7 @@ describe('nz-select option container', () => {
     it('should scrollIntoViewIfNeeded', fakeAsync(() => {
       fixture.detectChanges();
       const nzSelectService = fixture.debugElement.injector.get(NzSelectService);
-      nzSelectService.activatedOption$.next(
-        nzSelectService.listOfNzOptionComponent[nzSelectService.listOfNzOptionComponent.length - 1]
-      );
+      nzSelectService.activatedOption$.next(nzSelectService.listOfNzOptionComponent[nzSelectService.listOfNzOptionComponent.length - 1]);
       fixture.detectChanges();
       tick();
       fixture.detectChanges();

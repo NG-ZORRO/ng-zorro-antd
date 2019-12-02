@@ -101,7 +101,7 @@
     "no-unused-expression": true,
     "no-use-before-declare": true,
     "no-var-keyword": true,
-    "number-literal-format": true,
+    "number-literal-format": false,
     "one-line": [true, "check-open-brace", "check-catch", "check-else", "check-whitespace"],
     "one-variable-per-declaration": [true, "ignore-for-loop"],
     "ordered-imports": [

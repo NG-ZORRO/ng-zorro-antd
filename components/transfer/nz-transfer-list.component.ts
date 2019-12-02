@@ -140,11 +140,7 @@ export class NzTransferListComponent implements OnChanges, OnInit {
 
   // #endregion
 
-  constructor(
-    private el: ElementRef,
-    private updateHostClassService: NzUpdateHostClassService,
-    private cdr: ChangeDetectorRef
-  ) {}
+  constructor(private el: ElementRef, private updateHostClassService: NzUpdateHostClassService, private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if ('footer' in changes) {

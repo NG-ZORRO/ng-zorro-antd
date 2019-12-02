@@ -66,10 +66,7 @@ export class NzSubmenuService {
     }
   }
 
-  constructor(
-    @SkipSelf() @Optional() private nzHostSubmenuService: NzSubmenuService,
-    public nzMenuService: NzMenuService
-  ) {
+  constructor(@SkipSelf() @Optional() private nzHostSubmenuService: NzSubmenuService, public nzMenuService: NzMenuService) {
     if (this.nzHostSubmenuService) {
       this.setLevel(this.nzHostSubmenuService.level + 1);
     }

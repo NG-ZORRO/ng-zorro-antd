@@ -92,8 +92,7 @@ export class MonthTableComponent implements OnChanges {
           [`${this.prefixCls}-month-panel-cell`]: true,
           [`${this.prefixCls}-month-panel-cell-disabled`]: disabled,
           [`${this.prefixCls}-month-panel-selected-cell`]: monthValue === currentMonth,
-          [`${this.prefixCls}-month-panel-current-cell`]:
-            today.getYear() === this.value.getYear() && monthValue === today.getMonth()
+          [`${this.prefixCls}-month-panel-current-cell`]: today.getYear() === this.value.getYear() && monthValue === today.getMonth()
         };
 
         monthValue++;

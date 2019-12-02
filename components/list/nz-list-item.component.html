@@ -1,6 +1,6 @@
 <ng-template #actionsTpl>
   <ul *ngIf="nzActions?.length > 0" class="ant-list-item-action">
-    <li *ngFor="let i of nzActions; let last=last;">
+    <li *ngFor="let i of nzActions; let last = last">
       <ng-template [ngTemplateOutlet]="i"></ng-template>
       <em *ngIf="!last" class="ant-list-item-action-split"></em>
     </li>

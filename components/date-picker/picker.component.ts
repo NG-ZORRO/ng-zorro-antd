@@ -6,12 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  CdkConnectedOverlay,
-  CdkOverlayOrigin,
-  ConnectedOverlayPositionChange,
-  ConnectionPositionPair
-} from '@angular/cdk/overlay';
+import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -116,9 +111,7 @@ export class NzPickerComponent implements AfterViewInit, OnChanges {
 
   focus(): void {
     if (this.isRange) {
-      const firstInput = (this.pickerInput.nativeElement as HTMLElement).querySelector(
-        'input:first-child'
-      ) as HTMLInputElement;
+      const firstInput = (this.pickerInput.nativeElement as HTMLElement).querySelector('input:first-child') as HTMLInputElement;
       firstInput.focus(); // Focus on the first input
     } else {
       this.pickerInput.nativeElement.focus();

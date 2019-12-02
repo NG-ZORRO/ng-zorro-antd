@@ -47,9 +47,7 @@ describe('modal footer directive', () => {
     testComponent.showModal();
     fixture.detectChanges();
     expect(testComponent.isVisible).toBe(true);
-    const cancelBtn: HTMLButtonElement = overlayContainerElement.querySelector(
-      '.ant-modal #btn-template'
-    ) as HTMLButtonElement;
+    const cancelBtn: HTMLButtonElement = overlayContainerElement.querySelector('.ant-modal #btn-template') as HTMLButtonElement;
     expect(cancelBtn).toBeTruthy();
     cancelBtn.click();
     fixture.detectChanges();

@@ -4,9 +4,7 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-tooltip-template',
   template: `
     <a nz-tooltip [nzTooltipTitle]="titleTemplate">This Tooltip Have Icon</a>
-    <ng-template #titleTemplate>
-      <i nz-icon nzType="file" style="margin-right: 8px"></i> <span>Tooltip With Icon</span>
-    </ng-template>
+    <ng-template #titleTemplate> <i nz-icon nzType="file" style="margin-right: 8px"></i> <span>Tooltip With Icon</span> </ng-template>
   `
 })
 export class NzDemoTooltipTemplateComponent {}

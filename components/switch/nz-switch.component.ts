@@ -101,11 +101,7 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
     this.switchElement.nativeElement.blur();
   }
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef,
-    private focusMonitor: FocusMonitor
-  ) {}
+  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {}
 
   ngAfterViewInit(): void {
     this.focusMonitor.monitor(this.switchElement.nativeElement, true).subscribe(focusOrigin => {

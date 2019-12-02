@@ -50,34 +50,21 @@ import { Component } from '@angular/core';
           <div class="content">
             <div class="content">
               <p nz-paragraph>
-                Ant Design interprets the color system into two levels: a system-level color system and a product-level
-                color system.
+                Ant Design interprets the color system into two levels: a system-level color system and a product-level color system.
               </p>
               <p nz-paragraph>
-                Ant Design's design team preferred to design with the HSB color model, which makes it easier for
-                designers to have a clear psychological expectation of color when adjusting colors, as well as
-                facilitate communication in teams.
+                Ant Design's design team preferred to design with the HSB color model, which makes it easier for designers to have a clear
+                psychological expectation of color when adjusting colors, as well as facilitate communication in teams.
               </p>
               <p class="content-link">
-                <a>
-                  <img src="https://gw.alipayobjects.com/zos/rmsportal/MjEImQtenlyueSmVEfUD.svg" alt="start" />Quick
-                  Start
-                </a>
-                <a>
-                  <img src="https://gw.alipayobjects.com/zos/rmsportal/NbuDUAuBlIApFuDvWiND.svg" alt="info" />Product
-                  Info
-                </a>
-                <a>
-                  <img src="https://gw.alipayobjects.com/zos/rmsportal/ohOEPSYdDTNnyMbGuyLb.svg" alt="doc" />Product Doc
-                </a>
+                <a> <img src="https://gw.alipayobjects.com/zos/rmsportal/MjEImQtenlyueSmVEfUD.svg" alt="start" />Quick Start </a>
+                <a> <img src="https://gw.alipayobjects.com/zos/rmsportal/NbuDUAuBlIApFuDvWiND.svg" alt="info" />Product Info </a>
+                <a> <img src="https://gw.alipayobjects.com/zos/rmsportal/ohOEPSYdDTNnyMbGuyLb.svg" alt="doc" />Product Doc </a>
               </p>
             </div>
           </div>
           <div class="extra-content">
-            <img
-              src="https://gw.alipayobjects.com/mdn/mpaas_user/afts/img/A*KsfVQbuLRlYAAAAAAAAAAABjAQAAAQ/original"
-              alt="content"
-            />
+            <img src="https://gw.alipayobjects.com/mdn/mpaas_user/afts/img/A*KsfVQbuLRlYAAAAAAAAAAABjAQAAAQ/original" alt="content" />
           </div>
         </div>
       </nz-page-header-content>

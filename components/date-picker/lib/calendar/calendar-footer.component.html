@@ -1,4 +1,6 @@
-<div class="{{ prefixCls }}-footer {{ isRange ? prefixCls + '-range-bottom' : '' }} {{ hasTimePicker ? prefixCls + '-footer-show-ok' : '' }}">
+<div
+  class="{{ prefixCls }}-footer {{ isRange ? prefixCls + '-range-bottom' : '' }} {{ hasTimePicker ? prefixCls + '-footer-show-ok' : '' }}"
+>
   <div *ngIf="rangeQuickSelector" class="{{ prefixCls }}-footer-extra {{ prefixCls }}-range-quick-selector">
     <ng-container *ngTemplateOutlet="rangeQuickSelector"></ng-container>
   </div>
@@ -27,11 +29,6 @@
       [showTimePicker]="showTimePicker"
       (showTimePickerChange)="showTimePickerChange.emit($event)"
     ></time-picker-button>
-    <ok-button
-      *ngIf="hasTimePicker"
-      [okDisabled]="okDisabled"
-      [locale]="locale"
-      (clickOk)="clickOk.emit()"
-    ></ok-button>
+    <ok-button *ngIf="hasTimePicker" [okDisabled]="okDisabled" [locale]="locale" (clickOk)="clickOk.emit()"></ok-button>
   </span>
 </div>

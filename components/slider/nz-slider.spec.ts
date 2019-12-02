@@ -872,12 +872,7 @@ function dispatchClickEventSequence(sliderElement: HTMLElement, percentage: numb
  * @param endPercent The percentage of the slider where the slide will end.
  * @param stick Whether stick on and not mouseup when move at the end
  */
-function dispatchSlideEventSequence(
-  sliderElement: HTMLElement,
-  startPercent: number,
-  endPercent: number,
-  stick: boolean = false
-): void {
+function dispatchSlideEventSequence(sliderElement: HTMLElement, startPercent: number, endPercent: number, stick: boolean = false): void {
   dispatchMouseenterEvent(sliderElement);
   dispatchSlideStartEvent(sliderElement, startPercent);
   dispatchSlideEvent(sliderElement, startPercent);

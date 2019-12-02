@@ -25,9 +25,7 @@ export class NzEmptyService<T = any> {
     @Inject(NZ_DEFAULT_EMPTY_CONTENT) @Optional() private legacyDefaultEmptyContent: Type<T>
   ) {
     if (legacyDefaultEmptyContent) {
-      warnDeprecation(
-        `'NZ_DEFAULT_EMPTY_CONTENT' is deprecated and would be removed in 9.0.0. Please migrate to 'NZ_CONFIG'.`
-      );
+      warnDeprecation(`'NZ_DEFAULT_EMPTY_CONTENT' is deprecated and would be removed in 9.0.0. Please migrate to 'NZ_CONFIG'.`);
     }
 
     const userDefaultEmptyContent = this.getUserDefaultEmptyContent();
@@ -42,9 +40,7 @@ export class NzEmptyService<T = any> {
   }
 
   setDefaultContent(content?: NzEmptyCustomContent): void {
-    warnDeprecation(
-      `'setDefaultContent' is deprecated and would be removed in 9.0.0. Please migrate to 'NzConfigService'.`
-    );
+    warnDeprecation(`'setDefaultContent' is deprecated and would be removed in 9.0.0. Please migrate to 'NzConfigService'.`);
 
     if (
       typeof content === 'string' ||
@@ -55,9 +51,7 @@ export class NzEmptyService<T = any> {
     ) {
       this.userDefaultContent$.next(content);
     } else {
-      throw new Error(
-        `${PREFIX} 'useDefaultContent' expect 'string', 'templateRef' or 'component' but get ${content}.`
-      );
+      throw new Error(`${PREFIX} 'useDefaultContent' expect 'string', 'templateRef' or 'component' but get ${content}.`);
     }
   }
 
@@ -69,9 +63,6 @@ export class NzEmptyService<T = any> {
   }
 
   private getUserDefaultEmptyContent(): Type<T> | TemplateRef<string> | string {
-    return (
-      (this.nzConfigService.getConfigForComponent('empty') || {}).nzDefaultEmptyContent ||
-      this.legacyDefaultEmptyContent
-    );
+    return (this.nzConfigService.getConfigForComponent('empty') || {}).nzDefaultEmptyContent || this.legacyDefaultEmptyContent;
   }
 }

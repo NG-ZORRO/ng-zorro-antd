@@ -45,10 +45,7 @@ import {
 
 import { NzTreeService } from './nz-tree.service';
 
-export function NzTreeServiceFactory(
-  higherOrderService: NzTreeBaseService,
-  treeService: NzTreeService
-): NzTreeBaseService {
+export function NzTreeServiceFactory(higherOrderService: NzTreeBaseService, treeService: NzTreeService): NzTreeBaseService {
   return higherOrderService ? higherOrderService : treeService;
 }
 

@@ -255,9 +255,7 @@ describe('tree-select component', () => {
         .querySelectorAll('.ant-select-selection__choice')[2]
         .querySelector('.ant-select-selection__choice__content');
       expect(maxTagPlaceholderElement).toBeTruthy();
-      expect(maxTagPlaceholderElement.innerText.trim()).toBe(
-        `+ ${testComponent.value.length - testComponent.maxTagCount} ...`
-      );
+      expect(maxTagPlaceholderElement.innerText.trim()).toBe(`+ ${testComponent.value.length - testComponent.maxTagCount} ...`);
     }));
 
     it('should set selectable', fakeAsync(() => {

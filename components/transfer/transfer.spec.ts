@@ -286,9 +286,9 @@ describe('transfer', () => {
       instance = dl.componentInstance;
       pageObject = new TransferPageObject();
       fixture.detectChanges();
-      expect(
-        pageObject.getEl('[data-direction="right"] .ant-transfer-list-header .ant-checkbox').classList
-      ).not.toContain('ant-checkbox-checked');
+      expect(pageObject.getEl('[data-direction="right"] .ant-transfer-list-header .ant-checkbox').classList).not.toContain(
+        'ant-checkbox-checked'
+      );
       pageObject.checkItem('right', 1);
       tick(50);
       fixture.detectChanges();
@@ -331,11 +331,7 @@ describe('transfer', () => {
       return this;
     }
 
-    checkItem(
-      direction: TransferDirection,
-      index: number | number[],
-      cls: string = '.ant-transfer-list-content-item label'
-    ): this {
+    checkItem(direction: TransferDirection, index: number | number[], cls: string = '.ant-transfer-list-content-item label'): this {
       if (!Array.isArray(index)) {
         index = [index];
       }
@@ -349,9 +345,7 @@ describe('transfer', () => {
     }
 
     search(direction: TransferDirection, value: string): this {
-      const ipt = (direction === 'left' ? this.leftList : this.rightList).querySelector(
-        '.ant-transfer-list-search'
-      ) as HTMLInputElement;
+      const ipt = (direction === 'left' ? this.leftList : this.rightList).querySelector('.ant-transfer-list-search') as HTMLInputElement;
       ipt.value = value;
       ipt.dispatchEvent(new Event('input'));
       fixture.detectChanges();

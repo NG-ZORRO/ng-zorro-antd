@@ -6,12 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  CdkConnectedOverlay,
-  CdkOverlayOrigin,
-  ConnectedOverlayPositionChange,
-  ConnectionPositionPair
-} from '@angular/cdk/overlay';
+import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 import { ChangeDetectorRef, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 

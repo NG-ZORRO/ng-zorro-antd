@@ -32,7 +32,10 @@ export class NzDemoTreeLineComponent {
         {
           title: 'parent 1-2',
           key: '1003',
-          children: [{ title: 'leaf', key: '10030', isLeaf: true }, { title: 'leaf', key: '10031', isLeaf: true }]
+          children: [
+            { title: 'leaf', key: '10030', isLeaf: true },
+            { title: 'leaf', key: '10031', isLeaf: true }
+          ]
         }
       ]
     }

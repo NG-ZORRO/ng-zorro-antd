@@ -426,11 +426,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   updateInputWidth(): void {
     if (this.isMultiple && this.inputElement) {
       if (this.inputValue || this.isComposing) {
-        this.renderer.setStyle(
-          this.inputElement.nativeElement,
-          'width',
-          `${this.inputElement.nativeElement.scrollWidth}px`
-        );
+        this.renderer.setStyle(this.inputElement.nativeElement, 'width', `${this.inputElement.nativeElement.scrollWidth}px`);
       } else {
         this.renderer.removeStyle(this.inputElement.nativeElement, 'width');
       }

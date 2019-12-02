@@ -29,9 +29,7 @@ import { NzUploadBtnComponent } from './nz-upload-btn.component';
 import { NzUploadListComponent } from './nz-upload-list.component';
 import { NzUploadComponent } from './nz-upload.component';
 
-const FILECONTENT = [
-  `iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==`
-];
+const FILECONTENT = [`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==`];
 const FILE = new File(FILECONTENT, '');
 const PNGSMALL = {
   target: {
@@ -630,9 +628,7 @@ describe('upload', () => {
       private files: any;
 
       constructor() {
-        spyOn(this.btnComp, 'onClick').and.callFake(() =>
-          this.btnComp.onChange({ target: { files: this.files } } as any)
-        );
+        spyOn(this.btnComp, 'onClick').and.callFake(() => this.btnComp.onChange({ target: { files: this.files } } as any));
       }
 
       get btnEl(): DebugElement {
@@ -681,15 +677,7 @@ describe('upload', () => {
     let instance: TestUploadListComponent;
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [
-          CommonModule,
-          FormsModule,
-          NzToolTipModule,
-          NzProgressModule,
-          NzI18nModule,
-          NoopAnimationsModule,
-          NzIconTestModule
-        ],
+        imports: [CommonModule, FormsModule, NzToolTipModule, NzProgressModule, NzI18nModule, NoopAnimationsModule, NzIconTestModule],
         declarations: [NzUploadListComponent, TestUploadListComponent]
       });
       fixture = TestBed.createComponent(TestUploadListComponent);

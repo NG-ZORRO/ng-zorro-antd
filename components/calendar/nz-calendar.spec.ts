@@ -493,12 +493,7 @@ class NzTestCalendarMonthFullCellComponent {}
 
 @Component({
   template: `
-    <nz-calendar
-      [(nzMode)]="mode"
-      [(ngModel)]="date0"
-      (nzPanelChange)="panelChange($event)"
-      (nzSelectChange)="selectChange($event)"
-    >
+    <nz-calendar [(nzMode)]="mode" [(ngModel)]="date0" (nzPanelChange)="panelChange($event)" (nzSelectChange)="selectChange($event)">
     </nz-calendar>
   `
 })

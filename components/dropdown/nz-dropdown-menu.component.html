@@ -1,12 +1,15 @@
 <ng-template>
-  <div *ngIf="open" class="{{'ant-dropdown nz-dropdown ant-dropdown-placement-'+nzPlacement}}"
-       [ngClass]="nzOverlayClassName"
-       [ngStyle]="nzOverlayStyle"
-       [@slideMotion]="dropDownPosition"
-       [@.disabled]="noAnimation?.nzNoAnimation"
-       [nzNoAnimation]="noAnimation?.nzNoAnimation"
-       (mouseenter)="setVisibleStateWhen(true,'hover')"
-       (mouseleave)="setVisibleStateWhen(false,'hover')">
+  <div
+    *ngIf="open"
+    class="{{ 'ant-dropdown nz-dropdown ant-dropdown-placement-' + nzPlacement }}"
+    [ngClass]="nzOverlayClassName"
+    [ngStyle]="nzOverlayStyle"
+    [@slideMotion]="dropDownPosition"
+    [@.disabled]="noAnimation?.nzNoAnimation"
+    [nzNoAnimation]="noAnimation?.nzNoAnimation"
+    (mouseenter)="setVisibleStateWhen(true, 'hover')"
+    (mouseleave)="setVisibleStateWhen(false, 'hover')"
+  >
     <div [class.ant-table-filter-dropdown]="nzTableFilter">
       <ng-content></ng-content>
     </div>

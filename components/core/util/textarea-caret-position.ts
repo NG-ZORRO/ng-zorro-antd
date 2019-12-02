@@ -167,12 +167,6 @@ export function createDebugEle(element: HTMLInputElement | HTMLTextAreaElement, 
   rect.style.backgroundColor = 'red';
   rect.style.height = fontSize;
   rect.style.width = '1px';
-  rect.style.top = `${element.getBoundingClientRect().top -
-    element.scrollTop +
-    window.pageYOffset +
-    coordinates.top}px`;
-  rect.style.left = `${element.getBoundingClientRect().left -
-    element.scrollLeft +
-    window.pageXOffset +
-    coordinates.left}px`;
+  rect.style.top = `${element.getBoundingClientRect().top - element.scrollTop + window.pageYOffset + coordinates.top}px`;
+  rect.style.left = `${element.getBoundingClientRect().left - element.scrollLeft + window.pageXOffset + coordinates.left}px`;
 }

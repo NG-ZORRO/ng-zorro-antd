@@ -7,15 +7,15 @@
  */
 
 export default {
-  today: 'Aujourd\'hui',
+  today: "Aujourd'hui",
   now: 'Maintenant',
-  backToToday: 'Aujourd\'hui',
+  backToToday: "Aujourd'hui",
   ok: 'Ok',
   clear: 'Rétablir',
   month: 'Mois',
   year: 'Année',
-  timeSelect: 'Sélectionner l\'heure',
-  dateSelect: 'Sélectionner l\'heure',
+  timeSelect: "Sélectionner l'heure",
+  dateSelect: "Sélectionner l'heure",
   monthSelect: 'Choisissez un mois',
   yearSelect: 'Choisissez une année',
   decadeSelect: 'Choisissez une décennie',

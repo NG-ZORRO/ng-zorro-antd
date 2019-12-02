@@ -196,9 +196,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
   initActionSubscribe(): void {
     const hostVisible$ = this.nzTrigger === 'hover' ? this.hover$ : this.$click;
     const dropdownMenuVisible$ = this.nzDropdownMenu.visible$;
-    const menuClickVisible$ = this.nzClickHide
-      ? this.nzDropdownMenu.nzMenuDropdownService.menuItemClick$.pipe(mapTo(false))
-      : EMPTY;
+    const menuClickVisible$ = this.nzClickHide ? this.nzDropdownMenu.nzMenuDropdownService.menuItemClick$.pipe(mapTo(false)) : EMPTY;
     const supVisible$ = merge(dropdownMenuVisible$, hostVisible$, menuClickVisible$);
     const subVisible$ = this.nzDropdownMenu.nzMenuDropdownService.menuOpen$;
     combineLatest([supVisible$, subVisible$])
@@ -268,15 +266,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const {
-      nzVisible,
-      nzTrigger,
-      nzPlacement,
-      nzDisabled,
-      nzOverlayClassName,
-      nzOverlayStyle,
-      nzTableFilter
-    } = changes;
+    const { nzVisible, nzTrigger, nzPlacement, nzDisabled, nzOverlayClassName, nzOverlayStyle, nzTableFilter } = changes;
     if (this.nzDropdownMenu) {
       if (nzVisible) {
         this.updateOverlayByVisible();
@@ -296,10 +286,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
       }
       if (nzPlacement) {
         this.nzDropdownMenu.setValue('nzPlacement', this.nzPlacement);
-        this.nzDropdownMenu.setValue(
-          'dropDownPosition',
-          this.nzDropdownMenu.nzPlacement.indexOf('top') !== -1 ? 'top' : 'bottom'
-        );
+        this.nzDropdownMenu.setValue('dropDownPosition', this.nzDropdownMenu.nzPlacement.indexOf('top') !== -1 ? 'top' : 'bottom');
         this.positions = this.regeneratePosition(this.nzPlacement, this.positions);
         this.updatePositionStrategy(this.positions);
       }

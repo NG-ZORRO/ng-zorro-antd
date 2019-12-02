@@ -264,14 +264,9 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
       this.dropdownWidthStyle = '';
     });
 
-    this.i18nService.localeChange
-      .pipe(
-        startWith(),
-        takeUntil(this.$destroy)
-      )
-      .subscribe(() => {
-        this.setLocale();
-      });
+    this.i18nService.localeChange.pipe(startWith(), takeUntil(this.$destroy)).subscribe(() => {
+      this.setLocale();
+    });
 
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
@@ -500,9 +495,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   }
 
   private isActionTrigger(action: 'click' | 'hover'): boolean {
-    return typeof this.nzTriggerAction === 'string'
-      ? this.nzTriggerAction === action
-      : this.nzTriggerAction.indexOf(action) !== -1;
+    return typeof this.nzTriggerAction === 'string' ? this.nzTriggerAction === action : this.nzTriggerAction.indexOf(action) !== -1;
   }
 
   private onEnter(): void {

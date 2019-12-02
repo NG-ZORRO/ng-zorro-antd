@@ -363,15 +363,11 @@ describe('NzYearPickerComponent', () => {
   }
 
   function getSelectedYearCell(): HTMLElement {
-    return queryFromOverlay(
-      'tbody.ant-calendar-year-panel-tbody td.ant-calendar-year-panel-selected-cell'
-    ) as HTMLElement;
+    return queryFromOverlay('tbody.ant-calendar-year-panel-tbody td.ant-calendar-year-panel-selected-cell') as HTMLElement;
   }
 
   function getSecondYearCell(): HTMLElement {
-    return queryFromOverlay(
-      'tbody.ant-calendar-year-panel-tbody td.ant-calendar-year-panel-cell:nth-child(2)'
-    ) as HTMLElement;
+    return queryFromOverlay('tbody.ant-calendar-year-panel-tbody td.ant-calendar-year-panel-cell:nth-child(2)') as HTMLElement;
   }
 
   function queryFromOverlay(selector: string): HTMLElement {

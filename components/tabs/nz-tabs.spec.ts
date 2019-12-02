@@ -116,9 +116,7 @@ describe('tabs', () => {
       testComponent.hideAll = true;
       fixture.detectChanges();
       expect(tabs.nativeElement.querySelector('.ant-tabs-tabpane').classList).toContain('ant-tabs-tabpane-inactive');
-      expect(tabs.nativeElement.querySelector('.ant-tabs-ink-bar').attributes.getNamedItem('hidden').name).toBe(
-        'hidden'
-      );
+      expect(tabs.nativeElement.querySelector('.ant-tabs-ink-bar').attributes.getNamedItem('hidden').name).toBe('hidden');
     });
 
     it('should title work', () => {
@@ -478,9 +476,7 @@ describe('tabs', () => {
       tick();
       fixture.detectChanges();
       const tabs = fixture.debugElement.query(By.directive(NzTabSetComponent));
-      expect(tabs.nativeElement.querySelector('.ant-tabs-nav-container').classList).not.toContain(
-        'ant-tabs-nav-container-scrolling'
-      );
+      expect(tabs.nativeElement.querySelector('.ant-tabs-nav-container').classList).not.toContain('ant-tabs-nav-container-scrolling');
     }));
   });
 });
@@ -566,12 +562,7 @@ describe('link router', () => {
         [nzTabBarGutter]="tabBarGutter"
         [nzHideAll]="hideAll"
       >
-        <nz-tab
-          nzTitle="title"
-          [nzForceRender]="true"
-          (nzDeselect)="deselect00()"
-          (nzSelect)="select00()"
-          (nzClick)="click00()"
+        <nz-tab nzTitle="title" [nzForceRender]="true" (nzDeselect)="deselect00()" (nzSelect)="select00()" (nzClick)="click00()"
           >Content 1<!----></nz-tab
         >
         <nz-tab
@@ -585,13 +576,7 @@ describe('link router', () => {
           Content 2<!---->
           <button></button>
         </nz-tab>
-        <nz-tab
-          [nzForceRender]="true"
-          nzTitle="add"
-          *ngIf="add"
-          (nzDeselect)="deselect02()"
-          (nzSelect)="select02()"
-          (nzClick)="click02()"
+        <nz-tab [nzForceRender]="true" nzTitle="add" *ngIf="add" (nzDeselect)="deselect02()" (nzSelect)="select02()" (nzClick)="click02()"
           >add
         </nz-tab>
         <nz-tab *ngFor="let i of array" [nzTitle]="i"></nz-tab>

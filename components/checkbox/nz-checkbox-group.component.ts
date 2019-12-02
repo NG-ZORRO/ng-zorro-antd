@@ -59,12 +59,7 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, O
     return option.value;
   }
 
-  constructor(
-    private elementRef: ElementRef,
-    private focusMonitor: FocusMonitor,
-    private cdr: ChangeDetectorRef,
-    renderer: Renderer2
-  ) {
+  constructor(private elementRef: ElementRef, private focusMonitor: FocusMonitor, private cdr: ChangeDetectorRef, renderer: Renderer2) {
     renderer.addClass(elementRef.nativeElement, 'ant-checkbox-group');
   }
 

@@ -110,12 +110,7 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   get isZeroTrigger(): boolean {
-    return (
-      this.nzCollapsible &&
-      this.trigger &&
-      this.nzCollapsedWidth === 0 &&
-      ((this.nzBreakpoint && this.below) || !this.nzBreakpoint)
-    );
+    return this.nzCollapsible && this.trigger && this.nzCollapsedWidth === 0 && ((this.nzBreakpoint && this.below) || !this.nzBreakpoint);
   }
 
   get isSiderTrigger(): boolean {

@@ -423,9 +423,7 @@ describe('NzMonthPickerComponent', () => {
   }
 
   function getSelectedMonthCell(): HTMLElement {
-    return queryFromOverlay(
-      'tbody.ant-calendar-month-panel-tbody td.ant-calendar-month-panel-selected-cell'
-    ) as HTMLElement;
+    return queryFromOverlay('tbody.ant-calendar-month-panel-tbody td.ant-calendar-month-panel-selected-cell') as HTMLElement;
   }
 
   function getFirstMonthCell(): HTMLElement {

@@ -60,7 +60,11 @@ export class NzRadioGroupComponent implements AfterContentInit, ControlValueAcce
   private touchedSubscription: Subscription;
   onChange: (_: string) => void = () => null;
   onTouched: () => void = () => null;
-  @ContentChildren(forwardRef(() => NzRadioComponent), { descendants: true }) radios: QueryList<NzRadioComponent>;
+  @ContentChildren(
+    forwardRef(() => NzRadioComponent),
+    { descendants: true }
+  )
+  radios: QueryList<NzRadioComponent>;
   @Input() @InputBoolean() nzDisabled: boolean;
   @Input() nzButtonStyle: NzRadioButtonStyle = 'outline';
   @Input() nzSize: NzSizeLDSType = 'default';
@@ -88,34 +92,29 @@ export class NzRadioGroupComponent implements AfterContentInit, ControlValueAcce
   }
 
   ngAfterContentInit(): void {
-    this.radios.changes
-      .pipe(
-        startWith(null),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(() => {
-        this.updateChildrenStatus();
-        if (this.selectSubscription) {
-          this.selectSubscription.unsubscribe();
-        }
-        this.selectSubscription = merge(...this.radios.map(radio => radio.select$))
-          .pipe(takeUntil(this.destroy$))
-          .subscribe(radio => {
-            if (this.value !== radio.nzValue) {
-              this.value = radio.nzValue;
-              this.updateChildrenStatus();
-              this.onChange(this.value);
-            }
-          });
-        if (this.touchedSubscription) {
-          this.touchedSubscription.unsubscribe();
-        }
-        this.touchedSubscription = merge(...this.radios.map(radio => radio.touched$))
-          .pipe(takeUntil(this.destroy$))
-          .subscribe(() => {
-            Promise.resolve().then(() => this.onTouched());
-          });
-      });
+    this.radios.changes.pipe(startWith(null), takeUntil(this.destroy$)).subscribe(() => {
+      this.updateChildrenStatus();
+      if (this.selectSubscription) {
+        this.selectSubscription.unsubscribe();
+      }
+      this.selectSubscription = merge(...this.radios.map(radio => radio.select$))
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(radio => {
+          if (this.value !== radio.nzValue) {
+            this.value = radio.nzValue;
+            this.updateChildrenStatus();
+            this.onChange(this.value);
+          }
+        });
+      if (this.touchedSubscription) {
+        this.touchedSubscription.unsubscribe();
+      }
+      this.touchedSubscription = merge(...this.radios.map(radio => radio.touched$))
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          Promise.resolve().then(() => this.onTouched());
+        });
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

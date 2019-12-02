@@ -12,18 +12,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-label [nzSpan]="4" nzFor="nickname" [nzRequired]="validateForm.get('required')?.value"
-          >Nickname</nz-form-label
-        >
+        <nz-form-label [nzSpan]="4" nzFor="nickname" [nzRequired]="validateForm.get('required')?.value">Nickname</nz-form-label>
         <nz-form-control [nzSpan]="8" nzErrorTip="Please input your nickname">
           <input type="text" nz-input formControlName="nickname" placeholder="Please input your nickname" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-control [nzSpan]="8" [nzOffset]="4">
-          <label nz-checkbox formControlName="required" (ngModelChange)="requiredChange($event)"
-            >Nickname is required</label
-          >
+          <label nz-checkbox formControlName="required" (ngModelChange)="requiredChange($event)">Nickname is required</label>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>

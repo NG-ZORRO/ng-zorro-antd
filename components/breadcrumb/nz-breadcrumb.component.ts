@@ -109,11 +109,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getBreadcrumbs(
-    route: ActivatedRoute,
-    url: string = '',
-    breadcrumbs: BreadcrumbOption[] = []
-  ): BreadcrumbOption[] | undefined {
+  private getBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: BreadcrumbOption[] = []): BreadcrumbOption[] | undefined {
     const children: ActivatedRoute[] = route.children;
     // If there's no sub root, then stop the recurse and returns the generated breadcrumbs.
     if (children.length === 0) {

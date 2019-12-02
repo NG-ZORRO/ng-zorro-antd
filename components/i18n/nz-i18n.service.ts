@@ -27,10 +27,7 @@ export class NzI18nService {
     return this._change.asObservable();
   }
 
-  constructor(
-    @Optional() @Inject(NZ_I18N) locale: NzI18nInterface,
-    @Optional() @Inject(NZ_DATE_LOCALE) dateLocale: DateLocale
-  ) {
+  constructor(@Optional() @Inject(NZ_I18N) locale: NzI18nInterface, @Optional() @Inject(NZ_DATE_LOCALE) dateLocale: DateLocale) {
     this.setLocale(locale || zh_CN);
     this.setDateLocale(dateLocale || null);
   }

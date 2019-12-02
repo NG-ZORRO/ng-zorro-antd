@@ -127,9 +127,7 @@ describe('badge', () => {
       statusList.forEach(status => {
         testComponent.status = status;
         fixture.detectChanges();
-        expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').classList).toContain(
-          `ant-badge-status-${status}`
-        );
+        expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').classList).toContain(`ant-badge-status-${status}`);
       });
       testComponent.text = 'test';
       fixture.detectChanges();

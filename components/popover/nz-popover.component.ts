@@ -6,14 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Host,
-  Optional,
-  ViewEncapsulation
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Host, Optional, ViewEncapsulation } from '@angular/core';
 
 import { zoomBigMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core';
 import { isTooltipEmpty, NzToolTipComponent } from 'ng-zorro-antd/tooltip';

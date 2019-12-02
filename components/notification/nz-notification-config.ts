@@ -19,9 +19,7 @@ export interface NzNotificationConfigLegacy extends NzMessageConfigLegacy {
   nzPlacement?: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight' | string;
 }
 
-export const NZ_NOTIFICATION_DEFAULT_CONFIG = new InjectionToken<NzNotificationConfigLegacy>(
-  'NZ_NOTIFICATION_DEFAULT_CONFIG'
-);
+export const NZ_NOTIFICATION_DEFAULT_CONFIG = new InjectionToken<NzNotificationConfigLegacy>('NZ_NOTIFICATION_DEFAULT_CONFIG');
 
 export const NZ_NOTIFICATION_CONFIG = new InjectionToken<NzNotificationConfigLegacy>('NZ_NOTIFICATION_CONFIG');
 

@@ -30,13 +30,10 @@ describe('Coverage supplements', () => {
     TestBed.compileComponents();
   }));
 
-  beforeEach(inject(
-    [NzI18nService, DateHelperService],
-    (i18nService: NzI18nService, dateHelperService: DateHelperService) => {
-      dateHelper = dateHelperService;
-      i18n = i18nService;
-    }
-  ));
+  beforeEach(inject([NzI18nService, DateHelperService], (i18nService: NzI18nService, dateHelperService: DateHelperService) => {
+    dateHelper = dateHelperService;
+    i18n = i18nService;
+  }));
 
   describe('CalendarHeader', () => {
     beforeEach(() => {

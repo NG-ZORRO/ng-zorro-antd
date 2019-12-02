@@ -466,10 +466,7 @@ describe('affix-extra', () => {
     dl = fixture.debugElement;
   });
   it('#getOffset', () => {
-    const ret = fixture.componentInstance.nzAffixComponent.getOffset(
-      fixture.debugElement.query(By.css('#affix')).nativeElement,
-      window
-    );
+    const ret = fixture.componentInstance.nzAffixComponent.getOffset(fixture.debugElement.query(By.css('#affix')).nativeElement, window);
     expect(ret).not.toBeUndefined();
   });
   it('with window when scrolled below the bottom offset', fakeAsync(() => {

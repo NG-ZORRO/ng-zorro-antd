@@ -12,12 +12,7 @@ import { of as observableOf, BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 import { warn, warnDeprecation, NzConfigService, PREFIX } from 'ng-zorro-antd/core';
-import {
-  JoinedEditorOptions,
-  NzCodeEditorConfig,
-  NzCodeEditorLoadingStatus,
-  NZ_CODE_EDITOR_CONFIG
-} from './nz-code-editor.definitions';
+import { JoinedEditorOptions, NzCodeEditorConfig, NzCodeEditorLoadingStatus, NZ_CODE_EDITOR_CONFIG } from './nz-code-editor.definitions';
 
 // tslint:disable-next-line no-any
 declare const monaco: any;

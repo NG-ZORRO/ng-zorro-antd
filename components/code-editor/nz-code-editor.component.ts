@@ -164,10 +164,7 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
   private registerResizeChange(): void {
     this.ngZone.runOutsideAngular(() => {
       fromEvent(window, 'resize')
-        .pipe(
-          debounceTime(300),
-          takeUntil(this.destroy$)
-        )
+        .pipe(debounceTime(300), takeUntil(this.destroy$))
         .subscribe(() => {
           this.layout();
         });

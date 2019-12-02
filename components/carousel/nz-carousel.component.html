@@ -21,13 +21,8 @@
     [class.slick-dots-left]="nzDotPosition === 'left'"
     [class.slick-dots-right]="nzDotPosition === 'right'"
   >
-    <li
-      *ngFor="let content of carouselContents; let i = index"
-      [class.slick-active]="content.isActive"
-      (click)="goTo(i)"
-    >
-      <ng-template [ngTemplateOutlet]="nzDotRender || renderDotTemplate" [ngTemplateOutletContext]="{ $implicit: i }">
-      </ng-template>
+    <li *ngFor="let content of carouselContents; let i = index" [class.slick-active]="content.isActive" (click)="goTo(i)">
+      <ng-template [ngTemplateOutlet]="nzDotRender || renderDotTemplate" [ngTemplateOutletContext]="{ $implicit: i }"> </ng-template>
     </li>
   </ul>
 </div>

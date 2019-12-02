@@ -467,13 +467,7 @@ export class NzTestTableScrollComponent implements OnInit {
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/3004 **/
 @Component({
   template: `
-    <nz-table
-      #nzTable
-      [nzData]="data"
-      [(nzPageIndex)]="pageIndex"
-      [(nzPageSize)]="pageSize"
-      (nzPageIndexChange)="(pageIndexChange)"
-    >
+    <nz-table #nzTable [nzData]="data" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize" (nzPageIndexChange)="(pageIndexChange)">
       <thead>
         <tr>
           <th>ID</th>

@@ -269,8 +269,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   onRemove = (file: UploadFile): void => {
     this.uploadComp.abort(file);
     file.status = 'removed';
-    const fnRes =
-      typeof this.nzRemove === 'function' ? this.nzRemove(file) : this.nzRemove == null ? true : this.nzRemove;
+    const fnRes = typeof this.nzRemove === 'function' ? this.nzRemove(file) : this.nzRemove == null ? true : this.nzRemove;
     (fnRes instanceof Observable ? fnRes : of(fnRes)).pipe(filter((res: boolean) => res)).subscribe(() => {
       this.nzFileList = this.removeFileItem(file, this.nzFileList);
       this.nzChange.emit({

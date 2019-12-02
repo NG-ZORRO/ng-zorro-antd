@@ -382,9 +382,7 @@ export class NzTestButtonSearchComponent {}
 // https://github.com/NG-ZORRO/ng-zorro-antd/issues/2191
 @Component({
   template: `
-    <button nz-button nzType="primary" (click)="load()" [nzLoading]="loading">
-      <i nz-icon nzType="poweroff"></i> {{ 'Click me!' }}
-    </button>
+    <button nz-button nzType="primary" (click)="load()" [nzLoading]="loading"><i nz-icon nzType="poweroff"></i> {{ 'Click me!' }}</button>
   `
 })
 export class NzTestButtonBindingComponent {

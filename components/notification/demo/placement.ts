@@ -4,11 +4,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 @Component({
   selector: 'nz-demo-notification-placement',
   template: `
-    <nz-select
-      [(ngModel)]="placement"
-      style="width: 120px; margin-right: 10px;"
-      (ngModelChange)="clearBeforeNotifications()"
-    >
+    <nz-select [(ngModel)]="placement" style="width: 120px; margin-right: 10px;" (ngModelChange)="clearBeforeNotifications()">
       <nz-option nzValue="topLeft" nzLabel="topLeft"></nz-option>
       <nz-option nzValue="topRight" nzLabel="topRight"></nz-option>
       <nz-option nzValue="bottomLeft" nzLabel="bottomLeft"></nz-option>

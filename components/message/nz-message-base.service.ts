@@ -59,7 +59,9 @@ export class NzMessageBaseService<
   }
 
   config(config: MessageConfig): void {
-    warnDeprecation(`'config' of 'NzMessageService' and 'NzNotificationService' is deprecated and will be removed in 9.0.0. Please use 'set' of 'NzConfigService' instead.`);
+    warnDeprecation(
+      `'config' of 'NzMessageService' and 'NzNotificationService' is deprecated and will be removed in 9.0.0. Please use 'set' of 'NzConfigService' instead.`
+    );
 
     this._container.setConfig(config);
   }

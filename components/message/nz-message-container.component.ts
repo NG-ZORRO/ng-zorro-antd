@@ -6,15 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Inject,
-  OnInit,
-  Optional,
-  ViewEncapsulation
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, Optional, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { toCssPixel, warnDeprecation, NzConfigService } from 'ng-zorro-antd/core';

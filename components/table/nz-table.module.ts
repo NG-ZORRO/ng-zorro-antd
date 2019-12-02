@@ -39,15 +39,7 @@ import { NzVirtualScrollDirective } from './nz-virtual-scroll.directive';
     NzTrDirective,
     NzVirtualScrollDirective
   ],
-  exports: [
-    NzTableComponent,
-    NzThComponent,
-    NzTdComponent,
-    NzTheadComponent,
-    NzTbodyDirective,
-    NzTrDirective,
-    NzVirtualScrollDirective
-  ],
+  exports: [NzTableComponent, NzThComponent, NzTdComponent, NzTheadComponent, NzTbodyDirective, NzTrDirective, NzVirtualScrollDirective],
   imports: [
     NzMenuModule,
     FormsModule,

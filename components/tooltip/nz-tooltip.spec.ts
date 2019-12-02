@@ -35,14 +35,7 @@ import { NzToolTipModule } from './nz-tooltip.module';
       Focus
     </a>
 
-    <a
-      #program
-      nz-tooltip
-      [nzTooltipTrigger]="null"
-      nzTitle="program"
-      [nzVisible]="visible"
-      (nzVisibleChange)="onVisibleChange()"
-    >
+    <a #program nz-tooltip [nzTooltipTrigger]="null" nzTitle="program" [nzVisible]="visible" (nzVisibleChange)="onVisibleChange()">
       Manually
     </a>
 

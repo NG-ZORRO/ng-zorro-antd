@@ -4,17 +4,17 @@
   </span>
 </ng-template>
 <div *ngIf="loading">
-  <div class="ant-spin"
+  <div
+    class="ant-spin"
     [class.ant-spin-spinning]="loading"
     [class.ant-spin-lg]="nzSize === 'large'"
     [class.ant-spin-sm]="nzSize === 'small'"
-    [class.ant-spin-show-text]="nzTip">
+    [class.ant-spin-show-text]="nzTip"
+  >
     <ng-template [ngTemplateOutlet]="nzIndicator || defaultIndicatorTemplate"></ng-template>
     <div class="ant-spin-text" *ngIf="nzTip">{{ nzTip }}</div>
   </div>
 </div>
-<div *ngIf="!nzSimple"
-  class="ant-spin-container"
-  [class.ant-spin-blur]="loading">
+<div *ngIf="!nzSimple" class="ant-spin-container" [class.ant-spin-blur]="loading">
   <ng-content></ng-content>
 </div>

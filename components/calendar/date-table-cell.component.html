@@ -16,13 +16,13 @@
   </ng-container>
   <ng-container *ngSwitchCase="'ant-fullcalendar'">
     <div class="ant-fullcalendar-date">
-      <ng-container *ngIf="cell.dateFullCellRender else defaultCell">
-        <ng-container *ngTemplateOutlet="cell.dateFullCellRender; context: {$implicit: cell.value}"></ng-container>
+      <ng-container *ngIf="cell.dateFullCellRender; else defaultCell">
+        <ng-container *ngTemplateOutlet="cell.dateFullCellRender; context: { $implicit: cell.value }"></ng-container>
       </ng-container>
       <ng-template #defaultCell>
         <div class="{{ prefixCls }}-value">{{ cell.content }}</div>
         <div *ngIf="cell.dateCellRender" class="{{ prefixCls }}-content">
-          <ng-container *ngTemplateOutlet="cell.dateCellRender; context: {$implicit: cell.value}"></ng-container>
+          <ng-container *ngTemplateOutlet="cell.dateCellRender; context: { $implicit: cell.value }"></ng-container>
         </div>
       </ng-template>
     </div>

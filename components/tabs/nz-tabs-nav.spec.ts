@@ -58,9 +58,7 @@ describe('tabs nav', () => {
         // Focus on the last tab, expect this to be the maximum scroll distance.
         appComponent.nzTabsNavComponent.selectedIndex = appComponent.tabs.length - 1;
         fixture.detectChanges();
-        expect(appComponent.nzTabsNavComponent.scrollDistance).toBe(
-          appComponent.nzTabsNavComponent.getMaxScrollDistance()
-        );
+        expect(appComponent.nzTabsNavComponent.scrollDistance).toBe(appComponent.nzTabsNavComponent.getMaxScrollDistance());
 
         // Focus on the first tab, expect this to be the maximum scroll distance.
         appComponent.nzTabsNavComponent.selectedIndex = 0;

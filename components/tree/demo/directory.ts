@@ -5,12 +5,7 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/core';
 @Component({
   selector: 'nz-demo-tree-directory',
   template: `
-    <nz-tree
-      [nzData]="nodes"
-      (nzClick)="activeNode($event)"
-      (nzDblClick)="openFolder($event)"
-      [nzTreeTemplate]="nzTreeTemplate"
-    ></nz-tree>
+    <nz-tree [nzData]="nodes" (nzClick)="activeNode($event)" (nzDblClick)="openFolder($event)" [nzTreeTemplate]="nzTreeTemplate"></nz-tree>
     <ng-template #nzTreeTemplate let-node>
       <span class="custom-node" [class.active]="activedNode?.key === node.key">
         <span *ngIf="!node.isLeaf" (contextmenu)="contextMenu($event, menu)">

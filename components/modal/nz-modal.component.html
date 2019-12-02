@@ -1,7 +1,9 @@
-<ng-template #tplOriginContent><ng-content></ng-content></ng-template> <!-- Compatible: the <ng-content> can appear only once -->
+<ng-template #tplOriginContent><ng-content></ng-content></ng-template>
+<!-- Compatible: the <ng-content> can appear only once -->
 
 <div [nzNoAnimation]="nzNoAnimation">
-  <div *ngIf="mask"
+  <div
+    *ngIf="mask"
     class="ant-modal-mask"
     [ngClass]="maskAnimationClassMap"
     [class.ant-modal-mask-hidden]="hidden"
@@ -17,7 +19,8 @@
     tabindex="-1"
     role="dialog"
   >
-    <div #modalContainer
+    <div
+      #modalContainer
       class="ant-modal {{ nzClassName }}"
       (mousedown)="onMaskDialogDown()"
       [ngClass]="modalAnimationClassMap"
@@ -67,7 +70,9 @@
       <ng-container *ngSwitchCase="isTemplateRef(nzFooter)" [ngTemplateOutlet]="nzFooter"></ng-container>
       <ng-container *ngSwitchCase="isNonEmptyString(nzFooter)"><div [innerHTML]="nzFooter"></div></ng-container>
       <ng-container *ngSwitchCase="isModalButtons(nzFooter)">
-        <button *ngFor="let button of nzFooter" nz-button
+        <button
+          *ngFor="let button of nzFooter"
+          nz-button
           (click)="onButtonClick(button)"
           [hidden]="!getButtonCallableProp(button, 'show')"
           [nzLoading]="getButtonCallableProp(button, 'loading')"
@@ -76,13 +81,28 @@
           [nzShape]="button.shape"
           [nzSize]="button.size"
           [nzGhost]="button.ghost"
-        >{{ button.label }}</button>
+        >
+          {{ button.label }}
+        </button>
       </ng-container>
       <ng-container *ngSwitchDefault>
-        <button *ngIf="nzCancelText!==null" nz-button (click)="onClickOkCancel('cancel')" [nzLoading]="nzCancelLoading" [disabled]="nzCancelDisabled">
+        <button
+          *ngIf="nzCancelText !== null"
+          nz-button
+          (click)="onClickOkCancel('cancel')"
+          [nzLoading]="nzCancelLoading"
+          [disabled]="nzCancelDisabled"
+        >
           {{ cancelText }}
         </button>
-        <button *ngIf="nzOkText!==null" nz-button [nzType]="nzOkType" (click)="onClickOkCancel('ok')" [nzLoading]="nzOkLoading" [disabled]="nzOkDisabled">
+        <button
+          *ngIf="nzOkText !== null"
+          nz-button
+          [nzType]="nzOkType"
+          (click)="onClickOkCancel('ok')"
+          [nzLoading]="nzOkLoading"
+          [disabled]="nzOkDisabled"
+        >
           {{ okText }}
         </button>
       </ng-container>
@@ -114,24 +134,29 @@
         </div>
       </div>
       <div class="ant-modal-confirm-btns">
-        <button *ngIf="nzCancelText!==null"
+        <button
+          *ngIf="nzCancelText !== null"
           nz-button
           (click)="onClickOkCancel('cancel')"
           [nzLoading]="nzCancelLoading"
-          [disabled]="nzCancelDisabled">
+          [disabled]="nzCancelDisabled"
+        >
           {{ cancelText }}
         </button>
-        <button #autoFocusButtonOk
-          *ngIf="nzOkText!==null"
+        <button
+          #autoFocusButtonOk
+          *ngIf="nzOkText !== null"
           nz-button
           (click)="onClickOkCancel('ok')"
           [nzType]="nzOkType"
           [nzLoading]="nzOkLoading"
-          [disabled]="nzOkDisabled">
+          [disabled]="nzOkDisabled"
+        >
           {{ okText }}
         </button>
       </div>
-    </div> <!-- /.ant-modal-confirm-body-wrapper -->
+    </div>
+    <!-- /.ant-modal-confirm-body-wrapper -->
   </div>
 </ng-template>
 <!-- /[Predefined] Confirm Modal Content -->

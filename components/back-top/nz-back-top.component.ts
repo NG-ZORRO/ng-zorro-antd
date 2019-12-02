@@ -99,10 +99,7 @@ export class NzBackTopComponent implements OnInit, OnDestroy {
     this.removeListen();
     this.handleScroll();
     this.scroll$ = fromEvent(this.getTarget(), 'scroll')
-      .pipe(
-        throttleTime(50),
-        distinctUntilChanged()
-      )
+      .pipe(throttleTime(50), distinctUntilChanged())
       .subscribe(() => this.handleScroll());
   }
 

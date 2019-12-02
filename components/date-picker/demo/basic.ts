@@ -7,11 +7,7 @@ import { en_US, zh_CN, NzI18nService } from 'ng-zorro-antd/i18n';
   template: `
     <nz-date-picker [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-date-picker>
     <br />
-    <nz-month-picker
-      [(ngModel)]="date"
-      (ngModelChange)="onChange($event)"
-      nzPlaceHolder="Select month"
-    ></nz-month-picker>
+    <nz-month-picker [(ngModel)]="date" (ngModelChange)="onChange($event)" nzPlaceHolder="Select month"></nz-month-picker>
     <br />
     <nz-year-picker [(ngModel)]="date" (ngModelChange)="onChange($event)" nzPlaceHolder="Select year"></nz-year-picker>
     <br />

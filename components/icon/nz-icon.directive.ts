@@ -6,16 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  AfterContentChecked,
-  Directive,
-  ElementRef,
-  Input,
-  OnChanges,
-  OnInit,
-  Renderer2,
-  SimpleChanges
-} from '@angular/core';
+import { AfterContentChecked, Directive, ElementRef, Input, OnChanges, OnInit, Renderer2, SimpleChanges } from '@angular/core';
 import { IconDirective, ThemeType } from '@ant-design/icons-angular';
 import { InputBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 

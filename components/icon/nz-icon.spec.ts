@@ -25,14 +25,7 @@ describe('nz icon', () => {
       providers: [
         {
           provide: NZ_ICONS,
-          useValue: [
-            LeftOutline,
-            RightOutline,
-            QuestionOutline,
-            QuestionCircleOutline,
-            LoadingOutline,
-            QuestionCircleFill
-          ]
+          useValue: [LeftOutline, RightOutline, QuestionOutline, QuestionCircleOutline, LoadingOutline, QuestionCircleFill]
         },
         {
           provide: NZ_ICON_DEFAULT_TWOTONE_COLOR,
@@ -125,9 +118,7 @@ describe('nz icon', () => {
       const icon1 = icons[0];
       expect(icon1.nativeElement.className).toContain('anticon');
       expect(icon1.nativeElement.innerHTML).toContain('svg');
-      expect(icon1.nativeElement.innerHTML).toContain(
-        'viewBox="0 0 1024 1024" width="1em" height="1em" fill="currentColor"'
-      );
+      expect(icon1.nativeElement.innerHTML).toContain('viewBox="0 0 1024 1024" width="1em" height="1em" fill="currentColor"');
     });
   });
 

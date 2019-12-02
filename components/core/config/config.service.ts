@@ -69,8 +69,7 @@ export function WithConfig<T>(componentName: NzConfigKey, innerDefaultValue?: T)
 
     return {
       get(): T | undefined {
-        const originalValue =
-          originalDescriptor && originalDescriptor.get ? originalDescriptor.get.bind(this)() : this[privatePropName];
+        const originalValue = originalDescriptor && originalDescriptor.get ? originalDescriptor.get.bind(this)() : this[privatePropName];
 
         if (isDefined(originalValue)) {
           return originalValue;

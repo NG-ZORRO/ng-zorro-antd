@@ -70,9 +70,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   @Input() @InputBoolean() nzBackfill = false;
   @Input() compareWith: CompareWith = (o1, o2) => o1 === o2;
   @Input() nzDataSource: AutocompleteDataSource;
-  @Output() readonly selectionChange: EventEmitter<NzAutocompleteOptionComponent> = new EventEmitter<
-    NzAutocompleteOptionComponent
-  >();
+  @Output() readonly selectionChange: EventEmitter<NzAutocompleteOptionComponent> = new EventEmitter<NzAutocompleteOptionComponent>();
 
   showPanel: boolean = true;
   isOpen: boolean = false;
@@ -92,9 +90,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   }
 
   /** Provided by content */
-  @ContentChildren(NzAutocompleteOptionComponent, { descendants: true }) fromContentOptions: QueryList<
-    NzAutocompleteOptionComponent
-  >;
+  @ContentChildren(NzAutocompleteOptionComponent, { descendants: true }) fromContentOptions: QueryList<NzAutocompleteOptionComponent>;
   /** Provided by dataSource */
   @ViewChildren(NzAutocompleteOptionComponent) fromDataSourceOptions: QueryList<NzAutocompleteOptionComponent>;
 

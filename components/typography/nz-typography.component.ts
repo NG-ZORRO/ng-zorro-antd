@@ -187,9 +187,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
       return;
     }
     const { viewRef, removeView } = this.getOriginContentViewRef();
-    const fixedNodes = [this.textCopyRef, this.textEditRef, this.expandableBtn]
-      .filter(e => e && e.nativeElement)
-      .map(e => e.nativeElement);
+    const fixedNodes = [this.textCopyRef, this.textEditRef, this.expandableBtn].filter(e => e && e.nativeElement).map(e => e.nativeElement);
 
     const { contentNodes, text, ellipsis } = measure(
       this.host.nativeElement,

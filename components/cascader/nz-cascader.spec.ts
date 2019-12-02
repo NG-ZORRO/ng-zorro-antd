@@ -35,14 +35,10 @@ describe('cascader', () => {
 
   function getItemAtColumnAndRow(column: number, row: number): HTMLElement | null {
     if (row === -1) {
-      return overlayContainerElement.querySelector(
-        `.ant-cascader-menu:nth-child(${column}) .ant-cascader-menu-item:last-child`
-      );
+      return overlayContainerElement.querySelector(`.ant-cascader-menu:nth-child(${column}) .ant-cascader-menu-item:last-child`);
     }
 
-    return overlayContainerElement.querySelector(
-      `.ant-cascader-menu:nth-child(${column}) .ant-cascader-menu-item:nth-child(${row})`
-    );
+    return overlayContainerElement.querySelector(`.ant-cascader-menu:nth-child(${column}) .ant-cascader-menu-item:nth-child(${row})`);
   }
 
   function getAllColumns(): NodeListOf<Element> {
@@ -1969,9 +1965,7 @@ const options5: any[] = []; // tslint:disable-line:no-any
     </nz-cascader>
 
     <ng-template #renderTpl let-labels="labels" let-selectedOptions="selectedOptions">
-      <ng-container *ngFor="let label of labels; let i = index; let isLast = last">
-        {{ label }}{{ isLast ? '' : ' | ' }}
-      </ng-container>
+      <ng-container *ngFor="let label of labels; let i = index; let isLast = last"> {{ label }}{{ isLast ? '' : ' | ' }} </ng-container>
     </ng-template>
   `,
   styles: [

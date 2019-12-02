@@ -47,9 +47,7 @@ describe('time-picker', () => {
       fixture.detectChanges();
       testComponent.autoFocus = true;
       fixture.detectChanges();
-      expect(timeElement.nativeElement.querySelector('input').attributes.getNamedItem('autofocus').name).toBe(
-        'autofocus'
-      );
+      expect(timeElement.nativeElement.querySelector('input').attributes.getNamedItem('autofocus').name).toBe('autofocus');
       testComponent.autoFocus = false;
       fixture.detectChanges();
       expect(timeElement.nativeElement.querySelector('input').attributes.getNamedItem('autofocus')).toBe(null);

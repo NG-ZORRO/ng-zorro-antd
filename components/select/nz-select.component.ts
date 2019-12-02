@@ -34,14 +34,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { merge, EMPTY, Subject } from 'rxjs';
 import { flatMap, startWith, takeUntil } from 'rxjs/operators';
 
-import {
-  isNotNil,
-  slideMotion,
-  toBoolean,
-  InputBoolean,
-  NzNoAnimationDirective,
-  NzSizeLDSType
-} from 'ng-zorro-antd/core';
+import { isNotNil, slideMotion, toBoolean, InputBoolean, NzNoAnimationDirective, NzSizeLDSType } from 'ng-zorro-antd/core';
 
 import { NzOptionGroupComponent } from './nz-option-group.component';
 import { NzOptionComponent } from './nz-option.component';
@@ -288,9 +281,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   ngOnInit(): void {
-    this.nzSelectService.animationEvent$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(() => this.updateCdkConnectedOverlayPositions());
+    this.nzSelectService.animationEvent$.pipe(takeUntil(this.destroy$)).subscribe(() => this.updateCdkConnectedOverlayPositions());
     this.nzSelectService.searchValue$.pipe(takeUntil(this.destroy$)).subscribe(data => {
       this.nzOnSearch.emit(data);
       this.updateCdkConnectedOverlayPositions();
@@ -342,10 +333,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
         )
       )
       .subscribe(() => {
-        this.nzSelectService.updateTemplateOption(
-          this.listOfNzOptionComponent.toArray(),
-          this.listOfNzOptionGroupComponent.toArray()
-        );
+        this.nzSelectService.updateTemplateOption(this.listOfNzOptionComponent.toArray(), this.listOfNzOptionGroupComponent.toArray());
       });
   }
 
