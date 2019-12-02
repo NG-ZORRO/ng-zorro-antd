@@ -328,7 +328,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
         interval(speed).pipe(
           takeUntil(manualTransitions$),
           filter(() => this.nzAutoPlay),
-          repeatWhen(self => self),
+          repeatWhen(() => this.transitionEnd$),
           map(() => this.activeIndex + 1)
         )
       )
