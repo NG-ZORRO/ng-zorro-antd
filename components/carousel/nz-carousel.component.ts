@@ -327,8 +327,8 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
       switchMap(speed =>
         interval(speed).pipe(
           takeUntil(manualTransitions$),
-          filter(() => this.nzAutoPlay),
-          repeatWhen(() => this.transitionEnd$),
+          filter(() => this.nzAutoPlay && !this.gestureRect),
+          repeatWhen(self => self),
           map(() => this.activeIndex + 1)
         )
       )
