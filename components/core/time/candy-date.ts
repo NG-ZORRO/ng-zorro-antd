@@ -129,9 +129,7 @@ export class CandyDate implements IndexableObject {
   }
 
   setHms(hour: number, minute: number, second: number): CandyDate {
-    const date = new Date(this.nativeDate);
-    date.setHours(hour, minute, second);
-    return new CandyDate(date);
+    return new CandyDate(this.nativeDate.setHours(hour, minute, second));
   }
 
   setYear(year: number): CandyDate {

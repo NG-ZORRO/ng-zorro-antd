@@ -18,7 +18,7 @@ import {
 
 import { CandyDate, FunctionProp } from 'ng-zorro-antd/core';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
-import { DisabledDateFn, PanelMode } from '../../standard-types';
+import { DisabledDateFn, PanelMode, SupportTimeOptions } from '../../standard-types';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -33,8 +33,7 @@ export class InnerPopupComponent {
 
   @Input() locale: NzCalendarI18nInterface;
   @Input() showTimePicker: boolean;
-  // tslint:disable-next-line:no-any
-  @Input() timeOptions: any;
+  @Input() timeOptions: SupportTimeOptions;
   @Input() enablePrev: boolean;
   @Input() enableNext: boolean;
   @Input() disabledDate: DisabledDateFn;
@@ -61,6 +60,13 @@ export class InnerPopupComponent {
   // The value real changed to outside
   onSelectDate(date: CandyDate | Date): void {
     const value = date instanceof CandyDate ? date : new CandyDate(date);
+    const timeValue = this.timeOptions && this.timeOptions.nzDefaultOpenValue;
+
+    // Display timeValue when value is null
+    if (!this.value && timeValue) {
+      value.setHms(timeValue.getHours(), timeValue.getMinutes(), timeValue.getSeconds());
+    }
+
     this.selectDate.emit(value);
   }
 }

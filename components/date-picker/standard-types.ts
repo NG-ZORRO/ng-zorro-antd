@@ -50,6 +50,7 @@ export interface SupportTimeOptions {
   nzHideDisabledOptions?: boolean;
   nzDefaultOpenValue?: Date;
   nzAddOn?: TemplateRef<void>;
+  nzUse12Hours?: boolean;
 }
 
 export interface PresetRanges {

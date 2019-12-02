@@ -649,6 +649,12 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       openPickerByClickTrigger();
 
+      dispatchMouseEvent(getFirstCell(), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect((queryFromOverlay('input.ant-calendar-input') as HTMLInputElement).value).toContain('00:01:02');
+
       // Open time picker panel
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-time-picker-btn'), 'click');
       fixture.detectChanges();
@@ -668,7 +674,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       openPickerByClickTrigger();
 
-      dispatchMouseEvent(queryFromOverlay('.ant-calendar-cell > .ant-calendar-date'), 'click');
+      dispatchMouseEvent(getFirstCell(), 'click');
 
       fixture.detectChanges();
       flush();
