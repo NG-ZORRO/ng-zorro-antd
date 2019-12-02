@@ -1,4 +1,11 @@
-<button *ngIf="!editing" [nzTitle]="locale?.edit" nz-tooltip nz-trans-button class="ant-typography-edit" (click)="onClick()">
+<button
+  *ngIf="!editing"
+  [nzTitle]="locale?.edit"
+  nz-tooltip
+  nz-trans-button
+  class="ant-typography-edit"
+  (click)="onClick()"
+>
   <i nz-icon nzType="edit"></i>
 </button>
 <ng-container *ngIf="editing">

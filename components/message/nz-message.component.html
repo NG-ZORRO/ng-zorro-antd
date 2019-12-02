@@ -1,4 +1,9 @@
-<div class="ant-message-notice" [@moveUpMotion]="nzMessage.state" (mouseenter)="onEnter()" (mouseleave)="onLeave()">
+<div
+  class="ant-message-notice"
+  [@moveUpMotion]="nzMessage.state"
+  (mouseenter)="onEnter()"
+  (mouseleave)="onLeave()"
+>
   <div class="ant-message-notice-content">
     <div class="ant-message-custom-content" [ngClass]="'ant-message-' + nzMessage.type">
       <ng-container [ngSwitch]="nzMessage.type">

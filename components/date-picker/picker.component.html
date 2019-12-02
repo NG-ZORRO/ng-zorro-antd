@@ -34,7 +34,9 @@
     >
       <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'left' }"></ng-container>
       <span class="{{ prefixCls }}-range-picker-separator"> ~ </span>
-      <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'right' }"></ng-container>
+      <ng-container
+        *ngTemplateOutlet="tplRangeInput; context: { partType: 'right' }"
+      ></ng-container>
       <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
     </span>
   </ng-container>

@@ -1,9 +1,19 @@
 <div class="{{ prefixCls }}">
   <div class="{{ prefixCls }}-header">
-    <a class="{{ prefixCls }}-prev-century-btn" role="button" (click)="previousCentury()" title="{{ locale.previousCentury }}"></a>
+    <a
+      class="{{ prefixCls }}-prev-century-btn"
+      role="button"
+      (click)="previousCentury()"
+      title="{{ locale.previousCentury }}"
+    ></a>
 
     <div class="{{ prefixCls }}-century">{{ startYear }}-{{ endYear }}</div>
-    <a class="{{ prefixCls }}-next-century-btn" role="button" (click)="nextCentury()" title="{{ locale.nextCentury }}"></a>
+    <a
+      class="{{ prefixCls }}-next-century-btn"
+      role="button"
+      (click)="nextCentury()"
+      title="{{ locale.nextCentury }}"
+    ></a>
   </div>
   <div class="{{ prefixCls }}-body">
     <table class="{{ prefixCls }}-table" cellSpacing="0" role="grid">

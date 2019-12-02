@@ -10,7 +10,11 @@
             <!-- Horizontal & NOT Bordered -->
             <ng-container *ngIf="!nzBordered">
               <td class="ant-descriptions-item" [colSpan]="item.span">
-                <span class="ant-descriptions-item-label" [class.ant-descriptions-item-colon]="nzColon">{{ item.title }}</span>
+                <span
+                  class="ant-descriptions-item-label"
+                  [class.ant-descriptions-item-colon]="nzColon"
+                  >{{ item.title }}</span
+                >
                 <span class="ant-descriptions-item-content">
                   <ng-template [ngTemplateOutlet]="item.content"></ng-template>
                 </span>
@@ -18,7 +22,9 @@
             </ng-container>
             <!-- Horizontal & Bordered -->
             <ng-container *ngIf="nzBordered">
-              <td class="ant-descriptions-item-label" *nzStringTemplateOutlet="item.title">{{ item.title }}</td>
+              <td class="ant-descriptions-item-label" *nzStringTemplateOutlet="item.title">
+                {{ item.title }}
+              </td>
               <td class="ant-descriptions-item-content" [colSpan]="item.span * 2 - 1">
                 <ng-template [ngTemplateOutlet]="item.content"></ng-template>
               </td>
@@ -34,7 +40,11 @@
             <tr class="ant-descriptions-row">
               <ng-container *ngFor="let item of row; let isLast = last">
                 <td class="ant-descriptions-item" [colSpan]="item.span">
-                  <span class="ant-descriptions-item-label" [class.ant-descriptions-item-colon]="nzColon">{{ item.title }}</span>
+                  <span
+                    class="ant-descriptions-item-label"
+                    [class.ant-descriptions-item-colon]="nzColon"
+                    >{{ item.title }}</span
+                  >
                 </td>
               </ng-container>
             </tr>

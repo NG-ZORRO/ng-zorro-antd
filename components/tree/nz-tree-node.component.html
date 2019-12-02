@@ -18,7 +18,13 @@
           >
           </i>
         </ng-container>
-        <i *ngIf="nzTreeNode.isLoading" nz-icon nzType="loading" [nzSpin]="true" class="ant-tree-switcher-loading-icon"></i>
+        <i
+          *ngIf="nzTreeNode.isLoading"
+          nz-icon
+          nzType="loading"
+          [nzSpin]="true"
+          class="ant-tree-switcher-loading-icon"
+        ></i>
       </ng-container>
       <ng-container *ngIf="nzShowLine">
         <ng-template
@@ -41,7 +47,10 @@
   </ng-container>
   <ng-container *ngIf="nzCheckable">
     <span [ngClass]="nzNodeCheckboxClass" (click)="_clickCheckBox($event)">
-      <span [class.ant-tree-checkbox-inner]="!nzSelectMode" [class.ant-select-tree-checkbox-inner]="nzSelectMode"></span>
+      <span
+        [class.ant-tree-checkbox-inner]="!nzSelectMode"
+        [class.ant-select-tree-checkbox-inner]="nzSelectMode"
+      ></span>
     </span>
   </ng-container>
   <ng-container *ngIf="!nzTreeTemplate">
@@ -63,10 +72,18 @@
           <i nz-icon *ngIf="nzIcon" [nzType]="nzIcon"></i>
         </span>
       </span>
-      <span class="ant-tree-title" [innerHTML]="nzTreeNode.title | nzHighlight: nzSearchValue:'':'font-highlight'"> </span>
+      <span
+        class="ant-tree-title"
+        [innerHTML]="nzTreeNode.title | nzHighlight: nzSearchValue:'':'font-highlight'"
+      >
+      </span>
     </span>
   </ng-container>
-  <ng-template [ngTemplateOutlet]="nzTreeTemplate" [ngTemplateOutletContext]="{ $implicit: nzTreeNode }"> </ng-template>
+  <ng-template
+    [ngTemplateOutlet]="nzTreeTemplate"
+    [ngTemplateOutletContext]="{ $implicit: nzTreeNode }"
+  >
+  </ng-template>
 
   <ul
     *ngIf="nzTreeNode.isExpanded"

@@ -1,4 +1,8 @@
-<div *ngFor="let file of items" class="ant-upload-list-item ant-upload-list-item-{{ file.status }}" @itemState>
+<div
+  *ngFor="let file of items"
+  class="ant-upload-list-item ant-upload-list-item-{{ file.status }}"
+  @itemState
+>
   <ng-template #icon>
     <ng-container *ngIf="showPic; else noPicTpl">
       <div
@@ -25,11 +29,19 @@
         [href]="file.thumbUrl || file.url"
         (click)="handlePreview(file, $event)"
       >
-        <img *ngIf="isImageUrl(file); else noThumbTpl" [src]="file.thumbUrl || file.url" [attr.alt]="file.name" />
+        <img
+          *ngIf="isImageUrl(file); else noThumbTpl"
+          [src]="file.thumbUrl || file.url"
+          [attr.alt]="file.name"
+        />
       </a>
     </ng-template>
-    <ng-template #noThumbTpl><i class="ant-upload-list-item-icon" nz-icon nzType="file" nzTheme="twotone"></i></ng-template>
-    <ng-template #noPicTpl><i nz-icon [nzType]="file.status === 'uploading' ? 'loading' : 'paper-clip'"></i></ng-template>
+    <ng-template #noThumbTpl
+      ><i class="ant-upload-list-item-icon" nz-icon nzType="file" nzTheme="twotone"></i
+    ></ng-template>
+    <ng-template #noPicTpl
+      ><i nz-icon [nzType]="file.status === 'uploading' ? 'loading' : 'paper-clip'"></i
+    ></ng-template>
   </ng-template>
   <ng-template #preview>
     <ng-container *ngIf="file.url; else prevText">
@@ -45,7 +57,12 @@
       >
     </ng-container>
     <ng-template #prevText>
-      <span (click)="handlePreview(file, $event)" class="ant-upload-list-item-name" title="{{ file.name }}">{{ file.name }}</span>
+      <span
+        (click)="handlePreview(file, $event)"
+        class="ant-upload-list-item-name"
+        title="{{ file.name }}"
+        >{{ file.name }}</span
+      >
     </ng-template>
   </ng-template>
   <div class="ant-upload-list-item-info">
@@ -71,11 +88,23 @@
       >
         <i nz-icon nzType="eye-o"></i>
       </a>
-      <i *ngIf="icons.showRemoveIcon" (click)="handleRemove(file, $event)" nz-icon nzType="delete" title="{{ locale.removeFile }}"></i>
+      <i
+        *ngIf="icons.showRemoveIcon"
+        (click)="handleRemove(file, $event)"
+        nz-icon
+        nzType="delete"
+        title="{{ locale.removeFile }}"
+      ></i>
     </span>
   </ng-container>
   <ng-template #close>
-    <i *ngIf="icons.showRemoveIcon" (click)="handleRemove(file, $event)" nz-icon nzType="close" title="{{ locale.removeFile }}"></i>
+    <i
+      *ngIf="icons.showRemoveIcon"
+      (click)="handleRemove(file, $event)"
+      nz-icon
+      nzType="close"
+      title="{{ locale.removeFile }}"
+    ></i>
   </ng-template>
   <div *ngIf="file.status === 'uploading'" class="ant-upload-list-item-progress">
     <nz-progress [nzPercent]="file.percent" [nzShowInfo]="false" [nzStrokeWidth]="2"></nz-progress>

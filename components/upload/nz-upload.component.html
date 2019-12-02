@@ -19,7 +19,12 @@
   </div>
 </ng-template>
 <ng-container *ngIf="nzType === 'drag'; else select">
-  <div [ngClass]="classList" (drop)="fileDrop($event)" (dragover)="fileDrop($event)" (dragleave)="fileDrop($event)">
+  <div
+    [ngClass]="classList"
+    (drop)="fileDrop($event)"
+    (dragover)="fileDrop($event)"
+    (dragleave)="fileDrop($event)"
+  >
     <div nz-upload-btn #uploadComp [options]="_btnOptions" [classes]="{ 'ant-upload-btn': true }">
       <div class="ant-upload-drag-container">
         <ng-template [ngTemplateOutlet]="con"></ng-template>

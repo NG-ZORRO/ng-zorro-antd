@@ -12,24 +12,41 @@
   <span #mirrorElement class="ant-select-search__field__mirror"></span>
 </ng-template>
 <div class="ant-select-selection__rendered">
-  <div *ngIf="nzPlaceHolder" nz-select-unselectable [style.display]="placeHolderDisplay" class="ant-select-selection__placeholder">
+  <div
+    *ngIf="nzPlaceHolder"
+    nz-select-unselectable
+    [style.display]="placeHolderDisplay"
+    class="ant-select-selection__placeholder"
+  >
     {{ nzPlaceHolder }}
   </div>
   <!--single mode-->
   <ng-container *ngIf="nzSelectService.isSingleMode">
     <!--selected label-->
     <div
-      *ngIf="nzSelectService.listOfCachedSelectedOption.length && nzSelectService.listOfSelectedValue.length"
+      *ngIf="
+        nzSelectService.listOfCachedSelectedOption.length &&
+        nzSelectService.listOfSelectedValue.length
+      "
       class="ant-select-selection-selected-value"
       [attr.title]="nzSelectService.listOfCachedSelectedOption[0]?.nzLabel"
       [ngStyle]="selectedValueStyle"
     >
-      <ng-container *nzStringTemplateOutlet="nzCustomTemplate; context: { $implicit: nzSelectService.listOfCachedSelectedOption[0] }">
+      <ng-container
+        *nzStringTemplateOutlet="
+          nzCustomTemplate;
+          context: { $implicit: nzSelectService.listOfCachedSelectedOption[0] }
+        "
+      >
         <ng-container>{{ nzSelectService.listOfCachedSelectedOption[0]?.nzLabel }}</ng-container>
       </ng-container>
     </div>
     <!--show search-->
-    <div *ngIf="nzShowSearch" class="ant-select-search ant-select-search--inline" [style.display]="nzOpen ? 'block' : 'none'">
+    <div
+      *ngIf="nzShowSearch"
+      class="ant-select-search ant-select-search--inline"
+      [style.display]="nzOpen ? 'block' : 'none'"
+    >
       <div class="ant-select-search__field__wrap">
         <ng-template [ngTemplateOutlet]="inputTemplate"></ng-template>
       </div>
@@ -38,7 +55,11 @@
   <!--multiple or tags mode-->
   <ul *ngIf="nzSelectService.isMultipleOrTags">
     <ng-container
-      *ngFor="let option of nzSelectService.listOfCachedSelectedOption | slice: 0:nzMaxTagCount; trackBy: trackValue; let index = index"
+      *ngFor="
+        let option of nzSelectService.listOfCachedSelectedOption | slice: 0:nzMaxTagCount;
+        trackBy: trackValue;
+        let index = index
+      "
     >
       <li
         [@zoomMotion]
@@ -49,7 +70,12 @@
         (@zoomMotion.done)="animationEnd()"
         class="ant-select-selection__choice"
       >
-        <ng-container *nzStringTemplateOutlet="nzCustomTemplate; context: { $implicit: nzSelectService.listOfCachedSelectedOption[index] }">
+        <ng-container
+          *nzStringTemplateOutlet="
+            nzCustomTemplate;
+            context: { $implicit: nzSelectService.listOfCachedSelectedOption[index] }
+          "
+        >
           <div class="ant-select-selection__choice__content">{{ option.nzLabel }}</div>
         </ng-container>
         <span
@@ -58,7 +84,12 @@
           (mousedown)="$event.preventDefault()"
           (click)="removeSelectedValue(option, $event)"
         >
-          <i nz-icon nzType="close" class="ant-select-remove-icon" *ngIf="!nzRemoveIcon; else nzRemoveIcon"></i>
+          <i
+            nz-icon
+            nzType="close"
+            class="ant-select-remove-icon"
+            *ngIf="!nzRemoveIcon; else nzRemoveIcon"
+          ></i>
         </span>
       </li>
     </ng-container>
@@ -74,7 +105,9 @@
         <ng-container *ngIf="nzMaxTagPlaceholder">
           <ng-template
             [ngTemplateOutlet]="nzMaxTagPlaceholder"
-            [ngTemplateOutletContext]="{ $implicit: nzSelectService.listOfSelectedValue | slice: nzMaxTagCount }"
+            [ngTemplateOutletContext]="{
+              $implicit: nzSelectService.listOfSelectedValue | slice: nzMaxTagCount
+            }"
           >
           </ng-template>
         </ng-container>
@@ -95,11 +128,22 @@
   (mousedown)="$event.preventDefault()"
   (click)="onClearSelection($event)"
 >
-  <i nz-icon nzType="close-circle" nzTheme="fill" *ngIf="!nzClearIcon; else nzClearIcon" class="ant-select-close-icon"></i>
+  <i
+    nz-icon
+    nzType="close-circle"
+    nzTheme="fill"
+    *ngIf="!nzClearIcon; else nzClearIcon"
+    class="ant-select-close-icon"
+  ></i>
 </span>
 <span class="ant-select-arrow" nz-select-unselectable *ngIf="nzShowArrow">
   <i nz-icon nzType="loading" *ngIf="nzLoading; else defaultArrow"></i>
   <ng-template #defaultArrow>
-    <i nz-icon nzType="down" class="ant-select-arrow-icon" *ngIf="!nzSuffixIcon; else nzSuffixIcon"></i>
+    <i
+      nz-icon
+      nzType="down"
+      class="ant-select-arrow-icon"
+      *ngIf="!nzSuffixIcon; else nzSuffixIcon"
+    ></i>
   </ng-template>
 </span>

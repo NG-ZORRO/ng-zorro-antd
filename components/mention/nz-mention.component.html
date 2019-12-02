@@ -9,11 +9,16 @@
       (click)="selectSuggestion(suggestion)"
     >
       <ng-container *ngIf="suggestionTemplate; else defaultSuggestion">
-        <ng-container *ngTemplateOutlet="suggestionTemplate; context: { $implicit: suggestion }"></ng-container>
+        <ng-container
+          *ngTemplateOutlet="suggestionTemplate; context: { $implicit: suggestion }"
+        ></ng-container>
       </ng-container>
       <ng-template #defaultSuggestion>{{ nzValueWith(suggestion) }}</ng-template>
     </li>
-    <li class="ant-mention-dropdown-notfound ant-mention-dropdown-item" *ngIf="filteredSuggestions.length === 0">
+    <li
+      class="ant-mention-dropdown-notfound ant-mention-dropdown-item"
+      *ngIf="filteredSuggestions.length === 0"
+    >
       <span *ngIf="nzLoading"><i nz-icon nzType="loading"></i></span>
       <span *ngIf="!nzLoading">{{ nzNotFoundContent }}</span>
     </li>

@@ -12,12 +12,18 @@
           <ng-container *ngSwitchCase="'ant-fullcalendar'">
             <div class="{{ prefixCls }}-month">
               <ng-container *ngIf="monthFullCellRender; else defaultCell">
-                <ng-container *ngTemplateOutlet="monthFullCellRender; context: { $implicit: monthCell.value }"> </ng-container>
+                <ng-container
+                  *ngTemplateOutlet="monthFullCellRender; context: { $implicit: monthCell.value }"
+                >
+                </ng-container>
               </ng-container>
               <ng-template #defaultCell>
                 <div class="{{ prefixCls }}-value">{{ monthCell.content }}</div>
                 <div *ngIf="monthCellRender" class="{{ prefixCls }}-content">
-                  <ng-container *ngTemplateOutlet="monthCellRender; context: { $implicit: monthCell.value }"> </ng-container>
+                  <ng-container
+                    *ngTemplateOutlet="monthCellRender; context: { $implicit: monthCell.value }"
+                  >
+                  </ng-container>
                 </div>
               </ng-template>
             </div>

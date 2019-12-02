@@ -9,7 +9,13 @@
   (mouseleave)="onRateLeave(); $event.stopPropagation()"
   [tabindex]="nzDisabled ? -1 : 1"
 >
-  <li *ngFor="let star of starArray; let i = index" class="ant-rate-star" [ngClass]="setClasses(star)" nz-tooltip [nzTitle]="nzTooltips[i]">
+  <li
+    *ngFor="let star of starArray; let i = index"
+    class="ant-rate-star"
+    [ngClass]="setClasses(star)"
+    nz-tooltip
+    [nzTitle]="nzTooltips[i]"
+  >
     <div
       nz-rate-item
       [allowHalf]="nzAllowHalf"

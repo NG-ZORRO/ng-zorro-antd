@@ -19,12 +19,19 @@
         <ng-container *ngIf="nzShowCheckbox">
           <ng-template [ngTemplateOutlet]="checkboxTemplate"></ng-template>
         </ng-container>
-        <div nz-dropdown class="ant-table-selection-down" nzPlacement="bottomLeft" [nzDropdownMenu]="selectionMenu">
+        <div
+          nz-dropdown
+          class="ant-table-selection-down"
+          nzPlacement="bottomLeft"
+          [nzDropdownMenu]="selectionMenu"
+        >
           <i nz-icon nzType="down"></i>
         </div>
         <nz-dropdown-menu #selectionMenu="nzDropdownMenu">
           <ul nz-menu class="ant-table-selection-menu">
-            <li nz-menu-item *ngFor="let selection of nzSelections" (click)="selection.onSelect()">{{ selection.text }}</li>
+            <li nz-menu-item *ngFor="let selection of nzSelections" (click)="selection.onSelect()">
+              {{ selection.text }}
+            </li>
           </ul>
         </nz-dropdown-menu>
       </div>
@@ -72,13 +79,19 @@
     <ul nz-menu>
       <ng-container *ngIf="nzFilterMultiple">
         <li nz-menu-item *ngFor="let filter of multipleFilterList" (click)="checkMultiple(filter)">
-          <label nz-checkbox [ngModel]="filter.checked" (ngModelChange)="checkMultiple(filter)"></label>
+          <label
+            nz-checkbox
+            [ngModel]="filter.checked"
+            (ngModelChange)="checkMultiple(filter)"
+          ></label>
           <span>{{ filter.text }}</span>
         </li>
       </ng-container>
       <ng-container *ngIf="!nzFilterMultiple">
         <li nz-menu-item *ngFor="let filter of singleFilterList" (click)="checkSingle(filter)">
-          <label nz-radio [ngModel]="filter.checked" (ngModelChange)="checkSingle(filter)">{{ filter.text }}</label>
+          <label nz-radio [ngModel]="filter.checked" (ngModelChange)="checkSingle(filter)">{{
+            filter.text
+          }}</label>
         </li>
       </ng-container>
     </ul>

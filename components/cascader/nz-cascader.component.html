@@ -40,9 +40,14 @@
       [class.ant-cascader-show-search]="!!nzShowSearch"
       [class.ant-focusd]="!!nzShowSearch && isFocused && !inputValue"
     >
-      <ng-container *ngIf="!isLabelRenderTemplate; else labelTemplate">{{ labelRenderText }}</ng-container>
+      <ng-container *ngIf="!isLabelRenderTemplate; else labelTemplate">{{
+        labelRenderText
+      }}</ng-container>
       <ng-template #labelTemplate>
-        <ng-template [ngTemplateOutlet]="nzLabelRender" [ngTemplateOutletContext]="labelRenderContext"></ng-template>
+        <ng-template
+          [ngTemplateOutlet]="nzLabelRender"
+          [ngTemplateOutletContext]="labelRenderContext"
+        ></ng-template>
       </ng-template>
     </span>
   </div>
@@ -95,7 +100,10 @@
         *ngIf="inSearchingMode && !cascaderService.columns[0].length"
         class="ant-cascader-menu-item ant-cascader-menu-item-expanded ant-cascader-menu-item-disabled"
       >
-        <nz-embed-empty [nzComponentName]="'cascader'" [specificContent]="nzNotFoundContent"></nz-embed-empty>
+        <nz-embed-empty
+          [nzComponentName]="'cascader'"
+          [specificContent]="nzNotFoundContent"
+        ></nz-embed-empty>
       </li>
     </ul>
   </div>

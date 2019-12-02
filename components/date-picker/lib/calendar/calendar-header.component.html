@@ -46,7 +46,11 @@
 
   <ng-container [ngSwitch]="panelMode">
     <ng-container *ngSwitchCase="'decade'">
-      <decade-panel [locale]="locale" [value]="value" (valueChange)="onChooseDecade($event)"></decade-panel>
+      <decade-panel
+        [locale]="locale"
+        [value]="value"
+        (valueChange)="onChooseDecade($event)"
+      ></decade-panel>
     </ng-container>
     <ng-container *ngSwitchCase="'year'">
       <year-panel

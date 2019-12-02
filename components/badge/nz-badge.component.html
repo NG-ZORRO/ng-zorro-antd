@@ -21,7 +21,11 @@
     [class.ant-badge-multiple-words]="countArray.length >= 2"
   >
     <ng-container *ngFor="let n of maxNumberArray; let i = index">
-      <span class="ant-scroll-number-only" *ngIf="count <= nzOverflowCount" [style.transform]="'translateY(' + -countArray[i] * 100 + '%)'">
+      <span
+        class="ant-scroll-number-only"
+        *ngIf="count <= nzOverflowCount"
+        [style.transform]="'translateY(' + -countArray[i] * 100 + '%)'"
+      >
         <ng-container *ngIf="!nzDot && countArray[i] !== undefined">
           <p *ngFor="let p of countSingleArray" [class.current]="p === countArray[i]">{{ p }}</p>
         </ng-container>

@@ -1,6 +1,8 @@
 <ng-template #progressInfoTemplate>
   <span class="ant-progress-text" *ngIf="nzShowInfo">
-    <ng-container *ngIf="status === 'exception' || (status === 'success' && !nzFormat); else formatTemplate">
+    <ng-container
+      *ngIf="status === 'exception' || (status === 'success' && !nzFormat); else formatTemplate"
+    >
       <i nz-icon [nzType]="icon"></i>
     </ng-container>
     <ng-template #formatTemplate>
@@ -52,7 +54,11 @@
     <svg class="ant-progress-circle " viewBox="0 0 100 100">
       <defs *ngIf="isGradient">
         <linearGradient [id]="'gradient-' + gradientId" x1="100%" y1="0%" x2="0%" y2="0%">
-          <stop *ngFor="let i of circleGradient" [attr.offset]="i.offset" [attr.stop-color]="i.color"></stop>
+          <stop
+            *ngFor="let i of circleGradient"
+            [attr.offset]="i.offset"
+            [attr.stop-color]="i.color"
+          ></stop>
         </linearGradient>
       </defs>
       <path

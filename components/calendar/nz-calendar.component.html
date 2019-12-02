@@ -8,9 +8,14 @@
 >
 </nz-calendar-header>
 
-<div class="{{ prefixCls }} {{ prefixCls }}-full" [class.ant-fullcalendar-fullscreen]="nzFullscreen">
+<div
+  class="{{ prefixCls }} {{ prefixCls }}-full"
+  [class.ant-fullcalendar-fullscreen]="nzFullscreen"
+>
   <div class="{{ prefixCls }}-calendar-body">
-    <ng-container *ngIf="nzMode === 'month'; then monthModeTable; else yearModeTable"></ng-container>
+    <ng-container
+      *ngIf="nzMode === 'month'; then monthModeTable; else yearModeTable"
+    ></ng-container>
   </div>
 </div>
 

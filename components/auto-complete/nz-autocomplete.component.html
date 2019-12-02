@@ -15,7 +15,9 @@
         role="menu"
         aria-activedescendant
       >
-        <ng-template *ngTemplateOutlet="nzDataSource ? optionsTemplate : contentTemplate"></ng-template>
+        <ng-template
+          *ngTemplateOutlet="nzDataSource ? optionsTemplate : contentTemplate"
+        ></ng-template>
       </ul>
     </div>
   </div>
@@ -23,6 +25,8 @@
     <ng-content></ng-content>
   </ng-template>
   <ng-template #optionsTemplate>
-    <nz-auto-option *ngFor="let option of nzDataSource" [nzValue]="option">{{ option }}</nz-auto-option>
+    <nz-auto-option *ngFor="let option of nzDataSource" [nzValue]="option">{{
+      option
+    }}</nz-auto-option>
   </ng-template>
 </ng-template>

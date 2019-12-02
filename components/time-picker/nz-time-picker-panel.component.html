@@ -1,6 +1,8 @@
 <div class="{{ nzInDatePicker ? prefixCls + '-panel' : '' }}">
   <div
-    class="{{ prefixCls }}-inner {{ nzInDatePicker ? prefixCls + '-column-' + enabledColumns : '' }}"
+    class="{{ prefixCls }}-inner {{
+      nzInDatePicker ? prefixCls + '-column-' + enabledColumns : ''
+    }}"
     [style.width.px]="nzInDatePicker ? null : enabledColumns * 56"
   >
     <div class="{{ prefixCls }}-input-wrap">

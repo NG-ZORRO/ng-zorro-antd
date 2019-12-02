@@ -65,7 +65,10 @@
     >
     </nz-tree>
     <span *ngIf="nzNodes.length === 0 || isNotFound" class="ant-select-not-found">
-      <nz-embed-empty [nzComponentName]="'tree-select'" [specificContent]="nzNotFoundContent"></nz-embed-empty>
+      <nz-embed-empty
+        [nzComponentName]="'tree-select'"
+        [specificContent]="nzNotFoundContent"
+      ></nz-embed-empty>
     </span>
   </div>
 </ng-template>
@@ -96,7 +99,11 @@
         {{ nzDisplayWith(selectedNodes[0]) }}
       </div>
 
-      <div *ngIf="nzShowSearch" [style.display]="searchDisplay" class="ant-select-search ant-select-search--inline">
+      <div
+        *ngIf="nzShowSearch"
+        [style.display]="searchDisplay"
+        class="ant-select-search ant-select-search--inline"
+      >
         <div class="ant-select-search__field__wrap">
           <ng-template [ngTemplateOutlet]="inputTemplate"></ng-template>
           <span class="ant-select-search__field__mirror">{{ inputValue }}&nbsp;</span>
@@ -113,7 +120,9 @@
       >
         {{ nzPlaceHolder }}
       </div>
-      <ng-container *ngFor="let node of selectedNodes | slice: 0:nzMaxTagCount; trackBy: trackValue">
+      <ng-container
+        *ngFor="let node of selectedNodes | slice: 0:nzMaxTagCount; trackBy: trackValue"
+      >
         <li
           [@zoomMotion]
           [@.disabled]="noAnimation?.nzNoAnimation"
@@ -133,7 +142,11 @@
           <span class="ant-select-selection__choice__content">{{ nzDisplayWith(node) }}</span>
         </li>
       </ng-container>
-      <li [@zoomMotion] *ngIf="selectedNodes.length > nzMaxTagCount" class="ant-select-selection__choice">
+      <li
+        [@zoomMotion]
+        *ngIf="selectedNodes.length > nzMaxTagCount"
+        class="ant-select-selection__choice"
+      >
         <div class="ant-select-selection__choice__content">
           <ng-container *ngIf="nzMaxTagPlaceholder">
             <ng-template
@@ -142,7 +155,9 @@
             >
             </ng-template>
           </ng-container>
-          <ng-container *ngIf="!nzMaxTagPlaceholder"> + {{ selectedNodes.length - nzMaxTagCount }} ... </ng-container>
+          <ng-container *ngIf="!nzMaxTagPlaceholder">
+            + {{ selectedNodes.length - nzMaxTagCount }} ...
+          </ng-container>
         </div>
       </li>
       <li class="ant-select-search ant-select-search--inline">
@@ -150,7 +165,12 @@
       </li>
     </ul>
   </ng-container>
-  <span *ngIf="nzAllowClear" class="ant-select-selection__clear" (mousedown)="$event.preventDefault()" (click)="onClearSelection($event)">
+  <span
+    *ngIf="nzAllowClear"
+    class="ant-select-selection__clear"
+    (mousedown)="$event.preventDefault()"
+    (click)="onClearSelection($event)"
+  >
     <i nz-icon nzType="close-circle" class="ant-select-clear-icon" nzTheme="fill"></i>
   </span>
   <span *ngIf="!isMultiple" class="ant-select-arrow">

@@ -15,13 +15,20 @@
           [nzDisabled]="disabled || item.disabled"
         >
           <ng-container *ngIf="!render; else renderContainer">{{ item.title }}</ng-container>
-          <ng-template #renderContainer [ngTemplateOutlet]="render" [ngTemplateOutletContext]="{ $implicit: item }"></ng-template>
+          <ng-template
+            #renderContainer
+            [ngTemplateOutlet]="render"
+            [ngTemplateOutletContext]="{ $implicit: item }"
+          ></ng-template>
         </label>
       </li>
     </div>
   </ul>
   <div *ngIf="stat.shownCount === 0" class="ant-transfer-list-body-not-found">
-    <nz-embed-empty [nzComponentName]="'transfer'" [specificContent]="notFoundContent"></nz-embed-empty>
+    <nz-embed-empty
+      [nzComponentName]="'transfer'"
+      [specificContent]="notFoundContent"
+    ></nz-embed-empty>
   </div>
 </ng-template>
 <div class="ant-transfer-list-header">
@@ -36,13 +43,18 @@
   </label>
   <span class="ant-transfer-list-header-selected">
     <span
-      >{{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }} {{ dataSource.length > 1 ? itemsUnit : itemUnit }}</span
+      >{{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }}
+      {{ dataSource.length > 1 ? itemsUnit : itemUnit }}</span
     >
     <span *ngIf="titleText" class="ant-transfer-list-header-title">{{ titleText }}</span>
   </span>
 </div>
 <div
-  class="{{ showSearch ? 'ant-transfer-list-body ant-transfer-list-body-with-search' : 'ant-transfer-list-body' }}"
+  class="{{
+    showSearch
+      ? 'ant-transfer-list-body ant-transfer-list-body-with-search'
+      : 'ant-transfer-list-body'
+  }}"
   [ngClass]="{ 'ant-transfer__nodata': stat.shownCount === 0 }"
 >
   <div *ngIf="showSearch" class="ant-transfer-list-body-search-wrapper">
@@ -74,5 +86,8 @@
   </ng-container>
 </div>
 <div *ngIf="footer" class="ant-transfer-list-footer">
-  <ng-template [ngTemplateOutlet]="footer" [ngTemplateOutletContext]="{ $implicit: direction }"></ng-template>
+  <ng-template
+    [ngTemplateOutlet]="footer"
+    [ngTemplateOutletContext]="{ $implicit: direction }"
+  ></ng-template>
 </div>

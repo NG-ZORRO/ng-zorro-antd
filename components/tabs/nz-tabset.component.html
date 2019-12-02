@@ -32,7 +32,9 @@
       (click)="clickLabel(i, tab.nzDisabled)"
       *ngFor="let tab of listOfNzTabComponent; let i = index"
     >
-      <ng-container *nzStringTemplateOutlet="tab.nzTitle || tab.title">{{ tab.nzTitle }}</ng-container>
+      <ng-container *nzStringTemplateOutlet="tab.nzTitle || tab.title">{{
+        tab.nzTitle
+      }}</ng-container>
     </div>
   </div>
   <div
@@ -45,7 +47,9 @@
     [class.ant-tabs-content-animated]="tabPaneAnimated"
     [class.ant-tabs-card-content]="nzType === 'card'"
     [class.ant-tabs-content-no-animated]="!tabPaneAnimated"
-    [style.margin-left.%]="tabPositionMode === 'horizontal' && tabPaneAnimated && -(nzSelectedIndex || 0) * 100"
+    [style.margin-left.%]="
+      tabPositionMode === 'horizontal' && tabPaneAnimated && -(nzSelectedIndex || 0) * 100
+    "
   >
     <div
       nz-tab-body

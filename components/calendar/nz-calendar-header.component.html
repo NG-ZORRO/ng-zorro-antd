@@ -16,7 +16,11 @@
   [ngModel]="activeMonth"
   (ngModelChange)="monthChange.emit($event)"
 >
-  <nz-option *ngFor="let month of months" [nzLabel]="month.label" [nzValue]="month.value"></nz-option>
+  <nz-option
+    *ngFor="let month of months"
+    [nzLabel]="month.label"
+    [nzValue]="month.value"
+  ></nz-option>
 </nz-select>
 
 <nz-radio-group [(ngModel)]="mode" (ngModelChange)="modeChange.emit($event)" [nzSize]="size">

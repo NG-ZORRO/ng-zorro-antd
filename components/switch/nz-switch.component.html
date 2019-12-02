@@ -15,10 +15,14 @@
   <span class="ant-switch-inner">
     <span>
       <ng-container *ngIf="checked">
-        <ng-container *nzStringTemplateOutlet="nzCheckedChildren">{{ nzCheckedChildren }}</ng-container>
+        <ng-container *nzStringTemplateOutlet="nzCheckedChildren">{{
+          nzCheckedChildren
+        }}</ng-container>
       </ng-container>
       <ng-container *ngIf="!checked">
-        <ng-container *nzStringTemplateOutlet="nzUnCheckedChildren">{{ nzUnCheckedChildren }}</ng-container>
+        <ng-container *nzStringTemplateOutlet="nzUnCheckedChildren">{{
+          nzUnCheckedChildren
+        }}</ng-container>
       </ng-container>
     </span>
   </span>

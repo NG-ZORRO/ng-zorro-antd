@@ -7,7 +7,10 @@
   (mouseleave)="onLeave()"
 >
   <div *ngIf="!nzMessage.template" class="ant-notification-notice-content">
-    <div class="ant-notification-notice-content" [ngClass]="{ 'ant-notification-notice-with-icon': nzMessage.type !== 'blank' }">
+    <div
+      class="ant-notification-notice-content"
+      [ngClass]="{ 'ant-notification-notice-with-icon': nzMessage.type !== 'blank' }"
+    >
       <div [class.ant-notification-notice-with-icon]="nzMessage.type !== 'blank'">
         <ng-container [ngSwitch]="nzMessage.type">
           <i
@@ -16,7 +19,12 @@
             nzType="check-circle"
             class="ant-notification-notice-icon ant-notification-notice-icon-success"
           ></i>
-          <i *ngSwitchCase="'info'" nz-icon nzType="info-circle" class="ant-notification-notice-icon ant-notification-notice-icon-info"></i>
+          <i
+            *ngSwitchCase="'info'"
+            nz-icon
+            nzType="info-circle"
+            class="ant-notification-notice-icon ant-notification-notice-icon-info"
+          ></i>
           <i
             *ngSwitchCase="'warning'"
             nz-icon
