@@ -47,9 +47,9 @@ export abstract class NzCarouselBaseStrategy {
    * @param contents
    */
   withCarouselContents(contents: QueryList<NzCarouselContentDirective> | null): void {
-    // TODO: carousel and its contents should be separated.
     const carousel = this.carouselComponent!;
     const rect = carousel.el.getBoundingClientRect();
+
     this.slickListEl = carousel.slickListEl;
     this.slickTrackEl = carousel.slickTrackEl;
     this.unitWidth = rect.width;
@@ -67,12 +67,12 @@ export abstract class NzCarouselBaseStrategy {
    * When user drag the carousel component.
    * @optional
    */
-  dragging(_vector: PointerVector): void {}
+  abstract dragging(_vector: PointerVector): void;
 
   /**
    * Destroy a scroll strategy.
    */
-  dispose(): void {}
+  abstract dispose(): void;
 
   protected getFromToInBoundary(f: number, t: number): FromToInterface {
     const length = this.maxIndex + 1;

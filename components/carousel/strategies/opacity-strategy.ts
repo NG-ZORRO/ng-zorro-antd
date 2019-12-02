@@ -50,7 +50,7 @@ export class NzCarouselOpacityStrategy extends NzCarouselBaseStrategy {
     this.contents.forEach((content: NzCarouselContentDirective) => {
       this.renderer.setStyle(content.el, 'transition', null);
     });
-
-    super.dispose();
   }
+
+  dragging(): void {}
 }

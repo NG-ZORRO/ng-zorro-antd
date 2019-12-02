@@ -23,7 +23,6 @@ export class NzCarouselTransformStrategy extends NzCarouselBaseStrategy {
   }
 
   dispose(): void {
-    super.dispose();
     this.renderer.setStyle(this.slickTrackEl, 'transform', null);
   }
 
