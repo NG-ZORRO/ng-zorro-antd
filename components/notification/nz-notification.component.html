@@ -25,7 +25,14 @@
   </ng-template>
   <a tabindex="0" class="ant-notification-notice-close" (click)="close()">
     <span class="ant-notification-notice-close-x">
-      <i nz-icon nzType="close" class="ant-notification-close-icon"></i>
+      <ng-container *ngIf="nzMessage.options?.nzCloseIcon">
+        <ng-container *nzStringTemplateOutlet="nzMessage.options?.nzCloseIcon">
+          <i nz-icon [nzType]="nzMessage.options?.nzCloseIcon"></i>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="!nzMessage.options?.nzCloseIcon">
+        <i nz-icon nzType="close" class="ant-notification-close-icon"></i>
+      </ng-container>
     </span>
   </a>
 </div>
