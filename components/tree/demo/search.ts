@@ -4,18 +4,14 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/core';
 @Component({
   selector: 'nz-demo-tree-search',
   template: `
-    <nz-row>
-      <nz-input-group [nzSuffix]="suffixIcon">
-        <input type="text" nz-input placeholder="Search" [(ngModel)]="searchValue" />
-      </nz-input-group>
-      <label nz-checkbox [(ngModel)]="ifCaseSensitive">Case Sensitive</label>
-    </nz-row>
+    <nz-input-group [nzSuffix]="suffixIcon">
+      <input type="text" nz-input placeholder="Search (Case Insensitive)" [(ngModel)]="searchValue" />
+    </nz-input-group>
     <ng-template #suffixIcon>
       <i nz-icon nzType="search"></i>
     </ng-template>
     <nz-tree
       [nzData]="nodes"
-      [nzHideUnMatched]="true"
       [nzSearchValue]="searchValue"
       [nzFilterOption]="customFilterOption"
       [nzHighlightFunc]="customHighlightFunc"
@@ -35,7 +31,6 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/core';
 })
 export class NzDemoTreeSearchComponent {
   searchValue = '';
-  ifCaseSensitive = true;
   nodes = [
     {
       title: 'A',
@@ -83,12 +78,7 @@ export class NzDemoTreeSearchComponent {
   ];
 
   customFilterOption = (inputValue: string, option: NzTreeNode) => {
-    console.log(inputValue, option);
-    if (this.ifCaseSensitive) {
-      return option.title.indexOf(inputValue) > -1;
-    } else {
-      return option.title.toLowerCase().indexOf(inputValue.toLowerCase()) > -1;
-    }
+    return option.title.toLowerCase().indexOf(inputValue.toLowerCase()) > -1;
   };
 
   customHighlightFunc = (inputValue: string, option: NzTreeNode) => {
