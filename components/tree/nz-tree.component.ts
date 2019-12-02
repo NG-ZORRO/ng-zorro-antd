@@ -34,6 +34,7 @@ import {
   NzConfigService,
   NzFormatBeforeDropEvent,
   NzFormatEmitEvent,
+  NzHighlightFunc,
   NzNoAnimationDirective,
   NzTreeBase,
   NzTreeBaseService,
@@ -183,6 +184,15 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   set nzFilterOption(value: NzTreeFilterOption) {
     this.nzTreeService.filterOption = value;
   }
+
+  @Input()
+  set nzHighlightFunc(value: NzHighlightFunc) {
+    this._nzHighlightFunc = value;
+  }
+  get nzHighlightFunc(): NzHighlightFunc {
+    return this._nzHighlightFunc;
+  }
+  private _nzHighlightFunc: NzHighlightFunc;
 
   /**
    * To render nodes if root is changed.

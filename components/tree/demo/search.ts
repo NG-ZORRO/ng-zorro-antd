@@ -18,9 +18,9 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/core';
       [nzHideUnMatched]="true"
       [nzSearchValue]="searchValue"
       [nzFilterOption]="customFilterOption"
+      [nzHighlightFunc]="customHighlightFunc"
       (nzClick)="nzEvent($event)"
       (nzExpandChange)="nzEvent($event)"
-      y
       (nzSearchValueChange)="nzEvent($event)"
     >
     </nz-tree>
@@ -88,6 +88,21 @@ export class NzDemoTreeSearchComponent {
       return option.title.indexOf(inputValue) > -1;
     } else {
       return option.title.toLowerCase().indexOf(inputValue.toLowerCase()) > -1;
+    }
+  };
+
+  customHighlightFunc = (inputValue: string, option: NzTreeNode) => {
+    if (inputValue && option) {
+      const startIndex = option.title.toLowerCase().indexOf(inputValue.toLowerCase());
+      if (startIndex > -1) {
+        const highlightLength = inputValue.length;
+        const highlightText = option.title.slice(startIndex, startIndex + highlightLength);
+        return option.title.replace(highlightText, `<span class="font-highlight">${highlightText}</span>`);
+      } else {
+        return option.title;
+      }
+    } else {
+      return option.title;
     }
   };
 

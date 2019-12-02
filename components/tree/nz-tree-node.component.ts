@@ -29,8 +29,10 @@ import { filter, takeUntil } from 'rxjs/operators';
 import {
   InputBoolean,
   NzFormatBeforeDropEvent,
+  NzHighlightFunc,
   NzNoAnimationDirective,
   NzTreeBaseService,
+  nzTreeDefaultHighlightFunc,
   NzTreeNode,
   treeCollapseMotion,
   warnDeprecation
@@ -101,6 +103,16 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
 
   get nzExpandAll(): boolean {
     return this._nzExpandAll;
+  }
+
+  _nzHighlightFunc = nzTreeDefaultHighlightFunc;
+  @Input()
+  set nzHighlightFunc(value: NzHighlightFunc) {
+    this._nzHighlightFunc = value || this._nzHighlightFunc;
+  }
+
+  get nzHighlightFunc(): NzHighlightFunc {
+    return this._nzHighlightFunc;
   }
 
   // default var
