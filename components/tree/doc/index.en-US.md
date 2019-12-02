@@ -37,6 +37,7 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 | `[nzSelectedKeys]` | Specifies the keys of the default selected treeNodes | `string[]` | `[]` |
 | `[nzSearchValue]` | Filter (highlight) treeNodes (see demo `Searchable`), two-way binding | `string` | `null` |
 | `[nzFilterOption]` | Filter options against it. The function will receive two arguments, `inputValue` and `option`, if the function returns `true`, the option will be included in the filtered set; Otherwise, it will be excluded. | `(inputValue?: string, option?: NzTreeNode) => boolean;` | - |
+| `[nzHighlightFUnc]` | Highlight options against it. The function will receive two arguments, `inputValue` and `option`, finally the value returned will be displayed as `innerHTML`. | `(inputValue?: string, option?: NzTreeNode) => string | null;` | - |
 | `[nzBeforeDrop]` | Drop before the second check, allowing the user to decide whether to allow placement | `(confirm: NzFormatBeforeDropEvent) => Observable<boolean>` | - |
 | `(nzClick)` | Callback function for when the user clicks a treeNode | `EventEmitter<NzFormatEmitEvent>` | - |
 | `(nzDblClick)` | Callback function for when the user double clicks a treeNode | `EventEmitter<NzFormatEmitEvent>` | - |
