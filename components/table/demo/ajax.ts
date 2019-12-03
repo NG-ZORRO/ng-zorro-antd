@@ -82,7 +82,10 @@ export class NzDemoTableAjaxComponent implements OnInit {
   loading = true;
   sortValue: string | null = null;
   sortKey: string | null = null;
-  filterGender = [{ text: 'male', value: 'male' }, { text: 'female', value: 'female' }];
+  filterGender = [
+    { text: 'male', value: 'male' },
+    { text: 'female', value: 'female' }
+  ];
   searchGenderList: string[] = [];
 
   sort(sort: { key: string; value: string }): void {

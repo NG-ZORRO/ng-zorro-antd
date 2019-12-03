@@ -2,7 +2,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -423,9 +423,7 @@ describe('NzMonthPickerComponent', () => {
   }
 
   function getSelectedMonthCell(): HTMLElement {
-    return queryFromOverlay(
-      'tbody.ant-calendar-month-panel-tbody td.ant-calendar-month-panel-selected-cell'
-    ) as HTMLElement;
+    return queryFromOverlay('tbody.ant-calendar-month-panel-tbody td.ant-calendar-month-panel-selected-cell') as HTMLElement;
   }
 
   function getFirstMonthCell(): HTMLElement {

@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { animate, style, transition, trigger, AnimationTriggerMetadata } from '@angular/animations';
+import { animate, AnimationTriggerMetadata, style, transition, trigger } from '@angular/animations';
 import { AnimationCurves, AnimationDuration } from './animation-consts';
 
 export const helpMotion: AnimationTriggerMetadata = trigger('helpMotion', [

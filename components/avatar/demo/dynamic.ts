@@ -6,12 +6,7 @@ const colorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
 @Component({
   selector: 'nz-demo-avatar-dynamic',
   template: `
-    <nz-avatar
-      [ngStyle]="{ 'background-color': color }"
-      [nzText]="text"
-      nzSize="large"
-      style="vertical-align: middle;"
-    ></nz-avatar>
+    <nz-avatar [ngStyle]="{ 'background-color': color }" [nzText]="text" nzSize="large" style="vertical-align: middle;"></nz-avatar>
     <button nz-button [nzType]="'dashed'" (click)="change()" style="margin-left: 16px; vertical-align: middle;">
       <span>Change</span>
     </button>

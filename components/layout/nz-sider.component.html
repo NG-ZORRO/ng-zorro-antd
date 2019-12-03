@@ -4,10 +4,12 @@
 <span class="ant-layout-sider-zero-width-trigger" *ngIf="isZeroTrigger" (click)="toggleCollapse()">
   <ng-template [ngTemplateOutlet]="nzZeroTrigger || zeroTrigger"></ng-template>
 </span>
-<div class="ant-layout-sider-trigger"
+<div
+  class="ant-layout-sider-trigger"
   *ngIf="isSiderTrigger"
   (click)="toggleCollapse()"
-  [style.width]="widthSetting">
+  [style.width]="widthSetting"
+>
   <ng-template [ngTemplateOutlet]="trigger"></ng-template>
 </div>
 <ng-template #defaultTrigger>

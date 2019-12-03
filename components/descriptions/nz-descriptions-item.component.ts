@@ -6,16 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnChanges,
-  OnDestroy,
-  TemplateRef,
-  ViewChild,
-  ViewEncapsulation
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 
 import { InputNumber } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';

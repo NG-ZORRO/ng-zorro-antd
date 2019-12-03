@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'nz-demo-popover-triggerType',
+  selector: 'nz-demo-popover-trigger-type',
   template: `
     <ng-template #contentTemplate>
       <div>

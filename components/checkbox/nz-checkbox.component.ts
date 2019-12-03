@@ -8,13 +8,13 @@
 
 import { FocusMonitor } from '@angular/cdk/a11y';
 import {
-  forwardRef,
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Input,
   OnChanges,
   OnDestroy,
@@ -28,7 +28,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { isEmpty, InputBoolean } from 'ng-zorro-antd/core';
+import { InputBoolean, isEmpty } from 'ng-zorro-antd/core';
 
 import { NzCheckboxWrapperComponent } from './nz-checkbox-wrapper.component';
 

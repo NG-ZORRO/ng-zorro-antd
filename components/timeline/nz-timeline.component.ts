@@ -65,11 +65,7 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
     if (modeChanges && (modeChanges.previousValue !== modeChanges.currentValue || modeChanges.isFirstChange())) {
       this.updateChildren();
     }
-    if (
-      reverseChanges &&
-      reverseChanges.previousValue !== reverseChanges.currentValue &&
-      !reverseChanges.isFirstChange()
-    ) {
+    if (reverseChanges && reverseChanges.previousValue !== reverseChanges.currentValue && !reverseChanges.isFirstChange()) {
       this.reverseChildTimelineDots();
     }
     if (pendingChanges) {

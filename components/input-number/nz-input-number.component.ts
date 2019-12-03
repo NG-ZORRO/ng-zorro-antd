@@ -9,13 +9,13 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { DOWN_ARROW, ENTER, UP_ARROW } from '@angular/cdk/keycodes';
 import {
-  forwardRef,
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Input,
   OnChanges,
   OnDestroy,
@@ -28,7 +28,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { isNotNil, InputBoolean, NzSizeLDSType } from 'ng-zorro-antd/core';
+import { InputBoolean, isNotNil, NzSizeLDSType } from 'ng-zorro-antd/core';
 
 @Component({
   selector: 'nz-input-number',
@@ -109,12 +109,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
 
   // '1.' '1x' 'xx' '' => are not complete numbers
   isNotCompleteNumber(num: string | number): boolean {
-    return (
-      isNaN(num as number) ||
-      num === '' ||
-      num === null ||
-      !!(num && num.toString().indexOf('.') === num.toString().length - 1)
-    );
+    return isNaN(num as number) || num === '' || num === null || !!(num && num.toString().indexOf('.') === num.toString().length - 1);
   }
 
   getValidValue(value?: string | number): string | number | undefined {

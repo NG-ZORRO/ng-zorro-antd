@@ -59,11 +59,7 @@ export class NzTreeNode {
     return this.service || (this.parentNode && this.parentNode.treeService);
   }
 
-  constructor(
-    option: NzTreeNodeOptions | NzTreeNode,
-    parent: NzTreeNode | null = null,
-    service: NzTreeBaseService | null = null
-  ) {
+  constructor(option: NzTreeNodeOptions | NzTreeNode, parent: NzTreeNode | null = null, service: NzTreeBaseService | null = null) {
     if (option instanceof NzTreeNode) {
       return option;
     }
@@ -97,14 +93,7 @@ export class NzTreeNode {
     if (typeof option.children !== 'undefined' && option.children !== null) {
       option.children.forEach(nodeOptions => {
         const s = this.treeService;
-        if (
-          s &&
-          !s.isCheckStrictly &&
-          option.checked &&
-          !option.disabled &&
-          !nodeOptions.disabled &&
-          !nodeOptions.disableCheckbox
-        ) {
+        if (s && !s.isCheckStrictly && option.checked && !option.disabled && !nodeOptions.disabled && !nodeOptions.disableCheckbox) {
           nodeOptions.checked = option.checked;
         }
         this._children.push(new NzTreeNode(nodeOptions, this));

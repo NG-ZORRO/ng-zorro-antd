@@ -6,29 +6,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  AfterViewInit,
-  Directive,
-  ElementRef,
-  Input,
-  NgZone,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Renderer2,
-  SimpleChanges
-} from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, Input, NgZone, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges } from '@angular/core';
 
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Platform } from '@angular/cdk/platform';
-import {
-  responsiveMap,
-  IndexableObject,
-  NzAlignType,
-  NzBreakPoint,
-  NzDomEventService,
-  NzUpdateHostClassService
-} from 'ng-zorro-antd/core';
+import { IndexableObject, NzAlignType, NzBreakPoint, NzDomEventService, NzUpdateHostClassService, responsiveMap } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 

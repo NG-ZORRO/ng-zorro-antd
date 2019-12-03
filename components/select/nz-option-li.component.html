@@ -1,6 +1,11 @@
 <ng-container *ngIf="!nzOption.nzCustomContent; else nzOption.template">
-  {{nzOption.nzLabel}}
+  {{ nzOption.nzLabel }}
 </ng-container>
 <ng-container *ngIf="nzSelectService.isMultipleOrTags">
-  <i nz-icon nzType="check" class="ant-select-selected-icon" *ngIf="!nzMenuItemSelectedIcon; else nzMenuItemSelectedIcon"></i>
+  <i
+    nz-icon
+    nzType="check"
+    class="ant-select-selected-icon"
+    *ngIf="!nzMenuItemSelectedIcon; else nzMenuItemSelectedIcon"
+  ></i>
 </ng-container>

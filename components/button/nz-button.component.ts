@@ -34,15 +34,15 @@ import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 import {
   findFirstNotEmptyNode,
   findLastNotEmptyNode,
-  isEmpty,
   InputBoolean,
+  isEmpty,
+  NZ_WAVE_GLOBAL_CONFIG,
   NzConfigService,
   NzSizeLDSType,
   NzSizeMap,
   NzUpdateHostClassService,
   NzWaveConfig,
   NzWaveDirective,
-  NZ_WAVE_GLOBAL_CONFIG,
   WithConfig
 } from 'ng-zorro-antd/core';
 import { NzIconDirective } from 'ng-zorro-antd/icon';
@@ -66,12 +66,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'button';
 export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, OnChanges {
   @ViewChild('contentElement', { static: true }) contentElement: ElementRef;
   @ContentChildren(NzIconDirective, { read: ElementRef }) listOfIconElement: QueryList<ElementRef>;
-  @HostBinding('attr.nz-wave') nzWave = new NzWaveDirective(
-    this.ngZone,
-    this.elementRef,
-    this.waveConfig,
-    this.animationType
-  );
+  @HostBinding('attr.nz-wave') nzWave = new NzWaveDirective(this.ngZone, this.elementRef, this.waveConfig, this.animationType);
 
   @Input() @InputBoolean() nzBlock: boolean = false;
   @Input() @InputBoolean() nzGhost: boolean = false;
@@ -167,10 +162,7 @@ export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, O
   ngAfterContentInit(): void {
     this.contentObserver
       .observe(this.contentElement)
-      .pipe(
-        startWith(true),
-        takeUntil(this.destroy$)
-      )
+      .pipe(startWith(true), takeUntil(this.destroy$))
       .subscribe(() => {
         // https://github.com/NG-ZORRO/ng-zorro-antd/issues/3079
         Promise.resolve().then(() => this.checkContent());

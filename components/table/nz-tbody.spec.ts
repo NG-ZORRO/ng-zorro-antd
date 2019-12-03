@@ -1,5 +1,5 @@
 import { Component, DebugElement } from '@angular/core';
-import { fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzTableModule } from './nz-table.module';
 import { NzTbodyDirective } from './nz-tbody.directive';

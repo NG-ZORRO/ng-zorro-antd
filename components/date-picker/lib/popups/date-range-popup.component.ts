@@ -19,7 +19,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { sortRangeValue, CandyDate, FunctionProp } from 'ng-zorro-antd/core';
+import { CandyDate, FunctionProp, sortRangeValue } from 'ng-zorro-antd/core';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import {
   CompatibleValue,
@@ -357,10 +357,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
       const showTime = typeof this.showTime === 'object' ? this.showTime : {};
       if (this.isRange) {
         const value = this.value as CandyDate[];
-        this.timeOptions = [
-          this.overrideTimeOptions(showTime, value[0], 'start'),
-          this.overrideTimeOptions(showTime, value[1], 'end')
-        ];
+        this.timeOptions = [this.overrideTimeOptions(showTime, value[0], 'start'), this.overrideTimeOptions(showTime, value[1], 'end')];
       } else {
         this.timeOptions = this.overrideTimeOptions(showTime, this.value as CandyDate);
       }
@@ -369,11 +366,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
     }
   }
 
-  private overrideTimeOptions(
-    origin: SupportTimeOptions,
-    value: CandyDate,
-    partial?: DisabledTimePartial
-  ): SupportTimeOptions {
+  private overrideTimeOptions(origin: SupportTimeOptions, value: CandyDate, partial?: DisabledTimePartial): SupportTimeOptions {
     let disabledTimeFn;
     if (partial) {
       disabledTimeFn = partial === 'start' ? this.disabledStartTime : this.disabledEndTime;

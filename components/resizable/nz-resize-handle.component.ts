@@ -6,30 +6,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzResizableService } from './nz-resizable.service';
 
-export type NzResizeDirection =
-  | 'top'
-  | 'right'
-  | 'bottom'
-  | 'left'
-  | 'topRight'
-  | 'bottomRight'
-  | 'bottomLeft'
-  | 'topLeft';
+export type NzResizeDirection = 'top' | 'right' | 'bottom' | 'left' | 'topRight' | 'bottomRight' | 'bottomLeft' | 'topLeft';
 
 export class NzResizeHandleMouseDownEvent {
   constructor(public direction: NzResizeDirection, public mouseEvent: MouseEvent | TouchEvent) {}

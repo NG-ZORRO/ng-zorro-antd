@@ -20,15 +20,7 @@ import { NzTextEditComponent } from './nz-text-edit.component';
 import { NzTypographyComponent } from './nz-typography.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    NzIconModule,
-    NzToolTipModule,
-    NzInputModule,
-    NzI18nModule,
-    NzTransButtonModule,
-    NzCopyToClipboardServiceModule
-  ],
+  imports: [CommonModule, NzIconModule, NzToolTipModule, NzInputModule, NzI18nModule, NzTransButtonModule, NzCopyToClipboardServiceModule],
   exports: [NzTypographyComponent, NzTextCopyComponent, NzTextEditComponent, PlatformModule],
   declarations: [NzTypographyComponent, NzTextCopyComponent, NzTextEditComponent]
 })

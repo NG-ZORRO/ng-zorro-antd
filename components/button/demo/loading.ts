@@ -7,9 +7,7 @@ import { Component } from '@angular/core';
     <button nz-button nzType="primary" nzSize="small" nzLoading>Loading</button>
     <br />
     <button nz-button nzType="primary" (click)="loadOne()" [nzLoading]="isLoadingOne">Click me!</button>
-    <button nz-button nzType="primary" (click)="loadTwo()" [nzLoading]="isLoadingTwo">
-      <i nz-icon nzType="poweroff"></i>Click me!
-    </button>
+    <button nz-button nzType="primary" (click)="loadTwo()" [nzLoading]="isLoadingTwo"><i nz-icon nzType="poweroff"></i>Click me!</button>
     <br />
     <button nz-button nzLoading nzShape="circle"></button>
     <button nz-button nzLoading nzType="primary" nzShape="circle"></button>

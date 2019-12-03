@@ -1,5 +1,5 @@
 import { Component, DebugElement } from '@angular/core';
-import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -127,9 +127,7 @@ describe('badge', () => {
       statusList.forEach(status => {
         testComponent.status = status;
         fixture.detectChanges();
-        expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').classList).toContain(
-          `ant-badge-status-${status}`
-        );
+        expect(badgeElement.nativeElement.querySelector('.ant-badge-status-dot').classList).toContain(`ant-badge-status-${status}`);
       });
       testComponent.text = 'test';
       fixture.detectChanges();

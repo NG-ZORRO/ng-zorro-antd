@@ -6,25 +6,20 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  CdkConnectedOverlay,
-  CdkOverlayOrigin,
-  ConnectedOverlayPositionChange,
-  ConnectionPositionPair
-} from '@angular/cdk/overlay';
+import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 import { ChangeDetectorRef, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import {
+  DEFAULT_TOOLTIP_POSITIONS,
   getPlacementName,
   isNotNil,
-  toBoolean,
-  DEFAULT_TOOLTIP_POSITIONS,
   NgClassInterface,
   NgStyleInterface,
   NzNoAnimationDirective,
   NzTSType,
-  POSITION_MAP
+  POSITION_MAP,
+  toBoolean
 } from 'ng-zorro-antd/core';
 
 import { NzTooltipTrigger } from './nz-tooltip.definitions';

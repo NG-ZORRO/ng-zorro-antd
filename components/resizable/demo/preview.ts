@@ -4,14 +4,7 @@ import { NzResizeEvent } from 'ng-zorro-antd/resizable';
 @Component({
   selector: 'nz-demo-resizable-preview',
   template: `
-    <div
-      class="box"
-      nz-resizable
-      nzPreview
-      (nzResizeEnd)="onResize($event)"
-      [style.height.px]="height"
-      [style.width.px]="width"
-    >
+    <div class="box" nz-resizable nzPreview (nzResizeEnd)="onResize($event)" [style.height.px]="height" [style.width.px]="width">
       <nz-resize-handles></nz-resize-handles>
       content
     </div>

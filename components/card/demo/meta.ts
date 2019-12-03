@@ -4,11 +4,7 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-card-meta',
   template: `
     <nz-card style="width:300px;" [nzCover]="coverTemplate" [nzActions]="[actionSetting, actionEdit, actionEllipsis]">
-      <nz-card-meta
-        nzTitle="Card title"
-        nzDescription="This is the description"
-        [nzAvatar]="avatarTemplate"
-      ></nz-card-meta>
+      <nz-card-meta nzTitle="Card title" nzDescription="This is the description" [nzAvatar]="avatarTemplate"></nz-card-meta>
     </nz-card>
     <ng-template #avatarTemplate>
       <nz-avatar nzSrc="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>

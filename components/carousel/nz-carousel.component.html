@@ -26,7 +26,10 @@
       [class.slick-active]="content.isActive"
       (click)="goTo(i)"
     >
-      <ng-template [ngTemplateOutlet]="nzDotRender || renderDotTemplate" [ngTemplateOutletContext]="{ $implicit: i }">
+      <ng-template
+        [ngTemplateOutlet]="nzDotRender || renderDotTemplate"
+        [ngTemplateOutletContext]="{ $implicit: i }"
+      >
       </ng-template>
     </li>
   </ul>

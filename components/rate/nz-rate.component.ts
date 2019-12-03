@@ -8,13 +8,13 @@
 
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import {
-  forwardRef,
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Input,
   OnChanges,
   OnDestroy,

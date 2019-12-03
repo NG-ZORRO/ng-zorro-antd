@@ -2,14 +2,14 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import differenceInDays from 'date-fns/difference_in_days';
 import isSameDay from 'date-fns/is_same_day';
 
-import { dispatchMouseEvent, typeInElement, NgStyleInterface } from 'ng-zorro-antd/core';
+import { dispatchMouseEvent, NgStyleInterface, typeInElement } from 'ng-zorro-antd/core';
 
 import { CandyDate } from '../core';
 import { NzDatePickerModule } from './nz-date-picker.module';
@@ -176,9 +176,7 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      const disabledCell = queryFromOverlay(
-        '.ant-calendar-range-left tbody.ant-calendar-tbody td.ant-calendar-disabled-cell'
-      );
+      const disabledCell = queryFromOverlay('.ant-calendar-range-left tbody.ant-calendar-tbody td.ant-calendar-disabled-cell');
       expect(disabledCell.textContent!.trim()).toBe('15');
     }));
 
@@ -324,31 +322,23 @@ describe('NzRangePickerComponent', () => {
       // Click previous year button
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-range-left .ant-calendar-prev-year-btn'), 'click');
       fixture.detectChanges();
-      expect(
-        queryFromOverlay('.ant-calendar-range-left .ant-calendar-year-select').textContent!.indexOf('2017') > -1
-      ).toBeTruthy();
+      expect(queryFromOverlay('.ant-calendar-range-left .ant-calendar-year-select').textContent!.indexOf('2017') > -1).toBeTruthy();
       // Click next year button * 2
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-range-left .ant-calendar-next-year-btn'), 'click');
       fixture.detectChanges();
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-range-left .ant-calendar-next-year-btn'), 'click');
       fixture.detectChanges();
-      expect(
-        queryFromOverlay('.ant-calendar-range-left .ant-calendar-year-select').textContent!.indexOf('2019') > -1
-      ).toBeTruthy();
+      expect(queryFromOverlay('.ant-calendar-range-left .ant-calendar-year-select').textContent!.indexOf('2019') > -1).toBeTruthy();
       // Click previous month button
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-range-left .ant-calendar-prev-month-btn'), 'click');
       fixture.detectChanges();
-      expect(
-        queryFromOverlay('.ant-calendar-range-left .ant-calendar-month-select').textContent!.indexOf('5') > -1
-      ).toBeTruthy();
+      expect(queryFromOverlay('.ant-calendar-range-left .ant-calendar-month-select').textContent!.indexOf('5') > -1).toBeTruthy();
       // Click next month button * 2
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-range-left .ant-calendar-next-month-btn'), 'click');
       fixture.detectChanges();
       dispatchMouseEvent(queryFromOverlay('.ant-calendar-range-left .ant-calendar-next-month-btn'), 'click');
       fixture.detectChanges();
-      expect(
-        queryFromOverlay('.ant-calendar-range-left .ant-calendar-month-select').textContent!.indexOf('7') > -1
-      ).toBeTruthy();
+      expect(queryFromOverlay('.ant-calendar-range-left .ant-calendar-month-select').textContent!.indexOf('7') > -1).toBeTruthy();
     }));
   }); // /panel switch and move forward/afterward
 
@@ -383,9 +373,7 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(
-        queryFromOverlay('.ant-calendar-range-left .ant-calendar-time-picker-inner.ant-calendar-time-picker-column-3')
-      ).toBeDefined();
+      expect(queryFromOverlay('.ant-calendar-range-left .ant-calendar-time-picker-inner.ant-calendar-time-picker-column-3')).toBeDefined();
       expect(
         queryFromOverlay(
           '.ant-calendar-range-left .ant-calendar-time-picker-select:first-child li.ant-calendar-time-picker-select-option-selected'
@@ -393,10 +381,7 @@ describe('NzRangePickerComponent', () => {
       ).toBe('11');
 
       // Click to choose a hour
-      dispatchMouseEvent(
-        queryFromOverlay('.ant-calendar-range-left .ant-calendar-time-picker-select:first-child li:first-child'),
-        'click'
-      );
+      dispatchMouseEvent(queryFromOverlay('.ant-calendar-range-left .ant-calendar-time-picker-select:first-child li:first-child'), 'click');
       fixture.detectChanges();
       expect(getPickerPanelLeftInput().value).toBe('2018-11-11 00:22:33');
     }));
@@ -412,9 +397,7 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(
-        queryFromOverlay('.ant-calendar-range-left .ant-calendar-time-picker-inner.ant-calendar-time-picker-column-2')
-      ).toBeDefined();
+      expect(queryFromOverlay('.ant-calendar-range-left .ant-calendar-time-picker-inner.ant-calendar-time-picker-column-2')).toBeDefined();
     }));
 
     it('should support nzDisabledTime and nzShowTime.nzHideDisabledOptions', fakeAsync(() => {
@@ -443,35 +426,35 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       // Left time picker
       expect(
-        queryFromOverlay(
-          '.ant-calendar-range-left .ant-calendar-time-picker-select:nth-child(1) li:nth-child(3)'
-        ).classList.contains('ant-calendar-time-picker-select-option-disabled')
+        queryFromOverlay('.ant-calendar-range-left .ant-calendar-time-picker-select:nth-child(1) li:nth-child(3)').classList.contains(
+          'ant-calendar-time-picker-select-option-disabled'
+        )
       ).toBeTruthy();
       expect(
-        queryFromOverlay(
-          '.ant-calendar-range-left .ant-calendar-time-picker-select:nth-child(2) li:nth-child(2)'
-        ).classList.contains('ant-calendar-time-picker-select-option-disabled')
+        queryFromOverlay('.ant-calendar-range-left .ant-calendar-time-picker-select:nth-child(2) li:nth-child(2)').classList.contains(
+          'ant-calendar-time-picker-select-option-disabled'
+        )
       ).toBeTruthy();
       expect(
-        queryFromOverlay(
-          '.ant-calendar-range-left .ant-calendar-time-picker-select:nth-child(3) li:nth-child(1)'
-        ).classList.contains('ant-calendar-time-picker-select-option-disabled')
+        queryFromOverlay('.ant-calendar-range-left .ant-calendar-time-picker-select:nth-child(3) li:nth-child(1)').classList.contains(
+          'ant-calendar-time-picker-select-option-disabled'
+        )
       ).toBeTruthy();
       // Right time picker
       expect(
-        queryFromOverlay(
-          '.ant-calendar-range-right .ant-calendar-time-picker-select:nth-child(1) li:nth-child(4)'
-        ).classList.contains('ant-calendar-time-picker-select-option-disabled')
+        queryFromOverlay('.ant-calendar-range-right .ant-calendar-time-picker-select:nth-child(1) li:nth-child(4)').classList.contains(
+          'ant-calendar-time-picker-select-option-disabled'
+        )
       ).toBeTruthy();
       expect(
-        queryFromOverlay(
-          '.ant-calendar-range-right .ant-calendar-time-picker-select:nth-child(2) li:nth-child(3)'
-        ).classList.contains('ant-calendar-time-picker-select-option-disabled')
+        queryFromOverlay('.ant-calendar-range-right .ant-calendar-time-picker-select:nth-child(2) li:nth-child(3)').classList.contains(
+          'ant-calendar-time-picker-select-option-disabled'
+        )
       ).toBeTruthy();
       expect(
-        queryFromOverlay(
-          '.ant-calendar-range-right .ant-calendar-time-picker-select:nth-child(3) li:nth-child(2)'
-        ).classList.contains('ant-calendar-time-picker-select-option-disabled')
+        queryFromOverlay('.ant-calendar-range-right .ant-calendar-time-picker-select:nth-child(3) li:nth-child(2)').classList.contains(
+          'ant-calendar-time-picker-select-option-disabled'
+        )
       ).toBeTruthy();
 
       // Use nzHideDisabledOptions to hide disabled times
@@ -479,35 +462,23 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       // Left time picker
       expect(
-        +queryFromOverlay(
-          '.ant-calendar-range-left .ant-calendar-time-picker-select:nth-child(1) li:first-child'
-        ).textContent!.trim()
+        +queryFromOverlay('.ant-calendar-range-left .ant-calendar-time-picker-select:nth-child(1) li:first-child').textContent!.trim()
       ).toBe(3);
       expect(
-        +queryFromOverlay(
-          '.ant-calendar-range-left .ant-calendar-time-picker-select:nth-child(2) li:first-child'
-        ).textContent!.trim()
+        +queryFromOverlay('.ant-calendar-range-left .ant-calendar-time-picker-select:nth-child(2) li:first-child').textContent!.trim()
       ).toBe(2);
       expect(
-        +queryFromOverlay(
-          '.ant-calendar-range-left .ant-calendar-time-picker-select:nth-child(3) li:first-child'
-        ).textContent!.trim()
+        +queryFromOverlay('.ant-calendar-range-left .ant-calendar-time-picker-select:nth-child(3) li:first-child').textContent!.trim()
       ).toBe(1);
       // Right time picker
       expect(
-        +queryFromOverlay(
-          '.ant-calendar-range-right .ant-calendar-time-picker-select:nth-child(1) li:first-child'
-        ).textContent!.trim()
+        +queryFromOverlay('.ant-calendar-range-right .ant-calendar-time-picker-select:nth-child(1) li:first-child').textContent!.trim()
       ).toBe(4);
       expect(
-        +queryFromOverlay(
-          '.ant-calendar-range-right .ant-calendar-time-picker-select:nth-child(2) li:first-child'
-        ).textContent!.trim()
+        +queryFromOverlay('.ant-calendar-range-right .ant-calendar-time-picker-select:nth-child(2) li:first-child').textContent!.trim()
       ).toBe(3);
       expect(
-        +queryFromOverlay(
-          '.ant-calendar-range-right .ant-calendar-time-picker-select:nth-child(3) li:first-child'
-        ).textContent!.trim()
+        +queryFromOverlay('.ant-calendar-range-right .ant-calendar-time-picker-select:nth-child(3) li:first-child').textContent!.trim()
       ).toBe(2);
     }));
 
@@ -545,17 +516,13 @@ describe('NzRangePickerComponent', () => {
       // Click header to month panel
       // Left
       dispatchMouseEvent(
-        overlayContainerElement.querySelector(
-          '.ant-calendar-range-left .ant-calendar-header .ant-calendar-month-select'
-        )!,
+        overlayContainerElement.querySelector('.ant-calendar-range-left .ant-calendar-header .ant-calendar-month-select')!,
         'click'
       );
       fixture.detectChanges();
       // Right
       dispatchMouseEvent(
-        overlayContainerElement.querySelector(
-          '.ant-calendar-range-right .ant-calendar-header .ant-calendar-year-select'
-        )!,
+        overlayContainerElement.querySelector('.ant-calendar-range-right .ant-calendar-header .ant-calendar-year-select')!,
         'click'
       );
       fixture.detectChanges();
@@ -634,9 +601,7 @@ describe('NzRangePickerComponent', () => {
       selector = queryFromOverlay('.ant-calendar-range-quick-selector > a');
       dispatchMouseEvent(selector, 'mouseenter');
       fixture.detectChanges();
-      expect(queryFromOverlay('.ant-calendar-range-left td.ant-calendar-selected-day').textContent).toContain(
-        `${today.getDate()}`
-      );
+      expect(queryFromOverlay('.ant-calendar-range-left td.ant-calendar-selected-day').textContent).toContain(`${today.getDate()}`);
 
       selector = queryFromOverlay('.ant-calendar-range-quick-selector > a');
       dispatchMouseEvent(selector, 'mouseleave');
@@ -790,21 +755,15 @@ describe('NzRangePickerComponent', () => {
   }
 
   function getFirstSelectedDayCell(): HTMLElement {
-    return queryFromOverlay(
-      '.ant-calendar-range-left tbody.ant-calendar-tbody td.ant-calendar-selected-day'
-    ) as HTMLElement;
+    return queryFromOverlay('.ant-calendar-range-left tbody.ant-calendar-tbody td.ant-calendar-selected-day') as HTMLElement;
   }
 
   function getSecondSelectedDayCell(): HTMLElement {
-    return queryFromOverlay(
-      '.ant-calendar-range-right tbody.ant-calendar-tbody td.ant-calendar-selected-day'
-    ) as HTMLElement;
+    return queryFromOverlay('.ant-calendar-range-right tbody.ant-calendar-tbody td.ant-calendar-selected-day') as HTMLElement;
   }
 
   function getFirstCell(partial: 'left' | 'right'): HTMLElement {
-    return queryFromOverlay(
-      `.ant-calendar-range-${partial} tbody.ant-calendar-tbody td.ant-calendar-cell`
-    ) as HTMLElement;
+    return queryFromOverlay(`.ant-calendar-range-${partial} tbody.ant-calendar-tbody td.ant-calendar-cell`) as HTMLElement;
   }
 
   function getLastCell(partial: 'left' | 'right'): HTMLElement {

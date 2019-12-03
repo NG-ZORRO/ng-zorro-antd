@@ -1,7 +1,7 @@
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component } from '@angular/core';
-import { async, fakeAsync, flush, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -493,12 +493,7 @@ class NzTestCalendarMonthFullCellComponent {}
 
 @Component({
   template: `
-    <nz-calendar
-      [(nzMode)]="mode"
-      [(ngModel)]="date0"
-      (nzPanelChange)="panelChange($event)"
-      (nzSelectChange)="selectChange($event)"
-    >
+    <nz-calendar [(nzMode)]="mode" [(ngModel)]="date0" (nzPanelChange)="panelChange($event)" (nzSelectChange)="selectChange($event)">
     </nz-calendar>
   `
 })

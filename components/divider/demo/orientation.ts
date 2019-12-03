@@ -6,13 +6,13 @@ import { Component } from '@angular/core';
     <div>
       <nz-divider nzText="Left Text" nzOrientation="left"></nz-divider>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne merninisti licere mihi ista probare, quae
-        sunt a te dicta? Refert tamen, quo modo.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne merninisti licere mihi ista probare, quae sunt a te dicta? Refert
+        tamen, quo modo.
       </p>
       <nz-divider nzText="Right Text" nzOrientation="right"></nz-divider>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne merninisti licere mihi ista probare, quae
-        sunt a te dicta? Refert tamen, quo modo.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nonne merninisti licere mihi ista probare, quae sunt a te dicta? Refert
+        tamen, quo modo.
       </p>
     </div>
   `

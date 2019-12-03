@@ -1,6 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core';
@@ -134,14 +134,7 @@ describe('NzPopconfirm', () => {
     >
       Delete
     </a>
-    <a
-      nz-popconfirm
-      #templateTemplate
-      [nzIcon]="icon"
-      [nzTitle]="titleTemplate"
-      (nzOnConfirm)="confirm()"
-      (nzOnCancel)="cancel()"
-    >
+    <a nz-popconfirm #templateTemplate [nzIcon]="icon" [nzTitle]="titleTemplate" (nzOnConfirm)="confirm()" (nzOnCancel)="cancel()">
       Delete
     </a>
 

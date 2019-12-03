@@ -43,7 +43,10 @@ describe('divider', () => {
   });
 
   describe('#nzText', () => {
-    for (const item of [{ text: 'with text', ret: true }, { text: undefined, ret: false }]) {
+    for (const item of [
+      { text: 'with text', ret: true },
+      { text: undefined, ret: false }
+    ]) {
       it(`[${item.text}]`, () => {
         context.nzText = item.text;
         fixture.detectChanges();
@@ -72,13 +75,7 @@ describe('divider', () => {
 
 @Component({
   template: `
-    <nz-divider
-      #comp
-      [nzDashed]="nzDashed"
-      [nzType]="nzType"
-      [nzText]="nzText"
-      [nzOrientation]="nzOrientation"
-    ></nz-divider>
+    <nz-divider #comp [nzDashed]="nzDashed" [nzType]="nzType" [nzText]="nzText" [nzOrientation]="nzOrientation"></nz-divider>
   `
 })
 class TestDividerComponent {

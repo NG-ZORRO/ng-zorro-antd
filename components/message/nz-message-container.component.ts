@@ -6,20 +6,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Inject,
-  OnInit,
-  Optional,
-  ViewEncapsulation
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, Optional, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { toCssPixel, warnDeprecation, NzConfigService } from 'ng-zorro-antd/core';
+import { NzConfigService, toCssPixel, warnDeprecation } from 'ng-zorro-antd/core';
 
-import { NzMessageConfigLegacy, NZ_MESSAGE_CONFIG, NZ_MESSAGE_DEFAULT_CONFIG } from './nz-message-config';
+import { NZ_MESSAGE_CONFIG, NZ_MESSAGE_DEFAULT_CONFIG, NzMessageConfigLegacy } from './nz-message-config';
 import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
 
 const NZ_CONFIG_COMPONENT_NAME = 'message';

@@ -1,5 +1,5 @@
 import { Component, DebugElement, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { async, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import en_US from '../i18n/languages/en_US';
 import { NzI18nService } from '../i18n/nz-i18n.service';
@@ -467,13 +467,7 @@ export class NzTestTableScrollComponent implements OnInit {
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/3004 **/
 @Component({
   template: `
-    <nz-table
-      #nzTable
-      [nzData]="data"
-      [(nzPageIndex)]="pageIndex"
-      [(nzPageSize)]="pageSize"
-      (nzPageIndexChange)="(pageIndexChange)"
-    >
+    <nz-table #nzTable [nzData]="data" [(nzPageIndex)]="pageIndex" [(nzPageSize)]="pageSize" (nzPageIndexChange)="(pageIndexChange)">
       <thead>
         <tr>
           <th>ID</th>

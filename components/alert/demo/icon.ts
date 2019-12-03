@@ -21,15 +21,8 @@ import { Component } from '@angular/core';
       nzShowIcon
     >
     </nz-alert>
-    <nz-alert
-      nzType="warning"
-      nzMessage="Warning"
-      nzDescription="This is a warning notice about copywriting."
-      nzShowIcon
-    >
-    </nz-alert>
-    <nz-alert nzType="error" nzMessage="Error" nzDescription="This is an error message about copywriting." nzShowIcon>
-    </nz-alert>
+    <nz-alert nzType="warning" nzMessage="Warning" nzDescription="This is a warning notice about copywriting." nzShowIcon> </nz-alert>
+    <nz-alert nzType="error" nzMessage="Error" nzDescription="This is an error message about copywriting." nzShowIcon> </nz-alert>
   `,
   styles: [
     `

@@ -40,7 +40,7 @@ import { Component, OnInit } from '@angular/core';
   `
 })
 export class NzDemoTableBreakWordComponent implements OnInit {
-  listOfData: any[] = [];
+  listOfData: Array<{ name: string; age: number; address: string }> = [];
 
   ngOnInit(): void {
     for (let i = 0; i < 100; i++) {

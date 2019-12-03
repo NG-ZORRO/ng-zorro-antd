@@ -27,13 +27,13 @@ import { fromEvent, Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
 import {
-  treeCollapseMotion,
-  warnDeprecation,
   InputBoolean,
   NzFormatBeforeDropEvent,
   NzNoAnimationDirective,
   NzTreeBaseService,
-  NzTreeNode
+  NzTreeNode,
+  treeCollapseMotion,
+  warnDeprecation
 } from 'ng-zorro-antd/core';
 
 @Component({

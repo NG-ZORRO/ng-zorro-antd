@@ -131,8 +131,7 @@ export class NzDemoModalServiceComponent {
         {
           label: 'Confirm',
           type: 'primary',
-          onClick: () =>
-            this.modalService.confirm({ nzTitle: 'Confirm Modal Title', nzContent: 'Confirm Modal Content' })
+          onClick: () => this.modalService.confirm({ nzTitle: 'Confirm Modal Title', nzContent: 'Confirm Modal Content' })
         },
         {
           label: 'Change Button Status',
