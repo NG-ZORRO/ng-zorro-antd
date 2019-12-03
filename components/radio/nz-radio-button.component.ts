@@ -6,15 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  forwardRef,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  Renderer2,
-  ViewEncapsulation
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, forwardRef, Renderer2, ViewEncapsulation } from '@angular/core';
 
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';

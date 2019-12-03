@@ -22,14 +22,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import {
-  NzConfigService,
-  NzShapeSCType,
-  NzSizeLDSType,
-  NzSizeMap,
-  NzUpdateHostClassService,
-  WithConfig
-} from 'ng-zorro-antd/core';
+import { NzConfigService, NzShapeSCType, NzSizeLDSType, NzSizeMap, NzUpdateHostClassService, WithConfig } from 'ng-zorro-antd/core';
 
 const NZ_CONFIG_COMPONENT_NAME = 'avatar';
 

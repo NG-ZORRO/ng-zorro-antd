@@ -1,12 +1,20 @@
 <div
-  class="ant-notification ant-notification-{{config.nzPlacement}}"
-  [style.top]="(config.nzPlacement === 'topLeft' || config.nzPlacement === 'topRight') ? top : null"
-  [style.bottom]="(config.nzPlacement === 'bottomLeft' || config.nzPlacement === 'bottomRight') ? bottom : null"
-  [style.right]="(config.nzPlacement === 'bottomRight' || config.nzPlacement === 'topRight') ? '0px' : null"
-  [style.left]="(config.nzPlacement === 'topLeft' || config.nzPlacement === 'bottomLeft') ? '0px' : null">
+  class="ant-notification ant-notification-{{ config.nzPlacement }}"
+  [style.top]="config.nzPlacement === 'topLeft' || config.nzPlacement === 'topRight' ? top : null"
+  [style.bottom]="
+    config.nzPlacement === 'bottomLeft' || config.nzPlacement === 'bottomRight' ? bottom : null
+  "
+  [style.right]="
+    config.nzPlacement === 'bottomRight' || config.nzPlacement === 'topRight' ? '0px' : null
+  "
+  [style.left]="
+    config.nzPlacement === 'topLeft' || config.nzPlacement === 'bottomLeft' ? '0px' : null
+  "
+>
   <nz-notification
     *ngFor="let message of messages; let i = index"
     [nzMessage]="message"
-    [nzIndex]="i">
+    [nzIndex]="i"
+  >
   </nz-notification>
 </div>

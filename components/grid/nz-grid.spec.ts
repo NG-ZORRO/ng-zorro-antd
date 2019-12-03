@@ -1,5 +1,5 @@
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzDemoGridBasicComponent } from './demo/basic';
@@ -169,9 +169,7 @@ describe('grid', () => {
     it('should number work', () => {
       fixture.detectChanges();
       expect(rows[0].nativeElement.style.cssText).toBe('margin-left: -8px; margin-right: -8px;');
-      expect(
-        cols.slice(0, 4).every(col => col.nativeElement.style.cssText === 'padding-left: 8px; padding-right: 8px;')
-      ).toBe(true);
+      expect(cols.slice(0, 4).every(col => col.nativeElement.style.cssText === 'padding-left: 8px; padding-right: 8px;')).toBe(true);
       expect(cols.slice(0, 4).every(col => col.nativeElement.classList.contains('gutter-row'))).toBe(true);
     });
 
@@ -183,9 +181,7 @@ describe('grid', () => {
       fixture.detectChanges();
 
       expect(rows[1].nativeElement.style.cssText).toBe('margin-left: -16px; margin-right: -16px;');
-      expect(
-        cols.slice(4, 8).every(col => col.nativeElement.style.cssText === 'padding-left: 16px; padding-right: 16px;')
-      ).toBe(true);
+      expect(cols.slice(4, 8).every(col => col.nativeElement.style.cssText === 'padding-left: 16px; padding-right: 16px;')).toBe(true);
       expect(cols.slice(4, 8).every(col => col.nativeElement.classList.contains('gutter-row'))).toBe(true);
 
       viewport.set(480, 480);
@@ -194,9 +190,7 @@ describe('grid', () => {
       tick(100);
       fixture.detectChanges();
       expect(rows[1].nativeElement.style.cssText).toBe('margin-left: -4px; margin-right: -4px;');
-      expect(
-        cols.slice(4, 8).every(col => col.nativeElement.style.cssText === 'padding-left: 4px; padding-right: 4px;')
-      ).toBe(true);
+      expect(cols.slice(4, 8).every(col => col.nativeElement.style.cssText === 'padding-left: 4px; padding-right: 4px;')).toBe(true);
       expect(cols.slice(4, 8).every(col => col.nativeElement.classList.contains('gutter-row'))).toBe(true);
 
       viewport.reset();
@@ -250,15 +244,9 @@ describe('grid', () => {
 
     it('should have correct style', () => {
       fixture.detectChanges();
-      expect(cols[0].nativeElement.className).toBe(
-        'ant-col ant-col-xs-2 ant-col-sm-4 ant-col-md-6 ant-col-lg-8 ant-col-xl-10'
-      );
-      expect(cols[1].nativeElement.className).toBe(
-        'ant-col ant-col-xs-20 ant-col-sm-16 ant-col-md-12 ant-col-lg-8 ant-col-xl-4'
-      );
-      expect(cols[2].nativeElement.className).toBe(
-        'ant-col ant-col-xs-2 ant-col-sm-4 ant-col-md-6 ant-col-lg-8 ant-col-xl-10'
-      );
+      expect(cols[0].nativeElement.className).toBe('ant-col ant-col-xs-2 ant-col-sm-4 ant-col-md-6 ant-col-lg-8 ant-col-xl-10');
+      expect(cols[1].nativeElement.className).toBe('ant-col ant-col-xs-20 ant-col-sm-16 ant-col-md-12 ant-col-lg-8 ant-col-xl-4');
+      expect(cols[2].nativeElement.className).toBe('ant-col ant-col-xs-2 ant-col-sm-4 ant-col-md-6 ant-col-lg-8 ant-col-xl-10');
     });
   });
 
@@ -280,15 +268,9 @@ describe('grid', () => {
     });
     it('should have correct style', () => {
       fixture.detectChanges();
-      expect(cols[0].nativeElement.className).toBe(
-        'ant-col ant-col-xs-5 ant-col-xs-offset-1 ant-col-lg-6 ant-col-lg-offset-2'
-      );
-      expect(cols[1].nativeElement.className).toBe(
-        'ant-col ant-col-xs-11 ant-col-xs-offset-1 ant-col-lg-6 ant-col-lg-offset-2'
-      );
-      expect(cols[2].nativeElement.className).toBe(
-        'ant-col ant-col-xs-5 ant-col-xs-offset-1 ant-col-lg-6 ant-col-lg-offset-2'
-      );
+      expect(cols[0].nativeElement.className).toBe('ant-col ant-col-xs-5 ant-col-xs-offset-1 ant-col-lg-6 ant-col-lg-offset-2');
+      expect(cols[1].nativeElement.className).toBe('ant-col ant-col-xs-11 ant-col-xs-offset-1 ant-col-lg-6 ant-col-lg-offset-2');
+      expect(cols[2].nativeElement.className).toBe('ant-col ant-col-xs-5 ant-col-xs-offset-1 ant-col-lg-6 ant-col-lg-offset-2');
     });
   });
 
@@ -339,18 +321,14 @@ describe('grid', () => {
       const row = fixture.debugElement.query(By.directive(NzRowDirective));
       let cols = fixture.debugElement.queryAll(By.directive(NzColDirective));
       expect(cols.length).toBe(4);
-      expect(cols.every(col => col.nativeElement.style.cssText === 'padding-left: 8px; padding-right: 8px;')).toBe(
-        true
-      );
+      expect(cols.every(col => col.nativeElement.style.cssText === 'padding-left: 8px; padding-right: 8px;')).toBe(true);
       expect(row.nativeElement.style.cssText).toBe('margin-left: -8px; margin-right: -8px;');
       testComponent.gutter = 24;
       testComponent.count = 12;
       fixture.detectChanges();
       cols = fixture.debugElement.queryAll(By.directive(NzColDirective));
       expect(cols.length).toBe(12);
-      expect(cols.every(col => col.nativeElement.style.cssText === 'padding-left: 12px; padding-right: 12px;')).toBe(
-        true
-      );
+      expect(cols.every(col => col.nativeElement.style.cssText === 'padding-left: 12px; padding-right: 12px;')).toBe(true);
       expect(row.nativeElement.style.cssText).toBe('margin-left: -12px; margin-right: -12px;');
     });
   });

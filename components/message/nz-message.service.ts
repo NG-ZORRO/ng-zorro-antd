@@ -19,11 +19,7 @@ import { NzMessageServiceModule } from './nz-message.service.module';
 @Injectable({
   providedIn: NzMessageServiceModule
 })
-export class NzMessageService extends NzMessageBaseService<
-  NzMessageContainerComponent,
-  NzMessageData,
-  NzMessageConfigLegacy
-> {
+export class NzMessageService extends NzMessageBaseService<NzMessageContainerComponent, NzMessageData, NzMessageConfigLegacy> {
   constructor(
     nzSingletonService: NzSingletonService,
     overlay: Overlay,

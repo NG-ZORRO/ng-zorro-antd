@@ -1,5 +1,6 @@
 <ng-container *ngIf="listOfNzTabComponent">
-  <div nz-tabs-nav
+  <div
+    nz-tabs-nav
     role="tablist"
     tabindex="0"
     class="ant-tabs-bar"
@@ -20,18 +21,24 @@
     [nzTabBarExtraContent]="nzTabBarExtraContent"
     [selectedIndex]="nzSelectedIndex"
     (nzOnNextClick)="nzOnNextClick.emit()"
-    (nzOnPrevClick)="nzOnPrevClick.emit()">
-    <div nz-tab-label
+    (nzOnPrevClick)="nzOnPrevClick.emit()"
+  >
+    <div
+      nz-tab-label
       role="tab"
       [style.margin-right.px]="nzTabBarGutter"
-      [class.ant-tabs-tab-active]="(nzSelectedIndex == i) && !nzHideAll"
+      [class.ant-tabs-tab-active]="nzSelectedIndex == i && !nzHideAll"
       [disabled]="tab.nzDisabled"
-      (click)="clickLabel(i,tab.nzDisabled)"
-      *ngFor="let tab of listOfNzTabComponent; let i = index">
-      <ng-container *nzStringTemplateOutlet="tab.nzTitle || tab.title">{{ tab.nzTitle }}</ng-container>
+      (click)="clickLabel(i, tab.nzDisabled)"
+      *ngFor="let tab of listOfNzTabComponent; let i = index"
+    >
+      <ng-container *nzStringTemplateOutlet="tab.nzTitle || tab.title">{{
+        tab.nzTitle
+      }}</ng-container>
     </div>
   </div>
-  <div #tabContent
+  <div
+    #tabContent
     class="ant-tabs-content"
     [class.ant-tabs-top-content]="nzTabPosition === 'top'"
     [class.ant-tabs-bottom-content]="nzTabPosition === 'bottom'"
@@ -40,13 +47,17 @@
     [class.ant-tabs-content-animated]="tabPaneAnimated"
     [class.ant-tabs-card-content]="nzType === 'card'"
     [class.ant-tabs-content-no-animated]="!tabPaneAnimated"
-    [style.margin-left.%]="(tabPositionMode === 'horizontal') && tabPaneAnimated && (-(nzSelectedIndex || 0 ) * 100)">
-    <div nz-tab-body
+    [style.margin-left.%]="
+      tabPositionMode === 'horizontal' && tabPaneAnimated && -(nzSelectedIndex || 0) * 100
+    "
+  >
+    <div
+      nz-tab-body
       class="ant-tabs-tabpane"
       *ngFor="let tab of listOfNzTabComponent; let i = index"
-      [active]="(nzSelectedIndex == i) && !nzHideAll"
+      [active]="nzSelectedIndex == i && !nzHideAll"
       [forceRender]="tab.nzForceRender"
-      [content]="tab.template || tab.content">
-    </div>
+      [content]="tab.template || tab.content"
+    ></div>
   </div>
 </ng-container>

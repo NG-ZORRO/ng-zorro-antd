@@ -35,13 +35,13 @@ import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/
 import { merge, Subject, Subscription } from 'rxjs';
 
 import {
-  toNumber,
   InputBoolean,
   NzConfigService,
   NzFourDirectionType,
   NzSizeLDSType,
   NzUpdateHostClassService,
   PREFIX,
+  toNumber,
   WithConfig
 } from 'ng-zorro-antd/core';
 import { filter, startWith, takeUntil } from 'rxjs/operators';
@@ -81,8 +81,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'tabs';
     `
   ]
 })
-export class NzTabSetComponent
-  implements AfterContentChecked, OnInit, AfterViewInit, OnChanges, AfterContentInit, OnDestroy {
+export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterViewInit, OnChanges, AfterContentInit, OnDestroy {
   private indexToSelect: number | null = 0;
   private el: HTMLElement = this.elementRef.nativeElement;
   private _selectedIndex: number | null = null;
@@ -136,17 +135,9 @@ export class NzTabSetComponent
   setPosition(value: NzTabPosition): void {
     if (this.tabContent) {
       if (value === 'bottom') {
-        this.renderer.insertBefore(
-          this.el,
-          this.tabContent.nativeElement,
-          this.nzTabsNavComponent.elementRef.nativeElement
-        );
+        this.renderer.insertBefore(this.el, this.tabContent.nativeElement, this.nzTabsNavComponent.elementRef.nativeElement);
       } else {
-        this.renderer.insertBefore(
-          this.el,
-          this.nzTabsNavComponent.elementRef.nativeElement,
-          this.tabContent.nativeElement
-        );
+        this.renderer.insertBefore(this.el, this.nzTabsNavComponent.elementRef.nativeElement, this.tabContent.nativeElement);
       }
     }
   }
@@ -156,8 +147,7 @@ export class NzTabSetComponent
       [`ant-tabs`]: true,
       [`ant-tabs-vertical`]: this.nzTabPosition === 'left' || this.nzTabPosition === 'right',
       [`ant-tabs-${this.nzTabPosition}`]: this.nzTabPosition,
-      [`ant-tabs-no-animation`]:
-        this.nzAnimated === false || (this.nzAnimated as NzAnimatedInterface).tabPane === false,
+      [`ant-tabs-no-animation`]: this.nzAnimated === false || (this.nzAnimated as NzAnimatedInterface).tabPane === false,
       [`ant-tabs-${this.nzType}`]: this.nzType,
       [`ant-tabs-large`]: this.nzSize === 'large',
       [`ant-tabs-small`]: this.nzSize === 'small'
@@ -199,9 +189,7 @@ export class NzTabSetComponent
     if (this.tabLabelSubscription) {
       this.tabLabelSubscription.unsubscribe();
     }
-    this.tabLabelSubscription = merge(...this.listOfNzTabComponent.map(tab => tab.stateChanges)).subscribe(() =>
-      this.cdr.markForCheck()
-    );
+    this.tabLabelSubscription = merge(...this.listOfNzTabComponent.map(tab => tab.stateChanges)).subscribe(() => this.cdr.markForCheck());
   }
 
   constructor(

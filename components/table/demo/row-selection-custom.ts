@@ -10,12 +10,7 @@ interface ItemData {
 @Component({
   selector: 'nz-demo-table-row-selection-custom',
   template: `
-    <nz-table
-      #rowSelectionTable
-      nzShowSizeChanger
-      [nzData]="listOfAllData"
-      (nzCurrentPageDataChange)="currentPageDataChange($event)"
-    >
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfAllData" (nzCurrentPageDataChange)="currentPageDataChange($event)">
       <thead>
         <tr>
           <th
@@ -78,8 +73,7 @@ export class NzDemoTableRowSelectionCustomComponent implements OnInit {
 
   refreshStatus(): void {
     this.isAllDisplayDataChecked = this.listOfDisplayData.every(item => this.mapOfCheckedId[item.id]);
-    this.isIndeterminate =
-      this.listOfDisplayData.some(item => this.mapOfCheckedId[item.id]) && !this.isAllDisplayDataChecked;
+    this.isIndeterminate = this.listOfDisplayData.some(item => this.mapOfCheckedId[item.id]) && !this.isAllDisplayDataChecked;
   }
 
   checkAll(value: boolean): void {

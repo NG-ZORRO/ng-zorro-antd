@@ -1,8 +1,8 @@
 import { BACKSPACE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, NgZone, ViewChild } from '@angular/core';
-import { async, fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { async, ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -10,10 +10,10 @@ import {
   createKeyboardEvent,
   dispatchFakeEvent,
   dispatchMouseEvent,
-  typeInElement,
   MockNgZone,
   NzTreeNode,
-  NzTreeNodeOptions
+  NzTreeNodeOptions,
+  typeInElement
 } from 'ng-zorro-antd/core';
 
 import { NzTreeSelectComponent } from './nz-tree-select.component';
@@ -255,9 +255,7 @@ describe('tree-select component', () => {
         .querySelectorAll('.ant-select-selection__choice')[2]
         .querySelector('.ant-select-selection__choice__content');
       expect(maxTagPlaceholderElement).toBeTruthy();
-      expect(maxTagPlaceholderElement.innerText.trim()).toBe(
-        `+ ${testComponent.value.length - testComponent.maxTagCount} ...`
-      );
+      expect(maxTagPlaceholderElement.innerText.trim()).toBe(`+ ${testComponent.value.length - testComponent.maxTagCount} ...`);
     }));
 
     it('should set selectable', fakeAsync(() => {

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'nz-demo-breadcrumb-withIcon',
+  selector: 'nz-demo-breadcrumb-with-icon',
   template: `
     <nz-breadcrumb>
       <nz-breadcrumb-item>

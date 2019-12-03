@@ -30,7 +30,7 @@ import {
 import { defer, merge, Observable, Subscription } from 'rxjs';
 import { filter, switchMap, take } from 'rxjs/operators';
 
-import { slideMotion, CompareWith, InputBoolean, NzDropDownPosition, NzNoAnimationDirective } from 'ng-zorro-antd/core';
+import { CompareWith, InputBoolean, NzDropDownPosition, NzNoAnimationDirective, slideMotion } from 'ng-zorro-antd/core';
 
 import { NzAutocompleteOptionComponent, NzOptionSelectionChange } from './nz-autocomplete-option.component';
 
@@ -70,9 +70,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   @Input() @InputBoolean() nzBackfill = false;
   @Input() compareWith: CompareWith = (o1, o2) => o1 === o2;
   @Input() nzDataSource: AutocompleteDataSource;
-  @Output() readonly selectionChange: EventEmitter<NzAutocompleteOptionComponent> = new EventEmitter<
-    NzAutocompleteOptionComponent
-  >();
+  @Output() readonly selectionChange: EventEmitter<NzAutocompleteOptionComponent> = new EventEmitter<NzAutocompleteOptionComponent>();
 
   showPanel: boolean = true;
   isOpen: boolean = false;
@@ -92,9 +90,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   }
 
   /** Provided by content */
-  @ContentChildren(NzAutocompleteOptionComponent, { descendants: true }) fromContentOptions: QueryList<
-    NzAutocompleteOptionComponent
-  >;
+  @ContentChildren(NzAutocompleteOptionComponent, { descendants: true }) fromContentOptions: QueryList<NzAutocompleteOptionComponent>;
   /** Provided by dataSource */
   @ViewChildren(NzAutocompleteOptionComponent) fromDataSourceOptions: QueryList<NzAutocompleteOptionComponent>;
 

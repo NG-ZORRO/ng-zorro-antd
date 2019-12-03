@@ -6,7 +6,12 @@
   <ng-container *ngIf="!isAffix">
     <ng-template *ngTemplateOutlet="contentTemplate"></ng-template>
   </ng-container>
-  <span class="ant-input-affix-wrapper" [class.ant-input-affix-wrapper-sm]="isSmall" [class.ant-input-affix-wrapper-lg]="isLarge" *ngIf="isAffix">
+  <span
+    class="ant-input-affix-wrapper"
+    [class.ant-input-affix-wrapper-sm]="isSmall"
+    [class.ant-input-affix-wrapper-lg]="isLarge"
+    *ngIf="isAffix"
+  >
     <ng-template *ngTemplateOutlet="affixTemplate"></ng-template>
   </span>
   <span class="ant-input-group-addon" *ngIf="nzAddOnAfter || nzAddOnAfterIcon">

@@ -1,6 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -363,15 +363,11 @@ describe('NzYearPickerComponent', () => {
   }
 
   function getSelectedYearCell(): HTMLElement {
-    return queryFromOverlay(
-      'tbody.ant-calendar-year-panel-tbody td.ant-calendar-year-panel-selected-cell'
-    ) as HTMLElement;
+    return queryFromOverlay('tbody.ant-calendar-year-panel-tbody td.ant-calendar-year-panel-selected-cell') as HTMLElement;
   }
 
   function getSecondYearCell(): HTMLElement {
-    return queryFromOverlay(
-      'tbody.ant-calendar-year-panel-tbody td.ant-calendar-year-panel-cell:nth-child(2)'
-    ) as HTMLElement;
+    return queryFromOverlay('tbody.ant-calendar-year-panel-tbody td.ant-calendar-year-panel-cell:nth-child(2)') as HTMLElement;
   }
 
   function queryFromOverlay(selector: string): HTMLElement {

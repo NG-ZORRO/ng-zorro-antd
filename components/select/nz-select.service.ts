@@ -8,7 +8,7 @@
 
 import { BACKSPACE, DOWN_ARROW, ENTER, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { Injectable } from '@angular/core';
-import { combineLatest, merge, BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, merge, ReplaySubject, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map, share, skip, tap } from 'rxjs/operators';
 
 import { isNil, isNotNil } from 'ng-zorro-antd/core';
@@ -120,14 +120,9 @@ export class NzSelectService {
     }),
     share()
   );
-  check$ = merge(
-    this.checkRaw$,
-    this.valueOrOption$,
-    this.searchValue$,
-    this.activatedOption$,
-    this.open$,
-    this.modelChange$
-  ).pipe(share());
+  check$ = merge(this.checkRaw$, this.valueOrOption$, this.searchValue$, this.activatedOption$, this.open$, this.modelChange$).pipe(
+    share()
+  );
 
   clickOption(option: NzOptionComponent): void {
     /** update listOfSelectedOption -> update listOfSelectedValue -> next listOfSelectedValue$ **/
@@ -157,9 +152,7 @@ export class NzSelectService {
 
   updateListOfCachedOption(): void {
     if (this.isSingleMode) {
-      const selectedOption = this.listOfTemplateOption.find(o =>
-        this.compareWith(o.nzValue, this.listOfSelectedValue[0])
-      );
+      const selectedOption = this.listOfTemplateOption.find(o => this.compareWith(o.nzValue, this.listOfSelectedValue[0]));
       if (!isNil(selectedOption)) {
         this.listOfCachedSelectedOption = [selectedOption];
       }
@@ -219,9 +212,7 @@ export class NzSelectService {
       this.filterOption,
       this.serverSearch
     );
-    this.listOfFilteredOption = this.addedTagOption
-      ? [this.addedTagOption, ...listOfFilteredOption]
-      : [...listOfFilteredOption];
+    this.listOfFilteredOption = this.addedTagOption ? [this.addedTagOption, ...listOfFilteredOption] : [...listOfFilteredOption];
     this.isShowNotFound = !this.isTagsMode && !this.listOfFilteredOption.length;
   }
 
@@ -272,9 +263,7 @@ export class NzSelectService {
 
   resetActivatedOptionIfNeeded(): void {
     const resetActivatedOption = () => {
-      const activatedOption = this.listOfFilteredOption.find(item =>
-        this.compareWith(item.nzValue, this.listOfSelectedValue[0])
-      );
+      const activatedOption = this.listOfFilteredOption.find(item => this.compareWith(item.nzValue, this.listOfSelectedValue[0]));
       this.updateActivatedOption(activatedOption || null);
     };
     if (this.activatedOption) {
@@ -289,10 +278,7 @@ export class NzSelectService {
     }
   }
 
-  updateTemplateOption(
-    listOfNzOptionComponent: NzOptionComponent[],
-    listOfNzOptionGroupComponent: NzOptionGroupComponent[]
-  ): void {
+  updateTemplateOption(listOfNzOptionComponent: NzOptionComponent[], listOfNzOptionGroupComponent: NzOptionGroupComponent[]): void {
     this.mapOfTemplateOption$.next({ listOfNzOptionComponent, listOfNzOptionGroupComponent });
   }
 
@@ -312,10 +298,7 @@ export class NzSelectService {
       const listOfUnMatchOptionValue = listOfLabel.filter(
         label => this.listOfTagAndTemplateOption.map(item => item.nzLabel).indexOf(label) === -1
       );
-      this.updateListOfSelectedValue(
-        [...listOfSelectedValue, ...listOfMatchOptionValue, ...listOfUnMatchOptionValue],
-        true
-      );
+      this.updateListOfSelectedValue([...listOfSelectedValue, ...listOfMatchOptionValue, ...listOfUnMatchOptionValue], true);
     }
   }
 
@@ -325,21 +308,17 @@ export class NzSelectService {
     }
     const keyCode = e.keyCode;
     const eventTarget = e.target as HTMLInputElement;
-    const listOfFilteredOptionWithoutDisabledOrHidden = this.listOfFilteredOption.filter(
-      item => !item.nzDisabled && !item.nzHide
-    );
+    const listOfFilteredOptionWithoutDisabledOrHidden = this.listOfFilteredOption.filter(item => !item.nzDisabled && !item.nzHide);
     const activatedIndex = listOfFilteredOptionWithoutDisabledOrHidden.findIndex(item => item === this.activatedOption);
     switch (keyCode) {
       case UP_ARROW:
         e.preventDefault();
-        const preIndex =
-          activatedIndex > 0 ? activatedIndex - 1 : listOfFilteredOptionWithoutDisabledOrHidden.length - 1;
+        const preIndex = activatedIndex > 0 ? activatedIndex - 1 : listOfFilteredOptionWithoutDisabledOrHidden.length - 1;
         this.updateActivatedOption(listOfFilteredOptionWithoutDisabledOrHidden[preIndex]);
         break;
       case DOWN_ARROW:
         e.preventDefault();
-        const nextIndex =
-          activatedIndex < listOfFilteredOptionWithoutDisabledOrHidden.length - 1 ? activatedIndex + 1 : 0;
+        const nextIndex = activatedIndex < listOfFilteredOptionWithoutDisabledOrHidden.length - 1 ? activatedIndex + 1 : 0;
         this.updateActivatedOption(listOfFilteredOptionWithoutDisabledOrHidden[nextIndex]);
         if (!this.disabled && !this.open) {
           this.setOpenState(true);

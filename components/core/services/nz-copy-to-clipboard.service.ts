@@ -18,36 +18,34 @@ export class NzCopyToClipboardService {
   constructor(@Inject(DOCUMENT) private document: any) {}
 
   copy(text: string): Promise<string> {
-    return new Promise<string>(
-      (resolve, reject): void => {
-        let copyTextArea = null;
-        try {
-          // tslint:disable-next-line no-any
-          copyTextArea = this.document.createElement('textarea') as any;
-          copyTextArea.style!.all = 'unset';
-          copyTextArea.style.position = 'fixed';
-          copyTextArea.style.top = '0';
-          copyTextArea.style.clip = 'rect(0, 0, 0, 0)';
-          copyTextArea.style.whiteSpace = 'pre';
-          copyTextArea.style.webkitUserSelect = 'text';
-          copyTextArea.style!.MozUserSelect = 'text';
-          copyTextArea.style.msUserSelect = 'text';
-          copyTextArea.style.userSelect = 'text';
-          this.document.body.appendChild(copyTextArea);
-          copyTextArea.value = text;
-          copyTextArea.select();
+    return new Promise<string>((resolve, reject): void => {
+      let copyTextArea = null;
+      try {
+        // tslint:disable-next-line no-any
+        copyTextArea = this.document.createElement('textarea') as any;
+        copyTextArea.style!.all = 'unset';
+        copyTextArea.style.position = 'fixed';
+        copyTextArea.style.top = '0';
+        copyTextArea.style.clip = 'rect(0, 0, 0, 0)';
+        copyTextArea.style.whiteSpace = 'pre';
+        copyTextArea.style.webkitUserSelect = 'text';
+        copyTextArea.style!.MozUserSelect = 'text';
+        copyTextArea.style.msUserSelect = 'text';
+        copyTextArea.style.userSelect = 'text';
+        this.document.body.appendChild(copyTextArea);
+        copyTextArea.value = text;
+        copyTextArea.select();
 
-          const successful = this.document.execCommand('copy');
-          if (!successful) {
-            reject(text);
-          }
-          resolve(text);
-        } finally {
-          if (copyTextArea) {
-            this.document.body.removeChild(copyTextArea);
-          }
+        const successful = this.document.execCommand('copy');
+        if (!successful) {
+          reject(text);
+        }
+        resolve(text);
+      } finally {
+        if (copyTextArea) {
+          this.document.body.removeChild(copyTextArea);
         }
       }
-    );
+    });
   }
 }

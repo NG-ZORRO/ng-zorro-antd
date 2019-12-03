@@ -8,7 +8,7 @@
 
 import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
 
-import { valueFunctionProp, CandyDate, FunctionProp, NzNoAnimationDirective } from 'ng-zorro-antd/core';
+import { CandyDate, FunctionProp, NzNoAnimationDirective, valueFunctionProp } from 'ng-zorro-antd/core';
 import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { AbstractPickerComponent } from './abstract-picker.component';
@@ -34,12 +34,7 @@ export class HeaderPickerComponent extends AbstractPickerComponent implements On
 
   private supportPanels: PanelMode[];
 
-  constructor(
-    i18n: NzI18nService,
-    cdr: ChangeDetectorRef,
-    dateHelper: DateHelperService,
-    noAnimation?: NzNoAnimationDirective
-  ) {
+  constructor(i18n: NzI18nService, cdr: ChangeDetectorRef, dateHelper: DateHelperService, noAnimation?: NzNoAnimationDirective) {
     super(i18n, cdr, dateHelper, noAnimation);
   }
 

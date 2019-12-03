@@ -22,7 +22,7 @@ import {
   SimpleChanges,
   ViewContainerRef
 } from '@angular/core';
-import { warnDeprecation, NgStyleInterface, NzNoAnimationDirective, NzTSType } from 'ng-zorro-antd/core';
+import { NgStyleInterface, NzNoAnimationDirective, NzTSType, warnDeprecation } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
@@ -162,15 +162,10 @@ Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popcon
 
   ngOnInit(): void {
     this.createTooltipComponent();
-    this.tooltip.nzVisibleChange
-      .pipe(
-        distinctUntilChanged(),
-        takeUntil(this.$destroy)
-      )
-      .subscribe((visible: boolean) => {
-        this.isTooltipComponentVisible = visible;
-        this.nzVisibleChange.emit(visible);
-      });
+    this.tooltip.nzVisibleChange.pipe(distinctUntilChanged(), takeUntil(this.$destroy)).subscribe((visible: boolean) => {
+      this.isTooltipComponentVisible = visible;
+      this.nzVisibleChange.emit(visible);
+    });
   }
 
   ngAfterViewInit(): void {
@@ -212,10 +207,7 @@ Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popcon
     this.tooltip = tooltipRef.instance;
 
     // Remove the component's DOM because it should be in the overlay container.
-    this.renderer.removeChild(
-      this.renderer.parentNode(this.elementRef.nativeElement),
-      tooltipRef.location.nativeElement
-    );
+    this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), tooltipRef.location.nativeElement);
     this.tooltip.setOverlayOrigin(this as CdkOverlayOrigin);
 
     this.updateChangedProperties(this.needProxyProperties);

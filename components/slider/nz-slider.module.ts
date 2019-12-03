@@ -17,20 +17,8 @@ import { NzSliderTrackComponent } from './nz-slider-track.component';
 import { NzSliderComponent } from './nz-slider.component';
 
 @NgModule({
-  exports: [
-    NzSliderComponent,
-    NzSliderTrackComponent,
-    NzSliderHandleComponent,
-    NzSliderStepComponent,
-    NzSliderMarksComponent
-  ],
-  declarations: [
-    NzSliderComponent,
-    NzSliderTrackComponent,
-    NzSliderHandleComponent,
-    NzSliderStepComponent,
-    NzSliderMarksComponent
-  ],
+  exports: [NzSliderComponent, NzSliderTrackComponent, NzSliderHandleComponent, NzSliderStepComponent, NzSliderMarksComponent],
+  declarations: [NzSliderComponent, NzSliderTrackComponent, NzSliderHandleComponent, NzSliderStepComponent, NzSliderMarksComponent],
   imports: [CommonModule, PlatformModule, NzToolTipModule]
 })
 export class NzSliderModule {}

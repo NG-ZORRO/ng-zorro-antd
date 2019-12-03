@@ -14,7 +14,4 @@ import { Component } from '@angular/core';
     </nz-descriptions>
   `
 })
-
-export class NzDemoDescriptionsBasicComponent {
-
-}
+export class NzDemoDescriptionsBasicComponent {}

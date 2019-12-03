@@ -48,11 +48,7 @@ export class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewI
   @Output() readonly nzSortChange = new EventEmitter<{ key: string; value: string }>();
 
   // tslint:disable-next-line:no-any
-  constructor(
-    @Host() @Optional() public nzTableComponent: NzTableComponent,
-    private elementRef: ElementRef,
-    private renderer: Renderer2
-  ) {
+  constructor(@Host() @Optional() public nzTableComponent: NzTableComponent, private elementRef: ElementRef, private renderer: Renderer2) {
     if (this.nzTableComponent) {
       this.nzTableComponent.nzTheadComponent = this;
     }
@@ -62,9 +58,7 @@ export class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewI
     this.listOfNzThComponent.changes
       .pipe(
         startWith(true),
-        switchMap(() =>
-          merge<{ key: string; value: string }>(...this.listOfNzThComponent.map(th => th.nzSortChangeWithKey))
-        ),
+        switchMap(() => merge<{ key: string; value: string }>(...this.listOfNzThComponent.map(th => th.nzSortChangeWithKey))),
         takeUntil(this.destroy$)
       )
       .subscribe((data: { key: string; value: string }) => {

@@ -12,13 +12,7 @@ export interface Data {
   selector: 'nz-demo-table-row-selection-and-operation',
   template: `
     <div class="operate">
-      <button
-        nz-button
-        [disabled]="numberOfChecked === 0"
-        [nzType]="'primary'"
-        [nzLoading]="isOperating"
-        (click)="operateData()"
-      >
+      <button nz-button [disabled]="numberOfChecked === 0" [nzType]="'primary'" [nzLoading]="isOperating" (click)="operateData()">
         Reload
       </button>
       <span *ngIf="numberOfChecked">Selected {{ numberOfChecked }} items</span>
@@ -45,12 +39,7 @@ export interface Data {
       </thead>
       <tbody>
         <tr *ngFor="let data of rowSelectionTable.data">
-          <td
-            nzShowCheckbox
-            [(nzChecked)]="mapOfCheckedId[data.id]"
-            [nzDisabled]="data.disabled"
-            (nzCheckedChange)="refreshStatus()"
-          ></td>
+          <td nzShowCheckbox [(nzChecked)]="mapOfCheckedId[data.id]" [nzDisabled]="data.disabled" (nzCheckedChange)="refreshStatus()"></td>
           <td>{{ data.name }}</td>
           <td>{{ data.age }}</td>
           <td>{{ data.address }}</td>
@@ -85,12 +74,9 @@ export class NzDemoTableRowSelectionAndOperationComponent implements OnInit {
   }
 
   refreshStatus(): void {
-    this.isAllDisplayDataChecked = this.listOfDisplayData
-      .filter(item => !item.disabled)
-      .every(item => this.mapOfCheckedId[item.id]);
+    this.isAllDisplayDataChecked = this.listOfDisplayData.filter(item => !item.disabled).every(item => this.mapOfCheckedId[item.id]);
     this.isIndeterminate =
-      this.listOfDisplayData.filter(item => !item.disabled).some(item => this.mapOfCheckedId[item.id]) &&
-      !this.isAllDisplayDataChecked;
+      this.listOfDisplayData.filter(item => !item.disabled).some(item => this.mapOfCheckedId[item.id]) && !this.isAllDisplayDataChecked;
     this.numberOfChecked = this.listOfAllData.filter(item => this.mapOfCheckedId[item.id]).length;
   }
 

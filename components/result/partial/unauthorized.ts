@@ -89,13 +89,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
           d="M64.674 85.116s-2.34 8.413-8.912 14.447c.652.548 18.586 10.51 22.144 10.056 5.238-.669 6.417-18.968 1.145-20.531-.702-.208-5.901-1.286-8.853-2.167-.87-.26-1.611-1.71-3.545-.936l-1.98-.869zM128.362 85.826s5.318 1.956 7.325 13.734c-.546.274-17.55 12.35-21.829 7.805-6.534-6.94-.766-17.393 4.275-18.61 4.646-1.121 5.03-1.37 10.23-2.929"
           fill="#FFF"
         />
-        <path
-          d="M78.18 94.656s.911 7.41-4.914 13.078"
-          stroke="#E4EBF7"
-          strokeWidth="1.051"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
+        <path d="M78.18 94.656s.911 7.41-4.914 13.078" stroke="#E4EBF7" strokeWidth="1.051" strokeLinecap="round" strokeLinejoin="round" />
         <path
           d="M87.397 94.68s3.124 2.572 10.263 2.572c7.14 0 9.074-3.437 9.074-3.437"
           stroke="#E4EBF7"
@@ -137,10 +131,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-        <path
-          d="M99.776 81.903s-3.592.232-1.44-2.79c1.59-1.496 4.897-.46 4.897-.46s1.156 3.906-3.457 3.25"
-          fill="#DB836E"
-        />
+        <path d="M99.776 81.903s-3.592.232-1.44-2.79c1.59-1.496 4.897-.46 4.897-.46s1.156 3.906-3.457 3.25" fill="#DB836E" />
         <path
           d="M102.88 70.6s2.483.84 3.402.715M93.883 71.975s2.492-1.144 4.778-1.073"
           stroke="#5C2552"
@@ -176,13 +167,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-        <path
-          d="M64.09 84.816s-6.03 9.912-13.607 9.903"
-          stroke="#DB836E"
-          strokeWidth=".795"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
+        <path d="M64.09 84.816s-6.03 9.912-13.607 9.903" stroke="#DB836E" strokeWidth=".795" strokeLinecap="round" strokeLinejoin="round" />
         <path
           d="M112.366 65.909l-.142 5.32s5.993 4.472 11.945 9.202c4.482 3.562 8.888 7.455 10.985 8.662 4.804 2.766 8.9 3.355 11.076 1.808 4.071-2.894 4.373-9.878-8.136-15.263-4.271-1.838-16.144-6.36-25.728-9.73"
           fill="#FFC6A0"
@@ -240,12 +225,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-        <path
-          d="M108.459 220.905s2.759-1.104 6.07-3.863"
-          stroke="#648BD8"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
+        <path d="M108.459 220.905s2.759-1.104 6.07-3.863" stroke="#648BD8" strokeLinecap="round" strokeLinejoin="round" />
         <path
           d="M76.099 223.557s2.608-.587 6.47-3.346M87.33 150.82c-.27 3.088.297 8.478-4.315 9.073M104.829 149.075s.11 13.936-1.286 14.983c-2.207 1.655-2.975 1.934-2.975 1.934M101.014 149.63s.035 12.81-1.19 24.245M94.93 174.965s7.174-1.655 9.38-1.655M75.671 204.754c-.316 1.55-.64 3.067-.973 4.535 0 0-1.45 1.822-1.003 3.756.446 1.934-.943 2.034-4.96 15.273-1.686 5.559-4.464 18.49-6.313 27.447-.078.38-4.018 18.06-4.093 18.423M77.043 196.743a313.269 313.269 0 0 1-.877 4.729M83.908 151.414l-1.19 10.413s-1.091.148-.496 2.23c.111 1.34-2.66 15.692-5.153 30.267M57.58 272.94h13.238"
           stroke="#648BD8"

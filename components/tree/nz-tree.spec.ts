@@ -1,17 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { async, fakeAsync, flush, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { of, Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
-import {
-  dispatchMouseEvent,
-  dispatchTouchEvent,
-  NzTreeBaseService,
-  NzTreeNode,
-  NzTreeNodeOptions
-} from 'ng-zorro-antd/core';
+import { dispatchMouseEvent, dispatchTouchEvent, NzTreeBaseService, NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core';
 
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
@@ -189,9 +183,7 @@ describe('nz-tree', () => {
       expect(clickSpy).toHaveBeenCalledTimes(3); // will detect dblclick
 
       // click disabled node
-      targetNode = treeElement.querySelectorAll('nz-tree-node')[
-        treeElement.querySelectorAll('nz-tree-node').length - 1
-      ];
+      targetNode = treeElement.querySelectorAll('nz-tree-node')[treeElement.querySelectorAll('nz-tree-node').length - 1];
       dispatchMouseEvent(targetNode, 'click');
       fixture.detectChanges();
       expect(treeElement.querySelectorAll('.ant-tree-node-selected').length).toEqual(1);
@@ -307,9 +299,7 @@ describe('nz-tree', () => {
       fixture.detectChanges();
       const clickSpy = spyOn(treeInstance, 'nzEvent');
       // contextmenu 0-0-0
-      const targetNode = treeElement.querySelectorAll('.ant-tree-checkbox')[
-        treeElement.querySelectorAll('li').length - 1
-      ];
+      const targetNode = treeElement.querySelectorAll('.ant-tree-checkbox')[treeElement.querySelectorAll('li').length - 1];
       dispatchMouseEvent(targetNode, 'click');
       fixture.detectChanges();
       expect(clickSpy).toHaveBeenCalledTimes(0);
@@ -396,9 +386,7 @@ describe('nz-tree', () => {
       node.isDisabled = true;
       fixture.componentInstance.expandAll = true;
       fixture.detectChanges();
-      expect(
-        treeElement.querySelector('.ant-tree-treenode-disabled')!.querySelectorAll("[title='0-0-reset']").length
-      ).toEqual(1);
+      expect(treeElement.querySelector('.ant-tree-treenode-disabled')!.querySelectorAll("[title='0-0-reset']").length).toEqual(1);
     }));
   });
 

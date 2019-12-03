@@ -1,6 +1,6 @@
 import { OverlayContainer, ScrollDispatcher } from '@angular/cdk/overlay';
 import { Component, Provider, Type, ViewChild } from '@angular/core';
-import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 import { createMouseEvent } from '../core/testing';

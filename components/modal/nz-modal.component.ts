@@ -39,17 +39,10 @@ import {
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import {
-  getElementOffset,
-  isPromise,
-  warnDeprecation,
-  InputBoolean,
-  NzConfigService,
-  WithConfig
-} from 'ng-zorro-antd/core';
+import { getElementOffset, InputBoolean, isPromise, NzConfigService, warnDeprecation, WithConfig } from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
-import { NzModalConfig, NZ_MODAL_CONFIG } from './nz-modal-config';
+import { NZ_MODAL_CONFIG, NzModalConfig } from './nz-modal-config';
 import { NzModalControlService } from './nz-modal-control.service';
 import { NzModalFooterDirective } from './nz-modal-footer.directive';
 import { NzModalRef } from './nz-modal-ref.class';
@@ -215,9 +208,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
     this.scrollStrategy = this.overlay.scrollStrategies.block();
 
     if (this.nzModalGlobalConfig) {
-      warnDeprecation(
-        '`NZ_MODAL_CONFIG` has been deprecated and will be removed in 9.0.0. Please use global config instead.'
-      );
+      warnDeprecation('`NZ_MODAL_CONFIG` has been deprecated and will be removed in 9.0.0. Please use global config instead.');
     }
   }
 

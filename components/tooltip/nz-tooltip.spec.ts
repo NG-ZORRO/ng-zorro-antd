@@ -1,6 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core';
@@ -35,14 +35,7 @@ import { NzToolTipModule } from './nz-tooltip.module';
       Focus
     </a>
 
-    <a
-      #program
-      nz-tooltip
-      [nzTooltipTrigger]="null"
-      nzTitle="program"
-      [nzVisible]="visible"
-      (nzVisibleChange)="onVisibleChange()"
-    >
+    <a #program nz-tooltip [nzTooltipTrigger]="null" nzTitle="program" [nzVisible]="visible" (nzVisibleChange)="onVisibleChange()">
       Manually
     </a>
 

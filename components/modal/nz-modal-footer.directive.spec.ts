@@ -1,6 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component } from '@angular/core';
-import { async, fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -47,9 +47,7 @@ describe('modal footer directive', () => {
     testComponent.showModal();
     fixture.detectChanges();
     expect(testComponent.isVisible).toBe(true);
-    const cancelBtn: HTMLButtonElement = overlayContainerElement.querySelector(
-      '.ant-modal #btn-template'
-    ) as HTMLButtonElement;
+    const cancelBtn: HTMLButtonElement = overlayContainerElement.querySelector('.ant-modal #btn-template') as HTMLButtonElement;
     expect(cancelBtn).toBeTruthy();
     cancelBtn.click();
     fixture.detectChanges();

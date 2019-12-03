@@ -34,22 +34,22 @@ import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 
 import {
-  warnDeprecation,
   InputBoolean,
   InputNumber,
   NzConfigService,
   NzDomEventService,
   NzDragService,
+  warnDeprecation,
   WithConfig
 } from 'ng-zorro-antd/core';
 
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
 import {
   FromToInterface,
+  NZ_CAROUSEL_CUSTOM_STRATEGIES,
   NzCarouselDotPosition,
   NzCarouselEffects,
   NzCarouselStrategyRegistryItem,
-  NZ_CAROUSEL_CUSTOM_STRATEGIES,
   PointerVector
 } from './nz-carousel-definitions';
 import { NzCarouselBaseStrategy } from './strategies/base-strategy';

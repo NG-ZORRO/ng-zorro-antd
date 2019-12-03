@@ -6,13 +6,7 @@ import { Component } from '@angular/core';
     <nz-table #filterTable [nzData]="listOfDisplayData">
       <thead (nzSortChange)="sort($event)" nzSingleSort>
         <tr>
-          <th
-            nzShowSort
-            nzSortKey="name"
-            nzShowFilter
-            [nzFilters]="listOfName"
-            (nzFilterChange)="filter($event, searchAddress)"
-          >
+          <th nzShowSort nzSortKey="name" nzShowFilter [nzFilters]="listOfName" (nzFilterChange)="filter($event, searchAddress)">
             Name
           </th>
           <th nzShowSort nzSortKey="age">Age</th>
@@ -39,8 +33,14 @@ import { Component } from '@angular/core';
   `
 })
 export class NzDemoTableDefaultFilterComponent {
-  listOfName = [{ text: 'Joe', value: 'Joe', byDefault: true }, { text: 'Jim', value: 'Jim' }];
-  listOfAddress = [{ text: 'London', value: 'London', byDefault: true }, { text: 'Sidney', value: 'Sidney' }];
+  listOfName = [
+    { text: 'Joe', value: 'Joe', byDefault: true },
+    { text: 'Jim', value: 'Jim' }
+  ];
+  listOfAddress = [
+    { text: 'London', value: 'London', byDefault: true },
+    { text: 'Sidney', value: 'Sidney' }
+  ];
   listOfSearchName = ['Joe']; // You need to change it as well!
   sortName: string | null = null;
   sortValue: string | null = null;
@@ -92,13 +92,7 @@ export class NzDemoTableDefaultFilterComponent {
     /** sort data **/
     if (this.sortName && this.sortValue) {
       this.listOfDisplayData = data.sort((a, b) =>
-        this.sortValue === 'ascend'
-          ? a[this.sortName!] > b[this.sortName!]
-            ? 1
-            : -1
-          : b[this.sortName!] > a[this.sortName!]
-          ? 1
-          : -1
+        this.sortValue === 'ascend' ? (a[this.sortName!] > b[this.sortName!] ? 1 : -1) : b[this.sortName!] > a[this.sortName!] ? 1 : -1
       );
     } else {
       this.listOfDisplayData = data;

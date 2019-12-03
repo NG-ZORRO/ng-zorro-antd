@@ -158,13 +158,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
           strokeLinejoin="round"
           d="M110.13 74.84l-.896 1.61-.298 4.357h-2.228"
         />
-        <path
-          d="M110.846 74.481s1.79-.716 2.506.537"
-          stroke="#5C2552"
-          strokeWidth="1.118"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
+        <path d="M110.846 74.481s1.79-.716 2.506.537" stroke="#5C2552" strokeWidth="1.118" strokeLinecap="round" strokeLinejoin="round" />
         <path
           d="M92.386 74.282s.477-1.114 1.113-.716c.637.398 1.274 1.433.558 1.99-.717.556.159 1.67.159 1.67"
           stroke="#DB836E"
@@ -172,13 +166,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
           strokeLinecap="round"
           strokeLinejoin="round"
         />
-        <path
-          d="M103.287 72.93s1.83 1.113 4.137.954"
-          stroke="#5C2552"
-          strokeWidth="1.118"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
+        <path d="M103.287 72.93s1.83 1.113 4.137.954" stroke="#5C2552" strokeWidth="1.118" strokeLinecap="round" strokeLinejoin="round" />
         <path
           d="M103.685 81.762s2.227 1.193 4.376 1.193M104.64 84.308s.954.398 1.511.318M94.693 81.205s2.308 7.4 10.424 7.639"
           stroke="#DB836E"
@@ -266,13 +254,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/
           d="M186.443 293.613H158.92a3.187 3.187 0 0 1-3.187-3.187v-46.134a3.187 3.187 0 0 1 3.187-3.187h27.524a3.187 3.187 0 0 1 3.187 3.187v46.134a3.187 3.187 0 0 1-3.187 3.187"
           fill="#F2D7AD"
         />
-        <path
-          d="M88.979 89.48s7.776 5.384 16.6 2.842"
-          stroke="#E4EBF7"
-          strokeWidth="1.101"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
+        <path d="M88.979 89.48s7.776 5.384 16.6 2.842" stroke="#E4EBF7" strokeWidth="1.101" strokeLinecap="round" strokeLinejoin="round" />
       </g>
     </svg>
   `

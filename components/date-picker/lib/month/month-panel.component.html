@@ -26,7 +26,12 @@
       ></a>
     </div>
     <div class="{{ prefixCls }}-body">
-      <month-table [prefixCls]="'ant-calendar'" [disabledDate]="disabledDate" [value]="value" (valueChange)="valueChange.emit($event)"></month-table>
+      <month-table
+        [prefixCls]="'ant-calendar'"
+        [disabledDate]="disabledDate"
+        [value]="value"
+        (valueChange)="valueChange.emit($event)"
+      ></month-table>
     </div>
   </div>
 </div>

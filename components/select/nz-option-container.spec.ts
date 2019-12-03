@@ -1,5 +1,5 @@
 import { Component, DebugElement, QueryList, ViewEncapsulation } from '@angular/core';
-import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ReplaySubject, Subject } from 'rxjs';
@@ -81,9 +81,7 @@ describe('nz-select option container', () => {
     it('should scrollIntoViewIfNeeded', fakeAsync(() => {
       fixture.detectChanges();
       const nzSelectService = fixture.debugElement.injector.get(NzSelectService);
-      nzSelectService.activatedOption$.next(
-        nzSelectService.listOfNzOptionComponent[nzSelectService.listOfNzOptionComponent.length - 1]
-      );
+      nzSelectService.activatedOption$.next(nzSelectService.listOfNzOptionComponent[nzSelectService.listOfNzOptionComponent.length - 1]);
       fixture.detectChanges();
       tick();
       fixture.detectChanges();

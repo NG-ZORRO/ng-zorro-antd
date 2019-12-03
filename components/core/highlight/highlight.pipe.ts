@@ -24,7 +24,7 @@ function encodeEntities(value: string): string {
     .replace(SURROGATE_PAIR_REGEXP, (match: string) => {
       const hi = match.charCodeAt(0);
       const low = match.charCodeAt(1);
-      return `&#${(hi - 0xD800) * 0x400 + (low - 0xDC00) + 0x10000};`;
+      return `&#${(hi - 0xd800) * 0x400 + (low - 0xdc00) + 0x10000};`;
     })
     .replace(NON_ALPHANUMERIC_REGEXP, (match: string) => `&#${match.charCodeAt(0)};`)
     .replace(/</g, '&lt;')

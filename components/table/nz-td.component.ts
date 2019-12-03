@@ -18,7 +18,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { isNotNil, InputBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { InputBoolean, isNotNil, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
 @Component({
   // tslint:disable-next-line:component-selector

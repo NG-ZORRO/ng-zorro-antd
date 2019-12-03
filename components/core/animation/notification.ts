@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { animate, state, style, transition, trigger, AnimationTriggerMetadata } from '@angular/animations';
+import { animate, AnimationTriggerMetadata, state, style, transition, trigger } from '@angular/animations';
 
 export const notificationMotion: AnimationTriggerMetadata = trigger('notificationMotion', [
   state('enterRight', style({ opacity: 1, transform: 'translateX(0)' })),

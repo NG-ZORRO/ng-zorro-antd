@@ -244,9 +244,7 @@ export class CandyDate implements IndexableObject {
         fn = differenceInCalendarDays;
         break;
     }
-    return isBefore
-      ? fn(this.nativeDate, this.toNativeDate(date)) < 0
-      : fn(this.nativeDate, this.toNativeDate(date)) > 0;
+    return isBefore ? fn(this.nativeDate, this.toNativeDate(date)) < 0 : fn(this.nativeDate, this.toNativeDate(date)) > 0;
   }
 
   isBeforeYear(date: CandyDateType): boolean {

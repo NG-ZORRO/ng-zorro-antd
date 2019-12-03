@@ -9,12 +9,12 @@
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { CdkConnectedOverlay, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
-  forwardRef,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Host,
   HostListener,
   Input,
@@ -34,15 +34,15 @@ import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
 import {
-  slideMotion,
-  toArray,
-  warnDeprecation,
   DEFAULT_DROPDOWN_POSITIONS,
   InputBoolean,
   NgClassType,
   NgStyleInterface,
   NzConfigService,
   NzNoAnimationDirective,
+  slideMotion,
+  toArray,
+  warnDeprecation,
   WithConfig
 } from 'ng-zorro-antd/core';
 
@@ -264,14 +264,9 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
       this.dropdownWidthStyle = '';
     });
 
-    this.i18nService.localeChange
-      .pipe(
-        startWith(),
-        takeUntil(this.$destroy)
-      )
-      .subscribe(() => {
-        this.setLocale();
-      });
+    this.i18nService.localeChange.pipe(startWith(), takeUntil(this.$destroy)).subscribe(() => {
+      this.setLocale();
+    });
 
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
@@ -500,9 +495,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   }
 
   private isActionTrigger(action: 'click' | 'hover'): boolean {
-    return typeof this.nzTriggerAction === 'string'
-      ? this.nzTriggerAction === action
-      : this.nzTriggerAction.indexOf(action) !== -1;
+    return typeof this.nzTriggerAction === 'string' ? this.nzTriggerAction === action : this.nzTriggerAction.indexOf(action) !== -1;
   }
 
   private onEnter(): void {

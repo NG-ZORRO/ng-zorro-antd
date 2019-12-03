@@ -12,13 +12,7 @@ export interface AutocompleteOptionGroups {
   template: `
     <div class="example-input">
       <nz-input-group nzSize="large" [nzSuffix]="suffixIcon">
-        <input
-          placeholder="input here"
-          nz-input
-          [(ngModel)]="inputValue"
-          (ngModelChange)="onChange($event)"
-          [nzAutocomplete]="auto"
-        />
+        <input placeholder="input here" nz-input [(ngModel)]="inputValue" (ngModelChange)="onChange($event)" [nzAutocomplete]="auto" />
       </nz-input-group>
       <ng-template #suffixIcon>
         <i nz-icon nzType="search"></i>
