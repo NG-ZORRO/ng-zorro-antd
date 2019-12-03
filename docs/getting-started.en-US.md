@@ -9,7 +9,7 @@ Ant Design of Angular is dedicated to providing a **good development experience*
 
 ## Playground
 
-The following StackBlitz demo is the simplest use case, and it's also a good habit to fork this demo to provide a re-producible demo while reporting a bug. Please don't use this demo as a scaffold in production.
+The following StackBlitz demo is the simplest use case, and it's also a good habit to fork this demo to provide a reproducible demo while reporting a bug. Please don't use this demo as a scaffold in production.
 
 - [NG-ZORRO StackBlitz](https://stackblitz.com/edit/ng-zorro-antd-start?file=src%2Fapp%2Fapp.component.ts)
 
@@ -192,6 +192,6 @@ If you want to import several components, it is recommended to use less instead 
 Importing individually is recommended if you:
 
 * Only use a small part of the components of ng-zorro-antd (You can use a shared module to wrap those components).
-* Use ng-zorro-antd along with others component kits and get error because of conflicts.
+* Use ng-zorro-antd along with other component kits and get a error because of conflicts.
 
 Of course, if you import NgZorroAntdModule in your modules, you don't have to import sub modules individually.
