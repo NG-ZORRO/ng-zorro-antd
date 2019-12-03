@@ -31,30 +31,23 @@ function encodeEntities(value: string): string {
     .replace(/>/g, '&gt;');
 }
 
-export function hightlightTransform(
-  value: string,
-  highlightValue: string,
-  flags?: string,
-  klass?: string
-): string | null {
-  const UNIQUE_WRAPPERS: [string, string] = ['##==-open_tag-==##', '##==-close_tag-==##'];
-  if (!highlightValue) {
-    return value;
-  }
-  // Escapes regex keyword to interpret these characters literally
-  const searchValue = new RegExp(highlightValue.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$&'), flags);
-  const wrapValue = value.replace(searchValue, `${UNIQUE_WRAPPERS[0]}$&${UNIQUE_WRAPPERS[1]}`);
-  return encodeEntities(wrapValue)
-    .replace(new RegExp(UNIQUE_WRAPPERS[0], 'g'), klass ? `<span class="${klass}">` : '<span>')
-    .replace(new RegExp(UNIQUE_WRAPPERS[1], 'g'), '</span>');
-}
-
 @Pipe({
   name: 'nzHighlight',
   pure: true
 })
 export class NzHighlightPipe implements PipeTransform {
+  private UNIQUE_WRAPPERS: [string, string] = ['##==-open_tag-==##', '##==-close_tag-==##'];
+
   transform(value: string, highlightValue: string, flags?: string, klass?: string): string | null {
-    return hightlightTransform(value, highlightValue, flags, klass);
+    if (!highlightValue) {
+      return value;
+    }
+
+    // Escapes regex keyword to interpret these characters literally
+    const searchValue = new RegExp(highlightValue.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$&'), flags);
+    const wrapValue = value.replace(searchValue, `${this.UNIQUE_WRAPPERS[0]}$&${this.UNIQUE_WRAPPERS[1]}`);
+    return encodeEntities(wrapValue)
+      .replace(new RegExp(this.UNIQUE_WRAPPERS[0], 'g'), klass ? `<span class="${klass}">` : '<span>')
+      .replace(new RegExp(this.UNIQUE_WRAPPERS[1], 'g'), '</span>');
   }
 }

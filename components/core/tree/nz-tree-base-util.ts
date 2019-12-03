@@ -6,14 +6,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { hightlightTransform } from '../highlight';
+import { NzHighlightPipe } from '../highlight';
 import { NzTreeNode } from './nz-tree-base-node';
 
 export type NzHighlightFunc = (inputValue: string, option: NzTreeNode) => string | null;
 
 export function nzTreeDefaultHighlightFunc(inputValue: string, option: NzTreeNode): string | null {
+  const nzHighlightPipe = new NzHighlightPipe();
   if (inputValue && option.title) {
-    return hightlightTransform(option.title, inputValue, '', 'font-highlight');
+    return nzHighlightPipe.transform(option.title, inputValue, '', 'font-highlight');
   } else {
     return option.title;
   }
