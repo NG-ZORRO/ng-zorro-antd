@@ -9,6 +9,8 @@ import { dispatchMouseEvent, dispatchTouchEvent, NzTreeBaseService, NzTreeNode, 
 
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzDemoTreeSearchComponent } from './demo/search';
 import { NzTreeComponent } from './nz-tree.component';
 import { NzTreeModule } from './nz-tree.module';
 
@@ -387,6 +389,45 @@ describe('nz-tree', () => {
       fixture.componentInstance.expandAll = true;
       fixture.detectChanges();
       expect(treeElement.querySelector('.ant-tree-treenode-disabled')!.querySelectorAll("[title='0-0-reset']").length).toEqual(1);
+    }));
+  });
+
+  describe('custom filter tree', () => {
+    let treeElement: HTMLElement;
+    let treeComponent: NzTreeComponent;
+    let fixture: ComponentFixture<NzDemoTreeSearchComponent>;
+    beforeEach(async(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          NzTreeModule,
+          NoopAnimationsModule,
+          FormsModule,
+          ReactiveFormsModule,
+          NzIconTestModule,
+          NzInputModule
+        ],
+        declarations: [NzDemoTreeSearchComponent]
+      }).compileComponents();
+      fixture = TestBed.createComponent(NzDemoTreeSearchComponent);
+      fixture.detectChanges();
+      treeComponent = fixture.componentInstance.treeComponent;
+      treeElement = fixture.debugElement.query(By.directive(NzTreeComponent)).nativeElement;
+    }));
+    it('test custom filter', fakeAsync(() => {
+      fixture.detectChanges();
+      // case insensitive
+      fixture.componentInstance.searchValue = 'a';
+      fixture.detectChanges();
+      expect(treeComponent.getMatchedNodeList().length).toEqual(11);
+      expect(treeElement.querySelectorAll('.font-highlight').length).toEqual(11);
+      fixture.componentInstance.searchValue = 'a-a';
+      fixture.detectChanges();
+      expect(treeComponent.getMatchedNodeList().length).toEqual(4);
+      expect(treeElement.querySelectorAll('.font-highlight').length).toEqual(4);
+      fixture.componentInstance.searchValue = 'a-B';
+      fixture.detectChanges();
+      expect(treeComponent.getMatchedNodeList().length).toEqual(5);
+      expect(treeElement.querySelectorAll('.font-highlight').length).toEqual(5);
     }));
   });
 

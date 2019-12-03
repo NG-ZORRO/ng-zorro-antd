@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { NzTreeComponent } from 'ng-zorro-antd';
 import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/core';
 
 @Component({
@@ -11,6 +12,7 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/core';
       <i nz-icon nzType="search"></i>
     </ng-template>
     <nz-tree
+      #treeComponent
       [nzData]="nodes"
       [nzSearchValue]="searchValue"
       [nzFilterOption]="customFilterOption"
@@ -30,6 +32,7 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/core';
   ]
 })
 export class NzDemoTreeSearchComponent {
+  @ViewChild('treeComponent', { static: true }) treeComponent: NzTreeComponent;
   searchValue = '';
   nodes = [
     {
