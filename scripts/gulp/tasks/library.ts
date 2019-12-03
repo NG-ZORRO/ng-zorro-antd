@@ -9,7 +9,7 @@ import { execNodeTask } from '../util/task-helpers';
 task('library:build-zorro', execNodeTask(
   '@angular/cli',
   'ng',
-  [ 'build', 'ng-zorro-antd-lib', '--prod' ]
+  [ 'build', 'ng-zorro-antd-lib' ]
 ));
 
 // Compile less to the public directory.
