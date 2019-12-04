@@ -11,6 +11,10 @@ import { Component } from '@angular/core';
   `,
   styles: [
     `
+      nz-carousel {
+        height: 160px;
+      }
+
       [nz-carousel-content] {
         text-align: center;
         height: 160px;

@@ -36,9 +36,11 @@ import { finalize, takeUntil } from 'rxjs/operators';
 import {
   InputBoolean,
   InputNumber,
+  NZ_UNSTABLE_CONTAINER_TOKEN,
   NzConfigService,
   NzDomEventService,
   NzDragService,
+  UnstableContainer,
   warnDeprecation,
   WithConfig
 } from 'ng-zorro-antd/core';
@@ -155,7 +157,8 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     private readonly platform: Platform,
     private readonly nzDomEventService: NzDomEventService,
     private readonly nzDragService: NzDragService,
-    @Optional() @Inject(NZ_CAROUSEL_CUSTOM_STRATEGIES) private customStrategies: NzCarouselStrategyRegistryItem[]
+    @Optional() @Inject(NZ_CAROUSEL_CUSTOM_STRATEGIES) private customStrategies: NzCarouselStrategyRegistryItem[],
+    @Optional() @Inject(NZ_UNSTABLE_CONTAINER_TOKEN) private unstableContainer: UnstableContainer
   ) {
     this.renderer.addClass(elementRef.nativeElement, 'ant-carousel');
     this.el = elementRef.nativeElement;
@@ -190,6 +193,15 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     this.switchStrategy();
     this.markContentActive(0);
     this.syncStrategy();
+
+    if (this.unstableContainer) {
+      this.unstableContainer
+        .subscribeDOMChange()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          this.syncStrategy();
+        });
+    }
 
     // If embedded in an entry component, it may do initial render at a inappropriate time.
     // ngZone.onStable won't do this trick

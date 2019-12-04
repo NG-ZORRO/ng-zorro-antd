@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { UnstableContainer } from 'ng-zorro-antd/core';
 import { Observable } from 'rxjs';
 
 import { NzModalComponent } from './nz-modal.component';
@@ -15,7 +16,7 @@ import { NzModalComponent } from './nz-modal.component';
  * NzModalRef is aim to avoid accessing to the modal instance directly by users.
  */
 // tslint:disable-next-line:no-any
-export abstract class NzModalRef<T = any, R = any> {
+export abstract class NzModalRef<T = any, R = any> extends UnstableContainer {
   abstract afterOpen: Observable<void>;
   abstract afterClose: Observable<R>;
 

@@ -21,6 +21,7 @@ import {
   ContentChild,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Inject,
   Injector,
   Input,
@@ -39,7 +40,15 @@ import {
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { getElementOffset, InputBoolean, isPromise, NzConfigService, warnDeprecation, WithConfig } from 'ng-zorro-antd/core';
+import {
+  getElementOffset,
+  InputBoolean,
+  isPromise,
+  NZ_UNSTABLE_CONTAINER_TOKEN,
+  NzConfigService,
+  warnDeprecation,
+  WithConfig
+} from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { NZ_MODAL_CONFIG, NzModalConfig } from './nz-modal-config';
@@ -60,9 +69,14 @@ const NZ_CONFIG_COMPONENT_NAME = 'modal';
   exportAs: 'nzModal',
   templateUrl: './nz-modal.component.html',
   // Using OnPush for modal caused footer can not to detect changes. we can fix it when 8.x.
-  changeDetection: ChangeDetectionStrategy.Default
+  changeDetection: ChangeDetectionStrategy.Default,
+  providers: [
+    {
+      provide: NZ_UNSTABLE_CONTAINER_TOKEN,
+      useExisting: forwardRef(() => NzModalComponent)
+    }
+  ]
 })
-
 // tslint:disable-next-line:no-any
 export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   implements OnInit, OnChanges, AfterViewInit, OnDestroy, ModalOptions<T> {
@@ -272,6 +286,8 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   }
 
   ngOnDestroy(): void {
+    super.ngOnDestroy();
+
     // Close self before destructing
     this.changeVisibleFromInside(false).then(() => {
       this.modalControl.deregisterModal(this);
@@ -429,6 +445,9 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
       // Emit open/close event after animations over
       if (visible) {
         this.nzAfterOpen.emit();
+        setTimeout(() => {
+          this.markDOMStable();
+        }, 200);
       } else {
         this.nzAfterClose.emit(closeResult);
         this.restoreFocus();

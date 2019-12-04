@@ -26,3 +26,4 @@ export * from './trans-button/public-api';
 export * from './highlight/public-api';
 export * from './config/public-api';
 export * from './pipe/public-api';
+export * from './unstable-container/public-api';

@@ -1,5 +1,6 @@
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 
-export const moduleList = [ NzModalModule, NzButtonModule, NzIconModule ];
+export const moduleList = [ NzModalModule, NzButtonModule, NzIconModule, NzCarouselModule ];
