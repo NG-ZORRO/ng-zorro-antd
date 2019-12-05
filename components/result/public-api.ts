@@ -11,6 +11,6 @@ export * from './nz-result.component';
 export * from './nz-result-cells';
 
 // Making these partial components not visible to users but comprehensive to ng-packagr.
-export { NzResultNotFoundComponent as θNzResultNotFoundComponent } from './partial/not-found';
-export { NzResultServerErrorComponent as θNzResultServerErrorComponent } from './partial/server-error.component';
-export { NzResultUnauthorizedComponent as θNzResultUnauthorizedComponent } from './partial/unauthorized';
+export { NzResultNotFoundComponent as ɵNzResultNotFoundComponent } from './partial/not-found';
+export { NzResultServerErrorComponent as ɵNzResultServerErrorComponent } from './partial/server-error.component';
+export { NzResultUnauthorizedComponent as ɵNzResultUnauthorizedComponent } from './partial/unauthorized';
