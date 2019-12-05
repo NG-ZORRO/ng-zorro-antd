@@ -28,6 +28,10 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/core';
       nz-input-group {
         padding: 10px 0;
       }
+
+      ::ng-deep .highlight-font {
+        color: #f5222d;
+      }
     `
   ]
 })
@@ -90,7 +94,7 @@ export class NzDemoTreeSearchComponent {
       if (startIndex > -1) {
         const highlightLength = inputValue.length;
         const highlightText = option.title.slice(startIndex, startIndex + highlightLength);
-        return option.title.replace(highlightText, `<span class="font-highlight">${highlightText}</span>`);
+        return option.title.replace(highlightText, `<span class="highlight-font">${highlightText}</span>`);
       } else {
         return option.title;
       }
