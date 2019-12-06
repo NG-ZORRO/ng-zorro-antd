@@ -234,7 +234,7 @@ describe('carousel', () => {
       expect(resizeSpy).toHaveBeenCalledTimes(1);
     }));
 
-    // TODO(wendzhue): no idea why this stops working with auditTime
+    // TODO(wendellhu95): no idea why this stops working with auditTime
     it('should support swiping to switch', fakeAsync(() => {
       swipe(testComponent.nzCarouselComponent, 500);
       tickMilliseconds(fixture, 700);
