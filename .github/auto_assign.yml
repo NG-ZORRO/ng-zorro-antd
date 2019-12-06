@@ -1,5 +1,5 @@
 # Set to true to add reviewers to pull requests
-addReviewers: true
+addReviewers: false
 
 # Set to true to add assignees to pull requests
 addAssignees: true
@@ -10,7 +10,6 @@ reviewers:
   - wendzhue
   - hsuanxyz
   - simplejason
-  - cipchk
   - wenqi73
 
 # A list of keywords to be skipped the process that add reviewers if pull requests include it

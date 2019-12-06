@@ -49,62 +49,62 @@ issue:
     labelTemplate: 'Component: {component}'
     components:
       Affix: cipchk
-      Alert: vthinkxie
       Anchor: cipchk
+      BackTop: cipchk
+      List: cipchk
+      Upload: cipchk
       AutoComplete: hsuanxyz
       Avatar: hsuanxyz
-      BackTop: cipchk
       Badge: hsuanxyz
+      Comment: hsuanxyz
+      Drawer: hsuanxyz
+      Mention: hsuanxyz
+      Modal: hsuanxyz
+      Steps: hsuanxyz
+      Tag: hsuanxyz
+      TreeSelect: hsuanxyz
+      Typography: hsuanxyz
       Breadcrumb: wendzhue
-      Button: vthinkxie
       Empty: wendzhue
-      Calendar: wenqi73
-      Card: vthinkxie
       Carousel: wendzhue
       Cascader: wendzhue
-      Comment: hsuanxyz
-      Checkbox: vthinkxie
-      Collapse: vthinkxie
-      DatePicker: wenqi73
-      Divider: vthinkxie
       Descriptions: wendzhue
-      Drawer: hsuanxyz
-      Dropdown: vthinkxie
-      Form: vthinkxie
-      Grid: vthinkxie
       Icon: wendzhue
-      Input: vthinkxie
-      InputNumber: vthinkxie
-      Layout: vthinkxie
-      List: cipchk
-      Mention: hsuanxyz
-      Menu: vthinkxie
       Message: wendzhue
-      Modal: hsuanxyz
       Notification: wendzhue
-      PageHeader: hsuanxyz
-      Pagination: vthinkxie
       Popconfirm: wendzhue
       Popover: wendzhue
       Progress: wendzhue
-      Radio: vthinkxie
       Rate: wendzhue
       Result: wendzhue
-      Select: vthinkxie
       Slider: wendzhue
-      Spin: vthinkxie
       Statistic: wendzhue
-      Steps: hsuanxyz
-      Skeleton: wenqi73
-      Switch: vthinkxie
-      Table: vthinkxie
-      Tabs: vthinkxie
-      Tag: hsuanxyz
-      TimePicker: wenqi73
       Timeline: wendzhue
       Tooltip: wendzhue
-      Transfer: cipchk
+      Calendar: wenqi73
+      DatePicker: wenqi73
+      Skeleton: wenqi73
+      TimePicker: wenqi73
+      Alert: vthinkxie
+      Button: vthinkxie
+      Card: vthinkxie
+      Checkbox: vthinkxie
+      Collapse: vthinkxie
+      Divider: vthinkxie
+      Dropdown: vthinkxie
+      Grid: vthinkxie
+      Input: vthinkxie
+      InputNumber: vthinkxie
+      Layout: vthinkxie
+      Menu: vthinkxie
+      Pagination: vthinkxie
+      Radio: vthinkxie
+      Select: vthinkxie
+      Spin: vthinkxie
+      Switch: vthinkxie
+      Table: vthinkxie
+      Tabs: NearZXH
       Tree: simplejason
-      TreeSelect: hsuanxyz
-      Typography: hsuanxyz
-      Upload: cipchk
+      Form: danranVm
+      PageHeader: CK110
+      Transfer: Ricbet

@@ -108,7 +108,7 @@
     "zone.js": "~0.10.2"
   },
   "lint-staged": {
-    "components/**/*.ts": [
+    "components/**/*.{html,ts}": [
       "./node_modules/.bin/prettier --write",
       "git add"
     ],
