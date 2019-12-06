@@ -15,10 +15,6 @@ title: Transfer
 选择一个或以上的选项后，点击对应的方向键，可以把选中的选项移动到另一栏。
 其中，左边一栏为 `source`，右边一栏为 `target`，API 的设计也反映了这两个概念。
 
-## 单独引入此组件
-
-想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
-
 ```ts
 import { NzTransferModule } from 'ng-zorro-antd/transfer';
 ```

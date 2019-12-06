@@ -23,7 +23,7 @@ title: 常见问题
 
 ### Can't Bind to since it isn't a known property of
 
-如果使用多 Module 管理方式，NgZorroAntdModule 需要在每个子 Module 中都要 import，或者在 `ShareModule` 中 export，可以参考[官方文档](https://angular.io/guide/sharing-ngmodules)。
+如果使用多 Module 管理方式，NG-ZORRO 的模块需要在每个子 Module 中都要 import，或者在 `ShareModule` 中 export，可以参考[官方文档](https://angular.io/guide/sharing-ngmodules)。
 
 ### Expression Changed After It Has Been Checked Error 错误
 

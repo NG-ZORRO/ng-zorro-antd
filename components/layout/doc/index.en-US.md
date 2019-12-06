@@ -7,10 +7,6 @@ title: Layout
 
 Handling the overall layout of a page.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 ```

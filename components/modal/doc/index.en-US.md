@@ -16,10 +16,6 @@ and so on.
 
 It is recommended to use the `Component` way to pop up the Modal, so that the component logic of the popup layer can be completely isolated from the outer component, and can be reused at any time. In the popup layer component, you can obtain Modal's component instance by injecting `NzModalRef` to control the behavior of the modal box.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzModalModule } from 'ng-zorro-antd/modal';
 ```

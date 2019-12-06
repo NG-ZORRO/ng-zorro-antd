@@ -204,6 +204,9 @@ export * from 'ng-zorro-antd/version';
     NzWaveModule
   ]
 })
+/**
+ * @deprecated Use secondary entry eg: `import { NzButtonModule } from 'ng-zorro-antd/button'`.
+ */
 export class NgZorroAntdModule {
   /**
    * @deprecated Use `NgZorroAntdModule` instead.

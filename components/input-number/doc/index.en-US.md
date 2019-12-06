@@ -12,10 +12,6 @@ Enter a number within certain range with the mouse or keyboard.
 
 When a numeric value needs to be provided.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 ```

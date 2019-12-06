@@ -11,10 +11,6 @@ title: Steps
 
 When the task is complicated or has a certain sequence in the series of subtasks, we can decompose it into several steps to make things easier.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 ```

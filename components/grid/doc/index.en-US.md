@@ -79,10 +79,6 @@ Our grid systems support Flex layout to allow the elements within the parent to 
 
 Flex layout uses a 24 grid layout to define the width of each "box", but does not rigidly adhere to the grid layout.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzGridModule } from 'ng-zorro-antd/grid';
 ```

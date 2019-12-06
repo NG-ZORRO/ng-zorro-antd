@@ -13,10 +13,6 @@ hasPageDemo: true
 
 新版图标可能略有缺失，我们将与 [Ant Design](https://ant.design/components/icon-cn/) 同步保持图标的更新。
 
-## 单独引入此组件
-
-想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
-
 ```ts
 import { NzIconModule } from 'ng-zorro-antd/icon';
 ```

@@ -15,10 +15,6 @@ cols: 1
 - 只适合用在第一次加载数据的场景。
 - 可以被 Spin 完全代替，但是在可用的场景下可以比 Spin 提供更好的视觉效果和用户体验
 
-## 单独引入此组件
-
-想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
-
 ```ts
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 ```

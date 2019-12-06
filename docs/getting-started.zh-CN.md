@@ -81,15 +81,11 @@ $ ng build --prod
 $ npm install ng-zorro-antd --save
 ```
 
-### 2.引入模块
+### 2.注册国际化
 
 ```typescript
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { NgZorroAntdModule, NZ_I18N, zh_CN } from 'ng-zorro-antd';
+import { NZ_I18N, zh_CN } from 'ng-zorro-antd';
 import { AppComponent } from './app.component';
 
 /** 配置 angular i18n **/
@@ -101,14 +97,6 @@ registerLocaleData(zh);
   declarations: [
     AppComponent
   ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    /** 导入 ng-zorro-antd 模块 **/
-    NgZorroAntdModule
-  ],
   bootstrap: [ AppComponent ],
   /** 配置 ng-zorro-antd 国际化（文案 及 日期） **/
   providers   : [
@@ -118,7 +106,6 @@ registerLocaleData(zh);
 export class AppModule { }
 
 ```
-这样就成功在全局引入了 `ng-zorro-antd`。
 
 ### 3. 引入样式与 SVG 资源
 
