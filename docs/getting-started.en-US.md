@@ -128,7 +128,7 @@ Import the less styles in `style.less`
 
 #### Import Component Module
 
-Finally, you need to import the component modules you want to use into your `app.module.ts` file or other lazy-loaded feature modules.
+Finally, you need to import the component modules you want to use into your `app.module.ts` file and [feature modules](https://angular.io/guide/feature-modules).
 
 Take the following Button Module module as an example, first introduce the component module:
 
