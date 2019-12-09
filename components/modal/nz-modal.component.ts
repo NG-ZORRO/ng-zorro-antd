@@ -386,7 +386,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
           this[loadingKey] = false;
           caseClose(doClose);
         };
-        (result as Promise<void>).then(handleThen).catch(handleThen);
+        result.then(handleThen).catch(handleThen);
       } else {
         caseClose(result);
       }
@@ -454,7 +454,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
     const result = this.getButtonCallableProp(button, 'onClick'); // Call onClick directly
     if (isPromise(result)) {
       button.loading = true;
-      (result as Promise<{}>).then(() => (button.loading = false)).catch(() => (button.loading = false));
+      result.then(() => (button.loading = false)).catch(() => (button.loading = false));
     }
   }
 
