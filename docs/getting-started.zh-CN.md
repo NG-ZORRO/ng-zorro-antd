@@ -28,7 +28,6 @@ NG-ZORRO 致力于提供给程序员**愉悦**的开发体验。
 $ npm install -g @angular/cli
 ```
 
-
 ### 2. 创建一个项目
 
 > 在创建项目之前，请确保 `@angular/cli` 已被成功安装。
@@ -81,113 +80,83 @@ $ ng build --prod
 $ npm install ng-zorro-antd --save
 ```
 
-### 2.注册国际化
+### 2. 引入样式
 
-```typescript
-import { NgModule } from '@angular/core';
-import { NZ_I18N, zh_CN } from 'ng-zorro-antd';
-import { AppComponent } from './app.component';
+#### 2.1 使用全部组件样式
 
-/** 配置 angular i18n **/
-import { registerLocaleData } from '@angular/common';
-import zh from '@angular/common/locales/zh';
-registerLocaleData(zh);
+该配置将包含组件库的全部样式，如果只想使用某些组件请查看 [2.2 使用特定组件样式](#2.2 使用特定组件样式) 配置。
 
-@NgModule({
-  declarations: [
-    AppComponent
-  ],
-  bootstrap: [ AppComponent ],
-  /** 配置 ng-zorro-antd 国际化（文案 及 日期） **/
-  providers   : [
-    { provide: NZ_I18N, useValue: zh_CN }
-  ]
-})
-export class AppModule { }
-
-```
-
-### 3. 引入样式与 SVG 资源
-
-在 `angular.json` 文件中引入样式和 SVG icon 资源。
-
-如果需要自定义主题样式，请参考[自定义主题](/docs/customize-theme/zh)部分。
+在 `angular.json` 中引入了
 
 ```json
 {
-  "assets": [
-    ...
-    {
-      "glob": "**/*",
-      "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
-      "output": "/assets/"
-    }
-  ],
   "styles": [
-    ...
     "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
   ]
 }
 ```
 
-## 配置主题和字体
+在 `style.css` 中引入预构建样式文件
 
-* [自定义主题](/docs/customize-theme/zh)
-* [使用本地字体](/docs/customize-theme/zh)
-
-## 单独引入某个组件
-
-你可以通过引入子 module 和单独打包的 CSS/less 文件来单独使用某个组件。
-
-例如，你只想使用 Button 组件，那么你就可以引入 `NzButtonModule` 而不是 `NgZorroAntdModule`，在 `style.css` 里导入组件对应的样式文件而不是全部的样式文件。
-
-在 module 文件里：
-
-```typescript
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
-import { NzButtonModule } from 'ng-zorro-antd/button';
-
-@NgModule({
-  declarations: [
-    ...
-  ],
-  imports: [
-    CommonModule,
-    NzButtonModule
-  ]
-})
-export class YourModule { }
+```css
+@import "~ng-zorro-antd/ng-zorro-antd.min.css";
 ```
 
-在 style.css 文件里：
+在 `style.less` 中引入 less 样式文件
+
+```less
+@import "~ng-zorro-antd/ng-zorro-antd.less";
+```
+
+#### 2.2 使用特定组件样式
+
+> 由于组件之间的样式也存在依赖关系，单独引入多个组件的 CSS 可能导致 CSS 的冗余。
+
+使用特定组件样式时前需要先引入基本样式(所有组件的共用样式)。
+
+在 `style.css` 中引入预构建样式文件
 
 ```css
 @import "~ng-zorro-antd/style/index.min.css"; /* 引入基本样式 */
 @import "~ng-zorro-antd/button/style/index.min.css"; /* 引入组件样式 */
 ```
 
-另：如果你想单独引入多个组件，我们建议使用 less，在你的 style.less 里导入各个组件的 entry.less 文件：
-
+在 `style.less` 中引入 less 样式文件
 ```less
 @import "~ng-zorro-antd/style/entry.less"; /* 引入基本样式 */
 @import "~ng-zorro-antd/button/style/entry.less"; /* 引入组件样式 */
 ```
 
-> 由于组件之间的样式也存在依赖关系，单独引入多个组件的 CSS 可能导致 CSS 的冗余。
+### 3. 引入组件模块
 
-### 比较单独引入和传统的全部引入方式
+最后你需要将想要使用的组件模块引入到你的 `app.module.ts` 文件，或其它懒加载的特征模块中。
 
-| 全部引入 | 单独引入 |
-| --- | --- |
-| 不管要使用何种组件只需要导入 NgZorroAntdModule 和全部样式 | 按照你想用的组件导入 module 和样式文件 |
-| 打包体积较大 | 打包体积较小 |
-| ng-zorro-antd 的组件会被打包到 main.js 文件中 | 按照实际引用情况，可能被打包到懒加载 module 中 |
+以下面的 `NzButtonModule` 模块为例，先引入组件模块：
 
-如果你符合或遇到了如下情形，推荐你使用单独引入：
+```ts
+import { NgModule } from '@angular/core';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { AppComponent } from './app.component';
 
-* 你的项目中仅仅用到了少数几个组件（你可以使用 ShareModule 来包装你需要用到的组件）
-* 你的项目同时使用了 ng-zorro-antd 和别的组件，而且你遇到了冲突
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    NzButtonModule
+  ]
+})
+export class AppModule { }
+```
 
-当然，如果你已经在 module 中引入了 NgZorroAntdModule，单独引入各个组件的子 module 就没有意义了。
+然后在模板中使用：
+
+```html
+<button nz-button nzType="primary">Primary</button>
+```
+
+### 4. 其他
+
+- [国际化配置](/docs/i18n/zh)
+- [自定义主题](/docs/customize-theme/zh)
+- [使用图标](/components/icon/zh)
