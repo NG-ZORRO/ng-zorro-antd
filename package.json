@@ -113,7 +113,7 @@
       "git add"
     ],
     "components/**/!(testing)/!(polyfills).ts": [
-      "tslint -p components/tsconfig.lib.json --fix",
+      "tslint -c tslint.json --fix",
       "git add"
     ]
   },
