@@ -13,7 +13,9 @@ import {
 } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
-import { en_US, NzI18nService, NzMessageService, VERSION, zh_CN } from 'ng-zorro-antd';
+import { en_US, NzI18nService, zh_CN } from 'ng-zorro-antd/i18n';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { VERSION } from 'ng-zorro-antd/version';
 import { fromEvent } from 'rxjs';
 import { debounceTime, map, startWith } from 'rxjs/operators';
 import { environment } from '../environments/environment';

@@ -79,7 +79,7 @@ $ npm install ng-zorro-antd
 
 ## 🔨 Usage
 
-Import the component modules you want to use into your `app.module.ts` file or other lazy-loaded feature modules.
+Import the component modules you want to use into your `app.module.ts` file and other lazy-loaded feature modules.
 
 ```ts
 import { NzButtonModule } from 'ng-zorro-antd/button';

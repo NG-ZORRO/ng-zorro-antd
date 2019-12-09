@@ -25,7 +25,7 @@ export class NzDemoCodeEditorDiffComponent {
 @Component({})
 export class SomeComponent {}`;
 
-  code = `import { NzCodeEditorModule } from 'ng-zorro-antd';
+  code = `import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
 
 @Component({})
 export class SomeComponent {}`;
