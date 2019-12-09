@@ -104,7 +104,6 @@ describe('ng-add schematic', () => {
     const tree = await runner.runSchematicAsync('ng-add-setup-project', {}, appTree).toPromise();
     const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
 
-    expect(fileContent).toContain('NgZorroAntdModule');
     expect(fileContent).toContain('FormsModule');
     expect(fileContent).toContain('HttpClientModule');
   });

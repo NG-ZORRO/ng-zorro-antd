@@ -82,7 +82,7 @@ $ npm install ng-zorro-antd --save
 #### 2.1 Use all component styles
 
 This configuration will include all the styles of the component library.
-If you want to use only certain components, please see [2.2 Use Only Certain Component Style] (# 2.2 Use Only Certain Component Style) configuration.
+If you want to use only certain components, please see [2.2 Use Only Certain Component Style](#2.2-use-only-certain-component-style) configuration.
 
 Import the pre-build styles in `angular.json`
 
