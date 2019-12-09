@@ -281,7 +281,7 @@ describe('nz-empty', () => {
         // Component.
         expect(embedComponent).toBeTruthy();
         expect(emptyComponent).toBeFalsy();
-        const componentEl = embedComponent.nativeElement.nextSibling;
+        const componentEl = embedComponent.nativeElement.firstElementChild;
         expect(componentEl).toBeTruthy();
         expect(componentEl.tagName).toBe('NZ-EMPTY-TEST-CUSTOM');
         expect(componentEl.innerText).toBe(`I'm in component list`);
