@@ -21,7 +21,7 @@
     "gulp": "gulp",
     "lint": "tslint -c tslint.json 'components/**/!(testing)/!(polyfills).ts'",
     "integration-cli": "npm run build:lib && cd integration/angular-cli && npm run integration",
-    "integration-rollup": "npm run build:lib&& cd integration/rollup && npm run integration",
+    "integration-rollup": "npm run build:lib && cd integration/rollup && npm run integration",
     "integration-webpack": "npm run build:lib && cd integration/webpack && npm run integration",
     "integration": "npm run build:lib && bash ./integration-test.sh"
   },
