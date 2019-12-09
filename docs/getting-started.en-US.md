@@ -156,6 +156,6 @@ Then use in the template:
 
 ### 4. Other
 
-- [I18n](/docs/i18n/zh)
-- [Customize Theme](/docs/customize-theme/zh)
-- [Use Icons](/components/icon/zh)
+- [I18n](/docs/i18n/en)
+- [Customize Theme](/docs/customize-theme/en)
+- [Use Icons](/components/icon/en)
