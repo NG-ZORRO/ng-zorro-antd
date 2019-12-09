@@ -19,7 +19,7 @@ During development, you may need to compile and debug TypeScript code, and even 
 
 Such features, together with packaging the production version, are covered in this work flow.
 
-### 1. Installation
+### Installation
 
 We strongly recommended to develop Angular with `@angular/cli`, you can install it with the following commands.
 > Read [the documentation of `Angular CLI`](https://github.com/angular/angular-cli/wiki) to explore more features.
@@ -28,7 +28,7 @@ We strongly recommended to develop Angular with `@angular/cli`, you can install 
 $ npm install -g @angular/cli
 ```
 
-### 2. Create a New Project
+### Create a New Project
 
 A new project can be created using Angular CLI tools.
 
@@ -38,7 +38,7 @@ $ ng new PROJECT-NAME
 
 `@angular/cli` will run `npm install` after a project is created. If it fails, you can run `npm install` by yourself.
 
-### 3. Install ng-zorro-antd
+### Install ng-zorro-antd
 
 `ng-zorro-antd` support init configuration with schematics, you can get more info in the [schematics](/docs/schematics/en) part.
 
@@ -49,7 +49,7 @@ $ ng add ng-zorro-antd
 
 <img style="display: block; border-radius: 4px; box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.2);" src="https://img.alicdn.com/tfs/TB19fFHdkxz61VjSZFtXXaDSVXa-680-243.svg">
 
-### 4. Development & Debugging
+### Development & Debugging
 
 Run your project now, you can see the img below now.
 
@@ -59,7 +59,7 @@ $ ng serve --port 0 --open
 
 <img style="display: block;padding: 30px 30%;height: 260px;" src="https://img.alicdn.com/tfs/TB1X.qJJgHqK1RjSZFgXXa7JXXa-89-131.svg">
 
-### 5. Building & Deployment
+### Building & Deployment
 
 ```bash
 $ ng build --prod
@@ -71,18 +71,18 @@ Entry files will be built and generated in `dist` directory, where we can deploy
 
 If you want to customize your work flow, you can use any scaffold available in the Angular ecosystem. If you encounter problems, you can use our [config](https://github.com/NG-ZORRO/ng-zorro-antd/tree/master/integration) and modify it.
 
-### 1. Install ng-zorro-antd
+### Install ng-zorro-antd
 
 ```bash
 $ npm install ng-zorro-antd --save
 ```
 
-### 2. Import Styles
+### Import Styles
 
-#### 2.1 Use all component styles
+#### Use all component styles
 
 This configuration will include all the styles of the component library.
-If you want to use only certain components, please see [2.2 Use Only Certain Component Style](#2-2-use-only-certain-component-style) configuration.
+If you want to use only certain components, please see [Use Only Certain Component Style](/docs/getting-started/en#use-only-certain-component-style) configuration.
 
 Import the pre-build styles in `angular.json`
 
@@ -106,7 +106,7 @@ Import the less styles in `style.less`
 @import "~ng-zorro-antd/ng-zorro-antd.less";
 ```
 
-#### 2.2 Use Only Certain Component Style
+#### Use Only Certain Component Style
 
 > Importing CSS files of several components may result in code redundancy because style files of components have dependency relationships like TypeScript files.
 
@@ -126,7 +126,7 @@ Import the less styles in `style.less`
 @import "~ng-zorro-antd/button/style/entry.less";  /* Import styles of the component */
 ```
 
-### 2. Import Component Module
+#### Import Component Module
 
 Finally, you need to import the component modules you want to use into your `app.module.ts` file or other lazy-loaded feature modules.
 
@@ -154,7 +154,7 @@ Then use in the template:
 <button nz-button nzType="primary">Primary</button>
 ```
 
-### 4. Other
+## Other
 
 - [I18n](/docs/i18n/en)
 - [Customize Theme](/docs/customize-theme/en)

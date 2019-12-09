@@ -19,7 +19,7 @@ NG-ZORRO 致力于提供给程序员**愉悦**的开发体验。
 实际项目开发中，你会需要对 TypeScript 代码的构建、调试、代理、打包部署等一系列工程化的需求。
 我们强烈建议使用官方的 `@angular/cli` 工具链辅助进行开发，下面我们用一个简单的实例来说明。
 
-### 1. 安装脚手架工具
+### 安装脚手架工具
 
 > 使用 `@angular/cli` 前，务必确认 [Node.js](https://nodejs.org/en/) 已经升级到 v12.1 或以上，强烈建议升级至最新版本的 `@angular/cli`。
 > 如果你想了解更多CLI工具链的功能和命令，建议访问 [Angular CLI](https://github.com/angular/angular-cli) 了解更多。
@@ -28,7 +28,7 @@ NG-ZORRO 致力于提供给程序员**愉悦**的开发体验。
 $ npm install -g @angular/cli
 ```
 
-### 2. 创建一个项目
+### 创建一个项目
 
 > 在创建项目之前，请确保 `@angular/cli` 已被成功安装。
 
@@ -38,7 +38,7 @@ $ npm install -g @angular/cli
 $ ng new PROJECT-NAME
 ```
 
-### 3. 初始化配置
+### 初始化配置
 
 进入项目文件夹，执行以下命令后将自动完成 `ng-zorro-antd` 的初始化配置，包括引入国际化文件，导入模块，引入样式文件等工作。
 
@@ -51,7 +51,7 @@ $ ng add ng-zorro-antd
 
 开发者可以通过增加参数来完成个性化的初始化配置，例如国际化或者自定义主题等，详细可以参考 [脚手架](/docs/schematics/zh) 部分。
 
-### 4. 开发调试
+### 开发调试
 
 一键启动调试，运行成功后显示欢迎页面。
 
@@ -62,7 +62,7 @@ $ ng serve --port 0 --open
 <img style="display: block;padding: 30px 30%;height: 260px;" src="https://img.alicdn.com/tfs/TB1X.qJJgHqK1RjSZFgXXa7JXXa-89-131.svg">
 
 
-### 5. 构建和部署
+### 构建和部署
 
 ```bash
 $ ng build --prod
@@ -74,17 +74,17 @@ $ ng build --prod
 
 如果想自己维护工作流，理论上你可以利用 Angular 生态圈中的 各种脚手架进行开发，如果遇到问题可参考我们所使用的 [配置](https://github.com/NG-ZORRO/ng-zorro-antd/tree/master/integration) 进行定制。
 
-### 1. 安装组件
+### 安装组件
 
 ```bash
 $ npm install ng-zorro-antd --save
 ```
 
-### 2. 引入样式
+### 引入样式
 
-#### 2.1 使用全部组件样式
+#### 使用全部组件样式
 
-该配置将包含组件库的全部样式，如果只想使用某些组件请查看 [2.2 使用特定组件样式](#2-2-使用特定组件样式) 配置。
+该配置将包含组件库的全部样式，如果只想使用某些组件请查看 [使用特定组件样式](/docs/getting-started/zh#使用特定组件样式) 配置。
 
 在 `angular.json` 中引入了
 
@@ -108,7 +108,7 @@ $ npm install ng-zorro-antd --save
 @import "~ng-zorro-antd/ng-zorro-antd.less";
 ```
 
-#### 2.2 使用特定组件样式
+#### 使用特定组件样式
 
 > 由于组件之间的样式也存在依赖关系，单独引入多个组件的 CSS 可能导致 CSS 的冗余。
 
@@ -127,7 +127,7 @@ $ npm install ng-zorro-antd --save
 @import "~ng-zorro-antd/button/style/entry.less"; /* 引入组件样式 */
 ```
 
-### 3. 引入组件模块
+### 引入组件模块
 
 最后你需要将想要使用的组件模块引入到你的 `app.module.ts` 文件，或其它懒加载的特征模块中。
 
@@ -155,7 +155,7 @@ export class AppModule { }
 <button nz-button nzType="primary">Primary</button>
 ```
 
-### 4. 其他
+## 其他
 
 - [国际化配置](/docs/i18n/zh)
 - [自定义主题](/docs/customize-theme/zh)
