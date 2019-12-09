@@ -25,6 +25,8 @@ export interface NzNotificationDataOptions<T = {}> extends NzMessageDataOptions 
 
   /** Anything user wants renderer into a template. */
   nzData?: T;
+
+  nzCloseIcon?: TemplateRef<void> | string;
 }
 
 // Filled version of NzMessageData (includes more private properties)

@@ -2,8 +2,10 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { HomeOutline } from '@ant-design/icons-angular/icons';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core';
+import { NZ_ICONS } from 'ng-zorro-antd/icon';
 
 import { NZ_NOTIFICATION_CONFIG } from './nz-notification-config';
 import { NzNotificationModule } from './nz-notification.module';
@@ -23,11 +25,23 @@ describe('NzNotification', () => {
   let overlayContainerElement: HTMLElement;
   let fixture: ComponentFixture<DemoAppComponent>;
 
+  function waitForNotificationToggling(): void {
+    fixture.detectChanges();
+    tick(2000);
+    fixture.detectChanges();
+  }
+
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports: [NzNotificationModule, NoopAnimationsModule],
       declarations: [DemoAppComponent],
-      providers: [{ provide: NZ_NOTIFICATION_CONFIG, useValue: { nzMaxStack: 2 } }] // Override default config
+      providers: [
+        { provide: NZ_NOTIFICATION_CONFIG, useValue: { nzMaxStack: 2 } },
+        {
+          provide: NZ_ICONS,
+          useValue: [HomeOutline]
+        }
+      ] // Override default config
     });
 
     TestBed.compileComponents();
@@ -201,33 +215,29 @@ describe('NzNotification', () => {
     tick(1000);
     expect(onCloseFlag).toBeTruthy();
 
-    waitForNotificationsToClose();
+    waitForNotificationToggling();
   }));
 
   it('should support configurable nzTop & nzBottom', fakeAsync(() => {
     notificationService.config({ nzTop: 48 });
     notificationService.create('', '', 'TEST TOP', { nzDuration: 3000 });
-    waitForNotificationToggling(fixture);
+    waitForNotificationToggling();
     const notificationContainer = overlayContainerElement.querySelector('.ant-notification') as HTMLElement;
     expect(notificationContainer.style.top).toBe('48px');
     expect(notificationContainer.style.bottom).toBeFalsy();
 
     notificationService.config({ nzPlacement: 'bottomLeft', nzBottom: '48px' });
     notificationService.create('', '', 'TEST BOTTOM');
-    waitForNotificationToggling(fixture);
+    waitForNotificationToggling();
     expect(notificationContainer.style.top).toBeFalsy();
     expect(notificationContainer.style.bottom).toBe('48px');
 
-    waitForNotificationsToClose();
+    waitForNotificationToggling();
+  }));
+
+  it('should support close icon', fakeAsync(() => {
+    notificationService.create('', '', 'ICON', { nzCloseIcon: 'home' });
+    waitForNotificationToggling();
+    expect(overlayContainerElement.querySelector('.anticon-home')).toBeTruthy();
   }));
 });
-
-function waitForNotificationToggling<T>(fixture: ComponentFixture<T>): void {
-  fixture.detectChanges();
-  tick(2000);
-  fixture.detectChanges();
-}
-
-function waitForNotificationsToClose(): void {
-  tick(10000);
-}

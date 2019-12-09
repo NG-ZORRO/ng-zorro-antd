@@ -53,6 +53,7 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
 | nzStyle | 自定义内联样式 | `object` |
 | nzClass | 自定义 CSS class | `object` |
 | nzData | 任何想要在模板中作为上下文的数据 | `any` |
+| nzCloseIcon | 自定义关闭图标 | `TemplateRef<void> \| string` |
 
 
 还提供了全局销毁方法：

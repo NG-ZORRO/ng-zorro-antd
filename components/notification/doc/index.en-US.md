@@ -54,6 +54,7 @@ The parameters that are set by the `options` support are as follows:
 | nzStyle | Custom inline style | `object` |
 | nzClass | Custom CSS class | `object` |
 | nzData | Anything that would be used as template context | `any` |
+| nzCloseIcon | Custom close icon | `TemplateRef<void> \| string` |
 
 Methods for destruction are also provided:
 
