@@ -19,7 +19,6 @@ stages:
           versionSpec: '12.13.1'
         displayName: 'Install Node.js'
 
-
 - stage: Build
   jobs:
     - job: build_site
