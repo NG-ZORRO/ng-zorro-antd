@@ -2,6 +2,9 @@
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
 const tags = process.env && process.env['NG_TEST_TAGS'];
+const processENV = require('process');
+processENV.env.CHROME_BIN = require('puppeteer').executablePath();
+
 module.exports = function(config) {
   config.set({
     basePath: '',
