@@ -22,9 +22,9 @@ references:
 #      - build:
 #          requires:
 #            - lib
-      - test:
-          requires:
-            - setup
+#      - test:
+#          requires:
+#            - setup
       - schematics:
           requires:
             - setup
@@ -73,12 +73,12 @@ jobs:
 #      - checkout
 #      - *attach_workspace
 #      - run: npm run build
-  test:
-    <<: *container_config
-    steps:
-      - checkout
-      - *attach_workspace
-      - run: npm run test
+#  test:
+#    <<: *container_config
+#    steps:
+#      - checkout
+#      - *attach_workspace
+#      - run: npm run test
   schematics:
     <<: *container_config
     steps:
@@ -112,6 +112,7 @@ jobs:
       - *attach_workspace
       - run: sudo apt install rsync
       - run: npm run integration-rollup
+
 
 workflows:
   version: 2
