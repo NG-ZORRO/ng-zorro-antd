@@ -148,13 +148,11 @@ export class AppModule { }
 * [自定义主题](/docs/customize-theme/zh)
 * [使用本地字体](/docs/customize-theme/zh)
 
-## 单独引入某个组件
+## 单独引入某个组件（使用二级入口引入）
 
-你可以通过引入子 module 和单独打包的 CSS/less 文件来单独使用某个组件。
+你可以通过引入子 module 和单独打包的 CSS/less 文件来单独使用某个组件。例如，你只想使用 Button 组件，那么你就可以引入 `NzButtonModule` 而不是 `NgZorroAntdModule`，在 `style.css` 里导入组件对应的样式文件而不是全部的样式文件。我们称这样的引入方式为**从二级入口引入**。
 
-例如，你只想使用 Button 组件，那么你就可以引入 `NzButtonModule` 而不是 `NgZorroAntdModule`，在 `style.css` 里导入组件对应的样式文件而不是全部的样式文件。
-
-在 module 文件里：
+你的 feature module 或 `AppModule` 看起来会像是这样：
 
 ```typescript
 import { NgModule } from '@angular/core';
@@ -174,33 +172,29 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 export class YourModule { }
 ```
 
-在 style.css 文件里：
+同时在 style.css 文件里引入基础样式和你所使用的组件的样式：
 
 ```css
 @import "~ng-zorro-antd/style/index.min.css"; /* 引入基本样式 */
 @import "~ng-zorro-antd/button/style/index.min.css"; /* 引入组件样式 */
 ```
 
-另：如果你想单独引入多个组件，我们建议使用 less，在你的 style.less 里导入各个组件的 entry.less 文件：
+另：如果你想单独引入多个组件，我们建议使用 less，在你的 style.less 里导入各个组件的 entry.less 文件。因为组件之间的样式也存在依赖关系，单独引入多个组件的 CSS 可能导致 CSS 的冗余。
 
 ```less
 @import "~ng-zorro-antd/style/entry.less"; /* 引入基本样式 */
 @import "~ng-zorro-antd/button/style/entry.less"; /* 引入组件样式 */
 ```
 
-> 由于组件之间的样式也存在依赖关系，单独引入多个组件的 CSS 可能导致 CSS 的冗余。
+下面是一个对传统的全量引入的方式和从二级入口引入方式的对比：
 
-### 比较单独引入和传统的全部引入方式
-
-| 全部引入 | 单独引入 |
+| 全量引入 | 二级入口引入 |
 | --- | --- |
-| 不管要使用何种组件只需要导入 NgZorroAntdModule 和全部样式 | 按照你想用的组件导入 module 和样式文件 |
+| 不管要使用何种组件只需要导入 `NgZorroAntdModule` 和全部样式 | 导入你想用的组件的 module 和样式 |
 | 打包体积较大 | 打包体积较小 |
-| ng-zorro-antd 的组件会被打包到 main.js 文件中 | 按照实际引用情况，可能被打包到懒加载 module 中 |
+| 打包速度较快 | 打包速度较慢 |
+| ng-zorro-antd 的部分代码会被打包到 main.js 文件中 | 按照实际引用情况打包到 main.js 和懒加载 module 中 |
 
-如果你符合或遇到了如下情形，推荐你使用单独引入：
+所以我们推荐你使用二级入口引入的方式使用 ng-zorro-antd。
 
-* 你的项目中仅仅用到了少数几个组件（你可以使用 ShareModule 来包装你需要用到的组件）
-* 你的项目同时使用了 ng-zorro-antd 和别的组件，而且你遇到了冲突
-
-当然，如果你已经在 module 中引入了 NgZorroAntdModule，单独引入各个组件的子 module 就没有意义了。
+推荐阅读我们的博客[《NG-ZORRO 开发博客：支持二级入口》](https://zhuanlan.zhihu.com/p/63260991)。

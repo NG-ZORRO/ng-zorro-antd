@@ -71,3 +71,9 @@ When `nzShowSearch` is an object it should implements `NzShowSearchOptions`：
 | blur() | remove focus |
 | focus() | get focus |
 | closeMenu() | hide the menu |
+
+## FAQ
+
+### nzLoadData is not working
+
+Because of how [this binding](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this) works in JavaScript, you should assign an [arrow function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions) to `nzLoadData`.

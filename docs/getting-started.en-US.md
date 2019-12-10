@@ -13,7 +13,7 @@ The following StackBlitz demo is the simplest use case, and it's also a good hab
 
 - [NG-ZORRO StackBlitz](https://stackblitz.com/edit/ng-zorro-antd-start?file=src%2Fapp%2Fapp.component.ts)
 
-## First Local Development
+## Your First ng-zorro-antd Project
 
 During development, you may need to compile and debug TypeScript code, and even proxy some of the requests to mock data or other external services. All of these can be done with quick feedback provided through hot reloading of changes.
 
@@ -141,11 +141,11 @@ You can get more info about how to customize styles at [customize theme](/docs/c
 * [Customize Theme](/docs/customize-theme/en)
 * [Local Iconfont](/docs/customize-theme/en)
 
-## Import a Component Individually
+## Import Components Separately (Secondary Entry Points)
 
-You can import a component's module and style files to just use that component. For example, if you only want to use the `Button` component, you can import `NzButtonModule` instead of `NgZorroAntdModule`, and `Button`'s style file instead of `ng-zorro-antd.css`.
+You can import a component's module and style files to just use that component. For example, if you only want to use the `Button` component, you can import `NzButtonModule` and `Button`'s style file instead of `NgZorroAntdModule` and all the style files. We call this **importing from secondary entry points (SEP)**.
 
-In your modules:
+You feature module or AppModule would look like this:
 
 ```typescript
 import { NgModule } from '@angular/core';
@@ -165,33 +165,31 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 export class YourModule { }
 ```
 
-In style.css:
+And your style.css would look like this:
 
 ```css
 @import "~ng-zorro-antd/style/index.min.css"; /* Import basic styles */
 @import "~ng-zorro-antd/button/style/index.min.css"; /* Import styles of the component */
 ```
 
-If you want to import several components, it is recommended to use less instead of CSS. In styles.less:
+Attention. If you want to import several components, it is recommended to use less instead of CSS. In styles.less:
 
 ```less
 @import "~ng-zorro-antd/style/entry.less"; /* Import basic styles */
 @import "~ng-zorro-antd/button/style/entry.less"; /* Import styles of the component */
 ```
 
-> Importing CSS files of several components may result in code redundancy because style files of components have dependency relationships like TypeScript files.
+Importing CSS files of several components may result in code redundancy because style files of components have dependency relationships just like TypeScript modules.
 
-### A comparison of Importing individually and Importing All
+Here's a comparison of the old way (importing all of them) and SEP.
 
-| Importing all | Importing individually |
+| Importing All | SEP |
 | --- | --- |
-| Just import NgZorroAntdModule no matter what component you want to use | Import styles and modules of components you want |
+| Just import `NgZorroAntdModule` no matter what component you want to use | Import styles and modules of components you want |
 | Larger package size | Smaller package size |
-| ng-zorro-antd would be bundled into main.js | It may be bundled into lazy loading module according to your usage |
+| Slower | Faster building |
+| ng-zorro-antd would be bundled into main.js | It may be bundled into lazy loading modules |
 
-Importing individually is recommended if you:
+Hence, we recommend all developers to use SEP.
 
-* Only use a small part of the components of ng-zorro-antd (You can use a shared module to wrap those components).
-* Use ng-zorro-antd along with other component kits and get a error because of conflicts.
-
-Of course, if you import NgZorroAntdModule in your modules, you don't have to import sub modules individually.
+For more, please read [our blog about this](https://medium.com/@wendellhu95/ng-zorro-dev-blog-support-of-secondary-entry-points-e6952123c6e5).
