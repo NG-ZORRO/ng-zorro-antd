@@ -12,10 +12,6 @@ title: Switch
 - 需要表示开关状态/两种状态之间的切换时；
 - 和 `checkbox`的区别是，切换 `switch` 会直接触发状态改变，而 `checkbox` 一般用于状态标记，需要和提交操作配合。
 
-## 单独引入此组件
-
-想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
-
 ```ts
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 ```

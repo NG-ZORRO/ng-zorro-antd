@@ -12,10 +12,6 @@ Display global messages as feedback in response to user operations.
 - To provide feedback such as success, warning, error etc.
 - A message is displayed at top and center and will be dismissed automatically, as a non-interrupting light-weighted prompt.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzMessageModule } from 'ng-zorro-antd/message';
 ```

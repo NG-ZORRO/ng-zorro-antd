@@ -11,10 +11,6 @@ Display statistic number.
 - When want to highlight some data.
 - When want to display statistic data with description.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 ```

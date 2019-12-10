@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { ServerModule } from '@angular/platform-server';
 import { IconDefinition } from '@ant-design/icons-angular';
 import { ModuleMapLoaderModule } from '@nguniversal/module-map-ngfactory-loader';
-import { NZ_ICONS } from 'ng-zorro-antd'
+import { NZ_ICONS } from 'ng-zorro-antd/icon'
 
 import { AppComponent } from './app.component';
 import { AppModule } from './app.module';

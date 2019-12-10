@@ -11,10 +11,6 @@ Display multiple read-only fields in groups.
 
 Commonly displayed on the details page.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 ```

@@ -11,10 +11,6 @@ Used to feed back the results of a series of operational tasks.
 
 Use when important operations need to inform the user to process the results and the feedback is more complicated.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzResultModule } from 'ng-zorro-antd/result';
 ```

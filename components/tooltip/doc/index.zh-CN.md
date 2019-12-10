@@ -13,10 +13,6 @@ title: Tooltip
 
 可用来代替系统默认的 `title` 提示，提供一个`按钮/文字/操作`的文案解释。
 
-## 单独引入此组件
-
-想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
-
 ```ts
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 ```

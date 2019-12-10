@@ -1,11 +1,3 @@
-/**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
- */
-
 import { NgModule } from '@angular/core';
 
 import { NzAffixModule } from 'ng-zorro-antd/affix';
@@ -24,7 +16,7 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzCommentModule } from 'ng-zorro-antd/comment';
-import { NzNoAnimationModule, NzTransButtonModule, NzWaveModule, warnDeprecation } from 'ng-zorro-antd/core';
+import { NzNoAnimationModule, NzTransButtonModule, NzWaveModule } from 'ng-zorro-antd/core';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
@@ -70,71 +62,6 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
-
-export * from 'ng-zorro-antd/affix';
-export * from 'ng-zorro-antd/alert';
-export * from 'ng-zorro-antd/anchor';
-export * from 'ng-zorro-antd/auto-complete';
-export * from 'ng-zorro-antd/avatar';
-export * from 'ng-zorro-antd/back-top';
-export * from 'ng-zorro-antd/badge';
-export * from 'ng-zorro-antd/breadcrumb';
-export * from 'ng-zorro-antd/button';
-export * from 'ng-zorro-antd/calendar';
-export * from 'ng-zorro-antd/card';
-export * from 'ng-zorro-antd/carousel';
-export * from 'ng-zorro-antd/cascader';
-export * from 'ng-zorro-antd/checkbox';
-export * from 'ng-zorro-antd/collapse';
-export * from 'ng-zorro-antd/comment';
-export * from 'ng-zorro-antd/core';
-export * from 'ng-zorro-antd/date-picker';
-export * from 'ng-zorro-antd/descriptions';
-export * from 'ng-zorro-antd/divider';
-export * from 'ng-zorro-antd/drawer';
-export * from 'ng-zorro-antd/dropdown';
-export * from 'ng-zorro-antd/empty';
-export * from 'ng-zorro-antd/form';
-export * from 'ng-zorro-antd/grid';
-export * from 'ng-zorro-antd/i18n';
-export * from 'ng-zorro-antd/icon';
-export * from 'ng-zorro-antd/input';
-export * from 'ng-zorro-antd/input-number';
-export * from 'ng-zorro-antd/layout';
-export * from 'ng-zorro-antd/list';
-export * from 'ng-zorro-antd/mention';
-export * from 'ng-zorro-antd/menu';
-export * from 'ng-zorro-antd/message';
-export * from 'ng-zorro-antd/modal';
-export * from 'ng-zorro-antd/notification';
-export * from 'ng-zorro-antd/page-header';
-export * from 'ng-zorro-antd/pagination';
-export * from 'ng-zorro-antd/popconfirm';
-export * from 'ng-zorro-antd/popover';
-export * from 'ng-zorro-antd/progress';
-export * from 'ng-zorro-antd/radio';
-export * from 'ng-zorro-antd/rate';
-export * from 'ng-zorro-antd/result';
-export * from 'ng-zorro-antd/select';
-export * from 'ng-zorro-antd/skeleton';
-export * from 'ng-zorro-antd/slider';
-export * from 'ng-zorro-antd/spin';
-export * from 'ng-zorro-antd/statistic';
-export * from 'ng-zorro-antd/steps';
-export * from 'ng-zorro-antd/switch';
-export * from 'ng-zorro-antd/table';
-export * from 'ng-zorro-antd/tabs';
-export * from 'ng-zorro-antd/tag';
-export * from 'ng-zorro-antd/time-picker';
-export * from 'ng-zorro-antd/timeline';
-export * from 'ng-zorro-antd/tooltip';
-export * from 'ng-zorro-antd/transfer';
-export * from 'ng-zorro-antd/tree';
-export * from 'ng-zorro-antd/tree-select';
-export * from 'ng-zorro-antd/typography';
-export * from 'ng-zorro-antd/upload';
-
-export * from 'ng-zorro-antd/version';
 
 @NgModule({
   exports: [
@@ -204,11 +131,4 @@ export * from 'ng-zorro-antd/version';
     NzWaveModule
   ]
 })
-/**
- * @deprecated Use secondary entry eg: `import { NzButtonModule } from 'ng-zorro-antd/button'`.
- */
-export class NgZorroAntdModule {
-  constructor() {
-    warnDeprecation('The `NgZorroAntdModule` has been deprecated and will be removed in 10.0.0.' + ' Please use secondary entry instead.');
-  }
-}
+export class SiteNgZorroAntdModule {}

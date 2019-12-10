@@ -14,10 +14,6 @@ Provide a placeholder while you wait for content to load, or to visualise conten
 - Only works when loading data for the first time.
 - Could be replaced by Spin in any situation, but can provide a better user experience.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 ```
