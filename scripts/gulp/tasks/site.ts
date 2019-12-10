@@ -1,9 +1,10 @@
 import * as fs from 'fs-extra';
 import { parallel, series, task, watch } from 'gulp';
 import { join } from 'path';
-import { execNodeTask, execTask } from '../util/task-helpers';
-const detectPort = require('detect-port');
 import { buildConfig } from '../../build-config';
+import { execNodeTask, execTask } from '../util/task-helpers';
+
+const detectPort = require('detect-port');
 
 const siteGenerate = require('../../site/generate-site');
 const colorGenerate = require('../../site/generateColorLess');
@@ -18,15 +19,14 @@ const tsconfigFile = join(buildConfig.projectDir, 'site/tsconfig.app.json');
  * to ensures the demos and docs have changes are rebuild.
  */
 task('watch:site', () => {
-  watch([docsGlob, demoGlob], {delay: 700})
-  .on('change', path =>  {
+  watch([docsGlob, demoGlob], { delay: 700 }).on('change', path => {
     const execArray = /components\/(.+)\/(doc|demo)/.exec(path);
     if (execArray && execArray[1]) {
       const component = execArray[1];
       console.log(`Reload '${component}'`);
       siteGenerate(component);
     }
-  })
+  });
 });
 
 /** Parse demos and docs to site directory. */
@@ -40,34 +40,18 @@ task('init:site', done => {
 /** Run `ng serve` */
 task('serve:site', done => {
   detectPort(4200).then((port: number) => {
-    execNodeTask(
-      '@angular/cli',
-      'ng',
-      [ 'serve', '--port', port === 4200 ? '4200' : '0' ]
-    )(done);
+    execNodeTask('@angular/cli', 'ng', ['serve', '--port', port === 4200 ? '4200' : '0'])(done);
   });
 });
 
 /** Run `ng build --prod --project=ng-zorro-antd-doc` */
-task('build:site-doc', execNodeTask(
-  '@angular/cli',
-  'ng',
-  [ 'build', '--project=ng-zorro-antd-doc', '--prod' ]
-));
+task('build:site-doc', execNodeTask('@angular/cli', 'ng', ['build', '--project=ng-zorro-antd-doc', '--prod']));
 
 /** Run `ng build --prod --project=ng-zorro-antd-doc --configuration es5` */
-task('build:site-doc-es5', execNodeTask(
-  '@angular/cli',
-  'ng',
-  [ 'build', '--project=ng-zorro-antd-doc', '--prod', '--configuration=es5' ]
-));
+task('build:site-doc-es5', execNodeTask('@angular/cli', 'ng', ['build', '--project=ng-zorro-antd-doc', '--prod', '--configuration=es5']));
 
 /** Run `ng build --prod --base-href ./ --project=ng-zorro-antd-iframe` */
-task('build:site-iframe', execNodeTask(
-  '@angular/cli',
-  'ng',
-  [ 'build', '--project=ng-zorro-antd-iframe', '--prod', '--base-href=./' ]
-));
+task('build:site-iframe', execNodeTask('@angular/cli', 'ng', ['build', '--project=ng-zorro-antd-iframe', '--prod', '--base-href=./']));
 
 /** Replace the library paths to publish/ directory */
 task('site:replace-path', () => {
@@ -81,44 +65,28 @@ task('site:replace-path', () => {
 /** Run release-helper.sh
  * Clone issue-helper builds from github and copy to the output directory.
  */
-task('build:site-issue-helper', execTask(
-  'bash',
-  [issueHelperScriptFile]
-));
+task('build:site-issue-helper', execTask('bash', [issueHelperScriptFile]));
 
 /** calc bundle size **/
-task('build:bundle-size', execTask(
-  'npx',
-  ['bundlesize']
-));
+task('build:bundle-size', execTask('npx', ['bundlesize']));
 
 /** Build all site projects to the output directory. */
-task('build:site', process.env.CI ? series('build:site-doc', 'build:bundle-size', 'build:site-iframe') : series(
-  'build:site-doc',
-  'build:site-iframe',
-  'build:site-issue-helper'
-));
+task(
+  'build:site',
+  process.env.CI || process.env.SYSTEM_JOBNAME
+    ? series('build:site-doc', 'build:bundle-size', 'build:site-iframe')
+    : series('build:site-doc', 'build:site-iframe', 'build:site-issue-helper')
+);
 
 /** Init site directory, and start watch and ng-serve */
-task('start:site', series(
-  'init:site',
-  parallel('watch:site', 'serve:site')
-));
+task('start:site', series('init:site', parallel('watch:site', 'serve:site')));
 
 /** Task that use source code to build ng-zorro-antd-doc project,
  * output not included issue-helper/iframe and prerender.
  */
-task('build:simple-site', series(
-  'init:site',
-  'build:site-doc'
-));
+task('build:simple-site', series('init:site', 'build:site-doc'));
 
 /** Task that use publish code to build ng-zorro-antd-doc project,
  * output included issue-helper/iframe and prerender.
  */
-task('build:release-site', series(
-  'init:site',
-  'site:replace-path',
-  'build:site',
-  'prerender'
-));
+task('build:release-site', series('init:site', 'site:replace-path', 'build:site', 'prerender'));

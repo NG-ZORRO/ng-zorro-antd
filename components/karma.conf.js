@@ -15,6 +15,7 @@ module.exports = function(config) {
       require('karma-spec-reporter'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage-istanbul-reporter'),
+      require('karma-junit-reporter'),
       require('@angular-devkit/build-angular/plugins/karma'),
       require('karma-viewport')
     ],
@@ -30,7 +31,10 @@ module.exports = function(config) {
       reports: ['html', 'lcovonly'],
       fixWebpackSourcePaths: true
     },
-    reporters: ['progress', 'kjhtml', 'spec'],
+    reporters: ['progress', 'kjhtml', 'spec', 'junit'],
+    junitReporter: {
+      outputDir: '../junit'
+    },
     specReporter: {
       maxLogLines: 5,
       suppressErrorSummary: true,

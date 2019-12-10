@@ -28,8 +28,8 @@ stages:
             command: 'install'
         - script: |
             npm run build
-            npm install -g surge
-            bash ./scripts/surge.sh
+            export DEPLOY_DOMAIN=https://preview-${SYSTEM_PULLREQUEST_PULLREQUESTNUMBER}-ng-zorro-antd.surge.sh
+            npx surge --project ./dist --domain $DEPLOY_DOMAIN
   dependsOn: env
 
 - stage: test
@@ -42,6 +42,15 @@ stages:
         - script: |
             npm run test
             cat ./coverage/lcov.info | ./node_modules/.bin/codecov
+
+        - task: PublishTestResults@2
+          displayName: 'publish test results'
+          condition: succeededOrFailed()
+          inputs:
+            searchFolder: $(System.DefaultWorkingDirectory)/junit
+            testRunTitle: NG-ZORRO
+            testResultsFormat: JUnit
+            testResultsFiles: "**/TESTS*.xml"
 
     - job: test_schematics
       steps:
