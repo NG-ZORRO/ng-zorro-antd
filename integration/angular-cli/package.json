@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "setup": "bash ../../setup-shared-libs.sh ./lib",
+    "setup": "bash ../../setup-shared-libs.sh angular-cli/lib",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
