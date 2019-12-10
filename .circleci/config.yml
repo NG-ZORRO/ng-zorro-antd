@@ -1,0 +1,22 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/my-project
+    docker:
+      - image: circleci/node:10-browsers
+    steps:
+      - checkout
+      - restore_cache:
+          key: my-project-{{ .Branch }}-{{ checksum "package.json" }}
+      - run: npm install
+      - save_cache:
+          key: my-project-{{ .Branch }}-{{ checksum "package.json" }}
+          paths:
+            - "node_modules"
+      - run: npm run build
+      - run: npm run test
+      - run: npm run test:schematics
+      - run: npm run lint
+      - run: npm run integration-cli
+      - run: npm run integration-webpack
+      - run: npm run integration-rollup
