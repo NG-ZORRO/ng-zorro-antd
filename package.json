@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "gulp start:dev",
-    "test": "ng test --watch=false --code-coverage",
+    "test": "ng test --no-watch --no-progress --browsers=ChromeHeadlessCI",
     "test:watch": "gulp test:watch --tags $tags",
     "test:schematics": "gulp build:schematics && gulp test:schematics",
     "build": "gulp build:release",

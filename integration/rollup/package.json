@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "setup": "bash ../../setup-shared-libs.sh ./lib",
+    "setup": "bash ../../setup-shared-libs.sh rollup/lib",
     "clean": "rimraf out-tsc src/node_modules src/**/*.ngfactory.ts src/**/*.ngsummary.json",
     "prestart": "npm run build",
     "start": "http-server dist",
