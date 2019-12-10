@@ -10,7 +10,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 stages:
-- stage: Env
+- stage: env
   jobs:
     - job: Nodes
       steps:
@@ -19,33 +19,39 @@ stages:
           versionSpec: '12.13.1'
         displayName: 'Install Node.js'
 
-- stage: Build
+- stage: build
   jobs:
     - job: build_site
       steps:
         - task: Npm@1
           inputs:
             command: 'install'
-        - script: npm run build
-  dependsOn: Env
+        - script: |
+            npm run build
+            npm install -g surge
+            bash ./scripts/surge.sh
+  dependsOn: env
 
-- stage: Test
+- stage: test
   jobs:
     - job: test_components
       steps:
         - task: Npm@1
           inputs:
             command: 'install'
-        - script: npm run test
+        - script: |
+            npm run test
+            cat ./coverage/lcov.info | ./node_modules/.bin/codecov
+
     - job: test_schematics
       steps:
         - task: Npm@1
           inputs:
             command: 'install'
         - script: npm run test:schematics
-  dependsOn: Env
+  dependsOn: env
 
-- stage: Lint
+- stage: lint
   jobs:
     - job: lint_components
       steps:
@@ -53,9 +59,9 @@ stages:
           inputs:
             command: 'install'
         - script: npm run lint
-  dependsOn: Env
+  dependsOn: env
 
-- stage: Integration
+- stage: integration
   jobs:
     - job: integration_cli
       steps:
@@ -75,4 +81,4 @@ stages:
           inputs:
             command: 'install'
         - script: npm run integration-rollup
-  dependsOn: Env
+  dependsOn: env
