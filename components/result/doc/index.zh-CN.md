@@ -12,10 +12,6 @@ cols: 1
 
 当有重要操作需告知用户处理结果，且反馈内容较为复杂时使用。
 
-## 单独引入此组件
-
-想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
-
 ```ts
 import { NzResultModule } from 'ng-zorro-antd/result';
 ```

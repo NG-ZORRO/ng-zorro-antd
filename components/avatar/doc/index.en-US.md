@@ -6,10 +6,6 @@ title: Avatar
 
 Avatars can be used to represent people or objects. It supports images, `Icon`s, or letters.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 ```

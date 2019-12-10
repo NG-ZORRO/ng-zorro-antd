@@ -11,10 +11,6 @@ Radio.
 - Used to select a single state in multiple options.
 - The difference between Select is that Radio is visible to user and can facilitate the comparison of choice. So, when you want to use Radio, option should not be too much.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 ```

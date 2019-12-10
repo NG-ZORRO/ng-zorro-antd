@@ -11,10 +11,6 @@ A simple text popup tip.
 - The tip is shown on mouse enter, and is hidden on mouse leave. The Tooltip doesn't support complex text or operations.
 - To provide an explanation of a `button/text/operation`. It's often used instead of the html `title` attribute.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 ```

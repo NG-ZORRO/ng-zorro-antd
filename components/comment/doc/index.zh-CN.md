@@ -12,10 +12,6 @@ cols: 1
 
 评论组件可用于对事物的讨论，例如页面、博客文章、问题等等。
 
-## 单独引入此组件
-
-想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
-
 ```ts
 import { NzCommentModule } from 'ng-zorro-antd/comment';
 ```

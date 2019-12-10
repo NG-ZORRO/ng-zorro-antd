@@ -11,10 +11,6 @@ Simple rectangular container.
 
 A card can be used to display content related to a single subject. The content can consist of multiple elements of varying types and sizes.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzCardModule } from 'ng-zorro-antd/card';
 ```

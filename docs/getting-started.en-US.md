@@ -19,7 +19,7 @@ During development, you may need to compile and debug TypeScript code, and even 
 
 Such features, together with packaging the production version, are covered in this work flow.
 
-### 1. Installation
+### Installation
 
 We strongly recommended to develop Angular with `@angular/cli`, you can install it with the following commands.
 > Read [the documentation of `Angular CLI`](https://github.com/angular/angular-cli/wiki) to explore more features.
@@ -28,7 +28,7 @@ We strongly recommended to develop Angular with `@angular/cli`, you can install 
 $ npm install -g @angular/cli
 ```
 
-### 2. Create a New Project
+### Create a New Project
 
 A new project can be created using Angular CLI tools.
 
@@ -38,7 +38,7 @@ $ ng new PROJECT-NAME
 
 `@angular/cli` will run `npm install` after a project is created. If it fails, you can run `npm install` by yourself.
 
-### 3. Install ng-zorro-antd
+### Install ng-zorro-antd
 
 `ng-zorro-antd` support init configuration with schematics, you can get more info in the [schematics](/docs/schematics/en) part.
 
@@ -49,7 +49,7 @@ $ ng add ng-zorro-antd
 
 <img style="display: block; border-radius: 4px; box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.2);" src="https://img.alicdn.com/tfs/TB19fFHdkxz61VjSZFtXXaDSVXa-680-243.svg">
 
-### 4. Development & Debugging
+### Development & Debugging
 
 Run your project now, you can see the img below now.
 
@@ -59,7 +59,7 @@ $ ng serve --port 0 --open
 
 <img style="display: block;padding: 30px 30%;height: 260px;" src="https://img.alicdn.com/tfs/TB1X.qJJgHqK1RjSZFgXXa7JXXa-89-131.svg">
 
-### 5. Building & Deployment
+### Building & Deployment
 
 ```bash
 $ ng build --prod
@@ -71,127 +71,91 @@ Entry files will be built and generated in `dist` directory, where we can deploy
 
 If you want to customize your work flow, you can use any scaffold available in the Angular ecosystem. If you encounter problems, you can use our [config](https://github.com/NG-ZORRO/ng-zorro-antd/tree/master/integration) and modify it.
 
-### 1. Install ng-zorro-antd
+### Install ng-zorro-antd
 
 ```bash
 $ npm install ng-zorro-antd --save
 ```
 
-### 2. Import module
+### Import Styles
 
-```typescript
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+#### Use all component styles
+
+This configuration will include all the styles of the component library.
+If you want to use only certain components, please see [Use Only Certain Component Style](/docs/getting-started/en#use-only-certain-component-style) configuration.
+
+Import the pre-build styles in `angular.json`
+
+```json
+{
+  "styles": [
+    "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
+  ]
+}
+```
+
+Import the pre-build styles in `style.css`
+
+```css
+@import "~ng-zorro-antd/ng-zorro-antd.min.css";
+```
+
+Import the less styles in `style.less`
+
+```less
+@import "~ng-zorro-antd/ng-zorro-antd.less";
+```
+
+#### Use Only Certain Component Style
+
+> Importing CSS files of several components may result in code redundancy because style files of components have dependency relationships like TypeScript files.
+
+Need import the styles of a base(styles common to all components) before using certain components.
+
+Import the pre-build styles in `style.css`
+
+```css
+@import "~ng-zorro-antd/style/index.min.css"; /* Import basic styles */
+@import "~ng-zorro-antd/button/style/index.min.css";  /* Import styles of the component */
+```
+
+Import the less styles in `style.less`
+
+```less
+@import "~ng-zorro-antd/style/entry.less"; /* Import basic styles */
+@import "~ng-zorro-antd/button/style/entry.less";  /* Import styles of the component */
+```
+
+#### Import Component Module
+
+Finally, you need to import the component modules you want to use into your `app.module.ts` file and [feature modules](https://angular.io/guide/feature-modules).
+
+Take the following Button Module module as an example, first introduce the component module:
+
+```ts
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { NgZorroAntdModule, NZ_I18N, en_US } from 'ng-zorro-antd';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { AppComponent } from './app.component';
-
-/** config angular i18n **/
-import { registerLocaleData } from '@angular/common';
-import en from '@angular/common/locales/en';
-registerLocaleData(en);
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
-    BrowserModule,
-    FormsModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    /** import ng-zorro-antd root module，you should import NgZorroAntdModule and avoid importing sub modules directly **/
-    NgZorroAntdModule
-  ],
-  bootstrap: [ AppComponent ],
-  /** config ng-zorro-antd i18n (language && date) **/
-  providers   : [
-    { provide: NZ_I18N, useValue: en_US }
+    NzButtonModule
   ]
 })
 export class AppModule { }
 ```
 
-### 5. Add Styles and SVG Assets
+Then use in the template:
 
-And import style and SVG icon assets file link in `angular.json`.
-
-You can get more info about how to customize styles at [customize theme](/docs/customize-theme/en) part.
-
-```json
-{
-  "assets": [
-    ...
-    {
-      "glob": "**/*",
-      "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
-      "output": "/assets/"
-    }
-  ],
-  "styles": [
-    ...
-    "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
-  ]
-}
+```html
+<button nz-button nzType="primary">Primary</button>
 ```
 
-## Customization
-* [Customize Theme](/docs/customize-theme/en)
-* [Local Iconfont](/docs/customize-theme/en)
+## Other
 
-## Import a Component Individually
-
-You can import a component's module and style files to just use that component. For example, if you only want to use the `Button` component, you can import `NzButtonModule` instead of `NgZorroAntdModule`, and `Button`'s style file instead of `ng-zorro-antd.css`.
-
-In your modules:
-
-```typescript
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
-import { NzButtonModule } from 'ng-zorro-antd/button';
-
-@NgModule({
-  declarations: [
-    ...
-  ],
-  imports: [
-    CommonModule,
-    NzButtonModule
-  ]
-})
-export class YourModule { }
-```
-
-In style.css:
-
-```css
-@import "~ng-zorro-antd/style/index.min.css"; /* Import basic styles */
-@import "~ng-zorro-antd/button/style/index.min.css"; /* Import styles of the component */
-```
-
-If you want to import several components, it is recommended to use less instead of CSS. In styles.less:
-
-```less
-@import "~ng-zorro-antd/style/entry.less"; /* Import basic styles */
-@import "~ng-zorro-antd/button/style/entry.less"; /* Import styles of the component */
-```
-
-> Importing CSS files of several components may result in code redundancy because style files of components have dependency relationships like TypeScript files.
-
-### A comparison of Importing individually and Importing All
-
-| Importing all | Importing individually |
-| --- | --- |
-| Just import NgZorroAntdModule no matter what component you want to use | Import styles and modules of components you want |
-| Larger package size | Smaller package size |
-| ng-zorro-antd would be bundled into main.js | It may be bundled into lazy loading module according to your usage |
-
-Importing individually is recommended if you:
-
-* Only use a small part of the components of ng-zorro-antd (You can use a shared module to wrap those components).
-* Use ng-zorro-antd along with other component kits and get a error because of conflicts.
-
-Of course, if you import NgZorroAntdModule in your modules, you don't have to import sub modules individually.
+- [I18n](/docs/i18n/en)
+- [Customize Theme](/docs/customize-theme/en)
+- [Use Icons](/components/icon/en)

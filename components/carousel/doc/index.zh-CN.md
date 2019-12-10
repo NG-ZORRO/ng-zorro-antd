@@ -13,10 +13,6 @@ subtitle: 走马灯
 - 当内容空间不足时，可以用走马灯的形式进行收纳，进行轮播展现。
 - 常用于一组图片或卡片轮播。
 
-## 单独引入此组件
-
-想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
-
 ```ts
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 ```
@@ -47,7 +43,7 @@ import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 
 ### InjectionToken
 
-| Token | 说明 | 参数 | 默认值 | 
+| Token | 说明 | 参数 | 默认值 |
 | ----- | --- | ---- | --- |
 | `NZ_CAROUSEL_CUSTOM_STRATEGIES` | 提供用户自定义的切换效果 | `CarouselStrategyRegistryItem[]` | - |
 

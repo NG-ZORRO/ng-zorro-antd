@@ -79,13 +79,13 @@ $ npm install ng-zorro-antd
 
 ## 🔨 Usage
 
-Import the module into every module where you want to use the components.
+Import the component modules you want to use into your `app.module.ts` file and [feature modules](https://angular.io/guide/feature-modules).
 
 ```ts
-import { NgZorroAntdModule } from 'ng-zorro-antd';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 
 @NgModule({
-  imports: [ NgZorroAntdModule ]
+  imports: [ NzButtonModule ]
 })
 export class AppModule {
 }
