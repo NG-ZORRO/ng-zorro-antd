@@ -145,7 +145,7 @@ You can get more info about how to customize styles at [customize theme](/docs/c
 
 You can import a component's module and style files to just use that component. For example, if you only want to use the `Button` component, you can import `NzButtonModule` and `Button`'s style file instead of `NgZorroAntdModule` and all the style files. We call this **importing from secondary entry points (SEP)**.
 
-You feature module or AppModule would look like this:
+You feature module or `AppModule` would look like this:
 
 ```typescript
 import { NgModule } from '@angular/core';
