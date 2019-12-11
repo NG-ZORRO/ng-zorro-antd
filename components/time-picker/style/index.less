@@ -18,7 +18,7 @@
     font-size: @font-size-base;
     text-align: left;
     list-style: none;
-    background-color: @component-background;
+    background-color: @time-picker-panel-inner-bg;
     background-clip: padding-box;
     border-radius: @border-radius-base;
     outline: none;
@@ -31,6 +31,7 @@
     margin: 0;
     padding: 0;
     line-height: normal;
+    background-color: inherit;
     border: 0;
     outline: 0;
     cursor: auto;
@@ -124,6 +125,10 @@
         background: transparent;
         cursor: not-allowed;
       }
+      &:focus {
+        color: @btn-disable-color;
+        font-weight: inherit;
+      }
     }
   }
 
@@ -183,7 +188,7 @@
   }
 
   &-icon,
-  &-clear {
+  &-clear.@{iconfont-css-prefix} {
     position: absolute;
     top: 50%;
     right: @control-padding-horizontal - 1px;

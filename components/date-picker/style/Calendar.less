@@ -150,9 +150,9 @@
   line-height: @line-height-base;
   text-align: left;
   list-style: none;
-  background-color: @component-background;
+  background-color: @calendar-bg;
   background-clip: padding-box;
-  border: @border-width-base @border-style-base @border-color-inverse;
+  border: @border-width-base @border-style-base @calendar-border-color;
   border-radius: @border-radius-base;
   outline: none;
   box-shadow: @box-shadow-base;
@@ -167,7 +167,7 @@
     width: 100%;
     height: 22px;
     color: @input-color;
-    background: @input-bg;
+    background: @calendar-input-bg;
     border: 0;
     outline: 0;
     cursor: auto;
@@ -242,7 +242,7 @@
     text-align: center;
     background: transparent;
     border: @border-width-base @border-style-base transparent;
-    border-radius: @border-radius-sm;
+    border-radius: @border-radius-base;
     transition: background 0.3s ease;
 
     &-panel {
@@ -302,7 +302,7 @@
     width: 24px;
     height: 24px;
     background: rgba(0, 0, 0, 0.1);
-    border-radius: @border-radius-sm;
+    border-radius: @border-radius-base;
     content: '';
   }
 
@@ -317,7 +317,7 @@
       width: 24px;
       height: 24px;
       border: @border-width-base @border-style-base @disabled-color;
-      border-radius: @border-radius-sm;
+      border-radius: @border-radius-base;
       content: ' ';
     }
   }
