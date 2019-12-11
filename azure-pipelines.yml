@@ -10,7 +10,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 stages:
-- stage: Env
+- stage: env
   jobs:
     - job: Nodes
       steps:
@@ -19,34 +19,48 @@ stages:
           versionSpec: '12.13.1'
         displayName: 'Install Node.js'
 
-
-- stage: Build
+- stage: build
   jobs:
     - job: build_site
       steps:
         - task: Npm@1
           inputs:
             command: 'install'
-        - script: npm run build
-  dependsOn: Env
+        - script: |
+            npm run build
+            export DEPLOY_DOMAIN=https://preview-${SYSTEM_PULLREQUEST_PULLREQUESTNUMBER}-ng-zorro-antd.surge.sh
+            npx surge --project ./dist --domain $DEPLOY_DOMAIN
+  dependsOn: env
 
-- stage: Test
+- stage: test
   jobs:
     - job: test_components
       steps:
         - task: Npm@1
           inputs:
             command: 'install'
-        - script: npm run test
+        - script: |
+            npm run test
+            cat ./coverage/lcov.info | ./node_modules/.bin/codecov
+
+        - task: PublishTestResults@2
+          displayName: 'publish test results'
+          condition: succeededOrFailed()
+          inputs:
+            searchFolder: $(System.DefaultWorkingDirectory)/junit
+            testRunTitle: NG-ZORRO
+            testResultsFormat: JUnit
+            testResultsFiles: "**/TESTS*.xml"
+
     - job: test_schematics
       steps:
         - task: Npm@1
           inputs:
             command: 'install'
         - script: npm run test:schematics
-  dependsOn: Env
+  dependsOn: env
 
-- stage: Lint
+- stage: lint
   jobs:
     - job: lint_components
       steps:
@@ -54,9 +68,9 @@ stages:
           inputs:
             command: 'install'
         - script: npm run lint
-  dependsOn: Env
+  dependsOn: env
 
-- stage: Integration
+- stage: integration
   jobs:
     - job: integration_cli
       steps:
@@ -76,4 +90,4 @@ stages:
           inputs:
             command: 'install'
         - script: npm run integration-rollup
-  dependsOn: Env
+  dependsOn: env

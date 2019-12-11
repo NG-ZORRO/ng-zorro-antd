@@ -4,6 +4,7 @@
 dist/
 /site/
 tmp/
+junit/
 out-tsc/
 /publish/
 integration/**/lib/

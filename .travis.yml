@@ -26,10 +26,3 @@ before_script:
 
 script:
   - npm run $TASK
-  - |
-    if [ "$TASK" = "test" ]; then
-      cat ./coverage/lcov.info | ./node_modules/.bin/codecov
-    fi
-    if [ "$TASK" = "build" ]; then
-      bash ./scripts/surge.sh
-    fi
