@@ -9,6 +9,7 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+
 stages:
 - stage: env
   jobs:
@@ -41,7 +42,16 @@ stages:
             command: 'install'
         - script: |
             npm run test
-            cat ./coverage/lcov.info | ./node_modules/.bin/codecov
+            cat ./coverage-report/lcov.info | ./node_modules/.bin/codecov
+
+        - task: PublishCodeCoverageResults@1
+          displayName: 'publish code coverage results'
+          condition: succeededOrFailed()
+          inputs:
+            codeCoverageTool: Cobertura
+            summaryFileLocation: $(System.DefaultWorkingDirectory)/coverage-report/cobertura-coverage.xml
+            reportDirectory: $(System.DefaultWorkingDirectory)/coverage-report
+            failIfCoverageEmpty: true
 
         - task: PublishTestResults@2
           displayName: 'publish test results'
