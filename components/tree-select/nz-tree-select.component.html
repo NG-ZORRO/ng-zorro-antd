@@ -25,7 +25,7 @@
   (positionChange)="onPositionChange($event)"
 >
   <div
-    class="ant-select-dropdown ant-select-tree-dropdown"
+    [class]="dropdownClassName"
     [@slideMotion]="nzOpen ? dropDownPosition : 'void'"
     [@.disabled]="noAnimation?.nzNoAnimation"
     [nzNoAnimation]="noAnimation?.nzNoAnimation"
