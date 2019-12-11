@@ -9,7 +9,6 @@ import { Component, OnInit } from '@angular/core';
       [nzNodes]="nodes"
       nzShowSearch
       nzPlaceHolder="Please select"
-      nzDropdownClassName="class-name"
       [(ngModel)]="value"
       (ngModelChange)="onChange($event)"
     >
