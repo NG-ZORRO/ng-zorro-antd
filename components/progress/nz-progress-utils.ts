@@ -18,13 +18,12 @@ export const sortGradient = (gradients: NzProgressGradientProgress) => {
   Object.keys(gradients).forEach(key => {
     const value = gradients[key];
     const formatKey = stripPercentToNumber(key);
-    if (isNaN(formatKey)) {
-      return {};
+    if (!isNaN(formatKey)) {
+      tempArr.push({
+        key: formatKey,
+        value
+      });
     }
-    tempArr.push({
-      key: formatKey,
-      value
-    });
   });
 
   tempArr = tempArr.sort((a, b) => a.key - b.key);

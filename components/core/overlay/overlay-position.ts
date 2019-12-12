@@ -47,4 +47,5 @@ export function getPlacementName(position: ConnectedOverlayPositionChange): stri
       return placement;
     }
   }
+  return undefined;
 }
