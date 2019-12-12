@@ -76,7 +76,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   panelOpen: boolean = false;
 
   /** Current active option */
-  get activeOption(): NzAutocompleteOptionComponent | undefined {
+  get activeOption(): NzAutocompleteOptionComponent | void {
     if (this.nzAutocomplete && this.nzAutocomplete.options.length) {
       return this.nzAutocomplete.activeItem;
     }

@@ -12,6 +12,7 @@
   ],
   "include": [
     "**/*.spec.ts",
-    "**/*.d.ts"
+    "**/*.d.ts",
+    "../node_modules/@types/jasmine/index.d.ts"
   ]
 }
