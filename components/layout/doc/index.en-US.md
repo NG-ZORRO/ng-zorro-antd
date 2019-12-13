@@ -7,10 +7,6 @@ title: Layout
 
 Handling the overall layout of a page.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 ```
@@ -99,11 +95,11 @@ The sidebar.
 
 ```js
 {
-  xs: '480px',
-  sm: '768px',
-  md: '992px',
-  lg: '1200px',
-  xl: '1600px',
+  xs: '575px',
+  sm: '576px',
+  md: '768px',
+  lg: '992px',
+  xl: '1200px',
   xxl: '1600px'
 }
 ```

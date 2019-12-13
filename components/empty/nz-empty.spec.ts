@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, DebugElement, Inject, NgModule, TemplateRef, ViewChild } from '@angular/core';
-import { fakeAsync, tick, ComponentFixture, TestBed, TestBedStatic } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, TestBedStatic, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzI18nService } from '../i18n';
@@ -281,7 +281,7 @@ describe('nz-empty', () => {
         // Component.
         expect(embedComponent).toBeTruthy();
         expect(emptyComponent).toBeFalsy();
-        const componentEl = embedComponent.nativeElement.nextSibling;
+        const componentEl = embedComponent.nativeElement.firstElementChild;
         expect(componentEl).toBeTruthy();
         expect(componentEl.tagName).toBe('NZ-EMPTY-TEST-CUSTOM');
         expect(componentEl.innerText).toBe(`I'm in component list`);

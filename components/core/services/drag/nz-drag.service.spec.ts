@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Subject, Subscription } from 'rxjs';
 
 import { NzDragService } from 'ng-zorro-antd/core';

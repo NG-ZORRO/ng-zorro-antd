@@ -1,10 +1,14 @@
-<div nz-tooltip
-     *ngIf="nzTipFormatter !== null && nzTooltipVisible !== 'never'"
-     class="ant-slider-handle"
-     [ngStyle]="style"
-     [nzTitle]="tooltipTitle"
-     [nzTrigger]="null"
-     [nzPlacement]="nzTooltipPlacement"></div>
-<div *ngIf="nzTipFormatter === null || nzTooltipVisible === 'never'"
-     class="ant-slider-handle"
-     [ngStyle]="style"></div>
+<div
+  nz-tooltip
+  *ngIf="nzTipFormatter !== null && nzTooltipVisible !== 'never'"
+  class="ant-slider-handle"
+  [ngStyle]="style"
+  [nzTitle]="tooltipTitle"
+  [nzTrigger]="null"
+  [nzPlacement]="nzTooltipPlacement"
+></div>
+<div
+  *ngIf="nzTipFormatter === null || nzTooltipVisible === 'never'"
+  class="ant-slider-handle"
+  [ngStyle]="style"
+></div>

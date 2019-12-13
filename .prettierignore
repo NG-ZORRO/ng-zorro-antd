@@ -1,11 +1,8 @@
 **/*.md
 **/*.svg
-**/*.html
 **/test.ts
-**/*.less
 coverage/
 publish/
 schematics/
-site/
 package.json
 **/template/*

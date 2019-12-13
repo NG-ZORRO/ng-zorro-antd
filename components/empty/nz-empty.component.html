@@ -1,6 +1,9 @@
 <div class="ant-empty-image">
   <ng-container *nzStringTemplateOutlet="nzNotFoundImage">
-    <img [src]="nzNotFoundImage || defaultSvg" [alt]="isContentString ? nzNotFoundContent : 'empty'">
+    <img
+      [src]="nzNotFoundImage || defaultSvg"
+      [alt]="isContentString ? nzNotFoundContent : 'empty'"
+    />
   </ng-container>
 </div>
 <p class="ant-empty-description">

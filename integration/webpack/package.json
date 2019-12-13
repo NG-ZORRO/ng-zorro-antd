@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "setup": "bash ../../setup-shared-libs.sh ./lib",
+    "setup": "bash ../../setup-shared-libs.sh webpack/lib",
     "start": "webpack-dev-server",
     "build": "webpack",
     "test": "echo \"Error: no test... minimal project\" && exit 1",

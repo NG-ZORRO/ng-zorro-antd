@@ -24,7 +24,7 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { zoomMotion, NzNoAnimationDirective } from 'ng-zorro-antd/core';
+import { NzNoAnimationDirective, zoomMotion } from 'ng-zorro-antd/core';
 
 import { NzOptionComponent } from './nz-option.component';
 import { NzSelectService } from './nz-select.service';

@@ -4,7 +4,7 @@
   [nzTitle]="copied ? locale?.copied : locale?.copy"
   class="ant-typography-copy"
   [class.ant-typography-copy-success]="copied"
-  (click)="onClick()">
+  (click)="onClick()"
+>
   <i nz-icon [nzType]="copied ? 'check' : 'copy'"></i>
 </button>
-

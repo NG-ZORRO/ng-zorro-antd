@@ -85,9 +85,7 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
     // need to be removed temporarily.
     textarea.classList.add('cdk-textarea-autosize-measuring');
     textarea.placeholder = '';
-    const height =
-      Math.round((textarea.scrollHeight - this.inputGap) / this.cachedLineHeight) * this.cachedLineHeight +
-      this.inputGap;
+    const height = Math.round((textarea.scrollHeight - this.inputGap) / this.cachedLineHeight) * this.cachedLineHeight + this.inputGap;
 
     // Use the scrollHeight to know how large the textarea *would* be if fit its entire value.
     textarea.style.height = `${height}px`;
@@ -155,8 +153,7 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
   }
 
   setMinHeight(): void {
-    const minHeight =
-      this.minRows && this.cachedLineHeight ? `${this.minRows * this.cachedLineHeight + this.inputGap}px` : null;
+    const minHeight = this.minRows && this.cachedLineHeight ? `${this.minRows * this.cachedLineHeight + this.inputGap}px` : null;
 
     if (minHeight) {
       this.el.style.minHeight = minHeight;
@@ -164,8 +161,7 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
   }
 
   setMaxHeight(): void {
-    const maxHeight =
-      this.maxRows && this.cachedLineHeight ? `${this.maxRows * this.cachedLineHeight + this.inputGap}px` : null;
+    const maxHeight = this.maxRows && this.cachedLineHeight ? `${this.maxRows * this.cachedLineHeight + this.inputGap}px` : null;
 
     if (maxHeight) {
       this.el.style.maxHeight = maxHeight;

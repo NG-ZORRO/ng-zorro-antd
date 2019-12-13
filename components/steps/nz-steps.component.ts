@@ -25,7 +25,7 @@ import {
 import { merge, Subject, Subscription } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
-import { toBoolean, NgClassType, NzSizeDSType } from 'ng-zorro-antd/core';
+import { NgClassType, NzSizeDSType, toBoolean } from 'ng-zorro-antd/core';
 
 import { NzStepComponent } from './nz-step.component';
 
@@ -95,14 +95,9 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
 
   ngAfterContentInit(): void {
     if (this.steps) {
-      this.steps.changes
-        .pipe(
-          startWith(null),
-          takeUntil(this.destroy$)
-        )
-        .subscribe(() => {
-          this.updateChildrenSteps();
-        });
+      this.steps.changes.pipe(startWith(null), takeUntil(this.destroy$)).subscribe(() => {
+        this.updateChildrenSteps();
+      });
     }
   }
 
@@ -127,9 +122,7 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
       if (this.indexChangeSubscription) {
         this.indexChangeSubscription.unsubscribe();
       }
-      this.indexChangeSubscription = merge(...this.steps.map(step => step.click$)).subscribe(index =>
-        this.nzIndexChange.emit(index)
-      );
+      this.indexChangeSubscription = merge(...this.steps.map(step => step.click$)).subscribe(index => this.nzIndexChange.emit(index));
     }
   }
 
@@ -137,8 +130,7 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
     this.classMap = {
       [`ant-steps-${this.nzDirection}`]: true,
       [`ant-steps-label-horizontal`]: this.nzDirection === 'horizontal',
-      [`ant-steps-label-vertical`]:
-        (this.showProcessDot || this.nzLabelPlacement === 'vertical') && this.nzDirection === 'horizontal',
+      [`ant-steps-label-vertical`]: (this.showProcessDot || this.nzLabelPlacement === 'vertical') && this.nzDirection === 'horizontal',
       [`ant-steps-dot`]: this.showProcessDot,
       ['ant-steps-small']: this.nzSize === 'small',
       ['ant-steps-navigation']: this.nzType === 'navigation'

@@ -18,15 +18,7 @@ import { NzDrawerComponent } from './nz-drawer.component';
 import { NzDrawerServiceModule } from './nz-drawer.service.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    OverlayModule,
-    PortalModule,
-    NzIconModule,
-    NzAddOnModule,
-    NzNoAnimationModule,
-    NzDrawerServiceModule
-  ],
+  imports: [CommonModule, OverlayModule, PortalModule, NzIconModule, NzAddOnModule, NzNoAnimationModule, NzDrawerServiceModule],
   exports: [NzDrawerComponent],
   declarations: [NzDrawerComponent],
   entryComponents: [NzDrawerComponent]

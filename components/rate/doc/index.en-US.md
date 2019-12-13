@@ -11,10 +11,6 @@ Rate component.
 - Show evaluation.
 - A quick rating operation on something.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzRateModule } from 'ng-zorro-antd/rate';
 ```

@@ -23,7 +23,7 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { isNotNil, InputBoolean } from 'ng-zorro-antd/core';
+import { InputBoolean, isNotNil } from 'ng-zorro-antd/core';
 import { NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
 import { NzI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 

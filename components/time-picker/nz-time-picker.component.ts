@@ -27,11 +27,11 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import {
-  isNotNil,
-  slideMotion,
   InputBoolean,
+  isNotNil,
   NzConfigService,
   NzUpdateHostClassService as UpdateCls,
+  slideMotion,
   WithConfig
 } from 'ng-zorro-antd/core';
 

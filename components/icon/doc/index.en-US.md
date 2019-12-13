@@ -9,11 +9,7 @@ Semantic vector graphics.
 
 ## List of icons
 
-We are still adding icons right now, syncing to [antd](https://ant.design/components/icon-cn/#components-icon-demo-iconfont).
-
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
+We are still adding icons right now, syncing to [antd](https://ant.design/components/icon/).
 
 ```ts
 import { NzIconModule } from 'ng-zorro-antd/icon';

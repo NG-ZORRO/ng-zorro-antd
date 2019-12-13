@@ -21,8 +21,8 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/router';
-import { isNotNil, InputBoolean, NzMenuBaseService, NzUpdateHostClassService } from 'ng-zorro-antd/core';
-import { merge, EMPTY, Subject } from 'rxjs';
+import { InputBoolean, isNotNil, NzMenuBaseService, NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { EMPTY, merge, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { NzSubmenuService } from './nz-submenu.service';
 
@@ -76,13 +76,7 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
   }
 
   private updateRouterActive(): void {
-    if (
-      !this.listOfRouterLink ||
-      !this.listOfRouterLinkWithHref ||
-      !this.router ||
-      !this.router.navigated ||
-      !this.nzMatchRouter
-    ) {
+    if (!this.listOfRouterLink || !this.listOfRouterLinkWithHref || !this.router || !this.router.navigated || !this.nzMatchRouter) {
       return;
     }
     Promise.resolve().then(() => {
@@ -134,11 +128,7 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
     if (paddingLeft) {
       this.originalPadding = parseInt(paddingLeft, 10);
     }
-    merge(
-      this.nzMenuService.mode$,
-      this.nzMenuService.inlineIndent$,
-      this.nzSubmenuService ? this.nzSubmenuService.level$ : EMPTY
-    )
+    merge(this.nzMenuService.mode$, this.nzMenuService.inlineIndent$, this.nzSubmenuService ? this.nzSubmenuService.level$ : EMPTY)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         let padding: number | null = null;

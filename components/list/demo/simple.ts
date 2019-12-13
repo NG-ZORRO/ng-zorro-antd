@@ -14,26 +14,11 @@ import { NzMessageService } from 'ng-zorro-antd/message';
       </ng-template>
     </nz-list>
     <h3 [ngStyle]="{ margin: '16px 0' }">Small Size</h3>
-    <nz-list
-      [nzDataSource]="data"
-      nzBordered
-      nzSize="small"
-      [nzHeader]="'Header'"
-      [nzFooter]="'Footer'"
-      [nzRenderItem]="smallItem"
-    >
+    <nz-list [nzDataSource]="data" nzBordered nzSize="small" [nzHeader]="'Header'" [nzFooter]="'Footer'" [nzRenderItem]="smallItem">
       <ng-template #smallItem let-item><nz-list-item [nzContent]="item"></nz-list-item></ng-template>
     </nz-list>
     <h3 [ngStyle]="{ margin: '16px 0' }">Large Size</h3>
-    <ul
-      nz-list
-      [nzDataSource]="data"
-      nzBordered
-      nzSize="large"
-      [nzHeader]="'Header'"
-      [nzFooter]="'Footer'"
-      [nzRenderItem]="largeItem"
-    >
+    <ul nz-list [nzDataSource]="data" nzBordered nzSize="large" [nzHeader]="'Header'" [nzFooter]="'Footer'" [nzRenderItem]="largeItem">
       <ng-template #largeItem let-item>
         <li nz-list-item [nzActions]="[opAction]" [nzContent]="item" nzNoFlex></li>
         <ng-template #opAction><a (click)="msg.info('edit')">edit</a></ng-template>

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, DebugElement } from '@angular/core';
-import { async, fakeAsync, flush, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router, Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -37,12 +37,8 @@ describe('breadcrumb', () => {
 
     it('should have correct style', () => {
       fixture.detectChanges();
-      expect(items.every(item => item.nativeElement.firstElementChild!.classList.contains('ant-breadcrumb-link'))).toBe(
-        true
-      );
-      expect(items.every(item => item.nativeElement.children[1].classList.contains('ant-breadcrumb-separator'))).toBe(
-        true
-      );
+      expect(items.every(item => item.nativeElement.firstElementChild!.classList.contains('ant-breadcrumb-link'))).toBe(true);
+      expect(items.every(item => item.nativeElement.children[1].classList.contains('ant-breadcrumb-separator'))).toBe(true);
       expect(breadcrumb.nativeElement.classList.contains('ant-breadcrumb')).toBe(true);
     });
   });
@@ -92,17 +88,11 @@ describe('breadcrumb', () => {
 
     it('should nzSeparator work', () => {
       fixture.detectChanges();
-      expect(items.every(item => item.nativeElement.firstElementChild!.classList.contains('ant-breadcrumb-link'))).toBe(
-        true
-      );
-      expect(items.every(item => item.nativeElement.children[1].classList.contains('ant-breadcrumb-separator'))).toBe(
-        true
-      );
+      expect(items.every(item => item.nativeElement.firstElementChild!.classList.contains('ant-breadcrumb-link'))).toBe(true);
+      expect(items.every(item => item.nativeElement.children[1].classList.contains('ant-breadcrumb-separator'))).toBe(true);
       expect(breadcrumbs.every(breadcrumb => breadcrumb.nativeElement.classList.contains('ant-breadcrumb'))).toBe(true);
       expect(items[0].nativeElement.children[1].innerText.indexOf('>') > -1).toBe(true);
-      expect(items[3].nativeElement.children[1].firstElementChild!.classList.contains('anticon-arrow-right')).toBe(
-        true
-      );
+      expect(items[3].nativeElement.children[1].firstElementChild!.classList.contains('anticon-arrow-right')).toBe(true);
     });
   });
 

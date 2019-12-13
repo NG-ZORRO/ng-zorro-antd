@@ -10,10 +10,6 @@ Small numerical value or status descriptor for UI elements.
 
 Badge normally appears in proximity to notifications or user avatars with eye-catching appeal, typically displaying unread messages count.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 ```

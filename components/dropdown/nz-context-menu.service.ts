@@ -7,13 +7,7 @@
  */
 
 /** keep track https://github.com/angular/material2/issues/5007 **/
-import {
-  ConnectionPositionPair,
-  FlexibleConnectedPositionStrategy,
-  Overlay,
-  OverlayConfig,
-  OverlayRef
-} from '@angular/cdk/overlay';
+import { ConnectionPositionPair, FlexibleConnectedPositionStrategy, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
@@ -74,9 +68,7 @@ export class NzContextMenuService {
     this.clickMenuSubscription = nzDropdownMenuComponent.nzMenuDropdownService.menuItemClick$.subscribe(() => {
       this.close();
     });
-    overlayRef.attach(
-      new TemplatePortal(nzDropdownMenuComponent.templateRef, nzDropdownMenuComponent.viewContainerRef)
-    );
+    overlayRef.attach(new TemplatePortal(nzDropdownMenuComponent.templateRef, nzDropdownMenuComponent.viewContainerRef));
     this.setOpenState(true);
   }
 
@@ -108,10 +100,7 @@ export class NzContextMenuService {
     this.positionSubscription.unsubscribe();
     this.positionSubscription = position.positionChanges.subscribe(change => {
       // TODO: positionChanges won't trigger if not dispose
-      this.nzDropdownMenuComponent.setValue(
-        'dropDownPosition',
-        change.connectionPair.overlayY === 'bottom' ? 'top' : 'bottom'
-      );
+      this.nzDropdownMenuComponent.setValue('dropDownPosition', change.connectionPair.overlayY === 'bottom' ? 'top' : 'bottom');
     });
   }
 

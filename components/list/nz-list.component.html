@@ -1,7 +1,10 @@
 <ng-template #itemsTpl>
   <div class="ant-list-items" *ngIf="nzDataSource.length > 0">
     <ng-container *ngFor="let item of nzDataSource; let index = index">
-      <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: item, index: index }"></ng-template>
+      <ng-template
+        [ngTemplateOutlet]="nzRenderItem"
+        [ngTemplateOutletContext]="{ $implicit: item, index: index }"
+      ></ng-template>
     </ng-container>
   </div>
 </ng-template>
@@ -12,9 +15,21 @@
   <ng-container *ngIf="nzDataSource">
     <div *ngIf="nzLoading && nzDataSource.length === 0" [style.min-height.px]="53"></div>
     <div *ngIf="nzGrid; else itemsTpl" nz-row [nzGutter]="nzGrid.gutter">
-      <div nz-col [nzSpan]="nzGrid.span" [nzXs]="nzGrid.xs" [nzSm]="nzGrid.sm" [nzMd]="nzGrid.md" [nzLg]="nzGrid.lg" [nzXl]="nzGrid.xl"
-           [nzXXl]="nzGrid.xxl" *ngFor="let item of nzDataSource; let index = index">
-        <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: item, index: index }"></ng-template>
+      <div
+        nz-col
+        [nzSpan]="nzGrid.span"
+        [nzXs]="nzGrid.xs"
+        [nzSm]="nzGrid.sm"
+        [nzMd]="nzGrid.md"
+        [nzLg]="nzGrid.lg"
+        [nzXl]="nzGrid.xl"
+        [nzXXl]="nzGrid.xxl"
+        *ngFor="let item of nzDataSource; let index = index"
+      >
+        <ng-template
+          [ngTemplateOutlet]="nzRenderItem"
+          [ngTemplateOutletContext]="{ $implicit: item, index: index }"
+        ></ng-template>
       </div>
     </div>
     <div *ngIf="!nzLoading && nzDataSource.length === 0" class="ant-list-empty-text">

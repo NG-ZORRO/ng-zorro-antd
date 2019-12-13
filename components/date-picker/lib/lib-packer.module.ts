@@ -46,7 +46,6 @@ import { YearPanelComponent } from './year/year-panel.component';
     DecadePanelComponent,
     InnerPopupComponent,
     DateRangePopupComponent
-
   ],
   declarations: [
     CalendarHeaderComponent,

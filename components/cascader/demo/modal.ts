@@ -46,12 +46,7 @@ const options = [
 @Component({
   selector: 'nz-demo-cascader-modal',
   template: `
-    <nz-modal
-      [(nzVisible)]="isVisible"
-      nzTitle="Please select"
-      (nzOnCancel)="handleCancel($event)"
-      (nzOnOk)="handleOk($event)"
-    >
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="Please select" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleOk($event)">
       <nz-cascader [nzOptions]="nzOptions" [(ngModel)]="values" (ngModelChange)="onChanges($event)"> </nz-cascader>
     </nz-modal>
 

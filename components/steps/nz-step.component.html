@@ -1,35 +1,47 @@
 <div
   class="ant-steps-item-container"
-  [attr.role]="(clickable && !nzDisabled) ? 'button' : null"
-  [tabindex]="(clickable && !nzDisabled) ? 0 : null"
-  (click)="onClick()">
+  [attr.role]="clickable && !nzDisabled ? 'button' : null"
+  [tabindex]="clickable && !nzDisabled ? 0 : null"
+  (click)="onClick()"
+>
   <div class="ant-steps-item-tail" *ngIf="last !== true"></div>
   <div class="ant-steps-item-icon">
     <ng-template [ngIf]="!showProcessDot">
-      <span class="ant-steps-icon" *ngIf="nzStatus === 'finish' && !nzIcon"><i nz-icon nzType="check"></i></span>
-      <span class="ant-steps-icon" *ngIf="nzStatus === 'error'"><i nz-icon nzType="close"></i></span>
+      <span class="ant-steps-icon" *ngIf="nzStatus === 'finish' && !nzIcon"
+        ><i nz-icon nzType="check"></i
+      ></span>
+      <span class="ant-steps-icon" *ngIf="nzStatus === 'error'"
+        ><i nz-icon nzType="close"></i
+      ></span>
       <span
         class="ant-steps-icon"
-        *ngIf="(nzStatus === 'process' || nzStatus === 'wait') && !nzIcon">{{ index + 1 }}</span>
+        *ngIf="(nzStatus === 'process' || nzStatus === 'wait') && !nzIcon"
+        >{{ index + 1 }}</span
+      >
       <span class="ant-steps-icon" *ngIf="nzIcon">
-      <ng-container *ngIf="isIconString; else iconTemplate">
-        <i nz-icon [nzType]="!oldAPIIcon && nzIcon" [ngClass]="oldAPIIcon && nzIcon"></i>
-      </ng-container>
-      <ng-template #iconTemplate>
-      <ng-template [ngTemplateOutlet]="nzIcon"></ng-template>
-    </ng-template>
-    </span>
+        <ng-container *ngIf="isIconString; else iconTemplate">
+          <i nz-icon [nzType]="!oldAPIIcon && nzIcon" [ngClass]="oldAPIIcon && nzIcon"></i>
+        </ng-container>
+        <ng-template #iconTemplate>
+          <ng-template [ngTemplateOutlet]="nzIcon"></ng-template>
+        </ng-template>
+      </span>
     </ng-template>
     <ng-template [ngIf]="showProcessDot">
-    <span class="ant-steps-icon">
-      <ng-template #processDotTemplate>
-        <span class="ant-steps-icon-dot"></span>
-      </ng-template>
-      <ng-template
-        [ngTemplateOutlet]="customProcessTemplate||processDotTemplate"
-        [ngTemplateOutletContext]="{ $implicit: processDotTemplate, status:nzStatus, index:index }">
-      </ng-template>
-    </span>
+      <span class="ant-steps-icon">
+        <ng-template #processDotTemplate>
+          <span class="ant-steps-icon-dot"></span>
+        </ng-template>
+        <ng-template
+          [ngTemplateOutlet]="customProcessTemplate || processDotTemplate"
+          [ngTemplateOutletContext]="{
+            $implicit: processDotTemplate,
+            status: nzStatus,
+            index: index
+          }"
+        >
+        </ng-template>
+      </span>
     </ng-template>
   </div>
   <div class="ant-steps-item-content">

@@ -17,12 +17,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { DateTableCellComponent } from './date-table-cell.component';
 import { DateTableComponent } from './date-table.component';
 import { MonthTableComponent } from './month-table.component';
-import {
-  NzDateCellDirective,
-  NzDateFullCellDirective,
-  NzMonthCellDirective,
-  NzMonthFullCellDirective
-} from './nz-calendar-cells';
+import { NzDateCellDirective, NzDateFullCellDirective, NzMonthCellDirective, NzMonthFullCellDirective } from './nz-calendar-cells';
 import { NzCalendarHeaderComponent } from './nz-calendar-header.component';
 import { NzCalendarComponent } from './nz-calendar.component';
 

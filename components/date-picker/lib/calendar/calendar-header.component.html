@@ -1,12 +1,14 @@
 <div class="{{ prefixCls }}-header">
   <div style="position: relative;">
-    <a *ngIf="enablePrev && !showTimePicker"
+    <a
+      *ngIf="enablePrev && !showTimePicker"
       class="{{ prefixCls }}-prev-year-btn"
       role="button"
       (click)="previousYear()"
       title="{{ locale.previousYear }}"
     ></a>
-    <a *ngIf="enablePrev && !showTimePicker"
+    <a
+      *ngIf="enablePrev && !showTimePicker"
       class="{{ prefixCls }}-prev-month-btn"
       role="button"
       (click)="previousMonth()"
@@ -15,7 +17,8 @@
 
     <span class="{{ prefixCls }}-{{ locale.monthBeforeYear ? 'my-select' : 'ym-select' }}">
       <ng-container *ngFor="let selector of yearMonthDaySelectors">
-        <a class="{{ selector.className }}"
+        <a
+          class="{{ selector.className }}"
           role="button"
           (click)="selector.onClick ? selector.onClick() : null"
           title="{{ selector.title || null }}"
@@ -25,13 +28,15 @@
       </ng-container>
     </span>
 
-    <a *ngIf="enableNext && !showTimePicker"
+    <a
+      *ngIf="enableNext && !showTimePicker"
       class="{{ prefixCls }}-next-month-btn"
       role="button"
       (click)="nextMonth()"
       title="{{ locale.nextMonth }}"
     ></a>
-    <a *ngIf="enableNext && !showTimePicker"
+    <a
+      *ngIf="enableNext && !showTimePicker"
       class="{{ prefixCls }}-next-year-btn"
       role="button"
       (click)="nextYear()"

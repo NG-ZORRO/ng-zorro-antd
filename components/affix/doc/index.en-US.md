@@ -12,10 +12,6 @@ When user browses a long web page, some content need to stick to the viewport. T
 
 Please note that Affix should not cover other content on the page, especially when the size of the viewport is small.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzAffixModule } from 'ng-zorro-antd/affix';
 ```

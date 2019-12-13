@@ -28,9 +28,7 @@ export interface NzCarouselStrategyRegistryItem {
   strategy: NzCarouselBaseStrategy;
 }
 
-export const NZ_CAROUSEL_CUSTOM_STRATEGIES = new InjectionToken<NzCarouselStrategyRegistryItem[]>(
-  'nz-carousel-custom-strategies'
-);
+export const NZ_CAROUSEL_CUSTOM_STRATEGIES = new InjectionToken<NzCarouselStrategyRegistryItem[]>('nz-carousel-custom-strategies');
 
 export interface PointerVector {
   x: number;

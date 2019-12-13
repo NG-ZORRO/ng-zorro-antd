@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 
 import { NzAffixModule } from 'ng-zorro-antd/affix';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
@@ -24,7 +24,7 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzCommentModule } from 'ng-zorro-antd/comment';
-import { warnDeprecation, NzNoAnimationModule, NzTransButtonModule, NzWaveModule } from 'ng-zorro-antd/core';
+import { NzNoAnimationModule, NzTransButtonModule, NzWaveModule, warnDeprecation } from 'ng-zorro-antd/core';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
@@ -204,16 +204,11 @@ export * from 'ng-zorro-antd/version';
     NzWaveModule
   ]
 })
+/**
+ * @deprecated Use secondary entry eg: `import { NzButtonModule } from 'ng-zorro-antd/button'`.
+ */
 export class NgZorroAntdModule {
-  /**
-   * @deprecated Use `NgZorroAntdModule` instead.
-   */
-  static forRoot(): ModuleWithProviders {
-    warnDeprecation(
-      `'forRoot' is not recommended if you are using Angular 6.0.0+. This API is going to be removed in 9.0.0.`
-    );
-    return {
-      ngModule: NgZorroAntdModule
-    };
+  constructor() {
+    warnDeprecation('The `NgZorroAntdModule` has been deprecated and will be removed in 10.0.0.' + ' Please use secondary entry instead.');
   }
 }

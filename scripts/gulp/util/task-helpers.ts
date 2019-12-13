@@ -1,5 +1,6 @@
 import * as child_process from 'child_process';
 import * as gulp from 'gulp';
+
 const gulpClean = require('gulp-clean');
 const resolveBin = require('resolve-bin');
 
@@ -15,9 +16,9 @@ export function execTask(binPath: string, args: string[], env: {} = {}): gulp.Ta
     // tslint:disable-next-line:no-any
     (process.stdout as any)._handle.setBlocking(true);
     const childProcess = child_process.spawn(binPath, args, {
-      env: {...process.env, ...env},
+      env: { ...process.env, ...env },
       cwd: process.cwd(),
-      stdio: "inherit"
+      stdio: 'inherit'
     });
 
     childProcess.on('close', (code: number) => {
@@ -42,7 +43,7 @@ export function execNodeTask(packageName: string, executable: string | string[],
       if (err) {
         done(err);
       } else {
-        execTask('node', ['--max_old_space_size=5120', binPath].concat(args!), env)(done);
+        execTask('node', ['--max_old_space_size=4096', binPath].concat(args!), env)(done);
       }
     });
   };

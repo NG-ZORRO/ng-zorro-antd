@@ -7,12 +7,12 @@
  */
 
 import {
-  forwardRef,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChild,
   EventEmitter,
+  forwardRef,
   HostBinding,
   Input,
   Output,

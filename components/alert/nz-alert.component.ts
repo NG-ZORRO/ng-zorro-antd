@@ -17,7 +17,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { slideAlertMotion, InputBoolean, NgClassType, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
+import { InputBoolean, NgClassType, NzConfigService, slideAlertMotion, WithConfig } from 'ng-zorro-antd/core';
 
 const NZ_CONFIG_COMPONENT_NAME = 'alert';
 

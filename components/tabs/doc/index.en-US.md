@@ -15,10 +15,6 @@ Ant Design has 3 types of Tabs for different situations.
 - Normal Tabs: for functional aspects of a page.
 - [RadioButton](/components/radio/en/#components-radio-demo-radiobutton): for secondary tabs.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 ```

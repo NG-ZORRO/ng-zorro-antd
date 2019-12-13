@@ -6,18 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  AfterViewInit,
-  Directive,
-  ElementRef,
-  Host,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Optional,
-  Renderer2
-} from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, Host, Input, OnChanges, OnDestroy, OnInit, Optional, Renderer2 } from '@angular/core';
 import { isNotNil, NgClassInterface, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
@@ -80,8 +69,7 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
           const prefixArray: Array<keyof EmbeddedProperty> = ['span', 'pull', 'push', 'offset', 'order'];
           prefixArray.forEach(prefix => {
             const prefixClass = prefix === 'span' ? '-' : `-${prefix}-`;
-            listClassMap[`${this.prefixCls}-${sizeName}${prefixClass}${embedded[prefix]}`] =
-              embedded && isNotNil(embedded[prefix]);
+            listClassMap[`${this.prefixCls}-${sizeName}${prefixClass}${embedded[prefix]}`] = embedded && isNotNil(embedded[prefix]);
           });
         }
       }
@@ -103,10 +91,7 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   ngAfterViewInit(): void {
     if (this.nzRowDirective) {
       this.nzRowDirective.actualGutter$
-        .pipe(
-          startWith(this.nzRowDirective.actualGutter),
-          takeUntil(this.destroy$)
-        )
+        .pipe(startWith(this.nzRowDirective.actualGutter), takeUntil(this.destroy$))
         .subscribe(actualGutter => {
           this.renderer.setStyle(this.el, 'padding-left', `${actualGutter / 2}px`);
           this.renderer.setStyle(this.el, 'padding-right', `${actualGutter / 2}px`);

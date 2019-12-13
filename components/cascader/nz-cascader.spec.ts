@@ -19,7 +19,7 @@ import {
 } from '@angular/cdk/keycodes';
 import { ConnectedOverlayPositionChange, OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { async, fakeAsync, flush, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -35,14 +35,10 @@ describe('cascader', () => {
 
   function getItemAtColumnAndRow(column: number, row: number): HTMLElement | null {
     if (row === -1) {
-      return overlayContainerElement.querySelector(
-        `.ant-cascader-menu:nth-child(${column}) .ant-cascader-menu-item:last-child`
-      );
+      return overlayContainerElement.querySelector(`.ant-cascader-menu:nth-child(${column}) .ant-cascader-menu-item:last-child`);
     }
 
-    return overlayContainerElement.querySelector(
-      `.ant-cascader-menu:nth-child(${column}) .ant-cascader-menu-item:nth-child(${row})`
-    );
+    return overlayContainerElement.querySelector(`.ant-cascader-menu:nth-child(${column}) .ant-cascader-menu-item:nth-child(${row})`);
   }
 
   function getAllColumns(): NodeListOf<Element> {
@@ -1969,9 +1965,7 @@ const options5: any[] = []; // tslint:disable-line:no-any
     </nz-cascader>
 
     <ng-template #renderTpl let-labels="labels" let-selectedOptions="selectedOptions">
-      <ng-container *ngFor="let label of labels; let i = index; let isLast = last">
-        {{ label }}{{ isLast ? '' : ' | ' }}
-      </ng-container>
+      <ng-container *ngFor="let label of labels; let i = index; let isLast = last"> {{ label }}{{ isLast ? '' : ' | ' }} </ng-container>
     </ng-template>
   `,
   styles: [

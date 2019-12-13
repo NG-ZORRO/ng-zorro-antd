@@ -74,14 +74,9 @@ export class NzFormDirective implements OnInit, OnChanges, AfterContentInit, OnD
   }
 
   ngAfterContentInit(): void {
-    this.nzFormLabelComponent.changes
-      .pipe(
-        startWith(null),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(() => {
-        this.updateItemsDefaultColon();
-      });
+    this.nzFormLabelComponent.changes.pipe(startWith(null), takeUntil(this.destroy$)).subscribe(() => {
+      this.updateItemsDefaultColon();
+    });
   }
 
   ngOnDestroy(): void {

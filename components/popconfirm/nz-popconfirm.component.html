@@ -9,13 +9,16 @@
   (detach)="hide()"
   (positionChange)="onPositionChange($event)"
   [cdkConnectedOverlayPositions]="_positions"
-  [cdkConnectedOverlayOpen]="_visible">
-  <div class="ant-popover"
+  [cdkConnectedOverlayOpen]="_visible"
+>
+  <div
+    class="ant-popover"
     [ngClass]="_classMap"
     [ngStyle]="nzOverlayStyle"
     [@.disabled]="noAnimation?.nzNoAnimation"
     [nzNoAnimation]="noAnimation?.nzNoAnimation"
-    [@zoomBigMotion]="'active'">
+    [@zoomBigMotion]="'active'"
+  >
     <div class="ant-popover-content">
       <div class="ant-popover-arrow"></div>
       <div class="ant-popover-inner">

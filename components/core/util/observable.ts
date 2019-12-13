@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { from, isObservable, of, Observable } from 'rxjs';
+import { from, isObservable, Observable, of } from 'rxjs';
 import { isPromise } from './is-promise';
 
 export function wrapIntoObservable<T>(value: T | Promise<T> | Observable<T>): Observable<T> {

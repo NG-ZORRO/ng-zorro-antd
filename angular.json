@@ -89,9 +89,6 @@
           "configurations": {
             "production": {
               "browserTarget": "ng-zorro-antd-doc:build:production"
-            },
-            "ivy": {
-              "browserTarget": "ng-zorro-antd-doc:build:ivy"
             }
           }
         },

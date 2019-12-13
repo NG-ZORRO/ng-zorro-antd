@@ -1,7 +1,10 @@
 <div class="{{ nzInDatePicker ? prefixCls + '-panel' : '' }}">
   <div
-    class="{{ prefixCls }}-inner {{ nzInDatePicker ? prefixCls + '-column-' + enabledColumns : '' }}"
-    [style.width.px]="nzInDatePicker ? null : enabledColumns * 56">
+    class="{{ prefixCls }}-inner {{
+      nzInDatePicker ? prefixCls + '-column-' + enabledColumns : ''
+    }}"
+    [style.width.px]="nzInDatePicker ? null : enabledColumns * 56"
+  >
     <div class="{{ prefixCls }}-input-wrap">
       <input
         type="text"
@@ -9,13 +12,11 @@
         [placeholder]="nzPlaceHolder"
         [nzTime]="format"
         [(ngModel)]="time.value"
-        (blur)="time.changed()">
+        (blur)="time.changed()"
+      />
     </div>
     <div class="{{ prefixCls }}-combobox">
-      <div
-        *ngIf="hourEnabled"
-        #hourListElement
-        class="{{ prefixCls }}-select">
+      <div *ngIf="hourEnabled" #hourListElement class="{{ prefixCls }}-select">
         <ul>
           <ng-container *ngFor="let hour of hourRange">
             <li
@@ -26,15 +27,12 @@
                 {{ hour.disabled ? prefixCls + '-select-option-disabled' : '' }}
               "
             >
-              {{ hour.index | number:'2.0-0' }}
+              {{ hour.index | number: '2.0-0' }}
             </li>
           </ng-container>
         </ul>
       </div>
-      <div
-        *ngIf="minuteEnabled"
-        #minuteListElement
-        class="{{ prefixCls }}-select">
+      <div *ngIf="minuteEnabled" #minuteListElement class="{{ prefixCls }}-select">
         <ul>
           <ng-container *ngFor="let minute of minuteRange">
             <li
@@ -45,15 +43,12 @@
                 {{ minute.disabled ? prefixCls + '-select-option-disabled' : '' }}
               "
             >
-              {{ minute.index | number:'2.0-0' }}
+              {{ minute.index | number: '2.0-0' }}
             </li>
           </ng-container>
         </ul>
       </div>
-      <div
-        *ngIf="secondEnabled"
-        #secondListElement
-        class="{{ prefixCls }}-select">
+      <div *ngIf="secondEnabled" #secondListElement class="{{ prefixCls }}-select">
         <ul>
           <ng-container *ngFor="let second of secondRange">
             <li
@@ -64,17 +59,14 @@
                 {{ second.disabled ? prefixCls + '-select-option-disabled' : '' }}
               "
             >
-              {{ second.index | number:'2.0-0' }}
+              {{ second.index | number: '2.0-0' }}
             </li>
           </ng-container>
         </ul>
       </div>
-      <div
-        *ngIf="nzUse12Hours"
-        #use12HoursListElement
-        class="{{ prefixCls }}-select">
+      <div *ngIf="nzUse12Hours" #use12HoursListElement class="{{ prefixCls }}-select">
         <ul>
-          <ng-container *ngFor="let range of use12HoursRange ">
+          <ng-container *ngFor="let range of use12HoursRange">
             <li
               *ngIf="!nzHideDisabledOptions"
               (click)="select12Hours(range)"

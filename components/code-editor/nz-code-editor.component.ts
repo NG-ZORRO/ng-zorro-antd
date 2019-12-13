@@ -7,12 +7,12 @@
  */
 
 import {
-  forwardRef,
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Input,
   NgZone,
   OnDestroy,
@@ -21,10 +21,10 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { combineLatest, fromEvent, BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, fromEvent, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil } from 'rxjs/operators';
 
-import { inNextTick, warn, InputBoolean } from 'ng-zorro-antd/core';
+import { inNextTick, InputBoolean, warn } from 'ng-zorro-antd/core';
 
 import { DiffEditorOptions, EditorOptions, JoinedEditorOptions, NzEditorMode } from './nz-code-editor.definitions';
 import { NzCodeEditorService } from './nz-code-editor.service';
@@ -164,10 +164,7 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
   private registerResizeChange(): void {
     this.ngZone.runOutsideAngular(() => {
       fromEvent(window, 'resize')
-        .pipe(
-          debounceTime(300),
-          takeUntil(this.destroy$)
-        )
+        .pipe(debounceTime(300), takeUntil(this.destroy$))
         .subscribe(() => {
           this.layout();
         });

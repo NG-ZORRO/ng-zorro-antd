@@ -8,16 +8,11 @@
 
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable, Optional } from '@angular/core';
-import { of as observableOf, BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of as observableOf, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
-import { warn, warnDeprecation, NzConfigService, PREFIX } from 'ng-zorro-antd/core';
-import {
-  JoinedEditorOptions,
-  NzCodeEditorConfig,
-  NzCodeEditorLoadingStatus,
-  NZ_CODE_EDITOR_CONFIG
-} from './nz-code-editor.definitions';
+import { NzConfigService, PREFIX, warn, warnDeprecation } from 'ng-zorro-antd/core';
+import { JoinedEditorOptions, NZ_CODE_EDITOR_CONFIG, NzCodeEditorConfig, NzCodeEditorLoadingStatus } from './nz-code-editor.definitions';
 
 // tslint:disable-next-line no-any
 declare const monaco: any;

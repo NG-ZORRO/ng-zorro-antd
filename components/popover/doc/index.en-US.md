@@ -12,10 +12,6 @@ A simple popup menu to provide extra information or operations.
 
 Comparing with `Tooltip`, besides information `Popover` card can also provide action elements like links and buttons.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 ```

@@ -20,7 +20,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { fadeMotion, warnDeprecation, InputBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { fadeMotion, InputBoolean, NzUpdateHostClassService, warnDeprecation } from 'ng-zorro-antd/core';
 
 @Component({
   selector: 'nz-tag',
@@ -53,9 +53,7 @@ export class NzTagComponent implements OnInit, OnChanges {
     if (!color) {
       return false;
     }
-    return /^(pink|red|yellow|orange|cyan|green|blue|purple|geekblue|magenta|volcano|gold|lime)(-inverse)?$/.test(
-      color
-    );
+    return /^(pink|red|yellow|orange|cyan|green|blue|purple|geekblue|magenta|volcano|gold|lime)(-inverse)?$/.test(color);
   }
 
   private updateClassMap(): void {
@@ -94,11 +92,7 @@ export class NzTagComponent implements OnInit, OnChanges {
     }
   }
 
-  constructor(
-    private renderer: Renderer2,
-    private elementRef: ElementRef,
-    private nzUpdateHostClassService: NzUpdateHostClassService
-  ) {}
+  constructor(private renderer: Renderer2, private elementRef: ElementRef, private nzUpdateHostClassService: NzUpdateHostClassService) {}
 
   ngOnInit(): void {
     this.updateClassMap();

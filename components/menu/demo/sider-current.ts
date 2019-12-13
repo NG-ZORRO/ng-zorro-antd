@@ -4,13 +4,7 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-menu-sider-current',
   template: `
     <ul nz-menu nzMode="inline" style="width: 240px;">
-      <li
-        nz-submenu
-        [(nzOpen)]="openMap.sub1"
-        (nzOpenChange)="openHandler('sub1')"
-        nzTitle="Navigation One"
-        nzIcon="mail"
-      >
+      <li nz-submenu [(nzOpen)]="openMap.sub1" (nzOpenChange)="openHandler('sub1')" nzTitle="Navigation One" nzIcon="mail">
         <ul>
           <li nz-menu-group nzTitle="Item 1">
             <ul>
@@ -26,13 +20,7 @@ import { Component } from '@angular/core';
           </li>
         </ul>
       </li>
-      <li
-        nz-submenu
-        [(nzOpen)]="openMap.sub2"
-        (nzOpenChange)="openHandler('sub2')"
-        nzTitle="Navigation Two"
-        nzIcon="appstore"
-      >
+      <li nz-submenu [(nzOpen)]="openMap.sub2" (nzOpenChange)="openHandler('sub2')" nzTitle="Navigation Two" nzIcon="appstore">
         <ul>
           <li nz-menu-item>Option 5</li>
           <li nz-menu-item>Option 6</li>
@@ -44,13 +32,7 @@ import { Component } from '@angular/core';
           </li>
         </ul>
       </li>
-      <li
-        nz-submenu
-        [(nzOpen)]="openMap.sub3"
-        (nzOpenChange)="openHandler('sub3')"
-        nzTitle="Navigation Three"
-        nzIcon="setting"
-      >
+      <li nz-submenu [(nzOpen)]="openMap.sub3" (nzOpenChange)="openHandler('sub3')" nzTitle="Navigation Three" nzIcon="setting">
         <ul>
           <li nz-menu-item>Option 9</li>
           <li nz-menu-item>Option 10</li>

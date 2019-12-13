@@ -52,9 +52,7 @@ export class NzOptionContainerComponent implements OnDestroy, OnInit, AfterViewI
     // delay after open
     setTimeout(() => {
       if (this.listOfNzOptionLiComponent && this.listOfNzOptionLiComponent.length && option) {
-        const targetOption = this.listOfNzOptionLiComponent.find(o =>
-          this.nzSelectService.compareWith(o.nzOption.nzValue, option.nzValue)
-        );
+        const targetOption = this.listOfNzOptionLiComponent.find(o => this.nzSelectService.compareWith(o.nzOption.nzValue, option.nzValue));
         // tslint:disable:no-any
         if (targetOption && targetOption.el && (targetOption.el as any).scrollIntoViewIfNeeded) {
           (targetOption.el as any).scrollIntoViewIfNeeded(false);

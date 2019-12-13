@@ -12,8 +12,7 @@ import { Component } from '@angular/core';
         <nz-comment-action>Reply to</nz-comment-action>
         <ng-container *ngIf="comment.children && comment.children.length">
           <ng-template ngFor let-child [ngForOf]="comment.children">
-            <ng-template [ngTemplateOutlet]="commentTemplateRef" [ngTemplateOutletContext]="{ comment: child }">
-            </ng-template>
+            <ng-template [ngTemplateOutlet]="commentTemplateRef" [ngTemplateOutletContext]="{ comment: child }"> </ng-template>
           </ng-template>
         </ng-container>
       </nz-comment>

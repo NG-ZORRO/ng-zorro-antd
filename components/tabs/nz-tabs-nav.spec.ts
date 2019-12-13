@@ -3,7 +3,7 @@ import { PortalModule } from '@angular/cdk/portal';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
-import { async, discardPeriodicTasks, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 
@@ -58,9 +58,7 @@ describe('tabs nav', () => {
         // Focus on the last tab, expect this to be the maximum scroll distance.
         appComponent.nzTabsNavComponent.selectedIndex = appComponent.tabs.length - 1;
         fixture.detectChanges();
-        expect(appComponent.nzTabsNavComponent.scrollDistance).toBe(
-          appComponent.nzTabsNavComponent.getMaxScrollDistance()
-        );
+        expect(appComponent.nzTabsNavComponent.scrollDistance).toBe(appComponent.nzTabsNavComponent.getMaxScrollDistance());
 
         // Focus on the first tab, expect this to be the maximum scroll distance.
         appComponent.nzTabsNavComponent.selectedIndex = 0;

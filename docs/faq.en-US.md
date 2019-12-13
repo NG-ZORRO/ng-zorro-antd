@@ -19,7 +19,7 @@ Please make sure your browser is [supported by Angular](https://github.com/angul
 
 ### Can't Bind to since it isn't a known property of
 
-Please make sure you have export `NgZorroAntdModule` in `ShareModule` if you have more than one module in your angular project, [ref](https://angular.io/guide/sharing-ngmodules).
+Please make sure you have export NG-ZORRO's feature modules in `ShareModule` if you have more than one module in your angular project, [ref](https://angular.io/guide/sharing-ngmodules).
 
 ### Expression Changed After It Has Been Checked Error
 

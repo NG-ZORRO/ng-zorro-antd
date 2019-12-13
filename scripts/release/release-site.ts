@@ -1,4 +1,4 @@
-import { copySync, emptyDirSync, removeSync } from 'fs-extra';
+import { copySync, emptyDirSync, readdirSync, removeSync } from 'fs-extra';
 import * as minimatch from 'minimatch';
 import { join } from 'path';
 import { buildConfig } from '../build-config';
@@ -10,8 +10,19 @@ export function releaseSite(version: string): boolean {
   emptyDirSync(docDir);
   const git = new GitClient(docDir, 'https://github.com/NG-ZORRO/ng-zorro.github.io.git');
   const branchName = `release/${version}`;
+
   git.clone();
   git.checkoutNewBranch(branchName);
+
+  // clean dir
+  const gitKeep = [
+    join(docDir, '.git'),
+    join(docDir, '.gitignore')
+  ];
+
+  readdirSync(docDir)
+    .filter(filePath => !gitKeep.some(keep => minimatch(filePath, keep)))
+    .forEach(removeSync);
 
   copySync(buildConfig.outputDir, docDir, {
     overwrite: true,

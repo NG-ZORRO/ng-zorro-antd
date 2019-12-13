@@ -87,7 +87,7 @@ import { Observable, Observer } from 'rxjs';
 export class NzDemoFormValidateReactiveComponent {
   validateForm: FormGroup;
 
-  submitForm(value: any): void {
+  submitForm(value: { userName: string; email: string; password: string; confirm: string; comment: string }): void {
     for (const key in this.validateForm.controls) {
       this.validateForm.controls[key].markAsDirty();
       this.validateForm.controls[key].updateValueAndValidity();

@@ -37,6 +37,7 @@ export { default as id_ID } from './languages/id_ID';
 export { default as is_IS } from './languages/is_IS';
 export { default as it_IT } from './languages/it_IT';
 export { default as ja_JP } from './languages/ja_JP';
+export { default as ka_GE } from './languages/ka_GE';
 export { default as kn_IN } from './languages/kn_IN';
 export { default as ko_KR } from './languages/ko_KR';
 export { default as ku_IQ } from './languages/ku_IQ';
