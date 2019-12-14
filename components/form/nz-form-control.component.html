@@ -23,10 +23,14 @@
         >
       </ng-container>
       <ng-container *ngIf="showErrorTip">
-        <ng-container
-          *nzStringTemplateOutlet="nzErrorTip; context: { $implicit: validateControl }"
-          >{{ nzErrorTip }}</ng-container
-        >
+        <ng-container *ngIf="errorTipByAuto">{{ errorTipByAuto }}</ng-container>
+        <ng-container *ngIf="!errorTipByAuto">
+          <ng-container
+            *nzStringTemplateOutlet="nzErrorTip; context: { $implicit: validateControl }"
+          >
+            {{ nzErrorTip }}
+          </ng-container>
+        </ng-container>
       </ng-container>
       <ng-container *ngIf="showValidatingTip">
         <ng-container

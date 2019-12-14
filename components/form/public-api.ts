@@ -15,3 +15,4 @@ export * from './nz-form-extra.component';
 export * from './nz-form-label.component';
 export * from './nz-form-split.component';
 export * from './nz-form-text.component';
+export * from './nz-form-auto-error-tip.directive';

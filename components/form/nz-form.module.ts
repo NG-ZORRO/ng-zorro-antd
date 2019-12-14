@@ -15,6 +15,7 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzAddOnModule } from 'ng-zorro-antd/core';
+import { NzFormAutoErrorTipDirective } from './nz-form-auto-error-tip.directive';
 import { NzFormControlComponent } from './nz-form-control.component';
 import { NzFormExplainComponent } from './nz-form-explain.component';
 import { NzFormExtraComponent } from './nz-form-extra.component';
@@ -33,7 +34,8 @@ import { NzFormDirective } from './nz-form.directive';
     NzFormControlComponent,
     NzFormExplainComponent,
     NzFormTextComponent,
-    NzFormSplitComponent
+    NzFormSplitComponent,
+    NzFormAutoErrorTipDirective
   ],
   exports: [
     NzFormExtraComponent,
@@ -43,7 +45,8 @@ import { NzFormDirective } from './nz-form.directive';
     NzFormControlComponent,
     NzFormExplainComponent,
     NzFormTextComponent,
-    NzFormSplitComponent
+    NzFormSplitComponent,
+    NzFormAutoErrorTipDirective
   ],
   imports: [CommonModule, NzGridModule, NzIconModule, LayoutModule, PlatformModule, NzAddOnModule]
 })

@@ -142,6 +142,10 @@ export interface EmptyConfig {
 
 export interface FormConfig {
   nzNoColon?: boolean;
+  nzAutoErrorTip?: boolean;
+  nzUseI18n?: boolean;
+  nzErrorTipKey?: string;
+  nzErrorTipMap?: Record<string, string>;
 }
 
 export interface GridConfig {

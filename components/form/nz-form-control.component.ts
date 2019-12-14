@@ -24,11 +24,12 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { FormControl, FormControlDirective, FormControlName, NgControl, NgModel } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { startWith } from 'rxjs/operators';
+import { Subject, Subscription } from 'rxjs';
+import { startWith, takeUntil } from 'rxjs/operators';
 
 import { helpMotion, NgClassType, NzUpdateHostClassService, toBoolean } from 'ng-zorro-antd/core';
 import { NzColDirective, NzRowDirective } from 'ng-zorro-antd/grid';
+import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzFormItemComponent } from './nz-form-item.component';
 
 export type NzFormControlStatusType = 'warning' | 'validating' | 'error' | 'success' | null;
@@ -54,9 +55,19 @@ export type NzFormControlStatusType = 'warning' | 'validating' | 'error' | 'succ
   ]
 })
 export class NzFormControlComponent extends NzColDirective implements OnDestroy, OnInit, AfterContentInit, AfterViewInit, OnDestroy {
+  private destroyed$ = new Subject<void>();
   private _hasFeedback = false;
   private validateChanges: Subscription = Subscription.EMPTY;
   private validateString: string | null;
+  private defaultAutoErrorTip: boolean;
+  private defaultUseI18n: boolean;
+  private defaultErrorTipKey: string | Record<string, string>;
+  private defaultErrorTipMap: Record<string, string> | Record<string, Record<string, string>>;
+  private localeId: string;
+  private errorTipKey: string;
+  private errorTipMap: Record<string, string>;
+
+  errorTipByAuto: string;
   validateControl: FormControl | NgModel | null;
   status: NzFormControlStatusType = null;
   controlClassMap: NgClassType = {};
@@ -67,6 +78,11 @@ export class NzFormControlComponent extends NzColDirective implements OnDestroy,
   @Input() nzErrorTip: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
   @Input() nzValidatingTip: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
   @Input() nzExtra: string | TemplateRef<void>;
+
+  @Input() nzAutoErrorTip: boolean | 'default' = 'default';
+  @Input() nzUseI18n: boolean | 'default' = 'default';
+  @Input() nzErrorTipKey: string | Record<string, string>;
+  @Input() nzErrorTipMap: Record<string, string> | Record<string, Record<string, string>>;
 
   @Input()
   set nzHasFeedback(value: boolean) {
@@ -103,7 +119,10 @@ export class NzFormControlComponent extends NzColDirective implements OnDestroy,
     this.removeSubscribe();
     /** miss detect https://github.com/angular/angular/issues/10887 **/
     if (this.validateControl && this.validateControl.statusChanges) {
-      this.validateChanges = this.validateControl.statusChanges.pipe(startWith(null)).subscribe(() => {
+      this.validateChanges = this.validateControl.statusChanges.pipe(startWith(null)).subscribe(status => {
+        if (this.autoErrorTip && status === 'INVALID') {
+          this.updateErrorTip();
+        }
         this.setControlClassMap();
         this.cdr.markForCheck();
       });
@@ -145,8 +164,22 @@ export class NzFormControlComponent extends NzColDirective implements OnDestroy,
     };
   }
 
+  setDefaultAutoErrorConf(
+    autoErrorTip: boolean,
+    useI18n: boolean,
+    errorTipKey: string | Record<string, string>,
+    errorTipMap: Record<string, string> | Record<string, Record<string, string>>
+  ): void {
+    this.defaultAutoErrorTip = autoErrorTip;
+    this.defaultUseI18n = useI18n;
+    this.defaultErrorTipKey = errorTipKey;
+    this.defaultErrorTipMap = errorTipMap;
+    this.updateAutoErrorConf();
+    this.cdr.detectChanges();
+  }
+
   get hasTips(): boolean {
-    return !!(this.nzSuccessTip || this.nzWarningTip || this.nzErrorTip || this.nzValidatingTip);
+    return !!(this.nzSuccessTip || this.nzWarningTip || this.errorTipByAuto || this.nzErrorTip || this.nzValidatingTip);
   }
 
   get showSuccessTip(): boolean {
@@ -158,7 +191,7 @@ export class NzFormControlComponent extends NzColDirective implements OnDestroy,
   }
 
   get showErrorTip(): boolean {
-    return this.status === 'error' && !!this.nzErrorTip;
+    return this.status === 'error' && (!!this.errorTipByAuto || !!this.nzErrorTip);
   }
 
   get showValidatingTip(): boolean {
@@ -169,13 +202,22 @@ export class NzFormControlComponent extends NzColDirective implements OnDestroy,
     return this.showSuccessTip || this.showWarningTip || this.showErrorTip || this.showValidatingTip;
   }
 
+  get autoErrorTip(): boolean {
+    return this.nzAutoErrorTip !== 'default' ? toBoolean(this.nzAutoErrorTip) : this.defaultAutoErrorTip;
+  }
+
+  get useI18n(): boolean {
+    return this.nzUseI18n !== 'default' ? toBoolean(this.nzUseI18n) : this.defaultUseI18n;
+  }
+
   constructor(
     nzUpdateHostClassService: NzUpdateHostClassService,
     elementRef: ElementRef,
     @Optional() @Host() private nzFormItemComponent: NzFormItemComponent,
     @Optional() @Host() nzRowDirective: NzRowDirective,
     private cdr: ChangeDetectorRef,
-    renderer: Renderer2
+    renderer: Renderer2,
+    private i18n: NzI18nService
   ) {
     super(nzUpdateHostClassService, elementRef, nzFormItemComponent || nzRowDirective, renderer);
     renderer.addClass(elementRef.nativeElement, 'ant-form-item-control-wrapper');
@@ -184,6 +226,7 @@ export class NzFormControlComponent extends NzColDirective implements OnDestroy,
   ngOnInit(): void {
     super.ngOnInit();
     this.setControlClassMap();
+    this.i18n.localeChange.pipe(takeUntil(this.destroyed$)).subscribe(() => this.updateAutoErrorConf());
   }
 
   ngOnDestroy(): void {
@@ -203,5 +246,60 @@ export class NzFormControlComponent extends NzColDirective implements OnDestroy,
 
   ngAfterViewInit(): void {
     super.ngAfterViewInit();
+  }
+
+  private updateAutoErrorConf(): void {
+    this.localeId = this.i18n.getLocaleId();
+    this.updateKeyAndMap();
+    if (this.autoErrorTip) {
+      this.updateErrorTip();
+      this.setControlClassMap();
+      this.cdr.markForCheck();
+    }
+  }
+
+  private updateKeyAndMap(): void {
+    const nzErrorTipKey = this.nzErrorTipKey || this.defaultErrorTipKey;
+    const nzErrorTipMap = this.nzErrorTipMap || this.defaultErrorTipMap;
+    if (this.useI18n) {
+      if (typeof nzErrorTipKey === 'object') {
+        this.errorTipKey = nzErrorTipKey[this.localeId];
+      } else {
+        throw new Error(`Type of 'nzErrorTipKey' should be 'Record<string, string>' if you want to use I18n.`);
+      }
+
+      const localeErrorTipMap = nzErrorTipMap[this.localeId];
+      if (typeof localeErrorTipMap === 'object') {
+        this.errorTipMap = localeErrorTipMap;
+      } else {
+        throw new Error(`Type of 'nzErrorTipMap' should be 'Record<string, Record<string, string>>' if you want to use I18n.`);
+      }
+    } else {
+      if (typeof nzErrorTipKey === 'string') {
+        this.errorTipKey = nzErrorTipKey;
+      } else {
+        throw new Error(`Type of 'nzErrorTipKey' should be 'string' if you don't use I18n.`);
+      }
+
+      const isValid = Object.values(nzErrorTipMap).every(value => typeof value === 'string');
+      if (isValid) {
+        this.errorTipMap = nzErrorTipMap as Record<string, string>;
+      } else {
+        throw new Error(`Type of 'nzErrorTipKey' should be 'Record<string, string>' if you don't use I18n.`);
+      }
+    }
+  }
+
+  private updateErrorTip(): void {
+    if (this.validateControl) {
+      const errors = this.validateControl.errors || {};
+      const target = Object.entries(errors).find(([key, error]) => error[this.errorTipKey] || this.errorTipMap[key]);
+      if (target) {
+        const [key, error] = target;
+        this.errorTipByAuto = error[this.errorTipKey] || this.errorTipMap[key];
+      } else {
+        this.errorTipByAuto = '';
+      }
+    }
   }
 }
