@@ -76,10 +76,10 @@
     [@slideMotion]="dropDownPosition"
     (mouseleave)="onTriggerMouseLeave($event)"
   >
-    <ul class="ant-cascader-menu"
-        [style.width]="input.nativeElement.offsetWidth + 'px'"
-        [style.height]="dropdownHeightStyle"
-        *ngIf="shouldShowEmpty; else hasOptionsTemplate">
+    <ul *ngIf="shouldShowEmpty; else hasOptionsTemplate"
+        class="ant-cascader-menu"
+        [style.width]="dropdownWidthStyle"
+        [style.height]="dropdownHeightStyle">
       <li
         class="ant-cascader-menu-item ant-cascader-menu-item-expanded ant-cascader-menu-item-disabled">
         <nz-embed-empty
