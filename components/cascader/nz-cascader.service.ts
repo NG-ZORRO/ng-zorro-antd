@@ -29,7 +29,7 @@ export class NzCascaderService implements OnDestroy {
   activatedOptions: NzCascaderOption[] = [];
 
   /** An array to store cascader items arranged in different layers. */
-  columns: NzCascaderOption[][] = [[]];
+  columns: NzCascaderOption[][] = [];
 
   /** If user has entered searching mode. */
   inSearchingMode = false;

@@ -34,7 +34,7 @@ import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
 import {
-  DEFAULT_DROPDOWN_POSITIONS,
+  DEFAULT_CASCADER_POSITIONS,
   InputBoolean,
   NgClassType,
   NgStyleInterface,
@@ -42,7 +42,6 @@ import {
   NzNoAnimationDirective,
   slideMotion,
   toArray,
-  warnDeprecation,
   WithConfig
 } from 'ng-zorro-antd/core';
 
@@ -140,15 +139,15 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   }
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
-
   @Output() readonly nzSelectionChange = new EventEmitter<NzCascaderOption[]>();
+  @Output() readonly nzSelect = new EventEmitter<{ option: NzCascaderOption; index: number } | null>();
+  @Output() readonly nzClear = new EventEmitter<void>();
 
   /**
-   * @deprecated 9.0.0. This api is a duplication of `ngModelChange`.
+   * If the dropdown should show the empty content.
+   * `true` if there's no options.
    */
-  @Output() readonly nzSelect = new EventEmitter<{ option: NzCascaderOption; index: number } | null>();
-
-  @Output() readonly nzClear = new EventEmitter<void>();
+  shouldShowEmpty: boolean = false;
 
   el: HTMLElement;
   dropDownPosition = 'bottom';
@@ -158,8 +157,13 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   labelRenderContext = {};
   onChange = Function.prototype;
   onTouched = Function.prototype;
-  positions: ConnectionPositionPair[] = [...DEFAULT_DROPDOWN_POSITIONS];
+  positions: ConnectionPositionPair[] = [...DEFAULT_CASCADER_POSITIONS];
+
+  /**
+   * Dropdown's with in pixel.
+   */
   dropdownWidthStyle: string;
+  dropdownHeightStyle: 'auto' | '' = '';
   isFocused = false;
 
   locale: NzCascaderI18nInterface;
@@ -232,8 +236,10 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     srv.$redraw.pipe(takeUntil(this.$destroy)).subscribe(() => {
       // These operations would not mutate data.
       this.checkChildren();
-      this.buildDisplayLabel();
+      this.setDisplayLabel();
       this.reposition();
+      this.setDropdownStyles();
+
       this.cdr.markForCheck();
     });
 
@@ -264,9 +270,14 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
       this.dropdownWidthStyle = '';
     });
 
-    this.i18nService.localeChange.pipe(startWith(), takeUntil(this.$destroy)).subscribe(() => {
-      this.setLocale();
-    });
+    this.i18nService.localeChange
+      .pipe(
+        startWith(),
+        takeUntil(this.$destroy)
+      )
+      .subscribe(() => {
+        this.setLocale();
+      });
 
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
@@ -274,10 +285,6 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
       .subscribe(() => {
         this.cdr.markForCheck();
       });
-
-    if (this.nzSelect.observers.length > 0) {
-      warnDeprecation(`nzSelect is deprecated and will be removed in 9.0.0. Please use 'nzSelectionChange' instead.`);
-    }
   }
 
   ngOnDestroy(): void {
@@ -571,8 +578,8 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   private toggleSearchingMode(toSearching: boolean): void {
     if (this.inSearchingMode !== toSearching) {
       this.cascaderService.toggleSearchingMode(toSearching);
-      this.dropdownWidthStyle = toSearching ? `${this.input.nativeElement.offsetWidth}px` : '';
     }
+
     if (this.inSearchingMode) {
       this.cascaderService.prepareSearchOptions(this.inputValue);
     }
@@ -625,7 +632,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     }
   }
 
-  private buildDisplayLabel(): void {
+  private setDisplayLabel(): void {
     const selectedOptions = this.cascaderService.selectedOptions;
     const labels: string[] = selectedOptions.map(o => this.cascaderService.getOptionLabel(o));
 
@@ -633,6 +640,19 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
       this.labelRenderContext = { labels, selectedOptions };
     } else {
       this.labelRenderText = defaultDisplayRender.call(this, labels, selectedOptions);
+    }
+  }
+
+  private setDropdownStyles(): void {
+    const firstColumn = this.cascaderService.columns[0];
+
+    this.shouldShowEmpty =
+      (this.inSearchingMode && (!firstColumn || !firstColumn.length)) || // Should show empty when there's no searching result
+      (!(this.nzOptions && this.nzOptions.length) && !this.nzLoadData); // Should show when there's no options and developer does not use nzLoadData
+    this.dropdownHeightStyle = this.shouldShowEmpty ? 'auto' : '';
+
+    if (this.input) {
+      this.dropdownWidthStyle = this.inSearchingMode || this.shouldShowEmpty ? `${this.input.nativeElement.offsetWidth}px` : '';
     }
   }
 
