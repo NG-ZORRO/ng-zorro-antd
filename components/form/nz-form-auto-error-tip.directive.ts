@@ -115,18 +115,8 @@ export class NzFormAutoErrorTipDirective implements OnInit, OnChanges, AfterCont
         throw new Error(`Type of 'nzErrorTipMap' should be 'Record<string, Record<string, string>>' if you want to use I18n.`);
       }
     } else {
-      if (typeof this.nzErrorTipKey === 'string') {
-        this.errorTipKey = this.nzErrorTipKey;
-      } else {
-        throw new Error(`Type of 'nzErrorTipKey' should be 'string' if you don't use I18n.`);
-      }
-
-      const isValid = Object.values(this.nzErrorTipMap).every(value => typeof value === 'string');
-      if (isValid) {
-        this.errorTipMap = this.nzErrorTipMap as Record<string, string>;
-      } else {
-        throw new Error(`Type of 'nzErrorTipKey' should be 'Record<string, string>' if you don't use I18n.`);
-      }
+      this.errorTipKey = this.nzErrorTipKey as string;
+      this.errorTipMap = this.nzErrorTipMap as Record<string, string>;
     }
   }
 }
