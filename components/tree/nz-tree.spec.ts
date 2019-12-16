@@ -398,14 +398,7 @@ describe('nz-tree', () => {
     let fixture: ComponentFixture<NzDemoTreeSearchComponent>;
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        imports: [
-          NzTreeModule,
-          NoopAnimationsModule,
-          FormsModule,
-          ReactiveFormsModule,
-          NzIconTestModule,
-          NzInputModule
-        ],
+        imports: [NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzInputModule],
         declarations: [NzDemoTreeSearchComponent]
       }).compileComponents();
       fixture = TestBed.createComponent(NzDemoTreeSearchComponent);
@@ -419,15 +412,20 @@ describe('nz-tree', () => {
       fixture.componentInstance.searchValue = 'a';
       fixture.detectChanges();
       expect(treeComponent.getMatchedNodeList().length).toEqual(11);
-      expect(treeElement.querySelectorAll('.font-highlight').length).toEqual(11);
+      // use custom highlight font
+      expect(treeElement.querySelectorAll('.highlight-font').length).toEqual(11);
       fixture.componentInstance.searchValue = 'a-a';
       fixture.detectChanges();
+      tick(300);
+      flush();
       expect(treeComponent.getMatchedNodeList().length).toEqual(4);
-      expect(treeElement.querySelectorAll('.font-highlight').length).toEqual(4);
+      expect(treeElement.querySelectorAll('.highlight-font').length).toEqual(4);
       fixture.componentInstance.searchValue = 'a-B';
       fixture.detectChanges();
+      tick(300);
+      flush();
       expect(treeComponent.getMatchedNodeList().length).toEqual(5);
-      expect(treeElement.querySelectorAll('.font-highlight').length).toEqual(5);
+      expect(treeElement.querySelectorAll('.highlight-font').length).toEqual(5);
     }));
   });
 
@@ -1040,10 +1038,7 @@ class NzTestTreeCustomizedIconComponent {
       key: '100',
       expanded: true,
       icon: 'smile',
-      children: [
-        { title: 'leaf', key: '1001', icon: 'meh', isLeaf: true },
-        { title: 'leaf', key: '1002', icon: 'frown', isLeaf: true }
-      ]
+      children: [{ title: 'leaf', key: '1001', icon: 'meh', isLeaf: true }, { title: 'leaf', key: '1002', icon: 'frown', isLeaf: true }]
     }
   ];
 }
