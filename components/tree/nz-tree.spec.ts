@@ -232,7 +232,7 @@ describe('nz-tree', () => {
       const targetNode = treeElement.querySelector("[title='0-0']") as HTMLElement;
       dispatchMouseEvent(targetNode, 'click');
       fixture.detectChanges();
-      expect(targetNode.style.display).toBe('list-item');
+      expect(targetNode.style.display).toBe('');
     }));
 
     it('test check event', fakeAsync(() => {
