@@ -19,7 +19,7 @@ import {
 } from '@angular/core';
 
 import { NzNoAnimationDirective, NzTSType } from 'ng-zorro-antd/core';
-import { NzTooltipBaseDirective, NzTooltipTrigger } from 'ng-zorro-antd/tooltip';
+import { NzTooltipBaseDirective, NzTooltipPlacement, NzTooltipTrigger } from 'ng-zorro-antd/tooltip';
 
 import { NzPopoverComponent } from './nz-popover.component';
 
@@ -35,7 +35,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   @Input('nzPopoverContent') specificContent: NzTSType;
   @Input('nz-popover') directiveNameTitle: NzTSType | null;
   @Input('nzPopoverTrigger') specificTrigger: NzTooltipTrigger;
-  @Input('nzPopoverPlacement') specificPlacement: string;
+  @Input('nzPopoverPlacement') specificPlacement: NzTooltipPlacement;
 
   componentFactory: ComponentFactory<NzPopoverComponent> = this.resolver.resolveComponentFactory(NzPopoverComponent);
 

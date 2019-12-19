@@ -7,3 +7,16 @@
  */
 
 export type NzTooltipTrigger = 'click' | 'focus' | 'hover' | null;
+export type NzTooltipPlacement =
+  | 'top'
+  | 'left'
+  | 'right'
+  | 'bottom'
+  | 'topLeft'
+  | 'topRight'
+  | 'bottomLeft'
+  | 'bottomRight'
+  | 'leftTop'
+  | 'leftBottom'
+  | 'rightTop'
+  | 'rightBottom';

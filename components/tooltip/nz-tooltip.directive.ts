@@ -22,7 +22,7 @@ import { NzNoAnimationDirective, NzTSType } from 'ng-zorro-antd/core';
 
 import { NzTooltipBaseDirective } from './nz-tooltip-base.directive';
 import { NzToolTipComponent } from './nz-tooltip.component';
-import { NzTooltipTrigger } from './nz-tooltip.definitions';
+import { NzTooltipPlacement, NzTooltipTrigger } from './nz-tooltip.definitions';
 
 @Directive({
   selector: '[nz-tooltip]',
@@ -43,7 +43,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   @Input('nz-tooltip') directiveNameTitle: NzTSType | null;
 
   @Input('nzTooltipTrigger') specificTrigger: NzTooltipTrigger;
-  @Input('nzTooltipPlacement') specificPlacement: string;
+  @Input('nzTooltipPlacement') specificPlacement: NzTooltipPlacement;
 
   componentFactory: ComponentFactory<NzToolTipComponent> = this.resolver.resolveComponentFactory(NzToolTipComponent);
 

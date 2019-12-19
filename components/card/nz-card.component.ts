@@ -55,7 +55,7 @@ export class NzCardComponent {
   @Input() nzBodyStyle: { [key: string]: string };
   @Input() nzCover: TemplateRef<void>;
   @Input() nzActions: Array<TemplateRef<void>> = [];
-  @Input() nzType: string;
+  @Input() nzType: 'inner' | null;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzSizeDSType;
   @Input() nzTitle: string | TemplateRef<void>;
   @Input() nzExtra: string | TemplateRef<void>;

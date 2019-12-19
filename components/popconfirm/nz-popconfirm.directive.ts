@@ -25,7 +25,7 @@ import {
 import { takeUntil } from 'rxjs/operators';
 
 import { InputBoolean, NzNoAnimationDirective, NzTSType } from 'ng-zorro-antd/core';
-import { NzTooltipBaseDirective, NzTooltipTrigger } from 'ng-zorro-antd/tooltip';
+import { NzTooltipBaseDirective, NzTooltipPlacement, NzTooltipTrigger } from 'ng-zorro-antd/tooltip';
 
 import { NzPopconfirmComponent } from './nz-popconfirm.component';
 
@@ -40,7 +40,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective implements OnI
   @Input('nzPopconfirmTitle') specificTitle: NzTSType;
   @Input('nz-popconfirm') directiveNameTitle: NzTSType | null;
   @Input('nzPopconfirmTrigger') specificTrigger: NzTooltipTrigger;
-  @Input('nzPopconfirmPlacement') specificPlacement: string;
+  @Input('nzPopconfirmPlacement') specificPlacement: NzTooltipPlacement;
   @Input() nzOkText: string;
   @Input() nzOkType: string;
   @Input() nzCancelText: string;

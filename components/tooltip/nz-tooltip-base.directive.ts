@@ -27,7 +27,7 @@ import { Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 import { NzTooltipBaseComponent } from './nz-tooltip-base.component';
-import { NzTooltipTrigger } from './nz-tooltip.definitions';
+import { NzTooltipPlacement, NzTooltipTrigger } from './nz-tooltip.definitions';
 
 export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDestroy, AfterViewInit {
   directiveNameTitle?: NzTSType | null;
@@ -35,7 +35,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
   directiveNameContent?: NzTSType | null;
   specificContent?: NzTSType | null;
   specificTrigger?: NzTooltipTrigger;
-  specificPlacement?: string;
+  specificPlacement?: NzTooltipPlacement;
 
   /**
    * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
@@ -59,7 +59,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
    * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
    * Please use a more specific API. Like `nzTooltipPlacement`.
    */
-  @Input() nzPlacement: string = 'top';
+  @Input() nzPlacement: NzTooltipPlacement = 'top';
 
   @Input() nzMouseEnterDelay: number;
   @Input() nzMouseLeaveDelay: number;
@@ -83,7 +83,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
     return this.specificContent || this.directiveNameContent || this.nzContent;
   }
 
-  protected get placement(): string {
+  protected get placement(): NzTooltipPlacement {
     return this.specificPlacement || this.nzPlacement;
   }
 

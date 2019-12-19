@@ -22,7 +22,7 @@ import {
   toBoolean
 } from 'ng-zorro-antd/core';
 
-import { NzTooltipTrigger } from './nz-tooltip.definitions';
+import { NzTooltipPlacement, NzTooltipTrigger } from './nz-tooltip.definitions';
 
 export abstract class NzTooltipBaseComponent implements OnDestroy {
   @ViewChild('overlay', { static: false }) overlay: CdkConnectedOverlay;
@@ -59,21 +59,21 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
 
   protected _trigger: NzTooltipTrigger = 'hover';
 
-  set nzPlacement(value: string) {
+  set nzPlacement(value: NzTooltipPlacement) {
     if (value !== this.preferredPlacement) {
       this.preferredPlacement = value;
       this._positions = [POSITION_MAP[this.nzPlacement], ...this._positions];
     }
   }
 
-  get nzPlacement(): string {
+  get nzPlacement(): NzTooltipPlacement {
     return this.preferredPlacement;
   }
 
   nzContentTemplate: TemplateRef<void>;
   nzTitleTemplate: TemplateRef<void>;
   origin: CdkOverlayOrigin;
-  preferredPlacement = 'top';
+  preferredPlacement: NzTooltipPlacement = 'top';
 
   _classMap: NgClassInterface = {};
   _hasBackdrop = false;
@@ -135,7 +135,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
   }
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
-    this.preferredPlacement = getPlacementName(position)!;
+    this.preferredPlacement = getPlacementName(position)! as NzTooltipPlacement;
     this.setClassMap();
     this.cdr.detectChanges();
   }

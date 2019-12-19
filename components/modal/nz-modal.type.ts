@@ -8,6 +8,7 @@
 
 import { OverlayRef } from '@angular/cdk/overlay';
 import { EventEmitter, TemplateRef, Type } from '@angular/core';
+import { NzButtonType } from 'ng-zorro-antd/core';
 
 export type OnClickCallback<T> = (instance: T) => (false | void | {}) | Promise<false | void | {}>;
 
@@ -43,7 +44,7 @@ export interface ModalOptions<T = any, R = any> {
 
   // --- Predefined OK & Cancel buttons
   nzOkText?: string | null;
-  nzOkType?: string;
+  nzOkType?: NzButtonType;
   nzOkLoading?: boolean;
   nzOkDisabled?: boolean;
   nzCancelDisabled?: boolean;

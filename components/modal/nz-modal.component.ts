@@ -39,7 +39,7 @@ import {
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { getElementOffset, InputBoolean, isPromise, NzConfigService, warnDeprecation, WithConfig } from 'ng-zorro-antd/core';
+import { getElementOffset, InputBoolean, isPromise, NzButtonType, NzConfigService, warnDeprecation, WithConfig } from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { NZ_MODAL_CONFIG, NzModalConfig } from './nz-modal-config';
@@ -94,7 +94,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
   @Input() nzBodyStyle: object;
   @Input() nzOkText: string | null;
   @Input() nzCancelText: string | null;
-  @Input() nzOkType: string = 'primary';
+  @Input() nzOkType: NzButtonType = 'primary';
   @Input() nzIconType: string = 'question-circle'; // Confirm Modal ONLY
   @Input() nzModalType: ModalType = 'default';
 
