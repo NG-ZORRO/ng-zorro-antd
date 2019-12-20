@@ -1,6 +1,13 @@
 issue:
   labeledReplay:
     - labels:
+        - help wanted
+      replay: |
+        Hello @{user}. We totally like your proposal/feedback, welcome to [send us a Pull Request](https://help.github.com/en/articles/creating-a-pull-request) for it. Please fill the [Pull Request Template](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/.github/PULL_REQUEST_TEMPLATE.md) here, provide documentation/test cases if needed and make sure CI passed, we will review it soon. Appreciate it advance and we are looking forward to your contribution!
+
+        你好 @{user}, 我们完全同意你的提议/反馈，欢迎直接在此仓库 [创建一个 Pull Request](https://help.github.com/en/articles/creating-a-pull-request) 来解决这个问题。请务必填写 Pull Request 内的[预设模板](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/.github/PULL_REQUEST_TEMPLATE.md)，提供改动所需相应的测试用例、文档等，并确保 CI 通过，我们会尽快进行 Review，提前感谢和期待您的贡献！
+        ![giphy](https://user-images.githubusercontent.com/507615/62342668-4735dc00-b51a-11e9-92a7-d46fbb1cc0c7.gif)
+    - labels:
         - Upgrade Deps
       replay: |
         Hello @{user}.
@@ -35,6 +42,7 @@ issue:
 
       你好 @{user}, 我们需要你提供一个在线的重现实例以便于我们帮你排查问题。你可以通过点击 [此处](https://stackblitz.com/edit/ng-zorro-antd-start) 创建一个 stackblitz 或者提供一个最小化的 GitHub 仓库
       被标记为 `Need Reproduce` 的 issue 7 天内未跟进将会被自动关闭。
+      ![](https://gw.alipayobjects.com/zos/antfincdn/y9kwg7DVCd/reproduce.gif)
   invalid:
     mark: ng-zorro-issue-helper
     labels: Invalid
