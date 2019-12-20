@@ -19,13 +19,13 @@
     "lib": ["es2018", "dom"],
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "noImplicitAny": true,
+    "strict": true,
+    "alwaysStrict": false,
+    "strictBindCallApply": false,
+    "strictPropertyInitialization": false,
     "noImplicitReturns": true,
-    "noImplicitThis": true,
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
-    "strictFunctionTypes": true,
-    "strictNullChecks": true,
     "types": ["jasmine"]
   }
 }
