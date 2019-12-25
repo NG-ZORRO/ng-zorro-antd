@@ -10,7 +10,7 @@ import { dispatchMouseEvent, dispatchTouchEvent, NzTreeBaseService, NzTreeNode, 
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzDemoTreeSearchComponent } from './demo/search';
+import { NzDemoTreeCustomFilterComponent } from './demo/custom-filter';
 import { NzTreeComponent } from './nz-tree.component';
 import { NzTreeModule } from './nz-tree.module';
 
@@ -395,13 +395,13 @@ describe('nz-tree', () => {
   describe('custom filter tree', () => {
     let treeElement: HTMLElement;
     let treeComponent: NzTreeComponent;
-    let fixture: ComponentFixture<NzDemoTreeSearchComponent>;
+    let fixture: ComponentFixture<NzDemoTreeCustomFilterComponent>;
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports: [NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzInputModule],
-        declarations: [NzDemoTreeSearchComponent]
+        declarations: [NzDemoTreeCustomFilterComponent]
       }).compileComponents();
-      fixture = TestBed.createComponent(NzDemoTreeSearchComponent);
+      fixture = TestBed.createComponent(NzDemoTreeCustomFilterComponent);
       fixture.detectChanges();
       treeComponent = fixture.componentInstance.treeComponent;
       treeElement = fixture.debugElement.query(By.directive(NzTreeComponent)).nativeElement;
