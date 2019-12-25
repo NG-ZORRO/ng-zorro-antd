@@ -12,6 +12,7 @@ import { NzTreeNode } from './nz-tree-base-node';
 export type NzHighlightFunc = (inputValue: string, option: NzTreeNode) => string | null;
 
 export function nzTreeDefaultHighlightFunc(inputValue: string, option: NzTreeNode): string | null {
+  console.log('1234');
   const nzHighlightPipe = new NzHighlightPipe();
   if (inputValue && option.title) {
     return nzHighlightPipe.transform(option.title, inputValue, '', 'font-highlight');

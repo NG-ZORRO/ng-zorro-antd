@@ -38,6 +38,10 @@ function encodeEntities(value: string): string {
 export class NzHighlightPipe implements PipeTransform {
   private UNIQUE_WRAPPERS: [string, string] = ['##==-open_tag-==##', '##==-close_tag-==##'];
 
+  constructor() {
+    console.log('------------');
+  }
+
   transform(value: string, highlightValue: string, flags?: string, klass?: string): string | null {
     if (!highlightValue) {
       return value;

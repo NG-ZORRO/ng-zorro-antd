@@ -1,22 +1,18 @@
-import { Component, ViewChild } from '@angular/core';
-import { NzTreeComponent } from 'ng-zorro-antd';
-import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/core';
+import { Component } from '@angular/core';
+import { NzFormatEmitEvent } from 'ng-zorro-antd/core';
 
 @Component({
   selector: 'nz-demo-tree-search',
   template: `
     <nz-input-group [nzSuffix]="suffixIcon">
-      <input type="text" nz-input placeholder="Search (Case Insensitive)" [(ngModel)]="searchValue" />
+      <input type="text" nz-input placeholder="Search" [(ngModel)]="searchValue" />
     </nz-input-group>
     <ng-template #suffixIcon>
       <i nz-icon nzType="search"></i>
     </ng-template>
     <nz-tree
-      #treeComponent
       [nzData]="nodes"
       [nzSearchValue]="searchValue"
-      [nzFilterOption]="customFilterOption"
-      [nzHighlightFunc]="customHighlightFunc"
       (nzClick)="nzEvent($event)"
       (nzExpandChange)="nzEvent($event)"
       (nzSearchValueChange)="nzEvent($event)"
@@ -28,80 +24,57 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/core';
       nz-input-group {
         padding: 10px 0;
       }
-
-      ::ng-deep .highlight-font {
-        color: #f5222d;
-      }
     `
   ]
 })
 export class NzDemoTreeSearchComponent {
-  @ViewChild('treeComponent', { static: true }) treeComponent: NzTreeComponent;
   searchValue = '';
+
   nodes = [
     {
-      title: 'A',
-      key: 'A',
+      title: '0-0',
+      key: '0-0',
       children: [
         {
-          title: 'A-a',
-          key: 'A-a',
+          title: '0-0-0',
+          key: '0-0-0',
           children: [
-            { title: 'A-a-a', key: 'A-a-a', isLeaf: true },
-            { title: 'A-a-b', key: 'A-a-b', isLeaf: true },
-            { title: 'A-a-c', key: 'A-a-c', isLeaf: true }
+            { title: '0-0-0-0', key: '0-0-0-0', isLeaf: true },
+            { title: '0-0-0-1', key: '0-0-0-1', isLeaf: true },
+            { title: '0-0-0-2', key: '0-0-0-2', isLeaf: true }
           ]
         },
         {
-          title: 'A-b',
-          key: 'A-b',
+          title: '0-0-1',
+          key: '0-0-1',
           children: [
-            { title: 'A-b-a', key: 'A-b-a', isLeaf: true },
-            { title: 'A-b-b', key: 'A-b-b', isLeaf: true },
-            { title: 'A-b-c', key: 'A-b-c', isLeaf: true }
+            { title: '0-0-1-0', key: '0-0-1-0', isLeaf: true },
+            { title: '0-0-1-1', key: '0-0-1-1', isLeaf: true },
+            { title: '0-0-1-2', key: '0-0-1-2', isLeaf: true }
           ]
         },
         {
-          title: 'A-c',
-          key: 'A-c',
+          title: '0-0-2',
+          key: '0-0-2',
           isLeaf: true
         }
       ]
     },
     {
-      title: 'B',
-      key: 'B',
+      title: '0-1',
+      key: '0-1',
       children: [
-        { title: 'B-a', key: 'B-a', isLeaf: true },
-        { title: 'B-b', key: 'B-b', isLeaf: true },
-        { title: 'B-c', key: 'B-c', isLeaf: true }
+        { title: '0-1-0-0', key: '0-1-0-0', isLeaf: true },
+        { title: '0-1-0-1', key: '0-1-0-1', isLeaf: true },
+        { title: '0-1-0-2', key: '0-1-0-2', isLeaf: true }
       ]
     },
     {
-      title: 'C',
-      key: 'C',
+      title: '0-2',
+      key: '0-2',
       isLeaf: true
     }
   ];
-
-  customFilterOption = (inputValue: string, option: NzTreeNode) => {
-    return option.title.toLowerCase().indexOf(inputValue.toLowerCase()) > -1;
-  };
-
-  customHighlightFunc = (inputValue: string, option: NzTreeNode) => {
-    if (inputValue && option) {
-      const startIndex = option.title.toLowerCase().indexOf(inputValue.toLowerCase());
-      if (startIndex > -1) {
-        const highlightLength = inputValue.length;
-        const highlightText = option.title.slice(startIndex, startIndex + highlightLength);
-        return option.title.replace(highlightText, `<span class="highlight-font">${highlightText}</span>`);
-      } else {
-        return option.title;
-      }
-    } else {
-      return option.title;
-    }
-  };
 
   nzEvent(event: NzFormatEmitEvent): void {
     console.log(event);

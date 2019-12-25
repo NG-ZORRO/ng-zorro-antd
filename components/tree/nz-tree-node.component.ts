@@ -32,7 +32,6 @@ import {
   NzHighlightFunc,
   NzNoAnimationDirective,
   NzTreeBaseService,
-  nzTreeDefaultHighlightFunc,
   NzTreeNode,
   treeCollapseMotion,
   warnDeprecation
@@ -65,6 +64,7 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzTreeTemplate: TemplateRef<{ $implicit: NzTreeNode }>;
   @Input() nzBeforeDrop: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;
   @Input() nzSearchValue = '';
+  @Input() nzHighlightFunc: NzHighlightFunc;
 
   @Input()
   set nzDraggable(value: boolean) {
@@ -103,16 +103,6 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
 
   get nzExpandAll(): boolean {
     return this._nzExpandAll;
-  }
-
-  _nzHighlightFunc = nzTreeDefaultHighlightFunc;
-  @Input()
-  set nzHighlightFunc(value: NzHighlightFunc) {
-    this._nzHighlightFunc = value || this._nzHighlightFunc;
-  }
-
-  get nzHighlightFunc(): NzHighlightFunc {
-    return this._nzHighlightFunc;
   }
 
   // default var

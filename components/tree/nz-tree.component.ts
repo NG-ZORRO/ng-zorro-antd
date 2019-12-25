@@ -38,6 +38,7 @@ import {
   NzNoAnimationDirective,
   NzTreeBase,
   NzTreeBaseService,
+  nzTreeDefaultHighlightFunc,
   NzTreeFilterOption,
   NzTreeHigherOrderServiceToken,
   NzTreeNode,
@@ -186,13 +187,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   }
 
   @Input()
-  set nzHighlightFunc(value: NzHighlightFunc) {
-    this._nzHighlightFunc = value;
-  }
-  get nzHighlightFunc(): NzHighlightFunc {
-    return this._nzHighlightFunc;
-  }
-  private _nzHighlightFunc: NzHighlightFunc;
+  nzHighlightFunc: NzHighlightFunc = nzTreeDefaultHighlightFunc;
 
   /**
    * To render nodes if root is changed.
