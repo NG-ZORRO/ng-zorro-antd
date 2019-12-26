@@ -6,7 +6,7 @@
       <i nz-icon [nzType]="icon"></i>
     </ng-container>
     <ng-template #formatTemplate>
-      <ng-container *nzstringtemplateoutlet="formatter; context: { $implicit: nzPercent }">
+      <ng-container *nzStringTemplateOutlet="formatter; context: { $implicit: nzPercent }">
         {{ formatter(nzPercent) }}
       </ng-container>
     </ng-template>
