@@ -110,33 +110,6 @@ export class NzIconService extends IconService {
 
   private iconfontCache = new Set<string>();
 
-  warnAPI(type: 'old' | 'cross' | 'vertical'): void {
-    if (type === 'old') {
-      warnDeprecation(
-        `'<i class="anticon"></i>' would be deprecated in 9.0.0. Please use '<i nz-icon nzType=""></i>' API. Please refer https://ng.ant.design/components/icon/en.`
-      );
-    }
-    if (type === 'cross') {
-      warnDeprecation(`'cross' icon is replaced by 'close' icon. This auto correction would be removed in 9.0.0.`);
-    }
-    if (type === 'vertical') {
-      warnDeprecation(`'verticle' is misspelled. Please use 'vertical'. This misspell would be fixed in 9.0.0.`);
-    }
-  }
-
-  normalizeSvgElement(svg: SVGElement): void {
-    if (!svg.getAttribute('viewBox')) {
-      this._renderer.setAttribute(svg, 'viewBox', '0 0 1024 1024');
-    }
-    if (!svg.getAttribute('width') || !svg.getAttribute('height')) {
-      this._renderer.setAttribute(svg, 'width', '1em');
-      this._renderer.setAttribute(svg, 'height', '1em');
-    }
-    if (!svg.getAttribute('fill')) {
-      this._renderer.setAttribute(svg, 'fill', 'currentColor');
-    }
-  }
-
   fetchFromIconfont(opt: NzIconfontOption): void {
     const { scriptUrl } = opt;
     if (this._document && !this.iconfontCache.has(scriptUrl)) {
@@ -168,19 +141,19 @@ export class NzIconService extends IconService {
   ) {
     super(rendererFactory, handler, _document, sanitizer);
 
-    this.onConfigChange();
-
+    this.registerConfigChangeEvent();
     this.addIcon(...NZ_ICONS_USED_BY_ZORRO, ...(icons || []));
 
     if (legacyDefaultTwotoneColor) {
       warnDeprecation(`'NZ_ICON_DEFAULT_TWOTONE_COLOR' is deprecated and will be removed in 9.0.0. Please use 'NZ_CONFIG' instead!`);
     }
+
     this.configDefaultTwotoneColor();
     this.configDefaultTheme();
     this.configJsonpLoading();
   }
 
-  private onConfigChange(): void {
+  private registerConfigChangeEvent(): void {
     this.nzConfigService.getConfigChangeEventForComponent('icon').subscribe(() => {
       this.configDefaultTwotoneColor();
       this.configDefaultTheme();
@@ -211,9 +184,9 @@ export class NzIconService extends IconService {
   }
 
   private configJsonpLoading(): void {
-    const iconConfog = this.getConfig();
+    const iconConfig = this.getConfig();
 
-    if (iconConfog && iconConfog.nzUseJsonpLoading) {
+    if (iconConfig && iconConfig.nzUseJsonpLoading) {
       this.useJsonpLoading();
     }
   }

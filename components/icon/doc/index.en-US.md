@@ -170,7 +170,7 @@ Static importing. Invoke `addIconLiteral` of `NzIconService`.
 
 Dynamic importing. Make sure that you have put your SVG resources in dir like `assets/${namespace}`. For example, if you have a `panda` icon and in `zoo` namespace, you should put `panda.svg` in `assets/zoo`.
 
-### jsonp like loading
+### JSONP-like Loading
 
 Some CDN would restrict cross-domain requests. If you use a CDN which does that, you can enable jsonp-like loading by configuring `{ icon: { nzUseJsonpLoading: true } }` globally.
 

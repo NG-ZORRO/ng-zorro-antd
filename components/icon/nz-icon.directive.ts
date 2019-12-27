@@ -109,7 +109,7 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
         while (length--) {
           const child = children[length];
           if (child.tagName.toLowerCase() === 'svg') {
-            this.iconService.normalizeSvgElement(child as SVGElement);
+            this.normalizeSvgElement(child as SVGElement);
           }
         }
       }
@@ -155,5 +155,18 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
   private setSVGData(svg: SVGElement): void {
     this.renderer.setAttribute(svg, 'data-icon', this.type);
     this.renderer.setAttribute(svg, 'aria-hidden', 'true');
+  }
+
+  private normalizeSvgElement(svg: SVGElement): void {
+    if (!svg.getAttribute('viewBox')) {
+      this.renderer.setAttribute(svg, 'viewBox', '0 0 1024 1024');
+    }
+    if (!svg.getAttribute('width') || !svg.getAttribute('height')) {
+      this.renderer.setAttribute(svg, 'width', '1em');
+      this.renderer.setAttribute(svg, 'height', '1em');
+    }
+    if (!svg.getAttribute('fill')) {
+      this.renderer.setAttribute(svg, 'fill', 'currentColor');
+    }
   }
 }
