@@ -633,7 +633,7 @@ export class NzTestTreeSelectBasicComponent {
     <nz-tree-select
       style="width: 250px"
       nzPlaceHolder="Please select"
-      [nzDefaultExpandedKeys]="expandKeys"
+      [nzExpandedKeys]="expandKeys"
       [nzNodes]="nodes"
       [nzShowSearch]="showSearch"
       [nzCheckable]="true"
