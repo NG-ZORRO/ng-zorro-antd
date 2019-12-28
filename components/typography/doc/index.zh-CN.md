@@ -12,6 +12,10 @@ cols: 1
 - 当需要展示标题、段落、列表内容时使用，如文章/博客/日志的文本样式。
 - 当需要一列基于文本的基础操作时，如拷贝/省略/可编辑。
 
+```ts
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
+```
+
 ## API
 
 ### [nz-typography]
