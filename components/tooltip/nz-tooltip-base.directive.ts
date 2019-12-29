@@ -6,6 +6,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { CdkOverlayOrigin } from '@angular/cdk/overlay';
 import {
   AfterViewInit,
@@ -27,6 +35,7 @@ import { Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 import { NzTooltipBaseComponent } from './nz-tooltip-base.component';
+import { NzTooltipScrollDirective } from './nz-tooltip-scroll.directive';
 import { NzTooltipTrigger } from './nz-tooltip.definitions';
 
 export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDestroy, AfterViewInit {
@@ -116,6 +125,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
     protected hostView: ViewContainerRef,
     protected resolver: ComponentFactoryResolver,
     protected renderer: Renderer2,
+    protected nzTooltipScrollDirective: NzTooltipScrollDirective,
     protected noAnimation?: NzNoAnimationDirective
   ) {}
 
@@ -166,6 +176,9 @@ Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popcon
       this.isTooltipComponentVisible = visible;
       this.nzVisibleChange.emit(visible);
     });
+    if (this.nzTooltipScrollDirective) {
+      this.nzTooltipScrollDirective.scroll$.pipe(takeUntil(this.$destroy)).subscribe(() => this.updatePosition());
+    }
   }
 
   ngAfterViewInit(): void {

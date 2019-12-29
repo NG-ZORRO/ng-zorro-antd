@@ -7,6 +7,7 @@ import { dispatchMouseEvent } from 'ng-zorro-antd/core';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzTooltipBaseDirective } from './nz-tooltip-base.directive';
+import { NzTooltipScrollDirective } from './nz-tooltip-scroll.directive';
 import { NzTooltipDirective } from './nz-tooltip.directive';
 import { NzToolTipModule } from './nz-tooltip.module';
 
@@ -48,9 +49,32 @@ import { NzToolTipModule } from './nz-tooltip.module';
     <ng-template #template>
       title-template
     </ng-template>
-  `
+
+    <div #scrollContainer class="scroll-container" nz-tooltip-scroll>
+      <div #scrollTooltipTemplate class="scroll" nz-tooltip [nzVisible]="true" nzTitle="prompt text"></div>
+    </div>
+  `,
+  styles: [
+    `
+      .scroll-container {
+        padding: 50px;
+        width: 300px;
+        height: 100px;
+        background: pink;
+        overflow: auto;
+      }
+      .scroll {
+        width: 300px;
+        height: 500px;
+        background: blue;
+      }
+    `
+  ]
 })
 export class NzTooltipTestComponent {
+  @ViewChild(NzTooltipScrollDirective, { static: false }) nzTooltipScrollDirective: NzTooltipScrollDirective;
+  @ViewChild('scrollTooltipTemplate', { static: false, read: NzTooltipDirective }) scrollTooltipTemplate: NzTooltipDirective;
+
   @ViewChild('titleString', { static: false }) titleString: ElementRef;
   @ViewChild('titleString', { static: false, read: NzTooltipDirective })
   titleStringDirective: NzTooltipDirective;
@@ -64,6 +88,7 @@ export class NzTooltipTestComponent {
   trigger: string | null = 'click';
 
   @ViewChild('inBtnGroup', { static: false }) inBtnGroup: ElementRef;
+  @ViewChild('scrollContainer', { static: false }) scrollContainer: ElementRef;
 
   title: string | null = 'title-string';
   visible = false;
@@ -249,6 +274,21 @@ describe('NzTooltip', () => {
       const triggerElement = component.inBtnGroup.nativeElement;
       // There's a <!--container--> element created by Ivy.
       expect(triggerElement.nextSibling.nextSibling.tagName).toBe('BUTTON');
+    }));
+  });
+
+  describe('scroll', () => {
+    it('listen scroll event, change the position with the change of origin', fakeAsync(() => {
+      const scrollContainerElement = component.scrollContainer.nativeElement;
+      const spy1 = spyOn(component.nzTooltipScrollDirective, 'onScroll');
+      const spy2 = spyOn(component.scrollTooltipTemplate, 'updatePosition');
+      scrollContainerElement.scrollTop = 50;
+      scrollContainerElement.dispatchEvent(new Event('scroll'));
+      expect(spy1).toHaveBeenCalled();
+      fixture.whenStable().then(() => {
+        tick();
+        expect(spy2).toHaveBeenCalled();
+      });
     }));
   });
 });
