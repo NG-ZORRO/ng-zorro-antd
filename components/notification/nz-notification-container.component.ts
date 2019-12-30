@@ -9,7 +9,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Optional, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { NzConfigService, toCssPixel, warnDeprecation } from 'ng-zorro-antd/core';
+import { isNotNil, NzConfigService, toCssPixel, warnDeprecation } from 'ng-zorro-antd/core';
 import { NzMessageContainerComponent } from 'ng-zorro-antd/message';
 
 import { NZ_NOTIFICATION_CONFIG, NZ_NOTIFICATION_DEFAULT_CONFIG, NzNotificationConfigLegacy } from './nz-notification-config';
@@ -73,10 +73,9 @@ export class NzNotificationContainerComponent extends NzMessageContainerComponen
       ...config,
       ...this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME)
     });
-    const placement = this.config.nzPlacement;
 
-    this.top = placement === 'topLeft' || placement === 'topRight' ? toCssPixel(newConfig.nzTop) : '0px';
-    this.bottom = placement === 'bottomLeft' || placement === 'bottomRight' ? toCssPixel(newConfig.nzBottom) : '0px';
+    this.top = isNotNil(newConfig.nzTop) ? toCssPixel(newConfig.nzTop) : '0px';
+    this.bottom = isNotNil(newConfig.nzBottom) ? toCssPixel(newConfig.nzBottom) : '0px';
 
     this.cdr.markForCheck();
   }
