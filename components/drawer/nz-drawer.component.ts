@@ -89,6 +89,8 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
 
   destroy$ = new Subject<void>();
   previouslyFocusedElement: HTMLElement;
+  placementChanging = false;
+  placementChangeTimeoutId = -1;
   nzContentParams: D; // only service
   overlayRef: OverlayRef | null;
   portal: TemplatePortal;
@@ -190,7 +192,8 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.hasOwnProperty('nzVisible')) {
+    const { nzPlacement, nzVisible } = changes;
+    if (nzVisible) {
       const value = changes.nzVisible.currentValue;
       if (value) {
         this.open();
@@ -198,16 +201,33 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
         this.close();
       }
     }
+    if (nzPlacement && !nzPlacement.isFirstChange()) {
+      this.triggerPlacementChangeCycleOnce();
+    }
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    clearTimeout(this.placementChangeTimeoutId);
     this.disposeOverlay();
   }
 
   private getAnimationDuration(): number {
     return this.nzNoAnimation ? 0 : DRAWER_ANIMATE_DURATION;
+  }
+
+  // Disable the transition animation temporarily when the placement changing
+  private triggerPlacementChangeCycleOnce(): void {
+    if (!this.nzNoAnimation) {
+      this.placementChanging = true;
+      this.changeDetectorRef.markForCheck();
+      clearTimeout(this.placementChangeTimeoutId);
+      this.placementChangeTimeoutId = setTimeout(() => {
+        this.placementChanging = false;
+        this.changeDetectorRef.markForCheck();
+      }, this.getAnimationDuration());
+    }
   }
 
   close(result?: R): void {

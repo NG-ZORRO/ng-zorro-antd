@@ -5,7 +5,7 @@ import { async, ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angu
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { dispatchKeyboardEvent } from 'ng-zorro-antd/core';
+import { dispatchKeyboardEvent, NzNoAnimationModule } from 'ng-zorro-antd/core';
 
 import { NzDrawerRef } from './nz-drawer-ref';
 import { NzDrawerComponent } from './nz-drawer.component';
@@ -21,7 +21,7 @@ describe('NzDrawerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [NzDrawerModule, NoopAnimationsModule],
+      imports: [NzDrawerModule, NoopAnimationsModule, NzNoAnimationModule],
       declarations: [NzTestDrawerComponent]
     }).compileComponents();
   }));
@@ -292,6 +292,44 @@ describe('NzDrawerComponent', () => {
     fixture.detectChanges();
   });
 
+  it('should disable the transition when the placement changing', fakeAsync(() => {
+    component.open();
+    tick(300);
+    fixture.detectChanges();
+    expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).style.transition).toBe('');
+    component.placement = 'top';
+    fixture.detectChanges();
+    expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).style.transition).toBe('none 0s ease 0s');
+    expect((overlayContainerElement.querySelector('.ant-drawer-content-wrapper') as HTMLElement).style.transition).toBe('none 0s ease 0s');
+    component.placement = 'right';
+    fixture.detectChanges();
+    component.close();
+    fixture.detectChanges();
+    tick(300);
+    fixture.detectChanges();
+    expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).style.transition).toBe('');
+  }));
+
+  it('should ignore set transition when `noAnimation` is `true` ', fakeAsync(() => {
+    component.noAnimation = true;
+    fixture.detectChanges();
+    component.open();
+    tick(300);
+    fixture.detectChanges();
+    expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).style.transition).toBe('');
+    component.placement = 'top';
+    fixture.detectChanges();
+    expect((overlayContainerElement.querySelector('.ant-drawer') as HTMLElement).style.transition).toBe('');
+    expect((overlayContainerElement.querySelector('.ant-drawer-content-wrapper') as HTMLElement).style.transition).toBe('');
+    fixture.detectChanges();
+    component.close();
+    component.placement = 'right';
+    component.noAnimation = false;
+    fixture.detectChanges();
+    tick(300);
+    fixture.detectChanges();
+  }));
+
   it('should nzOffsetX work', () => {
     component.open();
     component.placement = 'left';
@@ -448,6 +486,7 @@ describe('NzDrawerService', () => {
       [nzWidth]="width"
       [nzHeight]="height"
       [nzPlacement]="placement"
+      [nzNoAnimation]="noAnimation"
       [nzTitle]="title"
       [nzOffsetX]="offsetX"
       [nzOffsetY]="offsetY"
@@ -469,6 +508,7 @@ class NzTestDrawerComponent {
   width: string | number = '300px';
   height: string | number = '300px';
   placement = 'left';
+  noAnimation = false;
   offsetX = 0;
   offsetY = 0;
   @ViewChild('customTitle', { static: false }) templateTitle: TemplateRef<void>;
