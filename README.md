@@ -124,7 +124,7 @@ See [Getting Started](https://ng.ant.design/docs/getting-started/en) for more de
 $ git clone git@github.com:NG-ZORRO/ng-zorro-antd.git
 $ cd ng-zorro-antd
 $ npm install
-$ npm run site:start
+$ npm run start
 ```
 
 Browser would open automatically.
