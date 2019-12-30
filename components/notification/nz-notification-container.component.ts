@@ -27,12 +27,28 @@ const NZ_CONFIG_COMPONENT_NAME = 'notification';
 })
 export class NzNotificationContainerComponent extends NzMessageContainerComponent {
   config: Required<NzNotificationConfigLegacy>;
-  bottom: string | null;
+  bottom: string;
 
   /**
    * @override
    */
   messages: Array<Required<NzNotificationDataFilled>> = [];
+
+  get topLeftMessages(): Array<Required<NzNotificationDataFilled>> {
+    return this.messages.filter(m => m.options.nzPosition === 'topLeft');
+  }
+
+  get topRightMessages(): Array<Required<NzNotificationDataFilled>> {
+    return this.messages.filter(m => m.options.nzPosition === 'topRight' || !m.options.nzPosition);
+  }
+
+  get bottomLeftMessages(): Array<Required<NzNotificationDataFilled>> {
+    return this.messages.filter(m => m.options.nzPosition === 'bottomLeft');
+  }
+
+  get bottomRightMessages(): Array<Required<NzNotificationDataFilled>> {
+    return this.messages.filter(m => m.options.nzPosition === 'bottomRight');
+  }
 
   constructor(
     cdr: ChangeDetectorRef,
@@ -59,8 +75,8 @@ export class NzNotificationContainerComponent extends NzMessageContainerComponen
     });
     const placement = this.config.nzPlacement;
 
-    this.top = placement === 'topLeft' || placement === 'topRight' ? toCssPixel(newConfig.nzTop) : null;
-    this.bottom = placement === 'bottomLeft' || placement === 'bottomRight' ? toCssPixel(newConfig.nzBottom) : null;
+    this.top = placement === 'topLeft' || placement === 'topRight' ? toCssPixel(newConfig.nzTop) : '0px';
+    this.bottom = placement === 'bottomLeft' || placement === 'bottomRight' ? toCssPixel(newConfig.nzBottom) : '0px';
 
     this.cdr.markForCheck();
   }
