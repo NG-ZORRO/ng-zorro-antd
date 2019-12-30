@@ -44,3 +44,7 @@ You can checkout the official docs and Angular forums. A good trick is to search
 ### Relationship between NG-ZORRO and Ant Design
 
 NG-ZORRO are maintained by engineers from Computing Platform Unit and Aliyun of Alibaba Inc. It follows Ant Design' specs and would be synced to Ant Design React regularly.
+
+### tooltip can't change the position with the change of custom element
+
+You can add nz-tooltip-scroll directive to the scroll element.

@@ -49,3 +49,7 @@ ISSUE 列表是为了 开发者 和 用户 追踪相关的开发进度而设计�
 ### NG-ZORRO 与 Ant Design 的关系
 
 NG-ZORRO 由阿里计算平台事业部、阿里云等不同部门的一些小伙伴在原业务组件的基础上共同构建而成，整体的设计完全兼容并遵守 Ant Design 的规范，并定期会与 Ant Design React 版本保持功能同步。
+
+### tooltip在自定义容器中无法跟随参考元素一起滚动
+
+只需要在滚动的元素上添加nz-tooltip-scroll指令即可
