@@ -10,13 +10,15 @@ import { InjectionToken } from '@angular/core';
 
 import { NzMessageConfigLegacy } from 'ng-zorro-antd/message';
 
+import { NzNotificationPosition } from './nz-notification.definitions';
+
 /**
  * @deprecated This interface would has been moved to `ng-zorro-antd/core`. Please migrate to that.
  */
 export interface NzNotificationConfigLegacy extends NzMessageConfigLegacy {
   nzTop?: string | number;
   nzBottom?: string | number;
-  nzPlacement?: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight' | string;
+  nzPlacement?: NzNotificationPosition;
 }
 
 export const NZ_NOTIFICATION_DEFAULT_CONFIG = new InjectionToken<NzNotificationConfigLegacy>('NZ_NOTIFICATION_DEFAULT_CONFIG');

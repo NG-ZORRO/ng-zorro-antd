@@ -9,6 +9,7 @@
 import { TemplateRef } from '@angular/core';
 import { Subject } from 'rxjs';
 
+import { NgClassInterface, NgStyleInterface } from 'ng-zorro-antd/core';
 import { NzMessageData, NzMessageDataOptions } from 'ng-zorro-antd/message';
 
 export interface NzNotificationData extends NzMessageData {
@@ -18,15 +19,17 @@ export interface NzNotificationData extends NzMessageData {
   title?: string;
 }
 
+export type NzNotificationPosition = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
+
 export interface NzNotificationDataOptions<T = {}> extends NzMessageDataOptions {
   nzKey?: string;
-  nzStyle?: any; // tslint:disable-line:no-any
-  nzClass?: any; // tslint:disable-line:no-any
+  nzStyle?: NgStyleInterface | string;
+  nzClass?: NgClassInterface | string;
+  nzCloseIcon?: TemplateRef<void> | string;
+  nzPosition?: NzNotificationPosition;
 
   /** Anything user wants renderer into a template. */
   nzData?: T;
-
-  nzCloseIcon?: TemplateRef<void> | string;
 }
 
 // Filled version of NzMessageData (includes more private properties)
