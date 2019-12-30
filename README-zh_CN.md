@@ -115,7 +115,7 @@ export class AppModule {
 $ git clone git@github.com:NG-ZORRO/ng-zorro-antd.git
 $ cd ng-zorro-antd
 $ npm install
-$ npm run site:start
+$ npm run start
 ```
 
 浏览器会自动打开。
