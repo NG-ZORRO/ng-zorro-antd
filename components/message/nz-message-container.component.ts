@@ -10,7 +10,6 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewEnca
 import { Subject } from 'rxjs';
 
 import { MessageConfig, NzConfigService, toCssPixel } from 'ng-zorro-antd/core';
-import { NZ_MESSAGE_DEFAULT_CONFIG } from './nz-message-config';
 import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
 
 const NZ_CONFIG_COMPONENT_NAME = 'message';
@@ -90,9 +89,7 @@ export class NzMessageContainerComponent implements OnInit {
   }
 
   protected subscribeConfigChange(): void {
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
-      .subscribe(() => this.updateConfig());
+    this.nzConfigService.getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME).subscribe(() => this.updateConfig());
   }
 
   protected updateConfigFromConfigService(): Required<MessageConfig> {
