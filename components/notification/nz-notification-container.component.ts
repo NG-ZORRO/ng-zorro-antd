@@ -74,8 +74,8 @@ export class NzNotificationContainerComponent extends NzMessageContainerComponen
       ...this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME)
     });
 
-    this.top = isNotNil(newConfig.nzTop) ? toCssPixel(newConfig.nzTop) : '0px';
-    this.bottom = isNotNil(newConfig.nzBottom) ? toCssPixel(newConfig.nzBottom) : '0px';
+    this.top = toCssPixel(newConfig.nzTop);
+    this.bottom = toCssPixel(newConfig.nzBottom);
 
     this.cdr.markForCheck();
   }
