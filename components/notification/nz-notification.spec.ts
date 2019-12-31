@@ -222,15 +222,15 @@ describe('NzNotification', () => {
     notificationService.config({ nzTop: 48 });
     notificationService.create('', '', 'TEST TOP', { nzDuration: 3000 });
     waitForNotificationToggling();
-    const notificationContainer = overlayContainerElement.querySelector('.ant-notification') as HTMLElement;
-    expect(notificationContainer.style.top).toBe('48px');
-    expect(notificationContainer.style.bottom).toBeFalsy();
+    const notificationContainers = overlayContainerElement.querySelectorAll('.ant-notification') as NodeListOf<HTMLDivElement>;
+    expect(notificationContainers[0].style.top).toBe('48px');
+    expect(notificationContainers[0].style.bottom).toBeFalsy();
 
     notificationService.config({ nzPlacement: 'bottomLeft', nzBottom: '48px' });
     notificationService.create('', '', 'TEST BOTTOM');
     waitForNotificationToggling();
-    expect(notificationContainer.style.top).toBeFalsy();
-    expect(notificationContainer.style.bottom).toBe('48px');
+    expect(notificationContainers[3].style.top).toBeFalsy();
+    expect(notificationContainers[3].style.bottom).toBe('48px');
 
     waitForNotificationToggling();
   }));
