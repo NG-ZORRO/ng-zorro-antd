@@ -33,15 +33,7 @@ import {
 import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 
-import {
-  InputBoolean,
-  InputNumber,
-  NzConfigService,
-  NzDomEventService,
-  NzDragService,
-  warnDeprecation,
-  WithConfig
-} from 'ng-zorro-antd/core';
+import { InputBoolean, InputNumber, NzConfigService, NzDomEventService, NzDragService, WithConfig } from 'ng-zorro-antd/core';
 
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
 import {
