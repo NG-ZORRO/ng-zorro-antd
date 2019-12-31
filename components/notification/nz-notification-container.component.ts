@@ -9,7 +9,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Optional, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { isNotNil, NzConfigService, toCssPixel, warnDeprecation } from 'ng-zorro-antd/core';
+import { NzConfigService, toCssPixel, warnDeprecation } from 'ng-zorro-antd/core';
 import { NzMessageContainerComponent } from 'ng-zorro-antd/message';
 
 import { NZ_NOTIFICATION_CONFIG, NZ_NOTIFICATION_DEFAULT_CONFIG, NzNotificationConfigLegacy } from './nz-notification-config';
