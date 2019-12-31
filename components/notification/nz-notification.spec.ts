@@ -4,7 +4,7 @@ import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/cor
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeOutline } from '@ant-design/icons-angular/icons';
 
-import { dispatchMouseEvent, NZ_CONFIG, NzConfig, NzConfigService} from 'ng-zorro-antd/core';
+import { dispatchMouseEvent, NZ_CONFIG, NzConfig, NzConfigService } from 'ng-zorro-antd/core';
 import { NZ_ICONS } from 'ng-zorro-antd/icon';
 
 import { NzNotificationModule } from './nz-notification.module';
