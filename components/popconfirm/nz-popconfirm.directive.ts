@@ -79,7 +79,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective implements OnI
     hostView: ViewContainerRef,
     resolver: ComponentFactoryResolver,
     renderer: Renderer2,
-    nzTooltipScrollDirective: NzTooltipScrollDirective,
+    @Optional() nzTooltipScrollDirective: NzTooltipScrollDirective,
     @Host() @Optional() noAnimation?: NzNoAnimationDirective
   ) {
     super(elementRef, hostView, resolver, renderer, nzTooltipScrollDirective, noAnimation);

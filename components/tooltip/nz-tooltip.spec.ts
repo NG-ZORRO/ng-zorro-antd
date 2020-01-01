@@ -277,7 +277,7 @@ describe('NzTooltip', () => {
     }));
   });
 
-  describe('scroll', () => {
+  describe('should support scoller expect for body', () => {
     it('listen scroll event, change the position with the change of origin', fakeAsync(() => {
       const scrollContainerElement = component.scrollContainer.nativeElement;
       const spy1 = spyOn(component.nzTooltipScrollDirective, 'onScroll');
