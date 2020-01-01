@@ -19,7 +19,7 @@ import { NzNotificationPosition, NzNotificationService } from 'ng-zorro-antd/not
   styles: [
     `
       button {
-        padding-right: 1em;
+        margin-right: 1em;
       }
     `
   ]
