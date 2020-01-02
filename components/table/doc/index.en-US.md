@@ -135,7 +135,6 @@ Sort property
 | `[nzSort]` | Sort direction | `'ascend' | 'descend' | null` | - |
 | `[nzSortKey]` | Key to sort by | `string` | - |
 | `(nzSortChange)` | Sort direction change callback | `EventEmitter<'ascend' \| 'descend' \| null>` | - |
-| `(nzSortChangeWithKey)` | Sort direction change callback with `key` | `EventEmitter<{key: string, value: 'ascend' \| 'descend' \| null}>` | - |
 
 
 Style property
