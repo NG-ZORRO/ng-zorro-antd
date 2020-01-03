@@ -85,6 +85,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 1) @InputNumber() nzEllipsisRows: number;
   @Input() nzType: 'secondary' | 'warning' | 'danger' | undefined;
   @Input() nzCopyText: string | undefined;
+  @Input() nzSuffix: string | undefined;
   @Output() readonly nzContentChange = new EventEmitter<string>();
   @Output() readonly nzCopy = new EventEmitter<string>();
   @Output() readonly nzExpandChange = new EventEmitter<void>();
@@ -100,7 +101,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   editing = false;
   ellipsisText: string | undefined;
   cssEllipsis: boolean = false;
-  isEllipsis: boolean = false;
+  isEllipsis: boolean = true;
   expanded: boolean = false;
   ellipsisStr = '...';
 
@@ -149,7 +150,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   }
 
   canUseCSSEllipsis(): boolean {
-    if (this.nzEditable || this.nzCopyable || this.nzExpandable) {
+    if (this.nzEditable || this.nzCopyable || this.nzExpandable || this.nzSuffix) {
       return false;
     }
     if (this.nzEllipsisRows === 1) {
@@ -188,13 +189,13 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
     }
     const { viewRef, removeView } = this.getOriginContentViewRef();
     const fixedNodes = [this.textCopyRef, this.textEditRef, this.expandableBtn].filter(e => e && e.nativeElement).map(e => e.nativeElement);
-
     const { contentNodes, text, ellipsis } = measure(
       this.host.nativeElement,
       this.nzEllipsisRows,
       viewRef.rootNodes,
       fixedNodes,
-      this.ellipsisStr
+      this.ellipsisStr,
+      this.nzSuffix
     );
 
     removeView();
@@ -239,8 +240,8 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzCopyable, nzEditable, nzExpandable, nzEllipsis, nzContent, nzEllipsisRows } = changes;
-    if (nzCopyable || nzEditable || nzExpandable || nzEllipsis || nzContent || nzEllipsisRows) {
+    const { nzCopyable, nzEditable, nzExpandable, nzEllipsis, nzContent, nzEllipsisRows, nzSuffix } = changes;
+    if (nzCopyable || nzEditable || nzExpandable || nzEllipsis || nzContent || nzEllipsisRows || nzSuffix) {
       if (this.nzEllipsis) {
         if (this.expanded) {
           this.windowResizeSubscription.unsubscribe();
