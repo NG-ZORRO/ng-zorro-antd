@@ -25,7 +25,7 @@ cols: 1
 | `[nzEditable]` | 是否可编辑，需要配合 `[nzContent]` 使用 | `boolean` | `false` |
 | `[nzEllipsis]` | 自动溢出省略，动态内容时需要配合 `[nzContent]` 使用 | `boolean` | `false` |
 | `[nzExpandable]` | 自动溢出省略时是否可展开 | `boolean` | `false` |
-| `[nzSuffix]` | 设置文本后缀 | `string` | - |
+| `[nzSuffix]` | 自动溢出省略时的文本后缀 | `string` | - |
 | `[nzCopyText]` | 自定义被拷贝的文本 | `string` | - |
 | `[nzDisabled]` | 禁用文本 | `boolean` | `false` |
 | `[nzEllipsisRows]` | 自动溢出省略时省略行数 | `number` | `1` | ✅ |

@@ -12,7 +12,9 @@
       [ngTemplateOutletContext]="{ content: nzContent }"
     ></ng-template>
   </ng-container>
-  <ng-container *ngIf="nzEllipsis && !expanded && (nzEllipsisRows > 1 || nzExpandable || nzSuffix)">
+  <ng-container
+    *ngIf="(nzEllipsis && !expanded && (nzEllipsisRows > 1 || nzExpandable)) || nzSuffix"
+  >
     <span #ellipsisContainer></span>
     <ng-container *ngIf="isEllipsis">{{ ellipsisStr }}</ng-container>
     <ng-container *ngIf="nzSuffix">{{ nzSuffix }}</ng-container>

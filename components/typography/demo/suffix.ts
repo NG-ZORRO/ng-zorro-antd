@@ -4,7 +4,9 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-typography-suffix',
   template: `
     <nz-slider [(ngModel)]="rows" [nzMax]="10" [nzMin]="1"></nz-slider>
-    <p nz-paragraph nzEllipsis [nzEllipsisRows]="rows" [nzSuffix]="suffix">{{ content }}</p>
+    <p nz-paragraph nzEllipsis nzExpandable [attr.title]="content + suffix" [nzEllipsisRows]="rows" [nzSuffix]="suffix">
+      {{ content }}
+    </p>
   `
 })
 export class NzDemoTypographySuffixComponent {
