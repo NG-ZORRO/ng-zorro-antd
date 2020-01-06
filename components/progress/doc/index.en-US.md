@@ -24,7 +24,7 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[nzType]` | to set the type | `'line' \| 'circle' \| 'dashboard'` | `'line'` |
-| `[nzFormat]` | template function of the content | `(percent: number) => string` | `percent => percent + '%'` |
+| `[nzFormat]` | template function of the content | `(percent: number) => string \| TemplateRef<{ $implicit: number }>` | `percent => percent + '%'` |
 | `[nzPercent]` | to set the completion percentage | `number` | `0` |
 | `[nzShowInfo]` | whether to display the progress value and the status icon | `boolean` | `true` | ✅ |
 | `[nzStatus]` | to set the status of the Progress | `'success' \| 'exception' \| 'active' \| 'normal'` | - |

@@ -1,4 +1,4 @@
-import { Component, DebugElement } from '@angular/core';
+import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -79,13 +79,17 @@ describe('progress', () => {
       expect(progress.nativeElement.querySelector('.ant-progress')!.classList).not.toContain('ant-progress-status-success');
     });
 
-    it('should format work', () => {
-      testComponent.format = (percent: number) => `${percent} percent`;
+    it('should formatter work', () => {
+      testComponent.formatter = (percent: number) => `${percent} percent`;
       fixture.detectChanges();
       expect(progress.nativeElement.querySelector('.ant-progress-text').innerText.trim()).toBe('0 percent');
       testComponent.percent = 100;
       fixture.detectChanges();
       expect(progress.nativeElement.querySelector('.ant-progress-text').innerText.trim()).toBe('100 percent');
+
+      testComponent.formatter = testComponent.formatterTemplate;
+      fixture.detectChanges();
+      expect(progress.nativeElement.querySelector('.ant-progress-text').innerText.trim()).toBe('100 / 100');
     });
 
     it('should status work', () => {
@@ -373,7 +377,7 @@ describe('progress', () => {
     <nz-progress
       [nzSize]="size"
       [nzSuccessPercent]="successPercent"
-      [nzFormat]="format"
+      [nzFormat]="formatter"
       [nzStatus]="status"
       [nzShowInfo]="showInfo"
       [nzStrokeWidth]="strokeWidth"
@@ -382,12 +386,14 @@ describe('progress', () => {
       [nzStrokeLinecap]="strokeLinecap"
     >
     </nz-progress>
+    <ng-template #formatterTemplate let-percent> {{ percent }} / 100 </ng-template>
   `
 })
 export class NzTestProgressLineComponent {
+  @ViewChild('formatterTemplate') formatterTemplate: TemplateRef<{ $implicit: number }>;
   size: string;
   status: string;
-  format: NzProgressFormatter;
+  formatter: NzProgressFormatter;
   strokeWidth: number;
   percent = 0;
   successPercent = 0;
