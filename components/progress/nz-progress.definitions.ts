@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { TemplateRef } from '@angular/core';
 import { NgStyleInterface } from 'ng-zorro-antd/core';
 
 export type NzProgressGapPositionType = 'top' | 'bottom' | 'left' | 'right';
@@ -29,7 +30,7 @@ export type NzProgressColorGradient = { direction?: string } & (NzProgressGradie
 
 export type NzProgressStrokeColorType = string | NzProgressColorGradient;
 
-export type NzProgressFormatter = (percent: number) => string;
+export type NzProgressFormatter = ((percent: number) => string) | TemplateRef<{ $implicit: number }>;
 
 export interface NzProgressCirclePath {
   stroke: string | null;
