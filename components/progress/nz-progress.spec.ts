@@ -163,6 +163,19 @@ describe('progress', () => {
       expect(progressBar.style.background).toBe('');
       expect(progressBar.style.backgroundImage).toBe('linear-gradient(to right, rgb(16, 142, 233) 0%, rgb(135, 208, 104) 100%)');
     });
+
+    it('should support steps mode', () => {
+      testComponent.steps = 5;
+      testComponent.percent = 50;
+      testComponent.strokeColor = '#108ee9';
+      fixture.detectChanges();
+
+      const steps = progress.nativeElement.querySelectorAll('.ant-progress-steps-item');
+
+      expect(steps.length).toBe(5);
+      expect((steps[0] as HTMLDivElement).style.backgroundColor).toBe('rgb(16, 142, 233)');
+      expect((steps[4] as HTMLDivElement).style.backgroundColor).toBeFalsy();
+    });
   });
 
   describe('progress dashboard', () => {
@@ -380,6 +393,7 @@ describe('progress', () => {
       [nzPercent]="percent"
       [nzStrokeColor]="strokeColor"
       [nzStrokeLinecap]="strokeLinecap"
+      [nzSteps]="steps"
     >
     </nz-progress>
   `
@@ -393,6 +407,7 @@ export class NzTestProgressLineComponent {
   successPercent = 0;
   showInfo = true;
   strokeLinecap = 'round';
+  steps?: number;
   strokeColor: NzProgressStrokeColorType;
 }
 
