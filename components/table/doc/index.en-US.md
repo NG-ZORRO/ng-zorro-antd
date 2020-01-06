@@ -127,6 +127,16 @@ Filter property
 | `(nzFilterChange)` | Filter change callback `value` | `EventEmitter<any[] \| any>` | - |
 
 
+Sort property
+
+| Property | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
+| `[nzShowSort]` | Whether to show sort | `boolean` | - |
+| `[nzSort]` | Sort direction | `'ascend' | 'descend' | null` | - |
+| `[nzSortKey]` | Key to sort by | `string` | - |
+| `(nzSortChange)` | Sort direction change callback | `EventEmitter<'ascend' \| 'descend' \| null>` | - |
+
+
 Style property
 
 | Property | Description | Type | Default |
