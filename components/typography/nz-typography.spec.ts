@@ -319,6 +319,12 @@ describe('typography', () => {
         const el = componentElement.querySelector('.dynamic') as HTMLParagraphElement;
         expect(el.innerText.includes('The suffix.')).toBe(true);
         expect(el.innerText.includes('...')).toBe(true);
+        testComponent.expandable = false;
+        fixture.detectChanges();
+        tick(32);
+        fixture.detectChanges();
+        expect(el.innerText.endsWith('The suffix.')).toBe(true);
+        expect(el.innerText.includes('...')).toBe(true);
       }
 
       viewport.reset();
