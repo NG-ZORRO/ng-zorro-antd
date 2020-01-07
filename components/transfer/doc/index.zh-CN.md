@@ -25,7 +25,7 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzDataSource]` | 数据源，其中若数据属性 `direction: 'right'` 将会被渲染到右边一栏中或使用 `nzTargetKeys` | `TransferItem[]` | `[]` |
+| `[nzDataSource]` | 数据源，其中若数据属性 `direction: 'right'` 将会被渲染到右边一栏中 | `TransferItem[]` | `[]` |
 | `[nzDisabled]` | 是否禁用 | `boolean` | `false` |
 | `[nzTitles]` | 标题集合，顺序从左至右 | `string[]` | `['', '']` |
 | `[nzOperations]` | 操作文案集合，顺序从下至上 | `string[]` | `['', '']` |
@@ -40,7 +40,6 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
 | `[nzSearchPlaceholder]` | 搜索框的默认值 | `string` | `'请输入搜索内容'` |
 | `[nzNotFoundContent]` | 当列表为空时显示的内容 | `string` | `'列表为空'` |
 | `[nzCanMove]` | 穿梭时二次校验。**注意：** 穿梭组件内部始终只保留一份数据，二次校验过程中需取消穿梭项则直接删除该项；具体用法见示例。 | `(arg: TransferCanMove) => Observable<TransferItem[]>` | - |
-| `[nzTargetKeys]` | 显示在右侧框数据的 key 集合 | `string[]` | - |
 | `(nzChange)` | 选项在两栏之间转移时的回调函数 | `EventEmitter<TransferChange>` | - |
 | `(nzSearchChange)` | 搜索框内容时改变时的回调函数 | `EventEmitter<TransferSearchChange>` | - |
 | `(nzSelectChange)` | 选中项发生改变时的回调函数 | `EventEmitter<TransferSearchChange>` | - |

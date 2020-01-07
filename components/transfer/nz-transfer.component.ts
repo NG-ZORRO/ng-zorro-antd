@@ -145,11 +145,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     const datasource = direction === 'left' ? this.rightDataSource : this.leftDataSource;
     const moveList = datasource.filter(item => item.checked === true && !item.disabled);
     this.nzCanMove({ direction, list: moveList }).subscribe(
-      newMoveList =>
-        this.truthMoveTo(
-          direction,
-          newMoveList.filter(i => !!i)
-        ),
+      newMoveList => this.truthMoveTo(direction, newMoveList.filter(i => !!i)),
       () => moveList.forEach(i => (i.checked = false))
     );
   }
@@ -211,7 +207,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.setClassMap();
-    if (changes.nzDataSource || changes.nzTargetKeys) {
+    if (changes.nzDataSource) {
       this.splitDataSource();
       this.updateOperationStatus('left');
       this.updateOperationStatus('right');

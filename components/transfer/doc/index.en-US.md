@@ -23,7 +23,7 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzDataSource]` | Used for setting the source data. Except the elements whose keys are `direction: 'right'` prop , or using `nzTargetKeys` prop. | `TransferItem[]` | `[]` |
+| `[nzDataSource]` | Used for setting the source data. Except the elements whose keys are `direction: 'right'` prop. | `TransferItem[]` | `[]` |
 | `[nzDisabled]` | Whether disabled transfer | `boolean` | `false` |
 | `[nzTitles]` | A set of titles that are sorted from left to right. | `string[]` | `['', '']` |
 | `[nzOperations]` | A set of operations that are sorted from bottom to top. | `string[]` | `['', '']` |
@@ -38,7 +38,6 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
 | `[nzSearchPlaceholder]` | The hint text of the search box. | `string` | `'Search here'` |
 | `[nzNotFoundContent]` | Text to display when a column is empty. | `string` | `'The list is empty'` |
 | `[nzCanMove]` | Two verification when transfer choice box. please refer to the case. | `(arg: TransferCanMove) => Observable<TransferItem[]>` | - |
-| `[nzTargetKeys]` | A set of keys of elements that are listed on the right column. | `string[]` | - |
 | `(nzChange)` | A callback function that is executed when the transfer between columns is complete. | `EventEmitter<TransferChange>` | - |
 | `(nzSearchChange)` | A callback function which is executed when search field are changed | `EventEmitter<TransferSearchChange>` | - |
 | `(nzSelectChange)` | A callback function which is executed when selected items are changed. | `EventEmitter<TransferSearchChange>` | - |
