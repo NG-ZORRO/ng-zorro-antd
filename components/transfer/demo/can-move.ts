@@ -24,14 +24,14 @@ export class NzDemoTransferCanMoveComponent implements OnInit {
     [2, 3].forEach(idx => (this.list[idx].direction = 'right'));
   }
 
-  canMove(arg: TransferCanMove): Observable<TransferItem[]> {
+  canMove = (arg: TransferCanMove): Observable<TransferItem[]> => {
     if (arg.direction === 'right' && arg.list.length > 0) {
       arg.list.splice(0, 1);
     }
     // or
     // if (arg.direction === 'right' && arg.list.length > 0) delete arg.list[0];
     return of(arg.list).pipe(delay(1000));
-  }
+  };
 
   select(ret: {}): void {
     console.log('nzSelectChange', ret);
