@@ -8,6 +8,7 @@
     [class.ant-drawer-right]="nzPlacement === 'right'"
     [class.ant-drawer-left]="nzPlacement === 'left'"
     [style.transform]="offsetTransform"
+    [style.transition]="placementChanging ? 'none' : null"
     [style.zIndex]="nzZIndex"
   >
     <div class="ant-drawer-mask" (click)="maskClick()" *ngIf="nzMask" [ngStyle]="nzMaskStyle"></div>
@@ -16,6 +17,7 @@
       [style.width]="width"
       [style.height]="height"
       [style.transform]="transform"
+      [style.transition]="placementChanging ? 'none' : null"
     >
       <div class="ant-drawer-content">
         <div class="ant-drawer-wrapper-body" [style.height]="isLeftOrRight ? '100%' : null">
