@@ -6,41 +6,33 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Inject, Injectable, Optional, TemplateRef, Type } from '@angular/core';
+import { Injectable, TemplateRef, Type } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { startWith } from 'rxjs/operators';
 
-import { NzConfigService, PREFIX, warnDeprecation } from 'ng-zorro-antd/core';
+import { NzConfigService, PREFIX } from 'ng-zorro-antd/core';
 
-import { NZ_DEFAULT_EMPTY_CONTENT, NzEmptyCustomContent } from './nz-empty-config';
+import { NzEmptyCustomContent } from './nz-empty-config';
 
 @Injectable({
   providedIn: 'root'
 })
-// tslint:disable-next-line:no-any
-export class NzEmptyService<T = any> {
+export class NzEmptyService {
   userDefaultContent$ = new BehaviorSubject<NzEmptyCustomContent | undefined>(undefined);
 
-  constructor(
-    private nzConfigService: NzConfigService,
-    @Inject(NZ_DEFAULT_EMPTY_CONTENT) @Optional() private legacyDefaultEmptyContent: Type<T>
-  ) {
-    if (legacyDefaultEmptyContent) {
-      warnDeprecation(`'NZ_DEFAULT_EMPTY_CONTENT' is deprecated and would be removed in 9.0.0. Please migrate to 'NZ_CONFIG'.`);
-    }
+  constructor(public nzConfigService: NzConfigService) {
+    this.subscribeDefaultEmptyContentChange();
+  }
 
-    const userDefaultEmptyContent = this.getUserDefaultEmptyContent();
-
-    if (userDefaultEmptyContent) {
-      this.userDefaultContent$.next(userDefaultEmptyContent);
-    }
-
-    this.nzConfigService.getConfigChangeEventForComponent('empty').subscribe(() => {
+  private subscribeDefaultEmptyContentChange(): void {
+    this.nzConfigService.getConfigChangeEventForComponent('empty').pipe(startWith(true)).subscribe(() => {
       this.userDefaultContent$.next(this.getUserDefaultEmptyContent());
     });
   }
 
-  setDefaultContent(content?: NzEmptyCustomContent): void {
-    warnDeprecation(`'setDefaultContent' is deprecated and would be removed in 9.0.0. Please migrate to 'NzConfigService'.`);
+  // tslint:disable-next-line:no-any
+  private getUserDefaultEmptyContent(): Type<any> | TemplateRef<string> | string | undefined {
+    const content = (this.nzConfigService.getConfigForComponent('empty') || {}).nzDefaultEmptyContent;
 
     if (
       typeof content === 'string' ||
@@ -49,20 +41,11 @@ export class NzEmptyService<T = any> {
       content instanceof TemplateRef ||
       content instanceof Type
     ) {
-      this.userDefaultContent$.next(content);
+      return content;
     } else {
-      throw new Error(`${PREFIX} 'useDefaultContent' expect 'string', 'templateRef' or 'component' but get ${content}.`);
+      throw new Error(
+        `${PREFIX} default empty content expects a 'null', 'undefined', 'string', 'TemplateRef' or 'Component' but get ${content}.`
+      );
     }
-  }
-
-  resetDefault(): void {
-    warnDeprecation(
-      `'resetDefault' is deprecated and would be removed in 9.0.0. Please migrate to 'NzConfigService' and provide an 'undefined'.`
-    );
-    this.userDefaultContent$.next(undefined);
-  }
-
-  private getUserDefaultEmptyContent(): Type<T> | TemplateRef<string> | string {
-    return (this.nzConfigService.getConfigForComponent('empty') || {}).nzDefaultEmptyContent || this.legacyDefaultEmptyContent;
   }
 }

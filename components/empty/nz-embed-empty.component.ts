@@ -23,10 +23,28 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { NZ_EMPTY_COMPONENT_NAME, NzEmptyCustomContent, NzEmptySize, simpleEmptyImage } from './nz-empty-config';
 import { NzEmptyService } from './nz-empty.service';
+
+function getEmptySize(componentName: string): NzEmptySize {
+  switch (componentName) {
+    case 'table':
+    case 'list':
+      return 'normal';
+    case 'select':
+    case 'tree-select':
+    case 'cascader':
+    case 'transfer':
+      return 'small';
+    default:
+      return '';
+  }
+}
+
+type NzEmptyContentType = 'component' | 'template' | 'string';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -40,11 +58,12 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
   @Input() specificContent: NzEmptyCustomContent;
 
   content?: NzEmptyCustomContent;
-  contentType: 'component' | 'template' | 'string' = 'string';
+  contentType: NzEmptyContentType = 'string';
   contentPortal?: Portal<any>; // tslint:disable-line:no-any
   defaultSvg = this.sanitizer.bypassSecurityTrustResourceUrl(simpleEmptyImage);
   size: NzEmptySize = '';
-  subs_ = new Subscription();
+
+  private $destroy = new Subject<void>();
 
   constructor(
     public emptyService: NzEmptyService,
@@ -56,7 +75,7 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzComponentName) {
-      this.size = this.getEmptySize(changes.nzComponentName.currentValue);
+      this.size = getEmptySize(changes.nzComponentName.currentValue);
     }
 
     if (changes.specificContent && !changes.specificContent.isFirstChange()) {
@@ -66,31 +85,15 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const userContent_ = this.emptyService.userDefaultContent$.subscribe(content => {
+    this.emptyService.userDefaultContent$.pipe(takeUntil(this.$destroy)).subscribe(content => {
       this.content = this.specificContent || content;
       this.renderEmpty();
     });
-
-    this.subs_.add(userContent_);
   }
 
   ngOnDestroy(): void {
-    this.subs_.unsubscribe();
-  }
-
-  private getEmptySize(componentName: string): NzEmptySize {
-    switch (componentName) {
-      case 'table':
-      case 'list':
-        return 'normal';
-      case 'select':
-      case 'tree-select':
-      case 'cascader':
-      case 'transfer':
-        return 'small';
-      default:
-        return '';
-    }
+    this.$destroy.next();
+    this.$destroy.complete();
   }
 
   private renderEmpty(): void {

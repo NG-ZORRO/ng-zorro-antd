@@ -2,18 +2,19 @@ import { CommonModule } from '@angular/common';
 import { Component, DebugElement, Inject, NgModule, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, TestBedStatic, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { NZ_CONFIG } from 'ng-zorro-antd';
 
 import { NzI18nService } from '../i18n';
 import en_US from '../i18n/languages/en_US';
 import { NzListModule } from '../list';
 
 import { NzEmbedEmptyComponent } from './nz-embed-empty.component';
-import { NZ_DEFAULT_EMPTY_CONTENT, NZ_EMPTY_COMPONENT_NAME } from './nz-empty-config';
+import { NZ_EMPTY_COMPONENT_NAME } from './nz-empty-config';
 import { NzEmptyComponent } from './nz-empty.component';
 import { NzEmptyModule } from './nz-empty.module';
 import { NzEmptyService } from './nz-empty.service';
 
-describe('nz-empty', () => {
+describe('NzEmpty', () => {
   describe('basic', () => {
     let testBed: TestBedStatic;
     let fixture: ComponentFixture<NzEmptyTestBasicComponent>;
@@ -182,7 +183,7 @@ describe('nz-empty', () => {
       it('should raise error when set a invalid default value', () => {
         expect(() => {
           // tslint:disable-next-line:no-any
-          testComponent.emptyService.setDefaultContent(false as any);
+          testComponent.emptyService.nzConfigService.set('empty', { nzDefaultEmptyContent: false as any });
           fixture.detectChanges();
           tick();
           fixture.detectChanges();
@@ -200,7 +201,7 @@ describe('nz-empty', () => {
         };
 
         // String.
-        testComponent.emptyService.setDefaultContent('empty');
+        testComponent.emptyService.nzConfigService.set('empty', { nzDefaultEmptyContent: 'empty' });
         refresh();
         expect(embedComponent).toBeTruthy();
         expect(emptyComponent).toBeFalsy();
@@ -241,16 +242,6 @@ describe('nz-empty', () => {
         expect(imageEl.firstElementChild.getAttribute('alt')).toBe('empty');
         expect(imageEl.firstElementChild.src).toContain('data:image/svg+xml');
       }));
-
-      it('should raise error when set a invalid default value', () => {
-        expect(() => {
-          // tslint:disable-next-line:no-any
-          testComponent.emptyService.setDefaultContent(false as any);
-          fixture.detectChanges();
-          tick();
-          fixture.detectChanges();
-        }).toThrowError();
-      });
     });
 
     /**
@@ -318,18 +309,18 @@ export class NzEmptyTestBasicComponent {
   `
 })
 export class NzEmptyTestServiceComponent {
-  @ViewChild('tpl', { static: false }) template: TemplateRef<void>;
+  @ViewChild('tpl', { static: false }) template: TemplateRef<string>;
 
   noResult?: string | null;
 
   constructor(public emptyService: NzEmptyService) {}
 
   reset(): void {
-    this.emptyService.resetDefault();
+    this.emptyService.nzConfigService.set('empty', { nzDefaultEmptyContent: undefined });
   }
 
   changeToTemplate(): void {
-    this.emptyService.setDefaultContent(this.template);
+    this.emptyService.nzConfigService.set('empty', { nzDefaultEmptyContent: this.template });
   }
 }
 
@@ -359,8 +350,12 @@ export class NzEmptyTestServiceModule {}
   exports: [NzEmptyTestServiceComponent, NzEmptyTestCustomComponent],
   providers: [
     {
-      provide: NZ_DEFAULT_EMPTY_CONTENT,
-      useValue: NzEmptyTestCustomComponent
+      provide: NZ_CONFIG,
+      useValue: {
+        empty: {
+          nzDefaultEmptyContent: NzEmptyTestCustomComponent
+        }
+      }
     }
   ]
 })
