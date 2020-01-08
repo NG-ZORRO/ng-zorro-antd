@@ -6,6 +6,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-button.component';
-export * from './nz-button-group.component';
-export * from './nz-button.module';
+export * from './button.component';
+export * from './button-group.component';
+export * from './button.module';

@@ -22,7 +22,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { NzConfigService, NzShapeSCType, NzSizeLDSType, NzSizeMap, NzUpdateHostClassService, WithConfig } from 'ng-zorro-antd/core';
+import { NzConfigService, NzShapeSCType, NzSizeLDSType, NzUpdateHostClassService, WithConfig } from 'ng-zorro-antd/core';
 
 const NZ_CONFIG_COMPONENT_NAME = 'avatar';
 
@@ -55,7 +55,6 @@ export class NzAvatarComponent implements OnChanges {
 
   private el: HTMLElement = this.elementRef.nativeElement;
   private prefixCls = 'ant-avatar';
-  private sizeMap: NzSizeMap = { large: 'lg', small: 'sm' };
 
   constructor(
     public nzConfigService: NzConfigService,
@@ -69,7 +68,8 @@ export class NzAvatarComponent implements OnChanges {
   setClass(): this {
     const classMap = {
       [this.prefixCls]: true,
-      [`${this.prefixCls}-${this.sizeMap[this.nzSize]}`]: this.sizeMap[this.nzSize],
+      [`${this.prefixCls}-lg`]: this.nzSize === 'large',
+      [`${this.prefixCls}-sm`]: this.nzSize === 'small',
       [`${this.prefixCls}-${this.nzShape}`]: this.nzShape,
       [`${this.prefixCls}-icon`]: this.nzIcon,
       [`${this.prefixCls}-image`]: this.hasSrc // downgrade after image error
