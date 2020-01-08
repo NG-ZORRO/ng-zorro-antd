@@ -9,9 +9,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { NzHumanizeBytesPipe } from './nz-humanize-bytes.pipe';
-import { NzHumanizeCheckNullPipe } from './nz-humanize-check-null.pipe';
-import { NzHumanizeDurationPipe } from './nz-humanize-duration.pipe';
+import { NzHumanizeBytesPipe } from './humanize-bytes.pipe';
+import { NzHumanizeCheckNullPipe } from './humanize-check-null.pipe';
+import { NzHumanizeDurationPipe } from './humanize-duration.pipe';
 
 const pipes = [NzHumanizeBytesPipe, NzHumanizeCheckNullPipe, NzHumanizeDurationPipe];
 

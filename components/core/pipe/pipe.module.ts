@@ -9,9 +9,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
+import { NzToCssUnitPipe } from './css-unit.pipe';
 import { NzHumanizeDurationPipe } from './humanize/public-api';
-import { NzToCssUnitPipe } from './nz-css-unit.pipe';
-import { NzTimeRangePipe } from './nz-time-range.pipe';
+import { NzTimeRangePipe } from './time-range.pipe';
 
 @NgModule({
   imports: [CommonModule, NzHumanizeDurationPipe],

@@ -10,7 +10,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NzButtonComponent, NzButtonModule } from 'ng-zorro-antd/button';
 import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core';
-import { NzToCssUnitPipe } from 'ng-zorro-antd/core/pipe/nz-css-unit.pipe';
+import { NzToCssUnitPipe } from 'ng-zorro-antd/core/pipe/css-unit.pipe';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import en_US from '../i18n/languages/en_US';
