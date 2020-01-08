@@ -155,7 +155,7 @@ describe('modal testing (legacy)', () => {
       );
       expect((modalElement.querySelector('.ant-modal-body') as HTMLElement).style.background).toBe('gray');
       expect(getButtonOk(modalElement).innerHTML.indexOf('custom ok')).toBeGreaterThan(-1);
-      expect(getButtonOk(modalElement).classList.contains('ant-btn-success')).toBe(true);
+      expect(getButtonOk(modalElement).classList.contains('ant-btn-primary')).toBe(true);
       expect(isButtonLoading(getButtonOk(modalElement))).toBeFalsy();
       expect(getButtonCancel(modalElement).innerHTML.indexOf('custom cancel')).toBeGreaterThan(-1);
       expect(isButtonLoading(getButtonCancel(modalElement))).not.toBeFalsy();
@@ -846,7 +846,7 @@ class TestBasicServiceComponent {
       nzBodyStyle: { background: 'gray' },
       // nzFooter: '<div>custom html footer: <i>OK</i></div>',
       nzOkText: 'custom ok',
-      nzOkType: 'success',
+      nzOkType: 'primary',
       nzOkLoading: false,
       nzOkDisabled: false,
       nzCancelDisabled: false,
