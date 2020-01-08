@@ -47,6 +47,22 @@ export class NzNotificationContainerComponent extends NzMessageContainerComponen
     super(cdr, nzConfigService);
   }
 
+  get topLeftMessages(): Array<Required<NzNotificationDataFilled>> {
+    return this.messages.filter(m => m.options.nzPosition === 'topLeft');
+  }
+
+  get topRightMessages(): Array<Required<NzNotificationDataFilled>> {
+    return this.messages.filter(m => m.options.nzPosition === 'topRight' || !m.options.nzPosition);
+  }
+
+  get bottomLeftMessages(): Array<Required<NzNotificationDataFilled>> {
+    return this.messages.filter(m => m.options.nzPosition === 'bottomLeft');
+  }
+
+  get bottomRightMessages(): Array<Required<NzNotificationDataFilled>> {
+    return this.messages.filter(m => m.options.nzPosition === 'bottomRight');
+  }
+
   /**
    * Create a new notification.
    * If there's a notification whose `nzKey` is same with `nzKey` in `NzNotificationDataFilled`,
@@ -94,9 +110,7 @@ export class NzNotificationContainerComponent extends NzMessageContainerComponen
    * @override
    */
   protected subscribeConfigChange(): void {
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
-      .subscribe(() => this.updateConfig());
+    this.nzConfigService.getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME).subscribe(() => this.updateConfig());
   }
 
   private replaceNotification(old: NzNotificationDataFilled, _new: NzNotificationDataFilled): void {

@@ -172,7 +172,7 @@ export interface ModalConfig {
 export interface NotificationConfig extends MessageConfig {
   nzTop?: string | number;
   nzBottom?: string | number;
-  nzPlacement?: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight' | string;
+  nzPlacement?: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
 }
 
 export interface PageHeaderConfig {
