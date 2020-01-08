@@ -20,7 +20,7 @@ import { NzFormatEmitEvent, NzTreeComponent, NzTreeNodeOptions } from 'ng-zorro-
   `
 })
 export class NzDemoTreeBasicComponent implements AfterViewInit {
-  @ViewChild('nzTreeComponent', { static: false }) nzTreeComponent: NzTreeComponent;
+  @ViewChild('nzTreeComponent', { static: false }) nzTreeComponent!: NzTreeComponent;
   defaultCheckedKeys = ['10020'];
   defaultSelectedKeys = ['10010'];
   defaultExpandedKeys = ['100', '1001'];

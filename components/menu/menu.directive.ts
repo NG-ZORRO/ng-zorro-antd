@@ -84,8 +84,8 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
   static ngAcceptInputType_nzInlineCollapsed: BooleanInput;
   static ngAcceptInputType_nzSelectable: BooleanInput;
 
-  @ContentChildren(NzMenuItemDirective, { descendants: true }) listOfNzMenuItemDirective: QueryList<NzMenuItemDirective>;
-  @ContentChildren(NzSubMenuComponent, { descendants: true }) listOfNzSubMenuComponent: QueryList<NzSubMenuComponent>;
+  @ContentChildren(NzMenuItemDirective, { descendants: true }) listOfNzMenuItemDirective!: QueryList<NzMenuItemDirective>;
+  @ContentChildren(NzSubMenuComponent, { descendants: true }) listOfNzSubMenuComponent!: QueryList<NzSubMenuComponent>;
   @Input() nzInlineIndent = 24;
   @Input() nzTheme: NzMenuThemeType = 'light';
   @Input() nzMode: NzMenuModeType = 'vertical';

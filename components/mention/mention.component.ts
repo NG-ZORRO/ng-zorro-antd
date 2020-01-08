@@ -100,8 +100,8 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
   @Output() readonly nzOnSelect: EventEmitter<string | {}> = new EventEmitter();
   @Output() readonly nzOnSearchChange: EventEmitter<MentionOnSearchTypes> = new EventEmitter();
 
-  trigger: NzMentionTriggerDirective;
-  @ViewChild(TemplateRef, { static: false }) suggestionsTemp: TemplateRef<void>;
+  trigger!: NzMentionTriggerDirective;
+  @ViewChild(TemplateRef, { static: false }) suggestionsTemp?: TemplateRef<void>;
 
   @ContentChild(NzMentionSuggestionDirective, { static: false, read: TemplateRef })
   set suggestionChild(value: TemplateRef<{ $implicit: NzSafeAny }>) {
@@ -116,13 +116,13 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
   activeIndex = -1;
 
   private previousValue: string | null = null;
-  private cursorMention: string | null;
-  private cursorMentionStart: number;
-  private cursorMentionEnd: number;
-  private overlayRef: OverlayRef | null;
-  private portal: TemplatePortal<void>;
-  private positionStrategy: FlexibleConnectedPositionStrategy;
-  private overlayBackdropClickSubscription: Subscription;
+  private cursorMention: string | null = null;
+  private cursorMentionStart?: number;
+  private cursorMentionEnd?: number;
+  private overlayRef: OverlayRef | null = null;
+  private portal?: TemplatePortal<void>;
+  private positionStrategy!: FlexibleConnectedPositionStrategy;
+  private overlayBackdropClickSubscription!: Subscription;
 
   private get triggerNativeElement(): HTMLTextAreaElement | HTMLInputElement {
     return this.trigger.el.nativeElement;
@@ -175,15 +175,15 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
   }
 
   getMentions(): string[] {
-    return this.trigger ? getMentions(this.trigger.value, this.nzPrefix) : [];
+    return this.trigger ? getMentions(this.trigger.value!, this.nzPrefix) : [];
   }
 
   selectSuggestion(suggestion: string | {}): void {
     const value = this.nzValueWith(suggestion);
     this.trigger.insertMention({
       mention: value,
-      startPos: this.cursorMentionStart,
-      endPos: this.cursorMentionEnd
+      startPos: this.cursorMentionStart!,
+      endPos: this.cursorMentionEnd!
     });
     this.nzOnSelect.emit(suggestion);
     this.closeDropdown();
@@ -302,7 +302,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
   }
 
   private updatePositions(): void {
-    const coordinates = getCaretCoordinates(this.triggerNativeElement, this.cursorMentionStart);
+    const coordinates = getCaretCoordinates(this.triggerNativeElement, this.cursorMentionStart!);
     const top =
       coordinates.top -
       this.triggerNativeElement.getBoundingClientRect().height -
@@ -338,7 +338,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
 
   private attachOverlay(): void {
     if (!this.overlayRef) {
-      this.portal = new TemplatePortal(this.suggestionsTemp, this.viewContainerRef);
+      this.portal = new TemplatePortal(this.suggestionsTemp!, this.viewContainerRef);
       this.overlayRef = this.overlay.create(this.getOverlayConfig());
     }
     if (this.overlayRef && !this.overlayRef.hasAttached()) {

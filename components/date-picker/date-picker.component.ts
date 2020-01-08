@@ -30,7 +30,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { CandyDate, cloneDate, CompatibleValue } from 'ng-zorro-antd/core/time';
-import { BooleanInput, FunctionProp, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, FunctionProp, NgClassInterface, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzDatePickerI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
@@ -123,48 +123,49 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   isRange: boolean = false; // Indicate whether the value is a range value
   showWeek: boolean = false; // Should show as week picker
   focused: boolean = false;
-  extraFooter: TemplateRef<void> | string;
+  extraFooter?: TemplateRef<void> | string;
+  hostClassMap: NgClassInterface = {};
 
   protected destroyed$: Subject<void> = new Subject();
   protected isCustomPlaceHolder: boolean = false;
-  private showTime: SupportTimeOptions | boolean;
+  private showTime: SupportTimeOptions | boolean = false;
 
   // --- Common API
   @Input() @InputBoolean() nzAllowClear: boolean = true;
   @Input() @InputBoolean() nzAutoFocus: boolean = false;
   @Input() @InputBoolean() nzDisabled: boolean = false;
-  @Input() @InputBoolean() nzOpen: boolean;
+  @Input() @InputBoolean() nzOpen?: boolean;
   /**
    * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
    */
-  @Input() nzClassName: string;
-  @Input() nzDisabledDate: (d: Date) => boolean;
-  @Input() nzLocale: NzDatePickerI18nInterface;
-  @Input() nzPlaceHolder: string | string[];
+  @Input() nzClassName?: string;
+  @Input() nzDisabledDate?: (d: Date) => boolean;
+  @Input() nzLocale?: NzDatePickerI18nInterface;
+  @Input() nzPlaceHolder?: string | [string, string];
   @Input() nzPopupStyle: object = POPUP_STYLE_PATCH;
-  @Input() nzDropdownClassName: string;
-  @Input() nzSize: 'large' | 'small';
+  @Input() nzDropdownClassName?: string;
+  @Input() nzSize?: 'large' | 'small';
   /**
    * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
    */
-  @Input() nzStyle: object;
-  @Input() nzFormat: string;
-  @Input() nzDateRender: FunctionProp<TemplateRef<Date> | string>;
-  @Input() nzDisabledTime: DisabledTimeFn;
-  @Input() nzRenderExtraFooter: FunctionProp<TemplateRef<void> | string>;
+  @Input() nzStyle?: object;
+  @Input() nzFormat?: string;
+  @Input() nzDateRender?: FunctionProp<TemplateRef<Date> | string>;
+  @Input() nzDisabledTime?: DisabledTimeFn;
+  @Input() nzRenderExtraFooter?: FunctionProp<TemplateRef<void> | string>;
   @Input() @InputBoolean() nzShowToday: boolean = true;
   @Input() nzMode: PanelMode | PanelMode[] = 'date';
-  @Input() nzRanges: PresetRanges;
+  @Input() nzRanges?: PresetRanges;
   @Input() nzDefaultPickerValue: CompatibleDate | null = null;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSeparator: string;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'calendar') nzSuffixIcon: string | TemplateRef<NzSafeAny>;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSeparator?: string = undefined;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSuffixIcon: string | TemplateRef<NzSafeAny> = 'calendar';
 
   @Output() readonly nzOnPanelChange = new EventEmitter<PanelMode | PanelMode[]>();
   @Output() readonly nzOnCalendarChange = new EventEmitter<Array<Date | null>>();
   @Output() readonly nzOnOk = new EventEmitter<CompatibleDate | null>();
   @Output() readonly nzOnOpenChange = new EventEmitter<boolean>();
 
-  @ViewChild(NzPickerComponent, { static: true }) protected picker: NzPickerComponent;
+  @ViewChild(NzPickerComponent, { static: true }) protected picker!: NzPickerComponent;
 
   @Input() get nzShowTime(): SupportTimeOptions | boolean {
     return this.showTime;
@@ -247,7 +248,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     }
 
     if (changes.nzRenderExtraFooter) {
-      this.extraFooter = valueFunctionProp(this.nzRenderExtraFooter);
+      this.extraFooter = valueFunctionProp(this.nzRenderExtraFooter!);
     }
 
     if (changes.nzStyle) {
@@ -325,7 +326,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
 
   private setDefaultPlaceHolder(): void {
     if (!this.isCustomPlaceHolder && this.nzLocale) {
-      this.nzPlaceHolder = this.isRange ? this.nzLocale.lang.rangePlaceholder : this.nzLocale.lang.placeholder;
+      this.nzPlaceHolder = this.isRange ? (this.nzLocale.lang.rangePlaceholder as [string, string]) : this.nzLocale.lang.placeholder;
     }
   }
 

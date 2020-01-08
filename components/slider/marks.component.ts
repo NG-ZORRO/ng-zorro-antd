@@ -37,13 +37,13 @@ export class NzSliderMarksComponent implements OnChanges {
 
   @Input() lowerBound: number | null = null;
   @Input() upperBound: number | null = null;
-  @Input() marksArray: NzExtendedMark[];
-  @Input() min: number;
-  @Input() max: number;
+  @Input() marksArray: NzExtendedMark[] = [];
+  @Input() min!: number;
+  @Input() max!: number;
   @Input() @InputBoolean() vertical = false;
   @Input() @InputBoolean() included = false;
 
-  marks: NzDisplayedMark[];
+  marks: NzDisplayedMark[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
     const { marksArray, lowerBound, upperBound } = changes;

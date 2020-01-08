@@ -77,7 +77,7 @@ export class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy {
   private destroy$ = new Subject();
   private isNzShowSortChanged = false;
   private isNzShowFilterChanged = false;
-  @Input() nzColumnKey: string;
+  @Input() nzColumnKey?: string;
   @Input() nzFilterMultiple = true;
   @Input() nzSortOrder: NzTableSortOrder = null;
   @Input() nzSortPriority: number | boolean = false;
@@ -92,7 +92,7 @@ export class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy {
   @Output() readonly nzSortOrderChange = new EventEmitter<string | null>();
   @Output() readonly nzFilterChange = new EventEmitter<NzTableFilterValue>();
   /** @deprecated use nzColumnKey instead **/
-  @Input() nzSortKey: string;
+  @Input() nzSortKey?: string;
   /** @deprecated use nzSortOrder instead **/
   @Input() nzSort: NzTableSortOrder = null;
   /** @deprecated use nzSortOrderChange instead **/

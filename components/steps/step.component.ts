@@ -94,11 +94,11 @@ import { Subject } from 'rxjs';
 export class NzStepComponent implements OnDestroy {
   static ngAcceptInputType_nzDisabled: BooleanInput;
 
-  @ViewChild('processDotTemplate', { static: false }) processDotTemplate: TemplateRef<void>;
+  @ViewChild('processDotTemplate', { static: false }) processDotTemplate?: TemplateRef<void>;
 
-  @Input() nzTitle: string | TemplateRef<void>;
-  @Input() nzSubtitle: string | TemplateRef<void>;
-  @Input() nzDescription: string | TemplateRef<void>;
+  @Input() nzTitle?: string | TemplateRef<void>;
+  @Input() nzSubtitle?: string | TemplateRef<void>;
+  @Input() nzDescription?: string | TemplateRef<void>;
   @Input() @InputBoolean() nzDisabled = false;
 
   @Input()
@@ -115,11 +115,11 @@ export class NzStepComponent implements OnDestroy {
   private _status = 'wait';
 
   @Input()
-  get nzIcon(): NgClassType | TemplateRef<void> {
+  get nzIcon(): NgClassType | TemplateRef<void> | undefined {
     return this._icon;
   }
 
-  set nzIcon(value: NgClassType | TemplateRef<void>) {
+  set nzIcon(value: NgClassType | TemplateRef<void> | undefined) {
     if (!(value instanceof TemplateRef)) {
       this.isIconString = true;
       this.oldAPIIcon = typeof value === 'string' && value.indexOf('anticon') > -1;
@@ -131,9 +131,9 @@ export class NzStepComponent implements OnDestroy {
 
   oldAPIIcon = true;
   isIconString = true;
-  private _icon: NgClassType | TemplateRef<void>;
+  private _icon?: NgClassType | TemplateRef<void>;
 
-  customProcessTemplate: TemplateRef<{ $implicit: TemplateRef<void>; status: string; index: number }>; // Set by parent.
+  customProcessTemplate?: TemplateRef<{ $implicit: TemplateRef<void>; status: string; index: number }>; // Set by parent.
   direction = 'horizontal';
   index = 0;
   last = false;

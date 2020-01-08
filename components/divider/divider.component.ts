@@ -35,7 +35,7 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
 export class NzDividerComponent {
   static ngAcceptInputType_nzDashed: BooleanInput;
 
-  @Input() nzText: string | TemplateRef<void>;
+  @Input() nzText?: string | TemplateRef<void>;
   @Input() nzType: 'horizontal' | 'vertical' = 'horizontal';
   @Input() nzOrientation: 'left' | 'right' | 'center' = 'center';
   @Input() @InputBoolean() nzDashed = false;

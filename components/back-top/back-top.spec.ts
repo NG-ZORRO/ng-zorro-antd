@@ -203,7 +203,7 @@ describe('Component:nz-back-top', () => {
 })
 class TestBackTopComponent {
   @ViewChild(NzBackTopComponent, { static: true })
-  nzBackTopComponent: NzBackTopComponent;
+  nzBackTopComponent!: NzBackTopComponent;
 
   target: HTMLElement | null = null;
 
@@ -224,11 +224,11 @@ class TestBackTopComponent {
 })
 class TestBackTopTemplateComponent {
   @ViewChild(NzBackTopComponent, { static: false })
-  nzBackTopComponent: NzBackTopComponent;
+  nzBackTopComponent!: NzBackTopComponent;
 }
 
 class MockNzScrollService {
-  mockTopOffset: number;
+  mockTopOffset: number = 0;
 
   getScroll(): number {
     return this.mockTopOffset;

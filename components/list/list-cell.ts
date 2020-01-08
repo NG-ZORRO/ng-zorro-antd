@@ -20,7 +20,7 @@ import { ChangeDetectionStrategy, Component, Directive, Input, TemplateRef } fro
   }
 })
 export class NzListEmptyComponent {
-  @Input() nzNoResult: string | TemplateRef<void>;
+  @Input() nzNoResult?: string | TemplateRef<void>;
 }
 
 @Component({

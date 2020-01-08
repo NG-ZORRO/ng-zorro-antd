@@ -82,12 +82,12 @@ describe('nz-countdown', () => {
   `
 })
 export class NzTestCountdownComponent {
-  @ViewChild(NzCountdownComponent, { static: true }) countdown: NzCountdownComponent;
-  @ViewChild('tpl', { static: true }) tpl: TemplateRef<number>;
+  @ViewChild(NzCountdownComponent, { static: true }) countdown!: NzCountdownComponent;
+  @ViewChild('tpl', { static: true }) tpl!: TemplateRef<number>;
 
-  format: string;
-  value: number;
-  template: TemplateRef<number>;
+  format?: string;
+  value?: number;
+  template?: TemplateRef<number>;
   finished = 0;
 
   resetTimerWithFormat(format: string): void {

@@ -120,13 +120,13 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzAutoFocus: BooleanInput;
 
-  private _onChange: (value: Date | null) => void;
-  private _onTouched: () => void;
+  private _onChange?: (value: Date | null) => void;
+  private _onTouched?: () => void;
   isInit = false;
   focused = false;
   value: Date | null = null;
-  origin: CdkOverlayOrigin;
-  inputSize: number;
+  origin!: CdkOverlayOrigin;
+  inputSize?: number;
   overlayPositions: ConnectionPositionPair[] = [
     {
       originX: 'start',
@@ -138,28 +138,28 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     }
   ];
 
-  @ViewChild('inputElement', { static: true }) inputRef: ElementRef<HTMLInputElement>;
+  @ViewChild('inputElement', { static: true }) inputRef!: ElementRef<HTMLInputElement>;
   @Input() nzSize: string | null = null;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 1) nzHourStep: number;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 1) nzMinuteStep: number;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 1) nzSecondStep: number;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'clear') nzClearText: string;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzPopupClassName: string;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzHourStep: number = 1;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzMinuteStep: number = 1;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSecondStep: number = 1;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzClearText: string = 'clear';
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzPopupClassName?: string = undefined;
   @Input() nzPlaceHolder = '';
-  @Input() nzAddOn: TemplateRef<void>;
-  @Input() nzDefaultOpenValue: Date;
-  @Input() nzDisabledHours: () => number[];
-  @Input() nzDisabledMinutes: (hour: number) => number[];
-  @Input() nzDisabledSeconds: (hour: number, minute: number) => number[];
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'HH:mm:ss') nzFormat: string;
+  @Input() nzAddOn?: TemplateRef<void>;
+  @Input() nzDefaultOpenValue?: Date;
+  @Input() nzDisabledHours?: () => number[];
+  @Input() nzDisabledMinutes?: (hour: number) => number[];
+  @Input() nzDisabledSeconds?: (hour: number, minute: number) => number[];
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzFormat: string = 'HH:mm:ss';
   @Input() nzOpen = false;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzUse12Hours: boolean;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'clock-circle') nzSuffixIcon: string | TemplateRef<NzSafeAny>;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzUse12Hours: boolean = false;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSuffixIcon: string | TemplateRef<NzSafeAny> = 'clock-circle';
 
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
 
   @Input() @InputBoolean() nzHideDisabledOptions = false;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzAllowEmpty: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzAllowEmpty: boolean = true;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAutoFocus = false;
 

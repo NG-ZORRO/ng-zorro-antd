@@ -40,7 +40,7 @@ const NZ_MESSAGE_DEFAULT_CONFIG: Required<MessageConfig> = {
 export class NzMessageContainerComponent extends NzMNContainerComponent {
   readonly destroy$ = new Subject<void>();
   instances: Array<Required<NzMessageData>> = [];
-  top: string | null;
+  top: string | null = null;
 
   constructor(cdr: ChangeDetectorRef, nzConfigService: NzConfigService) {
     super(cdr, nzConfigService);

@@ -8,9 +8,9 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   `
 })
 export class NzHighlightComponent implements OnInit {
-  code: SafeHtml | string;
-  @ViewChild('code', { static: true }) codeElement: ElementRef;
-  @Input() nzLanguage: string;
+  code: SafeHtml | string = '';
+  @ViewChild('code', { static: true }) codeElement!: ElementRef;
+  @Input() nzLanguage?: string;
 
   @Input()
   get nzCode(): string | SafeHtml {

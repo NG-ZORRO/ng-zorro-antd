@@ -20,8 +20,8 @@ import { NzTableStyleService } from '../table-style.service';
   }
 })
 export class NzTrDirective implements AfterContentInit, OnDestroy {
-  @ContentChildren(NzThMeasureDirective) listOfNzThDirective: QueryList<NzThMeasureDirective>;
-  @ContentChildren(NzCellFixedDirective) listOfCellFixedDirective: QueryList<NzCellFixedDirective>;
+  @ContentChildren(NzThMeasureDirective) listOfNzThDirective!: QueryList<NzThMeasureDirective>;
+  @ContentChildren(NzCellFixedDirective) listOfCellFixedDirective!: QueryList<NzCellFixedDirective>;
   private destroy$ = new Subject<void>();
   private listOfFixedColumns$ = new ReplaySubject<NzCellFixedDirective[]>(1);
   private listOfColumns$ = new ReplaySubject<NzThMeasureDirective[]>(1);

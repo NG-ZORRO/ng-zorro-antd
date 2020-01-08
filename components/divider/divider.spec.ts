@@ -74,12 +74,10 @@ describe('divider', () => {
 });
 
 @Component({
-  template: `
-    <nz-divider #comp [nzDashed]="nzDashed" [nzType]="nzType" [nzText]="nzText" [nzOrientation]="nzOrientation"></nz-divider>
-  `
+  template: ` <nz-divider #comp [nzDashed]="nzDashed" [nzType]="nzType" [nzText]="nzText" [nzOrientation]="nzOrientation"></nz-divider> `
 })
 class TestDividerComponent {
-  @ViewChild('comp', { static: false }) comp: NzDividerComponent;
+  @ViewChild('comp', { static: false }) comp!: NzDividerComponent;
   nzDashed = false;
   nzType = 'horizontal';
   nzText?: string = 'with text';

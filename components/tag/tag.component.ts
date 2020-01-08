@@ -54,7 +54,7 @@ export class NzTagComponent implements OnInit, OnChanges {
   presetColor = false;
   cacheClassName: string | null = null;
   @Input() nzMode: 'default' | 'closeable' | 'checkable' = 'default';
-  @Input() nzColor: string;
+  @Input() nzColor?: string;
   @Input() @InputBoolean() nzChecked = false;
   @Input() @InputBoolean() nzNoAnimation = false;
   @Output() readonly nzAfterClose = new EventEmitter<void>();

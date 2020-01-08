@@ -78,7 +78,7 @@ export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
   @Input() dropdownRender: TemplateRef<NzSafeAny> | null = null;
   @Input() activatedValue: NzSafeAny | null = null;
   @Input() listOfSelectedValue: NzSafeAny[] = [];
-  @Input() compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean;
+  @Input() compareWith!: (o1: NzSafeAny, o2: NzSafeAny) => boolean;
   @Input() mode: NzSelectModeType = 'default';
   @Input() matchWidth = true;
   @Input() itemSize = 32;
@@ -86,7 +86,7 @@ export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
   @Input() listOfContainerItem: NzSelectItemInterface[] = [];
   @Output() readonly itemClick = new EventEmitter<NzSafeAny>();
   @Output() readonly scrollToBottom = new EventEmitter<void>();
-  @ViewChild(CdkVirtualScrollViewport, { static: true }) cdkVirtualScrollViewport: CdkVirtualScrollViewport;
+  @ViewChild(CdkVirtualScrollViewport, { static: true }) cdkVirtualScrollViewport!: CdkVirtualScrollViewport;
   private scrolledIndex = 0;
 
   onItemClick(value: NzSafeAny): void {

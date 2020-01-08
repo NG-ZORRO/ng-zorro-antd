@@ -89,12 +89,12 @@ export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, On
   @Input() virtualItemSize = 0;
   @Input() virtualMaxBufferPx = 200;
   @Input() virtualMinBufferPx = 100;
-  @Input() tableMainElement: HTMLDivElement;
+  @Input() tableMainElement?: HTMLDivElement;
   @Input() virtualForTrackBy: TrackByFunction<NzTableData> = index => index;
-  @ViewChild('tableHeaderElement', { read: ElementRef }) tableHeaderElement: ElementRef;
-  @ViewChild('tableBodyElement', { read: ElementRef }) tableBodyElement: ElementRef;
+  @ViewChild('tableHeaderElement', { read: ElementRef }) tableHeaderElement!: ElementRef;
+  @ViewChild('tableBodyElement', { read: ElementRef }) tableBodyElement!: ElementRef;
   @ViewChild(CdkVirtualScrollViewport, { read: CdkVirtualScrollViewport })
-  cdkVirtualScrollViewport: CdkVirtualScrollViewport;
+  cdkVirtualScrollViewport?: CdkVirtualScrollViewport;
   headerStyleMap = {};
   bodyStyleMap = {};
   @Input() verticalScrollBarWidth = 0;

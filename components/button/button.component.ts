@@ -69,7 +69,7 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
   static ngAcceptInputType_nzLoading: BooleanInput;
   static ngAcceptInputType_nzDanger: BooleanInput;
 
-  @ContentChild(NzIconDirective, { read: ElementRef }) nzIconDirectiveElement: ElementRef;
+  @ContentChild(NzIconDirective, { read: ElementRef }) nzIconDirectiveElement!: ElementRef;
   @Input() @InputBoolean() nzBlock: boolean = false;
   @Input() @InputBoolean() nzGhost: boolean = false;
   @Input() @InputBoolean() nzSearch: boolean = false;
@@ -77,7 +77,7 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
   @Input() @InputBoolean() nzDanger: boolean = false;
   @Input() nzType: NzButtonType = null;
   @Input() nzShape: NzButtonShape = null;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzButtonSize;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzButtonSize = 'default';
   private destroy$ = new Subject<void>();
   private loading$ = new Subject<boolean>();
 

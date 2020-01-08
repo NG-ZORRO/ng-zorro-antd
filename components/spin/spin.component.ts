@@ -65,7 +65,7 @@ export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
   static ngAcceptInputType_nzSimple: BooleanInput;
   static ngAcceptInputType_nzSpinning: BooleanInput;
 
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzIndicator: TemplateRef<void>;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzIndicator?: TemplateRef<void> = undefined;
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzTip: string | null = null;
   @Input() @InputNumber() nzDelay = 0;

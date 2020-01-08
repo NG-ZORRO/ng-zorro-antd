@@ -56,7 +56,7 @@ import { PaginationItemRenderContext } from './pagination.types';
   `
 })
 export class NzPaginationSimpleComponent implements OnChanges {
-  @ViewChild('containerTemplate', { static: true }) template: TemplateRef<NzSafeAny>;
+  @ViewChild('containerTemplate', { static: true }) template!: TemplateRef<NzSafeAny>;
   @Input() itemRender: TemplateRef<PaginationItemRenderContext> | null = null;
   @Input() disabled = false;
   @Input() locale: NzSafeAny = {};

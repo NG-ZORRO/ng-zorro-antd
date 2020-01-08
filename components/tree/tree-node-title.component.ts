@@ -51,20 +51,20 @@ import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
   }
 })
 export class NzTreeNodeTitleComponent {
-  @Input() searchValue: string;
-  @Input() treeTemplate: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
-  @Input() draggable: boolean;
-  @Input() showIcon: boolean;
+  @Input() searchValue!: string;
+  @Input() treeTemplate!: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
+  @Input() draggable!: boolean;
+  @Input() showIcon!: boolean;
   @Input() selectMode = false;
-  @Input() context: NzTreeNode;
-  @Input() icon: string;
-  @Input() title: string;
-  @Input() isLoading: boolean;
-  @Input() isSelected: boolean;
-  @Input() isDisabled: boolean;
-  @Input() isMatched: boolean;
-  @Input() isExpanded: boolean;
-  @Input() isLeaf: boolean;
+  @Input() context!: NzTreeNode;
+  @Input() icon!: string;
+  @Input() title!: string;
+  @Input() isLoading!: boolean;
+  @Input() isSelected!: boolean;
+  @Input() isDisabled!: boolean;
+  @Input() isMatched!: boolean;
+  @Input() isExpanded!: boolean;
+  @Input() isLeaf!: boolean;
 
   get canDraggable(): boolean | null {
     return this.draggable && !this.isDisabled ? true : null;

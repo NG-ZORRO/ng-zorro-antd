@@ -32,10 +32,10 @@ import { NzStatisticValueType } from './typings';
   `
 })
 export class NzStatisticComponent {
-  @Input() nzPrefix: string | TemplateRef<void>;
-  @Input() nzSuffix: string | TemplateRef<void>;
-  @Input() nzTitle: string | TemplateRef<void>;
-  @Input() nzValue: NzStatisticValueType;
+  @Input() nzPrefix?: string | TemplateRef<void>;
+  @Input() nzSuffix?: string | TemplateRef<void>;
+  @Input() nzTitle?: string | TemplateRef<void>;
+  @Input() nzValue?: NzStatisticValueType;
   @Input() nzValueStyle = {};
-  @Input() nzValueTemplate: TemplateRef<{ $implicit: NzStatisticValueType }>;
+  @Input() nzValueTemplate?: TemplateRef<{ $implicit: NzStatisticValueType }>;
 }

@@ -113,7 +113,7 @@ export class NzSelectTopControlComponent implements OnChanges {
   @Output() readonly animationEnd = new EventEmitter<void>();
   @Output() readonly deleteItem = new EventEmitter<NzSelectItemInterface>();
   @Output() readonly openChange = new EventEmitter<boolean>();
-  @ViewChild(NzSelectSearchComponent) nzSelectSearchComponent: NzSelectSearchComponent;
+  @ViewChild(NzSelectSearchComponent) nzSelectSearchComponent!: NzSelectSearchComponent;
   listOfSlicedItem: NzSelectTopControlItemType[] = [];
   isShowPlaceholder = true;
   isShowSingleLabel = false;

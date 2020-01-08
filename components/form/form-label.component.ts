@@ -41,7 +41,7 @@ export class NzFormLabelComponent implements OnDestroy {
   static ngAcceptInputType_nzRequired: BooleanInput;
   static ngAcceptInputType_nzNoColon: BooleanInput;
 
-  @Input() nzFor: string;
+  @Input() nzFor?: string;
   @Input() @InputBoolean() nzRequired = false;
   @Input()
   set nzNoColon(value: boolean) {

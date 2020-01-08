@@ -400,33 +400,33 @@ describe('NzYearPickerComponent', () => {
   `
 })
 class NzTestYearPickerComponent {
-  useSuite: 1 | 2 | 3 | 4;
-  @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter: TemplateRef<void>;
+  useSuite?: 1 | 2 | 3 | 4;
+  @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter!: TemplateRef<void>;
 
   // --- Suite 1
-  nzAllowClear: boolean;
-  nzAutoFocus: boolean;
-  nzDisabled: boolean;
-  nzClassName: string;
-  nzDisabledDate: (d: Date) => boolean;
+  nzAllowClear: boolean = false;
+  nzAutoFocus: boolean = false;
+  nzDisabled: boolean = false;
+  nzClassName?: string;
+  nzDisabledDate?: (d: Date) => boolean;
   nzLocale: any; // tslint:disable-line:no-any
-  nzPlaceHolder: string;
-  nzPopupStyle: NgStyleInterface;
-  nzDropdownClassName: string;
-  nzSize: string;
-  nzStyle: NgStyleInterface;
+  nzPlaceHolder?: string;
+  nzPopupStyle?: NgStyleInterface;
+  nzDropdownClassName?: string;
+  nzSize?: string;
+  nzStyle?: NgStyleInterface;
 
   nzOnOpenChange(): void {}
 
   nzOnChange(): void {}
 
-  nzValue: Date | null;
+  nzValue: Date | null = null;
 
-  nzRenderExtraFooter: string | (() => TemplateRef<void> | string);
+  nzRenderExtraFooter?: string | (() => TemplateRef<void> | string);
 
   // --- Suite 2
-  nzOpen: boolean;
+  nzOpen: boolean = false;
 
   // --- Suite 3
-  modelValue: Date;
+  modelValue?: Date;
 }

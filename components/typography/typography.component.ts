@@ -107,8 +107,8 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzExpandable = false;
   @Input() @InputBoolean() nzEllipsis = false;
-  @Input() nzContent: string;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 1) @InputNumber() nzEllipsisRows: number;
+  @Input() nzContent?: string;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputNumber() nzEllipsisRows: number = 1;
   @Input() nzType: 'secondary' | 'warning' | 'danger' | undefined;
   @Input() nzCopyText: string | undefined;
   @Input() nzSuffix: string | undefined;
@@ -116,11 +116,11 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   @Output() readonly nzCopy = new EventEmitter<string>();
   @Output() readonly nzExpandChange = new EventEmitter<void>();
 
-  @ViewChild(NzTextEditComponent, { static: false }) textEditRef: NzTextEditComponent;
-  @ViewChild(NzTextCopyComponent, { static: false }) textCopyRef: NzTextCopyComponent;
-  @ViewChild('ellipsisContainer', { static: false }) ellipsisContainer: ElementRef<HTMLSpanElement>;
-  @ViewChild('expandable', { static: false }) expandableBtn: ElementRef<HTMLSpanElement>;
-  @ViewChild('contentTemplate', { static: false }) contentTemplate: TemplateRef<{ content: string }>;
+  @ViewChild(NzTextEditComponent, { static: false }) textEditRef?: NzTextEditComponent;
+  @ViewChild(NzTextCopyComponent, { static: false }) textCopyRef?: NzTextCopyComponent;
+  @ViewChild('ellipsisContainer', { static: false }) ellipsisContainer?: ElementRef<HTMLSpanElement>;
+  @ViewChild('expandable', { static: false }) expandableBtn?: ElementRef<HTMLSpanElement>;
+  @ViewChild('contentTemplate', { static: false }) contentTemplate?: TemplateRef<{ content: string }>;
 
   locale: NzSafeAny = {};
   document: Document;
@@ -141,7 +141,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   private destroy$ = new Subject();
   private windowResizeSubscription = Subscription.EMPTY;
   get copyText(): string {
-    return typeof this.nzCopyText === 'string' ? this.nzCopyText : this.nzContent;
+    return (typeof this.nzCopyText === 'string' ? this.nzCopyText : this.nzContent)!;
   }
 
   constructor(
@@ -202,8 +202,8 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   }
 
   getOriginContentViewRef(): { viewRef: EmbeddedViewRef<{ content: string }>; removeView(): void } {
-    const viewRef = this.viewContainerRef.createEmbeddedView<{ content: string }>(this.contentTemplate, {
-      content: this.nzContent
+    const viewRef = this.viewContainerRef.createEmbeddedView<{ content: string }>(this.contentTemplate!, {
+      content: this.nzContent!
     });
     viewRef.detectChanges();
     return {
@@ -219,7 +219,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
       return;
     }
     const { viewRef, removeView } = this.getOriginContentViewRef();
-    const fixedNodes = [this.textCopyRef, this.textEditRef].filter(e => e && e.nativeElement).map(e => e.nativeElement);
+    const fixedNodes = [this.textCopyRef, this.textEditRef].filter(e => e && e.nativeElement).map(e => e!.nativeElement);
     const expandableBtnElement = this.getExpandableBtnElement();
     if (expandableBtnElement) {
       fixedNodes.push(expandableBtnElement);
@@ -237,7 +237,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
 
     this.ellipsisText = text;
     this.isEllipsis = ellipsis;
-    const ellipsisContainerNativeElement = this.ellipsisContainer.nativeElement;
+    const ellipsisContainerNativeElement = this.ellipsisContainer!.nativeElement;
     while (ellipsisContainerNativeElement.firstChild) {
       this.renderer.removeChild(ellipsisContainerNativeElement, ellipsisContainerNativeElement.firstChild);
     }

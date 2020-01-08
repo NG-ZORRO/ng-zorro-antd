@@ -55,19 +55,20 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzOffsetTop: NumberInput;
   static ngAcceptInputType_nzOffsetBottom: NumberInput;
 
-  @ViewChild('fixedEl', { static: true }) private fixedEl: ElementRef<HTMLDivElement>;
+  @ViewChild('fixedEl', { static: true }) private fixedEl!: ElementRef<HTMLDivElement>;
 
-  @Input() nzTarget: string | Element | Window;
-
-  @Input()
-  @WithConfig<number | null>(NZ_CONFIG_COMPONENT_NAME, null)
-  @InputNumber()
-  nzOffsetTop: null | number;
+  // TODO@hsuanxyz SSR breaks (perhaps)?
+  @Input() nzTarget: string | Element | Window = window;
 
   @Input()
-  @WithConfig<number | null>(NZ_CONFIG_COMPONENT_NAME, null)
+  @WithConfig<number | null>(NZ_CONFIG_COMPONENT_NAME)
   @InputNumber()
-  nzOffsetBottom: null | number;
+  nzOffsetTop: null | number = null;
+
+  @Input()
+  @WithConfig<number | null>(NZ_CONFIG_COMPONENT_NAME)
+  @InputNumber()
+  nzOffsetBottom: null | number = null;
 
   @Output() readonly nzChange = new EventEmitter<boolean>();
 
