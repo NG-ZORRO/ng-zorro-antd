@@ -3,9 +3,8 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { dispatchMouseEvent, NzConfigService } from 'ng-zorro-antd/core';
+import { dispatchMouseEvent, NZ_CONFIG, NzConfig, NzConfigService } from 'ng-zorro-antd/core';
 
-import { NZ_MESSAGE_CONFIG } from './nz-message-config';
 import { NzMessageModule } from './nz-message.module';
 import { NzMessageService } from './nz-message.service';
 
@@ -17,10 +16,15 @@ describe('NzMessage', () => {
   let nzConfigService: NzConfigService;
 
   beforeEach(fakeAsync(() => {
+    const MESSAGE_CONFIG: NzConfig['message'] = {
+      nzMaxStack: 2,
+      nzTop: 24
+    };
+
     TestBed.configureTestingModule({
       imports: [NzMessageModule, NoopAnimationsModule],
       declarations: [NzTestMessageBasicComponent],
-      providers: [{ provide: NZ_MESSAGE_CONFIG, useValue: { nzMaxStack: 2, nzTop: 24 } }]
+      providers: [{ provide: NZ_CONFIG, useValue: { message: MESSAGE_CONFIG } }]
     });
 
     TestBed.compileComponents();
@@ -28,13 +32,11 @@ describe('NzMessage', () => {
 
   beforeEach(inject([NzMessageService, OverlayContainer], (m: NzMessageService, oc: OverlayContainer) => {
     messageService = m;
+    // @ts-ignore
+    nzConfigService = messageService._container.nzConfigService;
     if (!overlayContainerElement) {
       overlayContainerElement = oc.getContainerElement();
     }
-  }));
-
-  beforeEach(inject([NzConfigService], (c: NzConfigService) => {
-    nzConfigService = c;
   }));
 
   afterEach(() => {
@@ -161,17 +163,6 @@ describe('NzMessage', () => {
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');
   }));
 
-  /**
-   * @deprecated This test is going to be removed in 9.0.0
-   */
-  it('should reset default config dynamically', fakeAsync(() => {
-    messageService.config({ nzDuration: 0 });
-    messageService.create('loading', 'EXISTS');
-    fixture.detectChanges();
-    tick(10000);
-    expect(overlayContainerElement.textContent).toContain('EXISTS');
-  }));
-
   it('should reset default config from config service', fakeAsync(() => {
     nzConfigService.set('message', { nzDuration: 0 });
     messageService.create('loading', 'EXISTS');
@@ -181,7 +172,6 @@ describe('NzMessage', () => {
   }));
 
   it('should emit event when message close', fakeAsync(() => {
-    messageService.config({ nzDuration: 2000 });
     const closeSpy = jasmine.createSpy('message closed');
     const msg = messageService.create('loading', 'CLOSE');
     const messageId = msg.messageId;

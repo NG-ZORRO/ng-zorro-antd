@@ -4,10 +4,9 @@ import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/cor
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeOutline } from '@ant-design/icons-angular/icons';
 
-import { dispatchMouseEvent } from 'ng-zorro-antd/core';
+import { dispatchMouseEvent, NZ_CONFIG, NzConfig, NzConfigService } from 'ng-zorro-antd/core';
 import { NZ_ICONS } from 'ng-zorro-antd/icon';
 
-import { NZ_NOTIFICATION_CONFIG } from './nz-notification-config';
 import { NzNotificationModule } from './nz-notification.module';
 import { NzNotificationService } from './nz-notification.service';
 
@@ -24,6 +23,7 @@ describe('NzNotification', () => {
   let notificationService: NzNotificationService;
   let overlayContainerElement: HTMLElement;
   let fixture: ComponentFixture<DemoAppComponent>;
+  let nzConfigService: NzConfigService;
 
   function waitForNotificationToggling(): void {
     fixture.detectChanges();
@@ -32,15 +32,19 @@ describe('NzNotification', () => {
   }
 
   beforeEach(fakeAsync(() => {
+    const NOTIFICATION_CONFIG: NzConfig['notification'] = {
+      nzMaxStack: 2
+    };
+
     TestBed.configureTestingModule({
       imports: [NzNotificationModule, NoopAnimationsModule],
       declarations: [DemoAppComponent],
       providers: [
-        { provide: NZ_NOTIFICATION_CONFIG, useValue: { nzMaxStack: 2 } },
         {
           provide: NZ_ICONS,
           useValue: [HomeOutline]
-        }
+        },
+        { provide: NZ_CONFIG, useValue: { notification: NOTIFICATION_CONFIG } }
       ] // Override default config
     });
 
@@ -49,17 +53,19 @@ describe('NzNotification', () => {
 
   beforeEach(inject([NzNotificationService, OverlayContainer], (n: NzNotificationService, oc: OverlayContainer) => {
     notificationService = n;
+    // @ts-ignore
+    nzConfigService = notificationService._container.nzConfigService;
     if (!overlayContainerElement) {
       overlayContainerElement = oc.getContainerElement();
     }
   }));
 
-  afterEach(() => {
-    notificationService.remove();
-  });
-
   beforeEach(() => {
     fixture = TestBed.createComponent(DemoAppComponent);
+  });
+
+  afterEach(() => {
+    notificationService.remove();
   });
 
   it('should open a message box with success', () => {
@@ -165,23 +171,21 @@ describe('NzNotification', () => {
     tick(1000 + 10);
     expect(overlayContainerElement.textContent).not.toContain('EXISTS');
   }));
-
   it('should reset default config dynamically', fakeAsync(() => {
-    notificationService.config({ nzDuration: 0 });
+    nzConfigService.set('notification', { nzDuration: 0 });
     notificationService.create('', 'loading', 'EXISTS');
     fixture.detectChanges();
-    tick(50000);
+    tick(10000);
     expect(overlayContainerElement.textContent).toContain('EXISTS');
   }));
 
   it('should show with placement of topLeft', () => {
-    notificationService.config({ nzPlacement: 'topLeft' });
+    nzConfigService.set('notification', { nzPlacement: 'topLeft' });
     notificationService.create('', '', 'EXISTS');
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toContain('EXISTS');
     expect(overlayContainerElement.querySelector('.ant-notification-topLeft')).not.toBeNull();
   });
-
   // Should support nzData as context.
   it('should open a message box with template ref', () => {
     notificationService.template(fixture.componentInstance.demoTemplateRef, { nzData: 'data' });
@@ -219,14 +223,14 @@ describe('NzNotification', () => {
   }));
 
   it('should support configurable nzTop & nzBottom', fakeAsync(() => {
-    notificationService.config({ nzTop: 48 });
+    nzConfigService.set('notification', { nzTop: 48 });
     notificationService.create('', '', 'TEST TOP', { nzDuration: 3000 });
     waitForNotificationToggling();
     const notificationContainer = overlayContainerElement.querySelector('.ant-notification') as HTMLElement;
     expect(notificationContainer.style.top).toBe('48px');
     expect(notificationContainer.style.bottom).toBeFalsy();
 
-    notificationService.config({ nzPlacement: 'bottomLeft', nzBottom: '48px' });
+    nzConfigService.set('notification', { nzPlacement: 'bottomLeft', nzBottom: '48px' });
     notificationService.create('', '', 'TEST BOTTOM');
     waitForNotificationToggling();
     expect(notificationContainer.style.top).toBeFalsy();

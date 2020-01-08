@@ -134,14 +134,13 @@ export class ChangeZorroConfigComponent {
 
 For any property that supports global configuration, the sequence of priority is as follow:
 
-**Parameters passed to an component instance (in templates or methods like `service.create` > global config provided with the injection token `NZ_CONFIG` > global config provided with legacy injection tokens > default value in ng-zorro-antd**
+**Parameters passed to an component instance (in templates or methods like `service.create` > global config provided with the injection token `NZ_CONFIG` > default value in ng-zorro-antd**
 
 For example, if you want to create a `NzNotification` component:
 
 1. When you call `NzNotificationService.success`, you passed `{ nzDuration: 6000 }` as the third parameter
 2. You provide `{ notification: { nzDuration: 5000 } }` with `NZ_CONFIG`
-3. You provide  `{ nzDuration: 4000 }` with `NZ_NOTIFICATION_CONFIG`
-4. ng-zorro-antd has a default value of 4500
+3. ng-zorro-antd has a default value of 4500
 
 Eventually, this notification would keep open for 6000 milliseconds.
 

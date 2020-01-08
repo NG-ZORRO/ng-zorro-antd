@@ -6,16 +6,25 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Optional, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { NzConfigService, toCssPixel, warnDeprecation } from 'ng-zorro-antd/core';
+import { NotificationConfig, NzConfigService, toCssPixel } from 'ng-zorro-antd/core';
 import { NzMessageContainerComponent } from 'ng-zorro-antd/message';
 
-import { NZ_NOTIFICATION_CONFIG, NZ_NOTIFICATION_DEFAULT_CONFIG, NzNotificationConfigLegacy } from './nz-notification-config';
 import { NzNotificationDataFilled, NzNotificationDataOptions } from './nz-notification.definitions';
 
 const NZ_CONFIG_COMPONENT_NAME = 'notification';
+
+const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
+  nzTop: '24px',
+  nzBottom: '24px',
+  nzPlacement: 'topRight',
+  nzDuration: 4500,
+  nzMaxStack: 7,
+  nzPauseOnHover: true,
+  nzAnimate: true
+};
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -26,7 +35,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'notification';
   templateUrl: './nz-notification-container.component.html'
 })
 export class NzNotificationContainerComponent extends NzMessageContainerComponent {
-  config: Required<NzNotificationConfigLegacy>;
+  config: Required<NotificationConfig>;
   bottom: string | null;
 
   /**
@@ -34,35 +43,8 @@ export class NzNotificationContainerComponent extends NzMessageContainerComponen
    */
   messages: Array<Required<NzNotificationDataFilled>> = [];
 
-  constructor(
-    cdr: ChangeDetectorRef,
-    nzConfigService: NzConfigService,
-    @Optional() @Inject(NZ_NOTIFICATION_DEFAULT_CONFIG) defaultConfig: NzNotificationConfigLegacy,
-    @Optional() @Inject(NZ_NOTIFICATION_CONFIG) config: NzNotificationConfigLegacy
-  ) {
-    super(cdr, nzConfigService, defaultConfig, config);
-    if (!!config) {
-      warnDeprecation(
-        `Injection token 'NZ_NOTIFICATION_CONFIG' is deprecated and will be removed in 9.0.0. Please use 'NzConfigService' instead.`
-      );
-    }
-  }
-
-  /**
-   * @override
-   */
-  setConfig(config?: NzNotificationConfigLegacy): void {
-    const newConfig = (this.config = {
-      ...this.config,
-      ...config,
-      ...this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME)
-    });
-    const placement = this.config.nzPlacement;
-
-    this.top = placement === 'topLeft' || placement === 'topRight' ? toCssPixel(newConfig.nzTop) : null;
-    this.bottom = placement === 'bottomLeft' || placement === 'bottomRight' ? toCssPixel(newConfig.nzBottom) : null;
-
-    this.cdr.markForCheck();
+  constructor(cdr: ChangeDetectorRef, nzConfigService: NzConfigService) {
+    super(cdr, nzConfigService);
   }
 
   /**
@@ -94,8 +76,27 @@ export class NzNotificationContainerComponent extends NzMessageContainerComponen
   /**
    * @override
    */
+  protected updateConfig(): void {
+    const newConfig = (this.config = {
+      ...NZ_NOTIFICATION_DEFAULT_CONFIG,
+      ...this.config,
+      ...this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME)
+    });
+    const placement = this.config.nzPlacement;
+
+    this.top = placement === 'topLeft' || placement === 'topRight' ? toCssPixel(newConfig.nzTop) : null;
+    this.bottom = placement === 'bottomLeft' || placement === 'bottomRight' ? toCssPixel(newConfig.nzBottom) : null;
+
+    this.cdr.markForCheck();
+  }
+
+  /**
+   * @override
+   */
   protected subscribeConfigChange(): void {
-    this.nzConfigService.getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME).subscribe(() => this.setConfig());
+    this.nzConfigService
+      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+      .subscribe(() => this.updateConfig());
   }
 
   private replaceNotification(old: NzNotificationDataFilled, _new: NzNotificationDataFilled): void {
