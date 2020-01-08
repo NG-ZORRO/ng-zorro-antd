@@ -58,6 +58,7 @@ stages:
           condition: succeededOrFailed()
           inputs:
             searchFolder: $(System.DefaultWorkingDirectory)/junit
+            failTaskOnFailedTests: true
             testRunTitle: NG-ZORRO
             testResultsFormat: JUnit
             testResultsFiles: "**/TESTS*.xml"

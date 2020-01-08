@@ -7,7 +7,7 @@
     </ng-container>
     <ng-template #formatTemplate>
       <ng-container *nzStringTemplateOutlet="formatter; context: { $implicit: nzPercent }">
-        {{ formatter(nzPercent) }}
+        {{ $any(formatter)(nzPercent) }}
       </ng-container>
     </ng-template>
   </span>
