@@ -179,8 +179,6 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
    */
   private getSteps(): void {
     const current = Math.floor(this.nzSteps! * (this.nzPercent / 100));
-
-    console.log(current, this.nzStrokeColor);
     const stepWidth = this.nzSize === 'small' ? 2 : 14;
 
     for (let i = 0; i < this.nzSteps!; i++) {
