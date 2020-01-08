@@ -296,6 +296,8 @@ export class NzCascaderService implements OnDestroy {
     }
 
     this.columns = [results];
+
+    this.$redraw.next(); // Search results may be empty, so should redraw.
   }
 
   /**
