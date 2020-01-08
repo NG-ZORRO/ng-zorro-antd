@@ -44,16 +44,16 @@ import { takeUntil } from 'rxjs/operators';
 export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   static ngAcceptInputType_nzCondition: BooleanInput;
 
-  @Input('nzPopconfirmTitle') specificTitle: NzTSType;
-  @Input('nz-popconfirm') directiveNameTitle: NzTSType | null;
-  @Input('nzPopconfirmTrigger') specificTrigger: NzTooltipTrigger;
-  @Input('nzPopconfirmPlacement') specificPlacement: string;
-  @Input('nzPopconfirmOrigin') specificOrigin: ElementRef<HTMLElement>;
-  @Input() nzOkText: string;
-  @Input() nzOkType: string;
-  @Input() nzCancelText: string;
-  @Input() nzIcon: string | TemplateRef<void>;
-  @Input() @InputBoolean() nzCondition: boolean;
+  @Input('nzPopconfirmTitle') specificTitle?: NzTSType;
+  @Input('nz-popconfirm') directiveNameTitle?: NzTSType | null;
+  @Input('nzPopconfirmTrigger') specificTrigger?: NzTooltipTrigger;
+  @Input('nzPopconfirmPlacement') specificPlacement?: string;
+  @Input('nzPopconfirmOrigin') specificOrigin?: ElementRef<HTMLElement>;
+  @Input() nzOkText?: string;
+  @Input() nzOkType?: string;
+  @Input() nzCancelText?: string;
+  @Input() nzIcon?: string | TemplateRef<void>;
+  @Input() @InputBoolean() nzCondition: boolean = false;
 
   /**
    * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
@@ -166,10 +166,10 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   `
 })
 export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestroy {
-  nzCancelText: string;
+  nzCancelText?: string;
   nzCondition = false;
-  nzIcon: string | TemplateRef<void>;
-  nzOkText: string;
+  nzIcon?: string | TemplateRef<void>;
+  nzOkText?: string;
   nzOkType: string = 'primary';
 
   readonly nzOnCancel = new Subject<void>();

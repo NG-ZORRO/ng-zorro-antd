@@ -61,10 +61,10 @@ function isDefaultColor(color?: string): boolean {
   `
 })
 export class NzTimelineItemComponent implements OnChanges {
-  @ViewChild('template', { static: false }) template: TemplateRef<void>;
+  @ViewChild('template', { static: false }) template!: TemplateRef<void>;
 
   @Input() nzColor: NzTimelineItemColor = 'blue';
-  @Input() nzDot: string | TemplateRef<void>;
+  @Input() nzDot?: string | TemplateRef<void>;
 
   isLast = false;
   borderColor: string | null = null;

@@ -61,9 +61,9 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
 
   visible: boolean = false;
 
-  @Input() nzTemplate: TemplateRef<void>;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 400) @InputNumber() nzVisibilityHeight: number;
-  @Input() nzTarget: string | HTMLElement;
+  @Input() nzTemplate?: TemplateRef<void>;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputNumber() nzVisibilityHeight: number = 400;
+  @Input() nzTarget?: string | HTMLElement;
   @Output() readonly nzClick: EventEmitter<boolean> = new EventEmitter();
 
   constructor(

@@ -44,7 +44,7 @@ export class NzOptionComponent implements OnChanges, OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   changes = new Subject();
   groupLabel: string | TemplateRef<NzSafeAny> | null = null;
-  @ViewChild(TemplateRef, { static: true }) template: TemplateRef<NzSafeAny>;
+  @ViewChild(TemplateRef, { static: true }) template!: TemplateRef<NzSafeAny>;
   @Input() nzLabel: string | null = null;
   @Input() nzValue: NzSafeAny | null = null;
   @Input() @InputBoolean() nzDisabled = false;

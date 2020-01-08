@@ -87,7 +87,7 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
   isRadioButton = !!this.nzRadioButtonDirective;
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
-  @ViewChild('inputElement', { static: false }) inputElement: ElementRef;
+  @ViewChild('inputElement', { static: false }) inputElement?: ElementRef;
   @Input() nzValue: NzSafeAny | null = null;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAutoFocus = false;
@@ -109,11 +109,11 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
   }
 
   focus(): void {
-    this.focusMonitor.focusVia(this.inputElement, 'keyboard');
+    this.focusMonitor.focusVia(this.inputElement!, 'keyboard');
   }
 
   blur(): void {
-    this.inputElement.nativeElement.blur();
+    this.inputElement!.nativeElement.blur();
   }
 
   constructor(

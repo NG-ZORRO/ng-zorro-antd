@@ -97,23 +97,23 @@ export class NzListComponent implements AfterContentInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzLoading: BooleanInput;
   static ngAcceptInputType_nzSplit: BooleanInput;
 
-  @Input() nzDataSource: NzSafeAny[];
+  @Input() nzDataSource: NzSafeAny[] = [];
   @Input() @InputBoolean() nzBordered = false;
-  @Input() nzGrid: NzListGrid;
-  @Input() nzHeader: string | TemplateRef<void>;
-  @Input() nzFooter: string | TemplateRef<void>;
+  @Input() nzGrid?: NzListGrid;
+  @Input() nzHeader?: string | TemplateRef<void>;
+  @Input() nzFooter?: string | TemplateRef<void>;
   @Input() nzItemLayout: NzDirectionVHType = 'horizontal';
-  @Input() nzRenderItem: TemplateRef<void>;
+  @Input() nzRenderItem?: TemplateRef<void>;
   @Input() @InputBoolean() nzLoading = false;
-  @Input() nzLoadMore: TemplateRef<void>;
-  @Input() nzPagination: TemplateRef<void>;
+  @Input() nzLoadMore?: TemplateRef<void>;
+  @Input() nzPagination?: TemplateRef<void>;
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() @InputBoolean() nzSplit = true;
-  @Input() nzNoResult: string | TemplateRef<void>;
+  @Input() nzNoResult?: string | TemplateRef<void>;
 
-  @ContentChild(NzListFooterComponent) nzListFooterComponent: NzListFooterComponent;
-  @ContentChild(NzListPaginationComponent) nzListPaginationComponent: NzListPaginationComponent;
-  @ContentChild(NzListLoadMoreDirective) nzListLoadMoreDirective: NzListLoadMoreDirective;
+  @ContentChild(NzListFooterComponent) nzListFooterComponent!: NzListFooterComponent;
+  @ContentChild(NzListPaginationComponent) nzListPaginationComponent!: NzListPaginationComponent;
+  @ContentChild(NzListLoadMoreDirective) nzListLoadMoreDirective!: NzListLoadMoreDirective;
 
   hasSomethingAfterLastItem = false;
 

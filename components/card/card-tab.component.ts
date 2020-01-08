@@ -20,5 +20,5 @@ import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild, ViewEncapsu
   `
 })
 export class NzCardTabComponent {
-  @ViewChild(TemplateRef, { static: true }) template: TemplateRef<void>;
+  @ViewChild(TemplateRef, { static: true }) template!: TemplateRef<void>;
 }

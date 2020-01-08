@@ -20,7 +20,7 @@ import { NzFormatEmitEvent, NzTreeNodeOptions } from 'ng-zorro-antd/tree';
 })
 export class NzDemoTreeSelectAsyncComponent {
   expandKeys = ['0-0'];
-  value: string;
+  value?: string;
   nodes = [
     {
       title: 'Node1',

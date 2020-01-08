@@ -43,9 +43,9 @@ import {
 export class NzTransferSearchComponent implements OnChanges {
   // region: fields
 
-  @Input() placeholder: string;
-  @Input() value: string;
-  @Input() disabled: boolean;
+  @Input() placeholder?: string;
+  @Input() value?: string;
+  @Input() disabled?: boolean;
 
   @Output() readonly valueChanged = new EventEmitter<string>();
   @Output() readonly valueClear = new EventEmitter<void>();

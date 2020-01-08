@@ -29,13 +29,13 @@ export const enum NzTriggerAction {
 }
 
 export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAPI<T, R> {
-  componentInstance: T | null;
+  componentInstance: T | null = null;
   result?: R;
   state: NzModalState = NzModalState.OPEN;
   afterClose: Subject<R> = new Subject();
   afterOpen: Subject<void> = new Subject();
 
-  private closeTimeout: number;
+  private closeTimeout?: number;
 
   constructor(private overlayRef: OverlayRef, private config: ModalOptions, public containerInstance: BaseModalContainer) {
     containerInstance.animationStateChanged

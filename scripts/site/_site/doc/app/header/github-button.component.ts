@@ -29,7 +29,7 @@ export class GithubButtonComponent implements OnInit {
   starCount = 0;
   org = 'NG-ZORRO';
   repo = 'ng-zorro-antd';
-  @Input() responsive: null | 'narrow' | 'crowded';
+  @Input() responsive: null | 'narrow' | 'crowded' = null;
 
   constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {
   }

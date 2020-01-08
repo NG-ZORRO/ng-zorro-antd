@@ -37,11 +37,11 @@ export class NzSliderStepComponent implements OnChanges {
 
   @Input() lowerBound: number | null = null;
   @Input() upperBound: number | null = null;
-  @Input() marksArray: NzExtendedMark[];
+  @Input() marksArray: NzExtendedMark[] = [];
   @Input() @InputBoolean() vertical = false;
   @Input() @InputBoolean() included = false;
 
-  steps: NzDisplayedStep[];
+  steps: NzDisplayedStep[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.marksArray) {

@@ -70,10 +70,10 @@ export class NzCollapsePanelComponent implements OnInit, OnDestroy {
 
   @Input() @InputBoolean() nzActive = false;
   @Input() @InputBoolean() nzDisabled = false;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzShowArrow: boolean;
-  @Input() nzExtra: string | TemplateRef<void>;
-  @Input() nzHeader: string | TemplateRef<void>;
-  @Input() nzExpandedIcon: string | TemplateRef<void>;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzShowArrow: boolean = true;
+  @Input() nzExtra?: string | TemplateRef<void>;
+  @Input() nzHeader?: string | TemplateRef<void>;
+  @Input() nzExpandedIcon?: string | TemplateRef<void>;
   @Output() readonly nzActiveChange = new EventEmitter<boolean>();
   private destroy$ = new Subject();
   clickHeader(): void {

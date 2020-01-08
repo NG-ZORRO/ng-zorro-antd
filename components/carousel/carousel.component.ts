@@ -103,21 +103,22 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   static ngAcceptInputType_nzAutoPlaySpeed: NumberInput;
   static ngAcceptInputType_nzTransitionSpeed: NumberInput;
 
-  @ContentChildren(NzCarouselContentDirective) carouselContents: QueryList<NzCarouselContentDirective>;
+  @ContentChildren(NzCarouselContentDirective) carouselContents!: QueryList<NzCarouselContentDirective>;
 
-  @ViewChild('slickList', { static: false }) slickList: ElementRef;
-  @ViewChild('slickTrack', { static: false }) slickTrack: ElementRef;
+  @ViewChild('slickList', { static: false }) slickList?: ElementRef;
+  @ViewChild('slickTrack', { static: false }) slickTrack?: ElementRef;
 
-  @Input() nzDotRender: TemplateRef<{ $implicit: number }>;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'scrollx') nzEffect: NzCarouselEffects;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzEnableSwipe: boolean;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzDots: boolean;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzAutoPlay: boolean;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 3000) @InputNumber() nzAutoPlaySpeed: number;
+  @Input() nzDotRender?: TemplateRef<{ $implicit: number }>;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzEffect: NzCarouselEffects = 'scrollx';
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzEnableSwipe: boolean = true;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzDots: boolean = true;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzAutoPlay: boolean = false;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputNumber() nzAutoPlaySpeed: number = 3000;
   @Input() @InputNumber() nzTransitionSpeed = 500;
 
   @Input()
-  @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'bottom')
+  // @ts-ignore
+  @WithConfig(NZ_CONFIG_COMPONENT_NAME)
   set nzDotPosition(value: NzCarouselDotPosition) {
     this._dotPosition = value;
     if (value === 'left' || value === 'right') {
@@ -131,18 +132,18 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     return this._dotPosition;
   }
 
-  private _dotPosition: NzCarouselDotPosition;
+  private _dotPosition: NzCarouselDotPosition = 'bottom';
 
   @Output() readonly nzBeforeChange = new EventEmitter<FromToInterface>();
   @Output() readonly nzAfterChange = new EventEmitter<number>();
 
   activeIndex = 0;
   el: HTMLElement;
-  slickListEl: HTMLElement;
-  slickTrackEl: HTMLElement;
-  strategy: NzCarouselBaseStrategy;
+  slickListEl!: HTMLElement;
+  slickTrackEl!: HTMLElement;
+  strategy?: NzCarouselBaseStrategy;
   vertical = false;
-  transitionInProgress: number | null;
+  transitionInProgress: number | null = null;
 
   private destroy$ = new Subject<void>();
   private gestureRect: ClientRect | null = null;
@@ -160,6 +161,8 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     private readonly nzDragService: NzDragService,
     @Optional() @Inject(NZ_CAROUSEL_CUSTOM_STRATEGIES) private customStrategies: NzCarouselStrategyRegistryItem[]
   ) {
+    this.nzDotPosition = 'bottom';
+
     this.renderer.addClass(elementRef.nativeElement, 'ant-carousel');
     this.el = elementRef.nativeElement;
   }
@@ -172,8 +175,8 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     if (!this.platform.isBrowser) {
       return;
     }
-    this.slickListEl = this.slickList.nativeElement;
-    this.slickTrackEl = this.slickTrack.nativeElement;
+    this.slickListEl = this.slickList!.nativeElement;
+    this.slickTrackEl = this.slickTrack!.nativeElement;
 
     this.carouselContents.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.markContentActive(0);
@@ -255,7 +258,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
       const to = (index + length) % length;
       this.isTransiting = true;
       this.nzBeforeChange.emit({ from, to });
-      this.strategy.switch(this.activeIndex, index).subscribe(() => {
+      this.strategy!.switch(this.activeIndex, index).subscribe(() => {
         this.scheduleNextTransition();
         this.nzAfterChange.emit(index);
         this.isTransiting = false;
@@ -323,7 +326,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
         delta => {
           this.pointerDelta = delta;
           this.isDragging = true;
-          this.strategy.dragging(this.pointerDelta);
+          this.strategy?.dragging(this.pointerDelta);
         },
         () => {},
         () => {

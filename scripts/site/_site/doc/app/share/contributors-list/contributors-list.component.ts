@@ -27,7 +27,8 @@ export class NzContributorsListComponent implements OnInit, OnDestroy {
   list: any[] = [];
   filePath = '';
   isIntersecting = false;
-  intersectionObserver: IntersectionObserver;
+  intersectionObserver!: IntersectionObserver;
+
   constructor(
     private router: Router,
     private platform: Platform,

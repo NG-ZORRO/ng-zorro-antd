@@ -25,7 +25,8 @@ export class DrawerBuilderForService<R> {
   constructor(private overlay: Overlay, private options: NzDrawerOptions) {
     /** pick {@link NzDrawerOptions.nzOnCancel} and omit this option */
     const { nzOnCancel, ...componentOption } = this.options;
-    this.createDrawer();
+    this.overlayRef = this.overlay.create();
+    this.drawerRef = this.overlayRef.attach(new ComponentPortal(NzDrawerComponent));
     this.updateOptions(componentOption);
     // Prevent repeatedly open drawer when tap focus element.
     this.drawerRef!.instance.savePreviouslyFocusedElement();
@@ -54,11 +55,6 @@ export class DrawerBuilderForService<R> {
 
   getInstance(): NzDrawerRef<R> {
     return this.drawerRef! && this.drawerRef!.instance;
-  }
-
-  createDrawer(): void {
-    this.overlayRef = this.overlay.create();
-    this.drawerRef = this.overlayRef.attach(new ComponentPortal(NzDrawerComponent));
   }
 
   updateOptions(options: NzDrawerOptionsOfComponent): void {

@@ -19,9 +19,9 @@ import { NZ_DATE_LOCALE, NZ_I18N } from './nz-i18n.token';
   providedIn: 'root'
 })
 export class NzI18nService {
-  private _locale: NzI18nInterface;
+  private _locale!: NzI18nInterface;
   private _change = new BehaviorSubject<NzI18nInterface>(this._locale);
-  private dateLocale: DateLocale;
+  private dateLocale!: DateLocale;
 
   get localeChange(): Observable<NzI18nInterface> {
     return this._change.asObservable();

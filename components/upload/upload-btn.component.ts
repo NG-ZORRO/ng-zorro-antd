@@ -36,8 +36,8 @@ import { UploadFile, UploadXHRArgs, ZipButtonOptions } from './interface';
 export class NzUploadBtnComponent implements OnDestroy {
   reqs: { [key: string]: Subscription } = {};
   private destroy = false;
-  @ViewChild('file', { static: false }) file: ElementRef;
-  @Input() options: ZipButtonOptions;
+  @ViewChild('file', { static: false }) file!: ElementRef;
+  @Input() options!: ZipButtonOptions;
   onClick(): void {
     if (this.options.disabled || !this.options.openFileDialogOnClick) {
       return;

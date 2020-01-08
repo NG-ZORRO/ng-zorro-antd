@@ -33,8 +33,8 @@ export class NzSliderTrackComponent implements OnChanges {
   static ngAcceptInputType_vertical: BooleanInput;
   static ngAcceptInputType_included: BooleanInput;
 
-  @Input() @InputNumber() offset: number;
-  @Input() @InputNumber() length: number;
+  @Input() @InputNumber() offset: number = 0;
+  @Input() @InputNumber() length: number = 0;
   @Input() @InputBoolean() vertical = false;
   @Input() @InputBoolean() included = false;
 

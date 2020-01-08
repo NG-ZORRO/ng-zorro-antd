@@ -104,17 +104,17 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> exte
   static ngAcceptInputType_nzNoAnimation: BooleanInput;
   static ngAcceptInputType_nzKeyboard: BooleanInput;
 
-  @Input() nzContent: TemplateRef<{ $implicit: D; drawerRef: NzDrawerRef<R> }> | Type<T>;
+  @Input() nzContent!: TemplateRef<{ $implicit: D; drawerRef: NzDrawerRef<R> }> | Type<T>;
   @Input() @InputBoolean() nzClosable: boolean = true;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzMaskClosable: boolean;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzMask: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzMaskClosable: boolean = true;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzMask: boolean = true;
   @Input() @InputBoolean() nzNoAnimation = false;
   @Input() @InputBoolean() nzKeyboard: boolean = true;
-  @Input() nzTitle: string | TemplateRef<{}>;
+  @Input() nzTitle?: string | TemplateRef<{}>;
   @Input() nzPlacement: NzDrawerPlacement = 'right';
   @Input() nzMaskStyle: object = {};
   @Input() nzBodyStyle: object = {};
-  @Input() nzWrapClassName: string;
+  @Input() nzWrapClassName?: string;
   @Input() nzWidth: number | string = 256;
   @Input() nzHeight: number | string = 256;
   @Input() nzZIndex = 1000;
@@ -133,17 +133,17 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> exte
   @Output() readonly nzOnViewInit = new EventEmitter<void>();
   @Output() readonly nzOnClose = new EventEmitter<MouseEvent>();
 
-  @ViewChild('drawerTemplate', { static: true }) drawerTemplate: TemplateRef<void>;
-  @ViewChild(CdkPortalOutlet, { static: false }) bodyPortalOutlet: CdkPortalOutlet;
+  @ViewChild('drawerTemplate', { static: true }) drawerTemplate!: TemplateRef<void>;
+  @ViewChild(CdkPortalOutlet, { static: false }) bodyPortalOutlet?: CdkPortalOutlet;
 
   destroy$ = new Subject<void>();
-  previouslyFocusedElement: HTMLElement;
+  previouslyFocusedElement?: HTMLElement;
   placementChanging = false;
   placementChangeTimeoutId = -1;
-  nzContentParams: D; // only service
-  overlayRef: OverlayRef | null;
-  portal: TemplatePortal;
-  focusTrap: FocusTrap;
+  nzContentParams?: D; // only service
+  overlayRef?: OverlayRef | null;
+  portal?: TemplatePortal;
+  focusTrap?: FocusTrap;
   isOpen = false;
   templateContext: { $implicit: D | undefined; drawerRef: NzDrawerRef<R> } = {
     $implicit: undefined,
@@ -315,12 +315,12 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> exte
   }
 
   private attachBodyContent(): void {
-    this.bodyPortalOutlet.dispose();
+    this.bodyPortalOutlet!.dispose();
 
     if (this.nzContent instanceof Type) {
       const childInjector = new PortalInjector(this.injector, new WeakMap([[NzDrawerRef, this]]));
       const componentPortal = new ComponentPortal<T>(this.nzContent, null, childInjector);
-      const componentRef = this.bodyPortalOutlet.attachComponentPortal(componentPortal);
+      const componentRef = this.bodyPortalOutlet!.attachComponentPortal(componentPortal);
       Object.assign(componentRef.instance, this.nzContentParams);
       componentRef.changeDetectorRef.detectChanges();
     }

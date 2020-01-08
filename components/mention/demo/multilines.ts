@@ -10,6 +10,6 @@ import { Component, ViewEncapsulation } from '@angular/core';
   `
 })
 export class NzDemoMentionMultilinesComponent {
-  inputValue: string;
+  inputValue?: string;
   suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご'];
 }

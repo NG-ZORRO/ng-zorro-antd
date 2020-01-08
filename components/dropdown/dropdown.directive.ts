@@ -45,7 +45,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzVisible: BooleanInput;
 
-  private portal: TemplatePortal;
+  private portal?: TemplatePortal;
   private overlayRef: OverlayRef | null = null;
   private destroy$ = new Subject();
   private positionStrategy = this.overlay.position().flexibleConnectedTo(this.elementRef.nativeElement).withLockedPosition();

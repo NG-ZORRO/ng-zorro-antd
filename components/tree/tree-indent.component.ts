@@ -21,9 +21,9 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleCha
   }
 })
 export class NzTreeIndentComponent implements OnInit, OnChanges {
-  @Input() nzTreeLevel: number;
-  @Input() nzIsStart: boolean[];
-  @Input() nzIsEnd: boolean[];
+  @Input() nzTreeLevel?: number;
+  @Input() nzIsStart!: boolean[];
+  @Input() nzIsEnd!: boolean[];
   @Input() nzSelectMode = false;
 
   listOfUnit: number[] = [];

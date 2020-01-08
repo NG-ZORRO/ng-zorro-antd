@@ -112,28 +112,28 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
   private _scrollDistance = 0;
   private _selectedIndex = 0;
   /** Cached text content of the header. */
-  private currentTextContent: string;
+  private currentTextContent?: string;
   private destroy$ = new Subject<void>();
   showPaginationControls = false;
   disableScrollAfter = true;
   disableScrollBefore = true;
   selectedIndexChanged = false;
   realignInkBar: Subscription | null = null;
-  tabLabelCount: number;
-  scrollDistanceChanged: boolean;
-  @ContentChildren(NzTabLabelDirective) listOfNzTabLabelDirective: QueryList<NzTabLabelDirective>;
-  @ViewChild(NzTabsInkBarDirective, { static: true }) nzTabsInkBarDirective: NzTabsInkBarDirective;
-  @ViewChild('navContainerElement', { static: true }) navContainerElement: ElementRef<HTMLDivElement>;
-  @ViewChild('navListElement', { static: true }) navListElement: ElementRef<HTMLDivElement>;
-  @ViewChild('scrollListElement', { static: true }) scrollListElement: ElementRef<HTMLDivElement>;
+  tabLabelCount?: number;
+  scrollDistanceChanged?: boolean;
+  @ContentChildren(NzTabLabelDirective) listOfNzTabLabelDirective!: QueryList<NzTabLabelDirective>;
+  @ViewChild(NzTabsInkBarDirective, { static: true }) nzTabsInkBarDirective!: NzTabsInkBarDirective;
+  @ViewChild('navContainerElement', { static: true }) navContainerElement!: ElementRef<HTMLDivElement>;
+  @ViewChild('navListElement', { static: true }) navListElement!: ElementRef<HTMLDivElement>;
+  @ViewChild('scrollListElement', { static: true }) scrollListElement!: ElementRef<HTMLDivElement>;
   @Output() readonly nzOnNextClick = new EventEmitter<void>();
   @Output() readonly nzOnPrevClick = new EventEmitter<void>();
-  @Input() nzTabBarExtraContent: TemplateRef<void>;
+  @Input() nzTabBarExtraContent?: TemplateRef<void>;
   @Input() @InputBoolean() nzAnimated = true;
   @Input() @InputBoolean() nzHideBar = false;
   @Input() @InputBoolean() nzShowPagination = true;
   @Input() nzType = 'line';
-  @Input() nzSize: NzSizeLDSType;
+  @Input() nzSize?: NzSizeLDSType;
   @Input() nzTabPosition: NzTabPosition = 'top';
 
   @Input()

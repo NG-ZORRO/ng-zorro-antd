@@ -60,24 +60,24 @@ interface UploadListFile extends UploadFile {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzUploadListComponent implements OnChanges {
-  list: UploadListFile[];
+  list: UploadListFile[] = [];
 
   private get showPic(): boolean {
     return this.listType === 'picture' || this.listType === 'picture-card';
   }
 
   @Input() locale: NzSafeAny = {};
-  @Input() listType: UploadListType;
+  @Input() listType!: UploadListType;
   @Input()
   set items(list: UploadFile[]) {
     this.list = list;
   }
-  @Input() icons: ShowUploadListInterface;
-  @Input() onPreview: (file: UploadFile) => void;
-  @Input() onRemove: (file: UploadFile) => void;
-  @Input() onDownload: (file: UploadFile) => void;
-  @Input() previewFile: (file: UploadFile) => Observable<string>;
-  @Input() iconRender: TemplateRef<void>;
+  @Input() icons!: ShowUploadListInterface;
+  @Input() onPreview!: (file: UploadFile) => void;
+  @Input() onRemove!: (file: UploadFile) => void;
+  @Input() onDownload!: (file: UploadFile) => void;
+  @Input() previewFile!: (file: UploadFile) => Observable<string>;
+  @Input() iconRender!: TemplateRef<void>;
 
   private genErr(file: UploadFile): string {
     if (file.response && typeof file.response === 'string') {
