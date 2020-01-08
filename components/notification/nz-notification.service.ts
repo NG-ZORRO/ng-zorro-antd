@@ -12,7 +12,6 @@ import { ApplicationRef, ComponentFactoryResolver, Injectable, Injector, Templat
 import { NzSingletonService } from 'ng-zorro-antd/core';
 import { NzMessageBaseService } from 'ng-zorro-antd/message';
 
-import { NzNotificationConfigLegacy } from './nz-notification-config';
 import { NzNotificationContainerComponent } from './nz-notification-container.component';
 import { NzNotificationData, NzNotificationDataFilled, NzNotificationDataOptions } from './nz-notification.definitions';
 import { NzNotificationServiceModule } from './nz-notification.service.module';
@@ -20,11 +19,7 @@ import { NzNotificationServiceModule } from './nz-notification.service.module';
 @Injectable({
   providedIn: NzNotificationServiceModule
 })
-export class NzNotificationService extends NzMessageBaseService<
-  NzNotificationContainerComponent,
-  NzNotificationData,
-  NzNotificationConfigLegacy
-> {
+export class NzNotificationService extends NzMessageBaseService<NzNotificationContainerComponent, NzNotificationData> {
   constructor(
     nzSingletonService: NzSingletonService,
     overlay: Overlay,

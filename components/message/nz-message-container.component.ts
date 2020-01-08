@@ -6,15 +6,20 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, Optional, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { NzConfigService, toCssPixel, warnDeprecation } from 'ng-zorro-antd/core';
-
-import { NZ_MESSAGE_CONFIG, NZ_MESSAGE_DEFAULT_CONFIG, NzMessageConfigLegacy } from './nz-message-config';
+import { MessageConfig, NzConfigService, toCssPixel } from 'ng-zorro-antd/core';
 import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
 
 const NZ_CONFIG_COMPONENT_NAME = 'message';
+const NZ_MESSAGE_DEFAULT_CONFIG: Required<MessageConfig> = {
+  nzAnimate: true,
+  nzDuration: 3000,
+  nzMaxStack: 7,
+  nzPauseOnHover: true,
+  nzTop: 24
+};
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -26,31 +31,15 @@ const NZ_CONFIG_COMPONENT_NAME = 'message';
 })
 export class NzMessageContainerComponent implements OnInit {
   messages: NzMessageDataFilled[] = [];
-  config: Required<NzMessageConfigLegacy>;
+  config: Required<MessageConfig>;
   top: string | null;
 
-  constructor(
-    protected cdr: ChangeDetectorRef,
-    protected nzConfigService: NzConfigService,
-    @Optional() @Inject(NZ_MESSAGE_DEFAULT_CONFIG) defaultConfig: NzMessageConfigLegacy,
-    @Optional() @Inject(NZ_MESSAGE_CONFIG) config: NzMessageConfigLegacy
-  ) {
-    if (!!config) {
-      warnDeprecation(
-        `Injection token 'NZ_MESSAGE_CONFIG' is deprecated and will be removed in 9.0.0. Please use 'NzConfigService' instead.`
-      );
-    }
-    this.setConfig({ ...defaultConfig, ...config });
+  constructor(protected cdr: ChangeDetectorRef, protected nzConfigService: NzConfigService) {
+    this.updateConfig();
   }
 
   ngOnInit(): void {
     this.subscribeConfigChange();
-  }
-
-  setConfig(config?: NzMessageConfigLegacy): void {
-    this.config = this.mergeMessageConfig(config);
-    this.top = toCssPixel(this.config.nzTop);
-    this.cdr.markForCheck();
   }
 
   /**
@@ -93,14 +82,20 @@ export class NzMessageContainerComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  protected subscribeConfigChange(): void {
-    this.nzConfigService.getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME).subscribe(() => this.setConfig());
+  protected updateConfig(): void {
+    this.config = this.updateConfigFromConfigService();
+    this.top = toCssPixel(this.config.nzTop);
+    this.cdr.markForCheck();
   }
 
-  protected mergeMessageConfig(config?: NzMessageConfigLegacy): Required<NzMessageConfigLegacy> {
+  protected subscribeConfigChange(): void {
+    this.nzConfigService.getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME).subscribe(() => this.updateConfig());
+  }
+
+  protected updateConfigFromConfigService(): Required<MessageConfig> {
     return {
+      ...NZ_MESSAGE_DEFAULT_CONFIG,
       ...this.config,
-      ...config,
       ...this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME)
     };
   }

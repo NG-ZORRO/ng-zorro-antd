@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NzConfigService } from 'ng-zorro-antd/core';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 @Component({
@@ -21,7 +22,7 @@ export class NzDemoNotificationPlacementComponent {
   }
 
   createBasicNotification(): void {
-    this.notification.config({
+    this.configService.set('notification', {
       nzPlacement: this.placement
     });
     this.notification.blank(
@@ -30,5 +31,5 @@ export class NzDemoNotificationPlacementComponent {
     );
   }
 
-  constructor(private notification: NzNotificationService) {}
+  constructor(private notification: NzNotificationService, private configService: NzConfigService) {}
 }

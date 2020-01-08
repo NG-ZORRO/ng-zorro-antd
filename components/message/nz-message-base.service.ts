@@ -8,19 +8,14 @@
 
 import { Overlay } from '@angular/cdk/overlay';
 import { ApplicationRef, ComponentFactoryResolver, EmbeddedViewRef, Injector, Type } from '@angular/core';
-import { NzSingletonService, warnDeprecation } from 'ng-zorro-antd/core';
+import { NzSingletonService } from 'ng-zorro-antd/core';
 
-import { NzMessageConfigLegacy } from './nz-message-config';
 import { NzMessageContainerComponent } from './nz-message-container.component';
 import { NzMessageData, NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
 
 let globalCounter = 0;
 
-export class NzMessageBaseService<
-  ContainerClass extends NzMessageContainerComponent,
-  MessageData,
-  MessageConfig extends NzMessageConfigLegacy
-> {
+export class NzMessageBaseService<ContainerClass extends NzMessageContainerComponent, MessageData> {
   protected _container: ContainerClass;
 
   constructor(
@@ -56,14 +51,6 @@ export class NzMessageBaseService<
     this._container.createMessage(resultMessage);
 
     return resultMessage;
-  }
-
-  config(config: MessageConfig): void {
-    warnDeprecation(
-      `'config' of 'NzMessageService' and 'NzNotificationService' is deprecated and will be removed in 9.0.0. Please use 'set' of 'NzConfigService' instead.`
-    );
-
-    this._container.setConfig(config);
   }
 
   protected _generateMessageId(): string {
