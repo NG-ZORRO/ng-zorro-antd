@@ -135,6 +135,66 @@ export const inputNames: VersionChanges<InputNameUpgradeData> = {
           }
         }
       ]
+    },
+    {
+      pr     : 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/4375',
+      changes: [
+        {
+          replace    : 'type',
+          replaceWith: 'nzType',
+          whitelist  : {
+            attributes: ['nz-icon']
+          }
+        }
+      ]
+    },
+    {
+      pr     : 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/4375',
+      changes: [
+        {
+          replace    : 'iconfont',
+          replaceWith: 'nzIconfont',
+          whitelist  : {
+            attributes: ['nz-icon']
+          }
+        }
+      ]
+    },
+    {
+      pr     : 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/4375',
+      changes: [
+        {
+          replace    : 'spin',
+          replaceWith: 'nzSpin',
+          whitelist  : {
+            attributes: ['nz-icon']
+          }
+        }
+      ]
+    },
+    {
+      pr     : 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/4375',
+      changes: [
+        {
+          replace    : 'theme',
+          replaceWith: 'nzTheme',
+          whitelist  : {
+            attributes: ['nz-icon']
+          }
+        }
+      ]
+    },
+    {
+      pr     : 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/4375',
+      changes: [
+        {
+          replace    : 'twoToneColor',
+          replaceWith: 'nzTwoToneColor',
+          whitelist  : {
+            attributes: ['nz-icon']
+          }
+        }
+      ]
     }
   ]
 };
