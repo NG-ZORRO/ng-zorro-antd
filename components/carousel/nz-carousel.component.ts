@@ -33,15 +33,7 @@ import {
 import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 
-import {
-  InputBoolean,
-  InputNumber,
-  NzConfigService,
-  NzDomEventService,
-  NzDragService,
-  warnDeprecation,
-  WithConfig
-} from 'ng-zorro-antd/core';
+import { InputBoolean, InputNumber, NzConfigService, NzDomEventService, NzDragService, WithConfig } from 'ng-zorro-antd/core';
 
 import { NzCarouselContentDirective } from './nz-carousel-content.directive';
 import {
@@ -101,17 +93,6 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzAutoPlay: boolean;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 3000) @InputNumber() nzAutoPlaySpeed: number;
   @Input() @InputNumber() nzTransitionSpeed = 500;
-
-  @Input()
-  @InputBoolean()
-  get nzVertical(): boolean {
-    return this.vertical;
-  }
-
-  set nzVertical(value: boolean) {
-    warnDeprecation(`'nzVertical' is deprecated and will be removed in 9.0.0. Please use 'nzDotPosition' instead.`);
-    this.vertical = value;
-  }
 
   @Input()
   @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'bottom')
@@ -314,7 +295,6 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
 
   /**
    * Drag carousel.
-   * @param event
    */
   pointerDown = (event: TouchEvent | MouseEvent) => {
     if (!this.isDragging && !this.isTransiting && this.nzEnableSwipe) {
