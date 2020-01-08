@@ -30,7 +30,7 @@ describe('nz-tree', () => {
       treeElement = fixture.debugElement.query(By.directive(NzTreeComponent)).nativeElement;
     }));
 
-    it('should set nzDefaultXXX correctly', fakeAsync(() => {
+    it('should set default property correctly', fakeAsync(() => {
       fixture.detectChanges();
       flush();
       tick(300);
@@ -878,10 +878,10 @@ export class NzTestTreeDraggableComponent {
     <nz-tree
       [(ngModel)]="modelNodes"
       [nzMultiple]="true"
-      [nzDefaultExpandedKeys]="expandKeys"
-      [nzDefaultCheckedKeys]="checkedKeys"
-      [nzDefaultSelectedKeys]="selectedKeys"
-      [nzDefaultExpandAll]="expandDefault"
+      [nzExpandedKeys]="expandKeys"
+      [nzCheckedKeys]="checkedKeys"
+      [nzSelectedKeys]="selectedKeys"
+      [nzExpandAll]="expandDefault"
       (nzExpandChange)="nzEvent()"
     >
     </nz-tree>

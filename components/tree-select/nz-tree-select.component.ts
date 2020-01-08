@@ -47,7 +47,6 @@ import {
   NzTreeNode,
   NzTreeNodeOptions,
   slideMotion,
-  warnDeprecation,
   WithConfig,
   zoomMotion
 } from 'ng-zorro-antd/core';
@@ -123,17 +122,6 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzSizeLDSType;
   @Input() nzPlaceHolder = '';
   @Input() nzDropdownStyle: { [key: string]: string };
-  /**
-   * @deprecated 9.0.0 - use `nzExpandedKeys` instead.
-   */
-  @Input()
-  set nzDefaultExpandedKeys(value: string[]) {
-    warnDeprecation(`'nzDefaultExpandedKeys' would be removed in 9.0.0. Please use 'nzExpandedKeys' instead.`);
-    this.expandedKeys = value;
-  }
-  get nzDefaultExpandedKeys(): string[] {
-    return this.expandedKeys;
-  }
 
   @Input()
   set nzExpandedKeys(value: string[]) {
