@@ -32,7 +32,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/router';
-import { merge, Subject, Subscription } from 'rxjs';
+import { merge, Observable, Subject, Subscription } from 'rxjs';
 
 import {
   InputBoolean,
@@ -42,9 +42,10 @@ import {
   NzUpdateHostClassService,
   PREFIX,
   toNumber,
-  WithConfig
+  WithConfig,
+  wrapIntoObservable
 } from 'ng-zorro-antd/core';
-import { filter, startWith, takeUntil } from 'rxjs/operators';
+import { filter, first, startWith, takeUntil } from 'rxjs/operators';
 
 import { NzTabComponent } from './nz-tab.component';
 import { NzTabsNavComponent } from './nz-tabs-nav.component';
@@ -58,6 +59,8 @@ export class NzTabChangeEvent {
   index: number;
   tab: NzTabComponent;
 }
+
+export type NzTabsCanDeactivateFn = (fromIndex: number, toIndex: number) => Observable<boolean> | Promise<boolean> | boolean;
 
 export type NzTabPosition = NzFourDirectionType;
 export type NzTabPositionMode = 'horizontal' | 'vertical';
@@ -109,6 +112,7 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
 
   @Input() @InputBoolean() nzLinkRouter = false;
   @Input() @InputBoolean() nzLinkExact = true;
+  @Input() nzCanDeactivate: NzTabsCanDeactivateFn | null = null;
 
   @Output() readonly nzOnNextClick = new EventEmitter<void>();
   @Output() readonly nzOnPrevClick = new EventEmitter<void>();
@@ -156,10 +160,20 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
 
   clickLabel(index: number, disabled: boolean): void {
     if (!disabled) {
-      const tabs = this.listOfNzTabComponent.toArray();
-      this.nzSelectedIndex = index;
-      tabs[index].nzClick.emit();
+      if (this.nzSelectedIndex !== null && this.nzSelectedIndex !== index && typeof this.nzCanDeactivate === 'function') {
+        const observable = wrapIntoObservable(this.nzCanDeactivate(this.nzSelectedIndex, index));
+        observable.pipe(first(), takeUntil(this.destroy$)).subscribe(canChange => canChange && this.emitClickEvent(index));
+      } else {
+        this.emitClickEvent(index);
+      }
     }
+  }
+
+  private emitClickEvent(index: number): void {
+    const tabs = this.listOfNzTabComponent.toArray();
+    this.nzSelectedIndex = index;
+    tabs[index].nzClick.emit();
+    this.cdr.markForCheck();
   }
 
   createChangeEvent(index: number): NzTabChangeEvent {

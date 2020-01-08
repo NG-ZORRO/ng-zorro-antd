@@ -7,8 +7,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { NgStyleInterface } from 'ng-zorro-antd/core';
 
+import { of } from 'rxjs';
 import { NzTabsModule } from './nz-tabs.module';
-import { NzAnimatedInterface, NzTabSetComponent } from './nz-tabset.component';
+import { NzAnimatedInterface, NzTabsCanDeactivateFn, NzTabSetComponent } from './nz-tabset.component';
 
 describe('tabs', () => {
   beforeEach(fakeAsync(() => {
@@ -467,6 +468,122 @@ describe('tabs', () => {
       expect(testComponent.select02).toHaveBeenCalledTimes(0);
       expect(testComponent.deselect02).toHaveBeenCalledTimes(0);
     }));
+
+    it('should switch hook work', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      testComponent.add = true;
+      // O => 1 => 2 => 0
+      testComponent.canDeactivate = (fromIndex: number, toIndex: number) => {
+        switch (fromIndex) {
+          case 0:
+            return toIndex === 1;
+          case 1:
+            return Promise.resolve(toIndex === 2);
+          case 2:
+            return of(toIndex === 0);
+          default:
+            return true;
+        }
+      };
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+
+      const titles = tabs.nativeElement.querySelectorAll('.ant-tabs-tab');
+      // 0 => 2: not
+      titles[2].click();
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      expect(testComponent.selectedIndex).toBe(0);
+      expect(testComponent.selectedIndexChange).toHaveBeenCalledTimes(0);
+      expect(testComponent.selectChange).toHaveBeenCalledTimes(0);
+      expect(testComponent.click00).toHaveBeenCalledTimes(0);
+      expect(testComponent.select00).toHaveBeenCalledTimes(0);
+      expect(testComponent.deselect00).toHaveBeenCalledTimes(0);
+      expect(testComponent.click02).toHaveBeenCalledTimes(0);
+      expect(testComponent.select02).toHaveBeenCalledTimes(0);
+      expect(testComponent.deselect02).toHaveBeenCalledTimes(0);
+
+      // 0 => 1: yes
+      titles[1].click();
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      expect(testComponent.selectedIndex).toBe(1);
+      expect(testComponent.selectedIndexChange).toHaveBeenCalledTimes(1);
+      expect(testComponent.selectChange).toHaveBeenCalledTimes(1);
+      expect(testComponent.click00).toHaveBeenCalledTimes(0);
+      expect(testComponent.select00).toHaveBeenCalledTimes(0);
+      expect(testComponent.deselect00).toHaveBeenCalledTimes(1);
+      expect(testComponent.click01).toHaveBeenCalledTimes(1);
+      expect(testComponent.select01).toHaveBeenCalledTimes(1);
+      expect(testComponent.deselect01).toHaveBeenCalledTimes(0);
+
+      // 1 => 0: not
+      titles[0].click();
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      expect(testComponent.selectedIndex).toBe(1);
+      expect(testComponent.selectedIndexChange).toHaveBeenCalledTimes(1);
+      expect(testComponent.selectChange).toHaveBeenCalledTimes(1);
+      expect(testComponent.click01).toHaveBeenCalledTimes(1);
+      expect(testComponent.select01).toHaveBeenCalledTimes(1);
+      expect(testComponent.deselect01).toHaveBeenCalledTimes(0);
+      expect(testComponent.click00).toHaveBeenCalledTimes(0);
+      expect(testComponent.select00).toHaveBeenCalledTimes(0);
+      expect(testComponent.deselect00).toHaveBeenCalledTimes(1);
+
+      // 1 => 2: yes
+      titles[2].click();
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      expect(testComponent.selectedIndex).toBe(2);
+      expect(testComponent.selectedIndexChange).toHaveBeenCalledTimes(2);
+      expect(testComponent.selectChange).toHaveBeenCalledTimes(2);
+      expect(testComponent.click01).toHaveBeenCalledTimes(1);
+      expect(testComponent.select01).toHaveBeenCalledTimes(1);
+      expect(testComponent.deselect01).toHaveBeenCalledTimes(1);
+      expect(testComponent.click02).toHaveBeenCalledTimes(1);
+      expect(testComponent.select02).toHaveBeenCalledTimes(1);
+      expect(testComponent.deselect02).toHaveBeenCalledTimes(1);
+
+      // 2 => 1: not
+      titles[1].click();
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      expect(testComponent.selectedIndex).toBe(2);
+      expect(testComponent.selectedIndexChange).toHaveBeenCalledTimes(2);
+      expect(testComponent.selectChange).toHaveBeenCalledTimes(2);
+      expect(testComponent.click02).toHaveBeenCalledTimes(1);
+      expect(testComponent.select02).toHaveBeenCalledTimes(1);
+      expect(testComponent.deselect02).toHaveBeenCalledTimes(1);
+      expect(testComponent.click01).toHaveBeenCalledTimes(1);
+      expect(testComponent.select01).toHaveBeenCalledTimes(1);
+      expect(testComponent.deselect01).toHaveBeenCalledTimes(1);
+
+      // 2 => 0: yes
+      titles[0].click();
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      expect(testComponent.selectedIndex).toBe(0);
+      expect(testComponent.selectedIndexChange).toHaveBeenCalledTimes(3);
+      expect(testComponent.selectChange).toHaveBeenCalledTimes(3);
+      expect(testComponent.click02).toHaveBeenCalledTimes(1);
+      expect(testComponent.select02).toHaveBeenCalledTimes(1);
+      expect(testComponent.deselect02).toHaveBeenCalledTimes(2);
+      expect(testComponent.click00).toHaveBeenCalledTimes(1);
+      expect(testComponent.select00).toHaveBeenCalledTimes(1);
+      expect(testComponent.deselect00).toHaveBeenCalledTimes(2);
+    }));
   });
 
   describe('init nzTabPosition to left', () => {
@@ -561,6 +678,7 @@ describe('link router', () => {
         [nzType]="type"
         [nzTabBarGutter]="tabBarGutter"
         [nzHideAll]="hideAll"
+        [nzCanDeactivate]="canDeactivate"
       >
         <nz-tab nzTitle="title" [nzForceRender]="true" (nzDeselect)="deselect00()" (nzSelect)="select00()" (nzClick)="click00()"
           >Content 1<!----></nz-tab
@@ -589,8 +707,8 @@ export class NzTestTabsBasicComponent {
   @ViewChild('extraTemplate', { static: false }) extraTemplate: TemplateRef<void>;
   @ViewChild(NzTabSetComponent, { static: false }) nzTabSetComponent: NzTabSetComponent;
   selectedIndex = 0;
-  selectedIndexChange = jasmine.createSpy('selectedIndex callback');
-  selectChange = jasmine.createSpy('selectedIndex callback');
+  selectedIndexChange = jasmine.createSpy('selectedIndexChange callback');
+  selectChange = jasmine.createSpy('selectChange callback');
   animated: NzAnimatedInterface | boolean = true;
   size = 'default';
   tabBarExtraContent: TemplateRef<void>;
@@ -612,6 +730,8 @@ export class NzTestTabsBasicComponent {
   select02 = jasmine.createSpy('select02 callback');
   deselect02 = jasmine.createSpy('deselect02 callback');
   array = [];
+
+  canDeactivate: NzTabsCanDeactivateFn | null = null;
 }
 
 /** https://github.com/NG-ZORRO/ng-zorro-antd/issues/1964 **/

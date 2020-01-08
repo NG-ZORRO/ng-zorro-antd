@@ -15,7 +15,7 @@ title: 资源推荐
 工具库|[Component Dev Kit](https://material.angular.io/cdk/categories) | Angular 官方的提供的组件库工具，包含拖拽、浮层、虚拟滚动等大量功能
 可视化|[NGX-CHARTS](https://swimlane.github.io/ngx-charts/) | 基于 D3 的Angular 可视化组件库
 可视化|[NGX-CHARTS-DAG](https://swimlane.github.io/ngx-graph/) | 基于 Dagre 的有向无环图可视化组件库
-无线端|[NG-ZORRO-MOBILE](http://ng.mobile.ant.design/) | Ant Design Mobile 设计规范的 Angular 实现
+无线端|[NG-ZORRO-MOBILE](https://ng.mobile.ant.design/) | Ant Design Mobile 设计规范的 Angular 实现
 打包 |[Angular CLI](https://cli.angular.io/) | Angular 的配套打包工具
 服务端渲染|[Angular Universal](https://universal.angular.io/) | Angular服务端渲染工具
 
