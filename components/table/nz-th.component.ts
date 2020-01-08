@@ -141,6 +141,9 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   reset(): void {
+    if (!this.nzFilters) {
+      return;
+    }
     this.initMultipleFilterList(true);
     this.initSingleFilterList(true);
     this.hasFilterValue = false;
@@ -209,7 +212,7 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzFilters) {
+    if (changes.nzFilters && this.nzFilters) {
       this.initMultipleFilterList();
       this.initSingleFilterList();
       this.updateFilterStatus();
