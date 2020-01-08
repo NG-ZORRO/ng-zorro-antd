@@ -32,8 +32,7 @@ import {
   NzNoAnimationDirective,
   NzTreeBaseService,
   NzTreeNode,
-  treeCollapseMotion,
-  warnDeprecation
+  treeCollapseMotion
 } from 'ng-zorro-antd/core';
 
 @Component({
@@ -72,22 +71,6 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
 
   get nzDraggable(): boolean {
     return this._nzDraggable;
-  }
-
-  /**
-   * @deprecated use `nzExpandAll` instead.
-   */
-  @Input()
-  set nzDefaultExpandAll(value: boolean) {
-    warnDeprecation(`'nzDefaultExpandAll' is going to be removed in 9.0.0. Please use 'nzExpandAll' instead.`);
-    this._nzExpandAll = value;
-    if (value && this.nzTreeNode && !this.nzTreeNode.isLeaf) {
-      this.nzTreeNode.isExpanded = true;
-    }
-  }
-
-  get nzDefaultExpandAll(): boolean {
-    return this._nzExpandAll;
   }
 
   // default set

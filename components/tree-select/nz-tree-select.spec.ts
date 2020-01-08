@@ -494,7 +494,6 @@ describe('tree-select component', () => {
       testComponent.expandKeys = [];
       treeSelect.nativeElement.click();
       fixture.detectChanges();
-      expect(treeSelectComponent.nzDefaultExpandedKeys.length === 0).toBe(true);
       expect(treeSelectComponent.nzExpandedKeys.length === 0).toBe(true);
       expect(treeSelectComponent.nzOpen).toBe(true);
       let targetSwitcher = overlayContainerElement.querySelector('.ant-select-tree-switcher')!;
@@ -503,7 +502,6 @@ describe('tree-select component', () => {
       dispatchMouseEvent(targetSwitcher, 'click');
       fixture.detectChanges();
       expect(targetSwitcher.classList.contains('ant-select-tree-switcher_open')).toBe(true);
-      expect(treeSelectComponent.nzDefaultExpandedKeys[0] === '1001').toBe(true);
       expect(treeSelectComponent.nzExpandedKeys[0] === '1001').toBe(true);
       treeSelect.nativeElement.click();
       fixture.detectChanges();
@@ -513,7 +511,6 @@ describe('tree-select component', () => {
       targetSwitcher = overlayContainerElement.querySelector('.ant-select-tree-switcher')!;
       expect(treeSelectComponent.nzOpen).toBe(true);
       expect(targetSwitcher.classList.contains('ant-select-tree-switcher_open')).toBe(true);
-      expect(treeSelectComponent.nzDefaultExpandedKeys[0] === '1001').toBe(true);
       expect(treeSelectComponent.nzExpandedKeys[0] === '1001').toBe(true);
     });
   });
@@ -636,7 +633,7 @@ export class NzTestTreeSelectBasicComponent {
     <nz-tree-select
       style="width: 250px"
       nzPlaceHolder="Please select"
-      [nzDefaultExpandedKeys]="expandKeys"
+      [nzExpandedKeys]="expandKeys"
       [nzNodes]="nodes"
       [nzShowSearch]="showSearch"
       [nzCheckable]="true"
