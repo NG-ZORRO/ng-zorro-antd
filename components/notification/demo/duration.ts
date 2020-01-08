@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { NotificationService } from 'ng-zorro-antd/notification';
 
 @Component({
   selector: 'nz-demo-notification-duration',
@@ -16,5 +16,5 @@ export class NzDemoNotificationDurationComponent {
     );
   }
 
-  constructor(private notification: NzNotificationService) {}
+  constructor(private notification: NotificationService) {}
 }

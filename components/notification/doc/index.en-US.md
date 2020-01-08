@@ -18,20 +18,20 @@ used in the following cases:
 - A notification that is pushed by the application.
 
 ```ts
-import { NzNotificationModule } from 'ng-zorro-antd/notification';
+import { NotificationModule } from 'ng-zorro-antd/notification';
 ```
 
 ## API
 
-### NzNotificationService
+### NotificationService
 
 The component provides a number of service methods using the following methods and parameters:
 
-- `NzNotificationService.blank(title, content, [options])` // Notification without icon
-- `NzNotificationService.success(title, content, [options])`
-- `NzNotificationService.error(title, content, [options])`
-- `NzNotificationService.info(title, content, [options])`
-- `NzNotificationService.warning(title, content, [options])`
+- `NotificationService.blank(title, content, [options])` // Notification without icon
+- `NotificationService.success(title, content, [options])`
+- `NotificationService.error(title, content, [options])`
+- `NotificationService.info(title, content, [options])`
+- `NotificationService.warning(title, content, [options])`
 
 | Argument | Description | Type | Default |
 | --- | --- | --- | --- |
@@ -54,7 +54,7 @@ The parameters that are set by the `options` support are as follows:
 
 Methods for destruction are also provided:
 
-- `NzNotificationService.remove(id)` // Remove the notification with the specified id. When the id is empty, remove all notifications (the notification id is returned by the above method)
+- `NotificationService.remove(id)` // Remove the notification with the specified id. When the id is empty, remove all notifications (the notification id is returned by the above method)
 
 ### Global Configuration
 
@@ -72,7 +72,7 @@ You can use `NzConfigService` to configure this component globally.
 
 ### NzNotificationDataFilled
 
-It's the object that returned when you call `NzNotificationService.success` and others.
+It's the object that returned when you call `NotificationService.success` and others.
 
 ```ts
 export interface NzNotificationDataFilled {

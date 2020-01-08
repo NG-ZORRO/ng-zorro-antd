@@ -1,5 +1,5 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { NotificationService } from 'ng-zorro-antd/notification';
 
 @Component({
   selector: 'nz-demo-notification-template',
@@ -33,5 +33,5 @@ export class NzDemoNotificationTemplateComponent {
     });
   }
 
-  constructor(private notificationService: NzNotificationService) {}
+  constructor(private notificationService: NotificationService) {}
 }

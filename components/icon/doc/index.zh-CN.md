@@ -30,7 +30,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 | `[nzIconfont]` | 指定来自 IconFont 的图标类型 | string | - |
 | `[nzRotate]` | 图标旋转角度（7.0.0 开始支持） | `number` | - |
 
-### NzIconService
+### IconService
 
 | 方法/属性 | 说明 | 参数 |
 | --- | --- | --- |
@@ -108,7 +108,7 @@ export class AppModule {
 }
 ```
 
-本质上是调用了 `NzIconService` 的 `addIcon` 方法，引入后的文件会被打包到 `.js` 文件中。静态引入会增加包体积，所以我们建议尽可能地使用动态加载，如果要静态加载，也仅仅加载你需要用到的图标，具体请看 Ant Design 的 [issue](https://github.com/ant-design/ant-design/issues/12011)。
+本质上是调用了 `IconService` 的 `addIcon` 方法，引入后的文件会被打包到 `.js` 文件中。静态引入会增加包体积，所以我们建议尽可能地使用动态加载，如果要静态加载，也仅仅加载你需要用到的图标，具体请看 Ant Design 的 [issue](https://github.com/ant-design/ant-design/issues/12011)。
 
 > 为了加快渲染速度，NG-ZORRO 本身用到的 icon 是静态引入的。而官网的图标是动态引入的。
 
@@ -126,7 +126,7 @@ export class AppModule {
 }
 ```
 
-你可以通过 `NzIconService` 的 `changeAssetsSource()` 方法来修改图标资源的位置，这样你就可以部署这些资源到 cdn 上。你的参数会被直接添加到 `assets/` 的前面。
+你可以通过 `IconService` 的 `changeAssetsSource()` 方法来修改图标资源的位置，这样你就可以部署这些资源到 cdn 上。你的参数会被直接添加到 `assets/` 的前面。
 
 例如，你在 `https://mycdn.somecdn.com/icons/assets` 目录下部署了静态资源文件，那么你就可以通过调用 `changeAssetsSource('https://mycdn.somecdn.com/icons')`，来告诉 NG-ZORRO 从这个位置动态加载图标资源。
 
@@ -166,7 +166,7 @@ this._iconService.fetchFromIconfont({
 
 用户可以使用该功能方便地添加自己的 icon。在渲染一个自定义 icon 时，只需要将 `type` 指定为 `namespace:name` 的形式，icon 组件就会在用户自行添加的图标中进行检索并渲染。同时支持静态和动态引入。
 
-静态引入，只需要调用 `NzIconService` 的 `addIconLiteral` 方法即可。
+静态引入，只需要调用 `IconService` 的 `addIconLiteral` 方法即可。
 
 动态引入，只需要保证 SVG 资源文件放到了相应的目录，即 `assets/${namespace}` 即可。例如你在 `zoo` 命名空间下有一个 `panda` 图标，你需要做的就是将 `panda.svg` 放到 `assets/zoo` 目录底下。
 
@@ -195,7 +195,7 @@ this._iconService.fetchFromIconfont({
 // const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key])
 ```
 
-然后通过 InjectionToken（1.8.0）或者 `NzIconService` 的 `addIcon` 方法引入。
+然后通过 InjectionToken（1.8.0）或者 `IconService` 的 `addIcon` 方法引入。
 
 ### 动态加载会不会影响网页的性能？
 

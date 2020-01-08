@@ -17,20 +17,20 @@ subtitle: 通知提醒框
 - 系统主动推送。
 
 ```ts
-import { NzNotificationModule } from 'ng-zorro-antd/notification';
+import { NotificationModule } from 'ng-zorro-antd/notification';
 ```
 
 ## API
 
-### NzNotificationService
+### NotificationService
 
 组件提供了一些服务方法，使用方式和参数如下：
 
-- `NzNotificationService.blank(title, content, [options])` // 不带图标的提示
-- `NzNotificationService.success(title, content, [options])`
-- `NzNotificationService.error(title, content, [options])`
-- `NzNotificationService.info(title, content, [options])`
-- `NzNotificationService.warning(title, content, [options])`
+- `NotificationService.blank(title, content, [options])` // 不带图标的提示
+- `NotificationService.success(title, content, [options])`
+- `NotificationService.error(title, content, [options])`
+- `NotificationService.info(title, content, [options])`
+- `NotificationService.warning(title, content, [options])`
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
@@ -54,7 +54,7 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
 
 还提供了全局销毁方法：
 
-- `NzNotificationService.remove(id)` // 移除特定id的消息，当id为空时，移除所有消息（该消息id通过上述方法返回值中得到）
+- `NotificationService.remove(id)` // 移除特定id的消息，当id为空时，移除所有消息（该消息id通过上述方法返回值中得到）
 
 ### 全局配置
 
@@ -72,7 +72,7 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
 
 ### NzNotificationDataFilled
 
-当你调用 `NzNotificationService.success` 或其他方法时会返回该对象。
+当你调用 `NotificationService.success` 或其他方法时会返回该对象。
 
 ```ts
 export interface NzNotificationDataFilled {

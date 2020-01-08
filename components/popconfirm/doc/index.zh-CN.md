@@ -14,7 +14,7 @@ title: Popconfirm
 和 `confirm` 弹出的全屏居中模态对话框相比，交互形式更轻量。
 
 ```ts
-import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { PopconfirmModule } from 'ng-zorro-antd/popconfirm';
 ```
 
 ## API

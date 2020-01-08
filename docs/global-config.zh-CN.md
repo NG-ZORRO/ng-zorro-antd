@@ -141,7 +141,7 @@ export class ChangeZorroConfigComponent {
 
 例如，你想创建一个 NzNotification 组件：
 
-1. 你在调用 `NzNotificationService.success` 时传递参数 `{ nzDuration: 6000 }`
+1. 你在调用 `NotificationService.success` 时传递参数 `{ nzDuration: 6000 }`
 2. 你通过 `NZ_CONFIG` 提供了全局默认值 `{ notification: { nzDuration: 5000 } }`
 3. NG-ZORRO 内部默认值为 4500
 

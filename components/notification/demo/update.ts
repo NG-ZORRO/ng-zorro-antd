@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { NotificationService } from 'ng-zorro-antd/notification';
 
 @Component({
   selector: 'nz-demo-notification-update',
@@ -10,7 +10,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
   `
 })
 export class NzDemoNotificationUpdateComponent {
-  constructor(private notification: NzNotificationService) {}
+  constructor(private notification: NotificationService) {}
 
   createAutoUpdatingNotifications(): void {
     this.notification.blank('Notification Title', 'Description.', {

@@ -13,7 +13,7 @@ A simple and compact dialog used for asking for user confirmation.
 The difference with the `confirm` modal dialog is that it's more lightweight than the static popped full-screen confirm modal.
 
 ```ts
-import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { PopconfirmModule } from 'ng-zorro-antd/popconfirm';
 ```
 
 ## API

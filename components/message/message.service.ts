@@ -1,0 +1,60 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { Overlay } from '@angular/cdk/overlay';
+import { ApplicationRef, ComponentFactoryResolver, Injectable, Injector, TemplateRef } from '@angular/core';
+import { NzSingletonService } from 'ng-zorro-antd/core';
+
+import { NzMessageBaseService } from './message-base.service';
+import { MessageContainerComponent } from './message-container.component';
+import { NzMessageServiceModule } from './message.service.module';
+import { NzMessageData, NzMessageDataFilled, NzMessageDataOptions } from './typings';
+
+@Injectable({
+  providedIn: NzMessageServiceModule
+})
+export class NzMessageService extends NzMessageBaseService<MessageContainerComponent, NzMessageData> {
+  constructor(
+    nzSingletonService: NzSingletonService,
+    overlay: Overlay,
+    injector: Injector,
+    cfr: ComponentFactoryResolver,
+    appRef: ApplicationRef
+  ) {
+    super(nzSingletonService, overlay, MessageContainerComponent, injector, cfr, appRef, 'message');
+  }
+
+  // Shortcut methods
+  success(content: string | TemplateRef<void>, options?: NzMessageDataOptions): NzMessageDataFilled {
+    return this.createMessage({ type: 'success', content }, options);
+  }
+
+  error(content: string | TemplateRef<void>, options?: NzMessageDataOptions): NzMessageDataFilled {
+    return this.createMessage({ type: 'error', content }, options);
+  }
+
+  info(content: string | TemplateRef<void>, options?: NzMessageDataOptions): NzMessageDataFilled {
+    return this.createMessage({ type: 'info', content }, options);
+  }
+
+  warning(content: string | TemplateRef<void>, options?: NzMessageDataOptions): NzMessageDataFilled {
+    return this.createMessage({ type: 'warning', content }, options);
+  }
+
+  loading(content: string | TemplateRef<void>, options?: NzMessageDataOptions): NzMessageDataFilled {
+    return this.createMessage({ type: 'loading', content }, options);
+  }
+
+  create(
+    type: 'success' | 'info' | 'warning' | 'error' | 'loading' | string,
+    content: string | TemplateRef<void>,
+    options?: NzMessageDataOptions
+  ): NzMessageDataFilled {
+    return this.createMessage({ type, content }, options);
+  }
+}

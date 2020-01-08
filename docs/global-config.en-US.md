@@ -138,7 +138,7 @@ For any property that supports global configuration, the sequence of priority is
 
 For example, if you want to create a `NzNotification` component:
 
-1. When you call `NzNotificationService.success`, you passed `{ nzDuration: 6000 }` as the third parameter
+1. When you call `NotificationService.success`, you passed `{ nzDuration: 6000 }` as the third parameter
 2. You provide `{ notification: { nzDuration: 5000 } }` with `NZ_CONFIG`
 3. ng-zorro-antd has a default value of 4500
 

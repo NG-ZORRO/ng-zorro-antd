@@ -28,7 +28,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 | `[nzIconfont]` | Type of the icon from iconfont | `string` | - |
 | `[nzRotate]` | Rotate degrees | `number` | - |
 
-### NzIconService
+### IconService
 
 | Methods/Properties | Description | Parameters |
 | --- | --- | --- |
@@ -106,7 +106,7 @@ export class AppModule {
 }
 ```
 
-Actually this calls `addIcon` of `NzIconService`. Icons imported would be bundled into your `.js` files. Static loading would increase your bundle's size so we recommend use dynamic importing as much as you can. You can track this [issue](https://github.com/ant-design/ant-design/issues/12011) of Ant Design for more details.
+Actually this calls `addIcon` of `IconService`. Icons imported would be bundled into your `.js` files. Static loading would increase your bundle's size so we recommend use dynamic importing as much as you can. You can track this [issue](https://github.com/ant-design/ant-design/issues/12011) of Ant Design for more details.
 
 > Icons used by `NG-ZORRO` itself are imported statically to increase loading speed. However, icons demonstrated on the official website are loaded dynamically.
 
@@ -124,7 +124,7 @@ Dynamic importing. This way would not increase your bundle's size. When NG-ZORRO
 }
 ```
 
-You can call `changeAssetsSource()` of `NzIconService` to change the location of your icon assets, so that you can deploy these icon assets to cdn. The parameter you passed would be add in front of `assets/`.
+You can call `changeAssetsSource()` of `IconService` to change the location of your icon assets, so that you can deploy these icon assets to cdn. The parameter you passed would be add in front of `assets/`.
 
 Let's assume that you deploy static assets under `https://mycdn.somecdn.com/icons/assets`. You can call `changeAssetsSource('https://mycdn.somecdn.com/icons')` to tell NG-ZORRO that all your resources are located there.
 
@@ -166,7 +166,7 @@ See [iconfont.cn](http://iconfont.cn/help/detail?spm=a313x.7781069.1998910419.15
 
 We introduced namespace so you could add your own icons in a convenient way. When you wan to render an icon, you could assign `type` `namespace:name`. Dynamic importing and static importing are both supported.
 
-Static importing. Invoke `addIconLiteral` of `NzIconService`.
+Static importing. Invoke `addIconLiteral` of `IconService`.
 
 Dynamic importing. Make sure that you have put your SVG resources in dir like `assets/${namespace}`. For example, if you have a `panda` icon and in `zoo` namespace, you should put `panda.svg` in `assets/zoo`.
 

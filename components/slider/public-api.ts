@@ -6,10 +6,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-slider.component';
-export * from './nz-slider.module';
-export * from './nz-slider-handle.component';
-export * from './nz-slider-marks.component';
-export * from './nz-slider-step.component';
-export * from './nz-slider-track.component';
-export * from './nz-slider-definitions';
+export * from './slider.component';
+export * from './slider.module';
+export * from './handle.component';
+export * from './marks.component';
+export * from './step';
+export * from './track.component';
+export * from './typings';

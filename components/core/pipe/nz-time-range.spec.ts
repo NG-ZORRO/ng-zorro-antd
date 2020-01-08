@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NzPipesModule } from 'ng-zorro-antd/core/pipe';
-import { NzStatisticModule } from '../../statistic/nz-statistic.module';
+import { NzStatisticModule } from '../../statistic/statistic.module';
 
 @Component({
   template: `

@@ -1,5 +1,5 @@
 import { Component, TemplateRef } from '@angular/core';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { NotificationService } from 'ng-zorro-antd/notification';
 
 @Component({
   selector: 'nz-demo-notification-custom-icon',
@@ -21,7 +21,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
   `
 })
 export class NzDemoNotificationCustomIconComponent {
-  constructor(private notification: NzNotificationService) {}
+  constructor(private notification: NotificationService) {}
 
   createBasicNotification(template: TemplateRef<{}>): void {
     this.notification.template(template);

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { NotificationService } from 'ng-zorro-antd/notification';
 
 @Component({
   selector: 'nz-demo-notification-custom-style',
@@ -8,7 +8,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
   `
 })
 export class NzDemoNotificationCustomStyleComponent {
-  constructor(private notification: NzNotificationService) {}
+  constructor(private notification: NotificationService) {}
 
   createBasicNotification(): void {
     this.notification.blank(
