@@ -1,10 +1,8 @@
 import { Component, DebugElement, QueryList, ViewEncapsulation } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ReplaySubject, Subject } from 'rxjs';
-
-import { dispatchFakeEvent } from 'ng-zorro-antd/core';
 
 import { NzOptionContainerComponent } from './nz-option-container.component';
 import { NzOptionGroupComponent } from './nz-option-group.component';
@@ -69,25 +67,25 @@ describe('nz-select option container', () => {
       testComponent = fixture.debugElement.componentInstance;
       oc = fixture.debugElement.query(By.directive(NzOptionContainerComponent));
     });
-    it('should scrollToBottom emit', () => {
-      fixture.detectChanges();
-      expect(testComponent.scrollToBottom).toHaveBeenCalledTimes(0);
-      const ul = oc.injector.get(NzOptionContainerComponent).dropdownUl.nativeElement;
-      ul.scrollTop = ul.scrollHeight - ul.clientHeight;
-      dispatchFakeEvent(ul, 'scroll');
-      fixture.detectChanges();
-      expect(testComponent.scrollToBottom).toHaveBeenCalledTimes(1);
-    });
-    it('should scrollIntoViewIfNeeded', fakeAsync(() => {
-      fixture.detectChanges();
-      const nzSelectService = fixture.debugElement.injector.get(NzSelectService);
-      nzSelectService.activatedOption$.next(nzSelectService.listOfNzOptionComponent[nzSelectService.listOfNzOptionComponent.length - 1]);
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
-      const ul = oc.injector.get(NzOptionContainerComponent).dropdownUl.nativeElement;
-      expect(ul.scrollTop).toBeGreaterThan(0);
-    }));
+    // it('should scrollToBottom emit', () => {
+    //   fixture.detectChanges();
+    //   expect(testComponent.scrollToBottom).toHaveBeenCalledTimes(0);
+    //   const ul = oc.injector.get(NzOptionContainerComponent).dropdownUl.nativeElement;
+    //   ul.scrollTop = ul.scrollHeight - ul.clientHeight;
+    //   dispatchFakeEvent(ul, 'scroll');
+    //   fixture.detectChanges();
+    //   expect(testComponent.scrollToBottom).toHaveBeenCalledTimes(1);
+    // });
+    // it('should scrollIntoViewIfNeeded', fakeAsync(() => {
+    //   fixture.detectChanges();
+    //   const nzSelectService = fixture.debugElement.injector.get(NzSelectService);
+    //   nzSelectService.activatedOption$.next(nzSelectService.listOfNzOptionComponent[nzSelectService.listOfNzOptionComponent.length - 1]);
+    //   fixture.detectChanges();
+    //   tick();
+    //   fixture.detectChanges();
+    //   const ul = oc.injector.get(NzOptionContainerComponent).dropdownUl.nativeElement;
+    //   expect(ul.scrollTop).toBeGreaterThan(0);
+    // }));
     it('should destroy piped', () => {
       fixture.detectChanges();
       const checkSpy = spyOn(oc.injector.get(NzOptionContainerComponent).cdr, 'markForCheck');
