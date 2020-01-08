@@ -36,3 +36,9 @@ export interface NzProgressCirclePath {
   stroke: string | null;
   strokePathStyle: NgStyleInterface;
 }
+
+export interface NzProgressStepItem {
+  backgroundColor: string;
+  width: string;
+  height: string;
+}

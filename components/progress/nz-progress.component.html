@@ -19,29 +19,41 @@
   [class.ant-progress-small]="nzSize == 'small'"
   [class.ant-progress-show-info]="nzShowInfo"
   [class.ant-progress-circle]="isCircleStyle"
+  [class.ant-progress-steps]="isSteps"
 >
   <!-- line progress -->
   <div *ngIf="nzType === 'line'">
-    <div class="ant-progress-outer">
-      <div class="ant-progress-inner">
-        <div
-          class="ant-progress-bg"
-          [style.width.%]="nzPercent"
-          [style.border-radius]="nzStrokeLinecap === 'round' ? '100px' : '0'"
-          [style.background]="!isGradient ? nzStrokeColor : null"
-          [style.background-image]="isGradient ? lineGradient : null"
-          [style.height.px]="strokeWidth"
-        ></div>
-        <div
-          *ngIf="nzSuccessPercent || nzSuccessPercent === 0"
-          class="ant-progress-success-bg"
-          [style.width.%]="nzSuccessPercent"
-          [style.border-radius]="nzStrokeLinecap === 'round' ? '100px' : '0'"
-          [style.height.px]="strokeWidth"
-        ></div>
+    <ng-container *ngIf="!isSteps">
+      <div class="ant-progress-outer" *ngIf="!isSteps">
+        <div class="ant-progress-inner">
+          <div
+            class="ant-progress-bg"
+            [style.width.%]="nzPercent"
+            [style.border-radius]="nzStrokeLinecap === 'round' ? '100px' : '0'"
+            [style.background]="!isGradient ? nzStrokeColor : null"
+            [style.background-image]="isGradient ? lineGradient : null"
+            [style.height.px]="strokeWidth"
+          ></div>
+          <div
+            *ngIf="nzSuccessPercent || nzSuccessPercent === 0"
+            class="ant-progress-success-bg"
+            [style.width.%]="nzSuccessPercent"
+            [style.border-radius]="nzStrokeLinecap === 'round' ? '100px' : '0'"
+            [style.height.px]="strokeWidth"
+          ></div>
+        </div>
       </div>
+      <ng-template [ngTemplateOutlet]="progressInfoTemplate"></ng-template>
+    </ng-container>
+    <!-- Step style progress -->
+    <div class="ant-progress-steps-outer" *ngIf="isSteps">
+      <div
+        *ngFor="let step of steps; let i = index"
+        class="ant-progress-steps-item"
+        [ngStyle]="step"
+      ></div>
+      <ng-template [ngTemplateOutlet]="progressInfoTemplate"></ng-template>
     </div>
-    <ng-template [ngTemplateOutlet]="progressInfoTemplate"></ng-template>
   </div>
 
   <!-- circle / dashboard progress -->
