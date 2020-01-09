@@ -12,6 +12,14 @@ Resize element.
 - Support Grids System
 - Support for custom handles and preview styles
 
+## When To Use
+
+When you want to resize elements.
+
+```ts
+import { NzResizableModule } from 'ng-zorro-antd/resizable';
+```
+
 ## API
 
 ### [nz-resizable]

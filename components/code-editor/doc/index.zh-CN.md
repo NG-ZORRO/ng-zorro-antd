@@ -11,7 +11,11 @@ monaco editor 组件。
 
 ## 何时使用
 
-- 需要在网页上渲染 monaco editor 时使用。
+需要在网页上渲染 monaco editor 时使用。
+
+```ts
+import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
+```
 
 ## API
 
