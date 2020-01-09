@@ -909,7 +909,7 @@ describe('date-fns testing', () => {
   it('should nzFormat has default value', fakeAsync(() => {
     fixtureInstance.nzShowTime = true;
     fixture.detectChanges();
-    expect(fixtureInstance.datePickerComp.nzFormat).toBe('MMM d, y h:mm:ss a');
+    expect(fixtureInstance.datePickerComp.nzFormat).toBe('yyyy-MM-dd HH:mm:ss');
   }));
 });
 
