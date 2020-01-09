@@ -90,7 +90,7 @@
     "marked": "^0.7.0",
     "minimist": "^1.2.0",
     "monaco-editor": "^0.17.1",
-    "ng-packagr": "^9.0.0-rc.3",
+    "ng-packagr": "9.0.0-rc.4",
     "ngx-color": "^4.0.0",
     "node-prismjs": "^0.1.2",
     "parse5": "^5.1.1",
