@@ -170,7 +170,7 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
     this.cdr.markForCheck();
   }
 
-  private setFormat(): void {}
+  protected setFormat(): void {}
 
   private setDefaultPlaceHolder(): void {
     if (!this.isCustomPlaceHolder && this.nzLocale) {

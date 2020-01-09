@@ -14,8 +14,8 @@ import en_US from '../i18n/languages/en_US';
 
 import { enUS } from 'date-fns/locale';
 import { NZ_DATE_LOCALE, NzI18nModule, NzI18nService } from 'ng-zorro-antd/i18n';
-import { NzDatePickerComponent } from './nz-date-picker.component';
-import { NzDatePickerModule } from './nz-date-picker.module';
+import { NzDatePickerComponent } from './date-picker.component';
+import { NzDatePickerModule } from './date-picker.module';
 
 registerLocaleData(zh);
 

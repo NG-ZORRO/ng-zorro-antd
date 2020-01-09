@@ -69,7 +69,7 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
     }
   }
 
-  private setFormat(): void {
+  protected setFormat(): void {
     // Default format when it's empty
     if (this.showWeek) {
       // TODO: Complete weekFormat in every locale file
