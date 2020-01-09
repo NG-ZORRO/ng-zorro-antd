@@ -34,7 +34,8 @@
       [class.ant-cascader-picker-arrow-expand]="menuVisible"
     >
     </i>
-    <i *ngIf="isLoading" nz-icon nzType="loading" class="ant-cascader-picker-arrow"></i>
+    <i *ngIf="isLoading" nz-icon nzType="loading"
+       class="ant-cascader-picker-arrow"></i>
     <span
       class="ant-cascader-picker-label"
       [class.ant-cascader-show-search]="!!nzShowSearch"
@@ -42,7 +43,7 @@
     >
       <ng-container *ngIf="!isLabelRenderTemplate; else labelTemplate">{{
         labelRenderText
-      }}</ng-container>
+        }}</ng-container>
       <ng-template #labelTemplate>
         <ng-template
           [ngTemplateOutlet]="nzLabelRender"
@@ -67,7 +68,6 @@
   <div
     #menu
     class="ant-cascader-menus"
-    *ngIf="(nzOptions && nzOptions.length) || inSearchingMode"
     [class.ant-cascader-menus-hidden]="!menuVisible"
     [ngClass]="menuCls"
     [ngStyle]="nzMenuStyle"
@@ -76,35 +76,40 @@
     [@slideMotion]="dropDownPosition"
     (mouseleave)="onTriggerMouseLeave($event)"
   >
-    <ul
-      *ngFor="let options of cascaderService.columns; let i = index"
-      class="ant-cascader-menu"
-      [ngClass]="menuColumnCls"
-      [style.height]="inSearchingMode && !cascaderService.columns[0].length ? 'auto' : ''"
-      [style.width]="dropdownWidthStyle"
-    >
+    <ul *ngIf="shouldShowEmpty; else hasOptionsTemplate"
+        class="ant-cascader-menu"
+        [style.width]="dropdownWidthStyle"
+        [style.height]="dropdownHeightStyle">
       <li
-        nz-cascader-option
-        *ngFor="let option of options"
-        [columnIndex]="i"
-        [nzLabelProperty]="nzLabelProperty"
-        [optionTemplate]="nzOptionRender"
-        [activated]="isOptionActivated(option, i)"
-        [highlightText]="inSearchingMode ? inputValue : ''"
-        [option]="option"
-        (mouseenter)="onOptionMouseEnter(option, i, $event)"
-        (mouseleave)="onOptionMouseLeave(option, i, $event)"
-        (click)="onOptionClick(option, i, $event)"
-      ></li>
-      <li
-        *ngIf="inSearchingMode && !cascaderService.columns[0].length"
-        class="ant-cascader-menu-item ant-cascader-menu-item-expanded ant-cascader-menu-item-disabled"
-      >
+        class="ant-cascader-menu-item ant-cascader-menu-item-expanded ant-cascader-menu-item-disabled">
         <nz-embed-empty
           [nzComponentName]="'cascader'"
           [specificContent]="nzNotFoundContent"
         ></nz-embed-empty>
       </li>
     </ul>
+    <ng-template #hasOptionsTemplate>
+      <ul
+        *ngFor="let options of cascaderService.columns; let i = index"
+        class="ant-cascader-menu"
+        [ngClass]="menuColumnCls"
+        [style.height]="dropdownHeightStyle"
+        [style.width]="dropdownWidthStyle"
+      >
+        <li
+          nz-cascader-option
+          *ngFor="let option of options"
+          [columnIndex]="i"
+          [nzLabelProperty]="nzLabelProperty"
+          [optionTemplate]="nzOptionRender"
+          [activated]="isOptionActivated(option, i)"
+          [highlightText]="inSearchingMode ? inputValue : ''"
+          [option]="option"
+          (mouseenter)="onOptionMouseEnter(option, i, $event)"
+          (mouseleave)="onOptionMouseLeave(option, i, $event)"
+          (click)="onOptionClick(option, i, $event)"
+        ></li>
+      </ul>
+    </ng-template>
   </div>
 </ng-template>
