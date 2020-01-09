@@ -29,7 +29,7 @@ export class NzCascaderService implements OnDestroy {
   activatedOptions: NzCascaderOption[] = [];
 
   /** An array to store cascader items arranged in different layers. */
-  columns: NzCascaderOption[][] = [[]];
+  columns: NzCascaderOption[][] = [];
 
   /** If user has entered searching mode. */
   inSearchingMode = false;
@@ -296,6 +296,8 @@ export class NzCascaderService implements OnDestroy {
     }
 
     this.columns = [results];
+
+    this.$redraw.next(); // Search results may be empty, so should redraw.
   }
 
   /**
