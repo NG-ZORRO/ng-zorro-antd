@@ -10,7 +10,11 @@ Support monaco editor in Angular.
 
 ## When To Use
 
-- When you want to use monaco editor in Angular.
+When you want to use monaco editor in Angular.
+
+```ts
+import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
+```
 
 ## API
 

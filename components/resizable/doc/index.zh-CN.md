@@ -13,6 +13,14 @@ experimental: true
 - 支持栅格系统
 - 支持自定义调整手柄和预览样式
 
+## 何时使用
+
+当你想调整元素尺寸时.
+
+```ts
+import { NzResizableModule } from 'ng-zorro-antd/resizable';
+```
+
 ## API
 
 ### [nz-resizable]
