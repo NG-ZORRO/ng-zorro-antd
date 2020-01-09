@@ -13,7 +13,7 @@ import { dispatchKeyboardEvent, dispatchMouseEvent, NgStyleInterface, typeInElem
 import en_US from '../i18n/languages/en_US';
 
 import { enUS } from 'date-fns/locale';
-import { NzI18nModule, NzI18nService, NZ_DATE_LOCALE } from 'ng-zorro-antd/i18n';
+import { NZ_DATE_LOCALE, NzI18nModule, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzDatePickerComponent } from './nz-date-picker.component';
 import { NzDatePickerModule } from './nz-date-picker.module';
 
