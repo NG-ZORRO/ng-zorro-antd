@@ -391,8 +391,9 @@ describe('NzDatePickerComponent', () => {
       expect(result.getDate()).toBe(+cellText);
     }));
 
-    it('should nzFormat parse input value', fakeAsync(() => {
+    it('should nzFormat parse input value by date-fns', fakeAsync(() => {
       const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+      i18nService.setDateLocale(enUS);
       fixtureInstance.nzFormat = 'dd.MM.yyyy';
       fixture.detectChanges();
       openPickerByClickTrigger();

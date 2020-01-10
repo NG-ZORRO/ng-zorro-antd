@@ -117,3 +117,5 @@ export interface NzI18nInterface {
     expand: string;
   };
 }
+
+export type DateLocale = Locale;

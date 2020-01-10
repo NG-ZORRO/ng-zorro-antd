@@ -37,10 +37,7 @@ export abstract class DateHelperService {
   abstract getISOWeek(date: Date): number;
   abstract getFirstDayOfWeek(): WeekDayIndex;
   abstract format(date: Date, formatStr: string): string;
-
-  parseDate(text: string, formatStr: string): Date {
-    return parse(text, transCompatFormat(formatStr), new Date());
-  }
+  abstract parseDate(text: string, formatStr?: string): Date;
 
   parseTime(text: string): Date | undefined {
     if (!text) {
@@ -74,6 +71,13 @@ export class DateHelperByDateFns extends DateHelperService {
   format(date: Date, formatStr: string): string {
     return date ? format(date, transCompatFormat(formatStr), { locale: this.i18n.getDateLocale() }) : '';
   }
+
+  parseDate(text: string, formatStr: string): Date {
+    return parse(text, formatStr, new Date(), {
+      locale: this.i18n.getDateLocale(),
+      weekStartsOn: this.getFirstDayOfWeek()
+    });
+  }
 }
 
 /**
@@ -101,6 +105,10 @@ export class DateHelperByDatePipe extends DateHelperService {
 
   format(date: Date | null, formatStr: string): string {
     return date ? formatDate(date, transCompatFormat(formatStr), this.i18n.getLocaleId())! : '';
+  }
+
+  parseDate(text: string): Date {
+    return new Date(text);
   }
 }
 
