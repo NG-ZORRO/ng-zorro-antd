@@ -8,11 +8,21 @@
 
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef } from '@angular/core';
 
-import { CandyDate, FunctionProp, InputBoolean, NzNoAnimationDirective, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core';
+import {
+  CandyDate,
+  FunctionProp,
+  InputBoolean,
+  NzNoAnimationDirective,
+  toBoolean,
+  valueFunctionProp,
+  WithConfig
+} from 'ng-zorro-antd/core';
 import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { AbstractPickerComponent } from './abstract-picker.component';
 import { CompatibleDate, DisabledTimeFn, PanelMode, PresetRanges } from './standard-types';
+
+const NZ_CONFIG_COMPONENT_NAME = 'datePicker';
 
 @Component({
   template: `` // Just for rollup
@@ -22,6 +32,7 @@ export class DateRangePickerComponent extends AbstractPickerComponent implements
 
   @Input() nzDateRender: FunctionProp<TemplateRef<Date> | string>;
   @Input() nzDisabledTime: DisabledTimeFn;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzFormat: string;
   @Input() nzRenderExtraFooter: FunctionProp<TemplateRef<void> | string>;
   @Input() @InputBoolean() nzShowToday: boolean = true;
   @Input() nzMode: PanelMode | PanelMode[];

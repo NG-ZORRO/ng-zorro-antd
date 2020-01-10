@@ -11,14 +11,13 @@ import { ControlValueAccessor } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { CandyDate, InputBoolean, NzNoAnimationDirective, WithConfig } from 'ng-zorro-antd/core';
+import { CandyDate, InputBoolean, NzNoAnimationDirective } from 'ng-zorro-antd/core';
 import { DateHelperService, NzDatePickerI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { NzPickerComponent } from './picker.component';
 import { CompatibleDate, CompatibleValue } from './standard-types';
 
 const POPUP_STYLE_PATCH = { position: 'relative' }; // Aim to override antd's style to support overlay's position strategy (position:absolute will cause it not working beacuse the overlay can't get the height/width of it's content)
-const NZ_CONFIG_COMPONENT_NAME = 'datePicker';
 /**
  * The base picker for all common APIs
  */
@@ -36,7 +35,6 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   @Input() nzDropdownClassName: string;
   @Input() nzSize: 'large' | 'small';
   @Input() nzStyle: object;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzFormat: string;
   @Input() nzValue: CompatibleValue | null;
 
   @Output() readonly nzOnOpenChange = new EventEmitter<boolean>();
