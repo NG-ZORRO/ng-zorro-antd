@@ -14,11 +14,12 @@ import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulati
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  templateUrl: './nz-autocomplete-optgroup.component.html',
-  host: {
-    role: 'group',
-    class: 'ant-select-dropdown-menu-item-group'
-  }
+  template: `
+    <div class="ant-select-item ant-select-item-group">
+      <ng-container *nzStringTemplateOutlet="nzLabel">{{ nzLabel }}</ng-container>
+    </div>
+    <ng-content select="nz-auto-option"></ng-content>
+  `
 })
 export class NzAutocompleteOptgroupComponent {
   @Input() nzLabel: string | TemplateRef<void>;

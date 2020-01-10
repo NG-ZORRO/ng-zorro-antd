@@ -13,10 +13,10 @@ import { FormsModule } from '@angular/forms';
 
 import { NzNoAnimationModule, NzOutletModule } from 'ng-zorro-antd/core';
 
-import { NzAutocompleteOptgroupComponent } from './nz-autocomplete-optgroup.component';
-import { NzAutocompleteOptionComponent } from './nz-autocomplete-option.component';
-import { NzAutocompleteTriggerDirective } from './nz-autocomplete-trigger.directive';
-import { NzAutocompleteComponent } from './nz-autocomplete.component';
+import { NzAutocompleteOptgroupComponent } from './autocomplete-optgroup.component';
+import { NzAutocompleteOptionComponent } from './autocomplete-option.component';
+import { NzAutocompleteTriggerDirective } from './autocomplete-trigger.directive';
+import { NzAutocompleteComponent } from './autocomplete.component';
 
 @NgModule({
   declarations: [NzAutocompleteComponent, NzAutocompleteOptionComponent, NzAutocompleteTriggerDirective, NzAutocompleteOptgroupComponent],
