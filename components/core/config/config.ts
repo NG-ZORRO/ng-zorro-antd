@@ -27,6 +27,7 @@ export interface NzConfig {
   codeEditor?: CodeEditorConfig;
   collapse?: CollapseConfig;
   collapsePanel?: CollapsePanelConfig;
+  datePicker?: DatePickerConfig;
   descriptions?: DescriptionsConfig;
   drawer?: DrawerConfig;
   empty?: EmptyConfig;
@@ -117,6 +118,10 @@ export interface CascaderConfig {
 export interface CollapseConfig {
   nzAccordion?: boolean;
   nzBordered?: boolean;
+}
+
+export interface DatePickerConfig {
+  nzFormat?: string;
 }
 
 export interface CollapsePanelConfig {
