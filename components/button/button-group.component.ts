@@ -25,11 +25,10 @@ export class NzButtonGroupComponent implements OnInit, OnChanges {
   @Input() nzSize: NzButtonGroupSize = 'default';
   hostClassMap = {};
   updateHostClassMap(): void {
-    const prefixCls = 'ant-btn-group';
     this.hostClassMap = {
-      [`${prefixCls}`]: true,
-      [`${prefixCls}-lg`]: this.nzSize === 'large',
-      [`${prefixCls}-sm`]: this.nzSize === 'small'
+      ['ant-btn-group']: true,
+      ['ant-btn-group-lg']: this.nzSize === 'large',
+      ['ant-btn-group-sm']: this.nzSize === 'small'
     };
   }
 

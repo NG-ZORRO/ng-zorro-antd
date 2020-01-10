@@ -68,22 +68,21 @@ export class NzButtonComponent implements OnInit, OnDestroy, OnChanges, AfterVie
   hostClassMap = {};
 
   updateHostClassMap(): void {
-    const prefixCls = 'ant-btn';
     this.hostClassMap = {
-      [`${prefixCls}`]: true,
-      [`${prefixCls}-primary`]: this.nzType === 'primary',
-      [`${prefixCls}-dashed`]: this.nzType === 'dashed',
-      [`${prefixCls}-link`]: this.nzType === 'link',
-      [`${prefixCls}-danger`]: this.nzType === 'danger',
-      [`${prefixCls}-circle`]: this.nzShape === 'circle',
-      [`${prefixCls}-round`]: this.nzShape === 'round',
-      [`${prefixCls}-lg`]: this.nzSize === 'large',
-      [`${prefixCls}-sm`]: this.nzSize === 'small',
-      [`${prefixCls}-dangerous`]: this.nzDanger,
-      [`${prefixCls}-loading`]: this.nzLoading,
-      [`${prefixCls}-background-ghost`]: this.nzGhost,
-      [`${prefixCls}-block`]: this.nzBlock,
-      [`ant-input-search-button`]: this.nzSearch
+      ['ant-btn']: true,
+      ['ant-btn-primary']: this.nzType === 'primary',
+      ['ant-btn-dashed']: this.nzType === 'dashed',
+      ['ant-btn-link']: this.nzType === 'link',
+      ['ant-btn-danger']: this.nzType === 'danger',
+      ['ant-btn-circle']: this.nzShape === 'circle',
+      ['ant-btn-round']: this.nzShape === 'round',
+      ['ant-btn-lg']: this.nzSize === 'large',
+      ['ant-btn-sm']: this.nzSize === 'small',
+      ['ant-btn-dangerous']: this.nzDanger,
+      ['ant-btn-loading']: this.nzLoading,
+      ['ant-btn-background-ghost']: this.nzGhost,
+      ['ant-btn-block']: this.nzBlock,
+      ['ant-input-search-button']: this.nzSearch
     };
     this.cdr.markForCheck();
   }

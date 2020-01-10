@@ -8,6 +8,7 @@
 
 export * from './addon/public-api';
 export * from './animation/public-api';
+export * from './transition-patch/public-api';
 export * from './no-animation/public-api';
 export * from './overlay/public-api';
 export * from './time/public-api';
