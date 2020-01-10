@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { createComponentBed, NzButtonGroupComponent } from 'ng-zorro-antd';
-import { NzButtonGroupSize } from './button-group.component';
+import { ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core';
+import { NzButtonGroupComponent, NzButtonGroupSize } from './button-group.component';
 
 describe('button-group', () => {
   it('should button group size work', () => {
