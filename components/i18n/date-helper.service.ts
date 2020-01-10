@@ -12,7 +12,7 @@ import fnsFormat from 'date-fns/format';
 import fnsGetISOWeek from 'date-fns/get_iso_week';
 import fnsParse from 'date-fns/parse';
 
-import { mergeDateConfig, NzDateConfig, NZ_DATE_CONFIG } from './date-config';
+import { mergeDateConfig, NZ_DATE_CONFIG, NzDateConfig } from './date-config';
 import { NzI18nService } from './nz-i18n.service';
 
 export function DATE_HELPER_SERVICE_FACTORY(injector: Injector, config: NzDateConfig): DateHelperService {

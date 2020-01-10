@@ -1,8 +1,18 @@
-<div class="{{ prefixCls }}-footer {{ isRange ? prefixCls + '-range-bottom' : '' }} {{ hasTimePicker ? prefixCls + '-footer-show-ok' : '' }}">
-  <div *ngIf="rangeQuickSelector" class="{{ prefixCls }}-footer-extra {{ prefixCls }}-range-quick-selector">
+<div
+  class="{{ prefixCls }}-footer {{ isRange ? prefixCls + '-range-bottom' : '' }} {{
+    hasTimePicker ? prefixCls + '-footer-show-ok' : ''
+  }}"
+>
+  <div
+    *ngIf="rangeQuickSelector"
+    class="{{ prefixCls }}-footer-extra {{ prefixCls }}-range-quick-selector"
+  >
     <ng-container *ngTemplateOutlet="rangeQuickSelector"></ng-container>
   </div>
-  <div *ngIf="extraFooter" class="{{ prefixCls }}-footer-extra {{ isRange ? prefixCls + '-range-quick-selector' : '' }}">
+  <div
+    *ngIf="extraFooter"
+    class="{{ prefixCls }}-footer-extra {{ isRange ? prefixCls + '-range-quick-selector' : '' }}"
+  >
     <ng-container [ngSwitch]="true">
       <ng-container *ngSwitchCase="isTemplateRef(extraFooter)">
         <ng-container *ngTemplateOutlet="extraFooter"></ng-container>

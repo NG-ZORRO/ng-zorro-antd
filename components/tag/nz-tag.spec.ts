@@ -1,5 +1,5 @@
 import { Component, DebugElement } from '@angular/core';
-import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzTagComponent } from './nz-tag.component';
@@ -57,8 +57,7 @@ describe('tag', () => {
       tick(1000);
       fixture.detectChanges();
       expect(testComponent.afterClose).toHaveBeenCalledTimes(1);
-      tag = fixture.debugElement.query(By.directive(NzTagComponent));
-      expect(tag).toBeNull();
+      expect(fixture.nativeElement.querySelector('nz-tag')).toBeFalsy();
     }));
     it('should color work', () => {
       fixture.detectChanges();

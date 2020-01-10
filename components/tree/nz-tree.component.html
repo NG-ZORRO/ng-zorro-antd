@@ -1,7 +1,4 @@
-<ul
-  role="tree"
-  unselectable="on"
-  [ngClass]="classMap">
+<ul role="tree" unselectable="on" [ngClass]="classMap">
   <ng-container *ngFor="let node of nzNodes">
     <nz-tree-node
       [nzTreeNode]="node"
@@ -19,7 +16,8 @@
       [nzShowIcon]="nzShowIcon"
       [nzTreeTemplate]="treeTemplate"
       [@.disabled]="noAnimation?.nzNoAnimation"
-      [nzNoAnimation]="noAnimation?.nzNoAnimation">
+      [nzNoAnimation]="noAnimation?.nzNoAnimation"
+    >
     </nz-tree-node>
   </ng-container>
 </ul>

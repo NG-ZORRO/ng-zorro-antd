@@ -1,17 +1,13 @@
 import { Component } from '@angular/core';
 import getISOWeek from 'date-fns/get_iso_week';
-import { en_US, zh_CN, NzI18nService } from 'ng-zorro-antd/i18n';
+import { en_US, NzI18nService, zh_CN } from 'ng-zorro-antd/i18n';
 
 @Component({
   selector: 'nz-demo-date-picker-basic',
   template: `
     <nz-date-picker [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-date-picker>
     <br />
-    <nz-month-picker
-      [(ngModel)]="date"
-      (ngModelChange)="onChange($event)"
-      nzPlaceHolder="Select month"
-    ></nz-month-picker>
+    <nz-month-picker [(ngModel)]="date" (ngModelChange)="onChange($event)" nzPlaceHolder="Select month"></nz-month-picker>
     <br />
     <nz-year-picker [(ngModel)]="date" (ngModelChange)="onChange($event)" nzPlaceHolder="Select year"></nz-year-picker>
     <br />

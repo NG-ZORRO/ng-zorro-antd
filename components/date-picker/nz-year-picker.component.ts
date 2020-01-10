@@ -7,11 +7,11 @@
  */
 
 import {
-  forwardRef,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
+  forwardRef,
   Host,
   Input,
   Optional,

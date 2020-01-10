@@ -14,13 +14,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
       <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>Password</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your password!">
-          <input
-            nz-input
-            type="password"
-            id="password"
-            formControlName="password"
-            (ngModelChange)="updateConfirmValidator()"
-          />
+          <input nz-input type="password" id="password" formControlName="password" (ngModelChange)="updateConfirmValidator()" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -41,13 +35,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="nickname" nzRequired>
           <span>
             Nickname
-            <i
-              nz-icon
-              nz-tooltip
-              nzTitle="What do you want other to call you"
-              nzType="question-circle"
-              nzTheme="outline"
-            ></i>
+            <i nz-icon nz-tooltip nzTitle="What do you want other to call you" nzType="question-circle" nzTheme="outline"></i>
           </span>
         </nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your nickname!">

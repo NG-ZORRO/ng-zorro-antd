@@ -22,10 +22,10 @@
       nzType="menu"
       class="nav-phone-icon"
       nz-popover
-      nzPlacement="bottomRight"
+      nzPopoverPlacement="bottomRight"
       nzOverlayClassName="popover-menu"
-      [nzContent]="languageAndVersionTpl"
-      [nzTrigger]="'click'">
+      [nzPopoverContent]="languageAndVersionTpl"
+      [nzPopoverTrigger]="'click'">
     </i>
     <div nz-row>
       <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8" [nzLg]="5" [nzXl]="5" [nzXXl]="4">
@@ -118,7 +118,7 @@
                 <div class="footer-center">
                   <h2>{{ language === 'zh' ? '相关资源' : 'Resources' }}</h2>
                   <div>
-                    <a href="http://ng.mobile.ant.design" target="_blank" rel="noopener noreferrer">NG-ZORRO-MOBILE</a>
+                    <a href="https://ng.mobile.ant.design" target="_blank" rel="noopener noreferrer">NG-ZORRO-MOBILE</a>
                     <span> - </span>
                     <span>Angular</span>
                   </div>
@@ -161,7 +161,7 @@
                     </a>
                   </div>
                   <div>
-                    <a href="https://twitter.com/NG_ZORRO" target="_blank" rel="noopener noreferrer"><span>
+                    <a href="https://twitter.com/ng_zorro" target="_blank" rel="noopener noreferrer"><span>
                       <i nz-icon nzType="twitter" style="margin-right: 4px; color: rgb(29, 161, 242);"></i>Twitter
                     </span>
                     </a>
@@ -272,9 +272,9 @@
                   <div style="margin-top: 20px;">
                     <div class="theme-color"
                       nz-popover
-                      [nzTrigger]="'click'"
+                      [nzPopoverTrigger]="'click'"
                       nzOverlayClassName="theme-color-content"
-                      [nzContent]="colorTpl">
+                      [nzPopoverContent]="colorTpl">
                       <div class="theme-color-value" [ngStyle]="{'background': color}"></div>
                     </div>
                     <ng-template #colorTpl>
@@ -320,10 +320,10 @@
 
     <li nz-submenu nzOpen>
       <span title>
-        <h4 *ngIf="isExperimental">'Experiments'</h4>
-        <h4 *ngIf="!isExperimental">
+        <h4>
           {{language=='en' ? 'Components' : '组件'}}
-          <span class="menu-antd-components-count">63</span>
+          <span *ngIf="!isExperimental" class="menu-antd-components-count">63</span>
+          <span *ngIf="isExperimental"  class="menu-antd-components-count">2</span>
         </h4>
       </span>
       <ul>
@@ -374,13 +374,6 @@
       </a>
       <a href="https://ng.ant.design/blog/en" *ngIf="language=='en'" target="_blank">
         <span>Blog</span>
-      </a>
-    </li>
-    <li nz-menu-item *ngIf="language=='zh'">
-      <a href="https://ng-china.org" target="_blank">
-        <nz-badge nzDot>
-          <a>2019 ngChina 开发者大会</a>
-        </nz-badge>
       </a>
     </li>
   </ul>

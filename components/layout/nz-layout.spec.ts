@@ -1,6 +1,6 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Component, DebugElement, NO_ERRORS_SCHEMA, TemplateRef, ViewChild } from '@angular/core';
-import { async, discardPeriodicTasks, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
@@ -45,10 +45,7 @@ describe('layout', () => {
       expect(footers.every(footer => footer.nativeElement.classList.contains('ant-layout-footer'))).toBe(true);
       expect(siders.every(sider => sider.nativeElement.classList.contains('ant-layout-sider'))).toBe(true);
       expect(
-        siders.every(
-          sider =>
-            sider.nativeElement.style.cssText === 'flex: 0 0 200px; max-width: 200px; min-width: 200px; width: 200px;'
-        )
+        siders.every(sider => sider.nativeElement.style.cssText === 'flex: 0 0 200px; max-width: 200px; min-width: 200px; width: 200px;')
       ).toBe(true);
       expect(layouts[2].nativeElement.classList.contains('ant-layout-has-sider')).toBe(true);
       expect(layouts[4].nativeElement.classList.contains('ant-layout-has-sider')).toBe(true);
@@ -80,35 +77,25 @@ describe('layout', () => {
       testComponent.isCollapsed = false;
       fixture.detectChanges();
       trigger = fixture.debugElement.query(By.css('.ant-layout-sider-trigger'));
-      expect(
-        sider.nativeElement.style.cssText === 'flex: 0 0 200px; max-width: 200px; min-width: 200px; width: 200px;'
-      ).toBe(true);
+      expect(sider.nativeElement.style.cssText === 'flex: 0 0 200px; max-width: 200px; min-width: 200px; width: 200px;').toBe(true);
       expect(trigger.nativeElement.style.cssText === 'width: 200px;').toBe(true);
       trigger.nativeElement.click();
       fixture.detectChanges();
       expect(testComponent.isCollapsed).toBe(true);
-      expect(
-        sider.nativeElement.style.cssText === 'flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;'
-      ).toBe(true);
+      expect(sider.nativeElement.style.cssText === 'flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;').toBe(true);
       expect(trigger.nativeElement.style.cssText === 'width: 80px;').toBe(true);
       trigger.nativeElement.click();
       fixture.detectChanges();
       expect(testComponent.isCollapsed).toBe(false);
-      expect(
-        sider.nativeElement.style.cssText === 'flex: 0 0 200px; max-width: 200px; min-width: 200px; width: 200px;'
-      ).toBe(true);
+      expect(sider.nativeElement.style.cssText === 'flex: 0 0 200px; max-width: 200px; min-width: 200px; width: 200px;').toBe(true);
       expect(trigger.nativeElement.style.cssText === 'width: 200px;').toBe(true);
       testComponent.isCollapsed = true;
       fixture.detectChanges();
-      expect(
-        sider.nativeElement.style.cssText === 'flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;'
-      ).toBe(true);
+      expect(sider.nativeElement.style.cssText === 'flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;').toBe(true);
       expect(trigger.nativeElement.style.cssText === 'width: 80px;').toBe(true);
       testComponent.isCollapsed = false;
       fixture.detectChanges();
-      expect(
-        sider.nativeElement.style.cssText === 'flex: 0 0 200px; max-width: 200px; min-width: 200px; width: 200px;'
-      ).toBe(true);
+      expect(sider.nativeElement.style.cssText === 'flex: 0 0 200px; max-width: 200px; min-width: 200px; width: 200px;').toBe(true);
       expect(trigger.nativeElement.style.cssText === 'width: 200px;').toBe(true);
     });
     it('should nzWidth work', () => {
@@ -116,35 +103,25 @@ describe('layout', () => {
       testComponent.width = 300;
       fixture.detectChanges();
       trigger = fixture.debugElement.query(By.css('.ant-layout-sider-trigger'));
-      expect(
-        sider.nativeElement.style.cssText === 'flex: 0 0 300px; max-width: 300px; min-width: 300px; width: 300px;'
-      ).toBe(true);
+      expect(sider.nativeElement.style.cssText === 'flex: 0 0 300px; max-width: 300px; min-width: 300px; width: 300px;').toBe(true);
       expect(trigger.nativeElement.style.cssText === 'width: 300px;').toBe(true);
       trigger.nativeElement.click();
       fixture.detectChanges();
       expect(testComponent.isCollapsed).toBe(true);
-      expect(
-        sider.nativeElement.style.cssText === 'flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;'
-      ).toBe(true);
+      expect(sider.nativeElement.style.cssText === 'flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;').toBe(true);
       expect(trigger.nativeElement.style.cssText === 'width: 80px;').toBe(true);
       trigger.nativeElement.click();
       fixture.detectChanges();
       expect(testComponent.isCollapsed).toBe(false);
-      expect(
-        sider.nativeElement.style.cssText === 'flex: 0 0 300px; max-width: 300px; min-width: 300px; width: 300px;'
-      ).toBe(true);
+      expect(sider.nativeElement.style.cssText === 'flex: 0 0 300px; max-width: 300px; min-width: 300px; width: 300px;').toBe(true);
       expect(trigger.nativeElement.style.cssText === 'width: 300px;').toBe(true);
       testComponent.isCollapsed = true;
       fixture.detectChanges();
-      expect(
-        sider.nativeElement.style.cssText === 'flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;'
-      ).toBe(true);
+      expect(sider.nativeElement.style.cssText === 'flex: 0 0 80px; max-width: 80px; min-width: 80px; width: 80px;').toBe(true);
       expect(trigger.nativeElement.style.cssText === 'width: 80px;').toBe(true);
       testComponent.isCollapsed = false;
       fixture.detectChanges();
-      expect(
-        sider.nativeElement.style.cssText === 'flex: 0 0 300px; max-width: 300px; min-width: 300px; width: 300px;'
-      ).toBe(true);
+      expect(sider.nativeElement.style.cssText === 'flex: 0 0 300px; max-width: 300px; min-width: 300px; width: 300px;').toBe(true);
       expect(trigger.nativeElement.style.cssText === 'width: 300px;').toBe(true);
     });
 
@@ -231,14 +208,10 @@ describe('layout', () => {
       discardPeriodicTasks();
       fixture.detectChanges();
       console.log(sider.nativeElement.style.cssText);
-      expect(sider.nativeElement.style.cssText === 'flex: 0 0 0px; max-width: 0px; min-width: 0px; width: 0px;').toBe(
-        true
+      expect(sider.nativeElement.style.cssText === 'flex: 0 0 0px; max-width: 0px; min-width: 0px; width: 0px;').toBe(true);
+      expect(sider.nativeElement.querySelector('.ant-layout-sider-zero-width-trigger').firstElementChild.getAttribute('nzType')).toBe(
+        'menu-fold'
       );
-      expect(
-        sider.nativeElement
-          .querySelector('.ant-layout-sider-zero-width-trigger')
-          .firstElementChild.getAttribute('nzType')
-      ).toBe('menu-fold');
     }));
   });
 });
@@ -271,12 +244,7 @@ describe('layout', () => {
       </nz-sider>
       <nz-layout>
         <nz-header style="background: #fff; padding:0;">
-          <i
-            class="trigger"
-            nz-icon
-            [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
-            (click)="isCollapsed = !isCollapsed"
-          ></i>
+          <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" (click)="isCollapsed = !isCollapsed"></i>
         </nz-header>
         <nz-content style="margin:0 16px;">
           <nz-breadcrumb style="margin:16px 0;">
@@ -366,13 +334,7 @@ export class NzLayoutSideComponent {
 @Component({
   template: `
     <nz-layout>
-      <nz-sider
-        nzCollapsible
-        [(nzCollapsed)]="isCollapsed"
-        [nzBreakpoint]="'lg'"
-        [nzCollapsedWidth]="0"
-        [nzZeroTrigger]="zeroTrigger"
-      >
+      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzBreakpoint]="'lg'" [nzCollapsedWidth]="0" [nzZeroTrigger]="zeroTrigger">
         <div class="logo"></div>
         <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
           <li nz-menu-item>

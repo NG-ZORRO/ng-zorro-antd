@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { hasModifierKey, ESCAPE } from '@angular/cdk/keycodes';
+import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
 import {
   ConnectedPosition,
   ConnectionPositionPair,
@@ -22,19 +22,16 @@ import {
   Directive,
   ElementRef,
   EventEmitter,
-  Host,
   Input,
   OnChanges,
   OnDestroy,
-  Optional,
   Output,
   Renderer2,
   SimpleChanges,
   ViewContainerRef
 } from '@angular/core';
-import { NzButtonComponent, NzButtonGroupComponent } from 'ng-zorro-antd/button';
 import { DEFAULT_DROPDOWN_POSITIONS, InputBoolean, POSITION_MAP } from 'ng-zorro-antd/core';
-import { combineLatest, fromEvent, merge, EMPTY, Observable, Subject, Subscription } from 'rxjs';
+import { combineLatest, EMPTY, fromEvent, merge, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, mapTo, takeUntil, tap } from 'rxjs/operators';
 import { NzDropdownMenuComponent, NzPlacementType } from './nz-dropdown-menu.component';
 
@@ -196,9 +193,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
   initActionSubscribe(): void {
     const hostVisible$ = this.nzTrigger === 'hover' ? this.hover$ : this.$click;
     const dropdownMenuVisible$ = this.nzDropdownMenu.visible$;
-    const menuClickVisible$ = this.nzClickHide
-      ? this.nzDropdownMenu.nzMenuDropdownService.menuItemClick$.pipe(mapTo(false))
-      : EMPTY;
+    const menuClickVisible$ = this.nzClickHide ? this.nzDropdownMenu.nzMenuDropdownService.menuItemClick$.pipe(mapTo(false)) : EMPTY;
     const supVisible$ = merge(dropdownMenuVisible$, hostVisible$, menuClickVisible$);
     const subVisible$ = this.nzDropdownMenu.nzMenuDropdownService.menuOpen$;
     combineLatest([supVisible$, subVisible$])
@@ -240,17 +235,9 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
     private renderer: Renderer2,
     private overlay: Overlay,
     private platform: Platform,
-    @Optional() @Host() private nzButtonComponent: NzButtonComponent,
-    @Optional() private nzButtonGroupComponent: NzButtonGroupComponent,
     private viewContainerRef: ViewContainerRef
   ) {
     renderer.addClass(elementRef.nativeElement, 'ant-dropdown-trigger');
-    if (this.nzButtonComponent) {
-      this.nzButtonComponent.isInDropdown = true;
-    }
-    if (this.nzButtonGroupComponent) {
-      this.nzButtonGroupComponent.isInDropdown = true;
-    }
   }
 
   ngAfterViewInit(): void {
@@ -268,15 +255,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const {
-      nzVisible,
-      nzTrigger,
-      nzPlacement,
-      nzDisabled,
-      nzOverlayClassName,
-      nzOverlayStyle,
-      nzTableFilter
-    } = changes;
+    const { nzVisible, nzTrigger, nzPlacement, nzDisabled, nzOverlayClassName, nzOverlayStyle, nzTableFilter } = changes;
     if (this.nzDropdownMenu) {
       if (nzVisible) {
         this.updateOverlayByVisible();
@@ -296,10 +275,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
       }
       if (nzPlacement) {
         this.nzDropdownMenu.setValue('nzPlacement', this.nzPlacement);
-        this.nzDropdownMenu.setValue(
-          'dropDownPosition',
-          this.nzDropdownMenu.nzPlacement.indexOf('top') !== -1 ? 'top' : 'bottom'
-        );
+        this.nzDropdownMenu.setValue('dropDownPosition', this.nzDropdownMenu.nzPlacement.indexOf('top') !== -1 ? 'top' : 'bottom');
         this.positions = this.regeneratePosition(this.nzPlacement, this.positions);
         this.updatePositionStrategy(this.positions);
       }

@@ -6,7 +6,8 @@
   [placeholder]="nzPlaceHolder || ('TimePicker.placeholder' | nzI18n)"
   [(ngModel)]="value"
   readonly="readonly"
-  (click)="open()">
+  (click)="open()"
+/>
 <span class="ant-time-picker-icon">
   <i nz-icon nzType="clock-circle"></i>
 </span>
@@ -31,7 +32,8 @@
   [cdkConnectedOverlayOpen]="nzOpen"
   [cdkConnectedOverlayOffsetY]="-2"
   (detach)="close()"
-  (backdropClick)="close()">
+  (backdropClick)="close()"
+>
   <nz-time-picker-panel
     [ngClass]="nzPopupClassName"
     [@slideMotion]="'bottom'"
@@ -50,7 +52,7 @@
     [opened]="nzOpen"
     [nzClearText]="nzClearText"
     [nzAllowEmpty]="nzAllowEmpty"
-    [(ngModel)]="value">
+    [(ngModel)]="value"
+  >
   </nz-time-picker-panel>
 </ng-template>
-

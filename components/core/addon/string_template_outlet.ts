@@ -6,16 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  Directive,
-  EmbeddedViewRef,
-  Input,
-  OnChanges,
-  SimpleChange,
-  SimpleChanges,
-  TemplateRef,
-  ViewContainerRef
-} from '@angular/core';
+import { Directive, EmbeddedViewRef, Input, OnChanges, SimpleChange, SimpleChanges, TemplateRef, ViewContainerRef } from '@angular/core';
 
 @Directive({
   selector: '[nzStringTemplateOutlet]',
@@ -47,20 +38,14 @@ export class NzStringTemplateOutletDirective implements OnChanges {
       /** use default template when input is string **/
       if (!this.defaultViewRef) {
         if (this.defaultTemplate) {
-          this.defaultViewRef = this.viewContainer.createEmbeddedView(
-            this.defaultTemplate,
-            this.nzStringTemplateOutletContext
-          );
+          this.defaultViewRef = this.viewContainer.createEmbeddedView(this.defaultTemplate, this.nzStringTemplateOutletContext);
         }
       }
     } else {
       /** use input template when input is templateRef **/
       if (!this.inputViewRef) {
         if (this.inputTemplate) {
-          this.inputViewRef = this.viewContainer.createEmbeddedView(
-            this.inputTemplate,
-            this.nzStringTemplateOutletContext
-          );
+          this.inputViewRef = this.viewContainer.createEmbeddedView(this.inputTemplate, this.nzStringTemplateOutletContext);
         }
       }
     }
@@ -87,8 +72,7 @@ export class NzStringTemplateOutletDirective implements OnChanges {
         shouldOutletRecreate = !(previousOutletType === 'string' && currentOutletType === 'string');
       }
     }
-    const shouldContextRecreate =
-      nzStringTemplateOutletContext && this.hasContextShapeChanged(nzStringTemplateOutletContext);
+    const shouldContextRecreate = nzStringTemplateOutletContext && this.hasContextShapeChanged(nzStringTemplateOutletContext);
     return shouldContextRecreate || shouldOutletRecreate;
   }
 

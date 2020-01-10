@@ -21,3 +21,4 @@ export * from './text-measure';
 export * from './measure-scrollbar';
 export * from './ensure-in-bounds';
 export * from './tick';
+export * from './observable';

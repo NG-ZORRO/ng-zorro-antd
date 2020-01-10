@@ -50,9 +50,7 @@ describe('input-group', () => {
         expect(inputGroupElement.firstElementChild!.classList).toContain('ant-input-group');
         expect(inputGroupElement.firstElementChild!.children.length).toBe(2);
         expect(inputGroupElement.firstElementChild!.lastElementChild!.classList).toContain('ant-input');
-        expect((inputGroupElement.firstElementChild!.firstElementChild as HTMLElement).innerText).toBe(
-          'beforeTemplate'
-        );
+        expect((inputGroupElement.firstElementChild!.firstElementChild as HTMLElement).innerText).toBe('beforeTemplate');
       });
       it('should after content string work', () => {
         testComponent.afterContent = 'after';

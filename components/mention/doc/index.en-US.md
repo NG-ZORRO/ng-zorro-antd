@@ -10,10 +10,6 @@ Mention component.
 
 When need to mention someone or something.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzMentionModule } from 'ng-zorro-antd/mention';
 ```

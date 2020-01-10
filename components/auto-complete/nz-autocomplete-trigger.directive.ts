@@ -20,10 +20,10 @@ import {
 import { TemplatePortal } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
 import {
-  forwardRef,
   Directive,
   ElementRef,
   ExistingProvider,
+  forwardRef,
   Inject,
   Input,
   NgZone,
@@ -76,7 +76,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   panelOpen: boolean = false;
 
   /** Current active option */
-  get activeOption(): NzAutocompleteOptionComponent | undefined {
+  get activeOption(): NzAutocompleteOptionComponent | void {
     if (this.nzAutocomplete && this.nzAutocomplete.options.length) {
       return this.nzAutocomplete.activeItem;
     }
@@ -246,11 +246,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
       const clickTarget = event.target as HTMLElement;
 
       // Make sure is not self
-      if (
-        clickTarget !== this.elementRef.nativeElement &&
-        !this.overlayRef!.overlayElement.contains(clickTarget) &&
-        this.panelOpen
-      ) {
+      if (clickTarget !== this.elementRef.nativeElement && !this.overlayRef!.overlayElement.contains(clickTarget) && this.panelOpen) {
         this.closePanel();
       }
     });

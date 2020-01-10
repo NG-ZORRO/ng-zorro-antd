@@ -10,10 +10,6 @@ Autocomplete function of input field.
 
 When there is a need for autocomplete functionality.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 ```

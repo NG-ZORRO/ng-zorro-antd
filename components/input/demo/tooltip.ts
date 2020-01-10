@@ -9,7 +9,7 @@ import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/co
       style="width: 120px"
       nz-input
       nz-tooltip
-      nzTrigger="focus"
+      nzTooltipTrigger="focus"
       nzPlacement="topLeft"
       nzOverlayClassName="numeric-input"
       [ngModel]="value"
@@ -63,8 +63,8 @@ export class NzDemoInputTooltipComponent {
   }
 
   formatNumber(value: string): string {
-    const string = `${value}`;
-    const list = string.split('.');
+    const stringValue = `${value}`;
+    const list = stringValue.split('.');
     const prefix = list[0].charAt(0) === '-' ? '-' : '';
     let num = prefix ? list[0].slice(1) : list[0];
     let result = '';

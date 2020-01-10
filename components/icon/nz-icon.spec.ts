@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, DebugElement } from '@angular/core';
-import { async, fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import {
   LeftOutline,
@@ -15,30 +15,17 @@ import { NzConfigService } from 'ng-zorro-antd/core';
 
 import { NzIconDirective } from './nz-icon.directive';
 import { NzIconModule } from './nz-icon.module';
-import { NzIconService, NZ_ICON_DEFAULT_TWOTONE_COLOR, NZ_ICONS } from './nz-icon.service';
+import { NZ_ICON_DEFAULT_TWOTONE_COLOR, NZ_ICONS, NzIconService } from './nz-icon.service';
 
 describe('nz icon', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [CommonModule, NzIconModule],
-      declarations: [
-        NzTestIconExtensionsComponent,
-        NzTestIconCustomComponent,
-        NzTestIconIconfontComponent,
-        NzTestIconOldApiComponent,
-        NzTestIconPrefixComponent
-      ],
+      declarations: [NzTestIconExtensionsComponent, NzTestIconCustomComponent, NzTestIconIconfontComponent],
       providers: [
         {
           provide: NZ_ICONS,
-          useValue: [
-            LeftOutline,
-            RightOutline,
-            QuestionOutline,
-            QuestionCircleOutline,
-            LoadingOutline,
-            QuestionCircleFill
-          ]
+          useValue: [LeftOutline, RightOutline, QuestionOutline, QuestionCircleOutline, LoadingOutline, QuestionCircleFill]
         },
         {
           provide: NZ_ICON_DEFAULT_TWOTONE_COLOR,
@@ -97,21 +84,6 @@ describe('nz icon', () => {
       expect(icons[1].nativeElement.firstChild.classList.contains('anticon-spin')).toBe(true);
     }));
 
-    it('should type support old API', () => {
-      testComponent.type = 'anticon anticon-cross';
-      fixture.detectChanges();
-      expect(icons[0].nativeElement.className).toContain('anticon');
-      expect(icons[0].nativeElement.className).toContain('anticon-close');
-      expect(icons[0].nativeElement.innerHTML).toContain('svg');
-
-      // An invalid type should not affect the actual type.
-      testComponent.type = 'anticon';
-      fixture.detectChanges();
-      expect(icons[0].nativeElement.className).toContain('anticon');
-      expect(icons[0].nativeElement.className).toContain('anticon-close');
-      expect(icons[0].nativeElement.innerHTML).toContain('svg');
-    });
-
     it('should rotate work', fakeAsync(() => {
       fixture.detectChanges();
       tick(1000);
@@ -146,9 +118,7 @@ describe('nz icon', () => {
       const icon1 = icons[0];
       expect(icon1.nativeElement.className).toContain('anticon');
       expect(icon1.nativeElement.innerHTML).toContain('svg');
-      expect(icon1.nativeElement.innerHTML).toContain(
-        'viewBox="0 0 1024 1024" width="1em" height="1em" fill="currentColor"'
-      );
+      expect(icon1.nativeElement.innerHTML).toContain('viewBox="0 0 1024 1024" width="1em" height="1em" fill="currentColor"');
     });
   });
 
@@ -171,45 +141,6 @@ describe('nz icon', () => {
         expect(icons[2].nativeElement.innerHTML).toContain('xlink:href="#icon-twitter"');
       });
     }));
-  });
-
-  /**
-   * @deprecated Would be removed in 9.0.0.
-   */
-  describe('old api', () => {
-    let fixture: ComponentFixture<NzTestIconOldApiComponent>;
-    let icons: DebugElement[];
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestIconOldApiComponent);
-      icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
-    });
-
-    it('should be compatible to old API', () => {
-      fixture.detectChanges();
-      expect(icons[0].nativeElement.className).toContain('anticon');
-      expect(icons[0].nativeElement.innerHTML).toContain('svg');
-    });
-  });
-
-  /**
-   * @deprecated Would be removed in 9.0.0.
-   */
-  describe('prefix', () => {
-    let fixture: ComponentFixture<NzTestIconPrefixComponent>;
-    let icons: DebugElement[];
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestIconPrefixComponent);
-      icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
-    });
-
-    it('should prefixes work', () => {
-      fixture.detectChanges();
-      expect(icons[0].nativeElement.className).toContain('anticon');
-      expect(icons[0].nativeElement.className).toContain('anticon-question');
-      expect(icons[0].nativeElement.innerHTML).toContain('svg');
-    });
   });
 });
 
@@ -319,13 +250,6 @@ export class NzTestIconExtensionsComponent {
 
 @Component({
   template: `
-    <i nz-icon [nzType]="'question-circle'" [nzTheme]="'fill'"></i>
-  `
-})
-export class NzTestIconPrefixComponent {}
-
-@Component({
-  template: `
     <i nz-icon style="color: hotpink;">
       <svg>
         <path
@@ -351,12 +275,3 @@ export class NzTestIconIconfontComponent {
     });
   }
 }
-
-@Component({
-  template: `
-    <i class="anticon anticon-question"></i>
-    <i class="anticon anticon-verticle"></i>
-    <i class="anticon anticon-cross"></i>
-  `
-})
-export class NzTestIconOldApiComponent {}

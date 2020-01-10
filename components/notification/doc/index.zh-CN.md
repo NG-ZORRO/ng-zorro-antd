@@ -16,10 +16,6 @@ subtitle: 通知提醒框
 - 带有交互的通知，给出用户下一步的行动点。
 - 系统主动推送。
 
-## 单独引入此组件
-
-想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
-
 ```ts
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
 ```
@@ -53,6 +49,7 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
 | nzStyle | 自定义内联样式 | `object` |
 | nzClass | 自定义 CSS class | `object` |
 | nzData | 任何想要在模板中作为上下文的数据 | `any` |
+| nzCloseIcon | 自定义关闭图标 | `TemplateRef<void> \| string` |
 
 
 还提供了全局销毁方法：

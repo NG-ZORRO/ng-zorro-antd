@@ -13,10 +13,6 @@ A breadcrumb displays the current location within a hierarchy. It allows going b
 - When the user may need to navigate back to a higher level.
 - When the application has multi-layer architecture.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 ```

@@ -8,12 +8,7 @@ import { Component, OnInit } from '@angular/core';
       <label nz-radio-button [nzValue]="'left'">Vertical</label>
     </nz-radio-group>
     <nz-input-number style="float:right;" [nzMin]="0" [nzMax]="10" [(ngModel)]="selectedIndex"></nz-input-number>
-    <nz-tabset
-      style="height:220px;"
-      [nzTabPosition]="nzTabPosition"
-      [(nzSelectedIndex)]="selectedIndex"
-      (nzSelectChange)="log([$event])"
-    >
+    <nz-tabset style="height:220px;" [nzTabPosition]="nzTabPosition" [(nzSelectedIndex)]="selectedIndex" (nzSelectChange)="log([$event])">
       <nz-tab
         *ngFor="let tab of tabs"
         [nzTitle]="tab.name"

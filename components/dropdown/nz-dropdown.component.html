@@ -9,16 +9,19 @@
   [cdkConnectedOverlayOpen]="nzVisible"
   (backdropClick)="setVisibleStateWhen(false)"
   (detach)="setVisibleStateWhen(false)"
-  (positionChange)="onPositionChange($event)">
-  <div class="{{'ant-dropdown ant-dropdown-placement-'+nzPlacement}}"
+  (positionChange)="onPositionChange($event)"
+>
+  <div
+    class="{{ 'ant-dropdown ant-dropdown-placement-' + nzPlacement }}"
     [ngClass]="nzOverlayClassName"
     [ngStyle]="nzOverlayStyle"
     [@slideMotion]="dropDownPosition"
     [@.disabled]="noAnimation?.nzNoAnimation"
     [nzNoAnimation]="noAnimation?.nzNoAnimation"
     [style.minWidth.px]="triggerWidth"
-    (mouseenter)="setVisibleStateWhen(true,'hover')"
-    (mouseleave)="setVisibleStateWhen(false,'hover')">
+    (mouseenter)="setVisibleStateWhen(true, 'hover')"
+    (mouseleave)="setVisibleStateWhen(false, 'hover')"
+  >
     <div [class.ant-table-filter-dropdown]="nzTableFilter">
       <ng-content select="[nz-menu]"></ng-content>
       <ng-content></ng-content>

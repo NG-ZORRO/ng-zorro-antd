@@ -1,21 +1,25 @@
-<div #slider
+<div
+  #slider
   class="ant-slider"
   [class.ant-slider-disabled]="nzDisabled"
   [class.ant-slider-vertical]="nzVertical"
-  [class.ant-slider-with-marks]="marksArray">
+  [class.ant-slider-with-marks]="marksArray"
+>
   <div class="ant-slider-rail"></div>
   <nz-slider-track
     [nzVertical]="nzVertical"
     [nzIncluded]="nzIncluded"
     [nzOffset]="track.offset"
-    [nzLength]="track.length"></nz-slider-track>
+    [nzLength]="track.length"
+  ></nz-slider-track>
   <nz-slider-step
     *ngIf="marksArray"
     [nzVertical]="nzVertical"
     [nzLowerBound]="bounds.lower"
     [nzUpperBound]="bounds.upper"
     [nzMarksArray]="marksArray"
-    [nzIncluded]="nzIncluded"></nz-slider-step>
+    [nzIncluded]="nzIncluded"
+  ></nz-slider-step>
   <nz-slider-handle
     *ngFor="let handle of handles"
     [nzVertical]="nzVertical"
@@ -25,7 +29,7 @@
     [nzTipFormatter]="nzTipFormatter"
     [nzTooltipVisible]="nzTooltipVisible"
     [nzTooltipPlacement]="nzTooltipPlacement"
-    ></nz-slider-handle>
+  ></nz-slider-handle>
   <nz-slider-marks
     *ngIf="marksArray"
     [nzVertical]="nzVertical"
@@ -34,5 +38,6 @@
     [nzLowerBound]="bounds.lower"
     [nzUpperBound]="bounds.upper"
     [nzMarksArray]="marksArray"
-    [nzIncluded]="nzIncluded"></nz-slider-marks>
+    [nzIncluded]="nzIncluded"
+  ></nz-slider-marks>
 </div>

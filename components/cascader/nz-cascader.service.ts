@@ -29,7 +29,7 @@ export class NzCascaderService implements OnDestroy {
   activatedOptions: NzCascaderOption[] = [];
 
   /** An array to store cascader items arranged in different layers. */
-  columns: NzCascaderOption[][] = [[]];
+  columns: NzCascaderOption[][] = [];
 
   /** If user has entered searching mode. */
   inSearchingMode = false;
@@ -165,12 +165,7 @@ export class NzCascaderService implements OnDestroy {
    * @param performSelect Select
    * @param loadingChildren Try to load children asynchronously.
    */
-  setOptionActivated(
-    option: NzCascaderOption,
-    columnIndex: number,
-    performSelect: boolean = false,
-    loadingChildren: boolean = true
-  ): void {
+  setOptionActivated(option: NzCascaderOption, columnIndex: number, performSelect: boolean = false, loadingChildren: boolean = true): void {
     if (option.disabled) {
       return;
     }
@@ -301,6 +296,8 @@ export class NzCascaderService implements OnDestroy {
     }
 
     this.columns = [results];
+
+    this.$redraw.next(); // Search results may be empty, so should redraw.
   }
 
   /**

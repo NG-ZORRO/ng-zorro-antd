@@ -1,11 +1,14 @@
 <ng-template #list>
-  <nz-upload-list #listComp [style.display]="nzShowUploadList ? '' : 'none'"
+  <nz-upload-list
+    #listComp
+    [style.display]="nzShowUploadList ? '' : 'none'"
     [locale]="locale"
     [listType]="nzListType"
     [items]="nzFileList || []"
     [icons]="nzShowUploadList"
     [onPreview]="nzPreview"
-    [onRemove]="onRemove"></nz-upload-list>
+    [onRemove]="onRemove"
+  ></nz-upload-list>
 </ng-template>
 <ng-template #con><ng-content></ng-content></ng-template>
 <ng-template #btn>
@@ -16,11 +19,13 @@
   </div>
 </ng-template>
 <ng-container *ngIf="nzType === 'drag'; else select">
-  <div [ngClass]="classList"
+  <div
+    [ngClass]="classList"
     (drop)="fileDrop($event)"
     (dragover)="fileDrop($event)"
-    (dragleave)="fileDrop($event)">
-    <div nz-upload-btn #uploadComp [options]="_btnOptions" [classes]="{'ant-upload-btn': true}">
+    (dragleave)="fileDrop($event)"
+  >
+    <div nz-upload-btn #uploadComp [options]="_btnOptions" [classes]="{ 'ant-upload-btn': true }">
       <div class="ant-upload-drag-container">
         <ng-template [ngTemplateOutlet]="con"></ng-template>
       </div>

@@ -6,23 +6,11 @@ import { Component } from '@angular/core';
     <div style="margin-bottom:16px;">
       <span style="margin-right: 6px;">Gutter (px): </span>
       <div style="width: 50%">
-        <nz-slider
-          [nzMarks]="marksGutter"
-          [nzStep]="null"
-          [nzDefaultValue]="16"
-          [nzMax]="48"
-          [(ngModel)]="gutter"
-        ></nz-slider>
+        <nz-slider [nzMarks]="marksGutter" [nzStep]="null" [nzDefaultValue]="16" [nzMax]="48" [(ngModel)]="gutter"></nz-slider>
       </div>
       <span style="margin-right: 6px;">Column Count:</span>
       <div style="width: 50%">
-        <nz-slider
-          [nzMarks]="marksCount"
-          [nzStep]="null"
-          [nzDefaultValue]="4"
-          [nzMax]="12"
-          [(ngModel)]="count"
-        ></nz-slider>
+        <nz-slider [nzMarks]="marksCount" [nzStep]="null" [nzDefaultValue]="4" [nzMax]="12" [(ngModel)]="count"></nz-slider>
       </div>
     </div>
 

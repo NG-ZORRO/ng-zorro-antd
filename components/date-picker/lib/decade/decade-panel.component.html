@@ -7,9 +7,7 @@
       title="{{ locale.previousCentury }}"
     ></a>
 
-    <div class="{{ prefixCls }}-century">
-      {{ startYear }}-{{ endYear }}
-    </div>
+    <div class="{{ prefixCls }}-century">{{ startYear }}-{{ endYear }}</div>
     <a
       class="{{ prefixCls }}-next-century-btn"
       role="button"
@@ -21,7 +19,8 @@
     <table class="{{ prefixCls }}-table" cellSpacing="0" role="grid">
       <tbody class="{{ prefixCls }}-tbody">
         <tr *ngFor="let row of panelDecades" role="row">
-          <td *ngFor="let cell of row; trackBy: trackPanelDecade"
+          <td
+            *ngFor="let cell of row; trackBy: trackPanelDecade"
             role="gridcell"
             title="{{ cell.title }}"
             (click)="cell.onClick()"

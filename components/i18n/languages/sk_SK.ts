@@ -17,12 +17,18 @@ export default {
   DatePicker,
   TimePicker,
   Calendar,
+  global: {
+    placeholder: 'Prosím vyberte'
+  },
   Table: {
     filterTitle: 'Filter',
     filterConfirm: 'OK',
     filterReset: 'Obnoviť',
     selectAll: 'Vybrať všetko',
-    selectInvert: 'Vybrať opačné'
+    selectInvert: 'Vybrať opačné',
+    sortTitle: 'Zoradiť',
+    expand: 'Rozbaliť riadok',
+    collapse: 'Zbaliť riadok'
   },
   Modal: {
     okText: 'OK',
@@ -34,6 +40,7 @@ export default {
     cancelText: 'Zrušiť'
   },
   Transfer: {
+    titles: ['', ''],
     searchPlaceholder: 'Vyhľadávanie',
     itemUnit: 'položka',
     itemsUnit: 'položiek'
@@ -46,5 +53,17 @@ export default {
   },
   Empty: {
     description: 'Žiadne dáta'
+  },
+  Icon: {
+    icon: 'ikona'
+  },
+  Text: {
+    edit: 'Upraviť',
+    copy: 'Kopírovať',
+    copied: 'Skopírované',
+    expand: 'Zväčšiť'
+  },
+  PageHeader: {
+    back: 'Späť'
   }
 };

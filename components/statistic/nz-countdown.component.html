@@ -4,7 +4,8 @@
   [nzValueTemplate]="nzValueTemplate || countDownTpl"
   [nzTitle]="nzTitle"
   [nzPrefix]="nzPrefix"
-  [nzSuffix]="nzSuffix">
+  [nzSuffix]="nzSuffix"
+>
 </nz-statistic>
 
 <ng-template #countDownTpl>{{ diff | nzTimeRange: nzFormat }}</ng-template>

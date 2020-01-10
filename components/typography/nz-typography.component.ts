@@ -33,13 +33,13 @@ import { finalize, takeUntil } from 'rxjs/operators';
 
 import {
   cancelRequestAnimationFrame,
-  isStyleSupport,
-  measure,
-  reqAnimFrame,
   InputBoolean,
   InputNumber,
+  isStyleSupport,
+  measure,
   NzConfigService,
   NzDomEventService,
+  reqAnimFrame,
   WithConfig
 } from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
@@ -187,9 +187,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
       return;
     }
     const { viewRef, removeView } = this.getOriginContentViewRef();
-    const fixedNodes = [this.textCopyRef, this.textEditRef, this.expandableBtn]
-      .filter(e => e && e.nativeElement)
-      .map(e => e.nativeElement);
+    const fixedNodes = [this.textCopyRef, this.textEditRef, this.expandableBtn].filter(e => e && e.nativeElement).map(e => e.nativeElement);
 
     const { contentNodes, text, ellipsis } = measure(
       this.host.nativeElement,

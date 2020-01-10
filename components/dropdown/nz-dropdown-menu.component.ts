@@ -22,12 +22,7 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
-import {
-  slideMotion,
-  NzDropdownHigherOrderServiceToken,
-  NzMenuBaseService,
-  NzNoAnimationDirective
-} from 'ng-zorro-antd/core';
+import { NzDropdownHigherOrderServiceToken, NzMenuBaseService, NzNoAnimationDirective, slideMotion } from 'ng-zorro-antd/core';
 
 import { Subject } from 'rxjs';
 import { NzMenuDropdownService } from './nz-menu-dropdown.service';

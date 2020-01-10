@@ -52,9 +52,7 @@ export class NzOptionContainerComponent implements OnDestroy, OnInit, AfterViewI
     // delay after open
     setTimeout(() => {
       if (this.listOfNzOptionLiComponent && this.listOfNzOptionLiComponent.length && option) {
-        const targetOption = this.listOfNzOptionLiComponent.find(o =>
-          this.nzSelectService.compareWith(o.nzOption.nzValue, option.nzValue)
-        );
+        const targetOption = this.listOfNzOptionLiComponent.find(o => this.nzSelectService.compareWith(o.nzOption.nzValue, option.nzValue));
         // tslint:disable:no-any
         if (targetOption && targetOption.el && (targetOption.el as any).scrollIntoViewIfNeeded) {
           (targetOption.el as any).scrollIntoViewIfNeeded(false);
@@ -72,7 +70,7 @@ export class NzOptionContainerComponent implements OnDestroy, OnInit, AfterViewI
     return option.nzValue;
   }
 
-  constructor(public nzSelectService: NzSelectService, private cdr: ChangeDetectorRef, private ngZone: NgZone) {}
+  constructor(public nzSelectService: NzSelectService, public cdr: ChangeDetectorRef, private ngZone: NgZone) {}
 
   ngOnInit(): void {
     this.nzSelectService.activatedOption$.pipe(takeUntil(this.destroy$)).subscribe(option => {

@@ -45,7 +45,8 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
   @Input() nzHref = '#';
 
   titleStr: string | null = '';
-  titleTpl: TemplateRef<void>;
+  // tslint:disable-next-line:no-any
+  titleTpl: TemplateRef<any>;
   active: boolean = false;
 
   @Input()

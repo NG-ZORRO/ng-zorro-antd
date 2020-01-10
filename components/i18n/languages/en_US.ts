@@ -26,7 +26,9 @@ export default {
     filterReset: 'Reset',
     selectAll: 'Select current page',
     selectInvert: 'Invert current page',
-    sortTitle: 'Sort'
+    sortTitle: 'Sort',
+    expand: 'Expand row',
+    collapse: 'Collapse row'
   },
   Modal: {
     okText: 'OK',
@@ -47,7 +49,8 @@ export default {
     uploading: 'Uploading...',
     removeFile: 'Remove file',
     uploadError: 'Upload error',
-    previewFile: 'Preview file'
+    previewFile: 'Preview file',
+    downloadFile: 'Download file'
   },
   Empty: {
     description: 'No Data'
@@ -56,12 +59,12 @@ export default {
     icon: 'icon'
   },
   Text: {
-    edit: 'edit',
-    copy: 'copy',
-    copied: 'copy success',
-    expand: 'expand'
+    edit: 'Edit',
+    copy: 'Copy',
+    copied: 'Copied',
+    expand: 'Expand'
   },
   PageHeader: {
-    back: 'back'
+    back: 'Back'
   }
 };

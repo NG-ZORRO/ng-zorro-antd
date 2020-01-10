@@ -9,11 +9,7 @@ Semantic vector graphics.
 
 ## List of icons
 
-We are still adding icons right now, syncing to [antd](https://ant.design/components/icon-cn/#components-icon-demo-iconfont).
-
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
+We are still adding icons right now, syncing to [antd](https://ant.design/components/icon/).
 
 ```ts
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -31,8 +27,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 | `[nzTwotoneColor]` | Only support the two-tone icon. Specific the primary color. | `string (hex color)` | - | ✅ |
 | `[nzIconfont]` | Type of the icon from iconfont | `string` | - |
 | `[nzRotate]` | Rotate degrees | `number` | - |
-
-<blockquote style="border-color: red;"><p><strong>API that is not started with nz and old API that is based on icon class names would be deprecated in 9.0.0. Please migrate.</strong></p></blockquote>
 
 ### NzIconService
 

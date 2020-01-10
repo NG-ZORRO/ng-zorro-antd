@@ -27,7 +27,7 @@ import { FormControl, FormControlDirective, FormControlName, NgControl, NgModel 
 import { Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
-import { helpMotion, toBoolean, NgClassType, NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { helpMotion, NgClassType, NzUpdateHostClassService, toBoolean } from 'ng-zorro-antd/core';
 import { NzColDirective, NzRowDirective } from 'ng-zorro-antd/grid';
 import { NzFormItemComponent } from './nz-form-item.component';
 
@@ -53,8 +53,7 @@ export type NzFormControlStatusType = 'warning' | 'validating' | 'error' | 'succ
     `
   ]
 })
-export class NzFormControlComponent extends NzColDirective
-  implements OnDestroy, OnInit, AfterContentInit, AfterViewInit, OnDestroy {
+export class NzFormControlComponent extends NzColDirective implements OnDestroy, OnInit, AfterContentInit, AfterViewInit, OnDestroy {
   private _hasFeedback = false;
   private validateChanges: Subscription = Subscription.EMPTY;
   private validateString: string | null;
@@ -121,11 +120,7 @@ export class NzFormControlComponent extends NzColDirective
     if (this.validateString === 'warning') {
       this.status = 'warning';
       this.iconType = 'exclamation-circle-fill';
-    } else if (
-      this.validateString === 'validating' ||
-      this.validateString === 'pending' ||
-      this.validateControlStatus('PENDING')
-    ) {
+    } else if (this.validateString === 'validating' || this.validateString === 'pending' || this.validateControlStatus('PENDING')) {
       this.status = 'validating';
       this.iconType = 'loading';
     } else if (this.validateString === 'error' || this.validateControlStatus('INVALID')) {

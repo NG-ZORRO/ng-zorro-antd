@@ -15,7 +15,12 @@
   (openChange)="onOpenChange($event)"
 >
   <div *ngIf="realOpenState">
-    <div class="ant-calendar-picker-container {{ nzDropdownClassName }} ant-calendar-picker-container-placement-bottomLeft" [ngStyle]="nzPopupStyle">
+    <div
+      class="ant-calendar-picker-container {{
+        nzDropdownClassName
+      }} ant-calendar-picker-container-placement-bottomLeft"
+      [ngStyle]="nzPopupStyle"
+    >
       <div class="ant-calendar ant-calendar-month ant-calendar-month-calendar" tabindex="0">
         <div class="ant-calendar-month-calendar-content">
           <div class="ant-calendar-month-header-wrap">

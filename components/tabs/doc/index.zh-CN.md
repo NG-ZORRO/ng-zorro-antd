@@ -18,10 +18,6 @@ Ant Design 依次提供了三级选项卡，分别用于不同的场景。
 - 标准线条式页签，用于容器内部的主功能切换，这是最常用的 Tabs。
 - [RadioButton](/components/radio/zh/#components-radio-demo-radiobutton) 可作为更次级的页签来使用。
 
-## 单独引入此组件
-
-想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
-
 ```ts
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 ```
@@ -44,6 +40,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | `[nzShowPagination]` | 是否超出范围时显示pre和next按钮 | `boolean` | `true` | ✅ |
 | `[nzLinkRouter]` | 与 Angular 路由联动 | `boolean` | `false` ||
 | `[nzLinkExact]` | 以严格匹配模式确定联动的路由 | `boolean` | `true` |
+| `[nzCanDeactivate]` | 决定一个 tab 是否可以被切换 | `NzTabsCanDeactivateFn` | - |
 | `(nzSelectedIndexChange)` | 当前激活 tab 面板的 序列号变更回调函数 | `EventEmitter<number>` | - |
 | `(nzSelectChange)` | 当前激活 tab 面板变更回调函数 | `EventEmitter<{nzSelectedIndex: number,tab: NzTabComponent}>` | - |
 | `(nzOnNextClick)` | next 按钮被点击的回调 | `EventEmitter<void>` | - |

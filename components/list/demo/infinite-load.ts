@@ -99,9 +99,7 @@ class MyDataSource extends DataSource<ItemData> {
     this.fetchedPages.add(page);
 
     this.http
-      .get<{ results: ItemData[] }>(
-        `https://randomuser.me/api/?results=${this.pageSize}&inc=name,gender,email,nat&noinfo`
-      )
+      .get<{ results: ItemData[] }>(`https://randomuser.me/api/?results=${this.pageSize}&inc=name,gender,email,nat&noinfo`)
       .subscribe(res => {
         this.cachedData.splice(page * this.pageSize, this.pageSize, ...res.results);
         this.dataStream.next(this.cachedData);

@@ -10,6 +10,5 @@ export * from './nz-tooltip.definitions';
 export * from './nz-tooltip.component';
 export * from './nz-tooltip.directive';
 export * from './nz-tooltip.module';
-
-// TODO: not everything in base should be exported.
-export * from './base/public-api';
+export * from './nz-tooltip-base.component';
+export * from './nz-tooltip-base.directive';

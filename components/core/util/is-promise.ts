@@ -7,6 +7,6 @@
  */
 
 // tslint:disable-next-line:no-any
-export function isPromise(obj: any): obj is Promise<any> {
+export function isPromise<T>(obj: any): obj is Promise<T> {
   return !!obj && typeof obj.then === 'function' && typeof obj.catch === 'function';
 }

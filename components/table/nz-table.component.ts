@@ -32,25 +32,22 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { fromEvent, merge, EMPTY, Subject } from 'rxjs';
-import { flatMap, startWith, takeUntil } from 'rxjs/operators';
 
-import {
-  measureScrollbar,
-  InputBoolean,
-  InputNumber,
-  NzConfigService,
-  NzSizeMDSType,
-  WithConfig
-} from 'ng-zorro-antd/core';
+import { InputBoolean, InputNumber, measureScrollbar, NzConfigService, NzSizeMDSType, WithConfig } from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
+import { EMPTY, fromEvent, merge, Subject } from 'rxjs';
+import { flatMap, startWith, takeUntil } from 'rxjs/operators';
 
 import { NzThComponent } from './nz-th.component';
 import { NzTheadComponent } from './nz-thead.component';
 import { NzVirtualScrollDirective } from './nz-virtual-scroll.directive';
 
 const NZ_CONFIG_COMPONENT_NAME = 'table';
+interface TableDataType {
+  // tslint:disable-next-line:no-any
+  [key: string]: any;
+}
 
 @Component({
   selector: 'nz-table',
@@ -75,9 +72,9 @@ const NZ_CONFIG_COMPONENT_NAME = 'table';
   ]
 })
 // tslint:disable-next-line no-any
-export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestroy, OnChanges, AfterContentInit {
+export class NzTableComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges, AfterContentInit {
   /** public data for ngFor tr */
-  data: T[] = [];
+  data: TableDataType[] = [];
   locale: any = {}; // tslint:disable-line:no-any
   nzTheadComponent: NzTheadComponent;
   lastScrollLeft = 0;
@@ -98,7 +95,7 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
   @Input() @InputNumber() nzVirtualItemSize = 0;
   @Input() @InputNumber() nzVirtualMaxBufferPx = 200;
   @Input() @InputNumber() nzVirtualMinBufferPx = 100;
-  @Input() nzVirtualForTrackBy: TrackByFunction<T> | undefined;
+  @Input() nzVirtualForTrackBy: TrackByFunction<TableDataType> | undefined;
   @Input() nzLoadingDelay = 0;
   @Input() nzLoadingIndicator: TemplateRef<void>;
   @Input() nzTotal = 0;
@@ -108,7 +105,7 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
   @Input() nzWidthConfig: string[] = [];
   @Input() nzPageIndex = 1;
   @Input() nzPageSize = 10;
-  @Input() nzData: T[] = [];
+  @Input() nzData: TableDataType[] = [];
   @Input() nzPaginationPosition: 'top' | 'bottom' | 'both' = 'bottom';
   @Input() nzScroll: { x?: string | null; y?: string | null } = { x: null, y: null };
 
@@ -298,10 +295,7 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
           this.syncScrollTable(data);
         });
       fromEvent<UIEvent>(window, 'resize')
-        .pipe(
-          startWith(true),
-          takeUntil(this.destroy$)
-        )
+        .pipe(startWith(true), takeUntil(this.destroy$))
         .subscribe(() => {
           this.fitScrollBar();
           this.setScrollPositionClassName();
@@ -313,9 +307,7 @@ export class NzTableComponent<T = any> implements OnInit, AfterViewInit, OnDestr
     this.listOfNzThComponent.changes
       .pipe(
         startWith(true),
-        flatMap(() =>
-          merge(this.listOfNzThComponent.changes, ...this.listOfNzThComponent.map(th => th.nzWidthChange$))
-        ),
+        flatMap(() => merge([this.listOfNzThComponent.changes, ...this.listOfNzThComponent.map(th => th.nzWidthChange$)])),
         takeUntil(this.destroy$)
       )
       .subscribe(() => {

@@ -11,10 +11,6 @@ The header is used to declare the theme of the page, which contains the most imp
 
 Use when you need the user to quickly understand what the current page is and what its features are.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 ```

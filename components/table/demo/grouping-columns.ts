@@ -65,7 +65,10 @@ export class NzDemoTableGroupingColumnsComponent implements OnInit {
   listOfDisplayData: ItemData[] = [];
   listOfData: ItemData[] = [];
   sortValue: 'ascend' | 'descend' | null = null;
-  filterName = [{ text: 'Joe', value: 'Joe' }, { text: 'John', value: 'John' }];
+  filterName = [
+    { text: 'Joe', value: 'Joe' },
+    { text: 'John', value: 'John' }
+  ];
   searchName: string[] = [];
 
   search(searchName: string[]): void {
@@ -74,9 +77,7 @@ export class NzDemoTableGroupingColumnsComponent implements OnInit {
       return this.searchName.length ? this.searchName.some(name => item.name.indexOf(name) !== -1) : true;
     };
     const listOfData = this.listOfData.filter(item => filterFunc(item));
-    this.listOfDisplayData = listOfData.sort((a, b) =>
-      this.sortValue === 'ascend' ? (a.age > b.age ? 1 : -1) : b.age > a.age ? 1 : -1
-    );
+    this.listOfDisplayData = listOfData.sort((a, b) => (this.sortValue === 'ascend' ? (a.age > b.age ? 1 : -1) : b.age > a.age ? 1 : -1));
   }
 
   ngOnInit(): void {

@@ -1,5 +1,5 @@
 import { Component, NgZone, ViewEncapsulation } from '@angular/core';
-import { async, fakeAsync, flush, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { dispatchFakeEvent, MockNgZone } from 'ng-zorro-antd/core';
@@ -55,10 +55,7 @@ describe('autoresize', () => {
         autosize.resizeToFitContent();
         zone.simulateZoneExit();
         fixture.detectChanges();
-        expect(textarea.clientHeight).toBeGreaterThan(
-          previousHeight,
-          'Expected textarea to have grown with added content.'
-        );
+        expect(textarea.clientHeight).toBeGreaterThan(previousHeight, 'Expected textarea to have grown with added content.');
         expect(textarea.clientHeight).toBe(textarea.scrollHeight, 'Expected textarea height to match its scrollHeight');
 
         previousHeight = textarea.clientHeight;
@@ -75,10 +72,7 @@ describe('autoresize', () => {
         autosize.resizeToFitContent(true);
         zone.simulateZoneExit();
         fixture.detectChanges();
-        expect(textarea.clientHeight).toBeGreaterThan(
-          previousHeight,
-          'Expected textarea to have grown with added content.'
-        );
+        expect(textarea.clientHeight).toBeGreaterThan(previousHeight, 'Expected textarea to have grown with added content.');
         expect(textarea.clientHeight).toBe(textarea.scrollHeight, 'Expected textarea height to match its scrollHeight');
       }));
 

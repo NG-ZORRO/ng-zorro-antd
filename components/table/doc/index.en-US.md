@@ -12,10 +12,6 @@ A table displays rows of data.
 - To display a collection of structured data.
 - To sort, search, paginate, filter data.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzTableModule } from 'ng-zorro-antd/table';
 ```
@@ -129,6 +125,16 @@ Filter property
 | `[nzFilters]` | Filter options,  `text`, and `value` for callback, `byDefault` to enable filter by default | `Array<{ text: string; value: any; byDefault?: boolean }>` | - |
 | `[nzFilterMultiple]` | Whether filter multiple mode | `boolean` | `true` |
 | `(nzFilterChange)` | Filter change callback `value` | `EventEmitter<any[] \| any>` | - |
+
+
+Sort property
+
+| Property | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
+| `[nzShowSort]` | Whether to show sort | `boolean` | - |
+| `[nzSort]` | Sort direction | `'ascend' | 'descend' | null` | - |
+| `[nzSortKey]` | Key to sort by | `string` | - |
+| `(nzSortChange)` | Sort direction change callback | `EventEmitter<'ascend' \| 'descend' \| null>` | - |
 
 
 Style property

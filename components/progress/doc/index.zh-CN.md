@@ -14,10 +14,6 @@ title: Progress
 - 当一个操作会打断当前界面，或者需要在后台运行，且耗时可能超过2秒时；
 - 当需要显示一个操作完成的百分比时。
 
-## 单独引入此组件
-
-想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
-
 ```ts
 import { NzProgressModule } from 'ng-zorro-antd/progress';
 ```
@@ -29,7 +25,7 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
 | 属性 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzType]` | 类型 | `'line' \| 'circle' \| 'dashboard'` | `'line'` |
-| `[nzFormat]` | 内容的模板函数 | `(percent: number) => string` | `percent => percent + '%'` |
+| `[nzFormat]` | 内容的模板函数 | `(percent: number) => string \| TemplateRef<{ $implicit: number }>` | `percent => percent + '%'` |
 | `[nzPercent]` | 百分比 | `number` | `0` |
 | `[nzShowInfo]` | 是否显示进度数值或状态图标 | `boolean` | `true` | ✅ |
 | `[nzStatus]` | 状态 | `'success' \| 'exception' \| 'active' \| 'normal'` | - |
@@ -42,6 +38,7 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
 | 属性 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzStrokeWidth]` | 进度条线的宽度，单位 px | `number` | `8` |
+| `[nzSteps]` | 进度条总共步数 | `number` | - |
 
 ### `nzType="circle"`
 

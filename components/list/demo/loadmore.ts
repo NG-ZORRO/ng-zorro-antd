@@ -18,10 +18,7 @@ const fakeDataUrl = 'https://randomuser.me/api/?results=5&inc=name,gender,email,
       [nzLoadMore]="loadMore"
     >
       <ng-template #item let-item>
-        <nz-list-item
-          [nzContent]="item.loading ? '' : 'content'"
-          [nzActions]="item.loading ? [] : [editAction, moreAction]"
-        >
+        <nz-list-item [nzContent]="item.loading ? '' : 'content'" [nzActions]="item.loading ? [] : [editAction, moreAction]">
           <nz-skeleton [nzAvatar]="true" [nzActive]="true" [nzTitle]="false" [nzLoading]="item.loading">
             <ng-template #editAction><a (click)="edit(item)">edit</a></ng-template>
             <ng-template #moreAction><a (click)="edit(item)">more</a></ng-template>

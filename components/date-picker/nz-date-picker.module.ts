@@ -26,13 +26,7 @@ import { NzPickerComponent } from './picker.component';
 
 @NgModule({
   imports: [CommonModule, OverlayModule, LibPackerModule, NzIconModule, NzOverlayModule, NzNoAnimationModule],
-  exports: [
-    NzDatePickerComponent,
-    NzRangePickerComponent,
-    NzMonthPickerComponent,
-    NzYearPickerComponent,
-    NzWeekPickerComponent
-  ],
+  exports: [NzDatePickerComponent, NzRangePickerComponent, NzMonthPickerComponent, NzYearPickerComponent, NzWeekPickerComponent],
   declarations: [
     HeaderPickerComponent,
     DateRangePickerComponent,

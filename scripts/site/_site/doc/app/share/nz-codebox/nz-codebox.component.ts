@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import sdk from '@stackblitz/sdk';
-import { VERSION } from 'ng-zorro-antd'
+import { VERSION } from 'ng-zorro-antd/version'
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';

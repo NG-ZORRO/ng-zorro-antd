@@ -56,9 +56,7 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
   private destroy$ = new Subject();
   private cacheMode: NzDirectionVHIType;
   private listOfOpenedNzSubMenuComponent: NzSubMenuComponent[] = [];
-  @ContentChildren(NzMenuItemDirective, { descendants: true }) listOfNzMenuItemDirective: QueryList<
-    NzMenuItemDirective
-  >;
+  @ContentChildren(NzMenuItemDirective, { descendants: true }) listOfNzMenuItemDirective: QueryList<NzMenuItemDirective>;
   @ContentChildren(NzSubMenuComponent, { descendants: true }) listOfNzSubMenuComponent: QueryList<NzSubMenuComponent>;
   @Input() nzInlineIndent = 24;
   @Input() nzTheme: 'light' | 'dark' = 'light';

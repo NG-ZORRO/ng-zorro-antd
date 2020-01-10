@@ -10,12 +10,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
           <nz-form-item nzFlex>
             <nz-form-label [nzFor]="'field' + control.index">Field {{ control.index }}</nz-form-label>
             <nz-form-control>
-              <input
-                nz-input
-                placeholder="placeholder"
-                [formControlName]="'field' + control.index"
-                [attr.id]="'field' + control.index"
-              />
+              <input nz-input placeholder="placeholder" [formControlName]="'field' + control.index" [attr.id]="'field' + control.index" />
             </nz-form-control>
           </nz-form-item>
         </div>
