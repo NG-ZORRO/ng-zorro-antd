@@ -16,8 +16,8 @@ import {
   NzCommentActionHostDirective,
   NzCommentAvatarDirective,
   NzCommentContentDirective
-} from './nz-comment-cells';
-import { NzCommentComponent } from './nz-comment.component';
+} from './comment-cells';
+import { NzCommentComponent } from './comment.component';
 
 const NZ_COMMENT_CELLS = [NzCommentAvatarDirective, NzCommentContentDirective, NzCommentActionComponent, NzCommentActionHostDirective];
 
