@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core';
+import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { NzButtonComponent, NzButtonShape, NzButtonSize, NzButtonType } from './index';
 
