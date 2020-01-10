@@ -1,60 +1,68 @@
-import { Component, ContentChildren, Input, QueryList, TemplateRef } from '@angular/core';
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ContentChildren,
+  ElementRef,
+  HostBinding,
+  Input,
+  OnDestroy,
+  QueryList,
+  Renderer2,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
+
+import { InputBoolean, NzDirectionVHType } from 'ng-zorro-antd/core';
+import { Subscription } from 'rxjs';
 import { NzListItemMetaComponent } from './nz-list-item-meta.component';
+import { NzListComponent } from './nz-list.component';
 
 @Component({
-  selector           : 'nz-list-item',
-  template           : `
-    <ng-template #contentTpl>
-      <div *ngIf="isCon" class="ant-list-item-content" [ngClass]="{'ant-list-item-content-single': metas.length < 1}">
-        <ng-container *ngIf="conStr; else conTpl">{{ conStr }}</ng-container>
-      </div>
-    </ng-template>
-    <ng-template #actionsTpl>
-      <ul *ngIf="nzActions?.length > 0" class="ant-list-item-action">
-        <li *ngFor="let i of nzActions; let idx = index">
-          <ng-template [ngTemplateOutlet]="i"></ng-template>
-          <em *ngIf="idx!==nzActions.length-1" class="ant-list-item-action-split"></em>
-        </li>
-      </ul>
-    </ng-template>
-    <ng-template #mainTpl>
-      <ng-content></ng-content>
-      <ng-template [ngTemplateOutlet]="contentTpl"></ng-template>
-      <ng-template [ngTemplateOutlet]="actionsTpl"></ng-template>
-    </ng-template>
-    <div *ngIf="nzExtra; else mainTpl" class="ant-list-item-extra-wrap">
-      <div class="ant-list-item-main">
-        <ng-template [ngTemplateOutlet]="mainTpl"></ng-template>
-      </div>
-      <div class="ant-list-item-extra">
-        <ng-template [ngTemplateOutlet]="nzExtra"></ng-template>
-      </div>
-    </div>`,
+  selector: 'nz-list-item, [nz-list-item]',
+  exportAs: 'nzListItem',
+  templateUrl: './nz-list-item.component.html',
   preserveWhitespaces: false,
-  host               : {
-    '[class.ant-list-item]': 'true'
-  }
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NzListItemComponent {
+export class NzListItemComponent implements OnDestroy, AfterViewInit {
+  @ContentChildren(NzListItemMetaComponent) metas!: QueryList<NzListItemMetaComponent>;
   @Input() nzActions: Array<TemplateRef<void>> = [];
-  @ContentChildren(NzListItemMetaComponent) metas: QueryList<NzListItemMetaComponent>;
+  @Input() nzContent: string | TemplateRef<void>;
+  @Input() nzExtra: TemplateRef<void>;
+  @Input() @InputBoolean() @HostBinding('class.ant-list-item-no-flex') nzNoFlex: boolean = false;
 
-  isCon = false;
-  conStr = '';
-  conTpl: TemplateRef<void>;
+  private itemLayout: NzDirectionVHType;
+  private itemLayout$: Subscription;
 
-  @Input()
-  set nzContent(value: string | TemplateRef<void>) {
-    if (value instanceof TemplateRef) {
-      this.conStr = null;
-      this.conTpl = value;
-    } else {
-      this.conStr = value;
-    }
-
-    this.isCon = !!value;
+  get isVerticalAndExtra(): boolean {
+    return this.itemLayout === 'vertical' && !!this.nzExtra;
   }
 
-  @Input() nzExtra: TemplateRef<void>;
+  constructor(elementRef: ElementRef, renderer: Renderer2, private parentComp: NzListComponent, private cdr: ChangeDetectorRef) {
+    renderer.addClass(elementRef.nativeElement, 'ant-list-item');
+  }
+
+  ngAfterViewInit(): void {
+    this.itemLayout$ = this.parentComp.itemLayoutNotify$.subscribe(val => {
+      this.itemLayout = val;
+      this.cdr.detectChanges();
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.itemLayout$) {
+      this.itemLayout$.unsubscribe();
+    }
+  }
 }

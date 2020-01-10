@@ -9,7 +9,7 @@ title:
 
 自定义建议
 
-注意，`nzSuggestions` 不为 `string[]` 时，需要提供 `valueWith`。
+注意，`nzSuggestions` 不为 `string[]` 时，需要提供 `nzValueWith`。
 
 ## en-US
 

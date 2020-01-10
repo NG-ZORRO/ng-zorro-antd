@@ -1,0 +1,46 @@
+:host {
+  display: flex;
+}
+
+.app-layout {
+  height: 100vh;
+}
+
+.top-nav {
+  line-height: 64px;
+}
+
+.logo {
+  float: left;
+  height: 64px;
+  padding-right: 24px;
+  line-height: 64px;
+  background: #001529;
+}
+
+.logo img {
+  display: inline-block;
+  height: 32px;
+  width: 32px;
+  vertical-align: middle;
+}
+
+.logo h1 {
+  display: inline-block;
+  margin: 0 0 0 15px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 20px;
+  font-family: Avenir,Helvetica Neue,Arial,Helvetica,sans-serif;
+  vertical-align: middle;
+}
+
+nz-content {
+  padding: 24px 50px;
+}
+
+.inner-content {
+  padding: 24px;
+  background: #fff;
+  height: 100%;
+}

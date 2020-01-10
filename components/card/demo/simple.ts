@@ -9,11 +9,12 @@ import { Component } from '@angular/core';
       <p>Card content</p>
     </nz-card>
   `,
-  styles  : [
-    `p {
-      margin: 0;
-    }`
+  styles: [
+    `
+      p {
+        margin: 0;
+      }
+    `
   ]
 })
-export class NzDemoCardSimpleComponent {
-}
+export class NzDemoCardSimpleComponent {}

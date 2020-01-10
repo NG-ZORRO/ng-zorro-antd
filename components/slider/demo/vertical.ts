@@ -5,35 +5,33 @@ import { Component } from '@angular/core';
   template: `
     <div [ngStyle]="{ height: '300px' }">
       <div [ngStyle]="style">
-        <nz-slider nzVertical [nzDefaultValue]="30"></nz-slider>
+        <nz-slider nzVertical [ngModel]="30"></nz-slider>
       </div>
       <div [ngStyle]="style">
-        <nz-slider nzVertical nzRange [nzStep]="10" [nzDefaultValue]="[20, 50]"></nz-slider>
+        <nz-slider nzVertical nzRange [nzStep]="10" [ngModel]="[20, 50]"></nz-slider>
       </div>
       <div [ngStyle]="style">
-        <nz-slider nzVertical nzRange [nzMarks]="marks" [nzDefaultValue]="[26, 37]"></nz-slider>
+        <nz-slider nzVertical nzRange [nzMarks]="marks" [ngModel]="[26, 37]"></nz-slider>
       </div>
     </div>
   `
 })
 export class NzDemoSliderVerticalComponent {
-
   style = {
-    float     : 'left',
-    height    : '300px',
+    float: 'left',
+    height: '300px',
     marginLeft: '70px'
   };
 
   marks = {
-    0  : '0°C',
-    26 : '26°C',
-    37 : '37°C',
+    0: '0°C',
+    26: '26°C',
+    37: '37°C',
     100: {
       style: {
-        color: '#f50',
+        color: '#f50'
       },
-      label: '<strong>100°C</strong>',
+      label: '<strong>100°C</strong>'
     }
   };
-
 }

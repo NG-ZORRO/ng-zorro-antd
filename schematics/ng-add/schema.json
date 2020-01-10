@@ -1,0 +1,143 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "id": "nz-ng-add",
+  "title": "Ant Design of Angular(NG-ZORRO) ng-add schematic",
+  "type": "object",
+  "properties": {
+    "project": {
+      "type": "string",
+      "description": "Name of the project.",
+      "$default": {
+        "$source": "projectName"
+      }
+    },
+    "skipPackageJson": {
+      "type": "boolean",
+      "default": false,
+      "description": "Do not add ng-zorro-antd dependencies to package.json (e.g., --skipPackageJson)"
+    },
+    "dynamicIcon": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether icon assets should be add.",
+      "x-prompt": "Add icon assets [ Detail: https://ng.ant.design/components/icon/en ]"
+    },
+    "theme": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether custom theme file should be set up.",
+      "x-prompt": "Set up custom theme file [ Detail: https://ng.ant.design/docs/customize-theme/en ]"
+    },
+    "i18n": {
+      "type": "string",
+      "default": "en_US",
+      "enum": [
+        "ar_EG",
+        "bg_BG",
+        "ca_ES",
+        "cs_CZ",
+        "da_DK",
+        "de_DE",
+        "el_GR",
+        "en_GB",
+        "en_US",
+        "es_ES",
+        "et_EE",
+        "fa_IR",
+        "fi_FI",
+        "fr_BE",
+        "fr_FR",
+        "is_IS",
+        "it_IT",
+        "ja_JP",
+        "ko_KR",
+        "nb_NO",
+        "nl_BE",
+        "nl_NL",
+        "pl_PL",
+        "pt_BR",
+        "pt_PT",
+        "sk_SK",
+        "sr_RS",
+        "sv_SE",
+        "th_TH",
+        "tr_TR",
+        "ru_RU",
+        "uk_UA",
+        "vi_VN",
+        "zh_CN",
+        "zh_TW"
+      ],
+      "description": "add locale code to module (e.g., --locale=en_US)"
+    },
+    "locale": {
+      "type": "string",
+      "description": "Add locale code to module (e.g., --locale=en_US)",
+      "default": "en_US",
+      "x-prompt": {
+        "message": "Choose your locale code:",
+        "type": "list",
+        "items": [
+          "en_US",
+          "zh_CN",
+          "ar_EG",
+          "bg_BG",
+          "ca_ES",
+          "cs_CZ",
+          "de_DE",
+          "el_GR",
+          "en_GB",
+          "es_ES",
+          "et_EE",
+          "fa_IR",
+          "fi_FI",
+          "fr_BE",
+          "fr_FR",
+          "is_IS",
+          "it_IT",
+          "ja_JP",
+          "ko_KR",
+          "nb_NO",
+          "nl_BE",
+          "nl_NL",
+          "pl_PL",
+          "pt_BR",
+          "pt_PT",
+          "sk_SK",
+          "sr_RS",
+          "sv_SE",
+          "th_TH",
+          "tr_TR",
+          "ru_RU",
+          "uk_UA",
+          "vi_VN",
+          "zh_TW"
+        ]
+      }
+    },
+    "template": {
+      "type": "string",
+      "default": "blank",
+      "description": "Create an Angular project with using preset template.",
+      "x-prompt": {
+        "message": "Choose template to create project:",
+        "type": "list",
+        "items": [
+          "blank",
+          "sidemenu"
+        ]
+      }
+    },
+    "gestures": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether gesture support should be set up."
+    },
+    "animations": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether Angular browser animations should be set up."
+    }
+  },
+  "required": []
+}

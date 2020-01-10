@@ -1,181 +1,157 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { dispatchMouseEvent } from '../core/testing';
+import { dispatchMouseEvent } from 'ng-zorro-antd/core';
+import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+
 import { NzPopconfirmModule } from './nz-popconfirm.module';
 
 describe('NzPopconfirm', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
-  let demoAppFixture: ComponentFixture<DemoAppComponent>;
-  let demoAppComponent: DemoAppComponent;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ NzPopconfirmModule, NoopAnimationsModule ],
-      declarations: [ DemoAppComponent ]
+      imports: [NzPopconfirmModule, NoopAnimationsModule, NzToolTipModule, NzIconTestModule],
+      declarations: [NzpopconfirmTestNewComponent]
     });
 
     TestBed.compileComponents();
   }));
 
-  beforeEach(inject([ OverlayContainer ], (oc: OverlayContainer) => {
+  beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
     overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
   }));
 
-  // afterEach(() => {
-  //   overlayContainer.ngOnDestroy();
-  // });
-
-  beforeEach(() => {
-    demoAppFixture = TestBed.createComponent(DemoAppComponent);
-    demoAppComponent = demoAppFixture.componentInstance;
-    demoAppFixture.detectChanges();
+  afterEach(() => {
+    overlayContainer.ngOnDestroy();
   });
 
-  it('should show/hide normal tooltip', fakeAsync(() => {
-    const featureKey = 'NORMAL';
-    const triggerElement = demoAppComponent.normalTrigger.nativeElement;
+  let fixture: ComponentFixture<NzpopconfirmTestNewComponent>;
+  let component: NzpopconfirmTestNewComponent;
 
-    expect(overlayContainerElement.textContent).not.toContain(featureKey);
+  function getTitleText(): Element | null {
+    return overlayContainerElement.querySelector('.ant-popover-message-title');
+  }
 
-    // Move inside to trigger tooltip shown up
-    dispatchMouseEvent(triggerElement, 'mouseenter');
-    demoAppFixture.detectChanges();
-    tick(150); // wait for the default 100ms delay
-    demoAppFixture.detectChanges();
-    tick();
-    expect(overlayContainerElement.textContent).toContain(featureKey);
+  function getTooltipTrigger(index: number): Element {
+    return overlayContainerElement.querySelectorAll('.ant-popover-buttons button')[index];
+  }
 
-    // Move out from the trigger element to hide it
-    dispatchMouseEvent(triggerElement, 'mouseleave');
-    tick(100); // wait for the default 100ms delay
-    demoAppFixture.detectChanges();
-    tick(); // wait for next tick to hide
-    expect(overlayContainerElement.textContent).not.toContain(featureKey);
-  }));
+  beforeEach(() => {
+    fixture = TestBed.createComponent(NzpopconfirmTestNewComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-  it('should show tooltip with custom template', fakeAsync(() => {
-    const triggerElement = demoAppComponent.templateTrigger.nativeElement;
-
-    dispatchMouseEvent(triggerElement, 'mouseenter');
-    demoAppFixture.detectChanges();
-    tick(150); // wait for the default 100ms delay
-    demoAppFixture.detectChanges();
-    tick();
-    expect(overlayContainerElement.querySelector('.anticon-file')).not.toBeNull();
-  }));
-
-  it('should show/hide tooltip by focus', fakeAsync(() => {
-    const featureKey = 'FOCUS';
-    const triggerElement = demoAppComponent.focusTrigger.nativeElement;
-
-    dispatchMouseEvent(triggerElement, 'focus');
-    demoAppFixture.detectChanges();
-    expect(overlayContainerElement.textContent).toContain(featureKey);
-
-    dispatchMouseEvent(triggerElement, 'blur');
-    tick(100); // wait for the default 100ms delay
-    demoAppFixture.detectChanges();
-    tick(); // wait for next tick to hide
-    expect(overlayContainerElement.textContent).not.toContain(featureKey);
-  }));
-
-  it('should show/hide tooltip by click', fakeAsync(() => {
-    const featureKey = 'CLICK';
-    const triggerElement = demoAppComponent.clickTrigger.nativeElement;
-
-    dispatchMouseEvent(triggerElement, 'click');
-    demoAppFixture.detectChanges();
-    expect(overlayContainerElement.textContent).toContain(featureKey);
-
-    dispatchMouseEvent(overlayContainerElement.querySelector('.cdk-overlay-backdrop'), 'click');
-    tick();
-    demoAppFixture.detectChanges();
-    tick(500); // Wait for animations
-    demoAppFixture.detectChanges();
-    tick();
-    expect(overlayContainerElement.textContent).not.toContain(featureKey);
-  }));
-
-  it('should show/hide by nzVisible change', fakeAsync(() => {
-    const featureKey = 'VISIBLE';
-    demoAppComponent.visible = true;
-    demoAppFixture.detectChanges();
-    expect(overlayContainerElement.textContent).toContain(featureKey);
-
-    demoAppComponent.visible = false;
-    demoAppFixture.detectChanges();
+  function waitingForTooltipToggling(): void {
+    fixture.detectChanges();
     tick(500);
-    expect(overlayContainerElement.textContent).not.toContain(featureKey);
+    fixture.detectChanges();
+  }
+
+  it('should support custom icon', fakeAsync(() => {
+    component.icon = 'question-circle';
+    const triggerElement = component.iconTemplate.nativeElement;
+    dispatchMouseEvent(triggerElement, 'click');
+    waitingForTooltipToggling();
+    expect(overlayContainerElement.querySelector('.anticon-exclamation-circle')).toBeFalsy();
   }));
 
-  it('should execute with condition', fakeAsync(() => {
-    const featureKey = 'EXECUTE';
-    const triggerElement = demoAppComponent.executeTrigger.nativeElement;
-    const onConfirm = spyOn(demoAppComponent, 'onConfirm');
-    const onCancel = spyOn(demoAppComponent, 'onCancel');
-
-    demoAppComponent.executeCondition = true;
-    demoAppFixture.detectChanges();
+  it('should nzOk work', () => {
+    const triggerElement = component.stringTemplate.nativeElement;
     dispatchMouseEvent(triggerElement, 'click');
-    demoAppFixture.detectChanges();
-    expect(overlayContainerElement.textContent).not.toContain(featureKey);
-    expect(onConfirm).toHaveBeenCalled();
+    fixture.detectChanges();
+    expect(getTooltipTrigger(0).textContent).toContain('cancel-text');
+    expect(getTooltipTrigger(1).textContent).toContain('ok-text');
+    expect(getTooltipTrigger(1).classList).not.toContain('ant-btn-primary');
+  });
 
-    demoAppComponent.executeCondition = false;
-    demoAppFixture.detectChanges();
+  it('should cancel work', fakeAsync(() => {
+    const triggerElement = component.stringTemplate.nativeElement;
+
     dispatchMouseEvent(triggerElement, 'click');
-    demoAppFixture.detectChanges();
-    expect(overlayContainerElement.textContent).toContain(featureKey);
-    expect(onConfirm).toHaveBeenCalledTimes(1);
+    fixture.detectChanges();
+    expect(getTitleText()!.textContent).toContain('title-string');
+    expect(component.confirm).toHaveBeenCalledTimes(0);
+    expect(component.cancel).toHaveBeenCalledTimes(0);
 
-    dispatchMouseEvent(overlayContainerElement.querySelector('.ant-popover-buttons button:first-child'), 'click');
-    demoAppFixture.detectChanges();
-    tick(600);
-    expect(overlayContainerElement.textContent).not.toContain(featureKey);
-    expect(onCancel).toHaveBeenCalled();
+    dispatchMouseEvent(getTooltipTrigger(0), 'click');
+    waitingForTooltipToggling();
+    expect(component.confirm).toHaveBeenCalledTimes(0);
+    expect(component.cancel).toHaveBeenCalledTimes(1);
+    expect(getTitleText()).toBeNull();
+  }));
+
+  it('should confirm work', fakeAsync(() => {
+    const triggerElement = component.stringTemplate.nativeElement;
+
+    dispatchMouseEvent(triggerElement, 'click');
+    fixture.detectChanges();
+    expect(getTitleText()!.textContent).toContain('title-string');
+    expect(component.confirm).toHaveBeenCalledTimes(0);
+    expect(component.cancel).toHaveBeenCalledTimes(0);
+
+    dispatchMouseEvent(getTooltipTrigger(1), 'click');
+    waitingForTooltipToggling();
+    expect(component.confirm).toHaveBeenCalledTimes(1);
+    expect(component.cancel).toHaveBeenCalledTimes(0);
+    expect(getTitleText()).toBeNull();
+  }));
+
+  it('should condition work', fakeAsync(() => {
+    expect(component.confirm).toHaveBeenCalledTimes(0);
+    expect(component.cancel).toHaveBeenCalledTimes(0);
+
+    component.condition = true;
+    fixture.detectChanges();
+    const triggerElement = component.stringTemplate.nativeElement;
+
+    dispatchMouseEvent(triggerElement, 'click');
+    fixture.detectChanges();
+    expect(getTitleText()).toBeNull();
+    expect(component.confirm).toHaveBeenCalledTimes(1);
+    expect(component.cancel).toHaveBeenCalledTimes(0);
   }));
 });
 
 @Component({
-  selector: 'nz-demo-app',
   template: `
-    <nz-popconfirm [nzTitle]="'NORMAL'" [nzTrigger]="'hover'"><span #normalTrigger nz-popconfirm>Show</span></nz-popconfirm>
+    <a
+      nz-popconfirm
+      #stringTemplate
+      nzTitle="title-string"
+      nzOkText="ok-text"
+      nzOkType="default"
+      nzCancelText="cancel-text"
+      [nzCondition]="condition"
+      (nzOnConfirm)="confirm()"
+      (nzOnCancel)="cancel()"
+    >
+      Delete
+    </a>
+    <a nz-popconfirm #templateTemplate [nzIcon]="icon" [nzTitle]="titleTemplate" (nzOnConfirm)="confirm()" (nzOnCancel)="cancel()">
+      Delete
+    </a>
 
-    <nz-popconfirm [nzTrigger]="'hover'">
-      <button #templateTrigger nz-popconfirm>Show</button>
-      <ng-template #nzTemplate>
-        <i class="anticon anticon-file"></i> <span>Show with icon</span>
-      </ng-template>
-    </nz-popconfirm>
+    <a nz-popconfirm #iconTemplate [nzIcon]="icon">
+      Delete
+    </a>
 
-    <nz-popconfirm nzTitle="FOCUS" [nzTrigger]="'focus'"><span #focusTrigger nz-popconfirm>Show</span></nz-popconfirm>
-
-    <nz-popconfirm nzTitle="CLICK" nzTrigger="click"><span #clickTrigger nz-popconfirm>Show</span></nz-popconfirm>
-
-    <nz-popconfirm nzTitle="VISIBLE" [(nzVisible)]="visible"><span #visibleTrigger nz-popconfirm>Show</span></nz-popconfirm>
-
-    <nz-popconfirm nzTitle="EXECUTE" [nzCondition]="executeCondition" (nzOnConfirm)="onConfirm()" (nzOnCancel)="onCancel()"><span #executeTrigger nz-popconfirm>Show</span></nz-popconfirm>
+    <ng-template #titleTemplate>title-template</ng-template>
   `
 })
-export class DemoAppComponent {
-  @ViewChild('normalTrigger') normalTrigger: ElementRef;
+export class NzpopconfirmTestNewComponent {
+  confirm = jasmine.createSpy('confirm');
+  cancel = jasmine.createSpy('cancel');
+  condition = false;
+  icon: string | undefined = undefined;
 
-  @ViewChild('templateTrigger') templateTrigger: ElementRef;
-
-  @ViewChild('focusTrigger') focusTrigger: ElementRef;
-
-  @ViewChild('clickTrigger') clickTrigger: ElementRef;
-
-  visible: boolean;
-  @ViewChild('visibleTrigger') visibleTrigger: ElementRef;
-
-  executeCondition: boolean;
-  @ViewChild('executeTrigger') executeTrigger: ElementRef;
-  onConfirm(): void { }
-  onCancel(): void { }
+  @ViewChild('stringTemplate', { static: false }) stringTemplate: ElementRef;
+  @ViewChild('templateTemplate', { static: false }) templateTemplate: ElementRef;
+  @ViewChild('iconTemplate', { static: false }) iconTemplate: ElementRef;
 }

@@ -1,65 +1,82 @@
 import { Component } from '@angular/core';
+import { NzFormatEmitEvent } from 'ng-zorro-antd/core';
 
 @Component({
   selector: 'nz-demo-tree-search',
   template: `
     <nz-input-group [nzSuffix]="suffixIcon">
-      <input type="text" nz-input placeholder="Search Tree Node" [(ngModel)]="searchValue">
+      <input type="text" nz-input placeholder="Search" [(ngModel)]="searchValue" />
     </nz-input-group>
     <ng-template #suffixIcon>
-      <i class="anticon anticon-search"></i>
+      <i nz-icon nzType="search"></i>
     </ng-template>
-    <nz-tree [nzTreeData]="nodes" [nzSearchValue]="searchValue"
-             [nzCheckable]="true"
-             (nzOnSearchNode)="mouseAction('search',$event)"
-             (nzCheckBoxChange)="mouseAction('check',$event)"
-             (nzClick)="mouseAction('click', $event)"
-             (nzExpandChange)="mouseAction('expand',$event)"
-             (nzDblClick)="mouseAction('dblclick',$event)">
-    </nz-tree>`
+    <nz-tree
+      [nzData]="nodes"
+      [nzSearchValue]="searchValue"
+      (nzClick)="nzEvent($event)"
+      (nzExpandChange)="nzEvent($event)"
+      (nzSearchValueChange)="nzEvent($event)"
+    >
+    </nz-tree>
+  `,
+  styles: [
+    `
+      nz-input-group {
+        padding: 10px 0;
+      }
+    `
+  ]
 })
 export class NzDemoTreeSearchComponent {
-  searchValue;
+  searchValue = '';
+
   nodes = [
     {
-      title   : 'root1',
-      key     : '1001',
+      title: '0-0',
+      key: '0-0',
       children: [
         {
-          title   : 'child1',
-          key     : '10001',
+          title: '0-0-0',
+          key: '0-0-0',
           children: [
-            { title: 'child1.1', children: [] },
-            {
-              title   : 'child1.3',
-              checked : true,
-              children: [
-                { title: 'grandchild1.2.1', key: '110101', isLeaf: true }
-              ]
-            }
+            { title: '0-0-0-0', key: '0-0-0-0', isLeaf: true },
+            { title: '0-0-0-1', key: '0-0-0-1', isLeaf: true },
+            { title: '0-0-0-2', key: '0-0-0-2', isLeaf: true }
           ]
         },
-        { title: 'child2', key: '10002', isLeaf: true }
-      ]
-    },
-    {
-      title   : 'root2',
-      key     : '1002',
-      children: [
-        { title: 'child2.1', children: [] },
         {
-          title     : 'child1.2',
-          selectable: false,
-          children  : [
-            { title: 'grandchild2.2.1' }
+          title: '0-0-1',
+          key: '0-0-1',
+          children: [
+            { title: '0-0-1-0', key: '0-0-1-0', isLeaf: true },
+            { title: '0-0-1-1', key: '0-0-1-1', isLeaf: true },
+            { title: '0-0-1-2', key: '0-0-1-2', isLeaf: true }
           ]
+        },
+        {
+          title: '0-0-2',
+          key: '0-0-2',
+          isLeaf: true
         }
       ]
     },
-    { title: 'root3', key: '1003' }
+    {
+      title: '0-1',
+      key: '0-1',
+      children: [
+        { title: '0-1-0-0', key: '0-1-0-0', isLeaf: true },
+        { title: '0-1-0-1', key: '0-1-0-1', isLeaf: true },
+        { title: '0-1-0-2', key: '0-1-0-2', isLeaf: true }
+      ]
+    },
+    {
+      title: '0-2',
+      key: '0-2',
+      isLeaf: true
+    }
   ];
 
-  mouseAction(name: string, e: any): void {
-    console.log(name, e);
+  nzEvent(event: NzFormatEmitEvent): void {
+    console.log(event);
   }
 }

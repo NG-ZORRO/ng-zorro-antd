@@ -1,9 +1,22 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NzI18nModule } from '../i18n/nz-i18n.module';
-import { NzRadioModule } from '../radio/nz-radio.module';
-import { NzSelectModule } from '../select/nz-select.module';
+
+import { NzI18nModule } from 'ng-zorro-antd/i18n';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+
+import { DateTableCellComponent } from './date-table-cell.component';
+import { DateTableComponent } from './date-table.component';
+import { MonthTableComponent } from './month-table.component';
 import { NzDateCellDirective, NzDateFullCellDirective, NzMonthCellDirective, NzMonthFullCellDirective } from './nz-calendar-cells';
 import { NzCalendarHeaderComponent } from './nz-calendar-header.component';
 import { NzCalendarComponent } from './nz-calendar.component';
@@ -15,15 +28,20 @@ import { NzCalendarComponent } from './nz-calendar.component';
     NzDateCellDirective,
     NzDateFullCellDirective,
     NzMonthCellDirective,
-    NzMonthFullCellDirective
+    NzMonthFullCellDirective,
+    DateTableComponent,
+    DateTableCellComponent,
+    MonthTableComponent
   ],
-  exports     : [
+  exports: [
     NzCalendarComponent,
     NzDateCellDirective,
     NzDateFullCellDirective,
     NzMonthCellDirective,
-    NzMonthFullCellDirective
+    NzMonthFullCellDirective,
+    DateTableComponent,
+    MonthTableComponent
   ],
-  imports     : [ CommonModule, FormsModule, NzI18nModule, NzRadioModule, NzSelectModule ]
+  imports: [CommonModule, FormsModule, NzI18nModule, NzRadioModule, NzSelectModule]
 })
-export class NzCalendarModule { }
+export class NzCalendarModule {}

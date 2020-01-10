@@ -6,11 +6,16 @@ import { Component } from '@angular/core';
     <button nz-button nzType="primary" (click)="showModal()">
       <span>Show Modal</span>
     </button>
-    <nz-modal [(nzVisible)]="isVisible" nzTitle="Modal Title" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()" [nzOkLoading]="isOkLoading">
+    <nz-modal
+      [(nzVisible)]="isVisible"
+      nzTitle="Modal Title"
+      (nzOnCancel)="handleCancel()"
+      (nzOnOk)="handleOk()"
+      [nzOkLoading]="isOkLoading"
+    >
       <p>Modal Content</p>
     </nz-modal>
-  `,
-  styles: []
+  `
 })
 export class NzDemoModalAsyncComponent {
   isVisible = false;
@@ -22,7 +27,7 @@ export class NzDemoModalAsyncComponent {
 
   handleOk(): void {
     this.isOkLoading = true;
-    window.setTimeout(() => {
+    setTimeout(() => {
       this.isVisible = false;
       this.isOkLoading = false;
     }, 3000);

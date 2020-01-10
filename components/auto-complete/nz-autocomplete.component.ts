@@ -1,4 +1,13 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
+  AfterContentInit,
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -6,23 +15,23 @@ import {
   ContentChildren,
   ElementRef,
   EventEmitter,
-  Input, NgZone,
+  Host,
+  Input,
+  NgZone,
+  OnDestroy,
+  Optional,
   Output,
   QueryList,
   TemplateRef,
-  ViewChild, ViewChildren
+  ViewChild,
+  ViewChildren,
+  ViewEncapsulation
 } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import { defer } from 'rxjs/observable/defer';
-import { merge } from 'rxjs/observable/merge';
-import { filter } from 'rxjs/operators/filter';
-import { switchMap } from 'rxjs/operators/switchMap';
-import { take } from 'rxjs/operators/take';
+import { defer, merge, Observable, Subscription } from 'rxjs';
+import { filter, switchMap, take } from 'rxjs/operators';
 
-import { toBoolean } from '../core/util/convert';
+import { CompareWith, InputBoolean, NzDropDownPosition, NzNoAnimationDirective, slideMotion } from 'ng-zorro-antd/core';
 
-import { dropDownAnimation } from '../core/animation/dropdown-animations';
 import { NzAutocompleteOptionComponent, NzOptionSelectionChange } from './nz-autocomplete-option.component';
 
 export interface AutocompleteDataSourceItem {
@@ -33,41 +42,15 @@ export interface AutocompleteDataSourceItem {
 export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | number[];
 
 @Component({
-  selector           : 'nz-autocomplete',
+  selector: 'nz-autocomplete',
+  exportAs: 'nzAutocomplete',
   preserveWhitespaces: false,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  animations         : [
-    dropDownAnimation
-  ],
-  template           : `
-    <ng-template>
-      <div class="ant-select-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft"
-        #panel
-        [@dropDownAnimation]="dropDownPosition"
-        [class.ant-select-dropdown-hidden]="!showPanel">
-        <div style="overflow: auto;">
-          <ul class="ant-select-dropdown-menu  ant-select-dropdown-menu-root ant-select-dropdown-menu-vertical"
-            role="menu"
-            aria-activedescendant>
-            <ng-template *ngTemplateOutlet="nzDataSource ? optionsTemplate : contentTemplate"></ng-template>
-          </ul>
-        </div>
-      </div>
-      <ng-template #contentTemplate>
-        <ng-content></ng-content>
-      </ng-template>
-      <ng-template #optionsTemplate>
-        <nz-auto-option *ngFor="let option of nzDataSource" [nzValue]="option">{{option}}</nz-auto-option>
-      </ng-template>
-    </ng-template>
-  `,
-  styles             : [
-      `
-      :host {
-        position: relative;
-        display: inline-block;
-      }
-
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  templateUrl: './nz-autocomplete.component.html',
+  animations: [slideMotion],
+  styles: [
+    `
       .ant-select-dropdown {
         top: 100%;
         left: 0;
@@ -79,19 +62,26 @@ export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | n
     `
   ]
 })
-export class NzAutocompleteComponent implements AfterViewInit {
-  private activeItemIndex: number = -1;
-  private selectionChangeSubscription: Subscription;
+export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit, OnDestroy {
+  @Input() nzWidth: number;
+  @Input() nzOverlayClassName = '';
+  @Input() nzOverlayStyle: { [key: string]: string } = {};
+  @Input() @InputBoolean() nzDefaultActiveFirstOption = true;
+  @Input() @InputBoolean() nzBackfill = false;
+  @Input() compareWith: CompareWith = (o1, o2) => o1 === o2;
+  @Input() nzDataSource: AutocompleteDataSource;
+  @Output() readonly selectionChange: EventEmitter<NzAutocompleteOptionComponent> = new EventEmitter<NzAutocompleteOptionComponent>();
 
-  showPanel: boolean = false;
+  showPanel: boolean = true;
   isOpen: boolean = false;
   activeItem: NzAutocompleteOptionComponent;
-  dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
+  dropDownPosition: NzDropDownPosition = 'bottom';
 
-  /** 组件支持设置 dataSource 和 content 设置 options
-   *  这个属性为其提供方便的访问方式 */
+  /**
+   * Options accessor, its source may be content or dataSource
+   */
   get options(): QueryList<NzAutocompleteOptionComponent> {
-    // 优先使用 dataSource
+    // first dataSource
     if (this.nzDataSource) {
       return this.fromDataSourceOptions;
     } else {
@@ -99,75 +89,51 @@ export class NzAutocompleteComponent implements AfterViewInit {
     }
   }
 
-  /** 提供给 cdk-overlay 用于渲染 */
-  @ViewChild(TemplateRef) template: TemplateRef<{}>;
-
-  @ViewChild('panel') panel: ElementRef;
-  @ViewChild('content') content: ElementRef;
-
-  /** 由 Content 提供 options */
+  /** Provided by content */
   @ContentChildren(NzAutocompleteOptionComponent, { descendants: true }) fromContentOptions: QueryList<NzAutocompleteOptionComponent>;
-
-  /** 由 nzDataSource 提供 options */
+  /** Provided by dataSource */
   @ViewChildren(NzAutocompleteOptionComponent) fromDataSourceOptions: QueryList<NzAutocompleteOptionComponent>;
 
-  /** 自定义宽度单位 px */
-  @Input() nzWidth: number | void;
+  /** cdk-overlay */
+  @ViewChild(TemplateRef, { static: false }) template: TemplateRef<{}>;
+  @ViewChild('panel', { static: false }) panel: ElementRef;
+  @ViewChild('content', { static: false }) content: ElementRef;
 
-  /** 是否默认高亮第一个选项，默认 `true` */
-  @Input()
-  get nzDefaultActiveFirstOption(): boolean {
-    return this._defaultActiveFirstOption;
-  }
-
-  set nzDefaultActiveFirstOption(value: boolean) {
-    this._defaultActiveFirstOption = toBoolean(value);
-  }
-
-  _defaultActiveFirstOption: boolean = true;
-
-  /** 使用键盘选择选项的时候把选中项回填到输入框中，默认 `false` */
-  @Input()
-  get nzBackfill(): boolean {
-    return this._backfill;
-  }
-
-  set nzBackfill(value: boolean) {
-    this._backfill = toBoolean(value);
-  }
-
-  _backfill: boolean = false;
-
-  /** 自动完成的数据源 */
-  @Input()
-  get nzDataSource(): AutocompleteDataSource {
-    return this._dataSource;
-  }
-
-  set nzDataSource(value: AutocompleteDataSource) {
-    this._dataSource = value;
-  }
-
-  _dataSource: AutocompleteDataSource;
-
-  /** 选择时发出的事件 */
-  @Output() selectionChange: EventEmitter<NzAutocompleteOptionComponent> = new EventEmitter<NzAutocompleteOptionComponent>();
-
-  /** 用于组件内部监听 options 的选择变化 */
+  private activeItemIndex: number = -1;
+  private selectionChangeSubscription = Subscription.EMPTY;
+  private dataSourceChangeSubscription = Subscription.EMPTY;
+  /** Options changes listener */
   readonly optionSelectionChanges: Observable<NzOptionSelectionChange> = defer(() => {
     if (this.options) {
-      return merge(...this.options.map(option => option.selectionChange));
+      return merge<NzOptionSelectionChange>(...this.options.map(option => option.selectionChange));
     }
-    return this._ngZone.onStable
-    .asObservable()
-    .pipe(take(1), switchMap(() => this.optionSelectionChanges));
+    return this.ngZone.onStable.asObservable().pipe(
+      take(1),
+      switchMap(() => this.optionSelectionChanges)
+    );
   });
 
-  constructor(private changeDetectorRef: ChangeDetectorRef, private _ngZone: NgZone) {
+  constructor(
+    private changeDetectorRef: ChangeDetectorRef,
+    private ngZone: NgZone,
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+  ) {}
+
+  ngAfterContentInit(): void {
+    if (!this.nzDataSource) {
+      this.optionsInit();
+    }
   }
 
   ngAfterViewInit(): void {
-    this.optionsInit();
+    if (this.nzDataSource) {
+      this.optionsInit();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.dataSourceChangeSubscription.unsubscribe();
+    this.selectionChangeSubscription.unsubscribe();
   }
 
   setVisibility(): void {
@@ -176,7 +142,7 @@ export class NzAutocompleteComponent implements AfterViewInit {
   }
 
   setActiveItem(index: number): void {
-    const activeItem = this.options.toArray()[ index ];
+    const activeItem = this.options.toArray()[index];
     if (activeItem && !activeItem.active) {
       this.activeItem = activeItem;
       this.activeItemIndex = index;
@@ -196,32 +162,35 @@ export class NzAutocompleteComponent implements AfterViewInit {
     this.setActiveItem(previousIndex);
   }
 
-  getOptionIndex(option: NzAutocompleteOptionComponent): number | undefined {
+  // tslint:disable-next-line:no-any
+  getOptionIndex(value: any): number {
     return this.options.reduce((result: number, current: NzAutocompleteOptionComponent, index: number) => {
-      return result === undefined ? (option === current ? index : undefined) : result;
-    }, undefined);
+      return result === -1 ? (this.compareWith(value, current.nzValue) ? index : -1) : result;
+    }, -1)!;
+  }
+
+  updatePosition(position: NzDropDownPosition): void {
+    this.dropDownPosition = position;
+    this.changeDetectorRef.markForCheck();
   }
 
   private optionsInit(): void {
     this.setVisibility();
     this.subscribeOptionChanges();
     const changes = this.nzDataSource ? this.fromDataSourceOptions.changes : this.fromContentOptions.changes;
-
-    // 用于处理动态/异步的 options
-    changes.subscribe(e => {
+    // async
+    this.dataSourceChangeSubscription = changes.subscribe(e => {
       if (!e.dirty && this.isOpen) {
-        setTimeout(_ => this.setVisibility());
+        setTimeout(() => this.setVisibility());
       }
       this.subscribeOptionChanges();
     });
   }
 
   /**
-   * 清除 Options 的激活状态
-   * @param {NzAutocompleteOptionComponent} skip
-   * @param {boolean} deselect
+   * Clear the status of options
    */
-  private clearSelectedOptions(skip?: NzAutocompleteOptionComponent, deselect: boolean = false): void {
+  clearSelectedOptions(skip?: NzAutocompleteOptionComponent | null, deselect: boolean = false): void {
     this.options.forEach(option => {
       if (option !== skip) {
         if (deselect) {
@@ -233,15 +202,16 @@ export class NzAutocompleteComponent implements AfterViewInit {
   }
 
   private subscribeOptionChanges(): void {
+    this.selectionChangeSubscription.unsubscribe();
     this.selectionChangeSubscription = this.optionSelectionChanges
-    .pipe(filter((event: NzOptionSelectionChange) => event.isUserInput))
-    .subscribe((event: NzOptionSelectionChange) => {
-      event.source.select();
-      event.source.setActiveStyles();
-      this.activeItem = event.source;
-      this.activeItemIndex = this.getOptionIndex(this.activeItem);
-      this.clearSelectedOptions(event.source, true);
-      this.selectionChange.emit(event.source);
-    });
+      .pipe(filter((event: NzOptionSelectionChange) => event.isUserInput))
+      .subscribe((event: NzOptionSelectionChange) => {
+        event.source.select();
+        event.source.setActiveStyles();
+        this.activeItem = event.source;
+        this.activeItemIndex = this.getOptionIndex(this.activeItem.nzValue);
+        this.clearSelectedOptions(event.source, true);
+        this.selectionChange.emit(event.source);
+      });
   }
 }

@@ -1,0 +1,79 @@
+<section class="code-box" [ngClass]="{ expand: nzExpanded }" [attr.id]="nzId">
+  <section class="code-box-demo">
+    <div
+      *ngIf="!showIframe"
+      [class.simulate-iframe]="simulateIFrame"
+      [class.browser-mockup]="simulateIFrame"
+      [class.with-url]="simulateIFrame"
+      [style.height.px]="simulateIFrame && nzIframeHeight"
+    >
+      <ng-content select="[demo]"></ng-content>
+    </div>
+    <div class="browser-mockup with-url" *ngIf="showIframe">
+      <iframe [src]="iframe" [height]="nzIframeHeight" title="demo"></iframe>
+    </div>
+  </section>
+  <section class="code-box-meta markdown">
+    <div class="code-box-title">
+      <a (click)="navigateToFragment()"
+      >{{ nzTitle }}
+        <a class="edit-button" [attr.href]="nzHref" target="_blank" rel="noopener noreferrer" style="">
+          <i nz-icon nzType="edit"></i>
+        </a>
+      </a>
+    </div>
+    <div class="code-box-description">
+      <ng-content select="[intro]"></ng-content>
+    </div>
+    <div class="code-box-actions">
+      <i
+        [nzTooltipTitle]="language==='zh' ? '在 StackBlitz 上打开':'Edit On StackBlitz'"
+        nz-tooltip
+        nz-icon
+        nzType="thunderbolt"
+        nzTheme="fill"
+        class="code-box-code-copy"
+        (click)="openOnStackBlitz()"
+      ></i>
+      <i
+        [nzTooltipTitle]="language==='zh'? '复制代码' : 'Copy Code'"
+        nz-tooltip
+        nz-icon
+        [nzType]="copied ? 'check' : 'snippets'"
+        class="code-box-code-copy"
+        [class.ant-tooltip-open]="copied"
+        (click)="copyCode(nzRawCode)"
+      ></i>
+      <i
+        [nzTooltipTitle]="language==='zh'? '复制生成代码命令' : 'Copy Generate Command'"
+        *ngIf="nzGenerateCommand"
+        nz-tooltip
+        nz-icon
+        [nzType]="commandCopied ? 'check' : 'code'"
+        class="code-box-code-copy"
+        [class.ant-tooltip-open]="commandCopied"
+        (click)="copyGenerateCommand(nzGenerateCommand)"
+      ></i>
+      <span class="code-expand-icon" [nzTooltipTitle]="nzExpanded ? (language==='zh'? '收起代码' : 'Hide Code') : (language==='zh'? '显示代码' : 'Show Code')" nz-tooltip (click)="nzExpanded = !nzExpanded">
+        <img
+          alt="expand code"
+          src="https://gw.alipayobjects.com/zos/rmsportal/wSAkBuJFbdxsosKKpqyq.svg"
+          [class.code-expand-icon-show]="nzExpanded"
+          [class.code-expand-icon-hide]="!nzExpanded"
+        />
+        <img
+          alt="expand code"
+          src="https://gw.alipayobjects.com/zos/rmsportal/OpROPHYqWmrMDBFMZtKF.svg"
+          [class.code-expand-icon-show]="!nzExpanded"
+          [class.code-expand-icon-hide]="nzExpanded"
+        />
+      </span>
+    </div>
+  </section>
+  <section class="highlight-wrapper" [ngClass]="{ 'highlight-wrapper-expand': nzExpanded }">
+    <div class="highlight">
+      <ng-content select="[code]"></ng-content>
+      <nz-highlight [nzCode]="nzCode" [nzLanguage]="'typescript'"></nz-highlight>
+    </div>
+  </section>
+</section>

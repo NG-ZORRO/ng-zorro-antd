@@ -3,28 +3,20 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-menu-inline-collapsed',
   template: `
-    <div style="width: 240px;">
-      <button nz-button [nzType]="'primary'" (click)="toggleCollapsed()" style="margin-bottom: 10px;">
-        <i class="anticon" [class.anticon-menu-unfold]="isCollapsed" [class.anticon-menu-fold]="!isCollapsed">
-        </i>
+    <div class="wrapper">
+      <button nz-button nzType="primary" (click)="toggleCollapsed()">
+        <i nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
       </button>
-      <ul nz-menu [nzMode]="'inline'" nzTheme='dark' [nzInlineCollapsed]="isCollapsed">
-        <li nz-menu-item>
-          <span title>
-            <i class="anticon anticon-mail"></i>
-            <span>Navigation One</span>
-          </span>
+      <ul nz-menu nzMode="inline" nzTheme="dark" [nzInlineCollapsed]="isCollapsed">
+        <li nz-menu-item nz-tooltip nzPlacement="right" [nzTitle]="isCollapsed ? 'Navigation One' : ''" nzSelected>
+          <i nz-icon nzType="mail"></i>
+          <span>Navigation One</span>
         </li>
-        <li nz-submenu>
-          <span title>
-            <i class="anticon anticon-appstore"></i>
-            <span>Navigation Two</span>
-          </span>
+        <li nz-submenu nzTitle="Navigation Two" nzIcon="appstore">
           <ul>
             <li nz-menu-item>Option 5</li>
             <li nz-menu-item>Option 6</li>
-            <li nz-submenu>
-              <span title>Submenu</span>
+            <li nz-submenu nzTitle="Submenu">
               <ul>
                 <li nz-menu-item>Option 7</li>
                 <li nz-menu-item>Option 8</li>
@@ -32,11 +24,7 @@ import { Component } from '@angular/core';
             </li>
           </ul>
         </li>
-        <li nz-submenu>
-          <span title>
-            <i class="anticon anticon-setting"></i>
-            <span>Navigation Three</span>
-          </span>
+        <li nz-submenu nzTitle="Navigation Three" nzIcon="setting">
           <ul>
             <li nz-menu-item>Option 9</li>
             <li nz-menu-item>Option 10</li>
@@ -45,7 +33,18 @@ import { Component } from '@angular/core';
         </li>
       </ul>
     </div>
-  `
+  `,
+  styles: [
+    `
+      .wrapper {
+        width: 240px;
+      }
+
+      button {
+        margin-bottom: 12px;
+      }
+    `
+  ]
 })
 export class NzDemoMenuInlineCollapsedComponent {
   isCollapsed = false;

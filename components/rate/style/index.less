@@ -1,55 +1,83 @@
-@import "../../style/themes/default";
-@import "../../style/mixins/index";
+@import '../../style/themes/index';
+@import '../../style/mixins/index';
 
-@rate-prefix-cls: ~"@{ant-prefix}-rate";
+@rate-prefix-cls: ~'@{ant-prefix}-rate';
 
 .@{rate-prefix-cls} {
   .reset-component;
-  line-height: unset;
+
+  display: inline-block;
   margin: 0;
   padding: 0;
-  list-style: none;
-  font-size: 20px;
-  display: inline-block;
   color: @rate-star-color;
+  font-size: 20px;
+  line-height: unset;
+  list-style: none;
   outline: none;
 
+  &-rtl {
+    direction: rtl;
+  }
+
   &-disabled &-star {
-    cursor: not-allowed;
+    cursor: default;
     &:hover {
       transform: scale(1);
     }
   }
 
   &-star {
+    position: relative;
+    display: inline-block;
     margin: 0;
     padding: 0;
-    display: inline-block;
-    margin-right: 8px;
-    position: relative;
-    transition: all .3s;
     color: inherit;
     cursor: pointer;
+    transition: all 0.3s;
+
+    &:not(:last-child) {
+      margin-right: 8px;
+
+      .@{rate-prefix-cls}-rtl & {
+        margin-right: 0;
+        margin-left: 8px;
+      }
+    }
+
+    > div {
+      &:focus {
+        outline: 0;
+      }
+
+      &:hover,
+      &:focus {
+        transform: scale(1.1);
+      }
+    }
 
     &-first,
     &-second {
-      user-select: none;
-      transition: all .3s;
       color: @rate-star-bg;
-    }
-
-    &-focused, &:hover {
-      transform: scale(1.1);
+      transition: all 0.3s;
+      user-select: none;
+      .@{iconfont-css-prefix} {
+        vertical-align: middle;
+      }
     }
 
     &-first {
       position: absolute;
-      left: 0;
       top: 0;
+      left: 0;
       width: 50%;
       height: 100%;
       overflow: hidden;
       opacity: 0;
+
+      .@{rate-prefix-cls}-rtl & {
+        right: 0;
+        left: auto;
+      }
     }
 
     &-half &-first,
@@ -64,8 +92,13 @@
   }
 
   &-text {
-    margin-left: 8px;
     display: inline-block;
+    margin-left: 8px;
     font-size: @font-size-base;
+
+    .@{rate-prefix-cls}-rtl & {
+      margin-right: 8px;
+      margin-left: 0;
+    }
   }
 }

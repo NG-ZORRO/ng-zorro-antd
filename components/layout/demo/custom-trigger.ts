@@ -1,80 +1,93 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-layout-custom-trigger',
   template: `
     <nz-layout>
-      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="triggerTemplate">
-        <div class="logo">
-        </div>
-        <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
-          <li nz-submenu>
-            <span title><i class="anticon anticon-user"></i><span class="nav-text">User</span></span>
+      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+        <div class="logo"></div>
+        <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+          <li nz-submenu nzTitle="User" nzIcon="user">
             <ul>
               <li nz-menu-item>Tom</li>
               <li nz-menu-item>Bill</li>
               <li nz-menu-item>Alex</li>
             </ul>
           </li>
-          <li nz-submenu>
-            <span title><i class="anticon anticon-team"></i><span class="nav-text">Team</span></span>
+          <li nz-submenu nzTitle="Team" nzIcon="team">
             <ul>
               <li nz-menu-item>Team 1</li>
               <li nz-menu-item>Team 2</li>
             </ul>
           </li>
-          <li nz-menu-item><span><i class="anticon anticon-file"></i><span class="nav-text">File</span></span></li>
+          <li nz-menu-item>
+            <i nz-icon nzType="file"></i>
+            <span>File</span>
+          </li>
         </ul>
       </nz-sider>
       <nz-layout>
-        <nz-header style="background: #fff; padding:0;">
-          <i class="anticon trigger" [class.anticon-menu-fold]="!isCollapsed" [class.anticon-menu-unfold]="isCollapsed" (click)="isCollapsed=!isCollapsed"></i>
+        <nz-header>
+          <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" (click)="isCollapsed = !isCollapsed"></i>
         </nz-header>
-        <nz-content style="margin:0 16px;">
-          <nz-breadcrumb style="margin:16px 0;">
+        <nz-content>
+          <nz-breadcrumb>
             <nz-breadcrumb-item>User</nz-breadcrumb-item>
             <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
           </nz-breadcrumb>
-          <div style="padding:24px; background: #fff; min-height: 360px;">
+          <div class="inner-content">
             Bill is a cat.
           </div>
         </nz-content>
-        <nz-footer style="text-align: center;">Ant Design ©2017 Implement By Angular</nz-footer>
+        <nz-footer>Ant Design ©2019 Implement By Angular</nz-footer>
       </nz-layout>
     </nz-layout>
-    <ng-template #trigger>
-      <i class="anticon anticon-up"></i>
-    </ng-template>
   `,
-  styles  : [
-      `
-      :host ::ng-deep .trigger {
+  styles: [
+    `
+      .trigger {
         font-size: 18px;
         line-height: 64px;
         padding: 0 24px;
         cursor: pointer;
-        transition: color .3s;
+        transition: color 0.3s;
       }
 
-      :host ::ng-deep .trigger:hover {
+      .trigger:hover {
         color: #1890ff;
       }
 
-      :host ::ng-deep .logo {
+      .logo {
         height: 32px;
-        background: rgba(255, 255, 255, .2);
+        background: rgba(255, 255, 255, 0.2);
         margin: 16px;
+      }
+
+      nz-header {
+        background: #fff;
+        padding: 0;
+      }
+
+      nz-content {
+        margin: 0 16px;
+      }
+
+      nz-breadcrumb {
+        margin: 16px 0;
+      }
+
+      .inner-content {
+        padding: 24px;
+        background: #fff;
+        min-height: 360px;
+      }
+
+      nz-footer {
+        text-align: center;
       }
     `
   ]
 })
 export class NzDemoLayoutCustomTriggerComponent {
   isCollapsed = false;
-  triggerTemplate = null;
-  @ViewChild('trigger') customTrigger: TemplateRef<void>;
-
-  /** custom trigger can be TemplateRef **/
-  changeTrigger(): void {
-    this.triggerTemplate = this.customTrigger;
-  }
 }

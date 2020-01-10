@@ -2,15 +2,12 @@
 // ------------------------
 .clearfix() {
   zoom: 1;
-  &:before,
-  &:after {
-    content: " ";
+  &::before,
+  &::after {
     display: table;
+    content: '';
   }
-  &:after {
+  &::after {
     clear: both;
-    visibility: hidden;
-    font-size: 0;
-    height: 0;
   }
 }

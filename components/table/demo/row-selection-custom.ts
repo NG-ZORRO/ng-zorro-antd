@@ -1,17 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 
+interface ItemData {
+  id: number;
+  name: string;
+  age: number;
+  address: string;
+}
+
 @Component({
   selector: 'nz-demo-table-row-selection-custom',
   template: `
-    <nz-table
-      #rowSelectionTable
-      [nzData]="dataSet"
-      [nzPageSize]="10"
-      (nzPageIndexChange)="refreshStatus()"
-      (nzPageSizeChange)="refreshStatus()">
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfAllData" (nzCurrentPageDataChange)="currentPageDataChange($event)">
       <thead>
         <tr>
-          <th nzShowCheckbox nzShowRowSelection [nzSelections]="listOfSelection" [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
+          <th
+            nzShowCheckbox
+            nzShowRowSelection
+            [nzSelections]="listOfSelection"
+            [(nzChecked)]="isAllDisplayDataChecked"
+            [nzIndeterminate]="isIndeterminate"
+            (nzCheckedChange)="checkAll($event)"
+          ></th>
           <th>Name</th>
           <th>Age</th>
           <th>Address</th>
@@ -19,61 +28,66 @@ import { Component, OnInit } from '@angular/core';
       </thead>
       <tbody>
         <tr *ngFor="let data of rowSelectionTable.data">
-          <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus($event)"></td>
-          <td>{{data.name}}</td>
-          <td>{{data.age}}</td>
-          <td>{{data.address}}</td>
+          <td nzShowCheckbox [(nzChecked)]="mapOfCheckedId[data.id]" (nzCheckedChange)="refreshStatus()"></td>
+          <td>{{ data.name }}</td>
+          <td>{{ data.age }}</td>
+          <td>{{ data.address }}</td>
         </tr>
       </tbody>
-    </nz-table>`,
-  styles  : []
+    </nz-table>
+  `
 })
 export class NzDemoTableRowSelectionCustomComponent implements OnInit {
   listOfSelection = [
     {
-      text    : 'Select All Row',
+      text: 'Select All Row',
       onSelect: () => {
         this.checkAll(true);
       }
     },
     {
-      text    : 'Select Odd Row',
+      text: 'Select Odd Row',
       onSelect: () => {
-        this.dataSet.forEach((data, index) => data.checked = index % 2 !== 0);
+        this.listOfDisplayData.forEach((data, index) => (this.mapOfCheckedId[data.id] = index % 2 !== 0));
         this.refreshStatus();
       }
     },
     {
-      text    : 'Select Even Row',
+      text: 'Select Even Row',
       onSelect: () => {
-        this.dataSet.forEach((data, index) => data.checked = index % 2 === 0);
+        this.listOfDisplayData.forEach((data, index) => (this.mapOfCheckedId[data.id] = index % 2 === 0));
         this.refreshStatus();
       }
     }
   ];
-  allChecked = false;
-  dataSet: Array<{ name: string; age: number; address: string; checked: boolean }> = [];
-  indeterminate = false;
+  isAllDisplayDataChecked = false;
+  isIndeterminate = false;
+  listOfDisplayData: ItemData[] = [];
+  listOfAllData: ItemData[] = [];
+  mapOfCheckedId: { [key: string]: boolean } = {};
+
+  currentPageDataChange($event: ItemData[]): void {
+    this.listOfDisplayData = $event;
+    this.refreshStatus();
+  }
 
   refreshStatus(): void {
-    const allChecked = this.dataSet.every(value => value.checked === true);
-    const allUnChecked = this.dataSet.every(value => !value.checked);
-    this.allChecked = allChecked;
-    this.indeterminate = (!allChecked) && (!allUnChecked);
+    this.isAllDisplayDataChecked = this.listOfDisplayData.every(item => this.mapOfCheckedId[item.id]);
+    this.isIndeterminate = this.listOfDisplayData.some(item => this.mapOfCheckedId[item.id]) && !this.isAllDisplayDataChecked;
   }
 
   checkAll(value: boolean): void {
-    this.dataSet.forEach(data => data.checked = value);
+    this.listOfDisplayData.forEach(item => (this.mapOfCheckedId[item.id] = value));
     this.refreshStatus();
   }
 
   ngOnInit(): void {
-    for (let i = 0; i < 46; i++) {
-      this.dataSet.push({
-        name   : `Edward King ${i}`,
-        age    : 32,
-        address: `London, Park Lane no. ${i}`,
-        checked: false
+    for (let i = 0; i < 100; i++) {
+      this.listOfAllData.push({
+        id: i,
+        name: `Edward King ${i}`,
+        age: 32,
+        address: `London, Park Lane no. ${i}`
       });
     }
   }

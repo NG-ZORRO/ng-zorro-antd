@@ -1,31 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup
-} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'nz-demo-form-advanced-search',
   template: `
     <form nz-form [formGroup]="validateForm" class="ant-advanced-search-form">
       <div nz-row [nzGutter]="24">
-        <div nz-col [nzSpan]="8" *ngFor="let control of controlArray" [style.display]="control.show?'block':'none'">
+        <div nz-col [nzSpan]="8" *ngFor="let control of controlArray" [hidden]="!control.show">
           <nz-form-item nzFlex>
-            <nz-form-label [nzFor]="'field'+control.index">Field {{control.index}}</nz-form-label>
+            <nz-form-label [nzFor]="'field' + control.index">Field {{ control.index }}</nz-form-label>
             <nz-form-control>
-              <input nz-input placeholder="placeholder" [formControlName]="'field'+control.index" [attr.id]="'field'+control.index">
+              <input nz-input placeholder="placeholder" [formControlName]="'field' + control.index" [attr.id]="'field' + control.index" />
             </nz-form-control>
           </nz-form-item>
         </div>
       </div>
       <div nz-row>
-        <div nz-col [nzSpan]="24" style="text-align: right;">
+        <div nz-col [nzSpan]="24" class="search-area">
           <button nz-button [nzType]="'primary'">Search</button>
           <button nz-button (click)="resetForm()">Clear</button>
-          <a style="margin-left:8px;font-size:12px;" (click)="toggleCollapse()">
+          <a class="collapse" (click)="toggleCollapse()">
             Collapse
-            <i class="anticon" [class.anticon-down]="isCollapse" [class.anticon-up]="!isCollapse"></i>
+            <i nz-icon [nzType]="isCollapse ? 'down' : 'up'"></i>
           </a>
         </div>
       </div>
@@ -36,7 +32,7 @@ import {
   `,
 
   styles: [
-      `
+    `
       .ant-advanced-search-form {
         padding: 24px;
         background: #fbfbfb;
@@ -57,18 +53,31 @@ import {
       [nz-form-label] {
         overflow: visible;
       }
+
+      button {
+        margin-left: 8px;
+      }
+
+      .collapse {
+        margin-left: 8px;
+        font-size: 12px;
+      }
+
+      .search-area {
+        text-align: right;
+      }
     `
   ]
 })
 export class NzDemoFormAdvancedSearchComponent implements OnInit {
   validateForm: FormGroup;
-  controlArray = [];
+  controlArray: Array<{ index: number; show: boolean }> = [];
   isCollapse = true;
 
   toggleCollapse(): void {
     this.isCollapse = !this.isCollapse;
     this.controlArray.forEach((c, index) => {
-      c.show = this.isCollapse ? (index < 6) : true;
+      c.show = this.isCollapse ? index < 6 : true;
     });
   }
 
@@ -76,8 +85,7 @@ export class NzDemoFormAdvancedSearchComponent implements OnInit {
     this.validateForm.reset();
   }
 
-  constructor(private fb: FormBuilder) {
-  }
+  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({});

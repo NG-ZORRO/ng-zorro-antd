@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 提及
-type: Data Entry
+type: 数据录入
 title: Mention
 ---
 
@@ -10,6 +10,10 @@ title: Mention
 ## 何时使用
 
 用于在输入中提及某人或某事，常用于发布、聊天或评论功能。
+
+```ts
+import { NzMentionModule } from 'ng-zorro-antd/mention';
+```
 
 ## API
 
@@ -27,18 +31,18 @@ title: Mention
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzMentionTrigger | 用于指定提及的触发元素 **(必须)** | `HTMLTextAreaElement` `HTMLInputElement` | - |
-| nzMentionSuggestion | 自定义建议渲染模板 | `TemplateRef<any>` | - |
-| nzLoading | 加载中 | `boolean` | `false` |
-| nzNotFoundContent | 未找到时的内容 | `string` | `'无匹配结果，轻敲空格完成输入'` |
-| nzPlacement | 建议框位置 | `'button'` `'top'` | `'bottom'` |
-| nzPrefix | 触发弹出下拉框的字符 | `'string'` `'string[]'` | `'@'` |
-| nzSuggestions | 建议内容 | `any[]` | `[]` |
-| nzValueWith | 建议选项的取值方法  | `(any) => string` | `(value: string) => string` |
-| (nzOnSelect) | 下拉框选择建议时回调 | `EventEmitter<any>` | - |
-| (onSearchChange) | 输入框中 @ 变化时回调 | `EventEmitter<string>` | - |
+| `[nzMentionTrigger]` | 用于指定提及的触发元素 **(必须)** | `HTMLTextAreaElement \| HTMLInputElement` | - |
+| `[nzMentionSuggestion]` | 自定义建议渲染模板 | `TemplateRef<any>` | - |
+| `[nzLoading]` | 加载中 | `boolean` | `false` |
+| `[nzNotFoundContent]` | 未找到时的内容 | `string` | `'无匹配结果，轻敲空格完成输入'` |
+| `[nzPlacement]` | 建议框位置 | `'button' \| 'top'` | `'bottom'` |
+| `[nzPrefix]` | 触发弹出下拉框的字符 | `string \| string[]` | `'@'` |
+| `[nzSuggestions]` | 建议内容 | `any[]` | `[]` |
+| `[nzValueWith]` | 建议选项的取值方法  | `(any) => string \| (value: string) => string` |
+| `(nzOnSelect)` | 下拉框选择建议时回调 | `EventEmitter<any>` | - |
+| `(nzOnSearchChange)` | 输入框中 @ 变化时回调 | `EventEmitter<MentionOnSearchTypes>` | - |
 
-### 方法
+#### 方法
 
 | 方法名 | 说明 |
 | --- |--- |
@@ -72,3 +76,10 @@ title: Mention
     </ng-container>
   </nz-mention>
 ```
+
+### MentionOnSearchTypes
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| value | 搜索关键词 | `string` | - |
+| prefix | 触发前缀 | `string` | - |

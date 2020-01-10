@@ -16,7 +16,14 @@ import { Component } from '@angular/core';
         {{ isDisabledButton ? 'Enabled' : 'Disabled' }}
       </button>
     </p>
-  `
+  `,
+  styles: [
+    `
+      button {
+        margin-right: 8px;
+      }
+    `
+  ]
 })
 export class NzDemoCheckboxControllerComponent {
   isCheckedButton = true;

@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import Calendar from './calendar/nl_BE';
 import DatePicker from './date-picker/nl_BE';
 import Pagination from './pagination/nl_BE';
@@ -13,32 +21,30 @@ export default {
     filterTitle: 'FilterMenu',
     filterConfirm: 'OK',
     filterReset: 'Reset',
-    emptyText: 'Geen gegevens',
     selectAll: 'Selecteer huidige pagina',
-    selectInvert: 'Selecteer huidige pagina',
+    selectInvert: 'Selecteer huidige pagina'
   },
   Modal: {
     okText: 'OK',
     cancelText: 'Annuleer',
-    justOkText: 'OK',
+    justOkText: 'OK'
   },
   Popconfirm: {
     okText: 'OK',
-    cancelText: 'Annuleer',
+    cancelText: 'Annuleer'
   },
   Transfer: {
-    notFoundContent: 'Niet gevonden',
     searchPlaceholder: 'Zoek hier',
     itemUnit: 'item',
-    itemsUnit: 'items',
-  },
-  Select: {
-    notFoundContent: 'Niet gevonden',
+    itemsUnit: 'items'
   },
   Upload: {
     uploading: 'Uploaden...',
     removeFile: 'Bestand verwijderen',
     uploadError: 'Upload fout',
-    previewFile: 'Preview bestand',
+    previewFile: 'Preview bestand'
   },
+  Empty: {
+    description: 'Geen gegevens'
+  }
 };

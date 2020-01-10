@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 栅格
-type: Layout
+type: 布局
 cols: 1
 title: Grid
 ---
@@ -78,31 +78,35 @@ title: Grid
 
 Flex 布局是基于 24 栅格来定义每一个『盒子』的宽度，但排版则不拘泥于栅格。
 
+```ts
+import { NzGridModule } from 'ng-zorro-antd/grid';
+```
+
 ## API
 
-### nz-row
+### [nz-row]
+
+| 成员 | 说明 | 类型 | 默认值 | 全局配置 |
+| --- | --- | --- | --- | --- |
+| `[nzAlign]` | flex 布局下的垂直对齐方式 | `'top' \| 'middle' \| 'bottom'` | `'top'` | ✅ |
+| `[nzGutter]` | 栅格间隔，可以写成像素值或支持响应式的对象写法 `{ xs: 8, sm: 16, md: 24, lg: 32, xl: 32, xxl: 32 }` | `number \| object` | `0` | ✅ |
+| `[nzJustify]` | flex 布局下的水平排列方式 | `'start' \| 'end' \| 'center' \| 'space-around' \| 'space-between'` | `'start'` | ✅ |
+| `[nzType]` | 布局模式，可选 `flex`，[现代浏览器](http://caniuse.com/#search=flex) 下有效 | `'flex'` | - | ✅ |
+
+### [nz-col]
 
 | 成员 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzAlign | flex 布局下的垂直对齐方式：`top` `middle` `bottom` | string | `top` |
-| nzGutter | 栅格间隔，可以写成像素值或支持响应式的对象写法 `{ xs: 8, sm: 16, md: 24, lg: 32, xl: 32, xxl: 32 }` | number/object | 0 |
-| nzJustify | flex 布局下的水平排列方式：`start` `end` `center` `space-around` `space-between` | string | `start` |
-| nzType | 布局模式，可选 `flex`，[现代浏览器](http://caniuse.com/#search=flex) 下有效 | string |  |
-
-### nz-col
-
-| 成员 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| nzOffset | 栅格左侧的间隔格数，间隔内不可以有栅格 | number | 0 |
-| nzOrder | 栅格顺序，`flex` 布局模式下有效 | number | 0 |
-| nzPull | 栅格向左移动格数 | number | 0 |
-| nzPush | 栅格向右移动格数 | number | 0 |
-| nzSpan | 栅格占位格数，为 0 时相当于 `display: none` | number | - |
-| nzXs | `<576px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | number丨object | - |
-| nzSm | `≥576px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | number丨object | - |
-| nzMd | `≥768px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | number丨object | - |
-| nzLg | `≥992px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | number丨object | - |
-| nzXl | `≥1200px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | number丨object | - |
-| nzXXl | `≥1600px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | number丨object | - |
+| `[nzOffset]` | 栅格左侧的间隔格数，间隔内不可以有栅格 | `number` | `0` |
+| `[nzOrder]` | 栅格顺序，`flex` 布局模式下有效 | `number` | `0` |
+| `[nzPull]` | 栅格向左移动格数 | `number` | `0` |
+| `[nzPush]` | 栅格向右移动格数 | `number` | `0` |
+| `[nzSpan]` | 栅格占位格数，为 0 时相当于 `display: none` | `number` | - |
+| `[nzXs]` | `<576px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | `number \| object` | - |
+| `[nzSm]` | `≥576px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | `number \| object` | - |
+| `[nzMd]` | `≥768px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | `number \| object` | - |
+| `[nzLg]` | `≥992px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | `number \| object` | - |
+| `[nzXl]` | `≥1200px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | `number \| object` | - |
+| `[nzXXl]` | `≥1600px` 响应式栅格，可为栅格数或一个包含其他属性的对象 | `number \| object` | - |
 
 响应式栅格的断点扩展自 [BootStrap 4 的规则](https://getbootstrap.com/docs/4.0/layout/overview/#responsive-breakpoints)（不包含链接里 `occasionally` 的部分)。

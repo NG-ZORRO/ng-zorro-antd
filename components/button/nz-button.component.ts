@@ -1,116 +1,101 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { ContentObserver } from '@angular/cdk/observers';
 import {
   AfterContentInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ContentChildren,
   ElementRef,
-  HostListener,
+  HostBinding,
+  Inject,
   Input,
+  NgZone,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Optional,
+  QueryList,
   Renderer2,
-  ViewChild
+  SimpleChanges,
+  ViewChild,
+  ViewEncapsulation,
+  ViewRef
 } from '@angular/core';
+import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
-import { isEmpty } from '../core/util/check';
-import { toBoolean } from '../core/util/convert';
+import {
+  findFirstNotEmptyNode,
+  findLastNotEmptyNode,
+  InputBoolean,
+  isEmpty,
+  NZ_WAVE_GLOBAL_CONFIG,
+  NzConfigService,
+  NzSizeLDSType,
+  NzSizeMap,
+  NzUpdateHostClassService,
+  NzWaveConfig,
+  NzWaveDirective,
+  WithConfig
+} from 'ng-zorro-antd/core';
+import { NzIconDirective } from 'ng-zorro-antd/icon';
+import { Subject } from 'rxjs';
+import { startWith, takeUntil } from 'rxjs/operators';
 
-export type NzButtonType = 'primary' | 'dashed' | 'danger';
-export type NzButtonShape = 'circle' | null ;
-export type NzButtonSize = 'small' | 'large' | 'default' ;
+export type NzButtonType = 'primary' | 'dashed' | 'danger' | 'default' | 'link';
+export type NzButtonShape = 'circle' | 'round' | null;
+
+const NZ_CONFIG_COMPONENT_NAME = 'button';
 
 @Component({
-  selector           : '[nz-button]',
-  providers          : [ NzUpdateHostClassService ],
+  selector: '[nz-button]',
+  exportAs: 'nzButton',
+  providers: [NzUpdateHostClassService],
   preserveWhitespaces: false,
-  template           : `
-    <i class="anticon anticon-spin anticon-loading" *ngIf="nzLoading"></i>
-    <span (cdkObserveContent)="checkContent()" #contentElement><ng-content></ng-content></span>
-  `
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  templateUrl: './nz-button.component.html'
 })
-export class NzButtonComponent implements AfterContentInit {
-  private _ghost = false;
-  private _search = false;
-  private _type: NzButtonType;
-  private _shape: NzButtonShape;
-  private _size: NzButtonSize;
-  private _loading = false;
-  private el: HTMLElement;
+export class NzButtonComponent implements AfterContentInit, OnInit, OnDestroy, OnChanges {
+  @ViewChild('contentElement', { static: true }) contentElement: ElementRef;
+  @ContentChildren(NzIconDirective, { read: ElementRef }) listOfIconElement: QueryList<ElementRef>;
+  @HostBinding('attr.nz-wave') nzWave = new NzWaveDirective(this.ngZone, this.elementRef, this.waveConfig, this.animationType);
+
+  @Input() @InputBoolean() nzBlock: boolean = false;
+  @Input() @InputBoolean() nzGhost: boolean = false;
+  @Input() @InputBoolean() nzSearch: boolean = false;
+  @Input() @InputBoolean() nzLoading: boolean = false;
+  @Input() nzType: NzButtonType = 'default';
+  @Input() nzShape: NzButtonShape = null;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzSizeLDSType;
+
+  readonly el: HTMLElement = this.elementRef.nativeElement;
+  isInDropdown = false;
   private iconElement: HTMLElement;
   private iconOnly = false;
-  private clicked = false;
-  private prefixCls = 'ant-btn';
-  private sizeMap = { large: 'lg', small: 'sm' };
-  @ViewChild('contentElement') contentElement: ElementRef;
+  private destroy$ = new Subject<void>();
 
-  @Input()
-  set nzGhost(value: boolean) {
-    this._ghost = toBoolean(value);
-    this.setClassMap();
-  }
-
-  get nzGhost(): boolean {
-    return this._ghost;
-  }
-
-  @Input()
-  set nzSearch(value: boolean) {
-    this._search = toBoolean(value);
-    this.setClassMap();
-  }
-
-  get nzSearch(): boolean {
-    return this._search;
-  }
-
-  @Input()
-  get nzType(): NzButtonType {
-    return this._type;
-  }
-
-  set nzType(value: NzButtonType) {
-    this._type = value;
-    this.setClassMap();
-  }
-
-  @Input()
-  get nzShape(): NzButtonShape {
-    return this._shape;
-  }
-
-  set nzShape(value: NzButtonShape) {
-    this._shape = value;
-    this.setClassMap();
-  }
-
-  @Input()
-  set nzSize(value: NzButtonSize) {
-    this._size = value;
-    this.setClassMap();
-  }
-
-  get nzSize(): NzButtonSize {
-    return this._size;
-  }
-
-  @Input()
-  set nzLoading(value: boolean) {
-    this._loading = toBoolean(value);
-    this.setClassMap();
-    this.updateIconDisplay(value);
-  }
-
-  get nzLoading(): boolean {
-    return this._loading;
-  }
-
-  /** toggle button clicked animation */
-  @HostListener('click')
-  onClick(): void {
-    this.clicked = true;
-    this.setClassMap();
-    setTimeout(() => {
-      this.clicked = false;
-      this.setClassMap();
-    }, 300);
+  /** temp solution since no method add classMap to host https://github.com/angular/angular/issues/7289 */
+  setClassMap(): void {
+    const prefixCls = 'ant-btn';
+    const sizeMap: NzSizeMap = { large: 'lg', small: 'sm' };
+    this.nzUpdateHostClassService.updateHostClass(this.el, {
+      [`${prefixCls}-${this.nzType}`]: this.nzType,
+      [`${prefixCls}-${this.nzShape}`]: this.nzShape,
+      [`${prefixCls}-${sizeMap[this.nzSize]}`]: sizeMap[this.nzSize],
+      [`${prefixCls}-loading`]: this.nzLoading,
+      [`${prefixCls}-icon-only`]: this.iconOnly && !this.nzSearch && !this.isInDropdown,
+      [`${prefixCls}-background-ghost`]: this.nzGhost,
+      [`${prefixCls}-block`]: this.nzBlock,
+      [`ant-input-search-button`]: this.nzSearch
+    });
   }
 
   updateIconDisplay(value: boolean): void {
@@ -119,83 +104,101 @@ export class NzButtonComponent implements AfterContentInit {
     }
   }
 
-  /** temp solution since no method add classMap to host https://github.com/angular/angular/issues/7289 */
-  setClassMap(): void {
-    const classMap = {
-      [ `${this.prefixCls}-${this.nzType}` ]                : this.nzType,
-      [ `${this.prefixCls}-${this.nzShape}` ]               : this.nzShape,
-      [ `${this.prefixCls}-${this.sizeMap[ this.nzSize ]}` ]: this.sizeMap[ this.nzSize ],
-      [ `${this.prefixCls}-loading` ]                       : this.nzLoading,
-      [ `${this.prefixCls}-clicked` ]                       : this.clicked,
-      [ `${this.prefixCls}-icon-only` ]                     : this.iconOnly,
-      [ `${this.prefixCls}-background-ghost` ]              : this.nzGhost,
-      [ `ant-input-search-button` ]                         : this.nzSearch
-    };
-    this.nzUpdateHostClassService.updateHostClass(this.el, classMap);
-  }
-
   checkContent(): void {
-    this.moveIcon();
+    const hasIcon = this.listOfIconElement && this.listOfIconElement.length;
+    if (hasIcon) {
+      this.moveIcon();
+    }
     this.renderer.removeStyle(this.contentElement.nativeElement, 'display');
     /** https://github.com/angular/angular/issues/12530 **/
     if (isEmpty(this.contentElement.nativeElement)) {
       this.renderer.setStyle(this.contentElement.nativeElement, 'display', 'none');
-      this.iconOnly = !!this.iconElement;
+      this.iconOnly = !!hasIcon;
     } else {
       this.renderer.removeStyle(this.contentElement.nativeElement, 'display');
       this.iconOnly = false;
     }
     this.setClassMap();
     this.updateIconDisplay(this.nzLoading);
-    this.cdr.detectChanges();
+    if (!(this.cdr as ViewRef).destroyed) {
+      this.cdr.detectChanges();
+    }
   }
 
   moveIcon(): void {
-    const firstChildElement = this.findFirstNotEmptyNode(this.contentElement.nativeElement);
-    const lastChildElement = this.findLastNotEmptyNode(this.contentElement.nativeElement);
-    if (firstChildElement && (firstChildElement.nodeName === 'I')) {
-      this.renderer.insertBefore(this.el, firstChildElement, this.contentElement.nativeElement);
-      this.iconElement = firstChildElement as HTMLElement;
-    } else if (lastChildElement && (lastChildElement.nodeName === 'I')) {
-      this.renderer.appendChild(this.el, lastChildElement);
-      this.iconElement = lastChildElement as HTMLElement;
-    } else {
-      this.iconElement = null;
-    }
-  }
-
-  findFirstNotEmptyNode(value: HTMLElement): Node {
-    const children = value.childNodes;
-    for (let i = 0; i < children.length; i++) {
-      const node = children.item(i);
-      if (node && (node.nodeType === 1) && ((node as HTMLElement).outerHTML.toString().trim().length !== 0)) {
-        return node;
-      } else if (node && (node.nodeType === 3) && ((node.textContent.toString().trim().length !== 0))) {
-        return node;
+    if (this.listOfIconElement && this.listOfIconElement.length) {
+      const firstChildElement = findFirstNotEmptyNode(this.contentElement.nativeElement);
+      const lastChildElement = findLastNotEmptyNode(this.contentElement.nativeElement);
+      if (firstChildElement && firstChildElement === this.listOfIconElement.first.nativeElement) {
+        this.renderer.insertBefore(this.el, firstChildElement, this.contentElement.nativeElement);
+        this.iconElement = firstChildElement as HTMLElement;
+      } else if (lastChildElement && lastChildElement === this.listOfIconElement.last.nativeElement) {
+        this.renderer.appendChild(this.el, lastChildElement);
       }
     }
-    return null;
   }
 
-  findLastNotEmptyNode(value: HTMLElement): Node {
-    const children = value.childNodes;
-    for (let i = children.length - 1; i >= 0; i--) {
-      const node = children.item(i);
-      if (node && (node.nodeType === 1) && ((node as HTMLElement).outerHTML.toString().trim().length !== 0)) {
-        return node;
-      } else if (node && (node.nodeType === 3) && ((node.textContent.toString().trim().length !== 0))) {
-        return node;
-      }
-    }
-    return null;
-  }
-
-  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private renderer: Renderer2, private nzUpdateHostClassService: NzUpdateHostClassService) {
-    this.el = this.elementRef.nativeElement;
-    this.renderer.addClass(this.el, this.prefixCls);
+  constructor(
+    private elementRef: ElementRef,
+    private cdr: ChangeDetectorRef,
+    private renderer: Renderer2,
+    private contentObserver: ContentObserver,
+    private nzUpdateHostClassService: NzUpdateHostClassService,
+    private ngZone: NgZone,
+    public nzConfigService: NzConfigService,
+    @Optional() @Inject(NZ_WAVE_GLOBAL_CONFIG) private waveConfig: NzWaveConfig,
+    @Optional() @Inject(ANIMATION_MODULE_TYPE) private animationType: string
+  ) {
+    this.renderer.addClass(elementRef.nativeElement, 'ant-btn');
+    this.nzConfigService
+      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.setClassMap();
+        this.cdr.markForCheck();
+      });
   }
 
   ngAfterContentInit(): void {
-    this.checkContent();
+    this.contentObserver
+      .observe(this.contentElement)
+      .pipe(startWith(true), takeUntil(this.destroy$))
+      .subscribe(() => {
+        // https://github.com/NG-ZORRO/ng-zorro-antd/issues/3079
+        Promise.resolve().then(() => this.checkContent());
+      });
+  }
+
+  ngOnInit(): void {
+    this.setClassMap();
+    this.nzWave.ngOnInit();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.nzWave.ngOnDestroy();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (
+      changes.nzBlock ||
+      changes.nzGhost ||
+      changes.nzSearch ||
+      changes.nzType ||
+      changes.nzShape ||
+      changes.nzSize ||
+      changes.nzLoading
+    ) {
+      this.setClassMap();
+    }
+    if (changes.nzLoading) {
+      this.updateIconDisplay(this.nzLoading);
+    }
+    if (changes.nzType && changes.nzType.currentValue === 'link') {
+      this.nzWave.disable();
+    } else {
+      this.nzWave.enable();
+    }
   }
 }

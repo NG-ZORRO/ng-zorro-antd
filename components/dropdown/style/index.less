@@ -1,15 +1,36 @@
-@import "../../style/themes/default";
-@import "../../style/mixins/index";
+@import '../../style/themes/index';
+@import '../../style/mixins/index';
 
-@dropdown-prefix-cls: ~"@{ant-prefix}-dropdown";
+@dropdown-prefix-cls: ~'@{ant-prefix}-dropdown';
 
 .@{dropdown-prefix-cls} {
   .reset-component;
+
   position: absolute;
-  left: -9999px;
   top: -9999px;
+  left: -9999px;
   z-index: @zindex-dropdown;
   display: block;
+
+  &-rtl {
+    direction: rtl;
+  }
+
+  &::before {
+    position: absolute;
+    top: -7px;
+    right: 0;
+    bottom: -7px;
+    left: -7px;
+    z-index: -9999;
+    opacity: 0.0001;
+    content: ' ';
+
+    .@{dropdown-prefix-cls}-rtl& {
+      right: -7px;
+      left: 0;
+    }
+  }
 
   &-wrap {
     position: relative;
@@ -18,13 +39,13 @@
       .iconfont-size-under-12px(10px);
     }
 
-    .@{iconfont-css-prefix}-down:before {
-      transition: transform .2s;
+    .@{iconfont-css-prefix}-down::before {
+      transition: transform 0.2s;
     }
   }
 
   &-wrap-open {
-    .@{iconfont-css-prefix}-down:before {
+    .@{iconfont-css-prefix}-down::before {
       transform: rotate(180deg);
     }
   }
@@ -35,55 +56,103 @@
   }
 
   &-menu {
-    outline: none;
     position: relative;
-    list-style-type: none;
-    padding: 0;
     margin: 0;
+    padding: @dropdown-edge-child-vertical-padding 0;
     text-align: left;
-    background-color: @component-background;
-    border-radius: @border-radius-base;
-    box-shadow: @box-shadow-base;
+    list-style-type: none;
+    background-color: @dropdown-menu-bg;
     background-clip: padding-box;
+    border-radius: @border-radius-base;
+    outline: none;
+    box-shadow: @box-shadow-base;
+    -webkit-transform: translate3d(0, 0, 0);
 
     &-item-group-title {
-      color: @text-color-secondary;
       padding: 5px @control-padding-horizontal;
-      transition: all .3s;
+      color: @text-color-secondary;
+      transition: all 0.3s;
     }
 
     &-submenu-popup {
       position: absolute;
       z-index: @zindex-dropdown;
+
+      > .@{dropdown-prefix-cls}-menu {
+        transform-origin: 0 0;
+      }
+
+      ul,
+      li {
+        list-style: none;
+
+        .@{dropdown-prefix-cls}-rtl & {
+          text-align: right;
+        }
+      }
+
+      ul {
+        margin-right: 0.3em;
+        margin-left: 0.3em;
+        padding: 0;
+      }
     }
 
     &-item,
     &-submenu-title {
-      padding: 5px @control-padding-horizontal;
-      margin: 0;
       clear: both;
-      font-size: @font-size-base;
-      font-weight: normal;
+      margin: 0;
+      padding: @dropdown-vertical-padding @control-padding-horizontal;
       color: @text-color;
+      font-weight: normal;
+      font-size: @dropdown-font-size;
+      line-height: @dropdown-line-height;
       white-space: nowrap;
       cursor: pointer;
-      transition: all .3s;
-      line-height: 22px;
+      transition: all 0.3s;
+
+      .@{dropdown-prefix-cls}-rtl & {
+        text-align: right;
+      }
+
+      > .anticon:first-child,
+      > span > .anticon:first-child {
+        min-width: 12px;
+        margin-right: 8px;
+        font-size: @font-size-sm;
+
+        .@{dropdown-prefix-cls}-rtl & {
+          margin-right: 0;
+          margin-left: 8px;
+        }
+      }
 
       > a {
-        color: @text-color;
         display: block;
-        padding: 5px @control-padding-horizontal;
         margin: -5px -@control-padding-horizontal;
-        transition: all .3s;
-        &:focus {
-          text-decoration: none;
+        padding: 5px @control-padding-horizontal;
+        color: @text-color;
+        transition: all 0.3s;
+        &:hover {
+          color: @text-color;
+        }
+      }
+
+      &:first-child {
+        & when (@dropdown-edge-child-vertical-padding = 0) {
+          border-radius: @border-radius-base @border-radius-base 0 0;
+        }
+      }
+
+      &:last-child {
+        & when (@dropdown-edge-child-vertical-padding = 0) {
+          border-radius: 0 0 @border-radius-base @border-radius-base;
         }
       }
 
       &-selected,
       &-selected > a {
-        color: @primary-color;
+        color: @dropdown-selected-color;
         background-color: @item-active-bg;
       }
 
@@ -97,50 +166,48 @@
 
         &:hover {
           color: @disabled-color;
-          background-color: @component-background;
+          background-color: @dropdown-menu-submenu-disabled-bg;
           cursor: not-allowed;
         }
       }
 
-      &:first-child,
-      &:first-child > a {
-        border-radius: @border-radius-base @border-radius-base 0 0;
-      }
-
-      &:last-child,
-      &:last-child > a {
-        border-radius: 0 0 @border-radius-base @border-radius-base;
-      }
-
-      &:only-child,
-      &:only-child > a {
-        border-radius: @border-radius-base;
-      }
-
       &-divider {
         height: 1px;
+        margin: 4px 0;
         overflow: hidden;
-        background-color: @border-color-split;
         line-height: 0;
+        background-color: @border-color-split;
       }
+
       .@{dropdown-prefix-cls}-menu-submenu-arrow {
         position: absolute;
         right: @padding-xs;
-        &:after {
-          font-family: "anticon" !important;
-          font-style: normal;
-          content: "\e61f";
+
+        .@{dropdown-prefix-cls}-rtl & {
+          right: auto;
+          left: @padding-xs;
+        }
+
+        &-icon {
           color: @text-color-secondary;
+          font-style: normal;
           .iconfont-size-under-12px(10px);
         }
       }
     }
 
+    &-item-group-list {
+      margin: 0 8px;
+      padding: 0;
+      list-style: none;
+    }
+
     &-submenu-title {
       padding-right: 26px;
-      &:first-child,
-      &:last-child {
-        border-radius: 0;
+
+      .@{dropdown-prefix-cls}-rtl & {
+        padding-right: @control-padding-horizontal;
+        padding-left: 26px;
       }
     }
 
@@ -149,26 +216,33 @@
     }
 
     &-submenu-vertical > & {
+      position: absolute;
       top: 0;
       left: 100%;
-      position: absolute;
       min-width: 100%;
       margin-left: 4px;
       transform-origin: 0 0;
+
+      .@{dropdown-prefix-cls}-rtl & {
+        right: 100%;
+        left: 0;
+        margin-right: 4px;
+        margin-left: 0;
+      }
     }
 
     &-submenu&-submenu-disabled .@{dropdown-prefix-cls}-menu-submenu-title {
       &,
-      .@{dropdown-prefix-cls}-menu-submenu-arrow:after {
+      .@{dropdown-prefix-cls}-menu-submenu-arrow-icon {
         color: @disabled-color;
+        background-color: @dropdown-menu-submenu-disabled-bg;
+        cursor: not-allowed;
       }
     }
-    &-submenu:first-child &-submenu-title {
-      border-radius: @border-radius-base @border-radius-base 0 0;
-    }
 
-    &-submenu:last-child &-submenu-title {
-      border-radius: 0 0 @border-radius-base @border-radius-base;
+    // https://github.com/ant-design/ant-design/issues/19264
+    &-submenu-selected &-submenu-title {
+      color: @primary-color;
     }
   }
 
@@ -205,7 +279,7 @@
 
 .@{dropdown-prefix-cls}-trigger,
 .@{dropdown-prefix-cls}-link {
-  .@{iconfont-css-prefix}-down {
+  > .@{iconfont-css-prefix}.@{iconfont-css-prefix}-down {
     .iconfont-size-under-12px(10px);
   }
 }
@@ -214,10 +288,10 @@
   white-space: nowrap;
 
   &.@{ant-prefix}-btn-group > .@{ant-prefix}-btn:last-child:not(:first-child) {
-    padding-left: @padding-xs;
     padding-right: @padding-xs;
+    padding-left: @padding-xs;
   }
-  .@{iconfont-css-prefix}-down {
+  .@{iconfont-css-prefix}.@{iconfont-css-prefix}-down {
     .iconfont-size-under-12px(10px);
   }
 }
@@ -232,11 +306,11 @@
   .@{dropdown-prefix-cls}-menu-submenu-title,
   .@{dropdown-prefix-cls}-menu-item > a {
     color: @text-color-secondary-dark;
-    .@{dropdown-prefix-cls}-menu-submenu-arrow:after {
+    .@{dropdown-prefix-cls}-menu-submenu-arrow::after {
       color: @text-color-secondary-dark;
     }
     &:hover {
-      color: #fff;
+      color: @text-color-inverse;
       background: transparent;
     }
   }
@@ -244,8 +318,8 @@
     &,
     &:hover,
     > a {
+      color: @text-color-inverse;
       background: @primary-color;
-      color: #fff;
     }
   }
 }

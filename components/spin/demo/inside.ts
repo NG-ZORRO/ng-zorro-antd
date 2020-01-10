@@ -4,14 +4,14 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-spin-inside',
   template: `
     <div class="example">
-      <nz-spin></nz-spin>
+      <nz-spin nzSimple></nz-spin>
     </div>
   `,
-  styles  : [
+  styles: [
     `
       .example {
         text-align: center;
-        background: rgba(0,0,0,0.05);
+        background: rgba(0, 0, 0, 0.05);
         border-radius: 4px;
         margin-bottom: 20px;
         padding: 30px 50px;
@@ -20,4 +20,4 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class NzDemoSpinInsideComponent { }
+export class NzDemoSpinInsideComponent {}

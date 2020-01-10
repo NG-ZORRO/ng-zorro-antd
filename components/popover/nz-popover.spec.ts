@@ -1,27 +1,29 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { dispatchMouseEvent } from '../core/testing';
+import { dispatchMouseEvent } from 'ng-zorro-antd/core';
+import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
+import { NzToolTipModule } from '../tooltip/nz-tooltip.module';
+import { NzPopoverDirective } from './nz-popover.directive';
 import { NzPopoverModule } from './nz-popover.module';
 
 describe('NzPopover', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
-  let demoAppFixture: ComponentFixture<DemoAppComponent>;
-  let demoAppComponent: DemoAppComponent;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ NzPopoverModule, NoopAnimationsModule ],
-      declarations: [ DemoAppComponent ]
+      imports: [NzPopoverModule, NoopAnimationsModule, NzToolTipModule, NzIconTestModule],
+      declarations: [NzPopoverTestComponent]
     });
 
     TestBed.compileComponents();
   }));
 
-  beforeEach(inject([ OverlayContainer ], (oc: OverlayContainer) => {
+  beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
     overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
   }));
@@ -30,120 +32,94 @@ describe('NzPopover', () => {
     overlayContainer.ngOnDestroy();
   });
 
+  function getTextContentOf(selector: string): string | null {
+    const el = overlayContainerElement.querySelector(selector);
+    return el && el.textContent ? el.textContent : null;
+  }
+
+  function getTitleTextContent(): string | null {
+    return getTextContentOf('.ant-popover-title');
+  }
+
+  function getInnerTextContent(): string | null {
+    return getTextContentOf('.ant-popover-inner-content');
+  }
+
+  let fixture: ComponentFixture<NzPopoverTestComponent>;
+  let component: NzPopoverTestComponent;
+
+  function waitingForTooltipToggling(): void {
+    fixture.detectChanges();
+    tick(500);
+    fixture.detectChanges();
+  }
+
   beforeEach(() => {
-    demoAppFixture = TestBed.createComponent(DemoAppComponent);
-    demoAppComponent = demoAppFixture.componentInstance;
-    demoAppFixture.detectChanges();
+    fixture = TestBed.createComponent(NzPopoverTestComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
-  it('should show/hide normal tooltip', fakeAsync(() => {
-    const featureKey = 'NORMAL';
-    const triggerElement = demoAppComponent.normalTrigger.nativeElement;
+  it('should support string', fakeAsync(() => {
+    const triggerElement = component.stringPopover.nativeElement;
 
-    expect(overlayContainerElement.textContent).not.toContain(featureKey);
+    expect(getTitleTextContent()).toBeNull();
+    expect(getInnerTextContent()).toBeNull();
 
-    // Move inside to trigger tooltip shown up
     dispatchMouseEvent(triggerElement, 'mouseenter');
-    demoAppFixture.detectChanges();
-    tick(150); // wait for the default 100ms delay
-    demoAppFixture.detectChanges();
-    tick();
-    demoAppFixture.detectChanges();
-    expect(overlayContainerElement.textContent).toContain(featureKey);
+    waitingForTooltipToggling();
+    expect(getTitleTextContent()).toContain('title-string');
+    expect(getInnerTextContent()).toContain('content-string');
 
-    // Move out from the trigger element to hide it
     dispatchMouseEvent(triggerElement, 'mouseleave');
-    tick(100); // wait for the default 100ms delay
-    demoAppFixture.detectChanges();
-    tick(); // wait for next tick to hide
-    expect(overlayContainerElement.textContent).not.toContain(featureKey);
+    waitingForTooltipToggling();
+    expect(getTitleTextContent()).toBeNull();
+    expect(getInnerTextContent()).toBeNull();
   }));
 
-  it('should show tooltip with custom template', fakeAsync(() => {
-    const triggerElement = demoAppComponent.templateTrigger.nativeElement;
+  it('should support template', fakeAsync(() => {
+    const triggerElement = component.templatePopover.nativeElement;
+
+    expect(getTitleTextContent()).toBeNull();
+    expect(getInnerTextContent()).toBeNull();
 
     dispatchMouseEvent(triggerElement, 'mouseenter');
-    demoAppFixture.detectChanges();
-    tick(150); // wait for the default 100ms delay
-    demoAppFixture.detectChanges();
-    tick();
-    demoAppFixture.detectChanges();
-    expect(overlayContainerElement.querySelector('.anticon-file')).not.toBeNull();
-  }));
+    waitingForTooltipToggling();
+    expect(getTitleTextContent()).toContain('title-template');
+    expect(getInnerTextContent()).toContain('content-template');
 
-  it('should show/hide tooltip by focus', fakeAsync(() => {
-    const featureKey = 'FOCUS';
-    const triggerElement = demoAppComponent.focusTrigger.nativeElement;
-
-    dispatchMouseEvent(triggerElement, 'focus');
-    demoAppFixture.detectChanges();
-    expect(overlayContainerElement.textContent).toContain(featureKey);
-
-    dispatchMouseEvent(triggerElement, 'blur');
-    tick(100); // wait for the default 100ms delay
-    demoAppFixture.detectChanges();
-    tick(); // wait for next tick to hide
-    expect(overlayContainerElement.textContent).not.toContain(featureKey);
-  }));
-
-  it('should show/hide tooltip by click', fakeAsync(() => {
-    const featureKey = 'CLICK';
-    const triggerElement = demoAppComponent.clickTrigger.nativeElement;
-
-    dispatchMouseEvent(triggerElement, 'click');
-    demoAppFixture.detectChanges();
-    expect(overlayContainerElement.textContent).toContain(featureKey);
-
-    dispatchMouseEvent(overlayContainerElement.querySelector('.cdk-overlay-backdrop'), 'click');
-    tick();
-    demoAppFixture.detectChanges();
-    tick(500); // Wait for animations
-    demoAppFixture.detectChanges();
-    tick();
-    expect(overlayContainerElement.textContent).not.toContain(featureKey);
-  }));
-
-  it('should show/hide by nzVisible change', fakeAsync(() => {
-    const featureKey = 'VISIBLE';
-    demoAppComponent.visible = true;
-    demoAppFixture.detectChanges();
-    expect(overlayContainerElement.textContent).toContain(featureKey);
-
-    demoAppComponent.visible = false;
-    demoAppFixture.detectChanges();
-    tick(100);
-    expect(overlayContainerElement.textContent).not.toContain(featureKey);
+    dispatchMouseEvent(triggerElement, 'mouseleave');
+    waitingForTooltipToggling();
+    expect(getTitleTextContent()).toBeNull();
+    expect(getInnerTextContent()).toBeNull();
   }));
 });
 
 @Component({
-  selector: 'nz-demo-app',
   template: `
-    <nz-popover [nzTitle]="'NORMAL'" [nzTrigger]="'hover'"><span #normalTrigger nz-popover>Show</span></nz-popover>
+    <a #stringPopover nz-popover nzTitle="title-string" nzContent="content-string">
+      Show
+    </a>
 
-    <nz-popover>
-      <button #templateTrigger nz-popover>Show</button>
-      <ng-template #nzTemplate>
-        <i class="anticon anticon-file"></i> <span>Show with icon</span>
-      </ng-template>
-    </nz-popover>
+    <a #templatePopover nz-popover [nzTitle]="templateTitle" [nzContent]="templateContent">
+      Show
+    </a>
 
-    <nz-popover nzTitle="FOCUS" [nzTrigger]="'focus'"><span #focusTrigger nz-popover>Show</span></nz-popover>
+    <ng-template #templateTitle>
+      title-template
+    </ng-template>
 
-    <nz-popover nzTitle="CLICK" nzTrigger="click"><span #clickTrigger nz-popover>Show</span></nz-popover>
-
-    <nz-popover nzTitle="VISIBLE" [(nzVisible)]="visible"><span #visibleTrigger nz-popover>Show</span></nz-popover>
+    <ng-template #templateContent>
+      content-template
+    </ng-template>
   `
 })
-export class DemoAppComponent {
-  @ViewChild('normalTrigger') normalTrigger: ElementRef;
+export class NzPopoverTestComponent {
+  @ViewChild('stringPopover', { static: false }) stringPopover: ElementRef;
+  @ViewChild('stringPopover', { static: false, read: NzPopoverDirective })
+  stringPopoverNzPopoverDirective: NzPopoverDirective;
 
-  @ViewChild('templateTrigger') templateTrigger: ElementRef;
-
-  @ViewChild('focusTrigger') focusTrigger: ElementRef;
-
-  @ViewChild('clickTrigger') clickTrigger: ElementRef;
-
-  visible: boolean;
-  @ViewChild('visibleTrigger') visibleTrigger: ElementRef;
+  @ViewChild('templatePopover', { static: false }) templatePopover: ElementRef;
+  @ViewChild('templatePopover', { static: false, read: NzPopoverDirective })
+  templatePopoverNzPopoverDirective: NzPopoverDirective;
 }

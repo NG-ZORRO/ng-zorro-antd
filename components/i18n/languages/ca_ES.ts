@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import Calendar from './calendar/ca_ES';
 import DatePicker from './date-picker/ca_ES';
 import Pagination from './pagination/ca_ES';
@@ -9,28 +17,50 @@ export default {
   DatePicker,
   TimePicker,
   Calendar,
+  global: {
+    placeholder: 'Seleccioni'
+  },
   Table: {
     filterTitle: 'Filtrar Menu',
     filterConfirm: 'OK',
     filterReset: 'Restablir',
-    emptyText: 'Sense dades',
+    selectAll: 'Seleccionar tot',
+    selectInvert: 'Invertir selecció',
+    sortTitle: 'Ordenar'
   },
   Modal: {
-    okText: 'OK',
+    okText: 'Acceptar',
     cancelText: 'Cancel·lar',
-    justOkText: 'OK',
+    justOkText: 'Acceptar'
   },
   Popconfirm: {
-    okText: 'OK',
-    cancelText: 'Cancel·lar',
+    okText: 'Acceptar',
+    cancelText: 'Cancel·lar'
   },
   Transfer: {
-    notFoundContent: 'No trobat',
     searchPlaceholder: 'Cercar aquí',
-    itemUnit: 'item',
-    itemsUnit: 'items',
+    itemUnit: 'element',
+    itemsUnit: 'element'
   },
-  Select: {
-    notFoundContent: 'No trobat',
+  Upload: {
+    uploading: 'Pujant...',
+    removeFile: 'Eliminar fitxer',
+    uploadError: 'Error al pujar el fitxer',
+    previewFile: 'Vista prèvia'
   },
+  Empty: {
+    description: 'No hi ha dades'
+  },
+  Icon: {
+    icon: 'ícona'
+  },
+  Text: {
+    edit: 'editar',
+    copy: 'copiar',
+    copied: 'copiat',
+    expand: 'expandir'
+  },
+  PageHeader: {
+    back: 'tornar'
+  }
 };

@@ -1,7 +1,6 @@
 ---
 order: 6
-iframe: 
-  source: https://components-layout-demo-fixed.stackblitz.io
+iframe:
   height: 360
 title:
   zh-CN: 固定头部

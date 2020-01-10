@@ -12,5 +12,4 @@ import { Component } from '@angular/core';
     </div>
   `
 })
-export class NzDemoProgressLineMiniComponent {
-}
+export class NzDemoProgressLineMiniComponent {}

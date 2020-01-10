@@ -1,7 +1,6 @@
 ---
 order: 7
-iframe: 
-  source: https://components-layout-demo-fixed-sider.stackblitz.io
+iframe:
   height: 360
 title:
   zh-CN: 固定侧边栏

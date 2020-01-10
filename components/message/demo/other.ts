@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'nz-demo-message-other',
@@ -8,8 +8,8 @@ import { NzMessageService } from 'ng-zorro-antd';
     <button nz-button (click)="createMessage('error')">Error</button>
     <button nz-button (click)="createMessage('warning')">Warning</button>
   `,
-  styles  : [
-      `
+  styles: [
+    `
       [nz-button] {
         margin-right: 8px;
       }
@@ -21,6 +21,5 @@ export class NzDemoMessageOtherComponent {
     this.message.create(type, `This is a message of ${type}`);
   }
 
-  constructor(private message: NzMessageService) {
-  }
+  constructor(private message: NzMessageService) {}
 }

@@ -1,7 +1,20 @@
 import resolve from 'rollup-plugin-node-resolve'
 import commonjs from 'rollup-plugin-commonjs'
-import uglify from 'rollup-plugin-uglify'
-import angularOptimizer from 'rollup-plugin-angular-optimizer'
+import { terser } from "rollup-plugin-terser";
+import { buildOptimizer } from '@angular-devkit/build-optimizer'
+
+function optimizer() {
+  return {
+    name: 'angular-optimizer',
+    transform: (content, id) => {
+      const { content: code, sourceMap: map } = buildOptimizer({ content, inputFilePath: id, emitSourceMap: true });
+      if (!code) { return null }
+      if (!map) { return code }
+      return { code, map }
+    },
+  }
+}
+
 
 function enableProdMode() {
   return {
@@ -11,11 +24,8 @@ function enableProdMode() {
 
       return content
         .replace(/platformBrowserDynamic/g, `platformBrowser`)
-        .replace(/bootstrapModule/g, `bootstrapModuleFactory`)
-        .replace(/AppModule/g, `AppModuleNgFactory`)
         .replace(`from '@angular/platform-browser-dynamic'`, `from '@angular/platform-browser'`)
         .replace(`from './environments/environment'`, `from './environments/environment.prod'`)
-        .replace(`from './app/app.module'`, `from './app/app.module.ngfactory'`)
     },
   }
 }
@@ -27,7 +37,5 @@ export default {
     file: './dist/main.bundle.js',
     format: 'iife',
   },
-  globals: {},
-  externals: [],
-  plugins: [enableProdMode(), resolve(), angularOptimizer(), commonjs(), uglify()],
+  plugins: [enableProdMode(), resolve(), optimizer(), commonjs(), terser()],
 }

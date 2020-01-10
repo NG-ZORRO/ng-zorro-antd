@@ -11,6 +11,10 @@ Vertical display timeline.
 - When a series of information needs to be ordered by time (ascend or descend).
 - When you need a timeline to make a visual connection.
 
+```ts
+import { NzTimelineModule } from 'ng-zorro-antd/timeline';
+```
+
 ## API
 
 ```html
@@ -28,7 +32,10 @@ Timeline
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| nzPending | Set the last ghost node's existence or its content | boolean｜string｜`TemplateRef<void>` | `false` |
+| `[nzPending]` | Set the last ghost node's existence or its content | `string\|boolean\|TemplateRef<void>` | `false` |
+| `[nzPendingDot]` | Set the dot of the last ghost node when pending is true | `string\|TemplateRef<void>` | `<i nz-icon nzType="loading"></i>` |
+| `[nzReverse]` | Reverse nodes or not | `boolean` | `false` |
+| `[nzMode]` | By sending `alternate` the timeline will distribute the nodes to the left and right | `'left' \| 'alternate' \| 'right'` | - |
 
 ### nz-timeline-item
 
@@ -36,5 +43,5 @@ Node of timeline
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| nzColor | Set the circle's color to `blue`, `red`, `green` or other custom colors | string | `blue` |
-| nzDot | Customize timeline dot | string｜`TemplateRef<void>` | - |
+| `[nzColor]` | Set the circle's color to `'blue' \| 'red' \| 'green' \| 'gray'` or other custom colors (css color) | `string` | `blue` |
+| `[nzDot]` | Customize timeline dot | `string \| TemplateRef<void>` | - |

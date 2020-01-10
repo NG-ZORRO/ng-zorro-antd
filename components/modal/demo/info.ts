@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'nz-demo-modal-info',
@@ -9,10 +9,16 @@ import { NzModalService } from 'ng-zorro-antd';
     <button nz-button (click)="error()">Error</button>
     <button nz-button (click)="warning()">Warning</button>
   `,
-  styles: []
+  styles: [
+    `
+      button {
+        margin-right: 8px;
+      }
+    `
+  ]
 })
 export class NzDemoModalInfoComponent {
-  constructor(private modalService: NzModalService) { }
+  constructor(private modalService: NzModalService) {}
 
   info(): void {
     this.modalService.info({

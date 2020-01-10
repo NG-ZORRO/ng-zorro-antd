@@ -42,15 +42,18 @@ A form consists of one or more form fields whose type includes input, textarea, 
 </form>
 ```
 
+```ts
+import { NzFormModule } from 'ng-zorro-antd/form';
+```
 
 ## API
 
-### Form
+### [nz-form]
 
-
-| Property | Description | Type | Default Value |
-| -------- | ----------- | ---- | ------------- |
-| nzLayout | Form layout | `'horizontal'丨'vertical'丨'inline'`| 'horizontal'|
+| Property | Description | Type | Default Value | Global Config |
+| -------- | ----------- | ---- | ------------- | ------------- |
+| `[nzLayout]`| Form layout | `'horizontal' \| 'vertical' \| 'inline'` | `'horizontal'` |
+| `[nzNoColon]`| change default props `[nzNoColon]` value of `nz-form-label` | `boolean` | `false` | ✅ |
 
 
 ### nz-form-item
@@ -61,7 +64,7 @@ Used to separate the item in forms, contains label(optional) and control field.
 
 | Property | Description | Type | Default Value |
 | --- | --- | --- | --- |
-| nzFlex | display flex	 | boolean | false|
+| `[nzFlex]`| display flex | `boolean` | `false` |
 
 ### nz-form-label
 
@@ -71,10 +74,12 @@ The label of the form item, optional.
 
 | Property | Description | Type | Default Value |
 | --- | --- | --- | --- |
-| nzRequired | add required style to current item | boolean | false|
-| nzFor | The `for` property of `label` | string | -|
+| `[nzRequired]`| add required style to current item | `boolean` | `false` |
+| `[nzNoColon]`| whether to not display `:` after label text. | `boolean` | `false` |
+| `[nzFor]`| The `for` property of `label` | `string` | - |
 
 ### nz-form-control
+> Note：Due to the lack of partial Observable in [Angular Form](https://github.com/angular/angular/issues/10887), you have to notify `nz-form-control` to update its status with `updateValueAndValidity` when you update form status using methods like `markAsDirty`.
 
 A form consists of one or more form fields whose type includes input, textarea, checkbox, radio, select, tag, and more.
 
@@ -82,18 +87,13 @@ A form consists of one or more form fields whose type includes input, textarea, 
 
 | Property | Description | Type | Default Value |
 | --- | --- | --- | --- |
-| nzValidateStatus(Reactive Forms) | Will generate status based on FormControl| FormControl | first `FormControl` in `nz-form-control` |
-| nzValidateStatus(Template-driven Forms) | The validation status. options：'success' 'warning' 'error' 'validating' | string |  |
-| nzHasFeedback | Used with `nzValidateStatus`, this option specifies the validation status icon. Recommended to be used only with `Input`. | boolean | false |
-
-### nz-form-explain
-
-Validation messages
-
-
-### nz-form-extra
-
-The extra prompt message. It is similar to help. 
+| `[nzValidateStatus]` | Will generate status based on the input `FormControl`, `NgModel` or string, the default value is the first `FormControl` or `NgModel` in `nz-form-control` | `'success' \| 'warning' \| 'error' \| 'validating'  \|  FormControl  \|  NgModel` | first `FormControl` or `NgModel` in `nz-form-control` |
+| `[nzHasFeedback]`| Used with `nzValidateStatus`, this option specifies the validation status icon. Recommended to be used only with `Input`. | `boolean` | `false` |
+| `[nzExtra]`| The extra prompt message | `string  \|  TemplateRef<void>` | - |
+| `[nzSuccessTip]`| Tip display when validate success  | `string  \|  TemplateRef<{ $implicit: FormControl  \|  NgModel }>` | - |
+| `[nzWarningTip]`| Tip display when validate warning | `string  \|  TemplateRef<{ $implicit: FormControl  \|  NgModel }>` | - |
+| `[nzErrorTip]`| Tip display when validate error | `string  \|  TemplateRef<{ $implicit: FormControl  \|  NgModel }>` | - |
+| `[nzValidatingTip]`| Tip display when validating | `string  \|  TemplateRef<{ $implicit: FormControl  \|  NgModel }>` | - |
 
 ### nz-form-split
 

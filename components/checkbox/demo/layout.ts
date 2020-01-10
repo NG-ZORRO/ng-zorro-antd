@@ -15,7 +15,6 @@ import { Component } from '@angular/core';
   `
 })
 export class NzDemoCheckboxLayoutComponent {
-
   log(value: string[]): void {
     console.log(value);
   }

@@ -8,24 +8,21 @@ import { Component, OnInit } from '@angular/core';
       <label nz-radio-button [nzValue]="'left'">Vertical</label>
     </nz-radio-group>
     <nz-input-number style="float:right;" [nzMin]="0" [nzMax]="10" [(ngModel)]="selectedIndex"></nz-input-number>
-    <nz-tabset
-      style="height:220px;"
-      [nzTabPosition]="nzTabPosition"
-      [(nzSelectedIndex)]="selectedIndex"
-      (nzSelectChange)="log([$event])">
+    <nz-tabset style="height:220px;" [nzTabPosition]="nzTabPosition" [(nzSelectedIndex)]="selectedIndex" (nzSelectChange)="log([$event])">
       <nz-tab
         *ngFor="let tab of tabs"
         [nzTitle]="tab.name"
-        (nzSelect)="log(['select',tab])"
-        (nzClick)="log(['click',tab])"
-        (nzDeselect)="log(['deselect',tab])">
+        (nzSelect)="log(['select', tab])"
+        (nzClick)="log(['click', tab])"
+        (nzDeselect)="log(['deselect', tab])"
+      >
         {{ tab.content }}
       </nz-tab>
-    </nz-tabset>`,
-  styles  : []
+    </nz-tabset>
+  `
 })
 export class NzDemoTabsSlideComponent implements OnInit {
-  tabs = [];
+  tabs: Array<{ name: string; content: string }> = [];
   nzTabPosition = 'top';
   selectedIndex = 0;
 
@@ -37,7 +34,7 @@ export class NzDemoTabsSlideComponent implements OnInit {
   ngOnInit(): void {
     for (let i = 0; i < 11; i++) {
       this.tabs.push({
-        name   : `Tab ${i}`,
+        name: `Tab ${i}`,
         content: `Content of tab ${i}`
       });
     }

@@ -1,232 +1,222 @@
-import {
-  Component,
-  Input,
-  OnInit
-} from '@angular/core';
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 
-export type NzProgressGapPositionType = 'top' | 'bottom' | 'left' | 'right';
-export type NzProgressStatusType = 'success' | 'exception' | 'active' | 'normal';
-export type NzProgressTypeType = 'line' | 'circle' | 'dashboard';
-import { isNotNil } from '../core/util/check';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
+
+import { InputNumber, isNotNil, NgStyleInterface, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
+
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { handleCircleGradient, handleLinearGradient } from './nz-progress-utils';
+import {
+  NzProgressCirclePath,
+  NzProgressColorGradient,
+  NzProgressFormatter,
+  NzProgressGapPositionType,
+  NzProgressGradientProgress,
+  NzProgressStatusType,
+  NzProgressStepItem,
+  NzProgressStrokeColorType,
+  NzProgressStrokeLinecapType,
+  NzProgressTypeType
+} from './nz-progress.definitions';
+
+let gradientIdSeed = 0;
+
+const NZ_CONFIG_COMPONENT_NAME = 'progress';
+const statusIconNameMap = new Map([
+  ['success', 'check'],
+  ['exception', 'close']
+]);
+const statusColorMap = new Map([
+  ['normal', '#108ee9'],
+  ['exception', '#ff5500'],
+  ['success', '#87d068']
+]);
+const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
 
 @Component({
-  selector           : 'nz-progress',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-progress',
+  exportAs: 'nzProgress',
   preserveWhitespaces: false,
-  template           : `
-    <ng-template #progressInfoTemplate>
-      <span class="ant-progress-text" *ngIf="nzShowInfo">
-        <ng-container *ngIf="(nzStatus=='exception')||(nzStatus=='success')&&(!isFormatSet); else formatTemplate">
-          <i class="anticon" [ngClass]="iconClassMap"></i>
-        </ng-container>
-        <ng-template #formatTemplate>
-          {{ nzFormat(nzPercent) }}
-        </ng-template>
-      </span>
-    </ng-template>
-    <div [ngClass]="'ant-progress ant-progress-status-'+nzStatus"
-      [class.ant-progress-line]="nzType=='line'"
-      [class.ant-progress-small]="nzSize=='small'"
-      [class.ant-progress-show-info]="nzShowInfo"
-      [class.ant-progress-circle]="isCirCleStyle">
-      <div *ngIf="nzType=='line'">
-        <div class="ant-progress-outer">
-          <div class="ant-progress-inner">
-            <div class="ant-progress-bg" [style.width.%]="nzPercent" [style.height.px]="nzStrokeWidth"></div>
-            <div class="ant-progress-success-bg" [style.width.%]="nzSuccessPercent" [style.height.px]="nzStrokeWidth"></div>
-          </div>
-        </div>
-        <ng-template [ngTemplateOutlet]="progressInfoTemplate"></ng-template>
-      </div>
-      <div
-        [style.width.px]="this.nzWidth"
-        [style.height.px]="this.nzWidth"
-        [style.fontSize.px]="this.nzWidth*0.15+6"
-        class="ant-progress-inner"
-        *ngIf="isCirCleStyle">
-        <svg class="ant-progress-circle " viewBox="0 0 100 100">
-          <path
-            class="ant-progress-circle-trail"
-            stroke="#f3f3f3"
-            fill-opacity="0"
-            [attr.stroke-width]="nzStrokeWidth"
-            [ngStyle]="trailPathStyle"
-            [attr.d]="pathString">
-          </path>
-          <path
-            class="ant-progress-circle-path"
-            [attr.d]="pathString"
-            stroke-linecap="round"
-            fill-opacity="0"
-            [attr.stroke]="statusColorMap[nzStatus]"
-            [attr.stroke-width]="nzPercent?nzStrokeWidth:0"
-            [ngStyle]="strokePathStyle">
-          </path>
-        </svg>
-        <ng-template [ngTemplateOutlet]="progressInfoTemplate"></ng-template>
-      </div>
-    </div>
-  `
+  templateUrl: './nz-progress.component.html'
 })
-export class NzProgressComponent implements OnInit {
-  private _gapDegree = 0;
-  private _gapPosition: NzProgressGapPositionType = 'top';
-  private _percent = 0;
-  private _status: NzProgressStatusType = 'normal';
-  private _cacheStatus: NzProgressStatusType = 'normal';
-  private _strokeWidth = 8;
-  private _size = 'default';
-  private _type: NzProgressTypeType = 'line';
-  private _format = (percent: number): string => `${percent}%`;
-  trailPathStyle: { [key: string]: string };
-  strokePathStyle: { [key: string]: string };
-  pathString: string;
-  iconClassMap;
-  isStatusSet = false;
-  isStrokeWidthSet = false;
-  isFormatSet = false;
-  isGapDegreeSet = false;
-  isGapPositionSet = false;
-  statusColorMap = {
-    normal   : '#108ee9',
-    exception: '#ff5500',
-    success  : '#87d068'
-  };
-  @Input() nzShowInfo = true;
+export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) nzShowInfo: boolean;
   @Input() nzWidth = 132;
-  @Input() nzSuccessPercent = 0;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzStrokeColor: NzProgressStrokeColorType;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: 'default' | 'small';
+  @Input() nzFormat?: NzProgressFormatter;
+  @Input() @InputNumber() nzSuccessPercent?: number;
+  @Input() @InputNumber() nzPercent: number = 0;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputNumber() nzStrokeWidth: number;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputNumber() nzGapDegree: number;
+  @Input() nzStatus: NzProgressStatusType;
+  @Input() nzType: NzProgressTypeType = 'line';
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'top') nzGapPosition: NzProgressGapPositionType;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'round') nzStrokeLinecap: NzProgressStrokeLinecapType;
 
-  @Input()
-  set nzSize(value: string) {
-    this._size = value;
-    if (this.nzSize === 'small' && !this.isStrokeWidthSet) {
-      this._strokeWidth = 6;
-    }
+  @Input() @InputNumber() nzSteps?: number;
+
+  steps: NzProgressStepItem[] = [];
+
+  /** Gradient style when `nzType` is `line`. */
+  lineGradient: string | null = null;
+
+  /** If user uses gradient color. */
+  isGradient = false;
+
+  /** If the linear progress is a step progress. */
+  isSteps = false;
+
+  /**
+   * Each progress whose `nzType` is circle or dashboard should have unique id to
+   * define `<linearGradient>`.
+   */
+  gradientId = gradientIdSeed++;
+
+  /** Paths to rendered in the template. */
+  progressCirclePath: NzProgressCirclePath[] = [];
+
+  circleGradient: Array<{ offset: string; color: string }>;
+
+  trailPathStyle: NgStyleInterface;
+
+  pathString: string;
+
+  icon: string;
+
+  trackByFn = (index: number) => `${index}`;
+
+  get formatter(): NzProgressFormatter {
+    return this.nzFormat || defaultFormatter;
   }
 
-  get nzSize(): string {
-    return this._size;
+  get status(): NzProgressStatusType {
+    return this.nzStatus || this.inferredStatus;
   }
 
-  @Input()
-  set nzFormat(value: (percent: number) => string) {
-    if (isNotNil(value)) {
-      this._format = value;
-      this.isFormatSet = true;
-    }
+  get strokeWidth(): number {
+    return this.nzStrokeWidth || (this.nzType === 'line' && this.nzSize !== 'small' ? 8 : 6);
   }
 
-  get nzFormat(): (percent: number) => string {
-    return this._format;
-  }
-
-  @Input()
-  set nzPercent(value: number) {
-    this._percent = value;
-    if (isNotNil(value)) {
-      const fillAll = parseInt(value.toString(), 10) >= 100;
-      if (fillAll && !this.isStatusSet) {
-        this._status = 'success';
-      } else {
-        this._status = this._cacheStatus;
-      }
-      this.updatePathStyles();
-      this.updateIconClassMap();
-    }
-  }
-
-  get nzPercent(): number {
-    return this._percent;
-  }
-
-  @Input()
-  set nzStrokeWidth(value: number) {
-    if (isNotNil(value)) {
-      this._strokeWidth = value;
-      this.isStrokeWidthSet = true;
-      this.updatePathStyles();
-    }
-  }
-
-  get nzStrokeWidth(): number {
-    return this._strokeWidth;
-  }
-
-  @Input()
-  set nzStatus(value: NzProgressStatusType) {
-    if (isNotNil(value)) {
-      this._status = value;
-      this._cacheStatus = value;
-      this.isStatusSet = true;
-      this.updateIconClassMap();
-    }
-  }
-
-  get nzStatus(): NzProgressStatusType {
-    return this._status;
-  }
-
-  @Input()
-  set nzType(value: NzProgressTypeType) {
-    this._type = value;
-    if (!this.isStrokeWidthSet) {
-      if (this.nzType !== 'line') {
-        this._strokeWidth = 6;
-      }
-    }
-    if (this.nzType === 'dashboard') {
-      if (!this.isGapPositionSet) {
-        this._gapPosition = 'bottom';
-      }
-      if (!this.isGapDegreeSet) {
-        this._gapDegree = 75;
-      }
-    }
-    this.updateIconClassMap();
-    this.updatePathStyles();
-  }
-
-  get nzType(): NzProgressTypeType {
-    return this._type;
-  }
-
-  @Input()
-  set nzGapDegree(value: number) {
-    if (isNotNil(value)) {
-      this._gapDegree = value;
-      this.isGapDegreeSet = true;
-      this.updatePathStyles();
-    }
-
-  }
-
-  get nzGapDegree(): number {
-    return this._gapDegree;
-  }
-
-  @Input()
-  set nzGapPosition(value: NzProgressGapPositionType) {
-    if (isNotNil(value)) {
-      this._gapPosition = value;
-      this.isGapPositionSet = true;
-      this.updatePathStyles();
-    }
-  }
-
-  get nzGapPosition(): NzProgressGapPositionType {
-    return this._gapPosition;
-  }
-
-  get isCirCleStyle(): boolean {
+  get isCircleStyle(): boolean {
     return this.nzType === 'circle' || this.nzType === 'dashboard';
   }
 
-  updatePathStyles(): void {
-    const radius = 50 - (this.nzStrokeWidth / 2);
+  private cachedStatus: NzProgressStatusType = 'normal';
+  private inferredStatus: NzProgressStatusType = 'normal';
+  private destroy$ = new Subject<void>();
+
+  constructor(public nzConfigService: NzConfigService) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const { nzSteps, nzGapPosition, nzStrokeLinecap, nzStrokeColor, nzGapDegree, nzType, nzStatus, nzPercent, nzSuccessPercent } = changes;
+
+    if (nzStatus) {
+      this.cachedStatus = this.nzStatus || this.cachedStatus;
+    }
+
+    if (nzPercent || nzSuccessPercent) {
+      const fillAll = parseInt(this.nzPercent.toString(), 10) >= 100;
+      if (fillAll) {
+        if ((isNotNil(this.nzSuccessPercent) && this.nzSuccessPercent! >= 100) || this.nzSuccessPercent === undefined) {
+          this.inferredStatus = 'success';
+        }
+      } else {
+        this.inferredStatus = this.cachedStatus;
+      }
+    }
+
+    if (nzStatus || nzPercent || nzSuccessPercent) {
+      this.updateIcon();
+    }
+
+    if (nzStrokeColor) {
+      this.setStrokeColor();
+    }
+
+    if (nzGapPosition || nzStrokeLinecap || nzGapDegree || nzType || nzPercent || nzStrokeColor) {
+      this.getCirclePaths();
+    }
+
+    if (nzSteps) {
+      this.isSteps = isNotNil(nzSteps.currentValue);
+      this.getSteps();
+    }
+  }
+
+  ngOnInit(): void {
+    this.nzConfigService
+      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.updateIcon();
+        this.setStrokeColor();
+        this.getCirclePaths();
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private updateIcon(): void {
+    const ret = statusIconNameMap.get(this.status);
+    this.icon = ret ? ret + (this.isCircleStyle ? '-o' : '-circle-fill') : '';
+  }
+
+  /**
+   * Calculate step render configs.
+   */
+  private getSteps(): void {
+    const current = Math.floor(this.nzSteps! * (this.nzPercent / 100));
+    const stepWidth = this.nzSize === 'small' ? 2 : 14;
+
+    for (let i = 0; i < this.nzSteps!; i++) {
+      let color;
+      if (i <= current - 1) {
+        color = this.nzStrokeColor;
+      }
+      const stepStyle = {
+        backgroundColor: `${color}`,
+        width: `${stepWidth}px`,
+        height: `${this.strokeWidth}px`
+      };
+      this.steps.push(stepStyle);
+    }
+  }
+
+  /**
+   * Calculate paths when the type is circle or dashboard.
+   */
+  private getCirclePaths(): void {
+    if (!this.isCircleStyle) {
+      return;
+    }
+
+    const values = isNotNil(this.nzSuccessPercent) ? [this.nzSuccessPercent!, this.nzPercent] : [this.nzPercent];
+
+    // Calculate shared styles.
+    const radius = 50 - this.strokeWidth / 2;
+    const gapPosition = this.nzGapPosition || (this.nzType === 'circle' ? 'top' : 'bottom');
+    const len = Math.PI * 2 * radius;
+    const gapDegree = this.nzGapDegree || (this.nzType === 'circle' ? 0 : 75);
+
     let beginPositionX = 0;
     let beginPositionY = -radius;
     let endPositionX = 0;
     let endPositionY = radius * -2;
-    switch (this.nzGapPosition) {
+
+    switch (gapPosition) {
       case 'left':
         beginPositionX = -radius;
         beginPositionY = 0;
@@ -245,35 +235,44 @@ export class NzProgressComponent implements OnInit {
         break;
       default:
     }
+
     this.pathString = `M 50,50 m ${beginPositionX},${beginPositionY}
-     a ${radius},${radius} 0 1 1 ${endPositionX},${-endPositionY}
-     a ${radius},${radius} 0 1 1 ${-endPositionX},${endPositionY}`;
-    const len = Math.PI * 2 * radius;
+       a ${radius},${radius} 0 1 1 ${endPositionX},${-endPositionY}
+       a ${radius},${radius} 0 1 1 ${-endPositionX},${endPositionY}`;
+
     this.trailPathStyle = {
-      strokeDasharray : `${len - this.nzGapDegree}px ${len}px`,
-      strokeDashoffset: `-${this.nzGapDegree / 2}px`,
-      transition      : 'stroke-dashoffset .3s ease 0s, stroke-dasharray .3s ease 0s, stroke .3s'
+      strokeDasharray: `${len - gapDegree}px ${len}px`,
+      strokeDashoffset: `-${gapDegree / 2}px`,
+      transition: 'stroke-dashoffset .3s ease 0s, stroke-dasharray .3s ease 0s, stroke .3s'
     };
-    this.strokePathStyle = {
-      strokeDasharray : `${(this.nzPercent / 100) * (len - this.nzGapDegree)}px ${len}px`,
-      strokeDashoffset: `-${this.nzGapDegree / 2}px`,
-      transition      : 'stroke-dashoffset .3s ease 0s, stroke-dasharray .3s ease 0s, stroke .3s, stroke-width .06s ease .3s' // eslint-disable-line
-    };
+
+    // Calculate styles for each path.
+    this.progressCirclePath = values
+      .map((value, index) => {
+        const isSuccessPercent = values.length === 2 && index === 0;
+        return {
+          stroke: this.isGradient && !isSuccessPercent ? `url(#gradient-${this.gradientId})` : null,
+          strokePathStyle: {
+            stroke: !this.isGradient ? (isSuccessPercent ? statusColorMap.get('success') : (this.nzStrokeColor as string)) : null,
+            transition: 'stroke-dashoffset .3s ease 0s, stroke-dasharray .3s ease 0s, stroke .3s, stroke-width .06s ease .3s',
+            strokeDasharray: `${((value || 0) / 100) * (len - gapDegree)}px ${len}px`,
+            strokeDashoffset: `-${gapDegree / 2}px`
+          }
+        };
+      })
+      .reverse();
   }
 
-  updateIconClassMap(): void {
-    const isCircle = (this.nzType === 'circle' || this.nzType === 'dashboard');
-    this.iconClassMap = {
-      'anticon-check'       : (this.nzStatus === 'success') && isCircle,
-      'anticon-cross'       : (this.nzStatus === 'exception') && isCircle,
-      'anticon-check-circle': (this.nzStatus === 'success') && !isCircle,
-      'anticon-cross-circle': (this.nzStatus === 'exception') && !isCircle
-    };
+  private setStrokeColor(): void {
+    const color = this.nzStrokeColor;
+    const isGradient = (this.isGradient = !!color && typeof color !== 'string');
+    if (isGradient && !this.isCircleStyle) {
+      this.lineGradient = handleLinearGradient(color as NzProgressColorGradient);
+    } else if (isGradient && this.isCircleStyle) {
+      this.circleGradient = handleCircleGradient(this.nzStrokeColor as NzProgressGradientProgress);
+    } else {
+      this.lineGradient = null;
+      this.circleGradient = [];
+    }
   }
-
-  ngOnInit(): void {
-    this.updatePathStyles();
-    this.updateIconClassMap();
-  }
-
 }

@@ -1,4 +1,4 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -19,8 +19,8 @@ import { NzCardModule } from './nz-card.module';
 describe('card', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzCardModule ],
-      schemas     : [ NO_ERRORS_SCHEMA ],
+      imports: [NzCardModule],
+      schemas: [NO_ERRORS_SCHEMA],
       declarations: [
         NzDemoCardBasicComponent,
         NzDemoCardBorderLessComponent,
@@ -31,7 +31,8 @@ describe('card', () => {
         NzDemoCardLoadingComponent,
         NzDemoCardMetaComponent,
         NzDemoCardSimpleComponent,
-        NzDemoCardTabsComponent
+        NzDemoCardTabsComponent,
+        TestCardSizeComponent
       ]
     });
     TestBed.compileComponents();
@@ -56,14 +57,14 @@ describe('card', () => {
     const fixture = TestBed.createComponent(NzDemoCardSimpleComponent);
     const card = fixture.debugElement.query(By.directive(NzCardComponent));
     fixture.detectChanges();
-    expect(card.nativeElement.firstElementChild.classList).toContain('ant-card-body');
+    expect(card.nativeElement.firstElementChild!.classList).toContain('ant-card-body');
   });
   it('should flexible content work', () => {
     const fixture = TestBed.createComponent(NzDemoCardFlexibleContentComponent);
     const card = fixture.debugElement.query(By.directive(NzCardComponent));
     fixture.detectChanges();
     expect(card.nativeElement.classList).toContain('ant-card-hoverable');
-    expect(card.nativeElement.firstElementChild.classList).toContain('ant-card-cover');
+    expect(card.nativeElement.firstElementChild!.classList).toContain('ant-card-cover');
     expect(card.nativeElement.querySelector('.ant-card-meta-title').innerText).toBe('Europe Street beat');
     expect(card.nativeElement.querySelector('.ant-card-meta-description').innerText).toBe('www.instagram.com');
   });
@@ -84,7 +85,8 @@ describe('card', () => {
     const fixture = TestBed.createComponent(NzDemoCardGridCardComponent);
     const card = fixture.debugElement.query(By.directive(NzCardComponent));
     fixture.detectChanges();
-    expect(card.nativeElement.querySelector('.ant-card-body').firstElementChild.classList).toContain('ant-card-grid');
+    expect(card.nativeElement.classList).toContain('ant-card-contain-grid');
+    expect(card.nativeElement.querySelector('.ant-card-body').firstElementChild!.classList).toContain('ant-card-grid');
   });
   it('should inner work', () => {
     const fixture = TestBed.createComponent(NzDemoCardInnerComponent);
@@ -97,10 +99,10 @@ describe('card', () => {
     const fixture = TestBed.createComponent(NzDemoCardTabsComponent);
     const cards = fixture.debugElement.queryAll(By.directive(NzCardComponent));
     fixture.detectChanges();
-    expect(cards[ 0 ].nativeElement.classList).toContain('ant-card-contain-tabs');
-    expect(cards[ 0 ].nativeElement.firstElementChild.firstElementChild.classList).toContain('ant-card-head-wrapper');
-    expect(cards[ 1 ].nativeElement.classList).toContain('ant-card-contain-tabs');
-    expect(cards[ 1 ].nativeElement.firstElementChild.firstElementChild.classList).toContain('ant-card-head-wrapper');
+    expect(cards[0].nativeElement.classList).toContain('ant-card-contain-tabs');
+    expect(cards[0].nativeElement.firstElementChild.firstElementChild!.classList).toContain('ant-card-head-wrapper');
+    expect(cards[1].nativeElement.classList).toContain('ant-card-contain-tabs');
+    expect(cards[1].nativeElement.firstElementChild.firstElementChild!.classList).toContain('ant-card-head-wrapper');
   });
   it('should meta work', () => {
     const fixture = TestBed.createComponent(NzDemoCardMetaComponent);
@@ -108,4 +110,26 @@ describe('card', () => {
     fixture.detectChanges();
     expect(card.nativeElement.querySelector('.ant-card-actions').children.length).toBe(3);
   });
+  it('should size work', () => {
+    const fixture = TestBed.createComponent(TestCardSizeComponent);
+    const card = fixture.debugElement.query(By.directive(NzCardComponent));
+    fixture.detectChanges();
+    expect(card.nativeElement.classList).not.toContain('ant-card-small');
+    fixture.componentInstance.size = 'small';
+    fixture.detectChanges();
+    expect(card.nativeElement.classList).toContain('ant-card-small');
+  });
 });
+
+@Component({
+  template: `
+    <nz-card [nzSize]="size">
+      <p>Card content</p>
+      <p>Card content</p>
+      <p>Card content</p>
+    </nz-card>
+  `
+})
+class TestCardSizeComponent {
+  size = 'default';
+}

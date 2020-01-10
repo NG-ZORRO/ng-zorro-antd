@@ -1,67 +1,83 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
-  Input,
-  Output
+  Host,
+  OnDestroy,
+  Optional,
+  TemplateRef,
+  ViewEncapsulation
 } from '@angular/core';
 
-import { fadeAnimation } from '../core/animation/fade-animations';
-import { toBoolean } from '../core/util/convert';
-import { NzI18nService } from '../i18n/nz-i18n.service';
-import { NzToolTipComponent } from '../tooltip/nz-tooltip.component';
+import { NzNoAnimationDirective, zoomBigMotion } from 'ng-zorro-antd/core';
+import { NzToolTipComponent, NzTooltipTrigger } from 'ng-zorro-antd/tooltip';
+import { Subject } from 'rxjs';
 
 @Component({
-  selector           : 'nz-popconfirm',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-popconfirm',
+  exportAs: 'nzPopconfirmComponent',
   preserveWhitespaces: false,
-  animations         : [ fadeAnimation ],
-  templateUrl        : './nz-popconfirm.component.html',
-  styles             : [ `
-    .ant-popover {
-      position: relative;
-    }
-  ` ]
+  animations: [zoomBigMotion],
+  templateUrl: './nz-popconfirm.component.html',
+  styles: [
+    `
+      .ant-popover {
+        position: relative;
+      }
+    `
+  ]
 })
-export class NzPopconfirmComponent extends NzToolTipComponent {
-  private _condition = false;
-  _prefix = 'ant-popover-placement';
-  _trigger = 'click';
-  _hasBackdrop = true;
-  @Input() nzContent;
-  @Input() nzOkText: string;
-  @Input() nzCancelText: string;
+export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestroy {
+  nzCancelText: string;
+  nzCondition = false;
+  nzIcon: string | TemplateRef<void>;
+  nzOkText: string;
+  nzOkType: string = 'primary';
 
-  @Input()
-  set nzCondition(value: boolean) {
-    this._condition = toBoolean(value);
+  readonly nzOnCancel = new Subject<void>();
+  readonly nzOnConfirm = new Subject<void>();
+
+  protected _trigger: NzTooltipTrigger = 'click';
+
+  _prefix = 'ant-popover-placement';
+  _hasBackdrop = true;
+
+  constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
+    super(cdr, noAnimation);
   }
 
-  // get nzCondition(): boolean {
-  //   return this._condition;
-  // }
+  ngOnDestroy(): void {
+    super.ngOnDestroy();
 
-  @Output() nzOnCancel: EventEmitter<void> = new EventEmitter();
-  @Output() nzOnConfirm: EventEmitter<void> = new EventEmitter();
-
-  constructor(cdr: ChangeDetectorRef, private _locale: NzI18nService) {
-    super(cdr);
+    this.nzOnCancel.complete();
+    this.nzOnConfirm.complete();
   }
 
   show(): void {
-    if (!this._condition) {
-      this.nzVisible = true;
+    if (!this.nzCondition) {
+      super.show();
     } else {
       this.onConfirm();
     }
   }
 
   onCancel(): void {
-    this.nzOnCancel.emit();
-    this.nzVisible = false;
+    this.nzOnCancel.next();
+    super.hide();
   }
 
   onConfirm(): void {
-    this.nzOnConfirm.emit();
-    this.nzVisible = false;
+    this.nzOnConfirm.next();
+    super.hide();
   }
 }

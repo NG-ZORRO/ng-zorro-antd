@@ -1,120 +1,173 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
-  ChangeDetectorRef,
+  AfterContentInit,
+  ContentChildren,
   Directive,
   ElementRef,
-  HostBinding,
-  HostListener,
   Input,
+  OnChanges,
+  OnDestroy,
   OnInit,
   Optional,
-  Renderer2
+  QueryList,
+  Renderer2,
+  SimpleChanges
 } from '@angular/core';
-
-import { toBoolean } from '../core/util/convert';
-
-import { NzMenuDirective } from './nz-menu.directive';
-import { NzSubMenuComponent } from './nz-submenu.component';
+import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/router';
+import { InputBoolean, isNotNil, NzMenuBaseService, NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { EMPTY, merge, Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
+import { NzSubmenuService } from './nz-submenu.service';
 
 @Directive({
-  selector: '[nz-menu-item]'
+  selector: '[nz-menu-item]',
+  exportAs: 'nzMenuItem',
+  providers: [NzUpdateHostClassService],
+  host: {
+    '(click)': 'clickMenuItem($event)'
+  }
 })
-export class NzMenuItemDirective implements OnInit {
-  private _disabled = false;
-  private _selected = false;
-  level = 0;
-  padding = null;
-  isInDropDown = false;
-
-  @Input()
-  set nzDisabled(value: boolean) {
-    this._disabled = toBoolean(value);
-  }
-
-  get nzDisabled(): boolean {
-    return this._disabled;
-  }
-
-  @Input()
-  set nzSelected(value: boolean) {
-    this._selected = toBoolean(value);
-    if (this._selected) {
-      this.renderer.addClass(this.hostElement.nativeElement, this.isInDropDown ? 'ant-dropdown-menu-item-selected' : 'ant-menu-item-selected');
-    } else {
-      this.renderer.removeClass(this.hostElement.nativeElement, this.isInDropDown ? 'ant-dropdown-menu-item-selected' : 'ant-menu-item-selected');
-    }
-  }
-
-  get nzSelected(): boolean {
-    return this._selected;
-  }
+export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterContentInit {
+  private el: HTMLElement = this.elementRef.nativeElement;
+  private destroy$ = new Subject();
+  private originalPadding: number | null = null;
+  selected$ = new Subject<boolean>();
+  @Input() @InputBoolean() nzDisabled = false;
+  @Input() @InputBoolean() nzSelected = false;
+  @Input() nzPaddingLeft: number;
+  @Input() @InputBoolean() nzMatchRouterExact = false;
+  @Input() @InputBoolean() nzMatchRouter = false;
+  @ContentChildren(RouterLink, { descendants: true }) listOfRouterLink: QueryList<RouterLink>;
+  @ContentChildren(RouterLinkWithHref, { descendants: true }) listOfRouterLinkWithHref: QueryList<RouterLinkWithHref>;
 
   /** clear all item selected status except this */
-  @HostListener('click', [ '$event' ])
-  onClickItem(e: MouseEvent): void {
+  clickMenuItem(e: MouseEvent): void {
     if (this.nzDisabled) {
       e.preventDefault();
       e.stopPropagation();
       return;
     }
-    this.nzMenuDirective.clickItem(this);
-    if (this.nzMenuDirective.nzSelectable) {
-      this.nzMenuDirective.clearAllSelected();
-      this.nzSelected = true;
-    }
-    if (this.nzSubMenuComponent) {
-      this.nzSubMenuComponent.clickSubMenuDropDown();
+    this.nzMenuService.onMenuItemClick(this);
+    if (this.nzSubmenuService) {
+      this.nzSubmenuService.onMenuItemClick();
     }
   }
 
-  /** define host class */
-  @HostBinding('class.ant-dropdown-menu-item')
-  get isInDropDownClass(): boolean {
-    return this.isInDropDown;
+  setClassMap(): void {
+    const prefixName = this.nzMenuService.isInDropDown ? 'ant-dropdown-menu-item' : 'ant-menu-item';
+    this.nzUpdateHostClassService.updateHostClass(this.el, {
+      [`${prefixName}`]: true,
+      [`${prefixName}-selected`]: this.nzSelected,
+      [`${prefixName}-disabled`]: this.nzDisabled
+    });
   }
 
-  @HostBinding('class.ant-menu-item')
-  get isNotInDropDownClass(): boolean {
-    return !this.isInDropDown;
+  setSelectedState(value: boolean): void {
+    this.nzSelected = value;
+    this.selected$.next(value);
+    this.setClassMap();
   }
 
-  @HostBinding('class.ant-dropdown-menu-item-disabled')
-  get setDropDownDisableClass(): boolean {
-    return this.isInDropDown && this.nzDisabled;
-  }
-
-  @HostBinding('class.ant-menu-item-disabled')
-  get setMenuDisableClass(): boolean {
-    return (!this.isInDropDown) && this.nzDisabled;
-  }
-
-  @HostBinding('style.padding-left.px')
-  get setPaddingLeft(): number {
-    if (this.nzSubMenuComponent) {
-      /** if in sub menu component */
-      if (this.nzSubMenuComponent.nzMenuDirective.nzMode === 'inline' && (this.nzSubMenuComponent.nzMenuDirective)) {
-        /** if host menu's mode is inline add PADDING_BASE * level padding */
-        return (this.nzSubMenuComponent.level + 1) * this.nzSubMenuComponent.nzMenuDirective.nzInlineIndent;
-      } else {
-        /** return origin padding */
-        return this.padding;
+  private updateRouterActive(): void {
+    if (!this.listOfRouterLink || !this.listOfRouterLinkWithHref || !this.router || !this.router.navigated || !this.nzMatchRouter) {
+      return;
+    }
+    Promise.resolve().then(() => {
+      const hasActiveLinks = this.hasActiveLinks();
+      if (this.nzSelected !== hasActiveLinks) {
+        this.nzSelected = hasActiveLinks;
+        this.setSelectedState(this.nzSelected);
       }
-    } else if (this.nzMenuDirective.hasSubMenu && (this.nzMenuDirective.nzMode === 'inline')) {
-      /** not in sub menu component but root menu's mode is inline and contains submenu return default padding*/
-      return this.nzMenuDirective.nzInlineIndent;
-    } else {
-      return this.padding;
-    }
+    });
   }
 
-  constructor(private renderer: Renderer2, public cd: ChangeDetectorRef, private nzMenuDirective: NzMenuDirective, @Optional() public nzSubMenuComponent: NzSubMenuComponent, private hostElement: ElementRef) {
-    this.nzMenuDirective.menuItems.push(this);
-    /** store origin padding in padding */
-    if (this.hostElement.nativeElement.style[ 'padding-left' ]) {
-      this.padding = parseInt(this.hostElement.nativeElement.style[ 'padding-left' ], 10);
+  private hasActiveLinks(): boolean {
+    const isActiveCheckFn = this.isLinkActive(this.router!);
+    return (
+      (this.routerLink && isActiveCheckFn(this.routerLink)) ||
+      (this.routerLinkWithHref && isActiveCheckFn(this.routerLinkWithHref)) ||
+      this.listOfRouterLink.some(isActiveCheckFn) ||
+      this.listOfRouterLinkWithHref.some(isActiveCheckFn)
+    );
+  }
+
+  private isLinkActive(router: Router): (link: RouterLink | RouterLinkWithHref) => boolean {
+    return (link: RouterLink | RouterLinkWithHref) => router.isActive(link.urlTree, this.nzMatchRouterExact);
+  }
+
+  constructor(
+    private nzUpdateHostClassService: NzUpdateHostClassService,
+    private nzMenuService: NzMenuBaseService,
+    @Optional() private nzSubmenuService: NzSubmenuService,
+    private renderer: Renderer2,
+    private elementRef: ElementRef,
+    @Optional() private routerLink?: RouterLink,
+    @Optional() private routerLinkWithHref?: RouterLinkWithHref,
+    @Optional() private router?: Router
+  ) {
+    if (router) {
+      this.router!.events.pipe(
+        takeUntil(this.destroy$),
+        filter(e => e instanceof NavigationEnd)
+      ).subscribe(() => {
+        this.updateRouterActive();
+      });
     }
   }
 
   ngOnInit(): void {
-    this.isInDropDown = this.nzMenuDirective.nzInDropDown;
+    /** store origin padding in padding */
+    const paddingLeft = this.el.style.paddingLeft;
+    if (paddingLeft) {
+      this.originalPadding = parseInt(paddingLeft, 10);
+    }
+    merge(this.nzMenuService.mode$, this.nzMenuService.inlineIndent$, this.nzSubmenuService ? this.nzSubmenuService.level$ : EMPTY)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        let padding: number | null = null;
+        if (this.nzMenuService.mode === 'inline') {
+          if (isNotNil(this.nzPaddingLeft)) {
+            padding = this.nzPaddingLeft;
+          } else {
+            const level = this.nzSubmenuService ? this.nzSubmenuService.level + 1 : 1;
+            padding = level * this.nzMenuService.inlineIndent;
+          }
+        } else {
+          padding = this.originalPadding;
+        }
+        if (padding) {
+          this.renderer.setStyle(this.el, 'padding-left', `${padding}px`);
+        } else {
+          this.renderer.removeStyle(this.el, 'padding-left');
+        }
+      });
+    this.setClassMap();
+  }
+
+  ngAfterContentInit(): void {
+    this.listOfRouterLink.changes.pipe(takeUntil(this.destroy$)).subscribe(() => this.updateRouterActive());
+    this.listOfRouterLinkWithHref.changes.pipe(takeUntil(this.destroy$)).subscribe(() => this.updateRouterActive());
+    this.updateRouterActive();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.nzSelected) {
+      this.setSelectedState(this.nzSelected);
+    }
+    if (changes.nzDisabled) {
+      this.setClassMap();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

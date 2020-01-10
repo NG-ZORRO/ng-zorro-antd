@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import Calendar from './calendar/uk_UA';
 import DatePicker from './date-picker/uk_UA';
 import Pagination from './pagination/uk_UA';
@@ -13,32 +21,30 @@ export default {
     filterTitle: 'Фільтрувати',
     filterConfirm: 'OK',
     filterReset: 'Скинути',
-    emptyText: 'Даних немає',
     selectAll: 'Обрати всі',
-    selectInvert: 'Інвертувати вибір',
+    selectInvert: 'Інвертувати вибір'
   },
   Modal: {
     okText: 'Гаразд',
     cancelText: 'Скасувати',
-    justOkText: 'Гаразд',
+    justOkText: 'Гаразд'
   },
   Popconfirm: {
     okText: 'Гаразд',
-    cancelText: 'Скасувати',
+    cancelText: 'Скасувати'
   },
   Transfer: {
-    notFoundContent: 'Нічого не знайдено',
     searchPlaceholder: 'Введіть текст для пошуку',
     itemUnit: 'item',
-    itemsUnit: 'items',
-  },
-  Select: {
-    notFoundContent: 'Нічого не знайдено',
+    itemsUnit: 'items'
   },
   Upload: {
     uploading: 'Завантаження ...',
     removeFile: 'Видалити файл',
     uploadError: 'Помилка завантаження',
-    previewFile: 'Попередній перегляд файлу',
+    previewFile: 'Попередній перегляд файлу'
   },
+  Empty: {
+    description: 'Даних немає'
+  }
 };

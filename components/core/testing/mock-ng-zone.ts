@@ -6,8 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import {EventEmitter, Injectable, NgZone} from '@angular/core';
-
+import { EventEmitter, Injectable, NgZone } from '@angular/core';
 
 /**
  * Mock synchronous NgZone implementation that can be used
@@ -21,7 +20,7 @@ export class MockNgZone extends NgZone {
   onStable: EventEmitter<any> = new EventEmitter(false);
 
   constructor() {
-    super({enableLongStackTrace: false});
+    super({ enableLongStackTrace: false });
   }
 
   run(fn: Function): any {

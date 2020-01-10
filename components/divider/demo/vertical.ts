@@ -3,7 +3,8 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-divider-vertical',
   template: `
-    <div>Text
+    <div>
+      Text
       <nz-divider nzType="vertical"></nz-divider>
       <a href="#">Link</a>
       <nz-divider nzType="vertical"></nz-divider>
@@ -11,7 +12,4 @@ import { Component } from '@angular/core';
     </div>
   `
 })
-
-export class NzDemoDividerVerticalComponent {
-
-}
+export class NzDemoDividerVerticalComponent {}

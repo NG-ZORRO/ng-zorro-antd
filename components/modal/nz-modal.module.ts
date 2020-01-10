@@ -1,21 +1,40 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { NzButtonModule } from '../button/nz-button.module';
-import { LoggerModule } from '../core/util/logger/logger.module';
-import { NzI18nModule } from '../i18n/nz-i18n.module';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzAddOnModule, NzNoAnimationModule, NzPipesModule } from 'ng-zorro-antd/core';
+import { NzI18nModule } from 'ng-zorro-antd/i18n';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
-import { CssUnitPipe } from './css-unit.pipe';
-import { NzModalControlService } from './nz-modal-control.service';
+import { NzModalControlServiceModule } from './nz-modal-control.service.module';
+import { NzModalFooterDirective } from './nz-modal-footer.directive';
 import { NzModalComponent } from './nz-modal.component';
-import { NzModalService } from './nz-modal.service';
+import { NzModalServiceModule } from './nz-modal.service.module';
 
 @NgModule({
-  imports: [ CommonModule, OverlayModule, NzI18nModule, NzButtonModule, LoggerModule ],
-  exports: [ NzModalComponent ],
-  declarations: [ NzModalComponent, CssUnitPipe ],
-  entryComponents: [ NzModalComponent ],
-  providers: [ NzModalControlService, NzModalService ]
+  imports: [
+    CommonModule,
+    OverlayModule,
+    NzAddOnModule,
+    NzI18nModule,
+    NzButtonModule,
+    NzIconModule,
+    NzPipesModule,
+    NzNoAnimationModule,
+    NzModalServiceModule,
+    NzModalControlServiceModule
+  ],
+  exports: [NzModalComponent, NzModalFooterDirective],
+  declarations: [NzModalComponent, NzModalFooterDirective],
+  entryComponents: [NzModalComponent]
 })
-export class NzModalModule { }
+export class NzModalModule {}

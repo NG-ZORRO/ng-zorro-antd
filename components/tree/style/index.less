@@ -1,206 +1,235 @@
-@import "../../style/themes/default";
-@import "../../style/mixins/index";
-@import "../../checkbox/style/mixin";
-@import "./mixin";
+@import '../../style/themes/index';
+@import '../../style/mixins/index';
+@import '../../checkbox/style/mixin';
+@import './mixin';
+@import './directory';
 
-@tree-prefix-cls: ~"@{ant-prefix}-tree";
-@tree-showline-icon-color: @text-color-secondary;
+@tree-prefix-cls: ~'@{ant-prefix}-tree';
+@tree-node-prefix-cls: ~'@{tree-prefix-cls}-treenode';
+@tree-motion: ~'@{ant-prefix}-motion-collapse';
 
-.antCheckboxFn(@checkbox-prefix-cls: ~"@{ant-prefix}-tree-checkbox");
+.antCheckboxFn(@checkbox-prefix-cls: ~'@{ant-prefix}-tree-checkbox');
 
-.@{tree-prefix-cls} {
-  .reset-component;
-  margin: 0;
-  padding: 0;
+.antTreeFn(@tree-prefix-cls) {
+  .@{tree-prefix-cls} {
+    .reset-component;
+    background: @tree-bg;
+    border-radius: @border-radius-base;
+    transition: background-color 0.3s;
 
-  ol, ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
+    &-rtl {
+      direction: rtl;
+    }
 
-  li {
-    padding: 4px 0;
-    margin: 0;
-    list-style: none;
-    white-space: nowrap;
-    outline: 0;
-    span[draggable],
-    span[draggable="true"] {
+    &-focused:not(:hover):not(&-active-focused) {
+      background: @primary-1;
+    }
+
+    // =================== Virtual List ===================
+    &-list-holder-inner {
+      align-items: flex-start;
+    }
+
+    &.@{tree-prefix-cls}-block-node {
+      .@{tree-prefix-cls}-list-holder-inner {
+        align-items: stretch;
+
+        // >>> Title
+        .@{tree-prefix-cls}-node-content-wrapper {
+          flex: auto;
+        }
+      }
+    }
+
+    // ===================== TreeNode =====================
+    .@{tree-node-prefix-cls} {
+      display: flex;
+      align-items: flex-start;
+      padding: 0 0 (@padding-xs / 2) 0;
+      outline: none;
+
+      &-rtl {
+        direction: rtl;
+      }
+      // Disabled
+      &-disabled {
+        // >>> Title
+        .@{tree-prefix-cls}-node-content-wrapper {
+          color: @disabled-color;
+          cursor: not-allowed;
+
+          &:hover {
+            background: transparent;
+          }
+        }
+      }
+
+      &-active .@{tree-prefix-cls}-node-content-wrapper {
+        background: @tree-node-hover-bg;
+      }
+    }
+
+    // >>> Indent
+    &-indent {
+      align-self: stretch;
+      white-space: nowrap;
       user-select: none;
-      border-top: 2px transparent solid;
-      border-bottom: 2px transparent solid;
-      margin-top: -2px;
-      /* Required to make elements draggable in old WebKit */
-      -khtml-user-drag: element;
-      -webkit-user-drag: element;
-    }
-    &.drag-over {
-      > span[draggable] {
-        background-color: @primary-color;
-        color: white;
-        opacity: 0.8;
-      }
-    }
-    &.drag-over-gap-top {
-      > span[draggable] {
-        border-top-color: @primary-color;
-      }
-    }
-    &.drag-over-gap-bottom {
-      > span[draggable] {
-        border-bottom-color: @primary-color;
-      }
-    }
-    &.filter-node {
-      > span {
-        color: @highlight-color !important;
-        font-weight: 500 !important;
-      }
-    }
-    ul {
-      margin: 0;
-      padding: 0 0 0 18px;
-    }
-    .@{tree-prefix-cls}-node-content-wrapper {
-      display: inline-block;
-      padding: 0 5px;
-      border-radius: @border-radius-sm;
-      margin: 0;
-      cursor: pointer;
-      text-decoration: none;
-      vertical-align: top;
-      color: @text-color;
-      transition: all .3s;
-      position: relative;
-      height: 24px;
-      line-height: 24px;
-      &:hover {
-        background-color: @item-hover-bg;
-      }
-      &.@{tree-prefix-cls}-node-selected {
-        background-color: @primary-2;
-      }
-      .font-red {
-        color: #FF5500;
-      }
-    }
-    span {
-      cursor: pointer;
-      &.@{tree-prefix-cls}-checkbox {
-        margin: 4px 4px 0 2px;
-      }
-      &.@{tree-prefix-cls}-switcher,
-      &.@{tree-prefix-cls}-iconEle {
-        margin: 0;
-        width: 24px;
-        height: 24px;
-        line-height: 24px;
+
+      &-unit {
         display: inline-block;
-        vertical-align: middle;
-        border: 0 none;
-        cursor: pointer;
-        outline: none;
-        text-align: center;
+        width: @tree-title-height;
       }
-      &.@{tree-prefix-cls}-icon_loading {
-        background: #fff;
-        &:after {
-          display: inline-block;
-          .iconfont-font("\E64D");
-          animation: loadingCircle 1s infinite linear;
-          color: @primary-color;
-        }
+    }
+
+    // >>> Switcher
+    & &-switcher {
+      .antTreeSwitcherIcon();
+      flex: none;
+
+      width: @tree-title-height;
+      height: @tree-title-height;
+      margin: 0;
+      line-height: @tree-title-height;
+      text-align: center;
+      cursor: pointer;
+
+      &-noop {
+        cursor: default;
       }
-      &.@{tree-prefix-cls}-switcher {
-        &.@{tree-prefix-cls}-switcher-noop {
-          cursor: default;
-        }
-        &.@{tree-prefix-cls}-switcher_open {
-          .antTreeSwitcherIcon();
-        }
-        &.@{tree-prefix-cls}-switcher_close {
-          .antTreeSwitcherIcon();
-          &:after {
-            transform: rotate(270deg) scale(0.59);
+
+      &_close {
+        .@{tree-prefix-cls}-switcher-icon {
+          svg {
+            transform: rotate(-90deg);
+
+            .@{tree-prefix-cls}-rtl& {
+              transform: rotate(90deg);
+            }
           }
         }
       }
     }
-    &:last-child > span {
-      &.@{tree-prefix-cls}-switcher,
-      &.@{tree-prefix-cls}-iconEle {
-        &:before {
+
+    // >>> Checkbox
+    & &-checkbox {
+      top: initial;
+      margin: ((@tree-title-height - @checkbox-size) / 2) 8px 0 0;
+    }
+
+    // >>> Title
+    & &-node-content-wrapper {
+      min-height: @tree-title-height;
+      margin: 0;
+      padding: 0 4px;
+      color: inherit;
+      line-height: @tree-title-height;
+      background: transparent;
+      border-radius: @border-radius-base;
+      cursor: pointer;
+      transition: all 0.3s;
+
+      &:hover {
+        background-color: @tree-node-hover-bg;
+      }
+      &.@{tree-prefix-cls}-node-selected {
+        background-color: @tree-node-selected-bg;
+      }
+
+      // Icon
+      .@{tree-prefix-cls}-iconEle {
+        display: inline-block;
+        width: @tree-title-height;
+        height: @tree-title-height;
+        line-height: @tree-title-height;
+        text-align: center;
+        vertical-align: top;
+        &:empty {
           display: none;
         }
       }
     }
-  }
-  > li {
-    &:first-child {
-      padding-top: 7px;
+
+    // ===================== Loading ======================
+    .@{tree-node-prefix-cls}-loading {
+      // Icon
+      .@{tree-prefix-cls}-iconEle {
+        display: none;
+      }
     }
-    &:last-child {
-      padding-bottom: 7px;
+
+    // ==================== Draggable =====================
+    &-node-content-wrapper[draggable='true'] {
+      line-height: @tree-title-height - 4px;
+      border-top: 2px transparent solid;
+      border-bottom: 2px transparent solid;
+      user-select: none;
     }
-  }
-  &-child-tree {
-    display: none;
-    &-open {
-      display: block;
+
+    .@{tree-node-prefix-cls}.drag-over {
+      > [draggable] {
+        color: white;
+        background-color: @primary-color;
+        opacity: 0.8;
+      }
     }
-  }
-  li&-treenode-disabled {
-    > span,
-    > .@{tree-prefix-cls}-node-content-wrapper,
-    > .@{tree-prefix-cls}-node-content-wrapper span,
-    > span.@{tree-prefix-cls}-switcher {
-      color: @disabled-color;
-      cursor: not-allowed;
+    .@{tree-node-prefix-cls}.drag-over-gap-top {
+      > [draggable] {
+        border-top-color: @primary-color;
+      }
     }
-    > .@{tree-prefix-cls}-node-content-wrapper:hover {
-      background: transparent;
+    .@{tree-node-prefix-cls}.drag-over-gap-bottom {
+      > [draggable] {
+        border-bottom-color: @primary-color;
+      }
     }
-  }
-  &-icon__open {
-    margin-right: 2px;
-    vertical-align: top;
-  }
-  &-icon__close {
-    margin-right: 2px;
-    vertical-align: top;
-  }
-  // Tree with line
-  &&-show-line {
-    li {
-      position: relative;
-      span {
-        &.@{tree-prefix-cls}-switcher {
-          background: @component-background;
-          color: @tree-showline-icon-color;
-          &.@{tree-prefix-cls}-switcher-noop {
-            .antTreeShowLineIcon("tree-doc-icon");
+
+    // ==================== Show Line =====================
+    &-show-line {
+      // ================ Indent lines ================
+      .@{tree-prefix-cls}-indent {
+        &-unit {
+          position: relative;
+          height: 100%;
+
+          &::before {
+            position: absolute;
+            top: calc(100% - 4px);
+            right: -@tree-title-height / 2;
+            bottom: -@tree-title-height - 4px;
+            border-right: 1px solid @border-color-base;
+            content: '';
+            .@{tree-prefix-cls}-rtl& {
+              right: auto;
+              left: -@tree-title-height / 2;
+              border-right: none;
+              border-left: 1px solid @border-color-base;
+            }
           }
-          &.@{tree-prefix-cls}-switcher_open {
-            .antTreeShowLineIcon("tree-showline-open-icon");
-          }
-          &.@{tree-prefix-cls}-switcher_close {
-            .antTreeShowLineIcon("tree-showline-close-icon");
+
+          &-end {
+            &::before {
+              display: none;
+            }
           }
         }
       }
-    }
-    li:before {
-      content: ' ';
-      width: 1px;
-      border-left: 1px solid @border-color-base;
-      height: 100%;
-      position: absolute;
-      left: 12px;
-      margin: 22px 0;
-    }
-    nz-tree-node:last-child li:before {
-      border-left: 0 solid @border-color-base !important;
+
+      /* Motion should hide line of measure */
+      .@{tree-node-prefix-cls}-motion:not(.@{tree-motion}-leave):not(.@{tree-motion}-appear-active) {
+        .@{tree-prefix-cls}-indent-unit {
+          &::before {
+            display: none;
+          }
+        }
+      }
+
+      // ============== Cover Background ==============
+      .@{tree-prefix-cls}-switcher {
+        z-index: 1;
+        background: @component-background;
+      }
     }
   }
 }
+
+.antTreeFn(@tree-prefix-cls);

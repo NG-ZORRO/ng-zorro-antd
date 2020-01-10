@@ -1,583 +1,613 @@
-@import "../../style/themes/default";
-@import "../../style/mixins/index";
+@import '../../style/themes/index';
+@import '../../style/mixins/index';
+@import './size';
+@import './bordered';
 
-@table-prefix-cls: ~"@{ant-prefix}-table";
-@table-header-icon-color: @text-color-secondary;
+@table-prefix-cls: ~'@{ant-prefix}-table';
+@dropdown-prefix-cls: ~'@{ant-prefix}-dropdown';
+@table-wrapepr-rtl-cls: ~'@{table-prefix-cls}-wrapper-rtl';
+@table-header-icon-color: #bfbfbf;
+@table-header-icon-color-hover: darken(@table-header-icon-color, 10%);
+@table-header-sort-active-filter-bg: lighten(@table-header-sort-active-bg, 2%);
+
+@table-selection-column-width: 60px;
 
 .@{table-prefix-cls}-wrapper {
   .clearfix;
+  &-rtl {
+    direction: rtl;
+  }
 }
 
 .@{table-prefix-cls} {
   .reset-component;
   position: relative;
-  border-radius: @border-radius-base @border-radius-base 0 0;
+  z-index: 0;
   clear: both;
 
-  &-body {
-    transition: opacity .3s;
-  }
-
+  // https://github.com/ant-design/ant-design/issues/17611
   table {
     width: 100%;
+    text-align: left;
+    border-radius: @table-border-radius-base @table-border-radius-base 0 0;
     border-collapse: separate;
     border-spacing: 0;
-    text-align: left;
-    border-radius: @border-radius-base @border-radius-base 0 0;
-  }
 
-  &-thead > tr > th {
-    background: @table-header-bg;
-    transition: background .3s ease;
-    text-align: left;
-    color: @heading-color;
-    font-weight: 500;
-    border-bottom: @border-width-base @border-style-base @border-color-split;
-
-    &:first-child {
-      border-top-left-radius: @border-radius-base;
-    }
-
-    &:last-child {
-      border-top-right-radius: @border-radius-base;
-    }
-
-    &[colspan] {
-      text-align: center;
-      border-bottom: 0;
-    }
-
-    .@{iconfont-css-prefix}-filter,
-    .@{table-prefix-cls}-filter-icon {
-      position: relative;
-      margin-left: 8px;
-      font-size: @font-size-base;
-      cursor: pointer;
-      color: @table-header-icon-color;
-      transition: all .3s;
-      width: 14px;
-      font-weight: normal;
-      vertical-align: text-bottom;
-
-      &:hover {
-        color: @text-color;
-      }
-    }
-
-    .@{table-prefix-cls}-column-sorter + .@{iconfont-css-prefix}-filter {
-      margin-left: 4px;
-    }
-
-    .@{table-prefix-cls}-filter-selected.@{iconfont-css-prefix}-filter {
-      color: @primary-color;
-    }
-
-    // https://github.com/ant-design/ant-design/issues/8979
-    &.@{table-prefix-cls}-column-has-filters {
-      overflow: hidden;
+    .@{table-wrapepr-rtl-cls} & {
+      text-align: right;
     }
   }
 
-  &-tbody > tr > td {
-    border-bottom: @border-width-base @border-style-base @border-color-split;
-    transition: all .3s;
+  // ============================= Cell =============================
+  thead > tr > th,
+  tbody > tr > td,
+  tfoot > tr > th,
+  tfoot > tr > td {
+    position: relative;
+    padding: @table-padding-vertical @table-padding-horizontal;
+    overflow-wrap: break-word;
   }
 
-  &-thead > tr,
-  &-tbody > tr {
-    transition: all .3s;
-    &.@{table-prefix-cls}-row-hover,
-    &:hover {
-      & > td {
-        background: @table-row-hover-bg;
+  // weak priority
+  td {
+    background: @table-bg;
+  }
+
+  &-cell-ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-break: keep-all;
+
+    // Fixed first or last should special process
+    &.@{table-prefix-cls}-cell-fix-left-last,
+    &.@{table-prefix-cls}-cell-fix-right-first {
+      overflow: visible;
+
+      .@{table-prefix-cls}-cell-content {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
   }
 
-  &-thead > tr:hover {
-    background: none;
+  // ============================ Title =============================
+  &-title {
+    padding: @table-padding-vertical @table-padding-horizontal;
   }
 
+  // ============================ Footer ============================
   &-footer {
     padding: @table-padding-vertical @table-padding-horizontal;
-    background: @table-header-bg;
-    border-radius: 0 0 @border-radius-base @border-radius-base;
-    position: relative;
-    border-top: @border-width-base @border-style-base @border-color-split;
-    &:before {
-      content: '';
-      height: 1px;
-      background: @table-header-bg;
-      position: absolute;
-      top: -1px;
-      width: 100%;
-      left: 0;
+    color: @table-footer-color;
+    background: @table-footer-bg;
+  }
+
+  // ============================ Header ============================
+  thead {
+    > tr {
+      > th {
+        color: @table-header-color;
+        font-weight: 500;
+        text-align: left;
+        background: @table-header-bg;
+        border-bottom: @border-width-base @border-style-base @border-color-split;
+        transition: background 0.3s ease;
+
+        &[colspan]:not([colspan='1']) {
+          text-align: center;
+
+          .@{table-wrapepr-rtl-cls} & {
+            text-align: center;
+          }
+        }
+
+        .@{table-wrapepr-rtl-cls} & {
+          text-align: right;
+        }
+      }
     }
-  }
 
-  &.@{table-prefix-cls}-bordered &-footer {
-    border: @border-width-base @border-style-base @border-color-split;
-  }
-
-  &-title {
-    padding: @table-padding-vertical 0;
-    position: relative;
-    top: 1px;
-    border-radius: @border-radius-base @border-radius-base 0 0;
-  }
-
-  &.@{table-prefix-cls}-bordered &-title {
-    border: @border-width-base @border-style-base @border-color-split;
-    padding-left: @table-padding-horizontal;
-    padding-right: @table-padding-horizontal;
-  }
-
-  &-title + &-content {
-    position: relative;
-    border-radius: @border-radius-base @border-radius-base 0 0;
-    overflow: hidden;
-    .@{table-prefix-cls}-bordered & {
-      &,
-      table {
-        border-radius: 0;
+    > tr:not(:last-child) > th {
+      &[colspan] {
+        border-bottom: 0;
       }
     }
   }
 
-  // https://github.com/ant-design/ant-design/issues/4373
-  &-without-column-header &-title + &-content,
-  &-without-column-header table {
-    border-radius: 0;
-  }
-
-  &-tbody > tr.@{table-prefix-cls}-row-selected td {
-    background: @table-selected-row-bg;
-  }
-
-  &-thead > tr > th.@{table-prefix-cls}-column-sort {
-    background: @table-header-sort-bg;
-  }
-
-  &-thead > tr > th,
-  &-tbody > tr > td {
-    padding: @table-padding-vertical @table-padding-horizontal;
-    word-break: break-all;
-  }
-
-  &-thead > tr > th.@{table-prefix-cls}-selection-column-custom {
-    padding-left: 16px;
-    padding-right: 0;
-  }
-
-  &-thead > tr > th.@{table-prefix-cls}-selection-column,
-  &-tbody > tr > td.@{table-prefix-cls}-selection-column {
-    text-align: center;
-    min-width: 62px;
-    width: 62px;
-    .@{ant-prefix}-radio-wrapper {
-      margin-right: 0;
-    }
-  }
-
-  &-expand-icon-th,
-  &-row-expand-icon-cell {
-    text-align: center;
-    min-width: 50px;
-    width: 50px;
-  }
-
-  &-header {
-    background: @table-header-bg;
-    overflow: hidden;
-  }
-
-  &-header table {
-    border-radius: @border-radius-base @border-radius-base 0 0;
-  }
-
-  &-loading {
-    position: relative;
-    .@{table-prefix-cls}-body {
-      background: @component-background;
-      opacity: 0.5;
-    }
-    .@{table-prefix-cls}-spin-holder {
-      height: 20px;
-      line-height: 20px;
-      left: 50%;
-      top: 50%;
-      margin-left: -30px;
-      position: absolute;
-    }
-    .@{table-prefix-cls}-with-pagination {
-      margin-top: -20px;
-    }
-    .@{table-prefix-cls}-without-pagination {
-      margin-top: 10px;
-    }
-  }
-
-  &-column-sorter {
-    position: relative;
-    margin-left: 8px;
-    display: inline-block;
-    width: 14px;
-    height: 14px;
-    vertical-align: middle;
-    text-align: center;
-    font-weight: normal;
-    color: @table-header-icon-color;
-
-    &-up,
-    &-down {
-      line-height: 6px;
-      display: block;
-      width: 14px;
-      height: 6px;
-      cursor: pointer;
-      position: relative;
-      &:hover .@{iconfont-css-prefix} {
-        color: @primary-4;
+  // ============================= Body =============================
+  tbody {
+    > tr {
+      > td {
+        border-bottom: @border-width-base @border-style-base @border-color-split;
+        transition: background 0.3s;
       }
-      &.on {
-        .@{iconfont-css-prefix}-caret-up,
-        .@{iconfont-css-prefix}-caret-down {
-          color: @primary-color;
+
+      &.@{table-prefix-cls}-row:hover {
+        > td {
+          background: @table-row-hover-bg;
         }
       }
 
-      &:after {
-        position: absolute;
-        content: '';
-        height: 30px;
-        width: 14px;
-        left: 0;
+      &.@{table-prefix-cls}-row-selected {
+        > td {
+          background: @table-selected-row-bg;
+        }
+
+        :hover {
+          > td {
+            background: @table-selected-row-hover-bg;
+          }
+        }
       }
-    }
 
-    &-up:after {
-      bottom: 0;
-    }
+      // ========================= Nest Table ===========================
+      .@{table-prefix-cls} {
+        margin: -@table-padding-vertical -@table-padding-horizontal -@table-padding-vertical (@table-padding-horizontal +
+              ceil(@font-size-sm * 1.4));
 
-    &-down:after {
-      top: 0;
-    }
+        &.@{table-prefix-cls}-rtl {
+          margin: -@table-padding-vertical (@table-padding-horizontal + ceil(@font-size-sm * 1.4)) -@table-padding-vertical -@table-padding-horizontal;
+        }
+        td {
+          background: transparent;
+        }
 
-    .@{iconfont-css-prefix}-caret-up,
-    .@{iconfont-css-prefix}-caret-down {
-      .iconfont-size-under-12px(8px);
-      line-height: 4px;
-      height: 4px;
-      transition: all .3s;
+        tbody > tr:last-child > td {
+          border-bottom: 0;
+
+          &:first-child,
+          &:last-child {
+            border-radius: 0;
+          }
+        }
+      }
     }
   }
 
-  &-bordered {
-    .@{table-prefix-cls}-header > table,
-    .@{table-prefix-cls}-body > table,
-    .@{table-prefix-cls}-fixed-left table,
-    .@{table-prefix-cls}-fixed-right table {
-      border: @border-width-base @border-style-base @border-color-split;
-      border-right: 0;
-      border-bottom: 0;
-    }
-
-    &.@{table-prefix-cls}-empty {
-      .@{table-prefix-cls}-placeholder {
-        border-left: @border-width-base @border-style-base @border-color-split;
-        border-right: @border-width-base @border-style-base @border-color-split;
+  // =========================== Summary ============================
+  tfoot {
+    > tr {
+      > th,
+      > td {
+        border-bottom: @border-width-base @border-style-base @border-color-split;
       }
-    }
-
-    &.@{table-prefix-cls}-fixed-header {
-      .@{table-prefix-cls}-header > table {
-        border-bottom: 0;
-      }
-
-      .@{table-prefix-cls}-body > table {
-        border-top: 0;
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-      }
-
-      .@{table-prefix-cls}-body-inner > table {
-        border-top: 0;
-      }
-
-      .@{table-prefix-cls}-placeholder {
-        border: 0;
-      }
-    }
-
-    .@{table-prefix-cls}-thead > tr > th {
-      border-bottom: @border-width-base @border-style-base @border-color-split;
-    }
-
-    .@{table-prefix-cls}-thead > tr > th,
-    .@{table-prefix-cls}-tbody > tr > td {
-      border-right: @border-width-base @border-style-base @border-color-split;
     }
   }
 
-  &-placeholder {
-    position: relative;
-    padding: @table-padding-vertical @table-padding-horizontal;
-    background: @component-background;
-    border-bottom: @border-width-base @border-style-base @border-color-split;
-    text-align: center;
-    font-size: @font-size-base;
-    color: @text-color-secondary;
-    z-index: 1;
-    .@{iconfont-css-prefix} {
-      margin-right: 4px;
-    }
-  }
-
+  // ========================== Pagination ==========================
   &-pagination.@{ant-prefix}-pagination {
-    margin: 16px 0;
     float: right;
+    margin: 16px 0;
+
+    .@{table-wrapepr-rtl-cls} & {
+      float: left;
+    }
   }
 
-  &-filter-dropdown {
-    min-width: 96px;
-    margin-left: -8px;
-    background: @component-background;
-    border-radius: @border-radius-base;
-    box-shadow: @box-shadow-base;
+  // ================================================================
+  // =                           Function                           =
+  // ================================================================
 
-    .@{ant-prefix}-dropdown-menu {
+  // ============================ Sorter ============================
+  thead th.@{table-prefix-cls}-column-has-sorters {
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover {
+      background: @table-header-sort-active-bg;
+
+      .@{table-prefix-cls}-filter-trigger-container {
+        background: @table-header-sort-active-filter-bg;
+      }
+    }
+  }
+
+  thead th.@{table-prefix-cls}-column-sort {
+    background: @table-header-sort-bg;
+  }
+  td&-column-sort {
+    background: @table-body-sort-bg;
+  }
+
+  &-column-sorters {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  &-column-sorter {
+    margin-top: 0.15em;
+    margin-bottom: -0.15em;
+    margin-left: @padding-xs;
+    color: @table-header-icon-color;
+
+    .@{table-wrapepr-rtl-cls} & {
+      margin-right: @padding-xs;
+      margin-left: 0;
+    }
+
+    &-full {
+      margin-top: -0.2em;
+      margin-bottom: 0;
+    }
+
+    &-inner {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    &-up,
+    &-down {
+      .iconfont-size-under-12px(11px);
+
+      &.active {
+        color: @primary-color;
+      }
+    }
+
+    &-up + &-down {
+      margin-top: -0.42em;
+    }
+  }
+
+  // ============================ Filter ============================
+  &-filter-column {
+    display: flex;
+    align-items: center;
+    margin: -@table-padding-vertical -@table-padding-horizontal;
+  }
+
+  &-filter-column-title {
+    flex: auto;
+    padding: @table-padding-vertical 2.3em @table-padding-vertical @table-padding-horizontal;
+
+    .@{table-wrapepr-rtl-cls} & {
+      padding: @table-padding-vertical @table-padding-horizontal @table-padding-vertical 2.3em;
+    }
+  }
+
+  &-filter-trigger-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex: none;
+    align-items: stretch;
+    align-self: stretch;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    .@{table-wrapepr-rtl-cls} & {
+      right: auto;
+      left: 0;
+    }
+
+    &-open,
+    &:hover,
+    thead th.@{table-prefix-cls}-column-has-sorters:hover &:hover {
+      background: @table-header-filter-active-bg;
+    }
+  }
+
+  &-filter-trigger {
+    display: block;
+    width: 2.3em;
+    color: @table-header-icon-color;
+    font-size: @font-size-sm;
+    transition: color 0.3s;
+
+    .@{iconfont-css-prefix} {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .@{table-prefix-cls}-filter-trigger-container-open &,
+    &:hover {
+      color: @text-color-secondary;
+    }
+
+    &.active {
+      color: @primary-color;
+    }
+  }
+
+  // Dropdown
+  &-filter-dropdown {
+    .reset-component;
+
+    // Reset menu
+    .@{dropdown-prefix-cls}-menu {
       border: 0;
       box-shadow: none;
-      border-radius: @border-radius-base @border-radius-base 0 0;
 
       // https://github.com/ant-design/ant-design/issues/4916
       &-without-submenu {
         max-height: 400px;
         overflow-x: hidden;
       }
+    }
+    min-width: 96px;
+    background-color: @table-filter-dropdown-bg;
 
-      &-item > label + span {
-        padding-right: 0;
-      }
+    border-radius: @border-radius-base;
+    box-shadow: @box-shadow-base;
 
-      &-sub {
-        border-radius: @border-radius-base;
-        box-shadow: @box-shadow-base;
-      }
+    // Checkbox
+    &,
+    &-submenu {
+      .@{ant-prefix}-checkbox-wrapper + span {
+        padding-left: 8px;
 
-      .@{ant-prefix}-dropdown-submenu-contain-selected {
-        .@{ant-prefix}-dropdown-menu-submenu-title:after {
-          color: @primary-color;
-          font-weight: bold;
-          text-shadow: 0 0 2px @primary-2;
+        .@{ant-prefix}-dropdown-rtl & {
+          padding-right: 8px;
+          padding-left: 0;
         }
       }
     }
 
-    .@{ant-prefix}-dropdown-menu-item {
-      overflow: hidden;
-    }
-
-    > .@{ant-prefix}-dropdown-menu > .@{ant-prefix}-dropdown-menu-item:last-child,
-    > .@{ant-prefix}-dropdown-menu > .@{ant-prefix}-dropdown-menu-submenu:last-child .@{ant-prefix}-dropdown-menu-submenu-title {
-      border-radius: 0;
-    }
-
+    // Operation
     &-btns {
-      overflow: hidden;
+      display: flex;
+      justify-content: space-between;
       padding: 7px 8px;
+      overflow: hidden;
+      background-color: @table-filter-btns-bg;
       border-top: @border-width-base @border-style-base @border-color-split;
     }
+  }
 
-    &-link {
-      color: @link-color;
-      &:hover {
-        color: @link-hover-color;
-      }
-      &:active {
-        color: @link-active-color;
-      }
-      &.confirm {
-        float: left;
-      }
-      &.clear {
-        float: right;
-      }
+  // ========================== Selections ==========================
+  colgroup {
+    > col.@{table-prefix-cls}-selection-col {
+      width: @table-selection-column-width;
+    }
+  }
+
+  table tr th&-selection-column,
+  table tr td&-selection-column {
+    text-align: center;
+
+    .@{ant-prefix}-radio-wrapper {
+      margin-right: 0;
     }
   }
 
   &-selection {
-    &-select-all-custom {
-      margin-right: 4px !important;
+    position: relative;
+
+    .@{table-wrapepr-rtl-cls} & {
+      text-align: center;
     }
 
-    .@{iconfont-css-prefix}-down {
-      color: @table-header-icon-color;
-      transition: all .3s;
-    }
+    &-extra {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      transform: translate(100%, -50%);
 
-    &-menu {
-      min-width: 96px;
-      margin-top: 5px;
-      margin-left: -30px;
-      background: @component-background;
-      border-radius: @border-radius-base;
-      box-shadow: @box-shadow-base;
-
-      .@{ant-prefix}-action-down {
-        color: @table-header-icon-color;
+      .@{table-wrapepr-rtl-cls} & {
+        right: auto;
+        left: 0;
+        transform: translate(-100%, -50%);
       }
-    }
 
-    &-down {
-      cursor: pointer;
-      padding: 0;
-      display: inline-block;
-      line-height: 1;
-      &:hover .@{iconfont-css-prefix}-down {
-        color: #666;
+      .@{iconfont-css-prefix} {
+        .iconfont-size-under-12px(10px);
+        color: @table-header-icon-color;
+
+        &:hover {
+          color: @table-header-icon-color-hover;
+        }
       }
     }
   }
 
-  &-row {
-    &-expand-icon {
-      cursor: pointer;
-      display: inline-block;
-      width: 17px;
-      height: 17px;
-      text-align: center;
-      line-height: 14px;
-      border: @border-width-base @border-style-base @border-color-split;
-      user-select: none;
-      background: @component-background;
+  // ========================== Expandable ==========================
+  &-expand-icon-col {
+    width: 48px;
+  }
+
+  &-row-expand-icon-cell {
+    text-align: center;
+  }
+
+  &-row-expand-icon {
+    .operation-unit();
+    position: relative;
+    display: inline-flex;
+    box-sizing: border-box;
+
+    width: ceil(@font-size-sm * 1.4);
+    height: ceil(@font-size-sm * 1.4);
+    color: inherit;
+    line-height: @font-size-sm;
+    vertical-align: floor((@font-size-base - ceil(@font-size-sm * 1.4)) / 2);
+    background: @component-background;
+    border: @border-width-base @border-style-base @border-color-split;
+    border-radius: @border-radius-base;
+    outline: none;
+    transition: all 0.3s;
+    user-select: none;
+
+    &:focus,
+    &:hover,
+    &:active {
+      border-color: currentColor;
     }
 
-    &-expanded:after {
-      content: '-';
+    &::before,
+    &::after {
+      position: absolute;
+      background: currentColor;
+      transition: transform 0.3s ease-out;
+      content: '';
     }
 
-    &-collapsed:after {
-      content: '+';
+    &::before {
+      top: 7px;
+      right: 3px;
+      left: 3px;
+      height: @border-width-base;
+    }
+
+    &::after {
+      top: 3px;
+      bottom: 3px;
+      left: 7px;
+      width: @border-width-base;
+      transform: rotate(90deg);
+    }
+
+    // Motion effect
+    &-collapsed::before {
+      transform: rotate(-180deg);
+    }
+    &-collapsed::after {
+      transform: rotate(0deg);
     }
 
     &-spaced {
-      visibility: hidden;
-      &:after {
-        content: '.';
+      &::before,
+      &::after {
+        display: none;
+        content: none;
       }
+      background: transparent;
+      border: 0;
     }
 
-    &[class*="@{table-prefix-cls}-row-level-0"] .@{table-prefix-cls}-selection-column > span {
-      display: inline-block;
+    .@{table-prefix-cls}-row-indent + & {
+      margin-right: @padding-xs;
+
+      .@{table-wrapepr-rtl-cls} & {
+        margin-right: 0;
+        margin-left: @padding-xs;
+      }
     }
   }
 
   tr&-expanded-row {
     &,
     &:hover {
-      background: #fbfbfb;
+      > td {
+        background: @table-expanded-row-bg;
+      }
     }
   }
 
-  .@{table-prefix-cls}-row-indent + .@{table-prefix-cls}-row-expand-icon {
-    margin-right: 8px;
-  }
-
-  &-scroll {
-    overflow: auto;
-    overflow-x: hidden;
-    table {
-      width: auto;
-      min-width: 100%;
-    }
-  }
-
-  &-body-inner {
-    height: 100%;
-  }
-
-  &-fixed-header > &-content > &-scroll > &-body {
+  // With fixed
+  .@{table-prefix-cls}-expanded-row-fixed {
     position: relative;
-    background: @component-background;
+    margin: -@table-padding-vertical -@table-padding-horizontal;
+    padding: @table-padding-vertical @table-padding-horizontal;
   }
 
-  &-fixed-header &-body-inner {
-    overflow: scroll;
+  // ========================= Placeholder ==========================
+  tbody > tr&-placeholder {
+    &:hover {
+      > td {
+        background: @component-background;
+      }
+    }
   }
 
-  &-fixed-header &-scroll &-header {
-    overflow: scroll;
-    padding-bottom: 20px;
-    margin-bottom: -20px;
+  // ============================ Fixed =============================
+  &-cell-fix-left,
+  &-cell-fix-right {
+    z-index: 2;
   }
 
-  &-fixed-left,
-  &-fixed-right {
+  &-cell-fix-left-last::after {
     position: absolute;
     top: 0;
-    overflow: hidden;
-    transition: box-shadow .3s ease;
-    border-radius: 0;
-    table {
-      width: auto;
-      background: @component-background;
-    }
-  }
-
-  &-fixed-header &-fixed-left &-body-outer &-fixed,
-  &-fixed-header &-fixed-right &-body-outer &-fixed {
-    border-radius: 0;
-  }
-
-  &-fixed-left {
-    left: 0;
-    box-shadow: 6px 0 6px -4px @shadow-color;
-    .@{table-prefix-cls}-header {
-      overflow-y: hidden;
-    }
-    // hide scrollbar in left fixed columns
-    .@{table-prefix-cls}-body-inner {
-      margin-right: -20px;
-      padding-right: 20px;
-    }
-    .@{table-prefix-cls}-fixed-header & .@{table-prefix-cls}-body-inner {
-      padding-right: 0;
-    }
-    &,
-    table {
-      border-radius: @border-radius-base 0 0 0;
-    }
-    .ant-table-thead > tr > th:last-child {
-      border-top-right-radius: 0;
-    }
-  }
-
-  &-fixed-right {
     right: 0;
-    box-shadow: -6px 0 6px -4px @shadow-color;
-    &,
-    table {
-      border-radius: 0 @border-radius-base 0 0;
-    }
-    // hide expand row content in right-fixed Table
-    // https://github.com/ant-design/ant-design/issues/1898
-    .@{table-prefix-cls}-expanded-row {
-      color: transparent;
+    bottom: -1px;
+    width: 20px;
+    transform: translateX(100%);
+    transition: box-shadow 0.3s;
+    content: '';
+    pointer-events: none;
+  }
+  &-cell-fix-right-first::after {
+    position: absolute;
+    top: 0;
+    bottom: -1px;
+    left: 0;
+    width: 20px;
+    transform: translateX(-100%);
+    transition: box-shadow 0.3s;
+    content: '';
+    pointer-events: none;
+  }
+
+  .@{table-prefix-cls}-container {
+    &::before,
+    &::after {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      z-index: 1;
+      width: 20px;
+      transition: box-shadow 0.3s;
+      content: '';
       pointer-events: none;
     }
-    .ant-table-thead > tr > th:first-child {
-      border-top-left-radius: 0;
+
+    &::before {
+      left: 0;
+    }
+    &::after {
+      right: 0;
     }
   }
 
-  &&-scroll-position-left &-fixed-left {
-    box-shadow: none;
+  &-ping-left {
+    &:not(.@{table-prefix-cls}-has-fix-left) .@{table-prefix-cls}-container {
+      position: relative;
+
+      &::before {
+        box-shadow: inset 10px 0 8px -8px darken(@shadow-color, 5%);
+      }
+    }
+
+    .@{table-prefix-cls}-cell-fix-left-last::after {
+      box-shadow: inset 10px 0 8px -8px darken(@shadow-color, 5%);
+    }
   }
 
-  &&-scroll-position-right &-fixed-right {
-    box-shadow: none;
+  &-ping-right {
+    &:not(.@{table-prefix-cls}-has-fix-right) .@{table-prefix-cls}-container {
+      position: relative;
+
+      &::after {
+        box-shadow: inset -10px 0 8px -8px darken(@shadow-color, 5%);
+      }
+    }
+
+    .@{table-prefix-cls}-cell-fix-right-first::after {
+      box-shadow: inset -10px 0 8px -8px darken(@shadow-color, 5%);
+    }
   }
 }
 
-@import './size';
+@media all and (-ms-high-contrast: none) {
+  .@{table-prefix-cls} {
+    &-ping-left {
+      .@{table-prefix-cls}-cell-fix-left-last::after {
+        box-shadow: none !important;
+      }
+    }
+    &-ping-right {
+      .@{table-prefix-cls}-cell-fix-right-first::after {
+        box-shadow: none !important;
+      }
+    }
+  }
+}
+
+@import './radius.less';

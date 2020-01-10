@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 export default {
   // Options.jsx
   items_per_page: '/ страница',
@@ -11,5 +19,5 @@ export default {
   prev_5: 'Предишни 5 страници',
   next_5: 'Следващи 5 страници',
   prev_3: 'Предишни 3 страници',
-  next_3: 'Следващи 3 страници',
+  next_3: 'Следващи 3 страници'
 };

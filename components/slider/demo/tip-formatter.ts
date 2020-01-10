@@ -8,9 +8,7 @@ import { Component } from '@angular/core';
   `
 })
 export class NzDemoSliderTipFormatterComponent {
-
-  formatter(value) {
+  formatter(value: number): string {
     return `${value}%`;
   }
-
 }

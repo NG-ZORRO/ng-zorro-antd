@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
         Check all
       </label>
     </div>
-    <br>
+    <br />
     <nz-checkbox-group [(ngModel)]="checkOptionsOne" (ngModelChange)="updateSingleChecked()"></nz-checkbox-group>
   `
 })
@@ -24,17 +24,27 @@ export class NzDemoCheckboxCheckAllComponent {
   updateAllChecked(): void {
     this.indeterminate = false;
     if (this.allChecked) {
-      this.checkOptionsOne.forEach(item => item.checked = true);
+      this.checkOptionsOne = this.checkOptionsOne.map(item => {
+        return {
+          ...item,
+          checked: true
+        };
+      });
     } else {
-      this.checkOptionsOne.forEach(item => item.checked = false);
+      this.checkOptionsOne = this.checkOptionsOne.map(item => {
+        return {
+          ...item,
+          checked: false
+        };
+      });
     }
   }
 
   updateSingleChecked(): void {
-    if (this.checkOptionsOne.every(item => item.checked === false)) {
+    if (this.checkOptionsOne.every(item => !item.checked)) {
       this.allChecked = false;
       this.indeterminate = false;
-    } else if (this.checkOptionsOne.every(item => item.checked === true)) {
+    } else if (this.checkOptionsOne.every(item => item.checked)) {
       this.allChecked = true;
       this.indeterminate = false;
     } else {

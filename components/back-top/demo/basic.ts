@@ -8,10 +8,12 @@ import { Component } from '@angular/core';
     <strong> gray </strong>
     button.
   `,
-  styles: [`
-  :host ::ng-deep strong {
-    color: rgba(64, 64, 64, 0.6);
-  }
-  `]
+  styles: [
+    `
+      strong {
+        color: rgba(64, 64, 64, 0.6);
+      }
+    `
+  ]
 })
-export class NzDemoBackTopBasicComponent { }
+export class NzDemoBackTopBasicComponent {}

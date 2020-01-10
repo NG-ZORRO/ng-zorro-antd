@@ -19,5 +19,4 @@ import { Component } from '@angular/core';
     </ng-template>
   `
 })
-export class NzDemoCardInnerComponent {
-}
+export class NzDemoCardInnerComponent {}

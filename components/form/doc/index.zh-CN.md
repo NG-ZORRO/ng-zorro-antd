@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 表单
-type: Data Entry
+type: 数据录入
 cols: 1
 title: Form
 ---
@@ -42,13 +42,18 @@ title: Form
 </form>
 ```
 
+```ts
+import { NzFormModule } from 'ng-zorro-antd/form';
+```
+
 ## API
 
-### nz-form
+### [nz-form]
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| nzLayout | 表单布局	 | `'horizontal'丨'vertical'丨'inline'`| 'horizontal'|
+| 参数 | 说明 | 类型 | 默认值 | 全局配置 |
+| --- | --- | --- | --- | --- |
+| `[nzLayout]`| 表单布局 | `'horizontal' \| 'vertical' \| 'inline'` | `'horizontal'` |
+| `[nzNoColon]`| 配置 `nz-form-label` 的 `[nzNoColon]` 的默认值 | `boolean` | `false` | ✅ |
 
 ### nz-form-item
 
@@ -58,7 +63,7 @@ title: Form
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzFlex | 是否Flex布局	 | boolean | false|
+| `[nzFlex]`| 是否Flex布局 | `boolean` | `false` |
 
 ### nz-form-label
 
@@ -68,10 +73,13 @@ title: Form
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzRequired | 当前项是否为必填，仅影响样式	 | boolean | false|
-| nzFor | label 标签的 for 属性	 | string | -|
+| `[nzRequired]`| 当前项是否为必填，仅影响样式 | `boolean` | `false` |
+| `[nzNoColon]`| 是否不显示 label 后面的冒号 | `boolean` | `false` |
+| `[nzFor]`| label 标签的 for 属性	 | `string` | - |
 
 ### nz-form-control
+
+> 注意：由于 Angular Form 目前提供的[状态变更订阅](https://github.com/angular/angular/issues/10887)不完整。手动更改表单状态时，例如 `markAsDirty` 后，需要执行 `updateValueAndValidity` 通知 `nz-form-control` 进行状态变更。
 
 表单一定会包含表单域，表单域可以是输入控件，标准表单域，标签，下拉菜单，文本域等。
 
@@ -80,19 +88,14 @@ title: Form
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzValidateStatus(Reactive Forms) | 会根据 FormControl 的状态自动生成校验状态 | FormControl | `nz-form-control` 中包裹的第一个 `FormControl`  |
-| nzValidateStatus(Template-driven Forms) | 校验状态，可选：'success' 'warning' 'error' 'validating' | string |  |
-| nzHasFeedback | 配合 nzValidateStatus 属性使用，展示校验状态图标	 | boolean | false|
+| `[nzValidateStatus]` | 会根据传入的 `FormControl` 或 `NgModel` 自动生成校验状态，也可以直接指定状态，不传入时默认值为 `nz-form-control` 中包裹的第一个 `FormControl` 或 `NgModel` | `'success' \| 'warning' \| 'error' \| 'validating'  \|  FormControl  \|  NgModel` | `nz-form-control` 中包裹的第一个 `FormControl` 或 `NgModel`  |
+| `[nzHasFeedback]`| 配合 `nzValidateStatus` 属性使用，展示校验状态图标	 | `boolean` | `false`|
+| `[nzExtra]`| 用于显示表单额外提示信息 | `string  \|  TemplateRef<void>` | - |
+| `[nzSuccessTip]`| 校验状态 success 时提示信息 | `string  \|  TemplateRef<{ $implicit: FormControl  \|  NgModel }>` | - |
+| `[nzWarningTip]`| 校验状态 warning 时提示信息 | `string  \|  TemplateRef<{ $implicit: FormControl  \|  NgModel }>` | - |
+| `[nzErrorTip]`| 校验状态 error 时提示信息 | `string  \|  TemplateRef<{ $implicit: FormControl  \|  NgModel }>` | - |
+| `[nzValidatingTip]`| 正在校验时提示信息 | `string  \|  TemplateRef<{ $implicit: FormControl  \|  NgModel }>` | - |
 
-### nz-form-explain
-
-用于显示提示信息，会自动根据当前的 nzValidateStatus 显示不同的颜色
-
-> 注意：每个 `nz-form-item` 下最多只能有一个 `nz-form-explain` 。
-
-### nz-form-extra
-
-用于显示表单额外提示信息
 
 ### nz-form-split
 

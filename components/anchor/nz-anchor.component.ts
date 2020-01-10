@@ -1,3 +1,12 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
@@ -10,14 +19,13 @@ import {
   Input,
   OnDestroy,
   Output,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { fromEvent } from 'rxjs/observable/fromEvent';
-import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
-import { throttleTime } from 'rxjs/operators/throttleTime';
-import { NzScrollService } from '../core/scroll/nz-scroll.service';
-import { toBoolean, toNumber } from '../core/util/convert';
+import { fromEvent, Subscription } from 'rxjs';
+import { distinctUntilChanged, throttleTime } from 'rxjs/operators';
+
+import { InputBoolean, InputNumber, NgStyleInterface, NzConfigService, NzScrollService, toNumber, WithConfig } from 'ng-zorro-antd/core';
 
 import { NzAnchorLinkComponent } from './nz-anchor-link.component';
 
@@ -26,68 +34,34 @@ interface Section {
   top: number;
 }
 
+const NZ_CONFIG_COMPONENT_NAME = 'anchor';
 const sharpMatcherRegx = /#([^#]+)$/;
 
 @Component({
-  selector           : 'nz-anchor',
+  selector: 'nz-anchor',
+  exportAs: 'nzAnchor',
   preserveWhitespaces: false,
-  template           : `
-    <nz-affix *ngIf="nzAffix;else content" [nzOffsetTop]="nzOffsetTop">
-      <ng-template [ngTemplateOutlet]="content"></ng-template>
-    </nz-affix>
-    <ng-template #content>
-      <div class="ant-anchor-wrapper" #wrap [ngStyle]="wrapperStyle">
-        <div class="ant-anchor" [ngClass]="{'fixed': !nzAffix && !nzShowInkInFixed}">
-          <div class="ant-anchor-ink">
-            <div class="ant-anchor-ink-ball" [class.visible]="visible" #ink></div>
-          </div>
-          <ng-content></ng-content>
-        </div>
-      </div>
-    </ng-template>`,
-  changeDetection    : ChangeDetectionStrategy.OnPush
+  templateUrl: './nz-anchor.component.html',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzAnchorComponent implements OnDestroy, AfterViewInit {
+  @ViewChild('ink', { static: false }) private ink: ElementRef;
 
-  private links: NzAnchorLinkComponent[] = [];
-  private animating = false;
-  private target: Element = null;
-  /** @private */
-  scroll$: Subscription = null;
-  /** @private */
-  visible = false;
-  /** @private */
-  wrapperStyle: {} = { 'max-height': '100vh' };
-  @ViewChild('wrap') private wrap: ElementRef;
-  @ViewChild('ink') private ink: ElementRef;
-
-  // region: fields
-
-  private _affix: boolean = true;
+  @Input() @InputBoolean() nzAffix = true;
 
   @Input()
-  set nzAffix(value: boolean) {
-    this._affix = toBoolean(value);
-  }
-
-  get nzAffix(): boolean {
-    return this._affix;
-  }
-
-  private _bounds: number = 5;
+  @WithConfig(NZ_CONFIG_COMPONENT_NAME, false)
+  @InputBoolean()
+  nzShowInkInFixed: boolean;
 
   @Input()
-  set nzBounds(value: number) {
-    this._bounds = toNumber(value, 5);
-  }
-
-  get nzBounds(): number {
-    return this._bounds;
-  }
-
-  private _offsetTop: number;
+  @WithConfig(NZ_CONFIG_COMPONENT_NAME, 5)
+  @InputNumber()
+  nzBounds: number;
 
   @Input()
+  @WithConfig<number>(NZ_CONFIG_COMPONENT_NAME)
   set nzOffsetTop(value: number) {
     this._offsetTop = toNumber(value, 0);
     this.wrapperStyle = {
@@ -99,32 +73,34 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
     return this._offsetTop;
   }
 
-  private _showInkInFixed: boolean = false;
+  private _offsetTop: number;
 
   @Input()
-  set nzShowInkInFixed(value: boolean) {
-    this._showInkInFixed = toBoolean(value);
-  }
-
-  get nzShowInkInFixed(): boolean {
-    return this._showInkInFixed;
-  }
-
-  @Input()
-  set nzTarget(el: Element) {
-    this.target = el;
+  set nzTarget(el: string | Element) {
+    this.target = typeof el === 'string' ? this.doc.querySelector(el) : el;
     this.registerScrollEvent();
   }
 
-  @Output() nzClick: EventEmitter<string> = new EventEmitter();
+  @Output() readonly nzClick = new EventEmitter<string>();
+  @Output() readonly nzScroll = new EventEmitter<NzAnchorLinkComponent>();
 
-  @Output() nzScroll: EventEmitter<NzAnchorLinkComponent> = new EventEmitter();
+  visible = false;
+  wrapperStyle: NgStyleInterface = { 'max-height': '100vh' };
 
-  // endregion
+  private links: NzAnchorLinkComponent[] = [];
+  private animating = false;
+  private target: Element | null = null;
+  private scroll$: Subscription | null = null;
+  private destroyed = false;
 
-  /* tslint:disable-next-line:no-any */
-  constructor(private scrollSrv: NzScrollService, @Inject(DOCUMENT) private doc: any, private cd: ChangeDetectorRef) {
-  }
+  constructor(
+    public nzConfigService: NzConfigService,
+    private scrollSrv: NzScrollService,
+    /* tslint:disable-next-line:no-any */
+    @Inject(DOCUMENT) private doc: any,
+    private cdr: ChangeDetectorRef,
+    private platform: Platform
+  ) {}
 
   registerLink(link: NzAnchorLinkComponent): void {
     this.links.push(link);
@@ -143,31 +119,45 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(): void {
+    this.destroyed = true;
     this.removeListen();
   }
 
   private registerScrollEvent(): void {
+    if (!this.platform.isBrowser) {
+      return;
+    }
     this.removeListen();
-    this.scroll$ = fromEvent(this.getTarget(), 'scroll').pipe(throttleTime(50), distinctUntilChanged())
-    .subscribe(e => this.handleScroll());
-    // 由于页面刷新时滚动条位置的记忆
-    // 倒置在dom未渲染完成，导致计算不正确
+    this.scroll$ = fromEvent(this.getTarget(), 'scroll')
+      .pipe(throttleTime(50), distinctUntilChanged())
+      .subscribe(() => this.handleScroll());
+    // Browser would maintain the scrolling position when refreshing.
+    // So we have to delay calculation in avoid of getting a incorrect result.
     setTimeout(() => this.handleScroll());
   }
 
   private removeListen(): void {
-    if (this.scroll$) { this.scroll$.unsubscribe(); }
+    if (this.scroll$) {
+      this.scroll$.unsubscribe();
+    }
   }
 
   private getOffsetTop(element: HTMLElement): number {
-    if (!element || !element.getClientRects().length) { return 0; }
+    if (!element || !element.getClientRects().length) {
+      return 0;
+    }
     const rect = element.getBoundingClientRect();
-    if (!rect.width && !rect.height) { return rect.top; }
-    return rect.top - element.ownerDocument.documentElement.clientTop;
+    if (rect.width || rect.height) {
+      if (this.getTarget() === window) {
+        return rect.top - element.ownerDocument!.documentElement!.clientTop;
+      }
+      return rect.top - (this.getTarget() as HTMLElement).getBoundingClientRect().top;
+    }
+    return rect.top;
   }
 
   handleScroll(): void {
-    if (this.animating) {
+    if (typeof document === 'undefined' || this.destroyed || this.animating) {
       return;
     }
 
@@ -178,55 +168,63 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit {
       if (!sharpLinkMatch) {
         return;
       }
-      const target = this.doc.getElementById(sharpLinkMatch[ 1 ]);
-      if (target && this.getOffsetTop(target) < scope) {
+      const target = this.doc.getElementById(sharpLinkMatch[1]);
+      if (target) {
         const top = this.getOffsetTop(target);
-        sections.push({
-          top,
-          comp
-        });
+        if (top < scope) {
+          sections.push({
+            top,
+            comp
+          });
+        }
       }
     });
 
     this.visible = !!sections.length;
     if (!this.visible) {
       this.clearActive();
-      this.cd.detectChanges();
+      this.cdr.detectChanges();
     } else {
-      const maxSection = sections.reduce((prev, curr) => curr.top > prev.top ? curr : prev);
+      const maxSection = sections.reduce((prev, curr) => (curr.top > prev.top ? curr : prev));
       this.handleActive(maxSection.comp);
     }
   }
 
   private clearActive(): void {
-    this.links.forEach(i => i.active = false);
+    this.links.forEach(i => {
+      i.active = false;
+      i.markForCheck();
+    });
   }
 
   private handleActive(comp: NzAnchorLinkComponent): void {
     this.clearActive();
 
     comp.active = true;
-    this.cd.detectChanges();
+    comp.markForCheck();
 
-    const linkNode = (comp.el.nativeElement as HTMLDivElement).querySelector('.ant-anchor-link-title') as HTMLElement;
+    const linkNode = (comp.elementRef.nativeElement as HTMLDivElement).querySelector('.ant-anchor-link-title') as HTMLElement;
     this.ink.nativeElement.style.top = `${linkNode.offsetTop + linkNode.clientHeight / 2 - 4.5}px`;
+    this.visible = true;
+    this.cdr.detectChanges();
 
     this.nzScroll.emit(comp);
   }
 
   handleScrollTo(linkComp: NzAnchorLinkComponent): void {
     const el = this.doc.querySelector(linkComp.nzHref);
-    if (!el) { return; }
+    if (!el) {
+      return;
+    }
 
     this.animating = true;
     const containerScrollTop = this.scrollSrv.getScroll(this.getTarget());
-    const elOffsetTop = this.scrollSrv.getOffset(el).top;
+    const elOffsetTop = this.getOffsetTop(el);
     const targetScrollTop = containerScrollTop + elOffsetTop - (this.nzOffsetTop || 0);
-    this.scrollSrv.scrollTo(this.getTarget(), targetScrollTop, null, () => {
+    this.scrollSrv.scrollTo(this.getTarget(), targetScrollTop, undefined, () => {
       this.animating = false;
       this.handleActive(linkComp);
     });
     this.nzClick.emit(linkComp.nzHref);
   }
-
 }

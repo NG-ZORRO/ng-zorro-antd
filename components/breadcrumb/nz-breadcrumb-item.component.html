@@ -1,0 +1,18 @@
+<ng-container *ngIf="!!nzOverlay; else noMenuTpl">
+  <span class="ant-breadcrumb-overlay-link" nz-dropdown [nzDropdownMenu]="nzOverlay">
+    <ng-template [ngTemplateOutlet]="noMenuTpl"></ng-template>
+    <i *ngIf="!!nzOverlay" nz-icon nzType="down"></i>
+  </span>
+</ng-container>
+
+<ng-template #noMenuTpl>
+  <span class="ant-breadcrumb-link">
+    <ng-content></ng-content>
+  </span>
+</ng-template>
+
+<span class="ant-breadcrumb-separator">
+  <ng-container *nzStringTemplateOutlet="nzBreadCrumbComponent.nzSeparator">
+    {{ nzBreadCrumbComponent.nzSeparator }}
+  </ng-container>
+</span>

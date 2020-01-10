@@ -2,20 +2,24 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./publish/src",
+    "inlineSources": true,
+    "lib": [
+      "dom",
+      "es2018"
+    ],
     "baseUrl": "./",
     "declaration": true,
-    "importHelpers": true,
-    "module": "es2015",
     "sourceMap": true,
     "target": "es2015",
-    "types": [
-      "node"
-    ]
+    "types": []
   },
   "files": [
     "./__gen_components/ng-zorro-antd.module.ts"
   ],
   "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true,
+    "enableResourceInlining": true,
     "annotateForClosureCompiler": true,
     "strictMetadataEmit": true,
     "flatModuleOutFile": "index.js",

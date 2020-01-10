@@ -1,7 +1,7 @@
 ---
 category: Components
 subtitle: 输入框
-type: Data Entry
+type: 数据录入
 title: Input
 ---
 
@@ -12,29 +12,29 @@ title: Input
 - 需要用户输入表单域内容时。
 - 提供组合型输入框，带搜索的输入框，还可以进行大小选择。
 
+```ts
+import { NzInputModule } from 'ng-zorro-antd/input';
+```
+
 ## API
 
-### nz-input
+### [nz-input]
 
 nz-input 可以使用所有的W3C标准下的所有 [使用方式](https://www.w3schools.com/tags/tag_input.asp) 和 Angular对 input 的全部额外功能支持。
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzAutosize | 只可以用于 `textarea`，自适应内容高度，可设置为 `boolean` 或对象：`{ minRows: 2, maxRows: 6 }` | boolean丨 `{ minRows: number, maxRows: number }` | false |
-| nzSize | 控件大小。注：标准表单内的输入框大小限制为 `large`。可选 `large` `default` `small` | string | `default` |
+| `[nzSize]` | 控件大小。注：标准表单内的输入框大小限制为 `large` | `'large' \| 'small' \| 'default'` | `'default'` |
+| `[nzAutosize]` | 只可以用于 `textarea`，自适应内容高度，可设置为 `boolean` 或对象：`{ minRows: 2, maxRows: 6 }` | `boolean \| { minRows: number, maxRows: number }` | `false` |
 
-#### nz-input-group
+### nz-input-group
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| nzAddonAfter | 带标签的 input，设置后置标签 | string 丨 `TemplateRef<void>` |  |
-| nzAddonAfterIcon | 后置标签按钮，`nzAddonAfter`的快捷使用方式 | `string 丨 string[] 丨 Set<string> 丨 { [klass: string]: any; }` | - |
-| nzAddonBefore | 带标签的 input，设置前置标签 | string 丨 `TemplateRef<void>` |  |
-| nzAddonBeforeIcon | 前置标签按钮，`nzAddonBefore`的快捷使用方式 | `string 丨 string[] 丨 Set<string> 丨 { [klass: string]: any; }` | - |
-| nzPrefix | 带有前缀图标的 input | string丨 `TemplateRef<void>` |  |
-| nzPrefixIcon | 前缀图标，`nzPrefix`的快捷使用方式 | `string 丨 string[] 丨 Set<string> 丨 { [klass: string]: any; }` | - |
-| nzSuffix | 带有后缀图标的 input | string丨 `TemplateRef<void>` |  |
-| nzSuffixIcon | 后缀图标，`nzSuffix`的快捷使用方式 | `string 丨 string[] 丨 Set<string> 丨 { [klass: string]: any; }` | - |
-| nzCompact | 是否用紧凑模式 | boolean | false |
-| nzSearch | 是否用搜索框 | boolean | false |
-| nzSize | `nz-input-group` 中所有的 `nz-input` 的大小，可选 `large` `default` `small` | string | `default` |
+| `[nzAddOnAfter]` | 带标签的 input，设置后置标签，可以与 `nzAddOnBefore` 配合使用 | `string \| TemplateRef<void>` | - |
+| `[nzAddOnBefore]` | 带标签的 input，设置前置标签，可以与 `nzAddOnAfter` 配合使用 | `string \| TemplateRef<void>` | - |
+| `[nzPrefix]` | 带有前缀图标的 input，可以与 `nzSuffix` 配合使用 | `string \| TemplateRef<void>` | - |
+| `[nzSuffix]` | 带有后缀图标的 input，可以与 `nzPrefix` 配合使用 | `string \| TemplateRef<void>` | - |
+| `[nzCompact]` | 是否用紧凑模式 | `boolean` | `false` |
+| `[nzSearch]` | 是否用搜索框 | `boolean` | `false` |
+| `[nzSize]` | `nz-input-group` 中所有的 `nz-input` 的大小 | `'large' \| 'small' \| 'default'` | `'default'` |

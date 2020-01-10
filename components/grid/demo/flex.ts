@@ -39,7 +39,7 @@ import { Component } from '@angular/core';
         <div nz-col nzSpan="4">col-4</div>
         <div nz-col nzSpan="4">col-4</div>
       </div>
-    </div>`
+    </div>
+  `
 })
-export class NzDemoGridFlexComponent {
-}
+export class NzDemoGridFlexComponent {}

@@ -10,4 +10,4 @@ import { Component } from '@angular/core';
     <nz-progress [nzPercent]="50" [nzShowInfo]="false"></nz-progress>
   `
 })
-export class NzDemoProgressLineComponent { }
+export class NzDemoProgressLineComponent {}

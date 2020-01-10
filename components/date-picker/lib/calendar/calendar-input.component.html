@@ -1,0 +1,13 @@
+<div class="{{ prefixCls }}-input-wrap">
+  <div class="{{ prefixCls }}-date-input-wrap">
+    <input
+      class="{{ prefixCls }}-input {{ invalidInputClass }}"
+      placeholder="{{ placeholder || locale.dateSelect }}"
+      value="{{ toReadableInput(value) }}"
+      (input)="onInputKeyup($event)"
+      (keyup.enter)="onInputKeyup($event, true)"
+      #inputElement
+    />
+  </div>
+  <a class="{{ prefixCls }}-clear-btn" role="button" title="{{ locale.clear }}"></a>
+</div>

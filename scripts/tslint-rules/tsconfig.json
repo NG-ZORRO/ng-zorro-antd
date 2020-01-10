@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "lib": ["es2015"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": ".",
+    "target": "es5",
+    "types": ["node"],
+    "baseUrl": "."
+  }
+}

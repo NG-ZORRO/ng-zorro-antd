@@ -1,13 +1,21 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 export default {
-  today: 'Aujourd\'hui',
+  today: "Aujourd'hui",
   now: 'Maintenant',
-  backToToday: 'Aujourd\'hui',
+  backToToday: "Aujourd'hui",
   ok: 'Ok',
   clear: 'Rétablir',
   month: 'Mois',
   year: 'Année',
-  timeSelect: 'Sélectionner l\'heure',
-  dateSelect: 'Sélectionner l\'heure',
+  timeSelect: "Sélectionner l'heure",
+  dateSelect: 'Sélectionner la date',
   monthSelect: 'Choisissez un mois',
   yearSelect: 'Choisissez une année',
   decadeSelect: 'Choisissez une décennie',
@@ -23,5 +31,5 @@ export default {
   previousDecade: 'Décennie précédente',
   nextDecade: 'Décennie suivante',
   previousCentury: 'Siècle précédent',
-  nextCentury: 'Siècle suivant',
+  nextCentury: 'Siècle suivant'
 };

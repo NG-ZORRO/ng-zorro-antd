@@ -1,9 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
-import { fakeAsync, flush, TestBed } from '@angular/core/testing';
-import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, DebugElement, ViewChild } from '@angular/core';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { dispatchEvent, dispatchFakeEvent } from '../core/testing';
+import { dispatchEvent, dispatchFakeEvent } from 'ng-zorro-antd/core';
 
 import { NzInputNumberComponent } from './nz-input-number.component';
 import { NzInputNumberModule } from './nz-input-number.module';
@@ -11,18 +11,19 @@ import { NzInputNumberModule } from './nz-input-number.module';
 describe('input number', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports     : [ NzInputNumberModule, FormsModule, ReactiveFormsModule ],
-      declarations: [ NzTestInputNumberBasicComponent, NzTestInputNumberFormComponent ]
+      imports: [NzInputNumberModule, FormsModule, ReactiveFormsModule],
+      declarations: [NzTestInputNumberBasicComponent, NzTestInputNumberFormComponent]
     });
     TestBed.compileComponents();
   }));
   describe('input number basic', () => {
-    let fixture;
-    let testComponent;
-    let inputNumber;
-    let inputElement;
-    let upHandler;
-    let downHandler;
+    let fixture: ComponentFixture<NzTestInputNumberBasicComponent>;
+    let testComponent: NzTestInputNumberBasicComponent;
+    let inputNumber: DebugElement;
+    let inputElement: HTMLInputElement;
+    let upHandler: HTMLElement;
+    let downHandler: HTMLElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestInputNumberBasicComponent);
       fixture.detectChanges();
@@ -35,16 +36,24 @@ describe('input number', () => {
     it('should basic className correct', () => {
       fixture.detectChanges();
       expect(inputNumber.nativeElement.classList).toContain('ant-input-number');
+      expect(inputElement.getAttribute('placeholder')).toBe('placeholder');
     });
-    it('should focus className correct', () => {
+    it('should focus className correct', fakeAsync(() => {
       fixture.detectChanges();
+      expect(inputNumber.nativeElement.classList).toContain('ng-untouched');
       dispatchFakeEvent(inputElement, 'focus');
       fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.classList).toContain('ng-untouched');
       expect(inputNumber.nativeElement.classList).toContain('ant-input-number-focused');
       dispatchFakeEvent(inputElement, 'blur');
       fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
       expect(inputNumber.nativeElement.classList).not.toContain('ant-input-number-focused');
-    });
+      expect(inputNumber.nativeElement.classList).toContain('ng-touched');
+    }));
     it('should nzSize work', () => {
       testComponent.size = 'large';
       fixture.detectChanges();
@@ -56,8 +65,11 @@ describe('input number', () => {
     it('should autofocus work', () => {
       fixture.detectChanges();
       testComponent.autofocus = true;
+      testComponent.nzInputNumberComponent.nzAutoFocus = true;
+      testComponent.nzInputNumberComponent.ngAfterViewInit();
       fixture.detectChanges();
-      expect(inputElement.attributes.getNamedItem('autofocus').name).toBe('autofocus');
+      expect(inputElement === document.activeElement).toBe(true);
+      expect(inputElement.attributes.getNamedItem('autofocus')!.name).toBe('autofocus');
       testComponent.autofocus = false;
       fixture.detectChanges();
       expect(inputElement.attributes.getNamedItem('autofocus')).toBe(null);
@@ -302,11 +314,11 @@ describe('input number', () => {
     });
     it('should key up and down work with ctrl key', () => {
       const upArrowEvent = new KeyboardEvent('keydown', {
-        code   : 'ArrowUp',
+        code: 'ArrowUp',
         ctrlKey: true
       });
       const downArrowEvent = new KeyboardEvent('keydown', {
-        code   : 'ArrowDown',
+        code: 'ArrowDown',
         ctrlKey: true
       });
       fixture.detectChanges();
@@ -323,11 +335,11 @@ describe('input number', () => {
     });
     it('should key up and down work with meta key', () => {
       const upArrowEvent = new KeyboardEvent('keydown', {
-        code   : 'ArrowUp',
+        code: 'ArrowUp',
         metaKey: true
       });
       const downArrowEvent = new KeyboardEvent('keydown', {
-        code   : 'ArrowDown',
+        code: 'ArrowDown',
         metaKey: true
       });
       fixture.detectChanges();
@@ -346,11 +358,11 @@ describe('input number', () => {
       testComponent.max = 100;
       testComponent.min = -100;
       const upArrowEvent = new KeyboardEvent('keydown', {
-        code    : 'ArrowUp',
+        code: 'ArrowUp',
         shiftKey: true
       });
       const downArrowEvent = new KeyboardEvent('keydown', {
-        code    : 'ArrowDown',
+        code: 'ArrowDown',
         shiftKey: true
       });
       fixture.detectChanges();
@@ -366,14 +378,40 @@ describe('input number', () => {
       fixture.detectChanges();
       expect(testComponent.value).toBe(-10);
     });
+    it('should update value immediately after formatter changed', () => {
+      const newFormatter = (v: number) => `${v} %`;
+      const initValue = 1;
+      const component = testComponent.nzInputNumberComponent;
+      component.onModelChange(`${initValue}`);
+      fixture.detectChanges();
+      component.nzFormatter = newFormatter;
+      component.setValue(component.getCurrentValidValue(component.actualValue), true);
+      fixture.detectChanges();
+      expect(inputElement.value).toBe(newFormatter(initValue));
+    });
+    // #1449
+    it('should up and down focus input', () => {
+      dispatchFakeEvent(upHandler, 'mousedown');
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.classList).toContain('ant-input-number-focused');
+      dispatchFakeEvent(inputElement, 'blur');
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.classList).not.toContain('ant-input-number-focused');
+      dispatchFakeEvent(downHandler, 'mousedown');
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.classList).toContain('ant-input-number-focused');
+      dispatchFakeEvent(inputElement, 'blur');
+      fixture.detectChanges();
+      expect(inputNumber.nativeElement.classList).not.toContain('ant-input-number-focused');
+    });
   });
+
   describe('input number form', () => {
-    let fixture;
-    let testComponent;
-    let inputNumber;
-    let inputElement;
-    let upHandler;
-    let downHandler;
+    let fixture: ComponentFixture<NzTestInputNumberFormComponent>;
+    let testComponent: NzTestInputNumberFormComponent;
+    let inputNumber: DebugElement;
+    let upHandler: HTMLElement;
+
     beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestInputNumberFormComponent);
       fixture.detectChanges();
@@ -381,9 +419,7 @@ describe('input number', () => {
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       inputNumber = fixture.debugElement.query(By.directive(NzInputNumberComponent));
-      inputElement = inputNumber.nativeElement.querySelector('input') as HTMLInputElement;
       upHandler = inputNumber.nativeElement.querySelector('.ant-input-number-handler-up');
-      downHandler = inputNumber.nativeElement.querySelector('.ant-input-number-handler-down');
     }));
     it('should be in pristine, untouched, and valid states initially', fakeAsync(() => {
       flush();
@@ -395,24 +431,23 @@ describe('input number', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('inputNumber').value).toBe(1);
+      expect(testComponent.formGroup.get('inputNumber')!.value).toBe(1);
       dispatchFakeEvent(upHandler, 'mousedown');
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('inputNumber').value).toBe(10);
+      expect(testComponent.formGroup.get('inputNumber')!.value).toBe(10);
       testComponent.disable();
       dispatchFakeEvent(upHandler, 'mousedown');
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(testComponent.formGroup.get('inputNumber').value).toBe(10);
+      expect(testComponent.formGroup.get('inputNumber')!.value).toBe(10);
     }));
   });
 });
 
 @Component({
-  selector: 'nz-test-input-number-basic',
   template: `
     <nz-input-number
       [(ngModel)]="value"
@@ -422,30 +457,32 @@ describe('input number', () => {
       [nzSize]="size"
       [nzMin]="min"
       [nzMax]="max"
+      [nzPlaceHolder]="placeholder"
       [nzStep]="step"
       [nzFormatter]="formatter"
       [nzParser]="parser"
-      [nzPrecision]="precision">
+      [nzPrecision]="precision"
+    >
     </nz-input-number>
   `
 })
 export class NzTestInputNumberBasicComponent {
-  @ViewChild(NzInputNumberComponent) nzInputNumberComponent: NzInputNumberComponent;
-  value;
+  @ViewChild(NzInputNumberComponent, { static: false }) nzInputNumberComponent: NzInputNumberComponent;
+  value?: number | string;
   autofocus = false;
   disabled = false;
   min = -1;
   max = 1;
   size = 'default';
+  placeholder = 'placeholder';
   step = 1;
-  precision = 2;
-  formatter = (value) => value;
-  parser = (value) => value;
+  precision?: number = 2;
+  formatter = (value: number) => (value !== null ? `${value}` : '');
+  parser = (value: number) => value;
   modelChange = jasmine.createSpy('change callback');
 }
 
 @Component({
-  selector: 'nz-test-input-number-form',
   template: `
     <form [formGroup]="formGroup">
       <nz-input-number formControlName="inputNumber" nzMax="10" nzMin="-10"></nz-input-number>
@@ -457,7 +494,7 @@ export class NzTestInputNumberFormComponent {
 
   constructor(private formBuilder: FormBuilder) {
     this.formGroup = this.formBuilder.group({
-      inputNumber: [ 1 ]
+      inputNumber: [1]
     });
   }
 

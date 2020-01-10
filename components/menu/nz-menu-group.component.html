@@ -1,0 +1,7 @@
+<div class="ant-menu-item-group-title">
+  <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+  <ng-content select="[title]" *ngIf="!nzTitle"></ng-content>
+</div>
+<ul class="ant-menu-item-group-list">
+  <ng-content></ng-content>
+</ul>

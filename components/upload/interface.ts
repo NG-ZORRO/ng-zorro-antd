@@ -1,17 +1,26 @@
-// tslint:disable:no-any prefer-method-signature
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 
-/** 状态 */
+// tslint:disable:no-any prefer-method-signature
+import { Observable, Subscription } from 'rxjs';
+
+import { IndexableObject } from 'ng-zorro-antd/core';
+
+/** Status */
 export type UploadFileStatus = 'error' | 'success' | 'done' | 'uploading' | 'removed';
 
-/** 上传方式 */
+/** Uploading type. */
 export type UploadType = 'select' | 'drag';
 
-/** 上传列表的内建样式 */
+/** Built-in styles of the uploading list. */
 export type UploadListType = 'text' | 'picture' | 'picture-card';
 
-/** 文件对象 */
+/** File object. */
 export interface UploadFile {
   uid: string;
   size: number;
@@ -26,8 +35,9 @@ export interface UploadFile {
   thumbUrl?: string;
   response?: any;
   error?: any;
-  linkProps?: any;
+  linkProps?: { download: string };
   type: string;
+
   [key: string]: any;
 }
 
@@ -35,19 +45,22 @@ export interface UploadChangeParam {
   file: UploadFile;
   fileList: UploadFile[];
   event?: { percent: number };
-  /** 回调类型 */
+  /** Callback type. */
   type?: string;
 }
 
 export interface ShowUploadListInterface {
   showRemoveIcon?: boolean;
   showPreviewIcon?: boolean;
+  hidePreviewIconInNonImage?: boolean;
 }
 
 export interface ZipButtonOptions {
   disabled?: boolean;
   accept?: string | string[];
   action?: string;
+  directory?: boolean;
+  openFileDialogOnClick?: boolean;
   beforeUpload?: (file: UploadFile, fileList: UploadFile[]) => boolean | Observable<any>;
   customRequest?: (item: any) => Subscription;
   data?: {} | ((file: UploadFile) => {});
@@ -64,15 +77,15 @@ export interface ZipButtonOptions {
 
 export interface UploadFilter {
   name: string;
-  fn: (fileList: UploadFile[]) => UploadFile[];
+  fn: (fileList: UploadFile[]) => UploadFile[] | Observable<UploadFile[]>;
 }
 
 export interface UploadXHRArgs {
   action?: string;
   name?: string;
-  headers?: {};
+  headers?: IndexableObject;
   file: UploadFile;
-  data?: {};
+  data?: IndexableObject;
   withCredentials?: boolean;
   onProgress?: (e: any, file: UploadFile) => void;
   onSuccess?: (ret: any, file: UploadFile, xhr: any) => void;

@@ -1,31 +1,30 @@
-import { Component } from '@angular/core';
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'nz-card-loading',
-  template: `
-    <p class="ant-card-loading-block" style="width: 94%;"></p>
-    <p>
-      <span class="ant-card-loading-block" style="width: 28%;"></span><span class="ant-card-loading-block" style="width: 62%;"></span>
-    </p>
-    <p>
-      <span class="ant-card-loading-block" style="width: 22%;"></span><span class="ant-card-loading-block" style="width: 66%;"></span>
-    </p>
-    <p>
-      <span class="ant-card-loading-block" style="width: 56%;"></span><span class="ant-card-loading-block" style="width: 39%;"></span>
-    </p>
-    <p>
-      <span class="ant-card-loading-block" style="width: 21%;"></span><span class="ant-card-loading-block" style="width: 15%;"></span><span class="ant-card-loading-block" style="width: 40%;"></span>
-    </p>
-  `,
-  host    : {
-    '[class.ant-card-loading-content]': 'true'
-  },
-  styles  : [ `
-    :host {
-      display: block;
-    }
-  ` ]
+  exportAs: 'nzCardLoading',
+  templateUrl: './nz-card-loading.component.html',
+  preserveWhitespaces: false,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  styles: [
+    `
+      nz-card-loading {
+        display: block;
+      }
+    `
+  ]
 })
 export class NzCardLoadingComponent {
-
+  constructor(elementRef: ElementRef, renderer: Renderer2) {
+    renderer.addClass(elementRef.nativeElement, 'ant-card-loading-content');
+  }
 }

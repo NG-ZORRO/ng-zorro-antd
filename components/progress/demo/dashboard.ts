@@ -6,4 +6,4 @@ import { Component } from '@angular/core';
     <nz-progress [nzPercent]="75" nzType="dashboard"></nz-progress>
   `
 })
-export class NzDemoProgressDashboardComponent { }
+export class NzDemoProgressDashboardComponent {}

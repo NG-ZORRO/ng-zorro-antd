@@ -10,6 +10,10 @@ Small numerical value or status descriptor for UI elements.
 
 Badge normally appears in proximity to notifications or user avatars with eye-catching appeal, typically displaying unread messages count.
 
+```ts
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+```
+
 ## API
 
 ```html
@@ -22,11 +26,17 @@ Badge normally appears in proximity to notifications or user avatars with eye-ca
 <nz-badge [nzCount]="5"></nz-badge>
 ```
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| nzCount | Number to show in badge | number |  |
-| nzDot | Whether to display a red dot instead of `count` | boolean | `false` |
-| nzOverflowCount | Max count to show | number | 99 |
-| nzShowZero | Whether to show badge when `count` is zero | boolean | `false` |
-| nzStatus | Set `nz-badge` as a status dot | `success` ｜ `processing` ｜ `default` ｜ `error` ｜ `warning` | `''` |
-| nzText | If `nzStatus` is set, `text` sets the display text of the status `dot` | string | `''` |
+### nz-badge
+
+| Property | Description | Type | Default | Global Config |
+| -------- | ----------- | ---- | ------- | ------------- |
+| `[nzColor]` | Customize Badge dot color | string | - | ✅ |
+| `[nzCount]` | Number to show in badge | `number \| TemplateRef<void>` | - |
+| `[nzDot]` | Whether to display a red dot instead of `count` | `boolean` | `false` |
+| `[nzShowDot]` | Whether to display the red dot | `boolean` | `true` |
+| `[nzOverflowCount]` | Max count to show | `number` | `99` | ✅ |
+| `[nzShowZero]` | Whether to show badge when `count` is zero | `boolean` | `false` |
+| `[nzStatus]` | Set `nz-badge` as a status dot | `'success' \| 'processing' \| 'default' \| 'error' \| 'warning'` | - |
+| `[nzText]` | If `nzStatus` is set, `text` sets the display text of the status `dot` | `string` | - |
+| `[nzTitle]` | Text to show when hovering over the badge（Only Non-standalone) | `string` | `nzCount` |
+| `[nzOffset]` | set offset of the badge dot, like[x, y] (Only Non-standalone) | `[number, number]` | - |

@@ -13,4 +13,3 @@ title:
 
 `nzAutosize` prop for a `textarea` type of `nz-input` makes the height to automatically adjust based on the content.
 An options object can be provided to `nzAutosize` to specify the minimum and maximum number of lines the textarea will automatically adjust.
-

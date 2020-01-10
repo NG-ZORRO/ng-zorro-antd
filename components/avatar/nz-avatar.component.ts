@@ -1,40 +1,70 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
+import { Platform } from '@angular/cdk/platform';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  Renderer2,
+  SimpleChanges,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 
-export type NzAvatarShape = 'square' | 'circle';
-export type NzAvatarSize = 'small' | 'large' | 'default';
+import { NzConfigService, NzShapeSCType, NzSizeLDSType, NzSizeMap, NzUpdateHostClassService, WithConfig } from 'ng-zorro-antd/core';
+
+const NZ_CONFIG_COMPONENT_NAME = 'avatar';
 
 @Component({
   selector: 'nz-avatar',
-  template: `
-  <i *ngIf="nzIcon && hasIcon" [ngClass]="nzIcon"></i>
-  <img [src]="nzSrc" *ngIf="nzSrc && hasSrc" (error)="imgError()"/>
-  <span class="ant-avatar-string" #textEl [ngStyle]="textStyles" *ngIf="nzText && hasText">{{ nzText }}</span>`,
+  exportAs: 'nzAvatar',
+  templateUrl: './nz-avatar.component.html',
   providers: [NzUpdateHostClassService],
   preserveWhitespaces: false,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None
 })
 export class NzAvatarComponent implements OnChanges {
-  private el: HTMLElement;
-  private prefixCls = 'ant-avatar';
-  private sizeMap = { large: 'lg', small: 'sm' };
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'circle') nzShape: NzShapeSCType;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzSizeLDSType | number;
+  @Input() nzText: string;
+  @Input() nzSrc: string;
+  @Input() nzSrcSet: string;
+  @Input() nzAlt: string;
+  @Input() nzIcon: string;
+  @Output() readonly nzError = new EventEmitter<Event>();
+
+  oldAPIIcon = true; // Make the user defined icon compatible to old API. Should be removed in 2.0.
   hasText: boolean = false;
   hasSrc: boolean = true;
   hasIcon: boolean = false;
   textStyles: {};
 
-  @ViewChild('textEl') textEl: ElementRef;
+  @ViewChild('textEl', { static: false }) textEl: ElementRef;
 
-  @Input() nzShape: NzAvatarShape = 'circle';
+  private el: HTMLElement = this.elementRef.nativeElement;
+  private prefixCls = 'ant-avatar';
+  private sizeMap: NzSizeMap = { large: 'lg', small: 'sm' };
 
-  @Input() nzSize: NzAvatarSize = 'default';
-
-  @Input() nzText: string;
-
-  @Input() nzSrc: string;
-
-  @Input() nzIcon: string;
+  constructor(
+    public nzConfigService: NzConfigService,
+    private elementRef: ElementRef,
+    private cd: ChangeDetectorRef,
+    private updateHostClassService: NzUpdateHostClassService,
+    private renderer: Renderer2,
+    private platform: Platform
+  ) {}
 
   setClass(): this {
     const classMap = {
@@ -42,60 +72,77 @@ export class NzAvatarComponent implements OnChanges {
       [`${this.prefixCls}-${this.sizeMap[this.nzSize]}`]: this.sizeMap[this.nzSize],
       [`${this.prefixCls}-${this.nzShape}`]: this.nzShape,
       [`${this.prefixCls}-icon`]: this.nzIcon,
-      [`${this.prefixCls}-image`]: this.nzSrc
+      [`${this.prefixCls}-image`]: this.hasSrc // downgrade after image error
     };
     this.updateHostClassService.updateHostClass(this.el, classMap);
     this.cd.detectChanges();
     return this;
   }
 
-  imgError(): void {
-    this.hasSrc = false;
-    this.hasIcon = false;
-    this.hasText = false;
-    if (this.nzIcon) {
-      this.hasIcon = true;
-    } else if (this.nzText) {
-      this.hasText = true;
+  imgError($event: Event): void {
+    this.nzError.emit($event);
+    if (!$event.defaultPrevented) {
+      this.hasSrc = false;
+      this.hasIcon = false;
+      this.hasText = false;
+      if (this.nzIcon) {
+        this.hasIcon = true;
+      } else if (this.nzText) {
+        this.hasText = true;
+      }
+      this.setClass().notifyCalc();
+      this.setSizeStyle();
     }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.hasOwnProperty('nzIcon') && changes.nzIcon.currentValue) {
+      this.oldAPIIcon = changes.nzIcon.currentValue.indexOf('anticon') > -1;
+    }
+    this.hasText = !this.nzSrc && !!this.nzText;
+    this.hasIcon = !this.nzSrc && !!this.nzIcon;
+    this.hasSrc = !!this.nzSrc;
+
     this.setClass().notifyCalc();
+    this.setSizeStyle();
   }
 
   private calcStringSize(): void {
-    if (!this.hasText) { return; }
+    if (!this.hasText) {
+      return;
+    }
 
     const childrenWidth = this.textEl.nativeElement.offsetWidth;
     const avatarWidth = this.el.getBoundingClientRect().width;
     const scale = avatarWidth - 8 < childrenWidth ? (avatarWidth - 8) / childrenWidth : 1;
-    if (scale === 1) {
-      this.textStyles = {};
-    } else {
-      this.textStyles = {
-        transform: `scale(${scale})`,
-        position: 'absolute',
-        display: 'inline-block',
-        left: `calc(50% - ${Math.round(childrenWidth / 2)}px)`
-      };
+    this.textStyles = {
+      transform: `scale(${scale}) translateX(-50%)`
+    };
+    if (typeof this.nzSize === 'number') {
+      Object.assign(this.textStyles, {
+        lineHeight: `${this.nzSize}px`
+      });
     }
     this.cd.detectChanges();
   }
 
   private notifyCalc(): this {
     // If use ngAfterViewChecked, always demands more computations, so......
-    setTimeout(() => {
-      this.calcStringSize();
-    });
+    if (this.platform.isBrowser) {
+      setTimeout(() => {
+        this.calcStringSize();
+      });
+    }
     return this;
   }
 
-  constructor(elementRef: ElementRef, private cd: ChangeDetectorRef, private updateHostClassService: NzUpdateHostClassService) {
-    this.el = elementRef.nativeElement;
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.hasText = !this.nzSrc && !!this.nzText;
-    this.hasIcon = !this.nzSrc && !!this.nzIcon;
-
-    this.setClass().notifyCalc();
+  private setSizeStyle(): void {
+    const size = typeof this.nzSize === 'string' ? this.nzSize : `${this.nzSize}px`;
+    this.renderer.setStyle(this.el, 'width', size);
+    this.renderer.setStyle(this.el, 'height', size);
+    this.renderer.setStyle(this.el, 'line-height', size);
+    if (this.hasIcon) {
+      this.renderer.setStyle(this.el, 'font-size', `calc(${size} / 2)`);
+    }
   }
 }

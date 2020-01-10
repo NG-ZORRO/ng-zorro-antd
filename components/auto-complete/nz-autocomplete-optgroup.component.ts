@@ -1,45 +1,27 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  TemplateRef
-} from '@angular/core';
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'nz-auto-optgroup',
+  exportAs: 'nzAutoOptgroup',
   preserveWhitespaces: false,
-  changeDetection    : ChangeDetectionStrategy.OnPush,
-  template           : `
-<div class="ant-select-dropdown-menu-item-group-title">
- <ng-container *ngIf="isLabelString; else labelTemplate">{{nzLabel}}</ng-container>
- <ng-template #labelTemplate>
-   <ng-template [ngTemplateOutlet]="nzLabel"></ng-template>
- </ng-template>
-</div>
-<ul class="ant-select-dropdown-menu-item-group-list">
-  <ng-content select="nz-auto-option"></ng-content>
-</ul>
-
-`,
-  host               : {
-    'role'  : 'group',
-    'class' : 'ant-select-dropdown-menu-item-group'
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  templateUrl: './nz-autocomplete-optgroup.component.html',
+  host: {
+    role: 'group',
+    class: 'ant-select-dropdown-menu-item-group'
   }
 })
 export class NzAutocompleteOptgroupComponent {
-  isLabelString: boolean;
-
-  /** group 的 label，支持 'string' 和 `TemplateRef` */
-  @Input()
-  set nzLabel(value: string | TemplateRef<void>) {
-    this.isLabelString = !(value instanceof TemplateRef);
-    this._label = value;
-  }
-  get nzLabel(): string | TemplateRef<void> {
-    return this._label;
-  }
-  _label: string | TemplateRef<void>;
+  @Input() nzLabel: string | TemplateRef<void>;
 
   constructor() {}
-
 }

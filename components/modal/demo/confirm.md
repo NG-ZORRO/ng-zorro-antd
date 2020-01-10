@@ -1,5 +1,5 @@
 ---
-order: 3
+order: 4
 title:
   zh-CN: 确认对话框
   en-US: Confirmation modal dialog

@@ -8,13 +8,12 @@ import { Component } from '@angular/core';
     <nz-alert nzType="warning" nzMessage="Warning Text"></nz-alert>
     <nz-alert nzType="error" nzMessage="Error Text"></nz-alert>
   `,
-  styles  : [
-      `
+  styles: [
+    `
       nz-alert {
         margin-bottom: 16px;
       }
     `
   ]
 })
-export class NzDemoAlertStyleComponent {
-}
+export class NzDemoAlertStyleComponent {}

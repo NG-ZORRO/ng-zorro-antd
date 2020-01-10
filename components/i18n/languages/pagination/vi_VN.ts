@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 export default {
   // Options.jsx
   items_per_page: '/ trang',
@@ -11,5 +19,5 @@ export default {
   prev_5: 'Về 5 Trang Trước',
   next_5: 'Đến 5 Trang Kế',
   prev_3: 'Về 3 Trang Trước',
-  next_3: 'Đến 3 Trang Kế',
+  next_3: 'Đến 3 Trang Kế'
 };

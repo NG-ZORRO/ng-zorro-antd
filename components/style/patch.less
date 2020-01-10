@@ -1,0 +1,132 @@
+@import './themes/default.less';
+
+// cdk overlay
+.cdk-overlay-container {
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 1000;
+}
+
+.cdk-overlay-backdrop {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity .4s cubic-bezier(.25, .8, .25, 1);
+  opacity: 0;
+  position: absolute;
+  pointer-events: auto;
+  z-index: 1000;
+}
+
+.cdk-overlay-pane {
+  position: absolute;
+  pointer-events: auto;
+  z-index: 1000; // Give an opportunity to the content own to manage their z-index such as Modal
+}
+
+.cdk-overlay-connected-position-bounding-box {
+  position: absolute;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  min-width: 1px;
+  min-height: 1px;
+}
+
+// Used when disabling global scrolling.
+.cdk-global-scrollblock {
+  position: fixed;
+
+  // Necessary for the content not to lose its width. Note that we're using 100%, instead of
+  // 100vw, because 100vw includes the width plus the scrollbar, whereas 100% is the width
+  // that the element had before we made it `fixed`.
+  width: 100%;
+
+  // Note: this will always add a scrollbar to whatever element it is on, which can
+  // potentially result in double scrollbars. It shouldn't be an issue, because we won't
+  // block scrolling on a page that doesn't have a scrollbar in the first place.
+  overflow-y: scroll;
+
+  // https://github.com/angular/material2/issues/15051
+  body {
+    overflow-x: visible;
+  }
+}
+
+.nz-overlay-transparent-backdrop {
+  &, &.cdk-overlay-backdrop-showing {
+    opacity: 0;
+  }
+}
+
+textarea.cdk-textarea-autosize-measuring {
+  height: auto !important;
+  overflow: hidden !important;
+  // Having 2px top and bottom padding seems to fix a bug where Chrome gets an incorrect
+  // measurement. We just have to account for it later and subtract it off the final result.
+  padding: 2px 0 !important;
+  box-sizing: content-box !important;
+}
+
+.nz-animate-disabled {
+  // drawer
+  &.ant-drawer {
+    &.ant-drawer-open .ant-drawer-mask {
+      animation: none;
+      transition: none;
+    }
+
+    & > * {
+      transition: none;
+    }
+  }
+
+  // modal
+  .ant-modal-mask, .ant-modal {
+    animation: none;
+    transition: none;
+
+    &.zoom-enter, &.zoom-leave,
+    &.zoom-enter-active, &.zoom-leave-active {
+      animation: none;
+      transition: none;
+    }
+  }
+
+  // menu
+  &.ant-menu {
+    transition: none;
+
+    .ant-menu-item, .ant-menu-submenu-title {
+      transition: none;
+    }
+
+    .ant-menu-item .anticon, .ant-menu-submenu-title .anticon {
+      transition: none;
+
+      & + span {
+        transition: none;
+      }
+    }
+  }
+
+  // tabs
+  &.ant-tabs {
+    .ant-tabs-top-content.ant-tabs-content-animated,
+    .ant-tabs-bottom-content.ant-tabs-content-animated,
+    .ant-tabs-top-content > .ant-tabs-tabpane,
+    .ant-tabs-bottom-content > .ant-tabs-tabpane,
+    &.ant-tabs-left .ant-tabs-ink-bar-animated,
+    &.ant-tabs-right .ant-tabs-ink-bar-animated,
+    &.ant-tabs-top .ant-tabs-ink-bar-animated,
+    &.ant-tabs-bottom .ant-tabs-ink-bar-animated {
+      transition: none;
+    }
+  }
+}

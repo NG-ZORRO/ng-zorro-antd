@@ -1,7 +1,6 @@
 ---
-order: 3
-iframe: 
-  source: https://components-layout-demo-side.stackblitz.io
+order: 4
+iframe:
   height: 360
 title:
   zh-CN: 侧边布局

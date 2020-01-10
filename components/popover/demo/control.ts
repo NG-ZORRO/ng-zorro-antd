@@ -1,30 +1,33 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'nz-demo-popover-control',
   template: `
-    <nz-popover [nzTitle]="'Title'" [(nzVisible)]="visible" [nzTrigger]="'click'">
-      <button nz-button nz-popover [nzType]="'primary'">Click me</button>
-      <ng-template #nzTemplate>
-        <a (click)='clickMe()'>Close</a>
-      </ng-template>
-    </nz-popover>
+    <button
+      nz-button
+      nzType="primary"
+      nz-popover
+      nzPopoverTitle="Title"
+      [(nzVisible)]="visible"
+      (nzVisibleChange)="change($event)"
+      nzPopoverTrigger="click"
+      [nzPopoverContent]="contentTemplate"
+    >
+      Click me
+    </button>
+    <ng-template #contentTemplate>
+      <a (click)="clickMe()">Close</a>
+    </ng-template>
   `
 })
-export class NzDemoPopoverControlComponent implements OnInit {
-  content: any;
+export class NzDemoPopoverControlComponent {
   visible: boolean;
 
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-
-  clickMe() {
+  clickMe(): void {
     this.visible = false;
+  }
+
+  change(value: boolean): void {
+    console.log(value);
   }
 }

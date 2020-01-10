@@ -3,13 +3,9 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-upload-file-list',
   template: `
-  <nz-upload
-    nzAction="https://jsonplaceholder.typicode.com/posts/"
-    [nzFileList]="fileList">
-    <button nz-button>
-      <i class="anticon anticon-upload"></i><span>Upload</span>
-    </button>
-  </nz-upload>
+    <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" [nzFileList]="fileList">
+      <button nz-button><i nz-icon nzType="upload"></i><span>Upload</span></button>
+    </nz-upload>
   `
 })
 export class NzDemoUploadFileListComponent {

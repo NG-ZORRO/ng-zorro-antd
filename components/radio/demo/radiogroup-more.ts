@@ -9,13 +9,12 @@ import { Component } from '@angular/core';
       <label nz-radio [ngStyle]="style" nzValue="C">Option C</label>
       <label nz-radio [ngStyle]="style" nzValue="M">
         More...
-        <input type="text" nz-input *ngIf="radioValue=='M'" style="width: 100px; margin-left: 10px;">
+        <input type="text" nz-input *ngIf="radioValue == 'M'" style="width: 100px; margin-left: 10px;" />
       </label>
     </nz-radio-group>
-
   `,
-  styles  : [
-      `
+  styles: [
+    `
       [nz-radio] {
         display: block;
       }
@@ -25,8 +24,8 @@ import { Component } from '@angular/core';
 export class NzDemoRadioRadiogroupMoreComponent {
   radioValue = 'A';
   style = {
-    display   : 'block',
-    height    : '30px',
+    display: 'block',
+    height: '30px',
     lineHeight: '30px'
   };
 }

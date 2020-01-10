@@ -1,28 +1,27 @@
-import { Directive, ElementRef, HostBinding, Input } from '@angular/core';
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 
-import { toBoolean } from '../core/util/convert';
+import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
+
+import { InputBoolean } from 'ng-zorro-antd/core';
 
 @Directive({
   selector: '[nz-tab-label]',
-  host    : {
-    '[class.ant-tabs-tab]': 'true'
+  exportAs: 'nzTabLabel',
+  host: {
+    '[class.ant-tabs-tab-disabled]': 'disabled'
   }
 })
 export class NzTabLabelDirective {
+  @Input() @InputBoolean() disabled = false;
 
-  private _disabled = false;
-
-  @Input()
-  @HostBinding('class.ant-tabs-tab-disabled')
-  set disabled(value: boolean) {
-    this._disabled = toBoolean(value);
-  }
-
-  get disabled(): boolean {
-    return this._disabled;
-  }
-
-  constructor(public elementRef: ElementRef) {
+  constructor(public elementRef: ElementRef, renderer: Renderer2) {
+    renderer.addClass(elementRef.nativeElement, 'ant-tabs-tab');
   }
 
   getOffsetLeft(): number {

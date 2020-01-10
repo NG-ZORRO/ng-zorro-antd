@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "setup": "bash ../../setup-shared-libs.sh ./lib",
+    "setup": "bash ../../setup-shared-libs.sh angular-cli/lib",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
@@ -21,7 +21,6 @@
     "@angular/compiler": "file:lib/@angular/compiler",
     "@angular/core": "file:lib/@angular/core",
     "@angular/forms": "file:lib/@angular/forms",
-    "@angular/http": "file:lib/@angular/http",
     "@angular/platform-browser": "file:lib/@angular/platform-browser",
     "@angular/platform-browser-dynamic": "file:lib/@angular/platform-browser-dynamic",
     "@angular/router": "file:lib/@angular/router",

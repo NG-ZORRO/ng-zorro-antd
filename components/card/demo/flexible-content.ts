@@ -7,9 +7,8 @@ import { Component } from '@angular/core';
       <nz-card-meta nzTitle="Europe Street beat" nzDescription="www.instagram.com"></nz-card-meta>
     </nz-card>
     <ng-template #coverTemplate>
-      <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"/>
+      <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />
     </ng-template>
   `
 })
-export class NzDemoCardFlexibleContentComponent {
-}
+export class NzDemoCardFlexibleContentComponent {}

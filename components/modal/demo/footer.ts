@@ -1,13 +1,18 @@
 import { Component } from '@angular/core';
 
-
 @Component({
   selector: 'nz-demo-modal-footer',
   template: `
     <button nz-button nzType="primary" (click)="showModal()">
       <span>Show Modal</span>
     </button>
-    <nz-modal [(nzVisible)]="isVisible" [nzTitle]="modalTitle" [nzContent]="modalContent" [nzFooter]="modalFooter" (nzOnCancel)="handleCancel()">
+    <nz-modal
+      [(nzVisible)]="isVisible"
+      [nzTitle]="modalTitle"
+      [nzContent]="modalContent"
+      [nzFooter]="modalFooter"
+      (nzOnCancel)="handleCancel()"
+    >
       <ng-template #modalTitle>
         Custom Modal Title
       </ng-template>
@@ -26,14 +31,13 @@ import { Component } from '@angular/core';
         <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isConfirmLoading">Custom Submit</button>
       </ng-template>
     </nz-modal>
-  `,
-  styles: []
+  `
 })
 export class NzDemoModalFooterComponent {
   isVisible = false;
   isConfirmLoading = false;
 
-  constructor() { }
+  constructor() {}
 
   showModal(): void {
     this.isVisible = true;

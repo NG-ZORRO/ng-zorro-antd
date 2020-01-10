@@ -1,7 +1,18 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   AfterContentInit,
+  AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   ContentChildren,
+  ElementRef,
   EventEmitter,
   Host,
   Input,
@@ -9,72 +20,66 @@ import {
   Optional,
   Output,
   QueryList,
+  Renderer2,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
-import { merge } from 'rxjs/operators/merge';
-import { toBoolean } from '../core/util/convert';
-import { NzThComponent } from './nz-th.component';
+import { merge, Subject } from 'rxjs';
+import { startWith, switchMap, takeUntil } from 'rxjs/operators';
+
+import { InputBoolean } from 'ng-zorro-antd/core';
 
 import { NzTableComponent } from './nz-table.component';
+import { NzThComponent } from './nz-th.component';
 
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'thead:not(.ant-table-thead)',
-  template: `
-    <ng-template #contentTemplate>
-      <ng-content></ng-content>
-    </ng-template>
-    <ng-container *ngIf="!nzTableComponent">
-      <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
-    </ng-container>
-  `
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  templateUrl: './nz-thead.component.html'
 })
-export class NzTheadComponent implements AfterContentInit, OnDestroy {
-  private _singleSort = false;
-  private sortSubscription: Subscription;
-  @ViewChild('contentTemplate') template: TemplateRef<void>;
+export class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewInit {
+  private destroy$ = new Subject<void>();
+  @ViewChild('contentTemplate', { static: true }) templateRef: TemplateRef<void>;
   @ContentChildren(NzThComponent, { descendants: true }) listOfNzThComponent: QueryList<NzThComponent>;
-  @Output() nzSortChange = new EventEmitter<{ key: string, value: string }>();
+  @Input() @InputBoolean() nzSingleSort = false;
+  @Output() readonly nzSortChange = new EventEmitter<{ key: string; value: string }>();
 
-  @Input()
-  set nzSingleSort(value: boolean) {
-    this._singleSort = toBoolean(value);
-  }
-
-  get nzSingleSort(): boolean {
-    return this._singleSort;
-  }
-
-  constructor(@Host() @Optional() public nzTableComponent: NzTableComponent) {
+  // tslint:disable-next-line:no-any
+  constructor(@Host() @Optional() public nzTableComponent: NzTableComponent, private elementRef: ElementRef, private renderer: Renderer2) {
     if (this.nzTableComponent) {
       this.nzTableComponent.nzTheadComponent = this;
     }
   }
 
   ngAfterContentInit(): void {
-    let sortChange = new Subject<{ key: string, value: string }>().asObservable();
-    const listOfTh = this.listOfNzThComponent.toArray();
-    const sortChangeArray = listOfTh.map(th => th.nzSortChangeWithKey);
-    if (sortChangeArray.length) {
-      sortChangeArray.forEach(sort => {
-        sortChange = sortChange.pipe(merge(sort.asObservable()));
+    this.listOfNzThComponent.changes
+      .pipe(
+        startWith(true),
+        switchMap(() => merge<{ key: string; value: string }>(...this.listOfNzThComponent.map(th => th.nzSortChangeWithKey))),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((data: { key: string; value: string }) => {
+        this.nzSortChange.emit(data);
+        if (this.nzSingleSort) {
+          this.listOfNzThComponent.forEach(th => {
+            th.nzSort = th.nzSortKey === data.key ? th.nzSort : null;
+            th.marForCheck();
+          });
+        }
       });
+  }
+
+  ngAfterViewInit(): void {
+    if (this.nzTableComponent) {
+      this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), this.elementRef.nativeElement);
     }
-    this.sortSubscription = sortChange.subscribe(data => {
-      this.nzSortChange.emit(data);
-      if (this.nzSingleSort) {
-        listOfTh.forEach(th => th.nzSort = (th.nzSortKey === data.key ? th.nzSort : null));
-      }
-    });
   }
 
   ngOnDestroy(): void {
-    if (this.sortSubscription) {
-      this.sortSubscription.unsubscribe();
-      this.sortSubscription = null;
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -4,14 +4,17 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-input-autosize-textarea',
   template: `
     <div>
-      <textarea nz-input placeholder="Autosize height based on content lines" nzAutosize></textarea>
+      <textarea nz-input placeholder="Autosize height based on content lines" ngModel nzAutosize></textarea>
       <div style="margin:24px 0;"></div>
-      <textarea nz-input placeholder="Autosize height with minimum and maximum number of lines" [nzAutosize]="{ minRows: 2, maxRows: 6 }"></textarea>
+      <textarea
+        nz-input
+        placeholder="Autosize height with minimum and maximum number of lines"
+        [(ngModel)]="value"
+        [nzAutosize]="{ minRows: 2, maxRows: 6 }"
+      ></textarea>
     </div>
-
-  `,
-
-  styles: []
+  `
 })
 export class NzDemoInputAutosizeTextareaComponent {
+  value: string;
 }

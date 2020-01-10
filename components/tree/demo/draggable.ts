@@ -1,93 +1,76 @@
-import { Component, OnInit } from '@angular/core';
-import { NzFormatEmitEvent } from 'ng-zorro-antd';
+import { Component } from '@angular/core';
+import { NzFormatEmitEvent } from 'ng-zorro-antd/core';
 
 @Component({
   selector: 'nz-demo-tree-draggable',
   template: `
-    <nz-tree [nzTreeData]="nodes"
-             (nzExpandChange)="mouseAction('expand',$event)"
-             [nzDraggable]="true"
-             (nzOnDragStart)="mouseAction('dragstart',$event)"
-             (nzOnDragEnter)="mouseAction('enter',$event)"
-             (nzOnDragLeave)="mouseAction('leave', $event)"
-             (nzOnDrop)="mouseAction('drop', $event)"
-             (nzOnDragEnd)="mouseAction('end', $event)">
-    </nz-tree>`
+    <nz-tree [nzData]="nodes" nzDraggable nzBlockNode (nzOnDrop)="nzEvent($event)"> </nz-tree>
+  `
 })
-export class NzDemoTreeDraggableComponent implements OnInit {
+export class NzDemoTreeDraggableComponent {
   nodes = [
     {
-      title   : 'root1',
-      key     : '1001',
+      title: '0-0',
+      key: '00',
+      expanded: true,
       children: [
         {
-          title   : 'child1',
-          key     : '10001',
+          title: '0-0-0',
+          key: '000',
+          expanded: true,
           children: [
-            {
-              title   : 'child1.1',
-              key     : '100011',
-              children: []
-            },
-            {
-              title   : 'child1.2',
-              key     : '100012',
-              children: [
-                {
-                  title   : 'grandchild1.2.1',
-                  key     : '1000121',
-                  isLeaf  : true,
-                  checked : true,
-                  disabled: true
-                },
-                {
-                  title : 'grandchild1.2.2',
-                  key   : '1000122',
-                  isLeaf: true
-                }
-              ]
-            }
+            { title: '0-0-0-0', key: '0000', isLeaf: true },
+            { title: '0-0-0-1', key: '0001', isLeaf: true },
+            { title: '0-0-0-2', key: '0002', isLeaf: true }
           ]
         },
         {
-          title: 'child2',
-          key  : '10002'
+          title: '0-0-1',
+          key: '001',
+          children: [
+            { title: '0-0-1-0', key: '0010', isLeaf: true },
+            { title: '0-0-1-1', key: '0011', isLeaf: true },
+            { title: '0-0-1-2', key: '0012', isLeaf: true }
+          ]
+        },
+        {
+          title: '0-0-2',
+          key: '002'
         }
       ]
     },
     {
-      title   : 'root2',
-      key     : '1002',
+      title: '0-1',
+      key: '01',
       children: [
         {
-          title   : 'child2.1',
-          key     : '10021',
-          children: []
+          title: '0-1-0',
+          key: '010',
+          children: [
+            { title: '0-1-0-0', key: '0100', isLeaf: true },
+            { title: '0-1-0-1', key: '0101', isLeaf: true },
+            { title: '0-1-0-2', key: '0102', isLeaf: true }
+          ]
         },
         {
-          title   : 'child2.2',
-          key     : '10022',
+          title: '0-1-1',
+          key: '011',
           children: [
-            {
-              title: 'grandchild2.2.1',
-              key  : '100221'
-            }
+            { title: '0-1-1-0', key: '0110', isLeaf: true },
+            { title: '0-1-1-1', key: '0111', isLeaf: true },
+            { title: '0-1-1-2', key: '0112', isLeaf: true }
           ]
         }
       ]
     },
-    { title: 'root3', key: '1003' }
+    {
+      title: '0-2',
+      key: '02',
+      isLeaf: true
+    }
   ];
 
-  mouseAction(name: string, e: NzFormatEmitEvent): void {
-    if (name !== 'over') {
-      console.log(name, e);
-    }
-  }
-
-  constructor() {
-  }
-
-  ngOnInit(): void {
+  nzEvent(event: NzFormatEmitEvent): void {
+    console.log(event);
   }
 }

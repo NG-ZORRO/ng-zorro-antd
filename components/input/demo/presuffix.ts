@@ -3,30 +3,16 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-input-presuffix',
   template: `
-    <nz-input-group [nzSuffix]="suffixTemplate" nzPrefixIcon="anticon anticon-user">
-      <input type="text" nz-input placeholder="Enter your username" [(ngModel)]="username">
+    <nz-input-group [nzSuffix]="suffixTemplateInfo" [nzPrefix]="prefixTemplateUser">
+      <input type="text" nz-input placeholder="Enter your username" />
     </nz-input-group>
-    <ng-template #suffixTemplate><i class="anticon anticon-close-circle" (click)="username=null" *ngIf="username"></i></ng-template>
-  `,
-  styles  : [
-      `
-      .anticon-close-circle {
-        cursor: pointer;
-        color: #ccc;
-        transition: color 0.3s;
-        font-size: 12px;
-      }
-
-      .anticon-close-circle:hover {
-        color: #999;
-      }
-
-      .anticon-close-circle:active {
-        color: #666;
-      }
-    `
-  ]
+    <ng-template #prefixTemplateUser><i nz-icon nzType="user"></i></ng-template>
+    <ng-template #suffixTemplateInfo><i nz-icon nz-tooltip nzTitle="Extra information" nzType="info-circle"></i></ng-template>
+    <br />
+    <br />
+    <nz-input-group nzSuffix="RMB" nzPrefix="￥">
+      <input type="text" nz-input />
+    </nz-input-group>
+  `
 })
-export class NzDemoInputPresuffixComponent {
-  username: string;
-}
+export class NzDemoInputPresuffixComponent {}

@@ -1,15 +1,26 @@
 import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
 
 @Component({
-  selector     : 'nz-demo-input-tooltip',
+  selector: 'nz-demo-input-tooltip',
   encapsulation: ViewEncapsulation.None,
-  template     : `
-    <nz-tooltip nzTrigger="focus" nzPlacement="topLeft" nzOverlayClassName="numeric-input" [nzTitle]="title">
-      <input #inputElement nz-input nz-tooltip placeholder="Input a number" [ngModel]="value" (ngModelChange)="onChange($event)" (blur)="onBlur()">
-    </nz-tooltip>
+  template: `
+    <input
+      #inputElement
+      style="width: 120px"
+      nz-input
+      nz-tooltip
+      nzTooltipTrigger="focus"
+      nzPlacement="topLeft"
+      nzOverlayClassName="numeric-input"
+      [ngModel]="value"
+      [nzTitle]="title"
+      placeholder="Input a number"
+      (ngModelChange)="onChange($event)"
+      (blur)="onBlur()"
+    />
   `,
-  styles       : [
-      `
+  styles: [
+    `
       .numeric-input .ant-tooltip-inner {
         min-width: 32px;
         min-height: 37px;
@@ -18,7 +29,6 @@ import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/co
       .numeric-input .numeric-input-title {
         font-size: 14px;
       }
-
     `
   ]
 })
@@ -26,7 +36,7 @@ export class NzDemoInputTooltipComponent {
   value = '';
   title = 'Input a number';
 
-  @ViewChild('inputElement') inputElement: ElementRef;
+  @ViewChild('inputElement', { static: false }) inputElement: ElementRef;
 
   onChange(value: string): void {
     this.updateValue(value);
@@ -53,10 +63,10 @@ export class NzDemoInputTooltipComponent {
   }
 
   formatNumber(value: string): string {
-    const string = `${value}`;
-    const list = string.split('.');
-    const prefix = list[ 0 ].charAt(0) === '-' ? '-' : '';
-    let num = prefix ? list[ 0 ].slice(1) : list[ 0 ];
+    const stringValue = `${value}`;
+    const list = stringValue.split('.');
+    const prefix = list[0].charAt(0) === '-' ? '-' : '';
+    let num = prefix ? list[0].slice(1) : list[0];
     let result = '';
     while (num.length > 3) {
       result = `,${num.slice(-3)}${result}`;
@@ -65,7 +75,6 @@ export class NzDemoInputTooltipComponent {
     if (num) {
       result = num + result;
     }
-    return `${prefix}${result}${list[ 1 ] ? `.${list[ 1 ]}` : ''}`;
+    return `${prefix}${result}${list[1] ? `.${list[1]}` : ''}`;
   }
-
 }

@@ -1,44 +1,38 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 
-import { toBoolean } from '../core/util/convert';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
+
+import { InputBoolean, InputNumber } from 'ng-zorro-antd/core';
+
+export interface NzSliderTrackStyle {
+  bottom?: string | null;
+  height?: string | null;
+  left?: string | null;
+  width?: string | null;
+  visibility?: string;
+}
 
 @Component({
-  selector     : 'nz-slider-track',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  selector: 'nz-slider-track',
+  exportAs: 'nzSliderTrack',
   preserveWhitespaces: false,
-  template     : `
-    <div [class]="nzClassName" [ngStyle]="style"></div>
-  `
+  templateUrl: './nz-slider-track.component.html'
 })
 export class NzSliderTrackComponent implements OnChanges {
-  private _vertical = false;
-  private _included = false;
+  @Input() @InputNumber() nzOffset: number;
+  @Input() @InputNumber() nzLength: number;
+  @Input() @InputBoolean() nzVertical = false;
+  @Input() @InputBoolean() nzIncluded = false;
 
-  // Dynamic properties
-  @Input() nzOffset;
-  @Input() nzLength;
-
-  // Static properties
-  @Input() nzClassName;
-
-  @Input()
-  set nzVertical(value: boolean) { // Required
-    this._vertical = toBoolean(value);
-  }
-
-  get nzVertical(): boolean {
-    return this._vertical;
-  }
-
-  @Input()
-  set nzIncluded(value: boolean) {
-    this._included = toBoolean(value);
-  }
-
-  get nzIncluded(): boolean {
-    return this._included;
-  }
-
-  style: { bottom?: string, height?: string, left?: string, width?: string, visibility?: string } = {};
+  style: NzSliderTrackStyle = {};
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzIncluded) {
@@ -48,11 +42,14 @@ export class NzSliderTrackComponent implements OnChanges {
       if (this.nzVertical) {
         this.style.bottom = `${this.nzOffset}%`;
         this.style.height = `${this.nzLength}%`;
+        this.style.left = null;
+        this.style.width = null;
       } else {
         this.style.left = `${this.nzOffset}%`;
         this.style.width = `${this.nzLength}%`;
+        this.style.bottom = null;
+        this.style.height = null;
       }
     }
   }
-
 }

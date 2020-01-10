@@ -3,55 +3,55 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-fixed-columns',
   template: `
-    <nz-table #nzTable [nzData]="dataSet" [nzPageSize]="10" [nzScroll]="{x:'1300px'}">
+    <nz-table #columnTable [nzData]="listOfData" [nzScroll]="{ x: '1100px' }">
       <thead>
         <tr>
           <th nzWidth="100px" nzLeft="0px">Full Name</th>
           <th nzWidth="100px" nzLeft="100px">Age</th>
-          <th>Column 1</th>
-          <th>Column 2</th>
-          <th>Column 3</th>
-          <th>Column 4</th>
-          <th>Column 5</th>
-          <th>Column 6</th>
-          <th>Column 7</th>
-          <th>Column 8</th>
+          <th nzWidth="100px">Column 1</th>
+          <th nzWidth="100px">Column 2</th>
+          <th nzWidth="100px">Column 3</th>
+          <th nzWidth="100px">Column 4</th>
+          <th nzWidth="100px">Column 5</th>
+          <th nzWidth="100px">Column 6</th>
+          <th nzWidth="100px">Column 7</th>
+          <th nzRight="100px" nzWidth="100px">Column 8</th>
           <th nzWidth="100px" nzRight="0px">Action</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of nzTable.data">
-          <td nzLeft="0px">{{data.name}}</td>
-          <td nzLeft="100px">{{data.age}}</td>
-          <td>{{data.address}}</td>
-          <td>{{data.address}}</td>
-          <td>{{data.address}}</td>
-          <td>{{data.address}}</td>
-          <td>{{data.address}}</td>
-          <td>{{data.address}}</td>
-          <td>{{data.address}}</td>
-          <td>{{data.address}}</td>
+        <tr *ngFor="let data of columnTable.data">
+          <td nzLeft="0px">{{ data.name }}</td>
+          <td nzLeft="100px">{{ data.age }}</td>
+          <td>{{ data.address }}</td>
+          <td>{{ data.address }}</td>
+          <td>{{ data.address }}</td>
+          <td>{{ data.address }}</td>
+          <td>{{ data.address }}</td>
+          <td>{{ data.address }}</td>
+          <td>{{ data.address }}</td>
+          <td nzRight="100px">{{ data.address }}</td>
           <td nzRight="0px">
             <a>action</a>
           </td>
         </tr>
       </tbody>
-    </nz-table>`,
-  styles  : []
+    </nz-table>
+  `
 })
 export class NzDemoTableFixedColumnsComponent {
-  dataSet = [
+  listOfData = [
     {
-      key    : '1',
-      name   : 'John Brown',
-      age    : 32,
-      address: 'New York Park',
+      key: '1',
+      name: 'John Brown',
+      age: 32,
+      address: 'New York'
     },
     {
-      key    : '2',
-      name   : 'Jim Green',
-      age    : 40,
-      address: 'London Park',
+      key: '2',
+      name: 'Jim Green',
+      age: 40,
+      address: 'London'
     }
   ];
 }

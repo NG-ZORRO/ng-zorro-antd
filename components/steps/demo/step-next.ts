@@ -22,8 +22,8 @@ import { Component } from '@angular/core';
       </button>
     </div>
   `,
-  styles  : [
-      `
+  styles: [
+    `
       .steps-content {
         margin-top: 16px;
         border: 1px dashed #e9e9e9;
@@ -36,6 +36,10 @@ import { Component } from '@angular/core';
 
       .steps-action {
         margin-top: 24px;
+      }
+
+      button {
+        margin-right: 8px;
       }
     `
   ]
@@ -79,6 +83,5 @@ export class NzDemoStepsStepNextComponent {
     }
   }
 
-  constructor() {
-  }
+  constructor() {}
 }

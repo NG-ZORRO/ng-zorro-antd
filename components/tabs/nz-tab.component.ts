@@ -1,71 +1,70 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
+  ChangeDetectionStrategy,
   Component,
+  ContentChild,
+  ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
-  OnInit,
   Output,
+  Renderer2,
+  SimpleChanges,
   TemplateRef,
-  ViewChild
+  ViewChild,
+  ViewEncapsulation
 } from '@angular/core';
+import { Subject } from 'rxjs';
 
-import { toBoolean } from '../core/util/convert';
+import { InputBoolean } from 'ng-zorro-antd/core';
 
-import { NzTabSetComponent } from './nz-tabset.component';
+import { NzTabLinkDirective } from './nz-tab-link.directive';
+import { NzTabDirective } from './nz-tab.directive';
 
 @Component({
-  selector           : 'nz-tab',
+  selector: 'nz-tab',
+  exportAs: 'nzTab',
   preserveWhitespaces: false,
-  template           : `
-    <ng-template>
-      <ng-content></ng-content>
-    </ng-template>
-  `,
-  styles             : [],
-  host               : {
-    '[class.ant-tabs-tabpane]': 'true'
-  }
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './nz-tab.component.html'
 })
-export class NzTabComponent implements OnDestroy, OnInit {
-  private _title: string | TemplateRef<void>;
-  private _disabled = false;
+export class NzTabComponent implements OnChanges, OnDestroy {
   position: number | null = null;
   origin: number | null = null;
-  isTitleString: boolean;
+  isActive = false;
+  readonly stateChanges = new Subject<void>();
+  @ViewChild('bodyTpl', { static: true }) content: TemplateRef<void>;
+  @ViewChild('titleTpl', { static: true }) title: TemplateRef<void>;
+  @ContentChild(NzTabDirective, { static: false, read: TemplateRef }) template: TemplateRef<void>;
+  @ContentChild(NzTabLinkDirective, { static: false }) linkDirective: NzTabLinkDirective;
+  @Input() nzTitle: string | TemplateRef<void>;
+  @Input() nzRouterIdentifier: string;
+  @Input() @InputBoolean() nzForceRender = false;
+  @Input() @InputBoolean() nzDisabled = false;
+  @Output() readonly nzClick = new EventEmitter<void>();
+  @Output() readonly nzSelect = new EventEmitter<void>();
+  @Output() readonly nzDeselect = new EventEmitter<void>();
 
-  @Input()
-  set nzDisabled(value: boolean) {
-    this._disabled = toBoolean(value);
+  constructor(public elementRef: ElementRef, private renderer: Renderer2) {
+    this.renderer.addClass(elementRef.nativeElement, 'ant-tabs-tabpane');
   }
 
-  get nzDisabled(): boolean {
-    return this._disabled;
-  }
-
-  @Output() nzClick = new EventEmitter<void>();
-  @Output() nzSelect = new EventEmitter<void>();
-  @Output() nzDeselect = new EventEmitter<void>();
-  @ViewChild(TemplateRef) content: TemplateRef<void>;
-
-  @Input()
-  set nzTitle(value: string | TemplateRef<void>) {
-    this.isTitleString = !(value instanceof TemplateRef);
-    this._title = value;
-  }
-
-  get nzTitle(): string | TemplateRef<void> {
-    return this._title;
-  }
-
-  constructor(private nzTabSetComponent: NzTabSetComponent) {
-  }
-
-  ngOnInit(): void {
-    this.nzTabSetComponent.addTab(this);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.nzTitle || changes.nzForceRender || changes.nzDisabled) {
+      this.stateChanges.next();
+    }
   }
 
   ngOnDestroy(): void {
-    this.nzTabSetComponent.removeTab(this);
+    this.stateChanges.complete();
   }
-
 }

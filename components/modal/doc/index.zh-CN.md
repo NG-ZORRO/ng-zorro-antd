@@ -1,5 +1,5 @@
 ---
-type: Feedback
+type: 反馈
 category: Components
 subtitle: 对话框
 title: Modal
@@ -17,41 +17,54 @@ title: Modal
 
 在弹出层Component中可以通过依赖注入`NzModalRef`方式直接获取模态框的组件实例，用于控制在弹出层组件中控制模态框行为。
 
+```ts
+import { NzModalModule } from 'ng-zorro-antd/modal';
+```
+
 ## API
+
+### NzModalService
 
 对话框当前分为2种模式，`普通模式` 和 `确认框模式`（即`Confirm`对话框，通过调用`confirm/info/success/error/warning`弹出），两种模式对API的支持程度稍有不同。
 
-| 参数 | 说明 | 类型 | 默认值 |
-|----|----|----|----|
-| nzAfterOpen      | Modal 打开后的回调 | EventEmitter | 无 |
-| nzAfterClose      | Modal 完全关闭后的回调，可监听close/destroy方法传入的参数 | EventEmitter | 无 |
-| nzBodyStyle       | Modal body 样式 | object | 无 |
-| nzCancelText      | 取消按钮文字。<i>设为 null 表示不显示取消按钮（若在普通模式下使用了 nzFooter 参数，则该值无效）</i> | string | 取消 |
-| nzClosable        | 是否显示右上角的关闭按钮。<i>确认框模式下该值无效（默认会被隐藏）</i> | boolean | true |
-| nzOkLoading       | 确定按钮 loading | boolean | false |
-| nzCancelLoading   | 取消按钮 loading | boolean | false |
+| 参数 | 说明 | 类型 | 默认值 | 全局配置 |
+| --- | --- | --- | --- | --- |
+| nzAfterOpen      | Modal 打开后的回调 | EventEmitter | - |
+| nzAfterClose      | Modal 完全关闭后的回调，可监听close/destroy方法传入的参数 | EventEmitter | - |
+| nzBodyStyle       | Modal body 样式 | `object` | - |
+| nzCancelText      | 取消按钮文字。<i>设为 null 表示不显示取消按钮（若在普通模式下使用了 nzFooter 参数，则该值无效）</i> | `string` | 取消 |
+| nzClosable        | 是否显示右上角的关闭按钮。<i>确认框模式下该值无效（默认会被隐藏）</i> | `boolean` | `true` |
+| nzOkLoading       | 确定按钮 loading | `boolean` | `false` |
+| nzCancelLoading   | 取消按钮 loading | `boolean` | `false` |
+| nzOkDisabled      | 是否禁用确定按钮 | `boolean` | `false` |
+| nzCancelDisabled  | 是否禁用取消按钮 | `boolean` | `false` |
 | nzFooter          | 底部内容。<i>1. 仅在普通模式下有效。<br>2. 可通过传入 ModalButtonOptions 来最大程度自定义按钮（详见案例或下方说明）。<br>3. 当不需要底部时，可以设为 null</i> | string<br>TemplateRef<br>ModalButtonOptions | 默认的确定取消按钮 |
 | nzGetContainer    | 指定 Modal 挂载的 HTML 节点 | HTMLElement<br>() => HTMLElement| 默认容器 |
-| nzMask            | 是否展示遮罩 | boolean | true |
-| nzMaskClosable    | 点击蒙层是否允许关闭 | boolean | true |
-| nzMaskStyle       | 遮罩样式 | object | 无 |
-| nzOkText          | 确认按钮文字。<i>设为 null 表示不显示取消按钮（若在普通模式下使用了 nzFooter 参数，则该值无效）</i> | string | 确定 |
-| nzOkType          | 确认按钮类型。<i>与button的type类型值一致</i> | string | primary |
-| nzStyle           | 可用于设置浮层的样式，调整浮层位置等 | object | 无 |
-| nzTitle           | 标题。<i>留空表示不展示标题。TemplateRef的使用方法可参考案例</i> | string<br>TemplateRef | 无 |
-| nzVisible         | 对话框是否可见。<i>当以 `<nz-modal>` 标签使用时，请务必使用双向绑定，例如：`[(nzVisible)]="visible"`</i> | boolean | false |
+| nzKeyboard        | 是否支持键盘esc关闭 | `boolean` | `true` |
+| nzMask            | 是否展示遮罩 | `boolean` | `true` | ✅ |
+| nzMaskClosable    | 点击蒙层是否允许关闭 | `boolean` | `true` | ✅ |
+| nzMaskStyle       | 遮罩样式 | `object` | - |
+| nzOkText          | 确认按钮文字。<i>设为 null 表示不显示确认按钮（若在普通模式下使用了 nzFooter 参数，则该值无效）</i> | `string` | 确定 |
+| nzOkType          | 确认按钮类型。<i>与button的type类型值一致</i> | `string` | primary |
+| nzStyle           | 可用于设置浮层的样式，调整浮层位置等 | `object` | - |
+| nzTitle           | 标题。<i>留空表示不展示标题。TemplateRef的使用方法可参考案例</i> | string<br>TemplateRef | - |
+| nzCloseIcon       | 自定义关闭图标 | `string\|TemplateRef<void>` | - |
+| nzVisible         | 对话框是否可见。<i>当以 `<nz-modal>` 标签使用时，请务必使用双向绑定，例如：`[(nzVisible)]="visible"`</i> | `boolean` | `false` |
 | nzWidth           | 宽度。<i>使用数字时，默认单位为px</i> | string<br>number | 520 |
-| nzWrapClassName   | 对话框外层容器的类名 | string | 无 |
-| nzZIndex          | 设置 Modal 的 `z-index` | number | 1000 |
-| nzOnCancel        | 点击遮罩层或右上角叉或取消按钮的回调（若nzContent为Component，则将会以该Component实例作为参数）。<i>注：当以`NzModalService.create`创建时，此参数应传入function（回调函数）。该函数可返回promise，待执行完毕或promise结束时，将自动关闭对话框（返回false可阻止关闭）</i> | EventEmitter | 无 |
-| nzOnOk            | 点击确定回调（若nzContent为Component，则将会以该Component实例作为参数）。<i>注：当以`NzModalService.create`创建时，此参数应传入function（回调函数）。该函数可返回promise，待执行完毕或promise结束时，将自动关闭对话框（返回false可阻止关闭）</i> | EventEmitter | 无 |
-| nzContent         | 内容 | string<br>TemplateRef<br>Component<br>ng-content | 无 |
-| nzComponentParams | 当nzContent为组件类(Component)时，该参数中的属性将传入nzContent实例中 | object | 无 |
-| nzIconType        | 图标 Icon 类型。<i>仅 确认框模式 下有效</i> | string | question-circle |
+| nzClassName       | 对话框的类名 | `string` | - |
+| nzWrapClassName   | 对话框外层容器的类名 | `string` | - |
+| nzZIndex          | 设置 Modal 的 `z-index` | `number` | 1000 |
+| nzOnCancel        | 点击遮罩层或右上角叉或取消按钮的回调（若nzContent为Component，则将会以该Component实例作为参数）。<i>注：当以`NzModalService.create`创建时，此参数应传入function（回调函数）。该函数可返回promise，待执行完毕或promise结束时，将自动关闭对话框（返回false可阻止关闭）</i> | EventEmitter | - |
+| nzOnOk            | 点击确定回调（若nzContent为Component，则将会以该Component实例作为参数）。<i>注：当以`NzModalService.create`创建时，此参数应传入function（回调函数）。该函数可返回promise，待执行完毕或promise结束时，将自动关闭对话框（返回false可阻止关闭）</i> | EventEmitter | - |
+| nzContent         | 内容 | string<br>TemplateRef<br>Component<br>ng-content | - |
+| nzComponentParams | 当nzContent为组件类(Component)时，该参数中的属性将传入nzContent实例中 | `object` | - |
+| nzIconType        | 图标 Icon 类型。<i>仅 确认框模式 下有效</i> | `string` | question-circle |
 
 #### 注意
 
 > `<nz-modal>` 默认关闭后状态不会自动清空, 如果希望每次打开都是新内容，请采用 `NzModalService` 服务方式创建对话框（当以服务方式创建时，默认会监听 `nzAfterClose` 并销毁对话框）。
+
+> 通过 `NzModalService` 服务方式创建的对话框需要自行管理其生命周期。比如你在页面路由切换时，服务方式创建的对话框并不会被销毁，你需要使用对话框引用来手动销毁（`NzModalRef.close()` 或 `NzModalRef.destroy()`）。
 
 #### 采用服务方式创建普通模式对话框
 
@@ -71,10 +84,10 @@ title: Modal
 
 | 参数       | 说明           | 类型             | 默认值       |
 |------------|----------------|------------------|--------------|
-| nzOnOk          | 点击确定按钮时将执行的回调函数（若nzContent为Component，则将会以该Component实例作为参数）。<i>该函数可返回promise，待执行完毕或promise结束时，将自动关闭对话框（返回false可阻止关闭）</i> | function | 无 |
-| nzOnCancel      | 点击遮罩层或右上角叉或取消按钮的回调（若nzContent为Component，则将会以该Component实例作为参数）。<i>该函数可返回promise，待执行完毕或promise结束时，将自动关闭对话框（返回false可阻止关闭）</i> | function | 无 |
+| nzOnOk          | 点击确定按钮时将执行的回调函数（若nzContent为Component，则将会以该Component实例作为参数）。<i>该函数可返回promise，待执行完毕或promise结束时，将自动关闭对话框（返回false可阻止关闭）</i> | function | - |
+| nzOnCancel      | 点击遮罩层或右上角叉或取消按钮的回调（若nzContent为Component，则将会以该Component实例作为参数）。<i>该函数可返回promise，待执行完毕或promise结束时，将自动关闭对话框（返回false可阻止关闭）</i> | function | - |
 | nzWidth         | 宽度 | string<br>number | 416 |
-| nzMaskClosable  | 点击蒙层是否允许关闭 | boolean | false |
+| nzMaskClosable  | 点击蒙层是否允许关闭 | `boolean` | `false` |
 
 以上函数调用后，会返回一个引用，可以通过该引用关闭弹窗。
 
@@ -112,7 +125,7 @@ constructor(modal: NzModalService) {
 | triggerOk()               | 手动触发nzOnOk |
 | triggerCancel()           | 手动触发nzOnCancel |
 
-#### ModalButtonOptions（用于自定义底部按钮）
+### ModalButtonOptions（用于自定义底部按钮）
 
 可将此类型数组传入 `nzFooter`，用于自定义底部按钮。
 
@@ -140,3 +153,21 @@ nzFooter: [{
 ```
 
 以上配置项也可在运行态实时改变，来触发按钮行为改变。
+
+### [nzModalFooter]
+
+另一种自定义页脚按钮的方式。
+
+```html
+<div *nzModalFooter>
+  <button nz-button nzType="default" (click)="handleCancel()">Custom Callback</button>
+  <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isConfirmLoading">Custom Submit</button>
+</div>
+
+<!-- or -->
+
+<ng-template [nzModalFooter]>
+  <button nz-button nzType="default" (click)="handleCancel()">Custom Callback</button>
+  <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isConfirmLoading">Custom Submit</button>
+</ng-template>
+```

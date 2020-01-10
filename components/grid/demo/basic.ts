@@ -17,7 +17,7 @@ import { Component } from '@angular/core';
       <div nz-col nzSpan="6">col-6</div>
       <div nz-col nzSpan="6">col-6</div>
       <div nz-col nzSpan="6">col-6</div>
-    </div>`
+    </div>
+  `
 })
-export class NzDemoGridBasicComponent {
-}
+export class NzDemoGridBasicComponent {}

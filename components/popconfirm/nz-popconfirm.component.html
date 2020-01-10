@@ -2,35 +2,46 @@
 <ng-template
   #overlay="cdkConnectedOverlay"
   cdkConnectedOverlay
-  [cdkConnectedOverlayOrigin]="overlayOrigin"
+  nzConnectedOverlay
+  [cdkConnectedOverlayOrigin]="origin"
   [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"
   (backdropClick)="hide()"
   (detach)="hide()"
   (positionChange)="onPositionChange($event)"
   [cdkConnectedOverlayPositions]="_positions"
-  [cdkConnectedOverlayOpen]="visible$ | async">
-  <div class="ant-popover" [ngClass]="_classMap" [ngStyle]="nzOverlayStyle" [@fadeAnimation]="''+(visible$ | async)"
-    (@fadeAnimation.done)="_afterVisibilityAnimation($event)">
+  [cdkConnectedOverlayOpen]="_visible"
+>
+  <div
+    class="ant-popover"
+    [ngClass]="_classMap"
+    [ngStyle]="nzOverlayStyle"
+    [@.disabled]="noAnimation?.nzNoAnimation"
+    [nzNoAnimation]="noAnimation?.nzNoAnimation"
+    [@zoomBigMotion]="'active'"
+  >
     <div class="ant-popover-content">
       <div class="ant-popover-arrow"></div>
       <div class="ant-popover-inner">
         <div>
           <div class="ant-popover-inner-content">
-            <div class="ant-popover-message" *ngIf="!nzTemplate">
-              <i class="anticon anticon-exclamation-circle"></i>
-              <div class="ant-popover-message-title">{{ nzTitle }}</div>
+            <div class="ant-popover-message">
+              <ng-container *nzStringTemplateOutlet="title">
+                <ng-container *nzStringTemplateOutlet="nzIcon">
+                  <i nz-icon [nzType]="nzIcon || 'exclamation-circle'" nzTheme="fill"></i>
+                </ng-container>
+                <div class="ant-popover-message-title">{{ title }}</div>
+              </ng-container>
             </div>
-            <div class="ant-popover-buttons" *ngIf="!nzTemplate">
+            <div class="ant-popover-buttons">
               <button nz-button [nzSize]="'small'" (click)="onCancel()">
                 <ng-container *ngIf="nzCancelText">{{ nzCancelText }}</ng-container>
                 <ng-container *ngIf="!nzCancelText">{{ 'Modal.cancelText' | nzI18n }}</ng-container>
               </button>
-              <button nz-button [nzSize]="'small'" [nzType]="'primary'" (click)="onConfirm()">
+              <button nz-button [nzSize]="'small'" [nzType]="nzOkType" (click)="onConfirm()">
                 <ng-container *ngIf="nzOkText">{{ nzOkText }}</ng-container>
                 <ng-container *ngIf="!nzOkText">{{ 'Modal.okText' | nzI18n }}</ng-container>
               </button>
             </div>
-            <ng-template *ngIf="nzTemplate" [ngTemplateOutlet]="nzTemplate"></ng-template>
           </div>
         </div>
       </div>

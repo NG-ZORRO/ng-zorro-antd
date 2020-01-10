@@ -8,24 +8,27 @@ import { Component } from '@angular/core';
       <label nz-radio-button nzValue="default">Default</label>
       <label nz-radio-button nzValue="small">Small</label>
     </nz-radio-group>
-    <br>
-    <br>
+    <br />
+    <br />
     <button nz-button [nzSize]="size" nzType="primary">Primary</button>
     <button nz-button [nzSize]="size" nzType="default">Default</button>
     <button nz-button [nzSize]="size" nzType="dashed">Dashed</button>
     <button nz-button [nzSize]="size" nzType="danger">Danger</button>
-    <br>
-    <button nz-button nzType="primary" [nzSize]="size" nzShape="circle"><i class="anticon anticon-download"></i>
-    </button>
-    <button nz-button nzType="primary" [nzSize]="size"><i class="anticon anticon-download"></i>Download</button>
-    <br>
+    <button nz-button [nzSize]="size" nzType="link">Link</button>
+    <br />
+    <button nz-button nzType="primary" [nzSize]="size"><i nz-icon nzType="download"></i></button>
+    <button nz-button nzType="primary" [nzSize]="size" nzShape="circle"><i nz-icon nzType="download"></i></button>
+    <button nz-button nzType="primary" [nzSize]="size" nzShape="round"><i nz-icon nzType="download"></i></button>
+    <button nz-button nzType="primary" [nzSize]="size" nzShape="round"><i nz-icon nzType="download"></i>Download</button>
+    <button nz-button nzType="primary" [nzSize]="size"><i nz-icon nzType="download"></i>Download</button>
+    <br />
     <nz-button-group [nzSize]="size">
-      <button nz-button nzType="primary"><i class="anticon anticon-left"></i>Backward</button>
-      <button nz-button nzType="primary">Forward<i class="anticon anticon-right"></i></button>
+      <button nz-button nzType="primary"><i nz-icon nzType="left"></i>Backward</button>
+      <button nz-button nzType="primary">Forward<i nz-icon nzType="right"></i></button>
     </nz-button-group>
   `,
-  styles  : [
-      `
+  styles: [
+    `
       [nz-button] {
         margin-right: 8px;
         margin-bottom: 12px;

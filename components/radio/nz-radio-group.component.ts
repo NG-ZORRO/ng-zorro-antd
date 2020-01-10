@@ -1,133 +1,138 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
-  forwardRef,
   AfterContentInit,
-  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  ContentChildren,
   ElementRef,
-  HostBinding,
-  Input
+  forwardRef,
+  Input,
+  OnChanges,
+  OnDestroy,
+  QueryList,
+  Renderer2,
+  SimpleChanges,
+  ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { merge, Subject, Subscription } from 'rxjs';
+import { startWith, takeUntil } from 'rxjs/operators';
 
-export type NzRadioGroupSizeType = 'large' | 'default' | 'small';
+import { InputBoolean, isNotNil, NzSizeLDSType } from 'ng-zorro-antd/core';
 
-import { trimWhiteSpace } from '../core/util/trim-whitespace';
-
-import { NzRadioButtonComponent } from './nz-radio-button.component';
 import { NzRadioComponent } from './nz-radio.component';
 
-@Component({
-  selector           : 'nz-radio-group',
-  preserveWhitespaces: false,
-  template           : `
-    <ng-content></ng-content>`,
-  host               : {
-    '[class.ant-radio-group]': 'true'
-  },
-  providers          : [
-    {
-      provide    : NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => NzRadioGroupComponent),
-      multi      : true
-    }
-  ]
-})
-export class NzRadioGroupComponent implements AfterContentInit, ControlValueAccessor, AfterViewInit {
-  private _size: NzRadioGroupSizeType = 'default';
-  private _name: string;
-  private _disabled: boolean = false;
-  el: HTMLElement;
-  value: string;
+export type NzRadioButtonStyle = 'outline' | 'solid';
 
-  // ngModel Access
+@Component({
+  selector: 'nz-radio-group',
+  exportAs: 'nzRadioGroup',
+  preserveWhitespaces: false,
+  templateUrl: './nz-radio-group.component.html',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => NzRadioGroupComponent),
+      multi: true
+    }
+  ],
+  host: {
+    '[class.ant-radio-group-large]': `nzSize === 'large'`,
+    '[class.ant-radio-group-small]': `nzSize === 'small'`,
+    '[class.ant-radio-group-solid]': `nzButtonStyle === 'solid'`
+  }
+})
+export class NzRadioGroupComponent implements AfterContentInit, ControlValueAccessor, OnDestroy, OnChanges {
+  /* tslint:disable-next-line:no-any */
+  private value: any;
+  private destroy$ = new Subject();
+  private selectSubscription: Subscription;
+  private touchedSubscription: Subscription;
   onChange: (_: string) => void = () => null;
   onTouched: () => void = () => null;
+  @ContentChildren(
+    forwardRef(() => NzRadioComponent),
+    { descendants: true }
+  )
+  radios: QueryList<NzRadioComponent>;
+  @Input() @InputBoolean() nzDisabled: boolean;
+  @Input() nzButtonStyle: NzRadioButtonStyle = 'outline';
+  @Input() nzSize: NzSizeLDSType = 'default';
+  @Input() nzName: string;
 
-  radios: Array<NzRadioComponent | NzRadioButtonComponent> = [];
-
-  @Input()
-  set nzSize(value: NzRadioGroupSizeType) {
-    this._size = value;
-  }
-
-  get nzSize(): NzRadioGroupSizeType {
-    return this._size;
-  }
-
-  @Input()
-  set nzDisabled(value: boolean) {
-    this._disabled = value;
-    this.radios.forEach((radio) => {
-      radio.nzDisabled = this.nzDisabled;
-    });
-  }
-
-  get nzDisabled(): boolean {
-    return this._disabled;
-  }
-
-  @Input()
-  set nzName(value: string) {
-    this._name = value;
-    this.updateChildrenName();
-  }
-
-  get nzName(): string {
-    return this._name;
-  }
-
-  updateChildrenName(): void {
-    if (this.nzName) {
-      this.radios.forEach((item) => {
-        item.name = this.nzName;
+  updateChildrenStatus(): void {
+    if (this.radios) {
+      Promise.resolve().then(() => {
+        this.radios.forEach(radio => {
+          radio.checked = radio.nzValue === this.value;
+          if (isNotNil(this.nzDisabled)) {
+            radio.nzDisabled = this.nzDisabled;
+          }
+          if (this.nzName) {
+            radio.name = this.nzName;
+          }
+          radio.markForCheck();
+        });
       });
     }
   }
 
-  syncCheckedValue(): void {
-    this.radios.forEach((item) => {
-      item.nzChecked = item.nzValue === this.value;
-    });
-  }
-
-  @HostBinding('class.ant-radio-group-large')
-  get isLarge(): boolean {
-    return this.nzSize === 'large';
-  }
-
-  @HostBinding('class.ant-radio-group-small')
-  get isSmall(): boolean {
-    return this.nzSize === 'small';
-  }
-
-  addRadio(radio: NzRadioComponent | NzRadioButtonComponent): void {
-    this.radios.push(radio);
-    radio.nzChecked = radio.nzValue === this.value;
-  }
-
-  selectRadio(radio: NzRadioComponent | NzRadioButtonComponent): void {
-    this.updateValue(radio.nzValue, true);
-  }
-
-  updateValue(value: string, emit: boolean): void {
-    this.value = value;
-    this.syncCheckedValue();
-    if (emit) {
-      this.onChange(value);
-    }
-  }
-
-  constructor(private elementRef: ElementRef) {
-    this.el = this.elementRef.nativeElement;
+  constructor(private cdr: ChangeDetectorRef, renderer: Renderer2, elementRef: ElementRef) {
+    renderer.addClass(elementRef.nativeElement, 'ant-radio-group');
   }
 
   ngAfterContentInit(): void {
-    this.syncCheckedValue();
-    this.updateChildrenName();
+    this.radios.changes.pipe(startWith(null), takeUntil(this.destroy$)).subscribe(() => {
+      this.updateChildrenStatus();
+      if (this.selectSubscription) {
+        this.selectSubscription.unsubscribe();
+      }
+      this.selectSubscription = merge(...this.radios.map(radio => radio.select$))
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(radio => {
+          if (this.value !== radio.nzValue) {
+            this.value = radio.nzValue;
+            this.updateChildrenStatus();
+            this.onChange(this.value);
+          }
+        });
+      if (this.touchedSubscription) {
+        this.touchedSubscription.unsubscribe();
+      }
+      this.touchedSubscription = merge(...this.radios.map(radio => radio.touched$))
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          Promise.resolve().then(() => this.onTouched());
+        });
+    });
   }
 
-  writeValue(value: string): void {
-    this.updateValue(value, false);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.nzDisabled || changes.nzName) {
+      this.updateChildrenStatus();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  /* tslint:disable-next-line:no-any */
+  writeValue(value: any): void {
+    this.value = value;
+    this.updateChildrenStatus();
+    this.cdr.markForCheck();
   }
 
   registerOnChange(fn: (_: string) => void): void {
@@ -140,9 +145,6 @@ export class NzRadioGroupComponent implements AfterContentInit, ControlValueAcce
 
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = isDisabled;
-  }
-
-  ngAfterViewInit(): void {
-    trimWhiteSpace(this.el);
+    this.cdr.markForCheck();
   }
 }

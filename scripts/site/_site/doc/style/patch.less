@@ -1,0 +1,136 @@
+[hidden] {
+  display: none !important;
+}
+
+.pic-plus > * {
+  display: inline-block !important;
+  vertical-align: middle;
+}
+
+.pic-plus span {
+  font-size: 30px;
+  color: #aaa;
+  margin: 0 20px;
+}
+
+.toc-affix {
+  &.fixed {
+    position: fixed;
+    top: 70px;
+    right: 30px;
+    .ant-anchor-ink {
+      left: 20px;
+      &::before {
+        width: 1px;
+      }
+    }
+  }
+  .ant-affix {
+    overflow: visible;
+  }
+  nz-link {
+    font-size: 12px;
+  }
+  .ant-anchor-link-active {
+    border-color: @primary-color;
+    color: @primary-color;
+  }
+}
+
+label {
+  &.api-type-label {
+    padding: 1px 10px;
+    font-size: 12px;
+    border-radius: 4px;
+    line-height: 18px;
+    display: inline;
+    vertical-align: middle;
+    color: #fff;
+    margin-left: 8px;
+    font-weight: normal;
+    text-transform: uppercase;
+    &.directive {
+      color: @magenta-6;
+      border: 2px solid @magenta-6;
+    }
+    &.component {
+      color: @blue-6;
+      border: 2px solid @blue-6;
+    }
+    &.service {
+      color: @green-6;
+      border: 2px solid @green-6;
+    }
+  }
+}
+
+.markdown pre code[class*="lang-"] {
+  padding: 12px 20px;
+}
+
+span.ant-component-decs {
+  font-size: 12px;
+  position: absolute;
+  color: #aaa;
+  right: 16px;
+}
+
+@media only screen and (max-width: 767.99px) {
+  nz-affix.toc-affix {
+    display: none;
+  }
+
+  .hide-menu {
+    display: none;
+  }
+
+  .popover-menu {
+    .ant-popover-inner {
+      overflow: hidden;
+      .ant-popover-inner-content {
+        padding: 0;
+        .ant-btn {
+          margin: 16px 8% 0 8px;
+        }
+        .ant-select {
+          display: block;
+          width: 60%;
+        }
+        .version {
+          margin: 16px auto;
+        }
+      }
+    }
+  }
+}
+
+.theme-color {
+  padding: 4px;
+  background: #fff;
+  border-radius: 2px;
+  box-shadow: rgba(0, 0, 0, .1) 0 0 0 1px;
+  display: inline-block;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.theme-color-value {
+  width: 80px;
+  height: 16px;
+  border-radius: 2px;
+}
+
+.theme-color-content .ant-popover-inner-content {
+  width: 200px;
+  padding: 0;
+}
+
+/* Code blocks */
+.markdown pre code[class*="language-"] {
+  padding: 12px 20px;
+  overflow: auto;
+}
+
+.page-wrapper {
+  transition: transform cubic-bezier(.78, .14, .13, .86) .3s;
+}

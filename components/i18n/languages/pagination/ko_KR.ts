@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 export default {
   // Options.jsx
   items_per_page: '/ 쪽',
@@ -11,5 +19,5 @@ export default {
   prev_5: '이전 5 페이지',
   next_5: '다음 5 페이지',
   prev_3: '이전 3 페이지',
-  next_3: '다음 3 페이지',
+  next_3: '다음 3 페이지'
 };

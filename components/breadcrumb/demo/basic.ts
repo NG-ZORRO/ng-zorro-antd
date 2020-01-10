@@ -13,8 +13,7 @@ import { Component } from '@angular/core';
       <nz-breadcrumb-item>
         An Application
       </nz-breadcrumb-item>
-    </nz-breadcrumb>`,
-  styles  : []
+    </nz-breadcrumb>
+  `
 })
-export class NzDemoBreadcrumbBasicComponent {
-}
+export class NzDemoBreadcrumbBasicComponent {}

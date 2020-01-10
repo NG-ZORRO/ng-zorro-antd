@@ -11,6 +11,6 @@ title:
 
 ## en-US
 
-You can use your own custom icons by setting the property `nzIcon` for `nz-step`.
+You can use your own custom icons by setting the property `nzIcon` for `nz-step`. Old API is still compatible but we strongly suggest the new API.
 
 

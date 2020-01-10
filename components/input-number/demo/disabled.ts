@@ -8,7 +8,8 @@ import { Component } from '@angular/core';
       <button nz-button [nzType]="'primary'" (click)="toggleDisabled()">
         <span>Toggle Disabled</span>
       </button>
-    </div>`
+    </div>
+  `
 })
 export class NzDemoInputNumberDisabledComponent {
   demoValue = 3;

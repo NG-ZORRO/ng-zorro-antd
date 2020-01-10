@@ -1,20 +1,13 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
-  selector     : 'nz-demo-mention-placement',
+  selector: 'nz-demo-mention-placement',
   encapsulation: ViewEncapsulation.None,
-  template     : `
-  <nz-mention
-    nzPlacement="top"
-    [nzSuggestions]="suggestions"
-    (nzOnSelect)="onSelect($event)">
-    <input
-      nzMentionTrigger
-      nz-input
-      [(ngModel)]="inputValue"
-      (ngModelChange)="onChange($event)">
-  </nz-mention>
-`
+  template: `
+    <nz-mention nzPlacement="top" [nzSuggestions]="suggestions" (nzOnSelect)="onSelect($event)">
+      <input nzMentionTrigger nz-input [(ngModel)]="inputValue" (ngModelChange)="onChange($event)" />
+    </nz-mention>
+  `
 })
 export class NzDemoMentionPlacementComponent {
   inputValue: string;

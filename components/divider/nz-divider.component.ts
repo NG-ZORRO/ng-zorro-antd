@@ -1,65 +1,42 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, TemplateRef } from '@angular/core';
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
 
-import { NzUpdateHostClassService } from '../core/services/update-host-class.service';
-import { toBoolean } from '../core/util/convert';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, OnInit, TemplateRef, ViewEncapsulation } from '@angular/core';
+
+import { InputBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
 @Component({
   selector: 'nz-divider',
-  template: `
-    <span *ngIf="isText" class="ant-divider-inner-text">
-      <ng-container *ngIf="textStr; else textTpl">{{ textStr }}</ng-container>
-    </span>
-    `,
-  providers: [NzUpdateHostClassService],
+  exportAs: 'nzDivider',
+  templateUrl: './nz-divider.component.html',
   preserveWhitespaces: false,
+  providers: [NzUpdateHostClassService],
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzDividerComponent implements OnChanges, OnInit {
-  // region fields
-
-  isText = false;
-  textStr = '';
-  textTpl: TemplateRef<void>;
-  @Input()
-  set nzText(value: string | TemplateRef<void>) {
-    if (value instanceof TemplateRef) {
-      this.textStr = null;
-      this.textTpl = value;
-    } else {
-      this.textStr = value;
-    }
-    this.isText = !!value;
-  }
-
+  @Input() nzText: string | TemplateRef<void>;
   @Input() nzType: 'horizontal' | 'vertical' = 'horizontal';
+  @Input() nzOrientation: 'left' | 'right' | 'center' = 'center';
+  @Input() @InputBoolean() nzDashed = false;
 
-  @Input() nzOrientation: 'left' | 'right' | '' = '';
-
-  private _dashed = false;
-  @Input()
-  set nzDashed(value: boolean) {
-    this._dashed = toBoolean(value);
-  }
-  get nzDashed(): boolean {
-    return this._dashed;
-  }
-
-  // endregion
   private setClass(): void {
-    const orientationPrefix = (this.nzOrientation.length > 0) ? '-' + this.nzOrientation : this.nzOrientation;
-    const classMap = {
+    this.nzUpdateHostClassService.updateHostClass(this.elementRef.nativeElement, {
       ['ant-divider']: true,
       [`ant-divider-${this.nzType}`]: true,
-      [`ant-divider-with-text${orientationPrefix}`]: this.isText,
+      [`ant-divider-with-text-${this.nzOrientation}`]: this.nzText,
       [`ant-divider-dashed`]: this.nzDashed
-    };
-    this.updateHostClassService.updateHostClass(this.el.nativeElement, classMap);
-    this.cd.detectChanges();
+    });
   }
 
-  constructor(private el: ElementRef, private cd: ChangeDetectorRef, private updateHostClassService: NzUpdateHostClassService) {}
+  constructor(private elementRef: ElementRef, private nzUpdateHostClassService: NzUpdateHostClassService) {}
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
     this.setClass();
   }
 

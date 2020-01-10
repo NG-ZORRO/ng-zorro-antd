@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'nz-demo-modal-confirm',
@@ -7,10 +7,16 @@ import { NzModalService } from 'ng-zorro-antd';
     <button nz-button nzType="info" (click)="showConfirm()">Confirm</button>
     <button nz-button nzType="dashed" (click)="showDeleteConfirm()">Delete</button>
   `,
-  styles  : []
+  styles: [
+    `
+      button {
+        margin-right: 8px;
+      }
+    `
+  ]
 })
 export class NzDemoModalConfirmComponent {
-  constructor(private modalService: NzModalService) { }
+  constructor(private modalService: NzModalService) {}
 
   showConfirm(): void {
     this.modalService.confirm({

@@ -16,16 +16,16 @@ import { Component } from '@angular/core';
 
     <div class="gutter-example">
       <div nz-row [nzGutter]="gutter">
-        <div nz-col class="gutter-row" [nzSpan]="24/count" *ngFor="let i of generateArray(count)">
+        <div nz-col class="gutter-row" [nzSpan]="24 / count" *ngFor="let i of generateArray(count)">
           <div class="grid-config">Column</div>
         </div>
       </div>
     </div>
   `,
-  styles  : [
-      `
+  styles: [
+    `
       .grid-config {
-        background: #00A0E9;
+        background: #00a0e9;
         height: 120px;
         line-height: 120px;
         font-size: 13px;
@@ -37,7 +37,7 @@ export class NzDemoGridPlaygroundComponent {
   gutter = 16;
   count = 4;
   marksGutter = {
-    8 : 8,
+    8: 8,
     16: 16,
     24: 24,
     32: 32,
@@ -45,11 +45,11 @@ export class NzDemoGridPlaygroundComponent {
     48: 48
   };
   marksCount = {
-    2 : 2,
-    3 : 3,
-    4 : 4,
-    6 : 6,
-    8 : 8,
+    2: 2,
+    3: 3,
+    4: 4,
+    6: 6,
+    8: 8,
     12: 12
   };
 

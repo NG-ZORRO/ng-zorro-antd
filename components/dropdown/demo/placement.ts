@@ -1,97 +1,25 @@
 import { Component } from '@angular/core';
+import { NzPlacementType } from 'ng-zorro-antd/dropdown';
 
 @Component({
   selector: 'nz-demo-dropdown-placement',
   template: `
     <div>
-      <nz-dropdown [nzPlacement]="'bottomLeft'">
-        <button nz-button nz-dropdown>bottomLeft</button>
-        <ul nz-menu>
-          <li nz-menu-item>
-            <a>1st menu item length</a>
-          </li>
-          <li nz-menu-item>
-            <a>2nd menu item length</a>
-          </li>
-          <li nz-menu-item>
-            <a>3rd menu item length</a>
-          </li>
-        </ul>
-      </nz-dropdown>
-      <nz-dropdown [nzPlacement]="'bottomCenter'">
-        <button nz-button nz-dropdown>bottomCenter</button>
-        <ul nz-menu>
-          <li nz-menu-item>
-            <a>1st menu item length</a>
-          </li>
-          <li nz-menu-item>
-            <a>2nd menu item length</a>
-          </li>
-          <li nz-menu-item>
-            <a>3rd menu item length</a>
-          </li>
-        </ul>
-      </nz-dropdown>
-      <nz-dropdown [nzPlacement]="'bottomRight'">
-        <button nz-button nz-dropdown>bottomRight</button>
-        <ul nz-menu>
-          <li nz-menu-item>
-            <a>1st menu item length</a>
-          </li>
-          <li nz-menu-item>
-            <a>2nd menu item length</a>
-          </li>
-          <li nz-menu-item>
-            <a>3rd menu item length</a>
-          </li>
-        </ul>
-      </nz-dropdown>
-      <nz-dropdown [nzPlacement]="'topLeft'">
-        <button nz-button nz-dropdown>topLeft</button>
-        <ul nz-menu>
-          <li nz-menu-item>
-            <a>1st menu item length</a>
-          </li>
-          <li nz-menu-item>
-            <a>2nd menu item length</a>
-          </li>
-          <li nz-menu-item>
-            <a>3rd menu item length</a>
-          </li>
-        </ul>
-      </nz-dropdown>
-      <nz-dropdown [nzPlacement]="'topCenter'">
-        <button nz-button nz-dropdown>topCenter</button>
-        <ul nz-menu>
-          <li nz-menu-item>
-            <a>1st menu item length</a>
-          </li>
-          <li nz-menu-item>
-            <a>2nd menu item length</a>
-          </li>
-          <li nz-menu-item>
-            <a>3rd menu item length</a>
-          </li>
-        </ul>
-      </nz-dropdown>
-      <nz-dropdown [nzPlacement]="'topRight'">
-        <button nz-button nz-dropdown>topRight</button>
-        <ul nz-menu>
-          <li nz-menu-item>
-            <a>1st menu item length</a>
-          </li>
-          <li nz-menu-item>
-            <a>2nd menu item length</a>
-          </li>
-          <li nz-menu-item>
-            <a>3rd menu item length</a>
-          </li>
-        </ul>
-      </nz-dropdown>
-    </div>`,
-  styles  : [
-      `
-      :host ::ng-deep .ant-btn {
+      <ng-container *ngFor="let position of listOfPosition">
+        <button nz-button nz-dropdown [nzDropdownMenu]="menu" [nzPlacement]="position">{{ position }}</button>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+          <ul nz-menu>
+            <li nz-menu-item>1st menu item length</li>
+            <li nz-menu-item>2nd menu item length</li>
+            <li nz-menu-item>3rd menu item length</li>
+          </ul>
+        </nz-dropdown-menu>
+      </ng-container>
+    </div>
+  `,
+  styles: [
+    `
+      [nz-button] {
         margin-right: 8px;
         margin-bottom: 8px;
       }
@@ -99,4 +27,5 @@ import { Component } from '@angular/core';
   ]
 })
 export class NzDemoDropdownPlacementComponent {
+  listOfPosition: NzPlacementType[] = ['bottomLeft', 'bottomCenter', 'bottomRight', 'topLeft', 'topCenter', 'topRight'];
 }

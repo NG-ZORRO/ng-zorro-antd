@@ -1,3 +1,11 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import Calendar from './calendar/de_DE';
 import DatePicker from './date-picker/de_DE';
 import Pagination from './pagination/de_DE';
@@ -9,36 +17,51 @@ export default {
   DatePicker,
   TimePicker,
   Calendar,
+  global: {
+    placeholder: 'Bitte auswählen'
+  },
   Table: {
     filterTitle: 'Filter-Menü',
     filterConfirm: 'OK',
     filterReset: 'Zurücksetzen',
-    emptyText: 'Keine Daten',
-    selectAll: 'Selektiere Alle',
-    selectInvert: 'Selektion Invertieren',
+    selectAll: 'Alle auswählen',
+    selectInvert: 'Auswahl Invertieren',
+    sortTitle: 'Sortieren'
   },
   Modal: {
     okText: 'OK',
     cancelText: 'Abbrechen',
-    justOkText: 'OK',
+    justOkText: 'OK'
   },
   Popconfirm: {
     okText: 'OK',
-    cancelText: 'Abbrechen',
+    cancelText: 'Abbrechen'
   },
   Transfer: {
-    notFoundContent: 'Nicht gefunden',
+    titles: ['', ''],
     searchPlaceholder: 'Suchen',
     itemUnit: 'Eintrag',
-    itemsUnit: 'Einträge',
-  },
-  Select: {
-    notFoundContent: 'Nicht gefunden',
+    itemsUnit: 'Einträge'
   },
   Upload: {
     uploading: 'Hochladen...',
     removeFile: 'Datei entfernen',
     uploadError: 'Fehler beim Hochladen',
-    previewFile: 'Dateivorschau',
+    previewFile: 'Dateivorschau'
   },
+  Empty: {
+    description: 'Keine Daten'
+  },
+  Icon: {
+    icon: 'Symbol'
+  },
+  Text: {
+    edit: 'Bearbeiten',
+    copy: 'Kopieren',
+    copied: 'Kopieren erfolgreich',
+    expand: 'Aufklappen'
+  },
+  PageHeader: {
+    back: 'Zurück'
+  }
 };
