@@ -6,5 +6,5 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-avatar.component';
-export * from './nz-avatar.module';
+export * from './avatar.component';
+export * from './avatar.module';

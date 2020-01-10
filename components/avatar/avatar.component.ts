@@ -16,8 +16,6 @@ import {
   Input,
   OnChanges,
   Output,
-  Renderer2,
-  SimpleChanges,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -29,7 +27,18 @@ const NZ_CONFIG_COMPONENT_NAME = 'avatar';
 @Component({
   selector: 'nz-avatar',
   exportAs: 'nzAvatar',
-  templateUrl: './nz-avatar.component.html',
+  template: `
+    <i nz-icon *ngIf="nzIcon && hasIcon" [nzType]="nzIcon"></i>
+    <img *ngIf="nzSrc && hasSrc" [src]="nzSrc" [attr.srcset]="nzSrcSet" [attr.alt]="nzAlt" (error)="imgError($event)" />
+    <span class="ant-avatar-string" #textEl [ngStyle]="textStyles" *ngIf="nzText && hasText">{{ nzText }}</span>
+  `,
+  host: {
+    '[class]': 'classMap',
+    '[style.width]': 'customSize',
+    '[style.height]': 'customSize',
+    '[style.line-height]': 'customSize',
+    '[style.font-size]': '(hasIcon && customSize) ? (nzSize / 2 + "px") : null'
+  },
   providers: [NzUpdateHostClassService],
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -45,38 +54,34 @@ export class NzAvatarComponent implements OnChanges {
   @Input() nzIcon: string;
   @Output() readonly nzError = new EventEmitter<Event>();
 
-  oldAPIIcon = true; // Make the user defined icon compatible to old API. Should be removed in 2.0.
   hasText: boolean = false;
   hasSrc: boolean = true;
   hasIcon: boolean = false;
   textStyles: {};
+  classMap: {};
+  customSize: string | null = null;
 
   @ViewChild('textEl', { static: false }) textEl: ElementRef;
 
   private el: HTMLElement = this.elementRef.nativeElement;
-  private prefixCls = 'ant-avatar';
 
   constructor(
     public nzConfigService: NzConfigService,
     private elementRef: ElementRef,
-    private cd: ChangeDetectorRef,
-    private updateHostClassService: NzUpdateHostClassService,
-    private renderer: Renderer2,
+    private cdr: ChangeDetectorRef,
     private platform: Platform
   ) {}
 
-  setClass(): this {
-    const classMap = {
-      [this.prefixCls]: true,
-      [`${this.prefixCls}-lg`]: this.nzSize === 'large',
-      [`${this.prefixCls}-sm`]: this.nzSize === 'small',
-      [`${this.prefixCls}-${this.nzShape}`]: this.nzShape,
-      [`${this.prefixCls}-icon`]: this.nzIcon,
-      [`${this.prefixCls}-image`]: this.hasSrc // downgrade after image error
+  setClass(): void {
+    this.classMap = {
+      ['ant-avatar']: true,
+      [`ant-avatar-lg`]: this.nzSize === 'large',
+      [`ant-avatar-sm`]: this.nzSize === 'small',
+      [`ant-avatar-${this.nzShape}`]: this.nzShape,
+      [`ant-avatar-icon`]: this.nzIcon,
+      [`ant-avatar-image`]: this.hasSrc // downgrade after image error
     };
-    this.updateHostClassService.updateHostClass(this.el, classMap);
-    this.cd.detectChanges();
-    return this;
+    this.cdr.detectChanges();
   }
 
   imgError($event: Event): void {
@@ -90,21 +95,20 @@ export class NzAvatarComponent implements OnChanges {
       } else if (this.nzText) {
         this.hasText = true;
       }
-      this.setClass().notifyCalc();
+      this.setClass();
       this.setSizeStyle();
+      this.notifyCalc();
     }
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.hasOwnProperty('nzIcon') && changes.nzIcon.currentValue) {
-      this.oldAPIIcon = changes.nzIcon.currentValue.indexOf('anticon') > -1;
-    }
+  ngOnChanges(): void {
     this.hasText = !this.nzSrc && !!this.nzText;
     this.hasIcon = !this.nzSrc && !!this.nzIcon;
     this.hasSrc = !!this.nzSrc;
 
-    this.setClass().notifyCalc();
+    this.setClass();
     this.setSizeStyle();
+    this.notifyCalc();
   }
 
   private calcStringSize(): void {
@@ -118,31 +122,29 @@ export class NzAvatarComponent implements OnChanges {
     this.textStyles = {
       transform: `scale(${scale}) translateX(-50%)`
     };
-    if (typeof this.nzSize === 'number') {
+    if (this.customSize) {
       Object.assign(this.textStyles, {
-        lineHeight: `${this.nzSize}px`
+        lineHeight: this.customSize
       });
     }
-    this.cd.detectChanges();
+    this.cdr.detectChanges();
   }
 
-  private notifyCalc(): this {
+  private notifyCalc(): void {
     // If use ngAfterViewChecked, always demands more computations, so......
     if (this.platform.isBrowser) {
       setTimeout(() => {
         this.calcStringSize();
       });
     }
-    return this;
   }
 
   private setSizeStyle(): void {
-    const size = typeof this.nzSize === 'string' ? this.nzSize : `${this.nzSize}px`;
-    this.renderer.setStyle(this.el, 'width', size);
-    this.renderer.setStyle(this.el, 'height', size);
-    this.renderer.setStyle(this.el, 'line-height', size);
-    if (this.hasIcon) {
-      this.renderer.setStyle(this.el, 'font-size', `calc(${size} / 2)`);
+    if (typeof this.nzSize === 'number') {
+      this.customSize = `${this.nzSize}px`;
+    } else {
+      this.customSize = null;
     }
+    this.cdr.markForCheck();
   }
 }
