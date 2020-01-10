@@ -12,7 +12,7 @@ import { NgModule } from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core';
 
-import { NzBadgeComponent } from './nz-badge.component';
+import { NzBadgeComponent } from './badge.component';
 
 @NgModule({
   declarations: [NzBadgeComponent],
