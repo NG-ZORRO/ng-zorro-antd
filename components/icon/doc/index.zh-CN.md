@@ -132,6 +132,21 @@ export class AppModule {
 
 请在 constructor 里或者在 `AppInitService` 里调用这个方法。
 
+### 在子模块中补充图标
+
+有时候，为了避免增大 main.js 的体积，你可能想要从懒加载模块中引入图标，这时你就可以使用 `NzIconModule.forChild` 来追加图标。
+
+```ts
+@NgModule({
+  imports: [CommonModule, NzIconModule.patch([QuestionOutline])],
+})
+class ChildModule {}
+```
+
+这样，当 `ChildModule` 加载之后，整个应用都能够使用 QuestionOutline 图标。
+
+当然，不要忘记在 `NZ_ICONS` 中删除该图标。
+
 ### 双色图标主色
 
 对于双色图标，可以通过提供全局配置 `{ nzIcon: { nzTwotoneColor: 'xxx' } }` 或 `NzConfigService` 的对应方法修改来全局设置图标主色。

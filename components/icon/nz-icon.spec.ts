@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DebugElement } from '@angular/core';
+import { Component, DebugElement, NgModule } from '@angular/core';
 import { async, ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import {
@@ -17,223 +17,252 @@ import { NzIconDirective } from './nz-icon.directive';
 import { NzIconModule } from './nz-icon.module';
 import { NZ_ICON_DEFAULT_TWOTONE_COLOR, NZ_ICONS, NzIconService } from './nz-icon.service';
 
-describe('nz icon', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [CommonModule, NzIconModule],
-      declarations: [NzTestIconExtensionsComponent, NzTestIconCustomComponent, NzTestIconIconfontComponent],
-      providers: [
-        {
-          provide: NZ_ICONS,
-          useValue: [LeftOutline, RightOutline, QuestionOutline, QuestionCircleOutline, LoadingOutline, QuestionCircleFill]
-        },
-        {
-          provide: NZ_ICON_DEFAULT_TWOTONE_COLOR,
-          useValue: '#3344cc'
-        }
-      ]
-    }).compileComponents();
+describe('nz-icon', () => {
+  describe('basics', () => {
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [CommonModule, NzIconModule],
+        declarations: [NzTestIconExtensionsComponent, NzTestIconCustomComponent, NzTestIconIconfontComponent],
+        providers: [
+          {
+            provide: NZ_ICONS,
+            useValue: [LeftOutline, RightOutline, QuestionOutline, QuestionCircleOutline, LoadingOutline, QuestionCircleFill]
+          },
+          {
+            provide: NZ_ICON_DEFAULT_TWOTONE_COLOR,
+            useValue: '#3344cc'
+          }
+        ]
+      }).compileComponents();
+    });
+
+    /**
+     * Extended features built on `@ant-design/icons-angular`.
+     */
+    describe('extensions', () => {
+      let testComponent: NzTestIconExtensionsComponent;
+      let fixture: ComponentFixture<NzTestIconExtensionsComponent>;
+      let icons: DebugElement[];
+
+      beforeEach(() => {
+        fixture = TestBed.createComponent(NzTestIconExtensionsComponent);
+        testComponent = fixture.debugElement.componentInstance;
+        icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
+      });
+
+      it('should get icon class name back', () => {
+        fixture.detectChanges();
+        expect(icons[0].nativeElement.classList.contains('anticon')).toBe(true);
+        expect(icons[0].nativeElement.classList.contains('anticon-question')).toBe(true);
+        expect(icons[1].nativeElement.classList.contains('anticon-loading')).toBe(true);
+      });
+
+      it('should change class name when type changes', () => {
+        testComponent.type = 'question-circle';
+        fixture.detectChanges();
+        expect(icons[0].nativeElement.classList.contains('anticon')).toBe(true);
+        expect(icons[0].nativeElement.classList.contains('anticon-question-circle')).toBe(true);
+        expect(icons[0].nativeElement.classList.contains('anticon-question')).not.toBe(true);
+      });
+
+      it('should support spin and cancel', fakeAsync(() => {
+        fixture.detectChanges();
+        tick(1000);
+        fixture.detectChanges();
+        expect(icons[0].nativeElement.firstChild.classList.contains('anticon-spin')).toBe(true);
+
+        testComponent.spin = false;
+        fixture.detectChanges();
+        tick(1000);
+        fixture.detectChanges();
+        expect(icons[0].nativeElement.firstChild.classList.contains('anticon-spin')).toBe(false);
+      }));
+
+      it('should make loading spin', fakeAsync(() => {
+        fixture.detectChanges();
+        tick(1000);
+        fixture.detectChanges();
+        expect(icons[1].nativeElement.firstChild.classList.contains('anticon-spin')).toBe(true);
+      }));
+
+      it('should rotate work', fakeAsync(() => {
+        fixture.detectChanges();
+        tick(1000);
+        fixture.detectChanges();
+        expect(icons[0].nativeElement.firstChild.style.transform).toBeFalsy();
+
+        testComponent.rotate = 120;
+        fixture.detectChanges();
+        tick(1000);
+        fixture.detectChanges();
+        expect(icons[0].nativeElement.firstChild.style.transform).toBe('rotate(120deg)');
+
+        testComponent.rotate = 0;
+        fixture.detectChanges();
+        tick(1000);
+        fixture.detectChanges();
+        expect(icons[0].nativeElement.firstChild.style.transform).toBeFalsy();
+      }));
+    });
+
+    describe('custom', () => {
+      let fixture: ComponentFixture<NzTestIconCustomComponent>;
+      let icons: DebugElement[];
+
+      beforeEach(() => {
+        fixture = TestBed.createComponent(NzTestIconCustomComponent);
+      });
+
+      it('should support custom svg element', () => {
+        fixture.detectChanges();
+        icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
+        const icon1 = icons[0];
+        expect(icon1.nativeElement.className).toContain('anticon');
+        expect(icon1.nativeElement.innerHTML).toContain('svg');
+        expect(icon1.nativeElement.innerHTML).toContain('viewBox="0 0 1024 1024" width="1em" height="1em" fill="currentColor"');
+      });
+    });
+
+    describe('iconfont', () => {
+      let fixture: ComponentFixture<NzTestIconIconfontComponent>;
+      let icons: DebugElement[];
+
+      beforeEach(() => {
+        fixture = TestBed.createComponent(NzTestIconIconfontComponent);
+      });
+
+      it('should support iconfont', async(() => {
+        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+          fixture.detectChanges();
+          icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
+          expect(icons[0].nativeElement.className).toContain('anticon');
+          expect(icons[0].nativeElement.innerHTML).toContain('xlink:href="#icon-tuichu"');
+          expect(icons[1].nativeElement.innerHTML).toContain('link:href="#icon-facebook"');
+          expect(icons[2].nativeElement.innerHTML).toContain('xlink:href="#icon-twitter"');
+        });
+      }));
+    });
+  });
+
+  describe('nz config service', () => {
+    let fixture: ComponentFixture<NzTestIconExtensionsComponent>;
+    let nzConfigService: NzConfigService;
+    let icons: DebugElement[];
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [CommonModule, NzIconModule],
+        declarations: [NzTestIconExtensionsComponent],
+        providers: [
+          {
+            provide: NZ_ICONS,
+            useValue: [LeftOutline, RightOutline, QuestionOutline]
+          }
+        ]
+      });
+
+      fixture = TestBed.createComponent(NzTestIconExtensionsComponent);
+      fixture.detectChanges();
+      icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
+    });
+
+    beforeEach(inject([NzConfigService], (c: NzConfigService) => {
+      nzConfigService = c;
+    }));
+
+    it('should support config service', () => {
+      nzConfigService!.set('icon', { nzTwotoneColor: '234567' });
+      expect(icons[0].componentInstance._iconService.twoToneColor.primaryColor).not.toBe('234567');
+      expect(icons[0].componentInstance._iconService.twoToneColor.primaryColor).toBe('#1890ff');
+    });
   });
 
   /**
-   * Extended features built on `@ant-design/icons-angular`.
+   * @deprecated This API is not going to be provided in 9.0.0.
    */
-  describe('extensions', () => {
-    let testComponent: NzTestIconExtensionsComponent;
+  describe('nz icon twotone color injection', () => {
     let fixture: ComponentFixture<NzTestIconExtensionsComponent>;
     let icons: DebugElement[];
 
-    beforeEach(() => {
+    it('should support default twotone color', () => {
+      TestBed.configureTestingModule({
+        imports: [CommonModule, NzIconModule],
+        declarations: [NzTestIconExtensionsComponent],
+        providers: [
+          {
+            provide: NZ_ICONS,
+            useValue: [LeftOutline, RightOutline, QuestionOutline]
+          },
+          {
+            provide: NZ_ICON_DEFAULT_TWOTONE_COLOR,
+            useValue: '#3344cc'
+          }
+        ]
+      });
+
       fixture = TestBed.createComponent(NzTestIconExtensionsComponent);
-      testComponent = fixture.debugElement.componentInstance;
+      fixture.detectChanges();
+
       icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
+      expect(icons[0].nativeElement.querySelector('svg')).not.toBe(null);
+      expect(icons[0].componentInstance._iconService.twoToneColor.primaryColor).toBe('#3344cc');
     });
 
-    it('should get icon class name back', () => {
+    it('should not set non-hashed-started string', () => {
+      TestBed.configureTestingModule({
+        imports: [CommonModule, NzIconModule],
+        declarations: [NzTestIconExtensionsComponent],
+        providers: [
+          {
+            provide: NZ_ICONS,
+            useValue: [LeftOutline, RightOutline, QuestionOutline]
+          },
+          {
+            provide: NZ_ICON_DEFAULT_TWOTONE_COLOR,
+            useValue: '3344cc'
+          }
+        ]
+      });
+
+      fixture = TestBed.createComponent(NzTestIconExtensionsComponent);
+      icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
+
       fixture.detectChanges();
-      expect(icons[0].nativeElement.classList.contains('anticon')).toBe(true);
+      expect(icons[0].componentInstance._iconService.twoToneColor.primaryColor).not.toBe('3344cc');
+      expect(icons[0].componentInstance._iconService.twoToneColor.primaryColor).toBe('#1890ff');
+    });
+  });
+
+  describe('multi injection of icons', () => {
+    let fixture: ComponentFixture<NzTestIconMultiInjectionComponent>;
+    let icons: DebugElement[];
+
+    it('should support feat modules add icons', () => {
+      TestBed.configureTestingModule({
+        imports: [CommonModule, NzIconModule, ChildModule],
+        declarations: [NzTestIconMultiInjectionComponent],
+        providers: [
+          {
+            provide: NZ_ICON_DEFAULT_TWOTONE_COLOR,
+            useValue: '3344cc'
+          }
+        ]
+      });
+
+      fixture = TestBed.createComponent(NzTestIconMultiInjectionComponent);
+      fixture.detectChanges();
+
+      icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
       expect(icons[0].nativeElement.classList.contains('anticon-question')).toBe(true);
       expect(icons[1].nativeElement.classList.contains('anticon-loading')).toBe(true);
     });
-
-    it('should change class name when type changes', () => {
-      testComponent.type = 'question-circle';
-      fixture.detectChanges();
-      expect(icons[0].nativeElement.classList.contains('anticon')).toBe(true);
-      expect(icons[0].nativeElement.classList.contains('anticon-question-circle')).toBe(true);
-      expect(icons[0].nativeElement.classList.contains('anticon-question')).not.toBe(true);
-    });
-
-    it('should support spin and cancel', fakeAsync(() => {
-      fixture.detectChanges();
-      tick(1000);
-      fixture.detectChanges();
-      expect(icons[0].nativeElement.firstChild.classList.contains('anticon-spin')).toBe(true);
-
-      testComponent.spin = false;
-      fixture.detectChanges();
-      tick(1000);
-      fixture.detectChanges();
-      expect(icons[0].nativeElement.firstChild.classList.contains('anticon-spin')).toBe(false);
-    }));
-
-    it('should make loading spin', fakeAsync(() => {
-      fixture.detectChanges();
-      tick(1000);
-      fixture.detectChanges();
-      expect(icons[1].nativeElement.firstChild.classList.contains('anticon-spin')).toBe(true);
-    }));
-
-    it('should rotate work', fakeAsync(() => {
-      fixture.detectChanges();
-      tick(1000);
-      fixture.detectChanges();
-      expect(icons[0].nativeElement.firstChild.style.transform).toBeFalsy();
-
-      testComponent.rotate = 120;
-      fixture.detectChanges();
-      tick(1000);
-      fixture.detectChanges();
-      expect(icons[0].nativeElement.firstChild.style.transform).toBe('rotate(120deg)');
-
-      testComponent.rotate = 0;
-      fixture.detectChanges();
-      tick(1000);
-      fixture.detectChanges();
-      expect(icons[0].nativeElement.firstChild.style.transform).toBeFalsy();
-    }));
-  });
-
-  describe('custom', () => {
-    let fixture: ComponentFixture<NzTestIconCustomComponent>;
-    let icons: DebugElement[];
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestIconCustomComponent);
-    });
-
-    it('should support custom svg element', () => {
-      fixture.detectChanges();
-      icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
-      const icon1 = icons[0];
-      expect(icon1.nativeElement.className).toContain('anticon');
-      expect(icon1.nativeElement.innerHTML).toContain('svg');
-      expect(icon1.nativeElement.innerHTML).toContain('viewBox="0 0 1024 1024" width="1em" height="1em" fill="currentColor"');
-    });
-  });
-
-  describe('iconfont', () => {
-    let fixture: ComponentFixture<NzTestIconIconfontComponent>;
-    let icons: DebugElement[];
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestIconIconfontComponent);
-    });
-
-    it('should support iconfont', async(() => {
-      fixture.detectChanges();
-      fixture.whenStable().then(() => {
-        fixture.detectChanges();
-        icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
-        expect(icons[0].nativeElement.className).toContain('anticon');
-        expect(icons[0].nativeElement.innerHTML).toContain('xlink:href="#icon-tuichu"');
-        expect(icons[1].nativeElement.innerHTML).toContain('link:href="#icon-facebook"');
-        expect(icons[2].nativeElement.innerHTML).toContain('xlink:href="#icon-twitter"');
-      });
-    }));
-  });
-});
-
-describe('nz config service', () => {
-  let fixture: ComponentFixture<NzTestIconExtensionsComponent>;
-  let nzConfigService: NzConfigService;
-  let icons: DebugElement[];
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [CommonModule, NzIconModule],
-      declarations: [NzTestIconExtensionsComponent],
-      providers: [
-        {
-          provide: NZ_ICONS,
-          useValue: [LeftOutline, RightOutline, QuestionOutline]
-        }
-      ]
-    });
-
-    fixture = TestBed.createComponent(NzTestIconExtensionsComponent);
-    fixture.detectChanges();
-    icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
-  });
-
-  beforeEach(inject([NzConfigService], (c: NzConfigService) => {
-    nzConfigService = c;
-  }));
-
-  it('should support config service', () => {
-    nzConfigService!.set('icon', { nzTwotoneColor: '234567' });
-    expect(icons[0].componentInstance._iconService.twoToneColor.primaryColor).not.toBe('234567');
-    expect(icons[0].componentInstance._iconService.twoToneColor.primaryColor).toBe('#1890ff');
-  });
-});
-
-/**
- * @deprecated This API is not going to be provided in 9.0.0.
- */
-describe('nz icon twotone color injection', () => {
-  let fixture: ComponentFixture<NzTestIconExtensionsComponent>;
-  let icons: DebugElement[];
-
-  it('should support default twotone color', () => {
-    TestBed.configureTestingModule({
-      imports: [CommonModule, NzIconModule],
-      declarations: [NzTestIconExtensionsComponent],
-      providers: [
-        {
-          provide: NZ_ICONS,
-          useValue: [LeftOutline, RightOutline, QuestionOutline]
-        },
-        {
-          provide: NZ_ICON_DEFAULT_TWOTONE_COLOR,
-          useValue: '#3344cc'
-        }
-      ]
-    });
-
-    fixture = TestBed.createComponent(NzTestIconExtensionsComponent);
-    fixture.detectChanges();
-
-    icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
-    expect(icons[0].nativeElement.querySelector('svg')).not.toBe(null);
-    expect(icons[0].componentInstance._iconService.twoToneColor.primaryColor).toBe('#3344cc');
-  });
-
-  it('should not set non-hashed-started string', () => {
-    TestBed.configureTestingModule({
-      imports: [CommonModule, NzIconModule],
-      declarations: [NzTestIconExtensionsComponent],
-      providers: [
-        {
-          provide: NZ_ICONS,
-          useValue: [LeftOutline, RightOutline, QuestionOutline]
-        },
-        {
-          provide: NZ_ICON_DEFAULT_TWOTONE_COLOR,
-          useValue: '3344cc'
-        }
-      ]
-    });
-
-    fixture = TestBed.createComponent(NzTestIconExtensionsComponent);
-    icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
-
-    fixture.detectChanges();
-    expect(icons[0].componentInstance._iconService.twoToneColor.primaryColor).not.toBe('3344cc');
-    expect(icons[0].componentInstance._iconService.twoToneColor.primaryColor).toBe('#1890ff');
   });
 });
 
 @Component({
+  // tslint:disable-next-line:no-selector
+  selector: 'nz-test-icon-extensions',
   template: `
     <i nz-icon [nzType]="type" [nzTheme]="theme" [nzSpin]="spin" [nzRotate]="rotate"></i>
     <i nz-icon [nzType]="'loading'" [nzTheme]="theme"></i>
@@ -275,3 +304,17 @@ export class NzTestIconIconfontComponent {
     });
   }
 }
+
+@NgModule({
+  imports: [CommonModule, NzIconModule.patch([QuestionOutline])],
+  declarations: [NzTestIconExtensionsComponent],
+  exports: [NzTestIconExtensionsComponent]
+})
+class ChildModule {}
+
+@Component({
+  template: `
+    <nz-test-icon-extensions></nz-test-icon-extensions>
+  `
+})
+class NzTestIconMultiInjectionComponent {}

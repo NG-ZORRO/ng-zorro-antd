@@ -6,11 +6,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { AfterContentChecked, Directive, ElementRef, Input, OnChanges, OnInit, Renderer2, SimpleChanges } from '@angular/core';
+import { AfterContentChecked, Directive, ElementRef, Input, OnChanges, OnInit, Optional, Renderer2, SimpleChanges } from '@angular/core';
 import { IconDirective, ThemeType } from '@ant-design/icons-angular';
 import { InputBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
-import { NzIconService } from './nz-icon.service';
+import { NzIconPatchService, NzIconService } from './nz-icon.service';
 
 /**
  * This directive extends IconDirective to provide:
@@ -75,9 +75,14 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     elementRef: ElementRef,
     public iconService: NzIconService,
     public renderer: Renderer2,
-    private nzUpdateHostClassService: NzUpdateHostClassService
+    private nzUpdateHostClassService: NzUpdateHostClassService,
+    @Optional() iconPatch: NzIconPatchService
   ) {
     super(iconService, elementRef, renderer);
+
+    if (iconPatch) {
+      iconPatch.doPatch();
+    }
 
     this.el = elementRef.nativeElement;
   }

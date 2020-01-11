@@ -130,6 +130,19 @@ Let's assume that you deploy static assets under `https://mycdn.somecdn.com/icon
 
 Please call this in component's constructor or `AppInitService`.
 
+### Add Icons in Lazy-loaded Modules
+
+Sometimes, you want to import icons in lazy modules to avoid increasing the size of the main.js. You can use `NzIconModule.forChild`.
+
+```ts
+@NgModule({
+  imports: [CommonModule, NzIconModule.patch([QuestionOutline])],
+})
+class ChildModule {}
+```
+
+When `ChildModule` get loaded, the icon QuestionOutline would be usable across the application.
+
 ### Set Default TwoTone Color
 
 When using the two-tone icons, you provide a global configuration like `{ nzIcon: { nzTwotoneColor: 'xxx' } }` via `NzConfigService` or call corresponding `set` method to change two default twotone color.

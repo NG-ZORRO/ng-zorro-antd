@@ -8,7 +8,7 @@
 
 import { DOCUMENT } from '@angular/common';
 import { HttpBackend } from '@angular/common/http';
-import { Inject, Injectable, InjectionToken, Optional, RendererFactory2 } from '@angular/core';
+import { Inject, Injectable, InjectionToken, NgModule, Optional, RendererFactory2, Self } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { IconDefinition, IconService } from '@ant-design/icons-angular';
 import {
@@ -198,5 +198,26 @@ export class NzIconService extends IconService {
 
   private getConfig(): IconConfig {
     return this.nzConfigService.getConfigForComponent('icon') || {};
+  }
+}
+
+export const NZ_ICONS_PATCH = new InjectionToken('nz_icons_patch');
+
+@NgModule()
+export class NzIconChildModule {}
+
+@Injectable()
+export class NzIconPatchService {
+  patched = false;
+
+  constructor(@Self() @Inject(NZ_ICONS_PATCH) private extraIcons: IconDefinition[], private rootIconService: NzIconService) {}
+
+  doPatch(): void {
+    if (this.patched) {
+      return;
+    }
+
+    this.extraIcons.forEach(iconDefinition => this.rootIconService.addIcon(iconDefinition));
+    this.patched = true;
   }
 }
