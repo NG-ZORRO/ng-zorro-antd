@@ -40,6 +40,7 @@ export class NzNavBottomComponent implements OnInit {
             (pre, cur) => {
               return pre.concat(cur.children);
             },
+            // tslint:disable-next-line:no-any
             [] as any[]
           );
         this.list = [

@@ -60,7 +60,8 @@ export class NzContributorsListComponent implements OnInit {
       }
     }).subscribe(data => {
       if (Array.isArray(data)) {
-        const list = [];
+        // tslint:disable-next-line:no-any
+        const list: any[] = [];
         data.forEach(e => {
           const id = e.author.login;
           const index = list.findIndex(i => i.id === id);
