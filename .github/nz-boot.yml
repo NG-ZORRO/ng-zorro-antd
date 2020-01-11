@@ -1,3 +1,7 @@
+pullRequest:
+  preview:
+    replay: |
+      This [preview](https://preview-@{number}-ng-zorro-antd.surge.sh/) will be available after the AzureCI is passed.
 issue:
   labeledReplay:
     - labels:
