@@ -34,8 +34,7 @@
       [class.ant-cascader-picker-arrow-expand]="menuVisible"
     >
     </i>
-    <i *ngIf="isLoading" nz-icon nzType="loading"
-       class="ant-cascader-picker-arrow"></i>
+    <i *ngIf="isLoading" nz-icon nzType="loading" class="ant-cascader-picker-arrow"></i>
     <span
       class="ant-cascader-picker-label"
       [class.ant-cascader-show-search]="!!nzShowSearch"
@@ -43,7 +42,7 @@
     >
       <ng-container *ngIf="!isLabelRenderTemplate; else labelTemplate">{{
         labelRenderText
-        }}</ng-container>
+      }}</ng-container>
       <ng-template #labelTemplate>
         <ng-template
           [ngTemplateOutlet]="nzLabelRender"
@@ -76,12 +75,15 @@
     [@slideMotion]="dropDownPosition"
     (mouseleave)="onTriggerMouseLeave($event)"
   >
-    <ul *ngIf="shouldShowEmpty; else hasOptionsTemplate"
-        class="ant-cascader-menu"
-        [style.width]="dropdownWidthStyle"
-        [style.height]="dropdownHeightStyle">
+    <ul
+      *ngIf="shouldShowEmpty; else hasOptionsTemplate"
+      class="ant-cascader-menu"
+      [style.width]="dropdownWidthStyle"
+      [style.height]="dropdownHeightStyle"
+    >
       <li
-        class="ant-cascader-menu-item ant-cascader-menu-item-expanded ant-cascader-menu-item-disabled">
+        class="ant-cascader-menu-item ant-cascader-menu-item-expanded ant-cascader-menu-item-disabled"
+      >
         <nz-embed-empty
           [nzComponentName]="'cascader'"
           [specificContent]="nzNotFoundContent"
