@@ -3,20 +3,34 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-grid-playground',
   template: `
-    <div style="margin-bottom:16px;">
-      <span style="margin-right: 6px;">Gutter (px): </span>
-      <div style="width: 50%">
-        <nz-slider [nzMarks]="marksGutter" [nzStep]="null" [nzDefaultValue]="16" [nzMax]="48" [(ngModel)]="gutter"></nz-slider>
+    <div class="slider-container">
+      <span>Horizontal Gutter (px): </span>
+      <div class="slider">
+        <nz-slider [nzMarks]="marksHGutter" [nzStep]="null" [nzMin]="8" [nzMax]="48" [(ngModel)]="hGutter"></nz-slider>
       </div>
-      <span style="margin-right: 6px;">Column Count:</span>
-      <div style="width: 50%">
-        <nz-slider [nzMarks]="marksCount" [nzStep]="null" [nzDefaultValue]="4" [nzMax]="12" [(ngModel)]="count"></nz-slider>
+      <span>Vertical Gutter (px): </span>
+      <div class="slider">
+        <nz-slider [nzMarks]="marksVGutter" [nzStep]="null" [nzMin]="8" [nzMax]="48" [(ngModel)]="vGutter"></nz-slider>
+      </div>
+      <span>Column Count:</span>
+      <div class="slider">
+        <nz-slider
+          [nzMarks]="marksCount"
+          [nzStep]="null"
+          [nzMin]="2"
+          [nzMax]="12"
+          [(ngModel)]="count"
+          (ngModelChange)="reGenerateArray($event)"
+        ></nz-slider>
       </div>
     </div>
 
     <div class="gutter-example">
-      <div nz-row [nzGutter]="gutter">
-        <div nz-col class="gutter-row" [nzSpan]="24 / count" *ngFor="let i of generateArray(count)">
+      <div nz-row [nzGutter]="[hGutter, vGutter]">
+        <div nz-col class="gutter-row" [nzSpan]="24 / count" *ngFor="let i of array">
+          <div class="grid-config">Column</div>
+        </div>
+        <div nz-col class="gutter-row" [nzSpan]="24 / count" *ngFor="let i of array">
           <div class="grid-config">Column</div>
         </div>
       </div>
@@ -24,6 +38,12 @@ import { Component } from '@angular/core';
   `,
   styles: [
     `
+      .slider {
+        width: 50%;
+      }
+      .slider-container {
+        margin-bottom: 16px;
+      }
       .grid-config {
         background: #00a0e9;
         height: 120px;
@@ -34,9 +54,19 @@ import { Component } from '@angular/core';
   ]
 })
 export class NzDemoGridPlaygroundComponent {
-  gutter = 16;
+  hGutter = 16;
+  vGutter = 16;
   count = 4;
-  marksGutter = {
+  array = new Array(this.count);
+  marksHGutter = {
+    8: 8,
+    16: 16,
+    24: 24,
+    32: 32,
+    40: 40,
+    48: 48
+  };
+  marksVGutter = {
     8: 8,
     16: 16,
     24: 24,
@@ -52,8 +82,7 @@ export class NzDemoGridPlaygroundComponent {
     8: 8,
     12: 12
   };
-
-  generateArray(value: number): number[] {
-    return new Array(value);
+  reGenerateArray(count: number): void {
+    this.array = new Array(count);
   }
 }

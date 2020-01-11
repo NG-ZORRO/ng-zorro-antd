@@ -19,10 +19,10 @@ import {
   Renderer2,
   SimpleChanges
 } from '@angular/core';
+
+import { InputBoolean, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
-
-import { InputBoolean, NzConfigService, NzUpdateHostClassService, WithConfig } from 'ng-zorro-antd/core';
 
 import { NzFormLabelComponent } from './nz-form-label.component';
 
@@ -31,20 +31,21 @@ const NZ_CONFIG_COMPONENT_NAME = 'form';
 @Directive({
   selector: '[nz-form]',
   exportAs: 'nzForm',
-  providers: [NzUpdateHostClassService]
+  host: { '[class]': 'hostClassMap' }
 })
 export class NzFormDirective implements OnInit, OnChanges, AfterContentInit, OnDestroy {
   @Input() nzLayout = 'horizontal';
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzNoColon: boolean;
+  hostClassMap = {};
 
   @ContentChildren(NzFormLabelComponent, { descendants: true }) nzFormLabelComponent: QueryList<NzFormLabelComponent>;
 
   destroy$ = new Subject();
 
   setClassMap(): void {
-    this.nzUpdateHostClassService.updateHostClass(this.elementRef.nativeElement, {
+    this.hostClassMap = {
       [`ant-form-${this.nzLayout}`]: this.nzLayout
-    });
+    };
   }
 
   updateItemsDefaultColon(): void {
@@ -53,12 +54,7 @@ export class NzFormDirective implements OnInit, OnChanges, AfterContentInit, OnD
     }
   }
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private elementRef: ElementRef,
-    private renderer: Renderer2,
-    private nzUpdateHostClassService: NzUpdateHostClassService
-  ) {
+  constructor(public nzConfigService: NzConfigService, elementRef: ElementRef, private renderer: Renderer2) {
     this.renderer.addClass(elementRef.nativeElement, 'ant-form');
   }
 
