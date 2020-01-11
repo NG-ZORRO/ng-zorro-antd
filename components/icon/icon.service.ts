@@ -8,7 +8,7 @@
 
 import { DOCUMENT } from '@angular/common';
 import { HttpBackend } from '@angular/common/http';
-import { Inject, Injectable, InjectionToken, Optional, RendererFactory2 } from '@angular/core';
+import { Inject, Injectable, InjectionToken, Optional, RendererFactory2, Self } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { IconDefinition, IconService } from '@ant-design/icons-angular';
 import {
@@ -53,7 +53,7 @@ import {
   UploadOutline,
   UpOutline
 } from '@ant-design/icons-angular/icons';
-import { IconConfig, NzConfigService, warn, warnDeprecation } from 'ng-zorro-antd/core';
+import { IconConfig, NzConfigService, warn } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
 
 export interface NzIconfontOption {
@@ -152,23 +152,12 @@ export class NzIconService extends IconService {
     @Optional() handler: HttpBackend,
     // tslint:disable-next-line:no-any
     @Optional() @Inject(DOCUMENT) _document: any,
-    @Optional() @Inject(NZ_ICONS) icons?: IconDefinition[],
-    /**
-     * @deprecated
-     * @inner
-     */
-    @Optional() @Inject(NZ_ICON_DEFAULT_TWOTONE_COLOR) private legacyDefaultTwotoneColor?: string
+    @Optional() @Inject(NZ_ICONS) icons?: IconDefinition[]
   ) {
     super(rendererFactory, handler, _document, sanitizer);
 
     this.onConfigChange();
-
     this.addIcon(...NZ_ICONS_USED_BY_ZORRO, ...(icons || []));
-
-    if (legacyDefaultTwotoneColor) {
-      warnDeprecation(`'NZ_ICON_DEFAULT_TWOTONE_COLOR' is deprecated and will be removed in 9.0.0. Please use 'NZ_CONFIG' instead!`);
-    }
-
     this.configDefaultTwotoneColor();
     this.configDefaultTheme();
   }
@@ -188,7 +177,7 @@ export class NzIconService extends IconService {
 
   private configDefaultTwotoneColor(): void {
     const iconConfig = this.getConfig();
-    const defaultTwotoneColor = iconConfig.nzTwotoneColor || this.legacyDefaultTwotoneColor;
+    const defaultTwotoneColor = iconConfig.nzTwotoneColor || DEFAULT_TWOTONE_COLOR;
 
     let primaryColor = DEFAULT_TWOTONE_COLOR;
 
@@ -205,5 +194,23 @@ export class NzIconService extends IconService {
 
   private getConfig(): IconConfig {
     return this.nzConfigService.getConfigForComponent('icon') || {};
+  }
+}
+
+export const NZ_ICONS_PATCH = new InjectionToken('nz_icons_patch');
+
+@Injectable()
+export class NzIconPatchService {
+  patched = false;
+
+  constructor(@Self() @Inject(NZ_ICONS_PATCH) private extraIcons: IconDefinition[], private rootIconService: NzIconService) {}
+
+  doPatch(): void {
+    if (this.patched) {
+      return;
+    }
+
+    this.extraIcons.forEach(iconDefinition => this.rootIconService.addIcon(iconDefinition));
+    this.patched = true;
   }
 }

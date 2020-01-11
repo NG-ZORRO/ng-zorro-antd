@@ -22,7 +22,7 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => {
 });
 
 /**
- * Include this module in every testing spec, except `nz-icon.spec.ts`.
+ * Include this module in every testing spec, except `icon.spec.ts`.
  */
 // @dynamic
 @NgModule({
