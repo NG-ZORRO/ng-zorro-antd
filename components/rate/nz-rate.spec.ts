@@ -6,6 +6,7 @@ import { By } from '@angular/platform-browser';
 import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core';
 
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
 import { NzRateComponent } from './rate.component';
 import { NzRateModule } from './rate.module';
 
@@ -19,12 +20,16 @@ describe('rate', () => {
   }));
 
   describe('basic rate', () => {
+    let testBed: ComponentBed<NzTestRateBasicComponent>;
     let fixture: ComponentFixture<NzTestRateBasicComponent>;
     let testComponent: NzTestRateBasicComponent;
     let rate: DebugElement;
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestRateBasicComponent);
+      testBed = createComponentBed(NzTestRateBasicComponent, {
+        imports: [NzRateModule, FormsModule, ReactiveFormsModule]
+      });
+      fixture = testBed.fixture;
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       rate = fixture.debugElement.query(By.directive(NzRateComponent));
@@ -194,12 +199,16 @@ describe('rate', () => {
     }));
   });
   describe('rate form', () => {
+    let testBed: ComponentBed<NzTestRateFormComponent>;
     let fixture: ComponentFixture<NzTestRateFormComponent>;
     let testComponent: NzTestRateFormComponent;
     let rate: DebugElement;
 
     beforeEach(fakeAsync(() => {
-      fixture = TestBed.createComponent(NzTestRateFormComponent);
+      testBed = createComponentBed(NzTestRateFormComponent, {
+        imports: [NzRateModule, FormsModule, ReactiveFormsModule]
+      });
+      fixture = testBed.fixture;
       fixture.detectChanges();
       flush();
       fixture.detectChanges();

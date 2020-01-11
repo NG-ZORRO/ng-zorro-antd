@@ -1,9 +1,9 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzTooltipBaseDirective } from './base.directive';
@@ -75,16 +75,20 @@ export class NzTooltipTestComponent {
 }
 
 describe('NzTooltip', () => {
+  let testBed: ComponentBed<NzTooltipTestComponent>;
+  let fixture: ComponentFixture<NzTooltipTestComponent>;
+  let component: NzTooltipTestComponent;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
 
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [NzToolTipModule, NoopAnimationsModule, NzIconTestModule],
-      declarations: [NzTooltipTestComponent]
+  beforeEach(() => {
+    testBed = createComponentBed(NzTooltipTestComponent, {
+      imports: [NzToolTipModule, NzIconTestModule]
     });
-    TestBed.compileComponents();
-  }));
+    fixture = testBed.fixture;
+    component = testBed.component;
+    fixture.detectChanges();
+  });
 
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
     overlayContainer = oc;
@@ -95,9 +99,6 @@ describe('NzTooltip', () => {
     overlayContainer.ngOnDestroy();
   });
 
-  let fixture: ComponentFixture<NzTooltipTestComponent>;
-  let component: NzTooltipTestComponent;
-
   function waitingForTooltipToggling(): void {
     fixture.detectChanges();
     tick(500);
@@ -107,12 +108,6 @@ describe('NzTooltip', () => {
   function getTooltipBackdropElement(): HTMLElement {
     return overlayContainerElement.querySelector('.cdk-overlay-backdrop') as HTMLElement;
   }
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(NzTooltipTestComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
 
   describe('visibility', () => {
     it('should hover mode works', fakeAsync(() => {

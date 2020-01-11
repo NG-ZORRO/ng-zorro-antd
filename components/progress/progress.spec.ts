@@ -1,34 +1,26 @@
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
 
 import { ProgressComponent } from './progress.component';
 import { NzProgressModule } from './progress.module';
 import { NzProgressFormatter, NzProgressGapPositionType, NzProgressStrokeColorType } from './typings';
 
 describe('progress', () => {
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [NzProgressModule],
-      declarations: [
-        NzTestProgressLineComponent,
-        NzTestProgressDashBoardComponent,
-        NzTestProgressCircleComponent,
-        NzTestProgressCircleSuccessComponent
-      ]
-    });
-    TestBed.compileComponents();
-  }));
-
   describe('progress line', () => {
+    let testBed: ComponentBed<NzTestProgressLineComponent>;
     let fixture: ComponentFixture<NzTestProgressLineComponent>;
     let testComponent: NzTestProgressLineComponent;
     let progress: DebugElement;
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestProgressLineComponent);
+      testBed = createComponentBed(NzTestProgressLineComponent, {
+        imports: [NzProgressModule]
+      });
+      fixture = testBed.fixture;
+      testComponent = testBed.component;
       fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
       progress = fixture.debugElement.query(By.directive(ProgressComponent));
     });
 
@@ -183,14 +175,18 @@ describe('progress', () => {
   });
 
   describe('progress dashboard', () => {
+    let testBed: ComponentBed<NzTestProgressDashBoardComponent>;
     let fixture: ComponentFixture<NzTestProgressDashBoardComponent>;
     let testComponent: NzTestProgressDashBoardComponent;
     let progress: DebugElement;
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestProgressDashBoardComponent);
+      testBed = createComponentBed(NzTestProgressDashBoardComponent, {
+        imports: [NzProgressModule]
+      });
+      fixture = testBed.fixture;
+      testComponent = testBed.component;
       fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
       progress = fixture.debugElement.query(By.directive(ProgressComponent));
     });
 
@@ -278,14 +274,18 @@ describe('progress', () => {
   });
 
   describe('progress circle', () => {
+    let testBed: ComponentBed<NzTestProgressCircleComponent>;
     let fixture: ComponentFixture<NzTestProgressCircleComponent>;
     let testComponent: NzTestProgressCircleComponent;
     let progress: DebugElement;
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestProgressCircleComponent);
+      testBed = createComponentBed(NzTestProgressCircleComponent, {
+        imports: [NzProgressModule]
+      });
+      fixture = testBed.fixture;
+      testComponent = testBed.component;
       fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
       progress = fixture.debugElement.query(By.directive(ProgressComponent));
     });
 
@@ -369,11 +369,15 @@ describe('progress', () => {
   });
 
   describe('progress circle with successPercent', () => {
+    let testBed: ComponentBed<NzTestProgressCircleSuccessComponent>;
     let fixture: ComponentFixture<NzTestProgressCircleSuccessComponent>;
     let progress: DebugElement;
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestProgressCircleSuccessComponent);
+      testBed = createComponentBed(NzTestProgressCircleSuccessComponent, {
+        imports: [NzProgressModule]
+      });
+      fixture = testBed.fixture;
       fixture.detectChanges();
       progress = fixture.debugElement.query(By.directive(ProgressComponent));
     });

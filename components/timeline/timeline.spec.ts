@@ -1,6 +1,8 @@
 import { Component, DebugElement } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { NzStatisticModule } from 'ng-zorro-antd';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
 
 import { NzTimelineItemComponent } from './timeline-item.component';
 import { NzTimelineComponent } from './timeline.component';
@@ -14,15 +16,20 @@ describe('timeline', () => {
     });
     TestBed.compileComponents();
   }));
+
   describe('basic timeline', () => {
+    let testBed: ComponentBed<NzTestTimelineBasicComponent>;
     let fixture: ComponentFixture<NzTestTimelineBasicComponent>;
     let testComponent: NzTestTimelineBasicComponent;
     let timeline: DebugElement;
     let items: DebugElement[];
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestTimelineBasicComponent);
-      testComponent = fixture.debugElement.componentInstance;
+      testBed = createComponentBed(NzTestTimelineBasicComponent, {
+        imports: [NzStatisticModule]
+      });
+      fixture = testBed.fixture;
+      testComponent = testBed.component;
       timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
       items = fixture.debugElement.queryAll(By.directive(NzTimelineItemComponent));
     });
@@ -72,6 +79,7 @@ describe('timeline', () => {
       fixture.detectChanges();
       expect(timeline.nativeElement.querySelector('.ant-timeline-item-pending').innerText).toBe('pending');
     });
+
     it('should reverse work', () => {
       fixture.detectChanges();
       testComponent.pending = true;
@@ -81,6 +89,7 @@ describe('timeline', () => {
       expect(items[0].nativeElement.firstElementChild!.classList).toContain('ant-timeline-item-last');
       expect(items[3].nativeElement.firstElementChild!.classList).not.toContain('ant-timeline-item-last');
     });
+
     it('should alternate position work', () => {
       fixture.detectChanges();
       testComponent.mode = 'alternate';
@@ -90,6 +99,7 @@ describe('timeline', () => {
       expect(items[1].nativeElement.firstElementChild!.classList).toContain('ant-timeline-item-right');
       expect(items[2].nativeElement.firstElementChild!.classList).toContain('ant-timeline-item-left');
     });
+
     it('should alternate right position work', () => {
       fixture.detectChanges();
       testComponent.mode = 'right';
@@ -100,12 +110,17 @@ describe('timeline', () => {
       expect(items[2].nativeElement.firstElementChild!.classList).toContain('ant-timeline-item-right');
     });
   });
+
   describe('custom color timeline', () => {
+    let testBed: ComponentBed<NzTestTimelineCustomColorComponent>;
     let fixture: ComponentFixture<NzTestTimelineCustomColorComponent>;
     let items: DebugElement[];
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestTimelineCustomColorComponent);
+      testBed = createComponentBed(NzTestTimelineBasicComponent, {
+        imports: [NzStatisticModule]
+      });
+      fixture = testBed.fixture;
       items = fixture.debugElement.queryAll(By.directive(NzTimelineItemComponent));
     });
 
@@ -119,12 +134,19 @@ describe('timeline', () => {
   });
 
   describe('pending timeline', () => {
+    let testBed: ComponentBed<NzTestTimelinePendingComponent>;
     let fixture: ComponentFixture<NzTestTimelinePendingComponent>;
     let timeline: DebugElement;
+
     beforeEach(() => {
+      testBed = createComponentBed(NzTestTimelinePendingComponent, {
+        imports: [NzStatisticModule]
+      });
+      fixture = testBed.fixture;
       fixture = TestBed.createComponent(NzTestTimelinePendingComponent);
       timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
     });
+
     it('should pending work', () => {
       fixture.detectChanges();
       expect(timeline.nativeElement.querySelector('.ant-timeline-item-pending').innerText).toBe('template');

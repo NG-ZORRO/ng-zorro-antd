@@ -2,10 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
 import { NzStatisticNumberComponent } from './statistic-number.component';
 import { NzStatisticModule } from './statistic.module';
 
 describe('nz-number', () => {
+  let testBed: ComponentBed<NzTestNumberComponent>;
   let fixture: ComponentFixture<NzTestNumberComponent>;
   let testComponent: NzTestNumberComponent;
   let numberEl: DebugElement;
@@ -19,8 +21,11 @@ describe('nz-number', () => {
 
   describe('basic', () => {
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestNumberComponent);
-      testComponent = fixture.debugElement.componentInstance;
+      testBed = createComponentBed(NzTestNumberComponent, {
+        imports: [NzStatisticModule]
+      });
+      fixture = testBed.fixture;
+      testComponent = testBed.component;
       numberEl = fixture.debugElement.query(By.directive(NzStatisticNumberComponent));
     });
 

@@ -1,7 +1,7 @@
-import { CommonModule } from '@angular/common';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
 import { NzCountdownComponent } from './countdown.component';
 import { NzStatisticModule } from './statistic.module';
 
@@ -45,21 +45,18 @@ export class NzTestCountdownComponent {
 }
 
 describe('nz-countdown', () => {
+  let testBed: ComponentBed<NzTestCountdownComponent>;
   let fixture: ComponentFixture<NzTestCountdownComponent>;
   let testComponent: NzTestCountdownComponent;
   let countdownEl: DebugElement;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [CommonModule, NzStatisticModule],
-      declarations: [NzTestCountdownComponent]
-    }).compileComponents();
-  });
-
   describe('basic', () => {
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestCountdownComponent);
-      testComponent = fixture.debugElement.componentInstance;
+      testBed = createComponentBed(NzTestCountdownComponent, {
+        imports: [NzStatisticModule]
+      });
+      fixture = testBed.fixture;
+      testComponent = testBed.component;
       countdownEl = fixture.debugElement.query(By.directive(NzCountdownComponent));
     });
 
