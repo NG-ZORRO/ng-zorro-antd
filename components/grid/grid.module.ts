@@ -11,8 +11,8 @@ import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { NzColDirective } from './nz-col.directive';
-import { NzRowDirective } from './nz-row.directive';
+import { NzColDirective } from './col.directive';
+import { NzRowDirective } from './row.directive';
 
 @NgModule({
   declarations: [NzColDirective, NzRowDirective],

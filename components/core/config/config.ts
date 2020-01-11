@@ -8,10 +8,10 @@
 
 import { InjectionToken, TemplateRef, Type } from '@angular/core';
 
-import { NzAlignType, NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType } from '../types';
-
 import { SafeUrl } from '@angular/platform-browser';
-import { BreakpointMap, NzBreakpoint } from '../responsive/public-api';
+import { NzBreakpointEnum } from '../responsive/public-api';
+
+import { NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType } from '../types';
 
 export interface NzConfig {
   affix?: AffixConfig;
@@ -31,7 +31,6 @@ export interface NzConfig {
   drawer?: DrawerConfig;
   empty?: EmptyConfig;
   form?: FormConfig;
-  grid?: GridConfig;
   icon?: IconConfig;
   message?: MessageConfig;
   modal?: ModalConfig;
@@ -125,7 +124,7 @@ export interface CollapsePanelConfig {
 
 export interface DescriptionsConfig {
   nzBorder?: boolean;
-  nzColumn?: { [key in NzBreakpoint]?: number } | number;
+  nzColumn?: { [key in NzBreakpointEnum]?: number } | number;
   nzSize?: 'default' | 'middle' | 'small';
   nzColon?: boolean;
 }
@@ -142,13 +141,6 @@ export interface EmptyConfig {
 
 export interface FormConfig {
   nzNoColon?: boolean;
-}
-
-export interface GridConfig {
-  nzAlign?: NzAlignType;
-  nzGutter?: number | BreakpointMap;
-  nzJustify?: 'start' | 'end' | 'center' | 'space-around' | 'space-between';
-  nzType?: 'flex';
 }
 
 export interface IconConfig {

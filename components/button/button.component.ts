@@ -14,21 +14,16 @@ import {
   Component,
   ContentChild,
   ElementRef,
-  HostBinding,
-  Inject,
   Input,
-  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
   Renderer2,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 
-import { InputBoolean, NZ_WAVE_GLOBAL_CONFIG, NzConfigService, NzWaveConfig, NzWaveDirective, WithConfig } from 'ng-zorro-antd/core';
+import { IndexableObject, InputBoolean, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
 import { NzIconDirective } from 'ng-zorro-antd/icon';
 import { Subject } from 'rxjs';
 import { filter, startWith, takeUntil } from 'rxjs/operators';
@@ -53,7 +48,6 @@ const NZ_CONFIG_COMPONENT_NAME = 'button';
 })
 export class NzButtonComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit, AfterContentInit {
   @ContentChild(NzIconDirective, { read: ElementRef }) nzIconDirectiveElement: ElementRef;
-  @HostBinding('attr.nz-wave') nzWave = new NzWaveDirective(this.ngZone, this.elementRef, this.waveConfig, this.animationType);
   @Input() @InputBoolean() nzBlock: boolean = false;
   @Input() @InputBoolean() nzGhost: boolean = false;
   @Input() @InputBoolean() nzSearch: boolean = false;
@@ -62,10 +56,9 @@ export class NzButtonComponent implements OnInit, OnDestroy, OnChanges, AfterVie
   @Input() nzType: NzButtonType = null;
   @Input() nzShape: NzButtonShape = null;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzButtonSize;
-  readonly nativeElement: HTMLElement = this.elementRef.nativeElement;
   private destroy$ = new Subject<void>();
   private loading$ = new Subject<boolean>();
-  hostClassMap = {};
+  hostClassMap: IndexableObject = {};
 
   updateHostClassMap(): void {
     this.hostClassMap = {
@@ -102,10 +95,7 @@ export class NzButtonComponent implements OnInit, OnDestroy, OnChanges, AfterVie
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef,
     private renderer: Renderer2,
-    private ngZone: NgZone,
-    public nzConfigService: NzConfigService,
-    @Optional() @Inject(NZ_WAVE_GLOBAL_CONFIG) private waveConfig: NzWaveConfig,
-    @Optional() @Inject(ANIMATION_MODULE_TYPE) private animationType: string
+    public nzConfigService: NzConfigService
   ) {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
@@ -117,30 +107,18 @@ export class NzButtonComponent implements OnInit, OnDestroy, OnChanges, AfterVie
 
   ngOnInit(): void {
     this.updateHostClassMap();
-    this.nzWave.ngOnInit();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-    this.nzWave.ngOnDestroy();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.updateHostClassMap();
-    const { nzType, nzLoading } = changes;
+    const { nzLoading } = changes;
     if (nzLoading) {
       this.loading$.next(this.nzLoading);
-    }
-    if (nzType && nzType.currentValue === 'link') {
-      this.nzWave.disable();
-    } else {
-      this.nzWave.enable();
     }
   }
 
   ngAfterViewInit(): void {
-    this.insertSpan(this.nativeElement.childNodes, this.renderer);
+    this.insertSpan(this.elementRef.nativeElement.childNodes, this.renderer);
   }
 
   ngAfterContentInit(): void {
@@ -158,5 +136,10 @@ export class NzButtonComponent implements OnInit, OnDestroy, OnChanges, AfterVie
           this.renderer.removeStyle(nativeElement, 'display');
         }
       });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
