@@ -20,7 +20,8 @@ import { NavigationEnd, Router } from '@angular/router';
 })
 export class NzContributorsListComponent implements OnInit {
   language = 'en';
-  list = [];
+  // tslint:disable-next-line:no-any
+  list: any[] = [];
   constructor(private router: Router,
               private platform: Platform,
               private cdr: ChangeDetectorRef,
