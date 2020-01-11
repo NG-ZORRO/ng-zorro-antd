@@ -31,21 +31,21 @@ describe('transition-patch', () => {
 
 @Component({
   template: `
-    <button nz-button id="patch"></button>
+    <button nz-button></button>
   `
 })
 export class TestTransitionPatchComponent {}
 
 @Component({
   template: `
-    <button nz-button hidden id="patch"></button>
+    <button nz-button hidden></button>
   `
 })
 export class TestTransitionPatchHiddenComponent {}
 
 @Component({
   template: `
-    <button nz-button hidden="abc" id="patch"></button>
+    <button nz-button hidden="abc"></button>
   `
 })
 export class TestTransitionPatchRestoreComponent {}
