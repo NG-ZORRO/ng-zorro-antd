@@ -1,14 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, DebugElement, Inject, NgModule, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, TestBedStatic, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NZ_CONFIG } from 'ng-zorro-antd';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
 
 import { NzI18nService } from '../i18n';
 import en_US from '../i18n/languages/en_US';
 import { NzListModule } from '../list';
 
-import { EmbedEmptyComponent } from './embed-empty.component';
+import { NzEmbedEmptyComponent } from './embed-empty.component';
 import { NzEmptyComponent } from './empty.component';
 import { NzEmptyModule } from './empty.module';
 import { NzEmptyService } from './empty.service';
@@ -16,21 +17,17 @@ import { NZ_EMPTY_COMPONENT_NAME } from './utils';
 
 describe('NzEmpty', () => {
   describe('basic', () => {
-    let testBed: TestBedStatic;
+    let testBed: ComponentBed<NzEmptyTestBasicComponent>;
     let fixture: ComponentFixture<NzEmptyTestBasicComponent>;
     let testComponent: NzEmptyTestBasicComponent;
     let emptyComponent: DebugElement;
 
     beforeEach(() => {
-      testBed = TestBed.configureTestingModule({
-        imports: [CommonModule, NzEmptyModule],
-        declarations: [NzEmptyTestBasicComponent]
+      testBed = createComponentBed(NzEmptyTestBasicComponent, {
+        imports: [NzEmptyModule]
       });
-
-      TestBed.compileComponents();
-
-      fixture = TestBed.createComponent(NzEmptyTestBasicComponent);
-      testComponent = fixture.debugElement.componentInstance;
+      fixture = testBed.fixture;
+      testComponent = testBed.component;
       emptyComponent = fixture.debugElement.query(By.directive(NzEmptyComponent));
 
       fixture.detectChanges();
@@ -116,7 +113,7 @@ describe('NzEmpty', () => {
       const contentEl = emptyComponent.nativeElement.lastElementChild;
       expect(contentEl.innerText.trim()).toBe('暂无数据');
 
-      testBed.get(NzI18nService).setLocale(en_US);
+      testBed.bed.get(NzI18nService).setLocale(en_US);
       fixture.detectChanges();
       expect(contentEl.innerText.trim()).toBe('No Data');
     });
@@ -126,6 +123,7 @@ describe('NzEmpty', () => {
    * Config default empty content via `NzEmptyService`'s `setDefaultEmptyContent` method.
    */
   describe('embed', () => {
+    let testBed: ComponentBed<NzEmptyTestServiceComponent>;
     let fixture: ComponentFixture<NzEmptyTestServiceComponent>;
     let testComponent: NzEmptyTestServiceComponent;
     let embedComponent: DebugElement;
@@ -133,12 +131,11 @@ describe('NzEmpty', () => {
 
     describe('service method', () => {
       beforeEach(() => {
-        TestBed.configureTestingModule({
-          imports: [NzEmptyTestServiceModule]
-        }).compileComponents();
-
-        fixture = TestBed.createComponent(NzEmptyTestServiceComponent);
-        testComponent = fixture.debugElement.componentInstance;
+        testBed = createComponentBed(NzEmptyTestServiceComponent, {
+          imports: [NzEmptyModule]
+        });
+        fixture = testBed.fixture;
+        testComponent = testBed.component;
       });
 
       it("should components' prop has priority", fakeAsync(() => {
@@ -147,7 +144,7 @@ describe('NzEmpty', () => {
           tick();
           fixture.detectChanges();
 
-          embedComponent = fixture.debugElement.query(By.directive(EmbedEmptyComponent));
+          embedComponent = fixture.debugElement.query(By.directive(NzEmbedEmptyComponent));
           emptyComponent = fixture.debugElement.query(By.directive(NzEmptyComponent));
         };
 
@@ -196,7 +193,7 @@ describe('NzEmpty', () => {
           tick();
           fixture.detectChanges();
 
-          embedComponent = fixture.debugElement.query(By.directive(EmbedEmptyComponent));
+          embedComponent = fixture.debugElement.query(By.directive(NzEmbedEmptyComponent));
           emptyComponent = fixture.debugElement.query(By.directive(NzEmptyComponent));
         };
 
@@ -249,12 +246,11 @@ describe('NzEmpty', () => {
      */
     describe('service injection', () => {
       beforeEach(() => {
-        TestBed.configureTestingModule({
-          imports: [NzEmptyTestInjectionModule]
-        }).compileComponents();
-
-        fixture = TestBed.createComponent(NzEmptyTestServiceComponent);
-        testComponent = fixture.debugElement.componentInstance;
+        testBed = createComponentBed(NzEmptyTestServiceComponent, {
+          imports: [NzEmptyModule]
+        });
+        fixture = testBed.fixture;
+        testComponent = testBed.component;
       });
 
       it('should support injection', fakeAsync(() => {
@@ -263,7 +259,7 @@ describe('NzEmpty', () => {
           tick();
           fixture.detectChanges();
 
-          embedComponent = fixture.debugElement.query(By.directive(EmbedEmptyComponent));
+          embedComponent = fixture.debugElement.query(By.directive(NzEmbedEmptyComponent));
           emptyComponent = fixture.debugElement.query(By.directive(NzEmptyComponent));
         };
 

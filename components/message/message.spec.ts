@@ -1,14 +1,15 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
 
 import { dispatchMouseEvent, NZ_CONFIG, NzConfig, NzConfigService } from 'ng-zorro-antd/core';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
 
 import { NzMessageModule } from './message.module';
 import { NzMessageService } from './message.service';
 
 describe('NzMessage', () => {
+  let testBed: ComponentBed<NzTestMessageBasicComponent>;
   let messageService: NzMessageService;
   let overlayContainerElement: HTMLElement;
   let fixture: ComponentFixture<NzTestMessageBasicComponent>;
@@ -21,13 +22,12 @@ describe('NzMessage', () => {
       nzTop: 24
     };
 
-    TestBed.configureTestingModule({
-      imports: [NzMessageModule, NoopAnimationsModule],
-      declarations: [NzTestMessageBasicComponent],
+    testBed = createComponentBed(NzTestMessageBasicComponent, {
+      imports: [NzMessageModule],
       providers: [{ provide: NZ_CONFIG, useValue: { message: MESSAGE_CONFIG } }]
     });
-
-    TestBed.compileComponents();
+    fixture = testBed.fixture;
+    testComponent = fixture.debugElement.componentInstance;
   }));
 
   beforeEach(inject([NzMessageService, OverlayContainer], (m: NzMessageService, oc: OverlayContainer) => {
@@ -41,11 +41,6 @@ describe('NzMessage', () => {
 
   afterEach(() => {
     messageService.remove();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(NzTestMessageBasicComponent);
-    testComponent = fixture.debugElement.componentInstance;
   });
 
   it('should open a message box with success', () => {

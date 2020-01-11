@@ -12,40 +12,38 @@ import {
 } from '@ant-design/icons-angular/icons';
 
 import { NzConfigService } from 'ng-zorro-antd/core';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
 
 import { NzIconDirective } from './icon.directive';
 import { NzIconModule } from './icon.module';
 import { NZ_ICON_DEFAULT_TWOTONE_COLOR, NZ_ICONS, NzIconService } from './icon.service';
 
 describe('nz icon', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [CommonModule, NzIconModule],
-      declarations: [NzTestIconExtensionsComponent, NzTestIconCustomComponent, NzTestIconIconfontComponent],
-      providers: [
-        {
-          provide: NZ_ICONS,
-          useValue: [LeftOutline, RightOutline, QuestionOutline, QuestionCircleOutline, LoadingOutline, QuestionCircleFill]
-        },
-        {
-          provide: NZ_ICON_DEFAULT_TWOTONE_COLOR,
-          useValue: '#3344cc'
-        }
-      ]
-    }).compileComponents();
-  });
-
   /**
    * Extended features built on `@ant-design/icons-angular`.
    */
   describe('extensions', () => {
+    let testBed: ComponentBed<NzTestIconExtensionsComponent>;
     let testComponent: NzTestIconExtensionsComponent;
     let fixture: ComponentFixture<NzTestIconExtensionsComponent>;
     let icons: DebugElement[];
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestIconExtensionsComponent);
-      testComponent = fixture.debugElement.componentInstance;
+      testBed = createComponentBed(NzTestIconExtensionsComponent, {
+        imports: [NzIconModule],
+        providers: [
+          {
+            provide: NZ_ICONS,
+            useValue: [LeftOutline, RightOutline, QuestionOutline, QuestionCircleOutline, LoadingOutline, QuestionCircleFill]
+          },
+          {
+            provide: NZ_ICON_DEFAULT_TWOTONE_COLOR,
+            useValue: '#3344cc'
+          }
+        ]
+      });
+      fixture = testBed.fixture;
+      testComponent = testBed.component;
       icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
     });
 
@@ -105,11 +103,25 @@ describe('nz icon', () => {
   });
 
   describe('custom', () => {
+    let testBed: ComponentBed<NzTestIconCustomComponent>;
     let fixture: ComponentFixture<NzTestIconCustomComponent>;
     let icons: DebugElement[];
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestIconCustomComponent);
+      testBed = createComponentBed(NzTestIconCustomComponent, {
+        imports: [NzIconModule],
+        providers: [
+          {
+            provide: NZ_ICONS,
+            useValue: [LeftOutline, RightOutline, QuestionOutline, QuestionCircleOutline, LoadingOutline, QuestionCircleFill]
+          },
+          {
+            provide: NZ_ICON_DEFAULT_TWOTONE_COLOR,
+            useValue: '#3344cc'
+          }
+        ]
+      });
+      fixture = testBed.fixture;
     });
 
     it('should support custom svg element', () => {
@@ -123,11 +135,25 @@ describe('nz icon', () => {
   });
 
   describe('iconfont', () => {
+    let testBed: ComponentBed<NzTestIconIconfontComponent>;
     let fixture: ComponentFixture<NzTestIconIconfontComponent>;
     let icons: DebugElement[];
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestIconIconfontComponent);
+      testBed = createComponentBed(NzTestIconIconfontComponent, {
+        imports: [NzIconModule],
+        providers: [
+          {
+            provide: NZ_ICONS,
+            useValue: [LeftOutline, RightOutline, QuestionOutline, QuestionCircleOutline, LoadingOutline, QuestionCircleFill]
+          },
+          {
+            provide: NZ_ICON_DEFAULT_TWOTONE_COLOR,
+            useValue: '#3344cc'
+          }
+        ]
+      });
+      fixture = testBed.fixture;
     });
 
     it('should support iconfont', async(() => {
@@ -145,14 +171,14 @@ describe('nz icon', () => {
 });
 
 describe('nz config service', () => {
+  let testBed: ComponentBed<NzTestIconExtensionsComponent>;
   let fixture: ComponentFixture<NzTestIconExtensionsComponent>;
   let nzConfigService: NzConfigService;
   let icons: DebugElement[];
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [CommonModule, NzIconModule],
-      declarations: [NzTestIconExtensionsComponent],
+    testBed = createComponentBed(NzTestIconExtensionsComponent, {
+      imports: [NzIconModule],
       providers: [
         {
           provide: NZ_ICONS,
@@ -161,7 +187,7 @@ describe('nz config service', () => {
       ]
     });
 
-    fixture = TestBed.createComponent(NzTestIconExtensionsComponent);
+    fixture = testBed.fixture;
     fixture.detectChanges();
     icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
   });
@@ -181,13 +207,13 @@ describe('nz config service', () => {
  * @deprecated This API is not going to be provided in 9.0.0.
  */
 describe('nz icon twotone color injection', () => {
+  let testBed: ComponentBed<NzTestIconExtensionsComponent>;
   let fixture: ComponentFixture<NzTestIconExtensionsComponent>;
   let icons: DebugElement[];
 
   it('should support default twotone color', () => {
-    TestBed.configureTestingModule({
-      imports: [CommonModule, NzIconModule],
-      declarations: [NzTestIconExtensionsComponent],
+    testBed = createComponentBed(NzTestIconExtensionsComponent, {
+      imports: [NzIconModule],
       providers: [
         {
           provide: NZ_ICONS,
@@ -199,8 +225,7 @@ describe('nz icon twotone color injection', () => {
         }
       ]
     });
-
-    fixture = TestBed.createComponent(NzTestIconExtensionsComponent);
+    fixture = testBed.fixture;
     fixture.detectChanges();
 
     icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));

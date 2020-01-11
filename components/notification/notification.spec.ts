@@ -1,10 +1,10 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
 import { HomeOutline } from '@ant-design/icons-angular/icons';
 
 import { dispatchMouseEvent, NZ_CONFIG, NzConfig, NzConfigService } from 'ng-zorro-antd/core';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
 import { NZ_ICONS } from 'ng-zorro-antd/icon';
 
 import { NotificationModule } from './notification.module';
@@ -20,6 +20,7 @@ export class DemoAppComponent {
 }
 
 describe('NzNotification', () => {
+  let testBed: ComponentBed<DemoAppComponent>;
   let notificationService: NotificationService;
   let overlayContainerElement: HTMLElement;
   let fixture: ComponentFixture<DemoAppComponent>;
@@ -36,19 +37,17 @@ describe('NzNotification', () => {
       nzMaxStack: 2
     };
 
-    TestBed.configureTestingModule({
-      imports: [NotificationModule, NoopAnimationsModule],
-      declarations: [DemoAppComponent],
+    testBed = createComponentBed(DemoAppComponent, {
+      imports: [NotificationModule],
       providers: [
         {
           provide: NZ_ICONS,
           useValue: [HomeOutline]
         },
         { provide: NZ_CONFIG, useValue: { notification: NOTIFICATION_CONFIG } }
-      ] // Override default config
+      ]
     });
-
-    TestBed.compileComponents();
+    fixture = testBed.fixture;
   }));
 
   beforeEach(inject([NotificationService, OverlayContainer], (n: NotificationService, oc: OverlayContainer) => {
@@ -59,10 +58,6 @@ describe('NzNotification', () => {
       overlayContainerElement = oc.getContainerElement();
     }
   }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(DemoAppComponent);
-  });
 
   afterEach(() => {
     notificationService.remove();

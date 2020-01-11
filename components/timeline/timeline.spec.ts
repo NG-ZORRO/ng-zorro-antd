@@ -2,7 +2,7 @@ import { Component, DebugElement } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { NzTimelineItemComponent } from './nz-timeline-item.component';
+import { NzTimelineItemComponent } from './timeline-item.component';
 import { NzTimelineComponent } from './timeline.component';
 import { NzTimelineModule } from './timeline.module';
 

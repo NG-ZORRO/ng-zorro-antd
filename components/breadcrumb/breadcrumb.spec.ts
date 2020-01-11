@@ -1,9 +1,9 @@
-import { CommonModule } from '@angular/common';
 import { Component, DebugElement } from '@angular/core';
 import { async, ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router, Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
 
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
@@ -17,26 +17,21 @@ import { NzDemoBreadcrumbSeparatorComponent } from './demo/separator';
 
 describe('breadcrumb', () => {
   describe('basic', () => {
-    let fixture: ComponentFixture<NzDemoBreadcrumbBasicComponent>;
+    let testBed: ComponentBed<NzDemoBreadcrumbBasicComponent>;
     let items: DebugElement[];
     let breadcrumb: DebugElement;
 
     beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [NzBreadCrumbModule],
-        declarations: [NzDemoBreadcrumbBasicComponent],
-        providers: []
-      }).compileComponents();
+      testBed = createComponentBed(NzDemoBreadcrumbBasicComponent, { declarations: [NzBreadCrumbComponent] });
     }));
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzDemoBreadcrumbBasicComponent);
-      items = fixture.debugElement.queryAll(By.directive(NzBreadCrumbItemComponent));
-      breadcrumb = fixture.debugElement.query(By.directive(NzBreadCrumbComponent));
+      items = testBed.debugElement.queryAll(By.directive(NzBreadCrumbItemComponent));
+      breadcrumb = testBed.debugElement.query(By.directive(NzBreadCrumbComponent));
     });
 
     it('should have correct style', () => {
-      fixture.detectChanges();
+      testBed.detectChanges();
       expect(items.every(item => item.nativeElement.firstElementChild!.classList.contains('ant-breadcrumb-link'))).toBe(true);
       expect(items.every(item => item.nativeElement.children[1].classList.contains('ant-breadcrumb-separator'))).toBe(true);
       expect(breadcrumb.nativeElement.classList.contains('ant-breadcrumb')).toBe(true);
@@ -44,24 +39,19 @@ describe('breadcrumb', () => {
   });
 
   describe('dropdown', () => {
-    let fixture: ComponentFixture<NzDemoBreadcrumbDropdownComponent>;
+    let testBed: ComponentBed<NzDemoBreadcrumbDropdownComponent>;
     let items: DebugElement[];
 
     beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [NzBreadCrumbModule, NzDropDownModule],
-        declarations: [NzDemoBreadcrumbDropdownComponent],
-        providers: []
-      }).compileComponents();
+      testBed = createComponentBed(NzDemoBreadcrumbDropdownComponent, { imports: [NzDropDownModule, NzBreadCrumbModule] });
     }));
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzDemoBreadcrumbDropdownComponent);
-      items = fixture.debugElement.queryAll(By.directive(NzBreadCrumbItemComponent));
+      items = testBed.fixture.debugElement.queryAll(By.directive(NzBreadCrumbItemComponent));
     });
 
     it('should dropdown work', () => {
-      fixture.detectChanges();
+      testBed.fixture.detectChanges();
 
       const dropdownElement = items[2];
       expect((dropdownElement.nativeElement as HTMLElement).querySelector('.ant-dropdown-trigger')).not.toBe(null);
@@ -69,25 +59,21 @@ describe('breadcrumb', () => {
   });
 
   describe('separator', () => {
-    let fixture: ComponentFixture<NzDemoBreadcrumbSeparatorComponent>;
+    let testBed: ComponentBed<NzDemoBreadcrumbSeparatorComponent>;
     let items: DebugElement[];
     let breadcrumbs: DebugElement[];
 
     beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [NzBreadCrumbModule, NzIconTestModule],
-        declarations: [NzDemoBreadcrumbSeparatorComponent]
-      }).compileComponents();
+      testBed = createComponentBed(NzDemoBreadcrumbSeparatorComponent, { imports: [NzBreadCrumbModule, NzIconTestModule] });
     }));
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzDemoBreadcrumbSeparatorComponent);
-      items = fixture.debugElement.queryAll(By.directive(NzBreadCrumbItemComponent));
-      breadcrumbs = fixture.debugElement.queryAll(By.directive(NzBreadCrumbComponent));
+      items = testBed.debugElement.queryAll(By.directive(NzBreadCrumbItemComponent));
+      breadcrumbs = testBed.debugElement.queryAll(By.directive(NzBreadCrumbComponent));
     });
 
     it('should nzSeparator work', () => {
-      fixture.detectChanges();
+      testBed.detectChanges();
       expect(items.every(item => item.nativeElement.firstElementChild!.classList.contains('ant-breadcrumb-link'))).toBe(true);
       expect(items.every(item => item.nativeElement.children[1].classList.contains('ant-breadcrumb-separator'))).toBe(true);
       expect(breadcrumbs.every(breadcrumb => breadcrumb.nativeElement.classList.contains('ant-breadcrumb'))).toBe(true);
@@ -97,17 +83,17 @@ describe('breadcrumb', () => {
   });
 
   describe('auto generated', () => {
+    let testBed: ComponentBed<NzBreadcrumbAutoGenerateDemoComponent>;
     let fixture: ComponentFixture<NzBreadcrumbAutoGenerateDemoComponent>;
     let router: Router;
     let breadcrumb: DebugElement;
 
     it('should auto generating work', fakeAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [CommonModule, NzBreadCrumbModule, RouterTestingModule.withRoutes(routes)],
-        declarations: [NzBreadcrumbAutoGenerateDemoComponent, NzBreadcrumbNullComponent]
-      }).compileComponents();
-
-      fixture = TestBed.createComponent(NzBreadcrumbAutoGenerateDemoComponent);
+      testBed = createComponentBed(NzBreadcrumbAutoGenerateDemoComponent, {
+        imports: [NzBreadCrumbModule, RouterTestingModule.withRoutes(routes)],
+        declarations: [NzBreadcrumbNullComponent]
+      });
+      fixture = testBed.fixture;
       breadcrumb = fixture.debugElement.query(By.directive(NzBreadCrumbComponent));
 
       fixture.ngZone!.run(() => {
@@ -141,12 +127,11 @@ describe('breadcrumb', () => {
     }));
 
     it('should route data breadcrumb label work', fakeAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [CommonModule, NzBreadCrumbModule, RouterTestingModule.withRoutes(customRouteLabelRoutes)],
-        declarations: [NzBreadcrumbRouteLabelDemoComponent, NzBreadcrumbNullComponent]
-      }).compileComponents();
-
-      fixture = TestBed.createComponent(NzBreadcrumbRouteLabelDemoComponent);
+      testBed = createComponentBed(NzBreadcrumbRouteLabelDemoComponent, {
+        imports: [NzBreadCrumbModule, RouterTestingModule.withRoutes(customRouteLabelRoutes)],
+        declarations: [NzBreadcrumbNullComponent]
+      });
+      fixture = testBed.fixture;
       breadcrumb = fixture.debugElement.query(By.directive(NzBreadCrumbComponent));
 
       fixture.ngZone!.run(() => {
@@ -165,14 +150,8 @@ describe('breadcrumb', () => {
     }));
 
     it('should raise error when RouterModule is not included', fakeAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [NzBreadCrumbModule],
-        declarations: [NzBreadcrumbAutoGenerateErrorDemoComponent]
-      });
-
       expect(() => {
-        TestBed.compileComponents();
-        fixture = TestBed.createComponent(NzBreadcrumbAutoGenerateErrorDemoComponent);
+        testBed = createComponentBed(NzBreadcrumbAutoGenerateErrorDemoComponent, { imports: [NzBreadCrumbModule] });
         fixture.detectChanges();
       }).toThrowError();
     }));

@@ -1,9 +1,10 @@
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
 
 import { NzCarouselContentDirective } from './carousel-content.directive';
 import { NZ_CAROUSEL_CUSTOM_STRATEGIES } from './carousel-definitions';
@@ -45,23 +46,19 @@ export class NzTestCarouselBasicComponent {
 }
 
 describe('carousel', () => {
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [NzCarouselModule],
-      declarations: [NzTestCarouselBasicComponent]
-    });
-    TestBed.compileComponents();
-  }));
-
   describe('carousel basic', () => {
+    let testBed: ComponentBed<NzTestCarouselBasicComponent>;
     let fixture: ComponentFixture<NzTestCarouselBasicComponent>;
     let testComponent: NzTestCarouselBasicComponent;
     let carouselWrapper: DebugElement;
     let carouselContents: DebugElement[];
 
+    beforeEach(fakeAsync(() => {
+      testBed = createComponentBed(NzTestCarouselBasicComponent, { imports: [NzCarouselModule] });
+    }));
+
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestCarouselBasicComponent);
-      fixture.detectChanges();
+      fixture = testBed.fixture;
       testComponent = fixture.debugElement.componentInstance;
       carouselWrapper = fixture.debugElement.query(By.directive(NzCarouselComponent));
       carouselContents = fixture.debugElement.queryAll(By.directive(NzCarouselContentDirective));
@@ -248,16 +245,18 @@ describe('carousel', () => {
   });
 
   describe('strategies', () => {
-    let fixture: ComponentFixture<NzTestCarouselBasicComponent>;
-    let testComponent: NzTestCarouselBasicComponent;
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestCarouselBasicComponent);
-      fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
-    });
-
     describe('transform strategy', () => {
+      let testBed: ComponentBed<NzTestCarouselBasicComponent>;
+      let fixture: ComponentFixture<NzTestCarouselBasicComponent>;
+      let testComponent: NzTestCarouselBasicComponent;
+
+      beforeEach(() => {
+        testBed = createComponentBed(NzTestCarouselBasicComponent, { imports: [NzCarouselModule] });
+        fixture = testBed.fixture;
+        fixture.detectChanges();
+        testComponent = fixture.debugElement.componentInstance;
+      });
+
       it('horizontal transform', fakeAsync(() => {
         expect(testComponent.nzCarouselComponent.slickTrackEl.style.transform).toBe(`translate3d(0px, 0px, 0px)`);
 
@@ -312,14 +311,14 @@ describe('carousel', () => {
 });
 
 describe('carousel custom strategies', () => {
+  let testBed: ComponentBed<NzTestCarouselBasicComponent>;
   let fixture: ComponentFixture<NzTestCarouselBasicComponent>;
   let testComponent: NzTestCarouselBasicComponent;
   let carouselWrapper: DebugElement;
   let carouselContents: DebugElement[];
 
   beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [NzCarouselModule],
+    testBed = createComponentBed(NzTestCarouselBasicComponent, {
       declarations: [NzTestCarouselBasicComponent],
       providers: [
         {
@@ -333,10 +332,10 @@ describe('carousel custom strategies', () => {
         }
       ]
     });
+    fixture = testBed.fixture;
   }));
 
   it('could use custom strategies', fakeAsync(() => {
-    fixture = TestBed.createComponent(NzTestCarouselBasicComponent);
     fixture.detectChanges();
     testComponent = fixture.debugElement.componentInstance;
     carouselWrapper = fixture.debugElement.query(By.directive(NzCarouselComponent));

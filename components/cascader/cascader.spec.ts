@@ -19,11 +19,12 @@ import {
 } from '@angular/cdk/keycodes';
 import { ConnectedOverlayPositionChange, OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, flush, inject, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { createFakeEvent, createMouseEvent, dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
 
 import { NzCascaderOption, NzShowSearchOptions } from './cascader-definitions';
 import { NzCascaderComponent } from './cascader.component';
@@ -46,6 +47,7 @@ describe('cascader', () => {
   }
 
   describe('default', () => {
+    let testBed: ComponentBed<NzDemoCascaderDefaultComponent>;
     let fixture: ComponentFixture<NzDemoCascaderDefaultComponent>;
     let cascader: DebugElement;
     let testComponent: NzDemoCascaderDefaultComponent;
@@ -59,11 +61,9 @@ describe('cascader', () => {
     }
 
     beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [FormsModule, ReactiveFormsModule, NoopAnimationsModule, NzCascaderModule],
-        declarations: [NzDemoCascaderDefaultComponent],
-        providers: []
-      }).compileComponents();
+      testBed = createComponentBed(NzDemoCascaderDefaultComponent, {
+        imports: [FormsModule, ReactiveFormsModule, NzCascaderModule]
+      });
 
       inject([OverlayContainer], (oc: OverlayContainer) => {
         overlayContainer = oc;
@@ -77,8 +77,8 @@ describe('cascader', () => {
     }));
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzDemoCascaderDefaultComponent);
-      testComponent = fixture.debugElement.componentInstance;
+      fixture = testBed.fixture;
+      testComponent = testBed.component;
       cascader = fixture.debugElement.query(By.directive(NzCascaderComponent));
     });
 
@@ -1573,16 +1573,15 @@ describe('cascader', () => {
   });
 
   describe('load data lazily', () => {
+    let testBed: ComponentBed<NzDemoCascaderLoadDataComponent>;
     let fixture: ComponentFixture<NzDemoCascaderLoadDataComponent>;
     let cascader: DebugElement;
     let testComponent: NzDemoCascaderLoadDataComponent;
 
     beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [FormsModule, ReactiveFormsModule, NoopAnimationsModule, NzCascaderModule],
-        declarations: [NzDemoCascaderLoadDataComponent],
-        providers: []
-      }).compileComponents();
+      testBed = createComponentBed(NzDemoCascaderLoadDataComponent, {
+        imports: [FormsModule, ReactiveFormsModule, NoopAnimationsModule, NzCascaderModule]
+      });
 
       inject([OverlayContainer], (oc: OverlayContainer) => {
         overlayContainer = oc;
@@ -1596,8 +1595,8 @@ describe('cascader', () => {
     }));
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzDemoCascaderLoadDataComponent);
-      testComponent = fixture.debugElement.componentInstance;
+      fixture = testBed.fixture;
+      testComponent = testBed.component;
       cascader = fixture.debugElement.query(By.directive(NzCascaderComponent));
     });
 
