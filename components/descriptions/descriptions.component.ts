@@ -26,8 +26,9 @@ import {
 import { InputBoolean, NzBreakpointEnum, NzConfigService, NzDomEventService, responsiveMap, warn, WithConfig } from 'ng-zorro-antd/core';
 import { merge, Subject } from 'rxjs';
 import { auditTime, finalize, startWith, switchMap, takeUntil } from 'rxjs/operators';
-import { NzDescriptionsItemRenderProps, NzDescriptionsLayout, NzDescriptionsSize } from './descriptions-definitions';
+
 import { NzDescriptionsItemComponent } from './descriptions-item.component';
+import { NzDescriptionsItemRenderProps, NzDescriptionsLayout, NzDescriptionsSize } from './typings';
 
 const NZ_CONFIG_COMPONENT_NAME = 'descriptions';
 const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
