@@ -2,9 +2,8 @@ import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NzFormExplainComponent } from './nz-form-explain.component';
-import { NzFormItemComponent } from './nz-form-item.component';
-import { NzFormModule } from './nz-form.module';
+import { NzFormItemComponent } from './form-item.component';
+import { NzFormModule } from './form.module';
 
 describe('nz-form-item', () => {
   beforeEach(fakeAsync(() => {
@@ -18,29 +17,15 @@ describe('nz-form-item', () => {
     let fixture: ComponentFixture<NzTestFormItemComponent>;
     let testComponent: NzTestFormItemComponent;
     let item: DebugElement;
-    let explain: DebugElement;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestFormItemComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       item = fixture.debugElement.query(By.directive(NzFormItemComponent));
-      explain = fixture.debugElement.query(By.directive(NzFormExplainComponent));
     });
     it('should className correct', () => {
       fixture.detectChanges();
       expect(item.nativeElement.classList).toContain('ant-form-item');
-      expect(explain.nativeElement.classList).toContain('ant-form-explain');
-    });
-    it('should help class correct', () => {
-      fixture.detectChanges();
-      expect(item.nativeElement.classList).toContain('ant-form-item-with-help');
-      testComponent.second = true;
-      fixture.detectChanges();
-      expect(item.nativeElement.classList).toContain('ant-form-item-with-help');
-      testComponent.first = false;
-      testComponent.second = false;
-      fixture.detectChanges();
-      expect(item.nativeElement.classList).not.toContain('ant-form-item-with-help');
     });
     it('should flex work', () => {
       fixture.detectChanges();
@@ -57,14 +42,9 @@ describe('nz-form-item', () => {
 
 @Component({
   template: `
-    <nz-form-item [nzFlex]="flex">
-      <nz-form-explain *ngIf="first"></nz-form-explain>
-      <nz-form-explain *ngIf="second"></nz-form-explain>
-    </nz-form-item>
+    <nz-form-item [nzFlex]="flex"></nz-form-item>
   `
 })
 export class NzTestFormItemComponent {
-  first = true;
-  second = false;
   flex = false;
 }

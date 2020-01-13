@@ -3,8 +3,8 @@ import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core
 import { FormBuilder, FormControl, FormControlName, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NzFormControlComponent } from './nz-form-control.component';
-import { NzFormModule } from './nz-form.module';
+import { NzFormControlComponent } from './form-control.component';
+import { NzFormModule } from './form.module';
 
 describe('nz-form-control', () => {
   beforeEach(fakeAsync(() => {

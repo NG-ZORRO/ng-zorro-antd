@@ -27,9 +27,7 @@ import { FormControl, FormControlDirective, FormControlName, NgControl, NgModel 
 import { helpMotion, NgClassType, toBoolean } from 'ng-zorro-antd/core';
 import { Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
-import { NzFormItemComponent } from './nz-form-item.component';
-
-export type NzFormControlStatusType = 'warning' | 'validating' | 'error' | 'success' | null;
+import { NzFormItemComponent, NzFormItemStatusType } from './form-item.component';
 
 @Component({
   selector: 'nz-form-control',
@@ -38,7 +36,35 @@ export type NzFormControlStatusType = 'warning' | 'validating' | 'error' | 'succ
   animations: [helpMotion],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './nz-form-control.component.html',
+  template: `
+    <div class="ant-form-item-control-input">
+      <ng-content></ng-content>
+      <span class="ant-form-item-children-icon">
+        <i *ngIf="nzHasFeedback && iconType" nz-icon [nzType]="iconType"></i>
+      </span>
+    </div>
+    <div class="ant-form-item-explain" *ngIf="showSuccessTip || showWarningTip || showErrorTip || showValidatingTip">
+      <div @helpMotion>
+        <ng-container *ngIf="showSuccessTip">
+          <ng-container *nzStringTemplateOutlet="nzSuccessTip; context: { $implicit: validateControl }">{{ nzSuccessTip }}</ng-container>
+        </ng-container>
+        <ng-container *ngIf="showWarningTip">
+          <ng-container *nzStringTemplateOutlet="nzWarningTip; context: { $implicit: validateControl }">{{ nzWarningTip }}</ng-container>
+        </ng-container>
+        <ng-container *ngIf="showErrorTip">
+          <ng-container *nzStringTemplateOutlet="nzErrorTip; context: { $implicit: validateControl }">{{ nzErrorTip }}</ng-container>
+        </ng-container>
+        <ng-container *ngIf="showValidatingTip">
+          <ng-container *nzStringTemplateOutlet="nzValidatingTip; context: { $implicit: validateControl }">{{
+            nzValidatingTip
+          }}</ng-container>
+        </ng-container>
+      </div>
+    </div>
+    <div class="ant-form-item-extra" *ngIf="nzExtra">
+      <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
+    </div>
+  `,
   styles: [
     `
       nz-form-control {
@@ -55,7 +81,7 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
   private validateChanges: Subscription = Subscription.EMPTY;
   private validateString: string | null;
   validateControl: FormControl | NgModel | null;
-  status: NzFormControlStatusType = null;
+  status: NzFormItemStatusType = null;
   controlClassMap: NgClassType = {};
   iconType: string;
   @ContentChild(NgControl, { static: false }) defaultValidateControl: FormControlName | FormControlDirective;
@@ -68,7 +94,7 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
   @Input()
   set nzHasFeedback(value: boolean) {
     this._hasFeedback = toBoolean(value);
-    this.setControlClassMap();
+    this.nzFormItemComponent.setHasFeedback(this._hasFeedback);
   }
 
   get nzHasFeedback(): boolean {
@@ -88,7 +114,7 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
     } else {
       this.validateString = value;
       this.validateControl = null;
-      this.setControlClassMap();
+      this.setItemStatus();
     }
   }
 
@@ -101,7 +127,7 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
     /** miss detect https://github.com/angular/angular/issues/10887 **/
     if (this.validateControl && this.validateControl.statusChanges) {
       this.validateChanges = this.validateControl.statusChanges.pipe(startWith(null)).subscribe(() => {
-        this.setControlClassMap();
+        this.setItemStatus();
         this.cdr.markForCheck();
       });
     }
@@ -113,7 +139,7 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
       this.validateControl.status === status) as boolean;
   }
 
-  setControlClassMap(): void {
+  setItemStatus(): void {
     if (this.validateString === 'warning') {
       this.status = 'warning';
       this.iconType = 'exclamation-circle-fill';
@@ -133,13 +159,7 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
     if (this.hasTips) {
       this.nzFormItemComponent.setWithHelpViaTips(this.showErrorTip);
     }
-    this.controlClassMap = {
-      [`has-warning`]: this.status === 'warning',
-      [`is-validating`]: this.status === 'validating',
-      [`has-error`]: this.status === 'error',
-      [`has-success`]: this.status === 'success',
-      [`has-feedback`]: this.nzHasFeedback && this.status
-    };
+    this.nzFormItemComponent.setItemStatus(this.status);
   }
 
   get hasTips(): boolean {
@@ -172,11 +192,11 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
     private cdr: ChangeDetectorRef,
     renderer: Renderer2
   ) {
-    renderer.addClass(elementRef.nativeElement, 'ant-form-item-control-wrapper');
+    renderer.addClass(elementRef.nativeElement, 'ant-form-item-control');
   }
 
   ngOnInit(): void {
-    this.setControlClassMap();
+    this.setItemStatus();
   }
 
   ngOnDestroy(): void {

@@ -2,9 +2,9 @@ import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NzFormItemComponent } from './nz-form-item.component';
-import { NzFormLabelComponent } from './nz-form-label.component';
-import { NzFormDirective } from './nz-form.directive';
+import { NzFormItemComponent } from './form-item.component';
+import { NzFormLabelComponent } from './form-label.component';
+import { NzFormDirective } from './form.directive';
 
 describe('nz-form', () => {
   beforeEach(fakeAsync(() => {
