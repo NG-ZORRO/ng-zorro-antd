@@ -1,0 +1,66 @@
+<table class="{{ prefixCls }}-content" cellspacing="0" role="grid">
+  <thead *ngIf="headRow && headRow.length > 0">
+    <tr role="row">
+      <th *ngIf="showWeek" role="columnheader"></th>
+      <th *ngFor="let cell of headRow" role="columnheader" title="{{ cell.title }}">
+        {{ cell.content }}
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of bodyRows;" [ngClass]="row.classMap" role="row">
+      <td *ngIf="row.weekNum" role="gridcell" class="{{ prefixCls }}-cell-week">
+        {{ row.weekNum }}
+      </td>
+      <td
+        *ngFor="let cell of row.dateCells;"
+        title="{{ cell.title }}"
+        role="gridcell"
+        [ngClass]="cell.classMap"
+        (click)="cell.isDisabled ? null : cell.onClick()"
+        (mouseenter)="cell.isDisabled ? null : cell.onMouseEnter()"
+      >
+        <ng-container [ngSwitch]="prefixCls">
+          <ng-container *ngSwitchCase="'ant-picker'">
+            <ng-container [ngSwitch]="true">
+              <ng-container *ngSwitchCase="isTemplateRef(cell.cellRender)">
+                <ng-container
+                  *ngTemplateOutlet="cell.cellRender; context: { $implicit: cell.value }"
+                ></ng-container>
+              </ng-container>
+              <ng-container *ngSwitchCase="isNonEmptyString(cell.cellRender)">
+                <span [innerHTML]="cell.cellRender"></span>
+              </ng-container>
+              <ng-container *ngSwitchDefault>
+                <div
+                  class="{{ prefixCls }}-cell-inner"
+                  [attr.aria-selected]="cell.isSelected"
+                  [attr.aria-disabled]="cell.isDisabled"
+                >
+                  {{ cell.content }}
+                </div>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngSwitchCase="'ant-picker-calendar'">
+            <div class="{{ prefixCls }}-date">
+              <ng-container *ngIf="cell.fullCellRender; else defaultCell">
+                <ng-container
+                  *ngTemplateOutlet="cell.fullCellRender; context: { $implicit: cell.value }"
+                ></ng-container>
+              </ng-container>
+              <ng-template #defaultCell>
+                <div class="{{ prefixCls }}-date-value">{{ cell.content }}</div>
+                <div *ngIf="cell.cellRender" class="{{ prefixCls }}-date-content">
+                  <ng-container
+                    *ngTemplateOutlet="cell.cellRender; context: { $implicit: cell.value }"
+                  ></ng-container>
+                </div>
+              </ng-template>
+            </div>
+          </ng-container>
+        </ng-container>
+      </td>
+    </tr>
+  </tbody>
+</table>

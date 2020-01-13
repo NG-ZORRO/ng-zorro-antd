@@ -9,6 +9,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 import { CandyDate, isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core';
+import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/name';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 
 @Component({
@@ -37,7 +38,7 @@ export class CalendarFooterComponent {
   @Output() readonly clickOk = new EventEmitter<void>();
   @Output() readonly clickToday = new EventEmitter<CandyDate>();
 
-  prefixCls: string = 'ant-calendar';
+  prefixCls: string = PREFIX_CLASS;
   isTemplateRef = isTemplateRef;
   isNonEmptyString = isNonEmptyString;
 }

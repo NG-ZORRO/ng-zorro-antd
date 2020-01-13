@@ -19,6 +19,7 @@ import {
 } from '@angular/core';
 
 import { CandyDate } from 'ng-zorro-antd/core';
+import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/name';
 import { DateHelperService, NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 
 @Component({
@@ -41,7 +42,7 @@ export class CalendarInputComponent implements OnInit {
 
   @Output() readonly valueChange = new EventEmitter<{ date: CandyDate; isEnter: boolean }>();
 
-  prefixCls: string = 'ant-calendar';
+  prefixCls: string = PREFIX_CLASS;
   invalidInputClass: string = '';
 
   constructor(private dateHelper: DateHelperService) {}

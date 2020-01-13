@@ -8,7 +8,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { dispatchMouseEvent, NgStyleInterface } from 'ng-zorro-antd/core';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
-import { NzDatePickerModule } from './nz-date-picker.module';
+import { NzDatePickerModule } from './date-picker.module';
 
 describe('NzYearPickerComponent', () => {
   let fixture: ComponentFixture<NzTestYearPickerComponent>;

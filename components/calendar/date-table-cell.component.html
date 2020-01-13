@@ -1,5 +1,5 @@
 <ng-container [ngSwitch]="prefixCls">
-  <ng-container *ngSwitchCase="'ant-calendar'">
+  <ng-container *ngSwitchCase="'ant-picker'">
     <ng-container [ngSwitch]="true">
       <ng-container *ngSwitchCase="isTemplateRef(cell.dateCellRender)">
         <ng-container
@@ -11,7 +11,7 @@
       </ng-container>
       <ng-container *ngSwitchDefault>
         <div
-          class="{{ prefixCls }}-date"
+          class="{{ prefixCls }}-cell-inner"
           [attr.aria-selected]="cell.isSelected"
           [attr.aria-disabled]="cell.isDisabled"
         >
@@ -20,16 +20,16 @@
       </ng-container>
     </ng-container>
   </ng-container>
-  <ng-container *ngSwitchCase="'ant-fullcalendar'">
-    <div class="ant-fullcalendar-date">
+  <ng-container *ngSwitchCase="'ant-picker-calendar'">
+    <div class="{{ prefixCls }}-date">
       <ng-container *ngIf="cell.dateFullCellRender; else defaultCell">
         <ng-container
           *ngTemplateOutlet="cell.dateFullCellRender; context: { $implicit: cell.value }"
         ></ng-container>
       </ng-container>
       <ng-template #defaultCell>
-        <div class="{{ prefixCls }}-value">{{ cell.content }}</div>
-        <div *ngIf="cell.dateCellRender" class="{{ prefixCls }}-content">
+        <div class="{{ prefixCls }}-date-value">{{ cell.content }}</div>
+        <div *ngIf="cell.dateCellRender" class="{{ prefixCls }}-date-content">
           <ng-container
             *ngTemplateOutlet="cell.dateCellRender; context: { $implicit: cell.value }"
           ></ng-container>

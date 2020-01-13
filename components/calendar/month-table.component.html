@@ -1,6 +1,6 @@
 <table class="{{ prefixCls }}-month-panel-table" cellSpacing="0" role="grid">
   <tbody class="{{ prefixCls }}-month-panel-tbody">
-    <tr *ngFor="let row of panelMonths; trackBy: trackYear" role="row">
+    <tr *ngFor="let row of bodyRows; trackBy: trackYear" role="row">
       <td
         *ngFor="let monthCell of row; trackBy: trackPanelMonth"
         role="gridcell"

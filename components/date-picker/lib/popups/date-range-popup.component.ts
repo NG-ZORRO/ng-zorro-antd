@@ -20,6 +20,7 @@ import {
 } from '@angular/core';
 
 import { CandyDate, FunctionProp, sortRangeValue } from 'ng-zorro-antd/core';
+import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/name';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import {
   CompatibleValue,
@@ -69,7 +70,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges {
   @Output() readonly resultOk = new EventEmitter<void>(); // Emitted when done with date selecting
   @Output() readonly closePicker = new EventEmitter<void>(); // Notify outside to close the picker panel
 
-  prefixCls: string = 'ant-calendar';
+  prefixCls: string = PREFIX_CLASS;
   showTimePicker: boolean = false;
   timeOptions: SupportTimeOptions | SupportTimeOptions[] | null;
   valueForRangeShow: CandyDate[]; // Range ONLY

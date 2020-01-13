@@ -1,11 +1,11 @@
 <div
-  class="{{ prefixCls }}-picker-container {{ dropdownClassName }} {{
+  class="{{ prefixCls }}-dropdown {{ dropdownClassName }} {{
     prefixCls
-  }}-picker-container-placement-bottomLeft"
+  }}-dropdown-placement-bottomLeft"
   [ngStyle]="popupStyle"
 >
   <div
-    class="{{ prefixCls }} {{ showWeek ? prefixCls + '-week-number' : '' }} {{
+    class="{{ prefixCls }}-panel-container {{ showWeek ? prefixCls + '-week-number' : '' }} {{
       hasTimePicker ? prefixCls + '-time' : ''
     }} {{ isRange ? prefixCls + '-range' : '' }}"
     tabindex="0"
@@ -21,7 +21,7 @@
           <ng-container
             *ngTemplateOutlet="tplRangePart; context: { partType: 'left' }"
           ></ng-container>
-          <div class="ant-calendar-range-middle">~</div>
+          <div class="ant-picker-range-middle">~</div>
           <ng-container
             *ngTemplateOutlet="tplRangePart; context: { partType: 'right' }"
           ></ng-container>

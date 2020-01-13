@@ -9,6 +9,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 
 import { CandyDate } from 'ng-zorro-antd/core';
+import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/name';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 
 @Component({
@@ -26,7 +27,7 @@ export class MonthPanelComponent {
   @Output() readonly valueChange = new EventEmitter<CandyDate>();
   @Output() readonly yearPanelShow = new EventEmitter<void>();
 
-  prefixCls: string = 'ant-calendar-month-panel';
+  prefixCls: string = `${PREFIX_CLASS}-month-panel`;
 
   previousYear(): void {
     this.gotoYear(-1);

@@ -7,6 +7,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/name';
 
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 
@@ -25,7 +26,7 @@ export class TimePickerButtonComponent {
   @Input() showTimePicker: boolean = false;
   @Output() readonly showTimePickerChange = new EventEmitter<boolean>();
 
-  prefixCls: string = 'ant-calendar';
+  prefixCls: string = PREFIX_CLASS;
 
   onClick(): void {
     this.showTimePicker = !this.showTimePicker;

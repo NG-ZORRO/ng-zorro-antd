@@ -17,6 +17,7 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
+import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/name';
 
 import { DateHelperByDatePipe, DateHelperService, NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 
@@ -49,7 +50,7 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
   @Output() readonly chooseYear = new EventEmitter<CandyDate>();
   @Output() readonly chooseMonth = new EventEmitter<CandyDate>();
 
-  prefixCls: string = 'ant-calendar';
+  prefixCls: string = `${PREFIX_CLASS}-header`;
   yearMonthDaySelectors: YearMonthDaySelector[];
 
   private yearToMonth: boolean = false; // Indicate whether should change to month panel when current is year panel (if referer=month, it should show month panel when choosed a year)
@@ -151,14 +152,14 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
       yearFormat = (this.dateHelper as DateHelperByDatePipe).transCompatFormat(yearFormat);
     }
     year = {
-      className: `${this.prefixCls}-year-select`,
+      className: `${this.prefixCls}-year-btn`,
       title: this.locale.yearSelect,
       onClick: () => (this.showTimePicker ? null : this.changePanel('year')),
       label: this.formatDateTime(yearFormat)
     };
 
     month = {
-      className: `${this.prefixCls}-month-select`,
+      className: `${this.prefixCls}-month-btn`,
       title: this.locale.monthSelect,
       onClick: () => (this.showTimePicker ? null : this.changeToMonthPanel()),
       label: this.formatDateTime(this.locale.monthFormat || 'MMM')
@@ -171,7 +172,7 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
     }
     if (this.showTimePicker) {
       day = {
-        className: `${this.prefixCls}-day-select`,
+        className: `${this.prefixCls}-day-btn`,
         label: this.formatDateTime(dayFormat)
       };
     }

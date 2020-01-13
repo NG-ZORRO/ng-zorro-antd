@@ -11,7 +11,7 @@ import isBefore from 'date-fns/is_before';
 import { dispatchMouseEvent, NgStyleInterface } from 'ng-zorro-antd/core';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
-import { NzDatePickerModule } from './nz-date-picker.module';
+import { NzDatePickerModule } from './date-picker.module';
 
 registerLocaleData(zh);
 

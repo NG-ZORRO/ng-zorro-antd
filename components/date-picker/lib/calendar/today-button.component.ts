@@ -18,6 +18,7 @@ import {
 } from '@angular/core';
 
 import { CandyDate } from 'ng-zorro-antd/core';
+import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/name';
 import { DateHelperByDatePipe, DateHelperService, NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 
 @Component({
@@ -35,7 +36,7 @@ export class TodayButtonComponent implements OnChanges {
 
   @Output() readonly clickToday = new EventEmitter<CandyDate>();
 
-  prefixCls: string = 'ant-calendar';
+  prefixCls: string = PREFIX_CLASS;
   isDisabled: boolean = false;
   title: string;
 

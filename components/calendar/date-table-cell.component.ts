@@ -21,6 +21,6 @@ export class DateTableCellComponent {
   isTemplateRef = isTemplateRef;
   isNonEmptyString = isNonEmptyString;
 
-  @Input() prefixCls: 'ant-calendar' | 'ant-fullcalendar';
+  @Input() prefixCls: 'ant-picker' | 'ant-calendar-picker';
   @Input() cell: DateCell;
 }

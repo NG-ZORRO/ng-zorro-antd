@@ -17,8 +17,9 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { AbstractTable, DateBodyRow, DateCell } from 'ng-zorro-antd/calendar/abstract-table';
 
-import { CandyDate } from 'ng-zorro-antd/core';
+import { CandyDate, valueFunctionProp } from 'ng-zorro-antd/core';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 
 const MAX_ROW = 4;
@@ -30,20 +31,19 @@ const MAX_COL = 3;
   // tslint:disable-next-line:component-selector
   selector: 'month-table',
   exportAs: 'monthTable',
-  templateUrl: 'month-table.component.html'
+  templateUrl: 'abstract-table.html'
 })
-export class MonthTableComponent implements OnChanges {
-  @Input() value: CandyDate = new CandyDate();
-  @Input() prefixCls: string = 'ant-fullcalendar';
+export class MonthTableComponent extends AbstractTable implements OnChanges {
+  @Input() prefixCls: string = 'ant-picker';
   @Input() monthCellRender: TemplateRef<{ $implicit: Date }>;
   @Input() monthFullCellRender: TemplateRef<{ $implicit: Date }>;
-  @Output() readonly valueChange = new EventEmitter<CandyDate>();
-
   @Input() disabledDate: (date: Date) => boolean;
 
-  panelMonths: PanelMonthData[][];
+  @Output() readonly valueChange = new EventEmitter<CandyDate>();
 
-  constructor(private dateHelper: DateHelperService) {}
+  constructor(private dateHelper: DateHelperService) {
+    super();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.value || changes.disabledDate) {
@@ -55,48 +55,49 @@ export class MonthTableComponent implements OnChanges {
     return this.value ? this.value.getYear() : _index;
   }
 
-  trackPanelMonth(_index: number, monthData: PanelMonthData): string {
-    return monthData.content;
+  // trackPanelMonth(_index: number, monthData: PanelMonthData): string {
+  //   return monthData.content;
+  // }
+
+  makeHeadRow(): DateCell[] {
+    return [];
   }
 
-  private render(): void {
-    if (this.value) {
-      this.panelMonths = this.makePanelMonths();
-    }
-  }
-
-  private makePanelMonths(): PanelMonthData[][] {
-    const months: PanelMonthData[][] = [];
+  makeBodyRows(): DateBodyRow[] {
+    const months: DateBodyRow[] = [];
     const currentMonth = this.value.getMonth();
     const today = new CandyDate();
 
     let monthValue = 0;
     for (let rowIndex = 0; rowIndex < MAX_ROW; rowIndex++) {
-      months[rowIndex] = [];
+      const row: DateCell[] = [];
       for (let colIndex = 0; colIndex < MAX_COL; colIndex++) {
         const month = this.value.setMonth(monthValue);
-        const disabled = this.disabledDate ? this.disabledDate(this.value.setMonth(monthValue).nativeDate) : false;
+        const isDisabled = this.disabledDate ? this.disabledDate(this.value.setMonth(monthValue).nativeDate) : false;
         const content = this.dateHelper.format(month.nativeDate, 'MMM');
 
-        const cell: PanelMonthData = (months[rowIndex][colIndex] = {
+        const cell: DateCell = {
           value: month.nativeDate,
-          disabled,
+          isDisabled,
           content,
-          month: monthValue,
           title: content,
-          classMap: null,
-          onClick: () => this.chooseMonth(cell.month) // don't use monthValue here
-        });
+          classMap: {},
+          cellRender: valueFunctionProp(this.dateCellRender, month), // Customized content
+          fullCellRender: valueFunctionProp(this.dateFullCellRender, month),
+          onClick: () => this.chooseMonth(cell.value.getMonth() + 1) // don't use monthValue here
+        };
 
         cell.classMap = {
           [`${this.prefixCls}-month-panel-cell`]: true,
-          [`${this.prefixCls}-month-panel-cell-disabled`]: disabled,
+          [`${this.prefixCls}-month-panel-cell-disabled`]: isDisabled,
           [`${this.prefixCls}-month-panel-selected-cell`]: monthValue === currentMonth,
           [`${this.prefixCls}-month-panel-current-cell`]: today.getYear() === this.value.getYear() && monthValue === today.getMonth()
         };
 
+        row.push(cell);
         monthValue++;
       }
+      months.push({ dateCells: row });
     }
     return months;
   }
@@ -106,14 +107,4 @@ export class MonthTableComponent implements OnChanges {
     this.valueChange.emit(this.value);
     this.render();
   }
-}
-
-export interface PanelMonthData {
-  disabled: boolean;
-  content: string;
-  month: number;
-  title: string;
-  classMap: object | null;
-  onClick: VoidFunction | null;
-  value: Date;
 }

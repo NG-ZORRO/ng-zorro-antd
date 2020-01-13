@@ -1,49 +1,55 @@
-<div class="{{ prefixCls }}-header">
-  <div style="position: relative;">
-    <a
-      *ngIf="enablePrev && !showTimePicker"
-      class="{{ prefixCls }}-prev-year-btn"
-      role="button"
-      (click)="previousYear()"
-      title="{{ locale.previousYear }}"
-    ></a>
-    <a
-      *ngIf="enablePrev && !showTimePicker"
-      class="{{ prefixCls }}-prev-month-btn"
-      role="button"
-      (click)="previousMonth()"
-      title="{{ locale.previousMonth }}"
-    ></a>
+<div class="{{ prefixCls }}">
+  <button
+    *ngIf="enablePrev && !showTimePicker"
+    class="{{ prefixCls }}-super-prev-btn"
+    role="button"
+    (click)="previousYear()"
+    title="{{ locale.previousYear }}"
+  >
+    <span class="ant-picker-super-prev-icon"></span>
+  </button>
+  <button
+    *ngIf="enablePrev && !showTimePicker"
+    class="{{ prefixCls }}-prev-btn"
+    role="button"
+    (click)="previousMonth()"
+    title="{{ locale.previousMonth }}"
+  >
+    <span class="ant-picker-prev-icon"></span>
+  </button>
 
-    <span class="{{ prefixCls }}-{{ locale.monthBeforeYear ? 'my-select' : 'ym-select' }}">
-      <ng-container *ngFor="let selector of yearMonthDaySelectors">
-        <a
-          class="{{ selector.className }}"
-          role="button"
-          (click)="selector.onClick ? selector.onClick() : null"
-          title="{{ selector.title || null }}"
-        >
-          {{ selector.label }}
-        </a>
-      </ng-container>
-    </span>
-
-    <a
-      *ngIf="enableNext && !showTimePicker"
-      class="{{ prefixCls }}-next-month-btn"
-      role="button"
-      (click)="nextMonth()"
-      title="{{ locale.nextMonth }}"
-    ></a>
-    <a
-      *ngIf="enableNext && !showTimePicker"
-      class="{{ prefixCls }}-next-year-btn"
-      role="button"
-      (click)="nextYear()"
-      title="{{ locale.nextYear }}"
-    ></a>
+  <div class="{{ prefixCls }}-view">
+    <ng-container *ngFor="let selector of yearMonthDaySelectors">
+      <button
+        class="{{ selector.className }}"
+        role="button"
+        type="button"
+        (click)="selector.onClick ? selector.onClick() : null"
+        title="{{ selector.title || null }}"
+      >
+        {{ selector.label }}
+      </button>
+    </ng-container>
   </div>
 
+  <button
+    *ngIf="enableNext && !showTimePicker"
+    class="{{ prefixCls }}-next-btn"
+    role="button"
+    (click)="nextMonth()"
+    title="{{ locale.nextMonth }}"
+  >
+    <span class="ant-picker-next-icon"></span>
+  </button>
+  <button
+    *ngIf="enableNext && !showTimePicker"
+    class="{{ prefixCls }}-super-next-btn"
+    role="button"
+    (click)="nextYear()"
+    title="{{ locale.nextYear }}"
+  >
+    <span class="ant-picker-super-next-icon"></span>
+  </button>
   <ng-container [ngSwitch]="panelMode">
     <ng-container *ngSwitchCase="'decade'">
       <decade-panel

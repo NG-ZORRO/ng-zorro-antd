@@ -1,4 +1,4 @@
-<table class="{{ prefixCls }}-table" cellSpacing="0" role="grid">
+<table class="{{ prefixCls }}-content" cellSpacing="0" role="grid">
   <thead>
     <tr role="row">
       <th
@@ -8,18 +8,13 @@
       >
         <span class="{{ prefixCls }}-column-header-inner">x</span>
       </th>
-      <th
-        *ngFor="let cell of headWeekDays"
-        role="columnheader"
-        title="{{ cell.short }}"
-        class="{{ prefixCls }}-column-header"
-      >
-        <span class="{{ prefixCls }}-column-header-inner">{{ cell.veryShort }}</span>
+      <th *ngFor="let cell of headWeekDays" role="columnheader" title="{{ cell.short }}">
+        {{ cell.veryShort }}
       </th>
     </tr>
   </thead>
-  <tbody class="{{ prefixCls }}-tbody">
-    <tr *ngFor="let row of weekRows; trackBy: trackByWeekFn" [ngClass]="row.classMap" role="row">
+  <tbody>
+    <tr *ngFor="let row of bodyRows; trackBy: trackByWeekFn" [ngClass]="row.classMap" role="row">
       <td *ngIf="row.weekNum" role="gridcell" class="{{ prefixCls }}-week-number-cell">
         {{ row.weekNum }}
       </td>

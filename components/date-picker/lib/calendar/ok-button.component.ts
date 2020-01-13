@@ -7,6 +7,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/name';
 
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 
@@ -23,5 +24,5 @@ export class OkButtonComponent {
   @Input() okDisabled: boolean = false;
   @Output() readonly clickOk = new EventEmitter<void>();
 
-  prefixCls: string = 'ant-calendar';
+  prefixCls: string = PREFIX_CLASS;
 }

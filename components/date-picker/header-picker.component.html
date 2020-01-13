@@ -1,4 +1,5 @@
-<nz-picker
+<div
+  nz-picker
   [isRange]="false"
   [value]="nzValue"
   (valueChange)="onValueChange($event)"
@@ -16,12 +17,12 @@
 >
   <div *ngIf="realOpenState">
     <div
-      class="ant-calendar-picker-container {{
+      class="ant-picker-picker-container {{
         nzDropdownClassName
-      }} ant-calendar-picker-container-placement-bottomLeft"
+      }} ant-picker-picker-container-placement-bottomLeft"
       [ngStyle]="nzPopupStyle"
     >
-      <div class="ant-calendar ant-calendar-month ant-calendar-month-calendar" tabindex="0">
+      <div class="ant-picker ant-picker-month ant-picker-month-calendar" tabindex="0">
         <div class="ant-calendar-month-calendar-content">
           <div class="ant-calendar-month-header-wrap">
             <calendar-header
@@ -42,4 +43,4 @@
       </div>
     </div>
   </div>
-</nz-picker>
+</div>

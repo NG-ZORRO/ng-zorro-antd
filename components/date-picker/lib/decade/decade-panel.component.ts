@@ -18,6 +18,7 @@ import {
 } from '@angular/core';
 
 import { CandyDate } from 'ng-zorro-antd/core';
+import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/name';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 
 const MAX_ROW = 4;
@@ -44,7 +45,7 @@ export class DecadePanelComponent implements OnChanges {
     return this.startYear + 99;
   }
 
-  prefixCls: string = 'ant-calendar-decade-panel';
+  prefixCls: string = `${PREFIX_CLASS}-decade-panel`;
   panelDecades: PanelDecadeData[][];
 
   constructor() {}

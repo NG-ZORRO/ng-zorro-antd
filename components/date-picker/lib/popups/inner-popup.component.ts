@@ -9,6 +9,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 import { CandyDate, FunctionProp } from 'ng-zorro-antd/core';
+import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/name';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import { DisabledDateFn, PanelMode, SupportTimeOptions } from '../../standard-types';
 
@@ -43,7 +44,7 @@ export class InnerPopupComponent {
   @Output() readonly selectTime = new EventEmitter<CandyDate>();
   @Output() readonly dayHover = new EventEmitter<CandyDate>(); // Emitted when hover on a day by mouse enter
 
-  prefixCls: string = 'ant-calendar';
+  prefixCls: string = PREFIX_CLASS;
 
   onSelectTime(date: Date): void {
     this.selectTime.emit(new CandyDate(date));

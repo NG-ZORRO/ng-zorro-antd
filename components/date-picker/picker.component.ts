@@ -23,13 +23,100 @@ import {
 } from '@angular/core';
 
 import { CandyDate, slideMotion } from 'ng-zorro-antd/core';
+import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/name';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
-  selector: 'nz-picker',
+  selector: '[nz-picker]',
   exportAs: 'nzPicker',
-  templateUrl: './picker.component.html',
+  host: { '[class]': 'hostClassMap' },
+  template: `
+    <div
+      cdkOverlayOrigin
+      #origin="cdkOverlayOrigin"
+      class="{{ prefixCls }}-input {{ className }}"
+      [ngStyle]="style"
+      tabindex="0"
+      (click)="onClickInputBox()"
+      (keyup.enter)="onClickInputBox()"
+    >
+      <!-- Content of single picker -->
+      <ng-container *ngIf="!isRange">
+        <input
+          #pickerInput
+          [class.ant-input-lg]="size === 'large'"
+          [class.ant-input-sm]="size === 'small'"
+          [class.ant-input-disabled]="disabled"
+          [disabled]="disabled"
+          readonly
+          value="{{ getReadableValue() }}"
+          placeholder="{{ getPlaceholder() }}"
+        />
+        <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
+      </ng-container>
+
+      <!-- Content of range picker -->
+      <ng-container *ngIf="isRange">
+        <span #pickerInput class="{{ prefixCls }}-input">
+          <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'left' }"></ng-container>
+          <span class="{{ prefixCls }}-range-picker-separator"> ~ </span>
+          <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'right' }"></ng-container>
+          <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
+        </span>
+      </ng-container>
+    </div>
+    <!-- Input for Range ONLY -->
+    <ng-template #tplRangeInput let-partType="partType">
+      <input
+        class="{{ prefixCls }}-range-picker-input"
+        [disabled]="disabled"
+        readonly
+        value="{{ getReadableValue(partType) }}"
+        placeholder="{{ getPlaceholder(partType) }}"
+      />
+    </ng-template>
+
+    <!-- Right operator icons -->
+    <ng-template #tplRightRest>
+      <i
+        nz-icon
+        nzType="close-circle"
+        nzTheme="fill"
+        *ngIf="!disabled && !isEmptyValue(value) && allowClear"
+        class="{{ prefixCls }}-picker-clear"
+        (click)="onClickClear($event)"
+      ></i>
+      <span class="{{ prefixCls }}-picker-icon">
+        <i nz-icon nzType="calendar"></i>
+      </span>
+    </ng-template>
+
+    <!-- Overlay -->
+    <ng-template
+      cdkConnectedOverlay
+      nzConnectedOverlay
+      [cdkConnectedOverlayOrigin]="origin"
+      [cdkConnectedOverlayOpen]="realOpenState"
+      [cdkConnectedOverlayHasBackdrop]="!isOpenHandledByUser()"
+      [cdkConnectedOverlayPositions]="overlayPositions"
+      (positionChange)="onPositionChange($event)"
+      (backdropClick)="onClickBackdrop()"
+      (detach)="onOverlayDetach()"
+    >
+      <div
+        [nzNoAnimation]="noAnimation"
+        [@slideMotion]="dropdownAnimation"
+        (@slideMotion.done)="animationDone()"
+        style="position: relative;"
+        [style.left]="currentPositionX === 'start' ? '-2px' : '2px'"
+        [style.top]="currentPositionY === 'top' ? '-2px' : '2px'"
+      >
+        <!-- Compatible for overlay that not support offset dynamically and immediately -->
+        <ng-content></ng-content>
+      </div>
+    </ng-template>
+  `,
   animations: [slideMotion],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -53,7 +140,8 @@ export class NzPickerComponent implements AfterViewInit, OnChanges {
   @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay: CdkConnectedOverlay;
   @ViewChild('pickerInput', { static: false }) pickerInput: ElementRef;
 
-  prefixCls = 'ant-calendar';
+  prefixCls = PREFIX_CLASS;
+  hostClassMap = {};
   animationOpenState = false;
   overlayOpen: boolean = false; // Available when "open"=undefined
   overlayOffsetY: number = 0;
@@ -90,6 +178,15 @@ export class NzPickerComponent implements AfterViewInit, OnChanges {
   currentPositionX: 'start' | 'end' = 'start';
   currentPositionY: 'top' | 'bottom' = 'top';
 
+  updateHostClass(): void {
+    this.hostClassMap = {
+      [`${this.prefixCls}`]: true,
+      [`${this.prefixCls}-large`]: this.size === 'large',
+      [`${this.prefixCls}-small`]: this.size === 'small',
+      [`${this.prefixCls}-disabled`]: !!this.disabled
+    };
+  }
+
   get realOpenState(): boolean {
     // The value that really decide the open state of overlay
     return this.isOpenHandledByUser() ? !!this.open : this.overlayOpen;
@@ -106,6 +203,9 @@ export class NzPickerComponent implements AfterViewInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.open) {
       this.animationStart();
+    }
+    if (changes.size || changes.disabled) {
+      this.updateHostClass();
     }
   }
 
