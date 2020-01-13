@@ -7,16 +7,13 @@
  */
 
 import {
-  AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ContentChildren,
   ElementRef,
   Input,
   OnChanges,
   OnDestroy,
-  QueryList,
   Renderer2,
   SimpleChanges,
   ViewEncapsulation
@@ -24,9 +21,8 @@ import {
 
 import { InputBoolean } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
-import { startWith, takeUntil } from 'rxjs/operators';
 
-import { NzFormExplainComponent } from './nz-form-explain.component';
+export type NzFormItemStatusType = 'success' | 'error' | 'warning' | 'validating' | null;
 
 /** should add nz-row directive to host, track https://github.com/angular/angular/issues/8785 **/
 @Component({
@@ -35,10 +31,17 @@ import { NzFormExplainComponent } from './nz-form-explain.component';
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  templateUrl: './nz-form-item.component.html',
   host: {
+    '[class.ant-form-item-has-success]': 'status === "success"',
+    '[class.ant-form-item-has-warning]': 'status === "warning"',
+    '[class.ant-form-item-has-error]': 'status === "error"',
+    '[class.ant-form-item-has-validating]': 'status === "validating"',
+    '[class.ant-form-item-has-feedback]': 'hasFeedback && status',
     '[class.ant-form-item-with-help]': 'withHelpClass'
   },
+  template: `
+    <ng-content></ng-content>
+  `,
   styles: [
     `
       nz-form-item {
@@ -47,12 +50,13 @@ import { NzFormExplainComponent } from './nz-form-explain.component';
     `
   ]
 })
-export class NzFormItemComponent implements AfterContentInit, OnDestroy, OnChanges, OnDestroy {
+export class NzFormItemComponent implements OnDestroy, OnChanges, OnDestroy {
   @Input() @InputBoolean() nzFlex: boolean = false;
-  @ContentChildren(NzFormExplainComponent, { descendants: true })
-  listOfNzFormExplainComponent: QueryList<NzFormExplainComponent>;
+
+  status: NzFormItemStatusType = null;
+  hasFeedback = false;
   withHelpClass = false;
-  tipsMode = false;
+
   private destroy$ = new Subject();
 
   updateFlexStyle(): void {
@@ -64,22 +68,22 @@ export class NzFormItemComponent implements AfterContentInit, OnDestroy, OnChang
   }
 
   setWithHelpViaTips(value: boolean): void {
-    this.tipsMode = true;
     this.withHelpClass = value;
+    this.cdr.markForCheck();
+  }
+
+  setItemStatus(status: NzFormItemStatusType): void {
+    this.status = status;
+    this.cdr.markForCheck();
+  }
+
+  setHasFeedback(hasFeedback: boolean): void {
+    this.hasFeedback = hasFeedback;
     this.cdr.markForCheck();
   }
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2, private cdr: ChangeDetectorRef) {
     renderer.addClass(elementRef.nativeElement, 'ant-form-item');
-  }
-
-  ngAfterContentInit(): void {
-    if (!this.tipsMode) {
-      this.listOfNzFormExplainComponent.changes.pipe(startWith(true), takeUntil(this.destroy$)).subscribe(() => {
-        this.withHelpClass = this.listOfNzFormExplainComponent && this.listOfNzFormExplainComponent.length > 0;
-        this.cdr.markForCheck();
-      });
-    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {

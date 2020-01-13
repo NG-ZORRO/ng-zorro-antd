@@ -2,7 +2,7 @@ import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NzFormLabelComponent } from './nz-form-label.component';
+import { NzFormLabelComponent } from './form-label.component';
 
 describe('nz-form-label', () => {
   beforeEach(fakeAsync(() => {

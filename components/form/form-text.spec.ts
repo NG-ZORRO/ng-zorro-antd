@@ -2,34 +2,34 @@ import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NzFormSplitComponent } from './nz-form-split.component';
+import { NzFormTextComponent } from './form-text.component';
 
-describe('nz-form-split', () => {
+describe('nz-form-text', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports: [NoopAnimationsModule],
-      declarations: [NzFormSplitComponent, NzTestFormSplitComponent]
+      declarations: [NzFormTextComponent, NzTestFormTextComponent]
     });
     TestBed.compileComponents();
   }));
   describe('default', () => {
-    let fixture: ComponentFixture<NzTestFormSplitComponent>;
-    let split: DebugElement;
+    let fixture: ComponentFixture<NzTestFormTextComponent>;
+    let text: DebugElement;
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestFormSplitComponent);
+      fixture = TestBed.createComponent(NzTestFormTextComponent);
       fixture.detectChanges();
-      split = fixture.debugElement.query(By.directive(NzFormSplitComponent));
+      text = fixture.debugElement.query(By.directive(NzFormTextComponent));
     });
     it('should className correct', () => {
       fixture.detectChanges();
-      expect(split.nativeElement.classList).toContain('ant-form-split');
+      expect(text.nativeElement.classList).toContain('ant-form-text');
     });
   });
 });
 
 @Component({
   template: `
-    <nz-form-split></nz-form-split>
+    <nz-form-text></nz-form-text>
   `
 })
-export class NzTestFormSplitComponent {}
+export class NzTestFormTextComponent {}

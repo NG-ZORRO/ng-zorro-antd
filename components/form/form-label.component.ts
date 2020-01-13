@@ -16,7 +16,15 @@ import { InputBoolean, toBoolean } from 'ng-zorro-antd/core';
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './nz-form-label.component.html'
+  template: `
+    <label
+      [attr.for]="nzFor"
+      [class.ant-form-item-no-colon]="noColon === 'default' ? defaultNoColon : nzNoColon"
+      [class.ant-form-item-required]="nzRequired"
+    >
+      <ng-content></ng-content>
+    </label>
+  `
 })
 export class NzFormLabelComponent {
   @Input() nzFor: string;
