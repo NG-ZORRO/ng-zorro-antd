@@ -45,9 +45,9 @@
 @component-background: #fff;
 // Popover background color
 @popover-background: @component-background;
-@font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
-  'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji',
-  'Segoe UI Emoji', 'Segoe UI Symbol';
+@font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+  'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+  'Noto Color Emoji';
 @code-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
 @text-color: fade(@black, 65%);
 @text-color-secondary: fade(@black, 45%);
@@ -287,10 +287,10 @@
 @layout-trigger-color-light: @text-color;
 
 // z-index list, order by `z-index`
+@zindex-badge: auto;
 @zindex-table-fixed: auto;
 @zindex-affix: 10;
 @zindex-back-top: 10;
-@zindex-badge: 10;
 @zindex-picker-panel: 10;
 @zindex-popup-close: 10;
 @zindex-modal: 1000;
@@ -439,6 +439,8 @@
 @modal-heading-color: @heading-color;
 @modal-footer-bg: transparent;
 @modal-footer-border-color-split: @border-color-split;
+@modal-footer-padding-vertical: 10px;
+@modal-footer-padding-horizontal: 16px;
 @modal-mask-bg: fade(@black, 45%);
 
 // Progress
@@ -521,10 +523,12 @@
 // ---
 @picker-bg: @component-background;
 @picker-basic-cell-hover-color: @item-hover-bg;
+@picker-basic-cell-active-with-range-color: @primary-1;
 @picker-basic-cell-hover-with-range-color: lighten(@primary-color, 35%);
 @picker-basic-cell-disabled-bg: @disabled-bg;
 @picker-border-color: @border-color-split;
 @picker-date-hover-range-border-color: lighten(@primary-color, 20%);
+@picker-date-hover-range-color: @picker-basic-cell-hover-with-range-color;
 
 // Calendar
 // ---
@@ -627,6 +631,8 @@
 // ---
 @switch-height: 22px;
 @switch-sm-height: 16px;
+@switch-min-width: 44px;
+@switch-sm-min-width: 28px;
 @switch-sm-checked-margin-left: -(@switch-sm-height - 3px);
 @switch-disabled-opacity: 0.4;
 @switch-color: @primary-color;
@@ -763,6 +769,8 @@
 @drawer-header-padding: 16px 24px;
 @drawer-body-padding: 24px;
 @drawer-bg: @component-background;
+@drawer-footer-padding-vertical: @modal-footer-padding-vertical;
+@drawer-footer-padding-horizontal: @modal-footer-padding-horizontal;
 
 // Timeline
 // ---
