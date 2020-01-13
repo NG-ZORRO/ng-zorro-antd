@@ -132,10 +132,11 @@ describe('NzEmpty', () => {
     describe('service method', () => {
       beforeEach(() => {
         testBed = createComponentBed(NzEmptyTestServiceComponent, {
-          imports: [NzEmptyModule]
+          imports: [NzEmptyTestServiceModule, NzEmptyModule]
         });
         fixture = testBed.fixture;
         testComponent = testBed.component;
+        fixture.detectChanges();
       });
 
       it("should components' prop has priority", fakeAsync(() => {
@@ -247,7 +248,7 @@ describe('NzEmpty', () => {
     describe('service injection', () => {
       beforeEach(() => {
         testBed = createComponentBed(NzEmptyTestServiceComponent, {
-          imports: [NzEmptyModule]
+          imports: [NzEmptyTestInjectionModule, NzEmptyModule]
         });
         fixture = testBed.fixture;
         testComponent = testBed.component;
