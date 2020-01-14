@@ -67,14 +67,11 @@ task('site:replace-path', () => {
  */
 task('build:site-issue-helper', execTask('bash', [issueHelperScriptFile]));
 
-/** calc bundle size **/
-task('build:bundle-size', execTask('npx', ['bundlesize']));
-
 /** Build all site projects to the output directory. */
 task(
   'build:site',
   process.env.CI || process.env.SYSTEM_JOBNAME
-    ? series('build:site-doc', 'build:bundle-size', 'build:site-iframe')
+    ? series('build:site-doc', 'build:site-iframe')
     : series('build:site-doc', 'build:site-iframe', 'build:site-issue-helper')
 );
 
