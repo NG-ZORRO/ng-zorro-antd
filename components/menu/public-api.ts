@@ -6,12 +6,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-menu.directive';
-export * from './nz-menu-group.component';
-export * from './nz-menu-divider.directive';
-export * from './nz-menu-item.directive';
-export * from './nz-submenu.component';
-export * from './nz-menu.module';
-export * from './nz-menu.service';
-export * from './nz-submenu.service';
-export * from './nz-menu.resolver';
+export * from './menu.directive';
+export * from './menu-group.component';
+export * from './menu-divider.directive';
+export * from './menu-item.directive';
+export * from './submenu.component';
+export * from './submenu-title.component';
+export * from './submenu-inline-child.component';
+export * from './submenu-non-inline-child.component';
+export * from './menu.module';
+export * from './submenu.service';
+export * from './menu.service';
+export * from './menu.token';

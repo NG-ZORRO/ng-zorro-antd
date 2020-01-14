@@ -9,7 +9,7 @@ import { ObserversModule } from '@angular/cdk/observers';
 import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { NzAddOnModule } from 'ng-zorro-antd/core';
+import { NzOutletModule } from 'ng-zorro-antd/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzTabBodyComponent } from './nz-tab-body.component';
@@ -42,6 +42,6 @@ import { NzTabSetComponent } from './nz-tabset.component';
     NzTabBodyComponent,
     NzTabLinkDirective
   ],
-  imports: [CommonModule, ObserversModule, NzIconModule, NzAddOnModule, PlatformModule]
+  imports: [CommonModule, ObserversModule, NzIconModule, NzOutletModule, PlatformModule]
 })
 export class NzTabsModule {}

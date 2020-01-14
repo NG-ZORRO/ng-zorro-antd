@@ -5,9 +5,9 @@ import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/cor
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { dispatchFakeEvent, dispatchKeyboardEvent } from '../core/testing';
-import { NzMenuModule } from '../menu/nz-menu.module';
-import { NzDropDownDirective } from './nz-dropdown.directive';
-import { NzDropDownModule } from './nz-dropdown.module';
+import { NzMenuModule } from '../menu/menu.module';
+import { NzDropDownDirective } from './dropdown.directive';
+import { NzDropDownModule } from './dropdown.module';
 
 describe('dropdown', () => {
   let overlayContainer: OverlayContainer;

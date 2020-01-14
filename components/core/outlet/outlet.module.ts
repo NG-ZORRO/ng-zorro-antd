@@ -8,12 +8,11 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { NzClassListAddDirective } from './classlist_add';
-import { NzStringTemplateOutletDirective } from './string_template_outlet';
+import { NzStringTemplateOutletDirective } from './string_template_outlet.directive';
 
 @NgModule({
   imports: [CommonModule],
-  exports: [NzStringTemplateOutletDirective, NzClassListAddDirective],
-  declarations: [NzStringTemplateOutletDirective, NzClassListAddDirective]
+  exports: [NzStringTemplateOutletDirective],
+  declarations: [NzStringTemplateOutletDirective]
 })
-export class NzAddOnModule {}
+export class NzOutletModule {}

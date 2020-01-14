@@ -4,10 +4,10 @@ import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/cor
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 import { createMouseEvent } from '../core/testing';
-import { NzMenuModule } from '../menu/nz-menu.module';
-import { NzContextMenuService } from './nz-context-menu.service';
-import { NzDropdownMenuComponent } from './nz-dropdown-menu.component';
-import { NzDropDownModule } from './nz-dropdown.module';
+import { NzMenuModule } from '../menu/menu.module';
+import { NzContextMenuService } from './context-menu.service';
+import { NzDropdownMenuComponent } from './dropdown-menu.component';
+import { NzDropDownModule } from './dropdown.module';
 
 describe('context-menu', () => {
   let overlayContainer: OverlayContainer;

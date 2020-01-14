@@ -15,3 +15,4 @@ export * from './size';
 export * from './template';
 export * from './shape';
 export * from './compare-with';
+export * from './any';

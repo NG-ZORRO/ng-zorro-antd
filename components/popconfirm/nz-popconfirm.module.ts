@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzAddOnModule, NzNoAnimationModule, NzOverlayModule } from 'ng-zorro-antd/core';
+import { NzNoAnimationModule, NzOutletModule, NzOverlayModule } from 'ng-zorro-antd/core';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
@@ -28,7 +28,7 @@ import { NzPopconfirmDirective } from './nz-popconfirm.directive';
     OverlayModule,
     NzI18nModule,
     NzIconModule,
-    NzAddOnModule,
+    NzOutletModule,
     NzOverlayModule,
     NzNoAnimationModule,
     NzToolTipModule

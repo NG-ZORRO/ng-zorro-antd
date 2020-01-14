@@ -10,38 +10,45 @@ import {
   AfterContentInit,
   ContentChildren,
   Directive,
-  ElementRef,
+  Inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Optional,
   QueryList,
-  Renderer2,
   SimpleChanges
 } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/router';
-import { InputBoolean, isNotNil, NzMenuBaseService, NzUpdateHostClassService } from 'ng-zorro-antd/core';
-import { EMPTY, merge, Subject } from 'rxjs';
+import { InputBoolean } from 'ng-zorro-antd/core';
+import { combineLatest, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { NzSubmenuService } from './nz-submenu.service';
+import { MenuService } from './menu.service';
+import { NzIsMenuInsideDropDownToken } from './menu.token';
+import { NzSubmenuService } from './submenu.service';
 
 @Directive({
   selector: '[nz-menu-item]',
   exportAs: 'nzMenuItem',
-  providers: [NzUpdateHostClassService],
   host: {
+    '[class.ant-dropdown-menu-item]': `isMenuInsideDropDown`,
+    '[class.ant-dropdown-menu-item-selected]': `isMenuInsideDropDown && nzSelected`,
+    '[class.ant-dropdown-menu-item-disabled]': `isMenuInsideDropDown && nzDisabled`,
+    '[class.ant-menu-item]': `!isMenuInsideDropDown`,
+    '[class.ant-menu-item-selected]': `!isMenuInsideDropDown && nzSelected`,
+    '[class.ant-menu-item-disabled]': `!isMenuInsideDropDown && nzDisabled`,
+    '[style.paddingLeft.px]': 'nzPaddingLeft || inlinePaddingLeft',
     '(click)': 'clickMenuItem($event)'
   }
 })
 export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterContentInit {
-  private el: HTMLElement = this.elementRef.nativeElement;
   private destroy$ = new Subject();
-  private originalPadding: number | null = null;
+  level = this.nzSubmenuService ? this.nzSubmenuService.level + 1 : 1;
   selected$ = new Subject<boolean>();
+  inlinePaddingLeft: number | null = null;
+  @Input() nzPaddingLeft: number;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzSelected = false;
-  @Input() nzPaddingLeft: number;
   @Input() @InputBoolean() nzMatchRouterExact = false;
   @Input() @InputBoolean() nzMatchRouter = false;
   @ContentChildren(RouterLink, { descendants: true }) listOfRouterLink: QueryList<RouterLink>;
@@ -52,27 +59,21 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
     if (this.nzDisabled) {
       e.preventDefault();
       e.stopPropagation();
-      return;
+    } else {
+      this.nzMenuService.onDescendantMenuItemClick(this);
+      if (this.nzSubmenuService) {
+        /** menu item inside the submenu **/
+        this.nzSubmenuService.onChildMenuItemClick(this);
+      } else {
+        /** menu item insisde the root menu **/
+        this.nzMenuService.onChildMenuItemClick(this);
+      }
     }
-    this.nzMenuService.onMenuItemClick(this);
-    if (this.nzSubmenuService) {
-      this.nzSubmenuService.onMenuItemClick();
-    }
-  }
-
-  setClassMap(): void {
-    const prefixName = this.nzMenuService.isInDropDown ? 'ant-dropdown-menu-item' : 'ant-menu-item';
-    this.nzUpdateHostClassService.updateHostClass(this.el, {
-      [`${prefixName}`]: true,
-      [`${prefixName}-selected`]: this.nzSelected,
-      [`${prefixName}-disabled`]: this.nzDisabled
-    });
   }
 
   setSelectedState(value: boolean): void {
     this.nzSelected = value;
     this.selected$.next(value);
-    this.setClassMap();
   }
 
   private updateRouterActive(): void {
@@ -103,11 +104,9 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
   }
 
   constructor(
-    private nzUpdateHostClassService: NzUpdateHostClassService,
-    private nzMenuService: NzMenuBaseService,
+    private nzMenuService: MenuService,
     @Optional() private nzSubmenuService: NzSubmenuService,
-    private renderer: Renderer2,
-    private elementRef: ElementRef,
+    @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean,
     @Optional() private routerLink?: RouterLink,
     @Optional() private routerLinkWithHref?: RouterLinkWithHref,
     @Optional() private router?: Router
@@ -124,31 +123,11 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
 
   ngOnInit(): void {
     /** store origin padding in padding */
-    const paddingLeft = this.el.style.paddingLeft;
-    if (paddingLeft) {
-      this.originalPadding = parseInt(paddingLeft, 10);
-    }
-    merge(this.nzMenuService.mode$, this.nzMenuService.inlineIndent$, this.nzSubmenuService ? this.nzSubmenuService.level$ : EMPTY)
+    combineLatest([this.nzMenuService.mode$, this.nzMenuService.inlineIndent$])
       .pipe(takeUntil(this.destroy$))
-      .subscribe(() => {
-        let padding: number | null = null;
-        if (this.nzMenuService.mode === 'inline') {
-          if (isNotNil(this.nzPaddingLeft)) {
-            padding = this.nzPaddingLeft;
-          } else {
-            const level = this.nzSubmenuService ? this.nzSubmenuService.level + 1 : 1;
-            padding = level * this.nzMenuService.inlineIndent;
-          }
-        } else {
-          padding = this.originalPadding;
-        }
-        if (padding) {
-          this.renderer.setStyle(this.el, 'padding-left', `${padding}px`);
-        } else {
-          this.renderer.removeStyle(this.el, 'padding-left');
-        }
+      .subscribe(([mode, inlineIndent]) => {
+        this.inlinePaddingLeft = mode === 'inline' ? this.level * inlineIndent : null;
       });
-    this.setClassMap();
   }
 
   ngAfterContentInit(): void {
@@ -160,9 +139,6 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzSelected) {
       this.setSelectedState(this.nzSelected);
-    }
-    if (changes.nzDisabled) {
-      this.setClassMap();
     }
   }
 

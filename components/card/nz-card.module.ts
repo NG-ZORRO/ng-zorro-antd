@@ -8,7 +8,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { NzAddOnModule } from 'ng-zorro-antd/core';
+import { NzOutletModule } from 'ng-zorro-antd/core';
 
 import { NzCardGridDirective } from './nz-card-grid.directive';
 import { NzCardLoadingComponent } from './nz-card-loading.component';
@@ -17,7 +17,7 @@ import { NzCardTabComponent } from './nz-card-tab.component';
 import { NzCardComponent } from './nz-card.component';
 
 @NgModule({
-  imports: [CommonModule, NzAddOnModule],
+  imports: [CommonModule, NzOutletModule],
   declarations: [NzCardComponent, NzCardGridDirective, NzCardMetaComponent, NzCardLoadingComponent, NzCardTabComponent],
   exports: [NzCardComponent, NzCardGridDirective, NzCardMetaComponent, NzCardLoadingComponent, NzCardTabComponent]
 })

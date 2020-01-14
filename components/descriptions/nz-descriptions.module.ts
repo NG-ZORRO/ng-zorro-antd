@@ -8,13 +8,13 @@
 import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { NzAddOnModule } from 'ng-zorro-antd/core';
+import { NzOutletModule } from 'ng-zorro-antd/core';
 
 import { NzDescriptionsItemComponent } from './nz-descriptions-item.component';
 import { NzDescriptionsComponent } from './nz-descriptions.component';
 
 @NgModule({
-  imports: [CommonModule, NzAddOnModule, PlatformModule],
+  imports: [CommonModule, NzOutletModule, PlatformModule],
   declarations: [NzDescriptionsComponent, NzDescriptionsItemComponent],
   exports: [NzDescriptionsComponent, NzDescriptionsItemComponent]
 })

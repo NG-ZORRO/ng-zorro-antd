@@ -9,7 +9,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { NzAddOnModule } from 'ng-zorro-antd/core';
+import { NzOutletModule } from 'ng-zorro-antd/core';
 
 import {
   NzCommentActionComponent,
@@ -22,7 +22,7 @@ import { NzCommentComponent } from './nz-comment.component';
 const NZ_COMMENT_CELLS = [NzCommentAvatarDirective, NzCommentContentDirective, NzCommentActionComponent, NzCommentActionHostDirective];
 
 @NgModule({
-  imports: [CommonModule, NzAddOnModule],
+  imports: [CommonModule, NzOutletModule],
   exports: [NzCommentComponent, ...NZ_COMMENT_CELLS],
   declarations: [NzCommentComponent, ...NZ_COMMENT_CELLS]
 })

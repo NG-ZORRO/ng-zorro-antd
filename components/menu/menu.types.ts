@@ -6,5 +6,5 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-menu-base.service';
-export * from './nz-dropdown-service.resolver';
+export type NzMenuModeType = 'vertical' | 'horizontal' | 'inline';
+export type NzMenuThemeType = 'light' | 'dark';

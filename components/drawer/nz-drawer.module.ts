@@ -11,14 +11,14 @@ import { PortalModule } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { NzAddOnModule, NzNoAnimationModule } from 'ng-zorro-antd/core';
+import { NzNoAnimationModule, NzOutletModule } from 'ng-zorro-antd/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzDrawerComponent } from './nz-drawer.component';
 import { NzDrawerServiceModule } from './nz-drawer.service.module';
 
 @NgModule({
-  imports: [CommonModule, OverlayModule, PortalModule, NzIconModule, NzAddOnModule, NzNoAnimationModule, NzDrawerServiceModule],
+  imports: [CommonModule, OverlayModule, PortalModule, NzIconModule, NzOutletModule, NzNoAnimationModule, NzDrawerServiceModule],
   exports: [NzDrawerComponent],
   declarations: [NzDrawerComponent],
   entryComponents: [NzDrawerComponent]

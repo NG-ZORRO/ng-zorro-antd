@@ -6,11 +6,5 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Injectable } from '@angular/core';
-
-import { NzMenuBaseService } from 'ng-zorro-antd/core';
-
-@Injectable()
-export class NzMenuDropdownService extends NzMenuBaseService {
-  isInDropDown = true;
-}
+export { NzOutletModule } from './outlet.module';
+export { NzStringTemplateOutletDirective } from './string_template_outlet.directive';
