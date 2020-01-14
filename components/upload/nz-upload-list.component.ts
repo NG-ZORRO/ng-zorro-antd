@@ -46,8 +46,6 @@ const MEASURE_SIZE = 200;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzUploadListComponent implements OnChanges {
-  private _items: UploadFile[];
-
   get showPic(): boolean {
     return this.listType === 'picture' || this.listType === 'picture-card';
   }
@@ -70,16 +68,7 @@ export class NzUploadListComponent implements OnChanges {
   // tslint:disable-next-line:no-any
   @Input() locale: any = {};
   @Input() listType: UploadListType;
-  @Input()
-  set items(list: UploadFile[]) {
-    list.forEach(file => {
-      file.linkProps = typeof file.linkProps === 'string' ? JSON.parse(file.linkProps) : file.linkProps;
-    });
-    this._items = list;
-  }
-  get items(): UploadFile[] {
-    return this._items;
-  }
+  @Input() items: UploadFile[];
   @Input() icons: ShowUploadListInterface;
   @Input() onPreview: (file: UploadFile) => void;
   @Input() onRemove: (file: UploadFile) => void;
@@ -103,6 +92,13 @@ export class NzUploadListComponent implements OnChanges {
   // #endregion
 
   // #region render
+
+  private genErr(file: UploadFile): string {
+    if (file.response && typeof file.response === 'string') {
+      return file.response;
+    }
+    return (file.error && file.error.statusText) || this.locale.uploadError;
+  }
 
   private extname(url: string): string {
     const temp = url.split('/');
@@ -188,12 +184,10 @@ export class NzUploadListComponent implements OnChanges {
       .filter(file => file.originFileObj instanceof File && file.thumbUrl === undefined)
       .forEach(file => {
         file.thumbUrl = '';
-        (this.previewFile ? this.previewFile(file).toPromise() : this.previewImage(file.originFileObj!)).then(
-          dataUrl => {
-            file.thumbUrl = dataUrl;
-            this.detectChanges();
-          }
-        );
+        (this.previewFile ? this.previewFile(file).toPromise() : this.previewImage(file.originFileObj!)).then(dataUrl => {
+          file.thumbUrl = dataUrl;
+          this.detectChanges();
+        });
       });
   }
 
@@ -250,6 +244,10 @@ export class NzUploadListComponent implements OnChanges {
   }
 
   ngOnChanges(): void {
+    this.items.forEach(file => {
+      file.message = this.genErr(file);
+      file.linkProps = typeof file.linkProps === 'string' ? JSON.parse(file.linkProps) : file.linkProps;
+    });
     this.setClassMap();
     this.genThumb();
   }

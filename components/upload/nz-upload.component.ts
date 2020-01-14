@@ -16,8 +16,6 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  SimpleChange,
-  SimpleChanges,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -188,12 +186,6 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     return fileList.filter(item => item.uid !== file.uid);
   }
 
-  private genErr(file: UploadFile): string {
-    return file.response && typeof file.response === 'string'
-      ? file.response
-      : (file.error && file.error.statusText) || this.locale.uploadError;
-  }
-
   private onStart = (file: UploadFile): void => {
     if (!this.nzFileList) {
       this.nzFileList = [];
@@ -237,7 +229,6 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     const targetItem = this.getFileItem(file, fileList);
     targetItem.error = err;
     targetItem.status = 'error';
-    targetItem.message = this.genErr(targetItem);
     this.nzChange.emit({
       file: { ...targetItem },
       fileList,
@@ -326,10 +317,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  ngOnChanges(changes: { [P in keyof this]?: SimpleChange } & SimpleChanges): void {
-    if (changes.nzFileList) {
-      (this.nzFileList || []).forEach(file => (file.message = this.genErr(file)));
-    }
+  ngOnChanges(): void {
     this.zipOptions().setClassMap();
   }
 

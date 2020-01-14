@@ -9,7 +9,7 @@ import { UploadFile } from 'ng-zorro-antd/upload';
         nzAction="https://jsonplaceholder.typicode.com/posts/"
         nzListType="picture-card"
         [(nzFileList)]="fileList"
-        [nzShowButton]="fileList.length < 3"
+        [nzShowButton]="fileList.length < 8"
         [nzPreview]="handlePreview"
       >
         <i nz-icon nzType="plus"></i>
@@ -42,6 +42,29 @@ export class NzDemoUploadPictureCardComponent {
       name: 'xxx.png',
       status: 'done',
       url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
+    },
+    {
+      uid: -2,
+      name: 'xxx.png',
+      status: 'done',
+      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
+    },
+    {
+      uid: -3,
+      name: 'xxx.png',
+      status: 'done',
+      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
+    },
+    {
+      uid: -4,
+      name: 'xxx.png',
+      status: 'done',
+      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
+    },
+    {
+      uid: -5,
+      name: 'xxx.png',
+      status: 'error'
     }
   ];
   previewImage: string | undefined = '';
