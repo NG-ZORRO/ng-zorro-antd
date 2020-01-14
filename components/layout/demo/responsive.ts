@@ -39,7 +39,7 @@ import { Component } from '@angular/core';
   styles: [
     `
       .layout {
-        height: 100vh;
+        min-height: 100vh;
       }
 
       .logo {
