@@ -9,7 +9,7 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Platform } from '@angular/cdk/platform';
 import { AfterViewInit, Directive, ElementRef, Input, NgZone, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges } from '@angular/core';
-import { IndexableObject, NzBreakpointKey, NzDomEventService, responsiveMap } from 'ng-zorro-antd/core';
+import { gridResponsiveMap, IndexableObject, NzBreakpointKey, NzDomEventService } from 'ng-zorro-antd/core';
 import { ReplaySubject, Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 
@@ -49,9 +49,9 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
 
   setGutterStyle(): void {
     let breakPoint: NzBreakpointKey | null = null;
-    Object.keys(responsiveMap).map((screen: string) => {
+    Object.keys(gridResponsiveMap).map((screen: string) => {
       const bp = screen as NzBreakpointKey;
-      if (this.mediaMatcher.matchMedia(responsiveMap[bp]).matches) {
+      if (this.mediaMatcher.matchMedia(gridResponsiveMap[bp]).matches) {
         breakPoint = bp;
       }
     });

@@ -20,7 +20,7 @@ import { Component } from '@angular/core';
         </nz-breadcrumb>
         <div class="inner-content">Content</div>
       </nz-content>
-      <nz-footer>Ant Design ©2019 Implement By Angular</nz-footer>
+      <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
     </nz-layout>
   `,
   styles: [
