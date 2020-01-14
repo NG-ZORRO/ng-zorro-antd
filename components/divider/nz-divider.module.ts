@@ -8,11 +8,11 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { NzAddOnModule } from 'ng-zorro-antd/core';
+import { NzOutletModule } from 'ng-zorro-antd/core';
 import { NzDividerComponent } from './nz-divider.component';
 
 @NgModule({
-  imports: [CommonModule, NzAddOnModule],
+  imports: [CommonModule, NzOutletModule],
   declarations: [NzDividerComponent],
   exports: [NzDividerComponent]
 })

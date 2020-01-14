@@ -9,7 +9,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { NzAddOnModule } from 'ng-zorro-antd/core';
+import { NzOutletModule } from 'ng-zorro-antd/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import {
@@ -36,7 +36,7 @@ const NzPageHeaderCells = [
 ];
 
 @NgModule({
-  imports: [CommonModule, NzAddOnModule, NzIconModule],
+  imports: [CommonModule, NzOutletModule, NzIconModule],
   exports: [NzPageHeaderComponent, NzPageHeaderCells],
   declarations: [NzPageHeaderComponent, NzPageHeaderCells]
 })

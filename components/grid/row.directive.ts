@@ -19,7 +19,17 @@ export type NzAlign = 'top' | 'middle' | 'bottom';
 @Directive({
   selector: '[nz-row],nz-row,nz-form-item',
   exportAs: 'nzRow',
-  host: { '[class]': 'hostClassMap' }
+  host: {
+    '[class.ant-row]': `true`,
+    '[class.ant-row-top]': `nzAlign === 'top'`,
+    '[class.ant-row-middle]': `nzAlign === 'middle'`,
+    '[class.ant-row-bottom]': `nzAlign === 'bottom'`,
+    '[class.ant-row-start]': `nzJustify === 'start'`,
+    '[class.ant-row-end]': `nzJustify === 'end'`,
+    '[class.ant-row-center]': `nzJustify === 'center'`,
+    '[class.ant-row-space-around]': `nzJustify === 'space-around'`,
+    '[class.ant-row-space-between]': `nzJustify === 'space-between'`
+  }
 })
 export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   /**
@@ -31,7 +41,6 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   @Input() nzGutter: number | IndexableObject | [number, number] | [IndexableObject, IndexableObject] | null = null;
   actualGutter$ = new ReplaySubject<[number, number]>(1);
   destroy$ = new Subject();
-  hostClassMap: IndexableObject = {};
 
   getGutter(breakPoint: NzBreakpointKey): [number, number] {
     const results: [number, number] = [0, 0];
@@ -70,21 +79,6 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
       renderGutter('margin-bottom', verticalGutter);
     }
   }
-
-  setHostClassMap(): void {
-    this.hostClassMap = {
-      ['ant-row']: true,
-      ['ant-row-top']: this.nzAlign === 'top',
-      ['ant-row-middle']: this.nzAlign === 'middle',
-      ['ant-row-bottom']: this.nzAlign === 'bottom',
-      ['ant-row-start']: this.nzJustify === 'start',
-      ['ant-row-end']: this.nzJustify === 'end',
-      ['ant-row-center']: this.nzJustify === 'center',
-      ['ant-row-space-around']: this.nzJustify === 'space-around',
-      ['ant-row-space-between']: this.nzJustify === 'space-between'
-    };
-  }
-
   constructor(
     public elementRef: ElementRef,
     public renderer: Renderer2,
@@ -95,14 +89,10 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   ) {}
 
   ngOnInit(): void {
-    this.setHostClassMap();
     this.setGutterStyle();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzType || changes.nzAlign || changes.nzJustify) {
-      this.setHostClassMap();
-    }
     if (changes.nzGutter) {
       this.setGutterStyle();
     }

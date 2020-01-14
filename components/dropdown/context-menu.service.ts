@@ -12,8 +12,8 @@ import { TemplatePortal } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
-import { NzContextMenuServiceModule } from './nz-context-menu.service.module';
-import { NzDropdownMenuComponent } from './nz-dropdown-menu.component';
+import { NzContextMenuServiceModule } from './context-menu.service.module';
+import { NzDropdownMenuComponent } from './dropdown-menu.component';
 
 @Injectable({
   providedIn: NzContextMenuServiceModule
@@ -65,7 +65,7 @@ export class NzContextMenuService {
     this.nzDropdownMenuComponent = nzDropdownMenuComponent;
     nzDropdownMenuComponent.setValue('nzTrigger', 'click');
     this.clickMenuSubscription.unsubscribe();
-    this.clickMenuSubscription = nzDropdownMenuComponent.nzMenuDropdownService.menuItemClick$.subscribe(() => {
+    this.clickMenuSubscription = nzDropdownMenuComponent.nzMenuService.descendantMenuItemClick$.subscribe(() => {
       this.close();
     });
     overlayRef.attach(new TemplatePortal(nzDropdownMenuComponent.templateRef, nzDropdownMenuComponent.viewContainerRef));

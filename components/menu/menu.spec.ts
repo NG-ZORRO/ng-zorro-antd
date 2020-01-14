@@ -5,19 +5,19 @@ import { Component, DebugElement, ElementRef, NO_ERRORS_SCHEMA, QueryList, ViewC
 import { async, ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Subject } from 'rxjs';
 
 import { dispatchFakeEvent } from 'ng-zorro-antd/core';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { Subject } from 'rxjs';
 
 import { NzDemoMenuInlineCollapsedComponent } from './demo/inline-collapsed';
 import { NzDemoMenuSiderCurrentComponent } from './demo/sider-current';
 import { NzDemoMenuSwitchModeComponent } from './demo/switch-mode';
 import { NzDemoMenuThemeComponent } from './demo/theme';
-import { NzMenuItemDirective } from './nz-menu-item.directive';
-import { NzMenuDirective } from './nz-menu.directive';
-import { NzMenuModule } from './nz-menu.module';
-import { NzSubMenuComponent } from './nz-submenu.component';
+import { NzMenuItemDirective } from './menu-item.directive';
+import { NzMenuDirective } from './menu.directive';
+import { NzMenuModule } from './menu.module';
+import { NzSubMenuComponent } from './submenu.component';
 
 describe('menu', () => {
   let overlayContainer: OverlayContainer;
@@ -77,7 +77,7 @@ describe('menu', () => {
         expect(items[1].nativeElement.classList.contains('ant-menu-item-disabled')).toBe(true);
         expect(submenu.nativeElement.classList.contains('ant-menu-submenu-horizontal')).toBe(true);
         expect(submenu.nativeElement.classList.contains('ant-menu-submenu')).toBe(true);
-        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-light ant-menu-horizontal');
+        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-horizontal ant-menu-light ant-menu-root');
       });
       it('should menu item select', () => {
         fixture.detectChanges();
@@ -107,7 +107,7 @@ describe('menu', () => {
         fixture.detectChanges();
         expect(submenus.every(subitem => subitem.nativeElement.classList.contains('ant-menu-submenu'))).toBe(true);
         expect(submenus.every(subitem => subitem.nativeElement.classList.contains('ant-menu-submenu-inline'))).toBe(true);
-        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-light ant-menu-inline');
+        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-inline ant-menu-light ant-menu-root');
       });
       it('should padding left work', () => {
         fixture.detectChanges();
@@ -146,13 +146,13 @@ describe('menu', () => {
       });
       it('should className correct', () => {
         fixture.detectChanges();
-        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-dark ant-menu-inline');
+        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-dark ant-menu-inline ant-menu-root');
         testComponent.isCollapsed = true;
         fixture.detectChanges();
-        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-dark ant-menu-vertical ant-menu-inline-collapsed');
+        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-dark ant-menu-root ant-menu-vertical ant-menu-inline-collapsed');
         testComponent.isCollapsed = false;
         fixture.detectChanges();
-        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-dark ant-menu-inline');
+        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-dark ant-menu-root ant-menu-inline');
       });
       it('should keep open after change mode', () => {
         fixture.detectChanges();
@@ -225,10 +225,10 @@ describe('menu', () => {
       });
       it('should className correct', () => {
         fixture.detectChanges();
-        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-dark ant-menu-inline');
+        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-dark ant-menu-inline ant-menu-root');
         testComponent.theme = false;
         fixture.detectChanges();
-        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-light ant-menu-inline');
+        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-inline ant-menu-root ant-menu-light');
       });
     });
     describe('swich-mode', () => {
@@ -244,11 +244,11 @@ describe('menu', () => {
       });
       it('should className correct', () => {
         fixture.detectChanges();
-        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-light ant-menu-inline');
+        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-inline ant-menu-light ant-menu-root');
         expect(submenus.every(submenu => submenu.nativeElement.classList.contains('ant-menu-submenu-inline'))).toBe(true);
         testComponent.mode = true;
         fixture.detectChanges();
-        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-light ant-menu-vertical');
+        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-light ant-menu-root ant-menu-vertical');
         expect(submenus.every(submenu => submenu.nativeElement.classList.contains('ant-menu-submenu-inline'))).toBe(false);
         expect(submenus.every(submenu => submenu.nativeElement.classList.contains('ant-menu-submenu-vertical'))).toBe(true);
       });
@@ -276,7 +276,8 @@ describe('menu', () => {
         const mouseenterCallback = jasmine.createSpy('mouseenter callback');
         const subs = testComponent.subs.toArray();
         const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
-        subs[0].nzSubmenuService.mouseEnterLeave$.subscribe(mouseenterCallback);
+        // tslint:disable-next-line:no-any
+        (subs[0].nzSubmenuService as any).isMouseEnterTitleOrOverlay$.subscribe(mouseenterCallback);
         dispatchFakeEvent(title, 'mouseenter');
         fixture.detectChanges();
         expect(mouseenterCallback).toHaveBeenCalledWith(true);
@@ -287,7 +288,8 @@ describe('menu', () => {
         const mouseleaveCallback = jasmine.createSpy('mouseleave callback');
         const subs = testComponent.subs.toArray();
         const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
-        subs[0].nzSubmenuService.mouseEnterLeave$.subscribe(mouseleaveCallback);
+        // tslint:disable-next-line:no-any
+        (subs[0].nzSubmenuService as any).isMouseEnterTitleOrOverlay$.subscribe(mouseleaveCallback);
         dispatchFakeEvent(title, 'mouseleave');
         fixture.detectChanges();
         expect(mouseleaveCallback).toHaveBeenCalledWith(false);
@@ -298,9 +300,10 @@ describe('menu', () => {
         fixture.detectChanges();
         const nestedCallback = jasmine.createSpy('nested callback');
         const subs = testComponent.subs.toArray();
-        subs[0].nzSubmenuService.subMenuOpen$.subscribe(nestedCallback);
+        // tslint:disable-next-line:no-any
+        (subs[0].nzSubmenuService as any).isChildSubMenuOpen$.subscribe(nestedCallback);
         subs[1].nzOpen = true;
-        subs[1].nzSubmenuService.open$.next(false);
+        subs[1].nzSubmenuService.isHostSubMenuOpen$.next(false);
         fixture.detectChanges();
         expect(nestedCallback).toHaveBeenCalledWith(false);
         expect(nestedCallback).toHaveBeenCalledTimes(1);
@@ -311,9 +314,10 @@ describe('menu', () => {
         fixture.detectChanges();
         const nestedCallback = jasmine.createSpy('nested callback');
         const subs = testComponent.subs.toArray();
-        subs[0].nzSubmenuService.subMenuOpen$.subscribe(nestedCallback);
+        // tslint:disable-next-line:no-any
+        (subs[0].nzSubmenuService as any).isChildSubMenuOpen$.subscribe(nestedCallback);
         subs[1].nzOpen = true;
-        subs[1].nzSubmenuService.open$.next(false);
+        subs[1].nzSubmenuService.isHostSubMenuOpen$.next(false);
         fixture.detectChanges();
         expect(nestedCallback).toHaveBeenCalledTimes(1);
       });
@@ -335,7 +339,8 @@ describe('menu', () => {
         const subs = testComponent.subs.toArray();
         subs[1].nzOpen = true;
         fixture.detectChanges();
-        subs[1].nzSubmenuService.mouseEnterLeave$.subscribe(nestedCallback);
+        // tslint:disable-next-line:no-any
+        (subs[1].nzSubmenuService as any).isChildSubMenuOpen$.subscribe(nestedCallback);
         testComponent.menuitem.nativeElement.click();
         fixture.detectChanges();
         expect(nestedCallback).toHaveBeenCalledWith(false);
@@ -346,7 +351,8 @@ describe('menu', () => {
         fixture.detectChanges();
         const nestedCallback = jasmine.createSpy('nested callback');
         const subs = testComponent.subs.toArray();
-        subs[1].nzSubmenuService.mouseEnterLeave$.subscribe(nestedCallback);
+        // tslint:disable-next-line:no-any
+        (subs[1].nzSubmenuService as any).isMouseEnterTitleOrOverlay$.subscribe(nestedCallback);
         subs[1].nzOpen = true;
         testComponent.disableditem.nativeElement.click();
         fixture.detectChanges();
@@ -406,7 +412,7 @@ describe('menu', () => {
         fixture.detectChanges();
         const subs = testComponent.subs.toArray();
         subs[1].nzOpen = true;
-        subs[1].nzSubmenuService.open$.next(true);
+        subs[1].nzSubmenuService.isHostSubMenuOpen$.next(true);
         fixture.detectChanges();
         expect((overlayContainerElement.querySelector('ul.nested-submenu') as HTMLUListElement).classList).toContain('ant-menu-sub');
       });
