@@ -210,12 +210,7 @@ export function buildComponent(options: ZorroComponentOptions,
     const schematicFilesUrl = './files';
     const schematicFilesPath = resolve(schematicPath, schematicFilesUrl);
 
-    options.style = (
-      options.style && options.style !== Style.Css
-        ? options.style : options.styleext
-    ) as Style || Style.Css;
-    options.skipTests = options.skipTests || !options.spec;
-
+    options.style = options.style || Style.Css;
     // Add the default component option values to the options if an option is not explicitly
     // specified but a default component option is available.
     Object.keys(options)

@@ -24,7 +24,7 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { isInteger, toNumber, InputBoolean, InputNumber } from 'ng-zorro-antd/core';
+import { InputBoolean, InputNumber, isInteger, toNumber } from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 export interface PaginationItemRenderContext {

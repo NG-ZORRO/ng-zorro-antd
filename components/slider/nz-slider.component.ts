@@ -8,12 +8,12 @@
 
 import { Platform } from '@angular/cdk/platform';
 import {
-  forwardRef,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Input,
   OnChanges,
   OnDestroy,
@@ -33,20 +33,13 @@ import {
   getElementOffset,
   getPercent,
   getPrecision,
-  shallowCopyArray,
-  silentEvent,
   InputBoolean,
-  MouseTouchObserverConfig
+  MouseTouchObserverConfig,
+  shallowCopyArray,
+  silentEvent
 } from 'ng-zorro-antd/core';
 
-import {
-  isValueARange,
-  ExtendedMark,
-  NzMarks,
-  SliderHandler,
-  SliderShowTooltip,
-  SliderValue
-} from './nz-slider-definitions';
+import { ExtendedMark, isValueARange, NzMarks, SliderHandler, SliderShowTooltip, SliderValue } from './nz-slider-definitions';
 import { getValueTypeNotMatchError } from './nz-slider-error';
 
 @Component({
@@ -181,9 +174,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
       normalizedValue = this.getValue(true);
     }
 
-    return isValueARange(normalizedValue)
-      ? normalizedValue.map(val => this.valueToOffset(val))
-      : this.valueToOffset(normalizedValue);
+    return isValueARange(normalizedValue) ? normalizedValue.map(val => this.valueToOffset(val)) : this.valueToOffset(normalizedValue);
   }
 
   /**
@@ -225,9 +216,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
     const valueSorted = this.getValue(true);
     const offsetSorted = this.getValueToOffset(valueSorted);
     const boundParts = isValueARange(valueSorted) ? valueSorted : [0, valueSorted];
-    const trackParts = isValueARange(offsetSorted)
-      ? [offsetSorted[0], offsetSorted[1] - offsetSorted[0]]
-      : [0, offsetSorted];
+    const trackParts = isValueARange(offsetSorted) ? [offsetSorted[0], offsetSorted[1] - offsetSorted[0]] : [0, offsetSorted];
 
     this.handles.forEach((handle, index) => {
       handle.offset = isValueARange(offset) ? offset[index] : offset;

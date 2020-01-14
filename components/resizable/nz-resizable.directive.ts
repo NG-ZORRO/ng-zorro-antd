@@ -7,17 +7,7 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
-import {
-  AfterViewInit,
-  Directive,
-  ElementRef,
-  EventEmitter,
-  Input,
-  NgZone,
-  OnDestroy,
-  Output,
-  Renderer2
-} from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, NgZone, OnDestroy, Output, Renderer2 } from '@angular/core';
 
 import { ensureInBounds, InputBoolean } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
@@ -188,11 +178,11 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
     switch (this.currentHandleEvent!.direction) {
       case 'left':
       case 'right':
-        this.renderer.setStyle(document.body, 'cursor', 'col-resize');
+        this.renderer.setStyle(document.body, 'cursor', 'ew-resize');
         break;
       case 'top':
       case 'bottom':
-        this.renderer.setStyle(document.body, 'cursor', 'row-resize');
+        this.renderer.setStyle(document.body, 'cursor', 'ns-resize');
         break;
       case 'topLeft':
       case 'bottomRight':

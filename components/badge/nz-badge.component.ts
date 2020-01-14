@@ -24,7 +24,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { isEmpty, zoomBadgeMotion, InputBoolean, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
+import { InputBoolean, isEmpty, NzConfigService, WithConfig, zoomBadgeMotion } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
 import { startWith, take, takeUntil } from 'rxjs/operators';
 
@@ -51,21 +51,7 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   maxNumberArray: string[] = [];
   countArray: number[] = [];
   countSingleArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-  colorArray = [
-    'pink',
-    'red',
-    'yellow',
-    'orange',
-    'cyan',
-    'green',
-    'blue',
-    'purple',
-    'geekblue',
-    'magenta',
-    'volcano',
-    'gold',
-    'lime'
-  ];
+  colorArray = ['pink', 'red', 'yellow', 'orange', 'cyan', 'green', 'blue', 'purple', 'geekblue', 'magenta', 'volcano', 'gold', 'lime'];
   presetColor: string | null = null;
   count: number;
   @ViewChild('contentElement', { static: false }) contentElement: ElementRef;
@@ -121,10 +107,7 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
 
     this.contentObserver
       .observe(this.contentElement)
-      .pipe(
-        startWith(true),
-        takeUntil(this.destroy$)
-      )
+      .pipe(startWith(true), takeUntil(this.destroy$))
       .subscribe(() => {
         this.checkContent();
       });

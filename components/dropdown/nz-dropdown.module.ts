@@ -7,6 +7,8 @@
  */
 
 import { OverlayModule } from '@angular/cdk/overlay';
+
+import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -15,14 +17,10 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzAddOnModule, NzNoAnimationModule, NzOverlayModule } from 'ng-zorro-antd/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
-
-import { PlatformModule } from '@angular/cdk/platform';
 import { NzContextMenuServiceModule } from './nz-context-menu.service.module';
 import { NzDropDownADirective } from './nz-dropdown-a.directive';
-import { NzDropDownButtonComponent } from './nz-dropdown-button.component';
-import { NzDropdownContextComponent } from './nz-dropdown-context.component';
+import { NzDropdownButtonDirective } from './nz-dropdown-button.directive';
 import { NzDropdownMenuComponent } from './nz-dropdown-menu.component';
-import { NzDropDownComponent } from './nz-dropdown.component';
 import { NzDropDownDirective } from './nz-dropdown.directive';
 import { NzDropdownServiceModule } from './nz-dropdown.service.module';
 
@@ -41,22 +39,7 @@ import { NzDropdownServiceModule } from './nz-dropdown.service.module';
     NzContextMenuServiceModule,
     NzAddOnModule
   ],
-  entryComponents: [NzDropdownContextComponent, NzDropdownMenuComponent],
-  declarations: [
-    NzDropDownComponent,
-    NzDropDownButtonComponent,
-    NzDropDownDirective,
-    NzDropDownADirective,
-    NzDropdownContextComponent,
-    NzDropdownMenuComponent
-  ],
-  exports: [
-    NzMenuModule,
-    NzDropDownComponent,
-    NzDropDownButtonComponent,
-    NzDropDownDirective,
-    NzDropDownADirective,
-    NzDropdownMenuComponent
-  ]
+  declarations: [NzDropDownDirective, NzDropDownADirective, NzDropdownMenuComponent, NzDropdownButtonDirective],
+  exports: [NzMenuModule, NzDropDownDirective, NzDropDownADirective, NzDropdownMenuComponent, NzDropdownButtonDirective]
 })
 export class NzDropDownModule {}

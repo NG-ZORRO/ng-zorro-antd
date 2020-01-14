@@ -37,10 +37,7 @@ const MEASURE_SIZE = 200;
   providers: [NzUpdateHostClassService],
   animations: [
     trigger('itemState', [
-      transition(':enter', [
-        style({ height: '0', width: '0', opacity: 0 }),
-        animate(150, style({ height: '*', width: '*', opacity: 1 }))
-      ]),
+      transition(':enter', [style({ height: '0', width: '0', opacity: 0 }), animate(150, style({ height: '*', width: '*', opacity: 1 }))]),
       transition(':leave', [animate(150, style({ height: '0', width: '0', opacity: 0 }))])
     ])
   ],
@@ -184,13 +181,7 @@ export class NzUploadListComponent implements OnChanges {
     }
     // tslint:disable-next-line:no-any
     const win = window as any;
-    if (
-      !this.showPic ||
-      typeof document === 'undefined' ||
-      typeof win === 'undefined' ||
-      !win.FileReader ||
-      !win.File
-    ) {
+    if (!this.showPic || typeof document === 'undefined' || typeof win === 'undefined' || !win.FileReader || !win.File) {
       return;
     }
     this.items

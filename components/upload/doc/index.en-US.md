@@ -14,10 +14,6 @@ Uploading is the process of publishing information (web pages, text, pictures, v
 - When you need to show the process of uploading.
 - When you need to upload files by dragging and dropping.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 ```

@@ -1,5 +1,5 @@
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { discardPeriodicTasks, fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzScrollService } from 'ng-zorro-antd/core';
@@ -466,10 +466,7 @@ describe('affix-extra', () => {
     dl = fixture.debugElement;
   });
   it('#getOffset', () => {
-    const ret = fixture.componentInstance.nzAffixComponent.getOffset(
-      fixture.debugElement.query(By.css('#affix')).nativeElement,
-      window
-    );
+    const ret = fixture.componentInstance.nzAffixComponent.getOffset(fixture.debugElement.query(By.css('#affix')).nativeElement, window);
     expect(ret).not.toBeUndefined();
   });
   it('with window when scrolled below the bottom offset', fakeAsync(() => {

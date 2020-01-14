@@ -21,10 +21,10 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET, Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { filter, startWith, takeUntil } from 'rxjs/operators';
 
 import { InputBoolean, PREFIX } from 'ng-zorro-antd/core';
+import { Subject } from 'rxjs';
+import { filter, startWith, takeUntil } from 'rxjs/operators';
 
 export interface BreadcrumbOption {
   label: string;
@@ -109,11 +109,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getBreadcrumbs(
-    route: ActivatedRoute,
-    url: string = '',
-    breadcrumbs: BreadcrumbOption[] = []
-  ): BreadcrumbOption[] | undefined {
+  private getBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: BreadcrumbOption[] = []): BreadcrumbOption[] | undefined {
     const children: ActivatedRoute[] = route.children;
     // If there's no sub root, then stop the recurse and returns the generated breadcrumbs.
     if (children.length === 0) {
@@ -138,5 +134,6 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
         return this.getBreadcrumbs(child, nextUrl, breadcrumbs);
       }
     }
+    return undefined;
   }
 }

@@ -17,6 +17,12 @@
     width: 100%;
     text-align: start;
     vertical-align: top; // https://github.com/ant-design/ant-design/issues/6403
+    &-rtl {
+      direction: rtl;
+    }
+  }
+  &-rtl {
+    direction: rtl;
   }
 }
 
@@ -37,30 +43,21 @@
   transition: all 0.3s;
 
   &:hover {
-    color: #333;
+    color: @input-icon-hover-color;
   }
 }
 
 .@{ant-prefix}-input-clear-icon {
-  color: @disabled-color;
-  font-size: @font-size-sm;
-  // https://github.com/ant-design/ant-design/pull/18151
-  // https://codesandbox.io/s/wizardly-sun-u10br
+  .clear-icon;
   vertical-align: 0;
-  cursor: pointer;
-  transition: color 0.3s;
+}
 
-  &:hover {
-    color: @text-color-secondary;
-  }
-
-  &:active {
-    color: @text-color;
-  }
-
-  + i {
-    margin-left: 6px;
-  }
+.@{ant-prefix}-input-textarea-clear-icon {
+  .clear-icon;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 8px 8px 0 0;
 }
 
 @import './search-input';

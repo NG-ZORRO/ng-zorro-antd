@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NzFormatBeforeDropEvent } from 'ng-zorro-antd/core';
-import { of, Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 @Component({
@@ -19,7 +19,10 @@ export class NzDemoTreeDraggableConfirmComponent {
         {
           title: '0-0-0',
           key: '1001',
-          children: [{ title: '0-0-0-0', key: '10010', isLeaf: true }, { title: '0-0-0-1', key: '10011', isLeaf: true }]
+          children: [
+            { title: '0-0-0-0', key: '10010', isLeaf: true },
+            { title: '0-0-0-1', key: '10011', isLeaf: true }
+          ]
         },
         {
           title: '0-0-1',

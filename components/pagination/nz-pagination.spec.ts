@@ -358,15 +358,8 @@ export class NzTestPaginationRenderComponent {}
 
 @Component({
   template: `
-    <nz-pagination
-      [(nzPageIndex)]="pageIndex"
-      [nzTotal]="85"
-      [nzPageSize]="20"
-      [nzShowTotal]="rangeTemplate"
-    ></nz-pagination>
-    <ng-template #rangeTemplate let-range="range" let-total>
-      {{ range[0] }}-{{ range[1] }} of {{ total }} items
-    </ng-template>
+    <nz-pagination [(nzPageIndex)]="pageIndex" [nzTotal]="85" [nzPageSize]="20" [nzShowTotal]="rangeTemplate"></nz-pagination>
+    <ng-template #rangeTemplate let-range="range" let-total> {{ range[0] }}-{{ range[1] }} of {{ total }} items </ng-template>
   `
 })
 export class NzTestPaginationTotalComponent {

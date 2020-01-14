@@ -2,18 +2,18 @@
   "rulesDirectory": ["./scripts/tslint-rules/", "node_modules/codelyzer"],
   "rules": {
     "ts-loader": true,
-    "banana-in-box": true,
-    "templates-no-negated-async": true,
+    "template-banana-in-box": true,
+    "template-no-negated-async": true,
     "no-life-cycle-call": false,
     "prefer-output-readonly": true,
     "no-conflicting-life-cycle-hooks": false,
     "enforce-component-selector": false,
-    "use-input-property-decorator": true,
-    "use-output-property-decorator": true,
+    "no-inputs-metadata-property": true,
+    "no-outputs-metadata-property": true,
     "use-host-property-decorator": false,
     "use-view-encapsulation": false,
-    "no-attribute-parameter-decorator": true,
-    "no-output-named-after-standard-event": true,
+    "no-attribute-decorator": true,
+    "no-output-native": true,
     "no-output-rename": true,
     "no-output-on-prefix": true,
     "no-forward-ref": false,
@@ -23,7 +23,7 @@
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
     "directive-class-suffix": true,
-    "pipe-impure": true,
+    "no-pipe-impure": true,
     "angular-whitespace": [false, "check-interpolation"],
     "directive-selector": [true, "attribute", ["nz"], ["camelCase", "kebab-case"]],
     "component-selector": [true, ["element", "attribute"], ["nz", "test"], "kebab-case"],
@@ -46,7 +46,7 @@
     "encoding": true,
     "eofline": true,
     "deprecation": {
-      "severity": "warn"
+      "severity": "warning"
     },
     "import-spacing": true,
     "indent": [true, "spaces"],
@@ -99,16 +99,15 @@
     "no-parameter-reassignment": true,
     "no-unnecessary-initializer": true,
     "no-unused-expression": true,
-    "no-use-before-declare": true,
     "no-var-keyword": true,
-    "number-literal-format": true,
+    "number-literal-format": false,
     "one-line": [true, "check-open-brace", "check-catch", "check-else", "check-whitespace"],
     "one-variable-per-declaration": [true, "ignore-for-loop"],
     "ordered-imports": [
       true,
       {
-        "import-sources-order": "lowercase-last",
-        "named-imports-order": "lowercase-first"
+        "import-sources-order": "case-insensitive",
+        "named-imports-order": "case-insensitive"
       }
     ],
     "prefer-conditional-expression": false,

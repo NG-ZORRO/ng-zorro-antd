@@ -1,5 +1,5 @@
 # Set to true to add reviewers to pull requests
-addReviewers: true
+addReviewers: false
 
 # Set to true to add assignees to pull requests
 addAssignees: true
@@ -7,10 +7,9 @@ addAssignees: true
 # A list of reviewers to be added to pull requests (GitHub user name)
 reviewers:
   - vthinkxie
-  - wendzhue
+  - wendellhu95
   - hsuanxyz
   - simplejason
-  - cipchk
   - wenqi73
 
 # A list of keywords to be skipped the process that add reviewers if pull requests include it

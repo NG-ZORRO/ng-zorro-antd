@@ -6,12 +6,7 @@ import { NzTreeComponent } from 'ng-zorro-antd/tree';
 @Component({
   selector: 'nz-demo-transfer-tree-transfer',
   template: `
-    <nz-transfer
-      [nzDataSource]="list"
-      [nzShowSelectAll]="false"
-      [nzRenderList]="[leftRenderList, null]"
-      (nzChange)="change($event)"
-    >
+    <nz-transfer [nzDataSource]="list" [nzShowSelectAll]="false" [nzRenderList]="[leftRenderList, null]" (nzChange)="change($event)">
       <ng-template #leftRenderList let-items let-onItemSelectAll="onItemSelectAll" let-onItemSelect="onItemSelect">
         <nz-tree #tree [nzData]="treeData" nzExpandAll nzBlockNode>
           <ng-template #nzTreeTemplate let-node>
@@ -23,11 +18,9 @@ import { NzTreeComponent } from 'ng-zorro-antd/tree';
             >
               <span class="ant-tree-checkbox-inner"></span>
             </span>
-            <span
-              (click)="checkBoxChange(node, onItemSelect)"
-              class="ant-tree-node-content-wrapper ant-tree-node-content-wrapper-open"
-              >{{ node.title }}</span
-            >
+            <span (click)="checkBoxChange(node, onItemSelect)" class="ant-tree-node-content-wrapper ant-tree-node-content-wrapper-open">{{
+              node.title
+            }}</span>
           </ng-template>
         </nz-tree>
       </ng-template>

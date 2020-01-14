@@ -32,19 +32,20 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/router';
-import { merge, Subject, Subscription } from 'rxjs';
+import { merge, Observable, Subject, Subscription } from 'rxjs';
 
 import {
-  toNumber,
   InputBoolean,
   NzConfigService,
   NzFourDirectionType,
   NzSizeLDSType,
   NzUpdateHostClassService,
   PREFIX,
-  WithConfig
+  toNumber,
+  WithConfig,
+  wrapIntoObservable
 } from 'ng-zorro-antd/core';
-import { filter, startWith, takeUntil } from 'rxjs/operators';
+import { filter, first, startWith, takeUntil } from 'rxjs/operators';
 
 import { NzTabComponent } from './nz-tab.component';
 import { NzTabsNavComponent } from './nz-tabs-nav.component';
@@ -58,6 +59,8 @@ export class NzTabChangeEvent {
   index: number;
   tab: NzTabComponent;
 }
+
+export type NzTabsCanDeactivateFn = (fromIndex: number, toIndex: number) => Observable<boolean> | Promise<boolean> | boolean;
 
 export type NzTabPosition = NzFourDirectionType;
 export type NzTabPositionMode = 'horizontal' | 'vertical';
@@ -81,8 +84,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'tabs';
     `
   ]
 })
-export class NzTabSetComponent
-  implements AfterContentChecked, OnInit, AfterViewInit, OnChanges, AfterContentInit, OnDestroy {
+export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterViewInit, OnChanges, AfterContentInit, OnDestroy {
   private indexToSelect: number | null = 0;
   private el: HTMLElement = this.elementRef.nativeElement;
   private _selectedIndex: number | null = null;
@@ -110,6 +112,7 @@ export class NzTabSetComponent
 
   @Input() @InputBoolean() nzLinkRouter = false;
   @Input() @InputBoolean() nzLinkExact = true;
+  @Input() nzCanDeactivate: NzTabsCanDeactivateFn | null = null;
 
   @Output() readonly nzOnNextClick = new EventEmitter<void>();
   @Output() readonly nzOnPrevClick = new EventEmitter<void>();
@@ -136,17 +139,9 @@ export class NzTabSetComponent
   setPosition(value: NzTabPosition): void {
     if (this.tabContent) {
       if (value === 'bottom') {
-        this.renderer.insertBefore(
-          this.el,
-          this.tabContent.nativeElement,
-          this.nzTabsNavComponent.elementRef.nativeElement
-        );
+        this.renderer.insertBefore(this.el, this.tabContent.nativeElement, this.nzTabsNavComponent.elementRef.nativeElement);
       } else {
-        this.renderer.insertBefore(
-          this.el,
-          this.nzTabsNavComponent.elementRef.nativeElement,
-          this.tabContent.nativeElement
-        );
+        this.renderer.insertBefore(this.el, this.nzTabsNavComponent.elementRef.nativeElement, this.tabContent.nativeElement);
       }
     }
   }
@@ -156,8 +151,7 @@ export class NzTabSetComponent
       [`ant-tabs`]: true,
       [`ant-tabs-vertical`]: this.nzTabPosition === 'left' || this.nzTabPosition === 'right',
       [`ant-tabs-${this.nzTabPosition}`]: this.nzTabPosition,
-      [`ant-tabs-no-animation`]:
-        this.nzAnimated === false || (this.nzAnimated as NzAnimatedInterface).tabPane === false,
+      [`ant-tabs-no-animation`]: this.nzAnimated === false || (this.nzAnimated as NzAnimatedInterface).tabPane === false,
       [`ant-tabs-${this.nzType}`]: this.nzType,
       [`ant-tabs-large`]: this.nzSize === 'large',
       [`ant-tabs-small`]: this.nzSize === 'small'
@@ -166,10 +160,20 @@ export class NzTabSetComponent
 
   clickLabel(index: number, disabled: boolean): void {
     if (!disabled) {
-      const tabs = this.listOfNzTabComponent.toArray();
-      this.nzSelectedIndex = index;
-      tabs[index].nzClick.emit();
+      if (this.nzSelectedIndex !== null && this.nzSelectedIndex !== index && typeof this.nzCanDeactivate === 'function') {
+        const observable = wrapIntoObservable(this.nzCanDeactivate(this.nzSelectedIndex, index));
+        observable.pipe(first(), takeUntil(this.destroy$)).subscribe(canChange => canChange && this.emitClickEvent(index));
+      } else {
+        this.emitClickEvent(index);
+      }
     }
+  }
+
+  private emitClickEvent(index: number): void {
+    const tabs = this.listOfNzTabComponent.toArray();
+    this.nzSelectedIndex = index;
+    tabs[index].nzClick.emit();
+    this.cdr.markForCheck();
   }
 
   createChangeEvent(index: number): NzTabChangeEvent {
@@ -199,9 +203,7 @@ export class NzTabSetComponent
     if (this.tabLabelSubscription) {
       this.tabLabelSubscription.unsubscribe();
     }
-    this.tabLabelSubscription = merge(...this.listOfNzTabComponent.map(tab => tab.stateChanges)).subscribe(() =>
-      this.cdr.markForCheck()
-    );
+    this.tabLabelSubscription = merge(...this.listOfNzTabComponent.map(tab => tab.stateChanges)).subscribe(() => this.cdr.markForCheck());
   }
 
   constructor(

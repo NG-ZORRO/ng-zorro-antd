@@ -28,12 +28,7 @@ import { Component } from '@angular/core';
       </nz-sider>
       <nz-layout>
         <nz-header>
-          <i
-            class="trigger"
-            nz-icon
-            [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
-            (click)="isCollapsed = !isCollapsed"
-          ></i>
+          <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" (click)="isCollapsed = !isCollapsed"></i>
         </nz-header>
         <nz-content>
           <nz-breadcrumb>

@@ -12,10 +12,6 @@ A long list can be divided into several pages by `Pagination`, and only one page
 - When it will take a long time to load/render all items.
 - If you want to browse the data by navigating through pages.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 ```

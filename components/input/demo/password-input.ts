@@ -4,12 +4,7 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-input-password-input',
   template: `
     <nz-input-group [nzSuffix]="suffixTemplate">
-      <input
-        [type]="passwordVisible ? 'text' : 'password'"
-        nz-input
-        placeholder="input password"
-        [(ngModel)]="password"
-      />
+      <input [type]="passwordVisible ? 'text' : 'password'" nz-input placeholder="input password" [(ngModel)]="password" />
     </nz-input-group>
     <ng-template #suffixTemplate>
       <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></i>

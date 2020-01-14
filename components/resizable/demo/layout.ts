@@ -7,13 +7,7 @@ import { NzResizeEvent } from 'ng-zorro-antd/resizable';
     <nz-layout>
       <nz-header>Header</nz-header>
       <nz-layout>
-        <nz-sider
-          [nzWidth]="siderWidth"
-          nz-resizable
-          [nzMinWidth]="50"
-          [nzMaxWidth]="300"
-          (nzResize)="onSideResize($event)"
-        >
+        <nz-sider [nzWidth]="siderWidth" nz-resizable [nzMinWidth]="50" [nzMaxWidth]="300" (nzResize)="onSideResize($event)">
           <nz-resize-handle nzDirection="right">
             <div class="sider-resize-line"></div>
           </nz-resize-handle>

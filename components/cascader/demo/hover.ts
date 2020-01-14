@@ -46,12 +46,7 @@ const options = [
 @Component({
   selector: 'nz-demo-cascader-hover',
   template: `
-    <nz-cascader
-      [nzExpandTrigger]="'hover'"
-      [nzOptions]="nzOptions"
-      [(ngModel)]="values"
-      (ngModelChange)="onChanges($event)"
-    >
+    <nz-cascader [nzExpandTrigger]="'hover'" [nzOptions]="nzOptions" [(ngModel)]="values" (ngModelChange)="onChanges($event)">
     </nz-cascader>
   `,
   styles: [

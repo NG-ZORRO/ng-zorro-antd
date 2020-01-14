@@ -6,18 +6,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  SimpleChanges,
-  ViewEncapsulation
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
 
-import { isNotNil, InputNumber, NgStyleInterface, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
+import { InputNumber, isNotNil, NgStyleInterface, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -29,6 +20,7 @@ import {
   NzProgressGapPositionType,
   NzProgressGradientProgress,
   NzProgressStatusType,
+  NzProgressStepItem,
   NzProgressStrokeColorType,
   NzProgressStrokeLinecapType,
   NzProgressTypeType
@@ -37,8 +29,15 @@ import {
 let gradientIdSeed = 0;
 
 const NZ_CONFIG_COMPONENT_NAME = 'progress';
-const statusIconNameMap = new Map([['success', 'check'], ['exception', 'close']]);
-const statusColorMap = new Map([['normal', '#108ee9'], ['exception', '#ff5500'], ['success', '#87d068']]);
+const statusIconNameMap = new Map([
+  ['success', 'check'],
+  ['exception', 'close']
+]);
+const statusColorMap = new Map([
+  ['normal', '#108ee9'],
+  ['exception', '#ff5500'],
+  ['success', '#87d068']
+]);
 const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
 
 @Component({
@@ -64,11 +63,18 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'top') nzGapPosition: NzProgressGapPositionType;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'round') nzStrokeLinecap: NzProgressStrokeLinecapType;
 
+  @Input() @InputNumber() nzSteps?: number;
+
+  steps: NzProgressStepItem[] = [];
+
   /** Gradient style when `nzType` is `line`. */
   lineGradient: string | null = null;
 
   /** If user uses gradient color. */
   isGradient = false;
+
+  /** If the linear progress is a step progress. */
+  isSteps = false;
 
   /**
    * Each progress whose `nzType` is circle or dashboard should have unique id to
@@ -112,16 +118,7 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   constructor(public nzConfigService: NzConfigService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    const {
-      nzGapPosition,
-      nzStrokeLinecap,
-      nzStrokeColor,
-      nzGapDegree,
-      nzType,
-      nzStatus,
-      nzPercent,
-      nzSuccessPercent
-    } = changes;
+    const { nzSteps, nzGapPosition, nzStrokeLinecap, nzStrokeColor, nzGapDegree, nzType, nzStatus, nzPercent, nzSuccessPercent } = changes;
 
     if (nzStatus) {
       this.cachedStatus = this.nzStatus || this.cachedStatus;
@@ -149,6 +146,11 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
     if (nzGapPosition || nzStrokeLinecap || nzGapDegree || nzType || nzPercent || nzStrokeColor) {
       this.getCirclePaths();
     }
+
+    if (nzSteps) {
+      this.isSteps = isNotNil(nzSteps.currentValue);
+      this.getSteps();
+    }
   }
 
   ngOnInit(): void {
@@ -170,6 +172,27 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   private updateIcon(): void {
     const ret = statusIconNameMap.get(this.status);
     this.icon = ret ? ret + (this.isCircleStyle ? '-o' : '-circle-fill') : '';
+  }
+
+  /**
+   * Calculate step render configs.
+   */
+  private getSteps(): void {
+    const current = Math.floor(this.nzSteps! * (this.nzPercent / 100));
+    const stepWidth = this.nzSize === 'small' ? 2 : 14;
+
+    for (let i = 0; i < this.nzSteps!; i++) {
+      let color;
+      if (i <= current - 1) {
+        color = this.nzStrokeColor;
+      }
+      const stepStyle = {
+        backgroundColor: `${color}`,
+        width: `${stepWidth}px`,
+        height: `${this.strokeWidth}px`
+      };
+      this.steps.push(stepStyle);
+    }
   }
 
   /**
@@ -230,13 +253,8 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
         return {
           stroke: this.isGradient && !isSuccessPercent ? `url(#gradient-${this.gradientId})` : null,
           strokePathStyle: {
-            stroke: !this.isGradient
-              ? isSuccessPercent
-                ? statusColorMap.get('success')
-                : (this.nzStrokeColor as string)
-              : null,
-            transition:
-              'stroke-dashoffset .3s ease 0s, stroke-dasharray .3s ease 0s, stroke .3s, stroke-width .06s ease .3s',
+            stroke: !this.isGradient ? (isSuccessPercent ? statusColorMap.get('success') : (this.nzStrokeColor as string)) : null,
+            transition: 'stroke-dashoffset .3s ease 0s, stroke-dasharray .3s ease 0s, stroke .3s, stroke-width .06s ease .3s',
             strokeDasharray: `${((value || 0) / 100) * (len - gapDegree)}px ${len}px`,
             strokeDashoffset: `-${gapDegree / 2}px`
           }

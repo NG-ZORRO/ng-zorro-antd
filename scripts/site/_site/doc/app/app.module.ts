@@ -7,6 +7,7 @@ import { PreloadAllModules, RouterModule } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { IconDefinition } from '@ant-design/icons-angular';
 import { LeftOutline, RightOutline } from '@ant-design/icons-angular/icons';
+import { NzAffixModule, NzGridModule } from "ng-zorro-antd";
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NZ_CONFIG } from 'ng-zorro-antd/core';
@@ -17,12 +18,13 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzSelectModule } from 'ng-zorro-antd/select';
+import { ColorSketchModule } from "ngx-color/sketch";
 
 import { environment } from '../environments/environment';
 import { DEMOComponent } from './_demo/demo.component';
 import { AppComponent } from './app.component';
 import { routes } from './app.routing.module';
-import { ShareModule } from './share/share.module';
+import { NzNavBottomModule } from "./share/nz-nav-bottom/nz-nav-bottom.module";
 
 const icons: IconDefinition[] = [LeftOutline, RightOutline];
 
@@ -33,6 +35,10 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline];
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
+    NzNavBottomModule,
+    ColorSketchModule,
+    NzGridModule,
+    NzAffixModule,
     NzMenuModule,
     NzI18nModule,
     NzSelectModule,
@@ -42,7 +48,6 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline];
     NzInputModule,
     NzIconModule,
     NzBadgeModule,
-    ShareModule,
     HttpClientJsonpModule,
     RouterModule.forRoot(routes, environment.production ? { preloadingStrategy: PreloadAllModules, scrollPositionRestoration: 'enabled'  } : {}),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })

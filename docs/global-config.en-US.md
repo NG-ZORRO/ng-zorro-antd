@@ -12,7 +12,7 @@ From version 8.3.0, we add support of **global configuration** to many component
 If you want to provide default configurations to some components, you should provide an object that implements the interface `NzConfig` with the injection token `NZ_CONFIG`, in the root module (in another word, to the root injector). Like this:
 
 ```typescript
-import { NgZorroAntdModule, NzConfig, NZ_CONFIG } from 'ng-zorro-antd';
+import { NzConfig, NZ_CONFIG } from 'ng-zorro-antd/core';
 
 const ngZorroConfig: NzConfig = {
   message: { nzTop: 120 },
@@ -23,7 +23,6 @@ const ngZorroConfig: NzConfig = {
   declarations: [AppComponent],
   imports: [
     CommonModule
-    NgZorroAntdModule,
   ],
   providers: [
     { provide: NZ_CONFIG, useValue: ngZorroConfig }
@@ -116,7 +115,7 @@ export class AppModule {}
 You can change the global config of a specific component by calling the `set` method of `NzConfigService`. For example, if you want to make all buttons to be barge in size by default, you should:
 
 ```typescript
-import { NzConfigService } from 'ng-zorro-antd';
+import { NzConfigService } from 'ng-zorro-antd/core';
 
 @Component({
   selector: 'app-change-zorro-config'
@@ -135,14 +134,13 @@ export class ChangeZorroConfigComponent {
 
 For any property that supports global configuration, the sequence of priority is as follow:
 
-**Parameters passed to an component instance (in templates or methods like `service.create` > global config provided with the injection token `NZ_CONFIG` > global config provided with legacy injection tokens > default value in ng-zorro-antd**
+**Parameters passed to an component instance (in templates or methods like `service.create` > global config provided with the injection token `NZ_CONFIG` > default value in ng-zorro-antd**
 
 For example, if you want to create a `NzNotification` component:
 
 1. When you call `NzNotificationService.success`, you passed `{ nzDuration: 6000 }` as the third parameter
 2. You provide `{ notification: { nzDuration: 5000 } }` with `NZ_CONFIG`
-3. You provide  `{ nzDuration: 4000 }` with `NZ_NOTIFICATION_CONFIG`
-4. ng-zorro-antd has a default value of 4500
+3. ng-zorro-antd has a default value of 4500
 
 Eventually, this notification would keep open for 6000 milliseconds.
 

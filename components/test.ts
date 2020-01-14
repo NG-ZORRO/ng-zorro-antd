@@ -5,8 +5,8 @@ import 'zone.js/dist/zone-testing';
 
 import { getTestBed } from '@angular/core/testing';
 import {
-  platformBrowserDynamicTesting,
-  BrowserDynamicTestingModule
+  BrowserDynamicTestingModule,
+  platformBrowserDynamicTesting
 } from '@angular/platform-browser-dynamic/testing';
 
 // tslint:disable-next-line:no-any

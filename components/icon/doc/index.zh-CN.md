@@ -11,11 +11,7 @@ hasPageDemo: true
 
 ## 图标列表
 
-新版图标可能略有缺失，我们将与 [Ant Design](https://ant.design/components/icon-cn/#components-icon-demo-iconfont) 同步保持图标的更新。
-
-## 单独引入此组件
-
-想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
+新版图标可能略有缺失，我们将与 [Ant Design](https://ant.design/components/icon-cn/) 同步保持图标的更新。
 
 ```ts
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -33,8 +29,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 | `[nzTwotoneColor]` | 仅适用双色图标，设置双色图标的主要颜色，默认为 Ant Design 蓝色 | `string (十六进制颜色)` | - | ✅ |
 | `[nzIconfont]` | 指定来自 IconFont 的图标类型 | string | - |
 | `[nzRotate]` | 图标旋转角度（7.0.0 开始支持） | `number` | - |
-
-<blockquote style="border-color: red;"><p><strong>不加上 nz 前缀的 API，以及原使用 icon 类名的 API 将会在 9.0.0 及之后不被支持，请及时迁移。</strong></p></blockquote>
 
 ### NzIconService
 

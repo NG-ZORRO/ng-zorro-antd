@@ -11,12 +11,7 @@ declare const monaco: any;
 
 @Component({
   template: `
-    <nz-code-editor
-      class="editor"
-      [ngModel]="code"
-      [nzFullControl]="true"
-      (nzEditorInitialized)="onEditorInit($event)"
-    ></nz-code-editor>
+    <nz-code-editor class="editor" [ngModel]="code" [nzFullControl]="true" (nzEditorInitialized)="onEditorInit($event)"></nz-code-editor>
   `
 })
 export class NzTestCodeEditorFullControlComponent {

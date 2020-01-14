@@ -22,9 +22,7 @@ describe('NzHighlightPipe', () => {
   });
 
   it('should flags work', () => {
-    expect(pipe.transform('Ant Design of Angular', 'a', 'ig')).toEqual(
-      '<span>A</span>nt Design of <span>A</span>ngul<span>a</span>r'
-    );
+    expect(pipe.transform('Ant Design of Angular', 'a', 'ig')).toEqual('<span>A</span>nt Design of <span>A</span>ngul<span>a</span>r');
   });
 
   it('should class work', () => {
@@ -52,14 +50,10 @@ describe('NzHighlightPipe', () => {
     expect(pipe.transform('abc<>&"¢¥~®™Abc', 'a', 'igm')).toEqual(
       '<span>a</span>bc&lt;&gt;&amp;&#34;&#162;&#165;~&#174;&#8482;<span>A</span>bc'
     );
-    expect(pipe.transform('<>&"¢¥~®™', '>', 'igm')).toEqual(
-      '&lt;<span>&gt;</span>&amp;&#34;&#162;&#165;~&#174;&#8482;'
-    );
+    expect(pipe.transform('<>&"¢¥~®™', '>', 'igm')).toEqual('&lt;<span>&gt;</span>&amp;&#34;&#162;&#165;~&#174;&#8482;');
     expect(pipe.transform('&forall;&nabla;&#8364;&#x20AC;', '&', 'g')).toEqual(
       '<span>&amp;</span>forall;<span>&amp;</span>nabla;<span>&amp;</span>#8364;<span>&amp;</span>#x20AC;'
     );
-    expect(pipe.transform('e😀m😁o😂j🤣i', '😂j', 'g')).toEqual(
-      'e&#128512;m&#128513;o<span>&#128514;j</span>&#129315;i'
-    );
+    expect(pipe.transform('e😀m😁o😂j🤣i', '😂j', 'g')).toEqual('e&#128512;m&#128513;o<span>&#128514;j</span>&#129315;i');
   });
 });

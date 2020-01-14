@@ -26,7 +26,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { isNotNil, reqAnimFrame, InputBoolean, NzUpdateHostClassService as UpdateCls } from 'ng-zorro-antd/core';
+import { InputBoolean, isNotNil, NzUpdateHostClassService as UpdateCls, reqAnimFrame } from 'ng-zorro-antd/core';
 
 import { NzTimeValueAccessorDirective } from './nz-time-value-accessor.directive';
 import { TimeHolder } from './time-holder';
@@ -254,8 +254,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     this.secondRange = makeRange(60, this.nzSecondStep).map(r => {
       return {
         index: r,
-        disabled:
-          this.nzDisabledSeconds && this.nzDisabledSeconds(this.time.hours!, this.time.minutes!).indexOf(r) !== -1
+        disabled: this.nzDisabledSeconds && this.nzDisabledSeconds(this.time.hours!, this.time.minutes!).indexOf(r) !== -1
       };
     });
   }
@@ -322,8 +321,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   scrollToSelected(instance: HTMLElement, index: number, duration: number = 0, unit: NzTimePickerUnit): void {
     const transIndex = this.translateIndex(index, unit);
-    const currentOption = (instance.children[0].children[transIndex] ||
-      instance.children[0].children[0]) as HTMLElement;
+    const currentOption = (instance.children[0].children[transIndex] || instance.children[0].children[0]) as HTMLElement;
     this.scrollTo(instance, currentOption.offsetTop, duration);
   }
 
@@ -396,22 +394,15 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   }
 
   isSelectedHour(hour: { index: number; disabled: boolean }): boolean {
-    return (
-      hour.index === this.time.viewHours ||
-      (!isNotNil(this.time.viewHours) && hour.index === this.time.defaultViewHours)
-    );
+    return hour.index === this.time.viewHours || (!isNotNil(this.time.viewHours) && hour.index === this.time.defaultViewHours);
   }
 
   isSelectedMinute(minute: { index: number; disabled: boolean }): boolean {
-    return (
-      minute.index === this.time.minutes || (!isNotNil(this.time.minutes) && minute.index === this.time.defaultMinutes)
-    );
+    return minute.index === this.time.minutes || (!isNotNil(this.time.minutes) && minute.index === this.time.defaultMinutes);
   }
 
   isSelectedSecond(second: { index: number; disabled: boolean }): boolean {
-    return (
-      second.index === this.time.seconds || (!isNotNil(this.time.seconds) && second.index === this.time.defaultSeconds)
-    );
+    return second.index === this.time.seconds || (!isNotNil(this.time.seconds) && second.index === this.time.defaultSeconds);
   }
 
   isSelected12Hours(value: { index: number; value: string }): boolean {
@@ -445,9 +436,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
         }
       }
       if (this.nzUse12Hours && this.use12HoursListElement) {
-        const selectedHours = isNotNil(this.time.selected12Hours)
-          ? this.time.selected12Hours
-          : this.time.default12Hours;
+        const selectedHours = isNotNil(this.time.selected12Hours) ? this.time.selected12Hours : this.time.default12Hours;
         const index = selectedHours === 'AM' ? 0 : 1;
         this.scrollToSelected(this.use12HoursListElement.nativeElement, index, 0, '12-hour');
       }

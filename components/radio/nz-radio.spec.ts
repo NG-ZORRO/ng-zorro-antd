@@ -1,6 +1,6 @@
 import { Component, DebugElement, OnInit, ViewChild } from '@angular/core';
-import { fakeAsync, flush, tick, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { NzRadioButtonComponent } from './nz-radio-button.component';
@@ -306,12 +306,7 @@ describe('radio', () => {
 
 @Component({
   template: `
-    <label
-      nz-radio
-      [(ngModel)]="value"
-      (ngModelChange)="modelChange($event)"
-      [nzDisabled]="disabled"
-      [nzAutoFocus]="autoFocus"
+    <label nz-radio [(ngModel)]="value" (ngModelChange)="modelChange($event)" [nzDisabled]="disabled" [nzAutoFocus]="autoFocus"
       >Radio</label
     >
   `
@@ -333,13 +328,7 @@ export class NzTestRadioButtonComponent {}
 
 @Component({
   template: `
-    <nz-radio-group
-      [(ngModel)]="value"
-      [nzName]="name"
-      [nzDisabled]="disabled"
-      (ngModelChange)="modelChange($event)"
-      [nzSize]="size"
-    >
+    <nz-radio-group [(ngModel)]="value" [nzName]="name" [nzDisabled]="disabled" (ngModelChange)="modelChange($event)" [nzSize]="size">
       <ng-container [ngClass]>
         <label nz-radio-button nzValue="A">A</label>
         <label nz-radio-button nzValue="B">B</label>

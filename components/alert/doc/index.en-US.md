@@ -11,10 +11,6 @@ Alert component for feedback.
 - When you need to show alert messages to users.
 - When you need a persistent static container which is closable by user actions.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 ```

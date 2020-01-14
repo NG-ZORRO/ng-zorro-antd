@@ -1,5 +1,5 @@
-TARGET="$1"
 ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+TARGET="$ROOT/integration/$1"
 
 mkdir -p "$TARGET/ng-zorro-antd"
 rsync -av --exclude=".*" "$ROOT/publish/" "$TARGET/ng-zorro-antd" > /dev/null 2>&1

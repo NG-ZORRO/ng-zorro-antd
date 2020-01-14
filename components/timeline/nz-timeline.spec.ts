@@ -30,28 +30,20 @@ describe('timeline', () => {
     it('should init className correct', () => {
       fixture.detectChanges();
       expect(timeline.nativeElement.firstElementChild!.classList).toContain('ant-timeline');
-      expect(items.every(item => item.nativeElement.firstElementChild!.classList.contains('ant-timeline-item'))).toBe(
-        true
-      );
+      expect(items.every(item => item.nativeElement.firstElementChild!.classList.contains('ant-timeline-item'))).toBe(true);
       expect(items[0].nativeElement.firstElementChild!.classList).not.toContain('ant-timeline-item-last');
       expect(items[3].nativeElement.firstElementChild!.classList).toContain('ant-timeline-item-last');
     });
 
     it('should color work', () => {
       fixture.detectChanges();
-      expect(items[0].nativeElement.querySelector('.ant-timeline-item-head').classList).toContain(
-        'ant-timeline-item-head-blue'
-      );
+      expect(items[0].nativeElement.querySelector('.ant-timeline-item-head').classList).toContain('ant-timeline-item-head-blue');
       testComponent.color = 'red';
       fixture.detectChanges();
-      expect(items[0].nativeElement.querySelector('.ant-timeline-item-head').classList).toContain(
-        'ant-timeline-item-head-red'
-      );
+      expect(items[0].nativeElement.querySelector('.ant-timeline-item-head').classList).toContain('ant-timeline-item-head-red');
       testComponent.color = 'green';
       fixture.detectChanges();
-      expect(items[0].nativeElement.querySelector('.ant-timeline-item-head').classList).toContain(
-        'ant-timeline-item-head-green'
-      );
+      expect(items[0].nativeElement.querySelector('.ant-timeline-item-head').classList).toContain('ant-timeline-item-head-green');
     });
 
     it('should dot work', () => {
@@ -85,9 +77,7 @@ describe('timeline', () => {
       testComponent.pending = true;
       testComponent.reverse = true;
       fixture.detectChanges();
-      expect(timeline.nativeElement.firstElementChild.firstElementChild!.classList).toContain(
-        'ant-timeline-item-pending'
-      );
+      expect(timeline.nativeElement.firstElementChild.firstElementChild!.classList).toContain('ant-timeline-item-pending');
       expect(items[0].nativeElement.firstElementChild!.classList).toContain('ant-timeline-item-last');
       expect(items[3].nativeElement.firstElementChild!.classList).not.toContain('ant-timeline-item-last');
     });
@@ -123,9 +113,7 @@ describe('timeline', () => {
       fixture.detectChanges();
       expect(items[0].nativeElement.querySelector('.ant-timeline-item-head').style.borderColor).toBe('cyan');
       expect(items[1].nativeElement.querySelector('.ant-timeline-item-head').style.borderColor).toBe('rgb(200, 0, 0)');
-      expect(items[2].nativeElement.querySelector('.ant-timeline-item-head').style.borderColor).toBe(
-        'rgb(120, 18, 65)'
-      ); // hex would be converted to rgb()
+      expect(items[2].nativeElement.querySelector('.ant-timeline-item-head').style.borderColor).toBe('rgb(120, 18, 65)'); // hex would be converted to rgb()
       expect(items[3].nativeElement.querySelector('.ant-timeline-item-head').style.borderColor).toBe('');
     });
   });

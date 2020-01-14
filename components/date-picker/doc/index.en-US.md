@@ -10,10 +10,6 @@ To select or input a date.
 
 By clicking the input box, you can select a date from a popup calendar.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 ```

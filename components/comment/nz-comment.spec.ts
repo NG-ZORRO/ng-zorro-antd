@@ -1,5 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, fakeAsync, tick, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzListModule } from '../list';
 import { NzDemoCommentBasicComponent } from './demo/basic';
@@ -15,12 +15,7 @@ describe('NzCommentComponent', () => {
     TestBed.configureTestingModule({
       imports: [NzCommentModule, NzListModule],
       schemas: [NO_ERRORS_SCHEMA],
-      declarations: [
-        NzDemoCommentBasicComponent,
-        NzDemoCommentEditorComponent,
-        NzDemoCommentListComponent,
-        NzDemoCommentNestedComponent
-      ]
+      declarations: [NzDemoCommentBasicComponent, NzDemoCommentEditorComponent, NzDemoCommentListComponent, NzDemoCommentNestedComponent]
     }).compileComponents();
   }));
 
@@ -49,36 +44,24 @@ describe('NzCommentComponent', () => {
     expect(component.dislikes).toBe(0);
     expect(comment.nativeElement.classList).toContain('ant-comment');
     expect(comment.nativeElement.querySelectorAll('.ant-comment-actions li>span').length).toBe(3);
-    expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .like').innerText).toBe(
-      component.likes.toString()
-    );
-    expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .dislike').innerText).toBe(
-      component.dislikes.toString()
-    );
+    expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .like').innerText).toBe(component.likes.toString());
+    expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .dislike').innerText).toBe(component.dislikes.toString());
 
     component.like();
     fixture.detectChanges();
 
     expect(component.likes).toBe(1);
     expect(component.dislikes).toBe(0);
-    expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .like').innerText).toBe(
-      component.likes.toString()
-    );
-    expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .dislike').innerText).toBe(
-      component.dislikes.toString()
-    );
+    expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .like').innerText).toBe(component.likes.toString());
+    expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .dislike').innerText).toBe(component.dislikes.toString());
 
     component.dislike();
     fixture.detectChanges();
 
     expect(component.likes).toBe(0);
     expect(component.dislikes).toBe(1);
-    expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .like').innerText).toBe(
-      component.likes.toString()
-    );
-    expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .dislike').innerText).toBe(
-      component.dislikes.toString()
-    );
+    expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .like').innerText).toBe(component.likes.toString());
+    expect(comment.nativeElement.querySelector('.ant-comment-actions li>span .dislike').innerText).toBe(component.dislikes.toString());
   });
 
   it('should list work', () => {

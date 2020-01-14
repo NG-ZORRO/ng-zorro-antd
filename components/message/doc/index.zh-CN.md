@@ -13,10 +13,6 @@ title: Message
 - 可提供成功、警告和错误等反馈信息。
 - 顶部居中显示并自动消失，是一种不打断用户操作的轻量级提示方式。
 
-## 单独引入此组件
-
-想要了解更多关于单独引入组件的内容，可以在[快速上手](/docs/getting-started/zh#单独引入某个组件)页面进行查看。
-
 ```ts
 import { NzMessageModule } from 'ng-zorro-antd/message';
 ```
@@ -70,4 +66,4 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 export interface NzMessageDataFilled {
   onClose: Subject<false>; // 当 message 关闭时它会派发一个事件
 }
-``` 
+```

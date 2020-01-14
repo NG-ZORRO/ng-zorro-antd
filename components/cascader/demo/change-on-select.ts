@@ -46,8 +46,7 @@ const options = [
 @Component({
   selector: 'nz-demo-cascader-change-on-select',
   template: `
-    <nz-cascader nzChangeOnSelect [nzOptions]="nzOptions" [(ngModel)]="values" (ngModelChange)="onChanges($event)">
-    </nz-cascader>
+    <nz-cascader nzChangeOnSelect [nzOptions]="nzOptions" [(ngModel)]="values" (ngModelChange)="onChanges($event)"> </nz-cascader>
   `,
   styles: [
     `

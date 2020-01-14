@@ -4,7 +4,7 @@ title: Ant Design of Angular
 widget: <nz-github-btn></nz-github-btn>
 ---
 
-Following the Ant Design specification, we developed a Angular UI library `ng-zorro-antd` that contains a set of high quality components and demos for building rich, interactive user interfaces.
+Following the Ant Design specification, we developed an Angular UI library `ng-zorro-antd` that contains a set of high-quality components and demos for building rich, interactive user interfaces.
 
 <div class="pic-plus">
   <img width="150" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg">
@@ -77,6 +77,7 @@ $ npm install ng-zorro-antd
 - [ThoughtWorks](https://www.thoughtworks.com/)
 - [Ververica](https://www.ververica.com/)
 - [Apache Flink](https://flink.apache.org/)
+- [Apache Zeppelin](http://zeppelin.apache.org/)
 - [Process Automation Group](http://pag.company/)
 - [AISINOCO](http://www.aisino.com/)
 - [GongDao](https://www.gongdao.com/)

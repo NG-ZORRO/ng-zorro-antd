@@ -1,5 +1,5 @@
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { createFakeEvent } from 'ng-zorro-antd/core';
 
@@ -111,18 +111,14 @@ describe('avatar', () => {
       context.nzText = 'a';
       fixture.detectChanges();
       tick();
-      const scale = +/(\w+)\(([^)]*)\)/g.exec(
-        dl.nativeElement.querySelector('.ant-avatar-string')!.style.transform!
-      )![2];
+      const scale = +/(\w+)\(([^)]*)\)/g.exec(dl.nativeElement.querySelector('.ant-avatar-string')!.style.transform!)![2];
       expect(scale).toBe(1);
     }));
     it('should be autoset font-size', fakeAsync(() => {
       context.nzText = 'LongUsername';
       fixture.detectChanges();
       tick();
-      const scale = +/(\w+)\(([^)]*)\)/g.exec(
-        dl.nativeElement.querySelector('.ant-avatar-string')!.style.transform!
-      )![2];
+      const scale = +/(\w+)\(([^)]*)\)/g.exec(dl.nativeElement.querySelector('.ant-avatar-string')!.style.transform!)![2];
       expect(scale).toBeLessThan(1);
     }));
   });
@@ -138,7 +134,10 @@ describe('avatar', () => {
   });
 
   describe('#nzSize', () => {
-    for (const item of [{ size: 'large', cls: 'lg' }, { size: 'small', cls: 'sm' }]) {
+    for (const item of [
+      { size: 'large', cls: 'lg' },
+      { size: 'small', cls: 'sm' }
+    ]) {
       it(item.size, () => {
         context.nzSize = item.size;
         fixture.detectChanges();

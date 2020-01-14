@@ -3,7 +3,8 @@
   [class.ant-timeline-item-right]="position === 'right'"
   [class.ant-timeline-item-left]="position === 'left'"
   [class.ant-timeline-item-last]="isLast"
-  #liTemplate>
+  #liTemplate
+>
   <div class="ant-timeline-item-tail"></div>
   <div
     class="ant-timeline-item-head"
@@ -11,7 +12,8 @@
     [class.ant-timeline-item-head-blue]="nzColor === 'blue'"
     [class.ant-timeline-item-head-green]="nzColor === 'green'"
     [class.ant-timeline-item-head-gray]="nzColor === 'gray'"
-    [class.ant-timeline-item-head-custom]="!!nzDot">
+    [class.ant-timeline-item-head-custom]="!!nzDot"
+  >
     <ng-container *nzStringTemplateOutlet="nzDot">{{ nzDot }}</ng-container>
   </div>
   <div class="ant-timeline-item-content">

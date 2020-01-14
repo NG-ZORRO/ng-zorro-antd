@@ -1,5 +1,5 @@
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { fakeAsync, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
@@ -83,7 +83,7 @@ describe('spin', () => {
       fixture.detectChanges();
       expect(spin.nativeElement.querySelector('.ant-spin-dot')).toBeNull();
       expect(spin.nativeElement.querySelector('.anticon-loading')).toBeDefined();
-    })
+    });
 
     it('should delay work', fakeAsync(() => {
       fixture.detectChanges();
@@ -127,14 +127,7 @@ describe('spin', () => {
 @Component({
   template: `
     <ng-template #indicatorTemplate><i nz-icon nzType="loading" style="font-size: 24px;"></i> </ng-template>
-    <nz-spin
-      [nzTip]="tip"
-      [nzSize]="size"
-      [nzDelay]="delay"
-      [nzSpinning]="spinning"
-      [nzSimple]="simple"
-      [nzIndicator]="indicator"
-    >
+    <nz-spin [nzTip]="tip" [nzSize]="size" [nzDelay]="delay" [nzSpinning]="spinning" [nzSimple]="simple" [nzIndicator]="indicator">
       <div>test</div>
     </nz-spin>
   `

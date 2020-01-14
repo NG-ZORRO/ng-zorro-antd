@@ -9,12 +9,12 @@
 import { BACKSPACE } from '@angular/cdk/keycodes';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
 import {
-  forwardRef,
   ChangeDetectorRef,
   Component,
   ContentChild,
   ElementRef,
   EventEmitter,
+  forwardRef,
   Host,
   Injector,
   Input,
@@ -35,11 +35,8 @@ import { merge, of as observableOf, Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
 import {
-  isNotNil,
-  slideMotion,
-  warnDeprecation,
-  zoomMotion,
   InputBoolean,
+  isNotNil,
   NzConfigService,
   NzFormatEmitEvent,
   NzNoAnimationDirective,
@@ -49,7 +46,9 @@ import {
   NzTreeHigherOrderServiceToken,
   NzTreeNode,
   NzTreeNodeOptions,
-  WithConfig
+  slideMotion,
+  WithConfig,
+  zoomMotion
 } from 'ng-zorro-antd/core';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
 
@@ -123,17 +122,6 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzSizeLDSType;
   @Input() nzPlaceHolder = '';
   @Input() nzDropdownStyle: { [key: string]: string };
-  /**
-   * @deprecated 9.0.0 - use `nzExpandedKeys` instead.
-   */
-  @Input()
-  set nzDefaultExpandedKeys(value: string[]) {
-    warnDeprecation(`'nzDefaultExpandedKeys' would be removed in 9.0.0. Please use 'nzExpandedKeys' instead.`);
-    this.expandedKeys = value;
-  }
-  get nzDefaultExpandedKeys(): string[] {
-    return this.expandedKeys;
-  }
 
   @Input()
   set nzExpandedKeys(value: string[]) {
@@ -359,7 +347,10 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
           const node = event.node!;
           if (this.nzCheckable && !node.isDisabled && !node.isDisableCheckbox) {
             node.isChecked = !node.isChecked;
-            this.nzTreeService.conduct(node);
+            node.isHalfChecked = false;
+            if (!this.nzCheckStrictly) {
+              this.nzTreeService.conduct(node);
+            }
           }
           if (this.nzCheckable) {
             node.isSelected = false;
@@ -423,11 +414,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   updateInputWidth(): void {
     if (this.isMultiple && this.inputElement) {
       if (this.inputValue || this.isComposing) {
-        this.renderer.setStyle(
-          this.inputElement.nativeElement,
-          'width',
-          `${this.inputElement.nativeElement.scrollWidth}px`
-        );
+        this.renderer.setStyle(this.inputElement.nativeElement, 'width', `${this.inputElement.nativeElement.scrollWidth}px`);
       } else {
         this.renderer.removeStyle(this.inputElement.nativeElement, 'width');
       }

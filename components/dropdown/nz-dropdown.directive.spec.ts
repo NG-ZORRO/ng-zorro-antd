@@ -1,7 +1,7 @@
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, Provider, Type } from '@angular/core';
-import { fakeAsync, inject, tick, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { dispatchFakeEvent, dispatchKeyboardEvent } from '../core/testing';
@@ -91,9 +91,7 @@ describe('dropdown', () => {
       fixture.detectChanges();
       tick(1000);
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.ant-dropdown')!.classList).toContain(
-        'ant-dropdown-placement-bottomLeft'
-      );
+      expect(overlayContainerElement.querySelector('.ant-dropdown')!.classList).toContain('ant-dropdown-placement-bottomLeft');
     }).not.toThrowError();
   }));
 
@@ -250,12 +248,7 @@ export class NzTestDropdownComponent {
 
 @Component({
   template: `
-    <a
-      nz-dropdown
-      [nzDropdownMenu]="menu"
-      [nzClickHide]="false"
-      [(nzVisible)]="visible"
-      (nzVisibleChange)="triggerVisible($event)"
+    <a nz-dropdown [nzDropdownMenu]="menu" [nzClickHide]="false" [(nzVisible)]="visible" (nzVisibleChange)="triggerVisible($event)"
       >Hover me</a
     >
     <nz-dropdown-menu #menu="nzDropdownMenu">

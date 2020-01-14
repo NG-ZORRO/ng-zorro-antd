@@ -13,10 +13,6 @@ If it will take a long time to complete an operation, you can use `Progress` to 
 - When an operation will interrupt the current interface, or it needs to run in the background for more than 2 seconds.
 - When you need to display the completion percentage of an operation.
 
-## Import this Component Individually
-
-You can get more detail [here](/docs/getting-started/en#import-a-component-individually).
-
 ```ts
 import { NzProgressModule } from 'ng-zorro-antd/progress';
 ```
@@ -28,7 +24,7 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[nzType]` | to set the type | `'line' \| 'circle' \| 'dashboard'` | `'line'` |
-| `[nzFormat]` | template function of the content | `(percent: number) => string` | `percent => percent + '%'` |
+| `[nzFormat]` | template function of the content | `(percent: number) => string \| TemplateRef<{ $implicit: number }>` | `percent => percent + '%'` |
 | `[nzPercent]` | to set the completion percentage | `number` | `0` |
 | `[nzShowInfo]` | whether to display the progress value and the status icon | `boolean` | `true` | ✅ |
 | `[nzStatus]` | to set the status of the Progress | `'success' \| 'exception' \| 'active' \| 'normal'` | - |
@@ -41,6 +37,7 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[nzStrokeWidth]` | to set the width of the progress bar, unit: `px` | `number` | `8` |
+| `[nzSteps]` | the total step count | `number` | - |
 
 ### `nzType="circle"`
 

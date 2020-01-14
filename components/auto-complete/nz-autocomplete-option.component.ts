@@ -17,7 +17,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { scrollIntoView, InputBoolean } from 'ng-zorro-antd/core';
+import { InputBoolean, scrollIntoView } from 'ng-zorro-antd/core';
 
 export class NzOptionSelectionChange {
   constructor(public source: NzAutocompleteOptionComponent, public isUserInput: boolean = false) {}
