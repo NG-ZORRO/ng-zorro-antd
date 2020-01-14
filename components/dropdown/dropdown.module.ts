@@ -14,15 +14,15 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzAddOnModule, NzNoAnimationModule, NzOverlayModule } from 'ng-zorro-antd/core';
+import { NzNoAnimationModule, NzOutletModule, NzOverlayModule } from 'ng-zorro-antd/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { NzContextMenuServiceModule } from './nz-context-menu.service.module';
-import { NzDropDownADirective } from './nz-dropdown-a.directive';
-import { NzDropdownButtonDirective } from './nz-dropdown-button.directive';
-import { NzDropdownMenuComponent } from './nz-dropdown-menu.component';
-import { NzDropDownDirective } from './nz-dropdown.directive';
-import { NzDropdownServiceModule } from './nz-dropdown.service.module';
+import { NzContextMenuServiceModule } from './context-menu.service.module';
+import { NzDropDownADirective } from './dropdown-a.directive';
+import { NzDropdownButtonDirective } from './dropdown-button.directive';
+import { NzDropdownMenuComponent } from './dropdown-menu.component';
+import { NzDropDownDirective } from './dropdown.directive';
+import { NzDropdownServiceModule } from './dropdown.service.module';
 
 @NgModule({
   imports: [
@@ -37,7 +37,7 @@ import { NzDropdownServiceModule } from './nz-dropdown.service.module';
     NzOverlayModule,
     NzDropdownServiceModule,
     NzContextMenuServiceModule,
-    NzAddOnModule
+    NzOutletModule
   ],
   declarations: [NzDropDownDirective, NzDropDownADirective, NzDropdownMenuComponent, NzDropdownButtonDirective],
   exports: [NzMenuModule, NzDropDownDirective, NzDropDownADirective, NzDropdownMenuComponent, NzDropdownButtonDirective]

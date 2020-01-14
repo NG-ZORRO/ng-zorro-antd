@@ -33,7 +33,7 @@ import {
 import { DEFAULT_DROPDOWN_POSITIONS, InputBoolean, POSITION_MAP } from 'ng-zorro-antd/core';
 import { combineLatest, EMPTY, fromEvent, merge, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, mapTo, takeUntil, tap } from 'rxjs/operators';
-import { NzDropdownMenuComponent, NzPlacementType } from './nz-dropdown-menu.component';
+import { NzDropdownMenuComponent, NzPlacementType } from './dropdown-menu.component';
 
 @Directive({
   selector: '[nz-dropdown]',
@@ -193,9 +193,9 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
   initActionSubscribe(): void {
     const hostVisible$ = this.nzTrigger === 'hover' ? this.hover$ : this.$click;
     const dropdownMenuVisible$ = this.nzDropdownMenu.visible$;
-    const menuClickVisible$ = this.nzClickHide ? this.nzDropdownMenu.nzMenuDropdownService.menuItemClick$.pipe(mapTo(false)) : EMPTY;
+    const menuClickVisible$ = this.nzClickHide ? this.nzDropdownMenu.nzMenuService.descendantMenuItemClick$.pipe(mapTo(false)) : EMPTY;
     const supVisible$ = merge(dropdownMenuVisible$, hostVisible$, menuClickVisible$);
-    const subVisible$ = this.nzDropdownMenu.nzMenuDropdownService.menuOpen$;
+    const subVisible$ = this.nzDropdownMenu.nzMenuService.isChildSubMenuOpen$;
     combineLatest([supVisible$, subVisible$])
       .pipe(
         map(([supVisible, subVisible]) => supVisible || subVisible),
@@ -203,7 +203,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges 
         distinctUntilChanged(),
         takeUntil(this.destroy$)
       )
-      .subscribe(visible => {
+      .subscribe((visible: boolean) => {
         if (!this.nzDisabled && this.nzVisible !== visible) {
           this.nzVisible = visible;
           this.updateOverlayByVisible();

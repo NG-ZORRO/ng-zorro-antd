@@ -13,51 +13,51 @@ import {
   Component,
   ElementRef,
   Host,
-  Injector,
   Optional,
   Renderer2,
-  Self,
   TemplateRef,
   ViewChild,
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
-import { NzDropdownHigherOrderServiceToken, NzMenuBaseService, NzNoAnimationDirective, slideMotion } from 'ng-zorro-antd/core';
-
+import { NzNoAnimationDirective, slideMotion } from 'ng-zorro-antd/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { MenuService, NzIsMenuInsideDropDownToken } from 'ng-zorro-antd/menu';
 import { Subject } from 'rxjs';
-import { NzMenuDropdownService } from './nz-menu-dropdown.service';
 
 export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLeft' | 'topCenter' | 'topRight';
 
-export function dropdownMenuServiceFactory(injector: Injector): NzMenuBaseService {
-  return injector.get(NzMenuDropdownService);
-}
-
 @Component({
   selector: `nz-dropdown-menu`,
-  templateUrl: './nz-dropdown-menu.component.html',
   exportAs: `nzDropdownMenu`,
   animations: [slideMotion],
   providers: [
-    NzMenuDropdownService,
+    MenuService,
+    /** menu is inside dropdown-menu component **/
     {
-      provide: NzDropdownHigherOrderServiceToken,
-      useFactory: dropdownMenuServiceFactory,
-      deps: [[new Self(), Injector]]
+      provide: NzIsMenuInsideDropDownToken,
+      useValue: true
     }
   ],
-  styles: [
-    `
-      :root .ant-dropdown.nz-dropdown {
-        top: 0;
-        left: 0;
-        position: relative;
-        width: 100%;
-        margin-top: 4px;
-        margin-bottom: 4px;
-      }
-    `
-  ],
+  template: `
+    <ng-template>
+      <div
+        *ngIf="open"
+        class="{{ 'ant-dropdown nz-dropdown ant-dropdown-placement-' + nzPlacement }}"
+        [ngClass]="nzOverlayClassName"
+        [ngStyle]="nzOverlayStyle"
+        [@slideMotion]="dropDownPosition"
+        [@.disabled]="noAnimation?.nzNoAnimation"
+        [nzNoAnimation]="noAnimation?.nzNoAnimation"
+        (mouseenter)="setVisibleStateWhen(true, 'hover')"
+        (mouseleave)="setVisibleStateWhen(false, 'hover')"
+      >
+        <div [class.ant-table-filter-dropdown]="nzTableFilter">
+          <ng-content></ng-content>
+        </div>
+      </div>
+    </ng-template>
+  `,
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -72,8 +72,7 @@ export class NzDropdownMenuComponent implements AfterContentInit {
   nzOverlayClassName = '';
   nzOverlayStyle: { [key: string]: string } = {};
   nzTableFilter = false;
-  // tslint:disable-next-line:no-any
-  @ViewChild(TemplateRef, { static: true }) templateRef: TemplateRef<any>;
+  @ViewChild(TemplateRef, { static: true }) templateRef: TemplateRef<NzSafeAny>;
 
   setVisibleStateWhen(visible: boolean, trigger: 'click' | 'hover' | 'all' = 'all'): void {
     if (this.nzTrigger === trigger || trigger === 'all') {
@@ -91,7 +90,7 @@ export class NzDropdownMenuComponent implements AfterContentInit {
     private elementRef: ElementRef,
     private renderer: Renderer2,
     public viewContainerRef: ViewContainerRef,
-    public nzMenuDropdownService: NzMenuDropdownService,
+    public nzMenuService: MenuService,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {}
 

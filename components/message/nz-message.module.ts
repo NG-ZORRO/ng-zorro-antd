@@ -9,7 +9,7 @@
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { NzAddOnModule } from 'ng-zorro-antd/core';
+import { NzOutletModule } from 'ng-zorro-antd/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzMessageContainerComponent } from './nz-message-container.component';
@@ -17,7 +17,7 @@ import { NzMessageComponent } from './nz-message.component';
 import { NzMessageServiceModule } from './nz-message.service.module';
 
 @NgModule({
-  imports: [CommonModule, OverlayModule, NzIconModule, NzAddOnModule, NzMessageServiceModule],
+  imports: [CommonModule, OverlayModule, NzIconModule, NzOutletModule, NzMessageServiceModule],
   declarations: [NzMessageContainerComponent, NzMessageComponent],
   entryComponents: [NzMessageContainerComponent]
 })

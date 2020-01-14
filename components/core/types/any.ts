@@ -6,11 +6,5 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Injectable } from '@angular/core';
-
-import { NzMenuBaseService } from 'ng-zorro-antd/core';
-
-@Injectable()
-export class NzMenuService extends NzMenuBaseService {
-  isInDropDown = false;
-}
+// tslint:disable-next-line:no-any
+export type NzSafeAny = any;

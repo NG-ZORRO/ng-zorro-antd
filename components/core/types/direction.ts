@@ -6,6 +6,5 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export type NzDirectionVHIType = 'vertical' | 'horizontal' | 'inline';
 export type NzDirectionVHType = 'vertical' | 'horizontal';
 export type NzFourDirectionType = 'top' | 'bottom' | 'left' | 'right';

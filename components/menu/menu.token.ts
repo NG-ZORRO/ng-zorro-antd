@@ -7,7 +7,7 @@
  */
 
 import { InjectionToken } from '@angular/core';
+import { MenuService } from './menu.service';
 
-import { NzMenuBaseService } from './nz-menu-base.service';
-
-export const NzDropdownHigherOrderServiceToken = new InjectionToken<NzMenuBaseService>('NzMenuHigherOrder');
+export const NzIsMenuInsideDropDownToken = new InjectionToken<boolean>('NzIsInDropDownMenuToken');
+export const NzMenuServiceLocalToken = new InjectionToken<MenuService>('NzMenuServiceLocalToken');

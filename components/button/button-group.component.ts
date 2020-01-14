@@ -6,8 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
-import { IndexableObject } from 'ng-zorro-antd/core';
+import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
 
 export type NzButtonGroupSize = 'large' | 'default' | 'small';
 
@@ -16,27 +15,16 @@ export type NzButtonGroupSize = 'large' | 'default' | 'small';
   exportAs: 'nzButtonGroup',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  host: { '[class]': 'hostClassMap' },
+  host: {
+    '[class.ant-btn-group]': `true`,
+    '[class.ant-btn-group-lg]': `nzSize === 'large'`,
+    '[class.ant-btn-group-sm]': `nzSize === 'small'`
+  },
   preserveWhitespaces: false,
   template: `
     <ng-content></ng-content>
   `
 })
-export class NzButtonGroupComponent implements OnInit, OnChanges {
+export class NzButtonGroupComponent {
   @Input() nzSize: NzButtonGroupSize = 'default';
-  hostClassMap: IndexableObject = {};
-  updateHostClassMap(): void {
-    this.hostClassMap = {
-      ['ant-btn-group']: true,
-      ['ant-btn-group-lg']: this.nzSize === 'large',
-      ['ant-btn-group-sm']: this.nzSize === 'small'
-    };
-  }
-
-  ngOnInit(): void {
-    this.updateHostClassMap();
-  }
-  ngOnChanges(): void {
-    this.updateHostClassMap();
-  }
 }

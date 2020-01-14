@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
-import { NzAddOnModule } from 'ng-zorro-antd/core';
+import { NzOutletModule } from 'ng-zorro-antd/core';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
@@ -43,7 +43,7 @@ import { NzVirtualScrollDirective } from './nz-virtual-scroll.directive';
   imports: [
     NzMenuModule,
     FormsModule,
-    NzAddOnModule,
+    NzOutletModule,
     NzRadioModule,
     NzCheckboxModule,
     NzDropDownModule,
