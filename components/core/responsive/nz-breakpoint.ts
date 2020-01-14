@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export enum NzBreakpoint {
+export enum NzBreakpointEnum {
   xxl = 'xxl',
   xl = 'xl',
   lg = 'lg',
@@ -15,9 +15,8 @@ export enum NzBreakpoint {
   xs = 'xs'
 }
 
-export type NzBreakPoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
-
-export type BreakpointMap = { [key in NzBreakpoint]: string };
+export type BreakpointMap = { [key in NzBreakpointEnum]: string };
+export type NzBreakpointKey = keyof typeof NzBreakpointEnum;
 
 export const responsiveMap: BreakpointMap = {
   xs: '(max-width: 575px)',

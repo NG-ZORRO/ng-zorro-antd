@@ -6,6 +6,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { MediaMatcher } from '@angular/cdk/layout';
+import { Platform } from '@angular/cdk/platform';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -26,12 +28,9 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { MediaMatcher } from '@angular/cdk/layout';
-import { Platform } from '@angular/cdk/platform';
+import { InputBoolean, NzBreakpointKey, NzDomEventService, toCssPixel } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
-
-import { InputBoolean, NzBreakPoint, NzDomEventService, toCssPixel } from 'ng-zorro-antd/core';
 
 import { NzLayoutComponent } from './nz-layout.component';
 
@@ -69,7 +68,7 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() nzWidth: string | number = 200;
   @Input() nzTheme: 'light' | 'dark' = 'dark';
   @Input() nzCollapsedWidth = 80;
-  @Input() nzBreakpoint: NzBreakPoint;
+  @Input() nzBreakpoint: NzBreakpointKey;
   @Input() nzZeroTrigger: TemplateRef<void>;
   @Input() @InputBoolean() nzReverseArrow = false;
   @Input() @InputBoolean() nzCollapsible = false;

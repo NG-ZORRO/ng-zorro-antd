@@ -13,6 +13,7 @@
   "include": [
     "**/*.spec.ts",
     "**/*.d.ts",
-    "../node_modules/@types/jasmine/index.d.ts"
+    "../node_modules/@types/jasmine/index.d.ts",
+    "../node_modules/karma-viewport/dist/index.d.ts"
   ]
 }

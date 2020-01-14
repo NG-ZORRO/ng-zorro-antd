@@ -6,6 +6,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-row.directive';
-export * from './nz-col.directive';
-export * from './nz-grid.module';
+export * from './row.directive';
+export * from './col.directive';
+export * from './grid.module';
