@@ -33,9 +33,11 @@ describe('input', () => {
       it('should disabled work', () => {
         fixture.detectChanges();
         expect(inputElement.nativeElement.classList).not.toContain('ant-input-disabled');
+        expect(inputElement.nativeElement.attributes.getNamedItem('disabled')).toBeNull();
         testComponent.disabled = true;
         fixture.detectChanges();
         expect(inputElement.nativeElement.classList).toContain('ant-input-disabled');
+        expect(inputElement.nativeElement.attributes.getNamedItem('disabled')).toBeDefined();
       });
       it('should nzSize work', () => {
         testComponent.size = 'small';
