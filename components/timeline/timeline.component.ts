@@ -11,12 +11,12 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ContentChild,
   ContentChildren,
   Input,
   OnChanges,
   OnDestroy,
   QueryList,
+  SimpleChange,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
@@ -70,8 +70,7 @@ export type NzTimelineMode = 'left' | 'alternate' | 'right';
   `
 })
 export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestroy {
-  @ContentChildren(NzTimelineItemComponent) listOfTimeLine: QueryList<NzTimelineItemComponent>;
-  @ContentChild('pending', { static: false }) _pendingContent: TemplateRef<void>;
+  @ContentChildren(NzTimelineItemComponent) listOfItems: QueryList<NzTimelineItemComponent>;
 
   @Input() nzMode: NzTimelineMode;
   @Input() nzPending: string | boolean | TemplateRef<void>;
@@ -86,30 +85,23 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    const modeChanges = changes.nzMode;
-    const reverseChanges = changes.nzReverse;
-    const pendingChanges = changes.nzPending;
+    const { nzMode, nzReverse, nzPending } = changes;
 
-    const shouldChangeByMode = modeChanges && (modeChanges.previousValue !== modeChanges.currentValue || modeChanges.isFirstChange());
-    const shouldChangeByReverse =
-      reverseChanges && reverseChanges.previousValue !== reverseChanges.currentValue && !reverseChanges.isFirstChange();
-
-    if (shouldChangeByMode || shouldChangeByReverse) {
+    if (simpleChangeActivated(nzMode) || simpleChangeActivated(nzReverse)) {
       this.updateChildren();
     }
 
-    if (pendingChanges) {
-      this.isPendingBoolean = pendingChanges.currentValue === true;
+    if (nzPending) {
+      this.isPendingBoolean = nzPending.currentValue === true;
     }
   }
 
   ngAfterContentInit(): void {
     this.updateChildren();
-    if (this.listOfTimeLine) {
-      this.listOfTimeLine.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
-        this.updateChildren();
-      });
-    }
+
+    this.listOfItems.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.updateChildren();
+    });
   }
 
   ngOnDestroy(): void {
@@ -118,9 +110,9 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
   }
 
   private updateChildren(): void {
-    if (this.listOfTimeLine && this.listOfTimeLine.length) {
-      const length = this.listOfTimeLine.length;
-      this.listOfTimeLine.forEach((item, index) => {
+    if (this.listOfItems && this.listOfItems.length) {
+      const length = this.listOfItems.length;
+      this.listOfItems.forEach((item, index) => {
         item.isLast = !this.nzReverse ? index === length - 1 : index === 0;
         item.position =
           this.nzMode === 'left' || !this.nzMode
@@ -132,8 +124,12 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
             : 'right';
         item.detectChanges();
       });
-      this.timelineItems = this.nzReverse ? this.listOfTimeLine.toArray().reverse() : this.listOfTimeLine.toArray();
+      this.timelineItems = this.nzReverse ? this.listOfItems.toArray().reverse() : this.listOfItems.toArray();
     }
     this.cdr.markForCheck();
   }
+}
+
+function simpleChangeActivated(simpleChange?: SimpleChange): boolean {
+  return !!(simpleChange && (simpleChange.previousValue !== simpleChange.currentValue || simpleChange.isFirstChange()));
 }

@@ -10,7 +10,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   Input,
   OnChanges,
   SimpleChanges,
@@ -37,7 +36,6 @@ export type NzTimelineItemColor = typeof NzTimelineTimeDefaultColors[number];
         [class.ant-timeline-item-right]="position === 'right'"
         [class.ant-timeline-item-left]="position === 'left'"
         [class.ant-timeline-item-last]="isLast"
-        #liElement
       >
         <div class="ant-timeline-item-tail"></div>
         <div
@@ -60,7 +58,7 @@ export type NzTimelineItemColor = typeof NzTimelineTimeDefaultColors[number];
 })
 export class NzTimelineItemComponent implements OnChanges {
   @ViewChild('template', { static: false }) template: TemplateRef<void>;
-  @ViewChild('liElement', { static: false }) liElement?: ElementRef<HTMLUListElement>;
+
   @Input() nzColor: NzTimelineItemColor = 'blue';
   @Input() nzDot: string | TemplateRef<void>;
 
