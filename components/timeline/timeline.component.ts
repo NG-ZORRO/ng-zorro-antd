@@ -6,7 +6,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Platform } from '@angular/cdk/platform';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -14,22 +13,18 @@ import {
   Component,
   ContentChild,
   ContentChildren,
-  ElementRef,
   Input,
   OnChanges,
   OnDestroy,
   QueryList,
   SimpleChanges,
   TemplateRef,
-  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { reverseChildNodes } from 'ng-zorro-antd/core';
-
-import { NzTimelineItemComponent } from './nz-timeline-item.component';
+import { NzTimelineItemComponent } from './timeline-item.component';
 
 export type NzTimelineMode = 'left' | 'alternate' | 'right';
 
@@ -39,10 +34,42 @@ export type NzTimelineMode = 'left' | 'alternate' | 'right';
   preserveWhitespaces: false,
   selector: 'nz-timeline',
   exportAs: 'nzTimeline',
-  templateUrl: './nz-timeline.component.html'
+  template: `
+    <ul
+      class="ant-timeline"
+      [class.ant-timeline-right]="nzMode === 'right'"
+      [class.ant-timeline-alternate]="nzMode === 'alternate'"
+      [class.ant-timeline-pending]="!!nzPending"
+      [class.ant-timeline-reverse]="nzReverse"
+    >
+      <!-- User inserted timeline dots. -->
+      <ng-container *ngIf="nzReverse" [ngTemplateOutlet]="pendingTemplate"></ng-container>
+      <li *ngFor="let item of timelineItems">
+        <ng-template [ngTemplateOutlet]="item.template"></ng-template>
+      </li>
+      <ng-container *ngIf="!nzReverse" [ngTemplateOutlet]="pendingTemplate"></ng-container>
+      <!-- Pending dot. -->
+    </ul>
+    <ng-template #pendingTemplate>
+      <li *ngIf="nzPending" class="ant-timeline-item ant-timeline-item-pending">
+        <div class="ant-timeline-item-tail"></div>
+        <div class="ant-timeline-item-head ant-timeline-item-head-custom ant-timeline-item-head-blue">
+          <ng-container *nzStringTemplateOutlet="nzPendingDot">
+            {{ nzPendingDot }}<i *ngIf="!nzPendingDot" nz-icon nzType="loading"></i>
+          </ng-container>
+        </div>
+        <div class="ant-timeline-item-content">
+          <ng-container *nzStringTemplateOutlet="nzPending">
+            {{ isPendingBoolean ? '' : nzPending }}
+          </ng-container>
+        </div>
+      </li>
+    </ng-template>
+    <!-- Grasp items -->
+    <ng-content></ng-content>
+  `
 })
 export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestroy {
-  @ViewChild('timeline', { static: false }) timeline: ElementRef<HTMLElement>;
   @ContentChildren(NzTimelineItemComponent) listOfTimeLine: QueryList<NzTimelineItemComponent>;
   @ContentChild('pending', { static: false }) _pendingContent: TemplateRef<void>;
 
@@ -52,22 +79,25 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
   @Input() nzReverse: boolean = false;
 
   isPendingBoolean: boolean = false;
+  timelineItems: NzTimelineItemComponent[] = [];
 
   private destroy$ = new Subject<void>();
 
-  constructor(private cdr: ChangeDetectorRef, private platform: Platform) {}
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const modeChanges = changes.nzMode;
     const reverseChanges = changes.nzReverse;
     const pendingChanges = changes.nzPending;
 
-    if (modeChanges && (modeChanges.previousValue !== modeChanges.currentValue || modeChanges.isFirstChange())) {
+    const shouldChangeByMode = modeChanges && (modeChanges.previousValue !== modeChanges.currentValue || modeChanges.isFirstChange());
+    const shouldChangeByReverse =
+      reverseChanges && reverseChanges.previousValue !== reverseChanges.currentValue && !reverseChanges.isFirstChange();
+
+    if (shouldChangeByMode || shouldChangeByReverse) {
       this.updateChildren();
     }
-    if (reverseChanges && reverseChanges.previousValue !== reverseChanges.currentValue && !reverseChanges.isFirstChange()) {
-      this.reverseChildTimelineDots();
-    }
+
     if (pendingChanges) {
       this.isPendingBoolean = pendingChanges.currentValue === true;
     }
@@ -90,7 +120,7 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
   private updateChildren(): void {
     if (this.listOfTimeLine && this.listOfTimeLine.length) {
       const length = this.listOfTimeLine.length;
-      this.listOfTimeLine.toArray().forEach((item, index) => {
+      this.listOfTimeLine.forEach((item, index) => {
         item.isLast = !this.nzReverse ? index === length - 1 : index === 0;
         item.position =
           this.nzMode === 'left' || !this.nzMode
@@ -102,14 +132,8 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
             : 'right';
         item.detectChanges();
       });
-      this.cdr.markForCheck();
+      this.timelineItems = this.nzReverse ? this.listOfTimeLine.toArray().reverse() : this.listOfTimeLine.toArray();
     }
-  }
-
-  private reverseChildTimelineDots(): void {
-    if (this.platform.isBrowser) {
-      reverseChildNodes(this.timeline.nativeElement as HTMLElement);
-      this.updateChildren();
-    }
+    this.cdr.markForCheck();
   }
 }
