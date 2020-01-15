@@ -7,14 +7,12 @@
  */
 
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   Input,
   OnChanges,
-  Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewChild,
@@ -23,7 +21,7 @@ import {
 
 import { NzTimelineMode } from './timeline.component';
 
-export const NzTimelineTimeDefaultColors = ['red', 'blue', 'green', 'grey'] as const;
+export const NzTimelineTimeDefaultColors = ['red', 'blue', 'green', 'grey', 'gray'] as const;
 export type NzTimelineItemColor = typeof NzTimelineTimeDefaultColors[number];
 
 @Component({
@@ -49,6 +47,7 @@ export type NzTimelineItemColor = typeof NzTimelineTimeDefaultColors[number];
           [class.ant-timeline-item-head-green]="nzColor === 'green'"
           [class.ant-timeline-item-head-gray]="nzColor === 'gray'"
           [class.ant-timeline-item-head-custom]="!!nzDot"
+          [style.border-color]="borderColor"
         >
           <ng-container *nzStringTemplateOutlet="nzDot">{{ nzDot }}</ng-container>
         </div>
@@ -59,24 +58,21 @@ export type NzTimelineItemColor = typeof NzTimelineTimeDefaultColors[number];
     </ng-template>
   `
 })
-export class NzTimelineItemComponent implements AfterViewInit, OnChanges {
+export class NzTimelineItemComponent implements OnChanges {
   @ViewChild('template', { static: false }) template: TemplateRef<void>;
   @ViewChild('liElement', { static: false }) liElement?: ElementRef<HTMLUListElement>;
   @Input() nzColor: NzTimelineItemColor = 'blue';
   @Input() nzDot: string | TemplateRef<void>;
 
   isLast = false;
+  borderColor: string | null = null;
   position: NzTimelineMode | undefined;
 
-  constructor(private renderer: Renderer2, private cdr: ChangeDetectorRef) {}
-
-  ngAfterViewInit(): void {
-    this.tryUpdateCustomColor();
-  }
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzColor) {
-      this.tryUpdateCustomColor();
+      this.updateCustomColor();
     }
   }
 
@@ -84,17 +80,7 @@ export class NzTimelineItemComponent implements AfterViewInit, OnChanges {
     this.cdr.detectChanges();
   }
 
-  private tryUpdateCustomColor(): void {
-    if (!this.liElement) {
-      return;
-    }
-
-    const circle = this.liElement.nativeElement.querySelector('.ant-timeline-item-head');
-
-    if (NzTimelineTimeDefaultColors.indexOf(this.nzColor) === -1) {
-      this.renderer.setStyle(circle, 'border-color', this.nzColor);
-    } else {
-      this.renderer.removeStyle(circle, 'border-color');
-    }
+  private updateCustomColor(): void {
+    this.borderColor = NzTimelineTimeDefaultColors.indexOf(this.nzColor) === -1 ? this.nzColor : null;
   }
 }

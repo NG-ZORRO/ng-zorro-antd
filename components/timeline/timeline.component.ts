@@ -44,9 +44,9 @@ export type NzTimelineMode = 'left' | 'alternate' | 'right';
     >
       <!-- User inserted timeline dots. -->
       <ng-container *ngIf="nzReverse" [ngTemplateOutlet]="pendingTemplate"></ng-container>
-      <li *ngFor="let item of timelineItems">
+      <ng-container *ngFor="let item of timelineItems">
         <ng-template [ngTemplateOutlet]="item.template"></ng-template>
-      </li>
+      </ng-container>
       <ng-container *ngIf="!nzReverse" [ngTemplateOutlet]="pendingTemplate"></ng-container>
       <!-- Pending dot. -->
     </ul>

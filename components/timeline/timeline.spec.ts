@@ -2,7 +2,6 @@ import { Component, DebugElement } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { NzTimelineItemComponent } from './timeline-item.component';
 import { NzTimelineComponent } from './timeline.component';
 import { NzTimelineModule } from './timeline.module';
 
@@ -18,38 +17,40 @@ describe('timeline', () => {
     let fixture: ComponentFixture<NzTestTimelineBasicComponent>;
     let testComponent: NzTestTimelineBasicComponent;
     let timeline: DebugElement;
-    let items: DebugElement[];
+    let items: HTMLDivElement[] = [];
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTimelineBasicComponent);
       testComponent = fixture.debugElement.componentInstance;
+
+      fixture.detectChanges();
+
       timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
-      items = fixture.debugElement.queryAll(By.directive(NzTimelineItemComponent));
+      items = Array.from((fixture.debugElement.nativeElement as HTMLElement).querySelectorAll('.ant-timeline-item'));
     });
 
     it('should init className correct', () => {
-      fixture.detectChanges();
       expect(timeline.nativeElement.firstElementChild!.classList).toContain('ant-timeline');
-      expect(items.every(item => item.nativeElement.firstElementChild!.classList.contains('ant-timeline-item'))).toBe(true);
-      expect(items[0].nativeElement.firstElementChild!.classList).not.toContain('ant-timeline-item-last');
-      expect(items[3].nativeElement.firstElementChild!.classList).toContain('ant-timeline-item-last');
+      expect(items.length).toBeGreaterThan(0);
+      expect(items[0].classList).not.toContain('ant-timeline-item-last');
+      expect(items[3].classList).toContain('ant-timeline-item-last');
     });
 
     it('should color work', () => {
       fixture.detectChanges();
-      expect(items[0].nativeElement.querySelector('.ant-timeline-item-head').classList).toContain('ant-timeline-item-head-blue');
+      expect(items[0].querySelector('.ant-timeline-item-head')!.classList).toContain('ant-timeline-item-head-blue');
       testComponent.color = 'red';
       fixture.detectChanges();
-      expect(items[0].nativeElement.querySelector('.ant-timeline-item-head').classList).toContain('ant-timeline-item-head-red');
+      expect(items[0].querySelector('.ant-timeline-item-head')!.classList).toContain('ant-timeline-item-head-red');
       testComponent.color = 'green';
       fixture.detectChanges();
-      expect(items[0].nativeElement.querySelector('.ant-timeline-item-head').classList).toContain('ant-timeline-item-head-green');
+      expect(items[0].querySelector('.ant-timeline-item-head')!.classList).toContain('ant-timeline-item-head-green');
     });
 
     it('should dot work', () => {
       fixture.detectChanges();
-      expect(items[0].nativeElement.querySelector('.ant-timeline-item-head').innerText).toBe('dot');
-      expect(items[1].nativeElement.querySelector('.ant-timeline-item-head').innerText).toBe('template');
+      expect((items[0].querySelector('.ant-timeline-item-head') as HTMLDivElement).innerText).toBe('dot');
+      expect((items[1].querySelector('.ant-timeline-item-head') as HTMLDivElement).innerText).toBe('template');
     });
 
     it('should last work', () => {
@@ -57,9 +58,9 @@ describe('timeline', () => {
       expect(items.length).toBe(4);
       testComponent.last = true;
       fixture.detectChanges();
-      items = fixture.debugElement.queryAll(By.directive(NzTimelineItemComponent));
+      items = Array.from((fixture.debugElement.nativeElement as HTMLElement).querySelectorAll('.ant-timeline-item'));
       expect(items.length).toBe(5);
-      expect(items[4].nativeElement.firstElementChild!.classList).toContain('ant-timeline-item-last');
+      expect(items[4]!.classList).toContain('ant-timeline-item-last');
     });
 
     it('should pending work', () => {
@@ -78,43 +79,45 @@ describe('timeline', () => {
       testComponent.reverse = true;
       fixture.detectChanges();
       expect(timeline.nativeElement.firstElementChild.firstElementChild!.classList).toContain('ant-timeline-item-pending');
-      expect(items[0].nativeElement.firstElementChild!.classList).toContain('ant-timeline-item-last');
-      expect(items[3].nativeElement.firstElementChild!.classList).not.toContain('ant-timeline-item-last');
+      expect(items[0].classList).toContain('ant-timeline-item-last');
+      expect(items[3].classList).not.toContain('ant-timeline-item-last');
     });
     it('should alternate position work', () => {
       fixture.detectChanges();
       testComponent.mode = 'alternate';
       fixture.detectChanges();
       expect(timeline.nativeElement.firstElementChild!.classList).toContain('ant-timeline-alternate');
-      expect(items[0].nativeElement.firstElementChild!.classList).toContain('ant-timeline-item-left');
-      expect(items[1].nativeElement.firstElementChild!.classList).toContain('ant-timeline-item-right');
-      expect(items[2].nativeElement.firstElementChild!.classList).toContain('ant-timeline-item-left');
+      expect(items[0].classList).toContain('ant-timeline-item-left');
+      expect(items[1].classList).toContain('ant-timeline-item-right');
+      expect(items[2].classList).toContain('ant-timeline-item-left');
     });
     it('should alternate right position work', () => {
       fixture.detectChanges();
       testComponent.mode = 'right';
       fixture.detectChanges();
       expect(timeline.nativeElement.firstElementChild!.classList).toContain('ant-timeline-right');
-      expect(items[0].nativeElement.firstElementChild!.classList).toContain('ant-timeline-item-right');
-      expect(items[1].nativeElement.firstElementChild!.classList).toContain('ant-timeline-item-right');
-      expect(items[2].nativeElement.firstElementChild!.classList).toContain('ant-timeline-item-right');
+      expect(items[0].classList).toContain('ant-timeline-item-right');
+      expect(items[1].classList).toContain('ant-timeline-item-right');
+      expect(items[2].classList).toContain('ant-timeline-item-right');
     });
   });
+
   describe('custom color timeline', () => {
     let fixture: ComponentFixture<NzTestTimelineCustomColorComponent>;
-    let items: DebugElement[];
+    let items: HTMLLIElement[];
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestTimelineCustomColorComponent);
-      items = fixture.debugElement.queryAll(By.directive(NzTimelineItemComponent));
+      fixture.detectChanges();
+      items = Array.from((fixture.debugElement.nativeElement as HTMLElement).querySelectorAll('.ant-timeline-item'));
     });
 
     it('should support custom color', () => {
       fixture.detectChanges();
-      expect(items[0].nativeElement.querySelector('.ant-timeline-item-head').style.borderColor).toBe('cyan');
-      expect(items[1].nativeElement.querySelector('.ant-timeline-item-head').style.borderColor).toBe('rgb(200, 0, 0)');
-      expect(items[2].nativeElement.querySelector('.ant-timeline-item-head').style.borderColor).toBe('rgb(120, 18, 65)'); // hex would be converted to rgb()
-      expect(items[3].nativeElement.querySelector('.ant-timeline-item-head').style.borderColor).toBe('');
+      expect((items[0].querySelector('.ant-timeline-item-head') as HTMLDivElement)!.style.borderColor).toBe('cyan');
+      expect((items[1].querySelector('.ant-timeline-item-head') as HTMLDivElement)!.style.borderColor).toBe('rgb(200, 0, 0)');
+      expect((items[2].querySelector('.ant-timeline-item-head') as HTMLDivElement)!.style.borderColor).toBe('rgb(120, 18, 65)'); // hex would be converted to rgb()
+      expect((items[3].querySelector('.ant-timeline-item-head') as HTMLDivElement)!.style.borderColor).toBe('');
     });
   });
 
