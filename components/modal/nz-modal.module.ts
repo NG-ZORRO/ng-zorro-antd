@@ -7,6 +7,7 @@
  */
 
 import { OverlayModule } from '@angular/cdk/overlay';
+import { PortalModule } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
@@ -15,6 +16,11 @@ import { NzNoAnimationModule, NzOutletModule, NzPipesModule } from 'ng-zorro-ant
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
+import { NzModalCloseComponent } from './modal-close.component';
+import { NzModalConfirmContainerComponent } from './modal-confirm-container.component';
+import { NzModalContainerComponent } from './modal-container.component';
+import { NzModalFooterComponent } from './modal-footer.component';
+import { NzModalTitleComponent } from './modal-title.component';
 import { NzModalControlServiceModule } from './nz-modal-control.service.module';
 import { NzModalFooterDirective } from './nz-modal-footer.directive';
 import { NzModalComponent } from './nz-modal.component';
@@ -25,6 +31,7 @@ import { NzModalServiceModule } from './nz-modal.service.module';
     CommonModule,
     OverlayModule,
     NzOutletModule,
+    PortalModule,
     NzI18nModule,
     NzButtonModule,
     NzIconModule,
@@ -33,8 +40,16 @@ import { NzModalServiceModule } from './nz-modal.service.module';
     NzModalServiceModule,
     NzModalControlServiceModule
   ],
-  exports: [NzModalComponent, NzModalFooterDirective],
-  declarations: [NzModalComponent, NzModalFooterDirective],
-  entryComponents: [NzModalComponent]
+  exports: [NzModalComponent, NzModalFooterDirective, NzModalContainerComponent, NzModalConfirmContainerComponent],
+  declarations: [
+    NzModalComponent,
+    NzModalFooterDirective,
+    NzModalCloseComponent,
+    NzModalFooterComponent,
+    NzModalTitleComponent,
+    NzModalContainerComponent,
+    NzModalConfirmContainerComponent
+  ],
+  entryComponents: [NzModalComponent, NzModalContainerComponent]
 })
 export class NzModalModule {}

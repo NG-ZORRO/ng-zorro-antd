@@ -8,12 +8,64 @@
 
 import { OverlayRef } from '@angular/cdk/overlay';
 import { EventEmitter, TemplateRef, Type } from '@angular/core';
+import { NzButtonShape, NzButtonSize, NzButtonType } from 'ng-zorro-antd/button';
 
 export type OnClickCallback<T> = (instance: T) => (false | void | {}) | Promise<false | void | {}>;
 
 export type ModalType = 'default' | 'confirm'; // Different modal styles we have supported
 
 export type ConfirmType = 'confirm' | 'info' | 'success' | 'error' | 'warning'; // Subtypes of Confirm Modal
+
+const noopFun = () => void 0;
+
+// tslint:disable-next-line:no-any
+export class ModalConfig<T = any, R = any> implements ModalOptions {
+  nzClosable?: boolean = true;
+  nzOkLoading?: boolean = false;
+  nzOkDisabled?: boolean = false;
+  nzCancelDisabled?: boolean = false;
+  nzCancelLoading?: boolean = false;
+  nzNoAnimation?: boolean = false;
+  nzMask?: boolean = true;
+  nzMaskClosable?: boolean = true;
+  nzKeyboard?: boolean = true;
+  nzZIndex?: number = 1000;
+  nzWidth?: number | string = 520;
+  nzCloseIcon?: string = 'close';
+  nzOkType?: NzButtonType = 'primary';
+  nzModalType?: ModalType = 'default';
+  nzOnCancel?: EventEmitter<T> | OnClickCallback<T> = noopFun;
+  nzOnOk?: EventEmitter<T> | OnClickCallback<T> = noopFun;
+  nzComponentParams?: Partial<T>;
+  nzMaskStyle?: {
+    [key: string]: string;
+  };
+  nzBodyStyle?: {
+    [key: string]: string;
+  };
+  nzWrapClassName?: string;
+  nzClassName?: string;
+  nzStyle?: object;
+  nzTitle?: string | TemplateRef<{}>;
+  nzFooter?: string | TemplateRef<{}> | Array<ModalButtonOptions<T>> | null; // Default Modal ONLY
+  nzCancelText?: string | null;
+  nzOkText?: string | null;
+  nzContent?: string | TemplateRef<{}> | Type<T>;
+
+  /**
+   * Reset the container element.
+   * @deprecated Not supported.
+   * @breaking-change 10.0.0
+   */
+  nzGetContainer?: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef);
+
+  // Template use only
+  nzAfterOpen?: EventEmitter<void>;
+  nzAfterClose?: EventEmitter<R>;
+
+  // Confirm
+  nzIconType?: string = 'question-circle';
+}
 
 // Public options for using by service
 // tslint:disable-next-line:no-any
@@ -43,7 +95,7 @@ export interface ModalOptions<T = any, R = any> {
 
   // --- Predefined OK & Cancel buttons
   nzOkText?: string | null;
-  nzOkType?: string;
+  nzOkType?: NzButtonType;
   nzOkLoading?: boolean;
   nzOkDisabled?: boolean;
   nzCancelDisabled?: boolean;
@@ -64,17 +116,18 @@ export interface ModalOptionsForService<T = any> extends ModalOptions<T> {
 // tslint:disable-next-line:no-any
 export interface ModalButtonOptions<T = any> {
   label: string;
-  type?: string;
-  shape?: string;
+  type?: NzButtonType;
+  shape?: NzButtonShape;
   ghost?: boolean;
-  size?: string;
+  size?: NzButtonSize;
   autoLoading?: boolean; // Default: true, indicate whether show loading automatically while onClick returned a Promise
 
   // [NOTE] "componentInstance" will refer to the component's instance when using Component
   show?: boolean | ((this: ModalButtonOptions<T>, contentComponentInstance?: T) => boolean);
   loading?: boolean | ((this: ModalButtonOptions<T>, contentComponentInstance?: T) => boolean); // This prop CAN'T use with autoLoading=true
   disabled?: boolean | ((this: ModalButtonOptions<T>, contentComponentInstance?: T) => boolean);
-  onClick?(this: ModalButtonOptions<T>, contentComponentInstance?: T): (void | {}) | Promise<void | {}>;
+  // tslint:disable-next-line:no-any
+  onClick?(this: ModalButtonOptions<T>, contentComponentInstance?: T): any | Promise<any>;
 
   // tslint:disable-next-line:no-any
   [key: string]: any;

@@ -14,5 +14,7 @@ export { NzModalService } from './nz-modal.service';
 export { NzModalServiceModule } from './nz-modal.service.module';
 export { NZ_MODAL_CONFIG, NzModalConfig } from './nz-modal-config';
 export { NzModalControlService } from './nz-modal-control.service';
+export { NzModal } from './nz-modal';
+export { NzModalRef2 } from './nz-modal-ref';
 export { NzModalControlServiceModule } from './nz-modal-control.service.module';
 export * from './nz-modal.type';

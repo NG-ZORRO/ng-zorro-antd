@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
+import { NzModal, NzModalRef, NzModalRef2, NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'nz-demo-modal-confirm-promise',
@@ -8,9 +8,9 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
   `
 })
 export class NzDemoModalConfirmPromiseComponent {
-  confirmModal: NzModalRef; // For testing by now
+  confirmModal: NzModalRef2; // For testing by now
 
-  constructor(private modal: NzModalService) {}
+  constructor(private modal: NzModal) {}
 
   showConfirm(): void {
     this.confirmModal = this.modal.confirm({

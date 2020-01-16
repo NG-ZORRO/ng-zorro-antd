@@ -228,6 +228,7 @@ export class NzModalComponent<T = any, R = any> extends NzModalRef<T, R>
 
     // Place the modal dom to elsewhere
     this.container = typeof this.nzGetContainer === 'function' ? this.nzGetContainer() : this.nzGetContainer;
+    console.log(this.container);
     if (this.container instanceof HTMLElement) {
       this.container.appendChild(this.elementRef.nativeElement);
       fromEvent<KeyboardEvent>(this.document.body, 'keydown')

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzModal, NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'nz-demo-modal-locale',
@@ -26,7 +26,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 export class NzDemoModalLocaleComponent {
   isVisible = false;
 
-  constructor(private modalService: NzModalService) {}
+  constructor(private modalService: NzModal) {}
 
   showModal(): void {
     this.isVisible = true;
