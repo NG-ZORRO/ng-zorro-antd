@@ -1,29 +1,26 @@
 <div
   nz-picker
   [isRange]="isRange"
-  [value]="nzValue"
-  (valueChange)="onValueChange($event)"
   [open]="nzOpen"
   [disabled]="nzDisabled"
+  [disabledDate]="nzDisabledDate"
   [format]="nzFormat"
   [allowClear]="nzAllowClear"
   [autoFocus]="nzAutoFocus"
-  [className]="nzClassName"
   [placeholder]="nzPlaceHolder"
-  [size]="nzSize"
+  [ngClass]="nzClassName"
   [style]="pickerStyle"
   [noAnimation]="noAnimation?.nzNoAnimation"
   (openChange)="onOpenChange($event)"
+  (focusChange)="onFocusChange($event)"
 >
   <date-range-popup
     *ngIf="realOpenState"
     [isRange]="isRange"
     [showWeek]="showWeek"
+    [endPanelMode]="endPanelMode"
     [panelMode]="nzMode"
-    (panelModeChange)="nzOnPanelChange.emit($event)"
-    [value]="nzValue"
-    (valueChange)="onValueChange($event)"
-    (inputChange)="onValueChange($event, true)"
+    (panelModeChange)="onPanelModeChange($event)"
     (calendarChange)="onCalendarChange($event)"
     [locale]="nzLocale?.lang"
     [showToday]="realShowToday"
@@ -38,6 +35,5 @@
     [extraFooter]="extraFooter"
     [ranges]="nzRanges"
     (resultOk)="onResultOk()"
-    (closePicker)="closeOverlay()"
   ></date-range-popup>
 </div>

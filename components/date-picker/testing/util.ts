@@ -1,0 +1,28 @@
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
+import { PREFIX_CLASS } from '../name';
+import { NzPickerComponent } from '../picker.component';
+
+export function getPickerAbstract<T = HTMLElement>(debugElement: DebugElement): T {
+  return debugElement.query(By.css(`.${PREFIX_CLASS}`)).nativeElement;
+}
+
+export function getPicker(debugElement: DebugElement): HTMLElement {
+  return debugElement.query(By.directive(NzPickerComponent)).nativeElement;
+}
+
+export function getPickerInput(debugElement: DebugElement): HTMLInputElement {
+  return debugElement.query(By.css(`.${PREFIX_CLASS}-input input`)).nativeElement as HTMLInputElement;
+}
+
+export function getRangePickerRightInput(debugElement: DebugElement): HTMLInputElement {
+  return debugElement.queryAll(By.css(`.${PREFIX_CLASS}-input input`))[1].nativeElement as HTMLInputElement;
+}

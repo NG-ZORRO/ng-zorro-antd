@@ -6,32 +6,26 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  forwardRef,
-  Host,
-  Input,
-  Optional,
-  Renderer2,
-  ViewEncapsulation
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, forwardRef, Host, Input, Optional, ViewEncapsulation } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core';
 import { DateHelperService, NzI18nService } from 'ng-zorro-antd/i18n';
-
-import { HeaderPickerComponent, SupportHeaderPanel } from './header-picker.component';
+import { AbstractPickerComponent } from './abstract-picker.component';
+import { DatePickerService } from './date-picker.service';
+import { PanelMode } from './standard-types';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'nz-month-picker',
   exportAs: 'nzMonthPicker',
-  templateUrl: './header-picker.component.html',
+  templateUrl: './abstract-picker.component.html',
+  host: {
+    '[class]': 'hostClassMap'
+  },
   providers: [
+    DatePickerService,
     {
       provide: NG_VALUE_ACCESSOR,
       multi: true,
@@ -39,20 +33,18 @@ import { HeaderPickerComponent, SupportHeaderPanel } from './header-picker.compo
     }
   ]
 })
-export class NzMonthPickerComponent extends HeaderPickerComponent {
+export class NzMonthPickerComponent extends AbstractPickerComponent {
+  endPanelMode: PanelMode = 'month';
   @Input() nzFormat: string = 'yyyy-MM';
-
-  endPanelMode: SupportHeaderPanel = 'month';
+  @Input() nzMode: PanelMode | PanelMode[] = 'month';
 
   constructor(
+    datePickerService: DatePickerService,
     i18n: NzI18nService,
     cdr: ChangeDetectorRef,
     dateHelper: DateHelperService,
-    renderer: Renderer2,
-    elementRef: ElementRef,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
-    super(i18n, cdr, dateHelper, noAnimation);
-    renderer.addClass(elementRef.nativeElement, 'ant-calendar-picker');
+    super(datePickerService, i18n, cdr, dateHelper, noAnimation);
   }
 }

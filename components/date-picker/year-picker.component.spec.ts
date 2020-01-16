@@ -6,6 +6,8 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent, NgStyleInterface } from 'ng-zorro-antd/core';
+import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/name';
+import { getPicker, getPickerAbstract, getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
 import { NzDatePickerModule } from './date-picker.module';
@@ -45,10 +47,7 @@ describe('NzYearPickerComponent', () => {
 
     it('should open by click and close by click at outside', fakeAsync(() => {
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
+      openPickerByClickTrigger();
       expect(getPickerContainer()).not.toBeNull();
 
       dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
@@ -60,7 +59,7 @@ describe('NzYearPickerComponent', () => {
 
     it('should open on enter', fakeAsync(() => {
       fixture.detectChanges();
-      getPickerTriggerWrapper().dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
+      getPickerInput(fixture.debugElement).dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -68,7 +67,7 @@ describe('NzYearPickerComponent', () => {
     }));
 
     it('should support nzAllowClear and work properly', fakeAsync(() => {
-      const clearBtnSelector = By.css('nz-picker i.ant-calendar-picker-clear');
+      const clearBtnSelector = By.css(`.${PREFIX_CLASS}-clear`);
       const initial = (fixtureInstance.nzValue = new Date());
       fixtureInstance.nzAllowClear = false;
       fixture.detectChanges();
@@ -96,7 +95,7 @@ describe('NzYearPickerComponent', () => {
     it('should support nzAutoFocus', () => {
       fixtureInstance.nzAutoFocus = true;
       fixture.detectChanges();
-      expect(getPickerTrigger() === document.activeElement).toBeTruthy();
+      expect(getPickerInput(fixture.debugElement) === document.activeElement).toBeTruthy();
     });
 
     it('should support nzDisabled', fakeAsync(() => {
@@ -108,15 +107,15 @@ describe('NzYearPickerComponent', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(debugElement.query(By.css('nz-picker .ant-input-disabled'))).toBeDefined();
-      expect(debugElement.query(By.css('nz-picker i.ant-calendar-picker-clear'))).toBeNull();
+      expect(debugElement.query(By.css('.ant-picker-disabled'))).not.toBeNull();
+      expect(debugElement.query(By.css('.ant-picker-clear'))).toBeNull();
 
       fixtureInstance.nzDisabled = false;
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(debugElement.query(By.css('nz-picker .ant-input-disabled'))).toBeNull();
-      expect(debugElement.query(By.css('nz-picker i.ant-calendar-picker-clear'))).toBeDefined();
+      expect(debugElement.query(By.css('.ant-picker-disabled'))).toBeNull();
+      expect(debugElement.query(By.css('.ant-picker-clear'))).not.toBeNull();
     }));
 
     it('should support nzOpen if assigned', fakeAsync(() => {
@@ -146,15 +145,13 @@ describe('NzYearPickerComponent', () => {
     it('should support nzClassName', () => {
       const className = (fixtureInstance.nzClassName = 'my-test-class');
       fixture.detectChanges();
-      const picker = debugElement.queryAll(By.css('.ant-calendar-picker'))[1].nativeElement as HTMLElement;
-      expect(picker.classList.contains(className)).toBeTruthy();
+      expect(getPicker(fixture.debugElement).classList.contains(className)).toBeTruthy();
     });
 
     it('should support nzCompact', () => {
       fixtureInstance.useSuite = 4;
-
       fixture.detectChanges();
-      const pickerInput = debugElement.query(By.css('input.ant-calendar-picker-input')).nativeElement as HTMLElement;
+      const pickerInput = getPickerInput(fixture.debugElement);
       expect(pickerInput).not.toBeNull();
       const compStyles = window.getComputedStyle(pickerInput);
       expect(compStyles.getPropertyValue('border-top-right-radius') === '0px').toBeTruthy();
@@ -169,13 +166,8 @@ describe('NzYearPickerComponent', () => {
       flush();
       fixture.detectChanges();
 
-      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
-      const disabledCell = overlayContainerElement.querySelector(
-        'tbody.ant-calendar-year-panel-tbody tr td.ant-calendar-year-panel-cell-disabled'
-      )!;
+      openPickerByClickTrigger();
+      const disabledCell = overlayContainerElement.querySelector('.ant-picker-year-panel tr td.ant-picker-cell-disabled')!;
       expect(disabledCell.textContent).toContain('2013');
     }));
 
@@ -183,72 +175,63 @@ describe('NzYearPickerComponent', () => {
       const featureKey = 'TEST_PLACEHOLDER';
       fixtureInstance.nzLocale = { lang: { placeholder: featureKey } };
       fixture.detectChanges();
-      expect(getPickerTrigger().getAttribute('placeholder')).toBe(featureKey);
+      expect(getPickerInput(fixture.debugElement).getAttribute('placeholder')).toBe(featureKey);
     });
 
     it('should support nzPlaceHolder', () => {
       const featureKey = (fixtureInstance.nzPlaceHolder = 'TEST_PLACEHOLDER');
       fixture.detectChanges();
-      expect(getPickerTrigger().getAttribute('placeholder')).toBe(featureKey);
+      expect(getPickerInput(fixture.debugElement).getAttribute('placeholder')).toBe(featureKey);
     });
 
     it('should support nzPopupStyle', fakeAsync(() => {
       fixtureInstance.nzPopupStyle = { color: 'red' };
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
-      expect(getPickerContainer().style.color).toBe('red');
+      openPickerByClickTrigger();
+      expect(queryFromOverlay(`.${PREFIX_CLASS}-dropdown`).style.color).toBe('red');
     }));
 
     it('should support nzDropdownClassName', fakeAsync(() => {
       const keyCls = (fixtureInstance.nzDropdownClassName = 'my-test-class');
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
-      expect(getPickerContainer().classList.contains(keyCls)).toBeTruthy();
+      openPickerByClickTrigger();
+      expect(queryFromOverlay(`.${PREFIX_CLASS}-dropdown`).classList.contains(keyCls)).toBeTruthy();
     }));
 
     it('should support nzSize', () => {
       fixtureInstance.nzSize = 'large';
       fixture.detectChanges();
-      expect(getPicker().classList.contains('ant-calendar-picker-large')).toBeTruthy();
+      expect(getPickerAbstract(fixture.debugElement).classList.contains('ant-picker-large')).toBeTruthy();
 
       fixtureInstance.nzSize = 'small';
       fixture.detectChanges();
-      expect(getPicker().classList.contains('ant-calendar-picker-small')).toBeTruthy();
+      expect(getPickerAbstract(fixture.debugElement).classList.contains('ant-picker-small')).toBeTruthy();
     });
 
     it('should support nzStyle', () => {
       fixtureInstance.nzStyle = { color: 'blue' };
       fixture.detectChanges();
-      expect(getPicker().style.color).toBe('blue');
+      expect(getPicker(fixture.debugElement).style.color).toBe('blue');
     });
 
-    it('should support nzOnOpenChange', () => {
+    it('should support nzOnOpenChange', fakeAsync(() => {
       const nzOnOpenChange = spyOn(fixtureInstance, 'nzOnOpenChange');
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
-      fixture.detectChanges();
+      openPickerByClickTrigger();
       expect(nzOnOpenChange).toHaveBeenCalledWith(true);
 
       dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
       fixture.detectChanges();
+      flush();
       expect(nzOnOpenChange).toHaveBeenCalledWith(false);
       expect(nzOnOpenChange).toHaveBeenCalledTimes(2);
-    });
+    }));
     it('should support nzValue', fakeAsync(() => {
       fixtureInstance.nzValue = new Date('2018-11-22');
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
+      openPickerByClickTrigger();
       expect(getSelectedYearCell().textContent).toContain('2018');
     }));
 
@@ -256,10 +239,7 @@ describe('NzYearPickerComponent', () => {
       fixtureInstance.nzValue = new Date('2018-11');
       const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
       fixture.detectChanges();
-      dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
+      openPickerByClickTrigger();
 
       const cell = getSecondYearCell(); // Use the second cell
       const cellText = cell.textContent!.trim();
@@ -281,29 +261,29 @@ describe('NzYearPickerComponent', () => {
       fixture.detectChanges();
       openPickerByClickTrigger();
       // Click to show decade panel
-      dispatchMouseEvent(queryFromOverlay('.ant-calendar-year-panel-decade-select'), 'click');
+      dispatchMouseEvent(queryFromOverlay('.ant-picker-header-year-btn'), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(queryFromOverlay('.ant-calendar-decade-panel')).toBeDefined();
+      expect(queryFromOverlay('.ant-picker-decade-panel')).toBeDefined();
       // Goto previous decade
-      dispatchMouseEvent(queryFromOverlay('.ant-calendar-decade-panel-prev-century-btn'), 'click');
+      dispatchMouseEvent(getSuperPreBtn(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(queryFromOverlay('.ant-calendar-decade-panel-century').textContent).toContain('1900');
-      expect(queryFromOverlay('.ant-calendar-decade-panel-century').textContent).toContain('1999');
+      expect(queryFromOverlay('.ant-picker-header-decade-btn').textContent).toContain('1900');
+      expect(queryFromOverlay('.ant-picker-header-decade-btn').textContent).toContain('1999');
       // Goto next decade * 2
-      dispatchMouseEvent(queryFromOverlay('.ant-calendar-decade-panel-next-century-btn'), 'click');
+      dispatchMouseEvent(getSuperNextBtn(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      dispatchMouseEvent(queryFromOverlay('.ant-calendar-decade-panel-next-century-btn'), 'click');
+      dispatchMouseEvent(getSuperNextBtn(), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(queryFromOverlay('.ant-calendar-decade-panel-century').textContent).toContain('2100');
-      expect(queryFromOverlay('.ant-calendar-decade-panel-century').textContent).toContain('2199');
+      expect(queryFromOverlay('.ant-picker-header-decade-btn').textContent).toContain('2100');
+      expect(queryFromOverlay('.ant-picker-header-decade-btn').textContent).toContain('2199');
     }));
   }); // /panel switch and move forward/afterward
 
@@ -346,28 +326,24 @@ describe('NzYearPickerComponent', () => {
 
   ////////////
 
-  function getPicker(): HTMLElement {
-    return debugElement.query(By.css('nz-picker .ant-calendar-picker')).nativeElement as HTMLElement;
+  function getSuperPreBtn(): HTMLElement {
+    return queryFromOverlay(`.${PREFIX_CLASS}-header-super-prev-btn`);
   }
 
-  function getPickerTrigger(): HTMLInputElement {
-    return debugElement.query(By.css('nz-picker input.ant-calendar-picker-input')).nativeElement as HTMLInputElement;
-  }
-
-  function getPickerTriggerWrapper(): HTMLInputElement {
-    return debugElement.query(By.css('nz-picker .ant-calendar-picker')).nativeElement as HTMLInputElement;
+  function getSuperNextBtn(): HTMLElement {
+    return queryFromOverlay(`.${PREFIX_CLASS}-header-super-next-btn`);
   }
 
   function getPickerContainer(): HTMLElement {
-    return queryFromOverlay('.ant-calendar-picker-container') as HTMLElement;
+    return queryFromOverlay('.ant-picker-panel-container') as HTMLElement;
   }
 
   function getSelectedYearCell(): HTMLElement {
-    return queryFromOverlay('tbody.ant-calendar-year-panel-tbody td.ant-calendar-year-panel-selected-cell') as HTMLElement;
+    return queryFromOverlay('.ant-picker-year-panel td.ant-picker-cell-selected') as HTMLElement;
   }
 
   function getSecondYearCell(): HTMLElement {
-    return queryFromOverlay('tbody.ant-calendar-year-panel-tbody td.ant-calendar-year-panel-cell:nth-child(2)') as HTMLElement;
+    return queryFromOverlay('.ant-picker-year-panel td.ant-picker-cell:nth-child(2) .ant-picker-cell-inner') as HTMLElement;
   }
 
   function queryFromOverlay(selector: string): HTMLElement {
@@ -375,7 +351,7 @@ describe('NzYearPickerComponent', () => {
   }
 
   function openPickerByClickTrigger(): void {
-    dispatchMouseEvent(getPickerTriggerWrapper(), 'click');
+    dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
     fixture.detectChanges();
     tick(500);
     fixture.detectChanges();
@@ -400,7 +376,6 @@ describe('NzYearPickerComponent', () => {
         [nzSize]="nzSize"
         [nzStyle]="nzStyle"
         (nzOnOpenChange)="nzOnOpenChange($event)"
-        [nzDefaultValue]="nzDefaultValue"
         [ngModel]="nzValue"
         (ngModelChange)="nzOnChange($event)"
         [nzRenderExtraFooter]="nzRenderExtraFooter"
