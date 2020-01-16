@@ -58,6 +58,7 @@ The dialog is currently divided into 2 modes, `normal mode` and `confirm box mod
 | nzContent         | Content | string / TemplateRef / Component / ng-content | - |
 | nzComponentParams | When nzContent is a Component, the attributes in this parameter will be passed to the nzContent instance | `object` | - |
 | nzIconType        | Icon type of the Icon component. <i>Only valid in confirm box mode</i> | `string` | question-circle |
+| nzAutofocus        | autofocus and the position，disabled when is `null` | `'ok' \| 'cancel' \| 'auto' \| null` | `'auto'` |
 
 #### Attentions
 

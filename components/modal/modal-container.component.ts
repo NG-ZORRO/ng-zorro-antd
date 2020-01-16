@@ -20,7 +20,6 @@ import {
   EmbeddedViewRef,
   EventEmitter,
   Inject,
-  Input,
   NgZone,
   Optional,
   Renderer2,
@@ -88,8 +87,6 @@ const FADE_CLASS_NAME_MAP = {
 export class NzModalContainerComponent extends BasePortalOutlet {
   @ViewChild(CdkPortalOutlet, { static: true }) portalOutlet: CdkPortalOutlet;
   @ViewChild('modalElement', { static: true }) modalElementRef: ElementRef<HTMLDivElement>;
-  @Input() autoFocus = false;
-  @Input() zIndex = 1000;
   width = '520px';
 
   animationStateChanged = new EventEmitter<AnimationEvent>();
@@ -188,7 +185,7 @@ export class NzModalContainerComponent extends BasePortalOutlet {
       this.focusTrap = this.focusTrapFactory.create(element);
     }
 
-    if (this.autoFocus) {
+    if (this.config.nzAutofocus) {
       this.focusTrap.focusInitialElementWhenReady().then();
     } else {
       const activeElement = this.document.activeElement;

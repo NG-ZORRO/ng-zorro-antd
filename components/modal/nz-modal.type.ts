@@ -26,6 +26,7 @@ export class ModalConfig<T = any, R = any> implements ModalOptions {
   nzCancelDisabled?: boolean = false;
   nzCancelLoading?: boolean = false;
   nzNoAnimation?: boolean = false;
+  nzAutofocus?: 'ok' | 'cancel' | 'auto' | null = 'auto';
   nzMask?: boolean = true;
   nzMaskClosable?: boolean = true;
   nzKeyboard?: boolean = true;
