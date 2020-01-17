@@ -11,6 +11,7 @@ import { ComponentPortal, PortalInjector, TemplatePortal } from '@angular/cdk/po
 import { Injectable, Injector, OnDestroy, Optional, SkipSelf, TemplateRef } from '@angular/core';
 import { IndexableObject, warn } from 'ng-zorro-antd/core';
 import { NzModalConfirmContainerComponent } from 'ng-zorro-antd/modal/modal-confirm-container.component';
+import { applyConfigDefaults, setContentInstanceParams } from 'ng-zorro-antd/modal/utils';
 import { defer, Observable, Subject } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
@@ -207,21 +208,4 @@ export class NzModal implements OnDestroy {
     this.closeModals(this.openModalsAtThisLevel);
     this.afterAllClosedAtThisLevel.complete();
   }
-}
-
-function applyConfigDefaults(config: ModalConfig, defaultOptions: ModalConfig): ModalConfig {
-  return { ...defaultOptions, ...config };
-}
-
-/**
- * Assign the params into the content component instance.
- * @deprecated Should use dependency injection to get the params for user
- * @breaking-change 10.0.0
- */
-function setContentInstanceParams<T>(
-  instance: T,
-  // tslint:disable-next-line:no-any
-  params: Partial<T> | undefined
-): void {
-  Object.assign(instance, params);
 }

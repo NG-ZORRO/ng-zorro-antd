@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NzModal, NzModalRef, NzModalRef2, NzModalService } from 'ng-zorro-antd/modal';
+import { NzModal, NzModalRef2 } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'nz-demo-modal-confirm-promise',

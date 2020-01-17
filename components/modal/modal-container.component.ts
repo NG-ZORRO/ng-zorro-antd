@@ -54,7 +54,14 @@ const FADE_CLASS_NAME_MAP = {
   selector: 'nz-modal-container',
   exportAs: 'nzModalContainer',
   template: `
-    <div #modalElement role="document" class="ant-modal" [class]="config.nzClassName" [ngStyle]="config.nzStyle" [style.width]="width">
+    <div
+      #modalElement
+      role="document"
+      class="ant-modal"
+      [class]="config.nzClassName"
+      [ngStyle]="config.nzStyle"
+      [style.width]="config.nzWidth | nzToCssUnit"
+    >
       <div class="ant-modal-content">
         <button *ngIf="config.nzClosable" nz-modal-close (click)="onCloseClick()"></button>
         <div *ngIf="config.nzTitle" nz-modal-title></div>
@@ -87,7 +94,6 @@ const FADE_CLASS_NAME_MAP = {
 export class NzModalContainerComponent extends BasePortalOutlet {
   @ViewChild(CdkPortalOutlet, { static: true }) portalOutlet: CdkPortalOutlet;
   @ViewChild('modalElement', { static: true }) modalElementRef: ElementRef<HTMLDivElement>;
-  width = '520px';
 
   animationStateChanged = new EventEmitter<AnimationEvent>();
   containerClick = new EventEmitter<void>();
@@ -119,6 +125,7 @@ export class NzModalContainerComponent extends BasePortalOutlet {
     this.document = document;
     this.isStringContent = typeof config.nzContent === 'string';
     this.setContainer();
+    console.log(config);
   }
 
   onMousedown(e: MouseEvent): void {
@@ -155,6 +162,10 @@ export class NzModalContainerComponent extends BasePortalOutlet {
     }
     this.savePreviouslyFocusedElement();
     return this.portalOutlet.attachTemplatePortal(portal);
+  }
+
+  getNativeElement(): HTMLElement {
+    return this.elementRef.nativeElement;
   }
 
   private setModalTransformOrigin(): void {

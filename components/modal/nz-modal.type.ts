@@ -16,6 +16,10 @@ export type ModalType = 'default' | 'confirm'; // Different modal styles we have
 
 export type ConfirmType = 'confirm' | 'info' | 'success' | 'error' | 'warning'; // Subtypes of Confirm Modal
 
+export interface StyleObjectLike {
+  [key: string]: string;
+}
+
 const noopFun = () => void 0;
 
 // tslint:disable-next-line:no-any
@@ -32,18 +36,14 @@ export class ModalConfig<T = any, R = any> implements ModalOptions {
   nzKeyboard?: boolean = true;
   nzZIndex?: number = 1000;
   nzWidth?: number | string = 520;
-  nzCloseIcon?: string = 'close';
+  nzCloseIcon?: string | TemplateRef<void> = 'close';
   nzOkType?: NzButtonType = 'primary';
   nzModalType?: ModalType = 'default';
   nzOnCancel?: EventEmitter<T> | OnClickCallback<T> = noopFun;
   nzOnOk?: EventEmitter<T> | OnClickCallback<T> = noopFun;
   nzComponentParams?: Partial<T>;
-  nzMaskStyle?: {
-    [key: string]: string;
-  };
-  nzBodyStyle?: {
-    [key: string]: string;
-  };
+  nzMaskStyle?: StyleObjectLike;
+  nzBodyStyle?: StyleObjectLike;
   nzWrapClassName?: string;
   nzClassName?: string;
   nzStyle?: object;
@@ -87,8 +87,8 @@ export interface ModalOptions<T = any, R = any> {
   nzKeyboard?: boolean;
   nzMask?: boolean;
   nzMaskClosable?: boolean;
-  nzMaskStyle?: object;
-  nzBodyStyle?: object;
+  nzMaskStyle?: StyleObjectLike;
+  nzBodyStyle?: StyleObjectLike;
   nzFooter?: string | TemplateRef<{}> | Array<ModalButtonOptions<T>> | null; // Default Modal ONLY
   nzGetContainer?: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef); // STATIC
   nzAfterOpen?: EventEmitter<void>;

@@ -1,7 +1,7 @@
 /* entryComponents: NzModalCustomComponent,NzModalCustomComponent */
 
 import { Component, Input, TemplateRef } from '@angular/core';
-import { NzModal, NzModalRef, NzModalRef2, NzModalService } from 'ng-zorro-antd/modal';
+import { NzModal, NzModalRef2 } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'nz-demo-modal-service',
@@ -61,7 +61,7 @@ export class NzDemoModalServiceComponent {
   htmlModalVisible = false;
   disabled = false;
 
-  constructor(private modalService: NzModalService, private modal: NzModal) {}
+  constructor(private modal: NzModal) {}
 
   createModal(): void {
     this.modal.create({
@@ -92,7 +92,8 @@ export class NzDemoModalServiceComponent {
   }
 
   createComponentModal2(): void {
-    const modalRef = this.modal.open<NzModalCustom2Component>(NzModalCustom2Component, {
+    const modalRef = this.modal.create({
+      nzContent: NzModalCustom2Component,
       nzTitle: 'Title',
       nzMaskStyle: {
         color: 'red'
@@ -146,7 +147,7 @@ export class NzDemoModalServiceComponent {
   }
 
   createCustomButtonModal(): void {
-    const modal: NzModalRef = this.modal.create({
+    const modal: NzModalRef2 = this.modal.create({
       nzTitle: 'custom button demo',
       nzContent: 'pass array of button config to nzFooter to create multiple buttons',
       nzFooter: [
@@ -158,7 +159,7 @@ export class NzDemoModalServiceComponent {
         {
           label: 'Confirm',
           type: 'primary',
-          onClick: () => this.modalService.confirm({ nzTitle: 'Confirm Modal Title', nzContent: 'Confirm Modal Content' })
+          onClick: () => this.modal.confirm({ nzTitle: 'Confirm Modal Title', nzContent: 'Confirm Modal Content' })
         },
         {
           label: 'Change Button Status',
@@ -249,6 +250,6 @@ export class NzModalCustom2Component {
   }
 
   destroyModal(): void {
-    // this.modal.destroy({ data: 'this the result data' });
+    this.modal.destroy({ data: 'this the result data' });
   }
 }

@@ -8,11 +8,14 @@
 import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
 import { GlobalPositionStrategy, OverlayRef } from '@angular/cdk/overlay';
 import { EventEmitter } from '@angular/core';
-import { isPromise } from 'ng-zorro-antd/core';
-import { ModalConfig } from 'ng-zorro-antd/modal/nz-modal.type';
 import { Subject } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
+
+import { isPromise } from 'ng-zorro-antd/core';
+
+import { ModalConfig } from 'ng-zorro-antd/modal/nz-modal.type';
 import { NzModalContainerComponent } from './modal-container.component';
+import { NzModalLegacyAPI } from './modal-legacy-api';
 
 export const enum NzModalState {
   OPEN,
@@ -26,7 +29,7 @@ export const enum NzTriggerAction {
 }
 
 // tslint:disable-next-line:no-any
-export class NzModalRef2<T = any, R = any> {
+export class NzModalRef2<T = any, R = any> implements NzModalLegacyAPI<T, R> {
   componentInstance: T | null;
   result?: R;
   state: NzModalState = NzModalState.OPEN;
@@ -103,6 +106,10 @@ export class NzModalRef2<T = any, R = any> {
     return this.componentInstance as T;
   }
 
+  getElement(): HTMLElement {
+    return this.containerInstance.getNativeElement();
+  }
+
   destroy(result?: R): void {
     this.close(result);
   }
@@ -157,6 +164,10 @@ export class NzModalRef2<T = any, R = any> {
     strategy.centerVertically();
     this.overlayRef.updatePosition();
     return this;
+  }
+
+  updateConfig(config: ModalConfig): void {
+    Object.assign(this.config, config);
   }
 
   private trigger(action: NzTriggerAction): void {

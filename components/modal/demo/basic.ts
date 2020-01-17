@@ -4,11 +4,12 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-modal-basic',
   template: `
     <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Show Modal</span></button>
-    <nz-modal [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+    <nz-modal2 [(nzVisible)]="isVisible" nzTitle="The first Modal" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
       <p>Content one</p>
       <p>Content two</p>
       <p>Content three</p>
-    </nz-modal>
+      <p>Content three</p>
+    </nz-modal2>
   `
 })
 export class NzDemoModalBasicComponent {

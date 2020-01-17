@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
     <button nz-button nzType="primary" (click)="showModal()">
       <span>Show Modal</span>
     </button>
-    <nz-modal
+    <nz-modal2
       [(nzVisible)]="isVisible"
       nzTitle="Modal Title"
       (nzOnCancel)="handleCancel()"
@@ -14,7 +14,7 @@ import { Component } from '@angular/core';
       [nzOkLoading]="isOkLoading"
     >
       <p>Modal Content</p>
-    </nz-modal>
+    </nz-modal2>
   `
 })
 export class NzDemoModalAsyncComponent {

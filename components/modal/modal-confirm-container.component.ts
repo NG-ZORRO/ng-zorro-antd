@@ -38,7 +38,14 @@ import { ModalConfig } from './nz-modal.type';
   selector: 'nz-modal-confirm-container',
   exportAs: 'nzModalConfirmContainer',
   template: `
-    <div #modalElement role="document" class="ant-modal" [class]="config.nzClassName" [ngStyle]="config.nzStyle" [style.width]="width">
+    <div
+      #modalElement
+      role="document"
+      class="ant-modal"
+      [class]="config.nzClassName"
+      [ngStyle]="config.nzStyle"
+      [style.width]="config.nzWidth | nzToCssUnit"
+    >
       <div class="ant-modal-content">
         <button *ngIf="config.nzClosable" nz-modal-close (click)="onCloseClick()"></button>
         <div class="ant-modal-body" [ngStyle]="config.nzBodyStyle">

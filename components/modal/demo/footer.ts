@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
     <button nz-button nzType="primary" (click)="showModal()">
       <span>Show Modal</span>
     </button>
-    <nz-modal
+    <nz-modal2
       [(nzVisible)]="isVisible"
       [nzTitle]="modalTitle"
       [nzContent]="modalContent"
@@ -30,7 +30,7 @@ import { Component } from '@angular/core';
         <button nz-button nzType="default" (click)="handleCancel()">Custom Callback</button>
         <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isConfirmLoading">Custom Submit</button>
       </ng-template>
-    </nz-modal>
+    </nz-modal2>
   `
 })
 export class NzDemoModalFooterComponent {

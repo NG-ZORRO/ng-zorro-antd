@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-modal-position',
   template: `
     <button nz-button nzType="primary" (click)="showModalTop()">Display a modal dialog at 20px to Top</button>
-    <nz-modal
+    <nz-modal2
       [nzStyle]="{ top: '20px' }"
       [(nzVisible)]="isVisibleTop"
       nzTitle="20px to Top"
@@ -14,12 +14,12 @@ import { Component } from '@angular/core';
       <p>some contents...</p>
       <p>some contents...</p>
       <p>some contents...</p>
-    </nz-modal>
+    </nz-modal2>
 
     <br /><br />
 
     <button nz-button nzType="primary" (click)="showModalMiddle()">Vertically centered modal dialog</button>
-    <nz-modal
+    <nz-modal2
       nzWrapClassName="vertical-center-modal"
       [(nzVisible)]="isVisibleMiddle"
       nzTitle="Vertically centered modal dialog"
@@ -29,7 +29,7 @@ import { Component } from '@angular/core';
       <p>some contents...</p>
       <p>some contents...</p>
       <p>some contents...</p>
-    </nz-modal>
+    </nz-modal2>
   `,
   styles: [
     `

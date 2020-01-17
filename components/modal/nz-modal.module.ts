@@ -21,6 +21,7 @@ import { NzModalConfirmContainerComponent } from './modal-confirm-container.comp
 import { NzModalContainerComponent } from './modal-container.component';
 import { NzModalFooterComponent } from './modal-footer.component';
 import { NzModalTitleComponent } from './modal-title.component';
+import { NzModal2Component } from './modal.component';
 import { NzModalControlServiceModule } from './nz-modal-control.service.module';
 import { NzModalFooterDirective } from './nz-modal-footer.directive';
 import { NzModalComponent } from './nz-modal.component';
@@ -40,7 +41,7 @@ import { NzModalServiceModule } from './nz-modal.service.module';
     NzModalServiceModule,
     NzModalControlServiceModule
   ],
-  exports: [NzModalComponent, NzModalFooterDirective, NzModalContainerComponent, NzModalConfirmContainerComponent],
+  exports: [NzModalComponent, NzModal2Component, NzModalFooterDirective, NzModalContainerComponent, NzModalConfirmContainerComponent],
   declarations: [
     NzModalComponent,
     NzModalFooterDirective,
@@ -48,7 +49,8 @@ import { NzModalServiceModule } from './nz-modal.service.module';
     NzModalFooterComponent,
     NzModalTitleComponent,
     NzModalContainerComponent,
-    NzModalConfirmContainerComponent
+    NzModalConfirmContainerComponent,
+    NzModal2Component
   ],
   entryComponents: [NzModalComponent, NzModalContainerComponent]
 })
