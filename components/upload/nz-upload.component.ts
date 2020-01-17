@@ -16,6 +16,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  TemplateRef,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
@@ -98,6 +99,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzPreviewFile: (file: UploadFile) => Observable<string>;
   @Input() nzTransformFile: (file: UploadFile) => UploadTransformFileType;
   @Input() nzDownload: (file: UploadFile) => void;
+  @Input() nzIconRender: TemplateRef<void>;
 
   @Output() readonly nzChange: EventEmitter<UploadChangeParam> = new EventEmitter<UploadChangeParam>();
   @Output() readonly nzFileListChange: EventEmitter<UploadFile[]> = new EventEmitter<UploadFile[]>();

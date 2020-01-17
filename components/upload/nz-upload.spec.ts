@@ -1,7 +1,7 @@
 // tslint:disable:no-any
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { Component, DebugElement, Injector, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, DebugElement, Injector, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -653,6 +653,21 @@ describe('upload', () => {
           });
         });
       });
+
+      it('#nzIconRender', () => {
+        instance.nzFileList = [
+          {
+            uid: 1,
+            name: 'xxx.png',
+            status: 'uploading'
+          } as any
+        ];
+        instance.nzIconRender = instance.customnzIconRender;
+        fixture.detectChanges();
+        const el = pageObject.getByCss(`.customnzIconRender`);
+        expect(el != null).toBe(true);
+        expect((el.nativeElement as HTMLElement).textContent).toBe('asdf');
+      });
     });
 
     describe('CORS', () => {
@@ -700,7 +715,7 @@ describe('upload', () => {
         return this.btnEl.injector.get(NzUploadBtnComponent) as NzUploadBtnComponent;
       }
 
-      getByCss(css: string): any {
+      getByCss(css: string): DebugElement {
         return dl.query(By.css(css));
       }
 
@@ -1317,15 +1332,20 @@ describe('upload', () => {
       [nzRemove]="onRemove"
       [nzDirectory]="directory"
       [nzTransformFile]="nzTransformFile"
+      [nzIconRender]="nzIconRender"
       (nzFileListChange)="nzFileListChange($event)"
       (nzChange)="nzChange($event)"
     >
       <button nz-button><i nz-icon nzType="upload"></i><span>Click to Upload</span></button>
     </nz-upload>
+    <ng-template #customnzIconRender>
+      <span class="customnzIconRender">asdf</span>
+    </ng-template>
   `
 })
 class TestUploadComponent {
   @ViewChild('upload', { static: false }) comp: NzUploadComponent;
+  @ViewChild('customnzIconRender', { static: false }) customnzIconRender: TemplateRef<void>;
   show = true;
   nzType: UploadType = 'select';
   nzLimit = 0;
@@ -1353,6 +1373,7 @@ class TestUploadComponent {
   nzShowButton = true;
   nzWithCredentials = false;
   nzTransformFile: (file: UploadFile) => UploadTransformFileType;
+  nzIconRender: TemplateRef<void> | null = null;
   _onPreview = false;
   onPreview = (): void => {
     this._onPreview = true;

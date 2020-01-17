@@ -6,10 +6,12 @@
     [listType]="nzListType"
     [items]="nzFileList || []"
     [icons]="nzShowUploadList"
+    [iconRender]="nzIconRender"
     [previewFile]="nzPreviewFile"
     [onPreview]="nzPreview"
     [onRemove]="onRemove"
-    [onDownload]="nzDownload"></nz-upload-list>
+    [onDownload]="nzDownload"
+  ></nz-upload-list>
 </ng-template>
 <ng-template #con><ng-content></ng-content></ng-template>
 <ng-template #btn>

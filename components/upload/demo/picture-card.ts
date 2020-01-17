@@ -38,32 +38,32 @@ import { UploadFile } from 'ng-zorro-antd/upload';
 export class NzDemoUploadPictureCardComponent {
   fileList = [
     {
-      uid: -1,
-      name: 'xxx.png',
+      uid: '-1',
+      name: 'image.png',
       status: 'done',
       url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
     },
     {
-      uid: -2,
-      name: 'xxx.png',
+      uid: '-2',
+      name: 'image.png',
       status: 'done',
       url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
     },
     {
-      uid: -3,
-      name: 'xxx.png',
+      uid: '-3',
+      name: 'image.png',
       status: 'done',
       url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
     },
     {
-      uid: -4,
-      name: 'xxx.png',
+      uid: '-4',
+      name: 'image.png',
       status: 'done',
       url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
     },
     {
-      uid: -5,
-      name: 'xxx.png',
+      uid: '-5',
+      name: 'image.png',
       status: 'error'
     }
   ];

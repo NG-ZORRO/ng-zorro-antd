@@ -52,6 +52,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 | `(nzChange)` | A callback function, can be executed when uploading state is changing | `EventEmitter<UploadChangeParam>` | - |
 | `nzDownload`   | Click the method to download the file, pass the method to perform the method logic, do not pass the default jump to the new TAB. | `(file: UploadFile) => void` | Jump to new TAB |
 | `nzTransformFile`   | Customize transform file before request  | `(file: UploadFile) => UploadTransformFileType` | -  |
+| `nzIconRender`   | Custom show icon  | `TemplateRef<void>` | -  |
 
 #### nzChange
 
