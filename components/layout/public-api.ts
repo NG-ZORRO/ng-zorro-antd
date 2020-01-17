@@ -6,9 +6,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-content.component';
-export * from './nz-footer.component';
-export * from './nz-header.component';
-export * from './nz-layout.component';
-export * from './nz-sider.component';
-export * from './nz-layout.module';
+export * from './content.component';
+export * from './footer.component';
+export * from './header.component';
+export * from './layout.component';
+export * from './sider.component';
+export { NzSiderTriggerComponent as ɵNzSiderTriggerComponent } from './sider-trigger.component';
+export * from './layout.module';
