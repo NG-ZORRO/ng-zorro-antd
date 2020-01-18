@@ -26,7 +26,8 @@ import { takeUntil } from 'rxjs/operators';
 
 import { NzTimelineItemComponent } from './timeline-item.component';
 
-export type NzTimelineMode = 'left' | 'alternate' | 'right';
+const TimelineModes = ['left', 'alternate', 'right'] as const;
+export type NzTimelineMode = typeof TimelineModes[number];
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

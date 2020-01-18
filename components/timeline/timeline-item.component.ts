@@ -20,8 +20,12 @@ import {
 
 import { NzTimelineMode } from './timeline.component';
 
-export const NzTimelineTimeDefaultColors = ['red', 'blue', 'green', 'grey', 'gray'] as const;
-export type NzTimelineItemColor = typeof NzTimelineTimeDefaultColors[number];
+const TimelineTimeDefaultColors = ['red', 'blue', 'green', 'grey', 'gray'] as const;
+export type NzTimelineItemColor = typeof TimelineTimeDefaultColors[number];
+
+function isDefaultColor(color?: string): boolean {
+  return TimelineTimeDefaultColors.findIndex(i => i === color) !== -1;
+}
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -79,6 +83,6 @@ export class NzTimelineItemComponent implements OnChanges {
   }
 
   private updateCustomColor(): void {
-    this.borderColor = NzTimelineTimeDefaultColors.indexOf(this.nzColor) === -1 ? this.nzColor : null;
+    this.borderColor = isDefaultColor(this.nzColor) ? null : this.nzColor;
   }
 }
