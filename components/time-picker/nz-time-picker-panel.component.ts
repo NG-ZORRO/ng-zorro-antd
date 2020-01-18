@@ -99,7 +99,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   @Input()
   set nzDisabledHours(value: () => number[]) {
     this._disabledHours = value;
-    if (this._disabledHours) {
+    if (!!this._disabledHours) {
       this.buildHours();
     }
   }
@@ -284,7 +284,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     this.time.setHours(hour.index, hour.disabled);
     this.scrollToSelected(this.hourListElement.nativeElement, hour.index, 120, 'hour');
 
-    if (this._disabledMinutes) {
+    if (!!this._disabledMinutes) {
       this.buildMinutes();
     }
     if (this._disabledSeconds || this._disabledMinutes) {
@@ -295,7 +295,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   selectMinute(minute: { index: number; disabled: boolean }): void {
     this.time.setMinutes(minute.index, minute.disabled);
     this.scrollToSelected(this.minuteListElement.nativeElement, minute.index, 120, 'minute');
-    if (this._disabledSeconds) {
+    if (!!this._disabledSeconds) {
       this.buildSeconds();
     }
   }
@@ -307,13 +307,13 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   select12Hours(value: { index: number; value: string }): void {
     this.time.selected12Hours = value.value;
-    if (this._disabledHours) {
+    if (!!this._disabledHours) {
       this.buildHours();
     }
-    if (this._disabledMinutes) {
+    if (!!this._disabledMinutes) {
       this.buildMinutes();
     }
-    if (this._disabledSeconds) {
+    if (!!this._disabledSeconds) {
       this.buildSeconds();
     }
     this.scrollToSelected(this.use12HoursListElement.nativeElement, value.index, 120, '12-hour');
