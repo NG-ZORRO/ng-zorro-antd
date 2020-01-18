@@ -12,26 +12,12 @@
     outline: none;
   }
 
-  &-rtl {
-    direction: rtl;
-    text-align: right;
-
-    // fix for virtual scroll style attribute > (direction:ltr)
-    .ReactVirtualized__List .@{list-prefix-cls}-item {
-      direction: rtl;
-    }
-  }
-
   &-pagination {
     margin-top: 24px;
     text-align: right;
 
     // https://github.com/ant-design/ant-design/issues/20037
     .@{ant-prefix}-pagination-options {
-      text-align: left;
-    }
-
-    .@{list-prefix-cls}-rtl & {
       text-align: left;
     }
   }
@@ -77,14 +63,8 @@
       flex: 1;
       align-items: flex-start;
       font-size: 0;
-
       &-avatar {
         margin-right: @list-item-meta-avatar-margin-right;
-
-        .@{list-prefix-cls}-rtl & {
-          margin-right: 0;
-          margin-left: @list-item-meta-avatar-margin-right;
-        }
       }
       &-content {
         flex: 1 0;
@@ -114,12 +94,6 @@
       padding: 0;
       font-size: 0;
       list-style: none;
-
-      .@{list-prefix-cls}-rtl & {
-        margin-right: 48px;
-        margin-left: 0;
-      }
-
       & > li {
         position: relative;
         display: inline-block;
@@ -132,11 +106,6 @@
       }
       & > li:first-child {
         padding-left: 0;
-
-        .@{list-prefix-cls}-rtl & {
-          padding-right: 0;
-          padding-left: 8px;
-        }
       }
       &-split {
         position: absolute;
@@ -146,11 +115,6 @@
         height: 14px;
         margin-top: -7px;
         background-color: @border-color-split;
-
-        .@{list-prefix-cls}-rtl & {
-          right: auto;
-          left: 0;
-        }
       }
     }
   }
@@ -215,11 +179,6 @@
 
     &-extra {
       margin-left: 40px;
-
-      .@{list-prefix-cls}-rtl& {
-        margin-right: 40px;
-        margin-left: 0;
-      }
     }
 
     &-meta {
@@ -237,19 +196,10 @@
       margin-top: @padding-md;
       margin-left: auto;
 
-      .@{list-prefix-cls}-rtl & {
-        margin-right: auto;
-      }
-
       > li {
         padding: 0 16px;
         &:first-child {
           padding-left: 0;
-
-          .@{list-prefix-cls}-rtl & {
-            padding-right: 0;
-            padding-left: 16px;
-          }
         }
       }
     }
@@ -274,10 +224,6 @@
     .@{list-prefix-cls}-item-no-flex {
       .@{list-prefix-cls}-item-action {
         float: right;
-
-        .@{list-prefix-cls}-rtl & {
-          float: left;
-        }
       }
     }
   }
