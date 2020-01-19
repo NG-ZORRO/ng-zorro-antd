@@ -4,8 +4,8 @@ import { async, ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angu
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { NzModalModule } from './nz-modal.module';
-import { NzModalService } from './nz-modal.service';
+import { NzModalModule } from './modal.module';
+import { NzModalService } from './modal.service';
 
 describe('modal footer directive', () => {
   let overlayContainer: OverlayContainer;

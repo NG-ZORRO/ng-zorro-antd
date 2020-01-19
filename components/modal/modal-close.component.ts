@@ -8,11 +8,11 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { ModalConfig } from './nz-modal.type';
+import { ModalOptions } from './modal-types';
 
 @Component({
   selector: 'button[nz-modal-close]',
-  exportAs: 'NzModalClose',
+  exportAs: 'NzModalCloseBuiltin',
   template: `
     <span class="ant-modal-close-x">
       <ng-container *nzStringTemplateOutlet="config?.nzCloseIcon">
@@ -27,5 +27,5 @@ import { ModalConfig } from './nz-modal.type';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzModalCloseComponent {
-  constructor(public config: ModalConfig) {}
+  constructor(public config: ModalOptions) {}
 }

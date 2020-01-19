@@ -6,19 +6,19 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { isPromise } from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
-import { NzModalContainerComponent } from './modal-container.component';
-import { ModalButtonOptions, ModalConfig } from './nz-modal.type';
+import { NzModalRef } from './modal-ref';
+import { ModalButtonOptions, ModalOptions } from './modal-types';
 
 @Component({
   selector: 'div[nz-modal-footer]',
-  exportAs: 'NzModalFooter',
+  exportAs: 'NzModalFooterBuiltin',
   template: `
     <div class="ant-modal-title">
       <ng-container *ngIf="config.nzFooter; else defaultFooterButtons">
@@ -78,10 +78,10 @@ export class NzModalFooterComponent implements OnDestroy {
   locale: { okText?: string; cancelText?: string } = {};
   @Output() readonly cancelTriggered = new EventEmitter<void>();
   @Output() readonly okTriggered = new EventEmitter<void>();
-
+  @Input() modalRef: NzModalRef;
   private destroy$ = new Subject<void>();
 
-  constructor(private i18n: NzI18nService, private modalContainer: NzModalContainerComponent, public config: ModalConfig) {
+  constructor(private i18n: NzI18nService, public config: ModalOptions) {
     if (Array.isArray(config.nzFooter)) {
       this.buttonsFooter = true;
       this.buttons = (config.nzFooter as ModalButtonOptions[]).map(mergeDefaultOption);
@@ -107,7 +107,7 @@ export class NzModalFooterComponent implements OnDestroy {
    */
   getButtonCallableProp(options: ModalButtonOptions, prop: keyof ModalButtonOptions): boolean {
     const value = options[prop];
-    const componentInstance = this.modalContainer.modalRef.getContentComponent();
+    const componentInstance = this.modalRef.getContentComponent();
     return typeof value === 'function' ? value.apply(options, componentInstance && [componentInstance]) : value;
   }
 

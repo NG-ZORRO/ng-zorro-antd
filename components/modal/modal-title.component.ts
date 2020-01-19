@@ -8,11 +8,11 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { ModalConfig } from './nz-modal.type';
+import { ModalOptions } from './modal-types';
 
 @Component({
   selector: 'div[nz-modal-title]',
-  exportAs: 'NzModalTitle',
+  exportAs: 'NzModalTitleBuiltin',
   template: `
     <div class="ant-modal-title">
       <ng-container *nzStringTemplateOutlet="config.nzTitle">
@@ -26,5 +26,5 @@ import { ModalConfig } from './nz-modal.type';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzModalTitleComponent {
-  constructor(public config: ModalConfig) {}
+  constructor(public config: ModalOptions) {}
 }

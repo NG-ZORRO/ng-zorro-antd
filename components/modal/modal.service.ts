@@ -9,28 +9,27 @@
 import { ComponentType, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal, PortalInjector, TemplatePortal } from '@angular/cdk/portal';
 import { Injectable, Injector, OnDestroy, Optional, SkipSelf, TemplateRef } from '@angular/core';
-import { IndexableObject, warn } from 'ng-zorro-antd/core';
-import { NzModalConfirmContainerComponent } from 'ng-zorro-antd/modal/modal-confirm-container.component';
-import { applyConfigDefaults, setContentInstanceParams } from 'ng-zorro-antd/modal/utils';
 import { defer, Observable, Subject } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
+import { IndexableObject, warn } from 'ng-zorro-antd/core';
+
+import { NzModalConfirmContainerComponent } from './modal-confirm-container.component';
+import { BaseModalContainer } from './modal-container';
 import { NzModalContainerComponent } from './modal-container.component';
-import { NzModalRef2 } from './nz-modal-ref';
-import { NzModalServiceModule } from './nz-modal.service.module';
-import { ConfirmType, ModalConfig } from './nz-modal.type';
+import { NzModalRef } from './modal-ref';
+import { ConfirmType, ModalOptions } from './modal-types';
+import { applyConfigDefaults, setContentInstanceParams } from './utils';
 
 const MODAL_MASK_CLASS_NAME = 'ant-modal-mask';
 type ContentType<T> = ComponentType<T> | TemplateRef<T> | string;
 
-@Injectable({
-  providedIn: NzModalServiceModule
-})
-export class NzModal implements OnDestroy {
-  private openModalsAtThisLevel: NzModalRef2[] = [];
+@Injectable()
+export class NzModalService implements OnDestroy {
+  private openModalsAtThisLevel: NzModalRef[] = [];
   private readonly afterAllClosedAtThisLevel = new Subject<void>();
 
-  get openModals(): NzModalRef2[] {
+  get openModals(): NzModalRef[] {
     return this.parentModal ? this.parentModal.openModals : this.openModalsAtThisLevel;
   }
 
@@ -43,31 +42,18 @@ export class NzModal implements OnDestroy {
     this.openModals.length ? this._afterAllClosed : this._afterAllClosed.pipe(startWith(undefined))
   ) as Observable<void>;
 
-  constructor(private overlay: Overlay, private injector: Injector, @Optional() @SkipSelf() private parentModal: NzModal) {}
+  constructor(private overlay: Overlay, private injector: Injector, @Optional() @SkipSelf() private parentModal: NzModalService) {}
 
   // tslint:disable-next-line:no-any
-  create<T, R = any>(config: ModalConfig<T, R>): NzModalRef2<T, R> {
+  create<T, R = any>(config: ModalOptions<T, R>): NzModalRef<T, R> {
     return this.open<T, R>(config.nzContent as ComponentType<T>, config);
-  }
-
-  open<T, R>(componentOrTemplateRef: ContentType<T>, config?: ModalConfig): NzModalRef2<T, R> {
-    const configMerged = applyConfigDefaults(config || {}, new ModalConfig());
-    const overlayRef = this.createOverlay(configMerged);
-    const modalContainer = this.attachModalContainer(overlayRef, configMerged);
-    const modalRef = this.attachModalContent<T, R>(componentOrTemplateRef, modalContainer, overlayRef, configMerged);
-    modalContainer.modalRef = modalRef;
-
-    this.openModals.push(modalRef);
-    modalRef.afterClose.subscribe(() => this.removeOpenModal(modalRef));
-
-    return modalRef;
   }
 
   closeAll(): void {
     this.closeModals(this.openModals);
   }
 
-  confirm<T>(options: ModalConfig<T> = {}, confirmType: ConfirmType = 'confirm'): NzModalRef2<T> {
+  confirm<T>(options: ModalOptions<T> = {}, confirmType: ConfirmType = 'confirm'): NzModalRef<T> {
     if ('nzFooter' in options) {
       warn(`The Confirm-Modal doesn't support "nzFooter", this property will be ignored.`);
     }
@@ -83,30 +69,43 @@ export class NzModal implements OnDestroy {
     return this.create(options);
   }
 
-  info<T>(options: ModalConfig<T> = {}): NzModalRef2<T> {
+  info<T>(options: ModalOptions<T> = {}): NzModalRef<T> {
     return this.confirmFactory(options, 'info');
   }
 
-  success<T>(options: ModalConfig<T> = {}): NzModalRef2<T> {
+  success<T>(options: ModalOptions<T> = {}): NzModalRef<T> {
     return this.confirmFactory(options, 'success');
   }
 
-  error<T>(options: ModalConfig<T> = {}): NzModalRef2<T> {
+  error<T>(options: ModalOptions<T> = {}): NzModalRef<T> {
     return this.confirmFactory(options, 'error');
   }
 
-  warning<T>(options: ModalConfig<T> = {}): NzModalRef2<T> {
+  warning<T>(options: ModalOptions<T> = {}): NzModalRef<T> {
     return this.confirmFactory(options, 'warning');
   }
 
-  private removeOpenModal(modalRef: NzModalRef2): void {
+  private open<T, R>(componentOrTemplateRef: ContentType<T>, config?: ModalOptions): NzModalRef<T, R> {
+    const configMerged = applyConfigDefaults(config || {}, new ModalOptions());
+    const overlayRef = this.createOverlay(configMerged);
+    const modalContainer = this.attachModalContainer(overlayRef, configMerged);
+    const modalRef = this.attachModalContent<T, R>(componentOrTemplateRef, modalContainer, overlayRef, configMerged);
+    modalContainer.modalRef = modalRef;
+
+    this.openModals.push(modalRef);
+    modalRef.afterClose.subscribe(() => this.removeOpenModal(modalRef));
+
+    return modalRef;
+  }
+
+  private removeOpenModal(modalRef: NzModalRef): void {
     const index = this.openModals.indexOf(modalRef);
     if (index > -1) {
       this.openModals.splice(index);
     }
   }
 
-  private closeModals(dialogs: NzModalRef2[]): void {
+  private closeModals(dialogs: NzModalRef[]): void {
     let i = dialogs.length;
     while (i--) {
       dialogs[i].close();
@@ -116,7 +115,7 @@ export class NzModal implements OnDestroy {
     }
   }
 
-  private createOverlay(config: ModalConfig): OverlayRef {
+  private createOverlay(config: ModalOptions): OverlayRef {
     const overlayConfig = new OverlayConfig({
       hasBackdrop: true,
       scrollStrategy: this.overlay.scrollStrategies.block(),
@@ -130,37 +129,36 @@ export class NzModal implements OnDestroy {
     return this.overlay.create(overlayConfig);
   }
 
-  private attachModalContainer(overlayRef: OverlayRef, config: ModalConfig): NzModalContainerComponent {
+  private attachModalContainer(overlayRef: OverlayRef, config: ModalOptions): BaseModalContainer {
     const injector = new PortalInjector(
       this.injector,
       // tslint:disable-next-line:no-any
       new WeakMap<any, any>([
         [OverlayRef, overlayRef],
-        [ModalConfig, config]
+        [ModalOptions, config]
       ])
     );
 
-    const containerPortal = new ComponentPortal(
+    const ContainerComponent =
       config.nzModalType === 'confirm'
         ? // If the mode is `confirm`, use `NzModalConfirmContainerComponent`
           NzModalConfirmContainerComponent
         : // If the mode is not `confirm`, use `NzModalContainerComponent`
-          NzModalContainerComponent,
-      undefined,
-      injector
-    );
-    const containerRef = overlayRef.attach<NzModalContainerComponent>(containerPortal);
+          NzModalContainerComponent;
+
+    const containerPortal = new ComponentPortal<BaseModalContainer>(ContainerComponent, undefined, injector);
+    const containerRef = overlayRef.attach<BaseModalContainer>(containerPortal);
 
     return containerRef.instance;
   }
 
   private attachModalContent<T, R>(
     componentOrTemplateRef: ContentType<T>,
-    modalContainer: NzModalContainerComponent,
+    modalContainer: BaseModalContainer,
     overlayRef: OverlayRef,
-    config: ModalConfig<T>
-  ): NzModalRef2<T, R> {
-    const modalRef = new NzModalRef2<T, R>(overlayRef, config, modalContainer);
+    config: ModalOptions<T>
+  ): NzModalRef<T, R> {
+    const modalRef = new NzModalRef<T, R>(overlayRef, config, modalContainer);
 
     if (componentOrTemplateRef instanceof TemplateRef) {
       modalContainer.attachTemplatePortal(
@@ -168,26 +166,22 @@ export class NzModal implements OnDestroy {
         new TemplatePortal<T>(componentOrTemplateRef, null!, { $implicit: modalRef } as any)
       );
     } else if (typeof componentOrTemplateRef !== 'string') {
-      const injector = this.createInjector<T, R>(modalRef, modalContainer);
+      const injector = this.createInjector<T, R>(modalRef);
       const contentRef = modalContainer.attachComponentPortal<T>(new ComponentPortal(componentOrTemplateRef, undefined, injector));
       setContentInstanceParams<T>(contentRef.instance, config.nzComponentParams);
       modalRef.componentInstance = contentRef.instance;
     }
-    modalRef.updateSize('520px').updatePosition();
     return modalRef;
   }
 
-  private createInjector<T, R>(modalRef: NzModalRef2<T, R>, modalContainer: NzModalContainerComponent): PortalInjector {
+  private createInjector<T, R>(modalRef: NzModalRef<T, R>): PortalInjector {
     // tslint:disable-next-line:no-any
-    const injectionTokens = new WeakMap<any, any>([
-      [NzModalContainerComponent, modalContainer],
-      [NzModalRef2, modalRef]
-    ]);
+    const injectionTokens = new WeakMap<any, any>([[NzModalRef, modalRef]]);
 
     return new PortalInjector(this.injector, injectionTokens);
   }
 
-  private confirmFactory<T>(options: ModalConfig<T> = {}, confirmType: ConfirmType): NzModalRef2<T> {
+  private confirmFactory<T>(options: ModalOptions<T> = {}, confirmType: ConfirmType): NzModalRef<T> {
     const iconMap: IndexableObject = {
       info: 'info-circle',
       success: 'check-circle',

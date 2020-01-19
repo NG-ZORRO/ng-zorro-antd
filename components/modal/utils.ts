@@ -6,10 +6,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NzModal2Component } from './modal.component';
-import { ModalConfig } from './nz-modal.type';
+import { ModalOptions } from './modal-types';
+import { NzModalComponent } from './modal.component';
 
-export function applyConfigDefaults(config: ModalConfig, defaultOptions: ModalConfig): ModalConfig {
+export function applyConfigDefaults(config: ModalOptions, defaultOptions: ModalOptions): ModalOptions {
   return { ...defaultOptions, ...config };
 }
 
@@ -26,7 +26,7 @@ export function setContentInstanceParams<T>(
   Object.assign(instance, params);
 }
 
-export function getConfigFromComponent(component: NzModal2Component): ModalConfig {
+export function getConfigFromComponent(component: NzModalComponent): ModalOptions {
   const {
     nzMask,
     nzMaskClosable,

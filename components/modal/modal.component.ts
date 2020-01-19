@@ -26,25 +26,25 @@ import { NzButtonType } from 'ng-zorro-antd/button';
 import { InputBoolean, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
 import { Observable } from 'rxjs';
 
+import { NzModalFooterDirective } from './modal-footer.directive';
 import { NzModalLegacyAPI } from './modal-legacy-api';
-import { NzModal } from './nz-modal';
-import { NzModalFooterDirective } from './nz-modal-footer.directive';
-import { NzModalRef2 } from './nz-modal-ref';
-import { ModalButtonOptions, ModalConfig, ModalType, OnClickCallback, StyleObjectLike } from './nz-modal.type';
+import { NzModalRef } from './modal-ref';
+import { ModalButtonOptions, ModalOptions, ModalTypes, OnClickCallback, StyleObjectLike } from './modal-types';
+import { NzModalService } from './modal.service';
 import { getConfigFromComponent } from './utils';
 
 const NZ_CONFIG_COMPONENT_NAME = 'modal';
 
 @Component({
-  selector: 'nz-modal2',
-  exportAs: 'nzModal2',
+  selector: 'nz-modal',
+  exportAs: 'nzModal',
   template: `
     <ng-template><ng-content></ng-content></ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 // tslint:disable-next-line:no-any
-export class NzModal2Component<T = any, R = any> implements OnChanges, NzModalLegacyAPI<T, R> {
+export class NzModalComponent<T = any, R = any> implements OnChanges, NzModalLegacyAPI<T, R> {
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzMask: boolean;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzMaskClosable: boolean;
   @Input() @InputBoolean() nzVisible: boolean = false;
@@ -72,7 +72,7 @@ export class NzModal2Component<T = any, R = any> implements OnChanges, NzModalLe
   @Input() nzCancelText: string | null;
   @Input() nzOkType: NzButtonType = 'primary';
   @Input() nzIconType: string = 'question-circle'; // Confirm Modal ONLY
-  @Input() nzModalType: ModalType = 'default';
+  @Input() nzModalType: ModalTypes = 'default';
 
   @Input()
   @Output()
@@ -92,7 +92,7 @@ export class NzModal2Component<T = any, R = any> implements OnChanges, NzModalLe
       this.setFooterWithTemplate(value.templateRef);
     }
   }
-  private modalRef: NzModalRef2 | null = null;
+  private modalRef: NzModalRef | null = null;
 
   get afterOpen(): Observable<void> {
     // Observable alias for nzAfterOpen
@@ -104,7 +104,7 @@ export class NzModal2Component<T = any, R = any> implements OnChanges, NzModalLe
     return this.nzAfterClose.asObservable();
   }
 
-  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef, private modal: NzModal) {}
+  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef, private modal: NzModalService) {}
 
   open(): void {
     if (!this.modalRef) {
@@ -153,7 +153,7 @@ export class NzModal2Component<T = any, R = any> implements OnChanges, NzModalLe
     this.cdr.markForCheck();
   }
 
-  private getConfig(): ModalConfig {
+  private getConfig(): ModalOptions {
     const componentConfig = getConfigFromComponent(this);
     if (!this.nzContent) {
       componentConfig.nzContent = this.contentTemplateRef;

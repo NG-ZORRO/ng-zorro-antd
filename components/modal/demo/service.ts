@@ -1,7 +1,7 @@
-/* entryComponents: NzModalCustomComponent,NzModalCustomComponent */
+/* entryComponents: NzModalCustomComponent */
 
 import { Component, Input, TemplateRef } from '@angular/core';
-import { NzModal, NzModalRef2 } from 'ng-zorro-antd/modal';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'nz-demo-modal-service',
@@ -35,9 +35,6 @@ import { NzModal, NzModalRef2 } from 'ng-zorro-antd/modal';
       <span>Use Component</span>
     </button>
 
-    <button nz-button nzType="primary" (click)="createComponentModal2()">
-      <span>Use Component2</span>
-    </button>
     <button nz-button nzType="primary" (click)="createCustomButtonModal()">Custom Button</button>
 
     <br /><br />
@@ -56,12 +53,12 @@ import { NzModal, NzModalRef2 } from 'ng-zorro-antd/modal';
   ]
 })
 export class NzDemoModalServiceComponent {
-  tplModal: NzModalRef2;
+  tplModal: NzModalRef;
   tplModalButtonLoading = false;
   htmlModalVisible = false;
   disabled = false;
 
-  constructor(private modal: NzModal) {}
+  constructor(private modal: NzModalService) {}
 
   createModal(): void {
     this.modal.create({
@@ -91,29 +88,6 @@ export class NzDemoModalServiceComponent {
     }, 1000);
   }
 
-  createComponentModal2(): void {
-    const modalRef = this.modal.create({
-      nzContent: NzModalCustom2Component,
-      nzTitle: 'Title',
-      nzMaskStyle: {
-        color: 'red'
-      },
-      nzStyle: {
-        color: 'red'
-      },
-      nzClassName: 'my-class-name',
-      nzWrapClassName: 'my-wrap-class-name',
-      nzZIndex: 1100,
-      nzComponentParams: {
-        title: 'title',
-        subtitle: 'subtitle'
-      },
-      nzOnOk: () => new Promise(resolve => setTimeout(resolve, 1000))
-    });
-    modalRef.afterOpen.subscribe(console.log);
-    modalRef.afterClose.subscribe(console.log);
-  }
-
   createComponentModal(): void {
     const modal = this.modal.create({
       nzTitle: 'Modal Title',
@@ -133,27 +107,25 @@ export class NzDemoModalServiceComponent {
         }
       ]
     });
-
+    const instance = modal.getContentComponent();
     modal.afterOpen.subscribe(() => console.log('[afterOpen] emitted!'));
-
     // Return a result when closed
     modal.afterClose.subscribe(result => console.log('[afterClose] The result is:', result));
 
     // delay until modal instance created
     setTimeout(() => {
-      const instance = modal.getContentComponent();
       instance.subtitle = 'sub title is changed';
     }, 2000);
   }
 
   createCustomButtonModal(): void {
-    const modal: NzModalRef2 = this.modal.create({
+    const modal: NzModalRef = this.modal.create({
       nzTitle: 'custom button demo',
       nzContent: 'pass array of button config to nzFooter to create multiple buttons',
       nzFooter: [
         {
           label: 'Close',
-          shape: 'default',
+          shape: 'round',
           onClick: () => modal.destroy()
         },
         {
@@ -222,32 +194,7 @@ export class NzModalCustomComponent {
   @Input() title: string;
   @Input() subtitle: string;
 
-  constructor(private modal: NzModalRef2) {}
-
-  destroyModal(): void {
-    this.modal.destroy({ data: 'this the result data' });
-  }
-}
-
-@Component({
-  selector: 'nz-modal-custom-component',
-  template: `
-    <h2>{{ title }}</h2>
-    <h4>{{ subtitle }}</h4>
-    Content
-    <br />
-    Content
-    <br />
-    Content...
-  `
-})
-export class NzModalCustom2Component {
-  @Input() title: string;
-  @Input() subtitle: string;
-
-  constructor(private modal: NzModalRef2) {
-    console.log(modal);
-  }
+  constructor(private modal: NzModalRef) {}
 
   destroyModal(): void {
     this.modal.destroy({ data: 'this the result data' });

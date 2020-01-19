@@ -24,6 +24,7 @@ import {
   Renderer2,
   ViewChild
 } from '@angular/core';
+import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -31,8 +32,8 @@ import { takeUntil } from 'rxjs/operators';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { nzModalAnimations } from './modal-animations';
-import { NzModalContainerComponent } from './modal-container.component';
-import { ModalConfig } from './nz-modal.type';
+import { BaseModalContainer } from './modal-container';
+import { ModalOptions } from './modal-types';
 
 @Component({
   selector: 'nz-modal-confirm-container',
@@ -44,7 +45,7 @@ import { ModalConfig } from './nz-modal.type';
       class="ant-modal"
       [class]="config.nzClassName"
       [ngStyle]="config.nzStyle"
-      [style.width]="config.nzWidth | nzToCssUnit"
+      [style.width]="config?.nzWidth | nzToCssUnit"
     >
       <div class="ant-modal-content">
         <button *ngIf="config.nzClosable" nz-modal-close (click)="onCloseClick()"></button>
@@ -107,7 +108,7 @@ import { ModalConfig } from './nz-modal.type';
     '(mouseup)': 'onMouseup($event)'
   }
 })
-export class NzModalConfirmContainerComponent extends NzModalContainerComponent implements OnDestroy {
+export class NzModalConfirmContainerComponent extends BaseModalContainer implements OnDestroy {
   @ViewChild(CdkPortalOutlet, { static: true }) portalOutlet: CdkPortalOutlet;
   @ViewChild('modalElement', { static: true }) modalElementRef: ElementRef<HTMLDivElement>;
   @Output() readonly cancelTriggered = new EventEmitter<void>();
@@ -123,11 +124,12 @@ export class NzModalConfirmContainerComponent extends NzModalContainerComponent 
     render: Renderer2,
     zone: NgZone,
     overlayRef: OverlayRef,
-    public config: ModalConfig,
+    public config: ModalOptions,
     // tslint:disable-next-line:no-any
-    @Optional() @Inject(DOCUMENT) document: any
+    @Optional() @Inject(DOCUMENT) document: any,
+    @Optional() @Inject(ANIMATION_MODULE_TYPE) animationType: string
   ) {
-    super(elementRef, focusTrapFactory, cdr, render, zone, overlayRef, config, document);
+    super(elementRef, focusTrapFactory, cdr, render, zone, overlayRef, config, document, animationType);
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Modal');
     });

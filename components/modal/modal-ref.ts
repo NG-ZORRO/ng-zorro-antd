@@ -13,8 +13,8 @@ import { filter, take } from 'rxjs/operators';
 
 import { isPromise } from 'ng-zorro-antd/core';
 
-import { ModalConfig } from 'ng-zorro-antd/modal/nz-modal.type';
-import { NzModalContainerComponent } from './modal-container.component';
+import { ModalOptions } from 'ng-zorro-antd/modal/modal-types';
+import { BaseModalContainer } from './modal-container';
 import { NzModalLegacyAPI } from './modal-legacy-api';
 
 export const enum NzModalState {
@@ -29,7 +29,7 @@ export const enum NzTriggerAction {
 }
 
 // tslint:disable-next-line:no-any
-export class NzModalRef2<T = any, R = any> implements NzModalLegacyAPI<T, R> {
+export class NzModalRef<T = any, R = any> implements NzModalLegacyAPI<T, R> {
   componentInstance: T | null;
   result?: R;
   state: NzModalState = NzModalState.OPEN;
@@ -38,7 +38,7 @@ export class NzModalRef2<T = any, R = any> implements NzModalLegacyAPI<T, R> {
 
   private closeTimeout: number;
 
-  constructor(private overlayRef: OverlayRef, private config: ModalConfig, public containerInstance: NzModalContainerComponent) {
+  constructor(private overlayRef: OverlayRef, private config: ModalOptions, public containerInstance: BaseModalContainer) {
     containerInstance.animationStateChanged
       .pipe(
         filter(event => event.phaseName === 'done' && event.toState === 'enter'),
@@ -150,14 +150,6 @@ export class NzModalRef2<T = any, R = any> implements NzModalLegacyAPI<T, R> {
     this.state = NzModalState.CLOSING;
   }
 
-  updateSize(width: string = '', height: string = ''): this {
-    this.getPositionStrategy()
-      .width(width)
-      .height(height);
-    this.overlayRef.updatePosition();
-    return this;
-  }
-
   updatePosition(): this {
     const strategy = this.getPositionStrategy();
     strategy.centerHorizontally();
@@ -166,7 +158,7 @@ export class NzModalRef2<T = any, R = any> implements NzModalLegacyAPI<T, R> {
     return this;
   }
 
-  updateConfig(config: ModalConfig): void {
+  updateConfig(config: ModalOptions): void {
     Object.assign(this.config, config);
   }
 

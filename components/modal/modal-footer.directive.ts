@@ -7,14 +7,14 @@
  */
 
 import { Directive, Optional, TemplateRef } from '@angular/core';
-import { NzModalRef2 } from './nz-modal-ref';
+import { NzModalRef } from './modal-ref';
 
 @Directive({
   selector: '[nzModalFooter]',
   exportAs: 'nzModalFooter'
 })
 export class NzModalFooterDirective {
-  constructor(@Optional() private nzModalRef: NzModalRef2, public templateRef: TemplateRef<{}>) {
+  constructor(@Optional() private nzModalRef: NzModalRef, public templateRef: TemplateRef<{}>) {
     if (this.nzModalRef) {
       this.nzModalRef.updateConfig({
         nzFooter: this.templateRef

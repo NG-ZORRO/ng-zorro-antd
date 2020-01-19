@@ -20,12 +20,10 @@ import { NzModalCloseComponent } from './modal-close.component';
 import { NzModalConfirmContainerComponent } from './modal-confirm-container.component';
 import { NzModalContainerComponent } from './modal-container.component';
 import { NzModalFooterComponent } from './modal-footer.component';
+import { NzModalFooterDirective } from './modal-footer.directive';
 import { NzModalTitleComponent } from './modal-title.component';
-import { NzModal2Component } from './modal.component';
-import { NzModalControlServiceModule } from './nz-modal-control.service.module';
-import { NzModalFooterDirective } from './nz-modal-footer.directive';
-import { NzModalComponent } from './nz-modal.component';
-import { NzModalServiceModule } from './nz-modal.service.module';
+import { NzModalComponent } from './modal.component';
+import { NzModalService } from './modal.service';
 
 @NgModule({
   imports: [
@@ -37,11 +35,10 @@ import { NzModalServiceModule } from './nz-modal.service.module';
     NzButtonModule,
     NzIconModule,
     NzPipesModule,
-    NzNoAnimationModule,
-    NzModalServiceModule,
-    NzModalControlServiceModule
+    NzNoAnimationModule
   ],
-  exports: [NzModalComponent, NzModal2Component, NzModalFooterDirective, NzModalContainerComponent, NzModalConfirmContainerComponent],
+  exports: [NzModalComponent, NzModalFooterDirective],
+  providers: [NzModalService],
   declarations: [
     NzModalComponent,
     NzModalFooterDirective,
@@ -50,8 +47,7 @@ import { NzModalServiceModule } from './nz-modal.service.module';
     NzModalTitleComponent,
     NzModalContainerComponent,
     NzModalConfirmContainerComponent,
-    NzModal2Component
-  ],
-  entryComponents: [NzModalComponent, NzModalContainerComponent]
+    NzModalComponent
+  ]
 })
 export class NzModalModule {}
