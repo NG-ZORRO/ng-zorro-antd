@@ -6,8 +6,20 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Output, Renderer2, ViewEncapsulation } from '@angular/core';
+import { Direction, Directionality } from '@angular/cdk/bidi';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  OnDestroy,
+  Optional,
+  Output,
+  ViewEncapsulation
+} from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { NzCheckboxComponent } from './checkbox.component';
 
 @Component({
@@ -18,11 +30,19 @@ import { NzCheckboxComponent } from './checkbox.component';
   encapsulation: ViewEncapsulation.None,
   template: `
     <ng-content></ng-content>
-  `
+  `,
+  host: {
+    '[class.ant-checkbox-group]': 'true',
+    '[class.ant-checkbox-group-rtl]': `dir === 'rtl'`
+  }
 })
-export class NzCheckboxWrapperComponent {
+export class NzCheckboxWrapperComponent implements OnDestroy {
   @Output() readonly nzOnChange = new EventEmitter<NzSafeAny[]>();
   private checkboxList: NzCheckboxComponent[] = [];
+
+  dir: Direction;
+
+  private destroy$ = new Subject<void>();
 
   addCheckbox(value: NzCheckboxComponent): void {
     this.checkboxList.push(value);
@@ -37,7 +57,17 @@ export class NzCheckboxWrapperComponent {
     this.nzOnChange.emit(listOfCheckedValue);
   }
 
-  constructor(renderer: Renderer2, elementRef: ElementRef) {
-    renderer.addClass(elementRef.nativeElement, 'ant-checkbox-group');
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  constructor(cdr: ChangeDetectorRef, @Optional() directionality: Directionality) {
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      cdr.detectChanges();
+    });
+
+    this.dir = directionality.value;
   }
 }

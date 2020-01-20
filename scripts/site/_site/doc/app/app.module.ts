@@ -21,6 +21,7 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { ColorSketchModule } from 'ngx-color/sketch';
 
+import { BidiModule } from '@angular/cdk/bidi';
 import { environment } from '../environments/environment';
 import { DEMOComponent } from './_demo/demo.component';
 import { AppComponent } from './app.component';
@@ -31,13 +32,14 @@ import { FooterModule } from './footer/footer.module';
 import { HeaderModule } from './header/header.module';
 import { NzContributorsListModule } from './share/contributors-list/contributors-list.module';
 import { FixedWidgetsModule } from './share/fixed-widgets/fixed-widgets.module';
-import { NzNavBottomModule } from "./share/nav-bottom/nav-bottom.module";
+import { NzNavBottomModule } from './share/nav-bottom/nav-bottom.module';
 
 const icons: IconDefinition[] = [LeftOutline, RightOutline];
 
 @NgModule({
   declarations: [AppComponent, DEMOComponent],
   imports: [
+    BidiModule,
     BrowserModule.withServerTransition({ appId: 'docs' }),
     BrowserAnimationsModule,
     FormsModule,
@@ -62,14 +64,13 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline];
     NzContributorsListModule,
     FixedWidgetsModule,
     QuicklinkModule,
-    RouterModule.forRoot(routes, environment.production ? { preloadingStrategy: QuicklinkStrategy, scrollPositionRestoration: 'enabled'  } : {}),
+    RouterModule.forRoot(
+      routes,
+      environment.production ? { preloadingStrategy: QuicklinkStrategy, scrollPositionRestoration: 'enabled' } : {}
+    ),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production && !environment.preProduction })
   ],
-  providers: [
-    Title,
-    { provide: NZ_CONFIG, useValue: { icon: { nzTwotoneColor: '#1890ff' } }}
-  ],
+  providers: [Title, { provide: NZ_CONFIG, useValue: { icon: { nzTwotoneColor: '#1890ff' } } }],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule {}

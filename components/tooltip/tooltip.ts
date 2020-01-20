@@ -25,6 +25,7 @@ import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzTSType } from 'ng-zorro-antd/core/types';
 
+import { Directionality } from '@angular/cdk/bidi';
 import { isTooltipEmpty, NzTooltipBaseComponent, NzTooltipBaseDirective, NzTooltipTrigger } from './base';
 
 @Directive({
@@ -75,6 +76,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
     >
       <div
         class="ant-tooltip"
+        [class.ant-tooltip-rtl]="dir === 'rtl'"
         [ngClass]="_classMap"
         [ngStyle]="nzOverlayStyle"
         [@.disabled]="noAnimation?.nzNoAnimation"
@@ -95,8 +97,12 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
 export class NzToolTipComponent extends NzTooltipBaseComponent {
   @Input() nzTitle: NzTSType | null = null;
 
-  constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
-    super(cdr, noAnimation);
+  constructor(
+    cdr: ChangeDetectorRef,
+    @Optional() directionality: Directionality,
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+  ) {
+    super(cdr, directionality, noAnimation);
   }
 
   protected isEmpty(): boolean {

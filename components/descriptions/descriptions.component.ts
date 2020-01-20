@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -141,7 +142,8 @@ const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
     class: 'ant-descriptions',
     '[class.ant-descriptions-bordered]': 'nzBordered',
     '[class.ant-descriptions-middle]': 'nzSize === "middle"',
-    '[class.ant-descriptions-small]': 'nzSize === "small"'
+    '[class.ant-descriptions-small]': 'nzSize === "small"',
+    '[class.ant-descriptions-rtl]': 'dir === "rtl"'
   }
 })
 export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterContentInit {
@@ -159,11 +161,22 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
 
   itemMatrix: NzDescriptionsItemRenderProps[][] = [];
   realColumn = 3;
+  dir: Direction;
 
   private breakpoint: NzBreakpointEnum = NzBreakpointEnum.md;
   private destroy$ = new Subject<void>();
 
-  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef, private breakpointService: NzBreakpointService) {}
+  constructor(
+    public nzConfigService: NzConfigService,
+    private cdr: ChangeDetectorRef,
+    private breakpointService: NzBreakpointService,
+    directionality: Directionality) {
+
+    this.dir = directionality.value;
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzColumn) {
@@ -172,7 +185,10 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
   }
 
   ngAfterContentInit(): void {
-    const contentChange$ = this.items.changes.pipe(startWith(this.items), takeUntil(this.destroy$));
+    const contentChange$ = this.items.changes.pipe(
+      startWith(this.items),
+      takeUntil(this.destroy$)
+    );
 
     merge(
       contentChange$,

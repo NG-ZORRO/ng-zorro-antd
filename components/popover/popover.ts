@@ -25,6 +25,7 @@ import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzTSType } from 'ng-zorro-antd/core/types';
 
+import { Directionality } from '@angular/cdk/bidi';
 import { isTooltipEmpty, NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger } from 'ng-zorro-antd/tooltip';
 
 @Directive({
@@ -77,6 +78,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
     >
       <div
         class="ant-popover"
+        [class.ant-popover-rtl]="dir === 'rtl'"
         [ngClass]="_classMap"
         [ngStyle]="nzOverlayStyle"
         [@.disabled]="noAnimation?.nzNoAnimation"
@@ -103,10 +105,13 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
 export class NzPopoverComponent extends NzToolTipComponent {
   _prefix = 'ant-popover-placement';
 
-  constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
-    super(cdr, noAnimation);
+  constructor(
+    cdr: ChangeDetectorRef,
+    @Optional() directionality: Directionality,
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+  ) {
+    super(cdr, directionality, noAnimation);
   }
-
   protected isEmpty(): boolean {
     return isTooltipEmpty(this.nzTitle) && isTooltipEmpty(this.nzContent);
   }

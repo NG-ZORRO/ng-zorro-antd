@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ContentObserver } from '@angular/cdk/observers';
 import {
   AfterViewInit,
@@ -18,6 +19,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Renderer2,
   SimpleChanges,
   TemplateRef,
@@ -101,6 +103,8 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   countSingleArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   presetColor: string | null = null;
   count: number = 0;
+  dir: Direction;
+
   @ViewChild('contentElement', { static: false }) contentElement?: ElementRef;
   @Input() @InputBoolean() nzShowZero: boolean = false;
   @Input() @InputBoolean() nzShowDot = true;
@@ -137,8 +141,20 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     private elementRef: ElementRef,
     private contentObserver: ContentObserver,
     private cdr: ChangeDetectorRef,
-    private ngZone: NgZone
-  ) {}
+    private ngZone: NgZone,
+    @Optional() directionality: Directionality
+  ) {
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      this.prepareBadgeForRtl();
+      this.cdr.detectChanges();
+    });
+
+    renderer.addClass(elementRef.nativeElement, 'ant-badge');
+
+    this.dir = directionality.value;
+    this.prepareBadgeForRtl();
+  }
 
   ngOnInit(): void {
     this.generateMaxNumberArray();
@@ -178,5 +194,17 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  private prepareBadgeForRtl(): void {
+    if (this.isRtlLayout) {
+      this.renderer.addClass(this.elementRef.nativeElement, 'ant-badge-rtl');
+    } else {
+      this.renderer.removeClass(this.elementRef.nativeElement, 'ant-badge-rtl');
+    }
+  }
+
+  get isRtlLayout(): boolean {
+    return this.dir === 'rtl';
   }
 }

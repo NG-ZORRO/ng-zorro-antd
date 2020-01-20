@@ -6,8 +6,24 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, ContentChildren, Input, QueryList, TemplateRef, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ContentChildren,
+  ElementRef,
+  Input,
+  OnDestroy,
+  Optional,
+  QueryList,
+  Renderer2,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { NzCommentActionComponent as CommentAction } from './comment-cells';
 
 @Component({
@@ -42,13 +58,46 @@ import { NzCommentActionComponent as CommentAction } from './comment-cells';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    class: 'ant-comment'
+    '[class.ant-comment]': `true`,
+    '[class.ant-comment-rtl]': `dir === "rtl"`
   }
 })
-export class NzCommentComponent {
+export class NzCommentComponent implements OnDestroy {
   @Input() nzAuthor?: string | TemplateRef<void>;
   @Input() nzDatetime?: string | TemplateRef<void>;
+  dir: Direction;
+
+  private destroy$ = new Subject<void>();
 
   @ContentChildren(CommentAction) actions!: QueryList<CommentAction>;
-  constructor() {}
+  constructor(
+    cdr: ChangeDetectorRef,
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    @Optional() directionality: Directionality
+  ) {
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      this.prepareComponentForRtl();
+      cdr.detectChanges();
+    });
+
+    renderer.addClass(elementRef.nativeElement, 'ant-comment');
+
+    this.dir = directionality.value;
+    this.prepareComponentForRtl();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private prepareComponentForRtl(): void {
+    if (this.dir === 'rtl') {
+      this.renderer.addClass(this.elementRef.nativeElement, 'ant-comment-rtl');
+    } else {
+      this.renderer.removeClass(this.elementRef.nativeElement, 'ant-comment-rtl');
+    }
+  }
 }

@@ -31,12 +31,24 @@ import { PaginationItemRenderContext, PaginationItemType } from './pagination.ty
         <a *ngSwitchCase="'page'">{{ page }}</a>
         <ng-container *ngSwitchDefault>
           <a class="ant-pagination-item-link" [ngSwitch]="type">
-            <i nz-icon nzType="left" *ngSwitchCase="'prev'"></i>
-            <i nz-icon nzType="right" *ngSwitchCase="'next'"></i>
+            <ng-container *ngSwitchCase="'prev'" [ngSwitch]="direction">
+              <i *ngSwitchCase="'rtl'" nz-icon nzType="right"></i>
+              <i *ngSwitchDefault nz-icon nzType="left"></i>
+            </ng-container>
+            <ng-container *ngSwitchCase="'next'" [ngSwitch]="direction">
+              <i *ngSwitchCase="'rtl'" nz-icon nzType="left"></i>
+              <i *ngSwitchDefault nz-icon nzType="right"></i>
+            </ng-container>
             <div class="ant-pagination-item-container" *ngSwitchDefault>
               <ng-container [ngSwitch]="type">
-                <i *ngSwitchCase="'prev_5'" nz-icon nzType="double-left" class="ant-pagination-item-link-icon"></i>
-                <i *ngSwitchCase="'next_5'" nz-icon nzType="double-right" class="ant-pagination-item-link-icon"></i>
+                <ng-container *ngSwitchCase="'prev_5'" [ngSwitch]="direction">
+                  <i *ngSwitchCase="'rtl'" nz-icon nzType="double-right" class="ant-pagination-item-link-icon"></i>
+                  <i *ngSwitchDefault nz-icon nzType="double-left" class="ant-pagination-item-link-icon"></i>
+                </ng-container>
+                <ng-container *ngSwitchCase="'next_5'" [ngSwitch]="direction">
+                  <i *ngSwitchCase="'rtl'" nz-icon nzType="double-left" class="ant-pagination-item-link-icon"></i>
+                  <i *ngSwitchDefault nz-icon nzType="double-right" class="ant-pagination-item-link-icon"></i>
+                </ng-container>
               </ng-container>
               <span class="ant-pagination-item-ellipsis">•••</span>
             </div>
@@ -71,6 +83,7 @@ export class NzPaginationItemComponent implements OnChanges {
   @Input() locale: NzSafeAny = {};
   @Input() index: number | null = null;
   @Input() disabled = false;
+  @Input() direction = 'ltr';
   @Input() type: PaginationItemType | string | null = null;
   @Input() itemRender: TemplateRef<PaginationItemRenderContext> | null = null;
   @Output() readonly diffIndex = new EventEmitter<number>();

@@ -14,12 +14,17 @@ import {
   OnChanges,
   OnInit,
   Renderer2,
+  OnDestroy,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { Direction, Directionality } from '@angular/cdk/bidi';
+
 import { collapseMotion } from 'ng-zorro-antd/core/animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { NzMenuModeType } from './menu.types';
 
 @Component({
@@ -33,16 +38,28 @@ import { NzMenuModeType } from './menu.types';
     '[class.ant-menu]': 'true',
     '[class.ant-menu-inline]': 'true',
     '[class.ant-menu-sub]': 'true',
+    '[class.ant-menu-rtl]': `dir === 'rtl'`,
+    '[class]': 'menuClass',
     '[@collapseMotion]': 'expandState'
   }
 })
-export class NzSubmenuInlineChildComponent implements OnInit, OnChanges {
+export class NzSubmenuInlineChildComponent implements OnDestroy, OnInit, OnChanges {
   @Input() templateOutlet: TemplateRef<NzSafeAny> | null = null;
   @Input() menuClass: string = '';
   @Input() mode: NzMenuModeType = 'vertical';
   @Input() nzOpen = false;
   listOfCacheClassName: string[] = [];
   expandState = 'collapsed';
+  dir: Direction;
+  private destroy$ = new Subject<void>();
+
+  constructor(directionality: Directionality) {
+    this.dir = directionality.value;
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+    });
+  }
+
   calcMotionState(): void {
     if (this.nzOpen) {
       this.expandState = 'expanded';
@@ -76,5 +93,10 @@ export class NzSubmenuInlineChildComponent implements OnInit, OnChanges {
           });
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

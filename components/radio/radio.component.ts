@@ -24,6 +24,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -73,6 +74,7 @@ import { NzRadioService } from './radio.service';
     '[class.ant-radio-button-wrapper-checked]': 'isChecked && isRadioButton',
     '[class.ant-radio-wrapper-disabled]': 'nzDisabled && !isRadioButton',
     '[class.ant-radio-button-wrapper-disabled]': 'nzDisabled && isRadioButton',
+    '[class.ant-radio-button-wrapper-rtl]': `dir === 'rtl'`,
     '(click)': 'onHostClick($event)'
   }
 })
@@ -91,6 +93,8 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
   @Input() nzValue: NzSafeAny | null = null;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAutoFocus = false;
+
+  dir: Direction;
 
   onHostClick(event: MouseEvent): void {
     /** prevent label click triggered twice. **/
@@ -120,9 +124,17 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef,
     private focusMonitor: FocusMonitor,
+    @Optional() directionality: Directionality,
     @Optional() private nzRadioService: NzRadioService,
     @Optional() private nzRadioButtonDirective: NzRadioButtonDirective
-  ) {}
+  ) {
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      cdr.detectChanges();
+    });
+
+    this.dir = directionality.value;
+  }
 
   setDisabledState(disabled: boolean): void {
     this.nzDisabled = disabled;

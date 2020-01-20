@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import {
   ChangeDetectionStrategy,
@@ -18,6 +19,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   Renderer2,
   SimpleChanges,
@@ -46,6 +48,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'rate';
       #ulElement
       class="ant-rate"
       [class.ant-rate-disabled]="nzDisabled"
+      [class.ant-rate-rtl]="dir === 'rtl'"
       [ngClass]="classMap"
       (blur)="onBlur($event)"
       (focus)="onFocus($event)"
@@ -102,6 +105,7 @@ export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor,
   classMap: NgClassType = {};
   starArray: number[] = [];
   starStyleArray: NgClassType[] = [];
+  dir: Direction;
 
   private readonly destroy$ = new Subject<void>();
   private hasHalf = false;
@@ -123,7 +127,19 @@ export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor,
     this.hoverValue = Math.ceil(input);
   }
 
-  constructor(public nzConfigService: NzConfigService, private renderer: Renderer2, private cdr: ChangeDetectorRef) {}
+  constructor(
+    public nzConfigService: NzConfigService,
+    private renderer: Renderer2,
+    private cdr: ChangeDetectorRef,
+    @Optional() directionality: Directionality
+  ) {
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      cdr.detectChanges();
+    });
+
+    this.dir = directionality.value;
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzAutoFocus, nzCount, nzValue } = changes;

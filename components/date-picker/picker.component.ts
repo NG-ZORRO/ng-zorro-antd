@@ -38,6 +38,7 @@ import {
 } from '@angular/core';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 
+import { Direction } from '@angular/cdk/bidi';
 import { CandyDate, CompatibleValue } from 'ng-zorro-antd/core/time';
 import { NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
@@ -169,6 +170,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Input() popupStyle: NgStyleInterface | null = null;
   @Input() dropdownClassName?: string;
   @Input() suffixIcon?: string | TemplateRef<NzSafeAny>;
+  @Input() dir: Direction;
 
   @Output() readonly focusChange = new EventEmitter<boolean>();
   @Output() readonly valueChange = new EventEmitter<CandyDate | CandyDate[] | null>();
@@ -280,6 +282,23 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       this.panel?.cdr.markForCheck();
       this.changeDetector.markForCheck();
     });
+
+    if (this.dir === 'rtl') {
+      this.datePickerService.arrowPositionStyle = {
+        right: this.datePickerService.activeInput === 'right' ? `${arrowLeft}px` : '10px',
+        left: 'auto'
+      };
+    } else {
+      this.datePickerService.arrowPositionStyle = {
+        left: this.datePickerService.activeInput === 'left' ? '0px' : `${arrowLeft}px`
+      };
+    }
+    this.activeBarStyle = {
+      ...this.activeBarStyle,
+      ...this.datePickerService.arrowPositionStyle,
+      width: `${inputWidth}px`
+    };
+    this.changeDetector.markForCheck();
   }
 
   ngOnDestroy(): void {

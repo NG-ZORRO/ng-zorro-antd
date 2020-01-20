@@ -21,6 +21,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   Renderer2,
   SimpleChanges,
@@ -40,6 +41,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzTextCopyComponent } from './text-copy.component';
 import { NzTextEditComponent } from './text-edit.component';
 
@@ -83,6 +85,7 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
   preserveWhitespaces: false,
   host: {
     '[class.ant-typography]': '!editing',
+    '[class.ant-typography-rtl]': 'dir === "rtl"',
     '[class.ant-typography-edit-content]': 'editing',
     '[class.ant-typography-secondary]': 'nzType === "secondary"',
     '[class.ant-typography-warning]': 'nzType === "warning"',
@@ -131,6 +134,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   isEllipsis: boolean = true;
   expanded: boolean = false;
   ellipsisStr = '...';
+  dir: Direction;
 
   get canCssEllipsis(): boolean {
     return this.nzEllipsis && this.cssEllipsis && !this.expanded;
@@ -153,8 +157,15 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
     private platform: Platform,
     private i18n: NzI18nService,
     @Inject(DOCUMENT) document: NzSafeAny,
-    private resizeService: NzResizeService
+    private resizeService: NzResizeService,
+    @Optional() directionality: Directionality
   ) {
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      cdr.detectChanges();
+    });
+
+    this.dir = directionality.value;
     this.document = document;
   }
 

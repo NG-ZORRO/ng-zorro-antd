@@ -16,6 +16,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   QueryList,
   SimpleChange,
   SimpleChanges,
@@ -25,6 +26,7 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzTimelineItemComponent } from './timeline-item.component';
 import { TimelineService } from './timeline.service';
 
@@ -45,6 +47,7 @@ export type NzTimelineMode = typeof TimelineModes[number];
       [class.ant-timeline-alternate]="nzMode === 'alternate'"
       [class.ant-timeline-pending]="!!nzPending"
       [class.ant-timeline-reverse]="nzReverse"
+      [class.ant-timeline-rtl]="dir === 'rtl'"
     >
       <!-- User inserted timeline dots. -->
       <ng-container *ngIf="nzReverse" [ngTemplateOutlet]="pendingTemplate"></ng-container>
@@ -83,10 +86,18 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
 
   isPendingBoolean: boolean = false;
   timelineItems: NzTimelineItemComponent[] = [];
+  dir: Direction;
 
   private destroy$ = new Subject<void>();
 
-  constructor(private cdr: ChangeDetectorRef, private timelineService: TimelineService) {}
+  constructor(private cdr: ChangeDetectorRef, private timelineService: TimelineService, @Optional() directionality: Directionality) {
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      cdr.detectChanges();
+    });
+
+    this.dir = directionality.value;
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzMode, nzReverse, nzPending } = changes;

@@ -7,14 +7,18 @@
  */
 
 import { AnimationEvent } from '@angular/animations';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
+  Optional,
   Output,
   Renderer2,
   ViewEncapsulation
@@ -23,6 +27,8 @@ import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'nz-tag',
@@ -47,10 +53,9 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
     '(@fadeMotion.done)': 'afterAnimation($event)'
   }
 })
-export class NzTagComponent implements OnInit, OnChanges {
+export class NzTagComponent implements OnInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzChecked: BooleanInput;
   static ngAcceptInputType_nzNoAnimation: BooleanInput;
-
   presetColor = false;
   cacheClassName: string | null = null;
   @Input() nzMode: 'default' | 'closeable' | 'checkable' = 'default';
@@ -60,6 +65,10 @@ export class NzTagComponent implements OnInit, OnChanges {
   @Output() readonly nzAfterClose = new EventEmitter<void>();
   @Output() readonly nzOnClose = new EventEmitter<MouseEvent>();
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
+
+  dir: Direction;
+
+  private destroy$ = new Subject<void>();
 
   private isPresetColor(color?: string): boolean {
     if (!color) {
@@ -107,7 +116,21 @@ export class NzTagComponent implements OnInit, OnChanges {
     }
   }
 
-  constructor(private renderer: Renderer2, private elementRef: ElementRef) {}
+  constructor(
+    cdr: ChangeDetectorRef,
+    private renderer: Renderer2,
+    private elementRef: ElementRef,
+    @Optional() directionality: Directionality
+  ) {
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      this.prepareComponentForRtl();
+      cdr.detectChanges();
+    });
+
+    this.dir = directionality.value;
+    this.prepareComponentForRtl();
+  }
 
   ngOnInit(): void {
     this.updateClassMap();
@@ -115,5 +138,21 @@ export class NzTagComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     this.updateClassMap();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private prepareComponentForRtl(): void {
+    if (this.isRtlLayout) {
+      this.renderer.addClass(this.elementRef.nativeElement, 'ant-tag-rtl');
+    } else {
+      this.renderer.removeClass(this.elementRef.nativeElement, 'ant-tag-rtl');
+    }
+  }
+  get isRtlLayout(): boolean {
+    return this.dir === 'rtl';
   }
 }

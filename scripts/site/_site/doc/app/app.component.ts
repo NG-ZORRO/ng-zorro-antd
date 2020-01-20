@@ -2,6 +2,7 @@ import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterContentInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   HostListener,
@@ -39,7 +40,6 @@ type SiteTheme = 'default' | 'dark' | 'compact';
   templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit, AfterContentInit {
-
   /**
    * When the screen size is smaller that 768 pixel, show the drawer and hide
    * the navigation on the side.
@@ -62,6 +62,7 @@ export class AppComponent implements OnInit, AfterContentInit {
     return window && window.location.href.indexOf('/version') === -1;
   }
 
+  direction: string = 'ltr';
   language = 'zh';
   currentVersion = VERSION.full;
 
@@ -74,11 +75,21 @@ export class AppComponent implements OnInit, AfterContentInit {
     this.router.navigateByUrl(url.join('/') + '/' + language);
   }
 
+  switchDirection(direction: string): void {
+    this.direction = direction;
+    if (direction === 'rtl') {
+      this.renderer.setAttribute(document.body, 'dir', 'rtl');
+    } else {
+      this.renderer.removeAttribute(document.body, 'dir');
+    }
+    this.cdr.detectChanges();
+  }
+
   initTheme(): void {
     if (!this.platform.isBrowser) {
       return;
     }
-    const theme = localStorage.getItem('site-theme') as SiteTheme || 'default';
+    const theme = (localStorage.getItem('site-theme') as SiteTheme) || 'default';
     this.onThemeChange(theme);
   }
 
@@ -116,6 +127,7 @@ export class AppComponent implements OnInit, AfterContentInit {
     private platform: Platform,
     private meta: Meta,
     private renderer: Renderer2,
+    private cdr: ChangeDetectorRef,
     // tslint:disable-next-line:no-any
     @Inject(DOCUMENT) private document: any
   ) {}
@@ -167,10 +179,7 @@ export class AppComponent implements OnInit, AfterContentInit {
           this.searchComponent = null;
         }
         this.setPage(this.router.url);
-        this.language = this.router.url
-          .split('/')
-          [this.router.url.split('/').length - 1].split('#')[0]
-          .split('?')[0];
+        this.language = this.router.url.split('/')[this.router.url.split('/').length - 1].split('#')[0].split('?')[0];
         this.appService.language$.next(this.language);
         this.nzI18nService.setLocale(this.language === 'en' ? en_US : zh_CN);
         this.updateDocMetaAndLocale();

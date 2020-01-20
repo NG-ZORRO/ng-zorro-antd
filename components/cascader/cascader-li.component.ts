@@ -18,6 +18,8 @@ import {
 } from '@angular/core';
 
 import { NzCascaderOption } from './typings';
+// tslint:disable-next-line: ordered-imports
+import { Directionality, Direction } from '@angular/cdk/bidi';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,7 +34,7 @@ import { NzCascaderOption } from './typings';
       <span [innerHTML]="optionLabel | nzHighlight: highlightText:'g':'ant-cascader-menu-item-keyword'"></span>
     </ng-template>
     <span *ngIf="!option.isLeaf || option.children?.length || option.loading" class="ant-cascader-menu-item-expand-icon">
-      <i nz-icon [nzType]="option.loading ? 'loading' : 'right'"></i>
+      <i nz-icon [nzType]="option.loading ? 'loading' : getArrowByDirection()"></i>
     </span>
   `,
   host: {
@@ -49,9 +51,15 @@ export class NzCascaderOptionComponent {
   @Input() highlightText!: string;
   @Input() nzLabelProperty = 'label';
   @Input() columnIndex!: number;
+  dir: Direction;
 
-  constructor(private cdr: ChangeDetectorRef, elementRef: ElementRef, renderer: Renderer2) {
+  constructor(private cdr: ChangeDetectorRef, elementRef: ElementRef, renderer: Renderer2, directionality: Directionality) {
     renderer.addClass(elementRef.nativeElement, 'ant-cascader-menu-item');
+
+    this.dir = directionality.value;
+    directionality.change.subscribe(() => {
+      this.dir = directionality.value;
+    });
   }
 
   get optionLabel(): string {
@@ -60,5 +68,11 @@ export class NzCascaderOptionComponent {
 
   markForCheck(): void {
     this.cdr.markForCheck();
+  }
+  getArrowByDirection(): string {
+    if (this.dir === 'rtl') {
+      return 'left';
+    }
+    return 'right';
   }
 }

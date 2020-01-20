@@ -8,20 +8,26 @@
 
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChild,
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
+  OnDestroy,
   Optional,
   Output,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { Location } from '@angular/common';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { PREFIX } from 'ng-zorro-antd/core/logger';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { NzPageHeaderBreadcrumbDirective, NzPageHeaderFooterDirective } from './page-header-cells';
 
 const NZ_CONFIG_COMPONENT_NAME = 'pageHeader';
@@ -69,10 +75,11 @@ const NZ_CONFIG_COMPONENT_NAME = 'pageHeader';
     class: 'ant-page-header',
     '[class.has-footer]': 'nzPageHeaderFooter',
     '[class.ant-page-header-ghost]': 'nzGhost',
-    '[class.has-breadcrumb]': 'nzPageHeaderBreadcrumb'
+    '[class.has-breadcrumb]': 'nzPageHeaderBreadcrumb',
+    '[class.ant-page-header-rtl]': `dir === 'rtl'`
   }
 })
-export class NzPageHeaderComponent {
+export class NzPageHeaderComponent implements OnChanges, OnDestroy {
   @Input() nzBackIcon: string | TemplateRef<void> | null = null;
   @Input() nzTitle?: string | TemplateRef<void>;
   @Input() nzSubtitle?: string | TemplateRef<void>;
@@ -82,7 +89,28 @@ export class NzPageHeaderComponent {
   @ContentChild(NzPageHeaderFooterDirective, { static: false }) nzPageHeaderFooter?: ElementRef<NzPageHeaderFooterDirective>;
   @ContentChild(NzPageHeaderBreadcrumbDirective, { static: false }) nzPageHeaderBreadcrumb?: ElementRef<NzPageHeaderBreadcrumbDirective>;
 
-  constructor(@Optional() private location: Location, public nzConfigService: NzConfigService) {}
+  dir: Direction;
+
+  private destroy$ = new Subject<void>();
+
+  constructor(
+    cdr: ChangeDetectorRef,
+    private location: Location,
+    public nzConfigService: NzConfigService,
+    @Optional() directionality: Directionality
+  ) {
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      cdr.detectChanges();
+    });
+
+    this.dir = directionality.value;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   onBack(): void {
     if (this.nzBack.observers.length) {
@@ -93,5 +121,14 @@ export class NzPageHeaderComponent {
       }
       this.location.back();
     }
+  }
+  getBackIcon(): string | TemplateRef<void> {
+    if (this.nzBackIcon) {
+      return this.nzBackIcon;
+    }
+    if (this.dir === 'rtl') {
+      return 'arrow-right';
+    }
+    return 'arrow-left';
   }
 }

@@ -11,6 +11,7 @@ import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -19,6 +20,7 @@ import {
   NgZone,
   OnChanges,
   OnDestroy,
+  Optional,
   Output,
   Renderer2,
   SimpleChanges,
@@ -33,6 +35,7 @@ import { getStyleAsText, InputNumber, shallowEqual } from 'ng-zorro-antd/core/ut
 import { fromEvent, merge, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { auditTime, map, takeUntil } from 'rxjs/operators';
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { AffixRespondEvents } from './respond-events';
 import { getTargetRect, SimpleRect } from './utils';
 
@@ -72,6 +75,9 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   @Output() readonly nzChange = new EventEmitter<boolean>();
 
+  dir: Direction;
+  private directionChangeSubscription: Subscription = Subscription.EMPTY;
+
   private readonly placeholderNode: HTMLElement;
 
   private affixStyle?: NgStyleInterface;
@@ -94,11 +100,21 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
     private scrollSrv: NzScrollService,
     private ngZone: NgZone,
     private platform: Platform,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    cdr: ChangeDetectorRef,
+    @Optional() directionality: Directionality
   ) {
     // The wrapper would stay at the original position as a placeholder.
     this.placeholderNode = el.nativeElement;
     this.document = doc;
+
+    this.directionChangeSubscription = directionality.change.subscribe(() => {
+      this.dir = directionality.value;
+      this.updatePosition({} as Event);
+      cdr.detectChanges();
+    });
+
+    this.dir = directionality.value;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -118,6 +134,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.removeListeners();
+    this.directionChangeSubscription.unsubscribe();
   }
 
   private registerListeners(): void {
@@ -178,10 +195,17 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
     this.affixStyle = affixStyle;
     if (fixed) {
       wrapEl.classList.add(NZ_AFFIX_CLS_PREFIX);
+
+      if (this.dir === 'rtl') {
+        wrapEl.classList.add(`${NZ_AFFIX_CLS_PREFIX}-rtl`);
+      }
     } else {
       wrapEl.classList.remove(NZ_AFFIX_CLS_PREFIX);
-    }
 
+      if (this.dir === 'rtl') {
+        wrapEl.classList.remove(`${NZ_AFFIX_CLS_PREFIX}-rtl`);
+      }
+    }
     if ((affixStyle && !originalAffixStyle) || (!affixStyle && originalAffixStyle)) {
       this.nzChange.emit(fixed);
     }

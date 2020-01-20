@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
   AfterViewInit,
@@ -17,6 +18,8 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
+  Optional,
   Output,
   Renderer2,
   SimpleChanges,
@@ -386,16 +389,36 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
 
   origin?: CdkOverlayOrigin;
   preferredPlacement = 'top';
+  public dir: Direction;
 
   _classMap: NgClassInterface = {};
   _hasBackdrop = false;
   _prefix = 'ant-tooltip-placement';
   _positions: ConnectionPositionPair[] = [...DEFAULT_TOOLTIP_POSITIONS];
 
-  constructor(public cdr: ChangeDetectorRef, public noAnimation?: NzNoAnimationDirective) {}
+  private destroy$ = new Subject<void>();
+
+  get content(): string | TemplateRef<void> | null {
+    return this.nzContent !== undefined ? this.nzContent : this.nzContentTemplate;
+  }
+
+  get title(): string | TemplateRef<void> | null {
+    return this.nzTitle !== undefined ? this.nzTitle : this.nzTitleTemplate;
+  }
+
+  constructor(public cdr: ChangeDetectorRef, @Optional() directionality: Directionality, public noAnimation?: NzNoAnimationDirective) {
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      cdr.detectChanges();
+    });
+
+    this.dir = directionality.value;
+  }
 
   ngOnDestroy(): void {
     this.nzVisibleChange.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   show(): void {
@@ -407,6 +430,11 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
       this.nzVisible = true;
       this.nzVisibleChange.next(true);
       this.cdr.detectChanges();
+    }
+
+    // for ltr for overlay to display tooltip in correct placement in rtl direction.
+    if (this.origin && this.overlay && this.overlay.overlayRef && this.overlay.overlayRef.getDirection() === 'rtl') {
+      this.overlay.overlayRef.setDirection('ltr');
     }
   }
 

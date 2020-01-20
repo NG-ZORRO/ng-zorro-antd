@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import {
   AfterViewInit,
@@ -19,6 +20,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -56,6 +58,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'table';
       <div
         #tableMainElement
         class="ant-table"
+        [class.ant-table-rtl]= "dir === 'rtl'"
         [class.ant-table-fixed-header]="nzData.length && scrollY"
         [class.ant-table-fixed-column]="scrollX"
         [class.ant-table-has-fix-left]="hasFixLeft"
@@ -118,7 +121,9 @@ const NZ_CONFIG_COMPONENT_NAME = 'table';
     <ng-template #contentTemplate><ng-content></ng-content></ng-template>
   `,
   host: {
-    '[class.ant-table-wrapper]': 'true'
+    '[class.ant-table-wrapper]': 'true',
+    '[class.ant-table-wrapper-rtl]': 'dir === "rtl"'
+
   }
 })
 export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
@@ -179,6 +184,7 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterView
   private destroy$ = new Subject<void>();
   private loading$ = new BehaviorSubject<boolean>(false);
   private templateMode$ = new BehaviorSubject<boolean>(false);
+  dir: Direction;
   @ContentChild(NzTableVirtualScrollDirective, { static: false })
   nzVirtualScrollDirective!: NzTableVirtualScrollDirective;
   @ViewChild(NzTableInnerScrollComponent) nzTableInnerScrollComponent!: NzTableInnerScrollComponent;
@@ -197,7 +203,8 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterView
     private nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
     private nzTableStyleService: NzTableStyleService,
-    private nzTableDataService: NzTableDataService
+    private nzTableDataService: NzTableDataService,
+    @Optional() directionality: Directionality
   ) {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
@@ -205,6 +212,11 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterView
       .subscribe(() => {
         this.cdr.markForCheck();
       });
+    this.dir = directionality.value;
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      cdr.detectChanges();
+    });
   }
 
   ngOnInit(): void {

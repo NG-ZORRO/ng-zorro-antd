@@ -38,6 +38,7 @@ import { takeUntil } from 'rxjs/operators';
 import { DatePickerService } from './date-picker.service';
 
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzPickerComponent } from './picker.component';
 import { CompatibleDate, DisabledTimeFn, PanelMode, PresetRanges, SupportTimeOptions } from './standard-types';
 
@@ -125,6 +126,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   focused: boolean = false;
   extraFooter?: TemplateRef<void> | string;
   hostClassMap: NgClassInterface = {};
+  dir: Direction;
 
   protected destroyed$: Subject<void> = new Subject();
   protected isCustomPlaceHolder: boolean = false;
@@ -179,6 +181,18 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     return this.picker.animationOpenState;
   } // Use picker's real open state to let re-render the picker's content when shown up
 
+  updateHostClass(): void {
+    this.hostClassMap = {
+      [`ant-picker`]: true,
+      [`ant-picker-range`]: this.isRange,
+      [`ant-picker-large`]: this.nzSize === 'large',
+      [`ant-picker-small`]: this.nzSize === 'small',
+      [`ant-picker-focused`]: this.focused,
+      [`ant-picker-disabled`]: this.nzDisabled,
+      [`ant-picker-rtl`]: this.dir === 'rtl'
+    };
+  }
+
   constructor(
     public nzConfigService: NzConfigService,
     public datePickerService: DatePickerService,
@@ -187,8 +201,17 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     private renderer: Renderer2,
     private elementRef: ElementRef,
     protected dateHelper: DateHelperService,
+    @Optional() directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
-  ) {}
+  ) {
+    directionality.change.pipe(takeUntil(this.destroyed$)).subscribe(() => {
+      this.dir = directionality.value;
+      this.updateHostClass();
+      cdr.detectChanges();
+    });
+    this.dir = directionality.value;
+    this.updateHostClass();
+  }
 
   ngOnInit(): void {
     // Subscribe the every locale change if the nzLocale is not handled by user

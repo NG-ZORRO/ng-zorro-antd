@@ -33,7 +33,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { slideMotion, zoomMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-
+import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 import {
   NzFormatEmitEvent,
   NzTreeBase,
@@ -46,10 +47,9 @@ import { BooleanInput, NgStyleInterface, NzSizeLDSType, OnChangeType, OnTouchedT
 import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzSelectSearchComponent } from 'ng-zorro-antd/select';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
-
 import { merge, of as observableOf, Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
-
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzTreeSelectService } from './tree-select.service';
 
 export function higherOrderServiceFactory(injector: Injector): NzTreeBaseService {
@@ -83,6 +83,8 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         [class.ant-select-dropdown-placement-bottomLeft]="dropDownPosition === 'bottom'"
         [class.ant-select-dropdown-placement-topLeft]="dropDownPosition === 'top'"
+        [class.ant-tree-select-dropdown-rtl]="dir === 'rtl'"
+        [dir]="dir === 'rtl' ? 'rtl' : 'ltr'"
         [ngStyle]="nzDropdownStyle"
       >
         <nz-tree
@@ -194,6 +196,7 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
   ],
   host: {
     '[class.ant-select-lg]': 'nzSize==="large"',
+    '[class.ant-select-rtl]': 'dir==="rtl"',
     '[class.ant-select-sm]': 'nzSize==="small"',
     '[class.ant-select-enabled]': '!nzDisabled',
     '[class.ant-select-disabled]': 'nzDisabled',
@@ -282,6 +285,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   selectedNodes: NzTreeNode[] = [];
   expandedKeys: string[] = [];
   value: string[] = [];
+  dir: Direction;
+
+  private destroy$ = new Subject<void>();
 
   onChange: OnChangeType = _value => {};
   onTouched: OnTouchedType = () => {};
@@ -300,11 +306,20 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
+    @Optional() directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     super(nzTreeService);
+
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      cdr.detectChanges();
+    });
+
     this.renderer.addClass(this.elementRef.nativeElement, 'ant-select');
     this.renderer.addClass(this.elementRef.nativeElement, 'ant-tree-select');
+
+    this.dir = directionality.value;
   }
 
   ngOnInit(): void {
@@ -315,7 +330,8 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   ngOnDestroy(): void {
     this.isDestroy = true;
     this.closeDropDown();
-    this.selectionChangeSubscription.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   setDisabledState(isDisabled: boolean): void {
@@ -432,7 +448,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
 
   subscribeSelectionChange(): Subscription {
     return merge(
-      this.nzTreeClick.pipe(
+      this.nzTreeClick.pipe(takeUntil(this.destroy$)).pipe(
         tap((event: NzFormatEmitEvent) => {
           const node = event.node!;
           if (this.nzCheckable && !node.isDisabled && !node.isDisableCheckbox) {

@@ -9,6 +9,7 @@
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChildren,
   EventEmitter,
@@ -16,6 +17,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   QueryList,
   SimpleChanges,
@@ -28,6 +30,7 @@ import { startWith, takeUntil } from 'rxjs/operators';
 
 import { BooleanInput, NgClassType, NzSizeDSType } from 'ng-zorro-antd/core/types';
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzStepComponent } from './step.component';
 
 export type NzDirectionType = 'horizontal' | 'vertical';
@@ -77,6 +80,18 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
   showProcessDot = false;
   customProcessDotTemplate?: TemplateRef<{ $implicit: TemplateRef<void>; status: string; index: number }>;
   classMap: NgClassType = {};
+  dir: Direction;
+
+  constructor(cdr: ChangeDetectorRef, @Optional() directionality: Directionality) {
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      this.setClassMap();
+      cdr.detectChanges();
+    });
+
+    this.dir = directionality.value;
+    this.setClassMap();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzStartIndex || changes.nzDirection || changes.nzStatus || changes.nzCurrent) {
@@ -140,7 +155,12 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
       [`ant-steps-label-vertical`]: (this.showProcessDot || this.nzLabelPlacement === 'vertical') && this.nzDirection === 'horizontal',
       [`ant-steps-dot`]: this.showProcessDot,
       ['ant-steps-small']: this.nzSize === 'small',
-      ['ant-steps-navigation']: this.nzType === 'navigation'
+      ['ant-steps-navigation']: this.nzType === 'navigation',
+      ['ant-steps-rtl']: this.dir === 'rtl'
     };
+  }
+
+  get isRtlLayout(): boolean {
+    return this.dir === 'rtl';
   }
 }

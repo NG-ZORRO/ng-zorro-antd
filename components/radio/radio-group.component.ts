@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -15,6 +16,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
@@ -22,6 +24,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BooleanInput, NzSafeAny, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { NzRadioService } from './radio.service';
 
 export type NzRadioButtonStyle = 'outline' | 'solid';
@@ -45,7 +48,8 @@ export type NzRadioButtonStyle = 'outline' | 'solid';
     '[class.ant-radio-group]': `true`,
     '[class.ant-radio-group-large]': `nzSize === 'large'`,
     '[class.ant-radio-group-small]': `nzSize === 'small'`,
-    '[class.ant-radio-group-solid]': `nzButtonStyle === 'solid'`
+    '[class.ant-radio-group-solid]': `nzButtonStyle === 'solid'`,
+    '[class.ant-radio-group-rtl]': `dir === 'rtl'`
   }
 })
 export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDestroy, OnChanges {
@@ -53,14 +57,27 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDe
 
   private value: NzSafeAny | null = null;
   private destroy$ = new Subject();
-  onChange: OnChangeType = () => {};
-  onTouched: OnTouchedType = () => {};
+  onChange: OnChangeType = () => { };
+  onTouched: OnTouchedType = () => { };
   @Input() @InputBoolean() nzDisabled = false;
   @Input() nzButtonStyle: NzRadioButtonStyle = 'outline';
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzName: string | null = null;
 
-  constructor(private cdr: ChangeDetectorRef, private nzRadioService: NzRadioService) {}
+  dir: Direction;
+
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private nzRadioService: NzRadioService,
+    @Optional() directionality: Directionality
+  ) {
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      cdr.detectChanges();
+    });
+
+    this.dir = directionality.value;
+  }
 
   ngOnInit(): void {
     this.nzRadioService.selected$.subscribe(value => {

@@ -22,6 +22,7 @@ import {
 } from '@angular/core';
 
 import { CandyDate, cloneDate, CompatibleValue, SingleValue, sortRangeValue } from 'ng-zorro-antd/core/time';
+import { Direction } from '@angular/cdk/bidi';
 import { FunctionProp } from 'ng-zorro-antd/core/types';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
@@ -113,7 +114,7 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
     </ng-template>
 
     <ng-template #tplRangePart let-partType="partType">
-      <div class="{{ prefixCls }}-panel">
+      <div class="{{ prefixCls }}-panel" [class.ant-picker-panel-rtl]="dir === 'rtl'">
         <ng-container *ngTemplateOutlet="tplInnerPopup; context: { partType: partType }"></ng-container>
       </div>
     </ng-template>
@@ -150,6 +151,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   @Output() readonly panelModeChange = new EventEmitter<PanelMode | PanelMode[]>();
   @Output() readonly calendarChange = new EventEmitter<CompatibleValue>();
   @Output() readonly resultOk = new EventEmitter<void>(); // Emitted when done with date selecting
+  @Input() dir: Direction;
 
   prefixCls: string = PREFIX_CLASS;
   endPanelMode: PanelMode | PanelMode[] = 'date';

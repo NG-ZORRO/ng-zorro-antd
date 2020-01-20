@@ -6,8 +6,20 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { Direction, Directionality } from '@angular/cdk/bidi';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+  Optional,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { NzStatisticValueType } from './typings';
 
 @Component({
@@ -16,7 +28,7 @@ import { NzStatisticValueType } from './typings';
   selector: 'nz-statistic',
   exportAs: 'nzStatistic',
   template: `
-    <div class="ant-statistic">
+    <div class="ant-statistic" [class.ant-statistic-rtl]="dir === 'rtl'">
       <div class="ant-statistic-title">
         <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
       </div>
@@ -32,11 +44,28 @@ import { NzStatisticValueType } from './typings';
     </div>
   `
 })
-export class NzStatisticComponent {
+export class NzStatisticComponent implements OnDestroy {
   @Input() nzPrefix?: string | TemplateRef<void>;
   @Input() nzSuffix?: string | TemplateRef<void>;
   @Input() nzTitle?: string | TemplateRef<void>;
   @Input() nzValue?: NzStatisticValueType;
   @Input() nzValueStyle: NgStyleInterface = {};
   @Input() nzValueTemplate?: TemplateRef<{ $implicit: NzStatisticValueType }>;
+  dir: Direction;
+
+  private destroy$ = new Subject<void>();
+
+  constructor(cdr: ChangeDetectorRef, @Optional() directionality: Directionality) {
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      cdr.detectChanges();
+    });
+
+    this.dir = directionality.value;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }
