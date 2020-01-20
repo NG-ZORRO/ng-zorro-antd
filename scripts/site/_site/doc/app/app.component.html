@@ -1,5 +1,5 @@
 <div id="ng-content" [style.transform]="isDrawerOpen ? 'translateX(245px)' : null">
-  <div class="page-wrapper">
+  <div class="page-wrapper" [class.page-wrapper-rtl]="direction === 'rtl'" [dir]="direction">
     <app-header
       [windowWidth]="windowWidth"
       [page]="page"

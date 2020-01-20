@@ -1,6 +1,6 @@
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
-import { AfterContentInit, Component, ElementRef, HostListener, Inject, NgZone, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterContentInit, ChangeDetectorRef, Component, ElementRef, HostListener, Inject, NgZone, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { en_US, NzI18nService, zh_CN } from 'ng-zorro-antd/i18n';
@@ -52,6 +52,7 @@ export class AppComponent implements OnInit, AfterContentInit {
   }
 
   language: 'zh' | 'en' = 'zh';
+  direction: 'ltr' | 'rtl' = 'ltr';
   currentVersion = VERSION.full;
 
   @ViewChild('searchInput', { static: false }) searchInput?: ElementRef<HTMLInputElement>;
@@ -63,12 +64,14 @@ export class AppComponent implements OnInit, AfterContentInit {
     this.router.navigateByUrl(url.join('/') + '/' + language);
   }
 
-  switchDirection(direction: string): void {
+  switchDirection(direction: 'ltr' | 'rtl'): void {
+    this.direction = direction;
     if (direction === 'rtl') {
       this.renderer.addClass(document.body, 'rtl');
     } else {
       this.renderer.removeClass(document.body, 'rtl');
     }
+    this.cdr.detectChanges();
   }
 
   initTheme(): void {
@@ -113,6 +116,7 @@ export class AppComponent implements OnInit, AfterContentInit {
     private platform: Platform,
     private meta: Meta,
     private renderer: Renderer2,
+    private cdr: ChangeDetectorRef,
     // tslint:disable-next-line:no-any
     @Inject(DOCUMENT) private document: any
   ) { }
