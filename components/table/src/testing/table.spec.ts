@@ -215,6 +215,13 @@ describe('nz-table', () => {
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-table-placeholder').innerText.trim()).toBe('No Data');
     });
+
+    it('#RTL', () => {
+      document.body.setAttribute('dir', 'rtl');
+      fixture.detectChanges();
+      expect(table.nativeElement.classList).toContain('ant-table-wrapper-rtl');
+      expect(table.nativeElement.querySelector('.ant-table-rtl').classList).toContain('ant-table-rtl');
+    });
   });
   describe('scroll nz-table', () => {
     let fixture: ComponentFixture<NzTestTableScrollComponent>;
