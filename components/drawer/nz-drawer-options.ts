@@ -35,5 +35,5 @@ export interface NzDrawerOptionsOfComponent<T = any, D = any> {
 // tslint:disable-next-line:no-any
 export interface NzDrawerOptions<T = any, D = any> extends NzDrawerOptionsOfComponent<T, D> {
   // tslint:disable-next-line:no-any
-  nzOnCancel?(): Promise<any>;
+  nzOnCancel?(instance: T): (boolean | void | {}) | Promise<boolean | void | {}>;
 }

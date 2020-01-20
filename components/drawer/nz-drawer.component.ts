@@ -13,6 +13,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ComponentRef,
   EventEmitter,
   Inject,
   Injector,
@@ -161,6 +162,8 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
     return value instanceof TemplateRef;
   }
 
+  private contentComponentRef: ComponentRef<T>;
+
   constructor(
     // tslint:disable-next-line:no-any
     @Optional() @Inject(DOCUMENT) private document: any,
@@ -272,9 +275,9 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
     if (this.nzContent instanceof Type) {
       const childInjector = new PortalInjector(this.injector, new WeakMap([[NzDrawerRef, this]]));
       const componentPortal = new ComponentPortal<T>(this.nzContent, null, childInjector);
-      const componentRef = this.bodyPortalOutlet.attachComponentPortal(componentPortal);
-      Object.assign(componentRef.instance, this.nzContentParams);
-      componentRef.changeDetectorRef.detectChanges();
+      this.contentComponentRef = this.bodyPortalOutlet.attachComponentPortal(componentPortal);
+      Object.assign(this.contentComponentRef.instance, this.nzContentParams);
+      this.contentComponentRef.changeDetectorRef.detectChanges();
     }
   }
 
@@ -351,5 +354,13 @@ export class NzDrawerComponent<T = any, R = any, D = any> extends NzDrawerRef<R>
     if (this.focusTrap) {
       this.focusTrap.destroy();
     }
+  }
+
+  getContentComponentRef(): ComponentRef<T> {
+    return this.contentComponentRef;
+  }
+
+  getContentComponent(): T {
+    return this.contentComponentRef && this.contentComponentRef.instance;
   }
 }

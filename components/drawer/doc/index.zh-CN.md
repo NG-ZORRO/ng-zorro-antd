@@ -51,7 +51,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | --- | --- | --- | --- |
 | nzContent | Drawer body 的内容 | `TemplateRef<{ $implicit: D, drawerRef: NzDrawerRef }> \|  Type<T>` | - |
 | nzContentParams | 内容组件的输入参数 / Template的 context | `D` | - |
-| nzOnCancel | 点击遮罩层或右上角叉时执行,该函数可返回 promise 待执行完毕或 promise 结束时，将自动关闭对话框（返回false可阻止关闭） | `() => Promise<any>` | - |
+| nzOnCancel | 点击遮罩层或右上角叉时执行（若nzContent为Component，则将会以该Component实例作为参数）,该函数可返回 promise 待执行完毕或 promise 结束时，将自动关闭对话框（返回false可阻止关闭） | `(instance: T) => (boolean \| void \| {}) \| Promise<boolean \| void \| {}>` | - |
 | nzClosable | 是否显示右上角的关闭按钮 | `boolean` | `true` |
 | nzMaskClosable | 点击蒙层是否允许关闭 | `boolean` | `true` |
 | nzMask | 是否展示遮罩 | `boolean` | `true` |

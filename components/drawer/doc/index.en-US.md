@@ -53,7 +53,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | nzContent |  The drawer body content. | `TemplateRef<{ $implicit: D, drawerRef: NzDrawerRef }> \| Type<T>` | - |
 | nzContentParams | The component inputs the param / The Template context. | `D` | - |
 | nzClosable | Whether a close (x) button is visible on top right of the Drawer dialog or not. | `boolean` | `true` |
-| nzOnCancel | Execute when click on the mask or the upper cancel button, This function returns a promise, which is automatically closed when the execution is complete or the promise ends (return false to prevent closing) | `() => Promise<any>` | - |
+| nzOnCancel | Execute when click on the mask or the upper cancel button(If nzContent is Component, the Component instance will be put in as an argument), This function returns a promise, which is automatically closed when the execution is complete or the promise ends (return false to prevent closing) | `(instance: T) => (boolean \| void \| {}) \| Promise<boolean \| void \| {}>` | - |
 | nzMaskClosable | Clicking on the mask (area outside the Drawer) to close the Drawer or not. | `boolean` | `true` |
 | nzMask | Whether to show mask or not. | `boolean` | `true` |
 | nzKeyboard | Whether support press esc to close | `boolean` | `true` |

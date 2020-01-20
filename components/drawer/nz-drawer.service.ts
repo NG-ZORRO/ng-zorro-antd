@@ -9,6 +9,7 @@
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { ComponentRef, Injectable } from '@angular/core';
+import { isPromise } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzDrawerOptions, NzDrawerOptionsOfComponent } from './nz-drawer-options';
@@ -32,14 +33,17 @@ export class DrawerBuilderForService<R> {
       this.drawerRef!.instance.open();
     });
     this.drawerRef!.instance.nzOnClose.subscribe(() => {
-      if (nzOnCancel) {
-        nzOnCancel().then(canClose => {
+      const result = nzOnCancel!(this.drawerRef!.instance.getContentComponent());
+      if (isPromise(result)) {
+        result.then(canClose => {
           if (canClose !== false) {
             this.drawerRef!.instance.close();
           }
         });
       } else {
-        this.drawerRef!.instance.close();
+        if (result !== false) {
+          this.drawerRef!.instance.close();
+        }
       }
     });
 
@@ -71,6 +75,9 @@ export class NzDrawerService {
 
   // tslint:disable-next-line:no-any
   create<T = any, D = any, R = any>(options: NzDrawerOptions<T, D>): NzDrawerRef<R> {
+    if (typeof options.nzOnCancel !== 'function') {
+      options.nzOnCancel = () => {}; // Leave a empty function to close this modal by default
+    }
     return new DrawerBuilderForService<R>(this.overlay, options).getInstance();
   }
 }
