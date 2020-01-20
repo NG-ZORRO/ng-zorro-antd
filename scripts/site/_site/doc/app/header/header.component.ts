@@ -76,6 +76,15 @@ const RESPONSIVE_SM = 1200;
           >
             {{ language == 'zh' ? 'English' : '中文' }}
           </button>
+          <button
+            nz-button
+            nzGhost
+            nzSize="small"
+            class="header-button header-direction-button"
+            (click)="toggleDirection()"
+          >
+          {{ nextDirection | uppercase }}
+        </button>
           <app-github-btn [responsive]="responsive"></app-github-btn>
         </ng-template>
       </ng-container>
@@ -88,6 +97,7 @@ export class HeaderComponent implements OnChanges {
   @Input() page: 'docs' | 'components' | 'experimental' | string = 'docs';
   @Output() versionChange = new EventEmitter<string>();
   @Output() languageChange = new EventEmitter<'zh' | 'en'>();
+  @Output() directionChange = new EventEmitter<'ltr' | 'rtl'>()
 
   searching = false;
   isMobile = false;
@@ -95,6 +105,7 @@ export class HeaderComponent implements OnChanges {
   responsive: null | 'narrow' | 'crowded' = null;
   oldVersionList = ['9.3.x', '8.5.x', '7.5.x', '1.8.x', '0.7.x', '0.5.x'];
   currentVersion = VERSION.full;
+  nextDirection: 'ltr' | 'rtl' = 'rtl';
 
   onChangeVersion(version: string): void {
     this.versionChange.emit(version);
@@ -108,6 +119,14 @@ export class HeaderComponent implements OnChanges {
     this.languageChange.emit(language);
   }
 
+  toggleDirection(): void {
+    this.directionChange.emit(this.nextDirection)
+    if (this.nextDirection === 'rtl') {
+      this.nextDirection = 'ltr';
+    } else {
+      this.nextDirection = 'rtl';
+    }
+  }
   updateResponsive(): void {
     this.responsive = null;
     this.isMobile = this.windowWidth <= 768;

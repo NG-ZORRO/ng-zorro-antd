@@ -63,6 +63,14 @@ export class AppComponent implements OnInit, AfterContentInit {
     this.router.navigateByUrl(url.join('/') + '/' + language);
   }
 
+  switchDirection(direction: string): void {
+    if (direction === 'rtl') {
+      this.renderer.addClass(document.body, 'rtl');
+    } else {
+      this.renderer.removeClass(document.body, 'rtl');
+    }
+  }
+
   initTheme(): void {
     if (!this.platform.isBrowser) {
       return;
@@ -107,7 +115,7 @@ export class AppComponent implements OnInit, AfterContentInit {
     private renderer: Renderer2,
     // tslint:disable-next-line:no-any
     @Inject(DOCUMENT) private document: any
-  ) {}
+  ) { }
 
   navigateToPage(url: string): void {
     if (url) {
