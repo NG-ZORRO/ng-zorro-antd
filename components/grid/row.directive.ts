@@ -3,9 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Platform } from '@angular/cdk/platform';
-import { AfterViewInit, Directive, ElementRef, Input, NgZone, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, Input, NgZone, OnChanges, OnDestroy, OnInit, Optional, Renderer2, SimpleChanges } from '@angular/core';
 import { gridResponsiveMap, NzBreakpointKey, NzBreakpointService } from 'ng-zorro-antd/core/services';
 import { IndexableObject } from 'ng-zorro-antd/core/types';
 import { ReplaySubject, Subject } from 'rxjs';
@@ -26,7 +27,8 @@ export type NzAlign = 'top' | 'middle' | 'bottom';
     '[class.ant-row-end]': `nzJustify === 'end'`,
     '[class.ant-row-center]': `nzJustify === 'center'`,
     '[class.ant-row-space-around]': `nzJustify === 'space-around'`,
-    '[class.ant-row-space-between]': `nzJustify === 'space-between'`
+    '[class.ant-row-space-between]': `nzJustify === 'space-between'`,
+    '[class.ant-row-rtl]': `dir === "rtl"`
   }
 })
 export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestroy {
@@ -36,6 +38,7 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
 
   readonly actualGutter$ = new ReplaySubject<[number | null, number | null]>(1);
 
+  dir: Direction;
   private readonly destroy$ = new Subject();
 
   getGutter(): [number | null, number | null] {
@@ -79,8 +82,14 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
     public mediaMatcher: MediaMatcher,
     public ngZone: NgZone,
     public platform: Platform,
-    private breakpointService: NzBreakpointService
-  ) {}
+    private breakpointService: NzBreakpointService,
+    @Optional() directionality: Directionality
+  ) {
+    this.dir = directionality.value;
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+    });
+  }
 
   ngOnInit(): void {
     this.setGutterStyle();
