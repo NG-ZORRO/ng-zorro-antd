@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { NzDescriptionsModule } from './nz-descriptions.module';
+import { NzDescriptionsModule } from './descriptions.module';
 
 // tslint:disable-next-line no-any
 declare const viewport: any;

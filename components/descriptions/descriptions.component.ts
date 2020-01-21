@@ -34,8 +34,8 @@ import {
 } from 'ng-zorro-antd/core';
 import { merge, Subject } from 'rxjs';
 import { auditTime, finalize, startWith, switchMap, takeUntil } from 'rxjs/operators';
-import { NzDescriptionsItemRenderProps, NzDescriptionsLayout, NzDescriptionsSize } from './nz-descriptions-definitions';
-import { NzDescriptionsItemComponent } from './nz-descriptions-item.component';
+import { NzDescriptionsItemComponent } from './descriptions-item.component';
+import { NzDescriptionsItemRenderProps, NzDescriptionsLayout, NzDescriptionsSize } from './typings';
 
 const NZ_CONFIG_COMPONENT_NAME = 'descriptions';
 const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
@@ -51,7 +51,7 @@ const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-descriptions',
-  templateUrl: './nz-descriptions.component.html',
+  templateUrl: './descriptions.component.html',
   exportAs: 'nzDescriptions',
   preserveWhitespaces: false,
   host: {

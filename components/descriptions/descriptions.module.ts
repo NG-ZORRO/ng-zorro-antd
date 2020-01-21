@@ -10,8 +10,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { NzOutletModule } from 'ng-zorro-antd/core';
 
-import { NzDescriptionsItemComponent } from './nz-descriptions-item.component';
-import { NzDescriptionsComponent } from './nz-descriptions.component';
+import { NzDescriptionsItemComponent } from './descriptions-item.component';
+import { NzDescriptionsComponent } from './descriptions.component';
 
 @NgModule({
   imports: [CommonModule, NzOutletModule, PlatformModule],
