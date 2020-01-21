@@ -14,8 +14,8 @@ import { NzOutletModule, NzOverlayModule } from 'ng-zorro-antd/core';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-import { NzBreadCrumbItemComponent } from './nz-breadcrumb-item.component';
-import { NzBreadCrumbComponent } from './nz-breadcrumb.component';
+import { NzBreadCrumbItemComponent } from './breadcrumb-item.component';
+import { NzBreadCrumbComponent } from './breadcrumb.component';
 
 @NgModule({
   imports: [CommonModule, NzOutletModule, OverlayModule, NzOverlayModule, NzDropDownModule, NzIconModule],
