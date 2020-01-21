@@ -26,8 +26,8 @@ import { debounceTime, distinctUntilChanged, filter, map, takeUntil } from 'rxjs
 
 import { inNextTick, InputBoolean, warn } from 'ng-zorro-antd/core';
 
-import { DiffEditorOptions, EditorOptions, JoinedEditorOptions, NzEditorMode } from './nz-code-editor.definitions';
-import { NzCodeEditorService } from './nz-code-editor.service';
+import { NzCodeEditorService } from './code-editor.service';
+import { DiffEditorOptions, EditorOptions, JoinedEditorOptions, NzEditorMode } from './typings';
 
 // Import types from monaco editor.
 import { editor } from 'monaco-editor';
@@ -43,7 +43,15 @@ declare const monaco: any;
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-code-editor',
   exportAs: 'nzCodeEditor',
-  templateUrl: './nz-code-editor.component.html',
+  template: `
+    <div class="ant-code-editor-loading" *ngIf="nzLoading">
+      <nz-spin></nz-spin>
+    </div>
+
+    <div class="ant-code-editor-toolkit" *ngIf="nzToolkit">
+      <ng-template [ngTemplateOutlet]="nzToolkit"></ng-template>
+    </div>
+  `,
   host: {
     '[class.ant-code-editor]': 'true'
   },
