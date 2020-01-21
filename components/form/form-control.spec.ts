@@ -120,8 +120,8 @@ describe('nz-form-control', () => {
 
       testBed.fixture.detectChanges();
 
-      expect(formItems[0].nativeElement.classList).not.toContain(statusMap.pending);
-      expect(formItems[1].nativeElement.classList).not.toContain(statusMap.pending);
+      expect(formItems[0].nativeElement.classList).not.toContain(statusMap.error);
+      expect(formItems[1].nativeElement.classList).not.toContain(statusMap.error);
     });
   });
   describe('reactive init status', () => {
