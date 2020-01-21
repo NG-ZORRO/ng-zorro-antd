@@ -5,10 +5,10 @@ import { By } from '@angular/platform-browser';
 
 import { dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core';
 
-import { NzCarouselContentDirective } from './nz-carousel-content.directive';
-import { NZ_CAROUSEL_CUSTOM_STRATEGIES } from './nz-carousel-definitions';
-import { NzCarouselComponent } from './nz-carousel.component';
-import { NzCarouselModule } from './nz-carousel.module';
+import { NzCarouselContentDirective } from './carousel-content.directive';
+import { NZ_CAROUSEL_CUSTOM_STRATEGIES } from './carousel-definitions';
+import { NzCarouselComponent } from './carousel.component';
+import { NzCarouselModule } from './carousel.module';
 import { NzCarouselOpacityStrategy } from './strategies/opacity-strategy';
 
 @Component({

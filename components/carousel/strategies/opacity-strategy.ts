@@ -9,7 +9,7 @@
 import { QueryList } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
-import { NzCarouselContentDirective } from '../nz-carousel-content.directive';
+import { NzCarouselContentDirective } from '../carousel-content.directive';
 
 import { NzCarouselBaseStrategy } from './base-strategy';
 
