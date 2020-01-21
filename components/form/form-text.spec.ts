@@ -1,27 +1,20 @@
 import { Component, DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core';
 import { NzFormTextComponent } from './form-text.component';
 
+const testBedOptions = { imports: [NoopAnimationsModule], declarations: [NzFormTextComponent] };
+
 describe('nz-form-text', () => {
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule],
-      declarations: [NzFormTextComponent, NzTestFormTextComponent]
-    });
-    TestBed.compileComponents();
-  }));
   describe('default', () => {
-    let fixture: ComponentFixture<NzTestFormTextComponent>;
+    let testBed: ComponentBed<NzTestFormTextComponent>;
     let text: DebugElement;
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestFormTextComponent);
-      fixture.detectChanges();
-      text = fixture.debugElement.query(By.directive(NzFormTextComponent));
+      testBed = createComponentBed(NzTestFormTextComponent, testBedOptions);
+      text = testBed.fixture.debugElement.query(By.directive(NzFormTextComponent));
     });
     it('should className correct', () => {
-      fixture.detectChanges();
       expect(text.nativeElement.classList).toContain('ant-form-text');
     });
   });

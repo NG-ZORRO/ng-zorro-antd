@@ -22,7 +22,7 @@ import {
 import { InputBoolean } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
 
-export type NzFormItemStatusType = 'success' | 'error' | 'warning' | 'validating' | null;
+export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validating' | null;
 
 /** should add nz-row directive to host, track https://github.com/angular/angular/issues/8785 **/
 @Component({
@@ -53,7 +53,7 @@ export type NzFormItemStatusType = 'success' | 'error' | 'warning' | 'validating
 export class NzFormItemComponent implements OnDestroy, OnChanges, OnDestroy {
   @Input() @InputBoolean() nzFlex: boolean = false;
 
-  status: NzFormItemStatusType = null;
+  status: NzFormControlStatusType = null;
   hasFeedback = false;
   withHelpClass = false;
 
@@ -72,7 +72,7 @@ export class NzFormItemComponent implements OnDestroy, OnChanges, OnDestroy {
     this.cdr.markForCheck();
   }
 
-  setItemStatus(status: NzFormItemStatusType): void {
+  setStatus(status: NzFormControlStatusType): void {
     this.status = status;
     this.cdr.markForCheck();
   }
