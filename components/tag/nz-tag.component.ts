@@ -53,7 +53,11 @@ export class NzTagComponent implements OnInit, OnChanges {
     if (!color) {
       return false;
     }
-    return /^(pink|red|yellow|orange|cyan|green|blue|purple|geekblue|magenta|volcano|gold|lime)(-inverse)?$/.test(color);
+
+    return (
+      /^(pink|red|yellow|orange|cyan|green|blue|purple|geekblue|magenta|volcano|gold|lime)(-inverse)?$/.test(color) ||
+      /^(success|processing|error|default|warning)$/.test(color)
+    );
   }
 
   private updateClassMap(): void {

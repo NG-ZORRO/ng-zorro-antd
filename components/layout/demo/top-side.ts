@@ -49,7 +49,7 @@ import { Component } from '@angular/core';
           </nz-sider>
           <nz-content class="inner-content">Content</nz-content>
         </nz-layout>
-        <nz-footer>Ant Design ©2019 Implement By Angular</nz-footer>
+        <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
       </nz-content>
     </nz-layout>
   `,

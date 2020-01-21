@@ -23,7 +23,15 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { InputBoolean, NzBreakpointEnum, NzConfigService, NzDomEventService, responsiveMap, warn, WithConfig } from 'ng-zorro-antd/core';
+import {
+  gridResponsiveMap,
+  InputBoolean,
+  NzBreakpointEnum,
+  NzConfigService,
+  NzDomEventService,
+  warn,
+  WithConfig
+} from 'ng-zorro-antd/core';
 import { merge, Subject } from 'rxjs';
 import { auditTime, finalize, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { NzDescriptionsItemRenderProps, NzDescriptionsLayout, NzDescriptionsSize } from './nz-descriptions-definitions';
@@ -168,9 +176,9 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
   private matchMedia(): NzBreakpointEnum {
     let bp: NzBreakpointEnum = NzBreakpointEnum.md;
 
-    Object.keys(responsiveMap).map((breakpoint: string) => {
+    Object.keys(gridResponsiveMap).map((breakpoint: string) => {
       const castBP = breakpoint as NzBreakpointEnum;
-      const matchBelow = this.mediaMatcher.matchMedia(responsiveMap[castBP]).matches;
+      const matchBelow = this.mediaMatcher.matchMedia(gridResponsiveMap[castBP]).matches;
       if (matchBelow) {
         bp = castBP;
       }
