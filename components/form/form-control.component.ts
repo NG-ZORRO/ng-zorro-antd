@@ -27,7 +27,7 @@ import { FormControl, FormControlDirective, FormControlName, NgControl, NgModel 
 import { helpMotion, NgClassType, toBoolean } from 'ng-zorro-antd/core';
 import { Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
-import { NzFormItemComponent, NzFormItemStatusType } from './form-item.component';
+import { NzFormControlStatusType, NzFormItemComponent } from './form-item.component';
 
 @Component({
   selector: 'nz-form-control',
@@ -81,7 +81,7 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
   private validateChanges: Subscription = Subscription.EMPTY;
   private validateString: string | null;
   validateControl: FormControl | NgModel | null;
-  status: NzFormItemStatusType = null;
+  status: NzFormControlStatusType = null;
   controlClassMap: NgClassType = {};
   iconType: string;
   @ContentChild(NgControl, { static: false }) defaultValidateControl: FormControlName | FormControlDirective;
@@ -94,7 +94,9 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
   @Input()
   set nzHasFeedback(value: boolean) {
     this._hasFeedback = toBoolean(value);
-    this.nzFormItemComponent.setHasFeedback(this._hasFeedback);
+    if (this.nzFormItemComponent) {
+      this.nzFormItemComponent.setHasFeedback(this._hasFeedback);
+    }
   }
 
   get nzHasFeedback(): boolean {
@@ -156,10 +158,12 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
       this.status = null;
       this.iconType = '';
     }
-    if (this.hasTips) {
-      this.nzFormItemComponent.setWithHelpViaTips(this.showErrorTip);
+    if (this.nzFormItemComponent) {
+      if (this.hasTips) {
+        this.nzFormItemComponent.setWithHelpViaTips(this.showErrorTip);
+      }
+      this.nzFormItemComponent.setStatus(this.status);
     }
-    this.nzFormItemComponent.setItemStatus(this.status);
   }
 
   get hasTips(): boolean {

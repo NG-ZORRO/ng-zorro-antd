@@ -1,41 +1,39 @@
 import { Component, DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core';
 import { NzFormItemComponent } from './form-item.component';
 import { NzFormModule } from './form.module';
 
+const testBedOptions = { imports: [NzFormModule, NoopAnimationsModule] };
+
 describe('nz-form-item', () => {
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [NzFormModule, NoopAnimationsModule],
-      declarations: [NzTestFormItemComponent]
-    });
-    TestBed.compileComponents();
-  }));
   describe('default', () => {
-    let fixture: ComponentFixture<NzTestFormItemComponent>;
+    let testBed: ComponentBed<NzTestFormItemComponent>;
     let testComponent: NzTestFormItemComponent;
-    let item: DebugElement;
+    let formItem: DebugElement;
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestFormItemComponent);
-      fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
-      item = fixture.debugElement.query(By.directive(NzFormItemComponent));
+      testBed = createComponentBed(NzTestFormItemComponent, testBedOptions);
+      testComponent = testBed.component;
+      formItem = testBed.fixture.debugElement.query(By.directive(NzFormItemComponent));
     });
     it('should className correct', () => {
-      fixture.detectChanges();
-      expect(item.nativeElement.classList).toContain('ant-form-item');
+      expect(formItem.nativeElement.classList).toContain('ant-form-item');
     });
     it('should flex work', () => {
-      fixture.detectChanges();
-      expect(item.nativeElement.style.display).toBe('');
+      expect(formItem.nativeElement.style.display).toBe('');
+
       testComponent.flex = true;
-      fixture.detectChanges();
-      expect(item.nativeElement.style.display).toBe('flex');
+
+      testBed.fixture.detectChanges();
+
+      expect(formItem.nativeElement.style.display).toBe('flex');
+
       testComponent.flex = false;
-      fixture.detectChanges();
-      expect(item.nativeElement.style.display).toBe('');
+
+      testBed.fixture.detectChanges();
+
+      expect(formItem.nativeElement.style.display).toBe('');
     });
   });
 });
