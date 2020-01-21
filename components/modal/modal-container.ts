@@ -56,7 +56,7 @@ export class BaseModalContainer extends BasePortalOutlet {
   constructor(
     protected elementRef: ElementRef,
     protected focusTrapFactory: FocusTrapFactory,
-    protected cdr: ChangeDetectorRef,
+    public cdr: ChangeDetectorRef,
     protected render: Renderer2,
     protected zone: NgZone,
     protected overlayRef: OverlayRef,

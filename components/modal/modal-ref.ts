@@ -160,6 +160,7 @@ export class NzModalRef<T = any, R = any> implements NzModalLegacyAPI<T, R> {
 
   updateConfig(config: ModalOptions): void {
     Object.assign(this.config, config);
+    this.containerInstance.cdr.markForCheck();
   }
 
   private trigger(action: NzTriggerAction): void {

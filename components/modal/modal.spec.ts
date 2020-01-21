@@ -32,7 +32,6 @@ describe('NzModal', () => {
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
-    modalService.closeAll();
   });
 
   beforeEach(() => {
@@ -324,6 +323,108 @@ describe('NzModal', () => {
       flush();
     })
   );
+
+  it('should notify the observers if all open modals have finished closing', fakeAsync(() => {
+    const ref1 = modalService.create({
+      nzContent: TestWithModalContentComponent
+    });
+    const ref2 = modalService.create({
+      nzContent: TestWithModalContentComponent
+    });
+    const spy = jasmine.createSpy('afterAllClose spy');
+
+    modalService.afterAllClose.subscribe(spy);
+
+    ref1.close();
+    fixture.detectChanges();
+    flush();
+
+    expect(spy).not.toHaveBeenCalled();
+
+    ref2.close();
+    fixture.detectChanges();
+    flush();
+
+    expect(spy).toHaveBeenCalled();
+  }));
+
+  it('should emit the afterAllClose stream on subscribe if there are no open modals', () => {
+    const spy = jasmine.createSpy('afterAllClose spy');
+
+    modalService.afterAllClose.subscribe(spy);
+
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should set and update the width of the modal', fakeAsync(() => {
+    const modalRef = modalService.create({
+      nzContent: TestWithModalContentComponent,
+      nzWidth: 500
+    });
+    fixture.detectChanges();
+
+    const modal = overlayContainerElement.querySelector('.ant-modal') as HTMLElement;
+
+    expect(modal.style.width).toBe('500px');
+
+    modalRef.updateConfig({
+      nzWidth: 300
+    });
+    fixture.detectChanges();
+    flushMicrotasks();
+
+    expect(modal.style.width).toBe('300px');
+
+    modalRef.updateConfig({
+      nzWidth: '100%'
+    });
+    fixture.detectChanges();
+    flushMicrotasks();
+
+    expect(modal.style.width).toBe('100%');
+
+    modalRef.close();
+    fixture.detectChanges();
+    flush();
+  }));
+
+  it('should set and update the z-index of the modal', fakeAsync(() => {
+    const modalRef = modalService.create({
+      nzContent: TestWithModalContentComponent,
+      nzZIndex: 1001
+    });
+    fixture.detectChanges();
+
+    const modal = overlayContainerElement.querySelector('nz-modal-container') as HTMLElement;
+
+    expect(modal.style.zIndex).toBe('1001');
+
+    modalRef.updateConfig({
+      nzZIndex: 1100
+    });
+    fixture.detectChanges();
+    flushMicrotasks();
+
+    expect(modal.style.zIndex).toBe('1100');
+
+    modalRef.close();
+    fixture.detectChanges();
+    flush();
+  }));
+
+  it('should close all of the modals', fakeAsync(() => {
+    modalService.create({ nzContent: TestWithModalContentComponent });
+    modalService.create({ nzContent: TestWithModalContentComponent });
+    modalService.create({ nzContent: TestWithModalContentComponent });
+
+    expect(overlayContainerElement.querySelectorAll('nz-modal-container').length).toBe(3);
+
+    modalService.closeAll();
+    fixture.detectChanges();
+    flush();
+
+    expect(overlayContainerElement.querySelectorAll('mat-dialog-container').length).toBe(0);
+  }));
 });
 
 @Component({

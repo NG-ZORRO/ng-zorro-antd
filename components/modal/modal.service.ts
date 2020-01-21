@@ -101,7 +101,11 @@ export class NzModalService implements OnDestroy {
   private removeOpenModal(modalRef: NzModalRef): void {
     const index = this.openModals.indexOf(modalRef);
     if (index > -1) {
-      this.openModals.splice(index);
+      this.openModals.splice(index, 1);
+
+      if (!this.openModals.length) {
+        this._afterAllClosed.next();
+      }
     }
   }
 
