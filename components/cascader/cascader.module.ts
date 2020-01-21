@@ -16,8 +16,8 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
-import { NzCascaderOptionComponent } from './nz-cascader-li.component';
-import { NzCascaderComponent } from './nz-cascader.component';
+import { NzCascaderOptionComponent } from './cascader-li.component';
+import { NzCascaderComponent } from './cascader.component';
 
 @NgModule({
   imports: [

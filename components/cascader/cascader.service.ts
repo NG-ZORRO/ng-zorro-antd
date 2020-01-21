@@ -17,8 +17,8 @@ import {
   NzCascaderFilter,
   NzCascaderOption,
   NzCascaderSearchOption
-} from './nz-cascader-definitions';
-import { isChildOption, isParentOption } from './nz-cascader-utils';
+} from './cascader-definitions';
+import { isChildOption, isParentOption } from './utils';
 
 /**
  * All data is stored and parsed in NzCascaderService.
