@@ -163,7 +163,7 @@ export class NzModalService implements OnDestroy {
     if (componentOrTemplateRef instanceof TemplateRef) {
       modalContainer.attachTemplatePortal(
         // tslint:disable-next-line:no-any
-        new TemplatePortal<T>(componentOrTemplateRef, null!, { $implicit: modalRef } as any)
+        new TemplatePortal<T>(componentOrTemplateRef, null!, { $implicit: config.nzComponentParams, modalRef } as any)
       );
     } else if (typeof componentOrTemplateRef !== 'string') {
       const injector = this.createInjector<T, R>(modalRef);
