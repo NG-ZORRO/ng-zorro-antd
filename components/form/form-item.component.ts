@@ -41,14 +41,7 @@ export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validat
   },
   template: `
     <ng-content></ng-content>
-  `,
-  styles: [
-    `
-      nz-form-item {
-        display: block;
-      }
-    `
-  ]
+  `
 })
 export class NzFormItemComponent implements OnDestroy, OnChanges, OnDestroy {
   @Input() @InputBoolean() nzFlex: boolean = false;
