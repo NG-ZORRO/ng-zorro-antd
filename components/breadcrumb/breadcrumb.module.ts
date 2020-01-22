@@ -15,11 +15,12 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzBreadCrumbItemComponent } from './breadcrumb-item.component';
+import { NzBreadCrumbSeparatorComponent } from './breadcrumb-separator.component';
 import { NzBreadCrumbComponent } from './breadcrumb.component';
 
 @NgModule({
   imports: [CommonModule, NzOutletModule, OverlayModule, NzOverlayModule, NzDropDownModule, NzIconModule],
-  declarations: [NzBreadCrumbComponent, NzBreadCrumbItemComponent],
-  exports: [NzBreadCrumbComponent, NzBreadCrumbItemComponent]
+  declarations: [NzBreadCrumbComponent, NzBreadCrumbItemComponent, NzBreadCrumbSeparatorComponent],
+  exports: [NzBreadCrumbComponent, NzBreadCrumbItemComponent, NzBreadCrumbSeparatorComponent]
 })
 export class NzBreadCrumbModule {}

@@ -32,7 +32,7 @@ import { NzBreadCrumbComponent } from './breadcrumb.component';
       </span>
     </ng-template>
 
-    <span class="ant-breadcrumb-separator">
+    <span class="ant-breadcrumb-separator" *ngIf="nzBreadCrumbComponent.nzSeparator">
       <ng-container *nzStringTemplateOutlet="nzBreadCrumbComponent.nzSeparator">
         {{ nzBreadCrumbComponent.nzSeparator }}
       </ng-container>

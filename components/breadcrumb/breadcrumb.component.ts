@@ -56,7 +56,7 @@ export interface BreadcrumbOption {
 })
 export class NzBreadCrumbComponent implements OnInit, OnDestroy {
   @Input() @InputBoolean() nzAutoGenerate = false;
-  @Input() nzSeparator: string | TemplateRef<void> = '/';
+  @Input() nzSeparator: string | TemplateRef<void> | null = '/';
   @Input() nzRouteLabel: string = 'breadcrumb';
 
   breadcrumbs: BreadcrumbOption[] | undefined = [];
