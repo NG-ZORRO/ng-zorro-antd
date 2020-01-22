@@ -46,6 +46,8 @@ import {
 } from 'ng-zorro-antd/core';
 
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzCascaderOptionComponent } from './cascader-li.component';
+import { NzCascaderService } from './cascader.service';
 import {
   NzCascaderComponentAsSource,
   NzCascaderExpandTrigger,
@@ -54,9 +56,7 @@ import {
   NzCascaderSize,
   NzCascaderTriggerType,
   NzShowSearchOptions
-} from './cascader-definitions';
-import { NzCascaderOptionComponent } from './cascader-li.component';
-import { NzCascaderService } from './cascader.service';
+} from './typings';
 
 const NZ_CONFIG_COMPONENT_NAME = 'cascader';
 const defaultDisplayRender = (labels: string[]) => labels.join(' / ');

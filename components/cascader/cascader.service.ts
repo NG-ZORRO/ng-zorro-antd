@@ -11,13 +11,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 
 import { arraysEqual, isNotNil } from 'ng-zorro-antd/core';
 
-import {
-  isShowSearchObject,
-  NzCascaderComponentAsSource,
-  NzCascaderFilter,
-  NzCascaderOption,
-  NzCascaderSearchOption
-} from './cascader-definitions';
+import { isShowSearchObject, NzCascaderComponentAsSource, NzCascaderFilter, NzCascaderOption, NzCascaderSearchOption } from './typings';
 import { isChildOption, isParentOption } from './utils';
 
 /**

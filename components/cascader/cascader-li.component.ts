@@ -17,7 +17,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { NzCascaderOption } from './cascader-definitions';
+import { NzCascaderOption } from './typings';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
