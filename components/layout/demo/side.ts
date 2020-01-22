@@ -37,7 +37,7 @@ import { Component } from '@angular/core';
             Bill is a cat.
           </div>
         </nz-content>
-        <nz-footer>Ant Design ©2019 Implement By Angular</nz-footer>
+        <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
       </nz-layout>
     </nz-layout>
   `,
