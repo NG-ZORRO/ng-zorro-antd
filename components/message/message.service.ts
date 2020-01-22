@@ -10,10 +10,10 @@ import { Overlay } from '@angular/cdk/overlay';
 import { ApplicationRef, ComponentFactoryResolver, Injectable, Injector, TemplateRef } from '@angular/core';
 import { NzSingletonService } from 'ng-zorro-antd/core';
 
-import { NzMessageBaseService } from './nz-message-base.service';
-import { NzMessageContainerComponent } from './nz-message-container.component';
-import { NzMessageData, NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
-import { NzMessageServiceModule } from './nz-message.service.module';
+import { NzMessageBaseService } from './base.service';
+import { NzMessageContainerComponent } from './message-container.component';
+import { NzMessageServiceModule } from './message.service.module';
+import { NzMessageData, NzMessageDataFilled, NzMessageDataOptions } from './typings';
 
 @Injectable({
   providedIn: NzMessageServiceModule

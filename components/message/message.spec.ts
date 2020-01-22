@@ -1,39 +1,46 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { dispatchMouseEvent, NZ_CONFIG, NzConfig, NzConfigService } from 'ng-zorro-antd/core';
+import { dispatchMouseEvent, NZ_CONFIG, NzConfigService } from 'ng-zorro-antd/core';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
 
-import { NzMessageModule } from './nz-message.module';
-import { NzMessageService } from './nz-message.service';
+import { NzMessageModule } from './message.module';
+import { NzMessageService } from './message.service';
 
-describe('NzMessage', () => {
+describe('message', () => {
+  let testBed: ComponentBed<NzTestMessageComponent>;
   let messageService: NzMessageService;
   let overlayContainerElement: HTMLElement;
-  let fixture: ComponentFixture<NzTestMessageBasicComponent>;
-  let testComponent: NzTestMessageBasicComponent;
+  let fixture: ComponentFixture<NzTestMessageComponent>;
+  let testComponent: NzTestMessageComponent;
   let nzConfigService: NzConfigService;
 
   beforeEach(fakeAsync(() => {
-    const MESSAGE_CONFIG: NzConfig['message'] = {
-      nzMaxStack: 2,
-      nzTop: 24
-    };
-
-    TestBed.configureTestingModule({
+    testBed = createComponentBed(NzTestMessageComponent, {
       imports: [NzMessageModule, NoopAnimationsModule],
-      declarations: [NzTestMessageBasicComponent],
-      providers: [{ provide: NZ_CONFIG, useValue: { message: MESSAGE_CONFIG } }]
+      providers: [
+        {
+          provide: NZ_CONFIG,
+          useValue: {
+            message: {
+              nzMaxStack: 2,
+              nzTop: 24
+            }
+          }
+        }
+      ]
     });
 
-    TestBed.compileComponents();
+    fixture = testBed.fixture;
+    testComponent = testBed.component;
   }));
 
   beforeEach(inject([NzMessageService, OverlayContainer], (m: NzMessageService, oc: OverlayContainer) => {
     messageService = m;
     // @ts-ignore
-    nzConfigService = messageService._container.nzConfigService;
+    nzConfigService = messageService.container.nzConfigService;
     if (!overlayContainerElement) {
       overlayContainerElement = oc.getContainerElement();
     }
@@ -41,11 +48,6 @@ describe('NzMessage', () => {
 
   afterEach(() => {
     messageService.remove();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(NzTestMessageBasicComponent);
-    testComponent = fixture.debugElement.componentInstance;
   });
 
   it('should open a message box with success', () => {
@@ -146,14 +148,14 @@ describe('NzMessage', () => {
       expect(overlayContainerElement.textContent).toContain(content);
       if (id === 3) {
         expect(overlayContainerElement.textContent).not.toContain('SUCCESS-1');
-        expect((messageService as any)._container.messages.length).toBe(2); // tslint:disable-line:no-any
+        expect((messageService as any).container.messages.length).toBe(2); // tslint:disable-line:no-any
       }
     });
 
     messageService.remove();
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).not.toContain('SUCCESS-3');
-    expect((messageService as any)._container.messages.length).toBe(0); // tslint:disable-line:no-any
+    expect((messageService as any).container.messages.length).toBe(0); // tslint:disable-line:no-any
   }));
 
   it('should destroy without animation', fakeAsync(() => {
@@ -201,6 +203,6 @@ describe('NzMessage', () => {
     </ng-template>
   `
 })
-export class NzTestMessageBasicComponent {
+export class NzTestMessageComponent {
   @ViewChild('contentTemplate', { static: true }) template: TemplateRef<void>;
 }
