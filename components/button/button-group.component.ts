@@ -7,6 +7,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
+import { IndexableObject } from 'ng-zorro-antd/core';
 
 export type NzButtonGroupSize = 'large' | 'default' | 'small';
 
@@ -23,7 +24,7 @@ export type NzButtonGroupSize = 'large' | 'default' | 'small';
 })
 export class NzButtonGroupComponent implements OnInit, OnChanges {
   @Input() nzSize: NzButtonGroupSize = 'default';
-  hostClassMap = {};
+  hostClassMap: IndexableObject = {};
   updateHostClassMap(): void {
     this.hostClassMap = {
       ['ant-btn-group']: true,

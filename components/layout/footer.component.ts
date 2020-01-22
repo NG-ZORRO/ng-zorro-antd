@@ -14,14 +14,9 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './nz-footer.component.html',
-  styles: [
-    `
-      nz-footer {
-        display: block;
-      }
-    `
-  ]
+  template: `
+    <ng-content></ng-content>
+  `
 })
 export class NzFooterComponent {
   constructor(public elementRef: ElementRef, private renderer: Renderer2) {

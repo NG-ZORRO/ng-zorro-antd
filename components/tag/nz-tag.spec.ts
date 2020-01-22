@@ -74,6 +74,19 @@ describe('tag', () => {
       expect(tag.nativeElement.classList).toContain('ant-tag-green');
       expect(tag.nativeElement.style.backgroundColor).toBe('');
     });
+
+    it('should status color work', () => {
+      fixture.detectChanges();
+      testComponent.color = 'success';
+      fixture.detectChanges();
+      expect(tag.nativeElement.classList).toContain('ant-tag-success');
+      testComponent.color = 'processing';
+      fixture.detectChanges();
+      expect(tag.nativeElement.classList).toContain('ant-tag-processing');
+      testComponent.color = 'invalid';
+      fixture.detectChanges();
+      expect(tag.nativeElement.classList).not.toContain('ant-tag-invalid');
+    });
     it('issues #1176', () => {
       testComponent.color = 'green';
       fixture.detectChanges();
