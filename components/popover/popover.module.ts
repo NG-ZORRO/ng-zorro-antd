@@ -13,8 +13,7 @@ import { NgModule } from '@angular/core';
 import { NzNoAnimationModule, NzOutletModule, NzOverlayModule } from 'ng-zorro-antd/core';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
-import { NzPopoverComponent } from './nz-popover.component';
-import { NzPopoverDirective } from './nz-popover.directive';
+import { NzPopoverComponent, NzPopoverDirective } from './popover';
 
 @NgModule({
   entryComponents: [NzPopoverComponent],

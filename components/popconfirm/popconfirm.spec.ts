@@ -1,25 +1,28 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
-import { NzPopconfirmModule } from './nz-popconfirm.module';
+import { NzPopconfirmModule } from './popconfirm.module';
 
 describe('NzPopconfirm', () => {
+  let testBed: ComponentBed<NzPopconfirmTestNewComponent>;
+  let fixture: ComponentFixture<NzPopconfirmTestNewComponent>;
+  let component: NzPopconfirmTestNewComponent;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
 
   beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [NzPopconfirmModule, NoopAnimationsModule, NzToolTipModule, NzIconTestModule],
-      declarations: [NzpopconfirmTestNewComponent]
+    testBed = createComponentBed(NzPopconfirmTestNewComponent, {
+      imports: [NzPopconfirmModule, NoopAnimationsModule, NzIconTestModule]
     });
-
-    TestBed.compileComponents();
+    fixture = testBed.fixture;
+    component = testBed.component;
+    fixture.detectChanges();
   }));
 
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
@@ -31,9 +34,6 @@ describe('NzPopconfirm', () => {
     overlayContainer.ngOnDestroy();
   });
 
-  let fixture: ComponentFixture<NzpopconfirmTestNewComponent>;
-  let component: NzpopconfirmTestNewComponent;
-
   function getTitleText(): Element | null {
     return overlayContainerElement.querySelector('.ant-popover-message-title');
   }
@@ -41,12 +41,6 @@ describe('NzPopconfirm', () => {
   function getTooltipTrigger(index: number): Element {
     return overlayContainerElement.querySelectorAll('.ant-popover-buttons button')[index];
   }
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(NzpopconfirmTestNewComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
 
   function waitingForTooltipToggling(): void {
     fixture.detectChanges();
@@ -145,7 +139,7 @@ describe('NzPopconfirm', () => {
     <ng-template #titleTemplate>title-template</ng-template>
   `
 })
-export class NzpopconfirmTestNewComponent {
+export class NzPopconfirmTestNewComponent {
   confirm = jasmine.createSpy('confirm');
   cancel = jasmine.createSpy('cancel');
   condition = false;
