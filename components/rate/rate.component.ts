@@ -250,7 +250,7 @@ export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor,
 
   writeValue(value: number | null): void {
     this.nzValue = value || 0;
-    this.updateStarStyle();
+    this.updateStarArray();
     this.cdr.markForCheck();
   }
 
