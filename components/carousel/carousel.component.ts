@@ -36,6 +36,9 @@ import { finalize, takeUntil } from 'rxjs/operators';
 import { InputBoolean, InputNumber, NzConfigService, NzDomEventService, NzDragService, WithConfig } from 'ng-zorro-antd/core';
 
 import { NzCarouselContentDirective } from './carousel-content.directive';
+import { NzCarouselBaseStrategy } from './strategies/base-strategy';
+import { NzCarouselOpacityStrategy } from './strategies/opacity-strategy';
+import { NzCarouselTransformStrategy } from './strategies/transform-strategy';
 import {
   FromToInterface,
   NZ_CAROUSEL_CUSTOM_STRATEGIES,
@@ -43,10 +46,7 @@ import {
   NzCarouselEffects,
   NzCarouselStrategyRegistryItem,
   PointerVector
-} from './carousel-definitions';
-import { NzCarouselBaseStrategy } from './strategies/base-strategy';
-import { NzCarouselOpacityStrategy } from './strategies/opacity-strategy';
-import { NzCarouselTransformStrategy } from './strategies/transform-strategy';
+} from './typings';
 
 const NZ_CONFIG_COMPONENT_NAME = 'carousel';
 
@@ -85,6 +85,10 @@ const NZ_CONFIG_COMPONENT_NAME = 'carousel';
         </li>
       </ul>
     </div>
+
+    <ng-template #renderDotTemplate let-index>
+      <button>{{ index + 1 }}</button>
+    </ng-template>
   `,
   host: {
     '[class.ant-carousel-vertical]': 'vertical'
