@@ -1,27 +1,25 @@
 import { Component, DebugElement } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
 
 import { NzTimelineComponent } from './timeline.component';
 import { NzTimelineModule } from './timeline.module';
 
-describe('timeline', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NzTimelineModule],
-      declarations: [NzTestTimelineBasicComponent, NzTestTimelinePendingComponent, NzTestTimelineCustomColorComponent]
-    });
-    TestBed.compileComponents();
-  }));
-  describe('basic timeline', () => {
+describe('nz-timeline', () => {
+  describe('basic', () => {
+    let testBed: ComponentBed<NzTestTimelineBasicComponent>;
     let fixture: ComponentFixture<NzTestTimelineBasicComponent>;
     let testComponent: NzTestTimelineBasicComponent;
     let timeline: DebugElement;
     let items: HTMLDivElement[] = [];
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestTimelineBasicComponent);
-      testComponent = fixture.debugElement.componentInstance;
+      testBed = createComponentBed(NzTestTimelineBasicComponent, {
+        imports: [NzTimelineModule]
+      });
+      fixture = testBed.fixture;
+      testComponent = testBed.component;
 
       fixture.detectChanges();
 
@@ -102,13 +100,19 @@ describe('timeline', () => {
     });
   });
 
-  describe('custom color timeline', () => {
+  describe('custom color', () => {
+    let testBed: ComponentBed<NzTestTimelineCustomColorComponent>;
     let fixture: ComponentFixture<NzTestTimelineCustomColorComponent>;
     let items: HTMLLIElement[];
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestTimelineCustomColorComponent);
+      testBed = createComponentBed(NzTestTimelineCustomColorComponent, {
+        imports: [NzTimelineModule]
+      });
+      fixture = testBed.fixture;
+
       fixture.detectChanges();
+
       items = Array.from((fixture.debugElement.nativeElement as HTMLElement).querySelectorAll('.ant-timeline-item'));
     });
 
@@ -121,13 +125,22 @@ describe('timeline', () => {
     });
   });
 
-  describe('pending timeline', () => {
+  describe('pending', () => {
+    let testBed: ComponentBed<NzTestTimelinePendingComponent>;
     let fixture: ComponentFixture<NzTestTimelinePendingComponent>;
     let timeline: DebugElement;
+
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestTimelinePendingComponent);
+      testBed = createComponentBed(NzTestTimelinePendingComponent, {
+        imports: [NzTimelineModule]
+      });
+      fixture = testBed.fixture;
+
+      fixture.detectChanges();
+
       timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
     });
+
     it('should pending work', () => {
       fixture.detectChanges();
       expect(timeline.nativeElement.querySelector('.ant-timeline-item-pending').innerText).toBe('template');
