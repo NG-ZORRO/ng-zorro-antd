@@ -10,9 +10,9 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { NzOutletModule, NzPipesModule } from 'ng-zorro-antd/core';
 
-import { NzCountdownComponent } from './nz-countdown.component';
-import { NzStatisticNumberComponent } from './nz-statistic-number.component';
-import { NzStatisticComponent } from './nz-statistic.component';
+import { NzCountdownComponent } from './countdown.component';
+import { NzStatisticNumberComponent } from './statistic-number.component';
+import { NzStatisticComponent } from './statistic.component';
 
 @NgModule({
   imports: [CommonModule, PlatformModule, NzOutletModule, NzPipesModule],

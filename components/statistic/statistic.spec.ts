@@ -1,26 +1,23 @@
-import { CommonModule } from '@angular/common';
 import { Component, DebugElement } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NzStatisticComponent } from './nz-statistic.component';
-import { NzStatisticModule } from './nz-statistic.module';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
+import { NzStatisticComponent } from './statistic.component';
+import { NzStatisticModule } from './statistic.module';
 
 describe('nz-statistic', () => {
+  let testBed: ComponentBed<NzTestStatisticComponent>;
   let fixture: ComponentFixture<NzTestStatisticComponent>;
   let testComponent: NzTestStatisticComponent;
   let statisticEl: DebugElement;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [CommonModule, NzStatisticModule],
-      declarations: [NzTestStatisticComponent]
-    }).compileComponents();
-  });
-
   describe('basic', () => {
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestStatisticComponent);
-      testComponent = fixture.debugElement.componentInstance;
+      testBed = createComponentBed(NzTestStatisticComponent, {
+        imports: [NzStatisticModule]
+      });
+      fixture = testBed.fixture;
+      testComponent = testBed.component;
       statisticEl = fixture.debugElement.query(By.directive(NzStatisticComponent));
     });
 

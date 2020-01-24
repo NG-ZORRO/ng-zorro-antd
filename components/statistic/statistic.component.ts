@@ -7,18 +7,29 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
-import { NzStatisticValueType } from './nz-statistic-definitions';
+import { NzStatisticValueType } from './typings';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-statistic',
   exportAs: 'nzStatistic',
-  templateUrl: './nz-statistic.component.html',
-  host: {
-    class: 'ant-statistic'
-  },
-  styles: ['nz-statistic { display: block; }']
+  template: `
+    <div class="ant-statistic">
+      <div class="ant-statistic-title">
+        <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+      </div>
+      <div class="ant-statistic-content" [ngStyle]="nzValueStyle">
+        <span *ngIf="nzPrefix" class="ant-statistic-content-prefix">
+          <ng-container *nzStringTemplateOutlet="nzPrefix">{{ nzPrefix }}</ng-container>
+        </span>
+        <nz-statistic-number [nzValue]="nzValue" [nzValueTemplate]="nzValueTemplate"> </nz-statistic-number>
+        <span *ngIf="nzSuffix" class="ant-statistic-content-suffix">
+          <ng-container *nzStringTemplateOutlet="nzSuffix">{{ nzSuffix }}</ng-container>
+        </span>
+      </div>
+    </div>
+  `
 })
 export class NzStatisticComponent {
   @Input() nzPrefix: string | TemplateRef<void>;
