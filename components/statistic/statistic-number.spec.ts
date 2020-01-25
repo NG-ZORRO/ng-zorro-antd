@@ -23,7 +23,7 @@ describe('nz-number', () => {
 
     it('should have correct class', () => {
       fixture.detectChanges();
-      expect(numberEl.nativeElement.classList.contains('ant-statistic-content-value')).toBeTruthy();
+      expect(numberEl.nativeElement.firstElementChild!.classList.contains('ant-statistic-content-value')).toBeTruthy();
     });
 
     it('should render number', () => {
