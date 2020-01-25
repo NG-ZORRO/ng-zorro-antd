@@ -2,9 +2,9 @@ import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { NzProgressComponent } from './nz-progress.component';
-import { NzProgressFormatter, NzProgressGapPositionType, NzProgressStrokeColorType } from './nz-progress.definitions';
-import { NzProgressModule } from './nz-progress.module';
+import { NzProgressComponent } from './progress.component';
+import { NzProgressModule } from './progress.module';
+import { NzProgressFormatter, NzProgressGapPositionType, NzProgressStrokeColorType } from './typings';
 
 describe('progress', () => {
   beforeEach(fakeAsync(() => {

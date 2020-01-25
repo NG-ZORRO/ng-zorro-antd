@@ -1,4 +1,4 @@
-import { handleCircleGradient, handleLinearGradient } from './nz-progress-utils';
+import { handleCircleGradient, handleLinearGradient } from './utils';
 
 // https://github.com/ant-design/ant-design/blob/330a952a988a4ae18c201b464c51d5faeb714f7c/components/progress/__tests__/index.test.js#L74-L88.
 describe('progress util functions', () => {
