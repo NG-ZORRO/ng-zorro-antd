@@ -18,8 +18,8 @@ import {
   NzResultIconDirective,
   NzResultSubtitleDirective,
   NzResultTitleDirective
-} from './nz-result-cells';
-import { NzResultComponent } from './nz-result.component';
+} from './result-cells';
+import { NzResultComponent } from './result.component';
 
 import { NzResultNotFoundComponent } from './partial/not-found';
 import { NzResultServerErrorComponent } from './partial/server-error.component';
