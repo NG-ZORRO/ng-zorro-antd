@@ -11,10 +11,10 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { ComponentRef, Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { NzDrawerOptions, NzDrawerOptionsOfComponent } from './nz-drawer-options';
-import { NzDrawerRef } from './nz-drawer-ref';
-import { NzDrawerComponent } from './nz-drawer.component';
-import { NzDrawerServiceModule } from './nz-drawer.service.module';
+import { NzDrawerOptions, NzDrawerOptionsOfComponent } from './drawer-options';
+import { NzDrawerRef } from './drawer-ref';
+import { NzDrawerComponent } from './drawer.component';
+import { NzDrawerServiceModule } from './drawer.service.module';
 
 export class DrawerBuilderForService<R> {
   private drawerRef: ComponentRef<NzDrawerComponent> | null;

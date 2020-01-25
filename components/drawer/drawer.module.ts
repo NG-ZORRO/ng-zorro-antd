@@ -14,8 +14,8 @@ import { NgModule } from '@angular/core';
 import { NzNoAnimationModule, NzOutletModule } from 'ng-zorro-antd/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-import { NzDrawerComponent } from './nz-drawer.component';
-import { NzDrawerServiceModule } from './nz-drawer.service.module';
+import { NzDrawerComponent } from './drawer.component';
+import { NzDrawerServiceModule } from './drawer.service.module';
 
 @NgModule({
   imports: [CommonModule, OverlayModule, PortalModule, NzIconModule, NzOutletModule, NzNoAnimationModule, NzDrawerServiceModule],

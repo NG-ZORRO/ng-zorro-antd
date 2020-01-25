@@ -7,7 +7,7 @@
  */
 
 import { TemplateRef, Type } from '@angular/core';
-import { NzDrawerRef } from './nz-drawer-ref';
+import { NzDrawerRef } from './drawer-ref';
 
 export type NzDrawerPlacement = 'left' | 'right' | 'top' | 'bottom';
 

@@ -38,8 +38,8 @@ import { Observable, Subject } from 'rxjs';
 
 import { InputBoolean, NzConfigService, toCssPixel, WithConfig } from 'ng-zorro-antd/core';
 import { takeUntil } from 'rxjs/operators';
-import { NzDrawerOptionsOfComponent, NzDrawerPlacement } from './nz-drawer-options';
-import { NzDrawerRef } from './nz-drawer-ref';
+import { NzDrawerOptionsOfComponent, NzDrawerPlacement } from './drawer-options';
+import { NzDrawerRef } from './drawer-ref';
 
 export const DRAWER_ANIMATE_DURATION = 300;
 
@@ -48,7 +48,51 @@ const NZ_CONFIG_COMPONENT_NAME = 'drawer';
 @Component({
   selector: 'nz-drawer',
   exportAs: 'nzDrawer',
-  templateUrl: './nz-drawer.component.html',
+  template: `
+    <ng-template #drawerTemplate>
+      <div
+        class="ant-drawer"
+        [nzNoAnimation]="nzNoAnimation"
+        [class.ant-drawer-open]="isOpen"
+        [class.ant-drawer-top]="nzPlacement === 'top'"
+        [class.ant-drawer-bottom]="nzPlacement === 'bottom'"
+        [class.ant-drawer-right]="nzPlacement === 'right'"
+        [class.ant-drawer-left]="nzPlacement === 'left'"
+        [style.transform]="offsetTransform"
+        [style.transition]="placementChanging ? 'none' : null"
+        [style.zIndex]="nzZIndex"
+      >
+        <div class="ant-drawer-mask" (click)="maskClick()" *ngIf="nzMask" [ngStyle]="nzMaskStyle"></div>
+        <div
+          class="ant-drawer-content-wrapper {{ nzWrapClassName }}"
+          [style.width]="width"
+          [style.height]="height"
+          [style.transform]="transform"
+          [style.transition]="placementChanging ? 'none' : null"
+        >
+          <div class="ant-drawer-content">
+            <div class="ant-drawer-wrapper-body" [style.height]="isLeftOrRight ? '100%' : null">
+              <div *ngIf="nzTitle || nzClosable" [class.ant-drawer-header]="!!nzTitle" [class.ant-drawer-header-no-title]="!!nzTitle">
+                <div *ngIf="nzTitle" class="ant-drawer-title">
+                  <ng-container *nzStringTemplateOutlet="nzTitle"><div [innerHTML]="nzTitle"></div></ng-container>
+                </div>
+                <button *ngIf="nzClosable" (click)="closeClick()" aria-label="Close" class="ant-drawer-close">
+                  <i nz-icon nzType="close"></i>
+                </button>
+              </div>
+              <div class="ant-drawer-body" [ngStyle]="nzBodyStyle">
+                <ng-template cdkPortalOutlet></ng-template>
+                <ng-container *ngIf="isTemplateRef(nzContent)">
+                  <ng-container *ngTemplateOutlet="nzContent; context: templateContext"></ng-container>
+                </ng-container>
+                <ng-content *ngIf="!nzContent"></ng-content>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  `,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
