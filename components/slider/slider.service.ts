@@ -6,8 +6,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export function getValueTypeNotMatchError(): Error {
-  return new Error(
-    `The "nzRange" can't match the "ngModel"'s type, please check these properties: "nzRange", "ngModel", "nzDefaultValue".`
-  );
+import { Injectable } from '@angular/core';
+
+@Injectable()
+export class NzSliderService {
+  isDragging = false;
 }
