@@ -13,17 +13,20 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ContentChild,
   EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 
 import { IndexableObject, InputBoolean, NzBreakpointKey, NzDomEventService, siderResponsiveMap, toCssPixel } from 'ng-zorro-antd/core';
+import { NzMenuDirective } from 'ng-zorro-antd/menu';
 import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 
@@ -62,6 +65,7 @@ import { finalize, takeUntil } from 'rxjs/operators';
 })
 export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
   private destroy$ = new Subject();
+  @ContentChild(NzMenuDirective) nzMenuDirective: NzMenuDirective;
   @Output() readonly nzCollapsedChange = new EventEmitter();
   @Input() nzWidth: string | number = 200;
   @Input() nzTheme: 'light' | 'dark' = 'dark';
@@ -99,10 +103,16 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
     }
     this.cdr.markForCheck();
   }
-
+  updateMenuInlineCollapsed(): void {
+    if (this.nzMenuDirective && this.nzMenuDirective.nzMode === 'inline') {
+      this.nzMenuDirective.setInlineCollapsed(this.nzCollapsed);
+    }
+  }
   setCollapsed(collapsed: boolean): void {
     this.nzCollapsed = collapsed;
     this.nzCollapsedChange.emit(collapsed);
+    this.updateMenuInlineCollapsed();
+    this.updateStyleMap();
     this.cdr.markForCheck();
   }
 
@@ -117,8 +127,11 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
     this.updateStyleMap();
   }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     this.updateStyleMap();
+    if (changes.nzCollapsed) {
+      this.updateMenuInlineCollapsed();
+    }
   }
 
   ngAfterViewInit(): void {
