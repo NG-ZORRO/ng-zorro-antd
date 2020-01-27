@@ -30,29 +30,22 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import {
-  collapseMotion,
-  DEFAULT_SUBMENU_POSITIONS,
-  getPlacementName,
-  InputBoolean,
-  NzNoAnimationDirective,
-  POSITION_MAP,
-  slideMotion,
-  zoomBigMotion
-} from 'ng-zorro-antd/core';
+import { getPlacementName, InputBoolean, NzNoAnimationDirective, POSITION_MAP } from 'ng-zorro-antd/core';
 import { combineLatest, merge, Subject } from 'rxjs';
-import { flatMap, map, startWith, takeUntil } from 'rxjs/operators';
+import { map, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { NzMenuItemDirective } from './menu-item.directive';
 import { MenuService } from './menu.service';
 import { NzIsMenuInsideDropDownToken } from './menu.token';
 import { NzMenuModeType, NzMenuThemeType } from './menu.types';
 import { NzSubmenuService } from './submenu.service';
 
+const listOfVerticalPositions = [POSITION_MAP.rightTop, POSITION_MAP.rightBottom, POSITION_MAP.leftTop, POSITION_MAP.leftBottom];
+const listOfHorizontalPositions = [POSITION_MAP.bottomLeft];
+
 @Component({
   selector: '[nz-submenu]',
   exportAs: 'nzSubmenu',
   providers: [NzSubmenuService],
-  animations: [collapseMotion, zoomBigMotion, slideMotion],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
@@ -75,7 +68,8 @@ import { NzSubmenuService } from './submenu.service';
     <div
       *ngIf="mode === 'inline'; else nonInlineTemplate"
       nz-submenu-inline-child
-      [@collapseMotion]="expandState"
+      [mode]="mode"
+      [nzOpen]="nzOpen"
       [@.disabled]="noAnimation?.nzNoAnimation"
       [nzNoAnimation]="noAnimation?.nzNoAnimation"
       [menuClass]="nzMenuClassName"
@@ -94,13 +88,12 @@ import { NzSubmenuService } from './submenu.service';
           nz-submenu-none-inline-child
           [theme]="theme"
           [mode]="mode"
-          [placement]="placement"
+          [nzOpen]="nzOpen"
+          [position]="position"
           [nzDisabled]="nzDisabled"
           [isMenuInsideDropDown]="isMenuInsideDropDown"
           [templateOutlet]="subMenuTemplate"
           [menuClass]="nzMenuClassName"
-          [@slideMotion]="expandState"
-          [@zoomBigMotion]="expandState"
           [@.disabled]="noAnimation?.nzNoAnimation"
           [nzNoAnimation]="noAnimation?.nzNoAnimation"
           (subMenuMouseState)="setMouseEnterState($event)"
@@ -146,14 +139,12 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   listOfNzMenuItemDirective: QueryList<NzMenuItemDirective> | null = null;
   private level = this.nzSubmenuService.level;
   private destroy$ = new Subject<void>();
-  placement = 'rightTop';
+  position = 'right';
   triggerWidth: number | null = null;
-  expandState = 'collapsed';
   theme: NzMenuThemeType = 'light';
   mode: NzMenuModeType = 'vertical';
   inlinePaddingLeft: number | null = null;
-  /** TODO: fix position error **/
-  overlayPositions = [...DEFAULT_SUBMENU_POSITIONS];
+  overlayPositions = listOfVerticalPositions;
   isSelected = false;
   isActive = false;
 
@@ -174,14 +165,19 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   }
 
   setTriggerWidth(): void {
-    if (this.mode === 'horizontal' && this.platform.isBrowser) {
+    if (this.mode === 'horizontal' && this.platform.isBrowser && this.cdkOverlayOrigin) {
       /** TODO: fast dom **/
       this.triggerWidth = this.cdkOverlayOrigin!.nativeElement.getBoundingClientRect().width;
     }
   }
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
-    this.placement = getPlacementName(position)!;
+    const placement = getPlacementName(position);
+    if (placement === 'rightTop' || placement === 'rightBottom') {
+      this.position = 'right';
+    } else if (placement === 'leftTop' || placement === 'leftBottom') {
+      this.position = 'left';
+    }
     this.cdr.markForCheck();
   }
 
@@ -195,60 +191,56 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   ) {}
 
   ngOnInit(): void {
+    /** submenu theme update **/
     this.nzMenuService.theme$.pipe(takeUntil(this.destroy$)).subscribe(theme => {
       this.theme = theme;
       this.cdr.markForCheck();
     });
+    /** submenu mode update **/
     this.nzSubmenuService.mode$.pipe(takeUntil(this.destroy$)).subscribe(mode => {
       this.mode = mode;
+      if (mode === 'horizontal') {
+        this.overlayPositions = listOfHorizontalPositions;
+      } else if (mode === 'vertical') {
+        this.overlayPositions = listOfVerticalPositions;
+      }
       this.cdr.markForCheck();
     });
+    /** inlineIndent update **/
     combineLatest([this.nzSubmenuService.mode$, this.nzMenuService.inlineIndent$])
       .pipe(takeUntil(this.destroy$))
       .subscribe(([mode, inlineIndent]) => {
         this.inlinePaddingLeft = mode === 'inline' ? this.level * inlineIndent : null;
         this.cdr.markForCheck();
       });
-    combineLatest([this.nzSubmenuService.mode$, this.nzSubmenuService.isHostSubMenuOpen$])
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(([mode, open]) => {
-        if (open) {
-          if (mode === 'inline') {
-            this.expandState = 'expanded';
-          } else if (mode === 'horizontal') {
-            this.expandState = 'bottom';
-          } else if (mode === 'vertical') {
-            this.expandState = 'active';
-          }
-        } else {
-          this.isActive = false;
-          this.expandState = 'collapsed';
-        }
-        this.overlayPositions = mode === 'horizontal' ? [POSITION_MAP.bottomLeft] : [POSITION_MAP.rightTop, POSITION_MAP.leftTop];
-        if (open !== this.nzOpen) {
-          this.setTriggerWidth();
-          this.nzOpen = open;
-          this.nzOpenChange.emit(this.nzOpen);
-        }
+    /** current submenu open status **/
+    this.nzSubmenuService.isCurrentSubMenuOpen$.pipe(takeUntil(this.destroy$)).subscribe(open => {
+      if (open !== this.nzOpen) {
+        this.setTriggerWidth();
+        this.nzOpen = open;
+        this.nzOpenChange.emit(this.nzOpen);
         this.cdr.markForCheck();
-      });
+      }
+    });
   }
 
   ngAfterContentInit(): void {
     this.setTriggerWidth();
-    const mergedObservable = merge(
-      ...[this.listOfNzMenuItemDirective!.changes, ...this.listOfNzMenuItemDirective!.map(menu => menu.selected$)]
-    );
-    this.listOfNzMenuItemDirective!.changes.pipe(
-      startWith(this.listOfNzMenuItemDirective),
-      flatMap(() => mergedObservable),
-      startWith(true),
-      map(() => this.listOfNzMenuItemDirective!.some(e => e.nzSelected)),
-      takeUntil(this.destroy$)
-    ).subscribe(selected => {
-      this.isSelected = selected;
-      this.cdr.markForCheck();
-    });
+    const listOfNzMenuItemDirective = this.listOfNzMenuItemDirective;
+    const changes = listOfNzMenuItemDirective!.changes;
+    const mergedObservable = merge(...[changes, ...listOfNzMenuItemDirective!.map(menu => menu.selected$)]);
+    changes
+      .pipe(
+        startWith(listOfNzMenuItemDirective),
+        switchMap(() => mergedObservable),
+        startWith(true),
+        map(() => listOfNzMenuItemDirective!.some(e => e.nzSelected)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(selected => {
+        this.isSelected = selected;
+        this.cdr.markForCheck();
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
