@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
     <nz-layout>
       <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
         <div class="logo"></div>
-        <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+        <ul nz-menu nzTheme="dark" nzMode="inline">
           <li nz-submenu nzTitle="User" nzIcon="user">
             <ul>
               <li nz-menu-item>Tom</li>
