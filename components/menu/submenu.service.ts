@@ -29,7 +29,7 @@ export class NzSubmenuService {
     })
   );
   level = 1;
-  isHostSubMenuOpen$ = new BehaviorSubject<boolean>(false);
+  isCurrentSubMenuOpen$ = new BehaviorSubject<boolean>(false);
   private isChildSubMenuOpen$ = new BehaviorSubject<boolean>(false);
   /** submenu title & overlay mouse enter status **/
   private isMouseEnterTitleOrOverlay$ = new Subject<boolean>();
@@ -42,7 +42,7 @@ export class NzSubmenuService {
     this.childMenuItemClick$.next(menu);
   }
   setOpenStateWithoutDebounce(value: boolean): void {
-    this.isHostSubMenuOpen$.next(value);
+    this.isCurrentSubMenuOpen$.next(value);
   }
   setMouseEnterTitleOrOverlayState(value: boolean): void {
     this.isMouseEnterTitleOrOverlay$.next(value);

@@ -6,11 +6,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { collapseMotion } from 'ng-zorro-antd/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzMenuModeType } from './menu.types';
 
 @Component({
   selector: '[nz-submenu-inline-child]',
+  animations: [collapseMotion],
   exportAs: 'nzSubmenuInlineChild',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -21,10 +24,30 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
     '[class.ant-menu]': 'true',
     '[class.ant-menu-inline]': 'true',
     '[class.ant-menu-sub]': 'true',
-    '[class]': 'menuClass'
+    '[class]': 'menuClass',
+    '[@collapseMotion]': 'expandState'
   }
 })
-export class NzSubmenuInlineChildComponent {
+export class NzSubmenuInlineChildComponent implements OnInit, OnChanges {
   @Input() templateOutlet: TemplateRef<NzSafeAny> | null = null;
   @Input() menuClass: string | null = null;
+  @Input() mode: NzMenuModeType = 'vertical';
+  @Input() nzOpen = false;
+  expandState = 'collapsed';
+  calcMotionState(): void {
+    if (this.nzOpen) {
+      this.expandState = 'expanded';
+    } else {
+      this.expandState = 'collapsed';
+    }
+  }
+  ngOnInit(): void {
+    this.calcMotionState();
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    const { mode, nzOpen } = changes;
+    if (mode || nzOpen) {
+      this.calcMotionState();
+    }
+  }
 }

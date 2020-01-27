@@ -65,7 +65,7 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
         /** menu item inside the submenu **/
         this.nzSubmenuService.onChildMenuItemClick(this);
       } else {
-        /** menu item insisde the root menu **/
+        /** menu item inside the root menu **/
         this.nzMenuService.onChildMenuItemClick(this);
       }
     }
