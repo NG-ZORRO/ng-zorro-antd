@@ -8,6 +8,7 @@
 
 import {
   AfterContentInit,
+  ChangeDetectorRef,
   ContentChildren,
   Directive,
   EventEmitter,
@@ -23,7 +24,7 @@ import {
   SkipSelf
 } from '@angular/core';
 import { InputBoolean } from 'ng-zorro-antd/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzMenuItemDirective } from './menu-item.directive';
 import { MenuService } from './menu.service';
@@ -76,8 +77,6 @@ import { NzSubMenuComponent } from './submenu.component';
   }
 })
 export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnDestroy {
-  private destroy$ = new Subject();
-  private listOfOpenedNzSubMenuComponent: NzSubMenuComponent[] = [];
   @ContentChildren(NzMenuItemDirective, { descendants: true }) listOfNzMenuItemDirective: QueryList<NzMenuItemDirective>;
   @ContentChildren(NzSubMenuComponent, { descendants: true }) listOfNzSubMenuComponent: QueryList<NzSubMenuComponent>;
   @Input() nzInlineIndent = 24;
@@ -87,6 +86,15 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
   @Input() @InputBoolean() nzSelectable = !this.isMenuInsideDropDown;
   @Output() readonly nzClick = new EventEmitter<NzMenuItemDirective>();
   actualMode: NzMenuModeType = 'vertical';
+  private inlineCollapsed$ = new BehaviorSubject<boolean>(this.nzInlineCollapsed);
+  private mode$ = new BehaviorSubject<NzMenuModeType>(this.nzMode);
+  private destroy$ = new Subject();
+  private listOfOpenedNzSubMenuComponent: NzSubMenuComponent[] = [];
+
+  setInlineCollapsed(inlineCollapsed: boolean): void {
+    this.nzInlineCollapsed = inlineCollapsed;
+    this.inlineCollapsed$.next(inlineCollapsed);
+  }
 
   updateInlineCollapse(): void {
     if (this.listOfNzMenuItemDirective) {
@@ -100,9 +108,20 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
     }
   }
 
-  constructor(private nzMenuService: MenuService, @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean) {}
+  constructor(
+    private nzMenuService: MenuService,
+    @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
+    combineLatest([this.inlineCollapsed$, this.mode$])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([inlineCollapsed, mode]) => {
+        this.actualMode = inlineCollapsed ? 'vertical' : mode;
+        this.nzMenuService.setMode(this.actualMode);
+        this.cdr.markForCheck();
+      });
     this.nzMenuService.descendantMenuItemClick$.pipe(takeUntil(this.destroy$)).subscribe(menu => {
       this.nzClick.emit(menu);
       if (this.nzSelectable) {
@@ -112,13 +131,16 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
   }
 
   ngAfterContentInit(): void {
-    this.updateInlineCollapse();
+    this.inlineCollapsed$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.updateInlineCollapse();
+      this.cdr.markForCheck();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzInlineCollapsed, nzInlineIndent, nzTheme, nzMode } = changes;
     if (nzInlineCollapsed) {
-      this.updateInlineCollapse();
+      this.inlineCollapsed$.next(this.nzInlineCollapsed);
     }
     if (nzInlineIndent) {
       this.nzMenuService.setInlineIndent(this.nzInlineIndent);
@@ -126,9 +148,8 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
     if (nzTheme) {
       this.nzMenuService.setTheme(this.nzTheme);
     }
-    if (nzMode || nzInlineCollapsed) {
-      this.actualMode = this.nzInlineCollapsed ? 'vertical' : this.nzMode;
-      this.nzMenuService.setMode(this.actualMode);
+    if (nzMode) {
+      this.mode$.next(this.nzMode);
     }
   }
 

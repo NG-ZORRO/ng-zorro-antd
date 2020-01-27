@@ -4,9 +4,9 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-layout-responsive',
   template: `
     <nz-layout class="layout">
-      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" nzBreakpoint="lg" [nzCollapsedWidth]="0">
+      <nz-sider nzCollapsible nzBreakpoint="lg" [nzCollapsedWidth]="0">
         <div class="logo"></div>
-        <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+        <ul nz-menu nzTheme="dark" nzMode="inline">
           <li nz-menu-item>
             <i nz-icon nzType="user"></i>
             <span>nav 1</span>
@@ -69,6 +69,4 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class NzDemoLayoutResponsiveComponent {
-  isCollapsed = false;
-}
+export class NzDemoLayoutResponsiveComponent {}
