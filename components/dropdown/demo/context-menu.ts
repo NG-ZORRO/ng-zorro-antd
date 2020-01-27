@@ -5,7 +5,7 @@ import { NzContextMenuService, NzDropdownMenuComponent } from 'ng-zorro-antd/dro
   selector: 'nz-demo-dropdown-context-menu',
   template: `
     <div class="context-area" (contextmenu)="contextMenu($event, menu)">
-      <span class="context-intro">Context Menu</span>
+      Right Click on here
     </div>
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu>
@@ -30,14 +30,11 @@ import { NzContextMenuService, NzDropdownMenuComponent } from 'ng-zorro-antd/dro
   styles: [
     `
       .context-area {
-        background: rgb(190, 200, 200);
-        padding: 32px;
+        background: #f7f7f7;
+        color: #777;
         text-align: center;
-      }
-
-      .context-intro {
-        color: #fff;
-        font-size: 14px;
+        height: 200px;
+        line-height: 200px;
       }
     `
   ]

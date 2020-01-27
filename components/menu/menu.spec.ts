@@ -303,7 +303,7 @@ describe('menu', () => {
         // tslint:disable-next-line:no-any
         (subs[0].nzSubmenuService as any).isChildSubMenuOpen$.subscribe(nestedCallback);
         subs[1].nzOpen = true;
-        subs[1].nzSubmenuService.isHostSubMenuOpen$.next(false);
+        subs[1].nzSubmenuService.isCurrentSubMenuOpen$.next(false);
         fixture.detectChanges();
         expect(nestedCallback).toHaveBeenCalledWith(false);
         expect(nestedCallback).toHaveBeenCalledTimes(1);
@@ -317,7 +317,7 @@ describe('menu', () => {
         // tslint:disable-next-line:no-any
         (subs[0].nzSubmenuService as any).isChildSubMenuOpen$.subscribe(nestedCallback);
         subs[1].nzOpen = true;
-        subs[1].nzSubmenuService.isHostSubMenuOpen$.next(false);
+        subs[1].nzSubmenuService.isCurrentSubMenuOpen$.next(false);
         fixture.detectChanges();
         expect(nestedCallback).toHaveBeenCalledTimes(1);
       });
@@ -396,10 +396,10 @@ describe('menu', () => {
         fixture.detectChanges();
         subs[1].onPositionChange(fakeLeftTopEvent);
         fixture.detectChanges();
-        expect(subs[1].placement).toBe('leftTop');
+        expect(subs[1].position).toBe('left');
         subs[1].onPositionChange(fakeRightTopEvent);
         fixture.detectChanges();
-        expect(subs[1].placement).toBe('rightTop');
+        expect(subs[1].position).toBe('right');
       });
       it('should `nzMenuClassName` work', fakeAsync(() => {
         fixture.detectChanges();
@@ -412,7 +412,7 @@ describe('menu', () => {
         fixture.detectChanges();
         const subs = testComponent.subs.toArray();
         subs[1].nzOpen = true;
-        subs[1].nzSubmenuService.isHostSubMenuOpen$.next(true);
+        subs[1].nzSubmenuService.isCurrentSubMenuOpen$.next(true);
         fixture.detectChanges();
         expect((overlayContainerElement.querySelector('ul.nested-submenu') as HTMLUListElement).classList).toContain('ant-menu-sub');
       });

@@ -27,7 +27,6 @@ export const POSITION_MAP: { [key: string]: ConnectionPositionPair } = {
 
 export const DEFAULT_TOOLTIP_POSITIONS = [POSITION_MAP.top, POSITION_MAP.right, POSITION_MAP.bottom, POSITION_MAP.left];
 export const DEFAULT_DROPDOWN_POSITIONS = [POSITION_MAP.bottomLeft, POSITION_MAP.bottomRight, POSITION_MAP.topRight, POSITION_MAP.topLeft];
-export const DEFAULT_SUBMENU_POSITIONS = [POSITION_MAP.rightTop, POSITION_MAP.leftTop];
 export const DEFAULT_CASCADER_POSITIONS = [POSITION_MAP.bottomLeft, POSITION_MAP.topLeft];
 
 export const DEFAULT_MENTION_TOP_POSITIONS = [
@@ -41,10 +40,13 @@ export const DEFAULT_MENTION_BOTTOM_POSITIONS = [
 ];
 
 export function getPlacementName(position: ConnectedOverlayPositionChange): string | undefined {
-  const keyList = ['originX', 'originY', 'overlayX', 'overlayY'];
   for (const placement in POSITION_MAP) {
-    // @ts-ignore
-    if (keyList.every(key => position.connectionPair[key] === POSITION_MAP[placement][key])) {
+    if (
+      position.connectionPair.originX === POSITION_MAP[placement].originX &&
+      position.connectionPair.originY === POSITION_MAP[placement].originY &&
+      position.connectionPair.overlayX === POSITION_MAP[placement].overlayX &&
+      position.connectionPair.overlayY === POSITION_MAP[placement].overlayY
+    ) {
       return placement;
     }
   }
