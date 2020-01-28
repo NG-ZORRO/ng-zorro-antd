@@ -215,6 +215,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
       });
     /** current submenu open status **/
     this.nzSubmenuService.isCurrentSubMenuOpen$.pipe(takeUntil(this.destroy$)).subscribe(open => {
+      this.isActive = open;
       if (open !== this.nzOpen) {
         this.setTriggerWidth();
         this.nzOpen = open;
