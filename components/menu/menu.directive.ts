@@ -124,7 +124,7 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
       });
     this.nzMenuService.descendantMenuItemClick$.pipe(takeUntil(this.destroy$)).subscribe(menu => {
       this.nzClick.emit(menu);
-      if (this.nzSelectable) {
+      if (this.nzSelectable && !menu.nzMatchRouter) {
         this.listOfNzMenuItemDirective.forEach(item => item.setSelectedState(item === menu));
       }
     });
