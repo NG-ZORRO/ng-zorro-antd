@@ -1,19 +1,10 @@
-import { Directionality } from '@angular/cdk/bidi';
 import { ConnectedOverlayPositionChange, OverlayContainer } from '@angular/cdk/overlay';
-import { ScrollDispatcher } from '@angular/cdk/scrolling';
-import { Component, DebugElement, ElementRef, NO_ERRORS_SCHEMA, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, DebugElement, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { async, ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
 import { dispatchFakeEvent } from 'ng-zorro-antd/core';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
-import { Subject } from 'rxjs';
-
-import { NzDemoMenuInlineCollapsedComponent } from './demo/inline-collapsed';
-import { NzDemoMenuSiderCurrentComponent } from './demo/sider-current';
-import { NzDemoMenuSwitchModeComponent } from './demo/switch-mode';
-import { NzDemoMenuThemeComponent } from './demo/theme';
 import { NzMenuItemDirective } from './menu-item.directive';
 import { NzMenuDirective } from './menu.directive';
 import { NzMenuModule } from './menu.module';
@@ -22,28 +13,21 @@ import { NzSubMenuComponent } from './submenu.component';
 describe('menu', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
-  const scrolledSubject = new Subject();
   beforeEach(async(() => {
-    const dir = 'ltr';
     TestBed.configureTestingModule({
-      imports: [NzMenuModule, NoopAnimationsModule, NoopAnimationsModule, NzIconTestModule],
+      imports: [NzMenuModule, NoopAnimationsModule, NzIconTestModule],
       declarations: [
         NzTestBasicMenuHorizontalComponent,
         NzTestBasicMenuInlineComponent,
-        NzDemoMenuInlineCollapsedComponent,
-        NzDemoMenuSiderCurrentComponent,
-        NzDemoMenuThemeComponent,
-        NzDemoMenuSwitchModeComponent,
+        NzTestMenuInlineCollapsedComponent,
+        NzTestMenuSiderCurrentComponent,
+        NzTestMenuThemeComponent,
+        NzTestMenuSwitchModeComponent,
         NzTestMenuHorizontalComponent,
         NzTestMenuInlineComponent,
         NzDemoMenuNgForComponent,
         NzTestNgIfMenuComponent,
         NzTestSubMenuSelectedComponent
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
-      providers: [
-        { provide: Directionality, useFactory: () => ({ value: dir }) },
-        { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) }
       ]
     });
 
@@ -134,12 +118,12 @@ describe('menu', () => {
       }));
     });
     describe('inline-collapsed', () => {
-      let fixture: ComponentFixture<NzDemoMenuInlineCollapsedComponent>;
-      let testComponent: NzDemoMenuInlineCollapsedComponent;
+      let fixture: ComponentFixture<NzTestMenuInlineCollapsedComponent>;
+      let testComponent: NzTestMenuInlineCollapsedComponent;
       let submenus: DebugElement[];
       let menu: DebugElement;
       beforeEach(() => {
-        fixture = TestBed.createComponent(NzDemoMenuInlineCollapsedComponent);
+        fixture = TestBed.createComponent(NzTestMenuInlineCollapsedComponent);
         testComponent = fixture.debugElement.componentInstance;
         submenus = fixture.debugElement.queryAll(By.directive(NzSubMenuComponent));
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
@@ -176,10 +160,10 @@ describe('menu', () => {
       });
     });
     describe('slider-current', () => {
-      let fixture: ComponentFixture<NzDemoMenuSiderCurrentComponent>;
+      let fixture: ComponentFixture<NzTestMenuSiderCurrentComponent>;
       let submenus: DebugElement[];
       beforeEach(() => {
-        fixture = TestBed.createComponent(NzDemoMenuSiderCurrentComponent);
+        fixture = TestBed.createComponent(NzTestMenuSiderCurrentComponent);
         submenus = fixture.debugElement.queryAll(By.directive(NzSubMenuComponent));
       });
       it('should collapsed self work', fakeAsync(() => {
@@ -215,11 +199,11 @@ describe('menu', () => {
       }));
     });
     describe('theme', () => {
-      let fixture: ComponentFixture<NzDemoMenuThemeComponent>;
-      let testComponent: NzDemoMenuThemeComponent;
+      let fixture: ComponentFixture<NzTestMenuThemeComponent>;
+      let testComponent: NzTestMenuThemeComponent;
       let menu: DebugElement;
       beforeEach(() => {
-        fixture = TestBed.createComponent(NzDemoMenuThemeComponent);
+        fixture = TestBed.createComponent(NzTestMenuThemeComponent);
         testComponent = fixture.debugElement.componentInstance;
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
       });
@@ -232,12 +216,12 @@ describe('menu', () => {
       });
     });
     describe('swich-mode', () => {
-      let fixture: ComponentFixture<NzDemoMenuSwitchModeComponent>;
-      let testComponent: NzDemoMenuSwitchModeComponent;
+      let fixture: ComponentFixture<NzTestMenuSwitchModeComponent>;
+      let testComponent: NzTestMenuSwitchModeComponent;
       let submenus: DebugElement[];
       let menu: DebugElement;
       beforeEach(() => {
-        fixture = TestBed.createComponent(NzDemoMenuSwitchModeComponent);
+        fixture = TestBed.createComponent(NzTestMenuSwitchModeComponent);
         testComponent = fixture.debugElement.componentInstance;
         submenus = fixture.debugElement.queryAll(By.directive(NzSubMenuComponent));
         menu = fixture.debugElement.query(By.directive(NzMenuDirective));
@@ -405,16 +389,18 @@ describe('menu', () => {
         fixture.detectChanges();
         testComponent.open = true;
         fixture.detectChanges();
-        expect((overlayContainerElement.querySelector('ul.submenu') as HTMLUListElement).classList).toContain('ant-menu-sub');
+        expect((overlayContainerElement.querySelector('.submenu') as HTMLUListElement).classList).toContain('ant-menu-sub');
       }));
       it('should nested submenu `nzMenuClassName` work', () => {
         testComponent.open = true;
         fixture.detectChanges();
         const subs = testComponent.subs.toArray();
+        subs[0].nzOpen = true;
         subs[1].nzOpen = true;
-        subs[1].nzSubmenuService.isCurrentSubMenuOpen$.next(true);
+        // tslint:disable-next-line:no-any
+        (subs[1] as any).cdr.markForCheck();
         fixture.detectChanges();
-        expect((overlayContainerElement.querySelector('ul.nested-submenu') as HTMLUListElement).classList).toContain('ant-menu-sub');
+        expect((overlayContainerElement.querySelector('.nested-submenu') as HTMLUListElement).classList).toContain('ant-menu-sub');
       });
     });
     describe('inline submenu', () => {
@@ -704,7 +690,7 @@ export class NzTestNgIfMenuComponent {
 @Component({
   template: `
     <ul nz-menu nzMode="inline" nzTheme="dark" nzInlineCollapsed>
-      <li nz-menu-item nz-tooltip nzPlacement="right">
+      <li nz-menu-item>
         <i nz-icon nzType="mail"></i>
         <span>Navigation One</span>
       </li>
@@ -718,3 +704,211 @@ export class NzTestNgIfMenuComponent {
   `
 })
 export class NzTestSubMenuSelectedComponent {}
+
+@Component({
+  template: `
+    <div class="wrapper">
+      <button nz-button nzType="primary" (click)="toggleCollapsed()">
+        <i nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
+      </button>
+      <ul nz-menu nzMode="inline" nzTheme="dark" [nzInlineCollapsed]="isCollapsed">
+        <li nz-menu-item nzSelected>
+          <i nz-icon nzType="mail"></i>
+          <span>Navigation One</span>
+        </li>
+        <li nz-submenu nzTitle="Navigation Two" nzIcon="appstore">
+          <ul>
+            <li nz-menu-item>Option 5</li>
+            <li nz-menu-item>Option 6</li>
+            <li nz-submenu nzTitle="Submenu">
+              <ul>
+                <li nz-menu-item>Option 7</li>
+                <li nz-menu-item>Option 8</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li nz-submenu nzTitle="Navigation Three" nzIcon="setting">
+          <ul>
+            <li nz-menu-item>Option 9</li>
+            <li nz-menu-item>Option 10</li>
+            <li nz-menu-item>Option 11</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  `,
+  styles: [
+    `
+      .wrapper {
+        width: 240px;
+      }
+
+      button {
+        margin-bottom: 12px;
+      }
+    `
+  ]
+})
+export class NzTestMenuInlineCollapsedComponent {
+  isCollapsed = false;
+
+  toggleCollapsed(): void {
+    this.isCollapsed = !this.isCollapsed;
+  }
+}
+
+@Component({
+  template: `
+    <ul nz-menu nzMode="inline" style="width: 240px;">
+      <li nz-submenu [(nzOpen)]="openMap.sub1" (nzOpenChange)="openHandler('sub1')" nzTitle="Navigation One" nzIcon="mail">
+        <ul>
+          <li nz-menu-group nzTitle="Item 1">
+            <ul>
+              <li nz-menu-item>Option 1</li>
+              <li nz-menu-item>Option 2</li>
+            </ul>
+          </li>
+          <li nz-menu-group nzTitle="Item 2">
+            <ul>
+              <li nz-menu-item>Option 3</li>
+              <li nz-menu-item>Option 4</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu [(nzOpen)]="openMap.sub2" (nzOpenChange)="openHandler('sub2')" nzTitle="Navigation Two" nzIcon="appstore">
+        <ul>
+          <li nz-menu-item>Option 5</li>
+          <li nz-menu-item>Option 6</li>
+          <li nz-submenu nzTitle="Submenu">
+            <ul>
+              <li nz-menu-item>Option 7</li>
+              <li nz-menu-item>Option 8</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu [(nzOpen)]="openMap.sub3" (nzOpenChange)="openHandler('sub3')" nzTitle="Navigation Three" nzIcon="setting">
+        <ul>
+          <li nz-menu-item>Option 9</li>
+          <li nz-menu-item>Option 10</li>
+          <li nz-menu-item>Option 11</li>
+        </ul>
+      </li>
+    </ul>
+  `
+})
+export class NzTestMenuSiderCurrentComponent {
+  openMap: { [name: string]: boolean } = {
+    sub1: true,
+    sub2: false,
+    sub3: false
+  };
+
+  openHandler(value: string): void {
+    for (const key in this.openMap) {
+      if (key !== value) {
+        this.openMap[key] = false;
+      }
+    }
+  }
+}
+
+@Component({
+  template: `
+    <ul nz-menu [nzMode]="mode ? 'vertical' : 'inline'" [nzTheme]="dark ? 'dark' : 'light'">
+      <li nz-submenu nzTitle="Navigation One" nzIcon="mail">
+        <ul>
+          <li nz-menu-group nzTitle="Item 1">
+            <ul>
+              <li nz-menu-item>Option 1</li>
+              <li nz-menu-item>Option 2</li>
+            </ul>
+          </li>
+          <li nz-menu-group nzTitle="Item 2">
+            <ul>
+              <li nz-menu-item>Option 3</li>
+              <li nz-menu-item>Option 4</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="Navigation Two" nzIcon="appstore">
+        <ul>
+          <li nz-menu-item>Option 5</li>
+          <li nz-menu-item>Option 6</li>
+          <li nz-submenu nzTitle="Submenu">
+            <ul>
+              <li nz-menu-item>Option 7</li>
+              <li nz-menu-item>Option 8</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="Navigation Three" nzIcon="setting">
+        <ul>
+          <li nz-menu-item>Option 9</li>
+          <li nz-menu-item>Option 10</li>
+          <li nz-menu-item>Option 11</li>
+        </ul>
+      </li>
+    </ul>
+  `,
+  styles: [
+    `
+      [nz-menu] {
+        width: 240px;
+      }
+    `
+  ]
+})
+export class NzTestMenuSwitchModeComponent {
+  mode = false;
+  dark = false;
+}
+
+@Component({
+  template: `
+    <ul nz-menu nzMode="inline" style="width: 240px;" [nzTheme]="theme ? 'dark' : 'light'">
+      <li nz-submenu nzOpen nzTitle="Navigation One" nzIcon="mail">
+        <ul>
+          <li nz-menu-group nzTitle="Item 1">
+            <ul>
+              <li nz-menu-item nzSelected>Option 1</li>
+              <li nz-menu-item>Option 2</li>
+            </ul>
+          </li>
+          <li nz-menu-group nzTitle="Item 2">
+            <ul>
+              <li nz-menu-item>Option 3</li>
+              <li nz-menu-item>Option 4</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="Navigation Two" nzIcon="appstore">
+        <ul>
+          <li nz-menu-item>Option 5</li>
+          <li nz-menu-item>Option 6</li>
+          <li nz-submenu nzTitle="Submenu">
+            <ul>
+              <li nz-menu-item>Option 7</li>
+              <li nz-menu-item>Option 8</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="Navigation Three" nzIcon="setting">
+        <ul>
+          <li nz-menu-item>Option 9</li>
+          <li nz-menu-item>Option 10</li>
+          <li nz-menu-item>Option 11</li>
+        </ul>
+      </li>
+    </ul>
+  `
+})
+export class NzTestMenuThemeComponent {
+  theme = true;
+}
