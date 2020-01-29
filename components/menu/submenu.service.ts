@@ -61,10 +61,11 @@ export class NzSubmenuService {
       flatMap(() => this.mode$),
       filter(mode => mode !== 'inline' || this.isMenuInsideDropDown)
     );
-    const isCurrentSubmenuOpen$ = merge(this.isMouseEnterTitleOrOverlay$.pipe(auditTime(150)), isClosedByMenuItemClick.pipe(mapTo(false)));
+    const isCurrentSubmenuOpen$ = merge(this.isMouseEnterTitleOrOverlay$, isClosedByMenuItemClick.pipe(mapTo(false)));
     /** combine the child submenu status with current submenu status to calculate host submenu open **/
     const isSubMenuOpenWithDebounce$ = combineLatest([this.isChildSubMenuOpen$, isCurrentSubmenuOpen$]).pipe(
       map(([isChildSubMenuOpen, isCurrentSubmenuOpen]) => isChildSubMenuOpen || isCurrentSubmenuOpen),
+      auditTime(150),
       distinctUntilChanged()
     );
     isSubMenuOpenWithDebounce$.pipe(distinctUntilChanged()).subscribe(data => {
