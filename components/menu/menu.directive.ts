@@ -150,6 +150,9 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
     }
     if (nzMode) {
       this.mode$.next(this.nzMode);
+      if (!changes.nzMode.isFirstChange() && this.listOfNzSubMenuComponent) {
+        this.listOfNzSubMenuComponent.forEach(submenu => submenu.setOpenStateWithoutDebounce(false));
+      }
     }
   }
 
