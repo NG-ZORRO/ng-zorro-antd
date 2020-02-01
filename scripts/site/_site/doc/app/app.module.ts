@@ -21,6 +21,7 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { ColorSketchModule } from 'ngx-color/sketch';
 
+import { BidiModule } from '@angular/cdk/bidi';
 import { environment } from '../environments/environment';
 import { DEMOComponent } from './_demo/demo.component';
 import { AppComponent } from './app.component';
@@ -38,6 +39,7 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline];
 @NgModule({
   declarations: [AppComponent, DEMOComponent],
   imports: [
+    BidiModule,
     BrowserModule.withServerTransition({ appId: 'docs' }),
     BrowserAnimationsModule,
     FormsModule,

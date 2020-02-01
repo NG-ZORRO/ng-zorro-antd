@@ -3,6 +3,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Platform } from '@angular/cdk/platform';
@@ -75,7 +83,6 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
     renderGutter('margin-top', verticalGutter);
     renderGutter('margin-bottom', verticalGutter);
   }
-
   constructor(
     public elementRef: ElementRef,
     public renderer: Renderer2,

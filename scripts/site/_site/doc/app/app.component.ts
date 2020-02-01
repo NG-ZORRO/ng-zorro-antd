@@ -67,9 +67,9 @@ export class AppComponent implements OnInit, AfterContentInit {
   switchDirection(direction: 'ltr' | 'rtl'): void {
     this.direction = direction;
     if (direction === 'rtl') {
-      this.renderer.addClass(document.body, 'rtl');
+      this.renderer.setAttribute(document.body, 'dir', 'rtl');
     } else {
-      this.renderer.removeClass(document.body, 'rtl');
+      this.renderer.removeAttribute(document.body, 'dir');
     }
     this.cdr.detectChanges();
   }
