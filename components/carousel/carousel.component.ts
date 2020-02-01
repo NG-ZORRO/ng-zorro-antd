@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import { Platform } from '@angular/cdk/platform';
 import {
@@ -90,7 +91,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
     </ng-template>
   `,
   host: {
-    '[class.ant-carousel-vertical]': 'vertical'
+    '[class.ant-carousel-vertical]': 'vertical',
+    '[class.ant-carousel-rtl]': `dir ==='rtl'`
   }
 })
 export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges {
@@ -142,6 +144,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   strategy?: NzCarouselBaseStrategy;
   vertical = false;
   transitionInProgress: number | null = null;
+  dir: Direction;
 
   private destroy$ = new Subject<void>();
   private gestureRect: ClientRect | null = null;
@@ -157,12 +160,19 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     private readonly platform: Platform,
     private readonly resizeService: NzResizeService,
     private readonly nzDragService: NzDragService,
+    directionality: Directionality,
     @Optional() @Inject(NZ_CAROUSEL_CUSTOM_STRATEGIES) private customStrategies: NzCarouselStrategyRegistryItem[]
   ) {
     this.nzDotPosition = 'bottom';
 
     this.renderer.addClass(elementRef.nativeElement, 'ant-carousel');
     this.el = elementRef.nativeElement;
+
+    this.dir = directionality.value;
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      this.syncStrategy();
+    });
   }
 
   ngAfterContentInit(): void {
@@ -324,7 +334,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
           this.isDragging = true;
           this.strategy?.dragging(this.pointerDelta);
         },
-        () => {},
+        () => { },
         () => {
           if (this.nzEnableSwipe && this.isDragging) {
             const xDelta = this.pointerDelta ? this.pointerDelta.x : 0;
