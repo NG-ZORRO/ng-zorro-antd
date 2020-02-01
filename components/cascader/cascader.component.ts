@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { CdkConnectedOverlay, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
@@ -122,6 +123,7 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
       <div
         #menu
         class="ant-cascader-menus"
+        [class.ant-cascader-menu-rtl]="dir === 'rtl'"
         [class.ant-cascader-menus-hidden]="!menuVisible"
         [ngClass]="menuCls"
         [ngStyle]="nzMenuStyle"
@@ -182,8 +184,22 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
     '[class.ant-cascader-picker-disabled]': 'nzDisabled',
     '[class.ant-cascader-picker-open]': 'menuVisible',
     '[class.ant-cascader-picker-with-value]': '!!inputValue',
-    '[class.ant-cascader-focused]': 'isFocused'
-  }
+    '[class.ant-cascader-focused]': 'isFocused',
+    '[class.ant-cascader-rtl]': `dir ==='rtl'`,
+    '[class.ant-cascader-picker-rtl]': `dir ==='rtl'`
+  },
+  styles: [
+    `
+      .ant-cascader-menus {
+        margin-top: 4px;
+        margin-bottom: 4px;
+        top: 100%;
+        left: 0;
+        position: relative;
+        width: 100%;
+      }
+    `
+  ]
 })
 export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit, OnDestroy, ControlValueAccessor {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
@@ -260,6 +276,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   isFocused = false;
 
   locale!: NzCascaderI18nInterface;
+  dir: Direction;
 
   private destroy$ = new Subject<void>();
   private inputString = '';
@@ -315,12 +332,18 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     private cdr: ChangeDetectorRef,
     elementRef: ElementRef,
     renderer: Renderer2,
+    directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     this.el = elementRef.nativeElement;
     this.cascaderService.withComponent(this);
     renderer.addClass(elementRef.nativeElement, 'ant-cascader');
     renderer.addClass(elementRef.nativeElement, 'ant-cascader-picker');
+
+    this.dir = directionality.value;
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+    });
   }
 
   ngOnInit(): void {

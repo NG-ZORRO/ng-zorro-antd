@@ -15,6 +15,8 @@ import {
 } from '@angular/core';
 
 import { NzCascaderOption } from './typings';
+// tslint:disable-next-line: ordered-imports
+import { Directionality, Direction } from '@angular/cdk/bidi';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -46,9 +48,15 @@ export class NzCascaderOptionComponent {
   @Input() highlightText!: string;
   @Input() nzLabelProperty = 'label';
   @Input() columnIndex!: number;
+  dir: Direction;
 
-  constructor(private cdr: ChangeDetectorRef, elementRef: ElementRef, renderer: Renderer2) {
+  constructor(private cdr: ChangeDetectorRef, elementRef: ElementRef, renderer: Renderer2, directionality: Directionality) {
     renderer.addClass(elementRef.nativeElement, 'ant-cascader-menu-item');
+
+    this.dir = directionality.value;
+    directionality.change.subscribe(() => {
+      this.dir = directionality.value;
+    });
   }
 
   get optionLabel(): string {
