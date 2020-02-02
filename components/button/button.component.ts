@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -58,6 +59,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
     '[class.ant-btn-background-ghost]': `nzGhost`,
     '[class.ant-btn-block]': `nzBlock`,
     '[class.ant-input-search-button]': `nzSearch`,
+    '[class.ant-btn-rtl]': `dir === 'rtl'`,
     '[attr.tabindex]': 'disabled ? -1 : (tabIndex === null ? null : tabIndex)',
     '[attr.disabled]': 'disabled || null'
   }
@@ -82,6 +84,7 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
   @Input() nzType: NzButtonType = null;
   @Input() nzShape: NzButtonShape = null;
   @Input() @WithConfig() nzSize: NzButtonSize = 'default';
+  dir: Direction;
   private destroy$ = new Subject<void>();
   private loading$ = new Subject<boolean>();
 
@@ -111,7 +114,8 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef,
     private renderer: Renderer2,
-    public nzConfigService: NzConfigService
+    public nzConfigService: NzConfigService,
+    directionality: Directionality
   ) {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
@@ -119,6 +123,11 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
       .subscribe(() => {
         this.cdr.markForCheck();
       });
+
+    this.dir = directionality.value;
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
