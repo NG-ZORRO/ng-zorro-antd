@@ -3,12 +3,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -17,6 +19,8 @@ import {
 } from '@angular/core';
 import { slideMotion, zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { NzMenuModeType, NzMenuThemeType } from './menu.types';
 
 @Component({
@@ -33,6 +37,7 @@ import { NzMenuModeType, NzMenuThemeType } from './menu.types';
       [class.ant-menu-vertical]="!isMenuInsideDropDown"
       [class.ant-dropdown-menu-sub]="isMenuInsideDropDown"
       [class.ant-menu-sub]="!isMenuInsideDropDown"
+      [class.ant-menu-rtl]="dir === 'rtl'"
       [ngClass]="menuClass"
     >
       <ng-template [ngTemplateOutlet]="templateOutlet"></ng-template>
@@ -52,7 +57,7 @@ import { NzMenuModeType, NzMenuThemeType } from './menu.types';
     '(mouseleave)': 'setMouseState(false)'
   }
 })
-export class NzSubmenuNoneInlineChildComponent implements OnInit, OnChanges {
+export class NzSubmenuNoneInlineChildComponent implements OnDestroy, OnInit, OnChanges {
   @Input() menuClass: string = '';
   @Input() theme: NzMenuThemeType = 'light';
   @Input() templateOutlet: TemplateRef<NzSafeAny> | null = null;
@@ -68,6 +73,20 @@ export class NzSubmenuNoneInlineChildComponent implements OnInit, OnChanges {
     }
   }
   expandState = 'collapsed';
+  dir: Direction;
+  private destroy$ = new Subject<void>();
+
+  constructor(directionality: Directionality) {
+    this.dir = directionality.value;
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
   calcMotionState(): void {
     if (this.nzOpen) {
       if (this.mode === 'horizontal') {

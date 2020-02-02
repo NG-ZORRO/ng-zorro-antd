@@ -3,7 +3,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { Direction, Directionality } from '@angular/cdk/bidi';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { NzMenuModeType } from './menu.types';
 
 @Component({
@@ -27,13 +30,14 @@ import { NzMenuModeType } from './menu.types';
   host: {
     '[class.ant-dropdown-menu-submenu-title]': 'isMenuInsideDropDown',
     '[class.ant-menu-submenu-title]': '!isMenuInsideDropDown',
-    '[style.paddingLeft.px]': 'paddingLeft',
+    '[style.paddingLeft.px]': `dir === 'rtl' ? 0 : paddingLeft `,
+    '[style.paddingRight.px]': `dir === 'rtl' ? paddingLeft : 0`,
     '(click)': 'clickTitle()',
     '(mouseenter)': 'setMouseState(true)',
     '(mouseleave)': 'setMouseState(false)'
   }
 })
-export class NzSubMenuTitleComponent {
+export class NzSubMenuTitleComponent implements OnDestroy {
   @Input() nzIcon: string | null = null;
   @Input() nzTitle: string | TemplateRef<void> | null = null;
   @Input() isMenuInsideDropDown = false;
@@ -42,6 +46,22 @@ export class NzSubMenuTitleComponent {
   @Input() mode: NzMenuModeType = 'vertical';
   @Output() readonly toggleSubMenu = new EventEmitter();
   @Output() readonly subMenuMouseState = new EventEmitter<boolean>();
+
+  dir: Direction;
+  private destroy$ = new Subject<void>();
+
+  constructor(directionality: Directionality) {
+    this.dir = directionality.value;
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   setMouseState(state: boolean): void {
     if (!this.nzDisabled) {
       this.subMenuMouseState.next(state);

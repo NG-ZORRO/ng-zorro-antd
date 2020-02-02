@@ -3,6 +3,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   ChangeDetectorRef,
@@ -36,7 +45,8 @@ import { NzSubmenuService } from './submenu.service';
     '[class.ant-menu-item]': `!isMenuInsideDropDown`,
     '[class.ant-menu-item-selected]': `!isMenuInsideDropDown && nzSelected`,
     '[class.ant-menu-item-disabled]': `!isMenuInsideDropDown && nzDisabled`,
-    '[style.paddingLeft.px]': 'nzPaddingLeft || inlinePaddingLeft',
+    '[style.paddingLeft.px]': `dir === 'rtl' ? 0 : nzPaddingLeft || inlinePaddingLeft`,
+    '[style.paddingRight.px]': `dir === 'rtl' ? nzPaddingLeft || inlinePaddingLeft : 0`,
     '(click)': 'clickMenuItem($event)'
   }
 })
@@ -50,6 +60,7 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
   level = this.nzSubmenuService ? this.nzSubmenuService.level + 1 : 1;
   selected$ = new Subject<boolean>();
   inlinePaddingLeft: number | null = null;
+  dir: Direction;
   @Input() nzPaddingLeft?: number;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzSelected = false;
@@ -113,6 +124,7 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
     private cdr: ChangeDetectorRef,
     @Optional() private nzSubmenuService: NzSubmenuService,
     @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean,
+    @Optional() directionality: Directionality,
     @Optional() private routerLink?: RouterLink,
     @Optional() private routerLinkWithHref?: RouterLinkWithHref,
     @Optional() private router?: Router
@@ -125,6 +137,11 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
         this.updateRouterActive();
       });
     }
+
+    this.dir = directionality.value;
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+    });
   }
 
   ngOnInit(): void {
