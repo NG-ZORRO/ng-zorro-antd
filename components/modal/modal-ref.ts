@@ -163,6 +163,10 @@ export class NzModalRef<T = any, R = any> implements NzModalLegacyAPI<T, R> {
     this.containerInstance.cdr.markForCheck();
   }
 
+  getState(): NzModalState {
+    return this.state;
+  }
+
   private trigger(action: NzTriggerAction): void {
     const trigger = { ok: this.config.nzOnOk, cancel: this.config.nzOnCancel }[action];
     const loadingKey = { ok: 'nzOkLoading', cancel: 'nzCancelLoading' }[action] as 'nzOkLoading' | 'nzCancelLoading';

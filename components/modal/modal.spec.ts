@@ -1,12 +1,14 @@
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
+import { Location } from '@angular/common';
+import { SpyLocation } from '@angular/common/testing';
 import { Component, Input, NgModule, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, flushMicrotasks, inject, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, flushMicrotasks, inject, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { createKeyboardEvent, dispatchEvent, dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 
-import { NzModalRef } from './modal-ref';
+import { NzModalRef, NzModalState } from './modal-ref';
 import { NzModalModule } from './modal.module';
 import { NzModalService } from './modal.service';
 
@@ -15,17 +17,20 @@ describe('NzModal', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
   let fixture: ComponentFixture<TestWithServiceComponent>;
+  let mockLocation: SpyLocation;
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzModalModule, TestModalModule]
+      imports: [NzModalModule, TestModalModule],
+      providers: [{ provide: Location, useClass: SpyLocation }]
     });
 
     TestBed.compileComponents();
   }));
 
-  beforeEach(inject([NzModalService, OverlayContainer], (m: NzModalService, oc: OverlayContainer) => {
+  beforeEach(inject([NzModalService, Location, OverlayContainer], (m: NzModalService, l: Location, oc: OverlayContainer) => {
     modalService = m;
+    mockLocation = l as SpyLocation;
     overlayContainer = oc;
     overlayContainerElement = oc.getContainerElement();
   }));
@@ -424,6 +429,93 @@ describe('NzModal', () => {
     flush();
 
     expect(overlayContainerElement.querySelectorAll('mat-dialog-container').length).toBe(0);
+  }));
+
+  it('should close all open modals when the location hash changes', fakeAsync(() => {
+    modalService.create({ nzContent: TestWithModalContentComponent });
+    modalService.create({ nzContent: TestWithModalContentComponent });
+
+    expect(overlayContainerElement.querySelectorAll('nz-modal-container').length).toBe(2);
+
+    mockLocation.simulateHashChange('');
+    fixture.detectChanges();
+    flush();
+
+    expect(overlayContainerElement.querySelectorAll('nz-modal-container').length).toBe(0);
+  }));
+
+  it('should close all of the modals when the injectable is destroyed', fakeAsync(() => {
+    modalService.create({ nzContent: TestWithModalContentComponent });
+    modalService.create({ nzContent: TestWithModalContentComponent });
+
+    expect(overlayContainerElement.querySelectorAll('nz-modal-container').length).toBe(2);
+
+    modalService.ngOnDestroy();
+    fixture.detectChanges();
+    flush();
+
+    expect(overlayContainerElement.querySelectorAll('nz-modal-container').length).toBe(0);
+  }));
+
+  it('should complete close streams when the injectable is destroyed', fakeAsync(() => {
+    const afterAllCloseSpy = jasmine.createSpy('after all closed spy');
+    const afterAllCloseSubscription = modalService.afterAllClose.subscribe({
+      complete: afterAllCloseSpy
+    });
+
+    modalService.ngOnDestroy();
+
+    expect(afterAllCloseSpy).toHaveBeenCalled();
+
+    afterAllCloseSubscription.unsubscribe();
+  }));
+
+  it('should allow the consumer to disable modals a dialog on navigation', fakeAsync(() => {
+    modalService.create({ nzContent: TestWithModalContentComponent });
+    modalService.create({ nzContent: TestWithModalContentComponent, nzCloseOnNavigation: false });
+
+    expect(overlayContainerElement.querySelectorAll('nz-modal-container').length).toBe(2);
+
+    mockLocation.simulateUrlPop('');
+    fixture.detectChanges();
+    flush();
+
+    expect(overlayContainerElement.querySelectorAll('nz-modal-container').length).toBe(1);
+  }));
+
+  it('should have the componentInstance available in the afterClose callback', fakeAsync(() => {
+    const modalRef = modalService.create({ nzContent: TestWithModalContentComponent });
+    const spy = jasmine.createSpy('afterClose spy');
+
+    flushMicrotasks();
+    fixture.detectChanges();
+    flushMicrotasks();
+
+    modalRef.afterClose.subscribe(() => {
+      spy();
+      expect(modalRef.componentInstance).toBeTruthy();
+    });
+
+    modalRef.close();
+
+    flushMicrotasks();
+    fixture.detectChanges();
+    tick(500);
+
+    expect(spy).toHaveBeenCalled();
+  }));
+
+  it('should return the current state of the modal', fakeAsync(() => {
+    const modalRef = modalService.create({ nzContent: TestWithModalContentComponent });
+
+    expect(modalRef.getState()).toBe(NzModalState.OPEN);
+    modalRef.close();
+    fixture.detectChanges();
+
+    expect(modalRef.getState()).toBe(NzModalState.CLOSING);
+    flush();
+
+    expect(modalRef.getState()).toBe(NzModalState.CLOSED);
   }));
 });
 

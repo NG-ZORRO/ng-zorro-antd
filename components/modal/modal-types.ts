@@ -52,6 +52,7 @@ export class ModalOptions<T = any, R = any> {
   nzCancelText?: string | null;
   nzOkText?: string | null;
   nzContent?: string | TemplateRef<{}> | Type<T>;
+  nzCloseOnNavigation?: boolean = true;
 
   /**
    * Reset the container element.
