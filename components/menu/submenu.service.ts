@@ -59,9 +59,10 @@ export class NzSubmenuService {
     /** close if menu item clicked **/
     const isClosedByMenuItemClick = this.childMenuItemClick$.pipe(
       flatMap(() => this.mode$),
-      filter(mode => mode !== 'inline' || this.isMenuInsideDropDown)
+      filter(mode => mode !== 'inline' || this.isMenuInsideDropDown),
+      mapTo(false)
     );
-    const isCurrentSubmenuOpen$ = merge(this.isMouseEnterTitleOrOverlay$, isClosedByMenuItemClick.pipe(mapTo(false)));
+    const isCurrentSubmenuOpen$ = merge(this.isMouseEnterTitleOrOverlay$, isClosedByMenuItemClick);
     /** combine the child submenu status with current submenu status to calculate host submenu open **/
     const isSubMenuOpenWithDebounce$ = combineLatest([this.isChildSubMenuOpen$, isCurrentSubmenuOpen$]).pipe(
       map(([isChildSubMenuOpen, isCurrentSubmenuOpen]) => isChildSubMenuOpen || isCurrentSubmenuOpen),
