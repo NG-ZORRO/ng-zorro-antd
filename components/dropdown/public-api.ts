@@ -7,7 +7,6 @@
  */
 
 export * from './dropdown.directive';
-export * from './dropdown.service.module';
 export * from './dropdown.module';
 export * from './dropdown-a.directive';
 export * from './dropdown-button.directive';

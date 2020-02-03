@@ -4,15 +4,14 @@ import { Component, Provider, Type } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { dispatchFakeEvent, dispatchKeyboardEvent } from '../core/testing';
-import { NzMenuModule } from '../menu/menu.module';
+import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzDropDownDirective } from './dropdown.directive';
 import { NzDropDownModule } from './dropdown.module';
 
 describe('dropdown', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
-
   function createComponent<T>(
     component: Type<T>,
     providers: Provider[] = [],
@@ -80,18 +79,6 @@ describe('dropdown', () => {
       tick(1000);
       fixture.detectChanges();
       expect(overlayContainerElement.textContent).toBe('');
-    }).not.toThrowError();
-  }));
-  it('should placement work', fakeAsync(() => {
-    const fixture = createComponent(NzTestDropdownComponent, [], []);
-    fixture.detectChanges();
-    expect(() => {
-      const dropdownElement = fixture.debugElement.query(By.directive(NzDropDownDirective)).nativeElement;
-      dispatchFakeEvent(dropdownElement, 'mouseenter');
-      fixture.detectChanges();
-      tick(1000);
-      fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.ant-dropdown')!.classList).toContain('ant-dropdown-placement-bottomLeft');
     }).not.toThrowError();
   }));
 
@@ -183,35 +170,32 @@ describe('dropdown', () => {
     const fixture = createComponent(NzTestDropdownVisibleComponent, [], []);
     fixture.detectChanges();
     expect(fixture.componentInstance.triggerVisible).toHaveBeenCalledTimes(0);
-    expect(() => {
-      const dropdownElement = fixture.debugElement.query(By.directive(NzDropDownDirective)).nativeElement;
-      dispatchFakeEvent(dropdownElement, 'mouseenter');
-      fixture.detectChanges();
-      tick(1000);
-      fixture.detectChanges();
-      expect(fixture.componentInstance.triggerVisible).toHaveBeenCalledTimes(1);
-      expect(fixture.componentInstance.triggerVisible).toHaveBeenCalledWith(true);
-      expect(overlayContainerElement.textContent).toContain('Clicking me will not close the menu.');
-      dispatchFakeEvent(overlayContainerElement.querySelector('.first-menu')!, 'click');
-      fixture.detectChanges();
-      tick(1000);
-      fixture.detectChanges();
-      expect(fixture.componentInstance.triggerVisible).toHaveBeenCalledTimes(1);
-      expect(fixture.componentInstance.triggerVisible).toHaveBeenCalledWith(true);
-      expect(overlayContainerElement.textContent).toContain('Clicking me will not close the menu.');
-      dispatchFakeEvent(overlayContainerElement.querySelector('.second-menu')!, 'click');
-      fixture.detectChanges();
-      tick(1000);
-      fixture.detectChanges();
-      expect(fixture.componentInstance.triggerVisible).toHaveBeenCalledTimes(1);
-      expect(overlayContainerElement.textContent).toContain('Clicking me will not close the menu.');
-      dispatchFakeEvent(overlayContainerElement.querySelector('.close-menu')!, 'click');
-      fixture.detectChanges();
-      tick(1000);
-      fixture.detectChanges();
-      expect(fixture.componentInstance.triggerVisible).toHaveBeenCalledTimes(1);
-      expect(overlayContainerElement.textContent).toBe('');
-    }).not.toThrowError();
+    const dropdownElement = fixture.debugElement.query(By.directive(NzDropDownDirective)).nativeElement;
+    dispatchFakeEvent(dropdownElement, 'mouseenter');
+    fixture.detectChanges();
+    tick(1000);
+    fixture.detectChanges();
+    expect(fixture.componentInstance.triggerVisible).toHaveBeenCalledTimes(1);
+    expect(fixture.componentInstance.triggerVisible).toHaveBeenCalledWith(true);
+    expect(overlayContainerElement.textContent).toContain('Clicking me will not close the menu.');
+    dispatchFakeEvent(overlayContainerElement.querySelector('.first-menu')!, 'click');
+    fixture.detectChanges();
+    tick(1000);
+    fixture.detectChanges();
+    expect(fixture.componentInstance.triggerVisible).toHaveBeenCalledTimes(1);
+    expect(fixture.componentInstance.triggerVisible).toHaveBeenCalledWith(true);
+    expect(overlayContainerElement.textContent).toContain('Clicking me will not close the menu.');
+    dispatchFakeEvent(overlayContainerElement.querySelector('.second-menu')!, 'click');
+    fixture.detectChanges();
+    tick(1000);
+    fixture.detectChanges();
+    expect(fixture.componentInstance.triggerVisible).toHaveBeenCalledTimes(1);
+    expect(overlayContainerElement.textContent).toContain('Clicking me will not close the menu.');
+    dispatchFakeEvent(overlayContainerElement.querySelector('.close-menu')!, 'click');
+    fixture.detectChanges();
+    tick(2000);
+    fixture.detectChanges();
+    expect(fixture.componentInstance.triggerVisible).toHaveBeenCalledTimes(1);
   }));
 });
 

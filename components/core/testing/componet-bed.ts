@@ -2,8 +2,9 @@ import { CommonModule } from '@angular/common';
 import { DebugElement, NO_ERRORS_SCHEMA, Provider, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-// tslint:disable-next-line:no-any
-type ComponentDeps = Array<Type<any>>;
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+
+type ComponentDeps = Array<Type<NzSafeAny>>;
 export interface ComponentBed<T> {
   fixture: ComponentFixture<T>;
   nativeElement: HTMLElement;
