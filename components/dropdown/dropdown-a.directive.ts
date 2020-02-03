@@ -6,14 +6,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, ElementRef, Renderer2 } from '@angular/core';
+import { Directive } from '@angular/core';
 
 @Directive({
   selector: 'a[nz-dropdown]',
-  exportAs: 'nzDropdown'
-})
-export class NzDropDownADirective {
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) {
-    this.renderer.addClass(this.elementRef.nativeElement, 'ant-dropdown-link');
+  host: {
+    '[class.ant-dropdown-link]': 'true'
   }
-}
+})
+export class NzDropDownADirective {}

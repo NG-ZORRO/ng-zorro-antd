@@ -21,9 +21,9 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzNoAnimationDirective, slideMotion } from 'ng-zorro-antd/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { MenuService, NzIsMenuInsideDropDownToken } from 'ng-zorro-antd/menu';
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 'topLeft' | 'topCenter' | 'topRight';
 
@@ -42,17 +42,16 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
   template: `
     <ng-template>
       <div
-        *ngIf="open"
-        class="{{ 'ant-dropdown nz-dropdown ant-dropdown-placement-' + nzPlacement }}"
-        [ngClass]="nzOverlayClassName"
+        class="ant-dropdown"
+        [class]="nzOverlayClassName"
         [ngStyle]="nzOverlayStyle"
         [@slideMotion]="dropDownPosition"
         [@.disabled]="noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
-        (mouseenter)="setVisibleStateWhen(true, 'hover')"
-        (mouseleave)="setVisibleStateWhen(false, 'hover')"
+        (mouseenter)="setMouseState(true)"
+        (mouseleave)="setMouseState(false)"
       >
-        <div [class.ant-table-filter-dropdown]="nzTableFilter">
+        <div [class.ant-table-filter-dropdown]="isInsideTh">
           <ng-content></ng-content>
         </div>
       </div>
@@ -63,21 +62,17 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzDropdownMenuComponent implements AfterContentInit {
-  open = false;
-  triggerWidth = 0;
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
-  visible$ = new Subject<boolean>();
-  nzTrigger: 'click' | 'hover' = 'hover';
-  nzPlacement: NzPlacementType = 'bottomLeft';
-  nzOverlayClassName = '';
-  nzOverlayStyle: { [key: string]: string } = {};
-  nzTableFilter = false;
+  mouseState$ = new BehaviorSubject<boolean>(false);
+  isChildSubMenuOpen$ = this.nzMenuService.isChildSubMenuOpen$;
+  descendantMenuItemClick$ = this.nzMenuService.descendantMenuItemClick$;
+  nzOverlayClassName: string | null = null;
+  nzOverlayStyle: IndexableObject = {};
+  isInsideTh = false;
   @ViewChild(TemplateRef, { static: true }) templateRef: TemplateRef<NzSafeAny>;
 
-  setVisibleStateWhen(visible: boolean, trigger: 'click' | 'hover' | 'all' = 'all'): void {
-    if (this.nzTrigger === trigger || trigger === 'all') {
-      this.visible$.next(visible);
-    }
+  setMouseState(visible: boolean): void {
+    this.mouseState$.next(visible);
   }
 
   setValue<T extends keyof NzDropdownMenuComponent>(key: T, value: this[T]): void {

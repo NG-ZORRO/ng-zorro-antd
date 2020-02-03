@@ -17,15 +17,13 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { InputBoolean, isNotNil } from 'ng-zorro-antd/core';
-import { NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
 import { NzI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 /* tslint:disable-next-line:no-any */
 export type NzThFilterType = Array<{ text: string; value: any; byDefault?: boolean }>;
@@ -69,7 +67,6 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
   nzWidthChange$ = new Subject();
   private destroy$ = new Subject();
   private hasDefaultFilter = false;
-  @ViewChild(NzDropdownMenuComponent, { static: false }) nzDropdownMenuComponent: NzDropdownMenuComponent;
   /* tslint:disable-next-line:no-any */
   @Input() nzSelections: Array<{ text: string; onSelect(...args: any[]): any }> = [];
   @Input() nzChecked = false;
@@ -158,7 +155,6 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   hideDropDown(): void {
-    this.nzDropdownMenuComponent.setVisibleStateWhen(false);
     this.filterVisible = false;
   }
 

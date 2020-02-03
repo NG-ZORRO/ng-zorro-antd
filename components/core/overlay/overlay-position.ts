@@ -26,7 +26,6 @@ export const POSITION_MAP: { [key: string]: ConnectionPositionPair } = {
 };
 
 export const DEFAULT_TOOLTIP_POSITIONS = [POSITION_MAP.top, POSITION_MAP.right, POSITION_MAP.bottom, POSITION_MAP.left];
-export const DEFAULT_DROPDOWN_POSITIONS = [POSITION_MAP.bottomLeft, POSITION_MAP.bottomRight, POSITION_MAP.topRight, POSITION_MAP.topLeft];
 export const DEFAULT_CASCADER_POSITIONS = [POSITION_MAP.bottomLeft, POSITION_MAP.topLeft];
 
 export const DEFAULT_MENTION_TOP_POSITIONS = [

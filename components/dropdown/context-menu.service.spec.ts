@@ -2,9 +2,9 @@ import { OverlayContainer, ScrollDispatcher } from '@angular/cdk/overlay';
 import { Component, Provider, Type, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { createMouseEvent } from 'ng-zorro-antd/core';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { Subject } from 'rxjs';
-import { createMouseEvent } from '../core/testing';
-import { NzMenuModule } from '../menu/menu.module';
 import { NzContextMenuService } from './context-menu.service';
 import { NzDropdownMenuComponent } from './dropdown-menu.component';
 import { NzDropDownModule } from './dropdown.module';
@@ -12,7 +12,6 @@ import { NzDropDownModule } from './dropdown.module';
 describe('context-menu', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
-
   function createComponent<T>(
     component: Type<T>,
     providers: Provider[] = [],
@@ -34,7 +33,6 @@ describe('context-menu', () => {
 
     return TestBed.createComponent<T>(component);
   }
-
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();

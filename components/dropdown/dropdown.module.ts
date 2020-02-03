@@ -8,7 +8,6 @@
 
 import { OverlayModule } from '@angular/cdk/overlay';
 
-import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -22,7 +21,6 @@ import { NzDropDownADirective } from './dropdown-a.directive';
 import { NzDropdownButtonDirective } from './dropdown-button.directive';
 import { NzDropdownMenuComponent } from './dropdown-menu.component';
 import { NzDropDownDirective } from './dropdown.directive';
-import { NzDropdownServiceModule } from './dropdown.service.module';
 
 @NgModule({
   imports: [
@@ -32,10 +30,8 @@ import { NzDropdownServiceModule } from './dropdown.service.module';
     NzButtonModule,
     NzMenuModule,
     NzIconModule,
-    PlatformModule,
     NzNoAnimationModule,
     NzOverlayModule,
-    NzDropdownServiceModule,
     NzContextMenuServiceModule,
     NzOutletModule
   ],
