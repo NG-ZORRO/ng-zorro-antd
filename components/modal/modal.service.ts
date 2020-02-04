@@ -12,7 +12,7 @@ import { Injectable, Injector, OnDestroy, Optional, SkipSelf, TemplateRef } from
 import { defer, Observable, Subject } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
-import { IndexableObject, warn } from 'ng-zorro-antd/core';
+import { IndexableObject, isNotNil, warn } from 'ng-zorro-antd/core';
 
 import { NzModalConfirmContainerComponent } from './modal-confirm-container.component';
 import { BaseModalContainer } from './modal-container';
@@ -135,8 +135,9 @@ export class NzModalService implements OnDestroy {
   }
 
   private attachModalContainer(overlayRef: OverlayRef, config: ModalOptions): BaseModalContainer {
+    const userInjector = config && config.nzViewContainerRef && config.nzViewContainerRef.injector;
     const injector = new PortalInjector(
-      this.injector,
+      userInjector || this.injector,
       // tslint:disable-next-line:no-any
       new WeakMap<any, any>([
         [OverlayRef, overlayRef],
@@ -151,7 +152,7 @@ export class NzModalService implements OnDestroy {
         : // If the mode is not `confirm`, use `NzModalContainerComponent`
           NzModalContainerComponent;
 
-    const containerPortal = new ComponentPortal<BaseModalContainer>(ContainerComponent, undefined, injector);
+    const containerPortal = new ComponentPortal<BaseModalContainer>(ContainerComponent, config.nzViewContainerRef, injector);
     const containerRef = overlayRef.attach<BaseModalContainer>(containerPortal);
 
     return containerRef.instance;
@@ -170,20 +171,23 @@ export class NzModalService implements OnDestroy {
         // tslint:disable-next-line:no-any
         new TemplatePortal<T>(componentOrTemplateRef, null!, { $implicit: config.nzComponentParams, modalRef } as any)
       );
-    } else if (typeof componentOrTemplateRef !== 'string') {
-      const injector = this.createInjector<T, R>(modalRef);
-      const contentRef = modalContainer.attachComponentPortal<T>(new ComponentPortal(componentOrTemplateRef, undefined, injector));
+    } else if (isNotNil(componentOrTemplateRef) && typeof componentOrTemplateRef !== 'string') {
+      const injector = this.createInjector<T, R>(modalRef, config);
+      const contentRef = modalContainer.attachComponentPortal<T>(
+        new ComponentPortal(componentOrTemplateRef, config.nzViewContainerRef, injector)
+      );
       setContentInstanceParams<T>(contentRef.instance, config.nzComponentParams);
       modalRef.componentInstance = contentRef.instance;
     }
     return modalRef;
   }
 
-  private createInjector<T, R>(modalRef: NzModalRef<T, R>): PortalInjector {
+  private createInjector<T, R>(modalRef: NzModalRef<T, R>, config: ModalOptions<T>): PortalInjector {
+    const userInjector = config && config.nzViewContainerRef && config.nzViewContainerRef.injector;
     // tslint:disable-next-line:no-any
     const injectionTokens = new WeakMap<any, any>([[NzModalRef, modalRef]]);
 
-    return new PortalInjector(this.injector, injectionTokens);
+    return new PortalInjector(userInjector || this.injector, injectionTokens);
   }
 
   private confirmFactory<T>(options: ModalOptions<T> = {}, confirmType: ConfirmType): NzModalRef<T> {

@@ -19,7 +19,8 @@ import {
   SimpleChanges,
   TemplateRef,
   Type,
-  ViewChild
+  ViewChild,
+  ViewContainerRef
 } from '@angular/core';
 
 import { NzButtonType } from 'ng-zorro-antd/button';
@@ -104,9 +105,19 @@ export class NzModalComponent<T = any, R = any> implements OnChanges, NzModalLeg
     return this.nzAfterClose.asObservable();
   }
 
-  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef, private modal: NzModalService) {}
+  constructor(
+    public nzConfigService: NzConfigService,
+    private cdr: ChangeDetectorRef,
+    private modal: NzModalService,
+    private viewContainerRef: ViewContainerRef
+  ) {}
 
   open(): void {
+    if (!this.nzVisible) {
+      this.nzVisible = true;
+      this.nzVisibleChange.emit(true);
+    }
+
     if (!this.modalRef) {
       const config = this.getConfig();
       this.modalRef = this.modal.create(config);
@@ -114,6 +125,11 @@ export class NzModalComponent<T = any, R = any> implements OnChanges, NzModalLeg
   }
 
   close(result?: R): void {
+    if (this.nzVisible) {
+      this.nzVisible = false;
+      this.nzVisibleChange.emit(false);
+    }
+
     if (this.modalRef) {
       this.modalRef.close(result);
       this.modalRef = null;
@@ -148,6 +164,10 @@ export class NzModalComponent<T = any, R = any> implements OnChanges, NzModalLeg
     }
   }
 
+  getModalRef(): NzModalRef | null {
+    return this.modalRef;
+  }
+
   private setFooterWithTemplate(templateRef: TemplateRef<{}>): void {
     this.nzFooter = templateRef;
     this.cdr.markForCheck();
@@ -155,6 +175,7 @@ export class NzModalComponent<T = any, R = any> implements OnChanges, NzModalLeg
 
   private getConfig(): ModalOptions {
     const componentConfig = getConfigFromComponent(this);
+    componentConfig.nzViewContainerRef = this.viewContainerRef;
     if (!this.nzContent) {
       componentConfig.nzContent = this.contentTemplateRef;
     }

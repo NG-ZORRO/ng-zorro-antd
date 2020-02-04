@@ -73,7 +73,6 @@ import { ModalOptions } from './modal-types';
     '(mouseup)': 'onMouseup($event)'
   }
 })
-// tslint:disable-next-line:no-any
 export class NzModalContainerComponent extends BaseModalContainer {
   @ViewChild(CdkPortalOutlet, { static: true }) portalOutlet: CdkPortalOutlet;
   @ViewChild('modalElement', { static: true }) modalElementRef: ElementRef<HTMLDivElement>;

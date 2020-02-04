@@ -7,7 +7,7 @@
  */
 
 import { OverlayRef } from '@angular/cdk/overlay';
-import { EventEmitter, TemplateRef, Type } from '@angular/core';
+import { EventEmitter, TemplateRef, Type, ViewContainerRef } from '@angular/core';
 import { NzButtonShape, NzButtonSize, NzButtonType } from 'ng-zorro-antd/button';
 
 export type OnClickCallback<T> = (instance: T) => (false | void | {}) | Promise<false | void | {}>;
@@ -53,6 +53,7 @@ export class ModalOptions<T = any, R = any> {
   nzOkText?: string | null;
   nzContent?: string | TemplateRef<{}> | Type<T>;
   nzCloseOnNavigation?: boolean = true;
+  nzViewContainerRef?: ViewContainerRef;
 
   /**
    * Reset the container element.

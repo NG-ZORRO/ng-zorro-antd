@@ -1,22 +1,25 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { Component } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
+import { NzModalFooterDirective } from './modal-footer.directive';
+import { NzModalRef } from './modal-ref';
+import { NzModalComponent } from './modal.component';
 import { NzModalModule } from './modal.module';
 import { NzModalService } from './modal.service';
 
 describe('modal footer directive', () => {
   let overlayContainer: OverlayContainer;
-  let overlayContainerElement: HTMLElement;
   let fixture: ComponentFixture<TestDirectiveFooterComponent>;
   let testComponent: TestDirectiveFooterComponent;
+  let modalService: NzModalService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [NzModalModule, NoopAnimationsModule],
-      declarations: [TestDirectiveFooterComponent],
+      declarations: [TestDirectiveFooterComponent, TestDirectiveFooterInServiceComponent],
       providers: [NzModalService]
     });
 
@@ -29,29 +32,32 @@ describe('modal footer directive', () => {
     fixture.detectChanges();
   });
 
-  beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
+  beforeEach(inject([OverlayContainer, NzModalService], (oc: OverlayContainer, m: NzModalService) => {
     overlayContainer = oc;
-    overlayContainerElement = oc.getContainerElement();
+    modalService = m;
   }));
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
   });
 
-  afterEach(fakeAsync(() => {
-    fixture.detectChanges();
-    tick(1000);
-  }));
-
   it('should work with template', () => {
     testComponent.showModal();
     fixture.detectChanges();
     expect(testComponent.isVisible).toBe(true);
-    const cancelBtn: HTMLButtonElement = overlayContainerElement.querySelector('.ant-modal #btn-template') as HTMLButtonElement;
-    expect(cancelBtn).toBeTruthy();
-    cancelBtn.click();
+
+    expect(testComponent.nzModalComponent.nzFooter).toBe(testComponent.nzModalFooterDirective.templateRef);
+
+    testComponent.handleCancel();
     fixture.detectChanges();
-    expect(testComponent.isVisible).toBe(false);
+  });
+
+  it('should work with service', () => {
+    const modalRef = modalService.create({ nzContent: TestDirectiveFooterInServiceComponent, nzFooter: null });
+    fixture.detectChanges();
+
+    expect(modalRef.componentInstance!.nzModalRef).toBe(modalRef);
+    expect(modalRef.componentInstance!.nzModalFooterDirective.templateRef).toBe(modalRef.getConfig().nzFooter as TemplateRef<{}>);
   });
 });
 
@@ -69,6 +75,8 @@ describe('modal footer directive', () => {
 })
 class TestDirectiveFooterComponent {
   isVisible = false;
+  @ViewChild(NzModalComponent) nzModalComponent: NzModalComponent;
+  @ViewChild(NzModalFooterDirective) nzModalFooterDirective: NzModalFooterDirective;
 
   constructor() {}
 
@@ -78,5 +86,23 @@ class TestDirectiveFooterComponent {
 
   showModal(): void {
     this.isVisible = true;
+  }
+}
+
+@Component({
+  template: `
+    <div *nzModalFooter>
+      <button id="btn-template" nz-button nzType="default" (click)="handleCancel()">Custom Callback</button>
+    </div>
+    s
+  `
+})
+class TestDirectiveFooterInServiceComponent {
+  @ViewChild(NzModalFooterDirective) nzModalFooterDirective: NzModalFooterDirective;
+
+  constructor(public nzModalRef: NzModalRef) {}
+
+  handleCancel(): void {
+    this.nzModalRef.close();
   }
 }

@@ -144,7 +144,7 @@ export class NzModalConfirmContainerComponent extends BaseModalContainer impleme
   }
 
   attachComponentPortal<T>(_portal: ComponentPortal<T>): never {
-    throw new Error();
+    throw new Error('The confirm mode does not support using component as content');
   }
 
   ngOnDestroy(): void {

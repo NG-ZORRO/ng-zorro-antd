@@ -6,16 +6,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
-import { GlobalPositionStrategy, OverlayRef } from '@angular/cdk/overlay';
+import { OverlayRef } from '@angular/cdk/overlay';
 import { EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 
 import { isPromise } from 'ng-zorro-antd/core';
 
-import { ModalOptions } from 'ng-zorro-antd/modal/modal-types';
 import { BaseModalContainer } from './modal-container';
 import { NzModalLegacyAPI } from './modal-legacy-api';
+import { ModalOptions } from './modal-types';
 
 export const enum NzModalState {
   OPEN,
@@ -150,14 +150,6 @@ export class NzModalRef<T = any, R = any> implements NzModalLegacyAPI<T, R> {
     this.state = NzModalState.CLOSING;
   }
 
-  updatePosition(): this {
-    const strategy = this.getPositionStrategy();
-    strategy.centerHorizontally();
-    strategy.centerVertically();
-    this.overlayRef.updatePosition();
-    return this;
-  }
-
   updateConfig(config: ModalOptions): void {
     Object.assign(this.config, config);
     this.containerInstance.cdr.markForCheck();
@@ -165,6 +157,14 @@ export class NzModalRef<T = any, R = any> implements NzModalLegacyAPI<T, R> {
 
   getState(): NzModalState {
     return this.state;
+  }
+
+  getConfig(): ModalOptions {
+    return this.config;
+  }
+
+  getBackdropElement(): HTMLElement | null {
+    return this.overlayRef.backdropElement;
   }
 
   private trigger(action: NzTriggerAction): void {
@@ -197,9 +197,5 @@ export class NzModalRef<T = any, R = any> implements NzModalLegacyAPI<T, R> {
     if (result !== false) {
       this.close(result);
     }
-  }
-
-  private getPositionStrategy(): GlobalPositionStrategy {
-    return this.overlayRef.getConfig().positionStrategy as GlobalPositionStrategy;
   }
 }

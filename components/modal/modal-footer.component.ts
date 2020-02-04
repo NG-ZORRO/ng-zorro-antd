@@ -20,52 +20,50 @@ import { ModalButtonOptions, ModalOptions } from './modal-types';
   selector: 'div[nz-modal-footer]',
   exportAs: 'NzModalFooterBuiltin',
   template: `
-    <div class="ant-modal-title">
-      <ng-container *ngIf="config.nzFooter; else defaultFooterButtons">
-        <ng-container *nzStringTemplateOutlet="config.nzFooter">
-          <div *ngIf="!buttonsFooter" [innerHTML]="config.nzTitle"></div>
-          <ng-container *ngIf="buttonsFooter">
-            <button
-              *ngFor="let button of buttons"
-              nz-button
-              (click)="onButtonClick(button)"
-              [hidden]="!getButtonCallableProp(button, 'show')"
-              [nzLoading]="getButtonCallableProp(button, 'loading')"
-              [disabled]="getButtonCallableProp(button, 'disabled')"
-              [nzType]="button.type"
-              [nzShape]="button.shape"
-              [nzSize]="button.size"
-              [nzGhost]="button.ghost"
-            >
-              {{ button.label }}
-            </button>
-          </ng-container>
+    <ng-container *ngIf="config.nzFooter; else defaultFooterButtons">
+      <ng-container *nzStringTemplateOutlet="config.nzFooter">
+        <div *ngIf="!buttonsFooter" [innerHTML]="config.nzTitle"></div>
+        <ng-container *ngIf="buttonsFooter">
+          <button
+            *ngFor="let button of buttons"
+            nz-button
+            (click)="onButtonClick(button)"
+            [hidden]="!getButtonCallableProp(button, 'show')"
+            [nzLoading]="getButtonCallableProp(button, 'loading')"
+            [disabled]="getButtonCallableProp(button, 'disabled')"
+            [nzType]="button.type"
+            [nzShape]="button.shape"
+            [nzSize]="button.size"
+            [nzGhost]="button.ghost"
+          >
+            {{ button.label }}
+          </button>
         </ng-container>
       </ng-container>
-      <ng-template #defaultFooterButtons>
-        <button
-          *ngIf="config.nzCancelText !== null"
-          [attr.cdkFocusInitial]="config.nzAutofocus === 'cancel'"
-          nz-button
-          (click)="onCancel()"
-          [nzLoading]="config.nzCancelLoading"
-          [disabled]="config.nzCancelDisabled"
-        >
-          {{ config.nzCancelText || locale.cancelText }}
-        </button>
-        <button
-          *ngIf="config.nzOkText !== null"
-          [attr.cdkFocusInitial]="config.nzAutofocus === 'ok'"
-          nz-button
-          [nzType]="config.nzOkType"
-          (click)="onOk()"
-          [nzLoading]="config.nzOkLoading"
-          [disabled]="config.nzOkDisabled"
-        >
-          {{ config.nzOkText || locale.okText }}
-        </button>
-      </ng-template>
-    </div>
+    </ng-container>
+    <ng-template #defaultFooterButtons>
+      <button
+        *ngIf="config.nzCancelText !== null"
+        [attr.cdkFocusInitial]="config.nzAutofocus === 'cancel'"
+        nz-button
+        (click)="onCancel()"
+        [nzLoading]="config.nzCancelLoading"
+        [disabled]="config.nzCancelDisabled"
+      >
+        {{ config.nzCancelText || locale.cancelText }}
+      </button>
+      <button
+        *ngIf="config.nzOkText !== null"
+        [attr.cdkFocusInitial]="config.nzAutofocus === 'ok'"
+        nz-button
+        [nzType]="config.nzOkType"
+        (click)="onOk()"
+        [nzLoading]="config.nzOkLoading"
+        [disabled]="config.nzOkDisabled"
+      >
+        {{ config.nzOkText || locale.okText }}
+      </button>
+    </ng-template>
   `,
   host: {
     class: 'ant-modal-footer'
