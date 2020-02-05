@@ -156,6 +156,7 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
 
   hideDropDown(): void {
     this.filterVisible = false;
+    this.search();
   }
 
   dropDownVisibleChange(value: boolean): void {
