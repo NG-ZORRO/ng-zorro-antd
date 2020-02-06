@@ -61,7 +61,7 @@ describe('menu', () => {
         expect(items[1].nativeElement.classList.contains('ant-menu-item-disabled')).toBe(true);
         expect(submenu.nativeElement.classList.contains('ant-menu-submenu-horizontal')).toBe(true);
         expect(submenu.nativeElement.classList.contains('ant-menu-submenu')).toBe(true);
-        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-horizontal ant-menu-light ant-menu-root');
+        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-light ant-menu-horizontal');
       });
       it('should menu item select', () => {
         fixture.detectChanges();
@@ -91,7 +91,7 @@ describe('menu', () => {
         fixture.detectChanges();
         expect(submenus.every(subitem => subitem.nativeElement.classList.contains('ant-menu-submenu'))).toBe(true);
         expect(submenus.every(subitem => subitem.nativeElement.classList.contains('ant-menu-submenu-inline'))).toBe(true);
-        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-inline ant-menu-light ant-menu-root');
+        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-light ant-menu-inline');
       });
       it('should padding left work', () => {
         fixture.detectChanges();
@@ -130,13 +130,13 @@ describe('menu', () => {
       });
       it('should className correct', () => {
         fixture.detectChanges();
-        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-dark ant-menu-inline ant-menu-root');
+        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-dark ant-menu-inline');
         testComponent.isCollapsed = true;
         fixture.detectChanges();
-        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-dark ant-menu-root ant-menu-vertical ant-menu-inline-collapsed');
+        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-dark ant-menu-vertical ant-menu-inline-collapsed');
         testComponent.isCollapsed = false;
         fixture.detectChanges();
-        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-dark ant-menu-root ant-menu-inline');
+        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-dark ant-menu-inline');
       });
       it('should keep open after change mode', () => {
         fixture.detectChanges();
@@ -209,10 +209,10 @@ describe('menu', () => {
       });
       it('should className correct', () => {
         fixture.detectChanges();
-        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-dark ant-menu-inline ant-menu-root');
+        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-dark ant-menu-inline');
         testComponent.theme = false;
         fixture.detectChanges();
-        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-inline ant-menu-root ant-menu-light');
+        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-inline ant-menu-light');
       });
     });
     describe('swich-mode', () => {
@@ -228,11 +228,11 @@ describe('menu', () => {
       });
       it('should className correct', () => {
         fixture.detectChanges();
-        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-inline ant-menu-light ant-menu-root');
+        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-light ant-menu-inline');
         expect(submenus.every(submenu => submenu.nativeElement.classList.contains('ant-menu-submenu-inline'))).toBe(true);
         testComponent.mode = true;
         fixture.detectChanges();
-        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-light ant-menu-root ant-menu-vertical');
+        expect(menu.nativeElement.className).toBe('ant-menu ant-menu-root ant-menu-light ant-menu-vertical');
         expect(submenus.every(submenu => submenu.nativeElement.classList.contains('ant-menu-submenu-inline'))).toBe(false);
         expect(submenus.every(submenu => submenu.nativeElement.classList.contains('ant-menu-submenu-vertical'))).toBe(true);
       });
@@ -308,13 +308,13 @@ describe('menu', () => {
       it('should click menu and other submenu menu not active', fakeAsync(() => {
         testComponent.open = true;
         fixture.detectChanges();
+        const subs = testComponent.subs.toArray();
         dispatchFakeEvent(testComponent.menuitem1.nativeElement, 'mouseenter');
         fixture.detectChanges();
         testComponent.menuitem1.nativeElement.click();
-        expect(submenu.nativeElement.classList).toContain('ant-menu-submenu-active');
         fixture.detectChanges();
         tick(500);
-        expect(submenu.nativeElement.classList).not.toContain('ant-menu-submenu-active');
+        expect(subs[1].isActive).toBe(false);
       }));
       it('should click submenu menu item close', () => {
         testComponent.open = true;

@@ -16,5 +16,6 @@ export * from './submenu-inline-child.component';
 export * from './submenu-non-inline-child.component';
 export * from './menu.module';
 export * from './submenu.service';
+export * from './menu.types';
 export * from './menu.service';
 export * from './menu.token';
