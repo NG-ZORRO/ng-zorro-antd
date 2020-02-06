@@ -36,7 +36,7 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 | `[nzSimple]` | 当添加该属性时，显示为简单分页 | `boolean` | - |
 | `[nzSize]` | 当为「small」时，是小尺寸分页 | `'small'` | `'default'` |
 | `[nzPageSizeOptions]` | 指定每页可以显示多少条 | `number[]` | `[10, 20, 30, 40]` |
-| `[nzItemRender]` | 用于自定义页码的结构 | `TemplateRef<{ $implicit: 'page' \| 'prev' \| 'next', page: number }>` | - |
+| `[nzItemRender]` | 用于自定义页码的结构 | `TemplateRef<{ $implicit: 'page' \| 'prev' \| 'next'\| 'prev_5'\| 'next_5', page: number }>` | - |
 | `[nzShowTotal]` | 用于显示数据总量和当前数据范围，具体使用方式见代码演示部分 | `TemplateRef<{ $implicit: number, range: [ number, number ] }>` | - |
 | `[nzHideOnSinglePage]` | 只有一页时是否隐藏分页器 | `boolean` | `false` |
 | `(nzPageIndexChange)` | 页码改变的回调 | `EventEmitter<number>` | - |

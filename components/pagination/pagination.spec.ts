@@ -1,12 +1,14 @@
+import { ENTER } from '@angular/cdk/keycodes';
 import { Component, DebugElement, Injector, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import en_US from '../i18n/languages/en_US';
-import { NzI18nService } from '../i18n/nz-i18n.service';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NzPaginationComponent } from './nz-pagination.component';
-import { NzPaginationModule } from './nz-pagination.module';
+import { createKeyboardEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core';
+import en_US from '../i18n/languages/en_US';
+import { NzI18nService } from '../i18n/nz-i18n.service';
+import { NzPaginationComponent } from './pagination.component';
+import { NzPaginationModule } from './pagination.module';
 
 describe('pagination', () => {
   let injector: Injector;
@@ -170,30 +172,29 @@ describe('pagination', () => {
         input.value = 5;
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
-        const event = new KeyboardEvent('keydown', {
-          code: 'ENTER'
-        });
-        testComponent.nzPaginationComponent.handleKeyDown(event, input, true);
+        const event = createKeyboardEvent('keydown', ENTER, input, 'enter');
+        input.dispatchEvent(event);
+        dispatchKeyboardEvent(input, 'keydown', ENTER, input);
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
         expect(testComponent.pageIndex).toBe(5);
         expect(input.value).toBe('');
-        testComponent.nzPaginationComponent.handleKeyDown(event, input, true);
+        dispatchKeyboardEvent(input, 'keydown', ENTER, input);
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
         expect(testComponent.pageIndex).toBe(5);
         input.value = 'abc';
-        testComponent.nzPaginationComponent.handleKeyDown(event, input, true);
+        dispatchKeyboardEvent(input, 'keydown', ENTER, input);
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
         expect(testComponent.pageIndex).toBe(5);
         input.value = -1;
-        testComponent.nzPaginationComponent.handleKeyDown(event, input, true);
+        dispatchKeyboardEvent(input, 'keydown', ENTER, input);
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
         expect(testComponent.pageIndex).toBe(5);
         input.value = 10;
-        testComponent.nzPaginationComponent.handleKeyDown(event, input, true);
+        dispatchKeyboardEvent(input, 'keydown', ENTER, input);
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
         expect(testComponent.pageIndex).toBe(5);
@@ -202,7 +203,6 @@ describe('pagination', () => {
         fixture.detectChanges();
         testComponent.disabled = true;
         fixture.detectChanges();
-        console.log(paginationElement.classList);
         expect(paginationElement.classList.contains('ant-pagination-disabled')).toBe(true);
       });
     });
@@ -222,24 +222,22 @@ describe('pagination', () => {
         const input = pagination.nativeElement.querySelector('input');
         input.value = 5;
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
-        const event = new KeyboardEvent('keydown', {
-          code: 'ENTER'
-        });
-        testComponent.nzPaginationComponent.handleKeyDown(event, input, false);
+        const event = createKeyboardEvent('keydown', ENTER, input, 'enter');
+        input.dispatchEvent(event);
+        dispatchKeyboardEvent(input, 'keydown', ENTER, input);
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
         expect(input.value).toBe('5');
         expect(testComponent.pageIndex).toBe(5);
-        testComponent.nzPaginationComponent.handleKeyDown(event, input, false);
+        dispatchKeyboardEvent(input, 'keydown', ENTER, input);
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
         expect(input.value).toBe('5');
         input.value = 100;
         expect(testComponent.pageIndex).toBe(5);
-        testComponent.nzPaginationComponent.handleKeyDown(event, input, false);
+        dispatchKeyboardEvent(input, 'keydown', ENTER, input);
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
-        expect(input.value).toBe('5');
         expect(testComponent.pageIndex).toBe(5);
       });
     });
@@ -348,7 +346,7 @@ export class NzTestPaginationComponent {
   template: `
     <nz-pagination [nzPageIndex]="1" [nzTotal]="50" [nzItemRender]="renderItemTemplate"></nz-pagination>
     <ng-template #renderItemTemplate let-type let-page="page">
-      <a *ngIf="type === 'pre'">Previous</a>
+      <a *ngIf="type === 'prev'">Previous</a>
       <a *ngIf="type === 'next'">Next</a>
       <a *ngIf="type === 'page'">{{ page * 2 }}</a>
     </ng-template>
