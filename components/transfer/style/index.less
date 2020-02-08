@@ -14,10 +14,6 @@
 
   position: relative;
 
-  &-rtl {
-    direction: rtl;
-  }
-
   &-disabled {
     .@{transfer-prefix-cls}-list {
       background: @transfer-disabled-bg;
@@ -49,12 +45,6 @@
         color: @disabled-color;
         line-height: @input-height-base;
         text-align: center;
-
-        .@{transfer-prefix-cls}-rtl & {
-          right: auto;
-          left: 12px;
-        }
-
         .@{iconfont-css-prefix} {
           color: @disabled-color;
           transition: all 0.3s;
@@ -82,27 +72,13 @@
       border-bottom: @border-width-base @border-style-base @border-color-split;
       border-radius: @border-radius-base @border-radius-base 0 0;
 
-      .@{transfer-prefix-cls}-rtl & {
-        right: 0;
-        left: auto;
-      }
       &-title {
         position: absolute;
         right: 12px;
-
-        .@{transfer-prefix-cls}-rtl & {
-          right: auto;
-          left: 12px;
-        }
       }
 
       .@{ant-prefix}-checkbox-wrapper + span {
         padding-left: 8px;
-
-        .@{transfer-prefix-cls}-rtl & {
-          padding-right: 8px;
-          padding-left: 0;
-        }
       }
     }
 
@@ -117,11 +93,6 @@
         left: 0;
         width: 100%;
         padding: 12px;
-
-        .@{transfer-prefix-cls}-rtl & {
-          right: 0;
-          left: auto;
-        }
       }
     }
 
@@ -135,6 +106,10 @@
       padding: 0;
       overflow: auto;
       list-style: none;
+      > .LazyLoad {
+        animation: transferHighlightIn 1s;
+      }
+
       &-item {
         min-height: 32px;
         padding: 6px @control-padding-horizontal;
@@ -144,28 +119,15 @@
         transition: all 0.3s;
         > span {
           padding-right: 0;
-
-          .@{transfer-prefix-cls}-rtl & {
-            padding-left: 0;
-          }
         }
         &-text {
           padding-left: 8px;
-
-          .@{transfer-prefix-cls}-rtl & {
-            padding-right: 8px;
-            padding-left: 0;
-          }
         }
       }
 
       &-item:not(&-item-disabled):hover {
-        background-color: @transfer-item-hover-bg;
+        background-color: @item-hover-bg;
         cursor: pointer;
-      }
-
-      &-item-checked {
-        background-color: @item-active-bg;
       }
 
       &-item-disabled {
@@ -196,11 +158,6 @@
       width: 100%;
       border-top: @border-width-base @border-style-base @border-color-split;
       border-radius: 0 0 @border-radius-base @border-radius-base;
-
-      .@{transfer-prefix-cls}-rtl & {
-        right: 0;
-        left: auto;
-      }
     }
   }
 
@@ -221,5 +178,14 @@
         font-size: 12px;
       }
     }
+  }
+}
+
+@keyframes transferHighlightIn {
+  0% {
+    background: @primary-2;
+  }
+  100% {
+    background: transparent;
   }
 }
