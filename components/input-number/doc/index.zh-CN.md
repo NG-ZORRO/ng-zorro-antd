@@ -33,6 +33,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 | `[nzFormatter]` | 指定输入框展示值的格式 | `(value: number \| string) => string \| number` | - |
 | `[nzParser]` | 指定从 nzFormatter 里转换回数字的方式，和 nzFormatter 搭配使用 | `(value: string) => string \| number` | - |
 | `[nzPrecision]` | 数值精度 | `number` | - |
+| `[nzPrecisionMode]` | 数值精度的取值方式 | `'cut' \| 'toFixed' \| ((value: number \| string, precision?: number) => number)` | `'toFixed'` |
 | `[nzSize]` | 输入框大小 | `'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzStep]` | 每次改变步数，可以为小数 | `number \| string` | `1` |
 | `[nzPlaceHolder]` | 选择框默认文字 | `string` | - |
