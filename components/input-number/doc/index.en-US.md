@@ -32,6 +32,7 @@ The value entered in `nz-input-number` will not be verified at the time of input
 | `[nzFormatter]` | Specifies the format of the value presented | `(value: number \| string) => string \| number` | - |
 | `[nzParser]` | Specifies the value extracted from nzFormatter | `(value: string) => string \| number` | - |
 | `[nzPrecision]` | precision of input value | `number` | - |
+| `[nzPrecisionMode]` | The method for calculating the precision of input value | `'cut' \| 'toFixed' \| ((value: number \| string, precision?: number) => number)` | `'toFixed'` |
 | `[nzSize]` | width of input box | `'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzStep]` | The number to which the current value is increased or decreased. It can be an integer or decimal. | `number \| string` | `1` |
 | `[nzPlaceHolder]` | Placeholder of select | `string` | - |

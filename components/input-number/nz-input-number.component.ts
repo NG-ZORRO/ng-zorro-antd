@@ -68,6 +68,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   @Input() nzMax: number = Infinity;
   @Input() nzParser = (value: any) => value; // tslint:disable-line:no-any
   @Input() nzPrecision: number;
+  @Input() nzPrecisionMode: 'cut' | 'toFixed' | ((value: number | string, precision?: number) => number) = 'toFixed';
   @Input() nzPlaceHolder = '';
   @Input() nzStep = 1;
   @Input() nzId: string;
@@ -131,8 +132,19 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     if (this.isNotCompleteNumber(num)) {
       return num as number;
     }
-    if (isNotNil(this.nzPrecision)) {
-      return Number(Number(num).toFixed(this.nzPrecision));
+    const numStr = String(num);
+    if (numStr.indexOf('.') >= 0) {
+      if (typeof this.nzPrecisionMode === 'function') {
+        return this.nzPrecisionMode(num, this.nzPrecision);
+      }
+      if (isNotNil(this.nzPrecision)) {
+        const numSplit = numStr.split('.');
+        if (this.nzPrecisionMode === 'cut') {
+          numSplit[1] = numSplit[1].slice(0, this.nzPrecision);
+          return Number(numSplit.join('.'));
+        }
+        return Number(Number(num).toFixed(this.nzPrecision));
+      }
     }
     return Number(num);
   }
