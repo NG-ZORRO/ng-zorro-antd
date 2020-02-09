@@ -3,10 +3,10 @@ import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testi
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { NzCheckboxGroupComponent } from './nz-checkbox-group.component';
-import { NzCheckboxWrapperComponent } from './nz-checkbox-wrapper.component';
-import { NzCheckboxComponent } from './nz-checkbox.component';
-import { NzCheckboxModule } from './nz-checkbox.module';
+import { NzCheckboxGroupComponent } from './checkbox-group.component';
+import { NzCheckboxWrapperComponent } from './checkbox-wrapper.component';
+import { NzCheckboxComponent } from './checkbox.component';
+import { NzCheckboxModule } from './checkbox.module';
 
 describe('checkbox', () => {
   beforeEach(fakeAsync(() => {

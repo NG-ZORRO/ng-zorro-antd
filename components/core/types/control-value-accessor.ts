@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './checkbox.component';
-export * from './checkbox.module';
-export * from './checkbox-group.component';
-export * from './checkbox-wrapper.component';
+import { NzSafeAny } from './any';
+
+export type OnTouchedType = () => NzSafeAny;
+export type OnChangeType = (value: NzSafeAny) => void;
