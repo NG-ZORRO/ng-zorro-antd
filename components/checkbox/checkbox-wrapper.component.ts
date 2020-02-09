@@ -7,8 +7,8 @@
  */
 
 import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Output, Renderer2, ViewEncapsulation } from '@angular/core';
-
-import { NzCheckboxComponent } from './nz-checkbox.component';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzCheckboxComponent } from './checkbox.component';
 
 @Component({
   selector: 'nz-checkbox-wrapper',
@@ -16,10 +16,12 @@ import { NzCheckboxComponent } from './nz-checkbox.component';
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  templateUrl: './nz-checkbox-wrapper.component.html'
+  template: `
+    <ng-content></ng-content>
+  `
 })
 export class NzCheckboxWrapperComponent {
-  @Output() readonly nzOnChange = new EventEmitter<string[]>();
+  @Output() readonly nzOnChange = new EventEmitter<NzSafeAny[]>();
   private checkboxList: NzCheckboxComponent[] = [];
 
   addCheckbox(value: NzCheckboxComponent): void {
@@ -30,13 +32,9 @@ export class NzCheckboxWrapperComponent {
     this.checkboxList.splice(this.checkboxList.indexOf(value), 1);
   }
 
-  outputValue(): string[] {
-    const checkedList = this.checkboxList.filter(item => item.nzChecked);
-    return checkedList.map(item => item.nzValue);
-  }
-
   onChange(): void {
-    this.nzOnChange.emit(this.outputValue());
+    const listOfCheckedValue = this.checkboxList.filter(item => item.nzChecked).map(item => item.nzValue);
+    this.nzOnChange.emit(listOfCheckedValue);
   }
 
   constructor(renderer: Renderer2, elementRef: ElementRef) {

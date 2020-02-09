@@ -7,20 +7,10 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
-import {
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  forwardRef,
-  Input,
-  OnDestroy,
-  OnInit,
-  Renderer2,
-  ViewEncapsulation
-} from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, forwardRef, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-
 import { InputBoolean } from 'ng-zorro-antd/core';
+import { OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 
 export interface NzCheckBoxOptionInterface {
   label: string;
@@ -34,34 +24,40 @@ export interface NzCheckBoxOptionInterface {
   exportAs: 'nzCheckboxGroup',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
-  templateUrl: './nz-checkbox-group.component.html',
+  template: `
+    <label
+      nz-checkbox
+      class="ant-checkbox-group-item"
+      *ngFor="let o of options; trackBy: trackByOption"
+      [nzDisabled]="o.disabled || nzDisabled"
+      [(nzChecked)]="o.checked"
+      (nzCheckedChange)="onChange(options)"
+    >
+      <span>{{ o.label }}</span>
+    </label>
+  `,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NzCheckboxGroupComponent),
       multi: true
     }
-  ]
+  ],
+  host: {
+    '[class.ant-checkbox-group]': 'true'
+  }
 })
 export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, OnDestroy {
-  // tslint:disable-next-line:no-any
-  onChange: (value: any) => void = () => null;
-  // tslint:disable-next-line:no-any
-  onTouched: () => any = () => null;
+  onChange: OnChangeType = () => {};
+  onTouched: OnTouchedType = () => {};
   options: NzCheckBoxOptionInterface[] = [];
   @Input() @InputBoolean() nzDisabled = false;
 
-  onOptionChange(): void {
-    this.onChange(this.options);
-  }
-
-  trackByOption(_index: number, option: NzCheckBoxOptionInterface): string {
+  trackByOption(_: number, option: NzCheckBoxOptionInterface): string {
     return option.value;
   }
 
-  constructor(private elementRef: ElementRef, private focusMonitor: FocusMonitor, private cdr: ChangeDetectorRef, renderer: Renderer2) {
-    renderer.addClass(elementRef.nativeElement, 'ant-checkbox-group');
-  }
+  constructor(private elementRef: ElementRef, private focusMonitor: FocusMonitor, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
@@ -80,16 +76,16 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, O
     this.cdr.markForCheck();
   }
 
-  registerOnChange(fn: (_: NzCheckBoxOptionInterface[]) => {}): void {
+  registerOnChange(fn: OnChangeType): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => {}): void {
+  registerOnTouched(fn: OnTouchedType): void {
     this.onTouched = fn;
   }
 
-  setDisabledState(isDisabled: boolean): void {
-    this.nzDisabled = isDisabled;
+  setDisabledState(disabled: boolean): void {
+    this.nzDisabled = disabled;
     this.cdr.markForCheck();
   }
 }
