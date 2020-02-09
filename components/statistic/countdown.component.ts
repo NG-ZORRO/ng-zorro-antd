@@ -24,7 +24,8 @@ import {
 import { interval, Subscription } from 'rxjs';
 
 import { NzStatisticComponent } from './statistic.component';
-import { REFRESH_INTERVAL } from './typings';
+
+const REFRESH_INTERVAL = 1000 / 30;
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -59,7 +60,6 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
     super();
   }
 
-  /** @override */
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzValue) {
       this.target = Number(changes.nzValue.currentValue);
