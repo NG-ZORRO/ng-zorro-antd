@@ -8,7 +8,7 @@
 
 import { getLocaleNumberSymbol, NumberSymbol } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject, Input, LOCALE_ID, OnChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
-import { NzStatisticValueType } from './nz-statistic-definitions';
+import { NzStatisticValueType } from './typings';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -16,11 +16,16 @@ import { NzStatisticValueType } from './nz-statistic-definitions';
   preserveWhitespaces: false,
   selector: 'nz-statistic-number',
   exportAs: 'nzStatisticNumber',
-  templateUrl: './nz-statistic-number.component.html',
-  host: {
-    class: 'ant-statistic-content-value'
-  },
-  styles: ['nz-number { display: inline }']
+  template: `
+    <span class="ant-statistic-content-value">
+      <ng-container *ngIf="nzValueTemplate" [ngTemplateOutlet]="nzValueTemplate" [ngTemplateOutletContext]="{ $implicit: nzValue }">
+      </ng-container>
+      <ng-container *ngIf="!nzValueTemplate">
+        <span *ngIf="displayInt" class="ant-statistic-content-value-int">{{ displayInt }}</span>
+        <span *ngIf="displayDecimal" class="ant-statistic-content-value-decimal">{{ displayDecimal }}</span>
+      </ng-container>
+    </span>
+  `
 })
 export class NzStatisticNumberComponent implements OnChanges {
   @Input() nzValue: NzStatisticValueType;

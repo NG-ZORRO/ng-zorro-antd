@@ -23,18 +23,30 @@ import {
 } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
 
-import { REFRESH_INTERVAL } from './nz-statistic-definitions';
-import { NzStatisticComponent } from './nz-statistic.component';
+import { NzStatisticComponent } from './statistic.component';
+
+const REFRESH_INTERVAL = 1000 / 30;
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-countdown',
   exportAs: 'nzCountdown',
-  templateUrl: './nz-countdown.component.html'
+  template: `
+    <nz-statistic
+      [nzValue]="diff"
+      [nzValueStyle]="nzValueStyle"
+      [nzValueTemplate]="nzValueTemplate || countDownTpl"
+      [nzTitle]="nzTitle"
+      [nzPrefix]="nzPrefix"
+      [nzSuffix]="nzSuffix"
+    >
+    </nz-statistic>
+
+    <ng-template #countDownTpl>{{ diff | nzTimeRange: nzFormat }}</ng-template>
+  `
 })
 export class NzCountdownComponent extends NzStatisticComponent implements OnInit, OnChanges, OnDestroy {
-  /** @override */
   @Input() nzFormat: string = 'HH:mm:ss';
   @Output() readonly nzCountdownFinish = new EventEmitter<void>();
 
@@ -47,7 +59,6 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
     super();
   }
 
-  /** @override */
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzValue) {
       this.target = Number(changes.nzValue.currentValue);
