@@ -10,7 +10,7 @@ import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
 import { InputBoolean, NzSizeLDSType } from 'ng-zorro-antd/core';
 
 @Directive({
-  selector: '[nz-input]',
+  selector: 'input[nz-input],textarea[nz-input]',
   exportAs: 'nzInput',
   host: {
     '[class.ant-input-disabled]': 'disabled',
