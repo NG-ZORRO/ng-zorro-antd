@@ -10,10 +10,10 @@ import { Component, ElementRef, ViewChild, ViewEncapsulation } from '@angular/co
       nz-input
       nz-tooltip
       nzTooltipTrigger="focus"
-      nzPlacement="topLeft"
+      nzTooltipPlacement="topLeft"
       nzOverlayClassName="numeric-input"
       [ngModel]="value"
-      [nzTitle]="title"
+      [nzTooltipTitle]="title"
       placeholder="Input a number"
       (ngModelChange)="onChange($event)"
       (blur)="onBlur()"

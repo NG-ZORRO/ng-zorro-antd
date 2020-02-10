@@ -8,18 +8,13 @@
 
 import { Platform } from '@angular/cdk/platform';
 import { AfterViewInit, Directive, DoCheck, ElementRef, Input, NgZone, OnDestroy } from '@angular/core';
+import { NzDomEventService } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
-
-import { NzDomEventService } from 'ng-zorro-antd/core';
 
 export interface AutoSizeType {
   minRows?: number;
   maxRows?: number;
-}
-
-export function isAutoSizeType(value: string | boolean | AutoSizeType): value is AutoSizeType {
-  return typeof value !== 'string' && typeof value !== 'boolean' && (!!value.maxRows || !!value.minRows);
 }
 
 @Directive({
@@ -40,24 +35,25 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
   private previousMinRows: number | undefined;
   private minRows: number | undefined;
   private maxRows: number | undefined;
+  private maxHeight: number | null = null;
+  private minHeight: number | null = null;
   private destroy$ = new Subject();
   private inputGap = 10;
 
   @Input()
   set nzAutosize(value: string | boolean | AutoSizeType) {
+    const isAutoSizeType = (data: string | boolean | AutoSizeType): data is AutoSizeType => {
+      return typeof data !== 'string' && typeof data !== 'boolean' && (!!data.maxRows || !!data.minRows);
+    };
     if (typeof value === 'string') {
       this.autosize = true;
     } else if (isAutoSizeType(value)) {
       this.autosize = value;
       this.minRows = value.minRows;
       this.maxRows = value.maxRows;
-      this.setMaxHeight();
-      this.setMinHeight();
+      this.maxHeight = this.setMaxHeight();
+      this.minHeight = this.setMinHeight();
     }
-  }
-
-  get nzAutosize(): string | boolean | AutoSizeType {
-    return this.autosize;
   }
 
   resizeToFitContent(force: boolean = false): void {
@@ -83,13 +79,18 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
     // Long placeholders that are wider than the textarea width may lead to a bigger scrollHeight
     // value. To ensure that the scrollHeight is not bigger than the content, the placeholders
     // need to be removed temporarily.
-    textarea.classList.add('cdk-textarea-autosize-measuring');
+    textarea.classList.add('nz-textarea-autosize-measuring');
     textarea.placeholder = '';
-    const height = Math.round((textarea.scrollHeight - this.inputGap) / this.cachedLineHeight) * this.cachedLineHeight + this.inputGap;
-
+    let height = Math.round((textarea.scrollHeight - this.inputGap) / this.cachedLineHeight) * this.cachedLineHeight + this.inputGap;
+    if (this.maxHeight !== null && height > this.maxHeight) {
+      height = this.maxHeight!;
+    }
+    if (this.minHeight !== null && height < this.minHeight) {
+      height = this.minHeight!;
+    }
     // Use the scrollHeight to know how large the textarea *would* be if fit its entire value.
     textarea.style.height = `${height}px`;
-    textarea.classList.remove('cdk-textarea-autosize-measuring');
+    textarea.classList.remove('nz-textarea-autosize-measuring');
     textarea.placeholder = placeholderText;
 
     // On Firefox resizing the textarea will prevent it from scrolling to the caret position.
@@ -144,28 +145,29 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
     textareaClone.style.overflow = 'hidden';
 
     this.el.parentNode!.appendChild(textareaClone);
-    this.cachedLineHeight = textareaClone.clientHeight - this.inputGap - 1;
+    this.cachedLineHeight = textareaClone.clientHeight - this.inputGap;
     this.el.parentNode!.removeChild(textareaClone);
 
     // Min and max heights have to be re-calculated if the cached line height changes
-    this.setMinHeight();
-    this.setMaxHeight();
+    this.maxHeight = this.setMaxHeight();
+    this.minHeight = this.setMinHeight();
   }
 
-  setMinHeight(): void {
-    const minHeight = this.minRows && this.cachedLineHeight ? `${this.minRows * this.cachedLineHeight + this.inputGap}px` : null;
+  setMinHeight(): number | null {
+    const minHeight = this.minRows && this.cachedLineHeight ? this.minRows * this.cachedLineHeight + this.inputGap : null;
 
-    if (minHeight) {
-      this.el.style.minHeight = minHeight;
+    if (minHeight !== null) {
+      this.el.style.minHeight = `${minHeight}px`;
     }
+    return minHeight;
   }
 
-  setMaxHeight(): void {
-    const maxHeight = this.maxRows && this.cachedLineHeight ? `${this.maxRows * this.cachedLineHeight + this.inputGap}px` : null;
-
-    if (maxHeight) {
-      this.el.style.maxHeight = maxHeight;
+  setMaxHeight(): number | null {
+    const maxHeight = this.maxRows && this.cachedLineHeight ? this.maxRows * this.cachedLineHeight + this.inputGap : null;
+    if (maxHeight !== null) {
+      this.el.style.maxHeight = `${maxHeight}px`;
     }
+    return maxHeight;
   }
 
   noopInputHandler(): void {
@@ -180,7 +182,7 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
   ) {}
 
   ngAfterViewInit(): void {
-    if (this.nzAutosize && this.platform.isBrowser) {
+    if (this.autosize && this.platform.isBrowser) {
       this.resizeToFitContent();
       this.nzDomEventService
         .registerResizeListener()
@@ -198,7 +200,7 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
   }
 
   ngDoCheck(): void {
-    if (this.nzAutosize && this.platform.isBrowser) {
+    if (this.autosize && this.platform.isBrowser) {
       this.resizeToFitContent();
     }
   }

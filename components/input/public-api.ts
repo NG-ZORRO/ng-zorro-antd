@@ -6,8 +6,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-input-group.component';
-export * from './nz-input.module';
-export * from './nz-input-group.component';
-export * from './nz-input.directive';
-export * from './nz-autosize.directive';
+export * from './input-group.component';
+export * from './input.module';
+export * from './input-group.component';
+export * from './input-group-slot.component';
+export * from './input.directive';
+export * from './autosize.directive';

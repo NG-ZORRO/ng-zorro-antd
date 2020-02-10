@@ -4,11 +4,13 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-input-group',
   template: `
     <nz-input-group [nzSize]="'large'">
-      <div nz-col nzSpan="5">
-        <input type="text" nz-input [ngModel]="'0571'" />
-      </div>
-      <div nz-col nzSpan="8">
-        <input type="text" nz-input [ngModel]="'26888888'" />
+      <div nz-row nzGutter="8">
+        <div nz-col nzSpan="5">
+          <input type="text" nz-input [ngModel]="'0571'" />
+        </div>
+        <div nz-col nzSpan="8">
+          <input type="text" nz-input [ngModel]="'26888888'" />
+        </div>
       </div>
     </nz-input-group>
     <br />

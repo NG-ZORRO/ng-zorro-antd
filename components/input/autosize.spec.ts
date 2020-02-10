@@ -3,8 +3,8 @@ import { async, ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angul
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { dispatchFakeEvent, MockNgZone } from 'ng-zorro-antd/core';
-import { NzAutosizeDirective } from './nz-autosize.directive';
-import { NzInputModule } from './nz-input.module';
+import { NzAutosizeDirective } from './autosize.directive';
+import { NzInputModule } from './input.module';
 
 describe('autoresize', () => {
   let zone: MockNgZone;
