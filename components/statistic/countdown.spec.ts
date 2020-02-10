@@ -1,65 +1,25 @@
-import { CommonModule } from '@angular/common';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NzCountdownComponent } from './nz-countdown.component';
-import { NzStatisticModule } from './nz-statistic.module';
 
-@Component({
-  template: `
-    <nz-countdown
-      [nzTitle]="'Countdown'"
-      [nzValue]="value"
-      [nzFormat]="format"
-      [nzValueTemplate]="template"
-      (nzCountdownFinish)="onFinish()"
-    >
-    </nz-countdown>
-    <ng-template #tpl let-diff>
-      {{ diff }}
-    </ng-template>
-  `
-})
-export class NzTestCountdownComponent {
-  @ViewChild(NzCountdownComponent, { static: true }) countdown: NzCountdownComponent;
-  @ViewChild('tpl', { static: true }) tpl: TemplateRef<number>;
+import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core';
 
-  format: string;
-  value: number;
-  template: TemplateRef<number>;
-  finished = 0;
-
-  resetTimerWithFormat(format: string): void {
-    this.format = format;
-    this.value = new Date().getTime() + 1000 * 60 * 60 * 24 * 2 + 1000 * 30;
-  }
-
-  resetWithTemplate(): void {
-    this.template = this.tpl;
-    this.value = new Date().getTime() + 1000 * 60 * 60 * 24 * 2 + 1000 * 30;
-  }
-
-  onFinish(): void {
-    this.finished += 1;
-  }
-}
+import { NzCountdownComponent } from './countdown.component';
+import { NzStatisticModule } from './statistic.module';
 
 describe('nz-countdown', () => {
+  let testBed: ComponentBed<NzTestCountdownComponent>;
   let fixture: ComponentFixture<NzTestCountdownComponent>;
   let testComponent: NzTestCountdownComponent;
   let countdownEl: DebugElement;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [CommonModule, NzStatisticModule],
-      declarations: [NzTestCountdownComponent]
-    }).compileComponents();
-  });
-
   describe('basic', () => {
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestCountdownComponent);
-      testComponent = fixture.debugElement.componentInstance;
+      testBed = createComponentBed(NzTestCountdownComponent, {
+        imports: [NzStatisticModule]
+      });
+      fixture = testBed.fixture;
+      testComponent = testBed.component;
       countdownEl = fixture.debugElement.query(By.directive(NzCountdownComponent));
     });
 
@@ -105,3 +65,42 @@ describe('nz-countdown', () => {
     }));
   });
 });
+
+@Component({
+  template: `
+    <nz-countdown
+      [nzTitle]="'Countdown'"
+      [nzValue]="value"
+      [nzFormat]="format"
+      [nzValueTemplate]="template"
+      (nzCountdownFinish)="onFinish()"
+    >
+    </nz-countdown>
+    <ng-template #tpl let-diff>
+      {{ diff }}
+    </ng-template>
+  `
+})
+export class NzTestCountdownComponent {
+  @ViewChild(NzCountdownComponent, { static: true }) countdown: NzCountdownComponent;
+  @ViewChild('tpl', { static: true }) tpl: TemplateRef<number>;
+
+  format: string;
+  value: number;
+  template: TemplateRef<number>;
+  finished = 0;
+
+  resetTimerWithFormat(format: string): void {
+    this.format = format;
+    this.value = new Date().getTime() + 1000 * 60 * 60 * 24 * 2 + 1000 * 30;
+  }
+
+  resetWithTemplate(): void {
+    this.template = this.tpl;
+    this.value = new Date().getTime() + 1000 * 60 * 60 * 24 * 2 + 1000 * 30;
+  }
+
+  onFinish(): void {
+    this.finished += 1;
+  }
+}

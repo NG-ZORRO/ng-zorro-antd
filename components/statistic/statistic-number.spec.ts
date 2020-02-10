@@ -1,32 +1,31 @@
-import { CommonModule } from '@angular/common';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NzStatisticNumberComponent } from './nz-statistic-number.component';
-import { NzStatisticModule } from './nz-statistic.module';
+
+import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core';
+
+import { NzStatisticNumberComponent } from './statistic-number.component';
+import { NzStatisticModule } from './statistic.module';
 
 describe('nz-number', () => {
+  let testBed: ComponentBed<NzTestNumberComponent>;
   let fixture: ComponentFixture<NzTestNumberComponent>;
   let testComponent: NzTestNumberComponent;
   let numberEl: DebugElement;
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [CommonModule, NzStatisticModule],
-      declarations: [NzTestNumberComponent]
-    }).compileComponents();
-  });
-
   describe('basic', () => {
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestNumberComponent);
-      testComponent = fixture.debugElement.componentInstance;
+      testBed = createComponentBed(NzTestNumberComponent, {
+        imports: [NzStatisticModule]
+      });
+      fixture = testBed.fixture;
+      testComponent = testBed.component;
       numberEl = fixture.debugElement.query(By.directive(NzStatisticNumberComponent));
     });
 
     it('should have correct class', () => {
       fixture.detectChanges();
-      expect(numberEl.nativeElement.classList.contains('ant-statistic-content-value')).toBeTruthy();
+      expect(numberEl.nativeElement.firstElementChild!.classList.contains('ant-statistic-content-value')).toBeTruthy();
     });
 
     it('should render number', () => {
