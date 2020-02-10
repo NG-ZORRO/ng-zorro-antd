@@ -47,7 +47,6 @@ const REFRESH_INTERVAL = 1000 / 30;
   `
 })
 export class NzCountdownComponent extends NzStatisticComponent implements OnInit, OnChanges, OnDestroy {
-  /** @override */
   @Input() nzFormat: string = 'HH:mm:ss';
   @Output() readonly nzCountdownFinish = new EventEmitter<void>();
 
