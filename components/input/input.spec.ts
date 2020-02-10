@@ -3,8 +3,8 @@ import { async, ComponentFixture, fakeAsync, flush, TestBed } from '@angular/cor
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
-import { NzInputDirective } from './nz-input.directive';
-import { NzInputModule } from './nz-input.module';
+import { NzInputDirective } from './input.directive';
+import { NzInputModule } from './input.module';
 
 describe('input', () => {
   beforeEach(async(() => {
