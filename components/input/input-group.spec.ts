@@ -3,8 +3,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
-import { NzInputGroupComponent } from './nz-input-group.component';
-import { NzInputModule } from './nz-input.module';
+import { NzInputGroupComponent } from './input-group.component';
+import { NzInputModule } from './input.module';
 
 describe('input-group', () => {
   beforeEach(async(() => {
@@ -183,7 +183,7 @@ describe('input-group', () => {
         expect(inputGroupElement.classList).toContain('ant-input-search');
         testComponent.size = 'large';
         fixture.detectChanges();
-        expect(inputGroupElement.classList).toContain('ant-input-search-lg');
+        expect(inputGroupElement.classList).toContain('ant-input-search-large');
         testComponent.size = 'small';
         fixture.detectChanges();
         expect(inputGroupElement.classList).toContain('ant-input-search-sm');

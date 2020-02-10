@@ -12,12 +12,13 @@ import { NgModule } from '@angular/core';
 import { NzOutletModule } from 'ng-zorro-antd/core';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzAutosizeDirective } from './nz-autosize.directive';
-import { NzInputGroupComponent } from './nz-input-group.component';
-import { NzInputDirective } from './nz-input.directive';
+import { NzAutosizeDirective } from './autosize.directive';
+import { NzInputGroupSlotComponent } from './input-group-slot.component';
+import { NzInputGroupComponent } from './input-group.component';
+import { NzInputDirective } from './input.directive';
 
 @NgModule({
-  declarations: [NzInputDirective, NzInputGroupComponent, NzAutosizeDirective],
+  declarations: [NzInputDirective, NzInputGroupComponent, NzAutosizeDirective, NzInputGroupSlotComponent],
   exports: [NzInputDirective, NzInputGroupComponent, NzAutosizeDirective],
   imports: [CommonModule, NzIconModule, PlatformModule, NzOutletModule]
 })
