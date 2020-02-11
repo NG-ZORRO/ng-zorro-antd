@@ -6,8 +6,6 @@ title: InputNumber
 
 Enter a number within certain range with the mouse or keyboard.
 
-> Note：InputNumber will validate the input value only when `(blur)` and `(keydown.enter)` happened other than when user input character to avoid error `ngModelChange` output (-0.02001 or -1.0e28)
-
 ## When To Use
 
 When a numeric value needs to be provided.
@@ -20,8 +18,6 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
 ### nz-input-number
 
-The value entered in `nz-input-number` will not be verified at the time of input, but will be fed back to `[ngModel]` and `(ngModelChange)` at a specific timing (Enter key, up and down keys, blur, etc.), otherwise input data such as `-0.12` or `1e10`, the `ngModel` will always be `undefined`.
-
 | property | description | type | default |
 | -------- | ----------- | ---- | ------- |
 | `[ngModel]` | current value, double binding | `number \| string`  \|  `string` | - |
@@ -30,7 +26,7 @@ The value entered in `nz-input-number` will not be verified at the time of input
 | `[nzMax]` | max value | `number` | `Infinity` |
 | `[nzMin]` | min value | `number` | `-Infinity` |
 | `[nzFormatter]` | Specifies the format of the value presented | `(value: number \| string) => string \| number` | - |
-| `[nzParser]` | Specifies the value extracted from nzFormatter | `(value: string) => string \| number` | - |
+| `[nzParser]` | Specifies the value extracted from nzFormatter | `(value: string) => string \| number` | `(value: string) => value.trim().replace(/。/g, '.').replace(/[^\w\.-]+/g, '')` |
 | `[nzPrecision]` | precision of input value | `number` | - |
 | `[nzPrecisionMode]` | The method for calculating the precision of input value | `'cut' \| 'toFixed' \| ((value: number \| string, precision?: number) => number)` | `'toFixed'` |
 | `[nzSize]` | width of input box | `'large' \| 'small' \| 'default'` | `'default'` |

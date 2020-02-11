@@ -4,12 +4,7 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-input-number-precision',
   template: `
     <nz-input-number [(ngModel)]="toFixedValue" [nzPrecision]="precision" nzPlaceHolder="toFixed"></nz-input-number>
-    <nz-input-number
-      [(ngModel)]="cutValue"
-      [nzPrecision]="precision"
-      nzPrecisionMode="cut"
-      nzPlaceHolder="cut off"
-    ></nz-input-number>
+    <nz-input-number [(ngModel)]="cutValue" [nzPrecision]="precision" nzPrecisionMode="cut" nzPlaceHolder="cut off"></nz-input-number>
     <nz-input-number
       [(ngModel)]="customFnValue"
       [nzPrecision]="precision"
@@ -26,9 +21,9 @@ import { Component } from '@angular/core';
   ]
 })
 export class NzDemoInputNumberPrecisionComponent {
-  toFixedValue = 2.128;
-  cutValue = 2.128;
-  customFnValue = 2.128;
+  toFixedValue = 2;
+  cutValue = 2;
+  customFnValue = 2;
   precision = 2;
   customPrecisionFn(value: number, precision: number): number {
     return +Number(value).toFixed(precision + 1);
