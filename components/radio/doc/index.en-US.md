@@ -24,7 +24,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 | `[nzAutoFocus]` | get focus when component mounted | `boolean` | `false` |
 | `[nzDisabled]` | Disable radio | `boolean` | `false` |
 | `[ngModel]` | Specifies whether the radio is selected, double binding | `boolean` | `false` |
-| `[nzValue]` | use with `nz-radio-group` | `string` | - |
+| `[nzValue]` | use with `nz-radio-group` | `any` | - |
 | `(ngModelChange)` | The callback function that is triggered when the state changes. | `EventEmitter<boolean>` | - |
 
 ### nz-radio-group
@@ -33,7 +33,7 @@ radio group，wrap a group of `nz-radio`。
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | -------- | ------- |
-| `[ngModel]` | current selected `nz-radio` value, double binding | `string` | - |
+| `[ngModel]` | current selected `nz-radio` value, double binding | `any` | - |
 | `[nzName]` | The `name` property of all `input[type="radio"]` children | `string`  | - |
 | `[nzDisabled]` | Disable all radio buttons | `boolean` |  `false` |
 | `[nzSize]` | Size, only on radio style | `'large' \| 'small' \| 'default'` | `'default'` |
