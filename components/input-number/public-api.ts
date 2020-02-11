@@ -6,5 +6,5 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-input-number.component';
-export * from './nz-input-number.module';
+export * from './input-number.component';
+export * from './input-number.module';
