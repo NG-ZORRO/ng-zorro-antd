@@ -7,8 +7,6 @@ title: InputNumber
 
 通过鼠标或键盘，输入范围内的数值。
 
-> 注意：InputNumber 会在 `(blur)` 和 `(keydown.enter)` 时触发校验，而不是在用户输入每个字符时立刻进行校验，以此来避免反复输出错误校验结果的情况（例如输入 -0.02001 或者 -1.0e28）
-
 ## 何时使用
 
 当需要获取标准数值时。
@@ -21,8 +19,6 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
 ### nz-input-number
 
-在 `nz-input-number` 中输入的数值不会在输入时进行校验，而是在特定时机（回车键，上下键，失去焦点等）时才会校验后反馈到 `[ngModel]` 和 `(ngModelChange)` 中，否则输入 `-0.12` 或者 `1e10` 这种类型数据时，双向绑定的数据会永远是 `undefined`
-
 | 成员 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[ngModel]` | 当前值，可双向绑定 | `number \| string`  \|  `string` | - |
@@ -31,7 +27,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 | `[nzMax]` | 最大值 | `number` | `Infinity` |
 | `[nzMin]` | 最小值 | `number` | `-Infinity` |
 | `[nzFormatter]` | 指定输入框展示值的格式 | `(value: number \| string) => string \| number` | - |
-| `[nzParser]` | 指定从 nzFormatter 里转换回数字的方式，和 nzFormatter 搭配使用 | `(value: string) => string \| number` | - |
+| `[nzParser]` | 指定从 nzFormatter 里转换回数字的方式，和 nzFormatter 搭配使用 | `(value: string) => string \| number` | `(value: string) => value.trim().replace(/。/g, '.').replace(/[^\w\.-]+/g, '')` |
 | `[nzPrecision]` | 数值精度 | `number` | - |
 | `[nzPrecisionMode]` | 数值精度的取值方式 | `'cut' \| 'toFixed' \| ((value: number \| string, precision?: number) => number)` | `'toFixed'` |
 | `[nzSize]` | 输入框大小 | `'large' \| 'small' \| 'default'` | `'default'` |

@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-import { NzInputNumberComponent } from './nz-input-number.component';
+import { NzInputNumberComponent } from './input-number.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule, NzIconModule],

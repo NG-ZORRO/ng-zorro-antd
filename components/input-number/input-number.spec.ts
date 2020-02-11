@@ -1,12 +1,13 @@
+import { DOWN_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { dispatchEvent, dispatchFakeEvent } from 'ng-zorro-antd/core';
+import { createKeyboardEvent, dispatchEvent, dispatchFakeEvent } from 'ng-zorro-antd/core';
 
-import { NzInputNumberComponent } from './nz-input-number.component';
-import { NzInputNumberModule } from './nz-input-number.module';
+import { NzInputNumberComponent } from './input-number.component';
+import { NzInputNumberModule } from './input-number.module';
 
 describe('input number', () => {
   beforeEach(fakeAsync(() => {
@@ -23,13 +24,28 @@ describe('input number', () => {
     let inputElement: HTMLInputElement;
     let upHandler: HTMLElement;
     let downHandler: HTMLElement;
-
+    let upArrowEvent: KeyboardEvent;
+    let downArrowEvent: KeyboardEvent;
+    let upArrowCtrlEvent: KeyboardEvent;
+    let downArrowCtrlEvent: KeyboardEvent;
+    let upArrowMetaEvent: KeyboardEvent;
+    let downArrowMetaEvent: KeyboardEvent;
+    let upArrowShiftEvent: KeyboardEvent;
+    let downArrowShiftEvent: KeyboardEvent;
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestInputNumberBasicComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
       inputNumber = fixture.debugElement.query(By.directive(NzInputNumberComponent));
       inputElement = inputNumber.nativeElement.querySelector('input');
+      upArrowEvent = createKeyboardEvent('keydown', UP_ARROW, inputElement, 'ArrowUp');
+      downArrowEvent = createKeyboardEvent('keydown', DOWN_ARROW, inputElement, 'ArrowDown');
+      upArrowCtrlEvent = createKeyboardEvent('keydown', UP_ARROW, inputElement, 'ArrowUp', true);
+      downArrowCtrlEvent = createKeyboardEvent('keydown', DOWN_ARROW, inputElement, 'ArrowDown', true);
+      upArrowMetaEvent = createKeyboardEvent('keydown', UP_ARROW, inputElement, 'ArrowUp', false, true);
+      downArrowMetaEvent = createKeyboardEvent('keydown', DOWN_ARROW, inputElement, 'ArrowDown', false, true);
+      upArrowShiftEvent = createKeyboardEvent('keydown', UP_ARROW, inputElement, 'ArrowUp', false, false, true);
+      downArrowShiftEvent = createKeyboardEvent('keydown', DOWN_ARROW, inputElement, 'ArrowDown', false, false, true);
       upHandler = inputNumber.nativeElement.querySelector('.ant-input-number-handler-up');
       downHandler = inputNumber.nativeElement.querySelector('.ant-input-number-handler-down');
     });
@@ -93,14 +109,10 @@ describe('input number', () => {
     it('should empty value work', () => {
       testComponent.nzInputNumberComponent.onModelChange('');
       fixture.detectChanges();
-      testComponent.nzInputNumberComponent.onBlur();
-      fixture.detectChanges();
       expect(testComponent.value).toBe('');
     });
     it('should NaN value work', () => {
       testComponent.nzInputNumberComponent.onModelChange('NaN');
-      fixture.detectChanges();
-      testComponent.nzInputNumberComponent.onBlur();
       fixture.detectChanges();
       expect(testComponent.value).toBe(undefined);
     });
@@ -125,10 +137,8 @@ describe('input number', () => {
     it('should not complete number work', () => {
       testComponent.nzInputNumberComponent.onModelChange('1.');
       fixture.detectChanges();
-      testComponent.nzInputNumberComponent.onBlur();
-      fixture.detectChanges();
       expect(testComponent.value).toBe(undefined);
-      expect(inputElement.value).toBe('');
+      expect(inputElement.value).toBe('1.');
     });
     it('should not complete number work with up arrow', () => {
       testComponent.nzInputNumberComponent.onModelChange('1.');
@@ -208,25 +218,14 @@ describe('input number', () => {
     it('should user input work', () => {
       testComponent.nzInputNumberComponent.onModelChange('123');
       fixture.detectChanges();
-      expect(testComponent.value).toBe(undefined);
-      expect(testComponent.modelChange).toHaveBeenCalledTimes(0);
-      testComponent.nzInputNumberComponent.onBlur();
-      fixture.detectChanges();
       expect(testComponent.value).toBe(1);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
       testComponent.nzInputNumberComponent.onModelChange('0');
       fixture.detectChanges();
-      expect(testComponent.value).toBe(1);
-      expect(testComponent.modelChange).toHaveBeenCalledTimes(1);
-      testComponent.nzInputNumberComponent.onBlur();
-      fixture.detectChanges();
       expect(testComponent.value).toBe(0);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(2);
+      expect(testComponent.value).toBe(0);
       testComponent.nzInputNumberComponent.onModelChange('-4');
-      fixture.detectChanges();
-      expect(testComponent.value).toBe(0);
-      expect(testComponent.modelChange).toHaveBeenCalledTimes(2);
-      testComponent.nzInputNumberComponent.onBlur();
       fixture.detectChanges();
       expect(testComponent.value).toBe(-1);
       expect(testComponent.modelChange).toHaveBeenCalledTimes(3);
@@ -234,10 +233,8 @@ describe('input number', () => {
     it('should auto precision work', () => {
       testComponent.precision = undefined;
       testComponent.max = 10;
+      fixture.detectChanges();
       testComponent.nzInputNumberComponent.onModelChange('0.999999');
-      fixture.detectChanges();
-      testComponent.nzInputNumberComponent.onBlur();
-      fixture.detectChanges();
       expect(testComponent.value).toBe(0.999999);
       dispatchFakeEvent(upHandler, 'mousedown');
       fixture.detectChanges();
@@ -246,8 +243,6 @@ describe('input number', () => {
       fixture.detectChanges();
       expect(testComponent.value).toBe(0.999999);
       testComponent.nzInputNumberComponent.onModelChange('1e-10');
-      fixture.detectChanges();
-      testComponent.nzInputNumberComponent.onBlur();
       fixture.detectChanges();
       expect(testComponent.value).toBe(1e-10);
       dispatchFakeEvent(upHandler, 'mousedown');
@@ -260,65 +255,43 @@ describe('input number', () => {
     it('should nzPrecision work', () => {
       testComponent.nzInputNumberComponent.onModelChange('0.99');
       fixture.detectChanges();
-      testComponent.nzInputNumberComponent.onBlur();
-      fixture.detectChanges();
       expect(testComponent.value).toBe(0.99);
       testComponent.nzInputNumberComponent.onModelChange('0.993');
       fixture.detectChanges();
-      testComponent.nzInputNumberComponent.onBlur();
-      fixture.detectChanges();
       expect(testComponent.value).toBe(0.99);
       testComponent.nzInputNumberComponent.onModelChange('0.999');
-      fixture.detectChanges();
-      testComponent.nzInputNumberComponent.onBlur();
       fixture.detectChanges();
       expect(testComponent.value).toBe(1);
     });
     it('should nzPrecisionMode work', () => {
       testComponent.nzInputNumberComponent.onModelChange('0.999');
       fixture.detectChanges();
-      testComponent.nzInputNumberComponent.onBlur();
-      fixture.detectChanges();
       expect(testComponent.value).toBe(1);
 
       testComponent.precisionMode = 'toFixed';
       testComponent.nzInputNumberComponent.onModelChange('0.991');
       fixture.detectChanges();
-      testComponent.nzInputNumberComponent.onBlur();
-      fixture.detectChanges();
       expect(testComponent.value).toBe(0.99);
       testComponent.nzInputNumberComponent.onModelChange('0.999');
       fixture.detectChanges();
-      testComponent.nzInputNumberComponent.onBlur();
-      fixture.detectChanges();
       expect(testComponent.value).toBe(1);
       testComponent.nzInputNumberComponent.onModelChange('1.0099');
-      fixture.detectChanges();
-      testComponent.nzInputNumberComponent.onBlur();
       fixture.detectChanges();
       expect(testComponent.value).toBe(1);
 
       testComponent.precisionMode = 'cut';
       testComponent.nzInputNumberComponent.onModelChange('0.991');
       fixture.detectChanges();
-      testComponent.nzInputNumberComponent.onBlur();
-      fixture.detectChanges();
       expect(testComponent.value).toBe(0.99);
       testComponent.nzInputNumberComponent.onModelChange('0.998');
-      fixture.detectChanges();
-      testComponent.nzInputNumberComponent.onBlur();
       fixture.detectChanges();
       expect(testComponent.value).toBe(0.99);
 
       testComponent.precisionMode = value => +Number(value).toFixed(2);
       testComponent.nzInputNumberComponent.onModelChange('0.991');
       fixture.detectChanges();
-      testComponent.nzInputNumberComponent.onBlur();
-      fixture.detectChanges();
       expect(testComponent.value).toBe(0.99);
       testComponent.nzInputNumberComponent.onModelChange('0.998');
-      fixture.detectChanges();
-      testComponent.nzInputNumberComponent.onBlur();
       fixture.detectChanges();
       expect(testComponent.value).toBe(1);
     });
@@ -339,12 +312,6 @@ describe('input number', () => {
       expect(testComponent.value).toBe(2);
     });
     it('should key up and down work', () => {
-      const upArrowEvent = new KeyboardEvent('keydown', {
-        code: 'ArrowUp'
-      });
-      const downArrowEvent = new KeyboardEvent('keydown', {
-        code: 'ArrowDown'
-      });
       fixture.detectChanges();
       expect(testComponent.value).toBe(undefined);
       dispatchEvent(inputElement, upArrowEvent);
@@ -361,68 +328,44 @@ describe('input number', () => {
       expect(testComponent.value).toBe(-1);
     });
     it('should key up and down work with ctrl key', () => {
-      const upArrowEvent = new KeyboardEvent('keydown', {
-        code: 'ArrowUp',
-        ctrlKey: true
-      });
-      const downArrowEvent = new KeyboardEvent('keydown', {
-        code: 'ArrowDown',
-        ctrlKey: true
-      });
       fixture.detectChanges();
       expect(testComponent.value).toBe(undefined);
-      dispatchEvent(inputElement, upArrowEvent);
+      dispatchEvent(inputElement, upArrowCtrlEvent);
       fixture.detectChanges();
       expect(testComponent.value).toBe(0.1);
-      dispatchEvent(inputElement, downArrowEvent);
+      dispatchEvent(inputElement, downArrowCtrlEvent);
       fixture.detectChanges();
       expect(testComponent.value).toBe(0);
-      dispatchEvent(inputElement, downArrowEvent);
+      dispatchEvent(inputElement, downArrowCtrlEvent);
       fixture.detectChanges();
       expect(testComponent.value).toBe(-0.1);
     });
     it('should key up and down work with meta key', () => {
-      const upArrowEvent = new KeyboardEvent('keydown', {
-        code: 'ArrowUp',
-        metaKey: true
-      });
-      const downArrowEvent = new KeyboardEvent('keydown', {
-        code: 'ArrowDown',
-        metaKey: true
-      });
       fixture.detectChanges();
       expect(testComponent.value).toBe(undefined);
-      dispatchEvent(inputElement, upArrowEvent);
+      dispatchEvent(inputElement, upArrowMetaEvent);
       fixture.detectChanges();
       expect(testComponent.value).toBe(0.1);
-      dispatchEvent(inputElement, downArrowEvent);
+      dispatchEvent(inputElement, downArrowMetaEvent);
       fixture.detectChanges();
       expect(testComponent.value).toBe(0);
-      dispatchEvent(inputElement, downArrowEvent);
+      dispatchEvent(inputElement, downArrowMetaEvent);
       fixture.detectChanges();
       expect(testComponent.value).toBe(-0.1);
     });
     it('should key up and down work with shift key', () => {
       testComponent.max = 100;
       testComponent.min = -100;
-      const upArrowEvent = new KeyboardEvent('keydown', {
-        code: 'ArrowUp',
-        shiftKey: true
-      });
-      const downArrowEvent = new KeyboardEvent('keydown', {
-        code: 'ArrowDown',
-        shiftKey: true
-      });
       fixture.detectChanges();
       expect(testComponent.value).toBe(undefined);
-      dispatchEvent(inputElement, upArrowEvent);
+      dispatchEvent(inputElement, upArrowShiftEvent);
       dispatchFakeEvent(inputElement, 'keyup');
       fixture.detectChanges();
       expect(testComponent.value).toBe(10);
-      dispatchEvent(inputElement, downArrowEvent);
+      dispatchEvent(inputElement, downArrowShiftEvent);
       fixture.detectChanges();
       expect(testComponent.value).toBe(0);
-      dispatchEvent(inputElement, downArrowEvent);
+      dispatchEvent(inputElement, downArrowShiftEvent);
       fixture.detectChanges();
       expect(testComponent.value).toBe(-10);
     });
@@ -430,10 +373,10 @@ describe('input number', () => {
       const newFormatter = (v: number) => `${v} %`;
       const initValue = 1;
       const component = testComponent.nzInputNumberComponent;
+      fixture.detectChanges();
       component.onModelChange(`${initValue}`);
       fixture.detectChanges();
-      component.nzFormatter = newFormatter;
-      component.setValue(component.getCurrentValidValue(component.actualValue), true);
+      testComponent.formatter = newFormatter;
       fixture.detectChanges();
       expect(inputElement.value).toBe(newFormatter(initValue));
     });
