@@ -3,10 +3,9 @@ import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { NzRadioButtonComponent } from './nz-radio-button.component';
-import { NzRadioGroupComponent } from './nz-radio-group.component';
-import { NzRadioComponent } from './nz-radio.component';
-import { NzRadioModule } from './nz-radio.module';
+import { NzRadioGroupComponent } from './radio-group.component';
+import { NzRadioComponent } from './radio.component';
+import { NzRadioModule } from './radio.module';
 
 describe('radio', () => {
   beforeEach(fakeAsync(() => {
@@ -100,7 +99,7 @@ describe('radio', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestRadioButtonComponent);
       fixture.detectChanges();
-      radio = fixture.debugElement.query(By.directive(NzRadioButtonComponent));
+      radio = fixture.debugElement.query(By.directive(NzRadioComponent));
     });
     it('should className correct', () => {
       fixture.detectChanges();
@@ -120,7 +119,7 @@ describe('radio', () => {
       fixture = TestBed.createComponent(NzTestRadioGroupComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
-      radios = fixture.debugElement.queryAll(By.directive(NzRadioButtonComponent));
+      radios = fixture.debugElement.queryAll(By.directive(NzRadioComponent));
       radioGroup = fixture.debugElement.query(By.directive(NzRadioGroupComponent));
     });
     it('should className correct', () => {
@@ -177,7 +176,7 @@ describe('radio', () => {
       fixture = TestBed.createComponent(NzTestRadioGroupDisabledComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
-      radios = fixture.debugElement.queryAll(By.directive(NzRadioButtonComponent));
+      radios = fixture.debugElement.queryAll(By.directive(NzRadioComponent));
     });
     it('should group disable work', fakeAsync(() => {
       testComponent.disabled = true;
@@ -269,7 +268,7 @@ describe('radio', () => {
       flush();
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
-      radios = fixture.debugElement.queryAll(By.directive(NzRadioButtonComponent));
+      radios = fixture.debugElement.queryAll(By.directive(NzRadioComponent));
     }));
     it('should be in pristine, untouched, and valid states initially', fakeAsync(() => {
       flush();

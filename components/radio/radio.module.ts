@@ -10,13 +10,13 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { NzRadioButtonComponent } from './nz-radio-button.component';
-import { NzRadioGroupComponent } from './nz-radio-group.component';
-import { NzRadioComponent } from './nz-radio.component';
+import { NzRadioButtonDirective } from './radio-button.directive';
+import { NzRadioGroupComponent } from './radio-group.component';
+import { NzRadioComponent } from './radio.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule],
-  exports: [NzRadioComponent, NzRadioButtonComponent, NzRadioGroupComponent],
-  declarations: [NzRadioComponent, NzRadioButtonComponent, NzRadioGroupComponent]
+  exports: [NzRadioComponent, NzRadioButtonDirective, NzRadioGroupComponent],
+  declarations: [NzRadioComponent, NzRadioButtonDirective, NzRadioGroupComponent]
 })
 export class NzRadioModule {}
