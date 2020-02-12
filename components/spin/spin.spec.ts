@@ -1,12 +1,10 @@
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-
-import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
-
 import { NzConfigService } from 'ng-zorro-antd/core';
-import { NzSpinComponent } from './nz-spin.component';
-import { NzSpinModule } from './nz-spin.module';
+import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { NzSpinComponent } from './spin.component';
+import { NzSpinModule } from './spin.module';
 
 describe('spin', () => {
   beforeEach(fakeAsync(() => {

@@ -7,7 +7,8 @@ import { Component } from '@angular/core';
       <nz-alert [nzType]="'info'" [nzMessage]="'Alert message title'" [nzDescription]="'Further details about the context of this alert.'">
       </nz-alert>
     </nz-spin>
-    <div style="margin-top:8px;">
+    <br />
+    <div>
       Loading state：
       <nz-switch [(ngModel)]="isSpinning"></nz-switch>
     </div>

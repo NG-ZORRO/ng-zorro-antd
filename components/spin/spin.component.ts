@@ -7,7 +7,6 @@
  */
 
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   Input,
@@ -18,10 +17,10 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, Subscription } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
 
 import { InputBoolean, InputNumber, NzConfigService, NzSizeLDSType, WithConfig } from 'ng-zorro-antd/core';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { debounceTime, flatMap, takeUntil } from 'rxjs/operators';
 
 const NZ_CONFIG_COMPONENT_NAME = 'spin';
 
@@ -30,52 +29,65 @@ const NZ_CONFIG_COMPONENT_NAME = 'spin';
   exportAs: 'nzSpin',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './nz-spin.component.html',
+  template: `
+    <ng-template #defaultTemplate>
+      <span class="ant-spin-dot ant-spin-dot-spin">
+        <i class="ant-spin-dot-item"></i>
+        <i class="ant-spin-dot-item"></i>
+        <i class="ant-spin-dot-item"></i>
+        <i class="ant-spin-dot-item"></i>
+      </span>
+    </ng-template>
+    <div *ngIf="isLoading">
+      <div
+        class="ant-spin"
+        [class.ant-spin-spinning]="isLoading"
+        [class.ant-spin-lg]="nzSize === 'large'"
+        [class.ant-spin-sm]="nzSize === 'small'"
+        [class.ant-spin-show-text]="nzTip"
+      >
+        <ng-template [ngTemplateOutlet]="nzIndicator || defaultTemplate"></ng-template>
+        <div class="ant-spin-text" *ngIf="nzTip">{{ nzTip }}</div>
+      </div>
+    </div>
+    <div *ngIf="!nzSimple" class="ant-spin-container" [class.ant-spin-blur]="isLoading">
+      <ng-content></ng-content>
+    </div>
+  `,
   host: {
     '[class.ant-spin-nested-loading]': '!nzSimple'
-  },
-  styles: [
-    `
-      nz-spin {
-        display: block;
-      }
-    `
-  ]
+  }
 })
 export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzIndicator: TemplateRef<void>;
   @Input() nzSize: NzSizeLDSType = 'default';
-  @Input() nzTip: string;
+  @Input() nzTip: string | null = null;
   @Input() @InputNumber() nzDelay = 0;
   @Input() @InputBoolean() nzSimple = false;
   @Input() @InputBoolean() nzSpinning = true;
-  loading = true;
   private destroy$ = new Subject<void>();
   private spinning$ = new BehaviorSubject(this.nzSpinning);
-  private loading$: Observable<boolean> = this.spinning$.pipe(debounceTime(this.nzDelay));
-  private loading_: Subscription | null;
-
-  subscribeLoading(): void {
-    this.unsubscribeLoading();
-    this.loading_ = this.loading$.subscribe(data => {
-      this.loading = data;
-      this.cdr.markForCheck();
-    });
-  }
-
-  unsubscribeLoading(): void {
-    if (this.loading_) {
-      this.loading_.unsubscribe();
-      this.loading_ = null;
-    }
-  }
+  private delay$ = new BehaviorSubject(this.nzDelay);
+  isLoading = true;
 
   constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.subscribeLoading();
-
+    const loading$ = this.spinning$.pipe(
+      flatMap(() => this.delay$),
+      flatMap(delay => {
+        if (delay === 0) {
+          return this.spinning$;
+        } else {
+          return this.spinning$.pipe(debounceTime(delay));
+        }
+      }),
+      takeUntil(this.destroy$)
+    );
+    loading$.subscribe(loading => {
+      this.isLoading = loading;
+      this.cdr.markForCheck();
+    });
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
       .pipe(takeUntil(this.destroy$))
@@ -83,21 +95,17 @@ export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzSpinning) {
-      if (changes.nzSpinning.isFirstChange()) {
-        this.loading = this.nzSpinning;
-      }
+    const { nzSpinning, nzDelay } = changes;
+    if (nzSpinning) {
       this.spinning$.next(this.nzSpinning);
     }
-    if (changes.nzDelay) {
-      this.loading$ = this.spinning$.pipe(debounceTime(this.nzDelay));
-      this.subscribeLoading();
+    if (nzDelay) {
+      this.delay$.next(this.nzDelay);
     }
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-    this.unsubscribeLoading();
   }
 }
