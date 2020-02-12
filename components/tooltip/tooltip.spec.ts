@@ -142,6 +142,27 @@ describe('nz-tooltip', () => {
       expect(component.visibilityTogglingCount).toBe(0);
     }));
 
+    it('should hide when the title is changed to null', fakeAsync(() => {
+      const title = 'title-string';
+      const triggerElement = component.titleString.nativeElement;
+
+      expect(overlayContainerElement.textContent).not.toContain(title);
+
+      dispatchMouseEvent(triggerElement, 'mouseenter');
+      waitingForTooltipToggling();
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toContain(title);
+      expect(component.visibilityTogglingCount).toBe(1);
+
+      // Should close when title is changed to null.
+      component.title = null;
+      fixture.detectChanges();
+      waitingForTooltipToggling();
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).not.toContain(title);
+      expect(component.visibilityTogglingCount).toBe(2);
+    }));
+
     it('should set `setTitle` proxy to `nzTitle`', fakeAsync(() => {
       const triggerElement = component.titleString.nativeElement;
       const tooltipComponent = component.titleStringDirective.tooltip;

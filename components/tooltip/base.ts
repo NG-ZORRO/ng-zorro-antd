@@ -6,12 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  CdkConnectedOverlay,
-  CdkOverlayOrigin,
-  ConnectedOverlayPositionChange,
-  ConnectionPositionPair
-} from '@angular/cdk/overlay';
+import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -149,6 +144,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
       this.updateChangedProperties(changes);
     }
 
+    // Warn deprecated things.
     if (changes.nzTitle) {
       warnDeprecation(
         `'nzTitle' of 'nz-tooltip' is deprecated and will be removed in 10.0.0.
@@ -450,6 +446,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
 
     Promise.resolve().then(() => {
       this.updatePosition();
+      this.updateVisibilityByTitle();
     });
   }
 
@@ -480,6 +477,14 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
     this.cdr.markForCheck();
   }
 
+  /**
+   * Hide the tooltip while the content is empty.
+   */
+  private updateVisibilityByTitle(): void {
+    if (this.isEmpty()) {
+      this.hide();
+    }
+  }
   /**
    * Empty tooltip cannot be opened.
    */
