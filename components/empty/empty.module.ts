@@ -13,12 +13,14 @@ import { NzOutletModule } from 'ng-zorro-antd/core';
 
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 
-import { NzEmbedEmptyComponent } from './nz-embed-empty.component';
-import { NzEmptyComponent } from './nz-empty.component';
+import { NzEmbedEmptyComponent } from './embed-empty.component';
+import { NzEmptyComponent } from './empty.component';
+import { NzEmptyDefaultComponent } from './partial/default';
+import { NzEmptySimpleComponent } from './partial/simple';
 
 @NgModule({
   imports: [CommonModule, PortalModule, NzOutletModule, NzI18nModule],
-  declarations: [NzEmptyComponent, NzEmbedEmptyComponent],
+  declarations: [NzEmptyComponent, NzEmbedEmptyComponent, NzEmptyDefaultComponent, NzEmptySimpleComponent],
   exports: [NzEmptyComponent, NzEmbedEmptyComponent]
 })
 export class NzEmptyModule {}

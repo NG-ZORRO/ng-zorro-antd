@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { DebugElement, NO_ERRORS_SCHEMA, Provider, Type } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, TestBedStatic } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 type ComponentDeps = Array<Type<NzSafeAny>>;
 export interface ComponentBed<T> {
+  bed: TestBedStatic;
   fixture: ComponentFixture<T>;
   nativeElement: HTMLElement;
   debugElement: DebugElement;
@@ -30,10 +31,11 @@ export function createComponentBed<T>(
     schemas: [NO_ERRORS_SCHEMA],
     providers: providers || []
   };
-  TestBed.configureTestingModule(config);
+  const bed = TestBed.configureTestingModule(config);
   const fixture = TestBed.createComponent<T>(component);
   fixture.detectChanges();
   return {
+    bed,
     fixture,
     nativeElement: fixture.nativeElement,
     debugElement: fixture.debugElement,
