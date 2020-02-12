@@ -22,12 +22,11 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { startWith, takeUntil } from 'rxjs/operators';
 
-import { NZ_EMPTY_COMPONENT_NAME, NzEmptyCustomContent, NzEmptySize, simpleEmptyImage } from './nz-empty-config';
-import { NzEmptyService } from './nz-empty.service';
+import { NzConfigService } from 'ng-zorro-antd/core';
+import { NZ_EMPTY_COMPONENT_NAME, NzEmptyCustomContent, NzEmptySize } from './config';
 
 function getEmptySize(componentName: string): NzEmptySize {
   switch (componentName) {
@@ -51,7 +50,19 @@ type NzEmptyContentType = 'component' | 'template' | 'string';
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-embed-empty',
   exportAs: 'nzEmbedEmpty',
-  templateUrl: './nz-embed-empty.component.html'
+  template: `
+    <ng-container *ngIf="!content && specificContent !== null" [ngSwitch]="size">
+      <nz-empty *ngSwitchCase="'normal'" class="ant-empty-normal" [nzNotFoundImage]="'simple'"></nz-empty>
+      <nz-empty *ngSwitchCase="'small'" class="ant-empty-small" [nzNotFoundImage]="'simple'"></nz-empty>
+      <nz-empty *ngSwitchDefault></nz-empty>
+    </ng-container>
+    <ng-container *ngIf="content">
+      <ng-template *ngIf="contentType !== 'string'" [cdkPortalOutlet]="contentPortal"></ng-template>
+      <ng-container *ngIf="contentType === 'string'">
+        {{ content }}
+      </ng-container>
+    </ng-container>
+  `
 })
 export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzComponentName: string;
@@ -60,14 +71,12 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
   content?: NzEmptyCustomContent;
   contentType: NzEmptyContentType = 'string';
   contentPortal?: Portal<any>; // tslint:disable-line:no-any
-  defaultSvg = this.sanitizer.bypassSecurityTrustResourceUrl(simpleEmptyImage);
   size: NzEmptySize = '';
 
-  private $destroy = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   constructor(
-    public emptyService: NzEmptyService,
-    private sanitizer: DomSanitizer,
+    private configService: NzConfigService,
     private viewContainerRef: ViewContainerRef,
     private cdr: ChangeDetectorRef,
     private injector: Injector
@@ -85,15 +94,12 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.emptyService.userDefaultContent$.pipe(takeUntil(this.$destroy)).subscribe(content => {
-      this.content = this.specificContent || content;
-      this.renderEmpty();
-    });
+    this.subscribeDefaultEmptyContentChange();
   }
 
   ngOnDestroy(): void {
-    this.$destroy.next();
-    this.$destroy.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private renderEmpty(): void {
@@ -115,6 +121,21 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
       this.contentPortal = undefined;
     }
 
-    this.cdr.markForCheck();
+    this.cdr.detectChanges();
+  }
+
+  private subscribeDefaultEmptyContentChange(): void {
+    this.configService
+      .getConfigChangeEventForComponent('empty')
+      .pipe(startWith(true), takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.content = this.specificContent || this.getUserDefaultEmptyContent();
+        this.renderEmpty();
+      });
+  }
+
+  // tslint:disable-next-line:no-any
+  private getUserDefaultEmptyContent(): Type<any> | TemplateRef<string> | string | undefined {
+    return (this.configService.getConfigForComponent('empty') || {}).nzDefaultEmptyContent;
   }
 }

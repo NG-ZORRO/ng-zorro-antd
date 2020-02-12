@@ -1,36 +1,32 @@
 import { CommonModule } from '@angular/common';
 import { Component, DebugElement, Inject, NgModule, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, TestBedStatic, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NZ_CONFIG } from 'ng-zorro-antd';
 
+import { NZ_CONFIG, NzConfigService } from '../core';
+import { ComponentBed, createComponentBed } from '../core/testing/componet-bed';
 import { NzI18nService } from '../i18n';
 import en_US from '../i18n/languages/en_US';
 import { NzListModule } from '../list';
+import { NZ_EMPTY_COMPONENT_NAME } from './config';
+import { NzEmbedEmptyComponent } from './embed-empty.component';
+import { NzEmptyComponent } from './empty.component';
+import { NzEmptyModule } from './empty.module';
 
-import { NzEmbedEmptyComponent } from './nz-embed-empty.component';
-import { NZ_EMPTY_COMPONENT_NAME } from './nz-empty-config';
-import { NzEmptyComponent } from './nz-empty.component';
-import { NzEmptyModule } from './nz-empty.module';
-import { NzEmptyService } from './nz-empty.service';
-
-describe('NzEmpty', () => {
+describe('nz-empty', () => {
   describe('basic', () => {
-    let testBed: TestBedStatic;
+    let testBed: ComponentBed<NzEmptyTestBasicComponent>;
     let fixture: ComponentFixture<NzEmptyTestBasicComponent>;
     let testComponent: NzEmptyTestBasicComponent;
     let emptyComponent: DebugElement;
 
     beforeEach(() => {
-      testBed = TestBed.configureTestingModule({
-        imports: [CommonModule, NzEmptyModule],
-        declarations: [NzEmptyTestBasicComponent]
+      testBed = createComponentBed(NzEmptyTestBasicComponent, {
+        imports: [NzEmptyModule]
       });
 
-      TestBed.compileComponents();
-
-      fixture = TestBed.createComponent(NzEmptyTestBasicComponent);
-      testComponent = fixture.debugElement.componentInstance;
+      fixture = testBed.fixture;
+      testComponent = testBed.component;
       emptyComponent = fixture.debugElement.query(By.directive(NzEmptyComponent));
 
       fixture.detectChanges();
@@ -40,11 +36,12 @@ describe('NzEmpty', () => {
       expect(emptyComponent.nativeElement.classList.contains('ant-empty')).toBe(true);
 
       const imageEl = emptyComponent.nativeElement.firstChild;
+
+      console.log(imageEl.outerHTML);
+
       expect(imageEl.tagName).toBe('DIV');
       expect(imageEl.classList.contains('ant-empty-image')).toBe(true);
-      expect(imageEl.firstElementChild.tagName).toBe('IMG');
-      expect(imageEl.firstElementChild.getAttribute('alt')).toBe('empty');
-      expect(imageEl.firstElementChild.src).toContain('data:image');
+      expect(imageEl.firstElementChild.tagName).toBe('NZ-EMPTY-DEFAULT');
 
       const contentEl = emptyComponent.nativeElement.lastElementChild;
       expect(contentEl.tagName).toBe('P');
@@ -112,11 +109,11 @@ describe('NzEmpty', () => {
       expect(contentEl.innerText).toBe('');
     });
 
-    it('#i18n', () => {
+    it('i18n', () => {
       const contentEl = emptyComponent.nativeElement.lastElementChild;
       expect(contentEl.innerText.trim()).toBe('暂无数据');
 
-      testBed.get(NzI18nService).setLocale(en_US);
+      testBed.bed.get(NzI18nService).setLocale(en_US);
       fixture.detectChanges();
       expect(contentEl.innerText.trim()).toBe('No Data');
     });
@@ -161,9 +158,7 @@ describe('NzEmpty', () => {
         const imageEl = emptyComponent.nativeElement.firstChild;
         expect(imageEl.tagName).toBe('DIV');
         expect(imageEl.classList.contains('ant-empty-image')).toBe(true);
-        expect(imageEl.firstElementChild.tagName).toBe('IMG');
-        expect(imageEl.firstElementChild.getAttribute('alt')).toBe('empty');
-        expect(imageEl.firstElementChild.src).toContain('data:image/svg+xml');
+        expect(imageEl.firstElementChild.tagName).toBe('NZ-EMPTY-SIMPLE');
 
         // Prop.
         testComponent.noResult = 'list';
@@ -180,16 +175,6 @@ describe('NzEmpty', () => {
         expect(embedComponent.nativeElement.innerText).toBe('');
       }));
 
-      it('should raise error when set a invalid default value', () => {
-        expect(() => {
-          // tslint:disable-next-line:no-any
-          testComponent.emptyService.nzConfigService.set('empty', { nzDefaultEmptyContent: false as any });
-          fixture.detectChanges();
-          tick();
-          fixture.detectChanges();
-        }).toThrowError();
-      });
-
       it('should support string, template and component', fakeAsync(() => {
         const refresh = () => {
           fixture.detectChanges();
@@ -201,7 +186,7 @@ describe('NzEmpty', () => {
         };
 
         // String.
-        testComponent.emptyService.nzConfigService.set('empty', { nzDefaultEmptyContent: 'empty' });
+        testComponent.configService.set('empty', { nzDefaultEmptyContent: 'empty' });
         refresh();
         expect(embedComponent).toBeTruthy();
         expect(emptyComponent).toBeFalsy();
@@ -238,9 +223,7 @@ describe('NzEmpty', () => {
         const imageEl = emptyComponent.nativeElement.firstChild;
         expect(imageEl.tagName).toBe('DIV');
         expect(imageEl.classList.contains('ant-empty-image')).toBe(true);
-        expect(imageEl.firstElementChild.tagName).toBe('IMG');
-        expect(imageEl.firstElementChild.getAttribute('alt')).toBe('empty');
-        expect(imageEl.firstElementChild.src).toContain('data:image/svg+xml');
+        expect(imageEl.firstElementChild.tagName).toBe('NZ-EMPTY-SIMPLE');
       }));
     });
 
@@ -275,8 +258,7 @@ describe('NzEmpty', () => {
         const componentEl = embedComponent.nativeElement.firstElementChild;
         expect(componentEl).toBeTruthy();
         expect(componentEl.tagName).toBe('NZ-EMPTY-TEST-CUSTOM');
-        // TODO: @wendell
-        // expect(componentEl.innerText).toBe(`I'm in component list`);
+        expect(componentEl.innerText).toBe(`I'm in component list`);
       }));
     });
   });
@@ -314,14 +296,14 @@ export class NzEmptyTestServiceComponent {
 
   noResult?: string | null;
 
-  constructor(public emptyService: NzEmptyService) {}
+  constructor(public configService: NzConfigService) {}
 
   reset(): void {
-    this.emptyService.nzConfigService.set('empty', { nzDefaultEmptyContent: undefined });
+    this.configService.set('empty', { nzDefaultEmptyContent: undefined });
   }
 
   changeToTemplate(): void {
-    this.emptyService.nzConfigService.set('empty', { nzDefaultEmptyContent: this.template });
+    this.configService.set('empty', { nzDefaultEmptyContent: this.template });
   }
 }
 
