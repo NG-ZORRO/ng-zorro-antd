@@ -121,7 +121,7 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
       this.contentPortal = undefined;
     }
 
-    this.cdr.markForCheck();
+    this.cdr.detectChanges();
   }
 
   private subscribeDefaultEmptyContentChange(): void {

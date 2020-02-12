@@ -268,8 +268,7 @@ describe('nz-empty', () => {
         const componentEl = embedComponent.nativeElement.firstElementChild;
         expect(componentEl).toBeTruthy();
         expect(componentEl.tagName).toBe('NZ-EMPTY-TEST-CUSTOM');
-        // TODO: @wendell
-        // expect(componentEl.innerText).toBe(`I'm in component list`);
+        expect(componentEl.innerText).toBe(`I'm in component list`);
       }));
     });
   });
