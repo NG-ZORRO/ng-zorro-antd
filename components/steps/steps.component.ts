@@ -27,7 +27,7 @@ import { startWith, takeUntil } from 'rxjs/operators';
 
 import { NgClassType, NzSizeDSType, toBoolean } from 'ng-zorro-antd/core';
 
-import { NzStepComponent } from './nz-step.component';
+import { NzStepComponent } from './step.component';
 
 export type NzDirectionType = 'horizontal' | 'vertical';
 export type NzStatusType = 'wait' | 'process' | 'finish' | 'error';
@@ -38,7 +38,11 @@ export type NzStatusType = 'wait' | 'process' | 'finish' | 'error';
   preserveWhitespaces: false,
   selector: 'nz-steps',
   exportAs: 'nzSteps',
-  templateUrl: './nz-steps.component.html'
+  template: `
+    <div class="ant-steps" [ngClass]="classMap">
+      <ng-content></ng-content>
+    </div>
+  `
 })
 export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterContentInit {
   @ContentChildren(NzStepComponent) steps: QueryList<NzStepComponent>;
