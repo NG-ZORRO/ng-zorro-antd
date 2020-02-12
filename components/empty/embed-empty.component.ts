@@ -25,7 +25,7 @@ import {
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
-import { NzConfigService, PREFIX } from 'ng-zorro-antd/core';
+import { NzConfigService } from 'ng-zorro-antd/core';
 import { NZ_EMPTY_COMPONENT_NAME, NzEmptyCustomContent, NzEmptySize } from './config';
 
 function getEmptySize(componentName: string): NzEmptySize {
@@ -136,20 +136,6 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
 
   // tslint:disable-next-line:no-any
   private getUserDefaultEmptyContent(): Type<any> | TemplateRef<string> | string | undefined {
-    const content = (this.configService.getConfigForComponent('empty') || {}).nzDefaultEmptyContent;
-
-    if (
-      typeof content === 'string' ||
-      content === undefined ||
-      content === null ||
-      content instanceof TemplateRef ||
-      content instanceof Type
-    ) {
-      return content;
-    } else {
-      throw new Error(
-        `${PREFIX} default empty content expects a 'null', 'undefined', 'string', 'TemplateRef' or 'Component' but get ${content}.`
-      );
-    }
+    return (this.configService.getConfigForComponent('empty') || {}).nzDefaultEmptyContent;
   }
 }

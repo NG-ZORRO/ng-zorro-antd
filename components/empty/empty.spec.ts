@@ -175,16 +175,6 @@ describe('nz-empty', () => {
         expect(embedComponent.nativeElement.innerText).toBe('');
       }));
 
-      xit('should raise error when set a invalid default value', () => {
-        expect(() => {
-          // tslint:disable-next-line:no-any
-          testComponent.configService.set('empty', { nzDefaultEmptyContent: false as any });
-          fixture.detectChanges();
-          tick();
-          fixture.detectChanges();
-        }).toThrowError();
-      });
-
       it('should support string, template and component', fakeAsync(() => {
         const refresh = () => {
           fixture.detectChanges();
