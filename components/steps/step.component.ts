@@ -10,10 +10,8 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   Input,
   OnDestroy,
-  Renderer2,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
@@ -81,6 +79,7 @@ import { Subject } from 'rxjs';
     </div>
   `,
   host: {
+    class: 'ant-steps-item',
     '[class.ant-steps-item-wait]': 'nzStatus === "wait"',
     '[class.ant-steps-item-process]': 'nzStatus === "process"',
     '[class.ant-steps-item-finish]': 'nzStatus === "finish"',
@@ -153,9 +152,7 @@ export class NzStepComponent implements OnDestroy {
 
   private _currentIndex = 0;
 
-  constructor(private cdr: ChangeDetectorRef, renderer: Renderer2, elementRef: ElementRef) {
-    renderer.addClass(elementRef.nativeElement, 'ant-steps-item');
-  }
+  constructor(private cdr: ChangeDetectorRef) {}
 
   onClick(): void {
     if (this.clickable && this.currentIndex !== this.index && !this.nzDisabled) {
