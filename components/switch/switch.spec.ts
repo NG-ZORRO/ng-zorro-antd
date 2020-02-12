@@ -3,12 +3,10 @@ import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-
 import { dispatchKeyboardEvent } from 'ng-zorro-antd/core';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
-
-import { NzSwitchComponent } from './nz-switch.component';
-import { NzSwitchModule } from './nz-switch.module';
+import { NzSwitchComponent } from './switch.component';
+import { NzSwitchModule } from './switch.module';
 
 describe('switch', () => {
   beforeEach(fakeAsync(() => {
@@ -177,16 +175,12 @@ describe('switch', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(switchElement.nativeElement.firstElementChild.firstElementChild.firstElementChild.firstElementChild!.classList).toContain(
-        'anticon-close'
-      );
+      expect(switchElement.nativeElement.firstElementChild.firstElementChild.firstElementChild!.classList).toContain('anticon-close');
       switchElement.nativeElement.click();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(switchElement.nativeElement.firstElementChild.firstElementChild.firstElementChild.firstElementChild!.classList).toContain(
-        'anticon-check'
-      );
+      expect(switchElement.nativeElement.firstElementChild.firstElementChild.firstElementChild!.classList).toContain('anticon-check');
     }));
   });
   describe('switch form', () => {

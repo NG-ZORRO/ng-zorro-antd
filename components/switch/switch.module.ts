@@ -12,7 +12,7 @@ import { NgModule } from '@angular/core';
 import { NzOutletModule, NzWaveModule } from 'ng-zorro-antd/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-import { NzSwitchComponent } from './nz-switch.component';
+import { NzSwitchComponent } from './switch.component';
 
 @NgModule({
   exports: [NzSwitchComponent],

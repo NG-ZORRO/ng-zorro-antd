@@ -23,7 +23,8 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { InputBoolean, NzConfigService, NzSizeDSType, WithConfig } from 'ng-zorro-antd/core';
+import { InputBoolean, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
+import { NzSizeDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 
 const NZ_CONFIG_COMPONENT_NAME = 'switch';
 
@@ -31,7 +32,6 @@ const NZ_CONFIG_COMPONENT_NAME = 'switch';
   selector: 'nz-switch',
   exportAs: 'nzSwitch',
   preserveWhitespaces: false,
-  templateUrl: './nz-switch.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   providers: [
@@ -41,40 +41,59 @@ const NZ_CONFIG_COMPONENT_NAME = 'switch';
       multi: true
     }
   ],
+  template: `
+    <button
+      nz-wave
+      type="button"
+      class="ant-switch"
+      #switchElement
+      [disabled]="nzDisabled"
+      [class.ant-switch-checked]="isChecked"
+      [class.ant-switch-loading]="nzLoading"
+      [class.ant-switch-disabled]="nzDisabled"
+      [class.ant-switch-small]="nzSize === 'small'"
+      [nzWaveExtraNode]="true"
+      (keydown)="onKeyDown($event)"
+    >
+      <i *ngIf="nzLoading" nz-icon nzType="loading" class="ant-switch-loading-icon"></i>
+      <span class="ant-switch-inner">
+        <ng-container *ngIf="isChecked; else uncheckTemplate">
+          <ng-container *nzStringTemplateOutlet="nzCheckedChildren">{{ nzCheckedChildren }}</ng-container>
+        </ng-container>
+        <ng-template #uncheckTemplate>
+          <ng-container *nzStringTemplateOutlet="nzUnCheckedChildren">{{ nzUnCheckedChildren }}</ng-container>
+        </ng-template>
+      </span>
+      <div class="ant-click-animating-node"></div>
+    </button>
+  `,
   host: {
-    '(click)': 'hostClick($event)'
-  },
-  styles: [
-    `
-      nz-switch {
-        display: inline-block;
-      }
-    `
-  ]
+    '(click)': 'onHostClick($event)'
+  }
 })
 export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, OnDestroy {
-  checked = false;
-  onChange: (value: boolean) => void = () => null;
-  onTouched: () => void = () => null;
+  isChecked = false;
+  onChange: OnChangeType = () => {};
+  onTouched: OnTouchedType = () => {};
   @ViewChild('switchElement', { static: true }) private switchElement: ElementRef;
   @Input() @InputBoolean() nzLoading = false;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzControl = false;
-  @Input() nzCheckedChildren: string | TemplateRef<void>;
-  @Input() nzUnCheckedChildren: string | TemplateRef<void>;
+  @Input() nzCheckedChildren: string | TemplateRef<void> | null = null;
+  @Input() nzUnCheckedChildren: string | TemplateRef<void> | null = null;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzSizeDSType;
 
-  hostClick(e: MouseEvent): void {
+  onHostClick(e: MouseEvent): void {
     e.preventDefault();
     if (!this.nzDisabled && !this.nzLoading && !this.nzControl) {
-      this.updateValue(!this.checked);
+      this.updateValue(!this.isChecked);
     }
   }
 
   updateValue(value: boolean): void {
-    if (this.checked !== value) {
-      this.checked = value;
-      this.onChange(this.checked);
+    if (this.isChecked !== value) {
+      this.isChecked = value;
+      this.onChange(this.isChecked);
     }
   }
 
@@ -87,7 +106,7 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
         this.updateValue(true);
         e.preventDefault();
       } else if (e.keyCode === SPACE || e.keyCode === ENTER) {
-        this.updateValue(!this.checked);
+        this.updateValue(!this.isChecked);
         e.preventDefault();
       }
     }
@@ -106,11 +125,7 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
   ngAfterViewInit(): void {
     this.focusMonitor.monitor(this.switchElement.nativeElement, true).subscribe(focusOrigin => {
       if (!focusOrigin) {
-        // When a focused element becomes disabled, the browser *immediately* fires a blur event.
-        // Angular does not expect events to be raised during change detection, so any state change
-        // (such as a form control's 'ng-touched') will cause a changed-after-checked error.
-        // See https://github.com/angular/angular/issues/17793. To work around this, we defer
-        // telling the form control it has been touched until the next tick.
+        /** https://github.com/angular/angular/issues/17793 **/
         Promise.resolve().then(() => this.onTouched());
       }
     });
@@ -121,20 +136,20 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
   }
 
   writeValue(value: boolean): void {
-    this.checked = value;
+    this.isChecked = value;
     this.cdr.markForCheck();
   }
 
-  registerOnChange(fn: (_: boolean) => void): void {
+  registerOnChange(fn: OnChangeType): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: () => void): void {
+  registerOnTouched(fn: OnTouchedType): void {
     this.onTouched = fn;
   }
 
-  setDisabledState(isDisabled: boolean): void {
-    this.nzDisabled = isDisabled;
+  setDisabledState(disabled: boolean): void {
+    this.nzDisabled = disabled;
     this.cdr.markForCheck();
   }
 }
