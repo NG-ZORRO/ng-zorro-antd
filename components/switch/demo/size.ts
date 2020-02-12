@@ -5,14 +5,8 @@ import { Component } from '@angular/core';
   template: `
     <nz-switch [ngModel]="true"></nz-switch>
     <br />
+    <br />
     <nz-switch nzSize="small" [ngModel]="true"></nz-switch>
-  `,
-  styles: [
-    `
-      nz-switch {
-        margin-bottom: 8px;
-      }
-    `
-  ]
+  `
 })
 export class NzDemoSwitchSizeComponent {}
