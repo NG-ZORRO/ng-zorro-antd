@@ -6,5 +6,5 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-divider.component';
-export * from './nz-divider.module';
+export * from './divider.component';
+export * from './divider.module';
