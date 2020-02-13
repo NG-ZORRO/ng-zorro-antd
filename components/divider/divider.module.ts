@@ -9,7 +9,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { NzOutletModule } from 'ng-zorro-antd/core';
-import { NzDividerComponent } from './nz-divider.component';
+import { NzDividerComponent } from './divider.component';
 
 @NgModule({
   imports: [CommonModule, NzOutletModule],
