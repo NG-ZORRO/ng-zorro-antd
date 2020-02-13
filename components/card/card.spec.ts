@@ -2,6 +2,9 @@ import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { NzCardComponent } from './card.component';
+import { NzCardModule } from './card.module';
+
 import { NzDemoCardBasicComponent } from './demo/basic';
 import { NzDemoCardBorderLessComponent } from './demo/border-less';
 import { NzDemoCardFlexibleContentComponent } from './demo/flexible-content';
@@ -12,9 +15,6 @@ import { NzDemoCardLoadingComponent } from './demo/loading';
 import { NzDemoCardMetaComponent } from './demo/meta';
 import { NzDemoCardSimpleComponent } from './demo/simple';
 import { NzDemoCardTabsComponent } from './demo/tabs';
-
-import { NzCardComponent } from './nz-card.component';
-import { NzCardModule } from './nz-card.module';
 
 describe('card', () => {
   beforeEach(fakeAsync(() => {

@@ -13,7 +13,11 @@ import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild, ViewEncapsu
   exportAs: 'nzCardTab',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './nz-card-tab.component.html'
+  template: `
+    <ng-template>
+      <ng-content></ng-content>
+    </ng-template>
+  `
 })
 export class NzCardTabComponent {
   @ViewChild(TemplateRef, { static: true }) template: TemplateRef<void>;
