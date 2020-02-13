@@ -24,6 +24,7 @@ import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 | -------- | ----------- | ---- | ------- | ------------- |
 | `[nzAccordion]` | Accordion mode | `boolean` | `false`| ✅ |
 | `[nzBordered]` | Set border style | `boolean` | `true` | ✅ |
+| `[nzExpandIconPosition]` | Set expand icon position | `'left' \| 'right'` | `left` | - |
 
 ### nz-collapse-panel
 

@@ -6,34 +6,45 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, ViewEncapsulation } from '@angular/core';
 
 import { InputBoolean, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import { NzCollapsePanelComponent } from './nz-collapse-panel.component';
+import { NzCollapsePanelComponent } from './collapse-panel.component';
 
 const NZ_CONFIG_COMPONENT_NAME = 'collapse';
 
 @Component({
   selector: 'nz-collapse',
   exportAs: 'nzCollapse',
-  templateUrl: './nz-collapse.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  styles: [
-    `
-      nz-collapse {
-        display: block;
-      }
-    `
-  ]
+  template: `
+    <ng-content></ng-content>
+  `,
+  host: {
+    '[class.ant-collapse]': 'true',
+    '[class.ant-collapse-icon-position-left]': `nzExpandIconPosition === 'left'`,
+    '[class.ant-collapse-icon-position-right]': `nzExpandIconPosition === 'right'`,
+    '[class.ant-collapse-borderless]': '!nzBordered'
+  }
 })
-export class NzCollapseComponent {
-  private listOfNzCollapsePanelComponent: NzCollapsePanelComponent[] = [];
+export class NzCollapseComponent implements OnDestroy {
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzAccordion: boolean;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzBordered: boolean;
-
-  constructor(public nzConfigService: NzConfigService) {}
+  @Input() nzExpandIconPosition: 'left' | 'right' = 'left';
+  private listOfNzCollapsePanelComponent: NzCollapsePanelComponent[] = [];
+  private destroy$ = new Subject();
+  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {
+    this.nzConfigService
+      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.cdr.markForCheck();
+      });
+  }
 
   addPanel(value: NzCollapsePanelComponent): void {
     this.listOfNzCollapsePanelComponent.push(value);
@@ -57,5 +68,9 @@ export class NzCollapseComponent {
     }
     collapse.nzActive = !collapse.nzActive;
     collapse.nzActiveChange.emit(collapse.nzActive);
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

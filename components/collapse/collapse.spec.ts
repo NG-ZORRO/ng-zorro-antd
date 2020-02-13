@@ -3,9 +3,9 @@ import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { NzCollapsePanelComponent } from './nz-collapse-panel.component';
-import { NzCollapseComponent } from './nz-collapse.component';
-import { NzCollapseModule } from './nz-collapse.module';
+import { NzCollapsePanelComponent } from './collapse-panel.component';
+import { NzCollapseComponent } from './collapse.component';
+import { NzCollapseModule } from './collapse.module';
 
 describe('collapse', () => {
   beforeEach(fakeAsync(() => {
@@ -30,15 +30,15 @@ describe('collapse', () => {
     });
     it('should className correct', () => {
       fixture.detectChanges();
-      expect(collapse.nativeElement.firstElementChild!.classList).toContain('ant-collapse');
+      expect(collapse.nativeElement!.classList).toContain('ant-collapse');
       expect(panels.every(panel => panel.nativeElement.classList.contains('ant-collapse-item'))).toBe(true);
     });
     it('should border work', () => {
       fixture.detectChanges();
-      expect(collapse.nativeElement.firstElementChild!.classList).not.toContain('ant-collapse-borderless');
+      expect(collapse.nativeElement!.classList).not.toContain('ant-collapse-borderless');
       testComponent.bordered = false;
       fixture.detectChanges();
-      expect(collapse.nativeElement.firstElementChild!.classList).toContain('ant-collapse-borderless');
+      expect(collapse.nativeElement!.classList).toContain('ant-collapse-borderless');
     });
     it('should showArrow work', () => {
       fixture.detectChanges();
