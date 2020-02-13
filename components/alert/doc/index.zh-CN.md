@@ -28,6 +28,6 @@ import { NzAlertModule } from 'ng-zorro-antd/alert';
 | `[nzDescription]` | 警告提示的辅助性文字介绍 | `string \| TemplateRef<void>` | - |
 | `[nzMessage]` | 警告提示内容 | `string \| TemplateRef<void>` | - |
 | `[nzShowIcon]` | 是否显示辅助图标，`nzBanner` 模式下默认值为 `true` | `boolean` | `false` | ✅ |
-| `[nzIconType]` | 自定义图标类型，`nzShowIcon` 为 `true` 时有效 | `string \| string[] \| Set<string> \| { [klass: string]: any; }` | - |
+| `[nzIconType]` | 自定义图标类型，`nzShowIcon` 为 `true` 时有效 | `string` | - |
 | `[nzType]` | 指定警告提示的样式，`nzBanner` 模式下默认值为 `'warning'` | `'success' \| 'info' \| 'warning' \| 'error'` | `'info'` |
 | `(nzOnClose)` | 关闭时触发的回调函数 | `EventEmitter<void>` | - |
