@@ -10,39 +10,51 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   EventEmitter,
   Host,
   Input,
   OnDestroy,
   OnInit,
   Output,
-  Renderer2,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 
 import { collapseMotion, InputBoolean, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import { NzCollapseComponent } from './nz-collapse.component';
+import { NzCollapseComponent } from './collapse.component';
 
 const NZ_CONFIG_COMPONENT_NAME = 'collapsePanel';
 
 @Component({
   selector: 'nz-collapse-panel',
   exportAs: 'nzCollapsePanel',
-  templateUrl: './nz-collapse-panel.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   animations: [collapseMotion],
-  styles: [
-    `
-      nz-collapse-panel {
-        display: block;
-      }
-    `
-  ],
+  template: `
+    <div role="tab" [attr.aria-expanded]="nzActive" class="ant-collapse-header" (click)="clickHeader()">
+      <ng-container *ngIf="nzShowArrow">
+        <ng-container *nzStringTemplateOutlet="nzExpandedIcon">
+          <i nz-icon [nzType]="nzExpandedIcon || 'right'" class="ant-collapse-arrow" [nzRotate]="nzActive ? 90 : 0"></i>
+        </ng-container>
+      </ng-container>
+      <ng-container *nzStringTemplateOutlet="nzHeader">{{ nzHeader }}</ng-container>
+      <div class="ant-collapse-extra" *ngIf="nzExtra">
+        <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
+      </div>
+    </div>
+    <div class="ant-collapse-content" [class.ant-collapse-content-active]="nzActive" [@collapseMotion]="nzActive ? 'expanded' : 'hidden'">
+      <div class="ant-collapse-content-box">
+        <ng-content></ng-content>
+      </div>
+    </div>
+  `,
+
   host: {
+    '[class.ant-collapse-item]': 'true',
     '[class.ant-collapse-no-arrow]': '!nzShowArrow',
     '[class.ant-collapse-item-active]': 'nzActive',
     '[class.ant-collapse-item-disabled]': 'nzDisabled'
@@ -56,7 +68,7 @@ export class NzCollapsePanelComponent implements OnInit, OnDestroy {
   @Input() nzHeader: string | TemplateRef<void>;
   @Input() nzExpandedIcon: string | TemplateRef<void>;
   @Output() readonly nzActiveChange = new EventEmitter<boolean>();
-
+  private destroy$ = new Subject();
   clickHeader(): void {
     if (!this.nzDisabled) {
       this.nzCollapseComponent.click(this);
@@ -70,11 +82,14 @@ export class NzCollapsePanelComponent implements OnInit, OnDestroy {
   constructor(
     public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
-    @Host() private nzCollapseComponent: NzCollapseComponent,
-    elementRef: ElementRef,
-    renderer: Renderer2
+    @Host() private nzCollapseComponent: NzCollapseComponent
   ) {
-    renderer.addClass(elementRef.nativeElement, 'ant-collapse-item');
+    this.nzConfigService
+      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.cdr.markForCheck();
+      });
   }
 
   ngOnInit(): void {
@@ -82,6 +97,8 @@ export class NzCollapsePanelComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.nzCollapseComponent.removePanel(this);
   }
 }
