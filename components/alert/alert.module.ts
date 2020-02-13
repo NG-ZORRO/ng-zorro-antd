@@ -11,7 +11,7 @@ import { NgModule } from '@angular/core';
 import { NzOutletModule } from 'ng-zorro-antd/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-import { NzAlertComponent } from './nz-alert.component';
+import { NzAlertComponent } from './alert.component';
 
 @NgModule({
   declarations: [NzAlertComponent],
