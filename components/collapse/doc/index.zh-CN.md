@@ -25,6 +25,7 @@ import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 | --- | --- | --- | --- | --- |
 | `[nzAccordion]` | 是否每次只打开一个tab | `boolean` | `false` | ✅ |
 | `[nzBordered]` | 是否有边框 | `boolean` | `true` | ✅ |
+| `[nzExpandIconPosition]` | 设置图标位置 | `'left' \| 'right'` | `left` | - |
 
 ### nz-collapse-panel
 

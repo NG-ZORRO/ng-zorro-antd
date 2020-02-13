@@ -11,8 +11,8 @@ import { NgModule } from '@angular/core';
 import { NzOutletModule } from 'ng-zorro-antd/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-import { NzCollapsePanelComponent } from './nz-collapse-panel.component';
-import { NzCollapseComponent } from './nz-collapse.component';
+import { NzCollapsePanelComponent } from './collapse-panel.component';
+import { NzCollapseComponent } from './collapse.component';
 
 @NgModule({
   declarations: [NzCollapsePanelComponent, NzCollapseComponent],
