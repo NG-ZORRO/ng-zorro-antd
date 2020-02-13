@@ -6,9 +6,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-card-grid.directive';
-export * from './nz-card.component';
-export * from './nz-card.module';
-export * from './nz-card-loading.component';
-export * from './nz-card-meta.component';
-export * from './nz-card-tab.component';
+export * from './card-grid.directive';
+export * from './card.component';
+export * from './card.module';
+export * from './card-loading.component';
+export * from './card-meta.component';
+export * from './card-tab.component';
