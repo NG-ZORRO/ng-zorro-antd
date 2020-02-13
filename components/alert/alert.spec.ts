@@ -2,11 +2,9 @@ import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
-
-import { NzAlertComponent } from './nz-alert.component';
-import { NzAlertModule } from './nz-alert.module';
+import { NzAlertComponent } from './alert.component';
+import { NzAlertModule } from './alert.module';
 
 describe('alert', () => {
   beforeEach(fakeAsync(() => {

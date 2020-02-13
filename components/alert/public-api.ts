@@ -6,5 +6,5 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-alert.component';
-export * from './nz-alert.module';
+export * from './alert.component';
+export * from './alert.module';
