@@ -134,7 +134,7 @@ export class AppModule {
 
 ### 在子模块中补充图标
 
-有时候，为了避免增大 main.js 的体积，你可能想要从懒加载模块中引入图标，这时你就可以使用 `NzIconModule.forChild` 来追加图标。
+有时候，为了避免增大 main.js 的体积，你可能想要从懒加载模块中引入图标，这时你就可以使用 `NzIconModule.patch` 来追加图标。
 
 ```ts
 @NgModule({

@@ -132,7 +132,7 @@ Please call this in component's constructor or `AppInitService`.
 
 ### Add Icons in Lazy-loaded Modules
 
-Sometimes, you want to import icons in lazy modules to avoid increasing the size of the main.js. You can use `NzIconModule.forChild`.
+Sometimes, you want to import icons in lazy modules to avoid increasing the size of the main.js. You can use `NzIconModule.patch`.
 
 ```ts
 @NgModule({
