@@ -6,5 +6,5 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-switch.component';
-export * from './nz-switch.module';
+export * from './switch.component';
+export * from './switch.module';

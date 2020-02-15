@@ -72,6 +72,9 @@
 
   // ======================= Placeholder =======================
   &-selection-placeholder {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     opacity: 0.4;
   }
 
@@ -268,5 +271,12 @@
   // ============================================================
   &-lg {
     font-size: @font-size-lg;
+  }
+
+  // no border style
+  &-borderless &-selector {
+    background-color: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
   }
 }

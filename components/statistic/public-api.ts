@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-countdown.component';
-export * from './nz-statistic.component';
-export * from './nz-statistic.module';
-export * from './nz-statistic-number.component';
+export * from './countdown.component';
+export * from './statistic.component';
+export * from './statistic.module';
+export * from './statistic-number.component';

@@ -73,6 +73,7 @@
     [nzDropdownMenu]="filterMenu"
     [class.ant-table-filter-selected]="hasFilterValue"
     [class.ant-table-filter-open]="filterVisible"
+    [nzVisible]="filterVisible"
     (nzVisibleChange)="dropDownVisibleChange($event)"
   ></i>
   <nz-dropdown-menu #filterMenu="nzDropdownMenu">

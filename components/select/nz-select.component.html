@@ -37,12 +37,11 @@
   [cdkConnectedOverlayOpen]="open"
 >
   <div
-    class="ant-select-dropdown"
+    class="ant-select-dropdown {{ nzDropdownClassName }}"
     [class.ant-select-dropdown--single]="nzSelectService.isSingleMode"
     [class.ant-select-dropdown--multiple]="nzSelectService.isMultipleOrTags"
     [class.ant-select-dropdown-placement-bottomLeft]="dropDownPosition === 'bottom'"
     [class.ant-select-dropdown-placement-topLeft]="dropDownPosition === 'top'"
-    [nzClassListAdd]="[nzDropdownClassName]"
     [@slideMotion]="dropDownPosition"
     [@.disabled]="noAnimation?.nzNoAnimation"
     [nzNoAnimation]="noAnimation?.nzNoAnimation"

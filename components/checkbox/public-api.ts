@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-checkbox.component';
-export * from './nz-checkbox.module';
-export * from './nz-checkbox-group.component';
-export * from './nz-checkbox-wrapper.component';
+export * from './checkbox.component';
+export * from './checkbox.module';
+export * from './checkbox-group.component';
+export * from './checkbox-wrapper.component';

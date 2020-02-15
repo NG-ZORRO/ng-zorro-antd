@@ -10,7 +10,7 @@ import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NzAddOnModule, NzNoAnimationModule, NzOverlayModule } from 'ng-zorro-antd/core';
+import { NzNoAnimationModule, NzOutletModule, NzOverlayModule } from 'ng-zorro-antd/core';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -32,7 +32,7 @@ import { NzSelectComponent } from './nz-select.component';
     PlatformModule,
     OverlayModule,
     NzIconModule,
-    NzAddOnModule,
+    NzOutletModule,
     NzEmptyModule,
     NzOverlayModule,
     NzNoAnimationModule

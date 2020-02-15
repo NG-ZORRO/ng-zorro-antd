@@ -6,5 +6,5 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-spin.component';
-export * from './nz-spin.module';
+export * from './spin.component';
+export * from './spin.module';
