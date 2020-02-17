@@ -2,8 +2,8 @@ import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NzTagComponent } from './nz-tag.component';
-import { NzTagModule } from './nz-tag.module';
+import { NzTagComponent } from './tag.component';
+import { NzTagModule } from './tag.module';
 
 describe('tag', () => {
   beforeEach(fakeAsync(() => {
