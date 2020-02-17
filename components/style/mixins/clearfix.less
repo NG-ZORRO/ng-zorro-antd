@@ -1,9 +1,14 @@
 // mixins for clearfix
 // ------------------------
 .clearfix() {
+  zoom: 1;
+  &::before,
   &::after {
-    display: block;
-    clear: both;
+    display: table;
+    width: 100%;
     content: '';
+  }
+  &::after {
+    clear: both;
   }
 }
