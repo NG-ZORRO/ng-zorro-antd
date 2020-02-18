@@ -14,12 +14,23 @@ import { FormsModule } from '@angular/forms';
 import { NzNoAnimationModule, NzOverlayModule } from 'ng-zorro-antd/core';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTreeModule } from 'ng-zorro-antd/tree';
 
-import { NzTreeSelectComponent } from './nz-tree-select.component';
+import { NzTreeSelectComponent } from './tree-select.component';
 
 @NgModule({
-  imports: [CommonModule, OverlayModule, FormsModule, NzTreeModule, NzIconModule, NzEmptyModule, NzOverlayModule, NzNoAnimationModule],
+  imports: [
+    CommonModule,
+    OverlayModule,
+    FormsModule,
+    NzSelectModule,
+    NzTreeModule,
+    NzIconModule,
+    NzEmptyModule,
+    NzOverlayModule,
+    NzNoAnimationModule
+  ],
   declarations: [NzTreeSelectComponent],
   exports: [NzTreeSelectComponent]
 })
