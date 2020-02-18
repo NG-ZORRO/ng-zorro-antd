@@ -8,8 +8,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CandyDate } from '../core';
 import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzRadioGroupComponent as RadioGroup, NzRadioModule } from '../radio/index';
-import { NzSelectComponent as Select } from '../select/nz-select.component';
-import { NzSelectModule } from '../select/nz-select.module';
+import { NzSelectComponent as Select } from '../select/select.component';
+import { NzSelectModule } from '../select/select.module';
 import { NzCalendarHeaderComponent, NzCalendarHeaderComponent as CalendarHeader } from './nz-calendar-header.component';
 
 registerLocaleData(zh);

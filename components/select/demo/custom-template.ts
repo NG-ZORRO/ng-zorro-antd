@@ -3,23 +3,29 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-select-custom-template',
   template: `
-    <nz-select nzAllowClear nzPlaceHolder="Select OS" [(ngModel)]="selectedOS" [nzCustomTemplate]="custom">
-      <nz-option nzCustomContent nzLabel="Windows" nzValue="windows"><i nz-icon nzType="windows"></i> Windows </nz-option>
-      <nz-option nzCustomContent nzLabel="Mac" nzValue="mac"><i nz-icon nzType="apple"></i> Mac</nz-option>
-      <nz-option nzCustomContent nzLabel="Android" nzValue="android"><i nz-icon nzType="android"></i> Android </nz-option>
+    <nz-select nzAllowClear nzPlaceHolder="Select OS" [nzCustomTemplate]="defaultTemplate">
+      <nz-option nzLabel="Windows" nzValue="windows"></nz-option>
+      <nz-option nzLabel="Apple" nzValue="apple"></nz-option>
+      <nz-option nzLabel="Android" nzValue="android"></nz-option>
     </nz-select>
-    <ng-template #custom let-selected>
-      <span>Label: {{ selected.nzLabel }} Value: {{ selected.nzValue }}</span>
+    <ng-template #defaultTemplate let-selected> <i nz-icon [nzType]="selected.nzValue"></i> {{ selected.nzLabel }} </ng-template>
+    <br />
+    <br />
+    <nz-select nzAllowClear nzPlaceHolder="Select OS" nzMode="multiple" [nzCustomTemplate]="multipleTemplate">
+      <nz-option nzLabel="Windows" nzValue="windows"></nz-option>
+      <nz-option nzLabel="Apple" nzValue="apple"></nz-option>
+      <nz-option nzLabel="Android" nzValue="android"></nz-option>
+    </nz-select>
+    <ng-template #multipleTemplate let-selected>
+      <div class="ant-select-selection-item-content"><i nz-icon [nzType]="selected.nzValue"></i> {{ selected.nzLabel }}</div>
     </ng-template>
   `,
   styles: [
     `
       nz-select {
-        width: 200px;
+        width: 100%;
       }
     `
   ]
 })
-export class NzDemoSelectCustomTemplateComponent {
-  selectedOS = null;
-}
+export class NzDemoSelectCustomTemplateComponent {}
