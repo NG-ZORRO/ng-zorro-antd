@@ -9,8 +9,9 @@ import { Component } from '@angular/core';
         <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
       </nz-option-group>
       <nz-option-group nzLabel="Engineer">
-        <nz-option nzValue="Tom" nzLabel="tom"></nz-option>
+        <nz-option nzValue="tom" nzLabel="Tom"></nz-option>
       </nz-option-group>
+      <nz-option nzValue="lily" nzLabel="Lily"></nz-option>
     </nz-select>
   `,
   styles: [

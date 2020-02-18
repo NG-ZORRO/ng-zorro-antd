@@ -6,13 +6,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-option-group.component';
-export * from './nz-option-container.component';
-export * from './nz-option.component';
-export * from './nz-select.component';
-export * from './nz-select.module';
-export * from './nz-option-li.component';
-export * from './nz-option.pipe';
-export * from './nz-select-top-control.component';
-export * from './nz-select-unselectable.directive';
-export * from './nz-select.service';
+export * from './option-group.component';
+export * from './option-container.component';
+export * from './option.component';
+export * from './select.component';
+export * from './select.module';
+export * from './option-item.component';
+export * from './select-top-control.component';
+export * from './select-search.component';
+export * from './select-item.component';
+export * from './select-clear.component';
+export * from './select-arrow.component';
+export * from './select-placeholder.component';
+export * from './select.types';
