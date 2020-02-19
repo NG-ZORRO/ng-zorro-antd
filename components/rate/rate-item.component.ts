@@ -14,7 +14,18 @@ import { InputBoolean } from 'ng-zorro-antd/core';
   encapsulation: ViewEncapsulation.None,
   selector: '[nz-rate-item]',
   exportAs: 'nzRateItem',
-  templateUrl: './nz-rate-item.component.html'
+  template: `
+    <div class="ant-rate-star-second" (mouseover)="hoverRate(false); $event.stopPropagation()" (click)="clickRate(false)">
+      <ng-template [ngTemplateOutlet]="character || defaultCharacter"></ng-template>
+    </div>
+    <div class="ant-rate-star-first" (mouseover)="hoverRate(true); $event.stopPropagation()" (click)="clickRate(true)">
+      <ng-template [ngTemplateOutlet]="character || defaultCharacter"></ng-template>
+    </div>
+
+    <ng-template #defaultCharacter>
+      <i nz-icon nzType="star" nzTheme="fill"></i>
+    </ng-template>
+  `
 })
 export class NzRateItemComponent {
   @Input() character: TemplateRef<void>;

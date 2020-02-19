@@ -8,7 +8,6 @@
 
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -30,7 +29,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { InputBoolean, NgClassType, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
+import { InputBoolean, InputNumber, NgClassType, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
 
 const NZ_CONFIG_COMPONENT_NAME = 'rate';
 
@@ -40,7 +39,35 @@ const NZ_CONFIG_COMPONENT_NAME = 'rate';
   selector: 'nz-rate',
   exportAs: 'nzRate',
   preserveWhitespaces: false,
-  templateUrl: './nz-rate.component.html',
+  template: `
+    <ul
+      #ulElement
+      class="ant-rate"
+      [class.ant-rate-disabled]="nzDisabled"
+      [ngClass]="classMap"
+      (blur)="onBlur($event)"
+      (focus)="onFocus($event)"
+      (keydown)="onKeyDown($event); $event.preventDefault()"
+      (mouseleave)="onRateLeave(); $event.stopPropagation()"
+      [tabindex]="nzDisabled ? -1 : 1"
+    >
+      <li
+        *ngFor="let star of starArray; let i = index"
+        class="ant-rate-star"
+        [ngClass]="starStyleArray[i]"
+        nz-tooltip
+        [nzTooltipTitle]="nzTooltips[i]"
+      >
+        <div
+          nz-rate-item
+          [allowHalf]="nzAllowHalf"
+          [character]="nzCharacter"
+          (itemHover)="onItemHover(i, $event)"
+          (itemClick)="onItemClick(i, $event)"
+        ></div>
+      </li>
+    </ul>
+  `,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -49,7 +76,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'rate';
     }
   ]
 })
-export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor, AfterViewInit, OnChanges {
+export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor, OnChanges {
   @ViewChild('ulElement', { static: false }) private ulElement: ElementRef;
 
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzAllowClear: boolean;
@@ -57,37 +84,22 @@ export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor,
   @Input() @InputBoolean() nzDisabled: boolean = false;
   @Input() @InputBoolean() nzAutoFocus: boolean = false;
   @Input() nzCharacter: TemplateRef<void>;
+  @Input() @InputNumber() nzCount: number = 5;
   @Input() nzTooltips: string[] = [];
   @Output() readonly nzOnBlur = new EventEmitter<FocusEvent>();
   @Output() readonly nzOnFocus = new EventEmitter<FocusEvent>();
   @Output() readonly nzOnHoverChange = new EventEmitter<number>();
   @Output() readonly nzOnKeyDown = new EventEmitter<KeyboardEvent>();
 
-  classMap: NgClassType;
-  hasHalf = false;
-  hoverValue = 0;
-  prefixCls = 'ant-rate';
-  innerPrefixCls = `${this.prefixCls}-star`;
-  isFocused = false;
-  isInit = false;
+  classMap: NgClassType = {};
   starArray: number[] = [];
+  starStyleArray: NgClassType[] = [];
 
-  private destroy$ = new Subject<void>();
-  private _count = 5;
+  private readonly destroy$ = new Subject<void>();
+  private hasHalf = false;
+  private hoverValue = 0;
+  private isFocused = false;
   private _value = 0;
-
-  @Input()
-  set nzCount(value: number) {
-    if (this._count === value) {
-      return;
-    }
-    this._count = value;
-    this.updateStarArray();
-  }
-
-  get nzCount(): number {
-    return this._count;
-  }
 
   get nzValue(): number {
     return this._value;
@@ -106,18 +118,27 @@ export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor,
   constructor(public nzConfigService: NzConfigService, private renderer: Renderer2, private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzAutoFocus && !changes.nzAutoFocus.isFirstChange()) {
+    const { nzAutoFocus, nzCount, nzValue } = changes;
+
+    if (nzAutoFocus && !nzAutoFocus.isFirstChange()) {
+      const el = this.ulElement.nativeElement;
       if (this.nzAutoFocus && !this.nzDisabled) {
-        this.renderer.setAttribute(this.ulElement.nativeElement, 'autofocus', 'autofocus');
+        this.renderer.setAttribute(el, 'autofocus', 'autofocus');
       } else {
-        this.renderer.removeAttribute(this.ulElement.nativeElement, 'autofocus');
+        this.renderer.removeAttribute(el, 'autofocus');
       }
+    }
+
+    if (nzCount) {
+      this.updateStarArray();
+    }
+
+    if (nzValue) {
+      this.updateStarStyle();
     }
   }
 
   ngOnInit(): void {
-    this.updateStarArray();
-
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
       .pipe(takeUntil(this.destroy$))
@@ -127,10 +148,6 @@ export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor,
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  ngAfterViewInit(): void {
-    this.isInit = true;
   }
 
   onItemClick(index: number, isHalf: boolean): void {
@@ -151,6 +168,8 @@ export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor,
       this.nzValue = actualValue;
       this.onChange(this.nzValue);
     }
+
+    this.updateStarStyle();
   }
 
   onItemHover(index: number, isHalf: boolean): void {
@@ -161,11 +180,15 @@ export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor,
     this.hoverValue = index + 1;
     this.hasHalf = isHalf;
     this.nzOnHoverChange.emit(this.hoverValue);
+
+    this.updateStarStyle();
   }
 
   onRateLeave(): void {
     this.hasHalf = !Number.isInteger(this.nzValue);
     this.hoverValue = Math.ceil(this.nzValue);
+
+    this.updateStarStyle();
   }
 
   onFocus(e: FocusEvent): void {
@@ -198,30 +221,36 @@ export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor,
     if (oldVal !== this.nzValue) {
       this.onChange(this.nzValue);
       this.nzOnKeyDown.emit(e);
+      this.updateStarStyle();
       this.cdr.markForCheck();
     }
-  }
-
-  setClasses(i: number): object {
-    return {
-      [`${this.innerPrefixCls}-full`]: i + 1 < this.hoverValue || (!this.hasHalf && i + 1 === this.hoverValue),
-      [`${this.innerPrefixCls}-half`]: this.hasHalf && i + 1 === this.hoverValue,
-      [`${this.innerPrefixCls}-active`]: this.hasHalf && i + 1 === this.hoverValue,
-      [`${this.innerPrefixCls}-zero`]: i + 1 > this.hoverValue,
-      [`${this.innerPrefixCls}-focused`]: this.hasHalf && i + 1 === this.hoverValue && this.isFocused
-    };
   }
 
   private updateStarArray(): void {
     this.starArray = Array(this.nzCount)
       .fill(0)
       .map((_, i) => i);
+
+    this.updateStarStyle();
   }
 
-  // #region Implement `ControlValueAccessor`
+  private updateStarStyle(): void {
+    this.starStyleArray = this.starArray.map(i => {
+      const prefix = 'ant-rate-star';
+      const value = i + 1;
+      return {
+        [`${prefix}-full`]: value < this.hoverValue || (!this.hasHalf && value === this.hoverValue),
+        [`${prefix}-half`]: this.hasHalf && value === this.hoverValue,
+        [`${prefix}-active`]: this.hasHalf && value === this.hoverValue,
+        [`${prefix}-zero`]: value > this.hoverValue,
+        [`${prefix}-focused`]: this.hasHalf && value === this.hoverValue && this.isFocused
+      };
+    });
+  }
 
   writeValue(value: number | null): void {
     this.nzValue = value || 0;
+    this.updateStarArray();
     this.cdr.markForCheck();
   }
 
@@ -239,6 +268,4 @@ export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor,
 
   onChange: (value: number) => void = () => null;
   onTouched: () => void = () => null;
-
-  // #endregion
 }
