@@ -37,13 +37,13 @@ import {
   UploadXHRArgs,
   ZipButtonOptions
 } from './interface';
-import { NzUploadBtnComponent } from './nz-upload-btn.component';
-import { NzUploadListComponent } from './nz-upload-list.component';
+import { NzUploadBtnComponent } from './upload-btn.component';
+import { NzUploadListComponent } from './upload-list.component';
 
 @Component({
   selector: 'nz-upload',
   exportAs: 'nzUpload',
-  templateUrl: './nz-upload.component.html',
+  templateUrl: './upload.component.html',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

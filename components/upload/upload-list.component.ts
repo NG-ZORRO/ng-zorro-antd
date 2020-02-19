@@ -44,7 +44,7 @@ interface UploadListFile extends UploadFile {
 @Component({
   selector: 'nz-upload-list',
   exportAs: 'nzUploadList',
-  templateUrl: './nz-upload-list.component.html',
+  templateUrl: './upload-list.component.html',
   providers: [NzUpdateHostClassService],
   animations: [
     trigger('itemState', [

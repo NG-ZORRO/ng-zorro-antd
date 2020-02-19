@@ -26,9 +26,9 @@ import {
   UploadType,
   ZipButtonOptions
 } from './interface';
-import { NzUploadBtnComponent } from './nz-upload-btn.component';
-import { NzUploadListComponent } from './nz-upload-list.component';
-import { NzUploadComponent } from './nz-upload.component';
+import { NzUploadBtnComponent } from './upload-btn.component';
+import { NzUploadListComponent } from './upload-list.component';
+import { NzUploadComponent } from './upload.component';
 
 const FILECONTENT = [`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==`];
 const FILE = new File(FILECONTENT, '');
