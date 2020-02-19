@@ -15,7 +15,11 @@ import { Subject } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-descriptions-item',
-  templateUrl: './nz-descriptions-item.component.html',
+  template: `
+    <ng-template>
+      <ng-content></ng-content>
+    </ng-template>
+  `,
   exportAs: 'nzDescriptionsItem',
   preserveWhitespaces: false
 })
