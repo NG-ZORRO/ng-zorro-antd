@@ -54,7 +54,15 @@ export function createTouchEvent(type: string, pageX: number = 0, pageY: number 
 }
 
 /** Dispatches a keydown event from an element. */
-export function createKeyboardEvent(type: string, keyCode: number, target?: Element, key?: string): KeyboardEvent {
+export function createKeyboardEvent(
+  type: string,
+  keyCode: number,
+  target?: Element,
+  key?: string,
+  ctrlKey?: boolean,
+  metaKey?: boolean,
+  shiftKey?: boolean
+): KeyboardEvent {
   // tslint:disable-next-line:no-any
   const event = document.createEvent('KeyboardEvent') as any;
   const originalPreventDefault = event.preventDefault;
@@ -71,7 +79,10 @@ export function createKeyboardEvent(type: string, keyCode: number, target?: Elem
   Object.defineProperties(event, {
     keyCode: { get: () => keyCode },
     key: { get: () => key },
-    target: { get: () => target }
+    target: { get: () => target },
+    ctrlKey: { get: () => ctrlKey },
+    metaKey: { get: () => metaKey },
+    shiftKey: { get: () => shiftKey }
   });
 
   // IE won't set `defaultPrevented` on synthetic events so we need to do it manually.

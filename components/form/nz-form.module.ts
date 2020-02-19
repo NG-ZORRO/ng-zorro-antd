@@ -11,7 +11,7 @@ import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { NzAddOnModule } from 'ng-zorro-antd/core';
+import { NzOutletModule } from 'ng-zorro-antd/core';
 
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -46,6 +46,6 @@ import { NzFormDirective } from './nz-form.directive';
     NzFormSplitComponent,
     NzGridModule
   ],
-  imports: [CommonModule, NzGridModule, NzIconModule, LayoutModule, PlatformModule, NzAddOnModule]
+  imports: [CommonModule, NzGridModule, NzIconModule, LayoutModule, PlatformModule, NzOutletModule]
 })
 export class NzFormModule {}

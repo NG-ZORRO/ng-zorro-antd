@@ -25,7 +25,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 | `[nzDisabled]` | Disable checkbox | `boolean` | `false` |
 | `[ngModel]` | Specifies whether the checkbox is selected, double binding | `boolean` | `false` |
 | `[nzIndeterminate]` | set the status of indeterminate，only affect the style | `boolean` | `false` |
-| `[nzValue]` | use for the callback of `nz-checkbox-wrapper` | `string` | - |
+| `[nzValue]` | use for the callback of `nz-checkbox-wrapper` | `any` | - |
 | `(ngModelChange)` | The callback function that is triggered when the state changes. | `EventEmitter<boolean>` | - |
 
 ### nz-checkbox-group
@@ -40,7 +40,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `(nzOnChange)` | The callback function that is triggered when the state changes. | `EventEmitter<string[]>` | - |
+| `(nzOnChange)` | The callback function that is triggered when the state changes. | `EventEmitter<any[]>` | - |
 
 ## Methods
 

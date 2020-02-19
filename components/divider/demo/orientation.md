@@ -1,5 +1,5 @@
 ---
-order: 2
+order: 1
 title:
   zh-CN: 标题位置
   en-US: Orientation of title

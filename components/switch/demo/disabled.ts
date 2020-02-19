@@ -5,15 +5,9 @@ import { Component } from '@angular/core';
   template: `
     <nz-switch [(ngModel)]="switchValue" [nzDisabled]="isDisabled"></nz-switch>
     <br />
+    <br />
     <button nz-button [nzType]="'primary'" (click)="isDisabled = !isDisabled">Toggle disabled</button>
-  `,
-  styles: [
-    `
-      nz-switch {
-        margin-bottom: 8px;
-      }
-    `
-  ]
+  `
 })
 export class NzDemoSwitchDisabledComponent {
   switchValue = false;

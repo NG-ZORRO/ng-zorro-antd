@@ -4,8 +4,8 @@ import { By } from '@angular/platform-browser';
 
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
-import { NzDividerComponent } from './nz-divider.component';
-import { NzDividerModule } from './nz-divider.module';
+import { NzDividerComponent } from './divider.component';
+import { NzDividerModule } from './divider.module';
 
 describe('divider', () => {
   let fixture: ComponentFixture<TestDividerComponent>;

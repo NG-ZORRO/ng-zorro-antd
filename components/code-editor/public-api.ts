@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-code-editor.definitions';
-export * from './nz-code-editor.component';
-export * from './nz-code-editor.module';
-export * from './nz-code-editor.service';
+export * from './typings';
+export * from './code-editor.component';
+export * from './code-editor.module';
+export * from './code-editor.service';
