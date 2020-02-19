@@ -9,8 +9,8 @@
 import { ChangeDetectorRef, QueryList, Renderer2 } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { NzCarouselContentDirective } from '../nz-carousel-content.directive';
-import { FromToInterface, NzCarouselComponentAsSource, PointerVector } from '../nz-carousel-definitions';
+import { NzCarouselContentDirective } from '../carousel-content.directive';
+import { FromToInterface, NzCarouselComponentAsSource, PointerVector } from '../typings';
 
 export abstract class NzCarouselBaseStrategy {
   // Properties that strategies may want to use.

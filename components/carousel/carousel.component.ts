@@ -35,7 +35,10 @@ import { finalize, takeUntil } from 'rxjs/operators';
 
 import { InputBoolean, InputNumber, NzConfigService, NzDomEventService, NzDragService, WithConfig } from 'ng-zorro-antd/core';
 
-import { NzCarouselContentDirective } from './nz-carousel-content.directive';
+import { NzCarouselContentDirective } from './carousel-content.directive';
+import { NzCarouselBaseStrategy } from './strategies/base-strategy';
+import { NzCarouselOpacityStrategy } from './strategies/opacity-strategy';
+import { NzCarouselTransformStrategy } from './strategies/transform-strategy';
 import {
   FromToInterface,
   NZ_CAROUSEL_CUSTOM_STRATEGIES,
@@ -43,10 +46,7 @@ import {
   NzCarouselEffects,
   NzCarouselStrategyRegistryItem,
   PointerVector
-} from './nz-carousel-definitions';
-import { NzCarouselBaseStrategy } from './strategies/base-strategy';
-import { NzCarouselOpacityStrategy } from './strategies/opacity-strategy';
-import { NzCarouselTransformStrategy } from './strategies/transform-strategy';
+} from './typings';
 
 const NZ_CONFIG_COMPONENT_NAME = 'carousel';
 
@@ -56,7 +56,40 @@ const NZ_CONFIG_COMPONENT_NAME = 'carousel';
   selector: 'nz-carousel',
   exportAs: 'nzCarousel',
   preserveWhitespaces: false,
-  templateUrl: './nz-carousel.component.html',
+  template: `
+    <div class="slick-initialized slick-slider" [class.slick-vertical]="nzDotPosition === 'left' || nzDotPosition === 'right'">
+      <div
+        #slickList
+        class="slick-list"
+        tabindex="-1"
+        (keydown)="onKeyDown($event)"
+        (mousedown)="pointerDown($event)"
+        (touchstart)="pointerDown($event)"
+      >
+        <!-- Render carousel items. -->
+        <div class="slick-track" #slickTrack>
+          <ng-content></ng-content>
+        </div>
+      </div>
+      <!-- Render dots. -->
+      <ul
+        class="slick-dots"
+        *ngIf="nzDots"
+        [class.slick-dots-top]="nzDotPosition === 'top'"
+        [class.slick-dots-bottom]="nzDotPosition === 'bottom'"
+        [class.slick-dots-left]="nzDotPosition === 'left'"
+        [class.slick-dots-right]="nzDotPosition === 'right'"
+      >
+        <li *ngFor="let content of carouselContents; let i = index" [class.slick-active]="content.isActive" (click)="goTo(i)">
+          <ng-template [ngTemplateOutlet]="nzDotRender || renderDotTemplate" [ngTemplateOutletContext]="{ $implicit: i }"> </ng-template>
+        </li>
+      </ul>
+    </div>
+
+    <ng-template #renderDotTemplate let-index>
+      <button>{{ index + 1 }}</button>
+    </ng-template>
+  `,
   host: {
     '[class.ant-carousel-vertical]': 'vertical'
   },
