@@ -6,8 +6,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-carousel.module';
-export * from './nz-carousel.component';
-export * from './nz-carousel-content.directive';
-export * from './nz-carousel-definitions';
+export * from './carousel.module';
+export * from './carousel.component';
+export * from './carousel-content.directive';
 export * from './strategies/base-strategy';
+export * from './typings';

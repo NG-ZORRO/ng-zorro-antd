@@ -7,7 +7,7 @@
  */
 
 import { InjectionToken, QueryList } from '@angular/core';
-import { NzCarouselContentDirective } from './nz-carousel-content.directive';
+import { NzCarouselContentDirective } from './carousel-content.directive';
 import { NzCarouselBaseStrategy } from './strategies/base-strategy';
 
 export type NzCarouselEffects = 'fade' | 'scrollx' | string;

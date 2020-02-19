@@ -13,7 +13,7 @@ import { Directive, ElementRef, Renderer2 } from '@angular/core';
   exportAs: 'nzCarouselContent'
 })
 export class NzCarouselContentDirective {
-  el: HTMLElement = this.elementRef.nativeElement;
+  readonly el: HTMLElement;
 
   set isActive(value: boolean) {
     this._active = value;
@@ -30,7 +30,8 @@ export class NzCarouselContentDirective {
 
   private _active = false;
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) {
-    renderer.addClass(elementRef.nativeElement, 'slick-slide');
+  constructor(elementRef: ElementRef, private renderer: Renderer2) {
+    this.el = elementRef.nativeElement;
+    this.renderer.addClass(elementRef.nativeElement, 'slick-slide');
   }
 }
