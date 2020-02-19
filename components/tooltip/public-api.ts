@@ -6,9 +6,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-tooltip.definitions';
-export * from './nz-tooltip.component';
-export * from './nz-tooltip.directive';
-export * from './nz-tooltip.module';
-export * from './nz-tooltip-base.component';
-export * from './nz-tooltip-base.directive';
+export * from './tooltip';
+export * from './tooltip.module';
+export * from './base';

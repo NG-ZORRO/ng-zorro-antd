@@ -14,7 +14,7 @@ import en_US from '../i18n/languages/en_US';
 import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { NzProgressModule } from '../progress/nz-progress.module';
-import { NzToolTipModule } from '../tooltip/nz-tooltip.module';
+import { NzToolTipModule } from '../tooltip/tooltip.module';
 
 import {
   ShowUploadListInterface,

@@ -1,26 +1,29 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
-import { NzToolTipModule } from '../tooltip/nz-tooltip.module';
-import { NzPopoverDirective } from './nz-popover.directive';
-import { NzPopoverModule } from './nz-popover.module';
+import { NzPopoverDirective } from './popover';
+import { NzPopoverModule } from './popover.module';
 
 describe('NzPopover', () => {
+  let testBed: ComponentBed<NzPopoverTestComponent>;
+  let fixture: ComponentFixture<NzPopoverTestComponent>;
+  let component: NzPopoverTestComponent;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
 
   beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [NzPopoverModule, NoopAnimationsModule, NzToolTipModule, NzIconTestModule],
-      declarations: [NzPopoverTestComponent]
+    testBed = createComponentBed(NzPopoverTestComponent, {
+      imports: [NzPopoverModule, NoopAnimationsModule, NzIconTestModule]
     });
-
-    TestBed.compileComponents();
+    fixture = testBed.fixture;
+    component = testBed.component;
+    fixture.detectChanges();
   }));
 
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
@@ -45,20 +48,11 @@ describe('NzPopover', () => {
     return getTextContentOf('.ant-popover-inner-content');
   }
 
-  let fixture: ComponentFixture<NzPopoverTestComponent>;
-  let component: NzPopoverTestComponent;
-
   function waitingForTooltipToggling(): void {
     fixture.detectChanges();
     tick(500);
     fixture.detectChanges();
   }
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(NzPopoverTestComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
 
   it('should support string', fakeAsync(() => {
     const triggerElement = component.stringPopover.nativeElement;

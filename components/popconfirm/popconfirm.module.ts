@@ -16,8 +16,7 @@ import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
-import { NzPopconfirmComponent } from './nz-popconfirm.component';
-import { NzPopconfirmDirective } from './nz-popconfirm.directive';
+import { NzPopconfirmComponent, NzPopconfirmDirective } from './popconfirm';
 
 @NgModule({
   declarations: [NzPopconfirmComponent, NzPopconfirmDirective],
