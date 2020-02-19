@@ -24,7 +24,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
           <label nz-checkbox formControlName="remember">
             <span>Remember me</span>
           </label>
-          <a class="login-form-forgot" class="login-form-forgot">Forgot password</a>
+          <a class="login-form-forgot">Forgot password</a>
           <button nz-button class="login-form-button" [nzType]="'primary'">Log in</button>
           Or
           <a>register now!</a>
