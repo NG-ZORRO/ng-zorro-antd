@@ -12,7 +12,7 @@ import { NgModule } from '@angular/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 
-import { NzCodeEditorComponent } from './nz-code-editor.component';
+import { NzCodeEditorComponent } from './code-editor.component';
 
 @NgModule({
   declarations: [NzCodeEditorComponent],
