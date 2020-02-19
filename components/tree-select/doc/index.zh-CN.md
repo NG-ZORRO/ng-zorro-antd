@@ -29,6 +29,7 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 | `[nzNotFoundContent]` | 当下拉列表为空时显示的内容 | `string` | - |
 | `[nzDropdownMatchSelectWidth]` | 下拉菜单和选择器同宽 | `boolean` | `true` | ✅ |
 | `[nzDropdownStyle]` | 下拉菜单的样式 | `{ [key: string]: string; }` | - |
+| `[nzDropdownClassName]` | 下拉菜单的 className 属性 | `string` | - |
 | `[nzMultiple]` | 支持多选（当设置 nzCheckable 时自动变为true） | `boolean` | `false` |
 | `[nzHideUnMatched]` | 搜索隐藏未匹配的节点 | `boolean` | `false` | ✅ |
 | `[nzSize]` | 选择框大小 | `'large' \| 'small' \| 'default'` | `'default'` | ✅ |

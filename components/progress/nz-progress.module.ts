@@ -8,7 +8,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { NzAddOnModule } from 'ng-zorro-antd/core';
+import { NzOutletModule } from 'ng-zorro-antd/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzProgressComponent } from './nz-progress.component';
@@ -16,6 +16,6 @@ import { NzProgressComponent } from './nz-progress.component';
 @NgModule({
   exports: [NzProgressComponent],
   declarations: [NzProgressComponent],
-  imports: [CommonModule, NzIconModule, NzAddOnModule]
+  imports: [CommonModule, NzIconModule, NzOutletModule]
 })
 export class NzProgressModule {}

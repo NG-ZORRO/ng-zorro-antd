@@ -6,6 +6,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-collapse-panel.component';
-export * from './nz-collapse.component';
-export * from './nz-collapse.module';
+export * from './collapse-panel.component';
+export * from './collapse.component';
+export * from './collapse.module';

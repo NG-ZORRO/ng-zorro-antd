@@ -4,9 +4,9 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-layout-side',
   template: `
     <nz-layout>
-      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" nzWidth="200px">
+      <nz-sider nzCollapsible nzWidth="200px">
         <div class="logo"></div>
-        <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+        <ul nz-menu nzTheme="dark" nzMode="inline">
           <li nz-submenu nzTitle="User" nzIcon="user">
             <ul>
               <li nz-menu-item>Tom</li>
@@ -74,6 +74,4 @@ import { Component } from '@angular/core';
     `
   ]
 })
-export class NzDemoLayoutSideComponent {
-  isCollapsed = false;
-}
+export class NzDemoLayoutSideComponent {}

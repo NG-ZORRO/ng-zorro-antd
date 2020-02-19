@@ -25,7 +25,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 | `[nzAutoFocus]` | 自动获取焦点 | `boolean` | `false` |
 | `[nzDisabled]` | 设定 disable 状态 | `boolean` | `false` |
 | `[ngModel]` | 指定当前是否选中，可双向绑定 | `boolean` | `false` |
-| `[nzValue]` | 设置 value，与 `nz-radio-group` 配合使用 | `string` | - |
+| `[nzValue]` | 设置 value，与 `nz-radio-group` 配合使用 | `any` | - |
 | `(ngModelChange)` | 选中变化时回调 | `EventEmitter<boolean>` | - |
 
 
@@ -35,7 +35,7 @@ import { NzRadioModule } from 'ng-zorro-antd/radio';
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[ngModel]` | 指定选中的 `nz-radio` 的 value 值 | `string` | - |
+| `[ngModel]` | 指定选中的 `nz-radio` 的 value 值 | `any` | - |
 | `[nzName]` | `nz-radio-group` 下所有 `input[type="radio"]` 的 `name` 属性 | `string` | - |
 | `[nzDisabled]` | 设定所有 `nz-radio` disable 状态 | `boolean` | `false` |
 | `[nzSize]` | 大小，只对按钮样式生效 | `'large' \| 'small' \| 'default'` | `'default'` |

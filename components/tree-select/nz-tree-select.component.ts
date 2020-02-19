@@ -59,6 +59,7 @@ export function higherOrderServiceFactory(injector: Injector): NzTreeBaseService
 }
 
 const NZ_CONFIG_COMPONENT_NAME = 'treeSelect';
+const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown';
 
 @Component({
   selector: 'nz-tree-select',
@@ -122,7 +123,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzSizeLDSType;
   @Input() nzPlaceHolder = '';
   @Input() nzDropdownStyle: { [key: string]: string };
-
+  @Input() nzDropdownClassName: string;
   @Input()
   set nzExpandedKeys(value: string[]) {
     this.expandedKeys = value;
@@ -152,6 +153,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     return this.nzTreeTemplate || this.nzTreeTemplateChild;
   }
 
+  dropdownClassName = TREE_SELECT_DEFAULT_CLASS;
   triggerWidth: number;
   isComposing = false;
   isDestroy = true;
@@ -228,8 +230,13 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.hasOwnProperty('nzNodes')) {
+    const { nzNodes, nzDropdownClassName } = changes;
+    if (nzNodes) {
       this.updateSelectedNodes(true);
+    }
+    if (nzDropdownClassName) {
+      const className = this.nzDropdownClassName && this.nzDropdownClassName.trim();
+      this.dropdownClassName = className ? `${TREE_SELECT_DEFAULT_CLASS} ${className}` : TREE_SELECT_DEFAULT_CLASS;
     }
   }
 

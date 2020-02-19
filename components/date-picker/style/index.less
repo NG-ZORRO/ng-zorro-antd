@@ -49,6 +49,13 @@
   &&-disabled {
     background: @input-disabled-bg;
     border-color: @select-border-color;
+    cursor: not-allowed;
+  }
+
+  &&-borderless {
+    background-color: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
   }
 
   // ======================== Input =========================

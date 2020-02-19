@@ -13,9 +13,3 @@ title:
 
 The most basic usage.
 
-
-<style>
-.ant-switch {
-  margin-bottom: 8px;
-}
-</style>

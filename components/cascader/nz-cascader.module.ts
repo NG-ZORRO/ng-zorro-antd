@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { NzAddOnModule, NzHighlightModule, NzNoAnimationModule, NzOverlayModule } from 'ng-zorro-antd/core';
+import { NzHighlightModule, NzNoAnimationModule, NzOutletModule, NzOverlayModule } from 'ng-zorro-antd/core';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -24,7 +24,7 @@ import { NzCascaderComponent } from './nz-cascader.component';
     CommonModule,
     FormsModule,
     OverlayModule,
-    NzAddOnModule,
+    NzOutletModule,
     NzEmptyModule,
     NzHighlightModule,
     NzIconModule,

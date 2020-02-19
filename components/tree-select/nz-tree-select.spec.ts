@@ -173,6 +173,15 @@ describe('tree-select component', () => {
       const targetElement = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
       expect(targetElement.style.height).toBe('120px');
     }));
+    it('should dropdown classname work', fakeAsync(() => {
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      expect(treeSelectComponent.nzOpen).toBe(true);
+      flush();
+      const targetElement = overlayContainerElement.querySelector('.ant-select-dropdown') as HTMLElement;
+      expect(targetElement.classList).toContain('class1');
+      expect(targetElement.classList).toContain('class2');
+    }));
     it('should click option close dropdown', fakeAsync(() => {
       treeSelect.nativeElement.click();
       fixture.detectChanges();
@@ -548,6 +557,7 @@ describe('tree-select component', () => {
       [nzMultiple]="multiple"
       [nzMaxTagCount]="maxTagCount"
       [nzDropdownStyle]="{ height: '120px' }"
+      nzDropdownClassName="class1 class2"
     >
     </nz-tree-select>
   `
