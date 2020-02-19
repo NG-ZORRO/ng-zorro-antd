@@ -23,7 +23,7 @@ export type UploadListType = 'text' | 'picture' | 'picture-card';
 /** File object. */
 export interface UploadFile {
   uid: string;
-  size: number;
+  size?: number;
   name: string;
   filename?: string;
   lastModified?: string;
@@ -36,7 +36,7 @@ export interface UploadFile {
   response?: any;
   error?: any;
   linkProps?: { download: string };
-  type: string;
+  type?: string;
 
   [key: string]: any;
 }

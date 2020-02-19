@@ -487,7 +487,7 @@ describe('upload', () => {
           instance.nzFilter = [
             {
               name: 'size',
-              fn: (fileList: UploadFile[]) => fileList.filter(w => w.size / 1024 <= instance.nzSize)
+              fn: (fileList: UploadFile[]) => fileList.filter(w => w.size! / 1024 <= instance.nzSize)
             }
           ];
           fixture.detectChanges();
@@ -1258,7 +1258,7 @@ describe('upload', () => {
         comp.options.filters = [
           {
             name: '',
-            fn: (fileList: UploadFile[]) => fileList.filter(w => w.size / 1024 <= 0)
+            fn: (fileList: UploadFile[]) => fileList.filter(w => w.size! / 1024 <= 0)
           }
         ];
         comp.onChange(PNGBIG as any);

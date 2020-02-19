@@ -1,12 +1,21 @@
 import { Component } from '@angular/core';
 import { UploadFile } from 'ng-zorro-antd/upload';
 
+function getBase64(file: File): Promise<string | ArrayBuffer | null> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+}
+
 @Component({
   selector: 'nz-demo-upload-picture-card',
   template: `
     <div class="clearfix">
       <nz-upload
-        nzAction="https://jsonplaceholder.typicode.com/posts/"
+        nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
         nzListType="picture-card"
         [(nzFileList)]="fileList"
         [nzShowButton]="fileList.length < 8"
@@ -70,10 +79,11 @@ export class NzDemoUploadPictureCardComponent {
   previewImage: string | undefined = '';
   previewVisible = false;
 
-  constructor() {}
-
-  handlePreview = (file: UploadFile) => {
-    this.previewImage = file.url || file.thumbUrl;
+  handlePreview = async (file: UploadFile) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj!);
+    }
+    this.previewImage = file.url || file.preview;
     this.previewVisible = true;
   };
 }

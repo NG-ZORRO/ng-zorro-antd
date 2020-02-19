@@ -43,7 +43,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 | `[nzListType]` | 上传列表的内建样式，支持三种基本样式 `text`, `picture` 和 `picture-card` | `'text' \| 'picture' \| 'picture-card'` | `'text'` |
 | `[nzMultiple]` | 是否支持多选文件，`ie10+` 支持。开启后按住 ctrl 可选择多个文件。 | `boolean` | `false` |
 | `[nzName]` | 发到后台的文件参数名 | `string` | `'file'` |
-| `[nzShowUploadList]` | 是否展示 uploadList, 可设为一个对象，用于单独设定 `showPreviewIcon`，`showRemoveIcon` 和 `, showDownloadIcon` | `boolean \| { showPreviewIcon?: boolean, showRemoveIcon?: boolean, showDownloadIcon?: boolean }` | `true` |
+| `[nzShowUploadList]` | 是否展示 uploadList, 可设为一个对象，用于单独设定 `showPreviewIcon`，`showRemoveIcon` 和 `showDownloadIcon` | `boolean \| { showPreviewIcon?: boolean, showRemoveIcon?: boolean, showDownloadIcon?: boolean }` | `true` |
 | `[nzShowButton]` | 是否展示上传按钮 | `boolean` | `true` |
 | `[nzWithCredentials]` | 上传请求时是否携带 cookie | `boolean` | `false` |
 | `[nzOpenFileDialogOnClick]` | 点击打开文件对话框 | `boolean` | `true` |

@@ -113,7 +113,7 @@ export class NzUploadListComponent implements OnChanges {
   }
 
   isImageUrl(file: UploadFile): boolean {
-    if (isImageFileType(file.type)) {
+    if (isImageFileType(file.type!)) {
       return true;
     }
     const url: string = (file.thumbUrl || file.url || '') as string;

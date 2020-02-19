@@ -125,14 +125,14 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     if (this.nzSize > 0 && filters.findIndex(w => w.name === 'size') === -1) {
       filters.push({
         name: 'size',
-        fn: (fileList: UploadFile[]) => fileList.filter(w => w.size / 1024 <= this.nzSize)
+        fn: (fileList: UploadFile[]) => fileList.filter(w => w.size! / 1024 <= this.nzSize)
       });
     }
     if (this.nzFileType && this.nzFileType.length > 0 && filters.findIndex(w => w.name === 'type') === -1) {
       const types = this.nzFileType.split(',');
       filters.push({
         name: 'type',
-        fn: (fileList: UploadFile[]) => fileList.filter(w => ~types.indexOf(w.type))
+        fn: (fileList: UploadFile[]) => fileList.filter(w => ~types.indexOf(w.type!))
       });
     }
     this._btnOptions = {
