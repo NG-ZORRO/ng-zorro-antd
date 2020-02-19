@@ -12,8 +12,7 @@ import { NgModule } from '@angular/core';
 
 import { NzNoAnimationModule, NzOutletModule, NzOverlayModule } from 'ng-zorro-antd/core';
 // NOTE: the `t` is not uppercase in directives. Change this would however introduce breaking change.
-import { NzToolTipComponent } from './nz-tooltip.component';
-import { NzTooltipDirective } from './nz-tooltip.directive';
+import { NzToolTipComponent, NzTooltipDirective } from './tooltip';
 
 @NgModule({
   declarations: [NzToolTipComponent, NzTooltipDirective],

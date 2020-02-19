@@ -6,6 +6,5 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-popover.component';
-export * from './nz-popover.directive';
-export * from './nz-popover.module';
+export * from './popover';
+export * from './popover.module';

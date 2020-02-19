@@ -1,89 +1,27 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
-import { NzTooltipBaseDirective } from './nz-tooltip-base.directive';
-import { NzTooltipDirective } from './nz-tooltip.directive';
-import { NzToolTipModule } from './nz-tooltip.module';
+import { NzTooltipBaseDirective } from './base';
+import { NzTooltipDirective } from './tooltip';
+import { NzToolTipModule } from './tooltip.module';
 
-@Component({
-  template: `
-    <a
-      #titleString
-      nz-tooltip
-      [nzTitle]="title"
-      nzTrigger="hover"
-      nzPlacement="topLeft"
-      nzOverlayClassName="testClass"
-      [nzOverlayStyle]="{ color: '#000' }"
-      [nzMouseEnterDelay]="0.15"
-      [nzMouseLeaveDelay]="0.1"
-      (nzVisibleChange)="onVisibleChange()"
-    >
-      Hover
-    </a>
-
-    <a #titleTemplate nz-tooltip [nzTitle]="template" [nzTooltipTrigger]="trigger">
-      Click
-    </a>
-
-    <a #focusTooltip nz-tooltip nzTooltipTrigger="focus" nzTitle="focus">
-      Focus
-    </a>
-
-    <a #program nz-tooltip [nzTooltipTrigger]="null" nzTitle="program" [nzVisible]="visible" (nzVisibleChange)="onVisibleChange()">
-      Manually
-    </a>
-
-    <div>
-      <button>A</button>
-      <button #inBtnGroup nz-tooltip nzTitle="title-string">B</button>
-      <button>C</button>
-    </div>
-
-    <ng-template #template>
-      title-template
-    </ng-template>
-  `
-})
-export class NzTooltipTestComponent {
-  @ViewChild('titleString', { static: false }) titleString: ElementRef;
-  @ViewChild('titleString', { static: false, read: NzTooltipDirective })
-  titleStringDirective: NzTooltipDirective;
-
-  @ViewChild('titleTemplate', { static: false }) titleTemplate: ElementRef;
-  @ViewChild('titleTemplate', { static: false, read: NzTooltipDirective })
-  titleTemplateDirective: NzTooltipDirective;
-
-  @ViewChild('focusTooltip', { static: false }) focusTemplate: ElementRef;
-
-  trigger: string | null = 'click';
-
-  @ViewChild('inBtnGroup', { static: false }) inBtnGroup: ElementRef;
-
-  title: string | null = 'title-string';
-  visible = false;
-  visibilityTogglingCount = 0;
-
-  onVisibleChange(): void {
-    this.visibilityTogglingCount += 1;
-  }
-}
-
-describe('NzTooltip', () => {
+describe('nz-tooltip', () => {
+  let testBed: ComponentBed<NzTooltipTestComponent>;
+  let fixture: ComponentFixture<NzTooltipTestComponent>;
+  let component: NzTooltipTestComponent;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
 
   beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [NzToolTipModule, NoopAnimationsModule, NzIconTestModule],
-      declarations: [NzTooltipTestComponent]
+    testBed = createComponentBed(NzTooltipTestComponent, {
+      imports: [NzToolTipModule, NoopAnimationsModule, NzIconTestModule]
     });
-    TestBed.compileComponents();
   }));
 
   beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
@@ -94,9 +32,6 @@ describe('NzTooltip', () => {
   afterEach(() => {
     overlayContainer.ngOnDestroy();
   });
-
-  let fixture: ComponentFixture<NzTooltipTestComponent>;
-  let component: NzTooltipTestComponent;
 
   function waitingForTooltipToggling(): void {
     fixture.detectChanges();
@@ -109,8 +44,8 @@ describe('NzTooltip', () => {
   }
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NzTooltipTestComponent);
-    component = fixture.componentInstance;
+    fixture = testBed.fixture;
+    component = testBed.component;
     fixture.detectChanges();
   });
 
@@ -207,6 +142,27 @@ describe('NzTooltip', () => {
       expect(component.visibilityTogglingCount).toBe(0);
     }));
 
+    it('should hide when the title is changed to null', fakeAsync(() => {
+      const title = 'title-string';
+      const triggerElement = component.titleString.nativeElement;
+
+      expect(overlayContainerElement.textContent).not.toContain(title);
+
+      dispatchMouseEvent(triggerElement, 'mouseenter');
+      waitingForTooltipToggling();
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).toContain(title);
+      expect(component.visibilityTogglingCount).toBe(1);
+
+      // Should close when title is changed to null.
+      component.title = null;
+      fixture.detectChanges();
+      waitingForTooltipToggling();
+      fixture.detectChanges();
+      expect(overlayContainerElement.textContent).not.toContain(title);
+      expect(component.visibilityTogglingCount).toBe(2);
+    }));
+
     it('should set `setTitle` proxy to `nzTitle`', fakeAsync(() => {
       const triggerElement = component.titleString.nativeElement;
       const tooltipComponent = component.titleStringDirective.tooltip;
@@ -255,4 +211,68 @@ describe('NzTooltip', () => {
 
 function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLElement {
   return tooltip.tooltip.overlay.overlayRef.overlayElement;
+}
+
+@Component({
+  template: `
+    <a
+      #titleString
+      nz-tooltip
+      [nzTitle]="title"
+      nzTrigger="hover"
+      nzPlacement="topLeft"
+      nzOverlayClassName="testClass"
+      [nzOverlayStyle]="{ color: '#000' }"
+      [nzMouseEnterDelay]="0.15"
+      [nzMouseLeaveDelay]="0.1"
+      (nzVisibleChange)="onVisibleChange()"
+    >
+      Hover
+    </a>
+
+    <a #titleTemplate nz-tooltip [nzTitle]="template" [nzTooltipTrigger]="trigger">
+      Click
+    </a>
+
+    <a #focusTooltip nz-tooltip nzTooltipTrigger="focus" nzTitle="focus">
+      Focus
+    </a>
+
+    <a #program nz-tooltip [nzTooltipTrigger]="null" nzTitle="program" [nzVisible]="visible" (nzVisibleChange)="onVisibleChange()">
+      Manually
+    </a>
+
+    <div>
+      <button>A</button>
+      <button #inBtnGroup nz-tooltip nzTitle="title-string">B</button>
+      <button>C</button>
+    </div>
+
+    <ng-template #template>
+      title-template
+    </ng-template>
+  `
+})
+export class NzTooltipTestComponent {
+  @ViewChild('titleString', { static: false }) titleString: ElementRef;
+  @ViewChild('titleString', { static: false, read: NzTooltipDirective })
+  titleStringDirective: NzTooltipDirective;
+
+  @ViewChild('titleTemplate', { static: false }) titleTemplate: ElementRef;
+  @ViewChild('titleTemplate', { static: false, read: NzTooltipDirective })
+  titleTemplateDirective: NzTooltipDirective;
+
+  @ViewChild('focusTooltip', { static: false }) focusTemplate: ElementRef;
+
+  trigger: string | null = 'click';
+
+  @ViewChild('inBtnGroup', { static: false }) inBtnGroup: ElementRef;
+
+  title: string | null = 'title-string';
+  visible = false;
+  visibilityTogglingCount = 0;
+
+  onVisibleChange(): void {
+    this.visibilityTogglingCount += 1;
+  }
 }
