@@ -6,8 +6,8 @@ import { By } from '@angular/platform-browser';
 import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core';
 
 import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
-import { NzRateComponent } from './nz-rate.component';
-import { NzRateModule } from './nz-rate.module';
+import { NzRateComponent } from './rate.component';
+import { NzRateModule } from './rate.module';
 
 describe('rate', () => {
   beforeEach(fakeAsync(() => {

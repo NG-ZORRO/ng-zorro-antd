@@ -12,8 +12,8 @@ import { NgModule } from '@angular/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
-import { NzRateItemComponent } from './nz-rate-item.component';
-import { NzRateComponent } from './nz-rate.component';
+import { NzRateItemComponent } from './rate-item.component';
+import { NzRateComponent } from './rate.component';
 
 @NgModule({
   exports: [NzRateComponent],
