@@ -1,7 +1,7 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { NzDescriptionsModule } from './nz-descriptions.module';
+import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
+import { NzDescriptionsModule } from './descriptions.module';
 
 // tslint:disable-next-line no-any
 declare const viewport: any;
@@ -23,22 +23,18 @@ export class NzTestDescriptionsComponent {
 }
 
 describe('nz descriptions', () => {
-  let testComponent: NzTestDescriptionsComponent;
-  let componentElement: HTMLElement;
-  let fixture: ComponentFixture<NzTestDescriptionsComponent>;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [CommonModule, NzDescriptionsModule],
-      declarations: [NzTestDescriptionsComponent]
-    }).compileComponents();
-  });
-
   describe('with different spans', () => {
+    let testBed: ComponentBed<NzTestDescriptionsComponent>;
+    let testComponent: NzTestDescriptionsComponent;
+    let componentElement: HTMLElement;
+    let fixture: ComponentFixture<NzTestDescriptionsComponent>;
     let rows;
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestDescriptionsComponent);
+      testBed = createComponentBed(NzTestDescriptionsComponent, {
+        imports: [NzDescriptionsModule]
+      });
+      fixture = testBed.fixture;
       testComponent = fixture.componentInstance;
       componentElement = fixture.debugElement.nativeElement;
 

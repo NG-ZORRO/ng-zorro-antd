@@ -6,8 +6,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export { NzDescriptionsModule } from './nz-descriptions.module';
-export { NzDescriptionsComponent } from './nz-descriptions.component';
-export { NzDescriptionsItemComponent } from './nz-descriptions-item.component';
+export { NzDescriptionsModule } from './descriptions.module';
+export { NzDescriptionsComponent } from './descriptions.component';
+export { NzDescriptionsItemComponent } from './descriptions-item.component';
 
-export * from './nz-descriptions-definitions';
+export * from './typings';
