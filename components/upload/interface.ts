@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-// tslint:disable:no-any prefer-method-signature
+// tslint:disable:no-any
 import { Observable, Subscription } from 'rxjs';
 
 import { IndexableObject } from 'ng-zorro-antd/core';
@@ -63,24 +63,24 @@ export interface ZipButtonOptions {
   action?: string | ((file: UploadFile) => string | Observable<string>);
   directory?: boolean;
   openFileDialogOnClick?: boolean;
-  beforeUpload?: (file: UploadFile, fileList: UploadFile[]) => boolean | Observable<any>;
-  customRequest?: (item: any) => Subscription;
+  beforeUpload?(file: UploadFile, fileList: UploadFile[]): boolean | Observable<any>;
+  customRequest?(item: any): Subscription;
   data?: {} | ((file: UploadFile) => {} | Observable<{}>);
   headers?: {} | ((file: UploadFile) => {} | Observable<{}>);
   name?: string;
   multiple?: boolean;
   withCredentials?: boolean;
   filters?: UploadFilter[];
-  transformFile?: (file: UploadFile) => UploadTransformFileType;
-  onStart?: (file: UploadFile) => void;
-  onProgress?: (e: any, file: UploadFile) => void;
-  onSuccess?: (ret: any, file: UploadFile, xhr: any) => void;
-  onError?: (err: any, file: UploadFile) => void;
+  transformFile?(file: UploadFile): UploadTransformFileType;
+  onStart?(file: UploadFile): void;
+  onProgress?(e: any, file: UploadFile): void;
+  onSuccess?(ret: any, file: UploadFile, xhr: any): void;
+  onError?(err: any, file: UploadFile): void;
 }
 
 export interface UploadFilter {
   name: string;
-  fn: (fileList: UploadFile[]) => UploadFile[] | Observable<UploadFile[]>;
+  fn(fileList: UploadFile[]): UploadFile[] | Observable<UploadFile[]>;
 }
 
 export interface UploadXHRArgs {
@@ -91,7 +91,7 @@ export interface UploadXHRArgs {
   postFile: string | Blob | File | UploadFile;
   data?: IndexableObject;
   withCredentials?: boolean;
-  onProgress?: (e: any, file: UploadFile) => void;
-  onSuccess?: (ret: any, file: UploadFile, xhr: any) => void;
-  onError?: (err: any, file: UploadFile) => void;
+  onProgress?(e: any, file: UploadFile): void;
+  onSuccess?(ret: any, file: UploadFile, xhr: any): void;
+  onError?(err: any, file: UploadFile): void;
 }

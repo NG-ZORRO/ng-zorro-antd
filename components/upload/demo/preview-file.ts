@@ -25,9 +25,6 @@ export class NzDemoUploadPreviewFileComponent {
         method: 'POST',
         body: file
       })
-      .pipe(
-        // tslint:disable-next-line: no-any
-        map((res: any) => res.thumbnail)
-      );
+      .pipe(map((res: { thumbnail?: string }) => res.thumbnail));
   };
 }
