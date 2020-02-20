@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NzCascaderOption } from './nz-cascader-definitions';
+import { NzCascaderOption } from './typings';
 
 export function isChildOption(o: NzCascaderOption): boolean {
   return o.isLeaf || !o.children || !o.children.length;

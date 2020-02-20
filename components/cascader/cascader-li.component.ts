@@ -17,14 +17,24 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { NzCascaderOption } from './nz-cascader-definitions';
+import { NzCascaderOption } from './typings';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: '[nz-cascader-option]',
   exportAs: 'nzCascaderOption',
-  templateUrl: './nz-cascader-li.component.html',
+  template: `
+    <ng-container *ngIf="optionTemplate; else defaultOptionTemplate">
+      <ng-template [ngTemplateOutlet]="optionTemplate" [ngTemplateOutletContext]="{ $implicit: option, index: columnIndex }"></ng-template>
+    </ng-container>
+    <ng-template #defaultOptionTemplate>
+      <span [innerHTML]="optionLabel | nzHighlight: highlightText:'g':'ant-cascader-menu-item-keyword'"></span>
+    </ng-template>
+    <span *ngIf="!option.isLeaf || option.children?.length || option.loading" class="ant-cascader-menu-item-expand-icon">
+      <i nz-icon [nzType]="option.loading ? 'loading' : 'right'"></i>
+    </span>
+  `,
   host: {
     '[attr.title]': 'option.title || optionLabel',
     '[class.ant-cascader-menu-item-active]': 'activated',

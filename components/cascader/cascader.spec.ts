@@ -25,9 +25,9 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { createFakeEvent, createMouseEvent, dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core';
 
-import { NzCascaderOption, NzShowSearchOptions } from './nz-cascader-definitions';
-import { NzCascaderComponent } from './nz-cascader.component';
-import { NzCascaderModule } from './nz-cascader.module';
+import { NzCascaderComponent } from './cascader.component';
+import { NzCascaderModule } from './cascader.module';
+import { NzCascaderOption, NzShowSearchOptions } from './typings';
 
 describe('cascader', () => {
   let overlayContainer: OverlayContainer;
