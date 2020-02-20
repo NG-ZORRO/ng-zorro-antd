@@ -6,9 +6,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-cascader-definitions';
-export * from './nz-cascader-utils';
-export * from './nz-cascader.component';
-export * from './nz-cascader.module';
-export * from './nz-cascader.service';
-export * from './nz-cascader-li.component';
+export * from './typings';
+export * from './utils';
+export * from './cascader.component';
+export * from './cascader.module';
+export * from './cascader.service';
+export * from './cascader-li.component';
