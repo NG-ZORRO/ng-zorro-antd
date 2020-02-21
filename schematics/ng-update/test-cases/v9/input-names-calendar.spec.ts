@@ -3,6 +3,7 @@ import { TempScopedNodeJsSyncHost } from '@angular-devkit/core/node/testing';
 import { HostTree } from '@angular-devkit/schematics';
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
 import * as shx from 'shelljs';
+import { SchematicsTestTsConfig, SchematicsTestNGConfig } from '../config';
 
 describe('calendar migration', () => {
   let runner: SchematicTestRunner;
@@ -18,15 +19,8 @@ describe('calendar migration', () => {
     host = new TempScopedNodeJsSyncHost();
     tree = new UnitTestTree(new HostTree(host));
 
-    writeFile('/tsconfig.json', JSON.stringify({
-      compilerOptions: {
-        experimentalDecorators: true,
-        lib: ['es2015']
-      }
-    }));
-    writeFile('/angular.json', JSON.stringify({
-      projects: {t: {architect: {build: {options: {tsConfig: './tsconfig.json'}}}}}
-    }));
+    writeFile('/tsconfig.json', JSON.stringify(SchematicsTestTsConfig));
+    writeFile('/angular.json', JSON.stringify(SchematicsTestNGConfig));
 
     warnOutput = [];
     errorOutput = [];
