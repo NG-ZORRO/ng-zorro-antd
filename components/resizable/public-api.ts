@@ -6,9 +6,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-resizable.module';
-export * from './nz-resizable.directive';
-export * from './nz-resizable.service';
-export * from './nz-resize-handles.component';
-export * from './nz-resize-handle.component';
-export * from './nz-resizable-utils';
+export * from './resizable.module';
+export * from './resizable.directive';
+export * from './resizable.service';
+export * from './resize-handles.component';
+export * from './resize-handle.component';
+export * from './resizable-utils';
