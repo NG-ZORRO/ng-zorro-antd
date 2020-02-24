@@ -423,7 +423,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
     const ratio = ensureNumberInRange((position - sliderStart) / sliderLength, 0, 1);
     const val = (this.nzMax - this.nzMin) * (this.nzVertical ? 1 - ratio : ratio) + this.nzMin;
     const points = this.nzMarks === null ? [] : Object.keys(this.nzMarks).map(parseFloat);
-    if (this.nzStep !== null && !this.nzDots) {
+    if (this.nzStep !== 0 && !this.nzDots) {
       const closestOne = Math.round(val / this.nzStep) * this.nzStep;
       points.push(closestOne);
     }
