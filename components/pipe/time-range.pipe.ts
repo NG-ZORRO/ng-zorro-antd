@@ -1,11 +1,15 @@
 /**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 import { Pipe, PipeTransform } from '@angular/core';
-import { timeUnits } from 'ng-zorro-antd/core/time';
-import { padStart } from 'ng-zorro-antd/core/util';
+
+import { timeUnits } from '../core/time';
+import { padStart } from '../core/util';
 
 @Pipe({
   name: 'nzTimeRange',

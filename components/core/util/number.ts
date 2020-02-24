@@ -22,3 +22,16 @@ export function ensureNumberInRange(num: number, min: number, max: number): numb
     return num;
   }
 }
+
+// tslint:disable-next-line:no-any
+export function isNumberFinite(value: any): boolean {
+  return typeof value === 'number' && isFinite(value);
+}
+
+export function toDecimal(value: number, decimal: number): number {
+  return Math.round(value * Math.pow(10, decimal)) / Math.pow(10, decimal);
+}
+
+export function sum(input: number[], initial: number = 0): number {
+  return input.reduce((previous: number, current: number) => previous + current, initial);
+}
