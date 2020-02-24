@@ -32,7 +32,16 @@ const NZ_CONFIG_COMPONENT_NAME = 'backTop';
   selector: 'nz-back-top',
   exportAs: 'nzBackTop',
   animations: [fadeMotion],
-  templateUrl: './nz-back-top.component.html',
+  template: `
+    <div class="ant-back-top" (click)="clickBackTop()" @fadeMotion *ngIf="visible">
+      <ng-template #defaultContent>
+        <div class="ant-back-top-content">
+          <div class="ant-back-top-icon"></div>
+        </div>
+      </ng-template>
+      <ng-template [ngTemplateOutlet]="nzTemplate || defaultContent"></ng-template>
+    </div>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false

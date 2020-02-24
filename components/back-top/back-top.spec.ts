@@ -5,8 +5,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NzScrollService } from 'ng-zorro-antd/core';
 
-import { NzBackTopComponent } from './nz-back-top.component';
-import { NzBackTopModule } from './nz-back-top.module';
+import { NzBackTopComponent } from './back-top.component';
+import { NzBackTopModule } from './back-top.module';
 
 describe('Component:nz-back-top', () => {
   let scrollService: MockNzScrollService;
