@@ -6,9 +6,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-result.module';
-export * from './nz-result.component';
-export * from './nz-result-cells';
+export * from './result.module';
+export * from './result.component';
+export * from './result-cells';
 
 // Making these partial components not visible to users but comprehensible to ng-packagr.
 export { NzResultNotFoundComponent as ɵNzResultNotFoundComponent } from './partial/not-found';
