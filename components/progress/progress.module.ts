@@ -11,7 +11,7 @@ import { NgModule } from '@angular/core';
 import { NzOutletModule } from 'ng-zorro-antd/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-import { NzProgressComponent } from './nz-progress.component';
+import { NzProgressComponent } from './progress.component';
 
 @NgModule({
   exports: [NzProgressComponent],
