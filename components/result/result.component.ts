@@ -26,8 +26,46 @@ const ExceptionStatus = ['404', '500', '403'];
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-result',
   exportAs: 'nzResult',
-  templateUrl: './nz-result.component.html',
   providers: [NzUpdateHostClassService],
+  template: `
+    <div class="ant-result-icon">
+      <ng-container *ngIf="!isException; else exceptionTpl">
+        <ng-container *ngIf="icon">
+          <ng-container *nzStringTemplateOutlet="icon">
+            <i nz-icon [nzType]="icon" nzTheme="fill"></i>
+          </ng-container>
+        </ng-container>
+        <ng-content *ngIf="!icon" select="[nz-result-icon]"></ng-content>
+      </ng-container>
+    </div>
+    <ng-container *ngIf="nzTitle">
+      <div class="ant-result-title" *nzStringTemplateOutlet="nzTitle">
+        {{ nzTitle }}
+      </div>
+    </ng-container>
+    <ng-content *ngIf="!nzTitle" select="div[nz-result-title]"></ng-content>
+    <ng-container *ngIf="nzSubTitle">
+      <div class="ant-result-subtitle" *nzStringTemplateOutlet="nzSubTitle">
+        {{ nzSubTitle }}
+      </div>
+    </ng-container>
+    <ng-content *ngIf="!nzSubTitle" select="div[nz-result-subtitle]"></ng-content>
+    <ng-content select="nz-result-content, [nz-result-content]"></ng-content>
+    <div class="ant-result-extra" *ngIf="nzExtra">
+      <ng-container *nzStringTemplateOutlet="nzExtra">
+        {{ nzExtra }}
+      </ng-container>
+    </div>
+    <ng-content *ngIf="!nzExtra" select="div[nz-result-extra]"></ng-content>
+
+    <ng-template #exceptionTpl>
+      <ng-container [ngSwitch]="nzStatus">
+        <nz-result-not-found *ngSwitchCase="'404'"></nz-result-not-found>
+        <nz-result-server-error *ngSwitchCase="'500'"></nz-result-server-error>
+        <nz-result-unauthorized *ngSwitchCase="'403'"></nz-result-unauthorized>
+      </ng-container>
+    </ng-template>
+  `,
   styles: [
     `
       nz-result {

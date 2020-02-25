@@ -1,12 +1,12 @@
-import { CommonModule } from '@angular/common';
 import { Component, DebugElement } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-import { NzResultComponent } from './nz-result.component';
-import { NzResultModule } from './nz-result.module';
+import { NzResultComponent } from './result.component';
+import { NzResultModule } from './result.module';
 
 @Component({
   template: `
@@ -30,19 +30,18 @@ export class NzTestResultBasicComponent {
 }
 
 describe('nz-result', () => {
+  let testBed: ComponentBed<NzTestResultBasicComponent>;
   let fixture: ComponentFixture<NzTestResultBasicComponent>;
   let testComponent: NzTestResultBasicComponent;
   let resultEl: DebugElement;
 
   describe('basic', () => {
     beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [CommonModule, NzResultModule, NzIconModule],
-        declarations: [NzTestResultBasicComponent]
-      }).compileComponents();
-
-      fixture = TestBed.createComponent(NzTestResultBasicComponent);
-      testComponent = fixture.debugElement.componentInstance;
+      testBed = createComponentBed(NzTestResultBasicComponent, {
+        imports: [NzResultModule, NzIconModule]
+      });
+      fixture = testBed.fixture;
+      testComponent = testBed.component;
       resultEl = fixture.debugElement.query(By.directive(NzResultComponent));
     });
 
