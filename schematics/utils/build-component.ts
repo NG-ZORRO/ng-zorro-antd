@@ -22,8 +22,9 @@ import {
   Tree
 } from '@angular-devkit/schematics';
 import { FileSystemSchematicContext } from '@angular-devkit/schematics/tools';
-import { getDefaultComponentOptions, getProjectFromWorkspace, ts } from '@angular/cdk/schematics';
+import { getDefaultComponentOptions, getProjectFromWorkspace } from '@angular/cdk/schematics';
 import { Schema as ComponentOptions, Style } from '@schematics/angular/component/schema';
+import * as ts from 'typescript';
 import {
   addDeclarationToModule,
   addEntryComponentToModule,
