@@ -1,5 +1,5 @@
 import { Rule, Tree } from '@angular-devkit/schematics';
-import { getProjectFromWorkspace, getProjectMainFile, getSourceFile } from '@angular/cdk/schematics';
+import { getProjectFromWorkspace, getProjectMainFile, parseSourceFile } from '@angular/cdk/schematics';
 import {
   addSymbolToNgModuleMetadata,
   findNodes,
@@ -20,7 +20,7 @@ export function registerLocale(options: Schema): Rule {
     const workspace = getWorkspace(host);
     const project = getProjectFromWorkspace(workspace, options.project);
     const appModulePath = getAppModulePath(host, getProjectMainFile(project));
-    const moduleSource = getSourceFile(host, appModulePath);
+    const moduleSource = parseSourceFile(host, appModulePath);
 
     const locale = getCompatibleLocal(options);
     const localePrefix = locale.split('_')[ 0 ];
