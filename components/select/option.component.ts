@@ -52,7 +52,6 @@ export class NzOptionComponent implements OnChanges, OnInit, OnDestroy {
   ngOnInit(): void {
     if (this.nzOptionGroupComponent) {
       this.nzOptionGroupComponent.changes.pipe(startWith(true), takeUntil(this.destroy$)).subscribe(() => {
-        this.changes.next();
         this.groupLabel = this.nzOptionGroupComponent.nzLabel;
       });
     }

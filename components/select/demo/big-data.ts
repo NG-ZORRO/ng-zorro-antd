@@ -22,7 +22,7 @@ export class NzDemoSelectBigDataComponent implements OnInit {
 
   ngOnInit(): void {
     const children: string[] = [];
-    for (let i = 10; i < 100000; i++) {
+    for (let i = 10; i < 10000; i++) {
       children.push(`${i.toString(36)}${i}`);
     }
     this.listOfOption = children;
