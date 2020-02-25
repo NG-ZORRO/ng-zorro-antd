@@ -41,6 +41,7 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
           *ngIf="isShowSingleLabel"
           [deletable]="false"
           [disabled]="false"
+          [removeIcon]="removeIcon"
           [label]="listOfTopItem[0].nzLabel"
           [contentTemplateOutlet]="customTemplate"
           [contentTemplateOutletContext]="listOfTopItem[0]"
@@ -63,6 +64,7 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
           [@zoomMotion]
           [@.disabled]="noAnimation?.nzNoAnimation"
           [nzNoAnimation]="noAnimation?.nzNoAnimation"
+          [removeIcon]="removeIcon"
           [label]="item.nzLabel"
           [disabled]="item.nzDisabled || disabled"
           [contentTemplateOutlet]="item.contentTemplateOutlet"
@@ -102,6 +104,7 @@ export class NzSelectTopControlComponent implements OnChanges {
   @Input() mode: NzSelectModeType = 'default';
   @Input() customTemplate: TemplateRef<{ $implicit: NzSelectItemInterface }> | null = null;
   @Input() maxTagPlaceholder: TemplateRef<{ $implicit: NzSafeAny[] }> | null = null;
+  @Input() removeIcon: TemplateRef<NzSafeAny> | null = null;
   @Input() listOfTopItem: NzSelectItemInterface[] = [];
   @Input() tokenSeparators: string[] = [];
   @Output() readonly tokenize = new EventEmitter<string[]>();
@@ -227,7 +230,7 @@ export class NzSelectTopControlComponent implements OnChanges {
         };
       });
       if (this.listOfTopItem.length > this.maxTagCount) {
-        const exceededLabel = `+ ${this.listOfTopItem.length - this.maxTagCount} ...'`;
+        const exceededLabel = `+ ${this.listOfTopItem.length - this.maxTagCount} ...`;
         const listOfSelectedValue = this.listOfTopItem.map(item => item.nzValue);
         const exceededItem = {
           nzLabel: exceededLabel,

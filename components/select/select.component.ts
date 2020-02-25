@@ -35,7 +35,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { InputBoolean, NzNoAnimationDirective, slideMotion } from 'ng-zorro-antd/core';
-import { NzSafeAny, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { BehaviorSubject, combineLatest, merge, Subject } from 'rxjs';
 import { startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { NzOptionGroupComponent } from './option-group.component';
@@ -50,6 +50,8 @@ const defaultFilterOption: NzFilterOptionType = (searchValue: string, item: NzSe
     return false;
   }
 };
+
+export type NzSelectSizeType = 'large' | 'default' | 'small';
 
 @Component({
   selector: 'nz-select',
@@ -75,11 +77,13 @@ const defaultFilterOption: NzFilterOptionType = (searchValue: string, item: NzSe
       [@.disabled]="noAnimation?.nzNoAnimation"
       [nzNoAnimation]="noAnimation?.nzNoAnimation"
       [maxTagPlaceholder]="nzMaxTagPlaceholder"
+      [removeIcon]="nzRemoveIcon"
       [placeHolder]="nzPlaceHolder"
       [maxTagCount]="nzMaxTagCount"
       [customTemplate]="nzCustomTemplate"
       [tokenSeparators]="nzTokenSeparators"
       [showSearch]="nzShowSearch"
+      [autofocus]="nzAutoFocus"
       [listOfTopItem]="listOfTopItem"
       (inputValueChange)="onInputValueChange($event)"
       (tokenize)="onTokenSeparate($event)"
@@ -106,14 +110,14 @@ const defaultFilterOption: NzFilterOptionType = (searchValue: string, item: NzSe
       [cdkConnectedOverlayMinWidth]="nzDropdownMatchSelectWidth ? null : triggerWidth"
       [cdkConnectedOverlayWidth]="nzDropdownMatchSelectWidth ? triggerWidth : null"
       [cdkConnectedOverlayOrigin]="origin"
+      [cdkConnectedOverlayPanelClass]="nzDropdownClassName"
       (backdropClick)="setOpenState(false)"
       (detach)="setOpenState(false)"
       (positionChange)="onPositionChange($event)"
       [cdkConnectedOverlayOpen]="nzOpen"
     >
       <nz-option-container
-        [class]="nzDropdownClassName"
-        [ngStyle]="nzDropdownStyle"
+        [style]="nzDropdownStyle"
         [class.ant-select-dropdown-placement-bottomLeft]="dropDownPosition === 'bottom'"
         [class.ant-select-dropdown-placement-topLeft]="dropDownPosition === 'top'"
         [@slideMotion]="dropDownPosition"
@@ -150,22 +154,22 @@ const defaultFilterOption: NzFilterOptionType = (searchValue: string, item: NzSe
   }
 })
 export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy, AfterContentInit, OnChanges {
-  @Input() nzSize: NzSizeLDSType = 'default';
-  @Input() nzDropdownClassName: string;
+  @Input() nzSize: NzSelectSizeType = 'default';
+  @Input() nzDropdownClassName: string | null = null;
   @Input() nzDropdownMatchSelectWidth = true;
-  @Input() nzDropdownStyle: { [key: string]: string };
-  @Input() nzNotFoundContent: string;
-  @Input() nzPlaceHolder: string;
-  @Input() nzMaxTagCount: number;
-  @Input() nzDropdownRender: TemplateRef<NzSafeAny>;
-  @Input() nzCustomTemplate: TemplateRef<{ $implicit: NzSelectItemInterface }>;
-  @Input() nzSuffixIcon: TemplateRef<void>;
-  @Input() nzClearIcon: TemplateRef<void>;
-  @Input() nzRemoveIcon: TemplateRef<void>;
-  @Input() nzMenuItemSelectedIcon: TemplateRef<void>;
+  @Input() nzDropdownStyle: { [key: string]: string } | null = null;
+  @Input() nzNotFoundContent: string | null = null;
+  @Input() nzPlaceHolder: string | TemplateRef<NzSafeAny> | null = null;
+  @Input() nzMaxTagCount = Infinity;
+  @Input() nzDropdownRender: TemplateRef<NzSafeAny> | null = null;
+  @Input() nzCustomTemplate: TemplateRef<{ $implicit: NzSelectItemInterface }> | null = null;
+  @Input() nzSuffixIcon: TemplateRef<NzSafeAny> | null = null;
+  @Input() nzClearIcon: TemplateRef<NzSafeAny> | null = null;
+  @Input() nzRemoveIcon: TemplateRef<NzSafeAny> | null = null;
+  @Input() nzMenuItemSelectedIcon: TemplateRef<NzSafeAny> | null = null;
   @Input() nzShowArrow = true;
   @Input() nzTokenSeparators: string[] = [];
-  @Input() nzMaxTagPlaceholder: TemplateRef<{ $implicit: NzSafeAny[] }>;
+  @Input() nzMaxTagPlaceholder: TemplateRef<{ $implicit: NzSafeAny[] }> | null = null;
   @Input() nzMaxMultipleCount = Infinity;
   @Input() nzMode: NzSelectModeType = 'default';
   @Input() nzFilterOption: NzFilterOptionType = defaultFilterOption;
@@ -266,7 +270,10 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
       listOfContainerItem = [tagItem, ...listOfContainerItem];
       this.activatedValue = tagItem.nzValue;
     }
-    if (listOfContainerItem.findIndex(item => this.compareWith(item.nzValue, this.activatedValue)) === -1) {
+    if (
+      this.listOfValue.length !== 0 &&
+      listOfContainerItem.findIndex(item => this.compareWith(item.nzValue, this.activatedValue)) === -1
+    ) {
       const activatedItem = listOfContainerItem.find(item => this.compareWith(item.nzValue, this.listOfValue[0])) || listOfContainerItem[0];
       this.activatedValue = (activatedItem && activatedItem.nzValue) || null;
     }
@@ -278,7 +285,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
         listOfContainerItem.splice(index, 0, groupItem);
       });
     }
-    this.listOfContainerItem = listOfContainerItem;
+    this.listOfContainerItem = [...listOfContainerItem];
     this.updateCdkConnectedOverlayPositions();
   }
 
@@ -496,7 +503,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
         this.listOfTopItem = this.listOfValue
           .map(v => [...this.listOfTagAndTemplateItem, ...this.listOfTopItem].find(item => this.compareWith(v, item.nzValue))!)
           .filter(item => !!item);
-        this.activatedValue = listOfSelectedValue[0] || null;
         this.updateListOfContainerItem();
       });
   }
@@ -506,13 +512,18 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   ngAfterContentInit(): void {
-    this.listOfNzOptionComponent.changes
+    merge(this.listOfNzOptionGroupComponent.changes, this.listOfNzOptionComponent.changes)
       .pipe(
         startWith(true),
         switchMap(() =>
-          merge(...[this.listOfNzOptionComponent.changes, ...this.listOfNzOptionComponent.map(option => option.changes)]).pipe(
-            startWith(true)
-          )
+          merge(
+            ...[
+              this.listOfNzOptionComponent.changes,
+              this.listOfNzOptionGroupComponent.changes,
+              ...this.listOfNzOptionComponent.map(option => option.changes),
+              ...this.listOfNzOptionGroupComponent.map(option => option.changes)
+            ]
+          ).pipe(startWith(true))
         )
       )
       .subscribe(() => {

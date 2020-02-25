@@ -11,7 +11,6 @@ import { Component } from '@angular/core';
       <nz-option-group nzLabel="Engineer">
         <nz-option nzValue="tom" nzLabel="Tom"></nz-option>
       </nz-option-group>
-      <nz-option nzValue="lily" nzLabel="Lily"></nz-option>
     </nz-select>
   `,
   styles: [
