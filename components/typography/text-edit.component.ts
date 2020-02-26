@@ -29,7 +29,26 @@ import { NzAutosizeDirective } from 'ng-zorro-antd/input';
 @Component({
   selector: 'nz-text-edit',
   exportAs: 'nzTextEdit',
-  templateUrl: './nz-text-edit.component.html',
+  template: `
+    <button *ngIf="!editing" [nzTitle]="locale?.edit" nz-tooltip nz-trans-button class="ant-typography-edit" (click)="onClick()">
+      <i nz-icon nzType="edit"></i>
+    </button>
+    <ng-container *ngIf="editing">
+      <textarea
+        #textarea
+        nz-input
+        nzAutosize
+        (input)="onInput($event)"
+        (blur)="confirm()"
+        (keydown.esc)="onCancel()"
+        (keydown.enter)="onEnter($event)"
+      >
+      </textarea>
+      <button nz-trans-button class="ant-typography-edit-content-confirm" (click)="confirm()">
+        <i nz-icon nzType="enter"></i>
+      </button>
+    </ng-container>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false

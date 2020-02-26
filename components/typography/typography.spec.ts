@@ -5,8 +5,8 @@ import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core
 import { createKeyboardEvent, dispatchFakeEvent, typeInElement } from 'ng-zorro-antd/core';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
-import { NzTypographyComponent } from './nz-typography.component';
-import { NzTypographyModule } from './nz-typography.module';
+import { NzTypographyComponent } from './typography.component';
+import { NzTypographyModule } from './typography.module';
 
 // tslint:disable-next-line no-any
 declare const viewport: any;

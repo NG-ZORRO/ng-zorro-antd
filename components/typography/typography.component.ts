@@ -46,8 +46,8 @@ import {
 } from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
-import { NzTextCopyComponent } from './nz-text-copy.component';
-import { NzTextEditComponent } from './nz-text-edit.component';
+import { NzTextCopyComponent } from './text-copy.component';
+import { NzTextEditComponent } from './text-edit.component';
 
 const NZ_CONFIG_COMPONENT_NAME = 'typography';
 const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
@@ -61,7 +61,29 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
   h1[nz-title], h2[nz-title], h3[nz-title], h4[nz-title]
   `,
   exportAs: 'nzTypography',
-  templateUrl: './nz-typography.component.html',
+  template: `
+    <ng-template #contentTemplate let-content="content">
+      <ng-content *ngIf="!content"></ng-content>
+      {{ content }}
+    </ng-template>
+
+    <ng-container *ngIf="!editing">
+      <ng-container *ngIf="expanded || (!nzExpandable && !nzSuffix && nzEllipsisRows === 1) || canCssEllipsis">
+        <ng-template [ngTemplateOutlet]="contentTemplate" [ngTemplateOutletContext]="{ content: nzContent }"></ng-template>
+      </ng-container>
+      <ng-container *ngIf="(nzEllipsis && !expanded && (nzEllipsisRows > 1 || nzExpandable)) || nzSuffix">
+        <span #ellipsisContainer *ngIf="!expanded"></span>
+        <ng-container *ngIf="isEllipsis">{{ ellipsisStr }}</ng-container>
+        <ng-container *ngIf="nzSuffix">{{ nzSuffix }}</ng-container>
+        <a #expandable *ngIf="nzExpandable && isEllipsis" class="ant-typography-expand" (click)="onExpand()">{{ locale?.expand }}</a>
+      </ng-container>
+    </ng-container>
+
+    <nz-text-edit *ngIf="nzEditable" [text]="nzContent" (endEditing)="onEndEditing($event)" (startEditing)="onStartEditing()">
+    </nz-text-edit>
+
+    <nz-text-copy *ngIf="nzCopyable && !editing" [text]="copyText" (textCopy)="onTextCopy($event)"></nz-text-copy>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
