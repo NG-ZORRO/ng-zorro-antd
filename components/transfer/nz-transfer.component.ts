@@ -206,7 +206,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     const keys = toArray(this.nzTargetKeys);
     const hasOwnKey = (e: TransferItem) => e.hasOwnProperty('key');
     this.leftDataSource.forEach(e => {
-      if (hasOwnKey(e) && keys.includes(e.key) && !e.disabled) {
+      if (hasOwnKey(e) && keys.indexOf(e.key) !== -1 && !e.disabled) {
         e.checked = true;
       }
     });
