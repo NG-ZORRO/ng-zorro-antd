@@ -15,7 +15,7 @@
   <ng-container
     *ngIf="(nzEllipsis && !expanded && (nzEllipsisRows > 1 || nzExpandable)) || nzSuffix"
   >
-    <span #ellipsisContainer></span>
+    <span #ellipsisContainer *ngIf="!expanded"></span>
     <ng-container *ngIf="isEllipsis">{{ ellipsisStr }}</ng-container>
     <ng-container *ngIf="nzSuffix">{{ nzSuffix }}</ng-container>
     <a

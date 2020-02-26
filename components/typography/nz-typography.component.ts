@@ -153,6 +153,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   }
 
   onExpand(): void {
+    this.isEllipsis = false;
     this.expanded = true;
     this.nzExpandChange.emit();
   }
