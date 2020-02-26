@@ -7,6 +7,7 @@
  */
 
 import { Platform } from '@angular/cdk/platform';
+import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -15,6 +16,7 @@ import {
   ElementRef,
   EmbeddedViewRef,
   EventEmitter,
+  Inject,
   Input,
   OnChanges,
   OnDestroy,
@@ -48,6 +50,7 @@ import { NzTextCopyComponent } from './nz-text-copy.component';
 import { NzTextEditComponent } from './nz-text-edit.component';
 
 const NZ_CONFIG_COMPONENT_NAME = 'typography';
+const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
 
 @Component({
   selector: `
@@ -85,6 +88,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 1) @InputNumber() nzEllipsisRows: number;
   @Input() nzType: 'secondary' | 'warning' | 'danger' | undefined;
   @Input() nzCopyText: string | undefined;
+  @Input() nzSuffix: string | undefined;
   @Output() readonly nzContentChange = new EventEmitter<string>();
   @Output() readonly nzCopy = new EventEmitter<string>();
   @Output() readonly nzExpandChange = new EventEmitter<void>();
@@ -97,10 +101,12 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
 
   // tslint:disable-next-line:no-any
   locale: any = {};
+  document: Document;
+  expandableBtnElementCache: HTMLElement | null = null;
   editing = false;
   ellipsisText: string | undefined;
   cssEllipsis: boolean = false;
-  isEllipsis: boolean = false;
+  isEllipsis: boolean = true;
   expanded: boolean = false;
   ellipsisStr = '...';
 
@@ -124,8 +130,11 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
     private renderer: Renderer2,
     private platform: Platform,
     private i18n: NzI18nService,
+    @Inject(DOCUMENT) document: any, // tslint:disable-line no-any
     private nzDomEventService: NzDomEventService
-  ) {}
+  ) {
+    this.document = document;
+  }
 
   onTextCopy(text: string): void {
     this.nzCopy.emit(text);
@@ -144,12 +153,13 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   }
 
   onExpand(): void {
+    this.isEllipsis = false;
     this.expanded = true;
     this.nzExpandChange.emit();
   }
 
   canUseCSSEllipsis(): boolean {
-    if (this.nzEditable || this.nzCopyable || this.nzExpandable) {
+    if (this.nzEditable || this.nzCopyable || this.nzExpandable || this.nzSuffix) {
       return false;
     }
     if (this.nzEllipsisRows === 1) {
@@ -187,14 +197,18 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
       return;
     }
     const { viewRef, removeView } = this.getOriginContentViewRef();
-    const fixedNodes = [this.textCopyRef, this.textEditRef, this.expandableBtn].filter(e => e && e.nativeElement).map(e => e.nativeElement);
-
+    const fixedNodes = [this.textCopyRef, this.textEditRef].filter(e => e && e.nativeElement).map(e => e.nativeElement);
+    const expandableBtnElement = this.getExpandableBtnElement();
+    if (expandableBtnElement) {
+      fixedNodes.push(expandableBtnElement);
+    }
     const { contentNodes, text, ellipsis } = measure(
       this.host.nativeElement,
       this.nzEllipsisRows,
       viewRef.rootNodes,
       fixedNodes,
-      this.ellipsisStr
+      this.ellipsisStr,
+      this.nzSuffix
     );
 
     removeView();
@@ -209,6 +223,24 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
       this.renderer.appendChild(ellipsisContainerNativeElement, n.cloneNode(true));
     });
     this.cdr.markForCheck();
+  }
+
+  // Need to create the element for calculation size before view init
+  private getExpandableBtnElement(): HTMLElement | null {
+    if (this.nzExpandable) {
+      const expandText = this.locale ? this.locale.expand : '';
+      const cache = this.expandableBtnElementCache;
+      if (!cache || cache.innerText === expandText) {
+        const el = this.document.createElement('a');
+        el.className = EXPAND_ELEMENT_CLASSNAME;
+        el.innerText = expandText;
+        this.expandableBtnElementCache = el;
+      }
+      return this.expandableBtnElementCache;
+    } else {
+      this.expandableBtnElementCache = null;
+      return null;
+    }
   }
 
   private renderAndSubscribeWindowResize(): void {
@@ -239,8 +271,8 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzCopyable, nzEditable, nzExpandable, nzEllipsis, nzContent, nzEllipsisRows } = changes;
-    if (nzCopyable || nzEditable || nzExpandable || nzEllipsis || nzContent || nzEllipsisRows) {
+    const { nzCopyable, nzEditable, nzExpandable, nzEllipsis, nzContent, nzEllipsisRows, nzSuffix } = changes;
+    if (nzCopyable || nzEditable || nzExpandable || nzEllipsis || nzContent || nzEllipsisRows || nzSuffix) {
       if (this.nzEllipsis) {
         if (this.expanded) {
           this.windowResizeSubscription.unsubscribe();
@@ -254,6 +286,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    this.expandableBtnElementCache = null;
     this.windowResizeSubscription.unsubscribe();
   }
 }

@@ -260,8 +260,7 @@ describe('typography', () => {
       viewport.reset();
     }));
 
-    // TODO Uncaught RangeError: Maximum call stack size exceeded thrown
-    xit('should resize work', fakeAsync(() => {
+    it('should resize work', fakeAsync(() => {
       testComponent.expandable = true;
       viewport.set(400, 1000);
       dispatchFakeEvent(window, 'resize');
@@ -294,6 +293,45 @@ describe('typography', () => {
         expect(e.innerText.includes('...')).toBe(true);
       });
       viewport.reset();
+    }));
+
+    it('should suffix work', fakeAsync(() => {
+      testComponent.expandable = true;
+      testComponent.suffix = 'The suffix.';
+
+      {
+        viewport.set(8000, 1000);
+        dispatchFakeEvent(window, 'resize');
+        fixture.detectChanges();
+        tick(32);
+        fixture.detectChanges();
+        const el = componentElement.querySelector('.dynamic') as HTMLParagraphElement;
+        expect(el.innerText.endsWith('The suffix.')).toBe(true);
+        expect(el.innerText.includes('...')).toBe(false);
+      }
+
+      {
+        viewport.set(800, 1000);
+        dispatchFakeEvent(window, 'resize');
+        fixture.detectChanges();
+        tick(32);
+        fixture.detectChanges();
+        const el = componentElement.querySelector('.dynamic') as HTMLParagraphElement;
+        expect(el.innerText.includes('The suffix.')).toBe(true);
+        expect(el.innerText.includes('...')).toBe(true);
+        testComponent.expandable = false;
+        fixture.detectChanges();
+        tick(32);
+        fixture.detectChanges();
+        expect(el.innerText.endsWith('The suffix.')).toBe(true);
+        expect(el.innerText.includes('...')).toBe(true);
+      }
+
+      viewport.reset();
+      dispatchFakeEvent(window, 'resize');
+      fixture.detectChanges();
+      tick(32);
+      fixture.detectChanges();
     }));
   });
 });
@@ -368,6 +406,7 @@ export class NzTestTypographyEditComponent {
       [nzEllipsisRows]="2"
       (nzExpandChange)="onExpand()"
       [nzContent]="str"
+      [nzSuffix]="suffix"
       class="dynamic"
     ></p>
   `,
@@ -382,7 +421,7 @@ export class NzTestTypographyEditComponent {
 export class NzTestTypographyEllipsisComponent {
   expandable = false;
   onExpand = jasmine.createSpy('expand callback');
-
+  suffix: string | null = null;
   @ViewChild(NzTypographyComponent, { static: false }) nzTypographyComponent: NzTypographyComponent;
   str = new Array(5).fill('Ant Design, a design language for background applications, is refined by Ant UED Team.').join('');
 }

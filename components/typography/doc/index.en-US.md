@@ -24,6 +24,7 @@ Basic text writing, including headings, body text, lists, and more.
 | `[nzCopyable]` | Can copy, require use `[nzContent]` | `boolean` | `false` ||
 | `[nzEditable]` | Editable, require use `[nzContent]` | `boolean` | `false` ||
 | `[nzEllipsis]` | Display ellipsis when overflow, require use `[nzContent]` when dynamic content | `boolean` | `false` ||
+| `[nzSuffix]` | The text suffix when used `nzEllipsis` | `string` | - ||
 | `[nzCopyText]` | Customize the copy text | `string` | - ||
 | `[nzDisabled]` | Disable content | `boolean` | `false` ||
 | `[nzExpandable]` | Expandable when ellipsis | `boolean` | `false` ||

@@ -62,7 +62,8 @@ export function measure(
   rows: number,
   contentNodes: Node[],
   fixedContent: HTMLElement[],
-  ellipsisStr: string
+  ellipsisStr: string,
+  suffixStr: string = ''
 ): { contentNodes: Node[]; text: string; ellipsis: boolean } {
   if (!ellipsisContainer) {
     ellipsisContainer = document.createElement('div');
@@ -94,6 +95,7 @@ export function measure(
   const contentList = mergeChildren(contentNodes);
   const container = document.createElement('div');
   const contentContainer = document.createElement('span');
+  const suffixContainer = document.createTextNode(suffixStr);
   const fixedContainer = document.createElement('span');
 
   // Add styles in container
@@ -104,6 +106,9 @@ export function measure(
   contentList.forEach(n => {
     contentContainer.appendChild(n);
   });
+
+  contentContainer.appendChild(suffixContainer);
+
   fixedContent.forEach(node => {
     fixedContainer.appendChild(node.cloneNode(true));
   });
@@ -137,7 +142,7 @@ export function measure(
   // Create origin content holder
   const ellipsisContentHolder = document.createElement('span');
   ellipsisContainer.appendChild(ellipsisContentHolder);
-  const ellipsisTextNode = document.createTextNode(ellipsisStr);
+  const ellipsisTextNode = document.createTextNode(ellipsisStr + suffixStr);
   ellipsisContentHolder.appendChild(ellipsisTextNode);
 
   fixedNodes.forEach(childNode => {
@@ -158,8 +163,7 @@ export function measure(
     lastSuccessLoc: number = 0
   ): MeasureResult {
     const midLoc = Math.floor((startLoc + endLoc) / 2);
-    const currentText = fullText.slice(0, midLoc);
-    textNode.textContent = currentText;
+    textNode.textContent = fullText.slice(0, midLoc);
 
     if (startLoc >= endLoc - 1) {
       // Loop when step is small
@@ -167,7 +171,7 @@ export function measure(
         const currentStepText = fullText.slice(0, step);
         textNode.textContent = currentStepText;
 
-        if (inRange()) {
+        if (inRange() || !currentStepText) {
           return step === fullText.length
             ? {
                 finished: false,
