@@ -4,15 +4,20 @@
 </ng-template>
 
 <ng-container *ngIf="!editing">
-  <ng-container *ngIf="expanded || (!nzExpandable && nzEllipsisRows === 1) || canCssEllipsis">
+  <ng-container
+    *ngIf="expanded || (!nzExpandable && !nzSuffix && nzEllipsisRows === 1) || canCssEllipsis"
+  >
     <ng-template
       [ngTemplateOutlet]="contentTemplate"
       [ngTemplateOutletContext]="{ content: nzContent }"
     ></ng-template>
   </ng-container>
-  <ng-container *ngIf="nzEllipsis && !expanded && (nzEllipsisRows > 1 || nzExpandable)">
-    <span #ellipsisContainer></span>
+  <ng-container
+    *ngIf="(nzEllipsis && !expanded && (nzEllipsisRows > 1 || nzExpandable)) || nzSuffix"
+  >
+    <span #ellipsisContainer *ngIf="!expanded"></span>
     <ng-container *ngIf="isEllipsis">{{ ellipsisStr }}</ng-container>
+    <ng-container *ngIf="nzSuffix">{{ nzSuffix }}</ng-container>
     <a
       #expandable
       *ngIf="nzExpandable && isEllipsis"
