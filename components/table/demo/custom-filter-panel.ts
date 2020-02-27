@@ -8,20 +8,20 @@ import { Component } from '@angular/core';
         <tr>
           <th nzCustomFilter>
             Name
-            <i
+            <span
               nz-th-extra
-              class="ant-table-filter-icon"
-              nz-icon
+              class="ant-table-filter-trigger"
+              [class.ant-table-filter-open]="dropdown.nzVisible"
               nz-dropdown
               #dropdown="nzDropdown"
-              nzType="search"
               [nzDropdownMenu]="menu"
-              [class.ant-table-filter-open]="dropdown.nzVisible"
               nzTrigger="click"
               nzPlacement="bottomRight"
               [nzClickHide]="false"
               nzTableFilter
-            ></i>
+            >
+              <i nz-icon nzType="search"></i>
+            </span>
           </th>
           <th>Age</th>
           <th nzShowFilter [nzFilters]="listOfFilterAddress" (nzFilterChange)="filterAddressChange($event)">Address</th>

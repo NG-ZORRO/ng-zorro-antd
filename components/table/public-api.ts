@@ -6,11 +6,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-table.component';
-export * from './nz-table.module';
-export * from './nz-tbody.directive';
-export * from './nz-td.component';
-export * from './nz-th.component';
-export * from './nz-thead.component';
-export * from './nz-tr.directive';
-export * from './nz-virtual-scroll.directive';
+export * from './table.component';
+export * from './table.module';
+export * from './tbody.component';
+export * from './td.component';
+export * from './th.component';
+export * from './thead.component';
+export * from './tr.directive';
+export * from './table-virtual-scroll.directive';
+export * from './fixed-left-cell.directive';
+export * from './fixed-right-cell.directive';

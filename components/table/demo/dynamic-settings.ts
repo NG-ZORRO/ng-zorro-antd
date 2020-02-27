@@ -105,19 +105,18 @@ interface ItemData {
     >
       <thead>
         <tr *ngIf="header">
-          <th nzWidth="50px" nzShowExpand *ngIf="expandable"></th>
+          <th nzShowExpand *ngIf="expandable"></th>
           <th
-            nzWidth="62px"
             nzShowCheckbox
             *ngIf="checkbox"
             [(nzChecked)]="allChecked"
             [nzIndeterminate]="indeterminate"
             (nzCheckedChange)="checkAll($event)"
           ></th>
-          <th nzWidth="150px">Name</th>
-          <th nzWidth="70px">Age</th>
+          <th>Name</th>
+          <th>Age</th>
           <th>Address</th>
-          <th nzWidth="260px">Action</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>

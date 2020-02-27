@@ -2,8 +2,8 @@ import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
-import { NzTableComponent } from './nz-table.component';
-import { NzTableModule } from './nz-table.module';
+import { NzTableComponent } from './table.component';
+import { NzTableModule } from './table.module';
 
 describe('nz-thead', () => {
   beforeEach(fakeAsync(() => {

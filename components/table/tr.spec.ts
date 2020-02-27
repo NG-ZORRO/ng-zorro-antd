@@ -1,8 +1,8 @@
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NzTableModule } from './nz-table.module';
-import { NzTrDirective } from './nz-tr.directive';
+import { NzTableModule } from './table.module';
+import { NzTrDirective } from './tr.directive';
 
 describe('nz-tr', () => {
   beforeEach(fakeAsync(() => {

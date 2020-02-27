@@ -14,20 +14,13 @@ interface ItemData {
 @Component({
   selector: 'nz-demo-table-grouping-columns',
   template: `
-    <nz-table
-      #groupingTable
-      [nzData]="listOfDisplayData"
-      nzBordered
-      nzSize="middle"
-      [nzWidthConfig]="widthConfig"
-      [nzScroll]="scrollConfig"
-    >
+    <nz-table #groupingTable [nzData]="listOfDisplayData" nzBordered nzSize="middle" [nzScroll]="scrollConfig">
       <thead>
         <tr>
-          <th rowspan="4" nzLeft="0px" nzShowFilter [nzFilters]="filterName" (nzFilterChange)="search($event)">Name</th>
+          <th rowspan="4" nzWidth="100px" nzLeft="0px" nzShowFilter [nzFilters]="filterName" (nzFilterChange)="search($event)">Name</th>
           <th colspan="4">Other</th>
           <th colspan="2">Company</th>
-          <th rowspan="4" nzRight="0px">Gender</th>
+          <th rowspan="4" nzWidth="100px" nzRight="0px">Gender</th>
         </tr>
         <tr>
           <th rowspan="3" nzShowSort [(nzSort)]="sortValue" (nzSortChange)="search(searchName)">Age</th>
@@ -60,7 +53,6 @@ interface ItemData {
   `
 })
 export class NzDemoTableGroupingColumnsComponent implements OnInit {
-  widthConfig = ['100px', '200px', '200px', '100px', '100px', '200px', '200px', '100px'];
   scrollConfig = { x: '1200px', y: '240px' };
   listOfDisplayData: ItemData[] = [];
   listOfData: ItemData[] = [];

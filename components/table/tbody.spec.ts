@@ -1,8 +1,8 @@
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NzTableModule } from './nz-table.module';
-import { NzTbodyDirective } from './nz-tbody.directive';
+import { NzTableModule } from './table.module';
+import { NzTbodyComponent } from './tbody.component';
 
 describe('nz-tbody', () => {
   beforeEach(fakeAsync(() => {
@@ -19,7 +19,7 @@ describe('nz-tbody', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTbodyTestTableComponent);
       fixture.detectChanges();
-      tbody = fixture.debugElement.query(By.directive(NzTbodyDirective));
+      tbody = fixture.debugElement.query(By.directive(NzTbodyComponent));
     });
 
     it('should not add class', () => {
@@ -35,7 +35,7 @@ describe('nz-tbody', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTbodyTestNzTableComponent);
       fixture.detectChanges();
-      tbody = fixture.debugElement.query(By.directive(NzTbodyDirective));
+      tbody = fixture.debugElement.query(By.directive(NzTbodyComponent));
     });
     it('should not add class', () => {
       fixture.detectChanges();

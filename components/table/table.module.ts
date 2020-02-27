@@ -20,14 +20,20 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzFixedLeftCellDirective } from './fixed-left-cell.directive';
+import { NzFixedRightCellDirective } from './fixed-right-cell.directive';
+import { NzTableInnerDefaultComponent } from './table-inner-default.component';
+import { NzTableInnerScrollComponent } from './table-inner-scroll.component';
+import { NzTableInnerComponent } from './table-inner.component';
+import { NzTableVirtualScrollDirective } from './table-virtual-scroll.directive';
 
-import { NzTableComponent } from './nz-table.component';
-import { NzTbodyDirective } from './nz-tbody.directive';
-import { NzTdComponent } from './nz-td.component';
-import { NzThComponent } from './nz-th.component';
-import { NzTheadComponent } from './nz-thead.component';
-import { NzTrDirective } from './nz-tr.directive';
-import { NzVirtualScrollDirective } from './nz-virtual-scroll.directive';
+import { NzTableComponent } from './table.component';
+import { NzTbodyComponent } from './tbody.component';
+import { NzTdComponent } from './td.component';
+import { NzThComponent } from './th.component';
+import { NzTheadComponent } from './thead.component';
+import { NzTableTitleFooterComponent } from './title-footer.component';
+import { NzTrDirective } from './tr.directive';
 
 @NgModule({
   declarations: [
@@ -35,11 +41,27 @@ import { NzVirtualScrollDirective } from './nz-virtual-scroll.directive';
     NzThComponent,
     NzTdComponent,
     NzTheadComponent,
-    NzTbodyDirective,
+    NzTbodyComponent,
     NzTrDirective,
-    NzVirtualScrollDirective
+    NzTableVirtualScrollDirective,
+    NzFixedLeftCellDirective,
+    NzFixedRightCellDirective,
+    NzTableInnerComponent,
+    NzTableTitleFooterComponent,
+    NzTableInnerDefaultComponent,
+    NzTableInnerScrollComponent
   ],
-  exports: [NzTableComponent, NzThComponent, NzTdComponent, NzTheadComponent, NzTbodyDirective, NzTrDirective, NzVirtualScrollDirective],
+  exports: [
+    NzTableComponent,
+    NzThComponent,
+    NzTdComponent,
+    NzTheadComponent,
+    NzTbodyComponent,
+    NzTrDirective,
+    NzTableVirtualScrollDirective,
+    NzFixedLeftCellDirective,
+    NzFixedRightCellDirective
+  ],
   imports: [
     NzMenuModule,
     FormsModule,

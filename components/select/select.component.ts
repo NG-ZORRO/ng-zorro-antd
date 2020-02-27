@@ -524,7 +524,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
               ...this.listOfNzOptionGroupComponent.map(option => option.changes)
             ]
           ).pipe(startWith(true))
-        )
+        ),
+        takeUntil(this.destroy$)
       )
       .subscribe(() => {
         const listOfOptionInterface = this.listOfNzOptionComponent.toArray().map(item => {

@@ -8,14 +8,14 @@ import { Component, OnInit } from '@angular/core';
         <tr>
           <th nzWidth="150px" nzLeft="0px">Full Name</th>
           <th nzWidth="100px" nzLeft="150px">Age</th>
-          <th nzWidth="100px">Column 1</th>
-          <th nzWidth="100px">Column 2</th>
-          <th nzWidth="100px">Column 3</th>
-          <th nzWidth="100px">Column 4</th>
-          <th nzWidth="100px">Column 5</th>
-          <th nzWidth="100px">Column 6</th>
-          <th nzWidth="100px">Column 7</th>
-          <th nzWidth="100px">Column 8</th>
+          <th>Column 1</th>
+          <th>Column 2</th>
+          <th>Column 3</th>
+          <th>Column 4</th>
+          <th>Column 5</th>
+          <th>Column 6</th>
+          <th>Column 7</th>
+          <th>Column 8</th>
           <th nzWidth="100px" nzRight="0px">Action</th>
         </tr>
       </thead>

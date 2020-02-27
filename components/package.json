@@ -29,7 +29,8 @@
   "dependencies": {
     "@angular/cdk": "^9.0.0",
     "@ant-design/icons-angular": "^9.0.0",
-    "date-fns": "^1.30.1"
+    "date-fns": "^1.30.1",
+    "resize-observer-polyfill": "^1.5.1"
   },
   "peerDependencies": {
     "@angular/animations": "^9.0.0",

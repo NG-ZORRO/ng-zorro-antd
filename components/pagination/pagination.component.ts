@@ -39,7 +39,7 @@ import { PaginationItemRenderContext } from './pagination.types';
       <ul
         *ngIf="nzSimple"
         nz-pagination-simple
-        [class.ant-table-pagination]="nzInTable"
+        [class.ant-table-pagination]="nzInsideTable"
         [disabled]="nzDisabled"
         [itemRender]="nzItemRender"
         [locale]="locale"
@@ -51,7 +51,7 @@ import { PaginationItemRenderContext } from './pagination.types';
       <ul
         *ngIf="!nzSimple"
         nz-pagination-default
-        [class.ant-table-pagination]="nzInTable"
+        [class.ant-table-pagination]="nzInsideTable"
         [nzSize]="nzSize"
         [itemRender]="nzItemRender"
         [showTotal]="nzShowTotal"
@@ -73,11 +73,11 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   @Output() readonly nzPageSizeChange: EventEmitter<number> = new EventEmitter();
   @Output() readonly nzPageIndexChange: EventEmitter<number> = new EventEmitter();
   @Input() nzShowTotal: TemplateRef<{ $implicit: number; range: [number, number] }> | null = null;
-  @Input() nzInTable = false;
   @Input() nzSize: 'default' | 'small' = 'default';
   @Input() nzPageSizeOptions = [10, 20, 30, 40];
   @Input() nzItemRender: TemplateRef<PaginationItemRenderContext>;
   @Input() @InputBoolean() nzDisabled = false;
+  @Input() @InputBoolean() nzInsideTable = false;
   @Input() @InputBoolean() nzShowSizeChanger = false;
   @Input() @InputBoolean() nzHideOnSinglePage = false;
   @Input() @InputBoolean() nzShowQuickJumper = false;

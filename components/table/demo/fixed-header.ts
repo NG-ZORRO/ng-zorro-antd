@@ -12,8 +12,8 @@ interface ItemData {
     <nz-table #headerTable [nzData]="listOfData" [nzPageSize]="50" [nzScroll]="{ y: '240px' }">
       <thead>
         <tr>
-          <th nzWidth="150px">Name</th>
-          <th nzWidth="150px">Age</th>
+          <th>Name</th>
+          <th>Age</th>
           <th>Address</th>
         </tr>
       </thead>

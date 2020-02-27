@@ -7,12 +7,12 @@
  */
 
 import { Directive, TemplateRef } from '@angular/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Directive({
   selector: '[nz-virtual-scroll]',
   exportAs: 'nzVirtualScroll'
 })
-export class NzVirtualScrollDirective {
-  /* tslint:disable-next-line:no-any */
-  constructor(public templateRef: TemplateRef<{ $implicit: any; index: number }>) {}
+export class NzTableVirtualScrollDirective {
+  constructor(public templateRef: TemplateRef<{ $implicit: NzSafeAny; index: number }>) {}
 }

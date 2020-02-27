@@ -49,8 +49,7 @@ interface ChildrenItemData {
             </td>
           </tr>
           <tr [nzExpand]="data.expand">
-            <td></td>
-            <td colspan="7">
+            <td colspan="8">
               <nz-table #innerTable [nzData]="listOfChildrenData" nzSize="middle" [nzShowPagination]="false">
                 <thead>
                   <tr>
