@@ -11,8 +11,8 @@ import { NgModule } from '@angular/core';
 import { NzOutletModule } from 'ng-zorro-antd/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-import { NzTimelineItemComponent } from './nz-timeline-item.component';
-import { NzTimelineComponent } from './nz-timeline.component';
+import { NzTimelineItemComponent } from './timeline-item.component';
+import { NzTimelineComponent } from './timeline.component';
 
 @NgModule({
   declarations: [NzTimelineItemComponent, NzTimelineComponent],
