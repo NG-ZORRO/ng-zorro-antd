@@ -38,7 +38,14 @@ export interface BreadcrumbOption {
   selector: 'nz-breadcrumb',
   exportAs: 'nzBreadcrumb',
   preserveWhitespaces: false,
-  templateUrl: './nz-breadcrumb.component.html',
+  template: `
+    <ng-content></ng-content>
+    <ng-container *ngIf="nzAutoGenerate">
+      <nz-breadcrumb-item *ngFor="let breadcrumb of breadcrumbs">
+        <a [attr.href]="breadcrumb.url" (click)="navigate(breadcrumb.url, $event)">{{ breadcrumb.label }}</a>
+      </nz-breadcrumb-item>
+    </ng-container>
+  `,
   styles: [
     `
       nz-breadcrumb {
@@ -49,7 +56,7 @@ export interface BreadcrumbOption {
 })
 export class NzBreadCrumbComponent implements OnInit, OnDestroy {
   @Input() @InputBoolean() nzAutoGenerate = false;
-  @Input() nzSeparator: string | TemplateRef<void> = '/';
+  @Input() nzSeparator: string | TemplateRef<void> | null = '/';
   @Input() nzRouteLabel: string = 'breadcrumb';
 
   breadcrumbs: BreadcrumbOption[] | undefined = [];

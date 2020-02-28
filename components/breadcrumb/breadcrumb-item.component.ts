@@ -10,7 +10,7 @@ import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@a
 
 import { NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
 
-import { NzBreadCrumbComponent } from './nz-breadcrumb.component';
+import { NzBreadCrumbComponent } from './breadcrumb.component';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -18,7 +18,26 @@ import { NzBreadCrumbComponent } from './nz-breadcrumb.component';
   selector: 'nz-breadcrumb-item',
   exportAs: 'nzBreadcrumbItem',
   preserveWhitespaces: false,
-  templateUrl: './nz-breadcrumb-item.component.html',
+  template: `
+    <ng-container *ngIf="!!nzOverlay; else noMenuTpl">
+      <span class="ant-breadcrumb-overlay-link" nz-dropdown [nzDropdownMenu]="nzOverlay">
+        <ng-template [ngTemplateOutlet]="noMenuTpl"></ng-template>
+        <i *ngIf="!!nzOverlay" nz-icon nzType="down"></i>
+      </span>
+    </ng-container>
+
+    <ng-template #noMenuTpl>
+      <span class="ant-breadcrumb-link">
+        <ng-content></ng-content>
+      </span>
+    </ng-template>
+
+    <span class="ant-breadcrumb-separator" *ngIf="nzBreadCrumbComponent.nzSeparator">
+      <ng-container *nzStringTemplateOutlet="nzBreadCrumbComponent.nzSeparator">
+        {{ nzBreadCrumbComponent.nzSeparator }}
+      </ng-container>
+    </span>
+  `,
   styles: [
     `
       nz-breadcrumb-item:last-child {

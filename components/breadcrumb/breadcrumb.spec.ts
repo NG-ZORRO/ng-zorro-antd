@@ -9,11 +9,11 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { NzDemoBreadcrumbDropdownComponent } from './demo/dropdown';
 
+import { NzBreadCrumbItemComponent } from './breadcrumb-item.component';
+import { NzBreadCrumbComponent } from './breadcrumb.component';
+import { NzBreadCrumbModule } from './breadcrumb.module';
 import { NzDemoBreadcrumbBasicComponent } from './demo/basic';
 import { NzDemoBreadcrumbSeparatorComponent } from './demo/separator';
-import { NzBreadCrumbItemComponent } from './nz-breadcrumb-item.component';
-import { NzBreadCrumbComponent } from './nz-breadcrumb.component';
-import { NzBreadCrumbModule } from './nz-breadcrumb.module';
 
 describe('breadcrumb', () => {
   describe('basic', () => {
