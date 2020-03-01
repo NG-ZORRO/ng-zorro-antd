@@ -34,7 +34,6 @@ import { PanelMode } from './standard-types';
   ]
 })
 export class NzYearPickerComponent extends AbstractPickerComponent {
-  endPanelMode: PanelMode = 'year';
   @Input() nzMode: PanelMode | PanelMode[] = 'year';
   @Input() nzFormat: string = 'yyyy';
 

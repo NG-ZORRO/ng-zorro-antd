@@ -7,7 +7,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { CandyDate, CompatibleValue } from 'ng-zorro-antd/core';
+import { CandyDate, cloneDate, CompatibleValue, normalizeRangeValue } from 'ng-zorro-antd/core';
 import { ReplaySubject, Subject } from 'rxjs';
 import { RangePartType } from './standard-types';
 
@@ -18,18 +18,32 @@ export class DatePickerService {
   activeDate: CompatibleValue;
   activeInput: RangePartType = 'left';
   arrowPositionStyle = {};
+  isRange = false;
 
   valueChange$ = new ReplaySubject<CompatibleValue>(1);
   emitValue$ = new Subject<void>();
   inputPartChange$ = new Subject<RangePartType>();
 
-  initValue(isRange: boolean = false): void {
-    this.value = this.initialValue = isRange ? [] : null;
+  initValue(): void {
+    if (this.isRange) {
+      this.activeDate = normalizeRangeValue([]);
+      this.value = this.initialValue = [];
+    } else {
+      this.value = this.initialValue = null;
+    }
+  }
+
+  setActiveDate(): void {
+    if (this.isRange) {
+      this.activeDate = normalizeRangeValue(this.value as CandyDate[]);
+    } else {
+      this.activeDate = cloneDate(this.value);
+    }
   }
 
   setValue(value: CompatibleValue): void {
     this.value = value;
-    this.activeDate = value;
+    this.setActiveDate();
     this.valueChange$.next(this.value);
   }
 

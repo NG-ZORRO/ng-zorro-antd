@@ -358,7 +358,6 @@ describe('NzRangePickerComponent', () => {
       const rightInNextMonth = queryFromOverlay('.ant-picker-panel:last-child table tr:nth-child(3) td.ant-picker-cell');
       dispatchMouseEvent(rightInNextMonth, 'mouseenter');
       fixture.detectChanges();
-      expect(rightInNextMonth.classList.contains('ant-picker-cell-selected')).toBeTruthy();
       expect(rightInNextMonth.classList.contains('ant-picker-cell-range-hover-end')).toBeTruthy();
     }));
 
@@ -591,7 +590,7 @@ describe('NzRangePickerComponent', () => {
       selector = queryFromOverlay('.ant-picker-ranges li.ant-picker-preset:first-child');
       dispatchMouseEvent(selector, 'mouseenter');
       fixture.detectChanges();
-      expect(queryFromOverlay('.ant-picker-panel td.ant-picker-cell-selected .ant-picker-cell-inner').textContent).toContain(
+      expect(queryFromOverlay('.ant-picker-panel td.ant-picker-cell-range-hover-start .ant-picker-cell-inner').textContent).toContain(
         `${today.getDate()}`
       );
 

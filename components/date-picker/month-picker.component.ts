@@ -34,7 +34,6 @@ import { PanelMode } from './standard-types';
   ]
 })
 export class NzMonthPickerComponent extends AbstractPickerComponent {
-  endPanelMode: PanelMode = 'month';
   @Input() nzFormat: string = 'yyyy-MM';
   @Input() nzMode: PanelMode | PanelMode[] = 'month';
 

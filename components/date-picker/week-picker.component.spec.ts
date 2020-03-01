@@ -1,6 +1,7 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core';
@@ -15,7 +16,7 @@ describe('NzWeekPickerComponent', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, NzDatePickerModule],
+      imports: [NoopAnimationsModule, NzDatePickerModule, FormsModule],
       declarations: [NzTestWeekPickerComponent]
     });
 
@@ -46,12 +47,25 @@ describe('NzWeekPickerComponent', () => {
   it('should change input value when click week', fakeAsync(() => {
     fixtureInstance.nzValue = new Date('2020-02-25');
     fixture.detectChanges();
+    flush();
+    fixture.detectChanges();
     openPickerByClickTrigger();
     dispatchMouseEvent(queryFromOverlay('.ant-picker-cell'), 'click');
     fixture.detectChanges();
     tick(500);
     fixture.detectChanges();
     expect(getPickerInput(fixture.debugElement).value).toBe('2020-05');
+  }));
+
+  it('should change panel to week from month', fakeAsync(() => {
+    fixtureInstance.nzValue = new Date('2020-02-25');
+    fixture.detectChanges();
+    openPickerByClickTrigger();
+    dispatchMouseEvent(queryFromOverlay('.ant-picker-header-month-btn'), 'click');
+    fixture.detectChanges();
+    dispatchMouseEvent(queryFromOverlay('.ant-picker-cell'), 'click');
+    fixture.detectChanges();
+    expect(queryFromOverlay('.ant-picker-week-panel')).toBeTruthy();
   }));
 
   ////////////

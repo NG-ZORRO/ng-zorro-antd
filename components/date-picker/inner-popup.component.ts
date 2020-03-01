@@ -149,6 +149,7 @@ import { DisabledDateFn, PanelMode, SupportTimeOptions } from './standard-types'
 export class InnerPopupComponent implements OnChanges {
   @Input() activeDate: CandyDate;
   @Input() endPanelMode: PanelMode;
+  @Input() panelMode: PanelMode;
   @Input() showWeek: boolean;
   @Input() locale: NzCalendarI18nInterface;
   @Input() showTimePicker: boolean;
@@ -160,7 +161,6 @@ export class InnerPopupComponent implements OnChanges {
   @Input() selectedValue: CandyDate[]; // Range ONLY
   @Input() hoverValue: CandyDate[]; // Range ONLY
   @Input() value: CandyDate;
-  @Input() panelMode: PanelMode = 'date';
 
   @Output() readonly panelModeChange = new EventEmitter<PanelMode>();
 
@@ -195,7 +195,7 @@ export class InnerPopupComponent implements OnChanges {
       this.value = value;
       this.selectDate.emit(value);
     } else {
-      this.panelModeChange.emit('date');
+      this.panelModeChange.emit(this.endPanelMode);
     }
   }
 
@@ -204,10 +204,8 @@ export class InnerPopupComponent implements OnChanges {
     if (this.endPanelMode === 'year') {
       this.value = value;
       this.selectDate.emit(value);
-    } else if (this.endPanelMode === 'month') {
-      this.panelModeChange.emit('month');
     } else {
-      this.panelModeChange.emit('date');
+      this.panelModeChange.emit(this.endPanelMode);
     }
   }
 

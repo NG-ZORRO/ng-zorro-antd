@@ -84,11 +84,11 @@ import {
       <inner-popup
         *ngIf="show(partType)"
         [showWeek]="showWeek"
-        [endPanelMode]="endPanelMode"
+        [endPanelMode]="getPanelMode(endPanelMode, partType)"
         [locale]="locale"
         [showTimePicker]="hasTimePicker"
         [timeOptions]="getTimeOptions(partType)"
-        [panelMode]="getPanelMode(partType)"
+        [panelMode]="getPanelMode(panelMode, partType)"
         (panelModeChange)="onPanelModeChange($event, partType)"
         [activeDate]="getActiveDate(partType)"
         [value]="getValue(partType)"
@@ -143,7 +143,6 @@ import {
 export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   @Input() isRange: boolean;
   @Input() showWeek: boolean;
-
   @Input() locale: NzCalendarI18nInterface;
   @Input() format: string;
   @Input() placeholder: string | string[];
@@ -158,7 +157,6 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   @Input() dropdownClassName: string;
 
   @Input() panelMode: PanelMode | PanelMode[];
-  @Input() endPanelMode: PanelMode;
   @Input() value: CompatibleValue;
 
   @Output() readonly panelModeChange = new EventEmitter<PanelMode | PanelMode[]>();
@@ -166,6 +164,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   @Output() readonly resultOk = new EventEmitter<void>(); // Emitted when done with date selecting
 
   prefixCls: string = PREFIX_CLASS;
+  endPanelMode: PanelMode | PanelMode[] = 'date';
   timeOptions: SupportTimeOptions | SupportTimeOptions[] | null;
   selectedValue: SingleValue[] = []; // Range ONLY
   hoverValue: SingleValue[] = []; // Range ONLY
@@ -198,6 +197,9 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
       if (this.showTime) {
         this.buildTimeOptions();
       }
+    }
+    if (changes.panelMode) {
+      this.endPanelMode = this.panelMode;
     }
   }
 
@@ -233,10 +235,16 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
 
   onPanelModeChange(mode: PanelMode, partType?: RangePartType): void {
     if (this.isRange) {
-      (this.panelMode as PanelMode[])[this.datePickerService.getActiveIndex(partType)] = mode;
+      const index = this.datePickerService.getActiveIndex(partType);
+      if (index === 0) {
+        this.panelMode = [mode, this.panelMode[1]] as PanelMode[];
+      } else {
+        this.panelMode = [this.panelMode[0], mode] as PanelMode[];
+      }
     } else {
       this.panelMode = mode;
     }
+    // this.cdr.markForCheck();
     this.panelModeChange.emit(this.panelMode);
   }
 
@@ -287,6 +295,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
         this.clearHoverValue(); // Clean up
         this.selectedValue[this.datePickerService.getActiveIndex()] = value;
         this.selectedValue = sortRangeValue(this.selectedValue); // Sort
+        this.datePickerService.activeDate = normalizeRangeValue(this.selectedValue);
         this.calendarChange.emit(cloneDate(this.selectedValue));
         this.datePickerService.setValue(cloneDate(this.selectedValue));
         if (!this.showTime) {
@@ -314,11 +323,11 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  getPanelMode(partType?: RangePartType): PanelMode {
+  getPanelMode(panelMode: PanelMode | PanelMode[], partType?: RangePartType): PanelMode {
     if (this.isRange) {
-      return this.panelMode[this.datePickerService.getActiveIndex(partType)] as PanelMode;
+      return panelMode[this.datePickerService.getActiveIndex(partType)] as PanelMode;
     } else {
-      return this.panelMode as PanelMode;
+      return panelMode as PanelMode;
     }
   }
 
@@ -333,7 +342,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
 
   getActiveDate(partType?: RangePartType): CandyDate {
     if (this.isRange) {
-      return normalizeRangeValue(this.datePickerService.activeDate as CandyDate[])[this.datePickerService.getActiveIndex(partType)];
+      return (this.datePickerService.activeDate as CandyDate[])[this.datePickerService.getActiveIndex(partType)];
     } else {
       return this.datePickerService.activeDate as CandyDate;
     }

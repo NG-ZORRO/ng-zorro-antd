@@ -19,9 +19,6 @@ import {
   ViewChild
 } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { DatePickerService } from './date-picker.service';
 
 import {
   CandyDate,
@@ -34,6 +31,9 @@ import {
   valueFunctionProp
 } from 'ng-zorro-antd/core';
 import { DateHelperService, NzDatePickerI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { DatePickerService } from './date-picker.service';
 
 import { NzPickerComponent } from './picker.component';
 import { CompatibleDate, DisabledTimeFn, PanelMode, PresetRanges } from './standard-types';
@@ -47,7 +47,6 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   isRange: boolean = false; // Indicate whether the value is a range value
   showWeek: boolean = false; // Should show as week picker
   focused: boolean = false;
-  endPanelMode: PanelMode = 'date';
   pickerStyle: object; // Final picker style that contains width fix corrections etc.
   extraFooter: TemplateRef<void> | string;
   hostClassMap = {};
@@ -122,11 +121,12 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
     }
 
     // Default value
-    this.datePickerService.initValue(this.isRange);
+    this.datePickerService.isRange = this.isRange;
+    this.datePickerService.initValue();
     this.datePickerService.emitValue$.pipe(takeUntil(this.destroyed$)).subscribe(_ => {
       const value = this.datePickerService.value;
       this.datePickerService.initialValue = cloneDate(value);
-      this.datePickerService.activeDate = cloneDate(value);
+      // this.datePickerService.activeDate = cloneDate(value);
       if (this.isRange) {
         const vAsRange = value as CandyDate[];
         if (vAsRange.length) {
@@ -190,14 +190,20 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
       this.updatePickerStyle();
     }
 
-    if (changes.nzMode && !changes.nzMode.currentValue) {
-      this.nzMode = this.isRange ? ['date', 'date'] : 'date';
+    if (changes.nzMode) {
+      this.setPanelMode();
     }
   }
 
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();
+  }
+
+  setPanelMode(): void {
+    if (!this.nzMode) {
+      this.nzMode = this.isRange ? ['date', 'date'] : 'date';
+    }
   }
 
   /**
@@ -280,7 +286,7 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   }
 
   onPanelModeChange(panelMode: PanelMode | PanelMode[]): void {
-    this.nzMode = panelMode;
+    // this.nzMode = panelMode;
     this.nzOnPanelChange.emit(panelMode);
   }
 
