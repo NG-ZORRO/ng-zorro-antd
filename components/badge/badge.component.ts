@@ -84,7 +84,9 @@ const NZ_BADGE_COLORS = [
             [style.transform]="'translateY(' + -countArray[i] * 100 + '%)'"
           >
             <ng-container *ngIf="!nzDot && countArray[i] !== undefined">
-              <p *ngFor="let p of countSingleArray" [class.current]="p === countArray[i]">{{ p }}</p>
+              <p *ngFor="let p of countSingleArray" class="ant-scroll-number-only-unit" [class.current]="p === countArray[i]">
+                {{ p }}
+              </p>
             </ng-container>
           </span>
         </ng-container>
