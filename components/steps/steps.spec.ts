@@ -7,9 +7,9 @@ import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { NzDemoStepsClickableComponent } from './demo/clickable';
 
 import { NzDemoStepsNavComponent } from './demo/nav';
-import { NzStepComponent } from './nz-step.component';
-import { NzStepsComponent } from './nz-steps.component';
-import { NzStepsModule } from './nz-steps.module';
+import { NzStepComponent } from './step.component';
+import { NzStepsComponent } from './steps.component';
+import { NzStepsModule } from './steps.module';
 
 describe('steps', () => {
   beforeEach(async(() => {
