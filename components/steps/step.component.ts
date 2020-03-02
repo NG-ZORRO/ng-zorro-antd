@@ -10,10 +10,8 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   Input,
   OnDestroy,
-  Renderer2,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
@@ -28,8 +26,60 @@ import { Subject } from 'rxjs';
   selector: 'nz-step',
   exportAs: 'nzStep',
   preserveWhitespaces: false,
-  templateUrl: './nz-step.component.html',
+  template: `
+    <div
+      class="ant-steps-item-container"
+      [attr.role]="clickable && !nzDisabled ? 'button' : null"
+      [tabindex]="clickable && !nzDisabled ? 0 : null"
+      (click)="onClick()"
+    >
+      <div class="ant-steps-item-tail" *ngIf="last !== true"></div>
+      <div class="ant-steps-item-icon">
+        <ng-template [ngIf]="!showProcessDot">
+          <span class="ant-steps-icon" *ngIf="nzStatus === 'finish' && !nzIcon"><i nz-icon nzType="check"></i></span>
+          <span class="ant-steps-icon" *ngIf="nzStatus === 'error'"><i nz-icon nzType="close"></i></span>
+          <span class="ant-steps-icon" *ngIf="(nzStatus === 'process' || nzStatus === 'wait') && !nzIcon">{{ index + 1 }}</span>
+          <span class="ant-steps-icon" *ngIf="nzIcon">
+            <ng-container *ngIf="isIconString; else iconTemplate">
+              <i nz-icon [nzType]="!oldAPIIcon && nzIcon" [ngClass]="oldAPIIcon && nzIcon"></i>
+            </ng-container>
+            <ng-template #iconTemplate>
+              <ng-template [ngTemplateOutlet]="nzIcon"></ng-template>
+            </ng-template>
+          </span>
+        </ng-template>
+        <ng-template [ngIf]="showProcessDot">
+          <span class="ant-steps-icon">
+            <ng-template #processDotTemplate>
+              <span class="ant-steps-icon-dot"></span>
+            </ng-template>
+            <ng-template
+              [ngTemplateOutlet]="customProcessTemplate || processDotTemplate"
+              [ngTemplateOutletContext]="{
+                $implicit: processDotTemplate,
+                status: nzStatus,
+                index: index
+              }"
+            >
+            </ng-template>
+          </span>
+        </ng-template>
+      </div>
+      <div class="ant-steps-item-content">
+        <div class="ant-steps-item-title">
+          <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+          <div *ngIf="nzSubtitle" class="ant-steps-item-subtitle">
+            <ng-container *nzStringTemplateOutlet="nzSubtitle">{{ nzSubtitle }}</ng-container>
+          </div>
+        </div>
+        <div class="ant-steps-item-description">
+          <ng-container *nzStringTemplateOutlet="nzDescription">{{ nzDescription }}</ng-container>
+        </div>
+      </div>
+    </div>
+  `,
   host: {
+    class: 'ant-steps-item',
     '[class.ant-steps-item-wait]': 'nzStatus === "wait"',
     '[class.ant-steps-item-process]': 'nzStatus === "process"',
     '[class.ant-steps-item-finish]': 'nzStatus === "finish"',
@@ -102,9 +152,7 @@ export class NzStepComponent implements OnDestroy {
 
   private _currentIndex = 0;
 
-  constructor(private cdr: ChangeDetectorRef, renderer: Renderer2, elementRef: ElementRef) {
-    renderer.addClass(elementRef.nativeElement, 'ant-steps-item');
-  }
+  constructor(private cdr: ChangeDetectorRef) {}
 
   onClick(): void {
     if (this.clickable && this.currentIndex !== this.index && !this.nzDisabled) {

@@ -12,8 +12,8 @@ import { NgModule } from '@angular/core';
 import { NzOutletModule } from 'ng-zorro-antd/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-import { NzStepComponent } from './nz-step.component';
-import { NzStepsComponent } from './nz-steps.component';
+import { NzStepComponent } from './step.component';
+import { NzStepsComponent } from './steps.component';
 
 @NgModule({
   imports: [CommonModule, NzIconModule, NzOutletModule],
