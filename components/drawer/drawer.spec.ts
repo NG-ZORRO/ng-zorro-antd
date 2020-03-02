@@ -7,10 +7,10 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchKeyboardEvent, NzNoAnimationModule } from 'ng-zorro-antd/core';
 
-import { NzDrawerRef } from './nz-drawer-ref';
-import { NzDrawerComponent } from './nz-drawer.component';
-import { NzDrawerModule } from './nz-drawer.module';
-import { NzDrawerService } from './nz-drawer.service';
+import { NzDrawerRef } from './drawer-ref';
+import { NzDrawerComponent } from './drawer.component';
+import { NzDrawerModule } from './drawer.module';
+import { NzDrawerService } from './drawer.service';
 
 describe('NzDrawerComponent', () => {
   let component: NzTestDrawerComponent;
