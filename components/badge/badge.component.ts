@@ -31,6 +31,21 @@ import { startWith, take, takeUntil } from 'rxjs/operators';
 export type NzBadgeStatusType = 'success' | 'processing' | 'default' | 'error' | 'warning';
 
 const NZ_CONFIG_COMPONENT_NAME = 'backTop';
+const NZ_BADGE_COLORS = [
+  'pink',
+  'red',
+  'yellow',
+  'orange',
+  'cyan',
+  'green',
+  'blue',
+  'purple',
+  'geekblue',
+  'magenta',
+  'volcano',
+  'gold',
+  'lime'
+];
 
 @Component({
   selector: 'nz-badge',
@@ -39,8 +54,48 @@ const NZ_CONFIG_COMPONENT_NAME = 'backTop';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [zoomBadgeMotion],
-  templateUrl: './nz-badge.component.html',
+  template: `
+    <span #contentElement><ng-content></ng-content></span>
+    <span
+      class="ant-badge-status-dot ant-badge-status-{{ nzStatus || presetColor }}"
+      [style.background]="!presetColor && nzColor"
+      *ngIf="nzStatus || nzColor"
+      [ngStyle]="nzStyle"
+    ></span>
+    <span class="ant-badge-status-text" *ngIf="nzStatus || nzColor">{{ nzText }}</span>
+    <ng-container *nzStringTemplateOutlet="nzCount">
+      <sup
+        class="ant-scroll-number"
+        *ngIf="showSup && viewInit"
+        [@.disabled]="notWrapper"
+        [@zoomBadgeMotion]
+        [ngStyle]="nzStyle"
+        [attr.title]="nzTitle || nzCount"
+        [style.right.px]="nzOffset && nzOffset[0] ? -nzOffset[0] : null"
+        [style.marginTop.px]="nzOffset && nzOffset[1] ? nzOffset[1] : null"
+        [class.ant-badge-count]="!nzDot"
+        [class.ant-badge-dot]="nzDot"
+        [class.ant-badge-multiple-words]="countArray.length >= 2"
+      >
+        <ng-container *ngFor="let n of maxNumberArray; let i = index">
+          <span
+            class="ant-scroll-number-only"
+            *ngIf="count <= nzOverflowCount"
+            [style.transform]="'translateY(' + -countArray[i] * 100 + '%)'"
+          >
+            <ng-container *ngIf="!nzDot && countArray[i] !== undefined">
+              <p *ngFor="let p of countSingleArray" class="ant-scroll-number-only-unit" [class.current]="p === countArray[i]">
+                {{ p }}
+              </p>
+            </ng-container>
+          </span>
+        </ng-container>
+        <ng-container *ngIf="count > nzOverflowCount">{{ nzOverflowCount }}+</ng-container>
+      </sup>
+    </ng-container>
+  `,
   host: {
+    class: 'ant-badge',
     '[class.ant-badge-status]': 'nzStatus'
   }
 })
@@ -51,7 +106,7 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   maxNumberArray: string[] = [];
   countArray: number[] = [];
   countSingleArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-  colorArray = ['pink', 'red', 'yellow', 'orange', 'cyan', 'green', 'blue', 'purple', 'geekblue', 'magenta', 'volcano', 'gold', 'lime'];
+  colorArray = NZ_BADGE_COLORS;
   presetColor: string | null = null;
   count: number;
   @ViewChild('contentElement', { static: false }) contentElement: ElementRef;
@@ -91,9 +146,7 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     private contentObserver: ContentObserver,
     private cdr: ChangeDetectorRef,
     private ngZone: NgZone
-  ) {
-    renderer.addClass(elementRef.nativeElement, 'ant-badge');
-  }
+  ) {}
 
   ngOnInit(): void {
     this.generateMaxNumberArray();

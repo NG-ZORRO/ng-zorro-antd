@@ -5,8 +5,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgStyleInterface } from 'ng-zorro-antd/core';
 
-import { NzBadgeComponent } from './nz-badge.component';
-import { NzBadgeModule } from './nz-badge.module';
+import { NzBadgeComponent } from './badge.component';
+import { NzBadgeModule } from './badge.module';
 
 describe('badge', () => {
   beforeEach(fakeAsync(() => {
