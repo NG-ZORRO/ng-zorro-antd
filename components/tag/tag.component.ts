@@ -28,7 +28,10 @@ import { fadeMotion, InputBoolean, NzUpdateHostClassService, warnDeprecation } f
   preserveWhitespaces: false,
   providers: [NzUpdateHostClassService],
   animations: [fadeMotion],
-  templateUrl: './nz-tag.component.html',
+  template: `
+    <ng-content></ng-content>
+    <i nz-icon nzType="close" *ngIf="nzMode === 'closeable'" tabindex="-1" (click)="closeTag($event)"></i>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
@@ -36,7 +39,11 @@ import { fadeMotion, InputBoolean, NzUpdateHostClassService, warnDeprecation } f
     '[@.disabled]': 'nzNoAnimation',
     '(@fadeMotion.done)': 'afterAnimation($event)',
     '(click)': 'updateCheckedStatus()',
-    '[style.background-color]': 'presetColor? null : nzColor'
+    '[style.background-color]': 'presetColor? null : nzColor',
+    class: 'ant-tag',
+    '[class.ant-tag-has-color]': 'nzColor && !presetColor',
+    '[class.ant-tag-checkable]': 'nzMode === "checkable"',
+    '[class.ant-tag-checkable-checked]': 'nzChecked'
   }
 })
 export class NzTagComponent implements OnInit, OnChanges {
@@ -62,13 +69,8 @@ export class NzTagComponent implements OnInit, OnChanges {
 
   private updateClassMap(): void {
     this.presetColor = this.isPresetColor(this.nzColor);
-    const prefix = 'ant-tag';
     this.nzUpdateHostClassService.updateHostClass(this.elementRef.nativeElement, {
-      [`${prefix}`]: true,
-      [`${prefix}-has-color`]: this.nzColor && !this.presetColor,
-      [`${prefix}-${this.nzColor}`]: this.presetColor,
-      [`${prefix}-checkable`]: this.nzMode === 'checkable',
-      [`${prefix}-checkable-checked`]: this.nzChecked
+      [`ant-tag-${this.nzColor}`]: this.presetColor
     });
   }
 
