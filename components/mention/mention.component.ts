@@ -47,9 +47,9 @@ import {
   InputBoolean
 } from 'ng-zorro-antd/core';
 
-import { NzMentionSuggestionDirective } from './nz-mention-suggestions';
-import { NzMentionTriggerDirective } from './nz-mention-trigger';
-import { NzMentionService } from './nz-mention.service';
+import { NzMentionSuggestionDirective } from './mention-suggestions';
+import { NzMentionTriggerDirective } from './mention-trigger';
+import { NzMentionService } from './mention.service';
 
 export interface MentionOnSearchTypes {
   value: string;
@@ -67,7 +67,29 @@ export type MentionPlacement = 'top' | 'bottom';
 @Component({
   selector: 'nz-mention',
   exportAs: 'nzMention',
-  templateUrl: './nz-mention.component.html',
+  template: `
+    <ng-content></ng-content>
+    <ng-template #suggestions>
+      <ul class="ant-mention-dropdown">
+        <li
+          class="ant-mention-dropdown-item"
+          *ngFor="let suggestion of filteredSuggestions; let i = index"
+          [class.focus]="i === activeIndex"
+          (mousedown)="$event.preventDefault()"
+          (click)="selectSuggestion(suggestion)"
+        >
+          <ng-container *ngIf="suggestionTemplate; else defaultSuggestion">
+            <ng-container *ngTemplateOutlet="suggestionTemplate; context: { $implicit: suggestion }"></ng-container>
+          </ng-container>
+          <ng-template #defaultSuggestion>{{ nzValueWith(suggestion) }}</ng-template>
+        </li>
+        <li class="ant-mention-dropdown-notfound ant-mention-dropdown-item" *ngIf="filteredSuggestions.length === 0">
+          <span *ngIf="nzLoading"><i nz-icon nzType="loading"></i></span>
+          <span *ngIf="!nzLoading">{{ nzNotFoundContent }}</span>
+        </li>
+      </ul>
+    </ng-template>
+  `,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [NzMentionService],
@@ -125,7 +147,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
 
   constructor(
     @Optional() @Inject(DOCUMENT) private ngDocument: any, // tslint:disable-line:no-any
-    private changeDetectorRef: ChangeDetectorRef,
+    private cdr: ChangeDetectorRef,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     private nzMentionService: NzMentionService
@@ -159,14 +181,14 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
       this.overlayRef.detach();
       this.overlayBackdropClickSubscription.unsubscribe();
       this.isOpen = false;
-      this.changeDetectorRef.markForCheck();
+      this.cdr.markForCheck();
     }
   }
 
   openDropdown(): void {
     this.attachOverlay();
     this.isOpen = true;
-    this.changeDetectorRef.markForCheck();
+    this.cdr.markForCheck();
   }
 
   getMentions(): string[] {
@@ -264,12 +286,12 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
 
   private setNextItemActive(): void {
     this.activeIndex = this.activeIndex + 1 <= this.filteredSuggestions.length - 1 ? this.activeIndex + 1 : 0;
-    this.changeDetectorRef.markForCheck();
+    this.cdr.markForCheck();
   }
 
   private setPreviousItemActive(): void {
     this.activeIndex = this.activeIndex - 1 < 0 ? this.filteredSuggestions.length - 1 : this.activeIndex - 1;
-    this.changeDetectorRef.markForCheck();
+    this.cdr.markForCheck();
   }
 
   private canOpen(): boolean {
@@ -350,7 +372,8 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
   private getOverlayConfig(): OverlayConfig {
     return new OverlayConfig({
       positionStrategy: this.getOverlayPosition(),
-      scrollStrategy: this.overlay.scrollStrategies.reposition()
+      scrollStrategy: this.overlay.scrollStrategies.reposition(),
+      disposeOnNavigation: true
     });
   }
 

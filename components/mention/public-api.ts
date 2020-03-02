@@ -6,8 +6,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-mention.module';
-export * from './nz-mention.component';
-export * from './nz-mention-trigger';
-export * from './nz-mention-suggestions';
-export * from './nz-mention.service';
+export * from './mention.module';
+export * from './mention.component';
+export * from './mention-trigger';
+export * from './mention-suggestions';
+export * from './mention.service';
