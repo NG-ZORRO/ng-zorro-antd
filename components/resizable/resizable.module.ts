@@ -9,9 +9,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { NzResizableDirective } from './nz-resizable.directive';
-import { NzResizeHandleComponent } from './nz-resize-handle.component';
-import { NzResizeHandlesComponent } from './nz-resize-handles.component';
+import { NzResizableDirective } from './resizable.directive';
+import { NzResizeHandleComponent } from './resize-handle.component';
+import { NzResizeHandlesComponent } from './resize-handles.component';
 
 @NgModule({
   imports: [CommonModule],

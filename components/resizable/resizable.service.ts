@@ -12,7 +12,7 @@ import { Inject, Injectable, NgZone, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { isTouchEvent } from 'ng-zorro-antd/core';
-import { NzResizeHandleMouseDownEvent } from './nz-resize-handle.component';
+import { NzResizeHandleMouseDownEvent } from './resize-handle.component';
 
 @Injectable()
 export class NzResizableService implements OnDestroy {

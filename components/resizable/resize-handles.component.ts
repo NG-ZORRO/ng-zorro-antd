@@ -8,7 +8,7 @@
 
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
-import { NzResizeDirection } from './nz-resize-handle.component';
+import { NzResizeDirection } from './resize-handle.component';
 
 export const DEFAULT_RESIZE_DIRECTION: NzResizeDirection[] = [
   'bottomRight',
@@ -24,7 +24,9 @@ export const DEFAULT_RESIZE_DIRECTION: NzResizeDirection[] = [
 @Component({
   selector: 'nz-resize-handles',
   exportAs: 'nzResizeHandles',
-  templateUrl: './nz-resize-handles.component.html',
+  template: `
+    <nz-resize-handle *ngFor="let dir of directions" [nzDirection]="dir"></nz-resize-handle>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzResizeHandlesComponent implements OnChanges {

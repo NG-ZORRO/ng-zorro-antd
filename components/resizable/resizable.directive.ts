@@ -13,9 +13,9 @@ import { ensureInBounds, InputBoolean } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { getEventWithPoint } from './nz-resizable-utils';
-import { NzResizableService } from './nz-resizable.service';
-import { NzResizeHandleMouseDownEvent } from './nz-resize-handle.component';
+import { getEventWithPoint } from './resizable-utils';
+import { NzResizableService } from './resizable.service';
+import { NzResizeHandleMouseDownEvent } from './resize-handle.component';
 
 export interface NzResizeEvent {
   width?: number;

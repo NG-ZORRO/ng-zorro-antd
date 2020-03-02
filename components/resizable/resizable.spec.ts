@@ -12,9 +12,9 @@ import { NzDemoResizableGridComponent } from './demo/grid';
 import { NzDemoResizableLockAspectRatioComponent } from './demo/lock-aspect-ratio';
 import { NzDemoResizablePreviewComponent } from './demo/preview';
 
-import { NzResizableDirective } from './nz-resizable.directive';
-import { NzResizableModule } from './nz-resizable.module';
-import { DEFAULT_RESIZE_DIRECTION } from './nz-resize-handles.component';
+import { NzResizableDirective } from './resizable.directive';
+import { NzResizableModule } from './resizable.module';
+import { DEFAULT_RESIZE_DIRECTION } from './resize-handles.component';
 
 describe('resizable', () => {
   let zone: MockNgZone;
