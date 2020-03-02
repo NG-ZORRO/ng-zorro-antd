@@ -7,8 +7,8 @@ import { NzDemoCommentEditorComponent } from './demo/editor';
 import { NzDemoCommentListComponent } from './demo/list';
 import { NzDemoCommentNestedComponent } from './demo/nested';
 
-import { NzCommentComponent } from './nz-comment.component';
-import { NzCommentModule } from './nz-comment.module';
+import { NzCommentComponent } from './comment.component';
+import { NzCommentModule } from './comment.module';
 
 describe('NzCommentComponent', () => {
   beforeEach(async(() => {
