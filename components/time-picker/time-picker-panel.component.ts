@@ -11,11 +11,12 @@ import {
   ChangeDetectorRef,
   Component,
   DebugElement,
+  EventEmitter,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
+  Output,
   SimpleChanges,
   TemplateRef,
   ViewChild,
@@ -23,8 +24,6 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
-import { NzTimePickerComponent } from './time-picker.component';
-
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -112,9 +111,9 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
     <div *ngIf="!nzInDatePicker" class="ant-picker-footer">
       <ul class="ant-picker-ranges">
         <li class="ant-picker-now">
-          <button nz-button nzType="link" nzSize="small" (click)="onClickNow()" [disabled]="nowDisabled()">
+          <a (click)="onClickNow()">
             {{ 'Calendar.now' | nzI18n }}
-          </button>
+          </a>
         </li>
       </ul>
       <div class="{{ prefixCls }}-addon" *ngIf="nzAddOn">
@@ -163,8 +162,10 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   @Input() nzClearText: string;
   @Input() nzPlaceHolder: string;
   @Input() @InputBoolean() nzUse12Hours = false;
-  @Input() opened = false;
   @Input() nzDefaultOpenValue = new Date();
+  @Input() opened = false;
+
+  @Output() readonly closePanel = new EventEmitter<void>();
 
   @Input()
   set nzAllowEmpty(value: boolean) {
@@ -468,30 +469,31 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   private setClassMap(): void {
     this.hostClassMap = {
       [`${this.prefixCls}`]: true,
-      [`${this.prefixCls}-column-${this.enabledColumns}`]: this.nzInDatePicker ? false : true,
+      [`${this.prefixCls}-column-${this.enabledColumns}`]: !this.nzInDatePicker,
       [`${this.prefixCls}-narrow`]: this.enabledColumns < 3,
-      [`${this.prefixCls}-placement-bottomLeft`]: this.nzInDatePicker ? false : true
+      [`${this.prefixCls}-placement-bottomLeft`]: !this.nzInDatePicker
     };
   }
 
-  nowDisabled(): boolean {
-    const now = new Date();
-    const hour = now.getHours();
-    const minute = now.getMinutes();
-    const second = now.getSeconds();
+  timeDisabled(value: Date): boolean {
+    const hour = value.getHours();
+    const minute = value.getMinutes();
+    const second = value.getSeconds();
     return (
-      (this.nzDisabledHours && this.nzDisabledHours().includes(hour)) ||
-      (this.nzDisabledMinutes && this.nzDisabledMinutes(hour).includes(minute)) ||
-      (this.nzDisabledSeconds && this.nzDisabledSeconds(hour, minute).includes(second))
+      (this.nzDisabledHours && this.nzDisabledHours().indexOf(hour)) > -1 ||
+      (this.nzDisabledMinutes && this.nzDisabledMinutes(hour).indexOf(minute)) > -1 ||
+      (this.nzDisabledSeconds && this.nzDisabledSeconds(hour, minute).indexOf(second)) > -1
     );
   }
 
   onClickNow(): void {
-    this.time.value = new Date();
-    this.changed();
-    if (this.timePicker) {
-      this.timePicker.close();
+    const now = new Date();
+    if (this.timeDisabled(now)) {
+      return;
     }
+    this.time.value = now;
+    this.changed();
+    this.closePanel.emit();
   }
 
   isSelectedHour(hour: { index: number; disabled: boolean }): boolean {
@@ -544,11 +546,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     });
   }
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    @Optional() private timePicker: NzTimePickerComponent,
-    public dateHelper: DateHelperService
-  ) {}
+  constructor(private cdr: ChangeDetectorRef, public dateHelper: DateHelperService) {}
 
   ngOnInit(): void {
     this.time.changes.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {

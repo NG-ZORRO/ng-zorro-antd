@@ -16,7 +16,6 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
   OnInit,
   Output,
   Renderer2,
@@ -35,8 +34,6 @@ import {
   slideMotion,
   WithConfig
 } from 'ng-zorro-antd/core';
-import { NzI18nService } from 'ng-zorro-antd/i18n';
-import { Subject } from 'rxjs';
 
 const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
 
@@ -98,6 +95,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
               [nzClearText]="nzClearText"
               [nzAllowEmpty]="nzAllowEmpty"
               [(ngModel)]="value"
+              (closePanel)="close()"
             >
             </nz-time-picker-panel>
           </div>
@@ -109,7 +107,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
   animations: [slideMotion],
   providers: [UpdateCls, { provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }]
 })
-export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges, OnDestroy {
+export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
   private _onChange: (value: Date | null) => void;
   private _onTouched: () => void;
   isInit = false;
@@ -117,7 +115,6 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   value: Date | null = null;
   origin: CdkOverlayOrigin;
   hostClassMap = {};
-  destroyed$ = new Subject();
   overlayPositions: ConnectionPositionPair[] = [
     {
       originX: 'start',
@@ -222,7 +219,6 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     public nzConfigService: NzConfigService,
     private element: ElementRef,
     private renderer: Renderer2,
-    protected i18n: NzI18nService,
     public cdr: ChangeDetectorRef
   ) {}
 
@@ -253,11 +249,6 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   ngAfterViewInit(): void {
     this.isInit = true;
     this.updateAutoFocus();
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
   }
 
   writeValue(time: Date | null): void {

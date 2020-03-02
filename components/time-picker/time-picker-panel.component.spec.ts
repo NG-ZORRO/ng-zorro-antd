@@ -121,15 +121,15 @@ describe('time-picker-panel', () => {
     it('should click now work', () => {
       const now = new Date();
       fixture.detectChanges();
-      dispatchFakeEvent(panelElement.nativeElement.querySelector('.ant-picker-now > button'), 'click');
+      dispatchFakeEvent(panelElement.nativeElement.querySelector('.ant-picker-now > a'), 'click');
       fixture.detectChanges();
       const listOfSelectContainer = panelElement.nativeElement.querySelectorAll('.ant-picker-time-panel-column');
-      expect(now.getHours().toString()).toContain(
+      expect(
         listOfSelectContainer[0].querySelector('.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner').textContent
-      );
-      expect(now.getMinutes().toString()).toContain(
+      ).toContain(now.getHours().toString());
+      expect(
         listOfSelectContainer[1].querySelector('.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner').textContent
-      );
+      ).toContain(now.getMinutes().toString());
     });
   });
   describe('disabled time-picker-panel', () => {
@@ -164,6 +164,27 @@ describe('time-picker-panel', () => {
       fixture.detectChanges();
       expect(listOfSelectContainer[0].children.length).toBe(21);
       expect(listOfSelectContainer[2].children.length).toBe(54);
+    }));
+
+    it('should now disabled work', fakeAsync(() => {
+      // disable every hour
+      testComponent.disabledHours = () => {
+        return [...Array(24).keys()];
+      };
+      fixture.detectChanges();
+      flush();
+      dispatchFakeEvent(panelElement.nativeElement.querySelector('.ant-picker-now > a'), 'click');
+      fixture.detectChanges();
+      const listOfSelectContainer = panelElement.nativeElement.querySelectorAll('.ant-picker-time-panel-column');
+      expect(
+        listOfSelectContainer[0].querySelector('.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner').textContent
+      ).toBe('10');
+      expect(
+        listOfSelectContainer[1].querySelector('.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner').textContent
+      ).toBe('11');
+      expect(
+        listOfSelectContainer[2].querySelector('.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner').textContent
+      ).toBe('12');
     }));
   });
   describe('12-hour time-picker-panel', () => {
