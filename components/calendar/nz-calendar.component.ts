@@ -29,8 +29,8 @@ import {
   NzMonthFullCellDirective as MonthFullCell
 } from './nz-calendar-cells';
 
-export type ModeType = 'month' | 'year';
-export type DateTemplate = TemplateRef<{ $implicit: Date }>;
+type NzCalendarMode = 'month' | 'year';
+type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -42,15 +42,15 @@ export type DateTemplate = TemplateRef<{ $implicit: Date }>;
 })
 export class NzCalendarComponent implements ControlValueAccessor {
   activeDate: CandyDate = new CandyDate();
-  prefixCls: string = 'ant-fullcalendar';
+  prefixCls: string = 'ant-picker-calendar';
 
   private onChangeFn: (date: Date) => void = () => {};
   private onTouchFn: () => void = () => {};
 
-  @Input() nzMode: ModeType = 'month';
+  @Input() nzMode: NzCalendarMode = 'month';
 
-  @Output() readonly nzModeChange: EventEmitter<ModeType> = new EventEmitter();
-  @Output() readonly nzPanelChange: EventEmitter<{ date: Date; mode: ModeType }> = new EventEmitter();
+  @Output() readonly nzModeChange: EventEmitter<NzCalendarMode> = new EventEmitter();
+  @Output() readonly nzPanelChange: EventEmitter<{ date: Date; mode: NzCalendarMode }> = new EventEmitter();
   @Output() readonly nzSelectChange: EventEmitter<Date> = new EventEmitter();
 
   @Input() set nzValue(value: Date) {
@@ -62,27 +62,27 @@ export class NzCalendarComponent implements ControlValueAccessor {
    * Cannot use @Input and @ContentChild on one variable
    * because { static: false } will make @Input property get delayed
    **/
-  @Input() nzDateCell: DateTemplate;
-  @ContentChild(DateCell, { static: false, read: TemplateRef }) nzDateCellChild: DateTemplate;
-  get dateCell(): DateTemplate {
+  @Input() nzDateCell: NzCalendarDateTemplate;
+  @ContentChild(DateCell, { static: false, read: TemplateRef }) nzDateCellChild: NzCalendarDateTemplate;
+  get dateCell(): NzCalendarDateTemplate {
     return this.nzDateCell || this.nzDateCellChild;
   }
 
-  @Input() nzDateFullCell: DateTemplate;
-  @ContentChild(DateFullCell, { static: false, read: TemplateRef }) nzDateFullCellChild: DateTemplate;
-  get dateFullCell(): DateTemplate {
+  @Input() nzDateFullCell: NzCalendarDateTemplate;
+  @ContentChild(DateFullCell, { static: false, read: TemplateRef }) nzDateFullCellChild: NzCalendarDateTemplate;
+  get dateFullCell(): NzCalendarDateTemplate {
     return this.nzDateFullCell || this.nzDateFullCellChild;
   }
 
-  @Input() nzMonthCell: DateTemplate;
-  @ContentChild(MonthCell, { static: false, read: TemplateRef }) nzMonthCellChild: DateTemplate;
-  get monthCell(): DateTemplate {
+  @Input() nzMonthCell: NzCalendarDateTemplate;
+  @ContentChild(MonthCell, { static: false, read: TemplateRef }) nzMonthCellChild: NzCalendarDateTemplate;
+  get monthCell(): NzCalendarDateTemplate {
     return this.nzMonthCell || this.nzMonthCellChild;
   }
 
-  @Input() nzMonthFullCell: DateTemplate;
-  @ContentChild(MonthFullCell, { static: false, read: TemplateRef }) nzMonthFullCellChild: DateTemplate;
-  get monthFullCell(): DateTemplate {
+  @Input() nzMonthFullCell: NzCalendarDateTemplate;
+  @ContentChild(MonthFullCell, { static: false, read: TemplateRef }) nzMonthFullCellChild: NzCalendarDateTemplate;
+  get monthFullCell(): NzCalendarDateTemplate {
     return this.nzMonthFullCell || this.nzMonthFullCellChild;
   }
 
@@ -93,7 +93,7 @@ export class NzCalendarComponent implements ControlValueAccessor {
 
   constructor(private cdr: ChangeDetectorRef) {}
 
-  onModeChange(mode: ModeType): void {
+  onModeChange(mode: NzCalendarMode): void {
     this.nzModeChange.emit(mode);
     this.nzPanelChange.emit({ date: this.activeDate.nativeDate, mode });
   }

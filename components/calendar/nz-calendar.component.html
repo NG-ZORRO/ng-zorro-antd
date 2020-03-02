@@ -1,30 +1,35 @@
-<nz-calendar-header
-  [fullscreen]="nzFullscreen"
-  [activeDate]="activeDate"
-  [(mode)]="nzMode"
-  (modeChange)="onModeChange($event)"
-  (yearChange)="onYearSelect($event)"
-  (monthChange)="onMonthSelect($event)"
->
-</nz-calendar-header>
-
 <div
-  class="{{ prefixCls }} {{ prefixCls }}-full"
-  [class.ant-fullcalendar-fullscreen]="nzFullscreen"
+  class="{{ prefixCls }}"
+  [class.ant-picker-calendar-full]="nzFullscreen"
+  [class.ant-picker-calendar-mini]="!nzFullscreen"
 >
-  <div class="{{ prefixCls }}-calendar-body">
-    <ng-container
-      *ngIf="nzMode === 'month'; then monthModeTable; else yearModeTable"
-    ></ng-container>
+  <nz-calendar-header
+    [fullscreen]="nzFullscreen"
+    [activeDate]="activeDate"
+    [(mode)]="nzMode"
+    (modeChange)="onModeChange($event)"
+    (yearChange)="onYearSelect($event)"
+    (monthChange)="onMonthSelect($event)"
+  >
+  </nz-calendar-header>
+
+  <div class="ant-picker-panel">
+    <div class="ant-picker-{{ nzMode }}-panel">
+      <div class="ant-picker-body">
+        <ng-container
+          *ngIf="nzMode === 'month'; then monthModeTable; else yearModeTable"
+        ></ng-container>
+      </div>
+    </div>
   </div>
 </div>
-
 <ng-template #monthModeTable>
   <date-table
     [prefixCls]="prefixCls"
     [value]="activeDate"
-    [dateCellRender]="dateCell"
-    [dateFullCellRender]="dateFullCell"
+    [activeDate]="activeDate"
+    [cellRender]="dateCell"
+    [fullCellRender]="dateFullCell"
     (valueChange)="onDateSelect($event)"
   ></date-table>
 </ng-template>
@@ -33,8 +38,9 @@
   <month-table
     [prefixCls]="prefixCls"
     [value]="activeDate"
-    [monthCellRender]="monthCell"
-    [monthFullCellRender]="monthFullCell"
+    [activeDate]="activeDate"
+    [cellRender]="monthCell"
+    [fullCellRender]="monthFullCell"
     (valueChange)="onDateSelect($event)"
   ></month-table>
 </ng-template>
