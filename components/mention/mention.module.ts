@@ -11,9 +11,9 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzMentionSuggestionDirective } from './nz-mention-suggestions';
-import { NzMentionTriggerDirective } from './nz-mention-trigger';
-import { NzMentionComponent } from './nz-mention.component';
+import { NzMentionSuggestionDirective } from './mention-suggestions';
+import { NzMentionTriggerDirective } from './mention-trigger';
+import { NzMentionComponent } from './mention.component';
 
 const COMPONENTS = [NzMentionComponent, NzMentionTriggerDirective, NzMentionSuggestionDirective];
 

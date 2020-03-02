@@ -9,7 +9,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
-import { NzMentionTriggerDirective } from './nz-mention-trigger';
+import { NzMentionTriggerDirective } from './mention-trigger';
 
 @Injectable()
 export class NzMentionService implements OnDestroy {

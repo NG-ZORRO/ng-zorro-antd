@@ -9,8 +9,8 @@
 import { AfterViewInit, Directive, ElementRef, EventEmitter, ExistingProvider, forwardRef, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { Mention } from './nz-mention.component';
-import { NzMentionService } from './nz-mention.service';
+import { Mention } from './mention.component';
+import { NzMentionService } from './mention.service';
 
 export const NZ_MENTION_TRIGGER_ACCESSOR: ExistingProvider = {
   provide: NG_VALUE_ACCESSOR,
