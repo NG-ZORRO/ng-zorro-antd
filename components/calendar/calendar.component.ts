@@ -13,9 +13,10 @@ import {
   ContentChild,
   EventEmitter,
   forwardRef,
-  HostBinding,
   Input,
+  OnChanges,
   Output,
+  SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
@@ -27,7 +28,7 @@ import {
   NzDateFullCellDirective as DateFullCell,
   NzMonthCellDirective as MonthCell,
   NzMonthFullCellDirective as MonthFullCell
-} from './nz-calendar-cells';
+} from './calendar-cells';
 
 type NzCalendarMode = 'month' | 'year';
 type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
@@ -37,10 +38,54 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'nz-calendar',
   exportAs: 'nzCalendar',
-  templateUrl: './nz-calendar.component.html',
+  template: `
+    <nz-calendar-header
+      [fullscreen]="nzFullscreen"
+      [activeDate]="activeDate"
+      [(mode)]="nzMode"
+      (modeChange)="onModeChange($event)"
+      (yearChange)="onYearSelect($event)"
+      (monthChange)="onMonthSelect($event)"
+    >
+    </nz-calendar-header>
+
+    <div class="ant-picker-panel">
+      <div class="ant-picker-{{ nzMode === 'month' ? 'date' : 'month' }}-panel">
+        <div class="ant-picker-body">
+          <ng-container *ngIf="nzMode === 'month'; then monthModeTable; else yearModeTable"></ng-container>
+        </div>
+      </div>
+    </div>
+    <ng-template #monthModeTable>
+      <date-table
+        [prefixCls]="prefixCls"
+        [value]="activeDate"
+        [activeDate]="activeDate"
+        [cellRender]="dateCell"
+        [fullCellRender]="dateFullCell"
+        (valueChange)="onDateSelect($event)"
+      ></date-table>
+    </ng-template>
+
+    <ng-template #yearModeTable>
+      <month-table
+        [prefixCls]="prefixCls"
+        [value]="activeDate"
+        [activeDate]="activeDate"
+        [cellRender]="monthCell"
+        [fullCellRender]="monthFullCell"
+        (valueChange)="onDateSelect($event)"
+      ></month-table>
+    </ng-template>
+  `,
+  host: {
+    '[class.ant-picker-calendar]': 'true',
+    '[class.ant-picker-calendar-full]': 'nzFullscreen',
+    '[class.ant-picker-calendar-mini]': '!nzFullscreen'
+  },
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzCalendarComponent), multi: true }]
 })
-export class NzCalendarComponent implements ControlValueAccessor {
+export class NzCalendarComponent implements ControlValueAccessor, OnChanges {
   activeDate: CandyDate = new CandyDate();
   prefixCls: string = 'ant-picker-calendar';
 
@@ -48,14 +93,11 @@ export class NzCalendarComponent implements ControlValueAccessor {
   private onTouchFn: () => void = () => {};
 
   @Input() nzMode: NzCalendarMode = 'month';
+  @Input() nzValue: Date;
 
   @Output() readonly nzModeChange: EventEmitter<NzCalendarMode> = new EventEmitter();
   @Output() readonly nzPanelChange: EventEmitter<{ date: Date; mode: NzCalendarMode }> = new EventEmitter();
   @Output() readonly nzSelectChange: EventEmitter<Date> = new EventEmitter();
-
-  @Input() set nzValue(value: Date) {
-    this.updateDate(new CandyDate(value), false);
-  }
   @Output() readonly nzValueChange: EventEmitter<Date> = new EventEmitter();
 
   /**
@@ -86,10 +128,7 @@ export class NzCalendarComponent implements ControlValueAccessor {
     return this.nzMonthFullCell || this.nzMonthFullCellChild;
   }
 
-  @Input()
-  @InputBoolean()
-  @HostBinding('class.ant-fullcalendar--fullscreen')
-  nzFullscreen: boolean = true;
+  @Input() @InputBoolean() nzFullscreen: boolean = true;
 
   constructor(private cdr: ChangeDetectorRef) {}
 
@@ -135,6 +174,12 @@ export class NzCalendarComponent implements ControlValueAccessor {
       this.onTouchFn();
       this.nzSelectChange.emit(date.nativeDate);
       this.nzValueChange.emit(date.nativeDate);
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.nzValue) {
+      this.updateDate(new CandyDate(this.nzValue), false);
     }
   }
 }
