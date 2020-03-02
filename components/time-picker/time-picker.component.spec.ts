@@ -5,8 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzI18nModule } from '../i18n/nz-i18n.module';
-import { NzTimePickerComponent } from './nz-time-picker.component';
-import { NzTimePickerModule } from './nz-time-picker.module';
+import { NzTimePickerComponent } from './time-picker.component';
+import { NzTimePickerModule } from './time-picker.module';
 
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
@@ -41,7 +41,7 @@ describe('time-picker', () => {
     });
     it('should init work', () => {
       fixture.detectChanges();
-      expect(timeElement.nativeElement.classList).toContain('ant-time-picker');
+      expect(timeElement.nativeElement.classList).toContain('ant-picker');
     });
     it('should autofocus work', () => {
       fixture.detectChanges();
@@ -92,7 +92,7 @@ describe('time-picker', () => {
       fixture.detectChanges();
       tick(500);
       testComponent.nzTimePickerComponent.cdr.detectChanges();
-      timeElement.nativeElement.querySelector('.ant-time-picker-clear').click();
+      timeElement.nativeElement.querySelector('.ant-picker-clear').click();
       fixture.detectChanges();
       expect(testComponent.date).toBeNull();
     }));
