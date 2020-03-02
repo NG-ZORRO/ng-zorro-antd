@@ -101,7 +101,7 @@ import {
         (dayHover)="onDayHover($event)"
         (selectDate)="changeValueFromSelect($event)"
         (selectTime)="onSelectTime($event, partType)"
-        (headerChange)="onActiveDateChange($event)"
+        (headerChange)="onActiveDateChange($event, partType)"
       ></inner-popup>
     </ng-template>
 
@@ -181,6 +181,8 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   constructor(public datePickerService: DatePickerService, public cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
+    // Set panel active date once open
+    this.datePickerService.setActiveDate();
     this.datePickerService.valueChange$.pipe(takeUntil(this.destroy$)).subscribe(value => {
       if (this.isRange) {
         // Re-initialize all related values
@@ -248,9 +250,9 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     this.panelModeChange.emit(this.panelMode);
   }
 
-  onActiveDateChange(value: CandyDate): void {
+  onActiveDateChange(value: CandyDate, partType: RangePartType): void {
     if (this.isRange) {
-      if (this.datePickerService.activeInput === 'left') {
+      if (partType === 'left') {
         this.datePickerService.activeDate = [value, value.addMonths(1)];
       } else {
         this.datePickerService.activeDate = [value.addMonths(-1), value];

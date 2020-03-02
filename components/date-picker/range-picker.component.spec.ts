@@ -307,6 +307,25 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-picker-panel .ant-picker-header-month-btn').textContent!.indexOf('7') > -1).toBeTruthy();
     }));
+
+    it('should support keep initValue when reopen panel', fakeAsync(() => {
+      fixtureInstance.modelValue = [new Date('2018-6-11'), new Date('2018-12-12')];
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      // Click next year button * 2
+      dispatchMouseEvent(getSuperNextBtn('left'), 'click');
+      fixture.detectChanges();
+      dispatchMouseEvent(getSuperNextBtn('left'), 'click');
+      fixture.detectChanges();
+
+      dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+
+      openPickerByClickTrigger();
+      expect(getHeaderYearBtn('left').textContent!.indexOf('2018') > -1).toBeTruthy();
+    }));
   }); // /panel switch and move forward/afterward
 
   describe('specified date picker testing', () => {
