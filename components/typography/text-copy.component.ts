@@ -27,7 +27,18 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'nz-text-copy',
   exportAs: 'nzTextCopy',
-  templateUrl: './nz-text-copy.component.html',
+  template: `
+    <button
+      nz-tooltip
+      nz-trans-button
+      [nzTitle]="copied ? locale?.copied : locale?.copy"
+      class="ant-typography-copy"
+      [class.ant-typography-copy-success]="copied"
+      (click)="onClick()"
+    >
+      <i nz-icon [nzType]="copied ? 'check' : 'copy'"></i>
+    </button>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false

@@ -15,9 +15,9 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
-import { NzTextCopyComponent } from './nz-text-copy.component';
-import { NzTextEditComponent } from './nz-text-edit.component';
-import { NzTypographyComponent } from './nz-typography.component';
+import { NzTextCopyComponent } from './text-copy.component';
+import { NzTextEditComponent } from './text-edit.component';
+import { NzTypographyComponent } from './typography.component';
 
 @NgModule({
   imports: [CommonModule, NzIconModule, NzToolTipModule, NzInputModule, NzI18nModule, NzTransButtonModule, NzCopyToClipboardServiceModule],
