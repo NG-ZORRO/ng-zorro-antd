@@ -6,5 +6,5 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-badge.component';
-export * from './nz-badge.module';
+export * from './badge.component';
+export * from './badge.module';
