@@ -9,14 +9,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { LibPackerModule } from 'ng-zorro-antd/date-picker';
 
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 
-import { DateTableCellComponent } from './date-table-cell.component';
-import { DateTableComponent } from './date-table.component';
-import { MonthTableComponent } from './month-table.component';
 import { NzDateCellDirective, NzDateFullCellDirective, NzMonthCellDirective, NzMonthFullCellDirective } from './nz-calendar-cells';
 import { NzCalendarHeaderComponent } from './nz-calendar-header.component';
 import { NzCalendarComponent } from './nz-calendar.component';
@@ -28,20 +26,9 @@ import { NzCalendarComponent } from './nz-calendar.component';
     NzDateCellDirective,
     NzDateFullCellDirective,
     NzMonthCellDirective,
-    NzMonthFullCellDirective,
-    DateTableComponent,
-    DateTableCellComponent,
-    MonthTableComponent
+    NzMonthFullCellDirective
   ],
-  exports: [
-    NzCalendarComponent,
-    NzDateCellDirective,
-    NzDateFullCellDirective,
-    NzMonthCellDirective,
-    NzMonthFullCellDirective,
-    DateTableComponent,
-    MonthTableComponent
-  ],
-  imports: [CommonModule, FormsModule, NzI18nModule, NzRadioModule, NzSelectModule]
+  exports: [NzCalendarComponent, NzDateCellDirective, NzDateFullCellDirective, NzMonthCellDirective, NzMonthFullCellDirective],
+  imports: [CommonModule, FormsModule, NzI18nModule, NzRadioModule, NzSelectModule, LibPackerModule]
 })
 export class NzCalendarModule {}

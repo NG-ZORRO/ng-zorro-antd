@@ -8,6 +8,7 @@
 
 import {
   ChangeDetectionStrategy,
+  // ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   DebugElement,
@@ -22,6 +23,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { DateHelperService } from 'ng-zorro-antd/i18n';
 
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -57,7 +59,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   private _disabledMinutes: (hour: number) => number[];
   private _disabledSeconds: (hour: number, minute: number) => number[];
   private _allowEmpty = true;
-  prefixCls: string = 'ant-time-picker-panel';
+  prefixCls: string = 'ant-picker-time-panel';
   time = new TimeHolder();
   hourEnabled = true;
   minuteEnabled = true;
@@ -443,13 +445,14 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     });
   }
 
-  constructor(private element: ElementRef, private updateCls: UpdateCls, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private element: ElementRef,
+    private updateCls: UpdateCls,
+    private cdr: ChangeDetectorRef,
+    public dateHelper: DateHelperService
+  ) {}
 
   ngOnInit(): void {
-    if (this.nzInDatePicker) {
-      this.prefixCls = 'ant-calendar-time-picker';
-    }
-
     this.time.changes.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.changed();
       this.touched();

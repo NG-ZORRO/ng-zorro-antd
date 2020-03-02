@@ -78,9 +78,9 @@ describe('Calendar', () => {
       fixture.detectChanges();
 
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[1];
-      const table = host.query(By.css('table'));
+      const table = host.query(By.css('.ant-picker-month-panel'));
 
-      expect(table.nativeElement.className).toContain('ant-fullcalendar-table');
+      expect(table.nativeElement).toBeTruthy();
     });
 
     it('should display date grid in year mode', () => {
@@ -88,9 +88,9 @@ describe('Calendar', () => {
       fixture.detectChanges();
 
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[1];
-      const table = host.query(By.css('table'));
+      const table = host.query(By.css('.ant-picker-year-panel'));
 
-      expect(table.nativeElement.className).toContain('ant-fullcalendar-month-panel-table');
+      expect(table.nativeElement).toBeTruthy();
     });
   });
 
@@ -173,8 +173,7 @@ describe('Calendar', () => {
       fixture.detectChanges();
 
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[0];
-      const cells = host.queryAll(By.css('td'));
-      const today = cells.find(x => x.nativeElement.className.indexOf('ant-fullcalendar-today') > 0)!;
+      const today = host.query(By.css('td.ant-picker-cell-today .ant-picker-calendar-date-value'));
 
       expect(today).toBeDefined();
       expect(parseInt(today.nativeElement.textContent!, 10)).toBe(now.getDate());
@@ -184,8 +183,7 @@ describe('Calendar', () => {
       fixture.detectChanges();
 
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[1];
-      const cells = host.queryAll(By.css('td'));
-      const active = cells.find(x => x.nativeElement.className.indexOf('ant-fullcalendar-selected-day') > 0)!;
+      const active = host.query(By.css('td.ant-picker-cell-selected .ant-picker-calendar-date-value'));
 
       expect(active).toBeDefined();
       expect(parseInt(active.nativeElement.textContent!, 10)).toBe(3);
@@ -199,8 +197,8 @@ describe('Calendar', () => {
       const lastPrevious = cells[3];
       const firstNext = cells[32];
 
-      expect(lastPrevious.nativeElement.className).toContain('ant-fullcalendar-last-month-cell');
-      expect(firstNext.nativeElement.className).toContain('ant-fullcalendar-next-month-btn-day');
+      expect(lastPrevious.nativeElement.className).not.toContain('ant-picker-cell-in-view');
+      expect(firstNext.nativeElement.className).not.toContain('ant-picker-cell-in-view');
     });
 
     it('should mark current month in year mode', () => {
@@ -211,7 +209,7 @@ describe('Calendar', () => {
       const cells = host.queryAll(By.css('td'));
       const current = cells[now.getMonth()];
 
-      expect(current.nativeElement.className).toContain('ant-fullcalendar-month-panel-current-cell');
+      expect(current.nativeElement.className).toContain('ant-picker-cell-selected');
     });
 
     it('should mark active month in year mode', () => {
@@ -223,7 +221,7 @@ describe('Calendar', () => {
       const cells = host.queryAll(By.css('td'));
       const current = cells[10];
 
-      expect(current.nativeElement.className).toContain('ant-fullcalendar-month-panel-selected-cell');
+      expect(current.nativeElement.className).toContain('ant-picker-cell-selected');
     });
   });
 
@@ -278,7 +276,7 @@ describe('Calendar', () => {
       fixture.detectChanges();
 
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[0];
-      const content = host.query(By.css('td')).query(By.css('.ant-fullcalendar-content'));
+      const content = host.query(By.css('td')).query(By.css('.ant-picker-calendar-date-content'));
 
       expect(content.nativeElement.textContent).toContain('Foo');
     });
@@ -287,7 +285,7 @@ describe('Calendar', () => {
       fixture.detectChanges();
 
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[1];
-      const content = host.query(By.css('td')).query(By.css('.ant-fullcalendar-content'));
+      const content = host.query(By.css('td')).query(By.css('.ant-picker-calendar-date-content'));
 
       expect(content.nativeElement.textContent).toContain('Bar');
     });
@@ -304,8 +302,7 @@ describe('Calendar', () => {
       fixture.detectChanges();
 
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[0];
-      const content = host.query(By.css('td')).query(By.css('.ant-fullcalendar-date'));
-
+      const content = host.query(By.css('td')).query(By.css('.ant-picker-cell-inner'));
       expect(content.nativeElement.textContent!.trim()).toBe('Foo');
     });
 
@@ -313,7 +310,7 @@ describe('Calendar', () => {
       fixture.detectChanges();
 
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[1];
-      const content = host.query(By.css('td')).query(By.css('.ant-fullcalendar-date'));
+      const content = host.query(By.css('td')).query(By.css('.ant-picker-cell-inner'));
 
       expect(content.nativeElement.textContent!.trim()).toBe('Bar');
     });
@@ -330,8 +327,7 @@ describe('Calendar', () => {
       fixture.detectChanges();
 
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[0];
-      const content = host.query(By.css('td')).query(By.css('.ant-fullcalendar-content'));
-
+      const content = host.query(By.css('td')).query(By.css('.ant-picker-calendar-date-content'));
       expect(content.nativeElement.textContent).toContain('Foo');
     });
 
@@ -339,8 +335,7 @@ describe('Calendar', () => {
       fixture.detectChanges();
 
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[1];
-      const content = host.query(By.css('td')).query(By.css('.ant-fullcalendar-content'));
-
+      const content = host.query(By.css('td')).query(By.css('.ant-picker-calendar-date-content'));
       expect(content.nativeElement.textContent).toContain('Bar');
     });
   });
@@ -356,8 +351,7 @@ describe('Calendar', () => {
       fixture.detectChanges();
 
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[0];
-      const content = host.query(By.css('td')).query(By.css('.ant-fullcalendar-month'));
-
+      const content = host.query(By.css('td')).query(By.css('.ant-picker-cell-inner'));
       expect(content.nativeElement.textContent!.trim()).toBe('Foo');
     });
 
@@ -365,8 +359,7 @@ describe('Calendar', () => {
       fixture.detectChanges();
 
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[1];
-      const content = host.query(By.css('td')).query(By.css('.ant-fullcalendar-month'));
-
+      const content = host.query(By.css('td')).query(By.css('.ant-picker-cell-inner'));
       expect(content.nativeElement.textContent!.trim()).toBe('Bar');
     });
   });
