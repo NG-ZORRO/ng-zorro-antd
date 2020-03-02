@@ -8,7 +8,7 @@
 
 import { TemplateRef } from '@angular/core';
 import { Observable } from 'rxjs';
-import { NzDrawerPlacement } from './nz-drawer-options';
+import { NzDrawerPlacement } from './drawer-options';
 
 // tslint:disable-next-line:no-any
 export abstract class NzDrawerRef<R = any> {
