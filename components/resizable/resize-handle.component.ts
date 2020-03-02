@@ -10,7 +10,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, In
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { NzResizableService } from './nz-resizable.service';
+import { NzResizableService } from './resizable.service';
 
 export type NzResizeDirection = 'top' | 'right' | 'bottom' | 'left' | 'topRight' | 'bottomRight' | 'bottomLeft' | 'topLeft';
 
@@ -21,7 +21,9 @@ export class NzResizeHandleMouseDownEvent {
 @Component({
   selector: 'nz-resize-handle, [nz-resize-handle]',
   exportAs: 'nzResizeHandle',
-  templateUrl: './nz-resize-handle.component.html',
+  template: `
+    <ng-content></ng-content>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class]': '"nz-resizable-handle nz-resizable-handle-" + nzDirection',
