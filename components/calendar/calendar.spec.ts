@@ -7,9 +7,9 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CandyDate } from 'ng-zorro-antd/core';
 import { NZ_DATE_CONFIG } from '../i18n/date-config';
-import { NzCalendarHeaderComponent as CalendarHeader } from './nz-calendar-header.component';
-import { NzCalendarComponent as Calendar } from './nz-calendar.component';
-import { NzCalendarModule } from './nz-calendar.module';
+import { NzCalendarHeaderComponent as CalendarHeader } from './calendar-header.component';
+import { NzCalendarComponent as Calendar } from './calendar.component';
+import { NzCalendarModule } from './calendar.module';
 
 registerLocaleData(zh);
 
@@ -78,7 +78,7 @@ describe('Calendar', () => {
       fixture.detectChanges();
 
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[1];
-      const table = host.query(By.css('.ant-picker-month-panel'));
+      const table = host.query(By.css('.ant-picker-date-panel'));
 
       expect(table.nativeElement).toBeTruthy();
     });
@@ -88,7 +88,7 @@ describe('Calendar', () => {
       fixture.detectChanges();
 
       const host = fixture.debugElement.queryAll(By.directive(Calendar))[1];
-      const table = host.query(By.css('.ant-picker-year-panel'));
+      const table = host.query(By.css('.ant-picker-month-panel'));
 
       expect(table.nativeElement).toBeTruthy();
     });
