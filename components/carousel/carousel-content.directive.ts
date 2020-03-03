@@ -30,7 +30,7 @@ export class NzCarouselContentDirective {
 
   private _active = false;
 
-  constructor(elementRef: ElementRef, private renderer: Renderer2) {
+  constructor(elementRef: ElementRef, private readonly renderer: Renderer2) {
     this.el = elementRef.nativeElement;
     this.renderer.addClass(elementRef.nativeElement, 'slick-slide');
   }

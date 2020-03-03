@@ -111,7 +111,7 @@ export class NzToolTipComponent extends NzTooltipBaseComponent {
   @Input() nzTitle: NzTSType | null;
   @ContentChild('nzTemplate', { static: true }) nzTitleTemplate: TemplateRef<void>;
 
-  constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
+  constructor(cdr: ChangeDetectorRef, @Host() @Optional() noAnimation?: NzNoAnimationDirective) {
     super(cdr, noAnimation);
   }
 

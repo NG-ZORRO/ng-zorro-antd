@@ -115,7 +115,11 @@ export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor,
     this.hoverValue = Math.ceil(input);
   }
 
-  constructor(public nzConfigService: NzConfigService, private renderer: Renderer2, private cdr: ChangeDetectorRef) {}
+  constructor(
+    public readonly nzConfigService: NzConfigService,
+    private readonly renderer: Renderer2,
+    private readonly cdr: ChangeDetectorRef
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzAutoFocus, nzCount, nzValue } = changes;

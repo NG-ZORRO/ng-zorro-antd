@@ -182,7 +182,7 @@ export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestr
   _prefix = 'ant-popover-placement';
   _hasBackdrop = true;
 
-  constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
+  constructor(cdr: ChangeDetectorRef, @Host() @Optional() noAnimation?: NzNoAnimationDirective) {
     super(cdr, noAnimation);
   }
 
@@ -193,9 +193,6 @@ export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestr
     this.nzOnConfirm.complete();
   }
 
-  /**
-   * @override
-   */
   show(): void {
     if (!this.nzCondition) {
       super.show();

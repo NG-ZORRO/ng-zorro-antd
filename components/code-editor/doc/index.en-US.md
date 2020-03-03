@@ -85,7 +85,7 @@ If you use static loading, you should not add assets of monaco editor to your pr
 
 ### NZ_CODE_EDITOR_CONFIG
 
-You can inject an object that implements `NzCodeEditorConfig` with the injection token `NZ_CODE_EDITOR_CONFIG`.
+You can set an object that implements `NzCodeEditorConfig` with the key `codeEditor` to the global config service.
 
 | Parameter | Description | Type | Default |
 | --- | --- | --- | --- |

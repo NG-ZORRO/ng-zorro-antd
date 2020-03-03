@@ -156,18 +156,17 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzColon: boolean;
 
   itemMatrix: NzDescriptionsItemRenderProps[][] = [];
-
   realColumn = 3;
 
-  private destroy$ = new Subject<void>();
-  private resize$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
+  private readonly resize$ = new Subject<void>();
 
   constructor(
-    public nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef,
-    private mediaMatcher: MediaMatcher,
-    private platform: Platform,
-    private nzDomEventService: NzDomEventService
+    public readonly nzConfigService: NzConfigService,
+    private readonly cdr: ChangeDetectorRef,
+    private readonly mediaMatcher: MediaMatcher,
+    private readonly platform: Platform,
+    private readonly nzDomEventService: NzDomEventService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -5,6 +5,7 @@ import { By } from '@angular/platform-browser';
 import { Router, Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
+import { NzSafeAny } from 'ng-zorro-antd/core';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { NzDemoBreadcrumbDropdownComponent } from './demo/dropdown';
@@ -179,8 +180,7 @@ describe('breadcrumb', () => {
   });
 });
 
-// tslint:disable-next-line no-any
-function flushFixture(fixture: ComponentFixture<any>): void {
+function flushFixture(fixture: ComponentFixture<NzSafeAny>): void {
   fixture.detectChanges();
   flush();
   fixture.detectChanges();

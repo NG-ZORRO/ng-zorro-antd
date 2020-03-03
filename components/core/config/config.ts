@@ -11,8 +11,8 @@ import { InjectionToken, TemplateRef, Type } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import { NzBreakpointEnum } from '../responsive/public-api';
 
-import { NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType } from '../types';
-import { NzSafeAny } from '../types/any';
+import { NzSafeAny, NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType } from '../types';
+
 export interface NzConfig {
   affix?: AffixConfig;
   alert?: AlertConfig;

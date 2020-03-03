@@ -81,10 +81,13 @@ export class NzResultComponent implements OnChanges {
   @Input() nzSubTitle?: string | TemplateRef<void>;
   @Input() nzExtra?: string | TemplateRef<void>;
 
+  el: HTMLElement;
   icon?: string | TemplateRef<void>;
   isException = false;
 
-  constructor(private nzUpdateHostClassService: NzUpdateHostClassService, private elementRef: ElementRef) {}
+  constructor(private readonly nzUpdateHostClassService: NzUpdateHostClassService, elementRef: ElementRef) {
+    this.el = elementRef.nativeElement;
+  }
 
   ngOnChanges(): void {
     this.setStatusIcon();
@@ -107,7 +110,7 @@ export class NzResultComponent implements OnChanges {
   private setClassMap(): void {
     const prefix = 'ant-result';
 
-    this.nzUpdateHostClassService.updateHostClass(this.elementRef.nativeElement, {
+    this.nzUpdateHostClassService.updateHostClass(this.el, {
       [prefix]: true,
       [`${prefix}-${this.nzStatus}`]: true
     });

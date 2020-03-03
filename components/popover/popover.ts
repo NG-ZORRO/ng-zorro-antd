@@ -107,7 +107,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
 export class NzPopoverComponent extends NzToolTipComponent {
   _prefix = 'ant-popover-placement';
 
-  constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
+  constructor(cdr: ChangeDetectorRef, @Host() @Optional() noAnimation?: NzNoAnimationDirective) {
     super(cdr, noAnimation);
   }
 

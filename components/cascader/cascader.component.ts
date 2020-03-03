@@ -40,6 +40,7 @@ import {
   NgStyleInterface,
   NzConfigService,
   NzNoAnimationDirective,
+  NzSafeAny,
   slideMotion,
   toArray,
   WithConfig
@@ -223,7 +224,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   @Input() nzMouseLeaveDelay: number = 150; // ms
   @Input() nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[] = ['click'] as NzCascaderTriggerType[];
   @Input() nzChangeOn: (option: NzCascaderOption, level: number) => boolean;
-  @Input() nzLoadData: (node: NzCascaderOption, index?: number) => PromiseLike<any>; // tslint:disable-line:no-any
+  @Input() nzLoadData: (node: NzCascaderOption, index?: number) => PromiseLike<NzSafeAny>;
 
   @Input()
   get nzOptions(): NzCascaderOption[] | null {
@@ -251,8 +252,6 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   isLoading = false;
   labelRenderText: string;
   labelRenderContext = {};
-  onChange = Function.prototype;
-  onTouched = Function.prototype;
   positions: ConnectionPositionPair[] = [...DEFAULT_CASCADER_POSITIONS];
 
   /**
@@ -261,10 +260,24 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   dropdownWidthStyle: string;
   dropdownHeightStyle: 'auto' | '' = '';
   isFocused = false;
-
   locale: NzCascaderI18nInterface;
 
-  private destroy$ = new Subject<void>();
+  //#region ControlValueAccesstor
+
+  onChange = Function.prototype;
+  onTouched = Function.prototype;
+
+  registerOnChange(fn: NzSafeAny): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: NzSafeAny): void {
+    this.onTouched = fn;
+  }
+
+  //#endregion
+
+  private readonly destroy$ = new Subject<void>();
   private inputString = '';
   private isOpening = false;
   private delayMenuTimer: number | null;
@@ -312,10 +325,10 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   }
 
   constructor(
-    public cascaderService: NzCascaderService,
-    private i18nService: NzI18nService,
-    public nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef,
+    public readonly cascaderService: NzCascaderService,
+    private readonly i18nService: NzI18nService,
+    public readonly nzConfigService: NzConfigService,
+    private readonly cdr: ChangeDetectorRef,
     elementRef: ElementRef,
     renderer: Renderer2,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
@@ -385,16 +398,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     this.clearDelaySelectTimer();
   }
 
-  registerOnChange(fn: () => {}): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: () => {}): void {
-    this.onTouched = fn;
-  }
-
-  // tslint:disable-next-line:no-any
-  writeValue(value: any): void {
+  writeValue(value: NzSafeAny): void {
     this.cascaderService.values = toArray(value);
     this.cascaderService.syncOptions(true);
   }
@@ -453,8 +457,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     this.cascaderService.clear();
   }
 
-  // tslint:disable-next-line:no-any
-  getSubmitValue(): any[] {
+  getSubmitValue(): NzSafeAny[] {
     return this.cascaderService.selectedOptions.map(o => this.cascaderService.getOptionValue(o));
   }
 

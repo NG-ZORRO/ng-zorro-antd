@@ -1,13 +1,16 @@
 import { Component } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { editor } from 'monaco-editor';
+import IEditor = editor.IEditor;
+import IDiffEditor = editor.IDiffEditor;
 
 import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
+import { NzSafeAny } from 'ng-zorro-antd/core';
 
 import { NzDemoCodeEditorBasicComponent } from './demo/basic';
 
-// tslint:disable-next-line no-any
-declare const monaco: any;
+declare const monaco: NzSafeAny;
 
 @Component({
   template: `
@@ -15,13 +18,11 @@ declare const monaco: any;
   `
 })
 export class NzTestCodeEditorFullControlComponent {
-  // tslint:disable-next-line no-any
-  editor: any;
+  editor: IEditor | IDiffEditor;
 
   code = '';
 
-  // tslint:disable-next-line no-any
-  onEditorInit(e: any): void {
+  onEditorInit(e: IEditor | IDiffEditor): void {
     this.editor = e;
     this.editor.setModel(monaco.editor.createModel("console.log('Hello ng-zorro-antd')", 'typescript'));
   }

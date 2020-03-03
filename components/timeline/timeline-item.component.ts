@@ -70,7 +70,7 @@ export class NzTimelineItemComponent implements OnChanges {
   borderColor: string | null = null;
   position: NzTimelineMode | undefined;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private readonly cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzColor) {

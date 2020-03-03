@@ -9,7 +9,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 
-import { arraysEqual, isNotNil } from 'ng-zorro-antd/core';
+import { arraysEqual, isNotNil, NzSafeAny } from 'ng-zorro-antd/core';
 
 import { isShowSearchObject, NzCascaderComponentAsSource, NzCascaderFilter, NzCascaderOption, NzCascaderSearchOption } from './typings';
 import { isChildOption, isParentOption } from './utils';
@@ -31,7 +31,7 @@ export class NzCascaderService implements OnDestroy {
   /** Selected options would be output to user. */
   selectedOptions: NzCascaderOption[] = [];
 
-  values: any[] = []; // tslint:disable-line:no-any
+  values: NzSafeAny[] = [];
 
   readonly $loading = new BehaviorSubject<boolean>(false);
 
@@ -333,8 +333,8 @@ export class NzCascaderService implements OnDestroy {
     return o[this.cascaderComponent.nzLabelProperty || 'label'] as string;
   }
 
-  // tslint:disable-next-line:no-any
-  getOptionValue(o: NzCascaderOption): any {
+  // tslint:disable-next-line:no-NzSafeAny
+  getOptionValue(o: NzCascaderOption): NzSafeAny {
     return o[this.cascaderComponent.nzValueProperty || 'value'];
   }
 
@@ -376,16 +376,11 @@ export class NzCascaderService implements OnDestroy {
   /**
    * Load children of an option asynchronously.
    */
-  loadChildren(
-    option: NzCascaderOption | any, // tslint:disable-line:no-any
-    columnIndex: number,
-    success?: VoidFunction,
-    failure?: VoidFunction
-  ): void {
+  loadChildren(option: NzCascaderOption | NzSafeAny, columnIndex: number, success?: VoidFunction, failure?: VoidFunction): void {
     const loadFn = this.cascaderComponent.nzLoadData;
 
     if (loadFn) {
-      // If there isn't any option in columns.
+      // If there isn't NzSafeAny option in columns.
       this.$loading.next(columnIndex < 0);
 
       if (typeof option === 'object') {
@@ -423,10 +418,7 @@ export class NzCascaderService implements OnDestroy {
   /**
    * Find a option that has a given value in a given column.
    */
-  private findOptionWithValue(
-    columnIndex: number,
-    value: NzCascaderOption | any // tslint:disable-line:no-any
-  ): NzCascaderOption | null {
+  private findOptionWithValue(columnIndex: number, value: NzCascaderOption | NzSafeAny): NzCascaderOption | null {
     const targetColumn = this.columns[columnIndex];
     if (targetColumn) {
       const v = typeof value === 'object' ? this.getOptionValue(value) : value;

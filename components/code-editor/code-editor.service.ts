@@ -7,56 +7,34 @@
  */
 
 import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable, Optional } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of as observableOf, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
-import { NzConfigService, PREFIX, warn, warnDeprecation } from 'ng-zorro-antd/core';
-import { JoinedEditorOptions, NZ_CODE_EDITOR_CONFIG, NzCodeEditorConfig, NzCodeEditorLoadingStatus } from './typings';
+import { NzConfigService, NzSafeAny, PREFIX, warn } from 'ng-zorro-antd/core';
+import { JoinedEditorOptions, NzCodeEditorConfig, NzCodeEditorLoadingStatus } from './typings';
 
-// tslint:disable-next-line no-any
-declare const monaco: any;
+declare const monaco: NzSafeAny;
 
 const NZ_CONFIG_COMPONENT_NAME = 'codeEditor';
-
-// tslint:disable no-any
-function tryTriggerFunc(fn?: (...args: any[]) => any): (...args: any) => void {
-  return (...args: any[]) => {
-    if (fn) {
-      fn(...args);
-    }
-  };
-}
-// tslint:enable no-any
 
 @Injectable({
   providedIn: 'root'
 })
 export class NzCodeEditorService {
-  private document: Document;
+  private readonly document: Document;
+  private readonly loaded$ = new Subject<boolean>();
   private firstEditorInitialized = false;
-  private loaded$ = new Subject<boolean>();
   private loadingStatus = NzCodeEditorLoadingStatus.UNLOAD;
   private option: JoinedEditorOptions;
   private config: NzCodeEditorConfig;
 
-  option$ = new BehaviorSubject<JoinedEditorOptions>(this.option);
+  public readonly option$ = new BehaviorSubject<JoinedEditorOptions>(this.option);
 
-  constructor(
-    private readonly nzConfigService: NzConfigService,
-    @Inject(DOCUMENT) _document: any, // tslint:disable-line no-any
-    @Inject(NZ_CODE_EDITOR_CONFIG) @Optional() config?: NzCodeEditorConfig
-  ) {
+  constructor(private readonly nzConfigService: NzConfigService, @Inject(DOCUMENT) _document: NzSafeAny) {
     const globalConfig = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME);
-
-    if (config) {
-      warnDeprecation(
-        `'NZ_CODE_EDITOR_CONFIG' is deprecated and will be removed in next minor version. Please use 'NzConfigService' instead.`
-      );
-    }
-
     this.document = _document;
-    this.config = { ...config, ...globalConfig };
+    this.config = { ...globalConfig };
     this.option = this.config.defaultEditorOption || {};
 
     this.nzConfigService.getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME).subscribe(() => {
@@ -65,14 +43,6 @@ export class NzCodeEditorService {
         this._updateDefaultOption(newGlobalConfig.defaultEditorOption);
       }
     });
-  }
-
-  updateDefaultOption(option: JoinedEditorOptions): void {
-    warnDeprecation(
-      `'updateDefaultOption' is deprecated and will be removed in next minor version. Please use 'set' of 'NzConfigService' instead.`
-    );
-
-    this._updateDefaultOption(option);
   }
 
   private _updateDefaultOption(option: JoinedEditorOptions): void {
@@ -122,7 +92,7 @@ export class NzCodeEditorService {
 
     const assetsRoot = this.config.assetsRoot;
     const vs = assetsRoot ? `${assetsRoot}/vs` : 'assets/vs';
-    const windowAsAny = window as any; // tslint:disable-line no-any
+    const windowAsAny = window as NzSafeAny;
     const loadScript = this.document.createElement('script');
 
     loadScript.type = 'text/javascript';
@@ -147,16 +117,22 @@ export class NzCodeEditorService {
     this.loaded$.next(true);
     this.loaded$.complete();
 
-    tryTriggerFunc(this.config.onLoad)();
+    if (this.config.onLoad) {
+      this.config.onLoad();
+    }
   }
 
   private onInit(): void {
     if (!this.firstEditorInitialized) {
       this.firstEditorInitialized = true;
-      tryTriggerFunc(this.config.onFirstEditorInit)();
+      if (this.config.onFirstEditorInit) {
+        this.config.onFirstEditorInit();
+      }
     }
 
-    tryTriggerFunc(this.config.onInit)();
+    if (this.config.onInit) {
+      this.config.onInit();
+    }
   }
 
   private getLatestOption(): JoinedEditorOptions {

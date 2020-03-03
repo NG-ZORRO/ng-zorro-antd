@@ -61,12 +61,12 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
 
   breadcrumbs: BreadcrumbOption[] | undefined = [];
 
-  private destroy$ = new Subject<void>();
+  private readonly destroy$ = new Subject<void>();
 
   constructor(
-    private injector: Injector,
-    private ngZone: NgZone,
-    private cdr: ChangeDetectorRef,
+    private readonly injector: Injector,
+    private readonly ngZone: NgZone,
+    private readonly cdr: ChangeDetectorRef,
     elementRef: ElementRef,
     renderer: Renderer2
   ) {

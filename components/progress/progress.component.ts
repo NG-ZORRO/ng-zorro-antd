@@ -205,7 +205,7 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   private inferredStatus: NzProgressStatusType = 'normal';
   private destroy$ = new Subject<void>();
 
-  constructor(public nzConfigService: NzConfigService) {}
+  constructor(public readonly nzConfigService: NzConfigService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzSteps, nzGapPosition, nzStrokeLinecap, nzStrokeColor, nzGapDegree, nzType, nzStatus, nzPercent, nzSuccessPercent } = changes;

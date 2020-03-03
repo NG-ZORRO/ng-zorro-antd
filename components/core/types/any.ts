@@ -6,5 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-// tslint:disable-next-line:no-any
-export type NzSafeAny = any;
+/**
+ * It's an any. But it's a explicit and specific any.
+ */
+export type NzSafeAny = any; // tslint:disable-line:no-any

@@ -32,6 +32,7 @@ import {
   NgClassInterface,
   NgStyleInterface,
   NzNoAnimationDirective,
+  NzSafeAny,
   NzTSType,
   POSITION_MAP,
   toBoolean,
@@ -280,8 +281,7 @@ Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popcon
     const isArray = Array.isArray(propertiesOrChanges);
     const keys = isArray ? (propertiesOrChanges as string[]) : Object.keys(propertiesOrChanges);
 
-    // tslint:disable-next-line no-any
-    keys.forEach((property: any) => {
+    keys.forEach((property: NzSafeAny) => {
       if (this.needProxyProperties.indexOf(property) !== -1) {
         // @ts-ignore
         this.updateComponentValue(property, this[property]);
@@ -312,8 +312,7 @@ Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popcon
     this.tooltip.updateByDirective();
   }
 
-  // tslint:disable-next-line no-any
-  private updateComponentValue(key: string, value: any): void {
+  private updateComponentValue(key: string, value: NzSafeAny): void {
     if (typeof value !== 'undefined') {
       // @ts-ignore
       this.tooltip[key] = value;
@@ -351,7 +350,7 @@ Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popcon
 export abstract class NzTooltipBaseComponent implements OnDestroy {
   @ViewChild('overlay', { static: false }) overlay: CdkConnectedOverlay;
 
-  nzVisibleChange = new Subject<boolean>();
+  readonly nzVisibleChange = new Subject<boolean>();
   nzTitle: NzTSType | null;
   nzContent: NzTSType | null;
   nzOverlayClassName: string;
@@ -399,9 +398,9 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
   origin: CdkOverlayOrigin;
   preferredPlacement = 'top';
 
+  _prefix: string = 'ant-tooltip-placement';
   _classMap: NgClassInterface = {};
   _hasBackdrop = false;
-  _prefix = 'ant-tooltip-placement';
   _positions: ConnectionPositionPair[] = [...DEFAULT_TOOLTIP_POSITIONS];
 
   get content(): string | TemplateRef<void> | null {
@@ -412,7 +411,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
     return this.nzTitle !== undefined ? this.nzTitle : this.nzTitleTemplate;
   }
 
-  constructor(public cdr: ChangeDetectorRef, public noAnimation?: NzNoAnimationDirective) {}
+  constructor(public readonly cdr: ChangeDetectorRef, public readonly noAnimation?: NzNoAnimationDirective) {}
 
   ngOnDestroy(): void {
     this.nzVisibleChange.complete();

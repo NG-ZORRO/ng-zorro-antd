@@ -20,11 +20,11 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BehaviorSubject, combineLatest, fromEvent, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil } from 'rxjs/operators';
 
-import { inNextTick, InputBoolean, warn } from 'ng-zorro-antd/core';
+import { inNextTick, InputBoolean, NzSafeAny, warn } from 'ng-zorro-antd/core';
 
 import { NzCodeEditorService } from './code-editor.service';
 import { DiffEditorOptions, EditorOptions, JoinedEditorOptions, NzEditorMode } from './typings';
@@ -35,8 +35,7 @@ import IEditor = editor.IEditor;
 import IDiffEditor = editor.IDiffEditor;
 import ITextModel = editor.ITextModel;
 
-// tslint:disable-next-line no-any
-declare const monaco: any;
+declare const monaco: NzSafeAny;
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -63,7 +62,7 @@ declare const monaco: any;
     }
   ]
 })
-export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
+export class NzCodeEditorComponent implements OnDestroy, AfterViewInit, ControlValueAccessor {
   @Input() nzEditorMode: NzEditorMode = 'normal';
   @Input() nzOriginalText = '';
   @Input() @InputBoolean() nzLoading = false;
@@ -79,14 +78,14 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
   editorOptionCached: JoinedEditorOptions = {};
 
   private readonly el: HTMLElement;
-  private destroy$ = new Subject<void>();
-  private resize$ = new Subject<void>();
-  private editorOption$ = new BehaviorSubject<JoinedEditorOptions>({});
+  private readonly destroy$ = new Subject<void>();
+  private readonly resize$ = new Subject<void>();
+  private readonly editorOption$ = new BehaviorSubject<JoinedEditorOptions>({});
   private editorInstance: IEditor | IDiffEditor;
   private value = '';
   private modelSet = false;
 
-  constructor(private nzCodeEditorService: NzCodeEditorService, private ngZone: NgZone, elementRef: ElementRef) {
+  constructor(private readonly nzCodeEditorService: NzCodeEditorService, private readonly ngZone: NgZone, elementRef: ElementRef) {
     this.el = elementRef.nativeElement;
   }
 
@@ -111,13 +110,11 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
     this.setValue();
   }
 
-  // tslint:disable-next-line no-any
-  registerOnChange(fn: (value: string) => void): any {
+  registerOnChange(fn: NzSafeAny): void {
     this.onChange = fn;
   }
 
-  // tslint:disable-next-line no-any
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: NzSafeAny): void {
     this.onTouch = fn;
   }
 

@@ -56,5 +56,5 @@ export class NzBreadCrumbItemComponent {
    */
   @Input() nzOverlay?: NzDropdownMenuComponent;
 
-  constructor(public nzBreadCrumbComponent: NzBreadCrumbComponent) {}
+  constructor(public readonly nzBreadCrumbComponent: NzBreadCrumbComponent) {}
 }

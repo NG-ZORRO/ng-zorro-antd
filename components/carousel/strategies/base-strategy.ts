@@ -34,7 +34,11 @@ export abstract class NzCarouselBaseStrategy {
     return this.contents[this.maxIndex].el;
   }
 
-  constructor(carouselComponent: NzCarouselComponentAsSource, protected cdr: ChangeDetectorRef, protected renderer: Renderer2) {
+  constructor(
+    carouselComponent: NzCarouselComponentAsSource,
+    protected readonly cdr: ChangeDetectorRef,
+    protected readonly renderer: Renderer2
+  ) {
     this.carouselComponent = carouselComponent;
   }
 
@@ -43,7 +47,6 @@ export abstract class NzCarouselBaseStrategy {
    * @param contents
    */
   withCarouselContents(contents: QueryList<NzCarouselContentDirective> | null): void {
-    // TODO: carousel and its contents should be separated.
     const carousel = this.carouselComponent!;
     const rect = carousel.el.getBoundingClientRect();
     this.slickListEl = carousel.slickListEl;

@@ -14,10 +14,7 @@ export type NzCascaderSize = 'small' | 'large' | 'default';
 export type NzCascaderFilter = (searchValue: string, path: NzCascaderOption[]) => boolean;
 export type NzCascaderSorter = (a: NzCascaderOption[], b: NzCascaderOption[], inputValue: string) => number;
 
-/**
- * @deprecated Use the prefixed version.
- */
-export interface CascaderOption {
+export interface NzCascaderOption {
   value?: NzSafeAny;
   label?: string;
   title?: string;
@@ -30,16 +27,9 @@ export interface CascaderOption {
   [key: string]: NzSafeAny;
 }
 
-export type NzCascaderOption = CascaderOption;
-
-/**
- * @deprecated Use the prefixed version.
- */
-export interface CascaderSearchOption extends NzCascaderOption {
+export interface NzCascaderSearchOption extends NzCascaderOption {
   path: NzCascaderOption[];
 }
-
-export type NzCascaderSearchOption = CascaderSearchOption;
 
 export interface NzShowSearchOptions {
   filter?: NzCascaderFilter;
@@ -62,7 +52,5 @@ export interface NzCascaderComponentAsSource {
   nzChangeOnSelect: boolean;
 
   nzChangeOn?(option: NzCascaderOption, level: number): boolean;
-
-  // tslint:disable-next-line:no-any
-  nzLoadData?(node: NzCascaderOption, index?: number): PromiseLike<any>;
+  nzLoadData?(node: NzCascaderOption, index?: number): PromiseLike<NzSafeAny>;
 }

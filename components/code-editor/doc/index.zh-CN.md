@@ -54,7 +54,7 @@ npm install monaco-editor
 ],
 ```
 
-这样就 OK 了！CodeEditor 组件在需要加载 monaco editor 时自动去 /assets/vs/ 目录下查询。
+这样就可以了！CodeEditor 组件在需要加载 monaco editor 时自动去 /assets/vs/ 目录下查询。
 
 如果你的静态资源都部署在 CDN 上，你就无须修改 angular.json 文件，但你必须配置 `NZ_CODE_EDITOR_CONFIG` 下的 `assetsRoot` 项。例如你将 monaco editor 的资源放置在了 https://mycdn.com/assets/vs ，你就需要传递 `{ assetsRoot: 'https://mycdn.com/assets' }` 。
 
@@ -90,9 +90,9 @@ npm install monaco-editor
 | --- | --- |
 | `layout()` | 强制组件重新渲染 |
 
-### NZ_CODE_EDITOR_CONFIG
+### 全局配置
 
-你可以通过注入令牌 `NZ_CODE_EDITOR_CONFIG` 提供一个符合 `NzCodeEditorConfig` 接口的对象，来进行配置、使用钩子或设置编辑器默认选项。
+你可以通过 `codeEditor` key 向全部注册服务提供一个符合 `NzCodeEditorConfig` 接口的对象，来进行配置、使用钩子或设置编辑器默认选项。
 
 | 属性 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
