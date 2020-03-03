@@ -99,7 +99,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
       const day = start.addDays(colIndex);
       weekDays.push({
         value: day.nativeDate,
-        title: this.dateHelper.format(day.nativeDate, this.dateHelper.relyOnDatePipe ? 'E' : 'ddd'), // eg. Tue
+        title: this.dateHelper.format(day.nativeDate, 'E'), // eg. Tue
         content: this.dateHelper.format(day.nativeDate, this.getVeryShortWeekFormat()), // eg. Tu,
         isSelected: false,
         isDisabled: false,
@@ -111,15 +111,12 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
   }
 
   private getVeryShortWeekFormat(): string {
-    if (this.dateHelper.relyOnDatePipe) {
-      return this.i18n
-        .getLocaleId()
-        .toLowerCase()
-        .indexOf('zh') === 0
-        ? 'EEEEE'
-        : 'EEEEEE'; // Use extreme short for chinese
-    }
-    return 'dd';
+    return this.i18n
+      .getLocaleId()
+      .toLowerCase()
+      .indexOf('zh') === 0
+      ? 'EEEEE'
+      : 'EEEEEE'; // Use extreme short for chinese
   }
 
   makeBodyRows(): DateBodyRow[] {
@@ -141,7 +138,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
           ? 'longDate'
           : this.i18n.getLocaleData('DatePicker.lang.dateFormat', 'YYYY-MM-DD');
         const title = this.dateHelper.format(date.nativeDate, dateFormat);
-        const label = this.dateHelper.format(date.nativeDate, this.dateHelper.relyOnDatePipe ? 'dd' : 'DD');
+        const label = this.dateHelper.format(date.nativeDate, 'dd');
 
         const cell: DayCell = {
           value: date.nativeDate,

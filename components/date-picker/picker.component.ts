@@ -403,7 +403,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   private checkValidInputDate(inputTarget: EventTarget): CandyDate | null {
     const input = (inputTarget as HTMLInputElement).value;
-    const date = new CandyDate(input);
+    const date = new CandyDate(this.dateHelper.parseDate(input, this.format));
 
     if (!date.isValid() || input !== this.dateHelper.format(date.nativeDate, this.format)) {
       // Should also match the input format exactly

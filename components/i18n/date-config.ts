@@ -8,6 +8,13 @@
 
 import { InjectionToken } from '@angular/core';
 
+export type WeekDayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+
+export interface NzDateConfig {
+  /** Customize the first day of a week */
+  firstDayOfWeek?: WeekDayIndex;
+}
+
 export const NZ_DATE_CONFIG = new InjectionToken<NzDateConfig>('date-config');
 
 export const NZ_DATE_CONFIG_DEFAULT: NzDateConfig = {
@@ -18,7 +25,21 @@ export function mergeDateConfig(config: NzDateConfig): NzDateConfig {
   return { ...NZ_DATE_CONFIG_DEFAULT, ...config };
 }
 
-export interface NzDateConfig {
-  /** Customize the first day of a week */
-  firstDayOfWeek?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+/**
+ * Compatible translate the moment-like format pattern to angular's pattern
+ * Why? For now, we need to support the existing language formats in AntD, and AntD uses the default temporal syntax.
+ *
+ * TODO: compare and complete all format patterns
+ * Each format docs as below:
+ * @link https://momentjs.com/docs/#/displaying/format/
+ * @link https://angular.io/api/common/DatePipe#description
+ * @param format input format pattern
+ */
+export function transCompatFormat(format: string): string {
+  return (
+    format &&
+    format
+      .replace(/Y/g, 'y') // only support y, yy, yyy, yyyy
+      .replace(/D/g, 'd')
+  ); // d, dd represent of D, DD for momentjs, others are not support
 }

@@ -19,7 +19,7 @@ import {
 } from '@angular/core';
 
 import { CandyDate, isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core';
-import { DateHelperByDatePipe, DateHelperService, NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
+import { DateHelperService, NzCalendarI18nInterface, transCompatFormat } from 'ng-zorro-antd/i18n';
 import { PREFIX_CLASS } from './name';
 
 @Component({
@@ -102,10 +102,7 @@ export class CalendarFooterComponent implements OnChanges {
     }
     if (changes.locale) {
       // NOTE: Compat for DatePipe formatting rules
-      let dateFormat: string = this.locale.dateFormat;
-      if (this.dateHelper.relyOnDatePipe) {
-        dateFormat = (this.dateHelper as DateHelperByDatePipe).transCompatFormat(dateFormat);
-      }
+      const dateFormat: string = transCompatFormat(this.locale.dateFormat);
       this.todayTitle = this.dateHelper.format(this.now.nativeDate, dateFormat);
     }
   }
