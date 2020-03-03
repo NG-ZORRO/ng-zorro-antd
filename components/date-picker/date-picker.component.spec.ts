@@ -218,6 +218,20 @@ describe('NzDatePickerComponent', () => {
       expect(getPickerContainer()).toBeNull();
     }));
 
+    it('should support nzFormat', fakeAsync(() => {
+      fixtureInstance.nzFormat = 'dd.MM.yyyy';
+      fixtureInstance.nzValue = new Date('2020-03-04');
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      const input = getPickerInput(fixture.debugElement);
+      expect(input.value).toBe('04.03.2020');
+      dispatchMouseEvent(queryFromOverlay('.ant-picker-cell')!, 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(input.value).toBe('24.02.2020');
+    }));
+
     it('should support nzClassName', () => {
       const className = (fixtureInstance.nzClassName = 'my-test-class');
       fixture.detectChanges();
@@ -855,7 +869,7 @@ describe('date-fns testing', () => {
     fixtureInstance.useSuite = 1;
   });
 
-  it('should nzFormat parse input value by date-fns', fakeAsync(() => {
+  it('should parse input value with nzFormat', fakeAsync(() => {
     const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
     fixtureInstance.nzFormat = 'dd.MM.yyyy';
     fixture.detectChanges();

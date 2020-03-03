@@ -20,7 +20,7 @@ import {
 } from '@angular/core';
 
 import { CandyDate, valueFunctionProp } from 'ng-zorro-antd/core';
-import { DateHelperService, NzCalendarI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import { DateHelperService, NzCalendarI18nInterface, NzI18nService, transCompatFormat } from 'ng-zorro-antd/i18n';
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell, DayCell } from './interface';
 
@@ -134,9 +134,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
 
       for (let day = 0; day < 7; day++) {
         const date = weekStart.addDays(day);
-        const dateFormat = this.dateHelper.relyOnDatePipe
-          ? 'longDate'
-          : this.i18n.getLocaleData('DatePicker.lang.dateFormat', 'YYYY-MM-DD');
+        const dateFormat = transCompatFormat(this.i18n.getLocaleData('DatePicker.lang.dateFormat', 'YYYY-MM-DD'));
         const title = this.dateHelper.format(date.nativeDate, dateFormat);
         const label = this.dateHelper.format(date.nativeDate, 'dd');
 

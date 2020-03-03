@@ -13,6 +13,7 @@ export type WeekDayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 export interface NzDateConfig {
   /** Customize the first day of a week */
   firstDayOfWeek?: WeekDayIndex;
+  dateFnsCompat?: boolean;
 }
 
 export const NZ_DATE_CONFIG = new InjectionToken<NzDateConfig>('date-config');

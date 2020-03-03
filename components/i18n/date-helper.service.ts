@@ -13,6 +13,7 @@ import fnsGetISOWeek from 'date-fns/getISOWeek';
 import fnsParse from 'date-fns/parse';
 
 import parseISO from 'date-fns/parseISO';
+import { convertTokens } from './convert-tokens';
 import { mergeDateConfig, NZ_DATE_CONFIG, NzDateConfig, WeekDayIndex } from './date-config';
 import { NzI18nService } from './nz-i18n.service';
 
@@ -31,8 +32,6 @@ export function DATE_HELPER_SERVICE_FACTORY(injector: Injector, config: NzDateCo
   deps: [Injector, [new Optional(), NZ_DATE_CONFIG]]
 })
 export abstract class DateHelperService {
-  relyOnDatePipe: boolean = this instanceof DateHelperByDatePipe; // Indicate whether this service is rely on DatePipe
-
   constructor(protected i18n: NzI18nService, @Optional() @Inject(NZ_DATE_CONFIG) protected config: NzDateConfig) {
     this.config = mergeDateConfig(this.config);
   }
@@ -58,10 +57,16 @@ export class DateHelperByDateFns extends DateHelperService {
     return fnsGetISOWeek(date);
   }
 
-  // TODO: Use date-fns's "weekStartsOn" to support different locale when "config.firstDayOfWeek" is null
-  // when v2.0 is ready: https://github.com/date-fns/date-fns/blob/v2.0.0-alpha.27/src/locale/en-US/index.js#L23
+  // Use date-fns's "weekStartsOn" to support different locale when "config.firstDayOfWeek" is null
+  // https://github.com/date-fns/date-fns/blob/v2.0.0-alpha.27/src/locale/en-US/index.js#L23
   getFirstDayOfWeek(): WeekDayIndex {
-    return this.config.firstDayOfWeek == null ? 1 : this.config.firstDayOfWeek;
+    let defaultWeekStartsOn: WeekDayIndex;
+    try {
+      defaultWeekStartsOn = this.i18n.getDateLocale().options!.weekStartsOn!;
+    } catch (e) {
+      defaultWeekStartsOn = 1;
+    }
+    return this.config.firstDayOfWeek == null ? defaultWeekStartsOn : this.config.firstDayOfWeek;
   }
 
   /**
@@ -70,12 +75,14 @@ export class DateHelperByDateFns extends DateHelperService {
    * @param date Date
    * @param formatStr format string
    */
-  format(date: Date | null, formatStr: string): string {
-    return date ? fnsFormat(date, formatStr, { locale: this.i18n.getDateLocale() }) : '';
+  format(date: Date, formatStr: string): string {
+    const mergedStr = this.config.dateFnsCompat ? convertTokens(formatStr) : formatStr;
+    return date ? fnsFormat(date, mergedStr, { locale: this.i18n.getDateLocale() }) : '';
   }
 
   parseDate(text: string, formatStr: string): Date {
-    return fnsParse(text, formatStr, new Date(), {
+    const mergedStr = this.config.dateFnsCompat ? convertTokens(formatStr) : formatStr;
+    return fnsParse(text, mergedStr, new Date(), {
       locale: this.i18n.getDateLocale(),
       weekStartsOn: this.getFirstDayOfWeek()
     });
