@@ -15,7 +15,35 @@ import { DateHelperService, NzI18nService as I18n } from 'ng-zorro-antd/i18n';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'nz-calendar-header',
   exportAs: 'nzCalendarHeader',
-  templateUrl: './nz-calendar-header.component.html',
+  template: `
+    <div class="ant-picker-calendar-header">
+      <nz-select
+        class="ant-picker-calendar-year-select"
+        [nzSize]="size"
+        [nzDropdownMatchSelectWidth]="false"
+        [ngModel]="activeYear"
+        (ngModelChange)="updateYear($event)"
+      >
+        <nz-option *ngFor="let year of years" [nzLabel]="year.label" [nzValue]="year.value"></nz-option>
+      </nz-select>
+
+      <nz-select
+        *ngIf="mode === 'month'"
+        class="ant-picker-calendar-month-select"
+        [nzSize]="size"
+        [nzDropdownMatchSelectWidth]="false"
+        [ngModel]="activeMonth"
+        (ngModelChange)="monthChange.emit($event)"
+      >
+        <nz-option *ngFor="let month of months" [nzLabel]="month.label" [nzValue]="month.value"></nz-option>
+      </nz-select>
+
+      <nz-radio-group class="ant-picker-calendar-mode-switch" [(ngModel)]="mode" (ngModelChange)="modeChange.emit($event)" [nzSize]="size">
+        <label nz-radio-button nzValue="month">{{ monthTypeText }}</label>
+        <label nz-radio-button nzValue="year">{{ yearTypeText }}</label>
+      </nz-radio-group>
+    </div>
+  `,
   host: {
     '[style.display]': `'block'`,
     '[class.ant-fullcalendar-header]': `true`
@@ -24,11 +52,9 @@ import { DateHelperService, NzI18nService as I18n } from 'ng-zorro-antd/i18n';
 export class NzCalendarHeaderComponent implements OnInit {
   @Input() mode: 'month' | 'year' = 'month';
   @Input() fullscreen: boolean = true;
-
-  @Output() readonly modeChange: EventEmitter<'month' | 'year'> = new EventEmitter();
-
   @Input() activeDate: CandyDate = new CandyDate();
 
+  @Output() readonly modeChange: EventEmitter<'month' | 'year'> = new EventEmitter();
   @Output() readonly yearChange: EventEmitter<number> = new EventEmitter();
   @Output() readonly monthChange: EventEmitter<number> = new EventEmitter();
   // @Output() readonly valueChange: EventEmitter<CandyDate> = new EventEmitter();
