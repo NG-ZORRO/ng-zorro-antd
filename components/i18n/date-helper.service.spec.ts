@@ -64,7 +64,7 @@ describe('DateHelperService', () => {
         imports: [NzI18nModule],
         providers: [
           { provide: NZ_DATE_LOCALE, useValue: enUS },
-          { provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 4, dateFnsCompat: true } }
+          { provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 4, dateFnsFormatConvert: true } }
         ]
       });
 

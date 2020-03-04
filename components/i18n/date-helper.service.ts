@@ -77,12 +77,12 @@ export class DateHelperByDateFns extends DateHelperService {
    * @param formatStr format string
    */
   format(date: Date, formatStr: string): string {
-    const mergedStr = this.config.dateFnsCompat ? convertTokens(formatStr) : formatStr;
+    const mergedStr = this.config.dateFnsFormatConvert ? convertTokens(formatStr) : formatStr;
     return date ? fnsFormat(date, mergedStr, { locale: this.i18n.getDateLocale() }) : '';
   }
 
   parseDate(text: string, formatStr: string): Date {
-    const mergedStr = this.config.dateFnsCompat ? convertTokens(formatStr) : formatStr;
+    const mergedStr = this.config.dateFnsFormatConvert ? convertTokens(formatStr) : formatStr;
     return fnsParse(text, mergedStr, new Date(), {
       locale: this.i18n.getDateLocale(),
       weekStartsOn: this.getFirstDayOfWeek()
