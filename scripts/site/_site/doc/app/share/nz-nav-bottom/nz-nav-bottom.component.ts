@@ -1,5 +1,5 @@
 import { Platform } from '@angular/cdk/platform';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { ROUTER_LIST } from '../../router';
 
@@ -24,7 +24,7 @@ export class NzNavBottomComponent implements OnInit {
   index = 0;
   language = 'en';
 
-  constructor(private router: Router, private platform: Platform) {}
+  constructor(private router: Router, private platform: Platform, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     if (!this.platform.isBrowser) {
@@ -34,17 +34,21 @@ export class NzNavBottomComponent implements OnInit {
       if (event instanceof NavigationEnd) {
         const url = window.location.pathname.slice(1);
         this.language = this.router.url.split('/')[this.router.url.split('/').length - 1].split('#')[0];
-        const componentsList = ROUTER_LIST.components.reduce(
+        const componentsList = ROUTER_LIST.components
+        .filter(e => e.language === this.language)
+        .reduce(
           (pre, cur) => {
             return pre.concat(cur.children);
           },
+          // tslint:disable-next-line:no-any
           [] as any[]
         );
         this.list = [
           ...ROUTER_LIST.intro.filter(item => item.language === this.language),
-          ...componentsList.filter(item => item.language === this.language)
+          ...componentsList.filter(item => !item.experimental)
         ];
         this.index = this.list.findIndex(item => item.path === url);
+        this.cdr.markForCheck();
       }
     });
   }
