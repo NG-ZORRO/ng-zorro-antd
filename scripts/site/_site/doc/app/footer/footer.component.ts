@@ -171,11 +171,13 @@ export class FooterComponent implements OnInit {
 
   @Input() language: string = 'zh';
   @Input() colorHex: string = '#1890ff'
+  // tslint:disable-next-line:no-any
   @Output() colorChange = new EventEmitter<any>()
 
   constructor() {
   }
 
+  // tslint:disable-next-line:no-any
   changeColor(res: any): void {
     this.colorChange.emit(res);
   }

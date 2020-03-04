@@ -125,7 +125,7 @@ export class HeaderComponent implements OnChanges {
     this.versionChange.emit(version)
   }
 
-  onFocusChange(focus: boolean) {
+  onFocusChange(focus: boolean): void {
     this.searching = focus;
   }
 
@@ -133,7 +133,7 @@ export class HeaderComponent implements OnChanges {
     this.languageChange.emit(language)
   }
 
-  updateResponsive() {
+  updateResponsive(): void {
     this.responsive = null;
     this.isMobile = this.windowWidth <= 768;
     if (this.windowWidth < RESPONSIVE_XS) {

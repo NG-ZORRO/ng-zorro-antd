@@ -38,14 +38,14 @@ export class SearchbarComponent {
   constructor(private cdr: ChangeDetectorRef) {
   }
 
-  triggerFocus(focus: boolean) {
+  triggerFocus(focus: boolean): void {
     this.focused = focus;
     this.focusChange.emit(focus);
     this.cdr.markForCheck();
   }
 
   @HostListener('document:keyup.s', ['$event'])
-  onKeyUp(event: KeyboardEvent) {
+  onKeyUp(event: KeyboardEvent): void {
     if (this.searchInput.nativeElement && event.target === document.body) {
       this.searchInput.nativeElement.focus();
     }

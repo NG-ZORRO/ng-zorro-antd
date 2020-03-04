@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
+import { ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from "@angular/core";
 
 @Component({
   selector: 'app-github-btn',

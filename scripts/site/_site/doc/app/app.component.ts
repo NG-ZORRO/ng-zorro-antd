@@ -92,7 +92,7 @@ export class AppComponent implements OnInit, AfterContentInit {
     }
   }
 
-  setPage(url: string) {
+  setPage(url: string): void {
     const match = url.match(/\/(\w+)/);
     if (match && match[1]) {
       this.page = match[1];

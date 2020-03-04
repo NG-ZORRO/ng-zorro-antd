@@ -82,7 +82,7 @@ export class NavigationComponent {
   @Input() language: 'zh' | 'en' = 'zh';
   @Output() languageChange = new EventEmitter<string>()
   @Input() responsive: null | 'narrow' | 'crowded' = null;
-  @Input() page:'docs' | 'components' | 'experimental' | string = 'docs'
+  @Input() page: 'docs' | 'components' | 'experimental' | string = 'docs'
   @Input() isMobile = false;
   constructor() {
   }
