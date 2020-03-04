@@ -7,7 +7,8 @@ import { PreloadAllModules, RouterModule } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { IconDefinition } from '@ant-design/icons-angular';
 import { LeftOutline, RightOutline } from '@ant-design/icons-angular/icons';
-import { NzAffixModule, NzGridModule } from "ng-zorro-antd";
+import { NzAffixModule } from 'ng-zorro-antd/affix';
+import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NZ_CONFIG } from 'ng-zorro-antd/core';
@@ -27,6 +28,7 @@ import { routes } from './app.routing.module';
 import { NzNavBottomModule } from "./share/nz-nav-bottom/nz-nav-bottom.module";
 import { HeaderModule } from './header/header.module';
 import { FooterModule } from './footer/footer.module';
+import { NzContributorsListModule } from './share/contributors-list/nz-contributors-list.module';
 
 const icons: IconDefinition[] = [LeftOutline, RightOutline];
 
@@ -53,6 +55,7 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline];
     HttpClientJsonpModule,
     HeaderModule,
     FooterModule,
+    NzContributorsListModule,
     RouterModule.forRoot(routes, environment.production ? { preloadingStrategy: PreloadAllModules, scrollPositionRestoration: 'enabled'  } : {}),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
