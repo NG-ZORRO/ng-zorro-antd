@@ -7,8 +7,7 @@
  */
 
 import { InjectionToken } from '@angular/core';
-
-export type WeekDayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+import { WeekDayIndex } from 'ng-zorro-antd/core';
 
 export interface NzDateConfig {
   /** Customize the first day of a week */

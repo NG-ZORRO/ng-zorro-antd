@@ -29,10 +29,10 @@ import addMonths from 'date-fns/addMonths';
 import addYears from 'date-fns/addYears';
 import setDay from 'date-fns/setDay';
 import setMonth from 'date-fns/setMonth';
-import { WeekDayIndex } from 'ng-zorro-antd/i18n';
 import { warn } from '../logger';
 import { IndexableObject } from '../types';
 
+export type WeekDayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 export type CandyDateCompareGrain = 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second';
 export type CandyDateType = CandyDate | Date | null;
 export type SingleValue = CandyDate | null;

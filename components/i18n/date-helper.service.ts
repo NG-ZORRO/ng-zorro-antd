@@ -13,8 +13,9 @@ import fnsGetISOWeek from 'date-fns/getISOWeek';
 import fnsParse from 'date-fns/parse';
 
 import parseISO from 'date-fns/parseISO';
+import { WeekDayIndex } from 'ng-zorro-antd/core';
 import { convertTokens } from './convert-tokens';
-import { mergeDateConfig, NZ_DATE_CONFIG, NzDateConfig, WeekDayIndex } from './date-config';
+import { mergeDateConfig, NZ_DATE_CONFIG, NzDateConfig } from './date-config';
 import { NzI18nService } from './nz-i18n.service';
 
 export function DATE_HELPER_SERVICE_FACTORY(injector: Injector, config: NzDateConfig): DateHelperService {

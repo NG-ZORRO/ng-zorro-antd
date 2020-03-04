@@ -8,7 +8,7 @@
 
 export { NzI18nModule } from './nz-i18n.module';
 export { NzI18nService } from './nz-i18n.service';
-export { NZ_DATE_CONFIG, NzDateConfig, WeekDayIndex, transCompatFormat } from './date-config';
+export { NZ_DATE_CONFIG, NzDateConfig, transCompatFormat } from './date-config';
 export * from './nz-i18n.interface';
 export * from './nz-i18n.token';
 export * from './date-helper.service';
