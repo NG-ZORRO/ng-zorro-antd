@@ -25,6 +25,8 @@ import { DEMOComponent } from './_demo/demo.component';
 import { AppComponent } from './app.component';
 import { routes } from './app.routing.module';
 import { NzNavBottomModule } from "./share/nz-nav-bottom/nz-nav-bottom.module";
+import { HeaderModule } from './header/header.module';
+import { FooterModule } from './footer/footer.module';
 
 const icons: IconDefinition[] = [LeftOutline, RightOutline];
 
@@ -49,6 +51,8 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline];
     NzIconModule,
     NzBadgeModule,
     HttpClientJsonpModule,
+    HeaderModule,
+    FooterModule,
     RouterModule.forRoot(routes, environment.production ? { preloadingStrategy: PreloadAllModules, scrollPositionRestoration: 'enabled'  } : {}),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
