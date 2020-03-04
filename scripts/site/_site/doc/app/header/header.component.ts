@@ -64,41 +64,6 @@ const RESPONSIVE_SM = 1200;
                   nzSize="small"
                   class="header-button header-lang-butto"
                   (click)="onChangeLanguage(language==='zh'?'en':'zh')">{{language == 'zh' ? 'English' : '中文'}}</button>
-          <button nz-button nzSize="small"
-                  nz-dropdown
-                  [nzDropdownMenu]="moreMenu"
-                  nzPlacement="bottomRight">
-            {{language == 'zh' ? '更多' : 'More'}}
-            <i nz-icon nzType="down"></i>
-          </button>
-          <nz-dropdown-menu #moreMenu="nzDropdownMenu">
-            <ul nz-menu>
-              <li nz-menu-group [nzTitle]="language == 'zh' ? '生态' : 'Ecosystem'">
-                <ul>
-                  <li nz-menu-item>
-                    <a href="https://ant.design/" class="header-link" target="_blank">
-                      Ant Design of React
-                    </a>
-                  </li>
-                  <li nz-menu-item>
-                    <a href="http://vue.ant.design" class="header-link" target="_blank">
-                      Ant Design of Vue
-                    </a>
-                  </li>
-                  <li nz-menu-item *ngIf="language == 'zh'">
-                    <a href="https://github.com/NG-ZORRO/today-ng-steps" class="header-link" target="_blank">
-                      实战教程
-                    </a>
-                  </li>
-                  <li nz-menu-item>
-                    <a href="https://ng.ant.design/blog/" class="header-link" target="_blank">
-                      Blog
-                    </a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </nz-dropdown-menu>
           <app-github-btn [responsive]="responsive"></app-github-btn>
         </ng-template>
       </ng-container>

@@ -38,30 +38,6 @@ import { Component, EventEmitter, Input, Output, ViewEncapsulation, } from "@ang
       <li nz-menu-item>
         <a (click)="changeLanguage(language==='zh'?'en':'zh', $event)">{{language == 'zh' ? 'English' : '中文'}}</a>
       </li>
-      <li nz-menu-group [nzTitle]="language == 'zh' ? '生态' : 'Ecosystem'">
-        <ul>
-          <li nz-menu-item>
-            <a href="https://ant.design/" class="header-link" target="_blank">
-              Ant Design of React
-            </a>
-          </li>
-          <li nz-menu-item>
-            <a href="http://vue.ant.design" class="header-link" target="_blank">
-              Ant Design of Vue
-            </a>
-          </li>
-          <li nz-menu-item *ngIf="language == 'zh'">
-            <a href="https://github.com/NG-ZORRO/today-ng-steps" class="header-link" target="_blank">
-              实战教程
-            </a>
-          </li>
-          <li nz-menu-item>
-            <a href="https://ng.ant.design/blog/" class="header-link" target="_blank">
-              Blog
-            </a>
-          </li>
-        </ul>
-      </li>
     </ng-template>
   `,
   styleUrls: ['./navigation.component.less'],

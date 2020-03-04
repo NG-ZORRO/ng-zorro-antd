@@ -96,53 +96,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
               title="StackOverflow"
               link="https://stackoverflow.com/questions/tagged/ng-zorro-antd">
             </app-footer-item>
-          </div>
-          <div app-footer-col
-               imgSrc="https://gw.alipayobjects.com/zos/rmsportal/nBVXkrFdWHxbZlmMbsaH.svg"
-               imgAlt="Ant XTech"
-               [title]="language === 'zh' ? '更多产品' : 'More Products'">
-            <app-footer-item
-              link="https://www.yuque.com/"
-              imgSrc="https://gw.alipayobjects.com/zos/rmsportal/XuVpGqBFxXplzvLjJBZB.svg"
-              imgAlt="yuque"
-              [description]="language === 'zh' ? '知识创作与分享工具' : 'Write your document as a team'"
-              [title]="language === 'zh' ? '语雀': 'YuQue'">
-            </app-footer-item>
-            <app-footer-item
-              link="https://www.yunfengdie.com/"
-              imgSrc="https://gw.alipayobjects.com/zos/rmsportal/uHocHZfNWZOdsRUonZNr.png"
-              imgAlt="yunfengdie"
-              [description]="language === 'zh' ? '移动建站平台' : 'Console Applications Builder'"
-              [title]="language === 'zh' ? '云凤蝶': 'FengDie'">
-            </app-footer-item>
-            <app-footer-item
-              link="https://antv.vision/"
-              imgSrc="https://gw.alipayobjects.com/zos/antfincdn/nc7Fc0XBg5/8a6844f5-a6ed-4630-9177-4fa5d0b7dd47.png"
-              imgAlt="AntV"
-              [description]="language === 'zh' ? '数据可视化' : 'Data Visualization'"
-              title="ant v">
-            </app-footer-item>
-            <app-footer-item
-              link="https://eggjs.org/"
-              imgSrc="https://gw.alipayobjects.com/zos/antfincdn/v2%24rh7lqpu/82f338dd-b0a6-41bc-9a86-58aaa9df217b.png"
-              imgAlt="egg"
-              [description]="language === 'zh' ? '企业级 Node 开发框架' : 'Enterprise Node.js Framework'"
-              title="Egg">
-            </app-footer-item>
-            <app-footer-item
-              link="https://kitchen.alipay.com/"
-              imgSrc="https://gw.alipayobjects.com/zos/rmsportal/DMDOlAUhmktLyEODCMBR.ico"
-              imgAlt="kitchen"
-              [description]="language === 'zh' ? 'Sketch 工具集' : 'Sketch Toolkit'"
-              title="Kitchen">
-            </app-footer-item>
-            <app-footer-item
-              link="https://xtech.antfin.com/"
-              imgSrc="https://gw.alipayobjects.com/zos/rmsportal/nBVXkrFdWHxbZlmMbsaH.svg"
-              imgAlt="xtech"
-              [description]="language === 'zh' ? 'Sketch 工具集' : 'Sketch Toolkit'"
-              [title]="language === 'zh' ? '蚂蚁体验科技' : 'Ant Financial Experience Tech'">
-            </app-footer-item>
             <div class="rc-footer-item" style="margin-top: 20px;">
               <div class="theme-pick-wrap"
                    nz-popover
