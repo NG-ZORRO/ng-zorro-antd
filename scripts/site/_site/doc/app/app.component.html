@@ -1,6 +1,7 @@
 <div id="ng-content" [style.transform]="isDrawerOpen ? 'translateX(245px)' : null ">
   <div class="page-wrapper">
     <app-header [windowWidth]="windowWidth"
+                [page]="page"
                 [(language)]="language"
                 (languageChange)="switchLanguage($event)"
                 (versionChange)="navigateToVersion($event)">
@@ -11,7 +12,7 @@
              *ngIf="!showDrawer"
              [nzXs]="24"
              [nzSm]="24"
-             [nzMd]="24"
+             [nzMd]="6"
              [nzLg]="6"
              [nzXl]="5"
              [nzXXl]="4"
@@ -26,7 +27,7 @@
              class="main-container main-container-component"
              [nzXs]="24"
              [nzSm]="24"
-             [nzMd]="24"
+             [nzMd]="18"
              [nzLg]="18"
              [nzXl]="19"
              [nzXXl]="20">
@@ -65,46 +66,50 @@
 
 <ng-template #sideOrDrawerTpl>
   <ul nz-menu [nzMode]="'inline'" class="aside-container menu-site" nzInlineIndent="40">
-    <ng-container  *ngFor="let intro of routerList.intro">
-      <li nz-menu-item nzMatchRouter [hidden]="intro.language !== language || intro.experimental !== isExperimental">
+    <ng-container *ngIf="page === 'docs'">
+      <li *ngFor="let intro of routerList.intro" nz-menu-item nzMatchRouter
+          [hidden]="intro.language !== language">
         <a routerLink="{{intro.path}}">{{intro.label}}</a>
       </li>
     </ng-container>
 
-    <li nz-submenu nzOpen>
-      <span title>
-        <h4>
-          {{language=='en' ? 'Components' : '组件'}}
-          <span *ngIf="!isExperimental" class="menu-antd-components-count">63</span>
-          <span *ngIf="isExperimental"  class="menu-antd-components-count">2</span>
-        </h4>
-      </span>
-      <ul>
-        <li nz-menu-group
-            *ngFor="let group of routerList.components"
-            [hidden]="group.language !== language || (isExperimental && group.experimentalChildren.length === 0)"
-            [nzTitle]="group.name">
-          <ul>
-            <ng-container *ngIf="isExperimental">
-              <li nz-menu-item nzMatchRouter *ngFor="let component of group.experimentalChildren">
-                <a routerLink="{{component.path}}">
-                  <span>{{component.label}}</span>
-                  <span class="chinese">{{component.zh}}</span>
-                </a>
-              </li>
-            </ng-container>
-            <ng-container *ngIf="!isExperimental">
-              <li nz-menu-item nzMatchRouter *ngFor="let component of group.children">
-                <a routerLink="{{component.path}}">
-                  <span>{{component.label}}</span>
-                  <span class="chinese">{{component.zh}}</span>
-                </a>
-              </li>
-            </ng-container>
-          </ul>
-        </li>
-      </ul>
-    </li>
+    <ng-container *ngIf="page === 'components'">
+      <li nz-menu-group
+          *ngFor="let group of routerList.components"
+          [hidden]="group.language !== language"
+          [nzTitle]="group.name">
+        <ul>
+          <ng-container>
+            <li nz-menu-item nzMatchRouter *ngFor="let component of group.children">
+              <a routerLink="{{component.path}}">
+                <span>{{component.label}}</span>
+                <span class="chinese">{{component.zh}}</span>
+              </a>
+            </li>
+          </ng-container>
+        </ul>
+      </li>
+    </ng-container>
+
+    <ng-container *ngIf="page === 'experimental'">
+      <li nz-menu-group
+          *ngFor="let group of routerList.components"
+          [hidden]="group.language !== language || (group.experimentalChildren.length === 0)"
+          [nzTitle]="group.name">
+        <ul>
+          <ng-container>
+            <li nz-menu-item nzMatchRouter *ngFor="let component of group.experimentalChildren">
+              <a routerLink="{{component.path}}">
+                <span>{{component.label}}</span>
+                <span class="chinese">{{component.zh}}</span>
+              </a>
+            </li>
+          </ng-container>
+
+        </ul>
+      </li>
+    </ng-container>
+
   </ul>
 </ng-template>
 

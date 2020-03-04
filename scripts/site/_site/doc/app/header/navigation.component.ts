@@ -3,24 +3,19 @@ import { Component, EventEmitter, Input, Output, ViewEncapsulation, } from "@ang
 @Component({
   selector: 'ul[nz-menu][app-navagation]',
   template: `
-    <li nz-menu-item [nzSelected]="true">
-      <a href="https://ng.ant.design/blog/" *ngIf="language=='zh'" target="_blank">
-        <span>文档</span>
-      </a>
-      <a href="https://ng.ant.design/blog/en" *ngIf="language=='en'" target="_blank">
-        <span>Docs</span>
+    <li nz-menu-item [nzSelected]="page === 'docs'">
+      <a [routerLink]="['docs', 'introduce', language]">
+        <span>{{language=='zh' ? '文档' : 'Docs'}}</span>
       </a>
     </li>
-    <li nz-menu-item>
-      <a>
-        <span *ngIf="language=='en'">Components</span>
-        <span *ngIf="language=='zh'">组件</span>
+    <li nz-menu-item [nzSelected]="page === 'components'">
+      <a [routerLink]="['components', 'button', language]">
+        <span>{{language=='zh' ? '组件' : 'Components'}}</span>
       </a>
     </li>
-    <li nz-menu-item>
-      <a>
-        <span *ngIf="language=='en'">Experimental</span>
-        <span *ngIf="language=='zh'">实验性功能</span>
+    <li nz-menu-item [nzSelected]="page === 'experimental'">
+      <a [routerLink]="['experimental', 'resizable', language]">
+        <span>{{language=='zh' ? '实验性功能' : 'Experimental'}}</span>
       </a>
     </li>
     <ng-container *ngIf="!isMobile && responsive === 'crowded'">
@@ -41,7 +36,7 @@ import { Component, EventEmitter, Input, Output, ViewEncapsulation, } from "@ang
         </a>
       </li>
       <li nz-menu-item>
-        <a href="#" (click)="changeLanguage(language==='zh'?'en':'zh')">{{language == 'zh' ? 'English' : '中文'}}</a>
+        <a (click)="changeLanguage(language==='zh'?'en':'zh', $event)">{{language == 'zh' ? 'English' : '中文'}}</a>
       </li>
       <li nz-menu-group [nzTitle]="language == 'zh' ? '生态' : 'Ecosystem'">
         <ul>
@@ -87,10 +82,12 @@ export class NavigationComponent {
   @Input() language: 'zh' | 'en' = 'zh';
   @Output() languageChange = new EventEmitter<string>()
   @Input() responsive: null | 'narrow' | 'crowded' = null;
+  @Input() page:'docs' | 'components' | 'experimental' | string = 'docs'
   @Input() isMobile = false;
   constructor() {
   }
-  changeLanguage(language: string): void {
+  changeLanguage(language: string, e: MouseEvent): void {
+    e.preventDefault();
     this.languageChange.emit(language)
   }
 

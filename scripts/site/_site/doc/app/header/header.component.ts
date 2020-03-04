@@ -34,6 +34,7 @@ const RESPONSIVE_SM = 1200;
               app-navagation
               class="menu-site"
               [responsive]="responsive"
+              [page]="page"
               [isMobile]="isMobile"
               [nzMode]="isMobile ? 'inline' : 'horizontal'"
               [nzSelectable]="false"
@@ -45,6 +46,7 @@ const RESPONSIVE_SM = 1200;
               app-navagation
               class="menu-site"
               [responsive]="responsive"
+              [page]="page"
               [isMobile]="isMobile"
               [nzMode]="isMobile ? 'inline' : 'horizontal'"
               [nzSelectable]="false"
@@ -108,6 +110,7 @@ export class HeaderComponent implements OnChanges {
 
   @Input() language: 'zh' | 'en' = 'zh';
   @Input() windowWidth = 1400;
+  @Input() page:'docs' | 'components' | 'experimental' | string = 'docs'
   @Output() versionChange = new EventEmitter<string>()
   @Output() languageChange = new EventEmitter<string>()
 

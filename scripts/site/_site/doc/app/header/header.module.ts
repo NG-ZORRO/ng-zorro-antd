@@ -17,11 +17,13 @@ import { LogoComponent } from './logo.component';
 import { SearchbarComponent } from './searchbar.component';
 import { NavigationComponent } from './navigation.component';
 import { GithubButtonComponent } from './github-button.component';
+import { RouterModule } from "@angular/router";
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    RouterModule,
     HttpClientModule,
     NzGridModule,
     NzIconModule,

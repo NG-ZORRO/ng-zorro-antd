@@ -44,7 +44,7 @@ export class AppComponent implements OnInit, AfterContentInit {
    **/
   showDrawer = false;
   isDrawerOpen = false;
-  isExperimental = false;
+  page: 'docs' | 'components' | 'experimental' | string = 'docs'
   windowWidth = 1400;
   routerList = ROUTER_LIST;
   componentList: DocPageMeta[] = [];
@@ -92,12 +92,10 @@ export class AppComponent implements OnInit, AfterContentInit {
     }
   }
 
-  setExperimental(isExperimental: boolean): void {
-    this.isExperimental = isExperimental;
-    if (isExperimental) {
-      this.router.navigateByUrl(`/docs/experimental/${this.language}`);
-    } else {
-      this.router.navigateByUrl(`/docs/introduce/${this.language}`);
+  setPage(url: string) {
+    const match = url.match(/\/(\w+)/);
+    if (match && match[1]) {
+      this.page = match[1];
     }
   }
 
@@ -134,7 +132,7 @@ export class AppComponent implements OnInit, AfterContentInit {
         if (this.router.url !== '/' + this.searchComponent) {
           this.searchComponent = null;
         }
-        this.isExperimental = this.router.url.search('experimental') !== -1;
+        this.setPage(this.router.url);
         this.language = this.router.url
         .split('/')
           [this.router.url.split('/').length - 1].split('#')[0]
@@ -302,7 +300,7 @@ export class AppComponent implements OnInit, AfterContentInit {
       )
       .subscribe(width => {
         this.windowWidth = width;
-        const showDrawer = width <= 995;
+        const showDrawer = width <= 768;
         if (this.showDrawer !== showDrawer) {
           this.showDrawer = showDrawer;
         }
