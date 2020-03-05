@@ -121,3 +121,64 @@ You can get more information about custom-webpack builder following the articles
 * [Customize Webpack Configuration in Your Angular Application](https://netbasal.com/customize-webpack-configuration-in-your-angular-application-d09683f6bd22)
 
 All less vars can be checked [here](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/scripts/site/_site/doc/theme.less) is a sample of theme define file.
+
+## Use dark theme
+
+### Method 1
+
+include `ng-zorro-antd/style/dark.less` in the style file to override theme variables.
+
+```less
+/* ng-zorro-antd styles */
+@import "~ng-zorro-antd/style/dark.less";
+```
+
+### Method 2
+
+If the project does not use Less, you can include `ng-zorro-antd.dark.css` in the CSS file or add to the `angular.json` config.
+
+CSS file：
+
+```css
+@import "~ng-zorro-antd/ng-zorro-antd.dark.min.css";
+```
+
+angular.json
+
+```json
+{
+  "build": {
+    "options": {
+      "styles": [
+        "node_modules/ng-zorro-antd/ng-zorro-antd.dark.min.css"
+      ]
+    }
+  }
+}
+```
+
+### Method 3
+
+using less-loader in webpack to introduce as needed.
+
+```javascript
+const darkThemeVars = require('ng-zorro-antd/dark-theme');
+module.exports = {
+  module: {
+    rules: [
+      {
+        test   : /\.less$/,
+        loader: 'less-loader',
+        options: {
+          modifyVars: {
+          'hack': `true;@import "${require.resolve('ng-zorro-antd/style/color/colorPalette.less')}";`,
+            ...darkThemeVars
+          },
+          javascriptEnabled: true
+        }
+      }
+    ]
+  }
+};
+
+```

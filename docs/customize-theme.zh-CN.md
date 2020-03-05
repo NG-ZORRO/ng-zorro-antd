@@ -121,3 +121,65 @@ module.exports = {
 * [Customize Webpack Configuration in Your Angular Application](https://netbasal.com/customize-webpack-configuration-in-your-angular-application-d09683f6bd22)
 
 全部可被自定义 less 变量可以参考 [这里](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/scripts/site/_site/doc/theme.less)。
+
+## 使用暗色主题
+
+### 方式一
+
+是在样式文件引入 `ng-zorro-antd/style/dark.less` 覆盖主题变量。
+
+```less
+/* ng-zorro-antd 全量样式或者单组件样式 */
+@import "~ng-zorro-antd/style/dark.less";
+```
+
+### 方式二
+
+如果项目不使用 Less，可在 CSS 文件或者 `angular.json` 的 `styles` 字段中，全量引入 `ng-zorro-antd.dark.css`。
+
+样式文件中：
+
+```css
+@import "~ng-zorro-antd/ng-zorro-antd.dark.min.css";
+```
+
+angular.json 中
+
+```json
+{
+  "build": {
+    "options": {
+      "styles": [
+        "node_modules/ng-zorro-antd/ng-zorro-antd.dark.min.css"
+      ]
+    }
+  }
+}
+```
+
+### 方式三
+
+在 webpack中 使用 less-loader 按需引入
+
+
+```javascript
+const darkThemeVars = require('ng-zorro-antd/dark-theme');
+module.exports = {
+  module: {
+    rules: [
+      {
+        test   : /\.less$/,
+        loader: 'less-loader',
+        options: {
+          modifyVars: {
+          'hack': `true;@import "${require.resolve('ng-zorro-antd/style/color/colorPalette.less')}";`,
+            ...darkThemeVars
+          },
+          javascriptEnabled: true
+        }
+      }
+    ]
+  }
+};
+
+```

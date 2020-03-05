@@ -54,19 +54,43 @@
         [class.ant-tooltip-open]="commandCopied"
         (click)="copyGenerateCommand(nzGenerateCommand)"
       ></i>
-      <span class="code-expand-icon" [nzTooltipTitle]="nzExpanded ? (language==='zh'? '收起代码' : 'Hide Code') : (language==='zh'? '显示代码' : 'Show Code')" nz-tooltip (click)="nzExpanded = !nzExpanded">
-        <img
-          alt="expand code"
-          src="https://gw.alipayobjects.com/zos/rmsportal/wSAkBuJFbdxsosKKpqyq.svg"
-          [class.code-expand-icon-show]="nzExpanded"
-          [class.code-expand-icon-hide]="!nzExpanded"
-        />
-        <img
-          alt="expand code"
-          src="https://gw.alipayobjects.com/zos/rmsportal/OpROPHYqWmrMDBFMZtKF.svg"
-          [class.code-expand-icon-show]="!nzExpanded"
-          [class.code-expand-icon-hide]="nzExpanded"
-        />
+      <span class="code-expand-icon"
+            nz-tooltip
+            [nzTooltipTitle]="nzExpanded ?
+            (language==='zh'? '收起代码' : 'Hide Code') :
+            (language==='zh'? '显示代码' : 'Show Code')"
+            (click)="nzExpanded = !nzExpanded">
+        <ng-container [ngSwitch]="theme">
+          <ng-container *ngSwitchCase="'dark'">
+              <img
+                alt="expand code"
+                src="https://gw.alipayobjects.com/zos/antfincdn/btT3qDZn1U/wSAkBuJFbdxsosKKpqyq.svg"
+                [class.code-expand-icon-show]="nzExpanded"
+                [class.code-expand-icon-hide]="!nzExpanded"
+              />
+              <img
+                alt="expand code"
+                src="https://gw.alipayobjects.com/zos/antfincdn/CjZPwcKUG3/OpROPHYqWmrMDBFMZtKF.svg"
+                [class.code-expand-icon-show]="!nzExpanded"
+                [class.code-expand-icon-hide]="nzExpanded"
+              />
+          </ng-container>
+          <ng-container *ngSwitchDefault>
+             <img
+               alt="expand code"
+               src="https://gw.alipayobjects.com/zos/rmsportal/wSAkBuJFbdxsosKKpqyq.svg"
+               [class.code-expand-icon-show]="nzExpanded"
+               [class.code-expand-icon-hide]="!nzExpanded"
+             />
+              <img
+                alt="expand code"
+                src="https://gw.alipayobjects.com/zos/rmsportal/OpROPHYqWmrMDBFMZtKF.svg"
+                [class.code-expand-icon-show]="!nzExpanded"
+                [class.code-expand-icon-hide]="nzExpanded"
+              />
+          </ng-container>
+        </ng-container>
+
       </span>
     </div>
   </section>
