@@ -2,7 +2,7 @@ import { Injector } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { enUS } from 'date-fns/locale';
-import { NZ_DATE_CONFIG } from './date-config';
+import { NZ_DATE_CONFIG, NZ_DATE_FORMAT_CONVERT } from './date-config';
 import { DateHelperByDatePipe, DateHelperService } from './date-helper.service';
 import en_US from './languages/en_US';
 import { NzI18nModule } from './nz-i18n.module';
@@ -64,7 +64,8 @@ describe('DateHelperService', () => {
         imports: [NzI18nModule],
         providers: [
           { provide: NZ_DATE_LOCALE, useValue: enUS },
-          { provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 4, dateFnsFormatConvert: true } }
+          { provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 4 } },
+          { provide: NZ_DATE_FORMAT_CONVERT, useValue: true }
         ]
       });
 

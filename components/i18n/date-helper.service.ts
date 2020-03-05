@@ -15,12 +15,14 @@ import fnsParse from 'date-fns/parse';
 import parseISO from 'date-fns/parseISO';
 import { WeekDayIndex } from 'ng-zorro-antd/core';
 import { convertTokens } from './convert-tokens';
-import { mergeDateConfig, NZ_DATE_CONFIG, NzDateConfig } from './date-config';
+import { mergeDateConfig, NZ_DATE_CONFIG, NZ_DATE_FORMAT_CONVERT, NzDateConfig } from './date-config';
 import { NzI18nService } from './nz-i18n.service';
 
-export function DATE_HELPER_SERVICE_FACTORY(injector: Injector, config: NzDateConfig): DateHelperService {
+export function DATE_HELPER_SERVICE_FACTORY(injector: Injector, config: NzDateConfig, convertFormat: boolean): DateHelperService {
   const i18n = injector.get(NzI18nService);
-  return i18n.getDateLocale() ? new DateHelperByDateFns(i18n, config) : new DateHelperByDatePipe(i18n, config);
+  return i18n.getDateLocale()
+    ? new DateHelperByDateFns(i18n, config, convertFormat)
+    : new DateHelperByDatePipe(i18n, config, convertFormat);
 }
 
 /**
@@ -30,10 +32,14 @@ export function DATE_HELPER_SERVICE_FACTORY(injector: Injector, config: NzDateCo
 @Injectable({
   providedIn: 'root',
   useFactory: DATE_HELPER_SERVICE_FACTORY,
-  deps: [Injector, [new Optional(), NZ_DATE_CONFIG]]
+  deps: [Injector, [new Optional(), NZ_DATE_CONFIG], [new Optional(), NZ_DATE_FORMAT_CONVERT]]
 })
 export abstract class DateHelperService {
-  constructor(protected i18n: NzI18nService, @Optional() @Inject(NZ_DATE_CONFIG) protected config: NzDateConfig) {
+  constructor(
+    protected i18n: NzI18nService,
+    @Optional() @Inject(NZ_DATE_CONFIG) protected config: NzDateConfig,
+    @Optional() @Inject(NZ_DATE_FORMAT_CONVERT) protected convertFormat: boolean
+  ) {
     this.config = mergeDateConfig(this.config);
   }
 
@@ -77,12 +83,12 @@ export class DateHelperByDateFns extends DateHelperService {
    * @param formatStr format string
    */
   format(date: Date, formatStr: string): string {
-    const mergedStr = this.config.dateFnsFormatConvert ? convertTokens(formatStr) : formatStr;
+    const mergedStr = this.convertFormat ? convertTokens(formatStr) : formatStr;
     return date ? fnsFormat(date, mergedStr, { locale: this.i18n.getDateLocale() }) : '';
   }
 
   parseDate(text: string, formatStr: string): Date {
-    const mergedStr = this.config.dateFnsFormatConvert ? convertTokens(formatStr) : formatStr;
+    const mergedStr = this.convertFormat ? convertTokens(formatStr) : formatStr;
     return fnsParse(text, mergedStr, new Date(), {
       locale: this.i18n.getDateLocale(),
       weekStartsOn: this.getFirstDayOfWeek()
@@ -97,10 +103,6 @@ export class DateHelperByDateFns extends DateHelperService {
  *
  */
 export class DateHelperByDatePipe extends DateHelperService {
-  constructor(i18n: NzI18nService, @Optional() @Inject(NZ_DATE_CONFIG) config: NzDateConfig) {
-    super(i18n, config);
-  }
-
   getISOWeek(date: Date): number {
     return +this.format(date, 'w');
   }
