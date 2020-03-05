@@ -28,6 +28,7 @@ import {
 } from '@angular/core';
 
 import { InputBoolean } from 'ng-zorro-antd/core';
+import { NzFixedCellDirective } from 'ng-zorro-antd/table/fixed-cell.directive';
 import { merge, Observable, of, Subject } from 'rxjs';
 import { flatMap, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
@@ -95,7 +96,27 @@ export class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewI
         }),
         takeUntil(this.destroy$)
       );
-      column$.subscribe(data => this.nzTableService.listOfColumnWidth$.next(data.map(item => item.nzWidth)));
+      const fixedColumn$ = this.listOfNzTrDirective.changes.pipe(
+        startWith(this.listOfNzTrDirective),
+        switchMap(item => {
+          const firstTr = item && item.first;
+          if (firstTr) {
+            const listOfColumn = firstTr.listOfCellFixedDirective;
+            const listOfColumnChanges = listOfColumn.changes.pipe(startWith(listOfColumn));
+            return listOfColumnChanges as Observable<NzFixedCellDirective[]>;
+          } else {
+            return of([]);
+          }
+        }),
+        takeUntil(this.destroy$)
+      );
+      fixedColumn$.subscribe(listOfFixedColumn => {
+        const listOfRightCell = listOfFixedColumn.filter(item => item.nzRight !== null);
+        const listOfLeftCell = listOfFixedColumn.filter(item => item.nzLeft !== null);
+        this.nzTableComponent.setHasFixRight(!!listOfRightCell.length);
+        this.nzTableComponent.setHasFixLeft(!!listOfLeftCell.length);
+      });
+      column$.subscribe(data => this.nzTableService.setListOfThWidthConfig(data));
 
       this.nzTableService.isFixedHeader$
         .pipe(

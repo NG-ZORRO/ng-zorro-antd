@@ -12,8 +12,14 @@ import { NzThComponent } from './th.component';
 
 @Injectable()
 export class NzTableService {
-  listOfColumnWidth$ = new BehaviorSubject<string[]>([]);
+  listOfThWidthConfig$ = new BehaviorSubject<string[]>([]);
   listOfMeasureColumn$ = new ReplaySubject<string[]>(1);
+  listOfAutoWidth$ = new ReplaySubject<number[]>(1);
+  isFixedHeader$ = new ReplaySubject<boolean>(1);
+
+  setListOfThWidthConfig(listOfTh: NzThComponent[]): void {
+    this.listOfThWidthConfig$.next(listOfTh.map(item => item.nzWidth));
+  }
   setListOfMeasureColumn(listOfTh: NzThComponent[]): void {
     const listOfKeys: string[] = [];
     listOfTh.forEach(th => {
@@ -24,6 +30,12 @@ export class NzTableService {
     });
     this.listOfMeasureColumn$.next(listOfKeys);
   }
-  isFixedHeader$ = new ReplaySubject<boolean>(1);
-  listOfAutoWidth$ = new ReplaySubject<string[]>(1);
+  setListOfAutoWidth(listOfAutoWidth: number[]): void {
+    this.listOfAutoWidth$.next(listOfAutoWidth);
+  }
+  setFixHeader(isFixedHeader: boolean): void {
+    this.isFixedHeader$.next(isFixedHeader);
+  }
+
+  constructor() {}
 }

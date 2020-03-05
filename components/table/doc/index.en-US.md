@@ -88,7 +88,6 @@ The data passed to `[nzData]` will be export with [Template Context](https://ang
 | `[nzHideOnSinglePage]` | Whether to hide pager on single page | `boolean` | `false` |
 | `[nzSimple]` | whether to use simple mode | `boolean` | - | ✅ |
 | `[nzTemplateMode]` | template mode，no need to pass data to `nzData` | `boolean` | `false` |
-| `[nzVirtualScroll]` | Enable virtual scroll mode，work with `[nzScroll]` | `boolean` | `false` |
 | `[nzVirtualItemSize]` | The size of the items in the list, same as [cdk itemSize](https://material.angular.io/cdk/scrolling/api) | `number` | `0` |
 | `[nzVirtualMaxBufferPx]` | The number of pixels worth of buffer to render for when rendering new items, same as [cdk maxBufferPx](https://material.angular.io/cdk/scrolling/api) | `number` | `200` |
 | `[nzVirtualMinBufferPx]` | The minimum amount of buffer rendered beyond the viewport (in pixels),same as [cdk minBufferPx](https://material.angular.io/cdk/scrolling/api) | `number` | `100` |

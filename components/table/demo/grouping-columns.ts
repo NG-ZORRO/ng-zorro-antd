@@ -17,10 +17,10 @@ interface ItemData {
     <nz-table #groupingTable [nzData]="listOfDisplayData" nzBordered nzSize="middle" [nzScroll]="scrollConfig">
       <thead>
         <tr>
-          <th rowspan="4" nzWidth="100px" nzLeft="0px" nzShowFilter [nzFilters]="filterName" (nzFilterChange)="search($event)">Name</th>
+          <th rowspan="4" nzLeft nzShowFilter [nzFilters]="filterName" (nzFilterChange)="search($event)">Name</th>
           <th colspan="4">Other</th>
           <th colspan="2">Company</th>
-          <th rowspan="4" nzWidth="100px" nzRight="0px">Gender</th>
+          <th rowspan="4" nzRight>Gender</th>
         </tr>
         <tr>
           <th rowspan="3" nzShowSort [(nzSort)]="sortValue" (nzSortChange)="search(searchName)">Age</th>
@@ -39,14 +39,14 @@ interface ItemData {
       </thead>
       <tbody>
         <tr *ngFor="let data of groupingTable.data">
-          <td nzLeft="0px">{{ data.name }}</td>
+          <td nzLeft>{{ data.name }}</td>
           <td>{{ data.age }}</td>
           <td>{{ data.street }}</td>
           <td>{{ data.building }}</td>
           <td>{{ data.number }}</td>
           <td>{{ data.companyAddress }}</td>
           <td>{{ data.companyName }}</td>
-          <td nzRight="0px">{{ data.gender }}</td>
+          <td nzRight>{{ data.gender }}</td>
         </tr>
       </tbody>
     </nz-table>

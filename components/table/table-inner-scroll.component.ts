@@ -28,7 +28,7 @@ import { NzDomEventService } from 'ng-zorro-antd/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEvent, merge, Subject } from 'rxjs';
 import { delay, filter, finalize, startWith, takeUntil } from 'rxjs/operators';
-import { NzTableDataInterface } from './table.types';
+import { NzTableDataType } from './table.types';
 
 @Component({
   selector: 'nz-table-inner-scroll',
@@ -37,23 +37,33 @@ import { NzTableDataInterface } from './table.types';
   template: `
     <div class="ant-table-content">
       <div *ngIf="scroll.y" #tableHeaderElement [style]="headerStyleMap" class="ant-table-header nz-table-hide-scrollbar">
-        <table nz-table-inner [scroll]="scroll" [listOfColWidth]="listOfColWidth" [theadTemplate]="theadTemplate"></table>
+        <table
+          nz-table-content
+          tableLayout="fixed"
+          [scroll]="scroll"
+          [listOfColWidth]="listOfColWidth"
+          [theadTemplate]="theadTemplate"
+        ></table>
       </div>
-      <div #tableBodyElement *ngIf="!virtualScroll" class="ant-table-body" [style]="bodyStyleMap">
-        <table nz-table-inner [scroll]="scroll" [listOfColWidth]="listOfColWidth" [theadTemplate]="theadTemplate" [hideThead]="!!scroll.y">
-          <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
-        </table>
+      <div #tableBodyElement *ngIf="!virtualTemplate" class="ant-table-body" [style]="bodyStyleMap">
+        <table
+          nz-table-content
+          [scroll]="scroll"
+          [listOfColWidth]="listOfColWidth"
+          [theadTemplate]="scroll.y ? null : theadTemplate"
+          [contentTemplate]="contentTemplate"
+        ></table>
       </div>
       <cdk-virtual-scroll-viewport
         #tableBodyElement
-        *ngIf="virtualScroll"
+        *ngIf="virtualTemplate"
         [hidden]="!data.length"
         [itemSize]="virtualItemSize"
         [maxBufferPx]="virtualMaxBufferPx"
         [minBufferPx]="virtualMinBufferPx"
         [style.height]="scroll.y"
       >
-        <table nz-table-inner [scroll]="scroll" [listOfColWidth]="listOfColWidth">
+        <table nz-table-content tableLayout="fixed" [scroll]="scroll" [listOfColWidth]="listOfColWidth">
           <tbody>
             <ng-container *cdkVirtualFor="let item of data; let i = index; trackBy: virtualForTrackBy">
               <ng-template [ngTemplateOutlet]="virtualTemplate" [ngTemplateOutletContext]="{ $implicit: item, index: i }"></ng-template>
@@ -68,10 +78,9 @@ import { NzTableDataInterface } from './table.types';
   }
 })
 export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, OnDestroy {
-  @Input() data: NzTableDataInterface[] = [];
+  @Input() data: NzTableDataType[] = [];
   @Input() scroll: { x?: string | null; y?: string | null } = { x: null, y: null };
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
-  @Input() virtualScroll = false;
   @Input() widthConfig: string[] = [];
   @Input() listOfColWidth: string[] = [];
   @Input() theadTemplate: TemplateRef<NzSafeAny> | null = null;
@@ -80,7 +89,7 @@ export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, On
   @Input() virtualMaxBufferPx = 200;
   @Input() virtualMinBufferPx = 100;
   @Input() tableMainElement: HTMLDivElement;
-  @Input() virtualForTrackBy: TrackByFunction<NzTableDataInterface> | null = null;
+  @Input() virtualForTrackBy: TrackByFunction<NzTableDataType> = index => index;
   @ViewChild('tableHeaderElement', { read: ElementRef }) tableHeaderElement: ElementRef;
   @ViewChild('tableBodyElement', { read: ElementRef }) tableBodyElement: ElementRef;
   @ViewChild(CdkVirtualScrollViewport, { read: CdkVirtualScrollViewport })
@@ -92,35 +101,23 @@ export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, On
 
   setScrollPositionClassName(): void {
     if (this.scroll && this.scroll.x) {
-      const nativeElement = this.tableBodyElement.nativeElement;
-      const scrollWidth = nativeElement.scrollWidth;
-      const scrollLeft = nativeElement.scrollLeft;
-      const clientWidth = nativeElement.clientWidth;
+      const { scrollWidth, scrollLeft, clientWidth } = this.tableBodyElement.nativeElement;
+      const leftClassName = 'ant-table-ping-left';
+      const rightClassName = 'ant-table-ping-right';
       if (scrollWidth === clientWidth && scrollWidth !== 0) {
-        this.resetClassName();
+        this.renderer.removeClass(this.tableMainElement, leftClassName);
+        this.renderer.removeClass(this.tableMainElement, rightClassName);
       } else if (scrollLeft === 0) {
-        this.resetClassName();
-        this.addClassName(['right']);
+        this.renderer.removeClass(this.tableMainElement, leftClassName);
+        this.renderer.addClass(this.tableMainElement, rightClassName);
       } else if (scrollWidth === scrollLeft + clientWidth) {
-        this.resetClassName();
-        this.addClassName(['left']);
+        this.renderer.removeClass(this.tableMainElement, rightClassName);
+        this.renderer.addClass(this.tableMainElement, leftClassName);
       } else {
-        this.resetClassName();
-        this.addClassName(['left', 'right']);
+        this.renderer.addClass(this.tableMainElement, leftClassName);
+        this.renderer.addClass(this.tableMainElement, rightClassName);
       }
     }
-  }
-
-  resetClassName(): void {
-    this.renderer.removeClass(this.tableMainElement, 'ant-table-ping-left');
-    this.renderer.removeClass(this.tableMainElement, 'ant-table-ping-right');
-  }
-
-  addClassName(listOfPosition: string[]): void {
-    const prefix = 'ant-table-ping';
-    listOfPosition.forEach(position => {
-      this.renderer.addClass(this.tableMainElement, `${prefix}-${position}`);
-    });
   }
 
   constructor(
@@ -129,6 +126,7 @@ export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, On
     private platform: Platform,
     private nzDomEventService: NzDomEventService
   ) {}
+
   ngOnChanges(changes: SimpleChanges): void {
     const { scroll, data } = changes;
     if (scroll) {
@@ -157,7 +155,8 @@ export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, On
           takeUntil(this.destroy$),
           finalize(() => this.nzDomEventService.unregisterResizeListener())
         );
-        const setClassName$ = merge(scroll$, resize$, this.data$).pipe(startWith(true), delay(0));
+        const data$ = this.data$.pipe(takeUntil(this.destroy$));
+        const setClassName$ = merge(scroll$, resize$, data$).pipe(startWith(true), delay(0));
         const syncScroll$ = scroll$.pipe(filter(() => !!this.scroll.y));
         setClassName$.subscribe(() => this.setScrollPositionClassName());
         syncScroll$.subscribe(() => (this.tableHeaderElement.nativeElement.scrollLeft = this.tableBodyElement.nativeElement.scrollLeft));

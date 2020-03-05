@@ -8,6 +8,14 @@
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-export interface NzTableDataInterface {
-  [key: string]: NzSafeAny;
-}
+export type NzTableDataType =
+  | NzSafeAny
+  | {
+      [key: string]: NzSafeAny;
+    };
+
+export type NzTableLayoutType = 'fixed' | 'auto';
+
+export type NzTablePaginationPositionType = 'top' | 'bottom' | 'both';
+
+export type NzTableSizeType = 'middle' | 'default' | 'small';

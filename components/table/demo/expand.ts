@@ -13,7 +13,7 @@ import { Component } from '@angular/core';
         </tr>
       </thead>
       <tbody>
-        <ng-template ngFor let-data [ngForOf]="nzTable.data">
+        <ng-container *ngFor="let data of nzTable.data">
           <tr>
             <td nzShowExpand [(nzExpand)]="mapOfExpandData[data.id]"></td>
             <td>{{ data.name }}</td>
@@ -21,10 +21,9 @@ import { Component } from '@angular/core';
             <td>{{ data.address }}</td>
           </tr>
           <tr [nzExpand]="mapOfExpandData[data.id]">
-            <td></td>
-            <td colspan="3">{{ data.description }}</td>
+            <td colspan="4">{{ data.description }}</td>
           </tr>
-        </ng-template>
+        </ng-container>
       </tbody>
     </nz-table>
   `

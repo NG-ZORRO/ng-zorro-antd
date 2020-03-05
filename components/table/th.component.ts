@@ -151,7 +151,6 @@ export interface NzThItemInterface {
     '[class.ant-table-expand-icon-th]': 'nzExpand',
     '[class.ant-table-cell]': 'true',
     '[class.ant-table-column-sort]': `nzSort === 'descend' || nzSort === 'ascend'`,
-    '[style.text-align]': 'nzAlign',
     '(click)': 'updateSortValue()'
   }
 })
@@ -172,7 +171,6 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzSortKey: string;
   @Input() nzFilterMultiple = true;
   @Input() nzWidth: string;
-  @Input() nzAlign: 'left' | 'right' | 'center';
   @Input() nzSort: 'ascend' | 'descend' | null = null;
   @Input() nzFilters: NzThFilterType = [];
   @Input() @InputBoolean() nzExpand = false;

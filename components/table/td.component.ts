@@ -8,7 +8,6 @@
 /* tslint:disable:component-selector */
 
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
-
 import { InputBoolean } from 'ng-zorro-antd/core';
 
 @Component({
@@ -17,50 +16,45 @@ import { InputBoolean } from 'ng-zorro-antd/core';
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <span class="ant-table-row-indent" *ngIf="nzIndentSize && nzIndentSize >= 0" [style.padding-left.px]="nzIndentSize"></span>
+    <ng-container *ngIf="nzIndentSize !== null">
+      <nz-row-indent [indentSize]="nzIndentSize"></nz-row-indent>
+      <button nz-row-expand-button [expand]="nzExpand" (expandChange)="onExpandChange($event)" [spaceMode]="!nzShowExpand"></button>
+    </ng-container>
     <label
       *ngIf="nzShowCheckbox"
       nz-checkbox
       [nzDisabled]="nzDisabled"
-      [(ngModel)]="nzChecked"
+      [ngModel]="nzChecked"
       [nzIndeterminate]="nzIndeterminate"
-      (ngModelChange)="nzCheckedChange.emit($event)"
+      (ngModelChange)="onCheckedChange($event)"
     >
     </label>
-    <span *ngIf="!nzShowExpand && nzIndentSize && nzIndentSize >= 0" class="ant-table-row-expand-icon ant-table-row-spaced"> </span>
-    <button
-      *ngIf="nzShowExpand"
-      class="ant-table-row-expand-icon"
-      [class.ant-table-row-expand-icon-expanded]="nzExpand"
-      [class.ant-table-row-expand-icon-collapsed]="!nzExpand"
-      (click)="expandChange($event)"
-    ></button>
     <ng-content></ng-content>
   `,
   host: {
-    '[class.ant-table-row-expand-icon-cell]': `nzShowExpand && nzIndentSize === null`,
+    '[class.ant-table-cell-with-append]': `nzIndentSize === null`,
     '[class.ant-table-selection-column]': `nzShowCheckbox`,
-    '[class.ant-table-cell]': 'true',
-    '[style.text-align]': 'nzAlign',
-    '[style.word-break]': `nzBreakWord ? 'break-all' : ''`
+    '[class.ant-table-cell]': 'true'
   }
 })
 export class NzTdComponent {
   @Input() nzChecked = false;
   @Input() nzDisabled = false;
   @Input() nzIndeterminate = false;
-  @Input() nzAlign: 'left' | 'right' | 'center';
   @Input() nzIndentSize: number | null = null;
   @Input() @InputBoolean() nzExpand = false;
   @Input() @InputBoolean() nzShowExpand = false;
   @Input() @InputBoolean() nzShowCheckbox = false;
-  @Input() @InputBoolean() nzBreakWord = false;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   @Output() readonly nzExpandChange = new EventEmitter<boolean>();
 
-  expandChange(e: Event): void {
-    e.stopPropagation();
-    this.nzExpand = !this.nzExpand;
-    this.nzExpandChange.emit(this.nzExpand);
+  onCheckedChange(checked: boolean): void {
+    this.nzChecked = checked;
+    this.nzCheckedChange.emit(checked);
+  }
+
+  onExpandChange(expand: boolean): void {
+    this.nzExpand = expand;
+    this.nzExpandChange.emit(expand);
   }
 }

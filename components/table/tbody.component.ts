@@ -7,83 +7,46 @@
  */
 /* tslint:disable:component-selector */
 
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  NgZone,
-  OnDestroy,
-  OnInit,
-  Optional,
-  QueryList,
-  ViewChildren
-} from '@angular/core';
-import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
-import { combineLatest, Observable, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, Optional, ViewEncapsulation } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { NzTableService } from './table.service';
 
 @Component({
   selector: 'tbody',
+  preserveWhitespaces: false,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
   template: `
-    <tr class="ant-table-measure-now" *ngIf="isInsideTable && listOfMeasureWidth.length">
-      <td #tdElement class="nz-disable-td" style="padding: 0px; border: 0px; height: 0px;" *ngFor="let th of listOfMeasureWidth"></td>
-    </tr>
+    <tr
+      nz-table-measure-row
+      *ngIf="isInsideTable && listOfMeasureWidth.length"
+      [listOfMeasureWidth]="listOfMeasureWidth"
+      (listOfAutoWidth)="onListOfAutoWidthChange($event)"
+    ></tr>
     <ng-content></ng-content>
   `,
   host: {
     '[class.ant-table-tbody]': 'isInsideTable'
   }
 })
-export class NzTbodyComponent implements AfterViewInit, OnDestroy, OnInit {
-  @ViewChildren('tdElement') listOfTdElement: QueryList<ElementRef>;
-  private destroy$ = new Subject();
+export class NzTbodyComponent implements OnDestroy {
   isInsideTable = false;
   listOfMeasureWidth: string[] = [];
-  constructor(
-    @Optional() private nzTableService: NzTableService,
-    private nzResizeObserver: NzResizeObserver,
-    private cdr: ChangeDetectorRef,
-    private ngZone: NgZone
-  ) {
+  private destroy$ = new Subject<void>();
+
+  constructor(@Optional() private nzTableService: NzTableService, private cdr: ChangeDetectorRef) {
     this.isInsideTable = !!this.nzTableService;
+    this.nzTableService.listOfMeasureColumn$.pipe(takeUntil(this.destroy$)).subscribe(list => {
+      this.listOfMeasureWidth = list;
+      this.cdr.markForCheck();
+    });
   }
 
-  ngOnInit(): void {
-    if (this.nzTableService) {
-      this.nzTableService.listOfMeasureColumn$.pipe(takeUntil(this.destroy$)).subscribe(list => {
-        this.listOfMeasureWidth = list;
-        this.cdr.markForCheck();
-      });
-    }
+  onListOfAutoWidthChange(listOfAutoWidth: number[]): void {
+    this.nzTableService.setListOfAutoWidth(listOfAutoWidth);
   }
 
-  ngAfterViewInit(): void {
-    if (this.nzTableService) {
-      const list$ = this.listOfTdElement.changes.pipe(startWith(this.listOfTdElement)).pipe(
-        switchMap(list => {
-          return combineLatest(
-            list.toArray().map((item: ElementRef) =>
-              this.nzResizeObserver.observe(item).pipe(
-                map(([entry]) => {
-                  const { width } = entry.target.getBoundingClientRect();
-                  return `${Math.floor(width)}px`;
-                }),
-                distinctUntilChanged()
-              )
-            )
-          );
-        }),
-        debounceTime(16)
-      ) as Observable<string[]>;
-      list$.pipe(takeUntil(this.destroy$)).subscribe(data => {
-        this.ngZone.run(() => {
-          this.nzTableService.listOfAutoWidth$.next(data);
-        });
-      });
-    }
-  }
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

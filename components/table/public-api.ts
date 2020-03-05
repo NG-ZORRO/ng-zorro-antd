@@ -13,6 +13,6 @@ export * from './td.component';
 export * from './th.component';
 export * from './thead.component';
 export * from './tr.directive';
+export * from './src/expand/tr-expand.directive';
 export * from './table-virtual-scroll.directive';
-export * from './fixed-left-cell.directive';
-export * from './fixed-right-cell.directive';
+export * from './fixed-cell.directive';

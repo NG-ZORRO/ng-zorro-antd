@@ -12,6 +12,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzOutletModule } from 'ng-zorro-antd/core';
+import { NzResizeObserversModule } from 'ng-zorro-antd/core/resize-observers';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
@@ -20,11 +21,16 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
-import { NzFixedLeftCellDirective } from './fixed-left-cell.directive';
-import { NzFixedRightCellDirective } from './fixed-right-cell.directive';
+import { NzFixedCellDirective } from './fixed-cell.directive';
+import { NzMeasureRowComponent } from './measure-row.component';
+import { NzRowExpandButtonDirective } from './src/expand/row-expand-button.directive';
+import { NzRowIndentDirective } from './src/expand/row-indent.directive';
+import { NzTrExpandDirective } from './src/expand/tr-expand.directive';
+import { NzCellAlignDirective } from './src/styled/align.directive';
+import { NzCellBreakWordDirective } from './src/styled/word-break.directive';
+import { NzTableContentComponent } from './table-content.component';
 import { NzTableInnerDefaultComponent } from './table-inner-default.component';
 import { NzTableInnerScrollComponent } from './table-inner-scroll.component';
-import { NzTableInnerComponent } from './table-inner.component';
 import { NzTableVirtualScrollDirective } from './table-virtual-scroll.directive';
 
 import { NzTableComponent } from './table.component';
@@ -43,13 +49,18 @@ import { NzTrDirective } from './tr.directive';
     NzTheadComponent,
     NzTbodyComponent,
     NzTrDirective,
+    NzTrExpandDirective,
     NzTableVirtualScrollDirective,
-    NzFixedLeftCellDirective,
-    NzFixedRightCellDirective,
-    NzTableInnerComponent,
+    NzFixedCellDirective,
+    NzTableContentComponent,
     NzTableTitleFooterComponent,
     NzTableInnerDefaultComponent,
-    NzTableInnerScrollComponent
+    NzTableInnerScrollComponent,
+    NzMeasureRowComponent,
+    NzRowIndentDirective,
+    NzRowExpandButtonDirective,
+    NzCellBreakWordDirective,
+    NzCellAlignDirective
   ],
   exports: [
     NzTableComponent,
@@ -59,8 +70,10 @@ import { NzTrDirective } from './tr.directive';
     NzTbodyComponent,
     NzTrDirective,
     NzTableVirtualScrollDirective,
-    NzFixedLeftCellDirective,
-    NzFixedRightCellDirective
+    NzFixedCellDirective,
+    NzTrExpandDirective,
+    NzCellBreakWordDirective,
+    NzCellAlignDirective
   ],
   imports: [
     NzMenuModule,
@@ -72,6 +85,7 @@ import { NzTrDirective } from './tr.directive';
     CommonModule,
     PlatformModule,
     NzPaginationModule,
+    NzResizeObserversModule,
     NzSpinModule,
     NzI18nModule,
     NzIconModule,

@@ -3,11 +3,11 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-break-word',
   template: `
-    <nz-table #fixedTable [nzData]="listOfData" [nzScroll]="{ x: '1150px', y: '240px' }">
+    <nz-table #fixedTable [nzData]="listOfData" [nzScroll]="{ x: '1500px', y: '240px' }">
       <thead>
         <tr>
-          <th nzWidth="150px" nzLeft="0px">Full Name</th>
-          <th nzWidth="100px" nzLeft="150px">Age</th>
+          <th nzLeft nzWidth="100px">Full Name</th>
+          <th nzLeft nzWidth="100px">Age</th>
           <th>Column 1</th>
           <th>Column 2</th>
           <th>Column 3</th>
@@ -16,13 +16,13 @@ import { Component, OnInit } from '@angular/core';
           <th>Column 6</th>
           <th>Column 7</th>
           <th>Column 8</th>
-          <th nzWidth="100px" nzRight="0px">Action</th>
+          <th nzRight nzWidth="100px">Action</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of fixedTable.data">
-          <td nzBreakWord nzLeft="0px">{{ data.name }}</td>
-          <td nzBreakWord nzLeft="150px">{{ data.age }}</td>
+          <td nzLeft>{{ data.name }}</td>
+          <td nzLeft>{{ data.age }}</td>
           <td nzBreakWord>{{ data.address }}</td>
           <td nzBreakWord>{{ data.address }}</td>
           <td nzBreakWord>{{ data.address }}</td>
@@ -31,7 +31,7 @@ import { Component, OnInit } from '@angular/core';
           <td nzBreakWord>{{ data.address }}</td>
           <td nzBreakWord>{{ data.address }}</td>
           <td nzBreakWord>{{ data.address }}</td>
-          <td nzBreakWord nzRight="0px">
+          <td nzRight>
             <a>action</a>
           </td>
         </tr>
@@ -45,7 +45,7 @@ export class NzDemoTableBreakWordComponent implements OnInit {
   ngOnInit(): void {
     for (let i = 0; i < 100; i++) {
       this.listOfData.push({
-        name: `Edward King ${i} Edward King ${i} Edward King ${i}`,
+        name: `Edward King`,
         age: 32,
         address: `LondonLondonLondonLondonLondon`
       });

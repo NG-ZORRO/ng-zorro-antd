@@ -12,8 +12,8 @@ interface ItemData {
     <nz-table #fixedTable [nzData]="listOfData" [nzScroll]="{ x: '1150px', y: '240px' }">
       <thead>
         <tr>
-          <th nzWidth="150px" nzLeft="0px">Full Name</th>
-          <th nzWidth="100px" nzLeft="150px">Age</th>
+          <th nzLeft>Full Name</th>
+          <th nzLeft>Age</th>
           <th>Column 1</th>
           <th>Column 2</th>
           <th>Column 3</th>
@@ -22,13 +22,13 @@ interface ItemData {
           <th>Column 6</th>
           <th>Column 7</th>
           <th>Column 8</th>
-          <th nzWidth="100px" nzRight="0px">Action</th>
+          <th nzRight>Action</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of fixedTable.data">
-          <td nzLeft="0px">{{ data.name }}</td>
-          <td nzLeft="150px">{{ data.age }}</td>
+          <td nzLeft>{{ data.name }}</td>
+          <td nzLeft>{{ data.age }}</td>
           <td>{{ data.address }}</td>
           <td>{{ data.address }}</td>
           <td>{{ data.address }}</td>
@@ -37,7 +37,7 @@ interface ItemData {
           <td>{{ data.address }}</td>
           <td>{{ data.address }}</td>
           <td>{{ data.address }}</td>
-          <td nzRight="0px">
+          <td nzRight>
             <a>action</a>
           </td>
         </tr>

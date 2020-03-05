@@ -8,26 +8,30 @@
 
 import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzTableLayoutType } from 'ng-zorro-antd/table/table.types';
 
 @Component({
-  selector: 'table[nz-table-inner]',
+  selector: 'table[nz-table-content]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
     <col [style.width]="width" [style.minWidth]="width" *ngFor="let width of listOfColWidth" />
-    <thead class="ant-table-thead" *ngIf="!hideThead && theadTemplate">
+    <thead class="ant-table-thead" *ngIf="theadTemplate">
       <ng-template [ngTemplateOutlet]="theadTemplate"></ng-template>
     </thead>
+    <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
     <ng-content></ng-content>
   `,
   host: {
+    '[style.table-layout]': 'tableLayout',
     '[class.ant-table-fixed]': 'scroll.x',
     '[style.width]': 'scroll.x'
   }
 })
-export class NzTableInnerComponent {
+export class NzTableContentComponent {
+  @Input() tableLayout: NzTableLayoutType = 'auto';
   @Input() theadTemplate: TemplateRef<NzSafeAny> | null = null;
+  @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() listOfColWidth: string[] = [];
-  @Input() hideThead = false;
   @Input() scroll: { x?: string | null; y?: string | null } = { x: null, y: null };
 }
