@@ -6,14 +6,25 @@ cols: 1
 experimental: true
 ---
 
-Support monaco editor in Angular.
+<blockquote style="border-color: #faad14;">
+<p>NG-ZORRO experiments are features that are released but not yet considered stable or production ready</p>
+<p>Developers and users can opt-in into these features before they are fully released. But <strong>breaking changes</strong> may occur with any release.</p>
+</blockquote>
 
 ## When To Use
 
 When you want to use monaco editor in Angular.
 
+### Import Module
+
 ```ts
 import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
+```
+
+### Import Style
+
+```less
+@import "node_modules/ng-zorro-antd/code-editor/style/entry.less"
 ```
 
 ## API

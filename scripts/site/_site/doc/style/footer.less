@@ -1,80 +1,149 @@
 @import './colors';
 
-@padding-space: 24px;
-
-footer {
-  clear: both;
-  font-size: 14px;
-  background-color: #000;
+.rc-footer {
   position: relative;
-  z-index: 9;
-  margin-left: -1px;
-  color: rgba(255, 255, 255, 0.65);
-
-  .ant-row {
+  clear: both;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 14px;
+  line-height: 1.5;
+  background-color: #000;
+}
+.rc-footer a {
+  transition: all 0.3s;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+}
+.rc-footer a:hover {
+  color: #40a9ff;
+}
+.rc-footer-container {
+  width: 100%;
+  max-width: 1200px;
+  padding: 80px 0 20px;
+  margin: auto;
+}
+.rc-footer-columns {
+  display: flex;
+  justify-content: space-around;
+}
+.rc-footer-column {
+  margin-bottom: 60px;
+}
+.rc-footer-column h2 {
+  position: relative;
+  margin: 0 auto 24px;
+  font-weight: 500;
+  font-size: 16px;
+  color: #fff;
+}
+.rc-footer-column-icon {
+  margin-right: 0.5em;
+  width: 22px;
+  display: inline-block;
+  vertical-align: middle;
+  top: -1px;
+  position: relative;
+  text-align: center;
+}
+.rc-footer-column-icon > span,
+.rc-footer-column-icon > svg,
+.rc-footer-column-icon img {
+  width: 100%;
+  display: block;
+}
+.rc-footer-item {
+  margin: 12px 0;
+}
+.rc-footer-item-icon {
+  margin-right: 0.4em;
+  width: 16px;
+  display: inline-block;
+  vertical-align: middle;
+  top: -1px;
+  position: relative;
+  text-align: center;
+}
+.rc-footer-item-icon > span,
+.rc-footer-item-icon > svg,
+.rc-footer-item-icon img {
+  width: 100%;
+  display: block;
+}
+.rc-footer-item-separator {
+  margin: 0 0.3em;
+}
+.rc-footer-bottom-container {
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  width: 100%;
+  max-width: 1200px;
+  text-align: center;
+  margin: 0 auto;
+  padding: 16px 0;
+  line-height: 32px;
+  font-size: 16px;
+}
+.rc-footer-light {
+  background-color: transparent;
+  color: rgba(0, 0, 0, 0.85);
+}
+.rc-footer-light h2,
+.rc-footer-light a {
+  color: rgba(0, 0, 0, 0.85);
+}
+.rc-footer-light .rc-footer-bottom-container {
+  border-top-color: #e8e8e8;
+}
+.rc-footer-light .rc-footer-item-separator,
+.rc-footer-light .rc-footer-item-description {
+  color: rgba(0, 0, 0, 0.45);
+}
+@media only screen and (max-width: 767.99px) {
+  .rc-footer {
     text-align: center;
-    .footer-center {
-      display: inline-block;
-      text-align: left;
-      > h2 {
-        font-size: 16px;
-        margin: 0 auto 24px;
-        font-weight: 500;
-        position: relative;
+  }
+  .rc-footer-container {
+    padding: 40px 0;
+  }
+  .rc-footer-columns {
+    display: block;
+  }
+  .rc-footer-column {
+    display: block;
+    margin-bottom: 40px;
+  }
+  .rc-footer-column:last-child {
+    margin-bottom: 0;
+  }
+}
 
-        > .title-icon {
-          width: 27px;
-          margin-right: 16px;
-        }
-        > .anticon {
-          font-size: 16px;
-          position: absolute;
-          left: -22px;
-          top: 3px;
-          color: #aaa;
-        }
+
+.rc-footer {
+  z-index: 11;
+
+  &-container {
+    max-width: unset;
+    padding: 60px;
+  }
+
+  &-bottom-container {
+    max-width: calc(100% - 120px);
+  }
+
+  &-columns {
+    justify-content: space-between;
+  }
+  &-item {
+    .page-wrapper-rtl & {
+      display: flex;
+      justify-content: flex-start;
+      text-align: right;
+    }
+
+    &-icon {
+      .page-wrapper-rtl & {
+        margin-right: 0;
+        margin-left: 0.4em;
       }
-      > div {
-        margin: 12px 0;
-      }
-    }
-  }
-  .footer-wrap {
-    position: relative;
-    padding: 86px @padding-space 93px @padding-space;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
-  }
-  .bottom-bar {
-    text-align: center;
-    padding: 16px @padding-space;
-    margin: 0;
-    line-height: 32px;
-    overflow: hidden;
-    font-family: Avenir, @font-family;
-    font-size: 16px;
-    font-variant: tabular-nums;
-    a {
-      color: rgba(255, 255, 255, 0.65);
-      margin-left: 4px;
-      &:hover {
-        color: #fff;
-      }
-    }
-    .translate-button {
-      text-align: left;
-    }
-    .heart {
-      color: #f73f51;
-      font-size: 22px;
-    }
-  }
-  a {
-    color: rgba(255, 255, 255, 0.9);
-  }
-  h2 {
-    color: rgba(255, 255, 255, 1);
-    & > span {
-      color: rgba(255, 255, 255, 1);
     }
   }
 }

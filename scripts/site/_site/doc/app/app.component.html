@@ -1,296 +1,51 @@
-<div class="page-wrapper" [style.transform]="isDrawerOpen ? 'translateX(245px)' : null ">
-  <header id="header" class="clearfix">
-    <ng-template #languageAndVersionTpl>
-      <div>
-        <button nz-button
-          class="header-lang-button"
-          nzSize="small"
-          (click)="switchLanguage(language==='zh'?'en':'zh')">
-          {{language == 'zh' ? 'English' : '中文'}}
-        </button>
-        <nz-select nzSize="small"
-          class="version"
-          [ngModel]="currentVersion"
-          (ngModelChange)="navigateToVersion($event)">
-          <nz-option *ngFor="let version of oldVersionList" [nzLabel]="version" [nzValue]="version"></nz-option>
-          <nz-option [nzLabel]="currentVersion" [nzValue]="currentVersion"></nz-option>
-        </nz-select>
-        <ng-template [ngTemplateOutlet]="topMenus" [ngTemplateOutletContext]="{ mode: 'inline' }"></ng-template>
-      </div>
-    </ng-template>
-    <i nz-icon
-      nzType="menu"
-      class="nav-phone-icon"
-      nz-popover
-      nzPopoverPlacement="bottomRight"
-      nzOverlayClassName="popover-menu"
-      [nzPopoverContent]="languageAndVersionTpl"
-      [nzPopoverTrigger]="'click'">
-    </i>
-    <div nz-row>
-      <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="8" [nzLg]="5" [nzXl]="5" [nzXXl]="4">
-        <a id="logo" href>
-          <img alt="logo" src="./assets/img/logo.svg">
-          <img alt="NG-ZORRO" src="./assets/img/zorro.svg">
-        </a>
-      </div>
-      <div nz-col [nzXs]="0" [nzSm]="0" [nzMd]="16" [nzLg]="19" [nzXl]="19" [nzXXl]="20" class="nav nav-hide">
-        <div id="search-box">
-          <i nz-icon nzType="search"></i>
-          <input *ngIf="useDocsearch"
-            nz-input
-            #searchInput
-            [placeholder]="language=='zh' ? '在 ng.ant.design 中搜索' : 'Search in ng.ant.design'">
-          <nz-select *ngIf="!useDocsearch"
-            [nzPlaceHolder]="language=='zh'?'搜索组件...':'Search Components...'"
-            nzShowSearch
-            [(ngModel)]="searchComponent"
-            (ngModelChange)="navigateToPage($event)">
-            <ng-template [ngForOf]="componentList" ngFor let-component>
-              <nz-option [nzValue]="component.path"
-                [nzLabel]="component.label"
-                nzCustomContent
-                *ngIf="language==component.language">
-                <strong>{{component.label}}</strong>
-                <span class="ant-component-decs">{{component.zh}}</span>
-              </nz-option>
-            </ng-template>
-          </nz-select>
+<div id="ng-content" [style.transform]="isDrawerOpen ? 'translateX(245px)' : null ">
+  <div class="page-wrapper">
+    <app-header [windowWidth]="windowWidth"
+                [page]="page"
+                [(language)]="language"
+                (languageChange)="switchLanguage($event)"
+                (versionChange)="navigateToVersion($event)">
+    </app-header>
+    <div class="main-wrapper">
+      <div nz-row>
+        <div nz-col
+             *ngIf="!showDrawer"
+             [nzXs]="24"
+             [nzSm]="24"
+             [nzMd]="6"
+             [nzLg]="6"
+             [nzXl]="5"
+             [nzXXl]="4"
+             class="main-menu">
+          <nz-affix [nzOffsetTop]="0">
+            <section class="main-menu-inner">
+              <ng-template [ngTemplateOutlet]="sideOrDrawerTpl"></ng-template>
+            </section>
+          </nz-affix>
         </div>
-        <button nz-button
-          nzGhost
-          nzSize="small"
-          class="header-lang-button"
-          (click)="switchLanguage(language==='zh'?'en':'zh')">{{language == 'zh' ? 'English' : '中文'}}</button>
-        <nz-select nzSize="small"
-          class="version"
-          style="max-width: 126px;"
-          [ngModel]="currentVersion"
-          (ngModelChange)="navigateToVersion($event)">
-          <nz-option *ngFor="let version of oldVersionList" [nzLabel]="version" [nzValue]="version"></nz-option>
-          <nz-option [nzLabel]="currentVersion" [nzValue]="currentVersion"></nz-option>
-        </nz-select>
-        <ng-template [ngTemplateOutlet]="topMenus" [ngTemplateOutletContext]="{ mode: 'horizontal' }"></ng-template>
+        <div nz-col
+             class="main-container main-container-component"
+             [nzXs]="24"
+             [nzSm]="24"
+             [nzMd]="18"
+             [nzLg]="18"
+             [nzXl]="19"
+             [nzXXl]="20">
+          <router-outlet></router-outlet>
+          <nz-contributors-list></nz-contributors-list>
+        </div>
       </div>
-    </div>
-  </header>
-  <div class="main-wrapper">
-    <div nz-row>
-      <div nz-col
-        *ngIf="!showDrawer"
-        [nzXs]="24"
-        [nzSm]="24"
-        [nzMd]="24"
-        [nzLg]="6"
-        [nzXl]="5"
-        [nzXXl]="4"
-        class="main-menu">
-        <nz-affix [nzOffsetTop]="0">
-          <section class="main-menu-inner">
-            <ng-template [ngTemplateOutlet]="sideOrDrawerTpl"></ng-template>
-          </section>
-        </nz-affix>
-      </div>
-      <div nz-col
-        class="main-container main-container-component"
-        [nzXs]="24"
-        [nzSm]="24"
-        [nzMd]="24"
-        [nzLg]="18"
-        [nzXl]="19"
-        [nzXXl]="20">
-        <router-outlet></router-outlet>
-      </div>
-    </div>
-    <div nz-row>
-      <div nz-col
-        [nzXs]="{span:24}"
-        [nzSm]="{span:24}"
-        [nzMd]="{span:24}"
-        [nzLg]="{span:18,offset:6}"
-        [nzXl]="{span:19,offset:5}"
-        [nzXXl]="{span:20,offset:4}">
-        <nz-nav-bottom></nz-nav-bottom>
-        <footer id="footer" class="dark">
-          <div class="footer-wrap">
-            <div nz-row>
-              <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="6">
-                <div class="footer-center">
-                  <h2>{{ language === 'zh' ? '相关资源' : 'Resources' }}</h2>
-                  <div>
-                    <a href="https://ng.mobile.ant.design" target="_blank" rel="noopener noreferrer">NG-ZORRO-MOBILE</a>
-                    <span> - </span>
-                    <span>Angular</span>
-                  </div>
-                  <div>
-                    <a href="https://ant.design/docs/react/introduce-cn"
-                      target="_blank"
-                      rel="noopener noreferrer">Ant Design
-                    </a>
-                    <span> - </span>
-                    <span>React</span>
-                  </div>
-                  <div>
-                    <a href="http://vue.ant.design" target="_blank" rel="noopener noreferrer">Ant Design</a>
-                    <span> - </span>
-                    <span>Vue</span>
-                  </div>
-                  <div>
-                    <a href="https://angular.cn" target="_blank" rel="noopener noreferrer">Angular</a>
-                  </div>
-                  <div>
-                    <a href="https://cli.angular.io/" target="_blank" rel="noopener noreferrer">Angular CLI</a>
-                  </div>
-                </div>
-              </div>
-              <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="6">
-                <div class="footer-center">
-                  <h2>{{language === 'zh' ? '社区' : 'Community'}}</h2>
-                  <div>
-                    <a target="_blank " href="https://github.com/websemantics/awesome-ant-design">
-                      <span><i nz-icon nzType="ant-design" style="margin-right: 4px;"></i>Awesome Ant Design</span>
-                    </a>
-                  </div>
-                  <div>
-                    <a *ngIf="language==='zh'"
-                      href="https://ng.ant.design/blog"
-                      target="_blank"
-                      rel="noopener noreferrer"><span>
-                      {{language === 'zh' ? '开发者博客' : 'Blog'}}
-                    </span>
-                    </a>
-                  </div>
-                  <div>
-                    <a href="https://twitter.com/ng_zorro" target="_blank" rel="noopener noreferrer"><span>
-                      <i nz-icon nzType="twitter" style="margin-right: 4px; color: rgb(29, 161, 242);"></i>Twitter
-                    </span>
-                    </a>
-                  </div>
-                  <div>
-                    <a *ngIf="language==='zh'"
-                      href="https://zhuanlan.zhihu.com/100000"
-                      target="_blank"
-                      rel="noopener noreferrer">
-                      <span><i nz-icon
-                        nzType="zhihu"
-                        style="margin-right: 4px; color: rgb(0, 132, 255);"></i>知乎专栏</span>
-                    </a>
-                  </div>
-                  <div>
-                    <a href="https://medium.com/ng-zorro" target="_blank" rel="noopener noreferrer">
-                      <span><i nz-icon nzType="medium" style="margin-right: 4px;"></i>Medium</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="6">
-                <div class="footer-center">
-                  <h2>{{language === 'zh' ? '帮助' : 'Help'}}</h2>
-                  <div>
-                    <a target="_blank " href="https://github.com/NG-ZORRO/ng-zorro-antd">
-                      <span>GitHub</span>
-                    </a>
-                    <span> - </span>
-                    <span><i nz-icon nzType="github"></i></span>
-                  </div>
-                  <div>
-                    <a target="_blank "
-                      [href]="language === 'zh' ? 'http://ng.ant.design/docs/changelog/zh' : 'http://ng.ant.design/docs/changelog/en'">
-                      <span>{{ language === 'zh' ? '更新日志' : 'Changelog' }}</span>
-                    </a>
-                  </div>
-                  <div *ngIf="language === 'zh'">
-                    <a target="_blank " href="https://github.com/NG-ZORRO/today-ng-steps">
-                      <span>NG ZORRO 实战教程</span>
-                    </a>
-                  </div>
-                  <div>
-                    <a target="_blank "
-                      [href]="language === 'zh' ? 'http://ng.ant.design/docs/faq/zh' : 'http://ng.ant.design/docs/faq/en'">
-                      <span>{{ language === 'zh' ? '常见问题' : 'FAQ' }}</span>
-                    </a>
-                  </div>
-                  <div>
-                    <a target="_blank "
-                      [href]="language === 'zh' ? 'https://ng.ant.design/issue-helper/#/zh' : 'https://ng.ant.design/issue-helper/#/en'">
-                      <span>{{ language === 'zh' ? '报告 Bug' : 'Bug Report' }}</span>
-                    </a>
-                  </div>
-                  <div>
-                    <a target="_blank " href="http://github.com/NG-ZORRO/ng-zorro-antd/issues">
-                      <span>{{ language === 'zh' ? '讨论列表' : 'Issue' }}</span>
-                    </a>
-                  </div>
-                  <div>
-                    <a target="_blank " href="https://stackoverflow.com/questions/tagged/ng-zorro-antd">
-                      <span>StackOverflow</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="6">
-                <div class="footer-center">
-                  <h2>
-                    <img class="title-icon"
-                      src="https://gw.alipayobjects.com/zos/rmsportal/nBVXkrFdWHxbZlmMbsaH.svg"
-                      alt="">
-                    <span>{{language === 'zh' ? '更多产品' : 'More Products'}}</span>
-                  </h2>
-                  <div>
-                    <a target="_blank " href="https://yuque.com/">
-                      <span><i nz-icon
-                        nzType="yuque"
-                        nzTheme="fill"
-                        style="margin-right: 4px; color: rgb(37, 184, 100);"></i>
-                        {{ language === 'zh' ? '语雀' : 'YuQue' }}</span>
-                    </a>
-                    <span> - </span>
-                    <span>{{ language === 'zh' ? '知识创作与分享工具' : 'Write your document as a team' }}</span>
-                  </div>
-                  <div>
-                    <a target="_blank " href="https://yunfengdie.com/">
-                      <span>{{ language === 'zh' ? '云凤蝶' : 'FengDie' }}</span>
-                    </a>
-                    <span> - </span>
-                    <span>{{ language === 'zh' ? '移动建站平台' : 'Mobile web app builder' }}</span>
-                  </div>
-                  <div>
-                    <a target="_blank" rel="noopener noreferrer" href="https://antv.alipay.com/">AntV</a>
-                    <span> - </span>
-                    <span>{{language === 'zh' ? '数据可视化' : 'Data Visualization'}}</span>
-                  </div>
-                  <div>
-                    <a target="_blank" rel="noopener noreferrer" href="https://eggjs.org/">Egg</a>
-                    <span> - </span>
-                    <span>{{language === 'zh' ? '企业级 Node 开发框架' : 'Enterprise Node Framework'}}</span>
-                  </div>
-                  <div>
-                    <a target="_blank " href="http://xtech.antfin.com/">
-                      <span>{{ language === 'zh' ? '蚂蚁体验科技' : 'Ant Financial Experience Tech' }}</span>
-                    </a>
-                  </div>
-                  <div style="margin-top: 20px;">
-                    <div class="theme-color"
-                      nz-popover
-                      [nzPopoverTrigger]="'click'"
-                      nzOverlayClassName="theme-color-content"
-                      [nzPopoverContent]="colorTpl">
-                      <div class="theme-color-value" [ngStyle]="{'background': color}"></div>
-                    </div>
-                    <ng-template #colorTpl>
-                      <color-sketch [color]="color" (onChangeComplete)="changeColor($event)"></color-sketch>
-                    </ng-template>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="bottom-bar">
-            Made with
-            <span class="heart">❤</span>
-            by NG-ZORRO team
-          </div>
-        </footer>
+      <div nz-row>
+        <div nz-col
+             [nzXs]="{span:24}"
+             [nzSm]="{span:24}"
+             [nzMd]="{span:24}"
+             [nzLg]="{span:18,offset:6}"
+             [nzXl]="{span:19,offset:5}"
+             [nzXXl]="{span:20,offset:4}">
+          <nz-nav-bottom></nz-nav-bottom>
+          <app-footer [colorHex]="color" (colorChange)="changeColor($event)"></app-footer>
+        </div>
       </div>
     </div>
   </div>
@@ -312,69 +67,50 @@
 
 <ng-template #sideOrDrawerTpl>
   <ul nz-menu [nzMode]="'inline'" class="aside-container menu-site" nzInlineIndent="40">
-    <ng-container  *ngFor="let intro of routerList.intro">
-      <li nz-menu-item nzMatchRouter [hidden]="intro.language !== language || intro.experimental !== isExperimental">
+    <ng-container *ngIf="page === 'docs'">
+      <li *ngFor="let intro of routerList.intro" nz-menu-item nzMatchRouter
+          [hidden]="intro.language !== language">
         <a routerLink="{{intro.path}}">{{intro.label}}</a>
       </li>
     </ng-container>
 
-    <li nz-submenu nzOpen>
-      <span title>
-        <h4>
-          {{language=='en' ? 'Components' : '组件'}}
-          <span *ngIf="!isExperimental" class="menu-antd-components-count">63</span>
-          <span *ngIf="isExperimental"  class="menu-antd-components-count">2</span>
-        </h4>
-      </span>
-      <ul>
-        <li nz-menu-group
+    <ng-container *ngIf="page === 'components'">
+      <li nz-menu-group
           *ngFor="let group of routerList.components"
-          [hidden]="group.language !== language || (isExperimental && group.experimentalChildren.length === 0)"
+          [hidden]="group.language !== language"
           [nzTitle]="group.name">
-          <ul>
-            <ng-container *ngIf="isExperimental">
-              <li nz-menu-item nzMatchRouter *ngFor="let component of group.experimentalChildren">
-                <a routerLink="{{component.path}}">
-                  <span>{{component.label}}</span>
-                  <span class="chinese">{{component.zh}}</span>
-                </a>
-              </li>
-            </ng-container>
-            <ng-container *ngIf="!isExperimental">
-              <li nz-menu-item nzMatchRouter *ngFor="let component of group.children">
-                <a routerLink="{{component.path}}">
-                  <span>{{component.label}}</span>
-                  <span class="chinese">{{component.zh}}</span>
-                </a>
-              </li>
-            </ng-container>
-          </ul>
-        </li>
-      </ul>
-    </li>
+        <ul>
+          <ng-container>
+            <li nz-menu-item nzMatchRouter *ngFor="let component of group.children">
+              <a routerLink="{{component.path}}">
+                <span>{{component.label}}</span>
+                <span class="chinese">{{component.zh}}</span>
+              </a>
+            </li>
+          </ng-container>
+        </ul>
+      </li>
+    </ng-container>
+
+    <ng-container *ngIf="page === 'experimental'">
+      <li nz-menu-group
+          *ngFor="let group of routerList.components"
+          [hidden]="group.language !== language || (group.experimentalChildren.length === 0)"
+          [nzTitle]="group.name">
+        <ul>
+          <ng-container>
+            <li nz-menu-item nzMatchRouter *ngFor="let component of group.experimentalChildren">
+              <a routerLink="{{component.path}}">
+                <span>{{component.label}}</span>
+                <span class="chinese">{{component.zh}}</span>
+              </a>
+            </li>
+          </ng-container>
+
+        </ul>
+      </li>
+    </ng-container>
+
   </ul>
 </ng-template>
-<ng-template #topMenus let-mode="mode">
-  <ul nz-menu [nzMode]="mode" id="nav" [nzSelectable]="false">
-    <li nz-menu-item [nzSelected]="!isExperimental">
-      <a (click)="setExperimental(false)">
-        <span *ngIf="language=='en'">Components</span>
-        <span *ngIf="language=='zh'">组件</span>
-      </a>
-    </li>
-    <li nz-menu-item [nzSelected]="isExperimental">
-      <a (click)="setExperimental(true)">
-        <span *ngIf="language=='en'">Experimental</span>
-        <span *ngIf="language=='zh'">实验性功能</span>
-      </a>
-    </li>
-    <li nz-menu-item>
-      <a href="https://ng.ant.design/blog/" *ngIf="language=='zh'" target="_blank">
-        <span>开发者博客</span>
-      </a>
-      <a href="https://ng.ant.design/blog/en" *ngIf="language=='en'" target="_blank">
-        <span>Blog</span>
-      </a>
-    </li>
-  </ul>
-</ng-template>
+
