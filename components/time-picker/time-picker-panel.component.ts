@@ -109,6 +109,9 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
       </ul>
     </div>
     <div *ngIf="!nzInDatePicker" class="ant-picker-footer">
+      <div *ngIf="nzAddOn" class="ant-picker-footer-extra">
+        <ng-template [ngTemplateOutlet]="nzAddOn"></ng-template>
+      </div>
       <ul class="ant-picker-ranges">
         <li class="ant-picker-now">
           <a (click)="onClickNow()">
@@ -116,9 +119,6 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
           </a>
         </li>
       </ul>
-      <div class="{{ prefixCls }}-addon" *ngIf="nzAddOn">
-        <ng-template [ngTemplateOutlet]="nzAddOn"></ng-template>
-      </div>
     </div>
   `,
   host: { '[class]': 'hostClassMap' },

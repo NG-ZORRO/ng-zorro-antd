@@ -46,7 +46,8 @@ const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
     <div class="ant-picker-input">
       <input
         #inputElement
-        nzType="text"
+        type="text"
+        [size]="inputSize"
         [nzTime]="nzFormat"
         [placeholder]="nzPlaceHolder || ('TimePicker.placeholder' | nzI18n)"
         [(ngModel)]="value"
@@ -115,6 +116,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   value: Date | null = null;
   origin: CdkOverlayOrigin;
   hostClassMap = {};
+  inputSize: number;
   overlayPositions: ConnectionPositionPair[] = [
     {
       originX: 'start',
@@ -223,6 +225,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   ) {}
 
   ngOnInit(): void {
+    this.inputSize = Math.max(8, this.nzFormat.length) + 2;
     this.setClassMap();
     this.origin = new CdkOverlayOrigin(this.element);
   }
