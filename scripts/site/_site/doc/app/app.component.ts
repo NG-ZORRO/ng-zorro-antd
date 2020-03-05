@@ -1,6 +1,16 @@
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, HostListener, Inject, NgZone, OnInit, Renderer2, ViewChild } from '@angular/core';
+import {
+  AfterContentInit,
+  Component,
+  ElementRef,
+  HostListener,
+  Inject,
+  NgZone,
+  OnInit,
+  Renderer2,
+  ViewChild
+} from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { en_US, NzI18nService, zh_CN } from 'ng-zorro-antd/i18n';
@@ -26,14 +36,16 @@ interface DocPageMeta {
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit, AfterContentInit {
+
   /**
    * When the screen size is smaller that 768 pixel, show the drawer and hide
    * the navigation on the side.
    **/
   showDrawer = false;
   isDrawerOpen = false;
-  isExperimental = false;
+  page: 'docs' | 'components' | 'experimental' | string = 'docs'
+  windowWidth = 1400;
   routerList = ROUTER_LIST;
   componentList: DocPageMeta[] = [];
   searchComponent = null;
@@ -80,12 +92,10 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
   }
 
-  setExperimental(isExperimental: boolean): void {
-    this.isExperimental = isExperimental;
-    if (isExperimental) {
-      this.router.navigateByUrl(`/docs/experimental/${this.language}`);
-    } else {
-      this.router.navigateByUrl(`/docs/introduce/${this.language}`);
+  setPage(url: string): void {
+    const match = url.match(/\/(\w+)/);
+    if (match && match[1]) {
+      this.page = match[1];
     }
   }
 
@@ -122,11 +132,11 @@ export class AppComponent implements OnInit, AfterViewInit {
         if (this.router.url !== '/' + this.searchComponent) {
           this.searchComponent = null;
         }
-        this.isExperimental = this.router.url.search('experimental') !== -1;
+        this.setPage(this.router.url);
         this.language = this.router.url
-          .split('/')
+        .split('/')
           [this.router.url.split('/').length - 1].split('#')[0]
-          .split('?')[0];
+        .split('?')[0];
         this.appService.language$.next(this.language);
         this.nzI18nService.setLocale(this.language === 'en' ? en_US : zh_CN);
         this.updateDocMetaAndLocale();
@@ -153,7 +163,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.detectLanguage();
   }
 
-  ngAfterViewInit(): void {
+  ngAfterContentInit(): void {
     if (this.useDocsearch) {
       this.initDocsearch();
     }
@@ -240,14 +250,14 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
     const changeColor = () => {
       (window as any).less
-        .modifyVars({
-          '@primary-color': res.color.hex
-        })
-        .then(() => {
-          this.msg.success(`应用成功`);
-          this.color = res.color.hex;
-          window.scrollTo(0, 0);
-        });
+      .modifyVars({
+        '@primary-color': res.color.hex
+      })
+      .then(() => {
+        this.msg.success(`应用成功`);
+        this.color = res.color.hex;
+        window.scrollTo(0, 0);
+      });
     };
 
     const lessUrl = 'https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js';
@@ -283,17 +293,18 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
     this.ngZone.runOutsideAngular(() => {
       fromEvent(window, 'resize')
-        .pipe(
-          startWith(true),
-          debounceTime(50),
-          map(() => window.innerWidth)
-        )
-        .subscribe(width => {
-          const showDrawer = width <= 995;
-          if (this.showDrawer !== showDrawer) {
-            this.showDrawer = showDrawer;
-          }
-        });
+      .pipe(
+        startWith(true),
+        debounceTime(50),
+        map(() => window.innerWidth)
+      )
+      .subscribe(width => {
+        this.windowWidth = width;
+        const showDrawer = width <= 768;
+        if (this.showDrawer !== showDrawer) {
+          this.showDrawer = showDrawer;
+        }
+      });
     });
   }
 

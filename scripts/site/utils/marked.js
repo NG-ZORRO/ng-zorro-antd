@@ -101,6 +101,30 @@ renderer.heading = function (text, level) {
   }
 };
 
+renderer.code = function(code, infostring, escaped) {
+  var lang = (infostring || '').match(/\S*/)[0];
+  if (this.options.highlight) {
+    var out = this.options.highlight(code, lang);
+    if (out != null && out !== code) {
+      escaped = true;
+      code = out;
+    }
+  }
+
+  if (!lang) {
+    return '<pre><code>'
+      + (escaped ? code : escape(code, true))
+      + '</code></pre>';
+  }
+
+  return '<pre class="'
+    + this.options.langPrefix
+    + escape(lang, true)
+    + '">' + '<code>'
+    + (escaped ? code : escape(code, true))
+    + '</code></pre>\n';
+};
+
 marked.setOptions({
   highlight: function (code, lang) {
     const language = Prism.languages[lang] || Prism.languages.autoit;

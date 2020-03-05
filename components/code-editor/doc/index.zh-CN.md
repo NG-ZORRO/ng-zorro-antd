@@ -7,15 +7,28 @@ cols: 1
 experimental: true
 ---
 
-monaco editor 组件。
+<blockquote style="border-color: #faad14;">
+<p>NG-ZORRO 实验性功能是指已发布但不稳定或者还未准备好用于生产环境的功能。</p>
+<p>开发者或用户可以选择在正式发布前使用这些功能，但是每次发布版本时都可能存在 <strong>breaking changes</strong>。</p>
+</blockquote>
+
 
 ## 何时使用
 
 需要在网页上渲染 monaco editor 时使用。
 
+### 引入模块
+
 ```ts
 import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
 ```
+
+### 引入样式
+
+```less
+@import "node_modules/ng-zorro-antd/code-editor/style/entry.less"
+```
+
 
 ## API
 
