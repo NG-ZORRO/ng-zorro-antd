@@ -6,8 +6,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-autocomplete.module';
-export * from './nz-autocomplete.component';
-export * from './nz-autocomplete-trigger.directive';
-export * from './nz-autocomplete-option.component';
-export * from './nz-autocomplete-optgroup.component';
+export * from './autocomplete.module';
+export * from './autocomplete.component';
+export * from './autocomplete-trigger.directive';
+export * from './autocomplete-option.component';
+export * from './autocomplete-optgroup.component';

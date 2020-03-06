@@ -36,8 +36,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { fromEvent, merge, Subscription } from 'rxjs';
 import { delay, distinct, map, take, tap } from 'rxjs/operators';
 
-import { NzAutocompleteOptionComponent } from './nz-autocomplete-option.component';
-import { NzAutocompleteComponent } from './nz-autocomplete.component';
+import { NzAutocompleteOptionComponent } from './autocomplete-option.component';
+import { NzAutocompleteComponent } from './autocomplete.component';
 
 export const NZ_AUTOCOMPLETE_VALUE_ACCESSOR: ExistingProvider = {
   provide: NG_VALUE_ACCESSOR,

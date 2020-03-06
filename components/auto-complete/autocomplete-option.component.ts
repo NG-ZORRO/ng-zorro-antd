@@ -13,11 +13,14 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  Optional,
   Output,
   ViewEncapsulation
 } from '@angular/core';
 
 import { InputBoolean, scrollIntoView } from 'ng-zorro-antd/core';
+
+import { NzAutocompleteOptgroupComponent } from './autocomplete-optgroup.component';
 
 export class NzOptionSelectionChange {
   constructor(public source: NzAutocompleteOptionComponent, public isUserInput: boolean = false) {}
@@ -29,16 +32,22 @@ export class NzOptionSelectionChange {
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  templateUrl: './nz-autocomplete-option.component.html',
+  template: `
+    <div class="ant-select-item-option-content">
+      <ng-content></ng-content>
+    </div>
+  `,
   host: {
     role: 'menuitem',
-    class: 'ant-select-dropdown-menu-item',
-    '[class.ant-select-dropdown-menu-item-selected]': 'selected',
-    '[class.ant-select-dropdown-menu-item-active]': 'active',
-    '[class.ant-select-dropdown-menu-item-disabled]': 'nzDisabled',
+    class: 'ant-select-item ant-select-item-option',
+    '[class.ant-select-item-option-grouped]': 'nzAutocompleteOptgroupComponent',
+    '[class.ant-select-item-option-selected]': 'selected',
+    '[class.ant-select-item-option-active]': 'active',
+    '[class.ant-select-item-option-disabled]': 'nzDisabled',
     '[attr.aria-selected]': 'selected.toString()',
     '[attr.aria-disabled]': 'nzDisabled.toString()',
     '(click)': 'selectViaInteraction()',
+    '(mouseenter)': 'onMouseEnter()',
     '(mousedown)': '$event.preventDefault()'
   }
 })
@@ -48,11 +57,17 @@ export class NzAutocompleteOptionComponent {
   @Input() nzLabel: string;
   @Input() @InputBoolean() nzDisabled = false;
   @Output() readonly selectionChange = new EventEmitter<NzOptionSelectionChange>();
+  @Output() readonly mouseEntered = new EventEmitter<NzAutocompleteOptionComponent>();
 
   active = false;
   selected = false;
 
-  constructor(private changeDetectorRef: ChangeDetectorRef, private element: ElementRef) {}
+  constructor(
+    private changeDetectorRef: ChangeDetectorRef,
+    private element: ElementRef,
+    @Optional()
+    public nzAutocompleteOptgroupComponent: NzAutocompleteOptgroupComponent
+  ) {}
 
   select(emit: boolean = true): void {
     this.selected = true;
@@ -60,6 +75,10 @@ export class NzAutocompleteOptionComponent {
     if (emit) {
       this.emitSelectionChangeEvent();
     }
+  }
+
+  onMouseEnter(): void {
+    this.mouseEntered.emit(this);
   }
 
   deselect(): void {

@@ -11,8 +11,8 @@ import { Subject } from 'rxjs';
 
 import { createKeyboardEvent, dispatchFakeEvent, dispatchKeyboardEvent, MockNgZone, typeInElement } from 'ng-zorro-antd/core';
 
+import { getNzAutocompleteMissingPanelError } from './autocomplete-trigger.directive';
 import { NzAutocompleteComponent, NzAutocompleteModule, NzAutocompleteOptionComponent, NzAutocompleteTriggerDirective } from './index';
-import { getNzAutocompleteMissingPanelError } from './nz-autocomplete-trigger.directive';
 
 describe('auto-complete', () => {
   let overlayContainer: OverlayContainer;
@@ -102,11 +102,10 @@ describe('auto-complete', () => {
       input.disabled = true;
       fixture.detectChanges();
 
-      expect(trigger.panelOpen).toBe(false);
       dispatchFakeEvent(input, 'focusin');
       flush();
-
       fixture.detectChanges();
+
       expect(trigger.panelOpen).toBe(false);
     }));
 
@@ -241,16 +240,6 @@ describe('auto-complete', () => {
       DOWN_ARROW_EVENT = createKeyboardEvent('keydown', DOWN_ARROW);
       ENTER_EVENT = createKeyboardEvent('keydown', ENTER);
       TAB_EVENT = createKeyboardEvent('keydown', TAB);
-    });
-
-    it('should open the panel when the input is focused', () => {
-      expect(fixture.componentInstance.trigger.panelOpen).toBe(false);
-
-      dispatchFakeEvent(input, 'focusin');
-      fixture.detectChanges();
-
-      expect(fixture.componentInstance.trigger.panelOpen).toBe(true);
-      expect(overlayContainerElement.textContent).toContain('Burns Bay Road');
     });
 
     it('should have correct width when setting', () => {
@@ -603,8 +592,8 @@ describe('auto-complete', () => {
       componentInstance.trigger.handleKeydown(DOWN_ARROW_EVENT);
       fixture.detectChanges();
 
-      expect(optionEls[0].classList).not.toContain('ant-select-dropdown-menu-item-active');
-      expect(optionEls[1].classList).toContain('ant-select-dropdown-menu-item-active');
+      expect(optionEls[0].classList).not.toContain('ant-select-item-option-active');
+      expect(optionEls[1].classList).toContain('ant-select-item-option-active');
     });
 
     it('should set the active item to the first option when DOWN key is pressed in last item', () => {
@@ -616,8 +605,33 @@ describe('auto-complete', () => {
       [1, 2, 3].forEach(() => componentInstance.trigger.handleKeydown(DOWN_ARROW_EVENT));
       fixture.detectChanges();
 
-      expect(optionEls[1].classList).not.toContain('ant-select-dropdown-menu-item-active');
-      expect(optionEls[0].classList).toContain('ant-select-dropdown-menu-item-active');
+      expect(optionEls[1].classList).not.toContain('ant-select-item-option-active');
+      expect(optionEls[0].classList).toContain('ant-select-item-option-active');
+    });
+
+    it('should set the active item when mouse is enter', () => {
+      const componentInstance = fixture.componentInstance;
+      const optionEls = overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
+
+      expect(componentInstance.trigger.panelOpen).toBe(true);
+
+      fixture.detectChanges();
+
+      dispatchFakeEvent(optionEls[1], 'mouseenter');
+
+      fixture.detectChanges();
+
+      expect(optionEls[0].classList).not.toContain('ant-select-item-option-active');
+      expect(optionEls[1].classList).toContain('ant-select-item-option-active');
+      expect(optionEls[2].classList).not.toContain('ant-select-item-option-active');
+
+      dispatchFakeEvent(optionEls[0], 'mouseenter');
+
+      fixture.detectChanges();
+
+      expect(optionEls[0].classList).toContain('ant-select-item-option-active');
+      expect(optionEls[1].classList).not.toContain('ant-select-item-option-active');
+      expect(optionEls[2].classList).not.toContain('ant-select-item-option-active');
     });
 
     it('should set the active item to the last option when UP key is pressed', () => {
@@ -629,9 +643,9 @@ describe('auto-complete', () => {
       componentInstance.trigger.handleKeydown(UP_ARROW_EVENT);
       fixture.detectChanges();
 
-      expect(optionEls[0].classList).not.toContain('ant-select-dropdown-menu-item-active');
-      expect(optionEls[1].classList).not.toContain('ant-select-dropdown-menu-item-active');
-      expect(optionEls[2].classList).toContain('ant-select-dropdown-menu-item-active');
+      expect(optionEls[0].classList).not.toContain('ant-select-item-option-active');
+      expect(optionEls[1].classList).not.toContain('ant-select-item-option-active');
+      expect(optionEls[2].classList).toContain('ant-select-item-option-active');
     });
 
     it('should set the active item to the previous option when UP key is pressed', () => {
@@ -643,9 +657,9 @@ describe('auto-complete', () => {
       [1, 2].forEach(() => componentInstance.trigger.handleKeydown(UP_ARROW_EVENT));
       fixture.detectChanges();
 
-      expect(optionEls[0].classList).not.toContain('ant-select-dropdown-menu-item-active');
-      expect(optionEls[1].classList).toContain('ant-select-dropdown-menu-item-active');
-      expect(optionEls[2].classList).not.toContain('ant-select-dropdown-menu-item-active');
+      expect(optionEls[0].classList).not.toContain('ant-select-item-option-active');
+      expect(optionEls[1].classList).toContain('ant-select-item-option-active');
+      expect(optionEls[2].classList).not.toContain('ant-select-item-option-active');
     });
 
     it('should set the active item properly after filtering', () => {
@@ -659,8 +673,8 @@ describe('auto-complete', () => {
 
       const optionEls = overlayContainerElement.querySelectorAll('nz-auto-option') as NodeListOf<HTMLElement>;
 
-      expect(optionEls[0].classList).not.toContain('ant-select-dropdown-menu-item-active');
-      expect(optionEls[1].classList).toContain('ant-select-dropdown-menu-item-active');
+      expect(optionEls[0].classList).not.toContain('ant-select-item-option-active');
+      expect(optionEls[1].classList).toContain('ant-select-item-option-active');
       expect(optionEls[1].innerText).toEqual('Wall Street');
     });
 
