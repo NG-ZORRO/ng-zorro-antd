@@ -311,8 +311,8 @@ describe('NzYearPickerComponent', () => {
       fixture.detectChanges();
       flush(); // Wait writeValue() tobe done
       fixture.detectChanges();
+      openPickerByClickTrigger();
       expect(getSelectedYearCell().textContent).toContain('2018');
-
       // Click the first cell to change ngModel
       const cell = getSecondYearCell();
       const cellText = cell.textContent!.trim();

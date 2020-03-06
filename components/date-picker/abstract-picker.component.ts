@@ -75,6 +75,7 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   @Input() nzRanges: PresetRanges;
   @Input() nzDefaultPickerValue: CompatibleDate | null = null;
   @Input() nzShowTime: SupportTimeOptions | boolean = false;
+  @Input() nzSeparator: string = '~';
 
   @Output() readonly nzOnPanelChange = new EventEmitter<PanelMode | PanelMode[]>();
   @Output() readonly nzOnCalendarChange = new EventEmitter<Array<Date | null>>();

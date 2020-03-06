@@ -245,6 +245,12 @@ describe('NzRangePickerComponent', () => {
       expect(queryFromOverlay('.ant-picker-panel:last-child .ant-picker-header-month-btn').textContent!.indexOf('11') > -1).toBeTruthy();
     }));
 
+    it('should support nzSeparator', fakeAsync(() => {
+      fixtureInstance.nzSeparator = '→';
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css(`.ant-picker-separator`)).nativeElement.textContent.trim()).toBe('→');
+    }));
+
     it('should support nzOnCalendarChange', fakeAsync(() => {
       const nzOnCalendarChange = spyOn(fixtureInstance, 'nzOnCalendarChange');
       fixture.detectChanges();
@@ -821,6 +827,7 @@ describe('NzRangePickerComponent', () => {
         [nzDropdownClassName]="nzDropdownClassName"
         [nzSize]="nzSize"
         [nzStyle]="nzStyle"
+        [nzSeparator]="nzSeparator"
         (nzOnOpenChange)="nzOnOpenChange($event)"
         [(ngModel)]="modelValue"
         (ngModelChange)="modelValueChange($event)"
@@ -873,6 +880,7 @@ class NzTestRangePickerComponent {
   modelValue: Array<Date | null>;
   modelValueChange(): void {}
   nzDefaultPickerValue: Array<Date | null>;
+  nzSeparator: string;
 
   nzDateRender: any; // tslint:disable-line:no-any
   nzShowTime: boolean | object = false;

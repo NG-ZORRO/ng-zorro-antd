@@ -60,7 +60,7 @@ import { RangePartType } from './standard-types';
           <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'left' }"></ng-container>
         </div>
         <div class="{{ prefixCls }}-range-separator">
-          <span class="{{ prefixCls }}-separator"> ~ </span>
+          <span class="{{ prefixCls }}-separator"> {{ separator }} </span>
         </div>
         <div class="{{ prefixCls }}-input">
           <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'right' }"></ng-container>
@@ -132,6 +132,7 @@ export class NzPickerComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() allowClear: boolean;
   @Input() autoFocus: boolean;
   @Input() format: string;
+  @Input() separator: string;
 
   @Output() readonly focusChange = new EventEmitter<boolean>();
   @Output() readonly valueChange = new EventEmitter<CandyDate | CandyDate[] | null>();
@@ -207,13 +208,18 @@ export class NzPickerComponent implements AfterViewInit, OnChanges, OnDestroy {
         inputWidth +
         ((this.elementRef.nativeElement as HTMLElement).querySelector('.ant-picker-range-separator') as HTMLElement).offsetWidth;
 
-      this.datePickerService.inputPartChange$.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe(partType => {
-        this.datePickerService.activeInput = partType;
-        this.focus();
-        this.datePickerService.arrowPositionStyle = { left: this.datePickerService.activeInput === 'left' ? '0px' : `${arrowLeft}px` };
-        this.activeBarStyle = { ...this.datePickerService.arrowPositionStyle, width: `${inputWidth}px`, position: 'absolute' };
-        this.changeDetector.markForCheck();
-      });
+      this.datePickerService.inputPartChange$
+        .pipe(
+          distinctUntilChanged(),
+          takeUntil(this.destroy$)
+        )
+        .subscribe(partType => {
+          this.datePickerService.activeInput = partType;
+          this.focus();
+          this.datePickerService.arrowPositionStyle = { left: this.datePickerService.activeInput === 'left' ? '0px' : `${arrowLeft}px` };
+          this.activeBarStyle = { ...this.datePickerService.arrowPositionStyle, width: `${inputWidth}px`, position: 'absolute' };
+          this.changeDetector.markForCheck();
+        });
     }
   }
 
