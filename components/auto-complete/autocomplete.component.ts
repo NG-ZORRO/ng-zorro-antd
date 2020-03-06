@@ -32,7 +32,7 @@ import { filter, switchMap, take } from 'rxjs/operators';
 
 import { CompareWith, InputBoolean, NzDropDownPosition, NzNoAnimationDirective, slideMotion } from 'ng-zorro-antd/core';
 
-import { NzAutocompleteOptionComponent, NzOptionSelectionChange } from './nz-autocomplete-option.component';
+import { NzAutocompleteOptionComponent, NzOptionSelectionChange } from './autocomplete-option.component';
 
 export interface AutocompleteDataSourceItem {
   value: string;
@@ -47,17 +47,37 @@ export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | n
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  templateUrl: './nz-autocomplete.component.html',
+  template: `
+    <ng-template>
+      <div
+        #panel
+        class="ant-select-dropdown ant-select-dropdown-placement-bottomLeft"
+        [class.ant-select-dropdown-hidden]="!showPanel"
+        [ngClass]="nzOverlayClassName"
+        [ngStyle]="nzOverlayStyle"
+        [nzNoAnimation]="noAnimation?.nzNoAnimation"
+        [@slideMotion]="dropDownPosition"
+        [@.disabled]="noAnimation?.nzNoAnimation"
+      >
+        <div style="max-height: 256px; overflow-y: auto; overflow-anchor: none;">
+          <div style="display: flex; flex-direction: column;">
+            <ng-template *ngTemplateOutlet="nzDataSource ? optionsTemplate : contentTemplate"></ng-template>
+          </div>
+        </div>
+      </div>
+      <ng-template #contentTemplate>
+        <ng-content></ng-content>
+      </ng-template>
+      <ng-template #optionsTemplate>
+        <nz-auto-option *ngFor="let option of nzDataSource" [nzValue]="option">{{ option }}</nz-auto-option>
+      </ng-template>
+    </ng-template>
+  `,
   animations: [slideMotion],
   styles: [
     `
-      .ant-select-dropdown {
-        top: 100%;
-        left: 0;
-        position: relative;
-        width: 100%;
-        margin-top: 4px;
-        margin-bottom: 4px;
+      .ant-select-dropdown-hidden {
+        display: none;
       }
     `
   ]
@@ -70,7 +90,8 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   @Input() @InputBoolean() nzBackfill = false;
   @Input() compareWith: CompareWith = (o1, o2) => o1 === o2;
   @Input() nzDataSource: AutocompleteDataSource;
-  @Output() readonly selectionChange: EventEmitter<NzAutocompleteOptionComponent> = new EventEmitter<NzAutocompleteOptionComponent>();
+  @Output()
+  readonly selectionChange: EventEmitter<NzAutocompleteOptionComponent> = new EventEmitter<NzAutocompleteOptionComponent>();
 
   showPanel: boolean = true;
   isOpen: boolean = false;
@@ -90,7 +111,8 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   }
 
   /** Provided by content */
-  @ContentChildren(NzAutocompleteOptionComponent, { descendants: true }) fromContentOptions: QueryList<NzAutocompleteOptionComponent>;
+  @ContentChildren(NzAutocompleteOptionComponent, { descendants: true })
+  fromContentOptions: QueryList<NzAutocompleteOptionComponent>;
   /** Provided by dataSource */
   @ViewChildren(NzAutocompleteOptionComponent) fromDataSourceOptions: QueryList<NzAutocompleteOptionComponent>;
 
@@ -101,6 +123,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
 
   private activeItemIndex: number = -1;
   private selectionChangeSubscription = Subscription.EMPTY;
+  private optionMouseEnterSubscription = Subscription.EMPTY;
   private dataSourceChangeSubscription = Subscription.EMPTY;
   /** Options changes listener */
   readonly optionSelectionChanges: Observable<NzOptionSelectionChange> = defer(() => {
@@ -110,6 +133,15 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
     return this.ngZone.onStable.asObservable().pipe(
       take(1),
       switchMap(() => this.optionSelectionChanges)
+    );
+  });
+  readonly optionMouseEnter: Observable<NzAutocompleteOptionComponent> = defer(() => {
+    if (this.options) {
+      return merge<NzAutocompleteOptionComponent>(...this.options.map(option => option.mouseEntered));
+    }
+    return this.ngZone.onStable.asObservable().pipe(
+      take(1),
+      switchMap(() => this.optionMouseEnter)
     );
   });
 
@@ -134,6 +166,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   ngOnDestroy(): void {
     this.dataSourceChangeSubscription.unsubscribe();
     this.selectionChangeSubscription.unsubscribe();
+    this.optionMouseEnterSubscription.unsubscribe();
   }
 
   setVisibility(): void {
@@ -213,5 +246,13 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
         this.clearSelectedOptions(event.source, true);
         this.selectionChange.emit(event.source);
       });
+
+    this.optionMouseEnterSubscription.unsubscribe();
+    this.optionMouseEnterSubscription = this.optionMouseEnter.subscribe((event: NzAutocompleteOptionComponent) => {
+      event.setActiveStyles();
+      this.activeItem = event;
+      this.activeItemIndex = this.getOptionIndex(this.activeItem.nzValue);
+      this.clearSelectedOptions(event);
+    });
   }
 }
