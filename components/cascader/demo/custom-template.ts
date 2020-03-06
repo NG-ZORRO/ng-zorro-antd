@@ -32,14 +32,7 @@ const options = [
     <nz-cascader [nzOptionRender]="renderTpl" [nzOptions]="nzOptions" [(ngModel)]="values" (ngModelChange)="onChanges($event)">
     </nz-cascader>
     <ng-template #renderTpl let-option let-index="index"> {{ index + 1 }}. {{ option.label }} </ng-template>
-  `,
-  styles: [
-    `
-      .ant-cascader-picker {
-        width: 300px;
-      }
-    `
-  ]
+  `
 })
 export class NzDemoCascaderCustomTemplateComponent {
   nzOptions = options;

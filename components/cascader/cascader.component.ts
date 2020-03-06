@@ -193,19 +193,7 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
     '[class.ant-cascader-picker-open]': 'menuVisible',
     '[class.ant-cascader-picker-with-value]': '!!inputValue',
     '[class.ant-cascader-focused]': 'isFocused'
-  },
-  styles: [
-    `
-      .ant-cascader-menus {
-        margin-top: 4px;
-        margin-bottom: 4px;
-        top: 100%;
-        left: 0;
-        position: relative;
-        width: 100%;
-      }
-    `
-  ]
+  }
 })
 export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit, OnDestroy, ControlValueAccessor {
   @ViewChild('input', { static: false }) input: ElementRef;
