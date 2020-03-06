@@ -13,9 +13,9 @@ import { createKeyboardEvent, dispatchFakeEvent, dispatchKeyboardEvent, MockNgZo
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzInputModule } from '../input';
-import { NzMentionTriggerDirective } from './nz-mention-trigger';
-import { NzMentionComponent } from './nz-mention.component';
-import { NzMentionModule } from './nz-mention.module';
+import { NzMentionTriggerDirective } from './mention-trigger';
+import { NzMentionComponent } from './mention.component';
+import { NzMentionModule } from './mention.module';
 
 describe('mention', () => {
   let overlayContainer: OverlayContainer;

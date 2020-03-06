@@ -5,8 +5,11 @@ import { createFakeEvent } from 'ng-zorro-antd/core';
 
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
-import { NzAvatarComponent } from './nz-avatar.component';
-import { NzAvatarModule } from './nz-avatar.module';
+import { NzAvatarComponent } from './avatar.component';
+import { NzAvatarModule } from './avatar.module';
+
+const imageBase64 =
+  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg==';
 
 function getType(dl: DebugElement): string {
   const el = dl.nativeElement as HTMLElement;
@@ -49,8 +52,7 @@ describe('avatar', () => {
       fixture.detectChanges();
       expect(getType(dl)).toBe('icon');
       expect(context.comp.hasSrc).toBe(false);
-      context.nzSrc =
-        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg==';
+      context.nzSrc = imageBase64;
       tick();
       fixture.detectChanges();
       expect(context.comp.hasSrc).toBe(true);
@@ -69,8 +71,7 @@ describe('avatar', () => {
       fixture.detectChanges();
       expect(getType(dl)).toBe('image');
       expect(context.comp.hasSrc).toBe(true);
-      context.nzSrc =
-        'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg==';
+      context.nzSrc = imageBase64;
       tick();
       fixture.detectChanges();
       expect(context.comp.hasSrc).toBe(true);
@@ -159,24 +160,7 @@ describe('avatar', () => {
 
       context.nzIcon = 'user';
       fixture.detectChanges();
-      expect(hostStyle.fontSize === `calc(${context.nzSize / 2}px)`).toBe(true);
-    });
-
-    it('should be custom unit size', () => {
-      const size = `8vw`;
-      context.nzSize = size;
-      context.nzIcon = null;
-      context.nzSrc = null;
-      fixture.detectChanges();
-      const hostStyle = dl.nativeElement.querySelector('nz-avatar').style;
-      expect(hostStyle.height === size).toBe(true);
-      expect(hostStyle.width === size).toBe(true);
-      expect(hostStyle.lineHeight === size).toBe(true);
-      expect(hostStyle.fontSize === ``).toBe(true);
-
-      context.nzIcon = 'user';
-      fixture.detectChanges();
-      expect(hostStyle.fontSize === `calc(4vw)`).toBe(true);
+      expect(hostStyle.fontSize === `${context.nzSize / 2}px`).toBe(true);
     });
   });
 
@@ -235,11 +219,9 @@ class TestAvatarComponent {
   @ViewChild('comp', { static: false }) comp: NzAvatarComponent;
   nzShape = 'square';
   nzSize: string | number = 'large';
-  nzIcon: string | null = 'anticon anticon-user';
+  nzIcon: string | null = 'user';
   nzText: string | null = 'A';
-  nzSrc:
-    | string
-    | null = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+P+/HgAFhAJ/wlseKgAAAABJRU5ErkJggg==`;
+  nzSrc: string | null = imageBase64;
   nzSrcSet: string;
   nzAlt: string;
 }

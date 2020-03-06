@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
     <nz-range-picker [nzDateRender]="tplRender"></nz-range-picker>
 
     <ng-template #tplRender let-current>
-      <div class="ant-calendar-date" [class.border]="current.getDate() === 1">
+      <div class="ant-picker-cell-inner" [class.border]="current.getDate() === 1">
         {{ current.getDate() }}
       </div>
     </ng-template>

@@ -7,6 +7,11 @@ cols: 1
 experimental: true
 ---
 
+<blockquote style="border-color: #faad14;">
+<p>NG-ZORRO 实验性功能是指已发布但不稳定或者还未准备好用于生产环境的功能。</p>
+<p>开发者或用户可以选择在正式发布前使用这些功能，但是每次发布版本时都可能存在 <strong>breaking changes</strong>。</p>
+</blockquote>
+
 调整元素尺寸。
 
 - 支持释放前预览提高性能
@@ -17,8 +22,16 @@ experimental: true
 
 当你想调整元素尺寸时.
 
+### 引入模块
+
 ```ts
 import { NzResizableModule } from 'ng-zorro-antd/resizable';
+```
+
+### 引入样式
+
+```less
+@import "node_modules/ng-zorro-antd/resizable/style/entry.less"
 ```
 
 ## API

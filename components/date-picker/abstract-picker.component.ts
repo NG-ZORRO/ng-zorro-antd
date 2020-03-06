@@ -6,16 +6,37 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectorRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
+
+import {
+  CandyDate,
+  cloneDate,
+  CompatibleValue,
+  FunctionProp,
+  InputBoolean,
+  NzNoAnimationDirective,
+  toBoolean,
+  valueFunctionProp
+} from 'ng-zorro-antd/core';
+import { DateHelperService, NzDatePickerI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
-import { CandyDate, InputBoolean, NzNoAnimationDirective } from 'ng-zorro-antd/core';
-import { DateHelperService, NzDatePickerI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import { DatePickerService } from './date-picker.service';
 
 import { NzPickerComponent } from './picker.component';
-import { CompatibleDate, CompatibleValue } from './standard-types';
+import { CompatibleDate, DisabledTimeFn, PanelMode, PresetRanges } from './standard-types';
 
 const POPUP_STYLE_PATCH = { position: 'relative' }; // Aim to override antd's style to support overlay's position strategy (position:absolute will cause it not working beacuse the overlay can't get the height/width of it's content)
 
@@ -23,6 +44,17 @@ const POPUP_STYLE_PATCH = { position: 'relative' }; // Aim to override antd's st
  * The base picker for all common APIs
  */
 export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDestroy, ControlValueAccessor {
+  isRange: boolean = false; // Indicate whether the value is a range value
+  showWeek: boolean = false; // Should show as week picker
+  focused: boolean = false;
+  pickerStyle: object; // Final picker style that contains width fix corrections etc.
+  extraFooter: TemplateRef<void> | string;
+  hostClassMap = {};
+
+  protected destroyed$: Subject<void> = new Subject();
+  protected isCustomPlaceHolder: boolean = false;
+  private _showTime: object | boolean;
+
   // --- Common API
   @Input() @InputBoolean() nzAllowClear: boolean = true;
   @Input() @InputBoolean() nzAutoFocus: boolean = false;
@@ -37,26 +69,45 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   @Input() nzSize: 'large' | 'small';
   @Input() nzStyle: object;
   @Input() nzFormat: string;
-  @Input() nzValue: CompatibleValue | null;
 
+  @Input() nzDateRender: FunctionProp<TemplateRef<Date> | string>;
+  @Input() nzDisabledTime: DisabledTimeFn;
+  @Input() nzRenderExtraFooter: FunctionProp<TemplateRef<void> | string>;
+  @Input() @InputBoolean() nzShowToday: boolean = true;
+  @Input() nzMode: PanelMode | PanelMode[] = 'date';
+  @Input() nzRanges: PresetRanges;
+  @Output() readonly nzOnPanelChange = new EventEmitter<PanelMode | PanelMode[]>();
+  @Output() readonly nzOnCalendarChange = new EventEmitter<Array<Date | null>>();
+  @Output() readonly nzOnOk = new EventEmitter<CompatibleDate | null>();
   @Output() readonly nzOnOpenChange = new EventEmitter<boolean>();
 
   @ViewChild(NzPickerComponent, { static: true }) protected picker: NzPickerComponent;
 
-  isRange: boolean = false; // Indicate whether the value is a range value
+  @Input() get nzShowTime(): object | boolean {
+    return this._showTime;
+  }
+
+  set nzShowTime(value: object | boolean) {
+    this._showTime = typeof value === 'object' ? value : toBoolean(value);
+  }
 
   get realOpenState(): boolean {
     return this.picker.animationOpenState;
   } // Use picker's real open state to let re-render the picker's content when shown up
 
-  initValue(): void {
-    this.nzValue = this.isRange ? [] : null;
+  updateHostClass(): void {
+    this.hostClassMap = {
+      [`ant-picker`]: true,
+      [`ant-picker-range`]: this.isRange,
+      [`ant-picker-large`]: this.nzSize === 'large',
+      [`ant-picker-small`]: this.nzSize === 'small',
+      [`ant-picker-focused`]: this.focused,
+      [`ant-picker-disabled`]: this.nzDisabled
+    };
   }
 
-  protected destroyed$: Subject<void> = new Subject();
-  protected isCustomPlaceHolder: boolean = false;
-
   constructor(
+    public datePickerService: DatePickerService,
     protected i18n: NzI18nService,
     protected cdr: ChangeDetectorRef,
     protected dateHelper: DateHelperService,
@@ -70,10 +121,52 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
     }
 
     // Default value
-    this.initValue();
+    this.datePickerService.isRange = this.isRange;
+    this.datePickerService.initValue();
+    this.datePickerService.emitValue$.pipe(takeUntil(this.destroyed$)).subscribe(_ => {
+      const value = this.datePickerService.value;
+      this.datePickerService.initialValue = cloneDate(value);
+      // this.datePickerService.activeDate = cloneDate(value);
+      if (this.isRange) {
+        const vAsRange = value as CandyDate[];
+        if (vAsRange.length) {
+          this.onChangeFn([vAsRange[0].nativeDate, vAsRange[1].nativeDate]);
+        } else {
+          this.onChangeFn([]);
+        }
+      } else {
+        if (value) {
+          this.onChangeFn((value as CandyDate).nativeDate);
+        } else {
+          this.onChangeFn(null);
+        }
+      }
+      this.onTouchedFn();
+      // When value emitted, overlay will be closed
+      this.picker.hideOverlay();
+    });
+
+    this.updateHostClass();
+    this.updatePickerStyle();
+    // Default format when it's empty
+    if (!this.nzFormat) {
+      if (this.showWeek) {
+        this.nzFormat = this.dateHelper.relyOnDatePipe ? 'yyyy-ww' : 'YYYY-WW'; // Format for week
+      } else {
+        if (this.dateHelper.relyOnDatePipe) {
+          this.nzFormat = this.nzShowTime ? 'yyyy-MM-dd HH:mm:ss' : 'yyyy-MM-dd';
+        } else {
+          this.nzFormat = this.nzShowTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD';
+        }
+      }
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes.nzSize || changes.nzDisabled) {
+      this.updateHostClass();
+    }
+
     if (changes.nzPopupStyle) {
       // Always assign the popup style patch
       this.nzPopupStyle = this.nzPopupStyle ? { ...this.nzPopupStyle, ...POPUP_STYLE_PATCH } : POPUP_STYLE_PATCH;
@@ -88,6 +181,18 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
       // The nzLocale is currently handled by user
       this.setDefaultPlaceHolder();
     }
+
+    if (changes.nzRenderExtraFooter) {
+      this.extraFooter = valueFunctionProp(this.nzRenderExtraFooter);
+    }
+
+    if (changes.nzShowTime || changes.nzStyle) {
+      this.updatePickerStyle();
+    }
+
+    if (changes.nzMode) {
+      this.setPanelMode();
+    }
   }
 
   ngOnDestroy(): void {
@@ -95,31 +200,10 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
     this.destroyed$.complete();
   }
 
-  closeOverlay(): void {
-    this.picker.hideOverlay();
-  }
-
-  /**
-   * Common handle for value changes
-   * @param value changed value
-   */
-  onValueChange(value: CompatibleValue): void {
-    this.nzValue = value;
-    if (this.isRange) {
-      const vAsRange = this.nzValue as CandyDate[];
-      if (vAsRange.length) {
-        this.onChangeFn([vAsRange[0].nativeDate, vAsRange[1].nativeDate]);
-      } else {
-        this.onChangeFn([]);
-      }
-    } else {
-      if (this.nzValue) {
-        this.onChangeFn((this.nzValue as CandyDate).nativeDate);
-      } else {
-        this.onChangeFn(null);
-      }
+  setPanelMode(): void {
+    if (!this.nzMode) {
+      this.nzMode = this.isRange ? ['date', 'date'] : 'date';
     }
-    this.onTouchedFn();
   }
 
   /**
@@ -153,11 +237,6 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
     this.onTouchedFn = fn;
   }
 
-  setDisabledState(disabled: boolean): void {
-    this.nzDisabled = disabled;
-    this.cdr.markForCheck();
-  }
-
   // ------------------------------------------------------------------------
   // | Internal methods
   // ------------------------------------------------------------------------
@@ -177,10 +256,64 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
 
   // Safe way of setting value with default
   private setValue(value: CompatibleDate): void {
+    let newValue: CompatibleValue;
     if (this.isRange) {
-      this.nzValue = value ? (value as Date[]).map(val => new CandyDate(val)) : [];
+      newValue = value ? (value as Date[]).map(val => new CandyDate(val)) : [];
     } else {
-      this.nzValue = value ? new CandyDate(value as Date) : null;
+      newValue = value ? new CandyDate(value as Date) : null;
     }
+    this.datePickerService.setValue(newValue);
+    this.datePickerService.initialValue = newValue;
+  }
+
+  get realShowToday(): boolean {
+    // Range not support nzShowToday currently
+    return !this.isRange && this.nzShowToday;
+  }
+
+  onFocusChange(value: boolean): void {
+    this.focused = value;
+    this.updateHostClass();
+  }
+
+  updatePickerStyle(): void {
+    if (this.nzShowTime) {
+      this.pickerStyle = { display: 'inherit', width: this.isRange ? '360px' : '174px' };
+    } else {
+      this.pickerStyle = { display: 'inherit', width: this.isRange ? '233px' : '111px' };
+    }
+    this.pickerStyle = { ...this.pickerStyle, ...this.nzStyle };
+  }
+
+  onPanelModeChange(panelMode: PanelMode | PanelMode[]): void {
+    // this.nzMode = panelMode;
+    this.nzOnPanelChange.emit(panelMode);
+  }
+
+  // Emit nzOnCalendarChange when select date by nz-range-picker
+  onCalendarChange(value: CandyDate[]): void {
+    if (this.isRange) {
+      const rangeValue = value.filter(x => x instanceof CandyDate).map(x => x.nativeDate);
+      this.nzOnCalendarChange.emit(rangeValue);
+    }
+  }
+
+  // Emitted when done with date selecting
+  onResultOk(): void {
+    if (this.isRange) {
+      const value = this.datePickerService.value as CandyDate[];
+      if (value.length) {
+        this.nzOnOk.emit([value[0].nativeDate, value[1].nativeDate]);
+      } else {
+        this.nzOnOk.emit([]);
+      }
+    } else {
+      if (this.datePickerService.value) {
+        this.nzOnOk.emit((this.datePickerService.value as CandyDate).nativeDate);
+      } else {
+        this.nzOnOk.emit(null);
+      }
+    }
+    this.datePickerService.emitValue$.next();
   }
 }
