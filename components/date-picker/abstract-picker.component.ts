@@ -46,7 +46,6 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   isRange: boolean = false; // Indicate whether the value is a range value
   showWeek: boolean = false; // Should show as week picker
   focused: boolean = false;
-  pickerStyle: object; // Final picker style that contains width fix corrections etc.
   extraFooter: TemplateRef<void> | string;
   hostClassMap = {};
 
@@ -58,6 +57,10 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   @Input() @InputBoolean() nzAutoFocus: boolean = false;
   @Input() @InputBoolean() nzDisabled: boolean = false;
   @Input() @InputBoolean() nzOpen: boolean;
+  /**
+   * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
+   * Please use CSS class attribute like <nz-date-picker class="..."></nz-date-picker>
+   */
   @Input() nzClassName: string;
   @Input() nzDisabledDate: (d: Date) => boolean;
   @Input() nzLocale: NzDatePickerI18nInterface;
@@ -65,6 +68,10 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   @Input() nzPopupStyle: object = POPUP_STYLE_PATCH;
   @Input() nzDropdownClassName: string;
   @Input() nzSize: 'large' | 'small';
+  /**
+   * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
+   * Please use CSS style attribute like <nz-date-picker style="..."></nz-date-picker>
+   */
   @Input() nzStyle: object;
   @Input() nzFormat: string;
   @Input() nzDateRender: FunctionProp<TemplateRef<Date> | string>;
@@ -179,7 +186,7 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
       this.extraFooter = valueFunctionProp(this.nzRenderExtraFooter);
     }
 
-    if (changes.nzShowTime || changes.nzStyle) {
+    if (changes.nzStyle) {
       this.updatePickerStyle();
     }
 
@@ -197,6 +204,10 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
     if (!this.nzMode) {
       this.nzMode = this.isRange ? ['date', 'date'] : 'date';
     }
+  }
+
+  updatePickerStyle(): void {
+    this.nzStyle = { display: 'inherit', width: '100%', ...this.nzStyle };
   }
 
   /**
@@ -262,15 +273,6 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   onFocusChange(value: boolean): void {
     this.focused = value;
     this.updateHostClass();
-  }
-
-  updatePickerStyle(): void {
-    if (this.nzShowTime) {
-      this.pickerStyle = { display: 'inherit', width: this.isRange ? '360px' : '174px' };
-    } else {
-      this.pickerStyle = { display: 'inherit', width: this.isRange ? '233px' : '111px' };
-    }
-    this.pickerStyle = { ...this.pickerStyle, ...this.nzStyle };
   }
 
   onPanelModeChange(panelMode: PanelMode | PanelMode[]): void {

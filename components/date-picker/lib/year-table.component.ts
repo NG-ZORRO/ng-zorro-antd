@@ -29,6 +29,7 @@ export class YearTableComponent extends AbstractTable implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    super.ngOnChanges(changes);
     if (changes.value || changes.disabledDate || changes.activeDate) {
       this.render();
     }
