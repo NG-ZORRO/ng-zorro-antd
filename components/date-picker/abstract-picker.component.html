@@ -17,6 +17,7 @@
   <date-range-popup
     *ngIf="realOpenState"
     [isRange]="isRange"
+    [defaultPickerValue]="nzDefaultPickerValue"
     [showWeek]="showWeek"
     [panelMode]="nzMode"
     (panelModeChange)="onPanelModeChange($event)"
