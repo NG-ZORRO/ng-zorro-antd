@@ -37,10 +37,12 @@ export class NzTbodyComponent implements OnDestroy {
 
   constructor(@Optional() private nzTableService: NzTableService, private cdr: ChangeDetectorRef) {
     this.isInsideTable = !!this.nzTableService;
-    this.nzTableService.listOfMeasureColumn$.pipe(takeUntil(this.destroy$)).subscribe(list => {
-      this.listOfMeasureWidth = list;
-      this.cdr.markForCheck();
-    });
+    if (this.nzTableService) {
+      this.nzTableService.listOfMeasureColumn$.pipe(takeUntil(this.destroy$)).subscribe(list => {
+        this.listOfMeasureWidth = list;
+        this.cdr.markForCheck();
+      });
+    }
   }
 
   onListOfAutoWidthChange(listOfAutoWidth: number[]): void {

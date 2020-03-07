@@ -63,7 +63,7 @@ export class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewI
     @Host() @Optional() private nzTableComponent: NzTableComponent,
     private elementRef: ElementRef,
     private renderer: Renderer2,
-    private nzTableService: NzTableService
+    @Optional() private nzTableService: NzTableService
   ) {
     this.isInTable = !!this.nzTableComponent;
   }

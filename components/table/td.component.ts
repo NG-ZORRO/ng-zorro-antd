@@ -7,8 +7,9 @@
  */
 /* tslint:disable:component-selector */
 
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Optional, Output, ViewEncapsulation } from '@angular/core';
 import { InputBoolean } from 'ng-zorro-antd/core';
+import { NzTableService } from 'ng-zorro-antd/table/table.service';
 
 @Component({
   selector: 'td:not(.nz-disable-td):not([mat-cell])',
@@ -16,7 +17,7 @@ import { InputBoolean } from 'ng-zorro-antd/core';
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <ng-container *ngIf="nzIndentSize !== null">
+    <ng-container *ngIf="nzShowExpand || nzIndentSize > 0">
       <nz-row-indent [indentSize]="nzIndentSize"></nz-row-indent>
       <button nz-row-expand-button [expand]="nzExpand" (expandChange)="onExpandChange($event)" [spaceMode]="!nzShowExpand"></button>
     </ng-container>
@@ -32,21 +33,26 @@ import { InputBoolean } from 'ng-zorro-antd/core';
     <ng-content></ng-content>
   `,
   host: {
-    '[class.ant-table-cell-with-append]': `nzIndentSize === null`,
+    '[class.ant-table-cell-with-append]': `nzShowExpand || nzIndentSize > 0`,
     '[class.ant-table-selection-column]': `nzShowCheckbox`,
-    '[class.ant-table-cell]': 'true'
+    '[class.ant-table-cell]': 'isInsideTable'
   }
 })
 export class NzTdComponent {
   @Input() nzChecked = false;
   @Input() nzDisabled = false;
   @Input() nzIndeterminate = false;
-  @Input() nzIndentSize: number | null = null;
+  @Input() nzIndentSize = 0;
   @Input() @InputBoolean() nzExpand = false;
   @Input() @InputBoolean() nzShowExpand = false;
   @Input() @InputBoolean() nzShowCheckbox = false;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   @Output() readonly nzExpandChange = new EventEmitter<boolean>();
+  isInsideTable = false;
+
+  constructor(@Optional() nzTableService: NzTableService) {
+    this.isInsideTable = !!nzTableService;
+  }
 
   onCheckedChange(checked: boolean): void {
     this.nzChecked = checked;

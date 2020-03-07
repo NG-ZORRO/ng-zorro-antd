@@ -16,5 +16,5 @@ import { Directive, Input } from '@angular/core';
   }
 })
 export class NzRowIndentDirective {
-  @Input() indentSize: number | null = null;
+  @Input() indentSize = 0;
 }

@@ -26,6 +26,9 @@ import { NzMeasureRowComponent } from './measure-row.component';
 import { NzRowExpandButtonDirective } from './src/expand/row-expand-button.directive';
 import { NzRowIndentDirective } from './src/expand/row-indent.directive';
 import { NzTrExpandDirective } from './src/expand/tr-expand.directive';
+import { NzTableFilterComponent } from './src/plugin/filter.component';
+import { NzTableSelectionComponent } from './src/plugin/selection.component';
+import { NzTableSortersComponent } from './src/plugin/sorters.component';
 import { NzCellAlignDirective } from './src/styled/align.directive';
 import { NzCellBreakWordDirective } from './src/styled/word-break.directive';
 import { NzTableContentComponent } from './table-content.component';
@@ -60,7 +63,10 @@ import { NzTrDirective } from './tr.directive';
     NzRowIndentDirective,
     NzRowExpandButtonDirective,
     NzCellBreakWordDirective,
-    NzCellAlignDirective
+    NzCellAlignDirective,
+    NzTableSortersComponent,
+    NzTableFilterComponent,
+    NzTableSelectionComponent
   ],
   exports: [
     NzTableComponent,
