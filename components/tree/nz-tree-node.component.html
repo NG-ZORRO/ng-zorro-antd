@@ -1,5 +1,12 @@
-<li #dragElement role="treeitem" [style.display]="displayStyle" [ngClass]="nzNodeClass">
+<div #dragElement role="treeitem" [style.display]="displayStyle" [ngClass]="nzNodeClass">
+  <nz-tree-indent
+    [nzTreeLevel]="nzTreeNode.level"
+    [nzPrefixCls]="prefixCls"
+    [nzIsStart]="nzTreeNode.isStart"
+    [nzIsEnd]="nzTreeNode.isEnd"
+  ></nz-tree-indent>
   <ng-container *ngIf="nzShowExpand">
+    <!-- render switcher -->
     <span [ngClass]="nzNodeSwitcherClass" (click)="_clickExpand($event)">
       <ng-container *ngIf="isShowSwitchIcon">
         <ng-container *ngIf="!nzTreeNode.isLoading">
@@ -84,35 +91,4 @@
     [ngTemplateOutletContext]="{ $implicit: nzTreeNode }"
   >
   </ng-template>
-
-  <ul
-    *ngIf="nzTreeNode.isExpanded"
-    role="group"
-    class="ant-tree-child-tree"
-    [class.ant-tree-child-tree-open]="!nzSelectMode || nzTreeNode.isExpanded"
-    data-expanded="true"
-    [@.disabled]="noAnimation?.nzNoAnimation"
-    @treeCollapseMotion
-  >
-    <nz-tree-node
-      *ngFor="let node of nzTreeNode.getChildren()"
-      [nzTreeNode]="node"
-      [nzShowExpand]="nzShowExpand"
-      [@.disabled]="noAnimation?.nzNoAnimation"
-      [nzNoAnimation]="noAnimation?.nzNoAnimation"
-      [nzSelectMode]="nzSelectMode"
-      [nzShowLine]="nzShowLine"
-      [nzExpandedIcon]="nzExpandedIcon"
-      [nzDraggable]="nzDraggable"
-      [nzCheckable]="nzCheckable"
-      [nzAsyncData]="nzAsyncData"
-      [nzExpandAll]="nzExpandAll"
-      [nzShowIcon]="nzShowIcon"
-      [nzSearchValue]="nzSearchValue"
-      [nzHideUnMatched]="nzHideUnMatched"
-      [nzBeforeDrop]="nzBeforeDrop"
-      [nzTreeTemplate]="nzTreeTemplate"
-    >
-    </nz-tree-node>
-  </ul>
-</li>
+</div>

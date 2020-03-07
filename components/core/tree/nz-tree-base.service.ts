@@ -7,12 +7,12 @@
  */
 
 import { Injectable, OnDestroy } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 import { isNotNil } from '../util';
 
-import { NzTreeNode } from './nz-tree-base-node';
-import { isCheckDisabled, isInArray } from './nz-tree-base-util';
+import { FlattenNode, NzTreeNode } from './nz-tree-base-node';
+import { flattenTreeData, isCheckDisabled, isInArray, NzTreeNodeKey } from './nz-tree-base-util';
 import { NzFormatEmitEvent } from './nz-tree-base.definitions';
 
 @Injectable()
@@ -24,11 +24,13 @@ export class NzTreeBaseService implements OnDestroy {
   isMultiple: boolean = false;
   selectedNode: NzTreeNode;
   rootNodes: NzTreeNode[] = [];
+  flattenNodes: FlattenNode[] = [];
   selectedNodeList: NzTreeNode[] = [];
   expandedNodeList: NzTreeNode[] = [];
   checkedNodeList: NzTreeNode[] = [];
   halfCheckedNodeList: NzTreeNode[] = [];
   matchedNodeList: NzTreeNode[] = [];
+  nodesListChange$ = new BehaviorSubject<NzTreeNode[]>([]);
   triggerEventChange$ = new Subject<NzFormatEmitEvent>();
 
   /**
@@ -43,15 +45,24 @@ export class NzTreeBaseService implements OnDestroy {
    */
   initTree(nzNodes: NzTreeNode[]): void {
     this.rootNodes = nzNodes;
-    this.expandedNodeList = [];
-    this.selectedNodeList = [];
-    this.halfCheckedNodeList = [];
-    this.checkedNodeList = [];
-    this.matchedNodeList = [];
+    // this.expandedNodeList = [];
+    // this.selectedNodeList = [];
+    // this.halfCheckedNodeList = [];
+    // this.checkedNodeList = [];
+    // this.matchedNodeList = [];
+    // if (flattenNodes) {
+    //   this.flattenNodes = [...flattenNodes];
+    // }
+    // const data = this.coerceTreeNodes(value);
+    // console.log(flattenTreeData(data, this.nzExpandAll || this.nzExpandedKeys), value);
     // refresh node checked state
-    setTimeout(() => {
-      this.refreshCheckState(this.isCheckStrictly);
-    });
+    // setTimeout(() => {
+    //   this.refreshCheckState(this.isCheckStrictly);
+    // });
+  }
+
+  flattenTreeData(nzNodes: NzTreeNode[], expandedKeys: NzTreeNodeKey[] | true = []): void {
+    this.flattenNodes = flattenTreeData(nzNodes, expandedKeys);
   }
 
   getSelectedNode(): NzTreeNode | null {
@@ -553,5 +564,92 @@ export class NzTreeBaseService implements OnDestroy {
 
   ngOnDestroy(): void {
     this.triggerEventChange$.complete();
+  }
+
+  /**
+   * New functions for flatten nodes
+   */
+  /**
+   * Set node to list
+   * @param list
+   * @param target
+   * @param deleteItem
+   */
+  setValueToList(list: NzTreeNode[] = [], target: NzTreeNode, deleteItem: boolean = false): void {
+    const index = list.findIndex(v => v.key === target.key);
+    if (index < 0) {
+      if (deleteItem) {
+        list.splice(index, 1);
+      }
+    } else if (!deleteItem) {
+      list.push(target);
+    }
+  }
+
+  /**
+   * Render by nzCheckedKeys
+   * @param keys
+   * @param checkStrictly
+   */
+  conductCheck(keys: NzTreeNodeKey[], checkStrictly: boolean): void {
+    this.checkedNodeList = [];
+    this.halfCheckedNodeList = [];
+    const calc = (nodes: NzTreeNode[]) => {
+      nodes.forEach(node => {
+        if (isInArray(node.key, keys) || node.isSelected) {
+          node.isChecked = true;
+          node.isHalfChecked = false;
+        } else {
+          node.isChecked = false;
+          node.isHalfChecked = false;
+        }
+        if (node.children.length > 0) {
+          calc(node.children);
+        }
+      });
+    };
+    calc(this.rootNodes);
+    this.refreshCheckState(checkStrictly);
+  }
+
+  conductExpandedKeys(keys: NzTreeNodeKey[] | true = []): void {
+    const expandedKeySet = new Set(keys === true ? [] : keys);
+    this.expandedNodeList = [];
+    const calc = (nodes: NzTreeNode[]) => {
+      nodes.forEach(node => {
+        node.isExpanded = keys === true || expandedKeySet.has(node.key);
+        if (node.isExpanded) {
+          this.setExpandedNodeList(node);
+        }
+        if (node.children.length > 0) {
+          calc(node.children);
+        }
+      });
+    };
+    calc(this.rootNodes);
+  }
+
+  conductSelect(keys: NzTreeNodeKey[], isMulti: boolean): void {
+    this.selectedNodeList = [];
+    const calc = (nodes: NzTreeNode[]): boolean => {
+      return nodes.every(node => {
+        if (isInArray(node.key, keys)) {
+          node.isSelected = true;
+          this.setSelectedNodeList(node);
+          if (!isMulti) {
+            // if not support multi select
+            return false;
+          }
+        } else {
+          node.isSelected = false;
+        }
+        if (node.children.length > 0) {
+          // Recursion
+          return calc(node.children);
+        }
+        return true;
+      });
+    };
+    calc(this.rootNodes);
   }
 }

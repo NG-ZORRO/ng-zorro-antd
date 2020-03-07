@@ -8,7 +8,6 @@
 
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ContentChild,
   EventEmitter,
@@ -25,12 +24,10 @@ import {
   TemplateRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import {
+  FlattenNode,
   InputBoolean,
-  isNotNil,
   NzConfigService,
   NzFormatBeforeDropEvent,
   NzFormatEmitEvent,
@@ -41,6 +38,9 @@ import {
   NzTreeNode,
   WithConfig
 } from 'ng-zorro-antd/core';
+import { flattenTreeData, NzTreeNodeKey } from 'ng-zorro-antd/core/tree/nz-tree-base-util';
+import { BehaviorSubject, Observable, ReplaySubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { NzTreeService } from './nz-tree.service';
 
@@ -94,45 +94,37 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
 
   @Input() @InputBoolean() nzMultiple = false;
 
-  @Input()
   // tslint:disable-next-line:no-any
-  set nzData(value: any[]) {
-    this.initNzData(value);
-  }
+  @Input() nzData: any[] = [];
 
-  @Input()
-  set nzExpandedKeys(value: string[]) {
-    this.nzDefaultSubject.next({ type: 'nzExpandedKeys', keys: value });
-  }
+  @Input() nzExpandedKeys: string[] = [];
 
-  @Input()
-  set nzSelectedKeys(value: string[]) {
-    this.nzDefaultSubject.next({ type: 'nzSelectedKeys', keys: value });
-  }
+  @Input() nzSelectedKeys: string[] = [];
 
-  @Input()
-  set nzCheckedKeys(value: string[]) {
-    this.nzDefaultSubject.next({ type: 'nzCheckedKeys', keys: value });
-  }
+  @Input() nzCheckedKeys: string[] = [];
 
-  @Input()
-  set nzSearchValue(value: string) {
-    this._searchValue = value;
-    this.nzTreeService.searchExpand(value);
-    if (isNotNil(value)) {
-      this.nzSearchValueChange.emit(this.nzTreeService.formatEvent('search', null, null));
-    }
-  }
+  @Input() nzSearchValue: string;
+  // set nzSearchValue(value: string) {
+  //   this._searchValue = value;
+  //   this.nzTreeService.searchExpand(value);
+  //   if (isNotNil(value)) {
+  //     this.nzSearchValueChange.emit(this.nzTreeService.formatEvent('search', null, null));
+  //   }
+  // }
 
-  get nzSearchValue(): string {
-    return this._searchValue;
-  }
+  // get nzSearchValue(): string {
+  //   return this._searchValue;
+  // }
 
   /**
    * To render nodes if root is changed.
    */
   get nzNodes(): NzTreeNode[] {
     return this.nzTreeService.rootNodes;
+  }
+
+  get nzFlattenNodes(): FlattenNode[] {
+    return this.nzTreeService.flattenNodes;
   }
 
   @Output() readonly nzExpandedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
@@ -154,11 +146,26 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   @Output() readonly nzOnDrop = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzOnDragEnd = new EventEmitter<NzFormatEmitEvent>();
 
+  HIDDEN_STYLE = {
+    width: 0,
+    height: 0,
+    display: 'flex',
+    overflow: 'hidden',
+    opacity: 0,
+    border: 0,
+    padding: 0,
+    margin: 0
+  };
+
   _searchValue: string;
   nzDefaultSubject = new ReplaySubject<{ type: string; keys: string[] }>(6);
+  nzOnChanges = new BehaviorSubject<{ [propertyName: string]: SimpleChange }>({});
   destroy$ = new Subject();
   prefixCls = 'ant-tree';
   classMap = {};
+  classMapOfNodeList = {
+    [this.prefixCls + '-list']: true
+  };
 
   onChange: (value: NzTreeNode[]) => void = () => null;
   onTouched: () => void = () => null;
@@ -191,14 +198,85 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
     if (Array.isArray(value)) {
       this.nzTreeService.isCheckStrictly = this.nzCheckStrictly;
       this.nzTreeService.isMultiple = this.nzMultiple;
+      const data = this.coerceTreeNodes(value);
+      console.warn(flattenTreeData(data, this.nzExpandAll || this.nzExpandedKeys), value);
       this.nzTreeService.initTree(this.coerceTreeNodes(value));
     }
   }
 
+  /**
+   * Render all properties of nzTree
+   */
+  renderTreeProperties(changes: { [propertyName: string]: SimpleChange }): void {
+    const { nzData, nzExpandedKeys, nzSelectedKeys, nzCheckedKeys, nzCheckStrictly, nzExpandAll, nzMultiple } = changes;
+    if (nzData) {
+      this.handleNzData(this.nzData);
+    }
+
+    if (nzCheckedKeys || nzCheckStrictly) {
+      this.handleCheckedKeys(this.nzCheckedKeys);
+    }
+
+    if (nzExpandedKeys || nzExpandAll) {
+      this.handleExpandedKeys(this.nzExpandAll || this.nzExpandedKeys);
+    }
+
+    if (nzSelectedKeys || nzMultiple) {
+      this.handleSelectedKeys(this.nzSelectedKeys, this.nzMultiple);
+    }
+
+    // flatten data
+    this.handleFlattenNodes(this.nzNodes, this.nzExpandAll || this.nzExpandedKeys);
+    console.error('data: ', { ...changes }, [...this.nzNodes], [...this.nzFlattenNodes], [...(this.nzCheckedKeys || [])]);
+  }
+
+  // Deal with properties
+  /**
+   * nzData
+   * @param value
+   */
+  // tslint:disable-next-line:no-any
+  handleNzData(value: any[]): void {
+    if (Array.isArray(value)) {
+      const data = this.coerceTreeNodes(value);
+      this.nzTreeService.initTree(data);
+    }
+  }
+
+  handleFlattenNodes(data: NzTreeNode[], expandKeys: NzTreeNodeKey[] | true = []): void {
+    this.nzTreeService.flattenTreeData(data, expandKeys);
+  }
+
+  handleCheckedKeys(keys: NzTreeNodeKey[]): void {
+    this.nzTreeService.conductCheck(keys, this.nzCheckStrictly);
+  }
+
+  handleExpandedKeys(keys: NzTreeNodeKey[] | true = []): void {
+    this.nzTreeService.conductExpandedKeys(keys);
+  }
+
+  handleSelectedKeys(keys: NzTreeNodeKey[], isMulti: boolean): void {
+    this.nzTreeService.conductSelect(keys, isMulti);
+  }
+
+  // Handle emit event
+  /**
+   * Click expand icon
+   * @param event
+   */
+  expandChange(event: NzFormatEmitEvent): void {
+    const { node } = event;
+    this.nzTreeService.setExpandedNodeList(node!);
+    this.handleFlattenNodes(
+      this.nzNodes,
+      this.getExpandedNodeList().map(v => v.key)
+    );
+  }
+  // Handle emit event end
+
   constructor(
     nzTreeService: NzTreeBaseService,
     public nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     super(nzTreeService);
@@ -206,26 +284,6 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
 
   ngOnInit(): void {
     this.setClassMap();
-    this.nzDefaultSubject.pipe(takeUntil(this.destroy$)).subscribe((data: { type: string; keys: string[] }) => {
-      if (!data || !data.keys) {
-        return;
-      }
-      switch (data.type) {
-        case 'nzExpandedKeys':
-          this.nzTreeService.calcExpandedKeys(data.keys, this.nzNodes);
-          this.nzExpandedKeysChange.emit(data.keys);
-          break;
-        case 'nzSelectedKeys':
-          this.nzTreeService.calcSelectedKeys(data.keys, this.nzNodes, this.nzMultiple);
-          this.nzSelectedKeysChange.emit(data.keys);
-          break;
-        case 'nzCheckedKeys':
-          this.nzTreeService.calcCheckedKeys(data.keys, this.nzNodes, this.nzCheckStrictly);
-          this.nzCheckedKeysChange.emit(data.keys);
-          break;
-      }
-      this.cdr.markForCheck();
-    });
     this.nzTreeService
       .eventTriggerChanged()
       .pipe(takeUntil(this.destroy$))
@@ -270,12 +328,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   }
 
   ngOnChanges(changes: { [propertyName: string]: SimpleChange }): void {
-    if (changes.nzCheckStrictly) {
-      this.nzTreeService.isCheckStrictly = this.nzCheckStrictly;
-    }
-    if (changes.nzMultiple) {
-      this.nzTreeService.isMultiple = this.nzMultiple;
-    }
+    this.renderTreeProperties(changes);
   }
 
   ngOnDestroy(): void {

@@ -11,6 +11,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
+  EventEmitter,
   Host,
   HostListener,
   Input,
@@ -19,6 +20,7 @@ import {
   OnDestroy,
   OnInit,
   Optional,
+  Output,
   Renderer2,
   TemplateRef,
   ViewChild
@@ -29,6 +31,7 @@ import { filter, takeUntil } from 'rxjs/operators';
 import {
   InputBoolean,
   NzFormatBeforeDropEvent,
+  NzFormatEmitEvent,
   NzNoAnimationDirective,
   NzTreeBaseService,
   NzTreeNode,
@@ -74,17 +77,9 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   // default set
-  @Input()
-  set nzExpandAll(value: boolean) {
-    this._nzExpandAll = value;
-    if (value && this.nzTreeNode && !this.nzTreeNode.isLeaf) {
-      this.nzTreeNode.isExpanded = true;
-    }
-  }
+  @Input() nzExpandAll: boolean = false;
 
-  get nzExpandAll(): boolean {
-    return this._nzExpandAll;
-  }
+  @Output() readonly nzExpandChange = new EventEmitter<NzFormatEmitEvent>();
 
   // default var
   prefixCls = 'ant-tree';
@@ -110,7 +105,6 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
    * default set
    */
   _nzDraggable = false;
-  _nzExpandAll = false;
 
   get nzIcon(): string {
     return this.nzTreeNode.icon;
@@ -153,6 +147,7 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   setClassMap(): void {
     this.prefixCls = this.nzSelectMode ? 'ant-select-tree' : 'ant-tree';
     this.nzNodeClass = {
+      [`${this.prefixCls}-treenode`]: true,
       [`${this.prefixCls}-treenode-disabled`]: this.nzTreeNode.isDisabled,
       [`${this.prefixCls}-treenode-switcher-open`]: this.isSwitcherOpen,
       [`${this.prefixCls}-treenode-switcher-close`]: this.isSwitcherClose,
@@ -236,20 +231,24 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
    */
   _clickExpand(event: MouseEvent): void {
     event.preventDefault();
-    event.stopPropagation();
-    if (!this.nzTreeNode.isLoading && !this.nzTreeNode.isLeaf) {
-      // set async state
-      if (this.nzAsyncData && this.nzTreeNode.children.length === 0 && !this.nzTreeNode.isExpanded) {
-        this.nzTreeNode.isLoading = true;
-      }
-      this.nzTreeNode.isExpanded = !this.nzTreeNode.isExpanded;
-      if (this.nzTreeNode.isMatched) {
-        this.setDisplayForParentNodes(this.nzTreeNode);
-      }
-      this.setDisplayForChildNodes(this.nzTreeNode);
-      const eventNext = this.nzTreeService.formatEvent('expand', this.nzTreeNode, event);
-      this.nzTreeService!.triggerEventChange$!.next(eventNext);
-    }
+    this.nzTreeNode.isExpanded = !this.nzTreeNode.isExpanded;
+    const eventNext = this.nzTreeService.formatEvent('expand', this.nzTreeNode, event);
+    this.nzExpandChange.emit(eventNext);
+    // event.stopPropagation();
+    // if (!this.nzTreeNode.isLoading && !this.nzTreeNode.isLeaf) {
+    //   // set async state
+    //   if (this.nzAsyncData && this.nzTreeNode.children.length === 0 && !this.nzTreeNode.isExpanded) {
+    //     this.nzTreeNode.isLoading = true;
+    //   }
+    //   this.nzTreeNode.isExpanded = !this.nzTreeNode.isExpanded;
+    //   if (this.nzTreeNode.isMatched) {
+    //     this.setDisplayForParentNodes(this.nzTreeNode);
+    //   }
+    //   this.setDisplayForChildNodes(this.nzTreeNode);
+    //   const eventNext = this.nzTreeService.formatEvent('expand', this.nzTreeNode, event);
+    //   this.nzTreeService!.triggerEventChange$!.next(eventNext);
+    // }
+    // console.error(this.nzTreeService.flattenNodes, this.nzTreeService.rootNodes);
   }
 
   private setDisplayForChildNodes(parentNode: NzTreeNode): void {

@@ -10,6 +10,15 @@ import { warnDeprecation } from '../logger/logger';
 import { NzTreeNodeBaseComponent } from './nz-tree-base.definitions';
 import { NzTreeBaseService } from './nz-tree-base.service';
 
+export interface FlattenNode {
+  parent: FlattenNode | null;
+  children: FlattenNode[];
+  pos: string;
+  data: NzTreeNode;
+  isStart: boolean[];
+  isEnd: boolean[];
+}
+
 export interface NzTreeNodeOptions {
   title: string;
   key: string;
@@ -54,6 +63,10 @@ export class NzTreeNode {
 
   service: NzTreeBaseService | null;
   component: NzTreeNodeBaseComponent;
+
+  /** New added in Tree for easy data access */
+  isStart?: boolean[];
+  isEnd?: boolean[];
 
   get treeService(): NzTreeBaseService | null {
     return this.service || (this.parentNode && this.parentNode.treeService);
