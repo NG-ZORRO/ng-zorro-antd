@@ -193,62 +193,22 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   /**
-   * click node to select, 200ms to dbl click
-   */
-  @HostListener('click', ['$event'])
-  nzClick(event: MouseEvent): void {
-    event.preventDefault();
-    event.stopPropagation();
-    if (this.nzTreeNode.isSelectable && !this.nzTreeNode.isDisabled) {
-      this.nzTreeNode.isSelected = !this.nzTreeNode.isSelected;
-    }
-    const eventNext = this.nzTreeService.formatEvent('click', this.nzTreeNode, event);
-    this.nzTreeService!.triggerEventChange$!.next(eventNext);
-  }
-
-  @HostListener('dblclick', ['$event'])
-  nzDblClick(event: MouseEvent): void {
-    event.preventDefault();
-    event.stopPropagation();
-    const eventNext = this.nzTreeService.formatEvent('dblclick', this.nzTreeNode, event);
-    this.nzTreeService!.triggerEventChange$!.next(eventNext);
-  }
-
-  /**
-   * @param event
-   */
-  @HostListener('contextmenu', ['$event'])
-  nzContextMenu(event: MouseEvent): void {
-    event.preventDefault();
-    event.stopPropagation();
-    const eventNext = this.nzTreeService.formatEvent('contextmenu', this.nzTreeNode, event);
-    this.nzTreeService!.triggerEventChange$!.next(eventNext);
-  }
-
-  /**
    * collapse node
    * @param event
    */
-  _clickExpand(event: MouseEvent): void {
+  clickExpand(event: MouseEvent): void {
     event.preventDefault();
-    this.nzTreeNode.isExpanded = !this.nzTreeNode.isExpanded;
+    event.stopPropagation();
+    if (!this.nzTreeNode.isLoading && !this.nzTreeNode.isLeaf) {
+      // set async state
+      if (this.nzAsyncData && this.nzTreeNode.children.length === 0 && !this.nzTreeNode.isExpanded) {
+        this.nzTreeNode.isLoading = true;
+      }
+      this.nzTreeNode.isExpanded = !this.nzTreeNode.isExpanded;
+    }
+    this.nzTreeService.setExpandedNodeList(this.nzTreeNode);
     const eventNext = this.nzTreeService.formatEvent('expand', this.nzTreeNode, event);
     this.nzExpandChange.emit(eventNext);
-    // event.stopPropagation();
-    // if (!this.nzTreeNode.isLoading && !this.nzTreeNode.isLeaf) {
-    //   // set async state
-    //   if (this.nzAsyncData && this.nzTreeNode.children.length === 0 && !this.nzTreeNode.isExpanded) {
-    //     this.nzTreeNode.isLoading = true;
-    //   }
-    //   this.nzTreeNode.isExpanded = !this.nzTreeNode.isExpanded;
-    //   if (this.nzTreeNode.isMatched) {
-    //     this.setDisplayForParentNodes(this.nzTreeNode);
-    //   }
-    //   this.setDisplayForChildNodes(this.nzTreeNode);
-    //   const eventNext = this.nzTreeService.formatEvent('expand', this.nzTreeNode, event);
-    //   this.nzTreeService!.triggerEventChange$!.next(eventNext);
-    // }
-    // console.error(this.nzTreeService.flattenNodes, this.nzTreeService.rootNodes);
   }
 
   private setDisplayForChildNodes(parentNode: NzTreeNode): void {

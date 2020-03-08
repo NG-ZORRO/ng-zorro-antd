@@ -22,7 +22,7 @@
           [nzTreeTemplate]="treeTemplate"
           [@.disabled]="noAnimation?.nzNoAnimation"
           [nzNoAnimation]="noAnimation?.nzNoAnimation"
-          (nzExpandChange)="expandChange($event)"
+          (nzExpandChange)="eventTriggerChanged($event)"
         >
         </nz-tree-node>
       </ng-container>

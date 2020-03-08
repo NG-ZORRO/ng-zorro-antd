@@ -22,6 +22,7 @@ export class NzTreeBaseService implements OnDestroy {
 
   isCheckStrictly: boolean = false;
   isMultiple: boolean = false;
+  expandAll: boolean = false;
   selectedNode: NzTreeNode;
   rootNodes: NzTreeNode[] = [];
   flattenNodes: FlattenNode[] = [];

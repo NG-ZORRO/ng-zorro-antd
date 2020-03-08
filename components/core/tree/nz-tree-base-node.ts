@@ -321,6 +321,7 @@ export class NzTreeNode {
       // remove loading state
       this.isLoading = false;
     }
+    this.afterValueChange('addChildren');
   }
 
   public clearChildren(): void {
@@ -359,6 +360,12 @@ export class NzTreeNode {
           break;
         case 'remove':
           this.treeService.afterRemove([this]);
+          break;
+        case 'addChildren':
+          this.treeService.flattenTreeData(
+            this.treeService.rootNodes,
+            this.treeService.expandAll || this.treeService.getExpandedNodeList().map(v => v.key)
+          );
           break;
       }
     }

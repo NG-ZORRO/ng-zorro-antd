@@ -60,7 +60,7 @@ export function flattenTreeData(treeNodeList: NzTreeNode[] = [], expandedKeys: N
       flattenList.push(flattenNode);
 
       // Loop treeNode children
-      if (expandedKeys === true || expandedKeySet.has(mergedKey)) {
+      if (expandedKeys === true || expandedKeySet.has(mergedKey) || treeNode.isExpanded) {
         flattenNode.children = dig(treeNode.children || [], flattenNode);
       } else {
         flattenNode.children = [];

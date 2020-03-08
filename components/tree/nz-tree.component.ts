@@ -8,6 +8,7 @@
 
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChild,
   EventEmitter,
@@ -218,6 +219,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
     }
 
     if (nzExpandedKeys || nzExpandAll) {
+      this.nzTreeService.expandAll = this.nzExpandAll;
       this.handleExpandedKeys(this.nzExpandAll || this.nzExpandedKeys);
     }
 
@@ -260,23 +262,35 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   }
 
   // Handle emit event
+  eventTriggerChanged(event: NzFormatEmitEvent): void {
+    switch (event.eventName) {
+      case 'expand':
+        this.renderFlattenNodes();
+        this.nzExpandChange.emit(event);
+        break;
+      case 'click':
+        this.nzClick.emit(event);
+        break;
+    }
+  }
+
   /**
    * Click expand icon
    * @param event
    */
-  expandChange(event: NzFormatEmitEvent): void {
-    const { node } = event;
-    this.nzTreeService.setExpandedNodeList(node!);
+  renderFlattenNodes(): void {
     this.handleFlattenNodes(
       this.nzNodes,
       this.getExpandedNodeList().map(v => v.key)
     );
+    this.cdr.markForCheck();
   }
   // Handle emit event end
 
   constructor(
     nzTreeService: NzTreeBaseService,
     public nzConfigService: NzConfigService,
+    private cdr: ChangeDetectorRef,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     super(nzTreeService);

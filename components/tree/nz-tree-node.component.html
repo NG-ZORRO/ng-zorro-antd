@@ -7,7 +7,7 @@
   ></nz-tree-indent>
   <ng-container *ngIf="nzShowExpand">
     <!-- render switcher -->
-    <span [ngClass]="nzNodeSwitcherClass" (click)="_clickExpand($event)">
+    <span [ngClass]="nzNodeSwitcherClass" (click)="clickExpand($event)">
       <ng-container *ngIf="isShowSwitchIcon">
         <ng-container *ngIf="!nzTreeNode.isLoading">
           <ng-template
