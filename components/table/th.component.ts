@@ -26,7 +26,7 @@ import { NzI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzTableService } from './table.service';
-import { NzThFilterType } from './table.types';
+import { NzSortValueType, NzThFilterType } from './table.types';
 
 @Component({
   selector: 'th:not(.nz-disable-th):not([mat-sort-header]):not([mat-header-cell])',
@@ -34,38 +34,41 @@ import { NzThFilterType } from './table.types';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ng-container *ngIf="!nzShowSort && !(nzShowFilter || nzCustomFilter) && !(nzShowCheckbox || nzShowRowSelection)">
-      <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
-    </ng-container>
-    <ng-container *ngIf="nzShowSort && !(nzShowFilter || nzCustomFilter)">
-      <ng-template [ngTemplateOutlet]="sortTemplate"></ng-template>
-    </ng-container>
-    <ng-template #sortTemplate>
-      <nz-table-sorters [nzSort]="nzSort" [contentTemplate]="contentTemplate"></nz-table-sorters>
-    </ng-template>
-    <nz-table-filter
-      *ngIf="nzShowFilter || nzCustomFilter"
-      [contentTemplate]="nzShowSort ? sortTemplate : contentTemplate"
-      [extraTemplate]="extraTemplate"
-      [locale]="locale"
-      [nzCustomFilter]="nzCustomFilter"
-      [nzFilterMultiple]="nzFilterMultiple"
-      [nzFilters]="nzFilters"
-      (nzFilterChange)="nzFilterChange.emit($event)"
-    ></nz-table-filter>
     <nz-table-selection
-      *ngIf="nzShowCheckbox || nzShowRowSelection"
+      *ngIf="nzShowCheckbox || nzShowRowSelection; else notSelectionTemplate"
       [contentTemplate]="contentTemplate"
-      [(nzChecked)]="nzChecked"
-      [nzDisabled]="nzDisabled"
-      [nzIndeterminate]="nzIndeterminate"
-      [nzSelections]="nzSelections"
-      [nzShowCheckbox]="nzShowCheckbox"
-      [nzShowRowSelection]="nzShowRowSelection"
-      (nzCheckedChange)="nzCheckedChange.emit($event)"
+      [checked]="nzChecked"
+      [disabled]="nzDisabled"
+      [indeterminate]="nzIndeterminate"
+      [listOfSelections]="nzSelections"
+      [showCheckbox]="nzShowCheckbox"
+      [showRowSelection]="nzShowRowSelection"
+      (checkedChange)="onCheckedChange($event)"
     ></nz-table-selection>
+    <ng-template #notSelectionTemplate>
+      <nz-table-filter
+        *ngIf="nzShowFilter || nzCustomFilter; else notFilterTemplate"
+        [contentTemplate]="notFilterTemplate"
+        [extraTemplate]="extraTemplate"
+        [locale]="locale"
+        [customFilter]="nzCustomFilter"
+        [filterMultiple]="nzFilterMultiple"
+        [listOfFilters]="nzFilters"
+        (filterChange)="nzFilterChange.emit($event)"
+      ></nz-table-filter>
+    </ng-template>
+    <ng-template #notFilterTemplate>
+      <ng-template [ngTemplateOutlet]="nzShowSort ? sortTemplate : contentTemplate"></ng-template>
+    </ng-template>
     <ng-template #extraTemplate>
       <ng-content select="[nz-th-extra]"></ng-content>
+    </ng-template>
+    <ng-template #sortTemplate>
+      <nz-table-sorters
+        [currentSortValue]="nzSort"
+        [sortDirections]="nzSortDirections"
+        [contentTemplate]="contentTemplate"
+      ></nz-table-sorters>
     </ng-template>
     <ng-template #contentTemplate><ng-content></ng-content></ng-template>
   `,
@@ -91,7 +94,8 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzSortKey: string;
   @Input() nzFilterMultiple = true;
   @Input() nzWidth: string;
-  @Input() nzSort: 'ascend' | 'descend' | null = null;
+  @Input() nzSort: NzSortValueType = null;
+  @Input() nzSortDirections: NzSortValueType[] = ['ascend', 'descend', null];
   @Input() nzFilters: NzThFilterType = [];
   @Input() @InputBoolean() nzExpand = false;
   @Input() @InputBoolean() nzShowCheckbox = false;
@@ -106,24 +110,27 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
 
   updateSortValue(): void {
     if (this.nzShowSort) {
-      if (this.nzSort === 'ascend') {
-        this.setSortValue('descend');
-      } else if (this.nzSort === 'descend') {
-        this.setSortValue(null);
-      } else {
-        this.setSortValue('ascend');
-      }
+      const nextSortDirection = (sortDirections: NzSortValueType[], current: NzSortValueType) => {
+        const index = sortDirections.indexOf(current);
+        if (index === sortDirections.length - 1) {
+          return sortDirections[0];
+        } else {
+          return sortDirections[index + 1];
+        }
+      };
+      this.nzSort = nextSortDirection(this.nzSortDirections, this.nzSort);
+      this.nzSortChangeWithKey.emit({ key: this.nzSortKey, value: this.nzSort });
+      this.nzSortChange.emit(this.nzSort);
     }
-  }
-
-  setSortValue(value: 'ascend' | 'descend' | null): void {
-    this.nzSort = value;
-    this.nzSortChangeWithKey.emit({ key: this.nzSortKey, value: this.nzSort });
-    this.nzSortChange.emit(this.nzSort);
   }
 
   marForCheck(): void {
     this.cdr.markForCheck();
+  }
+
+  onCheckedChange(checked: boolean): void {
+    this.nzChecked = checked;
+    this.nzCheckedChange.emit(checked);
   }
 
   constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService, @Optional() nzTableService: NzTableService) {
@@ -138,7 +145,8 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzWidth || changes.colspan) {
+    const { nzWidth, colspan } = changes;
+    if (nzWidth || colspan) {
       this.widthChange$.next();
     }
   }

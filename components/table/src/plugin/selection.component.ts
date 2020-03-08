@@ -16,22 +16,22 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   encapsulation: ViewEncapsulation.None,
   template: `
     <label
-      *ngIf="nzShowCheckbox"
+      *ngIf="showCheckbox"
       nz-checkbox
-      [class.ant-table-selection-select-all-custom]="nzShowRowSelection"
-      [(ngModel)]="nzChecked"
-      [nzDisabled]="nzDisabled"
-      [nzIndeterminate]="nzIndeterminate"
-      (ngModelChange)="nzCheckedChange.emit($event)"
+      [class.ant-table-selection-select-all-custom]="showRowSelection"
+      [ngModel]="checked"
+      [nzDisabled]="disabled"
+      [nzIndeterminate]="indeterminate"
+      (ngModelChange)="onCheckedChange($event)"
     >
     </label>
-    <div class="ant-table-selection-extra" *ngIf="nzShowRowSelection">
+    <div class="ant-table-selection-extra" *ngIf="showRowSelection">
       <span nz-dropdown class="ant-table-selection-down" nzPlacement="bottomLeft" [nzDropdownMenu]="selectionMenu">
         <i nz-icon nzType="down"></i>
       </span>
       <nz-dropdown-menu #selectionMenu="nzDropdownMenu">
         <ul nz-menu class="ant-table-selection-menu">
-          <li nz-menu-item *ngFor="let selection of nzSelections" (click)="selection.onSelect()">
+          <li nz-menu-item *ngFor="let selection of listOfSelections" (click)="selection.onSelect()">
             {{ selection.text }}
           </li>
         </ul>
@@ -45,11 +45,15 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 })
 export class NzTableSelectionComponent {
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
-  @Input() nzSelections: Array<{ text: string; onSelect(...args: NzSafeAny[]): NzSafeAny }> = [];
-  @Input() nzChecked = false;
-  @Input() nzDisabled = false;
-  @Input() nzIndeterminate = false;
-  @Input() nzShowCheckbox = false;
-  @Input() nzShowRowSelection = false;
-  @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
+  @Input() listOfSelections: Array<{ text: string; onSelect(...args: NzSafeAny[]): NzSafeAny }> = [];
+  @Input() checked = false;
+  @Input() disabled = false;
+  @Input() indeterminate = false;
+  @Input() showCheckbox = false;
+  @Input() showRowSelection = false;
+  @Output() readonly checkedChange = new EventEmitter<boolean>();
+  onCheckedChange(checked: boolean): void {
+    this.checked = checked;
+    this.checkedChange.emit(checked);
+  }
 }

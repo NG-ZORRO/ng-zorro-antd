@@ -104,6 +104,7 @@ Checkbox property
 | -------- | ----------- | ---- | ------- |
 | `[nzShowCheckbox]` | Whether add nz-checkbox | `boolean` | - |
 | `[nzDisabled]` | Whether disable checkbox | `boolean` | - |
+| `[nzSortDirections]` | supported sort way, could be `'ascend'`, `'descend'`, `null` | `Array<'ascend' \| 'descend' \| null>` |
 | `[nzIndeterminate]` | Indeterminate status | `boolean` | - |
 | `[nzChecked]` | Checked status, double binding | `boolean` | - |
 | `(nzCheckedChange)` | Checked status change callback | `EventEmitter<boolean>` | - |

@@ -21,8 +21,11 @@ export type NzTablePaginationPositionType = 'top' | 'bottom' | 'both';
 export type NzTableSizeType = 'middle' | 'default' | 'small';
 
 export type NzThFilterType = Array<{ text: string; value: NzSafeAny; byDefault?: boolean }>;
+
 export interface NzThItemInterface {
   text: string;
   value: NzSafeAny;
   checked: boolean;
 }
+
+export type NzSortValueType = 'ascend' | 'descend' | null;

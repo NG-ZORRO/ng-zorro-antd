@@ -32,10 +32,7 @@ import { NzThFilterType, NzThItemInterface } from '../../table.types';
       <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
     </span>
     <span class="ant-table-filter-trigger-container" [class.ant-table-filter-trigger-container-open]="filterVisible">
-      <ng-container *ngIf="nzCustomFilter">
-        <ng-template [ngTemplateOutlet]="extraTemplate"></ng-template>
-      </ng-container>
-      <ng-container *ngIf="!nzCustomFilter">
+      <ng-container *ngIf="!customFilter; else extraTemplate">
         <span
           nz-dropdown
           class="ant-table-filter-trigger"
@@ -54,13 +51,13 @@ import { NzThFilterType, NzThItemInterface } from '../../table.types';
         </span>
         <nz-dropdown-menu #filterMenu="nzDropdownMenu">
           <ul nz-menu>
-            <ng-container *ngIf="nzFilterMultiple">
+            <ng-container *ngIf="filterMultiple">
               <li nz-menu-item *ngFor="let filter of multipleFilterList" (click)="checkMultiple(filter)">
                 <label nz-checkbox [ngModel]="filter.checked" (ngModelChange)="checkMultiple(filter)"></label>
                 <span>{{ filter.text }}</span>
               </li>
             </ng-container>
-            <ng-container *ngIf="!nzFilterMultiple">
+            <ng-container *ngIf="!filterMultiple">
               <li nz-menu-item *ngFor="let filter of singleFilterList" (click)="checkSingle(filter)">
                 <label nz-radio [ngModel]="filter.checked" (ngModelChange)="checkSingle(filter)">{{ filter.text }}</label>
               </li>
@@ -85,17 +82,17 @@ import { NzThFilterType, NzThItemInterface } from '../../table.types';
 export class NzTableFilterComponent implements OnChanges {
   @Input() locale: NzI18nInterface['Table'] = {} as NzI18nInterface['Table'];
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
-  @Input() nzCustomFilter = false;
+  @Input() customFilter = false;
   @Input() extraTemplate: TemplateRef<NzSafeAny> | null = null;
+  @Input() filterMultiple = true;
+  @Input() listOfFilters: NzThFilterType = [];
+  @Output() readonly filterChange = new EventEmitter<NzSafeAny[] | NzSafeAny>();
   hasFilterValue = false;
   filterVisible = false;
   multipleFilterList: NzThItemInterface[] = [];
   singleFilterList: NzThItemInterface[] = [];
   private hasDefaultFilter = false;
 
-  @Input() nzFilterMultiple = true;
-  @Input() nzFilters: NzThFilterType = [];
-  @Output() readonly nzFilterChange = new EventEmitter<NzSafeAny[] | NzSafeAny>();
   checkSingle(filter: NzThItemInterface): void {
     this.singleFilterList.forEach(item => (item.checked = item === filter));
   }
@@ -120,7 +117,7 @@ export class NzTableFilterComponent implements OnChanges {
     }
   }
   updateFilterStatus(): void {
-    if (this.nzFilterMultiple) {
+    if (this.filterMultiple) {
       this.hasFilterValue = this.filterList.length > 0;
     } else {
       this.hasFilterValue = isNotNil(this.filterValue);
@@ -129,15 +126,15 @@ export class NzTableFilterComponent implements OnChanges {
 
   search(): void {
     this.updateFilterStatus();
-    if (this.nzFilterMultiple) {
-      this.nzFilterChange.emit(this.filterList);
+    if (this.filterMultiple) {
+      this.filterChange.emit(this.filterList);
     } else {
-      this.nzFilterChange.emit(this.filterValue);
+      this.filterChange.emit(this.filterValue);
     }
   }
 
   reset(): void {
-    if (!this.nzFilters) {
+    if (!this.listOfFilters) {
       return;
     }
     this.initMultipleFilterList(true);
@@ -146,7 +143,7 @@ export class NzTableFilterComponent implements OnChanges {
   }
 
   initMultipleFilterList(force?: boolean): void {
-    this.multipleFilterList = this.nzFilters.map(item => {
+    this.multipleFilterList = this.listOfFilters.map(item => {
       const checked = force ? false : !!item.byDefault;
       if (checked) {
         this.hasDefaultFilter = true;
@@ -157,7 +154,7 @@ export class NzTableFilterComponent implements OnChanges {
   }
 
   initSingleFilterList(force?: boolean): void {
-    this.singleFilterList = this.nzFilters.map(item => {
+    this.singleFilterList = this.listOfFilters.map(item => {
       const checked = force ? false : !!item.byDefault;
       if (checked) {
         this.hasDefaultFilter = true;
@@ -168,14 +165,14 @@ export class NzTableFilterComponent implements OnChanges {
   }
 
   checkDefaultFilters(): void {
-    if (!this.nzFilters || this.nzFilters.length === 0 || !this.hasDefaultFilter) {
+    if (!this.listOfFilters || this.listOfFilters.length === 0 || !this.hasDefaultFilter) {
       return;
     }
     this.updateFilterStatus();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzFilters && this.nzFilters) {
+    if (changes.listOfFilters && this.listOfFilters) {
       this.initMultipleFilterList();
       this.initSingleFilterList();
       this.updateFilterStatus();

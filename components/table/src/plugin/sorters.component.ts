@@ -6,8 +6,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core';
+import { NzSortValueType } from '../../table.types';
 
 @Component({
   selector: 'nz-table-sorters',
@@ -16,10 +17,22 @@ import { NzSafeAny } from 'ng-zorro-antd/core';
   encapsulation: ViewEncapsulation.None,
   template: `
     <span><ng-template [ngTemplateOutlet]="contentTemplate"></ng-template></span>
-    <span class="ant-table-column-sorter ant-table-column-sorter-full">
+    <span class="ant-table-column-sorter" [class.ant-table-column-sorter-full]="showSorterDown && showSorterUp">
       <span class="ant-table-column-sorter-inner">
-        <i nz-icon nzType="caret-up" class="ant-table-column-sorter-up" [class.active]="nzSort == 'ascend'"></i>
-        <i nz-icon nzType="caret-down" class="ant-table-column-sorter-down" [class.active]="nzSort == 'descend'"></i>
+        <i
+          nz-icon
+          nzType="caret-up"
+          *ngIf="showSorterUp"
+          class="ant-table-column-sorter-up"
+          [class.active]="currentSortValue == 'ascend'"
+        ></i>
+        <i
+          nz-icon
+          nzType="caret-down"
+          *ngIf="showSorterDown"
+          class="ant-table-column-sorter-down"
+          [class.active]="currentSortValue == 'descend'"
+        ></i>
       </span>
     </span>
   `,
@@ -27,7 +40,17 @@ import { NzSafeAny } from 'ng-zorro-antd/core';
     '[class.ant-table-column-sorters]': 'true'
   }
 })
-export class NzTableSortersComponent {
-  @Input() nzSort: 'ascend' | 'descend' | null = null;
+export class NzTableSortersComponent implements OnChanges {
+  @Input() sortDirections: NzSortValueType[] = ['ascend', 'descend', null];
+  @Input() currentSortValue: NzSortValueType = null;
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
+  showSorterUp = false;
+  showSorterDown = false;
+  ngOnChanges(changes: SimpleChanges): void {
+    const { sortDirections } = changes;
+    if (sortDirections) {
+      this.showSorterUp = this.sortDirections.indexOf('ascend') !== -1;
+      this.showSorterDown = this.sortDirections.indexOf('descend') !== -1;
+    }
+  }
 }

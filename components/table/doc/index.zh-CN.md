@@ -104,6 +104,7 @@ Table 组件同时具备了易用性和高度可定制性
 | --- | --- | --- | --- |
 | `[nzShowCheckbox]` | 是否添加checkbox | `boolean` | - |
 | `[nzDisabled]` | checkbox 是否禁用 | `boolean` | - |
+| `[nzSortDirections]` | 支持的排序方式，取值为 `'ascend'`, `'descend'`, `null` | `Array<'ascend' \| 'descend' \| null>` |
 | `[nzIndeterminate]` | checkbox indeterminate 状态 | `boolean` | - |
 | `[nzChecked]` | checkbox 是否被选中，可双向绑定 | `boolean` | - |
 | `(nzCheckedChange)` | 选中的回调 | `EventEmitter<boolean>` | - |
