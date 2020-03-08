@@ -1,13 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { NzTreeComponent } from 'ng-zorro-antd';
 import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/core';
 import { NzContextMenuService, NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
 
 @Component({
   selector: 'nz-demo-tree-directory',
   template: `
-    <nz-tree [nzData]="nodes" (nzClick)="activeNode($event)" (nzDblClick)="openFolder($event)" [nzTreeTemplate]="nzTreeTemplate"></nz-tree>
+    <nz-tree #nzTreeComponent nzBlockNode [nzData]="nodes" (nzDblClick)="openFolder($event)" [nzTreeTemplate]="nzTreeTemplate"></nz-tree>
     <ng-template #nzTreeTemplate let-node>
-      <span class="custom-node" [class.active]="activedNode?.key === node.key">
+      <span
+        class="custom-node ant-tree-node-content-wrapper"
+        [class.ant-tree-node-selected]="activatedNode?.key === node.key"
+        (click)="activeNode(node)"
+      >
         <span *ngIf="!node.isLeaf" (contextmenu)="contextMenu($event, menu)">
           <i nz-icon [nzType]="node.isExpanded ? 'folder-open' : 'folder'" (click)="openFolder(node)"></i>
           <span class="folder-name">{{ node.title }}</span>
@@ -42,10 +47,7 @@ import { NzContextMenuService, NzDropdownMenuComponent } from 'ng-zorro-antd/dro
       .custom-node {
         cursor: pointer;
         line-height: 24px;
-        margin-left: 4px;
         display: inline-block;
-        margin: 0 -1000px;
-        padding: 0 1000px;
       }
 
       .active {
@@ -71,8 +73,10 @@ import { NzContextMenuService, NzDropdownMenuComponent } from 'ng-zorro-antd/dro
   ]
 })
 export class NzDemoTreeDirectoryComponent {
-  // actived node
-  activedNode: NzTreeNode;
+  // Break Change
+  @ViewChild('nzTreeComponent', { static: false }) nzTreeComponent: NzTreeComponent;
+  // activated node
+  activatedNode: NzTreeNode | null;
   nodes = [
     {
       title: 'parent 0',
@@ -105,10 +109,16 @@ export class NzDemoTreeDirectoryComponent {
         node.isExpanded = !node.isExpanded;
       }
     }
+    this.nzTreeComponent.renderFlattenNodes();
   }
 
-  activeNode(data: NzFormatEmitEvent): void {
-    this.activedNode = data.node!;
+  activeNode(data: NzTreeNode): void {
+    data.isSelected = !data.isSelected;
+    if (data.isSelected) {
+      this.activatedNode = data;
+    } else {
+      this.activatedNode = null;
+    }
   }
 
   contextMenu($event: MouseEvent, menu: NzDropdownMenuComponent): void {

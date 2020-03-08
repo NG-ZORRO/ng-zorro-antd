@@ -4,28 +4,31 @@
   </div>
   <div [ngClass]="classMapOfNodeList">
     <div>
-      <ng-container *ngFor="let node of nzFlattenNodes">
-        <nz-tree-node
-          [nzTreeNode]="node.data"
-          [nzSelectMode]="nzSelectMode"
-          [nzShowLine]="nzShowLine"
-          [nzExpandedIcon]="nzExpandedIcon"
-          [nzDraggable]="nzDraggable"
-          [nzCheckable]="nzCheckable"
-          [nzShowExpand]="nzShowExpand"
-          [nzAsyncData]="nzAsyncData"
-          [nzSearchValue]="nzSearchValue"
-          [nzHideUnMatched]="nzHideUnMatched"
-          [nzBeforeDrop]="nzBeforeDrop"
-          [nzExpandAll]="nzExpandAll"
-          [nzShowIcon]="nzShowIcon"
-          [nzTreeTemplate]="treeTemplate"
-          [@.disabled]="noAnimation?.nzNoAnimation"
-          [nzNoAnimation]="noAnimation?.nzNoAnimation"
-          (nzExpandChange)="eventTriggerChanged($event)"
-        >
-        </nz-tree-node>
-      </ng-container>
+      <div class="ant-tree-list-holder-inner">
+        <ng-container *ngFor="let node of nzFlattenNodes">
+          <nz-tree-node
+            [nzTreeNode]="node.data"
+            [nzSelectMode]="nzSelectMode"
+            [nzShowLine]="nzShowLine"
+            [nzExpandedIcon]="nzExpandedIcon"
+            [nzDraggable]="nzDraggable"
+            [nzCheckable]="nzCheckable"
+            [nzShowExpand]="nzShowExpand"
+            [nzAsyncData]="nzAsyncData"
+            [nzSearchValue]="nzSearchValue"
+            [nzHideUnMatched]="nzHideUnMatched"
+            [nzBeforeDrop]="nzBeforeDrop"
+            [nzExpandAll]="nzExpandAll"
+            [nzShowIcon]="nzShowIcon"
+            [nzTreeTemplate]="treeTemplate"
+            [@.disabled]="noAnimation?.nzNoAnimation"
+            [nzNoAnimation]="noAnimation?.nzNoAnimation"
+            (nzExpandChange)="eventTriggerChanged($event)"
+            (nzClick)="eventTriggerChanged($event)"
+          >
+          </nz-tree-node>
+        </ng-container>
+      </div>
     </div>
   </div>
 </div>

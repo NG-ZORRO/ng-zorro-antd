@@ -322,6 +322,7 @@ export class NzTreeNode {
       this.isLoading = false;
     }
     this.afterValueChange('addChildren');
+    this.afterValueChange('reRender');
   }
 
   public clearChildren(): void {
@@ -329,6 +330,7 @@ export class NzTreeNode {
     this.afterValueChange('clearChildren');
     this.children = [];
     this.origin.children = [];
+    this.afterValueChange('reRender');
   }
 
   public remove(): void {
@@ -337,6 +339,7 @@ export class NzTreeNode {
       parentNode.children = parentNode.getChildren().filter(v => v.key !== this.key);
       parentNode.origin.children = parentNode.origin.children!.filter(v => v.key !== this.key);
       this.afterValueChange('remove');
+      this.afterValueChange('reRender');
     }
   }
 
@@ -361,7 +364,7 @@ export class NzTreeNode {
         case 'remove':
           this.treeService.afterRemove([this]);
           break;
-        case 'addChildren':
+        case 'reRender':
           this.treeService.flattenTreeData(
             this.treeService.rootNodes,
             this.treeService.expandAll || this.treeService.getExpandedNodeList().map(v => v.key)

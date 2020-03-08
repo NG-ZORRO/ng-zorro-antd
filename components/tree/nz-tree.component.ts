@@ -224,6 +224,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
     }
 
     if (nzSelectedKeys || nzMultiple) {
+      this.nzTreeService.isMultiple = this.nzMultiple;
       this.handleSelectedKeys(this.nzSelectedKeys, this.nzMultiple);
     }
 

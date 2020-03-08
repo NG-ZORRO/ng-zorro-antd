@@ -79,7 +79,18 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   // default set
   @Input() nzExpandAll: boolean = false;
 
+  @Output() readonly nzClick = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzDblClick = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzContextMenu = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzCheckBoxChange = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzExpandChange = new EventEmitter<NzFormatEmitEvent>();
+
+  @Output() readonly nzOnDragStart = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzOnDragEnter = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzOnDragOver = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzOnDragLeave = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzOnDrop = new EventEmitter<NzFormatEmitEvent>();
+  @Output() readonly nzOnDragEnd = new EventEmitter<NzFormatEmitEvent>();
 
   // default var
   prefixCls = 'ant-tree';
@@ -198,7 +209,6 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
    */
   clickExpand(event: MouseEvent): void {
     event.preventDefault();
-    event.stopPropagation();
     if (!this.nzTreeNode.isLoading && !this.nzTreeNode.isLeaf) {
       // set async state
       if (this.nzAsyncData && this.nzTreeNode.children.length === 0 && !this.nzTreeNode.isExpanded) {
@@ -211,23 +221,14 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
     this.nzExpandChange.emit(eventNext);
   }
 
-  private setDisplayForChildNodes(parentNode: NzTreeNode): void {
-    const { children } = parentNode;
-    if (children.length > 0) {
-      children.map(node => {
-        const canHide = !node.isMatched;
-        node.canHide = canHide;
-        this.setDisplayForChildNodes(node);
-      });
+  clickSelect(event: MouseEvent): void {
+    event.preventDefault();
+    if (this.nzTreeNode.isSelectable && !this.nzTreeNode.isDisabled) {
+      this.nzTreeNode.isSelected = !this.nzTreeNode.isSelected;
     }
-  }
-
-  private setDisplayForParentNodes(targetNode: NzTreeNode): void {
-    const parentNode = targetNode.getParentNode();
-    if (parentNode) {
-      parentNode.canHide = false;
-      this.setDisplayForParentNodes(parentNode);
-    }
+    this.nzTreeService.setSelectedNodeList(this.nzTreeNode);
+    const eventNext = this.nzTreeService.formatEvent('click', this.nzTreeNode, event);
+    this.nzClick.emit(eventNext);
   }
 
   /**

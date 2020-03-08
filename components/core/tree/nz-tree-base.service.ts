@@ -634,7 +634,7 @@ export class NzTreeBaseService implements OnDestroy {
     this.selectedNodeList = [];
     const calc = (nodes: NzTreeNode[]): boolean => {
       return nodes.every(node => {
-        if (isInArray(node.key, keys)) {
+        if (isInArray(node.key, keys) || node.isSelected) {
           node.isSelected = true;
           this.setSelectedNodeList(node);
           if (!isMulti) {
