@@ -9,7 +9,6 @@
 import { Platform } from '@angular/cdk/platform';
 import {
   AfterContentInit,
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -66,7 +65,7 @@ import { takeUntil } from 'rxjs/operators';
     '[style.width]': 'widthSetting'
   }
 })
-export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges, AfterContentInit {
+export class NzSiderComponent implements OnInit, OnDestroy, OnChanges, AfterContentInit {
   private destroy$ = new Subject();
   @ContentChild(NzMenuDirective) nzMenuDirective: NzMenuDirective | null = null;
   @Output() readonly nzCollapsedChange = new EventEmitter();
@@ -109,6 +108,19 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
 
   ngOnInit(): void {
     this.updateStyleMap();
+
+    if (this.platform.isBrowser) {
+      this.breakpointService
+        .subscribe(siderResponsiveMap, true)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(map => {
+          if (this.nzBreakpoint) {
+            this.matchBreakPoint = !map[this.nzBreakpoint];
+            this.setCollapsed(this.matchBreakPoint);
+            this.cdr.markForCheck();
+          }
+        });
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -123,21 +135,6 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
 
   ngAfterContentInit(): void {
     this.updateMenuInlineCollapsed();
-  }
-
-  ngAfterViewInit(): void {
-    if (this.platform.isBrowser) {
-      this.breakpointService
-        .subscribe(siderResponsiveMap, true)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(map => {
-          if (this.nzBreakpoint) {
-            this.matchBreakPoint = !map[this.nzBreakpoint];
-            this.setCollapsed(this.matchBreakPoint);
-            this.cdr.markForCheck();
-          }
-        });
-    }
   }
 
   ngOnDestroy(): void {

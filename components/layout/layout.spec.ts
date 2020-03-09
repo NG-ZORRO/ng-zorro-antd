@@ -1,7 +1,7 @@
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { async, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core';
+import { NzSafeAny, ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { NzContentComponent } from './content.component';
 import { NzFooterComponent } from './footer.component';
@@ -9,6 +9,8 @@ import { NzHeaderComponent } from './header.component';
 import { NzLayoutComponent } from './layout.component';
 import { NzLayoutModule } from './layout.module';
 import { NzSiderComponent } from './sider.component';
+
+declare const viewport: NzSafeAny;
 
 describe('layout', () => {
   describe('basic', () => {
