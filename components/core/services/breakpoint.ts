@@ -82,11 +82,11 @@ export class NzBreakpointService {
 
     Object.keys(breakpointMap).map(breakpoint => {
       const castBP = breakpoint as NzBreakpointEnum;
-      const matchBelow = this.mediaMatcher.matchMedia(gridResponsiveMap[castBP]).matches;
+      const matched = this.mediaMatcher.matchMedia(gridResponsiveMap[castBP]).matches;
 
-      breakpointBooleanMap[breakpoint as NzBreakpointEnum] = !!matchBelow;
+      breakpointBooleanMap[breakpoint as NzBreakpointEnum] = matched;
 
-      if (matchBelow) {
+      if (matched) {
         bp = castBP;
       }
     });
