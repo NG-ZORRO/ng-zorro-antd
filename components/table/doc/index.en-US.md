@@ -142,10 +142,11 @@ Style property
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[nzWidth]` | Specify the column width, can not used when grouping columns | `string` | - |
-| `[nzLeft]` | Left pixels, used to fixed column to left | `string` | - |
-| `[nzRight]` | Right pixels, used to fixed column to right | `string` | - |
+| `[nzLeft]` | Left pixels, used to fixed column to left | `string \| boolean` | - |
+| `[nzRight]` | Right pixels, used to fixed column to right | `string \| boolean` | - |
 | `[nzAlign]` | Specify how content is aligned | `'left' \| 'right' \| 'center'` | - |
 | `[nzBreakWord]` | Whether insert line breaks within words | `boolean` | `false` |
+| `[nzEllipsis]` | ellipsis cell content, not working with sorter and filters for now. Only work when nzTableLayout was `fixed` | `boolean` | `false` |
 
 Other property
 
@@ -177,9 +178,11 @@ Style property
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzLeft]` | Left pixels, used to fixed column to left | `string` | - |
-| `[nzRight]` | Right pixels, used to fixed column to right | `string` | - |
+| `[nzLeft]` | Left pixels, used to fixed column to left | `string \| boolean` | - |
+| `[nzRight]` | Right pixels, used to fixed column to right | `string \| boolean` | - |
 | `[nzAlign]` | Specify how content is aligned | `'left' \| 'right' \| 'center'` | - |
+| `[nzBreakWord]` | Whether insert line breaks within words | `boolean` | `false` |
+| `[nzEllipsis]` | ellipsis cell content, not working with sorter and filters for now. Only work when nzTableLayout was `fixed` | `boolean` | `false` |
 
 Other property
 

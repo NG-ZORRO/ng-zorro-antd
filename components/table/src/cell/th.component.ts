@@ -25,8 +25,8 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { NzTableService } from './table.service';
-import { NzSortValueType, NzThFilterType } from './table.types';
+import { NzTableService } from '../table.service';
+import { NzSortValueType, NzThFilterType } from '../table.types';
 
 @Component({
   selector: 'th:not(.nz-disable-th):not([mat-sort-header]):not([mat-header-cell])',
@@ -75,15 +75,15 @@ import { NzSortValueType, NzThFilterType } from './table.types';
   host: {
     '[class.ant-table-column-has-sorters]': 'nzShowSort',
     '[class.ant-table-selection-column]': 'nzShowCheckbox || nzShowRowSelection',
-    '[class.ant-table-expand-icon-th]': 'nzExpand',
+    '[class.ant-table-expand-icon-th]': 'nzShowExpand || nzExpand',
     '[class.ant-table-cell]': 'isInsideTable',
     '[class.ant-table-column-sort]': `nzSort === 'descend' || nzSort === 'ascend'`,
-    '(click)': 'updateSortValue()'
+    '(click)': 'nextSortValue()'
   }
 })
 export class NzThComponent implements OnChanges, OnInit, OnDestroy {
   locale: NzI18nInterface['Table'] = {} as NzI18nInterface['Table'];
-  widthChange$ = new Subject();
+  changes$ = new Subject();
   isInsideTable = false;
   private destroy$ = new Subject();
   @Input() colspan: number | null = null;
@@ -93,10 +93,11 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzIndeterminate = false;
   @Input() nzSortKey: string;
   @Input() nzFilterMultiple = true;
-  @Input() nzWidth: string;
+  @Input() nzWidth: string | null = null;
   @Input() nzSort: NzSortValueType = null;
   @Input() nzSortDirections: NzSortValueType[] = ['ascend', 'descend', null];
   @Input() nzFilters: NzThFilterType = [];
+  @Input() @InputBoolean() nzShowExpand = false;
   @Input() @InputBoolean() nzExpand = false;
   @Input() @InputBoolean() nzShowCheckbox = false;
   @Input() @InputBoolean() nzCustomFilter = false;
@@ -108,7 +109,7 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
   @Output() readonly nzSortChangeWithKey = new EventEmitter<{ key: string; value: string | null }>();
   @Output() readonly nzFilterChange = new EventEmitter<NzSafeAny[] | NzSafeAny>();
 
-  updateSortValue(): void {
+  nextSortValue(): void {
     if (this.nzShowSort) {
       const nextSortDirection = (sortDirections: NzSortValueType[], current: NzSortValueType) => {
         const index = sortDirections.indexOf(current);
@@ -124,7 +125,8 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
-  marForCheck(): void {
+  setSortValueByKey(key: string): void {
+    this.nzSort = this.nzSortKey === key ? this.nzSort : null;
     this.cdr.markForCheck();
   }
 
@@ -145,9 +147,17 @@ export class NzThComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzWidth, colspan } = changes;
+    const { nzWidth, colspan, nzShowCheckbox, nzShowRowSelection, nzShowExpand, nzExpand } = changes;
     if (nzWidth || colspan) {
-      this.widthChange$.next();
+      this.changes$.next();
+    }
+    if ((nzShowCheckbox || nzShowRowSelection) && this.nzWidth === null) {
+      this.nzWidth = '60px';
+      this.changes$.next();
+    }
+    if ((nzShowExpand || nzExpand) && this.nzWidth === null) {
+      this.nzWidth = '48px';
+      this.changes$.next();
     }
   }
 

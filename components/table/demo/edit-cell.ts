@@ -36,7 +36,7 @@ interface ItemData {
           <td>{{ data.age }}</td>
           <td>{{ data.address }}</td>
           <td>
-            <a nz-popconfirm nzTitle="Sure to delete?" (nzOnConfirm)="deleteRow(data.id)">Delete</a>
+            <a nz-popconfirm nzPopconfirmTitle="Sure to delete?" (nzOnConfirm)="deleteRow(data.id)">Delete</a>
           </td>
         </tr>
       </tbody>

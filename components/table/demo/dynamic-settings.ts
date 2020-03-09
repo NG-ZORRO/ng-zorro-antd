@@ -53,13 +53,19 @@ interface ItemData {
         </nz-form-item>
         <nz-form-item>
           <nz-form-label><label>Fixed Header</label></nz-form-label>
-          <nz-form-control><nz-switch [(ngModel)]="fixHeader" name="fixHeader"></nz-switch></nz-form-control>
+          <nz-form-control
+            ><nz-switch [(ngModel)]="fixHeader" name="fixHeader" (ngModelChange)="updateScroll()"></nz-switch
+          ></nz-form-control>
         </nz-form-item>
         <nz-form-item>
           <nz-form-label><label>No Result</label></nz-form-label>
           <nz-form-control
             ><nz-switch [(ngModel)]="noResult" (ngModelChange)="noResultChange($event)" name="noResult"></nz-switch
           ></nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label><label>Ellipsis</label></nz-form-label>
+          <nz-form-control><nz-switch [(ngModel)]="ellipsis" name="Ellipsis"></nz-switch></nz-form-control>
         </nz-form-item>
         <nz-form-item>
           <nz-form-label><label>Simple Pagination</label></nz-form-label>
@@ -72,6 +78,25 @@ interface ItemData {
               <label nz-radio-button nzValue="default">Default</label>
               <label nz-radio-button nzValue="middle">Middle</label>
               <label nz-radio-button nzValue="small">Small</label>
+            </nz-radio-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label><label>Table Scroll</label></nz-form-label>
+          <nz-form-control>
+            <nz-radio-group [(ngModel)]="tableScroll" name="tableScroll" (ngModelChange)="updateScroll()">
+              <label nz-radio-button nzValue="unset">Unset</label>
+              <label nz-radio-button nzValue="scroll">Scroll</label>
+              <label nz-radio-button nzValue="fixed">Fixed Columns</label>
+            </nz-radio-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label><label>Table Layout</label></nz-form-label>
+          <nz-form-control>
+            <nz-radio-group [(ngModel)]="tableLayout" name="tableLayout">
+              <label nz-radio-button nzValue="auto">Auto</label>
+              <label nz-radio-button nzValue="fixed">Fixed</label>
             </nz-radio-group>
           </nz-form-control>
         </nz-form-item>
@@ -89,8 +114,9 @@ interface ItemData {
     </div>
     <nz-table
       #dynamicTable
-      [nzScroll]="fixHeader ? { y: '240px' } : null"
+      [nzScroll]="scroll"
       [nzData]="listOfData"
+      [nzTableLayout]="tableLayout"
       [nzBordered]="bordered"
       [nzSimple]="simple"
       [nzLoading]="loading"
@@ -105,49 +131,51 @@ interface ItemData {
     >
       <thead>
         <tr *ngIf="header">
-          <th nzShowExpand *ngIf="expandable"></th>
+          <th nzShowExpand *ngIf="expandable" [nzLeft]="fixedColumn"></th>
           <th
             nzShowCheckbox
             *ngIf="checkbox"
             [(nzChecked)]="allChecked"
+            [nzLeft]="fixedColumn"
             [nzIndeterminate]="indeterminate"
             (nzCheckedChange)="checkAll($event)"
           ></th>
-          <th>Name</th>
+          <th [nzLeft]="fixedColumn">Name</th>
           <th>Age</th>
           <th>Address</th>
-          <th>Action</th>
+          <th [nzRight]="fixedColumn">Action</th>
         </tr>
       </thead>
       <tbody>
-        <ng-template ngFor let-data [ngForOf]="dynamicTable.data">
+        <ng-container *ngFor="let data of dynamicTable.data">
           <tr>
-            <td nzShowExpand *ngIf="expandable" [(nzExpand)]="data.expand"></td>
-            <td nzShowCheckbox *ngIf="checkbox" [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()"></td>
-            <td>{{ data.name }}</td>
+            <td [nzLeft]="fixedColumn" nzShowExpand *ngIf="expandable" [(nzExpand)]="data.expand"></td>
+            <td
+              [nzLeft]="fixedColumn"
+              nzShowCheckbox
+              *ngIf="checkbox"
+              [(nzChecked)]="data.checked"
+              (nzCheckedChange)="refreshStatus()"
+            ></td>
+            <td [nzLeft]="fixedColumn">{{ data.name }}</td>
             <td>{{ data.age }}</td>
-            <td>{{ data.address }}</td>
-            <td>
-              <a href="#">Action 一 {{ data.name }}</a>
-              <nz-divider nzType="vertical"></nz-divider>
+            <td [nzEllipsis]="ellipsis">{{ data.address }}</td>
+            <td [nzRight]="fixedColumn" [nzEllipsis]="ellipsis">
               <a href="#">Delete</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a href="#">More action</a>
             </td>
           </tr>
           <tr [nzExpand]="data.expand && expandable">
-            <td></td>
-            <td [attr.colspan]="checkbox ? 5 : 4">{{ data.description }}</td>
+            <td [attr.colspan]="checkbox ? 6 : 5">{{ data.description }}</td>
           </tr>
-        </ng-template>
+        </ng-container>
       </tbody>
     </nz-table>
   `,
   styles: [
     `
-      .components-table-demo-control-bar {
-        margin-bottom: 12px;
-      }
-
-      .nz-form-item {
+      form nz-form-item {
         margin-right: 16px;
         margin-bottom: 8px;
       }
@@ -157,7 +185,10 @@ interface ItemData {
 export class NzDemoTableDynamicSettingsComponent implements OnInit {
   listOfData: ItemData[] = [];
   displayData: ItemData[] = [];
+  tableScroll = 'unset';
   bordered = false;
+  ellipsis = false;
+  tableLayout = 'auto';
   loading = false;
   sizeChanger = false;
   pagination = true;
@@ -172,7 +203,13 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
   indeterminate = false;
   simple = false;
   noResult = false;
+  fixedColumn = false;
   position = 'bottom';
+  scroll: { x: string | null; y: string | null } = { x: null, y: null };
+  updateScroll(): void {
+    this.fixedColumn = this.tableScroll === 'fixed';
+    this.scroll = { y: this.fixHeader ? '240px' : null, x: this.tableScroll === 'scroll' || this.fixedColumn ? '100vw' : null };
+  }
 
   currentPageDataChange($event: ItemData[]): void {
     this.displayData = $event;

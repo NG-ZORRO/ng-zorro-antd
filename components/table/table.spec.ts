@@ -3,7 +3,7 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { By } from '@angular/platform-browser';
 import en_US from '../i18n/languages/en_US';
 import { NzI18nService } from '../i18n/nz-i18n.service';
-import { NzTableComponent } from './table.component';
+import { NzTableComponent } from './src/table/table.component';
 import { NzTableModule } from './table.module';
 
 describe('nz-table', () => {

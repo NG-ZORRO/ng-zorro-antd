@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-break-word',
   template: `
-    <nz-table #fixedTable [nzData]="listOfData" [nzScroll]="{ x: '1500px', y: '240px' }">
+    <nz-table #fixedTable [nzData]="listOfData" [nzScroll]="{ x: '1000px', y: '240px' }">
       <thead>
         <tr>
           <th nzLeft nzWidth="100px">Full Name</th>

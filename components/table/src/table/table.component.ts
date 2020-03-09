@@ -30,12 +30,12 @@ import { InputBoolean, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
-import { BehaviorSubject, combineLatest, merge, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { NzTableService } from '../table.service';
+import { NzTableDataType, NzTableLayoutType, NzTablePaginationPositionType, NzTableSizeType } from '../table.types';
 import { NzTableInnerScrollComponent } from './table-inner-scroll.component';
 import { NzTableVirtualScrollDirective } from './table-virtual-scroll.directive';
-import { NzTableService } from './table.service';
-import { NzTableDataType, NzTableLayoutType, NzTablePaginationPositionType, NzTableSizeType } from './table.types';
 
 const NZ_CONFIG_COMPONENT_NAME = 'table';
 
@@ -54,8 +54,8 @@ const NZ_CONFIG_COMPONENT_NAME = 'table';
       <div
         #tableMainElement
         class="ant-table"
-        [class.ant-table-fixed-header]="nzData.length && nzScroll.y"
-        [class.ant-table-fixed-column]="nzScroll.x"
+        [class.ant-table-fixed-header]="nzData.length && scrollY"
+        [class.ant-table-fixed-column]="scrollX"
         [class.ant-table-has-fix-left]="hasFixLeft"
         [class.ant-table-has-fix-right]="hasFixRight"
         [class.ant-table-bordered]="nzBordered"
@@ -63,17 +63,11 @@ const NZ_CONFIG_COMPONENT_NAME = 'table';
         [class.ant-table-small]="nzSize === 'small'"
       >
         <nz-table-title-footer [title]="nzTitle" *ngIf="nzTitle"></nz-table-title-footer>
-        <nz-table-inner-default
-          *ngIf="!nzScroll.y && !nzScroll.x"
-          [tableLayout]="nzTableLayout"
-          [listOfColWidth]="listOfColWidth"
-          [theadTemplate]="theadTemplate"
-          [contentTemplate]="contentTemplate"
-        ></nz-table-inner-default>
         <nz-table-inner-scroll
-          *ngIf="nzScroll.y || nzScroll.x"
+          *ngIf="scrollY || scrollX; else defaultTemplate"
           [data]="data"
-          [scroll]="nzScroll"
+          [scrollX]="scrollX"
+          [scrollY]="scrollY"
           [contentTemplate]="contentTemplate"
           [listOfColWidth]="listOfColWidth"
           [theadTemplate]="theadTemplate"
@@ -84,6 +78,14 @@ const NZ_CONFIG_COMPONENT_NAME = 'table';
           [tableMainElement]="tableMainElement"
           [virtualForTrackBy]="nzVirtualForTrackBy"
         ></nz-table-inner-scroll>
+        <ng-template #defaultTemplate>
+          <nz-table-inner-default
+            [tableLayout]="nzTableLayout"
+            [listOfColWidth]="listOfColWidth"
+            [theadTemplate]="theadTemplate"
+            [contentTemplate]="contentTemplate"
+          ></nz-table-inner-default>
+        </ng-template>
         <div class="ant-table-placeholder" *ngIf="data.length === 0 && !nzLoading && !nzTemplateMode">
           <nz-embed-empty nzComponentName="table" [specificContent]="nzNoResult"></nz-embed-empty>
         </div>
@@ -134,10 +136,10 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterCont
   @Input() nzVirtualMinBufferPx = 100;
   @Input() nzVirtualForTrackBy: TrackByFunction<NzTableDataType> = index => index;
   @Input() nzLoadingDelay = 0;
-  @Input() nzWidthConfig: string[] = [];
   @Input() nzPageIndex = 1;
   @Input() nzPageSize = 10;
   @Input() nzTotal = 0;
+  @Input() nzWidthConfig: Array<string | null> = [];
   @Input() nzData: NzTableDataType[] = [];
   @Input() nzPaginationPosition: NzTablePaginationPositionType = 'bottom';
   @Input() nzScroll: { x?: string | null; y?: string | null } = { x: null, y: null };
@@ -159,12 +161,13 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterCont
   public data: NzTableDataType[] = [];
   public cdkVirtualScrollViewport: CdkVirtualScrollViewport;
   locale: NzSafeAny = {};
+  scrollX: string | null = null;
+  scrollY: string | null = null;
   theadTemplate: TemplateRef<NzSafeAny> | null = null;
-  listOfColWidth: string[] = [];
+  listOfColWidth: Array<string | null> = [];
   hasFixLeft = false;
   hasFixRight = false;
   private destroy$ = new Subject<void>();
-  private widthConfig$ = new BehaviorSubject<string[]>([]);
   @ContentChild(NzTableVirtualScrollDirective, { static: false })
   nzVirtualScrollDirective: NzTableVirtualScrollDirective;
   @ViewChild(NzTableInnerScrollComponent) nzTableInnerScrollComponent: NzTableInnerScrollComponent;
@@ -237,15 +240,12 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterCont
   ngOnChanges(changes: SimpleChanges): void {
     const { nzScroll, nzPageIndex, nzPageSize, nzFrontPagination, nzData, nzWidthConfig } = changes;
     if (nzScroll) {
-      if (nzScroll.currentValue) {
-        this.nzScroll = nzScroll.currentValue;
-      } else {
-        this.nzScroll = { x: null, y: null };
-      }
-      this.nzTableService.setFixHeader(!!(this.nzScroll.y || this.nzScroll.x));
+      this.scrollX = (this.nzScroll && this.nzScroll.x) || null;
+      this.scrollY = (this.nzScroll && this.nzScroll.y) || null;
+      this.nzTableService.setScroll(this.scrollX, this.scrollY);
     }
     if (nzWidthConfig) {
-      this.widthConfig$.next(this.nzWidthConfig);
+      this.nzTableService.setTableWidthConfig(this.nzWidthConfig);
     }
     if (nzPageIndex || nzPageSize || nzFrontPagination || nzData) {
       this.updateFrontPaginationDataIfNeeded(!!(nzPageSize || nzData));
@@ -259,16 +259,10 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterCont
   }
 
   ngAfterContentInit(): void {
-    const manualWidthConfig$ = combineLatest([this.widthConfig$, this.nzTableService.listOfThWidthConfig$]).pipe(
-      map(([widthConfig, listOfWidth]) => (widthConfig.length ? widthConfig : listOfWidth))
-    );
-    const autoWidthConfig$ = this.nzTableService.listOfAutoWidth$.pipe(map(list => list.map(width => `${width}px`)));
-    merge(autoWidthConfig$, manualWidthConfig$)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(data => {
-        this.listOfColWidth = data;
-        this.cdr.markForCheck();
-      });
+    this.nzTableService.listOfTemplateThWidthPx$.pipe(takeUntil(this.destroy$)).subscribe(listOfWidth => {
+      this.listOfColWidth = listOfWidth;
+      this.cdr.markForCheck();
+    });
   }
 
   ngOnDestroy(): void {

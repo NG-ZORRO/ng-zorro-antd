@@ -31,7 +31,12 @@ import { debounceTime, distinctUntilChanged, map, startWith, switchMap, takeUnti
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <td #tdElement class="nz-disable-td" style="padding: 0px; border: 0px; height: 0px;" *ngFor="let th of listOfMeasureWidth"></td>
+    <td
+      #tdElement
+      class="nz-disable-td"
+      style="padding: 0px; border: 0px; height: 0px;"
+      *ngFor="let th of listOfMeasureWidth; trackBy: trackByFunc"
+    ></td>
   `,
   host: {
     '[class.ant-table-measure-now]': 'true'
@@ -43,7 +48,9 @@ export class NzMeasureRowComponent implements AfterViewInit, OnDestroy {
   @ViewChildren('tdElement') listOfTdElement: QueryList<ElementRef>;
   private destroy$ = new Subject();
   constructor(private nzResizeObserver: NzResizeObserver, private ngZone: NgZone) {}
-
+  trackByFunc(_: number, key: string): string {
+    return key;
+  }
   ngAfterViewInit(): void {
     this.listOfTdElement.changes
       .pipe(startWith(this.listOfTdElement))

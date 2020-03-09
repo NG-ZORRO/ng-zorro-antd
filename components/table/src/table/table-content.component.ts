@@ -8,7 +8,7 @@
 
 import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { NzTableLayoutType } from 'ng-zorro-antd/table/table.types';
+import { NzTableLayoutType } from '../table.types';
 
 @Component({
   selector: 'table[nz-table-content]',
@@ -24,14 +24,14 @@ import { NzTableLayoutType } from 'ng-zorro-antd/table/table.types';
   `,
   host: {
     '[style.table-layout]': 'tableLayout',
-    '[class.ant-table-fixed]': 'scroll.x',
-    '[style.width]': 'scroll.x'
+    '[class.ant-table-fixed]': 'scrollX',
+    '[style.width]': 'scrollX'
   }
 })
 export class NzTableContentComponent {
   @Input() tableLayout: NzTableLayoutType = 'auto';
   @Input() theadTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
-  @Input() listOfColWidth: string[] = [];
-  @Input() scroll: { x?: string | null; y?: string | null } = { x: null, y: null };
+  @Input() listOfColWidth: Array<string | null> = [];
+  @Input() scrollX: string | null = null;
 }

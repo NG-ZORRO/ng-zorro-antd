@@ -10,7 +10,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, Optional, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { NzTableService } from './table.service';
+import { NzTableService } from '../table.service';
 
 @Component({
   selector: 'tbody',

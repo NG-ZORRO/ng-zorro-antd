@@ -9,7 +9,7 @@
 
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Optional, Output, ViewEncapsulation } from '@angular/core';
 import { InputBoolean } from 'ng-zorro-antd/core';
-import { NzTableService } from 'ng-zorro-antd/table/table.service';
+import { NzTableService } from '../table.service';
 
 @Component({
   selector: 'td:not(.nz-disable-td):not([mat-cell])',

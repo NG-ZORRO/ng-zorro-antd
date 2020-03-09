@@ -10,11 +10,11 @@ import { Directive, Input } from '@angular/core';
 import { InputBoolean } from 'ng-zorro-antd/core';
 
 @Directive({
-  selector: 'th[nzBreakWord],td[nzBreakWord]',
+  selector: 'th[nzEllipsis],td[nzEllipsis]',
   host: {
-    '[style.word-break]': `nzBreakWord ? 'break-all' : ''`
+    '[class.ant-table-cell-ellipsis]': 'nzEllipsis'
   }
 })
-export class NzCellBreakWordDirective {
-  @Input() @InputBoolean() nzBreakWord = true;
+export class NzCellEllipsisDirective {
+  @Input() @InputBoolean() nzEllipsis = true;
 }

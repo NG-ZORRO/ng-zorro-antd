@@ -20,7 +20,7 @@ import {
 import { isNotNil } from 'ng-zorro-antd/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzI18nInterface } from 'ng-zorro-antd/i18n';
-import { NzThFilterType, NzThItemInterface } from '../../table.types';
+import { NzThFilterType, NzThItemInterface } from '../table.types';
 
 @Component({
   selector: 'nz-table-filter',

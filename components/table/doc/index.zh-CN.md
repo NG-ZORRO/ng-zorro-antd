@@ -139,9 +139,11 @@ Table 组件同时具备了易用性和高度可定制性
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzWidth]` | 指定该列宽度，表头未分组时可用 | `string` | - |
-| `[nzLeft]` | 左侧距离，用于固定左侧列 | `string` | - |
-| `[nzRight]` | 右侧距离，用于固定右侧列 | `string` | - |
+| `[nzLeft]` | 左侧距离，用于固定左侧列 | `string \| boolean` | - |
+| `[nzRight]` | 右侧距离，用于固定右侧列 | `string \| boolean` | - |
 | `[nzAlign]` | 设置列内容的对齐方式 | `'left' \| 'right' \| 'center'` | - |
+| `[nzBreakWord]` | 是否折行显示 | `boolean` | `false` |
+| `[nzEllipsis]` | 超过宽度将自动省略，暂不支持和排序筛选一起使用。仅当表格布局将为 `nzTableLayout="fixed"`时可用 | `boolean` | `false` |
 
 其他
 
@@ -173,10 +175,11 @@ Table 组件同时具备了易用性和高度可定制性
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzLeft]` | 左侧距离，用于固定左侧列 | `string` | - |
-| `[nzRight]` | 右侧距离，用于固定右侧列 | `string` | - |
+| `[nzLeft]` | 左侧距离，用于固定左侧列 | `string \| boolean` | - |
+| `[nzRight]` | 右侧距离，用于固定右侧列 | `string \| boolean` | - |
 | `[nzAlign]` | 设置列内容的对齐方式 | `'left' \| 'right' \| 'center'` | - |
 | `[nzBreakWord]` | 是否折行显示 | `boolean` | `false` |
+| `[nzEllipsis]` | 超过宽度将自动省略，暂不支持和排序筛选一起使用。仅当表格布局将为 `nzTableLayout="fixed"`时可用 | `boolean` | `false` |
 
 其他
 
