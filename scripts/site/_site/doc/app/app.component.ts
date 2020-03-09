@@ -32,6 +32,8 @@ interface DocPageMeta {
   zh: string;
 }
 
+type SiteTheme = 'default' | 'dark';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html'
@@ -51,6 +53,7 @@ export class AppComponent implements OnInit, AfterContentInit {
   searchComponent = null;
   // tslint:disable-next-line:no-any
   docsearch: any = null;
+  theme: SiteTheme = 'default';
 
   get useDocsearch(): boolean {
     if (!this.platform.isBrowser) {
@@ -70,6 +73,39 @@ export class AppComponent implements OnInit, AfterContentInit {
     url.splice(-1);
     // tslint:disable-next-line:prefer-template
     this.router.navigateByUrl(url.join('/') + '/' + language);
+  }
+
+  initTheme(): void {
+    if (!this.platform.isBrowser) {
+      return;
+    }
+    const theme = localStorage.getItem('site-theme') as SiteTheme || 'default';
+    this.onThemeChange(theme);
+  }
+
+  onThemeChange(theme: SiteTheme): void {
+    if (!this.platform.isBrowser) {
+      return;
+    }
+    this.theme = theme;
+    this.appService.theme$.next(theme);
+    this.renderer.setAttribute(document.body, 'data-theme', theme)
+    if (theme !== 'dark') {
+      const dom = document.getElementById('dark-theme');
+      if (dom) {
+        dom.remove();
+      }
+      localStorage.removeItem('site-theme');
+    } else {
+      const style = document.createElement('link');
+      style.type = 'text/css';
+      style.rel = 'stylesheet';
+      style.id = 'dark-theme';
+      style.href = '/assets/dark.css';
+
+      localStorage.setItem('site-theme', 'dark');
+      document.body.append(style);
+    }
   }
 
   constructor(
@@ -160,6 +196,7 @@ export class AppComponent implements OnInit, AfterContentInit {
     });
 
     this.initColor();
+    this.initTheme();
     this.detectLanguage();
   }
 

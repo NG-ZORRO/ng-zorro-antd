@@ -18,7 +18,6 @@ import {
            (blur)="triggerFocus(false)"
            [placeholder]="language=='zh' ? '在 ng.ant.design 中搜索' : 'Search in ng.ant.design'">
   `,
-  styleUrls: ['./searchbar.component.less'],
   host: {
     id: 'search-box',
     '[class.focused]': 'focused',

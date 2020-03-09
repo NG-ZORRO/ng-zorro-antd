@@ -43,6 +43,11 @@
              [nzLg]="{span:18,offset:6}"
              [nzXl]="{span:19,offset:5}"
              [nzXXl]="{span:20,offset:4}">
+          <app-fixed-widgets
+            [theme]="theme"
+            (themeChange)="onThemeChange($event)"
+            [language]="language">
+          </app-fixed-widgets>
           <nz-nav-bottom></nz-nav-bottom>
           <app-footer [colorHex]="color" (colorChange)="changeColor($event)"></app-footer>
         </div>

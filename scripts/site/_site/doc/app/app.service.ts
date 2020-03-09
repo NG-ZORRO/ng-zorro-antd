@@ -6,4 +6,5 @@ import { ReplaySubject } from 'rxjs';
 })
 export class AppService {
   language$ = new ReplaySubject<string>(1);
+  theme$ = new ReplaySubject<string>(1);
 }

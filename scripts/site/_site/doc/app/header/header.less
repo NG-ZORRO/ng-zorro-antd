@@ -1,0 +1,351 @@
+@import '../../style/github-button';
+
+@header-height: 64px;
+@menu-item-border: 2px;
+@mobile-max-width: 767.99px;
+
+#header {
+  position: relative;
+  z-index: 10;
+  max-width: 100%;
+  background: @component-background;
+  box-shadow: 0 2px 8px rgba(240, 241, 242, 65);
+
+  .menu-row {
+    display: flex;
+    align-items: center;
+    margin: 0;
+
+    > * {
+      flex: none;
+      margin: 0 16px 0 0;
+
+      &:last-child {
+        margin-right: 40px;
+      }
+    }
+  }
+
+  // Adjust github button style
+
+  .ant-row-rtl {
+    .menu-row {
+      > * {
+        &:last-child {
+          margin-right: 16px;
+          margin-left: 40px;
+        }
+      }
+    }
+  }
+
+  // Buttons
+  .header-button {
+    color: @text-color;
+    border-color: @border-color-base;
+  }
+}
+
+@media only screen and (max-width: @mobile-max-width) {
+  #header {
+    text-align: center;
+  }
+}
+
+#github-btn {
+  display: flex;
+  flex-flow: nowrap;
+  height: auto;
+
+  .gh-btn {
+    height: auto;
+    padding: 1px 4px;
+    background: transparent;
+    border: 0;
+
+    .gh-ico {
+      width: 20px;
+      height: 20px;
+      margin: 0;
+    }
+
+    .gh-text {
+      display: none;
+    }
+  }
+
+  .gh-count {
+    height: auto;
+    padding: 4px 8px;
+    font-weight: normal;
+    background: #fff;
+
+    &:hover {
+      color: @primary-color;
+    }
+  }
+
+  &.responsive-mode {
+    .gh-count {
+      display: none !important;
+    }
+  }
+}
+
+.ant-row-rtl {
+  #github-btn {
+    .gh-count {
+      display: none !important;
+    }
+  }
+}
+
+#logo {
+  height: @header-height;
+  padding-left: 40px;
+  overflow: hidden;
+  color: @site-heading-color;
+  font-size: 18px;
+  font-family: Avenir, @font-family, sans-serif;
+  line-height: @header-height;
+  white-space: nowrap;
+  text-decoration: none;
+
+  .ant-row-rtl & {
+    float: right;
+    padding-right: 40px;
+    padding-left: 0;
+  }
+
+  img {
+    position: relative;
+    top: -1.5px;
+    height: 32px;
+    margin-right: 16px;
+
+    .ant-row-rtl & {
+      margin-right: 0;
+      margin-left: 16px;
+    }
+  }
+}
+
+@media only screen and (max-width: @mobile-max-width) {
+  #logo {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
+#nav {
+  height: 100%;
+  font-size: 14px;
+  font-family: Avenir, @font-family, sans-serif;
+  border: 0;
+
+  &.ant-menu-horizontal {
+    border-bottom: none;
+
+    & > .ant-menu-item,
+    & > .ant-menu-submenu {
+      min-width: 72px;
+      height: @header-height;
+      line-height: @header-height - @menu-item-border - 2px;
+      border-top: @menu-item-border solid transparent;
+
+      &:hover {
+        border-top: @menu-item-border solid @primary-color;
+        border-bottom: @menu-item-border solid transparent;
+      }
+    }
+
+    & .ant-menu-submenu-title .anticon {
+      margin: 0;
+    }
+
+    & > .ant-menu-submenu-open {
+      border-top: @menu-item-border solid @primary-color;
+      border-bottom: @menu-item-border solid transparent;
+    }
+
+    & > .ant-menu-item-selected {
+      border-top: @menu-item-border solid @primary-color;
+      border-bottom: @menu-item-border solid transparent;
+      a {
+        color: @primary-color;
+      }
+    }
+  }
+
+  & > .ant-menu-item,
+  & > .ant-menu-submenu {
+    text-align: center;
+  }
+}
+
+.header-link {
+  color: @site-text-color;
+}
+
+.ant-menu-item-active .header-link {
+  color: @primary-color;
+}
+
+// Popover menu is only used for mobile
+.popover-menu {
+  width: 300px;
+
+  .ant-popover-inner-content {
+    padding: 0;
+
+    #nav {
+      .ant-menu-item,
+      .ant-menu-submenu {
+        text-align: left;
+      }
+
+      .ant-menu-item-group-title {
+        padding-left: 24px;
+      }
+
+      .ant-menu-item-group-list {
+        padding: 0 16px;
+      }
+
+      .ant-menu-item,
+      a {
+        color: #333;
+      }
+    }
+  }
+}
+
+@search-icon-color: #ced4d9;
+
+#search-box {
+  position: relative;
+  display: flex;
+  flex: auto !important;
+  align-items: center;
+  height: 22px;
+  margin: 0 auto 0 0 !important;
+  padding-left: 16px;
+  line-height: 22px;
+  white-space: nowrap;
+  border-left: 1px solid @site-border-color-split;
+  transition: width 0.5s;
+
+  .ant-row-rtl & {
+    margin: 0 0 0 auto !important;
+    padding-right: 16px;
+    padding-left: 0;
+    border-right: 1px solid @site-border-color-split;
+    border-left: none;
+  }
+
+  > * {
+    flex: auto;
+  }
+
+  .anticon {
+    position: absolute;
+    top: 50%;
+    z-index: 1;
+    flex: none;
+    color: @search-icon-color;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  input {
+    width: 100%;
+    max-width: 200px;
+    padding-left: 20px;
+    font-size: 14px;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+
+    &::placeholder {
+      color: #a3b1bf;
+    }
+  }
+
+  // ================ Narrow ================
+  &.narrow-mode {
+    flex: none !important;
+    width: 30px;
+
+    &:hover {
+      .anticon {
+        color: #a3b1bf;
+      }
+    }
+
+    .anticon {
+      right: 0;
+      left: auto;
+
+      .ant-row-rtl & {
+        right: auto;
+        left: 0;
+      }
+    }
+
+    input {
+      max-width: none;
+      padding-right: 20px;
+      padding-left: 11px;
+      cursor: pointer;
+
+      .ant-row-rtl & {
+        padding-right: 11px;
+        padding-left: 20px;
+      }
+    }
+
+    &.focused {
+      width: 500px;
+
+      .anticon {
+        color: @search-icon-color;
+      }
+
+      input {
+        cursor: text;
+      }
+    }
+  }
+}
+
+.component-select {
+  &.ant-select-dropdown {
+    font-size: 14px;
+    border: 0;
+    border-radius: 0;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+  }
+  .ant-select-dropdown-menu {
+    max-height: 200px;
+  }
+  .ant-select-dropdown-menu-item {
+    border-radius: 0 !important;
+  }
+  .ant-component-decs {
+    position: absolute;
+    right: 16px;
+    color: #aaa;
+    font-size: 12px;
+
+    .ant-row-rtl & {
+      right: auto;
+      left: 16px;
+    }
+  }
+}
+
+@media only screen and (max-width: @mobile-max-width) {
+  #search-box {
+    display: none;
+  }
+}
