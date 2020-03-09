@@ -198,11 +198,8 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   // tslint:disable-next-line:no-any
   initNzData(value: any[]): void {
     if (Array.isArray(value)) {
-      this.nzTreeService.isCheckStrictly = this.nzCheckStrictly;
-      this.nzTreeService.isMultiple = this.nzMultiple;
       const data = this.coerceTreeNodes(value);
-      console.warn(flattenTreeData(data, this.nzExpandAll || this.nzExpandedKeys), value);
-      this.nzTreeService.initTree(this.coerceTreeNodes(value));
+      this.nzTreeService.initTree(data);
     }
   }
 
@@ -310,6 +307,17 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
         break;
       case 'contextmenu':
         this.nzContextMenu.emit(event);
+        break;
+      case 'check':
+        // Render checked state with nodes' property `isChecked`
+        const node = event.node!;
+        this.nzTreeService.setCheckedNodeList(node);
+        if (!this.nzCheckStrictly) {
+          this.nzTreeService.conduct(node);
+        }
+        // Cause check method will rerender list, so we need recover it and next the new event to user
+        const eventNext = this.nzTreeService.formatEvent('check', node, event.event!);
+        this.nzCheckBoxChange.emit(eventNext);
         break;
       default:
         break;

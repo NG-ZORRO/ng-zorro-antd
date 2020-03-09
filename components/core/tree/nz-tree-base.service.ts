@@ -9,8 +9,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
-import { isNotNil } from '../util';
-
 import { FlattenNode, NzTreeNode, NzTreeNodeKey } from './nz-tree-base-node';
 import { flattenTreeData, isCheckDisabled, isInArray } from './nz-tree-base-util';
 import { NzFormatEmitEvent } from './nz-tree-base.definitions';
@@ -46,20 +44,6 @@ export class NzTreeBaseService implements OnDestroy {
    */
   initTree(nzNodes: NzTreeNode[]): void {
     this.rootNodes = nzNodes;
-    // this.expandedNodeList = [];
-    // this.selectedNodeList = [];
-    // this.halfCheckedNodeList = [];
-    // this.checkedNodeList = [];
-    // this.matchedNodeList = [];
-    // if (flattenNodes) {
-    //   this.flattenNodes = [...flattenNodes];
-    // }
-    // const data = this.coerceTreeNodes(value);
-    // console.log(flattenTreeData(data, this.nzExpandAll || this.nzExpandedKeys), value);
-    // refresh node checked state
-    // setTimeout(() => {
-    //   this.refreshCheckState(this.isCheckStrictly);
-    // });
   }
 
   flattenTreeData(nzNodes: NzTreeNode[], expandedKeys: NzTreeNodeKey[] | true = []): void {
@@ -553,7 +537,7 @@ export class NzTreeBaseService implements OnDestroy {
     this.halfCheckedNodeList = [];
     const calc = (nodes: NzTreeNode[]) => {
       nodes.forEach(node => {
-        if (isInArray(node.key, keys) || node.isSelected) {
+        if (isInArray(node.key, keys)) {
           node.isChecked = true;
           node.isHalfChecked = false;
         } else {

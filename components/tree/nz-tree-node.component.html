@@ -53,7 +53,7 @@
     </span>
   </ng-container>
   <ng-container *ngIf="nzCheckable">
-    <span [ngClass]="nzNodeCheckboxClass" (click)="_clickCheckBox($event)">
+    <span [ngClass]="nzNodeCheckboxClass" (click)="clickCheckBox($event)">
       <span
         [class.ant-tree-checkbox-inner]="!nzSelectMode"
         [class.ant-select-tree-checkbox-inner]="nzSelectMode"

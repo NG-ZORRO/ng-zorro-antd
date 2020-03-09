@@ -26,7 +26,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { fromEvent, Observable, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 import {
   InputBoolean,
@@ -247,20 +247,17 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
    * check node
    * @param event
    */
-  _clickCheckBox(event: MouseEvent): void {
+  clickCheckBox(event: MouseEvent): void {
     event.preventDefault();
-    event.stopPropagation();
     // return if node is disabled
     if (this.nzTreeNode.isDisabled || this.nzTreeNode.isDisableCheckbox) {
       return;
     }
     this.nzTreeNode.isChecked = !this.nzTreeNode.isChecked;
     this.nzTreeNode.isHalfChecked = false;
-    if (!this.nzTreeService.isCheckStrictly) {
-      this.nzTreeService.conduct(this.nzTreeNode);
-    }
+    this.nzTreeService.setCheckedNodeList(this.nzTreeNode);
     const eventNext = this.nzTreeService.formatEvent('check', this.nzTreeNode, event);
-    this.nzTreeService!.triggerEventChange$!.next(eventNext);
+    this.nzCheckBoxChange.emit(eventNext);
   }
 
   /**
