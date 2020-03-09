@@ -9,8 +9,7 @@ import { Component } from "@angular/core";
         NG-ZORRO
       </a>
     </h1>
-  `,
-  styleUrls: ['./logo.component.less']
+  `
 })
 export class LogoComponent {
 

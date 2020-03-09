@@ -33,6 +33,7 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
   simulateIFrame: boolean;
   iframe: SafeUrl;
   language = 'zh';
+  theme = 'default';
   destroy$ = new Subject();
   @Input() nzCode: string;
   @Input() nzTitle: string;
@@ -129,6 +130,10 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.appService.theme$.pipe(takeUntil(this.destroy$)).subscribe(data => {
+      this.theme = data;
+      this.check();
+    });
     this.appService.language$.pipe(takeUntil(this.destroy$)).subscribe(data => {
       this.language = data;
       this.check();

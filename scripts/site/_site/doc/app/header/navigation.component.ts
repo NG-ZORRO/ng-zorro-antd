@@ -40,7 +40,6 @@ import { Component, EventEmitter, Input, Output, ViewEncapsulation, } from "@ang
       </li>
     </ng-template>
   `,
-  styleUrls: ['./navigation.component.less'],
   styles: [`
     ::ng-deep .top-menu-additional {
       position: relative;

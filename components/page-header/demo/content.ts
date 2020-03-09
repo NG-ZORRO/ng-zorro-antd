@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-page-header-content',
   template: `
-    <nz-page-header>
+    <nz-page-header class="site-page-header">
       <!--breadcrumb-->
       <nz-breadcrumb nz-page-header-breadcrumb>
         <nz-breadcrumb-item>First-level Menu</nz-breadcrumb-item>
@@ -64,7 +64,7 @@ import { Component } from '@angular/core';
             </div>
           </div>
           <div class="extra-content">
-            <img src="https://gw.alipayobjects.com/mdn/mpaas_user/afts/img/A*KsfVQbuLRlYAAAAAAAAAAABjAQAAAQ/original" alt="content" />
+            <img src="https://gw.alipayobjects.com/zos/antfincdn/K%24NnlsB%26hz/pageHeader.svg" alt="content" />
           </div>
         </div>
       </nz-page-header-content>
@@ -72,10 +72,6 @@ import { Component } from '@angular/core';
   `,
   styles: [
     `
-      nz-page-header {
-        border: 1px solid rgb(235, 237, 240);
-      }
-
       .wrap {
         display: flex;
       }

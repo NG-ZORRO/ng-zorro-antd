@@ -36,10 +36,6 @@ import { Component } from '@angular/core';
           </div>
         </div>
       </form>
-      <div class="footer">
-        <button type="button" (click)="close()" class="ant-btn" style="margin-right: 8px;"><span>Cancel</span></button>
-        <button type="button" (click)="close()" class="ant-btn ant-btn-primary"><span>Submit</span></button>
-      </div>
       <nz-drawer [nzClosable]="false" [nzVisible]="childrenVisible" nzTitle="Food" (nzOnClose)="closeChildren()">
         <nz-list [nzDataSource]="vegetables" [nzRenderItem]="item">
           <ng-template #item let-item>
@@ -48,21 +44,7 @@ import { Component } from '@angular/core';
         </nz-list>
       </nz-drawer>
     </nz-drawer>
-  `,
-  styles: [
-    `
-      .footer {
-        position: absolute;
-        bottom: 0px;
-        width: 100%;
-        border-top: 1px solid rgb(232, 232, 232);
-        padding: 10px 16px;
-        text-align: right;
-        left: 0px;
-        background: #fff;
-      }
-    `
-  ]
+  `
 })
 export class NzDemoDrawerMultiLevelDrawerComponent {
   visible = false;

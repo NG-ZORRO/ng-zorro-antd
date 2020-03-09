@@ -12,9 +12,9 @@ const RESPONSIVE_SM = 1200;
          nzType="unordered-list"
          *ngIf="isMobile"
          nzOverlayClassName="popover-menu"
+         nzPopoverPlacement="bottomLeft"
          nz-popover
-         [nzPopoverContent]="menu"
-         nzPopoverPlacement="bottomRight"></i>
+         [nzPopoverContent]="menu"></i>
 
       <div nz-row style="flex-flow: nowrap">
         <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="6" [nzLg]="6" [nzXl]="5" [nzXXl]="4">
@@ -68,8 +68,7 @@ const RESPONSIVE_SM = 1200;
         </ng-template>
       </ng-container>
     </ng-template>
-  `,
-  styleUrls: ['./header.component.less']
+  `
 })
 export class HeaderComponent implements OnChanges {
 
