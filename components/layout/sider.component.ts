@@ -24,7 +24,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { InputBoolean, NzBreakpointKey, NzBreakpointService, siderResponsiveMap, toCssPixel } from 'ng-zorro-antd/core';
+import { inNextTick, InputBoolean, NzBreakpointKey, NzBreakpointService, siderResponsiveMap, toCssPixel } from 'ng-zorro-antd/core';
 import { NzMenuDirective } from 'ng-zorro-antd/menu';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -114,10 +114,13 @@ export class NzSiderComponent implements OnInit, OnDestroy, OnChanges, AfterCont
         .subscribe(siderResponsiveMap, true)
         .pipe(takeUntil(this.destroy$))
         .subscribe(map => {
-          if (this.nzBreakpoint) {
-            this.matchBreakPoint = !map[this.nzBreakpoint];
-            this.setCollapsed(this.matchBreakPoint);
-            this.cdr.markForCheck();
+          const breakpoint = this.nzBreakpoint;
+          if (breakpoint) {
+            inNextTick().subscribe(() => {
+              this.matchBreakPoint = !map[breakpoint];
+              this.setCollapsed(this.matchBreakPoint);
+              this.cdr.markForCheck();
+            });
           }
         });
     }
