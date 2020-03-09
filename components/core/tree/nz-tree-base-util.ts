@@ -6,9 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { FlattenNode, NzTreeNode } from './nz-tree-base-node';
-
-export type NzTreeNodeKey = string | number;
+import { FlattenNode, NzTreeNode, NzTreeNodeKey } from './nz-tree-base-node';
 
 export function isCheckDisabled(node: NzTreeNode): boolean {
   const { isDisabled, isDisableCheckbox } = node;

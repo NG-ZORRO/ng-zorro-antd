@@ -11,8 +11,8 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 import { isNotNil } from '../util';
 
-import { FlattenNode, NzTreeNode } from './nz-tree-base-node';
-import { flattenTreeData, isCheckDisabled, isInArray, NzTreeNodeKey } from './nz-tree-base-util';
+import { FlattenNode, NzTreeNode, NzTreeNodeKey } from './nz-tree-base-node';
+import { flattenTreeData, isCheckDisabled, isInArray } from './nz-tree-base-util';
 import { NzFormatEmitEvent } from './nz-tree-base.definitions';
 
 @Injectable()
@@ -286,11 +286,20 @@ export class NzTreeBaseService implements OnDestroy {
     if (node.isLeaf) {
       return;
     }
-    const index = this.expandedNodeList.findIndex(n => node.key === n.key);
+    const index = this.getIndexOfArray(this.expandedNodeList, node.key);
     if (node.isExpanded && index === -1) {
       this.expandedNodeList.push(node);
     } else if (!node.isExpanded && index > -1) {
-      this.expandedNodeList = this.expandedNodeList.filter(n => node.key !== n.key);
+      this.expandedNodeList.splice(index, 1);
+    }
+  }
+
+  setMatchedNodeList(node: NzTreeNode): void {
+    const index = this.getIndexOfArray(this.matchedNodeList, node.key);
+    if (node.isMatched && index === -1) {
+      this.matchedNodeList.push(node);
+    } else if (!node.isMatched && index > -1) {
+      this.matchedNodeList.splice(index, 1);
     }
   }
 
@@ -355,47 +364,6 @@ export class NzTreeBaseService implements OnDestroy {
         this.conductDown(n, value);
       });
     }
-  }
-
-  /**
-   * search value & expand node
-   * should add expandlist
-   */
-  searchExpand(value: string): void {
-    this.matchedNodeList = [];
-    const expandedKeys: string[] = [];
-    if (!isNotNil(value)) {
-      return;
-    }
-    // to reset expandedNodeList
-    const expandParent = (n: NzTreeNode) => {
-      // expand parent node
-      const parentNode = n.getParentNode();
-      if (parentNode) {
-        expandedKeys.push(parentNode.key);
-        expandParent(parentNode);
-      }
-    };
-    const searchChild = (n: NzTreeNode) => {
-      if (value && n.title.includes(value)) {
-        // match the node
-        n.isMatched = true;
-        this.matchedNodeList.push(n);
-        // expand parentNode
-        expandParent(n);
-      } else {
-        n.isMatched = false;
-      }
-      n.canHide = !n.isMatched;
-      n.children.forEach(child => {
-        searchChild(child);
-      });
-    };
-    this.rootNodes.forEach(child => {
-      searchChild(child);
-    });
-    // expand matched keys
-    this.calcExpandedKeys(expandedKeys, this.rootNodes);
   }
 
   /**
@@ -570,21 +538,9 @@ export class NzTreeBaseService implements OnDestroy {
   /**
    * New functions for flatten nodes
    */
-  /**
-   * Set node to list
-   * @param list
-   * @param target
-   * @param deleteItem
-   */
-  setValueToList(list: NzTreeNode[] = [], target: NzTreeNode, deleteItem: boolean = false): void {
-    const index = list.findIndex(v => v.key === target.key);
-    if (index < 0) {
-      if (deleteItem) {
-        list.splice(index, 1);
-      }
-    } else if (!deleteItem) {
-      list.push(target);
-    }
+
+  getIndexOfArray(list: NzTreeNode[], key: string): number {
+    return list.findIndex(v => v.key === key);
   }
 
   /**
@@ -618,7 +574,7 @@ export class NzTreeBaseService implements OnDestroy {
     this.expandedNodeList = [];
     const calc = (nodes: NzTreeNode[]) => {
       nodes.forEach(node => {
-        node.isExpanded = keys === true || expandedKeySet.has(node.key);
+        node.isExpanded = keys === true || expandedKeySet.has(node.key) || node.isExpanded === true;
         if (node.isExpanded) {
           this.setExpandedNodeList(node);
         }
@@ -652,5 +608,22 @@ export class NzTreeBaseService implements OnDestroy {
       });
     };
     calc(this.rootNodes);
+  }
+
+  /**
+   * Expand parent nodes by child node
+   * @param node
+   */
+  expandNodeAllParentBySearch(node: NzTreeNode): void {
+    const calc = (n: NzTreeNode | null): void => {
+      if (n) {
+        n.isExpanded = true;
+        this.setExpandedNodeList(n);
+        if (n.getParentNode()) {
+          return calc(n.getParentNode());
+        }
+      }
+    };
+    calc(node);
   }
 }

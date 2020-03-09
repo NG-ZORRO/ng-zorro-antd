@@ -10,6 +10,8 @@ import { warnDeprecation } from '../logger/logger';
 import { NzTreeNodeBaseComponent } from './nz-tree-base.definitions';
 import { NzTreeBaseService } from './nz-tree-base.service';
 
+export type NzTreeNodeKey = string | number;
+
 export interface FlattenNode {
   parent: FlattenNode | null;
   children: FlattenNode[];
@@ -367,7 +369,7 @@ export class NzTreeNode {
         case 'reRender':
           this.treeService.flattenTreeData(
             this.treeService.rootNodes,
-            this.treeService.expandAll || this.treeService.getExpandedNodeList().map(v => v.key)
+            this.treeService.getExpandedNodeList().map(v => v.key)
           );
           break;
       }
