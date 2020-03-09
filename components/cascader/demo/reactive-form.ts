@@ -57,10 +57,6 @@ const options = [
   `,
   styles: [
     `
-      .ant-cascader-picker {
-        width: 300px;
-      }
-
       button {
         margin-right: 8px;
       }
