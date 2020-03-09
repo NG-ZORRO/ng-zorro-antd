@@ -31,11 +31,11 @@ import {
 } from '@angular/core';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { cancelRequestAnimationFrame, reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
-import { NzDomEventService } from 'ng-zorro-antd/core/services';
+import { NzResizeService } from 'ng-zorro-antd/core/services';
 import { InputBoolean, InputNumber, isStyleSupport, measure } from 'ng-zorro-antd/core/util';
 
 import { Subject, Subscription } from 'rxjs';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
@@ -146,7 +146,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
     private platform: Platform,
     private i18n: NzI18nService,
     @Inject(DOCUMENT) document: any, // tslint:disable-line no-any
-    private nzDomEventService: NzDomEventService
+    private resizeService: NzResizeService
   ) {
     this.document = document;
   }
@@ -263,12 +263,9 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
       this.windowResizeSubscription.unsubscribe();
       this.cssEllipsis = this.canUseCSSEllipsis();
       this.renderOnNextFrame();
-      this.windowResizeSubscription = this.nzDomEventService
-        .registerResizeListener()
-        .pipe(
-          takeUntil(this.destroy$),
-          finalize(() => this.nzDomEventService.unregisterResizeListener())
-        )
+      this.windowResizeSubscription = this.resizeService
+        .subscribe()
+        .pipe(takeUntil(this.destroy$))
         .subscribe(() => this.renderOnNextFrame());
     }
   }

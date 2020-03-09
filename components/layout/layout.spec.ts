@@ -2,13 +2,17 @@ import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { async, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+
 import { NzContentComponent } from './content.component';
 import { NzFooterComponent } from './footer.component';
 import { NzHeaderComponent } from './header.component';
 import { NzLayoutComponent } from './layout.component';
 import { NzLayoutModule } from './layout.module';
 import { NzSiderComponent } from './sider.component';
+
+declare const viewport: NzSafeAny;
 
 describe('layout', () => {
   describe('basic', () => {
@@ -154,17 +158,18 @@ describe('layout', () => {
     });
 
     it('should responsive work', fakeAsync(() => {
-      viewport.set(800);
+      viewport.set(500);
       window.dispatchEvent(new Event('resize'));
       testBed.fixture.detectChanges();
       tick(1000);
       testBed.fixture.detectChanges();
       discardPeriodicTasks();
       testBed.fixture.detectChanges();
-      expect(sider.nativeElement.style.cssText === 'flex: 0 0 0px; max-width: 0px; min-width: 0px; width: 0px;').toBe(true);
+      expect(sider.nativeElement.style.cssText).toBe('flex: 0 0 0px; max-width: 0px; min-width: 0px; width: 0px;');
       expect(sider.nativeElement.querySelector('.ant-layout-sider-zero-width-trigger').firstElementChild.getAttribute('nzType')).toBe(
         'menu-fold'
       );
+      viewport.reset();
     }));
   });
 });

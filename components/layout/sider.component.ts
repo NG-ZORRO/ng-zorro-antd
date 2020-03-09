@@ -6,18 +6,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { MediaMatcher } from '@angular/cdk/layout';
 import { Platform } from '@angular/cdk/platform';
 import {
   AfterContentInit,
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChild,
   EventEmitter,
   Input,
-  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -26,13 +23,11 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { NzBreakpointKey, siderResponsiveMap } from 'ng-zorro-antd/core/responsive';
-import { NzDomEventService } from 'ng-zorro-antd/core/services';
-
-import { InputBoolean, toCssPixel } from 'ng-zorro-antd/core/util';
+import { NzBreakpointKey, NzBreakpointService, siderResponsiveMap } from 'ng-zorro-antd/core/services';
+import { inNextTick, InputBoolean, toCssPixel } from 'ng-zorro-antd/core/util';
 import { NzMenuDirective } from 'ng-zorro-antd/menu';
-import { merge, of, Subject } from 'rxjs';
-import { delay, finalize, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'nz-sider',
@@ -70,7 +65,7 @@ import { delay, finalize, takeUntil } from 'rxjs/operators';
     '[style.width]': 'widthSetting'
   }
 })
-export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges, AfterContentInit {
+export class NzSiderComponent implements OnInit, OnDestroy, OnChanges, AfterContentInit {
   private destroy$ = new Subject();
   @ContentChild(NzMenuDirective) nzMenuDirective: NzMenuDirective | null = null;
   @Output() readonly nzCollapsedChange = new EventEmitter();
@@ -93,14 +88,6 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
     this.cdr.markForCheck();
   }
 
-  updateBreakpointMatch(): void {
-    if (this.nzBreakpoint) {
-      this.matchBreakPoint = this.mediaMatcher.matchMedia(siderResponsiveMap[this.nzBreakpoint]).matches;
-      this.setCollapsed(this.matchBreakPoint);
-      this.cdr.markForCheck();
-    }
-  }
-
   updateMenuInlineCollapsed(): void {
     if (this.nzMenuDirective && this.nzMenuDirective.nzMode === 'inline' && this.nzCollapsedWidth !== 0) {
       this.nzMenuDirective.setInlineCollapsed(this.nzCollapsed);
@@ -117,16 +104,26 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
     }
   }
 
-  constructor(
-    private mediaMatcher: MediaMatcher,
-    private platform: Platform,
-    private cdr: ChangeDetectorRef,
-    private ngZone: NgZone,
-    private nzDomEventService: NzDomEventService
-  ) {}
+  constructor(private platform: Platform, private cdr: ChangeDetectorRef, private breakpointService: NzBreakpointService) {}
 
   ngOnInit(): void {
     this.updateStyleMap();
+
+    if (this.platform.isBrowser) {
+      this.breakpointService
+        .subscribe(siderResponsiveMap, true)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(map => {
+          const breakpoint = this.nzBreakpoint;
+          if (breakpoint) {
+            inNextTick().subscribe(() => {
+              this.matchBreakPoint = !map[breakpoint];
+              this.setCollapsed(this.matchBreakPoint);
+              this.cdr.markForCheck();
+            });
+          }
+        });
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -141,21 +138,6 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
 
   ngAfterContentInit(): void {
     this.updateMenuInlineCollapsed();
-  }
-
-  ngAfterViewInit(): void {
-    if (this.platform.isBrowser) {
-      merge(
-        this.nzDomEventService.registerResizeListener().pipe(finalize(() => this.nzDomEventService.unregisterResizeListener())),
-        of(true).pipe(delay(0))
-      )
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(() => {
-          this.ngZone.run(() => {
-            this.updateBreakpointMatch();
-          });
-        });
-    }
   }
 
   ngOnDestroy(): void {

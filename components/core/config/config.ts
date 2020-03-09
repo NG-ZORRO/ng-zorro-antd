@@ -9,7 +9,7 @@
 import { InjectionToken, TemplateRef, Type } from '@angular/core';
 
 import { SafeUrl } from '@angular/platform-browser';
-import { NzBreakpointEnum } from 'ng-zorro-antd/core/responsive';
+import { NzBreakpointEnum } from 'ng-zorro-antd/core/services';
 import { NzSafeAny, NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType } from 'ng-zorro-antd/core/types';
 
 export interface NzConfig {

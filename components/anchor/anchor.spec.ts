@@ -1,10 +1,11 @@
 // tslint:disable
+// TODO remove tslint:disable @hsuanxyz
 import { fakeAsync, tick, TestBed, ComponentFixture } from '@angular/core/testing';
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { NzAnchorModule } from './anchor.module';
 import { NzAnchorComponent } from './anchor.component';
-import { NzScrollService } from 'ng-zorro-antd/core/scroll';
 
 const throttleTime = 51;
 

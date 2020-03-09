@@ -2,7 +2,7 @@
 import { DOCUMENT, PlatformLocation } from '@angular/common';
 import { ReflectiveInjector } from '@angular/core';
 
-import { NzScrollService } from './nz-scroll.service';
+import { NzScrollService } from './scroll';
 
 describe('NzScrollService', () => {
   const TOP: number = 10;
