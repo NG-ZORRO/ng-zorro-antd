@@ -20,12 +20,13 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-
+import { gridResponsiveMap, NzBreakpointEnum, NzBreakpointService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
 import { PaginationItemRenderContext } from './pagination.types';
 
 @Component({
@@ -52,7 +53,7 @@ import { PaginationItemRenderContext } from './pagination.types';
         *ngIf="!nzSimple"
         nz-pagination-default
         [class.ant-table-pagination]="nzInsideTable"
-        [nzSize]="nzSize"
+        [nzSize]="size"
         [itemRender]="nzItemRender"
         [showTotal]="nzShowTotal"
         [disabled]="nzDisabled"
@@ -82,11 +83,15 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   @Input() @InputBoolean() nzHideOnSinglePage = false;
   @Input() @InputBoolean() nzShowQuickJumper = false;
   @Input() @InputBoolean() nzSimple = false;
+  @Input() @InputBoolean() nzResponsive = false;
   @Input() @InputNumber() nzTotal = 0;
   @Input() @InputNumber() nzPageIndex = 1;
   @Input() @InputNumber() nzPageSize = 10;
+
   showPagination = true;
   locale: NzSafeAny = {};
+  size: 'default' | 'small' = 'default';
+
   private destroy$ = new Subject<void>();
   private total$ = new ReplaySubject<number>(1);
 
@@ -129,16 +134,27 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
     return Math.ceil(total / pageSize);
   }
 
-  constructor(private i18n: NzI18nService, private cdr: ChangeDetectorRef) {}
+  constructor(private i18n: NzI18nService, private cdr: ChangeDetectorRef, private breakpointService: NzBreakpointService) {}
 
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Pagination');
       this.cdr.markForCheck();
     });
+
     this.total$.pipe(takeUntil(this.destroy$)).subscribe(total => {
       this.onTotalChange(total);
     });
+
+    this.breakpointService
+      .subscribe(gridResponsiveMap)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(bp => {
+        if (this.nzResponsive) {
+          this.size = bp === NzBreakpointEnum.xs ? 'small' : 'default';
+          this.cdr.markForCheck();
+        }
+      });
   }
 
   ngOnDestroy(): void {
@@ -147,12 +163,16 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzHideOnSinglePage, nzTotal, nzPageSize } = changes;
+    const { nzHideOnSinglePage, nzTotal, nzPageSize, nzSize } = changes;
     if (nzTotal) {
       this.total$.next(this.nzTotal);
     }
     if (nzHideOnSinglePage || nzTotal || nzPageSize) {
       this.showPagination = (this.nzHideOnSinglePage && this.nzTotal > this.nzPageSize) || (this.nzTotal > 0 && !this.nzHideOnSinglePage);
+    }
+
+    if (nzSize) {
+      this.size = nzSize.currentValue;
     }
   }
 }
