@@ -2,6 +2,7 @@
 *.css   text eol=lf
 *.html  text eol=lf
 *.js    text eol=lf
+*.ts    text eol=lf
 *.json  text eol=lf
 *.less  text eol=lf
 *.md    text eol=lf
