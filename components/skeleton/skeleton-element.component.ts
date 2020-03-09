@@ -11,10 +11,13 @@ import { ElementShape, ElementSize } from './skeleton.type';
 
 @Component({
   selector: 'nz-skeleton-element',
+  host: {
+    '[class.ant-skeleton]': 'true',
+    '[class.ant-skeleton-element]': 'true',
+    '[class.ant-skeleton-active]': 'nzActive'
+  },
   template: `
-    <div class="ant-skeleton ant-skeleton-element" [class.ant-skeleton-active]="nzActive">
-      <span [ngClass]="classMap"></span>
-    </div>
+    <span [ngClass]="classMap"></span>
   `
 })
 export class NzSkeletonElementComponent implements OnInit, OnChanges {
@@ -28,10 +31,9 @@ export class NzSkeletonElementComponent implements OnInit, OnChanges {
   updateClass(): void {
     this.classMap = {
       [`ant-skeleton-${this.nzType}`]: true,
+      [`ant-skeleton-${this.nzType}-${this.nzShape}`]: true,
       [`ant-skeleton-${this.nzType}-lg`]: this.nzSize === 'large',
-      [`ant-skeleton-${this.nzType}-sm`]: this.nzSize === 'small',
-      [`ant-skeleton-${this.nzType}-circle`]: this.nzShape === 'circle',
-      [`ant-skeleton-${this.nzType}-square`]: this.nzShape === 'square'
+      [`ant-skeleton-${this.nzType}-sm`]: this.nzSize === 'small'
     };
   }
 
