@@ -20,18 +20,40 @@ import {
 } from '@angular/core';
 
 import { toCssPixel } from 'ng-zorro-antd/core';
-import { AvatarShape, AvatarSize, NzSkeletonAvatar, NzSkeletonParagraph, NzSkeletonTitle } from './nz-skeleton.type';
+import { ElementShape, ElementSize, NzSkeletonAvatar, NzSkeletonParagraph, NzSkeletonTitle } from './skeleton.type';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-skeleton',
   exportAs: 'nzSkeleton',
-  templateUrl: './nz-skeleton.component.html',
   host: {
     '[class.ant-skeleton-with-avatar]': '!!nzAvatar',
     '[class.ant-skeleton-active]': 'nzActive'
-  }
+  },
+  template: `
+    <ng-container *ngIf="nzLoading">
+      <div class="ant-skeleton-header" *ngIf="!!nzAvatar">
+        <span
+          class="ant-skeleton-avatar"
+          [class.ant-skeleton-avatar-lg]="avatar.size === 'large'"
+          [class.ant-skeleton-avatar-sm]="avatar.size === 'small'"
+          [class.ant-skeleton-avatar-circle]="avatar.shape === 'circle'"
+          [class.ant-skeleton-avatar-square]="avatar.shape === 'square'"
+        >
+        </span>
+      </div>
+      <div class="ant-skeleton-content">
+        <h3 *ngIf="!!nzTitle" class="ant-skeleton-title" [style.width]="toCSSUnit(title.width)"></h3>
+        <ul *ngIf="!!nzParagraph" class="ant-skeleton-paragraph">
+          <li *ngFor="let row of rowsList; let i = index" [style.width]="toCSSUnit(widthList[i])"></li>
+        </ul>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!nzLoading">
+      <ng-content></ng-content>
+    </ng-container>
+  `
 })
 export class NzSkeletonComponent implements OnInit, OnChanges {
   @Input() nzActive = false;
@@ -67,8 +89,8 @@ export class NzSkeletonComponent implements OnInit, OnChanges {
   }
 
   private getAvatarProps(): NzSkeletonAvatar {
-    const shape: AvatarShape = !!this.nzTitle && !this.nzParagraph ? 'square' : 'circle';
-    const size: AvatarSize = 'large';
+    const shape: ElementShape = !!this.nzTitle && !this.nzParagraph ? 'square' : 'circle';
+    const size: ElementSize = 'large';
     return { shape, size, ...this.getProps(this.nzAvatar) };
   }
 

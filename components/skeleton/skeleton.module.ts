@@ -8,11 +8,12 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { NzSkeletonComponent } from './nz-skeleton.component';
+import { NzSkeletonElementComponent } from './skeleton-element.component';
+import { NzSkeletonComponent } from './skeleton.component';
 
 @NgModule({
-  declarations: [NzSkeletonComponent],
+  declarations: [NzSkeletonComponent, NzSkeletonElementComponent],
   imports: [CommonModule],
-  exports: [NzSkeletonComponent]
+  exports: [NzSkeletonComponent, NzSkeletonElementComponent]
 })
 export class NzSkeletonModule {}

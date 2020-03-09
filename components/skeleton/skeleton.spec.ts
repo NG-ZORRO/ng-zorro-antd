@@ -1,8 +1,8 @@
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NzSkeletonModule } from './nz-skeleton.module';
-import { NzSkeletonAvatar, NzSkeletonParagraph, NzSkeletonTitle } from './nz-skeleton.type';
+import { NzSkeletonModule } from './skeleton.module';
+import { NzSkeletonAvatar, NzSkeletonParagraph, NzSkeletonTitle } from './skeleton.type';
 
 describe('skeleton', () => {
   let fixture: ComponentFixture<NzTestSkeletonComponent>;
@@ -76,10 +76,7 @@ describe('skeleton', () => {
         expect(dl.query(By.css(`.ant-skeleton-avatar-${type}`)) !== null).toBe(true);
       });
     }
-    for (const type of [
-      { size: 'large', cls: 'lg' },
-      { size: 'small', cls: 'sm' }
-    ]) {
+    for (const type of [{ size: 'large', cls: 'lg' }, { size: 'small', cls: 'sm' }]) {
       it(`should customize size ${type.size} work`, () => {
         testComp.nzAvatar = { size: type.size } as NzSkeletonAvatar;
         fixture.detectChanges();
