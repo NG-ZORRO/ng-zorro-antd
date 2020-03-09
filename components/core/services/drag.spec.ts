@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { Subject, Subscription } from 'rxjs';
 
 import { createMouseEvent, createTouchEvent, dispatchMouseEvent, dispatchTouchEvent, NzDragService } from 'ng-zorro-antd/core';
-import { Subject, Subscription } from 'rxjs';
 
 @Component({
   template: ''

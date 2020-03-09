@@ -9,7 +9,7 @@
 import { InjectionToken, TemplateRef, Type } from '@angular/core';
 
 import { SafeUrl } from '@angular/platform-browser';
-import { NzBreakpointEnum } from '../responsive/public-api';
+import { NzBreakpointEnum } from '../services/breakpoint';
 
 import { NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType } from '../types';
 

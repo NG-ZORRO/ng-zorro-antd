@@ -6,7 +6,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { MediaMatcher } from '@angular/cdk/layout';
 import { Platform } from '@angular/cdk/platform';
 import {
   AfterContentInit,
@@ -17,7 +16,6 @@ import {
   ContentChild,
   EventEmitter,
   Input,
-  NgZone,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -27,10 +25,10 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { InputBoolean, NzBreakpointKey, NzDomEventService, siderResponsiveMap, toCssPixel } from 'ng-zorro-antd/core';
+import { InputBoolean, NzBreakpointKey, NzBreakpointService, siderResponsiveMap, toCssPixel } from 'ng-zorro-antd/core';
 import { NzMenuDirective } from 'ng-zorro-antd/menu';
-import { merge, of, Subject } from 'rxjs';
-import { delay, finalize, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'nz-sider',
@@ -91,14 +89,6 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
     this.cdr.markForCheck();
   }
 
-  updateBreakpointMatch(): void {
-    if (this.nzBreakpoint) {
-      this.matchBreakPoint = this.mediaMatcher.matchMedia(siderResponsiveMap[this.nzBreakpoint]).matches;
-      this.setCollapsed(this.matchBreakPoint);
-      this.cdr.markForCheck();
-    }
-  }
-
   updateMenuInlineCollapsed(): void {
     if (this.nzMenuDirective && this.nzMenuDirective.nzMode === 'inline' && this.nzCollapsedWidth !== 0) {
       this.nzMenuDirective.setInlineCollapsed(this.nzCollapsed);
@@ -115,13 +105,7 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
     }
   }
 
-  constructor(
-    private mediaMatcher: MediaMatcher,
-    private platform: Platform,
-    private cdr: ChangeDetectorRef,
-    private ngZone: NgZone,
-    private nzDomEventService: NzDomEventService
-  ) {}
+  constructor(private platform: Platform, private cdr: ChangeDetectorRef, private breakpointService: NzBreakpointService) {}
 
   ngOnInit(): void {
     this.updateStyleMap();
@@ -143,15 +127,15 @@ export class NzSiderComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
 
   ngAfterViewInit(): void {
     if (this.platform.isBrowser) {
-      merge(
-        this.nzDomEventService.registerResizeListener().pipe(finalize(() => this.nzDomEventService.unregisterResizeListener())),
-        of(true).pipe(delay(0))
-      )
+      this.breakpointService
+        .subscribe(siderResponsiveMap, true)
         .pipe(takeUntil(this.destroy$))
-        .subscribe(() => {
-          this.ngZone.run(() => {
-            this.updateBreakpointMatch();
-          });
+        .subscribe(map => {
+          if (this.nzBreakpoint) {
+            this.matchBreakPoint = !map[this.nzBreakpoint];
+            this.setCollapsed(this.matchBreakPoint);
+            this.cdr.markForCheck();
+          }
         });
     }
   }
