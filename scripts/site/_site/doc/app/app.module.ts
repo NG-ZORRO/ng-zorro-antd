@@ -61,7 +61,7 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline];
     NzContributorsListModule,
     FixedWidgetsModule,
     RouterModule.forRoot(routes, environment.production ? { preloadingStrategy: PreloadAllModules, scrollPositionRestoration: 'enabled'  } : {}),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production && !environment.preProduction })
   ],
   providers: [
     Title,
