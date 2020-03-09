@@ -53,14 +53,7 @@ const scenicspots: { [key: string]: Array<{ value: string; label: string; isLeaf
   selector: 'nz-demo-cascader-default-value-and-lazyload',
   template: `
     <nz-cascader [(ngModel)]="values" [nzLoadData]="loadData" (ngModelChange)="onChanges($event)"> </nz-cascader>
-  `,
-  styles: [
-    `
-      .ant-cascader-picker {
-        width: 300px;
-      }
-    `
-  ]
+  `
 })
 export class NzDemoCascaderDefaultValueAndLazyloadComponent {
   values: string[] = ['zhejiang', 'hangzhou', 'xihu'];
