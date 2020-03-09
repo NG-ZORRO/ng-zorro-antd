@@ -67,7 +67,9 @@
       [attr.aria-grabbed]="canDraggable"
       [ngClass]="nzNodeContentClass"
       [class.draggable]="canDraggable"
+      (dblclick)="dblClick($event)"
       (click)="clickSelect($event)"
+      (contextmenu)="contextMenu($event)"
     >
       <span
         *ngIf="nzTreeNode.icon && nzShowIcon"

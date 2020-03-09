@@ -272,6 +272,14 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
       case 'click':
         this.nzClick.emit(event);
         break;
+      case 'dblclick':
+        this.nzDblClick.emit(event);
+        break;
+      case 'contextmenu':
+        this.nzContextMenu.emit(event);
+        break;
+      default:
+        break;
     }
   }
 

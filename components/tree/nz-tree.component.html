@@ -25,6 +25,8 @@
             [nzNoAnimation]="noAnimation?.nzNoAnimation"
             (nzExpandChange)="eventTriggerChanged($event)"
             (nzClick)="eventTriggerChanged($event)"
+            (nzDblClick)="eventTriggerChanged($event)"
+            (nzContextMenu)="eventTriggerChanged($event)"
           >
           </nz-tree-node>
         </ng-container>

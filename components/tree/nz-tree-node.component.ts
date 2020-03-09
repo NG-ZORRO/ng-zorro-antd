@@ -231,6 +231,18 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
     this.nzClick.emit(eventNext);
   }
 
+  dblClick(event: MouseEvent): void {
+    event.preventDefault();
+    const eventNext = this.nzTreeService.formatEvent('dblclick', this.nzTreeNode, event);
+    this.nzDblClick.emit(eventNext);
+  }
+
+  contextMenu(event: MouseEvent): void {
+    event.preventDefault();
+    const eventNext = this.nzTreeService.formatEvent('contextmenu', this.nzTreeNode, event);
+    this.nzContextMenu.emit(eventNext);
+  }
+
   /**
    * check node
    * @param event
