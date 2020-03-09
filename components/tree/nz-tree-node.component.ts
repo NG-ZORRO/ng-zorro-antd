@@ -421,29 +421,7 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // init expanded / selected / checked list
-    if (this.nzTreeNode.isSelected) {
-      this.nzTreeService.setNodeActive(this.nzTreeNode);
-    }
-    if (this.nzTreeNode.isExpanded) {
-      this.nzTreeService.setExpandedNodeList(this.nzTreeNode);
-    }
-    if (this.nzTreeNode.isChecked) {
-      this.nzTreeService.setCheckedNodeList(this.nzTreeNode);
-    }
-    // TODO
     this.nzTreeNode.component = this;
-    this.nzTreeService
-      .eventTriggerChanged()
-      .pipe(
-        filter(data => data.node!.key === this.nzTreeNode.key),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(() => {
-        this.setClassMap();
-        this.markForCheck();
-      });
-    this.setClassMap();
   }
 
   ngOnChanges(): void {
