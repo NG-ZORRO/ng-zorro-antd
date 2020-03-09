@@ -156,17 +156,18 @@ describe('layout', () => {
     });
 
     it('should responsive work', fakeAsync(() => {
-      viewport.set(800);
+      viewport.set(500);
       window.dispatchEvent(new Event('resize'));
       testBed.fixture.detectChanges();
       tick(1000);
       testBed.fixture.detectChanges();
       discardPeriodicTasks();
       testBed.fixture.detectChanges();
-      expect(sider.nativeElement.style.cssText === 'flex: 0 0 0px; max-width: 0px; min-width: 0px; width: 0px;').toBe(true);
+      expect(sider.nativeElement.style.cssText).toBe('flex: 0 0 0px; max-width: 0px; min-width: 0px; width: 0px;');
       expect(sider.nativeElement.querySelector('.ant-layout-sider-zero-width-trigger').firstElementChild.getAttribute('nzType')).toBe(
         'menu-fold'
       );
+      viewport.reset();
     }));
   });
 });
