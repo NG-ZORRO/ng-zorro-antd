@@ -20,7 +20,7 @@ import {
 } from '@angular/core';
 
 import { toCssPixel } from 'ng-zorro-antd/core';
-import { NzSkeletonAvatar, NzSkeletonParagraph, NzSkeletonTitle, SkeletonElementShape, SkeletonElementSize } from './skeleton.type';
+import { AvatarShape, AvatarSize, NzSkeletonAvatar, NzSkeletonParagraph, NzSkeletonTitle } from './skeleton.type';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -82,8 +82,8 @@ export class NzSkeletonComponent implements OnInit, OnChanges {
   }
 
   private getAvatarProps(): NzSkeletonAvatar {
-    const shape: SkeletonElementShape = !!this.nzTitle && !this.nzParagraph ? 'square' : 'circle';
-    const size: SkeletonElementSize = 'large';
+    const shape: AvatarShape = !!this.nzTitle && !this.nzParagraph ? 'square' : 'circle';
+    const size: AvatarSize = 'large';
     return { shape, size, ...this.getProps(this.nzAvatar) };
   }
 

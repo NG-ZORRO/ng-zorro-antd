@@ -7,14 +7,15 @@
  */
 
 export type ParagraphWidth = number | string | Array<number | string>;
-
-export type SkeletonElementSize = 'small' | 'large' | 'default' | number;
-
-export type SkeletonElementShape = 'square' | 'circle' | 'round' | 'default';
+export type ButtonShape = 'circle' | 'round' | 'default';
+export type AvatarShape = 'square' | 'circle';
+export type InputSize = 'large' | 'small' | 'default';
+export type ButtonSize = InputSize;
+export type AvatarSize = InputSize | number;
 
 export interface NzSkeletonAvatar {
-  size?: SkeletonElementSize;
-  shape?: SkeletonElementShape;
+  size?: AvatarSize;
+  shape?: AvatarShape;
 }
 
 export interface NzSkeletonTitle {
