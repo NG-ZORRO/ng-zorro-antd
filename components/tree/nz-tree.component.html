@@ -18,7 +18,6 @@
             [nzSearchValue]="nzSearchValue"
             [nzHideUnMatched]="nzHideUnMatched"
             [nzBeforeDrop]="nzBeforeDrop"
-            [nzExpandAll]="nzExpandAll"
             [nzShowIcon]="nzShowIcon"
             [nzTreeTemplate]="treeTemplate"
             [@.disabled]="noAnimation?.nzNoAnimation"
@@ -28,6 +27,12 @@
             (nzDblClick)="eventTriggerChanged($event)"
             (nzContextMenu)="eventTriggerChanged($event)"
             (nzCheckBoxChange)="eventTriggerChanged($event)"
+            (nzOnDragStart)="eventTriggerChanged($event)"
+            (nzOnDragEnter)="eventTriggerChanged($event)"
+            (nzOnDragOver)="eventTriggerChanged($event)"
+            (nzOnDragLeave)="eventTriggerChanged($event)"
+            (nzOnDragEnd)="eventTriggerChanged($event)"
+            (nzOnDrop)="eventTriggerChanged($event)"
           >
           </nz-tree-node>
         </ng-container>

@@ -42,7 +42,6 @@ import {
 } from 'ng-zorro-antd/core';
 import { flattenTreeData } from 'ng-zorro-antd/core/tree/nz-tree-base-util';
 import { BehaviorSubject, Observable, ReplaySubject, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import { NzTreeService } from './nz-tree.service';
 
@@ -106,17 +105,6 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   @Input() nzCheckedKeys: NzTreeNodeKey[] = [];
 
   @Input() nzSearchValue: string;
-  // set nzSearchValue(value: string) {
-  //   this._searchValue = value;
-  //   this.nzTreeService.searchExpand(value);
-  //   if (isNotNil(value)) {
-  //     this.nzSearchValueChange.emit(this.nzTreeService.formatEvent('search', null, null));
-  //   }
-  // }
-
-  // get nzSearchValue(): string {
-  //   return this._searchValue;
-  // }
 
   /**
    * To render nodes if root is changed.
@@ -294,6 +282,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
 
   // Handle emit event
   eventTriggerChanged(event: NzFormatEmitEvent): void {
+    const node = event.node!;
     switch (event.eventName) {
       case 'expand':
         this.renderFlattenNodes();
@@ -310,7 +299,6 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
         break;
       case 'check':
         // Render checked state with nodes' property `isChecked`
-        const node = event.node!;
         this.nzTreeService.setCheckedNodeList(node);
         if (!this.nzCheckStrictly) {
           this.nzTreeService.conduct(node);
@@ -318,6 +306,35 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
         // Cause check method will rerender list, so we need recover it and next the new event to user
         const eventNext = this.nzTreeService.formatEvent('check', node, event.event!);
         this.nzCheckBoxChange.emit(eventNext);
+        break;
+      case 'dragstart':
+        // if node is expanded
+        if (node.isExpanded) {
+          node.isExpanded = !node.isExpanded;
+          this.renderFlattenNodes();
+        }
+        this.nzOnDragStart.emit(event);
+        break;
+      case 'dragenter':
+        const selectedNode = this.nzTreeService.getSelectedNode();
+        if (selectedNode && selectedNode.key !== node.key && !node.isExpanded && !node.isLeaf) {
+          node.isExpanded = true;
+          this.renderFlattenNodes();
+        }
+        this.nzOnDragEnter.emit(event);
+        break;
+      case 'dragover':
+        this.nzOnDragOver.emit(event);
+        break;
+      case 'dragleave':
+        this.nzOnDragLeave.emit(event);
+        break;
+      case 'dragend':
+        this.nzOnDragEnd.emit(event);
+        break;
+      case 'drop':
+        this.renderFlattenNodes();
+        this.nzOnDrop.emit(event);
         break;
       default:
         break;
@@ -346,52 +363,10 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
     super(nzTreeService);
   }
 
-  ngOnInit(): void {
-    this.setClassMap();
-    this.nzTreeService
-      .eventTriggerChanged()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(data => {
-        switch (data.eventName) {
-          case 'expand':
-            this.nzExpandChange.emit(data);
-            break;
-          case 'click':
-            this.nzClick.emit(data);
-            break;
-          case 'check':
-            this.nzCheckBoxChange.emit(data);
-            break;
-          case 'dblclick':
-            this.nzDblClick.emit(data);
-            break;
-          case 'contextmenu':
-            this.nzContextMenu.emit(data);
-            break;
-          // drag drop
-          case 'dragstart':
-            this.nzOnDragStart.emit(data);
-            break;
-          case 'dragenter':
-            this.nzOnDragEnter.emit(data);
-            break;
-          case 'dragover':
-            this.nzOnDragOver.emit(data);
-            break;
-          case 'dragleave':
-            this.nzOnDragLeave.emit(data);
-            break;
-          case 'drop':
-            this.nzOnDrop.emit(data);
-            break;
-          case 'dragend':
-            this.nzOnDragEnd.emit(data);
-            break;
-        }
-      });
-  }
+  ngOnInit(): void {}
 
   ngOnChanges(changes: { [propertyName: string]: SimpleChange }): void {
+    this.setClassMap();
     this.renderTreeProperties(changes);
   }
 

@@ -22,11 +22,10 @@ import {
   Optional,
   Output,
   Renderer2,
+  SimpleChange,
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import { fromEvent, Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 import {
   InputBoolean,
@@ -37,6 +36,8 @@ import {
   NzTreeNode,
   treeCollapseMotion
 } from 'ng-zorro-antd/core';
+import { fromEvent, Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'nz-tree-node',
@@ -65,19 +66,7 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzTreeTemplate: TemplateRef<{ $implicit: NzTreeNode }>;
   @Input() nzBeforeDrop: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;
   @Input() nzSearchValue = '';
-
-  @Input()
-  set nzDraggable(value: boolean) {
-    this._nzDraggable = value;
-    this.handDragEvent();
-  }
-
-  get nzDraggable(): boolean {
-    return this._nzDraggable;
-  }
-
-  // default set
-  @Input() nzExpandAll: boolean = false;
+  @Input() nzDraggable: boolean;
 
   @Output() readonly nzClick = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzDblClick = new EventEmitter<NzFormatEmitEvent>();
@@ -115,8 +104,6 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * default set
    */
-  _nzDraggable = false;
-
   get nzIcon(): string {
     return this.nzTreeNode.icon;
   }
@@ -139,17 +126,6 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
 
   get isSwitcherClose(): boolean {
     return !this.nzTreeNode.isExpanded && !this.nzTreeNode.isLeaf;
-  }
-
-  get displayStyle(): string {
-    // to hide unmatched nodes
-    return this.nzSearchValue &&
-      this.nzHideUnMatched &&
-      !this.nzTreeNode.isMatched &&
-      !this.nzTreeNode.isExpanded &&
-      this.nzTreeNode.canHide
-      ? 'none'
-      : '';
   }
 
   /**
@@ -272,7 +248,6 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   handleDragStart(e: DragEvent): void {
-    e.stopPropagation();
     try {
       // ie throw error
       // firefox-need-it
@@ -281,29 +256,22 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
       // empty
     }
     this.nzTreeService.setSelectedNode(this.nzTreeNode);
-    this.nzTreeNode.isExpanded = false;
     const eventNext = this.nzTreeService.formatEvent('dragstart', this.nzTreeNode, e);
-    this.nzTreeService!.triggerEventChange$!.next(eventNext);
+    this.nzOnDragStart.emit(eventNext);
   }
 
   handleDragEnter(e: DragEvent): void {
     e.preventDefault();
-    e.stopPropagation();
     // reset position
     this.dragPos = 2;
     this.ngZone.run(() => {
-      const node = this.nzTreeService.getSelectedNode();
-      if (node && node.key !== this.nzTreeNode.key && !this.nzTreeNode.isExpanded && !this.nzTreeNode.isLeaf) {
-        this.nzTreeNode.isExpanded = true;
-      }
       const eventNext = this.nzTreeService.formatEvent('dragenter', this.nzTreeNode, e);
-      this.nzTreeService!.triggerEventChange$!.next(eventNext);
+      this.nzOnDragEnter.emit(eventNext);
     });
   }
 
   handleDragOver(e: DragEvent): void {
     e.preventDefault();
-    e.stopPropagation();
     const dropPosition = this.nzTreeService.calcDropPosition(e);
     if (this.dragPos !== dropPosition) {
       this.clearDragClass();
@@ -314,21 +282,19 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
       }
     }
     const eventNext = this.nzTreeService.formatEvent('dragover', this.nzTreeNode, e);
-    this.nzTreeService!.triggerEventChange$!.next(eventNext);
+    this.nzOnDragOver.emit(eventNext);
   }
 
   handleDragLeave(e: DragEvent): void {
-    e.stopPropagation();
+    e.preventDefault();
     this.ngZone.run(() => {
       this.clearDragClass();
     });
     const eventNext = this.nzTreeService.formatEvent('dragleave', this.nzTreeNode, e);
-    this.nzTreeService!.triggerEventChange$!.next(eventNext);
+    this.nzOnDragLeave.emit(eventNext);
   }
 
   handleDragDrop(e: DragEvent): void {
-    e.preventDefault();
-    e.stopPropagation();
     this.ngZone.run(() => {
       this.clearDragClass();
       const node = this.nzTreeService.getSelectedNode();
@@ -347,23 +313,23 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
           if (canDrop) {
             this.nzTreeService.dropAndApply(this.nzTreeNode, this.dragPos);
           }
-          this.nzTreeService!.triggerEventChange$!.next(dropEvent);
-          this.nzTreeService!.triggerEventChange$!.next(dragEndEvent);
+          this.nzOnDrop.emit(dropEvent);
+          this.nzOnDragEnd.emit(dragEndEvent);
         });
       } else if (this.nzTreeNode) {
         this.nzTreeService.dropAndApply(this.nzTreeNode, this.dragPos);
-        this.nzTreeService!.triggerEventChange$!.next(dropEvent);
+        this.nzOnDrop.emit(dropEvent);
       }
     });
   }
 
   handleDragEnd(e: DragEvent): void {
-    e.stopPropagation();
+    e.preventDefault();
     this.ngZone.run(() => {
       // if user do not custom beforeDrop
       if (!this.nzBeforeDrop) {
         const eventNext = this.nzTreeService.formatEvent('dragend', this.nzTreeNode, e);
-        this.nzTreeService!.triggerEventChange$!.next(eventNext);
+        this.nzOnDragEnd.emit(eventNext);
       }
     });
   }
@@ -421,7 +387,11 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
     this.nzTreeNode.component = this;
   }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: { [propertyName: string]: SimpleChange }): void {
+    const { nzDraggable } = changes;
+    if (nzDraggable) {
+      this.handDragEvent();
+    }
     this.setClassMap();
   }
 

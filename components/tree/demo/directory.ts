@@ -6,9 +6,10 @@ import { NzContextMenuService, NzDropdownMenuComponent } from 'ng-zorro-antd/dro
 @Component({
   selector: 'nz-demo-tree-directory',
   template: `
-    <nz-tree #nzTreeComponent nzBlockNode [nzData]="nodes" [nzTreeTemplate]="nzTreeTemplate"></nz-tree>
+    <nz-tree #nzTreeComponent nzBlockNode [nzData]="nodes" [nzTreeTemplate]="nzTreeTemplate" nzDraggable></nz-tree>
     <ng-template #nzTreeTemplate let-node>
       <span
+        draggable="true"
         class="custom-node ant-tree-node-content-wrapper"
         [class.ant-tree-node-selected]="activatedNode?.key === node.key"
         (click)="activeNode(node)"
@@ -110,6 +111,7 @@ export class NzDemoTreeDirectoryComponent {
         node.isExpanded = !node.isExpanded;
       }
     }
+    // unless you click switcher icon, if you change isExpanded manually, you need to render tree again
     this.nzTreeComponent.renderFlattenNodes();
   }
 

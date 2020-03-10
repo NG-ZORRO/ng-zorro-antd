@@ -454,7 +454,7 @@ export class NzTreeBaseService implements OnDestroy {
           // Insert root node.
           this.rootNodes.splice(targetIndex, 0, this.selectedNode);
           this.rootNodes[targetIndex].parentNode = null;
-          this.rootNodes[targetIndex].level = 0;
+          this.resetNodeLevel(this.rootNodes[targetIndex]);
         }
         break;
     }
