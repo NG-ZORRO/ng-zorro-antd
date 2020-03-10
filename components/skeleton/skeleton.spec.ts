@@ -2,7 +2,7 @@ import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzSkeletonModule } from './skeleton.module';
-import { NzSkeletonAvatar, NzSkeletonParagraph, NzSkeletonTitle } from './skeleton.type';
+import { NzSkeletonAvatar, NzSkeletonParagraph, NzSkeletonTitle, SkeletonElementShape, SkeletonElementSize } from './skeleton.type';
 
 describe('skeleton', () => {
   let fixture: ComponentFixture<NzTestSkeletonComponent>;
@@ -131,6 +131,59 @@ describe('skeleton', () => {
   });
 });
 
+describe('skeleton element', () => {
+  let fixture: ComponentFixture<NzTestSkeletonElementComponent>;
+  let testComp: NzTestSkeletonElementComponent;
+  let dl: DebugElement;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [NzSkeletonModule],
+      declarations: [NzTestSkeletonElementComponent]
+    }).compileComponents();
+    fixture = TestBed.createComponent(NzTestSkeletonElementComponent);
+    testComp = fixture.componentInstance;
+    dl = fixture.debugElement;
+    fixture.detectChanges();
+  });
+
+  it('should nzActive work', () => {
+    expect(dl.nativeElement.querySelector('.ant-skeleton-active')).toBeFalsy();
+    testComp.nzActive = true;
+    fixture.detectChanges();
+    expect(dl.nativeElement.querySelector('.ant-skeleton-active')).toBeTruthy();
+  });
+
+  it('should nzSize work', () => {
+    testComp.nzType = 'avatar';
+    expect(dl.nativeElement.querySelector('.ant-skeleton-avatar-lg')).toBeFalsy();
+    testComp.nzSize = 'large';
+    fixture.detectChanges();
+    expect(dl.nativeElement.querySelector('.ant-skeleton-avatar-lg')).toBeTruthy();
+    testComp.nzSize = 40;
+    fixture.detectChanges();
+    expect(dl.nativeElement.querySelector('.ant-skeleton-avatar').style.width).toBe('40px');
+    expect(dl.nativeElement.querySelector('.ant-skeleton-avatar').style.height).toBe('40px');
+    expect(dl.nativeElement.querySelector('.ant-skeleton-avatar').style.lineHeight).toBe('40px');
+    // number size only work in 'avatar' type
+    testComp.nzType = 'button';
+    fixture.detectChanges();
+    expect(dl.nativeElement.querySelector('.ant-skeleton-button').style.width).toBeFalsy();
+  });
+
+  it('should nzShape work', () => {
+    testComp.nzType = 'button';
+    fixture.detectChanges();
+    expect(dl.nativeElement.querySelector('.ant-skeleton-button-circle')).toBeNull();
+    testComp.nzShape = 'circle';
+    fixture.detectChanges();
+    expect(dl.nativeElement.querySelector('.ant-skeleton-button-circle')).toBeTruthy();
+    testComp.nzShape = 'round';
+    fixture.detectChanges();
+    expect(dl.nativeElement.querySelector('.ant-skeleton-button-round')).toBeTruthy();
+  });
+});
+
 @Component({
   template: `
     <nz-skeleton [nzActive]="nzActive" [nzAvatar]="nzAvatar" [nzTitle]="nzTitle" [nzParagraph]="nzParagraph"> </nz-skeleton>
@@ -141,4 +194,16 @@ export class NzTestSkeletonComponent {
   nzAvatar: NzSkeletonAvatar | boolean;
   nzTitle: NzSkeletonTitle | boolean;
   nzParagraph: NzSkeletonParagraph | boolean;
+}
+
+@Component({
+  template: `
+    <nz-skeleton-element [nzType]="nzType" [nzActive]="nzActive" [nzSize]="nzSize" [nzShape]="nzShape"> </nz-skeleton-element>
+  `
+})
+export class NzTestSkeletonElementComponent {
+  nzType: string;
+  nzActive: boolean;
+  nzSize: SkeletonElementSize;
+  nzShape: SkeletonElementShape;
 }

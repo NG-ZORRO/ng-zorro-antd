@@ -8,13 +8,13 @@
 
 export type ParagraphWidth = number | string | Array<number | string>;
 
-export type ElementShape = 'square' | 'circle';
+export type SkeletonElementSize = 'small' | 'large' | 'default' | number;
 
-export type ElementSize = 'small' | 'large' | 'default';
+export type SkeletonElementShape = 'square' | 'circle' | 'round' | 'default';
 
 export interface NzSkeletonAvatar {
-  size?: ElementSize;
-  shape?: ElementShape;
+  size?: SkeletonElementSize;
+  shape?: SkeletonElementShape;
 }
 
 export interface NzSkeletonTitle {

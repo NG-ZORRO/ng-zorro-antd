@@ -7,7 +7,7 @@
  */
 
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { ElementShape, ElementSize } from './skeleton.type';
+import { SkeletonElementShape, SkeletonElementSize } from './skeleton.type';
 
 @Component({
   selector: 'nz-skeleton-element',
@@ -17,18 +17,26 @@ import { ElementShape, ElementSize } from './skeleton.type';
     '[class.ant-skeleton-active]': 'nzActive'
   },
   template: `
-    <span [ngClass]="classMap"></span>
+    <span [ngClass]="classMap" [style]="styleMap"></span>
   `
 })
 export class NzSkeletonElementComponent implements OnInit, OnChanges {
   classMap = {};
+  styleMap = {};
 
   @Input() nzActive: boolean = false;
   @Input() nzType: 'button' | 'input' | 'avatar';
-  @Input() nzSize: ElementSize;
-  @Input() nzShape: ElementShape;
+  @Input() nzSize: SkeletonElementSize;
+  @Input() nzShape: SkeletonElementShape;
 
   updateClass(): void {
+    if (this.nzType === 'avatar' && typeof this.nzSize === 'number') {
+      const sideLength = `${this.nzSize}px`;
+      this.styleMap = { width: sideLength, height: sideLength, 'line-height': sideLength };
+    } else {
+      this.styleMap = {};
+    }
+
     this.classMap = {
       [`ant-skeleton-${this.nzType}`]: true,
       [`ant-skeleton-${this.nzType}-${this.nzShape}`]: true,

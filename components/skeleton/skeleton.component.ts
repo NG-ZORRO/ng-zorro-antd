@@ -20,7 +20,7 @@ import {
 } from '@angular/core';
 
 import { toCssPixel } from 'ng-zorro-antd/core';
-import { ElementShape, ElementSize, NzSkeletonAvatar, NzSkeletonParagraph, NzSkeletonTitle } from './skeleton.type';
+import { NzSkeletonAvatar, NzSkeletonParagraph, NzSkeletonTitle, SkeletonElementShape, SkeletonElementSize } from './skeleton.type';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -34,14 +34,7 @@ import { ElementShape, ElementSize, NzSkeletonAvatar, NzSkeletonParagraph, NzSke
   template: `
     <ng-container *ngIf="nzLoading">
       <div class="ant-skeleton-header" *ngIf="!!nzAvatar">
-        <span
-          class="ant-skeleton-avatar"
-          [class.ant-skeleton-avatar-lg]="avatar.size === 'large'"
-          [class.ant-skeleton-avatar-sm]="avatar.size === 'small'"
-          [class.ant-skeleton-avatar-circle]="avatar.shape === 'circle'"
-          [class.ant-skeleton-avatar-square]="avatar.shape === 'square'"
-        >
-        </span>
+        <nz-skeleton-element nzType="avatar" [nzSize]="avatar.size" [nzShape]="avatar.shape"></nz-skeleton-element>
       </div>
       <div class="ant-skeleton-content">
         <h3 *ngIf="!!nzTitle" class="ant-skeleton-title" [style.width]="toCSSUnit(title.width)"></h3>
@@ -89,8 +82,8 @@ export class NzSkeletonComponent implements OnInit, OnChanges {
   }
 
   private getAvatarProps(): NzSkeletonAvatar {
-    const shape: ElementShape = !!this.nzTitle && !this.nzParagraph ? 'square' : 'circle';
-    const size: ElementSize = 'large';
+    const shape: SkeletonElementShape = !!this.nzTitle && !this.nzParagraph ? 'square' : 'circle';
+    const size: SkeletonElementSize = 'large';
     return { shape, size, ...this.getProps(this.nzAvatar) };
   }
 
