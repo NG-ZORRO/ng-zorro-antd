@@ -226,8 +226,10 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
 
     if (nzSearchValue) {
       useDefaultExpandedKeys = false;
-      this.handleSearchValue(this.nzSearchValue);
-      this.nzSearchValueChange.emit(this.nzTreeService.formatEvent('search', null, null));
+      if (!(nzSearchValue.firstChange && !this.nzSearchValue)) {
+        this.handleSearchValue(this.nzSearchValue);
+        this.nzSearchValueChange.emit(this.nzTreeService.formatEvent('search', null, null));
+      }
     }
 
     // flatten data
