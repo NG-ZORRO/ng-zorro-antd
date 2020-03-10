@@ -6,7 +6,7 @@ import { By } from '@angular/platform-browser';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { createFakeEvent } from 'ng-zorro-antd/core';
 
-import { NzTdComponent } from './src/cell/td.component';
+import { NzTdComponent } from '../cell/td.component';
 
 describe('nz-td', () => {
   beforeEach(fakeAsync(() => {

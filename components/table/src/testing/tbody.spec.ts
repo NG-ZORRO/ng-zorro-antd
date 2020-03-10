@@ -1,8 +1,8 @@
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NzTbodyComponent } from './src/table/tbody.component';
-import { NzTableModule } from './table.module';
+import { NzTableModule } from '../table.module';
+import { NzTbodyComponent } from '../table/tbody.component';
 
 describe('nz-tbody', () => {
   beforeEach(fakeAsync(() => {

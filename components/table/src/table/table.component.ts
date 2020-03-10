@@ -26,7 +26,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { InputBoolean, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
+import { InputBoolean, measureScrollbar, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
 import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
@@ -72,6 +72,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'table';
           [contentTemplate]="contentTemplate"
           [listOfColWidth]="listOfColWidth"
           [theadTemplate]="theadTemplate"
+          [verticalScrollBarWidth]="verticalScrollBarWidth"
           [virtualTemplate]="nzVirtualScrollDirective?.templateRef"
           [virtualItemSize]="nzVirtualItemSize"
           [virtualMaxBufferPx]="nzVirtualMaxBufferPx"
@@ -169,7 +170,7 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterView
   @ContentChild(NzTableVirtualScrollDirective, { static: false })
   nzVirtualScrollDirective: NzTableVirtualScrollDirective;
   @ViewChild(NzTableInnerScrollComponent) nzTableInnerScrollComponent: NzTableInnerScrollComponent;
-
+  verticalScrollBarWidth = 0;
   onPageSizeChange(size: number): void {
     if (size !== this.nzPageSize) {
       this.nzPageSize = size;
@@ -215,10 +216,10 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterView
   }
 
   constructor(
-    private nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
     private nzResizeObserver: NzResizeObserver,
+    private nzConfigService: NzConfigService,
+    private cdr: ChangeDetectorRef,
     private i18n: NzI18nService,
     private nzTableService: NzTableService
   ) {
@@ -231,6 +232,7 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterView
   }
 
   ngOnInit(): void {
+    this.verticalScrollBarWidth = measureScrollbar('vertical');
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Table');
       this.cdr.markForCheck();
@@ -266,7 +268,8 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterView
       .pipe(
         map(([entry]) => {
           const { width } = entry.target.getBoundingClientRect();
-          return Math.floor(width);
+          const scrollBarWidth = this.scrollY ? this.verticalScrollBarWidth : 0;
+          return Math.floor(width - scrollBarWidth);
         }),
         takeUntil(this.destroy$)
       )

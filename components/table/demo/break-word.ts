@@ -6,8 +6,8 @@ import { Component, OnInit } from '@angular/core';
     <nz-table #fixedTable [nzData]="listOfData" [nzScroll]="{ x: '1000px', y: '240px' }">
       <thead>
         <tr>
-          <th nzLeft nzWidth="100px">Full Name</th>
-          <th nzLeft nzWidth="100px">Age</th>
+          <th nzLeft>Full Name</th>
+          <th nzLeft>Age</th>
           <th>Column 1</th>
           <th>Column 2</th>
           <th>Column 3</th>
@@ -16,7 +16,7 @@ import { Component, OnInit } from '@angular/core';
           <th>Column 6</th>
           <th>Column 7</th>
           <th>Column 8</th>
-          <th nzRight nzWidth="100px">Action</th>
+          <th nzRight>Action</th>
         </tr>
       </thead>
       <tbody>

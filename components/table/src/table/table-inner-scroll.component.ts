@@ -24,7 +24,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { measureScrollbar, NzDomEventService } from 'ng-zorro-antd/core';
+import { NzDomEventService } from 'ng-zorro-antd/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEvent, merge, Subject } from 'rxjs';
 import { delay, filter, finalize, startWith, takeUntil } from 'rxjs/operators';
@@ -58,11 +58,10 @@ import { NzTableDataType } from '../table.types';
       <cdk-virtual-scroll-viewport
         #tableBodyElement
         *ngIf="virtualTemplate"
-        [hidden]="!data.length"
         [itemSize]="virtualItemSize"
         [maxBufferPx]="virtualMaxBufferPx"
         [minBufferPx]="virtualMinBufferPx"
-        [style.height]="scrollY"
+        [style.height]="data.length ? scrollY : noDateVirtualHeight"
       >
         <table nz-table-content tableLayout="fixed" [scrollX]="scrollX" [listOfColWidth]="listOfColWidth">
           <tbody>
@@ -98,6 +97,8 @@ export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, On
   cdkVirtualScrollViewport: CdkVirtualScrollViewport;
   headerStyleMap = {};
   bodyStyleMap = {};
+  @Input() verticalScrollBarWidth = 0;
+  noDateVirtualHeight = '182px';
   private data$ = new Subject<void>();
   private scroll$ = new Subject<void>();
   private destroy$ = new Subject<void>();
@@ -131,7 +132,7 @@ export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, On
   ngOnChanges(changes: SimpleChanges): void {
     const { scrollX, scrollY, data } = changes;
     if (scrollX || scrollY) {
-      const hasVerticalScrollBar = measureScrollbar('vertical') !== 0;
+      const hasVerticalScrollBar = this.verticalScrollBarWidth !== 0;
       this.headerStyleMap = {
         overflowX: 'hidden',
         overflowY: this.scrollY && hasVerticalScrollBar ? 'scroll' : 'hidden'

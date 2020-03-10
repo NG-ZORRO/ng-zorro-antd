@@ -167,7 +167,9 @@ interface ItemData {
             </td>
           </tr>
           <tr [nzExpand]="data.expand && expandable">
-            <td [attr.colspan]="checkbox ? 6 : 5">{{ data.description }}</td>
+            {{
+              data.description
+            }}
           </tr>
         </ng-container>
       </tbody>

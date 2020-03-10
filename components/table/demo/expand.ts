@@ -21,7 +21,9 @@ import { Component } from '@angular/core';
             <td>{{ data.address }}</td>
           </tr>
           <tr [nzExpand]="mapOfExpandData[data.id]">
-            <td colspan="4">{{ data.description }}</td>
+            {{
+              data.description
+            }}
           </tr>
         </ng-container>
       </tbody>

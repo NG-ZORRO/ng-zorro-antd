@@ -11,7 +11,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 export type NzTableDataType =
   | NzSafeAny
   | {
-      [key: string]: NzSafeAny;
+      [key: string]: NzSafeAny | { [key: string]: NzSafeAny };
     };
 
 export type NzTableLayoutType = 'fixed' | 'auto';

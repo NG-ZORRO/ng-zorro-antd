@@ -3,8 +3,8 @@ import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
-import { NzThComponent } from './src/cell/th.component';
-import { NzTableModule } from './table.module';
+import { NzThComponent } from '../cell/th.component';
+import { NzTableModule } from '../table.module';
 
 describe('nz-th', () => {
   beforeEach(fakeAsync(() => {

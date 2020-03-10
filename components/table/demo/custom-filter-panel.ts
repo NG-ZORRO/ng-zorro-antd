@@ -69,14 +69,12 @@ import { Component } from '@angular/core';
 })
 export class NzDemoTableCustomFilterPanelComponent {
   searchValue = '';
-  sortName: string | null = null;
-  sortValue: string | null = null;
   listOfFilterAddress = [
     { text: 'London', value: 'London' },
     { text: 'Sidney', value: 'Sidney' }
   ];
   listOfSearchAddress: string[] = [];
-  listOfData: Array<{ name: string; age: number; address: string; [key: string]: string | number }> = [
+  listOfData: Array<{ name: string; age: number; address: string }> = [
     {
       name: 'John Brown',
       age: 32,
@@ -105,27 +103,17 @@ export class NzDemoTableCustomFilterPanelComponent {
     this.search();
   }
 
-  sort(sortName: string, value: string): void {
-    this.sortName = sortName;
-    this.sortValue = value;
-    this.search();
-  }
-
   filterAddressChange(value: string[]): void {
     this.listOfSearchAddress = value;
     this.search();
   }
 
   search(): void {
-    const filterFunc = (item: { name: string; age: number; address: string }) => {
+    this.listOfDisplayData = this.listOfData.filter((item: { name: string; age: number; address: string }) => {
       return (
         (this.listOfSearchAddress.length ? this.listOfSearchAddress.some(address => item.address.indexOf(address) !== -1) : true) &&
         item.name.indexOf(this.searchValue) !== -1
       );
-    };
-    const data = this.listOfData.filter((item: { name: string; age: number; address: string }) => filterFunc(item));
-    this.listOfDisplayData = data.sort((a, b) =>
-      this.sortValue === 'ascend' ? (a[this.sortName!] > b[this.sortName!] ? 1 : -1) : b[this.sortName!] > a[this.sortName!] ? 1 : -1
-    );
+    });
   }
 }

@@ -49,48 +49,46 @@ interface ChildrenItemData {
             </td>
           </tr>
           <tr [nzExpand]="data.expand">
-            <td colspan="8">
-              <nz-table #innerTable [nzData]="listOfChildrenData" nzSize="middle" [nzShowPagination]="false">
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Name</th>
-                    <th>Status</th>
-                    <th>Upgrade Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let data of innerTable.data">
-                    <td>{{ data.date }}</td>
-                    <td>{{ data.name }}</td>
-                    <td>
-                      <nz-badge [nzStatus]="'success'" [nzText]="'Finished'"></nz-badge>
-                    </td>
-                    <td>{{ data.upgradeNum }}</td>
-                    <td>
-                      <span class="table-operation">
-                        <a nz-dropdown class="operation" [nzDropdownMenu]="menu"> Pause <i nz-icon nzType="down"></i> </a>
-                        <nz-dropdown-menu #menu="nzDropdownMenu">
-                          <ul nz-menu>
-                            <li nz-menu-item>
-                              <a>Action 1</a>
-                            </li>
-                            <li nz-menu-item>
-                              <a>Action 2</a>
-                            </li>
-                          </ul>
-                        </nz-dropdown-menu>
-                        <nz-divider nzType="vertical"></nz-divider>
-                        <a class="operation">Stop</a>
-                        <nz-divider nzType="vertical"></nz-divider>
-                        <a>More</a>
-                      </span>
-                    </td>
-                  </tr>
-                </tbody>
-              </nz-table>
-            </td>
+            <nz-table #innerTable [nzData]="listOfChildrenData" nzSize="middle" [nzShowPagination]="false">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Name</th>
+                  <th>Status</th>
+                  <th>Upgrade Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let data of innerTable.data">
+                  <td>{{ data.date }}</td>
+                  <td>{{ data.name }}</td>
+                  <td>
+                    <nz-badge [nzStatus]="'success'" [nzText]="'Finished'"></nz-badge>
+                  </td>
+                  <td>{{ data.upgradeNum }}</td>
+                  <td>
+                    <span class="table-operation">
+                      <a nz-dropdown class="operation" [nzDropdownMenu]="menu"> Pause <i nz-icon nzType="down"></i> </a>
+                      <nz-dropdown-menu #menu="nzDropdownMenu">
+                        <ul nz-menu>
+                          <li nz-menu-item>
+                            <a>Action 1</a>
+                          </li>
+                          <li nz-menu-item>
+                            <a>Action 2</a>
+                          </li>
+                        </ul>
+                      </nz-dropdown-menu>
+                      <nz-divider nzType="vertical"></nz-divider>
+                      <a class="operation">Stop</a>
+                      <nz-divider nzType="vertical"></nz-divider>
+                      <a>More</a>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </nz-table>
           </tr>
         </ng-template>
       </tbody>

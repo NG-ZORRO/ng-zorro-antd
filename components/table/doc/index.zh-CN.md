@@ -31,7 +31,7 @@ Table 组件同时具备了易用性和高度可定制性
 
 ### 数据处理
 
-传入`[nzData]`中的数据，经过处理之后，可以通过 [模板变量](https://angular.io/guide/template-syntax#statement-context) 获取当前展示表格部分的数据，再使用 `*ngFor` 依据需求将数据渲染。
+将数据传入`[nzData]`，经过组件处理之后，通过 [模板变量](https://angular.io/guide/template-syntax#statement-context) 获取当前展示表格部分的数据，使用 `*ngFor` 依据需求将数据渲染。
 
 ```html
 <nz-table #basicTable [nzData]="dataSet">

@@ -7,7 +7,7 @@
  */
 
 export * from './src/table/table.component';
-export * from './table.module';
+export * from './src/table.module';
 export * from './src/table/tbody.component';
 export * from './src/cell/td.component';
 export * from './src/cell/th.component';
@@ -19,3 +19,4 @@ export * from './src/fixed/fixed-cell.directive';
 export * from './src/styled/align.directive';
 export * from './src/styled/ellipsis.directive';
 export * from './src/styled/word-break.directive';
+export * from './src/table/table-fixed-row.component';

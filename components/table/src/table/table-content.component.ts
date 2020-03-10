@@ -25,7 +25,8 @@ import { NzTableLayoutType } from '../table.types';
   host: {
     '[style.table-layout]': 'tableLayout',
     '[class.ant-table-fixed]': 'scrollX',
-    '[style.width]': 'scrollX'
+    '[style.width]': 'scrollX',
+    '[style.min-width]': `scrollX ? '100%': null`
   }
 })
 export class NzTableContentComponent {

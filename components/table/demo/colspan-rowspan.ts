@@ -15,10 +15,28 @@ import { Component } from '@angular/core';
       <tbody>
         <tr *ngFor="let data of colSpanTable.data; index as i">
           <td>{{ data.name }}</td>
-          <td [attr.colspan]="i === 4 ? 5 : 1">{{ data.age }}</td>
-          <td [attr.rowspan]="i === 2 ? 2 : 1" *ngIf="i !== 3 && i !== 4">{{ data.tel }}</td>
-          <td *ngIf="i !== 4">{{ data.phone }}</td>
-          <td *ngIf="i !== 4">{{ data.address }}</td>
+          <ng-container [ngSwitch]="i">
+            <ng-container *ngSwitchCase="2">
+              <td>{{ data.age }}</td>
+              <td rowspan="2">{{ data.tel }}</td>
+              <td>{{ data.phone }}</td>
+              <td>{{ data.address }}</td>
+            </ng-container>
+            <ng-container *ngSwitchCase="3">
+              <td>{{ data.age }}</td>
+              <td>{{ data.phone }}</td>
+              <td>{{ data.address }}</td>
+            </ng-container>
+            <ng-container *ngSwitchCase="4">
+              <td colspan="5">{{ data.age }}</td>
+            </ng-container>
+            <ng-container *ngSwitchDefault>
+              <td>{{ data.age }}</td>
+              <td>{{ data.tel }}</td>
+              <td>{{ data.phone }}</td>
+              <td>{{ data.address }}</td>
+            </ng-container>
+          </ng-container>
         </tr>
       </tbody>
     </nz-table>

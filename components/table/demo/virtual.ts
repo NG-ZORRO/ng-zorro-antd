@@ -23,7 +23,7 @@ export interface VirtualDataInterface {
       [nzVirtualForTrackBy]="trackByIndex"
       [nzFrontPagination]="false"
       [nzShowPagination]="false"
-      [nzScroll]="{ x: '1300px', y: '240px' }"
+      [nzScroll]="{ x: '1200px', y: '240px' }"
     >
       <thead>
         <tr>

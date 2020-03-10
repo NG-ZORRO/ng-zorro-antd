@@ -1,10 +1,10 @@
 import { Component, DebugElement, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import en_US from '../i18n/languages/en_US';
-import { NzI18nService } from '../i18n/nz-i18n.service';
-import { NzTableComponent } from './src/table/table.component';
-import { NzTableModule } from './table.module';
+import en_US from '../../../i18n/languages/en_US';
+import { NzI18nService } from '../../../i18n/nz-i18n.service';
+import { NzTableModule } from '../table.module';
+import { NzTableComponent } from '../table/table.component';
 
 describe('nz-table', () => {
   let injector: Injector;
@@ -446,7 +446,7 @@ export class NzTestTableBasicComponent implements OnInit {
     </div>
   `,
   encapsulation: ViewEncapsulation.None,
-  styleUrls: ['../style/index.less', '../spin/style/index.less', './style/index.less']
+  styleUrls: ['../../../style/index.less', '../spin/style/index.less', '../../style/index.less']
 })
 export class NzTestTableScrollComponent implements OnInit {
   @ViewChild(NzTableComponent, { static: false }) nzTableComponent: NzTableComponent;

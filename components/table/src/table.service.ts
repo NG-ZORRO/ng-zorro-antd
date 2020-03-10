@@ -7,7 +7,7 @@
  */
 
 import { Injectable, TemplateRef } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { BehaviorSubject, combineLatest, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NzThComponent } from './cell/th.component';
