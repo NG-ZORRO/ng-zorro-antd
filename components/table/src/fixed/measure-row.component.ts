@@ -35,7 +35,7 @@ import { debounceTime, map, startWith, switchMap, takeUntil } from 'rxjs/operato
       #tdElement
       class="nz-disable-td"
       style="padding: 0px; border: 0px; height: 0px;"
-      *ngFor="let th of listOfMeasureWidth; trackBy: trackByFunc"
+      *ngFor="let th of listOfMeasureColumn; trackBy: trackByFunc"
     ></td>
   `,
   host: {
@@ -43,7 +43,7 @@ import { debounceTime, map, startWith, switchMap, takeUntil } from 'rxjs/operato
   }
 })
 export class NzMeasureRowComponent implements AfterViewInit, OnDestroy {
-  @Input() listOfMeasureWidth: string[] = [];
+  @Input() listOfMeasureColumn: string[] = [];
   @Output() readonly listOfAutoWidth = new EventEmitter<number[]>();
   @ViewChildren('tdElement') listOfTdElement: QueryList<ElementRef>;
   private destroy$ = new Subject();

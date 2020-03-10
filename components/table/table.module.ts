@@ -37,8 +37,8 @@ import { NzCellBreakWordDirective } from './src/styled/word-break.directive';
 import { NzTableContentComponent } from './src/table/table-content.component';
 import { NzTableInnerDefaultComponent } from './src/table/table-inner-default.component';
 import { NzTableInnerScrollComponent } from './src/table/table-inner-scroll.component';
+import { NzTablePlaceholderComponent } from './src/table/table-placeholder.component';
 import { NzTableVirtualScrollDirective } from './src/table/table-virtual-scroll.directive';
-
 import { NzTableComponent } from './src/table/table.component';
 import { NzTbodyComponent } from './src/table/tbody.component';
 import { NzTheadComponent } from './src/table/thead.component';
@@ -68,7 +68,8 @@ import { NzTrDirective } from './src/table/tr.directive';
     NzTableSortersComponent,
     NzTableFilterComponent,
     NzTableSelectionComponent,
-    NzCellEllipsisDirective
+    NzCellEllipsisDirective,
+    NzTablePlaceholderComponent
   ],
   exports: [
     NzTableComponent,

@@ -14,7 +14,7 @@ import { NzFixedCellDirective } from '../fixed/fixed-cell.directive';
 import { NzTableService } from '../table.service';
 
 @Directive({
-  selector: 'tr:not([mat-row]):not([mat-header-row]):not([nz-table-measure-row]):not([nzExpand])',
+  selector: 'tr:not([mat-row]):not([mat-header-row]):not([nz-table-measure-row]):not([nzExpand]):not([nz-table-placeholder])',
   host: {
     '[class.ant-table-row]': 'isInsideTable'
   }

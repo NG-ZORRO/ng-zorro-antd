@@ -82,7 +82,7 @@ export class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewI
         switchMap(firstTableRow => (firstTableRow ? firstTableRow.listOfColumnsChanges$ : EMPTY)),
         takeUntil(this.destroy$)
       );
-      listOfColumnsChanges$.subscribe(data => this.nzTableService.setListOfThWidthConfig(data));
+      listOfColumnsChanges$.subscribe(data => this.nzTableService.setListOfTh(data));
       /** TODO: need reset the measure row when scrollX change **/
       this.nzTableService.enableAutoMeasure$
         .pipe(switchMap(enable => (enable ? listOfColumnsChanges$ : of([]))))

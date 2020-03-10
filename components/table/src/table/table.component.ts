@@ -13,6 +13,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChild,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -26,11 +27,12 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { InputBoolean, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
+import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { NzTableService } from '../table.service';
 import { NzTableDataType, NzTableLayoutType, NzTablePaginationPositionType, NzTableSizeType } from '../table.types';
 import { NzTableInnerScrollComponent } from './table-inner-scroll.component';
@@ -85,9 +87,6 @@ const NZ_CONFIG_COMPONENT_NAME = 'table';
             [contentTemplate]="contentTemplate"
           ></nz-table-inner-default>
         </ng-template>
-        <div class="ant-table-placeholder" *ngIf="data.length === 0 && !nzLoading && !nzTemplateMode">
-          <nz-embed-empty nzComponentName="table" [specificContent]="nzNoResult"></nz-embed-empty>
-        </div>
         <nz-table-title-footer [footer]="nzFooter" *ngIf="nzFooter"></nz-table-title-footer>
       </div>
       <ng-container *ngIf="nzPaginationPosition === 'both' || nzPaginationPosition === 'bottom'">
@@ -218,6 +217,8 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterView
   constructor(
     private nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
+    private elementRef: ElementRef,
+    private nzResizeObserver: NzResizeObserver,
     private i18n: NzI18nService,
     private nzTableService: NzTableService
   ) {
@@ -241,7 +242,7 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterView
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzScroll, nzPageIndex, nzPageSize, nzFrontPagination, nzData, nzWidthConfig } = changes;
+    const { nzScroll, nzPageIndex, nzPageSize, nzFrontPagination, nzData, nzWidthConfig, nzNoResult } = changes;
     if (nzScroll) {
       this.scrollX = (this.nzScroll && this.nzScroll.x) || null;
       this.scrollY = (this.nzScroll && this.nzScroll.y) || null;
@@ -252,10 +253,24 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterView
     }
     if (nzPageIndex || nzPageSize || nzFrontPagination || nzData) {
       this.updateFrontPaginationDataIfNeeded(!!(nzPageSize || nzData));
+      this.nzTableService.setShowEmpty(this.data.length === 0 && !this.nzLoading && !this.nzTemplateMode);
+    }
+    if (nzNoResult) {
+      this.nzTableService.setNoResult(this.nzNoResult);
     }
   }
 
   ngAfterViewInit(): void {
+    this.nzResizeObserver
+      .observe(this.elementRef)
+      .pipe(
+        map(([entry]) => {
+          const { width } = entry.target.getBoundingClientRect();
+          return Math.floor(width);
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(this.nzTableService.hostWidth$);
     if (this.nzTableInnerScrollComponent && this.nzTableInnerScrollComponent.cdkVirtualScrollViewport) {
       this.cdkVirtualScrollViewport = this.nzTableInnerScrollComponent.cdkVirtualScrollViewport;
     }
