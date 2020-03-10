@@ -8,7 +8,6 @@
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import {
-  AfterContentInit,
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -122,7 +121,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'table';
     '[class.ant-table-wrapper]': 'true'
   }
 })
-export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterContentInit, AfterViewInit {
+export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
   @Input() nzTableLayout: NzTableLayoutType = 'auto';
   @Input() nzShowTotal: TemplateRef<{ $implicit: number; range: [number, number] }> | null = null;
   @Input() nzItemRender: TemplateRef<PaginationItemRenderContext> | null = null;
@@ -235,6 +234,10 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterCont
       this.locale = this.i18n.getLocaleData('Table');
       this.cdr.markForCheck();
     });
+    this.nzTableService.listOfListOfThWidthPx$.pipe(takeUntil(this.destroy$)).subscribe(listOfWidth => {
+      this.listOfColWidth = listOfWidth;
+      this.cdr.markForCheck();
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -256,13 +259,6 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterCont
     if (this.nzTableInnerScrollComponent && this.nzTableInnerScrollComponent.cdkVirtualScrollViewport) {
       this.cdkVirtualScrollViewport = this.nzTableInnerScrollComponent.cdkVirtualScrollViewport;
     }
-  }
-
-  ngAfterContentInit(): void {
-    this.nzTableService.listOfTemplateThWidthPx$.pipe(takeUntil(this.destroy$)).subscribe(listOfWidth => {
-      this.listOfColWidth = listOfWidth;
-      this.cdr.markForCheck();
-    });
   }
 
   ngOnDestroy(): void {

@@ -24,7 +24,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { NzDomEventService } from 'ng-zorro-antd/core';
+import { measureScrollbar, NzDomEventService } from 'ng-zorro-antd/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEvent, merge, Subject } from 'rxjs';
 import { delay, filter, finalize, startWith, takeUntil } from 'rxjs/operators';
@@ -131,13 +131,14 @@ export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, On
   ngOnChanges(changes: SimpleChanges): void {
     const { scrollX, scrollY, data } = changes;
     if (scrollX || scrollY) {
+      const hasVerticalScrollBar = measureScrollbar('vertical') !== 0;
       this.headerStyleMap = {
         overflowX: 'hidden',
-        overflowY: this.scrollY ? 'scroll' : 'hidden'
+        overflowY: this.scrollY && hasVerticalScrollBar ? 'scroll' : 'hidden'
       };
       this.bodyStyleMap = {
         overflowY: this.scrollY ? 'scroll' : null,
-        overflowX: this.scrollX ? 'auto' : null,
+        overflowX: this.scrollX ? 'scroll' : null,
         maxHeight: this.scrollY
       };
       this.scroll$.next();

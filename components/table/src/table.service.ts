@@ -7,7 +7,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, merge, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, combineLatest, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NzThComponent } from './cell/th.component';
 
@@ -19,12 +19,13 @@ export class NzTableService {
     map(([widthConfig, listOfWidth]) => (widthConfig.length ? widthConfig : listOfWidth))
   );
   private listOfAutoWidthPx$ = new ReplaySubject<string[]>(1);
-  private listOfListOfThWidthPx$ = combineLatest([this.listOfAutoWidthPx$, this.manualWidthConfigPx$]).pipe(
-    map(([autoWidth, manualWidth]) => (autoWidth.length === 0 ? manualWidth : autoWidth))
+  listOfListOfThWidthPx$ = combineLatest([this.listOfAutoWidthPx$, this.manualWidthConfigPx$]).pipe(
+    map(([autoWidth, manualWidth]) => {
+      /** use autoWidth until column length match **/
+      return autoWidth.length !== manualWidth.length ? manualWidth : autoWidth;
+    })
   );
   listOfMeasureColumn$ = new ReplaySubject<string[]>(1);
-  /** first init UI with manual width, then auto width **/
-  listOfTemplateThWidthPx$ = merge(this.manualWidthConfigPx$, this.listOfListOfThWidthPx$);
   listOfListOfThWidth$ = this.listOfAutoWidthPx$.pipe(map(list => list.map(width => parseInt(width, 10))));
   enableAutoMeasure$ = new ReplaySubject<boolean>(1);
 

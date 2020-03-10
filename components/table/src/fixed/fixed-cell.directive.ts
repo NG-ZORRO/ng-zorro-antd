@@ -6,19 +6,17 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectorRef, Directive, Input, OnChanges } from '@angular/core';
+import { ChangeDetectorRef, Directive, ElementRef, Input, OnChanges, Renderer2 } from '@angular/core';
 import { Subject } from 'rxjs';
 
 @Directive({
   selector: 'td[nzRight],th[nzRight],td[nzLeft],th[nzLeft]',
   host: {
-    '[class.ant-table-cell-fix-right]': `rightPx`,
-    '[class.ant-table-cell-fix-left]': `leftPx`,
+    '[class.ant-table-cell-fix-right]': `isFixedRight`,
+    '[class.ant-table-cell-fix-left]': `isFixedLeft`,
     '[class.ant-table-cell-fix-right-first]': `isFirstRight`,
     '[class.ant-table-cell-fix-left-last]': `isLastLeft`,
-    '[style.position]': `isFixed? 'sticky' : null`,
-    '[style.right]': `rightPx`,
-    '[style.left]': `leftPx`
+    '[style.position]': `isFixed? 'sticky' : null`
   }
 })
 export class NzFixedCellDirective implements OnChanges {
@@ -30,9 +28,9 @@ export class NzFixedCellDirective implements OnChanges {
   isLastLeft = false;
   isAutoLeft = false;
   isAutoRight = false;
+  isFixedLeft = false;
+  isFixedRight = false;
   isFixed = false;
-  leftPx: string | null = null;
-  rightPx: string | null = null;
 
   setIsFirstRight(isRightFirst: boolean): void {
     this.isFirstRight = isRightFirst;
@@ -44,24 +42,24 @@ export class NzFixedCellDirective implements OnChanges {
     this.cdr.markForCheck();
   }
 
-  setAutoLeftWidth(autoLeft: string): void {
-    this.leftPx = autoLeft;
-    this.cdr.markForCheck();
+  setAutoLeftWidth(autoLeft: string | null): void {
+    this.renderer.setStyle(this.elementRef.nativeElement, 'left', autoLeft);
   }
 
-  setAutoRightWidth(autoRight: string): void {
-    this.rightPx = autoRight;
-    this.cdr.markForCheck();
+  setAutoRightWidth(autoRight: string | null): void {
+    this.renderer.setStyle(this.elementRef.nativeElement, 'right', autoRight);
   }
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private renderer: Renderer2, private elementRef: ElementRef) {}
 
   ngOnChanges(): void {
     this.isFirstRight = false;
     this.isLastLeft = false;
     this.isAutoLeft = this.nzLeft === '' || this.nzLeft === true;
     this.isAutoRight = this.nzRight === '' || this.nzRight === true;
-    this.isFixed = this.nzRight !== false || this.nzLeft !== false;
+    this.isFixedLeft = this.nzLeft !== false;
+    this.isFixedRight = this.nzRight !== false;
+    this.isFixed = this.isFixedLeft || this.isFixedRight;
     const validatePx = (value: string | boolean): string | null => {
       if (typeof value === 'string' && value !== '') {
         return value;
@@ -69,8 +67,8 @@ export class NzFixedCellDirective implements OnChanges {
         return null;
       }
     };
-    this.leftPx = validatePx(this.nzLeft);
-    this.rightPx = validatePx(this.nzRight);
+    this.setAutoLeftWidth(validatePx(this.nzLeft));
+    this.setAutoRightWidth(validatePx(this.nzRight));
     this.changes$.next();
   }
 }

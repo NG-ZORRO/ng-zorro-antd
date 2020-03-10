@@ -23,7 +23,7 @@ import {
 } from '@angular/core';
 import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 import { combineLatest, Observable, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, map, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'tr[nz-table-measure-row]',
@@ -57,16 +57,14 @@ export class NzMeasureRowComponent implements AfterViewInit, OnDestroy {
       .pipe(
         switchMap(list => {
           return combineLatest(
-            list.toArray().map((item: ElementRef) =>
-              this.nzResizeObserver.observe(item).pipe(
+            list.toArray().map((item: ElementRef) => {
+              return this.nzResizeObserver.observe(item).pipe(
                 map(([entry]) => {
                   const { width } = entry.target.getBoundingClientRect();
                   return Math.floor(width);
-                }),
-                debounceTime(16),
-                distinctUntilChanged()
-              )
-            )
+                })
+              );
+            })
           ) as Observable<number[]>;
         }),
         debounceTime(16),
