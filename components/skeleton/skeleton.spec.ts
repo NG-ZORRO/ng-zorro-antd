@@ -158,7 +158,6 @@ describe('skeleton element', () => {
   });
 
   it('should nzSize work', () => {
-    testComp.nzType = 'avatar';
     expect(dl.nativeElement.querySelector('.ant-skeleton-avatar-lg')).toBeFalsy();
     testComp.nzSize = 'large';
     fixture.detectChanges();
@@ -169,18 +168,22 @@ describe('skeleton element', () => {
     expect(dl.nativeElement.querySelector('.ant-skeleton-avatar').style.height).toBe('40px');
     expect(dl.nativeElement.querySelector('.ant-skeleton-avatar').style.lineHeight).toBe('40px');
     // number size only work in 'avatar' type
-    testComp.nzType = 'button';
+    testComp.useSuite = 2;
     fixture.detectChanges();
     expect(dl.nativeElement.querySelector('.ant-skeleton-button').style.width).toBeFalsy();
   });
 
   it('should nzShape work', () => {
-    testComp.nzType = 'button';
     fixture.detectChanges();
-    expect(dl.nativeElement.querySelector('.ant-skeleton-button-circle')).toBeNull();
+    expect(dl.nativeElement.querySelector('.ant-skeleton-avatar-circle')).toBeNull();
     testComp.nzShape = 'circle';
     fixture.detectChanges();
-    expect(dl.nativeElement.querySelector('.ant-skeleton-button-circle')).toBeTruthy();
+    expect(dl.nativeElement.querySelector('.ant-skeleton-avatar-circle')).toBeTruthy();
+    testComp.nzShape = 'square';
+    fixture.detectChanges();
+    expect(dl.nativeElement.querySelector('.ant-skeleton-avatar-square')).toBeTruthy();
+
+    testComp.useSuite = 2;
     testComp.nzShape = 'round';
     fixture.detectChanges();
     expect(dl.nativeElement.querySelector('.ant-skeleton-button-round')).toBeTruthy();
@@ -201,11 +204,18 @@ export class NzTestSkeletonComponent {
 
 @Component({
   template: `
-    <nz-skeleton-element [nzType]="nzType" [nzActive]="nzActive" [nzSize]="nzSize" [nzShape]="nzShape"> </nz-skeleton-element>
+    <ng-container [ngSwitch]="useSuite">
+      <nz-skeleton-element *ngSwitchCase="1" nzType="avatar" [nzActive]="nzActive" [nzSize]="nzSize" [nzShape]="nzShape">
+      </nz-skeleton-element>
+      <nz-skeleton-element *ngSwitchCase="2" nzType="button" [nzActive]="nzActive" [nzSize]="nzSize" [nzShape]="nzShape">
+      </nz-skeleton-element>
+      <nz-skeleton-element *ngSwitchCase="3" nzType="input" [nzActive]="nzActive" [nzSize]="nzSize" [nzShape]="nzShape">
+      </nz-skeleton-element>
+    </ng-container>
   `
 })
 export class NzTestSkeletonElementComponent {
-  nzType: string;
+  useSuite = 1;
   nzActive: boolean;
   nzSize: AvatarSize | ButtonSize;
   nzShape: AvatarShape | ButtonShape;
