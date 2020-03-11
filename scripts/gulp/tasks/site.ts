@@ -20,13 +20,17 @@ const tsconfigFile = join(buildConfig.projectDir, 'site/tsconfig.app.json');
  * to ensures the demos and docs have changes are rebuild.
  */
 task('watch:site', () => {
-  watch([docsGlob, demoGlob], { delay: 700 }).on('change', path => {
-    const execArray = /components\/(.+)\/(doc|demo)/.exec(path);
-    if (execArray && execArray[1]) {
-      const component = execArray[1];
-      console.log(`Reload '${component}'`);
-      siteGenerate(component);
-    }
+  let tiemoutId: number;
+  watch([docsGlob, demoGlob]).on('change', path => {
+    clearTimeout(tiemoutId);
+    tiemoutId = setTimeout(() => {
+      const execArray = /components\/(.+)\/(doc|demo)/.exec(path);
+      if (execArray && execArray[1]) {
+        const component = execArray[1];
+        console.log(`Reload '${component}'`);
+        siteGenerate(component);
+      }
+    }, 5000);
   });
 });
 
