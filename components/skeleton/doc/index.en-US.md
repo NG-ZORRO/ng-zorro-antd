@@ -51,13 +51,6 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 | `rows` | Set the row count of paragraph | `number` | - |
 | `width` | Set the width of paragraph. When width is an Array, it can set the width of each row. Otherwise only set the last row width | `number \| string \| Array<number \| string>` | - |
 
-
-### nz-skeleton-element
-
-| Property | Description | Type | Default |
-| --- | --- | --- | --- |
-| `[nzType]` | type | `'button' \| 'avatar' \| 'input'` | - |
-
 ### nz-skeleton-element [nzType="button"]
 
 | Property | Description | Type | Default |
