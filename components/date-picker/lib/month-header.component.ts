@@ -9,8 +9,9 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 import { PanelSelector } from './interface';
 
-import { DateHelperService, transCompatFormat } from 'ng-zorro-antd/i18n';
+import { DateHelperService } from 'ng-zorro-antd/i18n';
 import { AbstractPanelHeader } from './abstract-panel-header';
+import { transCompatFormat } from './util';
 
 @Component({
   encapsulation: ViewEncapsulation.None,

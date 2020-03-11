@@ -20,9 +20,10 @@ import {
 } from '@angular/core';
 
 import { CandyDate, valueFunctionProp } from 'ng-zorro-antd/core';
-import { DateHelperService, NzCalendarI18nInterface, NzI18nService, transCompatFormat } from 'ng-zorro-antd/i18n';
+import { DateHelperService, NzCalendarI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell, DayCell } from './interface';
+import { transCompatFormat } from './util';
 
 @Component({
   encapsulation: ViewEncapsulation.None,

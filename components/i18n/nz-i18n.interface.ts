@@ -119,5 +119,4 @@ export interface NzI18nInterface {
   };
 }
 
-// tslint:disable-next-line:no-any
-export type DateLocale = Locale; // TODO: Implement this type definition when date-fns is stable
+export type DateLocale = Locale;
