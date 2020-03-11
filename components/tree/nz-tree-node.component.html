@@ -20,7 +20,7 @@
             *ngIf="!isTemplateRef(nzExpandedIcon)"
             nz-icon
             nzType="caret-down"
-            [class.ant-select-switcher-icon]="nzSelectMode"
+            [class.ant-select-tree-switcher-icon]="nzSelectMode"
             [class.ant-tree-switcher-icon]="!nzSelectMode"
           >
           </i>
@@ -60,17 +60,22 @@
       ></span>
     </span>
   </ng-container>
-  <ng-container *ngIf="!nzTreeTemplate">
-    <span
-      title="{{ nzTreeNode.title }}"
-      [attr.draggable]="canDraggable"
-      [attr.aria-grabbed]="canDraggable"
-      [ngClass]="nzNodeContentClass"
-      [class.draggable]="canDraggable"
-      (dblclick)="dblClick($event)"
-      (click)="clickSelect($event)"
-      (contextmenu)="contextMenu($event)"
+  <span
+    title="{{ nzTreeNode.title }}"
+    [attr.draggable]="canDraggable"
+    [attr.aria-grabbed]="canDraggable"
+    [ngClass]="nzNodeContentClass"
+    [class.draggable]="canDraggable"
+    (dblclick)="dblClick($event)"
+    (click)="clickSelect($event)"
+    (contextmenu)="contextMenu($event)"
+  >
+    <ng-template
+      [ngTemplateOutlet]="nzTreeTemplate"
+      [ngTemplateOutletContext]="{ $implicit: nzTreeNode }"
     >
+    </ng-template>
+    <ng-container *ngIf="!nzTreeTemplate">
       <span
         *ngIf="nzTreeNode.icon && nzShowIcon"
         [class.ant-tree-icon__open]="isSwitcherOpen"
@@ -87,11 +92,6 @@
         [innerHTML]="nzTreeNode.title | nzHighlight: nzSearchValue:'':'font-highlight'"
       >
       </span>
-    </span>
-  </ng-container>
-  <ng-template
-    [ngTemplateOutlet]="nzTreeTemplate"
-    [ngTemplateOutletContext]="{ $implicit: nzTreeNode }"
-  >
-  </ng-template>
+    </ng-container>
+  </span>
 </div>

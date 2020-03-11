@@ -224,6 +224,7 @@ export class NzTreeNode {
     this._isExpanded = value;
     this.origin.expanded = value;
     this.afterValueChange('isExpanded');
+    this.afterValueChange('reRender');
   }
 
   get isSelected(): boolean {
@@ -264,11 +265,13 @@ export class NzTreeNode {
   }
 
   /**
-   * @deprecated Maybe removed in next major version, use `isExpanded` instead.
+   * @not-deprecated Maybe removed in next major version, use `isExpanded` instead.
+   * We need it until tree refactoring is finished
    */
   public setExpanded(value: boolean): void {
-    warnDeprecation(`'setExpanded' is going to be removed in 9.0.0. Please use 'isExpanded' instead.`);
-    this.isExpanded = value;
+    this._isExpanded = value;
+    this.origin.expanded = value;
+    this.afterValueChange('isExpanded');
   }
 
   /**

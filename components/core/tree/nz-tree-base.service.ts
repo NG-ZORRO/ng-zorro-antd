@@ -6,21 +6,19 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Injectable } from '@angular/core';
 
 import { FlattenNode, NzTreeNode, NzTreeNodeKey } from './nz-tree-base-node';
 import { flattenTreeData, isCheckDisabled, isInArray } from './nz-tree-base-util';
 import { NzFormatEmitEvent } from './nz-tree-base.definitions';
 
 @Injectable()
-export class NzTreeBaseService implements OnDestroy {
+export class NzTreeBaseService {
   DRAG_SIDE_RANGE = 0.25;
   DRAG_MIN_GAP = 2;
 
   isCheckStrictly: boolean = false;
   isMultiple: boolean = false;
-  expandAll: boolean = false;
   selectedNode: NzTreeNode;
   rootNodes: NzTreeNode[] = [];
   flattenNodes: FlattenNode[] = [];
@@ -29,15 +27,6 @@ export class NzTreeBaseService implements OnDestroy {
   checkedNodeList: NzTreeNode[] = [];
   halfCheckedNodeList: NzTreeNode[] = [];
   matchedNodeList: NzTreeNode[] = [];
-  nodesListChange$ = new BehaviorSubject<NzTreeNode[]>([]);
-  triggerEventChange$ = new Subject<NzFormatEmitEvent>();
-
-  /**
-   * trigger event
-   */
-  eventTriggerChanged(): Observable<NzFormatEmitEvent> {
-    return this.triggerEventChange$.asObservable();
-  }
 
   /**
    * reset tree nodes will clear default node list
@@ -92,72 +81,6 @@ export class NzTreeBaseService implements OnDestroy {
   }
 
   /**
-   * reset selectedNodeList
-   */
-  calcSelectedKeys(selectedKeys: string[], nzNodes: NzTreeNode[], isMulti: boolean = false): void {
-    const calc = (nodes: NzTreeNode[]): boolean => {
-      return nodes.every(node => {
-        if (isInArray(node.key, selectedKeys)) {
-          node.isSelected = true;
-          if (!isMulti) {
-            // if not support multi select
-            return false;
-          }
-        } else {
-          node.isSelected = false;
-        }
-        if (node.children.length > 0) {
-          // Recursion
-          return calc(node.children);
-        }
-        return true;
-      });
-    };
-    calc(nzNodes);
-  }
-
-  /**
-   * reset expandedNodeList
-   */
-  calcExpandedKeys(expandedKeys: string[], nzNodes: NzTreeNode[]): void {
-    this.expandedNodeList = [];
-    const calc = (nodes: NzTreeNode[]) => {
-      nodes.forEach(node => {
-        node.isExpanded = isInArray(node.key, expandedKeys);
-        if (node.children.length > 0) {
-          calc(node.children);
-        }
-      });
-    };
-    calc(nzNodes);
-  }
-
-  /**
-   * reset checkedNodeList
-   */
-  calcCheckedKeys(checkedKeys: string[], nzNodes: NzTreeNode[], isCheckStrictly: boolean = false): void {
-    this.checkedNodeList = [];
-    this.halfCheckedNodeList = [];
-    const calc = (nodes: NzTreeNode[]) => {
-      nodes.forEach(node => {
-        if (isInArray(node.key, checkedKeys)) {
-          node.isChecked = true;
-          node.isHalfChecked = false;
-        } else {
-          node.isChecked = false;
-          node.isHalfChecked = false;
-        }
-        if (node.children.length > 0) {
-          calc(node.children);
-        }
-      });
-    };
-    calc(nzNodes);
-    // controlled state
-    this.refreshCheckState(isCheckStrictly);
-  }
-
-  /**
    * set drag node
    */
   setSelectedNode(node: NzTreeNode): void {
@@ -185,7 +108,7 @@ export class NzTreeBaseService implements OnDestroy {
    * add or remove node to selectedNodeList
    */
   setSelectedNodeList(node: NzTreeNode, isMultiple: boolean = false): void {
-    const index = this.selectedNodeList.findIndex(n => node.key === n.key);
+    const index = this.getIndexOfArray(this.selectedNodeList, node.key);
     if (isMultiple) {
       if (node.isSelected && index === -1) {
         this.selectedNodeList.push(node);
@@ -204,7 +127,7 @@ export class NzTreeBaseService implements OnDestroy {
    * merge checked nodes
    */
   setHalfCheckedNodeList(node: NzTreeNode): void {
-    const index = this.halfCheckedNodeList.findIndex(n => node.key === n.key);
+    const index = this.getIndexOfArray(this.halfCheckedNodeList, node.key);
     if (node.isHalfChecked && index === -1) {
       this.halfCheckedNodeList.push(node);
     } else if (!node.isHalfChecked && index > -1) {
@@ -213,7 +136,7 @@ export class NzTreeBaseService implements OnDestroy {
   }
 
   setCheckedNodeList(node: NzTreeNode): void {
-    const index = this.checkedNodeList.findIndex(n => node.key === n.key);
+    const index = this.getIndexOfArray(this.checkedNodeList, node.key);
     if (node.isChecked && index === -1) {
       this.checkedNodeList.push(node);
     } else if (!node.isChecked && index > -1) {
@@ -497,7 +420,6 @@ export class NzTreeBaseService implements OnDestroy {
         break;
       case 'check':
         const checkedNodeList = this.getCheckedNodeList();
-
         Object.assign(emitStructure, { checkedKeys: checkedNodeList });
         Object.assign(emitStructure, { nodes: checkedNodeList });
         Object.assign(emitStructure, { keys: checkedNodeList.map(n => n.key) });
@@ -513,10 +435,6 @@ export class NzTreeBaseService implements OnDestroy {
         break;
     }
     return emitStructure;
-  }
-
-  ngOnDestroy(): void {
-    this.triggerEventChange$.complete();
   }
 
   /**
@@ -570,11 +488,11 @@ export class NzTreeBaseService implements OnDestroy {
     calc(this.rootNodes);
   }
 
-  conductSelect(keys: NzTreeNodeKey[], isMulti: boolean): void {
+  conductSelectedKeys(keys: NzTreeNodeKey[], isMulti: boolean): void {
     this.selectedNodeList = [];
     const calc = (nodes: NzTreeNode[]): boolean => {
       return nodes.every(node => {
-        if (isInArray(node.key, keys) || node.isSelected) {
+        if (isInArray(node.key, keys)) {
           node.isSelected = true;
           this.setSelectedNodeList(node);
           if (!isMulti) {

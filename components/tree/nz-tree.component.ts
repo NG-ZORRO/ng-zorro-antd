@@ -38,10 +38,11 @@ import {
   NzTreeHigherOrderServiceToken,
   NzTreeNode,
   NzTreeNodeKey,
+  NzTreeNodeOptions,
   WithConfig
 } from 'ng-zorro-antd/core';
 import { flattenTreeData } from 'ng-zorro-antd/core/tree/nz-tree-base-util';
-import { BehaviorSubject, Observable, ReplaySubject, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { NzTreeService } from './nz-tree.service';
 
@@ -95,8 +96,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
 
   @Input() @InputBoolean() nzMultiple = false;
 
-  // tslint:disable-next-line:no-any
-  @Input() nzData: any[] = [];
+  @Input() nzData: NzTreeNodeOptions[] | NzTreeNode[] = [];
 
   @Input() nzExpandedKeys: NzTreeNodeKey[] = [];
 
@@ -147,28 +147,31 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
     margin: 0
   };
 
-  _searchValue: string;
-  nzDefaultSubject = new ReplaySubject<{ type: string; keys: string[] }>(6);
-  nzOnChanges = new BehaviorSubject<{ [propertyName: string]: SimpleChange }>({});
   destroy$ = new Subject();
   prefixCls = 'ant-tree';
   classMap = {};
-  classMapOfNodeList = {
-    [this.prefixCls + '-list']: true
-  };
+  classMapOfNodeList = {};
+  classMapOfListContainer = {};
 
   onChange: (value: NzTreeNode[]) => void = () => null;
   onTouched: () => void = () => null;
 
   setClassMap(): void {
+    this.prefixCls = this.nzSelectMode ? 'ant-select-tree' : 'ant-tree';
+    this.classMapOfNodeList = {
+      [this.prefixCls + '-list']: true
+    };
+    this.classMapOfListContainer = {
+      [this.prefixCls + '-list-holder-inner']: true
+    };
     this.classMap = {
       [this.prefixCls]: true,
       [this.prefixCls + '-show-line']: this.nzShowLine,
       [`${this.prefixCls}-icon-hide`]: !this.nzShowIcon,
       [`${this.prefixCls}-block-node`]: this.nzBlockNode,
-      ['draggable-tree']: this.nzDraggable,
-      ['ant-select-tree']: this.nzSelectMode
+      ['draggable-tree']: this.nzDraggable
     };
+    this.cdr.markForCheck();
   }
 
   writeValue(value: NzTreeNode[]): void {
@@ -236,6 +239,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
     const currentExpandedKeys = this.getExpandedNodeList().map(v => v.key);
     const newExpandedKeys = useDefaultExpandedKeys ? expandAll || this.nzExpandedKeys : currentExpandedKeys;
     this.handleFlattenNodes(this.nzNodes, newExpandedKeys);
+    console.log(this.nzFlattenNodes, this.nzNodes);
   }
 
   // Deal with properties
@@ -264,7 +268,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   }
 
   handleSelectedKeys(keys: NzTreeNodeKey[], isMulti: boolean): void {
-    this.nzTreeService.conductSelect(keys, isMulti);
+    this.nzTreeService.conductSelectedKeys(keys, isMulti);
   }
 
   handleSearchValue(value: string): void {
@@ -272,7 +276,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
     dataList.forEach(v => {
       v.isMatched = !value || !v.key.includes(value) ? false : true;
       if (!value || !v.key.includes(value)) {
-        v.isExpanded = false;
+        v.setExpanded(false);
         this.nzTreeService.setExpandedNodeList(v);
       } else if (v.key.includes(value)) {
         // expand
@@ -287,7 +291,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
     const node = event.node!;
     switch (event.eventName) {
       case 'expand':
-        this.renderFlattenNodes();
+        this.renderTree();
         this.nzExpandChange.emit(event);
         break;
       case 'click':
@@ -312,16 +316,16 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
       case 'dragstart':
         // if node is expanded
         if (node.isExpanded) {
-          node.isExpanded = !node.isExpanded;
-          this.renderFlattenNodes();
+          node.setExpanded(!node.isExpanded);
+          this.renderTree();
         }
         this.nzOnDragStart.emit(event);
         break;
       case 'dragenter':
         const selectedNode = this.nzTreeService.getSelectedNode();
         if (selectedNode && selectedNode.key !== node.key && !node.isExpanded && !node.isLeaf) {
-          node.isExpanded = true;
-          this.renderFlattenNodes();
+          node.setExpanded(true);
+          this.renderTree();
         }
         this.nzOnDragEnter.emit(event);
         break;
@@ -335,7 +339,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
         this.nzOnDragEnd.emit(event);
         break;
       case 'drop':
-        this.renderFlattenNodes();
+        this.renderTree();
         this.nzOnDrop.emit(event);
         break;
       default:
@@ -347,7 +351,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
    * Click expand icon
    * @param event
    */
-  renderFlattenNodes(): void {
+  renderTree(): void {
     this.handleFlattenNodes(
       this.nzNodes,
       this.getExpandedNodeList().map(v => v.key)

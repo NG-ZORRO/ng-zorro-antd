@@ -4,7 +4,7 @@
   </div>
   <div [ngClass]="classMapOfNodeList">
     <div>
-      <div class="ant-tree-list-holder-inner">
+      <div [ngClass]="classMapOfListContainer">
         <ng-container *ngFor="let node of nzFlattenNodes">
           <nz-tree-node
             [nzTreeNode]="node.data"
