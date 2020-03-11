@@ -266,6 +266,8 @@ describe('NzMonthPickerComponent', () => {
     it('should support year panel changes', fakeAsync(() => {
       fixtureInstance.nzValue = new Date('2018-11');
       fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
       openPickerByClickTrigger();
       // Click year select to show year panel
       dispatchMouseEvent(queryFromOverlay('.ant-picker-header-month-btn'), 'click');
