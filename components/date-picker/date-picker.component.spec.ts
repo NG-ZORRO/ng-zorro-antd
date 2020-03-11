@@ -329,6 +329,7 @@ describe('NzDatePickerComponent', () => {
     }));
 
     it('should support nzValue', fakeAsync(() => {
+      fixtureInstance.nzDefaultPickerValue = new Date('2015-09-17');
       fixtureInstance.nzValue = new Date('2018-11-11');
       fixture.detectChanges();
       flush();
@@ -354,6 +355,16 @@ describe('NzDatePickerComponent', () => {
       expect(nzOnCalendarChange).not.toHaveBeenCalled();
       const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
       expect(result.getDate()).toBe(+cellText);
+    }));
+
+    it('should support nzDefaultPickerValue', fakeAsync(() => {
+      fixtureInstance.nzDefaultPickerValue = new Date('2015-09-17');
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      expect(queryFromOverlay('.ant-picker-header-year-btn').textContent!.indexOf('2015') > -1).toBeTruthy();
+      expect(queryFromOverlay('.ant-picker-header-month-btn').textContent!.indexOf('9') > -1).toBeTruthy();
     }));
   });
 
@@ -403,6 +414,8 @@ describe('NzDatePickerComponent', () => {
     it('should support month panel changes', fakeAsync(() => {
       fixtureInstance.nzValue = new Date('2018-11-11');
       fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
       openPickerByClickTrigger();
       // Click month select to show month panel
       dispatchMouseEvent(queryFromOverlay('.ant-picker-header-month-btn'), 'click');
@@ -437,6 +450,8 @@ describe('NzDatePickerComponent', () => {
 
     it('should support year panel changes', fakeAsync(() => {
       fixtureInstance.nzValue = new Date('2018-11-11');
+      fixture.detectChanges();
+      flush();
       fixture.detectChanges();
       openPickerByClickTrigger();
       // Click year select to show year panel
@@ -840,6 +855,7 @@ describe('NzDatePickerComponent', () => {
         (nzOnOpenChange)="nzOnOpenChange($event)"
         [ngModel]="nzValue"
         (ngModelChange)="nzOnChange($event)"
+        [nzDefaultPickerValue]="nzDefaultPickerValue"
         [nzDateRender]="nzDateRender"
         [nzDisabledTime]="nzDisabledTime"
         [nzRenderExtraFooter]="nzRenderExtraFooter"
@@ -889,7 +905,7 @@ class NzTestDatePickerComponent {
   nzOnOpenChange(): void {}
 
   nzValue: Date | null;
-
+  nzDefaultPickerValue: Date | null;
   nzDateRender: any; // tslint:disable-line:no-any
   nzShowTime: boolean | object = false;
   nzDisabledTime: any; // tslint:disable-line:no-any

@@ -2,6 +2,7 @@
   nz-picker
   [isRange]="isRange"
   [open]="nzOpen"
+  [separator]="nzSeparator"
   [disabled]="nzDisabled"
   [disabledDate]="nzDisabledDate"
   [format]="nzFormat"
@@ -9,7 +10,7 @@
   [autoFocus]="nzAutoFocus"
   [placeholder]="nzPlaceHolder"
   [ngClass]="nzClassName"
-  [style]="pickerStyle"
+  [style]="nzStyle"
   [noAnimation]="noAnimation?.nzNoAnimation"
   (openChange)="onOpenChange($event)"
   (focusChange)="onFocusChange($event)"
@@ -17,6 +18,7 @@
   <date-range-popup
     *ngIf="realOpenState"
     [isRange]="isRange"
+    [defaultPickerValue]="nzDefaultPickerValue"
     [showWeek]="showWeek"
     [panelMode]="nzMode"
     (panelModeChange)="onPanelModeChange($event)"

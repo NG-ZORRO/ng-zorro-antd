@@ -17,9 +17,12 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
   Output,
+  QueryList,
   SimpleChanges,
   ViewChild,
+  ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
 
@@ -36,42 +39,43 @@ import { RangePartType } from './standard-types';
   selector: '[nz-picker]',
   exportAs: 'nzPicker',
   template: `
-    <div cdkOverlayOrigin #origin="cdkOverlayOrigin" style="display: inherit; width: 100%">
-      <!-- Content of single picker -->
-      <div *ngIf="!isRange" class="{{ prefixCls }}-input">
-        <input
-          #pickerInput
-          [class.ant-input-disabled]="disabled"
-          [disabled]="disabled"
-          [(ngModel)]="inputValue"
-          placeholder="{{ getPlaceholder() }}"
-          (click)="onClickInputBox()"
-          (focus)="onFocus()"
-          (blur)="onBlur()"
-          (input)="onInputKeyup($event)"
-          (keyup.enter)="onInputKeyup($event, true)"
-        />
-        <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
-      </div>
-
-      <!-- Content of range picker -->
-      <ng-container *ngIf="isRange">
-        <div class="{{ prefixCls }}-input">
-          <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'left' }"></ng-container>
-        </div>
-        <div class="{{ prefixCls }}-range-separator">
-          <span class="{{ prefixCls }}-separator"> ~ </span>
-        </div>
-        <div class="{{ prefixCls }}-input">
-          <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'right' }"></ng-container>
-        </div>
-        <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
-      </ng-container>
+    <!-- Content of single picker -->
+    <div *ngIf="!isRange" class="{{ prefixCls }}-input">
+      <input
+        #pickerInput
+        [class.ant-input-disabled]="disabled"
+        [disabled]="disabled"
+        [(ngModel)]="inputValue"
+        placeholder="{{ getPlaceholder() }}"
+        [size]="inputSize"
+        (click)="onClickInputBox()"
+        (focus)="onFocus()"
+        (blur)="onBlur()"
+        (input)="onInputKeyup($event)"
+        (keyup.enter)="onInputKeyup($event, true)"
+      />
+      <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
     </div>
+
+    <!-- Content of range picker -->
+    <ng-container *ngIf="isRange">
+      <div class="{{ prefixCls }}-input">
+        <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'left' }"></ng-container>
+      </div>
+      <div #separatorElement class="{{ prefixCls }}-range-separator">
+        <span class="{{ prefixCls }}-separator"> {{ separator }} </span>
+      </div>
+      <div class="{{ prefixCls }}-input">
+        <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'right' }"></ng-container>
+      </div>
+      <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
+    </ng-container>
     <!-- Input for Range ONLY -->
     <ng-template #tplRangeInput let-partType="partType">
       <input
+        #rangePickerInput
         [disabled]="disabled"
+        [size]="inputSize"
         (click)="onClickInputBox(partType)"
         (blur)="onBlur()"
         (input)="onInputKeyup($event, false)"
@@ -122,7 +126,7 @@ import { RangePartType } from './standard-types';
   animations: [slideMotion],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NzPickerComponent implements AfterViewInit, OnChanges, OnDestroy {
+export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
   @Input() noAnimation: boolean = false;
   @Input() isRange: boolean = false;
   @Input() open: boolean | undefined = undefined;
@@ -132,19 +136,24 @@ export class NzPickerComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() allowClear: boolean;
   @Input() autoFocus: boolean;
   @Input() format: string;
+  @Input() separator: string;
 
   @Output() readonly focusChange = new EventEmitter<boolean>();
   @Output() readonly valueChange = new EventEmitter<CandyDate | CandyDate[] | null>();
   @Output() readonly openChange = new EventEmitter<boolean>(); // Emitted when overlay's open state change
 
-  @ViewChild('origin', { static: false }) origin: CdkOverlayOrigin;
   @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay: CdkConnectedOverlay;
+  @ViewChild('separatorElement', { static: false }) separatorElement: ElementRef;
+  @ViewChildren('rangePickerInput') rangePickerInputs: QueryList<ElementRef>;
 
+  origin: CdkOverlayOrigin;
+  inputSize: number;
   destroy$ = new Subject();
   prefixCls = PREFIX_CLASS;
+  // Index signature in type 'string | string[]' only permits reading
   // tslint:disable-next-line:no-any
   inputValue: any;
-  activeBarStyle = {};
+  activeBarStyle: object = { position: 'absolute' };
   animationOpenState = false;
   overlayOpen: boolean = false; // Available when "open"=undefined
   overlayPositions: ConnectionPositionPair[] = [
@@ -190,7 +199,12 @@ export class NzPickerComponent implements AfterViewInit, OnChanges, OnDestroy {
     private changeDetector: ChangeDetectorRef,
     public datePickerService: DatePickerService
   ) {
+    this.origin = new CdkOverlayOrigin(elementRef);
     this.updateInputValue();
+  }
+
+  ngOnInit(): void {
+    this.inputSize = Math.max(10, this.format.length) + 2;
   }
 
   ngAfterViewInit(): void {
@@ -202,16 +216,20 @@ export class NzPickerComponent implements AfterViewInit, OnChanges, OnDestroy {
       this.changeDetector.markForCheck();
     });
     if (this.isRange) {
-      const inputWidth = (this.elementRef.nativeElement as HTMLElement).querySelector('input')!.offsetWidth;
-      const arrowLeft =
-        inputWidth +
-        ((this.elementRef.nativeElement as HTMLElement).querySelector('.ant-picker-range-separator') as HTMLElement).offsetWidth;
+      const inputWidth = this.rangePickerInputs.first.nativeElement.offsetWidth;
+      const arrowLeft = inputWidth + this.separatorElement.nativeElement.offsetWidth;
 
       this.datePickerService.inputPartChange$.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe(partType => {
         this.datePickerService.activeInput = partType;
         this.focus();
-        this.datePickerService.arrowPositionStyle = { left: this.datePickerService.activeInput === 'left' ? '0px' : `${arrowLeft}px` };
-        this.activeBarStyle = { ...this.datePickerService.arrowPositionStyle, width: `${inputWidth}px`, position: 'absolute' };
+        this.datePickerService.arrowPositionStyle = {
+          left: this.datePickerService.activeInput === 'left' ? '0px' : `${arrowLeft}px`
+        };
+        this.activeBarStyle = {
+          ...this.activeBarStyle,
+          ...this.datePickerService.arrowPositionStyle,
+          width: `${inputWidth}px`
+        };
         this.changeDetector.markForCheck();
       });
     }

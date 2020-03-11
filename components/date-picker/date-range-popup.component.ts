@@ -30,6 +30,7 @@ import { PREFIX_CLASS } from './name';
 
 import { getTimeConfig, isAllowedDate } from './lib/util';
 import {
+  CompatibleDate,
   DisabledDateFn,
   DisabledTimeConfig,
   DisabledTimeFn,
@@ -157,7 +158,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   @Input() dropdownClassName: string;
 
   @Input() panelMode: PanelMode | PanelMode[];
-  @Input() value: CompatibleValue;
+  @Input() defaultPickerValue: CompatibleDate;
 
   @Output() readonly panelModeChange = new EventEmitter<PanelMode | PanelMode[]>();
   @Output() readonly calendarChange = new EventEmitter<CompatibleValue>();
@@ -182,7 +183,10 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit(): void {
     // Set panel active date once open
-    this.datePickerService.setActiveDate();
+    const activeDate = this.datePickerService.hasValue()
+      ? this.datePickerService.value
+      : this.datePickerService.makeValue(this.defaultPickerValue);
+    this.datePickerService.setActiveDate(activeDate);
     this.datePickerService.valueChange$.pipe(takeUntil(this.destroy$)).subscribe(value => {
       if (this.isRange) {
         // Re-initialize all related values
