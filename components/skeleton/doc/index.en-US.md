@@ -59,7 +59,7 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 | `[nzSize]` | Set the size | `'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzShape]` | Set the shape | `'circle' \| 'round' \| 'default'` | `'default'` |
 
-### nz-skeleton-element[nzType="avatar"]
+### nz-skeleton-element [nzType="avatar"]
 
 | Property | Description | Type | Default |
 | --- | --- | --- | --- |
@@ -67,7 +67,7 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 | `[nzSize]` | Set the size | `number \| 'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzShape]` | Set the shape | `'circle' \| 'square'` | `'square'` |
 
-### nz-skeleton-element[nzType="input"]
+### nz-skeleton-element [nzType="input"]
 
 | Property | Description | Type | Default |
 | --- | --- | --- | --- |

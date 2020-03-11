@@ -17,8 +17,7 @@ import { AvatarShape, AvatarSize, ButtonShape, ButtonSize, InputSize } from './s
     '[class.ant-skeleton-active]': 'nzActive'
   }
 })
-// tslint:disable-next-line:directive-class-suffix
-export class NzSkeletonElementComponent {
+export class NzSkeletonElementDirective {
   @Input() nzActive: boolean = false;
   @Input() nzType: 'button' | 'input' | 'avatar';
 }

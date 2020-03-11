@@ -11,7 +11,7 @@ import { NgModule } from '@angular/core';
 import {
   NzSkeletonElementAvatarComponent,
   NzSkeletonElementButtonComponent,
-  NzSkeletonElementComponent,
+  NzSkeletonElementDirective,
   NzSkeletonElementInputComponent
 } from './skeleton-element.component';
 import { NzSkeletonComponent } from './skeleton.component';
@@ -19,7 +19,7 @@ import { NzSkeletonComponent } from './skeleton.component';
 @NgModule({
   declarations: [
     NzSkeletonComponent,
-    NzSkeletonElementComponent,
+    NzSkeletonElementDirective,
     NzSkeletonElementButtonComponent,
     NzSkeletonElementAvatarComponent,
     NzSkeletonElementInputComponent
@@ -27,7 +27,7 @@ import { NzSkeletonComponent } from './skeleton.component';
   imports: [CommonModule],
   exports: [
     NzSkeletonComponent,
-    NzSkeletonElementComponent,
+    NzSkeletonElementDirective,
     NzSkeletonElementButtonComponent,
     NzSkeletonElementAvatarComponent,
     NzSkeletonElementInputComponent
