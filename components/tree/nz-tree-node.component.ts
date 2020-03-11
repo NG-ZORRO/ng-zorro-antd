@@ -42,7 +42,88 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'nz-tree-node',
   exportAs: 'nzTreeNode',
-  templateUrl: './nz-tree-node.component.html',
+  template: `
+    <div #dragElement role="treeitem" [ngClass]="nzNodeClass">
+      <nz-tree-indent
+        [nzTreeLevel]="nzTreeNode.level"
+        [nzPrefixCls]="prefixCls"
+        [nzIsStart]="nzTreeNode.isStart"
+        [nzIsEnd]="nzTreeNode.isEnd"
+      ></nz-tree-indent>
+      <ng-container *ngIf="nzShowExpand">
+        <!-- render switcher -->
+        <span [ngClass]="nzNodeSwitcherClass" (click)="clickExpand($event)">
+          <ng-container *ngIf="isShowSwitchIcon">
+            <ng-container *ngIf="!nzTreeNode.isLoading">
+              <ng-template
+                *ngIf="isTemplateRef(nzExpandedIcon)"
+                [ngTemplateOutlet]="nzExpandedIcon"
+                [ngTemplateOutletContext]="{ $implicit: nzTreeNode }"
+              >
+              </ng-template>
+              <i
+                *ngIf="!isTemplateRef(nzExpandedIcon)"
+                nz-icon
+                nzType="caret-down"
+                [class.ant-select-tree-switcher-icon]="nzSelectMode"
+                [class.ant-tree-switcher-icon]="!nzSelectMode"
+              >
+              </i>
+            </ng-container>
+            <i *ngIf="nzTreeNode.isLoading" nz-icon nzType="loading" [nzSpin]="true" class="ant-tree-switcher-loading-icon"></i>
+          </ng-container>
+          <ng-container *ngIf="nzShowLine">
+            <ng-template
+              *ngIf="isTemplateRef(nzExpandedIcon)"
+              [ngTemplateOutlet]="nzExpandedIcon"
+              [ngTemplateOutletContext]="{ $implicit: nzTreeNode }"
+            >
+            </ng-template>
+            <ng-container *ngIf="!isTemplateRef(nzExpandedIcon)">
+              <i
+                *ngIf="isShowLineIcon"
+                nz-icon
+                [nzType]="isSwitcherOpen ? 'minus-square' : 'plus-square'"
+                class="ant-tree-switcher-line-icon"
+              ></i>
+              <i *ngIf="!isShowLineIcon" nz-icon nzType="file" class="ant-tree-switcher-line-icon"></i>
+            </ng-container>
+          </ng-container>
+        </span>
+      </ng-container>
+      <ng-container *ngIf="nzCheckable">
+        <span [ngClass]="nzNodeCheckboxClass" (click)="clickCheckBox($event)">
+          <span [class.ant-tree-checkbox-inner]="!nzSelectMode" [class.ant-select-tree-checkbox-inner]="nzSelectMode"></span>
+        </span>
+      </ng-container>
+      <span
+        title="{{ nzTreeNode.title }}"
+        [attr.draggable]="canDraggable"
+        [attr.aria-grabbed]="canDraggable"
+        [ngClass]="nzNodeContentClass"
+        [class.draggable]="canDraggable"
+        (dblclick)="dblClick($event)"
+        (click)="clickSelect($event)"
+        (contextmenu)="contextMenu($event)"
+      >
+        <ng-template [ngTemplateOutlet]="nzTreeTemplate" [ngTemplateOutletContext]="{ $implicit: nzTreeNode }"> </ng-template>
+        <ng-container *ngIf="!nzTreeTemplate">
+          <span
+            *ngIf="nzTreeNode.icon && nzShowIcon"
+            [class.ant-tree-icon__open]="isSwitcherOpen"
+            [class.ant-tree-icon__close]="isSwitcherClose"
+            [class.ant-tree-icon_loading]="nzTreeNode.isLoading"
+            [ngClass]="nzNodeContentLoadingClass"
+          >
+            <span [ngClass]="nzNodeContentIconClass">
+              <i nz-icon *ngIf="nzIcon" [nzType]="nzIcon"></i>
+            </span>
+          </span>
+          <span class="ant-tree-title" [innerHTML]="nzTreeNode.title | nzHighlight: nzSearchValue:'':'font-highlight'"> </span>
+        </ng-container>
+      </span>
+    </div>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
   animations: [treeCollapseMotion]

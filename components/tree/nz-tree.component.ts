@@ -55,7 +55,50 @@ const NZ_CONFIG_COMPONENT_NAME = 'tree';
 @Component({
   selector: 'nz-tree',
   exportAs: 'nzTree',
-  templateUrl: './nz-tree.component.html',
+  template: `
+    <div [ngClass]="classMap">
+      <div role="tree">
+        <input [ngStyle]="HIDDEN_STYLE" />
+      </div>
+      <div [ngClass]="classMapOfNodeList">
+        <div>
+          <div [ngClass]="classMapOfListContainer">
+            <ng-container *ngFor="let node of nzFlattenNodes">
+              <nz-tree-node
+                [nzTreeNode]="node.data"
+                [nzSelectMode]="nzSelectMode"
+                [nzShowLine]="nzShowLine"
+                [nzExpandedIcon]="nzExpandedIcon"
+                [nzDraggable]="nzDraggable"
+                [nzCheckable]="nzCheckable"
+                [nzShowExpand]="nzShowExpand"
+                [nzAsyncData]="nzAsyncData"
+                [nzSearchValue]="nzSearchValue"
+                [nzHideUnMatched]="nzHideUnMatched"
+                [nzBeforeDrop]="nzBeforeDrop"
+                [nzShowIcon]="nzShowIcon"
+                [nzTreeTemplate]="treeTemplate"
+                [@.disabled]="noAnimation?.nzNoAnimation"
+                [nzNoAnimation]="noAnimation?.nzNoAnimation"
+                (nzExpandChange)="eventTriggerChanged($event)"
+                (nzClick)="eventTriggerChanged($event)"
+                (nzDblClick)="eventTriggerChanged($event)"
+                (nzContextMenu)="eventTriggerChanged($event)"
+                (nzCheckBoxChange)="eventTriggerChanged($event)"
+                (nzOnDragStart)="eventTriggerChanged($event)"
+                (nzOnDragEnter)="eventTriggerChanged($event)"
+                (nzOnDragOver)="eventTriggerChanged($event)"
+                (nzOnDragLeave)="eventTriggerChanged($event)"
+                (nzOnDragEnd)="eventTriggerChanged($event)"
+                (nzOnDrop)="eventTriggerChanged($event)"
+              >
+              </nz-tree-node>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     NzTreeService,
@@ -239,7 +282,6 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
     const currentExpandedKeys = this.getExpandedNodeList().map(v => v.key);
     const newExpandedKeys = useDefaultExpandedKeys ? expandAll || this.nzExpandedKeys : currentExpandedKeys;
     this.handleFlattenNodes(this.nzNodes, newExpandedKeys);
-    console.log(this.nzFlattenNodes, this.nzNodes);
   }
 
   // Deal with properties
