@@ -27,7 +27,8 @@ import {
   FunctionProp,
   InputBoolean,
   NzNoAnimationDirective,
-  valueFunctionProp
+  valueFunctionProp,
+  warnDeprecation
 } from 'ng-zorro-antd/core';
 import { DateHelperService, NzDatePickerI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
@@ -59,7 +60,6 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   @Input() @InputBoolean() nzOpen: boolean;
   /**
    * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
-   * Please use CSS class attribute like <nz-date-picker class="..."></nz-date-picker>
    */
   @Input() nzClassName: string;
   @Input() nzDisabledDate: (d: Date) => boolean;
@@ -70,7 +70,6 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   @Input() nzSize: 'large' | 'small';
   /**
    * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
-   * Please use CSS style attribute like <nz-date-picker style="..."></nz-date-picker>
    */
   @Input() nzStyle: object;
   @Input() nzFormat: string;
@@ -187,7 +186,16 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
     }
 
     if (changes.nzStyle) {
+      warnDeprecation(
+        `'nzStyle' in DatePicker is going to be removed in 10.0.0. Please use CSS style attribute like <nz-date-picker style="..."></nz-date-picker> instead.`
+      );
       this.updatePickerStyle();
+    }
+
+    if (changes.nzClassName) {
+      warnDeprecation(
+        `'nzClassName' in DatePicker is going to be removed in 10.0.0. Please use CSS class attribute like <nz-date-picker class="..."></nz-date-picker> instead.`
+      );
     }
 
     if (changes.nzMode) {

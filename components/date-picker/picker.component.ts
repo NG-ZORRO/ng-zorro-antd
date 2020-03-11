@@ -19,8 +19,10 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  QueryList,
   SimpleChanges,
   ViewChild,
+  ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
 
@@ -60,7 +62,7 @@ import { RangePartType } from './standard-types';
       <div class="{{ prefixCls }}-input">
         <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'left' }"></ng-container>
       </div>
-      <div class="{{ prefixCls }}-range-separator">
+      <div #separatorElement class="{{ prefixCls }}-range-separator">
         <span class="{{ prefixCls }}-separator"> {{ separator }} </span>
       </div>
       <div class="{{ prefixCls }}-input">
@@ -71,6 +73,7 @@ import { RangePartType } from './standard-types';
     <!-- Input for Range ONLY -->
     <ng-template #tplRangeInput let-partType="partType">
       <input
+        #rangePickerInput
         [disabled]="disabled"
         [size]="inputSize"
         (click)="onClickInputBox(partType)"
@@ -140,6 +143,8 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Output() readonly openChange = new EventEmitter<boolean>(); // Emitted when overlay's open state change
 
   @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay: CdkConnectedOverlay;
+  @ViewChild('separatorElement', { static: false }) separatorElement: ElementRef;
+  @ViewChildren('rangePickerInput') rangePickerInputs: QueryList<ElementRef>;
 
   origin: CdkOverlayOrigin;
   inputSize: number;
@@ -211,29 +216,22 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       this.changeDetector.markForCheck();
     });
     if (this.isRange) {
-      const inputWidth = (this.elementRef.nativeElement as HTMLElement).querySelector('input')!.offsetWidth;
-      const arrowLeft =
-        inputWidth +
-        ((this.elementRef.nativeElement as HTMLElement).querySelector('.ant-picker-range-separator') as HTMLElement).offsetWidth;
+      const inputWidth = this.rangePickerInputs.first.nativeElement.offsetWidth;
+      const arrowLeft = inputWidth + this.separatorElement.nativeElement.offsetWidth;
 
-      this.datePickerService.inputPartChange$
-        .pipe(
-          distinctUntilChanged(),
-          takeUntil(this.destroy$)
-        )
-        .subscribe(partType => {
-          this.datePickerService.activeInput = partType;
-          this.focus();
-          this.datePickerService.arrowPositionStyle = {
-            left: this.datePickerService.activeInput === 'left' ? '0px' : `${arrowLeft}px`
-          };
-          this.activeBarStyle = {
-            ...this.activeBarStyle,
-            ...this.datePickerService.arrowPositionStyle,
-            width: `${inputWidth}px`
-          };
-          this.changeDetector.markForCheck();
-        });
+      this.datePickerService.inputPartChange$.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe(partType => {
+        this.datePickerService.activeInput = partType;
+        this.focus();
+        this.datePickerService.arrowPositionStyle = {
+          left: this.datePickerService.activeInput === 'left' ? '0px' : `${arrowLeft}px`
+        };
+        this.activeBarStyle = {
+          ...this.activeBarStyle,
+          ...this.datePickerService.arrowPositionStyle,
+          width: `${inputWidth}px`
+        };
+        this.changeDetector.markForCheck();
+      });
     }
   }
 
