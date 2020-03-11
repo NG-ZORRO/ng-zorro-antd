@@ -51,6 +51,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
         [nzTime]="nzFormat"
         [placeholder]="nzPlaceHolder || ('TimePicker.placeholder' | nzI18n)"
         [(ngModel)]="value"
+        [disabled]="nzDisabled"
         (click)="open()"
         (focus)="onFocus(true)"
         (blur)="onFocus(false)"
