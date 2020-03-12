@@ -5,17 +5,18 @@ import {
   ChangeDetectorRef,
   Component,
   Inject,
-  Input, OnDestroy,
+  Input,
+  OnDestroy,
   OnInit,
   ViewEncapsulation
 } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import sdk from '@stackblitz/sdk';
 import { VERSION } from 'ng-zorro-antd/version'
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { AppService } from '../../app.service';
+import { AppService, DemoCode } from '../../app.service';
 import { stackBlitzConfiguration } from './stack-blitz';
 
 @Component({
@@ -26,7 +27,7 @@ import { stackBlitzConfiguration } from './stack-blitz';
   styleUrls      : [ './nz-codebox.component.less' ]
 })
 export class NzCodeBoxComponent implements OnInit, OnDestroy {
-  rawCode: string;
+  highlightCode: string;
   copied = false;
   commandCopied = false;
   showIframe: boolean;
@@ -35,7 +36,9 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
   language = 'zh';
   theme = 'default';
   destroy$ = new Subject();
-  @Input() nzCode: string;
+  codeLoaded = false;
+  openStackBlitzLoading = false;
+  copyLoading = false;
   @Input() nzTitle: string;
   @Input() nzExpanded = false;
   @Input() nzHref: string;
@@ -53,29 +56,29 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
     this.iframe = this.sanitizer.bypassSecurityTrustResourceUrl(value);
   }
 
-  @Input()
-  get nzRawCode(): string {
-    return this.rawCode;
-  }
-
-  set nzRawCode(value: string) {
-    this.rawCode = decodeURIComponent(value).trim();
-  }
-
   navigateToFragment(): void {
     if (this.platform.isBrowser) {
       window.location.hash = this.nzLink;
     }
   }
 
-  copyCode(code: string): void {
-    this.copy(code).then(() => {
-      this.copied = true;
-      setTimeout(() => {
-        this.copied = false;
-        this.check();
-      }, 1000);
+  copyCode(): void {
+    setTimeout(() => {
+      this.copyLoading = !this.codeLoaded;
+      this.check();
+    }, 120);
+    this.getDemoCode().subscribe(data => {
+      this.copyLoading = false;
+      this.check();
+      this.copy(data.rawCode).then(() => {
+        this.copied = true;
+        setTimeout(() => {
+          this.copied = false;
+          this.check();
+        }, 1000);
+      });
     });
+
   }
 
   copyGenerateCommand(command: string): void {
@@ -114,14 +117,30 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
     return promise;
   }
 
-  openOnStackBlitz() {
-    sdk.openProject(stackBlitzConfiguration(this.nzComponentName, this.nzRawCode, this.nzSelector, VERSION.full));
+  expandCode(expanded: boolean): void {
+    this.nzExpanded = expanded;
+    if (expanded) {
+      this.getDemoCode().subscribe();
+    }
   }
 
-  check() {
+  openOnStackBlitz(): void {
+    setTimeout(() => {
+      this.openStackBlitzLoading = !this.codeLoaded;
+      this.check();
+    }, 120);
+    this.getDemoCode().subscribe(data => {
+      this.openStackBlitzLoading = false;
+      this.check();
+      sdk.openProject(stackBlitzConfiguration(this.nzComponentName, data.rawCode, this.nzSelector, VERSION.full));
+    });
+  }
+
+  check(): void {
     this.cdr.markForCheck();
   }
 
+  // tslint:disable-next-line:no-any
   constructor(@Inject(DOCUMENT) private dom: any,
               private sanitizer: DomSanitizer,
               private cdr: ChangeDetectorRef,
@@ -138,10 +157,24 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
       this.language = data;
       this.check();
     });
+
+  }
+
+  getDemoCode(): Observable<DemoCode> {
+    return this.appService.getCode(this.nzId).pipe(
+      takeUntil(this.destroy$),
+      tap(data => {
+        if (data) {
+          this.highlightCode = data.highlightCode;
+          this.codeLoaded = true;
+          this.check();
+        }
+      }));
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
+
 }

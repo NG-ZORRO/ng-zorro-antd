@@ -27,7 +27,9 @@
     </div>
     <div class="code-box-actions">
       <i
-        [nzTooltipTitle]="language==='zh' ? '在 StackBlitz 上打开':'Edit On StackBlitz'"
+        [nzTooltipTitle]="!openStackBlitzLoading ?
+        language==='zh' ? '在 StackBlitz 上打开':'Edit On StackBlitz':
+        language==='zh'? '加载中...' : 'Loading...'"
         nz-tooltip
         nz-icon
         nzType="thunderbolt"
@@ -36,13 +38,15 @@
         (click)="openOnStackBlitz()"
       ></i>
       <i
-        [nzTooltipTitle]="language==='zh'? '复制代码' : 'Copy Code'"
+        [nzTooltipTitle]="!copyLoading ?
+        language==='zh'? '复制代码' : 'Copy Code' :
+        language==='zh'? '加载中...' : 'Loading...'"
         nz-tooltip
         nz-icon
         [nzType]="copied ? 'check' : 'snippets'"
         class="code-box-code-copy"
         [class.ant-tooltip-open]="copied"
-        (click)="copyCode(nzRawCode)"
+        (click)="copyCode()"
       ></i>
       <i
         [nzTooltipTitle]="language==='zh'? '复制生成代码命令' : 'Copy Generate Command'"
@@ -59,7 +63,7 @@
             [nzTooltipTitle]="nzExpanded ?
             (language==='zh'? '收起代码' : 'Hide Code') :
             (language==='zh'? '显示代码' : 'Show Code')"
-            (click)="nzExpanded = !nzExpanded">
+            (click)="expandCode(!nzExpanded)">
         <ng-container [ngSwitch]="theme">
           <ng-container *ngSwitchCase="'dark'">
               <img
@@ -97,7 +101,11 @@
   <section class="highlight-wrapper" [ngClass]="{ 'highlight-wrapper-expand': nzExpanded }">
     <div class="highlight">
       <ng-content select="[code]"></ng-content>
-      <nz-highlight [nzCode]="nzCode" [nzLanguage]="'typescript'"></nz-highlight>
+      <nz-highlight [nzCode]="codeLoaded ?
+      highlightCode :
+      language === 'zh' ? '加载中' : 'Loading...'"
+                    [nzLanguage]="'typescript'">
+      </nz-highlight>
     </div>
   </section>
 </section>
