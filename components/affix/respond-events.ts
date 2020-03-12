@@ -6,5 +6,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './affix.component';
-export * from './affix.module';
+export enum AffixRespondEvents {
+  resize = 'resize',
+  scroll = 'scroll',
+  touchstart = 'touchstart',
+  touchmove = 'touchmove',
+  touchend = 'touchend',
+  pageshow = 'pageshow',
+  load = 'LOAD'
+}

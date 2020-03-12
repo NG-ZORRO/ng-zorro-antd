@@ -20,6 +20,7 @@ import {
   OnChanges,
   OnDestroy,
   Output,
+  Renderer2,
   SimpleChanges,
   ViewChild,
   ViewEncapsulation
@@ -34,27 +35,25 @@ import {
   shallowEqual,
   WithConfig
 } from 'ng-zorro-antd/core';
-import { fromEvent, merge, Subscription } from 'rxjs';
-import { auditTime } from 'rxjs/operators';
-import { isTargetWindow } from './utils';
 
-interface SimpleRect {
-  top: number;
-  left: number;
-  width?: number;
-  height?: number;
-  bottom?: number;
-}
+import { fromEvent, merge, ReplaySubject, Subject, Subscription } from 'rxjs';
+import { auditTime, map, takeUntil } from 'rxjs/operators';
+
+import { AffixRespondEvents } from './respond-events';
+import { getTargetRect, SimpleRect } from './utils';
 
 const NZ_CONFIG_COMPONENT_NAME = 'affix';
 const NZ_AFFIX_CLS_PREFIX = 'ant-affix';
 const NZ_AFFIX_DEFAULT_SCROLL_TIME = 20;
-const NZ_AFFIX_RESPOND_EVENTS = ['resize', 'scroll', 'touchstart', 'touchmove', 'touchend', 'pageshow', 'load'];
 
 @Component({
   selector: 'nz-affix',
   exportAs: 'nzAffix',
-  templateUrl: './nz-affix.component.html',
+  template: `
+    <div #fixedEl>
+      <ng-content></ng-content>
+    </div>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `
@@ -71,7 +70,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() nzTarget: string | Element | Window;
 
   @Input()
-  @WithConfig<number | null>(NZ_CONFIG_COMPONENT_NAME, 0)
+  @WithConfig<number | null>(NZ_CONFIG_COMPONENT_NAME, null)
   @InputNumber()
   nzOffsetTop: null | number;
 
@@ -86,7 +85,9 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   private affixStyle?: NgStyleInterface;
   private placeholderStyle?: NgStyleInterface;
-  private scroll$: Subscription = Subscription.EMPTY;
+  private positionChangeSubscription: Subscription = Subscription.EMPTY;
+  private offsetChanged$ = new ReplaySubject(1);
+  private destroy$ = new Subject<void>();
   private timeout?: number;
   private document: Document;
 
@@ -101,7 +102,8 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
     public nzConfigService: NzConfigService,
     private scrollSrv: NzScrollService,
     private ngZone: NgZone,
-    private platform: Platform
+    private platform: Platform,
+    private renderer: Renderer2
   ) {
     // The wrapper would stay at the original position as a placeholder.
     this.placeholderNode = el.nativeElement;
@@ -112,7 +114,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
     const { nzOffsetBottom, nzOffsetTop, nzTarget } = changes;
 
     if (nzOffsetBottom || nzOffsetTop) {
-      this.updatePosition({} as Event);
+      this.offsetChanged$.next();
     }
     if (nzTarget) {
       this.registerListeners();
@@ -129,22 +131,30 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   private registerListeners(): void {
     this.removeListeners();
-    this.scroll$ = this.ngZone.runOutsideAngular(() => {
-      return merge(...NZ_AFFIX_RESPOND_EVENTS.map(evName => fromEvent(this.target, evName)))
+    this.positionChangeSubscription = this.ngZone.runOutsideAngular(() => {
+      return merge(
+        ...Object.keys(AffixRespondEvents).map(evName => fromEvent(this.target, evName)),
+        this.offsetChanged$.pipe(
+          takeUntil(this.destroy$),
+          map(() => ({}))
+        )
+      )
         .pipe(auditTime(NZ_AFFIX_DEFAULT_SCROLL_TIME))
-        .subscribe(e => this.updatePosition(e));
+        .subscribe(e => this.updatePosition(e as Event));
     });
     this.timeout = setTimeout(() => this.updatePosition({} as Event));
   }
 
   private removeListeners(): void {
     clearTimeout(this.timeout);
-    this.scroll$.unsubscribe();
+    this.positionChangeSubscription.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getOffset(element: Element, target: Element | Window | undefined): SimpleRect {
     const elemRect = element.getBoundingClientRect();
-    const targetRect = this.getTargetRect(target!);
+    const targetRect = getTargetRect(target!);
 
     const scrollTop = this.scrollSrv.getScroll(target, true);
     const scrollLeft = this.scrollSrv.getScroll(target, false);
@@ -161,16 +171,6 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
     };
   }
 
-  private getTargetRect(target: Element | Window): SimpleRect {
-    return !isTargetWindow(target)
-      ? target.getBoundingClientRect()
-      : {
-          top: 0,
-          left: 0,
-          bottom: 0
-        };
-  }
-
   private setAffixStyle(e: Event, affixStyle?: NgStyleInterface): void {
     const originalAffixStyle = this.affixStyle;
     const isWindow = this.target === window;
@@ -183,7 +183,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
 
     const fixed = !!affixStyle;
     const wrapEl = this.fixedEl.nativeElement;
-    wrapEl.style.cssText = getStyleAsText(affixStyle);
+    this.renderer.setStyle(wrapEl, 'cssText', getStyleAsText(affixStyle));
     this.affixStyle = affixStyle;
     if (fixed) {
       wrapEl.classList.add(NZ_AFFIX_CLS_PREFIX);
@@ -201,7 +201,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
     if (shallowEqual(placeholderStyle, originalPlaceholderStyle)) {
       return;
     }
-    this.placeholderNode.style.cssText = getStyleAsText(placeholderStyle);
+    this.renderer.setStyle(this.placeholderNode, 'cssText', getStyleAsText(placeholderStyle));
     this.placeholderStyle = placeholderStyle;
   }
 
@@ -209,7 +209,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
     if (!this.affixStyle) {
       return;
     }
-    this.placeholderNode.style.cssText = '';
+    this.renderer.setStyle(this.placeholderNode, 'cssText', '');
     this.placeholderStyle = undefined;
     const styleObj = {
       width: this.placeholderNode.offsetWidth,
@@ -248,7 +248,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
       offsetMode.top = typeof offsetTop === 'number';
       offsetMode.bottom = typeof this.nzOffsetBottom === 'number';
     }
-    const targetRect = this.getTargetRect(targetNode as Window);
+    const targetRect = getTargetRect(targetNode as Window);
     const targetInnerHeight = (targetNode as Window).innerHeight || (targetNode as HTMLElement).clientHeight;
     if (scrollTop >= elemOffset.top - (offsetTop as number) && offsetMode.top) {
       const width = elemOffset.width;
@@ -257,7 +257,6 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
         position: 'fixed',
         top,
         left: targetRect.left + elemOffset.left,
-        maxHeight: `calc(100vh - ${top}px)`,
         width
       });
       this.setPlaceholderStyle({
@@ -265,11 +264,11 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
         height: elemSize.height
       });
     } else if (scrollTop <= elemOffset.top + elemSize.height + (this.nzOffsetBottom as number) - targetInnerHeight && offsetMode.bottom) {
-      const targetBottomOffet = targetNode === window ? 0 : window.innerHeight - targetRect.bottom!;
+      const targetBottomOffset = targetNode === window ? 0 : window.innerHeight - targetRect.bottom!;
       const width = elemOffset.width;
       this.setAffixStyle(e, {
         position: 'fixed',
-        bottom: targetBottomOffet + (this.nzOffsetBottom as number),
+        bottom: targetBottomOffset + (this.nzOffsetBottom as number),
         left: targetRect.left + elemOffset.left,
         width
       });
@@ -278,7 +277,12 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
         height: elemOffset.height
       });
     } else {
-      if (e.type === 'resize' && this.affixStyle && this.affixStyle.position === 'fixed' && this.placeholderNode.offsetWidth) {
+      if (
+        e.type === AffixRespondEvents.resize &&
+        this.affixStyle &&
+        this.affixStyle.position === 'fixed' &&
+        this.placeholderNode.offsetWidth
+      ) {
         this.setAffixStyle(e, {
           ...this.affixStyle,
           width: this.placeholderNode.offsetWidth
