@@ -481,7 +481,7 @@ export class NzTreeBaseService {
     this.expandedNodeList = [];
     const calc = (nodes: NzTreeNode[]) => {
       nodes.forEach(node => {
-        node.isExpanded = keys === true || expandedKeySet.has(node.key) || node.isExpanded === true;
+        node.setExpanded(keys === true || expandedKeySet.has(node.key) || node.isExpanded === true);
         if (node.isExpanded) {
           this.setExpandedNodeList(node);
         }
@@ -524,7 +524,7 @@ export class NzTreeBaseService {
   expandNodeAllParentBySearch(node: NzTreeNode): void {
     const calc = (n: NzTreeNode | null): void => {
       if (n) {
-        n.isExpanded = true;
+        n.setExpanded(true);
         this.setExpandedNodeList(n);
         if (n.getParentNode()) {
           return calc(n.getParentNode());

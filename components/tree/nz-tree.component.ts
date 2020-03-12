@@ -218,7 +218,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   }
 
   writeValue(value: NzTreeNode[]): void {
-    this.initNzData(value);
+    this.handleNzData(value);
   }
 
   registerOnChange(fn: (_: NzTreeNode[]) => void): void {
@@ -227,14 +227,6 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
 
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
-  }
-
-  // tslint:disable-next-line:no-any
-  initNzData(value: any[]): void {
-    if (Array.isArray(value)) {
-      const data = this.coerceTreeNodes(value);
-      this.nzTreeService.initTree(data);
-    }
   }
 
   /**
@@ -276,8 +268,8 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
     }
 
     if (nzSearchValue) {
-      useDefaultExpandedKeys = false;
       if (!(nzSearchValue.firstChange && !this.nzSearchValue)) {
+        useDefaultExpandedKeys = false;
         this.handleSearchValue(this.nzSearchValue);
         this.nzSearchValueChange.emit(this.nzTreeService.formatEvent('search', null, null));
       }
