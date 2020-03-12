@@ -266,7 +266,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
       this.handleCheckedKeys(this.nzCheckedKeys);
     }
 
-    if (nzExpandedKeys) {
+    if (nzExpandedKeys || nzExpandAll) {
       useDefaultExpandedKeys = true;
       this.handleExpandedKeys(expandAll || this.nzExpandedKeys);
     }
