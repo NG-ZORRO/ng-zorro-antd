@@ -27,8 +27,8 @@ import {
   FunctionProp,
   InputBoolean,
   NzNoAnimationDirective,
-  toBoolean,
-  valueFunctionProp
+  valueFunctionProp,
+  warnDeprecation
 } from 'ng-zorro-antd/core';
 import { DateHelperService, NzDatePickerI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
@@ -36,7 +36,7 @@ import { takeUntil } from 'rxjs/operators';
 import { DatePickerService } from './date-picker.service';
 
 import { NzPickerComponent } from './picker.component';
-import { CompatibleDate, DisabledTimeFn, PanelMode, PresetRanges } from './standard-types';
+import { CompatibleDate, DisabledTimeFn, PanelMode, PresetRanges, SupportTimeOptions } from './standard-types';
 
 const POPUP_STYLE_PATCH = { position: 'relative' }; // Aim to override antd's style to support overlay's position strategy (position:absolute will cause it not working beacuse the overlay can't get the height/width of it's content)
 
@@ -47,19 +47,20 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   isRange: boolean = false; // Indicate whether the value is a range value
   showWeek: boolean = false; // Should show as week picker
   focused: boolean = false;
-  pickerStyle: object; // Final picker style that contains width fix corrections etc.
   extraFooter: TemplateRef<void> | string;
   hostClassMap = {};
 
   protected destroyed$: Subject<void> = new Subject();
   protected isCustomPlaceHolder: boolean = false;
-  private _showTime: object | boolean;
 
   // --- Common API
   @Input() @InputBoolean() nzAllowClear: boolean = true;
   @Input() @InputBoolean() nzAutoFocus: boolean = false;
   @Input() @InputBoolean() nzDisabled: boolean = false;
   @Input() @InputBoolean() nzOpen: boolean;
+  /**
+   * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
+   */
   @Input() nzClassName: string;
   @Input() nzDisabledDate: (d: Date) => boolean;
   @Input() nzLocale: NzDatePickerI18nInterface;
@@ -67,29 +68,27 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   @Input() nzPopupStyle: object = POPUP_STYLE_PATCH;
   @Input() nzDropdownClassName: string;
   @Input() nzSize: 'large' | 'small';
+  /**
+   * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
+   */
   @Input() nzStyle: object;
   @Input() nzFormat: string;
-
   @Input() nzDateRender: FunctionProp<TemplateRef<Date> | string>;
   @Input() nzDisabledTime: DisabledTimeFn;
   @Input() nzRenderExtraFooter: FunctionProp<TemplateRef<void> | string>;
   @Input() @InputBoolean() nzShowToday: boolean = true;
   @Input() nzMode: PanelMode | PanelMode[] = 'date';
   @Input() nzRanges: PresetRanges;
+  @Input() nzDefaultPickerValue: CompatibleDate | null = null;
+  @Input() nzShowTime: SupportTimeOptions | boolean = false;
+  @Input() nzSeparator: string = '~';
+
   @Output() readonly nzOnPanelChange = new EventEmitter<PanelMode | PanelMode[]>();
   @Output() readonly nzOnCalendarChange = new EventEmitter<Array<Date | null>>();
   @Output() readonly nzOnOk = new EventEmitter<CompatibleDate | null>();
   @Output() readonly nzOnOpenChange = new EventEmitter<boolean>();
 
   @ViewChild(NzPickerComponent, { static: true }) protected picker: NzPickerComponent;
-
-  @Input() get nzShowTime(): object | boolean {
-    return this._showTime;
-  }
-
-  set nzShowTime(value: object | boolean) {
-    this._showTime = typeof value === 'object' ? value : toBoolean(value);
-  }
 
   get realOpenState(): boolean {
     return this.picker.animationOpenState;
@@ -186,8 +185,17 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
       this.extraFooter = valueFunctionProp(this.nzRenderExtraFooter);
     }
 
-    if (changes.nzShowTime || changes.nzStyle) {
+    if (changes.nzStyle) {
+      warnDeprecation(
+        `'nzStyle' in DatePicker is going to be removed in 10.0.0. Please use CSS style attribute like <nz-date-picker style="..."></nz-date-picker> instead.`
+      );
       this.updatePickerStyle();
+    }
+
+    if (changes.nzClassName) {
+      warnDeprecation(
+        `'nzClassName' in DatePicker is going to be removed in 10.0.0. Please use CSS class attribute like <nz-date-picker class="..."></nz-date-picker> instead.`
+      );
     }
 
     if (changes.nzMode) {
@@ -204,6 +212,10 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
     if (!this.nzMode) {
       this.nzMode = this.isRange ? ['date', 'date'] : 'date';
     }
+  }
+
+  updatePickerStyle(): void {
+    this.nzStyle = { display: 'inherit', width: '100%', ...this.nzStyle };
   }
 
   /**
@@ -256,12 +268,7 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
 
   // Safe way of setting value with default
   private setValue(value: CompatibleDate): void {
-    let newValue: CompatibleValue;
-    if (this.isRange) {
-      newValue = value ? (value as Date[]).map(val => new CandyDate(val)) : [];
-    } else {
-      newValue = value ? new CandyDate(value as Date) : null;
-    }
+    const newValue: CompatibleValue = this.datePickerService.makeValue(value);
     this.datePickerService.setValue(newValue);
     this.datePickerService.initialValue = newValue;
   }
@@ -274,15 +281,6 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
   onFocusChange(value: boolean): void {
     this.focused = value;
     this.updateHostClass();
-  }
-
-  updatePickerStyle(): void {
-    if (this.nzShowTime) {
-      this.pickerStyle = { display: 'inherit', width: this.isRange ? '360px' : '174px' };
-    } else {
-      this.pickerStyle = { display: 'inherit', width: this.isRange ? '233px' : '111px' };
-    }
-    this.pickerStyle = { ...this.pickerStyle, ...this.nzStyle };
   }
 
   onPanelModeChange(panelMode: PanelMode | PanelMode[]): void {

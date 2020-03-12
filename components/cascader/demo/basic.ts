@@ -91,9 +91,6 @@ const otherOptions = [
   `,
   styles: [
     `
-      .ant-cascader-picker {
-        width: 300px;
-      }
       .change-options {
         display: inline-block;
         font-size: 12px;

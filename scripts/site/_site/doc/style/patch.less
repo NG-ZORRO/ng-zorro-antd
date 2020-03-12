@@ -31,11 +31,11 @@
 
     .ant-anchor-ink::before {
       width: 1px;
-      border-left: 1px solid rgba(24, 143, 255, 0);
+      border-left: 1px solid @site-border-color-split;
     }
 
     .ant-anchor-link-active {
-      border-left: 1px solid #188fff;
+      border-left: 2px solid @primary-color;
       margin-left: -2px;
       position: relative;
       z-index: 2;
@@ -49,8 +49,14 @@
       padding: 0 0 4px 16px;
       line-height: 1.5;
 
+      &.ant-anchor-link-active {
+        .ant-anchor-link-title {
+          color: @primary-color;
+        }
+      }
+
       .ant-anchor-link-title {
-        color: rgba(0, 0, 0, .85);
+        color: @site-text-color;
         white-space: nowrap;
         text-overflow: ellipsis;
         width: 110px;
@@ -58,4 +64,65 @@
     }
   }
 
+}
+
+.site-page-header {
+  border: 1px solid rgb(235, 237, 240);
+}
+
+.site-page-header-ghost-wrapper {
+  background-color: #f5f5f5;
+  padding: 24px;
+}
+
+body[data-theme='dark'], [data-theme='dark'] * {
+  scrollbar-color: #434343 #262626;
+
+  &::-webkit-scrollbar {
+    width: 14px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #262626;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color:  #434343;
+    border-radius: 6px;
+    border: 2px solid #262626;
+    :hover {
+      background-color: #262626;
+    }
+  }
+}
+
+
+[data-theme='dark'] {
+
+  .popover-menu .ant-popover-inner-content #nav a {
+    color: @text-color;
+  }
+
+  .gh-ico {
+    background-image: url(/assets/img/GitHub-Mark-Light-64px.png);
+  }
+
+  nz-breadcrumb-item:last-child {
+    color: #ffffffa6;
+  }
+
+  .site-page-header {
+    border: 1px solid #303030;
+  }
+
+  .site-page-header-ghost-wrapper {
+    background-color: rgba(255,255,255,0.08);
+  }
+
+  .drawer-content-wrapper {
+    background-color: @component-background;
+  }
+  .ant-tooltip, .ant-popover {
+    position: relative;
+  }
 }

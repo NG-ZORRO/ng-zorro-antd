@@ -16,8 +16,8 @@ import {
   typeInElement
 } from 'ng-zorro-antd/core';
 
-import { NzTreeSelectComponent } from './nz-tree-select.component';
-import { NzTreeSelectModule } from './nz-tree-select.module';
+import { NzTreeSelectComponent } from './tree-select.component';
+import { NzTreeSelectModule } from './tree-select.module';
 
 describe('tree-select component', () => {
   let overlayContainer: OverlayContainer;
@@ -144,7 +144,7 @@ describe('tree-select component', () => {
       expect(testComponent.value).toBe('10001');
       treeSelectComponent.updateSelectedNodes();
       fixture.detectChanges();
-      treeSelect.nativeElement.querySelector('.ant-select-selection__clear').click();
+      treeSelect.nativeElement.querySelector('nz-select-clear').click();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
@@ -200,11 +200,13 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       treeSelect.nativeElement.click();
       fixture.detectChanges();
-      expect(treeSelect.nativeElement.querySelector('.ant-select-search--inline')).not.toBeNull();
+      expect(treeSelect.nativeElement.querySelector('nz-select-search')).toBeTruthy();
       testComponent.showSearch = false;
       fixture.detectChanges();
       tick();
-      expect(treeSelect.nativeElement.querySelector('.ant-select-search--inline')).toBeNull();
+      expect(treeSelect.nativeElement.querySelector('nz-select-search')).toBeNull();
+      flush();
+      fixture.detectChanges();
     }));
     it('should display no data', fakeAsync(() => {
       treeSelectComponent.updateSelectedNodes();
@@ -223,29 +225,7 @@ describe('tree-select component', () => {
       expect(overlayContainerElement.querySelector('nz-tree')!.getAttribute('hidden')).toBe('');
       expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeTruthy();
     }));
-    it('should selectedValueDisplay style correct', fakeAsync(() => {
-      testComponent.showSearch = true;
-      fixture.detectChanges();
-      treeSelectComponent.updateSelectedNodes();
-      fixture.detectChanges();
-      const selectedValueEl = treeSelect.nativeElement.querySelector('.ant-select-selection-selected-value');
-      const inputEl = treeSelect.nativeElement.querySelector('.ant-select-search__field');
-      expect(selectedValueEl.style.display).toBe('block');
-      expect(selectedValueEl.style.opacity).toBe('1');
-      treeSelectComponent.nzOpen = true;
-      fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
-      expect(selectedValueEl.style.display).toBe('block');
-      expect(selectedValueEl.style.opacity).toBe('0.4');
-      inputEl.value = 'test';
-      dispatchFakeEvent(inputEl, 'input');
-      fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
-      expect(selectedValueEl.style.display).toBe('none');
-      expect(selectedValueEl.style.opacity).toBe('1');
-    }));
+
     it('should max tag count work', fakeAsync(() => {
       fixture.detectChanges();
       testComponent.multiple = true;
@@ -254,15 +234,14 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      expect(treeSelect.nativeElement.querySelectorAll('.ant-select-selection__choice').length).toBe(4);
+      expect(treeSelect.nativeElement.querySelectorAll('nz-select-item').length).toBe(4);
       testComponent.maxTagCount = 2;
       fixture.detectChanges();
       tick(200);
       fixture.detectChanges();
-      expect(treeSelect.nativeElement.querySelectorAll('.ant-select-selection__choice').length).toBe(3);
-      const maxTagPlaceholderElement = treeSelect.nativeElement
-        .querySelectorAll('.ant-select-selection__choice')[2]
-        .querySelector('.ant-select-selection__choice__content');
+      expect(treeSelect.nativeElement.querySelectorAll('nz-select-item').length).toBe(3);
+      console.log(treeSelect.nativeElement.querySelectorAll('nz-select-item')[2]);
+      const maxTagPlaceholderElement = treeSelect.nativeElement.querySelectorAll('nz-select-item')[2];
       expect(maxTagPlaceholderElement).toBeTruthy();
       expect(maxTagPlaceholderElement.innerText.trim()).toBe(`+ ${testComponent.value.length - testComponent.maxTagCount} ...`);
     }));
@@ -360,6 +339,7 @@ describe('tree-select component', () => {
       tick();
       fixture.detectChanges();
       expect(testComponent.nzSelectTreeComponent.selectedNodes.length).toBe(1);
+      flush();
     }));
 
     it('should check strictly work', fakeAsync(() => {
@@ -371,6 +351,7 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       expect(testComponent.nzSelectTreeComponent.selectedNodes.length).toBe(3);
       testComponent.checkStrictly = false;
+      flush();
       fixture.detectChanges();
     }));
 
@@ -413,7 +394,7 @@ describe('tree-select component', () => {
       tick(200);
       fixture.detectChanges();
       expect(treeSelectComponent.selectedNodes.length).toBe(1);
-      treeSelect.nativeElement.querySelector('.ant-select-selection__choice__remove').click();
+      treeSelect.nativeElement.querySelector('.ant-select-selection-item-remove').click();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();

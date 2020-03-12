@@ -9,7 +9,7 @@
 import { Injectable } from '@angular/core';
 import { CandyDate, cloneDate, CompatibleValue, normalizeRangeValue } from 'ng-zorro-antd/core';
 import { ReplaySubject, Subject } from 'rxjs';
-import { RangePartType } from './standard-types';
+import { CompatibleDate, RangePartType } from './standard-types';
 
 @Injectable()
 export class DatePickerService {
@@ -33,17 +33,32 @@ export class DatePickerService {
     }
   }
 
-  setActiveDate(): void {
-    if (this.isRange) {
-      this.activeDate = normalizeRangeValue(this.value as CandyDate[]);
+  hasValue(value: CompatibleValue = this.value): boolean {
+    if (Array.isArray(value)) {
+      return !!value[0] && !!value[1];
     } else {
-      this.activeDate = cloneDate(this.value);
+      return !!value;
+    }
+  }
+
+  makeValue(value: CompatibleDate): CompatibleValue {
+    if (this.isRange) {
+      return value ? (value as Date[]).map(val => new CandyDate(val)) : [];
+    } else {
+      return value ? new CandyDate(value as Date) : null;
+    }
+  }
+
+  setActiveDate(value: CompatibleValue): void {
+    if (this.isRange) {
+      this.activeDate = normalizeRangeValue(value as CandyDate[]);
+    } else {
+      this.activeDate = cloneDate(value);
     }
   }
 
   setValue(value: CompatibleValue): void {
     this.value = value;
-    this.setActiveDate();
     this.valueChange$.next(this.value);
   }
 

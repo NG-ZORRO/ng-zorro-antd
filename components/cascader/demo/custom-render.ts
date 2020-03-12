@@ -62,14 +62,7 @@ const options = [
         </span>
       </ng-container>
     </ng-template>
-  `,
-  styles: [
-    `
-      .ant-cascader-picker {
-        width: 300px;
-      }
-    `
-  ]
+  `
 })
 export class NzDemoCascaderCustomRenderComponent {
   nzOptions: NzCascaderOption[] = options;

@@ -26,10 +26,12 @@ import { DEMOComponent } from './_demo/demo.component';
 import { AppComponent } from './app.component';
 import { routes } from './app.routing.module';
 
+import { NzContributorsListModule } from './share/contributors-list/nz-contributors-list.module';
+import { FixedWidgetsModule } from './share/fixed-widgets/fixed-widgets.module';
+import { NzNavBottomModule } from "./share/nz-nav-bottom/nz-nav-bottom.module";
+
 import { FooterModule } from './footer/footer.module';
 import { HeaderModule } from './header/header.module';
-import { NzContributorsListModule } from './share/contributors-list/nz-contributors-list.module';
-import { NzNavBottomModule } from "./share/nz-nav-bottom/nz-nav-bottom.module";
 
 const icons: IconDefinition[] = [LeftOutline, RightOutline];
 
@@ -57,8 +59,9 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline];
     HeaderModule,
     FooterModule,
     NzContributorsListModule,
+    FixedWidgetsModule,
     RouterModule.forRoot(routes, environment.production ? { preloadingStrategy: PreloadAllModules, scrollPositionRestoration: 'enabled'  } : {}),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production && !environment.preProduction })
   ],
   providers: [
     Title,

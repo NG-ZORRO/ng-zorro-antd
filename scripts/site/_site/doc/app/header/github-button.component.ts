@@ -15,7 +15,6 @@ import { ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from "
       {{starCount}}
     </a>
   `,
-  styleUrls: ['./github-button.component.less'],
   host: {
     id: 'github-btn',
     class: 'github-btn',

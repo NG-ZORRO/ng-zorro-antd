@@ -53,14 +53,7 @@ const options = [
   selector: 'nz-demo-cascader-change-on-function',
   template: `
     <nz-cascader [nzChangeOn]="validate" [nzOptions]="nzOptions" [(ngModel)]="values" (ngModelChange)="onChanges($event)"> </nz-cascader>
-  `,
-  styles: [
-    `
-      .ant-cascader-picker {
-        width: 300px;
-      }
-    `
-  ]
+  `
 })
 export class NzDemoCascaderChangeOnFunctionComponent {
   nzOptions: NzCascaderOption[] = options;
