@@ -244,6 +244,20 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
     let useDefaultExpandedKeys = false;
     let expandAll = false;
     const { nzData, nzExpandedKeys, nzSelectedKeys, nzCheckedKeys, nzCheckStrictly, nzExpandAll, nzMultiple, nzSearchValue } = changes;
+
+    if (nzExpandAll) {
+      useDefaultExpandedKeys = true;
+      expandAll = this.nzExpandAll;
+    }
+
+    if (nzMultiple) {
+      this.nzTreeService.isMultiple = this.nzMultiple;
+    }
+
+    if (nzCheckStrictly) {
+      this.nzTreeService.isCheckStrictly = this.nzCheckStrictly;
+    }
+
     if (nzData) {
       this.handleNzData(this.nzData);
     }
@@ -252,18 +266,9 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
       this.handleCheckedKeys(this.nzCheckedKeys);
     }
 
-    if (nzExpandAll) {
-      useDefaultExpandedKeys = true;
-      expandAll = this.nzExpandAll;
-    }
-
     if (nzExpandedKeys) {
       useDefaultExpandedKeys = true;
       this.handleExpandedKeys(expandAll || this.nzExpandedKeys);
-    }
-
-    if (nzMultiple) {
-      this.nzTreeService.isMultiple = this.nzMultiple;
     }
 
     if (nzSelectedKeys) {

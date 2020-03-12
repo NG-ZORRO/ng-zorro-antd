@@ -33,6 +33,11 @@ export class NzTreeBaseService {
    */
   initTree(nzNodes: NzTreeNode[]): void {
     this.rootNodes = nzNodes;
+    this.expandedNodeList = [];
+    this.selectedNodeList = [];
+    this.halfCheckedNodeList = [];
+    this.checkedNodeList = [];
+    this.matchedNodeList = [];
   }
 
   flattenTreeData(nzNodes: NzTreeNode[], expandedKeys: NzTreeNodeKey[] | true = []): void {
