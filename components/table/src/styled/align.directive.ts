@@ -9,7 +9,7 @@
 import { Directive, Input } from '@angular/core';
 
 @Directive({
-  selector: 'th[nzBreakWord],td[nzBreakWord]',
+  selector: 'th[nzAlign],td[nzAlign]',
   host: {
     '[style.text-align]': 'nzAlign'
   }

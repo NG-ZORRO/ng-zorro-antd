@@ -24,7 +24,7 @@ import {
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
-import { Subject } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PaginationItemRenderContext } from './pagination.types';
 
@@ -88,6 +88,7 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   showPagination = true;
   locale: NzSafeAny = {};
   private destroy$ = new Subject<void>();
+  private total$ = new ReplaySubject<number>(1);
 
   validatePageIndex(value: number, lastIndex: number): number {
     if (value > lastIndex) {
@@ -117,6 +118,13 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  onTotalChange(total: number): void {
+    const lastIndex = this.getLastIndex(total, this.nzPageSize);
+    if (this.nzPageIndex > lastIndex) {
+      Promise.resolve().then(() => this.onPageIndexChange(lastIndex));
+    }
+  }
+
   getLastIndex(total: number, pageSize: number): number {
     return Math.ceil(total / pageSize);
   }
@@ -128,6 +136,9 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
       this.locale = this.i18n.getLocaleData('Pagination');
       this.cdr.markForCheck();
     });
+    this.total$.pipe(takeUntil(this.destroy$)).subscribe(total => {
+      this.onTotalChange(total);
+    });
   }
 
   ngOnDestroy(): void {
@@ -137,6 +148,9 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzHideOnSinglePage, nzTotal, nzPageSize } = changes;
+    if (nzTotal) {
+      this.total$.next(this.nzTotal);
+    }
     if (nzHideOnSinglePage || nzTotal || nzPageSize) {
       this.showPagination = (this.nzHideOnSinglePage && this.nzTotal > this.nzPageSize) || (this.nzTotal > 0 && !this.nzHideOnSinglePage);
     }

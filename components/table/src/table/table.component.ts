@@ -29,11 +29,11 @@ import {
 import { InputBoolean, measureScrollbar, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
 import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
-import { NzTableService } from '../table.service';
+import { NzTableDataService } from '../table-data.service';
+import { NzTableStyleService } from '../table-style.service';
 import { NzTableDataType, NzTableLayoutType, NzTablePaginationPositionType, NzTableSizeType } from '../table.types';
 import { NzTableInnerScrollComponent } from './table-inner-scroll.component';
 import { NzTableVirtualScrollDirective } from './table-virtual-scroll.directive';
@@ -43,7 +43,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'table';
 @Component({
   selector: 'nz-table',
   exportAs: 'nzTable',
-  providers: [NzTableService],
+  providers: [NzTableStyleService, NzTableDataService],
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -117,7 +117,6 @@ const NZ_CONFIG_COMPONENT_NAME = 'table';
     <ng-template #contentTemplate><ng-content></ng-content></ng-template>
   `,
   host: {
-    '[class.ant-table-empty]': 'data.length === 0 && !nzTemplateMode',
     '[class.ant-table-wrapper]': 'true'
   }
 })
@@ -152,14 +151,13 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterView
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzHideOnSinglePage: boolean;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzShowQuickJumper: boolean;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzSimple: boolean;
-  @Output() readonly nzPageSizeChange: EventEmitter<number> = new EventEmitter();
-  @Output() readonly nzPageIndexChange: EventEmitter<number> = new EventEmitter();
-  @Output() readonly nzCurrentPageDataChange: EventEmitter<NzSafeAny[]> = new EventEmitter();
+  @Output() readonly nzPageSizeChange = new EventEmitter<number>();
+  @Output() readonly nzPageIndexChange = new EventEmitter<number>();
+  @Output() readonly nzCurrentPageDataChange = new EventEmitter<NzTableDataType[]>();
 
   /** public data for ngFor tr */
   public data: NzTableDataType[] = [];
   public cdkVirtualScrollViewport: CdkVirtualScrollViewport;
-  locale: NzSafeAny = {};
   scrollX: string | null = null;
   scrollY: string | null = null;
   theadTemplate: TemplateRef<NzSafeAny> | null = null;
@@ -167,52 +165,18 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterView
   hasFixLeft = false;
   hasFixRight = false;
   private destroy$ = new Subject<void>();
+  private loading$ = new BehaviorSubject<boolean>(false);
+  private templateMode$ = new BehaviorSubject<boolean>(false);
   @ContentChild(NzTableVirtualScrollDirective, { static: false })
   nzVirtualScrollDirective: NzTableVirtualScrollDirective;
   @ViewChild(NzTableInnerScrollComponent) nzTableInnerScrollComponent: NzTableInnerScrollComponent;
   verticalScrollBarWidth = 0;
   onPageSizeChange(size: number): void {
-    if (size !== this.nzPageSize) {
-      this.nzPageSize = size;
-      this.nzPageSizeChange.emit(this.nzPageSize);
-      this.updateFrontPaginationDataIfNeeded(true);
-    }
+    this.nzTableDataService.updatePageSize(size);
   }
 
   onPageIndexChange(index: number): void {
-    if (index !== this.nzPageIndex) {
-      this.nzPageIndex = index;
-      this.nzPageIndexChange.emit(this.nzPageIndex);
-      this.updateFrontPaginationDataIfNeeded(false);
-    }
-  }
-
-  updateFrontPaginationDataIfNeeded(isPageSizeOrDataChange: boolean = false): void {
-    let data = this.nzData || [];
-    if (this.nzFrontPagination) {
-      this.nzTotal = data.length;
-      if (isPageSizeOrDataChange) {
-        const maxPageIndex = Math.ceil(data.length / this.nzPageSize) || 1;
-        const pageIndex = this.nzPageIndex > maxPageIndex ? maxPageIndex : this.nzPageIndex;
-        if (pageIndex !== this.nzPageIndex) {
-          this.nzPageIndex = pageIndex;
-          Promise.resolve().then(() => this.nzPageIndexChange.emit(pageIndex));
-        }
-      }
-      data = data.slice((this.nzPageIndex - 1) * this.nzPageSize, this.nzPageIndex * this.nzPageSize);
-    }
-    this.data = [...data];
-    this.nzCurrentPageDataChange.emit(this.data);
-  }
-
-  setHasFixLeft(hasFixLeft: boolean): void {
-    this.hasFixLeft = hasFixLeft;
-    this.cdr.markForCheck();
-  }
-
-  setHasFixRight(hasFixRight: boolean): void {
-    this.hasFixRight = hasFixRight;
-    this.cdr.markForCheck();
+    this.nzTableDataService.updatePageIndex(index);
   }
 
   constructor(
@@ -220,8 +184,8 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterView
     private nzResizeObserver: NzResizeObserver,
     private nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
-    private i18n: NzI18nService,
-    private nzTableService: NzTableService
+    private nzTableStyleService: NzTableStyleService,
+    private nzTableDataService: NzTableDataService
   ) {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
@@ -232,33 +196,94 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterView
   }
 
   ngOnInit(): void {
-    this.verticalScrollBarWidth = measureScrollbar('vertical');
-    this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.locale = this.i18n.getLocaleData('Table');
+    const { pageIndexDistinct$, pageSizeDistinct$, listOfCurrentPageData$, total$ } = this.nzTableDataService;
+    const { theadTemplate$, hasFixLeft$, hasFixRight$ } = this.nzTableStyleService;
+    pageIndexDistinct$.pipe(takeUntil(this.destroy$)).subscribe(pageIndex => {
+      if (pageIndex !== this.nzPageIndex) {
+        this.nzPageIndex = pageIndex;
+        this.nzPageIndexChange.next(pageIndex);
+      }
+    });
+    pageSizeDistinct$.pipe(takeUntil(this.destroy$)).subscribe(pageSize => {
+      if (pageSize !== this.nzPageSize) {
+        this.nzPageSize = pageSize;
+        this.nzPageSizeChange.next(pageSize);
+      }
+    });
+    total$.pipe(takeUntil(this.destroy$)).subscribe(total => {
+      if (total !== this.nzTotal) {
+        this.nzTotal = total;
+        this.cdr.markForCheck();
+      }
+    });
+    listOfCurrentPageData$.pipe(takeUntil(this.destroy$)).subscribe(data => {
+      this.data = data;
+      this.nzCurrentPageDataChange.next(data);
       this.cdr.markForCheck();
     });
-    this.nzTableService.listOfListOfThWidthPx$.pipe(takeUntil(this.destroy$)).subscribe(listOfWidth => {
+
+    theadTemplate$.pipe(takeUntil(this.destroy$)).subscribe(theadTemplate => {
+      this.theadTemplate = theadTemplate;
+      this.cdr.markForCheck();
+    });
+
+    hasFixLeft$.pipe(takeUntil(this.destroy$)).subscribe(hasFixLeft => {
+      this.hasFixLeft = hasFixLeft;
+      this.cdr.markForCheck();
+    });
+
+    hasFixRight$.pipe(takeUntil(this.destroy$)).subscribe(hasFixRight => {
+      this.hasFixRight = hasFixRight;
+      this.cdr.markForCheck();
+    });
+
+    combineLatest([total$, this.loading$, this.templateMode$])
+      .pipe(
+        map(([total, loading, templateMode]) => total === 0 && !loading && !templateMode),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(empty => {
+        this.nzTableStyleService.setShowEmpty(empty);
+      });
+
+    this.verticalScrollBarWidth = measureScrollbar('vertical');
+    this.nzTableStyleService.listOfListOfThWidthPx$.pipe(takeUntil(this.destroy$)).subscribe(listOfWidth => {
       this.listOfColWidth = listOfWidth;
       this.cdr.markForCheck();
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzScroll, nzPageIndex, nzPageSize, nzFrontPagination, nzData, nzWidthConfig, nzNoResult } = changes;
+    const { nzScroll, nzPageIndex, nzPageSize, nzFrontPagination, nzData, nzWidthConfig, nzNoResult, nzLoading, nzTemplateMode } = changes;
+    if (nzPageIndex) {
+      this.nzTableDataService.updatePageIndex(this.nzPageIndex);
+    }
+    if (nzPageSize) {
+      this.nzTableDataService.updatePageSize(this.nzPageSize);
+    }
+    if (nzData) {
+      this.nzData = this.nzData || [];
+      this.nzTableDataService.updateListOfData(this.nzData);
+    }
+    if (nzFrontPagination) {
+      this.nzTableDataService.updateFrontPagination(this.nzFrontPagination);
+    }
     if (nzScroll) {
       this.scrollX = (this.nzScroll && this.nzScroll.x) || null;
       this.scrollY = (this.nzScroll && this.nzScroll.y) || null;
-      this.nzTableService.setScroll(this.scrollX, this.scrollY);
+      this.nzTableStyleService.setScroll(this.scrollX, this.scrollY);
     }
     if (nzWidthConfig) {
-      this.nzTableService.setTableWidthConfig(this.nzWidthConfig);
+      this.nzTableStyleService.setTableWidthConfig(this.nzWidthConfig);
     }
-    if (nzPageIndex || nzPageSize || nzFrontPagination || nzData) {
-      this.updateFrontPaginationDataIfNeeded(!!(nzPageSize || nzData));
-      this.nzTableService.setShowEmpty(this.data.length === 0 && !this.nzLoading && !this.nzTemplateMode);
+    if (nzLoading) {
+      this.loading$.next(this.nzLoading);
+    }
+    if (nzTemplateMode) {
+      this.templateMode$.next(this.nzTemplateMode);
     }
     if (nzNoResult) {
-      this.nzTableService.setNoResult(this.nzNoResult);
+      this.nzTableStyleService.setNoResult(this.nzNoResult);
     }
   }
 
@@ -273,7 +298,7 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterView
         }),
         takeUntil(this.destroy$)
       )
-      .subscribe(this.nzTableService.hostWidth$);
+      .subscribe(this.nzTableStyleService.hostWidth$);
     if (this.nzTableInnerScrollComponent && this.nzTableInnerScrollComponent.cdkVirtualScrollViewport) {
       this.cdkVirtualScrollViewport = this.nzTableInnerScrollComponent.cdkVirtualScrollViewport;
     }

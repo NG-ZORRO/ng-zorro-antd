@@ -3,7 +3,7 @@ import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
-import { NzThComponent } from '../cell/th.component';
+import { NzThAddOnComponent } from '../cell/th-addon.component';
 import { NzTableModule } from '../table.module';
 
 describe('nz-th', () => {
@@ -23,7 +23,7 @@ describe('nz-th', () => {
       fixture = TestBed.createComponent(NzThTestNzTableComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
-      th = fixture.debugElement.query(By.directive(NzThComponent));
+      th = fixture.debugElement.query(By.directive(NzThAddOnComponent));
       // table = fixture.debugElement.query(By.directive(NzTableComponent));
     });
     it('should showCheckbox work', () => {
@@ -303,8 +303,6 @@ describe('nz-th', () => {
   template: `
     <nz-table *ngIf="!destroy">
       <th
-        [nzExpand]="expand"
-        [nzShowCheckbox]="showCheckbox"
         [(nzChecked)]="checked"
         [nzIndeterminate]="indeterminate"
         (nzCheckedChange)="checkedChange($event)"
@@ -312,12 +310,9 @@ describe('nz-th', () => {
         [nzLeft]="left"
         [nzRight]="right"
         [nzWidth]="width"
-        [nzShowSort]="showSort"
-        [(nzSort)]="sort"
-        (nzSortChange)="sortChange($event)"
-        [nzShowRowSelection]="showRowSelection"
+        [(nzSortOrder)]="sort"
+        (nzSortOrderChange)="sortChange($event)"
         [nzSelections]="selections"
-        [nzShowFilter]="showFilter"
         [nzFilters]="filters"
         (nzFilterChange)="filterChange($event)"
         [nzFilterMultiple]="filterMultiple"
@@ -326,9 +321,8 @@ describe('nz-th', () => {
   `
 })
 export class NzThTestNzTableComponent {
-  @ViewChild(NzThComponent, { static: false }) nzThComponent: NzThComponent;
+  @ViewChild(NzThAddOnComponent, { static: false }) nzThComponent: NzThAddOnComponent;
   destroy = false;
-  showCheckbox = false;
   checked = false;
   checkedChange = jasmine.createSpy('show change');
   indeterminate = false;
@@ -339,7 +333,6 @@ export class NzThTestNzTableComponent {
   showSort = false;
   sort: string | null = null;
   sortChange = jasmine.createSpy('sort change');
-  showRowSelection = false;
   selections = [
     {
       text: 'select one',
@@ -361,18 +354,11 @@ export class NzThTestNzTableComponent {
     <nz-table #filterTable [nzData]="displayData">
       <thead (nzSortChange)="sort($event)" nzSingleSort>
         <tr>
-          <th nzShowSort nzSortKey="name" nzShowFilter [nzFilters]="nameList" (nzFilterChange)="filter($event, searchAddress)">
+          <th nzSortKey="name" [nzFilters]="nameList" (nzFilterChange)="filter($event, searchAddress)">
             Name
           </th>
-          <th nzShowSort nzSortKey="age">Age</th>
-          <th
-            nzShowSort
-            nzSortKey="address"
-            nzShowFilter
-            [nzFilterMultiple]="false"
-            [nzFilters]="addressList"
-            (nzFilterChange)="filter(listOfSearchName, $event)"
-          >
+          <th nzSortKey="age">Age</th>
+          <th nzSortKey="address" [nzFilterMultiple]="false" [nzFilters]="addressList" (nzFilterChange)="filter(listOfSearchName, $event)">
             Address
           </th>
         </tr>
@@ -424,7 +410,7 @@ export class NzThTestTableDefaultFilterComponent {
   ];
   displayData: Array<{ name: string; age: number; address: string; [key: string]: string | number }> = [];
 
-  @ViewChild(NzThComponent, { static: false }) nzThComponent: NzThComponent;
+  @ViewChild(NzThAddOnComponent, { static: false }) nzThComponent: NzThAddOnComponent;
 
   sort(sort: { key: string; value: string }): void {
     this.sortName = sort.key;

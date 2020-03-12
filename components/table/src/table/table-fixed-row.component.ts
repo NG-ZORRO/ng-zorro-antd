@@ -19,7 +19,7 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { NzTableService } from '../table.service';
+import { NzTableStyleService } from '../table-style.service';
 
 @Component({
   selector: 'tr[nz-table-fixed-row], tr[nzExpand]',
@@ -44,16 +44,16 @@ export class NzTableFixedRowComponent implements OnInit, OnDestroy, AfterViewIni
   hostWidth$ = new BehaviorSubject<number | null>(null);
   enableAutoMeasure$ = new BehaviorSubject<boolean>(false);
   private destroy$ = new Subject();
-  constructor(private nzTableService: NzTableService, private renderer: Renderer2) {}
+  constructor(private nzTableStyleService: NzTableStyleService, private renderer: Renderer2) {}
   ngOnInit(): void {
-    if (this.nzTableService) {
-      const { enableAutoMeasure$, hostWidth$ } = this.nzTableService;
+    if (this.nzTableStyleService) {
+      const { enableAutoMeasure$, hostWidth$ } = this.nzTableStyleService;
       enableAutoMeasure$.subscribe(this.enableAutoMeasure$);
       hostWidth$.subscribe(this.hostWidth$);
     }
   }
   ngAfterViewInit(): void {
-    this.nzTableService.columnCount$.pipe(takeUntil(this.destroy$)).subscribe(count => {
+    this.nzTableStyleService.columnCount$.pipe(takeUntil(this.destroy$)).subscribe(count => {
       this.renderer.setAttribute(this.tdElement.nativeElement, 'colspan', `${count}`);
     });
   }

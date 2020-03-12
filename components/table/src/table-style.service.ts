@@ -8,12 +8,15 @@
 
 import { Injectable, TemplateRef } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { BehaviorSubject, combineLatest, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, combineLatest, merge, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { NzThComponent } from './cell/th.component';
+import { NzThMeasureDirective } from './cell/th-measure.directive';
 
 @Injectable()
-export class NzTableService {
+export class NzTableStyleService {
+  theadTemplate$ = new ReplaySubject<TemplateRef<NzSafeAny>>(1);
+  hasFixLeft$ = new ReplaySubject<boolean>(1);
+  hasFixRight$ = new ReplaySubject<boolean>(1);
   hostWidth$ = new ReplaySubject<number>(1);
   columnCount$ = new ReplaySubject<number>(1);
   showEmpty$ = new ReplaySubject<boolean>(1);
@@ -24,28 +27,46 @@ export class NzTableService {
     map(([widthConfig, listOfWidth]) => (widthConfig.length ? widthConfig : listOfWidth))
   );
   private listOfAutoWidthPx$ = new ReplaySubject<string[]>(1);
-  listOfListOfThWidthPx$ = combineLatest([this.listOfAutoWidthPx$, this.manualWidthConfigPx$]).pipe(
-    map(([autoWidth, manualWidth]) => {
-      /** use autoWidth until column length match **/
-      return autoWidth.length !== manualWidth.length ? manualWidth : autoWidth;
-    })
+  listOfListOfThWidthPx$ = merge(
+    this.manualWidthConfigPx$,
+    combineLatest([this.listOfAutoWidthPx$, this.manualWidthConfigPx$]).pipe(
+      map(([autoWidth, manualWidth]) => {
+        /** use autoWidth until column length match **/
+        return autoWidth.length !== manualWidth.length ? manualWidth : autoWidth;
+      })
+    )
   );
   listOfMeasureColumn$ = new ReplaySubject<string[]>(1);
   listOfListOfThWidth$ = this.listOfAutoWidthPx$.pipe(map(list => list.map(width => parseInt(width, 10))));
   enableAutoMeasure$ = new ReplaySubject<boolean>(1);
 
+  setTheadTemplate(template: TemplateRef<NzSafeAny>): void {
+    this.theadTemplate$.next(template);
+  }
+
+  setHasFixLeft(hasFixLeft: boolean): void {
+    this.hasFixLeft$.next(hasFixLeft);
+  }
+
+  setHasFixRight(hasFixRight: boolean): void {
+    this.hasFixRight$.next(hasFixRight);
+  }
+
   setTableWidthConfig(widthConfig: Array<string | null>): void {
     this.tableWidthConfigPx$.next(widthConfig);
   }
-  setListOfTh(listOfTh: NzThComponent[]): void {
+
+  setListOfTh(listOfTh: NzThMeasureDirective[]): void {
     let columnCount = 0;
     listOfTh.forEach(th => {
       columnCount += th.colspan || 1;
     });
+    const listOfThPx = listOfTh.map(item => item.nzWidth);
     this.columnCount$.next(columnCount);
-    this.listOfThWidthConfigPx$.next(listOfTh.map(item => item.nzWidth));
+    this.listOfThWidthConfigPx$.next(listOfThPx);
   }
-  setListOfMeasureColumn(listOfTh: NzThComponent[]): void {
+
+  setListOfMeasureColumn(listOfTh: NzThMeasureDirective[]): void {
     const listOfKeys: string[] = [];
     listOfTh.forEach(th => {
       const length = th.colspan || 1;
@@ -55,6 +76,7 @@ export class NzTableService {
     });
     this.listOfMeasureColumn$.next(listOfKeys);
   }
+
   setListOfAutoWidth(listOfAutoWidth: number[]): void {
     this.listOfAutoWidthPx$.next(listOfAutoWidth.map(width => `${width}px`));
   }

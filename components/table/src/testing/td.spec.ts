@@ -6,13 +6,13 @@ import { By } from '@angular/platform-browser';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { createFakeEvent } from 'ng-zorro-antd/core';
 
-import { NzTdComponent } from '../cell/td.component';
+import { NzTdAddOnComponent } from '../cell/td-addon.component';
 
 describe('nz-td', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports: [NzCheckboxModule, FormsModule],
-      declarations: [NzTestTdComponent, NzTdComponent]
+      declarations: [NzTestTdComponent, NzTdAddOnComponent]
     });
     TestBed.compileComponents();
   }));
@@ -24,7 +24,7 @@ describe('nz-td', () => {
       fixture = TestBed.createComponent(NzTestTdComponent);
       fixture.detectChanges();
       testComponent = fixture.debugElement.componentInstance;
-      td = fixture.debugElement.query(By.directive(NzTdComponent));
+      td = fixture.debugElement.query(By.directive(NzTdAddOnComponent));
     });
     it('should showCheckbox work', () => {
       fixture.detectChanges();
@@ -169,12 +169,10 @@ describe('nz-td', () => {
 @Component({
   template: `
     <td
-      [nzShowCheckbox]="showCheckbox"
       [(nzChecked)]="checked"
       [nzIndeterminate]="indeterminate"
       (nzCheckedChange)="checkedChange($event)"
       [nzDisabled]="disabled"
-      [nzShowExpand]="showExpand"
       [(nzExpand)]="expand"
       (nzExpandChange)="expandChange($event)"
       [nzIndentSize]="indentSize"
@@ -199,7 +197,7 @@ export class NzTestTdComponent {
 
 @Component({
   template: `
-    <td class="nz-disable-td" [nzShowCheckbox]="true"></td>
+    <td class="nz-disable-td" [nzChecked]="true"></td>
   `
 })
 export class NzTestDisableTdComponent {}

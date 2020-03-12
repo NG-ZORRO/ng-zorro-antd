@@ -19,7 +19,7 @@ import { Subject } from 'rxjs';
     '[style.position]': `isFixed? 'sticky' : null`
   }
 })
-export class NzFixedCellDirective implements OnChanges {
+export class NzCellFixedDirective implements OnChanges {
   @Input() nzRight: string | boolean = false;
   @Input() nzLeft: string | boolean = false;
   @Input() colspan: number | null = null;

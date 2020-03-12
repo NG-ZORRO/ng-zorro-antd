@@ -35,7 +35,21 @@ Angular 下常见错误，使用 Reactive Forms 需要额外引入 `ReactiveForm
 
 ### 数据修改后页面为什么没有更新
 
-NG ZORRO 组件默认在 OnPush 模式下工作，mutate 对象或者数组不会触发 Angular 的变更检测，请使用 immutable 方式。
+为了获得更好的性能，NG-ZORRO 所有组件都运行在 [OnPush](https://angular.io/api/core/ChangeDetectionStrategy) 模式下，这意味着对 `@Input()` 数据的 mutate 将不会生效，请使用 immutable 方式操作数组或者对象。
+
+```typescript
+// 增加数据
+this.dataSet = [ ...this.dataSet, {
+  key    : `${this.i}`,
+  name   : `Edward King ${this.i}`,
+  age    : '32',
+  address: `London, Park Lane no. ${this.i}`
+}];
+// 删除数据
+this.dataSet = this.dataSet.filter(d => d.key !== i);
+```
+
+开发者也可以使用 [immer](https://immerjs.github.io/immer/docs/introduction) 获得更好的操作体验
 
 ### 为什么我的 ISSUE 会被关闭
 

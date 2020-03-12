@@ -80,9 +80,9 @@ describe('nz-thead', () => {
   template: `
     <nz-table>
       <thead [nzSingleSort]="singleSort" (nzSortChange)="sortChange($event)">
-        <th nzShowSort nzSortKey="first"></th>
-        <th nzShowSort nzSortKey="second"></th>
-        <th nzShowSort *ngFor="let col of columns" [nzSortKey]="col"></th>
+        <th nzSortKey="first"></th>
+        <th nzSortKey="second"></th>
+        <th *ngFor="let col of columns" [nzSortKey]="col"></th>
       </thead>
     </nz-table>
   `

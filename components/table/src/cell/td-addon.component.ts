@@ -7,12 +7,21 @@
  */
 /* tslint:disable:component-selector */
 
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Optional, Output, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChange,
+  SimpleChanges,
+  ViewEncapsulation
+} from '@angular/core';
 import { InputBoolean } from 'ng-zorro-antd/core';
-import { NzTableService } from '../table.service';
 
 @Component({
-  selector: 'td:not(.nz-disable-td):not([mat-cell])',
+  selector: 'td[nzChecked], td[nzDisabled], td[nzIndeterminate], td[nzIndentSize], td[nzExpand], td[nzShowExpand], td[nzShowCheckbox]',
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
@@ -22,8 +31,8 @@ import { NzTableService } from '../table.service';
       <button nz-row-expand-button [expand]="nzExpand" (expandChange)="onExpandChange($event)" [spaceMode]="!nzShowExpand"></button>
     </ng-container>
     <label
-      *ngIf="nzShowCheckbox"
       nz-checkbox
+      *ngIf="nzShowCheckbox"
       [nzDisabled]="nzDisabled"
       [ngModel]="nzChecked"
       [nzIndeterminate]="nzIndeterminate"
@@ -34,25 +43,19 @@ import { NzTableService } from '../table.service';
   `,
   host: {
     '[class.ant-table-cell-with-append]': `nzShowExpand || nzIndentSize > 0`,
-    '[class.ant-table-selection-column]': `nzShowCheckbox`,
-    '[class.ant-table-cell]': 'isInsideTable'
+    '[class.ant-table-selection-column]': `nzShowCheckbox`
   }
 })
-export class NzTdComponent {
+export class NzTdAddOnComponent implements OnChanges {
   @Input() nzChecked = false;
   @Input() nzDisabled = false;
   @Input() nzIndeterminate = false;
   @Input() nzIndentSize = 0;
-  @Input() @InputBoolean() nzExpand = false;
   @Input() @InputBoolean() nzShowExpand = false;
   @Input() @InputBoolean() nzShowCheckbox = false;
+  @Input() @InputBoolean() nzExpand = false;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   @Output() readonly nzExpandChange = new EventEmitter<boolean>();
-  isInsideTable = false;
-
-  constructor(@Optional() nzTableService: NzTableService) {
-    this.isInsideTable = !!nzTableService;
-  }
 
   onCheckedChange(checked: boolean): void {
     this.nzChecked = checked;
@@ -62,5 +65,15 @@ export class NzTdComponent {
   onExpandChange(expand: boolean): void {
     this.nzExpand = expand;
     this.nzExpandChange.emit(expand);
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    const isFirstChange = (value: SimpleChange) => value && value.firstChange && value.currentValue !== undefined;
+    const { nzExpand, nzChecked } = changes;
+    if (isFirstChange(nzExpand)) {
+      this.nzShowExpand = true;
+    }
+    if (isFirstChange(nzChecked)) {
+      this.nzShowCheckbox = true;
+    }
   }
 }

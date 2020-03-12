@@ -51,11 +51,11 @@ export class RandomUserService {
       (nzPageIndexChange)="onPageIndexChange($event)"
       (nzPageSizeChange)="onPageSizeChange($event)"
     >
-      <thead (nzSortChange)="onSortChange($event)" nzSingleSort>
+      <thead (nzSortOrderChange)="onSortChange($event)" nzSingleSort>
         <tr>
-          <th nzShowSort nzSortKey="name">Name</th>
-          <th nzShowFilter [nzFilters]="filterGender" (nzFilterChange)="onFilterChange($event)">Gender</th>
-          <th nzShowSort nzSortKey="email"><span>Email</span></th>
+          <th nzSortKey="name">Name</th>
+          <th [nzFilters]="filterGender" (nzFilterChange)="onFilterChange($event)">Gender</th>
+          <th nzSortKey="email"><span>Email</span></th>
         </tr>
       </thead>
       <tbody>

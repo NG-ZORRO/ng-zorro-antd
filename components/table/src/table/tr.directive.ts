@@ -9,9 +9,9 @@
 import { AfterContentInit, ContentChildren, Directive, OnDestroy, Optional, QueryList } from '@angular/core';
 import { combineLatest, merge, Observable, ReplaySubject, Subject } from 'rxjs';
 import { flatMap, map, startWith, switchMap, takeUntil } from 'rxjs/operators';
-import { NzThComponent } from '../cell/th.component';
-import { NzFixedCellDirective } from '../fixed/fixed-cell.directive';
-import { NzTableService } from '../table.service';
+import { NzCellFixedDirective } from '../cell/cell-fixed.directive';
+import { NzThMeasureDirective } from '../cell/th-measure.directive';
+import { NzTableStyleService } from '../table-style.service';
 
 @Directive({
   selector: 'tr:not([mat-row]):not([mat-header-row]):not([nz-table-measure-row]):not([nzExpand]):not([nz-table-fixed-row])',
@@ -20,14 +20,14 @@ import { NzTableService } from '../table.service';
   }
 })
 export class NzTrDirective implements AfterContentInit, OnDestroy {
-  @ContentChildren(NzThComponent) listOfNzThComponent: QueryList<NzThComponent>;
-  @ContentChildren(NzFixedCellDirective) listOfCellFixedDirective: QueryList<NzFixedCellDirective>;
+  @ContentChildren(NzThMeasureDirective) listOfNzThDirective: QueryList<NzThMeasureDirective>;
+  @ContentChildren(NzCellFixedDirective) listOfCellFixedDirective: QueryList<NzCellFixedDirective>;
   private destroy$ = new Subject<void>();
-  private listOfFixedColumns$ = new ReplaySubject<NzFixedCellDirective[]>(1);
-  private listOfColumns$ = new ReplaySubject<NzThComponent[]>(1);
-  listOfFixedColumnsChanges$: Observable<NzFixedCellDirective[]> = this.listOfFixedColumns$.pipe(
+  private listOfFixedColumns$ = new ReplaySubject<NzCellFixedDirective[]>(1);
+  private listOfColumns$ = new ReplaySubject<NzThMeasureDirective[]>(1);
+  listOfFixedColumnsChanges$: Observable<NzCellFixedDirective[]> = this.listOfFixedColumns$.pipe(
     switchMap(list =>
-      merge(...[this.listOfFixedColumns$, ...list.map((c: NzFixedCellDirective) => c.changes$)]).pipe(
+      merge(...[this.listOfFixedColumns$, ...list.map((c: NzCellFixedDirective) => c.changes$)]).pipe(
         flatMap(() => this.listOfFixedColumns$)
       )
     ),
@@ -35,24 +35,24 @@ export class NzTrDirective implements AfterContentInit, OnDestroy {
   );
   listOfFixedLeftColumnChanges$ = this.listOfFixedColumnsChanges$.pipe(map(list => list.filter(item => item.nzLeft !== false)));
   listOfFixedRightColumnChanges$ = this.listOfFixedColumnsChanges$.pipe(map(list => list.filter(item => item.nzRight !== false)));
-  listOfColumnsChanges$: Observable<NzThComponent[]> = this.listOfColumns$.pipe(
+  listOfColumnsChanges$: Observable<NzThMeasureDirective[]> = this.listOfColumns$.pipe(
     switchMap(list =>
-      merge(...[this.listOfColumns$, ...list.map((c: NzThComponent) => c.changes$)]).pipe(flatMap(() => this.listOfColumns$))
+      merge(...[this.listOfColumns$, ...list.map((c: NzThMeasureDirective) => c.changes$)]).pipe(flatMap(() => this.listOfColumns$))
     ),
     takeUntil(this.destroy$)
   );
   isInsideTable = false;
 
-  constructor(@Optional() private nzTableService: NzTableService) {
-    this.isInsideTable = !!nzTableService;
+  constructor(@Optional() private nzTableStyleService: NzTableStyleService) {
+    this.isInsideTable = !!nzTableStyleService;
   }
 
   ngAfterContentInit(): void {
-    if (this.nzTableService) {
+    if (this.nzTableStyleService) {
       this.listOfCellFixedDirective.changes
         .pipe(startWith(this.listOfCellFixedDirective), takeUntil(this.destroy$))
         .subscribe(this.listOfFixedColumns$);
-      this.listOfNzThComponent.changes.pipe(startWith(this.listOfNzThComponent), takeUntil(this.destroy$)).subscribe(this.listOfColumns$);
+      this.listOfNzThDirective.changes.pipe(startWith(this.listOfNzThDirective), takeUntil(this.destroy$)).subscribe(this.listOfColumns$);
       /** set last left and first right **/
       this.listOfFixedLeftColumnChanges$.subscribe(listOfFixedLeft => {
         listOfFixedLeft.forEach(cell => cell.setIsLastLeft(cell === listOfFixedLeft[listOfFixedLeft.length - 1]));
@@ -61,7 +61,7 @@ export class NzTrDirective implements AfterContentInit, OnDestroy {
         listOfFixedRight.forEach(cell => cell.setIsFirstRight(cell === listOfFixedRight[0]));
       });
       /** calculate fixed nzLeft and nzRight **/
-      combineLatest([this.nzTableService.listOfListOfThWidth$, this.listOfFixedLeftColumnChanges$]).subscribe(
+      combineLatest([this.nzTableStyleService.listOfListOfThWidth$, this.listOfFixedLeftColumnChanges$]).subscribe(
         ([listOfAutoWidth, listOfLeftCell]) => {
           listOfLeftCell.forEach((cell, index) => {
             if (cell.isAutoLeft) {
@@ -73,7 +73,7 @@ export class NzTrDirective implements AfterContentInit, OnDestroy {
           });
         }
       );
-      combineLatest([this.nzTableService.listOfListOfThWidth$, this.listOfFixedRightColumnChanges$]).subscribe(
+      combineLatest([this.nzTableStyleService.listOfListOfThWidth$, this.listOfFixedRightColumnChanges$]).subscribe(
         ([listOfAutoWidth, listOfRightCell]) => {
           listOfRightCell.forEach((_, index) => {
             const cell = listOfRightCell[listOfRightCell.length - index - 1];

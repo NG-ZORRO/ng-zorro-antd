@@ -11,7 +11,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 export type NzTableDataType =
   | NzSafeAny
   | {
-      [key: string]: NzSafeAny | { [key: string]: NzSafeAny };
+      [key: string]: NzTableDataType;
     };
 
 export type NzTableLayoutType = 'fixed' | 'auto';
@@ -28,4 +28,7 @@ export interface NzThItemInterface {
   checked: boolean;
 }
 
-export type NzSortValueType = 'ascend' | 'descend' | null;
+export type NzSortOrderType = string | 'ascend' | 'descend' | null;
+export type NzSortCompareFn = (a: NzTableDataType, b: NzTableDataType, sortOrder?: NzSortOrderType) => number;
+export type NzFilterValue = NzSafeAny[] | NzSafeAny;
+export type NzFilterFn = (value: NzFilterValue, data: NzTableDataType) => boolean;

@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Component({
@@ -37,14 +37,12 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
         </ul>
       </nz-dropdown-menu>
     </div>
-    <ng-template [ngTemplateOutlet]="contentTemplate"></ng-template>
   `,
   host: {
     '[class.ant-table-selection]': 'true'
   }
 })
 export class NzTableSelectionComponent {
-  @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() listOfSelections: Array<{ text: string; onSelect(...args: NzSafeAny[]): NzSafeAny }> = [];
   @Input() checked = false;
   @Input() disabled = false;

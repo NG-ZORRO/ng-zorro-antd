@@ -10,7 +10,7 @@
 import { ChangeDetectionStrategy, Component, Optional, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core';
 import { BehaviorSubject } from 'rxjs';
-import { NzTableService } from '../table.service';
+import { NzTableStyleService } from '../table-style.service';
 
 @Component({
   selector: 'tbody',
@@ -39,10 +39,10 @@ export class NzTbodyComponent {
   noResult$ = new BehaviorSubject<string | TemplateRef<NzSafeAny> | undefined>(undefined);
   listOfMeasureColumn$ = new BehaviorSubject<string[]>([]);
 
-  constructor(@Optional() private nzTableService: NzTableService) {
-    this.isInsideTable = !!this.nzTableService;
-    if (this.nzTableService) {
-      const { showEmpty$, noResult$, listOfMeasureColumn$ } = this.nzTableService;
+  constructor(@Optional() private nzTableStyleService: NzTableStyleService) {
+    this.isInsideTable = !!this.nzTableStyleService;
+    if (this.nzTableStyleService) {
+      const { showEmpty$, noResult$, listOfMeasureColumn$ } = this.nzTableStyleService;
       noResult$.subscribe(this.noResult$);
       listOfMeasureColumn$.subscribe(this.listOfMeasureColumn$);
       showEmpty$.subscribe(this.showEmpty$);
@@ -50,6 +50,6 @@ export class NzTbodyComponent {
   }
 
   onListOfAutoWidthChange(listOfAutoWidth: number[]): void {
-    this.nzTableService.setListOfAutoWidth(listOfAutoWidth);
+    this.nzTableStyleService.setListOfAutoWidth(listOfAutoWidth);
   }
 }

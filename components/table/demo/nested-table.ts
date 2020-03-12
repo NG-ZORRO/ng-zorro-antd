@@ -24,7 +24,7 @@ interface ChildrenItemData {
     <nz-table #nestedTable [nzData]="listOfParentData" [nzPageSize]="10">
       <thead>
         <tr>
-          <th nzShowExpand></th>
+          <th></th>
           <th>Name</th>
           <th>Platform</th>
           <th>Version</th>
@@ -37,7 +37,7 @@ interface ChildrenItemData {
       <tbody>
         <ng-template ngFor let-data [ngForOf]="nestedTable.data">
           <tr>
-            <td nzShowExpand [(nzExpand)]="data.expand"></td>
+            <td [(nzExpand)]="data.expand"></td>
             <td>{{ data.name }}</td>
             <td>{{ data.platform }}</td>
             <td>{{ data.version }}</td>

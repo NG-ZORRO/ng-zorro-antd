@@ -3,10 +3,10 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-table-expand',
   template: `
-    <nz-table #nzTable [nzData]="listOfData">
+    <nz-table #nzTable [nzData]="listOfData" nzTableLayout="fixed">
       <thead>
         <tr>
-          <th nzShowExpand></th>
+          <th nzWidth="60px"></th>
           <th>Name</th>
           <th>Age</th>
           <th>Address</th>
@@ -15,15 +15,13 @@ import { Component } from '@angular/core';
       <tbody>
         <ng-container *ngFor="let data of nzTable.data">
           <tr>
-            <td nzShowExpand [(nzExpand)]="mapOfExpandData[data.id]"></td>
+            <td [nzExpand]="expandSet.has(data.id)" (nzExpandChange)="onExpandChange(data.id, $event)"></td>
             <td>{{ data.name }}</td>
             <td>{{ data.age }}</td>
             <td>{{ data.address }}</td>
           </tr>
-          <tr [nzExpand]="mapOfExpandData[data.id]">
-            {{
-              data.description
-            }}
+          <tr [nzExpand]="expandSet.has(data.id)">
+            <span>{{ data.description }}</span>
           </tr>
         </ng-container>
       </tbody>
@@ -31,7 +29,14 @@ import { Component } from '@angular/core';
   `
 })
 export class NzDemoTableExpandComponent {
-  mapOfExpandData: { [key: string]: boolean } = {};
+  expandSet = new Set<number>();
+  onExpandChange(id: number, checked: boolean): void {
+    if (checked) {
+      this.expandSet.add(id);
+    } else {
+      this.expandSet.delete(id);
+    }
+  }
   listOfData = [
     {
       id: 1,

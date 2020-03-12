@@ -13,7 +13,7 @@ interface ItemData {
       <thead>
         <tr>
           <th>Name</th>
-          <th>Age</th>
+          <th nzWidth="100px">Age</th>
           <th>Address</th>
         </tr>
       </thead>
@@ -31,12 +31,14 @@ export class NzDemoTableFixedHeaderComponent implements OnInit {
   listOfData: ItemData[] = [];
 
   ngOnInit(): void {
+    const data = [];
     for (let i = 0; i < 100; i++) {
-      this.listOfData.push({
+      data.push({
         name: `Edward King ${i}`,
         age: 32,
         address: `London, Park Lane no. ${i}`
       });
     }
+    this.listOfData = data;
   }
 }

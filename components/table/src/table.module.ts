@@ -21,16 +21,18 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
-import { NzTdComponent } from './cell/td.component';
-import { NzThComponent } from './cell/th.component';
-import { NzRowExpandButtonDirective } from './expand/row-expand-button.directive';
-import { NzRowIndentDirective } from './expand/row-indent.directive';
-import { NzTrExpandDirective } from './expand/tr-expand.directive';
-import { NzFixedCellDirective } from './fixed/fixed-cell.directive';
-import { NzMeasureRowComponent } from './fixed/measure-row.component';
-import { NzTableFilterComponent } from './plugin/filter.component';
-import { NzTableSelectionComponent } from './plugin/selection.component';
-import { NzTableSortersComponent } from './plugin/sorters.component';
+import { NzFilterTriggerComponent } from './addon/filter-trigger.component';
+import { NzTableFilterComponent } from './addon/filter.component';
+import { NzRowExpandButtonDirective } from './addon/row-expand-button.directive';
+import { NzRowIndentDirective } from './addon/row-indent.directive';
+import { NzTableSelectionComponent } from './addon/selection.component';
+import { NzTableSortersComponent } from './addon/sorters.component';
+import { NzCellFixedDirective } from './cell/cell-fixed.directive';
+import { NzTableCellDirective } from './cell/cell.directive';
+import { NzTdAddOnComponent } from './cell/td-addon.component';
+import { NzThAddOnComponent } from './cell/th-addon.component';
+import { NzThMeasureDirective } from './cell/th-measure.directive';
+import { NzThSelectionComponent } from './cell/th-selection.component';
 import { NzCellAlignDirective } from './styled/align.directive';
 import { NzCellEllipsisDirective } from './styled/ellipsis.directive';
 import { NzCellBreakWordDirective } from './styled/word-break.directive';
@@ -43,24 +45,28 @@ import { NzTableComponent } from './table/table.component';
 import { NzTbodyComponent } from './table/tbody.component';
 import { NzTheadComponent } from './table/thead.component';
 import { NzTableTitleFooterComponent } from './table/title-footer.component';
+import { NzTrExpandDirective } from './table/tr-expand.directive';
+import { NzTrMeasureComponent } from './table/tr-measure.component';
 import { NzTrDirective } from './table/tr.directive';
 
 @NgModule({
   declarations: [
     NzTableComponent,
-    NzThComponent,
-    NzTdComponent,
+    NzThAddOnComponent,
+    NzTableCellDirective,
+    NzThMeasureDirective,
+    NzTdAddOnComponent,
     NzTheadComponent,
     NzTbodyComponent,
     NzTrDirective,
     NzTrExpandDirective,
     NzTableVirtualScrollDirective,
-    NzFixedCellDirective,
+    NzCellFixedDirective,
     NzTableContentComponent,
     NzTableTitleFooterComponent,
     NzTableInnerDefaultComponent,
     NzTableInnerScrollComponent,
-    NzMeasureRowComponent,
+    NzTrMeasureComponent,
     NzRowIndentDirective,
     NzRowExpandButtonDirective,
     NzCellBreakWordDirective,
@@ -69,22 +75,28 @@ import { NzTrDirective } from './table/tr.directive';
     NzTableFilterComponent,
     NzTableSelectionComponent,
     NzCellEllipsisDirective,
-    NzTableFixedRowComponent
+    NzFilterTriggerComponent,
+    NzTableFixedRowComponent,
+    NzThSelectionComponent
   ],
   exports: [
     NzTableComponent,
-    NzThComponent,
-    NzTdComponent,
+    NzThAddOnComponent,
+    NzTableCellDirective,
+    NzThMeasureDirective,
+    NzTdAddOnComponent,
     NzTheadComponent,
     NzTbodyComponent,
     NzTrDirective,
     NzTableVirtualScrollDirective,
-    NzFixedCellDirective,
+    NzCellFixedDirective,
+    NzFilterTriggerComponent,
     NzTrExpandDirective,
     NzCellBreakWordDirective,
     NzCellAlignDirective,
     NzCellEllipsisDirective,
-    NzTableFixedRowComponent
+    NzTableFixedRowComponent,
+    NzThSelectionComponent
   ],
   imports: [
     NzMenuModule,

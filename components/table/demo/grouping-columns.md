@@ -7,10 +7,10 @@ title:
 
 ## zh-CN
 
-当使用分组表头时，`th` 的 `nzWidth` 方式不再适用，使用 `nzWidthConfig` 来设定每个分组的宽度
+固定列与分组表头联合使用。
 
 ## en-US
 
-Group table head with `nzWidthConfig`.
+Group table head with fixed columns.
 
 

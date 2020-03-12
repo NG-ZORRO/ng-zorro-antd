@@ -42,7 +42,7 @@ import { debounceTime, map, startWith, switchMap, takeUntil } from 'rxjs/operato
     '[class.ant-table-measure-now]': 'true'
   }
 })
-export class NzMeasureRowComponent implements AfterViewInit, OnDestroy {
+export class NzTrMeasureComponent implements AfterViewInit, OnDestroy {
   @Input() listOfMeasureColumn: string[] = [];
   @Output() readonly listOfAutoWidth = new EventEmitter<number[]>();
   @ViewChildren('tdElement') listOfTdElement: QueryList<ElementRef>;
