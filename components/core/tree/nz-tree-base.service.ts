@@ -12,14 +12,14 @@ import { Observable, Subject } from 'rxjs';
 import { isNotNil } from '../util';
 
 import { NzTreeNode } from './nz-tree-base-node';
-import { isCheckDisabled, isInArray } from './nz-tree-base-util';
+import { isCheckDisabled, isInArray, nzTreeDefaultFilterOption, NzTreeFilterOption } from './nz-tree-base-util';
 import { NzFormatEmitEvent } from './nz-tree-base.definitions';
 
 @Injectable()
 export class NzTreeBaseService implements OnDestroy {
   DRAG_SIDE_RANGE = 0.25;
   DRAG_MIN_GAP = 2;
-
+  filterOption: NzTreeFilterOption = nzTreeDefaultFilterOption;
   isCheckStrictly: boolean = false;
   isMultiple: boolean = false;
   selectedNode: NzTreeNode;
@@ -365,7 +365,7 @@ export class NzTreeBaseService implements OnDestroy {
       }
     };
     const searchChild = (n: NzTreeNode) => {
-      if (value && n.title.includes(value)) {
+      if (value && this.filterOption(value, n)) {
         // match the node
         n.isMatched = true;
         this.matchedNodeList.push(n);

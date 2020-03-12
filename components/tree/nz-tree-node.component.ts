@@ -29,6 +29,7 @@ import { filter, takeUntil } from 'rxjs/operators';
 import {
   InputBoolean,
   NzFormatBeforeDropEvent,
+  NzHighlightFunc,
   NzNoAnimationDirective,
   NzTreeBaseService,
   NzTreeNode,
@@ -62,6 +63,7 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzTreeTemplate: TemplateRef<{ $implicit: NzTreeNode }>;
   @Input() nzBeforeDrop: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;
   @Input() nzSearchValue = '';
+  @Input() nzHighlightFunc: NzHighlightFunc;
 
   @Input()
   set nzDraggable(value: boolean) {

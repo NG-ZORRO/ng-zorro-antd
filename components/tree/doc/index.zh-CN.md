@@ -37,6 +37,8 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 | `[nzCheckedKeys]` | 指定选中复选框的树节点 | `string[]` | `[]` |
 | `[nzSelectedKeys]` | 指定选中的树节点 | `string[]` | `[]` |
 | `[nzSearchValue]` | 按需筛选树高亮节点(参考可搜索的树),双向绑定 | `string` | `null` |
+| `[nzFilterOption]` | 是否根据输入项进行筛选。当其为一个函数时，会接收 `inputValue` `option` 两个参数，当 `option` 符合筛选条件时，应返回 `true`，反之则返回 `false`。 | `(inputValue?: string, option?: NzTreeNode) => boolean;` | - |
+| `[nzHighlightFunc]` | 是否根据输入项进行高亮。当其为一个函数时，会接收 `inputValue` `option` 两个参数，最终返回的内容将作为 `innerHTML` 显示。 | `(inputValue?: string, option?: NzTreeNode) => string \| null;` | - |
 | `[nzBeforeDrop]` | drop前二次校验,允许用户自行决定是否允许放置 | `(confirm: NzFormatBeforeDropEvent) => Observable<boolean>` | - |
 | `(nzClick)` | 点击树节点触发 | `EventEmitter<NzFormatEmitEvent>` | - |
 | `(nzDblClick)` | 双击树节点触发 | `EventEmitter<NzFormatEmitEvent>` | - |

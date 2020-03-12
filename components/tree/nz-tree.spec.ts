@@ -9,6 +9,8 @@ import { dispatchMouseEvent, dispatchTouchEvent, NzTreeBaseService, NzTreeNode, 
 
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzDemoTreeCustomFilterComponent } from './demo/custom-filter';
 import { NzTreeComponent } from './nz-tree.component';
 import { NzTreeModule } from './nz-tree.module';
 
@@ -387,6 +389,43 @@ describe('nz-tree', () => {
       fixture.componentInstance.expandAll = true;
       fixture.detectChanges();
       expect(treeElement.querySelector('.ant-tree-treenode-disabled')!.querySelectorAll("[title='0-0-reset']").length).toEqual(1);
+    }));
+  });
+
+  describe('custom filter tree', () => {
+    let treeElement: HTMLElement;
+    let treeComponent: NzTreeComponent;
+    let fixture: ComponentFixture<NzDemoTreeCustomFilterComponent>;
+    beforeEach(async(() => {
+      TestBed.configureTestingModule({
+        imports: [NzTreeModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule, NzInputModule],
+        declarations: [NzDemoTreeCustomFilterComponent]
+      }).compileComponents();
+      fixture = TestBed.createComponent(NzDemoTreeCustomFilterComponent);
+      fixture.detectChanges();
+      treeComponent = fixture.componentInstance.treeComponent;
+      treeElement = fixture.debugElement.query(By.directive(NzTreeComponent)).nativeElement;
+    }));
+    it('test custom filter', fakeAsync(() => {
+      fixture.detectChanges();
+      // case insensitive
+      fixture.componentInstance.searchValue = 'a';
+      fixture.detectChanges();
+      expect(treeComponent.getMatchedNodeList().length).toEqual(11);
+      // use custom highlight font
+      expect(treeElement.querySelectorAll('.highlight-font').length).toEqual(11);
+      fixture.componentInstance.searchValue = 'a-a';
+      fixture.detectChanges();
+      tick(300);
+      flush();
+      expect(treeComponent.getMatchedNodeList().length).toEqual(4);
+      expect(treeElement.querySelectorAll('.highlight-font').length).toEqual(4);
+      fixture.componentInstance.searchValue = 'a-B';
+      fixture.detectChanges();
+      tick(300);
+      flush();
+      expect(treeComponent.getMatchedNodeList().length).toEqual(5);
+      expect(treeElement.querySelectorAll('.highlight-font').length).toEqual(5);
     }));
   });
 
@@ -999,10 +1038,7 @@ class NzTestTreeCustomizedIconComponent {
       key: '100',
       expanded: true,
       icon: 'smile',
-      children: [
-        { title: 'leaf', key: '1001', icon: 'meh', isLeaf: true },
-        { title: 'leaf', key: '1002', icon: 'frown', isLeaf: true }
-      ]
+      children: [{ title: 'leaf', key: '1001', icon: 'meh', isLeaf: true }, { title: 'leaf', key: '1002', icon: 'frown', isLeaf: true }]
     }
   ];
 }
