@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-skeleton.component';
-export * from './nz-skeleton.module';
-export * from './nz-skeleton.type';
+export * from './skeleton.component';
+export * from './skeleton.module';
+export * from './skeleton.type';
+export * from './skeleton-element.component';
