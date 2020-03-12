@@ -110,6 +110,9 @@ export class TimeHolder {
     if (this.isEmpty) {
       this._value = undefined;
     } else {
+      if (typeof this._value === 'string') {
+        this._value = new Date(this._value);
+      }
       if (!isNotNil(this._hours)) {
         this._hours = this.defaultHours;
       } else {
