@@ -66,7 +66,7 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline];
   providers: [
     Title,
     { provide: NZ_ICONS, useValue: icons },
-    { provide: NZ_CONFIG, useValue: { icon: { nzTwotoneColor: '#1890ff' } }}
+    { provide: NZ_CONFIG, useValue: { icon: { nzTwotoneColor: '#1890ff', nzUseJsonpLoading: true } }}
   ],
   bootstrap: [AppComponent]
 })

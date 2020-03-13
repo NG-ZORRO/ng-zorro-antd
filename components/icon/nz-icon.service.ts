@@ -110,19 +110,6 @@ export class NzIconService extends IconService {
 
   private iconfontCache = new Set<string>();
 
-  normalizeSvgElement(svg: SVGElement): void {
-    if (!svg.getAttribute('viewBox')) {
-      this._renderer.setAttribute(svg, 'viewBox', '0 0 1024 1024');
-    }
-    if (!svg.getAttribute('width') || !svg.getAttribute('height')) {
-      this._renderer.setAttribute(svg, 'width', '1em');
-      this._renderer.setAttribute(svg, 'height', '1em');
-    }
-    if (!svg.getAttribute('fill')) {
-      this._renderer.setAttribute(svg, 'fill', 'currentColor');
-    }
-  }
-
   fetchFromIconfont(opt: NzIconfontOption): void {
     const { scriptUrl } = opt;
     if (this._document && !this.iconfontCache.has(scriptUrl)) {
@@ -139,9 +126,9 @@ export class NzIconService extends IconService {
   }
 
   constructor(
+    public nzConfigService: NzConfigService,
     rendererFactory: RendererFactory2,
     sanitizer: DomSanitizer,
-    protected nzConfigService: NzConfigService,
     @Optional() handler: HttpBackend,
     // tslint:disable-next-line:no-any
     @Optional() @Inject(DOCUMENT) _document: any,
@@ -154,8 +141,7 @@ export class NzIconService extends IconService {
   ) {
     super(rendererFactory, handler, _document, sanitizer);
 
-    this.onConfigChange();
-
+    this.registerConfigChangeEvent();
     this.addIcon(...NZ_ICONS_USED_BY_ZORRO, ...(icons || []));
 
     if (legacyDefaultTwotoneColor) {
@@ -164,9 +150,10 @@ export class NzIconService extends IconService {
 
     this.configDefaultTwotoneColor();
     this.configDefaultTheme();
+    this.configJsonpLoading();
   }
 
-  private onConfigChange(): void {
+  private registerConfigChangeEvent(): void {
     this.nzConfigService.getConfigChangeEventForComponent('icon').subscribe(() => {
       this.configDefaultTwotoneColor();
       this.configDefaultTheme();
@@ -194,6 +181,14 @@ export class NzIconService extends IconService {
     }
 
     this.twoToneColor = { primaryColor };
+  }
+
+  private configJsonpLoading(): void {
+    const iconConfig = this.getConfig();
+
+    if (iconConfig && iconConfig.nzUseJsonpLoading) {
+      this.useJsonpLoading();
+    }
   }
 
   private getConfig(): IconConfig {

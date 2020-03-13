@@ -144,6 +144,7 @@ export interface FormConfig {
 }
 
 export interface IconConfig {
+  nzUseJsonpLoading?: boolean;
   nzTheme?: 'fill' | 'outline' | 'twotone';
   nzTwotoneColor?: string;
 }
