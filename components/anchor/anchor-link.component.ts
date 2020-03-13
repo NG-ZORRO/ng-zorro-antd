@@ -18,16 +18,22 @@ import {
   OnInit,
   Renderer2,
   TemplateRef,
+  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 
-import { NzAnchorComponent } from './nz-anchor.component';
+import { NzAnchorComponent } from './anchor.component';
 
 @Component({
   selector: 'nz-link',
   exportAs: 'nzLink',
   preserveWhitespaces: false,
-  templateUrl: './nz-anchor-link.component.html',
+  template: `
+    <a #linkTitle (click)="goToClick($event)" href="{{ nzHref }}" class="ant-anchor-link-title" title="{{ titleStr }}">
+      <span *ngIf="titleStr; else titleTpl || nzTemplate">{{ titleStr }}</span>
+    </a>
+    <ng-content></ng-content>
+  `,
   host: {
     '[class.ant-anchor-link-active]': 'active'
   },
@@ -60,6 +66,7 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
   }
 
   @ContentChild('nzTemplate', { static: false }) nzTemplate: TemplateRef<void>;
+  @ViewChild('linkTitle') linkTitle: ElementRef<HTMLAnchorElement>;
 
   constructor(
     public elementRef: ElementRef,
@@ -73,6 +80,10 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.anchorComp.registerLink(this);
+  }
+
+  getLinkTitleElement(): HTMLAnchorElement {
+    return this.linkTitle.nativeElement;
   }
 
   goToClick(e: Event): void {
