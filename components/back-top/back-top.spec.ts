@@ -5,8 +5,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NzScrollService } from 'ng-zorro-antd/core';
 
-import { NzBackTopComponent } from './nz-back-top.component';
-import { NzBackTopModule } from './nz-back-top.module';
+import { NzBackTopComponent } from './back-top.component';
+import { NzBackTopModule } from './back-top.module';
 
 describe('Component:nz-back-top', () => {
   let scrollService: MockNzScrollService;
@@ -148,7 +148,8 @@ describe('Component:nz-back-top', () => {
     let fakeTarget: HTMLElement;
     beforeEach(fakeAsync(() => {
       fakeTarget = debugElement.query(By.css('#fakeTarget')).nativeElement;
-      component.nzTarget = fakeTarget;
+      fixture.componentInstance.setTarget(fakeTarget);
+      fixture.detectChanges();
     }));
 
     it('window scroll does not show the button', fakeAsync(() => {
@@ -197,13 +198,19 @@ describe('Component:nz-back-top', () => {
 
 @Component({
   template: `
-    <nz-back-top></nz-back-top>
+    <nz-back-top [nzTarget]="target"></nz-back-top>
     <div id="fakeTarget"></div>
   `
 })
 class TestBackTopComponent {
   @ViewChild(NzBackTopComponent, { static: true })
   nzBackTopComponent: NzBackTopComponent;
+
+  target: HTMLElement | null = null;
+
+  setTarget(target: HTMLElement): void {
+    this.target = target;
+  }
 }
 
 @Component({

@@ -15,16 +15,19 @@ import {
   EventEmitter,
   Inject,
   Input,
+  NgZone,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
 
 import { fadeMotion, InputNumber, NzConfigService, NzScrollService, WithConfig } from 'ng-zorro-antd/core';
-import { fromEvent, Subscription } from 'rxjs';
-import { distinctUntilChanged, throttleTime } from 'rxjs/operators';
+import { fromEvent, Subject } from 'rxjs';
+import { takeUntil, throttleTime } from 'rxjs/operators';
 
 const NZ_CONFIG_COMPONENT_NAME = 'backTop';
 
@@ -32,41 +35,43 @@ const NZ_CONFIG_COMPONENT_NAME = 'backTop';
   selector: 'nz-back-top',
   exportAs: 'nzBackTop',
   animations: [fadeMotion],
-  templateUrl: './nz-back-top.component.html',
+  template: `
+    <div class="ant-back-top" (click)="clickBackTop()" @fadeMotion *ngIf="visible">
+      <ng-template #defaultContent>
+        <div class="ant-back-top-content">
+          <div class="ant-back-top-icon"></div>
+        </div>
+      </ng-template>
+      <ng-template [ngTemplateOutlet]="nzTemplate || defaultContent"></ng-template>
+    </div>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false
 })
-export class NzBackTopComponent implements OnInit, OnDestroy {
-  private scroll$: Subscription | null = null;
+export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
+  private scrollListenerDestroy$ = new Subject();
   private target: HTMLElement | null = null;
 
   visible: boolean = false;
 
   @Input() nzTemplate: TemplateRef<void>;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 400) @InputNumber() nzVisibilityHeight: number;
-
-  @Input()
-  set nzTarget(el: string | HTMLElement) {
-    this.target = typeof el === 'string' ? this.doc.querySelector(el) : el;
-    this.registerScrollEvent();
-  }
-
+  @Input() nzTarget: string | HTMLElement;
   @Output() readonly nzClick: EventEmitter<boolean> = new EventEmitter();
 
   constructor(
-    public nzConfigService: NzConfigService,
-    private scrollSrv: NzScrollService,
     // tslint:disable-next-line:no-any
     @Inject(DOCUMENT) private doc: any,
+    public nzConfigService: NzConfigService,
+    private scrollSrv: NzScrollService,
     private platform: Platform,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private zone: NgZone
   ) {}
 
   ngOnInit(): void {
-    if (!this.scroll$) {
-      this.registerScrollEvent();
-    }
+    this.registerScrollEvent();
   }
 
   clickBackTop(): void {
@@ -86,24 +91,29 @@ export class NzBackTopComponent implements OnInit, OnDestroy {
     this.cd.markForCheck();
   }
 
-  private removeListen(): void {
-    if (this.scroll$) {
-      this.scroll$.unsubscribe();
-    }
-  }
-
   private registerScrollEvent(): void {
     if (!this.platform.isBrowser) {
       return;
     }
-    this.removeListen();
+    this.scrollListenerDestroy$.next();
     this.handleScroll();
-    this.scroll$ = fromEvent(this.getTarget(), 'scroll')
-      .pipe(throttleTime(50), distinctUntilChanged())
-      .subscribe(() => this.handleScroll());
+    this.zone.runOutsideAngular(() => {
+      fromEvent(this.getTarget(), 'scroll')
+        .pipe(throttleTime(50), takeUntil(this.scrollListenerDestroy$))
+        .subscribe(() => this.handleScroll());
+    });
   }
 
   ngOnDestroy(): void {
-    this.removeListen();
+    this.scrollListenerDestroy$.next();
+    this.scrollListenerDestroy$.complete();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const { nzTarget } = changes;
+    if (nzTarget) {
+      this.target = typeof this.nzTarget === 'string' ? this.doc.querySelector(this.nzTarget) : this.nzTarget;
+      this.registerScrollEvent();
+    }
   }
 }
