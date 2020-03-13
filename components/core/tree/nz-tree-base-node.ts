@@ -60,7 +60,6 @@ export class NzTreeNode {
   private _isHalfChecked: boolean;
   private _isSelected: boolean;
   private _isLoading: boolean;
-  canHide: boolean;
   isMatched: boolean;
 
   service: NzTreeBaseService | null;

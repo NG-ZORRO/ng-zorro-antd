@@ -28,6 +28,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import {
   FlattenNode,
+  flattenTreeData,
   InputBoolean,
   NzConfigService,
   NzFormatBeforeDropEvent,
@@ -41,7 +42,6 @@ import {
   NzTreeNodeOptions,
   WithConfig
 } from 'ng-zorro-antd/core';
-import { flattenTreeData } from 'ng-zorro-antd/core/tree/nz-tree-base-util';
 import { Observable, Subject } from 'rxjs';
 
 import { NzTreeService } from './nz-tree.service';
