@@ -5,6 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { warnDeprecation } from 'ng-zorro-antd/core';
 
 // Compatible for date-fns v1 from https://github.com/date-fns/date-fns-upgrade/blob/master/src/v2/convertTokens/index.ts
 
@@ -72,6 +73,7 @@ interface TokensBuffer {
 }
 
 export function convertTokens(format: string): string {
+  warnDeprecation(`'NZ_DATE_FNS_COMPATIBLE' is deprecated and will be removed in next minor version. Please update to date-fns v2 format.`);
   const tokensCaptures = format.match(tokensRegExp);
   if (tokensCaptures) {
     return tokensCaptures

@@ -15,7 +15,7 @@ import fnsParse from 'date-fns/parse';
 import parseISO from 'date-fns/parseISO';
 import { WeekDayIndex } from 'ng-zorro-antd/core';
 import { convertTokens } from './convert-tokens';
-import { mergeDateConfig, NZ_DATE_CONFIG, NZ_DATE_FORMAT_CONVERT, NzDateConfig } from './date-config';
+import { mergeDateConfig, NZ_DATE_CONFIG, NZ_DATE_FNS_COMPATIBLE, NzDateConfig } from './date-config';
 import { NzI18nService } from './nz-i18n.service';
 
 export function DATE_HELPER_SERVICE_FACTORY(injector: Injector, config: NzDateConfig, convertFormat: boolean): DateHelperService {
@@ -32,13 +32,13 @@ export function DATE_HELPER_SERVICE_FACTORY(injector: Injector, config: NzDateCo
 @Injectable({
   providedIn: 'root',
   useFactory: DATE_HELPER_SERVICE_FACTORY,
-  deps: [Injector, [new Optional(), NZ_DATE_CONFIG], [new Optional(), NZ_DATE_FORMAT_CONVERT]]
+  deps: [Injector, [new Optional(), NZ_DATE_CONFIG], [new Optional(), NZ_DATE_FNS_COMPATIBLE]]
 })
 export abstract class DateHelperService {
   constructor(
     protected i18n: NzI18nService,
     @Optional() @Inject(NZ_DATE_CONFIG) protected config: NzDateConfig,
-    @Optional() @Inject(NZ_DATE_FORMAT_CONVERT) protected convertFormat: boolean
+    @Optional() @Inject(NZ_DATE_FNS_COMPATIBLE) protected convertFormat: boolean
   ) {
     this.config = mergeDateConfig(this.config);
   }
