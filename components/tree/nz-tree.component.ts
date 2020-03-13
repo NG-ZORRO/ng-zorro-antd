@@ -381,8 +381,6 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
         this.renderTree();
         this.nzOnDrop.emit(event);
         break;
-      default:
-        break;
     }
   }
 
