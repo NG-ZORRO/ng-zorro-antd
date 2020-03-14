@@ -4,6 +4,7 @@
  */
 
 import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { Overlay, OverlayConfig, OverlayKeyboardDispatcher, OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
@@ -13,6 +14,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   Inject,
   Injector,
@@ -50,6 +52,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
       <div
         class="ant-drawer"
         [nzNoAnimation]="nzNoAnimation"
+        [class.ant-drawer-rtl]="dir === 'rtl'"
         [class.ant-drawer-open]="isOpen"
         [class.no-mask]="!nzMask"
         [class.ant-drawer-top]="nzPlacement === 'top'"
@@ -99,8 +102,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
-  extends NzDrawerRef<T, R>
+export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> extends NzDrawerRef<T, R>
   implements OnInit, OnDestroy, AfterViewInit, OnChanges, NzDrawerOptionsOfComponent {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzClosable: BooleanInput;
@@ -130,6 +132,7 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
   @Input() nzOffsetX = 0;
   @Input() nzOffsetY = 0;
   private componentInstance: T | null = null;
+  dir: Direction;
 
   @Input()
   set nzVisible(value: boolean) {
@@ -221,17 +224,29 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
   }
 
   constructor(
+    cdr: ChangeDetectorRef,
+    // tslint:disable-next-line:no-any
     @Optional() @Inject(DOCUMENT) private document: NzSafeAny,
     public nzConfigService: NzConfigService,
     private renderer: Renderer2,
+    private elementRef: ElementRef,
     private overlay: Overlay,
     private injector: Injector,
     private changeDetectorRef: ChangeDetectorRef,
     private focusTrapFactory: FocusTrapFactory,
     private viewContainerRef: ViewContainerRef,
-    private overlayKeyboardDispatcher: OverlayKeyboardDispatcher
+    private overlayKeyboardDispatcher: OverlayKeyboardDispatcher,
+    @Optional() directionality: Directionality
   ) {
     super();
+
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      this.prepareComponentForRtl();
+      cdr.detectChanges();
+    });
+
+    this.dir = directionality.value;
   }
 
   ngOnInit(): void {
@@ -423,6 +438,14 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
     }
     if (this.focusTrap) {
       this.focusTrap.destroy();
+    }
+  }
+
+  private prepareComponentForRtl(): void {
+    if (this.dir === 'rtl') {
+      this.renderer.addClass(this.elementRef.nativeElement, 'ant-drawer-rtl');
+    } else {
+      this.renderer.removeClass(this.elementRef.nativeElement, 'ant-drawer-rtl');
     }
   }
 }
