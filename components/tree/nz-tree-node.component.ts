@@ -74,21 +74,24 @@ import { takeUntil } from 'rxjs/operators';
             <i *ngIf="nzTreeNode.isLoading" nz-icon nzType="loading" [nzSpin]="true" class="ant-tree-switcher-loading-icon"></i>
           </ng-container>
           <ng-container *ngIf="nzShowLine">
-            <ng-template
-              *ngIf="isTemplateRef(nzExpandedIcon)"
-              [ngTemplateOutlet]="nzExpandedIcon"
-              [ngTemplateOutletContext]="{ $implicit: nzTreeNode, origin: nzTreeNode.origin }"
-            >
-            </ng-template>
-            <ng-container *ngIf="!isTemplateRef(nzExpandedIcon)">
-              <i
-                *ngIf="isShowLineIcon"
-                nz-icon
-                [nzType]="isSwitcherOpen ? 'minus-square' : 'plus-square'"
-                class="ant-tree-switcher-line-icon"
-              ></i>
-              <i *ngIf="!isShowLineIcon" nz-icon nzType="file" class="ant-tree-switcher-line-icon"></i>
+            <ng-container *ngIf="!nzTreeNode.isLoading">
+              <ng-template
+                *ngIf="isTemplateRef(nzExpandedIcon)"
+                [ngTemplateOutlet]="nzExpandedIcon"
+                [ngTemplateOutletContext]="{ $implicit: nzTreeNode, origin: nzTreeNode.origin }"
+              >
+              </ng-template>
+              <ng-container *ngIf="!isTemplateRef(nzExpandedIcon)">
+                <i
+                  *ngIf="isShowLineIcon"
+                  nz-icon
+                  [nzType]="isSwitcherOpen ? 'minus-square' : 'plus-square'"
+                  class="ant-tree-switcher-line-icon"
+                ></i>
+                <i *ngIf="!isShowLineIcon" nz-icon nzType="file" class="ant-tree-switcher-line-icon"></i>
+              </ng-container>
             </ng-container>
+            <i *ngIf="nzTreeNode.isLoading" nz-icon nzType="loading" [nzSpin]="true" class="ant-tree-switcher-loading-icon"></i>
           </ng-container>
         </span>
       </ng-container>
