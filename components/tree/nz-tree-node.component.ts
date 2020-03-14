@@ -256,8 +256,29 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
     const { children } = parentNode;
     if (children.length > 0) {
       children.map(node => {
-        const canHide = !node.isMatched;
-        node.canHide = canHide;
+        if (node.isMatched) {
+          node.canHide = false;
+        } else {
+          const hasMatchedChildNode = (n: NzTreeNode): boolean => {
+            let m = false;
+            if (n.isMatched) {
+              return true;
+            } else {
+              if (n.children && n.children.length) {
+                for (const child of n.children) {
+                  m = hasMatchedChildNode(child);
+                  if (m) {
+                    break;
+                  }
+                }
+                return m;
+              } else {
+                return false;
+              }
+            }
+          };
+          node.canHide = !hasMatchedChildNode(node);
+        }
         this.setDisplayForChildNodes(node);
       });
     }

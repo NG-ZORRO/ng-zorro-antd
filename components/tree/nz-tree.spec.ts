@@ -217,6 +217,16 @@ describe('nz-tree', () => {
       expect(treeElement.querySelectorAll('.ant-tree-switcher_open').length).toEqual(3);
     }));
 
+    it('test shrink parent tree-node should not disappear when children contains searchValue', fakeAsync(() => {
+      fixture.detectChanges();
+      fixture.componentInstance.searchValue = '0-0-1';
+      fixture.detectChanges();
+      const targetNode = treeElement.querySelector("[title='0-0']") as HTMLElement;
+      dispatchMouseEvent(targetNode, 'click');
+      fixture.detectChanges();
+      expect(targetNode.style.display).toBe('');
+    }));
+
     it('test check event', fakeAsync(() => {
       fixture.detectChanges();
       // To avoid *ngIf to hide nodes
@@ -686,6 +696,7 @@ describe('nz-tree', () => {
       #treeComponent
       [nzData]="nodes"
       nzShowIcon
+      [nzHideUnMatched]="true"
       [nzCheckable]="true"
       [nzCheckStrictly]="checkStrictly"
       [nzCheckedKeys]="defaultCheckedKeys"
