@@ -13,8 +13,8 @@ import { NzDemoPageHeaderContentComponent } from './demo/content';
 import { NzDemoPageHeaderGhostComponent } from './demo/ghost';
 import { NzDemoPageHeaderResponsiveComponent } from './demo/responsive';
 
-import { NzPageHeaderComponent } from './nz-page-header.component';
-import { NzPageHeaderModule } from './nz-page-header.module';
+import { NzPageHeaderComponent } from './page-header.component';
+import { NzPageHeaderModule } from './page-header.module';
 
 describe('NzPageHeaderComponent', () => {
   let location: Location;
