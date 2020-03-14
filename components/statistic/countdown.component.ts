@@ -14,12 +14,14 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
 
+import { Directionality } from '@angular/cdk/bidi';
 import { NzStatisticComponent } from './statistic.component';
 
 const REFRESH_INTERVAL = 1000 / 30;
@@ -52,8 +54,13 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
   private target: number = 0;
   private updater_?: Subscription | null;
 
-  constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone, private platform: Platform) {
-    super();
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone,
+    private platform: Platform,
+    @Optional() directionality: Directionality
+  ) {
+    super(cdr, directionality);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
