@@ -5,24 +5,32 @@ import { NzMessageService } from 'ng-zorro-antd/message';
   selector: 'nz-demo-list-simple',
   template: `
     <h3 [ngStyle]="{ 'margin-bottom.px': 16 }">Default Size</h3>
-    <nz-list [nzDataSource]="data" nzBordered [nzHeader]="'Header'" [nzFooter]="'Footer'" [nzRenderItem]="defaultItem">
-      <ng-template #defaultItem let-item>
-        <nz-list-item>
-          <span class="ant-typography"><mark>[ITEM]</mark></span>
-          {{ item }}
-        </nz-list-item>
-      </ng-template>
+    <nz-list nzBordered nzHeader="Header" nzFooter="Footer">
+      <nz-list-item *ngFor="let item of data">
+        <span nz-typography><mark>[ITEM]</mark></span>
+        {{ item }}
+      </nz-list-item>
     </nz-list>
+
     <h3 [ngStyle]="{ margin: '16px 0' }">Small Size</h3>
-    <nz-list [nzDataSource]="data" nzBordered nzSize="small" [nzHeader]="'Header'" [nzFooter]="'Footer'" [nzRenderItem]="smallItem">
-      <ng-template #smallItem let-item><nz-list-item [nzContent]="item"></nz-list-item></ng-template>
+    <nz-list nzBordered nzSize="small">
+      <nz-list-header>Header</nz-list-header>
+      <nz-list-item *ngFor="let item of data">item</nz-list-item>
+      <nz-list-footer>Footer</nz-list-footer>
     </nz-list>
+
     <h3 [ngStyle]="{ margin: '16px 0' }">Large Size</h3>
-    <ul nz-list [nzDataSource]="data" nzBordered nzSize="large" [nzHeader]="'Header'" [nzFooter]="'Footer'" [nzRenderItem]="largeItem">
-      <ng-template #largeItem let-item>
-        <li nz-list-item [nzActions]="[opAction]" [nzContent]="item" nzNoFlex></li>
-        <ng-template #opAction><a (click)="msg.info('edit')">edit</a></ng-template>
-      </ng-template>
+    <ul nz-list [nzDataSource]="data" nzBordered nzSize="large">
+      <nz-list-header>Header</nz-list-header>
+      <li nz-list-item *ngFor="let item of data" nzNoFlex>
+        <ul nz-list-item-actions>
+          <nz-list-item-action>
+            <a (click)="msg.info('edit')">edit</a>
+          </nz-list-item-action>
+        </ul>
+        {{ item }}
+      </li>
+      <nz-list-footer>Footer</nz-list-footer>
     </ul>
   `
 })
