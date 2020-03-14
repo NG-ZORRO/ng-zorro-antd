@@ -111,7 +111,7 @@ export class NzDemoTableResetFilterComponent {
     ];
     this.listOfFilterAddress = [
       { text: 'London', value: 'London' },
-      { text: 'Sidney', value: 'Sidney', byDefault: true }
+      { text: 'Sidney', value: 'Sidney' }
     ];
   }
 

@@ -2,17 +2,14 @@ import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-
-import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
-import { createFakeEvent } from 'ng-zorro-antd/core';
-
 import { NzTdAddOnComponent } from '../cell/td-addon.component';
+import { NzTableModule } from '../table.module';
 
 describe('nz-td', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NzCheckboxModule, FormsModule],
-      declarations: [NzTestTdComponent, NzTdAddOnComponent]
+      imports: [NzTableModule, FormsModule],
+      declarations: [NzTestTdComponent]
     });
     TestBed.compileComponents();
   }));
@@ -26,19 +23,12 @@ describe('nz-td', () => {
       testComponent = fixture.debugElement.componentInstance;
       td = fixture.debugElement.query(By.directive(NzTdAddOnComponent));
     });
-    it('should showCheckbox work', () => {
-      fixture.detectChanges();
-      expect(td.nativeElement.querySelector('.ant-checkbox-wrapper')).toBeNull();
-      testComponent.showCheckbox = true;
+    it('should checkbox work', () => {
       fixture.detectChanges();
       expect(td.nativeElement.querySelector('.ant-checkbox-wrapper')).toBeDefined();
       expect(td.nativeElement.classList).toContain('ant-table-selection-column');
-      testComponent.showCheckbox = false;
-      fixture.detectChanges();
-      expect(td.nativeElement.classList).not.toContain('ant-table-selection-column');
     });
     it('should checked work', fakeAsync(() => {
-      testComponent.showCheckbox = true;
       fixture.detectChanges();
       expect(td.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild!.classList).not.toContain('ant-checkbox-checked');
       testComponent.checked = true;
@@ -50,7 +40,6 @@ describe('nz-td', () => {
       expect(testComponent.checkedChange).toHaveBeenCalledTimes(0);
     }));
     it('should disabled work', () => {
-      testComponent.showCheckbox = true;
       fixture.detectChanges();
       testComponent.disabled = true;
       fixture.detectChanges();
@@ -68,7 +57,6 @@ describe('nz-td', () => {
       expect(testComponent.checkedChange).toHaveBeenCalledTimes(0);
     });
     it('should indeterminate work', () => {
-      testComponent.showCheckbox = true;
       fixture.detectChanges();
       fixture.detectChanges();
       testComponent.indeterminate = true;
@@ -82,78 +70,43 @@ describe('nz-td', () => {
         td.nativeElement.querySelector('.ant-checkbox-wrapper').firstElementChild!.classList.contains('ant-checkbox-indeterminate')
       ).toBe(true);
     });
-    it('should showExpand work', () => {
-      fixture.detectChanges();
-      expect(td.nativeElement.querySelector('.ant-table-row-expand-icon')).toBeNull();
-      testComponent.showExpand = true;
-      fixture.detectChanges();
-      expect(td.nativeElement.querySelector('.ant-table-row-expand-icon')).toBeDefined();
-      expect(td.nativeElement.classList).toContain('ant-table-row-expand-icon-cell');
-      testComponent.showExpand = false;
-      fixture.detectChanges();
-      expect(td.nativeElement.classList).not.toContain('ant-table-row-expand-icon-cell');
-    });
     it('should expand work', () => {
-      testComponent.showExpand = true;
       fixture.detectChanges();
-      expect(td.nativeElement.querySelector('.ant-table-row-expand-icon').classList).toContain('ant-table-row-collapsed');
+      expect(td.nativeElement.querySelector('.ant-table-row-expand-icon').classList).toContain('ant-table-row-expand-icon-collapsed');
       testComponent.expand = true;
       fixture.detectChanges();
-      expect(td.nativeElement.querySelector('.ant-table-row-expand-icon').classList).toContain('ant-table-row-expanded');
+      expect(td.nativeElement.querySelector('.ant-table-row-expand-icon').classList).toContain('ant-table-row-expand-icon-expanded');
       expect(testComponent.expandChange).toHaveBeenCalledTimes(0);
     });
     it('should click expand work', () => {
-      testComponent.showExpand = true;
       fixture.detectChanges();
-      expect(td.nativeElement.querySelector('.ant-table-row-expand-icon').classList).toContain('ant-table-row-collapsed');
+      expect(td.nativeElement.querySelector('.ant-table-row-expand-icon').classList).toContain('ant-table-row-expand-icon-collapsed');
       td.nativeElement.querySelector('.ant-table-row-expand-icon').click();
       fixture.detectChanges();
       expect(testComponent.expand).toBe(true);
-      expect(td.nativeElement.querySelector('.ant-table-row-expand-icon').classList).toContain('ant-table-row-expanded');
+      expect(td.nativeElement.querySelector('.ant-table-row-expand-icon').classList).toContain('ant-table-row-expand-icon-expanded');
       expect(testComponent.expandChange).toHaveBeenCalledTimes(1);
-    });
-    it('should click expand event stopPropagation', () => {
-      testComponent.showExpand = true;
-      fixture.detectChanges();
-      const input: HTMLElement = td.nativeElement.querySelector('.ant-table-row-expand-icon');
-      const fakeInputChangeEvent = createFakeEvent('click', true, true);
-      spyOn(fakeInputChangeEvent, 'stopPropagation');
-      input.dispatchEvent(fakeInputChangeEvent);
-      fixture.detectChanges();
-      expect(fakeInputChangeEvent.stopPropagation).toHaveBeenCalled();
     });
     it('should be row index when index-size is 0', () => {
       testComponent.indentSize = 0;
       fixture.detectChanges();
       expect(td.nativeElement.querySelector('.ant-table-row-indent')).not.toBeNull();
     });
-    it('should be keeping space when hidden expand and index-size is not null', () => {
-      testComponent.showExpand = false;
-      testComponent.indentSize = 0;
-      fixture.detectChanges();
-      expect(td.nativeElement.querySelector('.ant-table-row-expand-icon').classList).toContain('ant-table-row-spaced');
-    });
     it('should indentSize work', () => {
-      fixture.detectChanges();
-      expect(td.nativeElement.querySelector('.ant-table-row-indent')).toBeNull();
       testComponent.indentSize = 20;
       fixture.detectChanges();
       expect(td.nativeElement.querySelector('.ant-table-row-indent').style.paddingLeft).toBe('20px');
     });
     it('should left work', () => {
-      fixture.detectChanges();
-      expect(td.nativeElement.classList).not.toContain('ant-table-td-left-sticky');
       testComponent.left = '20px';
       fixture.detectChanges();
-      expect(td.nativeElement.classList).toContain('ant-table-td-left-sticky');
+      expect(td.nativeElement.classList).toContain('ant-table-cell-fix-left');
       expect(td.nativeElement.style.left).toBe('20px');
     });
     it('should right work', () => {
-      fixture.detectChanges();
-      expect(td.nativeElement.classList).not.toContain('ant-table-td-right-sticky');
       testComponent.right = '20px';
       fixture.detectChanges();
-      expect(td.nativeElement.classList).toContain('ant-table-td-right-sticky');
+      expect(td.nativeElement.classList).toContain('ant-table-cell-fix-right');
       expect(td.nativeElement.style.right).toBe('20px');
     });
     it('should be throw error when use specific class name', () => {
@@ -182,12 +135,10 @@ describe('nz-td', () => {
   `
 })
 export class NzTestTdComponent {
-  showCheckbox = false;
   checked = false;
   checkedChange = jasmine.createSpy('show change');
   indeterminate = false;
   disabled = false;
-  showExpand = false;
   expand = false;
   expandChange = jasmine.createSpy('expand change');
   indentSize: number;

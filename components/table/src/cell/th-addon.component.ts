@@ -164,7 +164,9 @@ export class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy {
       this.nzFilterValue = this.nzFilterMultiple ? listOfValue : listOfValue[0] || null;
     }
     if (nzSortOrder) {
-      this.sortOrderChange$.next(this.nzSortOrder);
+      if (this.nzSortOrder !== this.sortOrder) {
+        this.updateCalcOperator();
+      }
     }
     if (nzSortFn || nzFilterFn || nzSortPriority || nzFilters) {
       this.updateCalcOperator();

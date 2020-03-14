@@ -8,7 +8,7 @@ describe('nz-tr', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports: [NzTableModule],
-      declarations: [NzTrTestTableComponent, NzTrTestNzTableComponent]
+      declarations: [NzTrTestTableComponent]
     });
     TestBed.compileComponents();
   }));
@@ -28,36 +28,6 @@ describe('nz-tr', () => {
       expect(tr.nativeElement.classList).not.toContain('ant-table-row');
     });
   });
-
-  describe('nz-tr in nz-table', () => {
-    let fixture: ComponentFixture<NzTrTestNzTableComponent>;
-    let testComponent: NzTrTestNzTableComponent;
-    let tr: DebugElement;
-
-    beforeEach(() => {
-      fixture = TestBed.createComponent(NzTrTestNzTableComponent);
-      fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
-      tr = fixture.debugElement.query(By.directive(NzTrDirective));
-    });
-
-    it('should not add class', () => {
-      fixture.detectChanges();
-      expect(tr.nativeElement.classList).toContain('ant-table-row');
-    });
-
-    it('should expand work', () => {
-      fixture.detectChanges();
-      testComponent.expand = true;
-      fixture.detectChanges();
-      expect(tr.nativeElement.classList).toContain('ant-table-row');
-      expect(tr.nativeElement.classList).toContain('ant-table-expanded-row');
-      testComponent.expand = false;
-      fixture.detectChanges();
-      expect(tr.nativeElement.classList).not.toContain('ant-table-expanded-row');
-      expect(tr.nativeElement.style.display).toBe('none');
-    });
-  });
 });
 
 @Component({
@@ -68,13 +38,3 @@ describe('nz-tr', () => {
   `
 })
 export class NzTrTestTableComponent {}
-
-@Component({
-  template: `
-    <nz-table>
-      <tr [nzExpand]="expand"></tr>
-    </nz-table>`
-})
-export class NzTrTestNzTableComponent {
-  expand = false;
-}
