@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -13,6 +14,7 @@ import {
   NgZone,
   OnDestroy,
   OnInit,
+  Optional,
   Renderer2,
   TemplateRef,
   ViewEncapsulation
@@ -55,6 +57,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
   @Input() nzRouteLabelFn: (label: string) => string = label => label;
 
   breadcrumbs: BreadcrumbOption[] | undefined = [];
+  dir: Direction;
 
   private destroy$ = new Subject<void>();
 
@@ -63,9 +66,27 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
     private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
     elementRef: ElementRef,
-    renderer: Renderer2
+    renderer: Renderer2,
+    @Optional() directionality: Directionality
   ) {
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      if (this.dir === "rtl") {
+        renderer.addClass(elementRef.nativeElement, 'ant-breadcrumb-rtl');
+      } else {
+        renderer.removeClass(elementRef.nativeElement, 'ant-breadcrumb-rtl');
+      }
+      cdr.detectChanges();
+    });
+
     renderer.addClass(elementRef.nativeElement, 'ant-breadcrumb');
+
+    this.dir = directionality.value;
+    if (this.dir === "rtl") {
+      renderer.addClass(elementRef.nativeElement, 'ant-breadcrumb-rtl');
+    } else {
+      renderer.removeClass(elementRef.nativeElement, 'ant-breadcrumb-rtl');
+    }
   }
 
   ngOnInit(): void {
