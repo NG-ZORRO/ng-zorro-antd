@@ -46,24 +46,22 @@ import { Component } from '@angular/core';
 
       <!--content-->
       <nz-page-header-content>
-        <div class="wrap">
+        <div nz-row>
           <div class="content">
-            <div class="content">
-              <p nz-paragraph>
-                Ant Design interprets the color system into two levels: a system-level color system and a product-level color system.
-              </p>
-              <p nz-paragraph>
-                Ant Design's design team preferred to design with the HSB color model, which makes it easier for designers to have a clear
-                psychological expectation of color when adjusting colors, as well as facilitate communication in teams.
-              </p>
-              <p class="content-link">
-                <a> <img src="https://gw.alipayobjects.com/zos/rmsportal/MjEImQtenlyueSmVEfUD.svg" alt="start" />Quick Start </a>
-                <a> <img src="https://gw.alipayobjects.com/zos/rmsportal/NbuDUAuBlIApFuDvWiND.svg" alt="info" />Product Info </a>
-                <a> <img src="https://gw.alipayobjects.com/zos/rmsportal/ohOEPSYdDTNnyMbGuyLb.svg" alt="doc" />Product Doc </a>
-              </p>
+            <p nz-paragraph>
+              Ant Design interprets the color system into two levels: a system-level color system and a product-level color system.
+            </p>
+            <p nz-paragraph>
+              Ant Design's design team preferred to design with the HSB color model, which makes it easier for designers to have a clear
+              psychological expectation of color when adjusting colors, as well as facilitate communication in teams.
+            </p>
+            <div class="content-link">
+              <a> <img src="https://gw.alipayobjects.com/zos/rmsportal/MjEImQtenlyueSmVEfUD.svg" alt="start" />Quick Start </a>
+              <a> <img src="https://gw.alipayobjects.com/zos/rmsportal/NbuDUAuBlIApFuDvWiND.svg" alt="info" />Product Info </a>
+              <a> <img src="https://gw.alipayobjects.com/zos/rmsportal/ohOEPSYdDTNnyMbGuyLb.svg" alt="doc" />Product Doc </a>
             </div>
           </div>
-          <div class="extra-content">
+          <div class="content-image">
             <img src="https://gw.alipayobjects.com/zos/antfincdn/K%24NnlsB%26hz/pageHeader.svg" alt="content" />
           </div>
         </div>
@@ -72,35 +70,37 @@ import { Component } from '@angular/core';
   `,
   styles: [
     `
-      .wrap {
-        display: flex;
-      }
-
       .content {
         flex: 1;
       }
 
       .content p {
-        margin-bottom: 8px;
-      }
-
-      .content-link {
-        padding-top: 16px;
+        margin-bottom: 1em;
       }
 
       .content-link a {
-        display: inline-block;
-        vertical-align: text-top;
-        margin-right: 32px;
+        margin-right: 16px;
       }
 
       .content-link a img {
         margin-right: 8px;
       }
 
-      .extra-content {
-        min-width: 240px;
-        text-align: right;
+      .content-image {
+        margin: 0 0 0 60px;
+        display: flex;
+        align-items: center;
+      }
+
+      .content-image img {
+        width: 100%;
+      }
+
+      @media (max-width: 768px) {
+        .content-image {
+          flex: 100%;
+          margin: 24px 0 0;
+        }
       }
     `
   ]

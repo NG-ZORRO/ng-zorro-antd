@@ -13,7 +13,7 @@ import { Component } from '@angular/core';
           <button nz-button nzType="primary">Primary</button>
         </nz-page-header-extra>
         <nz-page-header-content>
-          <nz-descriptions [nzColumn]="3">
+          <nz-descriptions nzSize="small" [nzColumn]="3">
             <nz-descriptions-item nzTitle="Created" [nzSpan]="1">Lili Qu</nz-descriptions-item>
             <nz-descriptions-item nzTitle="Association" [nzSpan]="1"><a>421421</a></nz-descriptions-item>
             <nz-descriptions-item nzTitle="Creation Time" [nzSpan]="1">2017-01-10</nz-descriptions-item>
