@@ -48,14 +48,7 @@ const options = [
   selector: 'nz-demo-cascader-disabled',
   template: `
     <nz-cascader [nzOptions]="nzOptions" [(ngModel)]="values" (ngModelChange)="onChanges($event)"> </nz-cascader>
-  `,
-  styles: [
-    `
-      .ant-cascader-picker {
-        width: 300px;
-      }
-    `
-  ]
+  `
 })
 export class NzDemoCascaderDisabledComponent {
   nzOptions: NzCascaderOption[] = options;

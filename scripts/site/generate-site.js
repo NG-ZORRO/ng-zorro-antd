@@ -5,6 +5,7 @@ const parseDemoMdUtil = require('./utils/parse-demo-md');
 const nameWithoutSuffixUtil = require('./utils/name-without-suffix');
 const generateCodeBox = require('./utils/generate-code-box');
 const generateDemo = require('./utils/generate-demo');
+const generateDemoCodeFiles = require('./utils/generate-demo-code-files');
 const generateDocs = require('./utils/generate-docs');
 const generateRoutes = require('./utils/generate-routes');
 const generateIframe = require('./utils/generate-iframe');
@@ -110,7 +111,7 @@ function generate(target) {
     componentsDocMap[componentName] = { zh: result.docZh.meta, en: result.docEn.meta };
     componentsMap[componentName] = demoMap;
     generateDemo(showCaseComponentPath, result);
-
+    generateDemoCodeFiles(result, showCasePath)
     }
   });
 

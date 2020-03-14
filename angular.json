@@ -58,6 +58,15 @@
               "serviceWorker": true,
               "ngswConfigPath": "ngsw-config.json"
             },
+            "pre-production": {
+              "fileReplacements": [
+                {
+                  "replace": "./site/doc/environments/environment.ts",
+                  "with": "./site/doc/environments/environment.pre-prod.ts"
+                }
+              ],
+              "serviceWorker": false
+            },
             "es5": {
               "tsConfig": "./site/doc/tsconfig.es5.json"
             }

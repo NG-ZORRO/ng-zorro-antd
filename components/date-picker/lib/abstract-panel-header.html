@@ -1,0 +1,56 @@
+<div class="{{ prefixCls }}">
+  <button
+    *ngIf="showSuperPreBtn"
+    class="{{ prefixCls }}-super-prev-btn"
+    role="button"
+    tabindex="-1"
+    title="{{ superPreviousTitle() }}"
+    (click)="superPrevious()"
+  >
+    <span class="ant-picker-super-prev-icon"></span>
+  </button>
+  <button
+    *ngIf="showPreBtn"
+    class="{{ prefixCls }}-prev-btn"
+    role="button"
+    title="{{ previousTitle() }}"
+    tabindex="-1"
+    (click)="previous()"
+  >
+    <span class="ant-picker-prev-icon"></span>
+  </button>
+
+  <div class="{{ prefixCls }}-view">
+    <ng-container *ngFor="let selector of selectors">
+      <button
+        class="{{ selector.className }}"
+        role="button"
+        type="button"
+        title="{{ selector.title || null }}"
+        (click)="selector.onClick ? selector.onClick() : null"
+      >
+        {{ selector.label }}
+      </button>
+    </ng-container>
+  </div>
+  <button
+    *ngIf="showNextBtn"
+    class="{{ prefixCls }}-next-btn"
+    role="button"
+    tabindex="-1"
+    title="{{ nextTitle() }}"
+    (click)="next()"
+  >
+    <span class="ant-picker-next-icon"></span>
+  </button>
+  <button
+    *ngIf="showSuperNextBtn"
+    class="{{ prefixCls }}-super-next-btn"
+    role="button"
+    tabindex="-1"
+    title="{{ superNextTitle() }}"
+    (click)="superNext()"
+  >
+    <span class="ant-picker-super-next-icon"></span>
+  </button>
+</div>

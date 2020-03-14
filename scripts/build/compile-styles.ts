@@ -68,17 +68,23 @@ export function compile(): Promise<void | Less.RenderOutput[]> {
     }
   });
 
-// Copy concentrated less files.
+  // Copy concentrated less files.
   fs.copySync(path.resolve(sourcePath, 'style'), path.resolve(targetPath, 'style'));
   fs.writeFileSync(`${targetPath}/components.less`, fs.readFileSync(`${sourcePath}/components.less`));
   fs.writeFileSync(`${targetPath}/ng-zorro-antd.less`, fs.readFileSync(`${sourcePath}/ng-zorro-antd.less`));
 
-// Compile concentrated less file to CSS file.
+  // Compile concentrated less file to CSS file.
   const lessContent = `@import "${path.posix.join(targetPath, 'ng-zorro-antd.less')}";`;
   promiseList.push(compileLess(lessContent, path.join(targetPath, 'ng-zorro-antd.css'), false));
   promiseList.push(compileLess(lessContent, path.join(targetPath, 'ng-zorro-antd.min.css'), true));
 
-// Compile css file that doesn't have component-specific styles.
+  // Compile the dark theme less file to CSS file.
+  const darkLessContent = `@import "${path.posix.join(targetPath, 'style', 'dark.less')}";
+  @import "${path.posix.join(targetPath, 'ng-zorro-antd.less')}";`;
+  promiseList.push(compileLess(darkLessContent, path.join(targetPath, 'ng-zorro-antd.dark.css'), false));
+  promiseList.push(compileLess(darkLessContent, path.join(targetPath, 'ng-zorro-antd.dark.min.css'), true));
+
+  // Compile css file that doesn't have component-specific styles.
   const cssIndexPath = path.join(sourcePath, 'style', 'entry.less');
   const cssIndex = fs.readFileSync(cssIndexPath, { encoding: 'utf8' });
   promiseList.push(compileLess(cssIndex, path.join(targetPath, 'style', 'index.css'), false, true, cssIndexPath));

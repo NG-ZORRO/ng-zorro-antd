@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export { NzTypographyModule } from './nz-typography.module';
-export { NzTypographyComponent } from './nz-typography.component';
-export { NzTextCopyComponent } from './nz-text-copy.component';
-export { NzTextEditComponent } from './nz-text-edit.component';
+export { NzTypographyModule } from './typography.module';
+export { NzTypographyComponent } from './typography.component';
+export { NzTextCopyComponent } from './text-copy.component';
+export { NzTextEditComponent } from './text-edit.component';

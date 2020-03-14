@@ -13,11 +13,11 @@ import { distanceInWords } from 'date-fns';
         </p>
       </nz-comment-content>
       <nz-comment-action>
-        <i nz-tooltip nzTitle="Like" nz-icon nzType="like" [theme]="likes > 0 ? 'twotone' : 'outline'" (click)="like()"></i>
+        <i nz-tooltip nzTitle="Like" nz-icon nzType="like" [nzTheme]="likes > 0 ? 'twotone' : 'outline'" (click)="like()"></i>
         <span class="count like">{{ likes }}</span>
       </nz-comment-action>
       <nz-comment-action>
-        <i nz-tooltip nzTitle="Dislike" nz-icon nzType="dislike" [theme]="dislikes > 0 ? 'twotone' : 'outline'" (click)="dislike()"></i>
+        <i nz-tooltip nzTitle="Dislike" nz-icon nzType="dislike" [nzTheme]="dislikes > 0 ? 'twotone' : 'outline'" (click)="dislike()"></i>
         <span class="count dislike">{{ dislikes }}</span>
       </nz-comment-action>
       <nz-comment-action>Reply to</nz-comment-action>

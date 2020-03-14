@@ -6,6 +6,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-tree-select.component';
-export * from './nz-tree-select.module';
-export * from './nz-tree-select.service';
+export * from './tree-select.component';
+export * from './tree-select.module';
+export * from './tree-select.service';

@@ -7,7 +7,7 @@ title:
 
 ## zh-CN
 
-通过 `nzCustomContent` 自定义 nz-option 显示的内容。
+通过 `nzCustomContent` 自定义下拉菜单选项显示的内容。
 
 ## en-US
 

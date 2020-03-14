@@ -2,7 +2,6 @@ const path = require('path');
 const fs = require('fs');
 const capitalizeFirstLetter = require('./capitalize-first-letter');
 const camelCase = require('./camelcase');
-const PrismAngular = require('./angular-language-marked');
 
 module.exports = function (showCaseComponentPath, result) {
   if (result.pageDemo) {
@@ -75,24 +74,18 @@ function generatePageDemoComponent(content) {
 function generateDemoComponent(content) {
   const demoComponentTemplate = String(fs.readFileSync(path.resolve(__dirname, '../template/demo-component.template.ts')));
   const component = content.name;
-  const demoMap = content.demoMap;
-  let code = '';
-  let rawCode = '';
-  for (const key in demoMap) {
-    const angularCode = encodeURIComponent(PrismAngular.highlight(demoMap[key].ts, Prism.languages['angular']));
-    code += `\t${camelCase(key)} = \`${angularCode}\`;\n`;
-    rawCode += `\t${camelCase(key)}Raw = \`${encodeURIComponent(demoMap[key].ts)}\`;\n`;
-  }
+
   let output = demoComponentTemplate;
   output = output.replace(/{{component}}/g, component);
-  output = output.replace(/{{code}}/g, code);
-  output = output.replace(/{{rawCode}}/g, rawCode);
+
   let zhOutput = output;
   let enOutput = output;
+
   enOutput = enOutput.replace(/{{componentName}}/g, generateComponentName(component, 'en'));
   enOutput = enOutput.replace(/{{language}}/g, 'en');
   zhOutput = zhOutput.replace(/{{componentName}}/g, generateComponentName(component, 'zh'));
   zhOutput = zhOutput.replace(/{{language}}/g, 'zh');
+
   return {
     en: enOutput,
     zh: zhOutput

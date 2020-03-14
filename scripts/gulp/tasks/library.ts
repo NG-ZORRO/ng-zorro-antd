@@ -22,7 +22,10 @@ task('library:compile-less', done => {
 
 // Copies README.md file to the public directory.
 task('library:copy-resources', () => {
-  return src(join(buildConfig.projectDir, 'README.md'))
+  return src([
+    join(buildConfig.projectDir, 'README.md'),
+    join(buildConfig.componentsDir, 'dark-theme.js')
+  ])
   .pipe(dest(join(buildConfig.publishDir)))
 });
 

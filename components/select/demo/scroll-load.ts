@@ -6,21 +6,23 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'nz-demo-select-scroll-load',
   template: `
-    <nz-select [(ngModel)]="selectedUser" (nzScrollToBottom)="loadMore()" nzPlaceHolder="Select users" nzAllowClear>
+    <nz-select
+      [(ngModel)]="selectedUser"
+      (nzScrollToBottom)="loadMore()"
+      nzPlaceHolder="Select users"
+      nzAllowClear
+      [nzDropdownRender]="renderTemplate"
+    >
       <nz-option *ngFor="let o of optionList" [nzValue]="o" [nzLabel]="o"></nz-option>
-      <nz-option *ngIf="isLoading" nzDisabled nzCustomContent>
-        <i nz-icon nzType="loading" class="loading-icon"></i> Loading Data...
-      </nz-option>
     </nz-select>
+    <ng-template #renderTemplate>
+      <nz-spin *ngIf="isLoading"></nz-spin>
+    </ng-template>
   `,
   styles: [
     `
       nz-select {
         width: 100%;
-      }
-
-      .loading-icon {
-        margin-right: 8px;
       }
     `
   ]

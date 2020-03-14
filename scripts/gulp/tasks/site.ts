@@ -8,11 +8,14 @@ const detectPort = require('detect-port');
 
 const siteGenerate = require('../../site/generate-site');
 const colorGenerate = require('../../site/generateColorLess');
+const themeGenerate = require('../../site/generate-theme');
 
 const docsGlob = join(buildConfig.componentsDir, `**/doc/*.+(md|txt)`);
 const demoGlob = join(buildConfig.componentsDir, `**/demo/*.+(md|ts)`);
 const issueHelperScriptFile = join(buildConfig.scriptsDir, 'release-helper.sh');
 const tsconfigFile = join(buildConfig.projectDir, 'site/tsconfig.app.json');
+
+const CI = process.env.CI;
 
 /**
  * Development app watch task,
@@ -32,9 +35,9 @@ task('watch:site', () => {
 /** Parse demos and docs to site directory. */
 task('init:site', done => {
   siteGenerate('init');
-  colorGenerate().then(() => {
-    done();
-  });
+  colorGenerate()
+    .then(themeGenerate)
+    .then(done);
 });
 
 /** Run `ng serve` */
@@ -45,13 +48,25 @@ task('serve:site', done => {
 });
 
 /** Run `ng build --prod --project=ng-zorro-antd-doc` */
-task('build:site-doc', execNodeTask('@angular/cli', 'ng', ['build', '--project=ng-zorro-antd-doc', '--prod']));
+task('build:site-doc', execNodeTask(
+  '@angular/cli',
+  'ng',
+  ['build', '--project=ng-zorro-antd-doc', '--prod', CI ? '--configuration=pre-production' : '']
+));
 
 /** Run `ng build --prod --project=ng-zorro-antd-doc --configuration es5` */
-task('build:site-doc-es5', execNodeTask('@angular/cli', 'ng', ['build', '--project=ng-zorro-antd-doc', '--prod', '--configuration=es5']));
+task('build:site-doc-es5', execNodeTask(
+  '@angular/cli',
+  'ng',
+  ['build', '--project=ng-zorro-antd-doc', '--prod', '--configuration=es5']
+));
 
 /** Run `ng build --prod --base-href ./ --project=ng-zorro-antd-iframe` */
-task('build:site-iframe', execNodeTask('@angular/cli', 'ng', ['build', '--project=ng-zorro-antd-iframe', '--prod', '--base-href=./']));
+task('build:site-iframe', execNodeTask(
+  '@angular/cli',
+  'ng',
+  ['build', '--project=ng-zorro-antd-iframe', '--prod', '--base-href=./']
+));
 
 /** Replace the library paths to publish/ directory */
 task('site:replace-path', () => {
@@ -70,7 +85,7 @@ task('build:site-issue-helper', execTask('bash', [issueHelperScriptFile]));
 /** Build all site projects to the output directory. */
 task(
   'build:site',
-  process.env.CI || process.env.SYSTEM_JOBNAME
+  CI || process.env.SYSTEM_JOBNAME
     ? series('build:site-doc', 'build:site-iframe')
     : series('build:site-doc', 'build:site-iframe', 'build:site-issue-helper')
 );

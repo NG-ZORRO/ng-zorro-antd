@@ -35,7 +35,7 @@ describe('time-picker-panel', () => {
 
     it('should init correct', () => {
       fixture.detectChanges();
-      expect(panelElement.nativeElement.classList).toContain('ant-time-picker-panel');
+      expect(panelElement.nativeElement.classList).toContain('ant-picker-time-panel');
     });
 
     it('should format work', () => {
@@ -62,7 +62,7 @@ describe('time-picker-panel', () => {
     //   fixture.detectChanges();
     //   tick(1000);
     //   fixture.detectChanges();
-    //   let listOfSelectedLi = panelElement.nativeElement.querySelectorAll('.ant-time-picker-panel-select-option-selected');
+    //   let listOfSelectedLi = panelElement.nativeElement.querySelectorAll('.ant-picker-time-panel-cell-selected');
     //   expect(listOfSelectedLi[0].innerText).toBe('10');
     //   expect(listOfSelectedLi[1].innerText).toBe('11');
     //   expect(listOfSelectedLi[2].innerText).toBe('12');
@@ -74,7 +74,7 @@ describe('time-picker-panel', () => {
     //   flush();
     //   fixture.detectChanges();
     //   flush();
-    //   listOfSelectedLi = panelElement.nativeElement.querySelectorAll('.ant-time-picker-panel-select-option-selected');
+    //   listOfSelectedLi = panelElement.nativeElement.querySelectorAll('.ant-picker-time-panel-cell-selected');
     //   expect(listOfSelectedLi[0].innerText).toBe('08');
     //   expect(listOfSelectedLi[1].innerText).toBe('09');
     //   expect(listOfSelectedLi[2].innerText).toBe('10');
@@ -85,7 +85,7 @@ describe('time-picker-panel', () => {
       flush();
       fixture.detectChanges();
       flush();
-      let listOfSelectedLi = panelElement.nativeElement.querySelectorAll('.ant-time-picker-panel-select-option-selected');
+      let listOfSelectedLi = panelElement.nativeElement.querySelectorAll('.ant-picker-time-panel-cell-selected');
       expect(listOfSelectedLi[0].innerText).toBe('08');
       expect(listOfSelectedLi[1].innerText).toBe('09');
       expect(listOfSelectedLi[2].innerText).toBe('10');
@@ -96,25 +96,25 @@ describe('time-picker-panel', () => {
       flush();
       fixture.detectChanges();
       flush();
-      listOfSelectedLi = panelElement.nativeElement.querySelectorAll('.ant-time-picker-panel-select-option-selected');
+      listOfSelectedLi = panelElement.nativeElement.querySelectorAll('.ant-picker-time-panel-cell-selected');
       expect(listOfSelectedLi[0].innerText).toBe('00');
       expect(listOfSelectedLi[1].innerText).toBe('01');
       expect(listOfSelectedLi[2].innerText).toBe('02');
     }));
     it('should step work', () => {
       fixture.detectChanges();
-      let listOfSelectContainer = panelElement.nativeElement.querySelectorAll('.ant-time-picker-panel-select');
-      expect(listOfSelectContainer[0].firstElementChild.children.length).toEqual(24);
-      expect(listOfSelectContainer[1].firstElementChild.children.length).toEqual(60);
-      expect(listOfSelectContainer[2].firstElementChild.children.length).toEqual(60);
+      let listOfSelectContainer = panelElement.nativeElement.querySelectorAll('.ant-picker-time-panel-column');
+      expect(listOfSelectContainer[0].children.length).toEqual(24);
+      expect(listOfSelectContainer[1].children.length).toEqual(60);
+      expect(listOfSelectContainer[2].children.length).toEqual(60);
       testComponent.hourStep = 2;
       testComponent.minuteStep = 15;
       testComponent.secondStep = 10;
       fixture.detectChanges();
-      listOfSelectContainer = panelElement.nativeElement.querySelectorAll('.ant-time-picker-panel-select');
-      expect(listOfSelectContainer[0].firstElementChild.children.length).toEqual(12);
-      expect(listOfSelectContainer[1].firstElementChild.children.length).toEqual(4);
-      expect(listOfSelectContainer[2].firstElementChild.children.length).toEqual(6);
+      listOfSelectContainer = panelElement.nativeElement.querySelectorAll('.ant-picker-time-panel-column');
+      expect(listOfSelectContainer[0].children.length).toEqual(12);
+      expect(listOfSelectContainer[1].children.length).toEqual(4);
+      expect(listOfSelectContainer[2].children.length).toEqual(6);
     });
   });
   describe('disabled time-picker-panel', () => {
@@ -134,21 +134,21 @@ describe('time-picker-panel', () => {
       flush();
       fixture.detectChanges();
       flush();
-      const listOfSelectContainer = panelElement.nativeElement.querySelectorAll('.ant-time-picker-panel-select');
-      expect(listOfSelectContainer[0].querySelectorAll('.ant-time-picker-panel-select-option-disabled').length).toBe(3);
-      expect(listOfSelectContainer[1].querySelectorAll('.ant-time-picker-panel-select-option-disabled').length).toBe(0);
-      expect(listOfSelectContainer[2].querySelectorAll('.ant-time-picker-panel-select-option-disabled').length).toBe(0);
+      const listOfSelectContainer = panelElement.nativeElement.querySelectorAll('.ant-picker-time-panel-column');
+      expect(listOfSelectContainer[0].querySelectorAll('.ant-picker-time-panel-cell-disabled').length).toBe(3);
+      expect(listOfSelectContainer[1].querySelectorAll('.ant-picker-time-panel-cell-disabled').length).toBe(0);
+      expect(listOfSelectContainer[2].querySelectorAll('.ant-picker-time-panel-cell-disabled').length).toBe(0);
       testComponent.nzTimePickerPanelComponent.selectHour({ index: 4, disabled: false });
       fixture.detectChanges();
-      expect(listOfSelectContainer[1].querySelectorAll('.ant-time-picker-panel-select-option-disabled').length).toBe(6);
+      expect(listOfSelectContainer[1].querySelectorAll('.ant-picker-time-panel-cell-disabled').length).toBe(6);
       testComponent.nzTimePickerPanelComponent.selectHour({ index: 5, disabled: false });
       testComponent.nzTimePickerPanelComponent.selectMinute({ index: 1, disabled: false });
       fixture.detectChanges();
-      expect(listOfSelectContainer[2].querySelectorAll('.ant-time-picker-panel-select-option-disabled').length).toBe(6);
+      expect(listOfSelectContainer[2].querySelectorAll('.ant-picker-time-panel-cell-disabled').length).toBe(6);
       testComponent.hideDisabledOptions = true;
       fixture.detectChanges();
-      expect(listOfSelectContainer[0].firstElementChild.children.length).toBe(21);
-      expect(listOfSelectContainer[2].firstElementChild.children.length).toBe(54);
+      expect(listOfSelectContainer[0].children.length).toBe(21);
+      expect(listOfSelectContainer[2].children.length).toBe(54);
     }));
   });
   describe('12-hour time-picker-panel', () => {
@@ -164,7 +164,7 @@ describe('time-picker-panel', () => {
     it('basic 12-hour time-picker-panel', fakeAsync(() => {
       fixture12Hour.detectChanges();
       expect(testComponent.nzTimePickerPanelComponent.enabledColumns).toBe(4);
-      const listColumns: HTMLElement[] = panelElement.nativeElement.querySelectorAll('.ant-time-picker-panel-select');
+      const listColumns: HTMLElement[] = panelElement.nativeElement.querySelectorAll('.ant-picker-time-panel-column');
       expect(listColumns[0].querySelectorAll('li')[0].innerText).toBe('12');
       const hour12labels = listColumns[3].querySelectorAll('li');
       expect(hour12labels[0].innerText).toBe('am');
@@ -175,7 +175,7 @@ describe('time-picker-panel', () => {
       fixture12Hour.detectChanges();
       tick(1000);
       fixture12Hour.detectChanges();
-      const listOfSelectedLi = panelElement.nativeElement.querySelectorAll('.ant-time-picker-panel-select-option-selected');
+      const listOfSelectedLi = panelElement.nativeElement.querySelectorAll('.ant-picker-time-panel-cell-selected');
       expect(listOfSelectedLi[0].innerText).toBe('12');
       expect(listOfSelectedLi[1].innerText).toBe('00');
       expect(listOfSelectedLi[2].innerText).toBe('00');
@@ -188,7 +188,7 @@ describe('time-picker-panel', () => {
       fixture12Hour.detectChanges();
       tick(1000);
       fixture12Hour.detectChanges();
-      let listOfSelectedLi = panelElement.nativeElement.querySelectorAll('.ant-time-picker-panel-select-option-selected');
+      let listOfSelectedLi = panelElement.nativeElement.querySelectorAll('.ant-picker-time-panel-cell-selected');
       expect(listOfSelectedLi[0].innerText).toBe('05');
       expect(listOfSelectedLi[1].innerText).toBe('06');
       expect(listOfSelectedLi[2].innerText).toBe('07');
@@ -203,7 +203,7 @@ describe('time-picker-panel', () => {
       fixture12Hour.detectChanges();
       tick(1000);
       fixture12Hour.detectChanges();
-      listOfSelectedLi = panelElement.nativeElement.querySelectorAll('.ant-time-picker-panel-select-option-selected');
+      listOfSelectedLi = panelElement.nativeElement.querySelectorAll('.ant-picker-time-panel-cell-selected');
       expect(listOfSelectedLi[0].innerText).toBe('06');
       expect(listOfSelectedLi[1].innerText).toBe('07');
       expect(listOfSelectedLi[2].innerText).toBe('08');
@@ -225,8 +225,8 @@ describe('time-picker-panel', () => {
     it('hour step in 12-hour-time-picker-panel', fakeAsync(() => {
       testComponent.hourStep = 2;
       fixture12Hour.detectChanges();
-      const listOfHourContainer = panelElement.nativeElement.querySelectorAll('.ant-time-picker-panel-select');
-      expect(listOfHourContainer[0].firstElementChild.children.length).toEqual(6);
+      const listOfHourContainer = panelElement.nativeElement.querySelectorAll('.ant-picker-time-panel-column');
+      expect(listOfHourContainer[0].children.length).toEqual(6);
     }));
   });
 
@@ -245,7 +245,7 @@ describe('time-picker-panel', () => {
     it('format in 12-hour-time-pick-panel', fakeAsync(() => {
       testComponent.format = 'hh:mm:ss A';
       fixture12Hour.detectChanges();
-      const list12HourLi = panelElement.nativeElement.querySelectorAll('.ant-time-picker-panel-select')[3].querySelectorAll('li');
+      const list12HourLi = panelElement.nativeElement.querySelectorAll('.ant-picker-time-panel-column')[3].querySelectorAll('li');
       expect(list12HourLi[0].innerText).toBe('AM');
       expect(list12HourLi[1].innerText).toBe('PM');
     }));
@@ -255,18 +255,18 @@ describe('time-picker-panel', () => {
       flush();
       testComponent.disabledHours = (): number[] => [0, 3, 4, 5, 12, 18, 19, 20, 24];
       fixture12Hour.detectChanges();
-      let listHourLi = panelElement.nativeElement.querySelectorAll('.ant-time-picker-panel-select')[0].querySelectorAll('li');
-      expect(listHourLi[0].classList).toContain('ant-time-picker-panel-select-option-disabled');
-      expect(listHourLi[3].classList).toContain('ant-time-picker-panel-select-option-disabled');
-      expect(listHourLi[4].classList).toContain('ant-time-picker-panel-select-option-disabled');
-      expect(listHourLi[5].classList).toContain('ant-time-picker-panel-select-option-disabled');
+      let listHourLi = panelElement.nativeElement.querySelectorAll('.ant-picker-time-panel-column')[0].querySelectorAll('li');
+      expect(listHourLi[0].classList).toContain('ant-picker-time-panel-cell-disabled');
+      expect(listHourLi[3].classList).toContain('ant-picker-time-panel-cell-disabled');
+      expect(listHourLi[4].classList).toContain('ant-picker-time-panel-cell-disabled');
+      expect(listHourLi[5].classList).toContain('ant-picker-time-panel-cell-disabled');
       testComponent.nzTimePickerPanelComponent.select12Hours({ index: 1, value: 'pm' });
       fixture12Hour.detectChanges();
-      listHourLi = panelElement.nativeElement.querySelectorAll('.ant-time-picker-panel-select')[0].querySelectorAll('li');
-      expect(listHourLi[0].classList).toContain('ant-time-picker-panel-select-option-disabled');
-      expect(listHourLi[6].classList).toContain('ant-time-picker-panel-select-option-disabled');
-      expect(listHourLi[7].classList).toContain('ant-time-picker-panel-select-option-disabled');
-      expect(listHourLi[8].classList).toContain('ant-time-picker-panel-select-option-disabled');
+      listHourLi = panelElement.nativeElement.querySelectorAll('.ant-picker-time-panel-column')[0].querySelectorAll('li');
+      expect(listHourLi[0].classList).toContain('ant-picker-time-panel-cell-disabled');
+      expect(listHourLi[6].classList).toContain('ant-picker-time-panel-cell-disabled');
+      expect(listHourLi[7].classList).toContain('ant-picker-time-panel-cell-disabled');
+      expect(listHourLi[8].classList).toContain('ant-picker-time-panel-cell-disabled');
     }));
   });
 });
