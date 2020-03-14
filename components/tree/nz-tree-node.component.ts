@@ -34,6 +34,7 @@ import {
   NzNoAnimationDirective,
   NzTreeBaseService,
   NzTreeNode,
+  NzTreeNodeOptions,
   treeCollapseMotion
 } from 'ng-zorro-antd/core';
 import { fromEvent, Observable, Subject } from 'rxjs';
@@ -58,7 +59,7 @@ import { takeUntil } from 'rxjs/operators';
               <ng-template
                 *ngIf="isTemplateRef(nzExpandedIcon)"
                 [ngTemplateOutlet]="nzExpandedIcon"
-                [ngTemplateOutletContext]="{ $implicit: nzTreeNode }"
+                [ngTemplateOutletContext]="{ $implicit: nzTreeNode, origin: nzTreeNode.origin }"
               >
               </ng-template>
               <i
@@ -76,7 +77,7 @@ import { takeUntil } from 'rxjs/operators';
             <ng-template
               *ngIf="isTemplateRef(nzExpandedIcon)"
               [ngTemplateOutlet]="nzExpandedIcon"
-              [ngTemplateOutletContext]="{ $implicit: nzTreeNode }"
+              [ngTemplateOutletContext]="{ $implicit: nzTreeNode, origin: nzTreeNode.origin }"
             >
             </ng-template>
             <ng-container *ngIf="!isTemplateRef(nzExpandedIcon)">
@@ -106,7 +107,8 @@ import { takeUntil } from 'rxjs/operators';
         (click)="clickSelect($event)"
         (contextmenu)="contextMenu($event)"
       >
-        <ng-template [ngTemplateOutlet]="nzTreeTemplate" [ngTemplateOutletContext]="{ $implicit: nzTreeNode }"> </ng-template>
+        <ng-template [ngTemplateOutlet]="nzTreeTemplate" [ngTemplateOutletContext]="{ $implicit: nzTreeNode, origin: nzTreeNode.origin }">
+        </ng-template>
         <ng-container *ngIf="!nzTreeTemplate">
           <span
             *ngIf="nzTreeNode.icon && nzShowIcon"
@@ -143,8 +145,8 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   @Input() @InputBoolean() nzNoAnimation = false;
   @Input() @InputBoolean() nzSelectMode = false;
   @Input() @InputBoolean() nzShowIcon = false;
-  @Input() nzExpandedIcon: TemplateRef<{ $implicit: NzTreeNode }>;
-  @Input() nzTreeTemplate: TemplateRef<{ $implicit: NzTreeNode }>;
+  @Input() nzExpandedIcon: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
+  @Input() nzTreeTemplate: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
   @Input() nzBeforeDrop: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;
   @Input() nzSearchValue = '';
   @Input() nzDraggable: boolean;

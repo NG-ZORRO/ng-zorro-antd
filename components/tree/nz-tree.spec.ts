@@ -493,7 +493,7 @@ export class NzTestTreeBasicControlledComponent {
   defaultCheckedKeys: string[] = [];
   defaultSelectedKeys: string[] = [];
   defaultExpandedKeys: string[] = [];
-  expandedIcon: TemplateRef<{ $implicit: NzTreeNode }>;
+  expandedIcon: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
 
   nodes: NzTreeNodeOptions[] | NzTreeNode[] = [
     {
@@ -531,7 +531,7 @@ export class NzTestTreeBasicControlledComponent {
   nzEvent(_data: NzFormatEmitEvent): void {}
 
   // Just for testing
-  changeIcon(template: TemplateRef<{ $implicit: NzTreeNode }>): void {
+  changeIcon(template: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>): void {
     this.expandedIcon = template;
   }
 }

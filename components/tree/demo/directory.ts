@@ -12,17 +12,17 @@ import { NzContextMenuService, NzDropdownMenuComponent } from 'ng-zorro-antd/dro
       (nzDblClick)="openFolder($event)"
       [nzTreeTemplate]="nzTreeTemplate"
     ></nz-tree>
-    <ng-template #nzTreeTemplate let-node>
+    <ng-template #nzTreeTemplate let-node let-origin>
       <span class="custom-node">
         <span *ngIf="!node.isLeaf" (contextmenu)="contextMenu($event, menu)">
           <i nz-icon [nzType]="node.isExpanded ? 'folder-open' : 'folder'" (click)="openFolder(node)"></i>
           <span class="folder-name">{{ node.title }}</span>
-          <span class="folder-desc">created by {{ node?.origin?.author | lowercase }}</span>
+          <span class="folder-desc">created by {{ origin.author | lowercase }}</span>
         </span>
         <span *ngIf="node.isLeaf" (contextmenu)="contextMenu($event, menu)">
           <i nz-icon nzType="file"></i>
           <span class="file-name">{{ node.title }}</span>
-          <span class="file-desc">modified by {{ node?.origin?.author | lowercase }}</span>
+          <span class="file-desc">modified by {{ origin.author | lowercase }}</span>
         </span>
       </span>
     </ng-template>
