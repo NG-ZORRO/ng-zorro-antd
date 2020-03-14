@@ -3,13 +3,17 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
+  Optional,
   Output,
   Renderer2,
   SimpleChanges,
@@ -17,6 +21,8 @@ import {
 } from '@angular/core';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'nz-tag',
@@ -38,7 +44,7 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
     '(click)': 'updateCheckedStatus()'
   }
 })
-export class NzTagComponent implements OnChanges {
+export class NzTagComponent implements OnChanges, OnDestroy {
   static ngAcceptInputType_nzChecked: BooleanInput;
   isPresetColor = false;
   @Input() nzMode: 'default' | 'closeable' | 'checkable' = 'default';
@@ -46,6 +52,8 @@ export class NzTagComponent implements OnChanges {
   @Input() @InputBoolean() nzChecked = false;
   @Output() readonly nzOnClose = new EventEmitter<MouseEvent>();
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
+  dir: Direction;
+  private destroy$ = new Subject<void>();
 
   updateCheckedStatus(): void {
     if (this.nzMode === 'checkable') {
@@ -61,7 +69,21 @@ export class NzTagComponent implements OnChanges {
     }
   }
 
-  constructor(private renderer: Renderer2, private elementRef: ElementRef) {}
+  constructor(
+    cdr: ChangeDetectorRef,
+    private renderer: Renderer2,
+    private elementRef: ElementRef,
+    @Optional() directionality: Directionality
+  ) {
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      this.prepareComponentForRtl();
+      cdr.detectChanges();
+    });
+
+    this.dir = directionality.value;
+    this.prepareComponentForRtl();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzColor } = changes;
@@ -74,5 +96,21 @@ export class NzTagComponent implements OnChanges {
           /^(success|processing|error|default|warning)$/.test(this.nzColor);
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private prepareComponentForRtl(): void {
+    if (this.isRtlLayout) {
+      this.renderer.addClass(this.elementRef.nativeElement, 'ant-tag-rtl');
+    } else {
+      this.renderer.removeClass(this.elementRef.nativeElement, 'ant-tag-rtl');
+    }
+  }
+  get isRtlLayout(): boolean {
+    return this.dir === 'rtl';
   }
 }
