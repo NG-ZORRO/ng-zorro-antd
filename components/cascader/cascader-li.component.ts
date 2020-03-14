@@ -31,7 +31,7 @@ import { Directionality, Direction } from '@angular/cdk/bidi';
       <span [innerHTML]="optionLabel | nzHighlight: highlightText:'g':'ant-cascader-menu-item-keyword'"></span>
     </ng-template>
     <span *ngIf="!option.isLeaf || option.children?.length || option.loading" class="ant-cascader-menu-item-expand-icon">
-      <i nz-icon [nzType]="option.loading ? 'loading' : 'right'"></i>
+      <i nz-icon [nzType]="option.loading ? 'loading' : getArrowByDirection()"></i>
     </span>
   `,
   host: {
@@ -65,5 +65,11 @@ export class NzCascaderOptionComponent {
 
   markForCheck(): void {
     this.cdr.markForCheck();
+  }
+  getArrowByDirection(): string {
+    if (this.dir === 'rtl') {
+      return 'left';
+    }
+    return 'right';
   }
 }
