@@ -14,7 +14,7 @@ import { Component } from '@angular/core';
       <nz-page-header-content>
         <div class="content">
           <div class="main">
-            <nz-descriptions [nzColumn]="2">
+            <nz-descriptions nzSize="small" [nzColumn]="2">
               <nz-descriptions-item nzTitle="Created" [nzSpan]="1">Lili Qu</nz-descriptions-item>
               <nz-descriptions-item nzTitle="Association" [nzSpan]="1"><a>421421</a></nz-descriptions-item>
               <nz-descriptions-item nzTitle="Creation Time" [nzSpan]="1">2017-01-10</nz-descriptions-item>
