@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NgStyleInterface, NumberInput } from 'ng-zorro-antd/core/types';
@@ -65,6 +66,7 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
       [class.ant-progress-show-info]="nzShowInfo"
       [class.ant-progress-circle]="isCircleStyle"
       [class.ant-progress-steps]="isSteps"
+      [class.ant-progress-rtl]="dir === 'rtl'"
     >
       <!-- line progress -->
       <div *ngIf="nzType === 'line'">
@@ -186,6 +188,8 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   pathString?: string;
   icon!: string;
 
+  dir: Direction;
+
   trackByFn = (index: number) => `${index}`;
 
   get formatter(): NzProgressFormatter {
@@ -208,7 +212,18 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   private inferredStatus: NzProgressStatusType = 'normal';
   private destroy$ = new Subject<void>();
 
-  constructor(public nzConfigService: NzConfigService) {}
+  constructor(
+    cdr: ChangeDetectorRef,
+    public nzConfigService: NzConfigService,
+    @Optional() directionality: Directionality
+  ) {
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      cdr.detectChanges();
+    });
+
+    this.dir = directionality.value;
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     const {
