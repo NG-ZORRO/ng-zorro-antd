@@ -34,14 +34,32 @@ import { IndexableObject } from '../types';
 
 export type CandyDateCompareGrain = 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second';
 export type CandyDateType = CandyDate | Date | null;
+export type SingleValue = CandyDate | null;
+export type CompatibleValue = SingleValue | SingleValue[];
 
-export function sortRangeValue(rangeValue: CandyDate[]): CandyDate[] {
+export function sortRangeValue(rangeValue: SingleValue[]): SingleValue[] {
   if (Array.isArray(rangeValue)) {
     const [start, end] = rangeValue;
     return start && end && start.isAfterSecond(end) ? [end, start] : [start, end];
   }
   return rangeValue;
 }
+
+export function normalizeRangeValue(value: SingleValue[]): CandyDate[] {
+  const [start, end] = value || [];
+  const newStart = start || new CandyDate();
+  const newEnd = end && end.isSameMonth(newStart) ? end.addMonths(1) : end || newStart.addMonths(1);
+  return [newStart, newEnd];
+}
+
+export function cloneDate(value: CompatibleValue): CompatibleValue {
+  if (Array.isArray(value)) {
+    return value.map(v => (v instanceof CandyDate ? v.clone() : null));
+  } else {
+    return value instanceof CandyDate ? value.clone() : null;
+  }
+}
+
 /**
  * Wrapping kind APIs for date operating and unify
  * NOTE: every new API return new CandyDate object without side effects to the former Date object
@@ -82,7 +100,7 @@ export class CandyDate implements IndexableObject {
 
   // ---------------------------------------------------------------------
   // | Native shortcuts
-  // ---------------------------------------------------------------------
+  // -----------------------------------------------------------------------------\
 
   getYear(): number {
     return this.nativeDate.getFullYear();

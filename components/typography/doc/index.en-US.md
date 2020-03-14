@@ -16,14 +16,13 @@ Basic text writing, including headings, body text, lists, and more.
 
 ### [nz-typography]
 
-> `p[nz-paragraph]`, `span[nz-text]`, `h1[nz-title]`, `h2[nz-title]`, `h3[nz-title]`, `h4[nz-title]` are used in the same way as the `[nz-typography]`
-
 | Property | Description | Type | Default | Global Config |
 | -------- | ----------- | ---- | ------- | ------------- |
 | `[nzContent]` | Component content | `string` | - ||
 | `[nzCopyable]` | Can copy, require use `[nzContent]` | `boolean` | `false` ||
 | `[nzEditable]` | Editable, require use `[nzContent]` | `boolean` | `false` ||
 | `[nzEllipsis]` | Display ellipsis when overflow, require use `[nzContent]` when dynamic content | `boolean` | `false` ||
+| `[nzSuffix]` | The text suffix when used `nzEllipsis` | `string` | - ||
 | `[nzCopyText]` | Customize the copy text | `string` | - ||
 | `[nzDisabled]` | Disable content | `boolean` | `false` ||
 | `[nzExpandable]` | Expandable when ellipsis | `boolean` | `false` ||

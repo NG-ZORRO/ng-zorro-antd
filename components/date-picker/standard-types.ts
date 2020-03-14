@@ -15,9 +15,9 @@ export type DisabledDateFn = (d: Date) => boolean;
 
 export type DisabledTimePartial = 'start' | 'end';
 
-export type PanelMode = 'decade' | 'year' | 'month' | 'date' | 'time';
+export type PanelMode = 'decade' | 'year' | 'month' | 'week' | 'date' | 'time';
 
-export type CompatibleValue = CandyDate | CandyDate[];
+export type RangePartType = 'left' | 'right';
 
 export type CompatibleDate = Date | Date[];
 

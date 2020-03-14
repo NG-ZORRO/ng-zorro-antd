@@ -13,53 +13,39 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { DateHeaderComponent } from './date-header.component';
+import { DateTableComponent } from './date-table.component';
+import { DecadeHeaderComponent } from './decade-header.component';
+import { DecadeTableComponent } from './decade-table.component';
+import { MonthHeaderComponent } from './month-header.component';
+import { MonthTableComponent } from './month-table.component';
+import { YearHeaderComponent } from './year-header.component';
+import { YearTableComponent } from './year-table.component';
 
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 
-import { CalendarFooterComponent } from './calendar/calendar-footer.component';
-import { CalendarHeaderComponent } from './calendar/calendar-header.component';
-import { CalendarInputComponent } from './calendar/calendar-input.component';
-import { OkButtonComponent } from './calendar/ok-button.component';
-import { TimePickerButtonComponent } from './calendar/time-picker-button.component';
-import { TodayButtonComponent } from './calendar/today-button.component';
-
-import { NzCalendarModule } from 'ng-zorro-antd/calendar';
-import { DecadePanelComponent } from './decade/decade-panel.component';
-import { MonthPanelComponent } from './month/month-panel.component';
-import { DateRangePopupComponent } from './popups/date-range-popup.component';
-import { InnerPopupComponent } from './popups/inner-popup.component';
-import { YearPanelComponent } from './year/year-panel.component';
-
 @NgModule({
-  imports: [CommonModule, FormsModule, NzI18nModule, NzTimePickerModule, NzCalendarModule],
+  imports: [CommonModule, FormsModule, NzI18nModule, NzTimePickerModule],
   exports: [
-    CalendarHeaderComponent,
-    CalendarInputComponent,
-    CalendarFooterComponent,
-    OkButtonComponent,
-    TimePickerButtonComponent,
-    TodayButtonComponent,
-
-    YearPanelComponent,
-    MonthPanelComponent,
-    DecadePanelComponent,
-    InnerPopupComponent,
-    DateRangePopupComponent
+    DateHeaderComponent,
+    DateTableComponent,
+    DecadeHeaderComponent,
+    DecadeTableComponent,
+    MonthHeaderComponent,
+    MonthTableComponent,
+    YearHeaderComponent,
+    YearTableComponent
   ],
   declarations: [
-    CalendarHeaderComponent,
-    CalendarInputComponent,
-    CalendarFooterComponent,
-    OkButtonComponent,
-    TimePickerButtonComponent,
-    TodayButtonComponent,
-
-    YearPanelComponent,
-    MonthPanelComponent,
-    DecadePanelComponent,
-    InnerPopupComponent,
-    DateRangePopupComponent
+    DateHeaderComponent,
+    DateTableComponent,
+    DecadeHeaderComponent,
+    DecadeTableComponent,
+    MonthHeaderComponent,
+    MonthTableComponent,
+    YearHeaderComponent,
+    YearTableComponent
   ]
 })
 export class LibPackerModule {}

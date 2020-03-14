@@ -9,8 +9,8 @@
 import { QueryList } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
-import { NzCarouselContentDirective } from '../nz-carousel-content.directive';
-import { PointerVector } from '../nz-carousel-definitions';
+import { NzCarouselContentDirective } from '../carousel-content.directive';
+import { PointerVector } from '../typings';
 
 import { NzCarouselBaseStrategy } from './base-strategy';
 

@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-page-header-responsive',
   template: `
-    <nz-page-header nzBackIcon>
+    <nz-page-header class="site-page-header" nzBackIcon>
       <nz-page-header-title>Title</nz-page-header-title>
       <nz-page-header-subtitle>This is a subtitle</nz-page-header-subtitle>
       <nz-page-header-extra>
@@ -42,9 +42,6 @@ import { Component } from '@angular/core';
   `,
   styles: [
     `
-      nz-page-header {
-        border: 1px solid rgb(235, 237, 240);
-      }
       .content {
         display: flex;
       }

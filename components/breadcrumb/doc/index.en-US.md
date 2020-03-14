@@ -23,7 +23,7 @@ import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzSeparator]` | Custom separator | `string \| TemplateRef<void>` | `'/'` |
+| `[nzSeparator]` | Custom separator | `string \| TemplateRef<void> \| null` | `'/'` |
 | `[nzAutoGenerate]` | Auto generate breadcrumb | `boolean` | `false` |
 | `[nzRouteLabel]` | Name of property that determines displayed text in routing config. It should be used when `nzAutoGenerate` is `true` | `string` | `'breadcrumb'` |
 

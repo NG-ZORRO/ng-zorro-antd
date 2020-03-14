@@ -6,6 +6,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-comment.module';
-export * from './nz-comment.component';
-export * from './nz-comment-cells';
+export * from './comment.module';
+export * from './comment.component';
+export * from './comment-cells';

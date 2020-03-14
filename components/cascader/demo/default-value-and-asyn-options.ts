@@ -47,14 +47,7 @@ const options = [
   selector: 'nz-demo-cascader-default-value-and-asyn-options',
   template: `
     <nz-cascader [(ngModel)]="values" [nzOptions]="nzOptions" (ngModelChange)="onChanges($event)"> </nz-cascader>
-  `,
-  styles: [
-    `
-      .ant-cascader-picker {
-        width: 300px;
-      }
-    `
-  ]
+  `
 })
 export class NzDemoCascaderDefaultValueAndAsynOptionsComponent implements OnInit {
   nzOptions: NzCascaderOption[] | null = null;

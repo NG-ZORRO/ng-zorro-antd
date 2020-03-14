@@ -53,6 +53,7 @@
     "interface-name": [true, "never-prefix"],
     "interface-over-type-literal": true,
     "label-position": true,
+    "linebreak-style": [true, "LF"],
     "require-license-banner": [
       true,
       "components/**/!(demo|doc|style|page|testing)/!(*.spec).ts"
