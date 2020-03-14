@@ -9,7 +9,6 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
-  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -18,7 +17,6 @@ import {
   Optional,
   Output,
   QueryList,
-  Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
@@ -81,10 +79,7 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
   classMap: NgClassType = {};
   dir: Direction;
 
-  constructor(
-    cdr: ChangeDetectorRef,
-    @Optional() directionality: Directionality
-  ) {
+  constructor(cdr: ChangeDetectorRef, @Optional() directionality: Directionality) {
     directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
       this.setClassMap();
