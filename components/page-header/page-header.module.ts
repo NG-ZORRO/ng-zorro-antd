@@ -21,8 +21,8 @@ import {
   NzPageHeaderSubtitleDirective,
   NzPageHeaderTagDirective,
   NzPageHeaderTitleDirective
-} from './nz-page-header-cells';
-import { NzPageHeaderComponent } from './nz-page-header.component';
+} from './page-header-cells';
+import { NzPageHeaderComponent } from './page-header.component';
 
 const NzPageHeaderCells = [
   NzPageHeaderTitleDirective,

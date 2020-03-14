@@ -5,11 +5,11 @@ title: PageHeader
 cols: 1
 ---
 
-The header is used to declare the theme of the page, which contains the most important information that the user is concerned about.
+A header with common actions and design elements built in.
 
 ## When To Use
 
-Use when you need the user to quickly understand what the current page is and what its features are.
+PageHeader can be used to highlight the page topic, display important information about the page, and carry the action items related to the current page (including page-level operations, inter-page navigation, etc.) It can also be used as inter-page navigation.
 
 ```ts
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
