@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -24,7 +25,6 @@ import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 
-import { isTooltipEmpty, NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger } from 'ng-zorro-antd/tooltip';
 
 @Directive({
   selector: '[nz-popover]',
@@ -111,8 +111,12 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
 export class NzPopoverComponent extends NzToolTipComponent {
   _prefix = 'ant-popover-placement';
 
-  constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
-    super(cdr, noAnimation);
+  constructor(
+    cdr: ChangeDetectorRef,
+    @Optional() directionality: Directionality,
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
+  ) {
+    super(cdr, directionality, noAnimation);
   }
 
   protected isEmpty(): boolean {

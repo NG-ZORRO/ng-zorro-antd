@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
   AfterViewInit,
@@ -14,6 +15,7 @@ import {
   EventEmitter,
   OnChanges,
   OnDestroy,
+  Optional,
   Renderer2,
   SimpleChanges,
   TemplateRef,
@@ -363,16 +365,28 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
 
   origin!: CdkOverlayOrigin;
   preferredPlacement = 'top';
+  dir: Direction;
 
   _classMap: NgClassInterface = {};
   _hasBackdrop = false;
   _prefix = 'ant-tooltip-placement';
   _positions: ConnectionPositionPair[] = [...DEFAULT_TOOLTIP_POSITIONS];
 
-  constructor(public cdr: ChangeDetectorRef, public noAnimation?: NzNoAnimationDirective) {}
+  private destroy$ = new Subject<void>();
+
+  constructor(public cdr: ChangeDetectorRef, @Optional() directionality: Directionality, public noAnimation?: NzNoAnimationDirective) {
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      cdr.detectChanges();
+    });
+
+    this.dir = directionality.value;
+  }
 
   ngOnDestroy(): void {
     this.nzVisibleChange.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   show(): void {
