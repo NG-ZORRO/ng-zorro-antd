@@ -29,6 +29,10 @@ import { formatDistance } from 'date-fns';
         padding-left: 8px;
         cursor: auto;
       }
+      .ant-comment-rtl .count {
+        padding-right: 8px;
+        padding-left: 0;
+      }
     `
   ]
 })

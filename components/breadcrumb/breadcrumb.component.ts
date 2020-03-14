@@ -65,28 +65,20 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
     private injector: Injector,
     private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
-    elementRef: ElementRef,
-    renderer: Renderer2,
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
     @Optional() directionality: Directionality
   ) {
     directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
-      if (this.dir === "rtl") {
-        renderer.addClass(elementRef.nativeElement, 'ant-breadcrumb-rtl');
-      } else {
-        renderer.removeClass(elementRef.nativeElement, 'ant-breadcrumb-rtl');
-      }
+      this.prepareComponentForRtl();
       cdr.detectChanges();
     });
 
     renderer.addClass(elementRef.nativeElement, 'ant-breadcrumb');
 
     this.dir = directionality.value;
-    if (this.dir === "rtl") {
-      renderer.addClass(elementRef.nativeElement, 'ant-breadcrumb-rtl');
-    } else {
-      renderer.removeClass(elementRef.nativeElement, 'ant-breadcrumb-rtl');
-    }
+    this.prepareComponentForRtl();
   }
 
   ngOnInit(): void {
@@ -157,4 +149,13 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
     }
     return undefined;
   }
+
+  private prepareComponentForRtl(): void {
+    if (this.dir === "rtl") {
+      this.renderer.addClass(this.elementRef.nativeElement, 'ant-breadcrumb-rtl');
+    } else {
+      this.renderer.removeClass(this.elementRef.nativeElement, 'ant-breadcrumb-rtl');
+    }
+  }
+
 }
