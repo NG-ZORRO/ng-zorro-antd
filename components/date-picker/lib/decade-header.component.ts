@@ -42,7 +42,9 @@ export class DecadeHeaderComponent extends AbstractPanelHeader {
       {
         className: `${this.prefixCls}-decade-btn`,
         title: '',
-        onClick: () => null,
+        onClick: () => {
+          // noop
+        },
         label: `${this.startYear}-${this.endYear}`
       }
     ];

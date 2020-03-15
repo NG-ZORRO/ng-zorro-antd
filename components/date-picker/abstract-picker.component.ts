@@ -150,13 +150,9 @@ export abstract class AbstractPickerComponent implements OnInit, OnChanges, OnDe
     // Default format when it's empty
     if (!this.nzFormat) {
       if (this.showWeek) {
-        this.nzFormat = this.dateHelper.relyOnDatePipe ? 'yyyy-ww' : 'YYYY-WW'; // Format for week
+        this.nzFormat = 'yyyy-ww'; // Format for week
       } else {
-        if (this.dateHelper.relyOnDatePipe) {
-          this.nzFormat = this.nzShowTime ? 'yyyy-MM-dd HH:mm:ss' : 'yyyy-MM-dd';
-        } else {
-          this.nzFormat = this.nzShowTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD';
-        }
+        this.nzFormat = this.nzShowTime ? 'yyyy-MM-dd HH:mm:ss' : 'yyyy-MM-dd';
       }
     }
   }

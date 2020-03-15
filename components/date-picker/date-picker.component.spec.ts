@@ -7,14 +7,15 @@ import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angu
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import isSameDay from 'date-fns/is_same_day';
+import isSameDay from 'date-fns/isSameDay';
 
 import { dispatchKeyboardEvent, dispatchMouseEvent, NgStyleInterface, typeInElement } from 'ng-zorro-antd/core';
 import en_US from '../i18n/languages/en_US';
 import { PREFIX_CLASS } from './name';
 import { getPicker, getPickerAbstract, getPickerInput } from './testing/util';
 
-import { NzI18nModule, NzI18nService } from 'ng-zorro-antd/i18n';
+import { enUS } from 'date-fns/locale';
+import { NZ_DATE_LOCALE, NzI18nModule, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzDatePickerModule } from './date-picker.module';
 
 registerLocaleData(zh);
@@ -215,6 +216,20 @@ describe('NzDatePickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(getPickerContainer()).toBeNull();
+    }));
+
+    it('should support nzFormat', fakeAsync(() => {
+      fixtureInstance.nzFormat = 'dd.MM.yyyy';
+      fixtureInstance.nzValue = new Date('2020-03-04');
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      const input = getPickerInput(fixture.debugElement);
+      expect(input.value).toBe('04.03.2020');
+      dispatchMouseEvent(queryFromOverlay('.ant-picker-cell')!, 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(input.value).toBe('24.02.2020');
     }));
 
     it('should support nzClassName', () => {
@@ -835,6 +850,46 @@ describe('NzDatePickerComponent', () => {
   }
 });
 
+describe('date-fns testing', () => {
+  let fixture: ComponentFixture<NzTestDatePickerComponent>;
+  let fixtureInstance: NzTestDatePickerComponent;
+
+  beforeEach(fakeAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [FormsModule, NoopAnimationsModule, NzDatePickerModule, NzI18nModule],
+      providers: [{ provide: NZ_DATE_LOCALE, useValue: enUS }],
+      declarations: [NzTestDatePickerComponent]
+    });
+    TestBed.compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(NzTestDatePickerComponent);
+    fixtureInstance = fixture.componentInstance;
+    fixtureInstance.useSuite = 1;
+  });
+
+  it('should parse input value with nzFormat', fakeAsync(() => {
+    const nzOnChange = spyOn(fixtureInstance, 'nzOnChange');
+    fixtureInstance.nzFormat = 'dd.MM.yyyy';
+    fixture.detectChanges();
+    dispatchMouseEvent(getPickerInput(fixture.debugElement), 'click');
+    fixture.detectChanges();
+    tick(500);
+    fixture.detectChanges();
+    const input = getPickerInput(fixture.debugElement);
+    typeInElement('25.10.2019', input);
+    fixture.detectChanges();
+    input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+    fixture.detectChanges();
+    flush();
+    const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
+    expect(result.getFullYear()).toBe(2019);
+    expect(result.getMonth() + 1).toBe(10);
+    expect(result.getDate()).toBe(25);
+  }));
+});
+
 @Component({
   template: `
     <ng-container [ngSwitch]="useSuite">
@@ -846,6 +901,7 @@ describe('NzDatePickerComponent', () => {
         [nzDisabled]="nzDisabled"
         [nzClassName]="nzClassName"
         [nzDisabledDate]="nzDisabledDate"
+        [nzFormat]="nzFormat"
         [nzLocale]="nzLocale"
         [nzPlaceHolder]="nzPlaceHolder"
         [nzPopupStyle]="nzPopupStyle"
@@ -892,6 +948,7 @@ class NzTestDatePickerComponent {
   nzAutoFocus: boolean;
   nzDisabled: boolean;
   nzClassName: string;
+  nzFormat: string;
   nzDisabledDate: (d: Date) => boolean;
   nzLocale: any; // tslint:disable-line:no-any
   nzPlaceHolder: string;

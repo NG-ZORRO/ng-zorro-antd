@@ -23,6 +23,7 @@ import { CandyDate, valueFunctionProp } from 'ng-zorro-antd/core';
 import { DateHelperService, NzCalendarI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell, DayCell } from './interface';
+import { transCompatFormat } from './util';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -99,7 +100,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
       const day = start.addDays(colIndex);
       weekDays.push({
         value: day.nativeDate,
-        title: this.dateHelper.format(day.nativeDate, this.dateHelper.relyOnDatePipe ? 'E' : 'ddd'), // eg. Tue
+        title: this.dateHelper.format(day.nativeDate, 'E'), // eg. Tue
         content: this.dateHelper.format(day.nativeDate, this.getVeryShortWeekFormat()), // eg. Tu,
         isSelected: false,
         isDisabled: false,
@@ -111,15 +112,12 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
   }
 
   private getVeryShortWeekFormat(): string {
-    if (this.dateHelper.relyOnDatePipe) {
-      return this.i18n
-        .getLocaleId()
-        .toLowerCase()
-        .indexOf('zh') === 0
-        ? 'EEEEE'
-        : 'EEEEEE'; // Use extreme short for chinese
-    }
-    return 'dd';
+    return this.i18n
+      .getLocaleId()
+      .toLowerCase()
+      .indexOf('zh') === 0
+      ? 'EEEEE'
+      : 'EEEEEE'; // Use extreme short for chinese
   }
 
   makeBodyRows(): DateBodyRow[] {
@@ -137,11 +135,9 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
 
       for (let day = 0; day < 7; day++) {
         const date = weekStart.addDays(day);
-        const dateFormat = this.dateHelper.relyOnDatePipe
-          ? 'longDate'
-          : this.i18n.getLocaleData('DatePicker.lang.dateFormat', 'YYYY-MM-DD');
+        const dateFormat = transCompatFormat(this.i18n.getLocaleData('DatePicker.lang.dateFormat', 'YYYY-MM-DD'));
         const title = this.dateHelper.format(date.nativeDate, dateFormat);
-        const label = this.dateHelper.format(date.nativeDate, this.dateHelper.relyOnDatePipe ? 'dd' : 'DD');
+        const label = this.dateHelper.format(date.nativeDate, 'dd');
 
         const cell: DayCell = {
           value: date.nativeDate,

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { distanceInWords } from 'date-fns';
+import { formatDistance } from 'date-fns';
 
 @Component({
   selector: 'nz-demo-comment-editor',
@@ -51,12 +51,12 @@ export class NzDemoCommentEditorComponent {
           ...this.user,
           content,
           datetime: new Date(),
-          displayTime: distanceInWords(new Date(), new Date())
+          displayTime: formatDistance(new Date(), new Date())
         }
       ].map(e => {
         return {
           ...e,
-          displayTime: distanceInWords(new Date(), e.datetime)
+          displayTime: formatDistance(new Date(), e.datetime)
         };
       });
     }, 800);

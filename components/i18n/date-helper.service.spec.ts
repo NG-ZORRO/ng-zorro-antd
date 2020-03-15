@@ -1,8 +1,8 @@
 import { Injector } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-import enDateLocale from 'date-fns/locale/en';
-import { NZ_DATE_CONFIG } from './date-config';
+import { enUS } from 'date-fns/locale';
+import { NZ_DATE_CONFIG, NZ_DATE_FNS_COMPATIBLE } from './date-config';
 import { DateHelperByDatePipe, DateHelperService } from './date-helper.service';
 import en_US from './languages/en_US';
 import { NzI18nModule } from './nz-i18n.module';
@@ -41,7 +41,7 @@ describe('DateHelperService', () => {
     beforeEach(() => {
       injector = TestBed.configureTestingModule({
         imports: [NzI18nModule],
-        providers: [{ provide: NZ_DATE_LOCALE, useValue: enDateLocale }]
+        providers: [{ provide: NZ_DATE_LOCALE, useValue: enUS }]
       });
 
       dateHelper = injector.get(DateHelperService);
@@ -53,8 +53,8 @@ describe('DateHelperService', () => {
 
     it('should do formatting correctly', () => {
       const date = new Date('2018-12-31 12:11:10');
-      expect(dateHelper.format(date, 'YYYY-MM-DD')).toBe('2018-12-31');
-      expect(dateHelper.format(date, 'WW')).toBe('01'); // ISO week
+      expect(dateHelper.format(date, 'yyyy-MM-dd')).toBe('2018-12-31');
+      expect(dateHelper.format(date, 'II')).toBe('01'); // ISO week
     });
   });
 
@@ -62,7 +62,11 @@ describe('DateHelperService', () => {
     beforeEach(() => {
       injector = TestBed.configureTestingModule({
         imports: [NzI18nModule],
-        providers: [{ provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 4 } }]
+        providers: [
+          { provide: NZ_DATE_LOCALE, useValue: enUS },
+          { provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 4 } },
+          { provide: NZ_DATE_FNS_COMPATIBLE, useValue: true }
+        ]
       });
 
       dateHelper = injector.get(DateHelperService);
@@ -70,6 +74,19 @@ describe('DateHelperService', () => {
 
     it('should set first day of week to 4', () => {
       expect(dateHelper.getFirstDayOfWeek()).toBe(4);
+    });
+
+    it('should do compat formatting correctly', () => {
+      const date = new Date('2018-12-31 12:11:10');
+      expect(dateHelper.format(date, 'YYYY-MM-DD')).toBe('2018-12-31');
+      expect(dateHelper.format(date, 'WW')).toBe('01'); // ISO week
+    });
+
+    it('should do compat parse correctly', () => {
+      const date = dateHelper.parseDate('31.12.2018', 'DD.MM.YYYY');
+      expect(date.getFullYear()).toBe(2018);
+      expect(date.getMonth()).toBe(11);
+      expect(date.getDate()).toBe(31);
     });
   });
 });
