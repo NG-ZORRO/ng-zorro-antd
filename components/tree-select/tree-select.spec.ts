@@ -187,7 +187,7 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
       fixture.detectChanges();
-      const targetNode = overlayContainerElement.querySelectorAll('nz-tree-node')[2];
+      const targetNode = overlayContainerElement.querySelectorAll('.ant-select-tree-node-content-wrapper')[2];
       dispatchMouseEvent(targetNode, 'click');
       fixture.detectChanges();
       flush();
@@ -250,7 +250,7 @@ describe('tree-select component', () => {
       treeSelect.nativeElement.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
-      let node = overlayContainerElement.querySelector('nz-tree-node')!;
+      let node = overlayContainerElement.querySelector('.ant-select-tree-node-content-wrapper')!;
       dispatchMouseEvent(node, 'click');
       fixture.detectChanges();
       flush();
@@ -491,6 +491,7 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       dispatchMouseEvent(targetSwitcher, 'click');
       fixture.detectChanges();
+      targetSwitcher = overlayContainerElement.querySelector('.ant-select-tree-switcher')!;
       expect(targetSwitcher.classList.contains('ant-select-tree-switcher_open')).toBe(true);
       expect(treeSelectComponent.nzExpandedKeys[0] === '1001').toBe(true);
       treeSelect.nativeElement.click();

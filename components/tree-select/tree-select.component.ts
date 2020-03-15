@@ -398,10 +398,6 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       if (this.selectedNodes.length) {
         const removeNode = this.selectedNodes[this.selectedNodes.length - 1];
         this.removeSelected(removeNode);
-        this.nzTreeService!.triggerEventChange$!.next({
-          eventName: 'removeSelect',
-          node: removeNode
-        });
       }
     }
   }
@@ -486,9 +482,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       this.nzTreeService.isCheckStrictly = this.nzCheckStrictly;
       this.nzTreeService.initTree(nodes);
       if (this.nzCheckable) {
-        this.nzTreeService.calcCheckedKeys(this.value, nodes, this.nzCheckStrictly);
+        this.nzTreeService.conductCheck(this.value, this.nzCheckStrictly);
       } else {
-        this.nzTreeService.calcSelectedKeys(this.value, nodes, this.isMultiple);
+        this.nzTreeService.conductSelectedKeys(this.value, this.isMultiple);
       }
     }
 

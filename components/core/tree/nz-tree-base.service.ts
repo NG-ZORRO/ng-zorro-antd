@@ -6,17 +6,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Injectable, OnDestroy } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Injectable } from '@angular/core';
 
-import { isNotNil } from '../util';
-
-import { NzTreeNode } from './nz-tree-base-node';
-import { isCheckDisabled, isInArray } from './nz-tree-base-util';
+import { FlattenNode, NzTreeNode, NzTreeNodeKey } from './nz-tree-base-node';
+import { flattenTreeData, isCheckDisabled, isInArray } from './nz-tree-base-util';
 import { NzFormatEmitEvent } from './nz-tree-base.definitions';
 
 @Injectable()
-export class NzTreeBaseService implements OnDestroy {
+export class NzTreeBaseService {
   DRAG_SIDE_RANGE = 0.25;
   DRAG_MIN_GAP = 2;
 
@@ -24,19 +21,12 @@ export class NzTreeBaseService implements OnDestroy {
   isMultiple: boolean = false;
   selectedNode: NzTreeNode;
   rootNodes: NzTreeNode[] = [];
+  flattenNodes: FlattenNode[] = [];
   selectedNodeList: NzTreeNode[] = [];
   expandedNodeList: NzTreeNode[] = [];
   checkedNodeList: NzTreeNode[] = [];
   halfCheckedNodeList: NzTreeNode[] = [];
   matchedNodeList: NzTreeNode[] = [];
-  triggerEventChange$ = new Subject<NzFormatEmitEvent>();
-
-  /**
-   * trigger event
-   */
-  eventTriggerChanged(): Observable<NzFormatEmitEvent> {
-    return this.triggerEventChange$.asObservable();
-  }
 
   /**
    * reset tree nodes will clear default node list
@@ -48,10 +38,10 @@ export class NzTreeBaseService implements OnDestroy {
     this.halfCheckedNodeList = [];
     this.checkedNodeList = [];
     this.matchedNodeList = [];
-    // refresh node checked state
-    setTimeout(() => {
-      this.refreshCheckState(this.isCheckStrictly);
-    });
+  }
+
+  flattenTreeData(nzNodes: NzTreeNode[], expandedKeys: NzTreeNodeKey[] | true = []): void {
+    this.flattenNodes = flattenTreeData(nzNodes, expandedKeys);
   }
 
   getSelectedNode(): NzTreeNode | null {
@@ -96,72 +86,6 @@ export class NzTreeBaseService implements OnDestroy {
   }
 
   /**
-   * reset selectedNodeList
-   */
-  calcSelectedKeys(selectedKeys: string[], nzNodes: NzTreeNode[], isMulti: boolean = false): void {
-    const calc = (nodes: NzTreeNode[]): boolean => {
-      return nodes.every(node => {
-        if (isInArray(node.key, selectedKeys)) {
-          node.isSelected = true;
-          if (!isMulti) {
-            // if not support multi select
-            return false;
-          }
-        } else {
-          node.isSelected = false;
-        }
-        if (node.children.length > 0) {
-          // Recursion
-          return calc(node.children);
-        }
-        return true;
-      });
-    };
-    calc(nzNodes);
-  }
-
-  /**
-   * reset expandedNodeList
-   */
-  calcExpandedKeys(expandedKeys: string[], nzNodes: NzTreeNode[]): void {
-    this.expandedNodeList = [];
-    const calc = (nodes: NzTreeNode[]) => {
-      nodes.forEach(node => {
-        node.isExpanded = isInArray(node.key, expandedKeys);
-        if (node.children.length > 0) {
-          calc(node.children);
-        }
-      });
-    };
-    calc(nzNodes);
-  }
-
-  /**
-   * reset checkedNodeList
-   */
-  calcCheckedKeys(checkedKeys: string[], nzNodes: NzTreeNode[], isCheckStrictly: boolean = false): void {
-    this.checkedNodeList = [];
-    this.halfCheckedNodeList = [];
-    const calc = (nodes: NzTreeNode[]) => {
-      nodes.forEach(node => {
-        if (isInArray(node.key, checkedKeys)) {
-          node.isChecked = true;
-          node.isHalfChecked = false;
-        } else {
-          node.isChecked = false;
-          node.isHalfChecked = false;
-        }
-        if (node.children.length > 0) {
-          calc(node.children);
-        }
-      });
-    };
-    calc(nzNodes);
-    // controlled state
-    this.refreshCheckState(isCheckStrictly);
-  }
-
-  /**
    * set drag node
    */
   setSelectedNode(node: NzTreeNode): void {
@@ -189,7 +113,7 @@ export class NzTreeBaseService implements OnDestroy {
    * add or remove node to selectedNodeList
    */
   setSelectedNodeList(node: NzTreeNode, isMultiple: boolean = false): void {
-    const index = this.selectedNodeList.findIndex(n => node.key === n.key);
+    const index = this.getIndexOfArray(this.selectedNodeList, node.key);
     if (isMultiple) {
       if (node.isSelected && index === -1) {
         this.selectedNodeList.push(node);
@@ -208,7 +132,7 @@ export class NzTreeBaseService implements OnDestroy {
    * merge checked nodes
    */
   setHalfCheckedNodeList(node: NzTreeNode): void {
-    const index = this.halfCheckedNodeList.findIndex(n => node.key === n.key);
+    const index = this.getIndexOfArray(this.halfCheckedNodeList, node.key);
     if (node.isHalfChecked && index === -1) {
       this.halfCheckedNodeList.push(node);
     } else if (!node.isHalfChecked && index > -1) {
@@ -217,7 +141,7 @@ export class NzTreeBaseService implements OnDestroy {
   }
 
   setCheckedNodeList(node: NzTreeNode): void {
-    const index = this.checkedNodeList.findIndex(n => node.key === n.key);
+    const index = this.getIndexOfArray(this.checkedNodeList, node.key);
     if (node.isChecked && index === -1) {
       this.checkedNodeList.push(node);
     } else if (!node.isChecked && index > -1) {
@@ -274,11 +198,20 @@ export class NzTreeBaseService implements OnDestroy {
     if (node.isLeaf) {
       return;
     }
-    const index = this.expandedNodeList.findIndex(n => node.key === n.key);
+    const index = this.getIndexOfArray(this.expandedNodeList, node.key);
     if (node.isExpanded && index === -1) {
       this.expandedNodeList.push(node);
     } else if (!node.isExpanded && index > -1) {
-      this.expandedNodeList = this.expandedNodeList.filter(n => node.key !== n.key);
+      this.expandedNodeList.splice(index, 1);
+    }
+  }
+
+  setMatchedNodeList(node: NzTreeNode): void {
+    const index = this.getIndexOfArray(this.matchedNodeList, node.key);
+    if (node.isMatched && index === -1) {
+      this.matchedNodeList.push(node);
+    } else if (!node.isMatched && index > -1) {
+      this.matchedNodeList.splice(index, 1);
     }
   }
 
@@ -343,47 +276,6 @@ export class NzTreeBaseService implements OnDestroy {
         this.conductDown(n, value);
       });
     }
-  }
-
-  /**
-   * search value & expand node
-   * should add expandlist
-   */
-  searchExpand(value: string): void {
-    this.matchedNodeList = [];
-    const expandedKeys: string[] = [];
-    if (!isNotNil(value)) {
-      return;
-    }
-    // to reset expandedNodeList
-    const expandParent = (n: NzTreeNode) => {
-      // expand parent node
-      const parentNode = n.getParentNode();
-      if (parentNode) {
-        expandedKeys.push(parentNode.key);
-        expandParent(parentNode);
-      }
-    };
-    const searchChild = (n: NzTreeNode) => {
-      if (value && n.title.includes(value)) {
-        // match the node
-        n.isMatched = true;
-        this.matchedNodeList.push(n);
-        // expand parentNode
-        expandParent(n);
-      } else {
-        n.isMatched = false;
-      }
-      n.canHide = !n.isMatched;
-      n.children.forEach(child => {
-        searchChild(child);
-      });
-    };
-    this.rootNodes.forEach(child => {
-      searchChild(child);
-    });
-    // expand matched keys
-    this.calcExpandedKeys(expandedKeys, this.rootNodes);
   }
 
   /**
@@ -490,7 +382,7 @@ export class NzTreeBaseService implements OnDestroy {
           // Insert root node.
           this.rootNodes.splice(targetIndex, 0, this.selectedNode);
           this.rootNodes[targetIndex].parentNode = null;
-          this.rootNodes[targetIndex].level = 0;
+          this.resetNodeLevel(this.rootNodes[targetIndex]);
         }
         break;
     }
@@ -533,7 +425,6 @@ export class NzTreeBaseService implements OnDestroy {
         break;
       case 'check':
         const checkedNodeList = this.getCheckedNodeList();
-
         Object.assign(emitStructure, { checkedKeys: checkedNodeList });
         Object.assign(emitStructure, { nodes: checkedNodeList });
         Object.assign(emitStructure, { keys: checkedNodeList.map(n => n.key) });
@@ -551,7 +442,96 @@ export class NzTreeBaseService implements OnDestroy {
     return emitStructure;
   }
 
-  ngOnDestroy(): void {
-    this.triggerEventChange$.complete();
+  /**
+   * New functions for flatten nodes
+   */
+
+  getIndexOfArray(list: NzTreeNode[], key: string): number {
+    return list.findIndex(v => v.key === key);
+  }
+
+  /**
+   * Render by nzCheckedKeys
+   * @param keys
+   * @param checkStrictly
+   */
+  conductCheck(keys: NzTreeNodeKey[], checkStrictly: boolean): void {
+    this.checkedNodeList = [];
+    this.halfCheckedNodeList = [];
+    const calc = (nodes: NzTreeNode[]) => {
+      nodes.forEach(node => {
+        if (isInArray(node.key, keys)) {
+          node.isChecked = true;
+          node.isHalfChecked = false;
+        } else {
+          node.isChecked = false;
+          node.isHalfChecked = false;
+        }
+        if (node.children.length > 0) {
+          calc(node.children);
+        }
+      });
+    };
+    calc(this.rootNodes);
+    this.refreshCheckState(checkStrictly);
+  }
+
+  conductExpandedKeys(keys: NzTreeNodeKey[] | true = []): void {
+    const expandedKeySet = new Set(keys === true ? [] : keys);
+    this.expandedNodeList = [];
+    const calc = (nodes: NzTreeNode[]) => {
+      nodes.forEach(node => {
+        node.setExpanded(keys === true || expandedKeySet.has(node.key) || node.isExpanded === true);
+        if (node.isExpanded) {
+          this.setExpandedNodeList(node);
+        }
+        if (node.children.length > 0) {
+          calc(node.children);
+        }
+      });
+    };
+    calc(this.rootNodes);
+  }
+
+  conductSelectedKeys(keys: NzTreeNodeKey[], isMulti: boolean): void {
+    this.selectedNodeList = [];
+    const calc = (nodes: NzTreeNode[]): boolean => {
+      return nodes.every(node => {
+        if (isInArray(node.key, keys)) {
+          node.isSelected = true;
+          this.setSelectedNodeList(node);
+          if (!isMulti) {
+            // if not support multi select
+            return false;
+          }
+        } else {
+          node.isSelected = false;
+        }
+        if (node.children.length > 0) {
+          // Recursion
+          return calc(node.children);
+        }
+        return true;
+      });
+    };
+    calc(this.rootNodes);
+  }
+
+  /**
+   * Expand parent nodes by child node
+   * @param node
+   */
+  expandNodeAllParentBySearch(node: NzTreeNode): void {
+    const calc = (n: NzTreeNode | null): void => {
+      if (n) {
+        n.canHide = false;
+        n.setExpanded(true);
+        this.setExpandedNodeList(n);
+        if (n.getParentNode()) {
+          return calc(n.getParentNode());
+        }
+      }
+    };
+    calc(node.getParentNode());
   }
 }
