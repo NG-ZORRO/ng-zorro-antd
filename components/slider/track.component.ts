@@ -24,29 +24,31 @@ export interface NzSliderTrackStyle {
   selector: 'nz-slider-track',
   exportAs: 'nzSliderTrack',
   preserveWhitespaces: false,
-  templateUrl: './nz-slider-track.component.html'
+  template: `
+    <div class="ant-slider-track" [ngStyle]="style"></div>
+  `
 })
 export class NzSliderTrackComponent implements OnChanges {
-  @Input() @InputNumber() nzOffset: number;
-  @Input() @InputNumber() nzLength: number;
-  @Input() @InputBoolean() nzVertical = false;
-  @Input() @InputBoolean() nzIncluded = false;
+  @Input() @InputNumber() offset: number;
+  @Input() @InputNumber() length: number;
+  @Input() @InputBoolean() vertical = false;
+  @Input() @InputBoolean() included = false;
 
   style: NzSliderTrackStyle = {};
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzIncluded) {
-      this.style.visibility = this.nzIncluded ? 'visible' : 'hidden';
+    if (changes.included) {
+      this.style.visibility = this.included ? 'visible' : 'hidden';
     }
-    if (changes.nzVertical || changes.nzOffset || changes.nzLength) {
-      if (this.nzVertical) {
-        this.style.bottom = `${this.nzOffset}%`;
-        this.style.height = `${this.nzLength}%`;
+    if (changes.vertical || changes.offset || changes.length) {
+      if (this.vertical) {
+        this.style.bottom = `${this.offset}%`;
+        this.style.height = `${this.length}%`;
         this.style.left = null;
         this.style.width = null;
       } else {
-        this.style.left = `${this.nzOffset}%`;
-        this.style.width = `${this.nzLength}%`;
+        this.style.left = `${this.offset}%`;
+        this.style.width = `${this.length}%`;
         this.style.bottom = null;
         this.style.height = null;
       }
