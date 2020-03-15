@@ -25,13 +25,12 @@ interface Name {
             <nz-skeleton *ngIf="!item" [nzAvatar]="true" [nzParagraph]="{ rows: 1 }"></nz-skeleton>
             <nz-list-item-meta
               *ngIf="item"
-              [nzTitle]="nzTitle"
               nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
               [nzDescription]="item.email"
             >
-              <ng-template #nzTitle>
+              <nz-list-item-meta-title>
                 <a href="https://ng.ant.design">{{ item.name.last }}</a>
-              </ng-template>
+              </nz-list-item-meta-title>
             </nz-list-item-meta>
           </nz-list-item>
         </nz-list>
