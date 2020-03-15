@@ -37,12 +37,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 | `fetchFromIconfont()` | To get icon assets from fonticon | `NzIconfontOption` |
 | `changeAssetsSource()` | To change the location of your icon assets, so that you can deploy these icons wherever you want | `string` |
 
-### InjectionToken
-
-| Token | Description | Parameters |
-| --- | --- | --- |
-| `NZ_ICONS` | To import icons statically | `IconDefinition[]`, `useValue` |
-
 ### SVG icons
 
 We synced to Ant Design and replaced font icons with svg icons which bring benefits below:
@@ -74,7 +68,7 @@ Static loading. By registering icons to `AppModule` you load icons statically.
 
 ```ts
 import { IconDefinition } from '@ant-design/icons-angular';
-import { NzIconModule, NZ_ICON_DEFAULT_TWOTONE_COLOR, NZ_ICONS } from 'ng-zorro-antd/icon';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 // Import what you need. RECOMMENDED. ✔️
 import { AccountBookFill, AlertFill, AlertOutline } from '@ant-design/icons-angular/icons';
@@ -94,19 +88,15 @@ const icons: IconDefinition[] = [ AccountBookFill, AlertOutline, AlertFill ];
     AppComponent
   ],
   imports: [
-    NzIconModule,
-  ],
-  providers: [
-    { provide: NZ_ICON_DEFAULT_TWOTONE_COLOR, useValue: '#00ff00' }, // If not provided, Ant Design's official blue would be used
-    { provide: NZ_ICONS, useValue: icons }
-  ],
+    NzIconModule.forRoot(icons),
+  ]
   bootstrap: [ AppComponent ]
 })
 export class AppModule {
 }
 ```
 
-Actually this calls `addIcon` of `NzIconService`. Icons imported would be bundled into your `.js` files. Static loading would increase your bundle's size so we recommend use dynamic importing as much as you can. You can track this [issue](https://github.com/ant-design/ant-design/issues/12011) of Ant Design for more details.
+Actually this calls `addIcon` of `NzIconService`. Icons imported would be bundled into your `.js` files. Static loading would increase your bundle's size so we recommend use dynamic importing as much as you can.
 
 > Icons used by `NG-ZORRO` itself are imported statically to increase loading speed. However, icons demonstrated on the official website are loaded dynamically.
 
@@ -129,6 +119,19 @@ You can call `changeAssetsSource()` of `NzIconService` to change the location of
 Let's assume that you deploy static assets under `https://mycdn.somecdn.com/icons/assets`. You can call `changeAssetsSource('https://mycdn.somecdn.com/icons')` to tell NG-ZORRO that all your resources are located there.
 
 Please call this in component's constructor or `AppInitService`.
+
+### Add Icons in Lazy-loaded Modules
+
+Sometimes, you want to import icons in lazy modules to avoid increasing the size of the main.js. You can use `NzIconModule.patch`.
+
+```ts
+@NgModule({
+  imports: [CommonModule, NzIconModule.forChild([QuestionOutline])],
+})
+class ChildModule {}
+```
+
+When `ChildModule` get loaded, the icon QuestionOutline would be usable across the application.
 
 ### Set Default TwoTone Color
 
