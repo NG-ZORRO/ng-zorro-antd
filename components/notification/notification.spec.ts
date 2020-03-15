@@ -57,6 +57,9 @@ describe('NzNotification', () => {
 
   beforeEach(inject([NzNotificationService, OverlayContainer], (n: NzNotificationService, oc: OverlayContainer) => {
     notificationService = n;
+    // need init before testing
+    const notification = notificationService.success('init', 'init');
+    notificationService.remove(notification.messageId);
     // @ts-ignore
     nzConfigService = notificationService.container.nzConfigService;
     if (!overlayContainerElement) {

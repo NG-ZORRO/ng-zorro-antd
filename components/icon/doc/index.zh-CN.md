@@ -124,7 +124,7 @@ export class AppModule {
 
 ### 在子模块中补充图标
 
-有时候，为了避免增大 main.js 的体积，你可能想要从懒加载模块中引入图标，这时你就可以使用 `NzIconModule.patch` 来追加图标。
+有时候，为了避免增大 main.js 的体积，你可能想要从懒加载模块中引入图标，这时你就可以使用 `NzIconModule.forChild` 来追加图标。
 
 ```ts
 @NgModule({
@@ -181,12 +181,6 @@ this._iconService.fetchFromIconfont({
 
 你是不是没有阅读以上的文档？
 
-### 出现了两个图标，这是怎么回事？
-
-1.7.0 及之后与之前的版本在图标的实现上完全不同，旧版本的主题文件中，会引入字体文件，字体文件根据 CSS 类名，通过一个伪类元素将 icon 添加进来，加上新版的 SVG icon，就会出现两个 icon。
-
-如果发生了，请先删除 `node_modules` 然后重装，如果还是不行，仔细检查你是否在别处引用了旧版本的主题文件，全局查找 `@icon-url`，删除该行代码即可。
-
 ### 我想静态引入全部的图标，该怎么做？
 
 实际上我们已经在 <a href="/components/icon/zh#%E9%9D%99%E6%80%81%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD">静态加载与动态加载</a> 部分演示过了：
@@ -200,7 +194,7 @@ this._iconService.fetchFromIconfont({
 // const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key])
 ```
 
-然后通过 InjectionToken（1.8.0）或者 `NzIconService` 的 `addIcon` 方法引入。
+然后通过 forRoot 或者 `NzIconService` 的 `addIcon` 方法引入。
 
 ### 动态加载会不会影响网页的性能？
 

@@ -2,7 +2,6 @@ import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
 import { async, ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
-import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchKeyboardEvent, NzNoAnimationModule } from 'ng-zorro-antd/core';
@@ -385,9 +384,6 @@ describe('NzDrawerService', () => {
       providers: [NzDrawerService],
       declarations: [NzTestDrawerWithServiceComponent, NzDrawerCustomComponent]
     });
-    TestBed.overrideModule(BrowserDynamicTestingModule, {
-      set: { entryComponents: [NzDrawerCustomComponent] }
-    }).compileComponents();
   }));
 
   beforeEach(async(() => {

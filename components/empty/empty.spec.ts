@@ -321,7 +321,6 @@ export class NzEmptyTestCustomComponent {
 @NgModule({
   imports: [CommonModule, NzEmptyModule, NzListModule],
   declarations: [NzEmptyTestServiceComponent, NzEmptyTestCustomComponent],
-  entryComponents: [NzEmptyTestCustomComponent],
   exports: [NzEmptyTestServiceComponent, NzEmptyTestCustomComponent]
 })
 export class NzEmptyTestServiceModule {}
@@ -329,7 +328,6 @@ export class NzEmptyTestServiceModule {}
 @NgModule({
   imports: [CommonModule, NzEmptyModule, NzListModule],
   declarations: [NzEmptyTestServiceComponent, NzEmptyTestCustomComponent],
-  entryComponents: [NzEmptyTestCustomComponent],
   exports: [NzEmptyTestServiceComponent, NzEmptyTestCustomComponent],
   providers: [
     {

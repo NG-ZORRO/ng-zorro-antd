@@ -31,7 +31,6 @@ import { NzPopconfirmComponent, NzPopconfirmDirective } from './popconfirm';
     NzOverlayModule,
     NzNoAnimationModule,
     NzToolTipModule
-  ],
-  entryComponents: [NzPopconfirmComponent]
+  ]
 })
 export class NzPopconfirmModule {}

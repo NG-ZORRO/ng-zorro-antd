@@ -6,16 +6,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
-import { Subject } from 'rxjs';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { NotificationConfig, NzConfigService, toCssPixel } from 'ng-zorro-antd/core';
-import { NzMessageContainerComponent } from 'ng-zorro-antd/message';
-
+import { Subject } from 'rxjs';
 import { NzNotificationDataFilled, NzNotificationDataOptions } from './typings';
 
 const NZ_CONFIG_COMPONENT_NAME = 'notification';
-
 const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
   nzTop: '24px',
   nzBottom: '24px',
@@ -47,17 +44,13 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
     </div>
   `
 })
-export class NzNotificationContainerComponent extends NzMessageContainerComponent {
+export class NzNotificationContainerComponent implements OnInit, OnDestroy {
   config: Required<NotificationConfig>;
   bottom: string | null;
-
-  /**
-   * @override
-   */
   messages: Array<Required<NzNotificationDataFilled>> = [];
 
-  constructor(cdr: ChangeDetectorRef, nzConfigService: NzConfigService) {
-    super(cdr, nzConfigService);
+  constructor(protected cdr: ChangeDetectorRef, protected nzConfigService: NzConfigService) {
+    this.updateConfig();
   }
 
   get topLeftMessages(): Array<Required<NzNotificationDataFilled>> {
@@ -102,25 +95,19 @@ export class NzNotificationContainerComponent extends NzMessageContainerComponen
     this.cdr.detectChanges();
   }
 
-  /**
-   * @override
-   */
   protected updateConfig(): void {
     const newConfig = (this.config = {
       ...NZ_NOTIFICATION_DEFAULT_CONFIG,
       ...this.config,
       ...this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME)
-    });
+    }) as NotificationConfig;
 
-    this.top = toCssPixel(newConfig.nzTop);
-    this.bottom = toCssPixel(newConfig.nzBottom);
+    this.top = toCssPixel(newConfig.nzTop!);
+    this.bottom = toCssPixel(newConfig.nzBottom!);
 
     this.cdr.markForCheck();
   }
 
-  /**
-   * @override
-   */
   protected subscribeConfigChange(): void {
     this.nzConfigService.getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME).subscribe(() => this.updateConfig());
   }
@@ -130,5 +117,57 @@ export class NzNotificationContainerComponent extends NzMessageContainerComponen
     old.content = _new.content;
     old.template = _new.template;
     old.type = _new.type;
+  }
+
+  destroy$ = new Subject<void>();
+  top: string | null;
+
+  ngOnInit(): void {
+    this.subscribeConfigChange();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  /**
+   * Remove a message by `messageId`.
+   * @param messageId Id of the message to be removed.
+   * @param userAction Whether this is closed by user interaction.
+   */
+  removeMessage(messageId: string, userAction: boolean = false): void {
+    this.messages.some((message, index) => {
+      if (message.messageId === messageId) {
+        this.messages.splice(index, 1);
+        this.messages = [...this.messages];
+        this.cdr.detectChanges();
+        message.onClose!.next(userAction);
+        message.onClose!.complete();
+        return true;
+      }
+      return false;
+    });
+  }
+
+  /**
+   * Remove all messages.
+   */
+  removeMessageAll(): void {
+    this.messages = [];
+    this.cdr.detectChanges();
+  }
+
+  /**
+   * Merge default options and custom message options
+   * @param options
+   */
+  protected mergeMessageOptions(options?: NzNotificationDataOptions): NzNotificationDataOptions {
+    const defaultOptions: NzNotificationDataOptions = {
+      nzDuration: this.config.nzDuration,
+      nzAnimate: this.config.nzAnimate,
+      nzPauseOnHover: this.config.nzPauseOnHover
+    };
+    return { ...defaultOptions, ...options };
   }
 }
