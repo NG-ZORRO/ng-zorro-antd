@@ -24,7 +24,7 @@ import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 | `[nzBounds]` | Bounding distance of anchor area, unit: px | `number` | `5` | ✅ |
 | `[nzOffsetTop]` | Pixels to offset from top when calculating position of scroll | `number` | `0` | ✅ |
 | `[nzShowInkInFixed]` | Whether show ink-balls in Fixed mode | `boolean` | `false` | ✅ |
-| `[nzTarget]` | Scrolling container | `string \| HTMLElement` | `window` |
+| `[nzContainer]` | Scrolling container | `string \| HTMLElement` | `window` |
 | `(nzClick)` | Click of Anchor item | `EventEmitter<string>` | - |
 | `(nzScroll)` | The scroll function that is triggered when scrolling to an anchor. | `EventEmitter<NzAnchorLinkComponent>` | - |
 

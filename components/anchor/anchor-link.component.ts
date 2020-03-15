@@ -9,7 +9,6 @@
 import { Platform } from '@angular/cdk/platform';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ContentChild,
   ElementRef,
@@ -18,19 +17,22 @@ import {
   OnInit,
   Renderer2,
   TemplateRef,
+  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 
-import { NzAnchorComponent } from './nz-anchor.component';
+import { NzAnchorComponent } from './anchor.component';
 
 @Component({
   selector: 'nz-link',
   exportAs: 'nzLink',
   preserveWhitespaces: false,
-  templateUrl: './nz-anchor-link.component.html',
-  host: {
-    '[class.ant-anchor-link-active]': 'active'
-  },
+  template: `
+    <a #linkTitle (click)="goToClick($event)" href="{{ nzHref }}" class="ant-anchor-link-title" title="{{ titleStr }}">
+      <span *ngIf="titleStr; else titleTpl || nzTemplate">{{ titleStr }}</span>
+    </a>
+    <ng-content></ng-content>
+  `,
   styles: [
     `
       nz-link {
@@ -47,7 +49,6 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
   titleStr: string | null = '';
   // tslint:disable-next-line:no-any
   titleTpl: TemplateRef<any>;
-  active: boolean = false;
 
   @Input()
   set nzTitle(value: string | TemplateRef<void>) {
@@ -60,19 +61,31 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
   }
 
   @ContentChild('nzTemplate', { static: false }) nzTemplate: TemplateRef<void>;
+  @ViewChild('linkTitle') linkTitle: ElementRef<HTMLAnchorElement>;
 
   constructor(
     public elementRef: ElementRef,
     private anchorComp: NzAnchorComponent,
-    private cdr: ChangeDetectorRef,
     private platform: Platform,
-    renderer: Renderer2
+    private renderer: Renderer2
   ) {
-    renderer.addClass(elementRef.nativeElement, 'ant-anchor-link');
+    this.renderer.addClass(elementRef.nativeElement, 'ant-anchor-link');
   }
 
   ngOnInit(): void {
     this.anchorComp.registerLink(this);
+  }
+
+  getLinkTitleElement(): HTMLAnchorElement {
+    return this.linkTitle.nativeElement;
+  }
+
+  setActive(): void {
+    this.renderer.addClass(this.elementRef.nativeElement, 'ant-anchor-link-active');
+  }
+
+  unsetActive(): void {
+    this.renderer.removeClass(this.elementRef.nativeElement, 'ant-anchor-link-active');
   }
 
   goToClick(e: Event): void {
@@ -81,10 +94,6 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
     if (this.platform.isBrowser) {
       this.anchorComp.handleScrollTo(this);
     }
-  }
-
-  markForCheck(): void {
-    this.cdr.markForCheck();
   }
 
   ngOnDestroy(): void {
