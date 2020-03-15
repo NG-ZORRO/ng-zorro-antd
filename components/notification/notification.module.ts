@@ -12,9 +12,9 @@ import { NgModule } from '@angular/core';
 import { NzOutletModule } from 'ng-zorro-antd/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-import { NzNotificationContainerComponent } from './nz-notification-container.component';
-import { NzNotificationComponent } from './nz-notification.component';
-import { NzNotificationServiceModule } from './nz-notification.service.module';
+import { NzNotificationContainerComponent } from './notification-container.component';
+import { NzNotificationComponent } from './notification.component';
+import { NzNotificationServiceModule } from './notification.service.module';
 
 @NgModule({
   imports: [CommonModule, OverlayModule, NzIconModule, NzNotificationServiceModule, NzOutletModule],

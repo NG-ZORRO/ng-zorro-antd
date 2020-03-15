@@ -10,13 +10,13 @@ import { Overlay } from '@angular/cdk/overlay';
 import { ApplicationRef, ComponentFactoryResolver, EmbeddedViewRef, Injector, Type } from '@angular/core';
 import { NzSingletonService } from 'ng-zorro-antd/core';
 
-import { NzMessageContainerComponent } from './nz-message-container.component';
-import { NzMessageData, NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
+import { NzMessageContainerComponent } from './message-container.component';
+import { NzMessageData, NzMessageDataFilled, NzMessageDataOptions } from './typings';
 
 let globalCounter = 0;
 
 export class NzMessageBaseService<ContainerClass extends NzMessageContainerComponent, MessageData> {
-  protected _container: ContainerClass;
+  protected container: ContainerClass;
 
   constructor(
     private nzSingletonService: NzSingletonService,
@@ -27,15 +27,15 @@ export class NzMessageBaseService<ContainerClass extends NzMessageContainerCompo
     private appRef: ApplicationRef,
     private name: string = ''
   ) {
-    this._container = this.withContainer();
-    this.nzSingletonService.registerSingletonWithKey(this.name, this._container);
+    this.container = this.withContainer();
+    this.nzSingletonService.registerSingletonWithKey(this.name, this.container);
   }
 
   remove(messageId?: string): void {
     if (messageId) {
-      this._container.removeMessage(messageId);
+      this.container.removeMessage(messageId);
     } else {
-      this._container.removeMessageAll();
+      this.container.removeMessageAll();
     }
   }
 
@@ -44,16 +44,16 @@ export class NzMessageBaseService<ContainerClass extends NzMessageContainerCompo
       ...(message as NzMessageData),
       ...{
         createdAt: new Date(),
-        messageId: this._generateMessageId(),
+        messageId: this.generateMessageId(),
         options
       }
     };
-    this._container.createMessage(resultMessage);
+    this.container.createMessage(resultMessage);
 
     return resultMessage;
   }
 
-  protected _generateMessageId(): string {
+  protected generateMessageId(): string {
     return `${this.name}-${globalCounter++}`;
   }
 
