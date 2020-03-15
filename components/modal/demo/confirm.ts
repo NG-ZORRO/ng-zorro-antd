@@ -16,10 +16,10 @@ import { NzModalService } from 'ng-zorro-antd/modal';
   ]
 })
 export class NzDemoModalConfirmComponent {
-  constructor(private modalService: NzModalService) {}
+  constructor(private modal: NzModalService) {}
 
   showConfirm(): void {
-    this.modalService.confirm({
+    this.modal.confirm({
       nzTitle: '<i>Do you Want to delete these items?</i>',
       nzContent: '<b>Some descriptions</b>',
       nzOnOk: () => console.log('OK')
@@ -27,7 +27,7 @@ export class NzDemoModalConfirmComponent {
   }
 
   showDeleteConfirm(): void {
-    this.modalService.confirm({
+    this.modal.confirm({
       nzTitle: 'Are you sure delete this task?',
       nzContent: '<b style="color: red;">Some descriptions</b>',
       nzOkText: 'Yes',

@@ -7,7 +7,7 @@
  */
 
 import { Directive, Optional, TemplateRef } from '@angular/core';
-import { NzModalRef } from './nz-modal-ref.class';
+import { NzModalRef } from './modal-ref';
 
 @Directive({
   selector: '[nzModalFooter]',
@@ -16,7 +16,9 @@ import { NzModalRef } from './nz-modal-ref.class';
 export class NzModalFooterDirective {
   constructor(@Optional() private nzModalRef: NzModalRef, public templateRef: TemplateRef<{}>) {
     if (this.nzModalRef) {
-      this.nzModalRef.getInstance().setFooterWithTemplate(this.templateRef);
+      this.nzModalRef.updateConfig({
+        nzFooter: this.templateRef
+      });
     }
   }
 }

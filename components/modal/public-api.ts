@@ -6,13 +6,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export { NzModalComponent } from './nz-modal.component';
-export { NzModalFooterDirective } from './nz-modal-footer.directive';
-export { NzModalRef } from './nz-modal-ref.class';
-export { NzModalModule } from './nz-modal.module';
-export { NzModalService } from './nz-modal.service';
-export { NzModalServiceModule } from './nz-modal.service.module';
-export { NZ_MODAL_CONFIG, NzModalConfig } from './nz-modal-config';
-export { NzModalControlService } from './nz-modal-control.service';
-export { NzModalControlServiceModule } from './nz-modal-control.service.module';
-export * from './nz-modal.type';
+export * from './modal-types';
+export { NzModalService } from './modal.service';
+export { NzModalRef } from './modal-ref';
+export { NZ_MODAL_CONFIG, NzModalConfig } from './modal-config';
+export { NzModalComponent } from './modal.component';
+export { NzModalFooterDirective } from './modal-footer.directive';
+export { NzModalModule } from './modal.module';

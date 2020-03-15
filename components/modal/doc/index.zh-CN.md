@@ -58,7 +58,9 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 | nzOnOk            | 点击确定回调（若nzContent为Component，则将会以该Component实例作为参数）。<i>注：当以`NzModalService.create`创建时，此参数应传入function（回调函数）。该函数可返回promise，待执行完毕或promise结束时，将自动关闭对话框（返回false可阻止关闭）</i> | EventEmitter | - |
 | nzContent         | 内容 | string<br>TemplateRef<br>Component<br>ng-content | - |
 | nzComponentParams | 当nzContent为组件类(Component)时，该参数中的属性将传入nzContent实例中 | `object` | - |
-| nzIconType        | 图标 Icon 类型。<i>仅 确认框模式 下有效</i> | `string` | question-circle |
+| nzIconType        | 图标 Icon 类型。<i>仅 确认框模式 下有效</i> | `string` | `'question-circle'` |
+| nzAutofocus        | 自动聚焦及聚焦位置，为 `null` 时禁用 | `'ok' \| 'cancel' \| 'auto' \| null` | `'auto'` |
+
 
 #### 注意
 

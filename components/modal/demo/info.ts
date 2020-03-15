@@ -18,10 +18,10 @@ import { NzModalService } from 'ng-zorro-antd/modal';
   ]
 })
 export class NzDemoModalInfoComponent {
-  constructor(private modalService: NzModalService) {}
+  constructor(private modal: NzModalService) {}
 
   info(): void {
-    this.modalService.info({
+    this.modal.info({
       nzTitle: 'This is a notification message',
       nzContent: '<p>some messages...some messages...</p><p>some messages...some messages...</p>',
       nzOnOk: () => console.log('Info OK')
@@ -29,21 +29,21 @@ export class NzDemoModalInfoComponent {
   }
 
   success(): void {
-    this.modalService.success({
+    this.modal.success({
       nzTitle: 'This is a success message',
       nzContent: 'some messages...some messages...'
     });
   }
 
   error(): void {
-    this.modalService.error({
+    this.modal.error({
       nzTitle: 'This is an error message',
       nzContent: 'some messages...some messages...'
     });
   }
 
   warning(): void {
-    this.modalService.warning({
+    this.modal.warning({
       nzTitle: 'This is an warning message',
       nzContent: 'some messages...some messages...'
     });
