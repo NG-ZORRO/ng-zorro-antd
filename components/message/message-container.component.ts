@@ -7,9 +7,9 @@
  */
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { Subject } from 'rxjs';
 
 import { MessageConfig, NzConfigService, toCssPixel } from 'ng-zorro-antd/core';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzMessageDataFilled, NzMessageDataOptions } from './typings';
 
@@ -30,7 +30,11 @@ const NZ_MESSAGE_DEFAULT_CONFIG: Required<MessageConfig> = {
   preserveWhitespaces: false,
   template: `
     <div class="ant-message" [style.top]="top">
-      <nz-message *ngFor="let message of messages" [nzMessage]="message"></nz-message>
+      <nz-message
+        *ngFor="let message of messages"
+        [nzMessage]="message"
+        (messageDestroy)="removeMessage($event.id, $event.userAction)"
+      ></nz-message>
     </div>
   `
 })
