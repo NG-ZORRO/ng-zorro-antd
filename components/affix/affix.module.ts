@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { SCROLL_SERVICE_PROVIDER } from 'ng-zorro-antd/core';
 
-import { NzAffixComponent } from './nz-affix.component';
+import { NzAffixComponent } from './affix.component';
 
 @NgModule({
   declarations: [NzAffixComponent],

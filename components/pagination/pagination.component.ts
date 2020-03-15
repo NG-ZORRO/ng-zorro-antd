@@ -87,7 +87,7 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   @Input() @InputNumber() nzPageSize = 10;
   showPagination = true;
   locale: NzSafeAny = {};
-  private $destroy = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   validatePageIndex(value: number, lastIndex: number): number {
     if (value > lastIndex) {
@@ -124,15 +124,15 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   constructor(private i18n: NzI18nService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.i18n.localeChange.pipe(takeUntil(this.$destroy)).subscribe(() => {
+    this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Pagination');
       this.cdr.markForCheck();
     });
   }
 
   ngOnDestroy(): void {
-    this.$destroy.next();
-    this.$destroy.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
