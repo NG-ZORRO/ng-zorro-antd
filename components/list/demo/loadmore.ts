@@ -9,36 +9,28 @@ const fakeDataUrl = 'https://randomuser.me/api/?results=5&inc=name,gender,email,
 @Component({
   selector: 'nz-demo-list-loadmore',
   template: `
-    <nz-list
-      class="demo-loadmore-list"
-      [nzDataSource]="list"
-      [nzItemLayout]="'horizontal'"
-      [nzLoading]="initLoading"
-      [nzRenderItem]="item"
-      [nzLoadMore]="loadMore"
-    >
-      <ng-template #item let-item>
-        <nz-list-item [nzContent]="item.loading ? '' : 'content'" [nzActions]="item.loading ? [] : [editAction, moreAction]">
-          <nz-skeleton [nzAvatar]="true" [nzActive]="true" [nzTitle]="false" [nzLoading]="item.loading">
-            <ng-template #editAction><a (click)="edit(item)">edit</a></ng-template>
-            <ng-template #moreAction><a (click)="edit(item)">more</a></ng-template>
-            <nz-list-item-meta
-              [nzTitle]="nzTitle"
-              nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-              nzDescription="Ant Design, a design language for background applications, is refined by Ant UED Team"
-            >
-              <ng-template #nzTitle>
-                <a href="https://ng.ant.design">{{ item.name.last }}</a>
-              </ng-template>
-            </nz-list-item-meta>
-          </nz-skeleton>
-        </nz-list-item>
-      </ng-template>
-      <ng-template #loadMore>
-        <div class="loadmore">
-          <button nz-button *ngIf="!loadingMore" (click)="onLoadMore()">loading more</button>
-        </div>
-      </ng-template>
+    <nz-list class="demo-loadmore-list" [nzLoading]="initLoading">
+      <nz-list-item *ngFor="let item of list">
+        <ng-container *ngIf="!item.loading">
+          <nz-list-item-meta
+            nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+            nzDescription="Ant Design, a design language for background applications, is refined by Ant UED Team"
+          >
+            <nz-list-item-meta-title>
+              <a href="https://ng.ant.design">{{ item.name.last }}</a>
+            </nz-list-item-meta-title>
+          </nz-list-item-meta>
+          content
+          <ul nz-list-item-actions>
+            <nz-list-item-action><a (click)="edit(item)">edit</a></nz-list-item-action>
+            <nz-list-item-action><a (click)="edit(item)">more</a></nz-list-item-action>
+          </ul>
+        </ng-container>
+        <nz-skeleton *ngIf="item.loading" [nzAvatar]="true" [nzActive]="true" [nzTitle]="false" [nzLoading]="true"> </nz-skeleton>
+      </nz-list-item>
+      <div class="loadmore" nz-list-load-more>
+        <button nz-button *ngIf="!loadingMore" (click)="onLoadMore()">loading more</button>
+      </div>
     </nz-list>
   `,
   styles: [

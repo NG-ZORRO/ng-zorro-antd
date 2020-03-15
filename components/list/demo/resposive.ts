@@ -3,16 +3,16 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-list-resposive',
   template: `
-    <nz-list [nzDataSource]="data" [nzRenderItem]="item" [nzGrid]="{ gutter: 16, xs: 24, sm: 12, md: 6, lg: 6, xl: 4 }">
-      <ng-template #item let-item>
-        <nz-list-item [nzContent]="nzContent">
-          <ng-template #nzContent>
+    <nz-list nzGrid>
+      <div nz-row [nzGutter]="16">
+        <div nz-col [nzXl]="4" [nzLg]="6" [nzMd]="6" [nzSm]="12" [nzXs]="24" *ngFor="let item of data">
+          <nz-list-item>
             <nz-card [nzTitle]="item.title">
               Card content
             </nz-card>
-          </ng-template>
-        </nz-list-item>
-      </ng-template>
+          </nz-list-item>
+        </div>
+      </div>
     </nz-list>
   `
 })

@@ -4,8 +4,8 @@ import { By } from '@angular/platform-browser';
 
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
-import { NzListComponent } from './nz-list.component';
-import { NzListModule } from './nz-list.module';
+import { NzListComponent } from './list.component';
+import { NzListModule } from './list.module';
 
 describe('list', () => {
   let fixture: ComponentFixture<TestListComponent>;
