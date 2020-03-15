@@ -119,7 +119,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnInit, OnDes
   isTooltipComponentVisible = false;
   tooltip: NzTooltipBaseComponent;
 
-  protected readonly $destroy = new Subject<void>();
+  protected readonly destroy$ = new Subject<void>();
   protected readonly triggerDisposables: Array<() => void> = [];
 
   private delayTimer?: number;
@@ -176,7 +176,7 @@ Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popcon
 
   ngOnInit(): void {
     this.createTooltipComponent();
-    this.tooltip.nzVisibleChange.pipe(distinctUntilChanged(), takeUntil(this.$destroy)).subscribe((visible: boolean) => {
+    this.tooltip.nzVisibleChange.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe((visible: boolean) => {
       this.isTooltipComponentVisible = visible;
       this.nzVisibleChange.emit(visible);
     });
@@ -187,8 +187,8 @@ Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popcon
   }
 
   ngOnDestroy(): void {
-    this.$destroy.next();
-    this.$destroy.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
 
     // Clear toggling timer. Issue #3875 #4317 #4386
     this.clearTogglingTimer();

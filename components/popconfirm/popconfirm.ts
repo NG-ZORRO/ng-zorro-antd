@@ -92,10 +92,10 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective implements OnI
   protected createTooltipComponent(): void {
     super.createTooltipComponent();
 
-    (this.tooltip as NzPopconfirmComponent).nzOnCancel.pipe(takeUntil(this.$destroy)).subscribe(() => {
+    (this.tooltip as NzPopconfirmComponent).nzOnCancel.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.nzOnCancel.emit();
     });
-    (this.tooltip as NzPopconfirmComponent).nzOnConfirm.pipe(takeUntil(this.$destroy)).subscribe(() => {
+    (this.tooltip as NzPopconfirmComponent).nzOnConfirm.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.nzOnConfirm.emit();
     });
   }

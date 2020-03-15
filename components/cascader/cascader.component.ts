@@ -264,7 +264,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
 
   locale: NzCascaderI18nInterface;
 
-  private $destroy = new Subject<void>();
+  private destroy$ = new Subject<void>();
   private inputString = '';
   private isOpening = false;
   private delayMenuTimer: number | null;
@@ -329,7 +329,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   ngOnInit(): void {
     const srv = this.cascaderService;
 
-    srv.$redraw.pipe(takeUntil(this.$destroy)).subscribe(() => {
+    srv.$redraw.pipe(takeUntil(this.destroy$)).subscribe(() => {
       // These operations would not mutate data.
       this.checkChildren();
       this.setDisplayLabel();
@@ -339,11 +339,11 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
       this.cdr.markForCheck();
     });
 
-    srv.$loading.pipe(takeUntil(this.$destroy)).subscribe(loading => {
+    srv.$loading.pipe(takeUntil(this.destroy$)).subscribe(loading => {
       this.isLoading = loading;
     });
 
-    srv.$optionSelected.pipe(takeUntil(this.$destroy)).subscribe(data => {
+    srv.$optionSelected.pipe(takeUntil(this.destroy$)).subscribe(data => {
       if (!data) {
         this.onChange([]);
         this.nzSelect.emit(null);
@@ -361,26 +361,26 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
       }
     });
 
-    srv.$quitSearching.pipe(takeUntil(this.$destroy)).subscribe(() => {
+    srv.$quitSearching.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.inputString = '';
       this.dropdownWidthStyle = '';
     });
 
-    this.i18nService.localeChange.pipe(startWith(), takeUntil(this.$destroy)).subscribe(() => {
+    this.i18nService.localeChange.pipe(startWith(), takeUntil(this.destroy$)).subscribe(() => {
       this.setLocale();
     });
 
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
-      .pipe(takeUntil(this.$destroy))
+      .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.cdr.markForCheck();
       });
   }
 
   ngOnDestroy(): void {
-    this.$destroy.next();
-    this.$destroy.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
     this.clearDelayMenuTimer();
     this.clearDelaySelectTimer();
   }
