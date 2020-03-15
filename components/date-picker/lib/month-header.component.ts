@@ -9,8 +9,9 @@
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 import { PanelSelector } from './interface';
 
-import { DateHelperByDatePipe, DateHelperService } from 'ng-zorro-antd/i18n';
+import { DateHelperService } from 'ng-zorro-antd/i18n';
 import { AbstractPanelHeader } from './abstract-panel-header';
+import { transCompatFormat } from './util';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -25,16 +26,12 @@ export class MonthHeaderComponent extends AbstractPanelHeader {
   }
 
   getSelectors(): PanelSelector[] {
-    let yearFormat: string = this.locale.yearFormat;
-    if (this.dateHelper.relyOnDatePipe) {
-      yearFormat = (this.dateHelper as DateHelperByDatePipe).transCompatFormat(yearFormat);
-    }
     return [
       {
         className: `${this.prefixCls}-month-btn`,
         title: this.locale.yearSelect,
         onClick: () => this.changeMode('year'),
-        label: this.dateHelper.format(this.value.nativeDate, yearFormat)
+        label: this.dateHelper.format(this.value.nativeDate, transCompatFormat(this.locale.yearFormat))
       }
     ];
   }

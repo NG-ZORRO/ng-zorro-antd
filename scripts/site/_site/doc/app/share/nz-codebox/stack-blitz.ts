@@ -413,7 +413,7 @@ export class DemoNgZorroAntdModule {
       '@angular/router'                  : 'next',
       '@angular/animations'              : 'next',
       '@ant-design/icons-angular'        : 'next',
-      'date-fns'                         : '^1.30.1',
+      'date-fns'                         : '^2.10.0',
       'ng-zorro-antd':  `^${version}`
     },
     tags        : [ 'stackblitz', 'sdk' ]

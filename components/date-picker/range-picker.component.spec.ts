@@ -7,8 +7,8 @@ import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angu
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import differenceInDays from 'date-fns/difference_in_days';
-import isSameDay from 'date-fns/is_same_day';
+import differenceInDays from 'date-fns/differenceInDays';
+import isSameDay from 'date-fns/isSameDay';
 
 import { dispatchKeyboardEvent, dispatchMouseEvent, NgStyleInterface, typeInElement } from 'ng-zorro-antd/core';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/name';
