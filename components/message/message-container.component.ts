@@ -64,14 +64,7 @@ export class NzMessageContainerComponent implements OnInit, OnDestroy {
     message.options = this.mergeMessageOptions(message.options);
     message.onClose = new Subject<boolean>();
     this.messages = [...this.messages, message];
-
-    const cdr = this.cdr;
-
-    console.log('debug messages length', this.messages, cdr);
-
-    // Bug should happen here. messages get updated but change detection failed.
-    cdr.detectChanges();
-    cdr.markForCheck();
+    this.cdr.detectChanges();
   }
 
   /**
