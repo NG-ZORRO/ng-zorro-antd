@@ -28,7 +28,7 @@ import {
 import { Observable, of, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { InputBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { InputBoolean, NzUpdateHostClassService, toArray } from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { TransferCanMove, TransferChange, TransferDirection, TransferItem, TransferSearchChange, TransferSelectChange } from './interface';
@@ -74,6 +74,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzFilterOption: (inputValue: string, item: TransferItem) => boolean;
   @Input() nzSearchPlaceholder: string;
   @Input() nzNotFoundContent: string;
+  @Input() nzTargetKeys: string[] = [];
 
   // events
   @Output() readonly nzChange = new EventEmitter<TransferChange>();
@@ -104,7 +105,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  private getCheckedData(direction: string): TransferItem[] {
+  private getCheckedData(direction: TransferDirection): TransferItem[] {
     return this[direction === 'left' ? 'leftDataSource' : 'rightDataSource'].filter(w => w.checked);
   }
 
@@ -131,7 +132,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   leftActive = false;
   rightActive = false;
 
-  private updateOperationStatus(direction: string, count?: number): void {
+  private updateOperationStatus(direction: TransferDirection, count?: number): void {
     this[direction === 'right' ? 'leftActive' : 'rightActive'] =
       (typeof count === 'undefined' ? this.getCheckedData(direction).filter(w => !w.disabled).length : count) > 0;
   }
@@ -201,6 +202,17 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     this.lists.forEach(i => i.markForCheck());
   }
 
+  private handleNzTargetKeys(): void {
+    const keys = toArray(this.nzTargetKeys);
+    const hasOwnKey = (e: TransferItem) => e.hasOwnProperty('key');
+    this.leftDataSource.forEach(e => {
+      if (hasOwnKey(e) && keys.indexOf(e.key) !== -1 && !e.disabled) {
+        e.checked = true;
+      }
+    });
+    this.moveToRight();
+  }
+
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Transfer');
@@ -211,12 +223,15 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.setClassMap();
-    if (changes.nzDataSource || changes.nzTargetKeys) {
+    if (changes.nzDataSource) {
       this.splitDataSource();
       this.updateOperationStatus('left');
       this.updateOperationStatus('right');
       this.cdr.detectChanges();
       this.markForCheckAllList();
+    }
+    if (changes.nzTargetKeys) {
+      this.handleNzTargetKeys();
     }
   }
 
