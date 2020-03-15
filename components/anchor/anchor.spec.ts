@@ -2,8 +2,8 @@
 import { fakeAsync, tick, TestBed, ComponentFixture } from '@angular/core/testing';
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { NzAnchorModule } from './nz-anchor.module';
-import { NzAnchorComponent } from './nz-anchor.component';
+import { NzAnchorModule } from './anchor.module';
+import { NzAnchorComponent } from './anchor.component';
 import { NzScrollService } from 'ng-zorro-antd/core';
 
 const throttleTime = 51;
@@ -44,10 +44,10 @@ describe('anchor', () => {
     });
 
     it('should hava remove listen when the component is destroyed', () => {
-      expect(context.comp['scroll$']!.closed).toBeFalsy();
+      expect(context.comp['destroy$']!.isStopped).toBeFalsy();
       context.comp.ngOnDestroy();
       fixture.detectChanges();
-      expect(context.comp['scroll$']!.closed).toBeTruthy();
+      expect(context.comp['destroy$']!.isStopped).toBeTruthy();
     });
 
     it('should actived when scrolling to the anchor', (done: () => void) => {

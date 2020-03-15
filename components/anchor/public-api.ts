@@ -6,6 +6,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-anchor-link.component';
-export * from './nz-anchor.component';
-export * from './nz-anchor.module';
+export * from './anchor-link.component';
+export * from './anchor.component';
+export * from './anchor.module';
