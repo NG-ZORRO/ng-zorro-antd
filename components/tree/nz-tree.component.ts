@@ -63,7 +63,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'tree';
       <div [ngClass]="classMapOfNodeList">
         <div>
           <div [ngClass]="classMapOfListContainer">
-            <ng-container *ngFor="let node of nzFlattenNodes">
+            <ng-container *ngFor="let node of nzFlattenNodes; trackBy: trackBy">
               <nz-tree-node
                 [nzTreeNode]="node.data"
                 [nzSelectMode]="nzSelectMode"
@@ -229,6 +229,10 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
 
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
+  }
+
+  trackBy(_index: number, item: FlattenNode): string {
+    return item.data.key;
   }
 
   /**

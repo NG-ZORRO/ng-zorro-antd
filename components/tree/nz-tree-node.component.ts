@@ -44,7 +44,14 @@ import { takeUntil } from 'rxjs/operators';
   selector: 'nz-tree-node',
   exportAs: 'nzTreeNode',
   template: `
-    <div #dragElement role="treeitem" [ngClass]="nzNodeClass" [style.display]="displayStyle">
+    <div
+      [@.disabled]="noAnimation?.nzNoAnimation"
+      @treeCollapseMotion
+      #dragElement
+      role="treeitem"
+      [ngClass]="nzNodeClass"
+      [style.display]="displayStyle"
+    >
       <nz-tree-indent
         [nzTreeLevel]="nzTreeNode.level"
         [nzPrefixCls]="prefixCls"
