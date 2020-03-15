@@ -37,6 +37,7 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 | `[nzCheckedKeys]` | 指定选中复选框的树节点 | `string[]` | `[]` |
 | `[nzSelectedKeys]` | 指定选中的树节点 | `string[]` | `[]` |
 | `[nzSearchValue]` | 按需筛选树高亮节点(参考可搜索的树),双向绑定 | `string` | `null` |
+| `[nzSearchFunc]` | 自定义匹配方法，配合 nzSearchValue 使用 | `(node: NzTreeNodeOptions) => boolean` | `null` |
 | `[nzBeforeDrop]` | drop前二次校验,允许用户自行决定是否允许放置 | `(confirm: NzFormatBeforeDropEvent) => Observable<boolean>` | - |
 | `(nzClick)` | 点击树节点触发 | `EventEmitter<NzFormatEmitEvent>` | - |
 | `(nzDblClick)` | 双击树节点触发 | `EventEmitter<NzFormatEmitEvent>` | - |
@@ -134,4 +135,4 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 ## 注意
 * `NzTreeNodeOptions` 可以接受用户自定义属性，可通过 `NzTreeNode` 的 `origin` 属性取得。
 * 使用 ViewChild 时，Tree 方法需要在 ngAfterViewInit 中调用。
-* nzData 属性请传递 NzTreeNodeOptions 数组，传递 NzTreeNode 数组模式将在 8.x 版本取消兼容。
+* nzData 属性请传递 NzTreeNodeOptions 数组。
