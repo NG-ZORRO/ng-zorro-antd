@@ -39,12 +39,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 | `fetchFromIconfont()` | 用于从 FontIcon 获取图标资源文件 | `NzIconfontOption` |
 | `changeAssetypescriptSource()` | 用于修改动态加载 icon 的资源前缀，使得你可以部署图标资源到你想要的任何位置，例如 cdn | `string` |
 
-### InjectionToken
-
-| Token | 说明 | 参数 |
-| --- | --- | --- |
-| `NZ_ICONS` | 用于静态引入图标，传入数组 | `IconDefinition[]`, `useValue` |
-
 ### SVG 图标
 
 我们与 Ant Design 同步，使用了 svg 图标替换了原先的 font 图标，从而带来了以下优势：
@@ -76,7 +70,7 @@ NG-ZORRO 之前并没有图标组件，而是提供了基于字体文件的解�
 
 ```ts
 import { IconDefinition } from '@ant-design/icons-angular';
-import { NzIconModule, NZ_ICON_DEFAULT_TWOTONE_COLOR, NZ_ICONS } from 'ng-zorro-antd/icon';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 // 引入你需要的图标，比如你需要 fill 主题的 AccountBook Alert 和 outline 主题的 Alert，推荐 ✔️
 import { AccountBookFill, AlertFill, AlertOutline } from '@ant-design/icons-angular/icons';
@@ -96,19 +90,15 @@ const icons: IconDefinition[] = [ AccountBookFill, AlertOutline, AlertFill ];
     AppComponent
   ],
   imports: [
-    NzIconModule,
-  ],
-  providers: [
-    { provide: NZ_ICON_DEFAULT_TWOTONE_COLOR, useValue: '#00ff00' }, // 不提供的话，即为 Ant Design 的主题蓝色
-    { provide: NZ_ICONS, useValue: icons }
-  ],
+    NzIconModule.forRoot(icons)
+  ]
   bootstrap: [ AppComponent ]
 })
 export class AppModule {
 }
 ```
 
-本质上是调用了 `NzIconService` 的 `addIcon` 方法，引入后的文件会被打包到 `.js` 文件中。静态引入会增加包体积，所以我们建议尽可能地使用动态加载，如果要静态加载，也仅仅加载你需要用到的图标，具体请看 Ant Design 的 [issue](https://github.com/ant-design/ant-design/issues/12011)。
+本质上是调用了 `NzIconService` 的 `addIcon` 方法，引入后的文件会被打包到 `.js` 文件中。静态引入会增加包体积，所以我们建议尽可能地使用动态加载，如果要静态加载，也仅仅加载你需要用到的图标。
 
 > 为了加快渲染速度，NG-ZORRO 本身用到的 icon 是静态引入的。而官网的图标是动态引入的。
 
@@ -131,6 +121,21 @@ export class AppModule {
 例如，你在 `https://mycdn.somecdn.com/icons/assets` 目录下部署了静态资源文件，那么你就可以通过调用 `changeAssetsSource('https://mycdn.somecdn.com/icons')`，来告诉 NG-ZORRO 从这个位置动态加载图标资源。
 
 请在 constructor 里或者在 `AppInitService` 里调用这个方法。
+
+### 在子模块中补充图标
+
+有时候，为了避免增大 main.js 的体积，你可能想要从懒加载模块中引入图标，这时你就可以使用 `NzIconModule.patch` 来追加图标。
+
+```ts
+@NgModule({
+  imports: [CommonModule, NzIconModule.forChild([QuestionOutline])],
+})
+class ChildModule {}
+```
+
+这样，当 `ChildModule` 加载之后，整个应用都能够使用 QuestionOutline 图标。
+
+当然，不要忘记在 `NZ_ICONS` 中删除该图标。
 
 ### 双色图标主色
 

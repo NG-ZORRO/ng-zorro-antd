@@ -13,7 +13,7 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NZ_CONFIG } from 'ng-zorro-antd/core';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
-import { NzIconModule, NZ_ICONS } from 'ng-zorro-antd/icon';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzMessageModule } from 'ng-zorro-antd/message';
@@ -44,6 +44,7 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline];
     HttpClientModule,
     NzNavBottomModule,
     ColorSketchModule,
+    NzIconModule.forRoot(icons),
     NzGridModule,
     NzAffixModule,
     NzMenuModule,
@@ -65,7 +66,6 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline];
   ],
   providers: [
     Title,
-    { provide: NZ_ICONS, useValue: icons },
     { provide: NZ_CONFIG, useValue: { icon: { nzTwotoneColor: '#1890ff' } }}
   ],
   bootstrap: [AppComponent]
