@@ -1,48 +1,42 @@
 import { Component, DebugElement } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NzFormItemComponent } from './nz-form-item.component';
-import { NzFormLabelComponent } from './nz-form-label.component';
-import { NzFormDirective } from './nz-form.directive';
+import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core';
+import { NzFormItemComponent } from './form-item.component';
+import { NzFormLabelComponent } from './form-label.component';
+import { NzFormDirective } from './form.directive';
+
+const testBedOptions = {
+  imports: [NoopAnimationsModule],
+  declarations: [NzFormDirective, NzFormLabelComponent, NzFormItemComponent]
+};
 
 describe('nz-form', () => {
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule],
-      declarations: [
-        NzFormDirective,
-        NzFormLabelComponent,
-        NzFormItemComponent,
-        NzTestFormDirectiveComponent,
-        NzTestFormLabelIntegrateComponent
-      ]
-    });
-    TestBed.compileComponents();
-  }));
   describe('default', () => {
-    let fixture: ComponentFixture<NzTestFormDirectiveComponent>;
+    let testBed: ComponentBed<NzTestFormDirectiveComponent>;
     let testComponent: NzTestFormDirectiveComponent;
     let form: DebugElement;
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestFormDirectiveComponent);
-      fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
-      form = fixture.debugElement.query(By.directive(NzFormDirective));
+      testBed = createComponentBed(NzTestFormDirectiveComponent, testBedOptions);
+      testComponent = testBed.component;
+      form = testBed.fixture.debugElement.query(By.directive(NzFormDirective));
     });
     it('should className correct', () => {
-      fixture.detectChanges();
       expect(form.nativeElement.classList).toContain('ant-form');
       expect(form.nativeElement.classList).toContain('ant-form-horizontal');
     });
     it('should layout work', () => {
-      fixture.detectChanges();
       testComponent.layout = 'vertical';
-      fixture.detectChanges();
+
+      testBed.fixture.detectChanges();
+
       expect(form.nativeElement.classList).toContain('ant-form-vertical');
       expect(form.nativeElement.classList).not.toContain('ant-form-horizontal');
+
       testComponent.layout = 'inline';
-      fixture.detectChanges();
+
+      testBed.fixture.detectChanges();
+
       expect(form.nativeElement.classList).not.toContain('ant-form-vertical');
       expect(form.nativeElement.classList).not.toContain('ant-form-horizontal');
       expect(form.nativeElement.classList).toContain('ant-form-inline');
@@ -50,41 +44,45 @@ describe('nz-form', () => {
   });
 
   describe('label integrate', () => {
-    let fixture: ComponentFixture<NzTestFormLabelIntegrateComponent>;
+    let testBed: ComponentBed<NzTestFormLabelIntegrateComponent>;
     let testComponent: NzTestFormLabelIntegrateComponent;
     let form: DebugElement;
     beforeEach(() => {
-      fixture = TestBed.createComponent(NzTestFormLabelIntegrateComponent);
-      fixture.detectChanges();
-      testComponent = fixture.debugElement.componentInstance;
-      form = fixture.debugElement.query(By.directive(NzFormDirective));
+      testBed = createComponentBed(NzTestFormLabelIntegrateComponent, testBedOptions);
+      testComponent = testBed.component;
+      form = testBed.fixture.debugElement.query(By.directive(NzFormDirective));
     });
 
     afterEach(() => {
       testComponent.defaultNoColon = false;
       testComponent.noColon = false;
       testComponent.testPriority = false;
-      fixture.detectChanges();
     });
 
     it('should set default `NoColon` value', () => {
-      fixture.detectChanges();
       const labels = (form.nativeElement as HTMLElement).querySelectorAll<HTMLLabelElement>('.ant-form-item-label label');
       labels.forEach(label => expect(label.classList).not.toContain('ant-form-item-no-colon'));
+
       testComponent.defaultNoColon = true;
-      fixture.detectChanges();
+
+      testBed.fixture.detectChanges();
+
       labels.forEach(label => expect(label.classList).toContain('ant-form-item-no-colon'));
     });
 
     it('should label have high priority', () => {
-      fixture.detectChanges();
       const labels = (form.nativeElement as HTMLElement).querySelectorAll<HTMLLabelElement>('.ant-form-item-label label');
       labels.forEach(label => expect(label.classList).not.toContain('ant-form-item-no-colon'));
+
       testComponent.defaultNoColon = true;
-      fixture.detectChanges();
+
+      testBed.fixture.detectChanges();
+
       labels.forEach(label => expect(label.classList).toContain('ant-form-item-no-colon'));
       testComponent.testPriority = true;
-      fixture.detectChanges();
+
+      testBed.fixture.detectChanges();
+
       labels.forEach(label => expect(label.classList).toContain('ant-form-item-no-colon'));
       labels.forEach(label => {
         if (label.innerText === 'TEST_PRIORITY') {
@@ -93,9 +91,12 @@ describe('nz-form', () => {
           expect(label.classList).toContain('ant-form-item-no-colon');
         }
       });
+
       testComponent.defaultNoColon = false;
       testComponent.noColon = true;
-      fixture.detectChanges();
+
+      testBed.fixture.detectChanges();
+
       labels.forEach(label => {
         if (label.innerText === 'TEST_PRIORITY') {
           expect(label.classList).toContain('ant-form-item-no-colon');

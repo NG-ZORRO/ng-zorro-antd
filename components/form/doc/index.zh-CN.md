@@ -61,10 +61,6 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 
 > 所有 [nz-row](/components/grid/zh) 的参数在 `nz-form-item` 上均可直接使用。
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `[nzFlex]`| 是否Flex布局 | `boolean` | `false` |
-
 ### nz-form-label
 
 用于标示当前表单项的内容，可选。
