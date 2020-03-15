@@ -75,12 +75,11 @@ const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
       (detach)="close()"
       (backdropClick)="close()"
     >
-      <div class="ant-picker-dropdown">
+      <div [@slideMotion]="'bottom'" class="ant-picker-dropdown">
         <div class="ant-picker-panel-container">
           <div tabindex="-1" class="ant-picker-panel">
             <nz-time-picker-panel
               [ngClass]="nzPopupClassName"
-              [@slideMotion]="'bottom'"
               [format]="nzFormat"
               [nzHourStep]="nzHourStep"
               [nzMinuteStep]="nzMinuteStep"
