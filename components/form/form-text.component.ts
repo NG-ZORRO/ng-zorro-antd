@@ -14,7 +14,9 @@ import { ChangeDetectionStrategy, Component, ElementRef, Renderer2, ViewEncapsul
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  templateUrl: './nz-form-text.component.html'
+  template: `
+    <ng-content></ng-content>
+  `
 })
 export class NzFormTextComponent {
   constructor(public elementRef: ElementRef, private renderer: Renderer2) {

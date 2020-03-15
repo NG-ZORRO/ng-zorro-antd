@@ -24,7 +24,7 @@ import { InputBoolean, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
-import { NzFormLabelComponent } from './nz-form-label.component';
+import { NzFormLabelComponent } from './form-label.component';
 
 const NZ_CONFIG_COMPONENT_NAME = 'form';
 

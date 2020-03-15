@@ -60,7 +60,10 @@ import { Component } from '@angular/core';
 })
 export class NzDemoCalendarNoticeCalendarComponent {
   listDataMap = {
-    eight: [{ type: 'warning', content: 'This is warning event.' }, { type: 'success', content: 'This is usual event.' }],
+    eight: [
+      { type: 'warning', content: 'This is warning event.' },
+      { type: 'success', content: 'This is usual event.' }
+    ],
     ten: [
       { type: 'warning', content: 'This is warning event.' },
       { type: 'success', content: 'This is usual event.' },
