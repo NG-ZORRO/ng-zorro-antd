@@ -88,7 +88,7 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
       return;
     }
     this.visible = !this.visible;
-    this.cd.markForCheck();
+    this.cd.detectChanges();
   }
 
   private registerScrollEvent(): void {
