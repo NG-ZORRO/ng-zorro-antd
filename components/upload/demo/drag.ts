@@ -8,8 +8,7 @@ import { UploadChangeParam } from 'ng-zorro-antd/upload';
     <nz-upload
       nzType="drag"
       [nzMultiple]="true"
-      [nzLimit]="2"
-      nzAction="https://jsonplaceholder.typicode.com/posts/"
+      nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
       (nzChange)="handleChange($event)"
     >
       <p class="ant-upload-drag-icon">
@@ -24,6 +23,7 @@ import { UploadChangeParam } from 'ng-zorro-antd/upload';
 })
 export class NzDemoUploadDragComponent {
   constructor(private msg: NzMessageService) {}
+
   handleChange({ file, fileList }: UploadChangeParam): void {
     const status = file.status;
     if (status !== 'uploading') {

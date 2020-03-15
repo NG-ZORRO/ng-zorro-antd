@@ -1,7 +1,7 @@
 // tslint:disable:no-any
 import { CommonModule } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { Component, DebugElement, Injector, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, DebugElement, Injector, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -22,12 +22,13 @@ import {
   UploadFile,
   UploadFilter,
   UploadListType,
+  UploadTransformFileType,
   UploadType,
   ZipButtonOptions
 } from './interface';
-import { NzUploadBtnComponent } from './nz-upload-btn.component';
-import { NzUploadListComponent } from './nz-upload-list.component';
-import { NzUploadComponent } from './nz-upload.component';
+import { NzUploadBtnComponent } from './upload-btn.component';
+import { NzUploadListComponent } from './upload-list.component';
+import { NzUploadComponent } from './upload.component';
 
 const FILECONTENT = [`iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==`];
 const FILE = new File(FILECONTENT, '');
@@ -104,7 +105,7 @@ describe('upload', () => {
       it('should be upload a file', () => {
         expect(instance._nzChange).toBeUndefined();
         pageObject.postFile(FILE);
-        const req = httpMock.expectOne(instance.nzAction);
+        const req = httpMock.expectOne(instance.nzAction as string);
         pageObject.expectChange();
         req.flush({});
         pageObject.expectChange('success');
@@ -113,7 +114,7 @@ describe('upload', () => {
 
       it('should notify progress when upload a large file', () => {
         pageObject.postLarge();
-        const req = httpMock.expectOne(instance.nzAction);
+        const req = httpMock.expectOne(instance.nzAction as string);
         req.event({ type: 1, loaded: 0, total: 0 });
         pageObject.expectChange('progress');
         req.event({ type: 1, loaded: 10, total: 100 });
@@ -127,7 +128,7 @@ describe('upload', () => {
 
       it('should be error when using 404 http', () => {
         pageObject.postLarge();
-        const req = httpMock.expectOne(instance.nzAction);
+        const req = httpMock.expectOne(instance.nzAction as string);
         req.error(new ErrorEvent('network'), { status: 404, statusText: 'not found' });
         pageObject.expectChange('error');
         httpMock.verify();
@@ -160,10 +161,10 @@ describe('upload', () => {
 
       it('should be abort when user canceled', () => {
         pageObject.postLarge();
-        const req = httpMock.expectOne(instance.nzAction);
+        const req = httpMock.expectOne(instance.nzAction as string);
         req.event({ type: 1, loaded: 10, total: 100 });
         pageObject.expectLength(1);
-        pageObject.getByCss('.anticon-close').nativeElement.click();
+        pageObject.getByCss('.anticon-delete').nativeElement.click();
         fixture.detectChanges();
         pageObject.expectLength(0);
         httpMock.verify();
@@ -181,7 +182,7 @@ describe('upload', () => {
         ];
         fixture.detectChanges();
         pageObject.expectLength(1);
-        pageObject.getByCss('.anticon-close').nativeElement.click();
+        pageObject.getByCss('.anticon-delete').nativeElement.click();
         fixture.detectChanges();
         pageObject.expectLength(0);
       });
@@ -221,12 +222,31 @@ describe('upload', () => {
         fixture.detectChanges();
         injector.get(NzI18nService).setLocale(en_US);
         fixture.detectChanges();
-        const removeFileText = (pageObject.getByCss('.anticon-close').nativeElement as HTMLElement).title;
+        const removeFileText = (pageObject.getByCss('.anticon-delete').nativeElement as HTMLElement).title;
         expect(removeFileText).toBe(en_US.Upload.removeFile);
       });
     });
 
     describe('property', () => {
+      describe('[nzActive]', () => {
+        it('shoule be return string when is function', () => {
+          const url = `/new-url`;
+          instance.nzAction = () => url;
+          fixture.detectChanges();
+          pageObject.postSmall();
+          const req = httpMock.expectOne(() => true);
+          expect(req.request.url).toBe(url);
+        });
+        it('shoule be return Observable when is function', () => {
+          const url = `/new-url-with-observalbe`;
+          instance.nzAction = () => of(url);
+          fixture.detectChanges();
+          pageObject.postSmall();
+          const req = httpMock.expectOne(() => true);
+          expect(req.request.url).toBe(url);
+        });
+      });
+
       describe('[nzData]', () => {
         it('should custom form data vis function', () => {
           instance.nzData = () => {
@@ -234,17 +254,27 @@ describe('upload', () => {
           };
           fixture.detectChanges();
           pageObject.postSmall();
-          const req = httpMock.expectOne(instance.nzAction);
+          const req = httpMock.expectOne(instance.nzAction as string);
           expect((req.request.body as FormData).get('a')).toBe('1');
           req.flush({});
           httpMock.verify();
         });
 
-        it('should custom form data vis object', () => {
+        it('should custom form data via object', () => {
           instance.nzData = { a: 1 };
           fixture.detectChanges();
           pageObject.postSmall();
-          const req = httpMock.expectOne(instance.nzAction);
+          const req = httpMock.expectOne(instance.nzAction as string);
+          expect((req.request.body as FormData).get('a')).toBe('1');
+          req.flush({});
+          httpMock.verify();
+        });
+
+        it('shoule custom form data via Observable', () => {
+          instance.nzData = () => of({ a: 1 });
+          fixture.detectChanges();
+          pageObject.postSmall();
+          const req = httpMock.expectOne(instance.nzAction as string);
           expect((req.request.body as FormData).get('a')).toBe('1');
           req.flush({});
           httpMock.verify();
@@ -272,7 +302,7 @@ describe('upload', () => {
           };
           fixture.detectChanges();
           pageObject.postSmall();
-          const req = httpMock.expectOne(instance.nzAction);
+          const req = httpMock.expectOne(instance.nzAction as string);
           expect(req.request.headers.get('a')).toBe('1');
           req.flush({});
           httpMock.verify();
@@ -282,7 +312,17 @@ describe('upload', () => {
           instance.nzHeaders = { a: '1' };
           fixture.detectChanges();
           pageObject.postSmall();
-          const req = httpMock.expectOne(instance.nzAction);
+          const req = httpMock.expectOne(instance.nzAction as string);
+          expect(req.request.headers.get('a')).toBe('1');
+          req.flush({});
+          httpMock.verify();
+        });
+
+        it('should custom form data vis Observable', () => {
+          instance.nzHeaders = () => of({ a: '1' });
+          fixture.detectChanges();
+          pageObject.postSmall();
+          const req = httpMock.expectOne(instance.nzAction as string);
           expect(req.request.headers.get('a')).toBe('1');
           req.flush({});
           httpMock.verify();
@@ -292,6 +332,27 @@ describe('upload', () => {
           instance.nzHeaders = null;
           fixture.detectChanges();
           pageObject.postSmall().expectChange();
+        });
+      });
+
+      describe('[nzTransformFile]', () => {
+        it('should be from small to big', () => {
+          instance.nzTransformFile = () => new File([`1`], `1.png`);
+          fixture.detectChanges();
+          pageObject.postLarge();
+          const req = httpMock.expectOne(instance.nzAction as string);
+          expect((req.request.body.get('file') as UploadFile).size).toBe(1);
+          req.flush({});
+          httpMock.verify();
+        });
+        it('should return Observable', () => {
+          instance.nzTransformFile = () => of(new File([`123`], `1.png`));
+          fixture.detectChanges();
+          pageObject.postLarge();
+          const req = httpMock.expectOne(instance.nzAction as string);
+          expect((req.request.body.get('file') as UploadFile).size).toBe(3);
+          req.flush({});
+          httpMock.verify();
         });
       });
 
@@ -315,7 +376,7 @@ describe('upload', () => {
           ] as any[];
           fixture.detectChanges();
           expect(instance._onRemove).toBe(false);
-          dl.query(By.css('.anticon-close')).nativeElement.click();
+          dl.query(By.css('.anticon-delete')).nativeElement.click();
           expect(instance._onRemove).toBe(true);
         });
       });
@@ -331,7 +392,7 @@ describe('upload', () => {
         instance.nzWithCredentials = true;
         fixture.detectChanges();
         pageObject.postSmall();
-        const req = httpMock.expectOne(instance.nzAction);
+        const req = httpMock.expectOne(instance.nzAction as string);
         expect(req.request.withCredentials).toBe(true);
         req.flush({});
         httpMock.verify();
@@ -426,7 +487,7 @@ describe('upload', () => {
           instance.nzFilter = [
             {
               name: 'size',
-              fn: (fileList: UploadFile[]) => fileList.filter(w => w.size / 1024 <= instance.nzSize)
+              fn: (fileList: UploadFile[]) => fileList.filter(w => w.size! / 1024 <= instance.nzSize)
             }
           ];
           fixture.detectChanges();
@@ -499,7 +560,7 @@ describe('upload', () => {
         fixture.detectChanges();
         expect(instance._nzChange).toBeUndefined();
         pageObject.postFile(FILE);
-        const req = httpMock.expectOne(instance.nzAction);
+        const req = httpMock.expectOne(instance.nzAction as string);
         pageObject.expectChange();
         req.flush({});
         pageObject.expectChange('success');
@@ -536,41 +597,41 @@ describe('upload', () => {
         it('should be return a Observable', () => {
           instance.onRemove = () => of(false);
           fixture.detectChanges();
-          expect(dl.queryAll(By.css('.anticon-close')).length).toBe(INITCOUNT);
-          dl.query(By.css('.anticon-close')).nativeElement.click();
-          expect(dl.queryAll(By.css('.anticon-close')).length).toBe(INITCOUNT);
+          expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(INITCOUNT);
+          dl.query(By.css('.anticon-delete')).nativeElement.click();
+          expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(INITCOUNT);
         });
         it('should be return a Observable includes a delay operation', (done: () => void) => {
           const DELAY = 20;
           instance.onRemove = () => of(true).pipe(delay(DELAY));
           fixture.detectChanges();
-          expect(dl.queryAll(By.css('.anticon-close')).length).toBe(INITCOUNT);
-          dl.query(By.css('.anticon-close')).nativeElement.click();
+          expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(INITCOUNT);
+          dl.query(By.css('.anticon-delete')).nativeElement.click();
           setTimeout(() => {
-            expect(dl.queryAll(By.css('.anticon-close')).length).toBe(INITCOUNT - 1);
+            expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(INITCOUNT - 1);
             done();
           }, DELAY + 1);
         });
         it('should be return a truth value', () => {
           instance.onRemove = () => true;
           fixture.detectChanges();
-          expect(dl.queryAll(By.css('.anticon-close')).length).toBe(INITCOUNT);
-          dl.query(By.css('.anticon-close')).nativeElement.click();
-          expect(dl.queryAll(By.css('.anticon-close')).length).toBe(INITCOUNT - 1);
+          expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(INITCOUNT);
+          dl.query(By.css('.anticon-delete')).nativeElement.click();
+          expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(INITCOUNT - 1);
         });
         it('should be return a falsy value', () => {
           instance.onRemove = () => false;
           fixture.detectChanges();
-          expect(dl.queryAll(By.css('.anticon-close')).length).toBe(INITCOUNT);
-          dl.query(By.css('.anticon-close')).nativeElement.click();
-          expect(dl.queryAll(By.css('.anticon-close')).length).toBe(INITCOUNT);
+          expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(INITCOUNT);
+          dl.query(By.css('.anticon-delete')).nativeElement.click();
+          expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(INITCOUNT);
         });
         it('should be with null', () => {
           instance.onRemove = null;
           fixture.detectChanges();
-          expect(dl.queryAll(By.css('.anticon-close')).length).toBe(INITCOUNT);
-          dl.query(By.css('.anticon-close')).nativeElement.click();
-          expect(dl.queryAll(By.css('.anticon-close')).length).toBe(INITCOUNT - 1);
+          expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(INITCOUNT);
+          dl.query(By.css('.anticon-delete')).nativeElement.click();
+          expect(dl.queryAll(By.css('.anticon-delete')).length).toBe(INITCOUNT - 1);
         });
       });
 
@@ -592,12 +653,27 @@ describe('upload', () => {
           });
         });
       });
+
+      it('#nzIconRender', () => {
+        instance.nzFileList = [
+          {
+            uid: 1,
+            name: 'xxx.png',
+            status: 'uploading'
+          } as any
+        ];
+        instance.nzIconRender = instance.customnzIconRender;
+        fixture.detectChanges();
+        const el = pageObject.getByCss(`.customnzIconRender`);
+        expect(el != null).toBe(true);
+        expect((el.nativeElement as HTMLElement).textContent).toBe('asdf');
+      });
     });
 
     describe('CORS', () => {
       it('should be auto setting [X-Requested-With]', () => {
         pageObject.postSmall();
-        const req = httpMock.expectOne(instance.nzAction);
+        const req = httpMock.expectOne(instance.nzAction as string);
         expect(req.request.headers.get('X-Requested-With')).toBe('XMLHttpRequest');
         req.flush({});
         httpMock.verify();
@@ -608,7 +684,7 @@ describe('upload', () => {
         };
         fixture.detectChanges();
         pageObject.postSmall();
-        const req = httpMock.expectOne(instance.nzAction);
+        const req = httpMock.expectOne(instance.nzAction as string);
         expect(req.request.headers.has('X-Requested-With')).toBe(false);
         req.flush({});
         httpMock.verify();
@@ -639,7 +715,7 @@ describe('upload', () => {
         return this.btnEl.injector.get(NzUploadBtnComponent) as NzUploadBtnComponent;
       }
 
-      getByCss(css: string): any {
+      getByCss(css: string): DebugElement {
         return dl.query(By.css(css));
       }
 
@@ -737,32 +813,6 @@ describe('upload', () => {
         expect(actions.length).toBe(0);
         expect(instance._onRemove).toBe(false);
       });
-      it('should be hide preview when is invalid image url', fakeAsync(() => {
-        instance.icons = {
-          showPreviewIcon: true,
-          showRemoveIcon: true,
-          hidePreviewIconInNonImage: false
-        };
-        instance.items = [{ url: '1.pdf' }];
-        fixture.detectChanges();
-        tick();
-        fixture.detectChanges();
-        const actions = dl.queryAll(By.css('.ant-upload-list-item-actions a'));
-        expect(actions.length).toBe(1);
-      }));
-      it('should be hide preview when is invalid image url', fakeAsync(() => {
-        instance.icons = {
-          showPreviewIcon: true,
-          showRemoveIcon: true,
-          hidePreviewIconInNonImage: true
-        };
-        instance.items = [{ url: '1.pdf' }];
-        fixture.detectChanges();
-        tick();
-        fixture.detectChanges();
-        const actions = dl.queryAll(By.css('.ant-upload-list-item-actions a'));
-        expect(actions.length).toBe(0);
-      }));
     });
 
     describe('[onPreview]', () => {
@@ -833,7 +883,7 @@ describe('upload', () => {
     describe('[isImageUrl]', () => {
       describe('via image type', () => {
         it('should be true when file object type value is a valid image', () => {
-          expect(instance.comp.isImageUrl({ type: 'image' } as any)).toBe(true);
+          expect(instance.comp.isImageUrl({ type: 'image/' } as any)).toBe(true);
         });
       });
       describe('via thumbUrl or url', () => {
@@ -860,32 +910,53 @@ describe('upload', () => {
     });
 
     describe('[genThumb]', () => {
-      class MockFR {
-        result = '1';
+      class MockImage {
+        width = 1;
+        height = 2;
 
-        onloadend(): void {}
+        onload(): void {}
 
-        readAsDataURL(): void {
-          this.onloadend();
+        set src(_: string) {
+          this.onload();
         }
       }
+      it('should be generate thumb when is valid image data', fakeAsync(() => {
+        spyOn(window as any, 'Image').and.returnValue(new MockImage());
 
-      it('should be generate thumb when is valid image data', () => {
-        spyOn(window as any, 'FileReader').and.returnValue(new MockFR());
         instance.listType = 'picture';
-        instance.items = [{ originFileObj: new File([''], '1.png', { type: 'image' }), thgitumbUrl: undefined }];
+        instance.items = [{ originFileObj: new File([''], '1.png', { type: 'image/' }), thgitumbUrl: undefined }];
         fixture.detectChanges();
-        expect(instance.items[0].thumbUrl).toBe('1');
-      });
+        tick();
+        expect(instance.items[0].thumbUrl.length).toBeGreaterThan(1);
+      }));
+      it('should be generate thumb when width greater than height', fakeAsync(() => {
+        spyOn(window as any, 'Image').and.callFake(() => {
+          const img = new MockImage();
+          img.width = 2;
+          img.height = 1;
+          return img;
+        });
+
+        instance.listType = 'picture';
+        instance.items = [{ originFileObj: new File([''], '1.png', { type: 'image/' }), thgitumbUrl: undefined }];
+        fixture.detectChanges();
+        tick();
+        expect(instance.items[0].thumbUrl.length).toBeGreaterThan(1);
+      }));
       it('should be ingore thumb when is invalid image data', () => {
-        const mockFR = new MockFR();
-        mockFR.result = '';
-        spyOn(window as any, 'FileReader').and.returnValue(mockFR);
         instance.listType = 'picture';
         instance.items = [{ originFileObj: new File([''], '1.pdf', { type: 'pdf' }), thumbUrl: undefined }];
         fixture.detectChanges();
         expect(instance.items[0].thumbUrl).toBe('');
       });
+      it('should be customize preview file', fakeAsync(() => {
+        instance.previewFile = () => of('11');
+        instance.listType = 'picture';
+        instance.items = [{ originFileObj: new File([''], '1.png', { type: 'image/' }), thgitumbUrl: undefined }];
+        fixture.detectChanges();
+        tick();
+        expect(instance.items[0].thumbUrl).toBe('11');
+      }));
     });
   });
 
@@ -1187,7 +1258,7 @@ describe('upload', () => {
         comp.options.filters = [
           {
             name: '',
-            fn: (fileList: UploadFile[]) => fileList.filter(w => w.size / 1024 <= 0)
+            fn: (fileList: UploadFile[]) => fileList.filter(w => w.size! / 1024 <= 0)
           }
         ];
         comp.onChange(PNGBIG as any);
@@ -1257,24 +1328,31 @@ describe('upload', () => {
       [nzShowButton]="nzShowButton"
       [nzWithCredentials]="nzWithCredentials"
       [nzPreview]="onPreview"
+      [nzPreviewFile]="previewFile"
       [nzRemove]="onRemove"
       [nzDirectory]="directory"
+      [nzTransformFile]="nzTransformFile"
+      [nzIconRender]="nzIconRender"
       (nzFileListChange)="nzFileListChange($event)"
       (nzChange)="nzChange($event)"
     >
       <button nz-button><i nz-icon nzType="upload"></i><span>Click to Upload</span></button>
     </nz-upload>
+    <ng-template #customnzIconRender>
+      <span class="customnzIconRender">asdf</span>
+    </ng-template>
   `
 })
 class TestUploadComponent {
   @ViewChild('upload', { static: false }) comp: NzUploadComponent;
+  @ViewChild('customnzIconRender', { static: false }) customnzIconRender: TemplateRef<void>;
   show = true;
   nzType: UploadType = 'select';
   nzLimit = 0;
   nzSize = 0;
   nzFileType: any;
   nzAccept = 'image/png';
-  nzAction = '/upload';
+  nzAction: string | ((file: UploadFile) => string | Observable<string>) = '/upload';
   _beforeUpload = false;
   _beforeUploadList: UploadFile[] = [];
   beforeUpload: any = (_file: UploadFile, fileList: UploadFile[]): any => {
@@ -1294,10 +1372,13 @@ class TestUploadComponent {
   nzShowUploadList: boolean | ShowUploadListInterface = true;
   nzShowButton = true;
   nzWithCredentials = false;
+  nzTransformFile: (file: UploadFile) => UploadTransformFileType;
+  nzIconRender: TemplateRef<void> | null = null;
   _onPreview = false;
   onPreview = (): void => {
     this._onPreview = true;
   };
+  previewFile: (file: UploadFile) => Observable<string>;
   _onRemove = false;
   onRemove: null | ((file: UploadFile) => boolean | Observable<boolean>) = (): boolean => {
     this._onRemove = true;
@@ -1326,6 +1407,7 @@ class TestUploadComponent {
       [items]="items"
       [icons]="icons"
       [onPreview]="onPreview"
+      [previewFile]="previewFile"
       [onRemove]="onRemove"
     ></nz-upload-list>
   `,
@@ -1364,6 +1446,7 @@ class TestUploadListComponent {
   onPreview: VoidFunction | null = (): void => {
     this._onPreview = true;
   };
+  previewFile: (file: UploadFile) => Observable<string>;
   _onRemove = false;
   onRemove: any = (): void => {
     this._onRemove = true;

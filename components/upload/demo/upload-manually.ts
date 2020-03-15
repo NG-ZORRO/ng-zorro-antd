@@ -5,7 +5,7 @@ import { UploadFile } from 'ng-zorro-antd/upload';
 import { filter } from 'rxjs/operators';
 
 @Component({
-  selector: 'nz-demo-upload-manually',
+  selector: 'nz-demo-upload-upload-manually',
   template: `
     <nz-upload [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload">
       <button nz-button><i nz-icon nzType="upload"></i><span>Select File</span></button>
@@ -22,7 +22,7 @@ import { filter } from 'rxjs/operators';
     </button>
   `
 })
-export class NzDemoUploadManuallyComponent {
+export class NzDemoUploadUploadManuallyComponent {
   uploading = false;
   fileList: UploadFile[] = [];
 
@@ -41,7 +41,7 @@ export class NzDemoUploadManuallyComponent {
     });
     this.uploading = true;
     // You can use any AJAX library you like
-    const req = new HttpRequest('POST', 'https://jsonplaceholder.typicode.com/posts/', formData, {
+    const req = new HttpRequest('POST', 'https://www.mocky.io/v2/5cc8019d300000980a055e76', formData, {
       // reportProgress: true
     });
     this.http

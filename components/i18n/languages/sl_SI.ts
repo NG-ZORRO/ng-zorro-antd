@@ -42,7 +42,8 @@ export default {
     uploading: 'Nalaganje...',
     removeFile: 'Odstrani datoteko',
     uploadError: 'Napaka pri nalaganju',
-    previewFile: 'Predogled datoteke'
+    previewFile: 'Predogled datoteke',
+    downloadFile: 'Prenos datoteke'
   },
   Empty: {
     description: 'Ni podatkov'

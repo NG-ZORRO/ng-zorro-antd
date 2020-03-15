@@ -27,28 +27,32 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 | Property | Description | Type | Default |
 | --- | --- | --- | --- |
 | `[nzAccept]` | File types that can be accepted. See [input accept Attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attr-accept) | `string` | - |
-| `[nzAction]` | Required. Uploading URL | `string` | - |
+| `[nzAction]` | Required. Uploading URL | `string \| ((file: UploadFile) => string \| Observable<string>)` | - |
 | `[nzDirectory]` | support upload whole directory ([caniuse](https://caniuse.com/#feat=input-file-directory)) | `boolean` | `false` |
 | `[nzBeforeUpload]` | Hook function which will be executed before uploading. Uploading will be stopped with `false` or a Observable. **Warning：this function is not supported in IE9**. NOTICE: Muse be use `=>` to define the method. | `(file: UploadFile, fileList: UploadFile[]) => boolean \| Observable<boolean>` | - |
 | `[nzCustomRequest]` | override for the default xhr behavior allowing for additional customization and ability to implement your own XMLHttpRequest. NOTICE: Muse be use `=>` to define the method. | `(item) => Subscription` | - |
-| `[nzData]` | Uploading params or function which can return uploading params. NOTICE: Muse be use `=>` to define the method. | `Object \| ((file: UploadFile) => Object)` | - |
+| `[nzData]` | Uploading params or function which can return uploading params. NOTICE: Muse be use `=>` to define the method. | `Object \| ((file: UploadFile) => Object \| Observable<{}>)` | - |
 | `[nzDisabled]` | disable upload button | `boolean` | `false` |
 | `[nzFileList]` | List of files, two-way data-binding | `UploadFile[]` | - |
 | `[nzLimit]` | limit single upload count when `nzMultiple` has opened. `0` unlimited | `number` | `0` |
 | `[nzSize]` | limit file size (KB). `0` unlimited | `number` | `0` |
 | `[nzFileType]` | limit file type, e.g: `image/png,image/jpeg,image/gif,image/bmp` | `string` | - |
 | `[nzFilter]` | Custom filter when choosed file | `UploadFilter[]` | - |
-| `[nzHeaders]` | Set request headers, valid above IE10. NOTICE: Muse be use `=>` to define the method.  | `Object \| ((file: UploadFile) => Object)` | - |
+| `[nzHeaders]` | Set request headers, valid above IE10. NOTICE: Muse be use `=>` to define the method.  | `Object \| ((file: UploadFile) => Object \| Observable<{}>)` | - |
 | `[nzListType]` | Built-in stylesheets, support for three types: `text`, `picture` or `picture-card` | `'text' \| 'picture' \| 'picture-card'` | `'text'` |
 | `[nzMultiple]` | Whether to support selected multiple file. `IE10+` supported. You can select multiple files with CTRL holding down while multiple is set to be true | `boolean` | `false` |
 | `[nzName]` | The name of uploading file | `string` | `'file'` |
-| `[nzShowUploadList]` | Whether to show default upload list, could be an object to specify `showPreviewIcon` and `showRemoveIcon` individually | `boolean \| { showPreviewIcon?: boolean, showRemoveIcon?: boolean }` | `true` |
+| `[nzShowUploadList]` | Whether to show default upload list, could be an object to specify `showPreviewIcon`, `showRemoveIcon` and `showDownloadIcon` individually | `boolean \| { showPreviewIcon?: boolean, showRemoveIcon?: boolean, showDownloadIcon?: boolean }` | `true` |
 | `[nzShowButton]` | Show upload button | `boolean` | `true` |
 | `[nzWithCredentials]` | ajax upload with cookie sent | `boolean` | `false` |
 | `[nzOpenFileDialogOnClick]` | click open file dialog | `boolean` | `true` |
 | `[nzPreview]` | A callback function, will be executed when file link or preview icon is clicked. NOTICE: Muse be use `=>` to define the method. | `(file: UploadFile) => void` | - |
+| `[nzPreviewFile]` | Customize preview file logic. NOTICE: Muse be use `=>` to define the method. | `(file: UploadFile) => Observable<dataURL: string>` | - |
 | `[nzRemove]` | A callback function, will be executed when removing file button is clicked, remove event will be prevented when return value is `false` or a Observable. NOTICE: Muse be use `=>` to define the method.  | `(file: UploadFile) => boolean \| Observable<boolean>` | - |
 | `(nzChange)` | A callback function, can be executed when uploading state is changing | `EventEmitter<UploadChangeParam>` | - |
+| `[nzDownload]`   | Click the method to download the file, pass the method to perform the method logic, do not pass the default jump to the new TAB. | `(file: UploadFile) => void` | Jump to new TAB |
+| `[nzTransformFile]`   | Customize transform file before request  | `(file: UploadFile) => UploadTransformFileType` | -  |
+| `[nzIconRender]`   | Custom show icon  | `TemplateRef<void>` | -  |
 
 #### nzChange
 

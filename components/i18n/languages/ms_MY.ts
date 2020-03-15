@@ -65,6 +65,7 @@ export default {
     uploading: 'Sedang memuat naik...',
     removeFile: 'Buang fail',
     uploadError: 'Masalah muat naik',
-    previewFile: 'Tengok fail'
+    previewFile: 'Tengok fail',
+    downloadFile: 'Muat turun fail'
   }
 };

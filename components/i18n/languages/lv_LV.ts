@@ -42,7 +42,8 @@ export default {
     uploading: 'Augšupielāde...',
     removeFile: 'Noņemt failu',
     uploadError: 'Augšupielādes kļūda',
-    previewFile: 'Priekšskatiet failu'
+    previewFile: 'Priekšskatiet failu',
+    downloadFile: 'Lejupielādēt failu'
   },
   Empty: {
     description: 'Nav datu'
