@@ -73,7 +73,7 @@ interface TokensBuffer {
 }
 
 export function convertTokens(format: string): string {
-  warnDeprecation(`'NZ_DATE_FNS_COMPATIBLE' is deprecated and will be removed in next minor version. Please update to date-fns v2 format.`);
+  warnDeprecation(`'NZ_DATE_FNS_COMPATIBLE' will be removed in 10.0.0, please update to date-fns v2 format.`);
   const tokensCaptures = format.match(tokensRegExp);
   if (tokensCaptures) {
     return tokensCaptures
