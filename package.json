@@ -28,7 +28,8 @@
   "dependencies": {
     "@angular/cdk": "^9.0.0",
     "@ant-design/icons-angular": "^9.0.0",
-    "date-fns": "^1.30.1"
+    "date-fns": "^1.30.1",
+    "resize-observer-polyfill": "^1.5.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.900.0",
@@ -59,6 +60,7 @@
     "@types/jasmine": "3.4.0",
     "@types/jasminewd2": "~2.0.3",
     "@types/less": "^3.0.0",
+    "@types/lodash.debounce": "^4.0.6",
     "@types/node": "^12.11.1",
     "@types/parse5": "^5.0.2",
     "antd-theme-generator": "^1.1.9",
@@ -73,6 +75,7 @@
     "gulp": "^4.0.2",
     "gulp-clean": "^0.4.0",
     "husky": "^3.0.4",
+    "immer": "^6.0.1",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~4.3.0",
@@ -87,6 +90,7 @@
     "less-plugin-clean-css": "^1.5.1",
     "less-plugin-npm-import": "^2.1.0",
     "lint-staged": "^9.2.3",
+    "lodash.debounce": "^4.0.8",
     "marked": "^0.7.0",
     "minimist": "^1.2.0",
     "monaco-editor": "^0.17.1",

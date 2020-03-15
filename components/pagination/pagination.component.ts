@@ -24,7 +24,7 @@ import {
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
-import { Subject } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PaginationItemRenderContext } from './pagination.types';
 
@@ -39,7 +39,7 @@ import { PaginationItemRenderContext } from './pagination.types';
       <ul
         *ngIf="nzSimple"
         nz-pagination-simple
-        [class.ant-table-pagination]="nzInTable"
+        [class.ant-table-pagination]="nzInsideTable"
         [disabled]="nzDisabled"
         [itemRender]="nzItemRender"
         [locale]="locale"
@@ -51,7 +51,7 @@ import { PaginationItemRenderContext } from './pagination.types';
       <ul
         *ngIf="!nzSimple"
         nz-pagination-default
-        [class.ant-table-pagination]="nzInTable"
+        [class.ant-table-pagination]="nzInsideTable"
         [nzSize]="nzSize"
         [itemRender]="nzItemRender"
         [showTotal]="nzShowTotal"
@@ -73,11 +73,11 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   @Output() readonly nzPageSizeChange: EventEmitter<number> = new EventEmitter();
   @Output() readonly nzPageIndexChange: EventEmitter<number> = new EventEmitter();
   @Input() nzShowTotal: TemplateRef<{ $implicit: number; range: [number, number] }> | null = null;
-  @Input() nzInTable = false;
   @Input() nzSize: 'default' | 'small' = 'default';
   @Input() nzPageSizeOptions = [10, 20, 30, 40];
   @Input() nzItemRender: TemplateRef<PaginationItemRenderContext>;
   @Input() @InputBoolean() nzDisabled = false;
+  @Input() @InputBoolean() nzInsideTable = false;
   @Input() @InputBoolean() nzShowSizeChanger = false;
   @Input() @InputBoolean() nzHideOnSinglePage = false;
   @Input() @InputBoolean() nzShowQuickJumper = false;
@@ -88,6 +88,7 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   showPagination = true;
   locale: NzSafeAny = {};
   private destroy$ = new Subject<void>();
+  private total$ = new ReplaySubject<number>(1);
 
   validatePageIndex(value: number, lastIndex: number): number {
     if (value > lastIndex) {
@@ -117,6 +118,13 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+  onTotalChange(total: number): void {
+    const lastIndex = this.getLastIndex(total, this.nzPageSize);
+    if (this.nzPageIndex > lastIndex) {
+      Promise.resolve().then(() => this.onPageIndexChange(lastIndex));
+    }
+  }
+
   getLastIndex(total: number, pageSize: number): number {
     return Math.ceil(total / pageSize);
   }
@@ -128,6 +136,9 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
       this.locale = this.i18n.getLocaleData('Pagination');
       this.cdr.markForCheck();
     });
+    this.total$.pipe(takeUntil(this.destroy$)).subscribe(total => {
+      this.onTotalChange(total);
+    });
   }
 
   ngOnDestroy(): void {
@@ -137,6 +148,9 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzHideOnSinglePage, nzTotal, nzPageSize } = changes;
+    if (nzTotal) {
+      this.total$.next(this.nzTotal);
+    }
     if (nzHideOnSinglePage || nzTotal || nzPageSize) {
       this.showPagination = (this.nzHideOnSinglePage && this.nzTotal > this.nzPageSize) || (this.nzTotal > 0 && !this.nzHideOnSinglePage);
     }

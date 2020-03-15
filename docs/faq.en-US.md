@@ -31,7 +31,21 @@ Don't forget to import `ReactiveFormsModule`, [ref](https://angular.io/guide/rea
 
 ### Why my page content is not updated after I change the data?
 
-Components of NG-ZORRO works default in `OnPush` mode, mutate `@Input` data won't work, please use immutable data.
+In order to get better performance, all NG-ZORRO's components are running under [OnPush](https://angular.io/api/core/ChangeDetectionStrategy) mode, this means any mutate to the `@Input()` data won't trigger change detection, please use immutable way to update array or object.
+
+```typescript
+    // add data
+    this.dataSet = [ ...this.dataSet, {
+      key    : `${this.i}`,
+      name   : `Edward King ${this.i}`,
+      age    : '32',
+      address: `London, Park Lane no. ${this.i}`
+    }];
+    // remove data
+    this.dataSet = this.dataSet.filter(d => d.key !== i);
+```
+
+Recommend using [immer](https://immerjs.github.io/immer/docs/introduction) for a better development experience
 
 ### Why my issue is closed?
 

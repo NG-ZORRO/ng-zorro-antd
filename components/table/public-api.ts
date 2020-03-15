@@ -6,11 +6,21 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-table.component';
-export * from './nz-table.module';
-export * from './nz-tbody.directive';
-export * from './nz-td.component';
-export * from './nz-th.component';
-export * from './nz-thead.component';
-export * from './nz-tr.directive';
-export * from './nz-virtual-scroll.directive';
+export * from './src/table/table.component';
+export * from './src/table.module';
+export * from './src/table/tbody.component';
+export * from './src/table/thead.component';
+export * from './src/table/tr.directive';
+export * from './src/table/tr-expand.directive';
+export * from './src/table/table-virtual-scroll.directive';
+export * from './src/cell/cell-fixed.directive';
+export * from './src/cell/cell.directive';
+export * from './src/cell/th-measure.directive';
+export * from './src/cell/td-addon.component';
+export * from './src/cell/th-selection.component';
+export * from './src/cell/th-addon.component';
+export * from './src/addon/filter-trigger.component';
+export * from './src/styled/align.directive';
+export * from './src/styled/ellipsis.directive';
+export * from './src/styled/word-break.directive';
+export * from './src/table/table-fixed-row.component';

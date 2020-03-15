@@ -25,7 +25,7 @@
 @primary-3: color(~`colorPalette('@{primary-color}', 3) `); // unused
 @primary-4: color(~`colorPalette('@{primary-color}', 4) `); // unused
 @primary-5: color(
-  ~`colorPalette('@{primary-color}', 5) `
+        ~`colorPalette('@{primary-color}', 5) `
 ); // color used to control the text color in many active and hover states, replace tint(@primary-color, 20%)
 @primary-6: @primary-color; // color used to control the text color of active buttons, don't use, use @primary-color
 @primary-7: color(~`colorPalette('@{primary-color}', 7) `); // replace shade(@primary-color, 5%)
@@ -497,7 +497,7 @@
 @table-header-bg: @background-color-light;
 @table-header-color: @heading-color;
 @table-header-sort-bg: @background-color-base;
-@table-body-sort-bg: #fafafa;
+@table-body-sort-bg: rgba(0, 0, 0, 0.01);
 @table-row-hover-bg: @item-hover-bg;
 @table-selected-row-color: inherit;
 @table-selected-row-bg: @primary-1;

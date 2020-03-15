@@ -14,11 +14,11 @@ export interface TreeNodeInterface {
 @Component({
   selector: 'nz-demo-table-expand-children',
   template: `
-    <nz-table #expandTable [nzData]="listOfMapData">
+    <nz-table #expandTable [nzData]="listOfMapData" nzTableLayout="fixed">
       <thead>
         <tr>
-          <th nzWidth="40%">Name</th>
-          <th nzWidth="30%">Age</th>
+          <th>Name</th>
+          <th>Age</th>
           <th>Address</th>
         </tr>
       </thead>
@@ -111,7 +111,7 @@ export class NzDemoTableExpandChildrenComponent implements OnInit {
   mapOfExpandedData: { [key: string]: TreeNodeInterface[] } = {};
 
   collapse(array: TreeNodeInterface[], data: TreeNodeInterface, $event: boolean): void {
-    if ($event === false) {
+    if (!$event) {
       if (data.children) {
         data.children.forEach(d => {
           const target = array.find(a => a.key === d.key)!;

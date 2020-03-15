@@ -56,7 +56,6 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
   @Input() @InputBoolean() nzClickHide = true;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzVisible = false;
-  @Input() @InputBoolean() nzTableFilter = false;
   @Input() nzOverlayClassName: string | null = null;
   @Input() nzOverlayStyle: IndexableObject = {};
   @Input() nzPlacement: NzPlacementType = 'bottomLeft';
@@ -176,7 +175,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzVisible, nzPlacement, nzDisabled, nzOverlayClassName, nzOverlayStyle, nzTableFilter, nzTrigger } = changes;
+    const { nzVisible, nzPlacement, nzDisabled, nzOverlayClassName, nzOverlayStyle, nzTrigger } = changes;
     if (nzTrigger) {
       this.nzTrigger$.next(this.nzTrigger);
     }
@@ -185,9 +184,6 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
     }
     if (nzDisabled && this.nzDisabled) {
       this.inputVisible$.next(false);
-    }
-    if (nzTableFilter) {
-      this.setDropdownMenuValue('isInsideTh', this.nzTableFilter);
     }
     if (nzOverlayClassName) {
       this.setDropdownMenuValue('nzOverlayClassName', this.nzOverlayClassName);

@@ -51,9 +51,7 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
         (mouseenter)="setMouseState(true)"
         (mouseleave)="setMouseState(false)"
       >
-        <div [class.ant-table-filter-dropdown]="isInsideTh">
-          <ng-content></ng-content>
-        </div>
+        <ng-content></ng-content>
       </div>
     </ng-template>
   `,
@@ -68,7 +66,6 @@ export class NzDropdownMenuComponent implements AfterContentInit {
   descendantMenuItemClick$ = this.nzMenuService.descendantMenuItemClick$;
   nzOverlayClassName: string | null = null;
   nzOverlayStyle: IndexableObject = {};
-  isInsideTh = false;
   @ViewChild(TemplateRef, { static: true }) templateRef: TemplateRef<NzSafeAny>;
 
   setMouseState(visible: boolean): void {

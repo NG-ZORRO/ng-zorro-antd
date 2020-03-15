@@ -2,19 +2,17 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Injectable, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
-interface ItemData {
+interface RandomUser {
   gender: string;
-  name: Name;
   email: string;
+  name: {
+    title: string;
+    first: string;
+    last: string;
+  };
 }
 
-interface Name {
-  title: string;
-  first: string;
-  last: string;
-}
-
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class RandomUserService {
   randomUserUrl = 'https://api.randomuser.me/';
 
@@ -24,7 +22,7 @@ export class RandomUserService {
     sortField: string,
     sortOrder: string,
     genders: string[]
-  ): Observable<{ results: ItemData[] }> {
+  ): Observable<{ results: RandomUser[] }> {
     let params = new HttpParams()
       .append('page', `${pageIndex}`)
       .append('results', `${pageSize}`)
@@ -33,9 +31,7 @@ export class RandomUserService {
     genders.forEach(gender => {
       params = params.append('gender', gender);
     });
-    return this.http.get<{ results: ItemData[] }>(`${this.randomUserUrl}`, {
-      params
-    });
+    return this.http.get<{ results: RandomUser[] }>(`${this.randomUserUrl}`, { params });
   }
 
   constructor(private http: HttpClient) {}
@@ -43,29 +39,27 @@ export class RandomUserService {
 
 @Component({
   selector: 'nz-demo-table-ajax',
-  providers: [RandomUserService],
   template: `
     <nz-table
-      #ajaxTable
       nzShowSizeChanger
+      [nzData]="listOfRandomUser"
       [nzFrontPagination]="false"
-      [nzData]="listOfData"
       [nzLoading]="loading"
       [nzTotal]="total"
-      [(nzPageIndex)]="pageIndex"
-      [(nzPageSize)]="pageSize"
-      (nzPageIndexChange)="searchData()"
-      (nzPageSizeChange)="searchData(true)"
+      [nzPageIndex]="pageIndex"
+      [nzPageSize]="pageSize"
+      (nzPageIndexChange)="onPageIndexChange($event)"
+      (nzPageSizeChange)="onPageSizeChange($event)"
     >
-      <thead (nzSortChange)="sort($event)" nzSingleSort>
+      <thead (nzSortOrderChange)="onSortChange($event)" nzSingleSort>
         <tr>
-          <th nzShowSort nzSortKey="name">Name</th>
-          <th nzShowFilter [nzFilters]="filterGender" (nzFilterChange)="updateFilter($event)">Gender</th>
-          <th nzShowSort nzSortKey="email"><span>Email</span></th>
+          <th nzSortKey="name">Name</th>
+          <th [nzFilters]="filterGender" (nzFilterChange)="onFilterChange($event)">Gender</th>
+          <th nzSortKey="email"><span>Email</span></th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of ajaxTable.data">
+        <tr *ngFor="let data of listOfRandomUser">
           <td>{{ data.name.first }} {{ data.name.last }}</td>
           <td>{{ data.gender }}</td>
           <td>{{ data.email }}</td>
@@ -78,9 +72,9 @@ export class NzDemoTableAjaxComponent implements OnInit {
   pageIndex = 1;
   pageSize = 10;
   total = 1;
-  listOfData: ItemData[] = [];
+  listOfRandomUser: RandomUser[] = [];
   loading = true;
-  sortValue: string | null = null;
+  sortOrder: string | null = null;
   sortKey: string | null = null;
   filterGender = [
     { text: 'male', value: 'male' },
@@ -88,34 +82,42 @@ export class NzDemoTableAjaxComponent implements OnInit {
   ];
   searchGenderList: string[] = [];
 
-  sort(sort: { key: string; value: string }): void {
+  onSortChange(sort: { key: string; value: string }): void {
     this.sortKey = sort.key;
-    this.sortValue = sort.value;
-    this.searchData();
+    this.sortOrder = sort.value;
+    this.getRandomUserList();
+  }
+
+  onPageIndexChange(index: number): void {
+    this.pageIndex = index;
+    this.getRandomUserList();
+  }
+
+  onPageSizeChange(size: number): void {
+    this.pageSize = size;
+    this.getRandomUserList();
+  }
+
+  onFilterChange(value: string[]): void {
+    this.searchGenderList = value;
+    this.pageIndex = 1;
+    this.getRandomUserList();
+  }
+
+  getRandomUserList(): void {
+    this.loading = true;
+    this.randomUserService
+      .getUsers(this.pageIndex, this.pageSize, this.sortKey!, this.sortOrder!, this.searchGenderList)
+      .subscribe(data => {
+        this.loading = false;
+        this.total = 200;
+        this.listOfRandomUser = data.results;
+      });
   }
 
   constructor(private randomUserService: RandomUserService) {}
 
-  searchData(reset: boolean = false): void {
-    if (reset) {
-      this.pageIndex = 1;
-    }
-    this.loading = true;
-    this.randomUserService
-      .getUsers(this.pageIndex, this.pageSize, this.sortKey!, this.sortValue!, this.searchGenderList)
-      .subscribe(data => {
-        this.loading = false;
-        this.total = 200;
-        this.listOfData = data.results;
-      });
-  }
-
-  updateFilter(value: string[]): void {
-    this.searchGenderList = value;
-    this.searchData(true);
-  }
-
   ngOnInit(): void {
-    this.searchData();
+    this.getRandomUserList();
   }
 }

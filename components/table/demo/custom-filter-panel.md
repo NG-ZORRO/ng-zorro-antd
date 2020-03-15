@@ -7,10 +7,10 @@ title:
 
 ## zh-CN
 
-通过 `nz-dropdown`、`nzFilters` 和 `nzFilterChange` 定义自定义的列筛选功能，并实现一个搜索列的示例，实际使用中建议将搜索组件进行单独封装。
+通过 `<nz-filter-trigger>` 组件定义自定义的列筛选功能，并实现一个搜索列的示例。
 
 ## en-US
 
-Implement a customized column search example via `nz-dropdown`, `nzFilters` and `nzFilterChange`.
+Implement a customized column search example via `<nz-filter-trigger>`.
 
 
