@@ -9,7 +9,6 @@
 import { Platform } from '@angular/cdk/platform';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ContentChild,
   ElementRef,
@@ -34,9 +33,6 @@ import { NzAnchorComponent } from './anchor.component';
     </a>
     <ng-content></ng-content>
   `,
-  host: {
-    '[class.ant-anchor-link-active]': 'active'
-  },
   styles: [
     `
       nz-link {
@@ -53,7 +49,6 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
   titleStr: string | null = '';
   // tslint:disable-next-line:no-any
   titleTpl: TemplateRef<any>;
-  active: boolean = false;
 
   @Input()
   set nzTitle(value: string | TemplateRef<void>) {
@@ -71,11 +66,10 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
   constructor(
     public elementRef: ElementRef,
     private anchorComp: NzAnchorComponent,
-    private cdr: ChangeDetectorRef,
     private platform: Platform,
-    renderer: Renderer2
+    private renderer: Renderer2
   ) {
-    renderer.addClass(elementRef.nativeElement, 'ant-anchor-link');
+    this.renderer.addClass(elementRef.nativeElement, 'ant-anchor-link');
   }
 
   ngOnInit(): void {
@@ -86,16 +80,20 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
     return this.linkTitle.nativeElement;
   }
 
+  setActive(): void {
+    this.renderer.addClass(this.elementRef.nativeElement, 'ant-anchor-link-active');
+  }
+
+  unsetActive(): void {
+    this.renderer.removeClass(this.elementRef.nativeElement, 'ant-anchor-link-active');
+  }
+
   goToClick(e: Event): void {
     e.preventDefault();
     e.stopPropagation();
     if (this.platform.isBrowser) {
       this.anchorComp.handleScrollTo(this);
     }
-  }
-
-  markForCheck(): void {
-    this.cdr.markForCheck();
   }
 
   ngOnDestroy(): void {

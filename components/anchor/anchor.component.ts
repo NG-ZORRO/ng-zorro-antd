@@ -21,6 +21,7 @@ import {
   OnChanges,
   OnDestroy,
   Output,
+  Renderer2,
   SimpleChanges,
   ViewChild,
   ViewEncapsulation
@@ -61,7 +62,7 @@ const sharpMatcherRegx = /#([^#]+)$/;
       <div class="ant-anchor-wrapper" [ngStyle]="wrapperStyle">
         <div class="ant-anchor" [ngClass]="{ fixed: !nzAffix && !nzShowInkInFixed }">
           <div class="ant-anchor-ink">
-            <div class="ant-anchor-ink-ball" [class.visible]="visible" #ink></div>
+            <div class="ant-anchor-ink-ball" #ink></div>
           </div>
           <ng-content></ng-content>
         </div>
@@ -114,7 +115,8 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
     private scrollSrv: NzScrollService,
     private cdr: ChangeDetectorRef,
     private platform: Platform,
-    private zone: NgZone
+    private zone: NgZone,
+    private renderer: Renderer2
   ) {}
 
   registerLink(link: NzAnchorLinkComponent): void {
@@ -147,11 +149,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
     this.zone.runOutsideAngular(() => {
       fromEvent(this.getContainer(), 'scroll')
         .pipe(throttleTime(50), takeUntil(this.destroy$))
-        .subscribe(() => {
-          this.zone.run(() => {
-            this.handleScroll();
-          });
-        });
+        .subscribe(() => this.handleScroll());
     });
     // Browser would maintain the scrolling position when refreshing.
     // So we have to delay calculation in avoid of getting a incorrect result.
@@ -190,27 +188,35 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
       const maxSection = sections.reduce((prev, curr) => (curr.top > prev.top ? curr : prev));
       this.handleActive(maxSection.comp);
     }
+    this.setVisible();
   }
 
   private clearActive(): void {
     this.links.forEach(i => {
-      i.active = false;
-      i.markForCheck();
+      i.unsetActive();
     });
   }
 
   private handleActive(comp: NzAnchorLinkComponent): void {
     this.clearActive();
-
-    comp.active = true;
-    comp.markForCheck();
-
+    comp.setActive();
     const linkNode = comp.getLinkTitleElement();
     this.ink.nativeElement.style.top = `${linkNode.offsetTop + linkNode.clientHeight / 2 - 4.5}px`;
     this.visible = true;
-    this.cdr.detectChanges();
-
+    this.setVisible();
     this.nzScroll.emit(comp);
+  }
+
+  private setVisible(): void {
+    const visible = this.visible;
+    const visibleClassname = 'visible';
+    if (this.ink) {
+      if (visible) {
+        this.renderer.addClass(this.ink.nativeElement, visibleClassname);
+      } else {
+        this.renderer.removeClass(this.ink.nativeElement, visibleClassname);
+      }
+    }
   }
 
   handleScrollTo(linkComp: NzAnchorLinkComponent): void {
