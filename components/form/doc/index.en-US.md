@@ -62,10 +62,6 @@ Used to separate the item in forms, contains label(optional) and control field.
 
 > All api in [nz-row](/components/grid/zh) can be used in `nz-form-item`.
 
-| Property | Description | Type | Default Value |
-| --- | --- | --- | --- |
-| `[nzFlex]`| display flex | `boolean` | `false` |
-
 ### nz-form-label
 
 The label of the form item, optional.

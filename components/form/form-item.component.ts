@@ -12,14 +12,12 @@ import {
   Component,
   ElementRef,
   Input,
-  OnChanges,
   OnDestroy,
   Renderer2,
-  SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
 
-import { InputBoolean } from 'ng-zorro-antd/core';
+import { warnDeprecation } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
 
 export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validating' | null;
@@ -35,7 +33,7 @@ export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validat
     '[class.ant-form-item-has-success]': 'status === "success"',
     '[class.ant-form-item-has-warning]': 'status === "warning"',
     '[class.ant-form-item-has-error]': 'status === "error"',
-    '[class.ant-form-item-has-validating]': 'status === "validating"',
+    '[class.ant-form-item-is-validating]': 'status === "validating"',
     '[class.ant-form-item-has-feedback]': 'hasFeedback && status',
     '[class.ant-form-item-with-help]': 'withHelpClass'
   },
@@ -43,22 +41,19 @@ export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validat
     <ng-content></ng-content>
   `
 })
-export class NzFormItemComponent implements OnDestroy, OnChanges, OnDestroy {
-  @Input() @InputBoolean() nzFlex: boolean = false;
+export class NzFormItemComponent implements OnDestroy, OnDestroy {
+  /**
+   * @deprecated 10.0.0. 'nzFlex' is deprecated and going to be removed in 10.0.0.
+   */
+  @Input() set nzFlex(_: boolean) {
+    warnDeprecation(`'nzFlex' is deprecated and going to be removed in 10.0.0.`);
+  }
 
   status: NzFormControlStatusType = null;
   hasFeedback = false;
   withHelpClass = false;
 
   private destroy$ = new Subject();
-
-  updateFlexStyle(): void {
-    if (this.nzFlex) {
-      this.renderer.setStyle(this.elementRef.nativeElement, 'display', 'flex');
-    } else {
-      this.renderer.removeStyle(this.elementRef.nativeElement, 'display');
-    }
-  }
 
   setWithHelpViaTips(value: boolean): void {
     this.withHelpClass = value;
@@ -75,14 +70,8 @@ export class NzFormItemComponent implements OnDestroy, OnChanges, OnDestroy {
     this.cdr.markForCheck();
   }
 
-  constructor(private elementRef: ElementRef, private renderer: Renderer2, private cdr: ChangeDetectorRef) {
+  constructor(elementRef: ElementRef, renderer: Renderer2, private cdr: ChangeDetectorRef) {
     renderer.addClass(elementRef.nativeElement, 'ant-form-item');
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.hasOwnProperty('nzFlex')) {
-      this.updateFlexStyle();
-    }
   }
 
   ngOnDestroy(): void {

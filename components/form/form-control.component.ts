@@ -45,7 +45,9 @@ const iconTypeMap = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="ant-form-item-control-input">
-      <ng-content></ng-content>
+      <div class="ant-form-item-control-input-content">
+        <ng-content></ng-content>
+      </div>
       <span class="ant-form-item-children-icon">
         <i *ngIf="nzHasFeedback && iconType" nz-icon [nzType]="iconType"></i>
       </span>
@@ -159,21 +161,18 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
   }
 
   private getInnerTip(status: NzFormControlStatusType): string | TemplateRef<{ $implicit: FormControl | NgModel }> | null {
-    let innerTip: string | TemplateRef<{ $implicit: FormControl | NgModel }> | null;
-
-    if (status === 'error') {
-      innerTip = this.nzErrorTip;
-    } else if (status === 'validating') {
-      innerTip = this.nzValidatingTip;
-    } else if (status === 'success') {
-      innerTip = this.nzSuccessTip;
-    } else if (status === 'warning') {
-      innerTip = this.nzWarningTip;
-    } else {
-      innerTip = null;
+    switch (status) {
+      case 'error':
+        return this.nzErrorTip;
+      case 'validating':
+        return this.nzValidatingTip;
+      case 'success':
+        return this.nzSuccessTip;
+      case 'warning':
+        return this.nzWarningTip;
+      default:
+        return null;
     }
-
-    return innerTip;
   }
 
   constructor(

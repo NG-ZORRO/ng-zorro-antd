@@ -10,8 +10,8 @@ import { NzFormModule } from './form.module';
 const testBedOptions = { imports: [NzFormModule, NoopAnimationsModule, ReactiveFormsModule, FormsModule] };
 const statusMap = {
   warning: 'ant-form-item-has-warning',
-  validating: 'ant-form-item-has-validating',
-  pending: 'ant-form-item-has-validating',
+  validating: 'ant-form-item-is-validating',
+  pending: 'ant-form-item-is-validating',
   error: 'ant-form-item-has-error',
   success: 'ant-form-item-has-success'
 };
