@@ -7,21 +7,21 @@
  */
 
 import { TemplateRef } from '@angular/core';
-import { Subject } from 'rxjs';
 
 import { NgClassInterface, NgStyleInterface } from 'ng-zorro-antd/core';
-import { NzMessageData, NzMessageDataOptions } from 'ng-zorro-antd/message';
+import { Subject } from 'rxjs';
 
-export interface NzNotificationData extends NzMessageData {
+export interface NzNotificationData {
   template?: TemplateRef<{}>;
 
   type?: 'success' | 'info' | 'warning' | 'error' | 'blank' | string;
   title?: string;
+  content?: string | TemplateRef<void>;
 }
 
 export type NzNotificationPosition = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
 
-export interface NzNotificationDataOptions<T = {}> extends NzMessageDataOptions {
+export interface NzNotificationDataOptions<T = {}> {
   nzKey?: string;
   nzStyle?: NgStyleInterface | string;
   nzClass?: NgClassInterface | string;
@@ -30,14 +30,22 @@ export interface NzNotificationDataOptions<T = {}> extends NzMessageDataOptions 
 
   /** Anything user wants renderer into a template. */
   nzData?: T;
+  nzDuration?: number;
+  nzAnimate?: boolean;
+  nzPauseOnHover?: boolean;
 }
 
 // Filled version of NzMessageData (includes more private properties)
-export interface NzNotificationDataFilled extends NzNotificationData {
+export interface NzNotificationDataFilled {
   messageId: string; // Service-wide unique id, auto generated
   createdAt: Date; // Auto created
 
   state?: 'enter' | 'leave';
   options?: NzNotificationDataOptions;
   onClose?: Subject<boolean>;
+  template?: TemplateRef<{}>;
+
+  type?: 'success' | 'info' | 'warning' | 'error' | 'blank' | string;
+  title?: string;
+  content?: string | TemplateRef<void>;
 }

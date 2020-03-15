@@ -6,13 +6,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectorRef, Component, Input, ViewEncapsulation } from '@angular/core';
-
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { notificationMotion } from 'ng-zorro-antd/core';
-import { NzMessageComponent } from 'ng-zorro-antd/message';
-
 import { NzNotificationContainerComponent } from './notification-container.component';
-import { NzNotificationDataFilled } from './typings';
+import { NzNotificationDataFilled, NzNotificationDataOptions } from './typings';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -84,11 +81,93 @@ import { NzNotificationDataFilled } from './typings';
     </div>
   `
 })
-export class NzNotificationComponent extends NzMessageComponent {
+export class NzNotificationComponent implements OnInit, OnDestroy {
   @Input() nzMessage: NzNotificationDataFilled;
+  @Input() nzIndex: number;
 
-  constructor(private container: NzNotificationContainerComponent, protected cdr: ChangeDetectorRef) {
-    super(container, cdr);
+  protected options: Required<NzNotificationDataOptions>;
+
+  // Whether to set a timeout to destroy itself.
+  private autoClose: boolean;
+
+  private eraseTimer: number | null = null;
+  private eraseTimingStart: number;
+  private eraseTTL: number; // Time to live.
+
+  constructor(private nzNotificationContainerComponent: NzNotificationContainerComponent, protected cdr: ChangeDetectorRef) {}
+
+  ngOnInit(): void {
+    // `NzMessageContainer` does its job so all properties cannot be undefined.
+    this.options = this.nzMessage.options as Required<NzNotificationDataOptions>;
+
+    if (this.options.nzAnimate) {
+      this.nzMessage.state = 'enter';
+    }
+
+    this.autoClose = this.options.nzDuration > 0;
+
+    if (this.autoClose) {
+      this.initErase();
+      this.startEraseTimeout();
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.autoClose) {
+      this.clearEraseTimeout();
+    }
+  }
+
+  onEnter(): void {
+    if (this.autoClose && this.options.nzPauseOnHover) {
+      this.clearEraseTimeout();
+      this.updateTTL();
+    }
+  }
+
+  onLeave(): void {
+    if (this.autoClose && this.options.nzPauseOnHover) {
+      this.startEraseTimeout();
+    }
+  }
+
+  // Remove self
+  protected destroy(userAction: boolean = false): void {
+    if (this.options.nzAnimate) {
+      this.nzMessage.state = 'leave';
+      this.cdr.detectChanges();
+      setTimeout(() => this.nzNotificationContainerComponent.removeMessage(this.nzMessage.messageId, userAction), 200);
+    } else {
+      this.nzNotificationContainerComponent.removeMessage(this.nzMessage.messageId, userAction);
+    }
+  }
+
+  private initErase(): void {
+    this.eraseTTL = this.options.nzDuration;
+    this.eraseTimingStart = Date.now();
+  }
+
+  private updateTTL(): void {
+    if (this.autoClose) {
+      this.eraseTTL -= Date.now() - this.eraseTimingStart;
+    }
+  }
+
+  private startEraseTimeout(): void {
+    if (this.eraseTTL > 0) {
+      this.clearEraseTimeout();
+      this.eraseTimer = setTimeout(() => this.destroy(), this.eraseTTL);
+      this.eraseTimingStart = Date.now();
+    } else {
+      this.destroy();
+    }
+  }
+
+  private clearEraseTimeout(): void {
+    if (this.eraseTimer !== null) {
+      clearTimeout(this.eraseTimer);
+      this.eraseTimer = null;
+    }
   }
 
   close(): void {
@@ -97,7 +176,10 @@ export class NzNotificationComponent extends NzMessageComponent {
 
   get state(): string | undefined {
     if (this.nzMessage.state === 'enter') {
-      if (this.container.config.nzPlacement === 'topLeft' || this.container.config.nzPlacement === 'bottomLeft') {
+      if (
+        this.nzNotificationContainerComponent.config.nzPlacement === 'topLeft' ||
+        this.nzNotificationContainerComponent.config.nzPlacement === 'bottomLeft'
+      ) {
         return 'enterLeft';
       } else {
         return 'enterRight';

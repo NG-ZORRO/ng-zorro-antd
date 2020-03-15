@@ -7,27 +7,23 @@
  */
 
 import { Overlay } from '@angular/cdk/overlay';
-import { ApplicationRef, ComponentFactoryResolver, Injectable, Injector, TemplateRef } from '@angular/core';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { Injectable, Injector, TemplateRef } from '@angular/core';
 import { NzSingletonService } from 'ng-zorro-antd/core';
-
-import { NzMessageBaseService } from './base.service';
 import { NzMessageContainerComponent } from './message-container.component';
 import { NzMessageServiceModule } from './message.service.module';
 import { NzMessageData, NzMessageDataFilled, NzMessageDataOptions } from './typings';
 
+let globalCounter = 0;
+
 @Injectable({
   providedIn: NzMessageServiceModule
 })
-export class NzMessageService extends NzMessageBaseService<NzMessageContainerComponent, NzMessageData> {
-  constructor(
-    nzSingletonService: NzSingletonService,
-    overlay: Overlay,
-    injector: Injector,
-    cfr: ComponentFactoryResolver,
-    appRef: ApplicationRef
-  ) {
-    super(nzSingletonService, overlay, NzMessageContainerComponent, injector, cfr, appRef, 'message');
-  }
+export class NzMessageService {
+  private name = 'message-';
+  protected container: NzMessageContainerComponent;
+
+  constructor(private nzSingletonService: NzSingletonService, private overlay: Overlay, private injector: Injector) {}
 
   // Shortcut methods
   success(content: string | TemplateRef<void>, options?: NzMessageDataOptions): NzMessageDataFilled {
@@ -56,5 +52,53 @@ export class NzMessageService extends NzMessageBaseService<NzMessageContainerCom
     options?: NzMessageDataOptions
   ): NzMessageDataFilled {
     return this.createMessage({ type, content }, options);
+  }
+
+  remove(messageId?: string): void {
+    if (messageId) {
+      this.container.removeMessage(messageId);
+    } else {
+      this.container.removeMessageAll();
+    }
+  }
+
+  createMessage(message: NzMessageData, options?: NzMessageDataOptions): NzMessageDataFilled {
+    this.container = this.withContainer();
+    this.nzSingletonService.registerSingletonWithKey(this.name, this.container);
+    const resultMessage: NzMessageDataFilled = {
+      ...(message as NzMessageData),
+      ...{
+        createdAt: new Date(),
+        messageId: this.generateMessageId(),
+        options
+      }
+    };
+    this.container.createMessage(resultMessage);
+
+    return resultMessage;
+  }
+
+  protected generateMessageId(): string {
+    return `${this.name}-${globalCounter++}`;
+  }
+
+  // Manually creating container for overlay to avoid multi-checking error, see: https://github.com/NG-ZORRO/ng-zorro-antd/issues/391
+  // NOTE: we never clean up the container component and it's overlay resources, if we should, we need to do it by our own codes.
+  private withContainer(): NzMessageContainerComponent {
+    const containerInstance = this.nzSingletonService.getSingletonWithKey(this.name);
+
+    if (containerInstance) {
+      return containerInstance as NzMessageContainerComponent;
+    }
+    const overlayRef = this.overlay.create({
+      hasBackdrop: false,
+      scrollStrategy: this.overlay.scrollStrategies.noop(),
+      positionStrategy: this.overlay.position().global()
+    });
+    const componentPortal = new ComponentPortal(NzMessageContainerComponent, null, this.injector);
+    const componentRef = overlayRef.attach(componentPortal);
+    const overlayPane = overlayRef.overlayElement;
+    overlayPane.style.zIndex = '1010'; // Patching: assign the same zIndex of ant-message to it's parent overlay panel, to the ant-message's zindex work.
+    return componentRef.instance;
   }
 }

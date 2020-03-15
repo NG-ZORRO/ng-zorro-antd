@@ -39,6 +39,9 @@ describe('message', () => {
 
   beforeEach(inject([NzMessageService, OverlayContainer], (m: NzMessageService, oc: OverlayContainer) => {
     messageService = m;
+    // need init before testing
+    const message = messageService.success('init');
+    messageService.remove(message.messageId);
     // @ts-ignore
     nzConfigService = messageService.container.nzConfigService;
     if (!overlayContainerElement) {

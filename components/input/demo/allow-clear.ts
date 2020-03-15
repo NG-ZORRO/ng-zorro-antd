@@ -11,7 +11,7 @@ import { Component } from '@angular/core';
     ></ng-template>
     <br />
     <br />
-    <nz-input-group [nzSuffix]="textAreaClearTpl">
+    <nz-input-group [nzSuffix]="textAreaClearTpl" class="ant-input-affix-wrapper-textarea-with-clear-btn">
       <textarea nz-input [(ngModel)]="textValue" placeholder="textarea with clear icon"></textarea>
     </nz-input-group>
     <ng-template #textAreaClearTpl

@@ -19,64 +19,6 @@ title: 资源推荐
 打包 |[Angular CLI](https://cli.angular.io/) | Angular 的配套打包工具
 服务端渲染|[Angular Universal](https://universal.angular.io/) | Angular服务端渲染工具
 
-
-## 设计资源
-
-这里提供 Ant Design 相关设计资源和设计工具的下载，更多设计资源正在整理和完善中。
-
-<div class="resource-cards">
-  <a class="resource-card"
-     target="_blank"
-     href="https://github.com/ant-design/ant-design/releases/download/resource/Ant.Design.Components.3.12.0.sketch">
-    <div class="resource-card-icon">
-      <img width="65" src="https://gw.alipayobjects.com/zos/rmsportal/pKfDZnzocrbAOSzDQOQq.png">
-    </div>
-    <div class="resource-card-content"><span class="resource-card-title">
-        全新 Sketch 组件包
-      </span>
-      <span class="resource-card-description">桌面组件 Sketch 模板包</span>
-    </div>
-  </a>
-  <a class="resource-card"
-     target="_blank"
-     href="http://p.tb.cn/rmsportal_3436_AntDesignMobile_20Template_20V1.0.sketch">
-    <div class="resource-card-icon">
-      <img width="41" src="https://gw.alipayobjects.com/zos/rmsportal/rFMdPVzabtQwxONUuVFr.png">
-    </div>
-    <div class="resource-card-content">
-      <span class="resource-card-title">Mobile Components</span>
-      <span class="resource-card-description">移动组件 Sketch 模板</span>
-    </div>
-  </a>
-  <a class="resource-card" target="_blank" href="http://library.ant.design">
-    <div class="resource-card-icon">
-      <img width="50" src="https://gw.alipayobjects.com/zos/rmsportal/TXrKQUJBTuwSTGimGYYn.png">
-    </div>
-    <div class="resource-card-content">
-      <span class="resource-card-title">Ant Design Library</span>
-      <span class="resource-card-description">一套强大的 Ant Design 的 Axure 部件库</span>
-    </div>
-  </a>
-  <a class="resource-card" target="_blank" href="http://ux.ant.design">
-    <div class="resource-card-icon">
-      <img width="64" src="https://gw.alipayobjects.com/zos/rmsportal/yMULSUQQyhoEGrCXlovN.png">
-    </div>
-    <div class="resource-card-content">
-      <span class="resource-card-title">Ant UX</span>
-      <span class="resource-card-description">一套页面逻辑原型库，帮你梳理页面逻辑</span>
-    </div>
-  </a>
-  <a class="resource-card" target="_blank" href="https://www.antforfigma.com">
-    <div class="resource-card-icon">
-      <img width="65" src="https://antforfigma.com/images/antforfigma-icon.png">
-    </div>
-    <div class="resource-card-content"><span class="resource-card-title">
-        Figma 组件包
-        <span class="resource-card-hot-badge">NEW</span></span>
-      <span class="resource-card-description">在 Figma 使用 Ant Design 进行设计</span>
-    </div>
-  </a>
-</div>    
     
 ## 博客及网站
 
@@ -93,5 +35,4 @@ title: 资源推荐
 - [RxJS 中文社区](https://github.com/RxJS-CN)
 - [Angular官方博客](https://blog.angular.io/)
 - [Angular Weekly Meeting Notes](http://g.co/ng/weekly-notes)
-- [NgFans](http://www.ngfans.net)
 - [Angular News](https://zhuanlan.zhihu.com/angular-news)

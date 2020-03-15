@@ -6,7 +6,6 @@ title: 快速上手
 NG-ZORRO 致力于提供给程序员**愉悦**的开发体验。
 
 <blockquote style="border-color: red;"><p><strong>官方指南假设你已了解关于 HTML、CSS 和 JavaScript 的中级知识，并且已经完全掌握了 Angular 及配套设施的正确开发方式。如果你刚开始学习前端或者 Angular ，将框架作为你的第一步可能不是最好的主意 —— 掌握好基础知识再来吧！</strong></p></blockquote>
-<blockquote><p><a href="https://github.com/NG-ZORRO/today-ng-steps" target="_blank">我们为你准备了一套教程</a>，能够帮助你快速上手 NG-ZORRO。</p></blockquote>
 
 ## 在线演示
 
@@ -21,8 +20,7 @@ NG-ZORRO 致力于提供给程序员**愉悦**的开发体验。
 
 ### 安装脚手架工具
 
-> 使用 `@angular/cli` 前，务必确认 [Node.js](https://nodejs.org/en/) 已经升级到 v12.1 或以上，强烈建议升级至最新版本的 `@angular/cli`。
-> 如果你想了解更多CLI工具链的功能和命令，建议访问 [Angular CLI](https://github.com/angular/angular-cli) 了解更多。
+> 如果你想了解更多CLI工具链的功能和命令，建议访问 [Angular](https://angular.cn/cli) 了解更多。
 
 ```bash
 $ npm install -g @angular/cli
