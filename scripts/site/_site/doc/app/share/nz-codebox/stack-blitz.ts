@@ -264,7 +264,7 @@ export class DemoNgZorroAntdModule {
   `;
   return {
     files: {
-      'angular.json'            : `{
+      'angular.json': `{
       "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
       "version": 1,
       "newProjectRoot": "projects",
@@ -388,34 +388,34 @@ export class DemoNgZorroAntdModule {
       },
       "defaultProject": "demo"
     }`,
-      'src/index.html'          : `<${selector}>loading</${selector}>`,
-      'src/main.ts'             : `${mainCode}`,
+      'src/index.html': `<${selector}>loading</${selector}>`,
+      'src/main.ts': `${mainCode}`,
       'src/app/app.component.ts': `${appComponentCode}`,
       'src/polyfills.ts': `${polyfillCode}`,
-      'src/app/app.module.ts'   : `${appModuleCode}`,
-      'src/app/ng-zorro-antd.module.ts'   : `${demoNgZorroAntdModule}`,
-      'src/styles.css'          : `/* Add application styles & imports to this file! */;`
+      'src/app/app.module.ts': `${appModuleCode}`,
+      'src/app/ng-zorro-antd.module.ts': `${demoNgZorroAntdModule}`,
+      'src/styles.css': `/* Add application styles & imports to this file! */;`
     },
 
-    title       : 'Dynamically Generated Project',
-    description : 'Created with <3 by the StackBlitz SDK!',
-    template    : 'angular-cli',
+    title: 'Dynamically Generated Project',
+    description: 'Created with <3 by the StackBlitz SDK!',
+    template: 'angular-cli',
     dependencies: {
-      'rxjs'                             : '~6.5.2',
-      '@angular/cdk'                     : 'next',
-      '@angular/compiler'                : 'next',
-      '@angular/core'                    : 'next',
-      '@angular/forms'                   : 'next',
-      '@angular/language-service'        : 'next',
-      '@angular/platform-browser'        : 'next',
-      '@angular/platform-browser-dynamic': 'next',
-      '@angular/common'                  : 'next',
-      '@angular/router'                  : 'next',
-      '@angular/animations'              : 'next',
-      '@ant-design/icons-angular'        : 'next',
-      'date-fns'                         : '^2.10.0',
-      'ng-zorro-antd':  `^${version}`
+      rxjs: '~6.5.2',
+      '@angular/cdk': '^9.0.0',
+      '@angular/compiler': '^9.0.0',
+      '@angular/core': '^9.0.0',
+      '@angular/forms': '^9.0.0',
+      '@angular/language-service': '^9.0.0',
+      '@angular/platform-browser': '^9.0.0',
+      '@angular/platform-browser-dynamic': '^9.0.0',
+      '@angular/common': '^9.0.0',
+      '@angular/router': '^9.0.0',
+      '@angular/animations': '^9.0.0',
+      '@ant-design/icons-angular': '9.0.0',
+      'date-fns': '^2.10.0',
+      'ng-zorro-antd': `^${version}`
     },
-    tags        : [ 'stackblitz', 'sdk' ]
+    tags: ['stackblitz', 'sdk']
   };
 };

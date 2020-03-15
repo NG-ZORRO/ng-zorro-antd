@@ -22,7 +22,7 @@ Such features, together with packaging the production version, are covered in th
 ### Installation
 
 We strongly recommended to develop Angular with `@angular/cli`, you can install it with the following commands.
-> Read [the documentation of `Angular CLI`](https://github.com/angular/angular-cli/wiki) to explore more features.
+> Read [the documentation of `Angular`](https://angular.io/cli) to explore more features.
 
 ```bash
 $ npm install -g @angular/cli

@@ -14,11 +14,11 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzMessageContainerComponent } from './message-container.component';
 import { NzMessageComponent } from './message.component';
-import { NzMessageServiceModule } from './message.service.module';
+import { NzMessageService } from './message.service';
 
 @NgModule({
-  imports: [CommonModule, OverlayModule, NzIconModule, NzOutletModule, NzMessageServiceModule],
-  declarations: [NzMessageContainerComponent, NzMessageComponent],
-  entryComponents: [NzMessageContainerComponent, NzMessageComponent]
+  imports: [CommonModule, OverlayModule, NzIconModule, NzOutletModule],
+  providers: [NzMessageService],
+  declarations: [NzMessageContainerComponent, NzMessageComponent]
 })
 export class NzMessageModule {}

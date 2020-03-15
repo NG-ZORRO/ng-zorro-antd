@@ -1486,7 +1486,6 @@ const TEST_DIRECTIVES = [
 @NgModule({
   imports: [NzModalModule],
   exports: TEST_DIRECTIVES,
-  declarations: TEST_DIRECTIVES,
-  entryComponents: [TestWithModalContentComponent]
+  declarations: TEST_DIRECTIVES
 })
 class TestModalModule {}

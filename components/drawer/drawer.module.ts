@@ -20,7 +20,6 @@ import { NzDrawerServiceModule } from './drawer.service.module';
 @NgModule({
   imports: [CommonModule, OverlayModule, PortalModule, NzIconModule, NzOutletModule, NzNoAnimationModule, NzDrawerServiceModule],
   exports: [NzDrawerComponent],
-  declarations: [NzDrawerComponent],
-  entryComponents: [NzDrawerComponent]
+  declarations: [NzDrawerComponent]
 })
 export class NzDrawerModule {}

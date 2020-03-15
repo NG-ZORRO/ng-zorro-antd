@@ -40,7 +40,7 @@ Following the Ant Design specification, we developed an Angular UI library `ng-z
 
 ## Version
 
-[![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
+[![npm next package](https://img.shields.io/npm/v/ng-zorro-antd/next.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 
 ## Angular Support
 
