@@ -12,7 +12,7 @@ import { Subject } from 'rxjs';
 import { NotificationConfig, NzConfigService, toCssPixel } from 'ng-zorro-antd/core';
 import { NzMessageContainerComponent } from 'ng-zorro-antd/message';
 
-import { NzNotificationDataFilled, NzNotificationDataOptions } from './nz-notification.definitions';
+import { NzNotificationDataFilled, NzNotificationDataOptions } from './typings';
 
 const NZ_CONFIG_COMPONENT_NAME = 'notification';
 
@@ -32,7 +32,20 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
   selector: 'nz-notification-container',
   exportAs: 'nzNotificationContainer',
   preserveWhitespaces: false,
-  templateUrl: './nz-notification-container.component.html'
+  template: `
+    <div class="ant-notification ant-notification-topLeft" [style.top]="top" [style.left]="'0px'">
+      <nz-notification *ngFor="let message of topLeftMessages" [nzMessage]="message"></nz-notification>
+    </div>
+    <div class="ant-notification ant-notification-topRight" [style.top]="top" [style.right]="'0px'">
+      <nz-notification *ngFor="let message of topRightMessages" [nzMessage]="message"></nz-notification>
+    </div>
+    <div class="ant-notification ant-notification-bottomLeft" [style.bottom]="bottom" [style.left]="'0px'">
+      <nz-notification *ngFor="let message of bottomLeftMessages" [nzMessage]="message"></nz-notification>
+    </div>
+    <div class="ant-notification ant-notification-bottomRight" [style.bottom]="bottom" [style.right]="'0px'">
+      <nz-notification *ngFor="let message of bottomRightMessages" [nzMessage]="message"></nz-notification>
+    </div>
+  `
 })
 export class NzNotificationContainerComponent extends NzMessageContainerComponent {
   config: Required<NotificationConfig>;
@@ -47,6 +60,22 @@ export class NzNotificationContainerComponent extends NzMessageContainerComponen
     super(cdr, nzConfigService);
   }
 
+  get topLeftMessages(): Array<Required<NzNotificationDataFilled>> {
+    return this.messages.filter(m => m.options.nzPosition === 'topLeft');
+  }
+
+  get topRightMessages(): Array<Required<NzNotificationDataFilled>> {
+    return this.messages.filter(m => m.options.nzPosition === 'topRight' || !m.options.nzPosition);
+  }
+
+  get bottomLeftMessages(): Array<Required<NzNotificationDataFilled>> {
+    return this.messages.filter(m => m.options.nzPosition === 'bottomLeft');
+  }
+
+  get bottomRightMessages(): Array<Required<NzNotificationDataFilled>> {
+    return this.messages.filter(m => m.options.nzPosition === 'bottomRight');
+  }
+
   /**
    * Create a new notification.
    * If there's a notification whose `nzKey` is same with `nzKey` in `NzNotificationDataFilled`,
@@ -55,7 +84,7 @@ export class NzNotificationContainerComponent extends NzMessageContainerComponen
    * @param notification
    */
   createMessage(notification: NzNotificationDataFilled): void {
-    notification.options = this._mergeMessageOptions(notification.options);
+    notification.options = this.mergeMessageOptions(notification.options);
     notification.onClose = new Subject<boolean>();
     const key = notification.options.nzKey;
     const notificationWithSameKey = this.messages.find(
@@ -82,10 +111,9 @@ export class NzNotificationContainerComponent extends NzMessageContainerComponen
       ...this.config,
       ...this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME)
     });
-    const placement = this.config.nzPlacement;
 
-    this.top = placement === 'topLeft' || placement === 'topRight' ? toCssPixel(newConfig.nzTop) : null;
-    this.bottom = placement === 'bottomLeft' || placement === 'bottomRight' ? toCssPixel(newConfig.nzBottom) : null;
+    this.top = toCssPixel(newConfig.nzTop);
+    this.bottom = toCssPixel(newConfig.nzBottom);
 
     this.cdr.markForCheck();
   }
@@ -94,9 +122,7 @@ export class NzNotificationContainerComponent extends NzMessageContainerComponen
    * @override
    */
   protected subscribeConfigChange(): void {
-    this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
-      .subscribe(() => this.updateConfig());
+    this.nzConfigService.getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME).subscribe(() => this.updateConfig());
   }
 
   private replaceNotification(old: NzNotificationDataFilled, _new: NzNotificationDataFilled): void {

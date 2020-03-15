@@ -1,28 +1,30 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeOutline } from '@ant-design/icons-angular/icons';
 
-import { dispatchMouseEvent, NZ_CONFIG, NzConfig, NzConfigService } from 'ng-zorro-antd/core';
+import { dispatchMouseEvent, NZ_CONFIG, NzConfigService } from 'ng-zorro-antd/core';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
 import { NZ_ICONS } from 'ng-zorro-antd/icon';
 
-import { NzNotificationModule } from './nz-notification.module';
-import { NzNotificationService } from './nz-notification.service';
+import { NzNotificationModule } from './notification.module';
+import { NzNotificationService } from './notification.service';
 
 @Component({
   template: `
     <ng-template let-data="data">{{ 'test template content' }}{{ data }}</ng-template>
   `
 })
-export class DemoAppComponent {
+export class NzTestNotificationComponent {
   @ViewChild(TemplateRef, { static: true }) demoTemplateRef: TemplateRef<{}>;
 }
 
 describe('NzNotification', () => {
+  let testBed: ComponentBed<NzTestNotificationComponent>;
   let notificationService: NzNotificationService;
   let overlayContainerElement: HTMLElement;
-  let fixture: ComponentFixture<DemoAppComponent>;
+  let fixture: ComponentFixture<NzTestNotificationComponent>;
   let nzConfigService: NzConfigService;
 
   function waitForNotificationToggling(): void {
@@ -32,37 +34,35 @@ describe('NzNotification', () => {
   }
 
   beforeEach(fakeAsync(() => {
-    const NOTIFICATION_CONFIG: NzConfig['notification'] = {
-      nzMaxStack: 2
-    };
-
-    TestBed.configureTestingModule({
+    testBed = createComponentBed(NzTestNotificationComponent, {
       imports: [NzNotificationModule, NoopAnimationsModule],
-      declarations: [DemoAppComponent],
       providers: [
         {
           provide: NZ_ICONS,
           useValue: [HomeOutline]
         },
-        { provide: NZ_CONFIG, useValue: { notification: NOTIFICATION_CONFIG } }
-      ] // Override default config
+        {
+          provide: NZ_CONFIG,
+          useValue: {
+            notification: {
+              nzMaxStack: 2
+            }
+          }
+        }
+      ]
     });
 
-    TestBed.compileComponents();
+    fixture = testBed.fixture;
   }));
 
   beforeEach(inject([NzNotificationService, OverlayContainer], (n: NzNotificationService, oc: OverlayContainer) => {
     notificationService = n;
     // @ts-ignore
-    nzConfigService = notificationService._container.nzConfigService;
+    nzConfigService = notificationService.container.nzConfigService;
     if (!overlayContainerElement) {
       overlayContainerElement = oc.getContainerElement();
     }
   }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(DemoAppComponent);
-  });
 
   afterEach(() => {
     notificationService.remove();
@@ -155,14 +155,14 @@ describe('NzNotification', () => {
       expect(overlayContainerElement.textContent).toContain(content);
       if (id === 3) {
         expect(overlayContainerElement.textContent).not.toContain('SUCCESS-1');
-        expect((notificationService as any)._container.messages.length).toBe(2); // tslint:disable-line:no-any
+        expect((notificationService as any).container.messages.length).toBe(2); // tslint:disable-line:no-any
       }
     });
 
     notificationService.remove();
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).not.toContain('SUCCESS-3');
-    expect((notificationService as any)._container.messages.length).toBe(0); // tslint:disable-line:no-any
+    expect((notificationService as any).container.messages.length).toBe(0); // tslint:disable-line:no-any
   }));
 
   it('should destroy without animation', fakeAsync(() => {
@@ -226,15 +226,15 @@ describe('NzNotification', () => {
     nzConfigService.set('notification', { nzTop: 48 });
     notificationService.create('', '', 'TEST TOP', { nzDuration: 3000 });
     waitForNotificationToggling();
-    const notificationContainer = overlayContainerElement.querySelector('.ant-notification') as HTMLElement;
-    expect(notificationContainer.style.top).toBe('48px');
-    expect(notificationContainer.style.bottom).toBeFalsy();
+    const notificationContainers = overlayContainerElement.querySelectorAll('.ant-notification') as NodeListOf<HTMLDivElement>;
+    expect(notificationContainers[0].style.top).toBe('48px');
+    expect(notificationContainers[0].style.bottom).toBeFalsy();
 
     nzConfigService.set('notification', { nzPlacement: 'bottomLeft', nzBottom: '48px' });
     notificationService.create('', '', 'TEST BOTTOM');
     waitForNotificationToggling();
-    expect(notificationContainer.style.top).toBeFalsy();
-    expect(notificationContainer.style.bottom).toBe('48px');
+    expect(notificationContainers[3].style.top).toBeFalsy();
+    expect(notificationContainers[3].style.bottom).toBe('48px');
 
     waitForNotificationToggling();
   }));

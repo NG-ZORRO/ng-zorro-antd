@@ -1,35 +1,39 @@
 import { Component } from '@angular/core';
-import { NzConfigService } from 'ng-zorro-antd/core';
-import { NzNotificationService } from 'ng-zorro-antd/notification';
+import { NzNotificationPosition, NzNotificationService } from 'ng-zorro-antd/notification';
 
 @Component({
   selector: 'nz-demo-notification-placement',
   template: `
-    <nz-select [(ngModel)]="placement" style="width: 120px; margin-right: 10px;" (ngModelChange)="clearBeforeNotifications()">
-      <nz-option nzValue="topLeft" nzLabel="topLeft"></nz-option>
-      <nz-option nzValue="topRight" nzLabel="topRight"></nz-option>
-      <nz-option nzValue="bottomLeft" nzLabel="bottomLeft"></nz-option>
-      <nz-option nzValue="bottomRight" nzLabel="bottomRight"></nz-option>
-    </nz-select>
-    <button nz-button [nzType]="'primary'" (click)="createBasicNotification()">Open the notification box</button>
-  `
+    <button nz-button (click)="createBasicNotification('topLeft')" nzType="primary"><i nz-icon nzType="radius-upleft"></i> topLeft</button>
+    <button nz-button (click)="createBasicNotification('topRight')" nzType="primary">
+      <i nz-icon nzType="radius-upright"></i> topRight
+    </button>
+    <nz-divider></nz-divider>
+    <button nz-button (click)="createBasicNotification('bottomLeft')" nzType="primary">
+      <i nz-icon nzType="radius-bottomleft"></i> bottomLeft
+    </button>
+    <button nz-button (click)="createBasicNotification('bottomRight')" nzType="primary">
+      <i nz-icon nzType="radius-bottomright"></i> bottomRight
+    </button>
+  `,
+  styles: [
+    `
+      button {
+        margin-right: 1em;
+      }
+    `
+  ]
 })
 export class NzDemoNotificationPlacementComponent {
   placement = 'topRight';
 
-  clearBeforeNotifications(): void {
-    this.notification.remove();
-  }
-
-  createBasicNotification(): void {
-    this.configService.set('notification', {
-      nzPlacement: this.placement
-    });
+  createBasicNotification(position: NzNotificationPosition): void {
     this.notification.blank(
       'Notification Title',
-      'This is the content of the notification. This is the content of the notification. This is the content of the notification.'
+      'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+      { nzPosition: position }
     );
   }
 
-  constructor(private notification: NzNotificationService, private configService: NzConfigService) {}
+  constructor(private notification: NzNotificationService) {}
 }

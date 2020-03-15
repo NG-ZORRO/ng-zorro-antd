@@ -6,11 +6,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { MessageConfig, NzConfigService, toCssPixel } from 'ng-zorro-antd/core';
-import { NzMessageDataFilled, NzMessageDataOptions } from './nz-message.definitions';
+import { takeUntil } from 'rxjs/operators';
+import { NzMessageDataFilled, NzMessageDataOptions } from './typings';
 
 const NZ_CONFIG_COMPONENT_NAME = 'message';
 const NZ_MESSAGE_DEFAULT_CONFIG: Required<MessageConfig> = {
@@ -27,9 +28,14 @@ const NZ_MESSAGE_DEFAULT_CONFIG: Required<MessageConfig> = {
   selector: 'nz-message-container',
   exportAs: 'nzMessageContainer',
   preserveWhitespaces: false,
-  templateUrl: './nz-message-container.component.html'
+  template: `
+    <div class="ant-message" [style.top]="top">
+      <nz-message *ngFor="let message of messages" [nzMessage]="message"></nz-message>
+    </div>
+  `
 })
-export class NzMessageContainerComponent implements OnInit {
+export class NzMessageContainerComponent implements OnInit, OnDestroy {
+  destroy$ = new Subject<void>();
   messages: NzMessageDataFilled[] = [];
   config: Required<MessageConfig>;
   top: string | null;
@@ -42,17 +48,22 @@ export class NzMessageContainerComponent implements OnInit {
     this.subscribeConfigChange();
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   /**
    * Create a new message.
    * @param message Parsed message configuration.
    */
   createMessage(message: NzMessageDataFilled): void {
     if (this.messages.length >= this.config.nzMaxStack) {
-      this.messages.splice(0, 1);
+      this.messages = this.messages.slice(1);
     }
-    message.options = this._mergeMessageOptions(message.options);
+    message.options = this.mergeMessageOptions(message.options);
     message.onClose = new Subject<boolean>();
-    this.messages.push(message);
+    this.messages = [...this.messages, message];
     this.cdr.detectChanges();
   }
 
@@ -65,6 +76,7 @@ export class NzMessageContainerComponent implements OnInit {
     this.messages.some((message, index) => {
       if (message.messageId === messageId) {
         this.messages.splice(index, 1);
+        this.messages = [...this.messages];
         this.cdr.detectChanges();
         message.onClose!.next(userAction);
         message.onClose!.complete();
@@ -89,7 +101,10 @@ export class NzMessageContainerComponent implements OnInit {
   }
 
   protected subscribeConfigChange(): void {
-    this.nzConfigService.getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME).subscribe(() => this.updateConfig());
+    this.nzConfigService
+      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.updateConfig());
   }
 
   protected updateConfigFromConfigService(): Required<MessageConfig> {
@@ -104,7 +119,7 @@ export class NzMessageContainerComponent implements OnInit {
    * Merge default options and custom message options
    * @param options
    */
-  protected _mergeMessageOptions(options?: NzMessageDataOptions): NzMessageDataOptions {
+  protected mergeMessageOptions(options?: NzMessageDataOptions): NzMessageDataOptions {
     const defaultOptions: NzMessageDataOptions = {
       nzDuration: this.config.nzDuration,
       nzAnimate: this.config.nzAnimate,
