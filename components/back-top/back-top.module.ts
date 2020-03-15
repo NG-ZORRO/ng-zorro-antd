@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { SCROLL_SERVICE_PROVIDER } from 'ng-zorro-antd/core';
 
-import { NzBackTopComponent } from './nz-back-top.component';
+import { NzBackTopComponent } from './back-top.component';
 
 @NgModule({
   declarations: [NzBackTopComponent],
