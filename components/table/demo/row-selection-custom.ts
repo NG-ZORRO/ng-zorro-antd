@@ -10,16 +10,14 @@ interface ItemData {
 @Component({
   selector: 'nz-demo-table-row-selection-custom',
   template: `
-    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfAllData" (nzCurrentPageDataChange)="currentPageDataChange($event)">
+    <nz-table #rowSelectionTable nzShowSizeChanger [nzData]="listOfData" (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
       <thead>
         <tr>
           <th
-            nzShowCheckbox
-            nzShowRowSelection
             [nzSelections]="listOfSelection"
-            [(nzChecked)]="isAllDisplayDataChecked"
-            [nzIndeterminate]="isIndeterminate"
-            (nzCheckedChange)="checkAll($event)"
+            [(nzChecked)]="checked"
+            [nzIndeterminate]="indeterminate"
+            (nzCheckedChange)="onAllChecked($event)"
           ></th>
           <th>Name</th>
           <th>Age</th>
@@ -28,7 +26,7 @@ interface ItemData {
       </thead>
       <tbody>
         <tr *ngFor="let data of rowSelectionTable.data">
-          <td nzShowCheckbox [(nzChecked)]="mapOfCheckedId[data.id]" (nzCheckedChange)="refreshStatus()"></td>
+          <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
           <td>{{ data.name }}</td>
           <td>{{ data.age }}</td>
           <td>{{ data.address }}</td>
@@ -42,53 +40,66 @@ export class NzDemoTableRowSelectionCustomComponent implements OnInit {
     {
       text: 'Select All Row',
       onSelect: () => {
-        this.checkAll(true);
+        this.onAllChecked(true);
       }
     },
     {
       text: 'Select Odd Row',
       onSelect: () => {
-        this.listOfDisplayData.forEach((data, index) => (this.mapOfCheckedId[data.id] = index % 2 !== 0));
-        this.refreshStatus();
+        this.listOfCurrentPageData.forEach((data, index) => this.updateCheckedSet(data.id, index % 2 !== 0));
+        this.refreshCheckedStatus();
       }
     },
     {
       text: 'Select Even Row',
       onSelect: () => {
-        this.listOfDisplayData.forEach((data, index) => (this.mapOfCheckedId[data.id] = index % 2 === 0));
-        this.refreshStatus();
+        this.listOfCurrentPageData.forEach((data, index) => this.updateCheckedSet(data.id, index % 2 === 0));
+        this.refreshCheckedStatus();
       }
     }
   ];
-  isAllDisplayDataChecked = false;
-  isIndeterminate = false;
-  listOfDisplayData: ItemData[] = [];
-  listOfAllData: ItemData[] = [];
-  mapOfCheckedId: { [key: string]: boolean } = {};
+  checked = false;
+  indeterminate = false;
+  listOfCurrentPageData: ItemData[] = [];
+  listOfData: ItemData[] = [];
+  setOfCheckedId = new Set<number>();
 
-  currentPageDataChange($event: ItemData[]): void {
-    this.listOfDisplayData = $event;
-    this.refreshStatus();
+  updateCheckedSet(id: number, checked: boolean): void {
+    if (checked) {
+      this.setOfCheckedId.add(id);
+    } else {
+      this.setOfCheckedId.delete(id);
+    }
   }
 
-  refreshStatus(): void {
-    this.isAllDisplayDataChecked = this.listOfDisplayData.every(item => this.mapOfCheckedId[item.id]);
-    this.isIndeterminate = this.listOfDisplayData.some(item => this.mapOfCheckedId[item.id]) && !this.isAllDisplayDataChecked;
+  onItemChecked(id: number, checked: boolean): void {
+    this.updateCheckedSet(id, checked);
+    this.refreshCheckedStatus();
   }
 
-  checkAll(value: boolean): void {
-    this.listOfDisplayData.forEach(item => (this.mapOfCheckedId[item.id] = value));
-    this.refreshStatus();
+  onAllChecked(value: boolean): void {
+    this.listOfCurrentPageData.forEach(item => this.updateCheckedSet(item.id, value));
+    this.refreshCheckedStatus();
+  }
+
+  onCurrentPageDataChange($event: ItemData[]): void {
+    this.listOfCurrentPageData = $event;
+    this.refreshCheckedStatus();
+  }
+
+  refreshCheckedStatus(): void {
+    this.checked = this.listOfCurrentPageData.every(item => this.setOfCheckedId.has(item.id));
+    this.indeterminate = this.listOfCurrentPageData.some(item => this.setOfCheckedId.has(item.id)) && !this.checked;
   }
 
   ngOnInit(): void {
-    for (let i = 0; i < 100; i++) {
-      this.listOfAllData.push({
-        id: i,
-        name: `Edward King ${i}`,
+    this.listOfData = new Array(200).fill(0).map((_, index) => {
+      return {
+        id: index,
+        name: `Edward King ${index}`,
         age: 32,
-        address: `London, Park Lane no. ${i}`
-      });
-    }
+        address: `London, Park Lane no. ${index}`
+      };
+    });
   }
 }

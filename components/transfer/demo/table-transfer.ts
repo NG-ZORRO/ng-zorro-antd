@@ -26,7 +26,6 @@ import { TransferChange, TransferItem } from 'ng-zorro-antd/transfer';
           <thead>
             <tr>
               <th
-                nzShowCheckbox
                 [nzDisabled]="disabled"
                 [nzChecked]="stat.checkAll"
                 [nzIndeterminate]="stat.checkHalf"
@@ -39,12 +38,7 @@ import { TransferChange, TransferItem } from 'ng-zorro-antd/transfer';
           </thead>
           <tbody>
             <tr *ngFor="let data of t.data" (click)="onItemSelect(data)">
-              <td
-                nzShowCheckbox
-                [nzChecked]="data.checked"
-                [nzDisabled]="disabled || data.disabled"
-                (nzCheckedChange)="onItemSelect(data)"
-              ></td>
+              <td [nzChecked]="data.checked" [nzDisabled]="disabled || data.disabled" (nzCheckedChange)="onItemSelect(data)"></td>
               <td>{{ data.title }}</td>
               <td *ngIf="direction === 'left'">
                 <nz-tag>{{ data.tag }}</nz-tag>

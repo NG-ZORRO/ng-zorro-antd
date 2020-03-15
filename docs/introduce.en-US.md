@@ -44,7 +44,7 @@ Following the Ant Design specification, we developed an Angular UI library `ng-z
 
 ## Angular Support
 
-Now Supports Angular `^8.0.0`.
+Now Supports Angular `^9.0.0`.
 
 ## Design Specification
 

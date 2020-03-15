@@ -45,7 +45,7 @@ title: Ant Design of Angular
 
 ## 支持 Angular 版本
 
-目前支持 Angular `^8.0.0` 版本。
+目前支持 Angular `^9.0.0` 版本。
 
 ## 设计规范
 

@@ -1,43 +1,37 @@
 import { Component } from '@angular/core';
 
-interface Data {
+interface DataItem {
   name: string;
   age: number;
   address: string;
+}
 
-  // tslint:disable-next-line:no-any
-  [key: string]: any;
+interface OptionItem {
+  byDefault?: boolean;
+  text: string;
+  value: string;
 }
 
 @Component({
   selector: 'nz-demo-table-reset-filter',
   template: `
     <div class="table-operations">
-      <button nz-button (click)="sort('age', 'descend')">Sort age</button>
+      <button nz-button (click)="sortByAge()">Sort age</button>
       <button nz-button (click)="resetFilters()">Clear filters</button>
       <button nz-button (click)="resetSortAndFilters()">Clear filters and sorters</button>
     </div>
-    <nz-table #filterTable [nzData]="listOfDisplayData">
+    <nz-table #filterTable [nzData]="listOfData" nzTableLayout="fixed">
       <thead>
         <tr>
-          <th
-            nzShowSort
-            nzShowFilter
-            [(nzSort)]="mapOfSort.name"
-            (nzSortChange)="sort('name', $event)"
-            [nzFilters]="listOfFilterName"
-            (nzFilterChange)="search($event, listOfSearchAddress)"
-          >
+          <th [(nzSortOrder)]="nameSortOrder" [nzSortFn]="sortNameFn" [nzFilters]="listOfFilterName" [nzFilterFn]="nameFilterFn">
             Name
           </th>
-          <th nzShowSort [(nzSort)]="mapOfSort.age" (nzSortChange)="sort('age', $event)">Age</th>
+          <th [(nzSortOrder)]="ageSortOrder" [nzSortFn]="sortAgeFn">Age</th>
           <th
-            nzShowSort
-            nzShowFilter
-            [(nzSort)]="mapOfSort.address"
-            (nzSortChange)="sort('address', $event)"
+            [(nzSortOrder)]="addressSortOrder"
+            [nzSortFn]="sortAddressLengthFn"
             [nzFilters]="listOfFilterAddress"
-            (nzFilterChange)="search(listOfSearchName, $event)"
+            [nzFilterFn]="addressFilterFn"
           >
             Address
           </th>
@@ -65,17 +59,23 @@ interface Data {
   ]
 })
 export class NzDemoTableResetFilterComponent {
-  listOfSearchName: string[] = [];
-  listOfSearchAddress: string[] = [];
-  listOfFilterName = [
+  sortNameFn = (a: DataItem, b: DataItem) => a.name.localeCompare(b.name);
+  sortAgeFn = (a: DataItem, b: DataItem) => a.age - b.age;
+  sortAddressLengthFn = (a: DataItem, b: DataItem) => a.address.length - b.address.length;
+  nameFilterFn = (list: string[], item: DataItem) => list.some(name => item.name.indexOf(name) !== -1);
+  addressFilterFn = (address: string, item: DataItem) => item.address.indexOf(address) !== -1;
+  nameSortOrder: string | null = null;
+  ageSortOrder: string | null = null;
+  addressSortOrder: string | null = null;
+  listOfFilterName: OptionItem[] = [
     { text: 'Joe', value: 'Joe' },
     { text: 'Jim', value: 'Jim' }
   ];
-  listOfFilterAddress = [
+  listOfFilterAddress: OptionItem[] = [
     { text: 'London', value: 'London' },
     { text: 'Sidney', value: 'Sidney' }
   ];
-  listOfData: Data[] = [
+  listOfData: DataItem[] = [
     {
       name: 'John Brown',
       age: 32,
@@ -97,38 +97,11 @@ export class NzDemoTableResetFilterComponent {
       address: 'London No. 2 Lake Park'
     }
   ];
-  listOfDisplayData = [...this.listOfData];
-  mapOfSort: { [key: string]: string | null } = {
-    name: null,
-    age: null,
-    address: null
-  };
-  sortName: string | null = null;
-  sortValue: string | null = null;
 
-  sort(sortName: string, value: string): void {
-    this.sortName = sortName;
-    this.sortValue = value;
-    for (const key in this.mapOfSort) {
-      this.mapOfSort[key] = key === sortName ? value : null;
-    }
-    this.search(this.listOfSearchName, this.listOfSearchAddress);
-  }
-
-  search(listOfSearchName: string[], listOfSearchAddress: string[]): void {
-    this.listOfSearchName = listOfSearchName;
-    this.listOfSearchAddress = listOfSearchAddress;
-    const filterFunc = (item: Data) =>
-      (this.listOfSearchAddress.length ? this.listOfSearchAddress.some(address => item.address.indexOf(address) !== -1) : true) &&
-      (this.listOfSearchName.length ? this.listOfSearchName.some(name => item.name.indexOf(name) !== -1) : true);
-    const listOfData = this.listOfData.filter((item: Data) => filterFunc(item));
-    if (this.sortName && this.sortValue) {
-      this.listOfDisplayData = listOfData.sort((a, b) =>
-        this.sortValue === 'ascend' ? (a[this.sortName!] > b[this.sortName!] ? 1 : -1) : b[this.sortName!] > a[this.sortName!] ? 1 : -1
-      );
-    } else {
-      this.listOfDisplayData = listOfData;
-    }
+  sortByAge(): void {
+    this.nameSortOrder = null;
+    this.ageSortOrder = 'descend';
+    this.addressSortOrder = null;
   }
 
   resetFilters(): void {
@@ -140,20 +113,12 @@ export class NzDemoTableResetFilterComponent {
       { text: 'London', value: 'London' },
       { text: 'Sidney', value: 'Sidney' }
     ];
-    this.listOfSearchName = [];
-    this.listOfSearchAddress = [];
-    this.search(this.listOfSearchName, this.listOfSearchAddress);
   }
 
   resetSortAndFilters(): void {
-    this.sortName = null;
-    this.sortValue = null;
-    this.mapOfSort = {
-      name: null,
-      age: null,
-      address: null
-    };
+    this.nameSortOrder = null;
+    this.ageSortOrder = null;
+    this.addressSortOrder = null;
     this.resetFilters();
-    this.search(this.listOfSearchName, this.listOfSearchAddress);
   }
 }
