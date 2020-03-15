@@ -21,41 +21,64 @@ import { NzListModule } from 'ng-zorro-antd/list';
 
 | Property | Description | Type | Default
 | --- | --- | --- | --- |
-| `[nzDataSource]` | Data source for list | `any[]` | - |
-| `[nzRenderItem]` | Custom item renderer | `TemplateRef<void>` | - |
 | `[nzBordered]` | Toggles rendering of the border around the list | `boolean` | `false` |
 | `[nzFooter]` | List footer renderer | `string \| TemplateRef<void>` | - |
-| `[nzGrid]` | The grid type of list. You can set grid to something like `{gutter: 16, column: 4}` | `object` | - |
 | `[nzHeader]` | List header renderer | `string \| TemplateRef<void>` | - |
 | `[nzItemLayout]` | The layout of list, default is `horizontal`, If a vertical list is desired, set the itemLayout property to `vertical` | `'vertical' \| 'horizontal'` | `'horizontal'` |
 | `[nzLoading]` | Shows a loading indicator while the contents of the list are being fetched | `boolean` | `false` |
-| `[nzLoadMore]` | Shows a load more content | `TemplateRef<void>` | - |
-| `[nzNoResult]` | Specify content to show when list is empty | `string`  \|  `TemplateRef<void>` | - |
-| `[nzPagination]` | Shows a pagination content | `TemplateRef<void>` | - |
 | `[nzSize]` | Size of list | `'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzSplit]` | Toggles rendering of the split under the list item | `boolean` | `true` |
 
-#### nzGrid
+### nz-list-empty
+
+Empty content component for the list.
 
 | Property | Description | Type | Default
 | --- | --- | --- | --- |
-| column | column of grid | `number` | - |
-| gutter | spacing between grid | `number` | `0` |
-| xs | `<576px` column of grid | `number` | - |
-| sm | `≥576px` column of grid | `number` | - |
-| md | `≥768px` column of grid | `number` | - |
-| lg | `≥992px` column of grid | `number` | - |
-| xl | `≥1200px` column of grid | `number` | - |
-| xxl | `≥1600px` column of grid | `number` | - |
+| `[nzNoResult]` | Empty content | `string \| TemplateRef<void>` | - |
+
+### nz-list[nzGrid]
+
+Use grid layout for the list.
+
+
+### nz-list-header
+
+Header component for the list.
+
+### nz-list-footer
+
+Footer component for the list.
+
+### nz-list-pagination
+
+Pagination component for the list.
+
+### nz-list-load-more
+
+Load more component for the list.
+
+---
 
 ### nz-list-item
 
 | Property | Description | Type | Default
 | --- | --- | --- | --- |
-| `[nzContent]` | content renderer | `string \| TemplateRef<void>` | - |
-| `[nzActions]` | The actions content of list item. If `itemLayout` is `vertical`, shows the content on bottom, otherwise shows content on the far right. | `Array<TemplateRef<void>>` | - |
-| `[nzExtra]` | The extra content of list item. If `itemLayout` is `vertical`, shows the content on right, otherwise shows content on the far right. | `TemplateRef<void>` | - |
 | `[nzNoFlex]` | Whether it's not `flex` layout rendering | `boolean` | `false` |
+
+#### ul[nz-list-item-actions]
+
+Actions container component for the list items.
+
+#### nz-list-item-action
+
+Action component for the list items.
+
+#### nz-list-item-extra
+
+Extra content for the list items.
+
+---
 
 ### nz-list-item-meta
 
@@ -64,3 +87,15 @@ import { NzListModule } from 'ng-zorro-antd/list';
 | `[nzAvatar]` | The avatar of list item | `string \| TemplateRef<void>` | - |
 | `[nzDescription]` | The description of list item | `string \| TemplateRef<void>` | - |
 | `[nzTitle]` | The title of list item | `string \| TemplateRef<void>` | - |
+
+#### nz-list-item-meta-title
+
+Title component for the list items meta part.
+
+#### nz-list-item-meta-description
+
+Description component for the list items meta part.
+
+#### nz-list-item-meta-avatar
+
+Avatar component for the list items meta part.
