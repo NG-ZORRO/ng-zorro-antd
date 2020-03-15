@@ -8,7 +8,7 @@ import { By } from '@angular/platform-browser';
 import { dispatchFakeEvent } from 'ng-zorro-antd/core';
 import { NzI18nModule } from '../i18n/nz-i18n.module';
 
-import { NzTimeValueAccessorDirective } from './nz-time-value-accessor.directive';
+import { NzTimeValueAccessorDirective } from './time-value-accessor.directive';
 
 registerLocaleData(zh);
 

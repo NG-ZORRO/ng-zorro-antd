@@ -15,9 +15,9 @@ import { NzOverlayModule } from 'ng-zorro-antd/core';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-import { NzTimePickerPanelComponent } from './nz-time-picker-panel.component';
-import { NzTimePickerComponent } from './nz-time-picker.component';
-import { NzTimeValueAccessorDirective } from './nz-time-value-accessor.directive';
+import { NzTimePickerPanelComponent } from './time-picker-panel.component';
+import { NzTimePickerComponent } from './time-picker.component';
+import { NzTimeValueAccessorDirective } from './time-value-accessor.directive';
 
 @NgModule({
   declarations: [NzTimePickerComponent, NzTimePickerPanelComponent, NzTimeValueAccessorDirective],
