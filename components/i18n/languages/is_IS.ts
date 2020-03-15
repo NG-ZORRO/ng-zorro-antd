@@ -42,7 +42,8 @@ export default {
     uploading: 'Hleð upp...',
     removeFile: 'Fjarlægja skrá',
     uploadError: 'Villa við að hlaða upp',
-    previewFile: 'Forskoða skrá'
+    previewFile: 'Forskoða skrá',
+    downloadFile: 'Hlaða niður skrá'
   },
   Empty: {
     description: 'Engin gögn'

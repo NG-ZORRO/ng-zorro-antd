@@ -42,7 +42,8 @@ export default {
     uploading: 'מעלה...',
     removeFile: 'הסר קובץ',
     uploadError: 'שגיאת העלאה',
-    previewFile: 'הצג קובץ'
+    previewFile: 'הצג קובץ',
+    downloadFile: 'הורד קובץ'
   },
   Empty: {
     description: 'אין מידע'

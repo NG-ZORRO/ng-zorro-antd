@@ -43,7 +43,8 @@ export default {
     uploading: 'Feltöltés...',
     removeFile: 'Fájl eltávolítása',
     uploadError: 'Feltöltési hiba',
-    previewFile: 'Fájl előnézet'
+    previewFile: 'Fájl előnézet',
+    downloadFile: 'Fájl letöltése'
   },
   Empty: {
     description: 'Nincs adat'

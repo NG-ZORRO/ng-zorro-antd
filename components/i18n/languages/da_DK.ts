@@ -42,7 +42,8 @@ export default {
     uploading: 'Uploader...',
     removeFile: 'Fjern fil',
     uploadError: 'Fejl ved upload',
-    previewFile: 'Forhåndsvisning'
+    previewFile: 'Forhåndsvisning',
+    downloadFile: 'Download fil'
   },
   Empty: {
     description: 'Ingen data'

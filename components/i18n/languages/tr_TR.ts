@@ -47,7 +47,8 @@ export default {
     uploading: 'Yükleniyor...',
     removeFile: `Dosyayı kaldır`,
     uploadError: 'Yükleme Hatası',
-    previewFile: `Dosyayı Önizle`
+    previewFile: `Dosyayı Önizle`,
+    downloadFile: 'Dosyayı indir'
   },
   Empty: {
     description: 'Veri Yok'

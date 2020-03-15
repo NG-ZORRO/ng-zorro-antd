@@ -44,7 +44,8 @@ export default {
     uploading: 'Mengunggah...',
     removeFile: 'Hapus file',
     uploadError: 'Kesalahan pengunggahan',
-    previewFile: 'File pratinjau'
+    previewFile: 'File pratinjau',
+    downloadFile: 'Unduh berkas'
   },
   Empty: {
     description: 'Tidak ada data'

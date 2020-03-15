@@ -43,7 +43,8 @@ export default {
     uploading: 'अपलोड गर्दै...',
     removeFile: 'फाइल हटाउनुहोस्',
     uploadError: 'अप्लोडमा समस्या भयो',
-    previewFile: 'फाइल पूर्वावलोकन गर्नुहोस्'
+    previewFile: 'फाइल पूर्वावलोकन गर्नुहोस्',
+    downloadFile: 'डाउनलोड फाइल'
   },
   Empty: {
     description: 'डाटा छैन'
