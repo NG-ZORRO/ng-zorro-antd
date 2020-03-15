@@ -44,7 +44,7 @@ import { takeUntil } from 'rxjs/operators';
   selector: 'nz-tree-node',
   exportAs: 'nzTreeNode',
   template: `
-    <div #dragElement role="treeitem" [ngClass]="nzNodeClass">
+    <div #dragElement role="treeitem" [ngClass]="nzNodeClass" [style.display]="displayStyle">
       <nz-tree-indent
         [nzTreeLevel]="nzTreeNode.level"
         [nzPrefixCls]="prefixCls"
@@ -124,7 +124,7 @@ import { takeUntil } from 'rxjs/operators';
               <i nz-icon *ngIf="nzIcon" [nzType]="nzIcon"></i>
             </span>
           </span>
-          <span class="ant-tree-title" [innerHTML]="nzTreeNode.title | nzHighlight: nzSearchValue:'':'font-highlight'"> </span>
+          <span class="ant-tree-title" [innerHTML]="nzTreeNode.title | nzHighlight: matchedValue:'':'font-highlight'"> </span>
         </ng-container>
       </span>
     </div>
@@ -190,6 +190,21 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * default set
    */
+  get displayStyle(): string {
+    // to hide unmatched nodes
+    return this.nzSearchValue &&
+      this.nzHideUnMatched &&
+      !this.nzTreeNode.isMatched &&
+      !this.nzTreeNode.isExpanded &&
+      this.nzTreeNode.canHide
+      ? 'none'
+      : '';
+  }
+
+  get matchedValue(): string {
+    return this.nzTreeNode.isMatched ? this.nzSearchValue : '';
+  }
+
   get nzIcon(): string {
     return this.nzTreeNode.icon;
   }

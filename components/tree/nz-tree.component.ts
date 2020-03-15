@@ -149,6 +149,8 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
 
   @Input() nzSearchValue: string;
 
+  @Input() nzSearchFunc: (node: NzTreeNodeOptions) => boolean;
+
   /**
    * To render nodes if root is changed.
    */
@@ -231,6 +233,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
 
   /**
    * Render all properties of nzTree
+   * @param changes: all changes from @Input
    */
   renderTreeProperties(changes: { [propertyName: string]: SimpleChange }): void {
     let useDefaultExpandedKeys = false;
@@ -270,7 +273,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
     if (nzSearchValue) {
       if (!(nzSearchValue.firstChange && !this.nzSearchValue)) {
         useDefaultExpandedKeys = false;
-        this.handleSearchValue(this.nzSearchValue);
+        this.handleSearchValue(this.nzSearchValue, this.nzSearchFunc);
         this.nzSearchValueChange.emit(this.nzTreeService.formatEvent('search', null, null));
       }
     }
@@ -310,14 +313,21 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
     this.nzTreeService.conductSelectedKeys(keys, isMulti);
   }
 
-  handleSearchValue(value: string): void {
+  handleSearchValue(value: string, searchFunc?: (node: NzTreeNodeOptions) => boolean): void {
     const dataList = flattenTreeData(this.nzNodes, true).map(v => v.data);
+    const checkIfMatched = (node: NzTreeNode): boolean => {
+      if (searchFunc) {
+        return searchFunc(node.origin);
+      }
+      return !value || !node.title.includes(value) ? false : true;
+    };
     dataList.forEach(v => {
-      v.isMatched = !value || !v.key.includes(value) ? false : true;
-      if (!value || !v.key.includes(value)) {
+      v.isMatched = checkIfMatched(v);
+      v.canHide = !v.isMatched;
+      if (!v.isMatched) {
         v.setExpanded(false);
         this.nzTreeService.setExpandedNodeList(v);
-      } else if (v.key.includes(value)) {
+      } else {
         // expand
         this.nzTreeService.expandNodeAllParentBySearch(v);
       }
@@ -325,7 +335,11 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
     });
   }
 
-  // Handle emit event
+  /**
+   * Handle emit event
+   * @param event
+   * handle each event
+   */
   eventTriggerChanged(event: NzFormatEmitEvent): void {
     const node = event.node!;
     switch (event.eventName) {
@@ -386,7 +400,6 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
 
   /**
    * Click expand icon
-   * @param event
    */
   renderTree(): void {
     this.handleFlattenNodes(

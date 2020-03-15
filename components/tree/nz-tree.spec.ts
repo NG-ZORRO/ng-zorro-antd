@@ -132,14 +132,52 @@ describe('NzTestTreeBasicControlledComponent', () => {
       const { component, fixture, nativeElement } = testBed;
       component.searchValue = '0-0-1';
       fixture.detectChanges();
-      // will expand 0-1, 0-0-1
+      // will expand 0-0 only
       const expandedNodes = nativeElement.querySelectorAll('.ant-tree-switcher_open');
       const matchedNodes = nativeElement.querySelectorAll('.font-highlight');
-      expect(expandedNodes.length).toEqual(2);
+      expect(expandedNodes.length).toEqual(1);
       expect(matchedNodes.length).toEqual(1);
       tick(300);
       fixture.detectChanges();
       expect(component.treeComponent.getMatchedNodeList().length).toEqual(1);
+    }));
+
+    it('should match nodes based on nzSearchFunc', fakeAsync(() => {
+      const { component, fixture, nativeElement } = testBed;
+      component.searchFunc = (data: NzTreeNodeOptions): boolean => {
+        return data.title === component.searchValue;
+      };
+      component.searchValue = '0-0';
+      fixture.detectChanges();
+      let expandedNodes = nativeElement.querySelectorAll('.ant-tree-switcher_open');
+      let matchedNodes = nativeElement.querySelectorAll('.font-highlight');
+      expect(expandedNodes.length).toEqual(0);
+      expect(matchedNodes.length).toEqual(1);
+      tick(300);
+      fixture.detectChanges();
+      expect(component.treeComponent.getMatchedNodeList().length).toEqual(1);
+
+      component.searchValue = '0-0-';
+      fixture.detectChanges();
+      expandedNodes = nativeElement.querySelectorAll('.ant-tree-switcher_open');
+      matchedNodes = nativeElement.querySelectorAll('.font-highlight');
+      expect(expandedNodes.length).toEqual(0);
+      expect(matchedNodes.length).toEqual(0);
+    }));
+
+    it('should keep parent expanded state of matched nodes based on nzHideUnMatched', fakeAsync(() => {
+      const { component, fixture, nativeElement } = testBed;
+      component.hideUnMatched = true;
+      fixture.detectChanges();
+      component.searchValue = '0-0-1';
+      fixture.detectChanges();
+      // will expand 0-0 but not matched
+      const node = nativeElement.querySelector('span.ant-tree-switcher')!;
+      dispatchMouseEvent(node, 'click');
+      fixture.detectChanges();
+      // 0-1 0-2 hidden, others are not shown because not expanded
+      const hiddenNodes = nativeElement.querySelectorAll('div[style*="display: none;"]');
+      expect(hiddenNodes.length).toEqual(2);
     }));
   });
 
@@ -466,6 +504,8 @@ describe('NzTestTreeDraggableComponent', () => {
       [nzSelectedKeys]="defaultSelectedKeys"
       [nzMultiple]="multiple"
       [nzSearchValue]="searchValue"
+      [nzSearchFunc]="searchFunc"
+      [nzHideUnMatched]="hideUnMatched"
       [nzExpandAll]="expandAll"
       [nzExpandedIcon]="expandedIcon"
       [nzAsyncData]="asyncData"
@@ -494,7 +534,8 @@ export class NzTestTreeBasicControlledComponent {
   defaultSelectedKeys: string[] = [];
   defaultExpandedKeys: string[] = [];
   expandedIcon: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
-
+  searchFunc: (node: NzTreeNodeOptions) => boolean;
+  hideUnMatched = false;
   nodes: NzTreeNodeOptions[] | NzTreeNode[] = [
     {
       title: '0-0',

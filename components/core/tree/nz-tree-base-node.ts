@@ -60,6 +60,7 @@ export class NzTreeNode {
   private _isHalfChecked: boolean;
   private _isSelected: boolean;
   private _isLoading: boolean;
+  canHide: boolean;
   isMatched: boolean;
 
   service: NzTreeBaseService | null;
@@ -73,6 +74,12 @@ export class NzTreeNode {
     return this.service || (this.parentNode && this.parentNode.treeService);
   }
 
+  /**
+   * Init nzTreeNode
+   * @param option: user's input
+   * @param parent
+   * @param service: base nzTreeService
+   */
   constructor(option: NzTreeNodeOptions | NzTreeNode, parent: NzTreeNode | null = null, service: NzTreeBaseService | null = null) {
     if (option instanceof NzTreeNode) {
       return option;

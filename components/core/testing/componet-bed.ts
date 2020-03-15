@@ -32,7 +32,6 @@ export function createComponentBed<T>(
     providers: providers || []
   };
   const bed = TestBed.configureTestingModule(config);
-
   const fixture = TestBed.createComponent<T>(component);
   fixture.detectChanges();
   return {

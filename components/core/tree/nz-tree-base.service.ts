@@ -524,6 +524,7 @@ export class NzTreeBaseService {
   expandNodeAllParentBySearch(node: NzTreeNode): void {
     const calc = (n: NzTreeNode | null): void => {
       if (n) {
+        n.canHide = false;
         n.setExpanded(true);
         this.setExpandedNodeList(n);
         if (n.getParentNode()) {
@@ -531,6 +532,6 @@ export class NzTreeBaseService {
         }
       }
     };
-    calc(node);
+    calc(node.getParentNode());
   }
 }
