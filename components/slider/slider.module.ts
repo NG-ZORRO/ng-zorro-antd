@@ -10,11 +10,11 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
-import { NzSliderHandleComponent } from './nz-slider-handle.component';
-import { NzSliderMarksComponent } from './nz-slider-marks.component';
-import { NzSliderStepComponent } from './nz-slider-step.component';
-import { NzSliderTrackComponent } from './nz-slider-track.component';
-import { NzSliderComponent } from './nz-slider.component';
+import { NzSliderHandleComponent } from './handle.component';
+import { NzSliderMarksComponent } from './marks.component';
+import { NzSliderComponent } from './slider.component';
+import { NzSliderStepComponent } from './step.component';
+import { NzSliderTrackComponent } from './track.component';
 
 @NgModule({
   exports: [NzSliderComponent, NzSliderTrackComponent, NzSliderHandleComponent, NzSliderStepComponent, NzSliderMarksComponent],

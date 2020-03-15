@@ -10,20 +10,19 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   Input,
   OnChanges,
-  OnDestroy,
   SimpleChanges,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { Subscription } from 'rxjs';
 
 import { InputBoolean, NgStyleInterface } from 'ng-zorro-antd/core';
 import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
 
-import { SliderShowTooltip } from './nz-slider-definitions';
-import { NzSliderComponent } from './nz-slider.component';
+import { NzSliderService } from './slider.service';
+import { NzSliderShowTooltip } from './typings';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,58 +30,67 @@ import { NzSliderComponent } from './nz-slider.component';
   selector: 'nz-slider-handle',
   exportAs: 'nzSliderHandle',
   preserveWhitespaces: false,
-  templateUrl: './nz-slider-handle.component.html',
+  template: `
+    <div
+      #handle
+      class="ant-slider-handle"
+      tabindex="0"
+      nz-tooltip
+      [ngStyle]="style"
+      [nzTooltipTitle]="tooltipFormatter === null || tooltipVisible === 'never' ? null : tooltipTitle"
+      [nzTooltipTrigger]="null"
+      [nzTooltipPlacement]="tooltipPlacement"
+    ></div>
+  `,
   host: {
     '(mouseenter)': 'enterHandle()',
     '(mouseleave)': 'leaveHandle()'
   }
 })
-export class NzSliderHandleComponent implements OnChanges, OnDestroy {
+export class NzSliderHandleComponent implements OnChanges {
+  @ViewChild('handle', { static: false }) handleEl: ElementRef;
   @ViewChild(NzTooltipDirective, { static: false }) tooltip: NzTooltipDirective;
 
-  @Input() nzVertical: string;
-  @Input() nzOffset: number;
-  @Input() nzValue: number;
-  @Input() nzTooltipVisible: SliderShowTooltip = 'default';
-  @Input() nzTooltipPlacement: string;
-  @Input() nzTipFormatter: (value: number) => string;
-  @Input() @InputBoolean() nzActive = false;
+  @Input() vertical: string;
+  @Input() offset: number;
+  @Input() value: number;
+  @Input() tooltipVisible: NzSliderShowTooltip = 'default';
+  @Input() tooltipPlacement: string;
+  @Input() tooltipFormatter: (value: number) => string;
+  @Input() @InputBoolean() active = false;
 
   tooltipTitle: string;
   style: NgStyleInterface = {};
 
-  private hovers_ = new Subscription();
-
-  constructor(private sliderComponent: NzSliderComponent, private cdr: ChangeDetectorRef) {}
+  constructor(private sliderService: NzSliderService, private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzOffset, nzValue, nzActive, nzTooltipVisible } = changes;
+    const { offset, value, active, tooltipVisible } = changes;
 
-    if (nzOffset) {
+    if (offset) {
       this.updateStyle();
     }
-    if (nzValue) {
+
+    if (value) {
       this.updateTooltipTitle();
       this.updateTooltipPosition();
     }
-    if (nzActive) {
-      if (nzActive.currentValue) {
+
+    if (active) {
+      if (active.currentValue) {
         this.toggleTooltip(true);
       } else {
         this.toggleTooltip(false);
       }
     }
-    if (nzTooltipVisible && nzTooltipVisible.currentValue === 'always') {
+
+    if (tooltipVisible && tooltipVisible.currentValue === 'always') {
       Promise.resolve().then(() => this.toggleTooltip(true, true));
     }
   }
 
-  ngOnDestroy(): void {
-    this.hovers_.unsubscribe();
-  }
-
   enterHandle = () => {
-    if (!this.sliderComponent.isDragging) {
+    if (!this.sliderService.isDragging) {
       this.toggleTooltip(true);
       this.updateTooltipPosition();
       this.cdr.detectChanges();
@@ -90,14 +98,18 @@ export class NzSliderHandleComponent implements OnChanges, OnDestroy {
   };
 
   leaveHandle = () => {
-    if (!this.sliderComponent.isDragging) {
+    if (!this.sliderService.isDragging) {
       this.toggleTooltip(false);
       this.cdr.detectChanges();
     }
   };
 
+  focus(): void {
+    this.handleEl.nativeElement.focus();
+  }
+
   private toggleTooltip(show: boolean, force: boolean = false): void {
-    if (!force && (this.nzTooltipVisible !== 'default' || !this.tooltip)) {
+    if (!force && (this.tooltipVisible !== 'default' || !this.tooltip)) {
       return;
     }
 
@@ -109,7 +121,7 @@ export class NzSliderHandleComponent implements OnChanges, OnDestroy {
   }
 
   private updateTooltipTitle(): void {
-    this.tooltipTitle = this.nzTipFormatter ? this.nzTipFormatter(this.nzValue) : `${this.nzValue}`;
+    this.tooltipTitle = this.tooltipFormatter ? this.tooltipFormatter(this.value) : `${this.value}`;
   }
 
   private updateTooltipPosition(): void {
@@ -119,7 +131,10 @@ export class NzSliderHandleComponent implements OnChanges, OnDestroy {
   }
 
   private updateStyle(): void {
-    this.style[this.nzVertical ? 'bottom' : 'left'] = `${this.nzOffset}%`;
+    this.style = {
+      [this.vertical ? 'bottom' : 'left']: `${this.offset}%`,
+      transform: this.vertical ? null : 'translateX(-50%)'
+    };
     this.cdr.markForCheck();
   }
 }

@@ -10,7 +10,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, Vi
 
 import { InputBoolean } from 'ng-zorro-antd/core';
 
-import { DisplayedStep, ExtendedMark } from './nz-slider-definitions';
+import { NzDisplayedStep, NzExtendedMark } from './typings';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -18,34 +18,44 @@ import { DisplayedStep, ExtendedMark } from './nz-slider-definitions';
   selector: 'nz-slider-step',
   exportAs: 'nzSliderStep',
   preserveWhitespaces: false,
-  templateUrl: './nz-slider-step.component.html'
+  template: `
+    <div class="ant-slider-step">
+      <span
+        class="ant-slider-dot"
+        *ngFor="let mark of steps; trackBy: trackById"
+        [class.ant-slider-dot-active]="mark.active"
+        [ngStyle]="mark.style"
+      >
+      </span>
+    </div>
+  `
 })
 export class NzSliderStepComponent implements OnChanges {
-  @Input() nzLowerBound: number | null = null;
-  @Input() nzUpperBound: number | null = null;
-  @Input() nzMarksArray: ExtendedMark[];
-  @Input() @InputBoolean() nzVertical = false;
-  @Input() @InputBoolean() nzIncluded = false;
+  @Input() lowerBound: number | null = null;
+  @Input() upperBound: number | null = null;
+  @Input() marksArray: NzExtendedMark[];
+  @Input() @InputBoolean() vertical = false;
+  @Input() @InputBoolean() included = false;
 
-  steps: DisplayedStep[];
+  steps: NzDisplayedStep[];
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzMarksArray) {
+    if (changes.marksArray) {
       this.buildSteps();
     }
-    if (changes.nzMarksArray || changes.nzLowerBound || changes.nzUpperBound) {
+    if (changes.marksArray || changes.lowerBound || changes.upperBound) {
       this.togglePointActive();
     }
   }
 
-  trackById(_index: number, step: DisplayedStep): number {
+  trackById(_index: number, step: NzDisplayedStep): number {
     return step.value;
   }
 
   private buildSteps(): void {
-    const orient = this.nzVertical ? 'bottom' : 'left';
+    const orient = this.vertical ? 'bottom' : 'left';
 
-    this.steps = this.nzMarksArray.map(mark => {
+    this.steps = this.marksArray.map(mark => {
       const { value, offset, config } = mark;
 
       return {
@@ -61,12 +71,11 @@ export class NzSliderStepComponent implements OnChanges {
   }
 
   private togglePointActive(): void {
-    if (this.steps && this.nzLowerBound !== null && this.nzUpperBound !== null) {
+    if (this.steps && this.lowerBound !== null && this.upperBound !== null) {
       this.steps.forEach(step => {
         const value = step.value;
         const isActive =
-          (!this.nzIncluded && value === this.nzUpperBound) ||
-          (this.nzIncluded && value <= this.nzUpperBound! && value >= this.nzLowerBound!);
+          (!this.included && value === this.upperBound) || (this.included && value <= this.upperBound! && value >= this.lowerBound!);
         step.active = isActive;
       });
     }
