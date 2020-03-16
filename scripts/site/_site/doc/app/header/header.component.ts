@@ -57,8 +57,8 @@ const RESPONSIVE_SM = 1200;
                      style="max-width: 126px;"
                      [ngModel]="currentVersion"
                      (ngModelChange)="onChangeVersion($event)">
-            <nz-option *ngFor="let version of oldVersionList" [nzLabel]="version" [nzValue]="version"></nz-option>
             <nz-option [nzLabel]="currentVersion" [nzValue]="currentVersion"></nz-option>
+            <nz-option *ngFor="let version of oldVersionList" [nzLabel]="version" [nzValue]="version"></nz-option>
           </nz-select>
           <button nz-button
                   nzSize="small"
@@ -74,15 +74,15 @@ export class HeaderComponent implements OnChanges {
 
   @Input() language: 'zh' | 'en' = 'zh';
   @Input() windowWidth = 1400;
-  @Input() page:'docs' | 'components' | 'experimental' | string = 'docs'
-  @Output() versionChange = new EventEmitter<string>()
-  @Output() languageChange = new EventEmitter<string>()
+  @Input() page: 'docs' | 'components' | 'experimental' | string = 'docs';
+  @Output() versionChange = new EventEmitter<string>();
+  @Output() languageChange = new EventEmitter<string>();
 
   searching = false;
   isMobile = false;
   mode = 'horizontal';
   responsive: null | 'narrow' | 'crowded' = null;
-  oldVersionList = ['0.5.x', '0.6.x', '0.7.x', '1.8.x', '7.5.x'];
+  oldVersionList = ['7.5.x', '1.8.x', '0.7.x', '0.5.x'];
   currentVersion = VERSION.full;
 
   onChangeVersion(version: string): void {
