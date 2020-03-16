@@ -12,14 +12,14 @@ import { NgModule } from '@angular/core';
 import { NzOutletModule } from 'ng-zorro-antd/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
-import { NzTabBodyComponent } from './nz-tab-body.component';
-import { NzTabLabelDirective } from './nz-tab-label.directive';
-import { NzTabLinkDirective } from './nz-tab-link.directive';
-import { NzTabComponent } from './nz-tab.component';
-import { NzTabDirective } from './nz-tab.directive';
-import { NzTabsInkBarDirective } from './nz-tabs-ink-bar.directive';
-import { NzTabsNavComponent } from './nz-tabs-nav.component';
-import { NzTabSetComponent } from './nz-tabset.component';
+import { NzTabBodyComponent } from './tab-body.component';
+import { NzTabLabelDirective } from './tab-label.directive';
+import { NzTabLinkDirective } from './tab-link.directive';
+import { NzTabComponent } from './tab.component';
+import { NzTabDirective } from './tab.directive';
+import { NzTabsInkBarDirective } from './tabs-ink-bar.directive';
+import { NzTabsNavComponent } from './tabs-nav.component';
+import { NzTabSetComponent } from './tabset.component';
 
 @NgModule({
   declarations: [
