@@ -123,9 +123,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class FooterComponent implements OnInit {
 
   @Input() language: string = 'zh';
-  @Input() colorHex: string = '#1890ff'
+  @Input() colorHex: string = '#1890ff';
   // tslint:disable-next-line:no-any
-  @Output() colorChange = new EventEmitter<any>()
+  @Output() colorChange = new EventEmitter<any>();
 
   constructor() {
   }

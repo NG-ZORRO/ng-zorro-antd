@@ -30,7 +30,7 @@ export class SearchbarComponent {
   @ViewChild('searchInput') searchInput: ElementRef<HTMLInputElement>;
   @Input() language: 'zh' | 'en' = 'zh';
   @Input() responsive: null | 'narrow' | 'crowded';
-  @Output() focusChange = new EventEmitter<boolean>()
+  @Output() focusChange = new EventEmitter<boolean>();
 
   focused = false;
 
