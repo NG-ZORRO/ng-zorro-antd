@@ -1,5 +1,5 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "../release",
@@ -9,8 +9,7 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "inlineSources": true,
-    "lib": ["es2015", "dom"],
-    "module": "es2015",
+    "lib": ["es2018", "dom"],
     "moduleResolution": "node",
     "sourceMap": true,
     "strictFunctionTypes": true,

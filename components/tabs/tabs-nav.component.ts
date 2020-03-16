@@ -29,24 +29,77 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { InputBoolean, NzDomEventService, pxToNumber } from 'ng-zorro-antd/core';
+import { InputBoolean, NzDomEventService, NzSizeLDSType, pxToNumber } from 'ng-zorro-antd/core';
 import { merge, of as observableOf, Subject, Subscription } from 'rxjs';
 import { finalize, startWith, takeUntil } from 'rxjs/operators';
 
-import { NzTabLabelDirective } from './nz-tab-label.directive';
-import { NzTabsInkBarDirective } from './nz-tabs-ink-bar.directive';
-import { NzTabPositionMode } from './nz-tabset.component';
+import { NzTabLabelDirective } from './tab-label.directive';
+import { NzTabPosition, NzTabPositionMode } from './table.types';
+import { NzTabsInkBarDirective } from './tabs-ink-bar.directive';
 
 const EXAGGERATED_OVERSCROLL = 64;
 export type ScrollDirection = 'after' | 'before';
 
 @Component({
-  selector: '[nz-tabs-nav]',
+  selector: 'nz-tabs-nav',
   exportAs: 'nzTabsNav',
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  templateUrl: './nz-tabs-nav.component.html'
+  template: `
+    <div style="float:right;" *ngIf="nzTabBarExtraContent" class="ant-tabs-extra-content">
+      <ng-template [ngTemplateOutlet]="nzTabBarExtraContent"></ng-template>
+    </div>
+    <div class="ant-tabs-nav-container" [class.ant-tabs-nav-container-scrolling]="showPaginationControls" #navContainerElement>
+      <span
+        class="ant-tabs-tab-prev"
+        (click)="scrollHeader('before')"
+        [class.ant-tabs-tab-btn-disabled]="disableScrollBefore"
+        [class.ant-tabs-tab-arrow-show]="showPaginationControls"
+      >
+        <span class="ant-tabs-tab-prev-icon">
+          <i nz-icon [nzType]="nzPositionMode === 'horizontal' ? 'left' : 'up'" class="ant-tabs-tab-prev-icon-target"></i>
+        </span>
+      </span>
+      <span
+        class="ant-tabs-tab-next"
+        (click)="scrollHeader('after')"
+        [class.ant-tabs-tab-btn-disabled]="disableScrollAfter"
+        [class.ant-tabs-tab-arrow-show]="showPaginationControls"
+      >
+        <span class="ant-tabs-tab-next-icon">
+          <i nz-icon [nzType]="nzPositionMode === 'horizontal' ? 'right' : 'down'" class="ant-tabs-tab-next-icon-target"></i>
+        </span>
+      </span>
+      <div class="ant-tabs-nav-wrap">
+        <div class="ant-tabs-nav-scroll" #scrollListElement>
+          <div class="ant-tabs-nav" [class.ant-tabs-nav-animated]="nzAnimated" #navListElement (cdkObserveContent)="onContentChanges()">
+            <div>
+              <ng-content></ng-content>
+            </div>
+            <div
+              nz-tabs-ink-bar
+              [hidden]="nzHideBar"
+              [nzAnimated]="nzAnimated"
+              [nzPositionMode]="nzPositionMode"
+              style="display: block;"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `,
+  host: {
+    '[class.ant-tabs-bar]': 'true',
+    '[class.ant-tabs-card-bar]': `nzType === 'card'`,
+    '[class.ant-tabs-top-bar]': `nzTabPosition === 'top'`,
+    '[class.ant-tabs-bottom-bar]': `nzTabPosition === 'bottom'`,
+    '[class.ant-tabs-left-bar]': `nzTabPosition === 'left'`,
+    '[class.ant-tabs-right-bar]': `nzTabPosition === 'right'`,
+    '[class.ant-tabs-small-bar]': `nzSize === 'small'`,
+    '[class.ant-tabs-default-bar]': `nzSize === 'default'`,
+    '[class.ant-tabs-large-bar]': `nzSize === 'large'`
+  }
 })
 export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit, OnDestroy {
   private _tabPositionMode: NzTabPositionMode = 'horizontal';
@@ -74,6 +127,8 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
   @Input() @InputBoolean() nzHideBar = false;
   @Input() @InputBoolean() nzShowPagination = true;
   @Input() nzType = 'line';
+  @Input() nzSize: NzSizeLDSType;
+  @Input() nzTabPosition: NzTabPosition = 'top';
 
   @Input()
   set nzPositionMode(value: NzTabPositionMode) {

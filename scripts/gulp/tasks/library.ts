@@ -6,11 +6,7 @@ import { copyStylesToSrc } from '../../build/migration-styles';
 import { execNodeTask } from '../util/task-helpers';
 
 /** Run `ng build ng-zorro-antd-lib` */
-task('library:build-zorro', execNodeTask(
-  '@angular/cli',
-  'ng',
-  [ 'build', 'ng-zorro-antd-lib' ]
-));
+task('library:build-zorro', execNodeTask('@angular/cli', 'ng', ['build', 'ng-zorro-antd-lib']));
 
 // Compile less to the public directory.
 task('library:compile-less', done => {
@@ -22,14 +18,9 @@ task('library:compile-less', done => {
 
 // Copies README.md file to the public directory.
 task('library:copy-resources', () => {
-  return src([
-    join(buildConfig.projectDir, 'README.md'),
-    join(buildConfig.componentsDir, 'dark-theme.js')
-  ])
-  .pipe(dest(join(buildConfig.publishDir)))
+  return src([join(buildConfig.projectDir, 'README.md'), join(buildConfig.componentsDir, 'dark-theme.js')]).pipe(
+    dest(join(buildConfig.publishDir))
+  );
 });
 
-task('build:library', series(
-  'library:build-zorro',
-  parallel('library:compile-less', 'library:copy-resources', 'build:schematics')
-));
+task('build:library', series('library:build-zorro', parallel('library:compile-less', 'library:copy-resources', 'build:schematics')));

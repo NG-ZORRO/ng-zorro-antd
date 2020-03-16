@@ -11,7 +11,6 @@
 import {
   AfterContentChecked,
   AfterContentInit,
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -32,12 +31,10 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/router';
-import { merge, Observable, Subject, Subscription } from 'rxjs';
 
 import {
   InputBoolean,
   NzConfigService,
-  NzFourDirectionType,
   NzSizeLDSType,
   NzUpdateHostClassService,
   PREFIX,
@@ -45,26 +42,11 @@ import {
   WithConfig,
   wrapIntoObservable
 } from 'ng-zorro-antd/core';
+import { merge, Subject, Subscription } from 'rxjs';
 import { filter, first, startWith, takeUntil } from 'rxjs/operators';
-
-import { NzTabComponent } from './nz-tab.component';
-import { NzTabsNavComponent } from './nz-tabs-nav.component';
-
-export interface NzAnimatedInterface {
-  inkBar: boolean;
-  tabPane: boolean;
-}
-
-export class NzTabChangeEvent {
-  index: number;
-  tab: NzTabComponent;
-}
-
-export type NzTabsCanDeactivateFn = (fromIndex: number, toIndex: number) => Observable<boolean> | Promise<boolean> | boolean;
-
-export type NzTabPosition = NzFourDirectionType;
-export type NzTabPositionMode = 'horizontal' | 'vertical';
-export type NzTabType = 'line' | 'card';
+import { NzTabComponent } from './tab.component';
+import { NzAnimatedInterface, NzTabChangeEvent, NzTabPosition, NzTabPositionMode, NzTabsCanDeactivateFn, NzTabType } from './table.types';
+import { NzTabsNavComponent } from './tabs-nav.component';
 
 const NZ_CONFIG_COMPONENT_NAME = 'tabs';
 
@@ -75,16 +57,61 @@ const NZ_CONFIG_COMPONENT_NAME = 'tabs';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [NzUpdateHostClassService],
-  templateUrl: './nz-tabset.component.html',
-  styles: [
-    `
-      nz-tabset {
-        display: block;
-      }
-    `
-  ]
+  template: `
+    <ng-container *ngIf="listOfNzTabComponent">
+      <nz-tabs-nav
+        role="tablist"
+        tabindex="0"
+        [nzSize]="nzSize"
+        [nzTabPosition]="nzTabPosition"
+        [nzType]="nzType"
+        [nzShowPagination]="nzShowPagination"
+        [nzPositionMode]="tabPositionMode"
+        [nzAnimated]="inkBarAnimated"
+        [ngStyle]="nzTabBarStyle"
+        [nzHideBar]="nzHideAll"
+        [nzTabBarExtraContent]="nzTabBarExtraContent"
+        [selectedIndex]="nzSelectedIndex"
+        (nzOnNextClick)="nzOnNextClick.emit()"
+        (nzOnPrevClick)="nzOnPrevClick.emit()"
+      >
+        <div
+          nz-tab-label
+          role="tab"
+          [style.margin-right.px]="nzTabBarGutter"
+          [class.ant-tabs-tab-active]="nzSelectedIndex == i && !nzHideAll"
+          [disabled]="tab.nzDisabled"
+          (click)="clickLabel(i, tab.nzDisabled)"
+          *ngFor="let tab of listOfNzTabComponent; let i = index"
+        >
+          <ng-container *nzStringTemplateOutlet="tab.nzTitle || tab.title">{{ tab.nzTitle }}</ng-container>
+        </div>
+      </nz-tabs-nav>
+      <div
+        #tabContent
+        class="ant-tabs-content"
+        [class.ant-tabs-top-content]="nzTabPosition === 'top'"
+        [class.ant-tabs-bottom-content]="nzTabPosition === 'bottom'"
+        [class.ant-tabs-left-content]="nzTabPosition === 'left'"
+        [class.ant-tabs-right-content]="nzTabPosition === 'right'"
+        [class.ant-tabs-content-animated]="tabPaneAnimated"
+        [class.ant-tabs-card-content]="nzType === 'card'"
+        [class.ant-tabs-content-no-animated]="!tabPaneAnimated"
+        [style.margin-left.%]="tabPositionMode === 'horizontal' && tabPaneAnimated && -(nzSelectedIndex || 0) * 100"
+      >
+        <div
+          nz-tab-body
+          class="ant-tabs-tabpane"
+          *ngFor="let tab of listOfNzTabComponent; let i = index"
+          [active]="nzSelectedIndex == i && !nzHideAll"
+          [forceRender]="tab.nzForceRender"
+          [content]="tab.template || tab.content"
+        ></div>
+      </div>
+    </ng-container>
+  `
 })
-export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterViewInit, OnChanges, AfterContentInit, OnDestroy {
+export class NzTabSetComponent implements AfterContentChecked, OnInit, OnChanges, AfterContentInit, OnDestroy {
   private indexToSelect: number | null = 0;
   private el: HTMLElement = this.elementRef.nativeElement;
   private _selectedIndex: number | null = null;
@@ -282,7 +309,24 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
 
   ngAfterContentInit(): void {
     this.subscribeToTabLabels();
+    this.setPosition(this.nzTabPosition);
 
+    if (this.nzLinkRouter) {
+      if (!this.router) {
+        throw new Error(`${PREFIX} you should import 'RouterModule' if you want to use 'nzLinkRouter'!`);
+      }
+
+      this.router.events
+        .pipe(
+          takeUntil(this.destroy$),
+          filter(e => e instanceof NavigationEnd),
+          startWith(true)
+        )
+        .subscribe(() => {
+          this.updateRouterActive();
+          this.cdr.markForCheck();
+        });
+    }
     // Subscribe to changes in the amount of tabs, in order to be
     // able to re-render the content as new tabs are added or removed.
     this.tabsSubscription = this.listOfNzTabComponent.changes.subscribe(() => {
@@ -314,27 +358,6 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, AfterView
     this.tabLabelSubscription.unsubscribe();
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  ngAfterViewInit(): void {
-    this.setPosition(this.nzTabPosition);
-
-    if (this.nzLinkRouter) {
-      if (!this.router) {
-        throw new Error(`${PREFIX} you should import 'RouterModule' if you want to use 'nzLinkRouter'!`);
-      }
-
-      this.router.events
-        .pipe(
-          takeUntil(this.destroy$),
-          filter(e => e instanceof NavigationEnd),
-          startWith(true)
-        )
-        .subscribe(() => {
-          this.updateRouterActive();
-          this.cdr.markForCheck();
-        });
-    }
   }
 
   private updateRouterActive(): void {

@@ -8,8 +8,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgStyleInterface } from 'ng-zorro-antd/core';
 
 import { of } from 'rxjs';
-import { NzTabsModule } from './nz-tabs.module';
-import { NzAnimatedInterface, NzTabsCanDeactivateFn, NzTabSetComponent } from './nz-tabset.component';
+import { NzAnimatedInterface, NzTabsCanDeactivateFn } from './table.types';
+import { NzTabsModule } from './tabs.module';
+import { NzTabSetComponent } from './tabset.component';
 
 describe('tabs', () => {
   beforeEach(fakeAsync(() => {
@@ -64,10 +65,10 @@ describe('tabs', () => {
 
     it('should tabBarStyle work', () => {
       fixture.detectChanges();
-      expect(tabs.nativeElement.querySelector('[nz-tabs-nav]').style.cssText).toBe('');
+      expect(tabs.nativeElement.querySelector('nz-tabs-nav').style.cssText).toBe('');
       testComponent.tabBarStyle = { top: 0 };
       fixture.detectChanges();
-      expect(tabs.nativeElement.querySelector('[nz-tabs-nav]').style.cssText).toBe('top: 0px;');
+      expect(tabs.nativeElement.querySelector('nz-tabs-nav').style.cssText).toBe('top: 0px;');
     });
 
     it('should animated work', () => {

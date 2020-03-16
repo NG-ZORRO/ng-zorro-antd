@@ -31,16 +31,36 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
   preserveWhitespaces: false,
   template: `
     <div class="ant-notification ant-notification-topLeft" [style.top]="top" [style.left]="'0px'">
-      <nz-notification *ngFor="let message of topLeftMessages" [nzMessage]="message"></nz-notification>
+      <nz-notification
+        *ngFor="let message of topLeftMessages"
+        [nzMessage]="message"
+        [nzPlacement]="config.nzPlacement"
+        (messageDestroy)="removeMessage($event.id, $event.userAction)"
+      ></nz-notification>
     </div>
     <div class="ant-notification ant-notification-topRight" [style.top]="top" [style.right]="'0px'">
-      <nz-notification *ngFor="let message of topRightMessages" [nzMessage]="message"></nz-notification>
+      <nz-notification
+        *ngFor="let message of topRightMessages"
+        [nzMessage]="message"
+        [nzPlacement]="config.nzPlacement"
+        (messageDestroy)="removeMessage($event.id, $event.userAction)"
+      ></nz-notification>
     </div>
     <div class="ant-notification ant-notification-bottomLeft" [style.bottom]="bottom" [style.left]="'0px'">
-      <nz-notification *ngFor="let message of bottomLeftMessages" [nzMessage]="message"></nz-notification>
+      <nz-notification
+        *ngFor="let message of bottomLeftMessages"
+        [nzMessage]="message"
+        [nzPlacement]="config.nzPlacement"
+        (messageDestroy)="removeMessage($event.id, $event.userAction)"
+      ></nz-notification>
     </div>
     <div class="ant-notification ant-notification-bottomRight" [style.bottom]="bottom" [style.right]="'0px'">
-      <nz-notification *ngFor="let message of bottomRightMessages" [nzMessage]="message"></nz-notification>
+      <nz-notification
+        *ngFor="let message of bottomRightMessages"
+        [nzMessage]="message"
+        [nzPlacement]="config.nzPlacement"
+        (messageDestroy)="removeMessage($event.id, $event.userAction)"
+      ></nz-notification>
     </div>
   `
 })
