@@ -14,7 +14,11 @@ import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulati
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './nz-tab-body.component.html',
+  template: `
+    <ng-container *ngIf="active || forceRender">
+      <ng-template [ngTemplateOutlet]="content"></ng-template>
+    </ng-container>
+  `,
   host: {
     '[class.ant-tabs-tabpane-active]': 'active',
     '[class.ant-tabs-tabpane-inactive]': '!active'

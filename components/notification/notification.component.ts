@@ -6,9 +6,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { notificationMotion } from 'ng-zorro-antd/core';
-import { NzNotificationContainerComponent } from './notification-container.component';
 import { NzNotificationDataFilled, NzNotificationDataOptions } from './typings';
 
 @Component({
@@ -84,6 +83,8 @@ import { NzNotificationDataFilled, NzNotificationDataOptions } from './typings';
 export class NzNotificationComponent implements OnInit, OnDestroy {
   @Input() nzMessage: NzNotificationDataFilled;
   @Input() nzIndex: number;
+  @Input() nzPlacement: string;
+  @Output() readonly messageDestroy = new EventEmitter<{ id: string; userAction: boolean }>();
 
   protected options: Required<NzNotificationDataOptions>;
 
@@ -94,7 +95,7 @@ export class NzNotificationComponent implements OnInit, OnDestroy {
   private eraseTimingStart: number;
   private eraseTTL: number; // Time to live.
 
-  constructor(private nzNotificationContainerComponent: NzNotificationContainerComponent, protected cdr: ChangeDetectorRef) {}
+  constructor(protected cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     // `NzMessageContainer` does its job so all properties cannot be undefined.
@@ -136,9 +137,11 @@ export class NzNotificationComponent implements OnInit, OnDestroy {
     if (this.options.nzAnimate) {
       this.nzMessage.state = 'leave';
       this.cdr.detectChanges();
-      setTimeout(() => this.nzNotificationContainerComponent.removeMessage(this.nzMessage.messageId, userAction), 200);
+      setTimeout(() => {
+        this.messageDestroy.next({ id: this.nzMessage.messageId, userAction: userAction });
+      }, 200);
     } else {
-      this.nzNotificationContainerComponent.removeMessage(this.nzMessage.messageId, userAction);
+      this.messageDestroy.next({ id: this.nzMessage.messageId, userAction: userAction });
     }
   }
 
@@ -176,10 +179,7 @@ export class NzNotificationComponent implements OnInit, OnDestroy {
 
   get state(): string | undefined {
     if (this.nzMessage.state === 'enter') {
-      if (
-        this.nzNotificationContainerComponent.config.nzPlacement === 'topLeft' ||
-        this.nzNotificationContainerComponent.config.nzPlacement === 'bottomLeft'
-      ) {
+      if (this.nzPlacement === 'topLeft' || this.nzPlacement === 'bottomLeft') {
         return 'enterLeft';
       } else {
         return 'enterRight';

@@ -22,12 +22,12 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { Subject } from 'rxjs';
 
 import { InputBoolean } from 'ng-zorro-antd/core';
+import { Subject } from 'rxjs';
 
-import { NzTabLinkDirective } from './nz-tab-link.directive';
-import { NzTabDirective } from './nz-tab.directive';
+import { NzTabLinkDirective } from './tab-link.directive';
+import { NzTabDirective } from './tab.directive';
 
 @Component({
   selector: 'nz-tab',
@@ -35,7 +35,14 @@ import { NzTabDirective } from './nz-tab.directive';
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './nz-tab.component.html'
+  template: `
+    <ng-template #titleTpl>
+      <ng-content select="[nz-tab-link]"></ng-content>
+    </ng-template>
+    <ng-template #bodyTpl>
+      <ng-content></ng-content>
+    </ng-template>
+  `
 })
 export class NzTabComponent implements OnChanges, OnDestroy {
   position: number | null = null;

@@ -5,13 +5,13 @@ import { CommonModule } from '@angular/common';
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { async, ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Subject } from 'rxjs';
 
 import { dispatchFakeEvent } from 'ng-zorro-antd/core';
+import { Subject } from 'rxjs';
+import { NzTabPositionMode } from './table.types';
 
-import { NzTabsNavComponent } from './nz-tabs-nav.component';
-import { NzTabsModule } from './nz-tabs.module';
-import { NzTabPositionMode } from './nz-tabset.component';
+import { NzTabsNavComponent } from './tabs-nav.component';
+import { NzTabsModule } from './tabs.module';
 
 describe('tabs nav', () => {
   const change = new Subject();
@@ -172,8 +172,7 @@ describe('tabs nav', () => {
 @Component({
   template: `
     <div [dir]="dir" style="width: 300px; height: 300px;" class="ant-tabs">
-      <div
-        nz-tabs-nav
+      <nz-tabs-nav
         role="tablist"
         tabindex="0"
         [selectedIndex]="selectedIndex"
@@ -184,7 +183,7 @@ describe('tabs nav', () => {
         <div *ngFor="let tab of tabs" nz-tab-label role="tab">
           {{ tab.label }}
         </div>
-      </div>
+      </nz-tabs-nav>
     </div>
   `,
   encapsulation: ViewEncapsulation.None,

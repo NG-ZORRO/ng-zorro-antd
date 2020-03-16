@@ -6,11 +6,20 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewEncapsulation
+} from '@angular/core';
 
 import { moveUpMotion } from 'ng-zorro-antd/core';
 
-import { NzMessageContainerComponent } from './message-container.component';
 import { NzMessageDataFilled, NzMessageDataOptions } from './typings';
 
 @Component({
@@ -42,6 +51,7 @@ import { NzMessageDataFilled, NzMessageDataOptions } from './typings';
 export class NzMessageComponent implements OnInit, OnDestroy {
   @Input() nzMessage: NzMessageDataFilled;
   @Input() nzIndex: number;
+  @Output() readonly messageDestroy = new EventEmitter<{ id: string; userAction: boolean }>();
 
   protected options: Required<NzMessageDataOptions>;
 
@@ -52,7 +62,7 @@ export class NzMessageComponent implements OnInit, OnDestroy {
   private eraseTimingStart: number;
   private eraseTTL: number; // Time to live.
 
-  constructor(private messageContainerComponent: NzMessageContainerComponent, protected cdr: ChangeDetectorRef) {}
+  constructor(protected cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     // `NzMessageContainer` does its job so all properties cannot be undefined.
@@ -94,9 +104,11 @@ export class NzMessageComponent implements OnInit, OnDestroy {
     if (this.options.nzAnimate) {
       this.nzMessage.state = 'leave';
       this.cdr.detectChanges();
-      setTimeout(() => this.messageContainerComponent.removeMessage(this.nzMessage.messageId, userAction), 200);
+      setTimeout(() => {
+        this.messageDestroy.next({ id: this.nzMessage.messageId, userAction: userAction });
+      }, 200);
     } else {
-      this.messageContainerComponent.removeMessage(this.nzMessage.messageId, userAction);
+      this.messageDestroy.next({ id: this.nzMessage.messageId, userAction: userAction });
     }
   }
 
