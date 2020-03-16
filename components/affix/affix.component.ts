@@ -31,6 +31,7 @@ import {
   InputNumber,
   NgStyleInterface,
   NzConfigService,
+  NzSafeAny,
   NzScrollService,
   shallowEqual,
   WithConfig
@@ -98,7 +99,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   constructor(
     el: ElementRef,
-    @Inject(DOCUMENT) doc: any, // tslint:disable-line no-any
+    @Inject(DOCUMENT) doc: NzSafeAny,
     public nzConfigService: NzConfigService,
     private scrollSrv: NzScrollService,
     private ngZone: NgZone,

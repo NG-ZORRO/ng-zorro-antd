@@ -7,6 +7,7 @@
  */
 
 import { warnDeprecation } from '../logger/logger';
+import { NzSafeAny } from '../types/any';
 import { NzTreeNodeBaseComponent } from './nz-tree-base.definitions';
 import { NzTreeBaseService } from './nz-tree-base.service';
 
@@ -34,8 +35,7 @@ export interface NzTreeNodeOptions {
   expanded?: boolean;
   children?: NzTreeNodeOptions[];
 
-  // tslint:disable-next-line:no-any
-  [key: string]: any;
+  [key: string]: NzSafeAny;
 }
 
 export class NzTreeNode {
@@ -302,8 +302,7 @@ export class NzTreeNode {
   /**
    * Support appending child nodes by position. Leaf node cannot be appended.
    */
-  // tslint:disable-next-line:no-any
-  public addChildren(children: any[], childPos: number = -1): void {
+  public addChildren(children: NzSafeAny[], childPos: number = -1): void {
     if (!this.isLeaf) {
       children.forEach(node => {
         const refreshLevel = (n: NzTreeNode) => {

@@ -21,6 +21,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
+import { NzSafeAny } from 'ng-zorro-antd/core';
 import { NzAnchorComponent } from './anchor.component';
 
 @Component({
@@ -47,8 +48,7 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
   @Input() nzHref = '#';
 
   titleStr: string | null = '';
-  // tslint:disable-next-line:no-any
-  titleTpl: TemplateRef<any>;
+  titleTpl: TemplateRef<NzSafeAny>;
 
   @Input()
   set nzTitle(value: string | TemplateRef<void>) {

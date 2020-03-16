@@ -12,7 +12,7 @@ import { SafeUrl } from '@angular/platform-browser';
 import { NzBreakpointEnum } from '../responsive/public-api';
 
 import { NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType } from '../types';
-
+import { NzSafeAny } from '../types/any';
 export interface NzConfig {
   affix?: AffixConfig;
   alert?: AlertConfig;
@@ -86,7 +86,7 @@ export interface ButtonConfig {
 
 export interface CodeEditorConfig {
   assetsRoot?: string | SafeUrl;
-  defaultEditorOption?: any; // tslint:disable-line no-any
+  defaultEditorOption?: NzSafeAny;
   useStaticLoading?: boolean;
 
   onLoad?(): void;
@@ -135,8 +135,7 @@ export interface DrawerConfig {
 }
 
 export interface EmptyConfig {
-  // tslint:disable-next-line no-any
-  nzDefaultEmptyContent?: Type<any> | TemplateRef<string> | string | undefined;
+  nzDefaultEmptyContent?: Type<NzSafeAny> | TemplateRef<string> | string | undefined;
 }
 
 export interface FormConfig {

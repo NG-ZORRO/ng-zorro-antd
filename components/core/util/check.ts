@@ -8,6 +8,7 @@
 
 import { TemplateRef, Type } from '@angular/core';
 
+import { NzSafeAny } from '../types/any';
 import { IndexableObject } from '../types/indexable';
 
 export function isNotNil<T>(value: T): value is NonNullable<T> {
@@ -81,17 +82,14 @@ export function filterNotEmptyNode(node: Node): Node | null {
   return null;
 }
 
-// tslint:disable-next-line:no-any
-export function isNonEmptyString(value: any): boolean {
+export function isNonEmptyString(value: NzSafeAny): boolean {
   return typeof value === 'string' && value !== '';
 }
 
-// tslint:disable-next-line:no-any
-export function isTemplateRef(value: any): boolean {
+export function isTemplateRef(value: NzSafeAny): boolean {
   return value instanceof TemplateRef;
 }
 
-// tslint:disable-next-line:no-any
-export function isComponent(value: any): boolean {
+export function isComponent(value: NzSafeAny): boolean {
   return value instanceof Type;
 }

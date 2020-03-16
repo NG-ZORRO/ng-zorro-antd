@@ -6,16 +6,16 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-// tslint:disable:no-any
 import { isDevMode } from '@angular/core';
 
 import { environment } from '../environments/environment';
+import { NzSafeAny } from '../types/any';
 
 const record: Record<string, boolean> = {};
 
 export const PREFIX = '[NG-ZORRO]:';
 
-function notRecorded(...args: any[]): boolean {
+function notRecorded(...args: NzSafeAny[]): boolean {
   const asRecord = args.reduce((acc, c) => acc + c.toString(), '');
 
   if (record[asRecord]) {
@@ -26,26 +26,26 @@ function notRecorded(...args: any[]): boolean {
   }
 }
 
-function consoleCommonBehavior(consoleFunc: (...args: any) => void, ...args: any[]): void {
+function consoleCommonBehavior(consoleFunc: (...args: NzSafeAny) => void, ...args: NzSafeAny[]): void {
   if (environment.isTestMode || (isDevMode() && notRecorded(...args))) {
     consoleFunc(...args);
   }
 }
 
 // Warning should only be printed in dev mode and only once.
-export const warn = (...args: any[]) => consoleCommonBehavior((...arg: any[]) => console.warn(PREFIX, ...arg), ...args);
+export const warn = (...args: NzSafeAny[]) => consoleCommonBehavior((...arg: NzSafeAny[]) => console.warn(PREFIX, ...arg), ...args);
 
-export const warnDeprecation = (...args: any[]) => {
+export const warnDeprecation = (...args: NzSafeAny[]) => {
   if (!environment.isTestMode) {
     const stack = new Error().stack;
-    return consoleCommonBehavior((...arg: any[]) => console.warn(PREFIX, 'deprecated:', ...arg, stack), ...args);
+    return consoleCommonBehavior((...arg: NzSafeAny[]) => console.warn(PREFIX, 'deprecated:', ...arg, stack), ...args);
   } else {
     return () => {};
   }
 };
 
 // Log should only be printed in dev mode.
-export const log = (...args: any[]) => {
+export const log = (...args: NzSafeAny[]) => {
   if (isDevMode()) {
     console.log(PREFIX, ...args);
   }

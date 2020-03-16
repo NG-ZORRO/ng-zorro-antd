@@ -5,6 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { NzSafeAny } from '../types/any';
 
 // from https://github.com/component/textarea-caret-position
 
@@ -55,8 +56,7 @@ export const properties = [
 
 const isBrowser = typeof window !== 'undefined';
 
-// tslint:disable-next-line:no-any
-const isFirefox = isBrowser && (window as any).mozInnerScreenX != null;
+const isFirefox = isBrowser && (window as NzSafeAny).mozInnerScreenX != null;
 
 const _parseInt = (str: string) => parseInt(str, 10);
 
@@ -90,8 +90,7 @@ export function getCaretCoordinates(
 
   const style = div.style;
 
-  // tslint:disable-next-line:no-any
-  const computed = window.getComputedStyle ? window.getComputedStyle(element) : (element as any).currentStyle; // currentStyle for IE < 9
+  const computed = window.getComputedStyle ? window.getComputedStyle(element) : (element as NzSafeAny).currentStyle; // currentStyle for IE < 9
   const isInput = element.nodeName === 'INPUT';
 
   // Default textarea styles

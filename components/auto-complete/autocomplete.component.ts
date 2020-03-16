@@ -30,7 +30,7 @@ import {
 import { defer, merge, Observable, Subscription } from 'rxjs';
 import { filter, switchMap, take } from 'rxjs/operators';
 
-import { CompareWith, InputBoolean, NzDropDownPosition, NzNoAnimationDirective, slideMotion } from 'ng-zorro-antd/core';
+import { CompareWith, InputBoolean, NzDropDownPosition, NzNoAnimationDirective, NzSafeAny, slideMotion } from 'ng-zorro-antd/core';
 
 import { NzAutocompleteOptionComponent, NzOptionSelectionChange } from './autocomplete-option.component';
 
@@ -195,8 +195,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
     this.setActiveItem(previousIndex);
   }
 
-  // tslint:disable-next-line:no-any
-  getOptionIndex(value: any): number {
+  getOptionIndex(value: NzSafeAny): number {
     return this.options.reduce((result: number, current: NzAutocompleteOptionComponent, index: number) => {
       return result === -1 ? (this.compareWith(value, current.nzValue) ? index : -1) : result;
     }, -1)!;

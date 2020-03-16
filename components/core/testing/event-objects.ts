@@ -6,6 +6,8 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+import { NzSafeAny } from '../types/any';
+
 /** Creates a browser MouseEvent with the specified options. */
 export function createMouseEvent(type: string, x: number = 0, y: number = 0, button: number = 0): MouseEvent {
   const event = document.createEvent('MouseEvent');
@@ -63,8 +65,7 @@ export function createKeyboardEvent(
   metaKey?: boolean,
   shiftKey?: boolean
 ): KeyboardEvent {
-  // tslint:disable-next-line:no-any
-  const event = document.createEvent('KeyboardEvent') as any;
+  const event = document.createEvent('KeyboardEvent') as NzSafeAny;
   const originalPreventDefault = event.preventDefault;
 
   // Firefox does not support `initKeyboardEvent`, but supports `initKeyEvent`.
