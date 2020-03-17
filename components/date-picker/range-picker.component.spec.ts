@@ -11,9 +11,9 @@ import differenceInDays from 'date-fns/differenceInDays';
 import isSameDay from 'date-fns/isSameDay';
 
 import { dispatchKeyboardEvent, dispatchMouseEvent, NgStyleInterface, typeInElement } from 'ng-zorro-antd/core';
-import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/name';
 import { RangePartType } from 'ng-zorro-antd/date-picker/standard-types';
 import { getPicker, getPickerAbstract, getPickerInput, getRangePickerRightInput } from 'ng-zorro-antd/date-picker/testing/util';
+import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/util';
 
 import { CandyDate } from '../core';
 import { NzDatePickerModule } from './date-picker.module';

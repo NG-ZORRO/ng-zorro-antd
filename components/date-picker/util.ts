@@ -9,6 +9,8 @@
 import { CandyDate } from 'ng-zorro-antd/core';
 import { DisabledDateFn, DisabledTimeConfig, DisabledTimeFn } from './standard-types';
 
+export const PREFIX_CLASS = 'ant-picker';
+
 const defaultDisabledTime: DisabledTimeConfig = {
   nzDisabledHours(): number[] {
     return [];

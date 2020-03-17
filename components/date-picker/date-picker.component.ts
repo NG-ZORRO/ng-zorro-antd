@@ -12,10 +12,12 @@ import {
   Component,
   EventEmitter,
   forwardRef,
+  Host,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -51,6 +53,7 @@ const POPUP_STYLE_PATCH = { position: 'relative' }; // Aim to override antd's st
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'nz-date-picker,nz-week-picker,nz-month-picker,nz-year-picker,nz-range-picker',
+  exportAs: 'nzDatePicker',
   templateUrl: './date-picker.component.html',
   host: {
     '[class]': 'hostClassMap'
@@ -131,7 +134,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     protected i18n: NzI18nService,
     protected cdr: ChangeDetectorRef,
     protected dateHelper: DateHelperService,
-    public noAnimation?: NzNoAnimationDirective
+    @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {}
 
   ngOnInit(): void {
