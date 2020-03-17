@@ -8,9 +8,9 @@ import { NzAffixModule } from 'ng-zorro-antd/affix';
 import { NzAnchorModule } from 'ng-zorro-antd/anchor';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import { NzCodeBoxModule } from './nz-codebox/nz-codebox.module';
-import { NzGithubBtnModule } from './nz-github-btn/nz-github-btn.module';
-import { NzHighlightModule } from './nz-highlight/nz-highlight.module';
+import { NzCodeBoxModule } from './codebox/codebox.module';
+import { NzGithubBtnModule } from './github-btn/github-btn.module';
+import { NzHighlightModule } from './highlight/highlight.module';
 
 @NgModule({
   imports: [
