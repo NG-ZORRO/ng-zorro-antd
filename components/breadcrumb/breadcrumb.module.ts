@@ -9,6 +9,7 @@
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { DownOutline } from '@ant-design/icons-angular/icons';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
@@ -19,7 +20,7 @@ import { NzBreadCrumbSeparatorComponent } from './breadcrumb-separator.component
 import { NzBreadCrumbComponent } from './breadcrumb.component';
 
 @NgModule({
-  imports: [CommonModule, NzOutletModule, OverlayModule, NzOverlayModule, NzDropDownModule, NzIconModule],
+  imports: [CommonModule, NzOutletModule, OverlayModule, NzOverlayModule, NzDropDownModule, NzIconModule.forChild([DownOutline])],
   declarations: [NzBreadCrumbComponent, NzBreadCrumbItemComponent, NzBreadCrumbSeparatorComponent],
   exports: [NzBreadCrumbComponent, NzBreadCrumbItemComponent, NzBreadCrumbSeparatorComponent]
 })

@@ -11,50 +11,41 @@ import { HttpBackend } from '@angular/common/http';
 import { Inject, Injectable, InjectionToken, Optional, RendererFactory2, Self } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { IconDefinition, IconService } from '@ant-design/icons-angular';
-import {
-  BarsOutline,
-  CalendarOutline,
-  CaretDownFill,
-  CaretDownOutline,
-  CaretUpFill,
-  CaretUpOutline,
-  CheckCircleFill,
-  CheckCircleOutline,
-  CheckOutline,
-  ClockCircleOutline,
-  CloseCircleFill,
-  CloseCircleOutline,
-  CloseOutline,
-  CopyOutline,
-  DeleteOutline,
-  DoubleLeftOutline,
-  DoubleRightOutline,
-  DownloadOutline,
-  DownOutline,
-  EditOutline,
-  EllipsisOutline,
-  ExclamationCircleFill,
-  ExclamationCircleOutline,
-  EyeOutline,
-  FileFill,
-  FileOutline,
-  FileTwoTone,
-  FilterFill,
-  InfoCircleFill,
-  InfoCircleOutline,
-  LeftOutline,
-  LoadingOutline,
-  PaperClipOutline,
-  PictureTwoTone,
-  QuestionCircleOutline,
-  RightOutline,
-  SearchOutline,
-  StarFill,
-  UploadOutline,
-  UpOutline
-} from '@ant-design/icons-angular/icons';
-import { IconConfig, NzConfigService } from 'ng-zorro-antd/core/config';
-import { warn } from 'ng-zorro-antd/core/logger';
+// import {
+//   BarsOutline,
+//   CalendarOutline,
+//   CaretDownFill,
+//   CaretDownOutline,
+//   CaretUpFill,
+//   CaretUpOutline,
+//   CheckOutline,
+//   ClockCircleOutline,
+//
+//   CloseOutline,
+//   CopyOutline,
+//   DeleteOutline,
+//   DoubleLeftOutline,
+//   DoubleRightOutline,
+//   DownloadOutline,
+//   DownOutline,
+//   EditOutline,
+//   EllipsisOutline,
+//   EyeOutline,
+//   FileFill,
+//   FileOutline,
+//   FileTwoTone,
+//   FilterFill,
+//   LeftOutline,
+//   LoadingOutline,
+//   PaperClipOutline,
+//   PictureTwoTone,
+//   QuestionCircleOutline,
+//   RightOutline,
+//   SearchOutline,
+//   UploadOutline,
+//   UpOutline
+// } from '@ant-design/icons-angular/icons';
+import { IconConfig, NzConfigService, warn } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
 
 export interface NzIconfontOption {
@@ -64,48 +55,39 @@ export interface NzIconfontOption {
 export const NZ_ICONS = new InjectionToken('nz_icons');
 export const NZ_ICON_DEFAULT_TWOTONE_COLOR = new InjectionToken('nz_icon_default_twotone_color');
 export const DEFAULT_TWOTONE_COLOR = '#1890ff';
-export const NZ_ICONS_USED_BY_ZORRO: IconDefinition[] = [
-  BarsOutline,
-  CalendarOutline,
-  CaretDownFill,
-  CaretDownOutline,
-  CaretUpFill,
-  CaretUpOutline,
-  CheckCircleFill,
-  CheckCircleOutline,
-  CheckOutline,
-  ClockCircleOutline,
-  CloseCircleFill,
-  CloseCircleOutline,
-  CloseOutline,
-  CopyOutline,
-  DeleteOutline,
-  DoubleLeftOutline,
-  DoubleRightOutline,
-  DownloadOutline,
-  DownOutline,
-  EditOutline,
-  EllipsisOutline,
-  ExclamationCircleFill,
-  ExclamationCircleOutline,
-  EyeOutline,
-  FileFill,
-  FileOutline,
-  FileTwoTone,
-  FilterFill,
-  InfoCircleFill,
-  InfoCircleOutline,
-  LeftOutline,
-  LoadingOutline,
-  PaperClipOutline,
-  PictureTwoTone,
-  QuestionCircleOutline,
-  RightOutline,
-  SearchOutline,
-  StarFill,
-  UploadOutline,
-  UpOutline
-];
+// export const NZ_ICONS_USED_BY_ZORRO: IconDefinition[] = [
+//   BarsOutline,
+//   CalendarOutline,
+//   CaretDownFill,
+//   CaretDownOutline,
+//   CaretUpFill,
+//   CaretUpOutline,
+//   CheckOutline,
+//   ClockCircleOutline,
+//   CloseOutline,
+//   CopyOutline,
+//   DeleteOutline,
+//   DoubleLeftOutline,
+//   DoubleRightOutline,
+//   DownloadOutline,
+//   DownOutline,
+//   EditOutline,
+//   EllipsisOutline,
+//   EyeOutline,
+//   FileFill,
+//   FileOutline,
+//   FileTwoTone,
+//   FilterFill,
+//   LeftOutline,
+//   LoadingOutline,
+//   PaperClipOutline,
+//   PictureTwoTone,
+//   QuestionCircleOutline,
+//   RightOutline,
+//   SearchOutline,
+//   UploadOutline,
+//   UpOutline
+// ];
 
 /**
  * It should be a global singleton, otherwise registered icons could not be found.
@@ -158,7 +140,7 @@ export class NzIconService extends IconService {
     super(rendererFactory, handler, _document, sanitizer);
 
     this.onConfigChange();
-    this.addIcon(...NZ_ICONS_USED_BY_ZORRO, ...(icons || []));
+    this.addIcon(...(icons || []));
     this.configDefaultTwotoneColor();
     this.configDefaultTheme();
   }

@@ -12,6 +12,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CheckOutline, DownOutline, SearchOutline } from '@ant-design/icons-angular/icons';
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
@@ -38,7 +39,7 @@ import { NzSelectComponent } from './select.component';
     FormsModule,
     PlatformModule,
     OverlayModule,
-    NzIconModule,
+    NzIconModule.forChild([CheckOutline, SearchOutline, DownOutline]),
     NzOutletModule,
     NzEmptyModule,
     NzOverlayModule,

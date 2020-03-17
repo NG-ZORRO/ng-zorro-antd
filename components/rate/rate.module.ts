@@ -8,6 +8,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { StarFill } from '@ant-design/icons-angular/icons';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
@@ -18,6 +19,6 @@ import { NzRateComponent } from './rate.component';
 @NgModule({
   exports: [NzRateComponent],
   declarations: [NzRateComponent, NzRateItemComponent],
-  imports: [CommonModule, NzIconModule, NzToolTipModule]
+  imports: [CommonModule, NzIconModule.forChild([StarFill]), NzToolTipModule]
 })
 export class NzRateModule {}

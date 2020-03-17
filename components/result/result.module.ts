@@ -8,7 +8,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-
+import { CheckCircleFill, CloseCircleFill, ExclamationCircleFill, WarningFill } from '@ant-design/icons-angular/icons';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -36,7 +36,7 @@ const cellDirectives = [
 ];
 
 @NgModule({
-  imports: [CommonModule, NzOutletModule, NzIconModule],
+  imports: [CommonModule, NzOutletModule, NzIconModule.forChild([CheckCircleFill, CloseCircleFill, ExclamationCircleFill, WarningFill])],
   declarations: [NzResultComponent, ...cellDirectives, ...partial],
   exports: [NzResultComponent, ...cellDirectives]
 })

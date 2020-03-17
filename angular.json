@@ -26,11 +26,6 @@
               "site/doc/robots.txt",
               {
                 "glob": "**/*",
-                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
-                "output": "/assets/"
-              },
-              {
-                "glob": "**/*",
                 "input": "./node_modules/monaco-editor/min/vs",
                 "output": "/assets/vs/"
               }

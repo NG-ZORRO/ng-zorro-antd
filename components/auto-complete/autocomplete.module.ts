@@ -10,7 +10,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
+import { SearchOutline } from '@ant-design/icons-angular/icons';
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 
@@ -22,6 +22,6 @@ import { NzAutocompleteComponent } from './autocomplete.component';
 @NgModule({
   declarations: [NzAutocompleteComponent, NzAutocompleteOptionComponent, NzAutocompleteTriggerDirective, NzAutocompleteOptgroupComponent],
   exports: [NzAutocompleteComponent, NzAutocompleteOptionComponent, NzAutocompleteTriggerDirective, NzAutocompleteOptgroupComponent],
-  imports: [CommonModule, OverlayModule, FormsModule, NzOutletModule, NzNoAnimationModule]
+  imports: [CommonModule, OverlayModule, FormsModule, NzOutletModule, NzNoAnimationModule, NzIconModule.forChild([SearchOutline])]
 })
 export class NzAutocompleteModule {}

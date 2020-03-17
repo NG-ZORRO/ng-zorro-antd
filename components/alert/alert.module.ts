@@ -8,6 +8,16 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import {
+  CheckCircleFill,
+  CheckCircleOutline,
+  CloseCircleFill,
+  CloseCircleOutline,
+  ExclamationCircleFill,
+  ExclamationCircleOutline,
+  InfoCircleFill,
+  InfoCircleOutline
+} from '@ant-design/icons-angular/icons';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
@@ -16,6 +26,19 @@ import { NzAlertComponent } from './alert.component';
 @NgModule({
   declarations: [NzAlertComponent],
   exports: [NzAlertComponent],
-  imports: [CommonModule, NzIconModule, NzOutletModule]
+  imports: [
+    CommonModule,
+    NzIconModule.forChild([
+      CheckCircleFill,
+      CheckCircleOutline,
+      CloseCircleFill,
+      CloseCircleOutline,
+      ExclamationCircleFill,
+      ExclamationCircleOutline,
+      InfoCircleFill,
+      InfoCircleOutline
+    ]),
+    NzOutletModule
+  ]
 })
 export class NzAlertModule {}

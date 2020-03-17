@@ -8,6 +8,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { LoadingOutline } from '@ant-design/icons-angular/icons';
 
 import { ɵNzTransitionPatchModule as NzTransitionPatchModule } from 'ng-zorro-antd/core/transition-patch';
 import { NzWaveModule } from 'ng-zorro-antd/core/wave';
@@ -18,6 +19,6 @@ import { NzButtonComponent } from './button.component';
 @NgModule({
   declarations: [NzButtonComponent, NzButtonGroupComponent],
   exports: [NzButtonComponent, NzButtonGroupComponent, NzTransitionPatchModule, NzWaveModule],
-  imports: [CommonModule, NzWaveModule, NzIconModule, NzTransitionPatchModule]
+  imports: [CommonModule, NzWaveModule, NzIconModule.forChild([LoadingOutline]), NzTransitionPatchModule]
 })
 export class NzButtonModule {}
