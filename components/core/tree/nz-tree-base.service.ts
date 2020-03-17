@@ -8,6 +8,7 @@
 
 import { Injectable } from '@angular/core';
 
+import { NzSafeAny } from '../types/any';
 import { FlattenNode, NzTreeNode, NzTreeNodeKey } from './nz-tree-base-node';
 import { flattenTreeData, isCheckDisabled, isInArray } from './nz-tree-base-util';
 import { NzFormatEmitEvent } from './nz-tree-base.definitions';
@@ -80,8 +81,7 @@ export class NzTreeBaseService {
     return this.conductNodeState('match');
   }
 
-  // tslint:disable-next-line:no-any
-  isArrayOfNzTreeNode(value: any[]): boolean {
+  isArrayOfNzTreeNode(value: NzSafeAny[]): boolean {
     return value.every(item => item instanceof NzTreeNode);
   }
 

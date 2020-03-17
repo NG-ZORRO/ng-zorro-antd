@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NzSafeAny } from '../types/any';
 import { NzTreeNode } from './nz-tree-base-node';
 import { NzTreeBaseService } from './nz-tree-base.service';
 
@@ -15,10 +16,7 @@ export class NzTreeBase {
   /**
    * Coerces a value({@link any[]}) to a TreeNodes({@link NzTreeNode[]})
    */
-  coerceTreeNodes(
-    // tslint:disable-next-line:no-any
-    value: any[]
-  ): NzTreeNode[] {
+  coerceTreeNodes(value: NzSafeAny[]): NzTreeNode[] {
     let nodes: NzTreeNode[] = [];
     if (!this.nzTreeService.isArrayOfNzTreeNode(value)) {
       // has not been new NzTreeNode

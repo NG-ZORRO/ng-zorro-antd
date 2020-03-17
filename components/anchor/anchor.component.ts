@@ -34,6 +34,7 @@ import {
   InputNumber,
   NgStyleInterface,
   NzConfigService,
+  NzSafeAny,
   NzScrollService,
   warnDeprecation,
   WithConfig
@@ -109,8 +110,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
   private handleScrollTimeoutID = -1;
 
   constructor(
-    /* tslint:disable-next-line:no-any */
-    @Inject(DOCUMENT) private doc: any,
+    @Inject(DOCUMENT) private doc: NzSafeAny,
     public nzConfigService: NzConfigService,
     private scrollSrv: NzScrollService,
     private cdr: ChangeDetectorRef,

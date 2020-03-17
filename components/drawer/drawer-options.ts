@@ -7,12 +7,12 @@
  */
 
 import { TemplateRef, Type } from '@angular/core';
+import { NzSafeAny } from 'ng-zorro-antd/core';
 import { NzDrawerRef } from './drawer-ref';
 
 export type NzDrawerPlacement = 'left' | 'right' | 'top' | 'bottom';
 
-// tslint:disable-next-line:no-any
-export interface NzDrawerOptionsOfComponent<T = any, D = any> {
+export interface NzDrawerOptionsOfComponent<T = NzSafeAny, D = NzSafeAny> {
   nzClosable?: boolean;
   nzMaskClosable?: boolean;
   nzMask?: boolean;
@@ -32,8 +32,6 @@ export interface NzDrawerOptionsOfComponent<T = any, D = any> {
   nzOffsetY?: number;
 }
 
-// tslint:disable-next-line:no-any
-export interface NzDrawerOptions<T = any, D = any> extends NzDrawerOptionsOfComponent<T, D> {
-  // tslint:disable-next-line:no-any
-  nzOnCancel?(): Promise<any>;
+export interface NzDrawerOptions<T = NzSafeAny, D = NzSafeAny> extends NzDrawerOptionsOfComponent<T, D> {
+  nzOnCancel?(): Promise<NzSafeAny>;
 }

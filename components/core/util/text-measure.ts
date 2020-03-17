@@ -5,6 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { NzSafeAny } from '../types/any';
 
 export interface MeasureResult {
   finished: boolean;
@@ -89,8 +90,7 @@ export function measure(
   // clean up css overflow
   ellipsisContainer.style.textOverflow = 'clip';
   ellipsisContainer.style.whiteSpace = 'normal';
-  // tslint:disable-next-line no-any
-  (ellipsisContainer.style as any).webkitLineClamp = 'none';
+  (ellipsisContainer.style as NzSafeAny).webkitLineClamp = 'none';
 
   const contentList = mergeChildren(contentNodes);
   const container = document.createElement('div');

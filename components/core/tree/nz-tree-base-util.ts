@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { NzSafeAny } from '../types/any';
 import { FlattenNode, NzTreeNode, NzTreeNodeKey } from './nz-tree-base-node';
 
 export function isCheckDisabled(node: NzTreeNode): boolean {
@@ -13,8 +14,7 @@ export function isCheckDisabled(node: NzTreeNode): boolean {
   return !!(isDisabled || isDisableCheckbox);
 }
 
-// tslint:disable-next-line:no-any
-export function isInArray(needle: any, haystack: any[]): boolean {
+export function isInArray(needle: NzSafeAny, haystack: NzSafeAny[]): boolean {
   return haystack.length > 0 && haystack.indexOf(needle) > -1;
 }
 
