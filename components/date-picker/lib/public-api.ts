@@ -15,3 +15,4 @@ export { MonthTableComponent as ɵMonthTableComponent } from './month-table.comp
 export { DateHeaderComponent as ɵDateHeaderComponent } from './date-header.component';
 export { DateTableComponent as ɵDateTableComponent } from './date-table.component';
 export { LibPackerModule } from './lib-packer.module';
+export { transCompatFormat } from './util';

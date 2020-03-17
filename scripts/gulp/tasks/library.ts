@@ -6,7 +6,7 @@ import { copyStylesToSrc } from '../../build/migration-styles';
 import { execNodeTask } from '../util/task-helpers';
 
 /** Run `ng build ng-zorro-antd-lib` */
-task('library:build-zorro', execNodeTask('@angular/cli', 'ng', ['build', 'ng-zorro-antd-lib']));
+task('library:build-zorro', execNodeTask('@angular/cli', 'ng', ['build', 'ng-zorro-antd-lib', '--prod']));
 
 // Compile less to the public directory.
 task('library:compile-less', done => {

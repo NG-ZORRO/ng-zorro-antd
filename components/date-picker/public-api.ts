@@ -15,4 +15,4 @@ export { NzMonthPickerComponent } from './month-picker.component';
 export { NzWeekPickerComponent } from './week-picker.component';
 export { NzYearPickerComponent } from './year-picker.component';
 
-export * from './lib';
+export * from './lib/public-api';

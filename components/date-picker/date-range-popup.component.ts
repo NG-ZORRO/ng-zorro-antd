@@ -28,7 +28,6 @@ import { takeUntil } from 'rxjs/operators';
 import { DatePickerService } from './date-picker.service';
 import { PREFIX_CLASS } from './name';
 
-import { getTimeConfig, isAllowedDate } from './lib/util';
 import {
   CompatibleDate,
   DisabledDateFn,
@@ -40,6 +39,7 @@ import {
   RangePartType,
   SupportTimeOptions
 } from './standard-types';
+import { getTimeConfig, isAllowedDate } from './util';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
