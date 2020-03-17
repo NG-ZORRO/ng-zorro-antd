@@ -10,6 +10,7 @@ import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable, Optional, Provider, SkipSelf } from '@angular/core';
 
 import { reqAnimFrame } from '../polyfill/request-animation';
+import { NzSafeAny } from '../types/any';
 
 export type EasyingFn = (t: number, b: number, c: number, d: number) => number;
 
@@ -27,8 +28,7 @@ function easeInOutCubic(t: number, b: number, c: number, d: number): number {
 export class NzScrollService {
   private doc: Document;
 
-  /* tslint:disable-next-line:no-any */
-  constructor(@Inject(DOCUMENT) doc: any) {
+  constructor(@Inject(DOCUMENT) doc: NzSafeAny) {
     this.doc = doc;
   }
 

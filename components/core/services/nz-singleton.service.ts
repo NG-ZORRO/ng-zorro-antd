@@ -6,14 +6,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-// tslint:disable no-any
-
 import { Injectable } from '@angular/core';
 
 import { environment } from '../environments/environment';
+import { NzSafeAny } from '../types/any';
 
 interface SingletonRegistryItem {
-  target: any;
+  target: NzSafeAny;
 }
 
 /**
@@ -42,7 +41,7 @@ export class NzSingletonService {
    */
   private _singletonRegistry = new Map<string, SingletonRegistryItem>();
 
-  registerSingletonWithKey(key: string, target: any): void {
+  registerSingletonWithKey(key: string, target: NzSafeAny): void {
     const alreadyHave = this.singletonRegistry.has(key);
     const item: SingletonRegistryItem = alreadyHave ? this.singletonRegistry.get(key)! : this.withNewTarget(target);
 
@@ -55,7 +54,7 @@ export class NzSingletonService {
     return this.singletonRegistry.has(key) ? (this.singletonRegistry.get(key)!.target as T) : null;
   }
 
-  private withNewTarget(target: any): SingletonRegistryItem {
+  private withNewTarget(target: NzSafeAny): SingletonRegistryItem {
     return {
       target
     };

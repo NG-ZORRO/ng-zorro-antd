@@ -25,7 +25,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { fadeMotion, InputNumber, NzConfigService, NzScrollService, WithConfig } from 'ng-zorro-antd/core';
+import { fadeMotion, InputNumber, NzConfigService, NzSafeAny, NzScrollService, WithConfig } from 'ng-zorro-antd/core';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
 
@@ -61,8 +61,7 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
   @Output() readonly nzClick: EventEmitter<boolean> = new EventEmitter();
 
   constructor(
-    // tslint:disable-next-line:no-any
-    @Inject(DOCUMENT) private doc: any,
+    @Inject(DOCUMENT) private doc: NzSafeAny,
     public nzConfigService: NzConfigService,
     private scrollSrv: NzScrollService,
     private platform: Platform,

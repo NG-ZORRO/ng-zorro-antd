@@ -8,21 +8,20 @@
 
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
+import { NzSafeAny } from '../types/any';
 import { NzCopyToClipboardServiceModule } from './nz-copy-to-clipboard.service.module';
 
 @Injectable({
   providedIn: NzCopyToClipboardServiceModule
 })
 export class NzCopyToClipboardService {
-  // tslint:disable-next-line:no-any
-  constructor(@Inject(DOCUMENT) private document: any) {}
+  constructor(@Inject(DOCUMENT) private document: NzSafeAny) {}
 
   copy(text: string): Promise<string> {
     return new Promise<string>((resolve, reject): void => {
       let copyTextArea = null;
       try {
-        // tslint:disable-next-line no-any
-        copyTextArea = this.document.createElement('textarea') as any;
+        copyTextArea = this.document.createElement('textarea') as NzSafeAny;
         copyTextArea.style!.all = 'unset';
         copyTextArea.style.position = 'fixed';
         copyTextArea.style.top = '0';

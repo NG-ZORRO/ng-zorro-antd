@@ -9,6 +9,7 @@
 import { _isNumberValue, coerceBooleanProperty, coerceCssPixelValue } from '@angular/cdk/coercion';
 
 import { warn } from '../logger/logger';
+import { NzSafeAny } from '../types/any';
 import { FunctionProp } from '../types/common-wrap';
 
 export function toBoolean(value: boolean | string): boolean {
@@ -25,18 +26,17 @@ export function toCssPixel(value: number | string): string {
   return coerceCssPixelValue(value);
 }
 
-// tslint:disable no-any
 // tslint:disable no-invalid-this
 
 /**
  * Get the function-property type's value
  */
-export function valueFunctionProp<T>(prop: FunctionProp<T>, ...args: any[]): T {
+export function valueFunctionProp<T>(prop: FunctionProp<T>, ...args: NzSafeAny[]): T {
   return typeof prop === 'function' ? prop(...args) : prop;
 }
 
-function propDecoratorFactory<T, D>(name: string, fallback: (v: T) => D): (target: any, propName: string) => void {
-  function propDecorator(target: any, propName: string, originalDescriptor?: TypedPropertyDescriptor<any>): any {
+function propDecoratorFactory<T, D>(name: string, fallback: (v: T) => D): (target: NzSafeAny, propName: string) => void {
+  function propDecorator(target: NzSafeAny, propName: string, originalDescriptor?: TypedPropertyDescriptor<NzSafeAny>): NzSafeAny {
     const privatePropName = `$$__${propName}`;
 
     if (Object.prototype.hasOwnProperty.call(target, privatePropName)) {
@@ -80,15 +80,14 @@ function propDecoratorFactory<T, D>(name: string, fallback: (v: T) => D): (targe
  * // __visible = false;
  * ```
  */
-export function InputBoolean(): any {
+export function InputBoolean(): NzSafeAny {
   return propDecoratorFactory('InputBoolean', toBoolean);
 }
 
-export function InputCssPixel(): any {
+export function InputCssPixel(): NzSafeAny {
   return propDecoratorFactory('InputCssPixel', toCssPixel);
 }
 
-export function InputNumber(): any {
-  // tslint:disable-line: no-any
+export function InputNumber(): NzSafeAny {
   return propDecoratorFactory('InputNumber', toNumber);
 }

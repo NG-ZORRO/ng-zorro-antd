@@ -5,6 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { NzSafeAny } from 'ng-zorro-antd/core';
 
 export type NzCascaderExpandTrigger = 'click' | 'hover';
 export type NzCascaderTriggerType = 'click' | 'hover';
@@ -17,7 +18,7 @@ export type NzCascaderSorter = (a: NzCascaderOption[], b: NzCascaderOption[], in
  * @deprecated Use the prefixed version.
  */
 export interface CascaderOption {
-  value?: any; // tslint:disable-line:no-any
+  value?: NzSafeAny;
   label?: string;
   title?: string;
   disabled?: boolean;
@@ -26,7 +27,7 @@ export interface CascaderOption {
   parent?: NzCascaderOption;
   children?: NzCascaderOption[];
 
-  [key: string]: any; // tslint:disable-line:no-any
+  [key: string]: NzSafeAny;
 }
 
 export type NzCascaderOption = CascaderOption;

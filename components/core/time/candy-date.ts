@@ -31,6 +31,7 @@ import setDay from 'date-fns/setDay';
 import setMonth from 'date-fns/setMonth';
 import { warn } from '../logger';
 import { IndexableObject } from '../types';
+import { NzSafeAny } from '../types/any';
 
 export type WeekDayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 export type CandyDateCompareGrain = 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second';
@@ -324,8 +325,7 @@ export class CandyDate implements IndexableObject {
     return isValid(this.nativeDate);
   }
 
-  // tslint:disable-next-line: no-any
-  private toNativeDate(date: any): Date {
+  private toNativeDate(date: NzSafeAny): Date {
     return date instanceof CandyDate ? date.nativeDate : date;
   }
 }
