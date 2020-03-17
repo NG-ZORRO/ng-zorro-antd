@@ -6,13 +6,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export { NzI18nModule } from './nz-i18n.module';
-export { NzI18nService } from './nz-i18n.service';
-export { NZ_DATE_CONFIG, NzDateConfig } from './date-config';
+export * from './nz-i18n.module';
+export * from './nz-i18n.service';
+export * from './date-config';
 export * from './nz-i18n.interface';
 export * from './nz-i18n.token';
-export * from './date-helper.service';
 export * from './nz-i18n.pipe';
+export * from './date-helper.service';
+export * from './convert-tokens';
 
 export { default as ar_EG } from './languages/ar_EG';
 export { default as bg_BG } from './languages/bg_BG';

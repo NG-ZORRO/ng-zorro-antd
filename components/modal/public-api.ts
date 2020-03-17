@@ -7,9 +7,19 @@
  */
 
 export * from './modal-types';
-export { NzModalService } from './modal.service';
-export { NzModalRef } from './modal-ref';
-export { NZ_MODAL_CONFIG, NzModalConfig } from './modal-config';
-export { NzModalComponent } from './modal.component';
-export { NzModalFooterDirective } from './modal-footer.directive';
-export { NzModalModule } from './modal.module';
+export * from './modal.service';
+export * from './modal-ref';
+export * from './modal-config';
+export * from './modal.component';
+export * from './modal-footer.directive';
+export * from './modal.module';
+export * from './modal-confirm-container.component';
+export * from './modal-container.component';
+export * from './modal-container';
+export * from './modal-close.component';
+export * from './modal-title.component';
+export * from './modal-legacy-api';
+export * from './modal-types';
+export * from './modal-animations';
+export * from './modal-footer.component';
+export * from './utils';
