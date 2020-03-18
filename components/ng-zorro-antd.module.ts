@@ -138,6 +138,29 @@ export * from 'ng-zorro-antd/upload';
 
 export * from 'ng-zorro-antd/version';
 
+export * from 'ng-zorro-antd/core/animation';
+export * from 'ng-zorro-antd/core/config';
+export * from 'ng-zorro-antd/core/environments';
+export * from 'ng-zorro-antd/core/highlight';
+export * from 'ng-zorro-antd/core/logger';
+export * from 'ng-zorro-antd/core/no-animation';
+export * from 'ng-zorro-antd/core/outlet';
+export * from 'ng-zorro-antd/core/overlay';
+export * from 'ng-zorro-antd/core/pipe';
+export * from 'ng-zorro-antd/core/polyfill';
+export * from 'ng-zorro-antd/core/resize-observers';
+export * from 'ng-zorro-antd/core/responsive';
+export * from 'ng-zorro-antd/core/scroll';
+export * from 'ng-zorro-antd/core/services';
+export * from 'ng-zorro-antd/core/testing';
+export * from 'ng-zorro-antd/core/time';
+export * from 'ng-zorro-antd/core/trans-button';
+export * from 'ng-zorro-antd/core/transition-patch';
+export * from 'ng-zorro-antd/core/tree';
+export * from 'ng-zorro-antd/core/types';
+export * from 'ng-zorro-antd/core/util';
+export * from 'ng-zorro-antd/core/wave';
+
 @NgModule({
   exports: [
     NzAffixModule,
