@@ -1,4 +1,4 @@
-import { CandyDate } from '../../core';
+import { CandyDate } from '../core';
 import { isAllowedDate } from './util';
 
 describe('util.ts coverage supplements', () => {

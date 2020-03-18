@@ -14,4 +14,7 @@ export { MonthHeaderComponent as ɵMonthHeaderComponent } from './month-header.c
 export { MonthTableComponent as ɵMonthTableComponent } from './month-table.component';
 export { DateHeaderComponent as ɵDateHeaderComponent } from './date-header.component';
 export { DateTableComponent as ɵDateTableComponent } from './date-table.component';
+export { AbstractPanelHeader as ɵAbstractPanelHeader } from './abstract-panel-header';
+export { AbstractTable as ɵAbstractTable } from './abstract-table';
 export { LibPackerModule } from './lib-packer.module';
+export { transCompatFormat } from './util';

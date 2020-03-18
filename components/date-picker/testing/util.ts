@@ -8,7 +8,7 @@
 
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { PREFIX_CLASS } from '../name';
+import { PREFIX_CLASS } from '../util';
 import { NzPickerComponent } from '../picker.component';
 
 export function getPickerAbstract<T = HTMLElement>(debugElement: DebugElement): T {

@@ -6,8 +6,8 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent, NgStyleInterface } from 'ng-zorro-antd/core';
-import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/name';
 import { getPicker, getPickerAbstract, getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
+import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/util';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
 import { NzDatePickerModule } from './date-picker.module';
