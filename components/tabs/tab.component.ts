@@ -23,7 +23,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { InputBoolean } from 'ng-zorro-antd/core';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 
 import { NzTabLinkDirective } from './tab-link.directive';

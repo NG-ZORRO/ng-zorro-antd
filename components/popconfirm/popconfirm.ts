@@ -26,8 +26,11 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
+import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzTSType } from 'ng-zorro-antd/core/types';
 
-import { InputBoolean, NzNoAnimationDirective, NzTSType, zoomBigMotion } from 'ng-zorro-antd/core';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger } from 'ng-zorro-antd/tooltip';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

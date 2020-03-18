@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
-import { NzOutletModule } from 'ng-zorro-antd/core';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzResizeObserversModule } from 'ng-zorro-antd/core/resize-observers';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';

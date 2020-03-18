@@ -9,7 +9,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 
-import { arraysEqual, isNotNil } from 'ng-zorro-antd/core';
+import { arraysEqual, isNotNil } from 'ng-zorro-antd/core/util';
 
 import { isShowSearchObject, NzCascaderComponentAsSource, NzCascaderFilter, NzCascaderOption, NzCascaderSearchOption } from './typings';
 import { isChildOption, isParentOption } from './utils';

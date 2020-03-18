@@ -4,7 +4,7 @@ import { Component, Provider, Type } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core';
+import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzDropDownDirective } from './dropdown.directive';
 import { NzDropDownModule } from './dropdown.module';

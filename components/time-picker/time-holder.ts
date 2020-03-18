@@ -8,7 +8,7 @@
 
 import { Observable, Subject } from 'rxjs';
 
-import { isNotNil } from 'ng-zorro-antd/core';
+import { isNotNil } from 'ng-zorro-antd/core/util';
 
 export class TimeHolder {
   private _seconds: number | undefined = undefined;

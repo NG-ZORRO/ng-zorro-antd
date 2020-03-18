@@ -17,8 +17,9 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { CandyDate } from 'ng-zorro-antd/core/time';
 
-import { CandyDate, isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core';
+import { isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import { transCompatFormat } from './lib/util';
 import { PREFIX_CLASS } from './util';

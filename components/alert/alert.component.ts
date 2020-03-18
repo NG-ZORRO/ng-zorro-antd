@@ -19,7 +19,9 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { InputBoolean, NzConfigService, slideAlertMotion, WithConfig } from 'ng-zorro-antd/core';
+import { slideAlertMotion } from 'ng-zorro-antd/core/animation';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 

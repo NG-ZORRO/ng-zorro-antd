@@ -4,7 +4,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { createKeyboardEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core';
+import { createKeyboardEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import en_US from '../i18n/languages/en_US';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { NzPaginationComponent } from './pagination.component';

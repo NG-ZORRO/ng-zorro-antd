@@ -8,7 +8,7 @@
 
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
-import { NzSafeAny } from '../types/any';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzCopyToClipboardServiceModule } from './nz-copy-to-clipboard.service.module';
 
 @Injectable({

@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { dispatchMouseEvent } from '../testing';
+import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NzWaveDirective } from './nz-wave.directive';
 import { NzWaveModule } from './nz-wave.module';
 

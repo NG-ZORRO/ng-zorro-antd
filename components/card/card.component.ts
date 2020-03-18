@@ -18,7 +18,9 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { InputBoolean, NzConfigService, NzSizeDSType, WithConfig } from 'ng-zorro-antd/core';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzSizeDSType } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzCardGridDirective } from './card-grid.directive';

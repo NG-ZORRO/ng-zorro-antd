@@ -29,7 +29,9 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { InputBoolean, NzDomEventService, NzSizeLDSType, pxToNumber } from 'ng-zorro-antd/core';
+import { NzDomEventService } from 'ng-zorro-antd/core/services';
+import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { InputBoolean, pxToNumber } from 'ng-zorro-antd/core/util';
 import { merge, of as observableOf, Subject, Subscription } from 'rxjs';
 import { finalize, startWith, takeUntil } from 'rxjs/operators';
 

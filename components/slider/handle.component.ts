@@ -17,10 +17,10 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { NgStyleInterface } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 
-import { InputBoolean, NgStyleInterface } from 'ng-zorro-antd/core';
 import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
-
 import { NzSliderService } from './slider.service';
 import { NzSliderShowTooltip } from './typings';
 

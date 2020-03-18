@@ -2,7 +2,7 @@ import { Component, ElementRef, NgZone, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { dispatchMouseEvent, dispatchTouchEvent, MockNgZone } from 'ng-zorro-antd/core';
+import { dispatchMouseEvent, dispatchTouchEvent, MockNgZone } from 'ng-zorro-antd/core/testing';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 

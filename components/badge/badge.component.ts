@@ -24,7 +24,9 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { InputBoolean, isEmpty, NzConfigService, WithConfig, zoomBadgeMotion } from 'ng-zorro-antd/core';
+import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { InputBoolean, isEmpty } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { startWith, take, takeUntil } from 'rxjs/operators';
 

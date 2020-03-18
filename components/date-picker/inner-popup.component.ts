@@ -18,7 +18,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { CandyDate, FunctionProp } from 'ng-zorro-antd/core';
+import { CandyDate } from 'ng-zorro-antd/core/time';
+import { FunctionProp } from 'ng-zorro-antd/core/types';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import { DisabledDateFn, PanelMode, SupportTimeOptions } from './standard-types';
 import { PREFIX_CLASS } from './util';

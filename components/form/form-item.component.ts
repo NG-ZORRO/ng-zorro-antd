@@ -17,7 +17,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { warnDeprecation } from 'ng-zorro-antd/core';
+import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { Subject } from 'rxjs';
 
 export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validating' | null;

@@ -18,7 +18,8 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { InputBoolean, NgClassType, NzSizeLDSType } from 'ng-zorro-antd/core';
+import { NgClassType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzInputDirective } from './input.directive';
 
 @Component({

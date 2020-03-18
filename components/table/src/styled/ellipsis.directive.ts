@@ -7,7 +7,7 @@
  */
 
 import { Directive, Input } from '@angular/core';
-import { InputBoolean } from 'ng-zorro-antd/core';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 @Directive({
   selector: 'th[nzEllipsis],td[nzEllipsis]',

@@ -8,8 +8,8 @@
 
 import { Injectable } from '@angular/core';
 
-import { environment } from '../environments/environment';
-import { NzSafeAny } from '../types/any';
+import { environment } from 'ng-zorro-antd/core/environments';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 interface SingletonRegistryItem {
   target: NzSafeAny;

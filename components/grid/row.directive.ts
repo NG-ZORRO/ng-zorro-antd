@@ -9,7 +9,9 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Platform } from '@angular/cdk/platform';
 import { AfterViewInit, Directive, ElementRef, Input, NgZone, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges } from '@angular/core';
-import { gridResponsiveMap, IndexableObject, NzBreakpointKey, NzDomEventService } from 'ng-zorro-antd/core';
+import { gridResponsiveMap, NzBreakpointKey } from 'ng-zorro-antd/core/responsive';
+import { NzDomEventService } from 'ng-zorro-antd/core/services';
+import { IndexableObject } from 'ng-zorro-antd/core/types';
 import { ReplaySubject, Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 

@@ -8,7 +8,8 @@
 
 import { AfterContentChecked, Directive, ElementRef, Input, OnChanges, OnInit, Optional, Renderer2, SimpleChanges } from '@angular/core';
 import { IconDirective, ThemeType } from '@ant-design/icons-angular';
-import { InputBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { NzUpdateHostClassService } from 'ng-zorro-antd/core/services';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzIconPatchService, NzIconService } from './icon.service';
 

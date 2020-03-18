@@ -19,7 +19,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { toCssPixel } from 'ng-zorro-antd/core';
+import { toCssPixel } from 'ng-zorro-antd/core/util';
 import { AvatarShape, AvatarSize, NzSkeletonAvatar, NzSkeletonParagraph, NzSkeletonTitle } from './skeleton.type';
 
 @Component({

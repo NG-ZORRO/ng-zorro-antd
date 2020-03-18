@@ -8,7 +8,7 @@
 
 import { Platform } from '@angular/cdk/platform';
 import { AfterViewInit, Directive, DoCheck, ElementRef, Input, NgZone, OnDestroy } from '@angular/core';
-import { NzDomEventService } from 'ng-zorro-antd/core';
+import { NzDomEventService } from 'ng-zorro-antd/core/services';
 import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 

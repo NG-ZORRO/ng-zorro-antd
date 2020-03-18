@@ -20,10 +20,10 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { warn } from 'ng-zorro-antd/core/logger';
+import { NzUpdateHostClassService } from 'ng-zorro-antd/core/services';
 import { Observable, of, Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-
-import { NzUpdateHostClassService, warn } from 'ng-zorro-antd/core';
 
 import { UploadFile, UploadXHRArgs, ZipButtonOptions } from './interface';
 

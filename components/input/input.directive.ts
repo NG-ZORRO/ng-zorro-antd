@@ -7,7 +7,8 @@
  */
 
 import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
-import { InputBoolean, NzSizeLDSType } from 'ng-zorro-antd/core';
+import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 @Directive({
   selector: 'input[nz-input],textarea[nz-input]',

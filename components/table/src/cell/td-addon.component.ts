@@ -18,7 +18,7 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { InputBoolean } from 'ng-zorro-antd/core';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 @Component({
   selector: 'td[nzChecked], td[nzDisabled], td[nzIndeterminate], td[nzIndentSize], td[nzExpand], td[nzShowExpand], td[nzShowCheckbox]',

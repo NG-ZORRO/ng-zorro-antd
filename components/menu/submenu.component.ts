@@ -30,7 +30,9 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { getPlacementName, InputBoolean, NzNoAnimationDirective, POSITION_MAP } from 'ng-zorro-antd/core';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { getPlacementName, POSITION_MAP } from 'ng-zorro-antd/core/overlay';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { combineLatest, merge, Subject } from 'rxjs';
 import { map, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { NzMenuItemDirective } from './menu-item.directive';

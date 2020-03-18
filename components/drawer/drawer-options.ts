@@ -7,7 +7,7 @@
  */
 
 import { TemplateRef, Type } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzDrawerRef } from './drawer-ref';
 
 export type NzDrawerPlacement = 'left' | 'right' | 'top' | 'bottom';

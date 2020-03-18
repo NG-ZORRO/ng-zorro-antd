@@ -8,7 +8,7 @@
 
 import { TemplateRef } from '@angular/core';
 
-import { NgClassInterface, NgStyleInterface } from 'ng-zorro-antd/core';
+import { NgClassInterface, NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
 
 export interface NzNotificationData {

@@ -8,8 +8,10 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { NzHighlightModule } from 'ng-zorro-antd/core/highlight';
+import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 
-import { NzHighlightModule, NzNoAnimationModule, NzOutletModule } from 'ng-zorro-antd/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTreeIndentComponent } from './nz-tree-indent.component';
 

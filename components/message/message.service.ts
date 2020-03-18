@@ -9,7 +9,7 @@
 import { Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { Injectable, Injector, TemplateRef } from '@angular/core';
-import { NzSingletonService } from 'ng-zorro-antd/core';
+import { NzSingletonService } from 'ng-zorro-antd/core/services';
 import { NzMessageContainerComponent } from './message-container.component';
 import { NzMessageServiceModule } from './message.service.module';
 import { NzMessageData, NzMessageDataFilled, NzMessageDataOptions } from './typings';

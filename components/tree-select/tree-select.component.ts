@@ -30,26 +30,23 @@ import {
   ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { slideMotion, zoomMotion } from 'ng-zorro-antd/core/animation';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 
 import { merge, of as observableOf, Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
 import {
-  InputBoolean,
-  isNotNil,
-  NzConfigService,
   NzFormatEmitEvent,
-  NzNoAnimationDirective,
-  NzSizeLDSType,
   NzTreeBase,
   NzTreeBaseService,
   NzTreeHigherOrderServiceToken,
   NzTreeNode,
-  NzTreeNodeOptions,
-  slideMotion,
-  WithConfig,
-  zoomMotion
-} from 'ng-zorro-antd/core';
+  NzTreeNodeOptions
+} from 'ng-zorro-antd/core/tree';
 import { NzSelectSearchComponent } from 'ng-zorro-antd/select';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
 

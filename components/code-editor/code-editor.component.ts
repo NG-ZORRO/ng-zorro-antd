@@ -21,10 +21,10 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { warn } from 'ng-zorro-antd/core/logger';
+import { inNextTick, InputBoolean } from 'ng-zorro-antd/core/util';
 import { BehaviorSubject, combineLatest, fromEvent, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil } from 'rxjs/operators';
-
-import { inNextTick, InputBoolean, warn } from 'ng-zorro-antd/core';
 
 import { NzCodeEditorService } from './code-editor.service';
 import { DiffEditorOptions, EditorOptions, JoinedEditorOptions, NzEditorMode } from './typings';
