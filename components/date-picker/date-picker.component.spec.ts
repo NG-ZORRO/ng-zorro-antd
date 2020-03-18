@@ -11,8 +11,8 @@ import isSameDay from 'date-fns/isSameDay';
 
 import { dispatchKeyboardEvent, dispatchMouseEvent, NgStyleInterface, typeInElement } from 'ng-zorro-antd/core';
 import en_US from '../i18n/languages/en_US';
-import { PREFIX_CLASS } from './name';
 import { getPicker, getPickerAbstract, getPickerInput } from './testing/util';
+import { PREFIX_CLASS } from './util';
 
 import { enUS } from 'date-fns/locale';
 import { NZ_DATE_LOCALE, NzI18nModule, NzI18nService } from 'ng-zorro-antd/i18n';

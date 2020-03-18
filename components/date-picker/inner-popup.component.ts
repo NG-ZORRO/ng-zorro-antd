@@ -20,8 +20,8 @@ import {
 
 import { CandyDate, FunctionProp } from 'ng-zorro-antd/core';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
-import { PREFIX_CLASS } from './name';
 import { DisabledDateFn, PanelMode, SupportTimeOptions } from './standard-types';
+import { PREFIX_CLASS } from './util';
 
 @Component({
   encapsulation: ViewEncapsulation.None,

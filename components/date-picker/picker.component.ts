@@ -31,8 +31,8 @@ import { DateHelperService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { DatePickerService } from './date-picker.service';
-import { PREFIX_CLASS } from './name';
 import { RangePartType } from './standard-types';
+import { PREFIX_CLASS } from './util';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
