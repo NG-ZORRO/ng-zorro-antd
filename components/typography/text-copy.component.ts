@@ -31,7 +31,7 @@ import { takeUntil } from 'rxjs/operators';
     <button
       nz-tooltip
       nz-trans-button
-      [nzTitle]="copied ? locale?.copied : locale?.copy"
+      [nzTooltipTitle]="copied ? locale?.copied : locale?.copy"
       class="ant-typography-copy"
       [class.ant-typography-copy-success]="copied"
       (click)="onClick()"
