@@ -8,7 +8,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { NzOutletModule } from 'ng-zorro-antd/core';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 
 import { NzCardGridDirective } from './card-grid.directive';
 import { NzCardLoadingComponent } from './card-loading.component';

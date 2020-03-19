@@ -25,8 +25,9 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
+import { slideMotion } from 'ng-zorro-antd/core/animation';
 
-import { CandyDate, CompatibleValue, SingleValue, slideMotion, sortRangeValue } from 'ng-zorro-antd/core';
+import { CandyDate, CompatibleValue, SingleValue, sortRangeValue } from 'ng-zorro-antd/core/time';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';

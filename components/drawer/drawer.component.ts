@@ -33,10 +33,10 @@ import {
 import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
 import { Overlay, OverlayConfig, OverlayKeyboardDispatcher, OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortalOutlet, ComponentPortal, PortalInjector, TemplatePortal } from '@angular/cdk/portal';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { InputBoolean, toCssPixel } from 'ng-zorro-antd/core/util';
 
 import { Observable, Subject } from 'rxjs';
-
-import { InputBoolean, NzConfigService, toCssPixel, WithConfig } from 'ng-zorro-antd/core';
 import { takeUntil } from 'rxjs/operators';
 import { NzDrawerOptionsOfComponent, NzDrawerPlacement } from './drawer-options';
 import { NzDrawerRef } from './drawer-ref';

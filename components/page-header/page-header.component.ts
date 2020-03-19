@@ -21,7 +21,7 @@ import {
 } from '@angular/core';
 
 import { Location } from '@angular/common';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzPageHeaderBreadcrumbDirective, NzPageHeaderFooterDirective } from './page-header-cells';
 
 const NZ_CONFIG_COMPONENT_NAME = 'pageHeader';

@@ -25,17 +25,10 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-
-import {
-  getStyleAsText,
-  InputNumber,
-  NgStyleInterface,
-  NzConfigService,
-  NzSafeAny,
-  NzScrollService,
-  shallowEqual,
-  WithConfig
-} from 'ng-zorro-antd/core';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzScrollService } from 'ng-zorro-antd/core/scroll';
+import { NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { getStyleAsText, InputNumber, shallowEqual } from 'ng-zorro-antd/core/util';
 
 import { fromEvent, merge, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { auditTime, map, takeUntil } from 'rxjs/operators';

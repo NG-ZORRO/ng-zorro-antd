@@ -25,25 +25,22 @@ import {
   TemplateRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import {
   FlattenNode,
   flattenTreeData,
-  InputBoolean,
-  NzConfigService,
   NzFormatBeforeDropEvent,
   NzFormatEmitEvent,
-  NzNoAnimationDirective,
   NzTreeBase,
   NzTreeBaseService,
   NzTreeHigherOrderServiceToken,
   NzTreeNode,
   NzTreeNodeKey,
-  NzTreeNodeOptions,
-  WithConfig
-} from 'ng-zorro-antd/core';
+  NzTreeNodeOptions
+} from 'ng-zorro-antd/core/tree';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Observable, Subject } from 'rxjs';
-
 import { NzTreeService } from './nz-tree.service';
 
 export function NzTreeServiceFactory(higherOrderService: NzTreeBaseService, treeService: NzTreeService): NzTreeBaseService {

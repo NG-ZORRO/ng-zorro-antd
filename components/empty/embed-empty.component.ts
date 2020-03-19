@@ -25,7 +25,7 @@ import {
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
-import { NzConfigService } from 'ng-zorro-antd/core';
+import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NZ_EMPTY_COMPONENT_NAME, NzEmptyCustomContent, NzEmptySize } from './config';
 
 function getEmptySize(componentName: string): NzEmptySize {

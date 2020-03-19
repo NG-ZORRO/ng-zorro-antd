@@ -8,10 +8,10 @@
 
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable, NgZone, OnDestroy } from '@angular/core';
+import { isTouchEvent } from 'ng-zorro-antd/core/util';
 
 import { Subject } from 'rxjs';
 
-import { isTouchEvent } from 'ng-zorro-antd/core';
 import { NzResizeHandleMouseDownEvent } from './resize-handle.component';
 
 @Injectable()

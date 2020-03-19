@@ -53,7 +53,8 @@ import {
   UploadOutline,
   UpOutline
 } from '@ant-design/icons-angular/icons';
-import { IconConfig, NzConfigService, warn } from 'ng-zorro-antd/core';
+import { IconConfig, NzConfigService } from 'ng-zorro-antd/core/config';
+import { warn } from 'ng-zorro-antd/core/logger';
 import { Subject } from 'rxjs';
 
 export interface NzIconfontOption {

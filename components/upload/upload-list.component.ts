@@ -21,9 +21,9 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { NzUpdateHostClassService } from 'ng-zorro-antd/core/services';
+import { NgClassType } from 'ng-zorro-antd/core/types';
 import { Observable } from 'rxjs';
-
-import { NgClassType, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
 import { ShowUploadListInterface, UploadFile, UploadListType } from './interface';
 

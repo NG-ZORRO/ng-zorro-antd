@@ -11,7 +11,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { NzNoAnimationModule, NzOutletModule } from 'ng-zorro-antd/core';
+import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 
 import { NzAutocompleteOptgroupComponent } from './autocomplete-optgroup.component';
 import { NzAutocompleteOptionComponent } from './autocomplete-option.component';

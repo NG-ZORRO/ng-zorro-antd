@@ -10,12 +10,12 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import differenceInDays from 'date-fns/differenceInDays';
 import isSameDay from 'date-fns/isSameDay';
 
-import { dispatchKeyboardEvent, dispatchMouseEvent, NgStyleInterface, typeInElement } from 'ng-zorro-antd/core';
+import { dispatchKeyboardEvent, dispatchMouseEvent, typeInElement } from 'ng-zorro-antd/core/testing';
+import { CandyDate } from 'ng-zorro-antd/core/time';
+import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { RangePartType } from 'ng-zorro-antd/date-picker/standard-types';
 import { getPicker, getPickerAbstract, getPickerInput, getRangePickerRightInput } from 'ng-zorro-antd/date-picker/testing/util';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/util';
-
-import { CandyDate } from '../core';
 import { NzDatePickerModule } from './date-picker.module';
 
 registerLocaleData(zh);

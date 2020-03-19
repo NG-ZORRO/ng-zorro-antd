@@ -10,8 +10,9 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 
-import { NzNoAnimationModule, NzOverlayModule } from 'ng-zorro-antd/core';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSelectModule } from 'ng-zorro-antd/select';

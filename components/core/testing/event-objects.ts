@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
-import { NzSafeAny } from '../types/any';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 /** Creates a browser MouseEvent with the specified options. */
 export function createMouseEvent(type: string, x: number = 0, y: number = 0, button: number = 0): MouseEvent {

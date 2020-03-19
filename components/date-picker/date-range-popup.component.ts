@@ -21,7 +21,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { CandyDate, cloneDate, CompatibleValue, FunctionProp, normalizeRangeValue, SingleValue, sortRangeValue } from 'ng-zorro-antd/core';
+import { CandyDate, cloneDate, CompatibleValue, normalizeRangeValue, SingleValue, sortRangeValue } from 'ng-zorro-antd/core/time';
+import { FunctionProp } from 'ng-zorro-antd/core/types';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

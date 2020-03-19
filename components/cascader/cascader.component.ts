@@ -30,20 +30,14 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { slideMotion } from 'ng-zorro-antd/core/animation';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { DEFAULT_CASCADER_POSITIONS } from 'ng-zorro-antd/core/overlay';
+import { NgClassType, NgStyleInterface } from 'ng-zorro-antd/core/types';
+import { InputBoolean, toArray } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
-
-import {
-  DEFAULT_CASCADER_POSITIONS,
-  InputBoolean,
-  NgClassType,
-  NgStyleInterface,
-  NzConfigService,
-  NzNoAnimationDirective,
-  slideMotion,
-  toArray,
-  WithConfig
-} from 'ng-zorro-antd/core';
 
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzCascaderOptionComponent } from './cascader-li.component';

@@ -24,7 +24,10 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzCommentModule } from 'ng-zorro-antd/comment';
-import { NzNoAnimationModule, NzTransButtonModule, NzWaveModule, warnDeprecation } from 'ng-zorro-antd/core';
+import { warnDeprecation } from 'ng-zorro-antd/core/logger';
+import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { NzTransButtonModule } from 'ng-zorro-antd/core/trans-button';
+import { NzWaveModule } from 'ng-zorro-antd/core/wave';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
@@ -87,7 +90,6 @@ export * from 'ng-zorro-antd/cascader';
 export * from 'ng-zorro-antd/checkbox';
 export * from 'ng-zorro-antd/collapse';
 export * from 'ng-zorro-antd/comment';
-export * from 'ng-zorro-antd/core';
 export * from 'ng-zorro-antd/date-picker';
 export * from 'ng-zorro-antd/descriptions';
 export * from 'ng-zorro-antd/divider';
@@ -135,6 +137,29 @@ export * from 'ng-zorro-antd/typography';
 export * from 'ng-zorro-antd/upload';
 
 export * from 'ng-zorro-antd/version';
+
+export * from 'ng-zorro-antd/core/animation';
+export * from 'ng-zorro-antd/core/config';
+export * from 'ng-zorro-antd/core/environments';
+export * from 'ng-zorro-antd/core/highlight';
+export * from 'ng-zorro-antd/core/logger';
+export * from 'ng-zorro-antd/core/no-animation';
+export * from 'ng-zorro-antd/core/outlet';
+export * from 'ng-zorro-antd/core/overlay';
+export * from 'ng-zorro-antd/core/pipe';
+export * from 'ng-zorro-antd/core/polyfill';
+export * from 'ng-zorro-antd/core/resize-observers';
+export * from 'ng-zorro-antd/core/responsive';
+export * from 'ng-zorro-antd/core/scroll';
+export * from 'ng-zorro-antd/core/services';
+export * from 'ng-zorro-antd/core/testing';
+export * from 'ng-zorro-antd/core/time';
+export * from 'ng-zorro-antd/core/trans-button';
+export * from 'ng-zorro-antd/core/transition-patch';
+export * from 'ng-zorro-antd/core/tree';
+export * from 'ng-zorro-antd/core/types';
+export * from 'ng-zorro-antd/core/util';
+export * from 'ng-zorro-antd/core/wave';
 
 @NgModule({
   exports: [

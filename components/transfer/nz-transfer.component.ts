@@ -24,11 +24,12 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
+import { NzUpdateHostClassService } from 'ng-zorro-antd/core/services';
+import { InputBoolean, toArray } from 'ng-zorro-antd/core/util';
 
 import { Observable, of, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { InputBoolean, NzUpdateHostClassService, toArray } from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { TransferCanMove, TransferChange, TransferDirection, TransferItem, TransferSearchChange, TransferSelectChange } from './interface';

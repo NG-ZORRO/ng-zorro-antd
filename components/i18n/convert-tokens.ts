@@ -5,7 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-import { warnDeprecation } from 'ng-zorro-antd/core';
+import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 
 // Compatible for date-fns v1 from https://github.com/date-fns/date-fns-upgrade/blob/master/src/v2/convertTokens/index.ts
 

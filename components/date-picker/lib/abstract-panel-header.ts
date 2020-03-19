@@ -7,7 +7,7 @@
  */
 
 import { EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { CandyDate } from 'ng-zorro-antd/core';
+import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import { PanelMode } from '../standard-types';
 import { PanelSelector } from './interface';

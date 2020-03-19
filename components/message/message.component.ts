@@ -17,8 +17,7 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
-
-import { moveUpMotion } from 'ng-zorro-antd/core';
+import { moveUpMotion } from 'ng-zorro-antd/core/animation';
 
 import { NzMessageDataFilled, NzMessageDataOptions } from './typings';
 

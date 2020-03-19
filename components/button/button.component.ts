@@ -21,8 +21,9 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 
-import { InputBoolean, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
 import { NzIconDirective } from 'ng-zorro-antd/icon';
 import { Subject } from 'rxjs';
 import { filter, startWith, takeUntil } from 'rxjs/operators';

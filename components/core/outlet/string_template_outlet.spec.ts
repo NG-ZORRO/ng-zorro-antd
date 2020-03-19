@@ -1,5 +1,6 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { NzSafeAny, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core';
+import { ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzOutletModule } from './outlet.module';
 import { NzStringTemplateOutletDirective } from './string_template_outlet.directive';
 

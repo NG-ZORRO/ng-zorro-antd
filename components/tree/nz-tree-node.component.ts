@@ -26,17 +26,11 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
+import { treeCollapseMotion } from 'ng-zorro-antd/core/animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 
-import {
-  InputBoolean,
-  NzFormatBeforeDropEvent,
-  NzFormatEmitEvent,
-  NzNoAnimationDirective,
-  NzTreeBaseService,
-  NzTreeNode,
-  NzTreeNodeOptions,
-  treeCollapseMotion
-} from 'ng-zorro-antd/core';
+import { NzFormatBeforeDropEvent, NzFormatEmitEvent, NzTreeBaseService, NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 

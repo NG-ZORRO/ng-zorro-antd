@@ -25,18 +25,11 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import {
-  DEFAULT_TOOLTIP_POSITIONS,
-  getPlacementName,
-  isNotNil,
-  NgClassInterface,
-  NgStyleInterface,
-  NzNoAnimationDirective,
-  NzTSType,
-  POSITION_MAP,
-  toBoolean,
-  warnDeprecation
-} from 'ng-zorro-antd/core';
+import { warnDeprecation } from 'ng-zorro-antd/core/logger';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { DEFAULT_TOOLTIP_POSITIONS, getPlacementName, POSITION_MAP } from 'ng-zorro-antd/core/overlay';
+import { NgClassInterface, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
+import { isNotNil, toBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 

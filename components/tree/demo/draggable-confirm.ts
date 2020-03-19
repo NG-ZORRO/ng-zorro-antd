@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NzFormatBeforeDropEvent } from 'ng-zorro-antd/core';
+import { NzFormatBeforeDropEvent } from 'ng-zorro-antd/core/tree';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 

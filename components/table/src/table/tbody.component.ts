@@ -8,7 +8,7 @@
 /* tslint:disable:component-selector */
 
 import { ChangeDetectionStrategy, Component, Optional, TemplateRef, ViewEncapsulation } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { BehaviorSubject } from 'rxjs';
 import { NzTableStyleService } from '../table-style.service';
 

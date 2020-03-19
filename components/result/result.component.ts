@@ -7,7 +7,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
-import { NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { NzUpdateHostClassService } from 'ng-zorro-antd/core/services';
 
 export type NzResultIconType = 'success' | 'error' | 'info' | 'warning';
 export type NzExceptionStatusType = '404' | '500' | '403';

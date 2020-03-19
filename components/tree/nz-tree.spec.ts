@@ -3,8 +3,10 @@ import { fakeAsync, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { dispatchMouseEvent, dispatchTouchEvent, NzFormatEmitEvent, NzSafeAny, NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core';
+import { dispatchMouseEvent, dispatchTouchEvent } from 'ng-zorro-antd/core/testing';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
+import { NzFormatEmitEvent, NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { Observable, of } from 'rxjs';

@@ -7,7 +7,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, TemplateRef, ViewEncapsulation } from '@angular/core';
-import { NzBreakpointKey } from 'ng-zorro-antd/core';
+import { NzBreakpointKey } from 'ng-zorro-antd/core/responsive';
 
 @Component({
   selector: '[nz-sider-trigger]',

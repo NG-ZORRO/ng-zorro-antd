@@ -3,7 +3,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { NzScrollService } from 'ng-zorro-antd/core';
+import { NzScrollService } from 'ng-zorro-antd/core/scroll';
 
 import { NzBackTopComponent } from './back-top.component';
 import { NzBackTopModule } from './back-top.module';

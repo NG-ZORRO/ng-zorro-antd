@@ -9,8 +9,7 @@
 import { coerceElement } from '@angular/cdk/coercion';
 import { AfterViewInit, Directive, ElementRef, Inject, Input, OnChanges, Optional, Renderer2 } from '@angular/core';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
-
-import { InputBoolean } from '../util/convert';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 const DISABLED_CLASSNAME = 'nz-animate-disabled';
 

@@ -3,8 +3,9 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
 import { async, ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 
-import { dispatchKeyboardEvent, NzNoAnimationModule } from 'ng-zorro-antd/core';
+import { dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 
 import { NzDrawerRef } from './drawer-ref';
 import { NzDrawerComponent } from './drawer.component';

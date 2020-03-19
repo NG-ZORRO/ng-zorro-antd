@@ -10,7 +10,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NzOverlayModule } from 'ng-zorro-antd/core';
+import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';

@@ -23,8 +23,9 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
-
-import { NzNoAnimationDirective, NzTSType, zoomBigMotion } from 'ng-zorro-antd/core';
+import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzTSType } from 'ng-zorro-antd/core/types';
 
 import { isTooltipEmpty, NzTooltipBaseComponent, NzTooltipBaseDirective, NzTooltipTrigger } from './base';
 

@@ -7,8 +7,8 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
-
-import { InputBoolean, NgStyleInterface } from 'ng-zorro-antd/core';
+import { NgStyleInterface } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzDisplayedMark, NzExtendedMark, NzMark, NzMarkObj } from './typings';
 

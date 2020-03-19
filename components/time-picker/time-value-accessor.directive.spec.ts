@@ -5,7 +5,7 @@ import { async, ComponentFixture, fakeAsync, flush, TestBed } from '@angular/cor
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
-import { dispatchFakeEvent } from 'ng-zorro-antd/core';
+import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
 import { NzI18nModule } from '../i18n/nz-i18n.module';
 
 import { NzTimeValueAccessorDirective } from './time-value-accessor.directive';

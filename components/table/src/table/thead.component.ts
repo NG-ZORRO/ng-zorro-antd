@@ -25,8 +25,9 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-import { InputBoolean, NzSafeAny } from 'ng-zorro-antd/core';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { EMPTY, merge, Observable, of, Subject } from 'rxjs';
 import { delay, flatMap, map, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { NzThAddOnComponent } from '../cell/th-addon.component';

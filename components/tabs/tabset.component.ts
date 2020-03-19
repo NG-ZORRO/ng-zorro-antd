@@ -31,17 +31,12 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/router';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { PREFIX } from 'ng-zorro-antd/core/logger';
+import { NzUpdateHostClassService } from 'ng-zorro-antd/core/services';
+import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { InputBoolean, toNumber, wrapIntoObservable } from 'ng-zorro-antd/core/util';
 
-import {
-  InputBoolean,
-  NzConfigService,
-  NzSizeLDSType,
-  NzUpdateHostClassService,
-  PREFIX,
-  toNumber,
-  WithConfig,
-  wrapIntoObservable
-} from 'ng-zorro-antd/core';
 import { merge, Subject, Subscription } from 'rxjs';
 import { filter, first, startWith, takeUntil } from 'rxjs/operators';
 import { NzTabComponent } from './tab.component';

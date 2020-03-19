@@ -7,7 +7,7 @@
  */
 
 import { TemplateRef } from '@angular/core';
-import { NgStyleInterface } from 'ng-zorro-antd/core';
+import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 
 export type NzProgressGapPositionType = 'top' | 'bottom' | 'left' | 'right';
 

@@ -30,10 +30,11 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzDomEventService, NzDragService } from 'ng-zorro-antd/core/services';
+import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
-
-import { InputBoolean, InputNumber, NzConfigService, NzDomEventService, NzDragService, WithConfig } from 'ng-zorro-antd/core';
 
 import { NzCarouselContentDirective } from './carousel-content.directive';
 import { NzCarouselBaseStrategy } from './strategies/base-strategy';

@@ -24,7 +24,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { NzDomEventService } from 'ng-zorro-antd/core';
+import { NzDomEventService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEvent, merge, Subject } from 'rxjs';
 import { delay, filter, finalize, startWith, takeUntil } from 'rxjs/operators';

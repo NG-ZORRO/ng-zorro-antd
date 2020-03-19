@@ -17,8 +17,8 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { toNumber } from 'ng-zorro-antd/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { toNumber } from 'ng-zorro-antd/core/util';
 import { PaginationItemRenderContext } from './pagination.types';
 
 @Component({

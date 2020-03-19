@@ -20,7 +20,8 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
-import { NzNoAnimationDirective, slideMotion } from 'ng-zorro-antd/core';
+import { slideMotion } from 'ng-zorro-antd/core/animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { MenuService, NzIsMenuInsideDropDownToken } from 'ng-zorro-antd/menu';
 import { BehaviorSubject } from 'rxjs';

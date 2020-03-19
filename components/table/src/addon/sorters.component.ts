@@ -7,7 +7,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzSortOrderType } from '../table.types';
 
 @Component({

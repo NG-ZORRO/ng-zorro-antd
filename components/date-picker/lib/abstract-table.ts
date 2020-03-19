@@ -7,7 +7,9 @@
  */
 
 import { EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef } from '@angular/core';
-import { CandyDate, FunctionProp, isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core';
+import { CandyDate } from 'ng-zorro-antd/core/time';
+import { FunctionProp } from 'ng-zorro-antd/core/types';
+import { isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core/util';
 import { DateBodyRow, DateCell } from './interface';
 
 export abstract class AbstractTable implements OnInit, OnChanges {

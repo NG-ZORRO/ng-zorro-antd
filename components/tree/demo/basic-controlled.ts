@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NzFormatEmitEvent } from 'ng-zorro-antd/core';
+import { NzFormatEmitEvent } from 'ng-zorro-antd/core/tree';
 
 @Component({
   selector: 'nz-demo-tree-basic-controlled',
