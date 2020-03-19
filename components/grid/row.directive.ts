@@ -42,13 +42,19 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   actualGutter$ = new ReplaySubject<[number, number]>(1);
   destroy$ = new Subject();
 
-  getGutter(breakPoint: NzBreakpointKey): [number, number] {
+  getGutter(): [number, number] {
     const results: [number, number] = [0, 0];
     const gutter = this.nzGutter || 0;
     const normalizedGutter = Array.isArray(gutter) ? gutter : [gutter, 0];
     normalizedGutter.forEach((g, index) => {
       if (typeof g === 'object') {
-        results[index] = (g![breakPoint] as number) || 0;
+        results[index] = 0;
+        Object.keys(gridResponsiveMap).map((screen: string) => {
+          const bp = screen as NzBreakpointKey;
+          if (this.mediaMatcher.matchMedia(gridResponsiveMap[bp]).matches && g[bp]) {
+            results[index] = g![bp] as number;
+          }
+        });
       } else {
         results[index] = g || 0;
       }
@@ -57,14 +63,7 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   }
 
   setGutterStyle(): void {
-    let breakPoint: NzBreakpointKey | null = null;
-    Object.keys(gridResponsiveMap).map((screen: string) => {
-      const bp = screen as NzBreakpointKey;
-      if (this.mediaMatcher.matchMedia(gridResponsiveMap[bp]).matches) {
-        breakPoint = bp;
-      }
-    });
-    const [horizontalGutter, verticalGutter] = this.getGutter(breakPoint!);
+    const [horizontalGutter, verticalGutter] = this.getGutter();
     this.actualGutter$.next([horizontalGutter, verticalGutter]);
     const renderGutter = (name: string, gutter: number) => {
       const nativeElement = this.elementRef.nativeElement;

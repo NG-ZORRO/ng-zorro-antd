@@ -20,17 +20,17 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzAutosizeDirective } from 'ng-zorro-antd/input';
+
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'nz-text-edit',
   exportAs: 'nzTextEdit',
   template: `
-    <button *ngIf="!editing" [nzTitle]="locale?.edit" nz-tooltip nz-trans-button class="ant-typography-edit" (click)="onClick()">
+    <button *ngIf="!editing" [nzTooltipTitle]="locale?.edit" nz-tooltip nz-trans-button class="ant-typography-edit" (click)="onClick()">
       <i nz-icon nzType="edit"></i>
     </button>
     <ng-container *ngIf="editing">
