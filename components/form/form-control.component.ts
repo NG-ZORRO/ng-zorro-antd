@@ -27,8 +27,10 @@ import { helpMotion } from 'ng-zorro-antd/core/animation';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 
 import { toBoolean } from 'ng-zorro-antd/core/util';
-import { Subscription } from 'rxjs';
-import { startWith } from 'rxjs/operators';
+import { NzI18nService } from 'ng-zorro-antd/i18n';
+import { Subject, Subscription } from 'rxjs';
+import { startWith, takeUntil } from 'rxjs/operators';
+
 import { NzFormControlStatusType, NzFormItemComponent } from './form-item.component';
 
 const iconTypeMap = {
@@ -68,11 +70,21 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
   static ngAcceptInputType_nzHasFeedback: BooleanInput;
   static ngAcceptInputType_nzRequired: BooleanInput;
   static ngAcceptInputType_nzNoColon: BooleanInput;
+  static ngAcceptInputType_nzDisableAutoTips: BooleanInput;
 
   private _hasFeedback = false;
   private validateChanges: Subscription = Subscription.EMPTY;
   private validateString: string | null = null;
   private status: NzFormControlStatusType = null;
+  private destroyed$ = new Subject<void>();
+  private localeId: string;
+  private defaultTipOptions: Record<string, string | Record<string, string>>;
+  private defaultDisableAutoTips: boolean;
+  private autoErrorTip: string;
+
+  private get disableAutoTips(): boolean {
+    return this.nzDisableAutoTips !== 'default' ? toBoolean(this.nzDisableAutoTips) : this.defaultDisableAutoTips;
+  }
 
   validateControl: FormControl | NgModel | null = null;
   iconType: typeof iconTypeMap[keyof typeof iconTypeMap] | null = null;
@@ -84,6 +96,8 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
   @Input() nzErrorTip: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
   @Input() nzValidatingTip: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
   @Input() nzExtra: string | TemplateRef<void>;
+  @Input() nzTipOptions: Record<string, Record<string, string>>;
+  @Input() nzDisableAutoTips: boolean | 'default' = 'default';
 
   @Input()
   set nzHasFeedback(value: boolean) {
@@ -122,9 +136,13 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
     this.removeSubscribe();
     /** miss detect https://github.com/angular/angular/issues/10887 **/
     if (this.validateControl && this.validateControl.statusChanges) {
-      this.validateChanges = this.validateControl.statusChanges.pipe(startWith(null)).subscribe(() => {
-        this.setStatus();
-        this.cdr.markForCheck();
+      this.validateChanges = this.validateControl.statusChanges.pipe(startWith(null)).subscribe(_ => {
+        if (this.disableAutoTips) {
+          this.setStatus();
+          this.cdr.markForCheck();
+        } else {
+          this.updateAutoTip();
+        }
       });
     }
   }
@@ -169,7 +187,7 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
   private getInnerTip(status: NzFormControlStatusType): string | TemplateRef<{ $implicit: FormControl | NgModel }> | null {
     switch (status) {
       case 'error':
-        return this.nzErrorTip;
+        return (!this.disableAutoTips && this.autoErrorTip) || this.nzErrorTip;
       case 'validating':
         return this.nzValidatingTip;
       case 'success':
@@ -181,13 +199,54 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
     }
   }
 
+  private updateAutoTip(): void {
+    this.updateAutoErrorTip();
+    this.setStatus();
+    this.cdr.markForCheck();
+  }
+
+  private updateAutoErrorTip(): void {
+    if (this.validateControl) {
+      const errors = this.validateControl.errors || {};
+      let autoErrorTip = '';
+      for (const key in errors) {
+        if (errors.hasOwnProperty(key)) {
+          autoErrorTip = errors[key][this.localeId];
+          if (!autoErrorTip) {
+            const tipOptions = this.nzTipOptions || this.defaultTipOptions || {};
+            autoErrorTip = (tipOptions[this.localeId] || {})[key];
+          }
+        }
+        if (!!autoErrorTip) {
+          break;
+        }
+      }
+      this.autoErrorTip = autoErrorTip;
+    }
+  }
+
+  setDefaultAutoTipConf(tipOptions: Record<string, string | Record<string, string>>, disableAutoTip: boolean): void {
+    this.defaultTipOptions = tipOptions;
+    this.defaultDisableAutoTips = disableAutoTip;
+    if (!this.disableAutoTips) {
+      this.updateAutoTip();
+    }
+  }
+
   constructor(
     elementRef: ElementRef,
     @Optional() @Host() private nzFormItemComponent: NzFormItemComponent,
     private cdr: ChangeDetectorRef,
-    renderer: Renderer2
+    renderer: Renderer2,
+    i18n: NzI18nService
   ) {
     renderer.addClass(elementRef.nativeElement, 'ant-form-item-control');
+    i18n.localeChange.pipe(takeUntil(this.destroyed$)).subscribe(locale => {
+      this.localeId = locale.locale;
+      if (!this.disableAutoTips) {
+        this.updateAutoTip();
+      }
+    });
   }
 
   ngOnInit(): void {
