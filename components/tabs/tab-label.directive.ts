@@ -8,7 +8,7 @@
 
 import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
 
-import { InputBoolean } from 'ng-zorro-antd/core';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 @Directive({
   selector: '[nz-tab-label]',

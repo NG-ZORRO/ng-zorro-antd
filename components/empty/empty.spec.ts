@@ -3,7 +3,7 @@ import { Component, DebugElement, Inject, NgModule, TemplateRef, ViewChild } fro
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { NZ_CONFIG, NzConfigService } from '../core';
+import { NZ_CONFIG, NzConfigService } from 'ng-zorro-antd/core/config';
 import { ComponentBed, createComponentBed } from '../core/testing/componet-bed';
 import { NzI18nService } from '../i18n';
 import en_US from '../i18n/languages/en_US';

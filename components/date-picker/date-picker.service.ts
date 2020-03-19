@@ -7,7 +7,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { CandyDate, cloneDate, CompatibleValue, normalizeRangeValue } from 'ng-zorro-antd/core';
+import { CandyDate, cloneDate, CompatibleValue, normalizeRangeValue } from 'ng-zorro-antd/core/time';
 import { ReplaySubject, Subject } from 'rxjs';
 import { CompatibleDate, RangePartType } from './standard-types';
 

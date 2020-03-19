@@ -20,7 +20,8 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { InputBoolean, warnDeprecation } from 'ng-zorro-antd/core';
+import { warnDeprecation } from 'ng-zorro-antd/core/logger';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzFilterFn, NzFilterValue, NzSortCompareFn, NzSortOrderType, NzThFilterType } from '../table.types';

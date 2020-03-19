@@ -21,7 +21,8 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { NzNoAnimationDirective, zoomMotion } from 'ng-zorro-antd/core';
+import { zoomMotion } from 'ng-zorro-antd/core/animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzSelectSearchComponent } from './select-search.component';
 import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } from './select.types';

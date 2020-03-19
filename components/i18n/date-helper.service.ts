@@ -13,7 +13,7 @@ import fnsGetISOWeek from 'date-fns/getISOWeek';
 import fnsParse from 'date-fns/parse';
 
 import parseISO from 'date-fns/parseISO';
-import { WeekDayIndex } from 'ng-zorro-antd/core';
+import { WeekDayIndex } from 'ng-zorro-antd/core/time';
 import { convertTokens } from './convert-tokens';
 import { mergeDateConfig, NZ_DATE_CONFIG, NZ_DATE_FNS_COMPATIBLE, NzDateConfig } from './date-config';
 import { NzI18nService } from './nz-i18n.service';

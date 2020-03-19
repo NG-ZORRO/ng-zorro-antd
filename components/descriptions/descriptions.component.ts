@@ -22,16 +22,12 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { warn } from 'ng-zorro-antd/core/logger';
+import { gridResponsiveMap, NzBreakpointEnum } from 'ng-zorro-antd/core/responsive';
+import { NzDomEventService } from 'ng-zorro-antd/core/services';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 
-import {
-  gridResponsiveMap,
-  InputBoolean,
-  NzBreakpointEnum,
-  NzConfigService,
-  NzDomEventService,
-  warn,
-  WithConfig
-} from 'ng-zorro-antd/core';
 import { merge, Subject } from 'rxjs';
 import { auditTime, finalize, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { NzDescriptionsItemComponent } from './descriptions-item.component';

@@ -20,8 +20,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-
-import { NzUpdateHostClassService } from 'ng-zorro-antd/core';
+import { NzUpdateHostClassService } from 'ng-zorro-antd/core/services';
 
 import { TransferItem } from './interface';
 

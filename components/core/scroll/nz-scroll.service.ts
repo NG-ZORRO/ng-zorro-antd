@@ -8,9 +8,8 @@
 
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable, Optional, Provider, SkipSelf } from '@angular/core';
-
-import { reqAnimFrame } from '../polyfill/request-animation';
-import { NzSafeAny } from '../types/any';
+import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 export type EasyingFn = (t: number, b: number, c: number, d: number) => number;
 

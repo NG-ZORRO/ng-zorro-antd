@@ -8,7 +8,8 @@
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 
-import { MessageConfig, NzConfigService, toCssPixel } from 'ng-zorro-antd/core';
+import { MessageConfig, NzConfigService } from 'ng-zorro-antd/core/config';
+import { toCssPixel } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzMessageDataFilled, NzMessageDataOptions } from './typings';

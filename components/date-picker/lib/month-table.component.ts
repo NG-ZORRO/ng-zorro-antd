@@ -7,7 +7,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
-import { valueFunctionProp } from 'ng-zorro-antd/core';
+import { valueFunctionProp } from 'ng-zorro-antd/core/util';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell, DayCell } from './interface';

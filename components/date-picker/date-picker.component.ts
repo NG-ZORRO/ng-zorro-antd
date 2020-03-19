@@ -25,17 +25,11 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-
-import {
-  CandyDate,
-  cloneDate,
-  CompatibleValue,
-  FunctionProp,
-  InputBoolean,
-  NzNoAnimationDirective,
-  valueFunctionProp,
-  warnDeprecation
-} from 'ng-zorro-antd/core';
+import { warnDeprecation } from 'ng-zorro-antd/core/logger';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { CandyDate, cloneDate, CompatibleValue } from 'ng-zorro-antd/core/time';
+import { FunctionProp } from 'ng-zorro-antd/core/types';
+import { InputBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzDatePickerI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

@@ -20,7 +20,8 @@ import {
   SimpleChanges
 } from '@angular/core';
 
-import { InputBoolean, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 

@@ -29,21 +29,14 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { cancelRequestAnimationFrame, reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
+import { NzDomEventService } from 'ng-zorro-antd/core/services';
+import { InputBoolean, InputNumber, isStyleSupport, measure } from 'ng-zorro-antd/core/util';
 
 import { Subject, Subscription } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 
-import {
-  cancelRequestAnimationFrame,
-  InputBoolean,
-  InputNumber,
-  isStyleSupport,
-  measure,
-  NzConfigService,
-  NzDomEventService,
-  reqAnimFrame,
-  WithConfig
-} from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { NzTextCopyComponent } from './text-copy.component';

@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { Router, Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { NgStyleInterface } from 'ng-zorro-antd/core';
+import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 
 import { of } from 'rxjs';
 import { NzAnimatedInterface, NzTabsCanDeactivateFn } from './table.types';

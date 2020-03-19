@@ -18,7 +18,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { slideMotion, zoomBigMotion } from 'ng-zorro-antd/core';
+import { slideMotion, zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzMenuModeType, NzMenuThemeType } from './menu.types';
 

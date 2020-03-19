@@ -8,9 +8,8 @@
 
 import { _isNumberValue, coerceBooleanProperty, coerceCssPixelValue } from '@angular/cdk/coercion';
 
-import { warn } from '../logger/logger';
-import { NzSafeAny } from '../types/any';
-import { FunctionProp } from '../types/common-wrap';
+import { warn } from 'ng-zorro-antd/core/logger';
+import { FunctionProp, NzSafeAny } from 'ng-zorro-antd/core/types';
 
 export function toBoolean(value: boolean | string): boolean {
   return coerceBooleanProperty(value);

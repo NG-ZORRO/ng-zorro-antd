@@ -18,8 +18,9 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
+import { CandyDate } from 'ng-zorro-antd/core/time';
+import { valueFunctionProp } from 'ng-zorro-antd/core/util';
 
-import { CandyDate, valueFunctionProp } from 'ng-zorro-antd/core';
 import { DateHelperService, NzCalendarI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell, DayCell } from './interface';

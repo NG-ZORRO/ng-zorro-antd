@@ -26,9 +26,10 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { InputBoolean, measureScrollbar, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { InputBoolean, measureScrollbar } from 'ng-zorro-antd/core/util';
 import { PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
 import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';

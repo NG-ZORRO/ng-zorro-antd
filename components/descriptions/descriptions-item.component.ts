@@ -7,8 +7,8 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { InputNumber } from 'ng-zorro-antd/core/util';
 
-import { InputNumber } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
 
 @Component({

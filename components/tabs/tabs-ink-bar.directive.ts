@@ -7,7 +7,7 @@
  */
 
 import { Directive, ElementRef, Input, NgZone, Renderer2 } from '@angular/core';
-import { InputBoolean } from 'ng-zorro-antd/core';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzTabPositionMode } from './table.types';
 
 @Directive({

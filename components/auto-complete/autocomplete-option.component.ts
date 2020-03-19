@@ -17,8 +17,8 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
-
-import { InputBoolean, NzSafeAny, scrollIntoView } from 'ng-zorro-antd/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { InputBoolean, scrollIntoView } from 'ng-zorro-antd/core/util';
 
 import { NzAutocompleteOptgroupComponent } from './autocomplete-optgroup.component';
 

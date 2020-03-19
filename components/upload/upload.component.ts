@@ -23,7 +23,7 @@ import {
 import { Observable, of, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { InputBoolean, InputNumber, toBoolean } from 'ng-zorro-antd/core';
+import { InputBoolean, InputNumber, toBoolean } from 'ng-zorro-antd/core/util';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import {

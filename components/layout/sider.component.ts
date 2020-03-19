@@ -26,8 +26,10 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { NzBreakpointKey, siderResponsiveMap } from 'ng-zorro-antd/core/responsive';
+import { NzDomEventService } from 'ng-zorro-antd/core/services';
 
-import { InputBoolean, NzBreakpointKey, NzDomEventService, siderResponsiveMap, toCssPixel } from 'ng-zorro-antd/core';
+import { InputBoolean, toCssPixel } from 'ng-zorro-antd/core/util';
 import { NzMenuDirective } from 'ng-zorro-antd/menu';
 import { merge, of, Subject } from 'rxjs';
 import { delay, finalize, takeUntil } from 'rxjs/operators';

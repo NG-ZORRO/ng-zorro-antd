@@ -1,5 +1,5 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { NzConfigService } from 'ng-zorro-antd/core';
+import { NzConfigService } from 'ng-zorro-antd/core/config';
 
 @Component({
   selector: 'nz-demo-empty-config',

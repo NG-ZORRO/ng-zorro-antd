@@ -7,10 +7,10 @@
  */
 
 import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
-import { PanelSelector } from './interface';
 
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 import { AbstractPanelHeader } from './abstract-panel-header';
+import { PanelSelector } from './interface';
 import { transCompatFormat } from './util';
 
 @Component({

@@ -16,8 +16,9 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { NgClassType } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 
-import { InputBoolean, NgClassType } from 'ng-zorro-antd/core';
 import { Subject } from 'rxjs';
 
 @Component({

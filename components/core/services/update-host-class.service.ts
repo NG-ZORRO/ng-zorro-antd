@@ -8,7 +8,7 @@
 
 import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 
-import { NgClassInterface } from '../types/ng-class';
+import { NgClassInterface } from 'ng-zorro-antd/core/types';
 
 @Injectable()
 export class NzUpdateHostClassService {

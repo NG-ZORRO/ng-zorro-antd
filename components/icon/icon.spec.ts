@@ -11,7 +11,7 @@ import {
   RightOutline
 } from '@ant-design/icons-angular/icons';
 
-import { NzConfigService } from 'ng-zorro-antd/core';
+import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
 
 import { NzIconDirective } from './icon.directive';

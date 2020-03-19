@@ -9,10 +9,9 @@
 import { InjectionToken, TemplateRef, Type } from '@angular/core';
 
 import { SafeUrl } from '@angular/platform-browser';
-import { NzBreakpointEnum } from '../responsive/public-api';
+import { NzBreakpointEnum } from 'ng-zorro-antd/core/responsive';
+import { NzSafeAny, NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType } from 'ng-zorro-antd/core/types';
 
-import { NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType } from '../types';
-import { NzSafeAny } from '../types/any';
 export interface NzConfig {
   affix?: AffixConfig;
   alert?: AlertConfig;

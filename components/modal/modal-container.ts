@@ -11,8 +11,7 @@ import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { BasePortalOutlet, CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { ChangeDetectorRef, ComponentRef, ElementRef, EmbeddedViewRef, EventEmitter, NgZone, Renderer2 } from '@angular/core';
-
-import { getElementOffset } from 'ng-zorro-antd/core';
+import { getElementOffset } from 'ng-zorro-antd/core/util';
 
 import { NzModalRef } from './modal-ref';
 import { ModalOptions } from './modal-types';

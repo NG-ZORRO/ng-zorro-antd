@@ -18,8 +18,8 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
+import { NzCopyToClipboardService } from 'ng-zorro-antd/core/services';
 
-import { NzCopyToClipboardService } from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

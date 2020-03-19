@@ -3,7 +3,8 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { dispatchMouseEvent, NZ_CONFIG, NzConfigService } from 'ng-zorro-antd/core';
+import { NZ_CONFIG, NzConfigService } from 'ng-zorro-antd/core/config';
+import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
 
 import { NzMessageModule } from './message.module';

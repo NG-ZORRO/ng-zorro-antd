@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { CandyDate } from 'ng-zorro-antd/core';
+import { CandyDate } from 'ng-zorro-antd/core/time';
 import { DisabledDateFn, DisabledTimeConfig, DisabledTimeFn } from './standard-types';
 
 export const PREFIX_CLASS = 'ant-picker';

@@ -20,10 +20,11 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { NzUpdateHostClassService } from 'ng-zorro-antd/core/services';
+import { NzDirectionVHType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { BehaviorSubject, Observable } from 'rxjs';
-
-import { InputBoolean, NzDirectionVHType, NzSizeLDSType, NzUpdateHostClassService } from 'ng-zorro-antd/core';
 
 import { NzListGrid } from './interface';
 import { NzListFooterComponent, NzListLoadMoreDirective, NzListPaginationComponent } from './list-cell';

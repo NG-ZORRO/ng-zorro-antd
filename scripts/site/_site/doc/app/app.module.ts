@@ -11,7 +11,7 @@ import { NzAffixModule } from 'ng-zorro-antd/affix';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NZ_CONFIG } from 'ng-zorro-antd/core';
+import { NZ_CONFIG } from 'ng-zorro-antd/core/config';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';

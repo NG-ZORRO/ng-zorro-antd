@@ -24,8 +24,12 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { fadeMotion } from 'ng-zorro-antd/core/animation';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzScrollService } from 'ng-zorro-antd/core/scroll';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { InputNumber } from 'ng-zorro-antd/core/util';
 
-import { fadeMotion, InputNumber, NzConfigService, NzSafeAny, NzScrollService, WithConfig } from 'ng-zorro-antd/core';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
 

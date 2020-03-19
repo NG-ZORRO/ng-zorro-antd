@@ -24,7 +24,8 @@ import {
 } from '@angular/core';
 
 import { NzButtonType } from 'ng-zorro-antd/button';
-import { InputBoolean, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Observable } from 'rxjs';
 
 import { NzModalFooterDirective } from './modal-footer.directive';

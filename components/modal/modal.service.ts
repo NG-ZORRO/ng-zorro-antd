@@ -9,10 +9,11 @@
 import { ComponentType, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal, PortalInjector, TemplatePortal } from '@angular/cdk/portal';
 import { Injectable, Injector, OnDestroy, Optional, SkipSelf, TemplateRef } from '@angular/core';
+import { warn } from 'ng-zorro-antd/core/logger';
+import { IndexableObject } from 'ng-zorro-antd/core/types';
+import { isNotNil } from 'ng-zorro-antd/core/util';
 import { defer, Observable, Subject } from 'rxjs';
 import { startWith } from 'rxjs/operators';
-
-import { IndexableObject, isNotNil, warn } from 'ng-zorro-antd/core';
 
 import { NzModalConfirmContainerComponent } from './modal-confirm-container.component';
 import { BaseModalContainer } from './modal-container';

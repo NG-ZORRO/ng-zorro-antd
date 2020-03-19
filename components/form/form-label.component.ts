@@ -8,7 +8,7 @@
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, Renderer2, ViewEncapsulation } from '@angular/core';
 
-import { InputBoolean, toBoolean } from 'ng-zorro-antd/core';
+import { InputBoolean, toBoolean } from 'ng-zorro-antd/core/util';
 
 @Component({
   selector: 'nz-form-label',

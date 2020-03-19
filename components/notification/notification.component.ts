@@ -7,7 +7,7 @@
  */
 
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
-import { notificationMotion } from 'ng-zorro-antd/core';
+import { notificationMotion } from 'ng-zorro-antd/core/animation';
 import { NzNotificationDataFilled, NzNotificationDataOptions } from './typings';
 
 @Component({

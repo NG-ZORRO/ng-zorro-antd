@@ -36,17 +36,10 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
+import { DEFAULT_MENTION_BOTTOM_POSITIONS, DEFAULT_MENTION_TOP_POSITIONS } from 'ng-zorro-antd/core/overlay';
+import { getCaretCoordinates, getMentions, InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { fromEvent, merge, Subscription } from 'rxjs';
-
-import {
-  DEFAULT_MENTION_BOTTOM_POSITIONS,
-  DEFAULT_MENTION_TOP_POSITIONS,
-  getCaretCoordinates,
-  getMentions,
-  InputBoolean
-} from 'ng-zorro-antd/core';
-
 import { NzMentionSuggestionDirective } from './mention-suggestions';
 import { NzMentionTriggerDirective } from './mention-trigger';
 import { NzMentionService } from './mention.service';

@@ -9,7 +9,7 @@
 // tslint:disable:no-any
 import { Observable, Subscription } from 'rxjs';
 
-import { IndexableObject } from 'ng-zorro-antd/core';
+import { IndexableObject } from 'ng-zorro-antd/core/types';
 
 /** Status */
 export type UploadFileStatus = 'error' | 'success' | 'done' | 'uploading' | 'removed';

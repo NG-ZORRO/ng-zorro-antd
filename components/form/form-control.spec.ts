@@ -2,7 +2,7 @@ import { Component, DebugElement } from '@angular/core';
 import { FormBuilder, FormControl, FormControlName, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core';
+import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
 import { NzFormControlComponent } from './form-control.component';
 import { NzFormItemComponent } from './form-item.component';
 import { NzFormModule } from './form.module';

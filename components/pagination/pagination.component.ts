@@ -21,8 +21,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { InputBoolean, InputNumber } from 'ng-zorro-antd/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

@@ -11,7 +11,7 @@ import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { NzOutletModule } from 'ng-zorro-antd/core';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
