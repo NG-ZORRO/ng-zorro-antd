@@ -137,14 +137,14 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
   private getControlStatus(validateString: string | null): NzFormControlStatusType {
     let status: NzFormControlStatusType;
 
-    if (validateString === 'error' || this.validateControlStatus('INVALID')) {
+    if (validateString === 'warning' || this.validateControlStatus('INVALID', 'warning')) {
+      status = 'warning';
+    } else if (validateString === 'error' || this.validateControlStatus('INVALID')) {
       status = 'error';
     } else if (validateString === 'validating' || validateString === 'pending' || this.validateControlStatus('PENDING')) {
       status = 'validating';
     } else if (validateString === 'success' || this.validateControlStatus('VALID')) {
       status = 'success';
-    } else if (validateString === 'warning') {
-      status = 'warning';
     } else {
       status = null;
     }
@@ -152,12 +152,12 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
     return status;
   }
 
-  private validateControlStatus(validStatus: string): boolean {
+  private validateControlStatus(validStatus: string, statusType?: NzFormControlStatusType): boolean {
     if (!this.validateControl) {
       return false;
     } else {
       const { dirty, touched, status } = this.validateControl;
-      return (!!dirty || !!touched) && status === validStatus;
+      return (!!dirty || !!touched) && (statusType ? this.validateControl.hasError(statusType) : status === validStatus);
     }
   }
 
