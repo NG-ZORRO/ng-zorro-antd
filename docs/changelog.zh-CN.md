@@ -13,6 +13,16 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+
+## 9.0.0-beta.2
+`2020-03-20`
+
+### Bug Fixes
+
+* **grid:** 修复响应式的问题 ([#4906](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4906)) ([d6828ed](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d6828ed))
+* **select:** 修复空状态的问题 ([#4907](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4907)) ([f295c10](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f295c10))
+
+
 ## 9.0.0-beta.1
 
 `2020-03-15`
@@ -22,7 +32,7 @@ timeline: true
 请注意，目前版本仍然是 beta 版本，不建议在生产环境中使用，如果使用中碰到任何问题，欢迎给我们提 issue。
 
 欢迎来到 `ng-zorro-antd` 的 `9.0.0-beta.1` 版本，升级到最新版本之后，开发者不仅可以享受到最新版本 Angular 的支持，还可以获得最新特性和更好的性能。
-                                         
+
 ng-zorro-antd 的部分 API 在 8.x 版本进入弃用状态，并且在开发环境中给出了警告提醒，所有之前弃用 API 在 9.0.0 不再支持，如果你之前已经根据告警信息修改了对应组件的使用方式，那么 9.0.0 版本升级不会有任何障碍，请按照以下步骤进行。
 
 1. 升级 Angular 主版本号至 9.0.0 版本，可以参考 https://update.angular.io/
@@ -127,15 +137,15 @@ providers: [
 
 注意： 所有不兼容改动均在 8.x 最新版本中给出了 warning，如果你在 8.x 最新版本中修复了所有 warning，9.x 可以直接升级的，`ng update` 工具在 9.0 正式版会提供。
 
-* **form:** 
+* **form:**
   - `nz-form-extra` 被移除，请使用 `nzExtra` 中的 `nz-form-control` 代替。
   - `nz-form-explain` 被移除，请使用 `nzSuccessTip | nzWarningTip | nzErrorTip | nzValidatingTip` 中的 `nz-form-control` 代替。
   - `nz-form-extra` 被移除，请使用 `nzExtra` 中的 `nz-form-control` 代替。
   - `nz-form-explain` 被移除，请使用 `nzSuccessTip | nzWarningTip | nzErrorTip | nzValidatingTip` 中的 `nz-form-control` 代替。
-* **input-number:** 
+* **input-number:**
   - ngModelChange 会在用户输入时立刻触发
-* **pagination:** 
-  - 当定制 nzItemRender 时，需要考虑 prev_5 and next_5 
+* **pagination:**
+  - 当定制 nzItemRender 时，需要考虑 prev_5 and next_5
   - 'pre' 被修改为 'prev'
 * **tree, tree-select:** * tree
   - 移除了 `[nzDefaultExpandAll]` 请使用 `[nzExpandAll]` 代替。
@@ -145,21 +155,21 @@ providers: [
   - 移除了 `(nzOnSearchNode)` 请使用 `(nzSearchValueChange)` 代替。
 * **tree-select**
   - 移除了 `[nzDefaultExpandedKeys]` 请使用 `[nzExpandedKeys]` 代替。
-* **message,notification:** 
+* **message,notification:**
   - `NZ_MESSAGE_CONFIG` 被移除，请使用 `NzGlobalConfigService` 代替。
   - `NZ_NOTIFICATION_CONFIG` 被移除，请使用 `NzGlobalConfigService` 代替。
   - `config` method of `NzMessageService` and `NzNotificationService` 被移除，请使用 `set` method of `NzGlobalConfigService` 代替。
-* **empty:** 
+* **empty:**
   - `NZ_DEFAULT_EMPTY_CONTENT` 被移除，请使用 `NzConfigService` 代替。
 * **carousel:** Carousel
   - `nzVertical` 被移除，请使用 'nzDotPosition' 代替。
-* **icon:** 
+* **icon:**
   - `i[nz-icon]`:  `twoToneColor` `theme` `spin` `iconfont` `type` 输入被移除, 请使用 `nzTwoToneColor` `nzTheme` `nzSpin` `nzIconfont` `nzType` 代替。
   - `i.anticon` 被移除, 请使用 `i[nz-icon]` 代替。
   - `NZ_ICON_DEFAULT_TWOTONE_COLOR` 被移除， 请使用 `NzGlobalConfigService`。
-* **calendar:** 
+* **calendar:**
   - `<nz-calendar>` `nzCard` 被移除了, 请使用 `nzFullscreen` 代替。
-* **tooltip,popover,popconfirm:** 
+* **tooltip,popover,popconfirm:**
   -`<nz-tooltip>` `<nz-popover>` `<nz-popconfirm>` 组件被移除, 请使用对应的 directives 代替。
 * 移除了无用的 API `NgZorroAntdModule.forRoot()`
 
