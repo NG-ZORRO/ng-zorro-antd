@@ -126,13 +126,22 @@ describe('nz-form-control', () => {
   });
   describe('reactive init status', () => {
     let testBed: ComponentBed<NzTestReactiveFormControlInitStatusComponent>;
+    let testComponent: NzTestReactiveFormControlInitStatusComponent;
     let formItem: DebugElement;
     beforeEach(() => {
       testBed = createComponentBed(NzTestReactiveFormControlInitStatusComponent, testBedOptions);
+      testComponent = testBed.component;
       formItem = testBed.fixture.debugElement.query(By.directive(NzFormItemComponent));
     });
     it('should init status correct', () => {
       expect(formItem.nativeElement.classList).toContain(statusMap.error);
+    });
+    it('should warning status work', () => {
+      testComponent.formGroup.get('input')!.setErrors({ warning: true });
+
+      testBed.fixture.detectChanges();
+
+      expect(formItem.nativeElement.classList).toContain(statusMap.warning);
     });
   });
 });
