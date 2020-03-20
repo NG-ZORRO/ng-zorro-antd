@@ -13,6 +13,16 @@ timeline: true
 * Major version release is not included in this schedule for breaking change and new features.
 
 ---
+
+## 9.0.0-beta.2
+`2020-03-20`
+
+### Bug Fixes
+
+* **grid:** fix grid responsive bug ([#4906](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4906)) ([d6828ed](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d6828ed))
+* **select:** fix select empty status ([#4907](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4907)) ([f295c10](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f295c10))
+
+
 ## 9.0.0-beta.1
 
 `2020-03-15`
@@ -143,14 +153,14 @@ providers: [
 ### BREAKING CHANGES
 
 Note: All break changes are warned in the latest version of 8.x, if you have fixed all warnings in 8.x, there will no break changes for you. Official `ng update` tools will be provided in version `9.0.0`.
-* **form:** 
+* **form:**
   - `nz-form-extra` is removed. Please use `nzExtra` is `nz-form-control` instead.
   - `nz-form-explain` is removed. Please use `nzSuccessTip | nzWarningTip | nzErrorTip | nzValidatingTip` is `nz-form-control` instead.
   - `nz-form-extra` is removed. Please use `nzExtra` is `nz-form-control` instead.
   - `nz-form-explain` is removed. Please use `nzSuccessTip | nzWarningTip | nzErrorTip | nzValidatingTip` is `nz-form-control` instead.
-* **input-number:** 
+* **input-number:**
   - ngModelChange trigger at once when user typing
-* **pagination:** 
+* **pagination:**
   - prev_5 and next_5 is needed when use nzItemRender
   - 'pre' typo was corrected to 'prev'
 * **tree, tree-select:** * tree
@@ -161,21 +171,21 @@ Note: All break changes are warned in the latest version of 8.x, if you have fix
   - Removed `(nzOnSearchNode)` use `(nzSearchValueChange)` instead.
 * tree-select
   - Removed `[nzDefaultExpandedKeys]` use `[nzExpandedKeys]` instead.
-* **message,notification:** 
+* **message,notification:**
   - `NZ_MESSAGE_CONFIG` is removed. Please use `NzGlobalConfigService` instead.
   - `NZ_NOTIFICATION_CONFIG` is removed. Please use `NzGlobalConfigService` instead.
   - `config` method of `NzMessageService` and `NzNotificationService` is removed. Please use `set` method of `NzGlobalConfigService` instead.
-* **empty:** 
+* **empty:**
   - `NZ_DEFAULT_EMPTY_CONTENT` is removed. Please use `NzConfigService` instead.
 * **carousel:** Carousel
   - `nzVertical` is removed. Please use 'nzDotPosition' instead.
-* **icon:** 
+* **icon:**
   - `NZ_ICON_DEFAULT_TWOTONE_COLOR` is removed. Use `NzGlobalConfigService` instead.
   - `i[nz-icon]`:  `twoToneColor` `theme` `spin` `iconfont` `type` inputs has been removed, use `nzTwoToneColor` `nzTheme` `nzSpin` `nzIconfont` `nzType` instead.
   - `i.anticon` selector has been removed, use `i[nz-icon]` instead.
-* **calendar:** 
+* **calendar:**
   - `<nz-calendar>` `nzCard` input has been removed, use `nzFullscreen` instead.
-* **tooltip,popover,popconfirm:** 
+* **tooltip,popover,popconfirm:**
   - `<nz-tooltip>` `<nz-popover>` `<nz-popconfirm>` components has been removed, use its directives instead.
 * Removed deprecated API `NgZorroAntdModule.forRoot()`
 

@@ -1,3 +1,14 @@
+<a name="9.0.0-beta.2"></a>
+# [9.0.0-beta.2](https://github.com/NG-ZORRO/ng-zorro-antd/compare/9.0.0-beta.1...9.0.0-beta.2) (2020-03-19)
+
+
+### Bug Fixes
+
+* **grid:** fix grid responsive bug ([#4906](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4906)) ([d6828ed](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d6828ed))
+* **select:** fix select empty status ([#4907](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4907)) ([f295c10](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f295c10))
+
+
+
 <a name="9.0.0-beta.1"></a>
 # [9.0.0-beta.1](https://github.com/NG-ZORRO/ng-zorro-antd/compare/8.5.1...9.0.0-beta.1) (2020-03-15)
 
