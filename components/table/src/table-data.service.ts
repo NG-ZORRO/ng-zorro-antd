@@ -7,7 +7,7 @@
  */
 
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, EMPTY, Subject } from 'rxjs';
 import { distinctUntilChanged, filter, map, switchMap, takeUntil } from 'rxjs/operators';
 import { NzFilterFn, NzFilterValue, NzSortCompareFn, NzSortOrderType, NzTableDataType } from './table.types';
 
@@ -74,7 +74,7 @@ export class NzTableDataService implements OnDestroy {
     switchMap(pagination => (pagination ? this.listOfFrontEndCurrentPageData$ : this.listOfData$))
   );
   total$ = this.frontPagination$.pipe(
-    switchMap(pagination => (pagination ? this.listOfDataAfterCalc$ : this.listOfData$)),
+    switchMap(pagination => (pagination ? this.listOfDataAfterCalc$ : EMPTY)),
     map(list => list.length),
     distinctUntilChanged()
   );
