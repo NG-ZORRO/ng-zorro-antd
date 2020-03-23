@@ -8,7 +8,7 @@
 import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { SCROLL_SERVICE_PROVIDER } from 'ng-zorro-antd/core/scroll';
+import { SCROLL_SERVICE_PROVIDER } from 'ng-zorro-antd/core/services';
 
 import { NzBackTopComponent } from './back-top.component';
 

@@ -31,10 +31,10 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzDomEventService, NzDragService } from 'ng-zorro-antd/core/services';
+import { NzDragService, NzResizeService } from 'ng-zorro-antd/core/services';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 import { NzCarouselContentDirective } from './carousel-content.directive';
 import { NzCarouselBaseStrategy } from './strategies/base-strategy';
@@ -168,7 +168,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     private readonly renderer: Renderer2,
     private readonly cdr: ChangeDetectorRef,
     private readonly platform: Platform,
-    private readonly nzDomEventService: NzDomEventService,
+    private readonly resizeService: NzResizeService,
     private readonly nzDragService: NzDragService,
     @Optional() @Inject(NZ_CAROUSEL_CUSTOM_STRATEGIES) private customStrategies: NzCarouselStrategyRegistryItem[]
   ) {
@@ -192,12 +192,9 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
       this.syncStrategy();
     });
 
-    this.nzDomEventService
-      .registerResizeListener()
-      .pipe(
-        takeUntil(this.destroy$),
-        finalize(() => this.nzDomEventService.unregisterResizeListener())
-      )
+    this.resizeService
+      .subscribe()
+      .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.syncStrategy();
       });

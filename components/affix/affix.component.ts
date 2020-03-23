@@ -26,7 +26,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzScrollService } from 'ng-zorro-antd/core/scroll';
+import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { getStyleAsText, InputNumber, shallowEqual } from 'ng-zorro-antd/core/util';
 

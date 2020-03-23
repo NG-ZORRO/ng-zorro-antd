@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Clipboard } from '@angular/cdk/clipboard';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -18,7 +19,6 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
-import { NzCopyToClipboardService } from 'ng-zorro-antd/core/services';
 
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
@@ -54,12 +54,7 @@ export class NzTextCopyComponent implements OnInit, OnDestroy {
   @Input() text: string;
   @Output() readonly textCopy = new EventEmitter<string>();
 
-  constructor(
-    private host: ElementRef,
-    private cdr: ChangeDetectorRef,
-    private copyToClipboard: NzCopyToClipboardService,
-    private i18n: NzI18nService
-  ) {}
+  constructor(private host: ElementRef, private cdr: ChangeDetectorRef, private clipboard: Clipboard, private i18n: NzI18nService) {}
 
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
@@ -82,10 +77,8 @@ export class NzTextCopyComponent implements OnInit, OnDestroy {
     this.cdr.detectChanges();
     const text = this.text;
     this.textCopy.emit(text);
-    this.copyToClipboard
-      .copy(text)
-      .then(() => this.onCopied())
-      .catch(() => this.onCopied());
+    this.clipboard.copy(text);
+    this.onCopied();
   }
 
   onCopied(): void {

@@ -6,8 +6,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { MediaMatcher } from '@angular/cdk/layout';
-import { Platform } from '@angular/cdk/platform';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -24,12 +22,11 @@ import {
 } from '@angular/core';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
-import { gridResponsiveMap, NzBreakpointEnum } from 'ng-zorro-antd/core/responsive';
-import { NzDomEventService } from 'ng-zorro-antd/core/services';
+import { gridResponsiveMap, NzBreakpointEnum, NzBreakpointService } from 'ng-zorro-antd/core/services';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { merge, Subject } from 'rxjs';
-import { auditTime, finalize, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { auditTime, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { NzDescriptionsItemComponent } from './descriptions-item.component';
 import { NzDescriptionsItemRenderProps, NzDescriptionsLayout, NzDescriptionsSize } from './typings';
 
@@ -152,23 +149,16 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzColon: boolean;
 
   itemMatrix: NzDescriptionsItemRenderProps[][] = [];
-
   realColumn = 3;
 
+  private breakpoint: NzBreakpointEnum = NzBreakpointEnum.md;
   private destroy$ = new Subject<void>();
-  private resize$ = new Subject<void>();
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef,
-    private mediaMatcher: MediaMatcher,
-    private platform: Platform,
-    private nzDomEventService: NzDomEventService
-  ) {}
+  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef, private breakpointService: NzBreakpointService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzColumn) {
-      this.resize$.next();
+      this.prepareMatrix();
     }
   }
 
@@ -178,35 +168,28 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
     merge(
       contentChange$,
       contentChange$.pipe(switchMap(() => merge(...this.items.map(i => i.inputChange$)).pipe(auditTime(16)))),
-      this.resize$
+      this.breakpointService.subscribe(gridResponsiveMap).pipe(tap(bp => (this.breakpoint = bp)))
     )
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.prepareMatrix();
         this.cdr.markForCheck();
       });
-
-    if (this.platform.isBrowser) {
-      this.nzDomEventService
-        .registerResizeListener()
-        .pipe(
-          takeUntil(this.destroy$),
-          finalize(() => this.nzDomEventService.unregisterResizeListener())
-        )
-        .subscribe(() => this.resize$.next());
-    }
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-    this.resize$.complete();
   }
 
   /**
    * Prepare the render matrix according to description items' spans.
    */
   private prepareMatrix(): void {
+    if (!this.items) {
+      return;
+    }
+
     let currentRow: NzDescriptionsItemRenderProps[] = [];
     let width = 0;
 
@@ -246,23 +229,9 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
     this.itemMatrix = matrix;
   }
 
-  private matchMedia(): NzBreakpointEnum {
-    let bp: NzBreakpointEnum = NzBreakpointEnum.md;
-
-    Object.keys(gridResponsiveMap).map((breakpoint: string) => {
-      const castBP = breakpoint as NzBreakpointEnum;
-      const matchBelow = this.mediaMatcher.matchMedia(gridResponsiveMap[castBP]).matches;
-      if (matchBelow) {
-        bp = castBP;
-      }
-    });
-
-    return bp;
-  }
-
   private getColumn(): number {
     if (typeof this.nzColumn !== 'number') {
-      return this.nzColumn[this.matchMedia()];
+      return this.nzColumn[this.breakpoint];
     }
 
     return this.nzColumn;
