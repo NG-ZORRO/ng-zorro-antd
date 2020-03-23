@@ -28,7 +28,7 @@ import {
 } from '@angular/core';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
-import { NzScrollService } from 'ng-zorro-antd/core/scroll';
+import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 import { fromEvent, Subject } from 'rxjs';

@@ -2,8 +2,7 @@ import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
-import { NzScrollService } from 'ng-zorro-antd/core/scroll';
+import { NzScrollService } from 'ng-zorro-antd/core/services';
 
 import { NzBackTopComponent } from './back-top.component';
 import { NzBackTopModule } from './back-top.module';

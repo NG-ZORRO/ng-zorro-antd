@@ -24,10 +24,10 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { NzDomEventService } from 'ng-zorro-antd/core/services';
+import { NzResizeService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEvent, merge, Subject } from 'rxjs';
-import { delay, filter, finalize, startWith, takeUntil } from 'rxjs/operators';
+import { delay, filter, startWith, takeUntil } from 'rxjs/operators';
 import { NzTableDataType } from '../table.types';
 
 @Component({
@@ -122,12 +122,7 @@ export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, On
     }
   }
 
-  constructor(
-    private renderer: Renderer2,
-    private ngZone: NgZone,
-    private platform: Platform,
-    private nzDomEventService: NzDomEventService
-  ) {}
+  constructor(private renderer: Renderer2, private ngZone: NgZone, private platform: Platform, private resizeService: NzResizeService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { scrollX, scrollY, data } = changes;
@@ -154,10 +149,7 @@ export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, On
         const scrollEvent$ = fromEvent<MouseEvent>(this.tableBodyElement.nativeElement, 'scroll').pipe(takeUntil(this.destroy$));
         const scrollX$ = scrollEvent$.pipe(filter(() => !!this.scrollX));
         const scrollY$ = scrollEvent$.pipe(filter(() => !!this.scrollY));
-        const resize$ = this.nzDomEventService.registerResizeListener().pipe(
-          takeUntil(this.destroy$),
-          finalize(() => this.nzDomEventService.unregisterResizeListener())
-        );
+        const resize$ = this.resizeService.subscribe().pipe(takeUntil(this.destroy$));
         const data$ = this.data$.pipe(takeUntil(this.destroy$));
         const setClassName$ = merge(scrollX$, resize$, data$, this.scroll$).pipe(startWith(true), delay(0));
         setClassName$.subscribe(() => this.setScrollPositionClassName());

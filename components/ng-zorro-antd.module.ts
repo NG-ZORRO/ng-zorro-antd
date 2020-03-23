@@ -149,8 +149,6 @@ export * from 'ng-zorro-antd/core/overlay';
 export * from 'ng-zorro-antd/core/pipe';
 export * from 'ng-zorro-antd/core/polyfill';
 export * from 'ng-zorro-antd/core/resize-observers';
-export * from 'ng-zorro-antd/core/responsive';
-export * from 'ng-zorro-antd/core/scroll';
 export * from 'ng-zorro-antd/core/services';
 export * from 'ng-zorro-antd/core/testing';
 export * from 'ng-zorro-antd/core/time';

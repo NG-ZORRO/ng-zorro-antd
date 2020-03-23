@@ -8,9 +8,9 @@
 
 import { Platform } from '@angular/cdk/platform';
 import { AfterViewInit, Directive, DoCheck, ElementRef, Input, NgZone, OnDestroy } from '@angular/core';
-import { NzDomEventService } from 'ng-zorro-antd/core/services';
+import { NzResizeService } from 'ng-zorro-antd/core/services';
 import { Subject } from 'rxjs';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 export interface AutoSizeType {
   minRows?: number;
@@ -174,22 +174,14 @@ export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
     // no-op handler that ensures we're running change detection on input events.
   }
 
-  constructor(
-    private elementRef: ElementRef,
-    private ngZone: NgZone,
-    private platform: Platform,
-    private nzDomEventService: NzDomEventService
-  ) {}
+  constructor(private elementRef: ElementRef, private ngZone: NgZone, private platform: Platform, private resizeService: NzResizeService) {}
 
   ngAfterViewInit(): void {
     if (this.autosize && this.platform.isBrowser) {
       this.resizeToFitContent();
-      this.nzDomEventService
-        .registerResizeListener()
-        .pipe(
-          takeUntil(this.destroy$),
-          finalize(() => this.nzDomEventService.unregisterResizeListener())
-        )
+      this.resizeService
+        .subscribe()
+        .pipe(takeUntil(this.destroy$))
         .subscribe(() => this.resizeToFitContent(true));
     }
   }

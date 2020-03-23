@@ -26,7 +26,7 @@ import {
 } from '@angular/core';
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzScrollService } from 'ng-zorro-antd/core/scroll';
+import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputNumber } from 'ng-zorro-antd/core/util';
 
