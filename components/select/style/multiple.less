@@ -4,8 +4,11 @@
 @select-multiple-item-height: @input-height-base - @input-padding-vertical-base * 2; // Normal 24px
 
 @select-multiple-item-spacing-half: ceil(@input-padding-vertical-base / 2);
-@select-multiple-padding: @input-padding-vertical-base - @select-multiple-item-border-width -
-  @select-multiple-item-spacing-half;
+@select-multiple-padding: max(
+  @input-padding-vertical-base - @select-multiple-item-border-width -
+    @select-multiple-item-spacing-half,
+  0
+);
 
 /**
  * Do not merge `height` & `line-height` under style with `selection` & `search`,
@@ -62,11 +65,6 @@
     transition: font-size 0.3s, line-height 0.3s, height 0.3s;
     user-select: none;
 
-    .@{select-prefix-cls}-rtl& {
-      margin-right: 0;
-      margin-left: @input-padding-vertical-base;
-      text-align: right;
-    }
     // It's ok not to do this, but 24px makes bottom narrow in view should adjust
     &-content {
       display: inline-block;
@@ -74,13 +72,6 @@
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
-      transform: translateY(-1px);
-
-      .@{select-prefix-cls}-rtl& {
-        margin-right: 0;
-        margin-left: @padding-xs / 2;
-        text-align: right;
-      }
     }
 
     &-remove {
@@ -104,11 +95,6 @@
     position: relative;
     margin-left: @select-multiple-padding / 2;
 
-    .@{select-prefix-cls}-rtl& {
-      margin-right: @select-multiple-padding / 2;
-      margin-left: @input-padding-vertical-base;
-    }
-
     &-input,
     &-mirror {
       font-family: @font-family;
@@ -127,11 +113,6 @@
       z-index: 999;
       white-space: nowrap;
       visibility: hidden;
-
-      .@{select-prefix-cls}-rtl& {
-        right: 0;
-        left: auto;
-      }
     }
   }
 
@@ -143,11 +124,6 @@
     left: @input-padding-horizontal;
     transform: translateY(-50%);
     transition: all 0.3s;
-
-    .@{select-prefix-cls}-rtl& {
-      right: @input-padding-horizontal;
-      left: auto;
-    }
   }
 
   // ============================================================
@@ -187,10 +163,6 @@
   &.@{select-prefix-cls}-sm {
     .@{select-prefix-cls}-selection-placeholder {
       left: @input-padding-horizontal-sm;
-
-      .@{select-prefix-cls}-rtl& {
-        right: @input-padding-horizontal-sm;
-      }
     }
   }
 }
