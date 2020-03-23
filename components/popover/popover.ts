@@ -97,14 +97,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
         </div>
       </div>
     </ng-template>
-  `,
-  styles: [
-    `
-      .ant-popover {
-        position: relative;
-      }
-    `
-  ]
+  `
 })
 export class NzPopoverComponent extends NzToolTipComponent {
   _prefix = 'ant-popover-placement';
