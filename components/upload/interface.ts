@@ -6,10 +6,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-// tslint:disable:no-any
 import { Observable, Subscription } from 'rxjs';
 
-import { IndexableObject } from 'ng-zorro-antd/core/types';
+import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 
 /** Status */
 export type UploadFileStatus = 'error' | 'success' | 'done' | 'uploading' | 'removed';
@@ -33,12 +32,12 @@ export interface UploadFile {
   originFileObj?: File;
   percent?: number;
   thumbUrl?: string;
-  response?: any;
-  error?: any;
+  response?: NzSafeAny;
+  error?: NzSafeAny;
   linkProps?: { download: string };
   type?: string;
 
-  [key: string]: any;
+  [key: string]: NzSafeAny;
 }
 
 export interface UploadChangeParam {
@@ -63,8 +62,8 @@ export interface ZipButtonOptions {
   action?: string | ((file: UploadFile) => string | Observable<string>);
   directory?: boolean;
   openFileDialogOnClick?: boolean;
-  beforeUpload?(file: UploadFile, fileList: UploadFile[]): boolean | Observable<any>;
-  customRequest?(item: any): Subscription;
+  beforeUpload?(file: UploadFile, fileList: UploadFile[]): boolean | Observable<NzSafeAny>;
+  customRequest?(item: NzSafeAny): Subscription;
   data?: {} | ((file: UploadFile) => {} | Observable<{}>);
   headers?: {} | ((file: UploadFile) => {} | Observable<{}>);
   name?: string;
@@ -73,9 +72,9 @@ export interface ZipButtonOptions {
   filters?: UploadFilter[];
   transformFile?(file: UploadFile): UploadTransformFileType;
   onStart?(file: UploadFile): void;
-  onProgress?(e: any, file: UploadFile): void;
-  onSuccess?(ret: any, file: UploadFile, xhr: any): void;
-  onError?(err: any, file: UploadFile): void;
+  onProgress?(e: NzSafeAny, file: UploadFile): void;
+  onSuccess?(ret: NzSafeAny, file: UploadFile, xhr: NzSafeAny): void;
+  onError?(err: NzSafeAny, file: UploadFile): void;
 }
 
 export interface UploadFilter {
@@ -91,7 +90,7 @@ export interface UploadXHRArgs {
   postFile: string | Blob | File | UploadFile;
   data?: IndexableObject;
   withCredentials?: boolean;
-  onProgress?(e: any, file: UploadFile): void;
-  onSuccess?(ret: any, file: UploadFile, xhr: any): void;
-  onError?(err: any, file: UploadFile): void;
+  onProgress?(e: NzSafeAny, file: UploadFile): void;
+  onSuccess?(ret: NzSafeAny, file: UploadFile, xhr: NzSafeAny): void;
+  onError?(err: NzSafeAny, file: UploadFile): void;
 }

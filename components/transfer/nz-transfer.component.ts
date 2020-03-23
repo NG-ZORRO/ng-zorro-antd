@@ -23,7 +23,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { InputBoolean, toArray } from 'ng-zorro-antd/core/util';
-
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { Observable, of, Subject } from 'rxjs';
@@ -47,8 +47,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   @ViewChildren(NzTransferListComponent)
   private lists!: QueryList<NzTransferListComponent>;
-  // tslint:disable-next-line:no-any
-  locale: any = {};
+  locale: NzSafeAny = {};
   hostClassMap = {};
 
   leftFilter = '';

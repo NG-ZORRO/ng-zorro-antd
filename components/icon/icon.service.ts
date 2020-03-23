@@ -55,6 +55,7 @@ import {
 } from '@ant-design/icons-angular/icons';
 import { IconConfig, NzConfigService } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
 
 export interface NzIconfontOption {
@@ -151,8 +152,7 @@ export class NzIconService extends IconService {
     sanitizer: DomSanitizer,
     protected nzConfigService: NzConfigService,
     @Optional() handler: HttpBackend,
-    // tslint:disable-next-line:no-any
-    @Optional() @Inject(DOCUMENT) _document: any,
+    @Optional() @Inject(DOCUMENT) _document: NzSafeAny,
     @Optional() @Inject(NZ_ICONS) icons?: IconDefinition[]
   ) {
     super(rendererFactory, handler, _document, sanitizer);

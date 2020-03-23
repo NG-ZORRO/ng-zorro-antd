@@ -20,7 +20,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { NgClassType } from 'ng-zorro-antd/core/types';
+import { NgClassType, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable } from 'rxjs';
 
 import { ShowUploadListInterface, UploadFile, UploadListType } from './interface';
@@ -66,8 +66,7 @@ export class NzUploadListComponent implements OnChanges {
 
   // #region fields
 
-  // tslint:disable-next-line:no-any
-  @Input() locale: any = {};
+  @Input() locale: NzSafeAny = {};
   @Input() listType: UploadListType;
   @Input()
   set items(list: UploadFile[]) {
@@ -191,8 +190,8 @@ export class NzUploadListComponent implements OnChanges {
     if (!this.platform.isBrowser) {
       return;
     }
-    // tslint:disable-next-line:no-any
-    const win = window as any;
+
+    const win = window as NzSafeAny;
     if (!this.showPic || typeof document === 'undefined' || typeof win === 'undefined' || !win.FileReader || !win.File) {
       return;
     }
@@ -216,7 +215,7 @@ export class NzUploadListComponent implements OnChanges {
   }
 
   private showDownload(file: UploadFile): boolean {
-    return this.icons.showDownloadIcon && file.status === 'done' ? true : false;
+    return !!(this.icons.showDownloadIcon && file.status === 'done');
   }
 
   private fixData(): this {
@@ -261,7 +260,7 @@ export class NzUploadListComponent implements OnChanges {
 
   constructor(
     private cdr: ChangeDetectorRef,
-    @Inject(DOCUMENT) private doc: any, // tslint:disable-line no-any
+    @Inject(DOCUMENT) private doc: NzSafeAny,
     private ngZone: NgZone,
     private platform: Platform
   ) {}

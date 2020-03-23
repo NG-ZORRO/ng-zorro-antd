@@ -30,7 +30,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzResizeService } from 'ng-zorro-antd/core/services';
-import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, pxToNumber } from 'ng-zorro-antd/core/util';
 import { merge, of as observableOf, Subject, Subscription } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
@@ -352,10 +352,9 @@ export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit
   get navContainerScrollPaddingPix(): number {
     if (this.platform.isBrowser) {
       const navContainer = this.navContainerElement.nativeElement;
-      // tslint:disable: no-any
       const originStyle: CSSStyleDeclaration = window.getComputedStyle
         ? window.getComputedStyle(navContainer)
-        : (navContainer as any).currentStyle; // currentStyle for IE < 9
+        : (navContainer as NzSafeAny).currentStyle; // currentStyle for IE < 9
       if (this.nzPositionMode === 'horizontal') {
         return pxToNumber(originStyle.paddingLeft) + pxToNumber(originStyle.paddingRight);
       } else {

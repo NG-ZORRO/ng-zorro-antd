@@ -9,6 +9,7 @@
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { ComponentRef, Injectable } from '@angular/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzDrawerOptions, NzDrawerOptionsOfComponent } from './drawer-options';
@@ -69,8 +70,7 @@ export class DrawerBuilderForService<R> {
 export class NzDrawerService {
   constructor(private overlay: Overlay) {}
 
-  // tslint:disable-next-line:no-any
-  create<T = any, D = any, R = any>(options: NzDrawerOptions<T, D>): NzDrawerRef<R> {
+  create<T = NzSafeAny, D = NzSafeAny, R = NzSafeAny>(options: NzDrawerOptions<T, D>): NzDrawerRef<R> {
     return new DrawerBuilderForService<R>(this.overlay, options).getInstance();
   }
 }

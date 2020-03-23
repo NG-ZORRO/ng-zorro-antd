@@ -63,6 +63,5 @@ export interface NzCascaderComponentAsSource {
 
   nzChangeOn?(option: NzCascaderOption, level: number): boolean;
 
-  // tslint:disable-next-line:no-any
-  nzLoadData?(node: NzCascaderOption, index?: number): PromiseLike<any>;
+  nzLoadData?(node: NzCascaderOption, index?: number): PromiseLike<NzSafeAny>;
 }

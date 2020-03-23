@@ -25,6 +25,7 @@ import {
 
 import { NzButtonType } from 'ng-zorro-antd/button';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Observable } from 'rxjs';
 
@@ -45,8 +46,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'modal';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-// tslint:disable-next-line:no-any
-export class NzModalComponent<T = any, R = any> implements OnChanges, NzModalLegacyAPI<T, R> {
+export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges, NzModalLegacyAPI<T, R> {
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzMask: boolean;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzMaskClosable: boolean;
   @Input() @InputBoolean() nzVisible: boolean = false;

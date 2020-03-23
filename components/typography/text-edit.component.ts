@@ -19,6 +19,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzAutosizeDirective } from 'ng-zorro-antd/input';
@@ -55,8 +56,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class NzTextEditComponent implements OnInit, OnDestroy {
   editing = false;
-  // tslint:disable-next-line:no-any
-  locale: any = {};
+  locale: NzSafeAny = {};
   private destroy$ = new Subject();
 
   @Input() text: string;

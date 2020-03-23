@@ -28,7 +28,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { CandyDate, cloneDate, CompatibleValue } from 'ng-zorro-antd/core/time';
-import { FunctionProp } from 'ng-zorro-antd/core/types';
+import { FunctionProp, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzDatePickerI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
@@ -245,21 +245,19 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   // ------------------------------------------------------------------------
 
   // NOTE: onChangeFn/onTouchedFn will not be assigned if user not use as ngModel
-  onChangeFn: (val: CompatibleDate | null) => void = () => void 0;
-  onTouchedFn: () => void = () => void 0;
+  onChangeFn: OnChangeType = () => void 0;
+  onTouchedFn: OnTouchedType = () => void 0;
 
   writeValue(value: CompatibleDate): void {
     this.setValue(value);
     this.cdr.markForCheck();
   }
 
-  // tslint:disable-next-line:no-any
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: OnChangeType): void {
     this.onChangeFn = fn;
   }
 
-  // tslint:disable-next-line:no-any
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: OnTouchedType): void {
     this.onTouchedFn = fn;
   }
 

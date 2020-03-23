@@ -10,7 +10,7 @@ import { ComponentType, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/
 import { ComponentPortal, PortalInjector, TemplatePortal } from '@angular/cdk/portal';
 import { Injectable, Injector, OnDestroy, Optional, SkipSelf, TemplateRef } from '@angular/core';
 import { warn } from 'ng-zorro-antd/core/logger';
-import { IndexableObject } from 'ng-zorro-antd/core/types';
+import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isNotNil } from 'ng-zorro-antd/core/util';
 import { defer, Observable, Subject } from 'rxjs';
 import { startWith } from 'rxjs/operators';
@@ -45,8 +45,7 @@ export class NzModalService implements OnDestroy {
 
   constructor(private overlay: Overlay, private injector: Injector, @Optional() @SkipSelf() private parentModal: NzModalService) {}
 
-  // tslint:disable-next-line:no-any
-  create<T, R = any>(config: ModalOptions<T, R>): NzModalRef<T, R> {
+  create<T, R = NzSafeAny>(config: ModalOptions<T, R>): NzModalRef<T, R> {
     return this.open<T, R>(config.nzContent as ComponentType<T>, config);
   }
 
@@ -139,8 +138,7 @@ export class NzModalService implements OnDestroy {
     const userInjector = config && config.nzViewContainerRef && config.nzViewContainerRef.injector;
     const injector = new PortalInjector(
       userInjector || this.injector,
-      // tslint:disable-next-line:no-any
-      new WeakMap<any, any>([
+      new WeakMap<NzSafeAny, NzSafeAny>([
         [OverlayRef, overlayRef],
         [ModalOptions, config]
       ])
@@ -169,8 +167,7 @@ export class NzModalService implements OnDestroy {
 
     if (componentOrTemplateRef instanceof TemplateRef) {
       modalContainer.attachTemplatePortal(
-        // tslint:disable-next-line:no-any
-        new TemplatePortal<T>(componentOrTemplateRef, null!, { $implicit: config.nzComponentParams, modalRef } as any)
+        new TemplatePortal<T>(componentOrTemplateRef, null!, { $implicit: config.nzComponentParams, modalRef } as NzSafeAny)
       );
     } else if (isNotNil(componentOrTemplateRef) && typeof componentOrTemplateRef !== 'string') {
       const injector = this.createInjector<T, R>(modalRef, config);
@@ -185,8 +182,7 @@ export class NzModalService implements OnDestroy {
 
   private createInjector<T, R>(modalRef: NzModalRef<T, R>, config: ModalOptions<T>): PortalInjector {
     const userInjector = config && config.nzViewContainerRef && config.nzViewContainerRef.injector;
-    // tslint:disable-next-line:no-any
-    const injectionTokens = new WeakMap<any, any>([[NzModalRef, modalRef]]);
+    const injectionTokens = new WeakMap<NzSafeAny, NzSafeAny>([[NzModalRef, modalRef]]);
 
     return new PortalInjector(userInjector || this.injector, injectionTokens);
   }
