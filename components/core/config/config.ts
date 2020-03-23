@@ -37,6 +37,7 @@ export interface NzConfig {
   pageHeader?: PageHeaderConfig;
   progress?: ProgressConfig;
   rate?: RateConfig;
+  space?: SpaceConfig;
   spin?: SpinConfig;
   switch?: SwitchConfig;
   table?: TableConfig;
@@ -183,6 +184,10 @@ export interface ProgressConfig {
 export interface RateConfig {
   nzAllowClear?: boolean;
   nzAllowHalf?: boolean;
+}
+
+export interface SpaceConfig {
+  nzSize?: 'small' | 'middle' | 'large' | number;
 }
 
 export interface SpinConfig {
