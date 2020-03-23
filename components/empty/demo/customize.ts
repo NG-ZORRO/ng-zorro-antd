@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-empty-customize',
   template: `
     <nz-empty
-      [nzNotFoundImage]="'https://gw.alipayobjects.com/mdn/miniapp_social/afts/img/A*pevERLJC9v0AAAAAAAAAAABjAQAAAQ/original'"
+      nzNotFoundImage="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
       [nzNotFoundContent]="contentTpl"
       [nzNotFoundFooter]="footerTpl"
     >
