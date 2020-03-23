@@ -10,6 +10,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { CheckCircleFill, CloseCircleFill, ExclamationCircleFill, LoadingOutline } from '@ant-design/icons-angular/icons';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzGridModule } from 'ng-zorro-antd/grid';
@@ -40,6 +41,13 @@ import { NzFormDirective } from './form.directive';
     NzFormTextComponent,
     NzFormSplitComponent
   ],
-  imports: [CommonModule, NzGridModule, NzIconModule, LayoutModule, PlatformModule, NzOutletModule]
+  imports: [
+    CommonModule,
+    NzGridModule,
+    NzIconModule.forChild([CloseCircleFill, LoadingOutline, CheckCircleFill, ExclamationCircleFill]),
+    LayoutModule,
+    PlatformModule,
+    NzOutletModule
+  ]
 })
 export class NzFormModule {}

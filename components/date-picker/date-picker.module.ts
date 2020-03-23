@@ -10,6 +10,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CalendarOutline, CloseCircleFill } from '@ant-design/icons-angular/icons';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
@@ -35,7 +36,7 @@ import { NzYearPickerComponent } from './year-picker.component';
     FormsModule,
     OverlayModule,
     LibPackerModule,
-    NzIconModule,
+    NzIconModule.forChild([CloseCircleFill, CalendarOutline]),
     NzOverlayModule,
     NzNoAnimationModule,
     NzTimePickerModule,

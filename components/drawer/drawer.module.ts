@@ -10,6 +10,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { PortalModule } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { CloseOutline } from '@ant-design/icons-angular/icons';
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 
@@ -19,7 +20,15 @@ import { NzDrawerComponent } from './drawer.component';
 import { NzDrawerServiceModule } from './drawer.service.module';
 
 @NgModule({
-  imports: [CommonModule, OverlayModule, PortalModule, NzIconModule, NzOutletModule, NzNoAnimationModule, NzDrawerServiceModule],
+  imports: [
+    NzIconModule.forChild([CloseOutline]),
+    CommonModule,
+    OverlayModule,
+    PortalModule,
+    NzOutletModule,
+    NzNoAnimationModule,
+    NzDrawerServiceModule
+  ],
   exports: [NzDrawerComponent],
   declarations: [NzDrawerComponent]
 })

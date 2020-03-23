@@ -9,6 +9,7 @@
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { ExclamationCircleFill } from '@ant-design/icons-angular/icons';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
@@ -28,7 +29,9 @@ import { NzPopconfirmComponent, NzPopconfirmDirective } from './popconfirm';
     NzButtonModule,
     OverlayModule,
     NzI18nModule,
-    NzIconModule,
+    NzIconModule.forChild([
+      ExclamationCircleFill
+    ]),
     NzOutletModule,
     NzOverlayModule,
     NzNoAnimationModule,

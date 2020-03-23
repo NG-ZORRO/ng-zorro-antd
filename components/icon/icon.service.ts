@@ -8,44 +8,11 @@
 
 import { DOCUMENT } from '@angular/common';
 import { HttpBackend } from '@angular/common/http';
-import { Inject, Injectable, InjectionToken, Optional, RendererFactory2, Self } from '@angular/core';
+import { Inject, Injectable, InjectionToken, Optional, RendererFactory2 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { IconDefinition, IconService } from '@ant-design/icons-angular';
-// import {
-//   BarsOutline,
-//   CalendarOutline,
-//   CaretDownFill,
-//   CaretDownOutline,
-//   CaretUpFill,
-//   CaretUpOutline,
-//   CheckOutline,
-//   ClockCircleOutline,
-//
-//   CloseOutline,
-//   CopyOutline,
-//   DeleteOutline,
-//   DoubleLeftOutline,
-//   DoubleRightOutline,
-//   DownloadOutline,
-//   DownOutline,
-//   EditOutline,
-//   EllipsisOutline,
-//   EyeOutline,
-//   FileFill,
-//   FileOutline,
-//   FileTwoTone,
-//   FilterFill,
-//   LeftOutline,
-//   LoadingOutline,
-//   PaperClipOutline,
-//   PictureTwoTone,
-//   QuestionCircleOutline,
-//   RightOutline,
-//   SearchOutline,
-//   UploadOutline,
-//   UpOutline
-// } from '@ant-design/icons-angular/icons';
-import { IconConfig, NzConfigService, warn } from 'ng-zorro-antd/core';
+import { IconConfig, NzConfigService } from 'ng-zorro-antd/core/config';
+import { warn } from 'ng-zorro-antd/core/logger';
 import { Subject } from 'rxjs';
 
 export interface NzIconfontOption {
@@ -88,6 +55,8 @@ export const DEFAULT_TWOTONE_COLOR = '#1890ff';
 //   UploadOutline,
 //   UpOutline
 // ];
+
+let root = false;
 
 /**
  * It should be a global singleton, otherwise registered icons could not be found.
@@ -143,6 +112,12 @@ export class NzIconService extends IconService {
     this.addIcon(...(icons || []));
     this.configDefaultTwotoneColor();
     this.configDefaultTheme();
+
+    if (root) {
+      throw Error('multiple icon root!')
+    }
+
+    root = true;
   }
 
   private onConfigChange(): void {
@@ -186,12 +161,15 @@ export const NZ_ICONS_PATCH = new InjectionToken('nz_icons_patch');
 export class NzIconPatchService {
   patched = false;
 
-  constructor(@Self() @Inject(NZ_ICONS_PATCH) private extraIcons: IconDefinition[], private rootIconService: NzIconService) {}
+  constructor(@Inject(NZ_ICONS_PATCH) private extraIcons: IconDefinition[], private rootIconService: NzIconService) {
+  }
 
   doPatch(): void {
     if (this.patched) {
       return;
     }
+
+    console.log('patching icons', this.extraIcons);
 
     this.extraIcons.forEach(iconDefinition => this.rootIconService.addIcon(iconDefinition));
     this.patched = true;

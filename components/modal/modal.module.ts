@@ -10,6 +10,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { PortalModule } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { CloseOutline } from '@ant-design/icons-angular/icons';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
@@ -35,7 +36,7 @@ import { NzModalService } from './modal.service';
     PortalModule,
     NzI18nModule,
     NzButtonModule,
-    NzIconModule,
+    NzIconModule.forChild([CloseOutline]),
     NzPipesModule,
     NzNoAnimationModule
   ],

@@ -8,6 +8,16 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import {
+  CaretDownOutline,
+  FileOutline,
+  FolderOpenOutline,
+  FolderOutline,
+  LoadingOutline,
+  MinusSquareOutline,
+  PlusSquareOutline,
+  SearchOutline
+} from '@ant-design/icons-angular/icons';
 import { NzHighlightModule } from 'ng-zorro-antd/core/highlight';
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -19,7 +29,22 @@ import { NzTreeNodeComponent } from './nz-tree-node.component';
 import { NzTreeComponent } from './nz-tree.component';
 
 @NgModule({
-  imports: [CommonModule, NzOutletModule, NzIconModule, NzNoAnimationModule, NzHighlightModule],
+  imports: [
+    CommonModule,
+    NzOutletModule,
+    NzIconModule.forChild([
+      MinusSquareOutline,
+      PlusSquareOutline,
+      LoadingOutline,
+      SearchOutline,
+      FileOutline,
+      FolderOpenOutline,
+      FolderOutline,
+      CaretDownOutline
+    ]),
+    NzNoAnimationModule,
+    NzHighlightModule
+  ],
   declarations: [NzTreeComponent, NzTreeNodeComponent, NzTreeIndentComponent],
   exports: [NzTreeComponent, NzTreeNodeComponent, NzTreeIndentComponent]
 })

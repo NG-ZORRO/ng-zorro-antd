@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { SearchOutline } from '@ant-design/icons-angular/icons';
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzAutocompleteOptgroupComponent } from './autocomplete-optgroup.component';
 import { NzAutocompleteOptionComponent } from './autocomplete-option.component';

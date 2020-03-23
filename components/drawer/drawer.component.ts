@@ -49,6 +49,8 @@ const NZ_CONFIG_COMPONENT_NAME = 'drawer';
   selector: 'nz-drawer',
   exportAs: 'nzDrawer',
   template: `
+    <!--  For injector test.  -->
+    <i nz-icon nzType="close"></i>
     <ng-template #drawerTemplate>
       <div
         class="ant-drawer"

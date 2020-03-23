@@ -10,6 +10,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CloseCircleFill, DownOutline, LoadingOutline, RightOutline } from '@ant-design/icons-angular/icons';
 import { NzHighlightModule } from 'ng-zorro-antd/core/highlight';
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
@@ -30,7 +31,7 @@ import { NzCascaderComponent } from './cascader.component';
     NzOutletModule,
     NzEmptyModule,
     NzHighlightModule,
-    NzIconModule,
+    NzIconModule.forChild([DownOutline, RightOutline, CloseCircleFill, LoadingOutline]),
     NzInputModule,
     NzNoAnimationModule,
     NzOverlayModule

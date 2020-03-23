@@ -9,13 +9,13 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
+import { DownOutline, UpOutline } from '@ant-design/icons-angular/icons';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzInputNumberComponent } from './input-number.component';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, NzIconModule],
+  imports: [CommonModule, FormsModule, NzIconModule.forChild([UpOutline, DownOutline])],
   declarations: [NzInputNumberComponent],
   exports: [NzInputNumberComponent]
 })
