@@ -190,8 +190,6 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
       return;
     }
 
-    console.log('recalc');
-
     let currentRow: NzDescriptionsItemRenderProps[] = [];
     let width = 0;
 

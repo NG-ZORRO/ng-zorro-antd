@@ -65,11 +65,7 @@ export class NzBreakpointService {
       );
     } else {
       const get = () => this.matchMedia(breakpointMap);
-      return this.resizeService.subscribe().pipe(
-        map(get),
-        startWith(get()),
-        distinctUntilChanged((x, y) => x === y)
-      );
+      return this.resizeService.subscribe().pipe(map(get), startWith(get()), distinctUntilChanged());
     }
   }
 
