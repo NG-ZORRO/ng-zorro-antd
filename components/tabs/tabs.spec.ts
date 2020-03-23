@@ -34,7 +34,7 @@ describe('tabs', () => {
 
     it('should className correct', () => {
       fixture.detectChanges();
-      expect(tabs.nativeElement.className).toBe('ant-tabs ant-tabs-top ant-tabs-line');
+      expect(tabs.nativeElement.className).toBe('ant-tabs ant-tabs-line ant-tabs-top');
     });
 
     it('should size work', () => {
@@ -91,16 +91,16 @@ describe('tabs', () => {
 
     it('should tabPosition work', () => {
       fixture.detectChanges();
-      expect(tabs.nativeElement.className).toBe('ant-tabs ant-tabs-top ant-tabs-line');
+      expect(tabs.nativeElement.className).toBe('ant-tabs ant-tabs-line ant-tabs-top');
       testComponent.tabPosition = 'left';
       fixture.detectChanges();
-      expect(tabs.nativeElement.className).toBe('ant-tabs ant-tabs-vertical ant-tabs-left ant-tabs-line');
+      expect(tabs.nativeElement.className).toBe('ant-tabs ant-tabs-line ant-tabs-left ant-tabs-vertical');
       testComponent.tabPosition = 'right';
       fixture.detectChanges();
-      expect(tabs.nativeElement.className).toBe('ant-tabs ant-tabs-vertical ant-tabs-right ant-tabs-line');
+      expect(tabs.nativeElement.className).toBe('ant-tabs ant-tabs-line ant-tabs-vertical ant-tabs-right');
       testComponent.tabPosition = 'bottom';
       fixture.detectChanges();
-      expect(tabs.nativeElement.className).toBe('ant-tabs ant-tabs-bottom ant-tabs-line');
+      expect(tabs.nativeElement.className).toBe('ant-tabs ant-tabs-line ant-tabs-bottom');
     });
 
     it('should tabBarGutter work', () => {

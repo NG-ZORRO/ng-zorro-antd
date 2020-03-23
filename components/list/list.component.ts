@@ -11,21 +11,16 @@ import {
   ChangeDetectionStrategy,
   Component,
   ContentChild,
-  ElementRef,
   Input,
   OnChanges,
   OnDestroy,
-  OnInit,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { NzUpdateHostClassService } from 'ng-zorro-antd/core/services';
-import { NzDirectionVHType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { NzDirectionVHType, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-
 import { BehaviorSubject, Observable } from 'rxjs';
-
 import { NzListGrid } from './interface';
 import { NzListFooterComponent, NzListLoadMoreDirective, NzListPaginationComponent } from './list-cell';
 
@@ -83,11 +78,11 @@ import { NzListFooterComponent, NzListLoadMoreDirective, NzListPaginationCompone
     </nz-list-pagination>
     <ng-content select="nz-list-pagination, [nz-list-pagination]"></ng-content>
   `,
-  providers: [NzUpdateHostClassService],
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
+    '[class.ant-list]': 'true',
     '[class.ant-list-vertical]': 'nzItemLayout === "vertical"',
     '[class.ant-list-lg]': 'nzSize === "large"',
     '[class.ant-list-sm]': 'nzSize === "small"',
@@ -97,9 +92,8 @@ import { NzListFooterComponent, NzListLoadMoreDirective, NzListPaginationCompone
     '[class.ant-list-something-after-last-item]': 'hasSomethingAfterLastItem'
   }
 })
-export class NzListComponent implements OnInit, AfterContentInit, OnChanges, OnDestroy {
-  // tslint:disable-next-line:no-any
-  @Input() nzDataSource: any[];
+export class NzListComponent implements AfterContentInit, OnChanges, OnDestroy {
+  @Input() nzDataSource: NzSafeAny[];
   @Input() @InputBoolean() nzBordered = false;
   @Input() nzGrid: NzListGrid;
   @Input() nzHeader: string | TemplateRef<void>;
@@ -118,16 +112,6 @@ export class NzListComponent implements OnInit, AfterContentInit, OnChanges, OnD
   @ContentChild(NzListLoadMoreDirective) nzListLoadMoreDirective: NzListLoadMoreDirective;
 
   hasSomethingAfterLastItem = false;
-  private prefixCls = 'ant-list';
-
-  private _setClassMap(): void {
-    const classMap = {
-      [this.prefixCls]: true
-    };
-    this.updateHostClassService.updateHostClass(this.el.nativeElement, classMap);
-  }
-
-  // #endregion
 
   private itemLayoutNotifySource = new BehaviorSubject<NzDirectionVHType>(this.nzItemLayout);
 
@@ -135,7 +119,7 @@ export class NzListComponent implements OnInit, AfterContentInit, OnChanges, OnD
     return this.itemLayoutNotifySource.asObservable();
   }
 
-  constructor(private el: ElementRef, private updateHostClassService: NzUpdateHostClassService) {}
+  constructor() {}
 
   getSomethingAfterLastItem(): boolean {
     return !!(
@@ -147,13 +131,7 @@ export class NzListComponent implements OnInit, AfterContentInit, OnChanges, OnD
       this.nzListLoadMoreDirective
     );
   }
-
-  ngOnInit(): void {
-    this._setClassMap();
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
-    this._setClassMap();
     if (changes.nzItemLayout) {
       this.itemLayoutNotifySource.next(this.nzItemLayout);
     }

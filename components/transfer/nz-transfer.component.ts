@@ -10,7 +10,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -18,19 +17,17 @@ import {
   OnInit,
   Output,
   QueryList,
-  Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { NzUpdateHostClassService } from 'ng-zorro-antd/core/services';
 import { InputBoolean, toArray } from 'ng-zorro-antd/core/util';
+
+import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { Observable, of, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
-import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { TransferCanMove, TransferChange, TransferDirection, TransferItem, TransferSearchChange, TransferSelectChange } from './interface';
 import { NzTransferListComponent } from './nz-transfer-list.component';
@@ -41,11 +38,10 @@ import { NzTransferListComponent } from './nz-transfer-list.component';
   preserveWhitespaces: false,
   templateUrl: './nz-transfer.component.html',
   host: {
-    '[class.ant-transfer-disabled]': 'nzDisabled'
+    '[class]': 'hostClassMap'
   },
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [NzUpdateHostClassService]
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   private unsubscribe$ = new Subject<void>();
@@ -53,6 +49,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   private lists!: QueryList<NzTransferListComponent>;
   // tslint:disable-next-line:no-any
   locale: any = {};
+  hostClassMap = {};
 
   leftFilter = '';
   rightFilter = '';
@@ -178,22 +175,15 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
 
   // #endregion
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private i18n: NzI18nService,
-    private nzUpdateHostClassService: NzUpdateHostClassService,
-    private elementRef: ElementRef,
-    renderer: Renderer2
-  ) {
-    renderer.addClass(elementRef.nativeElement, 'ant-transfer');
-  }
+  constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService) {}
 
   private setClassMap(): void {
     const prefixCls = 'ant-transfer';
-    this.nzUpdateHostClassService.updateHostClass(this.elementRef.nativeElement, {
+    this.hostClassMap = {
+      [`${prefixCls}`]: true,
       [`${prefixCls}-disabled`]: this.nzDisabled,
       [`${prefixCls}-customize-list`]: this.nzRenderList.some(i => !!i)
-    });
+    };
   }
 
   private markForCheckAllList(): void {
