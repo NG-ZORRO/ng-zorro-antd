@@ -21,7 +21,6 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { warn } from 'ng-zorro-antd/core/logger';
-import { NzUpdateHostClassService } from 'ng-zorro-antd/core/services';
 import { Observable, of, Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
@@ -33,14 +32,15 @@ import { UploadFile, UploadXHRArgs, ZipButtonOptions } from './interface';
   templateUrl: './upload-btn.component.html',
   host: {
     '[attr.tabindex]': '"0"',
-    '[attr.role]': '"button"'
+    '[attr.role]': '"button"',
+    '[class]': 'hostClassMap'
   },
-  providers: [NzUpdateHostClassService],
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None
 })
 export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
   reqs: { [key: string]: Subscription } = {};
+  hostClassMap = {};
   private inited = false;
   private destroy = false;
 
@@ -367,17 +367,16 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
   private prefixCls = 'ant-upload';
 
   private setClassMap(): void {
-    const classMap = {
+    this.hostClassMap = {
       [this.prefixCls]: true,
       [`${this.prefixCls}-disabled`]: this.options.disabled,
       ...this.classes
     };
-    this.updateHostClassService.updateHostClass(this.el.nativeElement, classMap);
   }
 
   // #endregion
 
-  constructor(@Optional() private http: HttpClient, private el: ElementRef, private updateHostClassService: NzUpdateHostClassService) {
+  constructor(@Optional() private http: HttpClient) {
     if (!http) {
       throw new Error(`Not found 'HttpClient', You can import 'HttpClientModule' in your root module.`);
     }

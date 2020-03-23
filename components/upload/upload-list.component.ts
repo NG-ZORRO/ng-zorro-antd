@@ -13,7 +13,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   Inject,
   Input,
   NgZone,
@@ -21,7 +20,6 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { NzUpdateHostClassService } from 'ng-zorro-antd/core/services';
 import { NgClassType } from 'ng-zorro-antd/core/types';
 import { Observable } from 'rxjs';
 
@@ -45,19 +43,22 @@ interface UploadListFile extends UploadFile {
   selector: 'nz-upload-list',
   exportAs: 'nzUploadList',
   templateUrl: './upload-list.component.html',
-  providers: [NzUpdateHostClassService],
   animations: [
     trigger('itemState', [
       transition(':enter', [style({ height: '0', width: '0', opacity: 0 }), animate(150, style({ height: '*', width: '*', opacity: 1 }))]),
       transition(':leave', [animate(150, style({ height: '0', width: '0', opacity: 0 }))])
     ])
   ],
+  host: {
+    '[class]': 'hostClassMap'
+  },
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzUploadListComponent implements OnChanges {
   list: UploadListFile[];
+  hostClassMap = {};
 
   private get showPic(): boolean {
     return this.listType === 'picture' || this.listType === 'picture-card';
@@ -86,11 +87,10 @@ export class NzUploadListComponent implements OnChanges {
   private prefixCls = 'ant-upload-list';
 
   private setClassMap(): this {
-    const classMap = {
+    this.hostClassMap = {
       [this.prefixCls]: true,
       [`${this.prefixCls}-${this.listType}`]: true
     };
-    this.updateHostClassService.updateHostClass(this.el.nativeElement, classMap);
     return this;
   }
 
@@ -260,9 +260,7 @@ export class NzUploadListComponent implements OnChanges {
   // #endregion
 
   constructor(
-    private el: ElementRef,
     private cdr: ChangeDetectorRef,
-    private updateHostClassService: NzUpdateHostClassService,
     @Inject(DOCUMENT) private doc: any, // tslint:disable-line no-any
     private ngZone: NgZone,
     private platform: Platform

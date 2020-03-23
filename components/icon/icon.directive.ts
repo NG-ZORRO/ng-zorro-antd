@@ -8,7 +8,6 @@
 
 import { AfterContentChecked, Directive, ElementRef, Input, OnChanges, OnInit, Optional, Renderer2, SimpleChanges } from '@angular/core';
 import { IconDirective, ThemeType } from '@ant-design/icons-angular';
-import { NzUpdateHostClassService } from 'ng-zorro-antd/core/services';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzIconPatchService, NzIconService } from './icon.service';
@@ -16,9 +15,9 @@ import { NzIconPatchService, NzIconService } from './icon.service';
 @Directive({
   selector: '[nz-icon]',
   exportAs: 'nzIcon',
-  providers: [NzUpdateHostClassService],
   host: {
-    '[class.anticon]': 'true'
+    '[class.anticon]': 'true',
+    '[class]': 'hostClass'
   }
 })
 export class NzIconDirective extends IconDirective implements OnInit, OnChanges, AfterContentChecked {
@@ -54,6 +53,7 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
 
   type: string;
   theme: ThemeType;
+  hostClass: string;
   // @ts-ignore
   twotoneColor: string;
 
@@ -64,7 +64,6 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     elementRef: ElementRef,
     public iconService: NzIconService,
     public renderer: Renderer2,
-    private nzUpdateHostClassService: NzUpdateHostClassService,
     @Optional() iconPatch: NzIconPatchService
   ) {
     super(iconService, elementRef, renderer);
@@ -141,9 +140,7 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
   }
 
   private setClassName(): void {
-    this.nzUpdateHostClassService.updateHostClass(this.el, {
-      [`anticon-${this.type}`]: true
-    });
+    this.hostClass = `anticon-${this.type}`;
   }
 
   private setSVGData(svg: SVGElement): void {
