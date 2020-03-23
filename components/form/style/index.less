@@ -13,6 +13,7 @@
 @form-prefix-cls: ~'@{ant-prefix}-form';
 @form-item-prefix-cls: ~'@{form-prefix-cls}-item';
 @form-font-height: ceil(@font-size-base * @line-height-base);
+@form-item-label-height: @input-height-base;
 
 .@{form-prefix-cls} {
   .reset-component;
@@ -73,10 +74,15 @@
   // ==============================================================
   &-label {
     display: inline-block;
+    flex-grow: 0;
     overflow: hidden;
     white-space: nowrap;
     text-align: right;
     vertical-align: middle;
+
+    .@{form-prefix-cls}-rtl & {
+      text-align: right;
+    }
 
     &-left {
       text-align: left;
@@ -87,8 +93,7 @@
       // display: inline;
       display: inline-flex;
       align-items: center;
-      height: 100%;
-      height: @input-height-base;
+      height: @form-item-label-height;
       color: @label-color;
       font-size: @form-item-label-font-size;
 
@@ -105,6 +110,11 @@
         font-family: SimSun, sans-serif;
         line-height: 1;
         content: '*';
+
+        .@{form-prefix-cls}-rtl & {
+          margin-right: 0;
+          margin-left: 4px;
+        }
 
         .@{form-prefix-cls}-hide-required-mark & {
           display: none;
@@ -136,8 +146,10 @@
   &-control {
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
 
-    &:first-child:not([class^=~"'@{ant-prefix}-col-'"]):not([class*=~"' @{ant-prefix}-col-'"]) {
+    &:first-child:not([class^=~"'@{ant-prefix}-col-'"]):not([class*=~"' @{ant-prefix}-col-'"]),
+    .@{ant-prefix}-col-rtl &:first-child {
       width: 100%;
     }
   }

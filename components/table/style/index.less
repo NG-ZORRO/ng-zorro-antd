@@ -58,10 +58,17 @@
     // Fixed first or last should special process
     &.@{table-prefix-cls}-cell-fix-left-last,
     &.@{table-prefix-cls}-cell-fix-right-first {
+      display: flex;
       overflow: visible;
+
+      > .@{table-prefix-cls}-row-indent,
+      > .@{table-prefix-cls}-row-expand-icon {
+        flex: none;
+      }
 
       .@{table-prefix-cls}-cell-content {
         display: block;
+        flex: auto;
         overflow: hidden;
         text-overflow: ellipsis;
       }
@@ -332,6 +339,12 @@
     border-radius: @border-radius-base;
     box-shadow: @box-shadow-base;
 
+    &-submenu > ul {
+      max-height: calc(100vh - 130px);
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
     // Checkbox
     &,
     &-submenu {
@@ -518,6 +531,7 @@
     background: @table-bg;
   }
 
+  &-cell-fix-left-first::after,
   &-cell-fix-left-last::after {
     position: absolute;
     top: 0;
@@ -529,7 +543,8 @@
     content: '';
     pointer-events: none;
   }
-  &-cell-fix-right-first::after {
+  &-cell-fix-right-first::after,
+  &-cell-fix-right-last::after {
     position: absolute;
     top: 0;
     bottom: -1px;
@@ -571,6 +586,7 @@
       }
     }
 
+    .@{table-prefix-cls}-cell-fix-left-first::after,
     .@{table-prefix-cls}-cell-fix-left-last::after {
       box-shadow: inset 10px 0 8px -8px darken(@shadow-color, 5%);
     }
@@ -585,14 +601,10 @@
       }
     }
 
-    .@{table-prefix-cls}-cell-fix-right-first::after {
+    .@{table-prefix-cls}-cell-fix-right-first::after,
+    .@{table-prefix-cls}-cell-fix-right-last::after {
       box-shadow: inset -10px 0 8px -8px darken(@shadow-color, 5%);
     }
-  }
-
-  // Fix for chrome overflow show the scrollbar
-  &:not(&-fixed-header) &-content {
-    overflow-y: hidden;
   }
 }
 

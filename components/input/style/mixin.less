@@ -26,7 +26,7 @@
   }
   border-right-width: @border-width-base !important;
   outline: 0;
-  box-shadow: @input-outline-offset @outline-blur-size @outline-width fade(@color, 20%);
+  box-shadow: @input-outline-offset @outline-blur-size @outline-width fade(@color, @outline-fade);
 
   .@{input-rtl-cls} & {
     border-right-width: 0;
@@ -339,7 +339,7 @@
     }
 
     & > * {
-      display: inline-block;
+      display: inline-flex;
       float: none;
       vertical-align: top; // https://github.com/ant-design/ant-design-pro/issues/139
       border-radius: 0;
