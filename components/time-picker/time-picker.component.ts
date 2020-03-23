@@ -28,7 +28,6 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzUpdateHostClassService } from 'ng-zorro-antd/core/services';
 import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 
 const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
@@ -102,7 +101,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
   `,
   host: { '[class]': 'hostClassMap' },
   animations: [slideMotion],
-  providers: [NzUpdateHostClassService, { provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }]
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }]
 })
 export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
   private _onChange: (value: Date | null) => void;

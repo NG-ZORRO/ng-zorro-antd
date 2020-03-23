@@ -33,7 +33,6 @@ import {
 import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/router';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { PREFIX } from 'ng-zorro-antd/core/logger';
-import { NzUpdateHostClassService } from 'ng-zorro-antd/core/services';
 import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toNumber, wrapIntoObservable } from 'ng-zorro-antd/core/util';
 
@@ -51,7 +50,6 @@ const NZ_CONFIG_COMPONENT_NAME = 'tabs';
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [NzUpdateHostClassService],
   template: `
     <ng-container *ngIf="listOfNzTabComponent">
       <nz-tabs-nav
@@ -104,7 +102,10 @@ const NZ_CONFIG_COMPONENT_NAME = 'tabs';
         ></div>
       </div>
     </ng-container>
-  `
+  `,
+  host: {
+    '[class]': 'hostClassMap'
+  }
 })
 export class NzTabSetComponent implements AfterContentChecked, OnInit, OnChanges, AfterContentInit, OnDestroy {
   private indexToSelect: number | null = 0;
@@ -114,10 +115,9 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, OnChanges
   private tabsSubscription = Subscription.EMPTY;
   /** Subscription to changes in the tab labels. */
   private tabLabelSubscription = Subscription.EMPTY;
-
   private destroy$ = new Subject<void>();
-
   tabPositionMode: NzTabPositionMode = 'horizontal';
+  hostClassMap = {};
   @ContentChildren(NzTabComponent) listOfNzTabComponent: QueryList<NzTabComponent>;
   @ViewChild(NzTabsNavComponent, { static: false }) nzTabsNavComponent: NzTabsNavComponent;
   @ViewChild('tabContent', { static: false }) tabContent: ElementRef;
@@ -169,7 +169,7 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, OnChanges
   }
 
   setClassMap(): void {
-    this.nzUpdateHostClassService.updateHostClass(this.el, {
+    this.hostClassMap = {
       [`ant-tabs`]: true,
       [`ant-tabs-vertical`]: this.nzTabPosition === 'left' || this.nzTabPosition === 'right',
       [`ant-tabs-${this.nzTabPosition}`]: this.nzTabPosition,
@@ -177,7 +177,7 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, OnChanges
       [`ant-tabs-${this.nzType}`]: this.nzType,
       [`ant-tabs-large`]: this.nzSize === 'large',
       [`ant-tabs-small`]: this.nzSize === 'small'
-    });
+    };
   }
 
   clickLabel(index: number, disabled: boolean): void {
@@ -231,7 +231,6 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, OnChanges
   constructor(
     public nzConfigService: NzConfigService,
     private renderer: Renderer2,
-    private nzUpdateHostClassService: NzUpdateHostClassService,
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef,
     @Optional() private router: Router

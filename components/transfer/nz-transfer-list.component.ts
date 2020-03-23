@@ -10,17 +10,12 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   EventEmitter,
   Input,
-  OnChanges,
-  OnInit,
   Output,
-  SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { NzUpdateHostClassService } from 'ng-zorro-antd/core/services';
 
 import { TransferItem } from './interface';
 
@@ -28,12 +23,15 @@ import { TransferItem } from './interface';
   selector: 'nz-transfer-list',
   exportAs: 'nzTransferList',
   preserveWhitespaces: false,
-  providers: [NzUpdateHostClassService],
   templateUrl: './nz-transfer-list.component.html',
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    '[class.ant-transfer-list]': 'true',
+    '[class.ant-transfer-list-with-footer]': '!!footer'
+  }
 })
-export class NzTransferListComponent implements OnChanges, OnInit {
+export class NzTransferListComponent {
   // #region fields
 
   @Input() direction = '';
@@ -59,24 +57,6 @@ export class NzTransferListComponent implements OnChanges, OnInit {
   @Output() readonly handleSelectAll: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() readonly handleSelect: EventEmitter<TransferItem> = new EventEmitter();
   @Output() readonly filterChange: EventEmitter<{ direction: string; value: string }> = new EventEmitter();
-
-  // #endregion
-
-  // #region styles
-
-  prefixCls = 'ant-transfer-list';
-
-  setClassMap(): void {
-    const classMap = {
-      [this.prefixCls]: true,
-      [`${this.prefixCls}-with-footer`]: !!this.footer
-    };
-    this.updateHostClassService.updateHostClass(this.el.nativeElement, classMap);
-  }
-
-  // #endregion
-
-  // #region select all
 
   stat = {
     checkAll: false,
@@ -139,17 +119,7 @@ export class NzTransferListComponent implements OnChanges, OnInit {
 
   // #endregion
 
-  constructor(private el: ElementRef, private updateHostClassService: NzUpdateHostClassService, private cdr: ChangeDetectorRef) {}
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if ('footer' in changes) {
-      this.setClassMap();
-    }
-  }
-
-  ngOnInit(): void {
-    this.setClassMap();
-  }
+  constructor(private cdr: ChangeDetectorRef) {}
 
   markForCheck(): void {
     this.updateCheckStatus();

@@ -6,8 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
-import { NzUpdateHostClassService } from 'ng-zorro-antd/core/services';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
 
 export type NzResultIconType = 'success' | 'error' | 'info' | 'warning';
 export type NzExceptionStatusType = '404' | '500' | '403';
@@ -26,7 +25,6 @@ const ExceptionStatus = ['404', '500', '403'];
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-result',
   exportAs: 'nzResult',
-  providers: [NzUpdateHostClassService],
   template: `
     <div class="ant-result-icon">
       <ng-container *ngIf="!isException; else exceptionTpl">
@@ -66,13 +64,13 @@ const ExceptionStatus = ['404', '500', '403'];
       </ng-container>
     </ng-template>
   `,
-  styles: [
-    `
-      nz-result {
-        display: block;
-      }
-    `
-  ]
+  host: {
+    '[class.ant-result]': 'true',
+    '[class.ant-result-success]': `nzStatus === 'success'`,
+    '[class.ant-result-error]': `nzStatus === 'error'`,
+    '[class.ant-result-info]': `nzStatus === 'info'`,
+    '[class.ant-result-warning]': `nzStatus === 'warning'`
+  }
 })
 export class NzResultComponent implements OnChanges {
   @Input() nzIcon?: string | TemplateRef<void>;
@@ -84,11 +82,10 @@ export class NzResultComponent implements OnChanges {
   icon?: string | TemplateRef<void>;
   isException = false;
 
-  constructor(private nzUpdateHostClassService: NzUpdateHostClassService, private elementRef: ElementRef) {}
+  constructor() {}
 
   ngOnChanges(): void {
     this.setStatusIcon();
-    this.setClassMap();
   }
 
   private setStatusIcon(): void {
@@ -102,14 +99,5 @@ export class NzResultComponent implements OnChanges {
       : this.isException
       ? undefined
       : IconMap[this.nzStatus as NzResultIconType];
-  }
-
-  private setClassMap(): void {
-    const prefix = 'ant-result';
-
-    this.nzUpdateHostClassService.updateHostClass(this.elementRef.nativeElement, {
-      [prefix]: true,
-      [`${prefix}-${this.nzStatus}`]: true
-    });
   }
 }

@@ -21,14 +21,12 @@ import {
 } from '@angular/core';
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
-import { NzUpdateHostClassService } from 'ng-zorro-antd/core/services';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 @Component({
   selector: 'nz-tag',
   exportAs: 'nzTag',
   preserveWhitespaces: false,
-  providers: [NzUpdateHostClassService],
   animations: [fadeMotion],
   template: `
     <ng-content></ng-content>
@@ -39,17 +37,15 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   host: {
     '[@fadeMotion]': '',
     '[@.disabled]': 'nzNoAnimation',
-    '(@fadeMotion.done)': 'afterAnimation($event)',
-    '(click)': 'updateCheckedStatus()',
     '[style.background-color]': 'presetColor? null : nzColor',
-    class: 'ant-tag',
-    '[class.ant-tag-has-color]': 'nzColor && !presetColor',
-    '[class.ant-tag-checkable]': 'nzMode === "checkable"',
-    '[class.ant-tag-checkable-checked]': 'nzChecked'
+    '[class]': 'hostClassMap',
+    '(click)': 'updateCheckedStatus()',
+    '(@fadeMotion.done)': 'afterAnimation($event)'
   }
 })
 export class NzTagComponent implements OnInit, OnChanges {
   presetColor = false;
+  hostClassMap = {};
   @Input() nzMode: 'default' | 'closeable' | 'checkable' = 'default';
   @Input() nzColor: string;
   @Input() @InputBoolean() nzChecked = false;
@@ -71,9 +67,13 @@ export class NzTagComponent implements OnInit, OnChanges {
 
   private updateClassMap(): void {
     this.presetColor = this.isPresetColor(this.nzColor);
-    this.nzUpdateHostClassService.updateHostClass(this.elementRef.nativeElement, {
+    this.hostClassMap = {
+      ['ant-tag']: true,
+      ['ant-tag-has-color']: this.nzColor && !this.presetColor,
+      ['ant-tag-checkable']: this.nzMode === 'checkable',
+      ['ant-tag-checkable-checked']: this.nzChecked,
       [`ant-tag-${this.nzColor}`]: this.presetColor
-    });
+    };
   }
 
   updateCheckedStatus(): void {
@@ -100,7 +100,7 @@ export class NzTagComponent implements OnInit, OnChanges {
     }
   }
 
-  constructor(private renderer: Renderer2, private elementRef: ElementRef, private nzUpdateHostClassService: NzUpdateHostClassService) {}
+  constructor(private renderer: Renderer2, private elementRef: ElementRef) {}
 
   ngOnInit(): void {
     this.updateClassMap();
