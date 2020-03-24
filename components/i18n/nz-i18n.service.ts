@@ -8,7 +8,7 @@
 
 import { Inject, Injectable, Optional } from '@angular/core';
 import { warn } from 'ng-zorro-antd/core/logger';
-import { IndexableObject } from 'ng-zorro-antd/core/types';
+import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import zh_CN from './languages/zh_CN';
@@ -34,8 +34,7 @@ export class NzI18nService {
 
   // [NOTE] Performance issue: this method may called by every change detections
   // TODO: cache more deeply paths for performance
-  /* tslint:disable-next-line:no-any */
-  translate(path: string, data?: any): string {
+  translate(path: string, data?: NzSafeAny): string {
     // this._logger.debug(`[NzI18nService] Translating(${this._locale.locale}): ${path}`);
     let content = this._getObjectPath(this._locale, path) as string;
     if (typeof content === 'string') {
@@ -83,8 +82,7 @@ export class NzI18nService {
    * @param path dot paths for finding exist value from locale data, eg. "a.b.c"
    * @param defaultValue default value if the result is not "truthy"
    */
-  // tslint:disable-next-line:no-any
-  getLocaleData(path: string, defaultValue?: any): any {
+  getLocaleData(path: string, defaultValue?: NzSafeAny): NzSafeAny {
     const result = path ? this._getObjectPath(this._locale, path) : this._locale;
 
     if (!result && !defaultValue) {
@@ -97,8 +95,7 @@ https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md`);
     return result || defaultValue || {};
   }
 
-  // tslint:disable-next-line:no-any
-  private _getObjectPath(obj: IndexableObject, path: string): string | object | any {
+  private _getObjectPath(obj: IndexableObject, path: string): string | object | NzSafeAny {
     let res = obj;
     const paths = path.split('.');
     const depth = paths.length;

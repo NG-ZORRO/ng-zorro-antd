@@ -32,6 +32,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 
 import { fromEvent, merge, Subscription } from 'rxjs';
 import { delay, distinct, map, take, tap } from 'rxjs/operators';
@@ -70,9 +71,8 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   /** Bind nzAutocomplete component */
   @Input() nzAutocomplete: NzAutocompleteComponent;
 
-  // tslint:disable-next-line:no-any
-  _onChange: (value: any) => void = () => {};
-  _onTouched = () => {};
+  onChange: OnChangeType = () => {};
+  onTouched: OnTouchedType = () => {};
   panelOpen: boolean = false;
 
   /** Current active option */
@@ -96,25 +96,23 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     private ngZone: NgZone,
-    // tslint:disable-next-line:no-any
-    @Optional() @Inject(DOCUMENT) private document: any
+    @Optional() @Inject(DOCUMENT) private document: NzSafeAny
   ) {}
 
   ngOnDestroy(): void {
     this.destroyPanel();
   }
 
-  // tslint:disable-next-line:no-any
-  writeValue(value: any): void {
+  writeValue(value: NzSafeAny): void {
     this.setTriggerValue(value);
   }
 
   registerOnChange(fn: (value: {}) => {}): void {
-    this._onChange = fn;
+    this.onChange = fn;
   }
 
   registerOnTouched(fn: () => {}): void {
-    this._onTouched = fn;
+    this.onTouched = fn;
   }
 
   setDisabledState(isDisabled: boolean): void {
@@ -190,7 +188,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
 
     if (this.previousValue !== value) {
       this.previousValue = value;
-      this._onChange(value);
+      this.onChange(value);
 
       if (this.canOpen() && document.activeElement === event.target) {
         this.openPanel();
@@ -205,7 +203,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   }
 
   handleBlur(): void {
-    this._onTouched();
+    this.onTouched();
   }
 
   /**
@@ -351,7 +349,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   private setValueAndClose(option: NzAutocompleteOptionComponent): void {
     const value = option.nzValue;
     this.setTriggerValue(option.getLabel());
-    this._onChange(value);
+    this.onChange(value);
     this.elementRef.nativeElement.focus();
     this.closePanel();
   }

@@ -11,6 +11,7 @@ import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { BasePortalOutlet, CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { ChangeDetectorRef, ComponentRef, ElementRef, EmbeddedViewRef, EventEmitter, NgZone, Renderer2 } from '@angular/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { getElementOffset } from 'ng-zorro-antd/core/util';
 
 import { NzModalRef } from './modal-ref';
@@ -60,8 +61,7 @@ export class BaseModalContainer extends BasePortalOutlet {
     protected zone: NgZone,
     protected overlayRef: OverlayRef,
     public config: ModalOptions,
-    // tslint:disable-next-line:no-any
-    document?: any,
+    document?: NzSafeAny,
     protected animationType?: string
   ) {
     super();

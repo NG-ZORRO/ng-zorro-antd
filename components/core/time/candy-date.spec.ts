@@ -7,12 +7,6 @@ describe('candy-date coverage supplements', () => {
 
   it('support getMilliseconds', () => expect(date.getMilliseconds()).toBe(date.nativeDate.getMilliseconds()));
 
-  // it('support endOf', () => {
-  //   expect(date.endOf('month')!.getDate()).toBe(31);
-  //   // tslint:disable-next-line:no-any
-  //   expect(date.endOf('should return null' as any)).toBeNull();
-  // });
-
   it('support isSame', () => {
     expect(date.isSame(new CandyDate('2018'), 'year')).toBeTruthy();
 

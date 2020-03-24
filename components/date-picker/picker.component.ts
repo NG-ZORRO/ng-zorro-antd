@@ -28,6 +28,7 @@ import {
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 
 import { CandyDate, CompatibleValue, SingleValue, sortRangeValue } from 'ng-zorro-antd/core/time';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
@@ -152,8 +153,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   destroy$ = new Subject();
   prefixCls = PREFIX_CLASS;
   // Index signature in type 'string | string[]' only permits reading
-  // tslint:disable-next-line:no-any
-  inputValue: any;
+  inputValue: NzSafeAny;
   activeBarStyle: object = { position: 'absolute' };
   animationOpenState = false;
   overlayOpen: boolean = false; // Available when "open"=undefined

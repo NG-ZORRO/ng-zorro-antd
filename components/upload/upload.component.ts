@@ -20,6 +20,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable, of, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -55,8 +56,8 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   private i18n$: Subscription;
   @ViewChild('uploadComp', { static: false }) uploadComp: NzUploadBtnComponent;
   @ViewChild('listComp', { static: false }) listComp: NzUploadListComponent;
-  // tslint:disable-next-line:no-any
-  locale: any = {};
+
+  locale: NzSafeAny = {};
 
   // #region fields
 
@@ -175,8 +176,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
       response: file.response,
       error: file.error,
       percent: 0,
-      // tslint:disable-next-line:no-any
-      originFileObj: file as any
+      originFileObj: file as NzSafeAny
     };
   }
 

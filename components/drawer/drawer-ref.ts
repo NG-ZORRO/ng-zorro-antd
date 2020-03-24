@@ -7,11 +7,11 @@
  */
 
 import { TemplateRef } from '@angular/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable } from 'rxjs';
 import { NzDrawerPlacement } from './drawer-options';
 
-// tslint:disable-next-line:no-any
-export abstract class NzDrawerRef<R = any> {
+export abstract class NzDrawerRef<R = NzSafeAny> {
   abstract afterClose: Observable<R>;
   abstract afterOpen: Observable<void>;
   abstract close(result?: R): void;

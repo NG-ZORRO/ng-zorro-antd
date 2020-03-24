@@ -8,6 +8,7 @@
 
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable, NgZone, OnDestroy } from '@angular/core';
+import { NzSafeAny } from 'ng-zorro-antd';
 import { isTouchEvent } from 'ng-zorro-antd/core/util';
 
 import { Subject } from 'rxjs';
@@ -24,8 +25,7 @@ export class NzResizableService implements OnDestroy {
   documentMouseMove$ = new Subject<MouseEvent | TouchEvent>();
   mouseEntered$ = new Subject<boolean>();
 
-  // tslint:disable-next-line:no-any
-  constructor(private ngZone: NgZone, @Inject(DOCUMENT) document: any) {
+  constructor(private ngZone: NgZone, @Inject(DOCUMENT) document: NzSafeAny) {
     this.document = document;
   }
 

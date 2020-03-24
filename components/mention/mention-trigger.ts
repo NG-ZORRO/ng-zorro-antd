@@ -8,6 +8,7 @@
 
 import { AfterViewInit, Directive, ElementRef, EventEmitter, ExistingProvider, forwardRef, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 
 import { Mention } from './mention.component';
 import { NzMentionService } from './mention.service';
@@ -32,8 +33,8 @@ export const NZ_MENTION_TRIGGER_ACCESSOR: ExistingProvider = {
   }
 })
 export class NzMentionTriggerDirective implements ControlValueAccessor, OnDestroy, AfterViewInit {
-  onChange: (value: string) => void;
-  onTouched: () => void;
+  onChange: OnChangeType = () => {};
+  onTouched: OnTouchedType = () => {};
 
   readonly onFocusin: EventEmitter<void> = new EventEmitter();
   readonly onBlur: EventEmitter<void> = new EventEmitter();
