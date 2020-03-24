@@ -10,8 +10,8 @@ import {
   selector       : 'nz-github-btn',
   encapsulation  : ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl    : './nz-github-btn.component.html',
-  styleUrls      : [ './nz-github-btn.component.less' ]
+  templateUrl    : './github-btn.component.html',
+  styleUrls      : [ './github-btn.component.less' ]
 })
 export class NzGithubBtnComponent implements OnInit {
 

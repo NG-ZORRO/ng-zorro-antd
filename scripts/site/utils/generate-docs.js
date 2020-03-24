@@ -41,9 +41,12 @@ function generateToc(meta, raw) {
       links += `<nz-link nzHref="#${lowerText}" nzTitle="${text}"></nz-link>`
     }
   }
-  return `<nz-anchor class="toc-affix"  [nzOffsetTop]="16" nzShowInkInFixed (nzClick)="goLink($event)">
-      ${links}
-    </nz-anchor>`;
+  return `
+<nz-affix class="toc-affix" [nzOffsetTop]="16">
+    <nz-anchor [nzAffix]="false" nzShowInkInFixed (nzClick)="goLink($event)">
+        ${links}
+    </nz-anchor>
+</nz-affix>`;
 }
 
 function baseInfo(file, path) {

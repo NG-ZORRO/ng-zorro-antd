@@ -1,5 +1,5 @@
 import { Component, QueryList, ViewChildren } from '@angular/core';
-import { NzCodeBoxComponent } from '../share/nz-codebox/nz-codebox.component';
+import { NzCodeBoxComponent } from '../share/codebox/codebox.component';
 
 @Component({
   selector     : 'nz-demo-{{component}}',

@@ -25,7 +25,7 @@ export class AppService {
       return of(this.codeMap.get(componentId) as DemoCode);
     } else {
       const path = componentId.startsWith('components-') ? componentId.split('components-')[1] : componentId;
-      return this.http.get<DemoCode>(`/assets/codes/${path}.json`, {
+      return this.http.get<DemoCode>(`assets/codes/${path}.json`, {
         responseType: "json"
       })
       .pipe(tap(data => {

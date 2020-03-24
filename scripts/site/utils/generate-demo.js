@@ -149,9 +149,13 @@ function generateToc(language, name, demoMap) {
   linkArray.sort((pre, next) => pre.order - next.order);
   linkArray.push({ content: `<nz-link nzHref="#api" nzTitle="API"></nz-link>` });
   const links = linkArray.map(link => link.content).join('');
-  return `<nz-anchor class="toc-affix" [nzOffsetTop]="16" nzShowInkInFixed (nzClick)="goLink($event)">
-      ${links}
-    </nz-anchor>`;
+  return `
+<nz-affix class="toc-affix" [nzOffsetTop]="16">
+    <nz-anchor [nzAffix]="false" nzShowInkInFixed (nzClick)="goLink($event)">
+        ${links}
+    </nz-anchor>
+</nz-affix>`;
+
 }
 
 function generateExample(result) {

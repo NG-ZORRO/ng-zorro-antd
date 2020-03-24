@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-import { NzContributorsListComponent } from './nz-contributors-list.component';
+import { NzContributorsListComponent } from './contributors-list.component';
 
 @NgModule({
   imports: [CommonModule, RouterModule, HttpClientModule, NzIconModule, NzAvatarModule, NzToolTipModule],
