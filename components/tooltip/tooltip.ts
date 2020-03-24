@@ -99,14 +99,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
       </div>
     </ng-template>
   `,
-  preserveWhitespaces: false,
-  styles: [
-    `
-      .ant-tooltip {
-        position: relative;
-      }
-    `
-  ]
+  preserveWhitespaces: false
 })
 export class NzToolTipComponent extends NzTooltipBaseComponent {
   @Input() nzTitle: NzTSType | null;

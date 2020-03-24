@@ -282,7 +282,8 @@ describe('anchor', () => {
       <div style="height: 1000px"></div>
       <h2 id="basic-target"></h2>
     </div>
-  `
+  `,
+  styleUrls: ['./style/patch.less']
 })
 export class TestComponent {
   @ViewChild(NzAnchorComponent, { static: false }) comp: NzAnchorComponent;

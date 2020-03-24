@@ -49,13 +49,6 @@ const NZ_AFFIX_DEFAULT_SCROLL_TIME = 20;
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: [
-    `
-      nz-affix {
-        display: block;
-      }
-    `
-  ],
   encapsulation: ViewEncapsulation.None
 })
 export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {

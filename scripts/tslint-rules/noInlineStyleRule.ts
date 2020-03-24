@@ -1,8 +1,5 @@
-import { ComponentMetadata, NgWalker } from 'codelyzer';
-import {
-  getDecoratorArgument,
-  getDecoratorPropertyInitializer
-} from 'codelyzer/util/utils';
+import { ComponentMetadata, DirectiveMetadata, NgWalker } from 'codelyzer';
+import { getDecoratorPropertyInitializer } from 'codelyzer/util/utils';
 import * as minimatch from 'minimatch';
 import * as path from 'path';
 import * as Lint from 'tslint';
@@ -27,25 +24,20 @@ class Walker extends NgWalker {
   }
 
   protected visitNgComponent(metadata: ComponentMetadata): void {
+    super.visitNgComponent(metadata);
+    return this.checkStylesOption(metadata);
+  }
+
+  private checkStylesOption(metadata: DirectiveMetadata |ComponentMetadata): void {
     if (!this._enabled || !metadata.selector) {
       return;
     }
-    const selectorExpression = getDecoratorPropertyInitializer(metadata.decorator, 'selector');
+    const selectorExpression = getDecoratorPropertyInitializer(metadata.decorator, 'styles');
     if (!selectorExpression) {
       return;
     }
-    const args = getDecoratorArgument(metadata.decorator);
-    const properties = ts.createNodeArray<ts.PropertyAssignment>(args.properties as ReadonlyArray<ts.PropertyAssignment>);
-    const selectorIndex = properties.findIndex(p => p.initializer === selectorExpression);
-    const pos = selectorExpression.parent.pos;
-    let end = selectorExpression.parent.end;
-    const nextProp = properties[selectorIndex + 1];
-    if (nextProp) {
-      end = nextProp.pos;
-    }
+
     super.visitNgComponent(metadata);
-    return this.addFailureAtNode(selectorExpression,
-      'Disallow definition selector in this file.',
-      this.deleteFromTo(pos, end));
+    return this.addFailureAtNode(selectorExpression, 'Disallow definition inline-style in component, please move to patch.less.');
   }
 }

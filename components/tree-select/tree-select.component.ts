@@ -204,20 +204,7 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
     '[class.ant-select-allow-clear]': 'nzAllowClear',
     '[class.ant-select-open]': 'nzOpen',
     '(click)': 'trigger()'
-  },
-  styles: [
-    `
-      .ant-select-dropdown {
-        top: 100%;
-        left: 0;
-        position: relative;
-        width: 100%;
-        margin-top: 4px;
-        margin-bottom: 4px;
-        overflow: auto;
-      }
-    `
-  ]
+  }
 })
 export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
   @Input() @InputBoolean() nzAllowClear: boolean = true;

@@ -94,26 +94,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'carousel';
   `,
   host: {
     '[class.ant-carousel-vertical]': 'vertical'
-  },
-  styles: [
-    `
-      nz-carousel {
-        display: block;
-        position: relative;
-        overflow: hidden;
-        width: 100%;
-        height: 100%;
-      }
-
-      .slick-dots {
-        display: block;
-      }
-
-      .slick-track {
-        opacity: 1;
-      }
-    `
-  ]
+  }
 })
 export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges {
   @ContentChildren(NzCarouselContentDirective) carouselContents: QueryList<NzCarouselContentDirective>;

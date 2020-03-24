@@ -86,18 +86,6 @@ export type MentionPlacement = 'top' | 'bottom';
   `,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: [
-    `
-      .ant-mention-dropdown {
-        top: 100%;
-        left: 0;
-        position: relative;
-        width: 100%;
-        margin-top: 4px;
-        margin-bottom: 4px;
-      }
-    `
-  ],
   providers: [NzMentionService]
 })
 export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {

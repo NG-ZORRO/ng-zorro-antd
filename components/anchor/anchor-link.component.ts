@@ -34,13 +34,6 @@ import { NzAnchorComponent } from './anchor.component';
     </a>
     <ng-content></ng-content>
   `,
-  styles: [
-    `
-      nz-link {
-        display: block;
-      }
-    `
-  ],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

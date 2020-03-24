@@ -46,14 +46,7 @@ export interface BreadcrumbOption {
         <a [attr.href]="breadcrumb.url" (click)="navigate(breadcrumb.url, $event)">{{ breadcrumb.label }}</a>
       </nz-breadcrumb-item>
     </ng-container>
-  `,
-  styles: [
-    `
-      nz-breadcrumb {
-        display: block;
-      }
-    `
-  ]
+  `
 })
 export class NzBreadCrumbComponent implements OnInit, OnDestroy {
   @Input() @InputBoolean() nzAutoGenerate = false;
