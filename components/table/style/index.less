@@ -5,7 +5,6 @@
 
 @table-prefix-cls: ~'@{ant-prefix}-table';
 @dropdown-prefix-cls: ~'@{ant-prefix}-dropdown';
-@table-wrapepr-rtl-cls: ~'@{table-prefix-cls}-wrapper-rtl';
 @table-header-icon-color: #bfbfbf;
 @table-header-icon-color-hover: darken(@table-header-icon-color, 10%);
 @table-header-sort-active-filter-bg: lighten(@table-header-sort-active-bg, 2%);
@@ -14,9 +13,6 @@
 
 .@{table-prefix-cls}-wrapper {
   .clearfix;
-  &-rtl {
-    direction: rtl;
-  }
 }
 
 .@{table-prefix-cls} {
@@ -25,6 +21,7 @@
   z-index: 0;
   clear: both;
   background: @table-bg;
+  border-radius: @border-radius-base;
 
   // https://github.com/ant-design/ant-design/issues/17611
   table {
@@ -33,10 +30,6 @@
     border-radius: @table-border-radius-base @table-border-radius-base 0 0;
     border-collapse: separate;
     border-spacing: 0;
-
-    .@{table-wrapepr-rtl-cls} & {
-      text-align: right;
-    }
   }
 
   // ============================= Cell =============================
@@ -93,14 +86,6 @@
 
         &[colspan]:not([colspan='1']) {
           text-align: center;
-
-          .@{table-wrapepr-rtl-cls} & {
-            text-align: center;
-          }
-        }
-
-        .@{table-wrapepr-rtl-cls} & {
-          text-align: right;
         }
       }
     }
@@ -143,9 +128,6 @@
         margin: -@table-padding-vertical -@table-padding-horizontal -@table-padding-vertical (@table-padding-horizontal +
               ceil(@font-size-sm * 1.4));
 
-        &.@{table-prefix-cls}-rtl {
-          margin: -@table-padding-vertical (@table-padding-horizontal + ceil(@font-size-sm * 1.4)) -@table-padding-vertical -@table-padding-horizontal;
-        }
         td {
           background: transparent;
         }
@@ -176,10 +158,6 @@
   &-pagination.@{ant-prefix}-pagination {
     float: right;
     margin: 16px 0;
-
-    .@{table-wrapepr-rtl-cls} & {
-      float: left;
-    }
   }
 
   // ================================================================
@@ -218,11 +196,6 @@
     margin-left: @padding-xs;
     color: @table-header-icon-color;
 
-    .@{table-wrapepr-rtl-cls} & {
-      margin-right: @padding-xs;
-      margin-left: 0;
-    }
-
     &-full {
       margin-top: -0.2em;
       margin-bottom: 0;
@@ -258,10 +231,6 @@
   &-filter-column-title {
     flex: auto;
     padding: @table-padding-vertical 2.3em @table-padding-vertical @table-padding-horizontal;
-
-    .@{table-wrapepr-rtl-cls} & {
-      padding: @table-padding-vertical @table-padding-horizontal @table-padding-vertical 2.3em;
-    }
   }
 
   &-filter-trigger-container {
@@ -275,11 +244,6 @@
     align-self: stretch;
     cursor: pointer;
     transition: background-color 0.3s;
-
-    .@{table-wrapepr-rtl-cls} & {
-      right: auto;
-      left: 0;
-    }
 
     &-open,
     &:hover,
@@ -332,16 +296,17 @@
     border-radius: @border-radius-base;
     box-shadow: @box-shadow-base;
 
+    &-submenu > ul {
+      max-height: calc(100vh - 130px);
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
     // Checkbox
     &,
     &-submenu {
       .@{ant-prefix}-checkbox-wrapper + span {
         padding-left: 8px;
-
-        .@{ant-prefix}-dropdown-rtl & {
-          padding-right: 8px;
-          padding-left: 0;
-        }
       }
     }
 
@@ -375,21 +340,11 @@
   &-selection {
     position: relative;
 
-    .@{table-wrapepr-rtl-cls} & {
-      text-align: center;
-    }
-
     &-extra {
       position: absolute;
       top: 50%;
       right: 0;
       transform: translate(100%, -50%);
-
-      .@{table-wrapepr-rtl-cls} & {
-        right: auto;
-        left: 0;
-        transform: translate(-100%, -50%);
-      }
 
       .@{iconfont-css-prefix} {
         .iconfont-size-under-12px(10px);
@@ -411,14 +366,21 @@
     text-align: center;
   }
 
+  &-row-indent {
+    float: left;
+    height: 1px;
+  }
+
   &-row-expand-icon {
     .operation-unit();
     position: relative;
     display: inline-flex;
+    float: left;
     box-sizing: border-box;
 
     width: ceil(@font-size-sm * 1.4);
     height: ceil(@font-size-sm * 1.4);
+    padding: 0;
     color: inherit;
     line-height: @font-size-sm;
     vertical-align: floor((@font-size-base - ceil(@font-size-sm * 1.4)) / 2);
@@ -477,12 +439,8 @@
     }
 
     .@{table-prefix-cls}-row-indent + & {
+      margin-top: (@font-size-base * @line-height-base - ceil(@font-size-sm * 1.4)) / 2;
       margin-right: @padding-xs;
-
-      .@{table-wrapepr-rtl-cls} & {
-        margin-right: 0;
-        margin-left: @padding-xs;
-      }
     }
   }
 
@@ -518,6 +476,7 @@
     background: @table-bg;
   }
 
+  &-cell-fix-left-first::after,
   &-cell-fix-left-last::after {
     position: absolute;
     top: 0;
@@ -529,7 +488,8 @@
     content: '';
     pointer-events: none;
   }
-  &-cell-fix-right-first::after {
+  &-cell-fix-right-first::after,
+  &-cell-fix-right-last::after {
     position: absolute;
     top: 0;
     bottom: -1px;
@@ -571,6 +531,7 @@
       }
     }
 
+    .@{table-prefix-cls}-cell-fix-left-first::after,
     .@{table-prefix-cls}-cell-fix-left-last::after {
       box-shadow: inset 10px 0 8px -8px darken(@shadow-color, 5%);
     }
@@ -585,14 +546,10 @@
       }
     }
 
-    .@{table-prefix-cls}-cell-fix-right-first::after {
+    .@{table-prefix-cls}-cell-fix-right-first::after,
+    .@{table-prefix-cls}-cell-fix-right-last::after {
       box-shadow: inset -10px 0 8px -8px darken(@shadow-color, 5%);
     }
-  }
-
-  // Fix for chrome overflow show the scrollbar
-  &:not(&-fixed-header) &-content {
-    overflow-y: hidden;
   }
 }
 
@@ -611,4 +568,5 @@
   }
 }
 
-@import './radius.less';
+@import './radius';
+@import './rtl';
