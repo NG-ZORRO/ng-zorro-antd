@@ -8,10 +8,6 @@
 @descriptions-small-padding: 8px 16px;
 
 .@{descriptions-prefix-cls} {
-  &-rtl {
-    direction: rtl;
-  }
-
   &-title {
     margin-bottom: 20px;
     color: @heading-color;
@@ -45,17 +41,12 @@
     font-weight: normal;
     font-size: @font-size-base;
     line-height: @line-height-base;
-    white-space: nowrap;
 
     &::after {
       position: relative;
       top: -0.5px;
       margin: 0 8px 0 2px;
       content: ' ';
-
-      .@{descriptions-prefix-cls}-rtl & {
-        margin: 0 2px 0 8px;
-      }
     }
   }
 
@@ -151,3 +142,5 @@
     }
   }
 }
+
+@import './rtl';

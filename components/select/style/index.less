@@ -7,6 +7,7 @@
 
 @select-prefix-cls: ~'@{ant-prefix}-select';
 @select-height-without-border: @input-height-base - 2 * @border-width-base;
+@select-dropdown-edge-child-vertical-padding: @dropdown-edge-child-vertical-padding;
 
 .select-selector() {
   position: relative;
@@ -59,12 +60,9 @@
     .hover();
   }
 
-  &-rtl {
-    direction: rtl;
-  }
-
   // ======================== Selection ========================
   &-selection-item {
+    flex: 1;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -72,6 +70,7 @@
 
   // ======================= Placeholder =======================
   &-selection-placeholder {
+    flex: 1;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -107,11 +106,6 @@
         transform: rotate(180deg);
       }
     }
-
-    .@{select-prefix-cls}-rtl & {
-      right: initial;
-      left: @control-padding-horizontal - 1px;
-    }
   }
 
   // ========================== Clear ==========================
@@ -145,25 +139,17 @@
     .@{select-prefix-cls}:hover & {
       opacity: 1;
     }
-
-    .@{select-prefix-cls}-rtl & {
-      right: initial;
-      left: @control-padding-horizontal - 1px;
-    }
   }
 
   // ========================== Popup ==========================
   &-dropdown {
     .reset-component;
-
-    &-rtl {
-      direction: rtl;
-    }
     position: absolute;
     top: -9999px;
     left: -9999px;
     z-index: @zindex-dropdown;
     box-sizing: border-box;
+    padding: @select-dropdown-edge-child-vertical-padding 0;
     overflow: hidden;
     font-size: @font-size-base;
     // Fix select render lag of long text in chrome
@@ -280,3 +266,5 @@
     box-shadow: none !important;
   }
 }
+
+@import './rtl';
