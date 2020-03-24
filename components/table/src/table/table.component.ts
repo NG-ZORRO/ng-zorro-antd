@@ -3,8 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Direction, Directionality } from '@angular/cdk/bidi';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -219,6 +219,7 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
     this.dir = directionality.value;
     directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
+      cdr.detectChanges();
     });
   }
 
