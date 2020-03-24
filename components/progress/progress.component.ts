@@ -4,7 +4,18 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Optional,
+  SimpleChanges,
+  ViewEncapsulation
+} from '@angular/core';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NgStyleInterface, NumberInput } from 'ng-zorro-antd/core/types';
 import { InputNumber, isNotNil } from 'ng-zorro-antd/core/util';
@@ -212,11 +223,7 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   private inferredStatus: NzProgressStatusType = 'normal';
   private destroy$ = new Subject<void>();
 
-  constructor(
-    cdr: ChangeDetectorRef,
-    public nzConfigService: NzConfigService,
-    @Optional() directionality: Directionality
-  ) {
+  constructor(cdr: ChangeDetectorRef, public nzConfigService: NzConfigService, @Optional() directionality: Directionality) {
     directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
       cdr.detectChanges();
