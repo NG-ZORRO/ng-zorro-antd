@@ -22,8 +22,8 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { InputBoolean, toArray } from 'ng-zorro-antd/core/util';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { InputBoolean, toArray } from 'ng-zorro-antd/core/util';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { Observable, of, Subject } from 'rxjs';
