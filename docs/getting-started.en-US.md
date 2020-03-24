@@ -11,7 +11,7 @@ Ant Design of Angular is dedicated to providing a **good development experience*
 
 The following StackBlitz demo is the simplest use case, and it's also a good habit to fork this demo to provide a reproducible demo while reporting a bug. Please don't use this demo as a scaffold in production.
 
-- [NG-ZORRO StackBlitz](https://stackblitz.com/edit/ng-zorro-antd-start?file=src%2Fapp%2Fapp.component.ts)
+- [NG-ZORRO StackBlitz](https://stackblitz.com/edit/ng-zorro-antd-ivy)
 
 ## First Local Development
 

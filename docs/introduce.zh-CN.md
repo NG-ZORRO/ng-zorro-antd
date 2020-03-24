@@ -3,7 +3,7 @@ order: 0
 title: Ant Design of Angular
 ---
 
-这里是 Ant Design 的 Angular 实现，开发和服务于企业级后台产品。
+`ng-zorro-antd` 是 Ant Design 的 Angular 实现，主要用于研发企业级中后台产品。
 
 <div class="pic-plus">
   <img width="150" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg">
@@ -30,8 +30,8 @@ title: Ant Design of Angular
 - 开箱即用的高质量 Angular 组件，与 Angular 保持同步升级。
 - 使用 TypeScript 构建，提供完整的类型定义文件。
 - 支持 OnPush 模式，性能卓越。
-- 支持自定义主题。
-- 支持使用单独某个组件。
+- 数十个国际化语言支持。
+- 深入每个细节的主题定制能力。
 
 ## 支持环境
 
