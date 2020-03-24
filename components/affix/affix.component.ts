@@ -199,7 +199,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
     this.renderer.setStyle(this.placeholderNode, 'cssText', '');
     this.placeholderStyle = undefined;
     const styleObj = {
-      width: this.placeholderNode.offsetWidth,
+      width: this.fixedEl.nativeElement.offsetWidth,
       height: this.fixedEl.nativeElement.offsetHeight
     };
     this.setAffixStyle(e, {

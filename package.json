@@ -98,7 +98,7 @@
     "ngx-color": "^4.0.0",
     "node-prismjs": "^0.1.2",
     "parse5": "^5.1.1",
-    "prettier": "^1.18.2",
+    "prettier": "^2.0.2",
     "prismjs": "^1.17.1",
     "process": "^0.11.10",
     "protractor": "~5.4.2",
