@@ -58,6 +58,10 @@
       true,
       "components/**/!(demo|doc|style|page|testing)/!(*.spec).ts"
     ],
+    "no-inline-style": [
+      true,
+      "components/**/!(demo|doc|style|page|testing)/!(*.spec).ts"
+    ],
     "new-parens": true,
     "no-angle-bracket-type-assertion": true,
     "member-access": false,

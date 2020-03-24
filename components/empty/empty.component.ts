@@ -31,7 +31,6 @@ type NzEmptyNotFoundImageType = typeof NzEmptyDefaultImages[number] | null | str
   encapsulation: ViewEncapsulation.None,
   selector: 'nz-empty',
   exportAs: 'nzEmpty',
-  styles: ['nz-empty { display: block; }'],
   template: `
     <div class="ant-empty-image">
       <ng-container *ngIf="!isImageBuildIn">

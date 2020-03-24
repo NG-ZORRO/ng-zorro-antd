@@ -43,18 +43,7 @@ import { NzCommentActionComponent as CommentAction } from './comment-cells';
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     class: 'ant-comment'
-  },
-  styles: [
-    `
-      nz-comment {
-        display: block;
-      }
-
-      nz-comment-content {
-        display: block;
-      }
-    `
-  ]
+  }
 })
 export class NzCommentComponent {
   @Input() nzAuthor: string | TemplateRef<void>;

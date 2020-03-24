@@ -161,14 +161,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective implements OnI
         </div>
       </div>
     </ng-template>
-  `,
-  styles: [
-    `
-      .ant-popover {
-        position: relative;
-      }
-    `
-  ]
+  `
 })
 export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestroy {
   nzCancelText: string;

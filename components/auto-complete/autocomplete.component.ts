@@ -75,14 +75,7 @@ export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | n
       </ng-template>
     </ng-template>
   `,
-  animations: [slideMotion],
-  styles: [
-    `
-      .ant-select-dropdown-hidden {
-        display: none;
-      }
-    `
-  ]
+  animations: [slideMotion]
 })
 export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit, OnDestroy {
   @Input() nzWidth: number;

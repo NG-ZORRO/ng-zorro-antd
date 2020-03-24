@@ -37,18 +37,7 @@ import { NzBreadCrumbComponent } from './breadcrumb.component';
         {{ nzBreadCrumbComponent.nzSeparator }}
       </ng-container>
     </span>
-  `,
-  styles: [
-    `
-      nz-breadcrumb-item:last-child {
-        color: rgba(0, 0, 0, 0.65);
-      }
-
-      nz-breadcrumb-item:last-child .ant-breadcrumb-separator {
-        display: none;
-      }
-    `
-  ]
+  `
 })
 export class NzBreadCrumbItemComponent {
   /**

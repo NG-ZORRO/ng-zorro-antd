@@ -129,14 +129,7 @@ const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
     '[class.ant-descriptions-bordered]': 'nzBordered',
     '[class.ant-descriptions-middle]': 'nzSize === "middle"',
     '[class.ant-descriptions-small]': 'nzSize === "small"'
-  },
-  styles: [
-    `
-      nz-descriptions {
-        display: block;
-      }
-    `
-  ]
+  }
 })
 export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterContentInit {
   @ContentChildren(NzDescriptionsItemComponent) items: QueryList<NzDescriptionsItemComponent>;

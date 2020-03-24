@@ -66,24 +66,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'pageHeader';
     '[class.has-footer]': 'nzPageHeaderFooter',
     '[class.ant-page-header-ghost]': 'nzGhost',
     '[class.has-breadcrumb]': 'nzPageHeaderBreadcrumb'
-  },
-  styles: [
-    `
-      .ant-page-header-back-button {
-        border: 0px;
-        background: transparent;
-        padding: 0px;
-        line-height: inherit;
-        display: inline-block;
-      }
-
-      nz-page-header,
-      nz-page-header-content,
-      nz-page-header-footer {
-        display: block;
-      }
-    `
-  ]
+  }
 })
 export class NzPageHeaderComponent implements OnChanges {
   isTemplateRefBackIcon = false;
