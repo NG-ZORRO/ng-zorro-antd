@@ -9,6 +9,7 @@
 import { OverlayRef } from '@angular/cdk/overlay';
 import { EventEmitter, TemplateRef, Type, ViewContainerRef } from '@angular/core';
 import { NzButtonShape, NzButtonSize, NzButtonType } from 'ng-zorro-antd/button';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 export type OnClickCallback<T> = (instance: T) => (false | void | {}) | Promise<false | void | {}>;
 
@@ -22,8 +23,7 @@ export interface StyleObjectLike {
 
 const noopFun = () => void 0;
 
-// tslint:disable-next-line:no-any
-export class ModalOptions<T = any, R = any> {
+export class ModalOptions<T = NzSafeAny, R = NzSafeAny> {
   nzClosable?: boolean = true;
   nzOkLoading?: boolean = false;
   nzOkDisabled?: boolean = false;
@@ -70,8 +70,7 @@ export class ModalOptions<T = any, R = any> {
   nzIconType?: string = 'question-circle';
 }
 
-// tslint:disable-next-line:no-any
-export interface ModalButtonOptions<T = any> {
+export interface ModalButtonOptions<T = NzSafeAny> {
   label: string;
   type?: NzButtonType;
   shape?: NzButtonShape;
@@ -83,8 +82,6 @@ export interface ModalButtonOptions<T = any> {
   show?: boolean | ((this: ModalButtonOptions<T>, contentComponentInstance?: T) => boolean);
   loading?: boolean | ((this: ModalButtonOptions<T>, contentComponentInstance?: T) => boolean); // This prop CAN'T use with autoLoading=true
   disabled?: boolean | ((this: ModalButtonOptions<T>, contentComponentInstance?: T) => boolean);
-  // tslint:disable-next-line:no-any
-  onClick?(this: ModalButtonOptions<T>, contentComponentInstance?: T): any | Promise<any>;
-  // tslint:disable-next-line:no-any
-  [key: string]: any;
+  onClick?(this: ModalButtonOptions<T>, contentComponentInstance?: T): NzSafeAny | Promise<NzSafeAny>;
+  [key: string]: NzSafeAny;
 }

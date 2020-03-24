@@ -22,6 +22,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { nzModalAnimations } from './modal-animations';
 import { BaseModalContainer } from './modal-container';
@@ -84,8 +85,7 @@ export class NzModalContainerComponent extends BaseModalContainer {
     zone: NgZone,
     overlayRef: OverlayRef,
     public config: ModalOptions,
-    // tslint:disable-next-line:no-any
-    @Optional() @Inject(DOCUMENT) document: any,
+    @Optional() @Inject(DOCUMENT) document: NzSafeAny,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) animationType: string
   ) {
     super(elementRef, focusTrapFactory, cdr, render, zone, overlayRef, config, document, animationType);

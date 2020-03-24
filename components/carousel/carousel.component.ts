@@ -32,6 +32,7 @@ import {
 } from '@angular/core';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzDragService, NzResizeService } from 'ng-zorro-antd/core/services';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -285,8 +286,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     // Load custom strategies first.
     const customStrategy = this.customStrategies ? this.customStrategies.find(s => s.name === this.nzEffect) : null;
     if (customStrategy) {
-      // tslint:disable-next-line:no-any
-      this.strategy = new (customStrategy.strategy as any)(this, this.cdr, this.renderer);
+      this.strategy = new (customStrategy.strategy as NzSafeAny)(this, this.cdr, this.renderer);
       return;
     }
 

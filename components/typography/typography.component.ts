@@ -32,6 +32,7 @@ import {
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { cancelRequestAnimationFrame, reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzResizeService } from 'ng-zorro-antd/core/services';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber, isStyleSupport, measure } from 'ng-zorro-antd/core/util';
 
 import { Subject, Subscription } from 'rxjs';
@@ -114,8 +115,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   @ViewChild('expandable', { static: false }) expandableBtn: ElementRef<HTMLSpanElement>;
   @ViewChild('contentTemplate', { static: false }) contentTemplate: TemplateRef<{ content: string }>;
 
-  // tslint:disable-next-line:no-any
-  locale: any = {};
+  locale: NzSafeAny = {};
   document: Document;
   expandableBtnElementCache: HTMLElement | null = null;
   editing = false;
@@ -145,7 +145,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
     private renderer: Renderer2,
     private platform: Platform,
     private i18n: NzI18nService,
-    @Inject(DOCUMENT) document: any, // tslint:disable-line no-any
+    @Inject(DOCUMENT) document: NzSafeAny,
     private resizeService: NzResizeService
   ) {
     this.document = document;

@@ -34,7 +34,7 @@ import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { DEFAULT_CASCADER_POSITIONS } from 'ng-zorro-antd/core/overlay';
-import { NgClassType, NgStyleInterface } from 'ng-zorro-antd/core/types';
+import { NgClassType, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toArray } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
@@ -217,7 +217,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   @Input() nzMouseLeaveDelay: number = 150; // ms
   @Input() nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[] = ['click'] as NzCascaderTriggerType[];
   @Input() nzChangeOn: (option: NzCascaderOption, level: number) => boolean;
-  @Input() nzLoadData: (node: NzCascaderOption, index?: number) => PromiseLike<any>; // tslint:disable-line:no-any
+  @Input() nzLoadData: (node: NzCascaderOption, index?: number) => PromiseLike<NzSafeAny>;
 
   @Input()
   get nzOptions(): NzCascaderOption[] | null {
@@ -387,8 +387,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     this.onTouched = fn;
   }
 
-  // tslint:disable-next-line:no-any
-  writeValue(value: any): void {
+  writeValue(value: NzSafeAny): void {
     this.cascaderService.values = toArray(value);
     this.cascaderService.syncOptions(true);
   }
@@ -447,8 +446,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     this.cascaderService.clear();
   }
 
-  // tslint:disable-next-line:no-any
-  getSubmitValue(): any[] {
+  getSubmitValue(): NzSafeAny[] {
     return this.cascaderService.selectedOptions.map(o => this.cascaderService.getOptionValue(o));
   }
 

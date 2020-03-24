@@ -22,6 +22,7 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
@@ -70,7 +71,7 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
 
   content?: NzEmptyCustomContent;
   contentType: NzEmptyContentType = 'string';
-  contentPortal?: Portal<any>; // tslint:disable-line:no-any
+  contentPortal?: Portal<NzSafeAny>;
   size: NzEmptySize = '';
 
   private destroy$ = new Subject<void>();
@@ -108,7 +109,7 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
     if (typeof content === 'string') {
       this.contentType = 'string';
     } else if (content instanceof TemplateRef) {
-      const context = { $implicit: this.nzComponentName } as any; // tslint:disable-line:no-any
+      const context = { $implicit: this.nzComponentName } as NzSafeAny;
       this.contentType = 'template';
       this.contentPortal = new TemplatePortal(content, this.viewContainerRef, context);
     } else if (content instanceof Type) {
@@ -134,8 +135,7 @@ export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
       });
   }
 
-  // tslint:disable-next-line:no-any
-  private getUserDefaultEmptyContent(): Type<any> | TemplateRef<string> | string | undefined {
+  private getUserDefaultEmptyContent(): Type<NzSafeAny> | TemplateRef<string> | string | undefined {
     return (this.configService.getConfigForComponent('empty') || {}).nzDefaultEmptyContent;
   }
 }

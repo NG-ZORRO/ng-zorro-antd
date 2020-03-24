@@ -8,26 +8,24 @@
 
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable, Optional } from '@angular/core';
+import { NzSafeAny } from 'ng-zorro-antd';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { PREFIX, warn, warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { BehaviorSubject, Observable, of as observableOf, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { JoinedEditorOptions, NZ_CODE_EDITOR_CONFIG, NzCodeEditorConfig, NzCodeEditorLoadingStatus } from './typings';
 
-// tslint:disable-next-line no-any
-declare const monaco: any;
+declare const monaco: NzSafeAny;
 
 const NZ_CONFIG_COMPONENT_NAME = 'codeEditor';
 
-// tslint:disable no-any
-function tryTriggerFunc(fn?: (...args: any[]) => any): (...args: any) => void {
-  return (...args: any[]) => {
+function tryTriggerFunc(fn?: (...args: NzSafeAny[]) => NzSafeAny): (...args: NzSafeAny) => void {
+  return (...args: NzSafeAny[]) => {
     if (fn) {
       fn(...args);
     }
   };
 }
-// tslint:enable no-any
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +42,7 @@ export class NzCodeEditorService {
 
   constructor(
     private readonly nzConfigService: NzConfigService,
-    @Inject(DOCUMENT) _document: any, // tslint:disable-line no-any
+    @Inject(DOCUMENT) _document: NzSafeAny,
     @Inject(NZ_CODE_EDITOR_CONFIG) @Optional() config?: NzCodeEditorConfig
   ) {
     const globalConfig = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME);
@@ -122,7 +120,7 @@ export class NzCodeEditorService {
 
     const assetsRoot = this.config.assetsRoot;
     const vs = assetsRoot ? `${assetsRoot}/vs` : 'assets/vs';
-    const windowAsAny = window as any; // tslint:disable-line no-any
+    const windowAsAny = window as NzSafeAny;
     const loadScript = this.document.createElement('script');
 
     loadScript.type = 'text/javascript';

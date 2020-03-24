@@ -21,6 +21,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { inNextTick, InputBoolean } from 'ng-zorro-antd/core/util';
 import { BehaviorSubject, combineLatest, fromEvent, Subject } from 'rxjs';
@@ -35,8 +36,7 @@ import IEditor = editor.IEditor;
 import IDiffEditor = editor.IDiffEditor;
 import ITextModel = editor.ITextModel;
 
-// tslint:disable-next-line no-any
-declare const monaco: any;
+declare const monaco: NzSafeAny;
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -111,19 +111,17 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
     this.setValue();
   }
 
-  // tslint:disable-next-line no-any
-  registerOnChange(fn: (value: string) => void): any {
+  registerOnChange(fn: OnChangeType): NzSafeAny {
     this.onChange = fn;
   }
 
-  // tslint:disable-next-line no-any
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: OnTouchedType): void {
     this.onTouch = fn;
   }
 
-  onChange(_value: string): void {}
+  onChange: OnChangeType;
 
-  onTouch(): void {}
+  onTouch: OnTouchedType;
 
   layout(): void {
     this.resize$.next();

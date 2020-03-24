@@ -18,11 +18,7 @@ export function applyConfigDefaults(config: ModalOptions, defaultOptions: ModalO
  * @deprecated Should use dependency injection to get the params for user
  * @breaking-change 10.0.0
  */
-export function setContentInstanceParams<T>(
-  instance: T,
-  // tslint:disable-next-line:no-any
-  params: Partial<T> | undefined
-): void {
+export function setContentInstanceParams<T>(instance: T, params: Partial<T> | undefined): void {
   Object.assign(instance, params);
 }
 

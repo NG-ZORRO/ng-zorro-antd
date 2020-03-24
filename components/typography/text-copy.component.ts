@@ -19,6 +19,7 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
@@ -46,8 +47,7 @@ import { takeUntil } from 'rxjs/operators';
 export class NzTextCopyComponent implements OnInit, OnDestroy {
   copied = false;
   copyId: number;
-  // tslint:disable-next-line:no-any
-  locale: any = {};
+  locale: NzSafeAny = {};
   nativeElement = this.host.nativeElement;
   private destroy$ = new Subject();
 

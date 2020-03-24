@@ -21,6 +21,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { warn } from 'ng-zorro-antd/core/logger';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable, of, Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
@@ -102,8 +103,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private traverseFileTree(files: DataTransferItemList): void {
-    // tslint:disable-next-line:no-any
-    const _traverseFileTree = (item: any, path: string) => {
+    const _traverseFileTree = (item: NzSafeAny, path: string) => {
       if (item.isFile) {
         item.file((file: File) => {
           if (this.attrAccept(file, this.options.accept)) {
@@ -113,16 +113,15 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
       } else if (item.isDirectory) {
         const dirReader = item.createReader();
 
-        // tslint:disable-next-line:no-any
-        dirReader.readEntries((entries: any) => {
+        dirReader.readEntries((entries: NzSafeAny) => {
           for (const entrieItem of entries) {
             _traverseFileTree(entrieItem, `${path}${item.name}/`);
           }
         });
       }
     };
-    // tslint:disable-next-line:no-any
-    for (const file of files as any) {
+
+    for (const file of files as NzSafeAny) {
       _traverseFileTree(file.webkitGetAsEntry(), '');
     }
   }
@@ -310,8 +309,8 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
         formData.append(key, args.data![key]);
       });
     }
-    // tslint:disable-next-line:no-any
-    formData.append(args.name!, args.postFile as any);
+
+    formData.append(args.name!, args.postFile as NzSafeAny);
 
     if (!args.headers) {
       args.headers = {};
@@ -327,12 +326,10 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
       headers: new HttpHeaders(args.headers)
     });
     return this.http.request(req).subscribe(
-      // tslint:disable-next-line no-any
-      (event: HttpEvent<any>) => {
+      (event: HttpEvent<NzSafeAny>) => {
         if (event.type === HttpEventType.UploadProgress) {
           if (event.total! > 0) {
-            // tslint:disable-next-line:no-any
-            (event as any).percent = (event.loaded / event.total!) * 100;
+            (event as NzSafeAny).percent = (event.loaded / event.total!) * 100;
           }
           args.onProgress!(event, args.file);
         } else if (event instanceof HttpResponse) {

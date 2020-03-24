@@ -8,6 +8,7 @@
 import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { EventEmitter } from '@angular/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isPromise } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
@@ -27,8 +28,7 @@ export const enum NzTriggerAction {
   OK = 'ok'
 }
 
-// tslint:disable-next-line:no-any
-export class NzModalRef<T = any, R = any> implements NzModalLegacyAPI<T, R> {
+export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAPI<T, R> {
   componentInstance: T | null;
   result?: R;
   state: NzModalState = NzModalState.OPEN;
@@ -191,8 +191,7 @@ export class NzModalRef<T = any, R = any> implements NzModalLegacyAPI<T, R> {
     }
   }
 
-  // tslint:disable-next-line:no-any
-  private closeWhitResult(result: any): void {
+  private closeWhitResult(result: NzSafeAny): void {
     if (result !== false) {
       this.close(result);
     }

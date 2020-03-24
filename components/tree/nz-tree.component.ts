@@ -39,6 +39,7 @@ import {
   NzTreeNodeKey,
   NzTreeNodeOptions
 } from 'ng-zorro-antd/core/tree';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Observable, Subject } from 'rxjs';
 import { NzTreeService } from './nz-tree.service';
@@ -286,8 +287,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
    * nzData
    * @param value
    */
-  // tslint:disable-next-line:no-any
-  handleNzData(value: any[]): void {
+  handleNzData(value: NzSafeAny[]): void {
     if (Array.isArray(value)) {
       const data = this.coerceTreeNodes(value);
       this.nzTreeService.initTree(data);
