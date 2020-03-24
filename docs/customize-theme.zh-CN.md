@@ -183,3 +183,65 @@ module.exports = {
 };
 
 ```
+
+## 主题切换
+
+当使用 AngularCLI 的方式配置主题时必须为每个主题单独打包，当你想切换主题而不重新加载应用时（就像这个网站），你可以使用下面的方法将主题编译到单独的样式文件，并在运行时切换：
+
+注意：确保与主题变量相关的样式存在全局样式中，而不是组件样式中，因为组件样式优先级更高将会导致样式无法被覆盖。
+
+1. 安装依赖
+
+```bash
+npm i less -D less-plugin-clean-css -D
+```
+
+2. 编写脚本
+
+以黑暗主题为例，使用 `less` 编译应用的样式入口文件，并且在 `modifyVars` 参数中替换样式变量，并输出到目标位置。
+
+```js
+const less = require('less');
+const LessPluginCleanCSS = require('less-plugin-clean-css');
+const fs = require('fs');
+const darkThemeVars = require('ng-zorro-antd/dark-theme');
+
+const appStyles = 'path/src/styles.less' // 应用的样式入口文件
+const themeContent = `@import '${appStyles}'`
+
+less.render(themeContent, {
+  javascriptEnabled: true,
+  plugins: [new LessPluginCleanCSS({ advanced: true })],
+  modifyVars: {
+    ...darkThemeVars
+  }
+}).then(data => {
+  fs.writeFileSync(
+    // 主题样式的输出文件
+    'path/assets/themes/style.dark.css',
+    data.css
+  )
+});
+```
+
+3. 运行时切换样式
+
+动态创建 `link` 标签，将样式文件动态加载在应用中，反之移除。
+
+```ts
+changeTheme(theme: 'default' | 'dark'): void {
+  if (theme === 'dark') {
+    const style = document.createElement('link');
+    style.type = 'text/css';
+    style.rel = 'stylesheet';
+    style.id = 'dark-theme';
+    style.href = 'assets/themes/style.dark.css';
+  } else {
+    const dom = document.getElementById('dark-theme');
+    if (dom) {
+      dom.remove();
+    }
+  }
+}
+```
+

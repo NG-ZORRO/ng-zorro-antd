@@ -23,8 +23,8 @@ import { stackBlitzConfiguration } from './stack-blitz';
   selector       : 'nz-code-box',
   encapsulation  : ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl    : './nz-codebox.component.html',
-  styleUrls      : [ './nz-codebox.component.less' ]
+  templateUrl    : './codebox.component.html',
+  styleUrls      : [ './codebox.component.less' ]
 })
 export class NzCodeBoxComponent implements OnInit, OnDestroy {
   highlightCode: string;

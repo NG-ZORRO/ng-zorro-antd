@@ -26,9 +26,9 @@ import { DEMOComponent } from './_demo/demo.component';
 import { AppComponent } from './app.component';
 import { routes } from './app.routing.module';
 
-import { NzContributorsListModule } from './share/contributors-list/nz-contributors-list.module';
+import { NzContributorsListModule } from './share/contributors-list/contributors-list.module';
 import { FixedWidgetsModule } from './share/fixed-widgets/fixed-widgets.module';
-import { NzNavBottomModule } from "./share/nz-nav-bottom/nz-nav-bottom.module";
+import { NzNavBottomModule } from "./share/nav-bottom/nav-bottom.module";
 
 import { FooterModule } from './footer/footer.module';
 import { HeaderModule } from './header/header.module';
