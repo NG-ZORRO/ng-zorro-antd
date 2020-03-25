@@ -29,6 +29,7 @@
     "@angular/cdk": "^9.0.0",
     "@ant-design/icons-angular": "^9.0.0",
     "date-fns": "^2.10.0",
+    "ngx-quicklink": "^0.2.1",
     "resize-observer-polyfill": "^1.5.1"
   },
   "devDependencies": {
@@ -115,6 +116,7 @@
     "tslint": "~5.18.0",
     "typescript": "~3.7.4",
     "yaml-front-matter": "^4.0.0",
+    "intersection-observer": "^0.7.0",
     "zone.js": "~0.10.2"
   },
   "lint-staged": {

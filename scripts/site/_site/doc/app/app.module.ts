@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { PreloadAllModules, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { IconDefinition } from '@ant-design/icons-angular';
 import { LeftOutline, RightOutline } from '@ant-design/icons-angular/icons';
@@ -26,12 +26,12 @@ import { DEMOComponent } from './_demo/demo.component';
 import { AppComponent } from './app.component';
 import { routes } from './app.routing.module';
 
+import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
+import { FooterModule } from './footer/footer.module';
+import { HeaderModule } from './header/header.module';
 import { NzContributorsListModule } from './share/contributors-list/contributors-list.module';
 import { FixedWidgetsModule } from './share/fixed-widgets/fixed-widgets.module';
 import { NzNavBottomModule } from "./share/nav-bottom/nav-bottom.module";
-
-import { FooterModule } from './footer/footer.module';
-import { HeaderModule } from './header/header.module';
 
 const icons: IconDefinition[] = [LeftOutline, RightOutline];
 
@@ -61,7 +61,8 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline];
     FooterModule,
     NzContributorsListModule,
     FixedWidgetsModule,
-    RouterModule.forRoot(routes, environment.production ? { preloadingStrategy: PreloadAllModules, scrollPositionRestoration: 'enabled'  } : {}),
+    QuicklinkModule,
+    RouterModule.forRoot(routes, environment.production ? { preloadingStrategy: QuicklinkStrategy, scrollPositionRestoration: 'enabled'  } : {}),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production && !environment.preProduction })
   ],
   providers: [
