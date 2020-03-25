@@ -11,7 +11,7 @@ NG-ZORRO 致力于提供给程序员**愉悦**的开发体验。
 
 最简单的使用方式参照以下 StackBlitz 演示，也推荐 Fork 本例来进行 `Bug Report`，注意不要在实际项目中这样使用。
 
-- [NG-ZORRO StackBlitz](https://stackblitz.com/edit/ng-zorro-antd-start?file=src%2Fapp%2Fapp.component.ts)
+- [NG-ZORRO StackBlitz](https://stackblitz.com/edit/ng-zorro-antd-ivy)
 
 ## 第一个本地实例
 

@@ -14,6 +14,19 @@ timeline: true
 
 ---
 
+## 9.0.0-beta.3
+`2020-03-24`
+
+### Bug Fixes
+
+* **empty:** fix empty image style in dark mode ([#4924](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4924)) ([bae59d7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/bae59d7)), closes [#4921](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4921)
+* **table:** fix nzTotal in frontend pagination false ([#4922](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4922)) ([9ddc060](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9ddc060)), closes [#4919](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4919)
+
+
+### Features
+
+* **pagination:** add auto resize ([#4863](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4863)) ([1bb01b5](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1bb01b5))
+
 ## 9.0.0-beta.2
 `2020-03-20`
 
@@ -154,8 +167,6 @@ providers: [
 
 Note: All break changes are warned in the latest version of 8.x, if you have fixed all warnings in 8.x, there will no break changes for you. Official `ng update` tools will be provided in version `9.0.0`.
 * **form:**
-  - `nz-form-extra` is removed. Please use `nzExtra` is `nz-form-control` instead.
-  - `nz-form-explain` is removed. Please use `nzSuccessTip | nzWarningTip | nzErrorTip | nzValidatingTip` is `nz-form-control` instead.
   - `nz-form-extra` is removed. Please use `nzExtra` is `nz-form-control` instead.
   - `nz-form-explain` is removed. Please use `nzSuccessTip | nzWarningTip | nzErrorTip | nzValidatingTip` is `nz-form-control` instead.
 * **input-number:**
