@@ -14,6 +14,21 @@ timeline: true
 
 ---
 
+## 9.0.0-beta.3
+`2020-03-24`
+
+### Bug Fixes
+
+* **empty:** 修复 Empty 在 dark 模式下的显示问题 ([#4924](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4924)) ([bae59d7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/bae59d7)), closes [#4921](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4921)
+* **table:** 修复 nzTotal 在非前端分页时的问题 ([#4922](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4922)) ([9ddc060](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9ddc060)), closes [#4919](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4919)
+
+
+### Features
+
+* **pagination:** 支持响应式 size ([#4863](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4863)) ([1bb01b5](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1bb01b5))
+
+
+
 ## 9.0.0-beta.2
 `2020-03-20`
 
@@ -138,8 +153,6 @@ providers: [
 注意： 所有不兼容改动均在 8.x 最新版本中给出了 warning，如果你在 8.x 最新版本中修复了所有 warning，9.x 可以直接升级的，`ng update` 工具在 9.0 正式版会提供。
 
 * **form:**
-  - `nz-form-extra` 被移除，请使用 `nzExtra` 中的 `nz-form-control` 代替。
-  - `nz-form-explain` 被移除，请使用 `nzSuccessTip | nzWarningTip | nzErrorTip | nzValidatingTip` 中的 `nz-form-control` 代替。
   - `nz-form-extra` 被移除，请使用 `nzExtra` 中的 `nz-form-control` 代替。
   - `nz-form-explain` 被移除，请使用 `nzSuccessTip | nzWarningTip | nzErrorTip | nzValidatingTip` 中的 `nz-form-control` 代替。
 * **input-number:**
