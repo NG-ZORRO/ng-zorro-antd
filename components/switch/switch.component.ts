@@ -14,15 +14,19 @@ import {
   forwardRef,
   Input,
   OnDestroy,
+  Optional,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NzSizeDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'switch';
 
@@ -50,6 +54,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'switch';
       [class.ant-switch-loading]="nzLoading"
       [class.ant-switch-disabled]="nzDisabled"
       [class.ant-switch-small]="nzSize === 'small'"
+      [class.ant-switch-rtl]="dir === 'rtl'"
       [nzWaveExtraNode]="true"
       (keydown)="onKeyDown($event)"
     >
@@ -89,6 +94,10 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
   @Input() nzUnCheckedChildren: string | TemplateRef<void> | null = null;
   @Input() @WithConfig() nzSize: NzSizeDSType = 'default';
 
+  dir: Direction;
+
+  private destroy$ = new Subject<void>();
+
   onHostClick(e: MouseEvent): void {
     e.preventDefault();
     if (!this.nzDisabled && !this.nzLoading && !this.nzControl) {
@@ -126,7 +135,19 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
     this.switchElement?.nativeElement.blur();
   }
 
-  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {}
+  constructor(
+    public nzConfigService: NzConfigService,
+    private cdr: ChangeDetectorRef,
+    private focusMonitor: FocusMonitor,
+    @Optional() directionality: Directionality
+  ) {
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      cdr.detectChanges();
+    });
+
+    this.dir = directionality.value;
+  }
 
   ngAfterViewInit(): void {
     this.focusMonitor.monitor(this.switchElement!.nativeElement, true).subscribe(focusOrigin => {
@@ -139,6 +160,8 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
 
   ngOnDestroy(): void {
     this.focusMonitor.stopMonitoring(this.switchElement!.nativeElement);
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   writeValue(value: boolean): void {
