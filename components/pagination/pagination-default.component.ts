@@ -3,13 +3,17 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
+  Optional,
   Output,
   Renderer2,
   SimpleChanges,
@@ -19,6 +23,8 @@ import {
 } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { NzPaginationItemComponent } from './pagination-item.component';
 import { PaginationItemRenderContext } from './pagination.types';
 
@@ -43,6 +49,7 @@ import { PaginationItemRenderContext } from './pagination.types';
         [active]="pageIndex === page.index"
         (gotoIndex)="jumpPage($event)"
         (diffIndex)="jumpDiff($event)"
+        [direction]="dir"
       ></li>
       <div
         nz-pagination-options
@@ -62,7 +69,7 @@ import { PaginationItemRenderContext } from './pagination.types';
     </ng-template>
   `
 })
-export class NzPaginationDefaultComponent implements OnChanges {
+export class NzPaginationDefaultComponent implements OnChanges, OnDestroy {
   @ViewChild('containerTemplate', { static: true }) template!: TemplateRef<NzSafeAny>;
   @Input() nzSize: 'default' | 'small' = 'default';
   @Input() itemRender: TemplateRef<PaginationItemRenderContext> | null = null;
@@ -80,8 +87,37 @@ export class NzPaginationDefaultComponent implements OnChanges {
   ranges = [0, 0];
   listOfPageItem: Array<Partial<NzPaginationItemComponent>> = [];
 
-  constructor(renderer: Renderer2, elementRef: ElementRef) {
+  dir: Direction;
+  private destroy$ = new Subject<void>();
+
+  constructor(
+    cdr: ChangeDetectorRef,
+    private renderer: Renderer2,
+    private elementRef: ElementRef,
+    @Optional() directionality: Directionality
+  ) {
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      this.updateRtlStyle();
+      cdr.detectChanges();
+    });
+    this.dir = directionality.value;
+    this.updateRtlStyle();
+
     renderer.removeChild(renderer.parentNode(elementRef.nativeElement), elementRef.nativeElement);
+  }
+
+  private updateRtlStyle(): void {
+    if (this.dir === 'rtl') {
+      this.renderer.addClass(this.elementRef.nativeElement, 'ant-pagination-rtl');
+    } else {
+      this.renderer.removeClass(this.elementRef.nativeElement, 'ant-pagination-rtl');
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   jumpPage(index: number): void {
