@@ -4,6 +4,7 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
@@ -156,7 +157,8 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
     '[class.ant-select-open]': 'nzOpen',
     '[class.ant-select-focused]': 'nzOpen || focused',
     '[class.ant-select-single]': `nzMode === 'default'`,
-    '[class.ant-select-multiple]': `nzMode !== 'default'`
+    '[class.ant-select-multiple]': `nzMode !== 'default'`,
+    '[class.ant-select-rtl]': `dir === 'rtl'`
   }
 })
 export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy, AfterContentInit, OnChanges {
@@ -243,6 +245,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   activatedValue: NzSafeAny | null = null;
   listOfValue: NzSafeAny[] = [];
   focused = false;
+  dir: Direction;
 
   generateTagItem(value: string): NzSelectItemInterface {
     return {
@@ -476,8 +479,16 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     private elementRef: ElementRef,
     private platform: Platform,
     private focusMonitor: FocusMonitor,
+    @Optional() directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
-  ) {}
+  ) {
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      cdr.detectChanges();
+    });
+
+    this.dir = directionality.value;
+  }
 
   writeValue(modelValue: NzSafeAny | NzSafeAny[]): void {
     /** https://github.com/angular/angular/issues/14988 **/
