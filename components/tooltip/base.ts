@@ -399,6 +399,11 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
       this.nzVisibleChange.next(true);
       this.cdr.detectChanges();
     }
+
+    // for ltr for overlay to display tooltip in correct placement in rtl direction.
+    if (this.origin && this.overlay && this.overlay.overlayRef && this.overlay.overlayRef.getDirection() === 'rtl') {
+      this.overlay.overlayRef.setDirection('ltr');
+    }
   }
 
   hide(): void {
