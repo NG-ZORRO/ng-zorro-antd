@@ -4,7 +4,17 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output, TemplateRef, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzMenuModeType } from './menu.types';
@@ -20,8 +30,9 @@ import { NzMenuModeType } from './menu.types';
       <span>{{ nzTitle }}</span>
     </ng-container>
     <ng-content></ng-content>
-    <span *ngIf="isMenuInsideDropDown; else notDropdownTpl" class="ant-dropdown-menu-submenu-arrow">
-      <i nz-icon nzType="right" class="ant-dropdown-menu-submenu-arrow-icon"></i>
+    <span [ngSwitch]="dir" *ngIf="isMenuInsideDropDown; else notDropdownTpl" class="ant-dropdown-menu-submenu-arrow">
+      <i *ngSwitchCase="'rtl'" nz-icon nzType="left" class="ant-dropdown-menu-submenu-arrow-icon"></i>
+      <i *ngSwitchDefault nz-icon nzType="right" class="ant-dropdown-menu-submenu-arrow-icon"></i>
     </span>
     <ng-template #notDropdownTpl>
       <i class="ant-menu-submenu-arrow"></i>
@@ -50,10 +61,11 @@ export class NzSubMenuTitleComponent implements OnDestroy {
   dir: Direction;
   private destroy$ = new Subject<void>();
 
-  constructor(directionality: Directionality) {
+  constructor(cdr: ChangeDetectorRef, directionality: Directionality) {
     this.dir = directionality.value;
     directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
+      cdr.detectChanges();
     });
   }
 
