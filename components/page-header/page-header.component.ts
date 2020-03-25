@@ -19,6 +19,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { Location } from '@angular/common';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { PREFIX } from 'ng-zorro-antd/core/logger';
@@ -41,7 +42,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pageHeader';
         <div *ngIf="nzBackIcon !== null" (click)="onBack()" class="ant-page-header-back">
           <div role="button" tabindex="0" class="ant-page-header-back-button">
             <ng-container *nzStringTemplateOutlet="nzBackIcon; let backIcon">
-              <i nz-icon [nzType]="backIcon || 'arrow-left'" nzTheme="outline"></i>
+              <i nz-icon [nzType]="getBackIcon()" nzTheme="outline"></i>
             </ng-container>
           </div>
         </div>
@@ -73,7 +74,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pageHeader';
     '[class.has-footer]': 'nzPageHeaderFooter',
     '[class.ant-page-header-ghost]': 'nzGhost',
     '[class.has-breadcrumb]': 'nzPageHeaderBreadcrumb',
-    '[class.ant-page-header-compact]': 'compact'
+    '[class.ant-page-header-compact]': 'compact',
+    '[class.ant-page-header-rtl]': `dir === 'rtl'`
   }
 })
 export class NzPageHeaderComponent implements AfterViewInit, OnDestroy {
@@ -90,14 +92,23 @@ export class NzPageHeaderComponent implements AfterViewInit, OnDestroy {
 
   compact = false;
   destroy$ = new Subject<void>();
+  dir: Direction;
 
   constructor(
     @Optional() private location: Location,
     public nzConfigService: NzConfigService,
     private elementRef: ElementRef,
     private nzResizeObserver: NzResizeObserver,
-    private cdr: ChangeDetectorRef
-  ) {}
+    private cdr: ChangeDetectorRef,
+    @Optional() directionality: Directionality
+  ) {
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      cdr.detectChanges();
+    });
+
+    this.dir = directionality.value;
+  }
 
   ngAfterViewInit(): void {
     this.nzResizeObserver
@@ -126,5 +137,15 @@ export class NzPageHeaderComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  getBackIcon(): string | TemplateRef<void> {
+    if (this.nzBackIcon) {
+      return this.nzBackIcon;
+    }
+    if (this.dir === 'rtl') {
+      return 'arrow-right';
+    }
+    return 'arrow-left';
   }
 }
