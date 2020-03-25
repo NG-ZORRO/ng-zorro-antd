@@ -86,6 +86,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
     >
       <div
         class="ant-popover"
+        [class.ant-popover-rtl]="dir === 'rtl'"
         [ngClass]="_classMap"
         [ngStyle]="nzOverlayStyle"
         [@.disabled]="noAnimation?.nzNoAnimation"

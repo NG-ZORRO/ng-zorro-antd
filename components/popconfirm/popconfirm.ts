@@ -140,6 +140,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
       <div
         class="ant-popover"
         [ngClass]="_classMap"
+        [class.ant-popover-rtl]="dir === 'rtl'"
         [ngStyle]="nzOverlayStyle"
         [@.disabled]="noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
