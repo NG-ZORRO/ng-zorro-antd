@@ -366,7 +366,6 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   selectHour(hour: { index: number; disabled: boolean }): void {
     this.time.setHours(hour.index, hour.disabled);
     this.scrollToSelected(this.hourListElement.nativeElement, hour.index, 120, 'hour');
-
     if (!!this._disabledMinutes) {
       this.buildMinutes();
     }
