@@ -77,6 +77,7 @@
     "gulp-clean": "^0.4.0",
     "husky": "^3.0.4",
     "immer": "^6.0.1",
+    "intersection-observer": "^0.7.0",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~4.3.0",
@@ -114,9 +115,8 @@
     "tsickle": "^0.38.1",
     "tslib": "^1.10.0",
     "tslint": "~5.18.0",
-    "typescript": "~3.7.4",
+    "typescript": "~3.8.0",
     "yaml-front-matter": "^4.0.0",
-    "intersection-observer": "^0.7.0",
     "zone.js": "~0.10.2"
   },
   "lint-staged": {
