@@ -4,6 +4,7 @@ import { async, ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angu
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzTimePickerComponent } from './time-picker.component';
 import { NzTimePickerModule } from './time-picker.module';
@@ -101,6 +102,26 @@ describe('time-picker', () => {
       fixture.detectChanges();
       expect(testComponent.nzTimePickerComponent.nzFormat).toBe('h:mm:ss a');
     });
+    it('should support ngModelChange', fakeAsync(() => {
+      testComponent.date = new Date('2020-03-26 11:33:00');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      const nzOnChange = spyOn(testComponent, 'onChange');
+      testComponent.open = true;
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(overlayContainer.getContainerElement().querySelector('.ant-picker-time-panel-cell-selected > div')!.textContent).toBe('11');
+
+      dispatchMouseEvent(overlayContainer.getContainerElement().querySelector('.ant-picker-time-panel-cell')!, 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(nzOnChange).toHaveBeenCalled();
+      const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
+      expect(result.getHours()).toBe(0);
+    }));
   });
 });
 
@@ -109,6 +130,7 @@ describe('time-picker', () => {
     <nz-time-picker
       [nzAutoFocus]="autoFocus"
       [(ngModel)]="date"
+      (ngModelChange)="onChange($event)"
       [(nzOpen)]="open"
       (nzOpenChange)="openChange($event)"
       [nzDisabled]="disabled"
@@ -123,5 +145,6 @@ export class NzTestTimePickerComponent {
   date = new Date();
   disabled = false;
   use12Hours = false;
+  onChange(): void {}
   @ViewChild(NzTimePickerComponent, { static: false }) nzTimePickerComponent: NzTimePickerComponent;
 }
