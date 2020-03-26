@@ -91,6 +91,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
               [nzClearText]="nzClearText"
               [nzAllowEmpty]="nzAllowEmpty"
               [(ngModel)]="value"
+              (ngModelChange)="setValue($event)"
               (closePanel)="close()"
             >
             </nz-time-picker-panel>
