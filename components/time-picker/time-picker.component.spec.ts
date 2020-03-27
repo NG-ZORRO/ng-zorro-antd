@@ -131,11 +131,12 @@ describe('time-picker', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
+      const date = new Date(testComponent.date);
       expect(queryFromOverlay('.ant-picker-time-panel-column:nth-child(1) .ant-picker-time-panel-cell-selected > div')!.textContent).toBe(
-        '21'
+        date.getHours().toString()
       );
       expect(queryFromOverlay('.ant-picker-time-panel-column:nth-child(2) .ant-picker-time-panel-cell-selected > div')!.textContent).toBe(
-        '49'
+        date.getMinutes().toString()
       );
     }));
   });
