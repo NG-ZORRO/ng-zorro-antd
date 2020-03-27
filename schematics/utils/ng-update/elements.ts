@@ -14,7 +14,7 @@ export function findElementWithTag(html: string, tagName: string): number[] {
         visitNodes(node.childNodes);
       }
 
-      if (node?.tagName.toLowerCase() === tagName.toLowerCase()) {
+      if (node.tagName?.toLowerCase() === tagName.toLowerCase()) {
         elements.push(node);
       }
     });
@@ -35,7 +35,7 @@ export function findElementWithClassName(html: string, className: string, tagNam
         visitNodes(node.childNodes);
       }
 
-      if (hasClassName(node, className) && node?.tagName.toLowerCase() === tagName.toLowerCase()) {
+      if (hasClassName(node, className) && node.tagName?.toLowerCase() === tagName.toLowerCase()) {
         elements.push(node);
       }
     });
