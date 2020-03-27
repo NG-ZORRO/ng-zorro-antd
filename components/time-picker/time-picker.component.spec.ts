@@ -131,10 +131,10 @@ describe('time-picker', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(
-        queryFromOverlay(' .ant-picker-time-panel-column:nth-child(1) .ant-picker-time-panel-cell-selenbvccted > div')!.textContent
-      ).toBe('21');
-      expect(queryFromOverlay(' .ant-picker-time-panel-column:nth-child(2) .ant-picker-time-panel-cell-selected > div')!.textContent).toBe(
+      expect(queryFromOverlay('.ant-picker-time-panel-column:nth-child(1) .ant-picker-time-panel-cell-selected > div')!.textContent).toBe(
+        '21'
+      );
+      expect(queryFromOverlay('.ant-picker-time-panel-column:nth-child(2) .ant-picker-time-panel-cell-selected > div')!.textContent).toBe(
         '49'
       );
     }));
