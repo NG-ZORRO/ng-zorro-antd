@@ -23,4 +23,11 @@ task('library:copy-resources', () => {
   );
 });
 
-task('build:library', series('library:build-zorro', parallel('library:compile-less', 'library:copy-resources', 'build:schematics')));
+// Copies files without ngcc to lib folder.
+task('library:copy-libs', () => {
+  return src([join(buildConfig.publishDir, '**/*')]).pipe(
+    dest(join(buildConfig.libDir))
+  );
+});
+
+task('build:library', series('library:build-zorro', parallel('library:compile-less', 'library:copy-resources', 'build:schematics', 'library:copy-libs')));

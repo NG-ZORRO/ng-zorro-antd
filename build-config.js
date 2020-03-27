@@ -10,4 +10,5 @@ module.exports = {
   scriptsDir: join(__dirname, 'scripts'),
   outputDir: join(__dirname, 'dist'),
   publishDir: join(__dirname, 'publish'),
+  libDir: join(__dirname, 'lib')
 };

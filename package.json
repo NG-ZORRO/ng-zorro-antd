@@ -33,8 +33,8 @@
     "resize-observer-polyfill": "^1.5.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.900.0",
-    "@angular-devkit/build-ng-packagr": "~0.900.0",
+    "@angular-devkit/build-angular": "~0.901.0",
+    "@angular-devkit/build-ng-packagr": "~0.901.0",
     "@angular-devkit/core": "^9.0.0",
     "@angular-devkit/schematics": "^9.0.0",
     "@angular/animations": "^9.0.0",
@@ -97,7 +97,7 @@
     "minimist": "^1.2.0",
     "monaco-editor": "^0.17.1",
     "ng-packagr": "^9.0.0",
-    "ngx-color": "^4.0.0",
+    "ngx-color": "^5.0.0",
     "node-prismjs": "^0.1.2",
     "parse5": "^5.1.1",
     "prettier": "^2.0.2",
@@ -115,9 +115,9 @@
     "tsickle": "^0.38.1",
     "tslib": "^1.10.0",
     "tslint": "~5.18.0",
-    "typescript": "~3.8.0",
+    "typescript": "~3.8.3",
     "yaml-front-matter": "^4.0.0",
-    "zone.js": "~0.10.2"
+    "zone.js": "~0.10.3"
   },
   "lint-staged": {
     "components/**/*.{html,ts}": [

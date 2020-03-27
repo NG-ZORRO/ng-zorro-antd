@@ -1,5 +1,7 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+__ngcc_entry_points__.json
+
 # compiled output
 dist/
 /site/
@@ -7,6 +9,7 @@ tmp/
 junit/
 out-tsc/
 /publish/
+/lib/
 integration/**/lib/
 integration/**/*.ngfactory.ts
 integration/**/*.ngsummary.json
