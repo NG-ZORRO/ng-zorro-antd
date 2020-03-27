@@ -1,7 +1,7 @@
 import { parseFragment, DefaultTreeDocument, DefaultTreeElement } from 'parse5';
 
 const hasClassName = (node: DefaultTreeElement, className: string) => {
-  return Array.isArray(node.attrs) && node.attrs.find(attr => attr.name === 'class' && attr.value.indexOf(className) !== -1)
+  return node.attrs?.find?.(attr => attr.name === 'class' && attr.value.indexOf(className) !== -1)
 };
 
 export function findElementWithTag(html: string, tagName: string): number[] {

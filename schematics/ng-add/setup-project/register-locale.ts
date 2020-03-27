@@ -74,7 +74,7 @@ function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, loc
 
   const registerLocaleDataFun = allFun.filter(node => {
     const fun = node.getChildren();
-    return fun[ 0 ].getChildren()[ 0 ] && fun[ 0 ].getChildren()[ 0 ].getText() === 'registerLocaleData';
+    return fun[ 0 ].getChildren()[ 0 ]?.getText() === 'registerLocaleData';
   });
 
   if (registerLocaleDataFun.length === 0) {
@@ -129,7 +129,7 @@ function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string,
     if (arrLiteral.elements.length === 0) {
       return addProvide;
     } else {
-      node = arrLiteral.elements.filter(e => e.getText && e.getText().includes('NZ_I18N'));
+      node = arrLiteral.elements.filter(e => e.getText?.().includes('NZ_I18N'));
       if (node.length === 0) {
         return addProvide;
       } else {

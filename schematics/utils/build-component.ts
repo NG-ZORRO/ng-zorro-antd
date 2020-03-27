@@ -65,7 +65,7 @@ function getModuleClassnamePrefix(source: any): string {
   const className = getFirstNgModuleName(source);
   if (className) {
     const execArray = /(\w+)Module/gi.exec(className);
-    return execArray[1] ?? null;
+    return execArray?.[1] ?? null;
   } else {
     return null;
   }
