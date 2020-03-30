@@ -32,7 +32,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, measureScrollbar } from 'ng-zorro-antd/core/util';
 import { PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
 import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { filter, map, takeUntil } from 'rxjs/operators';
 import { NzTableDataService } from '../table-data.service';
 import { NzTableStyleService } from '../table-style.service';
 import { NzTableDataType, NzTableLayoutType, NzTablePaginationPositionType, NzTableSizeType } from '../table.types';
@@ -211,12 +211,17 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterView
         this.nzPageSizeChange.next(pageSize);
       }
     });
-    total$.pipe(takeUntil(this.destroy$)).subscribe(total => {
-      if (total !== this.nzTotal) {
-        this.nzTotal = total;
-        this.cdr.markForCheck();
-      }
-    });
+    total$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter(() => this.nzFrontPagination)
+      )
+      .subscribe(total => {
+        if (total !== this.nzTotal) {
+          this.nzTotal = total;
+          this.cdr.markForCheck();
+        }
+      });
     listOfCurrentPageData$.pipe(takeUntil(this.destroy$)).subscribe(data => {
       this.data = data;
       this.nzCurrentPageDataChange.next(data);

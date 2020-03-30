@@ -8,6 +8,7 @@ export interface BuildConfig {
   scriptsDir: string;
   outputDir: string;
   publishDir: string;
+  libDir: string;
 }
 
 const BUILD_CONFIG_FILENAME = 'build-config.js';
