@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, ElementRef, Input } from '@angular/core';
+import { Directive, ElementRef } from '@angular/core';
 
 /**
  * A patch directive to select the element of a component.
@@ -17,9 +17,4 @@ import { Directive, ElementRef, Input } from '@angular/core';
 })
 export class NzElementPatchDirective {
   constructor(public elementRef: ElementRef) {}
-
-  @Input()
-  get element(): HTMLElement | undefined {
-    return this.elementRef.nativeElement;
-  }
 }
