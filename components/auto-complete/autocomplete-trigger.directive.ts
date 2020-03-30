@@ -307,6 +307,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   private getOverlayConfig(): OverlayConfig {
     return new OverlayConfig({
       positionStrategy: this.getOverlayPosition(),
+      disposeOnNavigation: true,
       scrollStrategy: this.overlay.scrollStrategies.reposition(),
       // default host element width
       width: this.nzAutocomplete.nzWidth || this.getHostWidth()

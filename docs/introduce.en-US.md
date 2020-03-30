@@ -44,7 +44,7 @@ Following the Ant Design specification, we developed an Angular UI library `ng-z
 
 ## Angular Support
 
-Now Supports Angular `^9.0.0`.
+`ng-zorro-antd` keeps the same major version with `@angular/core`, now supports Angular `^9.0.0`.
 
 ## Design Specification
 

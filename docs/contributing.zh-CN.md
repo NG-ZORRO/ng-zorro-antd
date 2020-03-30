@@ -36,7 +36,7 @@ title: 贡献指南
 
 如果之前有人留言说会处理这个 issue 但是一两个星期都没有动静，那么你也可以接手处理这个 issue，当然还是需要留言告知其他人。
 
-## Pull Request
+## 贡献代码
 
 NG ZORRO 团队会关注所有的 Pull Request，我们会 review 以及合并你的代码，也有可能要求你做一些修改或者告诉你我们为什么不能接受这样的修改。
 
@@ -48,6 +48,19 @@ NG ZORRO 团队会关注所有的 Pull Request，我们会 review 以及合并�
 4. 确保你的代码通过了 lint 检查 `npm run lint`。
 5. 确保你的代码在提交之前经过了正确的 [Rebase](https://www.digitalocean.com/community/tutorials/how-to-rebase-and-update-a-pull-request)。
 6. 确保你的提交信息符合[我们的 commit 规范](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md#-commit-message-guidelines)。
+
+
+## 如何提出 Pull Request
+
+1. fork `ng-zorro-antd` 仓库，以下所有操作均在 fork 之后的仓库上执行
+2. 在 `master` 分支运行：`git remote add upstream https://github.com/NG-ZORRO/ng-zorro-antd.git`
+3. 在 `master` 分支运行: `git pull upstream master`
+4. 在 `master` 分支运行: `git push origin master`
+5. 切换到你要工作的 feature 分支 (例如有一个分支叫 `docs-fix`): `git checkout docs-fix`
+6. 在 `docs-fix` 分支运行: `git rebase origin/master`
+7. 在 `docs-fix` 分支修改代码，并 commit: `git commit -a`，按照我们 [commit 规范](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md#-commit-message-guidelines)进行填写。
+8. 推送代码 `git push` (可能需要 `-f`)
+9. 在 Github 上发起 Pull Request 请求
 
 ## 开发流程
 

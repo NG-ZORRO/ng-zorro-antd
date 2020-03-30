@@ -36,12 +36,10 @@ export class NzContextMenuService {
     if ($event instanceof MouseEvent) {
       $event.preventDefault();
     }
-    const positionStrategy = this.overlay
-      .position()
-      .flexibleConnectedTo({ x, y })
-      .withPositions(listOfPositions);
+    const positionStrategy = this.overlay.position().flexibleConnectedTo({ x, y }).withPositions(listOfPositions);
     this.overlayRef = this.overlay.create({
       positionStrategy,
+      disposeOnNavigation: true,
       scrollStrategy: this.overlay.scrollStrategies.close()
     });
     positionStrategy.positionChanges.subscribe(change => {

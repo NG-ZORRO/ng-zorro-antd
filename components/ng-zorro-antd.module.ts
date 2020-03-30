@@ -135,9 +135,7 @@ export * from 'ng-zorro-antd/tree';
 export * from 'ng-zorro-antd/tree-select';
 export * from 'ng-zorro-antd/typography';
 export * from 'ng-zorro-antd/upload';
-
 export * from 'ng-zorro-antd/version';
-
 export * from 'ng-zorro-antd/core/animation';
 export * from 'ng-zorro-antd/core/config';
 export * from 'ng-zorro-antd/core/environments';

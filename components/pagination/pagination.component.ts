@@ -37,38 +37,43 @@ import { PaginationItemRenderContext } from './pagination.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ng-container *ngIf="showPagination">
-      <ul
-        *ngIf="nzSimple"
-        nz-pagination-simple
-        [class.ant-table-pagination]="nzInsideTable"
-        [disabled]="nzDisabled"
-        [itemRender]="nzItemRender"
-        [locale]="locale"
-        [pageSize]="nzPageSize"
-        [total]="nzTotal"
-        [pageIndex]="nzPageIndex"
-        (pageIndexChange)="onPageIndexChange($event)"
-      ></ul>
-      <ul
-        *ngIf="!nzSimple"
-        nz-pagination-default
-        [class.ant-table-pagination]="nzInsideTable"
-        [nzSize]="size"
-        [itemRender]="nzItemRender"
-        [showTotal]="nzShowTotal"
-        [disabled]="nzDisabled"
-        [locale]="locale"
-        [showSizeChanger]="nzShowSizeChanger"
-        [showQuickJumper]="nzShowQuickJumper"
-        [total]="nzTotal"
-        [pageIndex]="nzPageIndex"
-        [pageSize]="nzPageSize"
-        [pageSizeOptions]="nzPageSizeOptions"
-        (pageIndexChange)="onPageIndexChange($event)"
-        (pageSizeChange)="onPageSizeChange($event)"
-      ></ul>
+      <ng-container *ngIf="nzSimple; else defaultPagination.template">
+        <ng-template [ngTemplateOutlet]="simplePagination.template"></ng-template>
+      </ng-container>
     </ng-container>
-  `
+    <nz-pagination-simple
+      #simplePagination
+      [disabled]="nzDisabled"
+      [itemRender]="nzItemRender"
+      [locale]="locale"
+      [pageSize]="nzPageSize"
+      [total]="nzTotal"
+      [pageIndex]="nzPageIndex"
+      (pageIndexChange)="onPageIndexChange($event)"
+    ></nz-pagination-simple>
+    <nz-pagination-default
+      #defaultPagination
+      [nzSize]="size"
+      [itemRender]="nzItemRender"
+      [showTotal]="nzShowTotal"
+      [disabled]="nzDisabled"
+      [locale]="locale"
+      [showSizeChanger]="nzShowSizeChanger"
+      [showQuickJumper]="nzShowQuickJumper"
+      [total]="nzTotal"
+      [pageIndex]="nzPageIndex"
+      [pageSize]="nzPageSize"
+      [pageSizeOptions]="nzPageSizeOptions"
+      (pageIndexChange)="onPageIndexChange($event)"
+      (pageSizeChange)="onPageSizeChange($event)"
+    ></nz-pagination-default>
+  `,
+  host: {
+    '[class.ant-pagination]': 'true',
+    '[class.ant-pagination-simple]': 'nzSimple',
+    '[class.ant-pagination-disabled]': 'nzDisabled',
+    '[class.mini]': `!nzSimple && size === 'small'`
+  }
 })
 export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   @Output() readonly nzPageSizeChange: EventEmitter<number> = new EventEmitter();
@@ -78,7 +83,6 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   @Input() nzPageSizeOptions = [10, 20, 30, 40];
   @Input() nzItemRender: TemplateRef<PaginationItemRenderContext>;
   @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzInsideTable = false;
   @Input() @InputBoolean() nzShowSizeChanger = false;
   @Input() @InputBoolean() nzHideOnSinglePage = false;
   @Input() @InputBoolean() nzShowQuickJumper = false;

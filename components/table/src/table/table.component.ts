@@ -97,8 +97,8 @@ const NZ_CONFIG_COMPONENT_NAME = 'table';
     </nz-spin>
     <ng-template #paginationTemplate>
       <nz-pagination
-        nzInsideTable
         *ngIf="nzShowPagination && data.length"
+        class="ant-table-pagination ant-table-pagination-right"
         [nzShowSizeChanger]="nzShowSizeChanger"
         [nzPageSizeOptions]="nzPageSizeOptions"
         [nzItemRender]="nzItemRender"

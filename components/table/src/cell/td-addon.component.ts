@@ -56,6 +56,8 @@ export class NzTdAddOnComponent implements OnChanges {
   @Input() @InputBoolean() nzExpand = false;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   @Output() readonly nzExpandChange = new EventEmitter<boolean>();
+  private isNzShowExpandChanged = false;
+  private isNzShowCheckboxChanged = false;
 
   onCheckedChange(checked: boolean): void {
     this.nzChecked = checked;
@@ -68,11 +70,17 @@ export class NzTdAddOnComponent implements OnChanges {
   }
   ngOnChanges(changes: SimpleChanges): void {
     const isFirstChange = (value: SimpleChange) => value && value.firstChange && value.currentValue !== undefined;
-    const { nzExpand, nzChecked } = changes;
-    if (isFirstChange(nzExpand)) {
+    const { nzExpand, nzChecked, nzShowExpand, nzShowCheckbox } = changes;
+    if (nzShowExpand) {
+      this.isNzShowExpandChanged = true;
+    }
+    if (nzShowCheckbox) {
+      this.isNzShowCheckboxChanged = true;
+    }
+    if (isFirstChange(nzExpand) && !this.isNzShowExpandChanged) {
       this.nzShowExpand = true;
     }
-    if (isFirstChange(nzChecked)) {
+    if (isFirstChange(nzChecked) && !this.isNzShowCheckboxChanged) {
       this.nzShowCheckbox = true;
     }
   }
