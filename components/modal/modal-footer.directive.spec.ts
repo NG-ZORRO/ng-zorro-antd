@@ -1,6 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { async, ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, flush, inject, TestBed } from '@angular/core/testing';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -19,7 +19,7 @@ describe('modal footer directive', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [NzModalModule, NoopAnimationsModule],
-      declarations: [TestDirectiveFooterComponent, TestDirectiveFooterInServiceComponent],
+      declarations: [TestDirectiveFooterComponent, TestDirectiveFooterInServiceComponent, TestDirectiveFooterWithInitOpenedComponent],
       providers: [NzModalService]
     });
 
@@ -45,12 +45,26 @@ describe('modal footer directive', () => {
     testComponent.showModal();
     fixture.detectChanges();
     expect(testComponent.isVisible).toBe(true);
-
-    expect(testComponent.nzModalComponent.nzFooter).toBe(testComponent.nzModalFooterDirective.templateRef);
+    const modalRef = testComponent.nzModalComponent.getModalRef();
+    expect(modalRef!.getConfig().nzFooter).toBe(testComponent.nzModalFooterDirective.templateRef);
 
     testComponent.handleCancel();
     fixture.detectChanges();
   });
+
+  it('should work with template when init opened', fakeAsync(() => {
+    const initOpenedComponentFixture = TestBed.createComponent(TestDirectiveFooterWithInitOpenedComponent);
+    const initOpenedComponent = initOpenedComponentFixture.componentInstance;
+    initOpenedComponentFixture.detectChanges();
+    expect(initOpenedComponent.isVisible).toBe(true);
+    flush();
+    initOpenedComponentFixture.detectChanges();
+    const modalRef = initOpenedComponent.nzModalComponent.getModalRef();
+
+    expect(modalRef!.getConfig().nzFooter).toBe(initOpenedComponent.nzModalFooterDirective.templateRef);
+
+    initOpenedComponentFixture.detectChanges();
+  }));
 
   it('should work with service', () => {
     const modalRef = modalService.create({ nzContent: TestDirectiveFooterInServiceComponent, nzFooter: null });
@@ -87,6 +101,26 @@ class TestDirectiveFooterComponent {
   showModal(): void {
     this.isVisible = true;
   }
+}
+
+@Component({
+  template: `
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="Custom Modal Title">
+      <div>
+        <p>Modal Content</p>
+      </div>
+      <div *nzModalFooter>
+        <button id="btn-template" nz-button nzType="default">Custom Callback</button>
+      </div>
+    </nz-modal>
+  `
+})
+class TestDirectiveFooterWithInitOpenedComponent {
+  isVisible = true;
+  @ViewChild(NzModalComponent) nzModalComponent: NzModalComponent;
+  @ViewChild(NzModalFooterDirective) nzModalFooterDirective: NzModalFooterDirective;
+
+  constructor() {}
 }
 
 @Component({
