@@ -114,7 +114,7 @@ export class NzTransferListComponent {
     if (this.filterOption) {
       return this.filterOption(text, item);
     }
-    return item.title.includes(text);
+    return item.title.toLowerCase().includes(text.toLowerCase()) || item.description.toLowerCase().includes(text.toLowerCase()) ;
   }
 
   // #endregion
