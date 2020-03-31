@@ -9,12 +9,15 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
   Output,
+  Renderer2,
   SimpleChanges,
   TemplateRef,
+  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -22,40 +25,38 @@ import { toNumber } from 'ng-zorro-antd/core/util';
 import { PaginationItemRenderContext } from './pagination.types';
 
 @Component({
-  selector: 'ul[nz-pagination-simple]',
+  selector: 'nz-pagination-simple',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <li
-      nz-pagination-item
-      [attr.title]="locale.prev_page"
-      [disabled]="isFirstIndex"
-      (click)="prePage()"
-      type="prev"
-      [itemRender]="itemRender"
-    ></li>
-    <li [attr.title]="pageIndex + '/' + lastIndex" class="ant-pagination-simple-pager">
-      <input [disabled]="disabled" [value]="pageIndex" (keydown.enter)="jumpToPageViaInput($event)" size="3" />
-      <span class="ant-pagination-slash">/</span>
-      {{ lastIndex }}
-    </li>
-    <li
-      nz-pagination-item
-      [attr.title]="locale.next_page"
-      [disabled]="isLastIndex"
-      (click)="nextPage()"
-      type="next"
-      [itemRender]="itemRender"
-    ></li>
-  `,
-  host: {
-    '[class.ant-pagination]': 'true',
-    '[class.ant-pagination-simple]': 'true',
-    '[class.ant-pagination-disabled]': 'disabled'
-  }
+    <ng-template #containerTemplate>
+      <li
+        nz-pagination-item
+        [attr.title]="locale.prev_page"
+        [disabled]="isFirstIndex"
+        (click)="prePage()"
+        type="prev"
+        [itemRender]="itemRender"
+      ></li>
+      <li [attr.title]="pageIndex + '/' + lastIndex" class="ant-pagination-simple-pager">
+        <input [disabled]="disabled" [value]="pageIndex" (keydown.enter)="jumpToPageViaInput($event)" size="3" />
+        <span class="ant-pagination-slash">/</span>
+        {{ lastIndex }}
+      </li>
+      <li
+        nz-pagination-item
+        [attr.title]="locale.next_page"
+        [disabled]="isLastIndex"
+        (click)="nextPage()"
+        type="next"
+        [itemRender]="itemRender"
+      ></li>
+    </ng-template>
+  `
 })
 export class NzPaginationSimpleComponent implements OnChanges {
+  @ViewChild('containerTemplate', { static: true }) template: TemplateRef<NzSafeAny>;
   @Input() itemRender: TemplateRef<PaginationItemRenderContext> | null = null;
   @Input() disabled = false;
   @Input() locale: NzSafeAny = {};
@@ -66,6 +67,10 @@ export class NzPaginationSimpleComponent implements OnChanges {
   lastIndex = 0;
   isFirstIndex = false;
   isLastIndex = false;
+
+  constructor(renderer: Renderer2, elementRef: ElementRef) {
+    renderer.removeChild(renderer.parentNode(elementRef.nativeElement), elementRef.nativeElement);
+  }
 
   jumpToPageViaInput($event: Event): void {
     const target = $event.target as HTMLInputElement;

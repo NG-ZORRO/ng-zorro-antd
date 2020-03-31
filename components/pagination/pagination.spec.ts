@@ -40,7 +40,7 @@ describe('pagination', () => {
       testComponent = fixture.debugElement.componentInstance;
       pagination = fixture.debugElement.query(By.directive(NzPaginationComponent));
       fixture.detectChanges();
-      paginationElement = pagination.nativeElement.firstElementChild;
+      paginationElement = pagination.nativeElement;
     });
 
     describe('not simple mode', () => {
@@ -237,7 +237,7 @@ describe('pagination', () => {
       beforeEach(() => {
         testComponent.simple = true;
         fixture.detectChanges();
-        paginationElement = pagination.nativeElement.firstElementChild;
+        paginationElement = pagination.nativeElement;
       });
       it('should simple className work', () => {
         expect(paginationElement.classList.contains('ant-pagination-simple')).toBe(true);
@@ -277,7 +277,7 @@ describe('pagination', () => {
       (testComponent as NzTestPaginationComponent).total = 0;
       (testComponent as NzTestPaginationComponent).hideOnSinglePage = true;
       fixture.detectChanges();
-      expect(fixture.debugElement.nativeElement.querySelector('.ant-pagination')).toBeNull();
+      expect(fixture.debugElement.nativeElement.querySelector('.ant-pagination').children.length).toBe(0);
     });
   });
 
@@ -289,7 +289,7 @@ describe('pagination', () => {
       fixture = TestBed.createComponent(NzTestPaginationRenderComponent);
       pagination = fixture.debugElement.query(By.directive(NzPaginationComponent));
       fixture.detectChanges();
-      paginationElement = pagination.nativeElement.firstElementChild;
+      paginationElement = pagination.nativeElement;
     });
     it('should render correct', () => {
       fixture.detectChanges();
@@ -310,7 +310,7 @@ describe('pagination', () => {
       testComponent = fixture.debugElement.componentInstance;
       pagination = fixture.debugElement.query(By.directive(NzPaginationComponent));
       fixture.detectChanges();
-      paginationElement = pagination.nativeElement.firstElementChild;
+      paginationElement = pagination.nativeElement;
     });
 
     it('should render correct', () => {
@@ -331,7 +331,7 @@ describe('pagination', () => {
 
     viewport.set(1200, 350);
     fixture.detectChanges();
-    let paginationElement = pagination.nativeElement.firstElementChild;
+    let paginationElement = pagination.nativeElement;
     expect(paginationElement.classList).not.toContain('mini');
 
     viewport.set(350, 350);
@@ -339,7 +339,7 @@ describe('pagination', () => {
     fixture.detectChanges();
     tick(1000);
     fixture.detectChanges();
-    paginationElement = pagination.nativeElement.firstElementChild;
+    paginationElement = pagination.nativeElement;
     expect(paginationElement.classList).toContain('mini');
     viewport.reset();
   }));
@@ -415,8 +415,6 @@ export class NzTestPaginationTotalComponent {
 }
 
 @Component({
-  template: `
-    <nz-pagination nzResponsive></nz-pagination>
-  `
+  template: ` <nz-pagination nzResponsive></nz-pagination> `
 })
 export class NzTestPaginationAutoResizeComponent {}

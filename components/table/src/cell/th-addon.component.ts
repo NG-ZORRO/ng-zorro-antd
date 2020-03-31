@@ -72,6 +72,8 @@ export class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy {
   sortOrder: NzSortOrderType | undefined = undefined;
   private sortOrderChange$ = new Subject<NzSortOrderType>();
   private destroy$ = new Subject();
+  private isNzShowSortChanged = false;
+  private isNzShowFilterChanged = false;
   @Input() nzSortKey: string;
   @Input() nzFilterMultiple = true;
   @Input() nzSortOrder: NzSortOrderType = null;
@@ -146,18 +148,38 @@ export class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzSortKey, nzSort, nzFilters, nzSortOrder, nzSortFn, nzFilterFn, nzSortPriority, nzFilterMultiple } = changes;
+    const {
+      nzSortKey,
+      nzSort,
+      nzFilters,
+      nzSortOrder,
+      nzSortFn,
+      nzFilterFn,
+      nzSortPriority,
+      nzFilterMultiple,
+      nzShowSort,
+      nzShowFilter
+    } = changes;
     if (nzSort) {
       this.nzSortOrder = this.nzSort;
       warnDeprecation(
         `'nzSort' and 'nzSortChange' is deprecated and will be removed in 10.0.0. Please use 'nzSortOrder' instead and 'nzSortOrderChange'!`
       );
     }
+    if (nzShowSort) {
+      this.isNzShowSortChanged = true;
+    }
+    if (nzShowFilter) {
+      this.isNzShowFilterChanged = true;
+    }
     const isFirstChange = (value: SimpleChange) => value && value.firstChange && value.currentValue !== undefined;
-    if (isFirstChange(nzSortKey) || isFirstChange(nzSort) || isFirstChange(nzSortOrder) || isFirstChange(nzSortFn)) {
+    if (
+      (isFirstChange(nzSortKey) || isFirstChange(nzSort) || isFirstChange(nzSortOrder) || isFirstChange(nzSortFn)) &&
+      !this.isNzShowSortChanged
+    ) {
       this.nzShowSort = true;
     }
-    if (isFirstChange(nzFilters)) {
+    if (isFirstChange(nzFilters) && !this.isNzShowFilterChanged) {
       this.nzShowFilter = true;
     }
     if (nzFilters || nzFilterMultiple) {
