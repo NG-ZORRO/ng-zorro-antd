@@ -118,7 +118,7 @@ import { takeUntil } from 'rxjs/operators';
               <i nz-icon *ngIf="nzIcon" [nzType]="nzIcon"></i>
             </span>
           </span>
-          <span class="ant-tree-title" [innerHTML]="nzTreeNode.title | nzHighlight: matchedValue:'':'font-highlight'"> </span>
+          <span class="ant-tree-title" [innerHTML]="nzTreeNode.title | nzHighlight: matchedValue:'i':'font-highlight'"> </span>
         </ng-container>
       </span>
     </div>

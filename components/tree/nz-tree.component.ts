@@ -316,7 +316,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
       if (searchFunc) {
         return searchFunc(node.origin);
       }
-      return !value || !node.title.includes(value) ? false : true;
+      return !value || !node.title.toLowerCase().includes(value.toLowerCase()) ? false : true;
     };
     dataList.forEach(v => {
       v.isMatched = checkIfMatched(v);

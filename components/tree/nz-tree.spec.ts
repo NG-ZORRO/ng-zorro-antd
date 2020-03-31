@@ -488,6 +488,63 @@ describe('NzTestTreeDraggableComponent', () => {
   });
 });
 
+describe('NzTestTreeBasicSearchComponent', () => {
+  let testBed: ComponentBed<NzTestTreeBasicSearchComponent>;
+
+  const getVisibleNodes = (title?: string) => {
+    const isNodeVisible = (el: Element) => el.getClientRects().length !== 0;
+    const selector = title ? `[title='${title}']` : '[title]';
+    const nodes = testBed.nativeElement.querySelectorAll(selector);
+    return Array.from(nodes).filter(isNodeVisible);
+  };
+
+  beforeEach(() => {
+    testBed = prepareTest(NzTestTreeBasicSearchComponent);
+  });
+
+  describe('search case-insensitive', () => {
+    it('should list matches independent on casing', fakeAsync(() => {
+      const { component, fixture } = testBed;
+      fixture.detectChanges();
+      expect(getVisibleNodes().length).toEqual(3);
+
+      component.searchValue = 'foo';
+      fixture.detectChanges();
+      expect(getVisibleNodes().length).toEqual(2);
+      expect(getVisibleNodes('Foo').length).toEqual(1);
+      expect(getVisibleNodes('foo').length).toEqual(1);
+
+      component.searchValue = 'Foo';
+      fixture.detectChanges();
+      expect(getVisibleNodes().length).toEqual(2);
+      expect(getVisibleNodes('Foo').length).toEqual(1);
+      expect(getVisibleNodes('foo').length).toEqual(1);
+
+      component.searchValue = 'baz';
+      fixture.detectChanges();
+      expect(getVisibleNodes().length).toEqual(2);
+      expect(getVisibleNodes('Foo').length).toEqual(1);
+      expect(getVisibleNodes('Baz Bar').length).toEqual(1);
+    }));
+  });
+
+  describe('highlight case-insensitive', () => {
+    it('should highlight matched node', fakeAsync(() => {
+      const { component, fixture } = testBed;
+      fixture.detectChanges();
+      expect(getVisibleNodes().length).toEqual(3);
+
+      component.searchValue = 'baz';
+      fixture.detectChanges();
+      expect(getVisibleNodes().length).toEqual(2);
+      expect(getVisibleNodes('Foo').length).toEqual(1);
+      expect(getVisibleNodes('Baz Bar').length).toEqual(1);
+      const highlightedNode = getVisibleNodes('Baz Bar')[0].querySelector('.font-highlight');
+      expect(highlightedNode?.textContent).toEqual('Baz');
+    }));
+  });
+});
+
 /**
  * Basic controlled tree
  */
@@ -649,4 +706,39 @@ export class NzTestTreeDraggableComponent {
   onDrop(): void {}
 
   onDragEnd(): void {}
+}
+
+/**
+ * Basic searchable tree
+ */
+@Component({
+  template: `
+    <nz-tree
+      [nzData]="nodes"
+      [nzSearchValue]="searchValue"
+      [nzExpandAll]="expandAll"
+      [nzAsyncData]="asyncData"
+      [nzHideUnMatched]="hideUnMatched"
+    >
+    </nz-tree>
+  `
+})
+export class NzTestTreeBasicSearchComponent {
+  @ViewChild(NzTreeComponent, { static: true }) treeComponent: NzTreeComponent;
+  searchValue: string;
+  expandAll = true;
+  asyncData = false;
+  hideUnMatched = true;
+  nodes: NzTreeNodeOptions[] | NzTreeNode[] = [
+    {
+      title: 'Foo',
+      key: '0-1',
+      children: [{ title: 'Baz Bar', key: '0-1-0', isLeaf: true }]
+    },
+    {
+      title: 'foo',
+      key: '0-2',
+      isLeaf: true
+    }
+  ];
 }
