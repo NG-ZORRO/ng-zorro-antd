@@ -1316,35 +1316,6 @@ describe('cascader', () => {
       expect(testComponent.values![0]).toBe('zhejiang');
     }));
 
-    it('should position change correct', () => {
-      const fakeTopEvent = {
-        connectionPair: {
-          originX: 'center',
-          originY: 'top',
-          overlayX: 'center',
-          overlayY: 'bottom'
-        }
-      } as ConnectedOverlayPositionChange;
-      const fakeBottomEvent = {
-        connectionPair: {
-          originX: 'center',
-          originY: 'bottom',
-          overlayX: 'center',
-          overlayY: 'top'
-        }
-      } as ConnectedOverlayPositionChange;
-
-      fixture.detectChanges();
-      testComponent.cascader.setMenuVisible(true);
-      fixture.detectChanges();
-      testComponent.cascader.onPositionChange(fakeTopEvent);
-      fixture.detectChanges();
-      expect(testComponent.cascader.dropDownPosition).toBe('top');
-      testComponent.cascader.onPositionChange(fakeBottomEvent);
-      fixture.detectChanges();
-      expect(testComponent.cascader.dropDownPosition).toBe('bottom');
-    });
-
     it('should support search', fakeAsync(() => {
       fixture.detectChanges();
       testComponent.nzShowSearch = true;

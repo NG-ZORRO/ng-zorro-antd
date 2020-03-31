@@ -5,11 +5,9 @@
 
 import {
   CdkConnectedOverlay,
-  CdkOverlayOrigin,
-  ConnectedOverlayPositionChange,
+  CdkOverlayOrigin, ConnectedOverlayPositionChange,
   ConnectionPositionPair,
-  HorizontalConnectionPos,
-  VerticalConnectionPos
+  HorizontalConnectionPos, VerticalConnectionPos
 } from '@angular/cdk/overlay';
 import { DOCUMENT } from '@angular/common';
 import {
@@ -128,12 +126,11 @@ import { PREFIX_CLASS } from './util';
       (overlayKeydown)="onOverlayKeydown($event)"
     >
       <div
+        class="ant-picker-wrapper"
         [nzNoAnimation]="noAnimation"
-        [@slideMotion]="currentPositionY"
+        [@slideMotion]="'enter'"
         (@slideMotion.done)="animationDone()"
         style="position: relative;"
-        [style.left]="currentPositionX === 'start' ? '-12px' : '12px'"
-        [style.top]="currentPositionY === 'top' ? '-8px' : '8px'"
       >
         <div
           class="{{ prefixCls }}-dropdown {{ dropdownClassName }}"
@@ -191,26 +188,32 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   overlayOpen: boolean = false; // Available when "open"=undefined
   overlayPositions: ConnectionPositionPair[] = [
     {
-      // offsetX: -10, // TODO: What a pity, cdk/overlay current not support offset configs even though it already provide these properties
-      // offsetY: -10,
+      offsetX: -12,
+      offsetY: 7,
       originX: 'start',
       originY: 'bottom',
       overlayX: 'start',
       overlayY: 'top'
     },
     {
+      offsetX: -12,
+      offsetY: -7,
       originX: 'start',
       originY: 'top',
       overlayX: 'start',
       overlayY: 'bottom'
     },
     {
+      offsetX: 12,
+      offsetY: 7,
       originX: 'end',
       originY: 'bottom',
       overlayX: 'end',
       overlayY: 'top'
     },
     {
+      offsetX: 12,
+      offsetY: -7,
       originX: 'end',
       originY: 'top',
       overlayX: 'end',
@@ -325,11 +328,6 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       this.animationStart();
       this.focus();
       this.openChange.emit(true);
-      setTimeout(() => {
-        if (this.cdkConnectedOverlay && this.cdkConnectedOverlay.overlayRef) {
-          this.cdkConnectedOverlay.overlayRef.updatePosition();
-        }
-      });
     }
   }
 
