@@ -5,9 +5,11 @@
 
 import {
   CdkConnectedOverlay,
-  CdkOverlayOrigin, ConnectedOverlayPositionChange,
+  CdkOverlayOrigin,
+  ConnectedOverlayPositionChange,
   ConnectionPositionPair,
-  HorizontalConnectionPos, VerticalConnectionPos
+  HorizontalConnectionPos,
+  VerticalConnectionPos
 } from '@angular/cdk/overlay';
 import { DOCUMENT } from '@angular/common';
 import {
@@ -120,6 +122,7 @@ import { PREFIX_CLASS } from './util';
       [cdkConnectedOverlayOpen]="realOpenState"
       [cdkConnectedOverlayHasBackdrop]="!isOpenHandledByUser()"
       [cdkConnectedOverlayPositions]="overlayPositions"
+      [cdkConnectedOverlayTransformOriginOn]="'.ant-picker-wrapper'"
       (positionChange)="onPositionChange($event)"
       (backdropClick)="onClickBackdrop()"
       (detach)="onOverlayDetach()"
@@ -189,7 +192,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   overlayPositions: ConnectionPositionPair[] = [
     {
       offsetX: -12,
-      offsetY: 7,
+      offsetY: 8,
       originX: 'start',
       originY: 'bottom',
       overlayX: 'start',
@@ -197,7 +200,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     },
     {
       offsetX: -12,
-      offsetY: -7,
+      offsetY: -8,
       originX: 'start',
       originY: 'top',
       overlayX: 'start',
@@ -205,7 +208,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     },
     {
       offsetX: 12,
-      offsetY: 7,
+      offsetY: 8,
       originX: 'end',
       originY: 'bottom',
       overlayX: 'end',
@@ -213,7 +216,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     },
     {
       offsetX: 12,
-      offsetY: -7,
+      offsetY: -8,
       originX: 'end',
       originY: 'top',
       overlayX: 'end',

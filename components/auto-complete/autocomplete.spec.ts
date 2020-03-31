@@ -839,41 +839,6 @@ describe('auto-complete', () => {
       fixture = TestBed.createComponent(NzTestSimpleAutocompleteComponent);
       fixture.detectChanges();
     });
-
-    it('should use bottom positioning by default', fakeAsync(() => {
-      fixture.componentInstance.trigger.openPanel();
-      zone.simulateZoneExit();
-      fixture.detectChanges();
-      flush();
-      tick(1000);
-      fixture.detectChanges();
-      expect(fixture.componentInstance.trigger.nzAutocomplete.panel.nativeElement.style.tranformOrigin).toEqual('left bottom');
-    }));
-
-    it('should reposition the panel on scroll', fakeAsync(() => {
-      const spacer = document.createElement('div');
-
-      spacer.style.height = '1000px';
-      document.body.appendChild(spacer);
-
-      fixture.componentInstance.trigger.openPanel();
-      fixture.detectChanges();
-
-      const autocomplete = fixture.componentInstance.trigger.nzAutocomplete;
-
-      autocomplete.panel.nativeElement.style.transformOrigin = 'left top';
-      fixture.detectChanges();
-
-      expect(autocomplete.panel.nativeElement.style.transformOrigin).toEqual('left top');
-
-      window.scroll(0, 100);
-      scrolledSubject.next();
-      fixture.detectChanges();
-      tick();
-      expect(autocomplete.panel.nativeElement.style.transformOrigin).toEqual('left bottom');
-
-      document.body.removeChild(spacer);
-    }));
   });
 
   describe('misc', () => {

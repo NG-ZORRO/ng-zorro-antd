@@ -17,7 +17,7 @@ import {
   UP_ARROW,
   ZERO
 } from '@angular/cdk/keycodes';
-import { ConnectedOverlayPositionChange, OverlayContainer } from '@angular/cdk/overlay';
+import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { async, ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
