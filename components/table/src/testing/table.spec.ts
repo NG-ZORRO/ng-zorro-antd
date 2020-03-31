@@ -197,11 +197,11 @@ describe('nz-table', () => {
     });
     it('should hideOnSinglePage work', () => {
       fixture.detectChanges();
-      expect(table.nativeElement.querySelector('.ant-pagination')).not.toBe(null);
+      expect(table.nativeElement.querySelector('.ant-pagination').children.length).not.toBe(0);
       testComponent.hideOnSinglePage = true;
       testComponent.dataSet = [{}];
       fixture.detectChanges();
-      expect(table.nativeElement.querySelector('.ant-pagination')).toBe(null);
+      expect(table.nativeElement.querySelector('.ant-pagination').children.length).toBe(0);
     });
     it('#18n', () => {
       testComponent.dataSet = [];

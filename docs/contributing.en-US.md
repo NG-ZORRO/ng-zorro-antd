@@ -36,7 +36,7 @@ If you decide to fix an issue, please be sure to check the comment thread in cas
 
 If somebody claims an issue but doesn’t follow up for more than two weeks, it’s fine to take over it but you should still leave a comment.
 
-## Sending a Pull Request
+## Contribute
 
 The core team is monitoring for pull requests. We will review your pull request and either merge it, request changes to it, or close it with an explanation.
 
@@ -49,6 +49,18 @@ The core team is monitoring for pull requests. We will review your pull request 
 5. Make sure rebase your code to keep the history clean.
 6. Make sure your commit message meet the [guidelines](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md#-commit-message-guidelines)
 
+## How to send a Pull Request
+
+1. fork the repo of `ng-zorro-antd`
+2. On `master`: `git remote add upstream https://github.com/NG-ZORRO/ng-zorro-antd.git`
+3. On `master`: `git pull upstream master`
+4. On `master`: `git push origin master`
+5. Checkout the feature branch (for example if the branch is called `docs-fix`): `git checkout docs-fix`
+6. On `docs-fix` I rebase: `git rebase origin/master`
+7. On `docs-fix` change the code and commit: `git commit -a`, you need to follow the [commit message guidelines](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md#-commit-message-guidelines)
+8. Then, push up: `git push` (might need `-f`, just be sure you understand force pushing before you do it)
+9. Send Pull Request in the Github
+
 ## Development Workflow
 
 After cloning `ng-zorro-antd` and running `npm install` to fetch its dependencies, you can run the following commands:
@@ -60,3 +72,4 @@ After cloning `ng-zorro-antd` and running `npm install` to fetch its dependencie
 * `npm run build:lib` creates build of `ng-zorro-antd`.
 
 If you running into problems while developing ng-zorro-antd, you can refer to our [developement guide](https://github.com/NG-ZORRO/ng-zorro-antd/wiki/Development-Guide) on GitHub.
+

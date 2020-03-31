@@ -10,6 +10,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzResizeObserversModule } from 'ng-zorro-antd/core/resize-observers';
@@ -105,6 +106,7 @@ import { NzTrDirective } from './table/tr.directive';
     NzRadioModule,
     NzCheckboxModule,
     NzDropDownModule,
+    NzButtonModule,
     CommonModule,
     PlatformModule,
     NzPaginationModule,

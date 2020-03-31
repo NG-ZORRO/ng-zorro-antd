@@ -48,19 +48,15 @@ import { NzFilterTriggerComponent } from './filter-trigger.component';
       <nz-dropdown-menu #filterMenu="nzDropdownMenu">
         <div class="ant-table-filter-dropdown">
           <ul nz-menu>
-            <li nz-menu-item *ngFor="let f of listOfParsedFilter; trackBy: trackByValue" (click)="check(f)">
+            <li nz-menu-item [nzSelected]="f.checked" *ngFor="let f of listOfParsedFilter; trackBy: trackByValue" (click)="check(f)">
               <label nz-radio *ngIf="!filterMultiple" [ngModel]="f.checked" (ngModelChange)="check(f)"></label>
               <label nz-checkbox *ngIf="filterMultiple" [ngModel]="f.checked" (ngModelChange)="check(f)"></label>
               <span>{{ f.text }}</span>
             </li>
           </ul>
           <div class="ant-table-filter-dropdown-btns">
-            <a class="ant-table-filter-dropdown-link confirm" (click)="confirm(filterTrigger)">
-              <span>{{ locale.filterConfirm }}</span>
-            </a>
-            <a class="ant-table-filter-dropdown-link clear" (click)="reset(filterTrigger)">
-              <span>{{ locale.filterReset }}</span>
-            </a>
+            <button nz-button nzType="link" nzSize="small" (click)="reset(filterTrigger)">{{ locale.filterReset }}</button>
+            <button nz-button nzType="primary" nzSize="small" (click)="confirm(filterTrigger)">{{ locale.filterConfirm }}</button>
           </div>
         </div>
       </nz-dropdown-menu>
