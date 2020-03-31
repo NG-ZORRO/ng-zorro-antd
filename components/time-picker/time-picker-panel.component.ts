@@ -48,7 +48,7 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
     <div *ngIf="nzInDatePicker" class="ant-picker-header">
       <div class="ant-picker-header-view">{{ dateHelper.format(time?.value, format) || '&nbsp;' }}</div>
     </div>
-    <div class="ant-picker-content">
+    <div class="ant-picker-content" style="position: relative;">
       <ul *ngIf="hourEnabled" #hourListElement class="{{ prefixCls }}-column">
         <ng-container *ngFor="let hour of hourRange">
           <li
