@@ -41,7 +41,7 @@ export class DatePickerService {
     }
   }
 
-  makeValue(value: CompatibleDate): CompatibleValue {
+  makeValue(value: CompatibleDate | null): CompatibleValue {
     if (this.isRange) {
       return value ? (value as Date[]).map(val => new CandyDate(val)) : [];
     } else {

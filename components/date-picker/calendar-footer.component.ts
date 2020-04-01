@@ -80,7 +80,6 @@ export class CalendarFooterComponent implements OnChanges {
   @Input() hasTimePicker: boolean = false;
   @Input() isRange: boolean = false;
 
-  @Input() timePickerDisabled: boolean = false;
   @Input() okDisabled: boolean = false;
   @Input() disabledDate: (d: Date) => boolean;
   @Input() extraFooter: TemplateRef<void> | string;

@@ -387,6 +387,29 @@ describe('NzDatePickerComponent', () => {
   describe('panel switch and move forward/afterward', () => {
     beforeEach(() => (fixtureInstance.useSuite = 1));
 
+    it('should support date panel changes on click month', fakeAsync(() => {
+      fixtureInstance.nzValue = new Date('2018-11-11');
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      // Click month
+      dispatchMouseEvent(queryFromOverlay('.ant-picker-header-month-btn'), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      dispatchMouseEvent(getFirstCell(), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      // click 2018-01-01
+      dispatchMouseEvent(getFirstCell(), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerInput(fixture.debugElement).value).toBe('2018-01-01');
+    }));
+
     it('should support date panel changes', fakeAsync(() => {
       fixtureInstance.nzValue = new Date('2018-11-11');
       fixture.detectChanges();
@@ -585,10 +608,10 @@ describe('NzDatePickerComponent', () => {
 
     it('should support nzShowTime', fakeAsync(() => {
       fixtureInstance.nzValue = new Date('2018-11-11 11:22:33');
-      fixtureInstance.nzShowTime = true;
+      // tslint:disable-next-line:no-any
+      fixtureInstance.nzShowTime = '' as any;
       fixture.detectChanges();
       openPickerByClickTrigger();
-      // Why need one more detectChange ?
       flush();
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-picker-ok')).toBeDefined();
@@ -627,10 +650,10 @@ describe('NzDatePickerComponent', () => {
       fixtureInstance.nzValue = new Date('2019-08-02 13:03:33');
       fixtureInstance.nzShowTime = true;
       fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
       openPickerByClickTrigger();
-
       dispatchMouseEvent(getFirstCell(), 'click');
-
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
@@ -676,6 +699,35 @@ describe('NzDatePickerComponent', () => {
       expect(+queryFromOverlay('.ant-picker-time-panel-column:nth-child(1) li:first-child').textContent!.trim()).toBe(3);
       expect(+queryFromOverlay('.ant-picker-time-panel-column:nth-child(2) li:first-child').textContent!.trim()).toBe(2);
       expect(+queryFromOverlay('.ant-picker-time-panel-column:nth-child(3) li:first-child').textContent!.trim()).toBe(1);
+    }));
+
+    it('should nzDisabledTime invalid input not emit', fakeAsync(() => {
+      fixtureInstance.nzShowTime = true;
+      fixtureInstance.nzDisabledTime = () => {
+        return {
+          nzDisabledHours: () => [0, 1, 2],
+          nzDisabledMinutes: () => [0, 1],
+          nzDisabledSeconds: () => [0]
+        };
+      };
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      // input disabled value
+      const input = getPickerInput(fixture.debugElement);
+      typeInElement('2020-03-14 00:00:00', input);
+      fixture.detectChanges();
+      input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).not.toBeNull();
+
+      dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerInput(fixture.debugElement).value).toBe('');
     }));
 
     it('should support nzRenderExtraFooter', fakeAsync(() => {
@@ -806,24 +858,6 @@ describe('NzDatePickerComponent', () => {
       expect(fixtureInstance.modelValue.getDate()).toBe(+cellText);
     }));
   });
-
-  // describe('AbstractPicker', () => {
-  //   beforeEach(() => {
-  //     const fakeCdr = { markForCheck: () => void 0 };
-  //     componentInstance = new (AbstractPickerComponent as any)(i18n, fakeCdr); // tslint:disable-line:no-any
-  //   });
-  //
-  //   it('should cover untouched branches', () => {
-  //     // onOpenChange
-  //     const emit = spyOn(componentInstance.nzOnOpenChange, 'emit');
-  //     componentInstance.onOpenChange(true);
-  //     expect(emit).toHaveBeenCalled();
-  //
-  //     // setDisabledState
-  //     componentInstance.setDisabledState(true);
-  //     expect(componentInstance.nzDisabled).toBeTruthy();
-  //   });
-  // }); // /AbstractPicker
 
   ////////////
 

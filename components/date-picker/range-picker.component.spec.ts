@@ -165,7 +165,8 @@ describe('NzRangePickerComponent', () => {
       fixtureInstance.modelValue = [new Date('2018-11-11 12:12:12'), null];
       fixtureInstance.nzDisabledDate = (current: Date) => isSameDay(current, compareDate);
       fixture.detectChanges();
-
+      flush();
+      fixture.detectChanges();
       openPickerByClickTrigger();
       const disabledCell = queryFromOverlay('td.ant-picker-cell-disabled .ant-picker-cell-inner');
       expect(disabledCell.textContent!.trim()).toBe('15');
@@ -233,15 +234,17 @@ describe('NzRangePickerComponent', () => {
       fixtureInstance.nzDefaultPickerValue = [new Date('2012-03-18'), new Date('2019-12-12')];
       fixtureInstance.modelValue = [new Date('2018-11-11'), new Date('2018-12-11')];
       fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
       openPickerByClickTrigger();
       expect(getFirstSelectedDayCell().textContent!.trim()).toBe('11');
     }));
 
     it('should support nzDefaultPickerValue', fakeAsync(() => {
-      fixtureInstance.nzDefaultPickerValue = [new Date('2012-03-18'), new Date('2019-11-11')];
+      fixtureInstance.nzDefaultPickerValue = [new Date('2012-01-18'), new Date('2019-11-11')];
       fixture.detectChanges();
       openPickerByClickTrigger();
-      expect(queryFromOverlay('.ant-picker-panel .ant-picker-header-month-btn').textContent!.indexOf('3') > -1).toBeTruthy();
+      expect(queryFromOverlay('.ant-picker-panel .ant-picker-header-month-btn').textContent!.indexOf('1') > -1).toBeTruthy();
       expect(queryFromOverlay('.ant-picker-panel:last-child .ant-picker-header-month-btn').textContent!.indexOf('11') > -1).toBeTruthy();
     }));
 
@@ -279,6 +282,8 @@ describe('NzRangePickerComponent', () => {
     it('should support nzOnChange', fakeAsync(() => {
       fixtureInstance.modelValue = [new Date('2018-11-11'), new Date('2018-11-11')];
       const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
+      fixture.detectChanges();
+      flush();
       fixture.detectChanges();
       openPickerByClickTrigger();
 
@@ -594,6 +599,8 @@ describe('NzRangePickerComponent', () => {
       fixtureInstance.nzDisabledDate = (current: Date) => differenceInDays(current, initial[0]) < 0;
       fixtureInstance.nzShowTime = true;
       fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
       openPickerByClickTrigger();
 
       // Click start date
@@ -656,6 +663,12 @@ describe('NzRangePickerComponent', () => {
 
       typeInElement('2018-11-11', leftInput);
       fixture.detectChanges();
+
+      // should focus the other input
+      leftInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
+      fixture.detectChanges();
+      expect(getRangePickerRightInput(fixture.debugElement) === document.activeElement).toBeTruthy();
+
       typeInElement('2018-12-12', rightInput);
       rightInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
       fixture.detectChanges();
@@ -671,6 +684,8 @@ describe('NzRangePickerComponent', () => {
       const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
       fixtureInstance.modelValue = [new Date('2019-11-11 11:22:33'), new Date('2019-12-12 11:22:33')];
       fixtureInstance.nzShowTime = true;
+      fixture.detectChanges();
+      flush();
       fixture.detectChanges();
       openPickerByClickTrigger();
 
