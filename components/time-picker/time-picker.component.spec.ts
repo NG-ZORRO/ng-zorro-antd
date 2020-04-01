@@ -122,7 +122,28 @@ describe('time-picker', () => {
       const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
       expect(result.getHours()).toBe(0);
     }));
+    it('should support ISO string', fakeAsync(() => {
+      testComponent.date = '2020-03-27T13:49:54.917Z';
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      testComponent.open = true;
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      const date = new Date(testComponent.date);
+      expect(queryFromOverlay('.ant-picker-time-panel-column:nth-child(1) .ant-picker-time-panel-cell-selected > div')!.textContent).toBe(
+        date.getHours().toString()
+      );
+      expect(queryFromOverlay('.ant-picker-time-panel-column:nth-child(2) .ant-picker-time-panel-cell-selected > div')!.textContent).toBe(
+        date.getMinutes().toString()
+      );
+    }));
   });
+
+  function queryFromOverlay(selector: string): HTMLElement {
+    return overlayContainer.getContainerElement().querySelector(selector) as HTMLElement;
+  }
 });
 
 @Component({
@@ -142,7 +163,7 @@ export class NzTestTimePickerComponent {
   open = false;
   openChange = jasmine.createSpy('open change');
   autoFocus = false;
-  date = new Date();
+  date: Date | string = new Date();
   disabled = false;
   use12Hours = false;
   onChange(): void {}

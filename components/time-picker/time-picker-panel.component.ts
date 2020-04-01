@@ -404,7 +404,8 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   scrollToSelected(instance: HTMLElement, index: number, duration: number = 0, unit: NzTimePickerUnit): void {
     const transIndex = this.translateIndex(index, unit);
     const currentOption = (instance.children[transIndex] || instance.children[0]) as HTMLElement;
-    this.scrollTo(instance, currentOption.offsetTop, duration);
+    const parentPaddingTop = 4;
+    this.scrollTo(instance, currentOption.offsetTop - parentPaddingTop, duration);
   }
 
   translateIndex(index: number, unit: NzTimePickerUnit): number {
