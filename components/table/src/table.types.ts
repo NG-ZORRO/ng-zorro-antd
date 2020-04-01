@@ -8,27 +8,23 @@
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-export type NzTableDataType =
+export type NzTableData =
   | NzSafeAny
   | {
-      [key: string]: NzTableDataType;
+      [key: string]: NzTableData;
     };
+export type NzTableLayout = 'fixed' | 'auto';
+export type NzTablePaginationPosition = 'top' | 'bottom' | 'both';
+export type NzTableSize = 'middle' | 'default' | 'small';
+export type NzTableFilterList = Array<{ text: string; value: NzSafeAny; byDefault?: boolean }>;
+export type NzTableSortOrder = string | 'ascend' | 'descend' | null;
+export type NzTableSortFn = (a: NzTableData, b: NzTableData, sortOrder?: NzTableSortOrder) => number;
+export type NzTableFilterValue = NzSafeAny[] | NzSafeAny;
+export type NzTableFilterFn = (value: NzTableFilterValue, data: NzTableData) => boolean;
 
-export type NzTableLayoutType = 'fixed' | 'auto';
-
-export type NzTablePaginationPositionType = 'top' | 'bottom' | 'both';
-
-export type NzTableSizeType = 'middle' | 'default' | 'small';
-
-export type NzThFilterType = Array<{ text: string; value: NzSafeAny; byDefault?: boolean }>;
-
-export interface NzThItemInterface {
-  text: string;
-  value: NzSafeAny;
-  checked: boolean;
+export interface NzTableQueryParams {
+  pageIndex: number;
+  pageSize: number;
+  sort: Array<{ key: string; value: NzTableSortOrder }>;
+  filter: Array<{ key: string; value: NzTableFilterValue }>;
 }
-
-export type NzSortOrderType = string | 'ascend' | 'descend' | null;
-export type NzSortCompareFn = (a: NzTableDataType, b: NzTableDataType, sortOrder?: NzSortOrderType) => number;
-export type NzFilterValue = NzSafeAny[] | NzSafeAny;
-export type NzFilterFn = (value: NzFilterValue, data: NzTableDataType) => boolean;

@@ -19,6 +19,11 @@ Angular Vue and React have very similar benchmarks, which should not be a decidi
 
 `ng-zorro-antd` keeps the same major version with `@angular/core`, for example `ng-zorro-antd@8` supports `@angular/core@8`. In order to get the best performance, we recommend to use the latest version of angular, ref [update docs]( https://update.angular.io).
 
+### Can I use only some of the components of ng-zorro-antd?
+
+Yes, all components of `ng-zorro-antd` can be imported separately.
+
+
 ### Why ng-zorro-antd use less？ Can I use sass instead？
 
 ng-zorro-antd follow the design spec of Ant Design, which could customize theme by less. `@angular/cli` support using both `less` and `sass` in the same project, they could work together.
@@ -79,6 +84,10 @@ export class BugComponent {
   }
 }
 ```
+
+### How to make Angular applications faster?
+
+Read [https://web.dev/angular](https://web.dev/angular).
 
 ### Why some features are not supported?
 

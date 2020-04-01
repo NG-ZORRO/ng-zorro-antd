@@ -95,6 +95,7 @@ Table 组件同时具备了易用性和高度可定制性
 | `(nzPageIndexChange)` | 当前页码改变时的回调函数 | `EventEmitter<number>` | - |
 | `(nzPageSizeChange)` | 页数改变时的回调函数 | `EventEmitter<number>` | - |
 | `(nzCurrentPageDataChange)` | 当前页面展示数据改变的回调函数 | `EventEmitter<any[]>` | - |
+| `(nzQueryParams)` | 当服务端分页、筛选、排序时，用于获得参数，具体见示例 | `EventEmitter<NzTableQueryParams>` | - |
 
 ### th
 
@@ -102,6 +103,7 @@ Table 组件同时具备了易用性和高度可定制性
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
+| `[nzShowCheckbox]` | 是否添加checkbox | `boolean` | - |
 | `[nzDisabled]` | checkbox 是否禁用 | `boolean` | - |
 | `[nzIndeterminate]` | checkbox indeterminate 状态 | `boolean` | - |
 | `[nzChecked]` | checkbox 是否被选中，可双向绑定 | `boolean` | - |
@@ -111,23 +113,25 @@ Table 组件同时具备了易用性和高度可定制性
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
+| `[nzShowRowSelection]` | 是否显示下拉选择 | `boolean` | - |
 | `[nzSelections]` | 下拉选择的内容 `text` 及回调函数 `onSelect` | `Array<{ text: string, onSelect: any }>` | - |
 
 排序属性
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzSortFn]` | 排序函数，前端排序使用一个函数(参考 Array.sort 的 compareFunction) | `(a: any, b: any, sortOrder?: string) => number` | - |
+| `[nzShowSort]` | 是否显示排序 | `boolean` | - |
+| `[nzSortFn]` | 排序函数，前端排序使用一个函数(参考 Array.sort 的 compareFunction)，服务端排序时传入 true | `((a: any, b: any, sortOrder?: string) => number) | boolean` | - |
 | `[nzSortDirections]` | 支持的排序方式，取值为 `'ascend'`, `'descend'`, `null` | `Array<'ascend' \| 'descend' \| null>` | `['ascend', 'descend', null]` |
 | `[nzSortOrder]` | 当前排序状态，可双向绑定 | 'descend' \| 'ascend' \| null | null |
-| `[nzSortKey]` | 排序key，与 `thead` 中 `(nzSortChange)` 配合使用 | `string` | - |
 | `(nzSortOrderChange)` | 排序状态改变回调 | `EventEmitter<'descend' \| 'ascend' \| null>` | - |
 
 过滤属性
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[nzFilterFn]` | 	本地模式下，确定筛选的运行函数 | `(value: any, data: any) => boolean;` | - |
+| `[nzShowFilter]` | 是否显示过滤 | `boolean` | - |
+| `[nzFilterFn]` | 	前端排序时，确定筛选的运行函数，服务端排序时，传入 true | `((value: any, data: any) => boolean;) | boolean` | - |
 | `[nzFilters]` | 过滤器内容, 显示数据 `text`，回调函数传出 `value`，设置 `byDefault` 以默认应用过滤规则 | `Array<{ text: string; value: any; byDefault?: boolean }>` | - |
 | `[nzFilterMultiple]` | 是否为多选过滤器 | `boolean` | `true` |
 | `(nzFilterChange)` | 过滤器内容选择的 value 数据回调 | `EventEmitter<any[] \| any>` | - |
@@ -144,12 +148,20 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzEllipsis]` | 超过宽度将自动省略，暂不支持和排序筛选一起使用。仅当表格布局将为 `nzTableLayout="fixed"`时可用 | `boolean` | `false` |
 
 
+其他
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `[nzColumnKey]` | 当前列的key，用于服务端筛选和排序使用 | `string` | - |
+
+
 ### td
 
 勾选属性
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
+| `[nzShowCheckbox]` | 是否添加checkbox | `boolean` | - |
 | `[nzDisabled]` | checkbox 是否禁用 | `boolean` | - |
 | `[nzIndeterminate]` | checkbox indeterminate 状态 | `boolean` | - |
 | `[nzChecked]` | checkbox 是否被选中，可双向绑定 | `boolean` | - |
@@ -159,6 +171,7 @@ Table 组件同时具备了易用性和高度可定制性
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
+| `[nzShowExpand]` | 是否显示展开按钮 | `boolean` | - |
 | `[nzExpand]` | 当前展开按钮状态，可双向绑定 | `boolean` | - |
 | `(nzExpandChange)` | 当前展开按钮状态改变回调函数 | `EventEmitter<boolean>` | - |
 
@@ -179,23 +192,30 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzIndentSize]` | 展示树形数据时，每层缩进的宽度，以 px 为单位 | `number` | - |
 
 
-### thead
-
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `[nzSingleSort]` | 是否单列排序模式 | `boolean` | `false` |
-| `(nzSortChange)` | 排序改变时的回调函数，需要与 `th` 上的 `[nzSortKey]` 同时使用 | `EventEmitter<{ nzSortKey: string, value: 'descend' \| 'ascend' \| null }>` | - |
-
-
 ### tr
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzExpand]` | 当前列是否展开，与 `td` 上的 `nzExpand` 属性配合使用 | `boolean` | - |
 
+
+### nz-filter-trigger
+
+用于自定义筛选功能
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `[nzDropdownMenu]` | Dropdown 下拉菜单组件 | `NzDropdownMenuComponent` | - |
+| `[nzVisible]` | 菜单是否显示，可双向绑定 | `boolean` | - |
+| `[nzActive]` | 是否激活选中图标效果 | `boolean` | `false` |
+| `(nzVisibleChange)` | 菜单显示状态改变时调用，参数为 nzVisible | `EventEmitter<boolean>` | - |
+
+
 ### [nz-virtual-scroll]
 
 虚拟滚动时配合 `ng-template` 使用, 格式为： `TemplateRef<{ $implicit: any, index: number }>`.
+
+
 
 
 ## 注意

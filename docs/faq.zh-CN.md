@@ -21,6 +21,10 @@ Angular 与 angular.js 不是同一种前端框架，angular.js 发布的时间�
 
 `ng-zorro-antd` 与 `@angular/core` 保持相同的主版本号，例如 `ng-zorro-antd@8` 支持 `@angular/core@8` 版本，依次类推，为了获得最好的性能，推荐升级至最新版本的 Angular。升级 Angular 可以参考[该文档]( https://update.angular.io)。
 
+### 我可以只使用 ng-zorro-antd 的部分组件吗？
+
+`ng-zorro-antd` 的所有组件均支持单独导入使用，与其他的流行组件库可以混用。
+
 ### ng-zorro-antd 为什么使用 less 定制主题？ 我能使用 sass 吗？
 
 ng-zorro-antd 的设计规范遵从 ant design，因此同样使用了 less 文件来定制主题，`@angular/cli` 支持同一个项目中混用多种 css 预处理器， 与 sass 等文件不会互相干扰。
@@ -80,6 +84,10 @@ export class BugComponent {
   }
 }
 ```
+
+### 怎样才能进一步提高 Angular 项目性能？
+
+推荐 [https://web.dev/angular](https://web.dev/angular) 的系列文章
 
 ### 为什么我的 ISSUE 会被关闭
 

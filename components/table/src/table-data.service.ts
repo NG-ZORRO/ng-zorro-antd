@@ -7,9 +7,9 @@
  */
 
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
-import { distinctUntilChanged, filter, map, switchMap, takeUntil } from 'rxjs/operators';
-import { NzFilterFn, NzFilterValue, NzSortCompareFn, NzSortOrderType, NzTableDataType } from './table.types';
+import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, map, skip, switchMap, takeUntil } from 'rxjs/operators';
+import { NzTableData, NzTableFilterFn, NzTableFilterValue, NzTableQueryParams, NzTableSortFn, NzTableSortOrder } from './table.types';
 
 @Injectable()
 export class NzTableDataService implements OnDestroy {
@@ -17,18 +17,49 @@ export class NzTableDataService implements OnDestroy {
   private pageIndex$ = new BehaviorSubject<number>(1);
   private frontPagination$ = new BehaviorSubject<boolean>(true);
   private pageSize$ = new BehaviorSubject<number>(10);
-  private listOfData$ = new BehaviorSubject<NzTableDataType[]>([]);
+  private listOfData$ = new BehaviorSubject<NzTableData[]>([]);
   pageIndexDistinct$ = this.pageIndex$.pipe(distinctUntilChanged());
   pageSizeDistinct$ = this.pageSize$.pipe(distinctUntilChanged());
   listOfCalcOperator$ = new BehaviorSubject<
     Array<{
-      sortFn: NzSortCompareFn | null;
-      sortOrder: NzSortOrderType;
-      filterFn: NzFilterFn | null;
-      filterValue: NzFilterValue;
+      key?: string;
+      sortFn: NzTableSortFn | null | boolean;
+      sortOrder: NzTableSortOrder;
+      filterFn: NzTableFilterFn | null | boolean;
+      filterValue: NzTableFilterValue;
       sortPriority: number | boolean;
     }>
   >([]);
+  queryParams$: Observable<NzTableQueryParams> = combineLatest([
+    this.pageIndexDistinct$,
+    this.pageSizeDistinct$,
+    this.listOfCalcOperator$
+  ]).pipe(
+    debounceTime(300),
+    skip(1),
+    map(([pageIndex, pageSize, listOfCalc]) => {
+      return {
+        pageIndex,
+        pageSize,
+        sort: listOfCalc
+          .filter(item => item.sortFn)
+          .map(item => {
+            return {
+              key: item.key!,
+              value: item.sortOrder
+            };
+          }),
+        filter: listOfCalc
+          .filter(item => item.filterFn)
+          .map(item => {
+            return {
+              key: item.key!,
+              value: item.filterValue
+            };
+          })
+      };
+    })
+  );
   private listOfDataAfterCalc$ = combineLatest([this.listOfData$, this.listOfCalcOperator$]).pipe(
     map(([listOfData, listOfCalcOperator]) => {
       let listOfDataAfterCalc = [...listOfData];
@@ -39,7 +70,7 @@ export class NzTableDataService implements OnDestroy {
       });
       for (const item of listOfFilterOperator) {
         const { filterFn, filterValue } = item;
-        listOfDataAfterCalc = listOfDataAfterCalc.filter(data => filterFn!(filterValue, data));
+        listOfDataAfterCalc = listOfDataAfterCalc.filter(data => (filterFn as NzTableFilterFn)(filterValue, data));
       }
       const listOfSortOperator = listOfCalcOperator
         .filter(item => item.sortOrder !== null && typeof item.sortFn === 'function')
@@ -48,7 +79,7 @@ export class NzTableDataService implements OnDestroy {
         for (const item of listOfSortOperator) {
           const { sortFn, sortOrder } = item;
           if (sortFn && sortOrder) {
-            const compareResult = sortFn(record1, record2, sortOrder);
+            const compareResult = (sortFn as NzTableSortFn)(record1, record2, sortOrder);
             if (compareResult !== 0) {
               return sortOrder === 'ascend' ? compareResult : -compareResult;
             }
@@ -88,7 +119,7 @@ export class NzTableDataService implements OnDestroy {
   updatePageIndex(index: number): void {
     this.pageIndex$.next(index);
   }
-  updateListOfData(list: NzTableDataType[]): void {
+  updateListOfData(list: NzTableData[]): void {
     this.listOfData$.next(list);
   }
   constructor() {}

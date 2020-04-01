@@ -15,16 +15,19 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Optional,
   Output,
   QueryList,
   Renderer2,
+  SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { InputBoolean } from 'ng-zorro-antd/core/util';
@@ -48,12 +51,13 @@ import { NzTrDirective } from './tr.directive';
     </ng-container>
   `
 })
-export class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewInit, OnInit {
+export class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewInit, OnInit, OnChanges {
   private destroy$ = new Subject<void>();
   isInsideTable = false;
   @ViewChild('contentTemplate', { static: true }) templateRef: TemplateRef<NzSafeAny>;
   @ContentChildren(NzTrDirective) listOfNzTrDirective: QueryList<NzTrDirective>;
   @ContentChildren(NzThAddOnComponent, { descendants: true }) listOfNzThAddOnComponent: QueryList<NzThAddOnComponent>;
+  /** @deprecated use nzSortFn and nzSortPriority instead **/
   @Input() @InputBoolean() nzSingleSort = false;
   /** @deprecated use nzSortOrderChange instead **/
   @Output() readonly nzSortChange = new EventEmitter<{ key: NzSafeAny; value: string | null }>();
@@ -71,6 +75,15 @@ export class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewI
   ngOnInit(): void {
     if (this.nzTableStyleService) {
       this.nzTableStyleService.setTheadTemplate(this.templateRef);
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const { nzSingleSort } = changes;
+    if (nzSingleSort) {
+      warnDeprecation(
+        `'nzSingleSort' is deprecated and will be removed in 10.0.0. Please use use 'nzSortFn' and 'nzSortPriority' instead instead.`
+      );
     }
   }
 
@@ -114,15 +127,11 @@ export class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewI
         takeUntil(this.destroy$)
       );
       manualSort$.subscribe((data: NzThAddOnComponent) => {
-        const emitValue = { key: data.nzSortKey, value: data.nzSortOrder };
+        const emitValue = { key: data.nzColumnKey, value: data.sortOrder };
         this.nzSortChange.emit(emitValue);
         this.nzSortOrderChange.emit(emitValue);
         if (this.nzSingleSort || (data.nzSortFn && data.nzSortPriority === false)) {
-          this.listOfNzThAddOnComponent.forEach(th => {
-            if (th !== data) {
-              th.clearSortOrder();
-            }
-          });
+          this.listOfNzThAddOnComponent.filter(th => th !== data).forEach(th => th.clearSortOrder());
         }
       });
       const listOfCalcOperator$ = listOfColumn$.pipe(
@@ -133,11 +142,12 @@ export class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewI
           list
             .filter(item => !!item.nzSortFn || !!item.nzFilterFn)
             .map(item => {
-              const { nzSortFn, nzSortOrder, nzFilterFn, nzFilterValue, nzSortPriority } = item;
+              const { nzSortFn, sortOrder, nzFilterFn, nzFilterValue, nzSortPriority, nzColumnKey } = item;
               return {
+                key: nzColumnKey,
                 sortFn: nzSortFn,
                 sortPriority: nzSortPriority,
-                sortOrder: nzSortOrder,
+                sortOrder: sortOrder!,
                 filterFn: nzFilterFn!,
                 filterValue: nzFilterValue
               };
