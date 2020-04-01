@@ -28,6 +28,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { warn } from 'ng-zorro-antd/core/logger';
 import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 
 const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
@@ -250,8 +251,13 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     this.updateAutoFocus();
   }
 
-  writeValue(time: Date | null): void {
-    this.value = time;
+  writeValue(time: Date): void {
+    if (time instanceof Date) {
+      this.value = time;
+    } else {
+      warn('Non-Date type is not recommended for time-picker, use "Date" type');
+      this.value = time ? new Date(time) : null;
+    }
     this.cdr.markForCheck();
   }
 

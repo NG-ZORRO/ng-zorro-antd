@@ -35,6 +35,11 @@ describe('DateHelperService', () => {
     it('should get first day of week with 0 by en_US', () => {
       expect(dateHelper.getFirstDayOfWeek()).toBe(0);
     });
+
+    it('should do parseTime correctly', () => {
+      expect(dateHelper.parseTime('14:00')?.toTimeString().substr(0, 8)).toBe('14:00:00');
+      expect(dateHelper.parseTime('4:00')?.toTimeString().substr(0, 8)).toBe('04:00:00');
+    });
   });
 
   describe('Formatting with Data-fns', () => {
@@ -55,6 +60,11 @@ describe('DateHelperService', () => {
       const date = new Date('2018-12-31 12:11:10');
       expect(dateHelper.format(date, 'yyyy-MM-dd')).toBe('2018-12-31');
       expect(dateHelper.format(date, 'II')).toBe('01'); // ISO week
+    });
+
+    it('should do parseTime correctly', () => {
+      expect(dateHelper.parseTime('14:00', 'HH:mm')?.toTimeString().substr(0, 8)).toBe('14:00:00');
+      expect(dateHelper.parseTime('4:00', 'H:mm')?.toTimeString().substr(0, 8)).toBe('04:00:00');
     });
   });
 
