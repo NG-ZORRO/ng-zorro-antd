@@ -11,13 +11,13 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleCha
 @Component({
   selector: 'nz-tree-indent',
   exportAs: 'nzTreeIndent',
-  template: `
-    <span aria-hidden="true" class="{{ nzPrefixCls }}-indent">
-      <span *ngFor="let i of listOfUnit; let index = index" [ngClass]="unitMapOfClass(index)"></span>
-    </span>
-  `,
+  template: ` <span *ngFor="let i of listOfUnit; let index = index" [class]="unitMapOfClass(index)"></span> `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  preserveWhitespaces: false
+  preserveWhitespaces: false,
+  host: {
+    '[attr.aria-hidden]': 'true',
+    '[class]': `nzPrefixCls + '-indent'`
+  }
 })
 export class NzTreeIndentComponent implements OnInit, OnChanges {
   @Input() nzPrefixCls: string;

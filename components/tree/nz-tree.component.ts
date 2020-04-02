@@ -25,6 +25,7 @@ import {
   TemplateRef
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { treeCollapseMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import {
@@ -53,46 +54,45 @@ const NZ_CONFIG_COMPONENT_NAME = 'tree';
 @Component({
   selector: 'nz-tree',
   exportAs: 'nzTree',
+  animations: [treeCollapseMotion],
   template: `
-    <div [ngClass]="classMap">
-      <div role="tree">
-        <input [ngStyle]="HIDDEN_STYLE" />
-      </div>
-      <div [ngClass]="classMapOfNodeList">
-        <div>
-          <div [ngClass]="classMapOfListContainer">
-            <ng-container *ngFor="let node of nzFlattenNodes">
-              <nz-tree-node
-                [nzTreeNode]="node.data"
-                [nzSelectMode]="nzSelectMode"
-                [nzShowLine]="nzShowLine"
-                [nzExpandedIcon]="nzExpandedIcon"
-                [nzDraggable]="nzDraggable"
-                [nzCheckable]="nzCheckable"
-                [nzShowExpand]="nzShowExpand"
-                [nzAsyncData]="nzAsyncData"
-                [nzSearchValue]="nzSearchValue"
-                [nzHideUnMatched]="nzHideUnMatched"
-                [nzBeforeDrop]="nzBeforeDrop"
-                [nzShowIcon]="nzShowIcon"
-                [nzTreeTemplate]="treeTemplate"
-                [@.disabled]="noAnimation?.nzNoAnimation"
-                [nzNoAnimation]="noAnimation?.nzNoAnimation"
-                (nzExpandChange)="eventTriggerChanged($event)"
-                (nzClick)="eventTriggerChanged($event)"
-                (nzDblClick)="eventTriggerChanged($event)"
-                (nzContextMenu)="eventTriggerChanged($event)"
-                (nzCheckBoxChange)="eventTriggerChanged($event)"
-                (nzOnDragStart)="eventTriggerChanged($event)"
-                (nzOnDragEnter)="eventTriggerChanged($event)"
-                (nzOnDragOver)="eventTriggerChanged($event)"
-                (nzOnDragLeave)="eventTriggerChanged($event)"
-                (nzOnDragEnd)="eventTriggerChanged($event)"
-                (nzOnDrop)="eventTriggerChanged($event)"
-              >
-              </nz-tree-node>
-            </ng-container>
-          </div>
+    <div role="tree">
+      <input [ngStyle]="HIDDEN_STYLE" />
+    </div>
+    <div [ngClass]="classMapOfNodeList">
+      <div>
+        <div [ngClass]="classMapOfListContainer" [@treeCollapseMotion]="nzFlattenNodes.length">
+          <ng-container *ngFor="let node of nzFlattenNodes; trackBy: trackByFlattenNode">
+            <nz-tree-node
+              [nzTreeNode]="node.data"
+              [nzSelectMode]="nzSelectMode"
+              [nzShowLine]="nzShowLine"
+              [nzExpandedIcon]="nzExpandedIcon"
+              [nzDraggable]="nzDraggable"
+              [nzCheckable]="nzCheckable"
+              [nzShowExpand]="nzShowExpand"
+              [nzAsyncData]="nzAsyncData"
+              [nzSearchValue]="nzSearchValue"
+              [nzHideUnMatched]="nzHideUnMatched"
+              [nzBeforeDrop]="nzBeforeDrop"
+              [nzShowIcon]="nzShowIcon"
+              [nzTreeTemplate]="treeTemplate"
+              [@.disabled]="noAnimation?.nzNoAnimation"
+              [nzNoAnimation]="noAnimation?.nzNoAnimation"
+              (nzExpandChange)="eventTriggerChanged($event)"
+              (nzClick)="eventTriggerChanged($event)"
+              (nzDblClick)="eventTriggerChanged($event)"
+              (nzContextMenu)="eventTriggerChanged($event)"
+              (nzCheckBoxChange)="eventTriggerChanged($event)"
+              (nzOnDragStart)="eventTriggerChanged($event)"
+              (nzOnDragEnter)="eventTriggerChanged($event)"
+              (nzOnDragOver)="eventTriggerChanged($event)"
+              (nzOnDragLeave)="eventTriggerChanged($event)"
+              (nzOnDragEnd)="eventTriggerChanged($event)"
+              (nzOnDrop)="eventTriggerChanged($event)"
+            >
+            </nz-tree-node>
+          </ng-container>
         </div>
       </div>
     </div>
@@ -110,7 +110,10 @@ const NZ_CONFIG_COMPONENT_NAME = 'tree';
       useExisting: forwardRef(() => NzTreeComponent),
       multi: true
     }
-  ]
+  ],
+  host: {
+    '[class]': 'classMap'
+  }
 })
 export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, ControlValueAccessor, OnChanges {
   @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) nzShowIcon: boolean;
@@ -282,6 +285,9 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
     this.handleFlattenNodes(this.nzNodes, newExpandedKeys);
   }
 
+  trackByFlattenNode(_: number, node: FlattenNode): string {
+    return node.data.key;
+  }
   // Deal with properties
   /**
    * nzData
