@@ -41,9 +41,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'modal';
 @Component({
   selector: 'nz-modal',
   exportAs: 'nzModal',
-  template: `
-    <ng-template><ng-content></ng-content></ng-template>
-  `,
+  template: ` <ng-template><ng-content></ng-content></ng-template> `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges, NzModalLegacyAPI<T, R> {
@@ -142,27 +140,19 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   }
 
   triggerOk(): void {
-    if (this.modalRef) {
-      this.modalRef.triggerOk();
-    }
+    this.modalRef?.triggerOk();
   }
 
   triggerCancel(): void {
-    if (this.modalRef) {
-      this.modalRef.triggerCancel();
-    }
+    this.modalRef?.triggerCancel();
   }
 
   getContentComponent(): T | void {
-    if (this.modalRef) {
-      return this.modalRef.getContentComponent();
-    }
+    return this.modalRef?.getContentComponent();
   }
 
   getElement(): HTMLElement | void {
-    if (this.modalRef) {
-      return this.modalRef.getElement();
-    }
+    return this.modalRef?.getElement();
   }
 
   getModalRef(): NzModalRef | null {
@@ -171,6 +161,15 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
 
   private setFooterWithTemplate(templateRef: TemplateRef<{}>): void {
     this.nzFooter = templateRef;
+    if (this.modalRef) {
+      // If modalRef already created, set the footer in next tick
+      Promise.resolve().then(() => {
+        this.modalRef!.updateConfig({
+          nzFooter: this.nzFooter
+        });
+      });
+    }
+
     this.cdr.markForCheck();
   }
 
