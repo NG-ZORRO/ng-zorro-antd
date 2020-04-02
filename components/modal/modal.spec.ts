@@ -1375,6 +1375,62 @@ describe('NzModal', () => {
       }).not.toThrowError();
     }));
   });
+
+  describe('draggable', () => {
+    let componentFixture: ComponentFixture<TestWithDraggableComponent>;
+    let componentInstance: TestWithDraggableComponent;
+
+    beforeEach(() => {
+      componentFixture = TestBed.createComponent(TestWithDraggableComponent);
+      componentFixture.detectChanges();
+      componentInstance = componentFixture.componentInstance;
+    });
+
+    it('should component mode work', fakeAsync(() => {
+      componentInstance.isVisible = true;
+      componentFixture.detectChanges();
+      flush();
+      componentFixture.detectChanges();
+
+      expect(componentInstance.nzModalComponent).toBeTruthy();
+      const modalRef = componentInstance.nzModalComponent.getModalRef();
+      expect(modalRef?.getDragRef()).toBeTruthy();
+
+      componentInstance.isVisible = false;
+      componentFixture.detectChanges();
+      flush();
+      componentFixture.detectChanges();
+      expect(modalRef?.getDragRef()).toBeFalsy();
+    }));
+
+    it('should service work', fakeAsync(() => {
+      const modalRef = componentInstance.nzModalService.create({
+        nzContent: TestWithModalContentComponent,
+        nzDraggable: true
+      });
+
+      const modalConfirmRef = componentInstance.nzModalService.confirm({
+        nzContent: 'confirm',
+        nzDraggable: true
+      });
+
+      componentFixture.detectChanges();
+      flush();
+      componentFixture.detectChanges();
+
+      expect(modalRef.getDragRef()).toBeTruthy();
+      expect(modalConfirmRef.getDragRef()).toBeTruthy();
+
+      modalRef.close();
+      modalConfirmRef.close();
+      componentFixture.detectChanges();
+      flush();
+      componentFixture.detectChanges();
+
+      expect(modalRef.getDragRef()).toBeFalsy();
+      expect(modalConfirmRef.getDragRef()).toBeFalsy();
+    }));
+  });
 });
 
 @Directive({ selector: 'test-with-view-container' })
@@ -1383,9 +1439,7 @@ class TestWithViewContainerDirective {
 }
 
 @Component({
-  template: `
-    <test-with-view-container></test-with-view-container>
-  `
+  template: ` <test-with-view-container></test-with-view-container> `
 })
 class TestWithChildViewContainerComponent {
   @ViewChild(TestWithViewContainerDirective) childWithViewContainer: TestWithViewContainerDirective;
@@ -1422,6 +1476,23 @@ class TestWithServiceComponent {
     this.modalRef = modalRef;
     return '';
   }
+}
+
+@Component({
+  template: `
+    <nz-modal [(nzVisible)]="isVisible" nzDraggable nzWrapClassName="draggable-modal" nzTitle="Draggable Modal">
+      <p>Content one</p>
+      <p>Content two</p>
+      <p>Content three</p>
+    </nz-modal>
+  `
+})
+class TestWithDraggableComponent {
+  isVisible = false;
+
+  @ViewChild(NzModalComponent) nzModalComponent: NzModalComponent;
+
+  constructor(public nzModalService: NzModalService, public viewContainerRef: ViewContainerRef) {}
 }
 
 @Component({
@@ -1480,6 +1551,7 @@ const TEST_DIRECTIVES = [
   TestWithViewContainerDirective,
   TestWithOnPushViewContainerComponent,
   TestModalWithoutFocusableElementsComponent,
+  TestWithDraggableComponent,
   TestModalComponent
 ];
 

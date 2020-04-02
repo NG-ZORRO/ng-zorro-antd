@@ -54,6 +54,7 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   @Input() @InputBoolean() nzCancelDisabled: boolean = false;
   @Input() @InputBoolean() nzCancelLoading: boolean = false;
   @Input() @InputBoolean() nzKeyboard: boolean = true;
+  @Input() @InputBoolean() nzDraggable: boolean = false;
   @Input() @InputBoolean() nzNoAnimation = false;
   @Input() nzContent: string | TemplateRef<{}> | Type<T>;
   @Input() nzComponentParams: T;

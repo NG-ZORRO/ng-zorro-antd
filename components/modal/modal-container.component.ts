@@ -6,7 +6,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { FocusTrapFactory } from '@angular/cdk/a11y';
+import { ConfigurableFocusTrapFactory } from '@angular/cdk/a11y';
+import { DragDrop } from '@angular/cdk/drag-drop';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortalOutlet } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
@@ -26,6 +27,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { nzModalAnimations } from './modal-animations';
 import { BaseModalContainer } from './modal-container';
+import { NzModalTitleComponent } from './modal-title.component';
 import { ModalOptions } from './modal-types';
 
 @Component({
@@ -76,18 +78,20 @@ import { ModalOptions } from './modal-types';
 })
 export class NzModalContainerComponent extends BaseModalContainer {
   @ViewChild(CdkPortalOutlet, { static: true }) portalOutlet: CdkPortalOutlet;
+  @ViewChild(NzModalTitleComponent, { static: false }) modalHeaderRef: NzModalTitleComponent;
   @ViewChild('modalElement', { static: true }) modalElementRef: ElementRef<HTMLDivElement>;
   constructor(
     elementRef: ElementRef,
-    focusTrapFactory: FocusTrapFactory,
+    focusTrapFactory: ConfigurableFocusTrapFactory,
     cdr: ChangeDetectorRef,
     render: Renderer2,
     zone: NgZone,
     overlayRef: OverlayRef,
+    dragDrop: DragDrop,
     public config: ModalOptions,
     @Optional() @Inject(DOCUMENT) document: NzSafeAny,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) animationType: string
   ) {
-    super(elementRef, focusTrapFactory, cdr, render, zone, overlayRef, config, document, animationType);
+    super(elementRef, focusTrapFactory, cdr, render, zone, overlayRef, dragDrop, config, document, animationType);
   }
 }
