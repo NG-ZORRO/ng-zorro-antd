@@ -16,12 +16,11 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
     <ng-template #tplTitle>
       <span>Title Template</span>
     </ng-template>
-    <ng-template #tplContent>
+    <ng-template #tplContent let-params let-ref="modalRef">
       <p>some contents...</p>
       <p>some contents...</p>
-      <p>some contents...</p>
-      <p>some contents...</p>
-      <p>some contents...</p>
+      <p>{{ params.value }}</p>
+      <button nz-button (click)="ref.destroy()">Destroy</button>
     </ng-template>
     <ng-template #tplFooter>
       <button nz-button nzType="primary" (click)="destroyTplModal()" [nzLoading]="tplModalButtonLoading">
@@ -76,6 +75,9 @@ export class NzDemoModalServiceComponent {
       nzFooter: tplFooter,
       nzMaskClosable: false,
       nzClosable: false,
+      nzComponentParams: {
+        value: 'Template Context'
+      },
       nzOnOk: () => console.log('Click ok')
     });
   }
