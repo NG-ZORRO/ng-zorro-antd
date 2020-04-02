@@ -70,7 +70,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
 
   protected destroyed$: Subject<void> = new Subject();
   protected isCustomPlaceHolder: boolean = false;
-  private _showTime: SupportTimeOptions | boolean;
+  private showTime: SupportTimeOptions | boolean;
 
   // --- Common API
   @Input() @InputBoolean() nzAllowClear: boolean = true;
@@ -109,11 +109,11 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   @ViewChild(NzPickerComponent, { static: true }) protected picker: NzPickerComponent;
 
   @Input() get nzShowTime(): SupportTimeOptions | boolean {
-    return this._showTime;
+    return this.showTime;
   }
 
   set nzShowTime(value: SupportTimeOptions | boolean) {
-    this._showTime = typeof value === 'object' ? value : toBoolean(value);
+    this.showTime = typeof value === 'object' ? value : toBoolean(value);
   }
 
   get realOpenState(): boolean {
