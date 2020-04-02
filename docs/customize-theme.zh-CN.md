@@ -122,25 +122,31 @@ module.exports = {
 
 全部可被自定义 less 变量可以参考 [这里](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/scripts/site/_site/doc/theme.less)。
 
-## 使用暗色主题
+## 官方主题
+
+我们提供了一些官方主题，欢迎在项目中试用，并且给我们提供反馈。
+
+- 🌑 暗黑主题（9+ 支持）
+- 📦 紧凑主题（9+ 支持）
 
 ### 方式一
 
-是在样式文件引入 `ng-zorro-antd/style/dark.less` 覆盖主题变量。
+是在样式文件引入 `ng-zorro-antd/style/dark.less` 或 `ng-zorro-antd/style/compact.less` 覆盖主题变量。
 
 ```less
-/* ng-zorro-antd 全量样式或者单组件样式 */
-@import "~ng-zorro-antd/style/dark.less";
+@import "ng-zorro-antd/ng-zorro-antd.less";
+@import "~ng-zorro-antd/style/dark.less";    // 引入官方提供的暗色 less 样式文件
+@import "~ng-zorro-antd/style/compact.less"; // 引入官方提供的紧凑 less 样式文件
 ```
 
 ### 方式二
 
-如果项目不使用 Less，可在 CSS 文件或者 `angular.json` 的 `styles` 字段中，全量引入 `ng-zorro-antd.dark.css`。
+如果项目不使用 Less，可在 CSS 文件或者 `angular.json` 的 `styles` 字段中，全量引入 `ng-zorro-antd.dark.css` 或者 `ng-zorro-antd.compact.css`。
 
 样式文件中：
 
 ```css
-@import "~ng-zorro-antd/ng-zorro-antd.dark.min.css";
+@import "~ng-zorro-antd/ng-zorro-antd.dark.css";
 ```
 
 angular.json 中
@@ -150,7 +156,7 @@ angular.json 中
   "build": {
     "options": {
       "styles": [
-        "node_modules/ng-zorro-antd/ng-zorro-antd.dark.min.css"
+        "node_modules/ng-zorro-antd/ng-zorro-antd.dark.css"
       ]
     }
   }
@@ -164,6 +170,7 @@ angular.json 中
 
 ```javascript
 const darkThemeVars = require('ng-zorro-antd/dark-theme');
+const compactThemeVars = require('ng-zorro-antd/compact-theme');
 module.exports = {
   module: {
     rules: [
@@ -173,7 +180,8 @@ module.exports = {
         options: {
           modifyVars: {
           'hack': `true;@import "${require.resolve('ng-zorro-antd/style/color/colorPalette.less')}";`,
-            ...darkThemeVars
+            ...darkThemeVars,
+            ...compactThemeVars
           },
           javascriptEnabled: true
         }

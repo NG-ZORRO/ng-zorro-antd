@@ -122,25 +122,31 @@ You can get more information about custom-webpack builder following the articles
 
 All less vars can be checked [here](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/scripts/site/_site/doc/theme.less) is a sample of theme define file.
 
-## Use dark theme
+## Official Themes
+
+We have some official themes, try them out and give us some feedback!
+
+- 🌑 Dark Theme (supported in 9+)
+- 📦 Compact Theme (supported in 9+)
 
 ### Method 1
 
-include `ng-zorro-antd/style/dark.less` in the style file to override theme variables.
+include `ng-zorro-antd/style/dark.less` or `ng-zorro-antd/style/compact.less` in the style file to override theme variables.
 
 ```less
-/* ng-zorro-antd styles */
-@import "~ng-zorro-antd/style/dark.less";
+@import "ng-zorro-antd/ng-zorro-antd.less";
+@import "~ng-zorro-antd/style/dark.less";    // Introduce the official dark less style file
+@import "~ng-zorro-antd/style/compact.less"; // Introduce the official compact less style file
 ```
 
 ### Method 2
 
-If the project does not use Less, you can include `ng-zorro-antd.dark.css` in the CSS file or add to the `angular.json` config.
+If the project does not use Less, you can include `ng-zorro-antd.dark.css` or `ng-zorro-antd.compact.css` in the CSS file or add to the `angular.json` config.
 
 CSS file：
 
 ```css
-@import "~ng-zorro-antd/ng-zorro-antd.dark.min.css";
+@import "~ng-zorro-antd/ng-zorro-antd.dark.css";
 ```
 
 angular.json
@@ -150,7 +156,7 @@ angular.json
   "build": {
     "options": {
       "styles": [
-        "node_modules/ng-zorro-antd/ng-zorro-antd.dark.min.css"
+        "node_modules/ng-zorro-antd/ng-zorro-antd.dark.css"
       ]
     }
   }
@@ -163,6 +169,7 @@ using less-loader in webpack to introduce as needed.
 
 ```javascript
 const darkThemeVars = require('ng-zorro-antd/dark-theme');
+const compactThemeVars = require('ng-zorro-antd/compact-theme');
 module.exports = {
   module: {
     rules: [
@@ -172,7 +179,8 @@ module.exports = {
         options: {
           modifyVars: {
           'hack': `true;@import "${require.resolve('ng-zorro-antd/style/color/colorPalette.less')}";`,
-            ...darkThemeVars
+            ...darkThemeVars,
+            ...compactThemeVars
           },
           javascriptEnabled: true
         }

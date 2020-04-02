@@ -2,21 +2,19 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
-
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { FixedWidgetsComponent } from './fixed-widgets.component';
-import { DarkIcon, DefaultIcon } from './theme-icons'
+import { ThemingIcon } from './theme-icons'
 
 @NgModule({
   declarations: [
     FixedWidgetsComponent,
-    DefaultIcon,
-    DarkIcon
+    ThemingIcon
   ],
   imports: [
     CommonModule,
     NzAvatarModule,
-    NzToolTipModule
+    NzDropDownModule
   ],
   exports: [FixedWidgetsComponent]
 })
