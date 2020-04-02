@@ -35,7 +35,7 @@ import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { NzTableDataService } from '../table-data.service';
 import { NzTableStyleService } from '../table-style.service';
-import { NzTableDataType, NzTableLayoutType, NzTablePaginationPositionType, NzTableSizeType } from '../table.types';
+import { NzTableData, NzTableLayout, NzTablePaginationPosition, NzTableQueryParams, NzTableSize } from '../table.types';
 import { NzTableInnerScrollComponent } from './table-inner-scroll.component';
 import { NzTableVirtualScrollDirective } from './table-virtual-scroll.directive';
 
@@ -122,7 +122,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'table';
   }
 })
 export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
-  @Input() nzTableLayout: NzTableLayoutType = 'auto';
+  @Input() nzTableLayout: NzTableLayout = 'auto';
   @Input() nzShowTotal: TemplateRef<{ $implicit: number; range: [number, number] }> | null = null;
   @Input() nzItemRender: TemplateRef<PaginationItemRenderContext> | null = null;
   @Input() nzLoadingIndicator: TemplateRef<NzSafeAny> | null = null;
@@ -133,31 +133,32 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterView
   @Input() nzVirtualItemSize = 0;
   @Input() nzVirtualMaxBufferPx = 200;
   @Input() nzVirtualMinBufferPx = 100;
-  @Input() nzVirtualForTrackBy: TrackByFunction<NzTableDataType> = index => index;
+  @Input() nzVirtualForTrackBy: TrackByFunction<NzTableData> = index => index;
   @Input() nzLoadingDelay = 0;
   @Input() nzPageIndex = 1;
   @Input() nzPageSize = 10;
   @Input() nzTotal = 0;
   @Input() nzWidthConfig: Array<string | null> = [];
-  @Input() nzData: NzTableDataType[] = [];
-  @Input() nzPaginationPosition: NzTablePaginationPositionType = 'bottom';
+  @Input() nzData: NzTableData[] = [];
+  @Input() nzPaginationPosition: NzTablePaginationPosition = 'bottom';
   @Input() nzScroll: { x?: string | null; y?: string | null } = { x: null, y: null };
   @Input() @InputBoolean() nzFrontPagination = true;
   @Input() @InputBoolean() nzTemplateMode = false;
   @Input() @InputBoolean() nzShowPagination = true;
   @Input() @InputBoolean() nzLoading = false;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzBordered: boolean;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzTableSizeType;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzTableSize;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzShowSizeChanger: boolean;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzHideOnSinglePage: boolean;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzShowQuickJumper: boolean;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzSimple: boolean;
   @Output() readonly nzPageSizeChange = new EventEmitter<number>();
   @Output() readonly nzPageIndexChange = new EventEmitter<number>();
-  @Output() readonly nzCurrentPageDataChange = new EventEmitter<NzTableDataType[]>();
+  @Output() readonly nzQueryParams = new EventEmitter<NzTableQueryParams>();
+  @Output() readonly nzCurrentPageDataChange = new EventEmitter<NzTableData[]>();
 
   /** public data for ngFor tr */
-  public data: NzTableDataType[] = [];
+  public data: NzTableData[] = [];
   public cdkVirtualScrollViewport: CdkVirtualScrollViewport;
   scrollX: string | null = null;
   scrollY: string | null = null;
@@ -197,8 +198,9 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterView
   }
 
   ngOnInit(): void {
-    const { pageIndexDistinct$, pageSizeDistinct$, listOfCurrentPageData$, total$ } = this.nzTableDataService;
+    const { pageIndexDistinct$, pageSizeDistinct$, listOfCurrentPageData$, total$, queryParams$ } = this.nzTableDataService;
     const { theadTemplate$, hasFixLeft$, hasFixRight$ } = this.nzTableStyleService;
+    queryParams$.pipe(takeUntil(this.destroy$)).subscribe(this.nzQueryParams);
     pageIndexDistinct$.pipe(takeUntil(this.destroy$)).subscribe(pageIndex => {
       if (pageIndex !== this.nzPageIndex) {
         this.nzPageIndex = pageIndex;

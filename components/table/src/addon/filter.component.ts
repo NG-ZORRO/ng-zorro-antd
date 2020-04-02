@@ -24,8 +24,13 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { NzThFilterType, NzThItemInterface } from '../table.types';
-import { NzFilterTriggerComponent } from './filter-trigger.component';
+import { NzTableFilterList } from '../table.types';
+
+interface NzThItemInterface {
+  text: string;
+  value: NzSafeAny;
+  checked: boolean;
+}
 
 @Component({
   selector: 'nz-table-filter',
@@ -38,8 +43,8 @@ import { NzFilterTriggerComponent } from './filter-trigger.component';
     </span>
     <ng-container *ngIf="!customFilter; else extraTemplate">
       <nz-filter-trigger
-        #filterTrigger="nzFilterTrigger"
-        [nzActive]="isFilterIconActivated"
+        [nzVisible]="isVisible"
+        [nzActive]="isChecked"
         [nzDropdownMenu]="filterMenu"
         (nzVisibleChange)="onVisibleChange($event)"
       >
@@ -55,8 +60,8 @@ import { NzFilterTriggerComponent } from './filter-trigger.component';
             </li>
           </ul>
           <div class="ant-table-filter-dropdown-btns">
-            <button nz-button nzType="link" nzSize="small" (click)="reset(filterTrigger)">{{ locale.filterReset }}</button>
-            <button nz-button nzType="primary" nzSize="small" (click)="confirm(filterTrigger)">{{ locale.filterConfirm }}</button>
+            <button nz-button nzType="link" nzSize="small" (click)="reset()" [disabled]="!isChecked">{{ locale.filterReset }}</button>
+            <button nz-button nzType="primary" nzSize="small" (click)="confirm()">{{ locale.filterConfirm }}</button>
           </div>
         </div>
       </nz-dropdown-menu>
@@ -71,12 +76,13 @@ export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
   @Input() customFilter = false;
   @Input() extraTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() filterMultiple = true;
-  @Input() listOfFilter: NzThFilterType = [];
+  @Input() listOfFilter: NzTableFilterList = [];
   @Output() readonly filterChange = new EventEmitter<NzSafeAny[] | NzSafeAny>();
   private destroy$ = new Subject();
   locale: NzI18nInterface['Table'] = {} as NzI18nInterface['Table'];
   isChanged = false;
-  isFilterIconActivated = false;
+  isChecked = false;
+  isVisible = false;
   listOfParsedFilter: NzThItemInterface[] = [];
 
   trackByValue(_: number, item: NzThItemInterface): NzSafeAny {
@@ -86,34 +92,45 @@ export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
   check(filter: NzThItemInterface): void {
     this.isChanged = true;
     if (this.filterMultiple) {
+      this.listOfParsedFilter = this.listOfParsedFilter.map(item => {
+        if (item === filter) {
+          return { ...item, checked: !filter.checked };
+        } else {
+          return item;
+        }
+      });
       filter.checked = !filter.checked;
     } else {
-      this.listOfParsedFilter.forEach(item => (item.checked = item === filter));
+      this.listOfParsedFilter = this.listOfParsedFilter.map(item => {
+        return { ...item, checked: item === filter };
+      });
     }
+    this.isChecked = this.getCheckedStatus(this.listOfParsedFilter);
   }
 
-  confirm(filterTrigger: NzFilterTriggerComponent): void {
-    filterTrigger.hide();
-    this.onFilterChange();
+  confirm(): void {
+    this.isVisible = false;
+    this.emitFilterData();
   }
 
-  reset(filterTrigger: NzFilterTriggerComponent): void {
+  reset(): void {
     this.isChanged = true;
+    this.isVisible = false;
     this.listOfParsedFilter = this.parseListOfFilter(this.listOfFilter, true);
-    filterTrigger.hide();
-    this.onFilterChange();
+    this.isChecked = this.getCheckedStatus(this.listOfParsedFilter);
+    this.emitFilterData();
   }
 
   onVisibleChange(value: boolean): void {
+    this.isVisible = value;
     if (!value) {
-      this.onFilterChange();
+      this.emitFilterData();
     }
   }
 
-  onFilterChange(): void {
-    this.isFilterIconActivated = this.getActivatedStatus(this.listOfParsedFilter);
+  emitFilterData(): void {
     if (this.isChanged) {
-      const listOfChecked = this.listOfParsedFilter.filter(({ checked }) => checked).map(({ value }) => value);
+      const listOfChecked = this.listOfParsedFilter.filter(item => item.checked).map(item => item.value);
       if (this.filterMultiple) {
         this.filterChange.emit(listOfChecked);
       } else {
@@ -123,14 +140,14 @@ export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
     }
   }
 
-  parseListOfFilter(listOfFilter: NzThFilterType, reset?: boolean): NzThItemInterface[] {
+  parseListOfFilter(listOfFilter: NzTableFilterList, reset?: boolean): NzThItemInterface[] {
     return listOfFilter.map(item => {
       const checked = reset ? false : !!item.byDefault;
       return { text: item.text, value: item.value, checked };
     });
   }
 
-  getActivatedStatus(listOfParsedFilter: NzThItemInterface[]): boolean {
+  getCheckedStatus(listOfParsedFilter: NzThItemInterface[]): boolean {
     return listOfParsedFilter.some(item => item.checked);
   }
 
@@ -147,7 +164,7 @@ export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
     const { listOfFilter } = changes;
     if (listOfFilter && this.listOfFilter && this.listOfFilter.length) {
       this.listOfParsedFilter = this.parseListOfFilter(this.listOfFilter);
-      this.isFilterIconActivated = this.getActivatedStatus(this.listOfParsedFilter);
+      this.isChecked = this.getCheckedStatus(this.listOfParsedFilter);
     }
   }
   ngOnDestroy(): void {

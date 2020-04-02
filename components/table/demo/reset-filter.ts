@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NzTableFilterFn, NzTableFilterList, NzTableSortFn, NzTableSortOrder } from 'ng-zorro-antd/table';
 
 interface DataItem {
   name: string;
@@ -6,10 +7,12 @@ interface DataItem {
   address: string;
 }
 
-interface OptionItem {
-  byDefault?: boolean;
-  text: string;
-  value: string;
+interface ColumnItem {
+  name: string;
+  sortOrder?: NzTableSortOrder;
+  sortFn?: NzTableSortFn;
+  listOfFilter?: NzTableFilterList;
+  filterFn?: NzTableFilterFn;
 }
 
 @Component({
@@ -23,17 +26,14 @@ interface OptionItem {
     <nz-table #filterTable [nzData]="listOfData" nzTableLayout="fixed">
       <thead>
         <tr>
-          <th [(nzSortOrder)]="nameSortOrder" [nzSortFn]="sortNameFn" [nzFilters]="listOfFilterName" [nzFilterFn]="nameFilterFn">
-            Name
-          </th>
-          <th [(nzSortOrder)]="ageSortOrder" [nzSortFn]="sortAgeFn">Age</th>
           <th
-            [(nzSortOrder)]="addressSortOrder"
-            [nzSortFn]="sortAddressLengthFn"
-            [nzFilters]="listOfFilterAddress"
-            [nzFilterFn]="addressFilterFn"
+            *ngFor="let column of listOfColumns; trackBy: trackByName"
+            [(nzSortOrder)]="column.sortOrder"
+            [nzSortFn]="column.sortFn"
+            [nzFilters]="column.listOfFilter"
+            [nzFilterFn]="column.filterFn"
           >
-            Address
+            {{ column.name }}
           </th>
         </tr>
       </thead>
@@ -59,21 +59,30 @@ interface OptionItem {
   ]
 })
 export class NzDemoTableResetFilterComponent {
-  sortNameFn = (a: DataItem, b: DataItem) => a.name.localeCompare(b.name);
-  sortAgeFn = (a: DataItem, b: DataItem) => a.age - b.age;
-  sortAddressLengthFn = (a: DataItem, b: DataItem) => a.address.length - b.address.length;
-  nameFilterFn = (list: string[], item: DataItem) => list.some(name => item.name.indexOf(name) !== -1);
-  addressFilterFn = (address: string, item: DataItem) => item.address.indexOf(address) !== -1;
-  nameSortOrder: string | null = null;
-  ageSortOrder: string | null = null;
-  addressSortOrder: string | null = null;
-  listOfFilterName: OptionItem[] = [
-    { text: 'Joe', value: 'Joe' },
-    { text: 'Jim', value: 'Jim' }
-  ];
-  listOfFilterAddress: OptionItem[] = [
-    { text: 'London', value: 'London' },
-    { text: 'Sidney', value: 'Sidney' }
+  listOfColumns: ColumnItem[] = [
+    {
+      name: 'Name',
+      sortOrder: null,
+      sortFn: (a: DataItem, b: DataItem) => a.name.localeCompare(b.name),
+      listOfFilter: [
+        { text: 'Joe', value: 'Joe' },
+        { text: 'Jim', value: 'Jim' }
+      ],
+      filterFn: (list: string[], item: DataItem) => list.some(name => item.name.indexOf(name) !== -1)
+    },
+    {
+      name: 'Age',
+      sortOrder: null,
+      sortFn: (a: DataItem, b: DataItem) => a.age - b.age
+    },
+    {
+      name: 'Address',
+      listOfFilter: [
+        { text: 'London', value: 'London' },
+        { text: 'Sidney', value: 'Sidney' }
+      ],
+      filterFn: (address: string, item: DataItem) => item.address.indexOf(address) !== -1
+    }
   ];
   listOfData: DataItem[] = [
     {
@@ -98,27 +107,40 @@ export class NzDemoTableResetFilterComponent {
     }
   ];
 
+  trackByName(_: number, item: ColumnItem): string {
+    return item.name;
+  }
+
   sortByAge(): void {
-    this.nameSortOrder = null;
-    this.ageSortOrder = 'descend';
-    this.addressSortOrder = null;
+    this.listOfColumns.forEach(item => {
+      if (item.name === 'Age') {
+        item.sortOrder = 'descend';
+      } else {
+        item.sortOrder = null;
+      }
+    });
   }
 
   resetFilters(): void {
-    this.listOfFilterName = [
-      { text: 'Joe', value: 'Joe' },
-      { text: 'Jim', value: 'Jim' }
-    ];
-    this.listOfFilterAddress = [
-      { text: 'London', value: 'London' },
-      { text: 'Sidney', value: 'Sidney' }
-    ];
+    this.listOfColumns.forEach(item => {
+      if (item.name === 'Name') {
+        item.listOfFilter = [
+          { text: 'Joe', value: 'Joe' },
+          { text: 'Jim', value: 'Jim' }
+        ];
+      } else if (item.name === 'Address') {
+        item.listOfFilter = [
+          { text: 'London', value: 'London' },
+          { text: 'Sidney', value: 'Sidney' }
+        ];
+      }
+    });
   }
 
   resetSortAndFilters(): void {
-    this.nameSortOrder = null;
-    this.ageSortOrder = null;
-    this.addressSortOrder = null;
+    this.listOfColumns.forEach(item => {
+      item.sortOrder = null;
+    });
     this.resetFilters();
   }
 }

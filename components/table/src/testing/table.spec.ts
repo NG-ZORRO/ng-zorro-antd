@@ -88,6 +88,7 @@ describe('nz-table', () => {
       expect(testComponent.pageIndex).toBe(1);
       expect(testComponent.pageSizeChange).toHaveBeenCalledTimes(0);
       expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
+      testComponent.nzTableComponent.ngOnDestroy();
     }));
     it('should nzData change check pageIndex bounding', fakeAsync(() => {
       fixture.detectChanges();
@@ -113,6 +114,7 @@ describe('nz-table', () => {
       expect(testComponent.pageIndex).toBe(1);
       expect(testComponent.pageSizeChange).toHaveBeenCalledTimes(0);
       expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
+      testComponent.nzTableComponent.ngOnDestroy();
     }));
     it('should pagination simple work', () => {
       fixture.detectChanges();

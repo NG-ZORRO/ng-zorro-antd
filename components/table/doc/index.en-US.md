@@ -95,6 +95,7 @@ The data passed to `[nzData]` will be export with [Template Context](https://ang
 | `(nzPageIndexChange)` | pageIndex change callback | `EventEmitter<number>` | - |
 | `(nzPageSizeChange)` | pageSize change callback | `EventEmitter<number>` | - |
 | `(nzCurrentPageDataChange)` | current pageData change callback | `EventEmitter<any[]>` | - |
+| `(nzQueryParams)` | Get params when work with server pagination, sort and filter | `EventEmitter<NzTableQueryParams>` | - |
 
 ### th
 
@@ -102,6 +103,7 @@ Checkbox property
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
+| `[nzShowCheckbox]` | Whether add nz-checkbox | `boolean` | - |
 | `[nzDisabled]` | Whether disable checkbox | `boolean` | - |
 | `[nzIndeterminate]` | Indeterminate status | `boolean` | - |
 | `[nzChecked]` | Checked status, double binding | `boolean` | - |
@@ -111,16 +113,16 @@ Selection property
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
+| `[nzShowRowSelection]` | Whether show selections | `boolean` | - |
 | `[nzSelections]` | Selection options include `text` and `onSelect` function | `Array<{ text: string, onSelect: any }>` | - |
 
 Sort property
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzSortFn]` | Sort function, use to sort the data in the browser side(ref to Array.sort compareFunction) | `(a: any, b: any, sortOrder?: string) => number` | - |
+| `[nzSortFn]` | Sort function, use to sort the data in the browser side(ref to Array.sort compareFunction), set to true when using server sort  | `((a: any, b: any, sortOrder?: string) => number) | boolean` | - |
 | `[nzSortOrder]` | Sort direction | `'ascend' | 'descend' | null` | - |
 | `[nzSortDirections]` | supported sort way, could be `'ascend'`, `'descend'`, `null` | `Array<'ascend' \| 'descend' \| null>` | `['ascend', 'descend', null]` |
-| `[nzSortKey]` | Key to sort by | `string` | - |
 | `(nzSortOrderChange)` | Sort direction change callback | `EventEmitter<'ascend' \| 'descend' \| null>` | - |
 
 
@@ -128,7 +130,8 @@ Filter property
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzFilterFn]` | 	Filter function, use to filter the data in the browser side | `(value: any, data: any) => boolean;` | - |
+| `[nzShowFilter]` | Whether show filter | `boolean` | - |
+| `[nzFilterFn]` | 	Filter function, use to filter the data in the browser side. Set to true when using server filter | `((value: any, data: any) => boolean;) | boolean` | - |
 | `[nzFilters]` | Filter options,  `text`, and `value` for callback, `byDefault` to enable filter by default | `Array<{ text: string; value: any; byDefault?: boolean }>` | - |
 | `[nzFilterMultiple]` | Whether filter multiple mode | `boolean` | `true` |
 | `(nzFilterChange)` | Filter change callback `value` | `EventEmitter<any[] \| any>` | - |
@@ -147,12 +150,20 @@ Style property
 | `[nzEllipsis]` | ellipsis cell content, not working with sorter and filters for now. Only work when nzTableLayout was `fixed` | `boolean` | `false` |
 
 
+Other
+
+| Property | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
+| `[nzColumnKey]` | column key, work with server sort and filter | `string` | - |
+
+
 ### td
 
 Checkbox property
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
+| `[nzShowCheckbox]` | Whether add nz-checkbox | `boolean` | - |
 | `[nzDisabled]` | Whether disable checkbox | `boolean` | - |
 | `[nzIndeterminate]` | Indeterminate status | `boolean` | - |
 | `[nzChecked]` | Checked status, double binding | `boolean` | - |
@@ -162,6 +173,7 @@ Expand property
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
+| `[nzShowExpand]` | Whether show expand icon | `boolean` | - |
 | `[nzExpand]` | Current expand status, double binding | `boolean` | - |
 | `(nzExpandChange)` | Expand status change callback | `EventEmitter<boolean>` | - |
 
@@ -181,18 +193,22 @@ Other property
 | -------- | ----------- | ---- | ------- |
 | `[nzIndentSize]` | Indent size in pixels of tree data | `number` | - |
 
-### thead
-
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| `[nzSingleSort]` | Whether single column sort mode | `boolean` | `false` |
-| `(nzSortChange)` | sort change callback，should used with `[nzSortKey]` of `th` | `EventEmitter<{ nzSortKey: string, value: 'descend' \| 'ascend' \| null }>` | - |
-
 ### tr
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[nzExpand]` | Whether expand current row，used with `nzExpand` of `td`  | `boolean` | - |
+
+### nz-filter-trigger
+
+Customized filter panel
+
+| Property | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
+| `[nzDropdownMenu]` | Dropdown menu | `NzDropdownMenuComponent` | - |
+| `[nzVisible]` | whether the dropdown menu is visible, double binding | `boolean` | - |
+| `[nzActive]` | whether the icon status is activated | `boolean` | `false` |
+| `(nzVisibleChange)` | a callback function takes an argument: `nzVisible`, is executed when the visible state is changed | `EventEmitter<boolean>` | - |
 
 
 ### [nz-virtual-scroll]

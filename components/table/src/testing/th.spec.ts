@@ -137,11 +137,16 @@ interface DataItem {
     <nz-table #filterTable [nzData]="displayData">
       <thead (nzSortChange)="sort($event)" nzSingleSort>
         <tr>
-          <th nzSortKey="name" [nzFilters]="nameList" (nzFilterChange)="filter($event, searchAddress)">
+          <th nzColumnKey="name" [nzFilters]="nameList" (nzFilterChange)="filter($event, searchAddress)">
             Name
           </th>
-          <th nzSortKey="age">Age</th>
-          <th nzSortKey="address" [nzFilterMultiple]="false" [nzFilters]="addressList" (nzFilterChange)="filter(listOfSearchName, $event)">
+          <th nzColumnKey="age">Age</th>
+          <th
+            nzColumnKey="address"
+            [nzFilterMultiple]="false"
+            [nzFilters]="addressList"
+            (nzFilterChange)="filter(listOfSearchName, $event)"
+          >
             Address
           </th>
         </tr>
@@ -225,8 +230,6 @@ export class NzThTestTableDefaultFilterComponent {
 }
 
 @Component({
-  template: `
-    <th class="nz-disable-th"></th>
-  `
+  template: ` <th class="nz-disable-th"></th> `
 })
 export class NzTestDisableThComponent {}
