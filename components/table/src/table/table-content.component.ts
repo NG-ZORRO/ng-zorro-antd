@@ -8,7 +8,7 @@
 
 import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { NzTableLayoutType } from '../table.types';
+import { NzTableLayout } from '../table.types';
 
 @Component({
   selector: 'table[nz-table-content]',
@@ -30,7 +30,7 @@ import { NzTableLayoutType } from '../table.types';
   }
 })
 export class NzTableContentComponent {
-  @Input() tableLayout: NzTableLayoutType = 'auto';
+  @Input() tableLayout: NzTableLayout = 'auto';
   @Input() theadTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() listOfColWidth: Array<string | null> = [];

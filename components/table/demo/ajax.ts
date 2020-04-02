@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Injectable, OnInit } from '@angular/core';
+import { NzTableQueryParams } from 'ng-zorro-antd/table';
 import { Observable } from 'rxjs';
 
 interface RandomUser {
@@ -17,19 +18,21 @@ export class RandomUserService {
   randomUserUrl = 'https://api.randomuser.me/';
 
   getUsers(
-    pageIndex: number = 1,
-    pageSize: number = 10,
-    sortField: string,
-    sortOrder: string,
-    genders: string[]
+    pageIndex: number,
+    pageSize: number,
+    sortField: string | null,
+    sortOrder: string | null,
+    filters: Array<{ key: string; value: string[] }>
   ): Observable<{ results: RandomUser[] }> {
     let params = new HttpParams()
       .append('page', `${pageIndex}`)
       .append('results', `${pageSize}`)
-      .append('sortField', sortField)
-      .append('sortOrder', sortOrder);
-    genders.forEach(gender => {
-      params = params.append('gender', gender);
+      .append('sortField', `${sortField}`)
+      .append('sortOrder', `${sortOrder}`);
+    filters.forEach(filter => {
+      filter.value.forEach(value => {
+        params = params.append(filter.key, value);
+      });
     });
     return this.http.get<{ results: RandomUser[] }>(`${this.randomUserUrl}`, { params });
   }
@@ -46,16 +49,15 @@ export class RandomUserService {
       [nzFrontPagination]="false"
       [nzLoading]="loading"
       [nzTotal]="total"
-      [nzPageIndex]="pageIndex"
       [nzPageSize]="pageSize"
-      (nzPageIndexChange)="onPageIndexChange($event)"
-      (nzPageSizeChange)="onPageSizeChange($event)"
+      [nzPageIndex]="pageIndex"
+      (nzQueryParams)="onQueryParamsChange($event)"
     >
-      <thead (nzSortOrderChange)="onSortChange($event)" nzSingleSort>
+      <thead>
         <tr>
-          <th nzSortKey="name">Name</th>
-          <th [nzFilters]="filterGender" (nzFilterChange)="onFilterChange($event)">Gender</th>
-          <th nzSortKey="email"><span>Email</span></th>
+          <th nzColumnKey="name" [nzSortFn]="true">Name</th>
+          <th nzColumnKey="gender" [nzFilters]="filterGender" [nzFilterFn]="true">Gender</th>
+          <th nzColumnKey="email" [nzSortFn]="true">Email</th>
         </tr>
       </thead>
       <tbody>
@@ -69,55 +71,43 @@ export class RandomUserService {
   `
 })
 export class NzDemoTableAjaxComponent implements OnInit {
-  pageIndex = 1;
-  pageSize = 10;
   total = 1;
   listOfRandomUser: RandomUser[] = [];
   loading = true;
-  sortOrder: string | null = null;
-  sortKey: string | null = null;
+  pageSize = 10;
+  pageIndex = 1;
   filterGender = [
     { text: 'male', value: 'male' },
     { text: 'female', value: 'female' }
   ];
-  searchGenderList: string[] = [];
 
-  onSortChange(sort: { key: string; value: string }): void {
-    this.sortKey = sort.key;
-    this.sortOrder = sort.value;
-    this.getRandomUserList();
-  }
-
-  onPageIndexChange(index: number): void {
-    this.pageIndex = index;
-    this.getRandomUserList();
-  }
-
-  onPageSizeChange(size: number): void {
-    this.pageSize = size;
-    this.getRandomUserList();
-  }
-
-  onFilterChange(value: string[]): void {
-    this.searchGenderList = value;
-    this.pageIndex = 1;
-    this.getRandomUserList();
-  }
-
-  getRandomUserList(): void {
+  loadDataFromServer(
+    pageIndex: number,
+    pageSize: number,
+    sortField: string | null,
+    sortOrder: string | null,
+    filter: Array<{ key: string; value: string[] }>
+  ): void {
     this.loading = true;
-    this.randomUserService
-      .getUsers(this.pageIndex, this.pageSize, this.sortKey!, this.sortOrder!, this.searchGenderList)
-      .subscribe(data => {
-        this.loading = false;
-        this.total = 200;
-        this.listOfRandomUser = data.results;
-      });
+    this.randomUserService.getUsers(pageIndex, pageSize, sortField, sortOrder, filter).subscribe(data => {
+      this.loading = false;
+      this.total = 200; // mock the total data here
+      this.listOfRandomUser = data.results;
+    });
+  }
+
+  onQueryParamsChange(params: NzTableQueryParams): void {
+    console.log(params);
+    const { pageSize, pageIndex, sort, filter } = params;
+    const currentSort = sort.find(item => item.value !== null);
+    const sortField = (currentSort && currentSort.key) || null;
+    const sortOrder = (currentSort && currentSort.value) || null;
+    this.loadDataFromServer(pageIndex, pageSize, sortField, sortOrder, filter);
   }
 
   constructor(private randomUserService: RandomUserService) {}
 
   ngOnInit(): void {
-    this.getRandomUserList();
+    this.loadDataFromServer(this.pageIndex, this.pageSize, null, null, []);
   }
 }

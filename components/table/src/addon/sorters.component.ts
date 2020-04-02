@@ -8,7 +8,7 @@
 
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { NzSortOrderType } from '../table.types';
+import { NzTableSortOrder } from '../table.types';
 
 @Component({
   selector: 'nz-table-sorters',
@@ -17,16 +17,10 @@ import { NzSortOrderType } from '../table.types';
   encapsulation: ViewEncapsulation.None,
   template: `
     <span><ng-template [ngTemplateOutlet]="contentTemplate"></ng-template></span>
-    <span class="ant-table-column-sorter" [class.ant-table-column-sorter-full]="showSorterDown && showSorterUp">
+    <span class="ant-table-column-sorter" [class.ant-table-column-sorter-full]="isDown && isUp">
       <span class="ant-table-column-sorter-inner">
-        <i nz-icon nzType="caret-up" *ngIf="showSorterUp" class="ant-table-column-sorter-up" [class.active]="sortOrder == 'ascend'"></i>
-        <i
-          nz-icon
-          nzType="caret-down"
-          *ngIf="showSorterDown"
-          class="ant-table-column-sorter-down"
-          [class.active]="sortOrder == 'descend'"
-        ></i>
+        <i nz-icon nzType="caret-up" *ngIf="isUp" class="ant-table-column-sorter-up" [class.active]="sortOrder == 'ascend'"></i>
+        <i nz-icon nzType="caret-down" *ngIf="isDown" class="ant-table-column-sorter-down" [class.active]="sortOrder == 'descend'"></i>
       </span>
     </span>
   `,
@@ -35,16 +29,16 @@ import { NzSortOrderType } from '../table.types';
   }
 })
 export class NzTableSortersComponent implements OnChanges {
-  @Input() sortDirections: NzSortOrderType[] = ['ascend', 'descend', null];
-  @Input() sortOrder: NzSortOrderType = null;
+  @Input() sortDirections: NzTableSortOrder[] = ['ascend', 'descend', null];
+  @Input() sortOrder: NzTableSortOrder = null;
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
-  showSorterUp = false;
-  showSorterDown = false;
+  isUp = false;
+  isDown = false;
   ngOnChanges(changes: SimpleChanges): void {
     const { sortDirections } = changes;
     if (sortDirections) {
-      this.showSorterUp = this.sortDirections.indexOf('ascend') !== -1;
-      this.showSorterDown = this.sortDirections.indexOf('descend') !== -1;
+      this.isUp = this.sortDirections.indexOf('ascend') !== -1;
+      this.isDown = this.sortDirections.indexOf('descend') !== -1;
     }
   }
 }

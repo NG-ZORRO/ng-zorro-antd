@@ -24,10 +24,11 @@ import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { NzFilterFn, NzFilterValue, NzSortCompareFn, NzSortOrderType, NzThFilterType } from '../table.types';
+import { NzTableFilterFn, NzTableFilterList, NzTableFilterValue, NzTableSortFn, NzTableSortOrder } from '../table.types';
 
 @Component({
-  selector: 'th[nzSortKey], th[nzSort], th[nzSortFn], th[nzSortOrder], th[nzFilters], th[nzShowSort], th[nzShowFilter], th[nzCustomFilter]',
+  selector:
+    'th[nzSortKey], th[nzColumnKey], th[nzSort], th[nzSortFn], th[nzSortOrder], th[nzFilters], th[nzShowSort], th[nzShowFilter], th[nzCustomFilter]',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -49,11 +50,7 @@ import { NzFilterFn, NzFilterValue, NzSortCompareFn, NzSortOrderType, NzThFilter
       <ng-content select="nz-filter-trigger"></ng-content>
     </ng-template>
     <ng-template #sortTemplate>
-      <nz-table-sorters
-        [sortOrder]="nzSortOrder"
-        [sortDirections]="nzSortDirections"
-        [contentTemplate]="contentTemplate"
-      ></nz-table-sorters>
+      <nz-table-sorters [sortOrder]="sortOrder" [sortDirections]="sortDirections" [contentTemplate]="contentTemplate"></nz-table-sorters>
     </ng-template>
     <ng-template #contentTemplate>
       <ng-content></ng-content>
@@ -61,60 +58,60 @@ import { NzFilterFn, NzFilterValue, NzSortCompareFn, NzSortOrderType, NzThFilter
   `,
   host: {
     '[class.ant-table-column-has-sorters]': 'nzShowSort',
-    '[class.ant-table-column-sort]': `nzSortOrder === 'descend' || nzSortOrder === 'ascend'`,
-    '(click)': 'nextSortValue()'
+    '[class.ant-table-column-sort]': `sortOrder === 'descend' || sortOrder === 'ascend'`,
+    '(click)': 'emitNextSortValue()'
   }
 })
 export class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy {
   manualClickOrder$ = new Subject<NzThAddOnComponent>();
   calcOperatorChange$ = new Subject();
-  nzFilterValue: NzFilterValue = null;
-  sortOrder: NzSortOrderType | undefined = undefined;
-  private sortOrderChange$ = new Subject<NzSortOrderType>();
+  nzFilterValue: NzTableFilterValue = null;
+  sortOrder: NzTableSortOrder = null;
+  sortDirections: NzTableSortOrder[] = ['ascend', 'descend', null];
+  private sortOrderChange$ = new Subject<NzTableSortOrder>();
   private destroy$ = new Subject();
   private isNzShowSortChanged = false;
   private isNzShowFilterChanged = false;
-  @Input() nzSortKey: string;
+  @Input() nzColumnKey: string;
   @Input() nzFilterMultiple = true;
-  @Input() nzSortOrder: NzSortOrderType = null;
+  @Input() nzSortOrder: NzTableSortOrder = null;
   @Input() nzSortPriority: number | boolean = false;
-  @Input() nzSortDirections: NzSortOrderType[] = ['ascend', 'descend', null];
-  @Input() nzFilters: NzThFilterType = [];
-  @Input() nzSortFn: NzSortCompareFn | null = null;
-  @Input() nzFilterFn: NzFilterFn | null = null;
+  @Input() nzSortDirections: NzTableSortOrder[] = ['ascend', 'descend', null];
+  @Input() nzFilters: NzTableFilterList = [];
+  @Input() nzSortFn: NzTableSortFn | boolean | null = null;
+  @Input() nzFilterFn: NzTableFilterFn | boolean | null = null;
   @Input() @InputBoolean() nzShowSort = false;
   @Input() @InputBoolean() nzShowFilter = false;
   @Input() @InputBoolean() nzCustomFilter = false;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   @Output() readonly nzSortOrderChange = new EventEmitter<string | null>();
-  @Output() readonly nzFilterChange = new EventEmitter<NzFilterValue>();
+  @Output() readonly nzFilterChange = new EventEmitter<NzTableFilterValue>();
+  /** @deprecated use nzColumnKey instead **/
+  @Input() nzSortKey: string;
   /** @deprecated use nzSortOrder instead **/
-  @Input() nzSort: NzSortOrderType = null;
+  @Input() nzSort: NzTableSortOrder = null;
   /** @deprecated use nzSortOrderChange instead **/
   @Output() readonly nzSortChange = new EventEmitter<string | null>();
 
-  nextSortValue(): void {
-    if (this.nzShowSort) {
-      const nextSortDirection = (sortDirections: NzSortOrderType[], current: NzSortOrderType) => {
-        const index = sortDirections.indexOf(current);
-        if (index === sortDirections.length - 1) {
-          return sortDirections[0];
-        } else {
-          return sortDirections[index + 1];
-        }
-      };
-      const nextOrder = nextSortDirection(this.nzSortDirections, this.nzSortOrder);
-      this.manualClickOrder$.next(this);
-      this.sortOrderChange$.next(nextOrder);
+  getNextSortDirection(sortDirections: NzTableSortOrder[], current: NzTableSortOrder): NzTableSortOrder {
+    const index = sortDirections.indexOf(current);
+    if (index === sortDirections.length - 1) {
+      return sortDirections[0];
+    } else {
+      return sortDirections[index + 1];
     }
   }
 
-  setSortOrder(order: NzSortOrderType): void {
-    this.nzSortOrder = order;
-    this.sortOrder = order;
-    this.nzSortChange.emit(order);
-    this.nzSortOrderChange.emit(order);
-    this.cdr.markForCheck();
+  emitNextSortValue(): void {
+    if (this.nzShowSort) {
+      const nextOrder = this.getNextSortDirection(this.sortDirections, this.sortOrder!);
+      this.setSortOrder(nextOrder);
+      this.manualClickOrder$.next(this);
+    }
+  }
+
+  setSortOrder(order: NzTableSortOrder): void {
+    this.sortOrderChange$.next(order);
   }
 
   clearSortOrder(): void {
@@ -123,27 +120,27 @@ export class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
-  onFilterValueChange(value: NzFilterValue): void {
+  onFilterValueChange(value: NzTableFilterValue): void {
     this.nzFilterChange.emit(value);
     this.nzFilterValue = value;
     this.updateCalcOperator();
   }
 
   updateCalcOperator(): void {
-    if (this.nzSortFn || this.nzFilterFn) {
-      this.calcOperatorChange$.next();
-    }
+    this.calcOperatorChange$.next();
   }
 
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    // TODO: need perf
     this.sortOrderChange$.pipe(takeUntil(this.destroy$)).subscribe(order => {
       if (this.sortOrder !== order) {
-        this.setSortOrder(order);
-        this.updateCalcOperator();
+        this.sortOrder = order;
+        this.nzSortChange.emit(order);
+        this.nzSortOrderChange.emit(order);
       }
+      this.updateCalcOperator();
+      this.cdr.markForCheck();
     });
   }
 
@@ -151,6 +148,7 @@ export class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy {
     const {
       nzSortKey,
       nzSort,
+      nzSortDirections,
       nzFilters,
       nzSortOrder,
       nzSortFn,
@@ -160,11 +158,25 @@ export class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy {
       nzShowSort,
       nzShowFilter
     } = changes;
+    if (nzSortDirections) {
+      if (this.nzSortDirections && this.nzSortDirections.length) {
+        this.sortDirections = this.nzSortDirections;
+      }
+    }
     if (nzSort) {
-      this.nzSortOrder = this.nzSort;
+      this.sortOrder = this.nzSort;
+      this.setSortOrder(this.nzSort);
       warnDeprecation(
-        `'nzSort' and 'nzSortChange' is deprecated and will be removed in 10.0.0. Please use 'nzSortOrder' instead and 'nzSortOrderChange'!`
+        `'nzSort' and 'nzSortChange' is deprecated and will be removed in 10.0.0. Please use 'nzSortOrder' and 'nzSortOrderChange' instead.`
       );
+    }
+    if (nzSortKey) {
+      this.nzColumnKey = this.nzSortKey;
+      warnDeprecation(`'nzSortKey' is deprecated and will be removed in 10.0.0. Please use 'nzColumnKey' instead.`);
+    }
+    if (nzSortOrder) {
+      this.sortOrder = this.nzSortOrder;
+      this.setSortOrder(this.nzSortOrder);
     }
     if (nzShowSort) {
       this.isNzShowSortChanged = true;
@@ -182,14 +194,9 @@ export class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy {
     if (isFirstChange(nzFilters) && !this.isNzShowFilterChanged) {
       this.nzShowFilter = true;
     }
-    if (nzFilters || nzFilterMultiple) {
+    if ((nzFilters || nzFilterMultiple) && this.nzShowFilter) {
       const listOfValue = this.nzFilters.filter(item => item.byDefault).map(item => item.value);
       this.nzFilterValue = this.nzFilterMultiple ? listOfValue : listOfValue[0] || null;
-    }
-    if (nzSortOrder) {
-      if (this.nzSortOrder !== this.sortOrder) {
-        this.updateCalcOperator();
-      }
     }
     if (nzSortFn || nzFilterFn || nzSortPriority || nzFilters) {
       this.updateCalcOperator();

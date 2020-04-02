@@ -1,9 +1,20 @@
 import { Component } from '@angular/core';
+import { NzTableFilterFn, NzTableFilterList, NzTableSortFn, NzTableSortOrder } from 'ng-zorro-antd/table';
 
 interface DataItem {
   name: string;
   age: number;
   address: string;
+}
+
+interface ColumnItem {
+  name: string;
+  sortOrder?: NzTableSortOrder;
+  sortFn?: NzTableSortFn;
+  listOfFilter?: NzTableFilterList;
+  filterFn?: NzTableFilterFn;
+  filterMultiple?: boolean;
+  sortDirections?: NzTableSortOrder[];
 }
 
 @Component({
@@ -12,12 +23,16 @@ interface DataItem {
     <nz-table #filterTable [nzData]="listOfData" nzTableLayout="fixed">
       <thead>
         <tr>
-          <th [nzFilterFn]="nameFilterFn" [nzSortFn]="sortNameFn" [nzFilters]="listOfName">
-            Name
-          </th>
-          <th [nzSortOrder]="'descend'" [nzSortFn]="sortAgeFn" [nzSortDirections]="['descend', null]">Age</th>
-          <th [nzSortFn]="sortAddressLengthFn" [nzFilterFn]="addressFilterFn" [nzFilterMultiple]="false" [nzFilters]="listOfAddress">
-            Address
+          <th
+            *ngFor="let column of listOfColumns"
+            [nzSortOrder]="column.sortOrder"
+            [nzSortFn]="column.sortFn"
+            [nzSortDirections]="column.sortDirections"
+            [nzFilterMultiple]="column.filterMultiple"
+            [nzFilters]="column.listOfFilter"
+            [nzFilterFn]="column.filterFn"
+          >
+            {{ column.name }}
           </th>
         </tr>
       </thead>
@@ -32,18 +47,35 @@ interface DataItem {
   `
 })
 export class NzDemoTableSortFilterComponent {
-  sortNameFn = (a: DataItem, b: DataItem) => a.name.localeCompare(b.name);
-  sortAgeFn = (a: DataItem, b: DataItem) => a.age - b.age;
-  sortAddressLengthFn = (a: DataItem, b: DataItem) => a.address.length - b.address.length;
-  nameFilterFn = (list: string[], item: DataItem) => list.some(name => item.name.indexOf(name) !== -1);
-  addressFilterFn = (address: string, item: DataItem) => item.address.indexOf(address) !== -1;
-  listOfName = [
-    { text: 'Joe', value: 'Joe' },
-    { text: 'Jim', value: 'Jim', byDefault: true }
-  ];
-  listOfAddress = [
-    { text: 'London', value: 'London' },
-    { text: 'Sidney', value: 'Sidney' }
+  listOfColumns: ColumnItem[] = [
+    {
+      name: 'Name',
+      sortOrder: null,
+      sortFn: (a: DataItem, b: DataItem) => a.name.localeCompare(b.name),
+      filterMultiple: true,
+      listOfFilter: [
+        { text: 'Joe', value: 'Joe' },
+        { text: 'Jim', value: 'Jim', byDefault: true }
+      ],
+      filterFn: (list: string[], item: DataItem) => list.some(name => item.name.indexOf(name) !== -1)
+    },
+    {
+      name: 'Age',
+      sortOrder: 'descend',
+      sortFn: (a: DataItem, b: DataItem) => a.age - b.age,
+      sortDirections: ['descend', null]
+    },
+    {
+      name: 'Address',
+      sortOrder: null,
+      sortFn: (a: DataItem, b: DataItem) => a.address.length - b.address.length,
+      filterMultiple: false,
+      listOfFilter: [
+        { text: 'London', value: 'London' },
+        { text: 'Sidney', value: 'Sidney' }
+      ],
+      filterFn: (address: string, item: DataItem) => item.address.indexOf(address) !== -1
+    }
   ];
   listOfData: DataItem[] = [
     {
@@ -67,6 +99,4 @@ export class NzDemoTableSortFilterComponent {
       address: 'London No. 2 Lake Park'
     }
   ];
-
-  constructor() {}
 }
