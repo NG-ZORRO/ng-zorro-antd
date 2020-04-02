@@ -29,7 +29,7 @@ import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { CandyDate, cloneDate, CompatibleValue } from 'ng-zorro-antd/core/time';
 import { FunctionProp, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
+import { InputBoolean, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzDatePickerI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -70,6 +70,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
 
   protected destroyed$: Subject<void> = new Subject();
   protected isCustomPlaceHolder: boolean = false;
+  private showTime: SupportTimeOptions | boolean;
 
   // --- Common API
   @Input() @InputBoolean() nzAllowClear: boolean = true;
@@ -98,7 +99,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   @Input() nzMode: PanelMode | PanelMode[] = 'date';
   @Input() nzRanges: PresetRanges;
   @Input() nzDefaultPickerValue: CompatibleDate | null = null;
-  @Input() nzShowTime: SupportTimeOptions | boolean = false;
   @Input() nzSeparator: string = '~';
 
   @Output() readonly nzOnPanelChange = new EventEmitter<PanelMode | PanelMode[]>();
@@ -107,6 +107,14 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   @Output() readonly nzOnOpenChange = new EventEmitter<boolean>();
 
   @ViewChild(NzPickerComponent, { static: true }) protected picker: NzPickerComponent;
+
+  @Input() get nzShowTime(): SupportTimeOptions | boolean {
+    return this.showTime;
+  }
+
+  set nzShowTime(value: SupportTimeOptions | boolean) {
+    this.showTime = typeof value === 'object' ? value : toBoolean(value);
+  }
 
   get realOpenState(): boolean {
     return this.picker.animationOpenState;
@@ -143,7 +151,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     this.datePickerService.emitValue$.pipe(takeUntil(this.destroyed$)).subscribe(_ => {
       const value = this.datePickerService.value;
       this.datePickerService.initialValue = cloneDate(value);
-      // this.datePickerService.activeDate = cloneDate(value);
       if (this.isRange) {
         const vAsRange = value as CandyDate[];
         if (vAsRange.length) {

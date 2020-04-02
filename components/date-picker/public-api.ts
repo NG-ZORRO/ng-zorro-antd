@@ -6,8 +6,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export { PickerResult, PickerResultSingle, PickerResultRange, PresetRanges, PanelMode } from './standard-types';
-export { PREFIX_CLASS, getTimeConfig, isAllowedDate, isTimeValid, isTimeValidByConfig } from './util';
+export * from './standard-types';
+export * from './util';
 
 export { NzDatePickerModule } from './date-picker.module';
 export { NzDatePickerComponent } from './date-picker.component';

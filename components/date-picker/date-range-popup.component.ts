@@ -94,12 +94,12 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
         [value]="getValue(partType)"
         [disabledDate]="disabledDate"
         [dateRender]="dateRender"
-        [selectedValue]="selectedValue"
+        [selectedValue]="datePickerService?.value"
         [hoverValue]="hoverValue"
         [enablePrev]="enablePrevNext('prev', partType)"
         [enableNext]="enablePrevNext('next', partType)"
         (dayHover)="onDayHover($event)"
-        (selectDate)="changeValueFromSelect($event)"
+        (selectDate)="changeValueFromSelect($event, !showTime)"
         (selectTime)="onSelectTime($event, partType)"
         (headerChange)="onActiveDateChange($event, partType)"
       ></inner-popup>
@@ -111,8 +111,7 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
         [locale]="locale"
         [showToday]="showToday"
         [hasTimePicker]="hasTimePicker"
-        [timePickerDisabled]="timePickerDisabled()"
-        [okDisabled]="okDisabled()"
+        [okDisabled]="!isAllowed(datePickerService?.value)"
         [extraFooter]="extraFooter"
         [rangeQuickSelector]="ranges ? tplRangeQuickSelector : null"
         (clickOk)="onClickOk()"
@@ -166,7 +165,6 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   prefixCls: string = PREFIX_CLASS;
   endPanelMode: PanelMode | PanelMode[] = 'date';
   timeOptions: SupportTimeOptions | SupportTimeOptions[] | null;
-  selectedValue: SingleValue[] = []; // Range ONLY
   hoverValue: SingleValue[] = []; // Range ONLY
   destroy$ = new Subject();
 
@@ -181,17 +179,8 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   constructor(public datePickerService: DatePickerService, public cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    // Set panel active date once open
-    const activeDate = this.datePickerService.hasValue()
-      ? this.datePickerService.value
-      : this.datePickerService.makeValue(this.defaultPickerValue);
-    this.datePickerService.setActiveDate(activeDate);
-    this.datePickerService.valueChange$.pipe(takeUntil(this.destroy$)).subscribe(value => {
-      if (this.isRange) {
-        // Re-initialize all related values
-        this.clearHoverValue();
-        this.selectedValue = cloneDate(value) as SingleValue[];
-      }
+    this.datePickerService.valueChange$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.initActiveDate();
       this.cdr.markForCheck();
     });
   }
@@ -213,6 +202,13 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     this.destroy$.complete();
   }
 
+  initActiveDate(): void {
+    const activeDate = this.datePickerService.hasValue()
+      ? this.datePickerService.value
+      : this.datePickerService.makeValue(this.defaultPickerValue);
+    this.datePickerService.setActiveDate(activeDate);
+  }
+
   onClickOk(): void {
     if (this.datePickerService.hasOnePart()) {
       const otherPart = this.datePickerService.activeInput === 'left' ? 'right' : 'left';
@@ -223,13 +219,16 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onClickToday(value: CandyDate): void {
-    this.changeValueFromSelect(value);
+    this.changeValueFromSelect(value, !this.showTime);
   }
 
   onDayHover(value: CandyDate): void {
+    if (!this.isRange) {
+      return;
+    }
     const otherInputIndex = { left: 1, right: 0 }[this.datePickerService.activeInput];
-    const base = this.selectedValue[otherInputIndex]!;
-    if (this.isRange && base) {
+    const base = (this.datePickerService.value as CandyDate[])[otherInputIndex]!;
+    if (base) {
       if (base.isBeforeDay(value)) {
         this.hoverValue = [base, value];
       } else {
@@ -270,7 +269,6 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
       const newValue = cloneDate(this.datePickerService.value) as SingleValue[];
       const index = this.datePickerService.getActiveIndex(partType);
       newValue[index] = this.overrideHms(value, newValue[index]);
-      this.selectedValue[index] = newValue[index];
       this.datePickerService.setValue(newValue);
     } else {
       const newValue = this.overrideHms(value, this.datePickerService.value as CandyDate);
@@ -279,37 +277,45 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     this.buildTimeOptions();
   }
 
-  changeValueFromSelect(value: CandyDate): void {
+  changeValueFromSelect(value: CandyDate, emitValue: boolean = true): void {
     if (this.isRange) {
-      const [left, right] = this.selectedValue as CandyDate[]; // NOTE: the left/right maybe not the sequence it select at the date panels
-
-      if (!left && !right && !this.showTime) {
-        let otherPart: RangePartType;
-        // If totally full or empty, clean up && re-assign left first
-        if (this.datePickerService.activeInput === 'left') {
-          otherPart = 'right';
-          this.hoverValue = this.selectedValue = [value];
-        } else {
-          otherPart = 'left';
-          this.hoverValue = this.selectedValue = [null, value];
-        }
-        this.datePickerService.setValue(cloneDate(this.selectedValue));
-        this.calendarChange.emit([value.clone()]);
-        this.datePickerService.inputPartChange$.next(otherPart!);
+      let selectedValue: SingleValue[] = cloneDate(this.datePickerService.value) as CandyDate[];
+      let otherPart: RangePartType;
+      if (this.datePickerService.activeInput === 'left') {
+        otherPart = 'right';
+        selectedValue[0] = value;
       } else {
-        this.clearHoverValue(); // Clean up
-        this.selectedValue[this.datePickerService.getActiveIndex()] = value;
-        this.selectedValue = sortRangeValue(this.selectedValue); // Sort
-        this.datePickerService.activeDate = normalizeRangeValue(this.selectedValue);
-        this.calendarChange.emit(cloneDate(this.selectedValue));
-        this.datePickerService.setValue(cloneDate(this.selectedValue));
-        if (!this.showTime) {
+        otherPart = 'left';
+        selectedValue[1] = value;
+      }
+
+      if (!this.isAllowed(selectedValue)) {
+        return;
+      }
+
+      this.hoverValue = selectedValue;
+      selectedValue = sortRangeValue(selectedValue); // Sort
+      this.datePickerService.setValue(selectedValue);
+      this.datePickerService.setActiveDate(selectedValue);
+
+      if (emitValue) {
+        // If the other input has value
+        if (this.isBothAllowed(selectedValue)) {
+          this.calendarChange.emit(selectedValue);
+          this.clearHoverValue();
           this.datePickerService.emitValue$.next();
+        } else {
+          this.calendarChange.emit([value.clone()]);
+          this.datePickerService.inputPartChange$.next(otherPart!);
         }
       }
     } else {
+      if (!this.isAllowed(value)) {
+        return;
+      }
       this.datePickerService.setValue(value);
-      if (!this.showTime) {
+      this.datePickerService.setActiveDate(value);
+      if (emitValue) {
         this.datePickerService.emitValue$.next();
       }
     }
@@ -353,11 +359,6 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  hasSelectedValue(): boolean {
-    const part = this.datePickerService.getActiveIndex();
-    return this.selectedValue && !!this.selectedValue[part];
-  }
-
   disabledStartTime = (value: Date | Date[]): DisabledTimeConfig => {
     return this.disabledTime && this.disabledTime(value, 'start');
   };
@@ -366,46 +367,25 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     return this.disabledTime && this.disabledTime(value, 'end');
   };
 
-  isAllowedSelectedValue(): boolean {
-    const selectedValue = this.selectedValue;
-    if (selectedValue && selectedValue[0] && !selectedValue[1]) {
-      return isAllowedDate(selectedValue[0], this.disabledDate, this.disabledStartTime);
-    }
-    if (selectedValue && !selectedValue[0] && selectedValue[1]) {
-      return isAllowedDate(selectedValue[1], this.disabledDate, this.disabledEndTime);
-    }
-    if (selectedValue && selectedValue[0] && selectedValue[1]) {
-      return (
-        isAllowedDate(selectedValue[0], this.disabledDate, this.disabledStartTime) &&
-        isAllowedDate(selectedValue[1], this.disabledDate, this.disabledEndTime)
-      );
-    }
-    return false;
+  isOneAllowed(selectedValue: SingleValue[]): boolean {
+    return (
+      isAllowedDate(selectedValue[0]!, this.disabledDate, this.disabledStartTime) ||
+      isAllowedDate(selectedValue[1]!, this.disabledDate, this.disabledStartTime)
+    );
   }
 
-  timePickerDisabled(): boolean {
-    if (!this.hasTimePicker) {
-      return true;
-    }
-
-    if (this.isRange) {
-      return !this.hasSelectedValue() || !!this.hoverValue.length;
-    } else {
-      return false;
-    }
+  isBothAllowed(selectedValue: SingleValue[]): boolean {
+    return (
+      isAllowedDate(selectedValue[0]!, this.disabledDate, this.disabledStartTime) &&
+      isAllowedDate(selectedValue[1]!, this.disabledDate, this.disabledEndTime)
+    );
   }
 
-  okDisabled(): boolean {
-    if (!this.hasTimePicker) {
-      return true;
-    }
-
+  isAllowed(value: CompatibleValue, isBoth: boolean = false): boolean {
     if (this.isRange) {
-      return !this.isAllowedSelectedValue() || !this.hasSelectedValue();
+      return isBoth ? this.isBothAllowed(value as CandyDate[]) : this.isOneAllowed(value as CandyDate[]);
     } else {
-      return this.datePickerService.value
-        ? !isAllowedDate(this.datePickerService.value as CandyDate, this.disabledDate, this.disabledTime)
-        : false;
+      return isAllowedDate(value as CandyDate, this.disabledDate, this.disabledTime);
     }
   }
 
