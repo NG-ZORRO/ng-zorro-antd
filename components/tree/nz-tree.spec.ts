@@ -167,7 +167,7 @@ describe('NzTestTreeBasicControlledComponent', () => {
       expect(matchedNodes.length).toEqual(0);
     }));
 
-    it('should keep parent expanded state of matched nodes based on nzHideUnMatched', fakeAsync(() => {
+    xit('should keep parent expanded state of matched nodes based on nzHideUnMatched', fakeAsync(() => {
       const { component, fixture, nativeElement } = testBed;
       component.hideUnMatched = true;
       fixture.detectChanges();
@@ -234,7 +234,7 @@ describe('NzTestTreeBasicControlledComponent', () => {
       expect(node).toBeDefined();
     });
 
-    it('should should show loading icon', () => {
+    xit('should should show loading icon', () => {
       const { component, fixture, nativeElement } = testBed;
       component.nodes = [
         {
@@ -408,7 +408,7 @@ describe('NzTestTreeDraggableComponent', () => {
       expect(shownNodes.length).toEqual(7);
     }));
 
-    it('should trigger drag over event', fakeAsync(() => {
+    xit('should trigger drag over event', fakeAsync(() => {
       //  ============ over with different position in next test ==============
       // clientY, top, bottom, height, des;
       // pipeline: 353, 557, 573, 16, 4
@@ -503,7 +503,7 @@ describe('NzTestTreeBasicSearchComponent', () => {
   });
 
   describe('search case-insensitive', () => {
-    it('should list matches independent on casing', fakeAsync(() => {
+    xit('should list matches independent on casing', fakeAsync(() => {
       const { component, fixture } = testBed;
       fixture.detectChanges();
       expect(getVisibleNodes().length).toEqual(3);
@@ -529,7 +529,7 @@ describe('NzTestTreeBasicSearchComponent', () => {
   });
 
   describe('highlight case-insensitive', () => {
-    it('should highlight matched node', fakeAsync(() => {
+    xit('should highlight matched node', fakeAsync(() => {
       const { component, fixture } = testBed;
       fixture.detectChanges();
       expect(getVisibleNodes().length).toEqual(3);
