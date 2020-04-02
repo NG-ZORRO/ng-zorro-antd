@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import differenceInCalendarDays from 'date-fns/differenceInCalendarDays';
 import setHours from 'date-fns/setHours';
-import { DisabledTimeFn, DisabledTimePartial } from 'ng-zorro-antd/date-picker/standard-types';
+import { DisabledTimeFn, DisabledTimePartial } from 'ng-zorro-antd/date-picker';
 
 @Component({
   selector: 'nz-demo-date-picker-disabled-date',

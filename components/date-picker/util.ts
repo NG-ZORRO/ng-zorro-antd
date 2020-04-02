@@ -60,6 +60,9 @@ export function isTimeValid(value: CandyDate, disabledTime: DisabledTimeFn): boo
 }
 
 export function isAllowedDate(value: CandyDate, disabledDate?: DisabledDateFn, disabledTime?: DisabledTimeFn): boolean {
+  if (!value) {
+    return false;
+  }
   if (disabledDate) {
     if (disabledDate(value.nativeDate)) {
       return false;

@@ -57,8 +57,5 @@ export abstract class AbstractTable implements OnInit, OnChanges {
     if (changes.activeDate && !changes.activeDate.currentValue) {
       this.activeDate = new CandyDate();
     }
-    if (changes.value && changes.value.currentValue) {
-      this.activeDate = this.value;
-    }
   }
 }
