@@ -51,7 +51,7 @@ export class ModalOptions<T = NzSafeAny, R = NzSafeAny> {
   nzFooter?: string | TemplateRef<{}> | Array<ModalButtonOptions<T>> | null; // Default Modal ONLY
   nzCancelText?: string | null;
   nzOkText?: string | null;
-  nzContent?: string | TemplateRef<{}> | Type<T>;
+  nzContent?: string | TemplateRef<NzSafeAny> | Type<T>;
   nzCloseOnNavigation?: boolean = true;
   nzViewContainerRef?: ViewContainerRef;
 
