@@ -131,6 +131,15 @@ describe('time-picker-panel', () => {
         listOfSelectContainer[1].querySelector('.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner').textContent
       ).toContain(now.getMinutes().toString());
     });
+
+    it('should offsetTop is right', fakeAsync(() => {
+      testComponent.value = new Date(0, 0, 0, 0, 0, 0);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      const listOfSelectedLi = panelElement.nativeElement.querySelector('.ant-picker-time-panel-cell-selected');
+      expect(listOfSelectedLi.offsetTop).toBe(0);
+    }));
   });
   describe('disabled time-picker-panel', () => {
     let fixture: ComponentFixture<NzTestTimePanelDisabledComponent>;

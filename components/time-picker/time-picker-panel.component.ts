@@ -49,7 +49,7 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
       <div class="ant-picker-header-view">{{ dateHelper.format(time?.value, format) || '&nbsp;' }}</div>
     </div>
     <div class="ant-picker-content">
-      <ul *ngIf="hourEnabled" #hourListElement class="{{ prefixCls }}-column">
+      <ul *ngIf="hourEnabled" #hourListElement class="{{ prefixCls }}-column" style="position: relative;">
         <ng-container *ngFor="let hour of hourRange">
           <li
             *ngIf="!(nzHideDisabledOptions && hour.disabled)"
@@ -64,7 +64,7 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
           </li>
         </ng-container>
       </ul>
-      <ul *ngIf="minuteEnabled" #minuteListElement class="{{ prefixCls }}-column">
+      <ul *ngIf="minuteEnabled" #minuteListElement class="{{ prefixCls }}-column" style="position: relative;">
         <ng-container *ngFor="let minute of minuteRange">
           <li
             *ngIf="!(nzHideDisabledOptions && minute.disabled)"
@@ -79,7 +79,7 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
           </li>
         </ng-container>
       </ul>
-      <ul *ngIf="secondEnabled" #secondListElement class="{{ prefixCls }}-column">
+      <ul *ngIf="secondEnabled" #secondListElement class="{{ prefixCls }}-column" style="position: relative;">
         <ng-container *ngFor="let second of secondRange">
           <li
             *ngIf="!(nzHideDisabledOptions && second.disabled)"
