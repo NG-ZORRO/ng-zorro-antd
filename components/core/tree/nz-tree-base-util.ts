@@ -46,6 +46,7 @@ export function flattenTreeData(treeNodeList: NzTreeNode[] = [], expandedKeys: N
       treeNode.isStart = [...(parent ? parent.isStart : []), index === 0];
       treeNode.isEnd = [...(parent ? parent.isEnd : []), index === list.length - 1];
       // Add FlattenDataNode into list
+      // TODO: only need data here.
       const flattenNode: FlattenNode = {
         parent,
         pos,

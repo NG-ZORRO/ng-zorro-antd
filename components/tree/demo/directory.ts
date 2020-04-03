@@ -12,7 +12,7 @@ import { NzContextMenuService, NzDropdownMenuComponent } from 'ng-zorro-antd/dro
       (nzDblClick)="openFolder($event)"
       [nzTreeTemplate]="nzTreeTemplate"
     ></nz-tree>
-    <ng-template #nzTreeTemplate let-node let-origin>
+    <ng-template #nzTreeTemplate let-node let-origin="origin">
       <span class="custom-node">
         <span *ngIf="!node.isLeaf" (contextmenu)="contextMenu($event, menu)">
           <i nz-icon [nzType]="node.isExpanded ? 'folder-open' : 'folder'" (click)="openFolder(node)"></i>
@@ -35,14 +35,10 @@ import { NzContextMenuService, NzDropdownMenuComponent } from 'ng-zorro-antd/dro
   `,
   styles: [
     `
-      :host ::ng-deep .ant-tree {
+      nz-tree {
         overflow: hidden;
         margin: 0 -24px;
         padding: 0 24px;
-      }
-
-      :host ::ng-deep .ant-tree li {
-        padding: 4px 0 0 0;
       }
 
       .custom-node {
@@ -70,8 +66,8 @@ import { NzContextMenuService, NzDropdownMenuComponent } from 'ng-zorro-antd/dro
   ]
 })
 export class NzDemoTreeDirectoryComponent {
-  // actived node
-  activedNode: NzTreeNode;
+  // activated node
+  activatedNode: NzTreeNode;
   nodes = [
     {
       title: 'parent 0',
@@ -94,7 +90,7 @@ export class NzDemoTreeDirectoryComponent {
     }
   ];
 
-  openFolder(data: NzTreeNode | Required<NzFormatEmitEvent>): void {
+  openFolder(data: NzTreeNode | NzFormatEmitEvent): void {
     // do something if u want
     if (data instanceof NzTreeNode) {
       data.isExpanded = !data.isExpanded;
@@ -107,7 +103,7 @@ export class NzDemoTreeDirectoryComponent {
   }
 
   activeNode(data: NzFormatEmitEvent): void {
-    this.activedNode = data.node!;
+    this.activatedNode = data.node!;
   }
 
   contextMenu($event: MouseEvent, menu: NzDropdownMenuComponent): void {
