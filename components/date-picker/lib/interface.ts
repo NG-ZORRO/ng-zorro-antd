@@ -46,6 +46,8 @@ export interface DayCell extends DateCell {
   isHoverEndDate?: boolean;
   isInHoverRange?: boolean;
   isInSelectedRange?: boolean;
+  isLastDayOfMonth?: boolean;
+  isFirstDayOfMonth?: boolean;
 }
 
 export interface DecadeCell extends DateCell {

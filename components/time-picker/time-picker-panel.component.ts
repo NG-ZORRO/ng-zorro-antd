@@ -363,6 +363,12 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     this.build12Hours();
   }
 
+  scrollToTime(time: Date): void {
+    this.scrollToSelected(this.hourListElement.nativeElement, time.getHours(), 120, 'hour');
+    this.scrollToSelected(this.minuteListElement.nativeElement, time.getMinutes(), 120, 'minute');
+    this.scrollToSelected(this.secondListElement.nativeElement, time.getSeconds(), 120, 'second');
+  }
+
   selectHour(hour: { index: number; disabled: boolean }): void {
     this.time.setHours(hour.index, hour.disabled);
     this.scrollToSelected(this.hourListElement.nativeElement, hour.index, 120, 'hour');
@@ -584,6 +590,9 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   writeValue(value: Date): void {
     this.time.setValue(value, this.nzUse12Hours);
     this.buildTimes();
+    if (value) {
+      this.scrollToTime(value);
+    }
 
     // Mark this component to be checked manually with internal properties changing (see: https://github.com/angular/angular/issues/10816)
     this.cdr.markForCheck();

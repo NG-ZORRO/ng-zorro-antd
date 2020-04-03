@@ -31,7 +31,7 @@ import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { CandyDate, CompatibleValue } from 'ng-zorro-antd/core/time';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
-import { Subject } from 'rxjs';
+import { fromEvent, Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { DatePickerService } from './date-picker.service';
 import { DateRangePopupComponent } from './date-range-popup.component';
@@ -153,6 +153,8 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   origin: CdkOverlayOrigin;
   inputSize: number;
+  inputWidth: number;
+  arrowLeft: number;
   destroy$ = new Subject();
   prefixCls = PREFIX_CLASS;
   // Index signature in type 'string | string[]' only permits reading
@@ -219,21 +221,27 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       this.updateInputValue();
       this.changeDetector.markForCheck();
     });
+
     if (this.isRange) {
-      const inputWidth = this.rangePickerInputs.first.nativeElement.offsetWidth;
-      const arrowLeft = inputWidth + this.separatorElement.nativeElement.offsetWidth;
+      this.resetInputWidthAndArrowLeft();
+      fromEvent(window, 'resize')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          this.resetInputWidthAndArrowLeft();
+        });
 
       this.datePickerService.inputPartChange$.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe(partType => {
         this.datePickerService.activeInput = partType;
-        this.focus();
         this.datePickerService.arrowPositionStyle = {
-          left: this.datePickerService.activeInput === 'left' ? '0px' : `${arrowLeft}px`
+          left: this.datePickerService.activeInput === 'left' ? '0px' : `${this.arrowLeft}px`
         };
         this.activeBarStyle = {
           ...this.activeBarStyle,
           ...this.datePickerService.arrowPositionStyle,
-          width: `${inputWidth}px`
+          width: `${this.inputWidth}px`
         };
+        this.focus();
+        this.panel?.cdr.markForCheck();
         this.changeDetector.markForCheck();
       });
     }
@@ -248,6 +256,11 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     if (changes.open) {
       this.animationStart();
     }
+  }
+
+  resetInputWidthAndArrowLeft(): void {
+    this.inputWidth = this.rangePickerInputs?.first.nativeElement.offsetWidth || 0;
+    this.arrowLeft = this.inputWidth + this.separatorElement?.nativeElement.offsetWidth || 0;
   }
 
   getInput(partType?: RangePartType): HTMLInputElement {
