@@ -3,9 +3,13 @@
 
 @descriptions-prefix-cls: ~'@{ant-prefix}-descriptions';
 
+@descriptions-default-padding: 16px 24px;
+@descriptions-middle-padding: 12px 24px;
+@descriptions-small-padding: 8px 16px;
+
 .@{descriptions-prefix-cls} {
   &-title {
-    margin-bottom: @descriptions-title-margin-bottom;
+    margin-bottom: 20px;
     color: @heading-color;
     font-weight: bold;
     font-size: @font-size-lg;
@@ -25,7 +29,7 @@
   &-row {
     > th,
     > td {
-      padding-bottom: @padding-md;
+      padding-bottom: 16px;
     }
     &:last-child {
       border-bottom: none;
@@ -77,7 +81,7 @@
     .@{descriptions-prefix-cls}-row {
       > th,
       > td {
-        padding-bottom: @padding-sm;
+        padding-bottom: 12px;
       }
     }
   }
@@ -86,7 +90,7 @@
     .@{descriptions-prefix-cls}-row {
       > th,
       > td {
-        padding-bottom: @padding-xs;
+        padding-bottom: 8px;
       }
     }
   }
@@ -138,5 +142,3 @@
     }
   }
 }
-
-@import './rtl';

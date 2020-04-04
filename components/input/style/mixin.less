@@ -1,30 +1,28 @@
 @import '../../style/themes/index';
 @import '../../style/mixins/index';
 
+@input-affix-width: 19px;
 @input-affix-with-clear-btn-width: 38px;
 
 // size mixins for input
 .input-lg() {
+  height: @input-height-lg;
   padding: @input-padding-vertical-lg @input-padding-horizontal-lg;
   font-size: @font-size-lg;
 }
 
 .input-sm() {
+  height: @input-height-sm;
   padding: @input-padding-vertical-sm @input-padding-horizontal-sm;
 }
 
 // input status
 // == when focus or actived
 .active(@color: @outline-color) {
-  & when (@theme = dark) {
-    border-color: @color;
-  }
-  & when not (@theme = dark) {
-    border-color: ~`colorPalette('@{color}', 5) `;
-  }
+  border-color: ~`colorPalette('@{color}', 5) `;
   border-right-width: @border-width-base !important;
   outline: 0;
-  box-shadow: @input-outline-offset @outline-blur-size @outline-width fade(@color, @outline-fade);
+  box-shadow: @input-outline-offset @outline-blur-size @outline-width fade(@color, 20%);
 }
 
 // == when hoverd
@@ -49,7 +47,7 @@
   position: relative;
   display: inline-block;
   width: 100%;
-  min-width: 0;
+  height: @input-height-base;
   padding: @input-padding-vertical-base @input-padding-horizontal-base;
   color: @input-color;
   font-size: @font-size-base;
@@ -65,8 +63,7 @@
     .hover();
   }
 
-  &:focus,
-  &-focused {
+  &:focus {
     .active();
   }
 
@@ -175,8 +172,8 @@
     .@{ant-prefix}-select {
       margin: -(@input-padding-vertical-base + 1px) (-@input-padding-horizontal-base);
 
-      &.@{ant-prefix}-select-single:not(.@{ant-prefix}-select-customize-input)
-        .@{ant-prefix}-select-selector {
+      .@{ant-prefix}-select-selection {
+        margin: -1px;
         background-color: inherit;
         border: @border-width-base @border-style-base transparent;
         box-shadow: none;
@@ -184,7 +181,7 @@
 
       &-open,
       &-focused {
-        .@{ant-prefix}-select-selector {
+        .@{ant-prefix}-select-selection {
           color: @primary-color;
         }
       }
@@ -209,7 +206,7 @@
     border-bottom-right-radius: 0;
 
     // Reset Select's style in addon
-    .@{ant-prefix}-select .@{ant-prefix}-select-selector {
+    .@{ant-prefix}-select .@{ant-prefix}-select-selection {
       border-top-right-radius: 0;
       border-bottom-right-radius: 0;
     }
@@ -241,7 +238,7 @@
     border-bottom-left-radius: 0;
 
     // Reset Select's style in addon
-    .@{ant-prefix}-select .@{ant-prefix}-select-selector {
+    .@{ant-prefix}-select .@{ant-prefix}-select-selection {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
@@ -259,24 +256,18 @@
   }
 
   // Fix https://github.com/ant-design/ant-design/issues/5754
-  &-lg .@{ant-prefix}-select-single .ant-select-selector {
+  &-lg .@{ant-prefix}-select-selection--single {
     height: @input-height-lg;
   }
 
-  &-sm .@{ant-prefix}-select-single .ant-select-selector {
+  &-sm .@{ant-prefix}-select-selection--single {
     height: @input-height-sm;
   }
 
   .@{inputClass}-affix-wrapper {
-    &:not(:first-child) {
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-
-    &:not(:last-child) {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-    }
+    display: table-cell;
+    float: left;
+    width: 100%;
   }
 
   &&-compact {
@@ -300,7 +291,7 @@
     }
 
     & > * {
-      display: inline-flex;
+      display: inline-block;
       float: none;
       vertical-align: top; // https://github.com/ant-design/ant-design-pro/issues/139
       border-radius: 0;
@@ -317,7 +308,7 @@
     }
 
     // reset border for Select, DatePicker, AutoComplete, Cascader, Mention, TimePicker, Input
-    & > .@{ant-prefix}-select > .@{ant-prefix}-select-selector,
+    & > .@{ant-prefix}-select > .@{ant-prefix}-select-selection,
     & > .@{ant-prefix}-calendar-picker .@{ant-prefix}-input,
     & > .@{ant-prefix}-select-auto-complete .@{ant-prefix}-input,
     & > .@{ant-prefix}-cascader-picker .@{ant-prefix}-input,
@@ -336,13 +327,8 @@
       }
     }
 
-    // update z-index for arrow icon
-    & > .@{ant-prefix}-select > .@{ant-prefix}-select-arrow {
-      z-index: 1; // https://github.com/ant-design/ant-design/issues/20371
-    }
-
     & > *:first-child,
-    & > .@{ant-prefix}-select:first-child > .@{ant-prefix}-select-selector,
+    & > .@{ant-prefix}-select:first-child > .@{ant-prefix}-select-selection,
     & > .@{ant-prefix}-calendar-picker:first-child .@{ant-prefix}-input,
     & > .@{ant-prefix}-select-auto-complete:first-child .@{ant-prefix}-input,
     & > .@{ant-prefix}-cascader-picker:first-child .@{ant-prefix}-input,
@@ -353,7 +339,7 @@
     }
 
     & > *:last-child,
-    & > .@{ant-prefix}-select:last-child > .@{ant-prefix}-select-selector,
+    & > .@{ant-prefix}-select:last-child > .@{ant-prefix}-select-selection,
     & > .@{ant-prefix}-calendar-picker:last-child .@{ant-prefix}-input,
     & > .@{ant-prefix}-select-auto-complete:last-child .@{ant-prefix}-input,
     & > .@{ant-prefix}-cascader-picker:last-child .@{ant-prefix}-input,
@@ -369,5 +355,95 @@
     & > .@{ant-prefix}-select-auto-complete .@{ant-prefix}-input {
       vertical-align: top;
     }
+  }
+}
+
+.input-affix-wrapper(@inputClass) {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  text-align: start;
+
+  &:hover .@{inputClass}:not(.@{inputClass}-disabled) {
+    .hover();
+  }
+
+  .@{inputClass} {
+    position: relative;
+    text-align: inherit;
+  }
+
+  // Should not break align of icon & text
+  // https://github.com/ant-design/ant-design/issues/18087
+  // https://github.com/ant-design/ant-design/issues/17414
+  // https://github.com/ant-design/ant-design/pull/17684
+  // https://codesandbox.io/embed/pensive-paper-di2wk
+  // https://codesandbox.io/embed/nifty-benz-gb7ml
+  .@{inputClass}-prefix,
+  .@{inputClass}-suffix {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    color: @input-color;
+    line-height: 0;
+    transform: translateY(-50%);
+
+    :not(.anticon) {
+      line-height: @line-height-base;
+    }
+  }
+
+  .@{inputClass}-disabled ~ .@{inputClass}-suffix {
+    .anticon {
+      color: @disabled-color;
+      cursor: not-allowed;
+    }
+  }
+
+  .@{inputClass}-prefix {
+    left: @input-padding-horizontal-base + 1px;
+  }
+
+  .@{inputClass}-suffix {
+    right: @input-padding-horizontal-base + 1px;
+  }
+
+  .@{inputClass}:not(:first-child) {
+    padding-left: @input-padding-horizontal-base + @input-affix-width;
+  }
+
+  .@{inputClass}:not(:last-child) {
+    padding-right: @input-padding-horizontal-base + @input-affix-width;
+  }
+
+  &.@{inputClass}-affix-wrapper-input-with-clear-btn .@{inputClass}:not(:last-child) {
+    padding-right: @input-padding-horizontal-base + @input-affix-with-clear-btn-width;
+  }
+
+  &.@{inputClass}-affix-wrapper-textarea-with-clear-btn .@{inputClass} {
+    padding-right: 22px;
+  }
+}
+
+.clear-icon() {
+  color: @disabled-color;
+  font-size: @font-size-sm;
+  // https://github.com/ant-design/ant-design/pull/18151
+  // https://codesandbox.io/s/wizardly-sun-u10br
+  cursor: pointer;
+  transition: color 0.3s;
+
+  &:hover {
+    color: @text-color-secondary;
+  }
+
+  &:active {
+    color: @text-color;
+  }
+
+  + i {
+    margin-left: 6px;
   }
 }

@@ -2,7 +2,8 @@
 @import '../../style/mixins/index';
 
 @card-prefix-cls: ~'@{ant-prefix}-card';
-@card-hoverable-hover-border: transparent;
+@card-head-height: 48px;
+@card-hover-border: fade(@black, 9%);
 @card-action-icon-size: 16px;
 
 @gradient-min: fade(@card-skeleton-bg, 20%);
@@ -16,14 +17,10 @@
   border-radius: @card-radius;
   transition: all 0.3s;
 
-  &-rtl {
-    direction: rtl;
-  }
-
   &-hoverable {
     cursor: pointer;
     &:hover {
-      border-color: @card-hoverable-hover-border;
+      border-color: @card-hover-border;
       box-shadow: @card-shadow;
     }
   }
@@ -38,7 +35,7 @@
     padding: 0 @card-padding-base;
     color: @card-head-color;
     font-weight: 500;
-    font-size: @card-head-font-size;
+    font-size: @font-size-lg;
     background: @card-head-background;
     border-bottom: @border-width-base @border-style-base @border-color-split;
     border-radius: @card-radius @card-radius 0 0;
@@ -60,7 +57,7 @@
 
     .@{ant-prefix}-tabs {
       clear: both;
-      margin-bottom: @card-head-tabs-margin-bottom;
+      margin-bottom: -17px;
       color: @text-color;
       font-weight: normal;
       font-size: @font-size-base;
@@ -79,11 +76,6 @@
     color: @text-color;
     font-weight: normal;
     font-size: @font-size-base;
-
-    .@{card-prefix-cls}-rtl & {
-      margin-right: auto;
-      margin-left: 0;
-    }
   }
 
   &-body {
@@ -106,16 +98,11 @@
       1px 1px 0 0 @border-color-split, 1px 0 0 0 @border-color-split inset,
       0 1px 0 0 @border-color-split inset;
     transition: all 0.3s;
-
-    .@{card-prefix-cls}-rtl & {
-      float: right;
-    }
-
     &-hoverable {
       &:hover {
         position: relative;
         z-index: 1;
-        box-shadow: @card-shadow;
+        box-shadow: @box-shadow-base;
       }
     }
   }
@@ -130,14 +117,10 @@
   }
 
   &-cover {
-    margin-right: -1px;
-    margin-left: -1px;
-
     > * {
       display: block;
       width: 100%;
     }
-
     img {
       border-radius: @card-radius @card-radius 0 0;
     }
@@ -153,13 +136,9 @@
 
     & > li {
       float: left;
-      margin: @card-actions-li-margin;
+      margin: 12px 0;
       color: @text-color-secondary;
       text-align: center;
-
-      .@{card-prefix-cls}-rtl & {
-        float: right;
-      }
 
       > span {
         position: relative;
@@ -224,18 +203,12 @@
     &-avatar {
       float: left;
       padding-right: 16px;
-
-      .@{card-prefix-cls}-rtl & {
-        float: right;
-        padding-right: 0;
-        padding-left: 16px;
-      }
     }
 
     &-detail {
       overflow: hidden;
       > div:not(:last-child) {
-        margin-bottom: @margin-xs;
+        margin-bottom: 8px;
       }
     }
 
