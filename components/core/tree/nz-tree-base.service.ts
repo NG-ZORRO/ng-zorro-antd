@@ -9,7 +9,8 @@
 import { Injectable } from '@angular/core';
 
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { FlattenNode, NzTreeNode, NzTreeNodeKey } from './nz-tree-base-node';
+import { BehaviorSubject } from 'rxjs';
+import { NzTreeNode, NzTreeNodeKey } from './nz-tree-base-node';
 import { flattenTreeData, isCheckDisabled, isInArray } from './nz-tree-base-util';
 import { NzFormatEmitEvent } from './nz-tree-base.definitions';
 
@@ -22,7 +23,7 @@ export class NzTreeBaseService {
   isMultiple: boolean = false;
   selectedNode: NzTreeNode;
   rootNodes: NzTreeNode[] = [];
-  flattenNodes: FlattenNode[] = [];
+  flattenNodes$ = new BehaviorSubject<NzTreeNode[]>([]);
   selectedNodeList: NzTreeNode[] = [];
   expandedNodeList: NzTreeNode[] = [];
   checkedNodeList: NzTreeNode[] = [];
@@ -42,7 +43,7 @@ export class NzTreeBaseService {
   }
 
   flattenTreeData(nzNodes: NzTreeNode[], expandedKeys: NzTreeNodeKey[] | true = []): void {
-    this.flattenNodes = flattenTreeData(nzNodes, expandedKeys);
+    this.flattenNodes$.next(flattenTreeData(nzNodes, expandedKeys).map(item => item.data));
   }
 
   getSelectedNode(): NzTreeNode | null {
