@@ -17,9 +17,9 @@ import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
-import { NzTransferListComponent } from './nz-transfer-list.component';
-import { NzTransferSearchComponent } from './nz-transfer-search.component';
-import { NzTransferComponent } from './nz-transfer.component';
+import { NzTransferListComponent } from './transfer-list.component';
+import { NzTransferSearchComponent } from './transfer-search.component';
+import { NzTransferComponent } from './transfer.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule, NzCheckboxModule, NzButtonModule, NzInputModule, NzI18nModule, NzIconModule, NzEmptyModule],
