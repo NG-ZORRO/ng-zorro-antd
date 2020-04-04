@@ -6,8 +6,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-tree.module';
-export * from './nz-tree.component';
-export * from './nz-tree-node.component';
-export * from './nz-tree-indent.component';
-export * from './nz-tree.service';
+export * from './tree.module';
+export * from './tree.component';
+export * from './tree-node.component';
+export * from './tree-indent.component';
+export * from './tree.service';
+export * from './tree-node-switcher.component';
+export * from './tree-node-checkbox.component';
+export * from './tree-node-title.component';

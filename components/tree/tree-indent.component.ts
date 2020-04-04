@@ -16,22 +16,26 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleCha
   preserveWhitespaces: false,
   host: {
     '[attr.aria-hidden]': 'true',
-    '[class]': `nzPrefixCls + '-indent'`
+    '[class.ant-tree-indent]': '!nzSelectMode',
+    '[class.ant-select-tree-indent]': 'nzSelectMode'
   }
 })
 export class NzTreeIndentComponent implements OnInit, OnChanges {
-  @Input() nzPrefixCls: string;
   @Input() nzTreeLevel: number;
   @Input() nzIsStart: boolean[];
   @Input() nzIsEnd: boolean[];
+  @Input() nzSelectMode = false;
 
   listOfUnit: number[] = [];
 
   unitMapOfClass(index: number): { [key: string]: boolean } {
     return {
-      [`${this.nzPrefixCls}-indent-unit`]: true,
-      [`${this.nzPrefixCls}-indent-unit-start`]: this.nzIsStart[index + 1],
-      [`${this.nzPrefixCls}-indent-unit-end`]: this.nzIsEnd[index + 1]
+      [`ant-tree-indent-unit`]: !this.nzSelectMode,
+      [`ant-tree-indent-unit-start`]: !this.nzSelectMode && this.nzIsStart[index + 1],
+      [`ant-tree-indent-unit-end`]: !this.nzSelectMode && this.nzIsEnd[index + 1],
+      [`ant-select-tree-indent-unit`]: this.nzSelectMode,
+      [`ant-select-tree-indent-unit-start`]: this.nzSelectMode && this.nzIsStart[index + 1],
+      [`ant-select-tree-indent-unit-end`]: this.nzSelectMode && this.nzIsEnd[index + 1]
     };
   }
 
