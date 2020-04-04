@@ -1,16 +1,11 @@
 @import './index';
 
-@table-padding-vertical-md: @table-padding-vertical * 3 / 4;
-@table-padding-horizontal-md: @table-padding-horizontal / 2;
-@table-padding-vertical-sm: @table-padding-vertical / 2;
-@table-padding-horizontal-sm: @table-padding-horizontal / 2;
-
 .table-size(@size, @padding-vertical, @padding-horizontal) {
   .@{table-prefix-cls}.@{table-prefix-cls}-@{size} {
     .@{table-prefix-cls}-title,
     .@{table-prefix-cls}-footer,
-    thead > tr > th,
-    tbody > tr > td {
+    .@{table-prefix-cls}-thead > tr > th,
+    .@{table-prefix-cls}-tbody > tr > td {
       padding: @padding-vertical @padding-horizontal;
     }
 
@@ -35,7 +30,7 @@
 .table-size(~'small', @table-padding-vertical-sm, @table-padding-horizontal-sm);
 
 .@{table-prefix-cls}.@{table-prefix-cls}-small {
-  thead > tr > th {
+  .@{table-prefix-cls}-thead > tr > th {
     background-color: @table-header-bg-sm;
   }
 }

@@ -10,7 +10,7 @@ interface ItemData {
 @Component({
   selector: 'nz-demo-table-edit-row',
   template: `
-    <nz-table #editRowTable nzBordered [nzData]="listOfData">
+    <nz-table #editRowTable nzBordered [nzData]="listOfData" nzTableLayout="fixed">
       <thead>
         <tr>
           <th nzWidth="25%">Name</th>
@@ -21,48 +21,28 @@ interface ItemData {
       </thead>
       <tbody>
         <tr *ngFor="let data of editRowTable.data">
-          <td>
-            <ng-container *ngIf="!editCache[data.id].edit; else nameInputTpl">
-              {{ data.name }}
-            </ng-container>
-            <ng-template #nameInputTpl>
-              <input type="text" nz-input [(ngModel)]="editCache[data.id].data.name" />
-            </ng-template>
-          </td>
-          <td>
-            <ng-container *ngIf="!editCache[data.id].edit; else ageInputTpl">
-              {{ data.age }}
-            </ng-container>
-            <ng-template #ageInputTpl>
-              <input type="text" nz-input [(ngModel)]="editCache[data.id].data.age" />
-            </ng-template>
-          </td>
-          <td>
-            <ng-container *ngIf="!editCache[data.id].edit; else addressInputTpl">
-              {{ data.address }}
-            </ng-container>
-            <ng-template #addressInputTpl>
-              <input type="text" nz-input [(ngModel)]="editCache[data.id].data.address" />
-            </ng-template>
-          </td>
-          <td>
-            <div class="editable-row-operations">
-              <ng-container *ngIf="!editCache[data.id].edit; else saveTpl">
-                <a (click)="startEdit(data.id)">Edit</a>
-              </ng-container>
-              <ng-template #saveTpl>
-                <a (click)="saveEdit(data.id)">Save</a>
-                <a nz-popconfirm nzTitle="Sure to cancel?" (nzOnConfirm)="cancelEdit(data.id)">Cancel</a>
-              </ng-template>
-            </div>
-          </td>
+          <ng-container *ngIf="!editCache[data.id].edit; else editTemplate">
+            <td>{{ data.name }}</td>
+            <td>{{ data.age }}</td>
+            <td>{{ data.address }}</td>
+            <td><a (click)="startEdit(data.id)">Edit</a></td>
+          </ng-container>
+          <ng-template #editTemplate>
+            <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.name" /></td>
+            <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.age" /></td>
+            <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.address" /></td>
+            <td>
+              <a (click)="saveEdit(data.id)" class="save">Save</a>
+              <a nz-popconfirm nzTitle="Sure to cancel?" (nzOnConfirm)="cancelEdit(data.id)">Cancel</a>
+            </td>
+          </ng-template>
         </tr>
       </tbody>
     </nz-table>
   `,
   styles: [
     `
-      .editable-row-operations a {
+      .save {
         margin-right: 8px;
       }
     `
@@ -100,14 +80,16 @@ export class NzDemoTableEditRowComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const data = [];
     for (let i = 0; i < 100; i++) {
-      this.listOfData.push({
+      data.push({
         id: `${i}`,
         name: `Edrward ${i}`,
         age: 32,
         address: `London Park no. ${i}`
       });
     }
+    this.listOfData = data;
     this.updateEditCache();
   }
 }

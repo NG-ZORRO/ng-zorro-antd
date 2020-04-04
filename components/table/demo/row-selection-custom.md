@@ -7,11 +7,11 @@ title:
 
 ## zh-CN
 
-通过 `nzShowRowSelection` 与 `nzSelections` 自定义选择项.
+通过 `nzSelections` 自定义选择项.
 
 ## en-US
 
-Use `nzShowRowSelection` and `nzSelections` to custom selections.
+Use `nzSelections` to custom selections.
 
 
 

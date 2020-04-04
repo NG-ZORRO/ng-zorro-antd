@@ -39,12 +39,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 | `fetchFromIconfont()` | 用于从 FontIcon 获取图标资源文件 | `NzIconfontOption` |
 | `changeAssetypescriptSource()` | 用于修改动态加载 icon 的资源前缀，使得你可以部署图标资源到你想要的任何位置，例如 cdn | `string` |
 
-### InjectionToken
-
-| Token | 说明 | 参数 |
-| --- | --- | --- |
-| `NZ_ICONS` | 用于静态引入图标，传入数组 | `IconDefinition[]`, `useValue` |
-
 ### SVG 图标
 
 我们与 Ant Design 同步，使用了 svg 图标替换了原先的 font 图标，从而带来了以下优势：
@@ -76,7 +70,7 @@ NG-ZORRO 之前并没有图标组件，而是提供了基于字体文件的解�
 
 ```ts
 import { IconDefinition } from '@ant-design/icons-angular';
-import { NzIconModule, NZ_ICON_DEFAULT_TWOTONE_COLOR, NZ_ICONS } from 'ng-zorro-antd/icon';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 // 引入你需要的图标，比如你需要 fill 主题的 AccountBook Alert 和 outline 主题的 Alert，推荐 ✔️
 import { AccountBookFill, AlertFill, AlertOutline } from '@ant-design/icons-angular/icons';
@@ -96,19 +90,15 @@ const icons: IconDefinition[] = [ AccountBookFill, AlertOutline, AlertFill ];
     AppComponent
   ],
   imports: [
-    NzIconModule,
-  ],
-  providers: [
-    { provide: NZ_ICON_DEFAULT_TWOTONE_COLOR, useValue: '#00ff00' }, // 不提供的话，即为 Ant Design 的主题蓝色
-    { provide: NZ_ICONS, useValue: icons }
-  ],
+    NzIconModule.forRoot(icons)
+  ]
   bootstrap: [ AppComponent ]
 })
 export class AppModule {
 }
 ```
 
-本质上是调用了 `NzIconService` 的 `addIcon` 方法，引入后的文件会被打包到 `.js` 文件中。静态引入会增加包体积，所以我们建议尽可能地使用动态加载，如果要静态加载，也仅仅加载你需要用到的图标，具体请看 Ant Design 的 [issue](https://github.com/ant-design/ant-design/issues/12011)。
+本质上是调用了 `NzIconService` 的 `addIcon` 方法，引入后的文件会被打包到 `.js` 文件中。静态引入会增加包体积，所以我们建议尽可能地使用动态加载，如果要静态加载，也仅仅加载你需要用到的图标。
 
 > 为了加快渲染速度，NG-ZORRO 本身用到的 icon 是静态引入的。而官网的图标是动态引入的。
 
@@ -131,6 +121,21 @@ export class AppModule {
 例如，你在 `https://mycdn.somecdn.com/icons/assets` 目录下部署了静态资源文件，那么你就可以通过调用 `changeAssetsSource('https://mycdn.somecdn.com/icons')`，来告诉 NG-ZORRO 从这个位置动态加载图标资源。
 
 请在 constructor 里或者在 `AppInitService` 里调用这个方法。
+
+### 在子模块中补充图标
+
+有时候，为了避免增大 main.js 的体积，你可能想要从懒加载模块中引入图标，这时你就可以使用 `NzIconModule.forChild` 来追加图标。
+
+```ts
+@NgModule({
+  imports: [CommonModule, NzIconModule.forChild([QuestionOutline])],
+})
+class ChildModule {}
+```
+
+这样，当 `ChildModule` 加载之后，整个应用都能够使用 QuestionOutline 图标。
+
+当然，不要忘记在 `NZ_ICONS` 中删除该图标。
 
 ### 双色图标主色
 
@@ -176,12 +181,6 @@ this._iconService.fetchFromIconfont({
 
 你是不是没有阅读以上的文档？
 
-### 出现了两个图标，这是怎么回事？
-
-1.7.0 及之后与之前的版本在图标的实现上完全不同，旧版本的主题文件中，会引入字体文件，字体文件根据 CSS 类名，通过一个伪类元素将 icon 添加进来，加上新版的 SVG icon，就会出现两个 icon。
-
-如果发生了，请先删除 `node_modules` 然后重装，如果还是不行，仔细检查你是否在别处引用了旧版本的主题文件，全局查找 `@icon-url`，删除该行代码即可。
-
 ### 我想静态引入全部的图标，该怎么做？
 
 实际上我们已经在 <a href="/components/icon/zh#%E9%9D%99%E6%80%81%E5%8A%A0%E8%BD%BD%E4%B8%8E%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD">静态加载与动态加载</a> 部分演示过了：
@@ -195,7 +194,7 @@ this._iconService.fetchFromIconfont({
 // const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key])
 ```
 
-然后通过 InjectionToken（1.8.0）或者 `NzIconService` 的 `addIcon` 方法引入。
+然后通过 forRoot 或者 `NzIconService` 的 `addIcon` 方法引入。
 
 ### 动态加载会不会影响网页的性能？
 

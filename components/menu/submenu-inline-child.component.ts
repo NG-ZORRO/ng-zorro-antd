@@ -7,7 +7,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
-import { collapseMotion } from 'ng-zorro-antd/core';
+import { collapseMotion } from 'ng-zorro-antd/core/animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzMenuModeType } from './menu.types';
 

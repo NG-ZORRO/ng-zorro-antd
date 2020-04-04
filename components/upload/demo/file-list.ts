@@ -1,34 +1,40 @@
 import { Component } from '@angular/core';
+import { UploadChangeParam, UploadFile } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'nz-demo-upload-file-list',
   template: `
-    <nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" [nzFileList]="fileList">
+    <nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76" [nzFileList]="fileList" (nzChange)="handleChange($event)">
       <button nz-button><i nz-icon nzType="upload"></i><span>Upload</span></button>
     </nz-upload>
   `
 })
 export class NzDemoUploadFileListComponent {
-  fileList = [
+  fileList: UploadFile[] = [
     {
-      uid: 1,
+      uid: '-1',
       name: 'xxx.png',
       status: 'done',
-      response: 'Server Error 500', // custom error message to show
       url: 'http://www.baidu.com/xxx.png'
-    },
-    {
-      uid: 2,
-      name: 'yyy.png',
-      status: 'done',
-      url: 'http://www.baidu.com/yyy.png'
-    },
-    {
-      uid: 3,
-      name: 'zzz.png',
-      status: 'error',
-      response: 'Server Error 500', // custom error message to show
-      url: 'http://www.baidu.com/zzz.png'
     }
   ];
+
+  handleChange(info: UploadChangeParam): void {
+    let fileList = [...info.fileList];
+
+    // 1. Limit the number of uploaded files
+    // Only to show two recent uploaded files, and old ones will be replaced by the new
+    fileList = fileList.slice(-2);
+
+    // 2. Read from response and show file link
+    fileList = fileList.map(file => {
+      if (file.response) {
+        // Component will show file.url as link
+        file.url = file.response.url;
+      }
+      return file;
+    });
+
+    this.fileList = fileList;
+  }
 }

@@ -2,7 +2,6 @@ const path = require('path');
 const fs = require('fs');
 const capitalizeFirstLetter = require('./capitalize-first-letter');
 const camelCase = require('./camelcase');
-const PrismAngular = require('./angular-language-marked');
 
 module.exports = function (showCaseComponentPath, result) {
   if (result.pageDemo) {
@@ -26,11 +25,9 @@ function generateDemoModule(content) {
   const demoMap = content.demoMap;
   let imports = '';
   let declarations = '';
-  let entryComponents = [];
   for (const key in demoMap) {
     const declareComponents = [`NzDemo${componentName(component)}${componentName(key)}Component`];
     const entries = retrieveEntryComponents(demoMap[key] && demoMap[key].ts);
-    entryComponents.push(...entries);
     declareComponents.push(...entries);
     imports += `import { ${declareComponents.join(', ')} } from './${key}';\n`;
     declarations += `\t\t${declareComponents.join(',\n\t')},\n`;
@@ -45,7 +42,7 @@ function generateDemoModule(content) {
     declarations += `\t\tNzPageDemo${componentName(component)}ZhComponent,\n`;
     declarations += `\t\tNzPageDemo${componentName(component)}EnComponent,\n`;
   }
-  return demoModuleTemplate.replace(/{{imports}}/g, imports).replace(/{{declarations}}/g, declarations).replace(/{{component}}/g, componentName(component)).replace(/{{entryComponents}}/g, entryComponents.join(',\n'));
+  return demoModuleTemplate.replace(/{{imports}}/g, imports).replace(/{{declarations}}/g, declarations).replace(/{{component}}/g, componentName(component));
 }
 
 function componentName(component) {
@@ -75,24 +72,18 @@ function generatePageDemoComponent(content) {
 function generateDemoComponent(content) {
   const demoComponentTemplate = String(fs.readFileSync(path.resolve(__dirname, '../template/demo-component.template.ts')));
   const component = content.name;
-  const demoMap = content.demoMap;
-  let code = '';
-  let rawCode = '';
-  for (const key in demoMap) {
-    const angularCode = encodeURIComponent(PrismAngular.highlight(demoMap[key].ts, Prism.languages['angular']));
-    code += `\t${camelCase(key)} = \`${angularCode}\`;\n`;
-    rawCode += `\t${camelCase(key)}Raw = \`${encodeURIComponent(demoMap[key].ts)}\`;\n`;
-  }
+
   let output = demoComponentTemplate;
   output = output.replace(/{{component}}/g, component);
-  output = output.replace(/{{code}}/g, code);
-  output = output.replace(/{{rawCode}}/g, rawCode);
+
   let zhOutput = output;
   let enOutput = output;
+
   enOutput = enOutput.replace(/{{componentName}}/g, generateComponentName(component, 'en'));
   enOutput = enOutput.replace(/{{language}}/g, 'en');
   zhOutput = zhOutput.replace(/{{componentName}}/g, generateComponentName(component, 'zh'));
   zhOutput = zhOutput.replace(/{{language}}/g, 'zh');
+
   return {
     en: enOutput,
     zh: zhOutput
@@ -158,11 +149,13 @@ function generateToc(language, name, demoMap) {
   linkArray.sort((pre, next) => pre.order - next.order);
   linkArray.push({ content: `<nz-link nzHref="#api" nzTitle="API"></nz-link>` });
   const links = linkArray.map(link => link.content).join('');
-  return `<nz-affix class="toc-affix" [nzOffsetTop]="16">
+  return `
+<nz-affix class="toc-affix" [nzOffsetTop]="16">
     <nz-anchor [nzAffix]="false" nzShowInkInFixed (nzClick)="goLink($event)">
-      ${links}
+        ${links}
     </nz-anchor>
-  </nz-affix>`;
+</nz-affix>`;
+
 }
 
 function generateExample(result) {
@@ -202,7 +195,7 @@ function generateExample(result) {
 }
 
 function retrieveEntryComponents(plainCode) {
-  const matches = (plainCode + '').match(/^\/\*\s*?entryComponents:\s*([^\n]+?)\*\//) || [];
+  const matches = (plainCode + '').match(/^\/\*\s*?declarations:\s*([^\n]+?)\*\//) || [];
   if (matches[1]) {
     return matches[1].split(',').map(className => className.trim()).filter((value, index, self) => value && self.indexOf(value) === index);
   }

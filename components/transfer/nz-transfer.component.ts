@@ -10,7 +10,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -18,18 +17,17 @@ import {
   OnInit,
   Output,
   QueryList,
-  Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { InputBoolean, toArray } from 'ng-zorro-antd/core/util';
+import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { Observable, of, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
-import { InputBoolean, NzUpdateHostClassService } from 'ng-zorro-antd/core';
-import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { TransferCanMove, TransferChange, TransferDirection, TransferItem, TransferSearchChange, TransferSelectChange } from './interface';
 import { NzTransferListComponent } from './nz-transfer-list.component';
@@ -40,18 +38,17 @@ import { NzTransferListComponent } from './nz-transfer-list.component';
   preserveWhitespaces: false,
   templateUrl: './nz-transfer.component.html',
   host: {
-    '[class.ant-transfer-disabled]': 'nzDisabled'
+    '[class]': 'hostClassMap'
   },
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [NzUpdateHostClassService]
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   @ViewChildren(NzTransferListComponent)
   private lists!: QueryList<NzTransferListComponent>;
-  // tslint:disable-next-line:no-any
-  locale: any = {};
+  locale: NzSafeAny = {};
+  hostClassMap = {};
 
   leftFilter = '';
   rightFilter = '';
@@ -74,6 +71,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzFilterOption: (inputValue: string, item: TransferItem) => boolean;
   @Input() nzSearchPlaceholder: string;
   @Input() nzNotFoundContent: string;
+  @Input() nzTargetKeys: string[] = [];
 
   // events
   @Output() readonly nzChange = new EventEmitter<TransferChange>();
@@ -104,7 +102,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  private getCheckedData(direction: string): TransferItem[] {
+  private getCheckedData(direction: TransferDirection): TransferItem[] {
     return this[direction === 'left' ? 'leftDataSource' : 'rightDataSource'].filter(w => w.checked);
   }
 
@@ -131,7 +129,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   leftActive = false;
   rightActive = false;
 
-  private updateOperationStatus(direction: string, count?: number): void {
+  private updateOperationStatus(direction: TransferDirection, count?: number): void {
     this[direction === 'right' ? 'leftActive' : 'rightActive'] =
       (typeof count === 'undefined' ? this.getCheckedData(direction).filter(w => !w.disabled).length : count) > 0;
   }
@@ -176,22 +174,15 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
 
   // #endregion
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private i18n: NzI18nService,
-    private nzUpdateHostClassService: NzUpdateHostClassService,
-    private elementRef: ElementRef,
-    renderer: Renderer2
-  ) {
-    renderer.addClass(elementRef.nativeElement, 'ant-transfer');
-  }
+  constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService) {}
 
   private setClassMap(): void {
     const prefixCls = 'ant-transfer';
-    this.nzUpdateHostClassService.updateHostClass(this.elementRef.nativeElement, {
+    this.hostClassMap = {
+      [`${prefixCls}`]: true,
       [`${prefixCls}-disabled`]: this.nzDisabled,
       [`${prefixCls}-customize-list`]: this.nzRenderList.some(i => !!i)
-    });
+    };
   }
 
   private markForCheckAllList(): void {
@@ -199,6 +190,17 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
     this.lists.forEach(i => i.markForCheck());
+  }
+
+  private handleNzTargetKeys(): void {
+    const keys = toArray(this.nzTargetKeys);
+    const hasOwnKey = (e: TransferItem) => e.hasOwnProperty('key');
+    this.leftDataSource.forEach(e => {
+      if (hasOwnKey(e) && keys.indexOf(e.key) !== -1 && !e.disabled) {
+        e.checked = true;
+      }
+    });
+    this.moveToRight();
   }
 
   ngOnInit(): void {
@@ -211,12 +213,15 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.setClassMap();
-    if (changes.nzDataSource || changes.nzTargetKeys) {
+    if (changes.nzDataSource) {
       this.splitDataSource();
       this.updateOperationStatus('left');
       this.updateOperationStatus('right');
       this.cdr.detectChanges();
       this.markForCheckAllList();
+    }
+    if (changes.nzTargetKeys) {
+      this.handleNzTargetKeys();
     }
   }
 

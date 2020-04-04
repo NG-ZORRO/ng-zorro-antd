@@ -35,6 +35,20 @@ describe('transfer', () => {
   });
 
   describe('[default]', () => {
+    it('should be from left to right when via nzTargetKeys property', () => {
+      instance.nzTargetKeys = ['0', '1'];
+      fixture.detectChanges();
+
+      const leftKeys = instance.comp.leftDataSource.map(e => e.key);
+      const rightKeys = instance.comp.rightDataSource.map(e => e.key);
+
+      expect(rightKeys).toContain('0');
+      expect(leftKeys).not.toContain('0');
+
+      expect(rightKeys).toContain('1');
+      expect(leftKeys).not.toContain('1');
+    });
+
     it('should be from left to right', () => {
       pageObject
         .expectLeft(LEFTCOUNT)
@@ -383,6 +397,7 @@ describe('transfer', () => {
       [nzNotFoundContent]="nzNotFoundContent"
       [nzCanMove]="canMove"
       [nzFooter]="footer"
+      [nzTargetKeys]="nzTargetKeys"
       (nzSearchChange)="search($event)"
       (nzSelectChange)="select($event)"
       (nzChange)="change($event)"
@@ -406,6 +421,7 @@ class TestTransferComponent implements OnInit {
   nzDisabled = false;
   nzShowSelectAll = true;
   nzTitles = ['Source', 'Target'];
+  nzTargetKeys: string[] = [];
   nzOperations = ['to right', 'to left'];
   nzItemUnit = 'item';
   nzItemsUnit = 'items';

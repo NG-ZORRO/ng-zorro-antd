@@ -6,6 +6,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-steps.component';
-export * from './nz-step.component';
-export * from './nz-steps.module';
+export * from './steps.component';
+export * from './step.component';
+export * from './steps.module';

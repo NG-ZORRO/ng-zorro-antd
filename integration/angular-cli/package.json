@@ -11,7 +11,7 @@
     "lint": "echo \"Error: no lint... minimal project\" && exit 1",
     "e2e": "echo \"Error: no e2e... minimal project\" && exit 1",
     "preintegration": "npm run setup && npm install --ignore-scripts",
-    "integration": "ng build --prod --build-optimizer"
+    "integration": "ng build --prod"
   },
   "private": true,
   "dependencies": {

@@ -47,7 +47,8 @@ export default {
     uploading: 'Загрузка...',
     removeFile: 'Удалить файл',
     uploadError: 'При загрузке произошла ошибка',
-    previewFile: 'Предпросмотр файла'
+    previewFile: 'Предпросмотр файла',
+    downloadFile: 'Загрузить файл'
   },
   Empty: {
     description: 'Нет данных'

@@ -42,7 +42,8 @@ export default {
     uploading: 'در حال آپلود...',
     removeFile: 'حذف فایل',
     uploadError: 'خطا در آپلود',
-    previewFile: 'مشاهده‌ی فایل'
+    previewFile: 'مشاهده‌ی فایل',
+    downloadFile: 'دریافت فایل'
   },
   Empty: {
     description: 'داده‌ای موجود نیست'

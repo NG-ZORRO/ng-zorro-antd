@@ -51,14 +51,7 @@ const options = [
     </nz-modal>
 
     <button nz-button (click)="open()">Open Dialog</button>
-  `,
-  styles: [
-    `
-      .ant-cascader-picker {
-        width: 300px;
-      }
-    `
-  ]
+  `
 })
 export class NzDemoCascaderModalComponent {
   nzOptions: NzCascaderOption[] = options;

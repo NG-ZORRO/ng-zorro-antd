@@ -15,10 +15,10 @@
  */
 
 import { InjectionToken, TemplateRef, Type } from '@angular/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 export type NzEmptySize = 'normal' | 'small' | '';
 
-// tslint:disable-next-line:no-any
-export type NzEmptyCustomContent = Type<any> | TemplateRef<any> | string;
+export type NzEmptyCustomContent = Type<NzSafeAny> | TemplateRef<NzSafeAny> | string;
 
 export const NZ_EMPTY_COMPONENT_NAME = new InjectionToken<string>('nz-empty-component-name');

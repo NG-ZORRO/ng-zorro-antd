@@ -7,7 +7,10 @@
  */
 
 export * from './interface';
-export { NzListItemMetaComponent } from './nz-list-item-meta.component';
-export { NzListItemComponent } from './nz-list-item.component';
-export { NzListComponent } from './nz-list.component';
-export { NzListModule } from './nz-list.module';
+export { NzListItemMetaComponent } from './list-item-meta.component';
+export { NzListItemComponent } from './list-item.component';
+export { NzListComponent } from './list.component';
+export { NzListModule } from './list.module';
+export * from './list-cell';
+export * from './list-item-cell';
+export * from './list-item-meta-cell';

@@ -40,7 +40,8 @@ export default {
     uploading: 'Nahrávání...',
     removeFile: 'Odstranit soubor',
     uploadError: 'Chyba při nahrávání',
-    previewFile: 'Zobrazit soubor'
+    previewFile: 'Zobrazit soubor',
+    downloadFile: 'Stáhnout soubor'
   },
   Empty: {
     description: 'Žádná data'

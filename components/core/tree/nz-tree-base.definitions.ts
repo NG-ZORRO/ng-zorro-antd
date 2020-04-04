@@ -27,6 +27,5 @@ export interface NzFormatBeforeDropEvent {
 }
 
 export interface NzTreeNodeBaseComponent {
-  setClassMap(): void;
   markForCheck(): void;
 }

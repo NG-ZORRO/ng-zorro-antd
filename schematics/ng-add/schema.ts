@@ -17,6 +17,7 @@ export type Locale =
   | 'is_IS'
   | 'it_IT'
   | 'ja_JP'
+  | 'ka_GE'
   | 'ko_KR'
   | 'nb_NO'
   | 'nl_BE'

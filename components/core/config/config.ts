@@ -9,9 +9,8 @@
 import { InjectionToken, TemplateRef, Type } from '@angular/core';
 
 import { SafeUrl } from '@angular/platform-browser';
-import { NzBreakpointEnum } from '../responsive/public-api';
-
-import { NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType } from '../types';
+import { NzBreakpointEnum } from 'ng-zorro-antd/core/services';
+import { NzSafeAny, NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType } from 'ng-zorro-antd/core/types';
 
 export interface NzConfig {
   affix?: AffixConfig;
@@ -86,7 +85,7 @@ export interface ButtonConfig {
 
 export interface CodeEditorConfig {
   assetsRoot?: string | SafeUrl;
-  defaultEditorOption?: any; // tslint:disable-line no-any
+  defaultEditorOption?: NzSafeAny;
   useStaticLoading?: boolean;
 
   onLoad?(): void;
@@ -135,8 +134,7 @@ export interface DrawerConfig {
 }
 
 export interface EmptyConfig {
-  // tslint:disable-next-line no-any
-  nzDefaultEmptyContent?: Type<any> | TemplateRef<string> | string | undefined;
+  nzDefaultEmptyContent?: Type<NzSafeAny> | TemplateRef<string> | string | undefined;
 }
 
 export interface FormConfig {
@@ -164,7 +162,7 @@ export interface ModalConfig {
 export interface NotificationConfig extends MessageConfig {
   nzTop?: string | number;
   nzBottom?: string | number;
-  nzPlacement?: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight' | string;
+  nzPlacement?: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
 }
 
 export interface PageHeaderConfig {

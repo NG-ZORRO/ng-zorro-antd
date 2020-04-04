@@ -42,7 +42,8 @@ export default {
     uploading: 'アップロード中...',
     removeFile: 'ファイルを削除',
     uploadError: 'アップロードエラー',
-    previewFile: 'ファイルをプレビュー'
+    previewFile: 'ファイルをプレビュー',
+    downloadFile: 'ダウンロードファイル'
   },
   Empty: {
     description: 'データがありません'

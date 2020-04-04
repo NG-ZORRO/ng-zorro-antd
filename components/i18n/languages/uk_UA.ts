@@ -42,7 +42,8 @@ export default {
     uploading: 'Завантаження ...',
     removeFile: 'Видалити файл',
     uploadError: 'Помилка завантаження',
-    previewFile: 'Попередній перегляд файлу'
+    previewFile: 'Попередній перегляд файлу',
+    downloadFile: 'Завантажити файл'
   },
   Empty: {
     description: 'Даних немає'

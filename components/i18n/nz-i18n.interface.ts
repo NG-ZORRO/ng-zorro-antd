@@ -5,6 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { Locale } from 'date-fns';
 
 export interface NzPaginationI18nInterface {
   items_per_page: string;
@@ -118,5 +119,4 @@ export interface NzI18nInterface {
   };
 }
 
-// tslint:disable-next-line:no-any
-export type DateLocale = any; // TODO: Implement this type definition when date-fns is stable
+export type DateLocale = Locale;

@@ -6,10 +6,11 @@ import {
 import * as minimatch from 'minimatch';
 import * as path from 'path';
 import * as Lint from 'tslint';
+import { RuleFailure } from 'tslint/lib/language/rule/rule';
 import * as ts from 'typescript';
 
 export class Rule extends Lint.Rules.AbstractRule {
-  apply(sourceFile: ts.SourceFile) {
+  apply(sourceFile: ts.SourceFile): RuleFailure[] {
     return this.applyWithWalker(new Walker(sourceFile, this.getOptions()));
   }
 }

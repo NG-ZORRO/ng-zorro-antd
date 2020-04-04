@@ -23,8 +23,9 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { InputBoolean, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzSizeDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 const NZ_CONFIG_COMPONENT_NAME = 'switch';
 

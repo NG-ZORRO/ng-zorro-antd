@@ -5,14 +5,14 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { NzSafeAny } from './any';
 
-// tslint:disable-next-line:no-any
 export type NgClassType = string | string[] | Set<string> | NgClassInterface;
 
 export interface NgClassInterface {
-  [klass: string]: any; // tslint:disable-line:no-any
+  [klass: string]: NzSafeAny;
 }
 
 export interface NgStyleInterface {
-  [klass: string]: any; // tslint:disable-line:no-any
+  [klass: string]: NzSafeAny;
 }

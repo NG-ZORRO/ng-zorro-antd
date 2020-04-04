@@ -56,14 +56,7 @@ const options = [
     >
       <a href="javascript: void(0)">Change city</a>
     </nz-cascader>
-  `,
-  styles: [
-    `
-      .ant-cascader-picker {
-        width: 300px;
-      }
-    `
-  ]
+  `
 })
 export class NzDemoCascaderTriggerComponent {
   nzOptions: NzCascaderOption[] = options;

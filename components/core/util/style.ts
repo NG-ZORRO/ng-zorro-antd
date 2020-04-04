@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { NgStyleInterface } from '../types';
+import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 
 export function isStyleSupport(styleName: string | string[]): boolean {
   if (typeof window !== 'undefined' && window.document && window.document.documentElement) {

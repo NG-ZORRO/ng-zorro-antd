@@ -6,5 +6,5 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-affix.component';
-export * from './nz-affix.module';
+export * from './affix.component';
+export * from './affix.module';

@@ -6,9 +6,21 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { warnDeprecation } from '../logger/logger';
+import { warnDeprecation } from 'ng-zorro-antd/core/logger';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzTreeNodeBaseComponent } from './nz-tree-base.definitions';
 import { NzTreeBaseService } from './nz-tree-base.service';
+
+export type NzTreeNodeKey = string | number;
+
+export interface FlattenNode {
+  parent: FlattenNode | null;
+  children: FlattenNode[];
+  pos: string;
+  data: NzTreeNode;
+  isStart: boolean[];
+  isEnd: boolean[];
+}
 
 export interface NzTreeNodeOptions {
   title: string;
@@ -23,8 +35,7 @@ export interface NzTreeNodeOptions {
   expanded?: boolean;
   children?: NzTreeNodeOptions[];
 
-  // tslint:disable-next-line:no-any
-  [key: string]: any;
+  [key: string]: NzSafeAny;
 }
 
 export class NzTreeNode {
@@ -55,10 +66,20 @@ export class NzTreeNode {
   service: NzTreeBaseService | null;
   component: NzTreeNodeBaseComponent;
 
+  /** New added in Tree for easy data access */
+  isStart?: boolean[];
+  isEnd?: boolean[];
+
   get treeService(): NzTreeBaseService | null {
     return this.service || (this.parentNode && this.parentNode.treeService);
   }
 
+  /**
+   * Init nzTreeNode
+   * @param option: user's input
+   * @param parent
+   * @param service: base nzTreeService
+   */
   constructor(option: NzTreeNodeOptions | NzTreeNode, parent: NzTreeNode | null = null, service: NzTreeBaseService | null = null) {
     if (option instanceof NzTreeNode) {
       return option;
@@ -209,6 +230,7 @@ export class NzTreeNode {
     this._isExpanded = value;
     this.origin.expanded = value;
     this.afterValueChange('isExpanded');
+    this.afterValueChange('reRender');
   }
 
   get isSelected(): boolean {
@@ -249,11 +271,13 @@ export class NzTreeNode {
   }
 
   /**
-   * @deprecated Maybe removed in next major version, use `isExpanded` instead.
+   * @not-deprecated Maybe removed in next major version, use `isExpanded` instead.
+   * We need it until tree refactoring is finished
    */
   public setExpanded(value: boolean): void {
-    warnDeprecation(`'setExpanded' is going to be removed in 9.0.0. Please use 'isExpanded' instead.`);
-    this.isExpanded = value;
+    this._isExpanded = value;
+    this.origin.expanded = value;
+    this.afterValueChange('isExpanded');
   }
 
   /**
@@ -278,8 +302,7 @@ export class NzTreeNode {
   /**
    * Support appending child nodes by position. Leaf node cannot be appended.
    */
-  // tslint:disable-next-line:no-any
-  public addChildren(children: any[], childPos: number = -1): void {
+  public addChildren(children: NzSafeAny[], childPos: number = -1): void {
     if (!this.isLeaf) {
       children.forEach(node => {
         const refreshLevel = (n: NzTreeNode) => {
@@ -308,6 +331,8 @@ export class NzTreeNode {
       // remove loading state
       this.isLoading = false;
     }
+    this.afterValueChange('addChildren');
+    this.afterValueChange('reRender');
   }
 
   public clearChildren(): void {
@@ -315,6 +340,7 @@ export class NzTreeNode {
     this.afterValueChange('clearChildren');
     this.children = [];
     this.origin.children = [];
+    this.afterValueChange('reRender');
   }
 
   public remove(): void {
@@ -323,6 +349,7 @@ export class NzTreeNode {
       parentNode.children = parentNode.getChildren().filter(v => v.key !== this.key);
       parentNode.origin.children = parentNode.origin.children!.filter(v => v.key !== this.key);
       this.afterValueChange('remove');
+      this.afterValueChange('reRender');
     }
   }
 
@@ -347,6 +374,12 @@ export class NzTreeNode {
         case 'remove':
           this.treeService.afterRemove([this]);
           break;
+        case 'reRender':
+          this.treeService.flattenTreeData(
+            this.treeService.rootNodes,
+            this.treeService.getExpandedNodeList().map(v => v.key)
+          );
+          break;
       }
     }
     this.update();
@@ -354,7 +387,6 @@ export class NzTreeNode {
 
   public update(): void {
     if (this.component) {
-      this.component.setClassMap();
       this.component.markForCheck();
     }
   }

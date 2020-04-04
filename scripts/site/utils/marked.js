@@ -8,17 +8,18 @@ const insideString = {
     // Arithmetic Environment
     {
       pattern: /\$?\(\([\w\W]+?\)\)/,
-      inside : {
+      inside: {
         // If there is a $ sign at the beginning highlight $(( and )) as variable
-        variable   : [{
-          pattern   : /(^\$\(\([\w\W]+)\)\)/,
-          lookbehind: true
-        },
-          /^\$\(\(/,
+        variable: [
+          {
+            pattern: /(^\$\(\([\w\W]+)\)\)/,
+            lookbehind: true
+          },
+          /^\$\(\(/
         ],
-        number     : /\b-?(?:0x[\dA-Fa-f]+|\d*\.?\d+(?:[Ee]-?\d+)?)\b/,
+        number: /\b-?(?:0x[\dA-Fa-f]+|\d*\.?\d+(?:[Ee]-?\d+)?)\b/,
         // Operators according to https://www.gnu.org/software/bash/manual/bashref.html#Shell-Arithmetic
-        operator   : /--?|-=|\+\+?|\+=|!=?|~|\*\*?|\*=|\/=?|%=?|<<=?|>>=?|<=?|>=?|==?|&&?|&=|\^=?|\|\|?|\|=|\?|:/,
+        operator: /--?|-=|\+\+?|\+=|!=?|~|\*\*?|\*=|\/=?|%=?|<<=?|>>=?|<=?|>=?|==?|&&?|&=|\^=?|\|\|?|\|=|\?|:/,
         // If there is no $ sign at the beginning highlight (( and )) as punctuation
         punctuation: /\(\(?|\)\)?|,|;/
       }
@@ -26,24 +27,24 @@ const insideString = {
     // Command Substitution
     {
       pattern: /\$\([^)]+\)|`[^`]+`/,
-      inside : {
+      inside: {
         variable: /^\$\(|^`|\)$|`$/
       }
     },
     /\$(?:[a-z0-9_#\?\*!@]+|\{[^}]+\})/i
-  ],
+  ]
 };
 
 Prism.languages.bash = {
-  'shebang': {
+  shebang: {
     pattern: /^#!\s*\/bin\/bash|^#!\s*\/bin\/sh/,
     alias: 'important'
   },
-  'comment': {
+  comment: {
     pattern: /(^|[^"{\\])#.*/,
     lookbehind: true
   },
-  'string': [
+  string: [
     //Support for Here-Documents https://en.wikipedia.org/wiki/Here_document
     {
       pattern: /((?:^|[^<])<<\s*)(?:"|')?(\w+?)(?:"|')?\s*\r?\n(?:[\s\S])*?\r?\n\2/g,
@@ -57,22 +58,22 @@ Prism.languages.bash = {
       inside: insideString
     }
   ],
-  'variable': insideString.variable,
+  variable: insideString.variable,
   // Originally based on http://ss64.com/bash/
-  'function': {
+  function: {
     pattern: /(^|\s|;|\||&)(?:alias|ng-zorro-antd|@angular\/cli|apropos|apt-get|aptitude|aspell|awk|basename|bash|bc|bg|builtin|bzip2|cal|cat|cd|cfdisk|chgrp|chmod|chown|chroot|chkconfig|cksum|clear|cmp|comm|command|cp|cron|crontab|csplit|cut|date|dc|dd|ddrescue|df|diff|diff3|dig|dir|dircolors|dirname|dirs|dmesg|du|egrep|eject|enable|env|ethtool|eval|exec|expand|expect|export|expr|fdformat|fdisk|fg|fgrep|file|find|fmt|fold|format|free|fsck|ftp|fuser|gawk|getopts|git|grep|groupadd|groupdel|groupmod|groups|gzip|hash|head|help|hg|history|hostname|htop|iconv|id|ifconfig|ifdown|ifup|import|jobs|join|kill|killall|less|link|ln|locate|logname|logout|look|lpc|lpr|lprint|lprintd|lprintq|lprm|ls|lsof|make|man|mkdir|mkfifo|mkisofs|mknod|more|most|mount|mtools|mtr|mv|mmv|nano|netstat|nice|nl|nohup|notify-send|npm|ng|nslookup|open|op|passwd|paste|pathchk|ping|pkill|popd|pr|printcap|printenv|printf|ps|pushd|pv|pwd|quota|quotacheck|quotactl|ram|rar|rcp|read|readarray|readonly|reboot|rename|renice|remsync|rev|rm|rmdir|rsync|screen|scp|sdiff|sed|seq|service|sftp|shift|shopt|shutdown|sleep|slocate|sort|source|split|ssh|stat|strace|su|sudo|sum|suspend|sync|tail|tar|tee|test|time|timeout|times|touch|top|traceroute|trap|tr|tsort|tty|type|ulimit|umask|umount|unalias|uname|unexpand|uniq|units|unrar|unshar|uptime|useradd|userdel|usermod|users|uuencode|uudecode|v|vdir|vi|vmstat|wait|watch|wc|wget|whereis|which|who|whoami|write|xargs|xdg-open|yes|zip)(?=$|\s|;|\||&)/,
     lookbehind: true
   },
-  'keyword': {
+  keyword: {
     pattern: /(^|\s|;|\||&)(?:let|:|\.|if|then|else|elif|fi|for|break|continue|while|in|case|function|select|do|done|until|echo|exit|return|set|declare)(?=$|\s|;|\||&)/,
     lookbehind: true
   },
-  'boolean': {
+  boolean: {
     pattern: /(^|\s|;|\||&)(?:true|false)(?=$|\s|;|\||&)/,
     lookbehind: true
   },
-  'operator': /&&?|\|\|?|==?|!=?|<<<?|>>|<=?|>=?|=~/,
-  'punctuation': /\$?\(\(?|\)\)?|\.\.|[{}[\];]/
+  operator: /&&?|\|\|?|==?|!=?|<<<?|>>|<=?|>=?|=~/,
+  punctuation: /\$?\(\(?|\)\)?|\.\.|[{}[\];]/
 };
 
 const inside = insideString.variable[1].inside;
@@ -84,10 +85,10 @@ inside.punctuation = Prism.languages.bash.punctuation;
 
 renderer.heading = function (text, level) {
   const lowerText = text.toLowerCase().replace(/ /g, '-').replace(/\./g, '-').replace(/\?/g, '');
-  const isMarkedLabel = (level === 3) && (text.indexOf('nz-') === 0);
-  const isDirective = (text.indexOf('[') > -1) && (text.indexOf(']') > -1);
+  const isMarkedLabel = level === 3 && text.indexOf('nz-') === 0;
+  const isDirective = text[0] === '[' && text[text.length - 1] === ']';
   const isComponent = isMarkedLabel && !isDirective;
-  const isService = (text.indexOf('Nz') === 0) && (text.indexOf('Service') > -1);
+  const isService = text.indexOf('Nz') === 0 && text.indexOf('Service') > -1;
   const head = `<h${level} id="${lowerText}"><span>${text}</span>`;
   const link = `<a onclick="window.location.hash = '${lowerText}'" class="anchor">#</a></h${level}>`;
   if (isComponent) {
@@ -101,12 +102,37 @@ renderer.heading = function (text, level) {
   }
 };
 
+renderer.code = function (code, infostring, escaped) {
+  var lang = (infostring || '').match(/\S*/)[0];
+  if (this.options.highlight) {
+    var out = this.options.highlight(code, lang);
+    if (out != null && out !== code) {
+      escaped = true;
+      code = out;
+    }
+  }
+
+  if (!lang) {
+    return '<pre><code>' + (escaped ? code : escape(code, true)) + '</code></pre>';
+  }
+
+  return (
+    '<pre class="' +
+    this.options.langPrefix +
+    escape(lang, true) +
+    '">' +
+    '<code>' +
+    (escaped ? code : escape(code, true)) +
+    '</code></pre>\n'
+  );
+};
+
 marked.setOptions({
   highlight: function (code, lang) {
     const language = Prism.languages[lang] || Prism.languages.autoit;
     return Prism.highlight(code, language);
   },
-  renderer : renderer
+  renderer: renderer
 });
 
 module.exports = marked;

@@ -6,9 +6,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-drawer.component';
-export * from './nz-drawer.module';
-export * from './nz-drawer.service';
-export * from './nz-drawer.service.module';
-export * from './nz-drawer-options';
-export * from './nz-drawer-ref';
+export * from './drawer.component';
+export * from './drawer.module';
+export * from './drawer.service';
+export * from './drawer.service.module';
+export * from './drawer-options';
+export * from './drawer-ref';

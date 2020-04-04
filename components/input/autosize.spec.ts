@@ -2,7 +2,7 @@ import { Component, NgZone, ViewEncapsulation } from '@angular/core';
 import { async, ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { dispatchFakeEvent, MockNgZone } from 'ng-zorro-antd/core';
+import { dispatchFakeEvent, MockNgZone } from 'ng-zorro-antd/core/testing';
 import { NzAutosizeDirective } from './autosize.directive';
 import { NzInputModule } from './input.module';
 

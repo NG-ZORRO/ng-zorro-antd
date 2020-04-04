@@ -49,7 +49,8 @@ export default {
     uploading: 'กำลังอัปโหลด...',
     removeFile: 'ลบไฟล์',
     uploadError: 'เกิดข้อผิดพลาดในการอัปโหลด',
-    previewFile: 'ดูตัวอย่างไฟล์'
+    previewFile: 'ดูตัวอย่างไฟล์',
+    downloadFile: 'ดาวน์โหลดไฟล์'
   },
   Empty: {
     description: 'ไม่มีข้อมูล'

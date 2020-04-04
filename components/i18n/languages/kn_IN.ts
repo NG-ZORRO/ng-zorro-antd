@@ -53,6 +53,7 @@ export default {
     uploading: 'ಏರಿಸಿ...',
     removeFile: 'ಫೈಲ್ ತೆಗೆದುಹಾಕಿ',
     uploadError: 'ಏರಿಸುವ ದೋಷ',
-    previewFile: 'ಫೈಲ್ ಮುನ್ನೋಟ'
+    previewFile: 'ಫೈಲ್ ಮುನ್ನೋಟ',
+    downloadFile: 'ಫೈಲ್ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ'
   }
 };

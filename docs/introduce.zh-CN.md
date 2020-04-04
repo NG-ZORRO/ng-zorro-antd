@@ -1,10 +1,9 @@
 ---
 order: 0
 title: Ant Design of Angular
-widget: <nz-github-btn></nz-github-btn>
 ---
 
-这里是 Ant Design 的 Angular 实现，开发和服务于企业级后台产品。
+`ng-zorro-antd` 是 Ant Design 的 Angular 实现，主要用于研发企业级中后台产品。
 
 <div class="pic-plus">
   <img width="150" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg">
@@ -31,8 +30,8 @@ widget: <nz-github-btn></nz-github-btn>
 - 开箱即用的高质量 Angular 组件，与 Angular 保持同步升级。
 - 使用 TypeScript 构建，提供完整的类型定义文件。
 - 支持 OnPush 模式，性能卓越。
-- 支持自定义主题。
-- 支持使用单独某个组件。
+- 数十个国际化语言支持。
+- 深入每个细节的主题定制能力。
 
 ## 支持环境
 
@@ -42,11 +41,11 @@ widget: <nz-github-btn></nz-github-btn>
 
 ## 当前版本
 
-[![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
+[![npm next package](https://img.shields.io/npm/v/ng-zorro-antd/next.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 
 ## 支持 Angular 版本
 
-目前支持 Angular `^8.0.0` 版本。
+`ng-zorro-antd` 与 `@angular/core` 保持相同的主版本号，目前支持 Angular `^9.0.0` 版本。
 
 ## 设计规范
 
@@ -110,4 +109,4 @@ $ ng add ng-zorro-antd
 3. [![Gitter](https://img.shields.io/gitter/room/ng-zorro/ng-zorro-antd.svg?style=flat-square)](https://gitter.im/ng-zorro/ng-zorro-antd)
 4. 加入钉钉 NG-ZORRO 自助服务群（中文）
 
-<img src="https://img.alicdn.com/tfs/TB1aRk.clCw3KVjSZFlXXcJkFXa-750-990.jpg" width="300">
+<img src="https://img.alicdn.com/tfs/TB1oRkkzy_1gK0jSZFqXXcpaXXa-750-990.jpg" width="300" loading="lazy">

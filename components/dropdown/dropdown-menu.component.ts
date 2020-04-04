@@ -20,7 +20,8 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
-import { NzNoAnimationDirective, slideMotion } from 'ng-zorro-antd/core';
+import { slideMotion } from 'ng-zorro-antd/core/animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { MenuService, NzIsMenuInsideDropDownToken } from 'ng-zorro-antd/menu';
 import { BehaviorSubject } from 'rxjs';
@@ -51,9 +52,7 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
         (mouseenter)="setMouseState(true)"
         (mouseleave)="setMouseState(false)"
       >
-        <div [class.ant-table-filter-dropdown]="isInsideTh">
-          <ng-content></ng-content>
-        </div>
+        <ng-content></ng-content>
       </div>
     </ng-template>
   `,
@@ -68,7 +67,6 @@ export class NzDropdownMenuComponent implements AfterContentInit {
   descendantMenuItemClick$ = this.nzMenuService.descendantMenuItemClick$;
   nzOverlayClassName: string | null = null;
   nzOverlayStyle: IndexableObject = {};
-  isInsideTh = false;
   @ViewChild(TemplateRef, { static: true }) templateRef: TemplateRef<NzSafeAny>;
 
   setMouseState(visible: boolean): void {

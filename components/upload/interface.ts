@@ -6,10 +6,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-// tslint:disable:no-any prefer-method-signature
 import { Observable, Subscription } from 'rxjs';
 
-import { IndexableObject } from 'ng-zorro-antd/core';
+import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 
 /** Status */
 export type UploadFileStatus = 'error' | 'success' | 'done' | 'uploading' | 'removed';
@@ -23,7 +22,7 @@ export type UploadListType = 'text' | 'picture' | 'picture-card';
 /** File object. */
 export interface UploadFile {
   uid: string;
-  size: number;
+  size?: number;
   name: string;
   filename?: string;
   lastModified?: string;
@@ -33,12 +32,12 @@ export interface UploadFile {
   originFileObj?: File;
   percent?: number;
   thumbUrl?: string;
-  response?: any;
-  error?: any;
+  response?: NzSafeAny;
+  error?: NzSafeAny;
   linkProps?: { download: string };
-  type: string;
+  type?: string;
 
-  [key: string]: any;
+  [key: string]: NzSafeAny;
 }
 
 export interface UploadChangeParam {
@@ -52,32 +51,35 @@ export interface UploadChangeParam {
 export interface ShowUploadListInterface {
   showRemoveIcon?: boolean;
   showPreviewIcon?: boolean;
-  hidePreviewIconInNonImage?: boolean;
+  showDownloadIcon?: boolean;
 }
+
+export type UploadTransformFileType = string | Blob | File | Observable<string | Blob | File>;
 
 export interface ZipButtonOptions {
   disabled?: boolean;
   accept?: string | string[];
-  action?: string;
+  action?: string | ((file: UploadFile) => string | Observable<string>);
   directory?: boolean;
   openFileDialogOnClick?: boolean;
-  beforeUpload?: (file: UploadFile, fileList: UploadFile[]) => boolean | Observable<any>;
-  customRequest?: (item: any) => Subscription;
-  data?: {} | ((file: UploadFile) => {});
-  headers?: {} | ((file: UploadFile) => {});
+  beforeUpload?(file: UploadFile, fileList: UploadFile[]): boolean | Observable<NzSafeAny>;
+  customRequest?(item: NzSafeAny): Subscription;
+  data?: {} | ((file: UploadFile) => {} | Observable<{}>);
+  headers?: {} | ((file: UploadFile) => {} | Observable<{}>);
   name?: string;
   multiple?: boolean;
   withCredentials?: boolean;
   filters?: UploadFilter[];
-  onStart?: (file: UploadFile) => void;
-  onProgress?: (e: any, file: UploadFile) => void;
-  onSuccess?: (ret: any, file: UploadFile, xhr: any) => void;
-  onError?: (err: any, file: UploadFile) => void;
+  transformFile?(file: UploadFile): UploadTransformFileType;
+  onStart?(file: UploadFile): void;
+  onProgress?(e: NzSafeAny, file: UploadFile): void;
+  onSuccess?(ret: NzSafeAny, file: UploadFile, xhr: NzSafeAny): void;
+  onError?(err: NzSafeAny, file: UploadFile): void;
 }
 
 export interface UploadFilter {
   name: string;
-  fn: (fileList: UploadFile[]) => UploadFile[] | Observable<UploadFile[]>;
+  fn(fileList: UploadFile[]): UploadFile[] | Observable<UploadFile[]>;
 }
 
 export interface UploadXHRArgs {
@@ -85,9 +87,10 @@ export interface UploadXHRArgs {
   name?: string;
   headers?: IndexableObject;
   file: UploadFile;
+  postFile: string | Blob | File | UploadFile;
   data?: IndexableObject;
   withCredentials?: boolean;
-  onProgress?: (e: any, file: UploadFile) => void;
-  onSuccess?: (ret: any, file: UploadFile, xhr: any) => void;
-  onError?: (err: any, file: UploadFile) => void;
+  onProgress?(e: NzSafeAny, file: UploadFile): void;
+  onSuccess?(ret: NzSafeAny, file: UploadFile, xhr: NzSafeAny): void;
+  onError?(err: NzSafeAny, file: UploadFile): void;
 }

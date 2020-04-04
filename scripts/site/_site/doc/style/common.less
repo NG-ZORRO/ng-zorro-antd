@@ -1,69 +1,106 @@
-html,
 body {
-  height: 100%;
-}
-
-body {
-  font-family: @font-family;
-  font-variant: tabular-nums;
-  line-height: 1.5;
   color: @site-text-color;
   font-size: 14px;
-  background: #fff;
+  font-family: @font-family;
+  background: @body-background;
   transition: background 1s cubic-bezier(0.075, 0.82, 0.165, 1);
-  overflow-x: hidden;
 }
 
 a {
   transition: color 0.3s ease;
-  &:focus {
-    text-decoration: underline;
-    text-decoration-skip-ink: auto;
-  }
 }
 
 .main-wrapper {
-  background: #fff;
-  padding: 40px 0 0;
   position: relative;
+  padding: 40px 0 0;
+  background: @component-background;
 }
 
 .main-container {
-  padding: 0 170px 144px 64px;
-  background: #fff;
-  min-height: 500px;
-  overflow: hidden;
   position: relative;
+  min-height: 500px;
+  padding: 0 170px 32px 64px;
+  overflow: hidden;
+  background: @component-background;
+
+  .ant-row-rtl & {
+    padding: 0 64px 144px 170px;
+  }
 }
 
 .main-menu {
   z-index: 1;
 
   &-inner {
-    overflow-x: hidden;
-    overflow-y: hidden;
+    height: 100%;
     max-height: 100vh;
+    overflow: hidden;
   }
 
   &:hover &-inner {
     overflow-y: auto;
   }
+
+  > div,
+  > div > div {
+    height: 100%;
+  }
 }
 
 .aside-container {
+  min-height: 100%;
   padding-bottom: 48px;
-  font-family: Avenir, @font-family;
+  font-family: Avenir, @font-family, sans-serif;
 
-  &.ant-menu-inline .ant-menu-submenu-title h4,
-  &.ant-menu-inline > .ant-menu-item,
-  &.ant-menu-inline .ant-menu-item a {
-    font-size: 14px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
+  &.ant-menu-inline {
+    .ant-menu-submenu-title h4,
+    > .ant-menu-item,
+    .ant-menu-item a {
+      overflow: hidden;
+      font-size: 14px;
+      text-overflow: ellipsis;
+    }
 
-  &.ant-menu-inline .ant-menu-item-group-title {
-    padding-left: 56px;
+    > .ant-menu-item-group > .ant-menu-item-group-title {
+      margin-top: 16px;
+      margin-bottom: 16px;
+      font-size: 13px;
+
+      &::after {
+        position: relative;
+        top: 12px;
+        display: block;
+        width: calc(100% - 20px);
+        height: 1px;
+        background: @border-color-split;
+        content: '';
+      }
+    }
+
+    > .ant-menu-item,
+    > .ant-menu-submenu > .ant-menu-submenu-title,
+    > .ant-menu-item-group > .ant-menu-item-group-title,
+    > .ant-menu-item-group > .ant-menu-item-group-list > .ant-menu-item,
+    &.ant-menu-inline > .ant-menu-item-group > .ant-menu-item-group-list > .ant-menu-item {
+      padding-left: 40px !important;
+    }
+
+    // Nest Category > Type > Article
+    &.ant-menu-inline {
+      .ant-menu-item-group-title {
+        padding-left: 56px;
+      }
+
+      .ant-menu-item-group-list > .ant-menu-item {
+        padding-left: 80px !important;
+      }
+    }
+
+    .ant-menu-item-group:first-child {
+      .ant-menu-item-group-title {
+        margin-top: 0;
+      }
+    }
   }
 
   a[disabled] {
@@ -73,12 +110,12 @@ a {
   .menu-item-link-outside {
     position: relative;
     .anticon {
-      font-size: 12px;
-      color: @primary-color;
-      opacity: 0;
       position: absolute;
-      right: -10px;
       top: 16px;
+      right: -10px;
+      color: @primary-color;
+      font-size: 12px;
+      opacity: 0;
       transition: all 0.3s;
     }
     &:hover .anticon {
@@ -88,9 +125,9 @@ a {
 }
 
 .aside-container .chinese {
-  font-size: 12px;
   margin-left: 6px;
   font-weight: normal;
+  font-size: 12px;
   opacity: 0.67;
 }
 
@@ -100,14 +137,11 @@ a {
 
 .outside-link-icon {
   margin-left: 5px;
-  font-size: 12px;
   color: #aaa;
+  font-size: 12px;
 }
 
-.outside-link.internal {
-  display: none;
-}
-
+// reset menu text color
 .menu-site {
   .ant-menu-item > a {
     color: @site-text-color;
@@ -117,35 +151,58 @@ a {
   .ant-menu-item > a:hover {
     color: @primary-color;
   }
-
-  .menu-antd-components-count {
-    margin-left: .5em;
-    color: @disabled-color;
-    font-size: 12px;
-  }
 }
 
 #react-content {
-  transition: transform 0.3s @ease-in-out-circ;
   height: 100%;
+  transition: transform 0.3s @ease-in-out-circ;
 }
 .page-wrapper {
-  overflow: hidden;
-  padding: 0;
   width: 100%;
-  a {
-    text-decoration: none;
+  padding: 0;
+  overflow: hidden;
+
+  &-rtl {
+    direction: rtl;
   }
 }
 
 .drawer-content {
   padding: 40px 0;
+  &-wrapper {
+    background-color: @component-background;
+  }
 }
 
 .drawer {
   z-index: 1029;
 }
 
-#_hj_feedback_container .path1:before {
-  color: @primary-color !important;
+#_hj_feedback_container {
+  .path1::before {
+    color: @primary-color !important;
+  }
+  .path2::before {
+    color: @body-background !important;
+  }
+}
+
+.fixed-widgets {
+  position: fixed;
+  right: 32px;
+  bottom: 102px;
+  z-index: 2147483640;
+  cursor: pointer;
+  &-tooltip {
+    .ant-tooltip-inner {
+      min-width: 100px;
+    }
+  }
+  & > div {
+    display: block;
+  }
+  & &-avatar {
+    background-color: #fff;
+    box-shadow: @shadow-2;
+  }
 }

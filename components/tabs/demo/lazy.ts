@@ -1,4 +1,4 @@
-/* entryComponents: NzDemoTabContentLazyComponent,NzDemoTabContentEagerlyComponent */
+/* declarations: NzDemoTabContentLazyComponent,NzDemoTabContentEagerlyComponent */
 import { Component, OnInit } from '@angular/core';
 
 @Component({

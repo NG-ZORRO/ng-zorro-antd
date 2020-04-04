@@ -50,7 +50,8 @@ export default {
     uploading: 'பதிவேற்றுகிறது...',
     removeFile: 'கோப்பை அகற்று',
     uploadError: 'பதிவேற்றுவதில் பிழை',
-    previewFile: 'கோப்பை முன்னோட்டமிடுங்கள்'
+    previewFile: 'கோப்பை முன்னோட்டமிடுங்கள்',
+    downloadFile: 'பதிவிறக்க கோப்பு'
   },
   Empty: {
     description: 'தகவல் இல்லை'

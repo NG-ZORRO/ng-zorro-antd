@@ -23,7 +23,7 @@ import {
   SimpleChanges,
   SkipSelf
 } from '@angular/core';
-import { InputBoolean } from 'ng-zorro-antd/core';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzMenuItemDirective } from './menu-item.directive';
@@ -31,6 +31,13 @@ import { MenuService } from './menu.service';
 import { NzIsMenuInsideDropDownToken, NzMenuServiceLocalToken } from './menu.token';
 import { NzMenuModeType, NzMenuThemeType } from './menu.types';
 import { NzSubMenuComponent } from './submenu.component';
+
+export function MenuServiceFactory(serviceInsideDropDown: MenuService, serviceOutsideDropDown: MenuService): MenuService {
+  return serviceInsideDropDown ? serviceInsideDropDown : serviceOutsideDropDown;
+}
+export function MenuDropDownTokenFactory(isMenuInsideDropDownToken: boolean): boolean {
+  return isMenuInsideDropDownToken ? isMenuInsideDropDownToken : false;
+}
 
 @Directive({
   selector: '[nz-menu]',
@@ -43,17 +50,13 @@ import { NzSubMenuComponent } from './submenu.component';
     /** use the top level service **/
     {
       provide: MenuService,
-      useFactory: (serviceInsideDropDown: MenuService, serviceOutsideDropDown: MenuService) => {
-        return serviceInsideDropDown ? serviceInsideDropDown : serviceOutsideDropDown;
-      },
+      useFactory: MenuServiceFactory,
       deps: [[new SkipSelf(), new Optional(), MenuService], NzMenuServiceLocalToken]
     },
     /** check if menu inside dropdown-menu component **/
     {
       provide: NzIsMenuInsideDropDownToken,
-      useFactory: (isMenuInsideDropDownToken: boolean) => {
-        return isMenuInsideDropDownToken ? isMenuInsideDropDownToken : false;
-      },
+      useFactory: MenuDropDownTokenFactory,
       deps: [[new SkipSelf(), new Optional(), NzIsMenuInsideDropDownToken]]
     }
   ],

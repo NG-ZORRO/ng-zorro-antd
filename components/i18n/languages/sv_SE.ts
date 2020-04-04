@@ -44,5 +44,12 @@ export default {
     copy: 'kopiera',
     copied: 'kopierad',
     expand: 'expandera'
+  },
+  Upload: {
+    uploading: 'Uppladdning...',
+    removeFile: 'Ta bort fil',
+    uploadError: 'Uppladdningsfel',
+    previewFile: 'Förhandsgranska filen',
+    downloadFile: 'Nedladdning fil'
   }
 };

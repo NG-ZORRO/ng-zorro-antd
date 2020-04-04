@@ -53,6 +53,7 @@ export default {
     uploading: 'अपलोडिंग...',
     removeFile: 'फ़ाइल निकालें',
     uploadError: 'अपलोड में त्रुटि',
-    previewFile: 'फ़ाइल पूर्वावलोकन'
+    previewFile: 'फ़ाइल पूर्वावलोकन',
+    downloadFile: 'फ़ाइल डाउनलोड करें'
   }
 };

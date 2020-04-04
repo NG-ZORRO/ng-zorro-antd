@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-time-picker.component';
-export * from './nz-time-picker.module';
-export * from './nz-time-picker-panel.component';
-export * from './nz-time-value-accessor.directive';
+export * from './time-picker.component';
+export * from './time-picker.module';
+export * from './time-picker-panel.component';
+export * from './time-value-accessor.directive';

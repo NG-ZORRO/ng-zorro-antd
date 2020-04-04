@@ -13,7 +13,9 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzNoAnimationModule, NzOutletModule, NzOverlayModule } from 'ng-zorro-antd/core';
+import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzContextMenuServiceModule } from './context-menu.service.module';

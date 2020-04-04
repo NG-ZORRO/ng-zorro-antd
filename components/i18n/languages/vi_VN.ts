@@ -42,7 +42,8 @@ export default {
     uploading: 'Đang tải lên...',
     removeFile: 'Gỡ bỏ tập tin',
     uploadError: 'Lỗi tải lên',
-    previewFile: 'Xem thử tập tin'
+    previewFile: 'Xem thử tập tin',
+    downloadFile: 'Tải tập tin'
   },
   Empty: {
     description: 'Trống'
