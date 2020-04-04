@@ -30,26 +30,23 @@ import {
   ViewChild
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { slideMotion, zoomMotion } from 'ng-zorro-antd/core/animation';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 
 import { merge, of as observableOf, Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
 import {
-  InputBoolean,
-  isNotNil,
-  NzConfigService,
   NzFormatEmitEvent,
-  NzNoAnimationDirective,
-  NzSizeLDSType,
   NzTreeBase,
   NzTreeBaseService,
   NzTreeHigherOrderServiceToken,
   NzTreeNode,
-  NzTreeNodeOptions,
-  slideMotion,
-  WithConfig,
-  zoomMotion
-} from 'ng-zorro-antd/core';
+  NzTreeNodeOptions
+} from 'ng-zorro-antd/core/tree';
 import { NzSelectSearchComponent } from 'ng-zorro-antd/select';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
 
@@ -207,20 +204,7 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
     '[class.ant-select-allow-clear]': 'nzAllowClear',
     '[class.ant-select-open]': 'nzOpen',
     '(click)': 'trigger()'
-  },
-  styles: [
-    `
-      .ant-select-dropdown {
-        top: 100%;
-        left: 0;
-        position: relative;
-        width: 100%;
-        margin-top: 4px;
-        margin-bottom: 4px;
-        overflow: auto;
-      }
-    `
-  ]
+  }
 })
 export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
   @Input() @InputBoolean() nzAllowClear: boolean = true;
@@ -398,10 +382,6 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       if (this.selectedNodes.length) {
         const removeNode = this.selectedNodes[this.selectedNodes.length - 1];
         this.removeSelected(removeNode);
-        this.nzTreeService!.triggerEventChange$!.next({
-          eventName: 'removeSelect',
-          node: removeNode
-        });
       }
     }
   }
@@ -486,9 +466,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       this.nzTreeService.isCheckStrictly = this.nzCheckStrictly;
       this.nzTreeService.initTree(nodes);
       if (this.nzCheckable) {
-        this.nzTreeService.calcCheckedKeys(this.value, nodes, this.nzCheckStrictly);
+        this.nzTreeService.conductCheck(this.value, this.nzCheckStrictly);
       } else {
-        this.nzTreeService.calcSelectedKeys(this.value, nodes, this.isMultiple);
+        this.nzTreeService.conductSelectedKeys(this.value, this.isMultiple);
       }
     }
 

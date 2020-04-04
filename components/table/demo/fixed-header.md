@@ -7,14 +7,9 @@ title:
 
 ## zh-CN
 
-方便一页内展示大量数据。
-
-需要指定 `th` 的 `nzWidth` 属性，否则列头和内容可能不对齐。
+指定 `[nzScroll]` 的 `y` 数值 方便一页内展示大量数据，每一列的宽度可以由 `[nzWidth]` 指定。
 
 ## en-US
 
-Display large amounts of data in scrollable view.
-
-> Specify the width of each `th` if header and cell do not align properly.
-
+Display large amounts of data in scrollable view via set `y` of `[nzScroll]`, you can specify column width via `[nzWidth]`.
 

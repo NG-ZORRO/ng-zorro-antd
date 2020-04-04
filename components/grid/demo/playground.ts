@@ -45,10 +45,11 @@ import { Component } from '@angular/core';
         margin-bottom: 16px;
       }
       .grid-config {
-        background: #00a0e9;
         height: 120px;
+        font-size: 14px;
         line-height: 120px;
-        font-size: 13px;
+        background: #0092ff;
+        border-radius: 4px;
       }
     `
   ]

@@ -19,7 +19,8 @@ import {
   Renderer2,
   SimpleChanges
 } from '@angular/core';
-import { IndexableObject, isNotNil, NgClassInterface } from 'ng-zorro-antd/core';
+import { IndexableObject, NgClassInterface } from 'ng-zorro-antd/core/types';
+import { isNotNil } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzRowDirective } from './row.directive';

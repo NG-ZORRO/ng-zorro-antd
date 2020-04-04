@@ -36,6 +36,7 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 | `[nzCheckedKeys]` | Specifies the keys of the default checked treeNodes | `string[]` | `[]` |
 | `[nzSelectedKeys]` | Specifies the keys of the default selected treeNodes | `string[]` | `[]` |
 | `[nzSearchValue]` | Filter (highlight) treeNodes (see demo `Searchable`), two-way binding | `string` | `null` |
+| `[nzSearchFunc]` | Custom matching method, used with nzSearchValue | `(node: NzTreeNodeOptions) => boolean` | `null` |
 | `[nzBeforeDrop]` | Drop before the second check, allowing the user to decide whether to allow placement | `(confirm: NzFormatBeforeDropEvent) => Observable<boolean>` | - |
 | `(nzClick)` | Callback function for when the user clicks a treeNode | `EventEmitter<NzFormatEmitEvent>` | - |
 | `(nzDblClick)` | Callback function for when the user double clicks a treeNode | `EventEmitter<NzFormatEmitEvent>` | - |

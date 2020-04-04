@@ -42,7 +42,8 @@ export default {
     uploading: 'Uploading...',
     removeFile: 'Remove file',
     uploadError: 'Upload error',
-    previewFile: 'Preview file'
+    previewFile: 'Preview file',
+    downloadFile: 'Download file'
   },
   Empty: {
     description: 'No data'

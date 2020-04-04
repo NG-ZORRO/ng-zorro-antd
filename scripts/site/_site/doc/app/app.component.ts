@@ -46,7 +46,7 @@ export class AppComponent implements OnInit, AfterContentInit {
    **/
   showDrawer = false;
   isDrawerOpen = false;
-  page: 'docs' | 'components' | 'experimental' | string = 'docs'
+  page: 'docs' | 'components' | 'experimental' | string = 'docs';
   windowWidth = 1400;
   routerList = ROUTER_LIST;
   componentList: DocPageMeta[] = [];
@@ -63,7 +63,6 @@ export class AppComponent implements OnInit, AfterContentInit {
   }
 
   language = 'zh';
-  oldVersionList = ['0.5.x', '0.6.x', '0.7.x', '1.8.x', '7.5.x'];
   currentVersion = VERSION.full;
 
   @ViewChild('searchInput', { static: false }) searchInput: ElementRef<HTMLInputElement>;
@@ -89,7 +88,7 @@ export class AppComponent implements OnInit, AfterContentInit {
     }
     this.theme = theme;
     this.appService.theme$.next(theme);
-    this.renderer.setAttribute(document.body, 'data-theme', theme)
+    this.renderer.setAttribute(document.body, 'data-theme', theme);
     if (theme !== 'dark') {
       const dom = document.getElementById('dark-theme');
       if (dom) {
@@ -101,7 +100,7 @@ export class AppComponent implements OnInit, AfterContentInit {
       style.type = 'text/css';
       style.rel = 'stylesheet';
       style.id = 'dark-theme';
-      style.href = '/assets/dark.css';
+      style.href = 'assets/dark.css';
 
       localStorage.setItem('site-theme', 'dark');
       document.body.append(style);

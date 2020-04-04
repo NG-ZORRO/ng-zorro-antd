@@ -21,8 +21,10 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
+import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzTSType } from 'ng-zorro-antd/core/types';
 
-import { NzNoAnimationDirective, NzTSType, zoomBigMotion } from 'ng-zorro-antd/core';
 import { isTooltipEmpty, NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger } from 'ng-zorro-antd/tooltip';
 
 @Directive({
@@ -95,14 +97,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
         </div>
       </div>
     </ng-template>
-  `,
-  styles: [
-    `
-      .ant-popover {
-        position: relative;
-      }
-    `
-  ]
+  `
 })
 export class NzPopoverComponent extends NzToolTipComponent {
   _prefix = 'ant-popover-placement';

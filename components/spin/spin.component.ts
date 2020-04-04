@@ -17,8 +17,10 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 
-import { InputBoolean, InputNumber, NzConfigService, NzSizeLDSType, WithConfig } from 'ng-zorro-antd/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { debounceTime, flatMap, takeUntil } from 'rxjs/operators';
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TransferItem } from 'ng-zorro-antd/transfer';
+import { TransferChange, TransferItem } from 'ng-zorro-antd/transfer';
 
 @Component({
   selector: 'nz-demo-transfer-table-transfer',
@@ -22,11 +22,10 @@ import { TransferItem } from 'ng-zorro-antd/transfer';
         let-onItemSelectAll="onItemSelectAll"
         let-onItemSelect="onItemSelect"
       >
-        <nz-table #t [nzData]="convertItems(items)" nzSize="small">
+        <nz-table #t [nzData]="items" nzSize="small">
           <thead>
             <tr>
               <th
-                nzShowCheckbox
                 [nzDisabled]="disabled"
                 [nzChecked]="stat.checkAll"
                 [nzIndeterminate]="stat.checkHalf"
@@ -39,12 +38,7 @@ import { TransferItem } from 'ng-zorro-antd/transfer';
           </thead>
           <tbody>
             <tr *ngFor="let data of t.data" (click)="onItemSelect(data)">
-              <td
-                nzShowCheckbox
-                [nzChecked]="data.checked"
-                [nzDisabled]="disabled || data.disabled"
-                (nzCheckedChange)="onItemSelect(data)"
-              ></td>
+              <td [nzChecked]="data.checked" [nzDisabled]="disabled || data.disabled" (nzCheckedChange)="onItemSelect(data)"></td>
               <td>{{ data.title }}</td>
               <td *ngIf="direction === 'left'">
                 <nz-tag>{{ data.tag }}</nz-tag>
@@ -80,15 +74,23 @@ export class NzDemoTransferTableTransferComponent implements OnInit {
     [2, 3].forEach(idx => (this.list[idx].direction = 'right'));
   }
 
-  convertItems(items: TransferItem[]): TransferItem[] {
-    return items.filter(i => !i.hide);
-  }
-
-  select(ret: {}): void {
+  select(ret: TransferChange): void {
     console.log('nzSelectChange', ret);
   }
 
-  change(ret: {}): void {
+  change(ret: TransferChange): void {
     console.log('nzChange', ret);
+    const listKeys = ret.list.map(l => l.key);
+    const hasOwnKey = (e: TransferItem) => e.hasOwnProperty('key');
+    this.list = this.list.map(e => {
+      if (listKeys.includes(e.key) && hasOwnKey(e)) {
+        if (ret.to === 'left') {
+          delete e.hide;
+        } else if (ret.to === 'right') {
+          e.hide = false;
+        }
+      }
+      return e;
+    });
   }
 }

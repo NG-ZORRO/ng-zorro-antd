@@ -8,7 +8,7 @@
 
 import { Component } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core';
+import { ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
 import { NzTransitionPatchDirective } from './transition-patch.directive';
 import { NzTransitionPatchModule } from './transition-patch.module';
 

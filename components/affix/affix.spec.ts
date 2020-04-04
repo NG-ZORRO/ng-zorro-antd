@@ -1,11 +1,10 @@
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { NzScrollService } from 'ng-zorro-antd/core/services';
 
-import { NzScrollService } from 'ng-zorro-antd/core';
-
-import { NzAffixComponent } from './nz-affix.component';
-import { NzAffixModule } from './nz-affix.module';
+import { NzAffixComponent } from './affix.component';
+import { NzAffixModule } from './affix.module';
 
 interface Offset {
   top: number;
@@ -329,6 +328,7 @@ describe('affix', () => {
       fixture.detectChanges();
       tick();
       expect(component.updatePosition).toHaveBeenCalled();
+      discardPeriodicTasks();
     }));
   });
 

@@ -29,8 +29,8 @@ Following the Ant Design specification, we developed an Angular UI library `ng-z
 - A set of high-quality Angular components out of the box.
 - Written in TypeScript with complete defined types.
 - Support OnPush mode, high performance.
-- Support Customize theme.
-- Support import Component individually.
+- Powerful theme customization in every detail.
+- Internationalization support for dozens of languages.
 
 ## Environment Support
 
@@ -40,11 +40,11 @@ Following the Ant Design specification, we developed an Angular UI library `ng-z
 
 ## Version
 
-[![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
+[![npm next package](https://img.shields.io/npm/v/ng-zorro-antd/next.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 
 ## Angular Support
 
-Now Supports Angular `^8.0.0`.
+`ng-zorro-antd` keeps the same major version with `@angular/core`, now supports Angular `^9.0.0`.
 
 ## Design Specification
 

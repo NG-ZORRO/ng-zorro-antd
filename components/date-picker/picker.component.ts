@@ -12,6 +12,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ContentChild,
   ElementRef,
   EventEmitter,
   Input,
@@ -25,14 +26,17 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
+import { slideMotion } from 'ng-zorro-antd/core/animation';
 
-import { CandyDate, CompatibleValue, SingleValue, slideMotion, sortRangeValue } from 'ng-zorro-antd/core';
+import { CandyDate, CompatibleValue } from 'ng-zorro-antd/core/time';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { DatePickerService } from './date-picker.service';
-import { PREFIX_CLASS } from './name';
+import { DateRangePopupComponent } from './date-range-popup.component';
 import { RangePartType } from './standard-types';
+import { PREFIX_CLASS } from './util';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -131,7 +135,6 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Input() isRange: boolean = false;
   @Input() open: boolean | undefined = undefined;
   @Input() disabled: boolean;
-  @Input() disabledDate: (current: Date) => boolean;
   @Input() placeholder: string | string[];
   @Input() allowClear: boolean;
   @Input() autoFocus: boolean;
@@ -146,13 +149,14 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @ViewChild('separatorElement', { static: false }) separatorElement: ElementRef;
   @ViewChildren('rangePickerInput') rangePickerInputs: QueryList<ElementRef>;
 
+  @ContentChild(DateRangePopupComponent) panel: DateRangePopupComponent;
+
   origin: CdkOverlayOrigin;
   inputSize: number;
   destroy$ = new Subject();
   prefixCls = PREFIX_CLASS;
   // Index signature in type 'string | string[]' only permits reading
-  // tslint:disable-next-line:no-any
-  inputValue: any;
+  inputValue: NzSafeAny;
   activeBarStyle: object = { position: 'absolute' };
   animationOpenState = false;
   overlayOpen: boolean = false; // Available when "open"=undefined
@@ -303,15 +307,12 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   onClickBackdrop(): void {
-    if (this.isRange) {
-      if (this.isValidRange(this.datePickerService.value as CandyDate[])) {
-        this.datePickerService.emitValue$.next();
-      } else {
-        this.datePickerService.setValue(this.datePickerService.initialValue);
-        this.hideOverlay();
-      }
-    } else {
+    if (this.panel.isAllowed(this.datePickerService.value!, true)) {
+      this.updateInputValue();
       this.datePickerService.emitValue$.next();
+    } else {
+      this.datePickerService.setValue(this.datePickerService.initialValue);
+      this.hideOverlay();
     }
   }
 
@@ -358,52 +359,20 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     return this.dateHelper.format(value && (value as CandyDate).nativeDate, this.format);
   }
 
-  isDisabledDate(date: null | CandyDate): boolean {
-    return !date || (this.disabledDate && this.disabledDate(date.nativeDate));
-  }
-
-  // Check if it's a valid range value
-  private isValidRange(value: SingleValue[]): boolean {
-    if (Array.isArray(value)) {
-      const [start, end] = value;
-      return !!(start && end);
-    }
-    return false;
-  }
-
   onInputKeyup(event: Event, isEnter: boolean = false): void {
     if (isEnter && !this.realOpenState) {
       this.showOverlay();
       return;
     }
-
     const date = this.checkValidInputDate((event as KeyboardEvent).target!);
-    if (!date || (this.disabledDate && this.disabledDate(date.nativeDate))) {
-      return;
-    }
-    if (this.isRange) {
-      let newValue: CompatibleValue;
-      const leftDate = this.checkValidInputDate(this.getInput('left'));
-      const rightDate = this.checkValidInputDate(this.getInput('right'));
-      if (this.isDisabledDate(leftDate) || this.isDisabledDate(rightDate)) {
-        return;
-      }
-      newValue = [leftDate, rightDate];
-      if (this.isValidRange(newValue)) {
-        newValue = sortRangeValue(newValue);
-        this.datePickerService.setValue(newValue);
-      }
-    } else {
-      this.datePickerService.setValue(date);
-    }
-    if (isEnter) {
-      this.datePickerService.emitValue$.next();
+    if (this.panel && date) {
+      this.panel.changeValueFromSelect(date, isEnter);
     }
   }
 
   private checkValidInputDate(inputTarget: EventTarget): CandyDate | null {
     const input = (inputTarget as HTMLInputElement).value;
-    const date = new CandyDate(input);
+    const date = new CandyDate(this.dateHelper.parseDate(input, this.format));
 
     if (!date.isValid() || input !== this.dateHelper.format(date.nativeDate, this.format)) {
       // Should also match the input format exactly

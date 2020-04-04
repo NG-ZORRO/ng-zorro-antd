@@ -17,8 +17,8 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
-
-import { InputBoolean, scrollIntoView } from 'ng-zorro-antd/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { InputBoolean, scrollIntoView } from 'ng-zorro-antd/core/util';
 
 import { NzAutocompleteOptgroupComponent } from './autocomplete-optgroup.component';
 
@@ -52,8 +52,7 @@ export class NzOptionSelectionChange {
   }
 })
 export class NzAutocompleteOptionComponent {
-  /* tslint:disable-next-line:no-any */
-  @Input() nzValue: any;
+  @Input() nzValue: NzSafeAny;
   @Input() nzLabel: string;
   @Input() @InputBoolean() nzDisabled = false;
   @Output() readonly selectionChange = new EventEmitter<NzOptionSelectionChange>();

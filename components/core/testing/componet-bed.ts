@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { DebugElement, NO_ERRORS_SCHEMA, Provider, Type } from '@angular/core';
+import { DebugElement, ModuleWithProviders, NO_ERRORS_SCHEMA, Provider, Type } from '@angular/core';
 import { ComponentFixture, TestBed, TestBedStatic } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-type ComponentDeps = Array<Type<NzSafeAny>>;
+type ComponentDeps = Array<Type<NzSafeAny> | ModuleWithProviders>;
 export interface ComponentBed<T> {
   bed: TestBedStatic;
   fixture: ComponentFixture<T>;

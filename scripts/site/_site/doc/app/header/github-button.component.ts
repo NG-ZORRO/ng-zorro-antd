@@ -35,7 +35,8 @@ export class GithubButtonComponent implements OnInit {
   }
 
   getStar(): void {
-    this.http.get<{ stargazers_count: number }>(`https://api.github.com/repos/${this.org}/${this.repo}`).subscribe((res: { stargazers_count: number }) => {
+    this.http.get<{ stargazers_count: number }>(`https://api.github.com/repos/${this.org}/${this.repo}`)
+    .subscribe((res: { stargazers_count: number }) => {
       this.starCount = res.stargazers_count;
       this.cdr.markForCheck();
     })

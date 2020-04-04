@@ -46,7 +46,8 @@ export default {
     uploading: 'Caricamento...',
     removeFile: 'Rimuovi il file',
     uploadError: 'Errore di caricamento',
-    previewFile: 'Anteprima file'
+    previewFile: 'Anteprima file',
+    downloadFile: 'Download file'
   },
   Empty: {
     description: 'Nessun dato'

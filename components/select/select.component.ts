@@ -34,8 +34,10 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { InputBoolean, NzNoAnimationDirective, slideMotion } from 'ng-zorro-antd/core';
+import { slideMotion } from 'ng-zorro-antd/core/animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { BehaviorSubject, combineLatest, merge, Subject } from 'rxjs';
 import { startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { NzOptionGroupComponent } from './option-group.component';
@@ -158,7 +160,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @Input() nzDropdownClassName: string | null = null;
   @Input() nzDropdownMatchSelectWidth = true;
   @Input() nzDropdownStyle: { [key: string]: string } | null = null;
-  @Input() nzNotFoundContent: string | null = null;
+  @Input() nzNotFoundContent: string | undefined = undefined;
   @Input() nzPlaceHolder: string | TemplateRef<NzSafeAny> | null = null;
   @Input() nzMaxTagCount = Infinity;
   @Input() nzDropdownRender: TemplateRef<NzSafeAny> | null = null;
@@ -524,7 +526,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
               ...this.listOfNzOptionGroupComponent.map(option => option.changes)
             ]
           ).pipe(startWith(true))
-        )
+        ),
+        takeUntil(this.destroy$)
       )
       .subscribe(() => {
         const listOfOptionInterface = this.listOfNzOptionComponent.toArray().map(item => {

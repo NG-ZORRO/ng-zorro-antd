@@ -29,21 +29,15 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { cancelRequestAnimationFrame, reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
+import { NzResizeService } from 'ng-zorro-antd/core/services';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { InputBoolean, InputNumber, isStyleSupport, measure } from 'ng-zorro-antd/core/util';
 
 import { Subject, Subscription } from 'rxjs';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
-import {
-  cancelRequestAnimationFrame,
-  InputBoolean,
-  InputNumber,
-  isStyleSupport,
-  measure,
-  NzConfigService,
-  NzDomEventService,
-  reqAnimFrame,
-  WithConfig
-} from 'ng-zorro-antd/core';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { NzTextCopyComponent } from './text-copy.component';
@@ -121,8 +115,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   @ViewChild('expandable', { static: false }) expandableBtn: ElementRef<HTMLSpanElement>;
   @ViewChild('contentTemplate', { static: false }) contentTemplate: TemplateRef<{ content: string }>;
 
-  // tslint:disable-next-line:no-any
-  locale: any = {};
+  locale: NzSafeAny = {};
   document: Document;
   expandableBtnElementCache: HTMLElement | null = null;
   editing = false;
@@ -152,8 +145,8 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
     private renderer: Renderer2,
     private platform: Platform,
     private i18n: NzI18nService,
-    @Inject(DOCUMENT) document: any, // tslint:disable-line no-any
-    private nzDomEventService: NzDomEventService
+    @Inject(DOCUMENT) document: NzSafeAny,
+    private resizeService: NzResizeService
   ) {
     this.document = document;
   }
@@ -270,12 +263,9 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
       this.windowResizeSubscription.unsubscribe();
       this.cssEllipsis = this.canUseCSSEllipsis();
       this.renderOnNextFrame();
-      this.windowResizeSubscription = this.nzDomEventService
-        .registerResizeListener()
-        .pipe(
-          takeUntil(this.destroy$),
-          finalize(() => this.nzDomEventService.unregisterResizeListener())
-        )
+      this.windowResizeSubscription = this.resizeService
+        .subscribe()
+        .pipe(takeUntil(this.destroy$))
         .subscribe(() => this.renderOnNextFrame());
     }
   }

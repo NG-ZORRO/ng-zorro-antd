@@ -22,10 +22,11 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { toBoolean } from 'ng-zorro-antd/core/util';
 import { merge, Subject, Subscription } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
-import { NgClassType, NzSizeDSType, toBoolean } from 'ng-zorro-antd/core';
+import { NgClassType, NzSizeDSType } from 'ng-zorro-antd/core/types';
 
 import { NzStepComponent } from './step.component';
 

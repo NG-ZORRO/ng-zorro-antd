@@ -2,7 +2,7 @@ import { OverlayContainer, ScrollDispatcher } from '@angular/cdk/overlay';
 import { Component, Provider, Type, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { createMouseEvent } from 'ng-zorro-antd/core';
+import { createMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { Subject } from 'rxjs';
 import { NzContextMenuService } from './context-menu.service';

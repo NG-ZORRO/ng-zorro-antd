@@ -42,7 +42,8 @@ export default {
     uploading: 'Bardike...',
     removeFile: 'Pelê rabike',
     uploadError: 'Xeta barkirine',
-    previewFile: 'Pelê pêşbibîne'
+    previewFile: 'Pelê pêşbibîne',
+    downloadFile: 'Pelê dakêşin'
   },
   Empty: {
     description: 'Agahî tune'

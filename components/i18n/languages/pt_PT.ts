@@ -43,7 +43,8 @@ export default {
     uploading: 'A carregar...',
     removeFile: 'Remover',
     uploadError: 'Erro ao carregar',
-    previewFile: 'Pré-visualizar'
+    previewFile: 'Pré-visualizar',
+    downloadFile: 'Baixar'
   },
   Empty: {
     description: 'Sem resultados'

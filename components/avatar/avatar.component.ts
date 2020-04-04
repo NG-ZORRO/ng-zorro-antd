@@ -20,7 +20,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { NzConfigService, NzShapeSCType, NzSizeLDSType, NzUpdateHostClassService, WithConfig } from 'ng-zorro-antd/core';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 
 const NZ_CONFIG_COMPONENT_NAME = 'avatar';
 
@@ -39,7 +40,6 @@ const NZ_CONFIG_COMPONENT_NAME = 'avatar';
     '[style.line-height]': 'customSize',
     '[style.font-size]': '(hasIcon && customSize) ? (nzSize / 2 + "px") : null'
   },
-  providers: [NzUpdateHostClassService],
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None

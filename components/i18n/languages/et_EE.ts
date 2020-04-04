@@ -42,7 +42,8 @@ export default {
     uploading: 'Üleslaadimine...',
     removeFile: 'Eemalda fail',
     uploadError: 'Üleslaadimise tõrge',
-    previewFile: 'Faili eelvaade'
+    previewFile: 'Faili eelvaade',
+    downloadFile: 'Laadige fail alla'
   },
   Empty: {
     description: 'Andmed puuduvad'

@@ -6,6 +6,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-page-header.module';
-export * from './nz-page-header.component';
-export * from './nz-page-header-cells';
+export * from './page-header.module';
+export * from './page-header.component';
+export * from './page-header-cells';

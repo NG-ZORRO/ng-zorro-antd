@@ -3,7 +3,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzButtonComponent, NzButtonModule } from 'ng-zorro-antd/button';
-import { NZ_CONFIG, NzConfigService } from 'ng-zorro-antd/core';
+import { NZ_CONFIG } from './config';
+import { NzConfigService } from './config.service';
 
 @Component({
   template: `

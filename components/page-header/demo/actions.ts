@@ -12,7 +12,7 @@ import { Component } from '@angular/core';
         <button nz-button nzType="primary">Primary</button>
       </nz-page-header-extra>
       <nz-page-header-content>
-        <nz-descriptions [nzColumn]="3">
+        <nz-descriptions nzSize="small" [nzColumn]="3">
           <nz-descriptions-item nzTitle="Created" [nzSpan]="1">Lili Qu</nz-descriptions-item>
           <nz-descriptions-item nzTitle="Association" [nzSpan]="1"><a>421421</a></nz-descriptions-item>
           <nz-descriptions-item nzTitle="Creation Time" [nzSpan]="1">2017-01-10</nz-descriptions-item>
@@ -24,7 +24,7 @@ import { Component } from '@angular/core';
       </nz-page-header-content>
     </nz-page-header>
     <br />
-    <nz-page-header class="site-page-header" nzBackIcon>
+    <nz-page-header nzBackIcon>
       <nz-page-header-title>Title</nz-page-header-title>
       <nz-page-header-subtitle>This is a subtitle</nz-page-header-subtitle>
       <nz-page-header-tags>

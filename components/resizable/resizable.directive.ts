@@ -9,7 +9,7 @@
 import { Platform } from '@angular/cdk/platform';
 import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, NgZone, OnDestroy, Output, Renderer2 } from '@angular/core';
 
-import { ensureInBounds, InputBoolean } from 'ng-zorro-antd/core';
+import { ensureInBounds, InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 

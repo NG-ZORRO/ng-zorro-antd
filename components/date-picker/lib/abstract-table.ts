@@ -7,7 +7,9 @@
  */
 
 import { EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef } from '@angular/core';
-import { CandyDate, FunctionProp, isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core';
+import { CandyDate } from 'ng-zorro-antd/core/time';
+import { FunctionProp, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core/util';
 import { DateBodyRow, DateCell } from './interface';
 
 export abstract class AbstractTable implements OnInit, OnChanges {
@@ -35,14 +37,12 @@ export abstract class AbstractTable implements OnInit, OnChanges {
     }
   }
 
-  // tslint:disable-next-line:no-any
-  trackByBodyRow(_index: number, item: DateBodyRow): any {
+  trackByBodyRow(_index: number, item: DateBodyRow): NzSafeAny {
     return item;
   }
 
   // Item usually is an object, so trackby has no use by default.
-  // tslint:disable-next-line:no-any
-  trackByBodyColumn(_index: number, item: DateCell): any {
+  trackByBodyColumn(_index: number, item: DateCell): NzSafeAny {
     return item;
   }
 
@@ -56,9 +56,6 @@ export abstract class AbstractTable implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.activeDate && !changes.activeDate.currentValue) {
       this.activeDate = new CandyDate();
-    }
-    if (changes.value && changes.value.currentValue) {
-      this.activeDate = this.value;
     }
   }
 }

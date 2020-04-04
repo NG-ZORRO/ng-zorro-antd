@@ -7,7 +7,7 @@ title:
 
 ## zh-CN
 
-当 `td` 内容超出 `nzWidth` 设定值时使用 `nzBreakWord` 折行显示
+当有连续超长字符串时，可以使用 `nzBreakWord` 来折行显示
 
 ## en-US
 

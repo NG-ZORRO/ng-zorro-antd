@@ -1,45 +1,39 @@
 import { Component } from '@angular/core';
+import { NzTableFilterFn, NzTableFilterList, NzTableSortFn, NzTableSortOrder } from 'ng-zorro-antd/table';
 
-interface Data {
+interface DataItem {
   name: string;
   age: number;
   address: string;
+}
 
-  // tslint:disable-next-line:no-any
-  [key: string]: any;
+interface ColumnItem {
+  name: string;
+  sortOrder?: NzTableSortOrder;
+  sortFn?: NzTableSortFn;
+  listOfFilter?: NzTableFilterList;
+  filterFn?: NzTableFilterFn;
 }
 
 @Component({
   selector: 'nz-demo-table-reset-filter',
   template: `
     <div class="table-operations">
-      <button nz-button (click)="sort('age', 'descend')">Sort age</button>
+      <button nz-button (click)="sortByAge()">Sort age</button>
       <button nz-button (click)="resetFilters()">Clear filters</button>
       <button nz-button (click)="resetSortAndFilters()">Clear filters and sorters</button>
     </div>
-    <nz-table #filterTable [nzData]="listOfDisplayData">
+    <nz-table #filterTable [nzData]="listOfData" nzTableLayout="fixed">
       <thead>
         <tr>
           <th
-            nzShowSort
-            nzShowFilter
-            [(nzSort)]="mapOfSort.name"
-            (nzSortChange)="sort('name', $event)"
-            [nzFilters]="listOfFilterName"
-            (nzFilterChange)="search($event, listOfSearchAddress)"
+            *ngFor="let column of listOfColumns; trackBy: trackByName"
+            [(nzSortOrder)]="column.sortOrder"
+            [nzSortFn]="column.sortFn"
+            [nzFilters]="column.listOfFilter"
+            [nzFilterFn]="column.filterFn"
           >
-            Name
-          </th>
-          <th nzShowSort [(nzSort)]="mapOfSort.age" (nzSortChange)="sort('age', $event)">Age</th>
-          <th
-            nzShowSort
-            nzShowFilter
-            [(nzSort)]="mapOfSort.address"
-            (nzSortChange)="sort('address', $event)"
-            [nzFilters]="listOfFilterAddress"
-            (nzFilterChange)="search(listOfSearchName, $event)"
-          >
-            Address
+            {{ column.name }}
           </th>
         </tr>
       </thead>
@@ -65,17 +59,32 @@ interface Data {
   ]
 })
 export class NzDemoTableResetFilterComponent {
-  listOfSearchName: string[] = [];
-  listOfSearchAddress: string[] = [];
-  listOfFilterName = [
-    { text: 'Joe', value: 'Joe' },
-    { text: 'Jim', value: 'Jim' }
+  listOfColumns: ColumnItem[] = [
+    {
+      name: 'Name',
+      sortOrder: null,
+      sortFn: (a: DataItem, b: DataItem) => a.name.localeCompare(b.name),
+      listOfFilter: [
+        { text: 'Joe', value: 'Joe' },
+        { text: 'Jim', value: 'Jim' }
+      ],
+      filterFn: (list: string[], item: DataItem) => list.some(name => item.name.indexOf(name) !== -1)
+    },
+    {
+      name: 'Age',
+      sortOrder: null,
+      sortFn: (a: DataItem, b: DataItem) => a.age - b.age
+    },
+    {
+      name: 'Address',
+      listOfFilter: [
+        { text: 'London', value: 'London' },
+        { text: 'Sidney', value: 'Sidney' }
+      ],
+      filterFn: (address: string, item: DataItem) => item.address.indexOf(address) !== -1
+    }
   ];
-  listOfFilterAddress = [
-    { text: 'London', value: 'London' },
-    { text: 'Sidney', value: 'Sidney' }
-  ];
-  listOfData: Data[] = [
+  listOfData: DataItem[] = [
     {
       name: 'John Brown',
       age: 32,
@@ -97,63 +106,41 @@ export class NzDemoTableResetFilterComponent {
       address: 'London No. 2 Lake Park'
     }
   ];
-  listOfDisplayData = [...this.listOfData];
-  mapOfSort: { [key: string]: string | null } = {
-    name: null,
-    age: null,
-    address: null
-  };
-  sortName: string | null = null;
-  sortValue: string | null = null;
 
-  sort(sortName: string, value: string): void {
-    this.sortName = sortName;
-    this.sortValue = value;
-    for (const key in this.mapOfSort) {
-      this.mapOfSort[key] = key === sortName ? value : null;
-    }
-    this.search(this.listOfSearchName, this.listOfSearchAddress);
+  trackByName(_: number, item: ColumnItem): string {
+    return item.name;
   }
 
-  search(listOfSearchName: string[], listOfSearchAddress: string[]): void {
-    this.listOfSearchName = listOfSearchName;
-    this.listOfSearchAddress = listOfSearchAddress;
-    const filterFunc = (item: Data) =>
-      (this.listOfSearchAddress.length ? this.listOfSearchAddress.some(address => item.address.indexOf(address) !== -1) : true) &&
-      (this.listOfSearchName.length ? this.listOfSearchName.some(name => item.name.indexOf(name) !== -1) : true);
-    const listOfData = this.listOfData.filter((item: Data) => filterFunc(item));
-    if (this.sortName && this.sortValue) {
-      this.listOfDisplayData = listOfData.sort((a, b) =>
-        this.sortValue === 'ascend' ? (a[this.sortName!] > b[this.sortName!] ? 1 : -1) : b[this.sortName!] > a[this.sortName!] ? 1 : -1
-      );
-    } else {
-      this.listOfDisplayData = listOfData;
-    }
+  sortByAge(): void {
+    this.listOfColumns.forEach(item => {
+      if (item.name === 'Age') {
+        item.sortOrder = 'descend';
+      } else {
+        item.sortOrder = null;
+      }
+    });
   }
 
   resetFilters(): void {
-    this.listOfFilterName = [
-      { text: 'Joe', value: 'Joe' },
-      { text: 'Jim', value: 'Jim' }
-    ];
-    this.listOfFilterAddress = [
-      { text: 'London', value: 'London' },
-      { text: 'Sidney', value: 'Sidney' }
-    ];
-    this.listOfSearchName = [];
-    this.listOfSearchAddress = [];
-    this.search(this.listOfSearchName, this.listOfSearchAddress);
+    this.listOfColumns.forEach(item => {
+      if (item.name === 'Name') {
+        item.listOfFilter = [
+          { text: 'Joe', value: 'Joe' },
+          { text: 'Jim', value: 'Jim' }
+        ];
+      } else if (item.name === 'Address') {
+        item.listOfFilter = [
+          { text: 'London', value: 'London' },
+          { text: 'Sidney', value: 'Sidney' }
+        ];
+      }
+    });
   }
 
   resetSortAndFilters(): void {
-    this.sortName = null;
-    this.sortValue = null;
-    this.mapOfSort = {
-      name: null,
-      age: null,
-      address: null
-    };
+    this.listOfColumns.forEach(item => {
+      item.sortOrder = null;
+    });
     this.resetFilters();
-    this.search(this.listOfSearchName, this.listOfSearchAddress);
   }
 }

@@ -26,10 +26,12 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NgClassType } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { InputBoolean, InputNumber, NgClassType, NzConfigService, WithConfig } from 'ng-zorro-antd/core';
+import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 
 const NZ_CONFIG_COMPONENT_NAME = 'rate';
 

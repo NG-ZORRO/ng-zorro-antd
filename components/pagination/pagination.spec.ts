@@ -1,14 +1,17 @@
 import { ENTER } from '@angular/cdk/keycodes';
 import { Component, DebugElement, Injector, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { createKeyboardEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core';
+import { createKeyboardEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import en_US from '../i18n/languages/en_US';
 import { NzI18nService } from '../i18n/nz-i18n.service';
 import { NzPaginationComponent } from './pagination.component';
 import { NzPaginationModule } from './pagination.module';
+
+declare const viewport: NzSafeAny;
 
 describe('pagination', () => {
   let injector: Injector;
@@ -16,7 +19,12 @@ describe('pagination', () => {
   beforeEach(async(() => {
     injector = TestBed.configureTestingModule({
       imports: [NzPaginationModule, NoopAnimationsModule],
-      declarations: [NzTestPaginationComponent, NzTestPaginationRenderComponent, NzTestPaginationTotalComponent]
+      declarations: [
+        NzTestPaginationComponent,
+        NzTestPaginationRenderComponent,
+        NzTestPaginationTotalComponent,
+        NzTestPaginationAutoResizeComponent
+      ]
     });
     TestBed.compileComponents();
   }));
@@ -26,13 +34,15 @@ describe('pagination', () => {
     let testComponent: NzTestPaginationComponent;
     let pagination: DebugElement;
     let paginationElement: HTMLElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestPaginationComponent);
       testComponent = fixture.debugElement.componentInstance;
       pagination = fixture.debugElement.query(By.directive(NzPaginationComponent));
       fixture.detectChanges();
-      paginationElement = pagination.nativeElement.firstElementChild;
+      paginationElement = pagination.nativeElement;
     });
+
     describe('not simple mode', () => {
       it('should className correct', () => {
         fixture.detectChanges();
@@ -45,11 +55,13 @@ describe('pagination', () => {
         expect(array[0].classList.contains('ant-pagination-item-active')).toBe(true);
         expect(array.every((node: HTMLElement) => node.classList.contains('ant-pagination-item'))).toBe(true);
       });
+
       it('should small size className correct', () => {
         testComponent.size = 'small';
         fixture.detectChanges();
         expect(paginationElement.classList.contains('mini')).toBe(true);
       });
+
       it('should pageIndex change work', () => {
         testComponent.pageIndex = 2;
         fixture.detectChanges();
@@ -58,6 +70,7 @@ describe('pagination', () => {
         const array = Array.prototype.slice.call(paginationElement.children).slice(1, length - 1);
         expect(array[1].classList.contains('ant-pagination-item-active')).toBe(true);
       });
+
       it('should pageIndex change not trigger when same', () => {
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
@@ -68,6 +81,7 @@ describe('pagination', () => {
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
       });
+
       it('should change pageIndex change pages list', () => {
         fixture.detectChanges();
         testComponent.total = 500;
@@ -77,6 +91,7 @@ describe('pagination', () => {
         fixture.detectChanges();
         expect(paginationElement.children.length).toBe(11);
       });
+
       it('should pre button disabled', () => {
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
@@ -85,6 +100,7 @@ describe('pagination', () => {
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
         expect(testComponent.pageIndex).toBe(1);
       });
+
       it('should pre button work', () => {
         testComponent.pageIndex = 5;
         fixture.detectChanges();
@@ -94,6 +110,7 @@ describe('pagination', () => {
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
         expect(testComponent.pageIndex).toBe(4);
       });
+
       it('should next button disabled', () => {
         testComponent.pageIndex = 5;
         fixture.detectChanges();
@@ -103,6 +120,7 @@ describe('pagination', () => {
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
         expect(testComponent.pageIndex).toBe(5);
       });
+
       it('should next button work', () => {
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
@@ -111,6 +129,7 @@ describe('pagination', () => {
         expect(testComponent.pageIndex).toBe(2);
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
       });
+
       it('should click pageIndex work', () => {
         fixture.detectChanges();
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
@@ -119,11 +138,13 @@ describe('pagination', () => {
         expect(testComponent.pageIndex).toBe(3);
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
       });
+
       it('should total change style work', () => {
         testComponent.total = 500;
         fixture.detectChanges();
         expect(paginationElement.children.length).toBe(9);
       });
+
       it('should next five work', () => {
         testComponent.total = 500;
         fixture.detectChanges();
@@ -135,6 +156,7 @@ describe('pagination', () => {
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
         expect(paginationElement.children.length).toBe(9);
       });
+
       it('should pre five work', () => {
         testComponent.total = 500;
         fixture.detectChanges();
@@ -147,6 +169,7 @@ describe('pagination', () => {
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
         expect(paginationElement.children.length).toBe(9);
       });
+
       it('should showSizeChanger work', async(() => {
         testComponent.total = 500;
         testComponent.pageIndex = 50;
@@ -157,6 +180,7 @@ describe('pagination', () => {
           expect(paginationElement.lastElementChild!.classList.contains('ant-pagination-options')).toBe(true);
         });
       }));
+
       it('should change pageSize correct', () => {
         testComponent.pageIndex = 5;
         fixture.detectChanges();
@@ -165,6 +189,7 @@ describe('pagination', () => {
         expect(testComponent.pageIndex).toBe(3);
         expect(testComponent.pageSizeChange).toHaveBeenCalledTimes(1);
       });
+
       it('should showQuickJumper work', () => {
         testComponent.showQuickJumper = true;
         fixture.detectChanges();
@@ -199,6 +224,7 @@ describe('pagination', () => {
         expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(1);
         expect(testComponent.pageIndex).toBe(5);
       });
+
       it('should nzDisabled work', () => {
         fixture.detectChanges();
         testComponent.disabled = true;
@@ -206,11 +232,12 @@ describe('pagination', () => {
         expect(paginationElement.classList.contains('ant-pagination-disabled')).toBe(true);
       });
     });
+
     describe('simple mode', () => {
       beforeEach(() => {
         testComponent.simple = true;
         fixture.detectChanges();
-        paginationElement = pagination.nativeElement.firstElementChild;
+        paginationElement = pagination.nativeElement;
       });
       it('should simple className work', () => {
         expect(paginationElement.classList.contains('ant-pagination-simple')).toBe(true);
@@ -250,9 +277,10 @@ describe('pagination', () => {
       (testComponent as NzTestPaginationComponent).total = 0;
       (testComponent as NzTestPaginationComponent).hideOnSinglePage = true;
       fixture.detectChanges();
-      expect(fixture.debugElement.nativeElement.querySelector('.ant-pagination')).toBeNull();
+      expect(fixture.debugElement.nativeElement.querySelector('.ant-pagination').children.length).toBe(0);
     });
   });
+
   describe('pagination render items', () => {
     let fixture: ComponentFixture<NzTestPaginationRenderComponent>;
     let pagination: DebugElement;
@@ -261,7 +289,7 @@ describe('pagination', () => {
       fixture = TestBed.createComponent(NzTestPaginationRenderComponent);
       pagination = fixture.debugElement.query(By.directive(NzPaginationComponent));
       fixture.detectChanges();
-      paginationElement = pagination.nativeElement.firstElementChild;
+      paginationElement = pagination.nativeElement;
     });
     it('should render correct', () => {
       fixture.detectChanges();
@@ -270,18 +298,21 @@ describe('pagination', () => {
       expect((paginationElement.children[1] as HTMLElement).innerText).toBe('2');
     });
   });
+
   describe('pagination total items', () => {
     let fixture: ComponentFixture<NzTestPaginationTotalComponent>;
     let testComponent: NzTestPaginationTotalComponent;
     let pagination: DebugElement;
     let paginationElement: HTMLElement;
+
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestPaginationTotalComponent);
       testComponent = fixture.debugElement.componentInstance;
       pagination = fixture.debugElement.query(By.directive(NzPaginationComponent));
       fixture.detectChanges();
-      paginationElement = pagination.nativeElement.firstElementChild;
+      paginationElement = pagination.nativeElement;
     });
+
     it('should render correct', () => {
       fixture.detectChanges();
       expect((paginationElement.firstElementChild as HTMLElement).innerText.trim()).toBe('1-20 of 85 items');
@@ -293,6 +324,25 @@ describe('pagination', () => {
       expect((paginationElement.firstElementChild as HTMLElement).innerText.trim()).toBe('81-85 of 85 items');
     });
   });
+
+  it('should auto resize work', fakeAsync(() => {
+    const fixture = TestBed.createComponent(NzTestPaginationAutoResizeComponent);
+    const pagination = fixture.debugElement.query(By.directive(NzPaginationComponent));
+
+    viewport.set(1200, 350);
+    fixture.detectChanges();
+    let paginationElement = pagination.nativeElement;
+    expect(paginationElement.classList).not.toContain('mini');
+
+    viewport.set(350, 350);
+    window.dispatchEvent(new Event('resize'));
+    fixture.detectChanges();
+    tick(1000);
+    fixture.detectChanges();
+    paginationElement = pagination.nativeElement;
+    expect(paginationElement.classList).toContain('mini');
+    viewport.reset();
+  }));
 
   it('#i18n', () => {
     const fixture = TestBed.createComponent(NzTestPaginationComponent);
@@ -363,3 +413,8 @@ export class NzTestPaginationRenderComponent {}
 export class NzTestPaginationTotalComponent {
   pageIndex = 1;
 }
+
+@Component({
+  template: ` <nz-pagination nzResponsive></nz-pagination> `
+})
+export class NzTestPaginationAutoResizeComponent {}

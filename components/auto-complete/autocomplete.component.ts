@@ -27,10 +27,12 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
+import { slideMotion } from 'ng-zorro-antd/core/animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { CompareWith, NzDropDownPosition, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { defer, merge, Observable, Subscription } from 'rxjs';
 import { filter, switchMap, take } from 'rxjs/operators';
-
-import { CompareWith, InputBoolean, NzDropDownPosition, NzNoAnimationDirective, slideMotion } from 'ng-zorro-antd/core';
 
 import { NzAutocompleteOptionComponent, NzOptionSelectionChange } from './autocomplete-option.component';
 
@@ -73,14 +75,7 @@ export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | n
       </ng-template>
     </ng-template>
   `,
-  animations: [slideMotion],
-  styles: [
-    `
-      .ant-select-dropdown-hidden {
-        display: none;
-      }
-    `
-  ]
+  animations: [slideMotion]
 })
 export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit, OnDestroy {
   @Input() nzWidth: number;
@@ -195,8 +190,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
     this.setActiveItem(previousIndex);
   }
 
-  // tslint:disable-next-line:no-any
-  getOptionIndex(value: any): number {
+  getOptionIndex(value: NzSafeAny): number {
     return this.options.reduce((result: number, current: NzAutocompleteOptionComponent, index: number) => {
       return result === -1 ? (this.compareWith(value, current.nzValue) ? index : -1) : result;
     }, -1)!;

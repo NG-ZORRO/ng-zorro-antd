@@ -1,5 +1,5 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { NzConfigService } from 'ng-zorro-antd/core';
+import { NzConfigService } from 'ng-zorro-antd/core/config';
 
 @Component({
   selector: 'nz-demo-empty-config',
@@ -27,13 +27,14 @@ import { NzConfigService } from 'ng-zorro-antd/core';
     <nz-transfer></nz-transfer>
 
     <h3>Table</h3>
-    <nz-table>
+    <nz-table [nzData]="[]">
       <thead>
         <tr>
           <th>Title</th>
           <th>Age</th>
         </tr>
       </thead>
+      <tbody></tbody>
     </nz-table>
 
     <h3>List</h3>

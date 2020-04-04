@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <nz-date-picker [nzFormat]="dateFormat"></nz-date-picker>
     <br />
-    <nz-month-picker [nzFormat]="monthFormat"></nz-month-picker>
+    <nz-month-picker [nzFormat]="monthFormat" nzPlaceHolder="Select month"></nz-month-picker>
     <br />
     <nz-range-picker [nzFormat]="dateFormat"></nz-range-picker>
   `,

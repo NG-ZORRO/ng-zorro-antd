@@ -25,11 +25,9 @@ function generateDemoModule(content) {
   const demoMap = content.demoMap;
   let imports = '';
   let declarations = '';
-  let entryComponents = [];
   for (const key in demoMap) {
     const declareComponents = [`NzDemo${componentName(component)}${componentName(key)}Component`];
     const entries = retrieveEntryComponents(demoMap[key] && demoMap[key].ts);
-    entryComponents.push(...entries);
     declareComponents.push(...entries);
     imports += `import { ${declareComponents.join(', ')} } from './${key}';\n`;
     declarations += `\t\t${declareComponents.join(',\n\t')},\n`;
@@ -44,7 +42,7 @@ function generateDemoModule(content) {
     declarations += `\t\tNzPageDemo${componentName(component)}ZhComponent,\n`;
     declarations += `\t\tNzPageDemo${componentName(component)}EnComponent,\n`;
   }
-  return demoModuleTemplate.replace(/{{imports}}/g, imports).replace(/{{declarations}}/g, declarations).replace(/{{component}}/g, componentName(component)).replace(/{{entryComponents}}/g, entryComponents.join(',\n'));
+  return demoModuleTemplate.replace(/{{imports}}/g, imports).replace(/{{declarations}}/g, declarations).replace(/{{component}}/g, componentName(component));
 }
 
 function componentName(component) {
@@ -151,11 +149,13 @@ function generateToc(language, name, demoMap) {
   linkArray.sort((pre, next) => pre.order - next.order);
   linkArray.push({ content: `<nz-link nzHref="#api" nzTitle="API"></nz-link>` });
   const links = linkArray.map(link => link.content).join('');
-  return `<nz-affix class="toc-affix" [nzOffsetTop]="16">
+  return `
+<nz-affix class="toc-affix" [nzOffsetTop]="16">
     <nz-anchor [nzAffix]="false" nzShowInkInFixed (nzClick)="goLink($event)">
-      ${links}
+        ${links}
     </nz-anchor>
-  </nz-affix>`;
+</nz-affix>`;
+
 }
 
 function generateExample(result) {
@@ -195,7 +195,7 @@ function generateExample(result) {
 }
 
 function retrieveEntryComponents(plainCode) {
-  const matches = (plainCode + '').match(/^\/\*\s*?entryComponents:\s*([^\n]+?)\*\//) || [];
+  const matches = (plainCode + '').match(/^\/\*\s*?declarations:\s*([^\n]+?)\*\//) || [];
   if (matches[1]) {
     return matches[1].split(',').map(className => className.trim()).filter((value, index, self) => value && self.indexOf(value) === index);
   }

@@ -42,7 +42,8 @@ export default {
     uploading: 'Μεταφόρτωση...',
     removeFile: 'Αφαίρεση αρχείου',
     uploadError: 'Σφάλμα μεταφόρτωσης',
-    previewFile: 'Προεπισκόπηση αρχείου'
+    previewFile: 'Προεπισκόπηση αρχείου',
+    downloadFile: 'Λήψη αρχείου'
   },
   Empty: {
     description: 'Δεν υπάρχουν δεδομένα'

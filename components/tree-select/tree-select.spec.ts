@@ -6,15 +6,8 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import {
-  createKeyboardEvent,
-  dispatchFakeEvent,
-  dispatchMouseEvent,
-  MockNgZone,
-  NzTreeNode,
-  NzTreeNodeOptions,
-  typeInElement
-} from 'ng-zorro-antd/core';
+import { createKeyboardEvent, dispatchFakeEvent, dispatchMouseEvent, MockNgZone, typeInElement } from 'ng-zorro-antd/core/testing';
+import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
 
 import { NzTreeSelectComponent } from './tree-select.component';
 import { NzTreeSelectModule } from './tree-select.module';
@@ -187,7 +180,7 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
       fixture.detectChanges();
-      const targetNode = overlayContainerElement.querySelectorAll('nz-tree-node')[2];
+      const targetNode = overlayContainerElement.querySelectorAll('.ant-select-tree-node-content-wrapper')[2];
       dispatchMouseEvent(targetNode, 'click');
       fixture.detectChanges();
       flush();
@@ -250,7 +243,7 @@ describe('tree-select component', () => {
       treeSelect.nativeElement.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
-      let node = overlayContainerElement.querySelector('nz-tree-node')!;
+      let node = overlayContainerElement.querySelector('.ant-select-tree-node-content-wrapper')!;
       dispatchMouseEvent(node, 'click');
       fixture.detectChanges();
       flush();
@@ -491,6 +484,7 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       dispatchMouseEvent(targetSwitcher, 'click');
       fixture.detectChanges();
+      targetSwitcher = overlayContainerElement.querySelector('.ant-select-tree-switcher')!;
       expect(targetSwitcher.classList.contains('ant-select-tree-switcher_open')).toBe(true);
       expect(treeSelectComponent.nzExpandedKeys[0] === '1001').toBe(true);
       treeSelect.nativeElement.click();

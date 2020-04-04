@@ -42,7 +42,8 @@ export default {
     uploading: 'Enviando...',
     removeFile: 'Remover arquivo',
     uploadError: 'Erro no envio',
-    previewFile: 'Visualizar arquivo'
+    previewFile: 'Visualizar arquivo',
+    downloadFile: 'Baixar arquivo'
   },
   Empty: {
     description: 'Não há dados'

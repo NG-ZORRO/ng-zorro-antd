@@ -71,7 +71,7 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
   }
 })
 export class NzOptionContainerComponent implements OnChanges {
-  @Input() notFoundContent: string | null = null;
+  @Input() notFoundContent: string | undefined = undefined;
   @Input() menuItemSelectedIcon: TemplateRef<NzSafeAny> | null = null;
   @Input() dropdownRender: TemplateRef<NzSafeAny> | null = null;
   @Input() activatedValue: NzSafeAny | null = null;

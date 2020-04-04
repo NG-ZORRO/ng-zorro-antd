@@ -21,8 +21,9 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET, Router } from '@angular/router';
+import { PREFIX } from 'ng-zorro-antd/core/logger';
 
-import { InputBoolean, PREFIX } from 'ng-zorro-antd/core';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { filter, startWith, takeUntil } from 'rxjs/operators';
 
@@ -45,14 +46,7 @@ export interface BreadcrumbOption {
         <a [attr.href]="breadcrumb.url" (click)="navigate(breadcrumb.url, $event)">{{ breadcrumb.label }}</a>
       </nz-breadcrumb-item>
     </ng-container>
-  `,
-  styles: [
-    `
-      nz-breadcrumb {
-        display: block;
-      }
-    `
-  ]
+  `
 })
 export class NzBreadCrumbComponent implements OnInit, OnDestroy {
   @Input() @InputBoolean() nzAutoGenerate = false;

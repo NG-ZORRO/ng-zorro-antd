@@ -23,8 +23,9 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
-
-import { NzNoAnimationDirective, NzTSType, zoomBigMotion } from 'ng-zorro-antd/core';
+import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzTSType } from 'ng-zorro-antd/core/types';
 
 import { isTooltipEmpty, NzTooltipBaseComponent, NzTooltipBaseDirective, NzTooltipTrigger } from './base';
 
@@ -98,14 +99,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
       </div>
     </ng-template>
   `,
-  preserveWhitespaces: false,
-  styles: [
-    `
-      .ant-tooltip {
-        position: relative;
-      }
-    `
-  ]
+  preserveWhitespaces: false
 })
 export class NzToolTipComponent extends NzTooltipBaseComponent {
   @Input() nzTitle: NzTSType | null;

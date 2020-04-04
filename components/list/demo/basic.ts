@@ -4,20 +4,18 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-list-basic',
   template: `
     <div style="margin-bottom: 8px;"><button nz-button (click)="change()">Switch Data</button></div>
-    <nz-list [nzDataSource]="data" [nzRenderItem]="item" [nzItemLayout]="'horizontal'" [nzLoading]="loading">
-      <ng-template #item let-item>
-        <nz-list-item>
-          <nz-list-item-meta
-            [nzTitle]="nzTitle"
-            nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-            nzDescription="Ant Design, a design language for background applications, is refined by Ant UED Team"
-          >
-            <ng-template #nzTitle>
-              <a href="https://ng.ant.design">{{ item.title }}</a>
-            </ng-template>
-          </nz-list-item-meta>
-        </nz-list-item>
-      </ng-template>
+    <nz-list nzItemLayout="horizontal" [nzLoading]="loading">
+      <nz-list-item *ngFor="let item of data">
+        <nz-list-item-meta
+          nzAvatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+          nzDescription="Ant Design, a design language for background applications, is refined by Ant UED Team"
+        >
+          <nz-list-item-meta-title>
+            <a href="https://ng.ant.design">{{ item.title }}</a>
+          </nz-list-item-meta-title>
+        </nz-list-item-meta>
+      </nz-list-item>
+      <nz-list-empty *ngIf="data.length === 0"></nz-list-empty>
     </nz-list>
   `
 })

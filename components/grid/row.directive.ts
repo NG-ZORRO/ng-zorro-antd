@@ -9,9 +9,10 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Platform } from '@angular/cdk/platform';
 import { AfterViewInit, Directive, ElementRef, Input, NgZone, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChanges } from '@angular/core';
-import { gridResponsiveMap, IndexableObject, NzBreakpointKey, NzDomEventService } from 'ng-zorro-antd/core';
+import { gridResponsiveMap, NzBreakpointKey, NzBreakpointService } from 'ng-zorro-antd/core/services';
+import { IndexableObject } from 'ng-zorro-antd/core/types';
 import { ReplaySubject, Subject } from 'rxjs';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 export type NzJustify = 'start' | 'end' | 'center' | 'space-around' | 'space-between';
 export type NzAlign = 'top' | 'middle' | 'bottom';
@@ -39,16 +40,24 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   @Input() nzAlign: NzAlign | null = null;
   @Input() nzJustify: NzJustify | null = null;
   @Input() nzGutter: number | IndexableObject | [number, number] | [IndexableObject, IndexableObject] | null = null;
-  actualGutter$ = new ReplaySubject<[number, number]>(1);
-  destroy$ = new Subject();
 
-  getGutter(breakPoint: NzBreakpointKey): [number, number] {
+  readonly actualGutter$ = new ReplaySubject<[number, number]>(1);
+
+  private readonly destroy$ = new Subject();
+
+  getGutter(): [number, number] {
     const results: [number, number] = [0, 0];
     const gutter = this.nzGutter || 0;
     const normalizedGutter = Array.isArray(gutter) ? gutter : [gutter, 0];
     normalizedGutter.forEach((g, index) => {
       if (typeof g === 'object') {
-        results[index] = (g![breakPoint] as number) || 0;
+        results[index] = 0;
+        Object.keys(gridResponsiveMap).map((screen: string) => {
+          const bp = screen as NzBreakpointKey;
+          if (this.mediaMatcher.matchMedia(gridResponsiveMap[bp]).matches && g[bp]) {
+            results[index] = g![bp] as number;
+          }
+        });
       } else {
         results[index] = g || 0;
       }
@@ -57,14 +66,7 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   }
 
   setGutterStyle(): void {
-    let breakPoint: NzBreakpointKey | null = null;
-    Object.keys(gridResponsiveMap).map((screen: string) => {
-      const bp = screen as NzBreakpointKey;
-      if (this.mediaMatcher.matchMedia(gridResponsiveMap[bp]).matches) {
-        breakPoint = bp;
-      }
-    });
-    const [horizontalGutter, verticalGutter] = this.getGutter(breakPoint!);
+    const [horizontalGutter, verticalGutter] = this.getGutter();
     this.actualGutter$.next([horizontalGutter, verticalGutter]);
     const renderGutter = (name: string, gutter: number) => {
       const nativeElement = this.elementRef.nativeElement;
@@ -79,13 +81,14 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
       renderGutter('margin-bottom', verticalGutter);
     }
   }
+
   constructor(
     public elementRef: ElementRef,
     public renderer: Renderer2,
     public mediaMatcher: MediaMatcher,
     public ngZone: NgZone,
     public platform: Platform,
-    private nzDomEventService: NzDomEventService
+    private breakpointService: NzBreakpointService
   ) {}
 
   ngOnInit(): void {
@@ -100,13 +103,12 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
 
   ngAfterViewInit(): void {
     if (this.platform.isBrowser) {
-      this.nzDomEventService
-        .registerResizeListener()
-        .pipe(
-          takeUntil(this.destroy$),
-          finalize(() => this.nzDomEventService.unregisterResizeListener())
-        )
-        .subscribe(() => this.setGutterStyle());
+      this.breakpointService
+        .subscribe(gridResponsiveMap)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          this.setGutterStyle();
+        });
     }
   }
 

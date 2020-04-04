@@ -7,14 +7,13 @@
  */
 
 import { EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { CandyDate } from 'ng-zorro-antd/core';
+import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
-import { PREFIX_CLASS } from '../name';
 import { PanelMode } from '../standard-types';
 import { PanelSelector } from './interface';
 
 export abstract class AbstractPanelHeader implements OnInit, OnChanges {
-  prefixCls: string = `${PREFIX_CLASS}-header`;
+  prefixCls: string = `ant-picker-header`;
   selectors: PanelSelector[] = [];
 
   @Input() value: CandyDate;
@@ -87,7 +86,7 @@ export abstract class AbstractPanelHeader implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.value) {
+    if (changes.value || changes.locale) {
       this.render();
     }
   }

@@ -30,20 +30,14 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { slideMotion } from 'ng-zorro-antd/core/animation';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { DEFAULT_CASCADER_POSITIONS } from 'ng-zorro-antd/core/overlay';
+import { NgClassType, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { InputBoolean, toArray } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
-
-import {
-  DEFAULT_CASCADER_POSITIONS,
-  InputBoolean,
-  NgClassType,
-  NgStyleInterface,
-  NzConfigService,
-  NzNoAnimationDirective,
-  slideMotion,
-  toArray,
-  WithConfig
-} from 'ng-zorro-antd/core';
 
 import { NzCascaderI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { NzCascaderOptionComponent } from './cascader-li.component';
@@ -223,7 +217,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   @Input() nzMouseLeaveDelay: number = 150; // ms
   @Input() nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[] = ['click'] as NzCascaderTriggerType[];
   @Input() nzChangeOn: (option: NzCascaderOption, level: number) => boolean;
-  @Input() nzLoadData: (node: NzCascaderOption, index?: number) => PromiseLike<any>; // tslint:disable-line:no-any
+  @Input() nzLoadData: (node: NzCascaderOption, index?: number) => PromiseLike<NzSafeAny>;
 
   @Input()
   get nzOptions(): NzCascaderOption[] | null {
@@ -264,7 +258,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
 
   locale: NzCascaderI18nInterface;
 
-  private $destroy = new Subject<void>();
+  private destroy$ = new Subject<void>();
   private inputString = '';
   private isOpening = false;
   private delayMenuTimer: number | null;
@@ -329,7 +323,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   ngOnInit(): void {
     const srv = this.cascaderService;
 
-    srv.$redraw.pipe(takeUntil(this.$destroy)).subscribe(() => {
+    srv.$redraw.pipe(takeUntil(this.destroy$)).subscribe(() => {
       // These operations would not mutate data.
       this.checkChildren();
       this.setDisplayLabel();
@@ -339,11 +333,11 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
       this.cdr.markForCheck();
     });
 
-    srv.$loading.pipe(takeUntil(this.$destroy)).subscribe(loading => {
+    srv.$loading.pipe(takeUntil(this.destroy$)).subscribe(loading => {
       this.isLoading = loading;
     });
 
-    srv.$optionSelected.pipe(takeUntil(this.$destroy)).subscribe(data => {
+    srv.$optionSelected.pipe(takeUntil(this.destroy$)).subscribe(data => {
       if (!data) {
         this.onChange([]);
         this.nzSelect.emit(null);
@@ -361,26 +355,26 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
       }
     });
 
-    srv.$quitSearching.pipe(takeUntil(this.$destroy)).subscribe(() => {
+    srv.$quitSearching.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.inputString = '';
       this.dropdownWidthStyle = '';
     });
 
-    this.i18nService.localeChange.pipe(startWith(), takeUntil(this.$destroy)).subscribe(() => {
+    this.i18nService.localeChange.pipe(startWith(), takeUntil(this.destroy$)).subscribe(() => {
       this.setLocale();
     });
 
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
-      .pipe(takeUntil(this.$destroy))
+      .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.cdr.markForCheck();
       });
   }
 
   ngOnDestroy(): void {
-    this.$destroy.next();
-    this.$destroy.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
     this.clearDelayMenuTimer();
     this.clearDelaySelectTimer();
   }
@@ -393,8 +387,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     this.onTouched = fn;
   }
 
-  // tslint:disable-next-line:no-any
-  writeValue(value: any): void {
+  writeValue(value: NzSafeAny): void {
     this.cascaderService.values = toArray(value);
     this.cascaderService.syncOptions(true);
   }
@@ -453,8 +446,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     this.cascaderService.clear();
   }
 
-  // tslint:disable-next-line:no-any
-  getSubmitValue(): any[] {
+  getSubmitValue(): NzSafeAny[] {
     return this.cascaderService.selectedOptions.map(o => this.cascaderService.getOptionValue(o));
   }
 

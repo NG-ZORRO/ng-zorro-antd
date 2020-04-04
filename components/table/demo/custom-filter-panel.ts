@@ -1,30 +1,24 @@
 import { Component } from '@angular/core';
 
+interface DataItem {
+  name: string;
+  age: number;
+  address: string;
+}
 @Component({
   selector: 'nz-demo-table-custom-filter-panel',
   template: `
-    <nz-table #nzTable [nzData]="listOfDisplayData">
+    <nz-table #nzTable [nzData]="listOfDisplayData" nzTableLayout="fixed">
       <thead>
         <tr>
           <th nzCustomFilter>
             Name
-            <i
-              nz-th-extra
-              class="ant-table-filter-icon"
-              nz-icon
-              nz-dropdown
-              #dropdown="nzDropdown"
-              nzType="search"
-              [nzDropdownMenu]="menu"
-              [class.ant-table-filter-open]="dropdown.nzVisible"
-              nzTrigger="click"
-              nzPlacement="bottomRight"
-              [nzClickHide]="false"
-              nzTableFilter
-            ></i>
+            <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
+              <i nz-icon nzType="search"></i>
+            </nz-filter-trigger>
           </th>
           <th>Age</th>
-          <th nzShowFilter [nzFilters]="listOfFilterAddress" (nzFilterChange)="filterAddressChange($event)">Address</th>
+          <th>Address</th>
         </tr>
       </thead>
       <tbody>
@@ -36,12 +30,14 @@ import { Component } from '@angular/core';
       </tbody>
     </nz-table>
     <nz-dropdown-menu #menu="nzDropdownMenu">
-      <div class="search-box">
-        <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue" />
-        <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
-          Search
-        </button>
-        <button nz-button nzSize="small" (click)="reset()">Reset</button>
+      <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+          <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue" />
+          <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+            Search
+          </button>
+          <button nz-button nzSize="small" (click)="reset()">Reset</button>
+        </div>
       </div>
     </nz-dropdown-menu>
   `,
@@ -69,14 +65,8 @@ import { Component } from '@angular/core';
 })
 export class NzDemoTableCustomFilterPanelComponent {
   searchValue = '';
-  sortName: string | null = null;
-  sortValue: string | null = null;
-  listOfFilterAddress = [
-    { text: 'London', value: 'London' },
-    { text: 'Sidney', value: 'Sidney' }
-  ];
-  listOfSearchAddress: string[] = [];
-  listOfData: Array<{ name: string; age: number; address: string; [key: string]: string | number }> = [
+  visible = false;
+  listOfData: DataItem[] = [
     {
       name: 'John Brown',
       age: 32,
@@ -105,27 +95,8 @@ export class NzDemoTableCustomFilterPanelComponent {
     this.search();
   }
 
-  sort(sortName: string, value: string): void {
-    this.sortName = sortName;
-    this.sortValue = value;
-    this.search();
-  }
-
-  filterAddressChange(value: string[]): void {
-    this.listOfSearchAddress = value;
-    this.search();
-  }
-
   search(): void {
-    const filterFunc = (item: { name: string; age: number; address: string }) => {
-      return (
-        (this.listOfSearchAddress.length ? this.listOfSearchAddress.some(address => item.address.indexOf(address) !== -1) : true) &&
-        item.name.indexOf(this.searchValue) !== -1
-      );
-    };
-    const data = this.listOfData.filter((item: { name: string; age: number; address: string }) => filterFunc(item));
-    this.listOfDisplayData = data.sort((a, b) =>
-      this.sortValue === 'ascend' ? (a[this.sortName!] > b[this.sortName!] ? 1 : -1) : b[this.sortName!] > a[this.sortName!] ? 1 : -1
-    );
+    this.visible = false;
+    this.listOfDisplayData = this.listOfData.filter((item: DataItem) => item.name.indexOf(this.searchValue) !== -1);
   }
 }

@@ -22,6 +22,9 @@ import {
 } from '@angular/core';
 import { NzIsMenuInsideDropDownToken } from './menu.token';
 
+export function MenuGroupFactory(isMenuInsideDropDownToken: boolean): boolean {
+  return isMenuInsideDropDownToken ? isMenuInsideDropDownToken : false;
+}
 @Component({
   selector: '[nz-menu-group]',
   exportAs: 'nzMenuGroup',
@@ -30,9 +33,7 @@ import { NzIsMenuInsideDropDownToken } from './menu.token';
     /** check if menu inside dropdown-menu component **/
     {
       provide: NzIsMenuInsideDropDownToken,
-      useFactory: (isMenuInsideDropDownToken: boolean) => {
-        return isMenuInsideDropDownToken ? isMenuInsideDropDownToken : false;
-      },
+      useFactory: MenuGroupFactory,
       deps: [[new SkipSelf(), new Optional(), NzIsMenuInsideDropDownToken]]
     }
   ],

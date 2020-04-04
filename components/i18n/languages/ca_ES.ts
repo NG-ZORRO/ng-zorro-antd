@@ -46,7 +46,8 @@ export default {
     uploading: 'Pujant...',
     removeFile: 'Eliminar fitxer',
     uploadError: 'Error al pujar el fitxer',
-    previewFile: 'Vista prèvia'
+    previewFile: 'Vista prèvia',
+    downloadFile: "Descarrega l'arxiu"
   },
   Empty: {
     description: 'No hi ha dades'

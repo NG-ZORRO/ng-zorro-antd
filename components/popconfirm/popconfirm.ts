@@ -26,8 +26,11 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
+import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
+import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
+import { NzTSType } from 'ng-zorro-antd/core/types';
 
-import { InputBoolean, NzNoAnimationDirective, NzTSType, zoomBigMotion } from 'ng-zorro-antd/core';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger } from 'ng-zorro-antd/tooltip';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -92,10 +95,10 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective implements OnI
   protected createTooltipComponent(): void {
     super.createTooltipComponent();
 
-    (this.tooltip as NzPopconfirmComponent).nzOnCancel.pipe(takeUntil(this.$destroy)).subscribe(() => {
+    (this.tooltip as NzPopconfirmComponent).nzOnCancel.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.nzOnCancel.emit();
     });
-    (this.tooltip as NzPopconfirmComponent).nzOnConfirm.pipe(takeUntil(this.$destroy)).subscribe(() => {
+    (this.tooltip as NzPopconfirmComponent).nzOnConfirm.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.nzOnConfirm.emit();
     });
   }
@@ -158,14 +161,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective implements OnI
         </div>
       </div>
     </ng-template>
-  `,
-  styles: [
-    `
-      .ant-popover {
-        position: relative;
-      }
-    `
-  ]
+  `
 })
 export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestroy {
   nzCancelText: string;

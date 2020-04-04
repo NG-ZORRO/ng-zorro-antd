@@ -9,12 +9,15 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
   Output,
+  Renderer2,
   SimpleChanges,
   TemplateRef,
+  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -22,49 +25,47 @@ import { NzPaginationItemComponent } from './pagination-item.component';
 import { PaginationItemRenderContext } from './pagination.types';
 
 @Component({
-  selector: 'ul[nz-pagination-default]',
+  selector: 'nz-pagination-default',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <li class="ant-pagination-total-text" *ngIf="showTotal">
-      <ng-template [ngTemplateOutlet]="showTotal" [ngTemplateOutletContext]="{ $implicit: total, range: ranges }"></ng-template>
-    </li>
-    <li
-      *ngFor="let page of listOfPageItem; trackBy: trackByPageItem"
-      nz-pagination-item
-      [locale]="locale"
-      [type]="page.type"
-      [index]="page.index"
-      [disabled]="page.disabled"
-      [itemRender]="itemRender"
-      [active]="pageIndex === page.index"
-      (gotoIndex)="jumpPage($event)"
-      (diffIndex)="jumpDiff($event)"
-    ></li>
-    <div
-      nz-pagination-options
-      *ngIf="showQuickJumper || showSizeChanger"
-      [total]="total"
-      [locale]="locale"
-      [disabled]="disabled"
-      [nzSize]="nzSize"
-      [showSizeChanger]="showSizeChanger"
-      [showQuickJumper]="showQuickJumper"
-      [pageIndex]="pageIndex"
-      [pageSize]="pageSize"
-      [pageSizeOptions]="pageSizeOptions"
-      (pageIndexChange)="onPageIndexChange($event)"
-      (pageSizeChange)="onPageSizeChange($event)"
-    ></div>
-  `,
-  host: {
-    '[class.ant-pagination]': 'true',
-    '[class.ant-pagination-disabled]': 'disabled',
-    '[class.mini]': `nzSize === 'small'`
-  }
+    <ng-template #containerTemplate>
+      <li class="ant-pagination-total-text" *ngIf="showTotal">
+        <ng-template [ngTemplateOutlet]="showTotal" [ngTemplateOutletContext]="{ $implicit: total, range: ranges }"></ng-template>
+      </li>
+      <li
+        *ngFor="let page of listOfPageItem; trackBy: trackByPageItem"
+        nz-pagination-item
+        [locale]="locale"
+        [type]="page.type"
+        [index]="page.index"
+        [disabled]="page.disabled"
+        [itemRender]="itemRender"
+        [active]="pageIndex === page.index"
+        (gotoIndex)="jumpPage($event)"
+        (diffIndex)="jumpDiff($event)"
+      ></li>
+      <div
+        nz-pagination-options
+        *ngIf="showQuickJumper || showSizeChanger"
+        [total]="total"
+        [locale]="locale"
+        [disabled]="disabled"
+        [nzSize]="nzSize"
+        [showSizeChanger]="showSizeChanger"
+        [showQuickJumper]="showQuickJumper"
+        [pageIndex]="pageIndex"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions"
+        (pageIndexChange)="onPageIndexChange($event)"
+        (pageSizeChange)="onPageSizeChange($event)"
+      ></div>
+    </ng-template>
+  `
 })
 export class NzPaginationDefaultComponent implements OnChanges {
+  @ViewChild('containerTemplate', { static: true }) template: TemplateRef<NzSafeAny>;
   @Input() nzSize: 'default' | 'small' = 'default';
   @Input() itemRender: TemplateRef<PaginationItemRenderContext>;
   @Input() showTotal: TemplateRef<{ $implicit: number; range: [number, number] }> | null = null;
@@ -80,6 +81,10 @@ export class NzPaginationDefaultComponent implements OnChanges {
   @Output() readonly pageSizeChange = new EventEmitter<number>();
   ranges = [0, 0];
   listOfPageItem: Array<Partial<NzPaginationItemComponent>> = [];
+
+  constructor(renderer: Renderer2, elementRef: ElementRef) {
+    renderer.removeChild(renderer.parentNode(elementRef.nativeElement), elementRef.nativeElement);
+  }
 
   jumpPage(index: number): void {
     this.onPageIndexChange(index);

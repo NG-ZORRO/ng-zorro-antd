@@ -1,11 +1,11 @@
 import * as fs from 'fs-extra';
 import { parallel, series, task, watch } from 'gulp';
+import { debounce } from 'lodash';
 import { join } from 'path';
 import { buildConfig } from '../../build-config';
 import { execNodeTask, execTask } from '../util/task-helpers';
 
 const detectPort = require('detect-port');
-
 const siteGenerate = require('../../site/generate-site');
 const colorGenerate = require('../../site/generateColorLess');
 const themeGenerate = require('../../site/generate-theme');
@@ -22,14 +22,17 @@ const CI = process.env.CI;
  * to ensures the demos and docs have changes are rebuild.
  */
 task('watch:site', () => {
-  watch([docsGlob, demoGlob], { delay: 700 }).on('change', path => {
-    const execArray = /components\/(.+)\/(doc|demo)/.exec(path);
-    if (execArray && execArray[1]) {
-      const component = execArray[1];
-      console.log(`Reload '${component}'`);
-      siteGenerate(component);
-    }
-  });
+  watch([docsGlob, demoGlob]).on(
+    'change',
+    debounce(path => {
+      const execArray = /components\/(.+)\/(doc|demo)/.exec(path);
+      if (execArray && execArray[1]) {
+        const component = execArray[1];
+        console.log(`Reload '${component}'`);
+        siteGenerate(component);
+      }
+    }, 3000)
+  );
 });
 
 /** Parse demos and docs to site directory. */
@@ -48,25 +51,16 @@ task('serve:site', done => {
 });
 
 /** Run `ng build --prod --project=ng-zorro-antd-doc` */
-task('build:site-doc', execNodeTask(
-  '@angular/cli',
-  'ng',
-  ['build', '--project=ng-zorro-antd-doc', '--prod', CI ? '--configuration=pre-production' : '']
-));
+task(
+  'build:site-doc',
+  execNodeTask('@angular/cli', 'ng', ['build', '--project=ng-zorro-antd-doc', '--prod', CI ? '--configuration=pre-production' : ''])
+);
 
 /** Run `ng build --prod --project=ng-zorro-antd-doc --configuration es5` */
-task('build:site-doc-es5', execNodeTask(
-  '@angular/cli',
-  'ng',
-  ['build', '--project=ng-zorro-antd-doc', '--prod', '--configuration=es5']
-));
+task('build:site-doc-es5', execNodeTask('@angular/cli', 'ng', ['build', '--project=ng-zorro-antd-doc', '--prod', '--configuration=es5']));
 
 /** Run `ng build --prod --base-href ./ --project=ng-zorro-antd-iframe` */
-task('build:site-iframe', execNodeTask(
-  '@angular/cli',
-  'ng',
-  ['build', '--project=ng-zorro-antd-iframe', '--prod', '--base-href=./']
-));
+task('build:site-iframe', execNodeTask('@angular/cli', 'ng', ['build', '--project=ng-zorro-antd-iframe', '--prod', '--base-href=./']));
 
 /** Replace the library paths to publish/ directory */
 task('site:replace-path', () => {

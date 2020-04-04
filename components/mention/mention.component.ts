@@ -36,17 +36,11 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
+import { DEFAULT_MENTION_BOTTOM_POSITIONS, DEFAULT_MENTION_TOP_POSITIONS } from 'ng-zorro-antd/core/overlay';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { getCaretCoordinates, getMentions, InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { fromEvent, merge, Subscription } from 'rxjs';
-
-import {
-  DEFAULT_MENTION_BOTTOM_POSITIONS,
-  DEFAULT_MENTION_TOP_POSITIONS,
-  getCaretCoordinates,
-  getMentions,
-  InputBoolean
-} from 'ng-zorro-antd/core';
-
 import { NzMentionSuggestionDirective } from './mention-suggestions';
 import { NzMentionTriggerDirective } from './mention-trigger';
 import { NzMentionService } from './mention.service';
@@ -92,22 +86,10 @@ export type MentionPlacement = 'top' | 'bottom';
   `,
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [NzMentionService],
-  styles: [
-    `
-      .ant-mention-dropdown {
-        top: 100%;
-        left: 0;
-        position: relative;
-        width: 100%;
-        margin-top: 4px;
-        margin-bottom: 4px;
-      }
-    `
-  ]
+  providers: [NzMentionService]
 })
 export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
-  @Input() nzValueWith: (value: any) => string = value => value; // tslint:disable-line:no-any
+  @Input() nzValueWith: (value: NzSafeAny) => string = value => value;
   @Input() nzPrefix: string | string[] = '@';
   @Input() @InputBoolean() nzLoading = false;
   @Input() nzNotFoundContent: string = '无匹配结果，轻敲空格完成输入';
@@ -120,8 +102,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
   @ViewChild(TemplateRef, { static: false }) suggestionsTemp: TemplateRef<void>;
 
   @ContentChild(NzMentionSuggestionDirective, { static: false, read: TemplateRef })
-  // tslint:disable-next-line:no-any
-  set suggestionChild(value: TemplateRef<{ $implicit: any }>) {
+  set suggestionChild(value: TemplateRef<{ $implicit: NzSafeAny }>) {
     if (value) {
       this.suggestionTemplate = value;
     }
@@ -129,7 +110,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
 
   isOpen = false;
   filteredSuggestions: string[] = [];
-  suggestionTemplate: TemplateRef<{ $implicit: any }> | null = null; // tslint:disable-line:no-any
+  suggestionTemplate: TemplateRef<{ $implicit: NzSafeAny }> | null = null;
   activeIndex = -1;
 
   private previousValue: string | null = null;
@@ -146,7 +127,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
   }
 
   constructor(
-    @Optional() @Inject(DOCUMENT) private ngDocument: any, // tslint:disable-line:no-any
+    @Optional() @Inject(DOCUMENT) private ngDocument: NzSafeAny,
     private cdr: ChangeDetectorRef,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,

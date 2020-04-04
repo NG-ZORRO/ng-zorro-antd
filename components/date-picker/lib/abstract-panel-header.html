@@ -27,7 +27,7 @@
         role="button"
         type="button"
         title="{{ selector.title || null }}"
-        (click)="selector.onClick ? selector.onClick() : null"
+        (click)="selector.onClick()"
       >
         {{ selector.label }}
       </button>

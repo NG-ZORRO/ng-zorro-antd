@@ -28,11 +28,13 @@
   "dependencies": {
     "@angular/cdk": "^9.0.0",
     "@ant-design/icons-angular": "^9.0.0",
-    "date-fns": "^1.30.1"
+    "date-fns": "^2.10.0",
+    "ngx-quicklink": "^0.2.1",
+    "resize-observer-polyfill": "^1.5.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.900.0",
-    "@angular-devkit/build-ng-packagr": "~0.900.0",
+    "@angular-devkit/build-angular": "~0.901.0",
+    "@angular-devkit/build-ng-packagr": "~0.901.0",
     "@angular-devkit/core": "^9.0.0",
     "@angular-devkit/schematics": "^9.0.0",
     "@angular/animations": "^9.0.0",
@@ -59,6 +61,7 @@
     "@types/jasmine": "3.4.0",
     "@types/jasminewd2": "~2.0.3",
     "@types/less": "^3.0.0",
+    "@types/lodash.debounce": "^4.0.6",
     "@types/node": "^12.11.1",
     "@types/parse5": "^5.0.2",
     "antd-theme-generator": "^1.1.9",
@@ -73,6 +76,8 @@
     "gulp": "^4.0.2",
     "gulp-clean": "^0.4.0",
     "husky": "^3.0.4",
+    "immer": "^6.0.1",
+    "intersection-observer": "^0.7.0",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~4.3.0",
@@ -87,14 +92,15 @@
     "less-plugin-clean-css": "^1.5.1",
     "less-plugin-npm-import": "^2.1.0",
     "lint-staged": "^9.2.3",
+    "lodash.debounce": "^4.0.8",
     "marked": "^0.7.0",
     "minimist": "^1.2.0",
     "monaco-editor": "^0.17.1",
-    "ng-packagr": "9.0.0",
-    "ngx-color": "^4.0.0",
+    "ng-packagr": "^9.0.0",
+    "ngx-color": "^5.0.0",
     "node-prismjs": "^0.1.2",
     "parse5": "^5.1.1",
-    "prettier": "^1.18.2",
+    "prettier": "^2.0.2",
     "prismjs": "^1.17.1",
     "process": "^0.11.10",
     "protractor": "~5.4.2",
@@ -106,11 +112,12 @@
     "shelljs": "^0.8.3",
     "sitemap": "^4.1.1",
     "ts-node": "~8.3.0",
+    "tsickle": "^0.38.1",
     "tslib": "^1.10.0",
     "tslint": "~5.18.0",
-    "typescript": "~3.7.4",
+    "typescript": "~3.8.3",
     "yaml-front-matter": "^4.0.0",
-    "zone.js": "~0.10.2"
+    "zone.js": "~0.10.3"
   },
   "lint-staged": {
     "components/**/*.{html,ts}": [
