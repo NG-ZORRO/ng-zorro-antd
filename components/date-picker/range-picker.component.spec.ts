@@ -695,6 +695,7 @@ describe('NzRangePickerComponent', () => {
       typeInElement(newDateString[0], leftInput);
       fixture.detectChanges();
       typeInElement(newDateString[1], rightInput);
+      fixture.detectChanges();
       rightInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
       fixture.detectChanges();
       tick(500);

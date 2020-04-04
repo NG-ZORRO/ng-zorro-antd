@@ -26,7 +26,7 @@ export class DatePickerService {
 
   initValue(): void {
     if (this.isRange) {
-      this.activeDate = normalizeRangeValue([]);
+      this.setActiveDate([]);
       this.value = this.initialValue = [];
     } else {
       this.value = this.initialValue = null;
@@ -49,9 +49,9 @@ export class DatePickerService {
     }
   }
 
-  setActiveDate(value: CompatibleValue): void {
+  setActiveDate(value: CompatibleValue, normalize: boolean = false): void {
     if (this.isRange) {
-      this.activeDate = normalizeRangeValue(value as CandyDate[]);
+      this.activeDate = normalize ? normalizeRangeValue(value as CandyDate[]) : value;
     } else {
       this.activeDate = cloneDate(value);
     }

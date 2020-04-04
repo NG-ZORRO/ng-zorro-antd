@@ -32,7 +32,7 @@ import { CandyDate, CompatibleValue } from 'ng-zorro-antd/core/time';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 import { fromEvent, Subject } from 'rxjs';
-import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { DatePickerService } from './date-picker.service';
 import { DateRangePopupComponent } from './date-range-popup.component';
 import { RangePartType } from './standard-types';
@@ -120,10 +120,18 @@ import { PREFIX_CLASS } from './util';
         (@slideMotion.done)="animationDone()"
         style="position: relative;"
         [style.left]="currentPositionX === 'start' ? '-12px' : '12px'"
-        [style.top]="currentPositionY === 'top' ? '-7px' : '7px'"
+        [style.top]="currentPositionY === 'top' ? '-8px' : '8px'"
       >
-        <!-- Compatible for overlay that not support offset dynamically and immediately -->
-        <ng-content></ng-content>
+        <div
+          class="{{ prefixCls }}-dropdown {{ dropdownClassName }}"
+          [class.ant-picker-dropdown-placement-bottomLeft]="dropdownAnimation === 'bottom'"
+          [class.ant-picker-dropdown-placement-topLeft]="dropdownAnimation === 'top'"
+          [class.ant-picker-dropdown-range]="isRange"
+          [ngStyle]="popupStyle"
+        >
+          <!-- Compatible for overlay that not support offset dynamically and immediately -->
+          <ng-content></ng-content>
+        </div>
       </div>
     </ng-template>
   `,
@@ -140,6 +148,8 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Input() autoFocus: boolean;
   @Input() format: string;
   @Input() separator: string;
+  @Input() popupStyle: object;
+  @Input() dropdownClassName: string;
 
   @Output() readonly focusChange = new EventEmitter<boolean>();
   @Output() readonly valueChange = new EventEmitter<CandyDate | CandyDate[] | null>();
@@ -152,6 +162,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @ContentChild(DateRangePopupComponent) panel: DateRangePopupComponent;
 
   origin: CdkOverlayOrigin;
+  document: Document;
   inputSize: number;
   inputWidth: number;
   arrowLeft: number;
@@ -229,22 +240,25 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         .subscribe(() => {
           this.resetInputWidthAndArrowLeft();
         });
-
-      this.datePickerService.inputPartChange$.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe(partType => {
-        this.datePickerService.activeInput = partType;
-        this.datePickerService.arrowPositionStyle = {
-          left: this.datePickerService.activeInput === 'left' ? '0px' : `${this.arrowLeft}px`
-        };
-        this.activeBarStyle = {
-          ...this.activeBarStyle,
-          ...this.datePickerService.arrowPositionStyle,
-          width: `${this.inputWidth}px`
-        };
-        this.focus();
-        this.panel?.cdr.markForCheck();
-        this.changeDetector.markForCheck();
-      });
     }
+    this.datePickerService.inputPartChange$.pipe(takeUntil(this.destroy$)).subscribe(partType => {
+      if (partType) {
+        this.datePickerService.activeInput = partType;
+      }
+      this.datePickerService.arrowPositionStyle = {
+        left: this.datePickerService.activeInput === 'left' ? '0px' : `${this.arrowLeft}px`
+      };
+      this.activeBarStyle = {
+        ...this.activeBarStyle,
+        ...this.datePickerService.arrowPositionStyle,
+        width: `${this.inputWidth}px`
+      };
+      if (document.activeElement !== this.getInput(this.datePickerService.activeInput)) {
+        this.focus();
+      }
+      this.panel?.cdr.markForCheck();
+      this.changeDetector.markForCheck();
+    });
   }
 
   ngOnDestroy(): void {

@@ -21,7 +21,7 @@ import {
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { FunctionProp } from 'ng-zorro-antd/core/types';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
-import { DisabledDateFn, PanelMode, SupportTimeOptions } from './standard-types';
+import { DisabledDateFn, PanelMode, RangePartType, SupportTimeOptions } from './standard-types';
 import { PREFIX_CLASS } from './util';
 
 @Component({
@@ -38,6 +38,8 @@ import { PREFIX_CLASS } from './util';
             <decade-header
               [(value)]="activeDate"
               [locale]="locale"
+              [showSuperPreBtn]="enablePrevNext('prev', 'decade')"
+              [showSuperNextBtn]="enablePrevNext('next', 'decade')"
               [showNextBtn]="false"
               [showPreBtn]="false"
               (panelModeChange)="panelModeChange.emit($event)"
@@ -59,6 +61,8 @@ import { PREFIX_CLASS } from './util';
             <year-header
               [(value)]="activeDate"
               [locale]="locale"
+              [showSuperPreBtn]="enablePrevNext('prev', 'year')"
+              [showSuperNextBtn]="enablePrevNext('next', 'year')"
               [showNextBtn]="false"
               [showPreBtn]="false"
               (panelModeChange)="panelModeChange.emit($event)"
@@ -103,6 +107,10 @@ import { PREFIX_CLASS } from './util';
             <date-header
               [(value)]="activeDate"
               [locale]="locale"
+              [showSuperPreBtn]="enablePrevNext('prev', 'date')"
+              [showSuperNextBtn]="enablePrevNext('next', 'date')"
+              [showPreBtn]="enablePrevNext('prev', 'date')"
+              [showNextBtn]="enablePrevNext('next', 'date')"
               (panelModeChange)="panelModeChange.emit($event)"
               (valueChange)="headerChange.emit($event)"
             >
@@ -155,13 +163,12 @@ export class InnerPopupComponent implements OnChanges {
   @Input() locale: NzCalendarI18nInterface;
   @Input() showTimePicker: boolean;
   @Input() timeOptions: SupportTimeOptions;
-  @Input() enablePrev: boolean;
-  @Input() enableNext: boolean;
   @Input() disabledDate: DisabledDateFn;
   @Input() dateRender: FunctionProp<TemplateRef<Date> | string>;
   @Input() selectedValue: CandyDate[]; // Range ONLY
   @Input() hoverValue: CandyDate[]; // Range ONLY
   @Input() value: CandyDate;
+  @Input() partType: RangePartType;
 
   @Output() readonly panelModeChange = new EventEmitter<PanelMode>();
 
@@ -172,6 +179,23 @@ export class InnerPopupComponent implements OnChanges {
   @Output() readonly dayHover = new EventEmitter<CandyDate>(); // Emitted when hover on a day by mouse enter
 
   prefixCls: string = PREFIX_CLASS;
+
+  /**
+   * Hide "next" arrow in left panel,
+   * hide "prev" arrow in right panel
+   * @param direction
+   * @param panelMode
+   */
+  enablePrevNext(direction: 'prev' | 'next', panelMode: PanelMode): boolean {
+    if (
+      !this.showTimePicker &&
+      panelMode === this.endPanelMode &&
+      ((this.partType === 'left' && direction === 'next') || (this.partType === 'right' && direction === 'prev'))
+    ) {
+      return false;
+    }
+    return true;
+  }
 
   onSelectTime(date: Date): void {
     this.selectTime.emit(new CandyDate(date));
@@ -196,6 +220,7 @@ export class InnerPopupComponent implements OnChanges {
       this.value = value;
       this.selectDate.emit(value);
     } else {
+      this.headerChange.emit(value);
       this.panelModeChange.emit(this.endPanelMode);
     }
   }
@@ -206,6 +231,7 @@ export class InnerPopupComponent implements OnChanges {
       this.value = value;
       this.selectDate.emit(value);
     } else {
+      this.headerChange.emit(value);
       this.panelModeChange.emit(this.endPanelMode);
     }
   }
@@ -216,6 +242,7 @@ export class InnerPopupComponent implements OnChanges {
       this.value = value;
       this.selectDate.emit(value);
     } else {
+      this.headerChange.emit(value);
       this.panelModeChange.emit('year');
     }
   }

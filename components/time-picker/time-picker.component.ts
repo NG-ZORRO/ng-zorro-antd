@@ -134,7 +134,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzPopupClassName: string;
   @Input() nzPlaceHolder = '';
   @Input() nzAddOn: TemplateRef<void>;
-  @Input() nzDefaultOpenValue = new Date();
+  @Input() nzDefaultOpenValue: Date;
   @Input() nzDisabledHours: () => number[];
   @Input() nzDisabledMinutes: (hour: number) => number[];
   @Input() nzDisabledSeconds: (hour: number, minute: number) => number[];

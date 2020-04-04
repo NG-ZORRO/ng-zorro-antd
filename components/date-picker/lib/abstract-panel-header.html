@@ -1,6 +1,6 @@
 <div class="{{ prefixCls }}">
   <button
-    *ngIf="showSuperPreBtn"
+    [style.visibility]="showSuperPreBtn ? 'visible' : 'hidden'"
     class="{{ prefixCls }}-super-prev-btn"
     role="button"
     tabindex="-1"
@@ -10,7 +10,7 @@
     <span class="ant-picker-super-prev-icon"></span>
   </button>
   <button
-    *ngIf="showPreBtn"
+    [style.visibility]="showPreBtn ? 'visible' : 'hidden'"
     class="{{ prefixCls }}-prev-btn"
     role="button"
     title="{{ previousTitle() }}"
@@ -34,7 +34,7 @@
     </ng-container>
   </div>
   <button
-    *ngIf="showNextBtn"
+    [style.visibility]="showNextBtn ? 'visible' : 'hidden'"
     class="{{ prefixCls }}-next-btn"
     role="button"
     tabindex="-1"
@@ -44,7 +44,7 @@
     <span class="ant-picker-next-icon"></span>
   </button>
   <button
-    *ngIf="showSuperNextBtn"
+    [style.visibility]="showSuperNextBtn ? 'visible' : 'hidden'"
     class="{{ prefixCls }}-super-next-btn"
     role="button"
     tabindex="-1"

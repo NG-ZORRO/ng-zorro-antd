@@ -234,6 +234,8 @@ describe('time-picker-panel', () => {
       tick(1000);
       fixture12Hour.detectChanges();
       let listOfSelectedLi = panelElement.nativeElement.querySelectorAll('.ant-picker-time-panel-cell-selected');
+      console.log(fixture12Hour.componentInstance.nzTimePickerPanelComponent.time.hours);
+      console.log(fixture12Hour.componentInstance.nzTimePickerPanelComponent.time.value);
       expect(listOfSelectedLi[0].innerText).toBe('05');
       expect(listOfSelectedLi[1].innerText).toBe('06');
       expect(listOfSelectedLi[2].innerText).toBe('07');
