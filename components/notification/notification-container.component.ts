@@ -6,14 +6,18 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
 import { NotificationConfig, NzConfigService } from 'ng-zorro-antd/core/config';
 import { toCssPixel } from 'ng-zorro-antd/core/util';
 
+import { NzMNContainerComponent } from 'ng-zorro-antd/message';
 import { Subject } from 'rxjs';
-import { NzNotificationDataFilled, NzNotificationDataOptions } from './typings';
+import { takeUntil } from 'rxjs/operators';
+
+import { NzNotificationData, NzNotificationDataOptions } from './typings';
 
 const NZ_CONFIG_COMPONENT_NAME = 'notification';
+
 const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
   nzTop: '24px',
   nzBottom: '24px',
@@ -33,162 +37,112 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
   template: `
     <div class="ant-notification ant-notification-topLeft" [style.top]="top" [style.left]="'0px'">
       <nz-notification
-        *ngFor="let message of topLeftMessages"
-        [nzMessage]="message"
-        [nzPlacement]="config.nzPlacement"
-        (messageDestroy)="removeMessage($event.id, $event.userAction)"
+        *ngFor="let instance of topLeftInstances"
+        [instance]="instance"
+        [placement]="config.nzPlacement"
+        (destroyed)="remove($event.id, $event.userAction)"
       ></nz-notification>
     </div>
     <div class="ant-notification ant-notification-topRight" [style.top]="top" [style.right]="'0px'">
       <nz-notification
-        *ngFor="let message of topRightMessages"
-        [nzMessage]="message"
-        [nzPlacement]="config.nzPlacement"
-        (messageDestroy)="removeMessage($event.id, $event.userAction)"
+        *ngFor="let instance of topRightInstances"
+        [instance]="instance"
+        [placement]="config.nzPlacement"
+        (destroyed)="remove($event.id, $event.userAction)"
       ></nz-notification>
     </div>
     <div class="ant-notification ant-notification-bottomLeft" [style.bottom]="bottom" [style.left]="'0px'">
       <nz-notification
-        *ngFor="let message of bottomLeftMessages"
-        [nzMessage]="message"
-        [nzPlacement]="config.nzPlacement"
-        (messageDestroy)="removeMessage($event.id, $event.userAction)"
+        *ngFor="let instance of bottomLeftInstances"
+        [instance]="instance"
+        [placement]="config.nzPlacement"
+        (destroyed)="remove($event.id, $event.userAction)"
       ></nz-notification>
     </div>
     <div class="ant-notification ant-notification-bottomRight" [style.bottom]="bottom" [style.right]="'0px'">
       <nz-notification
-        *ngFor="let message of bottomRightMessages"
-        [nzMessage]="message"
-        [nzPlacement]="config.nzPlacement"
-        (messageDestroy)="removeMessage($event.id, $event.userAction)"
+        *ngFor="let instance of bottomRightInstances"
+        [instance]="instance"
+        [placement]="config.nzPlacement"
+        (destroyed)="remove($event.id, $event.userAction)"
       ></nz-notification>
     </div>
   `
 })
-export class NzNotificationContainerComponent implements OnInit, OnDestroy {
-  config: Required<NotificationConfig>;
+export class NzNotificationContainerComponent extends NzMNContainerComponent {
   bottom: string | null;
-  messages: Array<Required<NzNotificationDataFilled>> = [];
+  top: string | null;
+  config: Required<NotificationConfig>;
+  instances: Array<Required<NzNotificationData>> = [];
+  topLeftInstances: Array<Required<NzNotificationData>> = [];
+  topRightInstances: Array<Required<NzNotificationData>> = [];
+  bottomLeftInstances: Array<Required<NzNotificationData>> = [];
+  bottomRightInstances: Array<Required<NzNotificationData>> = [];
 
-  constructor(protected cdr: ChangeDetectorRef, protected nzConfigService: NzConfigService) {
-    this.updateConfig();
+  constructor(cdr: ChangeDetectorRef, nzConfigService: NzConfigService) {
+    super(cdr, nzConfigService);
   }
 
-  get topLeftMessages(): Array<Required<NzNotificationDataFilled>> {
-    return this.messages.filter(m => m.options.nzPosition === 'topLeft');
-  }
-
-  get topRightMessages(): Array<Required<NzNotificationDataFilled>> {
-    return this.messages.filter(m => m.options.nzPosition === 'topRight' || !m.options.nzPosition);
-  }
-
-  get bottomLeftMessages(): Array<Required<NzNotificationDataFilled>> {
-    return this.messages.filter(m => m.options.nzPosition === 'bottomLeft');
-  }
-
-  get bottomRightMessages(): Array<Required<NzNotificationDataFilled>> {
-    return this.messages.filter(m => m.options.nzPosition === 'bottomRight');
-  }
-
-  /**
-   * Create a new notification.
-   * If there's a notification whose `nzKey` is same with `nzKey` in `NzNotificationDataFilled`,
-   * replace its content instead of create a new one.
-   * @override
-   * @param notification
-   */
-  createMessage(notification: NzNotificationDataFilled): void {
-    notification.options = this.mergeMessageOptions(notification.options);
-    notification.onClose = new Subject<boolean>();
-    const key = notification.options.nzKey;
-    const notificationWithSameKey = this.messages.find(
+  create(notification: NzNotificationData): Required<NzNotificationData> {
+    const noti = this.onCreate(notification);
+    const key = noti.options.nzKey;
+    const notificationWithSameKey = this.instances.find(
       msg => msg.options.nzKey === (notification.options as Required<NzNotificationDataOptions>).nzKey
     );
-
     if (key && notificationWithSameKey) {
-      this.replaceNotification(notificationWithSameKey, notification);
+      this.replaceNotification(notificationWithSameKey, noti);
     } else {
-      if (this.messages.length >= this.config.nzMaxStack) {
-        this.messages.splice(0, 1);
+      if (this.instances.length >= this.config.nzMaxStack) {
+        this.instances = this.instances.slice(1);
       }
-      this.messages.push(notification as Required<NzNotificationDataFilled>);
+      this.instances = [...this.instances, noti];
     }
-    this.cdr.detectChanges();
+
+    this.readyInstances();
+
+    return noti;
+  }
+
+  protected onCreate(instance: NzNotificationData): Required<NzNotificationData> {
+    instance.options = this.mergeOptions(instance.options);
+    instance.onClose = new Subject<boolean>();
+    instance.onClick = new Subject<MouseEvent>();
+    return instance as Required<NzNotificationData>;
+  }
+
+  protected subscribeConfigChange(): void {
+    this.nzConfigService
+      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.updateConfig());
   }
 
   protected updateConfig(): void {
-    const newConfig = (this.config = {
+    this.config = {
       ...NZ_NOTIFICATION_DEFAULT_CONFIG,
       ...this.config,
       ...this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME)
-    }) as NotificationConfig;
+    };
 
-    this.top = toCssPixel(newConfig.nzTop!);
-    this.bottom = toCssPixel(newConfig.nzBottom!);
+    this.top = toCssPixel(this.config.nzTop!);
+    this.bottom = toCssPixel(this.config.nzBottom!);
 
     this.cdr.markForCheck();
   }
 
-  protected subscribeConfigChange(): void {
-    this.nzConfigService.getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME).subscribe(() => this.updateConfig());
-  }
-
-  private replaceNotification(old: NzNotificationDataFilled, _new: NzNotificationDataFilled): void {
+  private replaceNotification(old: NzNotificationData, _new: NzNotificationData): void {
     old.title = _new.title;
     old.content = _new.content;
     old.template = _new.template;
     old.type = _new.type;
   }
 
-  destroy$ = new Subject<void>();
-  top: string | null;
+  protected readyInstances(): void {
+    this.topLeftInstances = this.instances.filter(m => m.options.nzPosition === 'topLeft');
+    this.topRightInstances = this.instances.filter(m => m.options.nzPosition === 'topRight' || !m.options.nzPosition);
+    this.bottomLeftInstances = this.instances.filter(m => m.options.nzPosition === 'bottomLeft');
+    this.bottomRightInstances = this.instances.filter(m => m.options.nzPosition === 'bottomRight');
 
-  ngOnInit(): void {
-    this.subscribeConfigChange();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  /**
-   * Remove a message by `messageId`.
-   * @param messageId Id of the message to be removed.
-   * @param userAction Whether this is closed by user interaction.
-   */
-  removeMessage(messageId: string, userAction: boolean = false): void {
-    this.messages.some((message, index) => {
-      if (message.messageId === messageId) {
-        this.messages.splice(index, 1);
-        this.messages = [...this.messages];
-        this.cdr.detectChanges();
-        message.onClose!.next(userAction);
-        message.onClose!.complete();
-        return true;
-      }
-      return false;
-    });
-  }
-
-  /**
-   * Remove all messages.
-   */
-  removeMessageAll(): void {
-    this.messages = [];
     this.cdr.detectChanges();
-  }
-
-  /**
-   * Merge default options and custom message options
-   * @param options
-   */
-  protected mergeMessageOptions(options?: NzNotificationDataOptions): NzNotificationDataOptions {
-    const defaultOptions: NzNotificationDataOptions = {
-      nzDuration: this.config.nzDuration,
-      nzAnimate: this.config.nzAnimate,
-      nzPauseOnHover: this.config.nzPauseOnHover
-    };
-    return { ...defaultOptions, ...options };
   }
 }

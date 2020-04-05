@@ -57,12 +57,13 @@ You can use `NzConfigService` to configure this component globally. Please check
 | nzAnimate | Whether to turn on animation | `boolean` | `true` |
 | nzTop | Distance from top | `number \| string` | `24` |
 
-### NzMessageDataFilled
+### NzMessageRef
 
 It's the object that returned when you call `NzMessageService.success` and others.
 
 ```ts
-export interface NzMessageDataFilled {
+export interface NzMessageRef {
+  messageId: string;
   onClose: Subject<false>; // It would emit an event when the message is closed
 }
 ```
