@@ -222,7 +222,7 @@ export class NzUploadListComponent implements OnChanges {
     this.list.forEach(file => {
       file.message = this.genErr(file);
       file.linkProps = typeof file.linkProps === 'string' ? JSON.parse(file.linkProps) : file.linkProps;
-      file.isImageUrl = this.isImageUrl(file);
+      file.isImageUrl = file.isImageUrl ? true : this.isImageUrl(file);
       file.iconType = this.getIconType(file);
       file.isUploading = file.status === 'uploading';
       file.listItemNameCls = this.listItemNameCls(file);
