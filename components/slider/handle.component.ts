@@ -84,7 +84,7 @@ export class NzSliderHandleComponent implements OnChanges {
       }
     }
 
-    if (tooltipVisible && tooltipVisible.currentValue === 'always') {
+    if (tooltipVisible?.currentValue === 'always') {
       Promise.resolve().then(() => this.toggleTooltip(true, true));
     }
   }

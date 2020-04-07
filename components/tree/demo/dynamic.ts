@@ -3,9 +3,7 @@ import { NzFormatEmitEvent, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
 
 @Component({
   selector: 'nz-demo-tree-dynamic',
-  template: `
-    <nz-tree [nzData]="nodes" nzAsyncData (nzClick)="nzEvent($event)" (nzExpandChange)="nzEvent($event)"> </nz-tree>
-  `
+  template: ` <nz-tree [nzData]="nodes" nzAsyncData (nzClick)="nzEvent($event)" (nzExpandChange)="nzEvent($event)"> </nz-tree> `
 })
 export class NzDemoTreeDynamicComponent {
   nodes = [
@@ -19,7 +17,7 @@ export class NzDemoTreeDynamicComponent {
     // load child async
     if (event.eventName === 'expand') {
       const node = event.node;
-      if (node && node.getChildren().length === 0 && node.isExpanded) {
+      if (node?.getChildren().length === 0 && node?.isExpanded) {
         this.loadNode().then(data => {
           node.addChildren(data);
         });

@@ -289,7 +289,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   buildHours(): void {
     let hourRanges = 24;
-    let disabledHours = this.nzDisabledHours && this.nzDisabledHours();
+    let disabledHours = this.nzDisabledHours?.();
     let startIndex = 0;
     if (this.nzUse12Hours) {
       hourRanges = 12;
@@ -313,7 +313,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     this.hourRange = makeRange(hourRanges, this.nzHourStep, startIndex).map(r => {
       return {
         index: r,
-        disabled: this.nzDisabledHours && disabledHours.indexOf(r) !== -1
+        disabled: disabledHours && disabledHours.indexOf(r) !== -1
       };
     });
     if (this.nzUse12Hours && this.hourRange[this.hourRange.length - 1].index === 12) {
@@ -410,15 +410,15 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   translateIndex(index: number, unit: NzTimePickerUnit): number {
     if (unit === 'hour') {
-      const disabledHours = this.nzDisabledHours && this.nzDisabledHours();
-      return this.calcIndex(disabledHours, this.hourRange.map(item => item.index).indexOf(index));
+      return this.calcIndex(this.nzDisabledHours?.(), this.hourRange.map(item => item.index).indexOf(index));
     } else if (unit === 'minute') {
-      const disabledMinutes = this.nzDisabledMinutes && this.nzDisabledMinutes(this.time.hours!);
-      return this.calcIndex(disabledMinutes, this.minuteRange.map(item => item.index).indexOf(index));
+      return this.calcIndex(this.nzDisabledMinutes?.(this.time.hours!), this.minuteRange.map(item => item.index).indexOf(index));
     } else if (unit === 'second') {
       // second
-      const disabledSeconds = this.nzDisabledSeconds && this.nzDisabledSeconds(this.time.hours!, this.time.minutes!);
-      return this.calcIndex(disabledSeconds, this.secondRange.map(item => item.index).indexOf(index));
+      return this.calcIndex(
+        this.nzDisabledSeconds?.(this.time.hours!, this.time.minutes!),
+        this.secondRange.map(item => item.index).indexOf(index)
+      );
     } else {
       // 12-hour
       return this.calcIndex([], this.use12HoursRange.map(item => item.index).indexOf(index));
@@ -442,8 +442,8 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     });
   }
 
-  calcIndex(array: number[], index: number): number {
-    if (array && array.length && this.nzHideDisabledOptions) {
+  calcIndex(array: number[] | undefined, index: number): number {
+    if (array?.length && this.nzHideDisabledOptions) {
       return (
         index -
         array.reduce((pre, value) => {
@@ -565,11 +565,11 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzUse12Hours, opened, nzDefaultOpenValue } = changes;
-    if (nzUse12Hours && !nzUse12Hours.previousValue && nzUse12Hours.currentValue) {
+    if (!nzUse12Hours?.previousValue && nzUse12Hours?.currentValue) {
       this.build12Hours();
       this.enabledColumns++;
     }
-    if (opened && opened.currentValue) {
+    if (opened?.currentValue) {
       this.initPosition();
       this.selectInputRange();
     }

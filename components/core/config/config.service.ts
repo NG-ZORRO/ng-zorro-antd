@@ -14,7 +14,7 @@ import { filter, mapTo } from 'rxjs/operators';
 
 import { NZ_CONFIG, NzConfig, NzConfigKey } from './config';
 
-const isDefined = function(value?: NzSafeAny): boolean {
+const isDefined = function (value?: NzSafeAny): boolean {
   return value !== undefined;
 };
 
@@ -67,7 +67,7 @@ export function WithConfig<T>(componentName: NzConfigKey, innerDefaultValue?: T)
 
     return {
       get(): T | undefined {
-        const originalValue = originalDescriptor && originalDescriptor.get ? originalDescriptor.get.bind(this)() : this[privatePropName];
+        const originalValue = originalDescriptor?.get ? originalDescriptor.get.bind(this)() : this[privatePropName];
 
         if (isDefined(originalValue)) {
           return originalValue;
@@ -79,7 +79,7 @@ export function WithConfig<T>(componentName: NzConfigKey, innerDefaultValue?: T)
         return isDefined(configValue) ? configValue : innerDefaultValue;
       },
       set(value?: T): void {
-        if (originalDescriptor && originalDescriptor.set) {
+        if (originalDescriptor?.set) {
           originalDescriptor.set.bind(this)(value);
         } else {
           this[privatePropName] = value;
