@@ -12,14 +12,12 @@ import {
   Component,
   ComponentFactory,
   ComponentFactoryResolver,
-  ContentChild,
   Directive,
   ElementRef,
   Host,
   Input,
   Optional,
   Renderer2,
-  TemplateRef,
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
@@ -33,22 +31,15 @@ import { isTooltipEmpty, NzTooltipBaseComponent, NzTooltipBaseDirective, NzToolt
   selector: '[nz-tooltip]',
   exportAs: 'nzTooltip',
   host: {
-    '[class.ant-tooltip-open]': 'isTooltipComponentVisible'
+    '[class.ant-tooltip-open]': 'visible'
   }
 })
 export class NzTooltipDirective extends NzTooltipBaseDirective {
-  /**
-   * The title that should have highest priority.
-   */
   @Input('nzTooltipTitle') specificTitle: NzTSType;
-
-  /**
-   * Use the directive's name as the title that have priority in the second place.
-   */
   @Input('nz-tooltip') directiveNameTitle: NzTSType | null;
-
   @Input('nzTooltipTrigger') specificTrigger: NzTooltipTrigger;
   @Input('nzTooltipPlacement') specificPlacement: string;
+  @Input('nzTooltipOrigin') specificOrigin?: ElementRef<HTMLElement>;
 
   componentFactory: ComponentFactory<NzToolTipComponent> = this.resolver.resolveComponentFactory(NzToolTipComponent);
 
@@ -93,7 +84,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
         <div class="ant-tooltip-content">
           <div class="ant-tooltip-arrow"></div>
           <div class="ant-tooltip-inner">
-            <ng-container *nzStringTemplateOutlet="title">{{ title }}</ng-container>
+            <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
           </div>
         </div>
       </div>
@@ -103,13 +94,12 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
 })
 export class NzToolTipComponent extends NzTooltipBaseComponent {
   @Input() nzTitle: NzTSType | null;
-  @ContentChild('nzTemplate', { static: true }) nzTitleTemplate: TemplateRef<void>;
 
   constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
     super(cdr, noAnimation);
   }
 
   protected isEmpty(): boolean {
-    return isTooltipEmpty(this.title);
+    return isTooltipEmpty(this.nzTitle);
   }
 }
