@@ -191,7 +191,7 @@ describe('breadcrumb', () => {
 
         fixture.debugElement.query(By.css('a')).nativeElement.click();
         flushFixture(fixture);
-        expect(router.url).toEqual('/one/two');
+        expect(router.url).toBe('/one/two');
       });
     }));
 
