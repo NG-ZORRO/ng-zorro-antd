@@ -30,24 +30,10 @@ import { InputBoolean, isEmpty } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { startWith, take, takeUntil } from 'rxjs/operators';
 
-export type NzBadgeStatusType = 'success' | 'processing' | 'default' | 'error' | 'warning';
+import { badgePresetColors } from './preset-colors';
+import { NzBadgeStatusType } from './types';
 
 const NZ_CONFIG_COMPONENT_NAME = 'backTop';
-const NZ_BADGE_COLORS = [
-  'pink',
-  'red',
-  'yellow',
-  'orange',
-  'cyan',
-  'green',
-  'blue',
-  'purple',
-  'geekblue',
-  'magenta',
-  'volcano',
-  'gold',
-  'lime'
-];
 
 @Component({
   selector: 'nz-badge',
@@ -72,7 +58,7 @@ const NZ_BADGE_COLORS = [
         [@.disabled]="notWrapper"
         [@zoomBadgeMotion]
         [ngStyle]="nzStyle"
-        [attr.title]="nzTitle || nzCount"
+        [attr.title]="nzTitle === null ? '' : nzTitle || nzCount"
         [style.right.px]="nzOffset && nzOffset[0] ? -nzOffset[0] : null"
         [style.marginTop.px]="nzOffset && nzOffset[1] ? nzOffset[1] : null"
         [class.ant-badge-count]="!nzDot"
@@ -108,7 +94,6 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   maxNumberArray: string[] = [];
   countArray: number[] = [];
   countSingleArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-  colorArray = NZ_BADGE_COLORS;
   presetColor: string | null = null;
   count: number;
   @ViewChild('contentElement', { static: false }) contentElement: ElementRef;
@@ -181,7 +166,7 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
       this.generateMaxNumberArray();
     }
     if (nzColor) {
-      this.presetColor = this.colorArray.indexOf(this.nzColor) !== -1 ? this.nzColor : null;
+      this.presetColor = badgePresetColors.indexOf(this.nzColor) !== -1 ? this.nzColor : null;
     }
   }
 
