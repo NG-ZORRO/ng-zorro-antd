@@ -38,7 +38,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'avatar';
     '[style.width]': 'customSize',
     '[style.height]': 'customSize',
     '[style.line-height]': 'customSize',
-    '[style.font-size]': '(hasIcon && customSize) ? (nzSize / 2 + "px") : null'
+    '[style.font-size.px]': '(hasIcon && customSize) ? $any(nzSize) / 2 : null'
   },
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
