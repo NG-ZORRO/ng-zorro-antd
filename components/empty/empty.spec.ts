@@ -37,8 +37,6 @@ describe('nz-empty', () => {
 
       const imageEl = emptyComponent.nativeElement.firstChild;
 
-      console.log(imageEl.outerHTML);
-
       expect(imageEl.tagName).toBe('DIV');
       expect(imageEl.classList.contains('ant-empty-image')).toBe(true);
       expect(imageEl.firstElementChild.tagName).toBe('NZ-EMPTY-DEFAULT');

@@ -233,7 +233,6 @@ describe('tree-select component', () => {
       tick(200);
       fixture.detectChanges();
       expect(treeSelect.nativeElement.querySelectorAll('nz-select-item').length).toBe(3);
-      console.log(treeSelect.nativeElement.querySelectorAll('nz-select-item')[2]);
       const maxTagPlaceholderElement = treeSelect.nativeElement.querySelectorAll('nz-select-item')[2];
       expect(maxTagPlaceholderElement).toBeTruthy();
       expect(maxTagPlaceholderElement.innerText.trim()).toBe(`+ ${testComponent.value.length - testComponent.maxTagCount} ...`);

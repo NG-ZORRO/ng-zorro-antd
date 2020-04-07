@@ -88,8 +88,8 @@
       *ngIf="file.url"
       target="_blank"
       rel="noopener noreferrer"
-      [ngClass]="file.listItemNameCls"
-      title="{{ file.name }}"
+      [ngClass]="file.listItemNameCls!"
+      [attr.title]="file.name"
       [href]="file.url"
       [attr.download]="file.linkProps && file.linkProps.download"
       (click)="handlePreview(file, $event)"
@@ -97,8 +97,8 @@
     >
     <span
       *ngIf="!file.url"
-      [ngClass]="file.listItemNameCls"
-      title="{{ file.name }}"
+      [ngClass]="file.listItemNameCls!"
+      [attr.title]="file.name"
       (click)="handlePreview(file, $event)"
       >{{ file.name }}</span
     >
@@ -138,7 +138,7 @@
       target="_blank"
       rel="noopener noreferrer"
       title="{{ locale.previewFile }}"
-      [ngStyle]="!(file.url || file.thumbUrl) && { opacity: 0.5, 'pointer-events': 'none' }"
+      [ngStyle]="!(file.url || file.thumbUrl) ? { opacity: 0.5, 'pointer-events': 'none' } : null"
       (click)="handlePreview(file, $event)"
     >
       <i nz-icon nzType="eye"></i>
@@ -148,7 +148,7 @@
   </span>
   <div *ngIf="file.isUploading" class="ant-upload-list-item-progress">
     <nz-progress
-      [nzPercent]="file.percent"
+      [nzPercent]="file.percent!"
       nzType="line"
       [nzShowInfo]="false"
       [nzStrokeWidth]="2"

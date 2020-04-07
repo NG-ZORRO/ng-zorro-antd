@@ -37,7 +37,7 @@ import { PREFIX_CLASS } from './util';
           <ng-container *ngSwitchCase="'decade'">
             <decade-header
               [(value)]="activeDate"
-              [locale]="locale"
+              [locale]="locale!"
               [showSuperPreBtn]="enablePrevNext('prev', 'decade')"
               [showSuperNextBtn]="enablePrevNext('next', 'decade')"
               [showNextBtn]="false"
@@ -60,7 +60,7 @@ import { PREFIX_CLASS } from './util';
           <ng-container *ngSwitchCase="'year'">
             <year-header
               [(value)]="activeDate"
-              [locale]="locale"
+              [locale]="locale!"
               [showSuperPreBtn]="enablePrevNext('prev', 'year')"
               [showSuperNextBtn]="enablePrevNext('next', 'year')"
               [showNextBtn]="false"
@@ -83,7 +83,7 @@ import { PREFIX_CLASS } from './util';
           <ng-container *ngSwitchCase="'month'">
             <month-header
               [(value)]="activeDate"
-              [locale]="locale"
+              [locale]="locale!"
               [showNextBtn]="false"
               [showPreBtn]="false"
               (panelModeChange)="panelModeChange.emit($event)"
@@ -97,7 +97,6 @@ import { PREFIX_CLASS } from './util';
                 [activeDate]="activeDate"
                 [disabledDate]="disabledDate"
                 [cellRender]="dateRender"
-                (dayHover)="dayHover.emit($event)"
                 (valueChange)="onChooseMonth($event)"
               ></month-table>
             </div>
@@ -106,7 +105,7 @@ import { PREFIX_CLASS } from './util';
           <ng-container *ngSwitchDefault>
             <date-header
               [(value)]="activeDate"
-              [locale]="locale"
+              [locale]="locale!"
               [showSuperPreBtn]="enablePrevNext('prev', 'date')"
               [showSuperNextBtn]="enablePrevNext('next', 'date')"
               [showPreBtn]="enablePrevNext('prev', 'date')"
@@ -117,7 +116,7 @@ import { PREFIX_CLASS } from './util';
             </date-header>
             <div class="{{ prefixCls }}-body">
               <date-table
-                [locale]="locale"
+                [locale]="locale!"
                 [showWeek]="showWeek"
                 [value]="value"
                 [activeDate]="activeDate"
@@ -137,17 +136,17 @@ import { PREFIX_CLASS } from './util';
           [nzInDatePicker]="true"
           [ngModel]="value?.nativeDate"
           (ngModelChange)="onSelectTime($event)"
-          [format]="timeOptions.nzFormat"
-          [nzHourStep]="timeOptions.nzHourStep"
-          [nzMinuteStep]="timeOptions.nzMinuteStep"
-          [nzSecondStep]="timeOptions.nzSecondStep"
-          [nzDisabledHours]="timeOptions.nzDisabledHours"
-          [nzDisabledMinutes]="timeOptions.nzDisabledMinutes"
-          [nzDisabledSeconds]="timeOptions.nzDisabledSeconds"
-          [nzHideDisabledOptions]="timeOptions.nzHideDisabledOptions"
-          [nzDefaultOpenValue]="timeOptions.nzDefaultOpenValue"
-          [nzUse12Hours]="timeOptions.nzUse12Hours"
-          [nzAddOn]="timeOptions.nzAddOn"
+          [format]="$any(timeOptions.nzFormat)"
+          [nzHourStep]="$any(timeOptions.nzHourStep)"
+          [nzMinuteStep]="$any(timeOptions.nzMinuteStep)"
+          [nzSecondStep]="$any(timeOptions.nzSecondStep)"
+          [nzDisabledHours]="$any(timeOptions.nzDisabledHours)"
+          [nzDisabledMinutes]="$any(timeOptions.nzDisabledMinutes)"
+          [nzDisabledSeconds]="$any(timeOptions.nzDisabledSeconds)"
+          [nzHideDisabledOptions]="!!timeOptions.nzHideDisabledOptions"
+          [nzDefaultOpenValue]="$any(timeOptions.nzDefaultOpenValue)"
+          [nzUse12Hours]="!!timeOptions.nzUse12Hours"
+          [nzAddOn]="$any(timeOptions.nzAddOn)"
         ></nz-time-picker-panel>
         <!-- use [opened] to trigger time panel \`initPosition()\` -->
       </ng-container>
@@ -161,9 +160,9 @@ export class InnerPopupComponent implements OnChanges {
   @Input() showWeek!: boolean;
   @Input() locale!: NzCalendarI18nInterface;
   @Input() showTimePicker!: boolean;
-  @Input() timeOptions!: SupportTimeOptions;
-  @Input() disabledDate!: DisabledDateFn;
-  @Input() dateRender!: FunctionProp<TemplateRef<Date> | string>;
+  @Input() timeOptions!: SupportTimeOptions | null;
+  @Input() disabledDate?: DisabledDateFn;
+  @Input() dateRender?: FunctionProp<TemplateRef<Date> | string>;
   @Input() selectedValue!: CandyDate[]; // Range ONLY
   @Input() hoverValue!: CandyDate[]; // Range ONLY
   @Input() value!: CandyDate;

@@ -60,7 +60,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
   @Input() @InputBoolean() nzClickHide = true;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzVisible = false;
-  @Input() nzOverlayClassName: string | null = null;
+  @Input() nzOverlayClassName: string = '';
   @Input() nzOverlayStyle: IndexableObject = {};
   @Input() nzPlacement: NzPlacementType = 'bottomLeft';
   @Output() readonly nzVisibleChange: EventEmitter<boolean> = new EventEmitter();

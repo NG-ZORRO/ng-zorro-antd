@@ -21,8 +21,8 @@ import { NzNotificationData } from './typings';
   template: `
     <div
       class="ant-notification-notice ant-notification-notice-closable"
-      [ngStyle]="instance.options?.nzStyle"
-      [ngClass]="instance.options?.nzClass"
+      [ngStyle]="instance.options?.nzStyle || null"
+      [ngClass]="instance.options?.nzClass || ''"
       [@notificationMotion]="state"
       (click)="onClick($event)"
       (mouseenter)="onEnter()"
@@ -64,15 +64,15 @@ import { NzNotificationData } from './typings';
       </div>
       <ng-template
         [ngIf]="instance.template"
-        [ngTemplateOutlet]="instance.template"
+        [ngTemplateOutlet]="instance.template!"
         [ngTemplateOutletContext]="{ $implicit: this, data: instance.options?.nzData }"
       >
       </ng-template>
       <a tabindex="0" class="ant-notification-notice-close" (click)="close()">
         <span class="ant-notification-notice-close-x">
           <ng-container *ngIf="instance.options?.nzCloseIcon; else iconTpl">
-            <ng-container *nzStringTemplateOutlet="instance.options?.nzCloseIcon">
-              <i nz-icon [nzType]="instance.options?.nzCloseIcon"></i>
+            <ng-container *nzStringTemplateOutlet="instance.options?.nzCloseIcon; let closeIcon">
+              <i nz-icon [nzType]="closeIcon"></i>
             </ng-container>
           </ng-container>
           <ng-template #iconTpl>

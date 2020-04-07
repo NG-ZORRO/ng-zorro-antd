@@ -5,7 +5,7 @@
     [locale]="locale"
     [listType]="nzListType"
     [items]="nzFileList || []"
-    [icons]="nzShowUploadList"
+    [icons]="$any(nzShowUploadList)"
     [iconRender]="nzIconRender"
     [previewFile]="nzPreviewFile"
     [onPreview]="nzPreview"
@@ -16,7 +16,7 @@
 <ng-template #con><ng-content></ng-content></ng-template>
 <ng-template #btn>
   <div [ngClass]="classList" [style.display]="nzShowButton ? '' : 'none'">
-    <div nz-upload-btn #uploadComp [options]="_btnOptions">
+    <div nz-upload-btn #uploadComp [options]="_btnOptions!">
       <ng-template [ngTemplateOutlet]="con"></ng-template>
     </div>
   </div>
@@ -28,7 +28,7 @@
     (dragover)="fileDrop($event)"
     (dragleave)="fileDrop($event)"
   >
-    <div nz-upload-btn #uploadComp [options]="_btnOptions" class="ant-upload-btn">
+    <div nz-upload-btn #uploadComp [options]="_btnOptions!" class="ant-upload-btn">
       <div class="ant-upload-drag-container">
         <ng-template [ngTemplateOutlet]="con"></ng-template>
       </div>

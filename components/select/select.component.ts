@@ -112,10 +112,10 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       cdkConnectedOverlay
       nzConnectedOverlay
       [cdkConnectedOverlayHasBackdrop]="true"
-      [cdkConnectedOverlayMinWidth]="nzDropdownMatchSelectWidth ? null : triggerWidth"
-      [cdkConnectedOverlayWidth]="nzDropdownMatchSelectWidth ? triggerWidth : null"
+      [cdkConnectedOverlayMinWidth]="$any(nzDropdownMatchSelectWidth ? null : triggerWidth)"
+      [cdkConnectedOverlayWidth]="$any(nzDropdownMatchSelectWidth ? triggerWidth : null)"
       [cdkConnectedOverlayOrigin]="origin"
-      [cdkConnectedOverlayPanelClass]="nzDropdownClassName"
+      [cdkConnectedOverlayPanelClass]="nzDropdownClassName!"
       (backdropClick)="setOpenState(false)"
       (detach)="setOpenState(false)"
       (positionChange)="onPositionChange($event)"

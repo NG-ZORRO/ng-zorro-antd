@@ -91,7 +91,7 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   @Input() nzShowTotal: TemplateRef<{ $implicit: number; range: [number, number] }> | null = null;
   @Input() nzSize: 'default' | 'small' = 'default';
   @Input() nzPageSizeOptions = [10, 20, 30, 40];
-  @Input() nzItemRender?: TemplateRef<PaginationItemRenderContext>;
+  @Input() nzItemRender: TemplateRef<PaginationItemRenderContext> | null = null;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzShowSizeChanger = false;
   @Input() @InputBoolean() nzHideOnSinglePage = false;

@@ -41,7 +41,7 @@ export interface AutocompleteDataSourceItem {
   label: string;
 }
 
-export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | number[];
+export type AutocompleteDataSource = Array<AutocompleteDataSourceItem | string | number>;
 
 @Component({
   selector: 'nz-autocomplete',
@@ -72,11 +72,11 @@ export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | n
       </ng-template>
       <ng-template #optionsTemplate>
         <nz-auto-option
-          *ngFor="let option of nzDataSource"
+          *ngFor="let option of nzDataSource!"
           [nzValue]="option"
-          [nzLabel]="option && option.label ? option.label : $any(option)"
+          [nzLabel]="option && $any(option).label ? $any(option).label : $any(option)"
         >
-          {{ option && option.label ? option.label : option }}
+          {{ option && $any(option).label ? $any(option).label : $any(option) }}
         </nz-auto-option>
       </ng-template>
     </ng-template>

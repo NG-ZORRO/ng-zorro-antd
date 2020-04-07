@@ -63,7 +63,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'tabs';
         [ngStyle]="nzTabBarStyle"
         [nzHideBar]="nzHideAll"
         [nzTabBarExtraContent]="nzTabBarExtraContent"
-        [selectedIndex]="nzSelectedIndex"
+        [selectedIndex]="nzSelectedIndex!"
         (nzOnNextClick)="nzOnNextClick.emit()"
         (nzOnPrevClick)="nzOnPrevClick.emit()"
       >
@@ -141,7 +141,7 @@ export class NzTabSetComponent implements AfterContentChecked, OnChanges, AfterC
   @Input() nzTabPosition: NzTabPosition = 'top';
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzSizeLDSType = 'default';
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzTabBarGutter?: number = undefined;
-  @Input() nzTabBarStyle?: { [key: string]: string };
+  @Input() nzTabBarStyle: { [key: string]: string } | null = null;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzType: NzTabType = 'line';
 
   @Input() @InputBoolean() nzLinkRouter = false;

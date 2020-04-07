@@ -1,12 +1,13 @@
 /* tslint:disable:no-unused-variable no-inferrable-types no-any prefer-const */
 import { DOCUMENT, PlatformLocation } from '@angular/common';
-import { ReflectiveInjector } from '@angular/core';
+import { Injector } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 
 import { NzScrollService } from './scroll';
 
 describe('NzScrollService', () => {
   const TOP: number = 10;
-  let injector: ReflectiveInjector;
+  let injector: Injector;
   let document: MockDocument;
   let scrollService: NzScrollService;
 
@@ -32,12 +33,15 @@ describe('NzScrollService', () => {
   });
 
   beforeEach(() => {
-    injector = ReflectiveInjector.resolveAndCreate([
-      NzScrollService,
-      { provide: DOCUMENT, useClass: MockDocument },
-      { provide: PlatformLocation, useClass: MockPlatformLocation }
-    ]);
-    document = injector.get(DOCUMENT);
+    injector = TestBed.configureTestingModule({
+      providers: [
+        NzScrollService,
+        { provide: DOCUMENT, useClass: MockDocument },
+        { provide: PlatformLocation, useClass: MockPlatformLocation }
+      ]
+    });
+
+    document = injector.get<MockDocument>(DOCUMENT);
     scrollService = injector.get(NzScrollService);
   });
 

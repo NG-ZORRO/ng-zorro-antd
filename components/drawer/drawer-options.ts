@@ -20,7 +20,7 @@ export interface NzDrawerOptionsOfComponent<T = NzSafeAny, D = NzSafeAny> {
   nzNoAnimation?: boolean;
   nzTitle?: string | TemplateRef<{}>;
   nzContent?: TemplateRef<{ $implicit: D; drawerRef: NzDrawerRef }> | Type<T>;
-  nzContentParams?: D;
+  nzContentParams?: Partial<T & D>;
   nzMaskStyle?: object;
   nzBodyStyle?: object;
   nzWrapClassName?: string;
