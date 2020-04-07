@@ -95,7 +95,7 @@
     "lodash.debounce": "^4.0.8",
     "marked": "^0.7.0",
     "minimist": "^1.2.0",
-    "monaco-editor": "^0.17.1",
+    "monaco-editor": "^0.20.0",
     "ng-packagr": "^9.0.0",
     "ngx-color": "^5.0.0",
     "node-prismjs": "^0.1.2",
