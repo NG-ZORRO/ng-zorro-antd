@@ -49,7 +49,7 @@ export function sortRangeValue(rangeValue: SingleValue[]): SingleValue[] {
 export function normalizeRangeValue(value: SingleValue[]): CandyDate[] {
   const [start, end] = value || [];
   const newStart = start || new CandyDate();
-  const newEnd = end && end.isSameMonth(newStart) ? end.addMonths(1) : end || newStart.addMonths(1);
+  const newEnd = end?.isSameMonth(newStart) ? end.addMonths(1) : end || newStart.addMonths(1);
   return [newStart, newEnd];
 }
 

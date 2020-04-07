@@ -53,7 +53,7 @@ export class NzDemoFormLayoutComponent implements OnInit {
   }
 
   get isHorizontal(): boolean {
-    return this.validateForm.controls.formLayout && this.validateForm.controls.formLayout.value === 'horizontal';
+    return this.validateForm.controls.formLayout?.value === 'horizontal';
   }
 
   constructor(private fb: FormBuilder) {}
