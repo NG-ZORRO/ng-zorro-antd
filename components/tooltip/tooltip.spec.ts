@@ -3,6 +3,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
+import { NzElementPatchModule } from 'ng-zorro-antd/core/element-patch';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
@@ -50,7 +51,7 @@ describe('nz-tooltip', () => {
   });
 
   describe('visibility', () => {
-    it('should hover mode works', fakeAsync(() => {
+    it('should hover mode work', fakeAsync(() => {
       const title = 'title-string';
       const triggerElement = component.titleString.nativeElement;
 
@@ -84,7 +85,7 @@ describe('nz-tooltip', () => {
       expect(overlayContainerElement.textContent).not.toContain(title);
     }));
 
-    it('should click mode works', fakeAsync(() => {
+    it('should click mode work', fakeAsync(() => {
       const title = 'title-template';
       const triggerElement = component.titleTemplate.nativeElement;
 
@@ -97,7 +98,7 @@ describe('nz-tooltip', () => {
       expect(overlayContainerElement.textContent).not.toContain(title);
     }));
 
-    it('should focus and blur mode works', fakeAsync(() => {
+    it('should focus and blur mode work', fakeAsync(() => {
       const title = 'focus';
       const triggerElement = component.focusTemplate.nativeElement;
 
@@ -165,7 +166,7 @@ describe('nz-tooltip', () => {
 
     it('should set `setTitle` proxy to `nzTitle`', fakeAsync(() => {
       const triggerElement = component.titleString.nativeElement;
-      const tooltipComponent = component.titleStringDirective.tooltip;
+      const tooltipComponent = component.titleStringDirective.component;
 
       dispatchMouseEvent(triggerElement, 'mouseenter');
       waitingForTooltipToggling();
@@ -209,8 +210,24 @@ describe('nz-tooltip', () => {
   });
 });
 
+describe('origin', () => {
+  let testBed: ComponentBed<NzTestTooltipTargetComponent>;
+  let component: NzTestTooltipTargetComponent;
+
+  beforeEach(fakeAsync(() => {
+    testBed = createComponentBed(NzTestTooltipTargetComponent, {
+      imports: [NzToolTipModule, NoopAnimationsModule, NzIconTestModule, NzElementPatchModule]
+    });
+    component = testBed.component;
+  }));
+
+  it('should target work', () => {
+    expect((component.tooltip.component.origin.elementRef.nativeElement as HTMLElement).tagName).toBe('BUTTON');
+  });
+});
+
 function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLElement {
-  return tooltip.tooltip.overlay.overlayRef.overlayElement;
+  return tooltip.component.overlay.overlayRef.overlayElement;
 }
 
 @Component({
@@ -275,4 +292,21 @@ export class NzTooltipTestComponent {
   onVisibleChange(): void {
     this.visibilityTogglingCount += 1;
   }
+}
+
+@Component({
+  template: `
+    <button nz-button nz-element #button="nzElement">Action</button>
+    <a nz-tooltip nzTooltipTitle="This action could not be revoked!" [nzTooltipOrigin]="button.elementRef">Notice</a>
+  `,
+  styles: [
+    `
+      button {
+        margin-right: 8px;
+      }
+    `
+  ]
+})
+export class NzTestTooltipTargetComponent {
+  @ViewChild(NzTooltipDirective) tooltip: NzTooltipDirective;
 }

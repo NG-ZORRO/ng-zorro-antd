@@ -31,7 +31,7 @@ import { isTooltipEmpty, NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTr
   selector: '[nz-popover]',
   exportAs: 'nzPopover',
   host: {
-    '[class.ant-popover-open]': 'isTooltipComponentVisible'
+    '[class.ant-popover-open]': 'visible'
   }
 })
 export class NzPopoverDirective extends NzTooltipBaseDirective {
@@ -40,6 +40,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   @Input('nz-popover') directiveNameTitle: NzTSType | null;
   @Input('nzPopoverTrigger') specificTrigger: NzTooltipTrigger;
   @Input('nzPopoverPlacement') specificPlacement: string;
+  @Input('nzPopoverOrigin') specificOrigin: ElementRef<HTMLElement>;
 
   componentFactory: ComponentFactory<NzPopoverComponent> = this.resolver.resolveComponentFactory(NzPopoverComponent);
 
@@ -86,11 +87,11 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
           <div class="ant-popover-arrow"></div>
           <div class="ant-popover-inner" role="tooltip">
             <div>
-              <div class="ant-popover-title" *ngIf="title">
-                <ng-container *nzStringTemplateOutlet="title">{{ title }}</ng-container>
+              <div class="ant-popover-title" *ngIf="nzTitle">
+                <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
               </div>
               <div class="ant-popover-inner-content">
-                <ng-container *nzStringTemplateOutlet="content">{{ content }}</ng-container>
+                <ng-container *nzStringTemplateOutlet="nzContent">{{ nzContent }}</ng-container>
               </div>
             </div>
           </div>
@@ -107,6 +108,6 @@ export class NzPopoverComponent extends NzToolTipComponent {
   }
 
   protected isEmpty(): boolean {
-    return isTooltipEmpty(this.title) && isTooltipEmpty(this.content);
+    return isTooltipEmpty(this.nzTitle) && isTooltipEmpty(this.nzContent);
   }
 }

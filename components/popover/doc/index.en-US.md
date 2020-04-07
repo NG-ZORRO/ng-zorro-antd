@@ -26,6 +26,7 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 | `[nzPopoverContent]` | Content of the popover | `string \| TemplateRef<void>` | - |
 | `[nzPopoverTrigger]` | Popover trigger mode. If set to `null` it would not be triggered | `'click' \| 'focus' \| 'hover' \| null` | `'hover'` |
 | `[nzPopoverPlacement]` | The position of the popover relative to the target | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
+| `[nzPopoverOrigin]` | Origin of the tooltip | `ElementRef` | - |
 
 
 Consult [Tooltip's documentation](/components/tooltip/en#api) to find more APIs.
