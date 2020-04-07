@@ -164,6 +164,31 @@ describe('breadcrumb', () => {
       });
     }));
 
+    it('should route data breadcrumb navigate work', fakeAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [CommonModule, NzBreadCrumbModule, RouterTestingModule.withRoutes(customRouteLabelRoutes)],
+        declarations: [NzBreadcrumbRouteLabelDemoComponent, NzBreadcrumbNullComponent]
+      }).compileComponents();
+
+      fixture = TestBed.createComponent(NzBreadcrumbRouteLabelDemoComponent);
+      breadcrumb = fixture.debugElement.query(By.directive(NzBreadCrumbComponent));
+
+      fixture.ngZone!.run(() => {
+        router = TestBed.get(Router);
+        router.initialNavigation();
+
+        flushFixture(fixture);
+        expect(breadcrumb.componentInstance.nzRouteLabel).toBe('customBreadcrumb');
+
+        router.navigate(['one', 'two', 'three', 'four']);
+        flushFixture(fixture);
+
+        fixture.debugElement.query(By.css('a')).nativeElement.click();
+        flushFixture(fixture);
+        expect(router.url).toEqual('/one/two');
+      });
+    }));
+
     it('should raise error when RouterModule is not included', fakeAsync(() => {
       TestBed.configureTestingModule({
         imports: [NzBreadCrumbModule],
