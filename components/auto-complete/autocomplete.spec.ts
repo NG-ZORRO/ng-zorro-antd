@@ -30,7 +30,9 @@ describe('auto-complete', () => {
         NzTestAutocompleteWithoutPanelComponent,
         NzTestAutocompleteGroupComponent,
         NzTestAutocompleteWithOnPushDelayComponent,
-        NzTestAutocompleteWithFormComponent
+        NzTestAutocompleteWithFormComponent,
+        NzTestAutocompleteWithObjectOptionComponent,
+        NzTestAutocompleteDifferentValueWithFormComponent
       ],
       providers: [
         { provide: Directionality, useFactory: () => ({ value: dir }) },
@@ -402,19 +404,59 @@ describe('auto-complete', () => {
 
       typeInElement('Burns', input);
       fixture.detectChanges();
-      tick();
 
       expect(fixture.componentInstance.inputControl.value).toBe('Burns');
 
       fixture.componentInstance.inputControl.setValue('');
+      tick();
       fixture.detectChanges();
       expect(input.value).toBe('');
 
       typeInElement('Burns', input);
-      fixture.detectChanges();
       tick();
+      fixture.detectChanges();
 
       expect(fixture.componentInstance.inputControl.value).toBe('Burns');
+    }));
+  });
+
+  describe('object option', () => {
+    let fixture: ComponentFixture<NzTestAutocompleteWithObjectOptionComponent>;
+    let componentInstance: NzTestAutocompleteWithObjectOptionComponent;
+    let input: HTMLInputElement;
+
+    beforeEach(fakeAsync(() => {
+      fixture = TestBed.createComponent(NzTestAutocompleteWithObjectOptionComponent);
+      componentInstance = fixture.componentInstance;
+      flush();
+      fixture.detectChanges();
+      input = fixture.debugElement.query(By.css('input')).nativeElement;
+    }));
+
+    it('should select init option', fakeAsync(() => {
+      componentInstance.trigger.openPanel();
+      const options = componentInstance.trigger.nzAutocomplete.options.toArray();
+      expect(options[0].selected).toBe(true);
+      expect(input.value).toBe('Lucy');
+      expect(componentInstance.form.get('formControl')?.value.value).toBe('lucy');
+    }));
+
+    it('should set object option', fakeAsync(() => {
+      componentInstance.form.get('formControl')?.setValue({ label: 'Jack', value: 'jack' });
+      flush();
+      fixture.detectChanges();
+      componentInstance.trigger.openPanel();
+      const options = componentInstance.trigger.nzAutocomplete.options.toArray();
+      expect(options[0].selected).toBe(false);
+      expect(options[1].selected).toBe(true);
+      expect(input.value).toBe('Jack');
+      expect(componentInstance.form.get('formControl')?.value.value).toBe('jack');
+    }));
+
+    it('should be typing other string', fakeAsync(() => {
+      typeInElement('string', input);
+      fixture.detectChanges();
+      expect(componentInstance.form.get('formControl')?.value).toBe('string');
     }));
   });
 
@@ -422,18 +464,19 @@ describe('auto-complete', () => {
     let fixture: ComponentFixture<NzTestAutocompleteWithFormComponent>;
     let input: HTMLInputElement;
 
-    beforeEach(() => {
+    beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(NzTestAutocompleteWithFormComponent);
       fixture.detectChanges();
       input = fixture.debugElement.query(By.css('input')).nativeElement;
-    });
+    }));
 
-    it('should set the value with form', () => {
+    it('should set the value with form', fakeAsync(() => {
       const componentInstance = fixture.componentInstance;
+      flush();
       fixture.detectChanges();
       expect(componentInstance.form.get('formControl')!.value).toContain('Burns');
       expect(input.value).toContain('Burns');
-    });
+    }));
 
     it('should set disabled work', () => {
       const componentInstance = fixture.componentInstance;
@@ -464,6 +507,18 @@ describe('auto-complete', () => {
       expect(input.disabled).toBe(true);
       expect(componentInstance.trigger.panelOpen).toBe(false);
     });
+
+    it('should set correct label', fakeAsync(() => {
+      const differentValueWithFormFixture = TestBed.createComponent(NzTestAutocompleteDifferentValueWithFormComponent);
+      differentValueWithFormFixture.detectChanges();
+      flush();
+      differentValueWithFormFixture.detectChanges();
+
+      const differentValueWithFormInput = differentValueWithFormFixture.debugElement.query(By.css('input')).nativeElement;
+
+      expect(differentValueWithFormInput.value).toBe('Lucy');
+      expect(differentValueWithFormFixture.componentInstance.form.get('formControl')?.value).toBe('lucy');
+    }));
   });
 
   describe('option groups', () => {
@@ -910,9 +965,7 @@ class NzTestAutocompletePropertyComponent {
 }
 
 @Component({
-  template: `
-    <input [nzAutocomplete]="auto" />
-  `
+  template: ` <input [nzAutocomplete]="auto" /> `
 })
 class NzTestAutocompleteWithoutPanelComponent {
   @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger: NzAutocompleteTriggerDirective;
@@ -923,7 +976,7 @@ class NzTestAutocompleteWithoutPanelComponent {
   template: `
     <div>
       <input [nzAutocomplete]="auto" />
-      <nz-autocomplete [nzDataSource]="options" #auto> </nz-autocomplete>
+      <nz-autocomplete [nzDataSource]="options" #auto></nz-autocomplete>
     </div>
   `
 })
@@ -1021,5 +1074,62 @@ class NzTestAutocompleteWithFormComponent {
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({ formControl: 'Burns' });
+  }
+}
+
+@Component({
+  template: `
+    <form [formGroup]="form">
+      <input formControlName="formControl" [nzAutocomplete]="auto" />
+      <nz-autocomplete #auto>
+        <nz-auto-option *ngFor="let option of options" [nzValue]="option.value" [nzLabel]="option.label">
+          {{ option.label }}
+        </nz-auto-option>
+      </nz-autocomplete>
+    </form>
+  `
+})
+class NzTestAutocompleteDifferentValueWithFormComponent {
+  form: FormGroup;
+  options = [
+    { label: 'Lucy', value: 'lucy' },
+    { label: 'Jack', value: 'jack' }
+  ];
+  @ViewChild(NzAutocompleteTriggerDirective) trigger: NzAutocompleteTriggerDirective;
+
+  constructor(private fb: FormBuilder) {
+    this.form = this.fb.group({ formControl: 'lucy' });
+  }
+}
+
+@Component({
+  template: `
+    <form [formGroup]="form">
+      <input formControlName="formControl" [nzAutocomplete]="auto" />
+      <nz-autocomplete #auto [compareWith]="compareFun">
+        <nz-auto-option *ngFor="let option of options" [nzValue]="option" [nzLabel]="option.label">{{ option.label }}</nz-auto-option>
+      </nz-autocomplete>
+    </form>
+  `
+})
+class NzTestAutocompleteWithObjectOptionComponent {
+  form: FormGroup;
+  options = [
+    { label: 'Lucy', value: 'lucy' },
+    { label: 'Jack', value: 'jack' }
+  ];
+  @ViewChild(NzAutocompleteTriggerDirective) trigger: NzAutocompleteTriggerDirective;
+
+  // tslint:disable-next-line: no-any
+  compareFun = (o1: any, o2: any) => {
+    if (o1) {
+      return typeof o1 === 'string' ? o1 === o2.label : o1.value === o2.value;
+    } else {
+      return false;
+    }
+  };
+
+  constructor(private fb: FormBuilder) {
+    this.form = this.fb.group({ formControl: { label: 'Lucy', value: 'lucy', age: 20 } });
   }
 }
