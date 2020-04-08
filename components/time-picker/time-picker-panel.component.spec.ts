@@ -234,8 +234,6 @@ describe('time-picker-panel', () => {
       tick(1000);
       fixture12Hour.detectChanges();
       let listOfSelectedLi = panelElement.nativeElement.querySelectorAll('.ant-picker-time-panel-cell-selected');
-      console.log(fixture12Hour.componentInstance.nzTimePickerPanelComponent.time.hours);
-      console.log(fixture12Hour.componentInstance.nzTimePickerPanelComponent.time.value);
       expect(listOfSelectedLi[0].innerText).toBe('05');
       expect(listOfSelectedLi[1].innerText).toBe('06');
       expect(listOfSelectedLi[2].innerText).toBe('07');
@@ -276,7 +274,6 @@ describe('time-picker-panel', () => {
       expect(listOfHourContainer[0].children.length).toEqual(6);
     }));
   });
-
   describe('disabled and format 12-hour time-picker-panel', () => {
     let panelElement: DebugElement;
     let fixture12Hour: ComponentFixture<NzTest12HourTimePanelDisabeledComponent>;

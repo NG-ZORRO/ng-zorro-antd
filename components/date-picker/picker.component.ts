@@ -7,6 +7,7 @@
  */
 
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
+import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -15,6 +16,7 @@ import {
   ContentChild,
   ElementRef,
   EventEmitter,
+  Inject,
   Input,
   OnChanges,
   OnDestroy,
@@ -67,7 +69,10 @@ import { PREFIX_CLASS } from './util';
         <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'left' }"></ng-container>
       </div>
       <div #separatorElement class="{{ prefixCls }}-range-separator">
-        <span class="{{ prefixCls }}-separator"> {{ separator }} </span>
+        <ng-container *ngIf="separator; else defaultSeparator">{{ separator }}</ng-container>
+        <ng-template #defaultSeparator>
+          <span class="{{ prefixCls }}-separator"></span>
+        </ng-template>
       </div>
       <div class="{{ prefixCls }}-input">
         <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'right' }"></ng-container>
@@ -214,8 +219,10 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     private elementRef: ElementRef,
     private dateHelper: DateHelperService,
     private changeDetector: ChangeDetectorRef,
-    public datePickerService: DatePickerService
+    public datePickerService: DatePickerService,
+    @Inject(DOCUMENT) doc: NzSafeAny
   ) {
+    this.document = doc;
     this.origin = new CdkOverlayOrigin(elementRef);
     this.updateInputValue();
   }
@@ -230,7 +237,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     }
     this.datePickerService.valueChange$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.updateInputValue();
-      this.changeDetector.markForCheck();
+      this.changeDetector.detectChanges();
     });
 
     if (this.isRange) {
@@ -253,7 +260,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         ...this.datePickerService.arrowPositionStyle,
         width: `${this.inputWidth}px`
       };
-      if (document.activeElement !== this.getInput(this.datePickerService.activeInput)) {
+      if (this.document.activeElement !== this.getInput(this.datePickerService.activeInput)) {
         this.focus();
       }
       this.panel?.cdr.markForCheck();
@@ -349,7 +356,6 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   onOverlayKeydown(event: KeyboardEvent): void {
     if (event.key === 'Escape') {
-      this.updateInputValue(true);
       this.datePickerService.setValue(this.datePickerService.initialValue);
     }
   }
@@ -373,8 +379,8 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     this.datePickerService.emitValue$.next();
   }
 
-  updateInputValue(returnToInit: boolean = false): void {
-    const newValue = returnToInit ? this.datePickerService.initialValue : this.datePickerService.value;
+  updateInputValue(): void {
+    const newValue = this.datePickerService.value;
     if (this.isRange) {
       this.inputValue = newValue ? (newValue as CandyDate[]).map(v => this.formatValue(v)) : ['', ''];
     } else {
@@ -402,8 +408,6 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     const date = new CandyDate(this.dateHelper.parseDate(input, this.format));
 
     if (!date.isValid() || input !== this.dateHelper.format(date.nativeDate, this.format)) {
-      // Should also match the input format exactly
-      // this.invalidInputClass = `${this.prefixCls}-input-invalid`;
       return null;
     }
 

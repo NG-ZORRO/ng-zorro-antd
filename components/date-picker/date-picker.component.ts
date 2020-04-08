@@ -99,7 +99,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   @Input() nzMode: PanelMode | PanelMode[] = 'date';
   @Input() nzRanges: PresetRanges;
   @Input() nzDefaultPickerValue: CompatibleDate | null = null;
-  @Input() nzSeparator: string = '~';
+  @Input() nzSeparator: string;
 
   @Output() readonly nzOnPanelChange = new EventEmitter<PanelMode | PanelMode[]>();
   @Output() readonly nzOnCalendarChange = new EventEmitter<Array<Date | null>>();

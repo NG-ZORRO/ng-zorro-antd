@@ -25,7 +25,6 @@ export abstract class AbstractTable implements OnInit, OnChanges {
   @Input() activeDate: CandyDate = new CandyDate();
   @Input() showWeek: boolean = false;
   @Input() disabledDate: (d: Date) => boolean;
-  @Input() defaultDisabledDate: (d: Date) => boolean;
   @Input() cellRender: FunctionProp<TemplateRef<Date> | string>;
   @Input() fullCellRender: FunctionProp<TemplateRef<Date> | string>;
 

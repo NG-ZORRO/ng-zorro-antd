@@ -70,9 +70,6 @@ export class TimeHolder {
     if (value !== this.value) {
       this._value = value;
       if (isNotNil(this.value)) {
-        // this.hours = this.value!.getHours();
-        // this.minutes = this.value!.getMinutes();
-        // this.seconds = this.value!.getSeconds();
         if (this._use12Hours && isNotNil(this.hours)) {
           this.selected12Hours = this.hours >= 12 ? 'PM' : 'AM';
         }
@@ -125,7 +122,6 @@ export class TimeHolder {
           this.value!.setHours(this.hours! + 12);
         }
         if (this.selected12Hours === 'AM' && this.hours! >= 12) {
-          // this.hours! -= 12;
           this.value!.setHours(this.hours! - 12);
         }
       }
@@ -169,24 +165,8 @@ export class TimeHolder {
     return this.value?.getSeconds();
   }
 
-  // get defaultOpenValue(): Date {
-  //   return this._defaultOpenValue;
-  // }
-  //
-  // set defaultOpenValue(value: Date) {
-  //   if (this._defaultOpenValue !== value) {
-  //     this._defaultOpenValue = value;
-  //     this.update();
-  //   }
-  // }
-
   setDefaultOpenValue(value: Date): this {
     this._defaultOpenValue = value;
-    console.log('setd', this._value, value);
-    // this.update();
-    // if (isNil(this._value)) {
-    //   this.setValue(value);
-    // }
     return this;
   }
 

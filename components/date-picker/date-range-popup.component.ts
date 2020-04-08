@@ -42,7 +42,6 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
-  // TODO: comment it to pass test
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'date-range-popup',
@@ -201,9 +200,6 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
 
   onClickOk(): void {
     const otherPart = this.datePickerService.activeInput === 'left' ? 'right' : 'left';
-    // if (this.datePickerService.hasOnePart()) {
-    //   this.datePickerService.inputPartChange$.next(otherPart);
-    // } else {
     const selectedValue = this.datePickerService.value;
     if (this.isAllowed(selectedValue, true)) {
       this.resultOk.emit();
@@ -214,14 +210,6 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
         this.datePickerService.inputPartChange$.next();
       }
     }
-    // }
-    // let value: CandyDate | CandyDate[];
-    // if (this.isRange) {
-    //   value = (this.datePickerService.value as CandyDate[])[this.datePickerService.getActiveIndex()];
-    // } else {
-    //   value = this.datePickerService.value as CandyDate;
-    // }
-    // this.changeValueFromSelect(value, true);
   }
 
   onClickToday(value: CandyDate): void {
