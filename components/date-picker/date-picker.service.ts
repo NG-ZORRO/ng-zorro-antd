@@ -65,12 +65,4 @@ export class DatePickerService {
   getActiveIndex(part: RangePartType = this.activeInput): number {
     return { left: 0, right: 1 }[part];
   }
-
-  hasOnePart(): boolean {
-    if (Array.isArray(this.value)) {
-      const [left, right] = this.value as CandyDate[]; // NOTE: the left/right maybe not the sequence it select at the date panels
-      return (!left && !!right) || (!!left && !right);
-    }
-    return false;
-  }
 }
