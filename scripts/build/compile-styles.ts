@@ -84,6 +84,12 @@ export function compile(): Promise<void | Less.RenderOutput[]> {
   promiseList.push(compileLess(darkLessContent, path.join(targetPath, 'ng-zorro-antd.dark.css'), false));
   promiseList.push(compileLess(darkLessContent, path.join(targetPath, 'ng-zorro-antd.dark.min.css'), true));
 
+  // Compile the compact theme less file to CSS file.
+  const compactLessContent = `@import "${path.posix.join(targetPath, 'style', 'compact.less')}";
+  @import "${path.posix.join(targetPath, 'ng-zorro-antd.less')}";`;
+  promiseList.push(compileLess(compactLessContent, path.join(targetPath, 'ng-zorro-antd.compact.css'), false));
+  promiseList.push(compileLess(compactLessContent, path.join(targetPath, 'ng-zorro-antd.compact.min.css'), true));
+
   // Compile css file that doesn't have component-specific styles.
   const cssIndexPath = path.join(sourcePath, 'style', 'entry.less');
   const cssIndex = fs.readFileSync(cssIndexPath, { encoding: 'utf8' });
