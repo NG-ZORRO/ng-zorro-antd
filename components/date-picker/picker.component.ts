@@ -6,7 +6,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
+import {
+  CdkConnectedOverlay,
+  CdkOverlayOrigin,
+  ConnectedOverlayPositionChange,
+  ConnectionPositionPair,
+  HorizontalConnectionPos,
+  VerticalConnectionPos
+} from '@angular/cdk/overlay';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
@@ -121,7 +128,7 @@ import { PREFIX_CLASS } from './util';
     >
       <div
         [nzNoAnimation]="noAnimation"
-        [@slideMotion]="dropdownAnimation"
+        [@slideMotion]="currentPositionY"
         (@slideMotion.done)="animationDone()"
         style="position: relative;"
         [style.left]="currentPositionX === 'start' ? '-12px' : '12px'"
@@ -129,8 +136,10 @@ import { PREFIX_CLASS } from './util';
       >
         <div
           class="{{ prefixCls }}-dropdown {{ dropdownClassName }}"
-          [class.ant-picker-dropdown-placement-bottomLeft]="dropdownAnimation === 'bottom'"
-          [class.ant-picker-dropdown-placement-topLeft]="dropdownAnimation === 'top'"
+          [class.ant-picker-dropdown-placement-bottomLeft]="currentPositionY === 'bottom' && currentPositionX === 'start'"
+          [class.ant-picker-dropdown-placement-topLeft]="currentPositionY === 'top' && currentPositionX === 'start'"
+          [class.ant-picker-dropdown-placement-bottomRight]="currentPositionY === 'bottom' && currentPositionX === 'end'"
+          [class.ant-picker-dropdown-placement-topRight]="currentPositionY === 'top' && currentPositionX === 'end'"
           [class.ant-picker-dropdown-range]="isRange"
           [ngStyle]="popupStyle"
         >
@@ -206,9 +215,8 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       overlayY: 'bottom'
     }
   ] as ConnectionPositionPair[];
-  dropdownAnimation: 'top' | 'bottom' = 'bottom';
-  currentPositionX: 'start' | 'end' = 'start';
-  currentPositionY: 'top' | 'bottom' = 'top';
+  currentPositionX: HorizontalConnectionPos = 'start';
+  currentPositionY: VerticalConnectionPos = 'bottom';
 
   get realOpenState(): boolean {
     // The value that really decide the open state of overlay
@@ -365,9 +373,8 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   // All other components like "nz-dropdown" which depends on overlay also has the same issue.
   // See: https://github.com/NG-ZORRO/ng-zorro-antd/issues/1429
   onPositionChange(position: ConnectedOverlayPositionChange): void {
-    this.dropdownAnimation = position.connectionPair.originY === 'top' ? 'top' : 'bottom';
-    this.currentPositionX = position.connectionPair.originX as 'start' | 'end';
-    this.currentPositionY = position.connectionPair.originY as 'top' | 'bottom';
+    this.currentPositionX = position.connectionPair.originX;
+    this.currentPositionY = position.connectionPair.originY;
     this.changeDetector.detectChanges(); // Take side-effects to position styles
   }
 

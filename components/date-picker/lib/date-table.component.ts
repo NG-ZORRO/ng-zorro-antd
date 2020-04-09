@@ -159,7 +159,6 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
           ((Array.isArray(this.selectedValue) && this.selectedValue.length > 0) || (this.hoverValue && this.hoverValue.length > 0)) &&
           date.isSameMonth(this.activeDate)
         ) {
-          // const rangeValue = isHover ? this.hoverValue : this.selectedValue;
           const [startHover, endHover] = this.hoverValue;
           const [startSelected, endSelected] = this.selectedValue;
 
@@ -177,21 +176,28 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
             cell.isInSelectedRange = true;
           }
 
-          // Hover
-          if (startHover?.isSameDay(date)) {
-            cell.isHoverStartDate = true;
-          }
-
-          if (endHover) {
+          if (startHover && endHover) {
+            // Hover
+            if (startHover.isSameDay(date)) {
+              cell.isHoverStartDate = true;
+            }
+            if (endHover.isSameDay(date)) {
+              cell.isHoverEndDate = true;
+            }
             if (date.isLastDayOfMonth()) {
               cell.isLastDayOfMonth = true;
             }
             if (date.isFirstDayOfMonth()) {
               cell.isFirstDayOfMonth = true;
             }
-            if (endHover.isSameDay(date)) {
-              cell.isHoverEndDate = true;
-            }
+          }
+
+          if (startSelected && !endSelected) {
+            cell.isStartSingle = true;
+          }
+
+          if (!startSelected && endSelected) {
+            cell.isEndSingle = true;
           }
 
           if (date.isAfterDay(startHover) && date.isBeforeDay(endHover)) {
@@ -233,6 +239,8 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
       [`ant-picker-cell-in-range`]: !!cell.isInSelectedRange,
       [`ant-picker-cell-range-start`]: !!cell.isSelectedStartDate,
       [`ant-picker-cell-range-end`]: !!cell.isSelectedEndDate,
+      [`ant-picker-cell-range-start-single`]: !!cell.isStartSingle,
+      [`ant-picker-cell-range-end-single`]: !!cell.isEndSingle,
       [`ant-picker-cell-range-hover`]: !!cell.isInHoverRange,
       [`ant-picker-cell-range-hover-start`]: !!cell.isHoverStartDate,
       [`ant-picker-cell-range-hover-end`]: !!cell.isHoverEndDate,

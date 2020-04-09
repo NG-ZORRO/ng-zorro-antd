@@ -48,6 +48,8 @@ export interface DayCell extends DateCell {
   isInSelectedRange?: boolean;
   isLastDayOfMonth?: boolean;
   isFirstDayOfMonth?: boolean;
+  isStartSingle?: boolean;
+  isEndSingle?: boolean;
 }
 
 export interface DecadeCell extends DateCell {
