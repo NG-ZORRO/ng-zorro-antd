@@ -391,7 +391,6 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   selectHour(hour: { index: number; disabled: boolean }): void {
     this.time.setHours(hour.index, hour.disabled);
-    this.scrollHour();
     if (!!this._disabledMinutes) {
       this.buildMinutes();
     }
@@ -402,7 +401,6 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   selectMinute(minute: { index: number; disabled: boolean }): void {
     this.time.setMinutes(minute.index, minute.disabled);
-    this.scrollMinute();
     if (!!this._disabledSeconds) {
       this.buildSeconds();
     }
@@ -410,12 +408,10 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   selectSecond(second: { index: number; disabled: boolean }): void {
     this.time.setSeconds(second.index, second.disabled);
-    this.scrollSecond();
   }
 
   select12Hours(value: { index: number; value: string }): void {
     this.time.setSelected12Hours(value.value);
-    this.scroll12Hours();
     if (!!this._disabledHours) {
       this.buildHours();
     }
@@ -486,6 +482,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   protected changed(): void {
     if (this.onChange) {
       this.onChange(this.time.value!);
+      this.scrollToTime();
     }
   }
 
