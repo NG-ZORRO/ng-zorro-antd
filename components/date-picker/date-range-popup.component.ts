@@ -284,14 +284,15 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
         selectedValue[1] = value;
       }
 
-      if (!this.isAllowed(selectedValue)) {
-        return;
-      }
-
       selectedValue = sortRangeValue(selectedValue);
       this.hoverValue = selectedValue;
       this.datePickerService.setValue(selectedValue);
       this.datePickerService.setActiveDate(selectedValue, !this.showTime);
+      this.datePickerService.inputPartChange$.next();
+
+      if (!this.isAllowed(selectedValue)) {
+        return;
+      }
 
       if (emitValue) {
         // If the other input has value
@@ -305,16 +306,17 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
         }
       }
     } else {
+      this.datePickerService.setValue(value);
+      this.datePickerService.setActiveDate(value, !this.showTime);
+      this.datePickerService.inputPartChange$.next();
+
       if (!this.isAllowed(value)) {
         return;
       }
-      this.datePickerService.setValue(value);
-      this.datePickerService.setActiveDate(value, !this.showTime);
       if (emitValue) {
         this.datePickerService.emitValue$.next();
       }
     }
-    this.datePickerService.inputPartChange$.next();
   }
 
   getPanelMode(panelMode: PanelMode | PanelMode[], partType?: RangePartType): PanelMode {
