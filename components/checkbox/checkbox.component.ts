@@ -24,7 +24,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzCheckboxWrapperComponent } from './checkbox-wrapper.component';
 
@@ -70,6 +70,11 @@ import { NzCheckboxWrapperComponent } from './checkbox-wrapper.component';
   }
 })
 export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDestroy, AfterViewInit {
+  static ngAcceptInputType_nzAutoFocus: BooleanInput;
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzIndeterminate: BooleanInput;
+  static ngAcceptInputType_nzChecked: BooleanInput;
+
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
   @ViewChild('inputElement', { static: true }) private inputElement: ElementRef;

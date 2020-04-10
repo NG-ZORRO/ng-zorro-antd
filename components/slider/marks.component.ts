@@ -7,7 +7,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
-import { NgStyleInterface } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzDisplayedMark, NzExtendedMark, NzMark, NzMarkObj } from './typings';
@@ -32,6 +32,9 @@ import { NzDisplayedMark, NzExtendedMark, NzMark, NzMarkObj } from './typings';
   `
 })
 export class NzSliderMarksComponent implements OnChanges {
+  static ngAcceptInputType_vertical: BooleanInput;
+  static ngAcceptInputType_included: BooleanInput;
+
   @Input() lowerBound: number | null = null;
   @Input() upperBound: number | null = null;
   @Input() marksArray: NzExtendedMark[];

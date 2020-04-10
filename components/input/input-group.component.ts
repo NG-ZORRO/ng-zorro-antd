@@ -18,7 +18,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { NgClassType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgClassType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzInputDirective } from './input.directive';
 
@@ -86,6 +86,9 @@ import { NzInputDirective } from './input.directive';
   }
 })
 export class NzInputGroupComponent implements AfterContentInit, OnChanges {
+  static ngAcceptInputType_nzSearch: BooleanInput;
+  static ngAcceptInputType_nzCompact: BooleanInput;
+
   @ContentChildren(NzInputDirective) listOfNzInputDirective: QueryList<NzInputDirective>;
   @Input() nzAddOnBeforeIcon: NgClassType;
   @Input() nzAddOnAfterIcon: NgClassType;

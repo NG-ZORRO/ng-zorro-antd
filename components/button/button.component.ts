@@ -22,6 +22,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzIconDirective } from 'ng-zorro-antd/icon';
@@ -62,6 +63,12 @@ const NZ_CONFIG_COMPONENT_NAME = 'button';
   }
 })
 export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, AfterContentInit {
+  static ngAcceptInputType_nzBlock: BooleanInput;
+  static ngAcceptInputType_nzGhost: BooleanInput;
+  static ngAcceptInputType_nzSearch: BooleanInput;
+  static ngAcceptInputType_nzLoading: BooleanInput;
+  static ngAcceptInputType_nzDanger: BooleanInput;
+
   @ContentChild(NzIconDirective, { read: ElementRef }) nzIconDirectiveElement: ElementRef;
   @Input() @InputBoolean() nzBlock: boolean = false;
   @Input() @InputBoolean() nzGhost: boolean = false;

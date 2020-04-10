@@ -29,7 +29,7 @@ import {
 } from '@angular/core';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { CompareWith, NzDropDownPosition, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, CompareWith, NzDropDownPosition, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { defer, merge, Observable, Subscription } from 'rxjs';
 import { filter, switchMap, take } from 'rxjs/operators';
@@ -78,6 +78,9 @@ export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | n
   animations: [slideMotion]
 })
 export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit, OnDestroy {
+  static ngAcceptInputType_nzDefaultActiveFirstOption: BooleanInput;
+  static ngAcceptInputType_nzBackfill: BooleanInput;
+
   @Input() nzWidth: number;
   @Input() nzOverlayClassName = '';
   @Input() nzOverlayStyle: { [key: string]: string } = {};

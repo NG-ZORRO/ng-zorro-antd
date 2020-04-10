@@ -27,6 +27,7 @@ import {
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 
 import { NzFormatBeforeDropEvent, NzFormatEmitEvent, NzTreeBaseService, NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -101,6 +102,15 @@ import { takeUntil } from 'rxjs/operators';
   }
 })
 export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
+  static ngAcceptInputType_nzShowLine: BooleanInput;
+  static ngAcceptInputType_nzShowExpand: BooleanInput;
+  static ngAcceptInputType_nzCheckable: BooleanInput;
+  static ngAcceptInputType_nzAsyncData: BooleanInput;
+  static ngAcceptInputType_nzHideUnMatched: BooleanInput;
+  static ngAcceptInputType_nzNoAnimation: BooleanInput;
+  static ngAcceptInputType_nzSelectMode: BooleanInput;
+  static ngAcceptInputType_nzShowIcon: BooleanInput;
+
   /**
    * for global property
    */

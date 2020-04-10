@@ -9,6 +9,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, ViewEncapsulation } from '@angular/core';
 
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -22,9 +23,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'collapse';
   exportAs: 'nzCollapse',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  template: `
-    <ng-content></ng-content>
-  `,
+  template: ` <ng-content></ng-content> `,
   host: {
     '[class.ant-collapse]': 'true',
     '[class.ant-collapse-icon-position-left]': `nzExpandIconPosition === 'left'`,
@@ -33,6 +32,9 @@ const NZ_CONFIG_COMPONENT_NAME = 'collapse';
   }
 })
 export class NzCollapseComponent implements OnDestroy {
+  static ngAcceptInputType_nzAccordion: BooleanInput;
+  static ngAcceptInputType_nzBordered: BooleanInput;
+
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzAccordion: boolean;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzBordered: boolean;
   @Input() nzExpandIconPosition: 'left' | 'right' = 'left';

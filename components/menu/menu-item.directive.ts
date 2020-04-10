@@ -20,6 +20,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/router';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { combineLatest, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -42,6 +43,11 @@ import { NzSubmenuService } from './submenu.service';
   }
 })
 export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterContentInit {
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzSelected: BooleanInput;
+  static ngAcceptInputType_nzMatchRouterExact: BooleanInput;
+  static ngAcceptInputType_nzMatchRouter: BooleanInput;
+
   private destroy$ = new Subject();
   level = this.nzSubmenuService ? this.nzSubmenuService.level + 1 : 1;
   selected$ = new Subject<boolean>();

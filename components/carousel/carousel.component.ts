@@ -32,7 +32,7 @@ import {
 } from '@angular/core';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzDragService, NzResizeService } from 'ng-zorro-antd/core/services';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -97,6 +97,12 @@ const NZ_CONFIG_COMPONENT_NAME = 'carousel';
   }
 })
 export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges {
+  static ngAcceptInputType_nzEnableSwipe: BooleanInput;
+  static ngAcceptInputType_nzDots: BooleanInput;
+  static ngAcceptInputType_nzAutoPlay: BooleanInput;
+  static ngAcceptInputType_nzAutoPlaySpeed: NumberInput;
+  static ngAcceptInputType_nzTransitionSpeed: NumberInput;
+
   @ContentChildren(NzCarouselContentDirective) carouselContents: QueryList<NzCarouselContentDirective>;
 
   @ViewChild('slickList', { static: false }) slickList: ElementRef;

@@ -23,6 +23,7 @@ import {
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { gridResponsiveMap, NzBreakpointEnum, NzBreakpointService } from 'ng-zorro-antd/core/services';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { merge, Subject } from 'rxjs';
@@ -132,6 +133,9 @@ const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
   }
 })
 export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterContentInit {
+  static ngAcceptInputType_nzBordered: BooleanInput;
+  static ngAcceptInputType_nzColon: BooleanInput;
+
   @ContentChildren(NzDescriptionsItemComponent) items: QueryList<NzDescriptionsItemComponent>;
 
   @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) nzBordered: boolean;

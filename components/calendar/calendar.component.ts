@@ -23,6 +23,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { CandyDate } from 'ng-zorro-antd/core/time';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import {
   NzDateCellDirective as DateCell,
@@ -87,6 +88,8 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => NzCalendarComponent), multi: true }]
 })
 export class NzCalendarComponent implements ControlValueAccessor, OnChanges {
+  static ngAcceptInputType_nzFullscreen: BooleanInput;
+
   activeDate: CandyDate = new CandyDate();
   prefixCls: string = 'ant-picker-calendar';
 

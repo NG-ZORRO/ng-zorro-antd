@@ -28,7 +28,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { CandyDate, cloneDate, CompatibleValue } from 'ng-zorro-antd/core/time';
-import { FunctionProp, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, FunctionProp, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzDatePickerI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
@@ -62,6 +62,13 @@ const POPUP_STYLE_PATCH = { position: 'relative' }; // Aim to override antd's st
   ]
 })
 export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, ControlValueAccessor {
+  static ngAcceptInputType_nzAllowClear: BooleanInput;
+  static ngAcceptInputType_nzAutoFocus: BooleanInput;
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzOpen: BooleanInput;
+  static ngAcceptInputType_nzShowToday: BooleanInput;
+  static ngAcceptInputType_nzShowTime: BooleanInput;
+
   isRange: boolean = false; // Indicate whether the value is a range value
   showWeek: boolean = false; // Should show as week picker
   focused: boolean = false;

@@ -8,6 +8,7 @@
 
 import { Platform } from '@angular/cdk/platform';
 import { AfterViewInit, Directive, ElementRef, EventEmitter, Input, NgZone, OnDestroy, Output, Renderer2 } from '@angular/core';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 
 import { ensureInBounds, InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
@@ -36,6 +37,9 @@ export interface NzResizeEvent {
   }
 })
 export class NzResizableDirective implements AfterViewInit, OnDestroy {
+  static ngAcceptInputType_nzLockAspectRatio: BooleanInput;
+  static ngAcceptInputType_nzPreview: BooleanInput;
+
   @Input() nzBounds: 'window' | 'parent' | ElementRef<HTMLElement> = 'parent';
   @Input() nzMaxHeight: number;
   @Input() nzMaxWidth: number;

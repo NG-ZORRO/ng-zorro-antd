@@ -28,7 +28,7 @@ import {
 } from '@angular/core';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, measureScrollbar } from 'ng-zorro-antd/core/util';
 import { PaginationItemRenderContext } from 'ng-zorro-antd/pagination';
 import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
@@ -122,6 +122,16 @@ const NZ_CONFIG_COMPONENT_NAME = 'table';
   }
 })
 export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
+  static ngAcceptInputType_nzFrontPagination: BooleanInput;
+  static ngAcceptInputType_nzTemplateMode: BooleanInput;
+  static ngAcceptInputType_nzShowPagination: BooleanInput;
+  static ngAcceptInputType_nzLoading: BooleanInput;
+  static ngAcceptInputType_nzBordered: BooleanInput;
+  static ngAcceptInputType_nzShowSizeChanger: BooleanInput;
+  static ngAcceptInputType_nzHideOnSinglePage: BooleanInput;
+  static ngAcceptInputType_nzShowQuickJumper: BooleanInput;
+  static ngAcceptInputType_nzSimple: BooleanInput;
+
   @Input() nzTableLayout: NzTableLayout = 'auto';
   @Input() nzShowTotal: TemplateRef<{ $implicit: number; range: [number, number] }> | null = null;
   @Input() nzItemRender: TemplateRef<PaginationItemRenderContext> | null = null;

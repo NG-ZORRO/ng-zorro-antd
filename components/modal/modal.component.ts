@@ -25,7 +25,7 @@ import {
 
 import { NzButtonType } from 'ng-zorro-antd/button';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Observable } from 'rxjs';
 
@@ -45,6 +45,17 @@ const NZ_CONFIG_COMPONENT_NAME = 'modal';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges, NzModalLegacyAPI<T, R> {
+  static ngAcceptInputType_nzMask: BooleanInput;
+  static ngAcceptInputType_nzMaskClosable: BooleanInput;
+  static ngAcceptInputType_nzVisible: BooleanInput;
+  static ngAcceptInputType_nzClosable: BooleanInput;
+  static ngAcceptInputType_nzOkLoading: BooleanInput;
+  static ngAcceptInputType_nzOkDisabled: BooleanInput;
+  static ngAcceptInputType_nzCancelDisabled: BooleanInput;
+  static ngAcceptInputType_nzCancelLoading: BooleanInput;
+  static ngAcceptInputType_nzKeyboard: BooleanInput;
+  static ngAcceptInputType_nzNoAnimation: BooleanInput;
+
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzMask: boolean;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzMaskClosable: boolean;
   @Input() @InputBoolean() nzVisible: boolean = false;

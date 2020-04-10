@@ -34,7 +34,7 @@ import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { DEFAULT_CASCADER_POSITIONS } from 'ng-zorro-antd/core/overlay';
-import { NgClassType, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgClassType, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toArray } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
@@ -190,6 +190,13 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
   }
 })
 export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit, OnDestroy, ControlValueAccessor {
+  static ngAcceptInputType_nzShowInput: BooleanInput;
+  static ngAcceptInputType_nzShowArrow: BooleanInput;
+  static ngAcceptInputType_nzAllowClear: BooleanInput;
+  static ngAcceptInputType_nzAutoFocus: BooleanInput;
+  static ngAcceptInputType_nzChangeOnSelect: BooleanInput;
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+
   @ViewChild('input', { static: false }) input: ElementRef;
   @ViewChild('menu', { static: false }) menu: ElementRef;
   @ViewChild(CdkConnectedOverlay, { static: false }) overlay: CdkConnectedOverlay;
