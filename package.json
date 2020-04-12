@@ -86,6 +86,7 @@
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.2",
     "karma-junit-reporter": "^2.0.1",
+    "karma-sabarivka-reporter": "^3.2.0",
     "karma-spec-reporter": "0.0.32",
     "karma-viewport": "^1.0.4",
     "less": "^3.10.3",

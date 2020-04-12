@@ -14,6 +14,7 @@ module.exports = function(config) {
       require('karma-chrome-launcher'),
       require('karma-spec-reporter'),
       require('karma-jasmine-html-reporter'),
+      require('karma-sabarivka-reporter'),
       require('karma-coverage-istanbul-reporter'),
       require('karma-junit-reporter'),
       require('@angular-devkit/build-angular/plugins/karma'),
@@ -26,12 +27,15 @@ module.exports = function(config) {
       clearContext: true, // leave Jasmine Spec Runner output visible in browser
       ...tags && { args: [tags] }
     },
+    coverageReporter: {
+      include: 'components/**/!(*.spec|*.module|*.conf|environment*|main|test).ts',
+    },
     coverageIstanbulReporter: {
       dir: require('path').join(__dirname, '../coverage-report'),
       reports: ['html', 'lcovonly', 'text-summary', 'cobertura'],
       fixWebpackSourcePaths: true
     },
-    reporters: ['progress', 'kjhtml', 'spec', 'junit'],
+    reporters: ['progress', 'kjhtml', 'spec', 'junit', 'sabarivka'],
     junitReporter: {
       outputDir: '../junit'
     },
