@@ -131,12 +131,11 @@ We have some official themes, try them out and give us some feedback!
 
 ### Method 1
 
-include `ng-zorro-antd/style/dark.less` or `ng-zorro-antd/style/compact.less` in the style file to override theme variables.
+Import `ng-zorro-antd.dark.less` or `ng-zorro-antd.compact.less` in the style file.
 
 ```less
-@import "ng-zorro-antd/ng-zorro-antd.less";
-@import "~ng-zorro-antd/style/dark.less";    // Introduce the official dark less style file
-@import "~ng-zorro-antd/style/compact.less"; // Introduce the official compact less style file
+@import "~ng-zorro-antd/ng-zorro-antd.dark.less";    // Import the official dark less style file
+@import "~ng-zorro-antd/ng-zorro-antd.compact.less"; // Import the official compact less style file
 ```
 
 ### Method 2

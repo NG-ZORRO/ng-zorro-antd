@@ -131,12 +131,11 @@ module.exports = {
 
 ### 方式一
 
-是在样式文件引入 `ng-zorro-antd/style/dark.less` 或 `ng-zorro-antd/style/compact.less` 覆盖主题变量。
+是在样式文件全量引入 `ng-zorro-antd.dark.less` 或 `ng-zorro-antd.compact.less` 覆盖主题变量。
 
 ```less
-@import "ng-zorro-antd/ng-zorro-antd.less";
-@import "~ng-zorro-antd/style/dark.less";    // 引入官方提供的暗色 less 样式文件
-@import "~ng-zorro-antd/style/compact.less"; // 引入官方提供的紧凑 less 样式文件
+@import "~ng-zorro-antd/ng-zorro-antd.dark.less";    // 引入官方提供的暗色 less 样式文件
+@import "~ng-zorro-antd/ng-zorro-antd.compact.less"; // 引入官方提供的紧凑 less 样式文件
 ```
 
 ### 方式二
