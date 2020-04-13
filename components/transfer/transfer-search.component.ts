@@ -21,7 +21,22 @@ import {
   selector: '[nz-transfer-search]',
   exportAs: 'nzTransferSearch',
   preserveWhitespaces: false,
-  templateUrl: './nz-transfer-search.component.html',
+  template: `
+    <input
+      [(ngModel)]="value"
+      (ngModelChange)="_handle()"
+      [disabled]="disabled"
+      [placeholder]="placeholder"
+      class="ant-input ant-transfer-list-search"
+      [ngClass]="{ 'ant-input-disabled': disabled }"
+    />
+    <a *ngIf="value && value.length > 0; else def" class="ant-transfer-list-search-action" (click)="_clear()">
+      <i nz-icon nzType="close-circle"></i>
+    </a>
+    <ng-template #def>
+      <span class="ant-transfer-list-search-action"><i nz-icon nzType="search"></i></span>
+    </ng-template>
+  `,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })

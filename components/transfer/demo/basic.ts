@@ -9,6 +9,7 @@ import { TransferItem } from 'ng-zorro-antd/transfer';
       [nzDisabled]="disabled"
       [nzTitles]="['Source', 'Target']"
       (nzSelectChange)="select($event)"
+      [nzSelectedKeys]="['0', '2']"
       (nzChange)="change($event)"
     >
     </nz-transfer>
