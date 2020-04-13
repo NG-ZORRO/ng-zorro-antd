@@ -30,13 +30,68 @@ import { Observable, of, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { TransferCanMove, TransferChange, TransferDirection, TransferItem, TransferSearchChange, TransferSelectChange } from './interface';
-import { NzTransferListComponent } from './nz-transfer-list.component';
+import { NzTransferListComponent } from './transfer-list.component';
 
 @Component({
   selector: 'nz-transfer',
   exportAs: 'nzTransfer',
   preserveWhitespaces: false,
-  templateUrl: './nz-transfer.component.html',
+  template: `
+    <nz-transfer-list
+      class="ant-transfer-list"
+      [ngStyle]="nzListStyle"
+      data-direction="left"
+      [titleText]="nzTitles[0]"
+      [showSelectAll]="nzShowSelectAll"
+      [dataSource]="leftDataSource"
+      [filter]="leftFilter"
+      [filterOption]="nzFilterOption"
+      (filterChange)="handleFilterChange($event)"
+      [renderList]="nzRenderList[0]"
+      [render]="nzRender"
+      [disabled]="nzDisabled"
+      [showSearch]="nzShowSearch"
+      [searchPlaceholder]="nzSearchPlaceholder || locale.searchPlaceholder"
+      [notFoundContent]="nzNotFoundContent"
+      [itemUnit]="nzItemUnit || locale.itemUnit"
+      [itemsUnit]="nzItemsUnit || locale.itemsUnit"
+      [footer]="nzFooter"
+      (handleSelect)="handleLeftSelect($event)"
+      (handleSelectAll)="handleLeftSelectAll($event)"
+    >
+    </nz-transfer-list>
+    <div class="ant-transfer-operation">
+      <button nz-button (click)="moveToLeft()" [disabled]="nzDisabled || !leftActive" [nzType]="'primary'" [nzSize]="'small'">
+        <i nz-icon nzType="left"></i><span *ngIf="nzOperations[1]">{{ nzOperations[1] }}</span>
+      </button>
+      <button nz-button (click)="moveToRight()" [disabled]="nzDisabled || !rightActive" [nzType]="'primary'" [nzSize]="'small'">
+        <i nz-icon nzType="right"></i><span *ngIf="nzOperations[0]">{{ nzOperations[0] }}</span>
+      </button>
+    </div>
+    <nz-transfer-list
+      class="ant-transfer-list"
+      [ngStyle]="nzListStyle"
+      data-direction="right"
+      [titleText]="nzTitles[1]"
+      [showSelectAll]="nzShowSelectAll"
+      [dataSource]="rightDataSource"
+      [filter]="rightFilter"
+      [filterOption]="nzFilterOption"
+      (filterChange)="handleFilterChange($event)"
+      [renderList]="nzRenderList[1]"
+      [render]="nzRender"
+      [disabled]="nzDisabled"
+      [showSearch]="nzShowSearch"
+      [searchPlaceholder]="nzSearchPlaceholder || locale.searchPlaceholder"
+      [notFoundContent]="nzNotFoundContent"
+      [itemUnit]="nzItemUnit || locale.itemUnit"
+      [itemsUnit]="nzItemsUnit || locale.itemsUnit"
+      [footer]="nzFooter"
+      (handleSelect)="handleRightSelect($event)"
+      (handleSelectAll)="handleRightSelectAll($event)"
+    >
+    </nz-transfer-list>
+  `,
   host: {
     '[class]': 'hostClassMap'
   },
@@ -72,6 +127,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzSearchPlaceholder: string;
   @Input() nzNotFoundContent: string;
   @Input() nzTargetKeys: string[] = [];
+  @Input() nzSelectedKeys: string[] = [];
 
   // events
   @Output() readonly nzChange = new EventEmitter<TransferChange>();
@@ -203,6 +259,18 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     this.moveToRight();
   }
 
+  private handleNzSelectedKeys(): void {
+    const keys = toArray(this.nzSelectedKeys);
+    this.nzDataSource.forEach(e => {
+      if (keys.indexOf(e.key) !== -1) {
+        e.checked = true;
+      }
+    });
+    const term = (ld: TransferItem) => ld.disabled === false && ld.checked === true;
+    this.rightActive = this.leftDataSource.some(term);
+    this.leftActive = this.rightDataSource.some(term);
+  }
+
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Transfer');
@@ -222,6 +290,9 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
     }
     if (changes.nzTargetKeys) {
       this.handleNzTargetKeys();
+    }
+    if (changes.nzSelectedKeys) {
+      this.handleNzSelectedKeys();
     }
   }
 
