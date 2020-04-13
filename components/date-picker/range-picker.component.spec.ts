@@ -251,7 +251,7 @@ describe('NzRangePickerComponent', () => {
     it('should support nzSeparator', fakeAsync(() => {
       fixtureInstance.nzSeparator = '→';
       fixture.detectChanges();
-      expect(fixture.debugElement.query(By.css(`.ant-picker-separator`)).nativeElement.textContent.trim()).toBe('→');
+      expect(fixture.debugElement.query(By.css(`.ant-picker-range-separator`)).nativeElement.textContent.trim()).toBe('→');
     }));
 
     it('should support nzOnCalendarChange', fakeAsync(() => {
@@ -543,6 +543,51 @@ describe('NzRangePickerComponent', () => {
       expect(+queryFromOverlay('.ant-picker-time-panel-column:nth-child(3) li:first-child').textContent!.trim()).toBe(2);
     }));
 
+    it('should focus to invalid input when sorted', fakeAsync(() => {
+      const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');
+      fixtureInstance.modelValue = [new Date('2018-11-11 01:00:00'), new Date('2018-12-12 00:00:00')];
+      fixtureInstance.nzShowTime = true;
+      fixtureInstance.nzDisabledTime = (_current: Date, partial: 'start' | 'end') => {
+        return partial === 'start'
+          ? {
+              nzDisabledHours: () => [0]
+            }
+          : {
+              nzDisabledHours: () => [1]
+            };
+      };
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      const leftInput = getPickerInput(fixture.debugElement);
+      const rightInput = getRangePickerRightInput(fixture.debugElement);
+      const okButton = queryFromOverlay('.ant-picker-ok > button');
+      // will sort value
+      typeInElement('2019-11-11 01:00:00', leftInput);
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(leftInput.value.trim()).toBe('2018-12-12 00:00:00');
+      expect(okButton.getAttribute('disabled')).not.toBe(null);
+
+      const newValidDateString = ['2018-12-12 01:00:00', '2019-11-11 00:00:00'];
+      typeInElement(newValidDateString[0], leftInput);
+      fixture.detectChanges();
+      dispatchMouseEvent(okButton, 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(rightInput === document.activeElement).toBe(true);
+
+      typeInElement(newValidDateString[1], rightInput);
+      fixture.detectChanges();
+      dispatchMouseEvent(okButton, 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(nzOnChange).toHaveBeenCalledWith([new Date(newValidDateString[0]), new Date(newValidDateString[1])]);
+    }));
+
     it('should support nzRenderExtraFooter', fakeAsync(() => {
       fixtureInstance.nzRenderExtraFooter = () => fixtureInstance.tplExtraFooter;
       fixture.detectChanges();
@@ -695,6 +740,7 @@ describe('NzRangePickerComponent', () => {
       typeInElement(newDateString[0], leftInput);
       fixture.detectChanges();
       typeInElement(newDateString[1], rightInput);
+      fixture.detectChanges();
       rightInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
       fixture.detectChanges();
       tick(500);
