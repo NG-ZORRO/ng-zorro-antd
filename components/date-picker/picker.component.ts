@@ -76,9 +76,11 @@ import { PREFIX_CLASS } from './util';
         <ng-container *ngTemplateOutlet="tplRangeInput; context: { partType: 'left' }"></ng-container>
       </div>
       <div #separatorElement class="{{ prefixCls }}-range-separator">
-        <ng-container *ngIf="separator; else defaultSeparator">{{ separator }}</ng-container>
+        <span class="{{ prefixCls }}-separator">
+          <ng-container *ngIf="separator; else defaultSeparator">{{ separator }}</ng-container>
+        </span>
         <ng-template #defaultSeparator>
-          <span class="{{ prefixCls }}-separator"></span>
+          <i nz-icon nzType="swap-right" nzTheme="outline"></i>
         </ng-template>
       </div>
       <div class="{{ prefixCls }}-input">
@@ -171,7 +173,8 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay: CdkConnectedOverlay;
   @ViewChild('separatorElement', { static: false }) separatorElement: ElementRef;
-  @ViewChildren('rangePickerInput') rangePickerInputs: QueryList<ElementRef>;
+  @ViewChild('pickerInput', { static: false }) pickerInput: ElementRef<HTMLInputElement>;
+  @ViewChildren('rangePickerInput') rangePickerInputs: QueryList<ElementRef<HTMLInputElement>>;
 
   @ContentChild(DateRangePopupComponent) panel: DateRangePopupComponent;
 
@@ -231,22 +234,23 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     @Inject(DOCUMENT) doc: NzSafeAny
   ) {
     this.document = doc;
-    this.origin = new CdkOverlayOrigin(elementRef);
+    this.origin = new CdkOverlayOrigin(this.elementRef);
     this.updateInputValue();
   }
 
   ngOnInit(): void {
     this.inputSize = Math.max(10, this.format.length) + 2;
+
+    this.datePickerService.valueChange$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.updateInputValue();
+      this.changeDetector.markForCheck();
+    });
   }
 
   ngAfterViewInit(): void {
     if (this.autoFocus) {
       this.focus();
     }
-    this.datePickerService.valueChange$.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.updateInputValue();
-      this.changeDetector.detectChanges();
-    });
 
     if (this.isRange) {
       this.resetInputWidthAndArrowLeft();
@@ -293,10 +297,11 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   getInput(partType?: RangePartType): HTMLInputElement {
-    const index = partType === 'left' ? 0 : 1;
     return this.isRange
-      ? (this.elementRef.nativeElement as HTMLElement).querySelectorAll('input')[index]!
-      : (this.elementRef.nativeElement as HTMLElement).querySelector('input')!;
+      ? partType === 'left'
+        ? this.rangePickerInputs.first.nativeElement
+        : this.rangePickerInputs.last.nativeElement
+      : this.pickerInput.nativeElement;
   }
 
   focus(): void {

@@ -6,13 +6,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { CandyDate, cloneDate, CompatibleValue, normalizeRangeValue } from 'ng-zorro-antd/core/time';
 import { ReplaySubject, Subject } from 'rxjs';
 import { CompatibleDate, RangePartType } from './standard-types';
 
 @Injectable()
-export class DatePickerService {
+export class DatePickerService implements OnDestroy {
   initialValue: CompatibleValue;
   value: CompatibleValue;
   activeDate: CompatibleValue;
@@ -64,5 +64,11 @@ export class DatePickerService {
 
   getActiveIndex(part: RangePartType = this.activeInput): number {
     return { left: 0, right: 1 }[part];
+  }
+
+  ngOnDestroy(): void {
+    this.valueChange$.complete();
+    this.emitValue$.complete();
+    this.inputPartChange$.complete();
   }
 }

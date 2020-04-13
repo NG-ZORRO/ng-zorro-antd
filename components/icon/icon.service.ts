@@ -50,6 +50,7 @@ import {
   RightOutline,
   SearchOutline,
   StarFill,
+  SwapRightOutline,
   UploadOutline,
   UpOutline
 } from '@ant-design/icons-angular/icons';
@@ -105,7 +106,8 @@ export const NZ_ICONS_USED_BY_ZORRO: IconDefinition[] = [
   SearchOutline,
   StarFill,
   UploadOutline,
-  UpOutline
+  UpOutline,
+  SwapRightOutline
 ];
 
 /**
