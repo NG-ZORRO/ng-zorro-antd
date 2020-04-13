@@ -29,7 +29,7 @@ import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 | `[nzTitle]` | title 文字 | `string \| TemplateRef<void>` | - | - |
 | `[nzSubtitle]` | subTitle 文字 | `string \| TemplateRef<void>` | - | - |
 | `[nzBackIcon]` | 自定义 back icon | `string \| TemplateRef<void>` | - | - |
-| `(nzBack)` | 返回按钮的点击事件 | `EventEmitter<void>` | 未订阅该事件时默认调用 [Location[back]](https://angular.cn/api/common/Location#back) | - |
+| `(nzBack)` | 返回按钮的点击事件 | `EventEmitter<void>` | 未订阅该事件时默认调用 [Location[back]](https://angular.cn/api/common/Location#back)（需要引入 [RouterModule](https://angular.io/api/router/RouterModule) 或者注册 [Location](https://angular.io/api/common/Location))）| - |
 
 ### Page header 组成部分
 | 元素 | 说明 |

@@ -14,6 +14,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -22,6 +23,7 @@ import {
 
 import { Location } from '@angular/common';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { PREFIX } from 'ng-zorro-antd/core/logger';
 import { NzPageHeaderBreadcrumbDirective, NzPageHeaderFooterDirective } from './page-header-cells';
 
 const NZ_CONFIG_COMPONENT_NAME = 'pageHeader';
@@ -82,7 +84,7 @@ export class NzPageHeaderComponent implements OnChanges {
 
   @ContentChild(NzPageHeaderBreadcrumbDirective, { static: false }) nzPageHeaderBreadcrumb: ElementRef<NzPageHeaderBreadcrumbDirective>;
 
-  constructor(private location: Location, public nzConfigService: NzConfigService) {}
+  constructor(@Optional() private location: Location, public nzConfigService: NzConfigService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.hasOwnProperty('nzBackIcon')) {
@@ -95,6 +97,9 @@ export class NzPageHeaderComponent implements OnChanges {
     if (this.nzBack.observers.length) {
       this.nzBack.emit();
     } else {
+      if (!this.location) {
+        throw new Error(`${PREFIX} you should import 'RouterModule' or register 'Location' if you want to use 'nzBack' default event!`);
+      }
       this.location.back();
     }
   }
