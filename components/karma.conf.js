@@ -28,7 +28,10 @@ module.exports = function(config) {
       ...tags && { args: [tags] }
     },
     coverageReporter: {
-      include: 'components/**/!(*.spec|*.module|*.conf|environment*|main|test).ts',
+      include: [
+        'components/**/!(*.spec|*.module|*.conf|environment*|main|test).ts',
+        '!components/**/demo/**'
+      ]
     },
     coverageIstanbulReporter: {
       dir: require('path').join(__dirname, '../coverage-report'),
