@@ -21,7 +21,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { CandyDate, cloneDate, CompatibleValue, normalizeRangeValue, SingleValue, sortRangeValue } from 'ng-zorro-antd/core/time';
+import { CandyDate, cloneDate, CompatibleValue, SingleValue, sortRangeValue } from 'ng-zorro-antd/core/time';
 import { FunctionProp } from 'ng-zorro-antd/core/types';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
@@ -42,49 +42,43 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
-  // TODO: comment it to pass test
   changeDetection: ChangeDetectionStrategy.OnPush,
   // tslint:disable-next-line:component-selector
   selector: 'date-range-popup',
   exportAs: 'dateRangePopup',
   template: `
-    <div
-      class="{{ prefixCls }}-dropdown {{ dropdownClassName }} {{ prefixCls }}-dropdown-placement-bottomLeft"
-      [class.ant-picker-dropdown-range]="isRange"
-      [ngStyle]="popupStyle"
-    >
-      <ng-container *ngIf="isRange; else singlePanel">
-        <div class="{{ prefixCls }}-range-wrapper {{ prefixCls }}-date-range-wrapper">
-          <div class="{{ prefixCls }}-range-arrow" [style]="datePickerService?.arrowPositionStyle"></div>
-          <div class="{{ prefixCls }}-panel-container">
-            <div class="{{ prefixCls }}-panels">
-              <ng-container *ngTemplateOutlet="tplRangePart; context: { partType: 'left' }"></ng-container>
-              <ng-container *ngTemplateOutlet="tplRangePart; context: { partType: 'right' }"></ng-container>
-            </div>
-            <ng-container *ngTemplateOutlet="tplFooter"></ng-container>
+    <ng-container *ngIf="isRange; else singlePanel">
+      <div class="{{ prefixCls }}-range-wrapper {{ prefixCls }}-date-range-wrapper">
+        <div class="{{ prefixCls }}-range-arrow" [style]="datePickerService?.arrowPositionStyle"></div>
+        <div class="{{ prefixCls }}-panel-container">
+          <div class="{{ prefixCls }}-panels">
+            <ng-container *ngTemplateOutlet="tplRangePart; context: { partType: 'left' }"></ng-container>
+            <ng-container *ngTemplateOutlet="tplRangePart; context: { partType: 'right' }"></ng-container>
           </div>
+          <ng-container *ngTemplateOutlet="tplFooter"></ng-container>
         </div>
-      </ng-container>
-      <ng-template #singlePanel>
-        <div
-          class="{{ prefixCls }}-panel-container {{ showWeek ? prefixCls + '-week-number' : '' }} {{
-            hasTimePicker ? prefixCls + '-time' : ''
-          }} {{ isRange ? prefixCls + '-range' : '' }}"
-        >
-          <div class="{{ prefixCls }}-panel" tabindex="-1">
-            <!-- Single ONLY -->
-            <ng-container *ngTemplateOutlet="tplInnerPopup"></ng-container>
-            <ng-container *ngTemplateOutlet="tplFooter"></ng-container>
-          </div>
+      </div>
+    </ng-container>
+    <ng-template #singlePanel>
+      <div
+        class="{{ prefixCls }}-panel-container {{ showWeek ? prefixCls + '-week-number' : '' }} {{
+          hasTimePicker ? prefixCls + '-time' : ''
+        }} {{ isRange ? prefixCls + '-range' : '' }}"
+      >
+        <div class="{{ prefixCls }}-panel" tabindex="-1">
+          <!-- Single ONLY -->
+          <ng-container *ngTemplateOutlet="tplInnerPopup"></ng-container>
+          <ng-container *ngTemplateOutlet="tplFooter"></ng-container>
         </div>
-      </ng-template>
-    </div>
+      </div>
+    </ng-template>
 
     <ng-template #tplInnerPopup let-partType="partType">
       <inner-popup
         *ngIf="show(partType)"
         [showWeek]="showWeek"
         [endPanelMode]="getPanelMode(endPanelMode, partType)"
+        [partType]="partType"
         [locale]="locale"
         [showTimePicker]="hasTimePicker"
         [timeOptions]="getTimeOptions(partType)"
@@ -96,8 +90,6 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
         [dateRender]="dateRender"
         [selectedValue]="datePickerService?.value"
         [hoverValue]="hoverValue"
-        [enablePrev]="enablePrevNext('prev', partType)"
-        [enableNext]="enablePrevNext('next', partType)"
         (dayHover)="onDayHover($event)"
         (selectDate)="changeValueFromSelect($event, !showTime)"
         (selectTime)="onSelectTime($event, partType)"
@@ -152,9 +144,6 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   @Input() extraFooter: TemplateRef<void> | string;
   @Input() ranges: PresetRanges;
   @Input() dateRender: FunctionProp<TemplateRef<Date> | string>;
-  @Input() popupStyle: object;
-  @Input() dropdownClassName: string;
-
   @Input() panelMode: PanelMode | PanelMode[];
   @Input() defaultPickerValue: CompatibleDate;
 
@@ -206,15 +195,20 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     const activeDate = this.datePickerService.hasValue()
       ? this.datePickerService.value
       : this.datePickerService.makeValue(this.defaultPickerValue);
-    this.datePickerService.setActiveDate(activeDate);
+    this.datePickerService.setActiveDate(activeDate, !this.showTime);
   }
 
   onClickOk(): void {
-    if (this.datePickerService.hasOnePart()) {
-      const otherPart = this.datePickerService.activeInput === 'left' ? 'right' : 'left';
-      this.datePickerService.inputPartChange$.next(otherPart);
-    } else {
+    const otherPart = this.datePickerService.activeInput === 'left' ? 'right' : 'left';
+    const selectedValue = this.datePickerService.value;
+    if (this.isAllowed(selectedValue, true)) {
       this.resultOk.emit();
+    } else {
+      if (this.isRange && this.isOneAllowed(selectedValue as CandyDate[])) {
+        this.datePickerService.inputPartChange$.next(otherPart);
+      } else {
+        this.datePickerService.inputPartChange$.next();
+      }
     }
   }
 
@@ -274,6 +268,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
       const newValue = this.overrideHms(value, this.datePickerService.value as CandyDate);
       this.datePickerService.setValue(newValue); // If not select a date currently, use today
     }
+    this.datePickerService.inputPartChange$.next();
     this.buildTimeOptions();
   }
 
@@ -289,14 +284,15 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
         selectedValue[1] = value;
       }
 
+      selectedValue = sortRangeValue(selectedValue);
+      this.hoverValue = selectedValue;
+      this.datePickerService.setValue(selectedValue);
+      this.datePickerService.setActiveDate(selectedValue, !this.showTime);
+      this.datePickerService.inputPartChange$.next();
+
       if (!this.isAllowed(selectedValue)) {
         return;
       }
-
-      this.hoverValue = selectedValue;
-      selectedValue = sortRangeValue(selectedValue); // Sort
-      this.datePickerService.setValue(selectedValue);
-      this.datePickerService.setActiveDate(selectedValue);
 
       if (emitValue) {
         // If the other input has value
@@ -310,27 +306,16 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
         }
       }
     } else {
+      this.datePickerService.setValue(value);
+      this.datePickerService.setActiveDate(value, !this.showTime);
+      this.datePickerService.inputPartChange$.next();
+
       if (!this.isAllowed(value)) {
         return;
       }
-      this.datePickerService.setValue(value);
-      this.datePickerService.setActiveDate(value);
       if (emitValue) {
         this.datePickerService.emitValue$.next();
       }
-    }
-  }
-
-  enablePrevNext(direction: 'prev' | 'next', partType?: RangePartType): boolean {
-    if (this.isRange) {
-      const [start, end] = normalizeRangeValue(this.datePickerService.activeDate as CandyDate[]);
-      const showMiddle = !start.addMonths(1).isSame(end, 'month'); // One month diff then don't show middle prev/next
-      if ((partType === 'left' && direction === 'next') || (partType === 'right' && direction === 'prev')) {
-        return showMiddle;
-      }
-      return true;
-    } else {
-      return true;
     }
   }
 
@@ -368,10 +353,9 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   };
 
   isOneAllowed(selectedValue: SingleValue[]): boolean {
-    return (
-      isAllowedDate(selectedValue[0]!, this.disabledDate, this.disabledStartTime) ||
-      isAllowedDate(selectedValue[1]!, this.disabledDate, this.disabledStartTime)
-    );
+    const index = this.datePickerService.getActiveIndex();
+    const disabledTimeArr = [this.disabledStartTime, this.disabledEndTime];
+    return isAllowedDate(selectedValue[index]!, this.disabledDate, disabledTimeArr[index]);
   }
 
   isBothAllowed(selectedValue: SingleValue[]): boolean {

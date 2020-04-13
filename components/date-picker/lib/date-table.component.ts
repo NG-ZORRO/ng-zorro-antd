@@ -83,10 +83,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
 
   private changeValueFromInside(value: CandyDate): void {
     // Only change date not change time
-    this.activeDate = this.activeDate
-      .setYear(value.getYear())
-      .setMonth(value.getMonth())
-      .setDate(value.getDate());
+    this.activeDate = this.activeDate.setYear(value.getYear()).setMonth(value.getMonth()).setDate(value.getDate());
     this.valueChange.emit(this.activeDate);
 
     if (!this.activeDate.isSameMonth(this.value)) {
@@ -113,12 +110,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
   }
 
   private getVeryShortWeekFormat(): string {
-    return this.i18n
-      .getLocaleId()
-      .toLowerCase()
-      .indexOf('zh') === 0
-      ? 'EEEEE'
-      : 'EEEEEE'; // Use extreme short for chinese
+    return this.i18n.getLocaleId().toLowerCase().indexOf('zh') === 0 ? 'EEEEE' : 'EEEEEE'; // Use extreme short for chinese
   }
 
   makeBodyRows(): DateBodyRow[] {
@@ -167,7 +159,6 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
           ((Array.isArray(this.selectedValue) && this.selectedValue.length > 0) || (this.hoverValue && this.hoverValue.length > 0)) &&
           date.isSameMonth(this.activeDate)
         ) {
-          // const rangeValue = isHover ? this.hoverValue : this.selectedValue;
           const [startHover, endHover] = this.hoverValue;
           const [startSelected, endSelected] = this.selectedValue;
 
@@ -185,13 +176,31 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
             cell.isInSelectedRange = true;
           }
 
-          // Hover
-          if (startHover && startHover.isSameDay(date)) {
-            cell.isHoverStartDate = true;
+          if (startHover && endHover) {
+            // Hover
+            if (startHover.isSameDay(date)) {
+              cell.isHoverStartDate = true;
+            }
+            if (endHover.isSameDay(date)) {
+              cell.isHoverEndDate = true;
+            }
+            if (date.isLastDayOfMonth()) {
+              cell.isLastDayOfMonth = true;
+            }
+            if (date.isFirstDayOfMonth()) {
+              cell.isFirstDayOfMonth = true;
+            }
           }
-          if (endHover && endHover.isSameDay(date)) {
-            cell.isHoverEndDate = true;
-          } else if (date.isAfterDay(startHover) && date.isBeforeDay(endHover)) {
+
+          if (startSelected && !endSelected) {
+            cell.isStartSingle = true;
+          }
+
+          if (!startSelected && endSelected) {
+            cell.isEndSingle = true;
+          }
+
+          if (date.isAfterDay(startHover) && date.isBeforeDay(endHover)) {
             cell.isInHoverRange = true;
           }
         } else if (date.isSameDay(this.value)) {
@@ -199,7 +208,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
           row.isActive = true;
         }
 
-        if (this.disabledDate && this.disabledDate(date.nativeDate)) {
+        if (this.disabledDate?.(date.nativeDate)) {
           cell.isDisabled = true;
         }
 
@@ -230,9 +239,13 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
       [`ant-picker-cell-in-range`]: !!cell.isInSelectedRange,
       [`ant-picker-cell-range-start`]: !!cell.isSelectedStartDate,
       [`ant-picker-cell-range-end`]: !!cell.isSelectedEndDate,
+      [`ant-picker-cell-range-start-single`]: !!cell.isStartSingle,
+      [`ant-picker-cell-range-end-single`]: !!cell.isEndSingle,
       [`ant-picker-cell-range-hover`]: !!cell.isInHoverRange,
       [`ant-picker-cell-range-hover-start`]: !!cell.isHoverStartDate,
-      [`ant-picker-cell-range-hover-end`]: !!cell.isHoverEndDate
+      [`ant-picker-cell-range-hover-end`]: !!cell.isHoverEndDate,
+      [`ant-picker-cell-range-hover-edge-start`]: !!cell.isFirstDayOfMonth,
+      [`ant-picker-cell-range-hover-edge-end`]: !!cell.isLastDayOfMonth
     };
   }
 

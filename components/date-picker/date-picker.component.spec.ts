@@ -4,7 +4,7 @@ import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import isSameDay from 'date-fns/isSameDay';
@@ -31,7 +31,7 @@ describe('NzDatePickerComponent', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, NoopAnimationsModule, NzDatePickerModule, NzI18nModule],
+      imports: [FormsModule, NoopAnimationsModule, NzDatePickerModule, NzI18nModule, ReactiveFormsModule],
       providers: [
         // { provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 1 } }
       ],
@@ -824,6 +824,7 @@ describe('NzDatePickerComponent', () => {
       expect(result.getDate()).toBe(22);
     }));
   }); // /specified date picker testing
+
   function getPreBtn(): HTMLElement {
     return queryFromOverlay(`.${PREFIX_CLASS}-header-prev-btn`);
   }
@@ -856,6 +857,18 @@ describe('NzDatePickerComponent', () => {
       dispatchMouseEvent(cell, 'click');
       fixture.detectChanges();
       expect(fixtureInstance.modelValue.getDate()).toBe(+cellText);
+    }));
+  });
+
+  describe('formControl', () => {
+    beforeEach(() => (fixtureInstance.useSuite = 4));
+
+    it('should formControl init work', fakeAsync(() => {
+      fixtureInstance.control = new FormControl(new Date('2020-04-08'));
+      fixture.detectChanges();
+      flush(); // Wait writeValue() tobe done
+      fixture.detectChanges();
+      expect(getPickerInput(fixture.debugElement).value!.trim()).toBe('2020-04-08');
     }));
   });
 
@@ -970,11 +983,14 @@ describe('date-fns testing', () => {
 
       <!-- Suite 3 -->
       <nz-date-picker *ngSwitchCase="3" nzOpen [(ngModel)]="modelValue"></nz-date-picker>
+
+      <!-- Suite 4 -->
+      <nz-date-picker *ngSwitchCase="4" [formControl]="control"></nz-date-picker>
     </ng-container>
   `
 })
 class NzTestDatePickerComponent {
-  useSuite: 1 | 2 | 3;
+  useSuite: 1 | 2 | 3 | 4;
   @ViewChild('tplDateRender', { static: true }) tplDateRender: TemplateRef<Date>;
   @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter: TemplateRef<void>;
 
@@ -1015,4 +1031,7 @@ class NzTestDatePickerComponent {
 
   // --- Suite 3
   modelValue: Date;
+
+  // --- Suite 4
+  control: FormControl;
 }

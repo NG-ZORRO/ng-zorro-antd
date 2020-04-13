@@ -274,7 +274,6 @@ describe('time-picker-panel', () => {
       expect(listOfHourContainer[0].children.length).toEqual(6);
     }));
   });
-
   describe('disabled and format 12-hour time-picker-panel', () => {
     let panelElement: DebugElement;
     let fixture12Hour: ComponentFixture<NzTest12HourTimePanelDisabeledComponent>;
