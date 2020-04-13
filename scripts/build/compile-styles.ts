@@ -27,12 +27,12 @@ function compileLess(content: string, savePath: string, min: boolean, sub?: bool
     }
 
     return less
-    .render(content, lessOptions)
-    .then(({ css }) => {
-      fs.writeFileSync(savePath, css);
-      resolve();
-    })
-    .catch(err => reject(err));
+      .render(content, lessOptions)
+      .then(({ css }) => {
+        fs.writeFileSync(savePath, css);
+        resolve();
+      })
+      .catch(err => reject(err));
   });
 }
 
@@ -50,20 +50,24 @@ export function compile(): Promise<void | Less.RenderOutput[]> {
       // Compile less files to CSS and delete the `entry.less` file.
       const buildFilePath = `${sourcePath}/${dir}/style/entry.less`;
       if (fs.existsSync(buildFilePath)) {
-        promiseList.push(compileLess(
-          fs.readFileSync(buildFilePath, { encoding: 'utf8' }),
-          path.join(targetPath, dir, 'style', `index.css`),
-          false,
-          true,
-          buildFilePath
-        ));
-        promiseList.push(compileLess(
-          fs.readFileSync(buildFilePath, { encoding: 'utf8' }),
-          path.join(targetPath, dir, 'style', `index.min.css`),
-          true,
-          true,
-          buildFilePath
-        ));
+        promiseList.push(
+          compileLess(
+            fs.readFileSync(buildFilePath, { encoding: 'utf8' }),
+            path.join(targetPath, dir, 'style', `index.css`),
+            false,
+            true,
+            buildFilePath
+          )
+        );
+        promiseList.push(
+          compileLess(
+            fs.readFileSync(buildFilePath, { encoding: 'utf8' }),
+            path.join(targetPath, dir, 'style', `index.min.css`),
+            true,
+            true,
+            buildFilePath
+          )
+        );
       }
     }
   });
@@ -72,6 +76,8 @@ export function compile(): Promise<void | Less.RenderOutput[]> {
   fs.copySync(path.resolve(sourcePath, 'style'), path.resolve(targetPath, 'style'));
   fs.writeFileSync(`${targetPath}/components.less`, fs.readFileSync(`${sourcePath}/components.less`));
   fs.writeFileSync(`${targetPath}/ng-zorro-antd.less`, fs.readFileSync(`${sourcePath}/ng-zorro-antd.less`));
+  fs.writeFileSync(`${targetPath}/ng-zorro-antd.dark.less`, fs.readFileSync(`${sourcePath}/ng-zorro-antd.dark.less`));
+  fs.writeFileSync(`${targetPath}/ng-zorro-antd.compact.less`, fs.readFileSync(`${sourcePath}/ng-zorro-antd.compact.less`));
 
   // Compile concentrated less file to CSS file.
   const lessContent = `@import "${path.posix.join(targetPath, 'ng-zorro-antd.less')}";`;
@@ -79,14 +85,12 @@ export function compile(): Promise<void | Less.RenderOutput[]> {
   promiseList.push(compileLess(lessContent, path.join(targetPath, 'ng-zorro-antd.min.css'), true));
 
   // Compile the dark theme less file to CSS file.
-  const darkLessContent = `@import "${path.posix.join(targetPath, 'style', 'dark.less')}";
-  @import "${path.posix.join(targetPath, 'ng-zorro-antd.less')}";`;
+  const darkLessContent = `@import "${path.posix.join(targetPath, 'ng-zorro-antd.dark.less')}";`;
   promiseList.push(compileLess(darkLessContent, path.join(targetPath, 'ng-zorro-antd.dark.css'), false));
   promiseList.push(compileLess(darkLessContent, path.join(targetPath, 'ng-zorro-antd.dark.min.css'), true));
 
   // Compile the compact theme less file to CSS file.
-  const compactLessContent = `@import "${path.posix.join(targetPath, 'style', 'compact.less')}";
-  @import "${path.posix.join(targetPath, 'ng-zorro-antd.less')}";`;
+  const compactLessContent = `@import "${path.posix.join(targetPath, 'ng-zorro-antd.compact.less')}";`;
   promiseList.push(compileLess(compactLessContent, path.join(targetPath, 'ng-zorro-antd.compact.css'), false));
   promiseList.push(compileLess(compactLessContent, path.join(targetPath, 'ng-zorro-antd.compact.min.css'), true));
 
@@ -95,5 +99,5 @@ export function compile(): Promise<void | Less.RenderOutput[]> {
   const cssIndex = fs.readFileSync(cssIndexPath, { encoding: 'utf8' });
   promiseList.push(compileLess(cssIndex, path.join(targetPath, 'style', 'index.css'), false, true, cssIndexPath));
   promiseList.push(compileLess(cssIndex, path.join(targetPath, 'style', 'index.min.css'), true, true, cssIndexPath));
-  return Promise.all(promiseList).catch(e => console.log(e))
+  return Promise.all(promiseList).catch(e => console.log(e));
 }
