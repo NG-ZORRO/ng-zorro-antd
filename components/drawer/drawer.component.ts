@@ -72,11 +72,11 @@ const NZ_CONFIG_COMPONENT_NAME = 'drawer';
         >
           <div class="ant-drawer-content">
             <div class="ant-drawer-wrapper-body" [style.height]="isLeftOrRight ? '100%' : null">
-              <div *ngIf="nzTitle || nzClosable" [class.ant-drawer-header]="!!nzTitle" [class.ant-drawer-header-no-title]="!!nzTitle">
+              <div *ngIf="nzTitle || nzClosable" [class.ant-drawer-header]="!!nzTitle" [class.ant-drawer-header-no-title]="!nzTitle">
                 <div *ngIf="nzTitle" class="ant-drawer-title">
                   <ng-container *nzStringTemplateOutlet="nzTitle"><div [innerHTML]="nzTitle"></div></ng-container>
                 </div>
-                <button *ngIf="nzClosable" (click)="closeClick()" aria-label="Close" class="ant-drawer-close">
+                <button *ngIf="nzClosable" (click)="closeClick()" aria-label="Close" class="ant-drawer-close" style="--scroll-bar: 0px;">
                   <i nz-icon nzType="close"></i>
                 </button>
               </div>
