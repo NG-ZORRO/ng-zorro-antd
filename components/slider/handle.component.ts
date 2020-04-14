@@ -133,7 +133,7 @@ export class NzSliderHandleComponent implements OnChanges {
   private updateStyle(): void {
     this.style = {
       [this.vertical ? 'bottom' : 'left']: `${this.offset}%`,
-      transform: this.vertical ? null : 'translateX(-50%)'
+      transform: this.vertical ? 'translateY(50%)' : 'translateX(-50%)'
     };
     this.cdr.markForCheck();
   }
