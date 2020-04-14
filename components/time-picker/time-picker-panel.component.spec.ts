@@ -216,7 +216,6 @@ describe('time-picker-panel', () => {
       expect(hour12labels[1].innerText).toBe('pm');
     }));
     it('default value 12-hour time-picker-panel', fakeAsync(() => {
-      testComponent.nzTimePickerPanelComponent.opened = true;
       fixture12Hour.detectChanges();
       tick(1000);
       fixture12Hour.detectChanges();
@@ -229,7 +228,6 @@ describe('time-picker-panel', () => {
     it('should scroll work in 12-hour', fakeAsync(() => {
       fixture12Hour.componentInstance.openValue = new Date(0, 0, 0, 5, 6, 7);
       fixture12Hour.componentInstance.nzTimePickerPanelComponent.select12Hours({ index: 1, value: 'pm' });
-      fixture12Hour.componentInstance.nzTimePickerPanelComponent.opened = true;
       fixture12Hour.detectChanges();
       tick(1000);
       fixture12Hour.detectChanges();
@@ -238,13 +236,7 @@ describe('time-picker-panel', () => {
       expect(listOfSelectedLi[1].innerText).toBe('06');
       expect(listOfSelectedLi[2].innerText).toBe('07');
       expect(listOfSelectedLi[3].innerText).toBe('pm');
-      fixture12Hour.componentInstance.nzTimePickerPanelComponent.opened = false;
-      fixture12Hour.detectChanges();
-      tick(1000);
-      fixture12Hour.detectChanges();
       fixture12Hour.componentInstance.value = new Date(0, 0, 0, 6, 7, 8);
-      fixture12Hour.detectChanges();
-      fixture12Hour.componentInstance.nzTimePickerPanelComponent.opened = true;
       fixture12Hour.detectChanges();
       tick(1000);
       fixture12Hour.detectChanges();
@@ -325,14 +317,12 @@ describe('time-picker-panel', () => {
       [nzSecondStep]="secondStep"
       [nzMinuteStep]="minuteStep"
       [nzHourStep]="hourStep"
-      [opened]="opened"
     >
     </nz-time-picker-panel>
   `,
   styleUrls: ['../style/index.less', './style/index.less']
 })
 export class NzTestTimePanelComponent {
-  opened = false;
   secondStep = 1;
   minuteStep = 1;
   hourStep = 1;
