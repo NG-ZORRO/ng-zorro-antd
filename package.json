@@ -64,6 +64,7 @@
     "@types/lodash.debounce": "^4.0.6",
     "@types/node": "^12.11.1",
     "@types/parse5": "^5.0.2",
+    "@types/shelljs": "^0.8.6",
     "antd-theme-generator": "^1.1.9",
     "chalk": "^2.4.2",
     "classlist.js": "^1.1.20150312",

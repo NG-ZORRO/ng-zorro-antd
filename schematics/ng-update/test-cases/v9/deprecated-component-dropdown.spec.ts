@@ -3,7 +3,7 @@ import { TempScopedNodeJsSyncHost } from '@angular-devkit/core/node/testing';
 import { HostTree } from '@angular-devkit/schematics';
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
 import * as shx from 'shelljs';
-import { SchematicsTestTsConfig, SchematicsTestNGConfig } from '../config';
+import { SchematicsTestNGConfig, SchematicsTestTsConfig } from '../config';
 
 describe('dropdown components migration', () => {
   let runner: SchematicTestRunner;
