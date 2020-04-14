@@ -230,6 +230,8 @@ export * from 'ng-zorro-antd/core/wave';
  */
 export class NgZorroAntdModule {
   constructor() {
-    warnDeprecation('The `NgZorroAntdModule` has been deprecated and will be removed in 10.0.0.' + ' Please use secondary entry instead.');
+    warnDeprecation(
+      "The `NgZorroAntdModule` has been deprecated and will be removed in 10.0.0. Please use secondary entry instead.\ne.g. `import { NzButtonModule } from 'ng-zorro-antd/button';`"
+    );
   }
 }

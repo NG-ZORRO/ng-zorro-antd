@@ -52,7 +52,10 @@ function run(): void {
     }
   ];
 
-  let index = read.keyInSelect(stages.map(e => e.name), 'Where do you want to start?');
+  let index = read.keyInSelect(
+    stages.map(e => e.name),
+    'Where do you want to start?'
+  );
   if (index === -1) {
     return;
   }
@@ -64,20 +67,16 @@ function run(): void {
 
 /** git has uncommitted changes */
 function hasUncommittedChanges(): boolean {
-  const output = spawnSync('git',
-    ['diff-index', '--quiet', 'HEAD'],
-    {
-      encoding: 'utf-8'
-    });
-  return output.status !== 0
+  const output = spawnSync('git', ['diff-index', '--quiet', 'HEAD'], {
+    encoding: 'utf-8'
+  });
+  return output.status !== 0;
 }
 
 function getUpstreamRemoteName(): string | null {
-  const output = spawnSync('git',
-    ['remote', 'show'],
-    {
-      encoding: 'utf-8'
-    });
+  const output = spawnSync('git', ['remote', 'show'], {
+    encoding: 'utf-8'
+  });
   // tslint:disable-next-line:no-any
   const names: string[] = (output.stdout as any).split('\n').map((e: string) => e.trim());
   // tslint:disable-next-line:prefer-for-of
@@ -91,11 +90,9 @@ function getUpstreamRemoteName(): string | null {
 }
 
 function getRemoteUrl(remote: string): string {
-  const output = spawnSync('git',
-    ['remote', 'get-url', remote],
-    {
-      encoding: 'utf-8'
-    });
+  const output = spawnSync('git', ['remote', 'get-url', remote], {
+    encoding: 'utf-8'
+  });
   // tslint:disable-next-line:no-any
   return (output.stdout as any).trim();
 }
@@ -122,18 +119,14 @@ function bumpVersion(): void {
     }
   }
 
-  fs.writeJsonSync(packageJsonPath, {...packageJson, version: version}, {spaces: 2});
-  fs.writeFileSync(zorroVersionPath,
-    fs.readFileSync(zorroVersionPath, 'utf-8')
-    .replace(/Version\('.+'\);/g, `Version('${version}');`)
-  );
+  fs.writeJsonSync(packageJsonPath, { ...packageJson, version: version }, { spaces: 2 });
+  fs.writeFileSync(zorroVersionPath, fs.readFileSync(zorroVersionPath, 'utf-8').replace(/Version\('.+'\);/g, `Version('${version}');`));
   log.success('Version updated!');
 }
 
 function fetchUpstream(): void {
   if (hasUncommittedChanges()) {
-    log.error('Current working tree has changes which are not committed. ' +
-      'Please make sure your working tree is clean.');
+    log.error('Current working tree has changes which are not committed. ' + 'Please make sure your working tree is clean.');
     return;
   }
   log.info('Fetching upstream...');
@@ -167,20 +160,19 @@ function updateChangelog(): void {
 
 function buildRelease(): void {
   log.info('Running pre-release script... Be patient...');
-  execSync('npm run build', {stdio: [0, 1, 2]});
+  execSync('npm run build', { stdio: [0, 1, 2] });
   log.info('pre-release completed!');
 }
 
 function pushLibraryRelease(): void {
   const releaseVersion = getCurrentVersion();
   log.info('Checkout and push a new branch for publishing...');
-  execSync(`git checkout -b publish-${releaseVersion}`);
+  execSync(`git checkout -b release/${releaseVersion}`);
   execSync('git add .');
-  execSync(`git commit -m "release(${releaseVersion}): release ${releaseVersion}"`);
-  execSync(`git push origin publish-${releaseVersion}`);
+  execSync(`git commit -m "chore(release): release ${releaseVersion}"`);
+  execSync(`git push origin release/${releaseVersion}`);
   log.success('Push library release completed!');
   log.info('Please go to GitHub and make a pull request.');
-
 }
 
 function pushSiteRelease(): void {
