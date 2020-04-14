@@ -88,7 +88,6 @@ const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
               [nzUse12Hours]="nzUse12Hours"
               [nzDefaultOpenValue]="nzDefaultOpenValue"
               [nzAddOn]="nzAddOn"
-              [opened]="nzOpen"
               [nzClearText]="nzClearText"
               [nzAllowEmpty]="nzAllowEmpty"
               [(ngModel)]="value"

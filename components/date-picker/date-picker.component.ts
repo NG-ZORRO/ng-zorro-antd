@@ -236,7 +236,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   }
 
   updatePickerStyle(): void {
-    this.nzStyle = { display: 'inherit', width: '100%', ...this.nzStyle };
+    this.nzStyle = { display: 'inherit', alignItems: 'center', width: '100%', ...this.nzStyle };
   }
 
   /**
@@ -293,8 +293,8 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   }
 
   get realShowToday(): boolean {
-    // Range not support nzShowToday currently
-    return !this.isRange && this.nzShowToday;
+    // Range only support in single date picker
+    return this.nzMode === 'date' && this.nzShowToday;
   }
 
   onFocusChange(value: boolean): void {

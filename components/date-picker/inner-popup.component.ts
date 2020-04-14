@@ -148,7 +148,6 @@ import { PREFIX_CLASS } from './util';
           [nzDefaultOpenValue]="timeOptions.nzDefaultOpenValue"
           [nzUse12Hours]="timeOptions.nzUse12Hours"
           [nzAddOn]="timeOptions.nzAddOn"
-          [opened]="true"
         ></nz-time-picker-panel>
         <!-- use [opened] to trigger time panel \`initPosition()\` -->
       </ng-container>
