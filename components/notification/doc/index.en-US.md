@@ -70,12 +70,14 @@ You can use `NzConfigService` to configure this component globally.
 | nzBottom | The bottom of the notification when it pops up from the bottom. | `string` | 24px |
 | nzPlacement | Popup position, optional `topLeft` `topRight` `bottomLeft` `bottomRight` | `string` | `topRight` |
 
-### NzNotificationDataFilled
+### NzNotificationRef
 
 It's the object that returned when you call `NzNotificationService.success` and others.
 
 ```ts
-export interface NzNotificationDataFilled {
+export interface NzNotificationRef {
+  messageId: string;
   onClose: Subject<boolean>; // It would emit an event when the notification is closed, and emit a `true` if it's closed by user
+  onClick: Subject<MouseEvent>;
 }
 ```

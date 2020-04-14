@@ -17,22 +17,21 @@ export interface NzMessageDataOptions {
   nzPauseOnHover?: boolean;
 }
 
-/**
- * Message data for terminal users.
- */
 export interface NzMessageData {
   type?: NzMessageType | string;
   content?: string | TemplateRef<void>;
-}
-
-/**
- * Filled version of NzMessageData (includes more private properties).
- */
-export interface NzMessageDataFilled extends NzMessageData {
-  messageId: string;
-  createdAt: Date;
-
+  messageId?: string;
+  createdAt?: Date;
   options?: NzMessageDataOptions;
   state?: 'enter' | 'leave';
+
   onClose?: Subject<boolean>;
 }
+
+export type NzMessageRef = Pick<Required<NzMessageData>, 'onClose' | 'messageId'>;
+
+/**
+ * @deprecated use `NzMessageRef` instead
+ * @breaking-change 10.0.0
+ */
+export type NzMessageDataFilled = NzMessageRef;
