@@ -5,7 +5,7 @@ import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/te
 import * as shx from 'shelljs';
 import { SchematicsTestNGConfig, SchematicsTestTsConfig } from '../config';
 
-describe('tooltip-like migration', () => {
+describe('tree-like migration', () => {
   let runner: SchematicTestRunner;
   let host: TempScopedNodeJsSyncHost;
   let tree: UnitTestTree;
@@ -44,65 +44,49 @@ describe('tooltip-like migration', () => {
     await runner.runSchematicAsync('migration-v9', {}, tree).toPromise();
   }
 
-  describe('Popconfirm', () => {
+  describe('Tree', () => {
 
-    it('should rename deprecated input names in ts', async() => {
-      writeFile('/index.ts', `
-        import {Component} from '@angular/core';
-        @Component({template: \`
-          <div nz-popconfirm [nzTitle]="title" nzTrigger="click" nzPlacement="top"></div>
-        \`})
-        export class MyComp {
-          title = 'title'
-        }
-      `);
-
-      await runMigration();
-      const content = tree.readContent('/index.ts');
-      expect(content).toContain(`[nzPopconfirmTitle]="title"`);
-      expect(content).toContain(`nzPopconfirmTrigger="click"`);
-      expect(content).toContain(`nzPopconfirmPlacement="top"`);
-    });
-
-    it('should rename deprecated input names in HTML', async() => {
-      writeFile('/index.ts', `
-      import {Component} from '@angular/core';
-      @Component({
-        templateUrl: './sub_dir/tmpl.html',
-      })
-      export class MyComp {}
-     `);
-
-      writeFile('/sub_dir/tmpl.html', `
-        <div nz-popconfirm [nzTitle]="title" nzTrigger="click" nzPlacement="top"></div>
-      `);
-      await runMigration();
-      const content = tree.readContent('/sub_dir/tmpl.html');
-      expect(content).toContain(`[nzPopconfirmTitle]="title"`);
-      expect(content).toContain(`nzPopconfirmTrigger="click"`);
-      expect(content).toContain(`nzPopconfirmPlacement="top"`);
-    });
-
-  });
-
-  describe('Tooltip', () => {
+    function expectTreeContent(content: string): void {
+      expect(content).not.toContain(`[nzDefaultExpandedKeys]="expandKeys"`);
+      expect(content).not.toContain(`[nzDefaultCheckedKeys]="checkedKeys"`);
+      expect(content).not.toContain(`[nzDefaultSelectedKeys]="selectedKeys"`);
+      expect(content).not.toContain(`[nzDefaultExpandAll]="expandDefault"`);
+      expect(content).not.toContain(`(nzOnSearchNode)="onSearch($event)"`);
+      expect(content).toContain(`[nzExpandedKeys]="expandKeys"`);
+      expect(content).toContain(`[nzCheckedKeys]="checkedKeys"`);
+      expect(content).toContain(`[nzSelectedKeys]="selectedKeys"`);
+      expect(content).toContain(`[nzExpandAll]="expandDefault"`);
+      expect(content).toContain(`(nzSearchValueChange)="onSearch($event)"`);
+    }
 
     it('should rename deprecated input names', async() => {
       writeFile('/index.ts', `
         import {Component} from '@angular/core';
         @Component({template: \`
-          <div nz-tooltip [nzTitle]="title" nzTrigger="click" nzPlacement="top"></div>
+          <nz-tree
+            [nzDefaultExpandedKeys]="expandKeys"
+            [nzDefaultCheckedKeys]="checkedKeys"
+            [nzDefaultSelectedKeys]="selectedKeys"
+            [nzDefaultExpandAll]="expandDefault"
+            (nzOnSearchNode)="onSearch($event)">
+          </nz-tree>
         \`})
         export class MyComp {
-          title = 'title'
+          expandKeys = [];
+          checkedKeys = [];
+          selectedKeys = [];
+          expandDefault = [];
+
+          onSearch(e) {
+            // noop
+          }
         }
       `);
 
       await runMigration();
       const content = tree.readContent('/index.ts');
-      expect(content).toContain(`[nzTooltipTitle]="title"`);
-      expect(content).toContain(`nzTooltipTrigger="click"`);
-      expect(content).toContain(`nzTooltipPlacement="top"`);
+      expectTreeContent(content);
+
     });
 
     it('should rename deprecated input names in HTML', async() => {
@@ -111,43 +95,55 @@ describe('tooltip-like migration', () => {
       @Component({
         templateUrl: './sub_dir/tmpl.html',
       })
-      export class MyComp {}
+      export class MyComp {
+        expandKeys = [];
+        checkedKeys = [];
+        selectedKeys = [];
+        expandDefault = [];
+
+        onSearch(e) {
+          // noop
+        }
+       }
      `);
 
       writeFile('/sub_dir/tmpl.html', `
-        <div nz-tooltip [nzTitle]="title" nzTrigger="click" nzPlacement="top"></div>
+        <nz-tree
+          [nzDefaultExpandedKeys]="expandKeys"
+          [nzDefaultCheckedKeys]="checkedKeys"
+          [nzDefaultSelectedKeys]="selectedKeys"
+          [nzDefaultExpandAll]="expandDefault"
+          (nzOnSearchNode)="onSearch($event)">
+        </nz-tree>
       `);
       await runMigration();
       const content = tree.readContent('/sub_dir/tmpl.html');
-      expect(content).toContain(`[nzTooltipTitle]="title"`);
-      expect(content).toContain(`nzTooltipTrigger="click"`);
-      expect(content).toContain(`nzTooltipPlacement="top"`);
+      expectTreeContent(content);
     });
 
   });
 
-  describe('Popover', () => {
+  describe('Tree Select', () => {
+
+    function expectTreeSelectContent(content: string): void {
+      expect(content).not.toContain(`[nzDefaultExpandedKeys]="expandKeys"`);
+      expect(content).toContain(`[nzExpandedKeys]="expandKeys"`);
+    }
 
     it('should rename deprecated input names', async() => {
       writeFile('/index.ts', `
         import {Component} from '@angular/core';
         @Component({template: \`
-          <div nz-popover [nzTitle]="title" [nzContent]="content" nzTrigger="click" nzPlacement="top"></div>
-          <ng-template #content>
-          content
-          </ng-template>
+          <nz-tree-select [nzDefaultExpandedKeys]="expandKeys"></nz-tree-select>
         \`})
         export class MyComp {
-          title = 'title'
+          expandKeys = [];
         }
       `);
 
       await runMigration();
       const content = tree.readContent('/index.ts');
-      expect(content).toContain(`[nzPopoverTitle]="title"`);
-      expect(content).toContain(`[nzPopoverContent]="content"`);
-      expect(content).toContain(`nzPopoverTrigger="click"`);
-      expect(content).toContain(`nzPopoverPlacement="top"`);
+      expectTreeSelectContent(content);
     });
 
     it('should rename deprecated input names in HTML', async() => {
@@ -156,21 +152,17 @@ describe('tooltip-like migration', () => {
       @Component({
         templateUrl: './sub_dir/tmpl.html',
       })
-      export class MyComp {}
+      export class MyComp {
+        expandKeys = [];
+      }
      `);
 
       writeFile('/sub_dir/tmpl.html', `
-      <div nz-popover [nzTitle]="title" [nzContent]="content" nzTrigger="click" nzPlacement="top"></div>
-      <ng-template #content>
-      content
-      </ng-template>
+        <nz-tree-select [nzDefaultExpandedKeys]="expandKeys"></nz-tree-select>
       `);
       await runMigration();
       const content = tree.readContent('/sub_dir/tmpl.html');
-      expect(content).toContain(`[nzPopoverTitle]="title"`);
-      expect(content).toContain(`[nzPopoverContent]="content"`);
-      expect(content).toContain(`nzPopoverTrigger="click"`);
-      expect(content).toContain(`nzPopoverPlacement="top"`);
+      expectTreeSelectContent(content);
     });
 
   });

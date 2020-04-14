@@ -4,7 +4,7 @@ import { HostTree } from '@angular-devkit/schematics';
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
 import * as shx from 'shelljs';
 
-import { SchematicsTestTsConfig, SchematicsTestNGConfig } from '../config';
+import { SchematicsTestNGConfig, SchematicsTestTsConfig } from '../config';
 
 describe('dropdown class migration', () => {
   let runner: SchematicTestRunner;
@@ -13,7 +13,6 @@ describe('dropdown class migration', () => {
   let tmpDirPath: string;
   let previousWorkingDir: string;
   let warnOutput: string[];
-  let errorOutput: string[];
 
   beforeEach(() => {
     runner = new SchematicTestRunner('test', require.resolve('../../../migration.json'));
@@ -24,12 +23,9 @@ describe('dropdown class migration', () => {
     writeFile('/angular.json', JSON.stringify(SchematicsTestNGConfig));
 
     warnOutput = [];
-    errorOutput = [];
     runner.logger.subscribe(logEntry => {
       if (logEntry.level === 'warn') {
         warnOutput.push(logEntry.message);
-      } else if (logEntry.level === 'error') {
-        errorOutput.push(logEntry.message);
       }
     });
 
