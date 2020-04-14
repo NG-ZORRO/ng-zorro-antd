@@ -171,7 +171,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     });
 
     this.updateHostClass();
-    this.updatePickerStyle();
     // Default format when it's empty
     if (!this.nzFormat) {
       if (this.showWeek) {
@@ -210,7 +209,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
       warnDeprecation(
         `'nzStyle' in DatePicker is going to be removed in 10.0.0. Please use CSS style attribute like <nz-date-picker style="..."></nz-date-picker> instead.`
       );
-      this.updatePickerStyle();
     }
 
     if (changes.nzClassName) {
@@ -233,10 +231,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     if (!this.nzMode) {
       this.nzMode = this.isRange ? ['date', 'date'] : 'date';
     }
-  }
-
-  updatePickerStyle(): void {
-    this.nzStyle = { display: 'inherit', width: '100%', ...this.nzStyle };
   }
 
   /**
@@ -293,8 +287,8 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   }
 
   get realShowToday(): boolean {
-    // Range not support nzShowToday currently
-    return !this.isRange && this.nzShowToday;
+    // Range only support in single date picker
+    return this.nzMode === 'date' && this.nzShowToday;
   }
 
   onFocusChange(value: boolean): void {

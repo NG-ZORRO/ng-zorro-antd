@@ -101,6 +101,7 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
       <calendar-footer
         *ngIf="hasFooter"
         [locale]="locale"
+        [isRange]="isRange"
         [showToday]="showToday"
         [hasTimePicker]="hasTimePicker"
         [okDisabled]="!isAllowed(datePickerService?.value)"
