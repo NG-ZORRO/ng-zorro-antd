@@ -142,7 +142,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   hourEnabled = true;
   minuteEnabled = true;
   secondEnabled = true;
-  isInit = true;
+  firstScrolled = false;
   enabledColumns = 3;
   hostClassMap = {};
   hourRange: ReadonlyArray<{ index: number; disabled: boolean }>;
@@ -473,7 +473,6 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   protected changed(): void {
     if (this.onChange) {
       this.onChange(this.time.value!);
-      this.scrollToTime(120);
     }
   }
 
@@ -541,7 +540,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     this.selectInputRange();
     setTimeout(() => {
       this.scrollToTime();
-      this.isInit = false;
+      this.firstScrolled = true;
     });
   }
 
@@ -565,7 +564,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     this.time.setValue(value, this.nzUse12Hours);
     this.buildTimes();
 
-    if (value && !this.isInit) {
+    if (value && this.firstScrolled) {
       this.scrollToTime(120);
     }
     // Mark this component to be checked manually with internal properties changing (see: https://github.com/angular/angular/issues/10816)
