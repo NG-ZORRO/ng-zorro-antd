@@ -88,6 +88,7 @@ describe('button', () => {
       const testBed = createComponentBed(TestButtonBindingComponent, { imports: [NzIconTestModule], declarations: [NzButtonComponent] });
       const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
       expect(buttonElement.classList.contains('ant-btn-loading')).toBe(false);
+      expect(buttonElement.classList).not.toContain('ant-btn-icon-only');
       expect(buttonElement.firstElementChild.querySelector('svg')).not.toBe(null);
       expect(buttonElement.firstElementChild!.classList.contains('anticon-poweroff')).toBe(true);
       expect(buttonElement.firstElementChild!.classList.contains('anticon-loading')).toBe(false);
@@ -112,6 +113,14 @@ describe('button', () => {
       tick(5000);
       testBed.fixture.detectChanges();
       expect(buttonElement.firstElementChild.innerText).toContain('button');
+    }));
+  });
+  describe('icon only', () => {
+    it('should icon only works correctly', fakeAsync(() => {
+      const testBed = createComponentBed(TestButtonIconOnlyComponent, { imports: [NzIconTestModule], declarations: [NzButtonComponent] });
+      const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
+      testBed.fixture.detectChanges();
+      expect(buttonElement.classList).toContain('ant-btn-icon-only');
     }));
   });
 });
@@ -174,3 +183,12 @@ export class TestButtonWithIconComponent implements OnInit {
     setTimeout(() => (this.title = 'button'), 5000);
   }
 }
+
+@Component({
+  template: `
+    <button nz-button>
+      <i nz-icon nzType="caret-down"></i>
+    </button>
+  `
+})
+export class TestButtonIconOnlyComponent {}
