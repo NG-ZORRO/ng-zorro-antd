@@ -7,6 +7,7 @@
  */
 
 import { Directive, Input } from '@angular/core';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 @Directive({
@@ -18,5 +19,6 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   }
 })
 export class NzCardGridDirective {
+  static ngAcceptInputType_nzHoverable: BooleanInput;
   @Input() @InputBoolean() nzHoverable = true;
 }

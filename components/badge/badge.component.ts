@@ -26,6 +26,7 @@ import {
 } from '@angular/core';
 import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean, isEmpty } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { startWith, take, takeUntil } from 'rxjs/operators';
@@ -88,6 +89,10 @@ const NZ_CONFIG_COMPONENT_NAME = 'backTop';
   }
 })
 export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
+  static ngAcceptInputType_nzShowZero: BooleanInput;
+  static ngAcceptInputType_nzShowDot: BooleanInput;
+  static ngAcceptInputType_nzDot: BooleanInput;
+
   private destroy$ = new Subject();
   notWrapper = true;
   viewInit = false;

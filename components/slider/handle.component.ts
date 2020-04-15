@@ -17,7 +17,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { NgStyleInterface } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
@@ -48,6 +48,8 @@ import { NzSliderShowTooltip } from './typings';
   }
 })
 export class NzSliderHandleComponent implements OnChanges {
+  static ngAcceptInputType_active: BooleanInput;
+
   @ViewChild('handle', { static: false }) handleEl: ElementRef;
   @ViewChild(NzTooltipDirective, { static: false }) tooltip: NzTooltipDirective;
 

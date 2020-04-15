@@ -33,7 +33,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toCssPixel } from 'ng-zorro-antd/core/util';
 
 import { Observable, Subject } from 'rxjs';
@@ -98,6 +98,12 @@ const NZ_CONFIG_COMPONENT_NAME = 'drawer';
 })
 export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> extends NzDrawerRef<R>
   implements OnInit, OnDestroy, AfterViewInit, OnChanges, NzDrawerOptionsOfComponent {
+  static ngAcceptInputType_nzClosable: BooleanInput;
+  static ngAcceptInputType_nzMaskClosable: BooleanInput;
+  static ngAcceptInputType_nzMask: BooleanInput;
+  static ngAcceptInputType_nzNoAnimation: BooleanInput;
+  static ngAcceptInputType_nzKeyboard: BooleanInput;
+
   @Input() nzContent: TemplateRef<{ $implicit: D; drawerRef: NzDrawerRef<R> }> | Type<T>;
   @Input() @InputBoolean() nzClosable: boolean = true;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzMaskClosable: boolean;

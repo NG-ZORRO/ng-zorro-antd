@@ -21,6 +21,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -63,6 +64,10 @@ import { NzTableFilterFn, NzTableFilterList, NzTableFilterValue, NzTableSortFn, 
   }
 })
 export class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy {
+  static ngAcceptInputType_nzShowSort: BooleanInput;
+  static ngAcceptInputType_nzShowFilter: BooleanInput;
+  static ngAcceptInputType_nzCustomFilter: BooleanInput;
+
   manualClickOrder$ = new Subject<NzThAddOnComponent>();
   calcOperatorChange$ = new Subject();
   nzFilterValue: NzTableFilterValue = null;

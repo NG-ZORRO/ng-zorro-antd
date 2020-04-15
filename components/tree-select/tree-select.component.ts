@@ -33,7 +33,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { slideMotion, zoomMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 
 import { merge, of as observableOf, Subscription } from 'rxjs';
@@ -207,6 +207,20 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
   }
 })
 export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
+  static ngAcceptInputType_nzAllowClear: BooleanInput;
+  static ngAcceptInputType_nzShowExpand: BooleanInput;
+  static ngAcceptInputType_nzShowLine: BooleanInput;
+  static ngAcceptInputType_nzDropdownMatchSelectWidth: BooleanInput;
+  static ngAcceptInputType_nzCheckable: BooleanInput;
+  static ngAcceptInputType_nzHideUnMatched: BooleanInput;
+  static ngAcceptInputType_nzShowIcon: BooleanInput;
+  static ngAcceptInputType_nzShowSearch: BooleanInput;
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzAsyncData: BooleanInput;
+  static ngAcceptInputType_nzMultiple: BooleanInput;
+  static ngAcceptInputType_nzDefaultExpandAll: BooleanInput;
+  static ngAcceptInputType_nzCheckStrictly: BooleanInput;
+
   @Input() @InputBoolean() nzAllowClear: boolean = true;
   @Input() @InputBoolean() nzShowExpand: boolean = true;
   @Input() @InputBoolean() nzShowLine: boolean = false;

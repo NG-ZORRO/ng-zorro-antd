@@ -2,6 +2,13 @@
   "rulesDirectory": ["./scripts/tslint-rules/", "node_modules/codelyzer"],
   "rules": {
     "ts-loader": true,
+    "coercion-types": [true,
+      ["coerceBooleanProperty", "coerceCssPixelValue", "coerceNumberProperty"],
+      {
+        "CanDisable": ["disabled"],
+        "CanDisableRipple": ["disableRipple"]
+      }
+    ],
     "template-banana-in-box": true,
     "template-no-negated-async": true,
     "no-life-cycle-call": false,

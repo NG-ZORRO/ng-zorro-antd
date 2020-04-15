@@ -27,7 +27,7 @@ import {
 } from '@angular/core';
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { NzTSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzTSType } from 'ng-zorro-antd/core/types';
 
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger } from 'ng-zorro-antd/tooltip';
@@ -42,6 +42,8 @@ import { takeUntil } from 'rxjs/operators';
   }
 })
 export class NzPopconfirmDirective extends NzTooltipBaseDirective {
+  static ngAcceptInputType_nzCondition: BooleanInput;
+
   @Input('nzPopconfirmTitle') specificTitle: NzTSType;
   @Input('nz-popconfirm') directiveNameTitle: NzTSType | null;
   @Input('nzPopconfirmTrigger') specificTrigger: NzTooltipTrigger;

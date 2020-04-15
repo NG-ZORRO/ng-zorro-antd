@@ -22,6 +22,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
@@ -45,6 +46,9 @@ import { NzTabDirective } from './tab.directive';
   `
 })
 export class NzTabComponent implements OnChanges, OnDestroy {
+  static ngAcceptInputType_nzForceRender: BooleanInput;
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+
   position: number | null = null;
   origin: number | null = null;
   isActive = false;

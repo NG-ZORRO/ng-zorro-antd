@@ -24,6 +24,7 @@ import {
 } from '@angular/core';
 import { FormControl, FormControlDirective, FormControlName, NgControl, NgModel } from '@angular/forms';
 import { helpMotion } from 'ng-zorro-antd/core/animation';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 
 import { toBoolean } from 'ng-zorro-antd/core/util';
 import { Subscription } from 'rxjs';
@@ -64,6 +65,10 @@ const iconTypeMap = {
   `
 })
 export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentInit, OnDestroy {
+  static ngAcceptInputType_nzHasFeedback: BooleanInput;
+  static ngAcceptInputType_nzRequired: BooleanInput;
+  static ngAcceptInputType_nzNoColon: BooleanInput;
+
   private _hasFeedback = false;
   private validateChanges: Subscription = Subscription.EMPTY;
   private validateString: string | null = null;

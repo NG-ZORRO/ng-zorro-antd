@@ -29,6 +29,7 @@ import { slideMotion } from 'ng-zorro-antd/core/animation';
 
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 
 const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
@@ -105,6 +106,12 @@ const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }]
 })
 export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
+  static ngAcceptInputType_nzUse12Hours: BooleanInput;
+  static ngAcceptInputType_nzHideDisabledOptions: BooleanInput;
+  static ngAcceptInputType_nzAllowEmpty: BooleanInput;
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzAutoFocus: BooleanInput;
+
   private _onChange: (value: Date | null) => void;
   private _onTouched: () => void;
   isInit = false;

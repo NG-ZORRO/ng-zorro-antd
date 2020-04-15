@@ -20,7 +20,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable, of, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -53,6 +53,16 @@ import { NzUploadListComponent } from './upload-list.component';
   }
 })
 export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
+  static ngAcceptInputType_nzLimit: NumberInput;
+  static ngAcceptInputType_nzSize: NumberInput;
+  static ngAcceptInputType_nzDirectory: BooleanInput;
+  static ngAcceptInputType_nzOpenFileDialogOnClick: BooleanInput;
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzMultiple: BooleanInput;
+  static ngAcceptInputType_nzShowUploadList: BooleanInput | ShowUploadListInterface | undefined | null;
+  static ngAcceptInputType_nzShowButton: BooleanInput;
+  static ngAcceptInputType_nzWithCredentials: BooleanInput;
+
   private i18n$: Subscription;
   @ViewChild('uploadComp', { static: false }) uploadComp: NzUploadBtnComponent;
   @ViewChild('listComp', { static: false }) listComp: NzUploadListComponent;

@@ -24,6 +24,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 
 import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
@@ -126,6 +127,8 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerPanelComponent, multi: true }]
 })
 export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
+  static ngAcceptInputType_nzUse12Hours: BooleanInput;
+
   private _nzHourStep = 1;
   private _nzMinuteStep = 1;
   private _nzSecondStep = 1;

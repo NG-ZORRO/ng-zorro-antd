@@ -21,6 +21,7 @@ import {
 } from '@angular/core';
 import { slideAlertMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -72,6 +73,10 @@ const NZ_CONFIG_COMPONENT_NAME = 'alert';
   preserveWhitespaces: false
 })
 export class NzAlertComponent implements OnChanges, OnDestroy {
+  static ngAcceptInputType_nzCloseable: BooleanInput;
+  static ngAcceptInputType_nzShowIcon: BooleanInput;
+  static ngAcceptInputType_nzBanner: BooleanInput;
+
   @Input() nzCloseText: string | TemplateRef<void> | null = null;
   @Input() nzIconType: string | null = null;
   @Input() nzMessage: string | TemplateRef<void> | null = null;

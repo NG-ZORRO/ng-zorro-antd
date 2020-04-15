@@ -7,6 +7,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
 
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 
@@ -24,11 +25,14 @@ export interface NzSliderTrackStyle {
   selector: 'nz-slider-track',
   exportAs: 'nzSliderTrack',
   preserveWhitespaces: false,
-  template: `
-    <div class="ant-slider-track" [ngStyle]="style"></div>
-  `
+  template: ` <div class="ant-slider-track" [ngStyle]="style"></div> `
 })
 export class NzSliderTrackComponent implements OnChanges {
+  static ngAcceptInputType_offset: NumberInput;
+  static ngAcceptInputType_length: NumberInput;
+  static ngAcceptInputType_vertical: BooleanInput;
+  static ngAcceptInputType_included: BooleanInput;
+
   @Input() @InputNumber() offset: number;
   @Input() @InputNumber() length: number;
   @Input() @InputBoolean() vertical = false;
