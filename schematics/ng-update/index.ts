@@ -6,6 +6,7 @@ import { CalendarTemplateRule } from './upgrade-rules/checks/calendar-input-rule
 import { CarouselTemplateRule } from "./upgrade-rules/checks/carousel-like-template-rule";
 import { DropdownClassRule } from './upgrade-rules/checks/dropdown-class-rule';
 import { DropdownTemplateRule } from './upgrade-rules/checks/dropdown-template-rule';
+import { FormTemplateRule } from './upgrade-rules/checks/form-template-rule';
 import { IconTemplateRule } from './upgrade-rules/checks/icon-template-rule';
 import { InjectionTokenRule } from "./upgrade-rules/checks/injection-token-rule";
 import { TooltipLikeTemplateRule } from './upgrade-rules/checks/tooltip-like-template-rule';
@@ -26,7 +27,8 @@ export function updateToV9(): Rule {
       IconTemplateRule,
       CalendarTemplateRule,
       CarouselTemplateRule,
-      InjectionTokenRule
+      InjectionTokenRule,
+      FormTemplateRule
     ],
     ruleUpgradeData,
     postUpdate

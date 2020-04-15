@@ -62,11 +62,11 @@ describe('injection tokens migration', () => {
       await runMigration();
 
       const tokensWarn = [
-        'index.ts@2:16 - Found deprecated symbol "NZ_NOTIFICATION_CONFIG" which has been removed. Use "NZ_CONFIG" to ' +
+        'index.ts@2:16 - Found deprecated symbol "NZ_NOTIFICATION_CONFIG" which has been removed. Use global config to ' +
         'instead please.',
-        'index.ts@2:40 - Found deprecated symbol "NZ_MESSAGE_CONFIG" which has been removed. Use "NZ_CONFIG" to ' +
+        'index.ts@2:40 - Found deprecated symbol "NZ_MESSAGE_CONFIG" which has been removed. Use global config to ' +
         'instead please.',
-        'index.ts@2:59 - Found deprecated symbol "NZ_DEFAULT_EMPTY_CONTENT" which has been removed. Use "NZ_CONFIG" ' +
+        'index.ts@2:59 - Found deprecated symbol "NZ_DEFAULT_EMPTY_CONTENT" which has been removed. Use global config ' +
         'to instead please.'
       ];
 
@@ -80,16 +80,19 @@ describe('injection tokens migration', () => {
       import { NZ_NOTIFICATION_CONFIG} from 'ng-zorro-antd/notification';
       import { NZ_DEFAULT_EMPTY_CONTENT } from 'ng-zorro-antd/empty';
       import { NZ_MESSAGE_CONFIG } from 'ng-zorro-antd/message';
+      import { NZ_ICON_DEFAULT_TWOTONE_COLOR } from 'ng-zorro-antd';
 
       `);
       await runMigration();
 
       const tokensWarn = [
-        'index.ts@2:16 - Found deprecated symbol "NZ_NOTIFICATION_CONFIG" which has been removed. Use "NZ_CONFIG" ' +
+        'index.ts@2:16 - Found deprecated symbol "NZ_NOTIFICATION_CONFIG" which has been removed. Use global config ' +
         'to instead please.',
-        'index.ts@3:16 - Found deprecated symbol "NZ_DEFAULT_EMPTY_CONTENT" which has been removed. Use "NZ_CONFIG" ' +
+        'index.ts@3:16 - Found deprecated symbol "NZ_DEFAULT_EMPTY_CONTENT" which has been removed. Use global config ' +
         'to instead please.',
-        'index.ts@4:16 - Found deprecated symbol "NZ_MESSAGE_CONFIG" which has been removed. Use "NZ_CONFIG" to ' +
+        'index.ts@4:16 - Found deprecated symbol "NZ_MESSAGE_CONFIG" which has been removed. Use global config to ' +
+        'instead please.',
+        'index.ts@5:16 - Found deprecated symbol "NZ_ICON_DEFAULT_TWOTONE_COLOR" which has been removed. Use global config to ' +
         'instead please.'
       ];
 
