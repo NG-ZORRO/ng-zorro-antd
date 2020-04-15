@@ -78,7 +78,7 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
   private status: NzFormControlStatusType = null;
   private destroyed$ = new Subject<void>();
   private localeId: string;
-  private defaultTipOptions: Record<string, string | Record<string, string>>;
+  private defaultAutoTips: Record<string, string | Record<string, string>>;
   private defaultDisableAutoTips: boolean;
   private autoErrorTip: string;
 
@@ -96,7 +96,7 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
   @Input() nzErrorTip: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
   @Input() nzValidatingTip: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
   @Input() nzExtra: string | TemplateRef<void>;
-  @Input() nzTipOptions: Record<string, Record<string, string>>;
+  @Input() nzAutoTips: Record<string, Record<string, string>>;
   @Input() nzDisableAutoTips: boolean | 'default' = 'default';
 
   @Input()
@@ -213,8 +213,8 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
         if (errors.hasOwnProperty(key)) {
           autoErrorTip = errors[key][this.localeId];
           if (!autoErrorTip) {
-            const tipOptions = this.nzTipOptions || this.defaultTipOptions || {};
-            autoErrorTip = (tipOptions[this.localeId] || {})[key];
+            const autoTips = this.nzAutoTips || this.defaultAutoTips || {};
+            autoErrorTip = (autoTips[this.localeId] || {})[key];
           }
         }
         if (!!autoErrorTip) {
@@ -225,8 +225,8 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
     }
   }
 
-  setDefaultAutoTipConf(tipOptions: Record<string, string | Record<string, string>>, disableAutoTip: boolean): void {
-    this.defaultTipOptions = tipOptions;
+  setDefaultAutoTipConf(autoTips: Record<string, string | Record<string, string>>, disableAutoTip: boolean): void {
+    this.defaultAutoTips = autoTips;
     this.defaultDisableAutoTips = disableAutoTip;
     if (!this.disableAutoTips) {
       this.updateAutoTip();

@@ -54,7 +54,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 | -------- | ----------- | ---- | ------------- | ------------- |
 | `[nzLayout]`| Form layout | `'horizontal' \| 'vertical' \| 'inline'` | `'horizontal'` |
 | `[nzNoColon]`| change default props `[nzNoColon]` value of `nz-form-label` | `boolean` | `false` | ✅ |
-| `[nzTipOptions]`| Set default props `[nzTipOptions]` value of `nz-form-control`, please refer to the example: **Auto tips** | `Record<string, Record<string, string>>` | `{}` | ✅ |
+| `[nzAutoTips]`| Set default props `[nzAutoTips]` value of `nz-form-control`, please refer to the example: **Auto tips** | `Record<string, Record<string, string>>` | `{}` | ✅ |
 | `[nzDisableAutoTips]`| Set default props `[nzDisableAutoTip]` value of `nz-form-control` | `boolean` | `false` | ✅ |
 
 ### nz-form-item
@@ -91,7 +91,7 @@ A form consists of one or more form fields whose type includes input, textarea, 
 | `[nzWarningTip]`| Tip display when validate warning | `string  \|  TemplateRef<{ $implicit: FormControl  \|  NgModel }>` | - |
 | `[nzErrorTip]`| Tip display when validate error | `string  \|  TemplateRef<{ $implicit: FormControl  \|  NgModel }>` | - |
 | `[nzValidatingTip]`| Tip display when validating | `string  \|  TemplateRef<{ $implicit: FormControl  \|  NgModel }>` | - |
-| `[nzTipOptions]`| The object of the tips, please refer to the example: **Auto tips** | `Record<string, string \| Record<string, string>>` | - | - |
+| `[nzAutoTips]`| The object of the tips, please refer to the example: **Auto tips** | `Record<string, string \| Record<string, string>>` | - | - |
 | `[nzDisableAutoTips]`| Disable Auto Tips | `boolean` | - | - |
 
 ### nz-form-split

@@ -336,7 +336,7 @@ export class NzTestReactiveFormControlInitStatusComponent {
 
 @Component({
   template: `
-    <form [formGroup]="formGroup" nz-form [nzTipOptions]="tipOptions" [nzDisableAutoTips]="formDisableAutoTips">
+    <form [formGroup]="formGroup" nz-form [nzAutoTips]="autoTips" [nzDisableAutoTips]="formDisableAutoTips">
       <nz-form-item>
         <nz-form-control #control>
           <input nz-input formControlName="userName" />
@@ -353,7 +353,7 @@ export class NzTestReactiveFormControlInitStatusComponent {
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-control [nzTipOptions]="tipOptions" [nzDisableAutoTips]="passwordDisableAutoTips" nzErrorTip="Please input your password!">
+        <nz-form-control [nzAutoTips]="autoTips" [nzDisableAutoTips]="passwordDisableAutoTips" nzErrorTip="Please input your password!">
           <input nz-input type="password" formControlName="password" />
         </nz-form-control>
       </nz-form-item>
@@ -366,7 +366,7 @@ export class NzTestReactiveFormAutoTipsComponent {
   formDisableAutoTips = false;
   passwordDisableAutoTips = false;
 
-  tipOptions = {
+  autoTips = {
     'zh-cn': {
       required: '必填项',
       email: '邮箱格式不正确'
