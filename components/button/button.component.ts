@@ -92,6 +92,16 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
     });
   }
 
+  assertIconOnly(element: HTMLButtonElement, renderer: Renderer2): void {
+    const listOfNode = Array.from(element.childNodes);
+    const iconCount = listOfNode.filter(node => node.nodeName === 'I').length;
+    const noText = listOfNode.every(node => node.nodeName !== '#text');
+    const isIconOnly = noText && iconCount === 1;
+    if (isIconOnly) {
+      renderer.addClass(element, 'ant-btn-icon-only');
+    }
+  }
+
   constructor(
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef,
@@ -114,6 +124,7 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
   }
 
   ngAfterViewInit(): void {
+    this.assertIconOnly(this.elementRef.nativeElement, this.renderer);
     this.insertSpan(this.elementRef.nativeElement.childNodes, this.renderer);
   }
 
