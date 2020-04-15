@@ -6,7 +6,7 @@ import { Observable, Observer } from 'rxjs';
 @Component({
   selector: 'nz-demo-form-auto-tips',
   template: `
-    <form nz-form [nzTipOptions]="tipOptions" [formGroup]="validateForm" (ngSubmit)="submitForm(validateForm.value)">
+    <form nz-form [nzAutoTips]="autoTips" [formGroup]="validateForm" (ngSubmit)="submitForm(validateForm.value)">
       <nz-form-item>
         <nz-form-label [nzSpan]="7" nzRequired>Username</nz-form-label>
         <nz-form-control [nzSpan]="12" nzValidatingTip="Validating...">
@@ -63,8 +63,8 @@ import { Observable, Observer } from 'rxjs';
 export class NzDemoFormAutoTipsComponent {
   validateForm: FormGroup;
 
-  // current locale is key of the nzTipOptions
-  tipOptions: Record<string, Record<string, string>> = {
+  // current locale is key of the nzAutoTips
+  autoTips: Record<string, Record<string, string>> = {
     'zh-cn': {
       required: '必填项',
       email: '邮箱格式不正确'

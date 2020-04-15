@@ -54,7 +54,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 | --- | --- | --- | --- | --- |
 | `[nzLayout]`| 表单布局 | `'horizontal' \| 'vertical' \| 'inline'` | `'horizontal'` |
 | `[nzNoColon]`| 配置 `nz-form-label` 的 `[nzNoColon]` 的默认值 | `boolean` | `false` | ✅ |
-| `[nzTipOptions]`| 配置 `nz-form-control` 的 `[nzTipOptions]` 的默认值, 具体用法请参考示例：**自动提示** | `Record<string, Record<string, string>>` | `{}` | ✅ |
+| `[nzAutoTips]`| 配置 `nz-form-control` 的 `[nzAutoTips]` 的默认值, 具体用法请参考示例：**自动提示** | `Record<string, Record<string, string>>` | `{}` | ✅ |
 | `[nzDisableAutoTips]`| 配置 `nz-form-control` 的 `[nzDisableAutoTips]` 的默认值 | `boolean` | `false` | ✅ |
 
 ### nz-form-item
@@ -93,7 +93,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 | `[nzWarningTip]`| 校验状态 warning 时提示信息 | `string  \|  TemplateRef<{ $implicit: FormControl  \|  NgModel }>` | - |
 | `[nzErrorTip]`| 校验状态 error 时提示信息 | `string  \|  TemplateRef<{ $implicit: FormControl  \|  NgModel }>` | - |
 | `[nzValidatingTip]`| 正在校验时提示信息 | `string  \|  TemplateRef<{ $implicit: FormControl  \|  NgModel }>` | - |
-| `[nzTipOptions]`| 配置提示的对象, 具体用法请参考示例：**自动提示** | `Record<string, Record<string, string>>` | - | - |
+| `[nzAutoTips]`| 配置提示的对象, 具体用法请参考示例：**自动提示** | `Record<string, Record<string, string>>` | - | - |
 | `[nzDisableAutoTips]`| 禁用自动提示 | `boolean` | - | - |
 
 ### nz-form-split

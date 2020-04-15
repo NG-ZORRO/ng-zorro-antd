@@ -42,7 +42,7 @@ export class NzFormDirective implements OnInit, OnChanges, AfterContentInit, OnD
 
   @Input() nzLayout = 'horizontal';
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzNoColon: boolean;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, {}) nzTipOptions: Record<string, Record<string, string>>;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, {}) nzAutoTips: Record<string, Record<string, string>>;
   @Input() @InputBoolean() nzDisableAutoTips = false;
 
   hostClassMap = {};
@@ -66,7 +66,7 @@ export class NzFormDirective implements OnInit, OnChanges, AfterContentInit, OnD
 
   updateItemsDefaultAutoTipConf(): void {
     if (this.nzFormControlComponent) {
-      this.nzFormControlComponent.forEach(item => item.setDefaultAutoTipConf(this.nzTipOptions, this.nzDisableAutoTips));
+      this.nzFormControlComponent.forEach(item => item.setDefaultAutoTipConf(this.nzAutoTips, this.nzDisableAutoTips));
     }
   }
 
@@ -79,14 +79,14 @@ export class NzFormDirective implements OnInit, OnChanges, AfterContentInit, OnD
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzLayout, nzNoColon, nzTipOptions, nzDisableAutoTips } = changes;
+    const { nzLayout, nzNoColon, nzAutoTips, nzDisableAutoTips } = changes;
     if (nzLayout) {
       this.setClassMap();
     }
     if (nzNoColon) {
       this.updateItemsDefaultColon();
     }
-    if (nzTipOptions || nzDisableAutoTips) {
+    if (nzAutoTips || nzDisableAutoTips) {
       this.updateItemsDefaultAutoTipConf();
     }
   }
