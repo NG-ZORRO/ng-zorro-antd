@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NzFormatEmitEvent, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
+import { NzFormatEmitEvent, NzTreeNodeOptions } from 'ng-zorro-antd/tree';
 
 @Component({
   selector: 'nz-demo-tree-select-async',
