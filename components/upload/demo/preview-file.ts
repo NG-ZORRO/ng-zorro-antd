@@ -8,9 +8,7 @@ import { map } from 'rxjs/operators';
   template: `
     <div class="clearfix">
       <nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76" nzListType="picture" [nzPreviewFile]="previewFile">
-        <button nz-button>
-          <span><i nz-icon nzType="upload"></i> Upload</span>
-        </button>
+        <button nz-button><i nz-icon nzType="upload"></i> Upload</button>
       </nz-upload>
     </div>
   `

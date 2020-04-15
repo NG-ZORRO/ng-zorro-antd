@@ -1,3 +1,72 @@
+<a name="9.0.0"></a>
+# [9.0.0](https://github.com/NG-ZORRO/ng-zorro-antd/compare/9.0.0-beta.4...9.0.0) (2020-04-15)
+
+
+### Intro
+
+Welcome to the `9.0.0` version of `ng-zorro-antd`,some APIs were deprecated in version 8.x, and warning message was given under dev mode. All deprecated APIs is removed in 9.0.0, if you have fixed all warnings in the 8.x version, you can follow these steps to upgrade your version.
+
+#### Environmental Requirement
+
+1. Make sure `Node.js` >= `10.13`
+2. Create a new branch, or use other methods to back up the current project
+3. delete the package-lock.json file
+
+#### Upgrade dependencies
+
+- Upgrade Angular to 9.x version, ref https://update.angular.io/
+- Run `ng update @angular/cdk`, if you have used `@angular/cdk`.
+- if you have used `date-fns` in your project, upgrade it to `2.x` version, ref https://github.com/date-fns/date-fns-upgrade.
+- if you have used `monaco-editor` please upgrade it to `0.2.x`, don't forget to upgrade `monaco-editor-webpack-plugin` to `1.9.x` if you have used it.
+
+#### Upgrade NG-ZORRO
+
+- Run `ng update ng-zorro-antd`
+- If a warning message appears in the console, follow the prompts to modify the corresponding code
+
+#### date-fns update
+
+We have upgraded `date-fns` to v2. When you switch to` date-fns`, some date formats will have a breaking change. Such as:
+
+```html
+<!-- datefns v1 -->
+<nz-date-picker nzFormat="YYYY-MM-DD"></nz-date-picker>
+
+<!-- datefns v2 -->
+<nz-date-picker nzFormat="yyyy-MM-dd"></nz-date-picker>
+```
+
+**We recommend using `date-fns` v2 date format**. If you don't want to use the new date format, you can use `NZ_DATE_FNS_COMPATIBLE`. When set to` true`, `ng-zorro-antd` will convert the format of v1 to v2. See the comparison of the old and new formats [here](https://github.com/date-fns/date-fns/blob/master/CHANGELOG.md#200---2019-08-20).
+
+```js
+providers: [
+  { provide: NZ_DATE_FNS_COMPATIBLE, useValue: true }
+]
+```
+
+**Note: `NZ_DATE_FNS_COMPATIBLE` won't be kept for too long, we will remove the support for `date-fns` v1 format until ` ng-zorro-antd` v10**, we hope you can update the `date-fns` date format in time. For `date-fns` upgrade guide, see [here](https://github.com/date-fns/date-fns-upgrade).
+
+
+#### Angular Ivy Supported
+
+We have upgraded the `@angular/*` and `@angular/cdk` versions to v9, and now you can use the Ivy rendering engine to run your project, and enable the `strictTemplates` option to use more strict template type checking.
+
+More help go to [Angular Ivy](https://angular.io/guide/ivy) and [Template type](https://angular.io/guide/template-typecheck) checking.
+
+#### Ant Design 4 Spec
+
+We have synced the Ant Design 4 design specification and support the Dark and Compact themes.
+
+
+#### Enhanced Performance and Usability
+
+- In previous versions, the Table component has integrated virtual scrolling, also now supported for Select and Tree components.
+- Form and Table simplify usage and now allow for writing fewer templates and configurations.
+- Allow adding icons in sub-modules to reduce the first screen load time.
+- Now, the pop-up menu is automatically closed when the route is changed, and corresponding options have been added for components such as Modal.
+
+
+
 <a name="9.0.0-beta.4"></a>
 # [9.0.0-beta.4](https://github.com/NG-ZORRO/ng-zorro-antd/compare/9.0.0-beta.3...9.0.0-beta.4) (2020-04-14)
 

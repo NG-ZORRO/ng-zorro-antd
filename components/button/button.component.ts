@@ -96,7 +96,8 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
     const listOfNode = Array.from(element.childNodes);
     const iconCount = listOfNode.filter(node => node.nodeName === 'I').length;
     const noText = listOfNode.every(node => node.nodeName !== '#text');
-    const isIconOnly = noText && iconCount === 1;
+    const noSpan = listOfNode.every(node => node.nodeName !== 'SPAN');
+    const isIconOnly = noSpan && noText && iconCount === 1;
     if (isIconOnly) {
       renderer.addClass(element, 'ant-btn-icon-only');
     }
