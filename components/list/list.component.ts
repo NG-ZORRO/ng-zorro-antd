@@ -18,7 +18,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { NzDirectionVHType, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzDirectionVHType, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { NzListGrid } from './interface';
@@ -93,6 +93,10 @@ import { NzListFooterComponent, NzListLoadMoreDirective, NzListPaginationCompone
   }
 })
 export class NzListComponent implements AfterContentInit, OnChanges, OnDestroy {
+  static ngAcceptInputType_nzBordered: BooleanInput;
+  static ngAcceptInputType_nzLoading: BooleanInput;
+  static ngAcceptInputType_nzSplit: BooleanInput;
+
   @Input() nzDataSource: NzSafeAny[];
   @Input() @InputBoolean() nzBordered = false;
   @Input() nzGrid: NzListGrid;

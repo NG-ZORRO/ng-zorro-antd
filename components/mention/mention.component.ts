@@ -37,7 +37,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { DEFAULT_MENTION_BOTTOM_POSITIONS, DEFAULT_MENTION_TOP_POSITIONS } from 'ng-zorro-antd/core/overlay';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { getCaretCoordinates, getMentions, InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { fromEvent, merge, Subscription } from 'rxjs';
@@ -89,6 +89,8 @@ export type MentionPlacement = 'top' | 'bottom';
   providers: [NzMentionService]
 })
 export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
+  static ngAcceptInputType_nzLoading: BooleanInput;
+
   @Input() nzValueWith: (value: NzSafeAny) => string = value => value;
   @Input() nzPrefix: string | string[] = '@';
   @Input() @InputBoolean() nzLoading = false;
@@ -246,11 +248,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
       });
     }
     const searchValue = suggestions.toLowerCase();
-    this.filteredSuggestions = this.nzSuggestions.filter(suggestion =>
-      this.nzValueWith(suggestion)
-        .toLowerCase()
-        .includes(searchValue)
-    );
+    this.filteredSuggestions = this.nzSuggestions.filter(suggestion => this.nzValueWith(suggestion).toLowerCase().includes(searchValue));
   }
 
   private resetDropdown(emit: boolean = true): void {

@@ -20,7 +20,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { NzDirectionVHType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzDirectionVHType } from 'ng-zorro-antd/core/types';
 
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subscription } from 'rxjs';
@@ -68,6 +68,8 @@ import { NzListComponent } from './list.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzListItemComponent implements OnDestroy, AfterViewInit {
+  static ngAcceptInputType_nzNoFlex: BooleanInput;
+
   @Input() nzActions: Array<TemplateRef<void>> = [];
   @Input() nzContent: string | TemplateRef<void>;
   @Input() nzExtra: TemplateRef<void>;

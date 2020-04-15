@@ -16,7 +16,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { NgClassType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgClassType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { Subject } from 'rxjs';
@@ -92,6 +92,8 @@ import { Subject } from 'rxjs';
   }
 })
 export class NzStepComponent implements OnDestroy {
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+
   @ViewChild('processDotTemplate', { static: false }) processDotTemplate: TemplateRef<void>;
 
   @Input() nzTitle: string | TemplateRef<void>;

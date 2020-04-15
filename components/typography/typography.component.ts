@@ -32,7 +32,7 @@ import {
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { cancelRequestAnimationFrame, reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzResizeService } from 'ng-zorro-antd/core/services';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber, isStyleSupport, measure } from 'ng-zorro-antd/core/util';
 
 import { Subject, Subscription } from 'rxjs';
@@ -95,6 +95,13 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
   }
 })
 export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
+  static ngAcceptInputType_nzCopyable: BooleanInput;
+  static ngAcceptInputType_nzEditable: BooleanInput;
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzExpandable: BooleanInput;
+  static ngAcceptInputType_nzEllipsis: BooleanInput;
+  static ngAcceptInputType_nzEllipsisRows: NumberInput;
+
   @Input() @InputBoolean() nzCopyable = false;
   @Input() @InputBoolean() nzEditable = false;
   @Input() @InputBoolean() nzDisabled = false;

@@ -18,7 +18,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { NumberInput, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -61,6 +61,10 @@ const NZ_CONFIG_COMPONENT_NAME = 'spin';
   }
 })
 export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
+  static ngAcceptInputType_nzDelay: NumberInput;
+  static ngAcceptInputType_nzSimple: NumberInput;
+  static ngAcceptInputType_nzSpinning: NumberInput;
+
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzIndicator: TemplateRef<void>;
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzTip: string | null = null;

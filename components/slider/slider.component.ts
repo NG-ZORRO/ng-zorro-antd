@@ -27,6 +27,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
 import {
   arraysEqual,
   ensureNumberInRange,
@@ -105,6 +106,15 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
   `
 })
 export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChanges, OnDestroy {
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzDots: BooleanInput;
+  static ngAcceptInputType_nzIncluded: BooleanInput;
+  static ngAcceptInputType_nzRange: BooleanInput;
+  static ngAcceptInputType_nzVertical: BooleanInput;
+  static ngAcceptInputType_nzMax: NumberInput;
+  static ngAcceptInputType_nzMin: NumberInput;
+  static ngAcceptInputType_nzStep: NumberInput;
+
   @ViewChild('slider', { static: true }) slider: ElementRef<HTMLDivElement>;
   @ViewChildren(NzSliderHandleComponent) handlerComponents: QueryList<NzSliderHandleComponent>;
 

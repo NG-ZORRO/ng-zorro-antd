@@ -21,6 +21,7 @@ import {
 } from '@angular/core';
 
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
@@ -35,6 +36,8 @@ const NZ_CONFIG_COMPONENT_NAME = 'form';
   host: { '[class]': 'hostClassMap' }
 })
 export class NzFormDirective implements OnInit, OnChanges, AfterContentInit, OnDestroy {
+  static ngAcceptInputType_nzNoColon: BooleanInput;
+
   @Input() nzLayout = 'horizontal';
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzNoColon: boolean;
   hostClassMap = {};

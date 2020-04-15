@@ -7,6 +7,7 @@
  */
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, Renderer2, ViewEncapsulation } from '@angular/core';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 
 import { InputBoolean, toBoolean } from 'ng-zorro-antd/core/util';
 
@@ -27,6 +28,9 @@ import { InputBoolean, toBoolean } from 'ng-zorro-antd/core/util';
   `
 })
 export class NzFormLabelComponent {
+  static ngAcceptInputType_nzRequired: BooleanInput;
+  static ngAcceptInputType_nzNoColon: BooleanInput;
+
   @Input() nzFor: string;
   @Input() @InputBoolean() nzRequired = false;
   @Input()

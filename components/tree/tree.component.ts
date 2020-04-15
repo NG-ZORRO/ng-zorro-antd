@@ -42,7 +42,7 @@ import {
   NzTreeNodeKey,
   NzTreeNodeOptions
 } from 'ng-zorro-antd/core/tree';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -164,6 +164,19 @@ const NZ_CONFIG_COMPONENT_NAME = 'tree';
   }
 })
 export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, ControlValueAccessor, OnChanges, AfterViewInit {
+  static ngAcceptInputType_nzShowIcon: BooleanInput;
+  static ngAcceptInputType_nzHideUnMatched: BooleanInput;
+  static ngAcceptInputType_nzBlockNode: BooleanInput;
+  static ngAcceptInputType_nzExpandAll: BooleanInput;
+  static ngAcceptInputType_nzSelectMode: BooleanInput;
+  static ngAcceptInputType_nzCheckStrictly: BooleanInput;
+  static ngAcceptInputType_nzShowExpand: BooleanInput;
+  static ngAcceptInputType_nzShowLine: BooleanInput;
+  static ngAcceptInputType_nzCheckable: BooleanInput;
+  static ngAcceptInputType_nzAsyncData: BooleanInput;
+  static ngAcceptInputType_nzDraggable: BooleanInput;
+  static ngAcceptInputType_nzMultiple: BooleanInput;
+
   @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) nzShowIcon: boolean;
   @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) nzHideUnMatched: boolean;
   @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) nzBlockNode: boolean;

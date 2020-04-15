@@ -7,6 +7,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -32,6 +33,8 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   }
 })
 export class NzDividerComponent {
+  static ngAcceptInputType_nzDashed: BooleanInput;
+
   @Input() nzText: string | TemplateRef<void>;
   @Input() nzType: 'horizontal' | 'vertical' = 'horizontal';
   @Input() nzOrientation: 'left' | 'right' | 'center' = 'center';

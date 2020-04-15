@@ -36,7 +36,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { BehaviorSubject, combineLatest, merge, Subject } from 'rxjs';
 import { startWith, switchMap, takeUntil } from 'rxjs/operators';
@@ -156,6 +156,16 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
   }
 })
 export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy, AfterContentInit, OnChanges {
+  static ngAcceptInputType_nzAllowClear: BooleanInput;
+  static ngAcceptInputType_nzBorderless: BooleanInput;
+  static ngAcceptInputType_nzShowSearch: BooleanInput;
+  static ngAcceptInputType_nzLoading: BooleanInput;
+  static ngAcceptInputType_nzAutoFocus: BooleanInput;
+  static ngAcceptInputType_nzAutoClearSearchValue: BooleanInput;
+  static ngAcceptInputType_nzServerSearch: BooleanInput;
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzOpen: BooleanInput;
+
   @Input() nzSize: NzSelectSizeType = 'default';
   @Input() nzDropdownClassName: string | null = null;
   @Input() nzDropdownMatchSelectWidth = true;

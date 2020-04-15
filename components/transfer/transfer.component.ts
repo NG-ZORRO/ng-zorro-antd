@@ -22,7 +22,7 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toArray } from 'ng-zorro-antd/core/util';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
@@ -99,6 +99,10 @@ import { NzTransferListComponent } from './transfer-list.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzShowSelectAll: BooleanInput;
+  static ngAcceptInputType_nzShowSearch: BooleanInput;
+
   private unsubscribe$ = new Subject<void>();
   @ViewChildren(NzTransferListComponent)
   private lists!: QueryList<NzTransferListComponent>;

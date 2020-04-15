@@ -23,6 +23,7 @@ import {
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd';
 import { warn } from 'ng-zorro-antd/core/logger';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { inNextTick, InputBoolean } from 'ng-zorro-antd/core/util';
 import { BehaviorSubject, combineLatest, fromEvent, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil } from 'rxjs/operators';
@@ -64,6 +65,9 @@ declare const monaco: NzSafeAny;
   ]
 })
 export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
+  static ngAcceptInputType_nzLoading: BooleanInput;
+  static ngAcceptInputType_nzFullControl: BooleanInput;
+
   @Input() nzEditorMode: NzEditorMode = 'normal';
   @Input() nzOriginalText = '';
   @Input() @InputBoolean() nzLoading = false;
