@@ -29,11 +29,11 @@ export class InjectionTokenRule extends MigrationRule<null> {
     namedImports.elements.filter(element => ts.isIdentifier(element.name)).forEach(element => {
       const importName = element.name.text;
 
-      const deprecatedTokens = ['NZ_MESSAGE_CONFIG', 'NZ_NOTIFICATION_CONFIG', 'NZ_DEFAULT_EMPTY_CONTENT'];
+      const deprecatedTokens = ['NZ_MESSAGE_CONFIG', 'NZ_NOTIFICATION_CONFIG', 'NZ_DEFAULT_EMPTY_CONTENT', 'NZ_ICON_DEFAULT_TWOTONE_COLOR'];
 
       if (deprecatedTokens.indexOf(importName) !== -1) {
         this.createFailureAtNode(
-          element, `Found deprecated symbol "${importName}" which has been removed. Use "NZ_CONFIG" to instead please.`);
+          element, `Found deprecated symbol "${importName}" which has been removed. Use global config to instead please.`);
       }
     });
   }

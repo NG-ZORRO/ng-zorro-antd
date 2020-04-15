@@ -5,7 +5,7 @@ import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/te
 import * as shx from 'shelljs';
 import { SchematicsTestNGConfig, SchematicsTestTsConfig } from '../config';
 
-describe('dropdown components migration', () => {
+describe('v9 form components migration', () => {
   let runner: SchematicTestRunner;
   let host: TempScopedNodeJsSyncHost;
   let tree: UnitTestTree;
@@ -52,33 +52,23 @@ describe('dropdown components migration', () => {
     await runner.runSchematicAsync('migration-v9', {}, tree).toPromise();
   }
 
-  describe('dropdown components', () => {
+  describe('form components', () => {
 
     it('should properly report invalid deprecated component', async() => {
       writeFile('/index.ts', `;
       import {Component} from '@angular/core'
       @Component({
         template: \`
-        <nz-dropdown>
-          <a nz-dropdown> Hover me <i nz-icon type="down"></i> </a>
-          <ul nz-menu nzSelectable>
-            <li nz-menu-item>
-              <a>1st menu item</a>
-            </li>
-          </ul>
-        </nz-dropdown>
-        <nz-dropdown-button (nzClick)="log()">
-          DropDown
-          <ul nz-menu>
-            <li nz-menu-item>2nd menu item</li>
-            <li nz-submenu>
-              <span title>sub menu</span>
-              <ul>
-                <li nz-menu-item>3rd menu item</li>
-              </ul>
-            </li>
-          </ul>
-        </nz-dropdown-button>
+        <form nz-form>
+          <nz-form-item>
+            <nz-form-control>
+              <input type="text" placeholder="Username"/>
+              <nz-form-explain>Please input your username!
+              </nz-form-explain>
+              <nz-form-extra>We must make sure that your are a human.</nz-form-extra>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
         \`
       })
       export class MyComp {
@@ -86,10 +76,10 @@ describe('dropdown components migration', () => {
       }`);
       await runMigration();
 
-      expect(warnOutput).toContain( 'index.ts@5:9 - Found deprecated "<nz-dropdown>" component. ' +
-        'Use "[nz-dropdown]" to instead please.');
-      expect(warnOutput).toContain( 'index.ts@13:9 - Found deprecated "<nz-dropdown-button>" component. ' +
-        'Use "[nz-dropdown]" to instead please.');
+      expect(warnOutput).toContain( 'index.ts@11:15 - Found deprecated "<nz-form-extra>" component. ' +
+        'Use "nz-form-control[nzExtra]" to instead please.');
+      expect(warnOutput).toContain( 'index.ts@9:15 - Found deprecated "<nz-form-explain>" component. ' +
+        'Use "nz-form-control[nzSuccessTip][nzWarningTip][nzErrorTip]..." to instead please.');
     });
 
   });
