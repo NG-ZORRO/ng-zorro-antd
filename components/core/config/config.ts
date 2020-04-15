@@ -140,6 +140,7 @@ export interface EmptyConfig {
 
 export interface FormConfig {
   nzNoColon?: boolean;
+  nzTipOptions?: Record<string, Record<string, string>>;
 }
 
 export interface IconConfig {
