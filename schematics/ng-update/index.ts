@@ -9,6 +9,7 @@ import { DropdownTemplateRule } from './upgrade-rules/checks/dropdown-template-r
 import { FormTemplateRule } from './upgrade-rules/checks/form-template-rule';
 import { IconTemplateRule } from './upgrade-rules/checks/icon-template-rule';
 import { InjectionTokenRule } from "./upgrade-rules/checks/injection-token-rule";
+import { SecondaryEntryPointsRule } from './upgrade-rules/checks/secondary-entry-points-rule';
 import { TooltipLikeTemplateRule } from './upgrade-rules/checks/tooltip-like-template-rule';
 
 /** Entry point for the migration schematics with target of NG-ZORRO v7 */
@@ -28,7 +29,8 @@ export function updateToV9(): Rule {
       CalendarTemplateRule,
       CarouselTemplateRule,
       InjectionTokenRule,
-      FormTemplateRule
+      FormTemplateRule,
+      SecondaryEntryPointsRule
     ],
     ruleUpgradeData,
     postUpdate
