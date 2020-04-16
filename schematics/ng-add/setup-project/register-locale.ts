@@ -22,7 +22,7 @@ export function registerLocale(options: Schema): Rule {
     const appModulePath = getAppModulePath(host, getProjectMainFile(project));
     const moduleSource = parseSourceFile(host, appModulePath);
 
-    const locale = getCompatibleLocal(options);
+    const locale = options.locale || 'en_US';
     const localePrefix = locale.split('_')[ 0 ];
 
     const recorder = host.beginUpdate(appModulePath);
@@ -50,22 +50,6 @@ export function registerLocale(options: Schema): Rule {
 
     return host;
   };
-}
-
-function getCompatibleLocal(options: Schema): string {
-  const defaultLocal = 'en_US';
-  if (options.locale === options.i18n) {
-    return options.locale;
-  } else if (options.locale === defaultLocal) {
-
-    console.log();
-    console.log(`${chalk.bgYellow('WARN')} ${chalk.cyan('--i18n')} option will be deprecated, ` +
-      `use ${chalk.cyan('--locale')} instead`);
-
-    return options.i18n;
-  } else {
-    return options.locale || defaultLocal;
-  }
 }
 
 function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, locale: string): Change {
