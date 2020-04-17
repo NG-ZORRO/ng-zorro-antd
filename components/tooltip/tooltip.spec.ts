@@ -117,12 +117,12 @@ describe('nz-tooltip', () => {
       component.visible = true;
       waitingForTooltipToggling();
       expect(overlayContainerElement.textContent).toContain(title);
-      expect(component.visibilityTogglingCount).toBe(0);
+      expect(component.visibilityTogglingCount).toBe(1);
 
       component.visible = false;
       waitingForTooltipToggling();
       expect(overlayContainerElement.textContent).not.toContain(title);
-      expect(component.visibilityTogglingCount).toBe(0);
+      expect(component.visibilityTogglingCount).toBe(2);
     }));
   });
 

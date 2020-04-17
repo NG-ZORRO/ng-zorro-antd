@@ -352,6 +352,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
     const visible = toBoolean(value);
     if (this._visible !== visible) {
       this._visible = visible;
+      this.nzVisibleChange.next(visible);
     }
   }
 
