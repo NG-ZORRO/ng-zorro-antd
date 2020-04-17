@@ -293,7 +293,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     if (this.listOfNzOptionGroupComponent) {
       this.listOfNzOptionGroupComponent.forEach(o => {
         const groupItem = { groupLabel: o.nzLabel, type: 'group', key: o.nzLabel } as NzSelectItemInterface;
-        const index = this.listOfContainerItem.findIndex(item => groupItem.groupLabel === item.groupLabel);
+        const index = listOfContainerItem.findIndex(item => groupItem.groupLabel === item.groupLabel);
         listOfContainerItem.splice(index, 0, groupItem);
       });
     }
