@@ -335,6 +335,32 @@ describe('select', () => {
       expect(document.querySelectorAll('nz-option-item-group')[0]!.textContent).toBe('change-group');
       expect(document.querySelectorAll('nz-option-item')[0].textContent).toBe('change-label');
     }));
+
+    it('should group item sort be right', fakeAsync(() => {
+      component.listOfGroup = [
+        {
+          nzLabel: 'group-1',
+          children: [
+            { nzValue: 'value_01', nzLabel: 'label_01' },
+            { nzValue: 'value_02', nzLabel: 'label_02' }
+          ]
+        },
+        {
+          nzLabel: 'group-2',
+          children: [
+            { nzValue: 'value_03', nzLabel: 'label_03' },
+            { nzValue: 'value_04', nzLabel: 'label_04' }
+          ]
+        }
+      ];
+      component.nzOpen = true;
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(
+        document.querySelectorAll('nz-option-item')[0].parentElement!.nextElementSibling!.querySelector('nz-option-item')!.textContent
+      ).toBe('label_02');
+    }));
   });
   describe('multiple mode', () => {
     let testBed: ComponentBed<TestSelectMultipleComponent>;
