@@ -41,7 +41,7 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
         [style.height.px]="listOfContainerItem.length * itemSize"
         [style.max-height.px]="itemSize * maxItemLength"
       >
-        <div *cdkVirtualFor="let item of listOfContainerItem; trackBy: trackValue">
+        <ng-container *cdkVirtualFor="let item of listOfContainerItem; trackBy: trackValue">
           <ng-container [ngSwitch]="item.type">
             <nz-option-item-group *ngSwitchCase="'group'" [nzLabel]="item.groupLabel"></nz-option-item-group>
             <nz-option-item
@@ -61,7 +61,7 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
               (itemClick)="onItemClick($event)"
             ></nz-option-item>
           </ng-container>
-        </div>
+        </ng-container>
       </cdk-virtual-scroll-viewport>
       <ng-template [ngTemplateOutlet]="dropdownRender"></ng-template>
     </div>
