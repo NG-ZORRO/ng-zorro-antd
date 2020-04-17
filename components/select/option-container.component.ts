@@ -34,6 +34,7 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
         <nz-embed-empty nzComponentName="select" [specificContent]="notFoundContent"></nz-embed-empty>
       </div>
       <cdk-virtual-scroll-viewport
+        [class.full-width]="!matchWidth"
         [itemSize]="itemSize"
         [maxBufferPx]="itemSize * maxItemLength"
         [minBufferPx]="itemSize * maxItemLength"
@@ -78,6 +79,7 @@ export class NzOptionContainerComponent implements OnChanges {
   @Input() listOfSelectedValue: NzSafeAny[] = [];
   @Input() compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean;
   @Input() mode: NzSelectModeType = 'default';
+  @Input() matchWidth = true;
   @Input() listOfContainerItem: NzSelectItemInterface[] = [];
   @Output() readonly itemClick = new EventEmitter<NzSafeAny>();
   @Output() readonly itemHover = new EventEmitter<NzSafeAny>();
