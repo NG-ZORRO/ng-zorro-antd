@@ -358,7 +358,7 @@ describe('select', () => {
       flush();
       fixture.detectChanges();
       expect(
-        document.querySelectorAll('nz-option-item')[0].parentElement!.nextElementSibling!.querySelector('nz-option-item')!.textContent
+        document.querySelectorAll('nz-option-item')[0].parentElement!.querySelector('nz-option-item')!.nextElementSibling!.textContent
       ).toBe('label_02');
     }));
   });
