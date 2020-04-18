@@ -183,7 +183,7 @@ describe('nz-form-control', () => {
 
       expect(formControls[0].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('必填项');
       expect(formControls[1].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('必填项');
-      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('必填项');
+      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入邮箱');
       expect(formControls[3].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('必填项');
 
       testBed.fixture.detectChanges();
@@ -196,7 +196,48 @@ describe('nz-form-control', () => {
 
       expect(formControls[0].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual(`最小长度为 6`);
       expect(formControls[1].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('手机号码格式不正确');
-      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('邮箱格式不正确');
+      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入正确的邮箱');
+
+      testBed.fixture.detectChanges();
+
+      testComponent.formAutoTips = {
+        'zh-cn': {
+          required: '请输入',
+          email: '邮箱格式不正确'
+        },
+        en: {
+          required: 'Input is required',
+          email: 'The input is not valid email'
+        }
+      };
+      testBed.fixture.detectChanges();
+
+      formGroup.get('userName')!.setValue('');
+      formGroup.get('mobile')!.setValue('');
+      formGroup.get('email')!.setValue('');
+
+      testBed.fixture.detectChanges();
+
+      expect(formControls[0].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入');
+      expect(formControls[1].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入');
+      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入邮箱');
+      expect(formControls[3].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入');
+
+      testBed.fixture.detectChanges();
+
+      testComponent.showConfirmPassword = true;
+      testBed.fixture.detectChanges();
+
+      formGroup.get('userName')!.setValue('');
+      formGroup.get('mobile')!.setValue('');
+      formGroup.get('email')!.setValue('');
+      testBed.fixture.detectChanges();
+
+      expect(formControls[0].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入');
+      expect(formControls[1].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入');
+      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入邮箱');
+      expect(formControls[3].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入');
+      expect(formControls[3].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入');
     });
     it('should i18n work ', () => {
       formGroup.get('userName')!.markAsDirty();
@@ -228,7 +269,7 @@ describe('nz-form-control', () => {
 
       expect(formControls[0].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual(`MinLength is 6`);
       expect(formControls[1].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('Mobile phone number is not valid');
-      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('The input is not valid email');
+      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('Please input valid email');
     });
     it('should nzDisableAutoTips work ', () => {
       formGroup.get('userName')!.markAsDirty();
@@ -336,7 +377,7 @@ export class NzTestReactiveFormControlInitStatusComponent {
 
 @Component({
   template: `
-    <form [formGroup]="formGroup" nz-form [nzAutoTips]="autoTips" [nzDisableAutoTips]="formDisableAutoTips">
+    <form [formGroup]="formGroup" nz-form [nzAutoTips]="formAutoTips" [nzDisableAutoTips]="formDisableAutoTips">
       <nz-form-item>
         <nz-form-control #control>
           <input nz-input formControlName="userName" />
@@ -348,13 +389,18 @@ export class NzTestReactiveFormControlInitStatusComponent {
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-control>
+        <nz-form-control [nzAutoTips]="emailAutoTips">
           <input nz-input formControlName="email" type="email" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-control [nzAutoTips]="autoTips" [nzDisableAutoTips]="passwordDisableAutoTips" nzErrorTip="Please input your password!">
+        <nz-form-control [nzDisableAutoTips]="passwordDisableAutoTips" nzErrorTip="Please input your password!">
           <input nz-input type="password" formControlName="password" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="showConfirmPassword">
+        <nz-form-control>
+          <input nz-input type="password" formControlName="confirmPassword" />
         </nz-form-control>
       </nz-form-item>
     </form>
@@ -363,10 +409,12 @@ export class NzTestReactiveFormControlInitStatusComponent {
 export class NzTestReactiveFormAutoTipsComponent {
   formGroup: FormGroup;
 
+  showConfirmPassword = false;
+
   formDisableAutoTips = false;
   passwordDisableAutoTips = false;
 
-  autoTips = {
+  formAutoTips = {
     'zh-cn': {
       required: '必填项',
       email: '邮箱格式不正确'
@@ -376,6 +424,16 @@ export class NzTestReactiveFormAutoTipsComponent {
       email: 'The input is not valid email'
     }
   };
+  emailAutoTips = {
+    'zh-cn': {
+      required: '请输入邮箱',
+      email: '请输入正确的邮箱'
+    },
+    en: {
+      required: 'Input is required',
+      email: 'Please input valid email'
+    }
+  };
 
   constructor(private formBuilder: FormBuilder, public i18n: NzI18nService) {
     const { required, minLength, email, mobile } = MyValidators;
@@ -383,7 +441,8 @@ export class NzTestReactiveFormAutoTipsComponent {
       userName: ['', [required, minLength(6)]],
       mobile: ['', [required, mobile]],
       email: ['', [required, email]],
-      password: ['', [required]]
+      password: ['', [required]],
+      confirmPassword: ['', [required]]
     });
   }
 }
