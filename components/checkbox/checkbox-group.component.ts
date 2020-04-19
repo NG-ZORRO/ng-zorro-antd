@@ -9,7 +9,7 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { ChangeDetectorRef, Component, ElementRef, forwardRef, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 export interface NzCheckBoxOptionInterface {
@@ -48,6 +48,8 @@ export interface NzCheckBoxOptionInterface {
   }
 })
 export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, OnDestroy {
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
   options: NzCheckBoxOptionInterface[] = [];

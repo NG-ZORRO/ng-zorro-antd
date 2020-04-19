@@ -4,6 +4,10 @@
 @menu-prefix-cls: ~'@{ant-prefix}-menu';
 
 .@{menu-prefix-cls} {
+  &-rtl {
+    direction: rtl;
+  }
+
   &-item-group-title {
     .@{menu-prefix-cls}-rtl & {
       text-align: right;
@@ -116,6 +120,15 @@
     .@{menu-prefix-cls}-submenu-title {
       .@{menu-prefix-cls}-rtl& {
         padding-right: 0;
+        padding-left: 34px;
+      }
+    }
+  }
+
+  &-vertical {
+    .@{menu-prefix-cls}-submenu-title {
+      .@{menu-prefix-cls}-rtl& {
+        padding-right: 16px;
         padding-left: 34px;
       }
     }

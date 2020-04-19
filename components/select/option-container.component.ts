@@ -34,6 +34,7 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
         <nz-embed-empty nzComponentName="select" [specificContent]="notFoundContent"></nz-embed-empty>
       </div>
       <cdk-virtual-scroll-viewport
+        [class.full-width]="!matchWidth"
         [itemSize]="itemSize"
         [maxBufferPx]="itemSize * maxItemLength"
         [minBufferPx]="itemSize * maxItemLength"
@@ -41,7 +42,7 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
         [style.height.px]="listOfContainerItem.length * itemSize"
         [style.max-height.px]="itemSize * maxItemLength"
       >
-        <div *cdkVirtualFor="let item of listOfContainerItem; trackBy: trackValue">
+        <ng-container *cdkVirtualFor="let item of listOfContainerItem; trackBy: trackValue">
           <ng-container [ngSwitch]="item.type">
             <nz-option-item-group *ngSwitchCase="'group'" [nzLabel]="item.groupLabel"></nz-option-item-group>
             <nz-option-item
@@ -61,7 +62,7 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
               (itemClick)="onItemClick($event)"
             ></nz-option-item>
           </ng-container>
-        </div>
+        </ng-container>
       </cdk-virtual-scroll-viewport>
       <ng-template [ngTemplateOutlet]="dropdownRender"></ng-template>
     </div>
@@ -78,6 +79,7 @@ export class NzOptionContainerComponent implements OnChanges {
   @Input() listOfSelectedValue: NzSafeAny[] = [];
   @Input() compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean;
   @Input() mode: NzSelectModeType = 'default';
+  @Input() matchWidth = true;
   @Input() listOfContainerItem: NzSelectItemInterface[] = [];
   @Output() readonly itemClick = new EventEmitter<NzSafeAny>();
   @Output() readonly itemHover = new EventEmitter<NzSafeAny>();

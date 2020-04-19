@@ -39,6 +39,10 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 | `[nzSearchValue]` | 按需筛选树高亮节点(参考可搜索的树),双向绑定 | `string` | `null` |
 | `[nzSearchFunc]` | 自定义匹配方法，配合 nzSearchValue 使用 | `(node: NzTreeNodeOptions) => boolean` | `null` |
 | `[nzBeforeDrop]` | drop前二次校验,允许用户自行决定是否允许放置 | `(confirm: NzFormatBeforeDropEvent) => Observable<boolean>` | - |
+| `[nzVirtualHeight]` | 虚拟滚动的总高度 | `string` | `-` |
+| `[nzVirtualItemSize]` | 虚拟滚动时每一列的高度，与 [cdk itemSize](https://material.angular.io/cdk/scrolling/api) 相同 | `number` | `0` |
+| `[nzVirtualMaxBufferPx]` | 缓冲区最大像素高度，与 [cdk maxBufferPx](https://material.angular.io/cdk/scrolling/api) 相同 | `number` | `200` |
+| `[nzVirtualMinBufferPx]` | 缓冲区最小像素高度，低于该值时将加载新结构，与 [cdk minBufferPx](https://material.angular.io/cdk/scrolling/api) 相同 | `number` | `100` |
 | `(nzClick)` | 点击树节点触发 | `EventEmitter<NzFormatEmitEvent>` | - |
 | `(nzDblClick)` | 双击树节点触发 | `EventEmitter<NzFormatEmitEvent>` | - |
 | `(nzContextMenu)` | 右键树节点触发 | `EventEmitter<NzFormatEmitEvent>` | - |

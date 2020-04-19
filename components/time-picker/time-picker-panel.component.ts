@@ -24,6 +24,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 
 import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
@@ -94,7 +95,7 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
           </li>
         </ng-container>
       </ul>
-      <ul *ngIf="nzUse12Hours" #use12HoursListElement class="{{ prefixCls }}-column">
+      <ul *ngIf="nzUse12Hours" #use12HoursListElement class="{{ prefixCls }}-column" style="position: relative;">
         <ng-container *ngFor="let range of use12HoursRange">
           <li
             *ngIf="!nzHideDisabledOptions"
@@ -126,6 +127,8 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerPanelComponent, multi: true }]
 })
 export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
+  static ngAcceptInputType_nzUse12Hours: BooleanInput;
+
   private _nzHourStep = 1;
   private _nzMinuteStep = 1;
   private _nzSecondStep = 1;
@@ -142,6 +145,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   hourEnabled = true;
   minuteEnabled = true;
   secondEnabled = true;
+  firstScrolled = false;
   enabledColumns = 3;
   hostClassMap = {};
   hourRange: ReadonlyArray<{ index: number; disabled: boolean }>;
@@ -163,8 +167,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   @Input() nzClearText: string;
   @Input() nzPlaceHolder: string;
   @Input() @InputBoolean() nzUse12Hours = false;
-  @Input() nzDefaultOpenValue = new Date();
-  @Input() opened = false;
+  @Input() nzDefaultOpenValue: Date;
 
   @Output() readonly closePanel = new EventEmitter<void>();
 
@@ -289,7 +292,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   buildHours(): void {
     let hourRanges = 24;
-    let disabledHours = this.nzDisabledHours && this.nzDisabledHours();
+    let disabledHours = this.nzDisabledHours?.();
     let startIndex = 0;
     if (this.nzUse12Hours) {
       hourRanges = 12;
@@ -313,7 +316,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     this.hourRange = makeRange(hourRanges, this.nzHourStep, startIndex).map(r => {
       return {
         index: r,
-        disabled: this.nzDisabledHours && disabledHours.indexOf(r) !== -1
+        disabled: disabledHours && disabledHours.indexOf(r) !== -1
       };
     });
     if (this.nzUse12Hours && this.hourRange[this.hourRange.length - 1].index === 12) {
@@ -343,15 +346,15 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   }
 
   build12Hours(): void {
-    const isUpperForamt = this._format.includes('A');
+    const isUpperFormat = this._format.includes('A');
     this.use12HoursRange = [
       {
         index: 0,
-        value: isUpperForamt ? 'AM' : 'am'
+        value: isUpperFormat ? 'AM' : 'am'
       },
       {
         index: 1,
-        value: isUpperForamt ? 'PM' : 'pm'
+        value: isUpperFormat ? 'PM' : 'pm'
       }
     ];
   }
@@ -363,9 +366,25 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     this.build12Hours();
   }
 
+  scrollToTime(delay: number = 0): void {
+    if (this.hourEnabled && this.hourListElement) {
+      this.scrollToSelected(this.hourListElement.nativeElement, this.time.viewHours!, delay, 'hour');
+    }
+    if (this.minuteEnabled && this.minuteListElement) {
+      this.scrollToSelected(this.minuteListElement.nativeElement, this.time.minutes!, delay, 'minute');
+    }
+    if (this.secondEnabled && this.secondListElement) {
+      this.scrollToSelected(this.secondListElement.nativeElement, this.time.seconds!, delay, 'second');
+    }
+    if (this.nzUse12Hours && this.use12HoursListElement) {
+      const selectedHours = this.time.selected12Hours;
+      const index = selectedHours === 'AM' ? 0 : 1;
+      this.scrollToSelected(this.use12HoursListElement.nativeElement, index, delay, '12-hour');
+    }
+  }
+
   selectHour(hour: { index: number; disabled: boolean }): void {
     this.time.setHours(hour.index, hour.disabled);
-    this.scrollToSelected(this.hourListElement.nativeElement, hour.index, 120, 'hour');
     if (!!this._disabledMinutes) {
       this.buildMinutes();
     }
@@ -376,7 +395,6 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   selectMinute(minute: { index: number; disabled: boolean }): void {
     this.time.setMinutes(minute.index, minute.disabled);
-    this.scrollToSelected(this.minuteListElement.nativeElement, minute.index, 120, 'minute');
     if (!!this._disabledSeconds) {
       this.buildSeconds();
     }
@@ -384,11 +402,10 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   selectSecond(second: { index: number; disabled: boolean }): void {
     this.time.setSeconds(second.index, second.disabled);
-    this.scrollToSelected(this.secondListElement.nativeElement, second.index, 120, 'second');
   }
 
   select12Hours(value: { index: number; value: string }): void {
-    this.time.selected12Hours = value.value;
+    this.time.setSelected12Hours(value.value);
     if (!!this._disabledHours) {
       this.buildHours();
     }
@@ -398,27 +415,28 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     if (!!this._disabledSeconds) {
       this.buildSeconds();
     }
-    this.scrollToSelected(this.use12HoursListElement.nativeElement, value.index, 120, '12-hour');
   }
 
   scrollToSelected(instance: HTMLElement, index: number, duration: number = 0, unit: NzTimePickerUnit): void {
+    if (!instance) {
+      return;
+    }
     const transIndex = this.translateIndex(index, unit);
     const currentOption = (instance.children[transIndex] || instance.children[0]) as HTMLElement;
-    const parentPaddingTop = 4;
-    this.scrollTo(instance, currentOption.offsetTop - parentPaddingTop, duration);
+    this.scrollTo(instance, currentOption.offsetTop, duration);
   }
 
   translateIndex(index: number, unit: NzTimePickerUnit): number {
     if (unit === 'hour') {
-      const disabledHours = this.nzDisabledHours && this.nzDisabledHours();
-      return this.calcIndex(disabledHours, this.hourRange.map(item => item.index).indexOf(index));
+      return this.calcIndex(this.nzDisabledHours?.(), this.hourRange.map(item => item.index).indexOf(index));
     } else if (unit === 'minute') {
-      const disabledMinutes = this.nzDisabledMinutes && this.nzDisabledMinutes(this.time.hours!);
-      return this.calcIndex(disabledMinutes, this.minuteRange.map(item => item.index).indexOf(index));
+      return this.calcIndex(this.nzDisabledMinutes?.(this.time.hours!), this.minuteRange.map(item => item.index).indexOf(index));
     } else if (unit === 'second') {
       // second
-      const disabledSeconds = this.nzDisabledSeconds && this.nzDisabledSeconds(this.time.hours!, this.time.minutes!);
-      return this.calcIndex(disabledSeconds, this.secondRange.map(item => item.index).indexOf(index));
+      return this.calcIndex(
+        this.nzDisabledSeconds?.(this.time.hours!, this.time.minutes!),
+        this.secondRange.map(item => item.index).indexOf(index)
+      );
     } else {
       // 12-hour
       return this.calcIndex([], this.use12HoursRange.map(item => item.index).indexOf(index));
@@ -442,8 +460,8 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     });
   }
 
-  calcIndex(array: number[], index: number): number {
-    if (array && array.length && this.nzHideDisabledOptions) {
+  calcIndex(array: number[] | undefined, index: number): number {
+    if (array?.length && this.nzHideDisabledOptions) {
       return (
         index -
         array.reduce((pre, value) => {
@@ -492,59 +510,25 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     if (this.timeDisabled(now)) {
       return;
     }
-    this.time.value = now;
+    this.time.setValue(now);
     this.changed();
     this.closePanel.emit();
   }
 
   isSelectedHour(hour: { index: number; disabled: boolean }): boolean {
-    return hour.index === this.time.viewHours || (!isNotNil(this.time.viewHours) && hour.index === this.time.defaultViewHours);
+    return hour.index === this.time.viewHours;
   }
 
   isSelectedMinute(minute: { index: number; disabled: boolean }): boolean {
-    return minute.index === this.time.minutes || (!isNotNil(this.time.minutes) && minute.index === this.time.defaultMinutes);
+    return minute.index === this.time.minutes;
   }
 
   isSelectedSecond(second: { index: number; disabled: boolean }): boolean {
-    return second.index === this.time.seconds || (!isNotNil(this.time.seconds) && second.index === this.time.defaultSeconds);
+    return second.index === this.time.seconds;
   }
 
   isSelected12Hours(value: { index: number; value: string }): boolean {
-    return (
-      value.value.toUpperCase() === this.time.selected12Hours ||
-      (!isNotNil(this.time.selected12Hours) && value.value.toUpperCase() === this.time.default12Hours)
-    );
-  }
-
-  initPosition(): void {
-    setTimeout(() => {
-      if (this.hourEnabled && this.hourListElement) {
-        if (isNotNil(this.time.viewHours)) {
-          this.scrollToSelected(this.hourListElement.nativeElement, this.time.viewHours!, 0, 'hour');
-        } else {
-          this.scrollToSelected(this.hourListElement.nativeElement, this.time.defaultViewHours, 0, 'hour');
-        }
-      }
-      if (this.minuteEnabled && this.minuteListElement) {
-        if (isNotNil(this.time.minutes)) {
-          this.scrollToSelected(this.minuteListElement.nativeElement, this.time.minutes!, 0, 'minute');
-        } else {
-          this.scrollToSelected(this.minuteListElement.nativeElement, this.time.defaultMinutes, 0, 'minute');
-        }
-      }
-      if (this.secondEnabled && this.secondListElement) {
-        if (isNotNil(this.time.seconds)) {
-          this.scrollToSelected(this.secondListElement.nativeElement, this.time.seconds!, 0, 'second');
-        } else {
-          this.scrollToSelected(this.secondListElement.nativeElement, this.time.defaultSeconds, 0, 'second');
-        }
-      }
-      if (this.nzUse12Hours && this.use12HoursListElement) {
-        const selectedHours = isNotNil(this.time.selected12Hours) ? this.time.selected12Hours : this.time.default12Hours;
-        const index = selectedHours === 'AM' ? 0 : 1;
-        this.scrollToSelected(this.use12HoursListElement.nativeElement, index, 0, '12-hour');
-      }
-    });
+    return value.value.toUpperCase() === this.time.selected12Hours;
   }
 
   constructor(private cdr: ChangeDetectorRef, public dateHelper: DateHelperService) {}
@@ -556,6 +540,11 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     });
     this.buildTimes();
     this.setClassMap();
+    this.selectInputRange();
+    setTimeout(() => {
+      this.scrollToTime();
+      this.firstScrolled = true;
+    });
   }
 
   ngOnDestroy(): void {
@@ -564,20 +553,13 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzUse12Hours, opened, nzDefaultOpenValue } = changes;
-    if (nzUse12Hours && !nzUse12Hours.previousValue && nzUse12Hours.currentValue) {
+    const { nzUse12Hours, nzDefaultOpenValue } = changes;
+    if (!nzUse12Hours?.previousValue && nzUse12Hours?.currentValue) {
       this.build12Hours();
       this.enabledColumns++;
     }
-    if (opened && opened.currentValue) {
-      this.initPosition();
-      this.selectInputRange();
-    }
-    if (nzDefaultOpenValue) {
-      const value: Date = nzDefaultOpenValue.currentValue;
-      if (isNotNil(value)) {
-        this.time.setDefaultOpenValue(this.nzDefaultOpenValue);
-      }
+    if (nzDefaultOpenValue?.currentValue) {
+      this.time.setDefaultOpenValue(this.nzDefaultOpenValue || new Date());
     }
   }
 
@@ -585,6 +567,9 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     this.time.setValue(value, this.nzUse12Hours);
     this.buildTimes();
 
+    if (value && this.firstScrolled) {
+      this.scrollToTime(120);
+    }
     // Mark this component to be checked manually with internal properties changing (see: https://github.com/angular/angular/issues/10816)
     this.cdr.markForCheck();
   }

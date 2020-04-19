@@ -6,13 +6,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { CandyDate, cloneDate, CompatibleValue, normalizeRangeValue } from 'ng-zorro-antd/core/time';
 import { ReplaySubject, Subject } from 'rxjs';
 import { CompatibleDate, RangePartType } from './standard-types';
 
 @Injectable()
-export class DatePickerService {
+export class DatePickerService implements OnDestroy {
   initialValue: CompatibleValue;
   value: CompatibleValue;
   activeDate: CompatibleValue;
@@ -26,7 +26,7 @@ export class DatePickerService {
 
   initValue(): void {
     if (this.isRange) {
-      this.activeDate = normalizeRangeValue([]);
+      this.setActiveDate([]);
       this.value = this.initialValue = [];
     } else {
       this.value = this.initialValue = null;
@@ -49,9 +49,9 @@ export class DatePickerService {
     }
   }
 
-  setActiveDate(value: CompatibleValue): void {
+  setActiveDate(value: CompatibleValue, normalize: boolean = false): void {
     if (this.isRange) {
-      this.activeDate = normalizeRangeValue(value as CandyDate[]);
+      this.activeDate = normalize ? normalizeRangeValue(value as CandyDate[]) : value;
     } else {
       this.activeDate = cloneDate(value);
     }
@@ -66,11 +66,9 @@ export class DatePickerService {
     return { left: 0, right: 1 }[part];
   }
 
-  hasOnePart(): boolean {
-    if (Array.isArray(this.value)) {
-      const [left, right] = this.value as CandyDate[]; // NOTE: the left/right maybe not the sequence it select at the date panels
-      return (!left && !!right) || (!!left && !right);
-    }
-    return false;
+  ngOnDestroy(): void {
+    this.valueChange$.complete();
+    this.emitValue$.complete();
+    this.inputPartChange$.complete();
   }
 }

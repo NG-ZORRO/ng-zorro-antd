@@ -23,6 +23,7 @@ import {
   SimpleChanges,
   SkipSelf
 } from '@angular/core';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -80,6 +81,9 @@ export function MenuDropDownTokenFactory(isMenuInsideDropDownToken: boolean): bo
   }
 })
 export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnDestroy {
+  static ngAcceptInputType_nzInlineCollapsed: BooleanInput;
+  static ngAcceptInputType_nzSelectable: BooleanInput;
+
   @ContentChildren(NzMenuItemDirective, { descendants: true }) listOfNzMenuItemDirective: QueryList<NzMenuItemDirective>;
   @ContentChildren(NzSubMenuComponent, { descendants: true }) listOfNzSubMenuComponent: QueryList<NzSubMenuComponent>;
   @Input() nzInlineIndent = 24;

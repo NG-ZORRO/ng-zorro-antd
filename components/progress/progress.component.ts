@@ -8,7 +8,7 @@
 
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NgStyleInterface } from 'ng-zorro-antd/core/types';
+import { NgStyleInterface, NumberInput } from 'ng-zorro-antd/core/types';
 import { InputNumber, isNotNil } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -140,6 +140,12 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
   `
 })
 export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
+  static ngAcceptInputType_nzSuccessPercent: NumberInput;
+  static ngAcceptInputType_nzPercent: NumberInput;
+  static ngAcceptInputType_nzStrokeWidth: NumberInput;
+  static ngAcceptInputType_nzGapDegree: NumberInput;
+  static ngAcceptInputType_nzSteps: NumberInput;
+
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) nzShowInfo: boolean;
   @Input() nzWidth = 132;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzStrokeColor: NzProgressStrokeColorType;

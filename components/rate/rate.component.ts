@@ -27,7 +27,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NgClassType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgClassType } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -79,6 +79,12 @@ const NZ_CONFIG_COMPONENT_NAME = 'rate';
   ]
 })
 export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor, OnChanges {
+  static ngAcceptInputType_nzAllowClear: BooleanInput;
+  static ngAcceptInputType_nzAllowHalf: BooleanInput;
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzAutoFocus: BooleanInput;
+  static ngAcceptInputType_nzCount: BooleanInput;
+
   @ViewChild('ulElement', { static: false }) private ulElement: ElementRef;
 
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzAllowClear: boolean;

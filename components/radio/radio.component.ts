@@ -23,7 +23,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -77,6 +77,9 @@ import { NzRadioService } from './radio.service';
   }
 })
 export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, OnDestroy, OnInit {
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzAutoFocus: BooleanInput;
+
   private isNgModel = false;
   private destroy$ = new Subject<void>();
   isChecked = false;

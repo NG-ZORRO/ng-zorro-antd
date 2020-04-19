@@ -1,7 +1,7 @@
 import { parseFragment, DefaultTreeDocument, DefaultTreeElement } from 'parse5';
 
 const hasClassName = (node: DefaultTreeElement, className: string) => {
-  return Array.isArray(node.attrs) && node.attrs.find(attr => attr.name === 'class' && attr.value.indexOf(className) !== -1)
+  return node.attrs?.find?.(attr => attr.name === 'class' && attr.value.indexOf(className) !== -1)
 };
 
 export function findElementWithTag(html: string, tagName: string): number[] {
@@ -14,7 +14,7 @@ export function findElementWithTag(html: string, tagName: string): number[] {
         visitNodes(node.childNodes);
       }
 
-      if (node.tagName && node.tagName.toLowerCase() === tagName.toLowerCase()) {
+      if (node.tagName?.toLowerCase() === tagName.toLowerCase()) {
         elements.push(node);
       }
     });
@@ -35,7 +35,7 @@ export function findElementWithClassName(html: string, className: string, tagNam
         visitNodes(node.childNodes);
       }
 
-      if (hasClassName(node, className) && node.tagName && node.tagName.toLowerCase() === tagName.toLowerCase()) {
+      if (hasClassName(node, className) && node.tagName?.toLowerCase() === tagName.toLowerCase()) {
         elements.push(node);
       }
     });

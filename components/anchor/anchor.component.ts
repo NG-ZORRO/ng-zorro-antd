@@ -29,7 +29,7 @@ import {
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
-import { NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgStyleInterface, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
@@ -68,6 +68,11 @@ const sharpMatcherRegx = /#([^#]+)$/;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
+  static ngAcceptInputType_nzAffix: BooleanInput;
+  static ngAcceptInputType_nzShowInkInFixed: BooleanInput;
+  static ngAcceptInputType_nzBounds: NumberInput;
+  static ngAcceptInputType_nzOffsetTop: NumberInput;
+
   @ViewChild('ink', { static: false }) private ink: ElementRef;
 
   @Input() @InputBoolean() nzAffix = true;

@@ -7,7 +7,7 @@
  */
 
 import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
-import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 @Directive({
@@ -20,6 +20,8 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   }
 })
 export class NzInputDirective {
+  static ngAcceptInputType_disabled: BooleanInput;
+
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() @InputBoolean() disabled = false;
 

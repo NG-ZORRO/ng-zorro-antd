@@ -7,6 +7,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -31,6 +32,9 @@ import { NzDisplayedStep, NzExtendedMark } from './typings';
   `
 })
 export class NzSliderStepComponent implements OnChanges {
+  static ngAcceptInputType_vertical: BooleanInput;
+  static ngAcceptInputType_included: BooleanInput;
+
   @Input() lowerBound: number | null = null;
   @Input() upperBound: number | null = null;
   @Input() marksArray: NzExtendedMark[];

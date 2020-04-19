@@ -29,6 +29,7 @@ import { slideMotion } from 'ng-zorro-antd/core/animation';
 
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 
 const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
@@ -88,7 +89,6 @@ const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
               [nzUse12Hours]="nzUse12Hours"
               [nzDefaultOpenValue]="nzDefaultOpenValue"
               [nzAddOn]="nzAddOn"
-              [opened]="nzOpen"
               [nzClearText]="nzClearText"
               [nzAllowEmpty]="nzAllowEmpty"
               [(ngModel)]="value"
@@ -106,6 +106,12 @@ const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }]
 })
 export class NzTimePickerComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
+  static ngAcceptInputType_nzUse12Hours: BooleanInput;
+  static ngAcceptInputType_nzHideDisabledOptions: BooleanInput;
+  static ngAcceptInputType_nzAllowEmpty: BooleanInput;
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzAutoFocus: BooleanInput;
+
   private _onChange: (value: Date | null) => void;
   private _onTouched: () => void;
   isInit = false;
@@ -134,7 +140,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzPopupClassName: string;
   @Input() nzPlaceHolder = '';
   @Input() nzAddOn: TemplateRef<void>;
-  @Input() nzDefaultOpenValue = new Date();
+  @Input() nzDefaultOpenValue: Date;
   @Input() nzDisabledHours: () => number[];
   @Input() nzDisabledMinutes: (hour: number) => number[];
   @Input() nzDisabledSeconds: (hour: number, minute: number) => number[];
@@ -149,7 +155,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input() @InputBoolean() nzAutoFocus = false;
 
   setValue(value: Date | null): void {
-    this.value = value;
+    this.value = value ? new Date(value) : null;
     if (this._onChange) {
       this._onChange(this.value);
     }

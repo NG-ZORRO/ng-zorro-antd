@@ -36,7 +36,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { BehaviorSubject, combineLatest, merge, Subject } from 'rxjs';
 import { startWith, switchMap, takeUntil } from 'rxjs/operators';
@@ -120,6 +120,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
     >
       <nz-option-container
         [style]="nzDropdownStyle"
+        [matchWidth]="nzDropdownMatchSelectWidth"
         [class.ant-select-dropdown-placement-bottomLeft]="dropDownPosition === 'bottom'"
         [class.ant-select-dropdown-placement-topLeft]="dropDownPosition === 'top'"
         [@slideMotion]="dropDownPosition"
@@ -156,11 +157,21 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
   }
 })
 export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy, AfterContentInit, OnChanges {
+  static ngAcceptInputType_nzAllowClear: BooleanInput;
+  static ngAcceptInputType_nzBorderless: BooleanInput;
+  static ngAcceptInputType_nzShowSearch: BooleanInput;
+  static ngAcceptInputType_nzLoading: BooleanInput;
+  static ngAcceptInputType_nzAutoFocus: BooleanInput;
+  static ngAcceptInputType_nzAutoClearSearchValue: BooleanInput;
+  static ngAcceptInputType_nzServerSearch: BooleanInput;
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzOpen: BooleanInput;
+
   @Input() nzSize: NzSelectSizeType = 'default';
   @Input() nzDropdownClassName: string | null = null;
   @Input() nzDropdownMatchSelectWidth = true;
   @Input() nzDropdownStyle: { [key: string]: string } | null = null;
-  @Input() nzNotFoundContent: string | undefined = undefined;
+  @Input() nzNotFoundContent: string | TemplateRef<NzSafeAny> | undefined = undefined;
   @Input() nzPlaceHolder: string | TemplateRef<NzSafeAny> | null = null;
   @Input() nzMaxTagCount = Infinity;
   @Input() nzDropdownRender: TemplateRef<NzSafeAny> | null = null;
@@ -283,7 +294,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     if (this.listOfNzOptionGroupComponent) {
       this.listOfNzOptionGroupComponent.forEach(o => {
         const groupItem = { groupLabel: o.nzLabel, type: 'group', key: o.nzLabel } as NzSelectItemInterface;
-        const index = this.listOfContainerItem.findIndex(item => groupItem.groupLabel === item.groupLabel);
+        const index = listOfContainerItem.findIndex(item => groupItem.groupLabel === item.groupLabel);
         listOfContainerItem.splice(index, 0, groupItem);
       });
     }

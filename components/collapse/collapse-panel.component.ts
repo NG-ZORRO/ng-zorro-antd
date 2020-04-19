@@ -22,6 +22,7 @@ import {
 import { collapseMotion } from 'ng-zorro-antd/core/animation';
 
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -63,6 +64,10 @@ const NZ_CONFIG_COMPONENT_NAME = 'collapsePanel';
   }
 })
 export class NzCollapsePanelComponent implements OnInit, OnDestroy {
+  static ngAcceptInputType_nzActive: BooleanInput;
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzShowArrow: BooleanInput;
+
   @Input() @InputBoolean() nzActive = false;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzShowArrow: boolean;

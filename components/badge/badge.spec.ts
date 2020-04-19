@@ -57,6 +57,12 @@ describe('badge', () => {
       expect(badgeElement.nativeElement.querySelector('sup').getAttribute('title')).toBe('test');
     });
 
+    it('should be no title attribute when `nzTitle` is null', () => {
+      testComponent.title = null;
+      fixture.detectChanges();
+      expect(badgeElement.nativeElement.querySelector('sup').getAttribute('title')).toBeFalsy();
+    });
+
     it('should offset work', () => {
       testComponent.offset = [10, 10];
       fixture.detectChanges();
@@ -162,6 +168,6 @@ export class NzTestBadgeBasicComponent {
   status: string;
   style: NgStyleInterface;
   text: string;
-  title: string;
+  title: string | null;
   offset: [number, number];
 }

@@ -18,7 +18,6 @@ import {
   Host,
   Input,
   OnDestroy,
-  OnInit,
   Optional,
   Output,
   Renderer2,
@@ -28,7 +27,7 @@ import {
 } from '@angular/core';
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { NzTSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzTSType } from 'ng-zorro-antd/core/types';
 
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger } from 'ng-zorro-antd/tooltip';
@@ -39,14 +38,17 @@ import { takeUntil } from 'rxjs/operators';
   selector: '[nz-popconfirm]',
   exportAs: 'nzPopconfirm',
   host: {
-    '[class.ant-popover-open]': 'isTooltipComponentVisible'
+    '[class.ant-popover-open]': 'visible'
   }
 })
-export class NzPopconfirmDirective extends NzTooltipBaseDirective implements OnInit {
+export class NzPopconfirmDirective extends NzTooltipBaseDirective {
+  static ngAcceptInputType_nzCondition: BooleanInput;
+
   @Input('nzPopconfirmTitle') specificTitle: NzTSType;
   @Input('nz-popconfirm') directiveNameTitle: NzTSType | null;
   @Input('nzPopconfirmTrigger') specificTrigger: NzTooltipTrigger;
   @Input('nzPopconfirmPlacement') specificPlacement: string;
+  @Input('nzPopconfirmOrigin') specificOrigin: ElementRef<HTMLElement>;
   @Input() nzOkText: string;
   @Input() nzOkType: string;
   @Input() nzCancelText: string;
@@ -92,13 +94,13 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective implements OnI
   /**
    * @override
    */
-  protected createTooltipComponent(): void {
-    super.createTooltipComponent();
+  protected createComponent(): void {
+    super.createComponent();
 
-    (this.tooltip as NzPopconfirmComponent).nzOnCancel.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    (this.component as NzPopconfirmComponent).nzOnCancel.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.nzOnCancel.emit();
     });
-    (this.tooltip as NzPopconfirmComponent).nzOnConfirm.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    (this.component as NzPopconfirmComponent).nzOnConfirm.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.nzOnConfirm.emit();
     });
   }
@@ -138,11 +140,11 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective implements OnI
             <div>
               <div class="ant-popover-inner-content">
                 <div class="ant-popover-message">
-                  <ng-container *nzStringTemplateOutlet="title">
+                  <ng-container *nzStringTemplateOutlet="nzTitle">
                     <ng-container *nzStringTemplateOutlet="nzIcon">
                       <i nz-icon [nzType]="nzIcon || 'exclamation-circle'" nzTheme="fill"></i>
                     </ng-container>
-                    <div class="ant-popover-message-title">{{ title }}</div>
+                    <div class="ant-popover-message-title">{{ nzTitle }}</div>
                   </ng-container>
                 </div>
                 <div class="ant-popover-buttons">

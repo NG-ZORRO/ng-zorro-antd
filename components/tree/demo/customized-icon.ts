@@ -3,20 +3,11 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-tree-customized-icon',
   template: `
-    <nz-tree [nzData]="nodes" nzShowIcon [nzExpandedIcon]="expandedIconTpl">
-      <ng-template #expandedIconTpl let-node>
-        <i nz-icon [nzType]="node.origin.icon" class="ant-tree-switcher-icon"></i>
-      </ng-template>
-    </nz-tree>
-    <nz-tree [nzData]="nodes" nzShowIcon [nzExpandedIcon]="mutiExpandedIconTpl">
-      <ng-template #mutiExpandedIconTpl let-node>
-        <i
-          *ngIf="!node.origin.isLeaf"
-          nz-icon
-          [nzType]="node.isExpanded ? 'folder-open' : 'folder'"
-          class="ant-tree-switcher-line-icon"
-        ></i>
-        <i *ngIf="node.origin.isLeaf" nz-icon nzType="file" class="ant-tree-switcher-line-icon"></i>
+    <nz-tree [nzData]="nodes" nzShowIcon></nz-tree>
+    <nz-tree [nzData]="nodes" nzShowIcon [nzExpandedIcon]="multiExpandedIconTpl">
+      <ng-template #multiExpandedIconTpl let-node let-origin="origin">
+        <i *ngIf="!origin.isLeaf" nz-icon [nzType]="node.isExpanded ? 'folder-open' : 'folder'" class="ant-tree-switcher-line-icon"></i>
+        <i *ngIf="origin.isLeaf" nz-icon nzType="file" class="ant-tree-switcher-line-icon"></i>
       </ng-template>
     </nz-tree>
   `

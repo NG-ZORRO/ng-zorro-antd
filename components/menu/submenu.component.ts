@@ -32,6 +32,7 @@ import {
 } from '@angular/core';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { getPlacementName, POSITION_MAP } from 'ng-zorro-antd/core/overlay';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { combineLatest, merge, Subject } from 'rxjs';
 import { map, startWith, switchMap, takeUntil } from 'rxjs/operators';
@@ -127,6 +128,9 @@ const listOfHorizontalPositions = [POSITION_MAP.bottomLeft];
   }
 })
 export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, OnChanges {
+  static ngAcceptInputType_nzOpen: BooleanInput;
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+
   @Input() nzMenuClassName: string | null = null;
   @Input() nzPaddingLeft: number | null = null;
   @Input() nzTitle: string | TemplateRef<void> | null = null;

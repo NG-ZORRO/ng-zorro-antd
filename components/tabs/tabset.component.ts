@@ -33,7 +33,7 @@ import {
 import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/router';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { PREFIX } from 'ng-zorro-antd/core/logger';
-import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NumberInput, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toNumber, wrapIntoObservable } from 'ng-zorro-antd/core/util';
 
 import { merge, Subject, Subscription } from 'rxjs';
@@ -108,6 +108,10 @@ const NZ_CONFIG_COMPONENT_NAME = 'tabs';
   }
 })
 export class NzTabSetComponent implements AfterContentChecked, OnInit, OnChanges, AfterContentInit, OnDestroy {
+  static ngAcceptInputType_nzLinkRouter: BooleanInput;
+  static ngAcceptInputType_nzLinkExact: BooleanInput;
+  static ngAcceptInputType_nzSelectedIndex: NumberInput;
+
   private indexToSelect: number | null = 0;
   private el: HTMLElement = this.elementRef.nativeElement;
   private _selectedIndex: number | null = null;

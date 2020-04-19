@@ -129,6 +129,15 @@ label {
 
 [data-theme='dark'] {
 
+  .site-badge-count-4 .ant-badge-count {
+    background-color: @component-background !important;
+    box-shadow: 0 0 0 1px #434343 inset !important;
+  }
+
+  .head-example {
+    background: rgba(255,255,255,.12) !important;
+  }
+
   .popover-menu .ant-popover-inner-content #nav a {
     color: @text-color;
   }
@@ -149,4 +158,43 @@ label {
     background-color: @component-background;
   }
 
+}
+
+.resource-cards {
+  .resource-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: inherit;
+    list-style: none;
+    border: 1px solid #e6e6e6;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: box-shadow 0.3s;
+
+    &:hover {
+      box-shadow: @shadow-2;
+    }
+
+    .resource-card-image {
+      width: calc(100% + 2px);
+      max-width: none;
+      height: 184px;
+      margin: -1px -1px 0 -1px;
+      object-fit: cover;
+    }
+
+    .resource-card-title {
+      margin: 16px 20px 8px 20px;
+      color: #0d1a26;
+      font-size: 20px;
+      line-height: 28px;
+    }
+    .resource-card-description {
+      margin: 0 20px 20px 20px;
+      color: #697b8c;
+      font-size: 14px;
+      line-height: 22px;
+    }
+  }
 }

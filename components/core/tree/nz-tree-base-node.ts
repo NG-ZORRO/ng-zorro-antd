@@ -387,7 +387,6 @@ export class NzTreeNode {
 
   public update(): void {
     if (this.component) {
-      this.component.setClassMap();
       this.component.markForCheck();
     }
   }

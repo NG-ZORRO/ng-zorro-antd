@@ -19,7 +19,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzSizeDSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSizeDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -77,6 +77,10 @@ const NZ_CONFIG_COMPONENT_NAME = 'card';
   }
 })
 export class NzCardComponent implements OnDestroy {
+  static ngAcceptInputType_nzBordered: BooleanInput;
+  static ngAcceptInputType_nzLoading: BooleanInput;
+  static ngAcceptInputType_nzHoverable: BooleanInput;
+
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzBordered: boolean;
   @Input() @InputBoolean() nzLoading = false;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzHoverable: boolean;

@@ -105,7 +105,7 @@
   &-suffix {
     align-self: center;
     margin-left: @padding-xs / 2;
-    color: @disabled-color;
+    color: @text-color-secondary;
     pointer-events: none;
   }
 
@@ -113,7 +113,7 @@
     position: absolute;
     top: 50%;
     right: 0;
-    color: @disabled-color;
+    color: @text-color-secondary;
     background: @component-background;
     transform: translateY(-50%);
     cursor: pointer;
@@ -121,20 +121,24 @@
     transition: opacity @animation-duration-slow, color @animation-duration-slow;
 
     &:hover {
-      color: @text-color-secondary;
+      color: @disabled-color;
     }
   }
 
   &-separator {
+    position: relative;
     display: inline-block;
-    align-self: center;
-    width: 2em;
+    width: 1em;
     height: @font-size-lg;
     color: @disabled-color;
     font-size: @font-size-lg;
-    line-height: @font-size-lg;
-    text-align: center;
+    vertical-align: top;
     cursor: default;
+
+    .@{picker-prefix-cls}-focused & {
+      color: @text-color-secondary;
+    }
+
     .@{picker-prefix-cls}-range-separator & {
       .@{picker-prefix-cls}-disabled & {
         cursor: not-allowed;
@@ -173,6 +177,12 @@
       .@{picker-prefix-cls}-active-bar {
         opacity: 1;
       }
+    }
+
+    &-separator {
+      align-items: center;
+      padding: 0 @padding-xs;
+      line-height: 1;
     }
   }
 

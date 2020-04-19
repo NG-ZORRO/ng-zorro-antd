@@ -7,6 +7,7 @@
  */
 
 import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -18,6 +19,8 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   }
 })
 export class NzTabLabelDirective {
+  static ngAcceptInputType_disabled: BooleanInput;
+
   @Input() @InputBoolean() disabled = false;
 
   constructor(public elementRef: ElementRef, renderer: Renderer2) {

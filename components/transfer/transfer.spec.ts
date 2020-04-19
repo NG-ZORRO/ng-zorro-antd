@@ -49,6 +49,18 @@ describe('transfer', () => {
       expect(leftKeys).not.toContain('1');
     });
 
+    it('should be from left to right when via nzSelectedKeys property', () => {
+      instance.nzSelectedKeys = ['0', '1', '2'];
+      fixture.detectChanges();
+
+      expect(
+        instance.comp.nzSelectedKeys.every(e => {
+          const data = instance.comp.nzDataSource.find(d => d.key === e);
+          return !!data?.checked;
+        })
+      ).toBe(true);
+    });
+
     it('should be from left to right', () => {
       pageObject
         .expectLeft(LEFTCOUNT)
@@ -421,6 +433,7 @@ class TestTransferComponent implements OnInit {
   nzDisabled = false;
   nzShowSelectAll = true;
   nzTitles = ['Source', 'Target'];
+  nzSelectedKeys = ['0', '1', '2'];
   nzTargetKeys: string[] = [];
   nzOperations = ['to right', 'to left'];
   nzItemUnit = 'item';
@@ -506,9 +519,7 @@ class TestTransferCustomRenderComponent implements OnInit {
 }
 
 @Component({
-  template: `
-    <nz-transfer [nzDataSource]="list"></nz-transfer>
-  `
+  template: ` <nz-transfer [nzDataSource]="list"></nz-transfer> `
 })
 class Test996Component implements OnInit {
   // tslint:disable-next-line:no-any

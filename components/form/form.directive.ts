@@ -21,10 +21,12 @@ import {
 } from '@angular/core';
 
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
+import { NzFormControlComponent } from './form-control.component';
 import { NzFormLabelComponent } from './form-label.component';
 
 const NZ_CONFIG_COMPONENT_NAME = 'form';
@@ -35,11 +37,18 @@ const NZ_CONFIG_COMPONENT_NAME = 'form';
   host: { '[class]': 'hostClassMap' }
 })
 export class NzFormDirective implements OnInit, OnChanges, AfterContentInit, OnDestroy {
+  static ngAcceptInputType_nzNoColon: BooleanInput;
+  static ngAcceptInputType_nzDisableAutoTips: BooleanInput;
+
   @Input() nzLayout = 'horizontal';
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzNoColon: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, {}) nzAutoTips: Record<string, Record<string, string>>;
+  @Input() @InputBoolean() nzDisableAutoTips = false;
+
   hostClassMap = {};
 
   @ContentChildren(NzFormLabelComponent, { descendants: true }) nzFormLabelComponent: QueryList<NzFormLabelComponent>;
+  @ContentChildren(NzFormControlComponent, { descendants: true }) nzFormControlComponent: QueryList<NzFormControlComponent>;
 
   destroy$ = new Subject();
 
@@ -55,6 +64,12 @@ export class NzFormDirective implements OnInit, OnChanges, AfterContentInit, OnD
     }
   }
 
+  updateItemsDefaultAutoTipConf(): void {
+    if (this.nzFormControlComponent) {
+      this.nzFormControlComponent.forEach(item => item.setDefaultAutoTipConf(this.nzAutoTips, this.nzDisableAutoTips));
+    }
+  }
+
   constructor(public nzConfigService: NzConfigService, elementRef: ElementRef, private renderer: Renderer2) {
     this.renderer.addClass(elementRef.nativeElement, 'ant-form');
   }
@@ -64,15 +79,25 @@ export class NzFormDirective implements OnInit, OnChanges, AfterContentInit, OnD
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.setClassMap();
-    if (changes.hasOwnProperty('nzNoColon')) {
+    const { nzLayout, nzNoColon, nzAutoTips, nzDisableAutoTips } = changes;
+    if (nzLayout) {
+      this.setClassMap();
+    }
+    if (nzNoColon) {
       this.updateItemsDefaultColon();
+    }
+    if (nzAutoTips || nzDisableAutoTips) {
+      this.updateItemsDefaultAutoTipConf();
     }
   }
 
   ngAfterContentInit(): void {
     this.nzFormLabelComponent.changes.pipe(startWith(null), takeUntil(this.destroy$)).subscribe(() => {
       this.updateItemsDefaultColon();
+    });
+
+    this.nzFormControlComponent.changes.pipe(startWith(null), takeUntil(this.destroy$)).subscribe(() => {
+      this.updateItemsDefaultAutoTipConf();
     });
   }
 

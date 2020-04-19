@@ -167,15 +167,6 @@ describe('ng-add schematic', () => {
     expect(fileContent).toContain('registerLocaleData(zh)');
   });
 
-  it('should have a deprecation `--i18n` warning', async () => {
-    const tree = await runner.runSchematicAsync('ng-add-setup-project', {i18n: 'zh_CN'}, appTree).toPromise();
-    const fileContent = getFileContent(tree, '/projects/ng-zorro/src/app/app.module.ts');
-
-    expect(fileContent).toContain('{ provide: NZ_I18N, useValue: zh_CN }');
-    expect(fileContent).toContain('registerLocaleData(zh)');
-
-  });
-
   it('should not add locale id if locale id is set up', async () => {
     await runner.runSchematicAsync('ng-add-setup-project', {}, appTree).toPromise();
 

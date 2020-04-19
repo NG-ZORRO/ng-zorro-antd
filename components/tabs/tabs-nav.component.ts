@@ -30,7 +30,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzResizeService } from 'ng-zorro-antd/core/services';
-import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, pxToNumber } from 'ng-zorro-antd/core/util';
 import { merge, of as observableOf, Subject, Subscription } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
@@ -104,6 +104,10 @@ export type ScrollDirection = 'after' | 'before';
   }
 })
 export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit, OnDestroy {
+  static ngAcceptInputType_nzAnimated: BooleanInput;
+  static ngAcceptInputType_nzHideBar: BooleanInput;
+  static ngAcceptInputType_nzShowPagination: BooleanInput;
+
   private _tabPositionMode: NzTabPositionMode = 'horizontal';
   private _scrollDistance = 0;
   private _selectedIndex = 0;

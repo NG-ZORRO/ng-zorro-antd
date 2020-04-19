@@ -1,5 +1,4 @@
 import { findInputsOnElementWithTag, MigrationRule, ResolvedResource, TargetVersion } from '@angular/cdk/schematics';
-import { findElementWithClassName } from '../../../utils/ng-update/elements';
 
 export class CalendarTemplateRule extends MigrationRule<null> {
 

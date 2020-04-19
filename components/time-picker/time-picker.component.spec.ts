@@ -121,6 +121,7 @@ describe('time-picker', () => {
       expect(nzOnChange).toHaveBeenCalled();
       const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
       expect(result.getHours()).toBe(0);
+      expect(testComponent.nzTimePickerComponent.inputRef.nativeElement.value).toBe('00:33:00');
     }));
     it('should support ISO string', fakeAsync(() => {
       testComponent.date = '2020-03-27T13:49:54.917Z';

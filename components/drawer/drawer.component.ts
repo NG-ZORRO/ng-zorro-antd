@@ -33,7 +33,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toCssPixel } from 'ng-zorro-antd/core/util';
 
 import { Observable, Subject } from 'rxjs';
@@ -72,11 +72,11 @@ const NZ_CONFIG_COMPONENT_NAME = 'drawer';
         >
           <div class="ant-drawer-content">
             <div class="ant-drawer-wrapper-body" [style.height]="isLeftOrRight ? '100%' : null">
-              <div *ngIf="nzTitle || nzClosable" [class.ant-drawer-header]="!!nzTitle" [class.ant-drawer-header-no-title]="!!nzTitle">
+              <div *ngIf="nzTitle || nzClosable" [class.ant-drawer-header]="!!nzTitle" [class.ant-drawer-header-no-title]="!nzTitle">
                 <div *ngIf="nzTitle" class="ant-drawer-title">
                   <ng-container *nzStringTemplateOutlet="nzTitle"><div [innerHTML]="nzTitle"></div></ng-container>
                 </div>
-                <button *ngIf="nzClosable" (click)="closeClick()" aria-label="Close" class="ant-drawer-close">
+                <button *ngIf="nzClosable" (click)="closeClick()" aria-label="Close" class="ant-drawer-close" style="--scroll-bar: 0px;">
                   <i nz-icon nzType="close"></i>
                 </button>
               </div>
@@ -98,6 +98,12 @@ const NZ_CONFIG_COMPONENT_NAME = 'drawer';
 })
 export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> extends NzDrawerRef<R>
   implements OnInit, OnDestroy, AfterViewInit, OnChanges, NzDrawerOptionsOfComponent {
+  static ngAcceptInputType_nzClosable: BooleanInput;
+  static ngAcceptInputType_nzMaskClosable: BooleanInput;
+  static ngAcceptInputType_nzMask: BooleanInput;
+  static ngAcceptInputType_nzNoAnimation: BooleanInput;
+  static ngAcceptInputType_nzKeyboard: BooleanInput;
+
   @Input() nzContent: TemplateRef<{ $implicit: D; drawerRef: NzDrawerRef<R> }> | Type<T>;
   @Input() @InputBoolean() nzClosable: boolean = true;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzMaskClosable: boolean;

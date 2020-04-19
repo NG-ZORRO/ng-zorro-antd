@@ -28,7 +28,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { CandyDate, cloneDate, CompatibleValue } from 'ng-zorro-antd/core/time';
-import { FunctionProp, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, FunctionProp, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzDatePickerI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
@@ -62,6 +62,13 @@ const POPUP_STYLE_PATCH = { position: 'relative' }; // Aim to override antd's st
   ]
 })
 export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, ControlValueAccessor {
+  static ngAcceptInputType_nzAllowClear: BooleanInput;
+  static ngAcceptInputType_nzAutoFocus: BooleanInput;
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzOpen: BooleanInput;
+  static ngAcceptInputType_nzShowToday: BooleanInput;
+  static ngAcceptInputType_nzShowTime: BooleanInput;
+
   isRange: boolean = false; // Indicate whether the value is a range value
   showWeek: boolean = false; // Should show as week picker
   focused: boolean = false;
@@ -99,7 +106,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   @Input() nzMode: PanelMode | PanelMode[] = 'date';
   @Input() nzRanges: PresetRanges;
   @Input() nzDefaultPickerValue: CompatibleDate | null = null;
-  @Input() nzSeparator: string = '~';
+  @Input() nzSeparator: string;
 
   @Output() readonly nzOnPanelChange = new EventEmitter<PanelMode | PanelMode[]>();
   @Output() readonly nzOnCalendarChange = new EventEmitter<Array<Date | null>>();
@@ -171,7 +178,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     });
 
     this.updateHostClass();
-    this.updatePickerStyle();
     // Default format when it's empty
     if (!this.nzFormat) {
       if (this.showWeek) {
@@ -210,7 +216,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
       warnDeprecation(
         `'nzStyle' in DatePicker is going to be removed in 10.0.0. Please use CSS style attribute like <nz-date-picker style="..."></nz-date-picker> instead.`
       );
-      this.updatePickerStyle();
     }
 
     if (changes.nzClassName) {
@@ -233,10 +238,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     if (!this.nzMode) {
       this.nzMode = this.isRange ? ['date', 'date'] : 'date';
     }
-  }
-
-  updatePickerStyle(): void {
-    this.nzStyle = { display: 'inherit', width: '100%', ...this.nzStyle };
   }
 
   /**
@@ -293,8 +294,8 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   }
 
   get realShowToday(): boolean {
-    // Range not support nzShowToday currently
-    return !this.isRange && this.nzShowToday;
+    // Range only support in single date picker
+    return this.nzMode === 'date' && this.nzShowToday;
   }
 
   onFocusChange(value: boolean): void {

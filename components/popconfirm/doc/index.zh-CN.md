@@ -26,6 +26,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 | `[nzPopconfirmTitle]` | 确认框的描述 | `string \| TemplateRef<void>` | - |
 | `[nzPopconfirmTrigger]` | 触发行为，为 `null` 时不响应光标事件 | `'click' \| 'focus' \| 'hover' \| null` | `'hover'` |
 | `[nzPopconfirmPlacement]` | 气泡框位置 | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
+| `[nzPopconfirmOrigin]` | 气泡框定位元素 | `ElementRef` | - |
 
 
 | 参数 | 说明 | 类型 | 默认值 |

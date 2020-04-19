@@ -16,7 +16,7 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 @Component({
@@ -41,6 +41,9 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   }
 })
 export class NzThSelectionComponent implements OnChanges {
+  static ngAcceptInputType_nzShowCheckbox: BooleanInput;
+  static ngAcceptInputType_nzShowRowSelection: BooleanInput;
+
   @Input() nzSelections: Array<{ text: string; onSelect(...args: NzSafeAny[]): NzSafeAny }> = [];
   @Input() nzChecked = false;
   @Input() nzDisabled = false;

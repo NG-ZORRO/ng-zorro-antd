@@ -32,7 +32,7 @@ interface DocPageMeta {
   zh: string;
 }
 
-type SiteTheme = 'default' | 'dark';
+type SiteTheme = 'default' | 'dark' | 'compact';
 
 @Component({
   selector: 'app-root',
@@ -89,20 +89,19 @@ export class AppComponent implements OnInit, AfterContentInit {
     this.theme = theme;
     this.appService.theme$.next(theme);
     this.renderer.setAttribute(document.body, 'data-theme', theme);
-    if (theme !== 'dark') {
-      const dom = document.getElementById('dark-theme');
-      if (dom) {
-        dom.remove();
-      }
-      localStorage.removeItem('site-theme');
-    } else {
+    const dom = document.getElementById('site-theme');
+    if (dom) {
+      dom.remove();
+    }
+    localStorage.removeItem('site-theme');
+    if (theme !== 'default') {
       const style = document.createElement('link');
       style.type = 'text/css';
       style.rel = 'stylesheet';
-      style.id = 'dark-theme';
-      style.href = 'assets/dark.css';
+      style.id = 'site-theme';
+      style.href = `assets/${theme}.css`;
 
-      localStorage.setItem('site-theme', 'dark');
+      localStorage.setItem('site-theme', theme);
       document.body.append(style);
     }
   }
@@ -169,9 +168,9 @@ export class AppComponent implements OnInit, AfterContentInit {
         }
         this.setPage(this.router.url);
         this.language = this.router.url
-        .split('/')
+          .split('/')
           [this.router.url.split('/').length - 1].split('#')[0]
-        .split('?')[0];
+          .split('?')[0];
         this.appService.language$.next(this.language);
         this.nzI18nService.setLocale(this.language === 'en' ? en_US : zh_CN);
         this.updateDocMetaAndLocale();
@@ -286,14 +285,14 @@ export class AppComponent implements OnInit, AfterContentInit {
     }
     const changeColor = () => {
       (window as any).less
-      .modifyVars({
-        '@primary-color': res.color.hex
-      })
-      .then(() => {
-        this.msg.success(`应用成功`);
-        this.color = res.color.hex;
-        window.scrollTo(0, 0);
-      });
+        .modifyVars({
+          '@primary-color': res.color.hex
+        })
+        .then(() => {
+          this.msg.success(`应用成功`);
+          this.color = res.color.hex;
+          window.scrollTo(0, 0);
+        });
     };
 
     const lessUrl = 'https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js';
@@ -329,18 +328,18 @@ export class AppComponent implements OnInit, AfterContentInit {
     }
     this.ngZone.runOutsideAngular(() => {
       fromEvent(window, 'resize')
-      .pipe(
-        startWith(true),
-        debounceTime(50),
-        map(() => window.innerWidth)
-      )
-      .subscribe(width => {
-        this.windowWidth = width;
-        const showDrawer = width <= 768;
-        if (this.showDrawer !== showDrawer) {
-          this.showDrawer = showDrawer;
-        }
-      });
+        .pipe(
+          startWith(true),
+          debounceTime(50),
+          map(() => window.innerWidth)
+        )
+        .subscribe(width => {
+          this.windowWidth = width;
+          const showDrawer = width <= 768;
+          if (this.showDrawer !== showDrawer) {
+            this.showDrawer = showDrawer;
+          }
+        });
     });
   }
 

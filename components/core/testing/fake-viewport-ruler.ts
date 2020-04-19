@@ -6,9 +6,28 @@
  * found in the LICENSE file at https://angular.io/license
  */
 
+interface FakeViewportRect {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+  bottom: number;
+  right: number;
+}
+
+interface FakeViewportSize {
+  width: number;
+  height: number;
+}
+
+interface FakeViewportScrollPosition {
+  top: number;
+  left: number;
+}
+
 /** @docs-private */
 export class FakeViewportRuler {
-  getViewportRect() {
+  getViewportRect(): FakeViewportRect {
     return {
       left: 0,
       top: 0,
@@ -19,11 +38,11 @@ export class FakeViewportRuler {
     };
   }
 
-  getViewportSize() {
+  getViewportSize(): FakeViewportSize {
     return { width: 1014, height: 686 };
   }
 
-  getViewportScrollPosition() {
+  getViewportScrollPosition(): FakeViewportScrollPosition {
     return { top: 0, left: 0 };
   }
 }

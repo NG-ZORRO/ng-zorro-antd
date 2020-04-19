@@ -10,7 +10,7 @@ We add support of **global configuration** to many components. You can define th
 If you want to provide default configurations to some components, you should provide an object that implements the interface `NzConfig` with the injection token `NZ_CONFIG`, in the root module (in another word, to the root injector). Like this:
 
 ```typescript
-import { NzConfig, NZ_CONFIG } from 'ng-zorro-antd/core';
+import { NzConfig, NZ_CONFIG } from 'ng-zorro-antd/core/config';
 
 const ngZorroConfig: NzConfig = {
   message: { nzTop: 120 },
@@ -108,7 +108,7 @@ export class AppModule {}
 You can change the global config of a specific component by calling the `set` method of `NzConfigService`. For example, if you want to make all buttons to be barge in size by default, you should:
 
 ```typescript
-import { NzConfigService } from 'ng-zorro-antd/core';
+import { NzConfigService } from 'ng-zorro-antd/core/config';
 
 @Component({
   selector: 'app-change-zorro-config'

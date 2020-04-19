@@ -21,6 +21,7 @@ import {
 } from '@angular/core';
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 @Component({
@@ -44,6 +45,9 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   }
 })
 export class NzTagComponent implements OnInit, OnChanges {
+  static ngAcceptInputType_nzChecked: BooleanInput;
+  static ngAcceptInputType_nzNoAnimation: BooleanInput;
+
   presetColor = false;
   hostClassMap = {};
   @Input() nzMode: 'default' | 'closeable' | 'checkable' = 'default';

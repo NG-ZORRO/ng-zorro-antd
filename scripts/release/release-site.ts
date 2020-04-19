@@ -14,27 +14,19 @@ export function releaseSite(version: string): boolean {
   git.clone();
   git.checkoutNewBranch(branchName);
 
-  // clean dir
-  const gitKeep = [
-    join(docDir, '.git'),
-    join(docDir, '.gitignore')
-  ];
-
-  readdirSync(docDir)
-    .filter(filePath => !gitKeep.some(keep => minimatch(filePath, keep)))
-    .forEach(removeSync);
-
   copySync(buildConfig.outputDir, docDir, {
     overwrite: true,
     filter: file => {
       const fileGlobs = [
         '.DS_Store',
+        '.gitignore',
         'sitemap.js?(.map)',
         'static.paths.js?(.map)',
         'prerender.js?(.map)',
         'server/**/*',
         '.idea/**/*',
-        '.vscode/**/*'
+        '.vscode/**/*',
+        '.git/**/*'
       ].map(f => join(buildConfig.outputDir, f));
       return !fileGlobs.some(p => minimatch(file, p));
     }

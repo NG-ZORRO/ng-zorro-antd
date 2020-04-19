@@ -21,7 +21,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { gridResponsiveMap, NzBreakpointEnum, NzBreakpointService } from 'ng-zorro-antd/core/services';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 import { ReplaySubject, Subject } from 'rxjs';
@@ -76,6 +76,16 @@ import { PaginationItemRenderContext } from './pagination.types';
   }
 })
 export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzShowSizeChanger: BooleanInput;
+  static ngAcceptInputType_nzHideOnSinglePage: BooleanInput;
+  static ngAcceptInputType_nzShowQuickJumper: BooleanInput;
+  static ngAcceptInputType_nzSimple: BooleanInput;
+  static ngAcceptInputType_nzResponsive: BooleanInput;
+  static ngAcceptInputType_nzTotal: NumberInput;
+  static ngAcceptInputType_nzPageIndex: NumberInput;
+  static ngAcceptInputType_nzPageSize: NumberInput;
+
   @Output() readonly nzPageSizeChange: EventEmitter<number> = new EventEmitter();
   @Output() readonly nzPageIndexChange: EventEmitter<number> = new EventEmitter();
   @Input() nzShowTotal: TemplateRef<{ $implicit: number; range: [number, number] }> | null = null;

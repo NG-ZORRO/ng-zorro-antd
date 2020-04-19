@@ -113,7 +113,7 @@ export class NzTextEditComponent implements OnInit, OnDestroy {
 
   focusAndSetValue(): void {
     setTimeout(() => {
-      if (this.textarea && this.textarea.nativeElement) {
+      if (this.textarea?.nativeElement) {
         this.textarea.nativeElement.focus();
         this.textarea.nativeElement.value = this.currentText;
         this.autosizeDirective.resizeToFitContent();

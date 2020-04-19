@@ -3,32 +3,35 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 @Component({
   selector: 'app-fixed-widgets',
   template: `
-    <div class="fixed-widgets"
-         nz-tooltip
-         [nzTooltipTitle]="theme === 'dark' ?
-         (language === 'zh' ? '切换浅色模式' : 'Switch default mode') :
-         (language === 'zh' ? '切换暗黑模式' : 'Switch dark mode') ">
+    <div class="fixed-widgets">
       <div class="ant-avatar ant-avatar-circle ant-avatar-icon fixed-widgets-avatar"
            style="width: 44px; height: 44px; line-height: 44px; font-size: 22px;"
-           [class.fixed-widgets-avatar-dark]="theme === 'dark'"
-           [class.fixed-widgets-avatar-default]="theme === 'default'"
-      >
-        <theme-default-icon *ngIf="theme === 'default'"></theme-default-icon>
-        <theme-dark-icon *ngIf="theme === 'dark'"></theme-dark-icon>
+           nz-dropdown
+           nzPlacement="topCenter"
+           [nzDropdownMenu]="menu">
+        <theming-icon></theming-icon>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+          <ul nz-menu nzSelectable>
+            <li nz-menu-item (click)="onThemeChange('default')">{{language === 'zh' ? '默认主题' : 'Default' }}</li>
+            <li nz-menu-item (click)="onThemeChange('dark')">{{language === 'zh' ? '暗黑主题' : 'Dark Theme' }}</li>
+            <li nz-menu-item (click)="onThemeChange('compact')">{{language === 'zh' ? '紧凑主题' : 'Compact Theme' }}</li>
+          </ul>
+        </nz-dropdown-menu>
       </div>
     </div>
-  `,
-  host: {
-    '(click)': 'onClick()'
-  }
+  `
 })
 export class FixedWidgetsComponent {
 
+  compact = false;
   @Input() theme: string = 'default';
-  @Input() language: string = 'zh'
-  @Output() themeChange = new EventEmitter<string>()
+  @Input() language: string = 'zh';
+  @Output() readonly themeChange = new EventEmitter<string>();
 
-  onClick(): void {
-    this.themeChange.emit(this.theme === 'dark' ? 'default' : 'dark')
+  onThemeChange(theme: string): void {
+    this.theme = theme;
+    this.themeChange.emit(theme)
+
   }
+
 }

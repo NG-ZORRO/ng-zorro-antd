@@ -25,24 +25,14 @@ export const inputNames: VersionChanges<InputNameUpgradeData> = {
           whitelist  : {
             attributes: ['nz-popconfirm']
           }
-        }
-      ]
-    },
-    {
-      pr     : 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/3909',
-      changes: [
+        },
         {
           replace    : 'nzTrigger',
           replaceWith: 'nzPopconfirmTrigger',
           whitelist  : {
             attributes: ['nz-popconfirm']
           }
-        }
-      ]
-    },
-    {
-      pr     : 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/3909',
-      changes: [
+        },
         {
           replace    : 'nzPlacement',
           replaceWith: 'nzPopconfirmPlacement',
@@ -61,24 +51,14 @@ export const inputNames: VersionChanges<InputNameUpgradeData> = {
           whitelist  : {
             attributes: ['nz-tooltip']
           }
-        }
-      ]
-    },
-    {
-      pr     : 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/3909',
-      changes: [
+        },
         {
           replace    : 'nzTrigger',
           replaceWith: 'nzTooltipTrigger',
           whitelist  : {
             attributes: ['nz-tooltip']
           }
-        }
-      ]
-    },
-    {
-      pr     : 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/3909',
-      changes: [
+        },
         {
           replace    : 'nzPlacement',
           replaceWith: 'nzTooltipPlacement',
@@ -97,27 +77,24 @@ export const inputNames: VersionChanges<InputNameUpgradeData> = {
           whitelist  : {
             attributes: ['nz-popover']
           }
-        }
-      ]
-    },
-    {
-      pr     : 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/3909',
-      changes: [
+        },
         {
           replace    : 'nzTrigger',
           replaceWith: 'nzPopoverTrigger',
           whitelist  : {
             attributes: ['nz-popover']
           }
-        }
-      ]
-    },
-    {
-      pr     : 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/3909',
-      changes: [
+        },
         {
           replace    : 'nzPlacement',
           replaceWith: 'nzPopoverPlacement',
+          whitelist  : {
+            attributes: ['nz-popover']
+          }
+        },
+        {
+          replace    : 'nzContent',
+          replaceWith: 'nzPopoverContent',
           whitelist  : {
             attributes: ['nz-popover']
           }
@@ -125,13 +102,34 @@ export const inputNames: VersionChanges<InputNameUpgradeData> = {
       ]
     },
     {
-      pr     : 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/3909',
+      pr     : 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/4601',
       changes: [
         {
-          replace    : 'nzContent',
-          replaceWith: 'nzPopoverContent',
+          replace    : 'nzDefaultExpandAll',
+          replaceWith: 'nzExpandAll',
           whitelist  : {
-            attributes: ['nz-popover']
+            elements: ['nz-tree', 'nz-tree-node']
+          }
+        },
+        {
+          replace    : 'nzDefaultExpandedKeys',
+          replaceWith: 'nzExpandedKeys',
+          whitelist  : {
+            elements: ['nz-tree', 'nz-tree-select']
+          }
+        },
+        {
+          replace    : 'nzDefaultSelectedKeys',
+          replaceWith: 'nzSelectedKeys',
+          whitelist  : {
+            elements: ['nz-tree']
+          }
+        },
+        {
+          replace    : 'nzDefaultCheckedKeys',
+          replaceWith: 'nzCheckedKeys',
+          whitelist  : {
+            elements: ['nz-tree']
           }
         }
       ]

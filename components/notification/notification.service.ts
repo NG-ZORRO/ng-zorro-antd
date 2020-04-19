@@ -7,90 +7,45 @@
  */
 
 import { Overlay } from '@angular/cdk/overlay';
-import { ComponentPortal } from '@angular/cdk/portal';
 import { Injectable, Injector, TemplateRef } from '@angular/core';
 import { NzSingletonService } from 'ng-zorro-antd/core/services';
+import { NzMNService } from 'ng-zorro-antd/message';
 
 import { NzNotificationContainerComponent } from './notification-container.component';
 import { NzNotificationServiceModule } from './notification.service.module';
-import { NzNotificationData, NzNotificationDataFilled, NzNotificationDataOptions } from './typings';
+import { NzNotificationData, NzNotificationDataOptions, NzNotificationRef } from './typings';
 
-let globalCounter = 0;
+let notificationId = 0;
 
 @Injectable({
   providedIn: NzNotificationServiceModule
 })
-export class NzNotificationService {
-  private name = 'notification-';
+export class NzNotificationService extends NzMNService {
   protected container: NzNotificationContainerComponent;
-  remove(messageId?: string): void {
-    if (messageId) {
-      this.container.removeMessage(messageId);
-    } else {
-      this.container.removeMessageAll();
-    }
+  protected componentPrefix = 'notification-';
+
+  constructor(nzSingletonService: NzSingletonService, overlay: Overlay, injector: Injector) {
+    super(nzSingletonService, overlay, injector);
   }
 
-  createMessage(message: NzNotificationData, options?: NzNotificationDataOptions): NzNotificationDataFilled {
-    this.container = this.withContainer();
-    this.nzSingletonService.registerSingletonWithKey(this.name, this.container);
-    const resultMessage: NzNotificationDataFilled = {
-      ...(message as NzNotificationData),
-      ...{
-        createdAt: new Date(),
-        messageId: this.generateMessageId(),
-        options
-      }
-    };
-    this.container.createMessage(resultMessage);
-
-    return resultMessage;
+  success(title: string, content: string, options?: NzNotificationDataOptions): NzNotificationRef {
+    return this.createInstance({ type: 'success', title, content }, options);
   }
 
-  protected generateMessageId(): string {
-    return `${this.name}-${globalCounter++}`;
+  error(title: string, content: string, options?: NzNotificationDataOptions): NzNotificationRef {
+    return this.createInstance({ type: 'error', title, content }, options);
   }
 
-  // Manually creating container for overlay to avoid multi-checking error, see: https://github.com/NG-ZORRO/ng-zorro-antd/issues/391
-  // NOTE: we never clean up the container component and it's overlay resources, if we should, we need to do it by our own codes.
-  private withContainer(): NzNotificationContainerComponent {
-    const containerInstance = this.nzSingletonService.getSingletonWithKey(this.name);
-
-    if (containerInstance) {
-      return containerInstance as NzNotificationContainerComponent;
-    }
-    const overlayRef = this.overlay.create({
-      hasBackdrop: false,
-      scrollStrategy: this.overlay.scrollStrategies.noop(),
-      positionStrategy: this.overlay.position().global()
-    });
-    const componentPortal = new ComponentPortal(NzNotificationContainerComponent, null, this.injector);
-    const componentRef = overlayRef.attach(componentPortal);
-    const overlayPane = overlayRef.overlayElement;
-    overlayPane.style.zIndex = '1010'; // Patching: assign the same zIndex of ant-message to it's parent overlay panel, to the ant-message's zindex work.
-    return componentRef.instance;
-  }
-  constructor(private nzSingletonService: NzSingletonService, private overlay: Overlay, private injector: Injector) {}
-
-  // Shortcut methods
-  success(title: string, content: string, options?: NzNotificationDataOptions): NzNotificationDataFilled {
-    return this.createMessage({ type: 'success', title, content }, options) as NzNotificationDataFilled;
+  info(title: string, content: string, options?: NzNotificationDataOptions): NzNotificationRef {
+    return this.createInstance({ type: 'info', title, content }, options);
   }
 
-  error(title: string, content: string, options?: NzNotificationDataOptions): NzNotificationDataFilled {
-    return this.createMessage({ type: 'error', title, content }, options) as NzNotificationDataFilled;
+  warning(title: string, content: string, options?: NzNotificationDataOptions): NzNotificationRef {
+    return this.createInstance({ type: 'warning', title, content }, options);
   }
 
-  info(title: string, content: string, options?: NzNotificationDataOptions): NzNotificationDataFilled {
-    return this.createMessage({ type: 'info', title, content }, options) as NzNotificationDataFilled;
-  }
-
-  warning(title: string, content: string, options?: NzNotificationDataOptions): NzNotificationDataFilled {
-    return this.createMessage({ type: 'warning', title, content }, options) as NzNotificationDataFilled;
-  }
-
-  blank(title: string, content: string, options?: NzNotificationDataOptions): NzNotificationDataFilled {
-    return this.createMessage({ type: 'blank', title, content }, options) as NzNotificationDataFilled;
+  blank(title: string, content: string, options?: NzNotificationDataOptions): NzNotificationRef {
+    return this.createInstance({ type: 'blank', title, content }, options);
   }
 
   create(
@@ -98,12 +53,28 @@ export class NzNotificationService {
     title: string,
     content: string,
     options?: NzNotificationDataOptions
-  ): NzNotificationDataFilled {
-    return this.createMessage({ type, title, content }, options) as NzNotificationDataFilled;
+  ): NzNotificationRef {
+    return this.createInstance({ type, title, content }, options);
   }
 
-  // For content with template
-  template(template: TemplateRef<{}>, options?: NzNotificationDataOptions): NzNotificationDataFilled {
-    return this.createMessage({ template }, options) as NzNotificationDataFilled;
+  template(template: TemplateRef<{}>, options?: NzNotificationDataOptions): NzNotificationRef {
+    return this.createInstance({ template }, options);
+  }
+
+  protected generateMessageId(): string {
+    return `${this.componentPrefix}-${notificationId++}`;
+  }
+
+  private createInstance(message: NzNotificationData, options?: NzNotificationDataOptions): NzNotificationRef {
+    this.container = this.withContainer(NzNotificationContainerComponent);
+
+    return this.container.create({
+      ...message,
+      ...{
+        createdAt: new Date(),
+        messageId: this.generateMessageId(),
+        options
+      }
+    });
   }
 }
