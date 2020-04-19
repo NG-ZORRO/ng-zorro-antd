@@ -30,17 +30,19 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { CandyDate, cloneDate, CompatibleValue } from 'ng-zorro-antd/core/time';
-import { BooleanInput, FunctionProp, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, FunctionProp, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzDatePickerI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DatePickerService } from './date-picker.service';
 
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzPickerComponent } from './picker.component';
 import { CompatibleDate, DisabledTimeFn, PanelMode, PresetRanges, SupportTimeOptions } from './standard-types';
 
 const POPUP_STYLE_PATCH = { position: 'relative' }; // Aim to override antd's style to support overlay's position strategy (position:absolute will cause it not working beacuse the overlay can't get the height/width of it's content)
+const NZ_CONFIG_COMPONENT_NAME = 'datePicker';
 
 /**
  * The base picker for all common APIs
@@ -111,7 +113,8 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   @Input() nzMode: PanelMode | PanelMode[] = 'date';
   @Input() nzRanges: PresetRanges;
   @Input() nzDefaultPickerValue: CompatibleDate | null = null;
-  @Input() nzSeparator: string;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSeparator: string;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'calendar') nzSuffixIcon: string | TemplateRef<NzSafeAny>;
 
   @Output() readonly nzOnPanelChange = new EventEmitter<PanelMode | PanelMode[]>();
   @Output() readonly nzOnCalendarChange = new EventEmitter<Array<Date | null>>();
@@ -133,6 +136,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   } // Use picker's real open state to let re-render the picker's content when shown up
 
   constructor(
+    public nzConfigService: NzConfigService,
     public datePickerService: DatePickerService,
     protected i18n: NzI18nService,
     protected cdr: ChangeDetectorRef,

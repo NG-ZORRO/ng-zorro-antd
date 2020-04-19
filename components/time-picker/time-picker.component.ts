@@ -29,7 +29,7 @@ import { slideMotion } from 'ng-zorro-antd/core/animation';
 
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
@@ -54,7 +54,9 @@ const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
         (blur)="onFocus(false)"
       />
       <span class="ant-picker-suffix">
-        <i nz-icon nzType="clock-circle"></i>
+        <ng-container *nzStringTemplateOutlet="nzSuffixIcon">
+          <i nz-icon [nzType]="nzSuffixIcon"></i>
+        </ng-container>
       </span>
       <span *ngIf="nzAllowEmpty && value" class="ant-picker-clear" (click)="onClickClearBtn()">
         <i nz-icon nzType="close-circle" nzTheme="fill" [attr.aria-label]="nzClearText" [attr.title]="nzClearText"></i>
@@ -152,6 +154,8 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'HH:mm:ss') nzFormat: string;
   @Input() nzOpen = false;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzUse12Hours: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'clock-circle') nzSuffixIcon: string | TemplateRef<NzSafeAny>;
+
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
 
   @Input() @InputBoolean() nzHideDisabledOptions = false;

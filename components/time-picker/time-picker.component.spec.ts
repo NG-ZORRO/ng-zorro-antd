@@ -140,6 +140,11 @@ describe('time-picker', () => {
         date.getMinutes().toString()
       );
     }));
+    it('should support custom suffixIcon', fakeAsync(() => {
+      testComponent.nzSuffixIcon = 'calendar';
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css(`.anticon-calendar`))).toBeDefined();
+    }));
   });
 
   function queryFromOverlay(selector: string): HTMLElement {
@@ -157,6 +162,7 @@ describe('time-picker', () => {
       (nzOpenChange)="openChange($event)"
       [nzDisabled]="disabled"
       [nzUse12Hours]="use12Hours"
+      [nzSuffixIcon]="nzSuffixIcon"
     ></nz-time-picker>
   `
 })
@@ -167,6 +173,7 @@ export class NzTestTimePickerComponent {
   date: Date | string = new Date();
   disabled = false;
   use12Hours = false;
+  nzSuffixIcon: string;
   onChange(): void {}
   @ViewChild(NzTimePickerComponent, { static: false }) nzTimePickerComponent: NzTimePickerComponent;
 }

@@ -26,6 +26,7 @@ export interface NzConfig {
   codeEditor?: CodeEditorConfig;
   collapse?: CollapseConfig;
   collapsePanel?: CollapsePanelConfig;
+  datePicker?: DatePickerConfig;
   descriptions?: DescriptionsConfig;
   drawer?: DrawerConfig;
   empty?: EmptyConfig;
@@ -120,6 +121,11 @@ export interface CollapseConfig {
 
 export interface CollapsePanelConfig {
   nzShowArrow?: boolean;
+}
+
+export interface DatePickerConfig {
+  nzSeparator?: string;
+  nzSuffixIcon?: string | TemplateRef<NzSafeAny>;
 }
 
 export interface DescriptionsConfig {
@@ -230,6 +236,7 @@ export interface TimePickerConfig {
   nzSecondStep?: number;
   nzPopupClassName?: string;
   nzUse12Hours?: string;
+  nzSuffixIcon?: string | TemplateRef<NzSafeAny>;
 }
 
 export interface TreeConfig {
