@@ -6,28 +6,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  AfterContentInit,
-  ContentChildren,
-  Directive,
-  ElementRef,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  QueryList,
-  Renderer2,
-  SimpleChanges
-} from '@angular/core';
+import { Directive, ElementRef, Input, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChange, SimpleChanges } from '@angular/core';
 
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
+import { BooleanInput, InputObservable } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { Subject } from 'rxjs';
-import { startWith, takeUntil } from 'rxjs/operators';
-
-import { NzFormControlComponent } from './form-control.component';
-import { NzFormLabelComponent } from './form-label.component';
+import { Observable, Subject } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 const NZ_CONFIG_COMPONENT_NAME = 'form';
 
@@ -36,7 +21,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'form';
   exportAs: 'nzForm',
   host: { '[class]': 'hostClassMap' }
 })
-export class NzFormDirective implements OnInit, OnChanges, AfterContentInit, OnDestroy {
+export class NzFormDirective implements OnInit, OnChanges, OnDestroy, InputObservable {
   static ngAcceptInputType_nzNoColon: BooleanInput;
   static ngAcceptInputType_nzDisableAutoTips: BooleanInput;
 
@@ -47,10 +32,8 @@ export class NzFormDirective implements OnInit, OnChanges, AfterContentInit, OnD
 
   hostClassMap = {};
 
-  @ContentChildren(NzFormLabelComponent, { descendants: true }) nzFormLabelComponent: QueryList<NzFormLabelComponent>;
-  @ContentChildren(NzFormControlComponent, { descendants: true }) nzFormControlComponent: QueryList<NzFormControlComponent>;
-
   destroy$ = new Subject();
+  private inputChanges$ = new Subject<SimpleChanges>();
 
   setClassMap(): void {
     this.hostClassMap = {
@@ -58,16 +41,11 @@ export class NzFormDirective implements OnInit, OnChanges, AfterContentInit, OnD
     };
   }
 
-  updateItemsDefaultColon(): void {
-    if (this.nzFormLabelComponent) {
-      this.nzFormLabelComponent.forEach(item => item.setDefaultNoColon(this.nzNoColon));
-    }
-  }
-
-  updateItemsDefaultAutoTipConf(): void {
-    if (this.nzFormControlComponent) {
-      this.nzFormControlComponent.forEach(item => item.setDefaultAutoTipConf(this.nzAutoTips, this.nzDisableAutoTips));
-    }
+  getInputObservable<K extends keyof this>(changeType: K): Observable<SimpleChange> {
+    return this.inputChanges$.pipe(
+      filter(changes => changeType in changes),
+      map(value => value[changeType as string])
+    );
   }
 
   constructor(public nzConfigService: NzConfigService, elementRef: ElementRef, private renderer: Renderer2) {
@@ -79,26 +57,11 @@ export class NzFormDirective implements OnInit, OnChanges, AfterContentInit, OnD
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzLayout, nzNoColon, nzAutoTips, nzDisableAutoTips } = changes;
+    const { nzLayout } = changes;
     if (nzLayout) {
       this.setClassMap();
     }
-    if (nzNoColon) {
-      this.updateItemsDefaultColon();
-    }
-    if (nzAutoTips || nzDisableAutoTips) {
-      this.updateItemsDefaultAutoTipConf();
-    }
-  }
-
-  ngAfterContentInit(): void {
-    this.nzFormLabelComponent.changes.pipe(startWith(null), takeUntil(this.destroy$)).subscribe(() => {
-      this.updateItemsDefaultColon();
-    });
-
-    this.nzFormControlComponent.changes.pipe(startWith(null), takeUntil(this.destroy$)).subscribe(() => {
-      this.updateItemsDefaultAutoTipConf();
-    });
+    this.inputChanges$.next(changes);
   }
 
   ngOnDestroy(): void {
