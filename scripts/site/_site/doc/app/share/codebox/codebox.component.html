@@ -27,7 +27,17 @@
     </div>
     <div class="code-box-actions">
       <i
-        [nzTooltipTitle]="!openStackBlitzLoading ?
+        [nzTooltipTitle]="!onlineIDELoading ?
+        language==='zh' ? '在 CodeSandbox 上打开':'Edit On CodeSandbox':
+        language==='zh'? '加载中...' : 'Loading...'"
+        nz-tooltip
+        nz-icon
+        nzType="code-sandbox"
+        class="code-box-code-copy"
+        (click)="openOnlineIDE('CodeSandbox')"
+      ></i>
+      <i
+        [nzTooltipTitle]="!onlineIDELoading ?
         language==='zh' ? '在 StackBlitz 上打开':'Edit On StackBlitz':
         language==='zh'? '加载中...' : 'Loading...'"
         nz-tooltip
@@ -35,7 +45,7 @@
         nzType="thunderbolt"
         nzTheme="fill"
         class="code-box-code-copy"
-        (click)="openOnStackBlitz()"
+        (click)="openOnlineIDE()"
       ></i>
       <i
         [nzTooltipTitle]="!copyLoading ?

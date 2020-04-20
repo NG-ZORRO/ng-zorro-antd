@@ -1,30 +1,19 @@
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Inject,
-  Input,
-  OnDestroy,
-  OnInit,
-  ViewEncapsulation
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import sdk from '@stackblitz/sdk';
-import { VERSION } from 'ng-zorro-antd/version'
 import { Observable, Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { AppService, DemoCode } from '../../app.service';
-import { stackBlitzConfiguration } from './stack-blitz';
+import { OnlineIdeService } from '../../online-ide/online-ide.service';
 
 @Component({
-  selector       : 'nz-code-box',
-  encapsulation  : ViewEncapsulation.None,
+  selector: 'nz-code-box',
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl    : './codebox.component.html',
-  styleUrls      : [ './codebox.component.less' ]
+  templateUrl: './codebox.component.html',
+  styleUrls: ['./codebox.component.less']
 })
 export class NzCodeBoxComponent implements OnInit, OnDestroy {
   highlightCode: string;
@@ -37,7 +26,7 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
   theme = 'default';
   destroy$ = new Subject();
   codeLoaded = false;
-  openStackBlitzLoading = false;
+  onlineIDELoading = false;
   copyLoading = false;
   @Input() nzTitle: string;
   @Input() nzExpanded = false;
@@ -78,7 +67,6 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
         }, 1000);
       });
     });
-
   }
 
   copyGenerateCommand(command: string): void {
@@ -92,27 +80,25 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
   }
 
   copy(value: string): Promise<string> {
-    const promise = new Promise<string>(
-      (resolve): void => {
-        // @ts-ignore
-        let copyTextArea = null as HTMLTextAreaElement;
-        try {
-          copyTextArea = this.dom.createElement('textarea');
-          copyTextArea.style.height = '0px';
-          copyTextArea.style.opacity = '0';
-          copyTextArea.style.width = '0px';
-          this.dom.body.appendChild(copyTextArea);
-          copyTextArea.value = value;
-          copyTextArea.select();
-          this.dom.execCommand('copy');
-          resolve(value);
-        } finally {
-          if (copyTextArea && copyTextArea.parentNode) {
-            copyTextArea.parentNode.removeChild(copyTextArea);
-          }
+    const promise = new Promise<string>((resolve): void => {
+      // @ts-ignore
+      let copyTextArea = null as HTMLTextAreaElement;
+      try {
+        copyTextArea = this.dom.createElement('textarea');
+        copyTextArea.style.height = '0px';
+        copyTextArea.style.opacity = '0';
+        copyTextArea.style.width = '0px';
+        this.dom.body.appendChild(copyTextArea);
+        copyTextArea.value = value;
+        copyTextArea.select();
+        this.dom.execCommand('copy');
+        resolve(value);
+      } finally {
+        if (copyTextArea && copyTextArea.parentNode) {
+          copyTextArea.parentNode.removeChild(copyTextArea);
         }
       }
-    );
+    });
 
     return promise;
   }
@@ -124,15 +110,19 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
     }
   }
 
-  openOnStackBlitz(): void {
+  openOnlineIDE(ide: 'StackBlitz' | 'CodeSandbox' = 'StackBlitz'): void {
     setTimeout(() => {
-      this.openStackBlitzLoading = !this.codeLoaded;
+      this.onlineIDELoading = !this.codeLoaded;
       this.check();
     }, 120);
     this.getDemoCode().subscribe(data => {
-      this.openStackBlitzLoading = false;
+      this.onlineIDELoading = false;
       this.check();
-      sdk.openProject(stackBlitzConfiguration(this.nzComponentName, data.rawCode, this.nzSelector, VERSION.full));
+      if (ide === 'StackBlitz') {
+        this.onlineIdeService.openOnStackBlitz(this.nzComponentName, data.rawCode, this.nzSelector);
+      } else {
+        this.onlineIdeService.openOnCodeSandbox(this.nzComponentName, data.rawCode, this.nzSelector);
+      }
     });
   }
 
@@ -141,12 +131,14 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
   }
 
   // tslint:disable-next-line:no-any
-  constructor(@Inject(DOCUMENT) private dom: any,
-              private sanitizer: DomSanitizer,
-              private cdr: ChangeDetectorRef,
-              private appService: AppService,
-              private platform: Platform) {
-  }
+  constructor(
+    @Inject(DOCUMENT) private dom: any,
+    private sanitizer: DomSanitizer,
+    private cdr: ChangeDetectorRef,
+    private appService: AppService,
+    private platform: Platform,
+    private onlineIdeService: OnlineIdeService
+  ) {}
 
   ngOnInit(): void {
     this.appService.theme$.pipe(takeUntil(this.destroy$)).subscribe(data => {
@@ -157,7 +149,6 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
       this.language = data;
       this.check();
     });
-
   }
 
   getDemoCode(): Observable<DemoCode> {
@@ -169,12 +160,12 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
           this.codeLoaded = true;
           this.check();
         }
-      }));
+      })
+    );
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
 }
