@@ -6,10 +6,10 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Observable, Observer, of, throwError } from 'rxjs';
-import { delay } from 'rxjs/operators';
 
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { Observable, Observer, of, throwError } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import en_US from '../i18n/languages/en_US';
 import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzI18nService } from '../i18n/nz-i18n.service';
@@ -1454,13 +1454,10 @@ class TestUploadListComponent {
 }
 
 @Component({
-  template: `
-    <div nz-upload-btn #btn [options]="options" [classes]="classes">UPLAOD</div>
-  `
+  template: ` <div nz-upload-btn #btn [options]="options" class="test">UPLAOD</div> `
 })
 class TestUploadBtnComponent {
   @ViewChild('btn', { static: false }) comp: NzUploadBtnComponent;
-  classes: string[] = ['test'];
   options: ZipButtonOptions = {
     disabled: false,
     openFileDialogOnClick: true,

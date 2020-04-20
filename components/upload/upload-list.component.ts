@@ -50,7 +50,10 @@ interface UploadListFile extends UploadFile {
     ])
   ],
   host: {
-    '[class]': 'hostClassMap'
+    '[class.ant-upload-list]': `true`,
+    '[class.ant-upload-list-text]': `listType === 'text'`,
+    '[class.ant-upload-list-picture]': `listType === 'picture'`,
+    '[class.ant-upload-list-picture-card]': `listType === 'picture-card'`
   },
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
@@ -58,13 +61,10 @@ interface UploadListFile extends UploadFile {
 })
 export class NzUploadListComponent implements OnChanges {
   list: UploadListFile[];
-  hostClassMap = {};
 
   private get showPic(): boolean {
     return this.listType === 'picture' || this.listType === 'picture-card';
   }
-
-  // #region fields
 
   @Input() locale: NzSafeAny = {};
   @Input() listType: UploadListType;
@@ -78,24 +78,6 @@ export class NzUploadListComponent implements OnChanges {
   @Input() onDownload: (file: UploadFile) => void;
   @Input() previewFile: (file: UploadFile) => Observable<string>;
   @Input() iconRender: TemplateRef<void>;
-
-  // #endregion
-
-  // #region styles
-
-  private prefixCls = 'ant-upload-list';
-
-  private setClassMap(): this {
-    this.hostClassMap = {
-      [this.prefixCls]: true,
-      [`${this.prefixCls}-${this.listType}`]: true
-    };
-    return this;
-  }
-
-  // #endregion
-
-  // #region render
 
   private genErr(file: UploadFile): string {
     if (file.response && typeof file.response === 'string') {
@@ -209,8 +191,8 @@ export class NzUploadListComponent implements OnChanges {
   private listItemNameCls(file: UploadFile): NgClassType {
     const count = [this.showDownload(file), this.icons.showRemoveIcon].filter(x => x).length;
     return {
-      [`${this.prefixCls}-item-name`]: true,
-      [`${this.prefixCls}-item-name-icon-count-${count}`]: true
+      [`ant-upload-list-item-name`]: true,
+      [`ant-upload-list-item-name-icon-count-${count}`]: true
     };
   }
 
@@ -218,7 +200,7 @@ export class NzUploadListComponent implements OnChanges {
     return !!(this.icons.showDownloadIcon && file.status === 'done');
   }
 
-  private fixData(): this {
+  private fixData(): void {
     this.list.forEach(file => {
       file.message = this.genErr(file);
       file.linkProps = typeof file.linkProps === 'string' ? JSON.parse(file.linkProps) : file.linkProps;
@@ -228,7 +210,6 @@ export class NzUploadListComponent implements OnChanges {
       file.listItemNameCls = this.listItemNameCls(file);
       file.showDownload = this.showDownload(file);
     });
-    return this;
   }
 
   handlePreview(file: UploadFile, e: Event): void {
@@ -271,8 +252,7 @@ export class NzUploadListComponent implements OnChanges {
   }
 
   ngOnChanges(): void {
-    this.fixData()
-      .setClassMap()
-      .genThumb();
+    this.fixData();
+    this.genThumb();
   }
 }

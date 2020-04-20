@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, ElementRef, Input, OnChanges, OnDestroy, OnInit, Renderer2, SimpleChange, SimpleChanges } from '@angular/core';
+import { Directive, ElementRef, Input, OnChanges, OnDestroy, Renderer2, SimpleChange, SimpleChanges } from '@angular/core';
 
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, InputObservable } from 'ng-zorro-antd/core/types';
@@ -19,27 +19,23 @@ const NZ_CONFIG_COMPONENT_NAME = 'form';
 @Directive({
   selector: '[nz-form]',
   exportAs: 'nzForm',
-  host: { '[class]': 'hostClassMap' }
+  host: {
+    '[class.ant-form-horizontal]': `nzLayout === 'horizontal'`,
+    '[class.ant-form-vertical]': `nzLayout === 'vertical'`,
+    '[class.ant-form-inline]': `nzLayout === 'inline'`
+  }
 })
-export class NzFormDirective implements OnInit, OnChanges, OnDestroy, InputObservable {
+export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
   static ngAcceptInputType_nzNoColon: BooleanInput;
   static ngAcceptInputType_nzDisableAutoTips: BooleanInput;
 
-  @Input() nzLayout = 'horizontal';
+  @Input() nzLayout: 'horizontal' | 'vertical' | 'inline' = 'horizontal';
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzNoColon: boolean;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, {}) nzAutoTips: Record<string, Record<string, string>>;
   @Input() @InputBoolean() nzDisableAutoTips = false;
 
-  hostClassMap = {};
-
   destroy$ = new Subject();
   private inputChanges$ = new Subject<SimpleChanges>();
-
-  setClassMap(): void {
-    this.hostClassMap = {
-      [`ant-form-${this.nzLayout}`]: this.nzLayout
-    };
-  }
 
   getInputObservable<K extends keyof this>(changeType: K): Observable<SimpleChange> {
     return this.inputChanges$.pipe(
@@ -52,15 +48,7 @@ export class NzFormDirective implements OnInit, OnChanges, OnDestroy, InputObser
     this.renderer.addClass(elementRef.nativeElement, 'ant-form');
   }
 
-  ngOnInit(): void {
-    this.setClassMap();
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzLayout } = changes;
-    if (nzLayout) {
-      this.setClassMap();
-    }
     this.inputChanges$.next(changes);
   }
 

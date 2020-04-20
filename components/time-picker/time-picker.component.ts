@@ -30,7 +30,7 @@ import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
 
@@ -101,7 +101,13 @@ const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
       </div>
     </ng-template>
   `,
-  host: { '[class]': 'hostClassMap' },
+  host: {
+    '[class.ant-picker]': `true`,
+    '[class.ant-picker-large]': `nzSize === 'large'`,
+    '[class.ant-picker-small]': `nzSize === 'small'`,
+    '[class.ant-picker-disabled]': `nzDisabled`,
+    '[class.ant-picker-focused]': `focused`
+  },
   animations: [slideMotion],
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }]
 })
@@ -118,7 +124,6 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   focused = false;
   value: Date | null = null;
   origin: CdkOverlayOrigin;
-  hostClassMap = {};
   inputSize: number;
   overlayPositions: ConnectionPositionPair[] = [
     {
@@ -169,7 +174,6 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
       return;
     }
     this.focus();
-    this.setClassMap();
     this.nzOpen = true;
     this.nzOpenChange.emit(this.nzOpen);
   }
@@ -196,16 +200,6 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
   onFocus(value: boolean): void {
     this.focused = value;
-    this.setClassMap();
-  }
-
-  private setClassMap(): void {
-    this.hostClassMap = {
-      [`ant-picker`]: true,
-      [`ant-picker-${this.nzSize}`]: isNotNil(this.nzSize),
-      [`ant-picker-disabled`]: this.nzDisabled,
-      [`ant-picker-focused`]: this.focused
-    };
   }
 
   focus(): void {
@@ -229,7 +223,6 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
   ngOnInit(): void {
     this.inputSize = Math.max(8, this.nzFormat.length) + 2;
-    this.setClassMap();
     this.origin = new CdkOverlayOrigin(this.element);
   }
 

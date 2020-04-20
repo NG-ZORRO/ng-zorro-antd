@@ -33,11 +33,6 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { slideMotion, zoomMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { BooleanInput, NzSizeLDSType } from 'ng-zorro-antd/core/types';
-import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
-
-import { merge, of as observableOf, Subscription } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
 
 import {
   NzFormatEmitEvent,
@@ -47,8 +42,13 @@ import {
   NzTreeNode,
   NzTreeNodeOptions
 } from 'ng-zorro-antd/core/tree';
+import { BooleanInput, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzSelectSearchComponent } from 'ng-zorro-antd/select';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
+
+import { merge, of as observableOf, Subscription } from 'rxjs';
+import { filter, tap } from 'rxjs/operators';
 
 import { NzTreeSelectService } from './tree-select.service';
 
@@ -77,7 +77,7 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
       (positionChange)="onPositionChange($event)"
     >
       <div
-        [class]="dropdownClassName"
+        [ngClass]="dropdownClassName"
         [@slideMotion]="nzOpen ? dropDownPosition : 'void'"
         [@.disabled]="noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
