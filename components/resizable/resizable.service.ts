@@ -8,7 +8,7 @@
 
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable, NgZone, OnDestroy } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isTouchEvent } from 'ng-zorro-antd/core/util';
 
 import { Subject } from 'rxjs';

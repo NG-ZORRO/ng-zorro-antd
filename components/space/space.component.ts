@@ -7,7 +7,7 @@
  */
 
 import { AfterViewInit, ChangeDetectionStrategy, Component, ContentChildren, Input, OnChanges, OnDestroy, QueryList } from '@angular/core';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
@@ -21,9 +21,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'avatar';
   selector: 'nz-space',
   exportAs: 'NzSpace',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <ng-content></ng-content>
-  `,
+  template: ` <ng-content></ng-content> `,
   host: {
     class: 'ant-space',
     '[class.ant-space-horizontal]': 'nzDirection === "horizontal"',

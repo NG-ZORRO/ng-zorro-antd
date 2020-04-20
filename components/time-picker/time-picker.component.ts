@@ -250,8 +250,8 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     this.updateAutoFocus();
   }
 
-  writeValue(time: Date): void {
-    if (time instanceof Date) {
+  writeValue(time: Date | null): void {
+    if (time instanceof Date || time === null) {
       this.value = time;
     } else {
       warn('Non-Date type is not recommended for time-picker, use "Date" type');
