@@ -8,9 +8,9 @@
 
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable, Optional } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { PREFIX, warn, warnDeprecation } from 'ng-zorro-antd/core/logger';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { BehaviorSubject, Observable, of as observableOf, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { JoinedEditorOptions, NZ_CODE_EDITOR_CONFIG, NzCodeEditorConfig, NzCodeEditorLoadingStatus } from './typings';
