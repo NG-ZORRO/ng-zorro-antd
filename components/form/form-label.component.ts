@@ -6,10 +6,24 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, Renderer2, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  Optional,
+  Renderer2,
+  SkipSelf,
+  ViewEncapsulation
+} from '@angular/core';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 
 import { InputBoolean, toBoolean } from 'ng-zorro-antd/core/util';
+import { Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
+import { NzFormDirective } from './form.directive';
 
 @Component({
   selector: 'nz-form-label',
@@ -18,16 +32,12 @@ import { InputBoolean, toBoolean } from 'ng-zorro-antd/core/util';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <label
-      [attr.for]="nzFor"
-      [class.ant-form-item-no-colon]="noColon === 'default' ? defaultNoColon : nzNoColon"
-      [class.ant-form-item-required]="nzRequired"
-    >
+    <label [attr.for]="nzFor" [class.ant-form-item-no-colon]="nzNoColon" [class.ant-form-item-required]="nzRequired">
       <ng-content></ng-content>
     </label>
   `
 })
-export class NzFormLabelComponent {
+export class NzFormLabelComponent implements OnDestroy {
   static ngAcceptInputType_nzRequired: BooleanInput;
   static ngAcceptInputType_nzNoColon: BooleanInput;
 
@@ -38,18 +48,34 @@ export class NzFormLabelComponent {
     this.noColon = toBoolean(value);
   }
   get nzNoColon(): boolean {
-    return !!this.noColon;
+    return this.noColon !== 'default' ? this.noColon : this.nzFormDirective?.nzNoColon;
   }
 
-  defaultNoColon: boolean = false;
-  noColon: boolean | string = 'default';
+  noColon: boolean | 'default' = 'default';
 
-  constructor(elementRef: ElementRef, renderer: Renderer2, private cdr: ChangeDetectorRef) {
+  private destroy$ = new Subject();
+
+  constructor(
+    elementRef: ElementRef,
+    renderer: Renderer2,
+    private cdr: ChangeDetectorRef,
+    @Optional() @SkipSelf() private nzFormDirective: NzFormDirective
+  ) {
     renderer.addClass(elementRef.nativeElement, 'ant-form-item-label');
+
+    if (this.nzFormDirective) {
+      this.nzFormDirective
+        .getInputObservable('nzNoColon')
+        .pipe(
+          filter(() => this.noColon === 'default'),
+          takeUntil(this.destroy$)
+        )
+        .subscribe(() => this.cdr.markForCheck());
+    }
   }
 
-  setDefaultNoColon(value: boolean): void {
-    this.defaultNoColon = toBoolean(value);
-    this.cdr.markForCheck();
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

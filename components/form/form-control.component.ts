@@ -24,12 +24,13 @@ import {
 } from '@angular/core';
 import { FormControl, FormControlDirective, FormControlName, NgControl, NgModel } from '@angular/forms';
 import { helpMotion } from 'ng-zorro-antd/core/animation';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { toBoolean } from 'ng-zorro-antd/core/util';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
-import { Subject, Subscription } from 'rxjs';
-import { startWith, takeUntil } from 'rxjs/operators';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { filter, startWith, takeUntil, tap } from 'rxjs/operators';
+import { NzFormDirective } from './form.directive';
 
 import { NzFormControlStatusType, NzFormItemComponent } from './form-item.component';
 
@@ -78,12 +79,10 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
   private status: NzFormControlStatusType = null;
   private destroyed$ = new Subject<void>();
   private localeId: string;
-  private defaultAutoTips: Record<string, string | Record<string, string>>;
-  private defaultDisableAutoTips: boolean;
   private autoErrorTip: string;
 
   private get disableAutoTips(): boolean {
-    return this.nzDisableAutoTips !== 'default' ? toBoolean(this.nzDisableAutoTips) : this.defaultDisableAutoTips;
+    return this.nzDisableAutoTips !== 'default' ? toBoolean(this.nzDisableAutoTips) : this.nzFormDirective?.nzDisableAutoTips;
   }
 
   validateControl: FormControl | NgModel | null = null;
@@ -96,7 +95,7 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
   @Input() nzErrorTip: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
   @Input() nzValidatingTip: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
   @Input() nzExtra: string | TemplateRef<void>;
-  @Input() nzAutoTips: Record<string, Record<string, string>>;
+  @Input() nzAutoTips: Record<string, Record<string, string>> = {};
   @Input() nzDisableAutoTips: boolean | 'default' = 'default';
 
   @Input()
@@ -128,15 +127,11 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
     }
   }
 
-  private removeSubscribe(): void {
-    this.validateChanges.unsubscribe();
-  }
-
   private watchControl(): void {
-    this.removeSubscribe();
+    this.validateChanges.unsubscribe();
     /** miss detect https://github.com/angular/angular/issues/10887 **/
     if (this.validateControl && this.validateControl.statusChanges) {
-      this.validateChanges = this.validateControl.statusChanges.pipe(startWith(null)).subscribe(_ => {
+      this.validateChanges = this.validateControl.statusChanges.pipe(startWith(null), takeUntil(this.destroyed$)).subscribe(_ => {
         if (this.disableAutoTips) {
           this.setStatus();
           this.cdr.markForCheck();
@@ -211,11 +206,10 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
       let autoErrorTip = '';
       for (const key in errors) {
         if (errors.hasOwnProperty(key)) {
-          autoErrorTip = errors[key][this.localeId];
-          if (!autoErrorTip) {
-            const autoTips = this.nzAutoTips || this.defaultAutoTips || {};
-            autoErrorTip = (autoTips[this.localeId] || {})[key];
-          }
+          autoErrorTip =
+            errors[key][this.localeId] ??
+            this.nzAutoTips?.[this.localeId]?.[key] ??
+            this.nzFormDirective?.nzAutoTips?.[this.localeId]?.[key];
         }
         if (!!autoErrorTip) {
           break;
@@ -225,12 +219,12 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
     }
   }
 
-  setDefaultAutoTipConf(autoTips: Record<string, string | Record<string, string>>, disableAutoTip: boolean): void {
-    this.defaultAutoTips = autoTips;
-    this.defaultDisableAutoTips = disableAutoTip;
-    if (!this.disableAutoTips) {
-      this.updateAutoTip();
-    }
+  private subscribeAutoTips(observable: Observable<NzSafeAny>): void {
+    observable?.pipe(takeUntil(this.destroyed$)).subscribe(() => {
+      if (!this.disableAutoTips) {
+        this.updateAutoTip();
+      }
+    });
   }
 
   constructor(
@@ -238,15 +232,16 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
     @Optional() @Host() private nzFormItemComponent: NzFormItemComponent,
     private cdr: ChangeDetectorRef,
     renderer: Renderer2,
-    i18n: NzI18nService
+    i18n: NzI18nService,
+    @Optional() @Host() private nzFormDirective: NzFormDirective
   ) {
     renderer.addClass(elementRef.nativeElement, 'ant-form-item-control');
-    i18n.localeChange.pipe(takeUntil(this.destroyed$)).subscribe(locale => {
-      this.localeId = locale.locale;
-      if (!this.disableAutoTips) {
-        this.updateAutoTip();
-      }
-    });
+
+    this.subscribeAutoTips(i18n.localeChange.pipe(tap(locale => (this.localeId = locale.locale))));
+    this.subscribeAutoTips(this.nzFormDirective?.getInputObservable('nzAutoTips'));
+    this.subscribeAutoTips(
+      this.nzFormDirective?.getInputObservable('nzDisableAutoTips').pipe(filter(() => this.nzDisableAutoTips === 'default'))
+    );
   }
 
   ngOnInit(): void {
@@ -254,7 +249,8 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
   }
 
   ngOnDestroy(): void {
-    this.removeSubscribe();
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 
   ngAfterContentInit(): void {
