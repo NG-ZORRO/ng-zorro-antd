@@ -2,6 +2,7 @@ import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { NzInputGroupComponent } from './input-group.component';
 import { NzInputModule } from './input.module';
@@ -143,6 +144,22 @@ describe('input-group', () => {
         fixture.detectChanges();
         expect(inputGroupElement.classList).toContain('ant-input-affix-wrapper-sm');
       });
+      it('should disabled work', () => {
+        testComponent.beforeContent = 'before';
+        fixture.detectChanges();
+        expect(inputGroupElement.classList).not.toContain('ant-input-affix-wrapper-disabled');
+        testComponent.disabled = true;
+        fixture.detectChanges();
+        expect(inputGroupElement.classList).toContain('ant-input-affix-wrapper-disabled');
+      });
+      it('should focus work', () => {
+        testComponent.beforeContent = 'before';
+        fixture.detectChanges();
+        expect(inputGroupElement.classList).not.toContain('ant-input-affix-wrapper-focused');
+        dispatchFakeEvent(inputGroupElement.querySelector('input')!, 'focus');
+        fixture.detectChanges();
+        expect(inputGroupElement.classList).toContain('ant-input-affix-wrapper-focused');
+      });
     });
     describe('multiple', () => {
       let fixture: ComponentFixture<NzTestInputGroupMultipleComponent>;
@@ -239,7 +256,7 @@ export class NzTestInputGroupAddonComponent {
 @Component({
   template: `
     <nz-input-group [nzPrefix]="beforeContent" [nzSuffix]="afterContent" [nzSize]="size">
-      <input type="text" nz-input />
+      <input type="text" nz-input [disabled]="disabled" />
     </nz-input-group>
     <ng-template #beforeTemplate>beforeTemplate</ng-template>
     <ng-template #afterTemplate>afterTemplate</ng-template>
@@ -251,6 +268,7 @@ export class NzTestInputGroupAffixComponent {
   beforeContent: string | TemplateRef<void>;
   afterContent: string | TemplateRef<void>;
   size = 'default';
+  disabled = false;
 }
 
 @Component({

@@ -6,9 +6,10 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } from '@angular/core';
 import { BooleanInput, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { Subject } from 'rxjs';
 
 @Directive({
   selector: 'input[nz-input],textarea[nz-input]',
@@ -19,13 +20,20 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
     '[class.ant-input-sm]': `nzSize === 'small'`
   }
 })
-export class NzInputDirective {
+export class NzInputDirective implements OnChanges {
   static ngAcceptInputType_disabled: BooleanInput;
 
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() @InputBoolean() disabled = false;
+  disabled$ = new Subject<boolean>();
 
   constructor(renderer: Renderer2, elementRef: ElementRef) {
     renderer.addClass(elementRef.nativeElement, 'ant-input');
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    const { disabled } = changes;
+    if (disabled) {
+      this.disabled$.next(this.disabled);
+    }
   }
 }
