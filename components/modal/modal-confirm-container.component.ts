@@ -27,10 +27,10 @@ import {
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
+import { NzI18nService } from 'ng-zorro-antd/i18n';
+
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
-import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import { nzModalAnimations } from './modal-animations';
 import { BaseModalContainer } from './modal-container';
@@ -44,7 +44,7 @@ import { ModalOptions } from './modal-types';
       #modalElement
       role="document"
       class="ant-modal"
-      [class]="config.nzClassName"
+      [ngClass]="config.nzClassName"
       [ngStyle]="config.nzStyle"
       [style.width]="config?.nzWidth | nzToCssUnit"
     >

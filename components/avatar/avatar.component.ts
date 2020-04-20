@@ -34,7 +34,13 @@ const NZ_CONFIG_COMPONENT_NAME = 'avatar';
     <span class="ant-avatar-string" #textEl [ngStyle]="textStyles" *ngIf="nzText && hasText">{{ nzText }}</span>
   `,
   host: {
-    '[class]': 'classMap',
+    '[class.ant-avatar]': 'true',
+    '[class.ant-avatar-lg]': `nzSize === 'large'`,
+    '[class.ant-avatar-sm]': `nzSize === 'small'`,
+    '[class.ant-avatar-square]': `nzShape === 'square'`,
+    '[class.ant-avatar-circle]': `nzShape === 'circle'`,
+    '[class.ant-avatar-icon]': `nzIcon`,
+    '[class.ant-avatar-image]': `hasSrc `,
     '[style.width]': 'customSize',
     '[style.height]': 'customSize',
     '[style.line-height]': 'customSize',
@@ -58,7 +64,6 @@ export class NzAvatarComponent implements OnChanges {
   hasSrc: boolean = true;
   hasIcon: boolean = false;
   textStyles: {};
-  classMap: {};
   customSize: string | null = null;
 
   @ViewChild('textEl', { static: false }) textEl: ElementRef;
@@ -72,18 +77,6 @@ export class NzAvatarComponent implements OnChanges {
     private platform: Platform
   ) {}
 
-  setClass(): void {
-    this.classMap = {
-      ['ant-avatar']: true,
-      [`ant-avatar-lg`]: this.nzSize === 'large',
-      [`ant-avatar-sm`]: this.nzSize === 'small',
-      [`ant-avatar-${this.nzShape}`]: this.nzShape,
-      [`ant-avatar-icon`]: this.nzIcon,
-      [`ant-avatar-image`]: this.hasSrc // downgrade after image error
-    };
-    this.cdr.detectChanges();
-  }
-
   imgError($event: Event): void {
     this.nzError.emit($event);
     if (!$event.defaultPrevented) {
@@ -95,7 +88,7 @@ export class NzAvatarComponent implements OnChanges {
       } else if (this.nzText) {
         this.hasText = true;
       }
-      this.setClass();
+      this.cdr.detectChanges();
       this.setSizeStyle();
       this.notifyCalc();
     }
@@ -106,7 +99,6 @@ export class NzAvatarComponent implements OnChanges {
     this.hasIcon = !this.nzSrc && !!this.nzIcon;
     this.hasSrc = !!this.nzSrc;
 
-    this.setClass();
     this.setSizeStyle();
     this.notifyCalc();
   }

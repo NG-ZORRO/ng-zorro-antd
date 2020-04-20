@@ -17,7 +17,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { TransferItem } from './interface';
+import { TransferDirection, TransferItem } from './interface';
 
 @Component({
   selector: 'nz-transfer-list',
@@ -114,7 +114,7 @@ import { TransferItem } from './interface';
 export class NzTransferListComponent {
   // #region fields
 
-  @Input() direction = '';
+  @Input() direction: TransferDirection;
   @Input() titleText = '';
   @Input() showSelectAll = true;
 
@@ -136,7 +136,7 @@ export class NzTransferListComponent {
   // events
   @Output() readonly handleSelectAll: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() readonly handleSelect: EventEmitter<TransferItem> = new EventEmitter();
-  @Output() readonly filterChange: EventEmitter<{ direction: string; value: string }> = new EventEmitter();
+  @Output() readonly filterChange: EventEmitter<{ direction: TransferDirection; value: string }> = new EventEmitter();
 
   stat = {
     checkAll: false,

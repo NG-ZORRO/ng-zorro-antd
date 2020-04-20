@@ -19,6 +19,7 @@ import { NzPopoverComponent, NzPopoverDirective } from './popover';
 
 @NgModule({
   exports: [NzPopoverDirective, NzPopoverComponent],
+  entryComponents: [NzPopoverComponent],
   declarations: [NzPopoverDirective, NzPopoverComponent],
   imports: [CommonModule, OverlayModule, NzOutletModule, NzOverlayModule, NzNoAnimationModule, NzToolTipModule]
 })

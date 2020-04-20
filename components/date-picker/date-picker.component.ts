@@ -10,6 +10,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   forwardRef,
   Host,
@@ -19,6 +20,7 @@ import {
   OnInit,
   Optional,
   Output,
+  Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewChild,
@@ -50,7 +52,11 @@ const POPUP_STYLE_PATCH = { position: 'relative' }; // Aim to override antd's st
   exportAs: 'nzDatePicker',
   templateUrl: './date-picker.component.html',
   host: {
-    '[class]': 'hostClassMap'
+    '[class.ant-picker]': `true`,
+    '[class.ant-picker-range]': `isRange`,
+    '[class.ant-picker-large]': `nzSize === 'large'`,
+    '[class.ant-picker-small]': `nzSize === 'small'`,
+    '[class.ant-picker-disabled]': `nzDisabled`
   },
   providers: [
     DatePickerService,
@@ -73,7 +79,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   showWeek: boolean = false; // Should show as week picker
   focused: boolean = false;
   extraFooter: TemplateRef<void> | string;
-  hostClassMap = {};
 
   protected destroyed$: Subject<void> = new Subject();
   protected isCustomPlaceHolder: boolean = false;
@@ -127,21 +132,12 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     return this.picker.animationOpenState;
   } // Use picker's real open state to let re-render the picker's content when shown up
 
-  updateHostClass(): void {
-    this.hostClassMap = {
-      [`ant-picker`]: true,
-      [`ant-picker-range`]: this.isRange,
-      [`ant-picker-large`]: this.nzSize === 'large',
-      [`ant-picker-small`]: this.nzSize === 'small',
-      [`ant-picker-focused`]: this.focused,
-      [`ant-picker-disabled`]: this.nzDisabled
-    };
-  }
-
   constructor(
     public datePickerService: DatePickerService,
     protected i18n: NzI18nService,
     protected cdr: ChangeDetectorRef,
+    private renderer: Renderer2,
+    private elementRef: ElementRef,
     protected dateHelper: DateHelperService,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {}
@@ -177,7 +173,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
       this.picker.hideOverlay();
     });
 
-    this.updateHostClass();
     // Default format when it's empty
     if (!this.nzFormat) {
       if (this.showWeek) {
@@ -189,10 +184,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzSize || changes.nzDisabled) {
-      this.updateHostClass();
-    }
-
     if (changes.nzPopupStyle) {
       // Always assign the popup style patch
       this.nzPopupStyle = this.nzPopupStyle ? { ...this.nzPopupStyle, ...POPUP_STYLE_PATCH } : POPUP_STYLE_PATCH;
@@ -300,7 +291,12 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
 
   onFocusChange(value: boolean): void {
     this.focused = value;
-    this.updateHostClass();
+    // TODO: avoid autoFocus cause change after checked error
+    if (this.focused) {
+      this.renderer.addClass(this.elementRef.nativeElement, 'ant-picker-focused');
+    } else {
+      this.renderer.removeClass(this.elementRef.nativeElement, 'ant-picker-focused');
+    }
   }
 
   onPanelModeChange(panelMode: PanelMode | PanelMode[]): void {

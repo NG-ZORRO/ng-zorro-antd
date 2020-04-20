@@ -44,7 +44,7 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
     <ng-template>
       <div
         class="ant-dropdown"
-        [class]="nzOverlayClassName"
+        [ngClass]="nzOverlayClassName"
         [ngStyle]="nzOverlayStyle"
         [@slideMotion]="dropDownPosition"
         [@.disabled]="noAnimation?.nzNoAnimation"

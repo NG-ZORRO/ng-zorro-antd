@@ -11,7 +11,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleCha
 @Component({
   selector: 'nz-tree-indent',
   exportAs: 'nzTreeIndent',
-  template: ` <span *ngFor="let i of listOfUnit; let index = index" [class]="unitMapOfClass(index)"></span> `,
+  template: ` <span *ngFor="let i of listOfUnit; let index = index" [ngClass]="unitMapOfClass(index)"></span> `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
   host: {

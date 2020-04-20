@@ -36,7 +36,7 @@ import { NzMenuModeType, NzMenuThemeType } from './menu.types';
       [class.ant-menu-vertical]="!isMenuInsideDropDown"
       [class.ant-dropdown-menu-sub]="isMenuInsideDropDown"
       [class.ant-menu-sub]="!isMenuInsideDropDown"
-      [class]="menuClass"
+      [ngClass]="menuClass"
     >
       <ng-template [ngTemplateOutlet]="templateOutlet"></ng-template>
     </div>

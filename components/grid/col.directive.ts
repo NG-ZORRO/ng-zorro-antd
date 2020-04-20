@@ -19,7 +19,7 @@ import {
   Renderer2,
   SimpleChanges
 } from '@angular/core';
-import { IndexableObject, NgClassInterface } from 'ng-zorro-antd/core/types';
+import { NgClassInterface } from 'ng-zorro-antd/core/types';
 import { isNotNil } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -37,13 +37,12 @@ export interface EmbeddedProperty {
   selector: '[nz-col],nz-col,nz-form-control,nz-form-label',
   exportAs: 'nzCol',
   host: {
-    '[class]': 'hostClassMap',
     '[style.flex]': 'hostFlexStyle'
   }
 })
 export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+  private classMap: { [key: string]: boolean } = {};
   private destroy$ = new Subject();
-  hostClassMap: IndexableObject = {};
   hostFlexStyle: string | null = null;
   @Input() nzFlex: string | number | null = null;
   @Input() nzSpan: number | null = null;
@@ -59,7 +58,7 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   @Input() nzXXl: number | EmbeddedProperty | null = null;
 
   setHostClassMap(): void {
-    this.hostClassMap = {
+    const hostClassMap = {
       ['ant-col']: true,
       [`ant-col-${this.nzSpan}`]: isNotNil(this.nzSpan),
       [`ant-col-order-${this.nzOrder}`]: isNotNil(this.nzOrder),
@@ -68,6 +67,17 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
       [`ant-col-push-${this.nzPush}`]: isNotNil(this.nzPush),
       ...this.generateClass()
     };
+    for (const i in this.classMap) {
+      if (this.classMap.hasOwnProperty(i)) {
+        this.renderer.removeClass(this.elementRef.nativeElement, i);
+      }
+    }
+    this.classMap = { ...hostClassMap };
+    for (const i in this.classMap) {
+      if (this.classMap.hasOwnProperty(i) && this.classMap[i]) {
+        this.renderer.addClass(this.elementRef.nativeElement, i);
+      }
+    }
   }
 
   setHostFlexStyle(): void {

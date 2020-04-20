@@ -47,7 +47,7 @@ import { NzTransferListComponent } from './transfer-list.component';
       [filter]="leftFilter"
       [filterOption]="nzFilterOption"
       (filterChange)="handleFilterChange($event)"
-      [renderList]="nzRenderList[0]"
+      [renderList]="nzRenderList && nzRenderList[0]"
       [render]="nzRender"
       [disabled]="nzDisabled"
       [showSearch]="nzShowSearch"
@@ -78,7 +78,7 @@ import { NzTransferListComponent } from './transfer-list.component';
       [filter]="rightFilter"
       [filterOption]="nzFilterOption"
       (filterChange)="handleFilterChange($event)"
-      [renderList]="nzRenderList[1]"
+      [renderList]="nzRenderList && nzRenderList[1]"
       [render]="nzRender"
       [disabled]="nzDisabled"
       [showSearch]="nzShowSearch"
@@ -93,7 +93,9 @@ import { NzTransferListComponent } from './transfer-list.component';
     </nz-transfer-list>
   `,
   host: {
-    '[class]': 'hostClassMap'
+    '[class.ant-transfer]': `true`,
+    '[class.ant-transfer-disabled]': `nzDisabled`,
+    '[class.ant-transfer-customize-list]': `nzRenderList`
   },
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -107,7 +109,6 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChildren(NzTransferListComponent)
   private lists!: QueryList<NzTransferListComponent>;
   locale: NzSafeAny = {};
-  hostClassMap = {};
 
   leftFilter = '';
   rightFilter = '';
@@ -123,9 +124,9 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzItemUnit: string;
   @Input() nzItemsUnit: string;
   @Input() nzCanMove: (arg: TransferCanMove) => Observable<TransferItem[]> = (arg: TransferCanMove) => of(arg.list);
-  @Input() nzRenderList: Array<TemplateRef<void> | null> = [null, null];
-  @Input() nzRender: TemplateRef<void>;
-  @Input() nzFooter: TemplateRef<void>;
+  @Input() nzRenderList: Array<TemplateRef<NzSafeAny> | null> | null = null;
+  @Input() nzRender: TemplateRef<NzSafeAny>;
+  @Input() nzFooter: TemplateRef<NzSafeAny>;
   @Input() @InputBoolean() nzShowSearch = false;
   @Input() nzFilterOption: (inputValue: string, item: TransferItem) => boolean;
   @Input() nzSearchPlaceholder: string;
@@ -236,15 +237,6 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService) {}
 
-  private setClassMap(): void {
-    const prefixCls = 'ant-transfer';
-    this.hostClassMap = {
-      [`${prefixCls}`]: true,
-      [`${prefixCls}-disabled`]: this.nzDisabled,
-      [`${prefixCls}-customize-list`]: this.nzRenderList.some(i => !!i)
-    };
-  }
-
   private markForCheckAllList(): void {
     if (!this.lists) {
       return;
@@ -280,11 +272,9 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
       this.locale = this.i18n.getLocaleData('Transfer');
       this.markForCheckAllList();
     });
-    this.setClassMap();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.setClassMap();
     if (changes.nzDataSource) {
       this.splitDataSource();
       this.updateOperationStatus('left');
