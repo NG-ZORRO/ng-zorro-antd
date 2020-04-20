@@ -29,7 +29,7 @@ import { NzIconDirective } from 'ng-zorro-antd/icon';
 import { Subject } from 'rxjs';
 import { filter, startWith, takeUntil } from 'rxjs/operators';
 
-export type NzButtonType = 'primary' | 'dashed' | 'danger' | 'link' | null;
+export type NzButtonType = 'primary' | 'default' | 'dashed' | 'danger' | 'link' | null;
 export type NzButtonShape = 'circle' | 'round' | null;
 export type NzButtonSize = 'large' | 'default' | 'small';
 
