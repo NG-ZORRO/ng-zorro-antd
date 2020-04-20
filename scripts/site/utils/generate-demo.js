@@ -25,9 +25,11 @@ function generateDemoModule(content) {
   const demoMap = content.demoMap;
   let imports = '';
   let declarations = '';
+  let entryComponents = [];
   for (const key in demoMap) {
     const declareComponents = [`NzDemo${componentName(component)}${componentName(key)}Component`];
     const entries = retrieveEntryComponents(demoMap[key] && demoMap[key].ts);
+    entryComponents.push(...entries);
     declareComponents.push(...entries);
     imports += `import { ${declareComponents.join(', ')} } from './${key}';\n`;
     declarations += `\t\t${declareComponents.join(',\n\t')},\n`;
@@ -42,7 +44,11 @@ function generateDemoModule(content) {
     declarations += `\t\tNzPageDemo${componentName(component)}ZhComponent,\n`;
     declarations += `\t\tNzPageDemo${componentName(component)}EnComponent,\n`;
   }
-  return demoModuleTemplate.replace(/{{imports}}/g, imports).replace(/{{declarations}}/g, declarations).replace(/{{component}}/g, componentName(component));
+  return demoModuleTemplate
+    .replace(/{{imports}}/g, imports)
+    .replace(/{{declarations}}/g, declarations)
+    .replace(/{{component}}/g, componentName(component))
+    .replace(/{{entryComponents}}/g, entryComponents.join(',\n'));
 }
 
 function componentName(component) {
@@ -50,7 +56,7 @@ function componentName(component) {
 }
 
 function generateComponentName(component, language) {
-  return `NzDemo${componentName(component)}${capitalizeFirstLetter(language)}Component`
+  return `NzDemo${componentName(component)}${capitalizeFirstLetter(language)}Component`;
 }
 
 function generatePageDemoComponent(content) {
@@ -65,8 +71,8 @@ function generatePageDemoComponent(content) {
     .replace(`nz-page-demo-${component}`, `nz-page-demo-${component}-en`);
   return {
     en: enOutput,
-    zh: zhOutput,
-  }
+    zh: zhOutput
+  };
 }
 
 function generateDemoComponent(content) {
@@ -100,13 +106,19 @@ function generateTemplate(result) {
   const name = result.name;
   const hasPageDemo = !!result.pageDemo;
   return {
-    zh: wrapperAll(generateToc('zh-CN', result.name, result.demoMap), wrapperHeader(titleMap.zh, result.docZh.whenToUse, 'zh', innerMap.zh, hasPageDemo, name) + wrapperAPI(result.docZh.api)),
-    en: wrapperAll(generateToc('en-US', result.name, result.demoMap), wrapperHeader(titleMap.en, result.docEn.whenToUse, 'en', innerMap.en, hasPageDemo, name) + wrapperAPI(result.docEn.api))
-  }
+    zh: wrapperAll(
+      generateToc('zh-CN', result.name, result.demoMap),
+      wrapperHeader(titleMap.zh, result.docZh.whenToUse, 'zh', innerMap.zh, hasPageDemo, name) + wrapperAPI(result.docZh.api)
+    ),
+    en: wrapperAll(
+      generateToc('en-US', result.name, result.demoMap),
+      wrapperHeader(titleMap.en, result.docEn.whenToUse, 'en', innerMap.en, hasPageDemo, name) + wrapperAPI(result.docEn.api)
+    )
+  };
 }
 
 function wrapperAPI(content) {
-  return `<section class="markdown api-container" ngNonBindable>${content}</section>`
+  return `<section class="markdown api-container" ngNonBindable>${content}</section>`;
 }
 
 function wrapperHeader(title, whenToUse, language, example, hasPageDemo, name) {
@@ -119,32 +131,31 @@ function wrapperHeader(title, whenToUse, language, example, hasPageDemo, name) {
 	${hasPageDemo ? `<section class="page-demo"><nz-page-demo-${name}-${language}></nz-page-demo-${name}-${language}></section>` : ''}
 	<h2>
 		<span>${language === 'zh' ? '代码演示' : 'Examples'}</span>
-		<i nz-icon nzType="appstore" class="code-box-expand-trigger" nz-tooltip nzTooltipTitle="${language === 'zh' ? '展开全部代码' : 'Expand All Code'}" (click)="expandAllCode()"></i>
+		<i nz-icon nzType="appstore" class="code-box-expand-trigger" nz-tooltip nzTooltipTitle="${
+      language === 'zh' ? '展开全部代码' : 'Expand All Code'
+    }" (click)="expandAllCode()"></i>
 	</h2>
-</section>${example}`
+</section>${example}`;
   } else {
     return `<section class="markdown">
 	${title}
 	<section class="markdown">
 		${whenToUse}
-	</section></section>`
+	</section></section>`;
   }
-
 }
 
 function wrapperAll(toc, content) {
-  return `<article>${toc}${content}</article>`
+  return `<article>${toc}${content}</article>`;
 }
 
 function generateToc(language, name, demoMap) {
   let linkArray = [];
   for (const key in demoMap) {
-    linkArray.push(
-      {
-        content: `<nz-link nzHref="#components-${name}-demo-${key}" nzTitle="${demoMap[key].meta.title[language]}"></nz-link>`,
-        order  : demoMap[key].meta.order
-      }
-    );
+    linkArray.push({
+      content: `<nz-link nzHref="#components-${name}-demo-${key}" nzTitle="${demoMap[key].meta.title[language]}"></nz-link>`,
+      order: demoMap[key].meta.order
+    });
   }
   linkArray.sort((pre, next) => pre.order - next.order);
   linkArray.push({ content: `<nz-link nzHref="#api" nzTitle="API"></nz-link>` });
@@ -155,7 +166,6 @@ function generateToc(language, name, demoMap) {
         ${links}
     </nz-anchor>
 </nz-affix>`;
-
 }
 
 function generateExample(result) {
@@ -166,9 +176,7 @@ function generateExample(result) {
   const templateUnion = String(fs.readFileSync(path.resolve(__dirname, '../template/example-union.template.html')));
   let demoList = [];
   for (const key in demoMap) {
-    demoList.push(Object.assign(
-      {name: key}, demoMap[key]
-    ))
+    demoList.push(Object.assign({ name: key }, demoMap[key]));
   }
   demoList.sort((pre, next) => pre.meta.order - next.meta.order);
   let firstZhPart = '';
@@ -189,15 +197,22 @@ function generateExample(result) {
     }
   });
   return {
-    zh: (isZhUnion ? templateUnion.replace(/{{content}}/g, zhPart) : templateSplit.replace(/{{first}}/g, firstZhPart).replace(/{{second}}/g, secondZhPart)),
-    en: (isEnUnion ? templateUnion.replace(/{{content}}/g, enPart) : templateSplit.replace(/{{first}}/g, firstEnPart).replace(/{{second}}/g, secondEnPart))
-  }
+    zh: isZhUnion
+      ? templateUnion.replace(/{{content}}/g, zhPart)
+      : templateSplit.replace(/{{first}}/g, firstZhPart).replace(/{{second}}/g, secondZhPart),
+    en: isEnUnion
+      ? templateUnion.replace(/{{content}}/g, enPart)
+      : templateSplit.replace(/{{first}}/g, firstEnPart).replace(/{{second}}/g, secondEnPart)
+  };
 }
 
 function retrieveEntryComponents(plainCode) {
   const matches = (plainCode + '').match(/^\/\*\s*?declarations:\s*([^\n]+?)\*\//) || [];
   if (matches[1]) {
-    return matches[1].split(',').map(className => className.trim()).filter((value, index, self) => value && self.indexOf(value) === index);
+    return matches[1]
+      .split(',')
+      .map(className => className.trim())
+      .filter((value, index, self) => value && self.indexOf(value) === index);
   }
   return [];
 }

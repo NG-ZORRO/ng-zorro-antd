@@ -36,7 +36,7 @@ import { NzTableData } from '../table.types';
   encapsulation: ViewEncapsulation.None,
   template: `
     <div class="ant-table-content">
-      <div *ngIf="scrollY" #tableHeaderElement [style]="headerStyleMap" class="ant-table-header nz-table-hide-scrollbar">
+      <div *ngIf="scrollY" #tableHeaderElement [ngStyle]="headerStyleMap" class="ant-table-header nz-table-hide-scrollbar">
         <table
           nz-table-content
           tableLayout="fixed"
@@ -45,7 +45,7 @@ import { NzTableData } from '../table.types';
           [theadTemplate]="theadTemplate"
         ></table>
       </div>
-      <div #tableBodyElement *ngIf="!virtualTemplate" class="ant-table-body" [style]="bodyStyleMap">
+      <div #tableBodyElement *ngIf="!virtualTemplate" class="ant-table-body" [ngStyle]="bodyStyleMap">
         <table
           nz-table-content
           [scrollX]="scrollX"

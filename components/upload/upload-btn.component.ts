@@ -8,18 +8,7 @@
 
 import { ENTER } from '@angular/cdk/keycodes';
 import { HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Optional,
-  ViewChild,
-  ViewEncapsulation
-} from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, Optional, ViewChild, ViewEncapsulation } from '@angular/core';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable, of, Subscription } from 'rxjs';
@@ -34,26 +23,21 @@ import { UploadFile, UploadXHRArgs, ZipButtonOptions } from './interface';
   host: {
     '[attr.tabindex]': '"0"',
     '[attr.role]': '"button"',
-    '[class]': 'hostClassMap'
+    '[class.ant-upload]': 'true',
+    '[class.ant-upload-disabled]': 'options.disabled',
+    '(click)': 'onClick()',
+    '(keydown)': 'onKeyDown($event)',
+    '(drop)': 'onFileDrop($event)',
+    '(dragover)': 'onFileDrop($event)'
   },
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None
 })
-export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
+export class NzUploadBtnComponent implements OnDestroy {
   reqs: { [key: string]: Subscription } = {};
-  hostClassMap = {};
-  private inited = false;
   private destroy = false;
-
   @ViewChild('file', { static: false }) file: ElementRef;
-
-  // #region fields
-  @Input() classes: {} = {};
   @Input() options: ZipButtonOptions;
-
-  // #endregion
-
-  @HostListener('click')
   onClick(): void {
     if (this.options.disabled || !this.options.openFileDialogOnClick) {
       return;
@@ -61,7 +45,6 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     (this.file.nativeElement as HTMLInputElement).click();
   }
 
-  @HostListener('keydown', ['$event'])
   onKeyDown(e: KeyboardEvent): void {
     if (this.options.disabled) {
       return;
@@ -71,8 +54,6 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  @HostListener('drop', ['$event'])
-  @HostListener('dragover', ['$event'])
   // skip safari bug
   onFileDrop(e: DragEvent): void {
     if (this.options.disabled || e.type === 'dragover') {
@@ -151,9 +132,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
 
   private attachUid(file: UploadFile): UploadFile {
     if (!file.uid) {
-      file.uid = Math.random()
-        .toString(36)
-        .substring(2);
+      file.uid = Math.random().toString(36).substring(2);
     }
     return file;
   }
@@ -359,34 +338,9 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  // #region styles
-
-  private prefixCls = 'ant-upload';
-
-  private setClassMap(): void {
-    this.hostClassMap = {
-      [this.prefixCls]: true,
-      [`${this.prefixCls}-disabled`]: this.options.disabled,
-      ...this.classes
-    };
-  }
-
-  // #endregion
-
   constructor(@Optional() private http: HttpClient) {
     if (!http) {
       throw new Error(`Not found 'HttpClient', You can import 'HttpClientModule' in your root module.`);
-    }
-  }
-
-  ngOnInit(): void {
-    this.inited = true;
-    this.setClassMap();
-  }
-
-  ngOnChanges(): void {
-    if (this.inited) {
-      this.setClassMap();
     }
   }
 

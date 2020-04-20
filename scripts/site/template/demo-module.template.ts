@@ -16,7 +16,10 @@ import { moduleList } from './module';
   ],
   declarations: [
 {{declarations}}
-  ]
+  ],
+entryComponents: [
+  {{entryComponents}}
+]
 })
 export class NzDemo{{component}}Module {
 

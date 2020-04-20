@@ -36,7 +36,7 @@ import { ModalOptions } from './modal-types';
       #modalElement
       role="document"
       class="ant-modal"
-      [class]="config.nzClassName"
+      [ngClass]="config.nzClassName"
       [ngStyle]="config.nzStyle"
       [style.width]="config?.nzWidth | nzToCssUnit"
     >
