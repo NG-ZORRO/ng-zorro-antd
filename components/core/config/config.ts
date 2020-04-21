@@ -14,6 +14,7 @@ import { NzSafeAny, NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType } 
 
 export interface NzConfig {
   affix?: AffixConfig;
+  select?: SelectConfig;
   alert?: AlertConfig;
   anchor?: AnchorConfig;
   avatar?: AvatarConfig;
@@ -47,6 +48,10 @@ export interface NzConfig {
   tree?: TreeConfig;
   treeSelect?: TreeSelectConfig;
   typography?: TypographyConfig;
+}
+
+export interface SelectConfig {
+  nzSuffixIcon?: TemplateRef<NzSafeAny> | string | null;
 }
 
 export interface AffixConfig {

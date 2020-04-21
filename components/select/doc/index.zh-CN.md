@@ -26,8 +26,8 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 
 ### nz-select
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
+| 参数 | 说明 | 类型 | 默认值 | 全局配置 |
+| --- | --- | --- | --- | --- |
 | `[ngModel]` | 当前选中的 nz-option 的 nzValue 值，可双向绑定，当 `nzMode` 为 `multiple` 或 `tags` 时，ngModel 为数组 | `any \| any[]` | - |
 | `[compareWith]` | 与 [SelectControlValueAccessor](https://angular.io/api/forms/SelectControlValueAccessor#caveat-option-selection) 相同 | `(o1: any, o2: any) => boolean` | `(o1: any, o2: any) => o1===o2` |
 | `[nzAutoClearSearchValue]` | 是否在选中项后清空搜索框，只在 `mode` 为 `multiple` 或 `tags` 时有效。 | boolean | `true` |
@@ -48,20 +48,20 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzShowArrow]` | 是否显示下拉小箭头 | `boolean` | `true` |
 | `[nzShowSearch]` | 使单选模式可搜索 | `boolean` | `false` |
 | `[nzSize]` | 选择框大小 | `'large' \| 'small' \| 'default'` | `'default'` |
-| `[nzSuffixIcon]` | 自定义的选择框后缀图标 | `TemplateRef<void>` | - |
-| `[nzRemoveIcon]` | 自定义的多选框清除图标 | `TemplateRef<void>` | - |
-| `[nzClearIcon]` | 自定义的多选框清空图标 | `TemplateRef<void>` | - |
-| `[nzMenuItemSelectedIcon]` | 自定义当前选中的条目图标 | `TemplateRef<void>` | - |
+| `[nzSuffixIcon]` | 自定义的选择框后缀图标 | `TemplateRef<any> \| string` | - | ✅ |
+| `[nzRemoveIcon]` | 自定义的多选框清除图标 | `TemplateRef<any>` | - |
+| `[nzClearIcon]` | 自定义的多选框清空图标 | `TemplateRef<any>` | - |
+| `[nzMenuItemSelectedIcon]` | 自定义当前选中的条目图标 | `TemplateRef<any>` | - |
 | `[nzTokenSeparators]` | 在 tags 和 multiple 模式下自动分词的分隔符 | `string[]` | `[]` |
 | `[nzLoading]` | 加载中状态 | `boolean` | `false` |
 | `[nzMaxTagCount]` | 最多显示多少个 tag | `number` | - |
 | `[nzMaxTagPlaceholder]` | 隐藏 tag 时显示的内容 | `TemplateRef<{ $implicit: any[] }>` | - |
 | `(ngModelChange)` | 选中的 nz-option 发生变化时，调用此函数 | `EventEmitter<any[]>` | - |
 | `(nzOpenChange)` | 下拉菜单打开状态变化回调 | `EventEmitter<boolean>` | - |
-| `(nzScrollToBottom)` | 下拉列表滚动到底部的回调 | `EventEmitter<void>` | - |
+| `(nzScrollToBottom)` | 下拉列表滚动到底部的回调 | `EventEmitter<any>` | - |
 | `(nzOnSearch)` | 文本框值变化时回调 | `EventEmitter<string>` | - |
-| `(nzFocus)` | focus时回调 | `EventEmitter<void>` | - |
-| `(nzBlur)` | blur时回调 | `EventEmitter<void>` | - |
+| `(nzFocus)` | focus时回调 | `EventEmitter<any>` | - |
+| `(nzBlur)` | blur时回调 | `EventEmitter<any>` | - |
 
 ### nz-option
 
