@@ -82,11 +82,11 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
    * This true title that would be used in other parts on this component.
    */
   protected get title(): NzTSType | null {
-    return this.specificTitle || this.directiveNameTitle || this.nzTitle;
+    return this.specificTitle || this.directiveNameTitle || this.nzTitle || null;
   }
 
   protected get content(): NzTSType | null {
-    return this.specificContent || this.directiveNameContent || this.nzContent;
+    return this.specificContent || this.directiveNameContent || this.nzContent || null;
   }
 
   protected get placement(): string {
