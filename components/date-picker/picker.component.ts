@@ -107,7 +107,7 @@ import { PREFIX_CLASS } from './util';
 
     <!-- Right operator icons -->
     <ng-template #tplRightRest>
-      <div class="{{ prefixCls }}-active-bar" [style]="activeBarStyle"></div>
+      <div class="{{ prefixCls }}-active-bar" [ngStyle]="activeBarStyle"></div>
       <span *ngIf="showClear()" class="{{ prefixCls }}-clear" (click)="onClickClear($event)">
         <i nz-icon nzType="close-circle" nzTheme="fill"></i>
       </span>

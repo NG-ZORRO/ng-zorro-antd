@@ -435,7 +435,6 @@ describe('NzMonthPickerComponent', () => {
         [nzSize]="nzSize"
         [nzStyle]="nzStyle"
         (nzOnOpenChange)="nzOnOpenChange($event)"
-        [nzDefaultValue]="nzDefaultValue"
         [ngModel]="nzValue"
         (ngModelChange)="nzOnChange($event)"
         [nzRenderExtraFooter]="nzRenderExtraFooter"
@@ -462,7 +461,6 @@ describe('NzMonthPickerComponent', () => {
 class NzTestMonthPickerComponent {
   useSuite: 1 | 2 | 3 | 4;
   @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter: TemplateRef<void>;
-  nzDefaultValue: Date = new Date();
   // --- Suite 1
   nzAllowClear: boolean;
   nzAutoFocus: boolean;

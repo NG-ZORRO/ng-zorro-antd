@@ -49,7 +49,7 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
   template: `
     <ng-container *ngIf="isRange; else singlePanel">
       <div class="{{ prefixCls }}-range-wrapper {{ prefixCls }}-date-range-wrapper">
-        <div class="{{ prefixCls }}-range-arrow" [style]="datePickerService?.arrowPositionStyle"></div>
+        <div class="{{ prefixCls }}-range-arrow" [ngStyle]="datePickerService?.arrowPositionStyle"></div>
         <div class="{{ prefixCls }}-panel-container">
           <div class="{{ prefixCls }}-panels">
             <ng-container *ngTemplateOutlet="tplRangePart; context: { partType: 'left' }"></ng-container>
