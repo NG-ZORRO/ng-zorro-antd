@@ -8,6 +8,7 @@
 
 import {
   AfterContentInit,
+  ChangeDetectorRef,
   ContentChildren,
   Directive,
   Inject,
@@ -91,6 +92,7 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
       if (this.nzSelected !== hasActiveLinks) {
         this.nzSelected = hasActiveLinks;
         this.setSelectedState(this.nzSelected);
+        this.cdr.markForCheck();
       }
     });
   }
@@ -111,6 +113,7 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
 
   constructor(
     private nzMenuService: MenuService,
+    private cdr: ChangeDetectorRef,
     @Optional() private nzSubmenuService: NzSubmenuService,
     @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean,
     @Optional() private routerLink?: RouterLink,
