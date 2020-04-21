@@ -119,7 +119,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       [cdkConnectedOverlayOpen]="nzOpen"
     >
       <nz-option-container
-        [style]="nzDropdownStyle"
+        [ngStyle]="nzDropdownStyle"
         [matchWidth]="nzDropdownMatchSelectWidth"
         [class.ant-select-dropdown-placement-bottomLeft]="dropDownPosition === 'bottom'"
         [class.ant-select-dropdown-placement-topLeft]="dropDownPosition === 'top'"

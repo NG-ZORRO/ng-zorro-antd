@@ -41,7 +41,7 @@ import { NzModalService } from './modal.service';
   ],
   exports: [NzModalComponent, NzModalFooterDirective],
   providers: [NzModalService],
-  entryComponents: [NzModalComponent],
+  entryComponents: [NzModalContainerComponent, NzModalConfirmContainerComponent],
   declarations: [
     NzModalComponent,
     NzModalFooterDirective,

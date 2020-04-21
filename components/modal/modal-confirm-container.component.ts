@@ -98,8 +98,7 @@ import { ModalOptions } from './modal-types';
   host: {
     tabindex: '-1',
     role: 'dialog',
-    class: 'ant-modal-wrap',
-    '[class]': 'config.nzWrapClassName',
+    '[class]': 'config.nzWrapClassName ? "ant-modal-wrap " + config.nzWrapClassName : "ant-modal-wrap"',
     '[style.zIndex]': 'config.nzZIndex',
     '[@.disabled]': 'config.nzNoAnimation',
     '[@modalContainer]': 'state',

@@ -51,7 +51,7 @@ export class NzSkeletonElementButtonComponent {
       [class.ant-skeleton-avatar-circle]="nzShape === 'circle'"
       [class.ant-skeleton-avatar-lg]="nzSize === 'large'"
       [class.ant-skeleton-avatar-sm]="nzSize === 'small'"
-      [style]="styleMap"
+      [ngStyle]="styleMap"
     >
     </span>
   `
