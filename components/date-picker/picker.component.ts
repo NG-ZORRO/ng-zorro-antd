@@ -31,6 +31,7 @@ import {
   Output,
   QueryList,
   SimpleChanges,
+  TemplateRef,
   ViewChild,
   ViewChildren,
   ViewEncapsulation
@@ -111,7 +112,9 @@ import { PREFIX_CLASS } from './util';
         <i nz-icon nzType="close-circle" nzTheme="fill"></i>
       </span>
       <span class="{{ prefixCls }}-suffix">
-        <i nz-icon nzType="calendar"></i>
+        <ng-container *nzStringTemplateOutlet="suffixIcon">
+          <i nz-icon [nzType]="suffixIcon"></i>
+        </ng-container>
       </span>
     </ng-template>
 
@@ -166,6 +169,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Input() separator: string;
   @Input() popupStyle: object;
   @Input() dropdownClassName: string;
+  @Input() suffixIcon: string | TemplateRef<NzSafeAny>;
 
   @Output() readonly focusChange = new EventEmitter<boolean>();
   @Output() readonly valueChange = new EventEmitter<CandyDate | CandyDate[] | null>();

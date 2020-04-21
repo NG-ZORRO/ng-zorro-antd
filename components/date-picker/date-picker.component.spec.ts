@@ -382,6 +382,12 @@ describe('NzDatePickerComponent', () => {
       expect(queryFromOverlay('.ant-picker-header-year-btn').textContent!.indexOf('2015') > -1).toBeTruthy();
       expect(queryFromOverlay('.ant-picker-header-month-btn').textContent!.indexOf('9') > -1).toBeTruthy();
     }));
+
+    it('should support custom suffixIcon', fakeAsync(() => {
+      fixtureInstance.nzSuffixIcon = 'clock-circle';
+      fixture.detectChanges();
+      expect(debugElement.query(By.css(`.anticon-clock-circle`))).toBeDefined();
+    }));
   });
 
   describe('panel switch and move forward/afterward', () => {
@@ -969,6 +975,7 @@ describe('date-fns testing', () => {
         (nzOnCalendarChange)="nzOnCalendarChange($event)"
         [nzShowTime]="nzShowTime"
         (nzOnOk)="nzOnOk($event)"
+        [nzSuffixIcon]="nzSuffixIcon"
       ></nz-date-picker>
       <ng-template #tplDateRender let-current>
         <div [class.test-first-day]="current.getDate() === 1">{{ current.getDate() }}</div>
@@ -1020,6 +1027,7 @@ class NzTestDatePickerComponent {
   nzRenderExtraFooter: string | (() => TemplateRef<void> | string);
   nzShowToday = false;
   nzMode: string;
+  nzSuffixIcon: string;
 
   // nzRanges;
   nzOnPanelChange(): void {}
