@@ -35,6 +35,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
@@ -52,6 +53,8 @@ const defaultFilterOption: NzFilterOptionType = (searchValue: string, item: NzSe
     return false;
   }
 };
+
+const NZ_CONFIG_COMPONENT_NAME = 'select';
 
 export type NzSelectSizeType = 'large' | 'default' | 'small';
 
@@ -176,7 +179,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @Input() nzMaxTagCount = Infinity;
   @Input() nzDropdownRender: TemplateRef<NzSafeAny> | null = null;
   @Input() nzCustomTemplate: TemplateRef<{ $implicit: NzSelectItemInterface }> | null = null;
-  @Input() nzSuffixIcon: TemplateRef<NzSafeAny> | null = null;
+  @Input()
+  @WithConfig<TemplateRef<NzSafeAny> | string | null>(NZ_CONFIG_COMPONENT_NAME, null)
+  nzSuffixIcon: TemplateRef<NzSafeAny> | string | null;
   @Input() nzClearIcon: TemplateRef<NzSafeAny> | null = null;
   @Input() nzRemoveIcon: TemplateRef<NzSafeAny> | null = null;
   @Input() nzMenuItemSelectedIcon: TemplateRef<NzSafeAny> | null = null;
@@ -438,6 +443,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   constructor(
+    public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
     private platform: Platform,
