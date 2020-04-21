@@ -38,20 +38,21 @@ There are four kinds of picker:
 
 The following APIs are shared by nz-date-picker, nz-month-picker, nz-range-picker, nz-week-picker.
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| `[nzAllowClear]` | Whether to show clear button | `boolean` | `true` |
-| `[nzAutoFocus]` | get focus when component mounted | `boolean` | `false` |
-| `[nzDateRender]` | custom rendering function for date cells (Not support by month-picker/year-picker) | `TemplateRef<Date> \| string \| ((d: Date) => TemplateRef<Date> \| string)` | - |
-| `[nzDisabled]` | determine whether the nz-date-picker is disabled | `boolean` | `false` |
-| `[nzDisabledDate]` | specify the date that cannot be selected | `(current: Date) => boolean` | - |
-| `[nzLocale]` | localization configuration | `object` | [default](https://github.com/ant-design/ant-design/blob/master/components/date-picker/locale/example.json) |
-| `[nzOpen]` | open state of picker | `boolean` | - |
-| `[nzPopupStyle]` | to customize the style of the popup calendar | `object` | `{}` |
-| `[nzDropdownClassName]` | to customize the className of the popup calendar  | `string` | - |
-| `[nzSize]` | determine the size of the input box, the height of `large` and `small`, are 40px and 24px respectively, while default size is 32px | `'large' \| 'small'` | - |
-| `[nzDefaultPickerValue]` | default picker date | `Date` \| `Date[]` | - |
-| `(nzOnOpenChange)` | a callback emitter, can be executed whether the popup calendar is popped up or closed | `EventEmitter<boolean>` | - |
+| Property | Description | Type | Default | Global Config |
+| -------- | ----------- | ---- | ------- | - |
+| `[nzAllowClear]` | Whether to show clear button | `boolean` | `true` | - |
+| `[nzAutoFocus]` | get focus when component mounted | `boolean` | `false` | - |
+| `[nzDateRender]` | custom rendering function for date cells (Not support by month-picker/year-picker) | - |`TemplateRef<Date> \| string \| ((d: Date) => TemplateRef<Date> \| string)` | - | - |
+| `[nzDisabled]` | determine whether the nz-date-picker is disabled | `boolean` | `false` | - |
+| `[nzDisabledDate]` | specify the date that cannot be selected | `(current: Date) => boolean` | - | - |
+| `[nzLocale]` | localization configuration | `object` | [default](https://github.com/ant-design/ant-design/blob/master/components/date-picker/locale/example.json) | - |
+| `[nzOpen]` | open state of picker | `boolean` | - | - |
+| `[nzPopupStyle]` | to customize the style of the popup calendar | `object` | `{}` | - |
+| `[nzDropdownClassName]` | to customize the className of the popup calendar  | `string` | - | - |
+| `[nzSize]` | determine the size of the input box, the height of `large` and `small`, are 40px and 24px respectively, while default size is 32px | `'large' \| 'small'` | - | - |
+| `[nzDefaultPickerValue]` | default picker date | `Date` \| `Date[]` | - | - |
+| `[nzSuffixIcon]` | the custom suffix icon | `string` \| `TemplateRef` | - | ✅ |
+| `(nzOnOpenChange)` | a callback emitter, can be executed whether the popup calendar is popped up or closed | `EventEmitter<boolean>` | - | - |
 
 ### nz-date-picker
 
