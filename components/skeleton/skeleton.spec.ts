@@ -191,9 +191,7 @@ describe('skeleton element', () => {
 });
 
 @Component({
-  template: `
-    <nz-skeleton [nzActive]="nzActive" [nzAvatar]="nzAvatar" [nzTitle]="nzTitle" [nzParagraph]="nzParagraph"> </nz-skeleton>
-  `
+  template: ` <nz-skeleton [nzActive]="nzActive" [nzAvatar]="nzAvatar" [nzTitle]="nzTitle" [nzParagraph]="nzParagraph"> </nz-skeleton> `
 })
 export class NzTestSkeletonComponent {
   nzActive: boolean;
@@ -209,8 +207,7 @@ export class NzTestSkeletonComponent {
       </nz-skeleton-element>
       <nz-skeleton-element *ngSwitchCase="2" nzType="button" [nzActive]="nzActive" [nzSize]="nzSize" [nzShape]="nzShape">
       </nz-skeleton-element>
-      <nz-skeleton-element *ngSwitchCase="3" nzType="input" [nzActive]="nzActive" [nzSize]="nzSize" [nzShape]="nzShape">
-      </nz-skeleton-element>
+      <nz-skeleton-element *ngSwitchCase="3" nzType="input" [nzActive]="nzActive" [nzSize]="nzSize"> </nz-skeleton-element>
     </ng-container>
   `
 })
