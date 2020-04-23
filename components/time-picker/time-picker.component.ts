@@ -30,7 +30,7 @@ import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { InputBoolean, isNil } from 'ng-zorro-antd/core/util';
 
 const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
 
@@ -254,12 +254,14 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     this.updateAutoFocus();
   }
 
-  writeValue(time: Date | null): void {
-    if (time instanceof Date || time === null) {
+  writeValue(time: Date | null | undefined): void {
+    if (time instanceof Date) {
       this.value = time;
+    } else if (isNil(time)) {
+      this.value = null;
     } else {
-      warn('Non-Date type is not recommended for time-picker, use "Date" type');
-      this.value = time ? new Date(time) : null;
+      warn('Non-Date type is not recommended for time-picker, use "Date" type.');
+      this.value = new Date(time);
     }
     this.cdr.markForCheck();
   }
