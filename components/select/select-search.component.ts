@@ -35,7 +35,6 @@ import {
       [attr.autofocus]="autofocus ? 'autofocus' : null"
       [disabled]="disabled"
       [style.opacity]="showInput ? null : 0"
-      [readOnly]="!showInput"
       (ngModelChange)="onValueChange($event)"
       (compositionstart)="setCompositionState(true)"
       (compositionend)="setCompositionState(false)"
@@ -97,9 +96,16 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     const inputDOM = this.inputElement.nativeElement;
-    const { focusTrigger } = changes;
+    const { focusTrigger, showInput } = changes;
     if (focusTrigger && focusTrigger.currentValue === true && focusTrigger.previousValue === false) {
       inputDOM.focus();
+    }
+    if (showInput) {
+      if (this.showInput) {
+        this.renderer.removeAttribute(inputDOM, 'readonly');
+      } else {
+        this.renderer.setAttribute(inputDOM, 'readonly', 'readonly');
+      }
     }
   }
 
