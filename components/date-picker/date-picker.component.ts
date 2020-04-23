@@ -52,13 +52,56 @@ const NZ_CONFIG_COMPONENT_NAME = 'datePicker';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'nz-date-picker,nz-week-picker,nz-month-picker,nz-year-picker,nz-range-picker',
   exportAs: 'nzDatePicker',
-  templateUrl: './date-picker.component.html',
+  template: `
+    <div
+      nz-picker
+      [isRange]="isRange"
+      [open]="nzOpen"
+      [separator]="nzSeparator"
+      [disabled]="nzDisabled"
+      [format]="nzFormat"
+      [allowClear]="nzAllowClear"
+      [autoFocus]="nzAutoFocus"
+      [placeholder]="nzPlaceHolder"
+      [ngClass]="nzClassName"
+      style="display: inherit; align-items: center; width: 100%;"
+      [ngStyle]="nzStyle"
+      [dropdownClassName]="nzDropdownClassName"
+      [popupStyle]="nzPopupStyle"
+      [noAnimation]="noAnimation?.nzNoAnimation"
+      [suffixIcon]="nzSuffixIcon"
+      (openChange)="onOpenChange($event)"
+      (focusChange)="onFocusChange($event)"
+    >
+      <date-range-popup
+        *ngIf="realOpenState"
+        [isRange]="isRange"
+        [defaultPickerValue]="nzDefaultPickerValue"
+        [showWeek]="showWeek"
+        [panelMode]="nzMode"
+        (panelModeChange)="onPanelModeChange($event)"
+        (calendarChange)="onCalendarChange($event)"
+        [locale]="nzLocale?.lang"
+        [showToday]="realShowToday"
+        [showTime]="nzShowTime"
+        [format]="nzFormat"
+        [dateRender]="nzDateRender"
+        [disabledDate]="nzDisabledDate"
+        [disabledTime]="nzDisabledTime"
+        [placeholder]="nzPlaceHolder"
+        [extraFooter]="extraFooter"
+        [ranges]="nzRanges"
+        (resultOk)="onResultOk()"
+      ></date-range-popup>
+    </div>
+  `,
   host: {
     '[class.ant-picker]': `true`,
     '[class.ant-picker-range]': `isRange`,
     '[class.ant-picker-large]': `nzSize === 'large'`,
     '[class.ant-picker-small]': `nzSize === 'small'`,
-    '[class.ant-picker-disabled]': `nzDisabled`
+    '[class.ant-picker-disabled]': `nzDisabled`,
+    '(click)': 'picker.onClickInputBox($event)'
   },
   providers: [
     DatePickerService,
