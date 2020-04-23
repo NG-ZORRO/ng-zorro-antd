@@ -62,7 +62,6 @@ import { PREFIX_CLASS } from './util';
         [(ngModel)]="inputValue"
         placeholder="{{ getPlaceholder() }}"
         [size]="inputSize"
-        (click)="onClickInputBox()"
         (focus)="onFocus()"
         (blur)="onBlur()"
         (input)="onInputKeyup($event)"
@@ -95,7 +94,7 @@ import { PREFIX_CLASS } from './util';
         #rangePickerInput
         [disabled]="disabled"
         [size]="inputSize"
-        (click)="onClickInputBox(partType)"
+        (click)="onClickInputBox($event, partType)"
         (blur)="onBlur()"
         (input)="onInputKeyup($event, false)"
         (focus)="onFocus(partType)"
@@ -350,7 +349,9 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     return !this.disabled && !this.isEmptyValue(this.datePickerService.value) && this.allowClear;
   }
 
-  onClickInputBox(partType?: RangePartType): void {
+  onClickInputBox(event: MouseEvent, partType?: RangePartType): void {
+    event.stopPropagation();
+
     if (!this.disabled && !this.isOpenHandledByUser()) {
       this.showOverlay();
     }

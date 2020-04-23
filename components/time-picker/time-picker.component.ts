@@ -49,7 +49,6 @@ const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
         [placeholder]="nzPlaceHolder || ('TimePicker.placeholder' | nzI18n)"
         [(ngModel)]="value"
         [disabled]="nzDisabled"
-        (click)="open()"
         (focus)="onFocus(true)"
         (blur)="onFocus(false)"
       />
@@ -58,7 +57,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
           <i nz-icon [nzType]="nzSuffixIcon"></i>
         </ng-container>
       </span>
-      <span *ngIf="nzAllowEmpty && value" class="ant-picker-clear" (click)="onClickClearBtn()">
+      <span *ngIf="nzAllowEmpty && value" class="ant-picker-clear" (click)="onClickClearBtn($event)">
         <i nz-icon nzType="close-circle" nzTheme="fill" [attr.aria-label]="nzClearText" [attr.title]="nzClearText"></i>
       </span>
     </div>
@@ -108,7 +107,8 @@ const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
     '[class.ant-picker-large]': `nzSize === 'large'`,
     '[class.ant-picker-small]': `nzSize === 'small'`,
     '[class.ant-picker-disabled]': `nzDisabled`,
-    '[class.ant-picker-focused]': `focused`
+    '[class.ant-picker-focused]': `focused`,
+    '(click)': 'open()'
   },
   animations: [slideMotion],
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }]
@@ -198,7 +198,8 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     }
   }
 
-  onClickClearBtn(): void {
+  onClickClearBtn(event: MouseEvent): void {
+    event.stopPropagation();
     this.setValue(null);
   }
 
