@@ -15,6 +15,7 @@ import { isNotNil } from 'ng-zorro-antd/core/util';
 import { defer, Observable, Subject } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
+import { MODAL_MASK_CLASS_NAME } from './modal-config';
 import { NzModalConfirmContainerComponent } from './modal-confirm-container.component';
 import { BaseModalContainer } from './modal-container';
 import { NzModalContainerComponent } from './modal-container.component';
@@ -22,7 +23,6 @@ import { NzModalRef } from './modal-ref';
 import { ConfirmType, ModalOptions } from './modal-types';
 import { applyConfigDefaults, setContentInstanceParams } from './utils';
 
-const MODAL_MASK_CLASS_NAME = 'ant-modal-mask';
 type ContentType<T> = ComponentType<T> | TemplateRef<T> | string;
 
 @Injectable()

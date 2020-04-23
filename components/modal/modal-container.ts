@@ -13,6 +13,7 @@ import { BasePortalOutlet, CdkPortalOutlet, ComponentPortal, TemplatePortal } fr
 import { ChangeDetectorRef, ComponentRef, ElementRef, EmbeddedViewRef, EventEmitter, NgZone, Renderer2 } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { getElementOffset } from 'ng-zorro-antd/core/util';
+import { FADE_CLASS_NAME_MAP, MODAL_MASK_CLASS_NAME, ZOOM_CLASS_NAME_MAP } from './modal-config';
 
 import { NzModalRef } from './modal-ref';
 import { ModalOptions } from './modal-types';
@@ -20,20 +21,6 @@ import { ModalOptions } from './modal-types';
 export function throwNzModalContentAlreadyAttachedError(): never {
   throw Error('Attempting to attach modal content after content is already attached');
 }
-
-const ZOOM_CLASS_NAME_MAP = {
-  enter: 'zoom-enter',
-  enterActive: 'zoom-enter-active',
-  leave: 'zoom-leave',
-  leaveActive: 'zoom-leave-active'
-};
-
-const FADE_CLASS_NAME_MAP = {
-  enter: 'fade-enter',
-  enterActive: 'fade-enter-active',
-  leave: 'fade-leave',
-  leaveActive: 'fade-leave-active'
-};
 
 export class BaseModalContainer extends BasePortalOutlet {
   portalOutlet: CdkPortalOutlet;
@@ -187,12 +174,16 @@ export class BaseModalContainer extends BasePortalOutlet {
   }
 
   private setExitAnimationClass(): void {
-    if (this.animationDisabled()) {
-      return;
-    }
     this.zone.runOutsideAngular(() => {
       const modalElement = this.modalElementRef.nativeElement;
       const backdropElement = this.overlayRef.backdropElement;
+
+      if (this.animationDisabled()) {
+        // https://github.com/angular/components/issues/18645
+        this.render.removeClass(backdropElement, MODAL_MASK_CLASS_NAME);
+        return;
+      }
+
       this.render.addClass(modalElement, ZOOM_CLASS_NAME_MAP.leave);
       this.render.addClass(modalElement, ZOOM_CLASS_NAME_MAP.leaveActive);
       this.render.addClass(backdropElement, FADE_CLASS_NAME_MAP.leave);
@@ -269,6 +260,9 @@ export class BaseModalContainer extends BasePortalOutlet {
   }
 
   onAnimationDone(event: AnimationEvent): void {
+    if (event.toState === 'void') {
+      return;
+    }
     if (event.toState === 'enter') {
       this.setContainer();
       this.trapFocus();
