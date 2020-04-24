@@ -139,7 +139,6 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
         [mode]="nzMode"
         (keydown)="onKeyDown($event)"
         (itemClick)="onItemClick($event)"
-        (itemHover)="onItemHover($event)"
         (scrollToBottom)="nzScrollToBottom.emit()"
       ></nz-option-container>
     </ng-template>
@@ -263,10 +262,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     const listOfSelectedValue = this.listOfValue.filter(v => !this.compareWith(v, item.nzValue));
     this.updateListOfValue(listOfSelectedValue);
     this.clearInput();
-  }
-
-  onItemHover(value: NzSafeAny): void {
-    this.activatedValue = value;
   }
 
   updateListOfContainerItem(): void {
