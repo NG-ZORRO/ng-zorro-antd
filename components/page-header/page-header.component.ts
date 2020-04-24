@@ -35,26 +35,29 @@ const NZ_CONFIG_COMPONENT_NAME = 'pageHeader';
     <ng-content select="nz-breadcrumb[nz-page-header-breadcrumb]"></ng-content>
 
     <div class="ant-page-header-heading">
-      <!--back-->
-      <div *ngIf="nzBackIcon !== null" (click)="onBack()" class="ant-page-header-back">
-        <div role="button" tabindex="0" class="ant-page-header-back-button">
-          <i *ngIf="isStringBackIcon" nz-icon [nzType]="nzBackIcon ? nzBackIcon : 'arrow-left'" nzTheme="outline"></i>
-          <ng-container *ngIf="isTemplateRefBackIcon" [ngTemplateOutlet]="nzBackIcon"></ng-container>
+      <div class="ant-page-header-heading-left">
+        <!--back-->
+        <div *ngIf="nzBackIcon !== null" (click)="onBack()" class="ant-page-header-back">
+          <div role="button" tabindex="0" class="ant-page-header-back-button">
+            <i *ngIf="isStringBackIcon" nz-icon [nzType]="nzBackIcon ? nzBackIcon : 'arrow-left'" nzTheme="outline"></i>
+            <ng-container *ngIf="isTemplateRefBackIcon" [ngTemplateOutlet]="nzBackIcon"></ng-container>
+          </div>
         </div>
+        <!--avatar-->
+        <ng-content select="nz-avatar[nz-page-header-avatar]"></ng-content>
+        <!--title-->
+        <span class="ant-page-header-heading-title" *ngIf="nzTitle">
+          <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+        </span>
+        <ng-content *ngIf="!nzTitle" select="nz-page-header-title, [nz-page-header-title]"></ng-content>
+        <!--subtitle-->
+        <span class="ant-page-header-heading-sub-title" *ngIf="nzSubtitle">
+          <ng-container *nzStringTemplateOutlet="nzSubtitle">{{ nzSubtitle }}</ng-container>
+        </span>
+        <ng-content *ngIf="!nzSubtitle" select="nz-page-header-subtitle, [nz-page-header-subtitle]"></ng-content>
+        <ng-content select="nz-page-header-tags, [nz-page-header-tags]"></ng-content>
       </div>
-      <!--avatar-->
-      <ng-content select="nz-avatar[nz-page-header-avatar]"></ng-content>
-      <!--title-->
-      <span class="ant-page-header-heading-title" *ngIf="nzTitle">
-        <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
-      </span>
-      <ng-content *ngIf="!nzTitle" select="nz-page-header-title, [nz-page-header-title]"></ng-content>
-      <!--subtitle-->
-      <span class="ant-page-header-heading-sub-title" *ngIf="nzSubtitle">
-        <ng-container *nzStringTemplateOutlet="nzSubtitle">{{ nzSubtitle }}</ng-container>
-      </span>
-      <ng-content *ngIf="!nzSubtitle" select="nz-page-header-subtitle, [nz-page-header-subtitle]"></ng-content>
-      <ng-content select="nz-page-header-tags, [nz-page-header-tags]"></ng-content>
+
       <ng-content select="nz-page-header-extra, [nz-page-header-extra]"></ng-content>
     </div>
 
