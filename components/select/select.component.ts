@@ -123,6 +123,8 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
     >
       <nz-option-container
         [ngStyle]="nzDropdownStyle"
+        [itemSize]="nzOptionHeightPx"
+        [maxItemLength]="nzOptionOverflowSize"
         [matchWidth]="nzDropdownMatchSelectWidth"
         [class.ant-select-dropdown-placement-bottomLeft]="dropDownPosition === 'bottom'"
         [class.ant-select-dropdown-placement-topLeft]="dropDownPosition === 'top'"
@@ -170,6 +172,8 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   static ngAcceptInputType_nzOpen: BooleanInput;
 
   @Input() nzSize: NzSelectSizeType = 'default';
+  @Input() nzOptionHeightPx = 32;
+  @Input() nzOptionOverflowSize = 8;
   @Input() nzDropdownClassName: string | null = null;
   @Input() nzDropdownMatchSelectWidth = true;
   @Input() nzDropdownStyle: { [key: string]: string } | null = null;
