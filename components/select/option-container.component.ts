@@ -81,13 +81,13 @@ export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
   @Input() compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean;
   @Input() mode: NzSelectModeType = 'default';
   @Input() matchWidth = true;
+  @Input() itemSize = 32;
+  @Input() maxItemLength = 8;
   @Input() listOfContainerItem: NzSelectItemInterface[] = [];
   @Output() readonly itemClick = new EventEmitter<NzSafeAny>();
   @Output() readonly scrollToBottom = new EventEmitter<void>();
   @ViewChild(CdkVirtualScrollViewport, { static: true }) cdkVirtualScrollViewport: CdkVirtualScrollViewport;
   private scrolledIndex = 0;
-  readonly itemSize = 32;
-  readonly maxItemLength = 8;
 
   onItemClick(value: NzSafeAny): void {
     this.itemClick.emit(value);
