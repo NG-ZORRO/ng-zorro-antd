@@ -11,7 +11,7 @@ import { NotificationConfig, NzConfigService } from 'ng-zorro-antd/core/config';
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { toCssPixel } from 'ng-zorro-antd/core/util';
 
-import { NzMessageDataOptions, NzMNContainerComponent } from 'ng-zorro-antd/message';
+import { NzMNContainerComponent } from 'ng-zorro-antd/message';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
