@@ -8,6 +8,7 @@
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
@@ -71,7 +72,7 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
     '[class.ant-select-dropdown]': 'true'
   }
 })
-export class NzOptionContainerComponent implements OnChanges {
+export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
   @Input() notFoundContent: string | TemplateRef<NzSafeAny> | undefined = undefined;
   @Input() menuItemSelectedIcon: TemplateRef<NzSafeAny> | null = null;
   @Input() dropdownRender: TemplateRef<NzSafeAny> | null = null;
@@ -82,7 +83,6 @@ export class NzOptionContainerComponent implements OnChanges {
   @Input() matchWidth = true;
   @Input() listOfContainerItem: NzSelectItemInterface[] = [];
   @Output() readonly itemClick = new EventEmitter<NzSafeAny>();
-  @Output() readonly itemHover = new EventEmitter<NzSafeAny>();
   @Output() readonly scrollToBottom = new EventEmitter<void>();
   @ViewChild(CdkVirtualScrollViewport, { static: true }) cdkVirtualScrollViewport: CdkVirtualScrollViewport;
   private scrolledIndex = 0;
@@ -94,8 +94,8 @@ export class NzOptionContainerComponent implements OnChanges {
   }
 
   onItemHover(value: NzSafeAny): void {
-    // TODO: bug when mouse inside the option container & keydown
-    this.itemHover.emit(value);
+    // TODO: keydown.enter won't activate this value
+    this.activatedValue = value;
   }
 
   trackValue(_index: number, option: NzSelectItemInterface): NzSafeAny {
@@ -109,13 +109,20 @@ export class NzOptionContainerComponent implements OnChanges {
     }
   }
 
+  scrollToActivatedValue(): void {
+    const index = this.listOfContainerItem.findIndex(item => this.compareWith(item.key, this.activatedValue));
+    if (index < this.scrolledIndex || index >= this.scrolledIndex + this.maxItemLength) {
+      this.cdkVirtualScrollViewport.scrollToIndex(index || 0);
+    }
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     const { listOfContainerItem, activatedValue } = changes;
     if (listOfContainerItem || activatedValue) {
-      const index = this.listOfContainerItem.findIndex(item => this.compareWith(item.key, this.activatedValue));
-      if (index < this.scrolledIndex || index >= this.scrolledIndex + this.maxItemLength) {
-        this.cdkVirtualScrollViewport.scrollToIndex(index || 0);
-      }
+      this.scrollToActivatedValue();
     }
+  }
+  ngAfterViewInit(): void {
+    setTimeout(() => this.scrollToActivatedValue());
   }
 }
