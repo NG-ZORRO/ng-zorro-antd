@@ -876,6 +876,14 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       expect(getPickerInput(fixture.debugElement).value!.trim()).toBe('2020-04-08');
     }));
+
+    it('should disabled work', fakeAsync(() => {
+      fixtureInstance.control = new FormControl({ value: new Date('2020-04-24'), disabled: true });
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(getPickerInput(fixture.debugElement).getAttribute('disabled')).not.toBeNull();
+    }));
   });
 
   ////////////
