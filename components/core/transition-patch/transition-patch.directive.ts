@@ -15,7 +15,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
  * https://github.com/angular/angular/issues/34718
  */
 @Directive({
-  selector: '[nz-button],nz-button-group,[nz-icon],[nz-menu-item],[nz-submenu],nz-select-top-control'
+  selector: '[nz-button],nz-button-group,[nz-icon],[nz-menu-item],[nz-submenu],nz-select-top-control,nz-select-placeholder'
 })
 export class NzTransitionPatchDirective implements AfterViewInit, OnChanges {
   @Input() hidden: NzSafeAny = null;
