@@ -137,29 +137,29 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
       this.updateChangedProperties(changes);
     }
 
-    // Warn deprecated things.
-    if (changes.nzTitle) {
+    // warn deprecated things when specific property is not given
+    if (changes.nzTitle && !this.specificTitle && !this.directiveNameTitle) {
       warnDeprecation(
         `'nzTitle' of 'nz-tooltip' is deprecated and will be removed in 10.0.0.
 Please use 'nzTooltipTitle' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
       );
     }
 
-    if (changes.nzContent) {
+    if (changes.nzContent && !this.specificContent) {
       warnDeprecation(
         `'nzContent' of 'nz-popover' is deprecated and will be removed in 10.0.0.
 Please use 'nzPopoverContent' instead.`
       );
     }
 
-    if (changes.nzPlacement) {
+    if (changes.nzPlacement && !this.specificPlacement) {
       warnDeprecation(
         `'nzPlacement' of 'nz-tooltip' is deprecated and will be removed in 10.0.0.
 Please use 'nzTooltipContent' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
       );
     }
 
-    if (changes.nzTrigger) {
+    if (changes.nzTrigger && !this.specificTrigger) {
       warnDeprecation(
         `'nzTrigger' of 'nz-tooltip' is deprecated and will be removed in 10.0.0.
 Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
