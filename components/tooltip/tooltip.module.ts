@@ -12,13 +12,15 @@ import { NgModule } from '@angular/core';
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzOverlayModule } from 'ng-zorro-antd/core/overlay';
+import { NzFollowScrollDirective } from './follow-scroll.directive';
 // NOTE: the `t` is not uppercase in directives. Change this would however introduce breaking change.
 import { NzToolTipComponent, NzTooltipDirective } from './tooltip';
 
 @NgModule({
-  declarations: [NzToolTipComponent, NzTooltipDirective],
-  exports: [NzToolTipComponent, NzTooltipDirective],
+  declarations: [NzToolTipComponent, NzTooltipDirective, NzFollowScrollDirective],
+  exports: [NzToolTipComponent, NzTooltipDirective, NzFollowScrollDirective],
   entryComponents: [NzToolTipComponent],
-  imports: [CommonModule, OverlayModule, NzOutletModule, NzOverlayModule, NzNoAnimationModule]
+  imports: [CommonModule, OverlayModule, NzOutletModule, NzOverlayModule, NzNoAnimationModule],
+  providers: [NzFollowScrollDirective]
 })
 export class NzToolTipModule {}
