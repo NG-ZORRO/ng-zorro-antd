@@ -307,6 +307,11 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     this.onTouchedFn = fn;
   }
 
+  setDisabledState(isDisabled: boolean): void {
+    this.nzDisabled = isDisabled;
+    this.cdr.markForCheck();
+  }
+
   // ------------------------------------------------------------------------
   // | Internal methods
   // ------------------------------------------------------------------------
