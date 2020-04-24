@@ -24,10 +24,12 @@ export abstract class NzMNService {
   constructor(protected nzSingletonService: NzSingletonService, protected overlay: Overlay, private injector: Injector) {}
 
   remove(id?: string): void {
-    if (id) {
-      this.container.remove(id);
-    } else {
-      this.container.removeAll();
+    if (this.container) {
+      if (id) {
+        this.container.remove(id);
+      } else {
+        this.container.removeAll();
+      }
     }
   }
 
