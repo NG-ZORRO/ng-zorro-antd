@@ -235,6 +235,10 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
       weekRows.forEach(v => {
         v.dateCells = allDateCell.splice(0, 7);
       });
+      // delete empty row
+      if (weekRows[weekRows.length - 1].dateCells.length === 0) {
+        weekRows.pop();
+      }
     }
     return weekRows;
   }
