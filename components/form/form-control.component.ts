@@ -15,10 +15,12 @@ import {
   ElementRef,
   Host,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Optional,
   Renderer2,
+  SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
@@ -67,7 +69,7 @@ const iconTypeMap = {
     </div>
   `
 })
-export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentInit, OnDestroy {
+export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, AfterContentInit, OnDestroy {
   static ngAcceptInputType_nzHasFeedback: BooleanInput;
   static ngAcceptInputType_nzRequired: BooleanInput;
   static ngAcceptInputType_nzNoColon: BooleanInput;
@@ -94,9 +96,9 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
   @Input() nzWarningTip: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
   @Input() nzErrorTip: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
   @Input() nzValidatingTip: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
-  @Input() nzExtra: string | TemplateRef<void>;
   @Input() nzAutoTips: Record<string, Record<string, string>> = {};
   @Input() nzDisableAutoTips: boolean | 'default' = 'default';
+  @Input() nzExtra: string | TemplateRef<void>;
 
   @Input()
   set nzHasFeedback(value: boolean) {
@@ -132,12 +134,11 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
     /** miss detect https://github.com/angular/angular/issues/10887 **/
     if (this.validateControl && this.validateControl.statusChanges) {
       this.validateChanges = this.validateControl.statusChanges.pipe(startWith(null), takeUntil(this.destroyed$)).subscribe(_ => {
-        if (this.disableAutoTips) {
-          this.setStatus();
-          this.cdr.markForCheck();
-        } else {
-          this.updateAutoTip();
+        if (!this.disableAutoTips) {
+          this.updateAutoErrorTip();
         }
+        this.setStatus();
+        this.cdr.markForCheck();
       });
     }
   }
@@ -194,12 +195,6 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
     }
   }
 
-  private updateAutoTip(): void {
-    this.updateAutoErrorTip();
-    this.setStatus();
-    this.cdr.markForCheck();
-  }
-
   private updateAutoErrorTip(): void {
     if (this.validateControl) {
       const errors = this.validateControl.errors || {};
@@ -222,7 +217,9 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
   private subscribeAutoTips(observable: Observable<NzSafeAny>): void {
     observable?.pipe(takeUntil(this.destroyed$)).subscribe(() => {
       if (!this.disableAutoTips) {
-        this.updateAutoTip();
+        this.updateAutoErrorTip();
+        this.setStatus();
+        this.cdr.markForCheck();
       }
     });
   }
@@ -242,6 +239,17 @@ export class NzFormControlComponent implements OnDestroy, OnInit, AfterContentIn
     this.subscribeAutoTips(
       this.nzFormDirective?.getInputObservable('nzDisableAutoTips').pipe(filter(() => this.nzDisableAutoTips === 'default'))
     );
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const { nzDisableAutoTips, nzAutoTips, nzSuccessTip, nzWarningTip, nzErrorTip, nzValidatingTip } = changes;
+
+    if (nzDisableAutoTips || nzAutoTips) {
+      this.updateAutoErrorTip();
+      this.setStatus();
+    } else if (nzSuccessTip || nzWarningTip || nzErrorTip || nzValidatingTip) {
+      this.setStatus();
+    }
   }
 
   ngOnInit(): void {

@@ -27,13 +27,13 @@ import { Observable, Observer } from 'rxjs';
       </nz-form-item>
       <nz-form-item>
         <nz-form-label [nzSpan]="7" nzRequired>Password</nz-form-label>
-        <nz-form-control [nzSpan]="12" [nzDisableAutoTips]="true" nzErrorTip="Please input your password!">
+        <nz-form-control [nzSpan]="12" nzDisableAutoTips nzErrorTip="Please input your password!">
           <input nz-input type="password" formControlName="password" (ngModelChange)="validateConfirmPassword()" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label [nzSpan]="7" nzRequired>Confirm Password</nz-form-label>
-        <nz-form-control [nzSpan]="12" [nzDisableAutoTips]="true" [nzErrorTip]="passwordErrorTpl">
+        <nz-form-control [nzSpan]="12" nzDisableAutoTips [nzErrorTip]="passwordErrorTpl">
           <input nz-input type="password" formControlName="confirm" placeholder="confirm your password" />
           <ng-template #passwordErrorTpl let-control>
             <ng-container *ngIf="control.hasError('required')">
