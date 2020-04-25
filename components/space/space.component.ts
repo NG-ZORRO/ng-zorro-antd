@@ -15,7 +15,7 @@ import { startWith, takeUntil } from 'rxjs/operators';
 import { NzSpaceItemComponent } from './space-item.component';
 import { NzSpaceDirection, NzSpaceSize } from './types';
 
-const NZ_CONFIG_COMPONENT_NAME = 'avatar';
+const NZ_CONFIG_COMPONENT_NAME = 'space';
 
 @Component({
   selector: 'nz-space',
