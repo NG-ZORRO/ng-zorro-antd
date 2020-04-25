@@ -65,6 +65,7 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
         [activeDate]="activeDate"
         [cellRender]="dateCell"
         [fullCellRender]="dateFullCell"
+        [nzMonthScope]="nzMonthScope"
         (valueChange)="onDateSelect($event)"
       ></date-table>
     </ng-template>
@@ -98,6 +99,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges {
 
   @Input() nzMode: NzCalendarMode = 'month';
   @Input() nzValue: Date;
+  @Input() nzMonthScope = false;
 
   @Output() readonly nzModeChange: EventEmitter<NzCalendarMode> = new EventEmitter();
   @Output() readonly nzPanelChange: EventEmitter<{ date: Date; mode: NzCalendarMode }> = new EventEmitter();

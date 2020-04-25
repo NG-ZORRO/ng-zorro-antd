@@ -38,6 +38,7 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
   @Input() locale: NzCalendarI18nInterface;
   @Input() selectedValue: CandyDate[]; // Range ONLY
   @Input() hoverValue: CandyDate[]; // Range ONLY
+  @Input() nzMonthScope = false;
 
   @Output() readonly dayHover = new EventEmitter<CandyDate>(); // Emitted when hover on a day by mouse enter
 
@@ -225,6 +226,16 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
       weekRows.push(row);
     }
 
+    if (this.nzMonthScope) {
+      const allDateCell: DateCell[] = [];
+      weekRows.forEach(row => {
+        const rowCells = row.dateCells.filter(cell => cell.value.getMonth() === this.activeDate.getMonth());
+        allDateCell.push(...rowCells);
+      });
+      weekRows.forEach(v => {
+        v.dateCells = allDateCell.splice(0, 7);
+      });
+    }
     return weekRows;
   }
 
