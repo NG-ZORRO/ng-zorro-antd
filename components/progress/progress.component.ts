@@ -50,7 +50,7 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
   template: `
     <ng-template #progressInfoTemplate>
       <span class="ant-progress-text" *ngIf="nzShowInfo">
-        <ng-container *ngIf="status === 'exception' || (status === 'success' && !nzFormat); else formatTemplate">
+        <ng-container *ngIf="(status === 'exception' || status === 'success') && !nzFormat; else formatTemplate">
           <i nz-icon [nzType]="icon"></i>
         </ng-container>
         <ng-template #formatTemplate>
