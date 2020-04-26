@@ -71,7 +71,13 @@ export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | n
         <ng-content></ng-content>
       </ng-template>
       <ng-template #optionsTemplate>
-        <nz-auto-option *ngFor="let option of nzDataSource" [nzValue]="option">{{ option }}</nz-auto-option>
+        <nz-auto-option
+          *ngFor="let option of nzDataSource"
+          [nzValue]="option"
+          [nzLabel]="option && option.label ? option.label : $any(option)"
+        >
+          {{ option && option.label ? option.label : option }}
+        </nz-auto-option>
       </ng-template>
     </ng-template>
   `,
@@ -197,6 +203,10 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
     return this.options.reduce((result: number, current: NzAutocompleteOptionComponent, index: number) => {
       return result === -1 ? (this.compareWith(value, current.nzValue) ? index : -1) : result;
     }, -1)!;
+  }
+
+  getOption(value: NzSafeAny): NzAutocompleteOptionComponent | null {
+    return this.options.find(item => this.compareWith(value, item.nzValue)) || null;
   }
 
   updatePosition(position: NzDropDownPosition): void {

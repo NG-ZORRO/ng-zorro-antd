@@ -70,7 +70,6 @@ export function getNzAutocompleteMissingPanelError(): Error {
 export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnDestroy {
   /** Bind nzAutocomplete component */
   @Input() nzAutocomplete: NzAutocompleteComponent;
-
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
   panelOpen: boolean = false;
@@ -104,7 +103,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   }
 
   writeValue(value: NzSafeAny): void {
-    this.setTriggerValue(value);
+    Promise.resolve(null).then(() => this.setTriggerValue(value));
   }
 
   registerOnChange(fn: (value: {}) => {}): void {
@@ -185,7 +184,6 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     if (target.type === 'number') {
       value = value === '' ? null : parseFloat(value);
     }
-
     if (this.previousValue !== value) {
       this.previousValue = value;
       this.onChange(value);
@@ -355,10 +353,12 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     this.closePanel();
   }
 
-  private setTriggerValue(value: string | number | null): void {
-    this.elementRef.nativeElement.value = value || '';
+  private setTriggerValue(value: NzSafeAny): void {
+    const option = this.nzAutocomplete.getOption(value);
+    const displayValue = option ? option.getLabel() : value;
+    this.elementRef.nativeElement.value = displayValue != null ? displayValue : '';
     if (!this.nzAutocomplete.nzBackfill) {
-      this.previousValue = value;
+      this.previousValue = displayValue;
     }
   }
 
