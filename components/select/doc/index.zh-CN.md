@@ -56,6 +56,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzLoading]` | 加载中状态 | `boolean` | `false` |
 | `[nzMaxTagCount]` | 最多显示多少个 tag | `number` | - |
 | `[nzMaxTagPlaceholder]` | 隐藏 tag 时显示的内容 | `TemplateRef<{ $implicit: any[] }>` | - |
+| `[nzOptions]` | option 列表，可以取代 nz-option，用法参见例子 | `Array<{ label: string \| TemplateRef<any>; value: any; disabled?: boolean; hide?: boolean; groupLabel?: string \| TemplateRef<any>;}>` | - |
 | `[nzOptionHeightPx]` | 下拉菜单中每个 Option 的高度 | `number` | `32` |
 | `[nzOptionOverflowSize]` | 下拉菜单中最多展示的 Option 个数，超出部分滚动 | `number` | `8` |
 | `(ngModelChange)` | 选中的 nz-option 发生变化时，调用此函数 | `EventEmitter<any[]>` | - |

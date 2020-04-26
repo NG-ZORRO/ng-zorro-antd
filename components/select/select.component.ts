@@ -44,7 +44,7 @@ import { startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { NzOptionGroupComponent } from './option-group.component';
 import { NzOptionComponent } from './option.component';
 import { NzSelectTopControlComponent } from './select-top-control.component';
-import { NzFilterOptionType, NzSelectItemInterface, NzSelectModeType } from './select.types';
+import { NzFilterOptionType, NzSelectItemInterface, NzSelectModeType, NzSelectOptionInterface } from './select.types';
 
 const defaultFilterOption: NzFilterOptionType = (searchValue: string, item: NzSelectItemInterface): boolean => {
   if (item && item.nzLabel) {
@@ -204,6 +204,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @Input() @InputBoolean() nzServerSearch = false;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzOpen = false;
+  @Input() nzOptions: NzSelectOptionInterface[] = [];
   @Output() readonly nzOnSearch = new EventEmitter<string>();
   @Output() readonly nzScrollToBottom = new EventEmitter<void>();
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
@@ -220,6 +221,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   private listOfTemplateItem$ = new BehaviorSubject<NzSelectItemInterface[]>([]);
   private listOfTagAndTemplateItem: NzSelectItemInterface[] = [];
   private searchValue: string = '';
+  private isReactiveDriven = false;
   private value: NzSafeAny | NzSafeAny[];
   private destroy$ = new Subject();
   onChange: OnChangeType = () => {};
@@ -294,14 +296,20 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
       const activatedItem = listOfContainerItem.find(item => this.compareWith(item.nzValue, this.listOfValue[0])) || listOfContainerItem[0];
       this.activatedValue = (activatedItem && activatedItem.nzValue) || null;
     }
-    /** insert group item **/
-    if (this.listOfNzOptionGroupComponent) {
-      this.listOfNzOptionGroupComponent.forEach(o => {
-        const groupItem = { groupLabel: o.nzLabel, type: 'group', key: o.nzLabel } as NzSelectItemInterface;
-        const index = listOfContainerItem.findIndex(item => groupItem.groupLabel === item.groupLabel);
-        listOfContainerItem.splice(index, 0, groupItem);
-      });
+    let listOfGroupLabel: Array<string | TemplateRef<NzSafeAny> | null> = [];
+    if (this.isReactiveDriven) {
+      listOfGroupLabel = [...new Set(this.nzOptions.filter(o => o.groupLabel).map(o => o.groupLabel!))];
+    } else {
+      if (this.listOfNzOptionGroupComponent) {
+        listOfGroupLabel = this.listOfNzOptionGroupComponent.map(o => o.nzLabel);
+      }
     }
+    /** insert group item **/
+    listOfGroupLabel.forEach(label => {
+      const index = listOfContainerItem.findIndex(item => label === item.groupLabel);
+      const groupItem = { groupLabel: label, type: 'group', key: label } as NzSelectItemInterface;
+      listOfContainerItem.splice(index, 0, groupItem);
+    });
     this.listOfContainerItem = [...listOfContainerItem];
     this.updateCdkConnectedOverlayPositions();
   }
@@ -487,12 +495,30 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzOpen, nzDisabled } = changes;
+    const { nzOpen, nzDisabled, nzOptions } = changes;
     if (nzOpen) {
       this.onOpenChange();
     }
     if (nzDisabled && this.nzDisabled) {
       this.setOpenState(false);
+    }
+    if (nzOptions) {
+      this.isReactiveDriven = true;
+      const listOfOptions = this.nzOptions || [];
+      const listOfTransformedItem = listOfOptions.map(item => {
+        return {
+          template: item.label instanceof TemplateRef ? item.label : null,
+          nzLabel: typeof item.label === 'string' ? item.label : null,
+          nzValue: item.value,
+          nzDisabled: item.disabled || false,
+          nzHide: item.hide || false,
+          nzCustomContent: item.label instanceof TemplateRef,
+          groupLabel: item.groupLabel || null,
+          type: 'item',
+          key: item.value
+        };
+      });
+      this.listOfTemplateItem$.next(listOfTransformedItem);
     }
   }
 
@@ -530,29 +556,31 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   }
 
   ngAfterContentInit(): void {
-    merge(this.listOfNzOptionGroupComponent.changes, this.listOfNzOptionComponent.changes)
-      .pipe(
-        startWith(true),
-        switchMap(() =>
-          merge(
-            ...[
-              this.listOfNzOptionComponent.changes,
-              this.listOfNzOptionGroupComponent.changes,
-              ...this.listOfNzOptionComponent.map(option => option.changes),
-              ...this.listOfNzOptionGroupComponent.map(option => option.changes)
-            ]
-          ).pipe(startWith(true))
-        ),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(() => {
-        const listOfOptionInterface = this.listOfNzOptionComponent.toArray().map(item => {
-          const { template, nzLabel, nzValue, nzDisabled, nzHide, nzCustomContent, groupLabel } = item;
-          return { template, nzLabel, nzValue, nzDisabled, nzHide, nzCustomContent, groupLabel, type: 'item', key: nzValue };
+    if (!this.isReactiveDriven) {
+      merge(this.listOfNzOptionGroupComponent.changes, this.listOfNzOptionComponent.changes)
+        .pipe(
+          startWith(true),
+          switchMap(() =>
+            merge(
+              ...[
+                this.listOfNzOptionComponent.changes,
+                this.listOfNzOptionGroupComponent.changes,
+                ...this.listOfNzOptionComponent.map(option => option.changes),
+                ...this.listOfNzOptionGroupComponent.map(option => option.changes)
+              ]
+            ).pipe(startWith(true))
+          ),
+          takeUntil(this.destroy$)
+        )
+        .subscribe(() => {
+          const listOfOptionInterface = this.listOfNzOptionComponent.toArray().map(item => {
+            const { template, nzLabel, nzValue, nzDisabled, nzHide, nzCustomContent, groupLabel } = item;
+            return { template, nzLabel, nzValue, nzDisabled, nzHide, nzCustomContent, groupLabel, type: 'item', key: nzValue };
+          });
+          this.listOfTemplateItem$.next(listOfOptionInterface);
+          this.cdr.markForCheck();
         });
-        this.listOfTemplateItem$.next(listOfOptionInterface);
-        this.cdr.markForCheck();
-      });
+    }
   }
 
   ngOnDestroy(): void {
