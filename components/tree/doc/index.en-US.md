@@ -16,6 +16,8 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 
 ### nz-tree
 
+> Tips: According to the current data structure design, you need to ensure that `nzData` is set first, otherwise other attributes will not take effect. After the asynchronous operation returns data, re-assign other attributes to trigger rendering. Please refer to [#5152](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5152) to track the optimization progress.
+
 | Property | Description | Type | Default | Global Config |
 | -------- | ----------- | ---- | ------- | ------------- |
 | `[nzData]` | Tree data (Reference NzTreeNode) | `NzTreeNodeOptions[] \| NzTreeNode[]` | `[]` |
