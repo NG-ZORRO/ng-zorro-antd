@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
+import { NzInputModule } from 'ng-zorro-antd/input';
 
 import { NzAutocompleteOptgroupComponent } from './autocomplete-optgroup.component';
 import { NzAutocompleteOptionComponent } from './autocomplete-option.component';
@@ -22,6 +23,6 @@ import { NzAutocompleteComponent } from './autocomplete.component';
 @NgModule({
   declarations: [NzAutocompleteComponent, NzAutocompleteOptionComponent, NzAutocompleteTriggerDirective, NzAutocompleteOptgroupComponent],
   exports: [NzAutocompleteComponent, NzAutocompleteOptionComponent, NzAutocompleteTriggerDirective, NzAutocompleteOptgroupComponent],
-  imports: [CommonModule, OverlayModule, FormsModule, NzOutletModule, NzNoAnimationModule]
+  imports: [CommonModule, OverlayModule, FormsModule, NzOutletModule, NzNoAnimationModule, NzInputModule]
 })
 export class NzAutocompleteModule {}
