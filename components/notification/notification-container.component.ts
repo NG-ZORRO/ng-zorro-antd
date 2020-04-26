@@ -8,6 +8,7 @@
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
 import { NotificationConfig, NzConfigService } from 'ng-zorro-antd/core/config';
+import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { toCssPixel } from 'ng-zorro-antd/core/util';
 
 import { NzMNContainerComponent } from 'ng-zorro-antd/message';
@@ -138,11 +139,22 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent {
   }
 
   protected readyInstances(): void {
-    this.topLeftInstances = this.instances.filter(m => m.options.nzPosition === 'topLeft');
-    this.topRightInstances = this.instances.filter(m => m.options.nzPosition === 'topRight' || !m.options.nzPosition);
-    this.bottomLeftInstances = this.instances.filter(m => m.options.nzPosition === 'bottomLeft');
-    this.bottomRightInstances = this.instances.filter(m => m.options.nzPosition === 'bottomRight');
+    this.topLeftInstances = this.instances.filter(m => m.options.nzPlacement === 'topLeft');
+    this.topRightInstances = this.instances.filter(m => m.options.nzPlacement === 'topRight' || !m.options.nzPlacement);
+    this.bottomLeftInstances = this.instances.filter(m => m.options.nzPlacement === 'bottomLeft');
+    this.bottomRightInstances = this.instances.filter(m => m.options.nzPlacement === 'bottomRight');
 
     this.cdr.detectChanges();
+  }
+
+  protected mergeOptions(options?: NzNotificationDataOptions): NzNotificationDataOptions {
+    const { nzPosition } = options ?? {};
+
+    if (nzPosition) {
+      warnDeprecation('`nzPosition` of NzNotificationDataOptions is deprecated and would be removed in 10.0.0. Use `nzPlacement` instead.');
+    }
+
+    const { nzDuration, nzAnimate, nzPauseOnHover, nzPlacement } = this.config;
+    return { nzDuration, nzAnimate, nzPauseOnHover, nzPlacement: nzPlacement || nzPosition, ...options };
   }
 }
