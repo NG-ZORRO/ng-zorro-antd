@@ -17,6 +17,8 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 
 ### nz-tree
 
+> 说明: 根据目前的数据结构设计，需要保证优先设置 `nzData`，否则各属性不会生效。异步操作待数据返回后，重新赋值其他各属性触发渲染(`nzExpandAll` `nzExpandedKeys` `nzCheckedKeys` `nzSelectedKeys` `nzSearchValue`)。重构优化工作请追踪 [#5152](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5152)。
+
 | 参数 | 说明 | 类型 | 默认值 | 全局配置 |
 | --- | --- | --- | --- | --- |
 | `[nzData]` | 元数据 | `NzTreeNodeOptions[] \| NzTreeNode[]` | `[]` |
@@ -137,6 +139,18 @@ import { NzTreeModule } from 'ng-zorro-antd/tree';
 
 
 ## 注意
+* 当前请确保 `nzData` 在其他数据相关的属性之前被初始化:
+```typescript
+// 示例
+this.nzExpandAll = false;
+const nodes = []; // 源数据
+this.nzData = [...nodes];
+// nzData 值异步获取变化后重新渲染一下属性
+this.nzExpandedKeys = [...this.nzExpandedKeys];
+// this.nzExpandAll = true;
+this.nzCheckedKeys = [...this.nzCheckedKeys];
+this.nzSelectedKeys = [...this.nzSelectedKeys];
+```
 * `NzTreeNodeOptions` 可以接受用户自定义属性，可通过 `NzTreeNode` 的 `origin` 属性取得。
 * 使用 ViewChild 时，Tree 方法需要在 ngAfterViewInit 中调用。
 * nzData 属性请传递 NzTreeNodeOptions 数组。
