@@ -33,6 +33,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { NzInputGroupWhitSuffixOrPrefixDirective } from 'ng-zorro-antd/input';
 
 import { fromEvent, merge, Subscription } from 'rxjs';
 import { delay, distinct, map, take, tap } from 'rxjs/operators';
@@ -95,6 +96,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
     private ngZone: NgZone,
+    @Optional() private nzInputGroupWhitSuffixOrPrefixDirective: NzInputGroupWhitSuffixOrPrefixDirective,
     @Optional() @Inject(DOCUMENT) private document: NzSafeAny
   ) {}
 
@@ -313,7 +315,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   }
 
   private getConnectedElement(): ElementRef {
-    return this.elementRef;
+    return this.nzInputGroupWhitSuffixOrPrefixDirective ? this.nzInputGroupWhitSuffixOrPrefixDirective.elementRef : this.elementRef;
   }
 
   private getHostWidth(): number {

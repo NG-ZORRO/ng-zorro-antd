@@ -13,6 +13,7 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
+  Directive,
   ElementRef,
   Input,
   OnChanges,
@@ -28,6 +29,13 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { merge, Subject } from 'rxjs';
 import { flatMap, map, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { NzInputDirective } from './input.directive';
+
+@Directive({
+  selector: `nz-input-group[nzSuffix], nz-input-group[nzPrefix]`
+})
+export class NzInputGroupWhitSuffixOrPrefixDirective {
+  constructor(public elementRef: ElementRef) {}
+}
 
 @Component({
   selector: 'nz-input-group',
