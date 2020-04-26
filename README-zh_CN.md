@@ -38,6 +38,12 @@ Ant Design 的 Angular 实现，开发和服务于企业级后台产品。
 - 数十个国际化语言支持。
 - 深入每个细节的主题定制能力。
 
+## ☀️ 授权协议
+
+[MIT](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE)
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FNG-ZORRO%2Fng-zorro-antd.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FNG-ZORRO%2Fng-zorro-antd?ref=badge_shield)
+
 
 ## 🖥 支持环境
 
@@ -166,6 +172,3 @@ $ npm run start
 
 > 我们在这里列出了部分使用者，如果你的公司和产品使用了 NG-ZORRO，欢迎到 [这里](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1142) 留言。
 
-## ☀️ 授权协议
-
-MIT

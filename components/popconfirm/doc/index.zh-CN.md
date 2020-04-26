@@ -43,4 +43,4 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 
 ## 注意
 
-请确保 `nz-popconfirm` 的子元素能接受 `onMouseEnter`、`onMouseLeave`、`onFocus`、`onClick` 事件。
+请确保 `[nz-popconfirm]` 元素能接受 `onMouseEnter`、`onMouseLeave`、`onFocus`、`onClick` 事件。

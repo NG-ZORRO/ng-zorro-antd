@@ -34,4 +34,4 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 
 ## 注意
 
-请确保 `nz-popover` 的子元素能接受 `onMouseEnter`、`onMouseLeave`、`onFocus`、`onClick` 事件。
+请确保 `[nz-popover]` 元素能接受 `onMouseEnter`、`onMouseLeave`、`onFocus`、`onClick` 事件。
