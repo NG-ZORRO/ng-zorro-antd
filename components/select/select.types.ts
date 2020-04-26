@@ -22,6 +22,14 @@ export interface NzSelectItemInterface {
   key?: NzSafeAny;
 }
 
+export interface NzSelectOptionInterface {
+  label: string | null | TemplateRef<NzSafeAny>;
+  value: NzSafeAny | null;
+  disabled?: boolean;
+  hide?: boolean;
+  groupLabel?: string | TemplateRef<NzSafeAny> | null;
+}
+
 export type NzSelectTopControlItemType = Partial<NzSelectItemInterface> & {
   contentTemplateOutlet: TemplateRef<NzSafeAny> | null;
   contentTemplateOutletContext: NzSafeAny;
