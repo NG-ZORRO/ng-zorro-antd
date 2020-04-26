@@ -60,7 +60,11 @@ const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
                 <!-- Horizontal & NOT Bordered -->
                 <ng-container *ngIf="!nzBordered">
                   <td class="ant-descriptions-item" [colSpan]="item.span">
-                    <span class="ant-descriptions-item-label" [class.ant-descriptions-item-colon]="nzColon">{{ item.title }}</span>
+                    <span class="ant-descriptions-item-label" [class.ant-descriptions-item-colon]="nzColon">
+                      <ng-container *nzStringTemplateOutlet="item.title">
+                        {{ item.title }}
+                      </ng-container>
+                    </span>
                     <span class="ant-descriptions-item-content">
                       <ng-template [ngTemplateOutlet]="item.content"></ng-template>
                     </span>
@@ -69,7 +73,9 @@ const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
                 <!-- Horizontal & Bordered -->
                 <ng-container *ngIf="nzBordered">
                   <td class="ant-descriptions-item-label" *nzStringTemplateOutlet="item.title">
-                    {{ item.title }}
+                    <ng-container *nzStringTemplateOutlet="item.title">
+                      {{ item.title }}
+                    </ng-container>
                   </td>
                   <td class="ant-descriptions-item-content" [colSpan]="item.span * 2 - 1">
                     <ng-template [ngTemplateOutlet]="item.content"></ng-template>
@@ -86,7 +92,11 @@ const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
                 <tr class="ant-descriptions-row">
                   <ng-container *ngFor="let item of row; let isLast = last">
                     <td class="ant-descriptions-item" [colSpan]="item.span">
-                      <span class="ant-descriptions-item-label" [class.ant-descriptions-item-colon]="nzColon">{{ item.title }}</span>
+                      <span class="ant-descriptions-item-label" [class.ant-descriptions-item-colon]="nzColon">
+                        <ng-container *nzStringTemplateOutlet="item.title">
+                          {{ item.title }}
+                        </ng-container>
+                      </span>
                     </td>
                   </ng-container>
                 </tr>
@@ -107,7 +117,9 @@ const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
                 <tr class="ant-descriptions-row">
                   <ng-container *ngFor="let item of row; let isLast = last">
                     <td class="ant-descriptions-item-label" [colSpan]="item.span">
-                      {{ item.title }}
+                      <ng-container *nzStringTemplateOutlet="item.title">
+                        {{ item.title }}
+                      </ng-container>
                     </td>
                   </ng-container>
                 </tr>
