@@ -114,6 +114,7 @@
       &.@{table-prefix-cls}-row-selected {
         > td {
           background: @table-selected-row-bg;
+          border-color: rgba(0, 0, 0, 0.03);
         }
 
         &:hover {
@@ -507,6 +508,8 @@
   // ============================ Fixed =============================
   &-cell-fix-left,
   &-cell-fix-right {
+    position: -webkit-sticky !important;
+    position: sticky !important;
     z-index: 2;
     background: @table-bg;
   }
