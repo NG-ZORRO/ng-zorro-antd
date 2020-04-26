@@ -11,18 +11,23 @@ import { TemplateRef } from '@angular/core';
 import { NgClassInterface, NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
 
-export type NzNotificationPosition = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
+export type NzNotificationPlacement = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
 
 export interface NzNotificationDataOptions<T = {}> {
   nzKey?: string;
   nzStyle?: NgStyleInterface | string;
   nzClass?: NgClassInterface | string;
   nzCloseIcon?: TemplateRef<void> | string;
-  nzPosition?: NzNotificationPosition;
+  nzPlacement?: NzNotificationPlacement;
   nzData?: T;
   nzDuration?: number;
   nzAnimate?: boolean;
   nzPauseOnHover?: boolean;
+
+  /**
+   * @deprecated use nzPlacement instead, this would be removed in 10.0.0
+   */
+  nzPosition?: NzNotificationPlacement;
 }
 
 export interface NzNotificationData {
