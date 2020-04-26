@@ -174,10 +174,12 @@ describe('nz-form-control', () => {
       formGroup.get('mobile')!.markAsDirty();
       formGroup.get('email')!.markAsDirty();
       formGroup.get('password')!.markAsDirty();
+      formGroup.get('confirmPassword')!.markAsDirty();
       formGroup.get('userName')!.updateValueAndValidity();
       formGroup.get('mobile')!.updateValueAndValidity();
       formGroup.get('email')!.updateValueAndValidity();
       formGroup.get('password')!.updateValueAndValidity();
+      formGroup.get('confirmPassword')!.updateValueAndValidity();
 
       testBed.fixture.detectChanges();
 
@@ -233,11 +235,13 @@ describe('nz-form-control', () => {
       formGroup.get('email')!.setValue('');
       testBed.fixture.detectChanges();
 
+      formControls = testBed.fixture.debugElement.queryAll(By.directive(NzFormControlComponent));
+
       expect(formControls[0].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入');
       expect(formControls[1].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入');
       expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入邮箱');
       expect(formControls[3].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入');
-      expect(formControls[3].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入');
+      expect(formControls[4].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入');
     });
     it('should i18n work ', () => {
       formGroup.get('userName')!.markAsDirty();
@@ -303,6 +307,23 @@ describe('nz-form-control', () => {
       expect(formControls[0].nativeElement.querySelector('.ant-form-item-explain')).toBeNull();
       expect(formControls[1].nativeElement.querySelector('.ant-form-item-explain')).toBeNull();
       expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain')).toBeNull();
+    });
+    it('should nzErrorTip change work', () => {
+      testComponent.passwordDisableAutoTips = true;
+
+      formGroup.get('password')!.markAsDirty();
+      formGroup.get('password')!.updateValueAndValidity();
+
+      testBed.fixture.detectChanges();
+
+      expect(formControls[3].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('Please input your password!');
+
+      const passwordErrorTip = '请输入密码';
+      testComponent.passwordErrorTip = passwordErrorTip;
+
+      testBed.fixture.detectChanges();
+
+      expect(formControls[3].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual(passwordErrorTip);
     });
   });
 });
@@ -394,7 +415,7 @@ export class NzTestReactiveFormControlInitStatusComponent {
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-control [nzDisableAutoTips]="passwordDisableAutoTips" nzErrorTip="Please input your password!">
+        <nz-form-control [nzDisableAutoTips]="passwordDisableAutoTips" [nzErrorTip]="passwordErrorTip">
           <input nz-input type="password" formControlName="password" />
         </nz-form-control>
       </nz-form-item>
@@ -413,6 +434,7 @@ export class NzTestReactiveFormAutoTipsComponent {
 
   formDisableAutoTips = false;
   passwordDisableAutoTips = false;
+  passwordErrorTip = 'Please input your password!';
 
   formAutoTips = {
     'zh-cn': {
