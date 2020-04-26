@@ -48,4 +48,4 @@ The following APIs are shared by `nz-tooltip`, `nz-popconfirm`, `nz-popover`.
 
 ## Note
 
-Please ensure that the child node of `nz-tooltip` accepts `onMouseEnter`, `onMouseLeave`, `onFocus`, `onClick` events.
+Please ensure that the node of `[nz-tooltip]` accepts `onMouseEnter`, `onMouseLeave`, `onFocus`, `onClick` events.

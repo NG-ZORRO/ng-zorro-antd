@@ -50,4 +50,4 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
 ## 注意
 
-请确保 `nz-tooltip` 的子元素能接受 `onMouseEnter`、`onMouseLeave`、`onFocus`、`onClick` 事件。
+请确保 `[nz-tooltip]` 元素能接受 `onMouseEnter`、`onMouseLeave`、`onFocus`、`onClick` 事件。
