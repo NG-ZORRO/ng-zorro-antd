@@ -2,11 +2,22 @@ import { Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, ESCAPE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  NgZone,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
 import { async, ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { NzInputModule } from 'ng-zorro-antd/input';
 import { Subject } from 'rxjs';
 
 import { createKeyboardEvent, dispatchFakeEvent, dispatchKeyboardEvent, MockNgZone, typeInElement } from 'ng-zorro-antd/core/testing';
@@ -23,7 +34,7 @@ describe('auto-complete', () => {
   beforeEach(async(() => {
     const dir = 'ltr';
     TestBed.configureTestingModule({
-      imports: [NzAutocompleteModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule],
+      imports: [NzAutocompleteModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzInputModule],
       declarations: [
         NzTestSimpleAutocompleteComponent,
         NzTestAutocompletePropertyComponent,
@@ -32,7 +43,8 @@ describe('auto-complete', () => {
         NzTestAutocompleteWithOnPushDelayComponent,
         NzTestAutocompleteWithFormComponent,
         NzTestAutocompleteWithObjectOptionComponent,
-        NzTestAutocompleteDifferentValueWithFormComponent
+        NzTestAutocompleteDifferentValueWithFormComponent,
+        NzTestAutocompleteWithGroupInputComponent
       ],
       providers: [
         { provide: Directionality, useFactory: () => ({ value: dir }) },
@@ -904,6 +916,28 @@ describe('auto-complete', () => {
       })
     );
   });
+
+  describe('group-input', () => {
+    let fixture: ComponentFixture<NzTestAutocompleteWithGroupInputComponent>;
+    let input: HTMLInputElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzTestAutocompleteWithGroupInputComponent);
+      fixture.detectChanges();
+      input = fixture.debugElement.query(By.css('input')).nativeElement;
+    });
+
+    it('should use the group-input as the dropdown target', () => {
+      const componentInstance = fixture.componentInstance;
+      fixture.detectChanges();
+      dispatchFakeEvent(input, 'blur');
+      fixture.detectChanges();
+      // tslint:disable-next-line:no-any
+      expect((componentInstance.trigger as any).getConnectedElement().nativeElement).toEqual(
+        componentInstance.inputGroupComponent.nativeElement
+      );
+    });
+  });
 });
 
 @Component({
@@ -1132,4 +1166,21 @@ class NzTestAutocompleteWithObjectOptionComponent {
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({ formControl: { label: 'Lucy', value: 'lucy', age: 20 } });
   }
+}
+
+@Component({
+  template: `
+    <nz-input-group #inputGroupComponent nzSize="large" [nzSuffix]="suffixIcon">
+      <input placeholder="input here" nz-input [nzAutocomplete]="auto" />
+      <ng-template #suffixIcon> </ng-template>
+      <nz-autocomplete #auto>
+        <nz-auto-option nzValue="value">label</nz-auto-option>
+      </nz-autocomplete>
+    </nz-input-group>
+  `
+})
+class NzTestAutocompleteWithGroupInputComponent {
+  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger: NzAutocompleteTriggerDirective;
+  @ViewChild('inputGroupComponent', { static: false, read: ElementRef }) inputGroupComponent: ElementRef;
+  constructor() {}
 }
