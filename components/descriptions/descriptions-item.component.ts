@@ -30,7 +30,7 @@ export class NzDescriptionsItemComponent implements OnChanges, OnDestroy {
   @ViewChild(TemplateRef, { static: true }) content: TemplateRef<void>;
 
   @Input() @InputNumber() nzSpan = 1;
-  @Input() nzTitle: string = '';
+  @Input() nzTitle: string | TemplateRef<void> = '';
 
   readonly inputChange$ = new Subject<void>();
 
