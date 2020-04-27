@@ -16,7 +16,7 @@ export function execTask(binPath: string, args: string[], env: {} = {}): gulp.Ta
     (process.stdout as any)._handle.setBlocking(true);
     // tslint:disable-next-line:no-any
     (process.stdout as any)._handle.setBlocking(true);
-    const bin = os.platform() === 'win32' ? `${binPath}.cmd` : binPath;
+    const bin = os.platform() === 'win32' && binPath === 'ng' ? `${binPath}.cmd` : binPath;
     const childProcess = child_process.spawn(bin, args, {
       env: { ...process.env, ...env },
       cwd: process.cwd(),
