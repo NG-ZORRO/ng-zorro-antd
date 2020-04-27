@@ -402,6 +402,26 @@ describe('Calendar', () => {
       expect(component.selectChange).toHaveBeenCalledTimes(2);
     });
   });
+
+  describe('monthScope', () => {
+    let fixture: ComponentFixture<NzTestCalendarMonthCellComponent>;
+
+    beforeEach(async(() => {
+      fixture = TestBed.createComponent(NzTestCalendarMonthCellComponent);
+    }));
+
+    it('should only show date of active month', () => {
+      fixture.detectChanges();
+
+      const host = fixture.debugElement.queryAll(By.directive(Calendar))[2];
+      const tds = host.queryAll(By.css('td'));
+      expect(tds.length).toEqual(30);
+      const firstTd = tds[0].query(By.css('.ant-picker-calendar-date-value'));
+      expect(firstTd.nativeElement.textContent).toEqual('1');
+      const lastTd = tds[tds.length - 1].query(By.css('.ant-picker-calendar-date-value'));
+      expect(lastTd.nativeElement.textContent).toEqual('30');
+    });
+  });
 });
 
 @Component({
@@ -469,9 +489,12 @@ class NzTestCalendarDateFullCellComponent {}
     <nz-calendar nzMode="year">
       <ng-container *nzMonthCell>Bar</ng-container>
     </nz-calendar>
+    <nz-calendar [(ngModel)]="date" [nzMonthScope]="true"></nz-calendar>
   `
 })
-class NzTestCalendarMonthCellComponent {}
+class NzTestCalendarMonthCellComponent {
+  date = new Date(2020, 9, 17);
+}
 
 @Component({
   template: `
