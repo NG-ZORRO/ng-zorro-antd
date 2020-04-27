@@ -25,6 +25,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | `[nzClosable]` | 是否显示右上角的关闭按钮 | `boolean` | `true` |
 | `[nzMaskClosable]` | 点击蒙层是否允许关闭 | `boolean` | `true` | ✅ |
 | `[nzMask]` | 是否展示遮罩 | `boolean` | `true` | ✅ |
+| `[nzCloseOnNavigation]`    | 导航历史变化时是否关闭抽屉组件 | `boolean` | `true` | ✅ |
 | `[nzMaskStyle]` | 遮罩样式 | `object` | `{}` |
 | `[nzKeyboard]` | 是否支持键盘 esc 关闭 | `boolean` | `true` |
 | `[nzBodyStyle]` | Drawer body 样式 | `object` | `{}` |
@@ -55,6 +56,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | nzClosable | 是否显示右上角的关闭按钮 | `boolean` | `true` |
 | nzMaskClosable | 点击蒙层是否允许关闭 | `boolean` | `true` |
 | nzMask | 是否展示遮罩 | `boolean` | `true` |
+| nzCloseOnNavigation    | 导航历史变化时是否关闭抽屉组件 | `boolean` | `true` |
 | nzKeyboard | 是否支持键盘esc关闭 | `boolean` | `true` |
 | nzMaskStyle | 遮罩样式 | `object` | `{}` |
 | nzBodyStyle | Modal body 样式 | `object` | `{}` |
