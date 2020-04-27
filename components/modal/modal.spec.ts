@@ -1384,6 +1384,20 @@ describe('NzModal', () => {
         modalInstance.triggerCancel();
       }).not.toThrowError();
     }));
+
+    it('should close when the host view is destroyed', fakeAsync(() => {
+      componentInstance.isVisible = true;
+      componentFixture.detectChanges();
+      flush();
+
+      expect(overlayContainerElement.querySelector('nz-modal-container')).not.toBeNull();
+
+      componentFixture.destroy();
+      componentFixture.detectChanges();
+      flush();
+
+      expect(overlayContainerElement.querySelector('nz-modal-container')).toBeNull();
+    }));
   });
 });
 

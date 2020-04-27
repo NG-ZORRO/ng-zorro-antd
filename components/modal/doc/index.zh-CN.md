@@ -43,6 +43,7 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 | nzKeyboard        | 是否支持键盘esc关闭 | `boolean` | `true` |
 | nzMask            | 是否展示遮罩 | `boolean` | `true` | ✅ |
 | nzMaskClosable    | 点击蒙层是否允许关闭 | `boolean` | `true` | ✅ |
+| nzCloseOnNavigation    | 导航历史变化时是否关闭模态框 | `boolean` | `true` | ✅ |
 | nzMaskStyle       | 遮罩样式 | `object` | - |
 | nzOkText          | 确认按钮文字。<i>设为 null 表示不显示确认按钮（若在普通模式下使用了 nzFooter 参数，则该值无效）</i> | `string` | 确定 |
 | nzOkType          | 确认按钮类型。<i>与button的type类型值一致</i> | `string` | primary |
