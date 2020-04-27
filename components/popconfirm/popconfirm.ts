@@ -31,7 +31,6 @@ import { BooleanInput, NzTSType } from 'ng-zorro-antd/core/types';
 
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger } from 'ng-zorro-antd/tooltip';
-import { NzFollowScrollDirective } from 'ng-zorro-antd/tooltip/follow-scroll.directive';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -87,10 +86,9 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
     hostView: ViewContainerRef,
     resolver: ComponentFactoryResolver,
     renderer: Renderer2,
-    followScroll: NzFollowScrollDirective,
     @Host() @Optional() noAnimation?: NzNoAnimationDirective
   ) {
-    super(elementRef, hostView, resolver, renderer, followScroll, noAnimation);
+    super(elementRef, hostView, resolver, renderer, noAnimation);
   }
 
   /**

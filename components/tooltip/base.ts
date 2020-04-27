@@ -31,7 +31,6 @@ import { NgClassInterface, NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorr
 import { isNotNil, toBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
-import { NzFollowScrollDirective } from './follow-scroll.directive';
 
 export type NzTooltipTrigger = 'click' | 'focus' | 'hover' | null;
 
@@ -123,7 +122,6 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
     protected hostView: ViewContainerRef,
     protected resolver: ComponentFactoryResolver,
     protected renderer: Renderer2,
-    protected followScroll: NzFollowScrollDirective,
     protected noAnimation?: NzNoAnimationDirective
   ) {}
 
@@ -172,7 +170,6 @@ Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popcon
   ngAfterViewInit(): void {
     this.createComponent();
     this.registerTriggers();
-    this.followScroll.scroll$.pipe(takeUntil(this.destroy$)).subscribe(() => this.updatePosition());
   }
 
   ngOnDestroy(): void {

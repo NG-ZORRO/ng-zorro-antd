@@ -26,7 +26,6 @@ import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { NzTSType } from 'ng-zorro-antd/core/types';
 
 import { isTooltipEmpty, NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger } from 'ng-zorro-antd/tooltip';
-import { NzFollowScrollDirective } from 'ng-zorro-antd/tooltip/follow-scroll.directive';
 
 @Directive({
   selector: '[nz-popover]',
@@ -50,10 +49,9 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
     hostView: ViewContainerRef,
     resolver: ComponentFactoryResolver,
     renderer: Renderer2,
-    followScroll: NzFollowScrollDirective,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
-    super(elementRef, hostView, resolver, renderer, followScroll, noAnimation);
+    super(elementRef, hostView, resolver, renderer, noAnimation);
   }
 }
 
