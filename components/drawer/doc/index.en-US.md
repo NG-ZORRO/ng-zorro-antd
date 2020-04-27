@@ -30,6 +30,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | `[nzMaskStyle]` | Style for Drawer's mask element. | `object` | `{}` |
 | `[nzBodyStyle]` | Body style for drawer body element. Such as height, padding etc. | `object` | `{}` |
 | `[nzTitle]` | The title for Drawer. | `string \| TemplateRef<void>` | - |
+| `[nzExtra]` | Content to render in the top-right corner of the Drawer. | `string \| TemplateRef<void>` | - |
 | `[nzVisible]` | Whether the Drawer dialog is visible or not. | `boolean` | `false` |
 | `[nzPlacement]` | The placement of the Drawer. | `'top' \| 'right' \| 'bottom' \| 'left'` | `'right'` |
 | `[nzWidth]` | Width of the Drawer dialog, only when placement is `'right'` or `'left'`.  | `number \| string` | `256` |
@@ -60,6 +61,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | nzMaskStyle | Style for Drawer's mask element. | `object` | `{}` |
 | nzBodyStyle | Body style for modal body element. Such as height, padding etc. | `object` | `{}` |
 | nzTitle | The title for Drawer. | `string \| TemplateRef<void>` | - |
+| nzExtra | Content to render in the top-right corner of the Drawer. | `string \| TemplateRef<void>` | - |
 | nzWidth |  Width of the Drawer dialog.  | `number \| string` | `256` |
 | nzHeight | Height of the Drawer dialog, only when placement is `'top'` or `'bottom'`.  | `number \| string` | `256` |
 | nzWrapClassName | The class name of the container of the Drawer dialog. | `string` | - |
