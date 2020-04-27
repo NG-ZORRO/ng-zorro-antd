@@ -15,18 +15,21 @@
   // Fixing https://github.com/ant-design/ant-design/issues/12978
   // Fixing https://github.com/ant-design/ant-design/issues/20058
   // Fixing https://github.com/ant-design/ant-design/issues/19972
+  // Fixing https://github.com/ant-design/ant-design/issues/12978
   // Fixing https://github.com/ant-design/ant-design/issues/18107
   // Fixing https://github.com/ant-design/ant-design/issues/13214
   // It is a render problem of chrome, which is only happened in the codesandbox demo
   // 0.001px solution works and I don't why
-  line-height: @line-height-base;
+  line-height: @line-height-base - 0.001;
   .btn;
   .btn-default;
+
   // Make sure that the target of Button's click event always be `button`
   // Ref: https://github.com/ant-design/ant-design/issues/7034
   > i,
   > span {
     display: inline-block;
+    transition: margin-left 0.3s @ease-in-out;
     pointer-events: none;
   }
 
@@ -45,7 +48,6 @@
     .@{btn-prefix-cls}-group &:first-child {
       &:not(:last-child) {
         border-right-color: @btn-group-border;
-
         &[disabled] {
           border-right-color: @btn-default-border;
         }
@@ -55,7 +57,6 @@
     .@{btn-prefix-cls}-group &:last-child:not(:first-child),
     .@{btn-prefix-cls}-group & + & {
       border-left-color: @btn-group-border;
-
       &[disabled] {
         border-left-color: @btn-default-border;
       }
@@ -70,26 +71,12 @@
     .btn-dashed;
   }
 
-  // type="danger" will deprecated
-  // use danger instead
   &-danger {
     .btn-danger;
   }
 
   &-link {
     .btn-link;
-  }
-
-  &-dangerous {
-    .btn-danger-default;
-  }
-
-  &-dangerous&-primary {
-    .btn-danger;
-  }
-
-  &-dangerous&-link {
-    .btn-danger-link;
   }
 
   &-icon-only {
@@ -146,17 +133,23 @@
     &:not([disabled]) {
       pointer-events: none;
     }
+  }
 
-    &::before {
-      display: block;
+  &&-loading::before {
+    display: block;
+  }
+
+  &&-loading:not(&-circle):not(&-circle-outline):not(&-icon-only) {
+    padding-left: 29px;
+    .@{iconfont-css-prefix}:not(:last-child) {
+      margin-left: -14px;
     }
   }
 
-  & > &-loading-icon {
-    transition: all 0.3s @ease-in-out;
-
+  &-sm&-loading:not(&-circle):not(&-circle-outline):not(&-icon-only) {
+    padding-left: 24px;
     .@{iconfont-css-prefix} {
-      padding-right: @margin-xs;
+      margin-left: -17px;
     }
   }
 
@@ -173,13 +166,13 @@
   // To ensure that a space will be placed between character and `Icon`.
   > .@{iconfont-css-prefix} + span,
   > span + .@{iconfont-css-prefix} {
-    margin-left: @margin-xs;
+    margin-left: 8px;
   }
 
   &-background-ghost {
-    color: @btn-default-ghost-color;
-    background: @btn-default-ghost-bg !important;
-    border-color: @btn-default-ghost-border;
+    color: @component-background;
+    background: transparent !important;
+    border-color: @component-background;
   }
 
   &-background-ghost&-primary {
@@ -190,18 +183,10 @@
     .button-variant-ghost(@btn-danger-border);
   }
 
-  &-background-ghost&-dangerous {
-    .button-variant-ghost(@btn-danger-border);
-  }
-
-  &-background-ghost&-dangerous&-link {
-    .button-variant-ghost(@btn-danger-border, transparent);
-  }
-
   &-background-ghost&-link {
     .button-variant-ghost(@link-color; transparent);
 
-    color: @btn-link-ghost-color;
+    color: @component-background;
   }
 
   &-two-chinese-chars::first-letter {
@@ -218,12 +203,8 @@
   }
 
   // https://github.com/ant-design/ant-design/issues/12681
-  // same method as Select
   &:empty {
-    display: inline-block;
-    width: 0;
-    visibility: hidden;
-    content: '\a0';
+    vertical-align: top;
   }
 }
 
@@ -241,5 +222,3 @@ a.@{btn-prefix-cls} {
     line-height: @btn-height-sm - 2px;
   }
 }
-
-@import './rtl';

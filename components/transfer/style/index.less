@@ -1,7 +1,7 @@
 @import '../../style/themes/index';
 @import '../../style/mixins/index';
 @import '../../checkbox/style/mixin';
-@import './customize';
+@import './customize.less';
 
 @transfer-prefix-cls: ~'@{ant-prefix}-transfer';
 
@@ -35,18 +35,16 @@
     }
 
     &-search {
-      padding-right: 24px !important;
-      padding-left: @control-padding-horizontal-sm;
+      padding: 0 24px 0 @control-padding-horizontal-sm;
       &-action {
         position: absolute;
-        top: @transfer-list-search-icon-top;
+        top: 12px;
         right: 12px;
         bottom: 12px;
         width: 28px;
         color: @disabled-color;
         line-height: @input-height-base;
         text-align: center;
-
         .@{iconfont-css-prefix} {
           color: @disabled-color;
           transition: all 0.3s;
@@ -94,12 +92,12 @@
         top: 0;
         left: 0;
         width: 100%;
-        padding: @padding-sm;
+        padding: 12px;
       }
     }
 
     &-body-with-search {
-      padding-top: @input-height-base + @padding-sm * 2;
+      padding-top: @input-height-base + 24px;
     }
 
     &-content {
@@ -108,9 +106,13 @@
       padding: 0;
       overflow: auto;
       list-style: none;
+      > .LazyLoad {
+        animation: transferHighlightIn 1s;
+      }
+
       &-item {
-        min-height: @transfer-item-height;
-        padding: @transfer-item-padding-vertical @control-padding-horizontal;
+        min-height: 32px;
+        padding: 6px @control-padding-horizontal;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -124,12 +126,8 @@
       }
 
       &-item:not(&-item-disabled):hover {
-        background-color: @transfer-item-hover-bg;
+        background-color: @item-hover-bg;
         cursor: pointer;
-      }
-
-      &-item-checked {
-        background-color: @item-active-bg;
       }
 
       &-item-disabled {
@@ -183,4 +181,11 @@
   }
 }
 
-@import './rtl';
+@keyframes transferHighlightIn {
+  0% {
+    background: @primary-2;
+  }
+  100% {
+    background: transparent;
+  }
+}
