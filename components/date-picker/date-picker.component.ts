@@ -134,7 +134,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   @Input() @InputBoolean() nzAllowClear: boolean = true;
   @Input() @InputBoolean() nzAutoFocus: boolean = false;
   @Input() @InputBoolean() nzDisabled: boolean = false;
-  @Input() @InputBoolean() nzOpen: boolean = false;
+  @Input() @InputBoolean() nzOpen?: boolean;
   /**
    * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
    */
@@ -144,7 +144,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   @Input() nzPlaceHolder?: string | [string, string];
   @Input() nzPopupStyle: object = POPUP_STYLE_PATCH;
   @Input() nzDropdownClassName?: string;
-  @Input() nzSize: 'large' | 'small' = 'large';
+  @Input() nzSize?: 'large' | 'small';
   /**
    * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
    */
@@ -326,7 +326,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
 
   private setDefaultPlaceHolder(): void {
     if (!this.isCustomPlaceHolder && this.nzLocale) {
-      this.nzPlaceHolder = this.isRange ? this.nzLocale.lang.rangePlaceholder as [string, string] : this.nzLocale.lang.placeholder;
+      this.nzPlaceHolder = this.isRange ? (this.nzLocale.lang.rangePlaceholder as [string, string]) : this.nzLocale.lang.placeholder;
     }
   }
 
