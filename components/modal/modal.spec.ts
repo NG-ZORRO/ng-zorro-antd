@@ -1383,12 +1383,10 @@ class TestWithViewContainerDirective {
 }
 
 @Component({
-  template: `
-    <test-with-view-container></test-with-view-container>
-  `
+  template: ` <test-with-view-container></test-with-view-container> `
 })
 class TestWithChildViewContainerComponent {
-  @ViewChild(TestWithViewContainerDirective) childWithViewContainer: TestWithViewContainerDirective;
+  @ViewChild(TestWithViewContainerDirective) childWithViewContainer!: TestWithViewContainerDirective;
 
   get childViewContainer(): ViewContainerRef {
     return this.childWithViewContainer.viewContainerRef;
@@ -1412,9 +1410,9 @@ class TestWithOnPushViewContainerComponent {
   `
 })
 class TestWithServiceComponent {
-  value: string;
-  modalRef: NzModalRef;
-  @ViewChild(TemplateRef) templateRef: TemplateRef<{}>;
+  value?: string;
+  modalRef?: NzModalRef;
+  @ViewChild(TemplateRef) templateRef!: TemplateRef<{}>;
 
   constructor(public nzModalService: NzModalService, public viewContainerRef: ViewContainerRef) {}
 
@@ -1432,7 +1430,7 @@ class TestWithServiceComponent {
   `
 })
 class TestWithModalContentComponent {
-  @Input() value: string;
+  @Input() value?: string;
 
   constructor(public modalRef: NzModalRef, public modalInjector: Injector) {}
 
@@ -1453,8 +1451,8 @@ class TestModalComponent {
   isVisible = false;
   cancelSpy = jasmine.createSpy('cancel spy');
   okSpy = jasmine.createSpy('ok spy');
-  @ViewChild(NzModalComponent) nzModalComponent: NzModalComponent;
-  @ViewChild(TemplateRef) templateRef: TemplateRef<{}>;
+  @ViewChild(NzModalComponent) nzModalComponent!: NzModalComponent;
+  @ViewChild(TemplateRef) templateRef!: TemplateRef<{}>;
   content: TemplateRef<{}> = this.templateRef;
 
   constructor() {}

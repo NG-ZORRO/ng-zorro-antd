@@ -135,21 +135,19 @@ describe('alert', () => {
   `
 })
 export class NzDemoTestBasicComponent {
-  @ViewChild('template', { static: false }) template: TemplateRef<void>;
+  @ViewChild('template', { static: false }) template!: TemplateRef<void>;
   banner = false;
   closeable = false;
-  closeText: string | TemplateRef<void>;
+  closeText?: string | TemplateRef<void>;
   description: string | TemplateRef<void> = 'description';
   message: string | TemplateRef<void> = 'message';
   showIcon = false;
-  iconType: string;
+  iconType?: string;
   type = 'info';
   onClose = jasmine.createSpy('close callback');
 }
 
 @Component({
-  template: `
-    <nz-alert nzBanner> </nz-alert>
-  `
+  template: ` <nz-alert nzBanner> </nz-alert> `
 })
 export class NzDemoTestBannerComponent {}

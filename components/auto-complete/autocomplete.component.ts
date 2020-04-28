@@ -99,7 +99,7 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
 
   showPanel: boolean = true;
   isOpen: boolean = false;
-  activeItem?: NzAutocompleteOptionComponent;
+  activeItem!: NzAutocompleteOptionComponent;
   dropDownPosition: NzDropDownPosition = 'bottom';
 
   /**

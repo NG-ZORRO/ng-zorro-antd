@@ -268,7 +268,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
       throw getNzAutocompleteMissingPanelError();
     }
 
-    if (!this.portal) {
+    if (!this.portal && this.nzAutocomplete.template) {
       this.portal = new TemplatePortal(this.nzAutocomplete.template, this.viewContainerRef);
     }
 

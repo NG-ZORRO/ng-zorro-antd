@@ -109,11 +109,11 @@ describe('NzPopover', () => {
   `
 })
 export class NzPopoverTestComponent {
-  @ViewChild('stringPopover', { static: false }) stringPopover: ElementRef;
+  @ViewChild('stringPopover', { static: false }) stringPopover!: ElementRef;
   @ViewChild('stringPopover', { static: false, read: NzPopoverDirective })
-  stringPopoverNzPopoverDirective: NzPopoverDirective;
+  stringPopoverNzPopoverDirective!: NzPopoverDirective;
 
-  @ViewChild('templatePopover', { static: false }) templatePopover: ElementRef;
+  @ViewChild('templatePopover', { static: false }) templatePopover!: ElementRef;
   @ViewChild('templatePopover', { static: false, read: NzPopoverDirective })
-  templatePopoverNzPopoverDirective: NzPopoverDirective;
+  templatePopoverNzPopoverDirective!: NzPopoverDirective;
 }

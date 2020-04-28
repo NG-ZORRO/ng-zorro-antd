@@ -198,7 +198,7 @@ describe('layout', () => {
 export class NzLayoutCustomTriggerComponent {
   isCollapsed = false;
   triggerTemplate: TemplateRef<void> | null = null;
-  @ViewChild('trigger', { static: true }) customTrigger: TemplateRef<void>;
+  @ViewChild('trigger', { static: true }) customTrigger!: TemplateRef<void>;
 
   /** custom trigger can be TemplateRef **/
   changeTrigger(): void {

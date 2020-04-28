@@ -68,7 +68,7 @@ https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md`
   template: ''
 })
 export class NzI18nTestComponent implements OnDestroy {
-  locale: NzI18nInterface;
+  locale!: NzI18nInterface;
 
   private localeSubscription: Subscription;
 

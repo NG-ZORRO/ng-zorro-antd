@@ -145,7 +145,7 @@ export class NzPopconfirmTestNewComponent {
   condition = false;
   icon: string | undefined = undefined;
 
-  @ViewChild('stringTemplate', { static: false }) stringTemplate: ElementRef;
-  @ViewChild('templateTemplate', { static: false }) templateTemplate: ElementRef;
-  @ViewChild('iconTemplate', { static: false }) iconTemplate: ElementRef;
+  @ViewChild('stringTemplate', { static: false }) stringTemplate!: ElementRef;
+  @ViewChild('templateTemplate', { static: false }) templateTemplate!: ElementRef;
+  @ViewChild('iconTemplate', { static: false }) iconTemplate!: ElementRef;
 }

@@ -518,9 +518,8 @@ class NzTestDrawerComponent {
   noAnimation = false;
   offsetX = 0;
   offsetY = 0;
-  @ViewChild('customTitle', { static: false }) templateTitle: TemplateRef<void>;
-
-  @ViewChild(NzDrawerComponent, { static: false }) drawerComponent: NzDrawerComponent;
+  @ViewChild('customTitle', { static: false }) templateTitle!: TemplateRef<void>;
+  @ViewChild(NzDrawerComponent, { static: false }) drawerComponent!: NzDrawerComponent;
 
   open(): void {
     this.visible = true;
@@ -539,13 +538,13 @@ class NzTestDrawerComponent {
   `
 })
 class NzTestDrawerWithServiceComponent {
-  @ViewChild('drawerTemplate', { static: false }) drawerTemplate: TemplateRef<{
+  @ViewChild('drawerTemplate', { static: false }) drawerTemplate!: TemplateRef<{
     $implicit: number;
     drawerRef: NzDrawerRef;
   }>;
   templateOpenSpy = jasmine.createSpy('template afterOpen spy');
   templateCloseSpy = jasmine.createSpy('template afterClose spy');
-  templateDrawerRef: NzDrawerRef;
+  templateDrawerRef?: NzDrawerRef;
 
   constructor(private drawerService: NzDrawerService) {}
 

@@ -216,12 +216,12 @@ describe('avatar', () => {
   styleUrls: ['./style/index.less']
 })
 class TestAvatarComponent {
-  @ViewChild('comp', { static: false }) comp: NzAvatarComponent;
+  @ViewChild('comp', { static: false }) comp!: NzAvatarComponent;
   nzShape = 'square';
   nzSize: string | number = 'large';
   nzIcon: string | null = 'user';
   nzText: string | null = 'A';
   nzSrc: string | null = imageBase64;
-  nzSrcSet: string;
-  nzAlt: string;
+  nzSrcSet?: string;
+  nzAlt?: string;
 }
