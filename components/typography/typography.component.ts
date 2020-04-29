@@ -62,15 +62,15 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
     </ng-template>
 
     <ng-container *ngIf="!editing">
-      <ng-container *ngIf="expanded || (!nzExpandable && !nzSuffix && nzEllipsisRows === 1) || canCssEllipsis">
+      <ng-container *ngIf="(expanded || (!nzExpandable && nzEllipsisRows === 1) || canCssEllipsis) && !nzSuffix; else jsEllipsis">
         <ng-template [ngTemplateOutlet]="contentTemplate" [ngTemplateOutletContext]="{ content: nzContent }"></ng-template>
       </ng-container>
-      <ng-container *ngIf="(nzEllipsis && !expanded && (nzEllipsisRows > 1 || nzExpandable)) || nzSuffix">
-        <span #ellipsisContainer *ngIf="!expanded"></span>
+      <ng-template #jsEllipsis>
+        <span #ellipsisContainer></span>
         <ng-container *ngIf="isEllipsis">{{ ellipsisStr }}</ng-container>
         <ng-container *ngIf="nzSuffix">{{ nzSuffix }}</ng-container>
         <a #expandable *ngIf="nzExpandable && isEllipsis" class="ant-typography-expand" (click)="onExpand()">{{ locale?.expand }}</a>
-      </ng-container>
+      </ng-template>
     </ng-container>
 
     <nz-text-edit *ngIf="nzEditable" [text]="nzContent" (endEditing)="onEndEditing($event)" (startEditing)="onStartEditing()">
