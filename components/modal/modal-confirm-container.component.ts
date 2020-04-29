@@ -8,7 +8,7 @@
 
 import { FocusTrapFactory } from '@angular/cdk/a11y';
 import { OverlayRef } from '@angular/cdk/overlay';
-import { CdkPortalOutlet, ComponentPortal } from '@angular/cdk/portal';
+import { CdkPortalOutlet } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -140,10 +140,6 @@ export class NzModalConfirmContainerComponent extends BaseModalContainer impleme
 
   onOk(): void {
     this.okTriggered.emit();
-  }
-
-  attachComponentPortal<T>(_portal: ComponentPortal<T>): never {
-    throw new Error('The confirm mode does not support using component as content');
   }
 
   ngOnDestroy(): void {

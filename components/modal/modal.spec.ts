@@ -1161,14 +1161,6 @@ describe('NzModal', () => {
       expect(overlayContainerElement.querySelectorAll('nz-modal-confirm-container').length).toBe(0);
     }));
 
-    it('should the cancel button work', fakeAsync(() => {
-      expect(() => {
-        modalService.confirm({
-          nzContent: TestWithServiceComponent
-        });
-      }).toThrowError('The confirm mode does not support using component as content');
-    }));
-
     it('should info type work', fakeAsync(() => {
       const modalRef = modalService.info();
       fixture.detectChanges();
@@ -1232,6 +1224,24 @@ describe('NzModal', () => {
       fixture.detectChanges();
       flush();
     }));
+
+    it('should open confirm with component', () => {
+      const modalRef = modalService.confirm({
+        nzContent: TestWithModalContentComponent,
+        nzComponentParams: {
+          value: 'Confirm'
+        }
+      });
+
+      fixture.detectChanges();
+
+      const modalContentElement = overlayContainerElement.querySelector('.modal-content');
+      expect(modalContentElement).toBeTruthy();
+      expect(modalContentElement!.textContent).toBe('Hello Confirm');
+      expect(modalRef.getContentComponent() instanceof TestWithModalContentComponent).toBe(true);
+      expect(modalRef.getContentComponent().modalRef).toBe(modalRef);
+      modalRef.close();
+    });
   });
 
   describe('nz-modal component', () => {
@@ -1383,9 +1393,7 @@ class TestWithViewContainerDirective {
 }
 
 @Component({
-  template: `
-    <test-with-view-container></test-with-view-container>
-  `
+  template: ` <test-with-view-container></test-with-view-container> `
 })
 class TestWithChildViewContainerComponent {
   @ViewChild(TestWithViewContainerDirective) childWithViewContainer: TestWithViewContainerDirective;
