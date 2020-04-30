@@ -9,7 +9,7 @@
   "scripts": {
     "start": "gulp start:dev",
     "test": "ng test --no-watch --no-progress --browsers=ChromeHeadlessCI --code-coverage",
-    "test:watch": "gulp test:watch --tags $tags",
+    "test:watch": "gulp test:watch --tags",
     "test:schematics": "gulp build:schematics && gulp test:schematics",
     "build": "gulp build:release",
     "build:lib": "gulp build:library",
