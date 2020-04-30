@@ -1180,7 +1180,7 @@ class NzTestAutocompleteWithObjectOptionComponent {
   `
 })
 class NzTestAutocompleteWithGroupInputComponent {
-  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger: NzAutocompleteTriggerDirective;
-  @ViewChild('inputGroupComponent', { static: false, read: ElementRef }) inputGroupComponent: ElementRef;
+  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
+  @ViewChild('inputGroupComponent', { static: false, read: ElementRef }) inputGroupComponent!: ElementRef;
   constructor() {}
 }
