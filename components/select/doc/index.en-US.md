@@ -31,6 +31,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[compareWith]` | Same as [SelectControlValueAccessor](https://angular.io/api/forms/SelectControlValueAccessor#caveat-option-selection) | `(o1: any, o2: any) => boolean` | `(o1: any, o2: any) => o1===o2` |
 | `[nzAutoClearSearchValue]` | Whether the current search will be cleared on selecting an item. Only applies when `mode` is set to `multiple` or `tags`. | `boolean` | `true` |
 | `[nzAllowClear]` | Show clear button. | `boolean` | `false` |
+| `[nzBorderless]` | whether has borderless style | `boolean` | `false` |
 | `[nzOpen]` | dropdown expand state, double binding | `boolean` | `false` |
 | `[nzAutoFocus]` | Get focus by default | `boolean` | `false` |
 | `[nzDisabled]` | Whether disabled select | `boolean` | `false` |
