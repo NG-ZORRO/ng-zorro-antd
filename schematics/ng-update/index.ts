@@ -1,5 +1,5 @@
 import { Rule } from '@angular-devkit/schematics';
-import { createUpgradeRule, TargetVersion } from '@angular/cdk/schematics';
+import { createMigrationSchematicRule, TargetVersion } from '@angular/cdk/schematics';
 import chalk from 'chalk';
 import { ruleUpgradeData } from './upgrade-data';
 import { CalendarTemplateRule } from './upgrade-rules/checks/calendar-input-rule';
@@ -14,12 +14,12 @@ import { TooltipLikeTemplateRule } from './upgrade-rules/checks/tooltip-like-tem
 
 /** Entry point for the migration schematics with target of NG-ZORRO v7 */
 export function updateToV7(): Rule {
-  return createUpgradeRule(TargetVersion.V7, [TooltipLikeTemplateRule], ruleUpgradeData, postUpdate);
+  return createMigrationSchematicRule(TargetVersion.V7, [TooltipLikeTemplateRule], ruleUpgradeData, postUpdate);
 }
 
 /** Entry point for the migration schematics with target of NG-ZORRO v9 */
 export function updateToV9(): Rule {
-  return createUpgradeRule(
+  return createMigrationSchematicRule(
     TargetVersion.V9,
     [
       TooltipLikeTemplateRule,

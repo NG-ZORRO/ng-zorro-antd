@@ -1,8 +1,8 @@
-import { MigrationRule, TargetVersion} from '@angular/cdk/schematics';
+import { Migration, TargetVersion, UpgradeData } from '@angular/cdk/schematics';
 import * as ts from 'typescript';
 
-export class SecondaryEntryPointsRule extends MigrationRule<null> {
-  ruleEnabled = this.targetVersion === TargetVersion.V9;
+export class SecondaryEntryPointsRule extends Migration<UpgradeData> {
+  enabled = this.targetVersion === TargetVersion.V9;
 
   visitNode(declaration: ts.Node): void {
     if (!ts.isImportDeclaration(declaration) ||
