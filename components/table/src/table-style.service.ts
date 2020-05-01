@@ -30,9 +30,8 @@ export class NzTableStyleService {
   listOfListOfThWidthPx$ = merge(
     this.manualWidthConfigPx$,
     combineLatest([this.listOfAutoWidthPx$, this.manualWidthConfigPx$]).pipe(
-      map(([autoWidth, manualWidth]) => {
-        /** use autoWidth until column length match **/
-        return autoWidth.length !== manualWidth.length ? manualWidth : autoWidth;
+      map(([_, manualWidth]) => {
+        return manualWidth;
       })
     )
   );
