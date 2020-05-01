@@ -79,8 +79,8 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   @Input() nzCloseIcon: string | TemplateRef<void> = 'close';
   @Input() nzMaskStyle?: StyleObjectLike;
   @Input() nzBodyStyle?: StyleObjectLike;
-  @Input() nzOkText: string | null = null;
-  @Input() nzCancelText: string | null = null;
+  @Input() nzOkText?: string | null;
+  @Input() nzCancelText?: string | null;
   @Input() nzOkType: NzButtonType = 'primary';
   @Input() nzIconType: string = 'question-circle'; // Confirm Modal ONLY
   @Input() nzModalType: ModalTypes = 'default';

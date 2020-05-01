@@ -271,7 +271,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     if (this.nzDisabled) {
       return;
     }
-    const value = this.getCurrentValidValue(this.parsedValue || 0);
+    const value = this.getCurrentValidValue(this.parsedValue!) || 0;
     let val = 0;
     if (type === 'up') {
       val = this.upStep(value, ratio);

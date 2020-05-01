@@ -168,6 +168,6 @@ export class NzTestBadgeBasicComponent {
   status!: string;
   style!: NgStyleInterface;
   text!: string;
-  title: string | null = null;
+  title?: string | null;
   offset?: [number, number];
 }
