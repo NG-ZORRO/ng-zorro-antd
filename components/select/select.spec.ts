@@ -606,6 +606,28 @@ describe('select', () => {
       fixture.detectChanges();
       expect(listOfItem[2].textContent).toBe(' and 2 more selected ');
     }));
+    it('should nzMaxTagTextLength works', fakeAsync(() => {
+      component.listOfOption = [
+        { nzValue: 'test_01', nzLabel: 'oneword' },
+        { nzValue: 'test_02', nzLabel: 'two words' },
+        { nzValue: 'test_03', nzLabel: '3' },
+        { nzValue: 'test_04', nzLabel: 'four' },
+        { nzValue: 'test_05', nzLabel: 'five' }
+      ];
+      component.value = ['test_01', 'test_02', 'test_03', 'test_04', 'test_05'];
+      component.nzMaxTagTextLength = 4;
+      component.nzMaxTagCount = 4;
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      const listOfItem = selectElement.querySelectorAll('nz-select-item');
+      expect(listOfItem.length).toBe(5);
+      expect(listOfItem[0].querySelector('.ant-select-selection-item-content')!.textContent).toBe('onew…');
+      expect(listOfItem[1].querySelector('.ant-select-selection-item-content')!.textContent).toBe('two…');
+      expect(listOfItem[2].querySelector('.ant-select-selection-item-content')!.textContent).toBe('3');
+      expect(listOfItem[3].querySelector('.ant-select-selection-item-content')!.textContent).toBe('four');
+      expect(listOfItem[4].querySelector('.ant-select-selection-item-content')!.textContent).toBe('+ 1 ...');
+    }));
   });
   describe('default reactive mode', () => {
     let testBed: ComponentBed<TestSelectReactiveDefaultComponent>;
@@ -1086,6 +1108,28 @@ describe('select', () => {
       fixture.detectChanges();
       expect(listOfItem[2].textContent).toBe(' and 2 more selected ');
     }));
+    it('should nzMaxTagTextLength works', fakeAsync(() => {
+      component.listOfOption = [
+        { value: 'test_01', label: 'oneword' },
+        { value: 'test_02', label: 'two words' },
+        { value: 'test_03', label: '3' },
+        { value: 'test_04', label: 'four' },
+        { value: 'test_05', label: 'five' }
+      ];
+      component.value = ['test_01', 'test_02', 'test_03', 'test_04', 'test_05'];
+      component.nzMaxTagTextLength = 4;
+      component.nzMaxTagCount = 4;
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      const listOfItem = selectElement.querySelectorAll('nz-select-item');
+      expect(listOfItem.length).toBe(5);
+      expect(listOfItem[0].querySelector('.ant-select-selection-item-content')!.textContent).toBe('onew…');
+      expect(listOfItem[1].querySelector('.ant-select-selection-item-content')!.textContent).toBe('two…');
+      expect(listOfItem[2].querySelector('.ant-select-selection-item-content')!.textContent).toBe('3');
+      expect(listOfItem[3].querySelector('.ant-select-selection-item-content')!.textContent).toBe('four');
+      expect(listOfItem[4].querySelector('.ant-select-selection-item-content')!.textContent).toBe('+ 1 ...');
+    }));
   });
 });
 
@@ -1222,6 +1266,7 @@ export class TestSelectTemplateMultipleComponent {
       [(ngModel)]="value"
       [nzSize]="nzSize"
       [nzMaxTagCount]="nzMaxTagCount"
+      [nzMaxTagTextLength]="nzMaxTagTextLength"
       [nzTokenSeparators]="nzTokenSeparators"
       [nzMaxTagPlaceholder]="nzMaxTagPlaceholder"
       (ngModelChange)="valueChange($event)"
@@ -1241,6 +1286,7 @@ export class TestSelectTemplateTagsComponent {
   @ViewChild('tagTemplate') tagTemplate: TemplateRef<NzSafeAny>;
   nzSize: NzSelectSizeType = 'default';
   nzMaxTagCount = Infinity;
+  nzMaxTagTextLength = Infinity;
   value: NzSafeAny[] = [];
   listOfOption: NzSelectItemInterface[] = [];
   valueChange = jasmine.createSpy('valueChange');
@@ -1359,6 +1405,7 @@ export class TestSelectReactiveMultipleComponent {
       [nzOptions]="listOfOption"
       [nzSize]="nzSize"
       [nzMaxTagCount]="nzMaxTagCount"
+      [nzMaxTagTextLength]="nzMaxTagTextLength"
       [nzTokenSeparators]="nzTokenSeparators"
       [nzMaxTagPlaceholder]="nzMaxTagPlaceholder"
       (ngModelChange)="valueChange($event)"
@@ -1371,6 +1418,7 @@ export class TestSelectReactiveTagsComponent {
   @ViewChild('tagTemplate') tagTemplate: TemplateRef<NzSafeAny>;
   nzSize: NzSelectSizeType = 'default';
   nzMaxTagCount = Infinity;
+  nzMaxTagTextLength = Infinity;
   value: NzSafeAny[] = [];
   listOfOption: NzSelectOptionInterface[] = [];
   valueChange = jasmine.createSpy('valueChange');
