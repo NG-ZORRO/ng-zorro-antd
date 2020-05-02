@@ -7,6 +7,7 @@
 
 .@{drawer-prefix-cls} {
   @drawer-header-close-padding: ceil((@drawer-header-close-size - @font-size-lg) / 2);
+  @drawer-header-extra-margin-right: @drawer-header-close-size - @padding-lg;
 
   position: fixed;
   z-index: @zindex-modal;
@@ -144,6 +145,9 @@
     font-weight: 500;
     font-size: @font-size-lg;
     line-height: 22px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   &-content {
@@ -153,6 +157,21 @@
     background-color: @drawer-bg;
     background-clip: padding-box;
     border: 0;
+  }
+
+  &-extra {
+    float: right;
+    margin-left: auto;
+    margin-right: @drawer-header-extra-margin-right;
+    font-weight: normal;
+    font-size: @font-size-base;
+  }
+
+  &-extra-no-close {
+    float: right;
+    margin-left: auto;
+    font-weight: normal;
+    font-size: @font-size-base;
   }
 
   &-close {
@@ -191,6 +210,7 @@
   }
 
   &-header {
+    display: flex;
     position: relative;
     padding: @drawer-header-padding;
     color: @text-color;

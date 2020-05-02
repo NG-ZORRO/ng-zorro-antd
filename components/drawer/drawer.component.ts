@@ -72,9 +72,16 @@ const NZ_CONFIG_COMPONENT_NAME = 'drawer';
         >
           <div class="ant-drawer-content">
             <div class="ant-drawer-wrapper-body" [style.height]="isLeftOrRight ? '100%' : null">
-              <div *ngIf="nzTitle || nzClosable" [class.ant-drawer-header]="!!nzTitle" [class.ant-drawer-header-no-title]="!nzTitle">
+              <div
+                *ngIf="nzTitle || nzClosable || nzExtra"
+                [class.ant-drawer-header]="!!nzTitle || !!nzExtra"
+                [class.ant-drawer-header-no-title]="!nzTitle && !nzExtra"
+              >
                 <div *ngIf="nzTitle" class="ant-drawer-title">
-                  <ng-container *nzStringTemplateOutlet="nzTitle"><div [innerHTML]="nzTitle"></div></ng-container>
+                  <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+                </div>
+                <div *ngIf="nzExtra" [class.ant-drawer-extra]="!!nzClosable" [class.ant-drawer-extra-no-close]="!nzClosable">
+                  <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
                 </div>
                 <button *ngIf="nzClosable" (click)="closeClick()" aria-label="Close" class="ant-drawer-close" style="--scroll-bar: 0px;">
                   <i nz-icon nzType="close"></i>
@@ -111,6 +118,7 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> exte
   @Input() @InputBoolean() nzNoAnimation = false;
   @Input() @InputBoolean() nzKeyboard: boolean = true;
   @Input() nzTitle: string | TemplateRef<{}>;
+  @Input() nzExtra: string | TemplateRef<void>;
   @Input() nzPlacement: NzDrawerPlacement = 'right';
   @Input() nzMaskStyle: object = {};
   @Input() nzBodyStyle: object = {};
