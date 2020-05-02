@@ -25,6 +25,7 @@ const noopFun = () => void 0;
 
 export class ModalOptions<T = NzSafeAny, R = NzSafeAny> {
   nzClosable?: boolean = true;
+  nzDraggable?: boolean = false;
   nzOkLoading?: boolean = false;
   nzOkDisabled?: boolean = false;
   nzCancelDisabled?: boolean = false;

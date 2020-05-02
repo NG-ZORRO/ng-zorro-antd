@@ -5,6 +5,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { DragRef } from '@angular/cdk/drag-drop';
 import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { EventEmitter } from '@angular/core';
@@ -35,6 +36,7 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
   afterClose: Subject<R> = new Subject();
   afterOpen: Subject<void> = new Subject();
 
+  private dragRef: DragRef | null = null;
   private closeTimeout: number;
 
   constructor(private overlayRef: OverlayRef, private config: ModalOptions, public containerInstance: BaseModalContainer) {
@@ -44,6 +46,7 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
         take(1)
       )
       .subscribe(() => {
+        this.registerDragIfDraggable();
         this.afterOpen.next();
         this.afterOpen.complete();
         if (config.nzAfterOpen instanceof EventEmitter) {
@@ -58,6 +61,8 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
       )
       .subscribe(() => {
         clearTimeout(this.closeTimeout);
+        this.dragRef?.dispose();
+        this.dragRef = null;
         this.overlayRef.dispose();
       });
 
@@ -151,6 +156,7 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
 
   updateConfig(config: ModalOptions): void {
     Object.assign(this.config, config);
+    this.registerDragIfDraggable();
     this.containerInstance.cdr.markForCheck();
   }
 
@@ -164,6 +170,18 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
 
   getBackdropElement(): HTMLElement | null {
     return this.overlayRef.backdropElement;
+  }
+
+  getDragRef(): DragRef | null {
+    return this.dragRef;
+  }
+
+  private registerDragIfDraggable(): void {
+    if (this.config.nzDraggable && !this.dragRef) {
+      this.dragRef = this.containerInstance.registerDrag();
+    } else if (!this.config.nzDraggable) {
+      this.dragRef?.dispose();
+    }
   }
 
   private trigger(action: NzTriggerAction): void {

@@ -125,6 +125,8 @@ The dialog created by the service method `NzModalService.xxx()` will return a `N
 | getContentComponent()  | Gets the Component instance in the contents of the dialog for `nzContent`. <i> Note: When the dialog is not initialized (`ngOnInit` is not executed), this function will return `undefined`</i> |
 | triggerOk()               | Manually trigger nzOnOk |
 | triggerCancel()           | Manually trigger nzOnCancel |
+| updateConfig(option: ModalOptions) | Update option |
+| getDragRef(): DragRef \| null  | Get [CDK/DragRef](https://material.angular.io/cdk/drag-drop/api#DragRef) instance when the modal is draggable  |
 
 ### ModalButtonOptions (used to customize the bottom button)
 

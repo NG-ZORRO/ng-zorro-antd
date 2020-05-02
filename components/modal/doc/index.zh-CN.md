@@ -126,6 +126,8 @@ constructor(modal: NzModalService) {
 | getContentComponent()     | 获取对话框内容中`nzContent`的Component实例instance。<i>注：当对话框还未初始化完毕（`ngOnInit`未执行）时，此函数将返回`undefined`</i> |
 | triggerOk()               | 手动触发nzOnOk |
 | triggerCancel()           | 手动触发nzOnCancel |
+| updateConfig(option: ModalOptions) | 更新参数 |
+| getDragRef(): DragRef \| null  | 当模态框是可拖拽时获取 [CDK/DragRef](https://material.angular.io/cdk/drag-drop/api#DragRef) 实例 |
 
 ### ModalButtonOptions（用于自定义底部按钮）
 

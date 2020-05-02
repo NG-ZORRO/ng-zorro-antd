@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef } from '@angular/core';
 
 import { ModalOptions } from './modal-types';
 
@@ -26,5 +26,5 @@ import { ModalOptions } from './modal-types';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzModalTitleComponent {
-  constructor(public config: ModalOptions) {}
+  constructor(public config: ModalOptions, public elementRef: ElementRef<HTMLElement>) {}
 }
