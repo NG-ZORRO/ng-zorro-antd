@@ -111,6 +111,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzTransformFile: (file: UploadFile) => UploadTransformFileType;
   @Input() nzDownload: (file: UploadFile) => void;
   @Input() nzIconRender: TemplateRef<void>;
+  @Input() nzFileListRender: TemplateRef<void>;
 
   @Output() readonly nzChange: EventEmitter<UploadChangeParam> = new EventEmitter<UploadChangeParam>();
   @Output() readonly nzFileListChange: EventEmitter<UploadFile[]> = new EventEmitter<UploadFile[]>();
@@ -270,7 +271,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
 
   private detectChangesList(): void {
     this.cdr.detectChanges();
-    this.listComp.detectChanges();
+    this.listComp?.detectChanges();
   }
 
   onRemove = (file: UploadFile): void => {
