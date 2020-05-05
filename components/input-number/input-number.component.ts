@@ -59,6 +59,7 @@ import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
     <div class="ant-input-number-input-wrap">
       <input
         #inputElement
+        type="tel"
         autocomplete="off"
         class="ant-input-number-input"
         [attr.id]="nzId"
