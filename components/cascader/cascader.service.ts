@@ -63,7 +63,7 @@ export class NzCascaderService implements OnDestroy {
   /** To hold activated options before entering searching mode. */
   private activatedOptionsSnapshot: NzCascaderOption[] = [];
 
-  private cascaderComponent: NzCascaderComponentAsSource;
+  private cascaderComponent!: NzCascaderComponentAsSource;
 
   /** Return cascader options in the first layer. */
   get nzOptions(): NzCascaderOption[] {

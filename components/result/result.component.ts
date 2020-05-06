@@ -74,7 +74,7 @@ const ExceptionStatus = ['404', '500', '403'];
 })
 export class NzResultComponent implements OnChanges {
   @Input() nzIcon?: string | TemplateRef<void>;
-  @Input() nzTitle: string | TemplateRef<void>;
+  @Input() nzTitle?: string | TemplateRef<void>;
   @Input() nzStatus: NzResultStatusType = 'info';
   @Input() nzSubTitle?: string | TemplateRef<void>;
   @Input() nzExtra?: string | TemplateRef<void>;

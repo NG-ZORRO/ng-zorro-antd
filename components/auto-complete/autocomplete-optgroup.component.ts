@@ -22,7 +22,7 @@ import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulati
   `
 })
 export class NzAutocompleteOptgroupComponent {
-  @Input() nzLabel: string | TemplateRef<void>;
+  @Input() nzLabel?: string | TemplateRef<void>;
 
   constructor() {}
 }

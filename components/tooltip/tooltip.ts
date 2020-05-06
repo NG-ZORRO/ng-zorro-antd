@@ -35,10 +35,10 @@ import { isTooltipEmpty, NzTooltipBaseComponent, NzTooltipBaseDirective, NzToolt
   }
 })
 export class NzTooltipDirective extends NzTooltipBaseDirective {
-  @Input('nzTooltipTitle') specificTitle: NzTSType;
-  @Input('nz-tooltip') directiveNameTitle: NzTSType | null;
-  @Input('nzTooltipTrigger') specificTrigger: NzTooltipTrigger;
-  @Input('nzTooltipPlacement') specificPlacement: string;
+  @Input('nzTooltipTitle') specificTitle?: NzTSType;
+  @Input('nz-tooltip') directiveNameTitle?: NzTSType | null;
+  @Input('nzTooltipTrigger') specificTrigger?: NzTooltipTrigger;
+  @Input('nzTooltipPlacement') specificPlacement?: string;
   @Input('nzTooltipOrigin') specificOrigin?: ElementRef<HTMLElement>;
 
   componentFactory: ComponentFactory<NzToolTipComponent> = this.resolver.resolveComponentFactory(NzToolTipComponent);
@@ -93,7 +93,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   preserveWhitespaces: false
 })
 export class NzToolTipComponent extends NzTooltipBaseComponent {
-  @Input() nzTitle: NzTSType | null;
+  @Input() nzTitle: NzTSType | null = null;
 
   constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
     super(cdr, noAnimation);

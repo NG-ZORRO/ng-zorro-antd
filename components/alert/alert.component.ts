@@ -84,8 +84,8 @@ export class NzAlertComponent implements OnChanges, OnDestroy {
   @Input() nzMessage: string | TemplateRef<void> | null = null;
   @Input() nzDescription: string | TemplateRef<void> | null = null;
   @Input() nzType: 'success' | 'info' | 'warning' | 'error' = 'info';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzCloseable: boolean;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzShowIcon: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzCloseable: boolean = false;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzShowIcon: boolean = false;
   @Input() @InputBoolean() nzBanner = false;
   @Input() @InputBoolean() nzNoAnimation = false;
   @Output() readonly nzOnClose = new EventEmitter<boolean>();

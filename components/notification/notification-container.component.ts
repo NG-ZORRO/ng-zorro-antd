@@ -71,9 +71,9 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
   `
 })
 export class NzNotificationContainerComponent extends NzMNContainerComponent {
-  bottom: string | null;
-  top: string | null;
-  config: Required<NotificationConfig>;
+  bottom?: string | null;
+  top?: string | null;
+  config!: Required<NotificationConfig>; // initialized by parent class constructor
   instances: Array<Required<NzNotificationData>> = [];
   topLeftInstances: Array<Required<NzNotificationData>> = [];
   topRightInstances: Array<Required<NzNotificationData>> = [];

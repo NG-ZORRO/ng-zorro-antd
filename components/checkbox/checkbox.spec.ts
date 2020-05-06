@@ -312,7 +312,7 @@ describe('checkbox', () => {
   `
 })
 export class NzTestCheckboxSingleComponent {
-  @ViewChild(NzCheckboxComponent, { static: false }) nzCheckboxComponent: NzCheckboxComponent;
+  @ViewChild(NzCheckboxComponent, { static: false }) nzCheckboxComponent!: NzCheckboxComponent;
   disabled = false;
   autoFocus = false;
   checked = false;
@@ -321,9 +321,7 @@ export class NzTestCheckboxSingleComponent {
 }
 
 @Component({
-  template: `
-    <nz-checkbox-group [nzDisabled]="disabled" [ngModel]="options" (ngModelChange)="modelChange($event)"></nz-checkbox-group>
-  `
+  template: ` <nz-checkbox-group [nzDisabled]="disabled" [ngModel]="options" (ngModelChange)="modelChange($event)"></nz-checkbox-group> `
 })
 export class NzTestCheckboxGroupComponent {
   options = [

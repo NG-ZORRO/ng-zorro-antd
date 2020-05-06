@@ -61,8 +61,8 @@ export class NzCalendarHeaderComponent implements OnInit {
 
   yearOffset: number = 10;
   yearTotal: number = 20;
-  years: Array<{ label: string; value: number }>;
-  months: Array<{ label: string; value: number }>;
+  years: Array<{ label: string; value: number }> = [];
+  months: Array<{ label: string; value: number }> = [];
 
   get activeYear(): number {
     return this.activeDate.getYear();

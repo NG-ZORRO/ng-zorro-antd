@@ -689,7 +689,7 @@ function touchMoveTrigger(el: HTMLElement, from: { x: number; y: number }, to: {
   ]
 })
 class NzTestResizableBoundsComponent {
-  @ViewChild('boxRef', { static: false }) boxRef: ElementRef<HTMLDivElement>;
+  @ViewChild('boxRef', { static: false }) boxRef!: ElementRef<HTMLDivElement>;
   bounds: string | ElementRef = 'parent';
   maxWidth = 300;
   maxHeight = 300;

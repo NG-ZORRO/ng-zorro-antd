@@ -114,7 +114,7 @@ import { TransferDirection, TransferItem } from './interface';
 export class NzTransferListComponent {
   // #region fields
 
-  @Input() direction: TransferDirection;
+  @Input() direction: TransferDirection = 'left';
   @Input() titleText = '';
   @Input() showSelectAll = true;
 
@@ -123,15 +123,15 @@ export class NzTransferListComponent {
   @Input() itemUnit = '';
   @Input() itemsUnit = '';
   @Input() filter = '';
-  @Input() disabled: boolean;
-  @Input() showSearch: boolean;
-  @Input() searchPlaceholder: string;
-  @Input() notFoundContent: string;
-  @Input() filterOption: (inputValue: string, item: TransferItem) => boolean;
+  @Input() disabled?: boolean;
+  @Input() showSearch?: boolean;
+  @Input() searchPlaceholder?: string;
+  @Input() notFoundContent?: string;
+  @Input() filterOption?: (inputValue: string, item: TransferItem) => boolean;
 
-  @Input() renderList: TemplateRef<void>;
-  @Input() render: TemplateRef<void>;
-  @Input() footer: TemplateRef<void>;
+  @Input() renderList?: TemplateRef<void>;
+  @Input() render?: TemplateRef<void>;
+  @Input() footer?: TemplateRef<void>;
 
   // events
   @Output() readonly handleSelectAll: EventEmitter<boolean> = new EventEmitter<boolean>();

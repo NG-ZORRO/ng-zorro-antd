@@ -63,9 +63,9 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzShowButton: BooleanInput;
   static ngAcceptInputType_nzWithCredentials: BooleanInput;
 
-  private i18n$: Subscription;
-  @ViewChild('uploadComp', { static: false }) uploadComp: NzUploadBtnComponent;
-  @ViewChild('listComp', { static: false }) listComp: NzUploadListComponent;
+  private i18n$!: Subscription;
+  @ViewChild('uploadComp', { static: false }) uploadComp!: NzUploadBtnComponent;
+  @ViewChild('listComp', { static: false }) listComp!: NzUploadListComponent;
 
   locale: NzSafeAny = {};
 
@@ -75,18 +75,18 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   @Input() @InputNumber() nzLimit = 0;
   @Input() @InputNumber() nzSize = 0;
 
-  @Input() nzFileType: string;
-  @Input() nzAccept: string | string[];
-  @Input() nzAction: string | ((file: UploadFile) => string | Observable<string>);
+  @Input() nzFileType?: string;
+  @Input() nzAccept?: string | string[];
+  @Input() nzAction?: string | ((file: UploadFile) => string | Observable<string>);
   @Input() @InputBoolean() nzDirectory = false;
   @Input() @InputBoolean() nzOpenFileDialogOnClick = true;
-  @Input() nzBeforeUpload: (file: UploadFile, fileList: UploadFile[]) => boolean | Observable<boolean>;
-  @Input() nzCustomRequest: (item: UploadXHRArgs) => Subscription;
-  @Input() nzData: {} | ((file: UploadFile) => {} | Observable<{}>);
+  @Input() nzBeforeUpload?: (file: UploadFile, fileList: UploadFile[]) => boolean | Observable<boolean>;
+  @Input() nzCustomRequest?: (item: UploadXHRArgs) => Subscription;
+  @Input() nzData?: {} | ((file: UploadFile) => {} | Observable<{}>);
   @Input() nzFilter: UploadFilter[] = [];
   @Input() nzFileList: UploadFile[] = [];
   @Input() @InputBoolean() nzDisabled = false;
-  @Input() nzHeaders: {} | ((file: UploadFile) => {} | Observable<{}>);
+  @Input() nzHeaders?: {} | ((file: UploadFile) => {} | Observable<{}>);
   @Input() nzListType: UploadListType = 'text';
   @Input() @InputBoolean() nzMultiple = false;
   @Input() nzName = 'file';
@@ -105,17 +105,17 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   @Input() @InputBoolean() nzShowButton = true;
   @Input() @InputBoolean() nzWithCredentials = false;
 
-  @Input() nzRemove: (file: UploadFile) => boolean | Observable<boolean>;
-  @Input() nzPreview: (file: UploadFile) => void;
-  @Input() nzPreviewFile: (file: UploadFile) => Observable<string>;
-  @Input() nzTransformFile: (file: UploadFile) => UploadTransformFileType;
-  @Input() nzDownload: (file: UploadFile) => void;
-  @Input() nzIconRender: TemplateRef<void>;
+  @Input() nzRemove?: (file: UploadFile) => boolean | Observable<boolean>;
+  @Input() nzPreview?: (file: UploadFile) => void;
+  @Input() nzPreviewFile?: (file: UploadFile) => Observable<string>;
+  @Input() nzTransformFile?: (file: UploadFile) => UploadTransformFileType;
+  @Input() nzDownload?: (file: UploadFile) => void;
+  @Input() nzIconRender?: TemplateRef<void>;
 
   @Output() readonly nzChange: EventEmitter<UploadChangeParam> = new EventEmitter<UploadChangeParam>();
   @Output() readonly nzFileListChange: EventEmitter<UploadFile[]> = new EventEmitter<UploadFile[]>();
 
-  _btnOptions: ZipButtonOptions;
+  _btnOptions?: ZipButtonOptions;
 
   private zipOptions(): this {
     if (typeof this.nzShowUploadList === 'boolean' && this.nzShowUploadList) {
@@ -253,7 +253,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
 
   // #region drag
 
-  private dragState: string;
+  private dragState?: string;
 
   // skip safari bug
   fileDrop(e: DragEvent): void {

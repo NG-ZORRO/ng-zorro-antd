@@ -65,7 +65,7 @@ export class AppComponent implements OnInit, AfterContentInit {
   language = 'zh';
   currentVersion = VERSION.full;
 
-  @ViewChild('searchInput', { static: false }) searchInput: ElementRef<HTMLInputElement>;
+  @ViewChild('searchInput', { static: false }) searchInput?: ElementRef<HTMLInputElement>;
 
   switchLanguage(language: string): void {
     const url = this.router.url.split('/');

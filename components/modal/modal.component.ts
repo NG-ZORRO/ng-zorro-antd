@@ -56,8 +56,8 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   static ngAcceptInputType_nzKeyboard: BooleanInput;
   static ngAcceptInputType_nzNoAnimation: BooleanInput;
 
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzMask: boolean;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzMaskClosable: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzMask: boolean = true;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzMaskClosable: boolean = true;
   @Input() @InputBoolean() nzVisible: boolean = false;
   @Input() @InputBoolean() nzClosable: boolean = true;
   @Input() @InputBoolean() nzOkLoading: boolean = false;
@@ -66,21 +66,21 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   @Input() @InputBoolean() nzCancelLoading: boolean = false;
   @Input() @InputBoolean() nzKeyboard: boolean = true;
   @Input() @InputBoolean() nzNoAnimation = false;
-  @Input() nzContent: string | TemplateRef<{}> | Type<T>;
-  @Input() nzComponentParams: T;
-  @Input() nzFooter: string | TemplateRef<{}> | Array<ModalButtonOptions<T>> | null;
-  @Input() nzGetContainer: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef);
+  @Input() nzContent?: string | TemplateRef<{}> | Type<T>;
+  @Input() nzComponentParams?: T;
+  @Input() nzFooter?: string | TemplateRef<{}> | Array<ModalButtonOptions<T>> | null;
+  @Input() nzGetContainer?: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef);
   @Input() nzZIndex: number = 1000;
   @Input() nzWidth: number | string = 520;
-  @Input() nzWrapClassName: string;
-  @Input() nzClassName: string;
-  @Input() nzStyle: object;
-  @Input() nzTitle: string | TemplateRef<{}>;
+  @Input() nzWrapClassName?: string;
+  @Input() nzClassName?: string;
+  @Input() nzStyle?: object;
+  @Input() nzTitle?: string | TemplateRef<{}>;
   @Input() nzCloseIcon: string | TemplateRef<void> = 'close';
-  @Input() nzMaskStyle: StyleObjectLike;
-  @Input() nzBodyStyle: StyleObjectLike;
-  @Input() nzOkText: string | null;
-  @Input() nzCancelText: string | null;
+  @Input() nzMaskStyle?: StyleObjectLike;
+  @Input() nzBodyStyle?: StyleObjectLike;
+  @Input() nzOkText?: string | null;
+  @Input() nzCancelText?: string | null;
   @Input() nzOkType: NzButtonType = 'primary';
   @Input() nzIconType: string = 'question-circle'; // Confirm Modal ONLY
   @Input() nzModalType: ModalTypes = 'default';
@@ -96,7 +96,7 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   @Output() readonly nzAfterClose = new EventEmitter<R>();
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
-  @ViewChild(TemplateRef, { static: true }) contentTemplateRef: TemplateRef<{}>;
+  @ViewChild(TemplateRef, { static: true }) contentTemplateRef!: TemplateRef<{}>;
   @ContentChild(NzModalFooterDirective)
   set modalFooter(value: NzModalFooterDirective) {
     if (value && value.templateRef) {

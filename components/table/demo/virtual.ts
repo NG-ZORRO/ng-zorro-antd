@@ -65,12 +65,12 @@ export interface VirtualDataInterface {
   `
 })
 export class NzDemoTableVirtualComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('virtualTable', { static: false }) nzTableComponent: NzTableComponent;
+  @ViewChild('virtualTable', { static: false }) nzTableComponent?: NzTableComponent;
   private destroy$ = new Subject();
   listOfData: VirtualDataInterface[] = [];
 
   scrollToIndex(index: number): void {
-    this.nzTableComponent.cdkVirtualScrollViewport.scrollToIndex(index);
+    this.nzTableComponent?.cdkVirtualScrollViewport?.scrollToIndex(index);
   }
 
   trackByIndex(_: number, data: VirtualDataInterface): number {
@@ -91,7 +91,7 @@ export class NzDemoTableVirtualComponent implements OnInit, AfterViewInit, OnDes
   }
 
   ngAfterViewInit(): void {
-    this.nzTableComponent.cdkVirtualScrollViewport.scrolledIndexChange.pipe(takeUntil(this.destroy$)).subscribe((data: number) => {
+    this.nzTableComponent?.cdkVirtualScrollViewport?.scrolledIndexChange.pipe(takeUntil(this.destroy$)).subscribe((data: number) => {
       console.log('scroll index to', data);
     });
   }

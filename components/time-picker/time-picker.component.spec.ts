@@ -173,7 +173,7 @@ export class NzTestTimePickerComponent {
   date: Date | string = new Date();
   disabled = false;
   use12Hours = false;
-  nzSuffixIcon: string;
+  nzSuffixIcon?: string;
   onChange(): void {}
-  @ViewChild(NzTimePickerComponent, { static: false }) nzTimePickerComponent: NzTimePickerComponent;
+  @ViewChild(NzTimePickerComponent, { static: false }) nzTimePickerComponent!: NzTimePickerComponent;
 }

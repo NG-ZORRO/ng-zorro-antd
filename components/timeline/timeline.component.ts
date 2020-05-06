@@ -71,11 +71,11 @@ export type NzTimelineMode = typeof TimelineModes[number];
   `
 })
 export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestroy {
-  @ContentChildren(NzTimelineItemComponent) listOfItems: QueryList<NzTimelineItemComponent>;
+  @ContentChildren(NzTimelineItemComponent) listOfItems!: QueryList<NzTimelineItemComponent>;
 
-  @Input() nzMode: NzTimelineMode;
-  @Input() nzPending: string | boolean | TemplateRef<void>;
-  @Input() nzPendingDot: string | TemplateRef<void>;
+  @Input() nzMode?: NzTimelineMode;
+  @Input() nzPending?: string | boolean | TemplateRef<void>;
+  @Input() nzPendingDot?: string | TemplateRef<void>;
   @Input() nzReverse: boolean = false;
 
   isPendingBoolean: boolean = false;

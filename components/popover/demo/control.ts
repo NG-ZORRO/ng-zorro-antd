@@ -21,7 +21,7 @@ import { Component } from '@angular/core';
   `
 })
 export class NzDemoPopoverControlComponent {
-  visible: boolean;
+  visible: boolean = false;
 
   clickMe(): void {
     this.visible = false;

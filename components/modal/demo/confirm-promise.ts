@@ -8,7 +8,7 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
   `
 })
 export class NzDemoModalConfirmPromiseComponent {
-  confirmModal: NzModalRef; // For testing by now
+  confirmModal?: NzModalRef; // For testing by now
 
   constructor(private modal: NzModalService) {}
 

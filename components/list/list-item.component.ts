@@ -71,14 +71,14 @@ export class NzListItemComponent implements OnDestroy, AfterViewInit {
   static ngAcceptInputType_nzNoFlex: BooleanInput;
 
   @Input() nzActions: Array<TemplateRef<void>> = [];
-  @Input() nzContent: string | TemplateRef<void>;
-  @Input() nzExtra: TemplateRef<void>;
+  @Input() nzContent?: string | TemplateRef<void>;
+  @Input() nzExtra?: TemplateRef<void>;
   @Input() @InputBoolean() @HostBinding('class.ant-list-item-no-flex') nzNoFlex: boolean = false;
 
-  @ContentChild(NzListItemExtraComponent) listItemExtraDirective: NzListItemExtraComponent;
+  @ContentChild(NzListItemExtraComponent) listItemExtraDirective?: NzListItemExtraComponent;
 
-  private itemLayout: NzDirectionVHType;
-  private itemLayout$: Subscription;
+  private itemLayout?: NzDirectionVHType;
+  private itemLayout$?: Subscription;
 
   get isVerticalAndExtra(): boolean {
     return this.itemLayout === 'vertical' && (!!this.listItemExtraDirective || !!this.nzExtra);

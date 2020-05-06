@@ -27,7 +27,7 @@ import { Subject } from 'rxjs';
 export class NzDescriptionsItemComponent implements OnChanges, OnDestroy {
   static ngAcceptInputType_nzSpan: BooleanInput;
 
-  @ViewChild(TemplateRef, { static: true }) content: TemplateRef<void>;
+  @ViewChild(TemplateRef, { static: true }) content!: TemplateRef<void>;
 
   @Input() @InputNumber() nzSpan = 1;
   @Input() nzTitle: string | TemplateRef<void> = '';

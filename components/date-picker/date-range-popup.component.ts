@@ -133,20 +133,20 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
   `
 })
 export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() isRange: boolean;
-  @Input() showWeek: boolean;
-  @Input() locale: NzCalendarI18nInterface;
-  @Input() format: string;
-  @Input() placeholder: string | string[];
-  @Input() disabledDate: DisabledDateFn;
-  @Input() disabledTime: DisabledTimeFn; // This will lead to rebuild time options
-  @Input() showToday: boolean;
-  @Input() showTime: SupportTimeOptions | boolean;
-  @Input() extraFooter: TemplateRef<void> | string;
-  @Input() ranges: PresetRanges;
-  @Input() dateRender: FunctionProp<TemplateRef<Date> | string>;
-  @Input() panelMode: PanelMode | PanelMode[];
-  @Input() defaultPickerValue: CompatibleDate;
+  @Input() isRange!: boolean;
+  @Input() showWeek!: boolean;
+  @Input() locale!: NzCalendarI18nInterface;
+  @Input() format!: string;
+  @Input() placeholder!: string | string[];
+  @Input() disabledDate!: DisabledDateFn;
+  @Input() disabledTime!: DisabledTimeFn; // This will lead to rebuild time options
+  @Input() showToday!: boolean;
+  @Input() showTime!: SupportTimeOptions | boolean;
+  @Input() extraFooter!: TemplateRef<void> | string;
+  @Input() ranges!: PresetRanges;
+  @Input() dateRender!: FunctionProp<TemplateRef<Date> | string>;
+  @Input() panelMode!: PanelMode | PanelMode[];
+  @Input() defaultPickerValue!: CompatibleDate;
 
   @Output() readonly panelModeChange = new EventEmitter<PanelMode | PanelMode[]>();
   @Output() readonly calendarChange = new EventEmitter<CompatibleValue>();
@@ -154,7 +154,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
 
   prefixCls: string = PREFIX_CLASS;
   endPanelMode: PanelMode | PanelMode[] = 'date';
-  timeOptions: SupportTimeOptions | SupportTimeOptions[] | null;
+  timeOptions: SupportTimeOptions | SupportTimeOptions[] | null = null;
   hoverValue: SingleValue[] = []; // Range ONLY
   destroy$ = new Subject();
 

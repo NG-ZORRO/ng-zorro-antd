@@ -194,10 +194,10 @@ describe('skeleton element', () => {
   template: ` <nz-skeleton [nzActive]="nzActive" [nzAvatar]="nzAvatar" [nzTitle]="nzTitle" [nzParagraph]="nzParagraph"> </nz-skeleton> `
 })
 export class NzTestSkeletonComponent {
-  nzActive: boolean;
-  nzAvatar: NzSkeletonAvatar | boolean;
-  nzTitle: NzSkeletonTitle | boolean;
-  nzParagraph: NzSkeletonParagraph | boolean;
+  nzActive: boolean = false;
+  nzAvatar: NzSkeletonAvatar | boolean = false;
+  nzTitle: NzSkeletonTitle | boolean = false;
+  nzParagraph: NzSkeletonParagraph | boolean = false;
 }
 
 @Component({
@@ -213,7 +213,7 @@ export class NzTestSkeletonComponent {
 })
 export class NzTestSkeletonElementComponent {
   useSuite = 1;
-  nzActive: boolean;
-  nzSize: AvatarSize | ButtonSize;
-  nzShape: AvatarShape | ButtonShape;
+  nzActive: boolean = false;
+  nzSize: AvatarSize | ButtonSize = 'default';
+  nzShape: AvatarShape | ButtonShape = 'default';
 }

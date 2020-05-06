@@ -19,7 +19,7 @@ import { AvatarShape, AvatarSize, ButtonShape, ButtonSize, InputSize } from './s
 })
 export class NzSkeletonElementDirective {
   @Input() nzActive: boolean = false;
-  @Input() nzType: 'button' | 'input' | 'avatar';
+  @Input() nzType!: 'button' | 'input' | 'avatar';
 }
 
 @Component({
@@ -37,8 +37,8 @@ export class NzSkeletonElementDirective {
   `
 })
 export class NzSkeletonElementButtonComponent {
-  @Input() nzShape: ButtonShape;
-  @Input() nzSize: ButtonSize;
+  @Input() nzShape: ButtonShape = 'default';
+  @Input() nzSize: ButtonSize = 'default';
 }
 
 @Component({
@@ -57,9 +57,10 @@ export class NzSkeletonElementButtonComponent {
   `
 })
 export class NzSkeletonElementAvatarComponent implements OnChanges {
+  @Input() nzShape: AvatarShape = 'circle';
+  @Input() nzSize: AvatarSize = 'default';
+
   styleMap = {};
-  @Input() nzShape: AvatarShape;
-  @Input() nzSize: AvatarSize;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzSize && typeof this.nzSize === 'number') {
@@ -84,5 +85,5 @@ export class NzSkeletonElementAvatarComponent implements OnChanges {
   `
 })
 export class NzSkeletonElementInputComponent {
-  @Input() nzSize: InputSize;
+  @Input() nzSize: InputSize = 'default';
 }

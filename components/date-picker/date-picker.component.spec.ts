@@ -1005,37 +1005,37 @@ describe('date-fns testing', () => {
   `
 })
 class NzTestDatePickerComponent {
-  useSuite: 1 | 2 | 3 | 4;
-  @ViewChild('tplDateRender', { static: true }) tplDateRender: TemplateRef<Date>;
-  @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter: TemplateRef<void>;
+  useSuite!: 1 | 2 | 3 | 4;
+  @ViewChild('tplDateRender', { static: true }) tplDateRender!: TemplateRef<Date>;
+  @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter!: TemplateRef<void>;
 
   // --- Suite 1
-  nzAllowClear: boolean;
-  nzAutoFocus: boolean;
-  nzDisabled: boolean;
-  nzClassName: string;
-  nzFormat: string;
-  nzDisabledDate: (d: Date) => boolean;
+  nzAllowClear: boolean = false;
+  nzAutoFocus: boolean = false;
+  nzDisabled: boolean = false;
+  nzClassName!: string;
+  nzFormat!: string;
+  nzDisabledDate!: (d: Date) => boolean;
   nzLocale: any; // tslint:disable-line:no-any
-  nzPlaceHolder: string;
-  nzPopupStyle: NgStyleInterface;
-  nzDropdownClassName: string;
-  nzSize: string;
-  nzStyle: NgStyleInterface;
+  nzPlaceHolder!: string;
+  nzPopupStyle!: NgStyleInterface;
+  nzDropdownClassName!: string;
+  nzSize!: string;
+  nzStyle!: NgStyleInterface;
 
   nzOnChange(): void {}
   nzOnCalendarChange(): void {}
   nzOnOpenChange(): void {}
 
-  nzValue: Date | null;
-  nzDefaultPickerValue: Date | null;
+  nzValue: Date | null = null;
+  nzDefaultPickerValue: Date | null = null;
   nzDateRender: any; // tslint:disable-line:no-any
   nzShowTime: boolean | object = false;
   nzDisabledTime: any; // tslint:disable-line:no-any
-  nzRenderExtraFooter: string | (() => TemplateRef<void> | string);
+  nzRenderExtraFooter!: string | (() => TemplateRef<void> | string);
   nzShowToday = false;
-  nzMode: string;
-  nzSuffixIcon: string;
+  nzMode!: string;
+  nzSuffixIcon!: string;
 
   // nzRanges;
   nzOnPanelChange(): void {}
@@ -1043,11 +1043,11 @@ class NzTestDatePickerComponent {
   nzOnOk(): void {}
 
   // --- Suite 2
-  nzOpen: boolean;
+  nzOpen: boolean = false;
 
   // --- Suite 3
-  modelValue: Date;
+  modelValue!: Date;
 
   // --- Suite 4
-  control: FormControl;
+  control!: FormControl;
 }

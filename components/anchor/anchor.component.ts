@@ -73,27 +73,27 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
   static ngAcceptInputType_nzBounds: NumberInput;
   static ngAcceptInputType_nzOffsetTop: NumberInput;
 
-  @ViewChild('ink', { static: false }) private ink: ElementRef;
+  @ViewChild('ink', { static: false }) private ink!: ElementRef;
 
   @Input() @InputBoolean() nzAffix = true;
 
   @Input()
-  @WithConfig(NZ_CONFIG_COMPONENT_NAME, false)
+  @WithConfig(NZ_CONFIG_COMPONENT_NAME)
   @InputBoolean()
-  nzShowInkInFixed: boolean;
+  nzShowInkInFixed: boolean = false;
 
   @Input()
-  @WithConfig(NZ_CONFIG_COMPONENT_NAME, 5)
+  @WithConfig(NZ_CONFIG_COMPONENT_NAME)
   @InputNumber()
-  nzBounds: number;
+  nzBounds: number = 5;
 
   @Input()
   @InputNumber()
   @WithConfig<number>(NZ_CONFIG_COMPONENT_NAME)
-  nzOffsetTop: number;
+  nzOffsetTop?: number = undefined;
 
-  @Input() nzContainer: string | HTMLElement;
-  @Input() nzTarget: string | HTMLElement;
+  @Input() nzContainer?: string | HTMLElement;
+  @Input() nzTarget: string | HTMLElement = '';
 
   @Output() readonly nzClick = new EventEmitter<string>();
   @Output() readonly nzScroll = new EventEmitter<NzAnchorLinkComponent>();
@@ -101,7 +101,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
   visible = false;
   wrapperStyle: NgStyleInterface = { 'max-height': '100vh' };
 
-  container: HTMLElement | Window;
+  container?: HTMLElement | Window;
 
   private links: NzAnchorLinkComponent[] = [];
   private animating = false;

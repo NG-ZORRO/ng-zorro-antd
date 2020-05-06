@@ -19,7 +19,7 @@ let globalCounter = 0;
 
 export abstract class NzMNService {
   protected abstract componentPrefix: string;
-  protected container: NzMNContainerComponent;
+  protected container?: NzMNContainerComponent;
 
   constructor(protected nzSingletonService: NzSingletonService, protected overlay: Overlay, private injector: Injector) {}
 
@@ -63,7 +63,7 @@ export abstract class NzMNService {
 }
 
 export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
-  config: Required<MessageConfig>;
+  config?: Required<MessageConfig>;
   instances: Array<Required<NzMessageData>> = [];
 
   protected readonly destroy$ = new Subject<void>();
@@ -84,7 +84,7 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
   create(data: NzMessageData): Required<NzMessageData> {
     const instance = this.onCreate(data);
 
-    if (this.instances.length >= this.config.nzMaxStack) {
+    if (this.instances.length >= this.config!.nzMaxStack) {
       this.instances = this.instances.slice(1);
     }
 
@@ -135,22 +135,22 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
   protected abstract subscribeConfigChange(): void;
 
   protected mergeOptions(options?: NzMessageDataOptions): NzMessageDataOptions {
-    const { nzDuration, nzAnimate, nzPauseOnHover } = this.config;
+    const { nzDuration, nzAnimate, nzPauseOnHover } = this.config!;
     return { nzDuration, nzAnimate, nzPauseOnHover, ...options };
   }
 }
 
 export abstract class NzMNComponent implements OnInit, OnDestroy {
-  instance: Required<NzMessageData>;
-  index: number;
+  instance!: Required<NzMessageData>;
+  index?: number;
 
   readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
 
-  protected options: Required<NzMessageDataOptions>;
-  protected autoClose: boolean;
+  protected options!: Required<NzMessageDataOptions>;
+  protected autoClose?: boolean;
   protected eraseTimer: number | null = null;
-  protected eraseTimingStart: number;
-  protected eraseTTL: number;
+  protected eraseTimingStart?: number;
+  protected eraseTTL!: number;
 
   constructor(protected cdr: ChangeDetectorRef) {}
 
@@ -207,7 +207,7 @@ export abstract class NzMNComponent implements OnInit, OnDestroy {
 
   private updateTTL(): void {
     if (this.autoClose) {
-      this.eraseTTL -= Date.now() - this.eraseTimingStart;
+      this.eraseTTL -= Date.now() - this.eraseTimingStart!;
     }
   }
 

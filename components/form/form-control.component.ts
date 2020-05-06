@@ -80,8 +80,8 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
   private validateString: string | null = null;
   private status: NzFormControlStatusType = null;
   private destroyed$ = new Subject<void>();
-  private localeId: string;
-  private autoErrorTip: string;
+  private localeId!: string;
+  private autoErrorTip?: string;
 
   private get disableAutoTips(): boolean {
     return this.nzDisableAutoTips !== 'default' ? toBoolean(this.nzDisableAutoTips) : this.nzFormDirective?.nzDisableAutoTips;
@@ -91,14 +91,14 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
   iconType: typeof iconTypeMap[keyof typeof iconTypeMap] | null = null;
   innerTip: string | TemplateRef<{ $implicit: FormControl | NgModel }> | null = null;
 
-  @ContentChild(NgControl, { static: false }) defaultValidateControl: FormControlName | FormControlDirective;
-  @Input() nzSuccessTip: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
-  @Input() nzWarningTip: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
-  @Input() nzErrorTip: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
-  @Input() nzValidatingTip: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
+  @ContentChild(NgControl, { static: false }) defaultValidateControl?: FormControlName | FormControlDirective;
+  @Input() nzSuccessTip?: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
+  @Input() nzWarningTip?: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
+  @Input() nzErrorTip?: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
+  @Input() nzValidatingTip?: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
+  @Input() nzExtra?: string | TemplateRef<void>;
   @Input() nzAutoTips: Record<string, Record<string, string>> = {};
   @Input() nzDisableAutoTips: boolean | 'default' = 'default';
-  @Input() nzExtra: string | TemplateRef<void>;
 
   @Input()
   set nzHasFeedback(value: boolean) {
@@ -183,13 +183,13 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
   private getInnerTip(status: NzFormControlStatusType): string | TemplateRef<{ $implicit: FormControl | NgModel }> | null {
     switch (status) {
       case 'error':
-        return (!this.disableAutoTips && this.autoErrorTip) || this.nzErrorTip;
+        return (!this.disableAutoTips && this.autoErrorTip) || this.nzErrorTip || null;
       case 'validating':
-        return this.nzValidatingTip;
+        return this.nzValidatingTip || null;
       case 'success':
-        return this.nzSuccessTip;
+        return this.nzSuccessTip || null;
       case 'warning':
-        return this.nzWarningTip;
+        return this.nzWarningTip || null;
       default:
         return null;
     }
@@ -266,7 +266,7 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
       if (this.defaultValidateControl instanceof FormControlDirective) {
         this.nzValidateStatus = this.defaultValidateControl.control;
       } else {
-        this.nzValidateStatus = this.defaultValidateControl;
+        this.nzValidateStatus = this.defaultValidateControl!;
       }
     }
   }

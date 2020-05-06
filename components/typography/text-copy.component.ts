@@ -46,12 +46,12 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class NzTextCopyComponent implements OnInit, OnDestroy {
   copied = false;
-  copyId: number;
+  copyId: number = -1;
   locale: NzSafeAny = {};
   nativeElement = this.host.nativeElement;
   private destroy$ = new Subject();
 
-  @Input() text: string;
+  @Input() text!: string;
   @Output() readonly textCopy = new EventEmitter<string>();
 
   constructor(private host: ElementRef, private cdr: ChangeDetectorRef, private clipboard: Clipboard, private i18n: NzI18nService) {}

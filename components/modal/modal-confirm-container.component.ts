@@ -109,8 +109,8 @@ import { ModalOptions } from './modal-types';
   }
 })
 export class NzModalConfirmContainerComponent extends BaseModalContainer implements OnDestroy {
-  @ViewChild(CdkPortalOutlet, { static: true }) portalOutlet: CdkPortalOutlet;
-  @ViewChild('modalElement', { static: true }) modalElementRef: ElementRef<HTMLDivElement>;
+  @ViewChild(CdkPortalOutlet, { static: true }) portalOutlet!: CdkPortalOutlet;
+  @ViewChild('modalElement', { static: true }) modalElementRef!: ElementRef<HTMLDivElement>;
   @Output() readonly cancelTriggered = new EventEmitter<void>();
   @Output() readonly okTriggered = new EventEmitter<void>();
   locale: { okText?: string; cancelText?: string } = {};

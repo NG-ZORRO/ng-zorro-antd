@@ -78,14 +78,13 @@ export class NzPageHeaderComponent implements OnChanges {
   isStringBackIcon = false;
 
   @Input() nzBackIcon: string | TemplateRef<void> | null = null;
-  @Input() nzTitle: string | TemplateRef<void>;
-  @Input() nzSubtitle: string | TemplateRef<void>;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) nzGhost: boolean;
+  @Input() nzTitle?: string | TemplateRef<void>;
+  @Input() nzSubtitle?: string | TemplateRef<void>;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzGhost: boolean = true;
   @Output() readonly nzBack = new EventEmitter<void>();
 
-  @ContentChild(NzPageHeaderFooterDirective, { static: false }) nzPageHeaderFooter: ElementRef<NzPageHeaderFooterDirective>;
-
-  @ContentChild(NzPageHeaderBreadcrumbDirective, { static: false }) nzPageHeaderBreadcrumb: ElementRef<NzPageHeaderBreadcrumbDirective>;
+  @ContentChild(NzPageHeaderFooterDirective, { static: false }) nzPageHeaderFooter?: ElementRef<NzPageHeaderFooterDirective>;
+  @ContentChild(NzPageHeaderBreadcrumbDirective, { static: false }) nzPageHeaderBreadcrumb?: ElementRef<NzPageHeaderBreadcrumbDirective>;
 
   constructor(@Optional() private location: Location, public nzConfigService: NzConfigService) {}
 

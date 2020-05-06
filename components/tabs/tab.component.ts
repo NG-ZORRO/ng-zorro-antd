@@ -53,12 +53,12 @@ export class NzTabComponent implements OnChanges, OnDestroy {
   origin: number | null = null;
   isActive = false;
   readonly stateChanges = new Subject<void>();
-  @ViewChild('bodyTpl', { static: true }) content: TemplateRef<void>;
-  @ViewChild('titleTpl', { static: true }) title: TemplateRef<void>;
-  @ContentChild(NzTabDirective, { static: false, read: TemplateRef }) template: TemplateRef<void>;
-  @ContentChild(NzTabLinkDirective, { static: false }) linkDirective: NzTabLinkDirective;
-  @Input() nzTitle: string | TemplateRef<void>;
-  @Input() nzRouterIdentifier: string;
+  @ViewChild('bodyTpl', { static: true }) content!: TemplateRef<void>;
+  @ViewChild('titleTpl', { static: true }) title!: TemplateRef<void>;
+  @ContentChild(NzTabDirective, { static: false, read: TemplateRef }) template!: TemplateRef<void>;
+  @ContentChild(NzTabLinkDirective, { static: false }) linkDirective!: NzTabLinkDirective;
+  @Input() nzTitle?: string | TemplateRef<void>;
+  @Input() nzRouterIdentifier?: string;
   @Input() @InputBoolean() nzForceRender = false;
   @Input() @InputBoolean() nzDisabled = false;
   @Output() readonly nzClick = new EventEmitter<void>();

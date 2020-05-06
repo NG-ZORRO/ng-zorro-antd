@@ -13,9 +13,9 @@ import { CompatibleDate, RangePartType } from './standard-types';
 
 @Injectable()
 export class DatePickerService implements OnDestroy {
-  initialValue: CompatibleValue;
-  value: CompatibleValue;
-  activeDate: CompatibleValue;
+  initialValue?: CompatibleValue;
+  value!: CompatibleValue;
+  activeDate?: CompatibleValue;
   activeInput: RangePartType = 'left';
   arrowPositionStyle = {};
   isRange = false;

@@ -705,18 +705,18 @@ describe('link router', () => {
 })
 export class NzTestTabsBasicComponent {
   add = false;
-  @ViewChild('extraTemplate', { static: false }) extraTemplate: TemplateRef<void>;
-  @ViewChild(NzTabSetComponent, { static: false }) nzTabSetComponent: NzTabSetComponent;
+  @ViewChild('extraTemplate', { static: false }) extraTemplate!: TemplateRef<void>;
+  @ViewChild(NzTabSetComponent, { static: false }) nzTabSetComponent!: NzTabSetComponent;
   selectedIndex = 0;
   selectedIndexChange = jasmine.createSpy('selectedIndexChange callback');
   selectChange = jasmine.createSpy('selectChange callback');
   animated: NzAnimatedInterface | boolean = true;
   size = 'default';
-  tabBarExtraContent: TemplateRef<void>;
-  tabBarStyle: NgStyleInterface;
+  tabBarExtraContent!: TemplateRef<void>;
+  tabBarStyle!: NgStyleInterface;
   tabPosition = 'top';
   type = 'line';
-  tabBarGutter: number;
+  tabBarGutter!: number;
   hideAll = false;
   disabled = false;
   click00 = jasmine.createSpy('click00 callback');

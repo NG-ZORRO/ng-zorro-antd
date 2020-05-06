@@ -11,7 +11,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
   `
 })
 export class NzDemoAutoCompleteNonCaseSensitiveComponent {
-  inputValue: string;
+  inputValue?: string;
   filteredOptions: string[] = [];
   options = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
 

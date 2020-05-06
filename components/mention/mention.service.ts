@@ -13,7 +13,7 @@ import { NzMentionTriggerDirective } from './mention-trigger';
 
 @Injectable()
 export class NzMentionService implements OnDestroy {
-  private trigger: NzMentionTriggerDirective;
+  private trigger?: NzMentionTriggerDirective;
   private triggerChange$ = new Subject<NzMentionTriggerDirective>();
 
   triggerChanged(): Observable<NzMentionTriggerDirective> {
