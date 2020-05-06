@@ -116,7 +116,10 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
       if (child.outlet === PRIMARY_OUTLET) {
         // Only parse components in primary router-outlet (in another word, router-outlet without a specific name).
         // Parse this layer and generate a breadcrumb item.
-        const routeURL: string = child.snapshot.url.map(segment => segment.path).join('/');
+        const routeURL: string = child.snapshot.url
+          .map(segment => segment.path)
+          .filter(path => path)
+          .join('/');
         const nextUrl = url + `/${routeURL}`;
         const breadcrumbLabel = child.snapshot.data[this.nzRouteLabel];
         // If have data, go to generate a breadcrumb for it.
