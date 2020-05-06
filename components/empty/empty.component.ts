@@ -58,7 +58,7 @@ type NzEmptyNotFoundImageType = typeof NzEmptyDefaultImages[number] | null | str
 })
 export class NzEmptyComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzNotFoundImage: NzEmptyNotFoundImageType = 'default';
-  @Input() nzNotFoundContent: string | TemplateRef<void> | null = null;
+  @Input() nzNotFoundContent?: string | TemplateRef<void> | null;
   @Input() nzNotFoundFooter?: string | TemplateRef<void>;
 
   isContentString = false;
