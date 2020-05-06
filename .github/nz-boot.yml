@@ -76,6 +76,8 @@ issue:
       Tag: hsuanxyz
       TreeSelect: hsuanxyz
       Typography: hsuanxyz
+      Space: hsuanxyz
+      Resizable: hsuanxyz
       Breadcrumb: wendellhu95
       Empty: wendellhu95
       Carousel: wendellhu95
@@ -93,10 +95,12 @@ issue:
       Statistic: wendellhu95
       Timeline: wendellhu95
       Tooltip: wendellhu95
+      CodeEditor: wendellhu95
       Calendar: wenqi73
       DatePicker: wenqi73
       Skeleton: wenqi73
       TimePicker: wenqi73
+      I18n: wenqi73
       Alert: vthinkxie
       Button: vthinkxie
       Card: vthinkxie
