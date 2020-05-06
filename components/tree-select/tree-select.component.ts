@@ -42,7 +42,7 @@ import {
   NzTreeNode,
   NzTreeNodeOptions
 } from 'ng-zorro-antd/core/tree';
-import { BooleanInput, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzSelectSearchComponent } from 'ng-zorro-antd/select';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
@@ -82,7 +82,7 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
         [@.disabled]="noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         [class.ant-select-dropdown-placement-bottomLeft]="dropDownPosition === 'bottom'"
-        [class.ant-select-dropdownplacement-topLeft]="dropDownPosition === 'top'"
+        [class.ant-select-dropdown-placement-topLeft]="dropDownPosition === 'top'"
         [ngStyle]="nzDropdownStyle"
       >
         <nz-tree
@@ -283,8 +283,8 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   expandedKeys: string[] = [];
   value: string[] = [];
 
-  onChange: (value: string[] | string | null) => void = _value => {};
-  onTouched: () => void = () => null;
+  onChange: OnChangeType = _value => {};
+  onTouched: OnTouchedType = () => {};
 
   get placeHolderDisplay(): string {
     return this.inputValue || this.isComposing || this.selectedNodes.length ? 'none' : 'block';

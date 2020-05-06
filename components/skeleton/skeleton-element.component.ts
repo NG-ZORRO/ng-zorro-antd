@@ -19,7 +19,7 @@ import { AvatarShape, AvatarSize, ButtonShape, ButtonSize, InputSize } from './s
 })
 export class NzSkeletonElementDirective {
   @Input() nzActive: boolean = false;
-  @Input() nzType: 'button' | 'input' | 'avatar' = 'button';
+  @Input() nzType!: 'button' | 'input' | 'avatar';
 }
 
 @Component({
@@ -37,7 +37,7 @@ export class NzSkeletonElementDirective {
   `
 })
 export class NzSkeletonElementButtonComponent {
-  @Input() nzShape: ButtonShape = "default";
+  @Input() nzShape: ButtonShape = 'default';
   @Input() nzSize: ButtonSize = 'default';
 }
 

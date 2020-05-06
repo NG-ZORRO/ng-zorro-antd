@@ -100,6 +100,6 @@ export class NzToolTipComponent extends NzTooltipBaseComponent {
   }
 
   protected isEmpty(): boolean {
-    return !this.nzTitle || isTooltipEmpty(this.nzTitle);
+    return isTooltipEmpty(this.nzTitle);
   }
 }

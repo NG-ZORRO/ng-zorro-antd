@@ -150,7 +150,7 @@ export abstract class NzMNComponent implements OnInit, OnDestroy {
   protected autoClose?: boolean;
   protected eraseTimer: number | null = null;
   protected eraseTimingStart?: number;
-  protected eraseTTL: number = 6000;
+  protected eraseTTL!: number;
 
   constructor(protected cdr: ChangeDetectorRef) {}
 
