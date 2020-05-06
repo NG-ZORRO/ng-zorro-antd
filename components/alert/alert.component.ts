@@ -44,6 +44,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'alert';
       [class.ant-alert-banner]="nzBanner"
       [class.ant-alert-closable]="nzCloseable"
       [class.ant-alert-with-description]="!!nzDescription"
+      [@.disabled]="nzNoAnimation"
       [@slideAlertMotion]
       (@slideAlertMotion.done)="onFadeAnimationDone()"
     >
@@ -76,6 +77,7 @@ export class NzAlertComponent implements OnChanges, OnDestroy {
   static ngAcceptInputType_nzCloseable: BooleanInput;
   static ngAcceptInputType_nzShowIcon: BooleanInput;
   static ngAcceptInputType_nzBanner: BooleanInput;
+  static ngAcceptInputType_nzNoAnimation: BooleanInput;
 
   @Input() nzCloseText: string | TemplateRef<void> | null = null;
   @Input() nzIconType: string | null = null;
@@ -85,6 +87,7 @@ export class NzAlertComponent implements OnChanges, OnDestroy {
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzCloseable: boolean;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzShowIcon: boolean;
   @Input() @InputBoolean() nzBanner = false;
+  @Input() @InputBoolean() nzNoAnimation = false;
   @Output() readonly nzOnClose = new EventEmitter<boolean>();
   closed = false;
   iconTheme: 'outline' | 'fill' = 'fill';
