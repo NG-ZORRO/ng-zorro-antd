@@ -23,8 +23,8 @@ export function throwNzModalContentAlreadyAttachedError(): never {
 }
 
 export class BaseModalContainer extends BasePortalOutlet {
-  portalOutlet: CdkPortalOutlet;
-  modalElementRef: ElementRef<HTMLDivElement>;
+  portalOutlet!: CdkPortalOutlet;
+  modalElementRef!: ElementRef<HTMLDivElement>;
 
   animationStateChanged = new EventEmitter<AnimationEvent>();
   containerClick = new EventEmitter<void>();
@@ -33,10 +33,10 @@ export class BaseModalContainer extends BasePortalOutlet {
 
   state: 'void' | 'enter' | 'exit' = 'enter';
   document: Document;
-  modalRef: NzModalRef;
+  modalRef!: NzModalRef;
   isStringContent: boolean = false;
   private elementFocusedBeforeModalWasOpened: HTMLElement | null = null;
-  private focusTrap: FocusTrap;
+  private focusTrap!: FocusTrap;
   private latestMousedownTarget: HTMLElement | null = null;
   private oldMaskStyle: { [key: string]: string } | null = null;
 

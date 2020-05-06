@@ -11,7 +11,7 @@ import { MentionOnSearchTypes } from 'ng-zorro-antd/mention';
   `
 })
 export class NzDemoMentionAsyncComponent {
-  inputValue: string;
+  inputValue?: string;
   loading = false;
   suggestions: string[] = [];
 

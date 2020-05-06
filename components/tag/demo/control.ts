@@ -32,7 +32,7 @@ export class NzDemoTagControlComponent {
   tags = ['Unremovable', 'Tag 2', 'Tag 3'];
   inputVisible = false;
   inputValue = '';
-  @ViewChild('inputElement', { static: false }) inputElement: ElementRef;
+  @ViewChild('inputElement', { static: false }) inputElement?: ElementRef;
 
   handleClose(removedTag: {}): void {
     this.tags = this.tags.filter(tag => tag !== removedTag);
@@ -46,7 +46,7 @@ export class NzDemoTagControlComponent {
   showInput(): void {
     this.inputVisible = true;
     setTimeout(() => {
-      this.inputElement.nativeElement.focus();
+      this.inputElement?.nativeElement.focus();
     }, 10);
   }
 

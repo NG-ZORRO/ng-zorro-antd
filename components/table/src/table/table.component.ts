@@ -156,12 +156,12 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterView
   @Input() @InputBoolean() nzTemplateMode = false;
   @Input() @InputBoolean() nzShowPagination = true;
   @Input() @InputBoolean() nzLoading = false;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzBordered: boolean;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzTableSize;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzShowSizeChanger: boolean;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzHideOnSinglePage: boolean;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzShowQuickJumper: boolean;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzSimple: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzBordered: boolean = false;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzTableSize = 'default';
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzShowSizeChanger: boolean = false;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzHideOnSinglePage: boolean = false;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzShowQuickJumper: boolean = false;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzSimple: boolean = false;
   @Output() readonly nzPageSizeChange = new EventEmitter<number>();
   @Output() readonly nzPageIndexChange = new EventEmitter<number>();
   @Output() readonly nzQueryParams = new EventEmitter<NzTableQueryParams>();
@@ -169,7 +169,7 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterView
 
   /** public data for ngFor tr */
   public data: NzTableData[] = [];
-  public cdkVirtualScrollViewport: CdkVirtualScrollViewport;
+  public cdkVirtualScrollViewport?: CdkVirtualScrollViewport;
   scrollX: string | null = null;
   scrollY: string | null = null;
   theadTemplate: TemplateRef<NzSafeAny> | null = null;
@@ -180,8 +180,8 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterView
   private loading$ = new BehaviorSubject<boolean>(false);
   private templateMode$ = new BehaviorSubject<boolean>(false);
   @ContentChild(NzTableVirtualScrollDirective, { static: false })
-  nzVirtualScrollDirective: NzTableVirtualScrollDirective;
-  @ViewChild(NzTableInnerScrollComponent) nzTableInnerScrollComponent: NzTableInnerScrollComponent;
+  nzVirtualScrollDirective!: NzTableVirtualScrollDirective;
+  @ViewChild(NzTableInnerScrollComponent) nzTableInnerScrollComponent!: NzTableInnerScrollComponent;
   verticalScrollBarWidth = 0;
   onPageSizeChange(size: number): void {
     this.nzTableDataService.updatePageSize(size);

@@ -24,5 +24,5 @@ import { NzSiderComponent } from './sider.component';
   }
 })
 export class NzLayoutComponent {
-  @ContentChildren(NzSiderComponent) listOfNzSiderComponent: QueryList<NzSiderComponent>;
+  @ContentChildren(NzSiderComponent) listOfNzSiderComponent!: QueryList<NzSiderComponent>;
 }

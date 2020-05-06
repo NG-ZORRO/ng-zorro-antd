@@ -64,8 +64,8 @@ export class YearTableComponent extends AbstractTable implements OnChanges {
           content,
           title: content,
           classMap: {},
-          cellRender: valueFunctionProp(this.cellRender, year), // Customized content
-          fullCellRender: valueFunctionProp(this.fullCellRender, year),
+          cellRender: valueFunctionProp(this.cellRender!, year), // Customized content
+          fullCellRender: valueFunctionProp(this.fullCellRender!, year),
           onClick: () => this.chooseYear(cell.value.getFullYear()), // don't use yearValue here,
           onMouseEnter: () => null
         };

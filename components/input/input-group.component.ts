@@ -106,16 +106,16 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   static ngAcceptInputType_nzSearch: BooleanInput;
   static ngAcceptInputType_nzCompact: BooleanInput;
 
-  @ContentChildren(NzInputDirective) listOfNzInputDirective: QueryList<NzInputDirective>;
-  @Input() nzAddOnBeforeIcon: NgClassType;
-  @Input() nzAddOnAfterIcon: NgClassType;
-  @Input() nzPrefixIcon: NgClassType;
-  @Input() nzSuffixIcon: NgClassType;
-  @Input() nzAddOnBefore: string | TemplateRef<void>;
-  @Input() nzAddOnAfter: string | TemplateRef<void>;
-  @Input() nzPrefix: string | TemplateRef<void>;
-  @Input() nzSuffix: string | TemplateRef<void>;
-  @Input() nzSize: NzSizeLDSType;
+  @ContentChildren(NzInputDirective) listOfNzInputDirective!: QueryList<NzInputDirective>;
+  @Input() nzAddOnBeforeIcon?: NgClassType;
+  @Input() nzAddOnAfterIcon?: NgClassType;
+  @Input() nzPrefixIcon?: NgClassType;
+  @Input() nzSuffixIcon?: NgClassType;
+  @Input() nzAddOnBefore?: string | TemplateRef<void>;
+  @Input() nzAddOnAfter?: string | TemplateRef<void>;
+  @Input() nzPrefix?: string | TemplateRef<void>;
+  @Input() nzSuffix?: string | TemplateRef<void>;
+  @Input() nzSize: NzSizeLDSType = 'default';
   @Input() @InputBoolean() nzSearch = false;
   @Input() @InputBoolean() nzCompact = false;
   isLarge = false;

@@ -65,9 +65,9 @@ import { PaginationItemRenderContext } from './pagination.types';
   `
 })
 export class NzPaginationDefaultComponent implements OnChanges {
-  @ViewChild('containerTemplate', { static: true }) template: TemplateRef<NzSafeAny>;
+  @ViewChild('containerTemplate', { static: true }) template!: TemplateRef<NzSafeAny>;
   @Input() nzSize: 'default' | 'small' = 'default';
-  @Input() itemRender: TemplateRef<PaginationItemRenderContext>;
+  @Input() itemRender?: TemplateRef<PaginationItemRenderContext>;
   @Input() showTotal: TemplateRef<{ $implicit: number; range: [number, number] }> | null = null;
   @Input() disabled = false;
   @Input() locale: NzSafeAny = {};

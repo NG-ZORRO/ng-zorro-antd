@@ -52,8 +52,8 @@ export function MenuGroupFactory(isMenuInsideDropDownToken: boolean): boolean {
   preserveWhitespaces: false
 })
 export class NzMenuGroupComponent implements AfterViewInit {
-  @Input() nzTitle: string | TemplateRef<void>;
-  @ViewChild('titleElement') titleElement: ElementRef;
+  @Input() nzTitle?: string | TemplateRef<void>;
+  @ViewChild('titleElement') titleElement?: ElementRef;
 
   constructor(
     public elementRef: ElementRef,
@@ -63,8 +63,9 @@ export class NzMenuGroupComponent implements AfterViewInit {
     const className = this.isMenuInsideDropDown ? 'ant-dropdown-menu-item-group' : 'ant-menu-item-group';
     this.renderer.addClass(elementRef.nativeElement, className);
   }
+
   ngAfterViewInit(): void {
-    const ulElement = this.renderer.nextSibling(this.titleElement.nativeElement);
+    const ulElement = this.renderer.nextSibling(this.titleElement!.nativeElement);
     if (ulElement) {
       /** add classname to ul **/
       const className = this.isMenuInsideDropDown ? 'ant-dropdown-menu-item-group-list' : 'ant-menu-item-group-list';

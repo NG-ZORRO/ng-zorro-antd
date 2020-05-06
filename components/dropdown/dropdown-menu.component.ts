@@ -67,7 +67,7 @@ export class NzDropdownMenuComponent implements AfterContentInit {
   descendantMenuItemClick$ = this.nzMenuService.descendantMenuItemClick$;
   nzOverlayClassName: string | null = null;
   nzOverlayStyle: IndexableObject = {};
-  @ViewChild(TemplateRef, { static: true }) templateRef: TemplateRef<NzSafeAny>;
+  @ViewChild(TemplateRef, { static: true }) templateRef!: TemplateRef<NzSafeAny>;
 
   setMouseState(visible: boolean): void {
     this.mouseState$.next(visible);

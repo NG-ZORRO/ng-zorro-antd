@@ -16,8 +16,8 @@ export abstract class AbstractPanelHeader implements OnInit, OnChanges {
   prefixCls: string = `ant-picker-header`;
   selectors: PanelSelector[] = [];
 
-  @Input() value: CandyDate;
-  @Input() locale: NzCalendarI18nInterface;
+  @Input() value!: CandyDate;
+  @Input() locale!: NzCalendarI18nInterface;
   @Input() showSuperPreBtn: boolean = true;
   @Input() showSuperNextBtn: boolean = true;
   @Input() showPreBtn: boolean = true;

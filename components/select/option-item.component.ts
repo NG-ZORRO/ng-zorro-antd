@@ -55,7 +55,7 @@ export class NzOptionItemComponent implements OnChanges {
   @Input() activatedValue: NzSafeAny | null = null;
   @Input() listOfSelectedValue: NzSafeAny[] = [];
   @Input() icon: TemplateRef<NzSafeAny> | null = null;
-  @Input() compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean;
+  @Input() compareWith!: (o1: NzSafeAny, o2: NzSafeAny) => boolean;
   @Output() readonly itemClick = new EventEmitter<NzSafeAny>();
   @Output() readonly itemHover = new EventEmitter<NzSafeAny>();
   onHostMouseEnter(): void {

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'div[app-footer-col]',
@@ -15,14 +15,8 @@ import { Component, Input, OnInit } from '@angular/core';
     class: 'rc-footer-column'
   }
 })
-export class FooterColComponent implements OnInit {
-
-  @Input() title: string;
-  @Input() imgSrc: string;
-  @Input() imgAlt: string;
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+export class FooterColComponent {
+  @Input() title!: string;
+  @Input() imgSrc!: string;
+  @Input() imgAlt!: string;
 }

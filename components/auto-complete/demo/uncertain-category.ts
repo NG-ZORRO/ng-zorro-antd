@@ -48,7 +48,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
   ]
 })
 export class NzDemoAutoCompleteUncertainCategoryComponent {
-  inputValue: string;
+  inputValue?: string;
   options: Array<{ value: string; category: string; count: number }> = [];
 
   onChange(e: Event): void {

@@ -24,7 +24,7 @@ describe('NzScrollService', () => {
   }
 
   class MockPlatformLocation {
-    hash: string;
+    hash!: string;
   }
 
   beforeEach(() => {

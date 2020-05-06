@@ -35,9 +35,9 @@ import { transCompatFormat } from './util';
   templateUrl: './abstract-table.html'
 })
 export class DateTableComponent extends AbstractTable implements OnChanges, OnInit {
-  @Input() locale: NzCalendarI18nInterface;
-  @Input() selectedValue: CandyDate[]; // Range ONLY
-  @Input() hoverValue: CandyDate[]; // Range ONLY
+  @Input() locale!: NzCalendarI18nInterface;
+  @Input() selectedValue: CandyDate[] = []; // Range ONLY
+  @Input() hoverValue: CandyDate[] = []; // Range ONLY
 
   @Output() readonly dayHover = new EventEmitter<CandyDate>(); // Emitted when hover on a day by mouse enter
 

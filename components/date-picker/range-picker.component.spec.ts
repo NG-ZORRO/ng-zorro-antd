@@ -921,34 +921,34 @@ describe('NzRangePickerComponent', () => {
   `
 })
 class NzTestRangePickerComponent {
-  useSuite: 1 | 2 | 3;
-  @ViewChild('tplDateRender', { static: true }) tplDateRender: TemplateRef<Date>;
-  @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter: TemplateRef<void>;
+  useSuite!: 1 | 2 | 3;
+  @ViewChild('tplDateRender', { static: true }) tplDateRender!: TemplateRef<Date>;
+  @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter!: TemplateRef<void>;
 
   // --- Suite 1
-  nzAllowClear: boolean;
-  nzAutoFocus: boolean;
-  nzDisabled: boolean;
-  nzClassName: string;
-  nzDisabledDate: (d: Date) => boolean;
+  nzAllowClear: boolean = false;
+  nzAutoFocus: boolean = false;
+  nzDisabled: boolean = false;
+  nzClassName!: string;
+  nzDisabledDate!: (d: Date) => boolean;
   nzLocale: any; // tslint:disable-line:no-any
-  nzPlaceHolder: string[];
-  nzPopupStyle: NgStyleInterface;
-  nzDropdownClassName: string;
-  nzSize: string;
-  nzStyle: NgStyleInterface;
+  nzPlaceHolder!: string[];
+  nzPopupStyle!: NgStyleInterface;
+  nzDropdownClassName!: string;
+  nzSize!: string;
+  nzStyle!: NgStyleInterface;
   nzOnOpenChange(): void {}
-  modelValue: Array<Date | null>;
+  modelValue!: Array<Date | null>;
   modelValueChange(): void {}
-  nzDefaultPickerValue: Array<Date | null>;
-  nzSeparator: string;
+  nzDefaultPickerValue!: Array<Date | null>;
+  nzSeparator!: string;
 
   nzDateRender: any; // tslint:disable-line:no-any
   nzShowTime: boolean | object = false;
   nzDisabledTime: any; // tslint:disable-line:no-any
-  nzRenderExtraFooter: string | (() => TemplateRef<void> | string);
+  nzRenderExtraFooter!: string | (() => TemplateRef<void> | string);
   nzShowToday = false;
-  nzMode: string[];
+  nzMode?: string[];
 
   nzRanges: any; // tslint:disable-line:no-any
   nzOnPanelChange(): void {}
@@ -956,5 +956,5 @@ class NzTestRangePickerComponent {
   nzOnOk(): void {}
 
   // --- Suite 2
-  nzOpen: boolean;
+  nzOpen: boolean = false;
 }

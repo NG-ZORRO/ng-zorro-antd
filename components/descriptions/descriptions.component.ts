@@ -148,14 +148,14 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
   static ngAcceptInputType_nzBordered: BooleanInput;
   static ngAcceptInputType_nzColon: BooleanInput;
 
-  @ContentChildren(NzDescriptionsItemComponent) items: QueryList<NzDescriptionsItemComponent>;
+  @ContentChildren(NzDescriptionsItemComponent) items!: QueryList<NzDescriptionsItemComponent>;
 
-  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) nzBordered: boolean;
+  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzBordered: boolean = false;
   @Input() nzLayout: NzDescriptionsLayout = 'horizontal';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, defaultColumnMap) nzColumn: number | { [key in NzBreakpointEnum]: number };
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzDescriptionsSize;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzColumn: number | { [key in NzBreakpointEnum]: number } = defaultColumnMap;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzDescriptionsSize = 'default';
   @Input() nzTitle: string | TemplateRef<void> = '';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzColon: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzColon: boolean = true;
 
   itemMatrix: NzDescriptionsItemRenderProps[][] = [];
   realColumn = 3;

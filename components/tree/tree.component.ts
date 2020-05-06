@@ -177,9 +177,9 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   static ngAcceptInputType_nzDraggable: BooleanInput;
   static ngAcceptInputType_nzMultiple: BooleanInput;
 
-  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) nzShowIcon: boolean;
-  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) nzHideUnMatched: boolean;
-  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) nzBlockNode: boolean;
+  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzShowIcon: boolean = false;
+  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzHideUnMatched: boolean = false;
+  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzBlockNode: boolean = false;
   @Input() @InputBoolean() nzExpandAll = false;
   @Input() @InputBoolean() nzSelectMode = false;
   @Input() @InputBoolean() nzCheckStrictly = false;
@@ -189,21 +189,21 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   @Input() @InputBoolean() nzAsyncData = false;
   @Input() @InputBoolean() nzDraggable: boolean = false;
   @Input() @InputBoolean() nzMultiple = false;
-  @Input() nzExpandedIcon: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
+  @Input() nzExpandedIcon?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
   @Input() nzVirtualItemSize = 28;
   @Input() nzVirtualMaxBufferPx = 500;
   @Input() nzVirtualMinBufferPx = 28;
   @Input() nzVirtualHeight: number | boolean = false;
-  @Input() nzTreeTemplate: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
-  @Input() nzBeforeDrop: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;
+  @Input() nzTreeTemplate?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
+  @Input() nzBeforeDrop?: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;
   @Input() nzData: NzTreeNodeOptions[] | NzTreeNode[] = [];
   @Input() nzExpandedKeys: NzTreeNodeKey[] = [];
   @Input() nzSelectedKeys: NzTreeNodeKey[] = [];
   @Input() nzCheckedKeys: NzTreeNodeKey[] = [];
-  @Input() nzSearchValue: string;
-  @Input() nzSearchFunc: (node: NzTreeNodeOptions) => boolean;
-  @ContentChild('nzTreeTemplate', { static: true }) nzTreeTemplateChild: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
-  @ViewChild(CdkVirtualScrollViewport, { read: CdkVirtualScrollViewport }) cdkVirtualScrollViewport: CdkVirtualScrollViewport;
+  @Input() nzSearchValue?: string;
+  @Input() nzSearchFunc?: (node: NzTreeNodeOptions) => boolean;
+  @ContentChild('nzTreeTemplate', { static: true }) nzTreeTemplateChild!: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
+  @ViewChild(CdkVirtualScrollViewport, { read: CdkVirtualScrollViewport }) cdkVirtualScrollViewport!: CdkVirtualScrollViewport;
   nzFlattenNodes: NzTreeNode[] = [];
   beforeInit = true;
 
@@ -293,7 +293,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
     if (nzSearchValue) {
       if (!(nzSearchValue.firstChange && !this.nzSearchValue)) {
         useDefaultExpandedKeys = false;
-        this.handleSearchValue(this.nzSearchValue, this.nzSearchFunc);
+        this.handleSearchValue(nzSearchValue.currentValue, this.nzSearchFunc);
         this.nzSearchValueChange.emit(this.nzTreeService.formatEvent('search', null, null));
       }
     }

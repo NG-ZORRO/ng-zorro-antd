@@ -74,8 +74,8 @@ import { ModalOptions } from './modal-types';
   }
 })
 export class NzModalContainerComponent extends BaseModalContainer {
-  @ViewChild(CdkPortalOutlet, { static: true }) portalOutlet: CdkPortalOutlet;
-  @ViewChild('modalElement', { static: true }) modalElementRef: ElementRef<HTMLDivElement>;
+  @ViewChild(CdkPortalOutlet, { static: true }) portalOutlet!: CdkPortalOutlet;
+  @ViewChild('modalElement', { static: true }) modalElementRef!: ElementRef<HTMLDivElement>;
   constructor(
     elementRef: ElementRef,
     focusTrapFactory: FocusTrapFactory,

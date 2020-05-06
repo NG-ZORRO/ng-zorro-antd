@@ -21,7 +21,7 @@ export class NzTreeBaseService {
 
   isCheckStrictly: boolean = false;
   isMultiple: boolean = false;
-  selectedNode: NzTreeNode;
+  selectedNode!: NzTreeNode;
   rootNodes: NzTreeNode[] = [];
   flattenNodes$ = new BehaviorSubject<NzTreeNode[]>([]);
   selectedNodeList: NzTreeNode[] = [];

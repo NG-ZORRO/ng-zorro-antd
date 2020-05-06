@@ -49,15 +49,10 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     this.iconfont = value;
   }
 
+  hostClass?: string;
+
   private readonly el: HTMLElement;
-
-  type: string;
-  theme: ThemeType;
-  hostClass: string;
-  // @ts-ignore
-  twotoneColor: string;
-
-  private iconfont: string;
+  private iconfont?: string;
   private spin: boolean = false;
 
   constructor(
@@ -148,7 +143,7 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
   }
 
   private setSVGData(svg: SVGElement): void {
-    this.renderer.setAttribute(svg, 'data-icon', this.type);
+    this.renderer.setAttribute(svg, 'data-icon', this.type as string);
     this.renderer.setAttribute(svg, 'aria-hidden', 'true');
   }
 }

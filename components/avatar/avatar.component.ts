@@ -21,7 +21,12 @@ import {
 } from '@angular/core';
 
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import {
+  NgClassInterface,
+  NgStyleInterface,
+  NzShapeSCType,
+  NzSizeLDSType
+} from 'ng-zorro-antd/core/types';
 
 const NZ_CONFIG_COMPONENT_NAME = 'avatar';
 
@@ -51,22 +56,23 @@ const NZ_CONFIG_COMPONENT_NAME = 'avatar';
   encapsulation: ViewEncapsulation.None
 })
 export class NzAvatarComponent implements OnChanges {
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'circle') nzShape: NzShapeSCType;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzSizeLDSType | number;
-  @Input() nzText: string;
-  @Input() nzSrc: string;
-  @Input() nzSrcSet: string;
-  @Input() nzAlt: string;
-  @Input() nzIcon: string;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzShape: NzShapeSCType = 'circle';
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzSizeLDSType | number = 'default';
+  @Input() nzText?: string;
+  @Input() nzSrc?: string;
+  @Input() nzSrcSet?: string;
+  @Input() nzAlt?: string;
+  @Input() nzIcon?: string;
   @Output() readonly nzError = new EventEmitter<Event>();
 
   hasText: boolean = false;
   hasSrc: boolean = true;
   hasIcon: boolean = false;
-  textStyles: {};
+  textStyles: NgStyleInterface = {};
+  classMap: NgClassInterface = {};
   customSize: string | null = null;
 
-  @ViewChild('textEl', { static: false }) textEl: ElementRef;
+  @ViewChild('textEl', { static: false }) textEl?: ElementRef;
 
   private el: HTMLElement = this.elementRef.nativeElement;
 
@@ -108,7 +114,7 @@ export class NzAvatarComponent implements OnChanges {
       return;
     }
 
-    const childrenWidth = this.textEl.nativeElement.offsetWidth;
+    const childrenWidth = this.textEl!.nativeElement.offsetWidth;
     const avatarWidth = this.el.getBoundingClientRect().width;
     const scale = avatarWidth - 8 < childrenWidth ? (avatarWidth - 8) / childrenWidth : 1;
     this.textStyles = {

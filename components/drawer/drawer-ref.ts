@@ -17,19 +17,19 @@ export abstract class NzDrawerRef<R = NzSafeAny> {
   abstract close(result?: R): void;
   abstract open(): void;
 
-  abstract nzClosable: boolean;
-  abstract nzNoAnimation: boolean;
-  abstract nzMaskClosable: boolean;
-  abstract nzKeyboard: boolean;
-  abstract nzMask: boolean;
-  abstract nzTitle: string | TemplateRef<{}>;
-  abstract nzPlacement: NzDrawerPlacement;
-  abstract nzMaskStyle: object;
-  abstract nzBodyStyle: object;
-  abstract nzWrapClassName: string;
-  abstract nzWidth: number | string;
-  abstract nzHeight: number | string;
-  abstract nzZIndex: number | string;
-  abstract nzOffsetX: number | string;
-  abstract nzOffsetY: number | string;
+  abstract nzClosable?: boolean;
+  abstract nzNoAnimation?: boolean;
+  abstract nzMaskClosable?: boolean;
+  abstract nzKeyboard?: boolean;
+  abstract nzMask?: boolean;
+  abstract nzTitle?: string | TemplateRef<{}>;
+  abstract nzPlacement?: NzDrawerPlacement;
+  abstract nzMaskStyle?: object;
+  abstract nzBodyStyle?: object;
+  abstract nzWrapClassName?: string;
+  abstract nzWidth?: number | string;
+  abstract nzHeight?: number | string;
+  abstract nzZIndex?: number | string;
+  abstract nzOffsetX?: number | string;
+  abstract nzOffsetY?: number | string;
 }

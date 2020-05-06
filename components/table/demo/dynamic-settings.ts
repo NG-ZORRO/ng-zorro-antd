@@ -115,7 +115,7 @@ interface Setting {
   ]
 })
 export class NzDemoTableDynamicSettingsComponent implements OnInit {
-  settingForm: FormGroup;
+  settingForm?: FormGroup;
   listOfData: ItemData[] = [];
   displayData: ItemData[] = [];
   allChecked = false;
@@ -123,7 +123,7 @@ export class NzDemoTableDynamicSettingsComponent implements OnInit {
   fixedColumn = false;
   scrollX: string | null = null;
   scrollY: string | null = null;
-  settingValue: Setting;
+  settingValue!: Setting;
   listOfSwitch = [
     { name: 'Bordered', formControlName: 'bordered' },
     { name: 'Loading', formControlName: 'loading' },

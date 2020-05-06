@@ -16,7 +16,7 @@ import { NzNotificationService } from './notification.service';
   template: ` <ng-template let-data="data">{{ 'test template content' }}{{ data }}</ng-template> `
 })
 export class NzTestNotificationComponent {
-  @ViewChild(TemplateRef, { static: true }) demoTemplateRef: TemplateRef<{}>;
+  @ViewChild(TemplateRef, { static: true }) demoTemplateRef!: TemplateRef<{}>;
 }
 
 describe('NzNotification', () => {

@@ -56,9 +56,9 @@ export class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewI
 
   private destroy$ = new Subject<void>();
   isInsideTable = false;
-  @ViewChild('contentTemplate', { static: true }) templateRef: TemplateRef<NzSafeAny>;
-  @ContentChildren(NzTrDirective) listOfNzTrDirective: QueryList<NzTrDirective>;
-  @ContentChildren(NzThAddOnComponent, { descendants: true }) listOfNzThAddOnComponent: QueryList<NzThAddOnComponent>;
+  @ViewChild('contentTemplate', { static: true }) templateRef!: TemplateRef<NzSafeAny>;
+  @ContentChildren(NzTrDirective) listOfNzTrDirective!: QueryList<NzTrDirective>;
+  @ContentChildren(NzThAddOnComponent, { descendants: true }) listOfNzThAddOnComponent!: QueryList<NzThAddOnComponent>;
   /** @deprecated use nzSortFn and nzSortPriority instead **/
   @Input() @InputBoolean() nzSingleSort = false;
   /** @deprecated use nzSortOrderChange instead **/

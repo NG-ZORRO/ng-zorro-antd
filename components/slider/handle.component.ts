@@ -50,18 +50,18 @@ import { NzSliderShowTooltip } from './typings';
 export class NzSliderHandleComponent implements OnChanges {
   static ngAcceptInputType_active: BooleanInput;
 
-  @ViewChild('handle', { static: false }) handleEl: ElementRef;
-  @ViewChild(NzTooltipDirective, { static: false }) tooltip: NzTooltipDirective;
+  @ViewChild('handle', { static: false }) handleEl?: ElementRef;
+  @ViewChild(NzTooltipDirective, { static: false }) tooltip?: NzTooltipDirective;
 
-  @Input() vertical: string;
-  @Input() offset: number;
-  @Input() value: number;
+  @Input() vertical?: string;
+  @Input() offset?: number;
+  @Input() value?: number;
   @Input() tooltipVisible: NzSliderShowTooltip = 'default';
-  @Input() tooltipPlacement: string;
-  @Input() tooltipFormatter: (value: number) => string;
+  @Input() tooltipPlacement?: string;
+  @Input() tooltipFormatter?: (value: number) => string;
   @Input() @InputBoolean() active = false;
 
-  tooltipTitle: string;
+  tooltipTitle?: string;
   style: NgStyleInterface = {};
 
   constructor(private sliderService: NzSliderService, private cdr: ChangeDetectorRef) {}
@@ -107,7 +107,7 @@ export class NzSliderHandleComponent implements OnChanges {
   };
 
   focus(): void {
-    this.handleEl.nativeElement.focus();
+    this.handleEl?.nativeElement.focus();
   }
 
   private toggleTooltip(show: boolean, force: boolean = false): void {
@@ -116,19 +116,19 @@ export class NzSliderHandleComponent implements OnChanges {
     }
 
     if (show) {
-      this.tooltip.show();
+      this.tooltip?.show();
     } else {
-      this.tooltip.hide();
+      this.tooltip?.hide();
     }
   }
 
   private updateTooltipTitle(): void {
-    this.tooltipTitle = this.tooltipFormatter ? this.tooltipFormatter(this.value) : `${this.value}`;
+    this.tooltipTitle = this.tooltipFormatter ? this.tooltipFormatter(this.value!) : `${this.value}`;
   }
 
   private updateTooltipPosition(): void {
     if (this.tooltip) {
-      Promise.resolve().then(() => this.tooltip.updatePosition());
+      Promise.resolve().then(() => this.tooltip?.updatePosition());
     }
   }
 

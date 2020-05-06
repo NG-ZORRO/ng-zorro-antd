@@ -20,7 +20,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
   `
 })
 export class NzDemoAutoCompleteCustomComponent {
-  inputValue: string;
+  inputValue?: string;
   options: string[] = [];
 
   onInput(value: string): void {

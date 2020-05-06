@@ -85,13 +85,13 @@ export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor,
   static ngAcceptInputType_nzAutoFocus: BooleanInput;
   static ngAcceptInputType_nzCount: BooleanInput;
 
-  @ViewChild('ulElement', { static: false }) private ulElement: ElementRef;
+  @ViewChild('ulElement', { static: false }) private ulElement?: ElementRef;
 
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzAllowClear: boolean;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzAllowHalf: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzAllowClear: boolean = true;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzAllowHalf: boolean = false;
   @Input() @InputBoolean() nzDisabled: boolean = false;
   @Input() @InputBoolean() nzAutoFocus: boolean = false;
-  @Input() nzCharacter: TemplateRef<void>;
+  @Input() nzCharacter?: TemplateRef<void>;
   @Input() @InputNumber() nzCount: number = 5;
   @Input() nzTooltips: string[] = [];
   @Output() readonly nzOnBlur = new EventEmitter<FocusEvent>();
@@ -129,7 +129,7 @@ export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor,
     const { nzAutoFocus, nzCount, nzValue } = changes;
 
     if (nzAutoFocus && !nzAutoFocus.isFirstChange()) {
-      const el = this.ulElement.nativeElement;
+      const el = this.ulElement!.nativeElement;
       if (this.nzAutoFocus && !this.nzDisabled) {
         this.renderer.setAttribute(el, 'autofocus', 'autofocus');
       } else {
@@ -210,11 +210,11 @@ export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor,
   }
 
   focus(): void {
-    this.ulElement.nativeElement.focus();
+    this.ulElement!.nativeElement.focus();
   }
 
   blur(): void {
-    this.ulElement.nativeElement.blur();
+    this.ulElement!.nativeElement.blur();
   }
 
   onKeyDown(e: KeyboardEvent): void {

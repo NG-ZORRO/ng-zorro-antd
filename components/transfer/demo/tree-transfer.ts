@@ -29,7 +29,7 @@ import { NzTreeComponent } from 'ng-zorro-antd/tree';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzDemoTransferTreeTransferComponent {
-  @ViewChild('tree', { static: true }) tree: NzTreeComponent;
+  @ViewChild('tree', { static: true }) tree!: NzTreeComponent;
   list: TransferItem[] = [
     { id: 1, parentid: 0, title: 'parent 1' },
     { id: 2, parentid: 1, title: 'leaf 1-1', disabled: true, isLeaf: true },

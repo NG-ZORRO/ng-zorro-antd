@@ -115,8 +115,8 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   static ngAcceptInputType_nzMin: NumberInput;
   static ngAcceptInputType_nzStep: NumberInput;
 
-  @ViewChild('slider', { static: true }) slider: ElementRef<HTMLDivElement>;
-  @ViewChildren(NzSliderHandleComponent) handlerComponents: QueryList<NzSliderHandleComponent>;
+  @ViewChild('slider', { static: true }) slider!: ElementRef<HTMLDivElement>;
+  @ViewChildren(NzSliderHandleComponent) handlerComponents!: QueryList<NzSliderHandleComponent>;
 
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzDots: boolean = false;
@@ -130,7 +130,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   @Input() @InputNumber() nzStep = 1;
   @Input() nzTooltipVisible: NzSliderShowTooltip = 'default';
   @Input() nzTooltipPlacement: string = 'top';
-  @Input() nzTipFormatter: (value: number) => string;
+  @Input() nzTipFormatter?: (value: number) => string;
 
   @Output() readonly nzOnAfterChange = new EventEmitter<NzSliderValue>();
 
@@ -139,16 +139,16 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   cacheSliderLength: number | null = null;
   activeValueIndex: number | undefined = undefined; // Current activated handle's index ONLY for range=true
   track: { offset: null | number; length: null | number } = { offset: null, length: null }; // Track's offset and length
-  handles: NzSliderHandler[]; // Handles' offset
-  marksArray: NzExtendedMark[] | null; // "steps" in array type with more data & FILTER out the invalid mark
+  handles: NzSliderHandler[] = []; // Handles' offset
+  marksArray: NzExtendedMark[] | null = null; // "steps" in array type with more data & FILTER out the invalid mark
   bounds: { lower: NzSliderValue | null; upper: NzSliderValue | null } = { lower: null, upper: null }; // now for nz-slider-step
 
-  private dragStart$: Observable<number>;
-  private dragMove$: Observable<number>;
-  private dragEnd$: Observable<Event>;
-  private dragStart_: Subscription | null;
-  private dragMove_: Subscription | null;
-  private dragEnd_: Subscription | null;
+  private dragStart$?: Observable<number>;
+  private dragMove$?: Observable<number>;
+  private dragEnd$?: Observable<Event>;
+  private dragStart_?: Subscription | null;
+  private dragMove_?: Subscription | null;
+  private dragEnd_?: Subscription | null;
 
   constructor(private sliderService: NzSliderService, private cdr: ChangeDetectorRef, private platform: Platform) {}
 

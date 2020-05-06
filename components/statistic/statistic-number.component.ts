@@ -28,8 +28,8 @@ import { NzStatisticValueType } from './typings';
   `
 })
 export class NzStatisticNumberComponent implements OnChanges {
-  @Input() nzValue: NzStatisticValueType;
-  @Input() nzValueTemplate: TemplateRef<{ $implicit: NzStatisticValueType }>;
+  @Input() nzValue?: NzStatisticValueType;
+  @Input() nzValueTemplate?: TemplateRef<{ $implicit: NzStatisticValueType }>;
 
   displayInt = '';
   displayDecimal = '';

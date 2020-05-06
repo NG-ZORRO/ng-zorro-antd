@@ -77,7 +77,7 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
 
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
-  @ViewChild('inputElement', { static: true }) private inputElement: ElementRef;
+  @ViewChild('inputElement', { static: true }) private inputElement!: ElementRef;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   @Input() nzValue: NzSafeAny | null = null;
   @Input() @InputBoolean() nzAutoFocus = false;

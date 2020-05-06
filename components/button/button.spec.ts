@@ -178,7 +178,7 @@ export class TestButtonBindingComponent {
   `
 })
 export class TestButtonWithIconComponent implements OnInit {
-  title: string;
+  title?: string;
   ngOnInit(): void {
     setTimeout(() => (this.title = 'button'), 5000);
   }

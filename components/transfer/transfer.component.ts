@@ -121,18 +121,18 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzDataSource: TransferItem[] = [];
   @Input() nzTitles: string[] = ['', ''];
   @Input() nzOperations: string[] = [];
-  @Input() nzListStyle: object;
+  @Input() nzListStyle?: object;
   @Input() @InputBoolean() nzShowSelectAll = true;
-  @Input() nzItemUnit: string;
-  @Input() nzItemsUnit: string;
+  @Input() nzItemUnit?: string;
+  @Input() nzItemsUnit?: string;
   @Input() nzCanMove: (arg: TransferCanMove) => Observable<TransferItem[]> = (arg: TransferCanMove) => of(arg.list);
   @Input() nzRenderList: Array<TemplateRef<NzSafeAny> | null> | null = null;
-  @Input() nzRender: TemplateRef<NzSafeAny>;
-  @Input() nzFooter: TemplateRef<NzSafeAny>;
+  @Input() nzRender?: TemplateRef<NzSafeAny>;
+  @Input() nzFooter?: TemplateRef<NzSafeAny>;
   @Input() @InputBoolean() nzShowSearch = false;
-  @Input() nzFilterOption: (inputValue: string, item: TransferItem) => boolean;
-  @Input() nzSearchPlaceholder: string;
-  @Input() nzNotFoundContent: string;
+  @Input() nzFilterOption?: (inputValue: string, item: TransferItem) => boolean;
+  @Input() nzSearchPlaceholder?: string;
+  @Input() nzNotFoundContent?: string;
   @Input() nzTargetKeys: string[] = [];
   @Input() nzSelectedKeys: string[] = [];
 

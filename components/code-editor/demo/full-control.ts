@@ -18,7 +18,7 @@ declare const monaco: any;
   ]
 })
 export class NzDemoCodeEditorFullControlComponent {
-  editor: editor.ICodeEditor;
+  editor?: editor.ICodeEditor;
 
   code = `import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor'
 
