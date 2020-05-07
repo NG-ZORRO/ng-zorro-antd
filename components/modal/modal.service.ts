@@ -9,19 +9,20 @@
 import { ComponentType, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal, PortalInjector, TemplatePortal } from '@angular/cdk/portal';
 import { Injectable, Injector, OnDestroy, Optional, SkipSelf, TemplateRef } from '@angular/core';
+import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isNotNil } from 'ng-zorro-antd/core/util';
 import { defer, Observable, Subject } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
-import { MODAL_MASK_CLASS_NAME } from './modal-config';
+import { MODAL_MASK_CLASS_NAME, NZ_CONFIG_COMPONENT_NAME } from './modal-config';
 import { NzModalConfirmContainerComponent } from './modal-confirm-container.component';
 import { BaseModalContainer } from './modal-container';
 import { NzModalContainerComponent } from './modal-container.component';
 import { NzModalRef } from './modal-ref';
 import { ConfirmType, ModalOptions } from './modal-types';
-import { applyConfigDefaults, setContentInstanceParams } from './utils';
+import { applyConfigDefaults, getValueWithConfig, setContentInstanceParams } from './utils';
 
 type ContentType<T> = ComponentType<T> | TemplateRef<T> | string;
 
@@ -43,7 +44,12 @@ export class NzModalService implements OnDestroy {
     this.openModals.length ? this._afterAllClosed : this._afterAllClosed.pipe(startWith(undefined))
   ) as Observable<void>;
 
-  constructor(private overlay: Overlay, private injector: Injector, @Optional() @SkipSelf() private parentModal: NzModalService) {}
+  constructor(
+    private overlay: Overlay,
+    private injector: Injector,
+    private nzConfigService: NzConfigService,
+    @Optional() @SkipSelf() private parentModal: NzModalService
+  ) {}
 
   create<T, R = NzSafeAny>(config: ModalOptions<T, R>): NzModalRef<T, R> {
     return this.open<T, R>(config.nzContent as ComponentType<T>, config);
@@ -120,14 +126,15 @@ export class NzModalService implements OnDestroy {
   }
 
   private createOverlay(config: ModalOptions): OverlayRef {
+    const globalConfig = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME) || {};
     const overlayConfig = new OverlayConfig({
       hasBackdrop: true,
       scrollStrategy: this.overlay.scrollStrategies.block(),
       positionStrategy: this.overlay.position().global(),
-      disposeOnNavigation: config.nzCloseOnNavigation
+      disposeOnNavigation: getValueWithConfig(config.nzCloseOnNavigation, globalConfig.nzCloseOnNavigation, true)
     });
 
-    if (config.nzMask) {
+    if (getValueWithConfig(config.nzMask, globalConfig.nzMask, true)) {
       overlayConfig.backdropClass = MODAL_MASK_CLASS_NAME;
     }
 

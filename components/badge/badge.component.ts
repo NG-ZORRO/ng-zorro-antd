@@ -110,7 +110,7 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   @Input() nzStyle: { [key: string]: string } | null = null;
   @Input() nzText?: string;
   @Input() nzTitle?: string | null | undefined;
-  @Input() nzStatus?: NzBadgeStatusType;
+  @Input() nzStatus?: NzBadgeStatusType | string;
   @Input() nzCount?: number | TemplateRef<NzSafeAny>;
   @Input() nzOffset?: [number, number];
 

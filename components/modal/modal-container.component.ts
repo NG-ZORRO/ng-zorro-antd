@@ -22,6 +22,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
+import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { nzModalAnimations } from './modal-animations';
@@ -83,10 +84,11 @@ export class NzModalContainerComponent extends BaseModalContainer {
     render: Renderer2,
     zone: NgZone,
     overlayRef: OverlayRef,
+    nzConfigService: NzConfigService,
     public config: ModalOptions,
     @Optional() @Inject(DOCUMENT) document: NzSafeAny,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) animationType: string
   ) {
-    super(elementRef, focusTrapFactory, cdr, render, zone, overlayRef, config, document, animationType);
+    super(elementRef, focusTrapFactory, cdr, render, zone, overlayRef, nzConfigService, config, document, animationType);
   }
 }

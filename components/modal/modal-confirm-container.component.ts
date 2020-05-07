@@ -18,18 +18,17 @@ import {
   EventEmitter,
   Inject,
   NgZone,
-  OnDestroy,
   Optional,
   Output,
   Renderer2,
   ViewChild
 } from '@angular/core';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
+import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
-import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { nzModalAnimations } from './modal-animations';
@@ -108,13 +107,12 @@ import { ModalOptions } from './modal-types';
     '(mouseup)': 'onMouseup($event)'
   }
 })
-export class NzModalConfirmContainerComponent extends BaseModalContainer implements OnDestroy {
+export class NzModalConfirmContainerComponent extends BaseModalContainer {
   @ViewChild(CdkPortalOutlet, { static: true }) portalOutlet!: CdkPortalOutlet;
   @ViewChild('modalElement', { static: true }) modalElementRef!: ElementRef<HTMLDivElement>;
   @Output() readonly cancelTriggered = new EventEmitter<void>();
   @Output() readonly okTriggered = new EventEmitter<void>();
   locale: { okText?: string; cancelText?: string } = {};
-  private destroy$ = new Subject<void>();
 
   constructor(
     private i18n: NzI18nService,
@@ -124,11 +122,12 @@ export class NzModalConfirmContainerComponent extends BaseModalContainer impleme
     render: Renderer2,
     zone: NgZone,
     overlayRef: OverlayRef,
+    nzConfigService: NzConfigService,
     public config: ModalOptions,
     @Optional() @Inject(DOCUMENT) document: NzSafeAny,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) animationType: string
   ) {
-    super(elementRef, focusTrapFactory, cdr, render, zone, overlayRef, config, document, animationType);
+    super(elementRef, focusTrapFactory, cdr, render, zone, overlayRef, nzConfigService, config, document, animationType);
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Modal');
     });
@@ -140,10 +139,5 @@ export class NzModalConfirmContainerComponent extends BaseModalContainer impleme
 
   onOk(): void {
     this.okTriggered.emit();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 }
