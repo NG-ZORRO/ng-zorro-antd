@@ -100,8 +100,8 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges {
   private onTouchFn: () => void = () => {};
 
   @Input() nzMode: NzCalendarMode = 'month';
-  @Input() nzValue: Date;
-  @Input() nzDisabledDate: (date: Date) => boolean;
+  @Input() nzValue?: Date;
+  @Input() nzDisabledDate?: (date: Date) => boolean;
 
   @Output() readonly nzModeChange: EventEmitter<NzCalendarMode> = new EventEmitter();
   @Output() readonly nzPanelChange: EventEmitter<{ date: Date; mode: NzCalendarMode }> = new EventEmitter();
