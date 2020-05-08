@@ -79,7 +79,7 @@ export class NzTimelineItemComponent implements OnChanges {
   }
 
   detectChanges(): void {
-    this.cdr.detectChanges();
+    this.cdr.markForCheck();
   }
 
   private updateCustomColor(): void {
