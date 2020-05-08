@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-timeline-color',
   template: `
     <nz-timeline>
-      <nz-timeline-item nzColor="green">Create a services site 2015-09-01</nz-timeline-item>
+      <nz-timeline-item nzColor="red">Create a services site 2015-09-01</nz-timeline-item>
       <nz-timeline-item nzColor="green">Solve initial network problems 2015-09-01</nz-timeline-item>
       <nz-timeline-item nzColor="red">
         <p>Solve initial network problems 1</p>

@@ -6,7 +6,11 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './timeline-item.component';
+export {
+  NzTimelineItemComponent,
+  NzTimelineItemRendererComponent as ɵNzTimelineItemRendererComponent,
+  NzTimelinePendingItemComponent as ɵNzTimelinePendingItemComponent
+} from './timeline-item.component';
 export * from './timeline.component';
 export * from './timeline.module';
-export * from './timeline.service';
+export { NzTimelineService as ɵNzTimelineService } from './timeline.service';

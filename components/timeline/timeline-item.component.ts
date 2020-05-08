@@ -8,7 +8,6 @@
 
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   Input,
   OnChanges,
@@ -17,9 +16,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-
-import { NzTimelineMode } from './timeline.component';
-import { TimelineService } from './timeline.service';
+import { NzTimelineService } from 'ng-zorro-antd/timeline/timeline.service';
 
 const TimelineTimeDefaultColors = ['red', 'blue', 'green', 'grey', 'gray'] as const;
 export type NzTimelineItemColor = typeof TimelineTimeDefaultColors[number];
@@ -36,28 +33,7 @@ function isDefaultColor(color?: string): boolean {
   exportAs: 'nzTimelineItem',
   template: `
     <ng-template #template>
-      <li
-        class="ant-timeline-item"
-        [class.ant-timeline-item-right]="position === 'right'"
-        [class.ant-timeline-item-left]="position === 'left'"
-        [class.ant-timeline-item-last]="isLast"
-      >
-        <div class="ant-timeline-item-tail"></div>
-        <div
-          class="ant-timeline-item-head"
-          [class.ant-timeline-item-head-red]="nzColor === 'red'"
-          [class.ant-timeline-item-head-blue]="nzColor === 'blue'"
-          [class.ant-timeline-item-head-green]="nzColor === 'green'"
-          [class.ant-timeline-item-head-gray]="nzColor === 'gray'"
-          [class.ant-timeline-item-head-custom]="!!nzDot"
-          [style.border-color]="borderColor"
-        >
-          <ng-container *nzStringTemplateOutlet="nzDot">{{ nzDot }}</ng-container>
-        </div>
-        <div class="ant-timeline-item-content">
-          <ng-content></ng-content>
-        </div>
-      </li>
+      <ng-content></ng-content>
     </ng-template>
   `
 })
@@ -67,24 +43,88 @@ export class NzTimelineItemComponent implements OnChanges {
   @Input() nzColor: NzTimelineItemColor = 'blue';
   @Input() nzDot?: string | TemplateRef<void>;
 
-  isLast = false;
-  borderColor: string | null = null;
-  position: NzTimelineMode | undefined;
+  constructor(private timelineService: NzTimelineService) {}
 
-  constructor(private cdr: ChangeDetectorRef, private timelineService: TimelineService) {}
+  ngOnChanges(): void {
+    this.timelineService.updated$.next();
+  }
+}
+
+@Component({
+  selector: 'nz-timeline-item-renderer',
+  encapsulation: ViewEncapsulation.None,
+  preserveWhitespaces: false,
+  exportAs: 'nzTimelineItemRenderer',
+  template: `
+    <li
+      class="ant-timeline-item"
+      [class.ant-timeline-item-right]="position === 'right'"
+      [class.ant-timeline-item-left]="position === 'left'"
+      [class.ant-timeline-item-last]="isLast"
+    >
+      <div class="ant-timeline-item-tail"></div>
+      <div
+        class="ant-timeline-item-head"
+        [class.ant-timeline-item-head-red]="color === 'red'"
+        [class.ant-timeline-item-head-blue]="color === 'blue'"
+        [class.ant-timeline-item-head-green]="color === 'green'"
+        [class.ant-timeline-item-head-gray]="color === 'gray'"
+        [class.ant-timeline-item-head-custom]="!!dot"
+        [style.border-color]="borderColor"
+      >
+        <ng-container *nzStringTemplateOutlet="dot">{{ dot }}</ng-container>
+      </div>
+      <div class="ant-timeline-item-content">
+        <ng-template *ngTemplateOutlet="template"></ng-template>
+      </div>
+    </li>
+  `
+})
+export class NzTimelineItemRendererComponent implements OnChanges {
+  // properties of internal components should not have `nz` prefix
+  @Input() color: NzTimelineItemColor = 'blue';
+  @Input() dot?: string | TemplateRef<void>;
+  @Input() isLast: boolean = false;
+  @Input() position: 'left' | 'right' = 'left';
+  @Input() template: TemplateRef<void> | null = null;
+
+  borderColor: string | null = null;
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.timelineService.markForCheck();
     if (changes.nzColor) {
       this.updateCustomColor();
     }
   }
 
-  detectChanges(): void {
-    this.cdr.detectChanges();
-  }
-
   private updateCustomColor(): void {
-    this.borderColor = isDefaultColor(this.nzColor) ? null : this.nzColor;
+    this.borderColor = isDefaultColor(this.color) ? null : this.color;
   }
+}
+
+@Component({
+  selector: 'nz-timeline-pending-item',
+  encapsulation: ViewEncapsulation.None,
+  preserveWhitespaces: false,
+  exportAs: 'nzTimelinePendingItem',
+  template: `<li class="ant-timeline-item ant-timeline-item-pending">
+    <div class="ant-timeline-item-tail"></div>
+    <div class="ant-timeline-item-head ant-timeline-item-head-custom ant-timeline-item-head-blue">
+      <ng-container *nzStringTemplateOutlet="pendingDot">
+        <i *ngIf="!pendingDot" nz-icon nzType="loading"></i>
+        <ng-template *ngElse>
+          {{ pendingDot }}
+        </ng-template>
+      </ng-container>
+    </div>
+    <div class="ant-timeline-item-content">
+      <ng-container *nzStringTemplateOutlet="pendingContent">
+        {{ isPendingBoolean ? '' : pendingContent }}
+      </ng-container>
+    </div>
+  </li>`
+})
+export class NzTimelinePendingItemComponent {
+  @Input() pendingDot?: string | TemplateRef<void>;
+  @Input() isPendingBoolean: boolean = false;
+  @Input() pendingContent?: string | boolean | TemplateRef<void>;
 }
