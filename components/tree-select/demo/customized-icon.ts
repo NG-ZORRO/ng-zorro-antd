@@ -15,7 +15,7 @@ import { Component } from '@angular/core';
   `
 })
 export class NzDemoTreeSelectCustomizedIconComponent {
-  value: string;
+  value?: string;
   nodes = [
     {
       title: 'parent 1',

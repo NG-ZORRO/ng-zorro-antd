@@ -311,7 +311,7 @@ describe('radio', () => {
   `
 })
 export class NzTestRadioSingleComponent {
-  @ViewChild(NzRadioComponent, { static: false }) nzRadioComponent: NzRadioComponent;
+  @ViewChild(NzRadioComponent, { static: false }) nzRadioComponent!: NzRadioComponent;
   value = false;
   autoFocus = false;
   disabled = false;
@@ -319,9 +319,7 @@ export class NzTestRadioSingleComponent {
 }
 
 @Component({
-  template: `
-    <label nz-radio-button>Radio</label>
-  `
+  template: ` <label nz-radio-button>Radio</label> `
 })
 export class NzTestRadioButtonComponent {}
 
@@ -341,7 +339,7 @@ export class NzTestRadioGroupComponent {
   size = 'default';
   value = 'A';
   disabled = false;
-  name: string;
+  name?: string;
   modelChange = jasmine.createSpy('change callback');
 }
 
@@ -409,7 +407,7 @@ export class NzTestRadioGroupDisabledComponent {
   size = 'default';
   value = 'A';
   disabled = false;
-  name: string;
+  name?: string;
   singleDisabled = false;
 }
 
@@ -424,7 +422,7 @@ export class NzTestRadioGroupDisabledComponent {
   `
 })
 export class NzTestRadioGroupDisabledFormComponent implements OnInit {
-  validateForm: FormGroup;
+  validateForm?: FormGroup;
   radioValues = ['A', 'B', 'C', 'D'];
 
   constructor(private fb: FormBuilder) {}

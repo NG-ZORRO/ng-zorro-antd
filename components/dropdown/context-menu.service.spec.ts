@@ -131,7 +131,7 @@ describe('context-menu', () => {
   `
 })
 export class NzTestDropdownContextMenuComponent {
-  @ViewChild(NzDropdownMenuComponent, { static: true }) nzDropdownMenuComponent: NzDropdownMenuComponent;
+  @ViewChild(NzDropdownMenuComponent, { static: true }) nzDropdownMenuComponent!: NzDropdownMenuComponent;
 
   constructor(public nzContextMenuService: NzContextMenuService) {}
 }

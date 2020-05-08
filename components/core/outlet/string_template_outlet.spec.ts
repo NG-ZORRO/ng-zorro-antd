@@ -103,10 +103,10 @@ describe('string template outlet', () => {
   `
 })
 export class StringTemplateOutletTestComponent {
-  @ViewChild('stringTpl') stringTpl: TemplateRef<NzSafeAny>;
-  @ViewChild('emptyTpl') emptyTpl: TemplateRef<NzSafeAny>;
-  @ViewChild('dataTimeTpl') dataTimeTpl: TemplateRef<NzSafeAny>;
-  @ViewChild(NzStringTemplateOutletDirective) nzStringTemplateOutletDirective: NzStringTemplateOutletDirective;
+  @ViewChild('stringTpl') stringTpl!: TemplateRef<NzSafeAny>;
+  @ViewChild('emptyTpl') emptyTpl!: TemplateRef<NzSafeAny>;
+  @ViewChild('dataTimeTpl') dataTimeTpl!: TemplateRef<NzSafeAny>;
+  @ViewChild(NzStringTemplateOutletDirective) nzStringTemplateOutletDirective!: NzStringTemplateOutletDirective;
   stringTemplateOutlet: TemplateRef<NzSafeAny> | string | null = null;
   context: NzSafeAny = { $implicit: '' };
 }

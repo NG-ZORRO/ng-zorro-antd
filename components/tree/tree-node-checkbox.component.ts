@@ -26,8 +26,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 })
 export class NzTreeNodeCheckboxComponent {
   @Input() nzSelectMode = false;
-  @Input() isChecked: boolean;
-  @Input() isHalfChecked: boolean;
-  @Input() isDisabled: boolean;
-  @Input() isDisableCheckbox: boolean;
+  @Input() isChecked?: boolean;
+  @Input() isHalfChecked?: boolean;
+  @Input() isDisabled?: boolean;
+  @Input() isDisableCheckbox?: boolean;
 }

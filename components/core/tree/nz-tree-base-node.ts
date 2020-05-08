@@ -39,32 +39,32 @@ export interface NzTreeNodeOptions {
 }
 
 export class NzTreeNode {
-  private _title: string;
-  key: string;
+  private _title: string = '';
+  key!: string;
   level: number = 0;
-  origin: NzTreeNodeOptions;
+  origin!: NzTreeNodeOptions;
   // Parent Node
-  parentNode: NzTreeNode | null;
-  private _icon: string;
-  private _children: NzTreeNode[];
-  private _isLeaf: boolean;
-  private _isChecked: boolean;
+  parentNode: NzTreeNode | null = null;
+  private _icon: string = '';
+  private _children: NzTreeNode[] = [];
+  private _isLeaf: boolean = false;
+  private _isChecked: boolean = false;
   /**
    * @deprecated Maybe removed in next major version, use isChecked instead
    */
-  private _isAllChecked: boolean;
-  private _isSelectable: boolean;
-  private _isDisabled: boolean;
-  private _isDisableCheckbox: boolean;
-  private _isExpanded: boolean;
-  private _isHalfChecked: boolean;
-  private _isSelected: boolean;
-  private _isLoading: boolean;
-  canHide: boolean;
-  isMatched: boolean;
+  private _isAllChecked: boolean = false;
+  private _isSelectable: boolean = false;
+  private _isDisabled: boolean = false;
+  private _isDisableCheckbox: boolean = false;
+  private _isExpanded: boolean = false;
+  private _isHalfChecked: boolean = false;
+  private _isSelected: boolean = false;
+  private _isLoading: boolean = false;
+  canHide: boolean = false;
+  isMatched: boolean = false;
 
-  service: NzTreeBaseService | null;
-  component: NzTreeNodeBaseComponent;
+  service: NzTreeBaseService | null = null;
+  component!: NzTreeNodeBaseComponent;
 
   /** New added in Tree for easy data access */
   isStart?: boolean[];
@@ -377,7 +377,7 @@ export class NzTreeNode {
         case 'reRender':
           this.treeService.flattenTreeData(
             this.treeService.rootNodes,
-            this.treeService.getExpandedNodeList().map(v => v.key)
+            this.treeService.getExpandedNodeList().map(v => v.key!)
           );
           break;
       }

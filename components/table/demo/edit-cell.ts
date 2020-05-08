@@ -57,7 +57,7 @@ interface ItemData {
 })
 export class NzDemoTableEditCellComponent implements OnInit {
   i = 0;
-  editId: string | null;
+  editId: string | null = null;
   listOfData: ItemData[] = [];
 
   startEdit(id: string): void {

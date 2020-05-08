@@ -39,7 +39,7 @@ import { NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
 })
 export class NzFilterTriggerComponent {
   @Input() nzActive = false;
-  @Input() nzDropdownMenu: NzDropdownMenuComponent;
+  @Input() nzDropdownMenu!: NzDropdownMenuComponent;
   @Input() nzVisible = false;
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
   onVisibleChange(visible: boolean): void {

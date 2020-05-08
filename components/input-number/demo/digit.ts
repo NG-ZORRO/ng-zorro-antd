@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   `
 })
 export class NzDemoInputNumberDigitComponent {
-  demoValue: number;
+  demoValue: number = 0;
 }

@@ -75,15 +75,15 @@ import { PREFIX_CLASS } from './util';
   `
 })
 export class CalendarFooterComponent implements OnChanges {
-  @Input() locale: NzCalendarI18nInterface;
+  @Input() locale!: NzCalendarI18nInterface;
   @Input() showToday: boolean = false;
   @Input() hasTimePicker: boolean = false;
   @Input() isRange: boolean = false;
 
   @Input() okDisabled: boolean = false;
-  @Input() disabledDate: (d: Date) => boolean;
-  @Input() extraFooter: TemplateRef<void> | string;
-  @Input() rangeQuickSelector: TemplateRef<void>;
+  @Input() disabledDate?: (d: Date) => boolean;
+  @Input() extraFooter?: TemplateRef<void> | string;
+  @Input() rangeQuickSelector?: TemplateRef<void>;
 
   @Output() readonly clickOk = new EventEmitter<void>();
   @Output() readonly clickToday = new EventEmitter<CandyDate>();
@@ -91,15 +91,15 @@ export class CalendarFooterComponent implements OnChanges {
   prefixCls: string = PREFIX_CLASS;
   isTemplateRef = isTemplateRef;
   isNonEmptyString = isNonEmptyString;
-  isTodayDisabled: boolean;
-  todayTitle: string;
+  isTodayDisabled: boolean = false;
+  todayTitle: string = '';
   private now: CandyDate = new CandyDate();
 
   constructor(private dateHelper: DateHelperService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.disabledDate) {
-      this.isTodayDisabled = this.disabledDate && this.disabledDate(this.now.nativeDate);
+      this.isTodayDisabled = !!(this.disabledDate && this.disabledDate(this.now.nativeDate));
     }
     if (changes.locale) {
       // NOTE: Compat for DatePipe formatting rules

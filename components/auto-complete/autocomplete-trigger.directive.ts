@@ -70,7 +70,8 @@ export function getNzAutocompleteMissingPanelError(): Error {
 })
 export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnDestroy {
   /** Bind nzAutocomplete component */
-  @Input() nzAutocomplete: NzAutocompleteComponent;
+  @Input() nzAutocomplete!: NzAutocompleteComponent;
+
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
   panelOpen: boolean = false;
@@ -82,14 +83,14 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     }
   }
 
-  private overlayRef: OverlayRef | null;
-  private portal: TemplatePortal<{}> | null;
-  private positionStrategy: FlexibleConnectedPositionStrategy;
-  private previousValue: string | number | null;
-  private selectionChangeSubscription: Subscription;
-  private optionsChangeSubscription: Subscription;
-  private overlayBackdropClickSubscription: Subscription;
-  private overlayPositionChangeSubscription: Subscription;
+  private overlayRef: OverlayRef | null = null;
+  private portal: TemplatePortal<{}> | null = null;
+  private positionStrategy!: FlexibleConnectedPositionStrategy;
+  private previousValue: string | number | null = null;
+  private selectionChangeSubscription!: Subscription;
+  private optionsChangeSubscription!: Subscription;
+  private overlayBackdropClickSubscription!: Subscription;
+  private overlayPositionChangeSubscription!: Subscription;
 
   constructor(
     private elementRef: ElementRef,
@@ -269,7 +270,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
       throw getNzAutocompleteMissingPanelError();
     }
 
-    if (!this.portal) {
+    if (!this.portal && this.nzAutocomplete.template) {
       this.portal = new TemplatePortal(this.nzAutocomplete.template, this.viewContainerRef);
     }
 

@@ -50,10 +50,10 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
   @Input() nzFormat: string = 'HH:mm:ss';
   @Output() readonly nzCountdownFinish = new EventEmitter<void>();
 
-  diff: number;
+  diff!: number;
 
-  private target: number;
-  private updater_: Subscription | null;
+  private target: number = 0;
+  private updater_?: Subscription | null;
 
   constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone, private platform: Platform) {
     super();

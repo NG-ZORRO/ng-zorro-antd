@@ -89,8 +89,8 @@ describe('modal footer directive', () => {
 })
 class TestDirectiveFooterComponent {
   isVisible = false;
-  @ViewChild(NzModalComponent) nzModalComponent: NzModalComponent;
-  @ViewChild(NzModalFooterDirective) nzModalFooterDirective: NzModalFooterDirective;
+  @ViewChild(NzModalComponent) nzModalComponent!: NzModalComponent;
+  @ViewChild(NzModalFooterDirective) nzModalFooterDirective!: NzModalFooterDirective;
 
   constructor() {}
 
@@ -117,8 +117,8 @@ class TestDirectiveFooterComponent {
 })
 class TestDirectiveFooterWithInitOpenedComponent {
   isVisible = true;
-  @ViewChild(NzModalComponent) nzModalComponent: NzModalComponent;
-  @ViewChild(NzModalFooterDirective) nzModalFooterDirective: NzModalFooterDirective;
+  @ViewChild(NzModalComponent) nzModalComponent!: NzModalComponent;
+  @ViewChild(NzModalFooterDirective) nzModalFooterDirective!: NzModalFooterDirective;
 
   constructor() {}
 }
@@ -132,7 +132,7 @@ class TestDirectiveFooterWithInitOpenedComponent {
   `
 })
 class TestDirectiveFooterInServiceComponent {
-  @ViewChild(NzModalFooterDirective) nzModalFooterDirective: NzModalFooterDirective;
+  @ViewChild(NzModalFooterDirective) nzModalFooterDirective!: NzModalFooterDirective;
 
   constructor(public nzModalRef: NzModalRef) {}
 

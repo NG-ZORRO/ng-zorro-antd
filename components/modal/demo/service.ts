@@ -52,7 +52,7 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
   ]
 })
 export class NzDemoModalServiceComponent {
-  tplModal: NzModalRef;
+  tplModal?: NzModalRef;
   tplModalButtonLoading = false;
   htmlModalVisible = false;
   disabled = false;
@@ -86,7 +86,7 @@ export class NzDemoModalServiceComponent {
     this.tplModalButtonLoading = true;
     setTimeout(() => {
       this.tplModalButtonLoading = false;
-      this.tplModal.destroy();
+      this.tplModal!.destroy();
     }, 1000);
   }
 
@@ -193,8 +193,8 @@ export class NzDemoModalServiceComponent {
   `
 })
 export class NzModalCustomComponent {
-  @Input() title: string;
-  @Input() subtitle: string;
+  @Input() title?: string;
+  @Input() subtitle?: string;
 
   constructor(private modal: NzModalRef) {}
 

@@ -46,7 +46,7 @@ export class NzListItemExtraComponent {
   `
 })
 export class NzListItemActionComponent {
-  @ViewChild(TemplateRef) templateRef: TemplateRef<void>;
+  @ViewChild(TemplateRef) templateRef?: TemplateRef<void>;
   constructor() {}
 }
 
@@ -66,7 +66,7 @@ export class NzListItemActionComponent {
 })
 export class NzListItemActionsComponent implements OnChanges, OnDestroy {
   @Input() nzActions: Array<TemplateRef<void>> = [];
-  @ContentChildren(NzListItemActionComponent) nzListItemActions: QueryList<NzListItemActionComponent>;
+  @ContentChildren(NzListItemActionComponent) nzListItemActions!: QueryList<NzListItemActionComponent>;
 
   actions: Array<TemplateRef<void>> = [];
   private destroy$ = new Subject();
@@ -88,7 +88,7 @@ export class NzListItemActionsComponent implements OnChanges, OnDestroy {
         if (this.nzActions.length) {
           this.actions = this.nzActions;
         } else {
-          this.actions = this.nzListItemActions.map(action => action.templateRef);
+          this.actions = this.nzListItemActions.map(action => action.templateRef!);
         }
         this.cdr.markForCheck();
       });

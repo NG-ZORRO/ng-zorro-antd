@@ -8,7 +8,7 @@ import { NzCodeBoxComponent } from '../share/codebox/codebox.component';
 })
 export class {{componentName}} {
   expanded = false;
-  @ViewChildren(NzCodeBoxComponent) codeBoxes: QueryList<NzCodeBoxComponent>;
+  @ViewChildren(NzCodeBoxComponent) codeBoxes!: QueryList<NzCodeBoxComponent>;
 
   goLink(link: string): void {
     if (window) {

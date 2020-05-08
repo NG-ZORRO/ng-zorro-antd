@@ -286,7 +286,7 @@ describe('anchor', () => {
   styleUrls: ['./style/patch.less']
 })
 export class TestComponent {
-  @ViewChild(NzAnchorComponent, { static: false }) comp: NzAnchorComponent;
+  @ViewChild(NzAnchorComponent, { static: false }) comp!: NzAnchorComponent;
   nzAffix = true;
   nzBounds = 5;
   nzOffsetTop = 0;

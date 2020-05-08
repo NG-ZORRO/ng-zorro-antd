@@ -55,9 +55,9 @@ export class NzSkeletonComponent implements OnInit, OnChanges {
   @Input() nzAvatar: NzSkeletonAvatar | boolean = false;
   @Input() nzParagraph: NzSkeletonParagraph | boolean = true;
 
-  title: NzSkeletonTitle;
-  avatar: NzSkeletonAvatar;
-  paragraph: NzSkeletonParagraph;
+  title!: NzSkeletonTitle;
+  avatar!: NzSkeletonAvatar;
+  paragraph!: NzSkeletonParagraph;
   rowsList: number[] = [];
   widthList: Array<number | string> = [];
 

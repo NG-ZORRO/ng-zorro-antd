@@ -951,14 +951,14 @@ describe('auto-complete', () => {
   `
 })
 class NzTestSimpleAutocompleteComponent {
-  inputValue: string;
+  inputValue!: string;
   filteredOptions: Array<string | number>;
   inputControl = new FormControl();
   options: Array<string | number> = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
 
-  @ViewChild(NzAutocompleteComponent, { static: false }) panel: NzAutocompleteComponent;
-  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger: NzAutocompleteTriggerDirective;
-  @ViewChildren(NzAutocompleteOptionComponent) optionComponents: QueryList<NzAutocompleteOptionComponent>;
+  @ViewChild(NzAutocompleteComponent, { static: false }) panel!: NzAutocompleteComponent;
+  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
+  @ViewChildren(NzAutocompleteOptionComponent) optionComponents!: QueryList<NzAutocompleteOptionComponent>;
 
   constructor() {
     this.filteredOptions = this.options;
@@ -987,13 +987,13 @@ class NzTestSimpleAutocompleteComponent {
   `
 })
 class NzTestAutocompletePropertyComponent {
-  inputValue: string;
-  width: number;
+  inputValue?: string;
+  width?: number;
   overlayClassName = '';
   overlayStyle = {};
   options = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
-  @ViewChild(NzAutocompleteComponent, { static: false }) panel: NzAutocompleteComponent;
-  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger: NzAutocompleteTriggerDirective;
+  @ViewChild(NzAutocompleteComponent, { static: false }) panel!: NzAutocompleteComponent;
+  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
 
   constructor() {}
 }
@@ -1002,7 +1002,7 @@ class NzTestAutocompletePropertyComponent {
   template: ` <input [nzAutocomplete]="auto" /> `
 })
 class NzTestAutocompleteWithoutPanelComponent {
-  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger: NzAutocompleteTriggerDirective;
+  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
 }
 
 @Component({
@@ -1016,7 +1016,7 @@ class NzTestAutocompleteWithoutPanelComponent {
 })
 class NzTestAutocompleteWithOnPushDelayComponent implements OnInit {
   options: string[] = [];
-  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger: NzAutocompleteTriggerDirective;
+  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
 
   constructor(private cdr: ChangeDetectorRef) {}
 
@@ -1048,7 +1048,7 @@ class NzTestAutocompleteWithOnPushDelayComponent implements OnInit {
   `
 })
 class NzTestAutocompleteGroupComponent {
-  inputValue: string;
+  inputValue!: string;
   optionGroups = [
     {
       title: '话题',
@@ -1088,7 +1088,7 @@ class NzTestAutocompleteGroupComponent {
     }
   ];
 
-  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger: NzAutocompleteTriggerDirective;
+  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
 }
 
 @Component({
@@ -1104,7 +1104,7 @@ class NzTestAutocompleteGroupComponent {
 class NzTestAutocompleteWithFormComponent {
   form: FormGroup;
   options = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
-  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger: NzAutocompleteTriggerDirective;
+  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({ formControl: 'Burns' });
@@ -1129,7 +1129,7 @@ class NzTestAutocompleteDifferentValueWithFormComponent {
     { label: 'Lucy', value: 'lucy' },
     { label: 'Jack', value: 'jack' }
   ];
-  @ViewChild(NzAutocompleteTriggerDirective) trigger: NzAutocompleteTriggerDirective;
+  @ViewChild(NzAutocompleteTriggerDirective) trigger!: NzAutocompleteTriggerDirective;
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({ formControl: 'lucy' });
@@ -1152,7 +1152,7 @@ class NzTestAutocompleteWithObjectOptionComponent {
     { label: 'Lucy', value: 'lucy' },
     { label: 'Jack', value: 'jack' }
   ];
-  @ViewChild(NzAutocompleteTriggerDirective) trigger: NzAutocompleteTriggerDirective;
+  @ViewChild(NzAutocompleteTriggerDirective) trigger!: NzAutocompleteTriggerDirective;
 
   // tslint:disable-next-line: no-any
   compareFun = (o1: any, o2: any) => {
@@ -1180,7 +1180,7 @@ class NzTestAutocompleteWithObjectOptionComponent {
   `
 })
 class NzTestAutocompleteWithGroupInputComponent {
-  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger: NzAutocompleteTriggerDirective;
-  @ViewChild('inputGroupComponent', { static: false, read: ElementRef }) inputGroupComponent: ElementRef;
+  @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
+  @ViewChild('inputGroupComponent', { static: false, read: ElementRef }) inputGroupComponent!: ElementRef;
   constructor() {}
 }

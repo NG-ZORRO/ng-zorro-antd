@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   `
 })
 export class NzDemoInputTextareaComponent {
-  inputValue: string;
+  inputValue?: string;
 }

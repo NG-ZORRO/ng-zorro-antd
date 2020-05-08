@@ -14,7 +14,7 @@ export interface NzAnimatedInterface {
 }
 
 export class NzTabChangeEvent {
-  index: number;
+  index?: number;
   tab: NzSafeAny;
 }
 

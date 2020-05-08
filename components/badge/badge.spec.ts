@@ -165,9 +165,9 @@ export class NzTestBadgeBasicComponent {
   inner = true;
   overflow = 20;
   showZero = false;
-  status: string;
-  style: NgStyleInterface;
-  text: string;
-  title: string | null;
-  offset: [number, number];
+  status!: string;
+  style!: NgStyleInterface;
+  text!: string;
+  title?: string | null;
+  offset?: [number, number];
 }

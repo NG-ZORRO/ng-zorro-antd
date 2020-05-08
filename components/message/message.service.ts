@@ -19,7 +19,7 @@ import { NzMessageData, NzMessageDataOptions, NzMessageRef } from './typings';
   providedIn: NzMessageServiceModule
 })
 export class NzMessageService extends NzMNService {
-  protected container: NzMessageContainerComponent;
+  protected container?: NzMessageContainerComponent;
   protected componentPrefix = 'message-';
 
   constructor(nzSingletonService: NzSingletonService, overlay: Overlay, injector: Injector) {

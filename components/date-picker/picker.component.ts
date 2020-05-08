@@ -160,32 +160,31 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Input() noAnimation: boolean = false;
   @Input() isRange: boolean = false;
   @Input() open: boolean | undefined = undefined;
-  @Input() disabled: boolean;
-  @Input() placeholder: string | string[];
-  @Input() allowClear: boolean;
-  @Input() autoFocus: boolean;
-  @Input() format: string;
-  @Input() separator: string;
-  @Input() popupStyle: object;
-  @Input() dropdownClassName: string;
-  @Input() suffixIcon: string | TemplateRef<NzSafeAny>;
+  @Input() disabled: boolean = false;
+  @Input() placeholder!: string | string[];
+  @Input() allowClear?: boolean;
+  @Input() autoFocus?: boolean;
+  @Input() format!: string;
+  @Input() separator?: string;
+  @Input() popupStyle?: object;
+  @Input() dropdownClassName?: string;
+  @Input() suffixIcon?: string | TemplateRef<NzSafeAny>;
 
   @Output() readonly focusChange = new EventEmitter<boolean>();
   @Output() readonly valueChange = new EventEmitter<CandyDate | CandyDate[] | null>();
   @Output() readonly openChange = new EventEmitter<boolean>(); // Emitted when overlay's open state change
 
-  @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay: CdkConnectedOverlay;
-  @ViewChild('separatorElement', { static: false }) separatorElement: ElementRef;
-  @ViewChild('pickerInput', { static: false }) pickerInput: ElementRef<HTMLInputElement>;
-  @ViewChildren('rangePickerInput') rangePickerInputs: QueryList<ElementRef<HTMLInputElement>>;
-
-  @ContentChild(DateRangePopupComponent) panel: DateRangePopupComponent;
+  @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay?: CdkConnectedOverlay;
+  @ViewChild('separatorElement', { static: false }) separatorElement?: ElementRef;
+  @ViewChild('pickerInput', { static: false }) pickerInput?: ElementRef<HTMLInputElement>;
+  @ViewChildren('rangePickerInput') rangePickerInputs!: QueryList<ElementRef<HTMLInputElement>>;
+  @ContentChild(DateRangePopupComponent) panel!: DateRangePopupComponent;
 
   origin: CdkOverlayOrigin;
   document: Document;
-  inputSize: number;
-  inputWidth: number;
-  arrowLeft: number;
+  inputSize?: number;
+  inputWidth?: number;
+  arrowLeft?: number;
   destroy$ = new Subject();
   prefixCls = PREFIX_CLASS;
   // Index signature in type 'string | string[]' only permits reading
@@ -304,7 +303,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       ? partType === 'left'
         ? this.rangePickerInputs.first.nativeElement
         : this.rangePickerInputs.last.nativeElement
-      : this.pickerInput.nativeElement;
+      : this.pickerInput!.nativeElement;
   }
 
   focus(): void {
@@ -346,7 +345,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   showClear(): boolean {
-    return !this.disabled && !this.isEmptyValue(this.datePickerService.value) && this.allowClear;
+    return !this.disabled && !this.isEmptyValue(this.datePickerService.value) && !!this.allowClear;
   }
 
   onClickInputBox(event: MouseEvent, partType?: RangePartType): void {
@@ -363,7 +362,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       this.updateInputValue();
       this.datePickerService.emitValue$.next();
     } else {
-      this.datePickerService.setValue(this.datePickerService.initialValue);
+      this.datePickerService.setValue(this.datePickerService.initialValue!);
       this.hideOverlay();
     }
   }
@@ -374,7 +373,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   onOverlayKeydown(event: KeyboardEvent): void {
     if (event.key === 'Escape') {
-      this.datePickerService.setValue(this.datePickerService.initialValue);
+      this.datePickerService.setValue(this.datePickerService.initialValue!);
     }
   }
 

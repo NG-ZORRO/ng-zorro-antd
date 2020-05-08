@@ -33,7 +33,7 @@ import { Observable, Observer } from 'rxjs';
 })
 export class NzDemoUploadAvatarComponent {
   loading = false;
-  avatarUrl: string;
+  avatarUrl?: string;
 
   constructor(private msg: NzMessageService) {}
 
