@@ -28,7 +28,7 @@ export function NZ_WAVE_GLOBAL_CONFIG_FACTORY(): NzWaveConfig {
 }
 
 @Directive({
-  selector: '[nz-wave],button[nz-button]',
+  selector: '[nz-wave],button[nz-button]:not([nzType="link"])',
   exportAs: 'nzWave'
 })
 export class NzWaveDirective implements OnInit, OnDestroy {
