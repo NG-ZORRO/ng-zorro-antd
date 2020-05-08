@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectorRef, Directive, ElementRef, Input, OnChanges, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, Input, OnChanges, Renderer2 } from '@angular/core';
 import { Subject } from 'rxjs';
 
 @Directive({
@@ -11,8 +11,6 @@ import { Subject } from 'rxjs';
   host: {
     '[class.ant-table-cell-fix-right]': `isFixedRight`,
     '[class.ant-table-cell-fix-left]': `isFixedLeft`,
-    '[class.ant-table-cell-fix-right-first]': `isFirstRight`,
-    '[class.ant-table-cell-fix-left-last]': `isLastLeft`,
     '[style.position]': `isFixed? 'sticky' : null`
   }
 })
@@ -21,23 +19,11 @@ export class NzCellFixedDirective implements OnChanges {
   @Input() nzLeft: string | boolean = false;
   @Input() colspan: number | null = null;
   changes$ = new Subject<void>();
-  isFirstRight = false;
-  isLastLeft = false;
   isAutoLeft = false;
   isAutoRight = false;
   isFixedLeft = false;
   isFixedRight = false;
   isFixed = false;
-
-  setIsFirstRight(isRightFirst: boolean): void {
-    this.isFirstRight = isRightFirst;
-    this.cdr.markForCheck();
-  }
-
-  setIsLastLeft(isLeftLast: boolean): void {
-    this.isLastLeft = isLeftLast;
-    this.cdr.markForCheck();
-  }
 
   setAutoLeftWidth(autoLeft: string | null): void {
     this.renderer.setStyle(this.elementRef.nativeElement, 'left', autoLeft);
@@ -47,11 +33,28 @@ export class NzCellFixedDirective implements OnChanges {
     this.renderer.setStyle(this.elementRef.nativeElement, 'right', autoRight);
   }
 
-  constructor(private cdr: ChangeDetectorRef, private renderer: Renderer2, private elementRef: ElementRef) {}
+  setIsFirstRight(isFirstRight: boolean): void {
+    this.setFixClass(isFirstRight, 'ant-table-cell-fix-right-first');
+  }
+
+  setIsLastLeft(isLastLeft: boolean): void {
+    this.setFixClass(isLastLeft, 'ant-table-cell-fix-left-last');
+  }
+
+  private setFixClass(flag: boolean, className: string): void {
+    // the setFixClass function may call many times, so remove it first.
+    this.renderer.removeClass(this.elementRef.nativeElement, className);
+
+    if (flag) {
+      this.renderer.addClass(this.elementRef.nativeElement, className);
+    }
+  }
+
+  constructor(private renderer: Renderer2, private elementRef: ElementRef) {}
 
   ngOnChanges(): void {
-    this.isFirstRight = false;
-    this.isLastLeft = false;
+    this.setIsFirstRight(false);
+    this.setIsLastLeft(false);
     this.isAutoLeft = this.nzLeft === '' || this.nzLeft === true;
     this.isAutoRight = this.nzRight === '' || this.nzRight === true;
     this.isFixedLeft = this.nzLeft !== false;
