@@ -22,7 +22,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 
 import { NzTimelineItemComponent } from './timeline-item.component';
 
@@ -83,7 +83,7 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
 
   private destroy$ = new Subject<void>();
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzMode, nzReverse, nzPending } = changes;
@@ -98,7 +98,9 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
   }
 
   ngAfterContentInit(): void {
-    this.updateChildren();
+    this.ngZone.onStable.pipe(take(1)).subscribe(() => {
+      this.updateChildren();
+    })
 
     this.listOfItems.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.updateChildren();
@@ -123,7 +125,6 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
             : this.nzMode === 'alternate' && index % 2 === 0
             ? 'left'
             : 'right';
-        item.detectChanges();
       });
       this.timelineItems = this.nzReverse ? this.listOfItems.toArray().reverse() : this.listOfItems.toArray();
     }
