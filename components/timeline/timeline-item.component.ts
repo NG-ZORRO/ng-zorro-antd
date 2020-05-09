@@ -8,7 +8,6 @@
 
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   Input,
   OnChanges,
@@ -17,8 +16,6 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-
-import { NzTimelineMode } from './timeline.component';
 
 const TimelineTimeDefaultColors = ['red', 'blue', 'green', 'grey', 'gray'] as const;
 export type NzTimelineItemColor = typeof TimelineTimeDefaultColors[number];
@@ -34,7 +31,7 @@ function isDefaultColor(color?: string): boolean {
   selector: 'nz-timeline-item, [nz-timeline-item]',
   exportAs: 'nzTimelineItem',
   template: `
-    <ng-template #template let-isLast="isLast">
+    <ng-template #template let-isLast="isLast" let-position="position">
       <li
         class="ant-timeline-item"
         [class.ant-timeline-item-right]="position === 'right'"
@@ -67,18 +64,11 @@ export class NzTimelineItemComponent implements OnChanges {
   @Input() nzDot?: string | TemplateRef<void>;
 
   borderColor: string | null = null;
-  position: NzTimelineMode | undefined;
-
-  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzColor) {
       this.updateCustomColor();
     }
-  }
-
-  detectChanges(): void {
-    this.cdr.markForCheck();
   }
 
   private updateCustomColor(): void {
