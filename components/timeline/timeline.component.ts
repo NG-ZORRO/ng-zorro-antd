@@ -46,8 +46,8 @@ export type NzTimelineMode = typeof TimelineModes[number];
     >
       <!-- User inserted timeline dots. -->
       <ng-container *ngIf="nzReverse" [ngTemplateOutlet]="pendingTemplate"></ng-container>
-      <ng-container *ngFor="let item of timelineItems">
-        <ng-template [ngTemplateOutlet]="item.template"></ng-template>
+      <ng-container *ngFor="let item of timelineItems; let isLast = last">
+        <ng-template *ngTemplateOutlet="item.template; context: { isLast: isLast }"></ng-template>
       </ng-container>
       <ng-container *ngIf="!nzReverse" [ngTemplateOutlet]="pendingTemplate"></ng-container>
       <!-- Pending dot. -->
@@ -101,7 +101,7 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
   ngAfterContentInit(): void {
     this.ngZone.onStable.pipe(take(1)).subscribe(() => {
       this.updateChildren();
-    })
+    });
 
     this.listOfItems.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.updateChildren();
@@ -115,9 +115,7 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
 
   private updateChildren(): void {
     if (this.listOfItems && this.listOfItems.length) {
-      const length = this.listOfItems.length;
       this.listOfItems.forEach((item, index) => {
-        item.isLast = !this.nzReverse ? index === length - 1 : index === 0;
         item.position =
           this.nzMode === 'left' || !this.nzMode
             ? undefined

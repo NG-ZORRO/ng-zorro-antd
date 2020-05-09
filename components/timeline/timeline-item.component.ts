@@ -34,7 +34,7 @@ function isDefaultColor(color?: string): boolean {
   selector: 'nz-timeline-item, [nz-timeline-item]',
   exportAs: 'nzTimelineItem',
   template: `
-    <ng-template #template>
+    <ng-template #template let-isLast="isLast">
       <li
         class="ant-timeline-item"
         [class.ant-timeline-item-right]="position === 'right'"
@@ -66,7 +66,6 @@ export class NzTimelineItemComponent implements OnChanges {
   @Input() nzColor: NzTimelineItemColor = 'blue';
   @Input() nzDot?: string | TemplateRef<void>;
 
-  isLast = false;
   borderColor: string | null = null;
   position: NzTimelineMode | undefined;
 
