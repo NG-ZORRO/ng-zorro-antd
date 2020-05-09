@@ -13,6 +13,7 @@ import {
   Component,
   ContentChildren,
   Input,
+  NgZone,
   OnChanges,
   OnDestroy,
   QueryList,
