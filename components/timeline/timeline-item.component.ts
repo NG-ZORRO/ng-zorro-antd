@@ -19,6 +19,7 @@ import {
 } from '@angular/core';
 
 import { NzTimelineMode } from './timeline.component';
+import { TimelineService } from './timeline.service';
 
 const TimelineTimeDefaultColors = ['red', 'blue', 'green', 'grey', 'gray'] as const;
 export type NzTimelineItemColor = typeof TimelineTimeDefaultColors[number];
@@ -70,9 +71,10 @@ export class NzTimelineItemComponent implements OnChanges {
   borderColor: string | null = null;
   position: NzTimelineMode | undefined;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private timelineService: TimelineService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.timelineService.markForCheck();
     if (changes.nzColor) {
       this.updateCustomColor();
     }
