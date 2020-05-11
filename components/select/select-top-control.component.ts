@@ -49,7 +49,7 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
         ></nz-select-item>
         <nz-select-search
           [disabled]="disabled"
-          [value]="inputValue"
+          [value]="inputValue!"
           [showInput]="open && showSearch"
           [mirrorSync]="false"
           [autofocus]="autofocus"
@@ -77,7 +77,7 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
         </nz-select-item>
         <nz-select-search
           [disabled]="disabled"
-          [value]="inputValue"
+          [value]="inputValue!"
           [autofocus]="autofocus"
           [showInput]="true"
           [mirrorSync]="true"
@@ -109,7 +109,7 @@ export class NzSelectTopControlComponent implements OnChanges {
   @Input() listOfTopItem: NzSelectItemInterface[] = [];
   @Input() tokenSeparators: string[] = [];
   @Output() readonly tokenize = new EventEmitter<string[]>();
-  @Output() readonly inputValueChange = new EventEmitter<string | null>();
+  @Output() readonly inputValueChange = new EventEmitter<string>();
   @Output() readonly animationEnd = new EventEmitter<void>();
   @Output() readonly deleteItem = new EventEmitter<NzSelectItemInterface>();
   @Output() readonly openChange = new EventEmitter<boolean>();

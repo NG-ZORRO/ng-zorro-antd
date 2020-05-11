@@ -42,7 +42,7 @@ import {
   NzTreeNode,
   NzTreeNodeOptions
 } from 'ng-zorro-antd/core/tree';
-import { BooleanInput, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgStyleInterface, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzSelectSearchComponent } from 'ng-zorro-antd/select';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
@@ -70,8 +70,8 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
       [cdkConnectedOverlayOrigin]="cdkOverlayOrigin"
       [cdkConnectedOverlayOpen]="nzOpen"
       [cdkConnectedOverlayHasBackdrop]="true"
-      [cdkConnectedOverlayMinWidth]="nzDropdownMatchSelectWidth ? null : triggerWidth"
-      [cdkConnectedOverlayWidth]="nzDropdownMatchSelectWidth ? triggerWidth : null"
+      [cdkConnectedOverlayMinWidth]="$any(nzDropdownMatchSelectWidth ? null : triggerWidth)"
+      [cdkConnectedOverlayWidth]="$any(nzDropdownMatchSelectWidth ? triggerWidth : null)"
       (backdropClick)="closeDropDown()"
       (detach)="closeDropDown()"
       (positionChange)="onPositionChange($event)"
@@ -234,13 +234,13 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Input() @InputBoolean() nzMultiple = false;
   @Input() @InputBoolean() nzDefaultExpandAll = false;
   @Input() @InputBoolean() nzCheckStrictly = false;
-  @Input() nzExpandedIcon?: TemplateRef<{ $implicit: NzTreeNode }>;
+  @Input() nzExpandedIcon?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
   @Input() nzNotFoundContent?: string;
   @Input() nzNodes: Array<NzTreeNode | NzTreeNodeOptions> = [];
   @Input() nzOpen = false;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzSizeLDSType = 'default';
   @Input() nzPlaceHolder = '';
-  @Input() nzDropdownStyle?: { [key: string]: string };
+  @Input() nzDropdownStyle: NgStyleInterface | null = null;
   @Input() nzDropdownClassName?: string;
   @Input()
   set nzExpandedKeys(value: string[]) {
@@ -252,7 +252,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
 
   @Input() nzDisplayWith: (node: NzTreeNode) => string | undefined = (node: NzTreeNode) => node.title;
   @Input() nzMaxTagCount!: number;
-  @Input() nzMaxTagPlaceholder?: TemplateRef<{ $implicit: NzTreeNode[] }>;
+  @Input() nzMaxTagPlaceholder: TemplateRef<{ $implicit: NzTreeNode[] }> | null = null;
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
   @Output() readonly nzCleared = new EventEmitter<void>();
   @Output() readonly nzRemoved = new EventEmitter<NzTreeNode>();
@@ -265,9 +265,9 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @ViewChild(CdkOverlayOrigin, { static: true }) cdkOverlayOrigin!: CdkOverlayOrigin;
   @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay!: CdkConnectedOverlay;
 
-  @Input() nzTreeTemplate!: TemplateRef<{ $implicit: NzTreeNode }>;
-  @ContentChild('nzTreeTemplate', { static: true }) nzTreeTemplateChild!: TemplateRef<{ $implicit: NzTreeNode }>;
-  get treeTemplate(): TemplateRef<{ $implicit: NzTreeNode }> {
+  @Input() nzTreeTemplate!: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
+  @ContentChild('nzTreeTemplate', { static: true }) nzTreeTemplateChild!: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
+  get treeTemplate(): TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }> {
     return this.nzTreeTemplate || this.nzTreeTemplateChild;
   }
 

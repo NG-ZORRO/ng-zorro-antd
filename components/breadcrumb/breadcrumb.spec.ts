@@ -111,7 +111,7 @@ describe('breadcrumb', () => {
       breadcrumb = fixture.debugElement.query(By.directive(NzBreadCrumbComponent));
 
       fixture.ngZone!.run(() => {
-        router = TestBed.get(Router);
+        router = TestBed.inject(Router);
         router.initialNavigation();
 
         // Should generate 2 breadcrumbs when reaching out of the `data` scope.
@@ -156,7 +156,7 @@ describe('breadcrumb', () => {
       breadcrumb = fixture.debugElement.query(By.directive(NzBreadCrumbComponent));
 
       fixture.ngZone!.run(() => {
-        router = TestBed.get(Router);
+        router = TestBed.inject(Router);
         router.initialNavigation();
 
         // Should nzRouteLabel value is 'customBreadcrumb'

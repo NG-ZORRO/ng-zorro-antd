@@ -35,7 +35,7 @@ import { isTooltipEmpty, NzTooltipBaseComponent, NzTooltipBaseDirective, NzToolt
   }
 })
 export class NzTooltipDirective extends NzTooltipBaseDirective {
-  @Input('nzTooltipTitle') specificTitle?: NzTSType;
+  @Input('nzTooltipTitle') specificTitle?: NzTSType | null;
   @Input('nz-tooltip') directiveNameTitle?: NzTSType | null;
   @Input('nzTooltipTrigger') specificTrigger?: NzTooltipTrigger;
   @Input('nzTooltipPlacement') specificPlacement?: string;

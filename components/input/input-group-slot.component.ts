@@ -24,7 +24,7 @@ import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulati
   }
 })
 export class NzInputGroupSlotComponent {
-  @Input() icon: string | null = null;
+  @Input() icon?: string | null = null;
   @Input() type: 'addon' | 'prefix' | 'suffix' | null = null;
-  @Input() template: string | TemplateRef<void> | null = null;
+  @Input() template?: string | TemplateRef<void> | null = null;
 }

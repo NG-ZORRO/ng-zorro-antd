@@ -26,7 +26,7 @@ import {
 } from '@angular/core';
 import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, isEmpty } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { startWith, take, takeUntil } from 'rxjs/operators';
@@ -106,12 +106,12 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   @Input() @InputBoolean() nzShowDot = true;
   @Input() @InputBoolean() nzDot = false;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzOverflowCount: number = 99;
-  @Input() nzText?: string;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzColor?: string = undefined;
-  @Input() nzTitle?: string;
-  @Input() nzStyle?: { [key: string]: string };
+  @Input() nzStyle: { [key: string]: string } | null = null;
+  @Input() nzText?: string;
+  @Input() nzTitle?: string | null | undefined;
   @Input() nzStatus?: NzBadgeStatusType;
-  @Input() nzCount?: number | TemplateRef<void>;
+  @Input() nzCount?: number | TemplateRef<NzSafeAny>;
   @Input() nzOffset?: [number, number];
 
   checkContent(): void {

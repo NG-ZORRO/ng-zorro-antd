@@ -38,7 +38,7 @@ import { NzMenuModeType } from './menu.types';
 })
 export class NzSubmenuInlineChildComponent implements OnInit, OnChanges {
   @Input() templateOutlet: TemplateRef<NzSafeAny> | null = null;
-  @Input() menuClass: string | null = null;
+  @Input() menuClass: string = '';
   @Input() mode: NzMenuModeType = 'vertical';
   @Input() nzOpen = false;
   listOfCacheClassName: string[] = [];

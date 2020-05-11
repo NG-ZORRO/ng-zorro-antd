@@ -76,7 +76,7 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
 
   showProcessDot = false;
   customProcessDotTemplate?: TemplateRef<{ $implicit: TemplateRef<void>; status: string; index: number }>;
-  classMap?: NgClassType;
+  classMap: NgClassType = {};
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzStartIndex || changes.nzDirection || changes.nzStatus || changes.nzCurrent) {

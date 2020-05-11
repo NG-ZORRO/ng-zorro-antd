@@ -8,7 +8,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let row of bodyRows; trackBy: trackByBodyRow" [ngClass]="row.classMap" role="row">
+    <tr *ngFor="let row of bodyRows; trackBy: trackByBodyRow" [ngClass]="row.classMap!" role="row">
       <td *ngIf="row.weekNum" role="gridcell" class="{{ prefixCls }}-cell-week">
         {{ row.weekNum }}
       </td>
@@ -16,16 +16,17 @@
         *ngFor="let cell of row.dateCells; trackBy: trackByBodyColumn"
         title="{{ cell.title }}"
         role="gridcell"
-        [ngClass]="cell.classMap"
+        [ngClass]="cell.classMap!"
         (click)="cell.isDisabled ? null : cell.onClick()"
-        (mouseenter)="cell.isDisablcellRendered ? null : cell.onMouseEnter()"
+        (mouseenter)="cell.onMouseEnter()"
       >
         <ng-container [ngSwitch]="prefixCls">
           <ng-container *ngSwitchCase="'ant-picker'">
             <ng-container [ngSwitch]="true">
               <ng-container *ngSwitchCase="isTemplateRef(cell.cellRender)">
+                <!--           *ngSwitchCase not has type assertion support, the cellRender type here is TemplateRef -->
                 <ng-container
-                  *ngTemplateOutlet="cell.cellRender; context: { $implicit: cell.value }"
+                  *ngTemplateOutlet="$any(cell.cellRender); context: { $implicit: cell.value }"
                 ></ng-container>
               </ng-container>
               <ng-container *ngSwitchCase="isNonEmptyString(cell.cellRender)">
@@ -49,15 +50,17 @@
             >
               <ng-container *ngIf="cell.fullCellRender; else defaultCell">
                 <ng-container
-                  *ngTemplateOutlet="cell.fullCellRender; context: { $implicit: cell.value }"
-                ></ng-container>
+                  *ngTemplateOutlet="$any(cell.fullCellRender); context: { $implicit: cell.value }"
+                >
+                </ng-container>
               </ng-container>
               <ng-template #defaultCell>
                 <div class="{{ prefixCls }}-date-value">{{ cell.content }}</div>
                 <div class="{{ prefixCls }}-date-content">
                   <ng-container
-                    *ngTemplateOutlet="cell.cellRender; context: { $implicit: cell.value }"
-                  ></ng-container>
+                    *ngTemplateOutlet="$any(cell.cellRender); context: { $implicit: cell.value }"
+                  >
+                  </ng-container>
                 </div>
               </ng-template>
             </div>

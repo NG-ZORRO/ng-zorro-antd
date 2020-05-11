@@ -30,7 +30,6 @@ import { DatePickerService } from './date-picker.service';
 import {
   CompatibleDate,
   DisabledDateFn,
-  DisabledTimeConfig,
   DisabledTimeFn,
   DisabledTimePartial,
   PanelMode,
@@ -49,7 +48,7 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
   template: `
     <ng-container *ngIf="isRange; else singlePanel">
       <div class="{{ prefixCls }}-range-wrapper {{ prefixCls }}-date-range-wrapper">
-        <div class="{{ prefixCls }}-range-arrow" [ngStyle]="datePickerService?.arrowPositionStyle"></div>
+        <div class="{{ prefixCls }}-range-arrow" [ngStyle]="datePickerService?.arrowPositionStyle!"></div>
         <div class="{{ prefixCls }}-panel-container">
           <div class="{{ prefixCls }}-panels">
             <ng-container *ngTemplateOutlet="tplRangePart; context: { partType: 'left' }"></ng-container>
@@ -74,12 +73,13 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
     </ng-template>
 
     <ng-template #tplInnerPopup let-partType="partType">
+      <!-- TODO(@wenqi73) [selectedValue] [hoverValue] types-->
       <inner-popup
         *ngIf="show(partType)"
         [showWeek]="showWeek"
         [endPanelMode]="getPanelMode(endPanelMode, partType)"
         [partType]="partType"
-        [locale]="locale"
+        [locale]="locale!"
         [showTimePicker]="hasTimePicker"
         [timeOptions]="getTimeOptions(partType)"
         [panelMode]="getPanelMode(panelMode, partType)"
@@ -88,8 +88,8 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
         [value]="getValue(partType)"
         [disabledDate]="disabledDate"
         [dateRender]="dateRender"
-        [selectedValue]="datePickerService?.value"
-        [hoverValue]="hoverValue"
+        [selectedValue]="$any(datePickerService?.value)"
+        [hoverValue]="$any(hoverValue)"
         (dayHover)="onDayHover($event)"
         (selectDate)="changeValueFromSelect($event, !showTime)"
         (selectTime)="onSelectTime($event, partType)"
@@ -100,11 +100,11 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
     <ng-template #tplFooter>
       <calendar-footer
         *ngIf="hasFooter"
-        [locale]="locale"
+        [locale]="locale!"
         [isRange]="isRange"
         [showToday]="showToday"
         [hasTimePicker]="hasTimePicker"
-        [okDisabled]="!isAllowed(datePickerService?.value)"
+        [okDisabled]="!isAllowed($any(datePickerService?.value))"
         [extraFooter]="extraFooter"
         [rangeQuickSelector]="ranges ? tplRangeQuickSelector : null"
         (clickOk)="onClickOk()"
@@ -123,8 +123,8 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
       <li
         *ngFor="let name of getObjectKeys(ranges)"
         class="{{ prefixCls }}-preset"
-        (click)="onClickPresetRange(ranges[name])"
-        (mouseenter)="onHoverPresetRange(ranges[name])"
+        (click)="onClickPresetRange(ranges![name])"
+        (mouseenter)="onHoverPresetRange(ranges![name])"
         (mouseleave)="onPresetRangeMouseLeave()"
       >
         <span class="ant-tag ant-tag-blue">{{ name }}</span>
@@ -135,19 +135,18 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
 export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   @Input() isRange!: boolean;
   @Input() showWeek!: boolean;
-  @Input() locale!: NzCalendarI18nInterface;
+  @Input() locale!: NzCalendarI18nInterface | undefined;
   @Input() format!: string;
   @Input() placeholder!: string | string[];
-  @Input() disabledDate!: DisabledDateFn;
-  @Input() disabledTime!: DisabledTimeFn; // This will lead to rebuild time options
+  @Input() disabledDate?: DisabledDateFn;
+  @Input() disabledTime?: DisabledTimeFn; // This will lead to rebuild time options
   @Input() showToday!: boolean;
   @Input() showTime!: SupportTimeOptions | boolean;
-  @Input() extraFooter!: TemplateRef<void> | string;
-  @Input() ranges!: PresetRanges;
-  @Input() dateRender!: FunctionProp<TemplateRef<Date> | string>;
+  @Input() extraFooter?: TemplateRef<void> | string;
+  @Input() ranges?: PresetRanges;
+  @Input() dateRender?: FunctionProp<TemplateRef<Date> | string>;
   @Input() panelMode!: PanelMode | PanelMode[];
-  @Input() defaultPickerValue!: CompatibleDate;
-
+  @Input() defaultPickerValue!: CompatibleDate | undefined | null;
   @Output() readonly panelModeChange = new EventEmitter<PanelMode | PanelMode[]>();
   @Output() readonly calendarChange = new EventEmitter<CompatibleValue>();
   @Output() readonly resultOk = new EventEmitter<void>(); // Emitted when done with date selecting
@@ -195,7 +194,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   initActiveDate(): void {
     const activeDate = this.datePickerService.hasValue()
       ? this.datePickerService.value
-      : this.datePickerService.makeValue(this.defaultPickerValue);
+      : this.datePickerService.makeValue(this.defaultPickerValue!);
     this.datePickerService.setActiveDate(activeDate, !this.showTime);
   }
 
@@ -345,11 +344,11 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  disabledStartTime = (value: Date | Date[]): DisabledTimeConfig => {
+  disabledStartTime: DisabledTimeFn = (value: Date | Date[]) => {
     return this.disabledTime && this.disabledTime(value, 'start');
   };
 
-  disabledEndTime = (value: Date | Date[]): DisabledTimeConfig => {
+  disabledEndTime: DisabledTimeFn = (value: Date | Date[]) => {
     return this.disabledTime && this.disabledTime(value, 'end');
   };
 
@@ -399,7 +398,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  getObjectKeys(obj: object): string[] {
+  getObjectKeys(obj?: PresetRanges): string[] {
     return obj ? Object.keys(obj) : [];
   }
 

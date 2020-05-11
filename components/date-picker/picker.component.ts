@@ -39,7 +39,7 @@ import {
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 
 import { CandyDate, CompatibleValue } from 'ng-zorro-antd/core/time';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -99,7 +99,7 @@ import { PREFIX_CLASS } from './util';
         (input)="onInputKeyup($event, false)"
         (focus)="onFocus(partType)"
         (keyup.enter)="onInputKeyup($event, true)"
-        [(ngModel)]="inputValue[datePickerService?.getActiveIndex(partType)]"
+        [(ngModel)]="inputValue[datePickerService.getActiveIndex(partType)]"
         placeholder="{{ getPlaceholder(partType) }}"
       />
     </ng-template>
@@ -111,7 +111,7 @@ import { PREFIX_CLASS } from './util';
         <i nz-icon nzType="close-circle" nzTheme="fill"></i>
       </span>
       <span class="{{ prefixCls }}-suffix">
-        <ng-container *nzStringTemplateOutlet="suffixIcon">
+        <ng-container *nzStringTemplateOutlet="suffixIcon; let suffixIcon">
           <i nz-icon [nzType]="suffixIcon"></i>
         </ng-container>
       </span>
@@ -166,7 +166,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Input() autoFocus?: boolean;
   @Input() format!: string;
   @Input() separator?: string;
-  @Input() popupStyle?: object;
+  @Input() popupStyle: NgStyleInterface | null = null;
   @Input() dropdownClassName?: string;
   @Input() suffixIcon?: string | TemplateRef<NzSafeAny>;
 

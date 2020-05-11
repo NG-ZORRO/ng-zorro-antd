@@ -21,7 +21,7 @@ export type RangePartType = 'left' | 'right';
 
 export type CompatibleDate = Date | Date[];
 
-export type DisabledTimeFn = (current: Date | Date[], partial?: DisabledTimePartial) => DisabledTimeConfig;
+export type DisabledTimeFn = (current: Date | Date[], partial?: DisabledTimePartial) => DisabledTimeConfig | undefined;
 
 // The common result data format (the range-picker's props can be result as array)
 export interface PickerResultSingle {

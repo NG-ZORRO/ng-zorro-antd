@@ -54,8 +54,8 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
           <i nz-icon [nzType]="icon"></i>
         </ng-container>
         <ng-template #formatTemplate>
-          <ng-container *nzStringTemplateOutlet="formatter; context: { $implicit: nzPercent }">
-            {{ $any(formatter)(nzPercent) }}
+          <ng-container *nzStringTemplateOutlet="formatter; context: { $implicit: nzPercent }; let formatter">
+            {{ formatter(nzPercent) }}
           </ng-container>
         </ng-template>
       </span>
@@ -182,9 +182,9 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   /** Paths to rendered in the template. */
   progressCirclePath: NzProgressCirclePath[] = [];
   circleGradient?: Array<{ offset: string; color: string }>;
-  trailPathStyle?: NgStyleInterface;
+  trailPathStyle: NgStyleInterface | null = null;
   pathString?: string;
-  icon?: string;
+  icon!: string;
 
   trackByFn = (index: number) => `${index}`;
 

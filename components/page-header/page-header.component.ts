@@ -13,10 +13,8 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  OnChanges,
   Optional,
   Output,
-  SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
@@ -39,8 +37,9 @@ const NZ_CONFIG_COMPONENT_NAME = 'pageHeader';
         <!--back-->
         <div *ngIf="nzBackIcon !== null" (click)="onBack()" class="ant-page-header-back">
           <div role="button" tabindex="0" class="ant-page-header-back-button">
-            <i *ngIf="isStringBackIcon" nz-icon [nzType]="nzBackIcon ? nzBackIcon : 'arrow-left'" nzTheme="outline"></i>
-            <ng-container *ngIf="isTemplateRefBackIcon" [ngTemplateOutlet]="nzBackIcon"></ng-container>
+            <ng-container *nzStringTemplateOutlet="nzBackIcon; let backIcon">
+              <i nz-icon [nzType]="backIcon || 'arrow-left'" nzTheme="outline"></i>
+            </ng-container>
           </div>
         </div>
         <!--avatar-->
@@ -73,10 +72,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'pageHeader';
     '[class.has-breadcrumb]': 'nzPageHeaderBreadcrumb'
   }
 })
-export class NzPageHeaderComponent implements OnChanges {
-  isTemplateRefBackIcon = false;
-  isStringBackIcon = false;
-
+export class NzPageHeaderComponent {
   @Input() nzBackIcon: string | TemplateRef<void> | null = null;
   @Input() nzTitle?: string | TemplateRef<void>;
   @Input() nzSubtitle?: string | TemplateRef<void>;
@@ -87,13 +83,6 @@ export class NzPageHeaderComponent implements OnChanges {
   @ContentChild(NzPageHeaderBreadcrumbDirective, { static: false }) nzPageHeaderBreadcrumb?: ElementRef<NzPageHeaderBreadcrumbDirective>;
 
   constructor(@Optional() private location: Location, public nzConfigService: NzConfigService) {}
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.hasOwnProperty('nzBackIcon')) {
-      this.isTemplateRefBackIcon = changes.nzBackIcon.currentValue instanceof TemplateRef;
-      this.isStringBackIcon = typeof changes.nzBackIcon.currentValue === 'string';
-    }
-  }
 
   onBack(): void {
     if (this.nzBack.observers.length) {
