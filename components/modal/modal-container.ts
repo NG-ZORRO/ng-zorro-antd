@@ -11,12 +11,16 @@ import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { BasePortalOutlet, CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { ChangeDetectorRef, ComponentRef, ElementRef, EmbeddedViewRef, EventEmitter, NgZone, OnDestroy, Renderer2 } from '@angular/core';
+import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { getElementOffset } from 'ng-zorro-antd/core/util';
-import { FADE_CLASS_NAME_MAP, MODAL_MASK_CLASS_NAME, ZOOM_CLASS_NAME_MAP } from './modal-config';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { FADE_CLASS_NAME_MAP, MODAL_MASK_CLASS_NAME, NZ_CONFIG_COMPONENT_NAME, ZOOM_CLASS_NAME_MAP } from './modal-config';
 
 import { NzModalRef } from './modal-ref';
 import { ModalOptions } from './modal-types';
+import { getValueWithConfig } from './utils';
 
 export function throwNzModalContentAlreadyAttachedError(): never {
   throw Error('Attempting to attach modal content after content is already attached');
@@ -40,6 +44,19 @@ export class BaseModalContainer extends BasePortalOutlet implements OnDestroy {
   private focusTrap!: FocusTrap;
   private latestMousedownTarget: HTMLElement | null = null;
   private oldMaskStyle: { [key: string]: string } | null = null;
+  protected destroy$ = new Subject();
+
+  get showMask(): boolean {
+    const defaultConfig = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME) || {};
+
+    return !!getValueWithConfig<boolean>(this.config.nzMask, defaultConfig.nzMask, true);
+  }
+
+  get maskClosable(): boolean {
+    const defaultConfig = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME) || {};
+
+    return !!getValueWithConfig<boolean>(this.config.nzMaskClosable, defaultConfig.nzMaskClosable, true);
+  }
 
   constructor(
     protected elementRef: ElementRef,
@@ -48,6 +65,7 @@ export class BaseModalContainer extends BasePortalOutlet implements OnDestroy {
     protected render: Renderer2,
     protected zone: NgZone,
     protected overlayRef: OverlayRef,
+    protected nzConfigService: NzConfigService,
     public config: ModalOptions,
     document?: NzSafeAny,
     protected animationType?: string
@@ -56,10 +74,12 @@ export class BaseModalContainer extends BasePortalOutlet implements OnDestroy {
     this.document = document;
     this.isStringContent = typeof config.nzContent === 'string';
     this.setContainer();
-  }
-
-  ngOnDestroy(): void {
-    this.onDestroy.emit();
+    this.nzConfigService
+      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.updateMaskClassname();
+      });
   }
 
   onMousedown(e: MouseEvent): void {
@@ -67,7 +87,7 @@ export class BaseModalContainer extends BasePortalOutlet implements OnDestroy {
   }
 
   onMouseup(e: MouseEvent): void {
-    if (e.target === this.latestMousedownTarget && e.target === this.elementRef.nativeElement) {
+    if (e.target === this.latestMousedownTarget && e.target === this.elementRef.nativeElement && this.showMask && this.maskClosable) {
       this.containerClick.emit();
     }
     this.latestMousedownTarget = null;
@@ -264,6 +284,15 @@ export class BaseModalContainer extends BasePortalOutlet implements OnDestroy {
     return container instanceof HTMLElement ? container : null;
   }
 
+  updateMaskClassname(): void {
+    const backdropElement = this.overlayRef.backdropElement;
+    if (this.showMask) {
+      this.render.addClass(backdropElement, MODAL_MASK_CLASS_NAME);
+    } else {
+      this.render.removeClass(backdropElement, MODAL_MASK_CLASS_NAME);
+    }
+  }
+
   onAnimationDone(event: AnimationEvent): void {
     if (event.toState === 'void') {
       return;
@@ -292,5 +321,11 @@ export class BaseModalContainer extends BasePortalOutlet implements OnDestroy {
   startExitAnimation(): void {
     this.state = 'exit';
     this.cdr.markForCheck();
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy.emit();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
