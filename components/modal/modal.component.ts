@@ -24,7 +24,6 @@ import {
 } from '@angular/core';
 
 import { NzButtonType } from 'ng-zorro-antd/button';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Observable } from 'rxjs';
@@ -35,8 +34,6 @@ import { NzModalRef } from './modal-ref';
 import { ModalButtonOptions, ModalOptions, ModalTypes, OnClickCallback, StyleObjectLike } from './modal-types';
 import { NzModalService } from './modal.service';
 import { getConfigFromComponent } from './utils';
-
-const NZ_CONFIG_COMPONENT_NAME = 'modal';
 
 @Component({
   selector: 'nz-modal',
@@ -57,9 +54,9 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   static ngAcceptInputType_nzKeyboard: BooleanInput;
   static ngAcceptInputType_nzNoAnimation: BooleanInput;
 
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzMask: boolean = true;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzMaskClosable: boolean = true;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzCloseOnNavigation: boolean = true;
+  @Input() @InputBoolean() nzMask?: boolean;
+  @Input() @InputBoolean() nzMaskClosable?: boolean;
+  @Input() @InputBoolean() nzCloseOnNavigation?: boolean;
   @Input() @InputBoolean() nzVisible: boolean = false;
   @Input() @InputBoolean() nzClosable: boolean = true;
   @Input() @InputBoolean() nzOkLoading: boolean = false;
@@ -117,12 +114,7 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
     return this.nzAfterClose.asObservable();
   }
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef,
-    private modal: NzModalService,
-    private viewContainerRef: ViewContainerRef
-  ) {}
+  constructor(private cdr: ChangeDetectorRef, private modal: NzModalService, private viewContainerRef: ViewContainerRef) {}
 
   open(): void {
     if (!this.nzVisible) {

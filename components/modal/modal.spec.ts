@@ -16,6 +16,7 @@ import {
 import { ComponentFixture, fakeAsync, flush, flushMicrotasks, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { NzConfigService } from 'ng-zorro-antd';
 
 import { createKeyboardEvent, dispatchEvent, dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 
@@ -79,6 +80,7 @@ describe('NzModal', () => {
   let modalService: NzModalService;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
+  let configService: NzConfigService;
   let fixture: ComponentFixture<TestWithServiceComponent>;
   let mockLocation: SpyLocation;
 
@@ -91,12 +93,16 @@ describe('NzModal', () => {
     TestBed.compileComponents();
   }));
 
-  beforeEach(inject([NzModalService, Location, OverlayContainer], (m: NzModalService, l: Location, oc: OverlayContainer) => {
-    modalService = m;
-    mockLocation = l as SpyLocation;
-    overlayContainer = oc;
-    overlayContainerElement = oc.getContainerElement();
-  }));
+  beforeEach(inject(
+    [NzModalService, Location, OverlayContainer, NzConfigService],
+    (m: NzModalService, l: Location, oc: OverlayContainer, cs: NzConfigService) => {
+      modalService = m;
+      configService = cs;
+      mockLocation = l as SpyLocation;
+      overlayContainer = oc;
+      overlayContainerElement = oc.getContainerElement();
+    }
+  ));
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
@@ -381,6 +387,23 @@ describe('NzModal', () => {
     flush();
     expect(overlayContainerElement.querySelector('nz-modal-container')).toBeTruthy();
 
+    modalRef.close();
+    fixture.detectChanges();
+    flush();
+  }));
+
+  it('should global config work', fakeAsync(() => {
+    configService.set('modal', { nzMask: false });
+
+    const modalRef = modalService.create({
+      nzContent: TestWithModalContentComponent
+    });
+
+    fixture.detectChanges();
+
+    expect(modalRef.getBackdropElement()?.classList).not.toContain('ant-modal-mask');
+
+    configService.set('modal', { nzMask: true });
     modalRef.close();
     fixture.detectChanges();
     flush();
@@ -1332,6 +1355,37 @@ describe('NzModal', () => {
       modalInstance.close();
       componentFixture.detectChanges();
       flush();
+    }));
+
+    it('should global config work', fakeAsync(() => {
+      configService.set('modal', {
+        nzMaskClosable: false
+      });
+      const modalInstance = componentInstance.nzModalComponent;
+
+      modalInstance.open();
+      componentFixture.detectChanges();
+      flush();
+
+      let modalWrap = overlayContainerElement.querySelector('nz-modal-container') as HTMLElement;
+      dispatchMouseEvent(modalWrap, 'mousedown');
+      fixture.detectChanges();
+      dispatchMouseEvent(modalWrap, 'mouseup');
+      flush();
+      expect(componentInstance.cancelSpy).not.toHaveBeenCalled();
+
+      configService.set('modal', {
+        nzMaskClosable: true
+      });
+      componentFixture.detectChanges();
+      flush();
+
+      modalWrap = overlayContainerElement.querySelector('nz-modal-container') as HTMLElement;
+      dispatchMouseEvent(modalWrap, 'mousedown');
+      fixture.detectChanges();
+      dispatchMouseEvent(modalWrap, 'mouseup');
+      flush();
+      expect(componentInstance.cancelSpy).toHaveBeenCalled();
     }));
 
     it('should instance API work', fakeAsync(() => {
