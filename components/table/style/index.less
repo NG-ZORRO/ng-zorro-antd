@@ -9,8 +9,6 @@
 @table-header-icon-color-hover: darken(@table-header-icon-color, 10%);
 @table-header-sort-active-filter-bg: lighten(@table-header-sort-active-bg, 2%);
 
-@table-selection-column-width: 60px;
-
 .@{table-prefix-cls}-wrapper {
   .clearfix;
 }
@@ -114,6 +112,7 @@
       &.@{table-prefix-cls}-row-selected {
         > td {
           background: @table-selected-row-bg;
+          border-color: rgba(0, 0, 0, 0.03);
         }
 
         &:hover {
@@ -363,6 +362,8 @@
 
   table tr th&-selection-column,
   table tr td&-selection-column {
+    width: @table-selection-column-width;
+    min-width: @table-selection-column-width;
     text-align: center;
 
     .@{ant-prefix}-radio-wrapper {
@@ -376,7 +377,7 @@
     &-extra {
       position: absolute;
       top: 0;
-      right: -10px;
+      right: @table-selection-extra-right;
       cursor: pointer;
       transition: all 0.3s;
 
@@ -507,6 +508,8 @@
   // ============================ Fixed =============================
   &-cell-fix-left,
   &-cell-fix-right {
+    position: -webkit-sticky !important;
+    position: sticky !important;
     z-index: 2;
     background: @table-bg;
   }

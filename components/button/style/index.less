@@ -94,10 +94,7 @@
 
   &-icon-only {
     .btn-square(@btn-prefix-cls);
-
-    > i {
-      vertical-align: middle;
-    }
+    vertical-align: -0.5px;
   }
 
   &-round {
@@ -153,10 +150,11 @@
   }
 
   & > &-loading-icon {
+    padding-right: @margin-xs;
     transition: all 0.3s @ease-in-out;
 
-    .@{iconfont-css-prefix} {
-      padding-right: @margin-xs;
+    &:only-child {
+      padding-right: 0;
     }
   }
 
