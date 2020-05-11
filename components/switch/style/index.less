@@ -23,8 +23,8 @@
 
   &-inner {
     display: block;
-    margin-right: 6px;
-    margin-left: 24px;
+    margin-right: @switch-inner-margin-min;
+    margin-left: @switch-inner-margin-max;
     color: @text-color-inverse;
     font-size: @font-size-sm;
   }
@@ -71,7 +71,7 @@
 
   &-loading &-loading-icon {
     display: inline-block;
-    color: @text-color;
+    color: rgba(0, 0, 0, 0.65);
   }
 
   &-checked&-loading &-loading-icon {
@@ -136,8 +136,8 @@
     background-color: @switch-color;
 
     .@{switch-prefix-cls}-inner {
-      margin-right: 24px;
-      margin-left: 6px;
+      margin-right: @switch-inner-margin-max;
+      margin-left: @switch-inner-margin-min;
     }
 
     &::after {

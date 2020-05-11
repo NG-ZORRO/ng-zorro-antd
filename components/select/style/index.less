@@ -98,7 +98,6 @@
   // ========================== Arrow ==========================
   &-arrow {
     .iconfont-mixin();
-
     position: absolute;
     top: 53%;
     right: @control-padding-horizontal - 1px;
@@ -109,10 +108,9 @@
     font-size: @font-size-sm;
     line-height: 1;
     text-align: center;
-    // transform-origin: 50% 50%;
     pointer-events: none;
 
-    .anticon {
+    .@{iconfont-css-prefix} {
       vertical-align: top;
       transition: transform 0.3s;
 
@@ -120,8 +118,8 @@
         vertical-align: top;
       }
 
-      .@{select-prefix-cls}-open &.anticon-down {
-        transform: rotate(180deg);
+      &:not(.@{iconfont-css-prefix}-down) {
+        pointer-events: auto;
       }
     }
   }
