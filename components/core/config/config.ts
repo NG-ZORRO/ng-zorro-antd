@@ -171,6 +171,7 @@ export interface MessageConfig {
 export interface ModalConfig {
   nzMask?: boolean;
   nzMaskClosable?: boolean;
+  nzCloseOnNavigation?: boolean;
 }
 
 export interface NotificationConfig extends MessageConfig {

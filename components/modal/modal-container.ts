@@ -10,7 +10,7 @@ import { AnimationEvent } from '@angular/animations';
 import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { BasePortalOutlet, CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
-import { ChangeDetectorRef, ComponentRef, ElementRef, EmbeddedViewRef, EventEmitter, NgZone, Renderer2 } from '@angular/core';
+import { ChangeDetectorRef, ComponentRef, ElementRef, EmbeddedViewRef, EventEmitter, NgZone, OnDestroy, Renderer2 } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { getElementOffset } from 'ng-zorro-antd/core/util';
 import { FADE_CLASS_NAME_MAP, MODAL_MASK_CLASS_NAME, ZOOM_CLASS_NAME_MAP } from './modal-config';
@@ -22,7 +22,7 @@ export function throwNzModalContentAlreadyAttachedError(): never {
   throw Error('Attempting to attach modal content after content is already attached');
 }
 
-export class BaseModalContainer extends BasePortalOutlet {
+export class BaseModalContainer extends BasePortalOutlet implements OnDestroy {
   portalOutlet!: CdkPortalOutlet;
   modalElementRef!: ElementRef<HTMLDivElement>;
 
@@ -30,6 +30,7 @@ export class BaseModalContainer extends BasePortalOutlet {
   containerClick = new EventEmitter<void>();
   cancelTriggered = new EventEmitter<void>();
   okTriggered = new EventEmitter<void>();
+  onDestroy = new EventEmitter<void>();
 
   state: 'void' | 'enter' | 'exit' = 'enter';
   document: Document;
@@ -55,6 +56,10 @@ export class BaseModalContainer extends BasePortalOutlet {
     this.document = document;
     this.isStringContent = typeof config.nzContent === 'string';
     this.setContainer();
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy.emit();
   }
 
   onMousedown(e: MouseEvent): void {
