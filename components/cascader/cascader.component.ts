@@ -212,14 +212,14 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   @Input() nzColumnClassName?: string;
   @Input() nzExpandTrigger: NzCascaderExpandTrigger = 'click';
   @Input() nzValueProperty = 'value';
-  @Input() nzLabelRender?: TemplateRef<void>;
+  @Input() nzLabelRender: TemplateRef<void> | null = null;
   @Input() nzLabelProperty = 'label';
   @Input() nzNotFoundContent?: string | TemplateRef<void>;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzCascaderSize = 'default';
   @Input() nzShowSearch: boolean | NzShowSearchOptions = false;
   @Input() nzPlaceHolder: string = '';
   @Input() nzMenuClassName?: string;
-  @Input() nzMenuStyle?: NgStyleInterface;
+  @Input() nzMenuStyle: NgStyleInterface | null = null;
   @Input() nzMouseEnterDelay: number = 150; // ms
   @Input() nzMouseLeaveDelay: number = 150; // ms
   @Input() nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[] = ['click'] as NzCascaderTriggerType[];

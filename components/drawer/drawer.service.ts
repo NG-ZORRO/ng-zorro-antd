@@ -66,7 +66,7 @@ export class DrawerBuilderForService<R> {
 export class NzDrawerService {
   constructor(private overlay: Overlay) {}
 
-  create<T = NzSafeAny, D = NzSafeAny, R = NzSafeAny>(options: NzDrawerOptions<T, D>): NzDrawerRef<R> {
+  create<T = NzSafeAny, D = undefined, R = NzSafeAny>(options: NzDrawerOptions<T, D extends undefined ? {} : D>): NzDrawerRef<R> {
     return new DrawerBuilderForService<R>(this.overlay, options).getInstance();
   }
 }

@@ -65,7 +65,7 @@ export class NzDropdownMenuComponent implements AfterContentInit {
   mouseState$ = new BehaviorSubject<boolean>(false);
   isChildSubMenuOpen$ = this.nzMenuService.isChildSubMenuOpen$;
   descendantMenuItemClick$ = this.nzMenuService.descendantMenuItemClick$;
-  nzOverlayClassName: string | null = null;
+  nzOverlayClassName: string = '';
   nzOverlayStyle: IndexableObject = {};
   @ViewChild(TemplateRef, { static: true }) templateRef!: TemplateRef<NzSafeAny>;
 

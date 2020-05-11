@@ -58,7 +58,7 @@ export class NzPaginationOptionsComponent implements OnChanges {
   @Input() total = 0;
   @Input() pageIndex = 1;
   @Input() pageSize = 10;
-  @Input() pageSizeOptions = [];
+  @Input() pageSizeOptions: number[] = [];
   @Output() readonly pageIndexChange = new EventEmitter<number>();
   @Output() readonly pageSizeChange = new EventEmitter<number>();
   listOfPageSizeOption: Array<{ value: number; label: string }> = [];

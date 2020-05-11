@@ -129,9 +129,9 @@ export class NzTransferListComponent {
   @Input() notFoundContent?: string;
   @Input() filterOption?: (inputValue: string, item: TransferItem) => boolean;
 
-  @Input() renderList?: TemplateRef<void>;
-  @Input() render?: TemplateRef<void>;
-  @Input() footer?: TemplateRef<void>;
+  @Input() renderList: TemplateRef<void> | null = null;
+  @Input() render: TemplateRef<void> | null = null;
+  @Input() footer: TemplateRef<void> | null = null;
 
   // events
   @Output() readonly handleSelectAll: EventEmitter<boolean> = new EventEmitter<boolean>();

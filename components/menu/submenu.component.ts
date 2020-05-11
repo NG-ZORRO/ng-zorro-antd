@@ -91,7 +91,7 @@ const listOfHorizontalPositions = [POSITION_MAP.bottomLeft];
         (positionChange)="onPositionChange($event)"
         [cdkConnectedOverlayPositions]="overlayPositions"
         [cdkConnectedOverlayOrigin]="origin"
-        [cdkConnectedOverlayWidth]="triggerWidth"
+        [cdkConnectedOverlayWidth]="triggerWidth!"
         [cdkConnectedOverlayOpen]="nzOpen"
       >
         <div
@@ -138,7 +138,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   static ngAcceptInputType_nzOpen: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
 
-  @Input() nzMenuClassName: string | null = null;
+  @Input() nzMenuClassName: string = '';
   @Input() nzPaddingLeft: number | null = null;
   @Input() nzTitle: string | TemplateRef<void> | null = null;
   @Input() nzIcon: string | null = null;

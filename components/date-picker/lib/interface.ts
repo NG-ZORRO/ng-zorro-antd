@@ -12,7 +12,7 @@ export interface PanelSelector {
   className: string;
   title?: string;
   label: string;
-  onClick?(): void;
+  onClick(): void;
 }
 
 export interface DateCell {

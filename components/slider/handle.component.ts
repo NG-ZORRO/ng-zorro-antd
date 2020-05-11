@@ -53,7 +53,7 @@ export class NzSliderHandleComponent implements OnChanges {
   @ViewChild('handle', { static: false }) handleEl?: ElementRef;
   @ViewChild(NzTooltipDirective, { static: false }) tooltip?: NzTooltipDirective;
 
-  @Input() vertical?: string;
+  @Input() vertical?: boolean;
   @Input() offset?: number;
   @Input() value?: number;
   @Input() tooltipVisible: NzSliderShowTooltip = 'default';

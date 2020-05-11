@@ -47,7 +47,7 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
   exportAs: 'nzTimePickerPanel',
   template: `
     <div *ngIf="nzInDatePicker" class="ant-picker-header">
-      <div class="ant-picker-header-view">{{ dateHelper.format(time?.value, format) || '&nbsp;' }}</div>
+      <div class="ant-picker-header-view">{{ dateHelper.format($any(time?.value), format) || '&nbsp;' }}</div>
     </div>
     <div class="ant-picker-content">
       <ul *ngIf="hourEnabled" #hourListElement class="ant-picker-time-panel-column" style="position: relative;">
@@ -136,9 +136,9 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   private onChange?: (value: Date) => void;
   private onTouch?: () => void;
   private _format = 'HH:mm:ss';
-  private _disabledHours?: () => number[];
-  private _disabledMinutes?: (hour: number) => number[];
-  private _disabledSeconds?: (hour: number, minute: number) => number[];
+  private _disabledHours?: () => number[] = () => [];
+  private _disabledMinutes?: (hour: number) => number[] = () => [];
+  private _disabledSeconds?: (hour: number, minute: number) => number[] = () => [];
   private _allowEmpty = true;
   time = new TimeHolder();
   hourEnabled = true;

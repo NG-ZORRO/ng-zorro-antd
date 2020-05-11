@@ -53,8 +53,8 @@ const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
         (blur)="onFocus(false)"
       />
       <span class="ant-picker-suffix">
-        <ng-container *nzStringTemplateOutlet="nzSuffixIcon">
-          <i nz-icon [nzType]="nzSuffixIcon"></i>
+        <ng-container *nzStringTemplateOutlet="nzSuffixIcon; let suffixIcon">
+          <i nz-icon [nzType]="suffixIcon"></i>
         </ng-container>
       </span>
       <span *ngIf="nzAllowEmpty && value" class="ant-picker-clear" (click)="onClickClearBtn($event)">
@@ -144,7 +144,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzMinuteStep: number = 1;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSecondStep: number = 1;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzClearText: string = 'clear';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzPopupClassName?: string = undefined;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzPopupClassName: string = '';
   @Input() nzPlaceHolder = '';
   @Input() nzAddOn?: TemplateRef<void>;
   @Input() nzDefaultOpenValue?: Date;

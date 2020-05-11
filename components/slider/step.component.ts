@@ -25,7 +25,7 @@ import { NzDisplayedStep, NzExtendedMark } from './typings';
         class="ant-slider-dot"
         *ngFor="let mark of steps; trackBy: trackById"
         [class.ant-slider-dot-active]="mark.active"
-        [ngStyle]="mark.style"
+        [ngStyle]="mark.style!"
       >
       </span>
     </div>

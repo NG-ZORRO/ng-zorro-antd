@@ -52,7 +52,7 @@ import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
 })
 export class NzTreeNodeTitleComponent {
   @Input() searchValue!: string;
-  @Input() treeTemplate!: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
+  @Input() treeTemplate: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }> | null = null;
   @Input() draggable!: boolean;
   @Input() showIcon!: boolean;
   @Input() selectMode = false;

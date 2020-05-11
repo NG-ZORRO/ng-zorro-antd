@@ -36,14 +36,14 @@ import { ModalOptions } from './modal-types';
       #modalElement
       role="document"
       class="ant-modal"
-      [ngClass]="config.nzClassName"
-      [ngStyle]="config.nzStyle"
-      [style.width]="config?.nzWidth | nzToCssUnit"
+      [ngClass]="config.nzClassName!"
+      [ngStyle]="config.nzStyle!"
+      [style.width]="config?.nzWidth! | nzToCssUnit"
     >
       <div class="ant-modal-content">
         <button *ngIf="config.nzClosable" nz-modal-close (click)="onCloseClick()"></button>
         <div *ngIf="config.nzTitle" nz-modal-title></div>
-        <div class="ant-modal-body" [ngStyle]="config.nzBodyStyle">
+        <div class="ant-modal-body" [ngStyle]="config.nzBodyStyle!">
           <ng-template cdkPortalOutlet></ng-template>
           <div *ngIf="isStringContent" [innerHTML]="config.nzContent"></div>
         </div>

@@ -449,7 +449,6 @@ describe('tree', () => {
         // drag-over-gap-top
         dispatchMouseEvent(passedNode, 'dragover', 300, 340);
         elementNode = nativeElement.querySelector('nz-tree-node:nth-child(2)') as HTMLElement;
-        // console.log(elementNode);
         expect(elementNode.classList).toContain('drag-over-gap-top');
 
         // drag-over

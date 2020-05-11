@@ -40,8 +40,8 @@ const NZ_CONFIG_COMPONENT_NAME = 'collapsePanel';
   template: `
     <div role="tab" [attr.aria-expanded]="nzActive" class="ant-collapse-header" (click)="clickHeader()">
       <ng-container *ngIf="nzShowArrow">
-        <ng-container *nzStringTemplateOutlet="nzExpandedIcon">
-          <i nz-icon [nzType]="nzExpandedIcon || 'right'" class="ant-collapse-arrow" [nzRotate]="nzActive ? 90 : 0"></i>
+        <ng-container *nzStringTemplateOutlet="nzExpandedIcon; let expandedIcon">
+          <i nz-icon [nzType]="expandedIcon || 'right'" class="ant-collapse-arrow" [nzRotate]="nzActive ? 90 : 0"></i>
         </ng-container>
       </ng-container>
       <ng-container *nzStringTemplateOutlet="nzHeader">{{ nzHeader }}</ng-container>

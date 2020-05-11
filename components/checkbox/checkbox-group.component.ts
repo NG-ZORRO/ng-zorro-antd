@@ -30,8 +30,8 @@ export interface NzCheckBoxOptionInterface {
       class="ant-checkbox-group-item"
       *ngFor="let o of options; trackBy: trackByOption"
       [nzDisabled]="o.disabled || nzDisabled"
-      [(nzChecked)]="o.checked"
-      (nzCheckedChange)="onChange(options)"
+      [nzChecked]="o.checked!"
+      (nzCheckedChange)="onCheckedChange(o, $event)"
     >
       <span>{{ o.label }}</span>
     </label>
@@ -57,6 +57,11 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, O
 
   trackByOption(_: number, option: NzCheckBoxOptionInterface): string {
     return option.value;
+  }
+
+  onCheckedChange(option: NzCheckBoxOptionInterface, checked: boolean): void {
+    option.checked = checked;
+    this.onChange(this.options);
   }
 
   constructor(private elementRef: ElementRef, private focusMonitor: FocusMonitor, private cdr: ChangeDetectorRef) {}

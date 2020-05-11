@@ -59,23 +59,25 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
       </div>
     </div>
     <ng-template #monthModeTable>
+      <!--  TODO(@wenqi73) [cellRender] [fullCellRender] -->
       <date-table
         [prefixCls]="prefixCls"
         [value]="activeDate"
         [activeDate]="activeDate"
-        [cellRender]="dateCell"
-        [fullCellRender]="dateFullCell"
+        [cellRender]="$any(dateCell)"
+        [fullCellRender]="$any(dateFullCell)"
         (valueChange)="onDateSelect($event)"
       ></date-table>
     </ng-template>
 
+    <!--  TODO(@wenqi73) [cellRender] [fullCellRender] -->
     <ng-template #yearModeTable>
       <month-table
         [prefixCls]="prefixCls"
         [value]="activeDate"
         [activeDate]="activeDate"
-        [cellRender]="monthCell"
-        [fullCellRender]="monthFullCell"
+        [cellRender]="$any(monthCell)"
+        [fullCellRender]="$any(monthFullCell)"
         (valueChange)="onDateSelect($event)"
       ></month-table>
     </ng-template>

@@ -56,7 +56,7 @@ import { NzMenuModeType, NzMenuThemeType } from './menu.types';
   }
 })
 export class NzSubmenuNoneInlineChildComponent implements OnInit, OnChanges {
-  @Input() menuClass: string | null = null;
+  @Input() menuClass: string = '';
   @Input() theme: NzMenuThemeType = 'light';
   @Input() templateOutlet: TemplateRef<NzSafeAny> | null = null;
   @Input() isMenuInsideDropDown = false;

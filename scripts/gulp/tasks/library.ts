@@ -6,8 +6,11 @@ import { generateLessVars } from '../../build/generate-less-vars';
 import { copyStylesToSrc } from '../../build/migration-styles';
 import { execNodeTask } from '../util/task-helpers';
 
-/** Run `ng build ng-zorro-antd-lib` */
+/** Run `ng build ng-zorro-antd-lib --prod` */
 task('library:build-zorro', execNodeTask('@angular/cli', 'ng', ['build', 'ng-zorro-antd-lib', '--prod']));
+
+/** Run `ng build ng-zorro-antd-lib` */
+task('library:ivy-prebuild', execNodeTask('@angular/cli', 'ng', ['build', 'ng-zorro-antd-lib']));
 
 // Compile less to the public directory.
 task('library:compile-less', done => {

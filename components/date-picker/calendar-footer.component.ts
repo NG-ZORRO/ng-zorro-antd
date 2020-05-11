@@ -18,6 +18,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { CandyDate } from 'ng-zorro-antd/core/time';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
@@ -35,7 +36,7 @@ import { PREFIX_CLASS } from './util';
       <div *ngIf="extraFooter" class="{{ prefixCls }}-footer-extra">
         <ng-container [ngSwitch]="true">
           <ng-container *ngSwitchCase="isTemplateRef(extraFooter)">
-            <ng-container *ngTemplateOutlet="extraFooter"></ng-container>
+            <ng-container *ngTemplateOutlet="$any(extraFooter)"></ng-container>
           </ng-container>
           <ng-container *ngSwitchCase="isNonEmptyString(extraFooter)">
             <span [innerHTML]="extraFooter"></span>
@@ -83,7 +84,7 @@ export class CalendarFooterComponent implements OnChanges {
   @Input() okDisabled: boolean = false;
   @Input() disabledDate?: (d: Date) => boolean;
   @Input() extraFooter?: TemplateRef<void> | string;
-  @Input() rangeQuickSelector?: TemplateRef<void>;
+  @Input() rangeQuickSelector: TemplateRef<NzSafeAny> | null = null;
 
   @Output() readonly clickOk = new EventEmitter<void>();
   @Output() readonly clickToday = new EventEmitter<CandyDate>();

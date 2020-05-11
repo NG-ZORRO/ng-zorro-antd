@@ -15,7 +15,7 @@ export type NzNotificationPlacement = 'topLeft' | 'topRight' | 'bottomLeft' | 'b
 
 export interface NzNotificationDataOptions<T = {}> {
   nzKey?: string;
-  nzStyle?: NgStyleInterface | string;
+  nzStyle?: NgStyleInterface;
   nzClass?: NgClassInterface | string;
   nzCloseIcon?: TemplateRef<void> | string;
   nzPlacement?: NzNotificationPlacement;

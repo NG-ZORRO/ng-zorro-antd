@@ -32,7 +32,7 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
   template: `
     <div>
       <div *ngIf="listOfContainerItem.length === 0" class="ant-select-item-empty">
-        <nz-embed-empty nzComponentName="select" [specificContent]="notFoundContent"></nz-embed-empty>
+        <nz-embed-empty nzComponentName="select" [specificContent]="notFoundContent!"></nz-embed-empty>
       </div>
       <cdk-virtual-scroll-viewport
         [class.full-width]="!matchWidth"

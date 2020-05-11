@@ -45,16 +45,16 @@ import { NzListFooterComponent, NzListLoadMoreDirective, NzListPaginationCompone
     <nz-spin [nzSpinning]="nzLoading">
       <ng-container>
         <div *ngIf="nzLoading && nzDataSource && nzDataSource.length === 0" [style.min-height.px]="53"></div>
-        <div *ngIf="nzGrid && nzDataSource; else itemsTpl" nz-row [nzGutter]="nzGrid.gutter">
+        <div *ngIf="nzGrid && nzDataSource; else itemsTpl" nz-row [nzGutter]="nzGrid.gutter || null">
           <div
             nz-col
-            [nzSpan]="nzGrid.span"
-            [nzXs]="nzGrid.xs"
-            [nzSm]="nzGrid.sm"
-            [nzMd]="nzGrid.md"
-            [nzLg]="nzGrid.lg"
-            [nzXl]="nzGrid.xl"
-            [nzXXl]="nzGrid.xxl"
+            [nzSpan]="nzGrid.span || null"
+            [nzXs]="nzGrid.xs || null"
+            [nzSm]="nzGrid.sm || null"
+            [nzMd]="nzGrid.md || null"
+            [nzLg]="nzGrid.lg || null"
+            [nzXl]="nzGrid.xl || null"
+            [nzXXl]="nzGrid.xxl || null"
             *ngFor="let item of nzDataSource; let index = index"
           >
             <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: item, index: index }"></ng-template>
@@ -103,9 +103,9 @@ export class NzListComponent implements AfterContentInit, OnChanges, OnDestroy {
   @Input() nzHeader?: string | TemplateRef<void>;
   @Input() nzFooter?: string | TemplateRef<void>;
   @Input() nzItemLayout: NzDirectionVHType = 'horizontal';
-  @Input() nzRenderItem?: TemplateRef<void>;
+  @Input() nzRenderItem: TemplateRef<void> | null = null;
   @Input() @InputBoolean() nzLoading = false;
-  @Input() nzLoadMore?: TemplateRef<void>;
+  @Input() nzLoadMore: TemplateRef<void> | null = null;
   @Input() nzPagination?: TemplateRef<void>;
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() @InputBoolean() nzSplit = true;
