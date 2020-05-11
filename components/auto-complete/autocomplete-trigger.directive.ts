@@ -35,8 +35,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { NzInputGroupWhitSuffixOrPrefixDirective } from 'ng-zorro-antd/input';
 
-import { fromEvent, merge, Subscription } from 'rxjs';
-import { delay, distinct, map, take, tap } from 'rxjs/operators';
+import { fromEvent, merge, Subject, Subscription } from 'rxjs';
+import { delay, distinct, map, take, takeUntil, tap } from 'rxjs/operators';
 
 import { NzAutocompleteOptionComponent } from './autocomplete-option.component';
 import { NzAutocompleteComponent } from './autocomplete.component';
@@ -83,6 +83,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     }
   }
 
+  private destroy$ = new Subject<void>();
   private overlayRef: OverlayRef | null = null;
   private portal: TemplatePortal<{}> | null = null;
   private positionStrategy!: FlexibleConnectedPositionStrategy;
@@ -138,7 +139,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
         this.overlayBackdropClickSubscription.unsubscribe();
         this.overlayPositionChangeSubscription.unsubscribe();
         this.optionsChangeSubscription.unsubscribe();
-        this.overlayRef.detach();
+        this.overlayRef.dispose();
         this.overlayRef = null;
         this.portal = null;
       }
@@ -284,6 +285,12 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
       this.selectionChangeSubscription = this.subscribeSelectionChange();
       this.overlayBackdropClickSubscription = this.subscribeOverlayBackdropClick();
       this.optionsChangeSubscription = this.subscribeOptionsChange();
+      this.overlayRef
+        .detachments()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          this.closePanel();
+        });
     }
     this.nzAutocomplete.isOpen = this.panelOpen = true;
   }
