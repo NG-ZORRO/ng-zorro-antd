@@ -15,6 +15,7 @@ export type NzDrawerPlacement = 'left' | 'right' | 'top' | 'bottom';
 export interface NzDrawerOptionsOfComponent<T = NzSafeAny, D = NzSafeAny> {
   nzClosable?: boolean;
   nzMaskClosable?: boolean;
+  nzCloseOnNavigation?: boolean;
   nzMask?: boolean;
   nzKeyboard?: boolean;
   nzNoAnimation?: boolean;

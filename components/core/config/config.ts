@@ -143,6 +143,7 @@ export interface DescriptionsConfig {
 export interface DrawerConfig {
   nzMask?: boolean;
   nzMaskClosable?: boolean;
+  nzCloseOnNavigation?: boolean;
 }
 
 export interface EmptyConfig {
