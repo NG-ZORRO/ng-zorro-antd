@@ -8,6 +8,7 @@
 
 import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { Platform } from '@angular/cdk/platform';
 import { TemplatePortal } from '@angular/cdk/portal';
 import {
   AfterViewInit,
@@ -70,7 +71,12 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
     }
   }
 
-  constructor(public elementRef: ElementRef, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {}
+  constructor(
+    public elementRef: ElementRef,
+    private overlay: Overlay,
+    private viewContainerRef: ViewContainerRef,
+    private platform: Platform
+  ) {}
 
   ngOnInit(): void {
     this.positionStrategy.positionChanges.pipe(takeUntil(this.destroy$)).subscribe(change => {
@@ -117,6 +123,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
           map(([visible, sub]) => visible || sub),
           auditTime(150),
           distinctUntilChanged(),
+          filter(() => this.platform.isBrowser),
           takeUntil(this.destroy$)
         )
         .subscribe((visible: boolean) => {
