@@ -65,7 +65,7 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
       });
 
     containerInstance.containerClick.pipe(take(1)).subscribe(() => {
-      const cancelable = !this.config.nzCancelLoading && !this.config.nzOkLoading && config.nzMask && config.nzMaskClosable;
+      const cancelable = !this.config.nzCancelLoading && !this.config.nzOkLoading;
       if (cancelable) {
         this.trigger(NzTriggerAction.CANCEL);
       }
