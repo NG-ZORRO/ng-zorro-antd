@@ -103,11 +103,13 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> exte
   static ngAcceptInputType_nzMask: BooleanInput;
   static ngAcceptInputType_nzNoAnimation: BooleanInput;
   static ngAcceptInputType_nzKeyboard: BooleanInput;
+  static ngAcceptInputType_nzCloseOnNavigation: BooleanInput;
 
   @Input() nzContent!: TemplateRef<{ $implicit: D; drawerRef: NzDrawerRef<R> }> | Type<T>;
   @Input() @InputBoolean() nzClosable: boolean = true;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzMaskClosable: boolean = true;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzMask: boolean = true;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzCloseOnNavigation: boolean = true;
   @Input() @InputBoolean() nzNoAnimation = false;
   @Input() @InputBoolean() nzKeyboard: boolean = true;
   @Input() nzTitle?: string | TemplateRef<{}>;
@@ -292,6 +294,7 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> exte
   }
 
   open(): void {
+    this.attachOverlay();
     this.isOpen = true;
     this.overlayKeyboardDispatcher.add(this.overlayRef!);
     this.updateOverlayStyle();
@@ -341,19 +344,23 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> exte
             this.nzOnClose.emit();
           }
         });
+      this.overlayRef
+        .detachments()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          this.disposeOverlay();
+        });
     }
   }
 
   private disposeOverlay(): void {
-    if (this.overlayRef) {
-      this.overlayRef.dispose();
-    }
+    this.overlayRef?.dispose();
     this.overlayRef = null;
   }
 
   private getOverlayConfig(): OverlayConfig {
     return new OverlayConfig({
-      disposeOnNavigation: true,
+      disposeOnNavigation: this.nzCloseOnNavigation,
       positionStrategy: this.overlay.position().global(),
       scrollStrategy: this.overlay.scrollStrategies.block()
     });
