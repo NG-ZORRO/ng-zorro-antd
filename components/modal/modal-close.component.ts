@@ -15,8 +15,8 @@ import { ModalOptions } from './modal-types';
   exportAs: 'NzModalCloseBuiltin',
   template: `
     <span class="ant-modal-close-x">
-      <ng-container *nzStringTemplateOutlet="config?.nzCloseIcon">
-        <i nz-icon [nzType]="config?.nzCloseIcon" class="ant-modal-close-icon"></i>
+      <ng-container *nzStringTemplateOutlet="config.nzCloseIcon; let closeIcon">
+        <i nz-icon [nzType]="closeIcon" class="ant-modal-close-icon"></i>
       </ng-container>
     </span>
   `,

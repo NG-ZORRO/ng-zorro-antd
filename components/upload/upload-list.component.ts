@@ -73,11 +73,11 @@ export class NzUploadListComponent implements OnChanges {
     this.list = list;
   }
   @Input() icons!: ShowUploadListInterface;
-  @Input() onPreview!: (file: UploadFile) => void;
+  @Input() onPreview?: (file: UploadFile) => void;
   @Input() onRemove!: (file: UploadFile) => void;
-  @Input() onDownload!: (file: UploadFile) => void;
-  @Input() previewFile!: (file: UploadFile) => Observable<string>;
-  @Input() iconRender!: TemplateRef<void>;
+  @Input() onDownload?: (file: UploadFile) => void;
+  @Input() previewFile?: (file: UploadFile) => Observable<string>;
+  @Input() iconRender: TemplateRef<NzSafeAny> | null = null;
 
   private genErr(file: UploadFile): string {
     if (file.response && typeof file.response === 'string') {

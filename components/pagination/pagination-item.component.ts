@@ -64,6 +64,9 @@ import { PaginationItemRenderContext, PaginationItemType } from './pagination.ty
   }
 })
 export class NzPaginationItemComponent implements OnChanges {
+  static ngAcceptInputType_type: PaginationItemType | string | null | undefined;
+  static ngAcceptInputType_index: number | null | undefined;
+
   @Input() active = false;
   @Input() locale: NzSafeAny = {};
   @Input() index: number | null = null;

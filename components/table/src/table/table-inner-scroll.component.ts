@@ -83,7 +83,7 @@ export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, On
   @Input() scrollY: string | null = null;
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() widthConfig: string[] = [];
-  @Input() listOfColWidth: string[] = [];
+  @Input() listOfColWidth: Array<string | null> = [];
   @Input() theadTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() virtualTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() virtualItemSize = 0;

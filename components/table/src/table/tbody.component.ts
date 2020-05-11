@@ -18,15 +18,17 @@ import { NzTableStyleService } from '../table-style.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <tr
-      nz-table-measure-row
-      *ngIf="isInsideTable && (listOfMeasureColumn$ | async)!.length"
-      [listOfMeasureColumn]="listOfMeasureColumn$ | async"
-      (listOfAutoWidth)="onListOfAutoWidthChange($event)"
-    ></tr>
+    <ng-container *ngIf="listOfMeasureColumn$ | async as listOfMeasureColumn">
+      <tr
+        nz-table-measure-row
+        *ngIf="isInsideTable && listOfMeasureColumn.length"
+        [listOfMeasureColumn]="listOfMeasureColumn"
+        (listOfAutoWidth)="onListOfAutoWidthChange($event)"
+      ></tr>
+    </ng-container>
     <ng-content></ng-content>
     <tr class="ant-table-placeholder" nz-table-fixed-row *ngIf="showEmpty$ | async">
-      <nz-embed-empty nzComponentName="table" [specificContent]="noResult$ | async"></nz-embed-empty>
+      <nz-embed-empty nzComponentName="table" [specificContent]="(noResult$ | async)!"></nz-embed-empty>
     </tr>
   `,
   host: {

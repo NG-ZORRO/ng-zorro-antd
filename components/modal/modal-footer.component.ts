@@ -31,10 +31,10 @@ import { ModalButtonOptions, ModalOptions } from './modal-types';
             [hidden]="!getButtonCallableProp(button, 'show')"
             [nzLoading]="getButtonCallableProp(button, 'loading')"
             [disabled]="getButtonCallableProp(button, 'disabled')"
-            [nzType]="button.type"
-            [nzShape]="button.shape"
-            [nzSize]="button.size"
-            [nzGhost]="button.ghost"
+            [nzType]="button.type!"
+            [nzShape]="button.shape!"
+            [nzSize]="button.size!"
+            [nzGhost]="button.ghost!"
           >
             {{ button.label }}
           </button>
@@ -47,7 +47,7 @@ import { ModalButtonOptions, ModalOptions } from './modal-types';
         [attr.cdkFocusInitial]="config.nzAutofocus === 'cancel'"
         nz-button
         (click)="onCancel()"
-        [nzLoading]="config.nzCancelLoading"
+        [nzLoading]="!!config.nzCancelLoading"
         [disabled]="config.nzCancelDisabled"
       >
         {{ config.nzCancelText || locale.cancelText }}
@@ -56,9 +56,9 @@ import { ModalButtonOptions, ModalOptions } from './modal-types';
         *ngIf="config.nzOkText !== null"
         [attr.cdkFocusInitial]="config.nzAutofocus === 'ok'"
         nz-button
-        [nzType]="config.nzOkType"
+        [nzType]="config.nzOkType!"
         (click)="onOk()"
-        [nzLoading]="config.nzOkLoading"
+        [nzLoading]="!!config.nzOkLoading"
         [disabled]="config.nzOkDisabled"
       >
         {{ config.nzOkText || locale.okText }}

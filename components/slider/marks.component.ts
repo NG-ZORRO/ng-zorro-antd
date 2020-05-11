@@ -24,7 +24,7 @@ import { NzDisplayedMark, NzExtendedMark, NzMark, NzMarkObj } from './typings';
         class="ant-slider-mark-text"
         *ngFor="let attr of marks; trackBy: trackById"
         [class.ant-slider-mark-active]="attr.active"
-        [ngStyle]="attr.style"
+        [ngStyle]="attr.style!"
         [innerHTML]="attr.label"
       >
       </span>

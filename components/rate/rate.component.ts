@@ -56,7 +56,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'rate';
       <li
         *ngFor="let star of starArray; let i = index"
         class="ant-rate-star"
-        [ngClass]="starStyleArray[i]"
+        [ngClass]="starStyleArray[i] || ''"
         nz-tooltip
         [nzTooltipTitle]="nzTooltips[i]"
       >

@@ -619,7 +619,7 @@ describe('link router', () => {
 
     it('should child route mode works', fakeAsync(() => {
       fixture.ngZone!.run(() => {
-        router = TestBed.get(Router);
+        router = TestBed.inject(Router);
         router.initialNavigation();
 
         fixture.detectChanges();

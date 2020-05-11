@@ -139,8 +139,8 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
           isDisabled: false,
           isToday: false,
           title: title,
-          cellRender: valueFunctionProp(this.cellRender, date), // Customized content
-          fullCellRender: valueFunctionProp(this.fullCellRender, date),
+          cellRender: valueFunctionProp(this.cellRender!, date), // Customized content
+          fullCellRender: valueFunctionProp(this.fullCellRender!, date),
           content: `${date.getDate()}`,
           onClick: () => this.changeValueFromInside(date),
           onMouseEnter: () => this.dayHover.emit(date)

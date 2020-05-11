@@ -6,7 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
+import { ConfigurableFocusTrapFactory, FocusTrap } from '@angular/cdk/a11y';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { Overlay, OverlayConfig, OverlayKeyboardDispatcher, OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortalOutlet, ComponentPortal, PortalInjector, TemplatePortal } from '@angular/cdk/portal';
@@ -33,7 +33,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toCssPixel } from 'ng-zorro-antd/core/util';
 
 import { Observable, Subject } from 'rxjs';
@@ -83,7 +83,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'drawer';
               <div class="ant-drawer-body" [ngStyle]="nzBodyStyle">
                 <ng-template cdkPortalOutlet></ng-template>
                 <ng-container *ngIf="isTemplateRef(nzContent)">
-                  <ng-container *ngTemplateOutlet="nzContent; context: templateContext"></ng-container>
+                  <ng-container *ngTemplateOutlet="$any(nzContent); context: templateContext"></ng-container>
                 </ng-container>
                 <ng-content *ngIf="!nzContent"></ng-content>
               </div>
@@ -112,8 +112,8 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> exte
   @Input() @InputBoolean() nzKeyboard: boolean = true;
   @Input() nzTitle?: string | TemplateRef<{}>;
   @Input() nzPlacement: NzDrawerPlacement = 'right';
-  @Input() nzMaskStyle: object = {};
-  @Input() nzBodyStyle: object = {};
+  @Input() nzMaskStyle: NgStyleInterface = {};
+  @Input() nzBodyStyle: NgStyleInterface = {};
   @Input() nzWrapClassName?: string;
   @Input() nzWidth: number | string = 256;
   @Input() nzHeight: number | string = 256;
@@ -217,7 +217,7 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> exte
     private overlay: Overlay,
     private injector: Injector,
     private changeDetectorRef: ChangeDetectorRef,
-    private focusTrapFactory: FocusTrapFactory,
+    private focusTrapFactory: ConfigurableFocusTrapFactory,
     private viewContainerRef: ViewContainerRef,
     private overlayKeyboardDispatcher: OverlayKeyboardDispatcher
   ) {

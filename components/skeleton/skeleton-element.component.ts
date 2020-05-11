@@ -57,6 +57,9 @@ export class NzSkeletonElementButtonComponent {
   `
 })
 export class NzSkeletonElementAvatarComponent implements OnChanges {
+  static ngAcceptInputType_nzShape: AvatarShape | undefined | null;
+  static ngAcceptInputType_AvatarSize: AvatarSize | undefined | null;
+
   @Input() nzShape: AvatarShape = 'circle';
   @Input() nzSize: AvatarSize = 'default';
 

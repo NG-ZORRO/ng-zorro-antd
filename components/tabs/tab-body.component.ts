@@ -25,7 +25,7 @@ import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulati
   }
 })
 export class NzTabBodyComponent {
-  @Input() content?: TemplateRef<void>;
+  @Input() content: TemplateRef<void> | null = null;
   @Input() active = false;
   @Input() forceRender = false;
 }

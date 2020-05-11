@@ -25,6 +25,7 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
+import { NzButtonType } from 'ng-zorro-antd/button';
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { BooleanInput, NzTSType } from 'ng-zorro-antd/core/types';
@@ -141,8 +142,8 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
               <div class="ant-popover-inner-content">
                 <div class="ant-popover-message">
                   <ng-container *nzStringTemplateOutlet="nzTitle">
-                    <ng-container *nzStringTemplateOutlet="nzIcon">
-                      <i nz-icon [nzType]="nzIcon || 'exclamation-circle'" nzTheme="fill"></i>
+                    <ng-container *nzStringTemplateOutlet="nzIcon; let icon">
+                      <i nz-icon [nzType]="icon || 'exclamation-circle'" nzTheme="fill"></i>
                     </ng-container>
                     <div class="ant-popover-message-title">{{ nzTitle }}</div>
                   </ng-container>
@@ -170,7 +171,7 @@ export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestr
   nzCondition = false;
   nzIcon?: string | TemplateRef<void>;
   nzOkText?: string;
-  nzOkType: string = 'primary';
+  nzOkType: NzButtonType = 'primary';
 
   readonly nzOnCancel = new Subject<void>();
   readonly nzOnConfirm = new Subject<void>();

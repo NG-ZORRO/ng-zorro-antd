@@ -73,20 +73,20 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
       [class.ant-slider-with-marks]="marksArray"
     >
       <div class="ant-slider-rail"></div>
-      <nz-slider-track [vertical]="nzVertical" [included]="nzIncluded" [offset]="track.offset" [length]="track.length"></nz-slider-track>
+      <nz-slider-track [vertical]="nzVertical" [included]="nzIncluded" [offset]="track.offset!" [length]="track.length!"></nz-slider-track>
       <nz-slider-step
         *ngIf="marksArray"
         [vertical]="nzVertical"
-        [lowerBound]="bounds.lower"
-        [upperBound]="bounds.upper"
+        [lowerBound]="$any(bounds.lower)"
+        [upperBound]="$any(bounds.upper)"
         [marksArray]="marksArray"
         [included]="nzIncluded"
       ></nz-slider-step>
       <nz-slider-handle
         *ngFor="let handle of handles"
         [vertical]="nzVertical"
-        [offset]="handle.offset"
-        [value]="handle.value"
+        [offset]="handle.offset!"
+        [value]="handle.value!"
         [active]="handle.active"
         [tooltipFormatter]="nzTipFormatter"
         [tooltipVisible]="nzTooltipVisible"
@@ -97,8 +97,8 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
         [vertical]="nzVertical"
         [min]="nzMin"
         [max]="nzMax"
-        [lowerBound]="bounds.lower"
-        [upperBound]="bounds.upper"
+        [lowerBound]="$any(bounds.lower)"
+        [upperBound]="$any(bounds.upper)"
         [marksArray]="marksArray"
         [included]="nzIncluded"
       ></nz-slider-marks>

@@ -44,16 +44,16 @@ import { ModalOptions } from './modal-types';
       #modalElement
       role="document"
       class="ant-modal"
-      [ngClass]="config.nzClassName"
-      [ngStyle]="config.nzStyle"
-      [style.width]="config?.nzWidth | nzToCssUnit"
+      [ngClass]="config.nzClassName!"
+      [ngStyle]="config.nzStyle!"
+      [style.width]="config?.nzWidth! | nzToCssUnit"
     >
       <div class="ant-modal-content">
         <button *ngIf="config.nzClosable" nz-modal-close (click)="onCloseClick()"></button>
-        <div class="ant-modal-body" [ngStyle]="config.nzBodyStyle">
+        <div class="ant-modal-body" [ngStyle]="config.nzBodyStyle!">
           <div class="ant-modal-confirm-body-wrapper">
             <div class="ant-modal-confirm-body">
-              <i nz-icon [nzType]="config.nzIconType"></i>
+              <i nz-icon [nzType]="config.nzIconType!"></i>
               <span class="ant-modal-confirm-title">
                 <ng-container *nzStringTemplateOutlet="config.nzTitle">
                   <span [innerHTML]="config.nzTitle"></span>
@@ -70,7 +70,7 @@ import { ModalOptions } from './modal-types';
                 [attr.cdkFocusInitial]="config.nzAutofocus === 'cancel'"
                 nz-button
                 (click)="onCancel()"
-                [nzLoading]="config.nzCancelLoading"
+                [nzLoading]="!!config.nzCancelLoading"
                 [disabled]="config.nzCancelDisabled"
               >
                 {{ config.nzCancelText || locale.cancelText }}
@@ -79,9 +79,9 @@ import { ModalOptions } from './modal-types';
                 *ngIf="config.nzOkText !== null"
                 [attr.cdkFocusInitial]="config.nzAutofocus === 'ok'"
                 nz-button
-                [nzType]="config.nzOkType"
+                [nzType]="config.nzOkType!"
                 (click)="onOk()"
-                [nzLoading]="config.nzOkLoading"
+                [nzLoading]="!!config.nzOkLoading"
                 [disabled]="config.nzOkDisabled"
               >
                 {{ config.nzOkText || locale.okText }}

@@ -68,7 +68,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'datePicker';
       [ngStyle]="nzStyle"
       [dropdownClassName]="nzDropdownClassName"
       [popupStyle]="nzPopupStyle"
-      [noAnimation]="noAnimation?.nzNoAnimation"
+      [noAnimation]="!!noAnimation?.nzNoAnimation"
       [suffixIcon]="nzSuffixIcon"
       (openChange)="onOpenChange($event)"
       (focusChange)="onFocusChange($event)"
@@ -81,7 +81,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'datePicker';
         [panelMode]="nzMode"
         (panelModeChange)="onPanelModeChange($event)"
         (calendarChange)="onCalendarChange($event)"
-        [locale]="nzLocale?.lang"
+        [locale]="nzLocale?.lang!"
         [showToday]="realShowToday"
         [showTime]="nzShowTime"
         [format]="nzFormat"
@@ -138,18 +138,18 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   /**
    * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
    */
-  @Input() nzClassName?: string;
+  @Input() nzClassName: string = '';
   @Input() nzDisabledDate?: (d: Date) => boolean;
   @Input() nzLocale?: NzDatePickerI18nInterface;
-  @Input() nzPlaceHolder?: string | [string, string];
+  @Input() nzPlaceHolder: string | [string, string] = '';
   @Input() nzPopupStyle: object = POPUP_STYLE_PATCH;
   @Input() nzDropdownClassName?: string;
   @Input() nzSize?: 'large' | 'small';
   /**
    * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
    */
-  @Input() nzStyle?: object;
-  @Input() nzFormat?: string;
+  @Input() nzStyle: object | null = null;
+  @Input() nzFormat!: string;
   @Input() nzDateRender?: FunctionProp<TemplateRef<Date> | string>;
   @Input() nzDisabledTime?: DisabledTimeFn;
   @Input() nzRenderExtraFooter?: FunctionProp<TemplateRef<void> | string>;
@@ -165,7 +165,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   @Output() readonly nzOnOk = new EventEmitter<CompatibleDate | null>();
   @Output() readonly nzOnOpenChange = new EventEmitter<boolean>();
 
-  @ViewChild(NzPickerComponent, { static: true }) protected picker!: NzPickerComponent;
+  @ViewChild(NzPickerComponent, { static: true }) picker!: NzPickerComponent;
 
   @Input() get nzShowTime(): SupportTimeOptions | boolean {
     return this.showTime;
@@ -358,9 +358,9 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   }
 
   // Emit nzOnCalendarChange when select date by nz-range-picker
-  onCalendarChange(value: CandyDate[]): void {
-    if (this.isRange) {
-      const rangeValue = value.filter(x => x instanceof CandyDate).map(x => x.nativeDate);
+  onCalendarChange(value: CompatibleValue): void {
+    if (this.isRange && Array.isArray(value)) {
+      const rangeValue = value.filter(x => x instanceof CandyDate).map(x => x!.nativeDate);
       this.nzOnCalendarChange.emit(rangeValue);
     }
   }

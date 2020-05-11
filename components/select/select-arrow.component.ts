@@ -21,7 +21,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
         <i nz-icon nzType="search" *ngIf="search"></i>
       </ng-container>
       <ng-template #suffixTemplate>
-        <ng-container *nzStringTemplateOutlet="suffixIcon">
+        <ng-container *nzStringTemplateOutlet="suffixIcon; let suffixIcon">
           <i nz-icon [nzType]="suffixIcon"></i>
         </ng-container>
       </ng-template>

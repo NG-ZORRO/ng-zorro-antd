@@ -100,7 +100,7 @@ export class NzTextEditComponent implements OnInit, OnDestroy {
     this.currentText = target.value;
   }
 
-  onEnter(event: KeyboardEvent): void {
+  onEnter(event: Event): void {
     event.stopPropagation();
     event.preventDefault();
     this.confirm();
