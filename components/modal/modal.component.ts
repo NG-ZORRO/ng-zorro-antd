@@ -47,6 +47,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'modal';
 export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges, NzModalLegacyAPI<T, R> {
   static ngAcceptInputType_nzMask: BooleanInput;
   static ngAcceptInputType_nzMaskClosable: BooleanInput;
+  static ngAcceptInputType_nzCloseOnNavigation: BooleanInput;
   static ngAcceptInputType_nzVisible: BooleanInput;
   static ngAcceptInputType_nzClosable: BooleanInput;
   static ngAcceptInputType_nzOkLoading: BooleanInput;
@@ -58,6 +59,7 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
 
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzMask: boolean = true;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzMaskClosable: boolean = true;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzCloseOnNavigation: boolean = true;
   @Input() @InputBoolean() nzVisible: boolean = false;
   @Input() @InputBoolean() nzClosable: boolean = true;
   @Input() @InputBoolean() nzOkLoading: boolean = false;

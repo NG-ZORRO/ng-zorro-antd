@@ -10,7 +10,7 @@ import { OverlayRef } from '@angular/cdk/overlay';
 import { EventEmitter } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isPromise } from 'ng-zorro-antd/core/util';
-import { Subject } from 'rxjs';
+import { merge, Subject } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 
 import { BaseModalContainer } from './modal-container';
@@ -51,14 +51,17 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
         }
       });
 
-    containerInstance.animationStateChanged
-      .pipe(
+    merge(
+      containerInstance.onDestroy,
+      containerInstance.animationStateChanged.pipe(
         filter(event => event.phaseName === 'done' && event.toState === 'exit'),
         take(1)
       )
+    )
+      .pipe(take(1))
       .subscribe(() => {
         clearTimeout(this.closeTimeout);
-        this.overlayRef.dispose();
+        this.finishDialogClose();
       });
 
     containerInstance.containerClick.pipe(take(1)).subscribe(() => {
@@ -138,10 +141,9 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
         take(1)
       )
       .subscribe(event => {
-        this.state = NzModalState.CLOSED;
         this.overlayRef.detachBackdrop();
         this.closeTimeout = setTimeout(() => {
-          this.overlayRef.dispose();
+          this.finishDialogClose();
         }, event.totalTime + 100);
       });
 
@@ -195,5 +197,10 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
     if (result !== false) {
       this.close(result);
     }
+  }
+
+  private finishDialogClose(): void {
+    this.state = NzModalState.CLOSED;
+    this.overlayRef.dispose();
   }
 }
