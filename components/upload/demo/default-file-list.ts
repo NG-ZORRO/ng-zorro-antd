@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { UploadFile } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'nz-demo-upload-default-file-list',
@@ -9,7 +10,7 @@ import { Component } from '@angular/core';
   `
 })
 export class NzDemoUploadDefaultFileListComponent {
-  fileList = [
+  fileList: UploadFile[] = [
     {
       uid: '1',
       name: 'xxx.png',

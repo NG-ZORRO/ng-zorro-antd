@@ -112,7 +112,7 @@
     <div class="highlight">
       <ng-content select="[code]"></ng-content>
       <nz-highlight [nzCode]="codeLoaded ?
-      highlightCode :
+      highlightCode! :
       language === 'zh' ? '加载中' : 'Loading...'"
                     [nzLanguage]="'typescript'">
       </nz-highlight>

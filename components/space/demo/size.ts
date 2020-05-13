@@ -25,5 +25,5 @@ import { Component } from '@angular/core';
   `
 })
 export class NzDemoSpaceSizeComponent {
-  size = 'small';
+  size: 'small' | 'middle' | 'large' | number = 'small';
 }

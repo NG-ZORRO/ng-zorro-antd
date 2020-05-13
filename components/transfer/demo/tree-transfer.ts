@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
-import { NzTreeNode } from 'ng-zorro-antd/core/tree';
-import { TransferChange, TransferItem } from 'ng-zorro-antd/transfer';
+import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
+import { TransferChange } from 'ng-zorro-antd/transfer';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
 
 @Component({
@@ -30,20 +30,20 @@ import { NzTreeComponent } from 'ng-zorro-antd/tree';
 })
 export class NzDemoTransferTreeTransferComponent {
   @ViewChild('tree', { static: true }) tree!: NzTreeComponent;
-  list: TransferItem[] = [
-    { id: 1, parentid: 0, title: 'parent 1' },
-    { id: 2, parentid: 1, title: 'leaf 1-1', disabled: true, isLeaf: true },
-    { id: 3, parentid: 1, title: 'leaf 1-2', isLeaf: true }
+  list: NzTreeNodeOptions[] = [
+    { key: '1', id: 1, parentid: 0, title: 'parent 1' },
+    { key: '2', id: 2, parentid: 1, title: 'leaf 1-1', disabled: true, isLeaf: true },
+    { key: '3', id: 3, parentid: 1, title: 'leaf 1-2', isLeaf: true }
   ];
   treeData = this.generateTree(this.list);
   checkedNodeList: NzTreeNode[] = [];
 
-  private generateTree(arr: TransferItem[]): TransferItem[] {
-    const tree: TransferItem[] = [];
+  private generateTree(arr: NzTreeNodeOptions[]): NzTreeNodeOptions[] {
+    const tree: NzTreeNodeOptions[] = [];
     // tslint:disable-next-line:no-any
     const mappedArr: any = {};
-    let arrElem: TransferItem;
-    let mappedElem: TransferItem;
+    let arrElem: NzTreeNodeOptions;
+    let mappedElem: NzTreeNodeOptions;
 
     for (let i = 0, len = arr.length; i < len; i++) {
       arrElem = arr[i];
@@ -64,7 +64,7 @@ export class NzDemoTransferTreeTransferComponent {
     return tree;
   }
 
-  checkBoxChange(node: NzTreeNode, onItemSelect: (item: TransferItem) => void): void {
+  checkBoxChange(node: NzTreeNode, onItemSelect: (item: NzTreeNodeOptions) => void): void {
     if (node.isDisabled) {
       return;
     }

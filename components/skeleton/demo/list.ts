@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
         <nz-list-item
           [nzContent]="loading ? ' ' : item.content"
           [nzActions]="loading ? [] : [starAction, likeAction, msgAction]"
-          [nzExtra]="loading ? '' : extra"
+          [nzExtra]="loading ? null : extra"
         >
           <nz-skeleton [nzLoading]="loading" [nzActive]="true" [nzAvatar]="true">
             <ng-template #starAction><i nz-icon nzType="star-o" style="margin-right: 8px;"></i> 156</ng-template>

@@ -45,17 +45,17 @@ export class NzColDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   private destroy$ = new Subject();
   hostFlexStyle: string | null = null;
   @Input() nzFlex: string | number | null = null;
-  @Input() nzSpan: number | null = null;
-  @Input() nzOrder: number | null = null;
-  @Input() nzOffset: number | null = null;
-  @Input() nzPush: number | null = null;
-  @Input() nzPull: number | null = null;
-  @Input() nzXs: number | EmbeddedProperty | null = null;
-  @Input() nzSm: number | EmbeddedProperty | null = null;
-  @Input() nzMd: number | EmbeddedProperty | null = null;
-  @Input() nzLg: number | EmbeddedProperty | null = null;
-  @Input() nzXl: number | EmbeddedProperty | null = null;
-  @Input() nzXXl: number | EmbeddedProperty | null = null;
+  @Input() nzSpan: string | number | null = null;
+  @Input() nzOrder: string | number | null = null;
+  @Input() nzOffset: string | number | null = null;
+  @Input() nzPush: string | number | null = null;
+  @Input() nzPull: string | number | null = null;
+  @Input() nzXs: string | number | EmbeddedProperty | null = null;
+  @Input() nzSm: string | number | EmbeddedProperty | null = null;
+  @Input() nzMd: string | number | EmbeddedProperty | null = null;
+  @Input() nzLg: string | number | EmbeddedProperty | null = null;
+  @Input() nzXl: string | number | EmbeddedProperty | null = null;
+  @Input() nzXXl: string | number | EmbeddedProperty | null = null;
 
   setHostClassMap(): void {
     const hostClassMap = {

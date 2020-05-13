@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NzSelectSizeType } from 'ng-zorro-antd/select';
 
 @Component({
   selector: 'nz-demo-select-size',
@@ -35,7 +36,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NzDemoSelectSizeComponent implements OnInit {
   listOfOption: Array<{ label: string; value: string }> = [];
-  size = 'default';
+  size: NzSelectSizeType = 'default';
   singleValue = 'a10';
   multipleValue = ['a10', 'c12'];
   tagValue = ['a10', 'c12', 'tag'];

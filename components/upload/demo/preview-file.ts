@@ -19,10 +19,10 @@ export class NzDemoUploadPreviewFileComponent {
   previewFile = (file: UploadFile) => {
     console.log('Your upload file:', file);
     return this.http
-      .post(`https://next.json-generator.com/api/json/get/4ytyBoLK8`, {
+      .post<{ thumbnail: string }>(`https://next.json-generator.com/api/json/get/4ytyBoLK8`, {
         method: 'POST',
         body: file
       })
-      .pipe(map((res: { thumbnail?: string }) => res.thumbnail));
+      .pipe(map(res => res.thumbnail));
   };
 }

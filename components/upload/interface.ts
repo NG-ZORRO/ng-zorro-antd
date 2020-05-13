@@ -54,7 +54,7 @@ export interface ShowUploadListInterface {
   showDownloadIcon?: boolean;
 }
 
-export type UploadTransformFileType = string | Blob | File | Observable<string | Blob | File>;
+export type UploadTransformFileType = string | Blob | UploadFile | Observable<string | Blob | File>;
 
 export interface ZipButtonOptions {
   disabled?: boolean;

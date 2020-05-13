@@ -27,7 +27,7 @@ export interface TreeNodeInterface {
           <ng-container *ngFor="let item of mapOfExpandedData[data.key]">
             <tr *ngIf="(item.parent && item.parent.expand) || !item.parent">
               <td
-                [nzIndentSize]="item.level * 20"
+                [nzIndentSize]="item.level! * 20"
                 [nzShowExpand]="!!item.children"
                 [(nzExpand)]="item.expand"
                 (nzExpandChange)="collapse(mapOfExpandedData[data.key], item, $event)"

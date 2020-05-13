@@ -12,7 +12,7 @@ export class NzDemoTreeDynamicComponent {
     { title: 'Tree Node', key: '2', isLeaf: true }
   ];
 
-  nzEvent(event: Required<NzFormatEmitEvent>): void {
+  nzEvent(event: NzFormatEmitEvent): void {
     console.log(event);
     // load child async
     if (event.eventName === 'expand') {

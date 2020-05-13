@@ -32,7 +32,7 @@ import {
   DisabledDateFn,
   DisabledTimeFn,
   DisabledTimePartial,
-  PanelMode,
+  NzDateMode,
   PresetRanges,
   RangePartType,
   SupportTimeOptions
@@ -144,15 +144,15 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   @Input() showTime!: SupportTimeOptions | boolean;
   @Input() extraFooter?: TemplateRef<void> | string;
   @Input() ranges?: PresetRanges;
-  @Input() dateRender?: FunctionProp<TemplateRef<Date> | string>;
-  @Input() panelMode!: PanelMode | PanelMode[];
+  @Input() dateRender?: string | TemplateRef<Date> | FunctionProp<TemplateRef<Date> | string>;
+  @Input() panelMode!: NzDateMode | NzDateMode[];
   @Input() defaultPickerValue!: CompatibleDate | undefined | null;
-  @Output() readonly panelModeChange = new EventEmitter<PanelMode | PanelMode[]>();
+  @Output() readonly panelModeChange = new EventEmitter<NzDateMode | NzDateMode[]>();
   @Output() readonly calendarChange = new EventEmitter<CompatibleValue>();
   @Output() readonly resultOk = new EventEmitter<void>(); // Emitted when done with date selecting
 
   prefixCls: string = PREFIX_CLASS;
-  endPanelMode: PanelMode | PanelMode[] = 'date';
+  endPanelMode: NzDateMode | NzDateMode[] = 'date';
   timeOptions: SupportTimeOptions | SupportTimeOptions[] | null = null;
   hoverValue: SingleValue[] = []; // Range ONLY
   destroy$ = new Subject();
@@ -231,13 +231,13 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  onPanelModeChange(mode: PanelMode, partType?: RangePartType): void {
+  onPanelModeChange(mode: NzDateMode, partType?: RangePartType): void {
     if (this.isRange) {
       const index = this.datePickerService.getActiveIndex(partType);
       if (index === 0) {
-        this.panelMode = [mode, this.panelMode[1]] as PanelMode[];
+        this.panelMode = [mode, this.panelMode[1]] as NzDateMode[];
       } else {
-        this.panelMode = [this.panelMode[0], mode] as PanelMode[];
+        this.panelMode = [this.panelMode[0], mode] as NzDateMode[];
       }
     } else {
       this.panelMode = mode;
@@ -319,11 +319,11 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  getPanelMode(panelMode: PanelMode | PanelMode[], partType?: RangePartType): PanelMode {
+  getPanelMode(panelMode: NzDateMode | NzDateMode[], partType?: RangePartType): NzDateMode {
     if (this.isRange) {
-      return panelMode[this.datePickerService.getActiveIndex(partType)] as PanelMode;
+      return panelMode[this.datePickerService.getActiveIndex(partType)] as NzDateMode;
     } else {
-      return panelMode as PanelMode;
+      return panelMode as NzDateMode;
     }
   }
 

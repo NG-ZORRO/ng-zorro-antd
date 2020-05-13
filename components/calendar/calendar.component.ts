@@ -32,7 +32,7 @@ import {
   NzMonthFullCellDirective as MonthFullCell
 } from './calendar-cells';
 
-type NzCalendarMode = 'month' | 'year';
+export type NzCalendarMode = 'month' | 'year';
 type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
 
 @Component({

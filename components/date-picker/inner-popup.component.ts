@@ -21,7 +21,7 @@ import {
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { FunctionProp } from 'ng-zorro-antd/core/types';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
-import { DisabledDateFn, PanelMode, RangePartType, SupportTimeOptions } from './standard-types';
+import { DisabledDateFn, NzDateMode, RangePartType, SupportTimeOptions } from './standard-types';
 import { PREFIX_CLASS } from './util';
 
 @Component({
@@ -155,20 +155,20 @@ import { PREFIX_CLASS } from './util';
 })
 export class InnerPopupComponent implements OnChanges {
   @Input() activeDate!: CandyDate;
-  @Input() endPanelMode!: PanelMode;
-  @Input() panelMode!: PanelMode;
+  @Input() endPanelMode!: NzDateMode;
+  @Input() panelMode!: NzDateMode;
   @Input() showWeek!: boolean;
   @Input() locale!: NzCalendarI18nInterface;
   @Input() showTimePicker!: boolean;
   @Input() timeOptions!: SupportTimeOptions | null;
   @Input() disabledDate?: DisabledDateFn;
-  @Input() dateRender?: FunctionProp<TemplateRef<Date> | string>;
+  @Input() dateRender?: string | TemplateRef<Date> | FunctionProp<TemplateRef<Date> | string>;
   @Input() selectedValue!: CandyDate[]; // Range ONLY
   @Input() hoverValue!: CandyDate[]; // Range ONLY
   @Input() value!: CandyDate;
   @Input() partType!: RangePartType;
 
-  @Output() readonly panelModeChange = new EventEmitter<PanelMode>();
+  @Output() readonly panelModeChange = new EventEmitter<NzDateMode>();
 
   // TODO: name is not proper
   @Output() readonly headerChange = new EventEmitter<CandyDate>(); // Emitted when user changed the header's value
@@ -184,7 +184,7 @@ export class InnerPopupComponent implements OnChanges {
    * @param direction
    * @param panelMode
    */
-  enablePrevNext(direction: 'prev' | 'next', panelMode: PanelMode): boolean {
+  enablePrevNext(direction: 'prev' | 'next', panelMode: NzDateMode): boolean {
     if (
       !this.showTimePicker &&
       panelMode === this.endPanelMode &&
