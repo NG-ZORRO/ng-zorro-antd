@@ -58,7 +58,7 @@ export class NzSliderHandleComponent implements OnChanges {
   @Input() value?: number;
   @Input() tooltipVisible: NzSliderShowTooltip = 'default';
   @Input() tooltipPlacement?: string;
-  @Input() tooltipFormatter?: (value: number) => string;
+  @Input() tooltipFormatter?: null | ((value: number) => string);
   @Input() @InputBoolean() active = false;
 
   tooltipTitle?: string;

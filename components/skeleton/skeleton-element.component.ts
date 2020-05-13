@@ -7,7 +7,13 @@
  */
 
 import { ChangeDetectionStrategy, Component, Directive, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { AvatarShape, AvatarSize, ButtonShape, ButtonSize, InputSize } from './skeleton.type';
+import {
+  NzSkeletonAvatarShape,
+  NzSkeletonAvatarSize,
+  NzSkeletonButtonShape,
+  NzSkeletonButtonSize,
+  NzSkeletonInputSize
+} from './skeleton.type';
 
 @Directive({
   selector: 'nz-skeleton-element',
@@ -37,8 +43,8 @@ export class NzSkeletonElementDirective {
   `
 })
 export class NzSkeletonElementButtonComponent {
-  @Input() nzShape: ButtonShape = 'default';
-  @Input() nzSize: ButtonSize = 'default';
+  @Input() nzShape: NzSkeletonButtonShape = 'default';
+  @Input() nzSize: NzSkeletonButtonSize = 'default';
 }
 
 @Component({
@@ -57,11 +63,11 @@ export class NzSkeletonElementButtonComponent {
   `
 })
 export class NzSkeletonElementAvatarComponent implements OnChanges {
-  static ngAcceptInputType_nzShape: AvatarShape | undefined | null;
-  static ngAcceptInputType_AvatarSize: AvatarSize | undefined | null;
+  static ngAcceptInputType_nzShape: NzSkeletonAvatarShape | undefined | null;
+  static ngAcceptInputType_AvatarSize: NzSkeletonAvatarSize | undefined | null;
 
-  @Input() nzShape: AvatarShape = 'circle';
-  @Input() nzSize: AvatarSize = 'default';
+  @Input() nzShape: NzSkeletonAvatarShape = 'circle';
+  @Input() nzSize: NzSkeletonAvatarSize = 'default';
 
   styleMap = {};
 
@@ -88,5 +94,5 @@ export class NzSkeletonElementAvatarComponent implements OnChanges {
   `
 })
 export class NzSkeletonElementInputComponent {
-  @Input() nzSize: InputSize = 'default';
+  @Input() nzSize: NzSkeletonInputSize = 'default';
 }

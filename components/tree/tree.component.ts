@@ -193,7 +193,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   @Input() nzVirtualItemSize = 28;
   @Input() nzVirtualMaxBufferPx = 500;
   @Input() nzVirtualMinBufferPx = 28;
-  @Input() nzVirtualHeight: number | boolean = false;
+  @Input() nzVirtualHeight: string | null = null;
   @Input() nzTreeTemplate?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
   @Input() nzBeforeDrop?: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;
   @Input() nzData: NzTreeNodeOptions[] | NzTreeNode[] = [];

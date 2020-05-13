@@ -9,7 +9,7 @@
 import { EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
-import { PanelMode } from '../standard-types';
+import { NzDateMode } from '../standard-types';
 import { PanelSelector } from './interface';
 
 export abstract class AbstractPanelHeader implements OnInit, OnChanges {
@@ -23,7 +23,7 @@ export abstract class AbstractPanelHeader implements OnInit, OnChanges {
   @Input() showPreBtn: boolean = true;
   @Input() showNextBtn: boolean = true;
 
-  @Output() readonly panelModeChange = new EventEmitter<PanelMode>();
+  @Output() readonly panelModeChange = new EventEmitter<NzDateMode>();
   @Output() readonly valueChange = new EventEmitter<CandyDate>();
 
   abstract getSelectors(): PanelSelector[];
@@ -68,7 +68,7 @@ export abstract class AbstractPanelHeader implements OnInit, OnChanges {
     }
   }
 
-  changeMode(mode: PanelMode): void {
+  changeMode(mode: NzDateMode): void {
     this.panelModeChange.emit(mode);
   }
 

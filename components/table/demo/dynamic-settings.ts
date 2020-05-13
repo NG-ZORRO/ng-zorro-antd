@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { NzTableLayout, NzTablePaginationPosition, NzTableSize } from 'ng-zorro-antd/table';
 
 interface ItemData {
   name: string;
@@ -25,17 +26,17 @@ interface Setting {
   noResult: boolean;
   ellipsis: boolean;
   simple: boolean;
-  size: string;
+  size: NzTableSize;
   tableScroll: string;
-  tableLayout: string;
-  position: string;
+  tableLayout: NzTableLayout;
+  position: NzTablePaginationPosition;
 }
 
 @Component({
   selector: 'nz-demo-table-dynamic-settings',
   template: `
     <div class="components-table-demo-control-bar">
-      <form nz-form nzLayout="inline" [formGroup]="settingForm">
+      <form nz-form nzLayout="inline" [formGroup]="settingForm!">
         <nz-form-item *ngFor="let switch of listOfSwitch">
           <nz-form-label> {{ switch.name }} </nz-form-label>
           <nz-form-control><nz-switch [formControlName]="switch.formControlName"></nz-switch></nz-form-control>

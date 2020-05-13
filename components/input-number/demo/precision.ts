@@ -25,7 +25,7 @@ export class NzDemoInputNumberPrecisionComponent {
   cutValue = 2;
   customFnValue = 2;
   precision = 2;
-  customPrecisionFn(value: number, precision: number): number {
-    return +Number(value).toFixed(precision + 1);
+  customPrecisionFn(value: string | number, precision?: number): number {
+    return +Number(value).toFixed(precision! + 1);
   }
 }

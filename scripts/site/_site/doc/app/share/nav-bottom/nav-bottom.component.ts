@@ -12,7 +12,7 @@ import { ROUTER_LIST } from '../../router';
         <i nz-icon nzType="left" class="footer-nav-icon-before"></i>{{ list[index - 1]?.label
         }}<i nz-icon nzType="right" class="footer-nav-icon-after"></i>
       </a>
-      <a class="next-page" *ngIf="index + 1 < list?.length" [routerLink]="list[index + 1]?.path">
+      <a class="next-page" *ngIf="index + 1 < list.length" [routerLink]="list[index + 1]?.path">
         <i nz-icon nzType="left" class="footer-nav-icon-before"></i>{{ list[index + 1]?.label
         }}<i nz-icon nzType="right" class="footer-nav-icon-after"></i>
       </a>
@@ -20,7 +20,8 @@ import { ROUTER_LIST } from '../../router';
   `
 })
 export class NzNavBottomComponent implements OnInit {
-  list: any[] = []; // tslint:disable-line:no-any
+  // tslint:disable-next-line:no-any
+  list: any[] = [];
   index = 0;
   language = 'en';
 
@@ -28,21 +29,21 @@ export class NzNavBottomComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.platform.isBrowser) {
-      return
+      return;
     }
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         const url = window.location.pathname.slice(1);
         this.language = this.router.url.split('/')[this.router.url.split('/').length - 1].split('#')[0];
         const componentsList = ROUTER_LIST.components
-        .filter(e => e.language === this.language)
-        .reduce(
-          (pre, cur) => {
-            return pre.concat(cur.children);
-          },
-          // tslint:disable-next-line:no-any
-          [] as any[]
-        );
+          .filter(e => e.language === this.language)
+          .reduce(
+            (pre, cur) => {
+              return pre.concat(cur.children);
+            },
+            // tslint:disable-next-line:no-any
+            [] as any[]
+          );
         this.list = [
           ...ROUTER_LIST.intro.filter(item => item.language === this.language),
           ...componentsList.filter(item => !item.experimental)

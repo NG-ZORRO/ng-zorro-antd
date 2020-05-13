@@ -7,7 +7,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
+import { NumberInput } from 'ng-zorro-antd/core/types';
 import { InputNumber } from 'ng-zorro-antd/core/util';
 
 import { Subject } from 'rxjs';
@@ -25,7 +25,7 @@ import { Subject } from 'rxjs';
   preserveWhitespaces: false
 })
 export class NzDescriptionsItemComponent implements OnChanges, OnDestroy {
-  static ngAcceptInputType_nzSpan: BooleanInput;
+  static ngAcceptInputType_nzSpan: NumberInput;
 
   @ViewChild(TemplateRef, { static: true }) content!: TemplateRef<void>;
 

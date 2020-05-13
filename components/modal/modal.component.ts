@@ -84,12 +84,15 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   @Input() nzIconType: string = 'question-circle'; // Confirm Modal ONLY
   @Input() nzModalType: ModalTypes = 'default';
 
+  // TODO(@hsuanxyz) Input will not be supported
   @Input()
   @Output()
-  readonly nzOnOk: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
+  readonly nzOnOk: EventEmitter<T> | OnClickCallback<T> | NzSafeAny = new EventEmitter<T>();
+
+  // TODO(@hsuanxyz) Input will not be supported
   @Input()
   @Output()
-  readonly nzOnCancel: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
+  readonly nzOnCancel: EventEmitter<T> | OnClickCallback<T> | NzSafeAny = new EventEmitter<T>();
 
   @Output() readonly nzAfterOpen = new EventEmitter<void>();
   @Output() readonly nzAfterClose = new EventEmitter<R>();
