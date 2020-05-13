@@ -59,11 +59,19 @@ export interface NzCalendarI18nInterface {
 
 export interface NzDatePickerLangI18nInterface extends NzCalendarI18nInterface {
   placeholder: string;
+  yearPlaceholder: string;
+  quarterPlaceholder: string;
+  monthPlaceholder: string;
+  weekPlaceholder: string;
   rangePlaceholder: string[];
+  rangeYearPlaceholder: string[];
+  rangeMonthPlaceholder: string[];
+  rangeWeekPlaceholder: string[];
 }
 
 export interface NzTimePickerI18nInterface {
   placeholder: string;
+  rangePlaceholder: string[];
 }
 
 export type NzCascaderI18nInterface = NzGlobalI18nInterface;
@@ -81,6 +89,13 @@ export interface NzI18nInterface {
     filterReset: string;
     selectAll: string;
     selectInvert: string;
+    selectionAll: string;
+    sortTitle: string;
+    expand: string;
+    collapse: string;
+    triggerDesc: string;
+    triggerAsc: string;
+    cancelSort: string;
   };
   Modal: {
     okText: string;
@@ -102,6 +117,7 @@ export interface NzI18nInterface {
     removeFile: string;
     uploadError: string;
     previewFile: string;
+    downloadFile: string;
   };
   Empty: {
     description: string;
