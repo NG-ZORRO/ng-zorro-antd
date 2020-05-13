@@ -21,8 +21,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { CandyDate, cloneDate, CompatibleValue, SingleValue, sortRangeValue } from 'ng-zorro-antd/core/time';
 import { Direction } from '@angular/cdk/bidi';
+import { CandyDate, cloneDate, CompatibleValue, SingleValue, sortRangeValue } from 'ng-zorro-antd/core/time';
 import { FunctionProp } from 'ng-zorro-antd/core/types';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
@@ -151,7 +151,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   @Output() readonly panelModeChange = new EventEmitter<PanelMode | PanelMode[]>();
   @Output() readonly calendarChange = new EventEmitter<CompatibleValue>();
   @Output() readonly resultOk = new EventEmitter<void>(); // Emitted when done with date selecting
-  @Input() dir: Direction;
+  @Input() dir: Direction = 'ltr';
 
   prefixCls: string = PREFIX_CLASS;
   endPanelMode: PanelMode | PanelMode[] = 'date';
