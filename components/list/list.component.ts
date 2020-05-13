@@ -97,7 +97,7 @@ export class NzListComponent implements AfterContentInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzLoading: BooleanInput;
   static ngAcceptInputType_nzSplit: BooleanInput;
 
-  @Input() nzDataSource: NzSafeAny[] = [];
+  @Input() nzDataSource?: NzSafeAny[];
   @Input() @InputBoolean() nzBordered = false;
   @Input() nzGrid?: NzListGrid;
   @Input() nzHeader?: string | TemplateRef<void>;
