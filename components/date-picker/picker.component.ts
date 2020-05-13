@@ -142,6 +142,7 @@ import { PREFIX_CLASS } from './util';
       >
         <div
           class="{{ prefixCls }}-dropdown {{ dropdownClassName }}"
+          [class.ant-picker-dropdown-rtl]="dir === 'rtl'"
           [class.ant-picker-dropdown-placement-bottomLeft]="currentPositionY === 'bottom' && currentPositionX === 'start'"
           [class.ant-picker-dropdown-placement-topLeft]="currentPositionY === 'top' && currentPositionX === 'start'"
           [class.ant-picker-dropdown-placement-bottomRight]="currentPositionY === 'bottom' && currentPositionX === 'end'"
@@ -172,7 +173,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Input() popupStyle: NgStyleInterface | null = null;
   @Input() dropdownClassName?: string;
   @Input() suffixIcon?: string | TemplateRef<NzSafeAny>;
-  @Input() dir!: Direction;
+  @Input() dir: Direction = 'ltr';
 
   @Output() readonly focusChange = new EventEmitter<boolean>();
   @Output() readonly valueChange = new EventEmitter<CandyDate | CandyDate[] | null>();
