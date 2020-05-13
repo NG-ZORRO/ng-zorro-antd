@@ -96,8 +96,8 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
   @Input() @InputBoolean() nzLoading = false;
   @Input() nzNotFoundContent: string = '无匹配结果，轻敲空格完成输入';
   @Input() nzPlacement: MentionPlacement = 'bottom';
-  @Input() nzSuggestions: string[] = [];
-  @Output() readonly nzOnSelect: EventEmitter<string | {}> = new EventEmitter();
+  @Input() nzSuggestions: NzSafeAny[] = [];
+  @Output() readonly nzOnSelect: EventEmitter<NzSafeAny> = new EventEmitter();
   @Output() readonly nzOnSearchChange: EventEmitter<MentionOnSearchTypes> = new EventEmitter();
 
   trigger!: NzMentionTriggerDirective;

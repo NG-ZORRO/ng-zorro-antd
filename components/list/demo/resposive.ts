@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-list-resposive',
   template: `
-    <nz-list nzGrid>
+    <nz-list>
       <div nz-row [nzGutter]="16">
         <div nz-col [nzXl]="4" [nzLg]="6" [nzMd]="6" [nzSm]="12" [nzXs]="24" *ngFor="let item of data">
           <nz-list-item>

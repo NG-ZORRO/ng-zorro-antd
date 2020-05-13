@@ -6,9 +6,7 @@ declare const monaco: any;
 
 @Component({
   selector: 'nz-demo-code-editor-full-control',
-  template: `
-    <nz-code-editor class="editor" [nzFullControl]="true" (nzEditorInitialized)="onEditorInit($event)"></nz-code-editor>
-  `,
+  template: ` <nz-code-editor class="editor" [nzFullControl]="true" (nzEditorInitialized)="onEditorInit($event)"></nz-code-editor> `,
   styles: [
     `
       .editor {
@@ -18,14 +16,14 @@ declare const monaco: any;
   ]
 })
 export class NzDemoCodeEditorFullControlComponent {
-  editor?: editor.ICodeEditor;
+  editor?: editor.ICodeEditor | editor.IEditor;
 
   code = `import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor'
 
 @Component({})
 export class SomeComponent {}`;
 
-  onEditorInit(e: editor.ICodeEditor): void {
+  onEditorInit(e: editor.ICodeEditor | editor.IEditor): void {
     this.editor = e;
     this.editor.setModel(monaco.editor.createModel("console.log('Hello ng-zorro-antd')", 'typescript'));
   }

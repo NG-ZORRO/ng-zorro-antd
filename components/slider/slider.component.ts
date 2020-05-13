@@ -130,7 +130,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   @Input() @InputNumber() nzStep = 1;
   @Input() nzTooltipVisible: NzSliderShowTooltip = 'default';
   @Input() nzTooltipPlacement: string = 'top';
-  @Input() nzTipFormatter?: (value: number) => string;
+  @Input() nzTipFormatter?: null | ((value: number) => string);
 
   @Output() readonly nzOnAfterChange = new EventEmitter<NzSliderValue>();
 

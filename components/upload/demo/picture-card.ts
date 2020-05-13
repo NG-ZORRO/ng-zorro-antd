@@ -45,7 +45,7 @@ function getBase64(file: File): Promise<string | ArrayBuffer | null> {
   ]
 })
 export class NzDemoUploadPictureCardComponent {
-  fileList = [
+  fileList: UploadFile[] = [
     {
       uid: '-1',
       name: 'image.png',

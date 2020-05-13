@@ -224,7 +224,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   @Input() nzMouseLeaveDelay: number = 150; // ms
   @Input() nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[] = ['click'] as NzCascaderTriggerType[];
   @Input() nzChangeOn?: (option: NzCascaderOption, level: number) => boolean;
-  @Input() nzLoadData?: (node: NzCascaderOption, index?: number) => PromiseLike<NzSafeAny>;
+  @Input() nzLoadData?: (node: NzCascaderOption, index: number) => PromiseLike<NzSafeAny>;
 
   @Input()
   get nzOptions(): NzCascaderOption[] | null {

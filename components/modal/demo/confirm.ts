@@ -4,7 +4,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 @Component({
   selector: 'nz-demo-modal-confirm',
   template: `
-    <button nz-button nzType="info" (click)="showConfirm()">Confirm</button>
+    <button nz-button nzType="primary" (click)="showConfirm()">Confirm</button>
     <button nz-button nzType="dashed" (click)="showDeleteConfirm()">Delete</button>
   `,
   styles: [
