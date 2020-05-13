@@ -54,7 +54,6 @@ export class NzSliderHandleComponent implements OnChanges {
   @ViewChild(NzTooltipDirective, { static: false }) tooltip?: NzTooltipDirective;
 
   @Input() vertical?: boolean;
-  @Input() reverse?: boolean;
   @Input() offset?: number;
   @Input() value?: number;
   @Input() tooltipVisible: NzSliderShowTooltip = 'default';
@@ -68,9 +67,9 @@ export class NzSliderHandleComponent implements OnChanges {
   constructor(private sliderService: NzSliderService, private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { offset, value, active, tooltipVisible, reverse } = changes;
+    const { offset, value, active, tooltipVisible } = changes;
 
-    if (offset || reverse) {
+    if (offset) {
       this.updateStyle();
     }
 
@@ -134,23 +133,10 @@ export class NzSliderHandleComponent implements OnChanges {
   }
 
   private updateStyle(): void {
-    const vertical = this.vertical;
-    const reverse = this.reverse;
-    const offset = this.offset;
-
-    const positionStyle = vertical
-      ? {
-          [reverse ? 'top' : 'bottom']: `${offset}%`,
-          [reverse ? 'bottom' : 'top']: 'auto',
-          transform: reverse ? null : `translateY(+50%)`
-        }
-      : {
-          [reverse ? 'right' : 'left']: `${offset}%`,
-          [reverse ? 'left' : 'right']: 'auto',
-          transform: `translateX(${reverse ? '+' : '-'}50%)`
-        };
-
-    this.style = positionStyle;
+    this.style = {
+      [this.vertical ? 'bottom' : 'left']: `${this.offset}%`,
+      transform: this.vertical ? 'translateY(50%)' : 'translateX(-50%)'
+    };
     this.cdr.markForCheck();
   }
 }
