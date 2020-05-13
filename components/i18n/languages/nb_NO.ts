@@ -33,7 +33,8 @@ export default {
       nextYear: 'Neste år (Control + right)',
       previousDecade: 'Forrige tiår',
       nextDecade: 'Neste tiår',
-      previousCentury: 'Forrige århundre'
+      previousCentury: 'Forrige århundre',
+      nextCentury: 'Neste århundre'
     },
     timePickerLocale: {
       placeholder: 'Velg tid'
@@ -70,7 +71,8 @@ export default {
       nextYear: 'Neste år (Control + right)',
       previousDecade: 'Forrige tiår',
       nextDecade: 'Neste tiår',
-      previousCentury: 'Forrige århundre'
+      previousCentury: 'Forrige århundre',
+      nextCentury: 'Neste århundre'
     },
     timePickerLocale: {
       placeholder: 'Velg tid'

@@ -45,7 +45,8 @@ export default {
       nextYear: 'Järgmine aasta (Control + right)',
       previousDecade: 'Eelmine dekaad',
       nextDecade: 'Järgmine dekaad',
-      previousCentury: 'Eelmine sajand'
+      previousCentury: 'Eelmine sajand',
+      nextCentury: 'Järgmine sajand'
     },
     timePickerLocale: {
       placeholder: 'Vali aeg'
@@ -82,7 +83,8 @@ export default {
       nextYear: 'Järgmine aasta (Control + right)',
       previousDecade: 'Eelmine dekaad',
       nextDecade: 'Järgmine dekaad',
-      previousCentury: 'Eelmine sajand'
+      previousCentury: 'Eelmine sajand',
+      nextCentury: 'Järgmine sajand'
     },
     timePickerLocale: {
       placeholder: 'Vali aeg'

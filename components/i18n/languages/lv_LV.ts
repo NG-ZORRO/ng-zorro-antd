@@ -45,7 +45,8 @@ export default {
       nextYear: 'Nākamgad (Control + right)',
       previousDecade: 'Pēdējā desmitgadē',
       nextDecade: 'Nākamā desmitgade',
-      previousCentury: 'Pagājušajā gadsimtā'
+      previousCentury: 'Pagājušajā gadsimtā',
+      nextCentury: 'Nākamajā gadsimtā'
     },
     timePickerLocale: {
       placeholder: 'Izvēlieties laiku'
@@ -82,7 +83,8 @@ export default {
       nextYear: 'Nākamgad (Control + right)',
       previousDecade: 'Pēdējā desmitgadē',
       nextDecade: 'Nākamā desmitgade',
-      previousCentury: 'Pagājušajā gadsimtā'
+      previousCentury: 'Pagājušajā gadsimtā',
+      nextCentury: 'Nākamajā gadsimtā'
     },
     timePickerLocale: {
       placeholder: 'Izvēlieties laiku'

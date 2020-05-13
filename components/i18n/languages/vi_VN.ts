@@ -46,7 +46,8 @@ export default {
       nextYear: 'Năm sau (Control + right)',
       previousDecade: 'Thập kỷ trước',
       nextDecade: 'Thập kỷ sau',
-      previousCentury: 'Thế kỷ trước'
+      previousCentury: 'Thế kỷ trước',
+      nextCentury: 'Thế kỷ sau'
     },
     timePickerLocale: {
       placeholder: 'Chọn thời gian'
@@ -84,7 +85,8 @@ export default {
       nextYear: 'Năm sau (Control + right)',
       previousDecade: 'Thập kỷ trước',
       nextDecade: 'Thập kỷ sau',
-      previousCentury: 'Thế kỷ trước'
+      previousCentury: 'Thế kỷ trước',
+      nextCentury: 'Thế kỷ sau'
     },
     timePickerLocale: {
       placeholder: 'Chọn thời gian'

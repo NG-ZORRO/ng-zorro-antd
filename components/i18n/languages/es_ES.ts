@@ -45,7 +45,8 @@ export default {
       nextYear: 'Año siguiente (Control + right)',
       previousDecade: 'Década anterior',
       nextDecade: 'Década siguiente',
-      previousCentury: 'Siglo anterior'
+      previousCentury: 'Siglo anterior',
+      nextCentury: 'Siglo siguiente'
     },
     timePickerLocale: {
       placeholder: 'Seleccionar hora'
@@ -82,7 +83,8 @@ export default {
       nextYear: 'Año siguiente (Control + right)',
       previousDecade: 'Década anterior',
       nextDecade: 'Década siguiente',
-      previousCentury: 'Siglo anterior'
+      previousCentury: 'Siglo anterior',
+      nextCentury: 'Siglo siguiente'
     },
     timePickerLocale: {
       placeholder: 'Seleccionar hora'

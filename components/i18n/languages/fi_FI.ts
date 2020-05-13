@@ -45,7 +45,8 @@ export default {
       nextYear: 'Seuraava vuosi (Control + right)',
       previousDecade: 'Edellinen vuosikymmen',
       nextDecade: 'Seuraava vuosikymmen',
-      previousCentury: 'Edellinen vuosisata'
+      previousCentury: 'Edellinen vuosisata',
+      nextCentury: 'Seuraava vuosisata'
     },
     timePickerLocale: {
       placeholder: 'Valitse aika'
@@ -82,7 +83,8 @@ export default {
       nextYear: 'Seuraava vuosi (Control + right)',
       previousDecade: 'Edellinen vuosikymmen',
       nextDecade: 'Seuraava vuosikymmen',
-      previousCentury: 'Edellinen vuosisata'
+      previousCentury: 'Edellinen vuosisata',
+      nextCentury: 'Seuraava vuosisata'
     },
     timePickerLocale: {
       placeholder: 'Valitse aika'

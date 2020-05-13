@@ -45,7 +45,8 @@ export default {
       nextYear: 'Sala paş (Control + rast)',
       previousDecade: 'Dehsalen peş',
       nextDecade: 'Dehsalen paş',
-      previousCentury: 'Sedsalen peş'
+      previousCentury: 'Sedsalen peş',
+      nextCentury: 'Sedsalen paş'
     },
     timePickerLocale: {
       placeholder: 'Demê hilbijêre'
@@ -82,7 +83,8 @@ export default {
       nextYear: 'Sala paş (Control + rast)',
       previousDecade: 'Dehsalen peş',
       nextDecade: 'Dehsalen paş',
-      previousCentury: 'Sedsalen peş'
+      previousCentury: 'Sedsalen peş',
+      nextCentury: 'Sedsalen paş'
     },
     timePickerLocale: {
       placeholder: 'Demê hilbijêre'

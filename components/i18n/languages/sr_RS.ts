@@ -44,7 +44,8 @@ export default {
       nextYear: 'Sledeća godina (Control + right)',
       previousDecade: 'Prethodna decenija',
       nextDecade: 'Sledeća decenija',
-      previousCentury: 'Prethodni vek'
+      previousCentury: 'Prethodni vek',
+      nextCentury: 'Sledeći vek'
     },
     timePickerLocale: {
       placeholder: 'Izaberite vreme'
@@ -81,7 +82,8 @@ export default {
       nextYear: 'Sledeća godina (Control + right)',
       previousDecade: 'Prethodna decenija',
       nextDecade: 'Sledeća decenija',
-      previousCentury: 'Prethodni vek'
+      previousCentury: 'Prethodni vek',
+      nextCentury: 'Sledeći vek'
     },
     timePickerLocale: {
       placeholder: 'Izaberite vreme'

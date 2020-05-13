@@ -45,7 +45,8 @@ export default {
       nextYear: 'سال بعد (Control + right)',
       previousDecade: 'دهه قبل',
       nextDecade: 'دهه بعد',
-      previousCentury: 'قرن قبل'
+      previousCentury: 'قرن قبل',
+      nextCentury: 'قرن بعد'
     },
     timePickerLocale: {
       placeholder: 'انتخاب زمان'
@@ -82,7 +83,8 @@ export default {
       nextYear: 'سال بعد (Control + right)',
       previousDecade: 'دهه قبل',
       nextDecade: 'دهه بعد',
-      previousCentury: 'قرن قبل'
+      previousCentury: 'قرن قبل',
+      nextCentury: 'قرن بعد'
     },
     timePickerLocale: {
       placeholder: 'انتخاب زمان'

@@ -45,7 +45,8 @@ export default {
       nextYear: 'Nästa år (Control + right)',
       previousDecade: 'Föreg årtionde',
       nextDecade: 'Nästa årtionde',
-      previousCentury: 'Föreg århundrade'
+      previousCentury: 'Föreg århundrade',
+      nextCentury: 'Nästa århundrade'
     },
     timePickerLocale: {
       placeholder: 'Välj tid'
@@ -82,7 +83,8 @@ export default {
       nextYear: 'Nästa år (Control + right)',
       previousDecade: 'Föreg årtionde',
       nextDecade: 'Nästa årtionde',
-      previousCentury: 'Föreg århundrade'
+      previousCentury: 'Föreg århundrade',
+      nextCentury: 'Nästa århundrade'
     },
     timePickerLocale: {
       placeholder: 'Välj tid'

@@ -45,7 +45,8 @@ export default {
       nextYear: 'Następny rok (Ctrl + right)',
       previousDecade: 'Ostatnia dekada',
       nextDecade: 'Następna dekada',
-      previousCentury: 'Ostatni wiek'
+      previousCentury: 'Ostatni wiek',
+      nextCentury: 'Następny wiek'
     },
     timePickerLocale: {
       placeholder: 'Wybierz godzinę'
@@ -82,7 +83,8 @@ export default {
       nextYear: 'Następny rok (Ctrl + right)',
       previousDecade: 'Ostatnia dekada',
       nextDecade: 'Następna dekada',
-      previousCentury: 'Ostatni wiek'
+      previousCentury: 'Ostatni wiek',
+      nextCentury: 'Następny wiek'
     },
     timePickerLocale: {
       placeholder: 'Wybierz godzinę'

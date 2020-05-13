@@ -44,10 +44,10 @@ export default {
       previousDecade: 'Última década',
       nextDecade: 'Próxima década',
       previousCentury: 'Último século',
+      nextCentury: 'Próximo século',
       placeholder: 'Data',
       rangePlaceholder: ['Data inicial', 'Data final'],
-      monthFormat: 'MMMM',
-      nextCentury: 'Próximo século'
+      monthFormat: 'MMMM'
     },
     timePickerLocale: {
       placeholder: 'Hora'
@@ -83,10 +83,10 @@ export default {
       previousDecade: 'Última década',
       nextDecade: 'Próxima década',
       previousCentury: 'Último século',
+      nextCentury: 'Próximo século',
       placeholder: 'Data',
       rangePlaceholder: ['Data inicial', 'Data final'],
-      monthFormat: 'MMMM',
-      nextCentury: 'Próximo século'
+      monthFormat: 'MMMM'
     },
     timePickerLocale: {
       placeholder: 'Hora'

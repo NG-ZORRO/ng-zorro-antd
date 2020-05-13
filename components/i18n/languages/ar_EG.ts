@@ -45,7 +45,8 @@ export default {
       nextYear: 'العام التالى (Control + right)',
       previousDecade: 'العقد السابق',
       nextDecade: 'العقد التالى',
-      previousCentury: 'القرن السابق'
+      previousCentury: 'القرن السابق',
+      nextCentury: 'القرن التالى'
     },
     timePickerLocale: {
       placeholder: 'اختيار الوقت'
@@ -86,7 +87,8 @@ export default {
       nextYear: 'العام التالى (Control + right)',
       previousDecade: 'العقد السابق',
       nextDecade: 'العقد التالى',
-      previousCentury: 'القرن السابق'
+      previousCentury: 'القرن السابق',
+      nextCentury: 'القرن التالى'
     },
     timePickerLocale: {
       placeholder: 'اختيار الوقت'

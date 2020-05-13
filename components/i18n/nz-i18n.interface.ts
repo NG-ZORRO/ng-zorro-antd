@@ -74,6 +74,56 @@ export interface NzTimePickerI18nInterface {
   rangePlaceholder: string[];
 }
 
+export type ValidateMessage = string | (() => string);
+
+export interface NzFormValidateMessages {
+  default?: ValidateMessage;
+  required?: ValidateMessage;
+  enum?: ValidateMessage;
+  whitespace?: ValidateMessage;
+  date?: {
+    format?: ValidateMessage;
+    parse?: ValidateMessage;
+    invalid?: ValidateMessage;
+  };
+  types?: {
+    string?: ValidateMessage;
+    method?: ValidateMessage;
+    array?: ValidateMessage;
+    object?: ValidateMessage;
+    number?: ValidateMessage;
+    date?: ValidateMessage;
+    boolean?: ValidateMessage;
+    integer?: ValidateMessage;
+    float?: ValidateMessage;
+    regexp?: ValidateMessage;
+    email?: ValidateMessage;
+    url?: ValidateMessage;
+    hex?: ValidateMessage;
+  };
+  string?: {
+    len?: ValidateMessage;
+    min?: ValidateMessage;
+    max?: ValidateMessage;
+    range?: ValidateMessage;
+  };
+  number?: {
+    len?: ValidateMessage;
+    min?: ValidateMessage;
+    max?: ValidateMessage;
+    range?: ValidateMessage;
+  };
+  array?: {
+    len?: ValidateMessage;
+    min?: ValidateMessage;
+    max?: ValidateMessage;
+    range?: ValidateMessage;
+  };
+  pattern?: {
+    mismatch?: ValidateMessage;
+  };
+}
+
 export type NzCascaderI18nInterface = NzGlobalI18nInterface;
 
 export interface NzI18nInterface {
@@ -81,7 +131,7 @@ export interface NzI18nInterface {
   Pagination: NzPaginationI18nInterface;
   DatePicker: NzDatePickerI18nInterface;
   TimePicker: NzTimePickerI18nInterface;
-  Calendar: NzCalendarI18nInterface;
+  Calendar: NzDatePickerI18nInterface;
   global?: NzGlobalI18nInterface;
   Table: {
     filterTitle: string;
@@ -129,6 +179,9 @@ export interface NzI18nInterface {
     copy: string;
     copied: string;
     expand: string;
+  };
+  Form?: {
+    defaultValidateMessages: NzFormValidateMessages;
   };
 }
 

@@ -45,7 +45,8 @@ export default {
       nextYear: 'Sonraki Yıl (Control + Sağ)',
       previousDecade: 'Önceki On Yıl',
       nextDecade: 'Sonraki On Yıl',
-      previousCentury: 'Önceki Yüzyıl'
+      previousCentury: 'Önceki Yüzyıl',
+      nextCentury: 'Sonraki Yüzyıl'
     },
     timePickerLocale: {
       placeholder: 'Zaman Seç'
@@ -82,7 +83,8 @@ export default {
       nextYear: 'Sonraki Yıl (Control + Sağ)',
       previousDecade: 'Önceki On Yıl',
       nextDecade: 'Sonraki On Yıl',
-      previousCentury: 'Önceki Yüzyıl'
+      previousCentury: 'Önceki Yüzyıl',
+      nextCentury: 'Sonraki Yüzyıl'
     },
     timePickerLocale: {
       placeholder: 'Zaman Seç'

@@ -45,7 +45,8 @@ export default {
       nextYear: '翌年 (Controlを押しながら右キー)',
       previousDecade: '前の年代',
       nextDecade: '次の年代',
-      previousCentury: '前の世紀'
+      previousCentury: '前の世紀',
+      nextCentury: '次の世紀'
     },
     timePickerLocale: {
       placeholder: '時刻を選択'
@@ -82,7 +83,8 @@ export default {
       nextYear: '翌年 (Controlを押しながら右キー)',
       previousDecade: '前の年代',
       nextDecade: '次の年代',
-      previousCentury: '前の世紀'
+      previousCentury: '前の世紀',
+      nextCentury: '次の世紀'
     },
     timePickerLocale: {
       placeholder: '時刻を選択'

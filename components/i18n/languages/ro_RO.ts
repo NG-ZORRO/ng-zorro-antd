@@ -46,7 +46,8 @@ export default {
       nextYear: 'Anul următor (Control + dreapta)',
       previousDecade: 'Deceniul anterior',
       nextDecade: 'Deceniul următor',
-      previousCentury: 'Secolul anterior'
+      previousCentury: 'Secolul anterior',
+      nextCentury: 'Secolul următor'
     },
     timePickerLocale: {
       placeholder: 'Selectează ora'
@@ -84,7 +85,8 @@ export default {
       nextYear: 'Anul următor (Control + dreapta)',
       previousDecade: 'Deceniul anterior',
       nextDecade: 'Deceniul următor',
-      previousCentury: 'Secolul anterior'
+      previousCentury: 'Secolul anterior',
+      nextCentury: 'Secolul următor'
     },
     timePickerLocale: {
       placeholder: 'Selectează ora'

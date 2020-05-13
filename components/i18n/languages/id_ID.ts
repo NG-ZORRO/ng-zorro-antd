@@ -46,7 +46,8 @@ export default {
       nextYear: 'Tahun selanjutnya (Kontrol + kanan)',
       previousDecade: 'Dekade terakhir',
       nextDecade: 'Dekade berikutnya',
-      previousCentury: 'Abad terakhir'
+      previousCentury: 'Abad terakhir',
+      nextCentury: 'Abad berikutnya'
     },
     timePickerLocale: {
       placeholder: 'Pilih waktu'
@@ -84,7 +85,8 @@ export default {
       nextYear: 'Tahun selanjutnya (Kontrol + kanan)',
       previousDecade: 'Dekade terakhir',
       nextDecade: 'Dekade berikutnya',
-      previousCentury: 'Abad terakhir'
+      previousCentury: 'Abad terakhir',
+      nextCentury: 'Abad berikutnya'
     },
     timePickerLocale: {
       placeholder: 'Pilih waktu'

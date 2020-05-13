@@ -46,7 +46,8 @@ export default {
       nextYear: 'Дараа жил (Control + right)',
       previousDecade: 'Өмнөх арван',
       nextDecade: 'Дараа арван',
-      previousCentury: 'Өмнөх зуун'
+      previousCentury: 'Өмнөх зуун',
+      nextCentury: 'Дараа зуун'
     },
     timePickerLocale: {
       placeholder: 'Цаг сонгох'
@@ -84,7 +85,8 @@ export default {
       nextYear: 'Дараа жил (Control + right)',
       previousDecade: 'Өмнөх арван',
       nextDecade: 'Дараа арван',
-      previousCentury: 'Өмнөх зуун'
+      previousCentury: 'Өмнөх зуун',
+      nextCentury: 'Дараа зуун'
     },
     timePickerLocale: {
       placeholder: 'Цаг сонгох'

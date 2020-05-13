@@ -46,7 +46,8 @@ export default {
       nextYear: 'அடுத்த வருடம் (Control + right)',
       previousDecade: 'முந்தைய தசாப்தம்',
       nextDecade: 'அடுத்த தசாப்தம்',
-      previousCentury: 'முந்தைய நூற்றாண்டு'
+      previousCentury: 'முந்தைய நூற்றாண்டு',
+      nextCentury: 'அடுத்த நூற்றாண்டு'
     },
     timePickerLocale: {
       placeholder: 'நேரத்தைத் தேர்ந்தெடுக்கவும்'
@@ -84,7 +85,8 @@ export default {
       nextYear: 'அடுத்த வருடம் (Control + right)',
       previousDecade: 'முந்தைய தசாப்தம்',
       nextDecade: 'அடுத்த தசாப்தம்',
-      previousCentury: 'முந்தைய நூற்றாண்டு'
+      previousCentury: 'முந்தைய நூற்றாண்டு',
+      nextCentury: 'அடுத்த நூற்றாண்டு'
     },
     timePickerLocale: {
       placeholder: 'நேரத்தைத் தேர்ந்தெடுக்கவும்'

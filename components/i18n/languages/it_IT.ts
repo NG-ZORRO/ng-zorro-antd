@@ -45,7 +45,8 @@ export default {
       nextYear: "L'anno prossimo (Control + destra)",
       previousDecade: 'Ultimo decennio',
       nextDecade: 'Prossimo decennio',
-      previousCentury: 'Secolo precedente'
+      previousCentury: 'Secolo precedente',
+      nextCentury: 'Prossimo secolo'
     },
     timePickerLocale: {
       placeholder: "Selezionare l'orario"
@@ -82,7 +83,8 @@ export default {
       nextYear: "L'anno prossimo (Control + destra)",
       previousDecade: 'Ultimo decennio',
       nextDecade: 'Prossimo decennio',
-      previousCentury: 'Secolo precedente'
+      previousCentury: 'Secolo precedente',
+      nextCentury: 'Prossimo secolo'
     },
     timePickerLocale: {
       placeholder: "Selezionare l'orario"

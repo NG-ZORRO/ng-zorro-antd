@@ -46,7 +46,8 @@ export default {
       nextYear: 'ಮುಂದಿನ ವರ್ಷ (Ctrl + ಬಲ)',
       previousDecade: 'ಕಳೆದ ದಶಕ',
       nextDecade: 'ಮುಂದಿನ ದಶಕ',
-      previousCentury: 'ಕಳೆದ ಶತಮಾನ'
+      previousCentury: 'ಕಳೆದ ಶತಮಾನ',
+      nextCentury: 'ಮುಂದಿನ ಶತಮಾನ'
     },
     timePickerLocale: {
       placeholder: 'ಸಮಯ ಆಯ್ಕೆಮಾಡಿ'
@@ -84,7 +85,8 @@ export default {
       nextYear: 'ಮುಂದಿನ ವರ್ಷ (Ctrl + ಬಲ)',
       previousDecade: 'ಕಳೆದ ದಶಕ',
       nextDecade: 'ಮುಂದಿನ ದಶಕ',
-      previousCentury: 'ಕಳೆದ ಶತಮಾನ'
+      previousCentury: 'ಕಳೆದ ಶತಮಾನ',
+      nextCentury: 'ಮುಂದಿನ ಶತಮಾನ'
     },
     timePickerLocale: {
       placeholder: 'ಸಮಯ ಆಯ್ಕೆಮಾಡಿ'

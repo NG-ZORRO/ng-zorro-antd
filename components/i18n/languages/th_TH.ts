@@ -45,7 +45,8 @@ export default {
       nextYear: 'ปีถัดไป (Control + right)',
       previousDecade: 'ทศวรรษก่อนหน้า',
       nextDecade: 'ทศวรรษถัดไป',
-      previousCentury: 'ศตวรรษก่อนหน้า'
+      previousCentury: 'ศตวรรษก่อนหน้า',
+      nextCentury: 'ศตวรรษถัดไป'
     },
     timePickerLocale: {
       placeholder: 'เลือกเวลา'
@@ -82,7 +83,8 @@ export default {
       nextYear: 'ปีถัดไป (Control + right)',
       previousDecade: 'ทศวรรษก่อนหน้า',
       nextDecade: 'ทศวรรษถัดไป',
-      previousCentury: 'ศตวรรษก่อนหน้า'
+      previousCentury: 'ศตวรรษก่อนหน้า',
+      nextCentury: 'ศตวรรษถัดไป'
     },
     timePickerLocale: {
       placeholder: 'เลือกเวลา'

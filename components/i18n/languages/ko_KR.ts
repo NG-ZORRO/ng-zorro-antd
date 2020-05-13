@@ -45,7 +45,8 @@ export default {
       nextYear: '다음 해 (Control + right)',
       previousDecade: '이전 연대',
       nextDecade: '다음 연대',
-      previousCentury: '이전 세기'
+      previousCentury: '이전 세기',
+      nextCentury: '다음 세기'
     },
     timePickerLocale: {
       placeholder: '날짜 선택'
@@ -82,7 +83,8 @@ export default {
       nextYear: '다음 해 (Control + right)',
       previousDecade: '이전 연대',
       nextDecade: '다음 연대',
-      previousCentury: '이전 세기'
+      previousCentury: '이전 세기',
+      nextCentury: '다음 세기'
     },
     timePickerLocale: {
       placeholder: '날짜 선택'

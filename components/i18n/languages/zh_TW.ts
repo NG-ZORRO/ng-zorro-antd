@@ -45,7 +45,8 @@ export default {
       nextYear: '下一年 (Control鍵加右方向鍵)',
       previousDecade: '上一年代',
       nextDecade: '下一年代',
-      previousCentury: '上一世紀'
+      previousCentury: '上一世紀',
+      nextCentury: '下一世紀'
     },
     timePickerLocale: {
       placeholder: '請選擇時間'
@@ -82,7 +83,8 @@ export default {
       nextYear: '下一年 (Control鍵加右方向鍵)',
       previousDecade: '上一年代',
       nextDecade: '下一年代',
-      previousCentury: '上一世紀'
+      previousCentury: '上一世紀',
+      nextCentury: '下一世紀'
     },
     timePickerLocale: {
       placeholder: '請選擇時間'

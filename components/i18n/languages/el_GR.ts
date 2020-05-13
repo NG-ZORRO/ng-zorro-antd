@@ -45,7 +45,8 @@ export default {
       nextYear: 'Επόμενο έτος (Control + δεξιά)',
       previousDecade: 'Προηγούμενη δεκαετία',
       nextDecade: 'Επόμενη δεκαετία',
-      previousCentury: 'Προηγούμενος αιώνας'
+      previousCentury: 'Προηγούμενος αιώνας',
+      nextCentury: 'Επόμενος αιώνας'
     },
     timePickerLocale: {
       placeholder: 'Επιλέξτε ώρα'
@@ -82,7 +83,8 @@ export default {
       nextYear: 'Επόμενο έτος (Control + δεξιά)',
       previousDecade: 'Προηγούμενη δεκαετία',
       nextDecade: 'Επόμενη δεκαετία',
-      previousCentury: 'Προηγούμενος αιώνας'
+      previousCentury: 'Προηγούμενος αιώνας',
+      nextCentury: 'Επόμενος αιώνας'
     },
     timePickerLocale: {
       placeholder: 'Επιλέξτε ώρα'

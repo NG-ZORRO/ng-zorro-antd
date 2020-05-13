@@ -49,7 +49,8 @@ export default {
       nextYear: 'Növbəti il (Control + right)',
       previousDecade: 'Sonuncu onillik',
       nextDecade: 'Növbəti onillik',
-      previousCentury: 'Sonuncu əsr'
+      previousCentury: 'Sonuncu əsr',
+      nextCentury: 'Növbəti əsr'
     },
     timePickerLocale: {
       placeholder: 'Vaxtı seç'
@@ -87,7 +88,8 @@ export default {
       nextYear: 'Növbəti il (Control + right)',
       previousDecade: 'Sonuncu onillik',
       nextDecade: 'Növbəti onillik',
-      previousCentury: 'Sonuncu əsr'
+      previousCentury: 'Sonuncu əsr',
+      nextCentury: 'Növbəti əsr'
     },
     timePickerLocale: {
       placeholder: 'Vaxtı seç'

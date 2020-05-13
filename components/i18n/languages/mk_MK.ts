@@ -48,7 +48,8 @@ export default {
       nextYear: 'Наредна година (Control + right)',
       previousDecade: 'Претходна деценија',
       nextDecade: 'Наредна деценија',
-      previousCentury: 'Претходен век'
+      previousCentury: 'Претходен век',
+      nextCentury: 'Нареден век'
     },
     timePickerLocale: {
       placeholder: 'Избери време'
@@ -85,7 +86,8 @@ export default {
       nextYear: 'Наредна година (Control + right)',
       previousDecade: 'Претходна деценија',
       nextDecade: 'Наредна деценија',
-      previousCentury: 'Претходен век'
+      previousCentury: 'Претходен век',
+      nextCentury: 'Нареден век'
     },
     timePickerLocale: {
       placeholder: 'Избери време'

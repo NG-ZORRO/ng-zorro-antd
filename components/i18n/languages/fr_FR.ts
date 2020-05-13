@@ -52,7 +52,8 @@ export default {
       nextYear: 'Année prochaine (Ctrl + droite)',
       previousDecade: 'Décennie précédente',
       nextDecade: 'Décennie suivante',
-      previousCentury: 'Siècle précédent'
+      previousCentury: 'Siècle précédent',
+      nextCentury: 'Siècle suivant'
     },
     timePickerLocale: {
       placeholder: "Sélectionner l'heure",
@@ -98,7 +99,8 @@ export default {
       nextYear: 'Année prochaine (Ctrl + droite)',
       previousDecade: 'Décennie précédente',
       nextDecade: 'Décennie suivante',
-      previousCentury: 'Siècle précédent'
+      previousCentury: 'Siècle précédent',
+      nextCentury: 'Siècle suivant'
     },
     timePickerLocale: {
       placeholder: "Sélectionner l'heure",

@@ -46,7 +46,8 @@ export default {
       nextYear: 'שנה הבאה (Control + right)',
       previousDecade: 'העשור הקודם',
       nextDecade: 'העשור הבא',
-      previousCentury: 'המאה הקודמת'
+      previousCentury: 'המאה הקודמת',
+      nextCentury: 'המאה הבאה'
     },
     timePickerLocale: {
       placeholder: 'בחר שעה'
@@ -84,7 +85,8 @@ export default {
       nextYear: 'שנה הבאה (Control + right)',
       previousDecade: 'העשור הקודם',
       nextDecade: 'העשור הבא',
-      previousCentury: 'המאה הקודמת'
+      previousCentury: 'המאה הקודמת',
+      nextCentury: 'המאה הבאה'
     },
     timePickerLocale: {
       placeholder: 'בחר שעה'

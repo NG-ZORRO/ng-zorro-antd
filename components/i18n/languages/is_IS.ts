@@ -45,7 +45,8 @@ export default {
       nextYear: 'Næsta ár (Control + right)',
       previousDecade: 'Fyrri áratugur',
       nextDecade: 'Næsti áratugur',
-      previousCentury: 'Fyrri öld'
+      previousCentury: 'Fyrri öld',
+      nextCentury: 'Næsta öld'
     },
     timePickerLocale: {
       placeholder: 'Velja tíma'
@@ -82,7 +83,8 @@ export default {
       nextYear: 'Næsta ár (Control + right)',
       previousDecade: 'Fyrri áratugur',
       nextDecade: 'Næsti áratugur',
-      previousCentury: 'Fyrri öld'
+      previousCentury: 'Fyrri öld',
+      nextCentury: 'Næsta öld'
     },
     timePickerLocale: {
       placeholder: 'Velja tíma'

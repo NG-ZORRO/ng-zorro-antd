@@ -45,7 +45,8 @@ export default {
       nextYear: 'Volgend jaar (Control + right)',
       previousDecade: 'Vorig decennium',
       nextDecade: 'Volgend decennium',
-      previousCentury: 'Vorige eeuw'
+      previousCentury: 'Vorige eeuw',
+      nextCentury: 'Volgende eeuw'
     },
     timePickerLocale: {
       placeholder: 'Selecteer tijd'
@@ -82,7 +83,8 @@ export default {
       nextYear: 'Volgend jaar (Control + right)',
       previousDecade: 'Vorig decennium',
       nextDecade: 'Volgend decennium',
-      previousCentury: 'Vorige eeuw'
+      previousCentury: 'Vorige eeuw',
+      nextCentury: 'Volgende eeuw'
     },
     timePickerLocale: {
       placeholder: 'Selecteer tijd'

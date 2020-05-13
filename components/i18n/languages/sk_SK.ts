@@ -45,7 +45,8 @@ export default {
       nextYear: 'Nasledujúci rok (Control + right)',
       previousDecade: 'Predchádzajúca dekáda',
       nextDecade: 'Nasledujúca dekáda',
-      previousCentury: 'Predchádzajúce storočie'
+      previousCentury: 'Predchádzajúce storočie',
+      nextCentury: 'Nasledujúce storočie'
     },
     timePickerLocale: {
       placeholder: 'Vybrať čas'
@@ -82,7 +83,8 @@ export default {
       nextYear: 'Nasledujúci rok (Control + right)',
       previousDecade: 'Predchádzajúca dekáda',
       nextDecade: 'Nasledujúca dekáda',
-      previousCentury: 'Predchádzajúce storočie'
+      previousCentury: 'Predchádzajúce storočie',
+      nextCentury: 'Nasledujúce storočie'
     },
     timePickerLocale: {
       placeholder: 'Vybrať čas'

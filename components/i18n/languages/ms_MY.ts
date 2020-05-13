@@ -45,7 +45,8 @@ export default {
       nextYear: 'Tahun depan (Ctrl+right)',
       previousDecade: 'Dekad lepas',
       nextDecade: 'Dekad depan',
-      previousCentury: 'Abad lepas'
+      previousCentury: 'Abad lepas',
+      nextCentury: 'Abad depan'
     },
     timePickerLocale: {
       placeholder: 'Sila pilih masa'
@@ -82,7 +83,8 @@ export default {
       nextYear: 'Tahun depan (Ctrl+right)',
       previousDecade: 'Dekad lepas',
       nextDecade: 'Dekad depan',
-      previousCentury: 'Abad lepas'
+      previousCentury: 'Abad lepas',
+      nextCentury: 'Abad depan'
     },
     timePickerLocale: {
       placeholder: 'Sila pilih masa'

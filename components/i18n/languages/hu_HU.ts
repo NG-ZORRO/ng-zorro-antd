@@ -45,7 +45,8 @@ export default {
       nextYear: 'Jövő év (Control + right)',
       previousDecade: 'Előző évtized',
       nextDecade: 'Következő évtized',
-      previousCentury: 'Múlt évszázad'
+      previousCentury: 'Múlt évszázad',
+      nextCentury: 'Jövő évszázad'
     },
     timePickerLocale: {
       placeholder: 'Válasszon időt'
@@ -82,7 +83,8 @@ export default {
       nextYear: 'Jövő év (Control + right)',
       previousDecade: 'Előző évtized',
       nextDecade: 'Következő évtized',
-      previousCentury: 'Múlt évszázad'
+      previousCentury: 'Múlt évszázad',
+      nextCentury: 'Jövő évszázad'
     },
     timePickerLocale: {
       placeholder: 'Válasszon időt'

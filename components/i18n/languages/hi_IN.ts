@@ -46,7 +46,8 @@ export default {
       nextYear: 'अगले साल (Ctrl + दाहिना)',
       previousDecade: 'पिछला दशक',
       nextDecade: 'अगले दशक',
-      previousCentury: 'पीछ्ली शताब्दी'
+      previousCentury: 'पीछ्ली शताब्दी',
+      nextCentury: 'अगली सदी'
     },
     timePickerLocale: {
       placeholder: 'समय का चयन करें'
@@ -84,7 +85,8 @@ export default {
       nextYear: 'अगले साल (Ctrl + दाहिना)',
       previousDecade: 'पिछला दशक',
       nextDecade: 'अगले दशक',
-      previousCentury: 'पीछ्ली शताब्दी'
+      previousCentury: 'पीछ्ली शताब्दी',
+      nextCentury: 'अगली सदी'
     },
     timePickerLocale: {
       placeholder: 'समय का चयन करें'

@@ -45,7 +45,8 @@ export default {
       nextYear: 'Наступний рік (Control + right)',
       previousDecade: 'Попереднє десятиріччя',
       nextDecade: 'Наступне десятиріччя',
-      previousCentury: 'Попереднє століття'
+      previousCentury: 'Попереднє століття',
+      nextCentury: 'Наступне століття'
     },
     timePickerLocale: {
       placeholder: 'Оберіть час'
@@ -82,7 +83,8 @@ export default {
       nextYear: 'Наступний рік (Control + right)',
       previousDecade: 'Попереднє десятиріччя',
       nextDecade: 'Наступне десятиріччя',
-      previousCentury: 'Попереднє століття'
+      previousCentury: 'Попереднє століття',
+      nextCentury: 'Наступне століття'
     },
     timePickerLocale: {
       placeholder: 'Оберіть час'
