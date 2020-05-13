@@ -33,7 +33,7 @@ export class NzCodeBoxComponent implements OnInit, OnDestroy {
   @Input() nzHref!: string;
   @Input() nzLink!: string;
   @Input() nzId!: string;
-  @Input() nzIframeHeight = 360;
+  @Input() nzIframeHeight: number | null = 360;
   @Input() nzComponentName = '';
   @Input() nzSelector = '';
   @Input() nzGenerateCommand = '';

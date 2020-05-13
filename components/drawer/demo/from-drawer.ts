@@ -13,7 +13,7 @@ import { Component } from '@angular/core';
       (nzOnClose)="close()"
     >
       <form nz-form>
-        <div nz-row nzGutter="8">
+        <div nz-row [nzGutter]="8">
           <div nz-col nzSpan="12">
             <nz-form-item>
               <nz-form-label>Name</nz-form-label>
@@ -33,7 +33,7 @@ import { Component } from '@angular/core';
             </nz-form-item>
           </div>
         </div>
-        <div nz-row nzGutter="8">
+        <div nz-row [nzGutter]="8">
           <div nz-col nzSpan="12">
             <nz-form-item>
               <nz-form-label>Owner</nz-form-label>
@@ -51,7 +51,7 @@ import { Component } from '@angular/core';
             </nz-form-item>
           </div>
         </div>
-        <div nz-row nzGutter="8">
+        <div nz-row [nzGutter]="8">
           <div nz-col nzSpan="12">
             <nz-form-item>
               <nz-form-label>Approver</nz-form-label>
@@ -69,7 +69,7 @@ import { Component } from '@angular/core';
             </nz-form-item>
           </div>
         </div>
-        <div nz-row nzGutter="8">
+        <div nz-row [nzGutter]="8">
           <div nz-col nzSpan="24">
             <nz-form-item>
               <nz-form-label>Description</nz-form-label>

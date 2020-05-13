@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NzDescriptionsSize } from 'ng-zorro-antd/descriptions';
 
 @Component({
   selector: 'nz-demo-descriptions-custom-size',
@@ -37,5 +38,5 @@ import { Component } from '@angular/core';
   `
 })
 export class NzDemoDescriptionsCustomSizeComponent {
-  size = 'default';
+  size: NzDescriptionsSize = 'default';
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { UploadFile } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'nz-demo-upload-picture-style',
@@ -42,16 +43,16 @@ import { Component } from '@angular/core';
   ]
 })
 export class NzDemoUploadPictureStyleComponent {
-  defaultFileList = [
+  defaultFileList: UploadFile[] = [
     {
-      uid: -1,
+      uid: '-1',
       name: 'xxx.png',
       status: 'done',
       url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
       thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
     },
     {
-      uid: -2,
+      uid: '-2',
       name: 'yyy.png',
       status: 'error'
     }

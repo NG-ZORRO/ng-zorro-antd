@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NzDrawerPlacement } from 'ng-zorro-antd/drawer';
 
 @Component({
   selector: 'nz-demo-drawer-placement',
@@ -19,7 +20,7 @@ import { Component } from '@angular/core';
 })
 export class NzDemoDrawerPlacementComponent {
   visible = false;
-  placement = 'left';
+  placement: NzDrawerPlacement = 'left';
   open(): void {
     this.visible = true;
   }

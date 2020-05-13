@@ -20,7 +20,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
       </nz-modal>
     </div>
     <br />
-    <button nz-button nzType="info" (click)="showConfirm()">Confirm</button>
+    <button nz-button nzType="primary" (click)="showConfirm()">Confirm</button>
   `
 })
 export class NzDemoModalLocaleComponent {

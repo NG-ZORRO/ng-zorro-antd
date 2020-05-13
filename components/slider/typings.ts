@@ -14,7 +14,7 @@ export interface NzMarkObj {
 }
 
 export class NzMarks {
-  [key: number]: NzMark;
+  [key: string]: NzMark;
 }
 
 /**

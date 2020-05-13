@@ -24,7 +24,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { FormControl, FormControlDirective, FormControlName, NgControl, NgModel } from '@angular/forms';
+import { AbstractControl, FormControlDirective, FormControlName, NgControl, NgModel } from '@angular/forms';
 import { helpMotion } from 'ng-zorro-antd/core/animation';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -87,15 +87,15 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
     return this.nzDisableAutoTips !== 'default' ? toBoolean(this.nzDisableAutoTips) : this.nzFormDirective?.nzDisableAutoTips;
   }
 
-  validateControl: FormControl | NgModel | null = null;
+  validateControl: AbstractControl | NgModel | null = null;
   iconType: typeof iconTypeMap[keyof typeof iconTypeMap] | null = null;
-  innerTip: string | TemplateRef<{ $implicit: FormControl | NgModel }> | null = null;
+  innerTip: string | TemplateRef<{ $implicit: AbstractControl | NgModel }> | null = null;
 
   @ContentChild(NgControl, { static: false }) defaultValidateControl?: FormControlName | FormControlDirective;
-  @Input() nzSuccessTip?: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
-  @Input() nzWarningTip?: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
-  @Input() nzErrorTip?: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
-  @Input() nzValidatingTip?: string | TemplateRef<{ $implicit: FormControl | NgModel }>;
+  @Input() nzSuccessTip?: string | TemplateRef<{ $implicit: AbstractControl | NgModel }>;
+  @Input() nzWarningTip?: string | TemplateRef<{ $implicit: AbstractControl | NgModel }>;
+  @Input() nzErrorTip?: string | TemplateRef<{ $implicit: AbstractControl | NgModel }>;
+  @Input() nzValidatingTip?: string | TemplateRef<{ $implicit: AbstractControl | NgModel }>;
   @Input() nzExtra?: string | TemplateRef<void>;
   @Input() nzAutoTips: Record<string, Record<string, string>> = {};
   @Input() nzDisableAutoTips: boolean | 'default' = 'default';
@@ -113,8 +113,8 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
   }
 
   @Input()
-  set nzValidateStatus(value: string | FormControl | FormControlName | NgModel) {
-    if (value instanceof FormControl || value instanceof NgModel) {
+  set nzValidateStatus(value: string | AbstractControl | FormControlName | NgModel) {
+    if (value instanceof AbstractControl || value instanceof NgModel) {
       this.validateControl = value;
       this.validateString = null;
       this.watchControl();
@@ -180,7 +180,7 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
     }
   }
 
-  private getInnerTip(status: NzFormControlStatusType): string | TemplateRef<{ $implicit: FormControl | NgModel }> | null {
+  private getInnerTip(status: NzFormControlStatusType): string | TemplateRef<{ $implicit: AbstractControl | NgModel }> | null {
     switch (status) {
       case 'error':
         return (!this.disableAutoTips && this.autoErrorTip) || this.nzErrorTip || null;

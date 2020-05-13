@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
         <nz-col [nzSpan]="12">
           <nz-card>
             <nz-statistic
-              [nzValue]="11.28 | number: '1.0-2'"
+              [nzValue]="(11.28 | number: '1.0-2')!"
               [nzTitle]="'Active'"
               [nzPrefix]="prefixTplOne"
               [nzSuffix]="'%'"
@@ -21,7 +21,7 @@ import { Component } from '@angular/core';
         <nz-col [nzSpan]="12">
           <nz-card>
             <nz-statistic
-              [nzValue]="9.3 | number: '1.0-2'"
+              [nzValue]="(9.3 | number: '1.0-2')!"
               [nzTitle]="'Idle'"
               [nzPrefix]="prefixTplTwo"
               [nzSuffix]="'%'"

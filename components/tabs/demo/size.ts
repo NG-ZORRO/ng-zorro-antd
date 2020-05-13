@@ -14,6 +14,6 @@ import { Component } from '@angular/core';
   `
 })
 export class NzDemoTabsSizeComponent {
-  size = 'small';
+  size: 'large' | 'default' | 'small' = 'small';
   tabs = [1, 2, 3];
 }

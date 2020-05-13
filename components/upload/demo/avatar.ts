@@ -37,7 +37,7 @@ export class NzDemoUploadAvatarComponent {
 
   constructor(private msg: NzMessageService) {}
 
-  beforeUpload = (file: File) => {
+  beforeUpload = (file: UploadFile, _fileList: UploadFile[]) => {
     return new Observable((observer: Observer<boolean>) => {
       const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
       if (!isJpgOrPng) {
@@ -45,7 +45,7 @@ export class NzDemoUploadAvatarComponent {
         observer.complete();
         return;
       }
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      const isLt2M = file.size! / 1024 / 1024 < 2;
       if (!isLt2M) {
         this.msg.error('Image must smaller than 2MB!');
         observer.complete();

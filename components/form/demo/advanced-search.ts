@@ -7,7 +7,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
     <form nz-form [formGroup]="validateForm" class="ant-advanced-search-form">
       <div nz-row [nzGutter]="24">
         <div nz-col [nzSpan]="8" *ngFor="let control of controlArray" [hidden]="!control.show">
-          <nz-form-item nzFlex>
+          <nz-form-item>
             <nz-form-label [nzFor]="'field' + control.index">Field {{ control.index }}</nz-form-label>
             <nz-form-control>
               <input nz-input placeholder="placeholder" [formControlName]="'field' + control.index" [attr.id]="'field' + control.index" />

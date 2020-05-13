@@ -71,7 +71,7 @@
 </div>
 
 <ng-template #sideOrDrawerTpl>
-  <ul nz-menu [nzMode]="'inline'" class="aside-container menu-site" nzInlineIndent="40">
+  <ul nz-menu [nzMode]="'inline'" class="aside-container menu-site" [nzInlineIndent]="40">
     <ng-container *ngIf="page === 'docs'">
       <li *ngFor="let intro of routerList.intro" nz-menu-item nzMatchRouter
           [hidden]="intro.language !== language">

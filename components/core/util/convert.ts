@@ -30,8 +30,8 @@ export function toCssPixel(value: number | string): string {
 /**
  * Get the function-property type's value
  */
-export function valueFunctionProp<T>(prop: FunctionProp<T>, ...args: NzSafeAny[]): T {
-  return typeof prop === 'function' ? prop(...args) : prop;
+export function valueFunctionProp<T>(prop: FunctionProp<T> | T, ...args: NzSafeAny[]): T {
+  return typeof prop === 'function' ? (prop as FunctionProp<T>)(...args) : prop;
 }
 
 function propDecoratorFactory<T, D>(name: string, fallback: (v: T) => D): (target: NzSafeAny, propName: string) => void {

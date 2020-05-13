@@ -29,5 +29,5 @@ import { Component } from '@angular/core';
   ]
 })
 export class NzDemoDatePickerSizeComponent {
-  size = 'default';
+  size: 'large' | 'small' | 'default' = 'default';
 }
