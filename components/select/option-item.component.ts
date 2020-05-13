@@ -71,7 +71,7 @@ export class NzOptionItemComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const { value, activatedValue, listOfSelectedValue } = changes;
     if (value || listOfSelectedValue) {
-      this.selected = this.listOfSelectedValue.find(v => this.compareWith(v, this.value));
+      this.selected = this.listOfSelectedValue.some(v => this.compareWith(v, this.value));
     }
     if (value || activatedValue) {
       this.activated = this.compareWith(this.activatedValue, this.value);
