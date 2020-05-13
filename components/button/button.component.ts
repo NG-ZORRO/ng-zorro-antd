@@ -63,7 +63,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'button';
     '[class.ant-input-search-button]': `nzSearch`,
     '[attr.tabindex]': 'disabled ? -1 : (tabIndex === null ? null : tabIndex)',
     '[attr.disabled]': 'disabled || null',
-    '(click)': 'haltDisabledEvents($event)'
+    '(click)': 'haltDisabledEvents($event)',
     '[class.ant-btn-rtl]': `dir === 'rtl'`
   }
 })
