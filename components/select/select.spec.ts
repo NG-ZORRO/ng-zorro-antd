@@ -361,6 +361,35 @@ describe('select', () => {
         document.querySelectorAll('nz-option-item')[0].parentElement!.querySelector('nz-option-item')!.nextElementSibling!.textContent
       ).toBe('label_02');
     }));
+
+    it('should have selected class if item was selected', fakeAsync(() => {
+      const flushChanges = () => {
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+      };
+      component.listOfOption = [
+        { nzValue: 0, nzLabel: 'Falsy value' },
+        { nzValue: 'Truthy value', nzLabel: 'Truthy value' },
+        { nzValue: 'disabled', nzLabel: 'disabled', nzDisabled: true },
+        { nzValue: undefined, nzLabel: 'undefined' },
+        { nzValue: null, nzLabel: 'null' }
+      ];
+      component.nzOpen = true;
+      component.value = 0;
+      flushChanges();
+      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected').length).toBe(1);
+      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected')[0].textContent).toBe('Falsy value');
+      component.value = 'Truthy value';
+      flushChanges();
+      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected').length).toBe(1);
+      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected')[0].textContent).toBe('Truthy value');
+      ['disabled', undefined, null].forEach((value) => {
+        component.value = value;
+        flushChanges();
+        expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected').length).toBe(0);
+      });
+    }));
   });
   describe('multiple template mode', () => {
     let testBed: ComponentBed<TestSelectTemplateMultipleComponent>;
