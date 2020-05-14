@@ -57,18 +57,17 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   @ViewChild('fixedEl', { static: true }) private fixedEl!: ElementRef<HTMLDivElement>;
 
-  // TODO@hsuanxyz SSR breaks (perhaps)?
-  @Input() nzTarget: string | Element | Window = window;
+  @Input() nzTarget?: string | Element | Window;
 
   @Input()
   @WithConfig<number | null>(NZ_CONFIG_COMPONENT_NAME)
-  @InputNumber()
-  nzOffsetTop: null | number = null;
+  @InputNumber(undefined)
+  nzOffsetTop?: null | number;
 
   @Input()
   @WithConfig<number | null>(NZ_CONFIG_COMPONENT_NAME)
-  @InputNumber()
-  nzOffsetBottom: null | number = null;
+  @InputNumber(undefined)
+  nzOffsetBottom?: null | number;
 
   @Output() readonly nzChange = new EventEmitter<boolean>();
 

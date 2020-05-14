@@ -88,7 +88,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
   nzBounds: number = 5;
 
   @Input()
-  @InputNumber()
+  @InputNumber(undefined)
   @WithConfig<number>(NZ_CONFIG_COMPONENT_NAME)
   nzOffsetTop?: number = undefined;
 
