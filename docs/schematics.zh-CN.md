@@ -25,7 +25,7 @@ title: 脚手架
 ng g ng-zorro-antd:[schematic] <name> [options]
 ```
 
-例如通过以下代码可以快速生成一个登陆框组件
+例如通过以下代码可以快速生成一个登录框组件
 
 ```bash
 ng g ng-zorro-antd:form-normal-login login
