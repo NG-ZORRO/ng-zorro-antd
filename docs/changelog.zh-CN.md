@@ -14,6 +14,17 @@ timeline: true
 
 ---
 
+## 9.1.2
+
+`2020-05-13`
+
+### Bug Fixes
+
+* **all:** 修复 strictTemplates 模式下类型错误的问题 ([#5265](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5265)) ([2982766](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2982766)), closes [#5171](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5171)
+* **list:** 修复空内容渲染的问题 ([#5266](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5266)) ([ca7314c](https://github.com/NG-ZORRO/ng-zorro-antd/commit/ca7314c)), closes [#5260](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5260)
+* **select:** 修复 tags 模式下选中 `0` 值的样式问题 ([#5264](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5264)) ([1c4d7d8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1c4d7d8))
+
+
 ## 9.1.1
 
 `2020-05-11`
