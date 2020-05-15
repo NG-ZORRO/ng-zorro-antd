@@ -9,8 +9,6 @@
 @table-header-icon-color-hover: darken(@table-header-icon-color, 10%);
 @table-header-sort-active-filter-bg: lighten(@table-header-sort-active-bg, 2%);
 
-@table-selection-column-width: 60px;
-
 .@{table-prefix-cls}-wrapper {
   .clearfix;
 }
@@ -114,6 +112,7 @@
       &.@{table-prefix-cls}-row-selected {
         > td {
           background: @table-selected-row-bg;
+          border-color: rgba(0, 0, 0, 0.03);
         }
 
         &:hover {
@@ -355,10 +354,8 @@
   }
 
   // ========================== Selections ==========================
-  colgroup {
-    > col.@{table-prefix-cls}-selection-col {
-      width: @table-selection-column-width;
-    }
+  .@{table-prefix-cls}-selection-col {
+    width: @table-selection-column-width;
   }
 
   table tr th&-selection-column,
@@ -376,7 +373,7 @@
     &-extra {
       position: absolute;
       top: 0;
-      right: -10px;
+      right: @table-selection-extra-right;
       cursor: pointer;
       transition: all 0.3s;
 
@@ -507,6 +504,8 @@
   // ============================ Fixed =============================
   &-cell-fix-left,
   &-cell-fix-right {
+    position: -webkit-sticky !important;
+    position: sticky !important;
     z-index: 2;
     background: @table-bg;
   }
