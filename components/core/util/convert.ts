@@ -87,6 +87,6 @@ export function InputCssPixel(): NzSafeAny {
   return propDecoratorFactory('InputCssPixel', toCssPixel);
 }
 
-export function InputNumber(): NzSafeAny {
-  return propDecoratorFactory('InputNumber', toNumber);
+export function InputNumber(fallbackValue?: NzSafeAny): NzSafeAny {
+  return propDecoratorFactory('InputNumber', (value: string | number) => toNumber(value, fallbackValue));
 }
