@@ -21,6 +21,7 @@ import {
 } from '@angular/core';
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 @Component({
@@ -37,17 +38,23 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   host: {
     '[@fadeMotion]': '',
     '[@.disabled]': 'nzNoAnimation',
-    '[style.background-color]': 'presetColor? null : nzColor',
-    '[class]': 'hostClassMap',
+    '[style.background-color]': 'presetColor ? null : nzColor',
+    '[class.ant-tag]': `true`,
+    '[class.ant-tag-has-color]': `nzColor && !presetColor`,
+    '[class.ant-tag-checkable]': `nzMode === 'checkable'`,
+    '[class.ant-tag-checkable-checked]': `nzChecked`,
     '(click)': 'updateCheckedStatus()',
     '(@fadeMotion.done)': 'afterAnimation($event)'
   }
 })
 export class NzTagComponent implements OnInit, OnChanges {
+  static ngAcceptInputType_nzChecked: BooleanInput;
+  static ngAcceptInputType_nzNoAnimation: BooleanInput;
+
   presetColor = false;
-  hostClassMap = {};
+  cacheClassName: string | null = null;
   @Input() nzMode: 'default' | 'closeable' | 'checkable' = 'default';
-  @Input() nzColor: string;
+  @Input() nzColor?: string;
   @Input() @InputBoolean() nzChecked = false;
   @Input() @InputBoolean() nzNoAnimation = false;
   @Output() readonly nzAfterClose = new EventEmitter<void>();
@@ -67,13 +74,13 @@ export class NzTagComponent implements OnInit, OnChanges {
 
   private updateClassMap(): void {
     this.presetColor = this.isPresetColor(this.nzColor);
-    this.hostClassMap = {
-      ['ant-tag']: true,
-      ['ant-tag-has-color']: this.nzColor && !this.presetColor,
-      ['ant-tag-checkable']: this.nzMode === 'checkable',
-      ['ant-tag-checkable-checked']: this.nzChecked,
-      [`ant-tag-${this.nzColor}`]: this.presetColor
-    };
+    if (this.cacheClassName) {
+      this.renderer.removeClass(this.elementRef.nativeElement, this.cacheClassName);
+    }
+    if (this.presetColor) {
+      this.cacheClassName = `ant-tag-${this.nzColor}`;
+      this.renderer.addClass(this.elementRef.nativeElement, this.cacheClassName);
+    }
   }
 
   updateCheckedStatus(): void {

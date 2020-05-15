@@ -7,6 +7,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 @Component({
@@ -28,7 +29,9 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   `
 })
 export class NzRateItemComponent {
-  @Input() character: TemplateRef<void>;
+  static ngAcceptInputType_allowHalf: BooleanInput;
+
+  @Input() character!: TemplateRef<void>;
   @Input() @InputBoolean() allowHalf: boolean = false;
   @Output() readonly itemHover = new EventEmitter<boolean>();
   @Output() readonly itemClick = new EventEmitter<boolean>();

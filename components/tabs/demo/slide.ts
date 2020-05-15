@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NzTabPosition } from 'ng-zorro-antd/tabs';
 
 @Component({
   selector: 'nz-demo-tabs-slide',
@@ -23,7 +24,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NzDemoTabsSlideComponent implements OnInit {
   tabs: Array<{ name: string; content: string }> = [];
-  nzTabPosition = 'top';
+  nzTabPosition: NzTabPosition = 'top';
   selectedIndex = 0;
 
   /* tslint:disable-next-line:no-any */

@@ -28,20 +28,20 @@ export function NZ_WAVE_GLOBAL_CONFIG_FACTORY(): NzWaveConfig {
 }
 
 @Directive({
-  selector: '[nz-wave],button[nz-button]',
+  selector: '[nz-wave],button[nz-button]:not([nzType="link"])',
   exportAs: 'nzWave'
 })
 export class NzWaveDirective implements OnInit, OnDestroy {
   @Input() nzWaveExtraNode = false;
 
-  private waveRenderer: NzWaveRenderer;
+  private waveRenderer?: NzWaveRenderer;
   private waveDisabled: boolean = false;
 
   get disabled(): boolean {
     return this.waveDisabled;
   }
 
-  get rendererRef(): NzWaveRenderer {
+  get rendererRef(): NzWaveRenderer | undefined {
     return this.waveRenderer;
   }
 

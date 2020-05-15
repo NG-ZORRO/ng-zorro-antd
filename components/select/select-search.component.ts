@@ -35,7 +35,6 @@ import {
       [attr.autofocus]="autofocus ? 'autofocus' : null"
       [disabled]="disabled"
       [style.opacity]="showInput ? null : 0"
-      [readOnly]="!showInput"
       (ngModelChange)="onValueChange($event)"
       (compositionstart)="setCompositionState(true)"
       (compositionend)="setCompositionState(false)"
@@ -55,8 +54,8 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
   @Input() autofocus = false;
   @Output() readonly valueChange = new EventEmitter<string>();
   @Output() readonly isComposingChange = new EventEmitter<boolean>();
-  @ViewChild('inputElement', { static: true }) inputElement: ElementRef;
-  @ViewChild('mirrorElement', { static: false }) mirrorElement: ElementRef;
+  @ViewChild('inputElement', { static: true }) inputElement!: ElementRef;
+  @ViewChild('mirrorElement', { static: false }) mirrorElement?: ElementRef;
 
   setCompositionState(isComposing: boolean): void {
     this.isComposingChange.next(isComposing);
@@ -77,7 +76,7 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
   }
 
   syncMirrorWidth(): void {
-    const mirrorDOM = this.mirrorElement.nativeElement;
+    const mirrorDOM = this.mirrorElement!.nativeElement;
     const hostDOM = this.elementRef.nativeElement;
     const inputDOM = this.inputElement.nativeElement;
     this.renderer.removeStyle(hostDOM, 'width');
@@ -97,9 +96,16 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     const inputDOM = this.inputElement.nativeElement;
-    const { focusTrigger } = changes;
+    const { focusTrigger, showInput } = changes;
     if (focusTrigger && focusTrigger.currentValue === true && focusTrigger.previousValue === false) {
       inputDOM.focus();
+    }
+    if (showInput) {
+      if (this.showInput) {
+        this.renderer.removeAttribute(inputDOM, 'readonly');
+      } else {
+        this.renderer.setAttribute(inputDOM, 'readonly', 'readonly');
+      }
     }
   }
 

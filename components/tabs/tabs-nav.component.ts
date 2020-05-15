@@ -30,7 +30,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzResizeService } from 'ng-zorro-antd/core/services';
-import { NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, pxToNumber } from 'ng-zorro-antd/core/util';
 import { merge, of as observableOf, Subject, Subscription } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
@@ -104,32 +104,36 @@ export type ScrollDirection = 'after' | 'before';
   }
 })
 export class NzTabsNavComponent implements AfterContentChecked, AfterContentInit, OnDestroy {
+  static ngAcceptInputType_nzAnimated: BooleanInput;
+  static ngAcceptInputType_nzHideBar: BooleanInput;
+  static ngAcceptInputType_nzShowPagination: BooleanInput;
+
   private _tabPositionMode: NzTabPositionMode = 'horizontal';
   private _scrollDistance = 0;
   private _selectedIndex = 0;
   /** Cached text content of the header. */
-  private currentTextContent: string;
+  private currentTextContent?: string;
   private destroy$ = new Subject<void>();
   showPaginationControls = false;
   disableScrollAfter = true;
   disableScrollBefore = true;
   selectedIndexChanged = false;
   realignInkBar: Subscription | null = null;
-  tabLabelCount: number;
-  scrollDistanceChanged: boolean;
-  @ContentChildren(NzTabLabelDirective) listOfNzTabLabelDirective: QueryList<NzTabLabelDirective>;
-  @ViewChild(NzTabsInkBarDirective, { static: true }) nzTabsInkBarDirective: NzTabsInkBarDirective;
-  @ViewChild('navContainerElement', { static: true }) navContainerElement: ElementRef<HTMLDivElement>;
-  @ViewChild('navListElement', { static: true }) navListElement: ElementRef<HTMLDivElement>;
-  @ViewChild('scrollListElement', { static: true }) scrollListElement: ElementRef<HTMLDivElement>;
+  tabLabelCount?: number;
+  scrollDistanceChanged?: boolean;
+  @ContentChildren(NzTabLabelDirective) listOfNzTabLabelDirective!: QueryList<NzTabLabelDirective>;
+  @ViewChild(NzTabsInkBarDirective, { static: true }) nzTabsInkBarDirective!: NzTabsInkBarDirective;
+  @ViewChild('navContainerElement', { static: true }) navContainerElement!: ElementRef<HTMLDivElement>;
+  @ViewChild('navListElement', { static: true }) navListElement!: ElementRef<HTMLDivElement>;
+  @ViewChild('scrollListElement', { static: true }) scrollListElement!: ElementRef<HTMLDivElement>;
   @Output() readonly nzOnNextClick = new EventEmitter<void>();
   @Output() readonly nzOnPrevClick = new EventEmitter<void>();
-  @Input() nzTabBarExtraContent: TemplateRef<void>;
+  @Input() nzTabBarExtraContent?: TemplateRef<void>;
   @Input() @InputBoolean() nzAnimated = true;
   @Input() @InputBoolean() nzHideBar = false;
   @Input() @InputBoolean() nzShowPagination = true;
   @Input() nzType = 'line';
-  @Input() nzSize: NzSizeLDSType;
+  @Input() nzSize?: NzSizeLDSType;
   @Input() nzTabPosition: NzTabPosition = 'top';
 
   @Input()

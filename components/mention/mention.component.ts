@@ -37,7 +37,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { DEFAULT_MENTION_BOTTOM_POSITIONS, DEFAULT_MENTION_TOP_POSITIONS } from 'ng-zorro-antd/core/overlay';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { getCaretCoordinates, getMentions, InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { fromEvent, merge, Subscription } from 'rxjs';
@@ -89,17 +89,19 @@ export type MentionPlacement = 'top' | 'bottom';
   providers: [NzMentionService]
 })
 export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
+  static ngAcceptInputType_nzLoading: BooleanInput;
+
   @Input() nzValueWith: (value: NzSafeAny) => string = value => value;
   @Input() nzPrefix: string | string[] = '@';
   @Input() @InputBoolean() nzLoading = false;
   @Input() nzNotFoundContent: string = '无匹配结果，轻敲空格完成输入';
   @Input() nzPlacement: MentionPlacement = 'bottom';
-  @Input() nzSuggestions: string[] = [];
-  @Output() readonly nzOnSelect: EventEmitter<string | {}> = new EventEmitter();
+  @Input() nzSuggestions: NzSafeAny[] = [];
+  @Output() readonly nzOnSelect: EventEmitter<NzSafeAny> = new EventEmitter();
   @Output() readonly nzOnSearchChange: EventEmitter<MentionOnSearchTypes> = new EventEmitter();
 
-  trigger: NzMentionTriggerDirective;
-  @ViewChild(TemplateRef, { static: false }) suggestionsTemp: TemplateRef<void>;
+  trigger!: NzMentionTriggerDirective;
+  @ViewChild(TemplateRef, { static: false }) suggestionsTemp?: TemplateRef<void>;
 
   @ContentChild(NzMentionSuggestionDirective, { static: false, read: TemplateRef })
   set suggestionChild(value: TemplateRef<{ $implicit: NzSafeAny }>) {
@@ -114,13 +116,13 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
   activeIndex = -1;
 
   private previousValue: string | null = null;
-  private cursorMention: string | null;
-  private cursorMentionStart: number;
-  private cursorMentionEnd: number;
-  private overlayRef: OverlayRef | null;
-  private portal: TemplatePortal<void>;
-  private positionStrategy: FlexibleConnectedPositionStrategy;
-  private overlayBackdropClickSubscription: Subscription;
+  private cursorMention: string | null = null;
+  private cursorMentionStart?: number;
+  private cursorMentionEnd?: number;
+  private overlayRef: OverlayRef | null = null;
+  private portal?: TemplatePortal<void>;
+  private positionStrategy!: FlexibleConnectedPositionStrategy;
+  private overlayBackdropClickSubscription!: Subscription;
 
   private get triggerNativeElement(): HTMLTextAreaElement | HTMLInputElement {
     return this.trigger.el.nativeElement;
@@ -173,15 +175,15 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
   }
 
   getMentions(): string[] {
-    return this.trigger ? getMentions(this.trigger.value, this.nzPrefix) : [];
+    return this.trigger ? getMentions(this.trigger.value!, this.nzPrefix) : [];
   }
 
   selectSuggestion(suggestion: string | {}): void {
     const value = this.nzValueWith(suggestion);
     this.trigger.insertMention({
       mention: value,
-      startPos: this.cursorMentionStart,
-      endPos: this.cursorMentionEnd
+      startPos: this.cursorMentionStart!,
+      endPos: this.cursorMentionEnd!
     });
     this.nzOnSelect.emit(suggestion);
     this.closeDropdown();
@@ -246,11 +248,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
       });
     }
     const searchValue = suggestions.toLowerCase();
-    this.filteredSuggestions = this.nzSuggestions.filter(suggestion =>
-      this.nzValueWith(suggestion)
-        .toLowerCase()
-        .includes(searchValue)
-    );
+    this.filteredSuggestions = this.nzSuggestions.filter(suggestion => this.nzValueWith(suggestion).toLowerCase().includes(searchValue));
   }
 
   private resetDropdown(emit: boolean = true): void {
@@ -304,7 +302,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
   }
 
   private updatePositions(): void {
-    const coordinates = getCaretCoordinates(this.triggerNativeElement, this.cursorMentionStart);
+    const coordinates = getCaretCoordinates(this.triggerNativeElement, this.cursorMentionStart!);
     const top =
       coordinates.top -
       this.triggerNativeElement.getBoundingClientRect().height -
@@ -340,7 +338,7 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
 
   private attachOverlay(): void {
     if (!this.overlayRef) {
-      this.portal = new TemplatePortal(this.suggestionsTemp, this.viewContainerRef);
+      this.portal = new TemplatePortal(this.suggestionsTemp!, this.viewContainerRef);
       this.overlayRef = this.overlay.create(this.getOverlayConfig());
     }
     if (this.overlayRef && !this.overlayRef.hasAttached()) {

@@ -58,12 +58,13 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
 | nzAnimate | 开关动画效果 | `boolean` | `true` |
 | nzTop | 消息距离顶部的位置 | `number \| string` | `24` |
 
-### NzMessageDataFilled
+### NzMessageRef
 
 当你调用 `NzMessageService.success` 或其他方法时会返回该对象。
 
 ```ts
-export interface NzMessageDataFilled {
+export interface NzMessageRef {
+  messageId: string;
   onClose: Subject<false>; // 当 message 关闭时它会派发一个事件
 }
 ```

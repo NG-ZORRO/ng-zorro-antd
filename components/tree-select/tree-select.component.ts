@@ -33,11 +33,6 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { slideMotion, zoomMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
-import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
-
-import { merge, of as observableOf, Subscription } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
 
 import {
   NzFormatEmitEvent,
@@ -47,8 +42,13 @@ import {
   NzTreeNode,
   NzTreeNodeOptions
 } from 'ng-zorro-antd/core/tree';
+import { BooleanInput, NgStyleInterface, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzSelectSearchComponent } from 'ng-zorro-antd/select';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
+
+import { merge, of as observableOf, Subscription } from 'rxjs';
+import { filter, tap } from 'rxjs/operators';
 
 import { NzTreeSelectService } from './tree-select.service';
 
@@ -70,14 +70,14 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
       [cdkConnectedOverlayOrigin]="cdkOverlayOrigin"
       [cdkConnectedOverlayOpen]="nzOpen"
       [cdkConnectedOverlayHasBackdrop]="true"
-      [cdkConnectedOverlayMinWidth]="nzDropdownMatchSelectWidth ? null : triggerWidth"
-      [cdkConnectedOverlayWidth]="nzDropdownMatchSelectWidth ? triggerWidth : null"
+      [cdkConnectedOverlayMinWidth]="$any(nzDropdownMatchSelectWidth ? null : triggerWidth)"
+      [cdkConnectedOverlayWidth]="$any(nzDropdownMatchSelectWidth ? triggerWidth : null)"
       (backdropClick)="closeDropDown()"
       (detach)="closeDropDown()"
       (positionChange)="onPositionChange($event)"
     >
       <div
-        [class]="dropdownClassName"
+        [ngClass]="dropdownClassName"
         [@slideMotion]="nzOpen ? dropDownPosition : 'void'"
         [@.disabled]="noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
@@ -207,27 +207,41 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
   }
 })
 export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
+  static ngAcceptInputType_nzAllowClear: BooleanInput;
+  static ngAcceptInputType_nzShowExpand: BooleanInput;
+  static ngAcceptInputType_nzShowLine: BooleanInput;
+  static ngAcceptInputType_nzDropdownMatchSelectWidth: BooleanInput;
+  static ngAcceptInputType_nzCheckable: BooleanInput;
+  static ngAcceptInputType_nzHideUnMatched: BooleanInput;
+  static ngAcceptInputType_nzShowIcon: BooleanInput;
+  static ngAcceptInputType_nzShowSearch: BooleanInput;
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzAsyncData: BooleanInput;
+  static ngAcceptInputType_nzMultiple: BooleanInput;
+  static ngAcceptInputType_nzDefaultExpandAll: BooleanInput;
+  static ngAcceptInputType_nzCheckStrictly: BooleanInput;
+
   @Input() @InputBoolean() nzAllowClear: boolean = true;
   @Input() @InputBoolean() nzShowExpand: boolean = true;
   @Input() @InputBoolean() nzShowLine: boolean = false;
-  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) nzDropdownMatchSelectWidth: boolean;
+  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzDropdownMatchSelectWidth: boolean = true;
   @Input() @InputBoolean() nzCheckable: boolean = false;
-  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) nzHideUnMatched: boolean;
-  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) nzShowIcon: boolean;
+  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzHideUnMatched: boolean = false;
+  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzShowIcon: boolean = false;
   @Input() @InputBoolean() nzShowSearch: boolean = false;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAsyncData = false;
   @Input() @InputBoolean() nzMultiple = false;
   @Input() @InputBoolean() nzDefaultExpandAll = false;
   @Input() @InputBoolean() nzCheckStrictly = false;
-  @Input() nzExpandedIcon: TemplateRef<{ $implicit: NzTreeNode }>;
-  @Input() nzNotFoundContent: string;
+  @Input() nzExpandedIcon?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
+  @Input() nzNotFoundContent?: string;
   @Input() nzNodes: Array<NzTreeNode | NzTreeNodeOptions> = [];
   @Input() nzOpen = false;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzSizeLDSType;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzSizeLDSType = 'default';
   @Input() nzPlaceHolder = '';
-  @Input() nzDropdownStyle: { [key: string]: string };
-  @Input() nzDropdownClassName: string;
+  @Input() nzDropdownStyle: NgStyleInterface | null = null;
+  @Input() nzDropdownClassName?: string;
   @Input()
   set nzExpandedKeys(value: string[]) {
     this.expandedKeys = value;
@@ -237,8 +251,8 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   @Input() nzDisplayWith: (node: NzTreeNode) => string | undefined = (node: NzTreeNode) => node.title;
-  @Input() nzMaxTagCount: number;
-  @Input() nzMaxTagPlaceholder: TemplateRef<{ $implicit: NzTreeNode[] }>;
+  @Input() nzMaxTagCount!: number;
+  @Input() nzMaxTagPlaceholder: TemplateRef<{ $implicit: NzTreeNode[] }> | null = null;
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
   @Output() readonly nzCleared = new EventEmitter<void>();
   @Output() readonly nzRemoved = new EventEmitter<NzTreeNode>();
@@ -246,31 +260,31 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Output() readonly nzTreeClick = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzTreeCheckBoxChange = new EventEmitter<NzFormatEmitEvent>();
 
-  @ViewChild(NzSelectSearchComponent, { static: false }) nzSelectSearchComponent: NzSelectSearchComponent;
-  @ViewChild('treeRef', { static: false }) treeRef: NzTreeComponent;
-  @ViewChild(CdkOverlayOrigin, { static: true }) cdkOverlayOrigin: CdkOverlayOrigin;
-  @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay: CdkConnectedOverlay;
+  @ViewChild(NzSelectSearchComponent, { static: false }) nzSelectSearchComponent!: NzSelectSearchComponent;
+  @ViewChild('treeRef', { static: false }) treeRef!: NzTreeComponent;
+  @ViewChild(CdkOverlayOrigin, { static: true }) cdkOverlayOrigin!: CdkOverlayOrigin;
+  @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay!: CdkConnectedOverlay;
 
-  @Input() nzTreeTemplate: TemplateRef<{ $implicit: NzTreeNode }>;
-  @ContentChild('nzTreeTemplate', { static: true }) nzTreeTemplateChild: TemplateRef<{ $implicit: NzTreeNode }>;
-  get treeTemplate(): TemplateRef<{ $implicit: NzTreeNode }> {
+  @Input() nzTreeTemplate!: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
+  @ContentChild('nzTreeTemplate', { static: true }) nzTreeTemplateChild!: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
+  get treeTemplate(): TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }> {
     return this.nzTreeTemplate || this.nzTreeTemplateChild;
   }
 
   dropdownClassName = TREE_SELECT_DEFAULT_CLASS;
-  triggerWidth: number;
+  triggerWidth?: number;
   isComposing = false;
   isDestroy = true;
   isNotFound = false;
   inputValue = '';
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
-  selectionChangeSubscription: Subscription;
+  selectionChangeSubscription!: Subscription;
   selectedNodes: NzTreeNode[] = [];
   expandedKeys: string[] = [];
   value: string[] = [];
 
-  onChange: (value: string[] | string | null) => void;
-  onTouched: () => void = () => null;
+  onChange: OnChangeType = _value => {};
+  onTouched: OnTouchedType = () => {};
 
   get placeHolderDisplay(): string {
     return this.inputValue || this.isComposing || this.selectedNodes.length ? 'none' : 'block';

@@ -1,6 +1,6 @@
-const {join} = require('path');
+const { join } = require('path');
 
-const packageJson = require('./package.json');
+const packageJson = require(`${__dirname}/components/package.json`);
 const buildVersion = packageJson.version;
 
 module.exports = {

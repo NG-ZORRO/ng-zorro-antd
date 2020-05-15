@@ -38,20 +38,21 @@ registerLocaleData(zh);
 
 以下 API 为 nz-date-picker、nz-month-picker、nz-range-picker, nz-week-picker 共享的 API。
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `[nzAllowClear]` | 是否显示清除按钮 | `boolean` | `true` |
-| `[nzAutoFocus]` | 自动获取焦点 | `boolean` | `false` |
-| `[nzDateRender]` | 自定义日期单元格的内容（month-picker/year-picker不支持） | `TemplateRef<Date> \| string \| ((d: Date) => TemplateRef<Date> \| string)` | - |
-| `[nzDisabled]` | 禁用 | `boolean` | `false` |
-| `[nzDisabledDate]` | 不可选择的日期 | `(current: Date) => boolean` | - |
-| `[nzLocale]` | 国际化配置 | `object` | [默认配置](https://github.com/ant-design/ant-design/blob/master/components/date-picker/locale/example.json) |
-| `[nzOpen]` | 控制弹层是否展开 | `boolean` | - |
-| `[nzPopupStyle]` | 额外的弹出日历样式 | `object` | `{}` |
-| `[nzDropdownClassName]` | 额外的弹出日历 className | `string` | - |
-| `[nzSize]` | 输入框大小，`large` 高度为 40px，`small` 为 24px，默认是 32px | `'large' \| 'small'` | - |
-| `[nzDefaultPickerValue]` | 默认面板日期 | `Date` \| `Date[]` | - |
-| `(nzOnOpenChange)` | 弹出日历和关闭日历的回调 | `EventEmitter<boolean>` | - |
+| 参数 | 说明 | 类型 | 默认值 | 全局配置 |
+| --- | --- | --- | --- | - |
+| `[nzAllowClear]` | 是否显示清除按钮 | `boolean` | `true` | - |
+| `[nzAutoFocus]` | 自动获取焦点 | `boolean` | `false` | - |
+| `[nzDateRender]` | 自定义日期单元格的内容（month-picker/year-picker不支持） | `TemplateRef<Date> \| string \| ((d: Date) => TemplateRef<Date> \| string)` | - | - |
+| `[nzDisabled]` | 禁用 | `boolean` | `false` | - |
+| `[nzDisabledDate]` | 不可选择的日期 | `(current: Date) => boolean` | - | - |
+| `[nzLocale]` | 国际化配置 | `object` | [默认配置](https://github.com/ant-design/ant-design/blob/master/components/date-picker/locale/example.json) | - |
+| `[nzOpen]` | 控制弹层是否展开 | `boolean` | - | - |
+| `[nzPopupStyle]` | 额外的弹出日历样式 | `object` | `{}` | - |
+| `[nzDropdownClassName]` | 额外的弹出日历 className | `string` | - | - |
+| `[nzSize]` | 输入框大小，`large` 高度为 40px，`small` 为 24px，默认是 32px | `'large' \| 'small'` | - | - |
+| `[nzDefaultPickerValue]` | 默认面板日期 | `Date` \| `Date[]` | - | - |
+| `[nzSuffixIcon]` | 自定义的后缀图标 | `string` \| `TemplateRef` | - | ✅ |
+| `(nzOnOpenChange)` | 弹出日历和关闭日历的回调 | `EventEmitter<boolean>` | - | - |
 
 ### nz-date-picker
 

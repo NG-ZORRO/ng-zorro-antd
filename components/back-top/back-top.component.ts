@@ -27,7 +27,7 @@ import {
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputNumber } from 'ng-zorro-antd/core/util';
 
 import { fromEvent, Subject } from 'rxjs';
@@ -54,14 +54,16 @@ const NZ_CONFIG_COMPONENT_NAME = 'backTop';
   preserveWhitespaces: false
 })
 export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
+  static ngAcceptInputType_nzVisibilityHeight: NumberInput;
+
   private scrollListenerDestroy$ = new Subject();
   private target: HTMLElement | null = null;
 
   visible: boolean = false;
 
-  @Input() nzTemplate: TemplateRef<void>;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 400) @InputNumber() nzVisibilityHeight: number;
-  @Input() nzTarget: string | HTMLElement;
+  @Input() nzTemplate?: TemplateRef<void>;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputNumber() nzVisibilityHeight: number = 400;
+  @Input() nzTarget?: string | HTMLElement;
   @Output() readonly nzClick: EventEmitter<boolean> = new EventEmitter();
 
   constructor(

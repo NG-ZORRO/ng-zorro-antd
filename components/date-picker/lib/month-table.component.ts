@@ -58,8 +58,8 @@ export class MonthTableComponent extends AbstractTable implements OnChanges {
           content,
           title: content,
           classMap: {},
-          cellRender: valueFunctionProp(this.cellRender, month), // Customized content
-          fullCellRender: valueFunctionProp(this.fullCellRender, month),
+          cellRender: valueFunctionProp(this.cellRender!, month), // Customized content
+          fullCellRender: valueFunctionProp(this.fullCellRender!, month),
           onClick: () => this.chooseMonth(cell.value.getMonth()), // don't use monthValue here,
           onMouseEnter: () => null
         };

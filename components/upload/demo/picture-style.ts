@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
+import { UploadFile } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'nz-demo-upload-picture-style',
   template: `
     <div class="clearfix">
       <nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76" nzListType="picture" [(nzFileList)]="fileList1">
-        <button nz-button><i nz-icon nzType="upload"></i><span>Upload</span></button>
+        <button nz-button><i nz-icon nzType="upload"></i>Upload</button>
       </nz-upload>
     </div>
     <br /><br />
@@ -42,16 +43,16 @@ import { Component } from '@angular/core';
   ]
 })
 export class NzDemoUploadPictureStyleComponent {
-  defaultFileList = [
+  defaultFileList: UploadFile[] = [
     {
-      uid: -1,
+      uid: '-1',
       name: 'xxx.png',
       status: 'done',
       url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
       thumbUrl: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
     },
     {
-      uid: -2,
+      uid: '-2',
       name: 'yyy.png',
       status: 'error'
     }

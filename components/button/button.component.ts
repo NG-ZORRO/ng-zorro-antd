@@ -22,13 +22,14 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzIconDirective } from 'ng-zorro-antd/icon';
 import { Subject } from 'rxjs';
 import { filter, startWith, takeUntil } from 'rxjs/operators';
 
-export type NzButtonType = 'primary' | 'dashed' | 'danger' | 'link' | null;
+export type NzButtonType = 'primary' | 'default' | 'dashed' | 'danger' | 'link' | null;
 export type NzButtonShape = 'circle' | 'round' | null;
 export type NzButtonSize = 'large' | 'default' | 'small';
 
@@ -58,21 +59,40 @@ const NZ_CONFIG_COMPONENT_NAME = 'button';
     '[class.ant-btn-loading]': `nzLoading`,
     '[class.ant-btn-background-ghost]': `nzGhost`,
     '[class.ant-btn-block]': `nzBlock`,
-    '[class.ant-input-search-button]': `nzSearch`
+    '[class.ant-input-search-button]': `nzSearch`,
+    '[attr.tabindex]': 'disabled ? -1 : (tabIndex === null ? null : tabIndex)',
+    '[attr.disabled]': 'disabled || null',
+    '(click)': 'haltDisabledEvents($event)'
   }
 })
 export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, AfterContentInit {
-  @ContentChild(NzIconDirective, { read: ElementRef }) nzIconDirectiveElement: ElementRef;
+  static ngAcceptInputType_nzBlock: BooleanInput;
+  static ngAcceptInputType_nzGhost: BooleanInput;
+  static ngAcceptInputType_nzSearch: BooleanInput;
+  static ngAcceptInputType_nzLoading: BooleanInput;
+  static ngAcceptInputType_nzDanger: BooleanInput;
+  static ngAcceptInputType_disabled: BooleanInput;
+
+  @ContentChild(NzIconDirective, { read: ElementRef }) nzIconDirectiveElement!: ElementRef;
   @Input() @InputBoolean() nzBlock: boolean = false;
   @Input() @InputBoolean() nzGhost: boolean = false;
   @Input() @InputBoolean() nzSearch: boolean = false;
   @Input() @InputBoolean() nzLoading: boolean = false;
   @Input() @InputBoolean() nzDanger: boolean = false;
+  @Input() @InputBoolean() disabled: boolean = false;
+  @Input() tabIndex: number | string | null = null;
   @Input() nzType: NzButtonType = null;
   @Input() nzShape: NzButtonShape = null;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzButtonSize;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzButtonSize = 'default';
   private destroy$ = new Subject<void>();
   private loading$ = new Subject<boolean>();
+
+  haltDisabledEvents(event: Event): void {
+    if (this.disabled) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+  }
 
   insertSpan(nodes: NodeList, renderer: Renderer2): void {
     nodes.forEach(node => {
@@ -83,6 +103,17 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
         renderer.appendChild(span, node);
       }
     });
+  }
+
+  assertIconOnly(element: HTMLButtonElement, renderer: Renderer2): void {
+    const listOfNode = Array.from(element.childNodes);
+    const iconCount = listOfNode.filter(node => node.nodeName === 'I').length;
+    const noText = listOfNode.every(node => node.nodeName !== '#text');
+    const noSpan = listOfNode.every(node => node.nodeName !== 'SPAN');
+    const isIconOnly = noSpan && noText && iconCount === 1;
+    if (isIconOnly) {
+      renderer.addClass(element, 'ant-btn-icon-only');
+    }
   }
 
   constructor(
@@ -107,6 +138,7 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
   }
 
   ngAfterViewInit(): void {
+    this.assertIconOnly(this.elementRef.nativeElement, this.renderer);
     this.insertSpan(this.elementRef.nativeElement.childNodes, this.renderer);
   }
 

@@ -30,8 +30,8 @@ export interface AutoSizeType {
 export class NzAutosizeDirective implements AfterViewInit, OnDestroy, DoCheck {
   private autosize: boolean | AutoSizeType = false;
   private el: HTMLTextAreaElement | HTMLInputElement = this.elementRef.nativeElement;
-  private cachedLineHeight: number;
-  private previousValue: string;
+  private cachedLineHeight!: number;
+  private previousValue!: string;
   private previousMinRows: number | undefined;
   private minRows: number | undefined;
   private maxRows: number | undefined;

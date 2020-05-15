@@ -55,7 +55,7 @@ export class NzOptionItemComponent implements OnChanges {
   @Input() activatedValue: NzSafeAny | null = null;
   @Input() listOfSelectedValue: NzSafeAny[] = [];
   @Input() icon: TemplateRef<NzSafeAny> | null = null;
-  @Input() compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean;
+  @Input() compareWith!: (o1: NzSafeAny, o2: NzSafeAny) => boolean;
   @Output() readonly itemClick = new EventEmitter<NzSafeAny>();
   @Output() readonly itemHover = new EventEmitter<NzSafeAny>();
   onHostMouseEnter(): void {
@@ -71,7 +71,7 @@ export class NzOptionItemComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const { value, activatedValue, listOfSelectedValue } = changes;
     if (value || listOfSelectedValue) {
-      this.selected = this.listOfSelectedValue.find(v => this.compareWith(v, this.value));
+      this.selected = this.listOfSelectedValue.some(v => this.compareWith(v, this.value));
     }
     if (value || activatedValue) {
       this.activated = this.compareWith(this.activatedValue, this.value);

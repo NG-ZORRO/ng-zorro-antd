@@ -23,6 +23,7 @@ import {
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { gridResponsiveMap, NzBreakpointEnum, NzBreakpointService } from 'ng-zorro-antd/core/services';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { merge, Subject } from 'rxjs';
@@ -59,7 +60,11 @@ const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
                 <!-- Horizontal & NOT Bordered -->
                 <ng-container *ngIf="!nzBordered">
                   <td class="ant-descriptions-item" [colSpan]="item.span">
-                    <span class="ant-descriptions-item-label" [class.ant-descriptions-item-colon]="nzColon">{{ item.title }}</span>
+                    <span class="ant-descriptions-item-label" [class.ant-descriptions-item-colon]="nzColon">
+                      <ng-container *nzStringTemplateOutlet="item.title">
+                        {{ item.title }}
+                      </ng-container>
+                    </span>
                     <span class="ant-descriptions-item-content">
                       <ng-template [ngTemplateOutlet]="item.content"></ng-template>
                     </span>
@@ -68,7 +73,9 @@ const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
                 <!-- Horizontal & Bordered -->
                 <ng-container *ngIf="nzBordered">
                   <td class="ant-descriptions-item-label" *nzStringTemplateOutlet="item.title">
-                    {{ item.title }}
+                    <ng-container *nzStringTemplateOutlet="item.title">
+                      {{ item.title }}
+                    </ng-container>
                   </td>
                   <td class="ant-descriptions-item-content" [colSpan]="item.span * 2 - 1">
                     <ng-template [ngTemplateOutlet]="item.content"></ng-template>
@@ -85,7 +92,11 @@ const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
                 <tr class="ant-descriptions-row">
                   <ng-container *ngFor="let item of row; let isLast = last">
                     <td class="ant-descriptions-item" [colSpan]="item.span">
-                      <span class="ant-descriptions-item-label" [class.ant-descriptions-item-colon]="nzColon">{{ item.title }}</span>
+                      <span class="ant-descriptions-item-label" [class.ant-descriptions-item-colon]="nzColon">
+                        <ng-container *nzStringTemplateOutlet="item.title">
+                          {{ item.title }}
+                        </ng-container>
+                      </span>
                     </td>
                   </ng-container>
                 </tr>
@@ -106,7 +117,9 @@ const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
                 <tr class="ant-descriptions-row">
                   <ng-container *ngFor="let item of row; let isLast = last">
                     <td class="ant-descriptions-item-label" [colSpan]="item.span">
-                      {{ item.title }}
+                      <ng-container *nzStringTemplateOutlet="item.title">
+                        {{ item.title }}
+                      </ng-container>
                     </td>
                   </ng-container>
                 </tr>
@@ -132,14 +145,17 @@ const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
   }
 })
 export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterContentInit {
-  @ContentChildren(NzDescriptionsItemComponent) items: QueryList<NzDescriptionsItemComponent>;
+  static ngAcceptInputType_nzBordered: BooleanInput;
+  static ngAcceptInputType_nzColon: BooleanInput;
 
-  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) nzBordered: boolean;
+  @ContentChildren(NzDescriptionsItemComponent) items!: QueryList<NzDescriptionsItemComponent>;
+
+  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzBordered: boolean = false;
   @Input() nzLayout: NzDescriptionsLayout = 'horizontal';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, defaultColumnMap) nzColumn: number | { [key in NzBreakpointEnum]: number };
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzDescriptionsSize;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzColumn: number | { [key in NzBreakpointEnum]: number } = defaultColumnMap;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzDescriptionsSize = 'default';
   @Input() nzTitle: string | TemplateRef<void> = '';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzColon: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzColon: boolean = true;
 
   itemMatrix: NzDescriptionsItemRenderProps[][] = [];
   realColumn = 3;

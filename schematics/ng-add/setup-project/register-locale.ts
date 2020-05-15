@@ -22,7 +22,7 @@ export function registerLocale(options: Schema): Rule {
     const appModulePath = getAppModulePath(host, getProjectMainFile(project));
     const moduleSource = parseSourceFile(host, appModulePath);
 
-    const locale = getCompatibleLocal(options);
+    const locale = options.locale || 'en_US';
     const localePrefix = locale.split('_')[ 0 ];
 
     const recorder = host.beginUpdate(appModulePath);
@@ -52,29 +52,13 @@ export function registerLocale(options: Schema): Rule {
   };
 }
 
-function getCompatibleLocal(options: Schema): string {
-  const defaultLocal = 'en_US';
-  if (options.locale === options.i18n) {
-    return options.locale;
-  } else if (options.locale === defaultLocal) {
-
-    console.log();
-    console.log(`${chalk.bgYellow('WARN')} ${chalk.cyan('--i18n')} option will be deprecated, ` +
-      `use ${chalk.cyan('--locale')} instead`);
-
-    return options.i18n;
-  } else {
-    return options.locale || defaultLocal;
-  }
-}
-
 function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, locale: string): Change {
   const allImports = findNodes(moduleSource, ts.SyntaxKind.ImportDeclaration);
   const allFun = findNodes(moduleSource, ts.SyntaxKind.ExpressionStatement);
 
   const registerLocaleDataFun = allFun.filter(node => {
     const fun = node.getChildren();
-    return fun[ 0 ].getChildren()[ 0 ] && fun[ 0 ].getChildren()[ 0 ].getText() === 'registerLocaleData';
+    return fun[ 0 ].getChildren()[ 0 ]?.getText() === 'registerLocaleData';
   });
 
   if (registerLocaleDataFun.length === 0) {
@@ -129,7 +113,7 @@ function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string,
     if (arrLiteral.elements.length === 0) {
       return addProvide;
     } else {
-      node = arrLiteral.elements.filter(e => e.getText && e.getText().includes('NZ_I18N'));
+      node = arrLiteral.elements.filter(e => e.getText?.().includes('NZ_I18N'));
       if (node.length === 0) {
         return addProvide;
       } else {

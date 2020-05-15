@@ -21,6 +21,7 @@ import {
 } from '@angular/core';
 import { slideAlertMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -43,6 +44,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'alert';
       [class.ant-alert-banner]="nzBanner"
       [class.ant-alert-closable]="nzCloseable"
       [class.ant-alert-with-description]="!!nzDescription"
+      [@.disabled]="nzNoAnimation"
       [@slideAlertMotion]
       (@slideAlertMotion.done)="onFadeAnimationDone()"
     >
@@ -72,14 +74,20 @@ const NZ_CONFIG_COMPONENT_NAME = 'alert';
   preserveWhitespaces: false
 })
 export class NzAlertComponent implements OnChanges, OnDestroy {
+  static ngAcceptInputType_nzCloseable: BooleanInput;
+  static ngAcceptInputType_nzShowIcon: BooleanInput;
+  static ngAcceptInputType_nzBanner: BooleanInput;
+  static ngAcceptInputType_nzNoAnimation: BooleanInput;
+
   @Input() nzCloseText: string | TemplateRef<void> | null = null;
   @Input() nzIconType: string | null = null;
   @Input() nzMessage: string | TemplateRef<void> | null = null;
   @Input() nzDescription: string | TemplateRef<void> | null = null;
   @Input() nzType: 'success' | 'info' | 'warning' | 'error' = 'info';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzCloseable: boolean;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzShowIcon: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzCloseable: boolean = false;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzShowIcon: boolean = false;
   @Input() @InputBoolean() nzBanner = false;
+  @Input() @InputBoolean() nzNoAnimation = false;
   @Output() readonly nzOnClose = new EventEmitter<boolean>();
   closed = false;
   iconTheme: 'outline' | 'fill' = 'fill';

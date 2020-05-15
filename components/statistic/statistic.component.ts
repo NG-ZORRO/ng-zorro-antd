@@ -7,6 +7,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { NzStatisticValueType } from './typings';
 
 @Component({
@@ -32,10 +33,10 @@ import { NzStatisticValueType } from './typings';
   `
 })
 export class NzStatisticComponent {
-  @Input() nzPrefix: string | TemplateRef<void>;
-  @Input() nzSuffix: string | TemplateRef<void>;
-  @Input() nzTitle: string | TemplateRef<void>;
-  @Input() nzValue: NzStatisticValueType;
-  @Input() nzValueStyle = {};
-  @Input() nzValueTemplate: TemplateRef<{ $implicit: NzStatisticValueType }>;
+  @Input() nzPrefix?: string | TemplateRef<void>;
+  @Input() nzSuffix?: string | TemplateRef<void>;
+  @Input() nzTitle?: string | TemplateRef<void>;
+  @Input() nzValue?: NzStatisticValueType;
+  @Input() nzValueStyle: NgStyleInterface = {};
+  @Input() nzValueTemplate?: TemplateRef<{ $implicit: NzStatisticValueType }>;
 }

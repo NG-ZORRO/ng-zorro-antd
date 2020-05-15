@@ -1,5 +1,6 @@
 import * as child_process from 'child_process';
 import * as gulp from 'gulp';
+import * as os from 'os';
 
 const gulpClean = require('gulp-clean');
 const resolveBin = require('resolve-bin');
@@ -15,7 +16,8 @@ export function execTask(binPath: string, args: string[], env: {} = {}): gulp.Ta
     (process.stdout as any)._handle.setBlocking(true);
     // tslint:disable-next-line:no-any
     (process.stdout as any)._handle.setBlocking(true);
-    const childProcess = child_process.spawn(binPath, args, {
+    const bin = os.platform() === 'win32' && binPath === 'ng' ? `${binPath}.cmd` : binPath;
+    const childProcess = child_process.spawn(bin, args, {
       env: { ...process.env, ...env },
       cwd: process.cwd(),
       stdio: 'inherit'

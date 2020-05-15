@@ -21,7 +21,7 @@ import {
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { FunctionProp } from 'ng-zorro-antd/core/types';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
-import { DisabledDateFn, PanelMode, SupportTimeOptions } from './standard-types';
+import { DisabledDateFn, NzDateMode, RangePartType, SupportTimeOptions } from './standard-types';
 import { PREFIX_CLASS } from './util';
 
 @Component({
@@ -37,7 +37,9 @@ import { PREFIX_CLASS } from './util';
           <ng-container *ngSwitchCase="'decade'">
             <decade-header
               [(value)]="activeDate"
-              [locale]="locale"
+              [locale]="locale!"
+              [showSuperPreBtn]="enablePrevNext('prev', 'decade')"
+              [showSuperNextBtn]="enablePrevNext('next', 'decade')"
               [showNextBtn]="false"
               [showPreBtn]="false"
               (panelModeChange)="panelModeChange.emit($event)"
@@ -58,7 +60,9 @@ import { PREFIX_CLASS } from './util';
           <ng-container *ngSwitchCase="'year'">
             <year-header
               [(value)]="activeDate"
-              [locale]="locale"
+              [locale]="locale!"
+              [showSuperPreBtn]="enablePrevNext('prev', 'year')"
+              [showSuperNextBtn]="enablePrevNext('next', 'year')"
               [showNextBtn]="false"
               [showPreBtn]="false"
               (panelModeChange)="panelModeChange.emit($event)"
@@ -79,7 +83,7 @@ import { PREFIX_CLASS } from './util';
           <ng-container *ngSwitchCase="'month'">
             <month-header
               [(value)]="activeDate"
-              [locale]="locale"
+              [locale]="locale!"
               [showNextBtn]="false"
               [showPreBtn]="false"
               (panelModeChange)="panelModeChange.emit($event)"
@@ -93,7 +97,6 @@ import { PREFIX_CLASS } from './util';
                 [activeDate]="activeDate"
                 [disabledDate]="disabledDate"
                 [cellRender]="dateRender"
-                (dayHover)="dayHover.emit($event)"
                 (valueChange)="onChooseMonth($event)"
               ></month-table>
             </div>
@@ -102,14 +105,18 @@ import { PREFIX_CLASS } from './util';
           <ng-container *ngSwitchDefault>
             <date-header
               [(value)]="activeDate"
-              [locale]="locale"
+              [locale]="locale!"
+              [showSuperPreBtn]="enablePrevNext('prev', 'date')"
+              [showSuperNextBtn]="enablePrevNext('next', 'date')"
+              [showPreBtn]="enablePrevNext('prev', 'date')"
+              [showNextBtn]="enablePrevNext('next', 'date')"
               (panelModeChange)="panelModeChange.emit($event)"
               (valueChange)="headerChange.emit($event)"
             >
             </date-header>
             <div class="{{ prefixCls }}-body">
               <date-table
-                [locale]="locale"
+                [locale]="locale!"
                 [showWeek]="showWeek"
                 [value]="value"
                 [activeDate]="activeDate"
@@ -129,18 +136,17 @@ import { PREFIX_CLASS } from './util';
           [nzInDatePicker]="true"
           [ngModel]="value?.nativeDate"
           (ngModelChange)="onSelectTime($event)"
-          [format]="timeOptions.nzFormat"
-          [nzHourStep]="timeOptions.nzHourStep"
-          [nzMinuteStep]="timeOptions.nzMinuteStep"
-          [nzSecondStep]="timeOptions.nzSecondStep"
-          [nzDisabledHours]="timeOptions.nzDisabledHours"
-          [nzDisabledMinutes]="timeOptions.nzDisabledMinutes"
-          [nzDisabledSeconds]="timeOptions.nzDisabledSeconds"
-          [nzHideDisabledOptions]="timeOptions.nzHideDisabledOptions"
-          [nzDefaultOpenValue]="timeOptions.nzDefaultOpenValue"
-          [nzUse12Hours]="timeOptions.nzUse12Hours"
-          [nzAddOn]="timeOptions.nzAddOn"
-          [opened]="true"
+          [format]="$any(timeOptions.nzFormat)"
+          [nzHourStep]="$any(timeOptions.nzHourStep)"
+          [nzMinuteStep]="$any(timeOptions.nzMinuteStep)"
+          [nzSecondStep]="$any(timeOptions.nzSecondStep)"
+          [nzDisabledHours]="$any(timeOptions.nzDisabledHours)"
+          [nzDisabledMinutes]="$any(timeOptions.nzDisabledMinutes)"
+          [nzDisabledSeconds]="$any(timeOptions.nzDisabledSeconds)"
+          [nzHideDisabledOptions]="!!timeOptions.nzHideDisabledOptions"
+          [nzDefaultOpenValue]="$any(timeOptions.nzDefaultOpenValue)"
+          [nzUse12Hours]="!!timeOptions.nzUse12Hours"
+          [nzAddOn]="$any(timeOptions.nzAddOn)"
         ></nz-time-picker-panel>
         <!-- use [opened] to trigger time panel \`initPosition()\` -->
       </ng-container>
@@ -148,22 +154,21 @@ import { PREFIX_CLASS } from './util';
   `
 })
 export class InnerPopupComponent implements OnChanges {
-  @Input() activeDate: CandyDate;
-  @Input() endPanelMode: PanelMode;
-  @Input() panelMode: PanelMode;
-  @Input() showWeek: boolean;
-  @Input() locale: NzCalendarI18nInterface;
-  @Input() showTimePicker: boolean;
-  @Input() timeOptions: SupportTimeOptions;
-  @Input() enablePrev: boolean;
-  @Input() enableNext: boolean;
-  @Input() disabledDate: DisabledDateFn;
-  @Input() dateRender: FunctionProp<TemplateRef<Date> | string>;
-  @Input() selectedValue: CandyDate[]; // Range ONLY
-  @Input() hoverValue: CandyDate[]; // Range ONLY
-  @Input() value: CandyDate;
+  @Input() activeDate!: CandyDate;
+  @Input() endPanelMode!: NzDateMode;
+  @Input() panelMode!: NzDateMode;
+  @Input() showWeek!: boolean;
+  @Input() locale!: NzCalendarI18nInterface;
+  @Input() showTimePicker!: boolean;
+  @Input() timeOptions!: SupportTimeOptions | null;
+  @Input() disabledDate?: DisabledDateFn;
+  @Input() dateRender?: string | TemplateRef<Date> | FunctionProp<TemplateRef<Date> | string>;
+  @Input() selectedValue!: CandyDate[]; // Range ONLY
+  @Input() hoverValue!: CandyDate[]; // Range ONLY
+  @Input() value!: CandyDate;
+  @Input() partType!: RangePartType;
 
-  @Output() readonly panelModeChange = new EventEmitter<PanelMode>();
+  @Output() readonly panelModeChange = new EventEmitter<NzDateMode>();
 
   // TODO: name is not proper
   @Output() readonly headerChange = new EventEmitter<CandyDate>(); // Emitted when user changed the header's value
@@ -172,6 +177,23 @@ export class InnerPopupComponent implements OnChanges {
   @Output() readonly dayHover = new EventEmitter<CandyDate>(); // Emitted when hover on a day by mouse enter
 
   prefixCls: string = PREFIX_CLASS;
+
+  /**
+   * Hide "next" arrow in left panel,
+   * hide "prev" arrow in right panel
+   * @param direction
+   * @param panelMode
+   */
+  enablePrevNext(direction: 'prev' | 'next', panelMode: NzDateMode): boolean {
+    if (
+      !this.showTimePicker &&
+      panelMode === this.endPanelMode &&
+      ((this.partType === 'left' && direction === 'next') || (this.partType === 'right' && direction === 'prev'))
+    ) {
+      return false;
+    }
+    return true;
+  }
 
   onSelectTime(date: Date): void {
     this.selectTime.emit(new CandyDate(date));
@@ -196,6 +218,7 @@ export class InnerPopupComponent implements OnChanges {
       this.value = value;
       this.selectDate.emit(value);
     } else {
+      this.headerChange.emit(value);
       this.panelModeChange.emit(this.endPanelMode);
     }
   }
@@ -206,6 +229,7 @@ export class InnerPopupComponent implements OnChanges {
       this.value = value;
       this.selectDate.emit(value);
     } else {
+      this.headerChange.emit(value);
       this.panelModeChange.emit(this.endPanelMode);
     }
   }
@@ -216,6 +240,7 @@ export class InnerPopupComponent implements OnChanges {
       this.value = value;
       this.selectDate.emit(value);
     } else {
+      this.headerChange.emit(value);
       this.panelModeChange.emit('year');
     }
   }

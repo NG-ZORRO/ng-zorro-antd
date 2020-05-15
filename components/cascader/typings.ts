@@ -63,5 +63,5 @@ export interface NzCascaderComponentAsSource {
 
   nzChangeOn?(option: NzCascaderOption, level: number): boolean;
 
-  nzLoadData?(node: NzCascaderOption, index?: number): PromiseLike<NzSafeAny>;
+  nzLoadData?(node: NzCascaderOption, index: number): PromiseLike<NzSafeAny>;
 }

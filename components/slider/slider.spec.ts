@@ -743,18 +743,14 @@ const styles = `
 `;
 
 @Component({
-  template: `
-    <nz-slider [nzDisabled]="disabled"></nz-slider>
-  `,
+  template: ` <nz-slider [nzDisabled]="disabled"></nz-slider> `,
   styles: [styles]
 })
 class NzTestSliderComponent {
   disabled = false;
 }
 @Component({
-  template: `
-    <nz-slider [nzMin]="min" [nzMax]="max"></nz-slider>
-  `,
+  template: ` <nz-slider [nzMin]="min" [nzMax]="max"></nz-slider> `,
   styles: [styles]
 })
 class SliderWithMinAndMaxComponent {
@@ -763,17 +759,13 @@ class SliderWithMinAndMaxComponent {
 }
 
 @Component({
-  template: `
-    <nz-slider [ngModel]="26"></nz-slider>
-  `,
+  template: ` <nz-slider [ngModel]="26"></nz-slider> `,
   styles: [styles]
 })
 class SliderWithValueComponent {}
 
 @Component({
-  template: `
-    <nz-slider [nzStep]="step"></nz-slider>
-  `,
+  template: ` <nz-slider [nzStep]="step"></nz-slider> `,
   styles: [styles]
 })
 class SliderWithStepComponent {
@@ -781,25 +773,19 @@ class SliderWithStepComponent {
 }
 
 @Component({
-  template: `
-    <nz-slider [ngModel]="3" [nzMin]="4" [nzMax]="6"></nz-slider>
-  `,
+  template: ` <nz-slider [ngModel]="3" [nzMin]="4" [nzMax]="6"></nz-slider> `,
   styles: [styles]
 })
 class SliderWithValueSmallerThanMinComponent {}
 
 @Component({
-  template: `
-    <nz-slider [ngModel]="7" [nzMin]="4" [nzMax]="6"></nz-slider>
-  `,
+  template: ` <nz-slider [ngModel]="7" [nzMin]="4" [nzMax]="6"></nz-slider> `,
   styles: [styles]
 })
 class SliderWithValueGreaterThanMaxComponent {}
 
 @Component({
-  template: `
-    <nz-slider nzVertical></nz-slider>
-  `,
+  template: ` <nz-slider nzVertical></nz-slider> `,
   styles: [styles]
 })
 class VerticalSliderComponent {}
@@ -838,7 +824,7 @@ class MixedSliderComponent {
   styles: [styles]
 })
 class SliderWithFormControlComponent implements OnInit {
-  form: FormGroup;
+  form!: FormGroup;
 
   constructor(private fb: FormBuilder) {}
 
@@ -850,9 +836,7 @@ class SliderWithFormControlComponent implements OnInit {
 }
 
 @Component({
-  template: `
-    <nz-slider [nzTooltipVisible]="show" [ngModel]="value"></nz-slider>
-  `
+  template: ` <nz-slider [nzTooltipVisible]="show" [ngModel]="value"></nz-slider> `
 })
 class SliderShowTooltipComponent {
   show: NzSliderShowTooltip = 'default';
@@ -860,9 +844,7 @@ class SliderShowTooltipComponent {
 }
 
 @Component({
-  template: `
-    <nz-slider [nzRange]="range"></nz-slider>
-  `
+  template: ` <nz-slider [nzRange]="range"></nz-slider> `
 })
 class NzTestSliderKeyboardComponent {
   range = false;

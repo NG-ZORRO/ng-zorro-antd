@@ -44,6 +44,7 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 | `[nzPlaceHolder]` | 没有值的时候显示的内容 | `string` | `"请选择时间"` |
 | `[nzPopupClassName]` | 弹出层类名 | `string` | `''` | ✅ |
 | `[nzUse12Hours]` | 使用12小时制，为true时format默认为`h:mm:ss a` | `boolean` | `false` | ✅ |
+| `[nzSuffixIcon]` | 自定义的后缀图标 | `string` \| `TemplateRef` | - | ✅ |
 | `(ngModelChange)` | 时间发生变化的回调 | `EventEmitter<Date>` | - |
 | `(nzOpenChange)` | 面板打开/关闭时的回调 | `EventEmitter<boolean>` | - |
 

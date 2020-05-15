@@ -19,7 +19,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzSizeDSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgStyleInterface, NzSizeDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -77,18 +77,22 @@ const NZ_CONFIG_COMPONENT_NAME = 'card';
   }
 })
 export class NzCardComponent implements OnDestroy {
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzBordered: boolean;
+  static ngAcceptInputType_nzBordered: BooleanInput;
+  static ngAcceptInputType_nzLoading: BooleanInput;
+  static ngAcceptInputType_nzHoverable: BooleanInput;
+
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzBordered: boolean = true;
   @Input() @InputBoolean() nzLoading = false;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzHoverable: boolean;
-  @Input() nzBodyStyle: { [key: string]: string };
-  @Input() nzCover: TemplateRef<void>;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzHoverable: boolean = false;
+  @Input() nzBodyStyle: NgStyleInterface | null = null;
+  @Input() nzCover?: TemplateRef<void>;
   @Input() nzActions: Array<TemplateRef<void>> = [];
   @Input() nzType: string | 'inner' | null = null;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzSizeDSType;
-  @Input() nzTitle: string | TemplateRef<void>;
-  @Input() nzExtra: string | TemplateRef<void>;
-  @ContentChild(NzCardTabComponent, { static: false }) listOfNzCardTabComponent: NzCardTabComponent;
-  @ContentChildren(NzCardGridDirective) listOfNzCardGridDirective: QueryList<NzCardGridDirective>;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzSizeDSType = 'default';
+  @Input() nzTitle?: string | TemplateRef<void>;
+  @Input() nzExtra?: string | TemplateRef<void>;
+  @ContentChild(NzCardTabComponent, { static: false }) listOfNzCardTabComponent?: NzCardTabComponent;
+  @ContentChildren(NzCardGridDirective) listOfNzCardGridDirective!: QueryList<NzCardGridDirective>;
   private destroy$ = new Subject();
 
   constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {

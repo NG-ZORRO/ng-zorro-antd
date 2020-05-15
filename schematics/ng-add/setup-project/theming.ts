@@ -135,8 +135,7 @@ function addThemeStyleToTarget(project: WorkspaceProject, targetName: 'test' | '
  */
 function validateDefaultTargetBuilder(project: WorkspaceProject, targetName: 'build' | 'test'): boolean {
   const defaultBuilder = defaultTargetBuilders[ targetName ];
-  const targetConfig = project.architect && project.architect[ targetName ] ||
-    project.targets && project.targets[ targetName ];
+  const targetConfig = project.architect?.[ targetName ] || project.targets?.[ targetName ];
   const isDefaultBuilder = targetConfig && targetConfig.builder === defaultBuilder;
 
   if (!isDefaultBuilder && targetName === 'build') {

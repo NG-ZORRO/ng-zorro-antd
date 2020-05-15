@@ -27,6 +27,6 @@ import { Component } from '@angular/core';
   `
 })
 export class NzDemoInputAllowClearComponent {
-  inputValue: string | null;
-  textValue: string | null;
+  inputValue: string | null = null;
+  textValue: string | null = null;
 }

@@ -21,6 +21,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -63,6 +64,10 @@ import { NzTableFilterFn, NzTableFilterList, NzTableFilterValue, NzTableSortFn, 
   }
 })
 export class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy {
+  static ngAcceptInputType_nzShowSort: BooleanInput;
+  static ngAcceptInputType_nzShowFilter: BooleanInput;
+  static ngAcceptInputType_nzCustomFilter: BooleanInput;
+
   manualClickOrder$ = new Subject<NzThAddOnComponent>();
   calcOperatorChange$ = new Subject();
   nzFilterValue: NzTableFilterValue = null;
@@ -72,7 +77,7 @@ export class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy {
   private destroy$ = new Subject();
   private isNzShowSortChanged = false;
   private isNzShowFilterChanged = false;
-  @Input() nzColumnKey: string;
+  @Input() nzColumnKey?: string;
   @Input() nzFilterMultiple = true;
   @Input() nzSortOrder: NzTableSortOrder = null;
   @Input() nzSortPriority: number | boolean = false;
@@ -87,7 +92,7 @@ export class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy {
   @Output() readonly nzSortOrderChange = new EventEmitter<string | null>();
   @Output() readonly nzFilterChange = new EventEmitter<NzTableFilterValue>();
   /** @deprecated use nzColumnKey instead **/
-  @Input() nzSortKey: string;
+  @Input() nzSortKey?: string;
   /** @deprecated use nzSortOrder instead **/
   @Input() nzSort: NzTableSortOrder = null;
   /** @deprecated use nzSortOrderChange instead **/

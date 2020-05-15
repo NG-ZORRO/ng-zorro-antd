@@ -16,6 +16,7 @@ import {
 import { ComponentFixture, fakeAsync, flush, flushMicrotasks, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { NzConfigService } from 'ng-zorro-antd';
 
 import { createKeyboardEvent, dispatchEvent, dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 
@@ -79,6 +80,7 @@ describe('NzModal', () => {
   let modalService: NzModalService;
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
+  let configService: NzConfigService;
   let fixture: ComponentFixture<TestWithServiceComponent>;
   let mockLocation: SpyLocation;
 
@@ -91,12 +93,16 @@ describe('NzModal', () => {
     TestBed.compileComponents();
   }));
 
-  beforeEach(inject([NzModalService, Location, OverlayContainer], (m: NzModalService, l: Location, oc: OverlayContainer) => {
-    modalService = m;
-    mockLocation = l as SpyLocation;
-    overlayContainer = oc;
-    overlayContainerElement = oc.getContainerElement();
-  }));
+  beforeEach(inject(
+    [NzModalService, Location, OverlayContainer, NzConfigService],
+    (m: NzModalService, l: Location, oc: OverlayContainer, cs: NzConfigService) => {
+      modalService = m;
+      configService = cs;
+      mockLocation = l as SpyLocation;
+      overlayContainer = oc;
+      overlayContainerElement = oc.getContainerElement();
+    }
+  ));
 
   afterEach(() => {
     overlayContainer.ngOnDestroy();
@@ -381,6 +387,23 @@ describe('NzModal', () => {
     flush();
     expect(overlayContainerElement.querySelector('nz-modal-container')).toBeTruthy();
 
+    modalRef.close();
+    fixture.detectChanges();
+    flush();
+  }));
+
+  it('should global config work', fakeAsync(() => {
+    configService.set('modal', { nzMask: false });
+
+    const modalRef = modalService.create({
+      nzContent: TestWithModalContentComponent
+    });
+
+    fixture.detectChanges();
+
+    expect(modalRef.getBackdropElement()?.classList).not.toContain('ant-modal-mask');
+
+    configService.set('modal', { nzMask: true });
     modalRef.close();
     fixture.detectChanges();
     flush();
@@ -1161,14 +1184,6 @@ describe('NzModal', () => {
       expect(overlayContainerElement.querySelectorAll('nz-modal-confirm-container').length).toBe(0);
     }));
 
-    it('should the cancel button work', fakeAsync(() => {
-      expect(() => {
-        modalService.confirm({
-          nzContent: TestWithServiceComponent
-        });
-      }).toThrowError('The confirm mode does not support using component as content');
-    }));
-
     it('should info type work', fakeAsync(() => {
       const modalRef = modalService.info();
       fixture.detectChanges();
@@ -1232,6 +1247,24 @@ describe('NzModal', () => {
       fixture.detectChanges();
       flush();
     }));
+
+    it('should open confirm with component', () => {
+      const modalRef = modalService.confirm({
+        nzContent: TestWithModalContentComponent,
+        nzComponentParams: {
+          value: 'Confirm'
+        }
+      });
+
+      fixture.detectChanges();
+
+      const modalContentElement = overlayContainerElement.querySelector('.modal-content');
+      expect(modalContentElement).toBeTruthy();
+      expect(modalContentElement!.textContent).toBe('Hello Confirm');
+      expect(modalRef.getContentComponent() instanceof TestWithModalContentComponent).toBe(true);
+      expect(modalRef.getContentComponent().modalRef).toBe(modalRef);
+      modalRef.close();
+    });
   });
 
   describe('nz-modal component', () => {
@@ -1324,6 +1357,37 @@ describe('NzModal', () => {
       flush();
     }));
 
+    it('should global config work', fakeAsync(() => {
+      configService.set('modal', {
+        nzMaskClosable: false
+      });
+      const modalInstance = componentInstance.nzModalComponent;
+
+      modalInstance.open();
+      componentFixture.detectChanges();
+      flush();
+
+      let modalWrap = overlayContainerElement.querySelector('nz-modal-container') as HTMLElement;
+      dispatchMouseEvent(modalWrap, 'mousedown');
+      fixture.detectChanges();
+      dispatchMouseEvent(modalWrap, 'mouseup');
+      flush();
+      expect(componentInstance.cancelSpy).not.toHaveBeenCalled();
+
+      configService.set('modal', {
+        nzMaskClosable: true
+      });
+      componentFixture.detectChanges();
+      flush();
+
+      modalWrap = overlayContainerElement.querySelector('nz-modal-container') as HTMLElement;
+      dispatchMouseEvent(modalWrap, 'mousedown');
+      fixture.detectChanges();
+      dispatchMouseEvent(modalWrap, 'mouseup');
+      flush();
+      expect(componentInstance.cancelSpy).toHaveBeenCalled();
+    }));
+
     it('should instance API work', fakeAsync(() => {
       const modalInstance = componentInstance.nzModalComponent;
 
@@ -1374,6 +1438,20 @@ describe('NzModal', () => {
         modalInstance.triggerCancel();
       }).not.toThrowError();
     }));
+
+    it('should close when the host view is destroyed', fakeAsync(() => {
+      componentInstance.isVisible = true;
+      componentFixture.detectChanges();
+      flush();
+
+      expect(overlayContainerElement.querySelector('nz-modal-container')).not.toBeNull();
+
+      componentFixture.destroy();
+      componentFixture.detectChanges();
+      flush();
+
+      expect(overlayContainerElement.querySelector('nz-modal-container')).toBeNull();
+    }));
   });
 });
 
@@ -1383,12 +1461,10 @@ class TestWithViewContainerDirective {
 }
 
 @Component({
-  template: `
-    <test-with-view-container></test-with-view-container>
-  `
+  template: ` <test-with-view-container></test-with-view-container> `
 })
 class TestWithChildViewContainerComponent {
-  @ViewChild(TestWithViewContainerDirective) childWithViewContainer: TestWithViewContainerDirective;
+  @ViewChild(TestWithViewContainerDirective) childWithViewContainer!: TestWithViewContainerDirective;
 
   get childViewContainer(): ViewContainerRef {
     return this.childWithViewContainer.viewContainerRef;
@@ -1412,9 +1488,9 @@ class TestWithOnPushViewContainerComponent {
   `
 })
 class TestWithServiceComponent {
-  value: string;
-  modalRef: NzModalRef;
-  @ViewChild(TemplateRef) templateRef: TemplateRef<{}>;
+  value?: string;
+  modalRef?: NzModalRef;
+  @ViewChild(TemplateRef) templateRef!: TemplateRef<{}>;
 
   constructor(public nzModalService: NzModalService, public viewContainerRef: ViewContainerRef) {}
 
@@ -1432,7 +1508,7 @@ class TestWithServiceComponent {
   `
 })
 class TestWithModalContentComponent {
-  @Input() value: string;
+  @Input() value?: string;
 
   constructor(public modalRef: NzModalRef, public modalInjector: Injector) {}
 
@@ -1453,8 +1529,8 @@ class TestModalComponent {
   isVisible = false;
   cancelSpy = jasmine.createSpy('cancel spy');
   okSpy = jasmine.createSpy('ok spy');
-  @ViewChild(NzModalComponent) nzModalComponent: NzModalComponent;
-  @ViewChild(TemplateRef) templateRef: TemplateRef<{}>;
+  @ViewChild(NzModalComponent) nzModalComponent!: NzModalComponent;
+  @ViewChild(TemplateRef) templateRef!: TemplateRef<{}>;
   content: TemplateRef<{}> = this.templateRef;
 
   constructor() {}

@@ -41,7 +41,7 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
   @Input() nzHref = '#';
 
   titleStr: string | null = '';
-  titleTpl: TemplateRef<NzSafeAny>;
+  titleTpl?: TemplateRef<NzSafeAny>;
 
   @Input()
   set nzTitle(value: string | TemplateRef<void>) {
@@ -53,8 +53,8 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
     }
   }
 
-  @ContentChild('nzTemplate', { static: false }) nzTemplate: TemplateRef<void>;
-  @ViewChild('linkTitle') linkTitle: ElementRef<HTMLAnchorElement>;
+  @ContentChild('nzTemplate', { static: false }) nzTemplate!: TemplateRef<void>;
+  @ViewChild('linkTitle') linkTitle!: ElementRef<HTMLAnchorElement>;
 
   constructor(
     public elementRef: ElementRef,

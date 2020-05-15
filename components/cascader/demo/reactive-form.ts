@@ -64,7 +64,7 @@ const options = [
   ]
 })
 export class NzDemoCascaderReactiveFormComponent implements OnDestroy {
-  form: FormGroup;
+  form!: FormGroup;
   nzOptions: NzCascaderOption[] = options;
   changeSubscription: Subscription;
   constructor(private fb: FormBuilder) {

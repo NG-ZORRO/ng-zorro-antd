@@ -26,13 +26,13 @@ import { toBoolean } from 'ng-zorro-antd/core/util';
 import { merge, Subject, Subscription } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
-import { NgClassType, NzSizeDSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgClassType, NzSizeDSType } from 'ng-zorro-antd/core/types';
 
 import { NzStepComponent } from './step.component';
 
 export type NzDirectionType = 'horizontal' | 'vertical';
 export type NzStatusType = 'wait' | 'process' | 'finish' | 'error';
-
+export type nzProgressDotTemplate = TemplateRef<{ $implicit: TemplateRef<void>; status: string; index: number }>;
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -46,7 +46,9 @@ export type NzStatusType = 'wait' | 'process' | 'finish' | 'error';
   `
 })
 export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterContentInit {
-  @ContentChildren(NzStepComponent) steps: QueryList<NzStepComponent>;
+  static ngAcceptInputType_nzProgressDot: BooleanInput | nzProgressDotTemplate | undefined | null;
+
+  @ContentChildren(NzStepComponent) steps!: QueryList<NzStepComponent>;
 
   @Input() nzCurrent = 0;
   @Input() nzDirection: NzDirectionType = 'horizontal';
@@ -57,7 +59,7 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
   @Input() nzStatus: NzStatusType = 'process';
 
   @Input()
-  set nzProgressDot(value: boolean | TemplateRef<{ $implicit: TemplateRef<void>; status: string; index: number }>) {
+  set nzProgressDot(value: boolean | nzProgressDotTemplate) {
     if (value instanceof TemplateRef) {
       this.showProcessDot = true;
       this.customProcessDotTemplate = value;
@@ -70,11 +72,11 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
   @Output() readonly nzIndexChange = new EventEmitter<number>();
 
   private destroy$ = new Subject<void>();
-  private indexChangeSubscription: Subscription;
+  private indexChangeSubscription?: Subscription;
 
   showProcessDot = false;
-  customProcessDotTemplate: TemplateRef<{ $implicit: TemplateRef<void>; status: string; index: number }>;
-  classMap: NgClassType;
+  customProcessDotTemplate?: TemplateRef<{ $implicit: TemplateRef<void>; status: string; index: number }>;
+  classMap: NgClassType = {};
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzStartIndex || changes.nzDirection || changes.nzStatus || changes.nzCurrent) {

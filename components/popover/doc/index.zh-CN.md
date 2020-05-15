@@ -27,10 +27,11 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 | `[nzPopoverContent]` | 用于定义内容 | `string \| TemplateRef<void>` | - |
 | `[nzPopoverTrigger]` | 触发行为，为 `null` 时不响应光标事件 | `'click' \| 'focus' \| 'hover' \| null` | `'hover'` |
 | `[nzPopoverPlacement]` | 气泡框位置 | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
+| `[nzPopoverOrigin]` | 气泡框定位元素 | `ElementRef` | - |
 
 
 更多属性请参考 [Tooltip](/components/tooltip/zh#api)。
 
 ## 注意
 
-请确保 `nz-popover` 的子元素能接受 `onMouseEnter`、`onMouseLeave`、`onFocus`、`onClick` 事件。
+请确保 `[nz-popover]` 元素能接受 `onMouseEnter`、`onMouseLeave`、`onFocus`、`onClick` 事件。

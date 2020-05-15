@@ -26,28 +26,15 @@ import {
 } from '@angular/core';
 import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, isEmpty } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { startWith, take, takeUntil } from 'rxjs/operators';
 
-export type NzBadgeStatusType = 'success' | 'processing' | 'default' | 'error' | 'warning';
+import { badgePresetColors } from './preset-colors';
+import { NzBadgeStatusType } from './types';
 
 const NZ_CONFIG_COMPONENT_NAME = 'backTop';
-const NZ_BADGE_COLORS = [
-  'pink',
-  'red',
-  'yellow',
-  'orange',
-  'cyan',
-  'green',
-  'blue',
-  'purple',
-  'geekblue',
-  'magenta',
-  'volcano',
-  'gold',
-  'lime'
-];
 
 @Component({
   selector: 'nz-badge',
@@ -72,7 +59,7 @@ const NZ_BADGE_COLORS = [
         [@.disabled]="notWrapper"
         [@zoomBadgeMotion]
         [ngStyle]="nzStyle"
-        [attr.title]="nzTitle || nzCount"
+        [attr.title]="nzTitle === null ? '' : nzTitle || nzCount"
         [style.right.px]="nzOffset && nzOffset[0] ? -nzOffset[0] : null"
         [style.marginTop.px]="nzOffset && nzOffset[1] ? nzOffset[1] : null"
         [class.ant-badge-count]="!nzDot"
@@ -102,30 +89,33 @@ const NZ_BADGE_COLORS = [
   }
 })
 export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
+  static ngAcceptInputType_nzShowZero: BooleanInput;
+  static ngAcceptInputType_nzShowDot: BooleanInput;
+  static ngAcceptInputType_nzDot: BooleanInput;
+
   private destroy$ = new Subject();
   notWrapper = true;
   viewInit = false;
   maxNumberArray: string[] = [];
   countArray: number[] = [];
   countSingleArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-  colorArray = NZ_BADGE_COLORS;
   presetColor: string | null = null;
-  count: number;
-  @ViewChild('contentElement', { static: false }) contentElement: ElementRef;
+  count: number = 0;
+  @ViewChild('contentElement', { static: false }) contentElement?: ElementRef;
   @Input() @InputBoolean() nzShowZero: boolean = false;
   @Input() @InputBoolean() nzShowDot = true;
   @Input() @InputBoolean() nzDot = false;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 99) nzOverflowCount: number;
-  @Input() nzText: string;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzColor: string;
-  @Input() nzTitle: string;
-  @Input() nzStyle: { [key: string]: string };
-  @Input() nzStatus: NzBadgeStatusType;
-  @Input() nzCount: number | TemplateRef<void>;
-  @Input() nzOffset: [number, number];
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzOverflowCount: number = 99;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzColor?: string = undefined;
+  @Input() nzStyle: { [key: string]: string } | null = null;
+  @Input() nzText?: string;
+  @Input() nzTitle?: string | null | undefined;
+  @Input() nzStatus?: NzBadgeStatusType | string;
+  @Input() nzCount?: number | TemplateRef<NzSafeAny>;
+  @Input() nzOffset?: [number, number];
 
   checkContent(): void {
-    this.notWrapper = isEmpty(this.contentElement.nativeElement);
+    this.notWrapper = isEmpty(this.contentElement?.nativeElement);
     if (this.notWrapper) {
       this.renderer.addClass(this.elementRef.nativeElement, 'ant-badge-not-a-wrapper');
     } else {
@@ -161,7 +151,7 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
     });
 
     this.contentObserver
-      .observe(this.contentElement)
+      .observe(this.contentElement!)
       .pipe(startWith(true), takeUntil(this.destroy$))
       .subscribe(() => {
         this.checkContent();
@@ -181,7 +171,7 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
       this.generateMaxNumberArray();
     }
     if (nzColor) {
-      this.presetColor = this.colorArray.indexOf(this.nzColor) !== -1 ? this.nzColor : null;
+      this.presetColor = this.nzColor && badgePresetColors.indexOf(this.nzColor) !== -1 ? this.nzColor : null;
     }
   }
 

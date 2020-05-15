@@ -1,12 +1,13 @@
 import {
-  MigrationRule,
-  ResolvedResource
+  Migration,
+  ResolvedResource,
+  UpgradeData
 } from '@angular/cdk/schematics';
 import { findElementWithTag } from '../../../utils/ng-update/elements';
 
-export class TooltipLikeTemplateRule extends MigrationRule<null> {
+export class TooltipLikeTemplateRule extends Migration<UpgradeData> {
 
-  ruleEnabled = true;
+  enabled = true;
 
   visitTemplate(template: ResolvedResource): void {
 

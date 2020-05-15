@@ -28,7 +28,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { EMPTY, merge, Observable, of, Subject } from 'rxjs';
@@ -52,11 +52,13 @@ import { NzTrDirective } from './tr.directive';
   `
 })
 export class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewInit, OnInit, OnChanges {
+  static ngAcceptInputType_nzSingleSort: BooleanInput;
+
   private destroy$ = new Subject<void>();
   isInsideTable = false;
-  @ViewChild('contentTemplate', { static: true }) templateRef: TemplateRef<NzSafeAny>;
-  @ContentChildren(NzTrDirective) listOfNzTrDirective: QueryList<NzTrDirective>;
-  @ContentChildren(NzThAddOnComponent, { descendants: true }) listOfNzThAddOnComponent: QueryList<NzThAddOnComponent>;
+  @ViewChild('contentTemplate', { static: true }) templateRef!: TemplateRef<NzSafeAny>;
+  @ContentChildren(NzTrDirective) listOfNzTrDirective!: QueryList<NzTrDirective>;
+  @ContentChildren(NzThAddOnComponent, { descendants: true }) listOfNzThAddOnComponent!: QueryList<NzThAddOnComponent>;
   /** @deprecated use nzSortFn and nzSortPriority instead **/
   @Input() @InputBoolean() nzSingleSort = false;
   /** @deprecated use nzSortOrderChange instead **/

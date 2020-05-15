@@ -7,7 +7,7 @@ title: 常见问题
 
 ### Angular 是不是打出来的包很大？ `ng-zorro-antd` 打包大小如何？
 
-Angular 的 hello-world 项目（包含路由、动画与 Http 等模块） gzip 之后大概 `30KB`，`ng-zorro-antd` 的官网（包含所有组件，懒加载）打包后 gzip 之后为 `287KB`。这与 React 或者 Vue 增加路由、动画、Http 等模块之后的体积不会有太大差异。
+Angular 的 hello-world 项目（包含路由、动画与 Http 等模块） gzip 之后大概 `30KB`，`ng-zorro-antd` 的官网（包含所有组件，懒加载）打包后 gzip 之后为 `287KB`。这与 React 或者 Vue 增加路由、动画、Http 等模块之后 gzip 的体积不会有太大差异。
 
 如果碰到了打包大小问题，首先请确定使用了 `ng build --prod` 正确的方式进行了打包，如果除 `ng-zorro-antd` 之外还引入了其他第三方组件库，你可以通过 `ng build --prod --sourceMap=true` 命令生成 sourcemap 文件后，再通过 source-map-explorer 检查每个模块所占用的体积，具体操作可以参考[官方文档](https://angular.cn/guide/deployment#inspect-the-bundles)。
 

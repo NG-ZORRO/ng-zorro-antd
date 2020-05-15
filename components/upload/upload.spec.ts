@@ -6,10 +6,10 @@ import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testin
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Observable, Observer, of, throwError } from 'rxjs';
-import { delay } from 'rxjs/operators';
 
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
+import { Observable, Observer, of, throwError } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import en_US from '../i18n/languages/en_US';
 import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzI18nService } from '../i18n/nz-i18n.service';
@@ -1344,8 +1344,8 @@ describe('upload', () => {
   `
 })
 class TestUploadComponent {
-  @ViewChild('upload', { static: false }) comp: NzUploadComponent;
-  @ViewChild('customnzIconRender', { static: false }) customnzIconRender: TemplateRef<void>;
+  @ViewChild('upload', { static: false }) comp!: NzUploadComponent;
+  @ViewChild('customnzIconRender', { static: false }) customnzIconRender!: TemplateRef<void>;
   show = true;
   nzType: UploadType = 'select';
   nzLimit = 0;
@@ -1372,19 +1372,19 @@ class TestUploadComponent {
   nzShowUploadList: boolean | ShowUploadListInterface = true;
   nzShowButton = true;
   nzWithCredentials = false;
-  nzTransformFile: (file: UploadFile) => UploadTransformFileType;
+  nzTransformFile!: (file: UploadFile) => UploadTransformFileType;
   nzIconRender: TemplateRef<void> | null = null;
   _onPreview = false;
   onPreview = (): void => {
     this._onPreview = true;
   };
-  previewFile: (file: UploadFile) => Observable<string>;
+  previewFile!: (file: UploadFile) => Observable<string>;
   _onRemove = false;
   onRemove: null | ((file: UploadFile) => boolean | Observable<boolean>) = (): boolean => {
     this._onRemove = true;
     return true;
   };
-  _nzChange: UploadChangeParam;
+  _nzChange!: UploadChangeParam;
 
   nzChange(value: UploadChangeParam): void {
     this._nzChange = value;
@@ -1414,7 +1414,7 @@ class TestUploadComponent {
   encapsulation: ViewEncapsulation.None
 })
 class TestUploadListComponent {
-  @ViewChild('list', { static: false }) comp: NzUploadListComponent;
+  @ViewChild('list', { static: false }) comp!: NzUploadListComponent;
   listType: UploadListType = 'picture-card';
   items: any[] = [
     {
@@ -1446,7 +1446,7 @@ class TestUploadListComponent {
   onPreview: VoidFunction | null = (): void => {
     this._onPreview = true;
   };
-  previewFile: (file: UploadFile) => Observable<string>;
+  previewFile!: (file: UploadFile) => Observable<string>;
   _onRemove = false;
   onRemove: any = (): void => {
     this._onRemove = true;
@@ -1454,13 +1454,10 @@ class TestUploadListComponent {
 }
 
 @Component({
-  template: `
-    <div nz-upload-btn #btn [options]="options" [classes]="classes">UPLAOD</div>
-  `
+  template: ` <div nz-upload-btn #btn [options]="options" class="test">UPLAOD</div> `
 })
 class TestUploadBtnComponent {
-  @ViewChild('btn', { static: false }) comp: NzUploadBtnComponent;
-  classes: string[] = ['test'];
+  @ViewChild('btn', { static: false }) comp!: NzUploadBtnComponent;
   options: ZipButtonOptions = {
     disabled: false,
     openFileDialogOnClick: true,

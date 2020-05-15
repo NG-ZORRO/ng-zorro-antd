@@ -7,6 +7,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -24,20 +25,23 @@ import { NzDisplayedStep, NzExtendedMark } from './typings';
         class="ant-slider-dot"
         *ngFor="let mark of steps; trackBy: trackById"
         [class.ant-slider-dot-active]="mark.active"
-        [ngStyle]="mark.style"
+        [ngStyle]="mark.style!"
       >
       </span>
     </div>
   `
 })
 export class NzSliderStepComponent implements OnChanges {
+  static ngAcceptInputType_vertical: BooleanInput;
+  static ngAcceptInputType_included: BooleanInput;
+
   @Input() lowerBound: number | null = null;
   @Input() upperBound: number | null = null;
-  @Input() marksArray: NzExtendedMark[];
+  @Input() marksArray: NzExtendedMark[] = [];
   @Input() @InputBoolean() vertical = false;
   @Input() @InputBoolean() included = false;
 
-  steps: NzDisplayedStep[];
+  steps: NzDisplayedStep[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.marksArray) {

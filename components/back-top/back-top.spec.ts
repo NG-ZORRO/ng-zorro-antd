@@ -46,7 +46,8 @@ describe('Component:nz-back-top', () => {
     component = fixture.componentInstance.nzBackTopComponent;
     componentObject = new NzBackTopPageObject();
     debugElement = fixture.debugElement;
-    scrollService = TestBed.get(NzScrollService);
+    // tslint:disable-next-line:no-any
+    scrollService = TestBed.inject(NzScrollService) as any;
   });
 
   describe('[default]', () => {
@@ -203,7 +204,7 @@ describe('Component:nz-back-top', () => {
 })
 class TestBackTopComponent {
   @ViewChild(NzBackTopComponent, { static: true })
-  nzBackTopComponent: NzBackTopComponent;
+  nzBackTopComponent!: NzBackTopComponent;
 
   target: HTMLElement | null = null;
 
@@ -224,11 +225,11 @@ class TestBackTopComponent {
 })
 class TestBackTopTemplateComponent {
   @ViewChild(NzBackTopComponent, { static: false })
-  nzBackTopComponent: NzBackTopComponent;
+  nzBackTopComponent!: NzBackTopComponent;
 }
 
 class MockNzScrollService {
-  mockTopOffset: number;
+  mockTopOffset: number = 0;
 
   getScroll(): number {
     return this.mockTopOffset;

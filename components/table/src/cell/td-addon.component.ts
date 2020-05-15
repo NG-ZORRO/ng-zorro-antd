@@ -18,6 +18,7 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 @Component({
@@ -47,6 +48,10 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   }
 })
 export class NzTdAddOnComponent implements OnChanges {
+  static ngAcceptInputType_nzShowExpand: BooleanInput;
+  static ngAcceptInputType_nzShowCheckbox: BooleanInput;
+  static ngAcceptInputType_nzExpand: BooleanInput;
+
   @Input() nzChecked = false;
   @Input() nzDisabled = false;
   @Input() nzIndeterminate = false;

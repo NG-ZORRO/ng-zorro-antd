@@ -20,7 +20,6 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  OnInit,
   Optional,
   Output,
   QueryList,
@@ -33,7 +32,7 @@ import {
 import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/router';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { PREFIX } from 'ng-zorro-antd/core/logger';
-import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NumberInput, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toNumber, wrapIntoObservable } from 'ng-zorro-antd/core/util';
 
 import { merge, Subject, Subscription } from 'rxjs';
@@ -64,7 +63,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'tabs';
         [ngStyle]="nzTabBarStyle"
         [nzHideBar]="nzHideAll"
         [nzTabBarExtraContent]="nzTabBarExtraContent"
-        [selectedIndex]="nzSelectedIndex"
+        [selectedIndex]="nzSelectedIndex!"
         (nzOnNextClick)="nzOnNextClick.emit()"
         (nzOnPrevClick)="nzOnPrevClick.emit()"
       >
@@ -104,10 +103,24 @@ const NZ_CONFIG_COMPONENT_NAME = 'tabs';
     </ng-container>
   `,
   host: {
-    '[class]': 'hostClassMap'
+    '[class.ant-tabs]': `true`,
+    '[class.ant-tabs-no-animation]': `isAnimationDisabled`,
+    '[class.ant-tabs-line]': `nzType === 'line'`,
+    '[class.ant-tabs-card]': `nzType === 'card'`,
+    '[class.ant-tabs-top]': `nzTabPosition === 'top'`,
+    '[class.ant-tabs-bottom]': `nzTabPosition === 'bottom'`,
+    '[class.ant-tabs-left]': `nzTabPosition === 'left'`,
+    '[class.ant-tabs-right]': `nzTabPosition === 'right'`,
+    '[class.ant-tabs-vertical]': `nzTabPosition === 'left' || nzTabPosition === 'right'`,
+    '[class.ant-tabs-large]': `nzSize === 'large'`,
+    '[class.ant-tabs-small]': `nzSize === 'small'`
   }
 })
-export class NzTabSetComponent implements AfterContentChecked, OnInit, OnChanges, AfterContentInit, OnDestroy {
+export class NzTabSetComponent implements AfterContentChecked, OnChanges, AfterContentInit, OnDestroy {
+  static ngAcceptInputType_nzLinkRouter: BooleanInput;
+  static ngAcceptInputType_nzLinkExact: BooleanInput;
+  static ngAcceptInputType_nzSelectedIndex: NumberInput;
+
   private indexToSelect: number | null = 0;
   private el: HTMLElement = this.elementRef.nativeElement;
   private _selectedIndex: number | null = null;
@@ -117,20 +130,19 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, OnChanges
   private tabLabelSubscription = Subscription.EMPTY;
   private destroy$ = new Subject<void>();
   tabPositionMode: NzTabPositionMode = 'horizontal';
-  hostClassMap = {};
-  @ContentChildren(NzTabComponent) listOfNzTabComponent: QueryList<NzTabComponent>;
-  @ViewChild(NzTabsNavComponent, { static: false }) nzTabsNavComponent: NzTabsNavComponent;
-  @ViewChild('tabContent', { static: false }) tabContent: ElementRef;
+  @ContentChildren(NzTabComponent) listOfNzTabComponent!: QueryList<NzTabComponent>;
+  @ViewChild(NzTabsNavComponent, { static: false }) nzTabsNavComponent?: NzTabsNavComponent;
+  @ViewChild('tabContent', { static: false }) tabContent?: ElementRef;
 
-  @Input() nzTabBarExtraContent: TemplateRef<void>;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) nzShowPagination: boolean;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) nzAnimated: NzAnimatedInterface | boolean;
+  @Input() nzTabBarExtraContent?: TemplateRef<void>;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzShowPagination: boolean = true;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzAnimated: NzAnimatedInterface | boolean = true;
   @Input() nzHideAll = false;
   @Input() nzTabPosition: NzTabPosition = 'top';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzSizeLDSType;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzTabBarGutter: number;
-  @Input() nzTabBarStyle: { [key: string]: string };
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'line') nzType: NzTabType;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzSizeLDSType = 'default';
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzTabBarGutter?: number = undefined;
+  @Input() nzTabBarStyle: { [key: string]: string } | null = null;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzType: NzTabType = 'line';
 
   @Input() @InputBoolean() nzLinkRouter = false;
   @Input() @InputBoolean() nzLinkExact = true;
@@ -158,26 +170,18 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, OnChanges
     return this.nzAnimated === true || (this.nzAnimated as NzAnimatedInterface).tabPane === true;
   }
 
+  get isAnimationDisabled(): boolean {
+    return this.nzAnimated === false || (this.nzAnimated as NzAnimatedInterface).tabPane === false;
+  }
+
   setPosition(value: NzTabPosition): void {
     if (this.tabContent) {
       if (value === 'bottom') {
-        this.renderer.insertBefore(this.el, this.tabContent.nativeElement, this.nzTabsNavComponent.elementRef.nativeElement);
+        this.renderer.insertBefore(this.el, this.tabContent.nativeElement, this.nzTabsNavComponent!.elementRef.nativeElement);
       } else {
-        this.renderer.insertBefore(this.el, this.nzTabsNavComponent.elementRef.nativeElement, this.tabContent.nativeElement);
+        this.renderer.insertBefore(this.el, this.nzTabsNavComponent!.elementRef.nativeElement, this.tabContent.nativeElement);
       }
     }
-  }
-
-  setClassMap(): void {
-    this.hostClassMap = {
-      [`ant-tabs`]: true,
-      [`ant-tabs-vertical`]: this.nzTabPosition === 'left' || this.nzTabPosition === 'right',
-      [`ant-tabs-${this.nzTabPosition}`]: this.nzTabPosition,
-      [`ant-tabs-no-animation`]: this.nzAnimated === false || (this.nzAnimated as NzAnimatedInterface).tabPane === false,
-      [`ant-tabs-${this.nzType}`]: this.nzType,
-      [`ant-tabs-large`]: this.nzSize === 'large',
-      [`ant-tabs-small`]: this.nzSize === 'small'
-    };
   }
 
   clickLabel(index: number, disabled: boolean): void {
@@ -237,7 +241,8 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, OnChanges
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzTabPosition) {
+    const { nzTabPosition, nzType } = changes;
+    if (nzTabPosition) {
       if (this.nzTabPosition === 'top' || this.nzTabPosition === 'bottom') {
         this.tabPositionMode = 'horizontal';
       } else {
@@ -245,18 +250,11 @@ export class NzTabSetComponent implements AfterContentChecked, OnInit, OnChanges
       }
       this.setPosition(this.nzTabPosition);
     }
-    if (changes.nzType) {
+    if (nzType) {
       if (this.nzType === 'card') {
         this.nzAnimated = false;
       }
     }
-    if (changes.nzSize || changes.nzAnimated || changes.nzTabPosition || changes.nzType) {
-      this.setClassMap();
-    }
-  }
-
-  ngOnInit(): void {
-    this.setClassMap();
   }
 
   ngAfterContentChecked(): void {

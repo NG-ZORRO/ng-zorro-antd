@@ -7,7 +7,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
-import { NgStyleInterface } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzDisplayedMark, NzExtendedMark, NzMark, NzMarkObj } from './typings';
@@ -24,7 +24,7 @@ import { NzDisplayedMark, NzExtendedMark, NzMark, NzMarkObj } from './typings';
         class="ant-slider-mark-text"
         *ngFor="let attr of marks; trackBy: trackById"
         [class.ant-slider-mark-active]="attr.active"
-        [ngStyle]="attr.style"
+        [ngStyle]="attr.style!"
         [innerHTML]="attr.label"
       >
       </span>
@@ -32,15 +32,18 @@ import { NzDisplayedMark, NzExtendedMark, NzMark, NzMarkObj } from './typings';
   `
 })
 export class NzSliderMarksComponent implements OnChanges {
+  static ngAcceptInputType_vertical: BooleanInput;
+  static ngAcceptInputType_included: BooleanInput;
+
   @Input() lowerBound: number | null = null;
   @Input() upperBound: number | null = null;
-  @Input() marksArray: NzExtendedMark[];
-  @Input() min: number;
-  @Input() max: number;
+  @Input() marksArray: NzExtendedMark[] = [];
+  @Input() min!: number;
+  @Input() max!: number;
   @Input() @InputBoolean() vertical = false;
   @Input() @InputBoolean() included = false;
 
-  marks: NzDisplayedMark[];
+  marks: NzDisplayedMark[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
     const { marksArray, lowerBound, upperBound } = changes;

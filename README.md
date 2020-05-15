@@ -17,7 +17,6 @@ An enterprise-class UI components based on Ant Design and Angular.
 [![Codecov](https://img.shields.io/codecov/c/github/NG-ZORRO/ng-zorro-antd.svg?style=flat-square)](https://codecov.io/gh/NG-ZORRO/ng-zorro-antd)
 [![GitHub Release Date](https://img.shields.io/github/release-date/NG-ZORRO/ng-zorro-antd.svg?style=flat-square)](https://github.com/NG-ZORRO/ng-zorro-antd/releases)
 [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
-[![npm next package](https://img.shields.io/npm/v/ng-zorro-antd/next.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 [![NPM downloads](http://img.shields.io/npm/dm/ng-zorro-antd.svg?style=flat-square)](https://npmjs.org/package/ng-zorro-antd)
 [![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE)
 [![Gitter](https://img.shields.io/gitter/room/ng-zorro/ng-zorro-antd.svg?style=flat-square)](https://gitter.im/ng-zorro/ng-zorro-antd)
@@ -42,10 +41,16 @@ English | [简体中文](README-zh_CN.md)
 - Powerful theme customization in every detail.
 - Internationalization support for dozens of languages.
 
+
+## ☀️ License
+
+[MIT](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE)
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FNG-ZORRO%2Fng-zorro-antd.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FNG-ZORRO%2Fng-zorro-antd?ref=badge_shield)
+
 ## 🖥 Environment Support
 
-* Angular `^8.0.0` [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-atnd)
-* Angular `^9.0.0` [![npm next package](https://img.shields.io/npm/v/ng-zorro-antd/next.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
+* Angular `^9.0.0` [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 * Server-side Rendering
 * Modern browsers and Internet Explorer 11+ (with [polyfills](https://angular.io/guide/browser-support))
 * [Electron](http://electron.atom.io/)
@@ -130,10 +135,6 @@ $ npm run start
 
 Browser would open automatically.
 
-## 🗺 Road Map
-
-Check [this issue](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2025) to read our plans for 2019.
-
 ## 🤝 Contributing
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/NG-ZORRO/ng-zorro-antd/pulls)
@@ -174,6 +175,3 @@ As always, we encourage experienced users to help those who are not familiar wit
 
 > We list some users here, if your company or product uses NG-ZORRO, let us know [here](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1142)!
 
-## ☀️ License
-
-MIT

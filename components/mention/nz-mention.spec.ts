@@ -446,8 +446,8 @@ class NzTestSimpleMentionComponent {
   inputValue: string = '@angular';
   inputTrigger = false;
   suggestions = ['angular', 'ant-design', 'mention', '中文', 'にほんご'];
-  @ViewChild(NzMentionComponent, { static: false }) mention: NzMentionComponent;
-  @ViewChild(NzMentionTriggerDirective, { static: false }) trigger: NzMentionTriggerDirective;
+  @ViewChild(NzMentionComponent, { static: false }) mention!: NzMentionComponent;
+  @ViewChild(NzMentionTriggerDirective, { static: false }) trigger!: NzMentionTriggerDirective;
 }
 
 @Component({
@@ -472,8 +472,8 @@ class NzTestPropertyMentionComponent {
   loading = false;
   prefix: string | string[] = '@';
   valueWith = (data: { name: string; type: string }) => data.name;
-  @ViewChild(NzMentionComponent, { static: false }) mention: NzMentionComponent;
-  @ViewChild(NzMentionTriggerDirective, { static: false }) trigger: NzMentionTriggerDirective;
+  @ViewChild(NzMentionComponent, { static: false }) mention!: NzMentionComponent;
+  @ViewChild(NzMentionTriggerDirective, { static: false }) trigger!: NzMentionTriggerDirective;
 
   setArrayPrefix(): void {
     this.prefix = ['@', '#'];

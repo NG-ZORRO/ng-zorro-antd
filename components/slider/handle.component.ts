@@ -17,7 +17,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { NgStyleInterface } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
@@ -48,18 +48,20 @@ import { NzSliderShowTooltip } from './typings';
   }
 })
 export class NzSliderHandleComponent implements OnChanges {
-  @ViewChild('handle', { static: false }) handleEl: ElementRef;
-  @ViewChild(NzTooltipDirective, { static: false }) tooltip: NzTooltipDirective;
+  static ngAcceptInputType_active: BooleanInput;
 
-  @Input() vertical: string;
-  @Input() offset: number;
-  @Input() value: number;
+  @ViewChild('handle', { static: false }) handleEl?: ElementRef;
+  @ViewChild(NzTooltipDirective, { static: false }) tooltip?: NzTooltipDirective;
+
+  @Input() vertical?: boolean;
+  @Input() offset?: number;
+  @Input() value?: number;
   @Input() tooltipVisible: NzSliderShowTooltip = 'default';
-  @Input() tooltipPlacement: string;
-  @Input() tooltipFormatter: (value: number) => string;
+  @Input() tooltipPlacement?: string;
+  @Input() tooltipFormatter?: null | ((value: number) => string);
   @Input() @InputBoolean() active = false;
 
-  tooltipTitle: string;
+  tooltipTitle?: string;
   style: NgStyleInterface = {};
 
   constructor(private sliderService: NzSliderService, private cdr: ChangeDetectorRef) {}
@@ -84,7 +86,7 @@ export class NzSliderHandleComponent implements OnChanges {
       }
     }
 
-    if (tooltipVisible && tooltipVisible.currentValue === 'always') {
+    if (tooltipVisible?.currentValue === 'always') {
       Promise.resolve().then(() => this.toggleTooltip(true, true));
     }
   }
@@ -105,7 +107,7 @@ export class NzSliderHandleComponent implements OnChanges {
   };
 
   focus(): void {
-    this.handleEl.nativeElement.focus();
+    this.handleEl?.nativeElement.focus();
   }
 
   private toggleTooltip(show: boolean, force: boolean = false): void {
@@ -114,26 +116,26 @@ export class NzSliderHandleComponent implements OnChanges {
     }
 
     if (show) {
-      this.tooltip.show();
+      this.tooltip?.show();
     } else {
-      this.tooltip.hide();
+      this.tooltip?.hide();
     }
   }
 
   private updateTooltipTitle(): void {
-    this.tooltipTitle = this.tooltipFormatter ? this.tooltipFormatter(this.value) : `${this.value}`;
+    this.tooltipTitle = this.tooltipFormatter ? this.tooltipFormatter(this.value!) : `${this.value}`;
   }
 
   private updateTooltipPosition(): void {
     if (this.tooltip) {
-      Promise.resolve().then(() => this.tooltip.updatePosition());
+      Promise.resolve().then(() => this.tooltip?.updatePosition());
     }
   }
 
   private updateStyle(): void {
     this.style = {
       [this.vertical ? 'bottom' : 'left']: `${this.offset}%`,
-      transform: this.vertical ? null : 'translateX(-50%)'
+      transform: this.vertical ? 'translateY(50%)' : 'translateX(-50%)'
     };
     this.cdr.markForCheck();
   }

@@ -404,17 +404,17 @@ describe('progress', () => {
   `
 })
 export class NzTestProgressLineComponent {
-  @ViewChild('formatterTemplate') formatterTemplate: TemplateRef<{ $implicit: number }>;
-  size: string;
-  status: string;
-  formatter: NzProgressFormatter;
-  strokeWidth: number;
+  @ViewChild('formatterTemplate') formatterTemplate!: TemplateRef<{ $implicit: number }>;
+  size?: string;
+  status?: string;
+  formatter?: NzProgressFormatter;
+  strokeWidth?: number;
   percent = 0;
   successPercent = 0;
   showInfo = true;
   strokeLinecap = 'round';
   steps?: number;
-  strokeColor: NzProgressStrokeColorType;
+  strokeColor?: NzProgressStrokeColorType;
 }
 
 @Component({
@@ -433,9 +433,9 @@ export class NzTestProgressLineComponent {
   `
 })
 export class NzTestProgressDashBoardComponent {
-  status: string;
-  format: NzProgressFormatter;
-  strokeWidth: number;
+  status?: string;
+  format?: NzProgressFormatter;
+  strokeWidth?: number;
   percent = 0;
   showInfo = true;
   width = 132;
@@ -456,15 +456,13 @@ export class NzTestProgressDashBoardComponent {
   `
 })
 export class NzTestProgressCircleComponent {
-  gapDegree: number;
-  gapPosition: NzProgressGapPositionType;
+  gapDegree?: number;
+  gapPosition?: NzProgressGapPositionType;
   strokeLinecap = 'round';
-  strokeColor: NzProgressStrokeColorType;
+  strokeColor?: NzProgressStrokeColorType;
 }
 
 @Component({
-  template: `
-    <nz-progress nzType="circle" [nzPercent]="75" [nzSuccessPercent]="60"></nz-progress>
-  `
+  template: ` <nz-progress nzType="circle" [nzPercent]="75" [nzSuccessPercent]="60"></nz-progress> `
 })
 export class NzTestProgressCircleSuccessComponent {}

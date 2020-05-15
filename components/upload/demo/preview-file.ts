@@ -8,9 +8,7 @@ import { map } from 'rxjs/operators';
   template: `
     <div class="clearfix">
       <nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76" nzListType="picture" [nzPreviewFile]="previewFile">
-        <button nz-button>
-          <span><i nz-icon nzType="upload"></i> Upload</span>
-        </button>
+        <button nz-button><i nz-icon nzType="upload"></i> Upload</button>
       </nz-upload>
     </div>
   `
@@ -21,10 +19,10 @@ export class NzDemoUploadPreviewFileComponent {
   previewFile = (file: UploadFile) => {
     console.log('Your upload file:', file);
     return this.http
-      .post(`https://next.json-generator.com/api/json/get/4ytyBoLK8`, {
+      .post<{ thumbnail: string }>(`https://next.json-generator.com/api/json/get/4ytyBoLK8`, {
         method: 'POST',
         body: file
       })
-      .pipe(map((res: { thumbnail?: string }) => res.thumbnail));
+      .pipe(map(res => res.thumbnail));
   };
 }

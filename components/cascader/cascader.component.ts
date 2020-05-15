@@ -34,7 +34,7 @@ import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { DEFAULT_CASCADER_POSITIONS } from 'ng-zorro-antd/core/overlay';
-import { NgClassType, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgClassType, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toArray } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
@@ -190,10 +190,17 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
   }
 })
 export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit, OnDestroy, ControlValueAccessor {
-  @ViewChild('input', { static: false }) input: ElementRef;
-  @ViewChild('menu', { static: false }) menu: ElementRef;
-  @ViewChild(CdkConnectedOverlay, { static: false }) overlay: CdkConnectedOverlay;
-  @ViewChildren(NzCascaderOptionComponent) cascaderItems: QueryList<NzCascaderOptionComponent>;
+  static ngAcceptInputType_nzShowInput: BooleanInput;
+  static ngAcceptInputType_nzShowArrow: BooleanInput;
+  static ngAcceptInputType_nzAllowClear: BooleanInput;
+  static ngAcceptInputType_nzAutoFocus: BooleanInput;
+  static ngAcceptInputType_nzChangeOnSelect: BooleanInput;
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+
+  @ViewChild('input', { static: false }) input!: ElementRef;
+  @ViewChild('menu', { static: false }) menu!: ElementRef;
+  @ViewChild(CdkConnectedOverlay, { static: false }) overlay!: CdkConnectedOverlay;
+  @ViewChildren(NzCascaderOptionComponent) cascaderItems!: QueryList<NzCascaderOptionComponent>;
 
   @Input() nzOptionRender: TemplateRef<{ $implicit: NzCascaderOption; index: number }> | null = null;
   @Input() @InputBoolean() nzShowInput = true;
@@ -202,22 +209,22 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   @Input() @InputBoolean() nzAutoFocus = false;
   @Input() @InputBoolean() nzChangeOnSelect = false;
   @Input() @InputBoolean() nzDisabled = false;
-  @Input() nzColumnClassName: string;
+  @Input() nzColumnClassName?: string;
   @Input() nzExpandTrigger: NzCascaderExpandTrigger = 'click';
   @Input() nzValueProperty = 'value';
-  @Input() nzLabelRender: TemplateRef<void>;
+  @Input() nzLabelRender: TemplateRef<void> | null = null;
   @Input() nzLabelProperty = 'label';
-  @Input() nzNotFoundContent: string | TemplateRef<void>;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzCascaderSize;
-  @Input() nzShowSearch: boolean | NzShowSearchOptions;
-  @Input() nzPlaceHolder: string;
-  @Input() nzMenuClassName: string;
-  @Input() nzMenuStyle: NgStyleInterface;
+  @Input() nzNotFoundContent?: string | TemplateRef<void>;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzCascaderSize = 'default';
+  @Input() nzShowSearch: boolean | NzShowSearchOptions = false;
+  @Input() nzPlaceHolder: string = '';
+  @Input() nzMenuClassName?: string;
+  @Input() nzMenuStyle: NgStyleInterface | null = null;
   @Input() nzMouseEnterDelay: number = 150; // ms
   @Input() nzMouseLeaveDelay: number = 150; // ms
   @Input() nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[] = ['click'] as NzCascaderTriggerType[];
-  @Input() nzChangeOn: (option: NzCascaderOption, level: number) => boolean;
-  @Input() nzLoadData: (node: NzCascaderOption, index?: number) => PromiseLike<NzSafeAny>;
+  @Input() nzChangeOn?: (option: NzCascaderOption, level: number) => boolean;
+  @Input() nzLoadData?: (node: NzCascaderOption, index: number) => PromiseLike<NzSafeAny>;
 
   @Input()
   get nzOptions(): NzCascaderOption[] | null {
@@ -243,7 +250,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   dropDownPosition = 'bottom';
   menuVisible = false;
   isLoading = false;
-  labelRenderText: string;
+  labelRenderText?: string;
   labelRenderContext = {};
   onChange = Function.prototype;
   onTouched = Function.prototype;
@@ -252,17 +259,17 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   /**
    * Dropdown's with in pixel.
    */
-  dropdownWidthStyle: string;
+  dropdownWidthStyle?: string;
   dropdownHeightStyle: 'auto' | '' = '';
   isFocused = false;
 
-  locale: NzCascaderI18nInterface;
+  locale!: NzCascaderI18nInterface;
 
   private destroy$ = new Subject<void>();
   private inputString = '';
   private isOpening = false;
-  private delayMenuTimer: number | null;
-  private delaySelectTimer: number | null;
+  private delayMenuTimer: number | null = null;
+  private delaySelectTimer: number | null = null;
 
   get inSearchingMode(): boolean {
     return this.cascaderService.inSearchingMode;

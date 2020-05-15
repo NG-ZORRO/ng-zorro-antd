@@ -28,7 +28,7 @@ import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 | `[nzTitle]` | Title string | `string \| TemplateRef<void>` | - | - |
 | `[nzSubtitle]` | SubTitle string | `string \| TemplateRef<void>` | - | - |
 | `[nzBackIcon]` | Custom back icon | `string \| TemplateRef<void>` | - | - |
-| `(nzBack)` | Back icon click event | `EventEmitter<void>` | Call [Location[back]](https://angular.io/api/common/Location#back) when the event not subscribed | - |
+| `(nzBack)` | Back icon click event | `EventEmitter<void>` | Call [Location[back]](https://angular.io/api/common/Location#back) when the event not subscribed（you need import [RouterModule](https://angular.io/api/router/RouterModule) or register [Location](https://angular.io/api/common/Location)）| - |
 
 ### Page header sections
 | Element | Description |

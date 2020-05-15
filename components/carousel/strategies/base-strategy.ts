@@ -15,12 +15,12 @@ import { FromToInterface, NzCarouselComponentAsSource, PointerVector } from '../
 export abstract class NzCarouselBaseStrategy {
   // Properties that strategies may want to use.
   protected carouselComponent: NzCarouselComponentAsSource | null;
-  protected contents: NzCarouselContentDirective[];
-  protected slickListEl: HTMLElement;
-  protected slickTrackEl: HTMLElement;
-  protected length: number;
-  protected unitWidth: number;
-  protected unitHeight: number;
+  protected contents!: NzCarouselContentDirective[];
+  protected slickListEl!: HTMLElement;
+  protected slickTrackEl!: HTMLElement;
+  protected length!: number;
+  protected unitWidth!: number;
+  protected unitHeight!: number;
 
   protected get maxIndex(): number {
     return this.length - 1;

@@ -29,7 +29,7 @@ import {
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
-import { NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgStyleInterface, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
@@ -68,27 +68,32 @@ const sharpMatcherRegx = /#([^#]+)$/;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
-  @ViewChild('ink', { static: false }) private ink: ElementRef;
+  static ngAcceptInputType_nzAffix: BooleanInput;
+  static ngAcceptInputType_nzShowInkInFixed: BooleanInput;
+  static ngAcceptInputType_nzBounds: NumberInput;
+  static ngAcceptInputType_nzOffsetTop: NumberInput;
+
+  @ViewChild('ink', { static: false }) private ink!: ElementRef;
 
   @Input() @InputBoolean() nzAffix = true;
 
   @Input()
-  @WithConfig(NZ_CONFIG_COMPONENT_NAME, false)
+  @WithConfig(NZ_CONFIG_COMPONENT_NAME)
   @InputBoolean()
-  nzShowInkInFixed: boolean;
+  nzShowInkInFixed: boolean = false;
 
   @Input()
-  @WithConfig(NZ_CONFIG_COMPONENT_NAME, 5)
+  @WithConfig(NZ_CONFIG_COMPONENT_NAME)
   @InputNumber()
-  nzBounds: number;
+  nzBounds: number = 5;
 
   @Input()
-  @InputNumber()
+  @InputNumber(undefined)
   @WithConfig<number>(NZ_CONFIG_COMPONENT_NAME)
-  nzOffsetTop: number;
+  nzOffsetTop?: number = undefined;
 
-  @Input() nzContainer: string | HTMLElement;
-  @Input() nzTarget: string | HTMLElement;
+  @Input() nzContainer?: string | HTMLElement;
+  @Input() nzTarget: string | HTMLElement = '';
 
   @Output() readonly nzClick = new EventEmitter<string>();
   @Output() readonly nzScroll = new EventEmitter<NzAnchorLinkComponent>();
@@ -96,7 +101,7 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
   visible = false;
   wrapperStyle: NgStyleInterface = { 'max-height': '100vh' };
 
-  container: HTMLElement | Window;
+  container?: HTMLElement | Window;
 
   private links: NzAnchorLinkComponent[] = [];
   private animating = false;

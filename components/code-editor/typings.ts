@@ -9,10 +9,10 @@
 import { InjectionToken } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import { editor } from 'monaco-editor';
-import IEditorConstructionOptions = editor.IEditorConstructionOptions;
+import IStandAloneEditorConstructionOptions = editor.IStandaloneEditorConstructionOptions;
 import IDiffEditorConstructionOptions = editor.IDiffEditorConstructionOptions;
 
-export type EditorOptions = IEditorConstructionOptions;
+export type EditorOptions = IStandAloneEditorConstructionOptions;
 export type DiffEditorOptions = IDiffEditorConstructionOptions;
 export type JoinedEditorOptions = EditorOptions | DiffEditorOptions;
 

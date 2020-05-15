@@ -8,6 +8,7 @@
 
 import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { Platform } from '@angular/cdk/platform';
 import { TemplatePortal } from '@angular/cdk/portal';
 import {
   AfterViewInit,
@@ -23,7 +24,7 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import { POSITION_MAP } from 'ng-zorro-antd/core/overlay';
-import { IndexableObject } from 'ng-zorro-antd/core/types';
+import { BooleanInput, IndexableObject } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { BehaviorSubject, combineLatest, EMPTY, fromEvent, merge, Subject } from 'rxjs';
 import { auditTime, distinctUntilChanged, filter, map, mapTo, switchMap, takeUntil } from 'rxjs/operators';
@@ -40,13 +41,15 @@ const listOfPositions = [POSITION_MAP.bottomLeft, POSITION_MAP.bottomRight, POSI
   }
 })
 export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges, OnInit {
-  private portal: TemplatePortal;
+  static ngAcceptInputType_nzBackdrop: BooleanInput;
+  static ngAcceptInputType_nzClickHide: BooleanInput;
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzVisible: BooleanInput;
+
+  private portal?: TemplatePortal;
   private overlayRef: OverlayRef | null = null;
   private destroy$ = new Subject();
-  private positionStrategy = this.overlay
-    .position()
-    .flexibleConnectedTo(this.elementRef.nativeElement)
-    .withLockedPosition();
+  private positionStrategy = this.overlay.position().flexibleConnectedTo(this.elementRef.nativeElement).withLockedPosition();
   private inputVisible$ = new BehaviorSubject<boolean>(false);
   private nzTrigger$ = new BehaviorSubject<'click' | 'hover'>('hover');
   private overlayClose$ = new Subject<boolean>();
@@ -57,7 +60,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
   @Input() @InputBoolean() nzClickHide = true;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzVisible = false;
-  @Input() nzOverlayClassName: string | null = null;
+  @Input() nzOverlayClassName: string = '';
   @Input() nzOverlayStyle: IndexableObject = {};
   @Input() nzPlacement: NzPlacementType = 'bottomLeft';
   @Output() readonly nzVisibleChange: EventEmitter<boolean> = new EventEmitter();
@@ -68,7 +71,12 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
     }
   }
 
-  constructor(public elementRef: ElementRef, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {}
+  constructor(
+    public elementRef: ElementRef,
+    private overlay: Overlay,
+    private viewContainerRef: ViewContainerRef,
+    private platform: Platform
+  ) {}
 
   ngOnInit(): void {
     this.positionStrategy.positionChanges.pipe(takeUntil(this.destroy$)).subscribe(change => {
@@ -115,6 +123,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
           map(([visible, sub]) => visible || sub),
           auditTime(150),
           distinctUntilChanged(),
+          filter(() => this.platform.isBrowser),
           takeUntil(this.destroy$)
         )
         .subscribe((visible: boolean) => {

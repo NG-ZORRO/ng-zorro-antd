@@ -35,7 +35,7 @@ export class NzTableDataService implements OnDestroy {
     this.pageSizeDistinct$,
     this.listOfCalcOperator$
   ]).pipe(
-    debounceTime(300),
+    debounceTime(0),
     skip(1),
     map(([pageIndex, pageSize, listOfCalc]) => {
       return {

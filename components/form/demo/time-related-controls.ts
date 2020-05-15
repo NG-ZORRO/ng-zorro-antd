@@ -57,7 +57,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   ]
 })
 export class NzDemoFormTimeRelatedControlsComponent implements OnInit {
-  validateForm: FormGroup;
+  validateForm!: FormGroup;
 
   submitForm(): void {
     console.log(this.validateForm.value);

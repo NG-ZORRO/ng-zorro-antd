@@ -21,19 +21,18 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd';
+// Import types from monaco editor.
+import { editor } from 'monaco-editor';
 import { warn } from 'ng-zorro-antd/core/logger';
+import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { inNextTick, InputBoolean } from 'ng-zorro-antd/core/util';
 import { BehaviorSubject, combineLatest, fromEvent, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil } from 'rxjs/operators';
 
 import { NzCodeEditorService } from './code-editor.service';
 import { DiffEditorOptions, EditorOptions, JoinedEditorOptions, NzEditorMode } from './typings';
-
-// Import types from monaco editor.
-import { editor } from 'monaco-editor';
-import IEditor = editor.IEditor;
 import IDiffEditor = editor.IDiffEditor;
+import IEditor = editor.IEditor;
 import ITextModel = editor.ITextModel;
 
 declare const monaco: NzSafeAny;
@@ -64,11 +63,14 @@ declare const monaco: NzSafeAny;
   ]
 })
 export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
+  static ngAcceptInputType_nzLoading: BooleanInput;
+  static ngAcceptInputType_nzFullControl: BooleanInput;
+
   @Input() nzEditorMode: NzEditorMode = 'normal';
   @Input() nzOriginalText = '';
   @Input() @InputBoolean() nzLoading = false;
   @Input() @InputBoolean() nzFullControl = false;
-  @Input() nzToolkit: TemplateRef<void>;
+  @Input() nzToolkit?: TemplateRef<void>;
 
   @Input() set nzEditorOption(value: JoinedEditorOptions) {
     this.editorOption$.next(value);
@@ -82,7 +84,7 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
   private destroy$ = new Subject<void>();
   private resize$ = new Subject<void>();
   private editorOption$ = new BehaviorSubject<JoinedEditorOptions>({});
-  private editorInstance: IEditor | IDiffEditor;
+  private editorInstance?: IEditor | IDiffEditor;
   private value = '';
   private modelSet = false;
 
@@ -119,9 +121,9 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
     this.onTouch = fn;
   }
 
-  onChange: OnChangeType;
+  onChange: OnChangeType = (_value: string) => {};
 
-  onTouch: OnTouchedType;
+  onTouch: OnTouchedType = () => {};
 
   layout(): void {
     this.resize$.next();
@@ -187,7 +189,7 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
           debounceTime(50)
         )
         .subscribe(() => {
-          this.editorInstance.layout();
+          this.editorInstance!.layout();
         });
     });
   }

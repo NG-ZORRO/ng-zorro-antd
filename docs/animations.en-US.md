@@ -25,7 +25,7 @@ Replace `BrowserAnimationsModule` with 'NoopAnimationsModule` in the your module
 Import `NzNoAnimationModule` module.
 
 ```ts
-import { NzNoAnimationModule } from 'ng-zorro-antd/core';
+import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 
 @NgModule({
   imports: [

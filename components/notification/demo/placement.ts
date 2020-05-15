@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NzNotificationPosition, NzNotificationService } from 'ng-zorro-antd/notification';
+import { NzNotificationPlacement, NzNotificationService } from 'ng-zorro-antd/notification';
 
 @Component({
   selector: 'nz-demo-notification-placement',
@@ -27,11 +27,11 @@ import { NzNotificationPosition, NzNotificationService } from 'ng-zorro-antd/not
 export class NzDemoNotificationPlacementComponent {
   placement = 'topRight';
 
-  createBasicNotification(position: NzNotificationPosition): void {
+  createBasicNotification(position: NzNotificationPlacement): void {
     this.notification.blank(
       'Notification Title',
       'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
-      { nzPosition: position }
+      { nzPlacement: position }
     );
   }
 

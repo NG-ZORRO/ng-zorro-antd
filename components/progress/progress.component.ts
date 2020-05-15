@@ -8,7 +8,7 @@
 
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NgStyleInterface } from 'ng-zorro-antd/core/types';
+import { NgStyleInterface, NumberInput } from 'ng-zorro-antd/core/types';
 import { InputNumber, isNotNil } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -50,12 +50,12 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
   template: `
     <ng-template #progressInfoTemplate>
       <span class="ant-progress-text" *ngIf="nzShowInfo">
-        <ng-container *ngIf="status === 'exception' || (status === 'success' && !nzFormat); else formatTemplate">
+        <ng-container *ngIf="(status === 'exception' || status === 'success') && !nzFormat; else formatTemplate">
           <i nz-icon [nzType]="icon"></i>
         </ng-container>
         <ng-template #formatTemplate>
-          <ng-container *nzStringTemplateOutlet="formatter; context: { $implicit: nzPercent }">
-            {{ $any(formatter)(nzPercent) }}
+          <ng-container *nzStringTemplateOutlet="formatter; context: { $implicit: nzPercent }; let formatter">
+            {{ formatter(nzPercent) }}
           </ng-container>
         </ng-template>
       </span>
@@ -140,19 +140,25 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
   `
 })
 export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) nzShowInfo: boolean;
+  static ngAcceptInputType_nzSuccessPercent: NumberInput;
+  static ngAcceptInputType_nzPercent: NumberInput;
+  static ngAcceptInputType_nzStrokeWidth: NumberInput;
+  static ngAcceptInputType_nzGapDegree: NumberInput;
+  static ngAcceptInputType_nzSteps: NumberInput;
+
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzShowInfo: boolean = true;
   @Input() nzWidth = 132;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzStrokeColor: NzProgressStrokeColorType;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: 'default' | 'small';
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzStrokeColor?: NzProgressStrokeColorType = undefined;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: 'default' | 'small' = 'default';
   @Input() nzFormat?: NzProgressFormatter;
   @Input() @InputNumber() nzSuccessPercent?: number;
   @Input() @InputNumber() nzPercent: number = 0;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputNumber() nzStrokeWidth: number;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputNumber() nzGapDegree: number;
-  @Input() nzStatus: NzProgressStatusType;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputNumber() nzStrokeWidth?: number = undefined;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputNumber() nzGapDegree?: number = undefined;
+  @Input() nzStatus?: NzProgressStatusType;
   @Input() nzType: NzProgressTypeType = 'line';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'top') nzGapPosition: NzProgressGapPositionType;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'round') nzStrokeLinecap: NzProgressStrokeLinecapType;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzGapPosition: NzProgressGapPositionType = 'top';
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzStrokeLinecap: NzProgressStrokeLinecapType = 'round';
 
   @Input() @InputNumber() nzSteps?: number;
 
@@ -175,14 +181,10 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
 
   /** Paths to rendered in the template. */
   progressCirclePath: NzProgressCirclePath[] = [];
-
-  circleGradient: Array<{ offset: string; color: string }>;
-
-  trailPathStyle: NgStyleInterface;
-
-  pathString: string;
-
-  icon: string;
+  circleGradient?: Array<{ offset: string; color: string }>;
+  trailPathStyle: NgStyleInterface | null = null;
+  pathString?: string;
+  icon!: string;
 
   trackByFn = (index: number) => `${index}`;
 

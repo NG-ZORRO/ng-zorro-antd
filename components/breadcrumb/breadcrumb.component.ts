@@ -22,6 +22,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET, Router } from '@angular/router';
 import { PREFIX } from 'ng-zorro-antd/core/logger';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
@@ -49,6 +50,8 @@ export interface BreadcrumbOption {
   `
 })
 export class NzBreadCrumbComponent implements OnInit, OnDestroy {
+  static ngAcceptInputType_nzAutoGenerate: BooleanInput;
+
   @Input() @InputBoolean() nzAutoGenerate = false;
   @Input() nzSeparator: string | TemplateRef<void> | null = '/';
   @Input() nzRouteLabel: string = 'breadcrumb';
@@ -81,14 +84,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
   navigate(url: string, e: MouseEvent): void {
     e.preventDefault();
 
-    this.ngZone
-      .run(() =>
-        this.injector
-          .get(Router)
-          .navigateByUrl(url)
-          .then()
-      )
-      .then();
+    this.ngZone.run(() => this.injector.get(Router).navigateByUrl(url).then()).then();
   }
 
   private registerRouterChange(): void {
@@ -120,7 +116,10 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
       if (child.outlet === PRIMARY_OUTLET) {
         // Only parse components in primary router-outlet (in another word, router-outlet without a specific name).
         // Parse this layer and generate a breadcrumb item.
-        const routeURL: string = child.snapshot.url.map(segment => segment.path).join('/');
+        const routeURL: string = child.snapshot.url
+          .map(segment => segment.path)
+          .filter(path => path)
+          .join('/');
         const nextUrl = url + `/${routeURL}`;
         const breadcrumbLabel = child.snapshot.data[this.nzRouteLabel];
         // If have data, go to generate a breadcrumb for it.

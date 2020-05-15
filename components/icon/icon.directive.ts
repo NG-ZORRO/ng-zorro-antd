@@ -16,11 +16,11 @@ import { NzIconPatchService, NzIconService } from './icon.service';
   selector: '[nz-icon]',
   exportAs: 'nzIcon',
   host: {
-    '[class.anticon]': 'true',
-    '[class]': 'hostClass'
+    '[class.anticon]': 'true'
   }
 })
 export class NzIconDirective extends IconDirective implements OnInit, OnChanges, AfterContentChecked {
+  cacheClassName: string | null = null;
   @Input()
   @InputBoolean()
   set nzSpin(value: boolean) {
@@ -49,15 +49,10 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     this.iconfont = value;
   }
 
+  hostClass?: string;
+
   private readonly el: HTMLElement;
-
-  type: string;
-  theme: ThemeType;
-  hostClass: string;
-  // @ts-ignore
-  twotoneColor: string;
-
-  private iconfont: string;
+  private iconfont?: string;
   private spin: boolean = false;
 
   constructor(
@@ -140,11 +135,15 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
   }
 
   private setClassName(): void {
-    this.hostClass = `anticon-${this.type}`;
+    if (this.cacheClassName) {
+      this.renderer.removeClass(this.el, this.cacheClassName);
+    }
+    this.cacheClassName = `anticon-${this.type}`;
+    this.renderer.addClass(this.el, this.cacheClassName);
   }
 
   private setSVGData(svg: SVGElement): void {
-    this.renderer.setAttribute(svg, 'data-icon', this.type);
+    this.renderer.setAttribute(svg, 'data-icon', this.type as string);
     this.renderer.setAttribute(svg, 'aria-hidden', 'true');
   }
 }

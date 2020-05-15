@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TransferChange, TransferItem } from 'ng-zorro-antd/transfer';
+import { TransferChange, TransferItem, TransferSelectChange } from 'ng-zorro-antd/transfer';
 
 @Component({
   selector: 'nz-demo-transfer-table-transfer',
@@ -74,7 +74,7 @@ export class NzDemoTransferTableTransferComponent implements OnInit {
     [2, 3].forEach(idx => (this.list[idx].direction = 'right'));
   }
 
-  select(ret: TransferChange): void {
+  select(ret: TransferSelectChange): void {
     console.log('nzSelectChange', ret);
   }
 

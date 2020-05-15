@@ -11,7 +11,7 @@ import { MentionOnSearchTypes } from 'ng-zorro-antd/mention';
   `
 })
 export class NzDemoMentionMultipleTriggerComponent {
-  inputValue: string;
+  inputValue?: string;
   suggestions: string[] = [];
   users = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご'];
   tags = ['1.0', '2.0', '3.0'];

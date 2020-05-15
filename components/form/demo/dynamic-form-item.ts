@@ -70,7 +70,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
   ]
 })
 export class NzDemoFormDynamicFormItemComponent implements OnInit {
-  validateForm: FormGroup;
+  validateForm!: FormGroup;
   listOfControl: Array<{ id: number; controlInstance: string }> = [];
 
   addField(e?: MouseEvent): void {

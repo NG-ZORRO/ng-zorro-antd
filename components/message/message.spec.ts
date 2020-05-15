@@ -135,9 +135,6 @@ describe('message', () => {
 
     messageService.remove(filledMessage.messageId);
     fixture.detectChanges();
-    filledMessage!.onClose!.subscribe(() => {
-      console.log(1);
-    });
     expect(overlayContainerElement.textContent).not.toContain('SUCCESS');
   }));
 
@@ -152,14 +149,14 @@ describe('message', () => {
       expect(overlayContainerElement.textContent).toContain(content);
       if (id === 3) {
         expect(overlayContainerElement.textContent).not.toContain('SUCCESS-1');
-        expect((messageService as any).container.messages.length).toBe(2); // tslint:disable-line:no-any
+        expect((messageService as any).container.instances.length).toBe(2); // tslint:disable-line:no-any
       }
     });
 
     messageService.remove();
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).not.toContain('SUCCESS-3');
-    expect((messageService as any).container.messages.length).toBe(0); // tslint:disable-line:no-any
+    expect((messageService as any).container.instances.length).toBe(0); // tslint:disable-line:no-any
   }));
 
   it('should destroy without animation', fakeAsync(() => {
@@ -208,5 +205,5 @@ describe('message', () => {
   `
 })
 export class NzTestMessageComponent {
-  @ViewChild('contentTemplate', { static: true }) template: TemplateRef<void>;
+  @ViewChild('contentTemplate', { static: true }) template!: TemplateRef<void>;
 }

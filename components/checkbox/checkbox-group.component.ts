@@ -9,7 +9,7 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
 import { ChangeDetectorRef, Component, ElementRef, forwardRef, Input, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 export interface NzCheckBoxOptionInterface {
@@ -30,8 +30,8 @@ export interface NzCheckBoxOptionInterface {
       class="ant-checkbox-group-item"
       *ngFor="let o of options; trackBy: trackByOption"
       [nzDisabled]="o.disabled || nzDisabled"
-      [(nzChecked)]="o.checked"
-      (nzCheckedChange)="onChange(options)"
+      [nzChecked]="o.checked!"
+      (nzCheckedChange)="onCheckedChange(o, $event)"
     >
       <span>{{ o.label }}</span>
     </label>
@@ -48,6 +48,8 @@ export interface NzCheckBoxOptionInterface {
   }
 })
 export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, OnDestroy {
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
   options: NzCheckBoxOptionInterface[] = [];
@@ -55,6 +57,11 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, O
 
   trackByOption(_: number, option: NzCheckBoxOptionInterface): string {
     return option.value;
+  }
+
+  onCheckedChange(option: NzCheckBoxOptionInterface, checked: boolean): void {
+    option.checked = checked;
+    this.onChange(this.options);
   }
 
   constructor(private elementRef: ElementRef, private focusMonitor: FocusMonitor, private cdr: ChangeDetectorRef) {}

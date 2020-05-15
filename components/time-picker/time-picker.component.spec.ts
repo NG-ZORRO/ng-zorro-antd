@@ -121,6 +121,7 @@ describe('time-picker', () => {
       expect(nzOnChange).toHaveBeenCalled();
       const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
       expect(result.getHours()).toBe(0);
+      expect(testComponent.nzTimePickerComponent.inputRef.nativeElement.value).toBe('00:33:00');
     }));
     it('should support ISO string', fakeAsync(() => {
       testComponent.date = '2020-03-27T13:49:54.917Z';
@@ -139,6 +140,11 @@ describe('time-picker', () => {
         date.getMinutes().toString()
       );
     }));
+    it('should support custom suffixIcon', fakeAsync(() => {
+      testComponent.nzSuffixIcon = 'calendar';
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css(`.anticon-calendar`))).toBeDefined();
+    }));
   });
 
   function queryFromOverlay(selector: string): HTMLElement {
@@ -156,6 +162,7 @@ describe('time-picker', () => {
       (nzOpenChange)="openChange($event)"
       [nzDisabled]="disabled"
       [nzUse12Hours]="use12Hours"
+      [nzSuffixIcon]="nzSuffixIcon"
     ></nz-time-picker>
   `
 })
@@ -166,6 +173,7 @@ export class NzTestTimePickerComponent {
   date: Date | string = new Date();
   disabled = false;
   use12Hours = false;
+  nzSuffixIcon?: string;
   onChange(): void {}
-  @ViewChild(NzTimePickerComponent, { static: false }) nzTimePickerComponent: NzTimePickerComponent;
+  @ViewChild(NzTimePickerComponent, { static: false }) nzTimePickerComponent!: NzTimePickerComponent;
 }

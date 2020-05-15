@@ -21,12 +21,18 @@ export class NzResizeHandleMouseDownEvent {
 @Component({
   selector: 'nz-resize-handle, [nz-resize-handle]',
   exportAs: 'nzResizeHandle',
-  template: `
-    <ng-content></ng-content>
-  `,
+  template: ` <ng-content></ng-content> `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
-    '[class]': '"nz-resizable-handle nz-resizable-handle-" + nzDirection',
+    '[class.nz-resizable-handle]': 'true',
+    '[class.nz-resizable-handle-top]': `nzDirection === 'top'`,
+    '[class.nz-resizable-handle-right]': `nzDirection === 'right'`,
+    '[class.nz-resizable-handle-bottom]': `nzDirection === 'bottom'`,
+    '[class.nz-resizable-handle-left]': `nzDirection === 'left'`,
+    '[class.nz-resizable-handle-topRight]': `nzDirection === 'topRight'`,
+    '[class.nz-resizable-handle-bottomRight]': `nzDirection === 'bottomRight'`,
+    '[class.nz-resizable-handle-bottomLeft]': `nzDirection === 'bottomLeft'`,
+    '[class.nz-resizable-handle-topLeft]': `nzDirection === 'topLeft'`,
     '[class.nz-resizable-handle-box-hover]': 'entered',
     '(mousedown)': 'onMousedown($event)',
     '(touchstart)': 'onMousedown($event)'

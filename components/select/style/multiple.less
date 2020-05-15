@@ -112,6 +112,11 @@
       white-space: nowrap;
       visibility: hidden;
     }
+
+    // https://github.com/ant-design/ant-design/issues/22906
+    &:first-child .@{select-prefix-cls}-selection-search-input {
+      margin-left: 6.5px;
+    }
   }
 
   // ======================= Placeholder =======================
@@ -144,6 +149,7 @@
 
       .@{select-prefix-cls}-selection-search {
         height: @select-selection-height + @select-multiple-padding;
+        line-height: @select-selection-height + @select-multiple-padding;
 
         &-input,
         &-mirror {
@@ -154,13 +160,17 @@
     }
   }
 
-  .select-size('lg', @select-multiple-item-height-lg);
+  .select-size('lg', @input-height-lg);
   .select-size('sm', @input-height-sm);
 
   // Size small need additional set padding
   &.@{select-prefix-cls}-sm {
     .@{select-prefix-cls}-selection-placeholder {
       left: @input-padding-horizontal-sm;
+    }
+    // https://github.com/ant-design/ant-design/issues/22906
+    .@{select-prefix-cls}-selection-search:first-child .@{select-prefix-cls}-selection-search-input {
+      margin-left: 3px;
     }
   }
   &.@{select-prefix-cls}-lg {

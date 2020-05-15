@@ -38,6 +38,7 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
 | `[nzSearchPlaceholder]` | The hint text of the search box. | `string` | `'Search here'` |
 | `[nzNotFoundContent]` | Text to display when a column is empty. | `string` | `'The list is empty'` |
 | `[nzCanMove]` | Two verification when transfer choice box. please refer to the case. | `(arg: TransferCanMove) => Observable<TransferItem[]>` | - |
+| `[nzSelectedKeys]` | A set of keys of selected items. | `string[]` | - |
 | `[nzTargetKeys]` | A set of keys of elements that are listed on the right column. | `string[]` | - |
 | `(nzChange)` | A callback function that is executed when the transfer between columns is complete. | `EventEmitter<TransferChange>` | - |
 | `(nzSearchChange)` | A callback function which is executed when search field are changed | `EventEmitter<TransferSearchChange>` | - |

@@ -48,8 +48,8 @@ export interface AutocompleteOptionGroups {
   ]
 })
 export class NzDemoAutoCompleteCertainCategoryComponent implements OnInit {
-  inputValue: string;
-  optionGroups: AutocompleteOptionGroups[];
+  inputValue?: string;
+  optionGroups: AutocompleteOptionGroups[] = [];
 
   constructor() {}
 

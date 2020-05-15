@@ -7,7 +7,13 @@
  */
 
 import { ChangeDetectionStrategy, Component, Directive, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { AvatarShape, AvatarSize, ButtonShape, ButtonSize, InputSize } from './skeleton.type';
+import {
+  NzSkeletonAvatarShape,
+  NzSkeletonAvatarSize,
+  NzSkeletonButtonShape,
+  NzSkeletonButtonSize,
+  NzSkeletonInputSize
+} from './skeleton.type';
 
 @Directive({
   selector: 'nz-skeleton-element',
@@ -19,7 +25,7 @@ import { AvatarShape, AvatarSize, ButtonShape, ButtonSize, InputSize } from './s
 })
 export class NzSkeletonElementDirective {
   @Input() nzActive: boolean = false;
-  @Input() nzType: 'button' | 'input' | 'avatar';
+  @Input() nzType!: 'button' | 'input' | 'avatar';
 }
 
 @Component({
@@ -37,8 +43,8 @@ export class NzSkeletonElementDirective {
   `
 })
 export class NzSkeletonElementButtonComponent {
-  @Input() nzShape: ButtonShape;
-  @Input() nzSize: ButtonSize;
+  @Input() nzShape: NzSkeletonButtonShape = 'default';
+  @Input() nzSize: NzSkeletonButtonSize = 'default';
 }
 
 @Component({
@@ -51,15 +57,19 @@ export class NzSkeletonElementButtonComponent {
       [class.ant-skeleton-avatar-circle]="nzShape === 'circle'"
       [class.ant-skeleton-avatar-lg]="nzSize === 'large'"
       [class.ant-skeleton-avatar-sm]="nzSize === 'small'"
-      [style]="styleMap"
+      [ngStyle]="styleMap"
     >
     </span>
   `
 })
 export class NzSkeletonElementAvatarComponent implements OnChanges {
+  static ngAcceptInputType_nzShape: NzSkeletonAvatarShape | undefined | null;
+  static ngAcceptInputType_AvatarSize: NzSkeletonAvatarSize | undefined | null;
+
+  @Input() nzShape: NzSkeletonAvatarShape = 'circle';
+  @Input() nzSize: NzSkeletonAvatarSize = 'default';
+
   styleMap = {};
-  @Input() nzShape: AvatarShape;
-  @Input() nzSize: AvatarSize;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzSize && typeof this.nzSize === 'number') {
@@ -84,5 +94,5 @@ export class NzSkeletonElementAvatarComponent implements OnChanges {
   `
 })
 export class NzSkeletonElementInputComponent {
-  @Input() nzSize: InputSize;
+  @Input() nzSize: NzSkeletonInputSize = 'default';
 }

@@ -66,8 +66,8 @@ type NzEmptyContentType = 'component' | 'template' | 'string';
   `
 })
 export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
-  @Input() nzComponentName: string;
-  @Input() specificContent: NzEmptyCustomContent;
+  @Input() nzComponentName?: string;
+  @Input() specificContent?: NzEmptyCustomContent;
 
   content?: NzEmptyCustomContent;
   contentType: NzEmptyContentType = 'string';

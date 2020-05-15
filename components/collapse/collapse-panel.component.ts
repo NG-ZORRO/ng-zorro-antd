@@ -22,6 +22,7 @@ import {
 import { collapseMotion } from 'ng-zorro-antd/core/animation';
 
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -39,8 +40,8 @@ const NZ_CONFIG_COMPONENT_NAME = 'collapsePanel';
   template: `
     <div role="tab" [attr.aria-expanded]="nzActive" class="ant-collapse-header" (click)="clickHeader()">
       <ng-container *ngIf="nzShowArrow">
-        <ng-container *nzStringTemplateOutlet="nzExpandedIcon">
-          <i nz-icon [nzType]="nzExpandedIcon || 'right'" class="ant-collapse-arrow" [nzRotate]="nzActive ? 90 : 0"></i>
+        <ng-container *nzStringTemplateOutlet="nzExpandedIcon; let expandedIcon">
+          <i nz-icon [nzType]="expandedIcon || 'right'" class="ant-collapse-arrow" [nzRotate]="nzActive ? 90 : 0"></i>
         </ng-container>
       </ng-container>
       <ng-container *nzStringTemplateOutlet="nzHeader">{{ nzHeader }}</ng-container>
@@ -63,12 +64,16 @@ const NZ_CONFIG_COMPONENT_NAME = 'collapsePanel';
   }
 })
 export class NzCollapsePanelComponent implements OnInit, OnDestroy {
+  static ngAcceptInputType_nzActive: BooleanInput;
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzShowArrow: BooleanInput;
+
   @Input() @InputBoolean() nzActive = false;
   @Input() @InputBoolean() nzDisabled = false;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzShowArrow: boolean;
-  @Input() nzExtra: string | TemplateRef<void>;
-  @Input() nzHeader: string | TemplateRef<void>;
-  @Input() nzExpandedIcon: string | TemplateRef<void>;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzShowArrow: boolean = true;
+  @Input() nzExtra?: string | TemplateRef<void>;
+  @Input() nzHeader?: string | TemplateRef<void>;
+  @Input() nzExpandedIcon?: string | TemplateRef<void>;
   @Output() readonly nzActiveChange = new EventEmitter<boolean>();
   private destroy$ = new Subject();
   clickHeader(): void {

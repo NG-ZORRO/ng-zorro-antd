@@ -4,7 +4,7 @@ import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import isSameDay from 'date-fns/isSameDay';
@@ -31,7 +31,7 @@ describe('NzDatePickerComponent', () => {
 
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, NoopAnimationsModule, NzDatePickerModule, NzI18nModule],
+      imports: [FormsModule, NoopAnimationsModule, NzDatePickerModule, NzI18nModule, ReactiveFormsModule],
       providers: [
         // { provide: NZ_DATE_CONFIG, useValue: { firstDayOfWeek: 1 } }
       ],
@@ -381,6 +381,12 @@ describe('NzDatePickerComponent', () => {
       openPickerByClickTrigger();
       expect(queryFromOverlay('.ant-picker-header-year-btn').textContent!.indexOf('2015') > -1).toBeTruthy();
       expect(queryFromOverlay('.ant-picker-header-month-btn').textContent!.indexOf('9') > -1).toBeTruthy();
+    }));
+
+    it('should support custom suffixIcon', fakeAsync(() => {
+      fixtureInstance.nzSuffixIcon = 'clock-circle';
+      fixture.detectChanges();
+      expect(debugElement.query(By.css(`.anticon-clock-circle`))).toBeDefined();
     }));
   });
 
@@ -824,6 +830,7 @@ describe('NzDatePickerComponent', () => {
       expect(result.getDate()).toBe(22);
     }));
   }); // /specified date picker testing
+
   function getPreBtn(): HTMLElement {
     return queryFromOverlay(`.${PREFIX_CLASS}-header-prev-btn`);
   }
@@ -856,6 +863,26 @@ describe('NzDatePickerComponent', () => {
       dispatchMouseEvent(cell, 'click');
       fixture.detectChanges();
       expect(fixtureInstance.modelValue.getDate()).toBe(+cellText);
+    }));
+  });
+
+  describe('formControl', () => {
+    beforeEach(() => (fixtureInstance.useSuite = 4));
+
+    it('should formControl init work', fakeAsync(() => {
+      fixtureInstance.control = new FormControl(new Date('2020-04-08'));
+      fixture.detectChanges();
+      flush(); // Wait writeValue() tobe done
+      fixture.detectChanges();
+      expect(getPickerInput(fixture.debugElement).value!.trim()).toBe('2020-04-08');
+    }));
+
+    it('should disabled work', fakeAsync(() => {
+      fixtureInstance.control = new FormControl({ value: new Date('2020-04-24'), disabled: true });
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(getPickerInput(fixture.debugElement).getAttribute('disabled')).not.toBeNull();
     }));
   });
 
@@ -956,6 +983,7 @@ describe('date-fns testing', () => {
         (nzOnCalendarChange)="nzOnCalendarChange($event)"
         [nzShowTime]="nzShowTime"
         (nzOnOk)="nzOnOk($event)"
+        [nzSuffixIcon]="nzSuffixIcon"
       ></nz-date-picker>
       <ng-template #tplDateRender let-current>
         <div [class.test-first-day]="current.getDate() === 1">{{ current.getDate() }}</div>
@@ -970,40 +998,44 @@ describe('date-fns testing', () => {
 
       <!-- Suite 3 -->
       <nz-date-picker *ngSwitchCase="3" nzOpen [(ngModel)]="modelValue"></nz-date-picker>
+
+      <!-- Suite 4 -->
+      <nz-date-picker *ngSwitchCase="4" [formControl]="control"></nz-date-picker>
     </ng-container>
   `
 })
 class NzTestDatePickerComponent {
-  useSuite: 1 | 2 | 3;
-  @ViewChild('tplDateRender', { static: true }) tplDateRender: TemplateRef<Date>;
-  @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter: TemplateRef<void>;
+  useSuite!: 1 | 2 | 3 | 4;
+  @ViewChild('tplDateRender', { static: true }) tplDateRender!: TemplateRef<Date>;
+  @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter!: TemplateRef<void>;
 
   // --- Suite 1
-  nzAllowClear: boolean;
-  nzAutoFocus: boolean;
-  nzDisabled: boolean;
-  nzClassName: string;
-  nzFormat: string;
-  nzDisabledDate: (d: Date) => boolean;
+  nzAllowClear: boolean = false;
+  nzAutoFocus: boolean = false;
+  nzDisabled: boolean = false;
+  nzClassName!: string;
+  nzFormat!: string;
+  nzDisabledDate!: (d: Date) => boolean;
   nzLocale: any; // tslint:disable-line:no-any
-  nzPlaceHolder: string;
-  nzPopupStyle: NgStyleInterface;
-  nzDropdownClassName: string;
-  nzSize: string;
-  nzStyle: NgStyleInterface;
+  nzPlaceHolder!: string;
+  nzPopupStyle!: NgStyleInterface;
+  nzDropdownClassName!: string;
+  nzSize!: string;
+  nzStyle!: NgStyleInterface;
 
   nzOnChange(): void {}
   nzOnCalendarChange(): void {}
   nzOnOpenChange(): void {}
 
-  nzValue: Date | null;
-  nzDefaultPickerValue: Date | null;
+  nzValue: Date | null = null;
+  nzDefaultPickerValue: Date | null = null;
   nzDateRender: any; // tslint:disable-line:no-any
   nzShowTime: boolean | object = false;
   nzDisabledTime: any; // tslint:disable-line:no-any
-  nzRenderExtraFooter: string | (() => TemplateRef<void> | string);
+  nzRenderExtraFooter!: string | (() => TemplateRef<void> | string);
   nzShowToday = false;
-  nzMode: string;
+  nzMode!: string;
+  nzSuffixIcon!: string;
 
   // nzRanges;
   nzOnPanelChange(): void {}
@@ -1011,8 +1043,11 @@ class NzTestDatePickerComponent {
   nzOnOk(): void {}
 
   // --- Suite 2
-  nzOpen: boolean;
+  nzOpen: boolean = false;
 
   // --- Suite 3
-  modelValue: Date;
+  modelValue!: Date;
+
+  // --- Suite 4
+  control!: FormControl;
 }

@@ -14,6 +14,7 @@ import { NzSafeAny, NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType } 
 
 export interface NzConfig {
   affix?: AffixConfig;
+  select?: SelectConfig;
   alert?: AlertConfig;
   anchor?: AnchorConfig;
   avatar?: AvatarConfig;
@@ -26,6 +27,7 @@ export interface NzConfig {
   codeEditor?: CodeEditorConfig;
   collapse?: CollapseConfig;
   collapsePanel?: CollapsePanelConfig;
+  datePicker?: DatePickerConfig;
   descriptions?: DescriptionsConfig;
   drawer?: DrawerConfig;
   empty?: EmptyConfig;
@@ -37,6 +39,7 @@ export interface NzConfig {
   pageHeader?: PageHeaderConfig;
   progress?: ProgressConfig;
   rate?: RateConfig;
+  space?: SpaceConfig;
   spin?: SpinConfig;
   switch?: SwitchConfig;
   table?: TableConfig;
@@ -45,6 +48,10 @@ export interface NzConfig {
   tree?: TreeConfig;
   treeSelect?: TreeSelectConfig;
   typography?: TypographyConfig;
+}
+
+export interface SelectConfig {
+  nzSuffixIcon?: TemplateRef<NzSafeAny> | string | null;
 }
 
 export interface AffixConfig {
@@ -121,6 +128,11 @@ export interface CollapsePanelConfig {
   nzShowArrow?: boolean;
 }
 
+export interface DatePickerConfig {
+  nzSeparator?: string;
+  nzSuffixIcon?: string | TemplateRef<NzSafeAny>;
+}
+
 export interface DescriptionsConfig {
   nzBorder?: boolean;
   nzColumn?: { [key in NzBreakpointEnum]?: number } | number;
@@ -131,6 +143,7 @@ export interface DescriptionsConfig {
 export interface DrawerConfig {
   nzMask?: boolean;
   nzMaskClosable?: boolean;
+  nzCloseOnNavigation?: boolean;
 }
 
 export interface EmptyConfig {
@@ -139,6 +152,7 @@ export interface EmptyConfig {
 
 export interface FormConfig {
   nzNoColon?: boolean;
+  nzAutoTips?: Record<string, Record<string, string>>;
 }
 
 export interface IconConfig {
@@ -157,6 +171,7 @@ export interface MessageConfig {
 export interface ModalConfig {
   nzMask?: boolean;
   nzMaskClosable?: boolean;
+  nzCloseOnNavigation?: boolean;
 }
 
 export interface NotificationConfig extends MessageConfig {
@@ -183,6 +198,10 @@ export interface ProgressConfig {
 export interface RateConfig {
   nzAllowClear?: boolean;
   nzAllowHalf?: boolean;
+}
+
+export interface SpaceConfig {
+  nzSize?: 'small' | 'middle' | 'large' | number;
 }
 
 export interface SpinConfig {
@@ -224,6 +243,7 @@ export interface TimePickerConfig {
   nzSecondStep?: number;
   nzPopupClassName?: string;
   nzUse12Hours?: string;
+  nzSuffixIcon?: string | TemplateRef<NzSafeAny>;
 }
 
 export interface TreeConfig {

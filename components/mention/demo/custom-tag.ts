@@ -13,7 +13,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
   `
 })
 export class NzDemoMentionCustomTagComponent {
-  inputValue: string;
+  inputValue?: string;
   webFrameworks = [
     { name: 'React', type: 'JavaScript' },
     { name: 'Angular', type: 'JavaScript' },

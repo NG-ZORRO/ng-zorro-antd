@@ -5,7 +5,7 @@ import { UploadChangeParam, UploadFile } from 'ng-zorro-antd/upload';
   selector: 'nz-demo-upload-file-list',
   template: `
     <nz-upload nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76" [nzFileList]="fileList" (nzChange)="handleChange($event)">
-      <button nz-button><i nz-icon nzType="upload"></i><span>Upload</span></button>
+      <button nz-button><i nz-icon nzType="upload"></i>Upload</button>
     </nz-upload>
   `
 })

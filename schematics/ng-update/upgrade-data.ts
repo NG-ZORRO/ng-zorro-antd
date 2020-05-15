@@ -1,4 +1,4 @@
-import { RuleUpgradeData } from '@angular/cdk/schematics';
+import { UpgradeData } from '@angular/cdk/schematics';
 import {
   attributeSelectors,
   classNames,
@@ -12,7 +12,7 @@ import {
 } from './data';
 
 /** Upgrade data that will be used for the NG-ZORRO ng-update schematic. */
-export const ruleUpgradeData: RuleUpgradeData = {
+export const ruleUpgradeData: UpgradeData = {
   attributeSelectors,
   classNames,
   constructorChecks,

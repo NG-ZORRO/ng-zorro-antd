@@ -44,7 +44,7 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
     <ng-template>
       <div
         class="ant-dropdown"
-        [class]="nzOverlayClassName"
+        [ngClass]="nzOverlayClassName"
         [ngStyle]="nzOverlayStyle"
         [@slideMotion]="dropDownPosition"
         [@.disabled]="noAnimation?.nzNoAnimation"
@@ -65,9 +65,9 @@ export class NzDropdownMenuComponent implements AfterContentInit {
   mouseState$ = new BehaviorSubject<boolean>(false);
   isChildSubMenuOpen$ = this.nzMenuService.isChildSubMenuOpen$;
   descendantMenuItemClick$ = this.nzMenuService.descendantMenuItemClick$;
-  nzOverlayClassName: string | null = null;
+  nzOverlayClassName: string = '';
   nzOverlayStyle: IndexableObject = {};
-  @ViewChild(TemplateRef, { static: true }) templateRef: TemplateRef<NzSafeAny>;
+  @ViewChild(TemplateRef, { static: true }) templateRef!: TemplateRef<NzSafeAny>;
 
   setMouseState(visible: boolean): void {
     this.mouseState$.next(visible);

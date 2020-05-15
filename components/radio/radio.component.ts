@@ -23,7 +23,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -77,6 +77,9 @@ import { NzRadioService } from './radio.service';
   }
 })
 export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, OnDestroy, OnInit {
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzAutoFocus: BooleanInput;
+
   private isNgModel = false;
   private destroy$ = new Subject<void>();
   isChecked = false;
@@ -84,7 +87,7 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
   isRadioButton = !!this.nzRadioButtonDirective;
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
-  @ViewChild('inputElement', { static: false }) inputElement: ElementRef;
+  @ViewChild('inputElement', { static: false }) inputElement?: ElementRef;
   @Input() nzValue: NzSafeAny | null = null;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAutoFocus = false;
@@ -106,11 +109,11 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
   }
 
   focus(): void {
-    this.focusMonitor.focusVia(this.inputElement, 'keyboard');
+    this.focusMonitor.focusVia(this.inputElement!, 'keyboard');
   }
 
   blur(): void {
-    this.inputElement.nativeElement.blur();
+    this.inputElement!.nativeElement.blur();
   }
 
   constructor(

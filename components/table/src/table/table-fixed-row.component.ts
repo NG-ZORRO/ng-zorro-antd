@@ -40,7 +40,7 @@ import { NzTableStyleService } from '../table-style.service';
   `
 })
 export class NzTableFixedRowComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('tdElement') tdElement: ElementRef;
+  @ViewChild('tdElement') tdElement!: ElementRef;
   hostWidth$ = new BehaviorSubject<number | null>(null);
   enableAutoMeasure$ = new BehaviorSubject<boolean>(false);
   private destroy$ = new Subject();

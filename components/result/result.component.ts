@@ -29,7 +29,7 @@ const ExceptionStatus = ['404', '500', '403'];
     <div class="ant-result-icon">
       <ng-container *ngIf="!isException; else exceptionTpl">
         <ng-container *ngIf="icon">
-          <ng-container *nzStringTemplateOutlet="icon">
+          <ng-container *nzStringTemplateOutlet="icon; let icon">
             <i nz-icon [nzType]="icon" nzTheme="fill"></i>
           </ng-container>
         </ng-container>
@@ -74,7 +74,7 @@ const ExceptionStatus = ['404', '500', '403'];
 })
 export class NzResultComponent implements OnChanges {
   @Input() nzIcon?: string | TemplateRef<void>;
-  @Input() nzTitle: string | TemplateRef<void>;
+  @Input() nzTitle?: string | TemplateRef<void>;
   @Input() nzStatus: NzResultStatusType = 'info';
   @Input() nzSubTitle?: string | TemplateRef<void>;
   @Input() nzExtra?: string | TemplateRef<void>;

@@ -43,6 +43,7 @@ import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
 | `[nzPlaceHolder]` | display when there's no value | `string` | `"Select a time"` |
 | `[nzPopupClassName]` | className of panel | `string` | `''` | ✅ |
 | `[nzUse12Hours]` | display as 12 hours format, with default format `h:mm:ss a` | `boolean` | `false` | ✅ |
+| `[nzSuffixIcon]` | the custom suffix icon | `string` \| `TemplateRef` | - | ✅ |
 | `(ngModelChange)` | a callback function, can be executed when the selected time is changing | `EventEmitter<Date>` | - |
 | `(nzOpenChange)` | a callback function which will be called while panel opening/closing | `EventEmitter<boolean>` | - |
 

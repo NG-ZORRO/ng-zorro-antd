@@ -23,7 +23,7 @@ NG-ZORRO 允许开发者关闭动画效果，您可以通过添加对应指令�
 引入 `NzNoAnimationModule` 模块。
 
 ```ts
-import { NzNoAnimationModule } from 'ng-zorro-antd/core';
+import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 
 @NgModule({
   imports: [

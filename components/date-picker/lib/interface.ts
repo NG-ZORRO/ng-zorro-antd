@@ -12,7 +12,7 @@ export interface PanelSelector {
   className: string;
   title?: string;
   label: string;
-  onClick?(): void;
+  onClick(): void;
 }
 
 export interface DateCell {
@@ -46,6 +46,10 @@ export interface DayCell extends DateCell {
   isHoverEndDate?: boolean;
   isInHoverRange?: boolean;
   isInSelectedRange?: boolean;
+  isLastDayOfMonth?: boolean;
+  isFirstDayOfMonth?: boolean;
+  isStartSingle?: boolean;
+  isEndSingle?: boolean;
 }
 
 export interface DecadeCell extends DateCell {

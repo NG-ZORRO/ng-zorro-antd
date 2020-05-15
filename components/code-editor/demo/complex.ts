@@ -48,8 +48,8 @@ import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
   ]
 })
 export class NzDemoCodeEditorComplexComponent {
-  @ViewChild(NzCodeEditorComponent, { static: false }) editorComponent: NzCodeEditorComponent;
-  @ViewChild(NzTooltipDirective, { static: false }) tooltip: NzTooltipDirective;
+  @ViewChild(NzCodeEditorComponent, { static: false }) editorComponent?: NzCodeEditorComponent;
+  @ViewChild(NzTooltipDirective, { static: false }) tooltip?: NzTooltipDirective;
 
   loading = true;
   fullScreen = false;
@@ -84,7 +84,7 @@ console.log(flatten(['1', 2, [[3]]]))`;
   toggleFullScreen(): void {
     this.fullScreen = !this.fullScreen;
     this.renderer.setStyle(this.document.body, 'overflow-y', this.fullScreen ? 'hidden' : null);
-    this.editorComponent.layout();
-    this.tooltip.hide();
+    this.editorComponent?.layout();
+    this.tooltip?.hide();
   }
 }

@@ -3,7 +3,7 @@ import { TempScopedNodeJsSyncHost } from '@angular-devkit/core/node/testing';
 import { HostTree } from '@angular-devkit/schematics';
 import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
 import * as shx from 'shelljs';
-import { SchematicsTestTsConfig, SchematicsTestNGConfig } from '../config';
+import { SchematicsTestNGConfig, SchematicsTestTsConfig } from '../config';
 
 describe('tooltip-like migration', () => {
   let runner: SchematicTestRunner;
@@ -11,8 +11,6 @@ describe('tooltip-like migration', () => {
   let tree: UnitTestTree;
   let tmpDirPath: string;
   let previousWorkingDir: string;
-  let warnOutput: string[];
-  let errorOutput: string[];
 
   beforeEach(() => {
     runner = new SchematicTestRunner('test', require.resolve('../../../migration.json'));
@@ -21,16 +19,6 @@ describe('tooltip-like migration', () => {
 
     writeFile('/tsconfig.json', JSON.stringify(SchematicsTestTsConfig));
     writeFile('/angular.json', JSON.stringify(SchematicsTestNGConfig));
-
-    warnOutput = [];
-    errorOutput = [];
-    runner.logger.subscribe(logEntry => {
-      if (logEntry.level === 'warn') {
-        warnOutput.push(logEntry.message);
-      } else if (logEntry.level === 'error') {
-        errorOutput.push(logEntry.message);
-      }
-    });
 
     previousWorkingDir = shx.pwd();
     tmpDirPath = getSystemPath(host.root);

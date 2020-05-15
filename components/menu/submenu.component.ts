@@ -32,6 +32,7 @@ import {
 } from '@angular/core';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { getPlacementName, POSITION_MAP } from 'ng-zorro-antd/core/overlay';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { combineLatest, merge, Subject } from 'rxjs';
 import { map, startWith, switchMap, takeUntil } from 'rxjs/operators';
@@ -41,7 +42,14 @@ import { NzIsMenuInsideDropDownToken } from './menu.token';
 import { NzMenuModeType, NzMenuThemeType } from './menu.types';
 import { NzSubmenuService } from './submenu.service';
 
-const listOfVerticalPositions = [POSITION_MAP.rightTop, POSITION_MAP.rightBottom, POSITION_MAP.leftTop, POSITION_MAP.leftBottom];
+const listOfVerticalPositions = [
+  POSITION_MAP.rightTop,
+  POSITION_MAP.right,
+  POSITION_MAP.rightBottom,
+  POSITION_MAP.leftTop,
+  POSITION_MAP.left,
+  POSITION_MAP.leftBottom
+];
 const listOfHorizontalPositions = [POSITION_MAP.bottomLeft];
 
 @Component({
@@ -83,7 +91,7 @@ const listOfHorizontalPositions = [POSITION_MAP.bottomLeft];
         (positionChange)="onPositionChange($event)"
         [cdkConnectedOverlayPositions]="overlayPositions"
         [cdkConnectedOverlayOrigin]="origin"
-        [cdkConnectedOverlayWidth]="triggerWidth"
+        [cdkConnectedOverlayWidth]="triggerWidth!"
         [cdkConnectedOverlayOpen]="nzOpen"
       >
         <div
@@ -127,7 +135,10 @@ const listOfHorizontalPositions = [POSITION_MAP.bottomLeft];
   }
 })
 export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, OnChanges {
-  @Input() nzMenuClassName: string | null = null;
+  static ngAcceptInputType_nzOpen: BooleanInput;
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+
+  @Input() nzMenuClassName: string = '';
   @Input() nzPaddingLeft: number | null = null;
   @Input() nzTitle: string | TemplateRef<void> | null = null;
   @Input() nzIcon: string | null = null;
@@ -175,9 +186,9 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
     const placement = getPlacementName(position);
-    if (placement === 'rightTop' || placement === 'rightBottom') {
+    if (placement === 'rightTop' || placement === 'rightBottom' || placement === 'right') {
       this.position = 'right';
-    } else if (placement === 'leftTop' || placement === 'leftBottom') {
+    } else if (placement === 'leftTop' || placement === 'leftBottom' || placement === 'left') {
       this.position = 'left';
     }
     this.cdr.markForCheck();

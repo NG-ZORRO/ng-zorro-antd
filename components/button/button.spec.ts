@@ -3,9 +3,36 @@ import { fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
-import { NzButtonComponent, NzButtonShape, NzButtonSize, NzButtonType } from './index';
+import { NzButtonComponent, NzButtonModule, NzButtonShape, NzButtonSize, NzButtonType } from './index';
 
 describe('button', () => {
+  describe('anchor', () => {
+    let testBed: ComponentBed<TestAnchorButtonComponent>;
+    let buttonElement: HTMLAnchorElement;
+
+    beforeEach(() => {
+      testBed = createComponentBed(TestAnchorButtonComponent, { imports: [NzButtonModule] });
+      buttonElement = testBed.debugElement.query(By.css('a')).nativeElement;
+    });
+
+    it('should disabled work', () => {
+      testBed.component.disabled = false;
+      testBed.fixture.detectChanges();
+
+      expect(buttonElement.getAttribute('disabled')).toBeNull();
+
+      testBed.component.disabled = true;
+      testBed.fixture.detectChanges();
+
+      expect(buttonElement.getAttribute('disabled')).not.toBeNull();
+      expect(buttonElement.getAttribute('tabindex')).toBe('-1');
+
+      // If the page reloads will be thrown an error
+      expect(() => {
+        buttonElement.click();
+      }).not.toThrowError();
+    });
+  });
   describe('className', () => {
     let testBed: ComponentBed<TestButtonComponent>;
     let buttonElement: HTMLButtonElement;
@@ -13,6 +40,7 @@ describe('button', () => {
       testBed = createComponentBed(TestButtonComponent, { declarations: [NzButtonComponent] });
       buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
     });
+
     it('should apply classname', () => {
       expect(buttonElement.className).toBe('ant-btn');
     });
@@ -88,6 +116,7 @@ describe('button', () => {
       const testBed = createComponentBed(TestButtonBindingComponent, { imports: [NzIconTestModule], declarations: [NzButtonComponent] });
       const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
       expect(buttonElement.classList.contains('ant-btn-loading')).toBe(false);
+      expect(buttonElement.classList).not.toContain('ant-btn-icon-only');
       expect(buttonElement.firstElementChild.querySelector('svg')).not.toBe(null);
       expect(buttonElement.firstElementChild!.classList.contains('anticon-poweroff')).toBe(true);
       expect(buttonElement.firstElementChild!.classList.contains('anticon-loading')).toBe(false);
@@ -112,6 +141,14 @@ describe('button', () => {
       tick(5000);
       testBed.fixture.detectChanges();
       expect(buttonElement.firstElementChild.innerText).toContain('button');
+    }));
+  });
+  describe('icon only', () => {
+    it('should icon only works correctly', fakeAsync(() => {
+      const testBed = createComponentBed(TestButtonIconOnlyComponent, { imports: [NzIconTestModule], declarations: [NzButtonComponent] });
+      const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
+      testBed.fixture.detectChanges();
+      expect(buttonElement.classList).toContain('ant-btn-icon-only');
     }));
   });
 });
@@ -169,8 +206,24 @@ export class TestButtonBindingComponent {
   `
 })
 export class TestButtonWithIconComponent implements OnInit {
-  title: string;
+  title?: string;
   ngOnInit(): void {
     setTimeout(() => (this.title = 'button'), 5000);
   }
+}
+
+@Component({
+  template: `
+    <button nz-button>
+      <i nz-icon nzType="caret-down"></i>
+    </button>
+  `
+})
+export class TestButtonIconOnlyComponent {}
+
+@Component({
+  template: ` <a nz-button href="https://ng.ant.design/" [disabled]="disabled">anchor</a> `
+})
+export class TestAnchorButtonComponent {
+  disabled = false;
 }

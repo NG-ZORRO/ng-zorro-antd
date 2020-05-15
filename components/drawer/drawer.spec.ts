@@ -167,6 +167,16 @@ describe('NzDrawerComponent', () => {
     expect(overlayContainerElement.querySelector('.ant-drawer .ant-drawer-title')).toBe(null);
   });
 
+  it('should render header when is no title but is closeable', () => {
+    component.closable = true;
+    component.open();
+    fixture.detectChanges();
+
+    expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
+    expect(overlayContainerElement.querySelector('.ant-drawer-header-no-title')).toBeTruthy();
+    expect(overlayContainerElement.querySelector('.ant-drawer .ant-drawer-title')).toBe(null);
+  });
+
   it('should support string title', () => {
     component.title = component.stringTitle;
     component.open();
@@ -508,9 +518,8 @@ class NzTestDrawerComponent {
   noAnimation = false;
   offsetX = 0;
   offsetY = 0;
-  @ViewChild('customTitle', { static: false }) templateTitle: TemplateRef<void>;
-
-  @ViewChild(NzDrawerComponent, { static: false }) drawerComponent: NzDrawerComponent;
+  @ViewChild('customTitle', { static: false }) templateTitle!: TemplateRef<void>;
+  @ViewChild(NzDrawerComponent, { static: false }) drawerComponent!: NzDrawerComponent;
 
   open(): void {
     this.visible = true;
@@ -529,13 +538,13 @@ class NzTestDrawerComponent {
   `
 })
 class NzTestDrawerWithServiceComponent {
-  @ViewChild('drawerTemplate', { static: false }) drawerTemplate: TemplateRef<{
+  @ViewChild('drawerTemplate', { static: false }) drawerTemplate!: TemplateRef<{
     $implicit: number;
     drawerRef: NzDrawerRef;
   }>;
   templateOpenSpy = jasmine.createSpy('template afterOpen spy');
   templateCloseSpy = jasmine.createSpy('template afterClose spy');
-  templateDrawerRef: NzDrawerRef;
+  templateDrawerRef?: NzDrawerRef;
 
   constructor(private drawerService: NzDrawerService) {}
 

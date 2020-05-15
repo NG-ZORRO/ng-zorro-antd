@@ -14,7 +14,7 @@ import { Subject } from 'rxjs';
 export class NzThMeasureDirective implements OnChanges {
   changes$ = new Subject();
   @Input() nzWidth: string | null = null;
-  @Input() colspan: number | null = null;
+  @Input() colspan: string | number | null = null;
   ngOnChanges(changes: SimpleChanges): void {
     const { nzWidth, colspan } = changes;
     if (nzWidth || colspan) {

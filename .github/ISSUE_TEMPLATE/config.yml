@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Create new issue
+    url: https://ng.ant.design/issue-helper/#/en
+    about: The issue which is not created via issue-helper will be closed immediately.
+  - name: 报告问题
+    url: https://ng.ant.design/issue-helper/#/zh
+    about: 注意：不是用 issue-helper 创建的 issue 会被立即关闭。

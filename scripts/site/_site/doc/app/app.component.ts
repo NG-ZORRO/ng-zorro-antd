@@ -1,16 +1,6 @@
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
-import {
-  AfterContentInit,
-  Component,
-  ElementRef,
-  HostListener,
-  Inject,
-  NgZone,
-  OnInit,
-  Renderer2,
-  ViewChild
-} from '@angular/core';
+import { AfterContentInit, Component, ElementRef, HostListener, Inject, NgZone, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { en_US, NzI18nService, zh_CN } from 'ng-zorro-antd/i18n';
@@ -32,14 +22,13 @@ interface DocPageMeta {
   zh: string;
 }
 
-type SiteTheme = 'default' | 'dark';
+type SiteTheme = 'default' | 'dark' | 'compact';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit, AfterContentInit {
-
   /**
    * When the screen size is smaller that 768 pixel, show the drawer and hide
    * the navigation on the side.
@@ -62,10 +51,10 @@ export class AppComponent implements OnInit, AfterContentInit {
     return window && window.location.href.indexOf('/version') === -1;
   }
 
-  language = 'zh';
+  language: 'zh' | 'en' = 'zh';
   currentVersion = VERSION.full;
 
-  @ViewChild('searchInput', { static: false }) searchInput: ElementRef<HTMLInputElement>;
+  @ViewChild('searchInput', { static: false }) searchInput?: ElementRef<HTMLInputElement>;
 
   switchLanguage(language: string): void {
     const url = this.router.url.split('/');
@@ -78,31 +67,30 @@ export class AppComponent implements OnInit, AfterContentInit {
     if (!this.platform.isBrowser) {
       return;
     }
-    const theme = localStorage.getItem('site-theme') as SiteTheme || 'default';
+    const theme = (localStorage.getItem('site-theme') as SiteTheme) || 'default';
     this.onThemeChange(theme);
   }
 
-  onThemeChange(theme: SiteTheme): void {
+  onThemeChange(theme: string): void {
     if (!this.platform.isBrowser) {
       return;
     }
-    this.theme = theme;
+    this.theme = theme as SiteTheme;
     this.appService.theme$.next(theme);
     this.renderer.setAttribute(document.body, 'data-theme', theme);
-    if (theme !== 'dark') {
-      const dom = document.getElementById('dark-theme');
-      if (dom) {
-        dom.remove();
-      }
-      localStorage.removeItem('site-theme');
-    } else {
+    const dom = document.getElementById('site-theme');
+    if (dom) {
+      dom.remove();
+    }
+    localStorage.removeItem('site-theme');
+    if (theme !== 'default') {
       const style = document.createElement('link');
       style.type = 'text/css';
       style.rel = 'stylesheet';
-      style.id = 'dark-theme';
-      style.href = 'assets/dark.css';
+      style.id = 'site-theme';
+      style.href = `assets/${theme}.css`;
 
-      localStorage.setItem('site-theme', 'dark');
+      localStorage.setItem('site-theme', theme);
       document.body.append(style);
     }
   }
@@ -168,10 +156,7 @@ export class AppComponent implements OnInit, AfterContentInit {
           this.searchComponent = null;
         }
         this.setPage(this.router.url);
-        this.language = this.router.url
-        .split('/')
-          [this.router.url.split('/').length - 1].split('#')[0]
-        .split('?')[0];
+        this.language = this.router.url.split('/')[this.router.url.split('/').length - 1].split('#')[0].split('?')[0] as 'en' | 'zh';
         this.appService.language$.next(this.language);
         this.nzI18nService.setLocale(this.language === 'en' ? en_US : zh_CN);
         this.updateDocMetaAndLocale();
@@ -286,14 +271,14 @@ export class AppComponent implements OnInit, AfterContentInit {
     }
     const changeColor = () => {
       (window as any).less
-      .modifyVars({
-        '@primary-color': res.color.hex
-      })
-      .then(() => {
-        this.msg.success(`应用成功`);
-        this.color = res.color.hex;
-        window.scrollTo(0, 0);
-      });
+        .modifyVars({
+          '@primary-color': res.color.hex
+        })
+        .then(() => {
+          this.msg.success(`应用成功`);
+          this.color = res.color.hex;
+          window.scrollTo(0, 0);
+        });
     };
 
     const lessUrl = 'https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js';
@@ -329,18 +314,18 @@ export class AppComponent implements OnInit, AfterContentInit {
     }
     this.ngZone.runOutsideAngular(() => {
       fromEvent(window, 'resize')
-      .pipe(
-        startWith(true),
-        debounceTime(50),
-        map(() => window.innerWidth)
-      )
-      .subscribe(width => {
-        this.windowWidth = width;
-        const showDrawer = width <= 768;
-        if (this.showDrawer !== showDrawer) {
-          this.showDrawer = showDrawer;
-        }
-      });
+        .pipe(
+          startWith(true),
+          debounceTime(50),
+          map(() => window.innerWidth)
+        )
+        .subscribe(width => {
+          this.windowWidth = width;
+          const showDrawer = width <= 768;
+          if (this.showDrawer !== showDrawer) {
+            this.showDrawer = showDrawer;
+          }
+        });
     });
   }
 

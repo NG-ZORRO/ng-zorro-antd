@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
-import { manifest } from '@ant-design/icons-angular';
+import { manifest, ThemeType } from '@ant-design/icons-angular';
 import { AccountBookFill } from '@ant-design/icons-angular/icons';
 import { NzIconService } from 'ng-zorro-antd/icon';
 
@@ -315,7 +315,7 @@ const newIconNames: string[] = [
 export class NzPageDemoIconComponent implements OnInit {
   displayedNames: Array<{ name: string; icons: string[] }> = [];
   categoryNames: string[] = [];
-  currentTheme = 'outline';
+  currentTheme: ThemeType = 'outline';
   localeObj: { [key: string]: string } = locale;
   searchingString = '';
 
@@ -384,7 +384,7 @@ export class NzPageDemoIconComponent implements OnInit {
     this.categoryNames = notEmptyCategories.map(({ name }) => name);
   }
 
-  setIconsShouldBeDisplayed(theme: string): void {
+  setIconsShouldBeDisplayed(theme: ThemeType): void {
     this.currentTheme = theme;
     this.prepareIcons();
   }

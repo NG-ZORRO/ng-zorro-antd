@@ -27,6 +27,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
 import {
   arraysEqual,
   ensureNumberInRange,
@@ -72,20 +73,20 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
       [class.ant-slider-with-marks]="marksArray"
     >
       <div class="ant-slider-rail"></div>
-      <nz-slider-track [vertical]="nzVertical" [included]="nzIncluded" [offset]="track.offset" [length]="track.length"></nz-slider-track>
+      <nz-slider-track [vertical]="nzVertical" [included]="nzIncluded" [offset]="track.offset!" [length]="track.length!"></nz-slider-track>
       <nz-slider-step
         *ngIf="marksArray"
         [vertical]="nzVertical"
-        [lowerBound]="bounds.lower"
-        [upperBound]="bounds.upper"
+        [lowerBound]="$any(bounds.lower)"
+        [upperBound]="$any(bounds.upper)"
         [marksArray]="marksArray"
         [included]="nzIncluded"
       ></nz-slider-step>
       <nz-slider-handle
         *ngFor="let handle of handles"
         [vertical]="nzVertical"
-        [offset]="handle.offset"
-        [value]="handle.value"
+        [offset]="handle.offset!"
+        [value]="handle.value!"
         [active]="handle.active"
         [tooltipFormatter]="nzTipFormatter"
         [tooltipVisible]="nzTooltipVisible"
@@ -96,8 +97,8 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
         [vertical]="nzVertical"
         [min]="nzMin"
         [max]="nzMax"
-        [lowerBound]="bounds.lower"
-        [upperBound]="bounds.upper"
+        [lowerBound]="$any(bounds.lower)"
+        [upperBound]="$any(bounds.upper)"
         [marksArray]="marksArray"
         [included]="nzIncluded"
       ></nz-slider-marks>
@@ -105,8 +106,17 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
   `
 })
 export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChanges, OnDestroy {
-  @ViewChild('slider', { static: true }) slider: ElementRef<HTMLDivElement>;
-  @ViewChildren(NzSliderHandleComponent) handlerComponents: QueryList<NzSliderHandleComponent>;
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzDots: BooleanInput;
+  static ngAcceptInputType_nzIncluded: BooleanInput;
+  static ngAcceptInputType_nzRange: BooleanInput;
+  static ngAcceptInputType_nzVertical: BooleanInput;
+  static ngAcceptInputType_nzMax: NumberInput;
+  static ngAcceptInputType_nzMin: NumberInput;
+  static ngAcceptInputType_nzStep: NumberInput;
+
+  @ViewChild('slider', { static: true }) slider!: ElementRef<HTMLDivElement>;
+  @ViewChildren(NzSliderHandleComponent) handlerComponents!: QueryList<NzSliderHandleComponent>;
 
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzDots: boolean = false;
@@ -120,7 +130,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   @Input() @InputNumber() nzStep = 1;
   @Input() nzTooltipVisible: NzSliderShowTooltip = 'default';
   @Input() nzTooltipPlacement: string = 'top';
-  @Input() nzTipFormatter: (value: number) => string;
+  @Input() nzTipFormatter?: null | ((value: number) => string);
 
   @Output() readonly nzOnAfterChange = new EventEmitter<NzSliderValue>();
 
@@ -129,16 +139,16 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   cacheSliderLength: number | null = null;
   activeValueIndex: number | undefined = undefined; // Current activated handle's index ONLY for range=true
   track: { offset: null | number; length: null | number } = { offset: null, length: null }; // Track's offset and length
-  handles: NzSliderHandler[]; // Handles' offset
-  marksArray: NzExtendedMark[] | null; // "steps" in array type with more data & FILTER out the invalid mark
+  handles: NzSliderHandler[] = []; // Handles' offset
+  marksArray: NzExtendedMark[] | null = null; // "steps" in array type with more data & FILTER out the invalid mark
   bounds: { lower: NzSliderValue | null; upper: NzSliderValue | null } = { lower: null, upper: null }; // now for nz-slider-step
 
-  private dragStart$: Observable<number>;
-  private dragMove$: Observable<number>;
-  private dragEnd$: Observable<Event>;
-  private dragStart_: Subscription | null;
-  private dragMove_: Subscription | null;
-  private dragEnd_: Subscription | null;
+  private dragStart$?: Observable<number>;
+  private dragMove$?: Observable<number>;
+  private dragEnd$?: Observable<Event>;
+  private dragStart_?: Subscription | null;
+  private dragMove_?: Subscription | null;
+  private dragEnd_?: Subscription | null;
 
   constructor(private sliderService: NzSliderService, private cdr: ChangeDetectorRef, private platform: Platform) {}
 

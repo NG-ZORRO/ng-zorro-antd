@@ -8,6 +8,7 @@
 
 import {
   AfterContentInit,
+  ChangeDetectorRef,
   ContentChildren,
   Directive,
   Inject,
@@ -20,6 +21,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/router';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { combineLatest, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
@@ -42,17 +44,22 @@ import { NzSubmenuService } from './submenu.service';
   }
 })
 export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterContentInit {
+  static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzSelected: BooleanInput;
+  static ngAcceptInputType_nzMatchRouterExact: BooleanInput;
+  static ngAcceptInputType_nzMatchRouter: BooleanInput;
+
   private destroy$ = new Subject();
   level = this.nzSubmenuService ? this.nzSubmenuService.level + 1 : 1;
   selected$ = new Subject<boolean>();
   inlinePaddingLeft: number | null = null;
-  @Input() nzPaddingLeft: number;
+  @Input() nzPaddingLeft?: number;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzSelected = false;
   @Input() @InputBoolean() nzMatchRouterExact = false;
   @Input() @InputBoolean() nzMatchRouter = false;
-  @ContentChildren(RouterLink, { descendants: true }) listOfRouterLink: QueryList<RouterLink>;
-  @ContentChildren(RouterLinkWithHref, { descendants: true }) listOfRouterLinkWithHref: QueryList<RouterLinkWithHref>;
+  @ContentChildren(RouterLink, { descendants: true }) listOfRouterLink!: QueryList<RouterLink>;
+  @ContentChildren(RouterLinkWithHref, { descendants: true }) listOfRouterLinkWithHref!: QueryList<RouterLinkWithHref>;
 
   /** clear all item selected status except this */
   clickMenuItem(e: MouseEvent): void {
@@ -85,6 +92,7 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
       if (this.nzSelected !== hasActiveLinks) {
         this.nzSelected = hasActiveLinks;
         this.setSelectedState(this.nzSelected);
+        this.cdr.markForCheck();
       }
     });
   }
@@ -105,6 +113,7 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
 
   constructor(
     private nzMenuService: MenuService,
+    private cdr: ChangeDetectorRef,
     @Optional() private nzSubmenuService: NzSubmenuService,
     @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean,
     @Optional() private routerLink?: RouterLink,

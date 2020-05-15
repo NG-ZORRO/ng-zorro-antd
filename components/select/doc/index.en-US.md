@@ -25,12 +25,13 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 
 ### nz-select
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
+| Property | Description | Type | Default | Global Config |
+| -------- | ----------- | ---- | ------- | ------- |
 | `[ngModel]` | Current selected nz-option value, double binding. | `any \| any[]` | - |
 | `[compareWith]` | Same as [SelectControlValueAccessor](https://angular.io/api/forms/SelectControlValueAccessor#caveat-option-selection) | `(o1: any, o2: any) => boolean` | `(o1: any, o2: any) => o1===o2` |
 | `[nzAutoClearSearchValue]` | Whether the current search will be cleared on selecting an item. Only applies when `mode` is set to `multiple` or `tags`. | `boolean` | `true` |
 | `[nzAllowClear]` | Show clear button. | `boolean` | `false` |
+| `[nzBorderless]` | whether has borderless style | `boolean` | `false` |
 | `[nzOpen]` | dropdown expand state, double binding | `boolean` | `false` |
 | `[nzAutoFocus]` | Get focus by default | `boolean` | `false` |
 | `[nzDisabled]` | Whether disabled select | `boolean` | `false` |
@@ -47,20 +48,23 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzShowArrow]` | Whether to show the drop-down arrow | `boolean` | `true` |
 | `[nzShowSearch]` | Whether show search input in single mode. | `boolean` | `false` |
 | `[nzSize]` | Size of Select input | `'large' \| 'small' \| 'default'` | `'default'` |
-| `[nzSuffixIcon]` | The custom suffix icon | `TemplateRef<void>` | - |
-| `[nzRemoveIcon]` | The custom remove icon | `TemplateRef<void>` | - |
-| `[nzClearIcon]` | The custom clear icon | `TemplateRef<void>` | - |
-| `[nzMenuItemSelectedIcon]` | The custom menuItemSelected icon | `TemplateRef<void>` | - |
+| `[nzSuffixIcon]` | The custom suffix icon | `TemplateRef<any> \| string` | - |  ✅ |
+| `[nzRemoveIcon]` | The custom remove icon | `TemplateRef<any>` | - |
+| `[nzClearIcon]` | The custom clear icon | `TemplateRef<any>` | - |
+| `[nzMenuItemSelectedIcon]` | The custom menuItemSelected icon | `TemplateRef<any>` | - |
 | `[nzTokenSeparators]` | Separator used to tokenize on tag/multiple mode | `string[]` | `[]` |
 | `[nzLoading]` | indicate loading state | `boolean` | false |
 | `[nzMaxTagCount]` | Max tag count to show| `number` | - |
+| `[nzOptions]` | use nzOptions or `nz-option` to pass options to the select  | `Array<{ label: string \| TemplateRef<any>; value: any; disabled?: boolean; hide?: boolean; groupLabel?: string \| TemplateRef<any>;}>` | - |
 | `[nzMaxTagPlaceholder]` | Placeholder for not showing tags | `TemplateRef<{ $implicit: any[] }>` | - |
+| `[nzOptionHeightPx]` | Each option height inside the dropdown | `number` | `32` |
+| `[nzOptionOverflowSize]` | Max option size inside the dropdown, overflow when exceed the size | `number` | `8` |
 | `(ngModelChange)` | Current selected nz-option value change callback. | `EventEmitter<any[]>` | - |
 | `(nzOpenChange)` | dropdown expand change callback | `EventEmitter<boolean>` | `false` |
-| `(nzScrollToBottom)` | Called when dropdown scrolls to bottom | `EventEmitter<void>` | - |
+| `(nzScrollToBottom)` | Called when dropdown scrolls to bottom | `EventEmitter<any>` | - |
 | `(nzOnSearch)` | Callback function that is fired when input changed. | `EventEmitter<string>` | - |
-| `(nzFocus)` | focus callback | `EventEmitter<void>` | - |
-| `(nzBlur)` | blur callback | `EventEmitter<void>` | - |
+| `(nzFocus)` | focus callback | `EventEmitter<any>` | - |
+| `(nzBlur)` | blur callback | `EventEmitter<any>` | - |
 
 ### nz-option
 

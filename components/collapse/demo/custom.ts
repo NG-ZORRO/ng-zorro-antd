@@ -10,7 +10,7 @@ import { Component } from '@angular/core';
         [nzHeader]="panel.name"
         [nzActive]="panel.active"
         [ngStyle]="panel.customStyle"
-        [nzExpandedIcon]="!isFirst && (panel.icon || expandedIcon)"
+        [nzExpandedIcon]="!isFirst ? panel.icon || expandedIcon : undefined"
       >
         <p>{{ panel.name }} content</p>
         <ng-template #expandedIcon let-active>

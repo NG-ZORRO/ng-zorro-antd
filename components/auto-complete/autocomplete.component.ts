@@ -29,7 +29,7 @@ import {
 } from '@angular/core';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { CompareWith, NzDropDownPosition, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, CompareWith, NzDropDownPosition, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { defer, merge, Observable, Subscription } from 'rxjs';
 import { filter, switchMap, take } from 'rxjs/operators';
@@ -41,7 +41,7 @@ export interface AutocompleteDataSourceItem {
   label: string;
 }
 
-export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | number[];
+export type AutocompleteDataSource = Array<AutocompleteDataSourceItem | string | number>;
 
 @Component({
   selector: 'nz-autocomplete',
@@ -71,26 +71,35 @@ export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | n
         <ng-content></ng-content>
       </ng-template>
       <ng-template #optionsTemplate>
-        <nz-auto-option *ngFor="let option of nzDataSource" [nzValue]="option">{{ option }}</nz-auto-option>
+        <nz-auto-option
+          *ngFor="let option of nzDataSource!"
+          [nzValue]="option"
+          [nzLabel]="option && $any(option).label ? $any(option).label : $any(option)"
+        >
+          {{ option && $any(option).label ? $any(option).label : $any(option) }}
+        </nz-auto-option>
       </ng-template>
     </ng-template>
   `,
   animations: [slideMotion]
 })
 export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit, OnDestroy {
-  @Input() nzWidth: number;
+  static ngAcceptInputType_nzDefaultActiveFirstOption: BooleanInput;
+  static ngAcceptInputType_nzBackfill: BooleanInput;
+
+  @Input() nzWidth?: number;
   @Input() nzOverlayClassName = '';
   @Input() nzOverlayStyle: { [key: string]: string } = {};
   @Input() @InputBoolean() nzDefaultActiveFirstOption = true;
   @Input() @InputBoolean() nzBackfill = false;
   @Input() compareWith: CompareWith = (o1, o2) => o1 === o2;
-  @Input() nzDataSource: AutocompleteDataSource;
+  @Input() nzDataSource?: AutocompleteDataSource;
   @Output()
   readonly selectionChange: EventEmitter<NzAutocompleteOptionComponent> = new EventEmitter<NzAutocompleteOptionComponent>();
 
   showPanel: boolean = true;
   isOpen: boolean = false;
-  activeItem: NzAutocompleteOptionComponent;
+  activeItem!: NzAutocompleteOptionComponent;
   dropDownPosition: NzDropDownPosition = 'bottom';
 
   /**
@@ -107,14 +116,14 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
 
   /** Provided by content */
   @ContentChildren(NzAutocompleteOptionComponent, { descendants: true })
-  fromContentOptions: QueryList<NzAutocompleteOptionComponent>;
+  fromContentOptions!: QueryList<NzAutocompleteOptionComponent>;
   /** Provided by dataSource */
-  @ViewChildren(NzAutocompleteOptionComponent) fromDataSourceOptions: QueryList<NzAutocompleteOptionComponent>;
+  @ViewChildren(NzAutocompleteOptionComponent) fromDataSourceOptions!: QueryList<NzAutocompleteOptionComponent>;
 
   /** cdk-overlay */
-  @ViewChild(TemplateRef, { static: false }) template: TemplateRef<{}>;
-  @ViewChild('panel', { static: false }) panel: ElementRef;
-  @ViewChild('content', { static: false }) content: ElementRef;
+  @ViewChild(TemplateRef, { static: false }) template?: TemplateRef<{}>;
+  @ViewChild('panel', { static: false }) panel?: ElementRef;
+  @ViewChild('content', { static: false }) content?: ElementRef;
 
   private activeItemIndex: number = -1;
   private selectionChangeSubscription = Subscription.EMPTY;
@@ -194,6 +203,10 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
     return this.options.reduce((result: number, current: NzAutocompleteOptionComponent, index: number) => {
       return result === -1 ? (this.compareWith(value, current.nzValue) ? index : -1) : result;
     }, -1)!;
+  }
+
+  getOption(value: NzSafeAny): NzAutocompleteOptionComponent | null {
+    return this.options.find(item => this.compareWith(value, item.nzValue)) || null;
   }
 
   updatePosition(position: NzDropDownPosition): void {
