@@ -30,11 +30,10 @@
   }
 
   &-item-group-title {
-    height: @menu-item-group-height;
     padding: 8px 16px;
     color: @menu-item-group-title-color;
     font-size: @font-size-base;
-    line-height: @menu-item-group-height;
+    line-height: @line-height-base;
     transition: all 0.3s;
   }
 
@@ -59,9 +58,7 @@
   }
 
   &-item > a {
-    &:only-child {
-      display: block;
-    }
+    display: block;
     color: @menu-item-color;
     &:hover {
       color: @menu-highlight-color;
@@ -128,7 +125,6 @@
   &-vertical-left {
     border-right: @border-width-base @border-style-base @border-color-split;
   }
-
   &-vertical-right {
     border-left: @border-width-base @border-style-base @border-color-split;
   }
@@ -137,17 +133,9 @@
   &-vertical-left&-sub,
   &-vertical-right&-sub {
     min-width: 160px;
-    max-height: calc(100vh - 100px);
     padding: 0;
-    overflow: hidden;
     border-right: 0;
     transform-origin: 0 0;
-
-    // https://github.com/ant-design/ant-design/issues/22244
-    &:not(.zoom-big-enter-active):not(.zoom-big-leave-active) {
-      overflow-x: hidden;
-      overflow-y: auto;
-    }
 
     .@{menu-prefix-cls}-item {
       left: 0;
@@ -187,12 +175,6 @@
         transition: opacity 0.3s @ease-in-out, width 0.3s @ease-in-out;
       }
     }
-
-    &.@{menu-prefix-cls}-item-only-child {
-      > .@{iconfont-css-prefix} {
-        margin-right: 0;
-      }
-    }
   }
 
   & > &-item-divider {
@@ -208,6 +190,7 @@
     &-popup {
       position: absolute;
       z-index: @zindex-dropdown;
+      background: @menu-popup-bg;
       border-radius: @border-radius-base;
 
       .submenu-title-wrapper {
@@ -233,10 +216,6 @@
       }
     }
 
-    &-popup > .@{menu-prefix-cls} {
-      background-color: @menu-popup-bg;
-    }
-
     &-vertical,
     &-vertical-left,
     &-vertical-right,
@@ -247,15 +226,18 @@
         right: 16px;
         width: 10px;
         transition: transform 0.3s @ease-in-out;
-
         &::before,
         &::after {
           position: absolute;
           width: 6px;
           height: 1.5px;
           // background + background-image to makes before & after cross have same color.
+          // Since `linear-gradient` not work on IE9, we should hack it.
           // ref: https://github.com/ant-design/ant-design/issues/15910
+          background: @menu-bg;
+          background: ~'@{menu-item-color} \9';
           background-image: linear-gradient(to right, @menu-item-color, @menu-item-color);
+          background-image: ~'none \9';
           border-radius: 2px;
           transition: background 0.3s @ease-in-out, transform 0.3s @ease-in-out,
             top 0.3s @ease-in-out;
@@ -272,19 +254,6 @@
         &::after,
         &::before {
           background: linear-gradient(to right, @menu-highlight-color, @menu-highlight-color);
-        }
-      }
-    }
-
-    &-vertical,
-    &-vertical-left,
-    &-vertical-right {
-      > .@{menu-prefix-cls}-submenu-title .@{menu-prefix-cls}-submenu-arrow {
-        &::before {
-          transform: rotate(45deg) translateY(-2px);
-        }
-        &::after {
-          transform: rotate(-45deg) translateY(2px);
         }
       }
     }
@@ -348,9 +317,7 @@
 
     > .@{menu-prefix-cls}-item {
       > a {
-        &:only-child {
-          display: block;
-        }
+        display: block;
         color: @menu-item-color;
         &:hover {
           color: @menu-highlight-color;
@@ -419,12 +386,6 @@
     }
   }
 
-  &-vertical {
-    .@{menu-prefix-cls}-submenu-title {
-      padding-right: 34px;
-    }
-  }
-
   &-inline {
     width: 100%;
     .@{menu-prefix-cls}-selected,
@@ -458,7 +419,7 @@
       > .@{menu-prefix-cls}-submenu-title,
     > .@{menu-prefix-cls}-submenu > .@{menu-prefix-cls}-submenu-title {
       left: 0;
-      padding: 0 (@menu-collapsed-width - @menu-icon-size-lg) / 2;
+      padding: 0 (@menu-collapsed-width - @menu-icon-size-lg) / 2 !important;
       text-overflow: clip;
       .@{menu-prefix-cls}-submenu-arrow {
         display: none;
@@ -474,11 +435,6 @@
         }
       }
     }
-
-    .@{iconfont-css-prefix} {
-      display: inline-block;
-    }
-
     &-tooltip {
       pointer-events: none;
       .@{iconfont-css-prefix} {
@@ -556,12 +512,4 @@
   }
 }
 
-// Integration with header element so menu items have the same height
-.@{ant-prefix}-layout-header {
-  .@{menu-prefix-cls} {
-    line-height: inherit;
-  }
-}
-
 @import './dark';
-@import './rtl';

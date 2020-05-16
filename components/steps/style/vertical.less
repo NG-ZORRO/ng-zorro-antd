@@ -1,6 +1,5 @@
 .steps-vertical() {
-  display: flex;
-  flex-direction: column;
+  display: block;
   .@{steps-prefix-cls}-item {
     display: block;
     overflow: visible;
@@ -26,11 +25,10 @@
     > .@{steps-prefix-cls}-item-tail {
     position: absolute;
     top: 0;
-    left: @steps-icon-size / 2;
+    left: 16px;
     width: 1px;
     height: 100%;
     padding: @steps-icon-size + 6px 0 6px;
-
     &::after {
       width: 1px;
       height: 100%;

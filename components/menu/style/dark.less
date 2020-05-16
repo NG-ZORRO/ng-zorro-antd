@@ -1,6 +1,6 @@
 .@{menu-prefix-cls} {
   // dark theme
-  &&-dark,
+  &-dark,
   &-dark &-sub {
     color: @menu-dark-color;
     background: @menu-dark-bg;
@@ -20,6 +20,7 @@
 
   &-dark &-inline&-sub {
     background: @menu-dark-submenu-bg;
+    box-shadow: 0 2px 8px fade(@black, 45%) inset;
   }
 
   &-dark&-horizontal {
@@ -92,10 +93,6 @@
   }
   &-dark &-item:hover {
     background-color: @menu-dark-item-hover-bg;
-  }
-
-  &-dark&-dark:not(&-horizontal) &-item-selected {
-    background-color: @menu-dark-item-active-bg;
   }
 
   &-dark &-item-selected {
