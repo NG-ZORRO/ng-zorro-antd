@@ -30,3 +30,4 @@ Basic text writing, including headings, body text, lists, and more.
 | `[nzType]` | Content type | `'secondary'｜'warning'｜'danger'` | - ||
 | `(nzContentChange)` | Trigger when user edit the content | `EventEmitter<string>` | - ||
 | `(nzExpandChange)` | Trigger when user expanded the content | `EventEmitter<void>` | - ||
+| `(nzOnEllipsis)` | Trigger when ellipsis status changed | `EventEmitter<boolean>` | - ||
