@@ -38,6 +38,10 @@ Following the Ant Design specification, we developed an Angular UI library `ng-z
 - Server-side Rendering
 - [Electron](http://electron.atom.io/)
 
+| [<img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/62.2.25/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>IE / Edge | [<img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/62.2.25/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Firefox | [<img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/62.2.25/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Chrome | [<img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/62.2.25/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Safari | [<img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/62.2.25/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Opera | [<img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/62.2.25/electron/electron_48x48.png" alt="Electron" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Electron |
+| --- | --- | --- | --- | --- | --- |
+| IE11, Edge | last 2 versions | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
+
 ## Version
 
 [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
