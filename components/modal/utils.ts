@@ -59,7 +59,8 @@ export function getConfigFromComponent(component: NzModalComponent): ModalOption
     nzOnCancel,
     nzAfterOpen,
     nzAfterClose,
-    nzCloseOnNavigation
+    nzCloseOnNavigation,
+    nzAutofocus
   } = component;
   return {
     nzMask,
@@ -93,6 +94,7 @@ export function getConfigFromComponent(component: NzModalComponent): ModalOption
     nzOnCancel,
     nzAfterOpen,
     nzAfterClose,
-    nzCloseOnNavigation
+    nzCloseOnNavigation,
+    nzAutofocus
   };
 }
