@@ -25,12 +25,13 @@ import zh from '@angular/common/locales/zh';
 registerLocaleData(zh);
 ```
 
-日期类组件包括以下四种形式。
+日期类组件包括以下五种形式。
 
 - nz-date-picker
 - nz-month-picker
 - nz-range-picker
 - nz-week-picker
+- nz-year-picker
 
 **注意：** 所有输入输出日期对象均为 [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date)，你可以通过 [date-fns](https://date-fns.org/) 工具库获得你需要的数据。
 

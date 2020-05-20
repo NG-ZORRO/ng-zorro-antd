@@ -25,12 +25,13 @@ import en from '@angular/common/locales/en';
 registerLocaleData(en);
 ```
 
-There are four kinds of picker:
+There are five kinds of picker:
 
 - nz-date-picker
 - nz-month-picker
 - nz-range-picker
 - nz-week-picker
+- nz-year-picker
 
 **Note:** All input and output date objects are [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date), you can manpulate it with [date-fns](https://date-fns.org/).
 
