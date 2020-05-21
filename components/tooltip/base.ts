@@ -18,7 +18,6 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  OnInit,
   Optional,
   Output,
   Renderer2,
@@ -397,14 +396,6 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
   _positions: ConnectionPositionPair[] = [...DEFAULT_TOOLTIP_POSITIONS];
 
   private destroy$ = new Subject<void>();
-
-  get content(): string | TemplateRef<void> | null {
-    return this.nzContent !== undefined ? this.nzContent : this.nzContentTemplate;
-  }
-
-  get title(): string | TemplateRef<void> | null {
-    return this.nzTitle !== undefined ? this.nzTitle : this.nzTitleTemplate;
-  }
 
   constructor(public cdr: ChangeDetectorRef, @Optional() directionality: Directionality, public noAnimation?: NzNoAnimationDirective) {
     directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
