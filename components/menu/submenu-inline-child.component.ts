@@ -6,20 +6,20 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Renderer2,
-  OnDestroy,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { Direction, Directionality } from '@angular/cdk/bidi';
 
 import { collapseMotion } from 'ng-zorro-antd/core/animation';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -53,13 +53,6 @@ export class NzSubmenuInlineChildComponent implements OnDestroy, OnInit, OnChang
   dir: Direction;
   private destroy$ = new Subject<void>();
 
-  constructor(directionality: Directionality) {
-    this.dir = directionality.value;
-    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-    });
-  }
-
   calcMotionState(): void {
     if (this.nzOpen) {
       this.expandState = 'expanded';
@@ -67,7 +60,12 @@ export class NzSubmenuInlineChildComponent implements OnDestroy, OnInit, OnChang
       this.expandState = 'collapsed';
     }
   }
-  constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
+  constructor(private elementRef: ElementRef, private renderer: Renderer2, directionality: Directionality) {
+    this.dir = directionality.value;
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+    });
+  }
   ngOnInit(): void {
     this.calcMotionState();
   }
