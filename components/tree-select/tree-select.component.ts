@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { BACKSPACE } from '@angular/cdk/keycodes';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
 import {
@@ -33,8 +34,6 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { slideMotion, zoomMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { NzSizeLDSType } from 'ng-zorro-antd/core/types';
-import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 import {
   NzFormatEmitEvent,
   NzTreeBase,
@@ -47,9 +46,8 @@ import { BooleanInput, NgStyleInterface, NzSizeLDSType, OnChangeType, OnTouchedT
 import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzSelectSearchComponent } from 'ng-zorro-antd/select';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
-import { merge, of as observableOf, Subscription } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
-import { Direction, Directionality } from '@angular/cdk/bidi';
+import { merge, of as observableOf, Subject, Subscription } from 'rxjs';
+import { filter, takeUntil, tap } from 'rxjs/operators';
 import { NzTreeSelectService } from './tree-select.service';
 
 export function higherOrderServiceFactory(injector: Injector): NzTreeBaseService {
