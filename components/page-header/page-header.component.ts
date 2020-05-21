@@ -14,7 +14,6 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  OnChanges,
   OnDestroy,
   Optional,
   Output,
@@ -79,7 +78,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'pageHeader';
     '[class.ant-page-header-rtl]': `dir === 'rtl'`
   }
 })
-export class NzPageHeaderComponent implements OnChanges, OnDestroy {
+export class NzPageHeaderComponent implements OnDestroy {
   @Input() nzBackIcon: string | TemplateRef<void> | null = null;
   @Input() nzTitle?: string | TemplateRef<void>;
   @Input() nzSubtitle?: string | TemplateRef<void>;
