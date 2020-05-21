@@ -76,7 +76,7 @@ const RESPONSIVE_SM = 1200;
           >
             {{ language == 'zh' ? 'English' : '中文' }}
           </button>
-          <button nzGhost nzSize="small" class="header-button header-direction-button" (click)="toggleDirection()">
+          <button nz-button nzGhost nzSize="small" class="header-button header-direction-button" (click)="toggleDirection()">
             {{ nextDirection | uppercase }}
           </button>
           <app-github-btn [responsive]="responsive"></app-github-btn>
