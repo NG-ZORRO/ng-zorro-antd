@@ -2,8 +2,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-
 import { FocusMonitor } from '@angular/cdk/a11y';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { DOWN_ARROW, ENTER, UP_ARROW } from '@angular/cdk/keycodes';
 import {
   AfterViewInit,
@@ -26,6 +26,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { BooleanInput, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'nz-input-number',
@@ -87,7 +89,8 @@ import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
     '[class.ant-input-number-focused]': 'isFocused',
     '[class.ant-input-number-lg]': `nzSize === 'large'`,
     '[class.ant-input-number-sm]': `nzSize === 'small'`,
-    '[class.ant-input-number-disabled]': 'nzDisabled'
+    '[class.ant-input-number-disabled]': 'nzDisabled',
+    '[class.ant-input-number-rtl]': `dir === 'rtl'`
   }
 })
 export class NzInputNumberComponent implements ControlValueAccessor, AfterViewInit, OnChanges, OnInit, OnDestroy {
@@ -97,10 +100,12 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   private autoStepTimer?: number;
   private parsedValue?: string | number;
   private value?: number;
+  private destroy$ = new Subject<void>();
   displayValue?: string | number;
   isFocused = false;
   disabledUp = false;
   disabledDown = false;
+  dir: Direction;
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
   @Output() readonly nzBlur = new EventEmitter();
@@ -366,7 +371,17 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     this.inputElement.nativeElement.blur();
   }
 
-  constructor(private elementRef: ElementRef, private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {}
+  constructor(
+    private elementRef: ElementRef,
+    private cdr: ChangeDetectorRef,
+    private focusMonitor: FocusMonitor,
+    directionality: Directionality
+  ) {
+    this.dir = directionality.value;
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+    });
+  }
 
   ngOnInit(): void {
     this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
@@ -398,5 +413,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
 
   ngOnDestroy(): void {
     this.focusMonitor.stopMonitoring(this.elementRef);
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
