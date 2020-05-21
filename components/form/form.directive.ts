@@ -2,14 +2,14 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { Directive, ElementRef, Input, OnChanges, OnDestroy, Renderer2, SimpleChange, SimpleChanges } from '@angular/core';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, InputObservable } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Observable, Subject } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, takeUntil } from 'rxjs/operators';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'form';
 
@@ -21,7 +21,8 @@ export type NzFormLayoutType = 'horizontal' | 'vertical' | 'inline';
   host: {
     '[class.ant-form-horizontal]': `nzLayout === 'horizontal'`,
     '[class.ant-form-vertical]': `nzLayout === 'vertical'`,
-    '[class.ant-form-inline]': `nzLayout === 'inline'`
+    '[class.ant-form-inline]': `nzLayout === 'inline'`,
+    '[class.ant-form-rtl]': `dir === 'rtl'`
   }
 })
 export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
@@ -34,6 +35,7 @@ export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
   @Input() @WithConfig() nzAutoTips: Record<string, Record<string, string>> = {};
   @Input() @InputBoolean() nzDisableAutoTips = false;
 
+  dir: Direction;
   destroy$ = new Subject();
   private inputChanges$ = new Subject<SimpleChanges>();
 
@@ -44,8 +46,18 @@ export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
     );
   }
 
-  constructor(public nzConfigService: NzConfigService, elementRef: ElementRef, private renderer: Renderer2) {
+  constructor(
+    public nzConfigService: NzConfigService,
+    elementRef: ElementRef,
+    private renderer: Renderer2,
+    directionality: Directionality
+  ) {
     this.renderer.addClass(elementRef.nativeElement, 'ant-form');
+
+    this.dir = directionality.value;
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
