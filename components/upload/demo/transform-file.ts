@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UploadFile } from 'ng-zorro-antd/upload';
+import { NzUploadFile } from 'ng-zorro-antd/upload';
 import { Observable, Observer } from 'rxjs';
 
 @Component({
@@ -11,10 +11,10 @@ import { Observable, Observer } from 'rxjs';
   `
 })
 export class NzDemoUploadTransformFileComponent {
-  transformFile = (file: UploadFile) => {
+  transformFile = (file: NzUploadFile) => {
     return new Observable((observer: Observer<Blob>) => {
       const reader = new FileReader();
-      // tslint:disable-next-line: no-any
+      // tslint:disable-next-line:no-any
       reader.readAsDataURL(file as any);
       reader.onload = () => {
         const canvas = document.createElement('canvas');

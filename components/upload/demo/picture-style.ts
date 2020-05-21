@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UploadFile } from 'ng-zorro-antd/upload';
+import { NzUploadFile } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'nz-demo-upload-picture-style',
@@ -43,7 +43,7 @@ import { UploadFile } from 'ng-zorro-antd/upload';
   ]
 })
 export class NzDemoUploadPictureStyleComponent {
-  defaultFileList: UploadFile[] = [
+  defaultFileList: NzUploadFile[] = [
     {
       uid: '-1',
       name: 'xxx.png',

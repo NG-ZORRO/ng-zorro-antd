@@ -23,7 +23,7 @@ import {
 import { NgClassType, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable } from 'rxjs';
 
-import { ShowUploadListInterface, UploadFile, UploadListType } from './interface';
+import { NzShowUploadList, NzUploadFile, NzUploadListType } from './interface';
 
 const isImageFileType = (type: string): boolean => !!type && type.indexOf('image/') === 0;
 
@@ -31,7 +31,7 @@ const MEASURE_SIZE = 200;
 
 type UploadListIconType = '' | 'uploading' | 'thumbnail';
 
-interface UploadListFile extends UploadFile {
+interface UploadListFile extends NzUploadFile {
   isImageUrl?: boolean;
   isUploading?: boolean;
   iconType?: UploadListIconType;
@@ -67,19 +67,19 @@ export class NzUploadListComponent implements OnChanges {
   }
 
   @Input() locale: NzSafeAny = {};
-  @Input() listType!: UploadListType;
+  @Input() listType!: NzUploadListType;
   @Input()
-  set items(list: UploadFile[]) {
+  set items(list: NzUploadFile[]) {
     this.list = list;
   }
-  @Input() icons!: ShowUploadListInterface;
-  @Input() onPreview?: (file: UploadFile) => void;
-  @Input() onRemove!: (file: UploadFile) => void;
-  @Input() onDownload?: (file: UploadFile) => void;
-  @Input() previewFile?: (file: UploadFile) => Observable<string>;
+  @Input() icons!: NzShowUploadList;
+  @Input() onPreview?: (file: NzUploadFile) => void;
+  @Input() onRemove!: (file: NzUploadFile) => void;
+  @Input() onDownload?: (file: NzUploadFile) => void;
+  @Input() previewFile?: (file: NzUploadFile) => Observable<string>;
   @Input() iconRender: TemplateRef<NzSafeAny> | null = null;
 
-  private genErr(file: UploadFile): string {
+  private genErr(file: NzUploadFile): string {
     if (file.response && typeof file.response === 'string') {
       return file.response;
     }
@@ -93,7 +93,7 @@ export class NzUploadListComponent implements OnChanges {
     return (/\.[^./\\]*$/.exec(filenameWithoutSuffix) || [''])[0];
   }
 
-  isImageUrl(file: UploadFile): boolean {
+  isImageUrl(file: NzUploadFile): boolean {
     if (isImageFileType(file.type!)) {
       return true;
     }
@@ -188,7 +188,7 @@ export class NzUploadListComponent implements OnChanges {
       });
   }
 
-  private listItemNameCls(file: UploadFile): NgClassType {
+  private listItemNameCls(file: NzUploadFile): NgClassType {
     const count = [this.showDownload(file), this.icons.showRemoveIcon].filter(x => x).length;
     return {
       [`ant-upload-list-item-name`]: true,
@@ -196,7 +196,7 @@ export class NzUploadListComponent implements OnChanges {
     };
   }
 
-  private showDownload(file: UploadFile): boolean {
+  private showDownload(file: NzUploadFile): boolean {
     return !!(this.icons.showDownloadIcon && file.status === 'done');
   }
 
@@ -212,7 +212,7 @@ export class NzUploadListComponent implements OnChanges {
     });
   }
 
-  handlePreview(file: UploadFile, e: Event): void {
+  handlePreview(file: NzUploadFile, e: Event): void {
     if (!this.onPreview) {
       return;
     }
@@ -221,7 +221,7 @@ export class NzUploadListComponent implements OnChanges {
     return this.onPreview(file);
   }
 
-  handleRemove(file: UploadFile, e: Event): void {
+  handleRemove(file: NzUploadFile, e: Event): void {
     e.preventDefault();
     if (this.onRemove) {
       this.onRemove(file);
@@ -229,7 +229,7 @@ export class NzUploadListComponent implements OnChanges {
     return;
   }
 
-  handleDownload(file: UploadFile): void {
+  handleDownload(file: NzUploadFile): void {
     if (typeof this.onDownload === 'function') {
       this.onDownload(file);
     } else if (file.url) {
