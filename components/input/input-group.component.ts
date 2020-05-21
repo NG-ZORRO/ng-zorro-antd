@@ -5,8 +5,8 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-
 import { FocusMonitor } from '@angular/cdk/a11y';
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -87,17 +87,21 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
     '[class.ant-input-group-compact]': `nzCompact`,
     '[class.ant-input-search-enter-button]': `nzSearch`,
     '[class.ant-input-search]': `nzSearch`,
+    '[class.ant-input-search-rtl]': `dir === 'rtl'`,
     '[class.ant-input-search-sm]': `nzSearch && isSmall`,
     '[class.ant-input-search-large]': `nzSearch && isLarge`,
     '[class.ant-input-group-wrapper]': `isAddOn`,
+    '[class.ant-input-group-wrapper-rtl]': `dir === 'rtl'`,
     '[class.ant-input-group-wrapper-lg]': `isAddOn && isLarge`,
     '[class.ant-input-group-wrapper-sm]': `isAddOn && isSmall`,
     '[class.ant-input-affix-wrapper]': `isAffix && !isAddOn`,
+    '[class.ant-input-affix-wrapper-rtl]': `dir === 'rtl'`,
     '[class.ant-input-affix-wrapper-focused]': `isAffix && focused`,
     '[class.ant-input-affix-wrapper-disabled]': `isAffix && disabled`,
     '[class.ant-input-affix-wrapper-lg]': `isAffix && !isAddOn && isLarge`,
     '[class.ant-input-affix-wrapper-sm]': `isAffix && !isAddOn && isSmall`,
     '[class.ant-input-group]': `!isAffix && !isAddOn`,
+    '[class.ant-input-group-rtl]': `dir === 'rtl'`,
     '[class.ant-input-group-lg]': `!isAffix && !isAddOn && isLarge`,
     '[class.ant-input-group-sm]': `!isAffix && !isAddOn && isSmall`
   }
@@ -124,9 +128,20 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   isAddOn = false;
   focused = false;
   disabled = false;
+  dir: Direction;
   private destroy$ = new Subject<void>();
 
-  constructor(private focusMonitor: FocusMonitor, private elementRef: ElementRef, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private focusMonitor: FocusMonitor,
+    private elementRef: ElementRef,
+    private cdr: ChangeDetectorRef,
+    directionality: Directionality
+  ) {
+    this.dir = directionality.value;
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+    });
+  }
 
   updateChildrenInputSize(): void {
     if (this.listOfNzInputDirective) {
