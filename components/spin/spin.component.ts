@@ -2,7 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
-
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectorRef,
   Component,
@@ -40,6 +40,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
     <div *ngIf="isLoading">
       <div
         class="ant-spin"
+        [class.ant-spin-rtl]="dir === 'rtl'"
         [class.ant-spin-spinning]="isLoading"
         [class.ant-spin-lg]="nzSize === 'large'"
         [class.ant-spin-sm]="nzSize === 'small'"
@@ -74,8 +75,14 @@ export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
   private spinning$ = new BehaviorSubject(this.nzSpinning);
   private delay$ = new BehaviorSubject(this.nzDelay);
   isLoading = true;
+  dir: Direction;
 
-  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {}
+  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef, directionality: Directionality) {
+    this.dir = directionality.value;
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+    });
+  }
 
   ngOnInit(): void {
     const loading$ = this.spinning$.pipe(
