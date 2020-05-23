@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, ViewEncapsulation } from '@angular/core';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
@@ -25,6 +26,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapse';
   `,
   host: {
     '[class.ant-collapse]': 'true',
+    '[class.ant-collapse-rtl]': "dir === 'rtl'",
     '[class.ant-collapse-icon-position-left]': `nzExpandIconPosition === 'left'`,
     '[class.ant-collapse-icon-position-right]': `nzExpandIconPosition === 'right'`,
     '[class.ant-collapse-ghost]': `nzGhost`,
@@ -41,15 +43,24 @@ export class NzCollapseComponent implements OnDestroy {
   @Input() @WithConfig() @InputBoolean() nzBordered: boolean = true;
   @Input() @WithConfig() @InputBoolean() nzGhost: boolean = false;
   @Input() nzExpandIconPosition: 'left' | 'right' = 'left';
+
+  dir: Direction;
+
   private listOfNzCollapsePanelComponent: NzCollapsePanelComponent[] = [];
   private destroy$ = new Subject();
-  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {
+  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef, directionality: Directionality) {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.cdr.markForCheck();
       });
+
+    this.dir = directionality.value;
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      this.cdr.detectChanges();
+    });
   }
 
   addPanel(value: NzCollapsePanelComponent): void {
