@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -20,7 +21,8 @@ import {
 } from '@angular/core';
 import { BooleanInput, NzDirectionVHType, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { NzListGrid } from './interface';
 import { NzListFooterComponent, NzListLoadMoreDirective, NzListPaginationComponent } from './list-cell';
 
@@ -83,6 +85,7 @@ import { NzListFooterComponent, NzListLoadMoreDirective, NzListPaginationCompone
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.ant-list]': 'true',
+    '[class.ant-list-rtl]': `dir === 'rtl'`,
     '[class.ant-list-vertical]': 'nzItemLayout === "vertical"',
     '[class.ant-list-lg]': 'nzSize === "large"',
     '[class.ant-list-sm]': 'nzSize === "small"',
@@ -116,14 +119,20 @@ export class NzListComponent implements AfterContentInit, OnChanges, OnDestroy {
   @ContentChild(NzListLoadMoreDirective) nzListLoadMoreDirective!: NzListLoadMoreDirective;
 
   hasSomethingAfterLastItem = false;
-
+  dir: Direction;
   private itemLayoutNotifySource = new BehaviorSubject<NzDirectionVHType>(this.nzItemLayout);
+  private destroy$ = new Subject<void>();
 
   get itemLayoutNotify$(): Observable<NzDirectionVHType> {
     return this.itemLayoutNotifySource.asObservable();
   }
 
-  constructor() {}
+  constructor(directionality: Directionality) {
+    this.dir = directionality.value;
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+    });
+  }
 
   getSomethingAfterLastItem(): boolean {
     return !!(
@@ -143,6 +152,8 @@ export class NzListComponent implements AfterContentInit, OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.itemLayoutNotifySource.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngAfterContentInit(): void {
