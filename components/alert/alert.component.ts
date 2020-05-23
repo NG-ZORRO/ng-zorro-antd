@@ -6,6 +6,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -36,6 +37,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'alert';
     <div
       *ngIf="!closed"
       class="ant-alert"
+      [class.ant-alert-rtl]="dir === 'rtl'"
       [class.ant-alert-success]="nzType === 'success'"
       [class.ant-alert-info]="nzType === 'info'"
       [class.ant-alert-warning]="nzType === 'warning'"
@@ -92,17 +94,24 @@ export class NzAlertComponent implements OnChanges, OnDestroy {
   closed = false;
   iconTheme: 'outline' | 'fill' = 'fill';
   inferredIconType: string = 'info-circle';
+  dir: Direction;
   private isTypeSet = false;
   private isShowIconSet = false;
   private destroy$ = new Subject();
 
-  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {
+  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef, directionality: Directionality) {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.cdr.markForCheck();
       });
+
+    this.dir = directionality.value;
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      this.cdr.detectChanges();
+    });
   }
 
   closeAlert(): void {
