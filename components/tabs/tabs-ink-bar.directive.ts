@@ -6,9 +6,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, ElementRef, Input, NgZone, Renderer2 } from '@angular/core';
+import { Direction, Directionality } from '@angular/cdk/bidi';
+import { Directive, ElementRef, Input, NgZone, OnDestroy, Optional, Renderer2 } from '@angular/core';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { NzTabPositionMode } from './table.types';
 
 @Directive({
@@ -19,15 +22,28 @@ import { NzTabPositionMode } from './table.types';
     '[class.ant-tabs-ink-bar-no-animated]': '!nzAnimated'
   }
 })
-export class NzTabsInkBarDirective {
+export class NzTabsInkBarDirective implements OnDestroy {
   static ngAcceptInputType_nzAnimated: BooleanInput;
 
   @Input() @InputBoolean() nzAnimated = false;
 
   @Input() nzPositionMode: NzTabPositionMode = 'horizontal';
 
-  constructor(private renderer: Renderer2, private elementRef: ElementRef, private ngZone: NgZone) {
+  dir: Direction;
+  private readonly destroy$ = new Subject();
+
+  constructor(
+    private renderer: Renderer2,
+    private elementRef: ElementRef,
+    private ngZone: NgZone,
+    @Optional() directionality: Directionality
+  ) {
     renderer.addClass(elementRef.nativeElement, 'ant-tabs-ink-bar');
+
+    this.dir = directionality.value;
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+    });
   }
 
   alignToElement(element: HTMLElement): void {
@@ -55,7 +71,7 @@ export class NzTabsInkBarDirective {
   }
 
   getLeftPosition(element: HTMLElement): string {
-    return element ? element.offsetLeft + 'px' : '0';
+    return element ? (this.dir === 'rtl' ? element.offsetLeft + 'px' : element.offsetLeft + 'px') : '0';
   }
 
   getElementWidth(element: HTMLElement): string {
@@ -68,5 +84,10 @@ export class NzTabsInkBarDirective {
 
   getElementHeight(element: HTMLElement): string {
     return element ? element.offsetHeight + 'px' : '0';
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

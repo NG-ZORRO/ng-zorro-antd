@@ -8,6 +8,7 @@
 
 /** get some code from https://github.com/angular/material2 */
 
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentChecked,
   AfterContentInit,
@@ -89,7 +90,11 @@ const NZ_CONFIG_COMPONENT_NAME = 'tabs';
         [class.ant-tabs-content-animated]="tabPaneAnimated"
         [class.ant-tabs-card-content]="nzType === 'card'"
         [class.ant-tabs-content-no-animated]="!tabPaneAnimated"
-        [style.margin-left.%]="tabPositionMode === 'horizontal' && tabPaneAnimated && -(nzSelectedIndex || 0) * 100"
+        [style.margin-left.%]="
+          tabPositionMode === 'horizontal' && tabPaneAnimated && dir === 'rtl'
+            ? ((nzSelectedIndex || 0) + 1) * 100
+            : -(nzSelectedIndex || 0) * 100
+        "
       >
         <div
           nz-tab-body
@@ -104,6 +109,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'tabs';
   `,
   host: {
     '[class.ant-tabs]': `true`,
+    '[class.ant-tabs-rtl]': `dir === 'rtl'`,
     '[class.ant-tabs-no-animation]': `isAnimationDisabled`,
     '[class.ant-tabs-line]': `nzType === 'line'`,
     '[class.ant-tabs-card]': `nzType === 'card'`,
@@ -130,6 +136,7 @@ export class NzTabSetComponent implements AfterContentChecked, OnChanges, AfterC
   private tabLabelSubscription = Subscription.EMPTY;
   private destroy$ = new Subject<void>();
   tabPositionMode: NzTabPositionMode = 'horizontal';
+  dir: Direction;
   @ContentChildren(NzTabComponent) listOfNzTabComponent!: QueryList<NzTabComponent>;
   @ViewChild(NzTabsNavComponent, { static: false }) nzTabsNavComponent?: NzTabsNavComponent;
   @ViewChild('tabContent', { static: false }) tabContent?: ElementRef;
@@ -237,8 +244,15 @@ export class NzTabSetComponent implements AfterContentChecked, OnChanges, AfterC
     private renderer: Renderer2,
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef,
+    directionality: Directionality,
     @Optional() private router: Router
-  ) {}
+  ) {
+    this.dir = directionality.value;
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      this.cdr.detectChanges();
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzTabPosition, nzType } = changes;
