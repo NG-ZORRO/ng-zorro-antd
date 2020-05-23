@@ -7,6 +7,7 @@
  */
 
 import { animate, style, transition, trigger } from '@angular/animations';
+import { Direction } from '@angular/cdk/bidi';
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
@@ -51,6 +52,7 @@ interface UploadListFile extends UploadFile {
   ],
   host: {
     '[class.ant-upload-list]': `true`,
+    '[class.ant-upload-list-rtl]': `dir === 'rtl'`,
     '[class.ant-upload-list-text]': `listType === 'text'`,
     '[class.ant-upload-list-picture]': `listType === 'picture'`,
     '[class.ant-upload-list-picture-card]': `listType === 'picture-card'`
@@ -78,6 +80,7 @@ export class NzUploadListComponent implements OnChanges {
   @Input() onDownload?: (file: UploadFile) => void;
   @Input() previewFile?: (file: UploadFile) => Observable<string>;
   @Input() iconRender: TemplateRef<NzSafeAny> | null = null;
+  @Input() dir: Direction = 'ltr';
 
   private genErr(file: UploadFile): string {
     if (file.response && typeof file.response === 'string') {
