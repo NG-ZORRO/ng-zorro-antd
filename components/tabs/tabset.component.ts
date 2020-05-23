@@ -4,6 +4,9 @@
  */
 
 import { coerceNumberProperty } from '@angular/cdk/coercion';
+/** get some code from https://github.com/angular/material2 */
+
+import { Direction, Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentChecked,
   AfterContentInit,
@@ -117,7 +120,7 @@ let nextId = 0;
         [class.ant-tabs-content-left]="nzTabPosition === 'left'"
         [class.ant-tabs-content-right]="nzTabPosition === 'right'"
         [class.ant-tabs-content-animated]="tabPaneAnimated"
-        [style.margin-left.%]="tabPaneAnimated ? -(nzSelectedIndex || 0) * 100 : null"
+        [style.margin-left.%]="tabPaneAnimated && dir === 'rtl' ? ((nzSelectedIndex || 0) + 1) * 100 : -(nzSelectedIndex || 0) * 100"
       >
         <div
           nz-tab-body
@@ -136,6 +139,7 @@ let nextId = 0;
     '[class.ant-tabs-editable]': `nzType === 'editable-card'`,
     '[class.ant-tabs-editable-card]': `nzType === 'editable-card'`,
     '[class.ant-tabs-centered]': `nzCentered`,
+    '[class.ant-tabs-rtl]': `dir === 'rtl'`,
     '[class.ant-tabs-top]': `nzTabPosition === 'top'`,
     '[class.ant-tabs-bottom]': `nzTabPosition === 'bottom'`,
     '[class.ant-tabs-left]': `nzTabPosition === 'left'`,
@@ -238,6 +242,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   // All the direct tabs for this tab set
   tabs: QueryList<NzTabComponent> = new QueryList<NzTabComponent>();
 
+  dir: Direction;
   private readonly tabSetId!: number;
   private destroy$ = new Subject<void>();
   private indexToSelect: number | null = 0;
@@ -246,8 +251,19 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   private tabsSubscription = Subscription.EMPTY;
   private canDeactivateSubscription = Subscription.EMPTY;
 
-  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef, @Optional() private router: Router) {
+  constructor(
+    public nzConfigService: NzConfigService,
+    private cdr: ChangeDetectorRef,
+    directionality: Directionality,
+    @Optional() private router: Router
+  ) {
     this.tabSetId = nextId++;
+
+    this.dir = directionality.value;
+    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = directionality.value;
+      this.cdr.detectChanges();
+    });
   }
 
   ngOnInit(): void {

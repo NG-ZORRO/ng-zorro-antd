@@ -139,10 +139,7 @@ export class NzPageHeaderComponent implements AfterViewInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  getBackIcon(): string | TemplateRef<void> {
-    if (this.nzBackIcon) {
-      return this.nzBackIcon;
-    }
+  getBackIcon(): string {
     if (this.dir === 'rtl') {
       return 'arrow-right';
     }
