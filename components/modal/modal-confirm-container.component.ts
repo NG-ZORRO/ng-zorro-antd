@@ -6,6 +6,15 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Directionality } from '@angular/cdk/bidi';
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import { FocusTrapFactory } from '@angular/cdk/a11y';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortalOutlet } from '@angular/cdk/portal';
@@ -98,6 +107,7 @@ import { ModalOptions } from './modal-types';
     tabindex: '-1',
     role: 'dialog',
     '[class]': 'config.nzWrapClassName ? "ant-modal-wrap " + config.nzWrapClassName : "ant-modal-wrap"',
+    '[class.ant-modal-wrap-rtl]': `dir === 'rtl'`,
     '[style.zIndex]': 'config.nzZIndex',
     '[@.disabled]': 'config.nzNoAnimation',
     '[@modalContainer]': 'state',
@@ -124,10 +134,11 @@ export class NzModalConfirmContainerComponent extends BaseModalContainer {
     overlayRef: OverlayRef,
     nzConfigService: NzConfigService,
     public config: ModalOptions,
+    directionality: Directionality,
     @Optional() @Inject(DOCUMENT) document: NzSafeAny,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) animationType: string
   ) {
-    super(elementRef, focusTrapFactory, cdr, render, zone, overlayRef, nzConfigService, config, document, animationType);
+    super(elementRef, focusTrapFactory, cdr, render, zone, overlayRef, nzConfigService, config, directionality, document, animationType);
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Modal');
     });
