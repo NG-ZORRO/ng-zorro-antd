@@ -66,7 +66,7 @@ import { ModalOptions } from './modal-types';
             <div class="ant-modal-confirm-btns">
               <button
                 *ngIf="config.nzCancelText !== null"
-                [attr.cdkFocusInitial]="config.nzAutofocus === 'cancel'"
+                [attr.cdkFocusInitial]="config.nzAutofocus === 'cancel' || null"
                 nz-button
                 (click)="onCancel()"
                 [nzLoading]="!!config.nzCancelLoading"
@@ -76,7 +76,7 @@ import { ModalOptions } from './modal-types';
               </button>
               <button
                 *ngIf="config.nzOkText !== null"
-                [attr.cdkFocusInitial]="config.nzAutofocus === 'ok'"
+                [attr.cdkFocusInitial]="config.nzAutofocus === 'ok' || null"
                 nz-button
                 [nzType]="config.nzOkType!"
                 (click)="onOk()"
