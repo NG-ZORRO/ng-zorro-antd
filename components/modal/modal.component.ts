@@ -83,6 +83,7 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   @Input() nzOkType: NzButtonType = 'primary';
   @Input() nzIconType: string = 'question-circle'; // Confirm Modal ONLY
   @Input() nzModalType: ModalTypes = 'default';
+  @Input() nzAutofocus: 'ok' | 'cancel' | 'auto' | null = 'auto';
 
   // TODO(@hsuanxyz) Input will not be supported
   @Input()
