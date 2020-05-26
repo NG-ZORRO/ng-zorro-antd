@@ -1,7 +1,7 @@
 import { HttpClient, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { UploadFile } from 'ng-zorro-antd/upload';
+import { NzUploadFile } from 'ng-zorro-antd/upload';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -24,11 +24,11 @@ import { filter } from 'rxjs/operators';
 })
 export class NzDemoUploadUploadManuallyComponent {
   uploading = false;
-  fileList: UploadFile[] = [];
+  fileList: NzUploadFile[] = [];
 
   constructor(private http: HttpClient, private msg: NzMessageService) {}
 
-  beforeUpload = (file: UploadFile): boolean => {
+  beforeUpload = (file: NzUploadFile): boolean => {
     this.fileList = this.fileList.concat(file);
     return false;
   };

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { UploadChangeParam } from 'ng-zorro-antd/upload';
+import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'nz-demo-upload-basic',
@@ -17,7 +17,7 @@ import { UploadChangeParam } from 'ng-zorro-antd/upload';
 export class NzDemoUploadBasicComponent {
   constructor(private msg: NzMessageService) {}
 
-  handleChange(info: UploadChangeParam): void {
+  handleChange(info: NzUploadChangeParam): void {
     if (info.file.status !== 'uploading') {
       console.log(info.file, info.fileList);
     }

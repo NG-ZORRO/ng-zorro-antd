@@ -13,14 +13,12 @@ import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 /** Status */
 export type UploadFileStatus = 'error' | 'success' | 'done' | 'uploading' | 'removed';
 
-/** Uploading type. */
-export type UploadType = 'select' | 'drag';
+export type NzUploadType = 'select' | 'drag';
 
 /** Built-in styles of the uploading list. */
-export type UploadListType = 'text' | 'picture' | 'picture-card';
+export type NzUploadListType = 'text' | 'picture' | 'picture-card';
 
-/** File object. */
-export interface UploadFile {
+export interface NzUploadFile {
   uid: string;
   size?: number;
   name: string;
@@ -40,57 +38,101 @@ export interface UploadFile {
   [key: string]: NzSafeAny;
 }
 
-export interface UploadChangeParam {
-  file: UploadFile;
-  fileList: UploadFile[];
+export interface NzUploadChangeParam {
+  file: NzUploadFile;
+  fileList: NzUploadFile[];
   event?: { percent: number };
   /** Callback type. */
   type?: string;
 }
 
-export interface ShowUploadListInterface {
+export interface NzShowUploadList {
   showRemoveIcon?: boolean;
   showPreviewIcon?: boolean;
   showDownloadIcon?: boolean;
 }
 
-export type UploadTransformFileType = string | Blob | UploadFile | Observable<string | Blob | File>;
+export type NzUploadTransformFileType = string | Blob | NzUploadFile | Observable<string | Blob | File>;
 
 export interface ZipButtonOptions {
   disabled?: boolean;
   accept?: string | string[];
-  action?: string | ((file: UploadFile) => string | Observable<string>);
+  action?: string | ((file: NzUploadFile) => string | Observable<string>);
   directory?: boolean;
   openFileDialogOnClick?: boolean;
-  beforeUpload?(file: UploadFile, fileList: UploadFile[]): boolean | Observable<NzSafeAny>;
+  beforeUpload?(file: NzUploadFile, fileList: NzUploadFile[]): boolean | Observable<NzSafeAny>;
   customRequest?(item: NzSafeAny): Subscription;
-  data?: {} | ((file: UploadFile) => {} | Observable<{}>);
-  headers?: {} | ((file: UploadFile) => {} | Observable<{}>);
+  data?: {} | ((file: NzUploadFile) => {} | Observable<{}>);
+  headers?: {} | ((file: NzUploadFile) => {} | Observable<{}>);
   name?: string;
   multiple?: boolean;
   withCredentials?: boolean;
   filters?: UploadFilter[];
-  transformFile?(file: UploadFile): UploadTransformFileType;
-  onStart?(file: UploadFile): void;
-  onProgress?(e: NzSafeAny, file: UploadFile): void;
-  onSuccess?(ret: NzSafeAny, file: UploadFile, xhr: NzSafeAny): void;
-  onError?(err: NzSafeAny, file: UploadFile): void;
+  transformFile?(file: NzUploadFile): NzUploadTransformFileType;
+  onStart?(file: NzUploadFile): void;
+  onProgress?(e: NzSafeAny, file: NzUploadFile): void;
+  onSuccess?(ret: NzSafeAny, file: NzUploadFile, xhr: NzSafeAny): void;
+  onError?(err: NzSafeAny, file: NzUploadFile): void;
 }
 
 export interface UploadFilter {
   name: string;
-  fn(fileList: UploadFile[]): UploadFile[] | Observable<UploadFile[]>;
+  fn(fileList: NzUploadFile[]): NzUploadFile[] | Observable<NzUploadFile[]>;
 }
 
-export interface UploadXHRArgs {
+export interface NzUploadXHRArgs {
   action?: string;
   name?: string;
   headers?: IndexableObject;
-  file: UploadFile;
-  postFile: string | Blob | File | UploadFile;
+  file: NzUploadFile;
+  postFile: string | Blob | File | NzUploadFile;
   data?: IndexableObject;
   withCredentials?: boolean;
-  onProgress?(e: NzSafeAny, file: UploadFile): void;
-  onSuccess?(ret: NzSafeAny, file: UploadFile, xhr: NzSafeAny): void;
-  onError?(err: NzSafeAny, file: UploadFile): void;
+  onProgress?(e: NzSafeAny, file: NzUploadFile): void;
+  onSuccess?(ret: NzSafeAny, file: NzUploadFile, xhr: NzSafeAny): void;
+  onError?(err: NzSafeAny, file: NzUploadFile): void;
 }
+
+/**
+ * @deprecated Use {@link NzUploadType} from {@link @ng-zorro-antd/upload} instead.
+ * @breaking-change 10.0.0
+ */
+export type UploadType = NzUploadType;
+
+/**
+ * @deprecated Use {@link NzUploadListType} from {@link @ng-zorro-antd/upload} instead.
+ * @breaking-change 10.0.0
+ */
+export type UploadListType = NzUploadListType;
+
+/**
+ * @deprecated Use {@link NzUploadFile} from {@link @ng-zorro-antd/upload} instead.
+ * @breaking-change 10.0.0
+ */
+export type UploadFile = NzUploadFile;
+
+/**
+ * @deprecated Use {@link NzUploadChangeParam} from {@link @ng-zorro-antd/upload} instead.
+ * @breaking-change 10.0.0
+ */
+export type UploadChangeParam = NzUploadChangeParam;
+
+/**
+ * @deprecated Use {@link NzShowUploadList} from {@link @ng-zorro-antd/upload} instead.
+ * @breaking-change 10.0.0
+ */
+export type ShowUploadListInterface = NzShowUploadList;
+
+/**
+ * @deprecated Use {@link NzUploadTransformFileType} from {@link @ng-zorro-antd/upload} instead.
+ * @breaking-change 10.0.0
+ */
+export type UploadTransformFileType = NzUploadTransformFileType;
+
+/**
+ * @deprecated Use {@link NzUploadXHRArgs} from {@link @ng-zorro-antd/upload} instead.
+ * @breaking-change 10.0.0
+ */
+export type UploadXHRArgs = NzUploadXHRArgs;
+
+export class NzShowUploadListInterface {}

@@ -14,7 +14,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable, of, Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
-import { UploadFile, UploadXHRArgs, ZipButtonOptions } from './interface';
+import { NzUploadFile, NzUploadXHRArgs, ZipButtonOptions } from './interface';
 
 @Component({
   selector: '[nz-upload-btn]',
@@ -130,7 +130,7 @@ export class NzUploadBtnComponent implements OnDestroy {
     return true;
   }
 
-  private attachUid(file: UploadFile): UploadFile {
+  private attachUid(file: NzUploadFile): NzUploadFile {
     if (!file.uid) {
       file.uid = Math.random().toString(36).substring(2);
     }
@@ -138,7 +138,7 @@ export class NzUploadBtnComponent implements OnDestroy {
   }
 
   uploadFiles(fileList: FileList | File[]): void {
-    let filters$: Observable<UploadFile[]> = of(Array.prototype.slice.call(fileList));
+    let filters$: Observable<NzUploadFile[]> = of(Array.prototype.slice.call(fileList));
     if (this.options.filters) {
       this.options.filters.forEach(f => {
         filters$ = filters$.pipe(
@@ -151,7 +151,7 @@ export class NzUploadBtnComponent implements OnDestroy {
     }
     filters$.subscribe(
       list => {
-        list.forEach((file: UploadFile) => {
+        list.forEach((file: NzUploadFile) => {
           this.attachUid(file);
           this.upload(file, list);
         });
@@ -162,14 +162,14 @@ export class NzUploadBtnComponent implements OnDestroy {
     );
   }
 
-  private upload(file: UploadFile, fileList: UploadFile[]): void {
+  private upload(file: NzUploadFile, fileList: NzUploadFile[]): void {
     if (!this.options.beforeUpload) {
       return this.post(file);
     }
     const before = this.options.beforeUpload(file, fileList);
     if (before instanceof Observable) {
       before.subscribe(
-        (processedFile: UploadFile) => {
+        (processedFile: NzUploadFile) => {
           const processedFileType = Object.prototype.toString.call(processedFile);
           if (processedFileType === '[object File]' || processedFileType === '[object Blob]') {
             this.attachUid(processedFile);
@@ -187,16 +187,16 @@ export class NzUploadBtnComponent implements OnDestroy {
     }
   }
 
-  private post(file: UploadFile): void {
+  private post(file: NzUploadFile): void {
     if (this.destroy) {
       return;
     }
-    let process$: Observable<string | Blob | File | UploadFile> = of(file);
+    let process$: Observable<string | Blob | File | NzUploadFile> = of(file);
     const opt = this.options;
     const { uid } = file;
     const { action, data, headers, transformFile } = opt;
 
-    const args: UploadXHRArgs = {
+    const args: NzUploadXHRArgs = {
       action: typeof action === 'string' ? action : '',
       name: opt.name,
       headers,
@@ -220,7 +220,7 @@ export class NzUploadBtnComponent implements OnDestroy {
     };
 
     if (typeof action === 'function') {
-      const actionResult = (action as (file: UploadFile) => string | Observable<string>)(file);
+      const actionResult = (action as (file: NzUploadFile) => string | Observable<string>)(file);
       if (actionResult instanceof Observable) {
         process$ = process$.pipe(
           switchMap(() => actionResult),
@@ -240,7 +240,7 @@ export class NzUploadBtnComponent implements OnDestroy {
     }
 
     if (typeof data === 'function') {
-      const dataResult = (data as (file: UploadFile) => {} | Observable<{}>)(file);
+      const dataResult = (data as (file: NzUploadFile) => {} | Observable<{}>)(file);
       if (dataResult instanceof Observable) {
         process$ = process$.pipe(
           switchMap(() => dataResult),
@@ -255,7 +255,7 @@ export class NzUploadBtnComponent implements OnDestroy {
     }
 
     if (typeof headers === 'function') {
-      const headersResult = (headers as (file: UploadFile) => {} | Observable<{}>)(file);
+      const headersResult = (headers as (file: NzUploadFile) => {} | Observable<{}>)(file);
       if (headersResult instanceof Observable) {
         process$ = process$.pipe(
           switchMap(() => headersResult),
@@ -280,7 +280,7 @@ export class NzUploadBtnComponent implements OnDestroy {
     });
   }
 
-  private xhr(args: UploadXHRArgs): Subscription {
+  private xhr(args: NzUploadXHRArgs): Subscription {
     const formData = new FormData();
 
     if (args.data) {
@@ -330,7 +330,7 @@ export class NzUploadBtnComponent implements OnDestroy {
     delete this.reqs[uid];
   }
 
-  abort(file?: UploadFile): void {
+  abort(file?: NzUploadFile): void {
     if (file) {
       this.clean(file && file.uid);
     } else {
