@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { UploadFile } from 'ng-zorro-antd/upload';
+import { NzUploadFile } from 'ng-zorro-antd/upload';
 import { Observable, Observer } from 'rxjs';
 
 @Component({
@@ -37,7 +37,7 @@ export class NzDemoUploadAvatarComponent {
 
   constructor(private msg: NzMessageService) {}
 
-  beforeUpload = (file: UploadFile, _fileList: UploadFile[]) => {
+  beforeUpload = (file: NzUploadFile, _fileList: NzUploadFile[]) => {
     return new Observable((observer: Observer<boolean>) => {
       const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
       if (!isJpgOrPng) {
@@ -62,7 +62,7 @@ export class NzDemoUploadAvatarComponent {
     reader.readAsDataURL(img);
   }
 
-  handleChange(info: { file: UploadFile }): void {
+  handleChange(info: { file: NzUploadFile }): void {
     switch (info.file.status) {
       case 'uploading':
         this.loading = true;

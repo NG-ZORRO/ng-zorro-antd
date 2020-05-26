@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UploadChangeParam, UploadFile } from 'ng-zorro-antd/upload';
+import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'nz-demo-upload-file-list',
@@ -10,7 +10,7 @@ import { UploadChangeParam, UploadFile } from 'ng-zorro-antd/upload';
   `
 })
 export class NzDemoUploadFileListComponent {
-  fileList: UploadFile[] = [
+  fileList: NzUploadFile[] = [
     {
       uid: '-1',
       name: 'xxx.png',
@@ -19,7 +19,7 @@ export class NzDemoUploadFileListComponent {
     }
   ];
 
-  handleChange(info: UploadChangeParam): void {
+  handleChange(info: NzUploadChangeParam): void {
     let fileList = [...info.fileList];
 
     // 1. Limit the number of uploaded files

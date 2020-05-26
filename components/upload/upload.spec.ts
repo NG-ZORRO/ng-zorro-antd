@@ -17,13 +17,13 @@ import { NzProgressModule } from '../progress/progress.module';
 import { NzToolTipModule } from '../tooltip/tooltip.module';
 
 import {
-  ShowUploadListInterface,
-  UploadChangeParam,
-  UploadFile,
+  NzShowUploadList,
+  NzUploadChangeParam,
+  NzUploadFile,
+  NzUploadListType,
+  NzUploadTransformFileType,
+  NzUploadType,
   UploadFilter,
-  UploadListType,
-  UploadTransformFileType,
-  UploadType,
   ZipButtonOptions
 } from './interface';
 import { NzUploadBtnComponent } from './upload-btn.component';
@@ -341,7 +341,7 @@ describe('upload', () => {
           fixture.detectChanges();
           pageObject.postLarge();
           const req = httpMock.expectOne(instance.nzAction as string);
-          expect((req.request.body.get('file') as UploadFile).size).toBe(1);
+          expect((req.request.body.get('file') as NzUploadFile).size).toBe(1);
           req.flush({});
           httpMock.verify();
         });
@@ -350,7 +350,7 @@ describe('upload', () => {
           fixture.detectChanges();
           pageObject.postLarge();
           const req = httpMock.expectOne(instance.nzAction as string);
-          expect((req.request.body.get('file') as UploadFile).size).toBe(3);
+          expect((req.request.body.get('file') as NzUploadFile).size).toBe(3);
           req.flush({});
           httpMock.verify();
         });
@@ -416,7 +416,7 @@ describe('upload', () => {
           });
           it('can return same file', () => {
             let ret = false;
-            instance.beforeUpload = (file: UploadFile): Observable<any> => {
+            instance.beforeUpload = (file: NzUploadFile): Observable<any> => {
               ret = true;
               return of(file);
             };
@@ -474,7 +474,7 @@ describe('upload', () => {
           instance.nzFilter = [
             {
               name: 'limit',
-              fn: (fileList: UploadFile[]) => fileList.slice(-instance.nzLimit)
+              fn: (fileList: NzUploadFile[]) => fileList.slice(-instance.nzLimit)
             }
           ];
           fixture.detectChanges();
@@ -487,7 +487,7 @@ describe('upload', () => {
           instance.nzFilter = [
             {
               name: 'size',
-              fn: (fileList: UploadFile[]) => fileList.filter(w => w.size! / 1024 <= instance.nzSize)
+              fn: (fileList: NzUploadFile[]) => fileList.filter(w => w.size! / 1024 <= instance.nzSize)
             }
           ];
           fixture.detectChanges();
@@ -500,7 +500,7 @@ describe('upload', () => {
           instance.nzFilter = [
             {
               name: 'type',
-              fn: (fileList: UploadFile[]) => fileList.filter(w => ~[instance.nzFileType].indexOf(w.type))
+              fn: (fileList: NzUploadFile[]) => fileList.filter(w => ~[instance.nzFileType].indexOf(w.type))
             }
           ];
           fixture.detectChanges();
@@ -513,8 +513,8 @@ describe('upload', () => {
             instance.nzFilter = [
               {
                 name: 'f1',
-                fn: (fileList: UploadFile[]) => {
-                  return new Observable((observer: Observer<UploadFile[]>) => {
+                fn: (fileList: NzUploadFile[]) => {
+                  return new Observable((observer: Observer<NzUploadFile[]>) => {
                     observer.next(fileList.slice(1));
                     observer.complete();
                   });
@@ -522,8 +522,8 @@ describe('upload', () => {
               },
               {
                 name: 'f2',
-                fn: (fileList: UploadFile[]) => {
-                  return new Observable((observer: Observer<UploadFile[]>) => {
+                fn: (fileList: NzUploadFile[]) => {
+                  return new Observable((observer: Observer<NzUploadFile[]>) => {
                     observer.next(fileList.slice(1));
                     observer.complete();
                   });
@@ -542,7 +542,7 @@ describe('upload', () => {
               {
                 name: 'f1',
                 fn: () => {
-                  return new Observable((observer: Observer<UploadFile[]>) => {
+                  return new Observable((observer: Observer<NzUploadFile[]>) => {
                     observer.error('filter error');
                   });
                 }
@@ -765,7 +765,7 @@ describe('upload', () => {
     describe('[listType]', () => {
       for (const type of ['text', 'picture', 'picture-card']) {
         it(`with [${type}]`, () => {
-          instance.listType = type as UploadListType;
+          instance.listType = type as NzUploadListType;
           fixture.detectChanges();
           expect(dl.query(By.css(`.ant-upload-list-${type}`)) != null).toBe(true);
         });
@@ -1258,7 +1258,7 @@ describe('upload', () => {
         comp.options.filters = [
           {
             name: '',
-            fn: (fileList: UploadFile[]) => fileList.filter(w => w.size! / 1024 <= 0)
+            fn: (fileList: NzUploadFile[]) => fileList.filter(w => w.size! / 1024 <= 0)
           }
         ];
         comp.onChange(PNGBIG as any);
@@ -1347,15 +1347,15 @@ class TestUploadComponent {
   @ViewChild('upload', { static: false }) comp!: NzUploadComponent;
   @ViewChild('customnzIconRender', { static: false }) customnzIconRender!: TemplateRef<void>;
   show = true;
-  nzType: UploadType = 'select';
+  nzType: NzUploadType = 'select';
   nzLimit = 0;
   nzSize = 0;
   nzFileType: any;
   nzAccept = 'image/png';
-  nzAction: string | ((file: UploadFile) => string | Observable<string>) = '/upload';
+  nzAction: string | ((file: NzUploadFile) => string | Observable<string>) = '/upload';
   _beforeUpload = false;
-  _beforeUploadList: UploadFile[] = [];
-  beforeUpload: any = (_file: UploadFile, fileList: UploadFile[]): any => {
+  _beforeUploadList: NzUploadFile[] = [];
+  beforeUpload: any = (_file: NzUploadFile, fileList: NzUploadFile[]): any => {
     this._beforeUpload = true;
     this._beforeUploadList = fileList;
     return true;
@@ -1363,30 +1363,30 @@ class TestUploadComponent {
   nzCustomRequest: any;
   nzData: any;
   nzFilter: UploadFilter[] = [];
-  nzFileList: UploadFile[] | null = [];
+  nzFileList: NzUploadFile[] | null = [];
   nzDisabled = false;
   nzHeaders: any = {};
-  nzListType: UploadListType = 'text';
+  nzListType: NzUploadListType = 'text';
   nzMultiple = false;
   nzName = 'file';
-  nzShowUploadList: boolean | ShowUploadListInterface = true;
+  nzShowUploadList: boolean | NzShowUploadList = true;
   nzShowButton = true;
   nzWithCredentials = false;
-  nzTransformFile!: (file: UploadFile) => UploadTransformFileType;
+  nzTransformFile!: (file: NzUploadFile) => NzUploadTransformFileType;
   nzIconRender: TemplateRef<void> | null = null;
   _onPreview = false;
   onPreview = (): void => {
     this._onPreview = true;
   };
-  previewFile!: (file: UploadFile) => Observable<string>;
+  previewFile!: (file: NzUploadFile) => Observable<string>;
   _onRemove = false;
-  onRemove: null | ((file: UploadFile) => boolean | Observable<boolean>) = (): boolean => {
+  onRemove: null | ((file: NzUploadFile) => boolean | Observable<boolean>) = (): boolean => {
     this._onRemove = true;
     return true;
   };
-  _nzChange!: UploadChangeParam;
+  _nzChange!: NzUploadChangeParam;
 
-  nzChange(value: UploadChangeParam): void {
+  nzChange(value: NzUploadChangeParam): void {
     this._nzChange = value;
   }
 
@@ -1415,7 +1415,7 @@ class TestUploadComponent {
 })
 class TestUploadListComponent {
   @ViewChild('list', { static: false }) comp!: NzUploadListComponent;
-  listType: UploadListType = 'picture-card';
+  listType: NzUploadListType = 'picture-card';
   items: any[] = [
     {
       uid: 1,
@@ -1438,7 +1438,7 @@ class TestUploadListComponent {
       url: 'http://www.baidu.com/zzz.png'
     }
   ];
-  icons: ShowUploadListInterface = {
+  icons: NzShowUploadList = {
     showPreviewIcon: true,
     showRemoveIcon: true
   };
@@ -1446,7 +1446,7 @@ class TestUploadListComponent {
   onPreview: VoidFunction | null = (): void => {
     this._onPreview = true;
   };
-  previewFile!: (file: UploadFile) => Observable<string>;
+  previewFile!: (file: NzUploadFile) => Observable<string>;
   _onRemove = false;
   onRemove: any = (): void => {
     this._onRemove = true;
