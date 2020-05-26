@@ -59,6 +59,9 @@
 
     &:hover {
       border-color: @primary-color;
+      .@{upload-prefix-cls}-disabled& {
+        border-color: @border-color-base;
+      }
     }
   }
 
@@ -140,7 +143,7 @@
 .@{upload-prefix-cls}-list {
   .reset-component;
   .clearfix;
-  line-height: 22px;
+  line-height: @line-height-base;
   &-item-list-type-text {
     &:hover {
       .@{upload-prefix-cls}-list-item-name-icon-count-1 {
@@ -153,7 +156,7 @@
   }
   &-item {
     position: relative;
-    height: 22px;
+    height: @line-height-base * @font-size-base;
     margin-top: @margin-xs;
     font-size: @font-size-base;
     &-name {
@@ -161,7 +164,7 @@
       width: 100%;
       padding-left: @font-size-base + 8px;
       overflow: hidden;
-      line-height: 22px;
+      line-height: @line-height-base;
       white-space: nowrap;
       text-overflow: ellipsis;
     }
@@ -300,6 +303,20 @@
 
       .@{iconfont-css-prefix} {
         font-size: 26px;
+      }
+    }
+
+    // Adjust the color of the error icon : https://github.com/ant-design/ant-design/pull/24160
+    .@{upload-item}-error .@{upload-item}-thumbnail {
+      .@{iconfont-css-prefix} {
+        svg path {
+          &[fill='#e6f7ff'] {
+            fill: color(~`colorPalette('@{error-color}', 1) `);
+          }
+          &[fill='#1890ff'] {
+            fill: @error-color;
+          }
+        }
       }
     }
 
