@@ -61,7 +61,10 @@ export class NzTableStyleService {
     listOfTh.forEach(th => {
       columnCount += (th.colspan && +th.colspan) || 1;
     });
-    const listOfThPx = listOfTh.map(item => item.nzWidth);
+    let listOfThPx: string[] = [];
+    for (const th of listOfTh) {
+      if (th.nzWidth) listOfThPx.push(th.nzWidth);
+    }
     this.columnCount$.next(columnCount);
     this.listOfThWidthConfigPx$.next(listOfThPx);
   }
