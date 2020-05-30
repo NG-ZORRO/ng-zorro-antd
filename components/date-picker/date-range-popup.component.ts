@@ -146,7 +146,6 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   @Output() readonly panelModeChange = new EventEmitter<NzDateMode | NzDateMode[]>();
   @Output() readonly calendarChange = new EventEmitter<CompatibleValue>();
   @Output() readonly resultOk = new EventEmitter<void>(); // Emitted when done with date selecting
-  @Input() dropdownClassName!: string;
   @Input() dir!: Direction;
 
   prefixCls: string = PREFIX_CLASS;

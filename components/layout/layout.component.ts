@@ -30,7 +30,7 @@ import { NzSiderComponent } from './sider.component';
     '[class.ant-layout-rtl]': `dir === 'rtl'`
   }
 })
-export class NzLayoutComponent {
+export class NzLayoutComponent implements OnDestroy {
   @ContentChildren(NzSiderComponent) listOfNzSiderComponent!: QueryList<NzSiderComponent>;
 
   dir: Direction;
