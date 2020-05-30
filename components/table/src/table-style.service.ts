@@ -31,8 +31,21 @@ export class NzTableStyleService {
     this.manualWidthConfigPx$,
     combineLatest([this.listOfAutoWidthPx$, this.manualWidthConfigPx$]).pipe(
       map(([autoWidth, manualWidth]) => {
-        /** use autoWidth until column length match **/
-        return autoWidth.length !== manualWidth.length ? manualWidth : autoWidth;
+        let realManualWidthLength = 0;
+        for (const width of manualWidth) {
+          if (width) {
+            realManualWidthLength += 1;
+          }
+        }
+        // If manualWidth is fully filled with width and the length is equal to autoWidth, regard autoWidth as the result.
+        if (realManualWidthLength > 0 && realManualWidthLength === autoWidth.length) {
+          return autoWidth;
+        } else {
+          // If manualWidth is not specified (realManualWidthLength === 0), return it to generate corresponding number <col>.
+          // If manualWidth is specified or dynamically changed (realManualWidthLength > 0), but some column width not specified
+          // ( realManualWidthLength !== autoWidth.length ) then return manualWidth to dynamically change col width.
+          return manualWidth;
+        }
       })
     )
   );
