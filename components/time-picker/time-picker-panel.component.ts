@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -205,7 +202,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   }
 
   @Input()
-  set nzDisabledSeconds(value: (undefined | ((hour: number, minute: number) => number[]))) {
+  set nzDisabledSeconds(value: undefined | ((hour: number, minute: number) => number[])) {
     if (isNotNil(value)) {
       this._disabledSeconds = value;
       this.buildSeconds();
@@ -487,9 +484,11 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     const hour = value.getHours();
     const minute = value.getMinutes();
     const second = value.getSeconds();
-    return ((this.nzDisabledHours?.().indexOf(hour) ?? -1) > -1) ||
-      ((this.nzDisabledMinutes?.(hour).indexOf(minute) ?? -1) > -1) ||
-      ((this.nzDisabledSeconds?.(hour, minute).indexOf(second) ?? -1) > -1)
+    return (
+      (this.nzDisabledHours?.().indexOf(hour) ?? -1) > -1 ||
+      (this.nzDisabledMinutes?.(hour).indexOf(minute) ?? -1) > -1 ||
+      (this.nzDisabledSeconds?.(hour, minute).indexOf(second) ?? -1) > -1
+    );
   }
 
   onClickNow(): void {

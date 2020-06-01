@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -60,9 +57,7 @@ const tokensMap: TokensMap = {
   x: 'T'
 };
 
-const v1tokens = Object.keys(tokensMap)
-  .sort()
-  .reverse();
+const v1tokens = Object.keys(tokensMap).sort().reverse();
 
 // tslint:disable-next-line:prefer-template
 const tokensRegExp = new RegExp('(\\[[^\\[]*\\])|(\\\\)?' + '(' + v1tokens.join('|') + '|.)', 'g');
