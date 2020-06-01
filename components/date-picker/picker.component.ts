@@ -255,7 +255,6 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     }
 
     if (this.isRange) {
-      this.resetInputWidthAndArrowLeft();
       fromEvent(window, 'resize')
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
@@ -294,7 +293,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   resetInputWidthAndArrowLeft(): void {
-    this.inputWidth = this.rangePickerInputs?.first.nativeElement.offsetWidth || 0;
+    this.inputWidth = this.rangePickerInputs?.first?.nativeElement.offsetWidth || 0;
     this.arrowLeft = this.inputWidth + this.separatorElement?.nativeElement.offsetWidth || 0;
   }
 
@@ -324,6 +323,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   // Show overlay content
   showOverlay(): void {
     if (!this.realOpenState) {
+      this.resetInputWidthAndArrowLeft();
       this.overlayOpen = true;
       this.animationStart();
       this.focus();
