@@ -5,17 +5,13 @@ import * as ts from 'typescript';
 
 /** License banner that is placed at the top of every public TypeScript file. */
 const licenseBanner = `/**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */`;
 
 /** Failure message that will be shown if a license banner is missing. */
 const ERROR_MESSAGE =
-  'Missing license header in this TypeScript file. ' +
-  'Every TypeScript file of the library needs to have the Alibaba license banner at the top.';
+  'Missing license header in this TypeScript file. Every TypeScript file of the library needs to have the license banner at the top.';
 
 /** TSLint fix that can be used to add the license banner easily. */
 const tslintFix = Lint.Replacement.appendText(0, licenseBanner + '\n\n');
@@ -25,7 +21,7 @@ const tslintFix = Lint.Replacement.appendText(0, licenseBanner + '\n\n');
  * file does not have the license banner at the top of the file.
  */
 export class Rule extends Lint.Rules.AbstractRule {
-  apply(sourceFile: ts.SourceFile) {
+  apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
     return this.applyWithWalker(new RequireLicenseBannerWalker(sourceFile, this.getOptions()));
   }
 }
@@ -47,7 +43,7 @@ class RequireLicenseBannerWalker extends Lint.RuleWalker {
     this._enabled = fileGlobs.some(p => minimatch(relativeFilePath, p));
   }
 
-  visitSourceFile(sourceFile: ts.SourceFile) {
+  visitSourceFile(sourceFile: ts.SourceFile): void {
     if (!this._enabled) {
       return;
     }
