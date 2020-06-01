@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -21,12 +18,7 @@ import {
 } from '@angular/core';
 
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import {
-  NgClassInterface,
-  NgStyleInterface,
-  NzShapeSCType,
-  NzSizeLDSType
-} from 'ng-zorro-antd/core/types';
+import { NgClassInterface, NgStyleInterface, NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 
 const NZ_CONFIG_COMPONENT_NAME = 'avatar';
 
