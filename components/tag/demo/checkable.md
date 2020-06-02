@@ -7,10 +7,10 @@ title:
 
 ## zh-CN
 
-可通过 `nzMode="checkable"` 实现类似 Checkbox 的效果，点击切换选中效果。
+可通过 `nzCheckable="true"` 实现类似 Checkbox 的效果，点击切换选中效果。
 
 ## en-US
 
-`nzMode="checkable"` works like Checkbox, click it to toggle checked state.
+`nzCheckable="true"` works like Checkbox, click it to toggle checked state.
 
 

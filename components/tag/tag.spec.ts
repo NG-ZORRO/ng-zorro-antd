@@ -31,7 +31,7 @@ describe('tag', () => {
     it('should checkable work', () => {
       fixture.detectChanges();
       expect(tag.nativeElement.classList).not.toContain('ant-tag-checkable');
-      testComponent.mode = 'checkable';
+      testComponent.checkable = true;
       fixture.detectChanges();
       expect(testComponent.checked).toBe(false);
       expect(testComponent.checkedChange).toHaveBeenCalledTimes(0);
@@ -47,7 +47,7 @@ describe('tag', () => {
     it('should closeable work', fakeAsync(() => {
       fixture.detectChanges();
       expect(tag.nativeElement.querySelector('.anticon-close')).toBeNull();
-      testComponent.mode = 'closeable';
+      testComponent.closeable = true;
       fixture.detectChanges();
       expect(tag.nativeElement.querySelector('.anticon-close')).toBeDefined();
       tag.nativeElement.querySelector('.anticon-close').click();
@@ -124,6 +124,8 @@ describe('tag', () => {
   template: `
     <nz-tag
       [nzMode]="mode"
+      [nzCloseable]="closeable"
+      [nzCheckable]="checkable"
       [(nzChecked)]="checked"
       [nzColor]="color"
       (nzCheckedChange)="checkedChange($event)"
@@ -136,6 +138,8 @@ describe('tag', () => {
 })
 export class NzTestTagBasicComponent {
   mode = 'default';
+  closeable = false;
+  checkable = false;
   color: string | undefined;
   checked = false;
   onClose = jasmine.createSpy('on close');
@@ -144,9 +148,7 @@ export class NzTestTagBasicComponent {
 }
 
 @Component({
-  template: `
-    <nz-tag nzMode="closeable" (nzOnClose)="onClose($event)">Tag 1</nz-tag>
-  `
+  template: ` <nz-tag nzCloseable="true" (nzOnClose)="onClose($event)">Tag 1</nz-tag> `
 })
 export class NzTestTagPreventComponent {
   onClose(e: MouseEvent): void {

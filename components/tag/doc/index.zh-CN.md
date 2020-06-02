@@ -23,7 +23,9 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzMode]` | 设定标签工作的模式 | `'closeable' \| 'default' \| 'checkable'` | `'default'` |
-| `[nzChecked]` | 设置标签的选中状态，可双向绑定，在 `nzMode="checkable"` 时可用 | `boolean` | `false` |
+| `[nzCloseable]` | 设置标签可否被关闭 | `boolean` |`false` |
+| `[nzCheckable]` | 设置标签可否被选中 | `boolean` |`false` |
+| `[nzChecked]` | 设置标签的选中状态，可双向绑定，在 `nzCheckable="true"` 时可用 | `boolean` | `false` |
 | `[nzColor]` | 标签色 | `string` | - |
-| `(nzOnClose)` | 关闭时的回调，在 `nzMode="closable"` 时可用 | `EventEmitter<MouseEvent>` | - |
-| `(nzCheckedChange)` | 设置标签的选中状态的回调，在 `nzMode="checkable"` 时可用 | `EventEmitter<void>` | - |
+| `(nzOnClose)` | 关闭时的回调，在 `nzCloseable="true"` 时可用 | `EventEmitter<MouseEvent>` | - |
+| `(nzCheckedChange)` | 设置标签的选中状态的回调，在 `nzCheckable="true"` 时可用 | `EventEmitter<void>` | - |

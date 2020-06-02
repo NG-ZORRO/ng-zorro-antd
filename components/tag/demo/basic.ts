@@ -7,8 +7,8 @@ import { Component } from '@angular/core';
     <nz-tag>
       <a href="https://github.com/NG-ZORRO/ng-zorro-antd">Link</a>
     </nz-tag>
-    <nz-tag nzMode="closeable" (nzOnClose)="onClose()">Tag 2</nz-tag>
-    <nz-tag nzMode="closeable" (nzOnClose)="preventDefault($event)">Prevent Default</nz-tag>
+    <nz-tag nzCloseable="true" (nzOnClose)="onClose()">Tag 2</nz-tag>
+    <nz-tag nzCloseable="true" (nzOnClose)="preventDefault($event)">Prevent Default</nz-tag>
   `
 })
 export class NzDemoTagBasicComponent {

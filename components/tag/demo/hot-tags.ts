@@ -8,7 +8,7 @@ const tagsFromServer = ['Movie', 'Books', 'Music', 'Sports'];
     <strong>Categories: </strong>
     <nz-tag
       *ngFor="let tag of hotTags"
-      nzMode="checkable"
+      nzCheckable="true"
       [nzChecked]="selectedTags.indexOf(tag) > -1"
       (nzCheckedChange)="handleChange($event, tag)"
     >

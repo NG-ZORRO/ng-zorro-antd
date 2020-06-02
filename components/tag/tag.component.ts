@@ -28,7 +28,7 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   animations: [fadeMotion],
   template: `
     <ng-content></ng-content>
-    <i nz-icon nzType="close" *ngIf="nzMode === 'closeable'" tabindex="-1" (click)="closeTag($event)"></i>
+    <i nz-icon nzType="close" *ngIf="nzCloseable || nzMode === 'closeable'" tabindex="-1" (click)="closeTag($event)"></i>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -38,7 +38,7 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
     '[style.background-color]': 'presetColor ? null : nzColor',
     '[class.ant-tag]': `true`,
     '[class.ant-tag-has-color]': `nzColor && !presetColor`,
-    '[class.ant-tag-checkable]': `nzMode === 'checkable'`,
+    '[class.ant-tag-checkable]': `nzCheckable || nzMode === 'checkable'`,
     '[class.ant-tag-checkable-checked]': `nzChecked`,
     '(click)': 'updateCheckedStatus()',
     '(@fadeMotion.done)': 'afterAnimation($event)'
@@ -50,7 +50,13 @@ export class NzTagComponent implements OnInit, OnChanges {
 
   presetColor = false;
   cacheClassName: string | null = null;
+
+  /**
+   * @deprecated Maybe removed in next major version, use nzCloseable or nzCheckable instead
+   */
   @Input() nzMode: 'default' | 'closeable' | 'checkable' = 'default';
+  @Input() nzCloseable: boolean = false;
+  @Input() nzCheckable: boolean = false;
   @Input() nzColor?: string;
   @Input() @InputBoolean() nzChecked = false;
   @Input() @InputBoolean() nzNoAnimation = false;
@@ -81,7 +87,7 @@ export class NzTagComponent implements OnInit, OnChanges {
   }
 
   updateCheckedStatus(): void {
-    if (this.nzMode === 'checkable') {
+    if (this.nzCheckable || this.nzMode === 'checkable') {
       this.nzChecked = !this.nzChecked;
       this.nzCheckedChange.emit(this.nzChecked);
       this.updateClassMap();
