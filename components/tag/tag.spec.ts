@@ -148,7 +148,7 @@ export class NzTestTagBasicComponent {
 }
 
 @Component({
-  template: ` <nz-tag nzCloseable="true" (nzOnClose)="onClose($event)">Tag 1</nz-tag> `
+  template: ` <nz-tag [nzCloseable]="true" (nzOnClose)="onClose($event)">Tag 1</nz-tag> `
 })
 export class NzTestTagPreventComponent {
   onClose(e: MouseEvent): void {

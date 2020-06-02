@@ -25,7 +25,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 | `[nzMode]` | Mode of tag | `'closeable' \| 'default' \| 'checkable'` | `'default'` |
 | `[nzCloseable]` | Closeable of tag | `boolean` |`false` |
 | `[nzCheckable]` | Checkable of tag | `boolean` |`false` |
-| `[nzChecked]` | Checked status of Tag, double binding, only works when `nzCheckable="true"` | `boolean` | `false` |
+| `[nzChecked]` | Checked status of Tag, double binding, only works when `[nzCheckable]="true"` | `boolean` | `false` |
 | `[nzColor]` | Color of the Tag | `string` | - |
-| `(nzOnClose)` | Callback executed when tag is closed, only works when `nzCloseable="true"`| `EventEmitter<MouseEvent>` | - |
-| `(nzCheckedChange)` | Checked status change call back, only works when `nzCheckable="true"` | `EventEmitter<boolean>` | - |
+| `(nzOnClose)` | Callback executed when tag is closed, only works when `[nzCloseable]="true"`| `EventEmitter<MouseEvent>` | - |
+| `(nzCheckedChange)` | Checked status change call back, only works when `[nzCheckable]="true"` | `EventEmitter<boolean>` | - |
