@@ -281,6 +281,20 @@ describe('select', () => {
       expect(component.openChange).toHaveBeenCalledWith(false);
       expect(component.openChange).toHaveBeenCalledTimes(3);
     }));
+    it('should keyup tab', fakeAsync(() => {
+      const flushChanges = () => {
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+      };
+      component.nzOpen = false;
+      flushChanges();
+      const inputElement = selectElement.querySelector('input')!;
+      dispatchKeyboardEvent(inputElement, 'keyup', TAB, inputElement);
+      flushChanges();
+      expect(component.openChange).toHaveBeenCalledWith(true);
+      expect(component.openChange).toHaveBeenCalledTimes(1);
+    }));
     it('should mouseenter activated option work', fakeAsync(() => {
       const flushChanges = () => {
         fixture.detectChanges();

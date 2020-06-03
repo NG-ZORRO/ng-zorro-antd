@@ -92,6 +92,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       (animationEnd)="updateCdkConnectedOverlayPositions()"
       (deleteItem)="onItemDelete($event)"
       (keydown)="onKeyDown($event)"
+      (keyup)="onKeyUp($event)"
       (openChange)="setOpenState($event)"
     ></nz-select-top-control>
     <nz-select-clear
@@ -350,6 +351,16 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
       this.updateListOfValue([...this.listOfValue, ...listOfMatchedValue, ...listOfUnMatchedLabel]);
     }
     this.clearInput();
+  }
+
+  onKeyUp(e: KeyboardEvent): void {
+    if (this.nzDisabled) {
+      return;
+    }
+
+    if (e.keyCode === TAB) {
+      this.setOpenState(true);
+    }
   }
 
   onKeyDown(e: KeyboardEvent): void {
