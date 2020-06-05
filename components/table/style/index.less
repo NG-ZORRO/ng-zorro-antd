@@ -9,9 +9,8 @@
 @table-header-icon-color-hover: darken(@table-header-icon-color, 10%);
 @table-header-sort-active-filter-bg: lighten(@table-header-sort-active-bg, 2%);
 
-@table-selection-column-width: 60px;
-
 .@{table-prefix-cls}-wrapper {
+  max-width: 100%;
   .clearfix;
 }
 
@@ -114,6 +113,7 @@
       &.@{table-prefix-cls}-row-selected {
         > td {
           background: @table-selected-row-bg;
+          border-color: rgba(0, 0, 0, 0.03);
         }
 
         &:hover {
@@ -355,14 +355,14 @@
   }
 
   // ========================== Selections ==========================
-  colgroup {
-    > col.@{table-prefix-cls}-selection-col {
-      width: @table-selection-column-width;
-    }
+  .@{table-prefix-cls}-selection-col {
+    width: @table-selection-column-width;
   }
 
   table tr th&-selection-column,
   table tr td&-selection-column {
+    padding-right: @padding-xs;
+    padding-left: @padding-xs;
     text-align: center;
 
     .@{ant-prefix}-radio-wrapper {
@@ -376,7 +376,7 @@
     &-extra {
       position: absolute;
       top: 0;
-      right: -10px;
+      right: @table-selection-extra-right;
       cursor: pointer;
       transition: all 0.3s;
 
@@ -497,6 +497,9 @@
   // ========================= Placeholder ==========================
   &-tbody > tr&-placeholder {
     text-align: center;
+    .@{table-prefix-cls}-empty & {
+      color: @disabled-color;
+    }
     &:hover {
       > td {
         background: @component-background;
@@ -507,6 +510,8 @@
   // ============================ Fixed =============================
   &-cell-fix-left,
   &-cell-fix-right {
+    position: -webkit-sticky !important;
+    position: sticky !important;
     z-index: 2;
     background: @table-bg;
   }

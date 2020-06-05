@@ -1,11 +1,13 @@
 @import './index';
 
 .table-size(@size, @padding-vertical, @padding-horizontal) {
-  .@{table-prefix-cls}-@{size} {
+  .@{table-prefix-cls}.@{table-prefix-cls}-@{size} {
     .@{table-prefix-cls}-title,
     .@{table-prefix-cls}-footer,
     .@{table-prefix-cls}-thead > tr > th,
-    .@{table-prefix-cls}-tbody > tr > td {
+    .@{table-prefix-cls}-tbody > tr > td,
+    tfoot > tr > th,
+    tfoot > tr > td {
       padding: @padding-vertical @padding-horizontal;
     }
 
@@ -30,6 +32,16 @@
     .@{table-prefix-cls}-expanded-row-fixed {
       margin: -@padding-vertical -@padding-horizontal;
     }
+
+    .@{table-prefix-cls}-tbody {
+      // ========================= Nest Table ===========================
+      .@{table-prefix-cls}-wrapper:only-child {
+        .@{table-prefix-cls} {
+          margin: -@padding-vertical -@padding-horizontal -@padding-vertical (@padding-horizontal +
+                ceil(@font-size-sm * 1.4));
+        }
+      }
+    }
   }
 }
 
@@ -46,5 +58,9 @@
 .@{table-prefix-cls}-small {
   .@{table-prefix-cls}-thead > tr > th {
     background-color: @table-header-bg-sm;
+  }
+  .@{table-prefix-cls}-selection-column {
+    width: 46px;
+    min-width: 46px;
   }
 }
