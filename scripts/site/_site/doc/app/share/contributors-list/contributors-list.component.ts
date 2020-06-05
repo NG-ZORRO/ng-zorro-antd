@@ -91,21 +91,23 @@ export class NzContributorsListComponent implements OnInit, OnDestroy {
         if (Array.isArray(data)) {
           // tslint:disable-next-line:no-any
           const list: any[] = [];
-          data.forEach(e => {
-            const id = e.author.login;
-            const index = list.findIndex(i => i.id === id);
-            if (index === -1) {
-              list.push({
-                id,
-                count: 1,
-                name: e.commit && e.commit.author.name,
-                url: `http://github.com/${id}`,
-                avatar: e.author.avatar_url
-              });
-            } else {
-              list[index].count = list[index].count + 1;
-            }
-          });
+          data
+            .filter(e => e.author && e.author.login)
+            .forEach(e => {
+              const id = e.author.login;
+              const index = list.findIndex(i => i.id === id);
+              if (index === -1) {
+                list.push({
+                  id,
+                  count: 1,
+                  name: e.commit && e.commit.author.name,
+                  url: `http://github.com/${id}`,
+                  avatar: e.author.avatar_url
+                });
+              } else {
+                list[index].count = list[index].count + 1;
+              }
+            });
 
           this.list = list.sort((a, b) => b.count - a.count);
         } else {
