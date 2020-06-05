@@ -5,7 +5,7 @@ import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NzSafeAny } from 'ng-zorro-antd';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
