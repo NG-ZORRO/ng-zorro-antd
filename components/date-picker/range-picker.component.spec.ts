@@ -938,7 +938,7 @@ class NzTestRangePickerComponent {
   nzSize!: string;
   nzStyle!: NgStyleInterface;
   nzOnOpenChange(): void {}
-  modelValue!: Array<Date | null>;
+  modelValue: Array<Date | null> = [];
   modelValueChange(): void {}
   nzDefaultPickerValue!: Array<Date | null>;
   nzSeparator!: string;
