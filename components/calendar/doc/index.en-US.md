@@ -52,4 +52,6 @@ registerLocaleData(en);
 | `[nzDateFullCell]` | (Contentable) Customize the display of the date cell, the template content will override the cell | `TemplateRef<Date>` | - |
 | `[nzMonthCell]` | (Contentable) Customize the display of the month cell, the template content will be appended to the cell | `TemplateRef<Date>` | - |
 | `[nzMonthFullCell]` | (Contentable) Customize the display of the month cell, the template content will override the cell | `TemplateRef<Date>` | - |
+| `[nzDisabledDate]` | specify the date that cannot be selected | `(current: Date) => boolean` | - | - |
 | `(nzPanelChange)` | Callback for when panel changes | `EventEmitter<{ date: Date, mode: 'month' \| 'year' }>` | - |
+| `(nzSelectChange)` | A callback function of selected item | `EventEmitter<Date>` | - |
