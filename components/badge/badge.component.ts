@@ -144,7 +144,7 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   ngAfterViewInit(): void {
     this.ngZone.onStable.pipe(take(1)).subscribe(() => {
       this.viewInit = true;
-      this.cdr.markForCheck();
+      this.cdr.detectChanges();
     });
 
     this.contentObserver
