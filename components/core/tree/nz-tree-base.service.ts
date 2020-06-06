@@ -18,6 +18,7 @@ export class NzTreeBaseService {
 
   isCheckStrictly: boolean = false;
   isMultiple: boolean = false;
+  isAlreadySelected: boolean = false;
   selectedNode!: NzTreeNode;
   rootNodes: NzTreeNode[] = [];
   flattenNodes$ = new BehaviorSubject<NzTreeNode[]>([]);
@@ -493,14 +494,19 @@ export class NzTreeBaseService {
 
   conductSelectedKeys(keys: NzTreeNodeKey[], isMulti: boolean): void {
     this.selectedNodeList = [];
+    this.isAlreadySelected = false;
     const calc = (nodes: NzTreeNode[]): boolean => {
       return nodes.every(node => {
         if (isInArray(node.key, keys)) {
-          node.isSelected = true;
-          this.setSelectedNodeList(node);
-          if (!isMulti) {
-            // if not support multi select
-            return false;
+          /* In situation of single select mode with muliple selected keys,
+           * we handle the first key and unselect the rest
+           */
+          if (!isMulti && this.isAlreadySelected) {
+            node.isSelected = false;
+          } else if ((!isMulti && !this.isAlreadySelected) || isMulti) {
+            node.isSelected = true;
+            this.setSelectedNodeList(node);
+            this.isAlreadySelected = true;
           }
         } else {
           node.isSelected = false;

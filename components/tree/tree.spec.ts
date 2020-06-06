@@ -131,6 +131,24 @@ describe('tree', () => {
         expect(component.treeComponent.getSelectedNodeList().length).toEqual(1);
       }));
 
+      it('should undo the previous selection if new selectedkey is provided based on nzMultiple:false', fakeAsync(() => {
+        const { component, fixture, nativeElement } = testBed;
+        component.multiple = false;
+        // '0-1' is under '0-0'. if we selected 0-1 first and then select '0-0'
+        // we can test whether all the tree nodes has been rendered or not in single selected mode
+        component.defaultSelectedKeys = ['0-1'];
+        fixture.detectChanges();
+
+        component.defaultSelectedKeys = ['0-0'];
+        fixture.detectChanges();
+        // nzMultiple is false
+        const selectedNodes = nativeElement.querySelectorAll('.ant-tree-node-selected');
+        expect(selectedNodes.length).toEqual(1);
+        tick(300);
+        fixture.detectChanges();
+        expect(component.treeComponent.getSelectedNodeList().length).toEqual(1);
+      }));
+
       it('should match nodes based on nzSearchValue', fakeAsync(() => {
         const { component, fixture, nativeElement } = testBed;
         component.searchValue = '0-0-1';
