@@ -4,12 +4,15 @@
  */
 
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChild,
   ElementRef,
   EventEmitter,
   Input,
+  OnDestroy,
   Optional,
   Output,
   TemplateRef,
@@ -19,6 +22,9 @@ import {
 import { Location } from '@angular/common';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { PREFIX } from 'ng-zorro-antd/core/logger';
+import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
+import { Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 import { NzPageHeaderBreadcrumbDirective, NzPageHeaderFooterDirective } from './page-header-cells';
 
 const NZ_CONFIG_COMPONENT_NAME = 'pageHeader';
@@ -66,10 +72,11 @@ const NZ_CONFIG_COMPONENT_NAME = 'pageHeader';
     class: 'ant-page-header',
     '[class.has-footer]': 'nzPageHeaderFooter',
     '[class.ant-page-header-ghost]': 'nzGhost',
-    '[class.has-breadcrumb]': 'nzPageHeaderBreadcrumb'
+    '[class.has-breadcrumb]': 'nzPageHeaderBreadcrumb',
+    '[class.ant-page-header-compact]': 'compact'
   }
 })
-export class NzPageHeaderComponent {
+export class NzPageHeaderComponent implements AfterViewInit, OnDestroy {
   @Input() nzBackIcon: string | TemplateRef<void> | null = null;
   @Input() nzTitle?: string | TemplateRef<void>;
   @Input() nzSubtitle?: string | TemplateRef<void>;
@@ -79,7 +86,29 @@ export class NzPageHeaderComponent {
   @ContentChild(NzPageHeaderFooterDirective, { static: false }) nzPageHeaderFooter?: ElementRef<NzPageHeaderFooterDirective>;
   @ContentChild(NzPageHeaderBreadcrumbDirective, { static: false }) nzPageHeaderBreadcrumb?: ElementRef<NzPageHeaderBreadcrumbDirective>;
 
-  constructor(@Optional() private location: Location, public nzConfigService: NzConfigService) {}
+  compact = false;
+  destroy$ = new Subject<void>();
+
+  constructor(
+    @Optional() private location: Location,
+    public nzConfigService: NzConfigService,
+    private elementRef: ElementRef,
+    private nzResizeObserver: NzResizeObserver,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngAfterViewInit(): void {
+    this.nzResizeObserver
+      .observe(this.elementRef)
+      .pipe(
+        map(([entry]) => entry.contentRect.width),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((width: number) => {
+        this.compact = width < 768;
+        this.cdr.markForCheck();
+      });
+  }
 
   onBack(): void {
     if (this.nzBack.observers.length) {
@@ -90,5 +119,10 @@ export class NzPageHeaderComponent {
       }
       this.location.back();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
