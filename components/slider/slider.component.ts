@@ -70,7 +70,13 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
       [class.ant-slider-with-marks]="marksArray"
     >
       <div class="ant-slider-rail"></div>
-      <nz-slider-track [vertical]="nzVertical" [included]="nzIncluded" [offset]="track.offset!" [length]="track.length!"></nz-slider-track>
+      <nz-slider-track
+        [vertical]="nzVertical"
+        [included]="nzIncluded"
+        [offset]="track.offset!"
+        [length]="track.length!"
+        [reverse]="nzReverse"
+      ></nz-slider-track>
       <nz-slider-step
         *ngIf="marksArray"
         [vertical]="nzVertical"
@@ -82,6 +88,7 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
       <nz-slider-handle
         *ngFor="let handle of handles"
         [vertical]="nzVertical"
+        [reverse]="nzReverse"
         [offset]="handle.offset!"
         [value]="handle.value!"
         [active]="handle.active"
@@ -111,6 +118,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   static ngAcceptInputType_nzMax: NumberInput;
   static ngAcceptInputType_nzMin: NumberInput;
   static ngAcceptInputType_nzStep: NumberInput;
+  static ngAcceptInputType_nzReverse: BooleanInput;
 
   @ViewChild('slider', { static: true }) slider!: ElementRef<HTMLDivElement>;
   @ViewChildren(NzSliderHandleComponent) handlerComponents!: QueryList<NzSliderHandleComponent>;
@@ -120,6 +128,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   @Input() @InputBoolean() nzIncluded: boolean = true;
   @Input() @InputBoolean() nzRange: boolean = false;
   @Input() @InputBoolean() nzVertical: boolean = false;
+  @Input() @InputBoolean() nzReverse: boolean = false;
   @Input() nzDefaultValue?: NzSliderValue;
   @Input() nzMarks: NzMarks | null = null;
   @Input() @InputNumber() nzMax = 100;
@@ -211,7 +220,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
 
     e.preventDefault();
 
-    const step = isDecrease ? -this.nzStep : this.nzStep;
+    const step = (isDecrease ? -this.nzStep : this.nzStep) * (this.nzReverse ? -1 : 1);
     const newVal = this.nzRange ? (this.value as number[])[this.activeValueIndex!] + step : (this.value as number) + step;
     this.setActiveValue(ensureNumberInRange(newVal, this.nzMin, this.nzMax));
   }
@@ -305,14 +314,18 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   private onDragStart(value: number): void {
     this.toggleDragMoving(true);
     this.cacheSliderProperty();
-    this.setActiveValueIndex(value);
-    this.setActiveValue(value);
+    this.setActiveValueIndex(this.getLogicalValue(value));
+    this.setActiveValue(this.getLogicalValue(value));
     this.showHandleTooltip(this.nzRange ? this.activeValueIndex : 0);
   }
 
   private onDragMove(value: number): void {
-    this.setActiveValue(value);
+    this.setActiveValue(this.getLogicalValue(value));
     this.cdr.markForCheck();
+  }
+
+  private getLogicalValue(value: number): number {
+    return this.nzReverse ? this.nzMax - value : value;
   }
 
   private onDragEnd(): void {
