@@ -384,7 +384,7 @@ describe('select', () => {
       flushChanges();
       expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected').length).toBe(1);
       expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected')[0].textContent).toBe('Truthy value');
-      ['disabled', undefined, null].forEach(value => {
+      ['disabled', undefined, null].forEach((value) => {
         component.value = value;
         flushChanges();
         expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected').length).toBe(0);

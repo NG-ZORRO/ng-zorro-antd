@@ -80,7 +80,9 @@ export class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewI
   ngOnChanges(changes: SimpleChanges): void {
     const { nzSingleSort } = changes;
     if (nzSingleSort) {
-      warnDeprecation(`'nzSingleSort' is deprecated and will be removed in 10.0.0. Please use 'nzSortFn' and 'nzSortPriority' instead.`);
+      warnDeprecation(
+        `'nzSingleSort' is deprecated and will be removed in 10.0.0. Please use 'nzSortFn' and 'nzSortPriority' instead.`
+      );
     }
   }
 
