@@ -14,7 +14,8 @@ import { Subject } from 'rxjs';
   host: {
     '[class.ant-input-disabled]': 'disabled',
     '[class.ant-input-lg]': `nzSize === 'large'`,
-    '[class.ant-input-sm]': `nzSize === 'small'`
+    '[class.ant-input-sm]': `nzSize === 'small'`,
+    '[attr.disabled]': 'disabled || null'
   }
 })
 export class NzInputDirective implements OnChanges {
