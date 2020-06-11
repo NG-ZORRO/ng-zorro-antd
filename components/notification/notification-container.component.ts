@@ -133,6 +133,7 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent {
     old.content = _new.content;
     old.template = _new.template;
     old.type = _new.type;
+    old.options = _new.options;
   }
 
   protected readyInstances(): void {
