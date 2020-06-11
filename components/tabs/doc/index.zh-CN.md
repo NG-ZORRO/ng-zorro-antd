@@ -42,7 +42,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | `[nzLinkExact]` | 以严格匹配模式确定联动的路由 | `boolean` | `true` |
 | `[nzCanDeactivate]` | 决定一个 tab 是否可以被切换 | `NzTabsCanDeactivateFn` | - |
 | `(nzSelectedIndexChange)` | 当前激活 tab 面板的 序列号变更回调函数 | `EventEmitter<number>` | - |
-| `(nzSelectChange)` | 当前激活 tab 面板变更回调函数 | `EventEmitter<{nzSelectedIndex: number,tab: NzTabComponent}>` | - |
+| `(nzSelectChange)` | 当前激活 tab 面板变更回调函数 | `EventEmitter<{index: number,tab: NzTabComponent}>` | - |
 | `(nzOnNextClick)` | next 按钮被点击的回调 | `EventEmitter<void>` | - |
 | `(nzOnPrevClick)` | prev 按钮被点击的回调 | `EventEmitter<void>` | - |
 
