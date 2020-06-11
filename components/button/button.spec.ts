@@ -150,6 +150,16 @@ describe('button', () => {
       testBed.fixture.detectChanges();
       expect(buttonElement.classList).toContain('ant-btn-icon-only');
     }));
+    it('should icon only loading works correctly', () => {
+      const testBed = createComponentBed(TestButtonIconOnlyLoadingComponent, {
+        imports: [NzIconTestModule],
+        declarations: [NzButtonComponent]
+      });
+      testBed.fixture.detectChanges();
+      const buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
+      testBed.fixture.detectChanges();
+      expect(buttonElement.classList).toContain('ant-btn-icon-only');
+    });
   });
 });
 
@@ -220,6 +230,15 @@ export class TestButtonWithIconComponent implements OnInit {
   `
 })
 export class TestButtonIconOnlyComponent {}
+
+@Component({
+  template: `
+    <button nz-button nzLoading>
+      <i nz-icon nzType="caret-down"></i>
+    </button>
+  `
+})
+export class TestButtonIconOnlyLoadingComponent {}
 
 @Component({
   template: ` <a nz-button href="https://ng.ant.design/" [disabled]="disabled">anchor</a> `
