@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -39,7 +36,7 @@ import {
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 
 import { CandyDate, CompatibleValue } from 'ng-zorro-antd/core/time';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -99,7 +96,7 @@ import { PREFIX_CLASS } from './util';
         (input)="onInputKeyup($event, false)"
         (focus)="onFocus(partType)"
         (keyup.enter)="onInputKeyup($event, true)"
-        [(ngModel)]="inputValue[datePickerService?.getActiveIndex(partType)]"
+        [(ngModel)]="inputValue[datePickerService.getActiveIndex(partType)]"
         placeholder="{{ getPlaceholder(partType) }}"
       />
     </ng-template>
@@ -111,7 +108,7 @@ import { PREFIX_CLASS } from './util';
         <i nz-icon nzType="close-circle" nzTheme="fill"></i>
       </span>
       <span class="{{ prefixCls }}-suffix">
-        <ng-container *nzStringTemplateOutlet="suffixIcon">
+        <ng-container *nzStringTemplateOutlet="suffixIcon; let suffixIcon">
           <i nz-icon [nzType]="suffixIcon"></i>
         </ng-container>
       </span>
@@ -160,32 +157,31 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Input() noAnimation: boolean = false;
   @Input() isRange: boolean = false;
   @Input() open: boolean | undefined = undefined;
-  @Input() disabled: boolean;
-  @Input() placeholder: string | string[];
-  @Input() allowClear: boolean;
-  @Input() autoFocus: boolean;
-  @Input() format: string;
-  @Input() separator: string;
-  @Input() popupStyle: object;
-  @Input() dropdownClassName: string;
-  @Input() suffixIcon: string | TemplateRef<NzSafeAny>;
+  @Input() disabled: boolean = false;
+  @Input() placeholder!: string | string[];
+  @Input() allowClear?: boolean;
+  @Input() autoFocus?: boolean;
+  @Input() format!: string;
+  @Input() separator?: string;
+  @Input() popupStyle: NgStyleInterface | null = null;
+  @Input() dropdownClassName?: string;
+  @Input() suffixIcon?: string | TemplateRef<NzSafeAny>;
 
   @Output() readonly focusChange = new EventEmitter<boolean>();
   @Output() readonly valueChange = new EventEmitter<CandyDate | CandyDate[] | null>();
   @Output() readonly openChange = new EventEmitter<boolean>(); // Emitted when overlay's open state change
 
-  @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay: CdkConnectedOverlay;
-  @ViewChild('separatorElement', { static: false }) separatorElement: ElementRef;
-  @ViewChild('pickerInput', { static: false }) pickerInput: ElementRef<HTMLInputElement>;
-  @ViewChildren('rangePickerInput') rangePickerInputs: QueryList<ElementRef<HTMLInputElement>>;
-
-  @ContentChild(DateRangePopupComponent) panel: DateRangePopupComponent;
+  @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay?: CdkConnectedOverlay;
+  @ViewChild('separatorElement', { static: false }) separatorElement?: ElementRef;
+  @ViewChild('pickerInput', { static: false }) pickerInput?: ElementRef<HTMLInputElement>;
+  @ViewChildren('rangePickerInput') rangePickerInputs!: QueryList<ElementRef<HTMLInputElement>>;
+  @ContentChild(DateRangePopupComponent) panel!: DateRangePopupComponent;
 
   origin: CdkOverlayOrigin;
   document: Document;
-  inputSize: number;
-  inputWidth: number;
-  arrowLeft: number;
+  inputSize?: number;
+  inputWidth?: number;
+  arrowLeft?: number;
   destroy$ = new Subject();
   prefixCls = PREFIX_CLASS;
   // Index signature in type 'string | string[]' only permits reading
@@ -256,7 +252,6 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     }
 
     if (this.isRange) {
-      this.resetInputWidthAndArrowLeft();
       fromEvent(window, 'resize')
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
@@ -295,7 +290,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   resetInputWidthAndArrowLeft(): void {
-    this.inputWidth = this.rangePickerInputs?.first.nativeElement.offsetWidth || 0;
+    this.inputWidth = this.rangePickerInputs?.first?.nativeElement.offsetWidth || 0;
     this.arrowLeft = this.inputWidth + this.separatorElement?.nativeElement.offsetWidth || 0;
   }
 
@@ -304,7 +299,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       ? partType === 'left'
         ? this.rangePickerInputs.first.nativeElement
         : this.rangePickerInputs.last.nativeElement
-      : this.pickerInput.nativeElement;
+      : this.pickerInput!.nativeElement;
   }
 
   focus(): void {
@@ -325,6 +320,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   // Show overlay content
   showOverlay(): void {
     if (!this.realOpenState) {
+      this.resetInputWidthAndArrowLeft();
       this.overlayOpen = true;
       this.animationStart();
       this.focus();
@@ -346,7 +342,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   showClear(): boolean {
-    return !this.disabled && !this.isEmptyValue(this.datePickerService.value) && this.allowClear;
+    return !this.disabled && !this.isEmptyValue(this.datePickerService.value) && !!this.allowClear;
   }
 
   onClickInputBox(event: MouseEvent, partType?: RangePartType): void {
@@ -363,7 +359,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       this.updateInputValue();
       this.datePickerService.emitValue$.next();
     } else {
-      this.datePickerService.setValue(this.datePickerService.initialValue);
+      this.datePickerService.setValue(this.datePickerService.initialValue!);
       this.hideOverlay();
     }
   }
@@ -374,7 +370,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   onOverlayKeydown(event: KeyboardEvent): void {
     if (event.key === 'Escape') {
-      this.datePickerService.setValue(this.datePickerService.initialValue);
+      this.datePickerService.setValue(this.datePickerService.initialValue!);
     }
   }
 

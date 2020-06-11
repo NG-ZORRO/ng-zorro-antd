@@ -39,7 +39,7 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
     <br /><br />
 
     <button nz-button nzType="primary" (click)="openAndCloseAll()">Open more modals then close all after 2s</button>
-    <nz-modal [(nzVisible)]="htmlModalVisible" nzMask="false" nzZIndex="1001" nzTitle="Non-service html modal"
+    <nz-modal [(nzVisible)]="htmlModalVisible" nzMask="false" [nzZIndex]="1001" nzTitle="Non-service html modal"
       >This is a non-service html modal</nz-modal
     >
   `,
@@ -52,7 +52,7 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
   ]
 })
 export class NzDemoModalServiceComponent {
-  tplModal: NzModalRef;
+  tplModal?: NzModalRef;
   tplModalButtonLoading = false;
   htmlModalVisible = false;
   disabled = false;
@@ -86,7 +86,7 @@ export class NzDemoModalServiceComponent {
     this.tplModalButtonLoading = true;
     setTimeout(() => {
       this.tplModalButtonLoading = false;
-      this.tplModal.destroy();
+      this.tplModal!.destroy();
     }, 1000);
   }
 
@@ -193,8 +193,8 @@ export class NzDemoModalServiceComponent {
   `
 })
 export class NzModalCustomComponent {
-  @Input() title: string;
-  @Input() subtitle: string;
+  @Input() title?: string;
+  @Input() subtitle?: string;
 
   constructor(private modal: NzModalRef) {}
 

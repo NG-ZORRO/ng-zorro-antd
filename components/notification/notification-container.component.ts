@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -71,9 +68,9 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
   `
 })
 export class NzNotificationContainerComponent extends NzMNContainerComponent {
-  bottom: string | null;
-  top: string | null;
-  config: Required<NotificationConfig>;
+  bottom?: string | null;
+  top?: string | null;
+  config!: Required<NotificationConfig>; // initialized by parent class constructor
   instances: Array<Required<NzNotificationData>> = [];
   topLeftInstances: Array<Required<NzNotificationData>> = [];
   topRightInstances: Array<Required<NzNotificationData>> = [];
@@ -136,6 +133,7 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent {
     old.content = _new.content;
     old.template = _new.template;
     old.type = _new.type;
+    old.options = _new.options;
   }
 
   protected readyInstances(): void {

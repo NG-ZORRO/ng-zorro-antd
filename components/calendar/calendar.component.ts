@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -32,7 +29,7 @@ import {
   NzMonthFullCellDirective as MonthFullCell
 } from './calendar-cells';
 
-type NzCalendarMode = 'month' | 'year';
+export type NzCalendarMode = 'month' | 'year';
 type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
 
 @Component({
@@ -59,23 +56,26 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
       </div>
     </div>
     <ng-template #monthModeTable>
+      <!--  TODO(@wenqi73) [cellRender] [fullCellRender] -->
       <date-table
         [prefixCls]="prefixCls"
         [value]="activeDate"
         [activeDate]="activeDate"
-        [cellRender]="dateCell"
-        [fullCellRender]="dateFullCell"
+        [cellRender]="$any(dateCell)"
+        [fullCellRender]="$any(dateFullCell)"
+        [disabledDate]="nzDisabledDate"
         (valueChange)="onDateSelect($event)"
       ></date-table>
     </ng-template>
 
+    <!--  TODO(@wenqi73) [cellRender] [fullCellRender] -->
     <ng-template #yearModeTable>
       <month-table
         [prefixCls]="prefixCls"
         [value]="activeDate"
         [activeDate]="activeDate"
-        [cellRender]="monthCell"
-        [fullCellRender]="monthFullCell"
+        [cellRender]="$any(monthCell)"
+        [fullCellRender]="$any(monthFullCell)"
         (valueChange)="onDateSelect($event)"
       ></month-table>
     </ng-template>
@@ -97,7 +97,8 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges {
   private onTouchFn: () => void = () => {};
 
   @Input() nzMode: NzCalendarMode = 'month';
-  @Input() nzValue: Date;
+  @Input() nzValue?: Date;
+  @Input() nzDisabledDate?: (date: Date) => boolean;
 
   @Output() readonly nzModeChange: EventEmitter<NzCalendarMode> = new EventEmitter();
   @Output() readonly nzPanelChange: EventEmitter<{ date: Date; mode: NzCalendarMode }> = new EventEmitter();
@@ -108,28 +109,28 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges {
    * Cannot use @Input and @ContentChild on one variable
    * because { static: false } will make @Input property get delayed
    **/
-  @Input() nzDateCell: NzCalendarDateTemplate;
-  @ContentChild(DateCell, { static: false, read: TemplateRef }) nzDateCellChild: NzCalendarDateTemplate;
+  @Input() nzDateCell?: NzCalendarDateTemplate;
+  @ContentChild(DateCell, { static: false, read: TemplateRef }) nzDateCellChild?: NzCalendarDateTemplate;
   get dateCell(): NzCalendarDateTemplate {
-    return this.nzDateCell || this.nzDateCellChild;
+    return (this.nzDateCell || this.nzDateCellChild)!;
   }
 
-  @Input() nzDateFullCell: NzCalendarDateTemplate;
-  @ContentChild(DateFullCell, { static: false, read: TemplateRef }) nzDateFullCellChild: NzCalendarDateTemplate;
+  @Input() nzDateFullCell?: NzCalendarDateTemplate;
+  @ContentChild(DateFullCell, { static: false, read: TemplateRef }) nzDateFullCellChild?: NzCalendarDateTemplate;
   get dateFullCell(): NzCalendarDateTemplate {
-    return this.nzDateFullCell || this.nzDateFullCellChild;
+    return (this.nzDateFullCell || this.nzDateFullCellChild)!;
   }
 
-  @Input() nzMonthCell: NzCalendarDateTemplate;
-  @ContentChild(MonthCell, { static: false, read: TemplateRef }) nzMonthCellChild: NzCalendarDateTemplate;
+  @Input() nzMonthCell?: NzCalendarDateTemplate;
+  @ContentChild(MonthCell, { static: false, read: TemplateRef }) nzMonthCellChild?: NzCalendarDateTemplate;
   get monthCell(): NzCalendarDateTemplate {
-    return this.nzMonthCell || this.nzMonthCellChild;
+    return (this.nzMonthCell || this.nzMonthCellChild)!;
   }
 
-  @Input() nzMonthFullCell: NzCalendarDateTemplate;
-  @ContentChild(MonthFullCell, { static: false, read: TemplateRef }) nzMonthFullCellChild: NzCalendarDateTemplate;
+  @Input() nzMonthFullCell?: NzCalendarDateTemplate;
+  @ContentChild(MonthFullCell, { static: false, read: TemplateRef }) nzMonthFullCellChild?: NzCalendarDateTemplate;
   get monthFullCell(): NzCalendarDateTemplate {
-    return this.nzMonthFullCell || this.nzMonthFullCellChild;
+    return (this.nzMonthFullCell || this.nzMonthFullCellChild)!;
   }
 
   @Input() @InputBoolean() nzFullscreen: boolean = true;

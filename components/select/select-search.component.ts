@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -54,8 +51,8 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
   @Input() autofocus = false;
   @Output() readonly valueChange = new EventEmitter<string>();
   @Output() readonly isComposingChange = new EventEmitter<boolean>();
-  @ViewChild('inputElement', { static: true }) inputElement: ElementRef;
-  @ViewChild('mirrorElement', { static: false }) mirrorElement: ElementRef;
+  @ViewChild('inputElement', { static: true }) inputElement!: ElementRef;
+  @ViewChild('mirrorElement', { static: false }) mirrorElement?: ElementRef;
 
   setCompositionState(isComposing: boolean): void {
     this.isComposingChange.next(isComposing);
@@ -76,7 +73,7 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
   }
 
   syncMirrorWidth(): void {
-    const mirrorDOM = this.mirrorElement.nativeElement;
+    const mirrorDOM = this.mirrorElement!.nativeElement;
     const hostDOM = this.elementRef.nativeElement;
     const inputDOM = this.inputElement.nativeElement;
     this.renderer.removeStyle(hostDOM, 'width');

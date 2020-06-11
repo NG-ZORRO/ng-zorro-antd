@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -54,7 +51,7 @@ export class NzTagComponent implements OnInit, OnChanges {
   presetColor = false;
   cacheClassName: string | null = null;
   @Input() nzMode: 'default' | 'closeable' | 'checkable' = 'default';
-  @Input() nzColor: string;
+  @Input() nzColor?: string;
   @Input() @InputBoolean() nzChecked = false;
   @Input() @InputBoolean() nzNoAnimation = false;
   @Output() readonly nzAfterClose = new EventEmitter<void>();

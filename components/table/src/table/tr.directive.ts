@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -20,8 +17,8 @@ import { NzTableStyleService } from '../table-style.service';
   }
 })
 export class NzTrDirective implements AfterContentInit, OnDestroy {
-  @ContentChildren(NzThMeasureDirective) listOfNzThDirective: QueryList<NzThMeasureDirective>;
-  @ContentChildren(NzCellFixedDirective) listOfCellFixedDirective: QueryList<NzCellFixedDirective>;
+  @ContentChildren(NzThMeasureDirective) listOfNzThDirective!: QueryList<NzThMeasureDirective>;
+  @ContentChildren(NzCellFixedDirective) listOfCellFixedDirective!: QueryList<NzCellFixedDirective>;
   private destroy$ = new Subject<void>();
   private listOfFixedColumns$ = new ReplaySubject<NzCellFixedDirective[]>(1);
   private listOfColumns$ = new ReplaySubject<NzThMeasureDirective[]>(1);

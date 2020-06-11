@@ -16,24 +16,24 @@ import { OnlineIdeService } from '../../online-ide/online-ide.service';
   styleUrls: ['./codebox.component.less']
 })
 export class NzCodeBoxComponent implements OnInit, OnDestroy {
-  highlightCode: string;
+  highlightCode?: string;
   copied = false;
   commandCopied = false;
-  showIframe: boolean;
-  simulateIFrame: boolean;
-  iframe: SafeUrl;
+  showIframe: boolean = false;
+  simulateIFrame: boolean = false;
+  iframe?: SafeUrl;
   language = 'zh';
   theme = 'default';
   destroy$ = new Subject();
   codeLoaded = false;
   onlineIDELoading = false;
   copyLoading = false;
-  @Input() nzTitle: string;
+  @Input() nzTitle!: string;
   @Input() nzExpanded = false;
-  @Input() nzHref: string;
-  @Input() nzLink: string;
-  @Input() nzId: string;
-  @Input() nzIframeHeight = 360;
+  @Input() nzHref!: string;
+  @Input() nzLink!: string;
+  @Input() nzId!: string;
+  @Input() nzIframeHeight: number | null = 360;
   @Input() nzComponentName = '';
   @Input() nzSelector = '';
   @Input() nzGenerateCommand = '';

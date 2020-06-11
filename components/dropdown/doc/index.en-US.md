@@ -37,7 +37,7 @@ You should use [nz-menu](/components/menu/en) in `nz-dropdown`. The menu items a
 
 ### nz-dropdown-menu
 
-Wrap Dropdown Menu and pass to `[nz-dropdown]` 和 `NzContextMenuService`, you can export it via Template Syntax `nzDropdownMenu`
+Wrap Dropdown Menu and pass to `[nz-dropdown]` and `NzContextMenuService`, you can export it via Template Syntax `nzDropdownMenu`
 
 > Note：Every `[nz-dropdown]` should pass independent `nz-dropdown-menu`.
 
@@ -58,5 +58,5 @@ Create dropdown with contextmenu, the detail can be found in the example above
 
 | Property | Description | Arguments | Return Value |
 | --- | --- | --- | --- |
-| create | create dropdown | `($event:MouseEvent | {x:number, y:number}, menu:NzDropdownMenuComponent)` | - |
+| create | create dropdown | `($event:MouseEvent \| {x:number, y:number}, menu:NzDropdownMenuComponent)` | - |
 | close | close dropdown | - | - |

@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -14,7 +11,7 @@ import { Subject } from 'rxjs';
 export class NzThMeasureDirective implements OnChanges {
   changes$ = new Subject();
   @Input() nzWidth: string | null = null;
-  @Input() colspan: number | null = null;
+  @Input() colspan: string | number | null = null;
   ngOnChanges(changes: SimpleChanges): void {
     const { nzWidth, colspan } = changes;
     if (nzWidth || colspan) {

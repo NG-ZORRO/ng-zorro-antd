@@ -212,8 +212,8 @@ const LessPluginCleanCSS = require('less-plugin-clean-css');
 const fs = require('fs');
 const darkThemeVars = require('ng-zorro-antd/dark-theme');
 
-const appStyles = 'path/src/styles.less' // style entry path for the application
-const themeContent = `@import '${appStyles}'`
+const appStyles = 'path/src/styles.less'; // style entry path for the application
+const themeContent = `@import '${appStyles}';`;
 
 less.render(themeContent, {
   javascriptEnabled: true,
@@ -227,6 +227,9 @@ less.render(themeContent, {
     'path/assets/themes/style.dark.css',
     data.css
   )
+}).catch(e => {
+  // log the render error
+  console.error(e);
 });
 ```
 

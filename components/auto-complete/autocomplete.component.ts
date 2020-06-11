@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -41,7 +38,7 @@ export interface AutocompleteDataSourceItem {
   label: string;
 }
 
-export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | number[];
+export type AutocompleteDataSource = Array<AutocompleteDataSourceItem | string | number>;
 
 @Component({
   selector: 'nz-autocomplete',
@@ -72,11 +69,11 @@ export type AutocompleteDataSource = AutocompleteDataSourceItem[] | string[] | n
       </ng-template>
       <ng-template #optionsTemplate>
         <nz-auto-option
-          *ngFor="let option of nzDataSource"
+          *ngFor="let option of nzDataSource!"
           [nzValue]="option"
-          [nzLabel]="option && option.label ? option.label : $any(option)"
+          [nzLabel]="option && $any(option).label ? $any(option).label : $any(option)"
         >
-          {{ option && option.label ? option.label : option }}
+          {{ option && $any(option).label ? $any(option).label : $any(option) }}
         </nz-auto-option>
       </ng-template>
     </ng-template>
@@ -87,19 +84,19 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
   static ngAcceptInputType_nzDefaultActiveFirstOption: BooleanInput;
   static ngAcceptInputType_nzBackfill: BooleanInput;
 
-  @Input() nzWidth: number;
+  @Input() nzWidth?: number;
   @Input() nzOverlayClassName = '';
   @Input() nzOverlayStyle: { [key: string]: string } = {};
   @Input() @InputBoolean() nzDefaultActiveFirstOption = true;
   @Input() @InputBoolean() nzBackfill = false;
   @Input() compareWith: CompareWith = (o1, o2) => o1 === o2;
-  @Input() nzDataSource: AutocompleteDataSource;
+  @Input() nzDataSource?: AutocompleteDataSource;
   @Output()
   readonly selectionChange: EventEmitter<NzAutocompleteOptionComponent> = new EventEmitter<NzAutocompleteOptionComponent>();
 
   showPanel: boolean = true;
   isOpen: boolean = false;
-  activeItem: NzAutocompleteOptionComponent;
+  activeItem!: NzAutocompleteOptionComponent;
   dropDownPosition: NzDropDownPosition = 'bottom';
 
   /**
@@ -116,14 +113,14 @@ export class NzAutocompleteComponent implements AfterContentInit, AfterViewInit,
 
   /** Provided by content */
   @ContentChildren(NzAutocompleteOptionComponent, { descendants: true })
-  fromContentOptions: QueryList<NzAutocompleteOptionComponent>;
+  fromContentOptions!: QueryList<NzAutocompleteOptionComponent>;
   /** Provided by dataSource */
-  @ViewChildren(NzAutocompleteOptionComponent) fromDataSourceOptions: QueryList<NzAutocompleteOptionComponent>;
+  @ViewChildren(NzAutocompleteOptionComponent) fromDataSourceOptions!: QueryList<NzAutocompleteOptionComponent>;
 
   /** cdk-overlay */
-  @ViewChild(TemplateRef, { static: false }) template: TemplateRef<{}>;
-  @ViewChild('panel', { static: false }) panel: ElementRef;
-  @ViewChild('content', { static: false }) content: ElementRef;
+  @ViewChild(TemplateRef, { static: false }) template?: TemplateRef<{}>;
+  @ViewChild('panel', { static: false }) panel?: ElementRef;
+  @ViewChild('content', { static: false }) content?: ElementRef;
 
   private activeItemIndex: number = -1;
   private selectionChangeSubscription = Subscription.EMPTY;

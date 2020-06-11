@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -41,8 +38,8 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
   static ngAcceptInputType_nzPreview: BooleanInput;
 
   @Input() nzBounds: 'window' | 'parent' | ElementRef<HTMLElement> = 'parent';
-  @Input() nzMaxHeight: number;
-  @Input() nzMaxWidth: number;
+  @Input() nzMaxHeight?: number;
+  @Input() nzMaxWidth?: number;
   @Input() nzMinHeight: number = 40;
   @Input() nzMinWidth: number = 40;
   @Input() nzGridColumnCount: number = -1;
@@ -55,11 +52,11 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
   @Output() readonly nzResizeStart = new EventEmitter<NzResizeEvent>();
 
   resizing = false;
-  private elRect: ClientRect | DOMRect;
-  private currentHandleEvent: NzResizeHandleMouseDownEvent | null;
-  private ghostElement: HTMLDivElement | null;
-  private el: HTMLElement;
-  private sizeCache: NzResizeEvent | null;
+  private elRect!: ClientRect | DOMRect;
+  private currentHandleEvent: NzResizeHandleMouseDownEvent | null = null;
+  private ghostElement: HTMLDivElement | null = null;
+  private el!: HTMLElement;
+  private sizeCache: NzResizeEvent | null = null;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -138,8 +135,8 @@ export class NzResizableDirective implements AfterViewInit, OnDestroy {
       boundHeight = boundsRect.height;
     }
 
-    maxWidth = ensureInBounds(this.nzMaxWidth, boundWidth);
-    maxHeight = ensureInBounds(this.nzMaxHeight, boundHeight);
+    maxWidth = ensureInBounds(this.nzMaxWidth!, boundWidth);
+    maxHeight = ensureInBounds(this.nzMaxHeight!, boundHeight);
 
     if (this.nzGridColumnCount !== -1) {
       spanWidth = maxWidth / this.nzGridColumnCount;

@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -31,7 +28,7 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
 export class NzRateItemComponent {
   static ngAcceptInputType_allowHalf: BooleanInput;
 
-  @Input() character: TemplateRef<void>;
+  @Input() character!: TemplateRef<void>;
   @Input() @InputBoolean() allowHalf: boolean = false;
   @Output() readonly itemHover = new EventEmitter<boolean>();
   @Output() readonly itemClick = new EventEmitter<boolean>();

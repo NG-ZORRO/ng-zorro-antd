@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -47,7 +44,7 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
   exportAs: 'nzTimePickerPanel',
   template: `
     <div *ngIf="nzInDatePicker" class="ant-picker-header">
-      <div class="ant-picker-header-view">{{ dateHelper.format(time?.value, format) || '&nbsp;' }}</div>
+      <div class="ant-picker-header-view">{{ dateHelper.format($any(time?.value), format) || '&nbsp;' }}</div>
     </div>
     <div class="ant-picker-content">
       <ul *ngIf="hourEnabled" #hourListElement class="ant-picker-time-panel-column" style="position: relative;">
@@ -133,12 +130,12 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   private _nzMinuteStep = 1;
   private _nzSecondStep = 1;
   private unsubscribe$ = new Subject<void>();
-  private onChange: (value: Date) => void;
-  private onTouch: () => void;
+  private onChange?: (value: Date) => void;
+  private onTouch?: () => void;
   private _format = 'HH:mm:ss';
-  private _disabledHours: () => number[];
-  private _disabledMinutes: (hour: number) => number[];
-  private _disabledSeconds: (hour: number, minute: number) => number[];
+  private _disabledHours?: () => number[] = () => [];
+  private _disabledMinutes?: (hour: number) => number[] = () => [];
+  private _disabledSeconds?: (hour: number, minute: number) => number[] = () => [];
   private _allowEmpty = true;
   time = new TimeHolder();
   hourEnabled = true;
@@ -146,26 +143,27 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   secondEnabled = true;
   firstScrolled = false;
   enabledColumns = 3;
-  hourRange: ReadonlyArray<{ index: number; disabled: boolean }>;
-  minuteRange: ReadonlyArray<{ index: number; disabled: boolean }>;
-  secondRange: ReadonlyArray<{ index: number; disabled: boolean }>;
-  use12HoursRange: ReadonlyArray<{ index: number; value: string }>;
+  hourRange!: ReadonlyArray<{ index: number; disabled: boolean }>;
+  minuteRange!: ReadonlyArray<{ index: number; disabled: boolean }>;
+  secondRange!: ReadonlyArray<{ index: number; disabled: boolean }>;
+  use12HoursRange!: ReadonlyArray<{ index: number; value: string }>;
 
   @ViewChild(NzTimeValueAccessorDirective, { static: false })
-  nzTimeValueAccessorDirective: NzTimeValueAccessorDirective;
+  nzTimeValueAccessorDirective?: NzTimeValueAccessorDirective;
   @ViewChild('hourListElement', { static: false })
-  hourListElement: DebugElement;
-  @ViewChild('minuteListElement', { static: false }) minuteListElement: DebugElement;
-  @ViewChild('secondListElement', { static: false }) secondListElement: DebugElement;
-  @ViewChild('use12HoursListElement', { static: false }) use12HoursListElement: DebugElement;
+  hourListElement?: DebugElement;
+  @ViewChild('minuteListElement', { static: false }) minuteListElement?: DebugElement;
+  @ViewChild('secondListElement', { static: false }) secondListElement?: DebugElement;
+  @ViewChild('use12HoursListElement', { static: false }) use12HoursListElement?: DebugElement;
 
   @Input() nzInDatePicker: boolean = false; // If inside a date-picker, more diff works need to be done
-  @Input() nzAddOn: TemplateRef<void>;
+  @Input() nzAddOn?: TemplateRef<void>;
   @Input() nzHideDisabledOptions = false;
-  @Input() nzClearText: string;
-  @Input() nzPlaceHolder: string;
+  @Input() nzClearText?: string;
+  @Input() nzPlaceHolder?: string;
   @Input() @InputBoolean() nzUse12Hours = false;
-  @Input() nzDefaultOpenValue: Date;
+  @Input() nzDefaultOpenValue?: Date;
+
   @Output() readonly closePanel = new EventEmitter<void>();
 
   @Input()
@@ -180,38 +178,38 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   }
 
   @Input()
-  set nzDisabledHours(value: () => number[]) {
+  set nzDisabledHours(value: undefined | (() => number[])) {
     this._disabledHours = value;
     if (!!this._disabledHours) {
       this.buildHours();
     }
   }
 
-  get nzDisabledHours(): () => number[] {
+  get nzDisabledHours(): undefined | (() => number[]) {
     return this._disabledHours;
   }
 
   @Input()
-  set nzDisabledMinutes(value: (hour: number) => number[]) {
+  set nzDisabledMinutes(value: undefined | ((hour: number) => number[])) {
     if (isNotNil(value)) {
       this._disabledMinutes = value;
       this.buildMinutes();
     }
   }
 
-  get nzDisabledMinutes(): (hour: number) => number[] {
+  get nzDisabledMinutes(): undefined | ((hour: number) => number[]) {
     return this._disabledMinutes;
   }
 
   @Input()
-  set nzDisabledSeconds(value: (hour: number, minute: number) => number[]) {
+  set nzDisabledSeconds(value: undefined | ((hour: number, minute: number) => number[])) {
     if (isNotNil(value)) {
       this._disabledSeconds = value;
       this.buildSeconds();
     }
   }
 
-  get nzDisabledSeconds(): (hour: number, minute: number) => number[] {
+  get nzDisabledSeconds(): undefined | ((hour: number, minute: number) => number[]) {
     return this._disabledSeconds;
   }
 
@@ -313,7 +311,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     this.hourRange = makeRange(hourRanges, this.nzHourStep, startIndex).map(r => {
       return {
         index: r,
-        disabled: disabledHours && disabledHours.indexOf(r) !== -1
+        disabled: !!disabledHours && disabledHours.indexOf(r) !== -1
       };
     });
     if (this.nzUse12Hours && this.hourRange[this.hourRange.length - 1].index === 12) {
@@ -328,7 +326,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     this.minuteRange = makeRange(60, this.nzMinuteStep).map(r => {
       return {
         index: r,
-        disabled: this.nzDisabledMinutes && this.nzDisabledMinutes(this.time.hours!).indexOf(r) !== -1
+        disabled: !!this.nzDisabledMinutes && this.nzDisabledMinutes(this.time.hours!).indexOf(r) !== -1
       };
     });
   }
@@ -337,7 +335,7 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     this.secondRange = makeRange(60, this.nzSecondStep).map(r => {
       return {
         index: r,
-        disabled: this.nzDisabledSeconds && this.nzDisabledSeconds(this.time.hours!, this.time.minutes!).indexOf(r) !== -1
+        disabled: !!this.nzDisabledSeconds && this.nzDisabledSeconds(this.time.hours!, this.time.minutes!).indexOf(r) !== -1
       };
     });
   }
@@ -487,9 +485,9 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     const minute = value.getMinutes();
     const second = value.getSeconds();
     return (
-      (this.nzDisabledHours && this.nzDisabledHours().indexOf(hour)) > -1 ||
-      (this.nzDisabledMinutes && this.nzDisabledMinutes(hour).indexOf(minute)) > -1 ||
-      (this.nzDisabledSeconds && this.nzDisabledSeconds(hour, minute).indexOf(second)) > -1
+      (this.nzDisabledHours?.().indexOf(hour) ?? -1) > -1 ||
+      (this.nzDisabledMinutes?.(hour).indexOf(minute) ?? -1) > -1 ||
+      (this.nzDisabledSeconds?.(hour, minute).indexOf(second) ?? -1) > -1
     );
   }
 

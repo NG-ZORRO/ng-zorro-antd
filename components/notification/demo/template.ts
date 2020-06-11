@@ -7,7 +7,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
     <button nz-button [nzType]="'primary'" (click)="ninja()">Open the notification box</button>
     <ng-template let-fruit="data">
       It's a <nz-tag [nzColor]="fruit.color">{{ fruit.name }}</nz-tag>
-      <button nz-button nzType="small">Cut It!</button>
+      <button nz-button nzSize="small">Cut It!</button>
     </ng-template>
   `,
   styles: [
@@ -19,7 +19,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
   ]
 })
 export class NzDemoNotificationTemplateComponent {
-  @ViewChild(TemplateRef, { static: false }) template: TemplateRef<{}>;
+  @ViewChild(TemplateRef, { static: false }) template?: TemplateRef<{}>;
 
   ninja(): void {
     const fruits = [
@@ -29,7 +29,7 @@ export class NzDemoNotificationTemplateComponent {
     ];
 
     fruits.forEach(fruit => {
-      this.notificationService.template(this.template, { nzData: fruit });
+      this.notificationService.template(this.template!, { nzData: fruit });
     });
   }
 

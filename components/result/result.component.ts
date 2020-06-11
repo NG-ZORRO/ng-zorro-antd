@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -29,7 +26,7 @@ const ExceptionStatus = ['404', '500', '403'];
     <div class="ant-result-icon">
       <ng-container *ngIf="!isException; else exceptionTpl">
         <ng-container *ngIf="icon">
-          <ng-container *nzStringTemplateOutlet="icon">
+          <ng-container *nzStringTemplateOutlet="icon; let icon">
             <i nz-icon [nzType]="icon" nzTheme="fill"></i>
           </ng-container>
         </ng-container>
@@ -74,7 +71,7 @@ const ExceptionStatus = ['404', '500', '403'];
 })
 export class NzResultComponent implements OnChanges {
   @Input() nzIcon?: string | TemplateRef<void>;
-  @Input() nzTitle: string | TemplateRef<void>;
+  @Input() nzTitle?: string | TemplateRef<void>;
   @Input() nzStatus: NzResultStatusType = 'info';
   @Input() nzSubTitle?: string | TemplateRef<void>;
   @Input() nzExtra?: string | TemplateRef<void>;

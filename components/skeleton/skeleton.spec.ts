@@ -2,7 +2,15 @@ import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzSkeletonModule } from './skeleton.module';
-import { AvatarShape, AvatarSize, ButtonShape, ButtonSize, NzSkeletonAvatar, NzSkeletonParagraph, NzSkeletonTitle } from './skeleton.type';
+import {
+  NzSkeletonAvatar,
+  NzSkeletonAvatarShape,
+  NzSkeletonAvatarSize,
+  NzSkeletonButtonShape,
+  NzSkeletonButtonSize,
+  NzSkeletonParagraph,
+  NzSkeletonTitle
+} from './skeleton.type';
 
 describe('skeleton', () => {
   let fixture: ComponentFixture<NzTestSkeletonComponent>;
@@ -194,10 +202,10 @@ describe('skeleton element', () => {
   template: ` <nz-skeleton [nzActive]="nzActive" [nzAvatar]="nzAvatar" [nzTitle]="nzTitle" [nzParagraph]="nzParagraph"> </nz-skeleton> `
 })
 export class NzTestSkeletonComponent {
-  nzActive: boolean;
-  nzAvatar: NzSkeletonAvatar | boolean;
-  nzTitle: NzSkeletonTitle | boolean;
-  nzParagraph: NzSkeletonParagraph | boolean;
+  nzActive: boolean = false;
+  nzAvatar: NzSkeletonAvatar | boolean = false;
+  nzTitle: NzSkeletonTitle | boolean = false;
+  nzParagraph: NzSkeletonParagraph | boolean = false;
 }
 
 @Component({
@@ -213,7 +221,7 @@ export class NzTestSkeletonComponent {
 })
 export class NzTestSkeletonElementComponent {
   useSuite = 1;
-  nzActive: boolean;
-  nzSize: AvatarSize | ButtonSize;
-  nzShape: AvatarShape | ButtonShape;
+  nzActive: boolean = false;
+  nzSize: NzSkeletonAvatarSize | NzSkeletonButtonSize = 'default';
+  nzShape: NzSkeletonAvatarShape | NzSkeletonButtonShape = 'default';
 }

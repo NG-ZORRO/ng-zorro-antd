@@ -233,7 +233,6 @@ describe('tree-select component', () => {
       tick(200);
       fixture.detectChanges();
       expect(treeSelect.nativeElement.querySelectorAll('nz-select-item').length).toBe(3);
-      console.log(treeSelect.nativeElement.querySelectorAll('nz-select-item')[2]);
       const maxTagPlaceholderElement = treeSelect.nativeElement.querySelectorAll('nz-select-item')[2];
       expect(maxTagPlaceholderElement).toBeTruthy();
       expect(maxTagPlaceholderElement.innerText.trim()).toBe(`+ ${testComponent.value.length - testComponent.maxTagCount} ...`);
@@ -538,7 +537,7 @@ describe('tree-select component', () => {
   `
 })
 export class NzTestTreeSelectBasicComponent {
-  @ViewChild(NzTreeSelectComponent, { static: false }) nzSelectTreeComponent: NzTreeSelectComponent;
+  @ViewChild(NzTreeSelectComponent, { static: false }) nzSelectTreeComponent!: NzTreeSelectComponent;
   expandKeys = ['1001', '10001'];
   value: string | string[] | null = '10001';
   size = 'default';
@@ -629,7 +628,7 @@ export class NzTestTreeSelectBasicComponent {
   `
 })
 export class NzTestTreeSelectCheckableComponent {
-  @ViewChild(NzTreeSelectComponent, { static: false }) nzSelectTreeComponent: NzTreeSelectComponent;
+  @ViewChild(NzTreeSelectComponent, { static: false }) nzSelectTreeComponent!: NzTreeSelectComponent;
   expandKeys = ['1001', '10001'];
   value: string[] | null = ['1000122'];
   showSearch = false;
@@ -750,7 +749,7 @@ export class NzTestTreeSelectFormComponent {
   `
 })
 export class NzTestTreeSelectCustomizedIconComponent {
-  value: string;
+  value?: string;
   nodes = [
     new NzTreeNode({
       title: 'root3',

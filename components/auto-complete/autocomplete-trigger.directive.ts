@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -35,8 +32,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { NzInputGroupWhitSuffixOrPrefixDirective } from 'ng-zorro-antd/input';
 
-import { fromEvent, merge, Subscription } from 'rxjs';
-import { delay, distinct, map, take, tap } from 'rxjs/operators';
+import { fromEvent, merge, Subject, Subscription } from 'rxjs';
+import { delay, distinct, map, take, takeUntil, tap } from 'rxjs/operators';
 
 import { NzAutocompleteOptionComponent } from './autocomplete-option.component';
 import { NzAutocompleteComponent } from './autocomplete.component';
@@ -70,7 +67,8 @@ export function getNzAutocompleteMissingPanelError(): Error {
 })
 export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnDestroy {
   /** Bind nzAutocomplete component */
-  @Input() nzAutocomplete: NzAutocompleteComponent;
+  @Input() nzAutocomplete!: NzAutocompleteComponent;
+
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
   panelOpen: boolean = false;
@@ -82,14 +80,15 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     }
   }
 
-  private overlayRef: OverlayRef | null;
-  private portal: TemplatePortal<{}> | null;
-  private positionStrategy: FlexibleConnectedPositionStrategy;
-  private previousValue: string | number | null;
-  private selectionChangeSubscription: Subscription;
-  private optionsChangeSubscription: Subscription;
-  private overlayBackdropClickSubscription: Subscription;
-  private overlayPositionChangeSubscription: Subscription;
+  private destroy$ = new Subject<void>();
+  private overlayRef: OverlayRef | null = null;
+  private portal: TemplatePortal<{}> | null = null;
+  private positionStrategy!: FlexibleConnectedPositionStrategy;
+  private previousValue: string | number | null = null;
+  private selectionChangeSubscription!: Subscription;
+  private optionsChangeSubscription!: Subscription;
+  private overlayBackdropClickSubscription!: Subscription;
+  private overlayPositionChangeSubscription!: Subscription;
 
   constructor(
     private elementRef: ElementRef,
@@ -137,7 +136,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
         this.overlayBackdropClickSubscription.unsubscribe();
         this.overlayPositionChangeSubscription.unsubscribe();
         this.optionsChangeSubscription.unsubscribe();
-        this.overlayRef.detach();
+        this.overlayRef.dispose();
         this.overlayRef = null;
         this.portal = null;
       }
@@ -269,7 +268,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
       throw getNzAutocompleteMissingPanelError();
     }
 
-    if (!this.portal) {
+    if (!this.portal && this.nzAutocomplete.template) {
       this.portal = new TemplatePortal(this.nzAutocomplete.template, this.viewContainerRef);
     }
 
@@ -283,6 +282,12 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
       this.selectionChangeSubscription = this.subscribeSelectionChange();
       this.overlayBackdropClickSubscription = this.subscribeOverlayBackdropClick();
       this.optionsChangeSubscription = this.subscribeOptionsChange();
+      this.overlayRef
+        .detachments()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          this.closePanel();
+        });
     }
     this.nzAutocomplete.isOpen = this.panelOpen = true;
   }

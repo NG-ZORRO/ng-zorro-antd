@@ -31,7 +31,6 @@ describe('spin', () => {
       fixture.detectChanges();
       tick(1000);
       fixture.detectChanges();
-      console.log(spin.nativeElement);
       expect(spin.nativeElement.querySelector('.ant-spin').firstElementChild!.classList).toContain('ant-spin-dot');
     }));
 
@@ -131,13 +130,13 @@ describe('spin', () => {
   `
 })
 export class NzTestSpinBasicComponent {
-  @ViewChild('indicatorTemplate', { static: false }) indicatorTemplate: TemplateRef<void>;
+  @ViewChild('indicatorTemplate', { static: false }) indicatorTemplate!: TemplateRef<void>;
 
   size = 'default';
   delay = 0;
   spinning = true;
-  indicator: TemplateRef<void>;
-  tip: string;
+  indicator?: TemplateRef<void>;
+  tip?: string;
   simple = false;
 
   constructor(public nzConfigService: NzConfigService) {}

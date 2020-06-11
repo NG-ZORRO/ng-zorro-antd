@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -45,16 +42,16 @@ import { NzListFooterComponent, NzListLoadMoreDirective, NzListPaginationCompone
     <nz-spin [nzSpinning]="nzLoading">
       <ng-container>
         <div *ngIf="nzLoading && nzDataSource && nzDataSource.length === 0" [style.min-height.px]="53"></div>
-        <div *ngIf="nzGrid && nzDataSource; else itemsTpl" nz-row [nzGutter]="nzGrid.gutter">
+        <div *ngIf="nzGrid && nzDataSource; else itemsTpl" nz-row [nzGutter]="nzGrid.gutter || null">
           <div
             nz-col
-            [nzSpan]="nzGrid.span"
-            [nzXs]="nzGrid.xs"
-            [nzSm]="nzGrid.sm"
-            [nzMd]="nzGrid.md"
-            [nzLg]="nzGrid.lg"
-            [nzXl]="nzGrid.xl"
-            [nzXXl]="nzGrid.xxl"
+            [nzSpan]="nzGrid.span || null"
+            [nzXs]="nzGrid.xs || null"
+            [nzSm]="nzGrid.sm || null"
+            [nzMd]="nzGrid.md || null"
+            [nzLg]="nzGrid.lg || null"
+            [nzXl]="nzGrid.xl || null"
+            [nzXXl]="nzGrid.xxl || null"
             *ngFor="let item of nzDataSource; let index = index"
           >
             <ng-template [ngTemplateOutlet]="nzRenderItem" [ngTemplateOutletContext]="{ $implicit: item, index: index }"></ng-template>
@@ -96,24 +93,25 @@ export class NzListComponent implements AfterContentInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzBordered: BooleanInput;
   static ngAcceptInputType_nzLoading: BooleanInput;
   static ngAcceptInputType_nzSplit: BooleanInput;
+  static ngAcceptInputType_nzGrid: '' | NzListGrid | null | undefined;
 
-  @Input() nzDataSource: NzSafeAny[];
+  @Input() nzDataSource?: NzSafeAny[];
   @Input() @InputBoolean() nzBordered = false;
-  @Input() nzGrid: NzListGrid;
-  @Input() nzHeader: string | TemplateRef<void>;
-  @Input() nzFooter: string | TemplateRef<void>;
+  @Input() nzGrid?: NzListGrid | '' = '';
+  @Input() nzHeader?: string | TemplateRef<void>;
+  @Input() nzFooter?: string | TemplateRef<void>;
   @Input() nzItemLayout: NzDirectionVHType = 'horizontal';
-  @Input() nzRenderItem: TemplateRef<void>;
+  @Input() nzRenderItem: TemplateRef<void> | null = null;
   @Input() @InputBoolean() nzLoading = false;
-  @Input() nzLoadMore: TemplateRef<void>;
-  @Input() nzPagination: TemplateRef<void>;
+  @Input() nzLoadMore: TemplateRef<void> | null = null;
+  @Input() nzPagination?: TemplateRef<void>;
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() @InputBoolean() nzSplit = true;
-  @Input() nzNoResult: string | TemplateRef<void>;
+  @Input() nzNoResult?: string | TemplateRef<void>;
 
-  @ContentChild(NzListFooterComponent) nzListFooterComponent: NzListFooterComponent;
-  @ContentChild(NzListPaginationComponent) nzListPaginationComponent: NzListPaginationComponent;
-  @ContentChild(NzListLoadMoreDirective) nzListLoadMoreDirective: NzListLoadMoreDirective;
+  @ContentChild(NzListFooterComponent) nzListFooterComponent!: NzListFooterComponent;
+  @ContentChild(NzListPaginationComponent) nzListPaginationComponent!: NzListPaginationComponent;
+  @ContentChild(NzListLoadMoreDirective) nzListLoadMoreDirective!: NzListLoadMoreDirective;
 
   hasSomethingAfterLastItem = false;
 

@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -15,7 +12,7 @@ export type NzNotificationPlacement = 'topLeft' | 'topRight' | 'bottomLeft' | 'b
 
 export interface NzNotificationDataOptions<T = {}> {
   nzKey?: string;
-  nzStyle?: NgStyleInterface | string;
+  nzStyle?: NgStyleInterface;
   nzClass?: NgClassInterface | string;
   nzCloseIcon?: TemplateRef<void> | string;
   nzPlacement?: NzNotificationPlacement;

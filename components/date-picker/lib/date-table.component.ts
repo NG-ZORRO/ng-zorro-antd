@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -35,9 +32,9 @@ import { transCompatFormat } from './util';
   templateUrl: './abstract-table.html'
 })
 export class DateTableComponent extends AbstractTable implements OnChanges, OnInit {
-  @Input() locale: NzCalendarI18nInterface;
-  @Input() selectedValue: CandyDate[]; // Range ONLY
-  @Input() hoverValue: CandyDate[]; // Range ONLY
+  @Input() locale!: NzCalendarI18nInterface;
+  @Input() selectedValue: CandyDate[] = []; // Range ONLY
+  @Input() hoverValue: CandyDate[] = []; // Range ONLY
 
   @Output() readonly dayHover = new EventEmitter<CandyDate>(); // Emitted when hover on a day by mouse enter
 
@@ -139,8 +136,8 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
           isDisabled: false,
           isToday: false,
           title: title,
-          cellRender: valueFunctionProp(this.cellRender, date), // Customized content
-          fullCellRender: valueFunctionProp(this.fullCellRender, date),
+          cellRender: valueFunctionProp(this.cellRender!, date), // Customized content
+          fullCellRender: valueFunctionProp(this.fullCellRender!, date),
           content: `${date.getDate()}`,
           onClick: () => this.changeValueFromInside(date),
           onMouseEnter: () => this.dayHover.emit(date)

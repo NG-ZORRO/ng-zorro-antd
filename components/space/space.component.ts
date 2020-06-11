@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -30,9 +27,9 @@ const NZ_CONFIG_COMPONENT_NAME = 'space';
 })
 export class NzSpaceComponent implements OnChanges, OnDestroy, AfterViewInit {
   @Input() nzDirection: NzSpaceDirection = 'horizontal';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'small') nzSize: number | NzSpaceSize;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: number | NzSpaceSize = 'small';
 
-  @ContentChildren(NzSpaceItemComponent) nzSpaceItemComponents: QueryList<NzSpaceItemComponent>;
+  @ContentChildren(NzSpaceItemComponent) nzSpaceItemComponents!: QueryList<NzSpaceItemComponent>;
 
   private destroy$ = new Subject();
 

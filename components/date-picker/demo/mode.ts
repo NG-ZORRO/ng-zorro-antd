@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NzDateMode } from 'ng-zorro-antd/date-picker';
 
 @Component({
   selector: 'nz-demo-date-picker-mode',
@@ -23,7 +24,7 @@ import { Component } from '@angular/core';
   ]
 })
 export class NzDemoDatePickerModeComponent {
-  dateMode = 'time';
+  dateMode: NzDateMode = 'time';
 
   handleDateOpenChange(open: boolean): void {
     if (open) {
@@ -31,7 +32,7 @@ export class NzDemoDatePickerModeComponent {
     }
   }
 
-  handleDatePanelChange(mode: string): void {
+  handleDatePanelChange(mode: string | NzDateMode[] | string[]): void {
     console.log('handleDatePanelChange: ', mode);
   }
 }

@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -24,7 +21,7 @@ import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulati
   }
 })
 export class NzInputGroupSlotComponent {
-  @Input() icon: string | null = null;
+  @Input() icon?: string | null = null;
   @Input() type: 'addon' | 'prefix' | 'suffix' | null = null;
-  @Input() template: string | TemplateRef<void> | null = null;
+  @Input() template?: string | TemplateRef<void> | null = null;
 }

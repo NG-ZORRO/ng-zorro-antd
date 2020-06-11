@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -50,26 +47,27 @@ import { NzSliderShowTooltip } from './typings';
 export class NzSliderHandleComponent implements OnChanges {
   static ngAcceptInputType_active: BooleanInput;
 
-  @ViewChild('handle', { static: false }) handleEl: ElementRef;
-  @ViewChild(NzTooltipDirective, { static: false }) tooltip: NzTooltipDirective;
+  @ViewChild('handle', { static: false }) handleEl?: ElementRef;
+  @ViewChild(NzTooltipDirective, { static: false }) tooltip?: NzTooltipDirective;
 
-  @Input() vertical: string;
-  @Input() offset: number;
-  @Input() value: number;
+  @Input() vertical?: boolean;
+  @Input() reverse?: boolean;
+  @Input() offset?: number;
+  @Input() value?: number;
   @Input() tooltipVisible: NzSliderShowTooltip = 'default';
-  @Input() tooltipPlacement: string;
-  @Input() tooltipFormatter: (value: number) => string;
+  @Input() tooltipPlacement?: string;
+  @Input() tooltipFormatter?: null | ((value: number) => string);
   @Input() @InputBoolean() active = false;
 
-  tooltipTitle: string;
+  tooltipTitle?: string;
   style: NgStyleInterface = {};
 
   constructor(private sliderService: NzSliderService, private cdr: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { offset, value, active, tooltipVisible } = changes;
+    const { offset, value, active, tooltipVisible, reverse } = changes;
 
-    if (offset) {
+    if (offset || reverse) {
       this.updateStyle();
     }
 
@@ -107,7 +105,7 @@ export class NzSliderHandleComponent implements OnChanges {
   };
 
   focus(): void {
-    this.handleEl.nativeElement.focus();
+    this.handleEl?.nativeElement.focus();
   }
 
   private toggleTooltip(show: boolean, force: boolean = false): void {
@@ -116,27 +114,40 @@ export class NzSliderHandleComponent implements OnChanges {
     }
 
     if (show) {
-      this.tooltip.show();
+      this.tooltip?.show();
     } else {
-      this.tooltip.hide();
+      this.tooltip?.hide();
     }
   }
 
   private updateTooltipTitle(): void {
-    this.tooltipTitle = this.tooltipFormatter ? this.tooltipFormatter(this.value) : `${this.value}`;
+    this.tooltipTitle = this.tooltipFormatter ? this.tooltipFormatter(this.value!) : `${this.value}`;
   }
 
   private updateTooltipPosition(): void {
     if (this.tooltip) {
-      Promise.resolve().then(() => this.tooltip.updatePosition());
+      Promise.resolve().then(() => this.tooltip?.updatePosition());
     }
   }
 
   private updateStyle(): void {
-    this.style = {
-      [this.vertical ? 'bottom' : 'left']: `${this.offset}%`,
-      transform: this.vertical ? 'translateY(50%)' : 'translateX(-50%)'
-    };
+    const vertical = this.vertical;
+    const reverse = this.reverse;
+    const offset = this.offset;
+
+    const positionStyle = vertical
+      ? {
+          [reverse ? 'top' : 'bottom']: `${offset}%`,
+          [reverse ? 'bottom' : 'top']: 'auto',
+          transform: reverse ? null : `translateY(+50%)`
+        }
+      : {
+          [reverse ? 'right' : 'left']: `${offset}%`,
+          [reverse ? 'left' : 'right']: 'auto',
+          transform: `translateX(${reverse ? '+' : '-'}50%)`
+        };
+
+    this.style = positionStyle;
     this.cdr.markForCheck();
   }
 }

@@ -17,7 +17,7 @@
   ],
   "angularCompilerOptions": {
     "annotateForClosureCompiler": true,
-    "fullTemplateTypeCheck": true,
+    "strictTemplates": true,
     "strictMetadataEmit": true,
     "strictInjectionParameters":true
   }

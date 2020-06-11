@@ -21,7 +21,7 @@ export class NzDemoSliderEventComponent {
     console.log(`onChange: ${value}`);
   }
 
-  onAfterChange(value: number): void {
+  onAfterChange(value: number[] | number): void {
     console.log(`onAfterChange: ${value}`);
   }
 }

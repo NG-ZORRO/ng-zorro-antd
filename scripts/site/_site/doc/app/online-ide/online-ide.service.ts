@@ -1,9 +1,9 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
-import { VERSION } from 'ng-zorro-antd/version';
 
 import sdk from '@stackblitz/sdk';
 import { getParameters } from 'codesandbox/lib/api/define';
+import { VERSION } from 'ng-zorro-antd/version';
 
 import angularJSON from './files/angular.json';
 import appModuleTS from './files/app.module';
@@ -21,7 +21,7 @@ export class OnlineIdeService {
   template = 'angular-cli';
   dependencies = {
     '@angular/animations': '^9.0.0',
-    '@angular/cdk': '9.2.1',
+    '@angular/cdk': '^9.0.0',
     '@angular/common': '^9.0.0',
     '@angular/compiler': '^9.0.0',
     '@angular/core': '^9.0.0',
@@ -50,7 +50,7 @@ export class OnlineIdeService {
       template: this.template,
       dependencies: this.dependencies,
       files: {
-        'angular.json': `${JSON.stringify(angularJSON)}`,
+        'angular.json': `${JSON.stringify(angularJSON, null, 2)}`,
         'src/index.html': `<${selector}>loading</${selector}>`,
         'src/main.ts': mainTS,
         'src/app/app.component.ts': appComponentCode,
@@ -81,7 +81,13 @@ export class OnlineIdeService {
           isBinary: false
         },
         'src/index.html': {
-          content: `<${selector}>loading</${selector}>`,
+          content: `
+<!DOCTYPE html>
+<html>
+  <body>
+    <${selector}>loading</${selector}>
+   </body>
+</html>`,
           isBinary: false
         },
         'src/app/app.module.ts': {

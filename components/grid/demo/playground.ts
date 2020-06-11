@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NzMarks } from 'ng-zorro-antd/slider';
 
 @Component({
   selector: 'nz-demo-grid-playground',
@@ -59,29 +60,29 @@ export class NzDemoGridPlaygroundComponent {
   vGutter = 16;
   count = 4;
   array = new Array(this.count);
-  marksHGutter = {
-    8: 8,
-    16: 16,
-    24: 24,
-    32: 32,
-    40: 40,
-    48: 48
+  marksHGutter: NzMarks = {
+    '8': '8',
+    '16': '16',
+    '24': '24',
+    '32': '32',
+    '40': '40',
+    '48': '48'
   };
-  marksVGutter = {
-    8: 8,
-    16: 16,
-    24: 24,
-    32: 32,
-    40: 40,
-    48: 48
+  marksVGutter: NzMarks = {
+    '8': '8',
+    '16': '16',
+    '24': '24',
+    '32': '32',
+    '40': '40',
+    '48': '48'
   };
-  marksCount = {
-    2: 2,
-    3: 3,
-    4: 4,
-    6: 6,
-    8: 8,
-    12: 12
+  marksCount: NzMarks = {
+    '2': '2',
+    '3': '3',
+    '4': '4',
+    '6': '6',
+    '8': '8',
+    '12': '12'
   };
   reGenerateArray(count: number): void {
     this.array = new Array(count);

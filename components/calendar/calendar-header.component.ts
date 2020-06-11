@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -9,6 +6,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { DateHelperService, NzI18nService as I18n } from 'ng-zorro-antd/i18n';
+import { NzSelectSizeType } from 'ng-zorro-antd/select';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -61,8 +59,8 @@ export class NzCalendarHeaderComponent implements OnInit {
 
   yearOffset: number = 10;
   yearTotal: number = 20;
-  years: Array<{ label: string; value: number }>;
-  months: Array<{ label: string; value: number }>;
+  years: Array<{ label: string; value: number }> = [];
+  months: Array<{ label: string; value: number }> = [];
 
   get activeYear(): number {
     return this.activeDate.getYear();
@@ -72,7 +70,7 @@ export class NzCalendarHeaderComponent implements OnInit {
     return this.activeDate.getMonth();
   }
 
-  get size(): string {
+  get size(): NzSelectSizeType {
     return this.fullscreen ? 'default' : 'small';
   }
 

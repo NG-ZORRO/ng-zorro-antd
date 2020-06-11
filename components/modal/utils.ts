@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -11,6 +8,10 @@ import { NzModalComponent } from './modal.component';
 
 export function applyConfigDefaults(config: ModalOptions, defaultOptions: ModalOptions): ModalOptions {
   return { ...defaultOptions, ...config };
+}
+
+export function getValueWithConfig<T>(userValue: T | undefined, configValue: T | undefined, defaultValue: T): T | undefined {
+  return typeof userValue === 'undefined' ? (typeof configValue === 'undefined' ? defaultValue : configValue) : userValue;
 }
 
 /**
@@ -54,7 +55,9 @@ export function getConfigFromComponent(component: NzModalComponent): ModalOption
     nzOnOk,
     nzOnCancel,
     nzAfterOpen,
-    nzAfterClose
+    nzAfterClose,
+    nzCloseOnNavigation,
+    nzAutofocus
   } = component;
   return {
     nzMask,
@@ -87,6 +90,8 @@ export function getConfigFromComponent(component: NzModalComponent): ModalOption
     nzOnOk,
     nzOnCancel,
     nzAfterOpen,
-    nzAfterClose
+    nzAfterClose,
+    nzCloseOnNavigation,
+    nzAutofocus
   };
 }

@@ -135,9 +135,6 @@ describe('message', () => {
 
     messageService.remove(filledMessage.messageId);
     fixture.detectChanges();
-    filledMessage!.onClose!.subscribe(() => {
-      console.log(1);
-    });
     expect(overlayContainerElement.textContent).not.toContain('SUCCESS');
   }));
 
@@ -208,5 +205,5 @@ describe('message', () => {
   `
 })
 export class NzTestMessageComponent {
-  @ViewChild('contentTemplate', { static: true }) template: TemplateRef<void>;
+  @ViewChild('contentTemplate', { static: true }) template!: TemplateRef<void>;
 }

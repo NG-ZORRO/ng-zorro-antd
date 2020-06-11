@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -30,7 +27,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 })
 export class NzSelectItemComponent {
   @Input() disabled = false;
-  @Input() label: string | null = null;
+  @Input() label: string | null | undefined = null;
   @Input() deletable = false;
   @Input() removeIcon: TemplateRef<NzSafeAny> | null = null;
   @Input() contentTemplateOutletContext: NzSafeAny | null = null;

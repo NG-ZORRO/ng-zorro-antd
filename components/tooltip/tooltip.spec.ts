@@ -166,7 +166,7 @@ describe('nz-tooltip', () => {
 
     it('should set `setTitle` proxy to `nzTitle`', fakeAsync(() => {
       const triggerElement = component.titleString.nativeElement;
-      const tooltipComponent = component.titleStringDirective.component;
+      const tooltipComponent = component.titleStringDirective.component!;
 
       dispatchMouseEvent(triggerElement, 'mouseenter');
       waitingForTooltipToggling();
@@ -222,12 +222,12 @@ describe('origin', () => {
   }));
 
   it('should target work', () => {
-    expect((component.tooltip.component.origin.elementRef.nativeElement as HTMLElement).tagName).toBe('BUTTON');
+    expect((component.tooltip!.component!.origin!.elementRef.nativeElement as HTMLElement).tagName).toBe('BUTTON');
   });
 });
 
 function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLElement {
-  return tooltip.component.overlay.overlayRef.overlayElement;
+  return tooltip!.component!.overlay.overlayRef.overlayElement;
 }
 
 @Component({
@@ -271,19 +271,19 @@ function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLEleme
   `
 })
 export class NzTooltipTestComponent {
-  @ViewChild('titleString', { static: false }) titleString: ElementRef;
+  @ViewChild('titleString', { static: false }) titleString!: ElementRef;
   @ViewChild('titleString', { static: false, read: NzTooltipDirective })
-  titleStringDirective: NzTooltipDirective;
+  titleStringDirective!: NzTooltipDirective;
 
-  @ViewChild('titleTemplate', { static: false }) titleTemplate: ElementRef;
+  @ViewChild('titleTemplate', { static: false }) titleTemplate!: ElementRef;
   @ViewChild('titleTemplate', { static: false, read: NzTooltipDirective })
-  titleTemplateDirective: NzTooltipDirective;
+  titleTemplateDirective!: NzTooltipDirective;
 
-  @ViewChild('focusTooltip', { static: false }) focusTemplate: ElementRef;
+  @ViewChild('focusTooltip', { static: false }) focusTemplate!: ElementRef;
 
   trigger: string | null = 'click';
 
-  @ViewChild('inBtnGroup', { static: false }) inBtnGroup: ElementRef;
+  @ViewChild('inBtnGroup', { static: false }) inBtnGroup!: ElementRef;
 
   title: string | null = 'title-string';
   visible = false;
@@ -308,5 +308,5 @@ export class NzTooltipTestComponent {
   ]
 })
 export class NzTestTooltipTargetComponent {
-  @ViewChild(NzTooltipDirective) tooltip: NzTooltipDirective;
+  @ViewChild(NzTooltipDirective) tooltip?: NzTooltipDirective;
 }

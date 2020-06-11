@@ -13,6 +13,7 @@ export function releaseSite(version: string): boolean {
 
   git.clone();
   git.checkoutNewBranch(branchName);
+  emptyDirSync(docDir);
 
   copySync(buildConfig.outputDir, docDir, {
     overwrite: true,

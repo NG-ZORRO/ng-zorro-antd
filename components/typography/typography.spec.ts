@@ -122,7 +122,7 @@ describe('typography', () => {
       const textarea = componentElement.querySelector<HTMLTextAreaElement>('textarea')!;
       typeInElement('test', textarea);
       fixture.detectChanges();
-      testComponent.nzTypographyComponent.textEditRef.onCancel();
+      testComponent.nzTypographyComponent.textEditRef!.onCancel();
       fixture.detectChanges();
       expect(testComponent.str).toBe('This is an editable text.');
     });
@@ -160,7 +160,7 @@ describe('typography', () => {
       typeInElement('test', textarea);
       fixture.detectChanges();
       const event = createKeyboardEvent('keydown', ENTER, textarea);
-      testComponent.nzTypographyComponent.textEditRef.onEnter(event);
+      testComponent.nzTypographyComponent.textEditRef!.onEnter(event);
       fixture.detectChanges();
       expect(testComponent.str).toBe('test');
     });
@@ -192,7 +192,6 @@ describe('typography', () => {
       const dynamicContent = componentElement.querySelector('.dynamic')!;
       expect(singleLine.classList).toContain('ant-typography-ellipsis-single-line');
       expect(multipleLine.classList).toContain('ant-typography-ellipsis-multiple-line');
-      expect(dynamicContent.classList).toContain('ant-typography-ellipsis-multiple-line');
       testComponent.expandable = true;
       fixture.detectChanges();
       expect(singleLine.classList).not.toContain('ant-typography-ellipsis-single-line');
@@ -279,6 +278,7 @@ describe('typography', () => {
       componentElement.querySelectorAll('p').forEach(e => {
         expect(e.innerText.includes('...')).toBe(false);
       });
+      expect(testComponent.onEllipsis).toHaveBeenCalledWith(false);
       viewport.set(400, 1000);
       dispatchFakeEvent(window, 'resize');
       fixture.detectChanges();
@@ -292,6 +292,7 @@ describe('typography', () => {
       componentElement.querySelectorAll('p').forEach(e => {
         expect(e.innerText.includes('...')).toBe(true);
       });
+      expect(testComponent.onEllipsis).toHaveBeenCalledWith(true);
       viewport.reset();
     }));
 
@@ -372,12 +373,10 @@ export class NzTestTypographyCopyComponent {
 }
 
 @Component({
-  template: `
-    <p nz-paragraph nzEditable (nzContentChange)="onChange($event)" [nzContent]="str"></p>
-  `
+  template: ` <p nz-paragraph nzEditable (nzContentChange)="onChange($event)" [nzContent]="str"></p> `
 })
 export class NzTestTypographyEditComponent {
-  @ViewChild(NzTypographyComponent, { static: false }) nzTypographyComponent: NzTypographyComponent;
+  @ViewChild(NzTypographyComponent, { static: false }) nzTypographyComponent!: NzTypographyComponent;
   str = 'This is an editable text.';
   onChange = (text: string): void => {
     this.str = text;
@@ -405,6 +404,7 @@ export class NzTestTypographyEditComponent {
       [nzExpandable]="expandable"
       [nzEllipsisRows]="2"
       (nzExpandChange)="onExpand()"
+      (nzOnEllipsis)="onEllipsis($event)"
       [nzContent]="str"
       [nzSuffix]="suffix"
       class="dynamic"
@@ -422,6 +422,7 @@ export class NzTestTypographyEllipsisComponent {
   expandable = false;
   onExpand = jasmine.createSpy('expand callback');
   suffix: string | null = null;
-  @ViewChild(NzTypographyComponent, { static: false }) nzTypographyComponent: NzTypographyComponent;
+  onEllipsis = jasmine.createSpy('ellipsis callback');
+  @ViewChild(NzTypographyComponent, { static: false }) nzTypographyComponent!: NzTypographyComponent;
   str = new Array(5).fill('Ant Design, a design language for background applications, is refined by Ant UED Team.').join('');
 }

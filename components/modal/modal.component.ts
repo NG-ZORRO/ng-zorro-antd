@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -24,7 +21,6 @@ import {
 } from '@angular/core';
 
 import { NzButtonType } from 'ng-zorro-antd/button';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Observable } from 'rxjs';
@@ -36,8 +32,6 @@ import { ModalButtonOptions, ModalOptions, ModalTypes, OnClickCallback, StyleObj
 import { NzModalService } from './modal.service';
 import { getConfigFromComponent } from './utils';
 
-const NZ_CONFIG_COMPONENT_NAME = 'modal';
-
 @Component({
   selector: 'nz-modal',
   exportAs: 'nzModal',
@@ -47,6 +41,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'modal';
 export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges, NzModalLegacyAPI<T, R> {
   static ngAcceptInputType_nzMask: BooleanInput;
   static ngAcceptInputType_nzMaskClosable: BooleanInput;
+  static ngAcceptInputType_nzCloseOnNavigation: BooleanInput;
   static ngAcceptInputType_nzVisible: BooleanInput;
   static ngAcceptInputType_nzClosable: BooleanInput;
   static ngAcceptInputType_nzOkLoading: BooleanInput;
@@ -56,8 +51,9 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   static ngAcceptInputType_nzKeyboard: BooleanInput;
   static ngAcceptInputType_nzNoAnimation: BooleanInput;
 
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzMask: boolean;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzMaskClosable: boolean;
+  @Input() @InputBoolean() nzMask?: boolean;
+  @Input() @InputBoolean() nzMaskClosable?: boolean;
+  @Input() @InputBoolean() nzCloseOnNavigation?: boolean;
   @Input() @InputBoolean() nzVisible: boolean = false;
   @Input() @InputBoolean() nzClosable: boolean = true;
   @Input() @InputBoolean() nzOkLoading: boolean = false;
@@ -66,37 +62,41 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   @Input() @InputBoolean() nzCancelLoading: boolean = false;
   @Input() @InputBoolean() nzKeyboard: boolean = true;
   @Input() @InputBoolean() nzNoAnimation = false;
-  @Input() nzContent: string | TemplateRef<{}> | Type<T>;
-  @Input() nzComponentParams: T;
-  @Input() nzFooter: string | TemplateRef<{}> | Array<ModalButtonOptions<T>> | null;
-  @Input() nzGetContainer: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef);
+  @Input() nzContent?: string | TemplateRef<{}> | Type<T>;
+  @Input() nzComponentParams?: T;
+  @Input() nzFooter?: string | TemplateRef<{}> | Array<ModalButtonOptions<T>> | null;
+  @Input() nzGetContainer?: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef);
   @Input() nzZIndex: number = 1000;
   @Input() nzWidth: number | string = 520;
-  @Input() nzWrapClassName: string;
-  @Input() nzClassName: string;
-  @Input() nzStyle: object;
-  @Input() nzTitle: string | TemplateRef<{}>;
+  @Input() nzWrapClassName?: string;
+  @Input() nzClassName?: string;
+  @Input() nzStyle?: object;
+  @Input() nzTitle?: string | TemplateRef<{}>;
   @Input() nzCloseIcon: string | TemplateRef<void> = 'close';
-  @Input() nzMaskStyle: StyleObjectLike;
-  @Input() nzBodyStyle: StyleObjectLike;
-  @Input() nzOkText: string | null;
-  @Input() nzCancelText: string | null;
+  @Input() nzMaskStyle?: StyleObjectLike;
+  @Input() nzBodyStyle?: StyleObjectLike;
+  @Input() nzOkText?: string | null;
+  @Input() nzCancelText?: string | null;
   @Input() nzOkType: NzButtonType = 'primary';
   @Input() nzIconType: string = 'question-circle'; // Confirm Modal ONLY
   @Input() nzModalType: ModalTypes = 'default';
+  @Input() nzAutofocus: 'ok' | 'cancel' | 'auto' | null = 'auto';
 
+  // TODO(@hsuanxyz) Input will not be supported
   @Input()
   @Output()
-  readonly nzOnOk: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
+  readonly nzOnOk: EventEmitter<T> | OnClickCallback<T> | NzSafeAny = new EventEmitter<T>();
+
+  // TODO(@hsuanxyz) Input will not be supported
   @Input()
   @Output()
-  readonly nzOnCancel: EventEmitter<T> | OnClickCallback<T> = new EventEmitter<T>();
+  readonly nzOnCancel: EventEmitter<T> | OnClickCallback<T> | NzSafeAny = new EventEmitter<T>();
 
   @Output() readonly nzAfterOpen = new EventEmitter<void>();
   @Output() readonly nzAfterClose = new EventEmitter<R>();
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
-  @ViewChild(TemplateRef, { static: true }) contentTemplateRef: TemplateRef<{}>;
+  @ViewChild(TemplateRef, { static: true }) contentTemplateRef!: TemplateRef<{}>;
   @ContentChild(NzModalFooterDirective)
   set modalFooter(value: NzModalFooterDirective) {
     if (value && value.templateRef) {
@@ -115,12 +115,7 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
     return this.nzAfterClose.asObservable();
   }
 
-  constructor(
-    public nzConfigService: NzConfigService,
-    private cdr: ChangeDetectorRef,
-    private modal: NzModalService,
-    private viewContainerRef: ViewContainerRef
-  ) {}
+  constructor(private cdr: ChangeDetectorRef, private modal: NzModalService, private viewContainerRef: ViewContainerRef) {}
 
   open(): void {
     if (!this.nzVisible) {

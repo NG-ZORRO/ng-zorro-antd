@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -11,8 +8,8 @@ import { NgZone } from '@angular/core';
 
 export class NzWaveRenderer {
   private waveTransitionDuration = 400;
-  private styleForPseudo: HTMLStyleElement | null;
-  private extraNode: HTMLDivElement | null;
+  private styleForPseudo: HTMLStyleElement | null = null;
+  private extraNode: HTMLDivElement | null = null;
   private lastTime = 0;
   private platform = new Platform();
   clickHandler: () => void;

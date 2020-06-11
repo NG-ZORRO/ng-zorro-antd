@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -30,8 +27,8 @@ export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
   static ngAcceptInputType_nzDisableAutoTips: BooleanInput;
 
   @Input() nzLayout: 'horizontal' | 'vertical' | 'inline' = 'horizontal';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzNoColon: boolean;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, {}) nzAutoTips: Record<string, Record<string, string>>;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzNoColon: boolean = false;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzAutoTips: Record<string, Record<string, string>> = {};
   @Input() @InputBoolean() nzDisableAutoTips = false;
 
   destroy$ = new Subject();

@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -40,7 +37,7 @@ export class NzCommentContentDirective {}
   exportAs: 'nzCommentActionHost'
 })
 export class NzCommentActionHostDirective extends CdkPortalOutlet implements OnInit, OnDestroy, AfterViewInit {
-  @Input() nzCommentActionHost: TemplatePortal | null;
+  @Input() nzCommentActionHost?: TemplatePortal | null;
 
   constructor(componentFactoryResolver: ComponentFactoryResolver, viewContainerRef: ViewContainerRef) {
     super(componentFactoryResolver, viewContainerRef);
@@ -67,7 +64,7 @@ export class NzCommentActionHostDirective extends CdkPortalOutlet implements OnI
   template: '<ng-template><ng-content></ng-content></ng-template>'
 })
 export class NzCommentActionComponent implements OnInit {
-  @ViewChild(TemplateRef, { static: true }) implicitContent: TemplateRef<void>;
+  @ViewChild(TemplateRef, { static: true }) implicitContent!: TemplateRef<void>;
   private contentPortal: TemplatePortal | null = null;
 
   get content(): TemplatePortal | null {

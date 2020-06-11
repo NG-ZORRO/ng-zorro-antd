@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -25,7 +22,7 @@ import { NzDisplayedStep, NzExtendedMark } from './typings';
         class="ant-slider-dot"
         *ngFor="let mark of steps; trackBy: trackById"
         [class.ant-slider-dot-active]="mark.active"
-        [ngStyle]="mark.style"
+        [ngStyle]="mark.style!"
       >
       </span>
     </div>
@@ -37,11 +34,11 @@ export class NzSliderStepComponent implements OnChanges {
 
   @Input() lowerBound: number | null = null;
   @Input() upperBound: number | null = null;
-  @Input() marksArray: NzExtendedMark[];
+  @Input() marksArray: NzExtendedMark[] = [];
   @Input() @InputBoolean() vertical = false;
   @Input() @InputBoolean() included = false;
 
-  steps: NzDisplayedStep[];
+  steps: NzDisplayedStep[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.marksArray) {

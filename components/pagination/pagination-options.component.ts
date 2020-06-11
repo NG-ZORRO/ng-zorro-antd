@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -58,7 +55,7 @@ export class NzPaginationOptionsComponent implements OnChanges {
   @Input() total = 0;
   @Input() pageIndex = 1;
   @Input() pageSize = 10;
-  @Input() pageSizeOptions = [];
+  @Input() pageSizeOptions: number[] = [];
   @Output() readonly pageIndexChange = new EventEmitter<number>();
   @Output() readonly pageSizeChange = new EventEmitter<number>();
   listOfPageSizeOption: Array<{ value: number; label: string }> = [];

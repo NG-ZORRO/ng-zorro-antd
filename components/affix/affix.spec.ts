@@ -55,7 +55,7 @@ describe('affix', () => {
     fixture = TestBed.createComponent(TestAffixComponent);
     context = fixture.componentInstance;
     component = context.nzAffixComponent;
-    scrollService = TestBed.get(NzScrollService);
+    scrollService = TestBed.inject(NzScrollService);
     componentObject = new NzAffixPageObject();
     debugElement = fixture.debugElement;
     componentObject.wrap().id = 'wrap';
@@ -215,7 +215,8 @@ describe('affix', () => {
     });
 
     it('recreate bug https://github.com/NG-ZORRO/ng-zorro-antd/issues/868', fakeAsync(() => {
-      context.newOffset = offsetTop.toString();
+      // tslint:disable-next-line:no-any
+      context.newOffset = offsetTop.toString() as any;
       setupInitialState({ offsetTop: offsetTop + 1 });
       emitScroll(window, 2);
 
@@ -501,9 +502,8 @@ describe('affix-extra', () => {
   `
 })
 class TestAffixComponent {
-  @ViewChild(NzAffixComponent, { static: true })
-  nzAffixComponent: NzAffixComponent;
+  @ViewChild(NzAffixComponent, { static: true }) nzAffixComponent!: NzAffixComponent;
   fakeTarget: string | Element | Window | null = null;
-  newOffset: {};
-  newOffsetBottom: {};
+  newOffset!: number;
+  newOffsetBottom!: number;
 }

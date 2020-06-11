@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -35,8 +32,8 @@ export class NzCollapseComponent implements OnDestroy {
   static ngAcceptInputType_nzAccordion: BooleanInput;
   static ngAcceptInputType_nzBordered: BooleanInput;
 
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzAccordion: boolean;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzBordered: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzAccordion: boolean = false;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzBordered: boolean = true;
   @Input() nzExpandIconPosition: 'left' | 'right' = 'left';
   private listOfNzCollapsePanelComponent: NzCollapsePanelComponent[] = [];
   private destroy$ = new Subject();

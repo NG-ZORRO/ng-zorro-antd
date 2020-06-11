@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <nz-list nzGrid>
       <div nz-row [nzGutter]="16">
-        <div nz-col [nzXl]="4" [nzLg]="6" [nzMd]="6" [nzSm]="12" [nzXs]="24" *ngFor="let item of data">
+        <div nz-col [nzXXl]="8" [nzXl]="4" [nzLg]="6" [nzMd]="6" [nzSm]="12" [nzXs]="24" *ngFor="let item of data">
           <nz-list-item>
             <nz-card [nzTitle]="item.title">
               Card content

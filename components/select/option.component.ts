@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -44,7 +41,7 @@ export class NzOptionComponent implements OnChanges, OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   changes = new Subject();
   groupLabel: string | TemplateRef<NzSafeAny> | null = null;
-  @ViewChild(TemplateRef, { static: true }) template: TemplateRef<NzSafeAny>;
+  @ViewChild(TemplateRef, { static: true }) template!: TemplateRef<NzSafeAny>;
   @Input() nzLabel: string | null = null;
   @Input() nzValue: NzSafeAny | null = null;
   @Input() @InputBoolean() nzDisabled = false;

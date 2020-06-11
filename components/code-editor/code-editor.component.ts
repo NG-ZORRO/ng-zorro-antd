@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -70,7 +67,7 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
   @Input() nzOriginalText = '';
   @Input() @InputBoolean() nzLoading = false;
   @Input() @InputBoolean() nzFullControl = false;
-  @Input() nzToolkit: TemplateRef<void>;
+  @Input() nzToolkit?: TemplateRef<void>;
 
   @Input() set nzEditorOption(value: JoinedEditorOptions) {
     this.editorOption$.next(value);
@@ -84,7 +81,7 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
   private destroy$ = new Subject<void>();
   private resize$ = new Subject<void>();
   private editorOption$ = new BehaviorSubject<JoinedEditorOptions>({});
-  private editorInstance: IEditor | IDiffEditor;
+  private editorInstance?: IEditor | IDiffEditor;
   private value = '';
   private modelSet = false;
 
@@ -121,9 +118,9 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
     this.onTouch = fn;
   }
 
-  onChange: OnChangeType;
+  onChange: OnChangeType = (_value: string) => {};
 
-  onTouch: OnTouchedType;
+  onTouch: OnTouchedType = () => {};
 
   layout(): void {
     this.resize$.next();
@@ -189,7 +186,7 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
           debounceTime(50)
         )
         .subscribe(() => {
-          this.editorInstance.layout();
+          this.editorInstance!.layout();
         });
     });
   }

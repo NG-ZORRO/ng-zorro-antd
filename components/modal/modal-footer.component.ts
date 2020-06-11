@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -31,10 +28,10 @@ import { ModalButtonOptions, ModalOptions } from './modal-types';
             [hidden]="!getButtonCallableProp(button, 'show')"
             [nzLoading]="getButtonCallableProp(button, 'loading')"
             [disabled]="getButtonCallableProp(button, 'disabled')"
-            [nzType]="button.type"
-            [nzShape]="button.shape"
-            [nzSize]="button.size"
-            [nzGhost]="button.ghost"
+            [nzType]="button.type!"
+            [nzShape]="button.shape!"
+            [nzSize]="button.size!"
+            [nzGhost]="button.ghost!"
           >
             {{ button.label }}
           </button>
@@ -44,21 +41,21 @@ import { ModalButtonOptions, ModalOptions } from './modal-types';
     <ng-template #defaultFooterButtons>
       <button
         *ngIf="config.nzCancelText !== null"
-        [attr.cdkFocusInitial]="config.nzAutofocus === 'cancel'"
+        [attr.cdkFocusInitial]="config.nzAutofocus === 'cancel' || null"
         nz-button
         (click)="onCancel()"
-        [nzLoading]="config.nzCancelLoading"
+        [nzLoading]="!!config.nzCancelLoading"
         [disabled]="config.nzCancelDisabled"
       >
         {{ config.nzCancelText || locale.cancelText }}
       </button>
       <button
         *ngIf="config.nzOkText !== null"
-        [attr.cdkFocusInitial]="config.nzAutofocus === 'ok'"
+        [attr.cdkFocusInitial]="config.nzAutofocus === 'ok' || null"
         nz-button
-        [nzType]="config.nzOkType"
+        [nzType]="config.nzOkType!"
         (click)="onOk()"
-        [nzLoading]="config.nzOkLoading"
+        [nzLoading]="!!config.nzOkLoading"
         [disabled]="config.nzOkDisabled"
       >
         {{ config.nzOkText || locale.okText }}
@@ -76,7 +73,7 @@ export class NzModalFooterComponent implements OnDestroy {
   locale: { okText?: string; cancelText?: string } = {};
   @Output() readonly cancelTriggered = new EventEmitter<void>();
   @Output() readonly okTriggered = new EventEmitter<void>();
-  @Input() modalRef: NzModalRef;
+  @Input() modalRef!: NzModalRef;
   private destroy$ = new Subject<void>();
 
   constructor(private i18n: NzI18nService, public config: ModalOptions) {

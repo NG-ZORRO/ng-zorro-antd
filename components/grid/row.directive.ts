@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -36,7 +33,7 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   /**
    * @deprecated don't need nzType="flex" after 9.0
    */
-  @Input() nzType: 'flex' | null;
+  @Input() nzType: 'flex' | null = 'flex';
   @Input() nzAlign: NzAlign | null = null;
   @Input() nzJustify: NzJustify | null = null;
   @Input() nzGutter: number | IndexableObject | [number, number] | [IndexableObject, IndexableObject] | null = null;

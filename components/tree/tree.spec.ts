@@ -449,7 +449,6 @@ describe('tree', () => {
         // drag-over-gap-top
         dispatchMouseEvent(passedNode, 'dragover', 300, 340);
         elementNode = nativeElement.querySelector('nz-tree-node:nth-child(2)') as HTMLElement;
-        // console.log(elementNode);
         expect(elementNode.classList).toContain('drag-over-gap-top');
 
         // drag-over
@@ -586,8 +585,8 @@ describe('tree', () => {
   `
 })
 export class NzTestTreeBasicControlledComponent {
-  @ViewChild('treeComponent', { static: true }) treeComponent: NzTreeComponent;
-  searchValue: string;
+  @ViewChild('treeComponent', { static: true }) treeComponent!: NzTreeComponent;
+  searchValue?: string;
   multiple = true;
   expandAll = false;
   asyncData = false;
@@ -596,8 +595,8 @@ export class NzTestTreeBasicControlledComponent {
   defaultCheckedKeys: string[] = [];
   defaultSelectedKeys: string[] = [];
   defaultExpandedKeys: string[] = [];
-  expandedIcon: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
-  searchFunc: (node: NzTreeNodeOptions) => boolean;
+  expandedIcon?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
+  searchFunc?: (node: NzTreeNodeOptions) => boolean;
   hideUnMatched = false;
   nodes: NzTreeNodeOptions[] | NzTreeNode[] = [
     {
@@ -663,7 +662,7 @@ export class NzTestTreeBasicControlledComponent {
   `
 })
 export class NzTestTreeDraggableComponent {
-  @ViewChild(NzTreeComponent, { static: true }) treeComponent: NzTreeComponent;
+  @ViewChild(NzTreeComponent, { static: true }) treeComponent!: NzTreeComponent;
   defaultExpandedKeys: string[] = [];
   nodes: NzTreeNodeOptions[] | NzTreeNode[] = [
     {
@@ -697,7 +696,7 @@ export class NzTestTreeDraggableComponent {
       isLeaf: true
     }
   ];
-  beforeDrop: () => Observable<boolean>;
+  beforeDrop?: () => Observable<boolean>;
 
   onDragStart(): void {}
 
@@ -728,8 +727,8 @@ export class NzTestTreeDraggableComponent {
   `
 })
 export class NzTestTreeBasicSearchComponent {
-  @ViewChild(NzTreeComponent, { static: true }) treeComponent: NzTreeComponent;
-  searchValue: string;
+  @ViewChild(NzTreeComponent, { static: true }) treeComponent!: NzTreeComponent;
+  searchValue!: string;
   expandAll = true;
   asyncData = false;
   hideUnMatched = true;

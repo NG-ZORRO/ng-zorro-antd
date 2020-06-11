@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -15,6 +12,7 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
   QueryList,
   SimpleChange,
   SimpleChanges,
@@ -25,6 +23,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzTimelineItemComponent } from './timeline-item.component';
+import { TimelineService } from './timeline.service';
 
 const TimelineModes = ['left', 'alternate', 'right'] as const;
 export type NzTimelineMode = typeof TimelineModes[number];
@@ -34,6 +33,7 @@ export type NzTimelineMode = typeof TimelineModes[number];
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false,
   selector: 'nz-timeline',
+  providers: [TimelineService],
   exportAs: 'nzTimeline',
   template: `
     <ul
@@ -70,12 +70,12 @@ export type NzTimelineMode = typeof TimelineModes[number];
     <ng-content></ng-content>
   `
 })
-export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestroy {
-  @ContentChildren(NzTimelineItemComponent) listOfItems: QueryList<NzTimelineItemComponent>;
+export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestroy, OnInit {
+  @ContentChildren(NzTimelineItemComponent) listOfItems!: QueryList<NzTimelineItemComponent>;
 
-  @Input() nzMode: NzTimelineMode;
-  @Input() nzPending: string | boolean | TemplateRef<void>;
-  @Input() nzPendingDot: string | TemplateRef<void>;
+  @Input() nzMode?: NzTimelineMode;
+  @Input() nzPending?: string | boolean | TemplateRef<void>;
+  @Input() nzPendingDot?: string | TemplateRef<void>;
   @Input() nzReverse: boolean = false;
 
   isPendingBoolean: boolean = false;
@@ -83,7 +83,7 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
 
   private destroy$ = new Subject<void>();
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private timelineService: TimelineService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzMode, nzReverse, nzPending } = changes;
@@ -95,6 +95,11 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
     if (nzPending) {
       this.isPendingBoolean = nzPending.currentValue === true;
     }
+  }
+  ngOnInit(): void {
+    this.timelineService.check$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.cdr.markForCheck();
+    });
   }
 
   ngAfterContentInit(): void {

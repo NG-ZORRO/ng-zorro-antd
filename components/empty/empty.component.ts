@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -58,8 +55,8 @@ type NzEmptyNotFoundImageType = typeof NzEmptyDefaultImages[number] | null | str
 })
 export class NzEmptyComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzNotFoundImage: NzEmptyNotFoundImageType = 'default';
-  @Input() nzNotFoundContent: string | TemplateRef<void> | null;
-  @Input() nzNotFoundFooter: string | TemplateRef<void>;
+  @Input() nzNotFoundContent?: string | TemplateRef<void> | null;
+  @Input() nzNotFoundFooter?: string | TemplateRef<void>;
 
   isContentString = false;
   isImageBuildIn = true;

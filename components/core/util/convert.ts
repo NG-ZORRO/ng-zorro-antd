@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -30,8 +27,8 @@ export function toCssPixel(value: number | string): string {
 /**
  * Get the function-property type's value
  */
-export function valueFunctionProp<T>(prop: FunctionProp<T>, ...args: NzSafeAny[]): T {
-  return typeof prop === 'function' ? prop(...args) : prop;
+export function valueFunctionProp<T>(prop: FunctionProp<T> | T, ...args: NzSafeAny[]): T {
+  return typeof prop === 'function' ? (prop as FunctionProp<T>)(...args) : prop;
 }
 
 function propDecoratorFactory<T, D>(name: string, fallback: (v: T) => D): (target: NzSafeAny, propName: string) => void {
@@ -87,6 +84,6 @@ export function InputCssPixel(): NzSafeAny {
   return propDecoratorFactory('InputCssPixel', toCssPixel);
 }
 
-export function InputNumber(): NzSafeAny {
-  return propDecoratorFactory('InputNumber', toNumber);
+export function InputNumber(fallbackValue?: NzSafeAny): NzSafeAny {
+  return propDecoratorFactory('InputNumber', (value: string | number) => toNumber(value, fallbackValue));
 }

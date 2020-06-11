@@ -16,7 +16,7 @@ import { NzNotificationService } from './notification.service';
   template: ` <ng-template let-data="data">{{ 'test template content' }}{{ data }}</ng-template> `
 })
 export class NzTestNotificationComponent {
-  @ViewChild(TemplateRef, { static: true }) demoTemplateRef: TemplateRef<{}>;
+  @ViewChild(TemplateRef, { static: true }) demoTemplateRef!: TemplateRef<{}>;
 }
 
 describe('NzNotification', () => {
@@ -193,6 +193,13 @@ describe('NzNotification', () => {
     notificationService.template(fixture.componentInstance.demoTemplateRef, { nzData: 'data' });
     fixture.detectChanges();
     expect(overlayContainerElement.textContent).toContain('test template contentdata');
+  });
+
+  it('should update an existing notification with use template ref when change nzData', () => {
+    notificationService.template(fixture.componentInstance.demoTemplateRef, { nzData: 'oldData', nzKey: 'exists' });
+    expect(overlayContainerElement.textContent).toContain('oldData');
+    notificationService.template(fixture.componentInstance.demoTemplateRef, { nzData: 'newData', nzKey: 'exists' });
+    expect(overlayContainerElement.textContent).toContain('newData');
   });
 
   it('should update an existing notification when keys are matched', () => {

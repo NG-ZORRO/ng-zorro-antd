@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -76,7 +73,7 @@ export function measure(
   const originStyle = window.getComputedStyle(originEle);
   const originCSS = styleToString(originStyle);
   const lineHeight = pxToNumber(originStyle.lineHeight);
-  const maxHeight = lineHeight * (rows + 1) + pxToNumber(originStyle.paddingTop) + pxToNumber(originStyle.paddingBottom);
+  const maxHeight = Math.round(lineHeight * (rows + 1) + pxToNumber(originStyle.paddingTop) + pxToNumber(originStyle.paddingBottom));
   // Set shadow
   ellipsisContainer.setAttribute('style', originCSS);
   ellipsisContainer.style.position = 'fixed';

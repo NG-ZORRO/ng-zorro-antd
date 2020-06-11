@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -17,9 +14,9 @@ import { DateHelperService } from 'ng-zorro-antd/i18n';
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: NzTimeValueAccessorDirective, multi: true }]
 })
 export class NzTimeValueAccessorDirective implements ControlValueAccessor {
-  private _onChange: (value: Date) => void;
-  private _onTouch: () => void;
-  @Input() nzTime: string;
+  private _onChange?: (value: Date) => void;
+  private _onTouch?: () => void;
+  @Input() nzTime?: string;
 
   @HostListener('keyup')
   keyup(): void {
@@ -52,7 +49,7 @@ export class NzTimeValueAccessorDirective implements ControlValueAccessor {
   constructor(private dateHelper: DateHelperService, private elementRef: ElementRef) {}
 
   writeValue(value: Date): void {
-    this.elementRef.nativeElement.value = this.dateHelper.format(value, this.nzTime);
+    this.elementRef.nativeElement.value = this.dateHelper.format(value, this.nzTime!);
   }
 
   registerOnChange(fn: (value: Date) => void): void {

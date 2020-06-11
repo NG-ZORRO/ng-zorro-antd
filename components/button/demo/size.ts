@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NzButtonSize } from 'ng-zorro-antd/button';
 
 @Component({
   selector: 'nz-demo-button-size',
@@ -40,5 +41,5 @@ import { Component } from '@angular/core';
   ]
 })
 export class NzDemoButtonSizeComponent {
-  size = 'large';
+  size: NzButtonSize = 'large';
 }

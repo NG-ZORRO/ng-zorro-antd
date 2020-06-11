@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -32,7 +29,7 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
   template: `
     <div>
       <div *ngIf="listOfContainerItem.length === 0" class="ant-select-item-empty">
-        <nz-embed-empty nzComponentName="select" [specificContent]="notFoundContent"></nz-embed-empty>
+        <nz-embed-empty nzComponentName="select" [specificContent]="notFoundContent!"></nz-embed-empty>
       </div>
       <cdk-virtual-scroll-viewport
         [class.full-width]="!matchWidth"
@@ -78,7 +75,7 @@ export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
   @Input() dropdownRender: TemplateRef<NzSafeAny> | null = null;
   @Input() activatedValue: NzSafeAny | null = null;
   @Input() listOfSelectedValue: NzSafeAny[] = [];
-  @Input() compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean;
+  @Input() compareWith!: (o1: NzSafeAny, o2: NzSafeAny) => boolean;
   @Input() mode: NzSelectModeType = 'default';
   @Input() matchWidth = true;
   @Input() itemSize = 32;
@@ -86,7 +83,7 @@ export class NzOptionContainerComponent implements OnChanges, AfterViewInit {
   @Input() listOfContainerItem: NzSelectItemInterface[] = [];
   @Output() readonly itemClick = new EventEmitter<NzSafeAny>();
   @Output() readonly scrollToBottom = new EventEmitter<void>();
-  @ViewChild(CdkVirtualScrollViewport, { static: true }) cdkVirtualScrollViewport: CdkVirtualScrollViewport;
+  @ViewChild(CdkVirtualScrollViewport, { static: true }) cdkVirtualScrollViewport!: CdkVirtualScrollViewport;
   private scrolledIndex = 0;
 
   onItemClick(value: NzSafeAny): void {

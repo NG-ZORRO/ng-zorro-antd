@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -28,14 +25,14 @@ import { InputBoolean, InputNumber, toBoolean } from 'ng-zorro-antd/core/util';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
 import {
-  ShowUploadListInterface,
-  UploadChangeParam,
-  UploadFile,
+  NzShowUploadList,
+  NzUploadChangeParam,
+  NzUploadFile,
+  NzUploadListType,
+  NzUploadTransformFileType,
+  NzUploadType,
+  NzUploadXHRArgs,
   UploadFilter,
-  UploadListType,
-  UploadTransformFileType,
-  UploadType,
-  UploadXHRArgs,
   ZipButtonOptions
 } from './interface';
 import { NzUploadBtnComponent } from './upload-btn.component';
@@ -59,64 +56,64 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzOpenFileDialogOnClick: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzMultiple: BooleanInput;
-  static ngAcceptInputType_nzShowUploadList: BooleanInput | ShowUploadListInterface | undefined | null;
+  static ngAcceptInputType_nzShowUploadList: BooleanInput | NzShowUploadList | undefined | null;
   static ngAcceptInputType_nzShowButton: BooleanInput;
   static ngAcceptInputType_nzWithCredentials: BooleanInput;
 
-  private i18n$: Subscription;
-  @ViewChild('uploadComp', { static: false }) uploadComp: NzUploadBtnComponent;
-  @ViewChild('listComp', { static: false }) listComp: NzUploadListComponent;
+  private i18n$!: Subscription;
+  @ViewChild('uploadComp', { static: false }) uploadComp!: NzUploadBtnComponent;
+  @ViewChild('listComp', { static: false }) listComp!: NzUploadListComponent;
 
   locale: NzSafeAny = {};
 
   // #region fields
 
-  @Input() nzType: UploadType = 'select';
+  @Input() nzType: NzUploadType = 'select';
   @Input() @InputNumber() nzLimit = 0;
   @Input() @InputNumber() nzSize = 0;
 
-  @Input() nzFileType: string;
-  @Input() nzAccept: string | string[];
-  @Input() nzAction: string | ((file: UploadFile) => string | Observable<string>);
+  @Input() nzFileType?: string;
+  @Input() nzAccept?: string | string[];
+  @Input() nzAction?: string | ((file: NzUploadFile) => string | Observable<string>);
   @Input() @InputBoolean() nzDirectory = false;
   @Input() @InputBoolean() nzOpenFileDialogOnClick = true;
-  @Input() nzBeforeUpload: (file: UploadFile, fileList: UploadFile[]) => boolean | Observable<boolean>;
-  @Input() nzCustomRequest: (item: UploadXHRArgs) => Subscription;
-  @Input() nzData: {} | ((file: UploadFile) => {} | Observable<{}>);
+  @Input() nzBeforeUpload?: (file: NzUploadFile, fileList: NzUploadFile[]) => boolean | Observable<boolean>;
+  @Input() nzCustomRequest?: (item: NzUploadXHRArgs) => Subscription;
+  @Input() nzData?: {} | ((file: NzUploadFile) => {} | Observable<{}>);
   @Input() nzFilter: UploadFilter[] = [];
-  @Input() nzFileList: UploadFile[] = [];
+  @Input() nzFileList: NzUploadFile[] = [];
   @Input() @InputBoolean() nzDisabled = false;
-  @Input() nzHeaders: {} | ((file: UploadFile) => {} | Observable<{}>);
-  @Input() nzListType: UploadListType = 'text';
+  @Input() nzHeaders?: {} | ((file: NzUploadFile) => {} | Observable<{}>);
+  @Input() nzListType: NzUploadListType = 'text';
   @Input() @InputBoolean() nzMultiple = false;
   @Input() nzName = 'file';
 
-  private _showUploadList: boolean | ShowUploadListInterface = true;
+  private _showUploadList: boolean | NzShowUploadList = true;
 
   @Input()
-  set nzShowUploadList(value: boolean | ShowUploadListInterface) {
+  set nzShowUploadList(value: boolean | NzShowUploadList) {
     this._showUploadList = typeof value === 'boolean' ? toBoolean(value) : value;
   }
 
-  get nzShowUploadList(): boolean | ShowUploadListInterface {
+  get nzShowUploadList(): boolean | NzShowUploadList {
     return this._showUploadList;
   }
 
   @Input() @InputBoolean() nzShowButton = true;
   @Input() @InputBoolean() nzWithCredentials = false;
 
-  @Input() nzRemove: (file: UploadFile) => boolean | Observable<boolean>;
-  @Input() nzPreview: (file: UploadFile) => void;
-  @Input() nzPreviewFile: (file: UploadFile) => Observable<string>;
-  @Input() nzTransformFile: (file: UploadFile) => UploadTransformFileType;
-  @Input() nzDownload: (file: UploadFile) => void;
-  @Input() nzIconRender: TemplateRef<void>;
-  @Input() nzFileListRender: TemplateRef<void>;
+  @Input() nzRemove?: (file: NzUploadFile) => boolean | Observable<boolean>;
+  @Input() nzPreview?: (file: NzUploadFile) => void;
+  @Input() nzPreviewFile?: (file: NzUploadFile) => Observable<string>;
+  @Input() nzTransformFile?: (file: NzUploadFile) => NzUploadTransformFileType;
+  @Input() nzDownload?: (file: NzUploadFile) => void;
+  @Input() nzIconRender: TemplateRef<NzSafeAny> | null = null;
+  @Input() nzFileListRender: TemplateRef<void> | null = null;
 
-  @Output() readonly nzChange: EventEmitter<UploadChangeParam> = new EventEmitter<UploadChangeParam>();
-  @Output() readonly nzFileListChange: EventEmitter<UploadFile[]> = new EventEmitter<UploadFile[]>();
+  @Output() readonly nzChange: EventEmitter<NzUploadChangeParam> = new EventEmitter<NzUploadChangeParam>();
+  @Output() readonly nzFileListChange: EventEmitter<NzUploadFile[]> = new EventEmitter<NzUploadFile[]>();
 
-  _btnOptions: ZipButtonOptions;
+  _btnOptions?: ZipButtonOptions;
 
   private zipOptions(): this {
     if (typeof this.nzShowUploadList === 'boolean' && this.nzShowUploadList) {
@@ -131,20 +128,20 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     if (this.nzMultiple && this.nzLimit > 0 && filters.findIndex(w => w.name === 'limit') === -1) {
       filters.push({
         name: 'limit',
-        fn: (fileList: UploadFile[]) => fileList.slice(-this.nzLimit)
+        fn: (fileList: NzUploadFile[]) => fileList.slice(-this.nzLimit)
       });
     }
     if (this.nzSize > 0 && filters.findIndex(w => w.name === 'size') === -1) {
       filters.push({
         name: 'size',
-        fn: (fileList: UploadFile[]) => fileList.filter(w => w.size! / 1024 <= this.nzSize)
+        fn: (fileList: NzUploadFile[]) => fileList.filter(w => w.size! / 1024 <= this.nzSize)
       });
     }
     if (this.nzFileType && this.nzFileType.length > 0 && filters.findIndex(w => w.name === 'type') === -1) {
       const types = this.nzFileType.split(',');
       filters.push({
         name: 'type',
-        fn: (fileList: UploadFile[]) => fileList.filter(w => ~types.indexOf(w.type!))
+        fn: (fileList: NzUploadFile[]) => fileList.filter(w => ~types.indexOf(w.type!))
       });
     }
     this._btnOptions = {
@@ -176,7 +173,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
 
   // #region upload
 
-  private fileToObject(file: UploadFile): UploadFile {
+  private fileToObject(file: NzUploadFile): NzUploadFile {
     return {
       lastModified: file.lastModified,
       lastModifiedDate: file.lastModifiedDate,
@@ -191,15 +188,15 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     };
   }
 
-  private getFileItem(file: UploadFile, fileList: UploadFile[]): UploadFile {
+  private getFileItem(file: NzUploadFile, fileList: NzUploadFile[]): NzUploadFile {
     return fileList.filter(item => item.uid === file.uid)[0];
   }
 
-  private removeFileItem(file: UploadFile, fileList: UploadFile[]): UploadFile[] {
+  private removeFileItem(file: NzUploadFile, fileList: NzUploadFile[]): NzUploadFile[] {
     return fileList.filter(item => item.uid !== file.uid);
   }
 
-  private onStart = (file: UploadFile): void => {
+  private onStart = (file: NzUploadFile): void => {
     if (!this.nzFileList) {
       this.nzFileList = [];
     }
@@ -211,7 +208,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     this.detectChangesList();
   };
 
-  private onProgress = (e: { percent: number }, file: UploadFile): void => {
+  private onProgress = (e: { percent: number }, file: NzUploadFile): void => {
     const fileList = this.nzFileList;
     const targetItem = this.getFileItem(file, fileList);
     targetItem.percent = e.percent;
@@ -224,7 +221,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     this.detectChangesList();
   };
 
-  private onSuccess = (res: {}, file: UploadFile): void => {
+  private onSuccess = (res: {}, file: NzUploadFile): void => {
     const fileList = this.nzFileList;
     const targetItem = this.getFileItem(file, fileList);
     targetItem.status = 'done';
@@ -237,7 +234,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     this.detectChangesList();
   };
 
-  private onError = (err: {}, file: UploadFile): void => {
+  private onError = (err: {}, file: NzUploadFile): void => {
     const fileList = this.nzFileList;
     const targetItem = this.getFileItem(file, fileList);
     targetItem.error = err;
@@ -254,7 +251,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
 
   // #region drag
 
-  private dragState: string;
+  private dragState?: string;
 
   // skip safari bug
   fileDrop(e: DragEvent): void {
@@ -274,7 +271,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
     this.listComp?.detectChanges();
   }
 
-  onRemove = (file: UploadFile): void => {
+  onRemove = (file: NzUploadFile): void => {
     this.uploadComp.abort(file);
     file.status = 'removed';
     const fnRes = typeof this.nzRemove === 'function' ? this.nzRemove(file) : this.nzRemove == null ? true : this.nzRemove;

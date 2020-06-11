@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -22,7 +19,7 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toArray } from 'ng-zorro-antd/core/util';
 import { NzI18nService } from 'ng-zorro-antd/i18n';
 
@@ -121,18 +118,18 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzDataSource: TransferItem[] = [];
   @Input() nzTitles: string[] = ['', ''];
   @Input() nzOperations: string[] = [];
-  @Input() nzListStyle: object;
+  @Input() nzListStyle: NgStyleInterface = {};
   @Input() @InputBoolean() nzShowSelectAll = true;
-  @Input() nzItemUnit: string;
-  @Input() nzItemsUnit: string;
+  @Input() nzItemUnit?: string;
+  @Input() nzItemsUnit?: string;
   @Input() nzCanMove: (arg: TransferCanMove) => Observable<TransferItem[]> = (arg: TransferCanMove) => of(arg.list);
   @Input() nzRenderList: Array<TemplateRef<NzSafeAny> | null> | null = null;
-  @Input() nzRender: TemplateRef<NzSafeAny>;
-  @Input() nzFooter: TemplateRef<NzSafeAny>;
+  @Input() nzRender: TemplateRef<NzSafeAny> | null = null;
+  @Input() nzFooter: TemplateRef<NzSafeAny> | null = null;
   @Input() @InputBoolean() nzShowSearch = false;
-  @Input() nzFilterOption: (inputValue: string, item: TransferItem) => boolean;
-  @Input() nzSearchPlaceholder: string;
-  @Input() nzNotFoundContent: string;
+  @Input() nzFilterOption?: (inputValue: string, item: TransferItem) => boolean;
+  @Input() nzSearchPlaceholder?: string;
+  @Input() nzNotFoundContent?: string;
   @Input() nzTargetKeys: string[] = [];
   @Input() nzSelectedKeys: string[] = [];
 

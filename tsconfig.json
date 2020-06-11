@@ -26,6 +26,7 @@
     "skipLibCheck": true,
     "strictFunctionTypes": true,
     "strictNullChecks": true,
+    "strictPropertyInitialization": true,
     "types": ["jasmine"]
   }
 }

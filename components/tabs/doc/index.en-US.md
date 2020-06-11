@@ -39,7 +39,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | `[nzLinkExact]` | Use exact routing matching | `boolean` | `true` |
 | `[nzCanDeactivate]` | Determine if a tab can be deactivated | `NzTabsCanDeactivateFn` | - |
 | `(nzSelectedIndexChange)` | Current tab's index change callback | `EventEmitter<number>` | - |
-| `(nzSelectChange)` | Current tab's change callback | `EventEmitter<{nzSelectedIndex: number,tab: NzTabComponent}>` | - |
+| `(nzSelectChange)` | Current tab's change callback | `EventEmitter<{index: number,tab: NzTabComponent}>` | - |
 | `(nzOnNextClick)` | Callback executed when next button is clicked | `EventEmitter<void>` | - |
 | `(nzOnPrevClick)` | Callback executed when prev button is clicked | `EventEmitter<void>` | - |
 

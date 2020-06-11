@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -24,7 +21,7 @@ import { NzDisplayedMark, NzExtendedMark, NzMark, NzMarkObj } from './typings';
         class="ant-slider-mark-text"
         *ngFor="let attr of marks; trackBy: trackById"
         [class.ant-slider-mark-active]="attr.active"
-        [ngStyle]="attr.style"
+        [ngStyle]="attr.style!"
         [innerHTML]="attr.label"
       >
       </span>
@@ -37,13 +34,13 @@ export class NzSliderMarksComponent implements OnChanges {
 
   @Input() lowerBound: number | null = null;
   @Input() upperBound: number | null = null;
-  @Input() marksArray: NzExtendedMark[];
-  @Input() min: number;
-  @Input() max: number;
+  @Input() marksArray: NzExtendedMark[] = [];
+  @Input() min!: number;
+  @Input() max!: number;
   @Input() @InputBoolean() vertical = false;
   @Input() @InputBoolean() included = false;
 
-  marks: NzDisplayedMark[];
+  marks: NzDisplayedMark[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
     const { marksArray, lowerBound, upperBound } = changes;

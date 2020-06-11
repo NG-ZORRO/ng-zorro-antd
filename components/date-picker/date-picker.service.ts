@@ -1,23 +1,21 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 import { Injectable, OnDestroy } from '@angular/core';
 import { CandyDate, cloneDate, CompatibleValue, normalizeRangeValue } from 'ng-zorro-antd/core/time';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { ReplaySubject, Subject } from 'rxjs';
 import { CompatibleDate, RangePartType } from './standard-types';
 
 @Injectable()
 export class DatePickerService implements OnDestroy {
-  initialValue: CompatibleValue;
-  value: CompatibleValue;
-  activeDate: CompatibleValue;
+  initialValue?: CompatibleValue;
+  value!: CompatibleValue;
+  activeDate?: CompatibleValue;
   activeInput: RangePartType = 'left';
-  arrowPositionStyle = {};
+  arrowPositionStyle: { [klass: string]: NzSafeAny } | null = {};
   isRange = false;
 
   valueChange$ = new ReplaySubject<CompatibleValue>(1);
@@ -41,7 +39,7 @@ export class DatePickerService implements OnDestroy {
     }
   }
 
-  makeValue(value: CompatibleDate | null): CompatibleValue {
+  makeValue(value?: CompatibleDate): CompatibleValue {
     if (this.isRange) {
       return value ? (value as Date[]).map(val => new CandyDate(val)) : [];
     } else {

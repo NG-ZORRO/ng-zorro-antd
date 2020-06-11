@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -22,6 +19,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
+import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { nzModalAnimations } from './modal-animations';
@@ -36,14 +34,14 @@ import { ModalOptions } from './modal-types';
       #modalElement
       role="document"
       class="ant-modal"
-      [ngClass]="config.nzClassName"
-      [ngStyle]="config.nzStyle"
-      [style.width]="config?.nzWidth | nzToCssUnit"
+      [ngClass]="config.nzClassName!"
+      [ngStyle]="config.nzStyle!"
+      [style.width]="config?.nzWidth! | nzToCssUnit"
     >
       <div class="ant-modal-content">
         <button *ngIf="config.nzClosable" nz-modal-close (click)="onCloseClick()"></button>
         <div *ngIf="config.nzTitle" nz-modal-title></div>
-        <div class="ant-modal-body" [ngStyle]="config.nzBodyStyle">
+        <div class="ant-modal-body" [ngStyle]="config.nzBodyStyle!">
           <ng-template cdkPortalOutlet></ng-template>
           <div *ngIf="isStringContent" [innerHTML]="config.nzContent"></div>
         </div>
@@ -74,8 +72,8 @@ import { ModalOptions } from './modal-types';
   }
 })
 export class NzModalContainerComponent extends BaseModalContainer {
-  @ViewChild(CdkPortalOutlet, { static: true }) portalOutlet: CdkPortalOutlet;
-  @ViewChild('modalElement', { static: true }) modalElementRef: ElementRef<HTMLDivElement>;
+  @ViewChild(CdkPortalOutlet, { static: true }) portalOutlet!: CdkPortalOutlet;
+  @ViewChild('modalElement', { static: true }) modalElementRef!: ElementRef<HTMLDivElement>;
   constructor(
     elementRef: ElementRef,
     focusTrapFactory: FocusTrapFactory,
@@ -83,10 +81,11 @@ export class NzModalContainerComponent extends BaseModalContainer {
     render: Renderer2,
     zone: NgZone,
     overlayRef: OverlayRef,
+    nzConfigService: NzConfigService,
     public config: ModalOptions,
     @Optional() @Inject(DOCUMENT) document: NzSafeAny,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) animationType: string
   ) {
-    super(elementRef, focusTrapFactory, cdr, render, zone, overlayRef, config, document, animationType);
+    super(elementRef, focusTrapFactory, cdr, render, zone, overlayRef, nzConfigService, config, document, animationType);
   }
 }

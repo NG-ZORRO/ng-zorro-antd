@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -13,6 +10,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
@@ -26,7 +24,7 @@ import { YearHeaderComponent } from './year-header.component';
 import { YearTableComponent } from './year-table.component';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, NzI18nModule, NzTimePickerModule],
+  imports: [CommonModule, FormsModule, NzI18nModule, NzTimePickerModule, NzOutletModule],
   exports: [
     DateHeaderComponent,
     DateTableComponent,

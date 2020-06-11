@@ -361,6 +361,35 @@ describe('select', () => {
         document.querySelectorAll('nz-option-item')[0].parentElement!.querySelector('nz-option-item')!.nextElementSibling!.textContent
       ).toBe('label_02');
     }));
+
+    it('should have selected class if item was selected', fakeAsync(() => {
+      const flushChanges = () => {
+        fixture.detectChanges();
+        flush();
+        fixture.detectChanges();
+      };
+      component.listOfOption = [
+        { nzValue: 0, nzLabel: 'Falsy value' },
+        { nzValue: 'Truthy value', nzLabel: 'Truthy value' },
+        { nzValue: 'disabled', nzLabel: 'disabled', nzDisabled: true },
+        { nzValue: undefined, nzLabel: 'undefined' },
+        { nzValue: null, nzLabel: 'null' }
+      ];
+      component.nzOpen = true;
+      component.value = 0;
+      flushChanges();
+      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected').length).toBe(1);
+      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected')[0].textContent).toBe('Falsy value');
+      component.value = 'Truthy value';
+      flushChanges();
+      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected').length).toBe(1);
+      expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected')[0].textContent).toBe('Truthy value');
+      ['disabled', undefined, null].forEach(value => {
+        component.value = value;
+        flushChanges();
+        expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected').length).toBe(0);
+      });
+    }));
   });
   describe('multiple template mode', () => {
     let testBed: ComponentBed<TestSelectTemplateMultipleComponent>;
@@ -1139,9 +1168,9 @@ describe('select', () => {
   `
 })
 export class TestSelectTemplateDefaultComponent {
-  @ViewChild('dropdownTemplate') dropdownTemplate: TemplateRef<NzSafeAny>;
-  @ViewChild('customTemplate') customTemplate: TemplateRef<NzSafeAny>;
-  @ViewChild('suffixIconTemplate') suffixIconTemplate: TemplateRef<NzSafeAny>;
+  @ViewChild('dropdownTemplate') dropdownTemplate!: TemplateRef<NzSafeAny>;
+  @ViewChild('customTemplate') customTemplate!: TemplateRef<NzSafeAny>;
+  @ViewChild('suffixIconTemplate') suffixIconTemplate!: TemplateRef<NzSafeAny>;
   value: NzSafeAny | null = null;
   valueChange = jasmine.createSpy('valueChange');
   openChange = jasmine.createSpy('openChange');
@@ -1152,7 +1181,7 @@ export class TestSelectTemplateDefaultComponent {
   nzDropdownMatchSelectWidth = true;
   nzPlaceHolder: string | TemplateRef<NzSafeAny> | null = null;
   nzDropdownRender: TemplateRef<NzSafeAny> | null = null;
-  nzCustomTemplate: TemplateRef<{ $implicit: NzSelectItemInterface }>;
+  nzCustomTemplate?: TemplateRef<{ $implicit: NzSelectItemInterface }>;
   nzSuffixIcon: TemplateRef<NzSafeAny> | null = null;
   nzClearIcon: TemplateRef<NzSafeAny> | null = null;
   nzShowArrow = true;
@@ -1201,7 +1230,7 @@ export class TestSelectTemplateDefaultComponent {
   `
 })
 export class TestSelectTemplateMultipleComponent {
-  @ViewChild('iconTemplate') iconTemplate: TemplateRef<NzSafeAny>;
+  @ViewChild('iconTemplate') iconTemplate!: TemplateRef<NzSafeAny>;
   listOfOption: NzSelectItemInterface[] = [];
   value: NzSafeAny[] = [];
   nzOpen = false;
@@ -1238,14 +1267,14 @@ export class TestSelectTemplateMultipleComponent {
   `
 })
 export class TestSelectTemplateTagsComponent {
-  @ViewChild('tagTemplate') tagTemplate: TemplateRef<NzSafeAny>;
+  @ViewChild('tagTemplate') tagTemplate!: TemplateRef<NzSafeAny>;
   nzSize: NzSelectSizeType = 'default';
   nzMaxTagCount = Infinity;
   value: NzSafeAny[] = [];
   listOfOption: NzSelectItemInterface[] = [];
   valueChange = jasmine.createSpy('valueChange');
   nzTokenSeparators: string[] = [];
-  nzMaxTagPlaceholder: TemplateRef<{ $implicit: NzSafeAny[] }>;
+  nzMaxTagPlaceholder!: TemplateRef<{ $implicit: NzSafeAny[] }>;
 }
 
 @Component({
@@ -1282,9 +1311,9 @@ export class TestSelectTemplateTagsComponent {
   `
 })
 export class TestSelectReactiveDefaultComponent {
-  @ViewChild('dropdownTemplate') dropdownTemplate: TemplateRef<NzSafeAny>;
-  @ViewChild('customTemplate') customTemplate: TemplateRef<NzSafeAny>;
-  @ViewChild('suffixIconTemplate') suffixIconTemplate: TemplateRef<NzSafeAny>;
+  @ViewChild('dropdownTemplate') dropdownTemplate!: TemplateRef<NzSafeAny>;
+  @ViewChild('customTemplate') customTemplate!: TemplateRef<NzSafeAny>;
+  @ViewChild('suffixIconTemplate') suffixIconTemplate!: TemplateRef<NzSafeAny>;
   value: NzSafeAny | null = null;
   valueChange = jasmine.createSpy('valueChange');
   openChange = jasmine.createSpy('openChange');
@@ -1294,7 +1323,7 @@ export class TestSelectReactiveDefaultComponent {
   nzDropdownMatchSelectWidth = true;
   nzPlaceHolder: string | TemplateRef<NzSafeAny> | null = null;
   nzDropdownRender: TemplateRef<NzSafeAny> | null = null;
-  nzCustomTemplate: TemplateRef<{ $implicit: NzSelectItemInterface }>;
+  nzCustomTemplate?: TemplateRef<{ $implicit: NzSelectItemInterface }>;
   nzSuffixIcon: TemplateRef<NzSafeAny> | null = null;
   nzClearIcon: TemplateRef<NzSafeAny> | null = null;
   nzShowArrow = true;
@@ -1337,7 +1366,7 @@ export class TestSelectReactiveDefaultComponent {
   `
 })
 export class TestSelectReactiveMultipleComponent {
-  @ViewChild('iconTemplate') iconTemplate: TemplateRef<NzSafeAny>;
+  @ViewChild('iconTemplate') iconTemplate!: TemplateRef<NzSafeAny>;
   listOfOption: NzSelectOptionInterface[] = [];
   value: NzSafeAny[] = [];
   nzOpen = false;
@@ -1368,12 +1397,12 @@ export class TestSelectReactiveMultipleComponent {
   `
 })
 export class TestSelectReactiveTagsComponent {
-  @ViewChild('tagTemplate') tagTemplate: TemplateRef<NzSafeAny>;
+  @ViewChild('tagTemplate') tagTemplate?: TemplateRef<NzSafeAny>;
   nzSize: NzSelectSizeType = 'default';
   nzMaxTagCount = Infinity;
   value: NzSafeAny[] = [];
   listOfOption: NzSelectOptionInterface[] = [];
   valueChange = jasmine.createSpy('valueChange');
   nzTokenSeparators: string[] = [];
-  nzMaxTagPlaceholder: TemplateRef<{ $implicit: NzSafeAny[] }>;
+  nzMaxTagPlaceholder?: TemplateRef<{ $implicit: NzSafeAny[] }>;
 }

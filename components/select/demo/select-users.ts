@@ -39,7 +39,7 @@ export class NzDemoSelectSelectUsersComponent implements OnInit {
   randomUserUrl = 'https://api.randomuser.me/?results=5';
   searchChange$ = new BehaviorSubject('');
   optionList: string[] = [];
-  selectedUser: string;
+  selectedUser?: string;
   isLoading = false;
 
   onSearch(value: string): void {
@@ -60,10 +60,7 @@ export class NzDemoSelectSelectUsersComponent implements OnInit {
             return list.map((item: any) => `${item.name.first} ${name}`);
           })
         );
-    const optionList$: Observable<string[]> = this.searchChange$
-      .asObservable()
-      .pipe(debounceTime(500))
-      .pipe(switchMap(getRandomNameList));
+    const optionList$: Observable<string[]> = this.searchChange$.asObservable().pipe(debounceTime(500)).pipe(switchMap(getRandomNameList));
     optionList$.subscribe(data => {
       this.optionList = data;
       this.isLoading = false;

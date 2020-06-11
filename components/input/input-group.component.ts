@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -24,7 +21,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { BooleanInput, NgClassType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { merge, Subject } from 'rxjs';
 import { flatMap, map, startWith, switchMap, takeUntil } from 'rxjs/operators';
@@ -106,16 +103,16 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   static ngAcceptInputType_nzSearch: BooleanInput;
   static ngAcceptInputType_nzCompact: BooleanInput;
 
-  @ContentChildren(NzInputDirective) listOfNzInputDirective: QueryList<NzInputDirective>;
-  @Input() nzAddOnBeforeIcon: NgClassType;
-  @Input() nzAddOnAfterIcon: NgClassType;
-  @Input() nzPrefixIcon: NgClassType;
-  @Input() nzSuffixIcon: NgClassType;
-  @Input() nzAddOnBefore: string | TemplateRef<void>;
-  @Input() nzAddOnAfter: string | TemplateRef<void>;
-  @Input() nzPrefix: string | TemplateRef<void>;
-  @Input() nzSuffix: string | TemplateRef<void>;
-  @Input() nzSize: NzSizeLDSType;
+  @ContentChildren(NzInputDirective) listOfNzInputDirective!: QueryList<NzInputDirective>;
+  @Input() nzAddOnBeforeIcon?: string | null = null;
+  @Input() nzAddOnAfterIcon?: string | null = null;
+  @Input() nzPrefixIcon?: string | null = null;
+  @Input() nzSuffixIcon?: string | null = null;
+  @Input() nzAddOnBefore?: string | TemplateRef<void>;
+  @Input() nzAddOnAfter?: string | TemplateRef<void>;
+  @Input() nzPrefix?: string | TemplateRef<void>;
+  @Input() nzSuffix?: string | TemplateRef<void>;
+  @Input() nzSize: NzSizeLDSType = 'default';
   @Input() @InputBoolean() nzSearch = false;
   @Input() @InputBoolean() nzCompact = false;
   isLarge = false;

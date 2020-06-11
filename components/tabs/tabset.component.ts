@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -63,7 +60,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'tabs';
         [ngStyle]="nzTabBarStyle"
         [nzHideBar]="nzHideAll"
         [nzTabBarExtraContent]="nzTabBarExtraContent"
-        [selectedIndex]="nzSelectedIndex"
+        [selectedIndex]="nzSelectedIndex!"
         (nzOnNextClick)="nzOnNextClick.emit()"
         (nzOnPrevClick)="nzOnPrevClick.emit()"
       >
@@ -130,19 +127,19 @@ export class NzTabSetComponent implements AfterContentChecked, OnChanges, AfterC
   private tabLabelSubscription = Subscription.EMPTY;
   private destroy$ = new Subject<void>();
   tabPositionMode: NzTabPositionMode = 'horizontal';
-  @ContentChildren(NzTabComponent) listOfNzTabComponent: QueryList<NzTabComponent>;
-  @ViewChild(NzTabsNavComponent, { static: false }) nzTabsNavComponent: NzTabsNavComponent;
-  @ViewChild('tabContent', { static: false }) tabContent: ElementRef;
+  @ContentChildren(NzTabComponent) listOfNzTabComponent!: QueryList<NzTabComponent>;
+  @ViewChild(NzTabsNavComponent, { static: false }) nzTabsNavComponent?: NzTabsNavComponent;
+  @ViewChild('tabContent', { static: false }) tabContent?: ElementRef;
 
-  @Input() nzTabBarExtraContent: TemplateRef<void>;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) nzShowPagination: boolean;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) nzAnimated: NzAnimatedInterface | boolean;
+  @Input() nzTabBarExtraContent?: TemplateRef<void>;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzShowPagination: boolean = true;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzAnimated: NzAnimatedInterface | boolean = true;
   @Input() nzHideAll = false;
   @Input() nzTabPosition: NzTabPosition = 'top';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzSizeLDSType;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzTabBarGutter: number;
-  @Input() nzTabBarStyle: { [key: string]: string };
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'line') nzType: NzTabType;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzSizeLDSType = 'default';
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzTabBarGutter?: number = undefined;
+  @Input() nzTabBarStyle: { [key: string]: string } | null = null;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzType: NzTabType = 'line';
 
   @Input() @InputBoolean() nzLinkRouter = false;
   @Input() @InputBoolean() nzLinkExact = true;
@@ -177,9 +174,9 @@ export class NzTabSetComponent implements AfterContentChecked, OnChanges, AfterC
   setPosition(value: NzTabPosition): void {
     if (this.tabContent) {
       if (value === 'bottom') {
-        this.renderer.insertBefore(this.el, this.tabContent.nativeElement, this.nzTabsNavComponent.elementRef.nativeElement);
+        this.renderer.insertBefore(this.el, this.tabContent.nativeElement, this.nzTabsNavComponent!.elementRef.nativeElement);
       } else {
-        this.renderer.insertBefore(this.el, this.nzTabsNavComponent.elementRef.nativeElement, this.tabContent.nativeElement);
+        this.renderer.insertBefore(this.el, this.nzTabsNavComponent!.elementRef.nativeElement, this.tabContent.nativeElement);
       }
     }
   }

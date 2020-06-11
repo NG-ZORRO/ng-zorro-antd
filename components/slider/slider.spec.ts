@@ -1,4 +1,4 @@
-import { LEFT_ARROW, RIGHT_ARROW } from '@angular/cdk/keycodes';
+import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, OnInit } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
@@ -8,6 +8,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzSliderComponent } from './slider.component';
 import { NzSliderModule } from './slider.module';
@@ -19,8 +20,7 @@ describe('nz-slider', () => {
   let sliderInstance: NzSliderComponent;
   let overlayContainerElement: HTMLElement;
 
-  // tslint:disable-next-line:no-any
-  function getReferenceFromFixture(fixture: ComponentFixture<any>): void {
+  function getReferenceFromFixture(fixture: ComponentFixture<NzSafeAny>): void {
     sliderDebugElement = fixture.debugElement.query(By.directive(NzSliderComponent));
     sliderInstance = sliderDebugElement.componentInstance;
     sliderNativeElement = sliderInstance.slider.nativeElement;
@@ -491,6 +491,49 @@ describe('nz-slider', () => {
     });
   });
 
+  describe('reverse', () => {
+    let testBed: ComponentBed<ReverseSliderComponent>;
+    let fixture: ComponentFixture<ReverseSliderComponent>;
+    let sliderDebugElements: DebugElement[];
+
+    beforeEach(() => {
+      testBed = createComponentBed(ReverseSliderComponent, {
+        imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule]
+      });
+      fixture = testBed.fixture;
+      fixture.detectChanges();
+
+      sliderDebugElements = fixture.debugElement.queryAll(By.directive(NzSliderComponent));
+    });
+
+    it('should reverse work', () => {
+      const trackElement = (sliderDebugElements[0].nativeElement as HTMLElement).querySelector('.ant-slider-track') as HTMLElement;
+      expect(trackElement.style.right).toBe('0%');
+
+      const rangeTrackElement = (sliderDebugElements[1].nativeElement as HTMLElement).querySelector('.ant-slider-track') as HTMLElement;
+      expect(trackElement.style.right).toBe('0%');
+      expect(rangeTrackElement.style.width).toBe('100%');
+
+      const verticalTrackElement = (sliderDebugElements[2].nativeElement as HTMLElement).querySelector('.ant-slider-track') as HTMLElement;
+      expect(verticalTrackElement.style.top).toBe('0%');
+    });
+
+    it('should respond to keyboard event reversely', () => {
+      getReferenceFromFixture(fixture);
+
+      dispatchKeyboardEvent(sliderNativeElement, 'keydown', LEFT_ARROW);
+      dispatchKeyboardEvent(sliderNativeElement, 'keydown', RIGHT_ARROW);
+      dispatchKeyboardEvent(sliderNativeElement, 'keydown', DOWN_ARROW);
+      dispatchKeyboardEvent(sliderNativeElement, 'keydown', UP_ARROW);
+      dispatchKeyboardEvent(sliderNativeElement, 'keydown', LEFT_ARROW);
+
+      fixture.detectChanges();
+
+      const trackElement = (sliderDebugElements[0].nativeElement as HTMLElement).querySelector('.ant-slider-track') as HTMLElement;
+      expect(trackElement.style.width).toBe('1%');
+    });
+  });
+
   describe('mixed usage', () => {
     let testBed: ComponentBed<MixedSliderComponent>;
     let fixture: ComponentFixture<MixedSliderComponent>;
@@ -743,18 +786,14 @@ const styles = `
 `;
 
 @Component({
-  template: `
-    <nz-slider [nzDisabled]="disabled"></nz-slider>
-  `,
+  template: ` <nz-slider [nzDisabled]="disabled"></nz-slider> `,
   styles: [styles]
 })
 class NzTestSliderComponent {
   disabled = false;
 }
 @Component({
-  template: `
-    <nz-slider [nzMin]="min" [nzMax]="max"></nz-slider>
-  `,
+  template: ` <nz-slider [nzMin]="min" [nzMax]="max"></nz-slider> `,
   styles: [styles]
 })
 class SliderWithMinAndMaxComponent {
@@ -763,17 +802,13 @@ class SliderWithMinAndMaxComponent {
 }
 
 @Component({
-  template: `
-    <nz-slider [ngModel]="26"></nz-slider>
-  `,
+  template: ` <nz-slider [ngModel]="26"></nz-slider> `,
   styles: [styles]
 })
 class SliderWithValueComponent {}
 
 @Component({
-  template: `
-    <nz-slider [nzStep]="step"></nz-slider>
-  `,
+  template: ` <nz-slider [nzStep]="step"></nz-slider> `,
   styles: [styles]
 })
 class SliderWithStepComponent {
@@ -781,28 +816,31 @@ class SliderWithStepComponent {
 }
 
 @Component({
-  template: `
-    <nz-slider [ngModel]="3" [nzMin]="4" [nzMax]="6"></nz-slider>
-  `,
+  template: ` <nz-slider [ngModel]="3" [nzMin]="4" [nzMax]="6"></nz-slider> `,
   styles: [styles]
 })
 class SliderWithValueSmallerThanMinComponent {}
 
 @Component({
-  template: `
-    <nz-slider [ngModel]="7" [nzMin]="4" [nzMax]="6"></nz-slider>
-  `,
+  template: ` <nz-slider [ngModel]="7" [nzMin]="4" [nzMax]="6"></nz-slider> `,
   styles: [styles]
 })
 class SliderWithValueGreaterThanMaxComponent {}
 
 @Component({
-  template: `
-    <nz-slider nzVertical></nz-slider>
-  `,
+  template: ` <nz-slider nzVertical></nz-slider> `,
   styles: [styles]
 })
 class VerticalSliderComponent {}
+
+@Component({
+  template: `
+    <nz-slider nzReverse></nz-slider>
+    <nz-slider nzReverse nzRange></nz-slider>
+    <nz-slider nzVertical nzReverse></nz-slider>
+  `
+})
+class ReverseSliderComponent {}
 
 @Component({
   template: `
@@ -838,7 +876,7 @@ class MixedSliderComponent {
   styles: [styles]
 })
 class SliderWithFormControlComponent implements OnInit {
-  form: FormGroup;
+  form!: FormGroup;
 
   constructor(private fb: FormBuilder) {}
 
@@ -850,9 +888,7 @@ class SliderWithFormControlComponent implements OnInit {
 }
 
 @Component({
-  template: `
-    <nz-slider [nzTooltipVisible]="show" [ngModel]="value"></nz-slider>
-  `
+  template: ` <nz-slider [nzTooltipVisible]="show" [ngModel]="value"></nz-slider> `
 })
 class SliderShowTooltipComponent {
   show: NzSliderShowTooltip = 'default';
@@ -860,9 +896,7 @@ class SliderShowTooltipComponent {
 }
 
 @Component({
-  template: `
-    <nz-slider [nzRange]="range"></nz-slider>
-  `
+  template: ` <nz-slider [nzRange]="range"></nz-slider> `
 })
 class NzTestSliderKeyboardComponent {
   range = false;

@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -41,7 +38,7 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
   @Input() nzHref = '#';
 
   titleStr: string | null = '';
-  titleTpl: TemplateRef<NzSafeAny>;
+  titleTpl?: TemplateRef<NzSafeAny>;
 
   @Input()
   set nzTitle(value: string | TemplateRef<void>) {
@@ -53,8 +50,8 @@ export class NzAnchorLinkComponent implements OnInit, OnDestroy {
     }
   }
 
-  @ContentChild('nzTemplate', { static: false }) nzTemplate: TemplateRef<void>;
-  @ViewChild('linkTitle') linkTitle: ElementRef<HTMLAnchorElement>;
+  @ContentChild('nzTemplate', { static: false }) nzTemplate!: TemplateRef<void>;
+  @ViewChild('linkTitle') linkTitle!: ElementRef<HTMLAnchorElement>;
 
   constructor(
     public elementRef: ElementRef,

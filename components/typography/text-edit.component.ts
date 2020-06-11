@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -59,14 +56,14 @@ export class NzTextEditComponent implements OnInit, OnDestroy {
   locale: NzSafeAny = {};
   private destroy$ = new Subject();
 
-  @Input() text: string;
+  @Input() text?: string;
   @Output() readonly startEditing = new EventEmitter<void>();
   @Output() readonly endEditing = new EventEmitter<string>();
-  @ViewChild('textarea', { static: false }) textarea: ElementRef<HTMLTextAreaElement>;
-  @ViewChild(NzAutosizeDirective, { static: false }) autosizeDirective: NzAutosizeDirective;
+  @ViewChild('textarea', { static: false }) textarea!: ElementRef<HTMLTextAreaElement>;
+  @ViewChild(NzAutosizeDirective, { static: false }) autosizeDirective!: NzAutosizeDirective;
 
-  beforeText: string;
-  currentText: string;
+  beforeText?: string;
+  currentText?: string;
   nativeElement = this.host.nativeElement;
   constructor(private host: ElementRef, private cdr: ChangeDetectorRef, private i18n: NzI18nService) {}
 
@@ -100,7 +97,7 @@ export class NzTextEditComponent implements OnInit, OnDestroy {
     this.currentText = target.value;
   }
 
-  onEnter(event: KeyboardEvent): void {
+  onEnter(event: Event): void {
     event.stopPropagation();
     event.preventDefault();
     this.confirm();
@@ -115,7 +112,7 @@ export class NzTextEditComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       if (this.textarea?.nativeElement) {
         this.textarea.nativeElement.focus();
-        this.textarea.nativeElement.value = this.currentText;
+        this.textarea.nativeElement.value = this.currentText || '';
         this.autosizeDirective.resizeToFitContent();
       }
     });

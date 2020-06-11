@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -19,6 +16,7 @@ import {
 } from '@angular/core';
 
 import { NzTimelineMode } from './timeline.component';
+import { TimelineService } from './timeline.service';
 
 const TimelineTimeDefaultColors = ['red', 'blue', 'green', 'grey', 'gray'] as const;
 export type NzTimelineItemColor = typeof TimelineTimeDefaultColors[number];
@@ -61,18 +59,19 @@ function isDefaultColor(color?: string): boolean {
   `
 })
 export class NzTimelineItemComponent implements OnChanges {
-  @ViewChild('template', { static: false }) template: TemplateRef<void>;
+  @ViewChild('template', { static: false }) template!: TemplateRef<void>;
 
   @Input() nzColor: NzTimelineItemColor = 'blue';
-  @Input() nzDot: string | TemplateRef<void>;
+  @Input() nzDot?: string | TemplateRef<void>;
 
   isLast = false;
   borderColor: string | null = null;
   position: NzTimelineMode | undefined;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private timelineService: TimelineService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.timelineService.markForCheck();
     if (changes.nzColor) {
       this.updateCustomColor();
     }

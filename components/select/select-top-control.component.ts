@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -49,7 +46,7 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
         ></nz-select-item>
         <nz-select-search
           [disabled]="disabled"
-          [value]="inputValue"
+          [value]="inputValue!"
           [showInput]="open && showSearch"
           [mirrorSync]="false"
           [autofocus]="autofocus"
@@ -77,7 +74,7 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
         </nz-select-item>
         <nz-select-search
           [disabled]="disabled"
-          [value]="inputValue"
+          [value]="inputValue!"
           [autofocus]="autofocus"
           [showInput]="true"
           [mirrorSync]="true"
@@ -109,11 +106,11 @@ export class NzSelectTopControlComponent implements OnChanges {
   @Input() listOfTopItem: NzSelectItemInterface[] = [];
   @Input() tokenSeparators: string[] = [];
   @Output() readonly tokenize = new EventEmitter<string[]>();
-  @Output() readonly inputValueChange = new EventEmitter<string | null>();
+  @Output() readonly inputValueChange = new EventEmitter<string>();
   @Output() readonly animationEnd = new EventEmitter<void>();
   @Output() readonly deleteItem = new EventEmitter<NzSelectItemInterface>();
   @Output() readonly openChange = new EventEmitter<boolean>();
-  @ViewChild(NzSelectSearchComponent) nzSelectSearchComponent: NzSelectSearchComponent;
+  @ViewChild(NzSelectSearchComponent) nzSelectSearchComponent!: NzSelectSearchComponent;
   listOfSlicedItem: NzSelectTopControlItemType[] = [];
   isShowPlaceholder = true;
   isShowSingleLabel = false;

@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -55,19 +52,19 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzOffsetTop: NumberInput;
   static ngAcceptInputType_nzOffsetBottom: NumberInput;
 
-  @ViewChild('fixedEl', { static: true }) private fixedEl: ElementRef<HTMLDivElement>;
+  @ViewChild('fixedEl', { static: true }) private fixedEl!: ElementRef<HTMLDivElement>;
 
-  @Input() nzTarget: string | Element | Window;
-
-  @Input()
-  @WithConfig<number | null>(NZ_CONFIG_COMPONENT_NAME, null)
-  @InputNumber()
-  nzOffsetTop: null | number;
+  @Input() nzTarget?: string | Element | Window;
 
   @Input()
-  @WithConfig<number | null>(NZ_CONFIG_COMPONENT_NAME, null)
-  @InputNumber()
-  nzOffsetBottom: null | number;
+  @WithConfig<number | null>(NZ_CONFIG_COMPONENT_NAME)
+  @InputNumber(undefined)
+  nzOffsetTop?: null | number;
+
+  @Input()
+  @WithConfig<number | null>(NZ_CONFIG_COMPONENT_NAME)
+  @InputNumber(undefined)
+  nzOffsetBottom?: null | number;
 
   @Output() readonly nzChange = new EventEmitter<boolean>();
 

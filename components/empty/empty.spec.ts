@@ -37,8 +37,6 @@ describe('nz-empty', () => {
 
       const imageEl = emptyComponent.nativeElement.firstChild;
 
-      console.log(imageEl.outerHTML);
-
       expect(imageEl.tagName).toBe('DIV');
       expect(imageEl.classList.contains('ant-empty-image')).toBe(true);
       expect(imageEl.firstElementChild.tagName).toBe('NZ-EMPTY-DEFAULT');
@@ -274,9 +272,9 @@ describe('nz-empty', () => {
   `
 })
 export class NzEmptyTestBasicComponent {
-  @ViewChild('imageTpl', { static: false }) imageTpl: TemplateRef<void>;
-  @ViewChild('contentTpl', { static: false }) contentTpl: TemplateRef<void>;
-  @ViewChild('footerTpl', { static: false }) footerTpl: TemplateRef<void>;
+  @ViewChild('imageTpl', { static: false }) imageTpl!: TemplateRef<void>;
+  @ViewChild('contentTpl', { static: false }) contentTpl!: TemplateRef<void>;
+  @ViewChild('footerTpl', { static: false }) footerTpl!: TemplateRef<void>;
 
   image?: TemplateRef<void> | string;
   content?: TemplateRef<void> | string;
@@ -292,7 +290,7 @@ export class NzEmptyTestBasicComponent {
   `
 })
 export class NzEmptyTestServiceComponent {
-  @ViewChild('tpl', { static: false }) template: TemplateRef<string>;
+  @ViewChild('tpl', { static: false }) template!: TemplateRef<string>;
 
   noResult?: string | null;
 
@@ -310,9 +308,7 @@ export class NzEmptyTestServiceComponent {
 @Component({
   // tslint:disable-next-line:no-selector
   selector: 'nz-empty-test-custom',
-  template: `
-    <div>I'm in component {{ name }}</div>
-  `
+  template: ` <div>I'm in component {{ name }}</div> `
 })
 export class NzEmptyTestCustomComponent {
   constructor(@Inject(NZ_EMPTY_COMPONENT_NAME) public name: string) {}

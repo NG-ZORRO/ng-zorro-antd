@@ -111,11 +111,11 @@ describe('nz-th', () => {
   `
 })
 export class NzThTestNzTableComponent {
-  @ViewChild(NzThAddOnComponent, { static: false }) nzThComponent: NzThAddOnComponent;
+  @ViewChild(NzThAddOnComponent, { static: false }) nzThComponent!: NzThAddOnComponent;
   destroy = false;
-  left: string | number;
-  right: string | number;
-  width: string | number;
+  left?: string | number;
+  right?: string | number;
+  width?: string | number;
   sort: string | null = null;
   sortChange = jasmine.createSpy('sort change');
   filters = [
@@ -173,7 +173,7 @@ export class NzThTestTableDefaultFilterComponent {
   sortName: keyof DataItem | null = null;
   sortValue: string | null = null;
   listOfSearchName = ['Joe', 'London'];
-  searchAddress: string;
+  searchAddress!: string;
   data: DataItem[] = [
     {
       name: 'John Brown',
@@ -198,7 +198,7 @@ export class NzThTestTableDefaultFilterComponent {
   ];
   displayData: DataItem[] = [];
 
-  @ViewChild(NzThAddOnComponent, { static: false }) nzThComponent: NzThAddOnComponent;
+  @ViewChild(NzThAddOnComponent, { static: false }) nzThComponent!: NzThAddOnComponent;
 
   sort(sort: { key: keyof DataItem; value: string }): void {
     this.sortName = sort.key;

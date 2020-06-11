@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -42,7 +39,7 @@ import {
   NzTreeNode,
   NzTreeNodeOptions
 } from 'ng-zorro-antd/core/tree';
-import { BooleanInput, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgStyleInterface, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzSelectSearchComponent } from 'ng-zorro-antd/select';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
@@ -70,8 +67,8 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
       [cdkConnectedOverlayOrigin]="cdkOverlayOrigin"
       [cdkConnectedOverlayOpen]="nzOpen"
       [cdkConnectedOverlayHasBackdrop]="true"
-      [cdkConnectedOverlayMinWidth]="nzDropdownMatchSelectWidth ? null : triggerWidth"
-      [cdkConnectedOverlayWidth]="nzDropdownMatchSelectWidth ? triggerWidth : null"
+      [cdkConnectedOverlayMinWidth]="$any(nzDropdownMatchSelectWidth ? null : triggerWidth)"
+      [cdkConnectedOverlayWidth]="$any(nzDropdownMatchSelectWidth ? triggerWidth : null)"
       (backdropClick)="closeDropDown()"
       (detach)="closeDropDown()"
       (positionChange)="onPositionChange($event)"
@@ -224,24 +221,24 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Input() @InputBoolean() nzAllowClear: boolean = true;
   @Input() @InputBoolean() nzShowExpand: boolean = true;
   @Input() @InputBoolean() nzShowLine: boolean = false;
-  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) nzDropdownMatchSelectWidth: boolean;
+  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzDropdownMatchSelectWidth: boolean = true;
   @Input() @InputBoolean() nzCheckable: boolean = false;
-  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) nzHideUnMatched: boolean;
-  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) nzShowIcon: boolean;
+  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzHideUnMatched: boolean = false;
+  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzShowIcon: boolean = false;
   @Input() @InputBoolean() nzShowSearch: boolean = false;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAsyncData = false;
   @Input() @InputBoolean() nzMultiple = false;
   @Input() @InputBoolean() nzDefaultExpandAll = false;
   @Input() @InputBoolean() nzCheckStrictly = false;
-  @Input() nzExpandedIcon: TemplateRef<{ $implicit: NzTreeNode }>;
-  @Input() nzNotFoundContent: string;
+  @Input() nzExpandedIcon?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
+  @Input() nzNotFoundContent?: string;
   @Input() nzNodes: Array<NzTreeNode | NzTreeNodeOptions> = [];
   @Input() nzOpen = false;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzSizeLDSType;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzSizeLDSType = 'default';
   @Input() nzPlaceHolder = '';
-  @Input() nzDropdownStyle: { [key: string]: string };
-  @Input() nzDropdownClassName: string;
+  @Input() nzDropdownStyle: NgStyleInterface | null = null;
+  @Input() nzDropdownClassName?: string;
   @Input()
   set nzExpandedKeys(value: string[]) {
     this.expandedKeys = value;
@@ -251,8 +248,8 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   }
 
   @Input() nzDisplayWith: (node: NzTreeNode) => string | undefined = (node: NzTreeNode) => node.title;
-  @Input() nzMaxTagCount: number;
-  @Input() nzMaxTagPlaceholder: TemplateRef<{ $implicit: NzTreeNode[] }>;
+  @Input() nzMaxTagCount!: number;
+  @Input() nzMaxTagPlaceholder: TemplateRef<{ $implicit: NzTreeNode[] }> | null = null;
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
   @Output() readonly nzCleared = new EventEmitter<void>();
   @Output() readonly nzRemoved = new EventEmitter<NzTreeNode>();
@@ -260,31 +257,31 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Output() readonly nzTreeClick = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzTreeCheckBoxChange = new EventEmitter<NzFormatEmitEvent>();
 
-  @ViewChild(NzSelectSearchComponent, { static: false }) nzSelectSearchComponent: NzSelectSearchComponent;
-  @ViewChild('treeRef', { static: false }) treeRef: NzTreeComponent;
-  @ViewChild(CdkOverlayOrigin, { static: true }) cdkOverlayOrigin: CdkOverlayOrigin;
-  @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay: CdkConnectedOverlay;
+  @ViewChild(NzSelectSearchComponent, { static: false }) nzSelectSearchComponent!: NzSelectSearchComponent;
+  @ViewChild('treeRef', { static: false }) treeRef!: NzTreeComponent;
+  @ViewChild(CdkOverlayOrigin, { static: true }) cdkOverlayOrigin!: CdkOverlayOrigin;
+  @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay!: CdkConnectedOverlay;
 
-  @Input() nzTreeTemplate: TemplateRef<{ $implicit: NzTreeNode }>;
-  @ContentChild('nzTreeTemplate', { static: true }) nzTreeTemplateChild: TemplateRef<{ $implicit: NzTreeNode }>;
-  get treeTemplate(): TemplateRef<{ $implicit: NzTreeNode }> {
+  @Input() nzTreeTemplate!: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
+  @ContentChild('nzTreeTemplate', { static: true }) nzTreeTemplateChild!: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
+  get treeTemplate(): TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }> {
     return this.nzTreeTemplate || this.nzTreeTemplateChild;
   }
 
   dropdownClassName = TREE_SELECT_DEFAULT_CLASS;
-  triggerWidth: number;
+  triggerWidth?: number;
   isComposing = false;
   isDestroy = true;
   isNotFound = false;
   inputValue = '';
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
-  selectionChangeSubscription: Subscription;
+  selectionChangeSubscription!: Subscription;
   selectedNodes: NzTreeNode[] = [];
   expandedKeys: string[] = [];
   value: string[] = [];
 
-  onChange: (value: string[] | string | null) => void;
-  onTouched: () => void = () => null;
+  onChange: OnChangeType = _value => {};
+  onTouched: OnTouchedType = () => {};
 
   get placeHolderDisplay(): string {
     return this.inputValue || this.isComposing || this.selectedNodes.length ? 'none' : 'block';

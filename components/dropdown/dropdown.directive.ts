@@ -1,13 +1,11 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { Platform } from '@angular/cdk/platform';
 import { TemplatePortal } from '@angular/cdk/portal';
 import {
   AfterViewInit,
@@ -45,7 +43,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzVisible: BooleanInput;
 
-  private portal: TemplatePortal;
+  private portal?: TemplatePortal;
   private overlayRef: OverlayRef | null = null;
   private destroy$ = new Subject();
   private positionStrategy = this.overlay.position().flexibleConnectedTo(this.elementRef.nativeElement).withLockedPosition();
@@ -59,7 +57,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
   @Input() @InputBoolean() nzClickHide = true;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzVisible = false;
-  @Input() nzOverlayClassName: string | null = null;
+  @Input() nzOverlayClassName: string = '';
   @Input() nzOverlayStyle: IndexableObject = {};
   @Input() nzPlacement: NzPlacementType = 'bottomLeft';
   @Output() readonly nzVisibleChange: EventEmitter<boolean> = new EventEmitter();
@@ -70,7 +68,12 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
     }
   }
 
-  constructor(public elementRef: ElementRef, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {}
+  constructor(
+    public elementRef: ElementRef,
+    private overlay: Overlay,
+    private viewContainerRef: ViewContainerRef,
+    private platform: Platform
+  ) {}
 
   ngOnInit(): void {
     this.positionStrategy.positionChanges.pipe(takeUntil(this.destroy$)).subscribe(change => {
@@ -117,6 +120,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
           map(([visible, sub]) => visible || sub),
           auditTime(150),
           distinctUntilChanged(),
+          filter(() => this.platform.isBrowser),
           takeUntil(this.destroy$)
         )
         .subscribe((visible: boolean) => {
