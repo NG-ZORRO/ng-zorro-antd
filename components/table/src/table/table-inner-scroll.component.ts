@@ -127,11 +127,11 @@ export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, On
       const hasVerticalScrollBar = this.verticalScrollBarWidth !== 0;
       this.headerStyleMap = {
         overflowX: 'hidden',
-        overflowY: this.scrollY && hasVerticalScrollBar ? 'scroll' : 'hidden'
+        overflowY: this.scrollY && hasVerticalScrollBar ? 'auto' : 'hidden'
       };
       this.bodyStyleMap = {
-        overflowY: this.scrollY ? 'scroll' : null,
-        overflowX: this.scrollX ? 'scroll' : null,
+        overflowY: this.scrollY ? 'auto' : null,
+        overflowX: this.scrollX ? 'auto' : null,
         maxHeight: this.scrollY
       };
       this.scroll$.next();
