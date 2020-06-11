@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -39,8 +36,9 @@ const NZ_MESSAGE_DEFAULT_CONFIG: Required<MessageConfig> = {
 })
 export class NzMessageContainerComponent extends NzMNContainerComponent {
   readonly destroy$ = new Subject<void>();
+
   instances: Array<Required<NzMessageData>> = [];
-  top: string | null = null;
+  top?: string | null;
 
   constructor(cdr: ChangeDetectorRef, nzConfigService: NzConfigService) {
     super(cdr, nzConfigService);

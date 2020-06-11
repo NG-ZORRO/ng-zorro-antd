@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -17,7 +14,8 @@ import { Subject } from 'rxjs';
   host: {
     '[class.ant-input-disabled]': 'disabled',
     '[class.ant-input-lg]': `nzSize === 'large'`,
-    '[class.ant-input-sm]': `nzSize === 'small'`
+    '[class.ant-input-sm]': `nzSize === 'small'`,
+    '[attr.disabled]': 'disabled || null'
   }
 })
 export class NzInputDirective implements OnChanges {

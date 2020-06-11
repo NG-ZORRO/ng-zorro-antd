@@ -57,15 +57,13 @@ The dialog is currently divided into 2 modes, `normal mode` and `confirm box mod
 | nzOnCancel        | Specify a function that will be called when a user clicks mask, close button on top right or Cancel button (If nzContent is Component, the Component instance will be put in as an argument). <i>Note: When created with `NzModalService.create`, this parameter should be passed into the type of function (callback function). This function returns a promise, which is automatically closed when the execution is complete or the promise ends (return `false` to prevent closing)</i> | EventEmitter | - |
 | nzOnOk            | Specify a EventEmitter that will be emitted when a user clicks the OK button (If nzContent is Component, the Component instance will be put in as an argument). <i>Note: When created with `NzModalService.create`, this parameter should be passed into the type of function (callback function). This function returns a promise, which is automatically closed when the execution is complete or the promise ends (return `false` to prevent closing)</i> | EventEmitter | - |
 | nzContent         | Content | string / TemplateRef / Component / ng-content | - |
-| nzComponentParams | When nzContent is a Component, the attributes in this parameter will be passed to the nzContent instance | `object` | - |
+| nzComponentParams | Will be instance property when `nzContent` is a component，will be template variable when `nzContent` is `TemplateRef`  | `object` | - |
 | nzIconType        | Icon type of the Icon component. <i>Only valid in confirm box mode</i> | `string` | question-circle |
 | nzAutofocus        | autofocus and the position，disabled when is `null` | `'ok' \| 'cancel' \| 'auto' \| null` | `'auto'` |
 
 #### Attentions
 
-> The default state of `<nz-modal>` will not be automatically cleared. If you wish to open new content each time, use the `NzModalService` service to create modals (when created as a service, the `nzAfterClose` event will be listened by default aim to destroy the modal).
-
-> Modals created through the `NzModalService` service need you to manage their own life cycle. For example, when you switch the page route, the modal box created by service will not be destroyed automatically. You need to use the modal box's reference to manually destroy it (`NzModalRef.close()` or `NzModalRef.destroy()`).
+> The creation or modification of the `nzComponentParams` property does not trigger the `ngOnChanges` life cycle hook of the `nzContent` component.
 
 #### Using service to create Normal Mode modal
 

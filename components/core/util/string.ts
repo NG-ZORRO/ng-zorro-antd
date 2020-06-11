@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -24,7 +21,5 @@ export function padEnd(toPad: string, length: number, element: string): string {
 }
 
 export function getRepeatedElement(length: number, element: string): string {
-  return Array(length)
-    .fill(element)
-    .join('');
+  return Array(length).fill(element).join('');
 }

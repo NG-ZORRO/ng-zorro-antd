@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -66,6 +63,7 @@ type NzCalendarDateTemplate = TemplateRef<{ $implicit: Date }>;
         [activeDate]="activeDate"
         [cellRender]="$any(dateCell)"
         [fullCellRender]="$any(dateFullCell)"
+        [disabledDate]="nzDisabledDate"
         (valueChange)="onDateSelect($event)"
       ></date-table>
     </ng-template>
@@ -100,6 +98,7 @@ export class NzCalendarComponent implements ControlValueAccessor, OnChanges {
 
   @Input() nzMode: NzCalendarMode = 'month';
   @Input() nzValue?: Date;
+  @Input() nzDisabledDate?: (date: Date) => boolean;
 
   @Output() readonly nzModeChange: EventEmitter<NzCalendarMode> = new EventEmitter();
   @Output() readonly nzPanelChange: EventEmitter<{ date: Date; mode: NzCalendarMode }> = new EventEmitter();

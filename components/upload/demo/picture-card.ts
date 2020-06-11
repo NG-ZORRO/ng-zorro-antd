@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UploadFile } from 'ng-zorro-antd/upload';
+import { NzUploadFile } from 'ng-zorro-antd/upload';
 
 function getBase64(file: File): Promise<string | ArrayBuffer | null> {
   return new Promise((resolve, reject) => {
@@ -45,7 +45,7 @@ function getBase64(file: File): Promise<string | ArrayBuffer | null> {
   ]
 })
 export class NzDemoUploadPictureCardComponent {
-  fileList: UploadFile[] = [
+  fileList: NzUploadFile[] = [
     {
       uid: '-1',
       name: 'image.png',
@@ -79,7 +79,7 @@ export class NzDemoUploadPictureCardComponent {
   previewImage: string | undefined = '';
   previewVisible = false;
 
-  handlePreview = async (file: UploadFile) => {
+  handlePreview = async (file: NzUploadFile) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj!);
     }

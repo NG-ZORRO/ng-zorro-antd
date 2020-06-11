@@ -50,7 +50,7 @@ export class OnlineIdeService {
       template: this.template,
       dependencies: this.dependencies,
       files: {
-        'angular.json': `${JSON.stringify(angularJSON)}`,
+        'angular.json': `${JSON.stringify(angularJSON, null, 2)}`,
         'src/index.html': `<${selector}>loading</${selector}>`,
         'src/main.ts': mainTS,
         'src/app/app.component.ts': appComponentCode,
@@ -81,7 +81,13 @@ export class OnlineIdeService {
           isBinary: false
         },
         'src/index.html': {
-          content: `<${selector}>loading</${selector}>`,
+          content: `
+<!DOCTYPE html>
+<html>
+  <body>
+    <${selector}>loading</${selector}>
+   </body>
+</html>`,
           isBinary: false
         },
         'src/app/app.module.ts': {

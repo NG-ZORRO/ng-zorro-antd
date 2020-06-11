@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -147,7 +144,7 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   ngAfterViewInit(): void {
     this.ngZone.onStable.pipe(take(1)).subscribe(() => {
       this.viewInit = true;
-      this.cdr.markForCheck();
+      this.cdr.detectChanges();
     });
 
     this.contentObserver

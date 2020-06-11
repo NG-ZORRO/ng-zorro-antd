@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UploadChangeParam, UploadFile } from 'ng-zorro-antd/upload';
+import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
 
 @Component({
   selector: 'nz-demo-upload-upload-with-aliyun-oss',
@@ -17,7 +17,7 @@ import { UploadChangeParam, UploadFile } from 'ng-zorro-antd/upload';
   `
 })
 export class NzDemoUploadUploadWithAliyunOssComponent {
-  files: UploadFile[] = [];
+  files: NzUploadFile[] = [];
   mockOSSData = {
     dir: 'user-dir/',
     expire: '1577811661',
@@ -27,7 +27,7 @@ export class NzDemoUploadUploadWithAliyunOssComponent {
     signature: 'ZGFob25nc2hhbw=='
   };
 
-  transformFile = (file: UploadFile) => {
+  transformFile = (file: NzUploadFile) => {
     const suffix = file.name.slice(file.name.lastIndexOf('.'));
     const filename = Date.now() + suffix;
     file.url = this.mockOSSData.dir + filename;
@@ -35,7 +35,7 @@ export class NzDemoUploadUploadWithAliyunOssComponent {
     return file;
   };
 
-  getExtraData = (file: UploadFile) => {
+  getExtraData = (file: NzUploadFile) => {
     const { accessId, policy, signature } = this.mockOSSData;
 
     return {
@@ -46,7 +46,7 @@ export class NzDemoUploadUploadWithAliyunOssComponent {
     };
   };
 
-  onChange(e: UploadChangeParam): void {
+  onChange(e: NzUploadChangeParam): void {
     console.log('Aliyun OSS:', e.fileList);
   }
 }
