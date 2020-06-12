@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-select-optgroup',
   template: `
-    <nz-select [(ngModel)]="selectedValue" nzAllowClear nzPlaceHolder="Choose">
+    <nz-select [(ngModel)]="selectedValue" nzAllowClear nzPlaceHolder="Choose" nzShowSearch>
       <nz-option-group nzLabel="Manager">
         <nz-option nzValue="jack" nzLabel="Jack"></nz-option>
         <nz-option nzValue="lucy" nzLabel="Lucy"></nz-option>
