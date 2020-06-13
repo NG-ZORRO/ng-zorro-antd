@@ -31,20 +31,22 @@ export class NzTableStyleService {
     this.manualWidthConfigPx$,
     combineLatest([this.listOfAutoWidthPx$, this.manualWidthConfigPx$]).pipe(
       map(([autoWidth, manualWidth]) => {
-        let realManualWidthLength = 0;
-        for (const width of manualWidth) {
-          if (width) {
-            realManualWidthLength += 1;
-          }
-        }
-        // If manualWidth is fully filled with width and the length is equal to autoWidth, regard autoWidth as the result.
-        if (realManualWidthLength > 0 && realManualWidthLength === autoWidth.length) {
-          return autoWidth;
-        } else {
-          // If manualWidth is not specified (realManualWidthLength === 0), return it to generate corresponding number <col>.
-          // If manualWidth is specified or dynamically changed (realManualWidthLength > 0), but some column width not specified
-          // ( realManualWidthLength !== autoWidth.length ) then return manualWidth to dynamically change col width.
+        /**
+         * In none scroll mode (autoWidth.length === 0):
+         * Use manualWidth not matter whether [nzWidth] or [nzWidthConfig] is configured or not.
+         */
+        if (autoWidth.length === 0) {
           return manualWidth;
+        } else {
+          /**
+           * In  scroll mode (autoWidth.length !== 0):
+           * Use manualWidth if [nzWidth] or [nzWidthConfig] is configured otherwise use autoWidth.
+           */
+          let realManualWidthLength = 0;
+          for (const width of manualWidth) {
+            realManualWidthLength += width ? 1 : 0;
+          }
+          return realManualWidthLength > 0 ? manualWidth : autoWidth;
         }
       })
     )
