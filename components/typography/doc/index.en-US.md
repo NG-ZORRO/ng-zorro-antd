@@ -12,6 +12,10 @@ Basic text writing, including headings, body text, lists, and more.
 - When need to display title or paragraph contents in Articles/Blogs/Notes.
 - When you need copyable/editable/ellipsis texts.
 
+```ts
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
+```
+
 ## API
 
 ### [nz-typography]
