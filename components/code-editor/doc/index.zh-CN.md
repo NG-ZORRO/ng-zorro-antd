@@ -82,7 +82,7 @@ npm install monaco-editor
 | `[nzFullControl]` | 完全控制模式，此模式下组件不会帮助用户处理 `TextModel`，用户应当自行管理 monaco editor 实例 | `boolean` | `false` |
 | `[nzEditorOption]` | 编辑器选项，[参考 monaco editor 的定义](https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditorconstructionoptions.html) | `IEditorConstructionOptions` | `{}` |
 | `[nzToolkit]` | 暴露快捷操作 | `TemplateRef<void>` | - |
-| `(nzEditorInitialized)` | 当编辑器组件初始化完毕之后派发事件  | `IEditor` \| `IDiffEditor` | - |
+| `(nzEditorInitialized)` | 当编辑器组件初始化完毕之后派发事件  | `IStandaloneCodeEditor` \| `IStandaloneDiffEditor` | - |
 
 #### 方法
 
