@@ -75,7 +75,7 @@ If you use static loading, you should not add assets of monaco editor to your pr
 | `[nzFullControl]` | Enable full control mode. User should manage `TextModel` manually in this mode | `boolean` | `false` |
 | `[nzEditorOption]` | [Please refer to the doc of monaco editor](https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditorconstructionoptions.html) | `IEditorConstructionOptions` | `{}` |
 | `[nzToolkit]` | A placeholder for adding some quick actions | `TemplateRef<void>` | - |
-| `(nzEditorInitialized)` | The event that a code editor is initialized  | `IEditor` \| `IDiffEditor` | - |
+| `(nzEditorInitialized)` | The event that a code editor is initialized  | `IStandaloneCodeEditor` \| `IStandaloneDiffEditor` | - |
 
 #### Methods
 
