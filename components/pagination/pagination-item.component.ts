@@ -95,10 +95,10 @@ export class NzPaginationItemComponent implements OnChanges {
     if (locale || index || type) {
       this.title = ({
         page: `${this.index}`,
-        next: this.locale.next_page,
-        prev: this.locale.prev_page,
-        prev_5: this.locale.prev_5,
-        next_5: this.locale.next_5
+        next: this.locale?.next_page,
+        prev: this.locale?.prev_page,
+        prev_5: this.locale?.prev_5,
+        next_5: this.locale?.next_5
       } as NzSafeAny)[this.type!];
     }
   }

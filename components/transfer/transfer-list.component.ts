@@ -117,8 +117,8 @@ export class NzTransferListComponent {
 
   @Input() dataSource: TransferItem[] = [];
 
-  @Input() itemUnit = '';
-  @Input() itemsUnit = '';
+  @Input() itemUnit: string | undefined = '';
+  @Input() itemsUnit: string | undefined = '';
   @Input() filter = '';
   @Input() disabled?: boolean;
   @Input() showSearch?: boolean;

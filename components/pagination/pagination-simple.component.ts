@@ -44,7 +44,7 @@ import { PaginationItemRenderContext } from './pagination.types';
       </li>
       <li
         nz-pagination-item
-        [attr.title]="locale.next_page"
+        [attr.title]="locale?.next_page"
         [disabled]="isLastIndex"
         (click)="nextPage()"
         type="next"
