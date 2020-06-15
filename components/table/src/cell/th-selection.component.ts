@@ -10,6 +10,7 @@ import {
   Input,
   OnChanges,
   Output,
+  SimpleChange,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
@@ -50,20 +51,28 @@ export class NzThSelectionComponent implements OnChanges {
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   @Output() readonly nzSortChangeWithKey = new EventEmitter<{ key: string; value: string | null }>();
 
+  private isNzShowExpandChanged = false;
+  private isNzShowCheckboxChanged = false;
+
   onCheckedChange(checked: boolean): void {
     this.nzChecked = checked;
     this.nzCheckedChange.emit(checked);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzChecked, nzSelections } = changes;
-    const isShowCheckbox = nzChecked && nzChecked.firstChange;
-    if (isShowCheckbox) {
-      this.nzShowCheckbox = true;
+    const isFirstChange = (value: SimpleChange) => value && value.firstChange && value.currentValue !== undefined;
+    const { nzChecked, nzSelections, nzShowExpand, nzShowCheckbox } = changes;
+    if (nzShowExpand) {
+      this.isNzShowExpandChanged = true;
     }
-    const isShowSelections = nzSelections && nzSelections.firstChange;
-    if (isShowSelections) {
+    if (nzShowCheckbox) {
+      this.isNzShowCheckboxChanged = true;
+    }
+    if (isFirstChange(nzSelections) && !this.isNzShowExpandChanged) {
       this.nzShowRowSelection = true;
+    }
+    if (isFirstChange(nzChecked) && !this.isNzShowCheckboxChanged) {
+      this.nzShowCheckbox = true;
     }
   }
 }
