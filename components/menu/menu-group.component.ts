@@ -62,7 +62,7 @@ export class NzMenuGroupComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const ulElement = this.renderer.nextSibling(this.titleElement!.nativeElement);
+    const ulElement = this.titleElement!.nativeElement.nextElementSibling;
     if (ulElement) {
       /** add classname to ul **/
       const className = this.isMenuInsideDropDown ? 'ant-dropdown-menu-item-group-list' : 'ant-menu-item-group-list';
