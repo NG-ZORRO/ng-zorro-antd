@@ -18,7 +18,7 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 ## API
 
 ```html
-<nz-card nzTitle="卡片标题">卡片内容</nz-card>
+<nz-card nzTitle="card title">card content</nz-card>
 ```
 
 ### nz-card
