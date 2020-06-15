@@ -4,19 +4,18 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-radio-radiogroup-more',
   template: `
     <nz-radio-group [(ngModel)]="radioValue">
-      <label nz-radio [ngStyle]="style" nzValue="A">Option A</label>
-      <label nz-radio [ngStyle]="style" nzValue="B">Option B</label>
-      <label nz-radio [ngStyle]="style" nzValue="C">Option C</label>
-      <label nz-radio [ngStyle]="style" nzValue="M">
-        More...
-        <input type="text" nz-input *ngIf="radioValue === 'M'" />
-      </label>
+      <label nz-radio nzValue="A">Option A</label>
+      <label nz-radio nzValue="B">Option B</label>
+      <label nz-radio nzValue="C">Option C</label>
+      <label nz-radio nzValue="M">More... <input type="text" nz-input *ngIf="radioValue === 'M'" /></label>
     </nz-radio-group>
   `,
   styles: [
     `
       [nz-radio] {
         display: block;
+        height: 32px;
+        line-height: 32px;
       }
       input {
         width: 100px;
@@ -27,9 +26,4 @@ import { Component } from '@angular/core';
 })
 export class NzDemoRadioRadiogroupMoreComponent {
   radioValue = 'A';
-  style = {
-    display: 'block',
-    height: '30px',
-    lineHeight: '30px'
-  };
 }
