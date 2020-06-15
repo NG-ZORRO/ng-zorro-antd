@@ -65,6 +65,7 @@ import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
         [attr.max]="nzMax"
         [placeholder]="nzPlaceHolder"
         [attr.step]="nzStep"
+        [attr.inputmode]="nzInputMode"
         (keydown)="onKeyDown($event)"
         (keyup)="stop()"
         [ngModel]="displayValue"
@@ -117,6 +118,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   @Input() nzPrecisionMode: 'cut' | 'toFixed' | ((value: number | string, precision?: number) => number) = 'toFixed';
   @Input() nzPlaceHolder = '';
   @Input() nzStep = 1;
+  @Input() nzInputMode: string = 'decimal';
   @Input() nzId: string | null = null;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAutoFocus = false;
