@@ -4,7 +4,7 @@
  */
 
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { DOWN_ARROW, ENTER, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
+import { DOWN_ARROW, ENTER, ESCAPE, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import { CdkConnectedOverlay, CdkOverlayOrigin, ConnectedOverlayPositionChange } from '@angular/cdk/overlay';
 import { Platform } from '@angular/cdk/platform';
 import {
@@ -152,7 +152,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
     '[class.ant-select-allow-clear]': 'nzAllowClear',
     '[class.ant-select-borderless]': 'nzBorderless',
     '[class.ant-select-open]': 'nzOpen',
-    '[class.ant-select-focused]': 'nzOpen',
+    '[class.ant-select-focused]': 'nzOpen || focused',
     '[class.ant-select-single]': `nzMode === 'default'`,
     '[class.ant-select-multiple]': `nzMode !== 'default'`
   }
@@ -229,6 +229,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   listOfTopItem: NzSelectItemInterface[] = [];
   activatedValue: NzSafeAny | null = null;
   listOfValue: NzSafeAny[] = [];
+  focused = false;
 
   generateTagItem(value: string): NzSelectItemInterface {
     return {
@@ -396,6 +397,13 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
       case TAB:
         this.setOpenState(false);
         break;
+      case ESCAPE:
+        this.setOpenState(false);
+        break;
+      default:
+        if (!this.nzOpen) {
+          this.setOpenState(true);
+        }
     }
   }
 
@@ -527,11 +535,15 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
       .pipe(takeUntil(this.destroy$))
       .subscribe(focusOrigin => {
         if (!focusOrigin) {
+          this.focused = false;
+          this.cdr.markForCheck();
           this.nzBlur.emit();
           Promise.resolve().then(() => {
             this.onTouched();
           });
         } else {
+          this.focused = true;
+          this.cdr.markForCheck();
           this.nzFocus.emit();
         }
       });
