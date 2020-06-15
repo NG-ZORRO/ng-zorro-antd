@@ -11,21 +11,12 @@
     cursor: pointer;
     transition: all 0.3s;
     &:hover {
-      color: @input-icon-hover-color;
+      color: fade(@black, 80%);
     }
   }
 
   &-enter-button {
     input {
-      border-right: 0;
-
-      &:hover,
-      &:focus {
-        border-color: @input-hover-border-color;
-      }
-    }
-
-    &.@{ant-prefix}-input-affix-wrapper {
       border-right: 0;
     }
 

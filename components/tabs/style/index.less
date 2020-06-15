@@ -61,7 +61,7 @@
 
   // https://github.com/ant-design/ant-design/issues/9104
   &-bottom &-bottom-bar {
-    margin-top: @margin-md;
+    margin-top: 16px;
     margin-bottom: 0;
     border-top: @border-width-base @border-style-base @border-color-split;
     border-bottom: none;
@@ -137,7 +137,6 @@
 
   &-tab-prev {
     left: 0;
-
     :root & {
       filter: none;
     }
@@ -208,13 +207,12 @@
       }
 
       .@{iconfont-css-prefix} {
-        margin-right: @margin-sm;
+        margin-right: 8px;
       }
 
       &-active {
         color: @tabs-highlight-color;
         font-weight: 500;
-        outline: none;
       }
 
       &-disabled {
@@ -253,18 +251,14 @@
     content: '';
   }
 
-  .@{tab-prefix-cls}-tabpane {
-    outline: none;
-  }
-
   // Horizontal Content
   .@{tab-prefix-cls}-top-content,
   .@{tab-prefix-cls}-bottom-content {
     width: 100%;
-
     > .@{tab-prefix-cls}-tabpane {
       flex-shrink: 0;
       width: 100%;
+      -webkit-backface-visibility: hidden;
       opacity: 1;
       transition: opacity 0.45s;
     }
@@ -382,7 +376,7 @@
     }
   }
   .@{tab-prefix-cls}-left-content {
-    padding-left: @padding-lg;
+    padding-left: 24px;
     border-left: @border-width-base @border-style-base @border-color-split;
   }
 
@@ -403,7 +397,7 @@
     }
   }
   .@{tab-prefix-cls}-right-content {
-    padding-right: @padding-lg;
+    padding-right: 24px;
     border-right: @border-width-base @border-style-base @border-color-split;
   }
 }
@@ -440,5 +434,3 @@
 .@{tab-prefix-cls}-right-content {
   .tabs-no-animation();
 }
-
-@import './rtl.less';
