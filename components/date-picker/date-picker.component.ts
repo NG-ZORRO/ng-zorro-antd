@@ -138,7 +138,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
    */
   @Input() nzClassName: string = '';
   @Input() nzDisabledDate?: (d: Date) => boolean;
-  @Input() nzLocale?: NzDatePickerI18nInterface;
+  @Input() nzLocale!: NzDatePickerI18nInterface;
   @Input() nzPlaceHolder: string | [string, string] = '';
   @Input() nzPopupStyle: object = POPUP_STYLE_PATCH;
   @Input() nzDropdownClassName?: string;

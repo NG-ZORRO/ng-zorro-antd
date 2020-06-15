@@ -18,6 +18,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzPaginationItemComponent } from './pagination-item.component';
 import { PaginationItemRenderContext } from './pagination.types';
 
@@ -67,7 +68,7 @@ export class NzPaginationDefaultComponent implements OnChanges {
   @Input() itemRender: TemplateRef<PaginationItemRenderContext> | null = null;
   @Input() showTotal: TemplateRef<{ $implicit: number; range: [number, number] }> | null = null;
   @Input() disabled = false;
-  @Input() locale: NzSafeAny = {};
+  @Input() locale!: NzPaginationI18nInterface;
   @Input() showSizeChanger = false;
   @Input() showQuickJumper = false;
   @Input() total = 0;

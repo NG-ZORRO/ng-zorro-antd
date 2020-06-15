@@ -8,7 +8,7 @@ import { isPromise } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzI18nService, NzModalI18nInterface } from 'ng-zorro-antd/i18n';
 
 import { NzModalRef } from './modal-ref';
 import { ModalButtonOptions, ModalOptions } from './modal-types';
@@ -70,7 +70,7 @@ import { ModalButtonOptions, ModalOptions } from './modal-types';
 export class NzModalFooterComponent implements OnDestroy {
   buttonsFooter = false;
   buttons: ModalButtonOptions[] = [];
-  locale: { okText?: string; cancelText?: string } = {};
+  locale!: NzModalI18nInterface;
   @Output() readonly cancelTriggered = new EventEmitter<void>();
   @Output() readonly okTriggered = new EventEmitter<void>();
   @Input() modalRef!: NzModalRef;

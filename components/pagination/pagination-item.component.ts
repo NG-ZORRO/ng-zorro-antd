@@ -15,6 +15,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 import { PaginationItemRenderContext, PaginationItemType } from './pagination.types';
 
 @Component({
@@ -65,7 +66,7 @@ export class NzPaginationItemComponent implements OnChanges {
   static ngAcceptInputType_index: number | null | undefined;
 
   @Input() active = false;
-  @Input() locale: NzSafeAny = {};
+  @Input() locale!: NzPaginationI18nInterface;
   @Input() index: number | null = null;
   @Input() disabled = false;
   @Input() type: PaginationItemType | string | null = null;

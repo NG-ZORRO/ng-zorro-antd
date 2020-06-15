@@ -21,7 +21,7 @@ import {
 } from '@angular/core';
 import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toArray } from 'ng-zorro-antd/core/util';
-import { NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzI18nService, NzTransferI18nInterface } from 'ng-zorro-antd/i18n';
 
 import { Observable, of, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -107,7 +107,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   @ViewChildren(NzTransferListComponent)
   private lists!: QueryList<NzTransferListComponent>;
-  locale: NzSafeAny = {};
+  locale!: NzTransferI18nInterface;
 
   leftFilter = '';
   rightFilter = '';

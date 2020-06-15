@@ -13,8 +13,8 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { toNumber } from 'ng-zorro-antd/core/util';
+import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 
 @Component({
   selector: 'div[nz-pagination-options]',
@@ -51,7 +51,7 @@ export class NzPaginationOptionsComponent implements OnChanges {
   @Input() disabled = false;
   @Input() showSizeChanger = false;
   @Input() showQuickJumper = false;
-  @Input() locale: NzSafeAny = {};
+  @Input() locale!: NzPaginationI18nInterface;
   @Input() total = 0;
   @Input() pageIndex = 1;
   @Input() pageSize = 10;
