@@ -668,6 +668,21 @@ describe('upload', () => {
         expect(el != null).toBe(true);
         expect((el.nativeElement as HTMLElement).textContent).toBe('asdf');
       });
+
+      it('#nzFileListRender', () => {
+        instance.nzFileList = [
+          {
+            uid: 1,
+            name: 'xxx.png',
+            status: 'uploading'
+          } as any
+        ];
+        instance.nzFileListRender = instance.fileListRender;
+        fixture.detectChanges();
+        const el = pageObject.getByCss(`.fileListRender`);
+        expect(el != null).toBe(true);
+        expect((el.nativeElement as HTMLElement).textContent).toBe('asdf');
+      });
     });
 
     describe('CORS', () => {
@@ -1333,6 +1348,7 @@ describe('upload', () => {
       [nzDirectory]="directory"
       [nzTransformFile]="nzTransformFile"
       [nzIconRender]="nzIconRender"
+      [nzFileListRender]="nzFileListRender"
       (nzFileListChange)="nzFileListChange($event)"
       (nzChange)="nzChange($event)"
     >
@@ -1341,11 +1357,15 @@ describe('upload', () => {
     <ng-template #customnzIconRender>
       <span class="customnzIconRender">asdf</span>
     </ng-template>
+    <ng-template #fileListRender>
+      <span class="fileListRender">asdf</span>
+    </ng-template>
   `
 })
 class TestUploadComponent {
   @ViewChild('upload', { static: false }) comp!: NzUploadComponent;
   @ViewChild('customnzIconRender', { static: false }) customnzIconRender!: TemplateRef<void>;
+  @ViewChild('fileListRender', { static: false }) fileListRender!: TemplateRef<void>;
   show = true;
   nzType: NzUploadType = 'select';
   nzLimit = 0;
@@ -1374,6 +1394,7 @@ class TestUploadComponent {
   nzWithCredentials = false;
   nzTransformFile!: (file: NzUploadFile) => NzUploadTransformFileType;
   nzIconRender: TemplateRef<void> | null = null;
+  nzFileListRender: TemplateRef<void> | null = null;
   _onPreview = false;
   onPreview = (): void => {
     this._onPreview = true;
