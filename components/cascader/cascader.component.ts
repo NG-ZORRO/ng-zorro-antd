@@ -4,7 +4,7 @@
  */
 
 import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
-import { CdkConnectedOverlay, ConnectedOverlayPositionChange, ConnectionPositionPair } from '@angular/cdk/overlay';
+import { CdkConnectedOverlay, ConnectionPositionPair } from '@angular/cdk/overlay';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -115,9 +115,9 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
       cdkConnectedOverlayHasBackdrop
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayPositions]="positions"
+      [cdkConnectedOverlayTransformOriginOn]="'.ant-cascader-menus'"
       (backdropClick)="closeMenu()"
       (detach)="closeMenu()"
-      (positionChange)="onPositionChange($event)"
       [cdkConnectedOverlayOpen]="menuVisible"
     >
       <div
@@ -128,7 +128,7 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
         [ngStyle]="nzMenuStyle"
         [@.disabled]="noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
-        [@slideMotion]="dropDownPosition"
+        [@slideMotion]="'enter'"
         (mouseleave)="onTriggerMouseLeave($event)"
       >
         <ul
@@ -244,7 +244,6 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   shouldShowEmpty: boolean = false;
 
   el: HTMLElement;
-  dropDownPosition = 'bottom';
   menuVisible = false;
   isLoading = false;
   labelRenderText?: string;
@@ -688,14 +687,6 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     this.blur();
     this.clearDelayMenuTimer();
     this.setMenuVisible(false);
-  }
-
-  onPositionChange(position: ConnectedOverlayPositionChange): void {
-    const newValue = position.connectionPair.originY === 'bottom' ? 'bottom' : 'top';
-    if (this.dropDownPosition !== newValue) {
-      this.dropDownPosition = newValue;
-      this.cdr.detectChanges();
-    }
   }
 
   /**

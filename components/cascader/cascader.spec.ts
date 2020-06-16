@@ -17,7 +17,7 @@ import {
   UP_ARROW,
   ZERO
 } from '@angular/cdk/keycodes';
-import { ConnectedOverlayPositionChange, OverlayContainer } from '@angular/cdk/overlay';
+import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { async, ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -1315,35 +1315,6 @@ describe('cascader', () => {
       expect(testComponent.values!.length).toBe(1);
       expect(testComponent.values![0]).toBe('zhejiang');
     }));
-
-    it('should position change correct', () => {
-      const fakeTopEvent = {
-        connectionPair: {
-          originX: 'center',
-          originY: 'top',
-          overlayX: 'center',
-          overlayY: 'bottom'
-        }
-      } as ConnectedOverlayPositionChange;
-      const fakeBottomEvent = {
-        connectionPair: {
-          originX: 'center',
-          originY: 'bottom',
-          overlayX: 'center',
-          overlayY: 'top'
-        }
-      } as ConnectedOverlayPositionChange;
-
-      fixture.detectChanges();
-      testComponent.cascader.setMenuVisible(true);
-      fixture.detectChanges();
-      testComponent.cascader.onPositionChange(fakeTopEvent);
-      fixture.detectChanges();
-      expect(testComponent.cascader.dropDownPosition).toBe('top');
-      testComponent.cascader.onPositionChange(fakeBottomEvent);
-      fixture.detectChanges();
-      expect(testComponent.cascader.dropDownPosition).toBe('bottom');
-    });
 
     it('should support search', fakeAsync(() => {
       fixture.detectChanges();
