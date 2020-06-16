@@ -72,18 +72,20 @@ export class NzTableDataService implements OnDestroy {
       const listOfSortOperator = listOfCalcOperator
         .filter(item => item.sortOrder !== null && typeof item.sortFn === 'function')
         .sort((a, b) => +b.sortPriority - +a.sortPriority);
-      listOfDataAfterCalc.sort((record1, record2) => {
-        for (const item of listOfSortOperator) {
-          const { sortFn, sortOrder } = item;
-          if (sortFn && sortOrder) {
-            const compareResult = (sortFn as NzTableSortFn)(record1, record2, sortOrder);
-            if (compareResult !== 0) {
-              return sortOrder === 'ascend' ? compareResult : -compareResult;
+      if (listOfCalcOperator.length) {
+        listOfDataAfterCalc.sort((record1, record2) => {
+          for (const item of listOfSortOperator) {
+            const { sortFn, sortOrder } = item;
+            if (sortFn && sortOrder) {
+              const compareResult = (sortFn as NzTableSortFn)(record1, record2, sortOrder);
+              if (compareResult !== 0) {
+                return sortOrder === 'ascend' ? compareResult : -compareResult;
+              }
             }
           }
-        }
-        return 0;
-      });
+          return 0;
+        });
+      }
       return listOfDataAfterCalc;
     })
   );
