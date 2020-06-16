@@ -79,10 +79,7 @@ task('build:site-issue-helper', execTask('bash', [issueHelperScriptFile]));
 
 /** Build all site projects to the output directory. */
 task(
-  'build:site',
-  CI || process.env.SYSTEM_JOBNAME
-    ? series('build:site-doc', 'build:site-iframe')
-    : series('build:site-doc', 'build:site-iframe', 'build:site-issue-helper')
+  'build:site', series('build:site-doc', 'build:site-iframe', 'build:site-issue-helper')
 );
 
 /** Init site directory, and start watch and ng-serve */
