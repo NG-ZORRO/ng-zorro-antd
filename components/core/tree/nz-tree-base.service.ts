@@ -461,13 +461,9 @@ export class NzTreeBaseService {
       nodes.forEach(node => {
         if (keys === null) {
           // render tree if no default checked keys found
-          if (node.origin.checked) {
-            node.isChecked = true;
-          } else {
-            node.isChecked = false;
-          }
+          node.isChecked = !!node.origin.checked;
         } else {
-          if (isInArray(node.key, keys ?? [])) {
+          if (isInArray(node.key, keys || [])) {
             node.isChecked = true;
             node.isHalfChecked = false;
           } else {
