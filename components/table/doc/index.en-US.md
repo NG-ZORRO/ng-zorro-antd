@@ -74,7 +74,7 @@ The data passed to `[nzData]` will be export with [Template Context](https://ang
 | `[nzWidthConfig]` | Set col width can not used with `[nzWidth]` of `th` | `string[]` | `[]` |
 | `[nzSize]` | Size of table | `'middle' \| 'small' \| 'default'` | `'default'` | ✅ |
 | `[nzLoading]` | Loading status of table | `boolean` | `false` |
-| `[nzLoadingIndicator]` | the spinning indicator | `TemplateRef<void>` | - |
+| `[nzLoadingIndicator]` | the spinning indicator | `TemplateRef<void>` | - | ✅ |
 | `[nzLoadingDelay]` | Specifies a delay in milliseconds for loading state (prevent flush) | `number` | `0` |
 | `[nzScroll]` | Whether table can be scrolled in x/y direction, `x` or `y` can be a string that indicates the width and height of table body | `object` | - |
 | `[nzTitle]` | Table title renderer | `string \| TemplateRef<void>` | - |
