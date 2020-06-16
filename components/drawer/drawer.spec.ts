@@ -147,9 +147,11 @@ describe('NzDrawerComponent', () => {
     component.open();
     fixture.detectChanges();
     expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
+    expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('no-mask')).toBe(true);
     expect(overlayContainerElement.querySelector('.ant-drawer .ant-drawer-mask')).toBe(null);
     component.showMask = true;
     fixture.detectChanges();
+    expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('no-mask')).toBe(false);
   });
 
   it('should set nzMaskStyle & nzBodyStyle', () => {
