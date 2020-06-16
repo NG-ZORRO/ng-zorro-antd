@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 export interface TreeNodeInterface {
-  key: number;
+  key: string;
   name: string;
   age?: number;
   level?: number;
@@ -46,25 +46,25 @@ export interface TreeNodeInterface {
 export class NzDemoTableExpandChildrenComponent implements OnInit {
   listOfMapData: TreeNodeInterface[] = [
     {
-      key: 1,
+      key: `1`,
       name: 'John Brown sr.',
       age: 60,
       address: 'New York No. 1 Lake Park',
       children: [
         {
-          key: 11,
+          key: `1-1`,
           name: 'John Brown',
           age: 42,
           address: 'New York No. 2 Lake Park'
         },
         {
-          key: 12,
+          key: `1-2`,
           name: 'John Brown jr.',
           age: 30,
           address: 'New York No. 3 Lake Park',
           children: [
             {
-              key: 121,
+              key: `1-2-1`,
               name: 'Jimmy Brown',
               age: 16,
               address: 'New York No. 3 Lake Park'
@@ -72,25 +72,25 @@ export class NzDemoTableExpandChildrenComponent implements OnInit {
           ]
         },
         {
-          key: 13,
+          key: `1-3`,
           name: 'Jim Green sr.',
           age: 72,
           address: 'London No. 1 Lake Park',
           children: [
             {
-              key: 131,
+              key: `1-3-1`,
               name: 'Jim Green',
               age: 42,
               address: 'London No. 2 Lake Park',
               children: [
                 {
-                  key: 1311,
+                  key: `1-3-1-1`,
                   name: 'Jim Green jr.',
                   age: 25,
                   address: 'London No. 3 Lake Park'
                 },
                 {
-                  key: 1312,
+                  key: `1-3-1-2`,
                   name: 'Jimmy Green sr.',
                   age: 18,
                   address: 'London No. 4 Lake Park'
@@ -102,7 +102,7 @@ export class NzDemoTableExpandChildrenComponent implements OnInit {
       ]
     },
     {
-      key: 2,
+      key: `2`,
       name: 'Joe Black',
       age: 32,
       address: 'Sidney No. 1 Lake Park'
