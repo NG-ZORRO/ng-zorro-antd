@@ -274,8 +274,12 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
       this.handleNzData(this.nzData);
     }
 
-    if (nzCheckedKeys || nzCheckStrictly) {
+    if (nzCheckedKeys) {
       this.handleCheckedKeys(this.nzCheckedKeys);
+    }
+
+    if (nzCheckStrictly) {
+      this.handleCheckedKeys(null);
     }
 
     if (nzExpandedKeys || nzExpandAll) {
@@ -320,7 +324,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
     this.nzTreeService.flattenTreeData(data, expandKeys);
   }
 
-  handleCheckedKeys(keys: NzTreeNodeKey[]): void {
+  handleCheckedKeys(keys: NzTreeNodeKey[] | null): void {
     this.nzTreeService.conductCheck(keys, this.nzCheckStrictly);
   }
 
