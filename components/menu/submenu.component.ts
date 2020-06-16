@@ -90,6 +90,7 @@ const listOfHorizontalPositions = [POSITION_MAP.bottomLeft];
         [cdkConnectedOverlayOrigin]="origin"
         [cdkConnectedOverlayWidth]="triggerWidth!"
         [cdkConnectedOverlayOpen]="nzOpen"
+        [cdkConnectedOverlayTransformOriginOn]="'.ant-menu-submenu'"
       >
         <div
           nz-submenu-none-inline-child

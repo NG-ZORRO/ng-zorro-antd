@@ -46,7 +46,11 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
   private portal?: TemplatePortal;
   private overlayRef: OverlayRef | null = null;
   private destroy$ = new Subject();
-  private positionStrategy = this.overlay.position().flexibleConnectedTo(this.elementRef.nativeElement).withLockedPosition();
+  private positionStrategy = this.overlay
+    .position()
+    .flexibleConnectedTo(this.elementRef.nativeElement)
+    .withLockedPosition()
+    .withTransformOriginOn('.ant-dropdown');
   private inputVisible$ = new BehaviorSubject<boolean>(false);
   private nzTrigger$ = new BehaviorSubject<'click' | 'hover'>('hover');
   private overlayClose$ = new Subject<boolean>();
@@ -76,11 +80,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
     private platform: Platform
   ) {}
 
-  ngOnInit(): void {
-    this.positionStrategy.positionChanges.pipe(takeUntil(this.destroy$)).subscribe(change => {
-      this.setDropdownMenuValue('dropDownPosition', change.connectionPair.originY);
-    });
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     if (this.nzDropdownMenu) {
@@ -183,7 +183,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzVisible, nzPlacement, nzDisabled, nzOverlayClassName, nzOverlayStyle, nzTrigger } = changes;
+    const { nzVisible, nzDisabled, nzOverlayClassName, nzOverlayStyle, nzTrigger } = changes;
     if (nzTrigger) {
       this.nzTrigger$.next(this.nzTrigger);
     }
@@ -204,9 +204,6 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
     }
     if (nzOverlayStyle) {
       this.setDropdownMenuValue('nzOverlayStyle', this.nzOverlayStyle);
-    }
-    if (nzPlacement) {
-      this.setDropdownMenuValue('dropDownPosition', this.nzPlacement.indexOf('top') !== -1 ? 'top' : 'bottom');
     }
   }
 }
