@@ -1,5 +1,6 @@
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
+import { ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { Location } from '@angular/common';
 import { SpyLocation } from '@angular/common/testing';
 import {
@@ -143,6 +144,27 @@ describe('NzModal', () => {
     expect(modalContentElement!.textContent).toBe('Hello Modal');
     expect(fixture.componentInstance.modalRef).toBe(modalRef);
     modalRef.close();
+  });
+
+  it('should be thrown when attaching repeatedly', () => {
+    const modalRefComponent = modalService.create({
+      nzContent: TestWithModalContentComponent,
+      nzComponentParams: {
+        value: 'Modal'
+      }
+    });
+
+    expect(() => {
+      modalRefComponent.containerInstance.attachComponentPortal(new ComponentPortal(TestWithModalContentComponent));
+    }).toThrowError('Attempting to attach modal content after content is already attached');
+
+    const modalRefTemplate = modalService.create({
+      nzContent: fixture.componentInstance.templateRef
+    });
+
+    expect(() => {
+      modalRefTemplate.containerInstance.attachTemplatePortal(new TemplatePortal(fixture.componentInstance.templateRef, null!));
+    }).toThrowError('Attempting to attach modal content after content is already attached');
   });
 
   it('should open modal with HTML string', () => {
@@ -405,9 +427,18 @@ describe('NzModal', () => {
 
     fixture.detectChanges();
 
-    expect(modalRef.getBackdropElement()?.classList).not.toContain('ant-modal-mask');
+    expect(modalRef.getBackdropElement()?.classList).not.toContain('ant-modal-mask', 'should use global config');
 
     configService.set('modal', { nzMask: true });
+    fixture.detectChanges();
+
+    expect(modalRef.getBackdropElement()?.classList).toContain('ant-modal-mask', 'should add class when global config changed');
+
+    configService.set('modal', { nzMask: false });
+    fixture.detectChanges();
+    expect(modalRef.getBackdropElement()?.classList).not.toContain('ant-modal-mask', 'should remove class when global config changed');
+
+    configService.set('modal', { nzMask: true }); // reset
     modalRef.close();
     fixture.detectChanges();
     flush();
@@ -633,6 +664,16 @@ describe('NzModal', () => {
 
     expect(modalRef.getBackdropElement()!.style.color).toBe('rgb(0, 0, 0)');
 
+    modalRef.updateConfig({
+      nzMaskStyle: {
+        color: 'rgb(255, 0, 0)'
+      }
+    });
+
+    fixture.detectChanges();
+    flushMicrotasks();
+
+    expect(modalRef.getBackdropElement()!.style.color).toBe('rgb(255, 0, 0)');
     modalRef.close();
     fixture.detectChanges();
     flush();
