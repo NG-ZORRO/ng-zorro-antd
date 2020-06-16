@@ -34,6 +34,7 @@ import { ModalOptions } from './modal-types';
       #modalElement
       role="document"
       class="ant-modal"
+      (mousedown)="onMousedown()"
       [ngClass]="config.nzClassName!"
       [ngStyle]="config.nzStyle!"
       [style.width]="config?.nzWidth! | nzToCssUnit"
@@ -67,8 +68,8 @@ import { ModalOptions } from './modal-types';
     '[@modalContainer]': 'state',
     '(@modalContainer.start)': 'onAnimationStart($event)',
     '(@modalContainer.done)': 'onAnimationDone($event)',
-    '(mousedown)': 'onMousedown($event)',
-    '(mouseup)': 'onMouseup($event)'
+    '(click)': 'onContainerClick($event)',
+    '(mouseup)': 'onMouseup()'
   }
 })
 export class NzModalContainerComponent extends BaseModalContainer {

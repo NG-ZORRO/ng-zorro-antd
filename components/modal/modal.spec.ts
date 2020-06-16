@@ -346,10 +346,14 @@ describe('NzModal', () => {
 
     fixture.detectChanges();
 
-    const modalWrap = overlayContainerElement.querySelector('nz-modal-container') as HTMLElement;
-    dispatchMouseEvent(modalWrap, 'mousedown');
+    const modalWrapElement = overlayContainerElement.querySelector('nz-modal-container') as HTMLElement;
+    const modalElement = overlayContainerElement.querySelector('nz-modal-container .ant-modal') as HTMLElement;
+    dispatchMouseEvent(modalElement, 'mousedown');
     fixture.detectChanges();
-    dispatchMouseEvent(modalWrap, 'mouseup');
+    dispatchMouseEvent(modalWrapElement, 'mouseup');
+    flush();
+    modalWrapElement.click();
+    fixture.detectChanges();
     flush();
     expect(overlayContainerElement.querySelector('nz-modal-container')).toBeFalsy();
   }));
@@ -1367,11 +1371,17 @@ describe('NzModal', () => {
       componentFixture.detectChanges();
       flush();
 
-      let modalWrap = overlayContainerElement.querySelector('nz-modal-container') as HTMLElement;
-      dispatchMouseEvent(modalWrap, 'mousedown');
+      let modalWrapElement = overlayContainerElement.querySelector('nz-modal-container') as HTMLElement;
+      let modalElement = overlayContainerElement.querySelector('nz-modal-container .ant-modal') as HTMLElement;
+
+      dispatchMouseEvent(modalWrapElement, 'mousedown');
       fixture.detectChanges();
-      dispatchMouseEvent(modalWrap, 'mouseup');
+      dispatchMouseEvent(modalElement, 'mouseup');
       flush();
+      modalWrapElement.click();
+      fixture.detectChanges();
+      flush();
+
       expect(componentInstance.cancelSpy).not.toHaveBeenCalled();
 
       configService.set('modal', {
@@ -1380,10 +1390,15 @@ describe('NzModal', () => {
       componentFixture.detectChanges();
       flush();
 
-      modalWrap = overlayContainerElement.querySelector('nz-modal-container') as HTMLElement;
-      dispatchMouseEvent(modalWrap, 'mousedown');
+      modalWrapElement = overlayContainerElement.querySelector('nz-modal-container') as HTMLElement;
+      modalElement = overlayContainerElement.querySelector('nz-modal-container .ant-modal') as HTMLElement;
+
+      dispatchMouseEvent(modalWrapElement, 'mousedown');
       fixture.detectChanges();
-      dispatchMouseEvent(modalWrap, 'mouseup');
+      dispatchMouseEvent(modalElement, 'mouseup');
+      flush();
+      modalWrapElement.click();
+      fixture.detectChanges();
       flush();
       expect(componentInstance.cancelSpy).toHaveBeenCalled();
     }));
