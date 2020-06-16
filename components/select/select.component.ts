@@ -193,7 +193,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @Input() nzFilterOption: NzFilterOptionType = defaultFilterOption;
   @Input() compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
   @Input() @InputBoolean() nzAllowClear = false;
-  @Input() @InputBoolean() nzBorderless = false;
+  @Input() @WithConfig<boolean>(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzBorderless = false;
   @Input() @InputBoolean() nzShowSearch = false;
   @Input() @InputBoolean() nzLoading = false;
   @Input() @InputBoolean() nzAutoFocus = false;
