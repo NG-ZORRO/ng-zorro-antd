@@ -118,7 +118,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'table';
     '[class.ant-table-wrapper]': 'true'
   }
 })
-export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
+export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnChanges, AfterViewInit {
   static ngAcceptInputType_nzFrontPagination: BooleanInput;
   static ngAcceptInputType_nzTemplateMode: BooleanInput;
   static ngAcceptInputType_nzShowPagination: BooleanInput;
@@ -145,7 +145,7 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterView
   @Input() nzPageSize = 10;
   @Input() nzTotal = 0;
   @Input() nzWidthConfig: Array<string | null> = [];
-  @Input() nzData: NzTableData[] = [];
+  @Input() nzData: T[] = [];
   @Input() nzPaginationPosition: NzTablePaginationPosition = 'bottom';
   @Input() nzScroll: { x?: string | null; y?: string | null } = { x: null, y: null };
   @Input() @InputBoolean() nzFrontPagination = true;
@@ -165,7 +165,7 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterView
   @Output() readonly nzCurrentPageDataChange = new EventEmitter<NzTableData[]>();
 
   /** public data for ngFor tr */
-  public data: NzTableData[] = [];
+  public data: T[] = [];
   public cdkVirtualScrollViewport?: CdkVirtualScrollViewport;
   scrollX: string | null = null;
   scrollY: string | null = null;

@@ -1,5 +1,12 @@
 import { Component } from '@angular/core';
 
+interface Person {
+  key: string;
+  name: string;
+  age: number;
+  address: string;
+}
+
 @Component({
   selector: 'nz-demo-table-basic',
   template: `
@@ -28,7 +35,7 @@ import { Component } from '@angular/core';
   `
 })
 export class NzDemoTableBasicComponent {
-  listOfData = [
+  listOfData: Person[] = [
     {
       key: '1',
       name: 'John Brown',
