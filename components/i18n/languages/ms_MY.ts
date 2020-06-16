@@ -3,17 +3,93 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import Calendar from './calendar/ms_MY';
-import DatePicker from './date-picker/ms_MY';
-import Pagination from './pagination/ms_MY';
-import TimePicker from './time-picker/ms_MY';
-
 export default {
   locale: 'ms-my',
-  Pagination,
-  DatePicker,
-  TimePicker,
-  Calendar,
+  Pagination: {
+    items_per_page: '/ halaman',
+    jump_to: 'Lompat ke',
+    jump_to_confirm: 'Sahkan',
+    page: '',
+    prev_page: 'Halaman sebelumnya',
+    next_page: 'Halam seterusnya',
+    prev_5: '5 halaman sebelum',
+    next_5: '5 halaman seterusnya',
+    prev_3: '3 halaman sebelumnya',
+    next_3: '3 halaman seterusnya'
+  },
+  DatePicker: {
+    lang: {
+      placeholder: 'Pilih tarikh',
+      rangePlaceholder: ['Tarikh mula', 'Tarikh akhir'],
+      locale: 'ms_MY',
+      today: 'Hari ini',
+      now: 'Sekarang',
+      backToToday: 'Kembali ke hari ini',
+      ok: 'Ok',
+      timeSelect: 'Pilih masa',
+      dateSelect: 'Pilih tarikh',
+      weekSelect: 'Pilih minggu',
+      clear: 'Padam',
+      month: 'Bulan',
+      year: 'Tahun',
+      previousMonth: 'Bulan lepas',
+      nextMonth: 'Bulan depan',
+      monthSelect: 'Pilih bulan',
+      yearSelect: 'Pilih tahun',
+      decadeSelect: 'Pilih dekad',
+      yearFormat: 'YYYY',
+      dayFormat: 'D',
+      dateFormat: 'M/D/YYYY',
+      dateTimeFormat: 'M/D/YYYY HH:mm:ss',
+      previousYear: 'Tahun lepas (Ctrl+left)',
+      nextYear: 'Tahun depan (Ctrl+right)',
+      previousDecade: 'Dekad lepas',
+      nextDecade: 'Dekad depan',
+      previousCentury: 'Abad lepas',
+      nextCentury: 'Abad depan'
+    },
+    timePickerLocale: {
+      placeholder: 'Sila pilih masa'
+    }
+  },
+  TimePicker: {
+    placeholder: 'Sila pilih masa'
+  },
+  Calendar: {
+    lang: {
+      placeholder: 'Pilih tarikh',
+      rangePlaceholder: ['Tarikh mula', 'Tarikh akhir'],
+      locale: 'ms_MY',
+      today: 'Hari ini',
+      now: 'Sekarang',
+      backToToday: 'Kembali ke hari ini',
+      ok: 'Ok',
+      timeSelect: 'Pilih masa',
+      dateSelect: 'Pilih tarikh',
+      weekSelect: 'Pilih minggu',
+      clear: 'Padam',
+      month: 'Bulan',
+      year: 'Tahun',
+      previousMonth: 'Bulan lepas',
+      nextMonth: 'Bulan depan',
+      monthSelect: 'Pilih bulan',
+      yearSelect: 'Pilih tahun',
+      decadeSelect: 'Pilih dekad',
+      yearFormat: 'YYYY',
+      dayFormat: 'D',
+      dateFormat: 'M/D/YYYY',
+      dateTimeFormat: 'M/D/YYYY HH:mm:ss',
+      previousYear: 'Tahun lepas (Ctrl+left)',
+      nextYear: 'Tahun depan (Ctrl+right)',
+      previousDecade: 'Dekad lepas',
+      nextDecade: 'Dekad depan',
+      previousCentury: 'Abad lepas',
+      nextCentury: 'Abad depan'
+    },
+    timePickerLocale: {
+      placeholder: 'Sila pilih masa'
+    }
+  },
   global: {
     placeholder: 'Sila pilih'
   },

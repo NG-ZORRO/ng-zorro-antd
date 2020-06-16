@@ -3,17 +3,95 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import Calendar from './calendar/id_ID';
-import DatePicker from './date-picker/id_ID';
-import Pagination from './pagination/id_ID';
-import TimePicker from './time-picker/id_ID';
-
 export default {
   locale: 'id',
-  Pagination,
-  DatePicker,
-  TimePicker,
-  Calendar,
+  Pagination: {
+    items_per_page: '/ halaman',
+    jump_to: 'Menuju',
+    jump_to_confirm: 'konfirmasi',
+    page: '',
+    prev_page: 'Halaman Sebelumnya',
+    next_page: 'Halaman Berikutnya',
+    prev_5: '5 Halaman Sebelumnya',
+    next_5: '5 Halaman Berikutnya',
+    prev_3: '3 Halaman Sebelumnya',
+    next_3: '3 Halaman Berikutnya'
+  },
+  DatePicker: {
+    lang: {
+      placeholder: 'Pilih tanggal',
+      rangePlaceholder: ['Mulai tanggal', 'Tanggal akhir'],
+      locale: 'id_ID',
+      today: 'Hari ini',
+      now: 'Sekarang',
+      backToToday: 'Kembali ke hari ini',
+      ok: 'Baik',
+      clear: 'Bersih',
+      month: 'Bulan',
+      year: 'Tahun',
+      timeSelect: 'pilih waktu',
+      dateSelect: 'pilih tanggal',
+      weekSelect: 'Pilih satu minggu',
+      monthSelect: 'Pilih satu bulan',
+      yearSelect: 'Pilih satu tahun',
+      decadeSelect: 'Pilih satu dekade',
+      yearFormat: 'YYYY',
+      dateFormat: 'D/M/YYYY',
+      dayFormat: 'D',
+      dateTimeFormat: 'D/M/YYYY HH:mm:ss',
+      monthBeforeYear: true,
+      previousMonth: 'Bulan sebelumnya (PageUp)',
+      nextMonth: 'Bulan selanjutnya (PageDown)',
+      previousYear: 'Tahun lalu (Control + kiri)',
+      nextYear: 'Tahun selanjutnya (Kontrol + kanan)',
+      previousDecade: 'Dekade terakhir',
+      nextDecade: 'Dekade berikutnya',
+      previousCentury: 'Abad terakhir',
+      nextCentury: 'Abad berikutnya'
+    },
+    timePickerLocale: {
+      placeholder: 'Pilih waktu'
+    }
+  },
+  TimePicker: {
+    placeholder: 'Pilih waktu'
+  },
+  Calendar: {
+    lang: {
+      placeholder: 'Pilih tanggal',
+      rangePlaceholder: ['Mulai tanggal', 'Tanggal akhir'],
+      locale: 'id_ID',
+      today: 'Hari ini',
+      now: 'Sekarang',
+      backToToday: 'Kembali ke hari ini',
+      ok: 'Baik',
+      clear: 'Bersih',
+      month: 'Bulan',
+      year: 'Tahun',
+      timeSelect: 'pilih waktu',
+      dateSelect: 'pilih tanggal',
+      weekSelect: 'Pilih satu minggu',
+      monthSelect: 'Pilih satu bulan',
+      yearSelect: 'Pilih satu tahun',
+      decadeSelect: 'Pilih satu dekade',
+      yearFormat: 'YYYY',
+      dateFormat: 'D/M/YYYY',
+      dayFormat: 'D',
+      dateTimeFormat: 'D/M/YYYY HH:mm:ss',
+      monthBeforeYear: true,
+      previousMonth: 'Bulan sebelumnya (PageUp)',
+      nextMonth: 'Bulan selanjutnya (PageDown)',
+      previousYear: 'Tahun lalu (Control + kiri)',
+      nextYear: 'Tahun selanjutnya (Kontrol + kanan)',
+      previousDecade: 'Dekade terakhir',
+      nextDecade: 'Dekade berikutnya',
+      previousCentury: 'Abad terakhir',
+      nextCentury: 'Abad berikutnya'
+    },
+    timePickerLocale: {
+      placeholder: 'Pilih waktu'
+    }
+  },
   Table: {
     filterTitle: 'Saring',
     filterConfirm: 'OK',

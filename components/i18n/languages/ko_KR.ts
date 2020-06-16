@@ -3,17 +3,93 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import Calendar from './calendar/ko_KR';
-import DatePicker from './date-picker/ko_KR';
-import Pagination from './pagination/ko_KR';
-import TimePicker from './time-picker/ko_KR';
-
 export default {
   locale: 'ko',
-  Pagination,
-  DatePicker,
-  TimePicker,
-  Calendar,
+  Pagination: {
+    items_per_page: '/ 쪽',
+    jump_to: '이동하기',
+    jump_to_confirm: '확인하다',
+    page: '',
+    prev_page: '이전 페이지',
+    next_page: '다음 페이지',
+    prev_5: '이전 5 페이지',
+    next_5: '다음 5 페이지',
+    prev_3: '이전 3 페이지',
+    next_3: '다음 3 페이지'
+  },
+  DatePicker: {
+    lang: {
+      placeholder: '날짜 선택',
+      rangePlaceholder: ['시작일', '종료일'],
+      locale: 'ko_KR',
+      today: '오늘',
+      now: '현재 시각',
+      backToToday: '오늘로 돌아가기',
+      ok: '확인',
+      clear: '지우기',
+      month: '월',
+      year: '년',
+      timeSelect: '시간 선택',
+      dateSelect: '날짜 선택',
+      monthSelect: '달 선택',
+      yearSelect: '연 선택',
+      decadeSelect: '연대 선택',
+      yearFormat: 'YYYY년',
+      dateFormat: 'YYYY-MM-DD',
+      dayFormat: 'Do',
+      dateTimeFormat: 'YYYY-MM-DD HH:mm:ss',
+      monthBeforeYear: false,
+      previousMonth: '이전 달 (PageUp)',
+      nextMonth: '다음 달 (PageDown)',
+      previousYear: '이전 해 (Control + left)',
+      nextYear: '다음 해 (Control + right)',
+      previousDecade: '이전 연대',
+      nextDecade: '다음 연대',
+      previousCentury: '이전 세기',
+      nextCentury: '다음 세기'
+    },
+    timePickerLocale: {
+      placeholder: '날짜 선택'
+    }
+  },
+  TimePicker: {
+    placeholder: '날짜 선택'
+  },
+  Calendar: {
+    lang: {
+      placeholder: '날짜 선택',
+      rangePlaceholder: ['시작일', '종료일'],
+      locale: 'ko_KR',
+      today: '오늘',
+      now: '현재 시각',
+      backToToday: '오늘로 돌아가기',
+      ok: '확인',
+      clear: '지우기',
+      month: '월',
+      year: '년',
+      timeSelect: '시간 선택',
+      dateSelect: '날짜 선택',
+      monthSelect: '달 선택',
+      yearSelect: '연 선택',
+      decadeSelect: '연대 선택',
+      yearFormat: 'YYYY년',
+      dateFormat: 'YYYY-MM-DD',
+      dayFormat: 'Do',
+      dateTimeFormat: 'YYYY-MM-DD HH:mm:ss',
+      monthBeforeYear: false,
+      previousMonth: '이전 달 (PageUp)',
+      nextMonth: '다음 달 (PageDown)',
+      previousYear: '이전 해 (Control + left)',
+      nextYear: '다음 해 (Control + right)',
+      previousDecade: '이전 연대',
+      nextDecade: '다음 연대',
+      previousCentury: '이전 세기',
+      nextCentury: '다음 세기'
+    },
+    timePickerLocale: {
+      placeholder: '날짜 선택'
+    }
+  },
   Table: {
     filterTitle: '필터 메뉴',
     filterConfirm: '확인',

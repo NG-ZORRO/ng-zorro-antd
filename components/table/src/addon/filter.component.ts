@@ -18,7 +18,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { NzI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzI18nService, NzTableI18nInterface } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzTableFilterList } from '../table.types';
@@ -76,7 +76,7 @@ export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
   @Input() listOfFilter: NzTableFilterList = [];
   @Output() readonly filterChange = new EventEmitter<NzSafeAny[] | NzSafeAny>();
   private destroy$ = new Subject();
-  locale: NzI18nInterface['Table'] = {} as NzI18nInterface['Table'];
+  locale!: NzTableI18nInterface;
   isChanged = false;
   isChecked = false;
   isVisible = false;

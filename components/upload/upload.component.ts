@@ -22,7 +22,7 @@ import { Observable, of, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { InputBoolean, InputNumber, toBoolean } from 'ng-zorro-antd/core/util';
-import { NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzI18nService, NzUploadI18nInterface } from 'ng-zorro-antd/i18n';
 
 import {
   NzShowUploadList,
@@ -64,7 +64,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('uploadComp', { static: false }) uploadComp!: NzUploadBtnComponent;
   @ViewChild('listComp', { static: false }) listComp!: NzUploadListComponent;
 
-  locale: NzSafeAny = {};
+  locale!: NzUploadI18nInterface;
 
   // #region fields
 

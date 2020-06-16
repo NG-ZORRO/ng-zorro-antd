@@ -24,7 +24,7 @@ import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-import { NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzI18nService, NzModalI18nInterface } from 'ng-zorro-antd/i18n';
 
 import { takeUntil } from 'rxjs/operators';
 
@@ -109,7 +109,7 @@ export class NzModalConfirmContainerComponent extends BaseModalContainer {
   @ViewChild('modalElement', { static: true }) modalElementRef!: ElementRef<HTMLDivElement>;
   @Output() readonly cancelTriggered = new EventEmitter<void>();
   @Output() readonly okTriggered = new EventEmitter<void>();
-  locale: { okText?: string; cancelText?: string } = {};
+  locale!: NzModalI18nInterface;
 
   constructor(
     private i18n: NzI18nService,

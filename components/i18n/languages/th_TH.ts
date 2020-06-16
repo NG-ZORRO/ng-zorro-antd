@@ -3,17 +3,93 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import Calendar from './calendar/th_TH';
-import DatePicker from './date-picker/th_TH';
-import Pagination from './pagination/th_TH';
-import TimePicker from './time-picker/th_TH';
-
 export default {
   locale: 'th',
-  Pagination,
-  DatePicker,
-  TimePicker,
-  Calendar,
+  Pagination: {
+    items_per_page: '/ หน้า',
+    jump_to: 'ไปยัง',
+    jump_to_confirm: 'ยืนยัน',
+    page: '',
+    prev_page: 'หน้าก่อนหน้า',
+    next_page: 'หน้าถัดไป',
+    prev_5: 'ย้อนกลับ 5 หน้า',
+    next_5: 'ถัดไป 5 หน้า',
+    prev_3: 'ย้อนกลับ 3 หน้า',
+    next_3: 'ถัดไป 3 หน้า'
+  },
+  DatePicker: {
+    lang: {
+      placeholder: 'เลือกวันที่',
+      rangePlaceholder: ['วันเริ่มต้น', 'วันสิ้นสุด'],
+      locale: 'th_TH',
+      today: 'วันนี้',
+      now: 'ตอนนี้',
+      backToToday: 'กลับไปยังวันนี้',
+      ok: 'ตกลง',
+      clear: 'ลบล้าง',
+      month: 'เดือน',
+      year: 'ปี',
+      timeSelect: 'เลือกเวลา',
+      dateSelect: 'เลือกวัน',
+      monthSelect: 'เลือกเดือน',
+      yearSelect: 'เลือกปี',
+      decadeSelect: 'เลือกทศวรรษ',
+      yearFormat: 'YYYY',
+      dateFormat: 'D/M/YYYY',
+      dayFormat: 'D',
+      dateTimeFormat: 'D/M/YYYY HH:mm:ss',
+      monthBeforeYear: true,
+      previousMonth: 'เดือนก่อนหน้า (PageUp)',
+      nextMonth: 'เดือนถัดไป (PageDown)',
+      previousYear: 'ปีก่อนหน้า (Control + left)',
+      nextYear: 'ปีถัดไป (Control + right)',
+      previousDecade: 'ทศวรรษก่อนหน้า',
+      nextDecade: 'ทศวรรษถัดไป',
+      previousCentury: 'ศตวรรษก่อนหน้า',
+      nextCentury: 'ศตวรรษถัดไป'
+    },
+    timePickerLocale: {
+      placeholder: 'เลือกเวลา'
+    }
+  },
+  TimePicker: {
+    placeholder: 'เลือกเวลา'
+  },
+  Calendar: {
+    lang: {
+      placeholder: 'เลือกวันที่',
+      rangePlaceholder: ['วันเริ่มต้น', 'วันสิ้นสุด'],
+      locale: 'th_TH',
+      today: 'วันนี้',
+      now: 'ตอนนี้',
+      backToToday: 'กลับไปยังวันนี้',
+      ok: 'ตกลง',
+      clear: 'ลบล้าง',
+      month: 'เดือน',
+      year: 'ปี',
+      timeSelect: 'เลือกเวลา',
+      dateSelect: 'เลือกวัน',
+      monthSelect: 'เลือกเดือน',
+      yearSelect: 'เลือกปี',
+      decadeSelect: 'เลือกทศวรรษ',
+      yearFormat: 'YYYY',
+      dateFormat: 'D/M/YYYY',
+      dayFormat: 'D',
+      dateTimeFormat: 'D/M/YYYY HH:mm:ss',
+      monthBeforeYear: true,
+      previousMonth: 'เดือนก่อนหน้า (PageUp)',
+      nextMonth: 'เดือนถัดไป (PageDown)',
+      previousYear: 'ปีก่อนหน้า (Control + left)',
+      nextYear: 'ปีถัดไป (Control + right)',
+      previousDecade: 'ทศวรรษก่อนหน้า',
+      nextDecade: 'ทศวรรษถัดไป',
+      previousCentury: 'ศตวรรษก่อนหน้า',
+      nextCentury: 'ศตวรรษถัดไป'
+    },
+    timePickerLocale: {
+      placeholder: 'เลือกเวลา'
+    }
+  },
   global: {
     placeholder: 'กรุณาเลือก'
   },

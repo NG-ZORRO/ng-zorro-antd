@@ -3,17 +3,95 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import Calendar from './calendar/mn_MN';
-import DatePicker from './date-picker/mn_MN';
-import Pagination from './pagination/mn_MN';
-import TimePicker from './time-picker/mn_MN';
-
 export default {
   locale: 'mn-mn',
-  Pagination,
-  DatePicker,
-  TimePicker,
-  Calendar,
+  Pagination: {
+    items_per_page: '/ хуудас',
+    jump_to: 'Шилжих',
+    jump_to_confirm: 'сонгох',
+    page: '',
+    prev_page: 'Өмнөх хуудас',
+    next_page: 'Дараагийн хуудас',
+    prev_5: 'Дараагийн 5 хуудас',
+    next_5: 'Дараагийн 5 хуудас',
+    prev_3: 'Дараагийн 3 хуудас',
+    next_3: 'Дараагийн 3 хуудас'
+  },
+  DatePicker: {
+    lang: {
+      placeholder: 'Огноо сонгох',
+      rangePlaceholder: ['Эхлэх огноо', 'Дуусах огноо'],
+      locale: 'mn_MN',
+      today: 'Өнөөдөр',
+      now: 'Одоо',
+      backToToday: 'Өнөөдөрлүү буцах',
+      ok: 'Ok',
+      clear: 'Цэвэрлэх',
+      month: 'Сар',
+      year: 'Жил',
+      timeSelect: 'Цаг сонгох',
+      dateSelect: 'Огноо сонгох',
+      weekSelect: '7 хоног сонгох',
+      monthSelect: 'Сар сонгох',
+      yearSelect: 'Жил сонгох',
+      decadeSelect: 'Арван сонгох',
+      yearFormat: 'YYYY',
+      dateFormat: 'YYYY/MM/DD',
+      dayFormat: 'DD',
+      dateTimeFormat: 'YYYY/MM/DD HH:mm:ss',
+      monthBeforeYear: true,
+      previousMonth: 'Өмнөх сар (PageUp)',
+      nextMonth: 'Дараа сар (PageDown)',
+      previousYear: 'Өмнөх жил (Control + left)',
+      nextYear: 'Дараа жил (Control + right)',
+      previousDecade: 'Өмнөх арван',
+      nextDecade: 'Дараа арван',
+      previousCentury: 'Өмнөх зуун',
+      nextCentury: 'Дараа зуун'
+    },
+    timePickerLocale: {
+      placeholder: 'Цаг сонгох'
+    }
+  },
+  TimePicker: {
+    placeholder: 'Цаг сонгох'
+  },
+  Calendar: {
+    lang: {
+      placeholder: 'Огноо сонгох',
+      rangePlaceholder: ['Эхлэх огноо', 'Дуусах огноо'],
+      locale: 'mn_MN',
+      today: 'Өнөөдөр',
+      now: 'Одоо',
+      backToToday: 'Өнөөдөрлүү буцах',
+      ok: 'Ok',
+      clear: 'Цэвэрлэх',
+      month: 'Сар',
+      year: 'Жил',
+      timeSelect: 'Цаг сонгох',
+      dateSelect: 'Огноо сонгох',
+      weekSelect: '7 хоног сонгох',
+      monthSelect: 'Сар сонгох',
+      yearSelect: 'Жил сонгох',
+      decadeSelect: 'Арван сонгох',
+      yearFormat: 'YYYY',
+      dateFormat: 'YYYY/MM/DD',
+      dayFormat: 'DD',
+      dateTimeFormat: 'YYYY/MM/DD HH:mm:ss',
+      monthBeforeYear: true,
+      previousMonth: 'Өмнөх сар (PageUp)',
+      nextMonth: 'Дараа сар (PageDown)',
+      previousYear: 'Өмнөх жил (Control + left)',
+      nextYear: 'Дараа жил (Control + right)',
+      previousDecade: 'Өмнөх арван',
+      nextDecade: 'Дараа арван',
+      previousCentury: 'Өмнөх зуун',
+      nextCentury: 'Дараа зуун'
+    },
+    timePickerLocale: {
+      placeholder: 'Цаг сонгох'
+    }
+  },
   Table: {
     filterTitle: 'Хайх цэс',
     filterConfirm: 'OK',

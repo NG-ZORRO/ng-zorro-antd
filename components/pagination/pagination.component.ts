@@ -18,9 +18,9 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { gridResponsiveMap, NzBreakpointEnum, NzBreakpointService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
-import { NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzI18nService, NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -100,7 +100,7 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   @Input() @InputNumber() nzPageSize = 10;
 
   showPagination = true;
-  locale: NzSafeAny = {};
+  locale!: NzPaginationI18nInterface;
   size: 'default' | 'small' = 'default';
 
   private destroy$ = new Subject<void>();

@@ -3,17 +3,93 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import Calendar from './calendar/uk_UA';
-import DatePicker from './date-picker/uk_UA';
-import Pagination from './pagination/uk_UA';
-import TimePicker from './time-picker/uk_UA';
-
 export default {
   locale: 'uk',
-  Pagination,
-  DatePicker,
-  TimePicker,
-  Calendar,
+  Pagination: {
+    items_per_page: '/ сторінці',
+    jump_to: 'Перейти',
+    jump_to_confirm: 'підтвердити',
+    page: '',
+    prev_page: 'Попередня сторінка',
+    next_page: 'Наступна сторінка',
+    prev_5: 'Попередні 5 сторінок',
+    next_5: 'Наступні 5 сторінок',
+    prev_3: 'Попередні 3 сторінки',
+    next_3: 'Наступні 3 сторінки'
+  },
+  DatePicker: {
+    lang: {
+      placeholder: 'Оберіть дату',
+      rangePlaceholder: ['Початкова дата', 'Кінцева дата'],
+      locale: 'uk_UA',
+      today: 'Сьогодні',
+      now: 'Зараз',
+      backToToday: 'Поточна дата',
+      ok: 'Ok',
+      clear: 'Очистити',
+      month: 'Місяць',
+      year: 'Рік',
+      timeSelect: 'Обрати час',
+      dateSelect: 'Обрати дату',
+      monthSelect: 'Обрати місяць',
+      yearSelect: 'Обрати рік',
+      decadeSelect: 'Обрати десятиріччя',
+      yearFormat: 'YYYY',
+      dateFormat: 'D-M-YYYY',
+      dayFormat: 'D',
+      dateTimeFormat: 'D-M-YYYY HH:mm:ss',
+      monthBeforeYear: true,
+      previousMonth: 'Попередній місяць (PageUp)',
+      nextMonth: 'Наступний місяць (PageDown)',
+      previousYear: 'Попередній рік (Control + left)',
+      nextYear: 'Наступний рік (Control + right)',
+      previousDecade: 'Попереднє десятиріччя',
+      nextDecade: 'Наступне десятиріччя',
+      previousCentury: 'Попереднє століття',
+      nextCentury: 'Наступне століття'
+    },
+    timePickerLocale: {
+      placeholder: 'Оберіть час'
+    }
+  },
+  TimePicker: {
+    placeholder: 'Оберіть час'
+  },
+  Calendar: {
+    lang: {
+      placeholder: 'Оберіть дату',
+      rangePlaceholder: ['Початкова дата', 'Кінцева дата'],
+      locale: 'uk_UA',
+      today: 'Сьогодні',
+      now: 'Зараз',
+      backToToday: 'Поточна дата',
+      ok: 'Ok',
+      clear: 'Очистити',
+      month: 'Місяць',
+      year: 'Рік',
+      timeSelect: 'Обрати час',
+      dateSelect: 'Обрати дату',
+      monthSelect: 'Обрати місяць',
+      yearSelect: 'Обрати рік',
+      decadeSelect: 'Обрати десятиріччя',
+      yearFormat: 'YYYY',
+      dateFormat: 'D-M-YYYY',
+      dayFormat: 'D',
+      dateTimeFormat: 'D-M-YYYY HH:mm:ss',
+      monthBeforeYear: true,
+      previousMonth: 'Попередній місяць (PageUp)',
+      nextMonth: 'Наступний місяць (PageDown)',
+      previousYear: 'Попередній рік (Control + left)',
+      nextYear: 'Наступний рік (Control + right)',
+      previousDecade: 'Попереднє десятиріччя',
+      nextDecade: 'Наступне десятиріччя',
+      previousCentury: 'Попереднє століття',
+      nextCentury: 'Наступне століття'
+    },
+    timePickerLocale: {
+      placeholder: 'Оберіть час'
+    }
+  },
   Table: {
     filterTitle: 'Фільтрувати',
     filterConfirm: 'OK',
