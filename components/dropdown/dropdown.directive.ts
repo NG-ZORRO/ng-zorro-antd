@@ -17,6 +17,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  Renderer2,
   SimpleChanges,
   ViewContainerRef
 } from '@angular/core';
@@ -33,7 +34,6 @@ const listOfPositions = [POSITION_MAP.bottomLeft, POSITION_MAP.bottomRight, POSI
   selector: '[nz-dropdown]',
   exportAs: 'nzDropdown',
   host: {
-    '[attr.disabled]': `nzDisabled ? '' : null`,
     '[class.ant-dropdown-trigger]': 'true'
   }
 })
@@ -71,6 +71,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
   constructor(
     public elementRef: ElementRef,
     private overlay: Overlay,
+    private renderer: Renderer2,
     private viewContainerRef: ViewContainerRef,
     private platform: Platform
   ) {}
@@ -189,8 +190,14 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
     if (nzVisible) {
       this.inputVisible$.next(this.nzVisible);
     }
-    if (nzDisabled && this.nzDisabled) {
-      this.inputVisible$.next(false);
+    if (nzDisabled) {
+      const nativeElement = this.elementRef.nativeElement;
+      if (this.nzDisabled) {
+        this.renderer.setAttribute(nativeElement, 'disabled', '');
+        this.inputVisible$.next(false);
+      } else {
+        this.renderer.removeAttribute(nativeElement, 'disabled');
+      }
     }
     if (nzOverlayClassName) {
       this.setDropdownMenuValue('nzOverlayClassName', this.nzOverlayClassName);
