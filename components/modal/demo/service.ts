@@ -1,6 +1,6 @@
 /* declarations: NzModalCustomComponent */
 
-import { Component, Input, TemplateRef } from '@angular/core';
+import { Component, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
@@ -57,7 +57,7 @@ export class NzDemoModalServiceComponent {
   htmlModalVisible = false;
   disabled = false;
 
-  constructor(private modal: NzModalService) {}
+  constructor(private modal: NzModalService, private viewContainerRef: ViewContainerRef) {}
 
   createModal(): void {
     this.modal.create({
@@ -94,6 +94,7 @@ export class NzDemoModalServiceComponent {
     const modal = this.modal.create({
       nzTitle: 'Modal Title',
       nzContent: NzModalCustomComponent,
+      nzViewContainerRef: this.viewContainerRef,
       nzGetContainer: () => document.body,
       nzComponentParams: {
         title: 'title in component',

@@ -119,12 +119,12 @@ constructor(modal: NzModalService) {
 |----|----|
 | afterOpen                 | 同nzAfterOpen，但类型为Observable&lt;void&gt; |
 | afterClose                | 同nzAfterClose，但类型为Observable&lt;result:any&gt; |
-| open()                    | 打开(显示)对话框。<i>若对话框已销毁，则调用此函数将失效</i> |
 | close(result: any)        | 关闭(隐藏)对话框。<i>注：当用于以服务方式创建的对话框，此方法将直接 销毁 对话框（同destroy方法）</i> |
 | destroy(result: any)      | 销毁对话框。<i>注：仅用于服务方式创建的对话框（非服务方式创建的对话框，此方法只会隐藏对话框）</i> |
 | getContentComponent()     | 获取对话框内容中`nzContent`的Component实例instance。<i>注：当对话框还未初始化完毕（`ngOnInit`未执行）时，此函数将返回`undefined`</i> |
 | triggerOk()               | 手动触发nzOnOk |
 | triggerCancel()           | 手动触发nzOnCancel |
+| updateConfig(config: ModalOptions): void   | 更新配置 |
 
 ### ModalButtonOptions（用于自定义底部按钮）
 

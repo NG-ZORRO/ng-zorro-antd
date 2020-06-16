@@ -4,10 +4,10 @@
  */
 
 import { AnimationEvent } from '@angular/animations';
-import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
+import { ConfigurableFocusTrapFactory, FocusTrap } from '@angular/cdk/a11y';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { BasePortalOutlet, CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
-import { ChangeDetectorRef, ComponentRef, ElementRef, EmbeddedViewRef, EventEmitter, NgZone, OnDestroy, Renderer2 } from '@angular/core';
+import { ChangeDetectorRef, ComponentRef, ElementRef, EmbeddedViewRef, EventEmitter, OnDestroy, Renderer2 } from '@angular/core';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { getElementOffset } from 'ng-zorro-antd/core/util';
@@ -31,7 +31,6 @@ export class BaseModalContainer extends BasePortalOutlet implements OnDestroy {
   containerClick = new EventEmitter<void>();
   cancelTriggered = new EventEmitter<void>();
   okTriggered = new EventEmitter<void>();
-  onDestroy = new EventEmitter<void>();
 
   state: 'void' | 'enter' | 'exit' = 'enter';
   document: Document;
@@ -57,10 +56,9 @@ export class BaseModalContainer extends BasePortalOutlet implements OnDestroy {
 
   constructor(
     protected elementRef: ElementRef,
-    protected focusTrapFactory: FocusTrapFactory,
+    protected focusTrapFactory: ConfigurableFocusTrapFactory,
     public cdr: ChangeDetectorRef,
     protected render: Renderer2,
-    protected zone: NgZone,
     protected overlayRef: OverlayRef,
     protected nzConfigService: NzConfigService,
     public config: ModalOptions,
@@ -143,6 +141,10 @@ export class BaseModalContainer extends BasePortalOutlet implements OnDestroy {
   }
 
   private savePreviouslyFocusedElement(): void {
+    if (!this.focusTrap) {
+      this.focusTrap = this.focusTrapFactory.create(this.elementRef.nativeElement);
+    }
+
     if (this.document) {
       this.elementFocusedBeforeModalWasOpened = this.document.activeElement as HTMLElement;
       if (this.elementRef.nativeElement.focus) {
@@ -153,10 +155,6 @@ export class BaseModalContainer extends BasePortalOutlet implements OnDestroy {
 
   private trapFocus(): void {
     const element = this.elementRef.nativeElement;
-
-    if (!this.focusTrap) {
-      this.focusTrap = this.focusTrapFactory.create(element);
-    }
 
     if (this.config.nzAutofocus) {
       this.focusTrap.focusInitialElementWhenReady().then();
@@ -190,56 +188,60 @@ export class BaseModalContainer extends BasePortalOutlet implements OnDestroy {
     if (this.animationDisabled()) {
       return;
     }
-    this.zone.runOutsideAngular(() => {
-      // Make sure to set the `TransformOrigin` style before set the modelElement's class names
-      this.setModalTransformOrigin();
-      const modalElement = this.modalElementRef.nativeElement;
-      const backdropElement = this.overlayRef.backdropElement;
-      this.render.addClass(modalElement, ZOOM_CLASS_NAME_MAP.enter);
-      this.render.addClass(modalElement, ZOOM_CLASS_NAME_MAP.enterActive);
-      this.render.addClass(backdropElement, FADE_CLASS_NAME_MAP.enter);
-      this.render.addClass(backdropElement, FADE_CLASS_NAME_MAP.enterActive);
-    });
+    // Make sure to set the `TransformOrigin` style before set the modelElement's class names
+    this.setModalTransformOrigin();
+    const modalElement = this.modalElementRef.nativeElement;
+    const backdropElement = this.overlayRef.backdropElement;
+    modalElement.classList.add(ZOOM_CLASS_NAME_MAP.enter);
+    modalElement.classList.add(ZOOM_CLASS_NAME_MAP.enterActive);
+    if (backdropElement) {
+      backdropElement.classList.add(FADE_CLASS_NAME_MAP.enter);
+      backdropElement.classList.add(FADE_CLASS_NAME_MAP.enterActive);
+    }
   }
 
   private setExitAnimationClass(): void {
-    this.zone.runOutsideAngular(() => {
-      const modalElement = this.modalElementRef.nativeElement;
-      const backdropElement = this.overlayRef.backdropElement;
+    const modalElement = this.modalElementRef.nativeElement;
 
-      if (this.animationDisabled()) {
+    modalElement.classList.add(ZOOM_CLASS_NAME_MAP.leave);
+    modalElement.classList.add(ZOOM_CLASS_NAME_MAP.leaveActive);
+
+    this.setMaskExitAnimationClass();
+  }
+
+  private setMaskExitAnimationClass(force: boolean = false): void {
+    const backdropElement = this.overlayRef.backdropElement;
+    if (backdropElement) {
+      if (this.animationDisabled() || force) {
         // https://github.com/angular/components/issues/18645
-        this.render.removeClass(backdropElement, MODAL_MASK_CLASS_NAME);
+        backdropElement.classList.remove(MODAL_MASK_CLASS_NAME);
         return;
       }
-
-      this.render.addClass(modalElement, ZOOM_CLASS_NAME_MAP.leave);
-      this.render.addClass(modalElement, ZOOM_CLASS_NAME_MAP.leaveActive);
-      this.render.addClass(backdropElement, FADE_CLASS_NAME_MAP.leave);
-      this.render.addClass(backdropElement, FADE_CLASS_NAME_MAP.leaveActive);
-    });
+      backdropElement.classList.add(FADE_CLASS_NAME_MAP.leave);
+      backdropElement.classList.add(FADE_CLASS_NAME_MAP.leaveActive);
+    }
   }
 
   private cleanAnimationClass(): void {
     if (this.animationDisabled()) {
       return;
     }
-    this.zone.runOutsideAngular(() => {
-      const backdropElement = this.overlayRef.backdropElement;
-      const modalElement = this.modalElementRef.nativeElement;
-      this.render.removeClass(modalElement, ZOOM_CLASS_NAME_MAP.enter);
-      this.render.removeClass(modalElement, ZOOM_CLASS_NAME_MAP.enterActive);
-      this.render.removeClass(modalElement, ZOOM_CLASS_NAME_MAP.leave);
-      this.render.removeClass(modalElement, ZOOM_CLASS_NAME_MAP.leaveActive);
-      this.render.removeClass(backdropElement, FADE_CLASS_NAME_MAP.enter);
-      this.render.removeClass(backdropElement, FADE_CLASS_NAME_MAP.enterActive);
-    });
+    const backdropElement = this.overlayRef.backdropElement;
+    const modalElement = this.modalElementRef.nativeElement;
+    if (backdropElement) {
+      backdropElement.classList.remove(FADE_CLASS_NAME_MAP.enter);
+      backdropElement.classList.remove(FADE_CLASS_NAME_MAP.enterActive);
+    }
+    modalElement.classList.remove(ZOOM_CLASS_NAME_MAP.enter);
+    modalElement.classList.remove(ZOOM_CLASS_NAME_MAP.enterActive);
+    modalElement.classList.remove(ZOOM_CLASS_NAME_MAP.leave);
+    modalElement.classList.remove(ZOOM_CLASS_NAME_MAP.leaveActive);
   }
 
-  private bindBackdropStyle(): void {
-    this.zone.runOutsideAngular(() => {
+  bindBackdropStyle(): void {
+    const backdropElement = this.overlayRef.backdropElement;
+    if (backdropElement) {
       if (this.oldMaskStyle) {
-        const backdropElement = this.overlayRef.backdropElement;
         const styles = this.oldMaskStyle as { [key: string]: string };
         Object.keys(styles).forEach(key => {
           this.render.removeStyle(backdropElement, key);
@@ -248,14 +250,13 @@ export class BaseModalContainer extends BasePortalOutlet implements OnDestroy {
       }
 
       if (typeof this.config.nzMaskStyle === 'object' && Object.keys(this.config.nzMaskStyle).length) {
-        const backdropElement = this.overlayRef.backdropElement;
         const styles: { [key: string]: string } = { ...this.config.nzMaskStyle };
         Object.keys(styles).forEach(key => {
           this.render.setStyle(backdropElement, key, styles[key]);
         });
         this.oldMaskStyle = styles;
       }
-    });
+    }
   }
 
   /**
@@ -290,17 +291,16 @@ export class BaseModalContainer extends BasePortalOutlet implements OnDestroy {
 
   updateMaskClassname(): void {
     const backdropElement = this.overlayRef.backdropElement;
-    if (this.showMask) {
-      this.render.addClass(backdropElement, MODAL_MASK_CLASS_NAME);
-    } else {
-      this.render.removeClass(backdropElement, MODAL_MASK_CLASS_NAME);
+    if (backdropElement) {
+      if (this.showMask) {
+        backdropElement.classList.add(MODAL_MASK_CLASS_NAME);
+      } else {
+        backdropElement.classList.remove(MODAL_MASK_CLASS_NAME);
+      }
     }
   }
 
   onAnimationDone(event: AnimationEvent): void {
-    if (event.toState === 'void') {
-      return;
-    }
     if (event.toState === 'enter') {
       this.setContainer();
       this.trapFocus();
@@ -328,7 +328,7 @@ export class BaseModalContainer extends BasePortalOutlet implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.onDestroy.emit();
+    this.setMaskExitAnimationClass(true);
     this.destroy$.next();
     this.destroy$.complete();
   }
