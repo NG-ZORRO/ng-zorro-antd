@@ -3,19 +3,95 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import Calendar from './calendar/ru_RU';
-import DatePicker from './date-picker/ru_RU';
-import Pagination from './pagination/ru_RU';
-import TimePicker from './time-picker/ru_RU';
-
 export default {
   locale: 'ru',
-  Pagination,
-  DatePicker,
-  TimePicker,
-  Calendar,
+  Pagination: {
+    items_per_page: '/ стр.',
+    jump_to: 'Перейти',
+    jump_to_confirm: 'подтвердить',
+    page: '',
+    prev_page: 'Назад',
+    next_page: 'Вперед',
+    prev_5: 'Предыдущие 5',
+    next_5: 'Следующие 5',
+    prev_3: 'Предыдущие 3',
+    next_3: 'Следующие 3'
+  },
+  DatePicker: {
+    lang: {
+      placeholder: 'Выберите дату',
+      rangePlaceholder: ['Начальная дата', 'Конечная дата'],
+      locale: 'ru_RU',
+      today: 'Сегодня',
+      now: 'Сейчас',
+      backToToday: 'Текущая дата',
+      ok: 'Ok',
+      clear: 'Очистить',
+      month: 'Месяц',
+      year: 'Год',
+      timeSelect: 'Выбрать время',
+      dateSelect: 'Выбрать дату',
+      monthSelect: 'Выбрать месяц',
+      yearSelect: 'Выбрать год',
+      decadeSelect: 'Выбрать десятилетие',
+      yearFormat: 'YYYY',
+      dateFormat: 'D-M-YYYY',
+      dayFormat: 'D',
+      dateTimeFormat: 'D-M-YYYY HH:mm:ss',
+      monthBeforeYear: true,
+      previousMonth: 'Предыдущий месяц (PageUp)',
+      nextMonth: 'Следующий месяц (PageDown)',
+      previousYear: 'Предыдущий год (Control + left)',
+      nextYear: 'Следующий год (Control + right)',
+      previousDecade: 'Предыдущее десятилетие',
+      nextDecade: 'Следущее десятилетие',
+      previousCentury: 'Предыдущий век',
+      nextCentury: 'Следующий век'
+    },
+    timePickerLocale: {
+      placeholder: 'Выберите время'
+    }
+  },
+  TimePicker: {
+    placeholder: 'Выберите время'
+  },
+  Calendar: {
+    lang: {
+      placeholder: 'Выберите дату',
+      rangePlaceholder: ['Начальная дата', 'Конечная дата'],
+      locale: 'ru_RU',
+      today: 'Сегодня',
+      now: 'Сейчас',
+      backToToday: 'Текущая дата',
+      ok: 'Ok',
+      clear: 'Очистить',
+      month: 'Месяц',
+      year: 'Год',
+      timeSelect: 'Выбрать время',
+      dateSelect: 'Выбрать дату',
+      monthSelect: 'Выбрать месяц',
+      yearSelect: 'Выбрать год',
+      decadeSelect: 'Выбрать десятилетие',
+      yearFormat: 'YYYY',
+      dateFormat: 'D-M-YYYY',
+      dayFormat: 'D',
+      dateTimeFormat: 'D-M-YYYY HH:mm:ss',
+      monthBeforeYear: true,
+      previousMonth: 'Предыдущий месяц (PageUp)',
+      nextMonth: 'Следующий месяц (PageDown)',
+      previousYear: 'Предыдущий год (Control + left)',
+      nextYear: 'Следующий год (Control + right)',
+      previousDecade: 'Предыдущее десятилетие',
+      nextDecade: 'Следущее десятилетие',
+      previousCentury: 'Предыдущий век',
+      nextCentury: 'Следующий век'
+    },
+    timePickerLocale: {
+      placeholder: 'Выберите время'
+    }
+  },
   global: {
-    placeholder: 'Пожалуйста, выберите'
+    placeholder: 'Пожалуйста выберите'
   },
   Table: {
     filterTitle: 'Фильтр',
@@ -23,7 +99,12 @@ export default {
     filterReset: 'Сбросить',
     selectAll: 'Выбрать всё',
     selectInvert: 'Инвертировать выбор',
-    sortTitle: 'Сортировка'
+    sortTitle: 'Сортировка',
+    expand: 'Развернуть строку',
+    collapse: 'Свернуть строку',
+    triggerDesc: 'Нажмите для сортировки по убыванию',
+    triggerAsc: 'Нажмите для сортировки по возрастанию',
+    cancelSort: 'Нажмите, чтобы отменить сортировку'
   },
   Modal: {
     okText: 'OK',
@@ -35,7 +116,6 @@ export default {
     cancelText: 'Отмена'
   },
   Transfer: {
-    titles: ['', ''],
     searchPlaceholder: 'Поиск',
     itemUnit: 'элем.',
     itemsUnit: 'элем.'

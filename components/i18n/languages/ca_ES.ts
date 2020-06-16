@@ -3,62 +3,120 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import Calendar from './calendar/ca_ES';
-import DatePicker from './date-picker/ca_ES';
-import Pagination from './pagination/ca_ES';
-import TimePicker from './time-picker/ca_ES';
-
 export default {
   locale: 'ca',
-  Pagination,
-  DatePicker,
-  TimePicker,
-  Calendar,
-  global: {
-    placeholder: 'Seleccioni'
+  Pagination: {
+    items_per_page: '/ pàgina',
+    jump_to: 'Anar a',
+    jump_to_confirm: 'Confirma',
+    page: '',
+    prev_page: 'Pàgina prèvia',
+    next_page: 'Pàgina següent',
+    prev_5: '5 pàgines prèvies',
+    next_5: '5 pàgines següents',
+    prev_3: '3 pàgines prèvies',
+    next_3: '3 pàgines següents'
+  },
+  DatePicker: {
+    lang: {
+      placeholder: 'Seleccionar data',
+      rangePlaceholder: ['Data inicial', 'Data final'],
+      locale: 'ca_ES',
+      today: 'Avui',
+      now: 'Ara',
+      backToToday: 'Tornar a avui',
+      ok: 'Acceptar',
+      clear: 'Netejar',
+      month: 'Mes',
+      year: 'Any',
+      timeSelect: 'Seleccionar hora',
+      dateSelect: 'Seleccionar data',
+      monthSelect: 'Escollir un mes',
+      yearSelect: 'Escollir un any',
+      decadeSelect: 'Escollir una dècada',
+      yearFormat: 'YYYY',
+      dateFormat: 'D/M/YYYY',
+      dayFormat: 'D',
+      dateTimeFormat: 'D/M/YYYY HH:mm:ss',
+      monthBeforeYear: true,
+      previousMonth: 'Mes anterior (PageUp)',
+      nextMonth: 'Mes següent (PageDown)',
+      previousYear: 'Any anterior (Control + left)',
+      nextYear: 'Mes següent (Control + right)',
+      previousDecade: 'Dècada anterior',
+      nextDecade: 'Dècada següent',
+      previousCentury: 'Segle anterior',
+      nextCentury: 'Segle següent'
+    },
+    timePickerLocale: {
+      placeholder: 'Seleccionar hora'
+    }
+  },
+  TimePicker: {
+    placeholder: 'Seleccionar hora'
+  },
+  Calendar: {
+    lang: {
+      placeholder: 'Seleccionar data',
+      rangePlaceholder: ['Data inicial', 'Data final'],
+      locale: 'ca_ES',
+      today: 'Avui',
+      now: 'Ara',
+      backToToday: 'Tornar a avui',
+      ok: 'Acceptar',
+      clear: 'Netejar',
+      month: 'Mes',
+      year: 'Any',
+      timeSelect: 'Seleccionar hora',
+      dateSelect: 'Seleccionar data',
+      monthSelect: 'Escollir un mes',
+      yearSelect: 'Escollir un any',
+      decadeSelect: 'Escollir una dècada',
+      yearFormat: 'YYYY',
+      dateFormat: 'D/M/YYYY',
+      dayFormat: 'D',
+      dateTimeFormat: 'D/M/YYYY HH:mm:ss',
+      monthBeforeYear: true,
+      previousMonth: 'Mes anterior (PageUp)',
+      nextMonth: 'Mes següent (PageDown)',
+      previousYear: 'Any anterior (Control + left)',
+      nextYear: 'Mes següent (Control + right)',
+      previousDecade: 'Dècada anterior',
+      nextDecade: 'Dècada següent',
+      previousCentury: 'Segle anterior',
+      nextCentury: 'Segle següent'
+    },
+    timePickerLocale: {
+      placeholder: 'Seleccionar hora'
+    }
   },
   Table: {
     filterTitle: 'Filtrar Menu',
     filterConfirm: 'OK',
-    filterReset: 'Restablir',
-    selectAll: 'Seleccionar tot',
-    selectInvert: 'Invertir selecció',
-    sortTitle: 'Ordenar'
+    filterReset: 'Restablir'
   },
   Modal: {
-    okText: 'Acceptar',
+    okText: 'OK',
     cancelText: 'Cancel·lar',
-    justOkText: 'Acceptar'
+    justOkText: 'OK'
   },
   Popconfirm: {
-    okText: 'Acceptar',
+    okText: 'OK',
     cancelText: 'Cancel·lar'
   },
   Transfer: {
     searchPlaceholder: 'Cercar aquí',
-    itemUnit: 'element',
-    itemsUnit: 'element'
+    itemUnit: 'item',
+    itemsUnit: 'items'
   },
   Upload: {
-    uploading: 'Pujant...',
-    removeFile: 'Eliminar fitxer',
-    uploadError: 'Error al pujar el fitxer',
-    previewFile: 'Vista prèvia',
+    uploading: 'Carregant...',
+    removeFile: 'Elimina el fitxer',
+    uploadError: 'Error de càrrega',
+    previewFile: 'Vista prèvia del fitxer',
     downloadFile: "Descarrega l'arxiu"
   },
   Empty: {
-    description: 'No hi ha dades'
-  },
-  Icon: {
-    icon: 'ícona'
-  },
-  Text: {
-    edit: 'editar',
-    copy: 'copiar',
-    copied: 'copiat',
-    expand: 'expandir'
-  },
-  PageHeader: {
-    back: 'tornar'
+    description: 'Sense dades'
   }
 };

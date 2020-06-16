@@ -3,17 +3,95 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import Calendar from './calendar/hr_HR';
-import DatePicker from './date-picker/hr_HR';
-import Pagination from './pagination/hr_HR';
-import TimePicker from './time-picker/hr_HR';
-
 export default {
   locale: 'hr',
-  Pagination,
-  DatePicker,
-  TimePicker,
-  Calendar,
+  Pagination: {
+    items_per_page: '/ str',
+    jump_to: 'Idi na',
+    jump_to_confirm: 'potvrdi',
+    page: '',
+    prev_page: 'Prijašnja stranica',
+    next_page: 'Sljedeća stranica',
+    prev_5: 'Prijašnjih 5 stranica',
+    next_5: 'Sljedećih 5 stranica',
+    prev_3: 'Prijašnje 3 stranice',
+    next_3: 'Sljedeće 3 stranice'
+  },
+  DatePicker: {
+    lang: {
+      placeholder: 'Odaberite datum',
+      rangePlaceholder: ['Početni datum', 'Završni datum'],
+      locale: 'hr_HR',
+      today: 'Danas',
+      now: 'Sad',
+      backToToday: 'Natrag na danas',
+      ok: 'Ok',
+      clear: 'Očisti',
+      month: 'Mjesec',
+      year: 'Godina',
+      timeSelect: 'odaberite vrijeme',
+      dateSelect: 'odaberite datum',
+      weekSelect: 'Odaberite tjedan',
+      monthSelect: 'Odaberite mjesec',
+      yearSelect: 'Odaberite godinu',
+      decadeSelect: 'Odaberite desetljeće',
+      yearFormat: 'YYYY',
+      dateFormat: 'D.M.YYYY',
+      dayFormat: 'D',
+      dateTimeFormat: 'D.M.YYYY HH:mm:ss',
+      monthBeforeYear: true,
+      previousMonth: 'Prošli mjesec (PageUp)',
+      nextMonth: 'Sljedeći mjesec (PageDown)',
+      previousYear: 'Prošla godina (Control + left)',
+      nextYear: 'Sljedeća godina (Control + right)',
+      previousDecade: 'Prošlo desetljeće',
+      nextDecade: 'Sljedeće desetljeće',
+      previousCentury: 'Prošlo stoljeće',
+      nextCentury: 'Sljedeće stoljeće'
+    },
+    timePickerLocale: {
+      placeholder: 'Odaberite vrijeme'
+    }
+  },
+  TimePicker: {
+    placeholder: 'Odaberite vrijeme'
+  },
+  Calendar: {
+    lang: {
+      placeholder: 'Odaberite datum',
+      rangePlaceholder: ['Početni datum', 'Završni datum'],
+      locale: 'hr_HR',
+      today: 'Danas',
+      now: 'Sad',
+      backToToday: 'Natrag na danas',
+      ok: 'Ok',
+      clear: 'Očisti',
+      month: 'Mjesec',
+      year: 'Godina',
+      timeSelect: 'odaberite vrijeme',
+      dateSelect: 'odaberite datum',
+      weekSelect: 'Odaberite tjedan',
+      monthSelect: 'Odaberite mjesec',
+      yearSelect: 'Odaberite godinu',
+      decadeSelect: 'Odaberite desetljeće',
+      yearFormat: 'YYYY',
+      dateFormat: 'D.M.YYYY',
+      dayFormat: 'D',
+      dateTimeFormat: 'D.M.YYYY HH:mm:ss',
+      monthBeforeYear: true,
+      previousMonth: 'Prošli mjesec (PageUp)',
+      nextMonth: 'Sljedeći mjesec (PageDown)',
+      previousYear: 'Prošla godina (Control + left)',
+      nextYear: 'Sljedeća godina (Control + right)',
+      previousDecade: 'Prošlo desetljeće',
+      nextDecade: 'Sljedeće desetljeće',
+      previousCentury: 'Prošlo stoljeće',
+      nextCentury: 'Sljedeće stoljeće'
+    },
+    timePickerLocale: {
+      placeholder: 'Odaberite vrijeme'
+    }
+  },
   global: {
     placeholder: 'Molimo označite'
   },

@@ -35,7 +35,7 @@ import { InputBoolean, InputNumber, isStyleSupport, measure } from 'ng-zorro-ant
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
 
 import { NzTextCopyComponent } from './text-copy.component';
 import { NzTextEditComponent } from './text-edit.component';
@@ -126,7 +126,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   @ViewChild('expandable', { static: false }) expandableBtn?: ElementRef<HTMLSpanElement>;
   @ViewChild('contentTemplate', { static: false }) contentTemplate?: TemplateRef<{ content: string }>;
 
-  locale: NzSafeAny = {};
+  locale!: NzTextI18nInterface;
   document: Document;
   expandableBtnElementCache: HTMLElement | null = null;
   editing = false;

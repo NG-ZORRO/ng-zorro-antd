@@ -3,18 +3,95 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import Calendar from './calendar//ta_IN';
-import DatePicker from './date-picker/ta_IN';
-import Pagination from './pagination/ta_IN';
-import TimePicker from './time-picker/ta_IN';
-
 export default {
   locale: 'ta',
-  Pagination,
-  DatePicker,
-  TimePicker,
-  Calendar,
-  // locales for all comoponents
+  Pagination: {
+    items_per_page: '/ பக்கம்',
+    jump_to: 'அடுத்த',
+    jump_to_confirm: 'உறுதிப்படுத்தவும்',
+    page: '',
+    prev_page: 'முந்தைய பக்கம்',
+    next_page: 'அடுத்த பக்கம்',
+    prev_5: 'முந்தைய 5 பக்கங்கள்',
+    next_5: 'அடுத்த 5 பக்கங்கள்',
+    prev_3: 'முந்தைய 3 பக்கங்கள்',
+    next_3: 'அடுத்த 3 பக்கங்கள்'
+  },
+  DatePicker: {
+    lang: {
+      placeholder: 'தேதியைத் தேர்ந்தெடுக்கவும்',
+      rangePlaceholder: ['தொடக்க தேதி', 'கடைசி தேதி'],
+      locale: 'ta_IN',
+      today: 'இன்று',
+      now: 'இப்போது',
+      backToToday: 'இன்றுக்கு திரும்பு',
+      ok: 'சரி',
+      clear: 'அழி',
+      month: 'மாதம்',
+      year: 'வருடம்',
+      timeSelect: 'நேரத்தைத் தேர்ந்தெடு',
+      dateSelect: 'தேதியைத் தேர்ந்தெடு',
+      weekSelect: 'வாரத்தைத் தேர்வுசெய்க',
+      monthSelect: 'மாதத்தைத் தேர்வுசெய்க',
+      yearSelect: 'வருடத்தைத் தேர்வுசெய்க',
+      decadeSelect: 'தசாப்தத்தைத் தேர்வுசெய்க',
+      yearFormat: 'YYYY',
+      dateFormat: 'M/D/YYYY',
+      dayFormat: 'D',
+      dateTimeFormat: 'M/D/YYYY HH:mm:ss',
+      monthBeforeYear: true,
+      previousMonth: 'முந்தைய மாதம் (PageUp)',
+      nextMonth: 'அடுத்த மாதம் (PageDown)',
+      previousYear: 'முந்தைய வருடம் (Control + left)',
+      nextYear: 'அடுத்த வருடம் (Control + right)',
+      previousDecade: 'முந்தைய தசாப்தம்',
+      nextDecade: 'அடுத்த தசாப்தம்',
+      previousCentury: 'முந்தைய நூற்றாண்டு',
+      nextCentury: 'அடுத்த நூற்றாண்டு'
+    },
+    timePickerLocale: {
+      placeholder: 'நேரத்தைத் தேர்ந்தெடுக்கவும்'
+    }
+  },
+  TimePicker: {
+    placeholder: 'நேரத்தைத் தேர்ந்தெடுக்கவும்'
+  },
+  Calendar: {
+    lang: {
+      placeholder: 'தேதியைத் தேர்ந்தெடுக்கவும்',
+      rangePlaceholder: ['தொடக்க தேதி', 'கடைசி தேதி'],
+      locale: 'ta_IN',
+      today: 'இன்று',
+      now: 'இப்போது',
+      backToToday: 'இன்றுக்கு திரும்பு',
+      ok: 'சரி',
+      clear: 'அழி',
+      month: 'மாதம்',
+      year: 'வருடம்',
+      timeSelect: 'நேரத்தைத் தேர்ந்தெடு',
+      dateSelect: 'தேதியைத் தேர்ந்தெடு',
+      weekSelect: 'வாரத்தைத் தேர்வுசெய்க',
+      monthSelect: 'மாதத்தைத் தேர்வுசெய்க',
+      yearSelect: 'வருடத்தைத் தேர்வுசெய்க',
+      decadeSelect: 'தசாப்தத்தைத் தேர்வுசெய்க',
+      yearFormat: 'YYYY',
+      dateFormat: 'M/D/YYYY',
+      dayFormat: 'D',
+      dateTimeFormat: 'M/D/YYYY HH:mm:ss',
+      monthBeforeYear: true,
+      previousMonth: 'முந்தைய மாதம் (PageUp)',
+      nextMonth: 'அடுத்த மாதம் (PageDown)',
+      previousYear: 'முந்தைய வருடம் (Control + left)',
+      nextYear: 'அடுத்த வருடம் (Control + right)',
+      previousDecade: 'முந்தைய தசாப்தம்',
+      nextDecade: 'அடுத்த தசாப்தம்',
+      previousCentury: 'முந்தைய நூற்றாண்டு',
+      nextCentury: 'அடுத்த நூற்றாண்டு'
+    },
+    timePickerLocale: {
+      placeholder: 'நேரத்தைத் தேர்ந்தெடுக்கவும்'
+    }
+  },
   global: {
     placeholder: 'தேதியைத் தேர்ந்தெடுக்கவும்'
   },

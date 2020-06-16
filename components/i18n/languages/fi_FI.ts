@@ -3,17 +3,93 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import Calendar from './calendar/fi_FI';
-import DatePicker from './date-picker/fi_FI';
-import Pagination from './pagination/fi_FI';
-import TimePicker from './time-picker/fi_FI';
-
 export default {
   locale: 'fi',
-  Pagination,
-  DatePicker,
-  TimePicker,
-  Calendar,
+  Pagination: {
+    items_per_page: '/ sivu',
+    jump_to: 'Mene',
+    jump_to_confirm: 'Potvrdite',
+    page: '',
+    prev_page: 'Edellinen sivu',
+    next_page: 'Seuraava sivu',
+    prev_5: 'Edelliset 5 sivua',
+    next_5: 'Seuraavat 5 sivua',
+    prev_3: 'Edelliset 3 sivua',
+    next_3: 'Seuraavat 3 sivua'
+  },
+  DatePicker: {
+    lang: {
+      placeholder: 'Valitse päivä',
+      rangePlaceholder: ['Alku päivä', 'Loppu päivä'],
+      locale: 'fi_FI',
+      today: 'Tänään',
+      now: 'Nyt',
+      backToToday: 'Tämä päivä',
+      ok: 'Ok',
+      clear: 'Tyhjennä',
+      month: 'Kuukausi',
+      year: 'Vuosi',
+      timeSelect: 'Valise aika',
+      dateSelect: 'Valitse päivä',
+      monthSelect: 'Valitse kuukausi',
+      yearSelect: 'Valitse vuosi',
+      decadeSelect: 'Valitse vuosikymmen',
+      yearFormat: 'YYYY',
+      dateFormat: 'D.M.YYYY',
+      dayFormat: 'D',
+      dateTimeFormat: 'D.M.YYYY HH:mm:ss',
+      monthBeforeYear: true,
+      previousMonth: 'Edellinen kuukausi (PageUp)',
+      nextMonth: 'Seuraava kuukausi (PageDown)',
+      previousYear: 'Edellinen vuosi (Control + left)',
+      nextYear: 'Seuraava vuosi (Control + right)',
+      previousDecade: 'Edellinen vuosikymmen',
+      nextDecade: 'Seuraava vuosikymmen',
+      previousCentury: 'Edellinen vuosisata',
+      nextCentury: 'Seuraava vuosisata'
+    },
+    timePickerLocale: {
+      placeholder: 'Valitse aika'
+    }
+  },
+  TimePicker: {
+    placeholder: 'Valitse aika'
+  },
+  Calendar: {
+    lang: {
+      placeholder: 'Valitse päivä',
+      rangePlaceholder: ['Alku päivä', 'Loppu päivä'],
+      locale: 'fi_FI',
+      today: 'Tänään',
+      now: 'Nyt',
+      backToToday: 'Tämä päivä',
+      ok: 'Ok',
+      clear: 'Tyhjennä',
+      month: 'Kuukausi',
+      year: 'Vuosi',
+      timeSelect: 'Valise aika',
+      dateSelect: 'Valitse päivä',
+      monthSelect: 'Valitse kuukausi',
+      yearSelect: 'Valitse vuosi',
+      decadeSelect: 'Valitse vuosikymmen',
+      yearFormat: 'YYYY',
+      dateFormat: 'D.M.YYYY',
+      dayFormat: 'D',
+      dateTimeFormat: 'D.M.YYYY HH:mm:ss',
+      monthBeforeYear: true,
+      previousMonth: 'Edellinen kuukausi (PageUp)',
+      nextMonth: 'Seuraava kuukausi (PageDown)',
+      previousYear: 'Edellinen vuosi (Control + left)',
+      nextYear: 'Seuraava vuosi (Control + right)',
+      previousDecade: 'Edellinen vuosikymmen',
+      nextDecade: 'Seuraava vuosikymmen',
+      previousCentury: 'Edellinen vuosisata',
+      nextCentury: 'Seuraava vuosisata'
+    },
+    timePickerLocale: {
+      placeholder: 'Valitse aika'
+    }
+  },
   Table: {
     filterTitle: 'Suodatus valikko',
     filterConfirm: 'OK',

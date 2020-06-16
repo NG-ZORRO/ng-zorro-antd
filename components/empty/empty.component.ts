@@ -18,7 +18,7 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzEmptyI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 const NzEmptyDefaultImages = ['default', 'simple'] as const;
 type NzEmptyNotFoundImageType = typeof NzEmptyDefaultImages[number] | null | string | TemplateRef<void>;
@@ -60,7 +60,7 @@ export class NzEmptyComponent implements OnChanges, OnInit, OnDestroy {
 
   isContentString = false;
   isImageBuildIn = true;
-  locale: { [key: string]: string } = {};
+  locale!: NzEmptyI18nInterface;
 
   private readonly destroy$ = new Subject<void>();
 
