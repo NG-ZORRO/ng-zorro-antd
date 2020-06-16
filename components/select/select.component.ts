@@ -278,14 +278,15 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
           return true;
         }
       });
-    if (
-      this.nzMode === 'tags' &&
-      this.searchValue &&
-      this.listOfTagAndTemplateItem.findIndex(item => item.nzLabel === this.searchValue) === -1
-    ) {
-      const tagItem = this.generateTagItem(this.searchValue);
-      listOfContainerItem = [tagItem, ...listOfContainerItem];
-      this.activatedValue = tagItem.nzValue;
+    if (this.nzMode === 'tags' && this.searchValue) {
+      const matchedItem = this.listOfTagAndTemplateItem.find(item => item.nzLabel === this.searchValue);
+      if (!matchedItem) {
+        const tagItem = this.generateTagItem(this.searchValue);
+        listOfContainerItem = [tagItem, ...listOfContainerItem];
+        this.activatedValue = tagItem.nzValue;
+      } else {
+        this.activatedValue = matchedItem.nzValue;
+      }
     }
     if (
       this.listOfValue.length !== 0 &&
