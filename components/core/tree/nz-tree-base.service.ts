@@ -222,14 +222,14 @@ export class NzTreeBaseService {
       return;
     }
     this.checkedNodeList.forEach(node => {
-      this.conduct(node);
+      this.conduct(node, isCheckStrictly);
     });
   }
 
   // reset other node checked state based current node
-  conduct(node: NzTreeNode): void {
+  conduct(node: NzTreeNode, isCheckStrictly: boolean = false): void {
     const isChecked = node.isChecked;
-    if (node) {
+    if (node && !isCheckStrictly) {
       this.conductUp(node);
       this.conductDown(node, isChecked);
     }
