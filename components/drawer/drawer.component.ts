@@ -51,6 +51,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'drawer';
         class="ant-drawer"
         [nzNoAnimation]="nzNoAnimation"
         [class.ant-drawer-open]="isOpen"
+        [class.no-mask]="!nzMask"
         [class.ant-drawer-top]="nzPlacement === 'top'"
         [class.ant-drawer-bottom]="nzPlacement === 'bottom'"
         [class.ant-drawer-right]="nzPlacement === 'right'"
