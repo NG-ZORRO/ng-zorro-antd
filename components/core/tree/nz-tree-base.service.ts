@@ -222,14 +222,14 @@ export class NzTreeBaseService {
       return;
     }
     this.checkedNodeList.forEach(node => {
-      this.conduct(node);
+      this.conduct(node, isCheckStrictly);
     });
   }
 
   // reset other node checked state based current node
-  conduct(node: NzTreeNode): void {
+  conduct(node: NzTreeNode, isCheckStrictly: boolean = false): void {
     const isChecked = node.isChecked;
-    if (node) {
+    if (node && !isCheckStrictly) {
       this.conductUp(node);
       this.conductDown(node, isChecked);
     }
@@ -450,20 +450,26 @@ export class NzTreeBaseService {
 
   /**
    * Render by nzCheckedKeys
+   * When keys equals null, just render with checkStrictly
    * @param keys
    * @param checkStrictly
    */
-  conductCheck(keys: NzTreeNodeKey[], checkStrictly: boolean): void {
+  conductCheck(keys: NzTreeNodeKey[] | null, checkStrictly: boolean): void {
     this.checkedNodeList = [];
     this.halfCheckedNodeList = [];
     const calc = (nodes: NzTreeNode[]) => {
       nodes.forEach(node => {
-        if (isInArray(node.key, keys)) {
-          node.isChecked = true;
-          node.isHalfChecked = false;
+        if (keys === null) {
+          // render tree if no default checked keys found
+          node.isChecked = !!node.origin.checked;
         } else {
-          node.isChecked = false;
-          node.isHalfChecked = false;
+          if (isInArray(node.key, keys || [])) {
+            node.isChecked = true;
+            node.isHalfChecked = false;
+          } else {
+            node.isChecked = false;
+            node.isHalfChecked = false;
+          }
         }
         if (node.children.length > 0) {
           calc(node.children);
@@ -492,6 +498,7 @@ export class NzTreeBaseService {
   }
 
   conductSelectedKeys(keys: NzTreeNodeKey[], isMulti: boolean): void {
+    this.selectedNodeList.forEach(node => (node.isSelected = false));
     this.selectedNodeList = [];
     const calc = (nodes: NzTreeNode[]): boolean => {
       return nodes.every(node => {
