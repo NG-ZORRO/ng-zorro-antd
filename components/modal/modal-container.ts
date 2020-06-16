@@ -39,7 +39,7 @@ export class BaseModalContainer extends BasePortalOutlet implements OnDestroy {
   isStringContent: boolean = false;
   private elementFocusedBeforeModalWasOpened: HTMLElement | null = null;
   private focusTrap!: FocusTrap;
-  private latestMousedownTarget: HTMLElement | null = null;
+  private mouseDown = false;
   private oldMaskStyle: { [key: string]: string } | null = null;
   protected destroy$ = new Subject();
 
@@ -79,15 +79,22 @@ export class BaseModalContainer extends BasePortalOutlet implements OnDestroy {
       });
   }
 
-  onMousedown(e: MouseEvent): void {
-    this.latestMousedownTarget = (e.target as HTMLElement) || null;
-  }
-
-  onMouseup(e: MouseEvent): void {
-    if (e.target === this.latestMousedownTarget && e.target === this.elementRef.nativeElement && this.showMask && this.maskClosable) {
+  onContainerClick(e: MouseEvent): void {
+    if (e.target === e.currentTarget && !this.mouseDown && this.showMask && this.maskClosable) {
       this.containerClick.emit();
     }
-    this.latestMousedownTarget = null;
+  }
+
+  onMousedown(): void {
+    this.mouseDown = true;
+  }
+
+  onMouseup(): void {
+    if (this.mouseDown) {
+      setTimeout(() => {
+        this.mouseDown = false;
+      });
+    }
   }
 
   onCloseClick(): void {
