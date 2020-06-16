@@ -48,6 +48,7 @@ export interface NzConfig {
 }
 
 export interface SelectConfig {
+  nzBorderless?: boolean;
   nzSuffixIcon?: TemplateRef<NzSafeAny> | string | null;
 }
 
@@ -202,7 +203,7 @@ export interface SpaceConfig {
 }
 
 export interface SpinConfig {
-  nzIndicator?: TemplateRef<void>;
+  nzIndicator?: TemplateRef<NzSafeAny>;
 }
 
 export interface SwitchConfig {
@@ -213,6 +214,7 @@ export interface TableConfig {
   nzBordered?: boolean;
   nzSize?: NzSizeMDSType;
   nzShowQuickJumper?: boolean;
+  nzLoadingIndicator?: TemplateRef<NzSafeAny>;
   nzShowSizeChanger?: boolean;
   nzSimple?: boolean;
   nzHideOnSinglePage?: boolean;

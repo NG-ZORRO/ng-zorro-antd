@@ -132,7 +132,6 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterView
   @Input() nzTableLayout: NzTableLayout = 'auto';
   @Input() nzShowTotal: TemplateRef<{ $implicit: number; range: [number, number] }> | null = null;
   @Input() nzItemRender: TemplateRef<PaginationItemRenderContext> | null = null;
-  @Input() nzLoadingIndicator: TemplateRef<NzSafeAny> | null = null;
   @Input() nzTitle: string | TemplateRef<NzSafeAny> | null = null;
   @Input() nzFooter: string | TemplateRef<NzSafeAny> | null = null;
   @Input() nzNoResult: string | TemplateRef<NzSafeAny> | undefined = undefined;
@@ -153,6 +152,7 @@ export class NzTableComponent implements OnInit, OnDestroy, OnChanges, AfterView
   @Input() @InputBoolean() nzTemplateMode = false;
   @Input() @InputBoolean() nzShowPagination = true;
   @Input() @InputBoolean() nzLoading = false;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzLoadingIndicator: TemplateRef<NzSafeAny> | null = null;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzBordered: boolean = false;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzTableSize = 'default';
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzShowSizeChanger: boolean = false;
