@@ -68,7 +68,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'table';
           [scrollX]="scrollX"
           [scrollY]="scrollY"
           [contentTemplate]="contentTemplate"
-          [listOfColWidth]="listOfColWidth"
+          [listOfColWidth]="listOfAutoColWidth"
           [theadTemplate]="theadTemplate"
           [verticalScrollBarWidth]="verticalScrollBarWidth"
           [virtualTemplate]="nzVirtualScrollDirective ? nzVirtualScrollDirective.templateRef : null"
@@ -81,7 +81,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'table';
         <ng-template #defaultTemplate>
           <nz-table-inner-default
             [tableLayout]="nzTableLayout"
-            [listOfColWidth]="listOfColWidth"
+            [listOfColWidth]="listOfManualColWidth"
             [theadTemplate]="theadTemplate"
             [contentTemplate]="contentTemplate"
           ></nz-table-inner-default>
@@ -112,7 +112,9 @@ const NZ_CONFIG_COMPONENT_NAME = 'table';
       >
       </nz-pagination>
     </ng-template>
-    <ng-template #contentTemplate><ng-content></ng-content></ng-template>
+    <ng-template #contentTemplate>
+      <ng-content></ng-content>
+    </ng-template>
   `,
   host: {
     '[class.ant-table-wrapper]': 'true'
@@ -170,7 +172,8 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   scrollX: string | null = null;
   scrollY: string | null = null;
   theadTemplate: TemplateRef<NzSafeAny> | null = null;
-  listOfColWidth: Array<string | null> = [];
+  listOfAutoColWidth: Array<string | null> = [];
+  listOfManualColWidth: Array<string | null> = [];
   hasFixLeft = false;
   hasFixRight = false;
   private destroy$ = new Subject<void>();
@@ -263,7 +266,11 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
 
     this.verticalScrollBarWidth = measureScrollbar('vertical');
     this.nzTableStyleService.listOfListOfThWidthPx$.pipe(takeUntil(this.destroy$)).subscribe(listOfWidth => {
-      this.listOfColWidth = listOfWidth;
+      this.listOfAutoColWidth = listOfWidth;
+      this.cdr.markForCheck();
+    });
+    this.nzTableStyleService.manualWidthConfigPx$.pipe(takeUntil(this.destroy$)).subscribe(listOfWidth => {
+      this.listOfManualColWidth = listOfWidth;
       this.cdr.markForCheck();
     });
   }
