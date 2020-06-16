@@ -3,17 +3,95 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import Calendar from './calendar/ro_RO';
-import DatePicker from './date-picker/ro_RO';
-import Pagination from './pagination/ro_RO';
-import TimePicker from './time-picker/ro_RO';
-
 export default {
   locale: 'ro',
-  Pagination,
-  DatePicker,
-  TimePicker,
-  Calendar,
+  Pagination: {
+    items_per_page: '/ pagină',
+    jump_to: 'Mergi la',
+    jump_to_confirm: 'confirm',
+    page: '',
+    prev_page: 'Pagina Anterioară',
+    next_page: 'Pagina Următoare',
+    prev_5: '5 Pagini Anterioare',
+    next_5: '5 Pagini Următoare',
+    prev_3: '3 Pagini Anterioare',
+    next_3: '3 Pagini Următoare'
+  },
+  DatePicker: {
+    lang: {
+      placeholder: 'Selectează data',
+      rangePlaceholder: ['Data start', 'Data sfârșit'],
+      locale: 'ro_RO',
+      today: 'Azi',
+      now: 'Acum',
+      backToToday: 'Înapoi la azi',
+      ok: 'Ok',
+      clear: 'Șterge',
+      month: 'Lună',
+      year: 'An',
+      timeSelect: 'selectează timpul',
+      dateSelect: 'selectează data',
+      weekSelect: 'Alege o săptămână',
+      monthSelect: 'Alege o lună',
+      yearSelect: 'Alege un an',
+      decadeSelect: 'Alege un deceniu',
+      yearFormat: 'YYYY',
+      dateFormat: 'D/M/YYYY',
+      dayFormat: 'D',
+      dateTimeFormat: 'D/M/YYYY HH:mm:ss',
+      monthBeforeYear: true,
+      previousMonth: 'Luna anterioară (PageUp)',
+      nextMonth: 'Luna următoare (PageDown)',
+      previousYear: 'Anul anterior (Control + stânga)',
+      nextYear: 'Anul următor (Control + dreapta)',
+      previousDecade: 'Deceniul anterior',
+      nextDecade: 'Deceniul următor',
+      previousCentury: 'Secolul anterior',
+      nextCentury: 'Secolul următor'
+    },
+    timePickerLocale: {
+      placeholder: 'Selectează ora'
+    }
+  },
+  TimePicker: {
+    placeholder: 'Selectează ora'
+  },
+  Calendar: {
+    lang: {
+      placeholder: 'Selectează data',
+      rangePlaceholder: ['Data start', 'Data sfârșit'],
+      locale: 'ro_RO',
+      today: 'Azi',
+      now: 'Acum',
+      backToToday: 'Înapoi la azi',
+      ok: 'Ok',
+      clear: 'Șterge',
+      month: 'Lună',
+      year: 'An',
+      timeSelect: 'selectează timpul',
+      dateSelect: 'selectează data',
+      weekSelect: 'Alege o săptămână',
+      monthSelect: 'Alege o lună',
+      yearSelect: 'Alege un an',
+      decadeSelect: 'Alege un deceniu',
+      yearFormat: 'YYYY',
+      dateFormat: 'D/M/YYYY',
+      dayFormat: 'D',
+      dateTimeFormat: 'D/M/YYYY HH:mm:ss',
+      monthBeforeYear: true,
+      previousMonth: 'Luna anterioară (PageUp)',
+      nextMonth: 'Luna următoare (PageDown)',
+      previousYear: 'Anul anterior (Control + stânga)',
+      nextYear: 'Anul următor (Control + dreapta)',
+      previousDecade: 'Deceniul anterior',
+      nextDecade: 'Deceniul următor',
+      previousCentury: 'Secolul anterior',
+      nextCentury: 'Secolul următor'
+    },
+    timePickerLocale: {
+      placeholder: 'Selectează ora'
+    }
+  },
   global: {
     placeholder: 'Selectează'
   },

@@ -3,17 +3,95 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import Calendar from './calendar/hy_AM';
-import DatePicker from './date-picker/hy_AM';
-import Pagination from './pagination/hy_AM';
-import TimePicker from './time-picker/hy_AM';
-
 export default {
-  locale: 'hy',
-  Pagination,
-  DatePicker,
-  TimePicker,
-  Calendar,
+  locale: 'hy-am',
+  Pagination: {
+    items_per_page: '/ էջ',
+    jump_to: 'Գնալ',
+    jump_to_confirm: 'հաստատել',
+    page: '',
+    prev_page: 'Նախորդ Էջ',
+    next_page: 'Հաջորդ Էջ',
+    prev_5: 'Նախորդ 5 Էջերը',
+    next_5: 'Հաջորդ 5 Էջերը',
+    prev_3: 'Նախորդ 3 Էջերը',
+    next_3: 'Հաջորդ 3 Էջերը'
+  },
+  DatePicker: {
+    lang: {
+      locale: 'hy-am',
+      placeholder: 'Ընտրեք ամսաթիվը',
+      rangePlaceholder: ['Մեկնարկի ամսաթիվ', 'Ավարտի ամսաթիվը'],
+      today: 'Այսօր',
+      now: 'Հիմա',
+      backToToday: 'Վերադառնալ այսօր',
+      ok: 'Օկ',
+      clear: 'Մաքրել',
+      month: 'Ամիս',
+      year: 'Տարի',
+      timeSelect: 'ընտրեք ժամը',
+      dateSelect: 'ընտրեք ամսաթիվը',
+      weekSelect: 'Ընտրեք շաբաթը',
+      monthSelect: 'Ընտրեք ամիսը',
+      yearSelect: 'Ընտրեք տարին',
+      decadeSelect: 'Ընտրեք տասնամյակը',
+      yearFormat: 'YYYY',
+      dateFormat: 'DD/MM//YYYY',
+      dayFormat: 'DD',
+      dateTimeFormat: 'DD/MM//YYYY HH:mm:ss',
+      monthBeforeYear: true,
+      previousMonth: 'Անցած ամիս (PageUp)',
+      nextMonth: 'Մյուս ամիս (PageDown)',
+      previousYear: 'Անցած տարի (Control + left)',
+      nextYear: 'Մյուս տարի (Control + right)',
+      previousDecade: 'Անցած տասնամյակ',
+      nextDecade: 'Մյուս տասնամյակ',
+      previousCentury: 'Անցած դար',
+      nextCentury: 'Մյուս դար'
+    },
+    timePickerLocale: {
+      placeholder: 'Ընտրեք ժամը'
+    }
+  },
+  TimePicker: {
+    placeholder: 'Ընտրեք ժամը'
+  },
+  Calendar: {
+    lang: {
+      locale: 'hy-am',
+      placeholder: 'Ընտրեք ամսաթիվը',
+      rangePlaceholder: ['Մեկնարկի ամսաթիվ', 'Ավարտի ամսաթիվը'],
+      today: 'Այսօր',
+      now: 'Հիմա',
+      backToToday: 'Վերադառնալ այսօր',
+      ok: 'Օկ',
+      clear: 'Մաքրել',
+      month: 'Ամիս',
+      year: 'Տարի',
+      timeSelect: 'ընտրեք ժամը',
+      dateSelect: 'ընտրեք ամսաթիվը',
+      weekSelect: 'Ընտրեք շաբաթը',
+      monthSelect: 'Ընտրեք ամիսը',
+      yearSelect: 'Ընտրեք տարին',
+      decadeSelect: 'Ընտրեք տասնամյակը',
+      yearFormat: 'YYYY',
+      dateFormat: 'DD/MM//YYYY',
+      dayFormat: 'DD',
+      dateTimeFormat: 'DD/MM//YYYY HH:mm:ss',
+      monthBeforeYear: true,
+      previousMonth: 'Անցած ամիս (PageUp)',
+      nextMonth: 'Մյուս ամիս (PageDown)',
+      previousYear: 'Անցած տարի (Control + left)',
+      nextYear: 'Մյուս տարի (Control + right)',
+      previousDecade: 'Անցած տասնամյակ',
+      nextDecade: 'Մյուս տասնամյակ',
+      previousCentury: 'Անցած դար',
+      nextCentury: 'Մյուս դար'
+    },
+    timePickerLocale: {
+      placeholder: 'Ընտրեք ժամը'
+    }
+  },
   global: {
     placeholder: 'Ընտրեք'
   },
@@ -46,7 +124,8 @@ export default {
     uploading: 'Ներբեռնում...',
     removeFile: 'Հեռացնել ֆայլը',
     uploadError: 'Ներբեռնման սխալ',
-    previewFile: 'Դիտել ֆայլը'
+    previewFile: 'Դիտել ֆայլը',
+    downloadFile: 'Ներբեռնել ֆայլը'
   },
   Empty: {
     description: 'Տվյալներ չկան'

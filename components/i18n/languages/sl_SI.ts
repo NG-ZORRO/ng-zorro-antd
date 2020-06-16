@@ -3,17 +3,95 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import Calendar from './calendar/sl_SI';
-import DatePicker from './date-picker/sl_SI';
-import Pagination from './pagination/sl_SI';
-import TimePicker from './time-picker/sl_SI';
-
 export default {
   locale: 'sl',
-  Pagination,
-  DatePicker,
-  TimePicker,
-  Calendar,
+  Pagination: {
+    items_per_page: '/ strani',
+    jump_to: 'Pojdi na',
+    jump_to_confirm: 'potrdi',
+    page: '',
+    prev_page: 'Prejšnja stran',
+    next_page: 'Naslednja stran',
+    prev_5: 'Prejšnjih 5 strani',
+    next_5: 'Naslednjih 5 strani',
+    prev_3: 'Prejšnje 3 strani',
+    next_3: 'Naslednje 3 strani'
+  },
+  DatePicker: {
+    lang: {
+      locale: 'sl',
+      placeholder: 'Izberite datum',
+      rangePlaceholder: ['Začetni datum', 'Končni datum'],
+      today: 'Danes',
+      now: 'Trenutno',
+      backToToday: 'Nazaj na trenutni datum',
+      ok: 'Ok',
+      clear: 'Počisti',
+      month: 'Mesec',
+      year: 'Leto',
+      timeSelect: 'Izberi čas',
+      dateSelect: 'Izberi datum',
+      monthSelect: 'Izberite mesec',
+      yearSelect: 'Izberite leto',
+      decadeSelect: 'Izberite desetletje',
+      yearFormat: 'YYYY',
+      dateFormat: 'D.M.YYYY',
+      dayFormat: 'D',
+      dateTimeFormat: 'D.M.YYYY HH:mm:ss',
+      monthFormat: 'MMMM',
+      monthBeforeYear: true,
+      previousMonth: 'Prejšnji mesec (PageUp)',
+      nextMonth: 'Naslednji mesec (PageDown)',
+      previousYear: 'Lansko leto (Control + left)',
+      nextYear: 'Naslednje leto (Control + right)',
+      previousDecade: 'Prejšnje desetletje',
+      nextDecade: 'Naslednje desetletje',
+      previousCentury: 'Zadnje stoletje',
+      nextCentury: 'Naslednje stoletje'
+    },
+    timePickerLocale: {
+      placeholder: 'Izberite čas'
+    }
+  },
+  TimePicker: {
+    placeholder: 'Izberite čas'
+  },
+  Calendar: {
+    lang: {
+      locale: 'sl',
+      placeholder: 'Izberite datum',
+      rangePlaceholder: ['Začetni datum', 'Končni datum'],
+      today: 'Danes',
+      now: 'Trenutno',
+      backToToday: 'Nazaj na trenutni datum',
+      ok: 'Ok',
+      clear: 'Počisti',
+      month: 'Mesec',
+      year: 'Leto',
+      timeSelect: 'Izberi čas',
+      dateSelect: 'Izberi datum',
+      monthSelect: 'Izberite mesec',
+      yearSelect: 'Izberite leto',
+      decadeSelect: 'Izberite desetletje',
+      yearFormat: 'YYYY',
+      dateFormat: 'D.M.YYYY',
+      dayFormat: 'D',
+      dateTimeFormat: 'D.M.YYYY HH:mm:ss',
+      monthFormat: 'MMMM',
+      monthBeforeYear: true,
+      previousMonth: 'Prejšnji mesec (PageUp)',
+      nextMonth: 'Naslednji mesec (PageDown)',
+      previousYear: 'Lansko leto (Control + left)',
+      nextYear: 'Naslednje leto (Control + right)',
+      previousDecade: 'Prejšnje desetletje',
+      nextDecade: 'Naslednje desetletje',
+      previousCentury: 'Zadnje stoletje',
+      nextCentury: 'Naslednje stoletje'
+    },
+    timePickerLocale: {
+      placeholder: 'Izberite čas'
+    }
+  },
   Table: {
     filterTitle: 'Filter',
     filterConfirm: 'Filtriraj',

@@ -106,7 +106,7 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
       <ul class="ant-picker-ranges">
         <li class="ant-picker-now">
           <a (click)="onClickNow()">
-            {{ 'Calendar.now' | nzI18n }}
+            {{ 'Calendar.lang.now' | nzI18n }}
           </a>
         </li>
       </ul>

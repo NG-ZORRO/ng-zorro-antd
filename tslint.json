@@ -90,7 +90,7 @@
     "no-for-in-array": true,
     "no-import-side-effect": true,
     "no-inferrable-types": [true, "ignore-params", "ignore-properties"],
-    "no-invalid-template-strings": true,
+    "no-invalid-template-strings": false,
     "no-invalid-this": true,
     "no-irregular-whitespace": true,
     "no-magic-numbers": false,

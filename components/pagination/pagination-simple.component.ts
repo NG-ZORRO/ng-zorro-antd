@@ -19,6 +19,7 @@ import {
 } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { toNumber } from 'ng-zorro-antd/core/util';
+import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 import { PaginationItemRenderContext } from './pagination.types';
 
 @Component({
@@ -43,7 +44,7 @@ import { PaginationItemRenderContext } from './pagination.types';
       </li>
       <li
         nz-pagination-item
-        [attr.title]="locale.next_page"
+        [attr.title]="locale?.next_page"
         [disabled]="isLastIndex"
         (click)="nextPage()"
         type="next"
@@ -56,7 +57,7 @@ export class NzPaginationSimpleComponent implements OnChanges {
   @ViewChild('containerTemplate', { static: true }) template!: TemplateRef<NzSafeAny>;
   @Input() itemRender: TemplateRef<PaginationItemRenderContext> | null = null;
   @Input() disabled = false;
-  @Input() locale: NzSafeAny = {};
+  @Input() locale!: NzPaginationI18nInterface;
   @Input() total = 0;
   @Input() pageIndex = 1;
   @Input() pageSize = 10;
