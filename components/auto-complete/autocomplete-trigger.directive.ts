@@ -5,35 +5,22 @@
 
 import { DOWN_ARROW, ENTER, ESCAPE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import {
-  ConnectedOverlayPositionChange,
   ConnectionPositionPair,
   FlexibleConnectedPositionStrategy,
   Overlay,
   OverlayConfig,
   OverlayRef,
-  PositionStrategy,
-  VerticalConnectionPos
+  PositionStrategy
 } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
-import {
-  Directive,
-  ElementRef,
-  ExistingProvider,
-  forwardRef,
-  Inject,
-  Input,
-  NgZone,
-  OnDestroy,
-  Optional,
-  ViewContainerRef
-} from '@angular/core';
+import { Directive, ElementRef, ExistingProvider, forwardRef, Inject, Input, OnDestroy, Optional, ViewContainerRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { NzInputGroupWhitSuffixOrPrefixDirective } from 'ng-zorro-antd/input';
 
 import { fromEvent, merge, Subject, Subscription } from 'rxjs';
-import { delay, distinct, map, take, takeUntil, tap } from 'rxjs/operators';
+import { delay, takeUntil, tap } from 'rxjs/operators';
 
 import { NzAutocompleteOptionComponent } from './autocomplete-option.component';
 import { NzAutocompleteComponent } from './autocomplete.component';
@@ -88,13 +75,11 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   private selectionChangeSubscription!: Subscription;
   private optionsChangeSubscription!: Subscription;
   private overlayBackdropClickSubscription!: Subscription;
-  private overlayPositionChangeSubscription!: Subscription;
 
   constructor(
     private elementRef: ElementRef,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
-    private ngZone: NgZone,
     @Optional() private nzInputGroupWhitSuffixOrPrefixDirective: NzInputGroupWhitSuffixOrPrefixDirective,
     @Optional() @Inject(DOCUMENT) private document: NzSafeAny
   ) {}
@@ -134,7 +119,6 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
       if (this.overlayRef && this.overlayRef.hasAttached()) {
         this.selectionChangeSubscription.unsubscribe();
         this.overlayBackdropClickSubscription.unsubscribe();
-        this.overlayPositionChangeSubscription.unsubscribe();
         this.optionsChangeSubscription.unsubscribe();
         this.overlayRef.dispose();
         this.overlayRef = null;
@@ -209,12 +193,11 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
    * Subscription data source changes event
    */
   private subscribeOptionsChange(): Subscription {
-    const firstStable = this.ngZone.onStable.asObservable().pipe(take(1));
     const optionChanges = this.nzAutocomplete.options.changes.pipe(
       tap(() => this.positionStrategy.reapplyLastPosition()),
       delay(0)
     );
-    return merge(firstStable, optionChanges).subscribe(() => {
+    return optionChanges.subscribe(() => {
       this.resetActiveItem();
       if (this.panelOpen) {
         this.overlayRef!.updatePosition();
@@ -248,21 +231,6 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     });
   }
 
-  /**
-   * Subscription overlay position changes and reset dropdown position
-   */
-  private subscribeOverlayPositionChange(): Subscription {
-    return this.positionStrategy.positionChanges
-      .pipe(
-        map((position: ConnectedOverlayPositionChange) => position.connectionPair.originY),
-        distinct(),
-        delay(0)
-      )
-      .subscribe((position: VerticalConnectionPos) => {
-        this.nzAutocomplete.updatePosition(position);
-      });
-  }
-
   private attachOverlay(): void {
     if (!this.nzAutocomplete) {
       throw getNzAutocompleteMissingPanelError();
@@ -278,7 +246,6 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
 
     if (this.overlayRef && !this.overlayRef.hasAttached()) {
       this.overlayRef.attach(this.portal);
-      this.overlayPositionChangeSubscription = this.subscribeOverlayPositionChange();
       this.selectionChangeSubscription = this.subscribeSelectionChange();
       this.overlayBackdropClickSubscription = this.subscribeOverlayBackdropClick();
       this.optionsChangeSubscription = this.subscribeOptionsChange();
@@ -337,7 +304,8 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
       .flexibleConnectedTo(this.getConnectedElement())
       .withFlexibleDimensions(false)
       .withPush(false)
-      .withPositions(positions);
+      .withPositions(positions)
+      .withTransformOriginOn('.ant-select-dropdown');
     return this.positionStrategy;
   }
 

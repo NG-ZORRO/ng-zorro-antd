@@ -67,10 +67,11 @@ const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayOpen]="nzOpen"
       [cdkConnectedOverlayOffsetY]="-2"
+      [cdkConnectedOverlayTransformOriginOn]="'.ant-picker-dropdown'"
       (detach)="close()"
       (backdropClick)="close()"
     >
-      <div [@slideMotion]="'bottom'" class="ant-picker-dropdown">
+      <div [@slideMotion]="'enter'" class="ant-picker-dropdown">
         <div class="ant-picker-panel-container">
           <div tabindex="-1" class="ant-picker-panel">
             <nz-time-picker-panel
@@ -130,7 +131,6 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
       originY: 'bottom',
       overlayX: 'start',
       overlayY: 'top',
-      offsetX: 0,
       offsetY: 3
     }
   ];

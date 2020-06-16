@@ -67,6 +67,7 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
       [cdkConnectedOverlayOrigin]="cdkOverlayOrigin"
       [cdkConnectedOverlayOpen]="nzOpen"
       [cdkConnectedOverlayHasBackdrop]="true"
+      [cdkConnectedOverlayTransformOriginOn]="'.ant-select-tree-dropdown'"
       [cdkConnectedOverlayMinWidth]="$any(nzDropdownMatchSelectWidth ? null : triggerWidth)"
       [cdkConnectedOverlayWidth]="$any(nzDropdownMatchSelectWidth ? triggerWidth : null)"
       (backdropClick)="closeDropDown()"
@@ -74,8 +75,8 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
       (positionChange)="onPositionChange($event)"
     >
       <div
+        [@slideMotion]="'enter'"
         [ngClass]="dropdownClassName"
-        [@slideMotion]="nzOpen ? dropDownPosition : 'void'"
         [@.disabled]="noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
         [class.ant-select-dropdown-placement-bottomLeft]="dropDownPosition === 'bottom'"
@@ -373,7 +374,6 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       this.nzOpen = true;
       this.nzOpenChange.emit(this.nzOpen);
       this.updateCdkConnectedOverlayStatus();
-      this.updatePosition();
     }
   }
 
