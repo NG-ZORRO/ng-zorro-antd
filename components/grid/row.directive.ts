@@ -38,17 +38,17 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   @Input() nzJustify: NzJustify | null = null;
   @Input() nzGutter: number | IndexableObject | [number, number] | [IndexableObject, IndexableObject] | null = null;
 
-  readonly actualGutter$ = new ReplaySubject<[number, number]>(1);
+  readonly actualGutter$ = new ReplaySubject<[number | null, number | null]>(1);
 
   private readonly destroy$ = new Subject();
 
-  getGutter(): [number, number] {
-    const results: [number, number] = [0, 0];
+  getGutter(): [number | null, number | null] {
+    const results: [number | null, number | null] = [null, null];
     const gutter = this.nzGutter || 0;
-    const normalizedGutter = Array.isArray(gutter) ? gutter : [gutter, 0];
+    const normalizedGutter = Array.isArray(gutter) ? gutter : [gutter, null];
     normalizedGutter.forEach((g, index) => {
-      if (typeof g === 'object') {
-        results[index] = 0;
+      if (typeof g === 'object' && g !== null) {
+        results[index] = null;
         Object.keys(gridResponsiveMap).map((screen: string) => {
           const bp = screen as NzBreakpointKey;
           if (this.mediaMatcher.matchMedia(gridResponsiveMap[bp]).matches && g[bp]) {
@@ -56,7 +56,7 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
           }
         });
       } else {
-        results[index] = g || 0;
+        results[index] = g || null;
       }
     });
     return results;
@@ -65,18 +65,16 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
   setGutterStyle(): void {
     const [horizontalGutter, verticalGutter] = this.getGutter();
     this.actualGutter$.next([horizontalGutter, verticalGutter]);
-    const renderGutter = (name: string, gutter: number) => {
+    const renderGutter = (name: string, gutter: number | null) => {
       const nativeElement = this.elementRef.nativeElement;
-      this.renderer.setStyle(nativeElement, name, `-${gutter / 2}px`);
+      if (gutter !== null) {
+        this.renderer.setStyle(nativeElement, name, `-${gutter / 2}px`);
+      }
     };
-    if (horizontalGutter > 0) {
-      renderGutter('margin-left', horizontalGutter);
-      renderGutter('margin-right', horizontalGutter);
-    }
-    if (verticalGutter > 0) {
-      renderGutter('margin-top', verticalGutter);
-      renderGutter('margin-bottom', verticalGutter);
-    }
+    renderGutter('margin-left', horizontalGutter);
+    renderGutter('margin-right', horizontalGutter);
+    renderGutter('margin-top', verticalGutter);
+    renderGutter('margin-bottom', verticalGutter);
   }
 
   constructor(
