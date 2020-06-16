@@ -12,6 +12,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -38,7 +39,7 @@ import { getConfigFromComponent } from './utils';
   template: ` <ng-template><ng-content></ng-content></ng-template> `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges, NzModalLegacyAPI<T, R> {
+export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges, NzModalLegacyAPI<T, R>, OnDestroy {
   static ngAcceptInputType_nzMask: BooleanInput;
   static ngAcceptInputType_nzMaskClosable: BooleanInput;
   static ngAcceptInputType_nzCloseOnNavigation: BooleanInput;
@@ -202,5 +203,9 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
         this.close();
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.modalRef?._finishDialogClose();
   }
 }

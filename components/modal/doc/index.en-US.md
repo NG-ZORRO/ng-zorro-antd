@@ -118,12 +118,12 @@ The dialog created by the service method `NzModalService.xxx()` will return a `N
 |----|----|
 | afterOpen                 | Same as nzAfterOpen but of type Observable&lt;void&gt; |
 | afterClose | Same as nzAfterClose, but of type Observable&lt;result:any&gt; |
-| open()                    | Open (display) dialog box. <i>Calling this function will fail if the dialog is already destroyed</i> |
 | close()                   | Close (hide) the dialog. <i>Note: When used for a dialog created as a service, this method will destroy the dialog directly (as with the destroy method)</i> |
 | destroy()                 | Destroy the dialog. <i>Note: Used only for dialogs created by the service (non-service created dialogs, this method only hides the dialog)</i> |
 | getContentComponent()  | Gets the Component instance in the contents of the dialog for `nzContent`. <i> Note: When the dialog is not initialized (`ngOnInit` is not executed), this function will return `undefined`</i> |
 | triggerOk()               | Manually trigger nzOnOk |
 | triggerCancel()           | Manually trigger nzOnCancel |
+| updateConfig(config: ModalOptions): void   | Update the config |
 
 ### ModalButtonOptions (used to customize the bottom button)
 
