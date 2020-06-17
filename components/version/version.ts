@@ -5,4 +5,4 @@
 
 import { Version } from '@angular/core';
 
-export const VERSION = new Version('9.1.2');
+export const VERSION = new Version('9.2.0');
