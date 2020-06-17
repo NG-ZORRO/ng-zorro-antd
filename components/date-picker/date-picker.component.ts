@@ -324,7 +324,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
 
   private setDefaultPlaceHolder(): void {
     if (!this.isCustomPlaceHolder && this.nzLocale) {
-      this.nzPlaceHolder = this.isRange ? (this.nzLocale.lang.rangePlaceholder as [string, string]) : this.nzLocale.lang.placeholder;
+      this.nzPlaceHolder = this.isRange ? (this.nzLocale.lang.rangePlaceholder as [string, string]) : this.nzLocale.lang.placeholder!;
     }
   }
 
