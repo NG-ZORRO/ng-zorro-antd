@@ -2,7 +2,10 @@ import { Component, OnDestroy } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 
 import { Subscription } from 'rxjs';
+import cs_CZ from './languages/cs_CZ';
+import de_DE from './languages/de_DE';
 import en_US from './languages/en_US';
+import ka_GE from './languages/ka_GE';
 import zh_CN from './languages/zh_CN';
 import { NzI18nInterface } from './nz-i18n.interface';
 import { NzI18nModule } from './nz-i18n.module';
@@ -30,6 +33,14 @@ describe('i18n service', () => {
     beforeEach(inject([NzI18nService], (s: NzI18nService) => {
       srv = s;
     }));
+
+    it('should interface be right', () => {
+      const i18nEN: NzI18nInterface = en_US;
+      const i18nDE: NzI18nInterface = de_DE;
+      const i18nCS: NzI18nInterface = cs_CZ;
+      const i18nKA: NzI18nInterface = ka_GE;
+      console.log(i18nEN, i18nDE, i18nCS, i18nKA);
+    });
 
     it('should be auto default zh_CN', () => {
       expect(testComponent.locale.locale).toBe(DEFAULT_LAN.locale);
