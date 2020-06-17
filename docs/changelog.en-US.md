@@ -14,6 +14,15 @@ timeline: true
 
 ---
 
+## 9.2.1
+
+`2020-06-17`
+
+### Bug Fixes
+
+* **i18n:** some locales compiles error ([#5445](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5445)) ([e9ef9f3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/e9ef9f3))
+
+
 ## 9.2.0
 
 `2020-06-16`
