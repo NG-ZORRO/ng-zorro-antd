@@ -58,20 +58,20 @@ export interface NzCalendarI18nInterface {
 }
 
 export interface NzDatePickerLangI18nInterface extends NzCalendarI18nInterface {
-  placeholder: string;
-  yearPlaceholder: string;
-  quarterPlaceholder: string;
-  monthPlaceholder: string;
-  weekPlaceholder: string;
-  rangePlaceholder: string[];
-  rangeYearPlaceholder: string[];
-  rangeMonthPlaceholder: string[];
-  rangeWeekPlaceholder: string[];
+  placeholder?: string;
+  yearPlaceholder?: string;
+  quarterPlaceholder?: string;
+  monthPlaceholder?: string;
+  weekPlaceholder?: string;
+  rangePlaceholder?: string[];
+  rangeYearPlaceholder?: string[];
+  rangeMonthPlaceholder?: string[];
+  rangeWeekPlaceholder?: string[];
 }
 
 export interface NzTimePickerI18nInterface {
-  placeholder: string;
-  rangePlaceholder: string[];
+  placeholder?: string;
+  rangePlaceholder?: string[];
 }
 
 export type ValidateMessage = string | (() => string);
@@ -127,18 +127,18 @@ export interface NzFormValidateMessages {
 export type NzCascaderI18nInterface = NzGlobalI18nInterface;
 
 export interface NzTableI18nInterface {
-  filterTitle: string;
-  filterConfirm: string;
-  filterReset: string;
-  selectAll: string;
-  selectInvert: string;
-  selectionAll: string;
-  sortTitle: string;
-  expand: string;
-  collapse: string;
-  triggerDesc: string;
-  triggerAsc: string;
-  cancelSort: string;
+  filterTitle?: string;
+  filterConfirm?: string;
+  filterReset?: string;
+  selectAll?: string;
+  selectInvert?: string;
+  selectionAll?: string;
+  sortTitle?: string;
+  expand?: string;
+  collapse?: string;
+  triggerDesc?: string;
+  triggerAsc?: string;
+  cancelSort?: string;
 }
 
 export interface NzModalI18nInterface {
@@ -154,17 +154,17 @@ export interface NzPopconfirmI18nInterface {
 
 export interface NzTransferI18nInterface {
   titles?: string[];
-  searchPlaceholder: string;
-  itemUnit: string;
-  itemsUnit: string;
+  searchPlaceholder?: string;
+  itemUnit?: string;
+  itemsUnit?: string;
 }
 
 export interface NzUploadI18nInterface {
-  uploading: string;
-  removeFile: string;
-  uploadError: string;
-  previewFile: string;
-  downloadFile: string;
+  uploading?: string;
+  removeFile?: string;
+  uploadError?: string;
+  previewFile?: string;
+  downloadFile?: string;
 }
 
 export interface NzEmptyI18nInterface {
@@ -191,9 +191,9 @@ export interface NzI18nInterface {
   Transfer: NzTransferI18nInterface;
   Upload: NzUploadI18nInterface;
   Empty: NzEmptyI18nInterface;
-  Text: NzTextI18nInterface;
-  Form: {
-    defaultValidateMessages: NzFormValidateMessages;
+  Text?: NzTextI18nInterface;
+  Form?: {
+    defaultValidateMessages?: NzFormValidateMessages;
   };
 }
 
