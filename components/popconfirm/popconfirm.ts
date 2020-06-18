@@ -59,6 +59,10 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
    */
   @Input() nzTrigger: NzTooltipTrigger = 'click';
 
+  @Input('nzPopconfirmVisible') specificVisible?: boolean;
+
+  // tslint:disable-next-line:no-output-rename
+  @Output('nzPopconfirmVisibleChange') readonly specificVisibleChange = new EventEmitter<boolean>();
   @Output() readonly nzOnCancel = new EventEmitter<void>();
   @Output() readonly nzOnConfirm = new EventEmitter<void>();
 

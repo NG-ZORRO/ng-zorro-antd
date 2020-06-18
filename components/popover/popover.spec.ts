@@ -87,6 +87,20 @@ describe('NzPopover', () => {
     expect(getTitleTextContent()).toBeNull();
     expect(getInnerTextContent()).toBeNull();
   }));
+
+  it('should support changing visibility programmatically', fakeAsync(() => {
+    const title = 'program';
+
+    component.visible = true;
+    waitingForTooltipToggling();
+    expect(overlayContainerElement.textContent).toContain(title);
+    expect(component.visibilityTogglingCount).toBe(1);
+
+    component.visible = false;
+    waitingForTooltipToggling();
+    expect(overlayContainerElement.textContent).not.toContain(title);
+    expect(component.visibilityTogglingCount).toBe(2);
+  }));
 });
 
 @Component({
@@ -97,6 +111,10 @@ describe('NzPopover', () => {
 
     <a #templatePopover nz-popover [nzTitle]="templateTitle" [nzContent]="templateContent">
       Show
+    </a>
+
+    <a #program nz-popover nzTitle="program" [nzPopoverVisible]="visible" (nzPopoverVisibleChange)="onVisibleChange()">
+      Manually
     </a>
 
     <ng-template #templateTitle>
@@ -116,4 +134,11 @@ export class NzPopoverTestComponent {
   @ViewChild('templatePopover', { static: false }) templatePopover!: ElementRef;
   @ViewChild('templatePopover', { static: false, read: NzPopoverDirective })
   templatePopoverNzPopoverDirective!: NzPopoverDirective;
+
+  visible = false;
+  visibilityTogglingCount = 0;
+
+  onVisibleChange(): void {
+    this.visibilityTogglingCount += 1;
+  }
 }

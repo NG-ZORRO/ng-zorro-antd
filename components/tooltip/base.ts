@@ -39,7 +39,9 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
   specificTrigger?: NzTooltipTrigger;
   specificPlacement?: string;
   specificOrigin?: ElementRef<HTMLElement>;
+  specificVisible?: boolean;
 
+  specificVisibleChange = new EventEmitter<boolean>();
   /**
    * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
    * Please use a more specific API. Like `nzTooltipTitle`.
@@ -95,18 +97,16 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
     return typeof this.specificTrigger !== 'undefined' ? this.specificTrigger : this.nzTrigger;
   }
 
-  protected needProxyProperties = [
-    'nzOverlayClassName',
-    'nzOverlayStyle',
-    'nzMouseEnterDelay',
-    'nzMouseLeaveDelay',
-    'nzVisible',
-    'noAnimation'
-  ];
+  protected get isVisible(): boolean {
+    return this.specificVisible || this.nzVisible || false;
+  }
+
+  visible = false;
+
+  protected needProxyProperties = ['nzOverlayClassName', 'nzOverlayStyle', 'nzMouseEnterDelay', 'nzMouseLeaveDelay', 'noAnimation'];
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
-  visible = false;
   component?: NzTooltipBaseComponent;
 
   protected readonly destroy$ = new Subject<void>();
@@ -162,6 +162,13 @@ Please use 'nzTooltipContent' instead. The same with 'nz-popover' and 'nz-popcon
 Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
       );
     }
+
+    if (changes.nzVisible && !this.specificVisible) {
+      warnDeprecation(
+        `'nzVisible' of 'nz-tooltip' is deprecated and will be removed in 10.0.0.
+Please use 'specificVisible' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
+      );
+    }
   }
 
   ngAfterViewInit(): void {
@@ -211,6 +218,7 @@ Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popcon
 
     this.component.nzVisibleChange.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe((visible: boolean) => {
       this.visible = visible;
+      this.specificVisibleChange.emit(visible);
       this.nzVisibleChange.emit(visible);
     });
   }
@@ -280,6 +288,7 @@ Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popcon
       this.updateComponentValue('nzContent', this.content);
       this.updateComponentValue('nzPlacement', this.placement);
       this.updateComponentValue('nzTrigger', this.trigger);
+      this.updateComponentValue('nzVisible', this.isVisible);
     } else {
       const c = propertiesOrChanges as SimpleChanges;
       if (c.specificTitle || c.directiveNameTitle || c.nzTitle) {
@@ -293,6 +302,9 @@ Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popcon
       }
       if (c.specificPlacement || c.nzPlacement) {
         this.updateComponentValue('nzPlacement', this.placement);
+      }
+      if (c.specificVisible || c.nzVisible) {
+        this.updateComponentValue('nzVisible', this.isVisible);
       }
     }
 

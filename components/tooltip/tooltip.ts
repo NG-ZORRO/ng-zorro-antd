@@ -3,6 +3,14 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+/**
+ * @license
+ * Copyright Alibaba.com All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -11,9 +19,11 @@ import {
   ComponentFactoryResolver,
   Directive,
   ElementRef,
+  EventEmitter,
   Host,
   Input,
   Optional,
+  Output,
   Renderer2,
   ViewContainerRef,
   ViewEncapsulation
@@ -37,7 +47,10 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   @Input('nzTooltipTrigger') specificTrigger?: NzTooltipTrigger;
   @Input('nzTooltipPlacement') specificPlacement?: string;
   @Input('nzTooltipOrigin') specificOrigin?: ElementRef<HTMLElement>;
+  @Input('nzTooltipVisible') specificVisible?: boolean;
 
+  // tslint:disable-next-line:no-output-rename
+  @Output('nzTooltipVisibleChange') readonly specificVisibleChange = new EventEmitter<boolean>();
   componentFactory: ComponentFactory<NzToolTipComponent> = this.resolver.resolveComponentFactory(NzToolTipComponent);
 
   constructor(
