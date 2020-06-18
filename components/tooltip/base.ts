@@ -123,30 +123,36 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
   ) {}
 
   warnDeprecationByChanges(changes: SimpleChanges): void {
-    const getWarnDeprecation = (property: string): string => {
-      return `'${property}' of 'nz-tooltip' is deprecated and will be removed in 10.0.0.
-      Please use 'nzTooltipTitle' instead. The same with 'nz-popover' and 'nz-popconfirm'.`;
+    const getWarnDeprecation = (property: string, newProperty: string, comp: string = 'nz-tooltip', shared: boolean = true): string => {
+      const prefix = `'${property}' of '${comp}' is deprecated and will be removed in 10.0.0.
+      Please use '${newProperty}' instead.`;
+
+      if (shared) {
+        return `${prefix} The same with 'nz-popover' and 'nz-popconfirm'.`;
+      } else {
+        return `${prefix}`;
+      }
     };
 
     // warn deprecated things when specific property is not given
     if (changes.nzTitle && !this.specificTitle && !this.directiveNameTitle) {
-      warnDeprecation(getWarnDeprecation('nzTitle'));
+      warnDeprecation(getWarnDeprecation('nzTitle', 'nzTooltipTitle'));
     }
 
     if (changes.nzContent && !this.specificContent) {
-      warnDeprecation(getWarnDeprecation('nzContent'));
+      warnDeprecation(getWarnDeprecation('nzContent', 'nzPopoverContent', 'nz-popover', false));
     }
 
     if (changes.nzPlacement && !this.specificPlacement) {
-      warnDeprecation(getWarnDeprecation('nzPlacement'));
+      warnDeprecation(getWarnDeprecation('nzPlacement', 'nzTooltipPlacement'));
     }
 
     if (changes.nzTrigger && !this.specificTrigger) {
-      warnDeprecation(getWarnDeprecation('nzTrigger'));
+      warnDeprecation(getWarnDeprecation('nzTrigger', 'nzTooltipTrigger'));
     }
 
     if (changes.nzVisible && !this.specificVisible) {
-      warnDeprecation(getWarnDeprecation('nzVisible'));
+      warnDeprecation(getWarnDeprecation('nzVisible', 'nzTooltipVisible'));
     }
   }
   ngOnChanges(changes: SimpleChanges): void {

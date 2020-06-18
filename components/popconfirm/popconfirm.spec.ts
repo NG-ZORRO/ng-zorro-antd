@@ -111,20 +111,6 @@ describe('NzPopconfirm', () => {
     expect(component.confirm).toHaveBeenCalledTimes(1);
     expect(component.cancel).toHaveBeenCalledTimes(0);
   }));
-
-  it('should support changing visibility programmatically', fakeAsync(() => {
-    const title = 'program';
-
-    component.visible = true;
-    waitingForTooltipToggling();
-    expect(overlayContainerElement.textContent).toContain(title);
-    expect(component.visibilityTogglingCount).toBe(1);
-
-    component.visible = false;
-    waitingForTooltipToggling();
-    expect(overlayContainerElement.textContent).not.toContain(title);
-    expect(component.visibilityTogglingCount).toBe(2);
-  }));
 });
 
 @Component({
@@ -148,10 +134,6 @@ describe('NzPopconfirm', () => {
 
     <a nz-popconfirm #iconTemplate [nzIcon]="icon">
       Delete
-    </a>
-
-    <a #program nz-popconfirm nzTitle="program" [nzPopconfirmVisible]="visible" (nzPopconfirmVisibleChange)="onVisibleChange()">
-      Manually
     </a>
 
     <ng-template #titleTemplate>title-template</ng-template>

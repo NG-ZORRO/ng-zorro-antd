@@ -38,7 +38,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 | `[nzIcon]` | 自定义弹出框的 icon  | `string \| TemplateRef<void>` | - |
 | `(nzOnCancel)` | 点击取消的回调 | `EventEmitter<void>` | - |
 | `(nzOnConfirm)` | 点击确认的回调 | `EventEmitter<void>` | - |
-| `(nzPopconfirmVisibleChange)` | 显示隐藏的回调 | `EventEmitter<boolean>` | - |
+| `(nzPopconfirmVisibleChange)` | 显示隐藏的事件 | `EventEmitter<boolean>` | - |
 
 
 更多属性请参考 [Tooltip](/components/tooltip/zh#api)。

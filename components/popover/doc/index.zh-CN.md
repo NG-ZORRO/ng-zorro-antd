@@ -29,7 +29,7 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 | `[nzPopoverPlacement]` | 气泡框位置 | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
 | `[nzPopoverOrigin]` | 气泡框定位元素 | `ElementRef` | - |
 | `[nzPopoverVisible]` | 显示隐藏气泡框 | `boolean` | `false` |
-| `(nzPopoverVisibleChange)` | 显示隐藏的回调 | `EventEmitter<boolean>` | - |
+| `(nzPopoverVisibleChange)` | 显示隐藏的事件 | `EventEmitter<boolean>` | - |
 
 更多属性请参考 [Tooltip](/components/tooltip/zh#api)。
 

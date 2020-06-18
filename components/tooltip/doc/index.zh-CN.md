@@ -28,7 +28,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 | `[nzTooltipPlacement]` | 气泡框位置 | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
 | `[nzTooltipOrigin]` | 气泡框定位元素 | `ElementRef` | - |
 | `[nzTooltipVisible]` | 显示隐藏气泡框 | `boolean` | `false` |
-| `(nzTooltipVisibleChange)` | 显示隐藏的回调 | `EventEmitter<boolean>` | - |
+| `(nzTooltipVisibleChange)` | 显示隐藏的事件 | `EventEmitter<boolean>` | - |
 
 ### 共同的 API
 
