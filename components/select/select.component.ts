@@ -168,6 +168,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   static ngAcceptInputType_nzServerSearch: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzOpen: BooleanInput;
+  static ngAcceptInputType_nzAcceptOnBlur: BooleanInput;
 
   @Input() nzSize: NzSelectSizeType = 'default';
   @Input() nzOptionHeightPx = 32;
@@ -202,6 +203,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @Input() @InputBoolean() nzServerSearch = false;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzOpen = false;
+  @Input() @InputBoolean() nzAcceptOnBlur = false;
   @Input() nzOptions: NzSelectOptionInterface[] = [];
   @Output() readonly nzOnSearch = new EventEmitter<string>();
   @Output() readonly nzScrollToBottom = new EventEmitter<void>();
@@ -540,6 +542,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
           this.focused = false;
           this.cdr.markForCheck();
           this.nzBlur.emit();
+          if (this.nzAcceptOnBlur && this.searchValue) {
+            this.onItemClick(this.searchValue);
+          }
           Promise.resolve().then(() => {
             this.onTouched();
           });

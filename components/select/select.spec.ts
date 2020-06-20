@@ -384,7 +384,7 @@ describe('select', () => {
       flushChanges();
       expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected').length).toBe(1);
       expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected')[0].textContent).toBe('Truthy value');
-      ['disabled', undefined, null].forEach((value) => {
+      ['disabled', undefined, null].forEach(value => {
         component.value = value;
         flushChanges();
         expect(document.querySelectorAll('nz-option-item.ant-select-item-option-selected').length).toBe(0);
@@ -634,6 +634,21 @@ describe('select', () => {
       component.nzMaxTagPlaceholder = component.tagTemplate;
       fixture.detectChanges();
       expect(listOfItem[2].textContent).toBe(' and 2 more selected ');
+    }));
+    it('should accept unselected string values on blur with nzAcceptOnBlur', fakeAsync(() => {
+      component.nzAcceptOnBlur = true;
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      const inputElement = selectElement.querySelector('input')!;
+      inputElement.value = 'test_01';
+      dispatchFakeEvent(inputElement, 'input');
+      dispatchFakeEvent(inputElement, 'blur');
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(component.value.length).toBe(1);
+      expect(component.value[0]).toBe('test_01');
     }));
   });
   describe('default reactive mode', () => {
@@ -1253,6 +1268,7 @@ export class TestSelectTemplateMultipleComponent {
       [nzMaxTagCount]="nzMaxTagCount"
       [nzTokenSeparators]="nzTokenSeparators"
       [nzMaxTagPlaceholder]="nzMaxTagPlaceholder"
+      [nzAcceptOnBlur]="nzAcceptOnBlur"
       (ngModelChange)="valueChange($event)"
     >
       <nz-option
@@ -1275,6 +1291,7 @@ export class TestSelectTemplateTagsComponent {
   valueChange = jasmine.createSpy('valueChange');
   nzTokenSeparators: string[] = [];
   nzMaxTagPlaceholder!: TemplateRef<{ $implicit: NzSafeAny[] }>;
+  nzAcceptOnBlur = false;
 }
 
 @Component({

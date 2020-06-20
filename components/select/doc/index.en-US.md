@@ -47,6 +47,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzPlaceHolder]` | Placeholder of select | `string` | - |
 | `[nzShowArrow]` | Whether to show the drop-down arrow | `boolean` | `true` |
 | `[nzShowSearch]` | Whether show search input in single mode. | `boolean` | `false` |
+| `[nzAcceptOnBlur]` | Whether to accept unselected string values on blur. | `boolean` | `false` |
 | `[nzSize]` | Size of Select input | `'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzSuffixIcon]` | The custom suffix icon | `TemplateRef<any> \| string` | - |  ✅ |
 | `[nzRemoveIcon]` | The custom remove icon | `TemplateRef<any>` | - |
