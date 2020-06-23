@@ -61,8 +61,8 @@ import { PREFIX_CLASS } from './util';
         [size]="inputSize"
         (focus)="onFocus()"
         (blur)="onBlur()"
-        (input)="onInputKeyup($event, true, false)"
-        (keyup.enter)="onInputKeyup($event, true, true)"
+        (input)="onInputKeyup($event)"
+        (keyup.enter)="onInputKeyup($event, true)"
       />
       <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
     </div>
@@ -93,9 +93,9 @@ import { PREFIX_CLASS } from './util';
         [size]="inputSize"
         (click)="onClickInputBox($event, partType)"
         (blur)="onBlur()"
-        (input)="onInputKeyup($event, true, false)"
+        (input)="onInputKeyup($event)"
         (focus)="onFocus(partType)"
-        (keyup.enter)="onInputKeyup($event, true, true)"
+        (keyup.enter)="onInputKeyup($event, true)"
         [(ngModel)]="inputValue[datePickerService.getActiveIndex(partType)]"
         placeholder="{{ getPlaceholder(partType) }}"
       />
@@ -406,8 +406,8 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     return this.dateHelper.format(value && (value as CandyDate).nativeDate, this.format);
   }
 
-  onInputKeyup(event: Event, OpenPanel: boolean = false, emitValue: boolean = false): void {
-    if (OpenPanel && !this.realOpenState) {
+  onInputKeyup(event: Event, emitValue: boolean = false): void {
+    if (!this.realOpenState) {
       this.showOverlay();
       return;
     }
