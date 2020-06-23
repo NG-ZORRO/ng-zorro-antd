@@ -180,6 +180,8 @@ export class NzModalService implements OnDestroy {
       );
       setContentInstanceParams<T>(contentRef.instance, config.nzComponentParams);
       modalRef.componentInstance = contentRef.instance;
+    } else {
+      modalContainer.attachStringContent();
     }
     return modalRef;
   }
