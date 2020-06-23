@@ -93,7 +93,7 @@ import { PREFIX_CLASS } from './util';
         [size]="inputSize"
         (click)="onClickInputBox($event, partType)"
         (blur)="onBlur()"
-        (input)="onInputKeyup($event, false)"
+        (input)="onInputKeyup($event)"
         (focus)="onFocus(partType)"
         (keyup.enter)="onInputKeyup($event, true)"
         [(ngModel)]="inputValue[datePickerService.getActiveIndex(partType)]"
@@ -406,14 +406,14 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     return this.dateHelper.format(value && (value as CandyDate).nativeDate, this.format);
   }
 
-  onInputKeyup(event: Event, isEnter: boolean = false): void {
-    if (isEnter && !this.realOpenState) {
+  onInputKeyup(event: Event, emitValue: boolean = false): void {
+    if (!this.realOpenState) {
       this.showOverlay();
       return;
     }
     const date = this.checkValidInputDate((event as KeyboardEvent).target!);
     if (this.panel && date) {
-      this.panel.changeValueFromSelect(date, isEnter);
+      this.panel.changeValueFromSelect(date, emitValue);
     }
   }
 
