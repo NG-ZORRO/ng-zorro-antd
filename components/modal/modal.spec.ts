@@ -992,6 +992,17 @@ describe('NzModal', () => {
       expect(document.activeElement!.tagName).toBe('INPUT', 'Expected first tabbable element (input) in the modal to be focused.');
     }));
 
+    it('should focus the first tabbable element when content is string type', fakeAsync(() => {
+      const modalRef = modalService.confirm({
+        nzContent: 'confirm content'
+      });
+
+      fixture.detectChanges();
+      flushMicrotasks();
+
+      expect(modalRef.containerInstance.getNativeElement().contains(document.activeElement)).toBe(true);
+    }));
+
     it('should allow disabling focus of the first tabbable element', fakeAsync(() => {
       modalService.create({
         nzContent: TestWithModalContentComponent,

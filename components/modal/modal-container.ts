@@ -120,6 +120,10 @@ export class BaseModalContainer extends BasePortalOutlet implements OnDestroy {
     return this.portalOutlet.attachTemplatePortal(portal);
   }
 
+  attachStringContent(): void {
+    this.savePreviouslyFocusedElement();
+  }
+
   getNativeElement(): HTMLElement {
     return this.elementRef.nativeElement;
   }
