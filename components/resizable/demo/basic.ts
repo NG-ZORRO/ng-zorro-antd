@@ -11,6 +11,7 @@ import { NzResizeEvent } from 'ng-zorro-antd/resizable';
       [nzMinWidth]="80"
       [nzMaxHeight]="200"
       [nzMinHeight]="80"
+      [nzDisabled]="disabled"
       [style.height.px]="height"
       [style.width.px]="width"
       (nzResize)="onResize($event)"
@@ -39,6 +40,7 @@ export class NzDemoResizableBasicComponent {
   width = 400;
   height = 200;
   id = -1;
+  disabled = false;
 
   onResize({ width, height }: NzResizeEvent): void {
     cancelAnimationFrame(this.id);
