@@ -21,23 +21,24 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 
 ### [nz-popconfirm]
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `[nzPopconfirmTitle]` | 确认框的描述 | `string \| TemplateRef<void>` | - |
-| `[nzPopconfirmTrigger]` | 触发行为，为 `null` 时不响应光标事件 | `'click' \| 'focus' \| 'hover' \| null` | `'hover'` |
-| `[nzPopconfirmPlacement]` | 气泡框位置 | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
-| `[nzPopconfirmOrigin]` | 气泡框定位元素 | `ElementRef` | - |
+| 参数                      | 说明                                 | 类型                                                                                                                                                             | 默认值    |
+| ------------------------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| `[nzPopconfirmTitle]`     | 确认框的描述                         | `string \| TemplateRef<void>`                                                                                                                                    | -         |
+| `[nzPopconfirmTrigger]`   | 触发行为，为 `null` 时不响应光标事件 | `'click' \| 'focus' \| 'hover' \| null`                                                                                                                          | `'hover'` |
+| `[nzPopconfirmPlacement]` | 气泡框位置                           | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'`   |
+| `[nzPopconfirmOrigin]`    | 气泡框定位元素                       | `ElementRef`                                                                                                                                                     | -         |
+| `[nzPopconfirmShowArrow]` | 气泡框是否包含箭头                   | `boolean`                                                                                                                                                        | `true`    |
 
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `[nzCancelText]` | 取消按钮文字 | `string` | `'取消'` |
-| `[nzOkText]` | 确认按钮文字 | `string` | `'确定'` |
-| `[nzOkType]` | 确认按钮类型 | `'primary' \| 'ghost' \| 'dashed' \| 'danger' \| 'default'` | `'primary'` |
-| `[nzCondition]` | 是否直接触发 `nzOnConfirm` 而不弹出框 | `boolean` | `false` |
-| `[nzIcon]` | 自定义弹出框的 icon  | `string \| TemplateRef<void>` | - |
-| `(nzOnCancel)` | 点击取消的回调 | `EventEmitter<void>` | - |
-| `(nzOnConfirm)` | 点击确认的回调 | `EventEmitter<void>` | - |
+| 参数             | 说明                                  | 类型                                                        | 默认值      |
+| ---------------- | ------------------------------------- | ----------------------------------------------------------- | ----------- |
+| `[nzCancelText]` | 取消按钮文字                          | `string`                                                    | `'取消'`    |
+| `[nzOkText]`     | 确认按钮文字                          | `string`                                                    | `'确定'`    |
+| `[nzOkType]`     | 确认按钮类型                          | `'primary' \| 'ghost' \| 'dashed' \| 'danger' \| 'default'` | `'primary'` |
+| `[nzCondition]`  | 是否直接触发 `nzOnConfirm` 而不弹出框 | `boolean`                                                   | `false`     |
+| `[nzIcon]`       | 自定义弹出框的 icon                   | `string \| TemplateRef<void>`                               | -           |
+| `(nzOnCancel)`   | 点击取消的回调                        | `EventEmitter<void>`                                        | -           |
+| `(nzOnConfirm)`  | 点击确认的回调                        | `EventEmitter<void>`                                        | -           |
 
 更多属性请参考 [Tooltip](/components/tooltip/zh#api)。
 
