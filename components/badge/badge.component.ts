@@ -23,8 +23,9 @@ import {
 } from '@angular/core';
 import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { InputBoolean, isEmpty } from 'ng-zorro-antd/core/util';
+import { InputBoolean, isEmpty, isNil } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { startWith, take, takeUntil } from 'rxjs/operators';
 
@@ -100,6 +101,10 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   count: number = 0;
   @ViewChild('contentElement', { static: false }) contentElement?: ElementRef;
   @Input() @InputBoolean() nzShowZero: boolean = false;
+  /**
+   * @deprecated Will be removed in 10.0.0, use `[nzCount]="0"` instead.
+   * @breaking-change 10.0.0
+   */
   @Input() @InputBoolean() nzShowDot = true;
   @Input() @InputBoolean() nzDot = false;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzOverflowCount: number = 99;
@@ -121,7 +126,7 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   }
 
   get showSup(): boolean {
-    return (this.nzShowDot && this.nzDot) || this.count > 0 || (this.count === 0 && this.nzShowZero);
+    return (isNil(this.nzCount) && this.nzShowDot && this.nzDot) || this.count > 0 || (this.count === 0 && this.nzShowZero);
   }
 
   generateMaxNumberArray(): void {
@@ -156,7 +161,10 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzOverflowCount, nzCount, nzColor } = changes;
+    const { nzOverflowCount, nzCount, nzColor, nzShowDot } = changes;
+    if (nzShowDot) {
+      warnDeprecation('`[nzShowDot]` Will be removed in 10.0.0, use `[nzCount]="0"` instead.');
+    }
     if (nzCount && !(nzCount.currentValue instanceof TemplateRef)) {
       this.count = Math.max(0, nzCount.currentValue);
       this.countArray = this.count
