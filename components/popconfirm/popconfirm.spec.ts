@@ -4,7 +4,7 @@ import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzPopconfirmModule } from './popconfirm.module';

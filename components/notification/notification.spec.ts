@@ -6,7 +6,7 @@ import { HomeOutline } from '@ant-design/icons-angular/icons';
 
 import { NZ_CONFIG, NzConfigService } from 'ng-zorro-antd/core/config';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 import { NZ_ICONS } from 'ng-zorro-antd/icon';
 
 import { NzNotificationModule } from './notification.module';
