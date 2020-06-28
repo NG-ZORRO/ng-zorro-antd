@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directionality } from '@angular/cdk/bidi';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
@@ -83,7 +82,7 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
 
   private destroy$ = new Subject<void>();
 
-  constructor(private cdr: ChangeDetectorRef, private timelineService: TimelineService, private dir: Directionality) {}
+  constructor(private cdr: ChangeDetectorRef, private timelineService: TimelineService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzMode, nzReverse, nzPending } = changes;
@@ -119,11 +118,10 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
   private updateChildren(): void {
     if (this.listOfItems && this.listOfItems.length) {
       const length = this.listOfItems.length;
-      const rtl = this.dir.value === 'rtl';
 
       this.listOfItems.forEach((item, index) => {
         item.isLast = !this.nzReverse ? index === length - 1 : index === 0;
-        item.position = getInferredTimelineItemPosition(index, this.nzMode, rtl);
+        item.position = getInferredTimelineItemPosition(index, this.nzMode);
         item.detectChanges();
       });
       this.timelineItems = this.nzReverse ? this.listOfItems.toArray().reverse() : this.listOfItems.toArray();
@@ -136,9 +134,7 @@ function simpleChangeActivated(simpleChange?: SimpleChange): boolean {
   return !!(simpleChange && (simpleChange.previousValue !== simpleChange.currentValue || simpleChange.isFirstChange()));
 }
 
-const rtlPositions = ['right', 'left'];
-function getInferredTimelineItemPosition(index: number, mode: NzTimelineMode, rtl: boolean = false): NzTimelinePosition | undefined {
-  const [start, tail] = rtl ? rtlPositions : [...rtlPositions].reverse();
+function getInferredTimelineItemPosition(index: number, mode: NzTimelineMode): NzTimelinePosition | undefined {
   const position =
     mode === 'custom'
       ? undefined
@@ -147,8 +143,8 @@ function getInferredTimelineItemPosition(index: number, mode: NzTimelineMode, rt
       : mode === 'right'
       ? 'right'
       : mode === 'alternate' && index % 2 === 0
-      ? start
-      : tail;
+      ? 'left'
+      : 'right';
 
   return position as NzTimelinePosition | undefined;
 }
