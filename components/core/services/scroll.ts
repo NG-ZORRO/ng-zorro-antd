@@ -4,7 +4,7 @@
  */
 
 import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable, Optional, Provider, SkipSelf } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -20,7 +20,9 @@ function easeInOutCubic(t: number, b: number, c: number, d: number): number {
   }
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class NzScrollService {
   private doc: Document;
 
@@ -103,13 +105,3 @@ export class NzScrollService {
     reqAnimFrame(frameFunc);
   }
 }
-
-export function SCROLL_SERVICE_PROVIDER_FACTORY(doc: Document, scrollService: NzScrollService): NzScrollService {
-  return scrollService || new NzScrollService(doc);
-}
-
-export const SCROLL_SERVICE_PROVIDER: Provider = {
-  provide: NzScrollService,
-  useFactory: SCROLL_SERVICE_PROVIDER_FACTORY,
-  deps: [DOCUMENT, [new Optional(), new SkipSelf(), NzScrollService]]
-};
