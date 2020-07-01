@@ -39,7 +39,9 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
   specificTrigger?: NzTooltipTrigger;
   specificPlacement?: string;
   specificOrigin?: ElementRef<HTMLElement>;
+  specificVisible?: boolean;
 
+  specificVisibleChange = new EventEmitter<boolean>();
   /**
    * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
    * Please use a more specific API. Like `nzTooltipTitle`.
@@ -95,18 +97,16 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
     return typeof this.specificTrigger !== 'undefined' ? this.specificTrigger : this.nzTrigger;
   }
 
-  protected needProxyProperties = [
-    'nzOverlayClassName',
-    'nzOverlayStyle',
-    'nzMouseEnterDelay',
-    'nzMouseLeaveDelay',
-    'nzVisible',
-    'noAnimation'
-  ];
+  protected get isVisible(): boolean {
+    return this.specificVisible || this.nzVisible || false;
+  }
+
+  visible = false;
+
+  protected needProxyProperties = ['nzOverlayClassName', 'nzOverlayStyle', 'nzMouseEnterDelay', 'nzMouseLeaveDelay', 'noAnimation'];
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
-  visible = false;
   component?: NzTooltipBaseComponent;
 
   protected readonly destroy$ = new Subject<void>();
@@ -122,6 +122,39 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
     protected noAnimation?: NzNoAnimationDirective
   ) {}
 
+  warnDeprecationByChanges(changes: SimpleChanges): void {
+    const getWarnDeprecation = (property: string, newProperty: string, comp: string = 'nz-tooltip', shared: boolean = true): string => {
+      const prefix = `'${property}' of '${comp}' is deprecated and will be removed in 10.0.0.
+      Please use '${newProperty}' instead.`;
+
+      if (shared) {
+        return `${prefix} The same with 'nz-popover' and 'nz-popconfirm'.`;
+      } else {
+        return `${prefix}`;
+      }
+    };
+
+    // warn deprecated things when specific property is not given
+    if (changes.nzTitle && !this.specificTitle && !this.directiveNameTitle) {
+      warnDeprecation(getWarnDeprecation('nzTitle', 'nzTooltipTitle'));
+    }
+
+    if (changes.nzContent && !this.specificContent) {
+      warnDeprecation(getWarnDeprecation('nzContent', 'nzPopoverContent', 'nz-popover', false));
+    }
+
+    if (changes.nzPlacement && !this.specificPlacement) {
+      warnDeprecation(getWarnDeprecation('nzPlacement', 'nzTooltipPlacement'));
+    }
+
+    if (changes.nzTrigger && !this.specificTrigger) {
+      warnDeprecation(getWarnDeprecation('nzTrigger', 'nzTooltipTrigger'));
+    }
+
+    if (changes.nzVisible && !this.specificVisible) {
+      warnDeprecation(getWarnDeprecation('nzVisible', 'nzTooltipVisible'));
+    }
+  }
   ngOnChanges(changes: SimpleChanges): void {
     const { nzTrigger, specificTrigger } = changes;
     const trigger = specificTrigger || nzTrigger;
@@ -134,34 +167,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
       this.updateChangedProperties(changes);
     }
 
-    // warn deprecated things when specific property is not given
-    if (changes.nzTitle && !this.specificTitle && !this.directiveNameTitle) {
-      warnDeprecation(
-        `'nzTitle' of 'nz-tooltip' is deprecated and will be removed in 10.0.0.
-Please use 'nzTooltipTitle' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
-      );
-    }
-
-    if (changes.nzContent && !this.specificContent) {
-      warnDeprecation(
-        `'nzContent' of 'nz-popover' is deprecated and will be removed in 10.0.0.
-Please use 'nzPopoverContent' instead.`
-      );
-    }
-
-    if (changes.nzPlacement && !this.specificPlacement) {
-      warnDeprecation(
-        `'nzPlacement' of 'nz-tooltip' is deprecated and will be removed in 10.0.0.
-Please use 'nzTooltipContent' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
-      );
-    }
-
-    if (changes.nzTrigger && !this.specificTrigger) {
-      warnDeprecation(
-        `'nzTrigger' of 'nz-tooltip' is deprecated and will be removed in 10.0.0.
-Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
-      );
-    }
+    this.warnDeprecationByChanges(changes);
   }
 
   ngAfterViewInit(): void {
@@ -211,6 +217,7 @@ Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popcon
 
     this.component.nzVisibleChange.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe((visible: boolean) => {
       this.visible = visible;
+      this.specificVisibleChange.emit(visible);
       this.nzVisibleChange.emit(visible);
     });
   }
@@ -280,6 +287,7 @@ Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popcon
       this.updateComponentValue('nzContent', this.content);
       this.updateComponentValue('nzPlacement', this.placement);
       this.updateComponentValue('nzTrigger', this.trigger);
+      this.updateComponentValue('nzVisible', this.isVisible);
     } else {
       const c = propertiesOrChanges as SimpleChanges;
       if (c.specificTitle || c.directiveNameTitle || c.nzTitle) {
@@ -293,6 +301,9 @@ Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popcon
       }
       if (c.specificPlacement || c.nzPlacement) {
         this.updateComponentValue('nzPlacement', this.placement);
+      }
+      if (c.specificVisible || c.nzVisible) {
+        this.updateComponentValue('nzVisible', this.isVisible);
       }
     }
 

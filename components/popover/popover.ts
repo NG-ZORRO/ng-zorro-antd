@@ -11,9 +11,11 @@ import {
   ComponentFactoryResolver,
   Directive,
   ElementRef,
+  EventEmitter,
   Host,
   Input,
   Optional,
+  Output,
   Renderer2,
   ViewContainerRef,
   ViewEncapsulation
@@ -38,6 +40,10 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   @Input('nzPopoverTrigger') specificTrigger?: NzTooltipTrigger;
   @Input('nzPopoverPlacement') specificPlacement?: string;
   @Input('nzPopoverOrigin') specificOrigin?: ElementRef<HTMLElement>;
+  @Input('nzPopoverVisible') specificVisible?: boolean;
+
+  // tslint:disable-next-line:no-output-rename
+  @Output('nzPopoverVisibleChange') readonly specificVisibleChange = new EventEmitter<boolean>();
 
   componentFactory: ComponentFactory<NzPopoverComponent> = this.resolver.resolveComponentFactory(NzPopoverComponent);
 

@@ -116,4 +116,11 @@ export class NzPopoverTestComponent {
   @ViewChild('templatePopover', { static: false }) templatePopover!: ElementRef;
   @ViewChild('templatePopover', { static: false, read: NzPopoverDirective })
   templatePopoverNzPopoverDirective!: NzPopoverDirective;
+
+  visible = false;
+  visibilityTogglingCount = 0;
+
+  onVisibleChange(): void {
+    this.visibilityTogglingCount += 1;
+  }
 }

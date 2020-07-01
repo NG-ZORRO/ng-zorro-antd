@@ -148,4 +148,11 @@ export class NzPopconfirmTestNewComponent {
   @ViewChild('stringTemplate', { static: false }) stringTemplate!: ElementRef;
   @ViewChild('templateTemplate', { static: false }) templateTemplate!: ElementRef;
   @ViewChild('iconTemplate', { static: false }) iconTemplate!: ElementRef;
+
+  visible = false;
+  visibilityTogglingCount = 0;
+
+  onVisibleChange(): void {
+    this.visibilityTogglingCount += 1;
+  }
 }
