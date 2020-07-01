@@ -58,13 +58,13 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   @Input()
   @WithConfig<number | null>(NZ_CONFIG_COMPONENT_NAME)
-  @InputNumber(undefined)
-  nzOffsetTop?: null | number;
+  @InputNumber(null)
+  nzOffsetTop: null | number = null;
 
   @Input()
   @WithConfig<number | null>(NZ_CONFIG_COMPONENT_NAME)
-  @InputNumber(undefined)
-  nzOffsetBottom?: null | number;
+  @InputNumber(null)
+  nzOffsetBottom: null | number = null;
 
   @Output() readonly nzChange = new EventEmitter<boolean>();
 
