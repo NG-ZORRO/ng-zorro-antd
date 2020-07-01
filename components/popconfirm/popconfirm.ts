@@ -41,6 +41,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   static ngAcceptInputType_nzCondition: BooleanInput;
+  static ngAcceptInputType_nzPopconfirmShowArrow: BooleanInput;
 
   @Input('nzPopconfirmTitle') specificTitle?: NzTSType;
   @Input('nz-popconfirm') directiveNameTitle?: NzTSType | null;
@@ -52,6 +53,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   @Input() nzCancelText?: string;
   @Input() nzIcon?: string | TemplateRef<void>;
   @Input() @InputBoolean() nzCondition: boolean = false;
+  @Input() @InputBoolean() nzPopconfirmShowArrow: boolean = true;
 
   /**
    * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
@@ -80,7 +82,8 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
     'nzOkType',
     'nzCancelText',
     'nzCondition',
-    'nzIcon'
+    'nzIcon',
+    'nzPopconfirmShowArrow'
   ];
 
   constructor(
@@ -137,7 +140,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
         [@zoomBigMotion]="'active'"
       >
         <div class="ant-popover-content">
-          <div class="ant-popover-arrow"></div>
+          <div class="ant-popover-arrow" *ngIf="nzPopconfirmShowArrow"></div>
           <div class="ant-popover-inner">
             <div>
               <div class="ant-popover-inner-content">
@@ -170,6 +173,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
 export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestroy {
   nzCancelText?: string;
   nzCondition = false;
+  nzPopconfirmShowArrow = true;
   nzIcon?: string | TemplateRef<void>;
   nzOkText?: string;
   nzOkType: NzButtonType = 'primary';

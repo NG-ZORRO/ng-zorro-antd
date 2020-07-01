@@ -27,6 +27,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 | `[nzPopconfirmPlacement]` | The position of the popconfirm relative to the target | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
 | `[nzPopconfirmOrigin]` | Origin of the popconfirm | `ElementRef` | - |
 | `[nzPopconfirmVisible]` | Show or hide popconfirm | `boolean` | `false` |
+| `[nzPopconfirmShowArrow]` | Whether popconfirm has arrow | `boolean`  | `true` |
 
 | Param | Description | Type | Default value |
 | ----- | ----------- | ---- | ------------- |

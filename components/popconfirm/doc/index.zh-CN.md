@@ -28,6 +28,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 | `[nzPopconfirmPlacement]` | 气泡框位置 | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
 | `[nzPopconfirmOrigin]` | 气泡框定位元素 | `ElementRef` | - |
 | `[nzPopconfirmVisible]` | 显示隐藏气泡框 | `boolean` | `false` |
+| `[nzPopconfirmShowArrow]` | 气泡框是否包含箭头 | `boolean` | `true` |
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
