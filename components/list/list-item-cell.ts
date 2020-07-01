@@ -83,7 +83,7 @@ export class NzListItemActionsComponent implements OnChanges, OnDestroy {
         } else {
           this.actions = this.nzListItemActions.map(action => action.templateRef!);
         }
-        this.cdr.markForCheck();
+        this.cdr.detectChanges();
       });
   }
 
