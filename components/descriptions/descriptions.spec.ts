@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 import { NzDescriptionsModule } from './descriptions.module';
 
 // tslint:disable-next-line no-any
