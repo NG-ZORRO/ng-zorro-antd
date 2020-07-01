@@ -27,7 +27,8 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 | `[nzTooltipTrigger]` | 触发行为，可选 `hover/focus/click`，为 `null` 时不响应光标事件 | `'click' \| 'focus' \| 'hover' \| null` | `'hover'` |
 | `[nzTooltipPlacement]` | 气泡框位置 | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
 | `[nzTooltipOrigin]` | 气泡框定位元素 | `ElementRef` | - |
-
+| `[nzTooltipVisible]` | 显示隐藏气泡框 | `boolean` | `false` |
+| `(nzTooltipVisibleChange)` | 显示隐藏的事件 | `EventEmitter<boolean>` | - |
 
 ### 共同的 API
 
@@ -39,8 +40,6 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 | `[nzMouseLeaveDelay]` | 鼠标移出后延时多少才隐藏 Tooltip，单位：秒 | `number` | `0.1` |
 | `[nzOverlayClassName]` | 卡片类名 | `string` | - |
 | `[nzOverlayStyle]` | 卡片样式 | `object` | - |
-| `[nzVisible]` | 用于手动控制浮层显隐 | `boolean` | `false` |
-| `(nzVisibleChange)` | 显示隐藏的回调 | `EventEmitter<boolean>` | - |
 
 | 方法 | 说明 |
 | --- | --- |

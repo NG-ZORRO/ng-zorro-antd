@@ -255,7 +255,14 @@ function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLEleme
       Focus
     </a>
 
-    <a #program nz-tooltip [nzTooltipTrigger]="null" nzTitle="program" [nzVisible]="visible" (nzVisibleChange)="onVisibleChange()">
+    <a
+      #program
+      nz-tooltip
+      [nzTooltipTrigger]="null"
+      nzTitle="program"
+      [nzTooltipVisible]="visible"
+      (nzTooltipVisibleChange)="onVisibleChange()"
+    >
       Manually
     </a>
 

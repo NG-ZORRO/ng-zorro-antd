@@ -26,7 +26,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 | `[nzPopconfirmTrigger]` | Popconfirm trigger mode. If set to `null` it would not be triggered | `'click' \| 'focus' \| 'hover' \| null` | `'hover'` |
 | `[nzPopconfirmPlacement]` | The position of the popconfirm relative to the target | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
 | `[nzPopconfirmOrigin]` | Origin of the popconfirm | `ElementRef` | - |
-
+| `[nzPopconfirmVisible]` | Show or hide popconfirm | `boolean` | `false` |
 
 | Param | Description | Type | Default value |
 | ----- | ----------- | ---- | ------------- |
@@ -37,6 +37,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 | `[nzIcon]` | Customize icon of confirmation  | `string \| TemplateRef<void>` | - |
 | `(nzOnCancel)` | Callback of cancel | `EventEmitter<void>` | - |
 | `(nzOnConfirm)` | Callback of confirmation | `EventEmitter<void>` | - |
+| `(nzPopconfirmVisibleChange)` | Callback of hide or show | `EventEmitter<boolean>` | - |
 
 Consult [Tooltip's documentation](/components/tooltip/en#api) to find more APIs.
 
