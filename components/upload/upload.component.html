@@ -1,6 +1,6 @@
 <ng-template #list>
   <nz-upload-list
-    *ngIf="!nzFileListRender"
+    *ngIf="locale && !nzFileListRender"
     #listComp
     [style.display]="nzShowUploadList ? '' : 'none'"
     [locale]="locale"
