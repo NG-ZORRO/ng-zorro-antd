@@ -1,7 +1,7 @@
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
