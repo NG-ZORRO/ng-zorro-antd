@@ -135,16 +135,13 @@ function simpleChangeActivated(simpleChange?: SimpleChange): boolean {
 }
 
 function getInferredTimelineItemPosition(index: number, mode: NzTimelineMode): NzTimelinePosition | undefined {
-  const position =
-    mode === 'custom'
-      ? undefined
-      : mode === 'left'
-      ? 'left'
-      : mode === 'right'
-      ? 'right'
-      : mode === 'alternate' && index % 2 === 0
-      ? 'left'
-      : 'right';
-
-  return position as NzTimelinePosition | undefined;
+  return mode === 'custom'
+    ? undefined
+    : mode === 'left'
+    ? 'left'
+    : mode === 'right'
+    ? 'right'
+    : mode === 'alternate' && index % 2 === 0
+    ? 'left'
+    : 'right';
 }
