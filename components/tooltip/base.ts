@@ -9,6 +9,7 @@ import {
   ChangeDetectorRef,
   ComponentFactory,
   ComponentFactoryResolver,
+  Directive,
   ElementRef,
   EventEmitter,
   Input,
@@ -24,13 +25,14 @@ import {
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { DEFAULT_TOOLTIP_POSITIONS, getPlacementName, POSITION_MAP } from 'ng-zorro-antd/core/overlay';
-import { NgClassInterface, NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgClassInterface, NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
 import { isNotNil, toBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 export type NzTooltipTrigger = 'click' | 'focus' | 'hover' | null;
 
+@Directive()
 export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, AfterViewInit {
   directiveNameTitle?: NzTSType | null;
   specificTitle?: NzTSType | null;
@@ -345,7 +347,11 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
   }
 }
 
+@Directive()
+// tslint:disable-next-line:directive-class-suffix
 export abstract class NzTooltipBaseComponent implements OnDestroy {
+  static ngAcceptInputType_nzVisible: BooleanInput;
+
   @ViewChild('overlay', { static: false }) overlay!: CdkConnectedOverlay;
 
   nzVisibleChange = new Subject<boolean>();

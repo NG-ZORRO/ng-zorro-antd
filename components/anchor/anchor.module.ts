@@ -6,7 +6,6 @@ import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { NzAffixModule } from 'ng-zorro-antd/affix';
-import { SCROLL_SERVICE_PROVIDER } from 'ng-zorro-antd/core/services';
 
 import { NzAnchorLinkComponent } from './anchor-link.component';
 import { NzAnchorComponent } from './anchor.component';
@@ -14,7 +13,6 @@ import { NzAnchorComponent } from './anchor.component';
 @NgModule({
   declarations: [NzAnchorComponent, NzAnchorLinkComponent],
   exports: [NzAnchorComponent, NzAnchorLinkComponent],
-  imports: [CommonModule, NzAffixModule, PlatformModule],
-  providers: [SCROLL_SERVICE_PROVIDER]
+  imports: [CommonModule, NzAffixModule, PlatformModule]
 })
 export class NzAnchorModule {}
