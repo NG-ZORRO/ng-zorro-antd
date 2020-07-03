@@ -83,6 +83,31 @@ describe('nz-tooltip', () => {
       dispatchMouseEvent(triggerElement, 'mouseleave');
       waitingForTooltipToggling();
       expect(overlayContainerElement.textContent).not.toContain(title);
+
+      component.mouseEnterDelay = 0.2;
+      fixture.detectChanges();
+      dispatchMouseEvent(triggerElement, 'mouseenter');
+      tick(150);
+      expect(overlayContainerElement.textContent).not.toContain(title);
+      tick(50);
+      expect(overlayContainerElement.textContent).toContain(title);
+
+      dispatchMouseEvent(triggerElement, 'mouseleave');
+      tick(150);
+      expect(overlayContainerElement.textContent).not.toContain(title);
+
+      component.mouseEnterDelay = 0.15;
+      component.mouseLeaveDelay = 0.2;
+      fixture.detectChanges();
+      dispatchMouseEvent(triggerElement, 'mouseenter');
+      tick(150);
+      expect(overlayContainerElement.textContent).toContain(title);
+
+      dispatchMouseEvent(triggerElement, 'mouseleave');
+      tick(150);
+      expect(overlayContainerElement.textContent).toContain(title);
+      tick(50);
+      expect(overlayContainerElement.textContent).not.toContain(title);
     }));
 
     it('should click mode work', fakeAsync(() => {
@@ -141,6 +166,33 @@ describe('nz-tooltip', () => {
       waitingForTooltipToggling();
       expect(overlayContainerElement.textContent).not.toContain('title-string');
       expect(component.visibilityTogglingCount).toBe(0);
+    }));
+
+    it('should change overlayStyle when the overlayStyle is changed', fakeAsync(() => {
+      const triggerElement = component.titleString.nativeElement;
+
+      dispatchMouseEvent(triggerElement, 'mouseenter');
+      waitingForTooltipToggling();
+
+      component.style = { color: '#fff' };
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip')!.style.color).toBe('rgb(255, 255, 255)');
+
+      component.style = { color: '#000' };
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector<HTMLElement>('.ant-tooltip')!.style.color).toBe('rgb(0, 0, 0)');
+    }));
+
+    it('should change overlayClass when the overlayClass is changed', fakeAsync(() => {
+      const triggerElement = component.titleString.nativeElement;
+
+      dispatchMouseEvent(triggerElement, 'mouseenter');
+      waitingForTooltipToggling();
+
+      component.class = 'testClass2';
+      fixture.detectChanges();
+
+      expect(overlayContainerElement.querySelector<HTMLElement>('.testClass2')).not.toBeNull();
     }));
 
     it('should hide when the title is changed to null', fakeAsync(() => {
@@ -236,13 +288,13 @@ function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLEleme
       #titleString
       nz-tooltip
       [nzTitle]="title"
-      nzTrigger="hover"
-      nzPlacement="topLeft"
-      nzOverlayClassName="testClass"
-      [nzOverlayStyle]="{ color: '#000' }"
-      [nzMouseEnterDelay]="0.15"
-      [nzMouseLeaveDelay]="0.1"
-      (nzVisibleChange)="onVisibleChange()"
+      nzTooltipTrigger="hover"
+      nzTooltipPlacement="topLeft"
+      [nzTooltipOverlayClassName]="class"
+      [nzTooltipOverlayStyle]="style"
+      [nzTooltipMouseEnterDelay]="mouseEnterDelay"
+      [nzTooltipMouseLeaveDelay]="mouseLeaveDelay"
+      (nzTooltipVisibleChange)="onVisibleChange()"
     >
       Hover
     </a>
@@ -295,7 +347,10 @@ export class NzTooltipTestComponent {
   title: string | null = 'title-string';
   visible = false;
   visibilityTogglingCount = 0;
-
+  style = { color: '#000' };
+  class = 'testClass';
+  mouseEnterDelay = 0.15;
+  mouseLeaveDelay = 0.1;
   onVisibleChange(): void {
     this.visibilityTogglingCount += 1;
   }

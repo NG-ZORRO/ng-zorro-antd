@@ -25,7 +25,7 @@ import {
 import { NzButtonType } from 'ng-zorro-antd/button';
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { BooleanInput, NzTSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger } from 'ng-zorro-antd/tooltip';
@@ -47,6 +47,10 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   @Input('nzPopconfirmTrigger') specificTrigger?: NzTooltipTrigger;
   @Input('nzPopconfirmPlacement') specificPlacement?: string;
   @Input('nzPopconfirmOrigin') specificOrigin?: ElementRef<HTMLElement>;
+  @Input('nzPopconfirmMouseEnterDelay') specificMouseEnterDelay?: number;
+  @Input('nzPopconfirmMouseLeaveDelay') specificMouseLeaveDelay?: number;
+  @Input('nzPopconfirmOverlayClassName') specificOverlayClassName?: string;
+  @Input('nzPopconfirmOverlayStyle') specificOverlayStyle?: NgStyleInterface;
   @Input() nzOkText?: string;
   @Input() nzOkType?: string;
   @Input() nzCancelText?: string;
