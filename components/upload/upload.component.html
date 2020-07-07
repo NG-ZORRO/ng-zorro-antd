@@ -1,6 +1,6 @@
 <ng-template #list>
   <nz-upload-list
-    *ngIf="!nzFileListRender"
+    *ngIf="locale && !nzFileListRender"
     #listComp
     [style.display]="nzShowUploadList ? '' : 'none'"
     [locale]="locale"
@@ -9,6 +9,7 @@
     [icons]="$any(nzShowUploadList)"
     [iconRender]="nzIconRender"
     [previewFile]="nzPreviewFile"
+    [previewIsImage]="nzPreviewIsImage"
     [onPreview]="nzPreview"
     [onRemove]="onRemove"
     [onDownload]="nzDownload"

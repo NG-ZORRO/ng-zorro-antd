@@ -49,6 +49,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 | `[nzOpenFileDialogOnClick]` | 点击打开文件对话框 | `boolean` | `true` |
 | `[nzPreview]` | 点击文件链接或预览图标时的回调；注意：务必使用 `=>` 定义处理方法。 | `(file: NzUploadFile) => void` | - |
 | `[nzPreviewFile]` | 自定义文件预览逻辑；注意：务必使用 `=>` 定义处理方法。 | `(file: NzUploadFile) => Observable<dataURL: string>` | - |
+| `[nzPreviewIsImage]` | 自定义预览文件是否有效图像，一般用于图像URL为非标准格式；注意：务必使用 `=>` 定义处理方法。 | `(file: NzUploadFile) => boolean` | - |
 | `[nzRemove]` | 点击移除文件时的回调，返回值为 false 时不移除。支持返回 `Observable` 对象；注意：务必使用 `=>` 定义处理方法。 | `(file: NzUploadFile) => boolean \| Observable<boolean>` | - |
 | `(nzChange)` | 上传文件改变时的状态 | `EventEmitter<NzUploadChangeParam>` | - |
 | `[nzDownload]`   | 点击下载文件时的回调，如果没有指定，则默认跳转到文件 url 对应的标签页 | `(file: NzUploadFile) => void` | 跳转新标签页 |
