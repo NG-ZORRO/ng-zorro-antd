@@ -61,6 +61,7 @@ interface NzResizeEvent {
 | [nzMinColumn] | 栅格最小列数 | `number` | - |
 | [nzLockAspectRatio] | 锁定宽高比 | `boolean` | `false` |
 | [nzPreview] | 开启预览 | `boolean` | `false` |
+| [nzDisabled] | 禁用 | `boolean` | `false` |
 | (nzResize) | 调整尺寸时的事件 | `EventEmitter<NzResizeEvent>` | - |
 | (nzResizeStart) | 开始调整尺寸时的事件 | `EventEmitter<NzResizeEvent>` | - |
 | (nzResizeEnd) | 结束调整尺寸时的事件 | `EventEmitter<NzResizeEvent>` | - |

@@ -62,6 +62,7 @@ interface NzResizeEvent {
 | [nzMinColumn] | Minimum Column | `number` | - |
 | [nzLockAspectRatio] | Lock the aspect ratio based on the initial size | `boolean` | `false` |
 | [nzPreview] | Enable preview when resizing | `boolean` | `false` |
+| [nzDisabled] | Disable resize | `boolean` | `false` |
 | (nzResize) | Calls when Resizing | `EventEmitter<NzResizeEvent>` | - |
 | (nzResizeStart) | Calls when resize start | `EventEmitter<NzResizeEvent>` | - |
 | (nzResizeEnd) | Calls when resize end | `EventEmitter<NzResizeEvent>` | - |
