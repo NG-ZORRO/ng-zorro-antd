@@ -13,20 +13,24 @@ export class NzThMeasureDirective implements OnChanges {
   changes$ = new Subject();
   @Input() nzWidth: string | null = null;
   @Input() colspan: string | number | null = null;
+  @Input() colSpan: string | number | null = null;
   @Input() rowspan: string | number | null = null;
+  @Input() rowSpan: string | number | null = null;
   constructor(private renderer: Renderer2, private elementRef: ElementRef) {}
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzWidth, colspan, rowspan } = changes;
-    if (colspan) {
-      if (!isNil(this.colspan)) {
-        this.renderer.setAttribute(this.elementRef.nativeElement, 'colspan', `${this.colspan}`);
+    const { nzWidth, colspan, rowspan, colSpan, rowSpan } = changes;
+    if (colspan || colSpan) {
+      const col = this.colspan || this.colSpan;
+      if (!isNil(col)) {
+        this.renderer.setAttribute(this.elementRef.nativeElement, 'colspan', `${col}`);
       } else {
         this.renderer.removeAttribute(this.elementRef.nativeElement, 'colspan');
       }
     }
-    if (rowspan) {
-      if (!isNil(this.rowspan)) {
-        this.renderer.setAttribute(this.elementRef.nativeElement, 'rowspan', `${this.rowspan}`);
+    if (rowspan || rowSpan) {
+      const row = this.rowspan || this.rowSpan;
+      if (!isNil(row)) {
+        this.renderer.setAttribute(this.elementRef.nativeElement, 'rowspan', `${row}`);
       } else {
         this.renderer.removeAttribute(this.elementRef.nativeElement, 'rowspan');
       }
