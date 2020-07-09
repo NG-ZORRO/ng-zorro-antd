@@ -67,7 +67,7 @@ export class NzTableStyleService {
   setListOfTh(listOfTh: NzThMeasureDirective[]): void {
     let columnCount = 0;
     listOfTh.forEach(th => {
-      columnCount += (th.colspan && +th.colspan) || 1;
+      columnCount += (th.colspan && +th.colspan) || (th.colSpan && +th.colSpan) || 1;
     });
     const listOfThPx = listOfTh.map(item => item.nzWidth);
     this.columnCount$.next(columnCount);
@@ -77,7 +77,7 @@ export class NzTableStyleService {
   setListOfMeasureColumn(listOfTh: NzThMeasureDirective[]): void {
     const listOfKeys: string[] = [];
     listOfTh.forEach(th => {
-      const length = (th.colspan && +th.colspan) || 1;
+      const length = (th.colspan && +th.colspan) || (th.colSpan && +th.colSpan) || 1;
       for (let i = 0; i < length; i++) {
         listOfKeys.push(`measure_key_${i}`);
       }

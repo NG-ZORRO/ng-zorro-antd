@@ -63,7 +63,7 @@ export class NzTrDirective implements AfterContentInit, OnDestroy {
           listOfLeftCell.forEach((cell, index) => {
             if (cell.isAutoLeft) {
               const currentArray = listOfLeftCell.slice(0, index);
-              const count = currentArray.reduce((pre, cur) => pre + (cur.colspan || 1), 0);
+              const count = currentArray.reduce((pre, cur) => pre + (cur.colspan || cur.colSpan || 1), 0);
               const width = listOfAutoWidth.slice(0, count).reduce((pre, cur) => pre + cur, 0);
               cell.setAutoLeftWidth(`${width}px`);
             }
@@ -76,7 +76,7 @@ export class NzTrDirective implements AfterContentInit, OnDestroy {
             const cell = listOfRightCell[listOfRightCell.length - index - 1];
             if (cell.isAutoRight) {
               const currentArray = listOfRightCell.slice(listOfRightCell.length - index, listOfRightCell.length);
-              const count = currentArray.reduce((pre, cur) => pre + (cur.colspan || 1), 0);
+              const count = currentArray.reduce((pre, cur) => pre + (cur.colspan || cur.colSpan || 1), 0);
               const width = listOfAutoWidth
                 .slice(listOfAutoWidth.length - count, listOfAutoWidth.length)
                 .reduce((pre, cur) => pre + cur, 0);

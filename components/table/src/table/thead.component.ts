@@ -54,7 +54,7 @@ export class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewI
   private destroy$ = new Subject<void>();
   isInsideTable = false;
   @ViewChild('contentTemplate', { static: true }) templateRef!: TemplateRef<NzSafeAny>;
-  @ContentChildren(NzTrDirective) listOfNzTrDirective!: QueryList<NzTrDirective>;
+  @ContentChildren(NzTrDirective, { descendants: true }) listOfNzTrDirective!: QueryList<NzTrDirective>;
   @ContentChildren(NzThAddOnComponent, { descendants: true }) listOfNzThAddOnComponent!: QueryList<NzThAddOnComponent>;
   /** @deprecated use nzSortFn and nzSortPriority instead **/
   @Input() @InputBoolean() nzSingleSort = false;
@@ -80,9 +80,7 @@ export class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewI
   ngOnChanges(changes: SimpleChanges): void {
     const { nzSingleSort } = changes;
     if (nzSingleSort) {
-      warnDeprecation(
-        `'nzSingleSort' is deprecated and will be removed in 10.0.0. Please use 'nzSortFn' and 'nzSortPriority' instead.`
-      );
+      warnDeprecation(`'nzSingleSort' is deprecated and will be removed in 10.0.0. Please use 'nzSortFn' and 'nzSortPriority' instead.`);
     }
   }
 

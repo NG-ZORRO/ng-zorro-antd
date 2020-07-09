@@ -146,8 +146,8 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzAlign]` | 设置列内容的对齐方式 | `'left' \| 'right' \| 'center'` | - |
 | `[nzBreakWord]` | 是否折行显示 | `boolean` | `false` |
 | `[nzEllipsis]` | 超过宽度将自动省略，暂不支持和排序筛选一起使用。仅当表格布局将为 `nzTableLayout="fixed"`时可用 | `boolean` | `false` |
-| `[colspan]` | 每单元格中扩展列的数量 | `number` | `null` |
-| `[rowspan]` | 每单元格中扩展行的数量 | `number` | `null` |
+| `[colSpan]` | 每单元格中扩展列的数量 | `number` | `null` |
+| `[rowSpan]` | 每单元格中扩展行的数量 | `number` | `null` |
 
 
 其他

@@ -18,6 +18,7 @@ export class NzCellFixedDirective implements OnChanges {
   @Input() nzRight: string | boolean = false;
   @Input() nzLeft: string | boolean = false;
   @Input() colspan: number | null = null;
+  @Input() colSpan: number | null = null;
   changes$ = new Subject<void>();
   isAutoLeft = false;
   isAutoRight = false;
