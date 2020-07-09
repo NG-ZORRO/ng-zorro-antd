@@ -45,7 +45,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 
 | Method | Description | Params | Return |
 | --- | --- | --- | --- |
-| create | create and open an Drawer | `NzDrawerOptions<T, D, R>`| `NzDrawerRef<R>` |
+| create<T, D, R> | create and open an Drawer | `NzDrawerOptions<T, D>`| `NzDrawerRef<T, R>` |
 
 ### NzDrawerOptions
 
@@ -77,7 +77,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | --- | --- | --- |
 | close | close the drawer. | `(result?: R) => void` |
 | open | open the drawer. | `() => void` |
-
+| getContentComponent| Returns the instance when `nzContent` is the component. | `() => T \| null` |
 
 #### Property
 | Name | Description | Type |

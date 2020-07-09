@@ -94,7 +94,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'drawer';
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> extends NzDrawerRef<R>
+export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> extends NzDrawerRef<T, R>
   implements OnInit, OnDestroy, AfterViewInit, OnChanges, NzDrawerOptionsOfComponent {
   static ngAcceptInputType_nzClosable: BooleanInput;
   static ngAcceptInputType_nzMaskClosable: BooleanInput;
@@ -120,6 +120,7 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> exte
   @Input() nzZIndex = 1000;
   @Input() nzOffsetX = 0;
   @Input() nzOffsetY = 0;
+  private componentInstance: T | null = null;
 
   @Input()
   set nzVisible(value: boolean) {
@@ -288,6 +289,7 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> exte
       this.restoreFocus();
       this.nzAfterClose.next(result);
       this.nzAfterClose.complete();
+      this.componentInstance = null;
     }, this.getAnimationDuration());
   }
 
@@ -303,6 +305,10 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> exte
     setTimeout(() => {
       this.nzAfterOpen.next();
     }, this.getAnimationDuration());
+  }
+
+  getContentComponent(): T | null {
+    return this.componentInstance;
   }
 
   closeClick(): void {
@@ -322,6 +328,7 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> exte
       const childInjector = new PortalInjector(this.injector, new WeakMap([[NzDrawerRef, this]]));
       const componentPortal = new ComponentPortal<T>(this.nzContent, null, childInjector);
       const componentRef = this.bodyPortalOutlet!.attachComponentPortal(componentPortal);
+      this.componentInstance = componentRef.instance;
       Object.assign(componentRef.instance, this.nzContentParams);
       componentRef.changeDetectorRef.detectChanges();
     }
