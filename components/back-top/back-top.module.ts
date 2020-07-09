@@ -5,14 +5,12 @@
 import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { SCROLL_SERVICE_PROVIDER } from 'ng-zorro-antd/core/services';
 
 import { NzBackTopComponent } from './back-top.component';
 
 @NgModule({
   declarations: [NzBackTopComponent],
   exports: [NzBackTopComponent],
-  imports: [CommonModule, PlatformModule],
-  providers: [SCROLL_SERVICE_PROVIDER]
+  imports: [CommonModule, PlatformModule]
 })
 export class NzBackTopModule {}

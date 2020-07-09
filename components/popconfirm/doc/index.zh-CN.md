@@ -29,6 +29,14 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 | `[nzPopconfirmOrigin]` | 气泡框定位元素 | `ElementRef` | - |
 | `[nzPopconfirmVisible]` | 显示隐藏气泡框 | `boolean` | `false` |
 | `[nzPopconfirmShowArrow]` | 气泡框是否包含箭头 | `boolean` | `true` |
+| `[nzPopconfirmPlacement]` | 确认框位置 | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
+| `[nzPopconfirmOrigin]` | 确认框定位元素 | `ElementRef` | - |
+| `[nzPopconfirmVisible]` | 显示隐藏确认框 | `boolean` | `false` |
+| `(nzPopconfirmVisibleChange)` | 显示隐藏的事件 | `EventEmitter<boolean>` | - |
+| `[nzPopoverMouseEnterDelay]` | 鼠标移入后延时多少才显示确认框，单位：秒 | `number` | `0.15` |
+| `[nzPopoverMouseLeaveDelay]` | 鼠标移出后延时多少才隐藏确认框，单位：秒 | `number` | `0.1` |
+| `[nzPopoverOverlayClassName]` | 卡片类名 | `string` | - |
+| `[nzPopoverOverlayStyle]` | 卡片样式 | `object` | - |
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
@@ -39,7 +47,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 | `[nzIcon]` | 自定义弹出框的 icon  | `string \| TemplateRef<void>` | - |
 | `(nzOnCancel)` | 点击取消的回调 | `EventEmitter<void>` | - |
 | `(nzOnConfirm)` | 点击确认的回调 | `EventEmitter<void>` | - |
-| `(nzPopconfirmVisibleChange)` | 显示隐藏的事件 | `EventEmitter<boolean>` | - |
+
 
 
 更多属性请参考 [Tooltip](/components/tooltip/zh#api)。

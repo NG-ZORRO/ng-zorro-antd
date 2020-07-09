@@ -30,7 +30,10 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 | `[nzPopoverOrigin]` | 气泡框定位元素 | `ElementRef` | - |
 | `[nzPopoverVisible]` | 显示隐藏气泡框 | `boolean` | `false` |
 | `(nzPopoverVisibleChange)` | 显示隐藏的事件 | `EventEmitter<boolean>` | - |
-
+| `[nzPopoverMouseEnterDelay]` | 鼠标移入后延时多少才显示气泡框，单位：秒 | `number` | `0.15` |
+| `[nzPopoverMouseLeaveDelay]` | 鼠标移出后延时多少才隐藏气泡框，单位：秒 | `number` | `0.1` |
+| `[nzPopoverOverlayClassName]` | 卡片类名 | `string` | - |
+| `[nzPopoverOverlayStyle]` | 卡片样式 | `object` | - |
 更多属性请参考 [Tooltip](/components/tooltip/zh#api)。
 
 ## 注意

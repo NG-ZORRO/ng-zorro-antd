@@ -29,17 +29,13 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 | `[nzTooltipOrigin]` | 气泡框定位元素 | `ElementRef` | - |
 | `[nzTooltipVisible]` | 显示隐藏气泡框 | `boolean` | `false` |
 | `(nzTooltipVisibleChange)` | 显示隐藏的事件 | `EventEmitter<boolean>` | - |
-
+| `[nzTooltipMouseEnterDelay]` | 鼠标移入后延时多少才显示 Tooltip，单位：秒 | `number` | `0.15` |
+| `[nzTooltipMouseLeaveDelay]` | 鼠标移出后延时多少才隐藏 Tooltip，单位：秒 | `number` | `0.1` |
+| `[nzTooltipOverlayClassName]` | 卡片类名 | `string` | - |
+| `[nzTooltipOverlayStyle]` | 卡片样式 | `object` | - |
 ### 共同的 API
 
 以下 API 为 `nz-tooltip`、`nz-popconfirm`、`nz-popover` 共享的 API。
-
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `[nzMouseEnterDelay]` | 鼠标移入后延时多少才显示 Tooltip，单位：秒 | `number` | `0.15` |
-| `[nzMouseLeaveDelay]` | 鼠标移出后延时多少才隐藏 Tooltip，单位：秒 | `number` | `0.1` |
-| `[nzOverlayClassName]` | 卡片类名 | `string` | - |
-| `[nzOverlayStyle]` | 卡片样式 | `object` | - |
 
 | 方法 | 说明 |
 | --- | --- |

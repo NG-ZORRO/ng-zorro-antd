@@ -5,14 +5,12 @@
 import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { SCROLL_SERVICE_PROVIDER } from 'ng-zorro-antd/core/services';
 
 import { NzAffixComponent } from './affix.component';
 
 @NgModule({
   declarations: [NzAffixComponent],
   exports: [NzAffixComponent],
-  imports: [CommonModule, PlatformModule],
-  providers: [SCROLL_SERVICE_PROVIDER]
+  imports: [CommonModule, PlatformModule]
 })
 export class NzAffixModule {}

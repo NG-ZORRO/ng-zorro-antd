@@ -198,6 +198,16 @@ describe('NzDatePickerComponent', () => {
       expect(debugElement.query(By.css('.ant-picker-clear'))).not.toBeNull();
     }));
 
+    it('should support nzInputReadOnly', fakeAsync(() => {
+      fixtureInstance.nzInputReadOnly = true;
+      fixture.detectChanges();
+      expect(getPickerInput(fixture.debugElement).readOnly).toBeTruthy();
+
+      fixtureInstance.nzInputReadOnly = false;
+      fixture.detectChanges();
+      expect(getPickerInput(fixture.debugElement).readOnly).not.toBeTruthy();
+    }));
+
     it('should support nzOpen if assigned', fakeAsync(() => {
       fixtureInstance.useSuite = 2;
 
@@ -961,6 +971,7 @@ describe('date-fns testing', () => {
         [nzAllowClear]="nzAllowClear"
         [nzAutoFocus]="nzAutoFocus"
         [nzDisabled]="nzDisabled"
+        [nzInputReadOnly]="nzInputReadOnly"
         [nzClassName]="nzClassName"
         [nzDisabledDate]="nzDisabledDate"
         [nzFormat]="nzFormat"
@@ -1013,6 +1024,7 @@ class NzTestDatePickerComponent {
   nzAllowClear: boolean = false;
   nzAutoFocus: boolean = false;
   nzDisabled: boolean = false;
+  nzInputReadOnly: boolean = false;
   nzClassName!: string;
   nzFormat!: string;
   nzDisabledDate!: (d: Date) => boolean;

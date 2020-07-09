@@ -8,8 +8,8 @@ import { Component } from '@angular/core';
       nzType="primary"
       nz-popover
       nzPopoverTitle="Title"
-      [(nzVisible)]="visible"
-      (nzVisibleChange)="change($event)"
+      [(nzPopoverVisible)]="visible"
+      (nzPopoverVisibleChange)="change($event)"
       nzPopoverTrigger="click"
       [nzPopoverContent]="contentTemplate"
     >

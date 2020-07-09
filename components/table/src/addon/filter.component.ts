@@ -131,7 +131,7 @@ export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
       if (this.filterMultiple) {
         this.filterChange.emit(listOfChecked);
       } else {
-        this.filterChange.emit(listOfChecked[0] || null);
+        this.filterChange.emit(listOfChecked.length > 0 ? listOfChecked[0] : null);
       }
       this.isChanged = false;
     }

@@ -56,6 +56,7 @@ import { PREFIX_CLASS } from './util';
         #pickerInput
         [class.ant-input-disabled]="disabled"
         [disabled]="disabled"
+        [readOnly]="inputReadOnly"
         [(ngModel)]="inputValue"
         placeholder="{{ getPlaceholder() }}"
         [size]="inputSize"
@@ -90,6 +91,7 @@ import { PREFIX_CLASS } from './util';
       <input
         #rangePickerInput
         [disabled]="disabled"
+        [readOnly]="inputReadOnly"
         [size]="inputSize"
         (click)="onClickInputBox($event, partType)"
         (blur)="onBlur()"
@@ -158,6 +160,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @Input() isRange: boolean = false;
   @Input() open: boolean | undefined = undefined;
   @Input() disabled: boolean = false;
+  @Input() inputReadOnly: boolean = false;
   @Input() placeholder!: string | string[];
   @Input() allowClear?: boolean;
   @Input() autoFocus?: boolean;
