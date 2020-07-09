@@ -56,6 +56,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'datePicker';
       [open]="nzOpen"
       [separator]="nzSeparator"
       [disabled]="nzDisabled"
+      [inputReadOnly]="nzInputReadOnly"
       [format]="nzFormat"
       [allowClear]="nzAllowClear"
       [autoFocus]="nzAutoFocus"
@@ -113,6 +114,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   static ngAcceptInputType_nzAllowClear: BooleanInput;
   static ngAcceptInputType_nzAutoFocus: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzInputReadOnly: BooleanInput;
   static ngAcceptInputType_nzOpen: BooleanInput;
   static ngAcceptInputType_nzShowToday: BooleanInput;
   static ngAcceptInputType_nzMode: NzDateMode | NzDateMode[] | string | string[] | null | undefined;
@@ -131,6 +133,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   @Input() @InputBoolean() nzAllowClear: boolean = true;
   @Input() @InputBoolean() nzAutoFocus: boolean = false;
   @Input() @InputBoolean() nzDisabled: boolean = false;
+  @Input() @InputBoolean() nzInputReadOnly: boolean = false;
   @Input() @InputBoolean() nzOpen?: boolean;
   /**
    * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.

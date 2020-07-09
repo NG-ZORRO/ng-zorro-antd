@@ -45,6 +45,7 @@ The following APIs are shared by nz-date-picker, nz-month-picker, nz-range-picke
 | `[nzAutoFocus]` | get focus when component mounted | `boolean` | `false` | - |
 | `[nzDateRender]` | custom rendering function for date cells (Not support by month-picker/year-picker) | - |`TemplateRef<Date> \| string \| ((d: Date) => TemplateRef<Date> \| string)` | - | - |
 | `[nzDisabled]` | determine whether the nz-date-picker is disabled | `boolean` | `false` | - |
+| `[nzInputReadOnly]` | set the readonly attribute of the input tag (avoids virtual keyboard on touch devices) | `boolean` | `false` | - |
 | `[nzDisabledDate]` | specify the date that cannot be selected | `(current: Date) => boolean` | - | - |
 | `[nzLocale]` | localization configuration | `object` | [default](https://github.com/ant-design/ant-design/blob/master/components/date-picker/locale/example.json) | - |
 | `[nzOpen]` | open state of picker | `boolean` | - | - |
