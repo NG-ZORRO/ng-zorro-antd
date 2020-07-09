@@ -105,6 +105,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzRemove?: (file: NzUploadFile) => boolean | Observable<boolean>;
   @Input() nzPreview?: (file: NzUploadFile) => void;
   @Input() nzPreviewFile?: (file: NzUploadFile) => Observable<string>;
+  @Input() nzPreviewIsImage?: (file: NzUploadFile) => boolean;
   @Input() nzTransformFile?: (file: NzUploadFile) => NzUploadTransformFileType;
   @Input() nzDownload?: (file: NzUploadFile) => void;
   @Input() nzIconRender: TemplateRef<NzSafeAny> | null = null;
