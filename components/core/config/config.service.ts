@@ -65,7 +65,7 @@ export function WithConfig<T>(componentName: NzConfigKey) {
     return {
       get(): T | undefined {
         const originalValue = originalDescriptor?.get ? originalDescriptor.get.bind(this)() : this[privatePropName];
-        const assignedByUser = (this.assignmentCount[propName] || 0) > 1;
+        const assignedByUser = ((this.assignmentCount || {})[propName] || 0) > 1;
 
         if (assignedByUser && isDefined(originalValue)) {
           return originalValue;
