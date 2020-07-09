@@ -48,6 +48,7 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
 | `[nzOpenFileDialogOnClick]` | click open file dialog | `boolean` | `true` |
 | `[nzPreview]` | A callback function, will be executed when file link or preview icon is clicked. NOTICE: Muse be use `=>` to define the method. | `(file: NzUploadFile) => void` | - |
 | `[nzPreviewFile]` | Customize preview file logic. NOTICE: Muse be use `=>` to define the method. | `(file: NzUploadFile) => Observable<dataURL: string>` | - |
+| `[nzPreviewIsImage]` | Customize the preview file is an image, generally used when the image URL is in a non-standard format. NOTICE: Muse be use `=>` to define the method. | `(file: NzUploadFile) => boolean` | - |
 | `[nzRemove]` | A callback function, will be executed when removing file button is clicked, remove event will be prevented when return value is `false` or a Observable. NOTICE: Muse be use `=>` to define the method.  | `(file: NzUploadFile) => boolean \| Observable<boolean>` | - |
 | `(nzChange)` | A callback function, can be executed when uploading state is changing | `EventEmitter<NzUploadChangeParam>` | - |
 | `[nzDownload]`   | Click the method to download the file, pass the method to perform the method logic, do not pass the default jump to the new TAB. | `(file: NzUploadFile) => void` | Jump to new TAB |

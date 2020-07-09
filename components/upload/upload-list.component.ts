@@ -74,6 +74,7 @@ export class NzUploadListComponent implements OnChanges {
   @Input() onRemove!: (file: NzUploadFile) => void;
   @Input() onDownload?: (file: NzUploadFile) => void;
   @Input() previewFile?: (file: NzUploadFile) => Observable<string>;
+  @Input() previewIsImage?: (file: NzUploadFile) => boolean;
   @Input() iconRender: TemplateRef<NzSafeAny> | null = null;
 
   private genErr(file: NzUploadFile): string {
@@ -202,7 +203,7 @@ export class NzUploadListComponent implements OnChanges {
       file.isUploading = file.status === 'uploading';
       file.message = this.genErr(file);
       file.linkProps = typeof file.linkProps === 'string' ? JSON.parse(file.linkProps) : file.linkProps;
-      file.isImageUrl = this.isImageUrl(file);
+      file.isImageUrl = this.previewIsImage ? this.previewIsImage(file) : this.isImageUrl(file);
       file.iconType = this.getIconType(file);
       file.listItemNameCls = this.listItemNameCls(file);
       file.showDownload = this.showDownload(file);

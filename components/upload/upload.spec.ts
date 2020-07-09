@@ -922,6 +922,14 @@ describe('upload', () => {
           });
         });
       });
+      it('#previewIsImage', fakeAsync(() => {
+        instance.previewIsImage = () => true;
+        instance.listType = 'picture';
+        instance.items = [{}];
+        fixture.detectChanges();
+        tick();
+        expect(instance.items[0].isImageUrl).toBe(true);
+      }));
     });
 
     describe('[genThumb]', () => {
@@ -1429,6 +1437,7 @@ class TestUploadComponent {
       [icons]="icons"
       [onPreview]="onPreview"
       [previewFile]="previewFile"
+      [previewIsImage]="previewIsImage"
       [onRemove]="onRemove"
     ></nz-upload-list>
   `,
@@ -1468,6 +1477,7 @@ class TestUploadListComponent {
     this._onPreview = true;
   };
   previewFile!: (file: NzUploadFile) => Observable<string>;
+  previewIsImage!: (file: NzUploadFile) => boolean;
   _onRemove = false;
   onRemove: any = (): void => {
     this._onRemove = true;
