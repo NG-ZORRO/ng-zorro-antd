@@ -35,7 +35,7 @@ import { NzSelectItemInterface, NzSelectModeType } from './select.types';
         [class.full-width]="!matchWidth"
         [itemSize]="itemSize"
         [maxBufferPx]="itemSize * maxItemLength"
-        [minBufferPx]="itemSize"
+        [minBufferPx]="itemSize * maxItemLength"
         (scrolledIndexChange)="onScrolledIndexChange($event)"
         [style.height.px]="listOfContainerItem.length * itemSize"
         [style.max-height.px]="itemSize * maxItemLength"
