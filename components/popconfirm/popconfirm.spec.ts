@@ -111,6 +111,19 @@ describe('NzPopconfirm', () => {
     expect(component.confirm).toHaveBeenCalledTimes(1);
     expect(component.cancel).toHaveBeenCalledTimes(0);
   }));
+
+  it('should nzPopconfirmShowArrow work', fakeAsync(() => {
+    const triggerElement = component.stringTemplate.nativeElement;
+    dispatchMouseEvent(triggerElement, 'click');
+
+    component.nzPopconfirmShowArrow = false;
+    fixture.detectChanges();
+    expect(overlayContainerElement.querySelector('.ant-popover-arrow')).toBeFalsy();
+
+    component.nzPopconfirmShowArrow = true;
+    fixture.detectChanges();
+    expect(overlayContainerElement.querySelector('.ant-popover-arrow')).toBeTruthy();
+  }));
 });
 
 @Component({
@@ -125,6 +138,7 @@ describe('NzPopconfirm', () => {
       [nzCondition]="condition"
       (nzOnConfirm)="confirm()"
       (nzOnCancel)="cancel()"
+      [nzPopconfirmShowArrow]="nzPopconfirmShowArrow"
     >
       Delete
     </a>
@@ -143,6 +157,7 @@ export class NzPopconfirmTestNewComponent {
   confirm = jasmine.createSpy('confirm');
   cancel = jasmine.createSpy('cancel');
   condition = false;
+  nzPopconfirmShowArrow = true;
   icon: string | undefined = undefined;
 
   @ViewChild('stringTemplate', { static: false }) stringTemplate!: ElementRef;
