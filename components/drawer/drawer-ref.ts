@@ -8,11 +8,12 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable } from 'rxjs';
 import { NzDrawerPlacement } from './drawer-options';
 
-export abstract class NzDrawerRef<R = NzSafeAny> {
+export abstract class NzDrawerRef<T = NzSafeAny, R = NzSafeAny> {
   abstract afterClose: Observable<R>;
   abstract afterOpen: Observable<void>;
   abstract close(result?: R): void;
   abstract open(): void;
+  abstract getContentComponent(): T | null;
 
   abstract nzClosable?: boolean;
   abstract nzNoAnimation?: boolean;
