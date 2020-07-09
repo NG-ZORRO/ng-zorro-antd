@@ -37,6 +37,7 @@ export interface NzResizeEvent {
 export class NzResizableDirective implements AfterViewInit, OnDestroy {
   static ngAcceptInputType_nzLockAspectRatio: BooleanInput;
   static ngAcceptInputType_nzPreview: BooleanInput;
+  static ngAcceptInputType_nzDisabled: BooleanInput;
 
   @Input() nzBounds: 'window' | 'parent' | ElementRef<HTMLElement> = 'parent';
   @Input() nzMaxHeight?: number;
