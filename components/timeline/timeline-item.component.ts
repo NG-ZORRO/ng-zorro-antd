@@ -15,11 +15,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { NzTimelineMode } from './timeline.component';
 import { TimelineService } from './timeline.service';
-
-const TimelineTimeDefaultColors = ['red', 'blue', 'green', 'grey', 'gray'] as const;
-export type NzTimelineItemColor = typeof TimelineTimeDefaultColors[number];
+import { NzTimelineItemColor, NzTimelinePosition, TimelineTimeDefaultColors } from './typings';
 
 function isDefaultColor(color?: string): boolean {
   return TimelineTimeDefaultColors.findIndex(i => i === color) !== -1;
@@ -35,8 +32,8 @@ function isDefaultColor(color?: string): boolean {
     <ng-template #template>
       <li
         class="ant-timeline-item"
-        [class.ant-timeline-item-right]="position === 'right'"
-        [class.ant-timeline-item-left]="position === 'left'"
+        [class.ant-timeline-item-right]="(nzPosition || position) === 'right'"
+        [class.ant-timeline-item-left]="(nzPosition || position) === 'left'"
         [class.ant-timeline-item-last]="isLast"
       >
         <div class="ant-timeline-item-tail"></div>
@@ -61,12 +58,13 @@ function isDefaultColor(color?: string): boolean {
 export class NzTimelineItemComponent implements OnChanges {
   @ViewChild('template', { static: false }) template!: TemplateRef<void>;
 
+  @Input() nzPosition?: NzTimelinePosition;
   @Input() nzColor: NzTimelineItemColor = 'blue';
   @Input() nzDot?: string | TemplateRef<void>;
 
   isLast = false;
   borderColor: string | null = null;
-  position: NzTimelineMode | undefined;
+  position?: NzTimelinePosition;
 
   constructor(private cdr: ChangeDetectorRef, private timelineService: TimelineService) {}
 

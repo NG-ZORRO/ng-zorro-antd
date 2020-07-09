@@ -71,6 +71,7 @@ describe('nz-timeline', () => {
       fixture.detectChanges();
       expect(timeline.nativeElement.querySelector('.ant-timeline-item-pending').innerText).toBe('pending');
     });
+
     it('should reverse work', () => {
       fixture.detectChanges();
       testComponent.pending = true;
@@ -80,6 +81,7 @@ describe('nz-timeline', () => {
       expect(items[0].classList).toContain('ant-timeline-item-last');
       expect(items[3].classList).not.toContain('ant-timeline-item-last');
     });
+
     it('should alternate position work', () => {
       fixture.detectChanges();
       testComponent.mode = 'alternate';
@@ -89,6 +91,7 @@ describe('nz-timeline', () => {
       expect(items[1].classList).toContain('ant-timeline-item-right');
       expect(items[2].classList).toContain('ant-timeline-item-left');
     });
+
     it('should alternate right position work', () => {
       fixture.detectChanges();
       testComponent.mode = 'right';
@@ -98,6 +101,28 @@ describe('nz-timeline', () => {
       expect(items[1].classList).toContain('ant-timeline-item-right');
       expect(items[2].classList).toContain('ant-timeline-item-right');
     });
+  });
+
+  // add another test component for simplicity
+  it('should custom position work', () => {
+    let testBed: ComponentBed<NzTestTimelineCustomPositionComponent>;
+    let fixture: ComponentFixture<NzTestTimelineCustomPositionComponent>;
+    let timeline: DebugElement;
+    let items: HTMLDivElement[] = [];
+
+    testBed = createComponentBed(NzTestTimelineCustomPositionComponent, {
+      imports: [NzTimelineModule]
+    });
+    fixture = testBed.fixture;
+
+    fixture.detectChanges();
+
+    timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
+    items = Array.from((fixture.debugElement.nativeElement as HTMLElement).querySelectorAll('.ant-timeline-item'));
+    // console.log(fixture.debugElement.nativeElement.outerHTML);
+
+    expect(timeline.nativeElement.firstElementChild!.classList).toContain('ant-timeline-alternate');
+    expect(items[0].classList).toContain('ant-timeline-item-right');
   });
 
   describe('custom color', () => {
@@ -191,3 +216,13 @@ export class NzTestTimelineCustomColorComponent {}
   `
 })
 export class NzTestTimelinePendingComponent {}
+
+@Component({
+  template: `
+    <nz-timeline nzMode="custom">
+      <nz-timeline-item nzPosition="right">Right</nz-timeline-item>
+      <nz-timelint-item nzPosition="left">Left</nz-timelint-item>
+    </nz-timeline>
+  `
+})
+export class NzTestTimelineCustomPositionComponent {}
