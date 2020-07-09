@@ -168,8 +168,8 @@ Checkbox property
 | `[nzIndeterminate]` | Indeterminate status | `boolean` | - |
 | `[nzChecked]` | Checked status, double binding | `boolean` | - |
 | `(nzCheckedChange)` | Checked status change callback | `EventEmitter<boolean>` | - |
-| `[colspan]` | how many columns the cell extends | `number` | `null` |
-| `[rowspan]` | how many rows the cell extends | `number` | `null` |
+| `[colSpan]` | how many columns the cell extends | `number` | `null` |
+| `[rowSpan]` | how many rows the cell extends | `number` | `null` |
 
 Expand property
 
