@@ -22,7 +22,7 @@ import {
 } from '@angular/core';
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { NzTSType } from 'ng-zorro-antd/core/types';
+import { NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 
 import { isTooltipEmpty, NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger } from 'ng-zorro-antd/tooltip';
 
@@ -41,6 +41,10 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   @Input('nzPopoverPlacement') specificPlacement?: string;
   @Input('nzPopoverOrigin') specificOrigin?: ElementRef<HTMLElement>;
   @Input('nzPopoverVisible') specificVisible?: boolean;
+  @Input('nzPopoverMouseEnterDelay') specificMouseEnterDelay?: number;
+  @Input('nzPopoverMouseLeaveDelay') specificMouseLeaveDelay?: number;
+  @Input('nzPopoverOverlayClassName') specificOverlayClassName?: string;
+  @Input('nzPopoverOverlayStyle') specificOverlayStyle?: NgStyleInterface;
 
   // tslint:disable-next-line:no-output-rename
   @Output('nzPopoverVisibleChange') readonly specificVisibleChange = new EventEmitter<boolean>();
