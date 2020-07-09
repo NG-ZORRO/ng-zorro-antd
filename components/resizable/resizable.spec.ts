@@ -361,6 +361,30 @@ describe('resizable', () => {
         expect(testComponent.height).toBeGreaterThanOrEqual(100);
       }));
     });
+
+    it('should disabled work', fakeAsync(() => {
+      testComponent.disabled = true;
+      fixture.detectChanges();
+      expect(resizableEle.classList).toContain(`nz-resizable-disabled`);
+      expect(testComponent.width).toBe(400);
+      const rect = resizableEle.getBoundingClientRect();
+      const handle = resizableEle.querySelector('.nz-resizable-handle-left') as HTMLElement;
+      mouseMoveTrigger(
+        handle,
+        {
+          x: rect.left,
+          y: rect.bottom
+        },
+        {
+          x: rect.left + 100,
+          y: rect.bottom
+        }
+      );
+      fixture.detectChanges();
+      tick(16);
+      fixture.detectChanges();
+      expect(testComponent.width).toBe(400);
+    }));
   });
 
   describe('customize', () => {
