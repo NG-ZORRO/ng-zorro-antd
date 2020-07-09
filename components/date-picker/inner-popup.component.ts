@@ -50,7 +50,6 @@ import { PREFIX_CLASS } from './util';
                 [value]="value"
                 (valueChange)="onChooseDecade($event)"
                 [disabledDate]="disabledDate"
-                [cellRender]="dateRender"
               ></decade-table>
             </div>
           </ng-container>
@@ -73,7 +72,6 @@ import { PREFIX_CLASS } from './util';
                 [value]="value"
                 (valueChange)="onChooseYear($event)"
                 [disabledDate]="disabledDate"
-                [cellRender]="dateRender"
               ></year-table>
             </div>
           </ng-container>
@@ -93,7 +91,6 @@ import { PREFIX_CLASS } from './util';
                 [value]="value"
                 [activeDate]="activeDate"
                 [disabledDate]="disabledDate"
-                [cellRender]="dateRender"
                 (valueChange)="onChooseMonth($event)"
               ></month-table>
             </div>
