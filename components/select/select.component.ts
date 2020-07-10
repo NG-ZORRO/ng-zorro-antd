@@ -542,7 +542,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
           this.focused = false;
           this.cdr.markForCheck();
           this.nzBlur.emit();
-          if (this.nzAcceptOnBlur && this.searchValue) {
+          if (this.nzMode === 'tags' && this.nzAcceptOnBlur && this.searchValue) {
             this.onItemClick(this.searchValue);
           }
           Promise.resolve().then(() => {
