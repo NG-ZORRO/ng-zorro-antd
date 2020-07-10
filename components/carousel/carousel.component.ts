@@ -177,24 +177,24 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
 
     this.carouselContents.changes.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.markContentActive(0);
-      this.syncStrategy();
+      this.layout();
     });
 
     this.resizeService
       .subscribe()
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
-        this.syncStrategy();
+        this.layout();
       });
 
     this.switchStrategy();
     this.markContentActive(0);
-    this.syncStrategy();
+    this.layout();
 
-    // If embedded in an entry component, it may do initial render at a inappropriate time.
+    // If embedded in an entry component, it may do initial render at an inappropriate time.
     // ngZone.onStable won't do this trick
     Promise.resolve().then(() => {
-      this.syncStrategy();
+      this.layout();
     });
   }
 
@@ -204,13 +204,13 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     if (nzEffect && !nzEffect.isFirstChange()) {
       this.switchStrategy();
       this.markContentActive(0);
-      this.syncStrategy();
+      this.layout();
     }
 
     if (nzDotPosition && !nzDotPosition.isFirstChange()) {
       this.switchStrategy();
       this.markContentActive(0);
-      this.syncStrategy();
+      this.layout();
     }
 
     if (!this.nzAutoPlay || !this.nzAutoPlaySpeed) {
@@ -347,7 +347,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     }
   };
 
-  private syncStrategy(): void {
+  layout(): void {
     if (this.strategy) {
       this.strategy.withCarouselContents(this.carouselContents);
     }
