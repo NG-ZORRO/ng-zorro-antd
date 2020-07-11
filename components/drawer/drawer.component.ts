@@ -75,7 +75,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
                   <ng-container *nzStringTemplateOutlet="nzTitle"><div [innerHTML]="nzTitle"></div></ng-container>
                 </div>
                 <button *ngIf="nzClosable" (click)="closeClick()" aria-label="Close" class="ant-drawer-close" style="--scroll-bar: 0px;">
-                  <i nz-icon nzType="close"></i>
+                  <ng-container *nzStringTemplateOutlet="nzCloseIcon; let closeIcon">
+                    <i nz-icon [nzType]="closeIcon"></i>
+                  </ng-container>
                 </button>
               </div>
               <div class="ant-drawer-body" [ngStyle]="nzBodyStyle">
@@ -108,6 +110,7 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> exte
   static ngAcceptInputType_nzCloseOnNavigation: BooleanInput;
 
   @Input() nzContent!: TemplateRef<{ $implicit: D; drawerRef: NzDrawerRef<R> }> | Type<T>;
+  @Input() nzCloseIcon: string | TemplateRef<void> = 'close';
   @Input() @InputBoolean() nzClosable: boolean = true;
   @Input() @WithConfig() @InputBoolean() nzMaskClosable: boolean = true;
   @Input() @WithConfig() @InputBoolean() nzMask: boolean = true;
