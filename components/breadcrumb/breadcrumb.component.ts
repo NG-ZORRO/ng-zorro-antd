@@ -52,6 +52,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
   @Input() @InputBoolean() nzAutoGenerate = false;
   @Input() nzSeparator: string | TemplateRef<void> | null = '/';
   @Input() nzRouteLabel: string = 'breadcrumb';
+  @Input() nzRouteLabelFn: (label: string) => string = label => label;
 
   breadcrumbs: BreadcrumbOption[] | undefined = [];
 
@@ -118,7 +119,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
           .filter(path => path)
           .join('/');
         const nextUrl = url + `/${routeURL}`;
-        const breadcrumbLabel = child.snapshot.data[this.nzRouteLabel];
+        const breadcrumbLabel = this.nzRouteLabelFn(child.snapshot.data[this.nzRouteLabel]);
         // If have data, go to generate a breadcrumb for it.
         if (routeURL && breadcrumbLabel) {
           const breadcrumb: BreadcrumbOption = {
