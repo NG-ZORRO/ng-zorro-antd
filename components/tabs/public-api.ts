@@ -12,4 +12,4 @@ export * from './tabs-nav.component';
 export * from './tabset.component';
 export * from './tab.directive';
 export * from './tab-link.directive';
-export * from './table.types';
+export * from './tabs.types';

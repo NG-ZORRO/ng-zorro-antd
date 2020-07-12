@@ -6,7 +6,7 @@
 import { Directive, ElementRef, Input, NgZone, Renderer2 } from '@angular/core';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { NzTabPositionMode } from './table.types';
+import { NzTabPositionMode } from './tabs.types';
 
 @Directive({
   selector: '[nz-tabs-ink-bar]',

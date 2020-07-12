@@ -35,8 +35,8 @@ import { InputBoolean, toNumber, wrapIntoObservable } from 'ng-zorro-antd/core/u
 import { merge, Subject, Subscription } from 'rxjs';
 import { filter, first, startWith, takeUntil } from 'rxjs/operators';
 import { NzTabComponent } from './tab.component';
-import { NzAnimatedInterface, NzTabChangeEvent, NzTabPosition, NzTabPositionMode, NzTabsCanDeactivateFn, NzTabType } from './table.types';
 import { NzTabsNavComponent } from './tabs-nav.component';
+import { NzAnimatedInterface, NzTabChangeEvent, NzTabPosition, NzTabPositionMode, NzTabsCanDeactivateFn, NzTabType } from './tabs.types';
 
 const NZ_CONFIG_COMPONENT_NAME = 'tabs';
 
