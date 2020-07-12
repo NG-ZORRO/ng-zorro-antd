@@ -8,8 +8,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 
 import { of } from 'rxjs';
-import { NzAnimatedInterface, NzTabsCanDeactivateFn } from './table.types';
 import { NzTabsModule } from './tabs.module';
+import { NzAnimatedInterface, NzTabsCanDeactivateFn } from './tabs.types';
 import { NzTabSetComponent } from './tabset.component';
 
 describe('tabs', () => {

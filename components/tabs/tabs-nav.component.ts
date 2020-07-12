@@ -33,8 +33,8 @@ import { merge, of as observableOf, Subject, Subscription } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
 import { NzTabLabelDirective } from './tab-label.directive';
-import { NzTabPosition, NzTabPositionMode } from './table.types';
 import { NzTabsInkBarDirective } from './tabs-ink-bar.directive';
+import { NzTabPosition, NzTabPositionMode } from './tabs.types';
 
 const EXAGGERATED_OVERSCROLL = 64;
 export type ScrollDirection = 'after' | 'before';
