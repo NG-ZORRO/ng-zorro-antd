@@ -8,7 +8,7 @@ import { By } from '@angular/platform-browser';
 
 import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
 import { Subject } from 'rxjs';
-import { NzTabPositionMode } from './table.types';
+import { NzTabPositionMode } from './tabs.types';
 
 import { NzTabsNavComponent } from './tabs-nav.component';
 import { NzTabsModule } from './tabs.module';
