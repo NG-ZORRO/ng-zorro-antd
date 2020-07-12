@@ -4,6 +4,7 @@
  */
 
 import {
+  AfterContentInit,
   ChangeDetectionStrategy,
   Component,
   ContentChild,
@@ -47,7 +48,7 @@ export const NZ_TAB_SET = new InjectionToken<NzSafeAny>('NZ_TAB_SET');
     <ng-template #contentTemplate><ng-content></ng-content></ng-template>
   `
 })
-export class NzTabComponent implements OnChanges, OnDestroy, OnInit {
+export class NzTabComponent implements OnChanges, OnDestroy, OnInit, AfterContentInit {
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzClosable: BooleanInput;
   static ngAcceptInputType_nzForceRender: BooleanInput;
@@ -85,6 +86,15 @@ export class NzTabComponent implements OnChanges, OnDestroy, OnInit {
     const { nzTitle, nzDisabled, nzForceRender } = changes;
     if (nzTitle || nzDisabled || nzForceRender) {
       this.stateChanges.next();
+    }
+    if (changes.nzDisabled && this.linkDirective) {
+      this.linkDirective.setDisabledState(changes.nzDisabled.currentValue);
+    }
+  }
+
+  ngAfterContentInit(): void {
+    if (this.linkDirective) {
+      this.linkDirective.setDisabledState(this.nzDisabled);
     }
   }
 

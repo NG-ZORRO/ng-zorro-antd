@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, Optional, Self } from '@angular/core';
+import { Directive, ElementRef, Optional, Renderer2, Self } from '@angular/core';
 import { RouterLink, RouterLinkWithHref } from '@angular/router';
 
 /**
@@ -14,5 +14,18 @@ import { RouterLink, RouterLinkWithHref } from '@angular/router';
   exportAs: 'nzTabLink'
 })
 export class NzTabLinkDirective {
-  constructor(@Optional() @Self() public routerLink?: RouterLink, @Optional() @Self() public routerLinkWithHref?: RouterLinkWithHref) {}
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2,
+    @Optional() @Self() public routerLink?: RouterLink,
+    @Optional() @Self() public routerLinkWithHref?: RouterLinkWithHref
+  ) {}
+
+  setDisabledState(disabled: boolean): void {
+    if (disabled) {
+      this.renderer.setAttribute(this.elementRef.nativeElement, 'disabled', '');
+    } else {
+      this.renderer.removeAttribute(this.elementRef.nativeElement, 'disabled');
+    }
+  }
 }
