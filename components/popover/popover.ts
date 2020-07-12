@@ -81,6 +81,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
       (positionChange)="onPositionChange($event)"
       [cdkConnectedOverlayPositions]="_positions"
       [cdkConnectedOverlayOpen]="_visible"
+      [cdkConnectedOverlayPush]="true"
     >
       <div
         class="ant-popover"
