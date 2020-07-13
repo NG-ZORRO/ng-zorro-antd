@@ -199,7 +199,7 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
       for (const key in errors) {
         if (errors.hasOwnProperty(key)) {
           autoErrorTip =
-            errors[key][this.localeId] ??
+            errors[key]?.[this.localeId] ??
             this.nzAutoTips?.[this.localeId]?.[key] ??
             this.nzFormDirective?.nzAutoTips?.[this.localeId]?.[key];
         }
