@@ -640,6 +640,20 @@ describe('link router', () => {
         // expect(location.path()).toBe('/');
       });
     }));
+
+    it('should nzDisabled works in route mode', fakeAsync(() => {
+      fixture.ngZone!.run(() => {
+        router = TestBed.inject(Router);
+        router.initialNavigation();
+
+        fixture.detectChanges();
+        expect(tabs.nativeElement.querySelector('a:disabled')).toBeDefined();
+
+        tabs.componentInstance.tabTwoDisabled = false;
+        fixture.detectChanges();
+        expect(tabs.nativeElement.querySelector('a:disabled')).toBeNull();
+      });
+    }));
   });
 
   describe('throw error', () => {
@@ -754,7 +768,7 @@ export class NzTestTabsTabPositionLeftComponent {
         <a nz-tab-link [routerLink]="['.']">One</a>
         One
       </nz-tab>
-      <nz-tab nzTitle="two">
+      <nz-tab nzTitle="two" [nzDisabled]="tabTwoDisabled">
         <a nz-tab-link [routerLink]="['.', 'two']">Two</a>
         Two
       </nz-tab>
@@ -762,7 +776,9 @@ export class NzTestTabsTabPositionLeftComponent {
     <router-outlet></router-outlet>
   `
 })
-export class NzTestTabsLinkRouterComponent {}
+export class NzTestTabsLinkRouterComponent {
+  tabTwoDisabled = true;
+}
 
 const routes: Routes = [
   {

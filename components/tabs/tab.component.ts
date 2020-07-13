@@ -4,6 +4,7 @@
  */
 
 import {
+  AfterContentInit,
   ChangeDetectionStrategy,
   Component,
   ContentChild,
@@ -42,7 +43,7 @@ import { NzTabDirective } from './tab.directive';
     </ng-template>
   `
 })
-export class NzTabComponent implements OnChanges, OnDestroy {
+export class NzTabComponent implements OnChanges, OnDestroy, AfterContentInit {
   static ngAcceptInputType_nzForceRender: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
 
@@ -62,13 +63,34 @@ export class NzTabComponent implements OnChanges, OnDestroy {
   @Output() readonly nzSelect = new EventEmitter<void>();
   @Output() readonly nzDeselect = new EventEmitter<void>();
 
+  linkDOM: HTMLElement | null = null;
+
   constructor(public elementRef: ElementRef, private renderer: Renderer2) {
     this.renderer.addClass(elementRef.nativeElement, 'ant-tabs-tabpane');
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (this.linkDOM && changes.nzDisabled) {
+      this.setLinkDisabledAttr(this.nzDisabled);
+    }
+
     if (changes.nzTitle || changes.nzForceRender || changes.nzDisabled) {
       this.stateChanges.next();
+    }
+  }
+
+  ngAfterContentInit(): void {
+    if (this.linkDirective) {
+      this.linkDOM = this.linkDirective.elementRef!.nativeElement;
+      this.setLinkDisabledAttr(this.nzDisabled);
+    }
+  }
+
+  setLinkDisabledAttr(disabled: boolean): void {
+    if (disabled) {
+      this.renderer.setAttribute(this.linkDOM, 'disabled', 'disabled');
+    } else {
+      this.renderer.removeAttribute(this.linkDOM, 'disabled');
     }
   }
 
