@@ -195,6 +195,22 @@ describe('NzDrawerComponent', () => {
     expect(overlayContainerElement.querySelector('.ant-drawer .ant-drawer-title .custom-title')).not.toBe(null);
   });
 
+  it('should support string footer', () => {
+    component.footer = 'test';
+    component.open();
+    fixture.detectChanges();
+    expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
+    expect((overlayContainerElement.querySelector('.ant-drawer .ant-drawer-footer') as HTMLElement).innerText.trim()).toBe('test');
+  });
+
+  it('should support TemplateRef footer', () => {
+    component.footer = component.templateFooter;
+    component.open();
+    fixture.detectChanges();
+    expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
+    expect(overlayContainerElement.querySelector('.ant-drawer .ant-drawer-footer .custom-footer')).not.toBe(null);
+  });
+
   it('should support custom width', () => {
     component.width = '500px';
     component.open();
@@ -433,6 +449,7 @@ describe('NzDrawerService', () => {
     const closeSpy = jasmine.createSpy('afterClose spy').and.returnValue(1);
     const drawerRef = drawerService.create({
       nzTitle: 'Service',
+      nzFooter: 'Footer',
       nzContent: NzDrawerCustomComponent,
       nzContentParams: { value: 1 }
     });
@@ -486,6 +503,10 @@ describe('NzDrawerService', () => {
       <span class="custom-title">title</span>
       <button class="close-btn"></button>
     </ng-template>
+    <ng-template #customFooter>
+      <span class="custom-footer">footer</span>
+      <button>Submit</button>
+    </ng-template>
     <nz-drawer
       [nzMaskStyle]="{ color: 'gray' }"
       [nzBodyStyle]="{ color: 'gray' }"
@@ -500,6 +521,7 @@ describe('NzDrawerService', () => {
       [nzPlacement]="placement"
       [nzNoAnimation]="noAnimation"
       [nzTitle]="title"
+      [nzFooter]="footer"
       [nzOffsetX]="offsetX"
       [nzOffsetY]="offsetY"
       (nzOnClose)="close()"
@@ -516,6 +538,7 @@ class NzTestDrawerComponent {
   maskClosable = true;
   showMask = true;
   title: string | TemplateRef<void> = '';
+  footer: string | TemplateRef<void> = '';
   stringTitle = 'test';
   width: string | number = '300px';
   height: string | number = '300px';
@@ -524,6 +547,7 @@ class NzTestDrawerComponent {
   offsetX = 0;
   offsetY = 0;
   @ViewChild('customTitle', { static: false }) templateTitle!: TemplateRef<void>;
+  @ViewChild('customFooter', { static: false }) templateFooter!: TemplateRef<void>;
   @ViewChild(NzDrawerComponent, { static: false }) drawerComponent!: NzDrawerComponent;
 
   open(): void {
