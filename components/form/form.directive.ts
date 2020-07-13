@@ -13,6 +13,8 @@ import { filter, map } from 'rxjs/operators';
 
 const NZ_CONFIG_COMPONENT_NAME = 'form';
 
+export type NzFormLayoutType = 'horizontal' | 'vertical' | 'inline';
+
 @Directive({
   selector: '[nz-form]',
   exportAs: 'nzForm',
@@ -26,7 +28,7 @@ export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
   static ngAcceptInputType_nzNoColon: BooleanInput;
   static ngAcceptInputType_nzDisableAutoTips: BooleanInput;
 
-  @Input() nzLayout: 'horizontal' | 'vertical' | 'inline' = 'horizontal';
+  @Input() nzLayout: NzFormLayoutType = 'horizontal';
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzNoColon: boolean = false;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzAutoTips: Record<string, Record<string, string>> = {};
   @Input() @InputBoolean() nzDisableAutoTips = false;
@@ -50,6 +52,7 @@ export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
   }
 
   ngOnDestroy(): void {
+    this.inputChanges$.complete();
     this.destroy$.next();
     this.destroy$.complete();
   }
