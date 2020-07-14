@@ -40,7 +40,9 @@ const NZ_CONFIG_COMPONENT_NAME = 'backTop';
     <div class="ant-back-top" (click)="clickBackTop()" @fadeMotion *ngIf="visible">
       <ng-template #defaultContent>
         <div class="ant-back-top-content">
-          <div class="ant-back-top-icon"></div>
+          <div class="ant-back-top-icon">
+            <i nz-icon nzType="vertical-align-top"></i>
+          </div>
         </div>
       </ng-template>
       <ng-template [ngTemplateOutlet]="nzTemplate || defaultContent"></ng-template>

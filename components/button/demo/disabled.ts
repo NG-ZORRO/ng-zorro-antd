@@ -12,8 +12,14 @@ import { Component } from '@angular/core';
     <button nz-button nzType="dashed">Dashed</button>
     <button nz-button nzType="dashed" disabled>Dashed(disabled)</button>
     <br />
+    <a nz-button nzType="text">Text</a>
+    <a nz-button nzType="text" disabled>Text(disabled)</a>
+    <br />
     <a nz-button nzType="link">Link</a>
     <a nz-button nzType="link" disabled>Link(disabled)</a>
+    <br />
+    <a nz-button nzType="text" nzDanger>Danger Text</a>
+    <a nz-button nzType="text" disabled nzDanger>Danger Text(disabled)</a>
     <br />
     <a nz-button nzType="link" nzDanger>Danger Link</a>
     <a nz-button nzType="link" disabled nzDanger>Danger Link(disabled)</a>

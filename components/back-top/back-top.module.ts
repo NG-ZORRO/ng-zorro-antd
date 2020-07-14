@@ -5,12 +5,13 @@
 import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
 import { NzBackTopComponent } from './back-top.component';
 
 @NgModule({
   declarations: [NzBackTopComponent],
   exports: [NzBackTopComponent],
-  imports: [CommonModule, PlatformModule]
+  imports: [CommonModule, PlatformModule, NzIconModule]
 })
 export class NzBackTopModule {}
