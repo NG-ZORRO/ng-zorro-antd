@@ -1,3 +1,4 @@
 import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
-export const moduleList = [ NzDividerModule ];
+export const moduleList = [ NzDividerModule, NzIconModule ];
