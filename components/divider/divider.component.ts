@@ -23,6 +23,8 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
     '[class.ant-divider]': 'true',
     '[class.ant-divider-horizontal]': `nzType === 'horizontal'`,
     '[class.ant-divider-vertical]': `nzType === 'vertical'`,
+    '[class.ant-divider-with-text]': `nzText`,
+    '[class.ant-divider-plain]': `nzPlain`,
     '[class.ant-divider-with-text-left]': `nzText && nzOrientation === 'left'`,
     '[class.ant-divider-with-text-right]': `nzText && nzOrientation === 'right'`,
     '[class.ant-divider-with-text-center]': `nzText && nzOrientation === 'center'`,
@@ -31,9 +33,11 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
 })
 export class NzDividerComponent {
   static ngAcceptInputType_nzDashed: BooleanInput;
+  static ngAcceptInputType_nzPlain: BooleanInput;
 
   @Input() nzText?: string | TemplateRef<void>;
   @Input() nzType: 'horizontal' | 'vertical' = 'horizontal';
   @Input() nzOrientation: 'left' | 'right' | 'center' = 'center';
   @Input() @InputBoolean() nzDashed = false;
+  @Input() @InputBoolean() nzPlain = false;
 }
