@@ -13,7 +13,7 @@ const RESPONSIVE_SM = 1200;
         class="nav-phone-icon"
         nzType="unordered-list"
         *ngIf="isMobile"
-        nzOverlayClassName="popover-menu"
+        nzPopoverOverlayClassName="popover-menu"
         nzPopoverPlacement="bottomLeft"
         nz-popover
         [nzPopoverContent]="menu"

@@ -15,6 +15,7 @@ subtitle: 按钮
 - 主按钮：用于主行动点，一个操作区域只能有一个主按钮。
 - 默认按钮：用于没有主次之分的一组行动点。
 - 虚线按钮：常用于添加操作。
+- 文本按钮：用于最次级的行动点。
 - 链接按钮：用于次要或外链的行动点。
 
 以及四种状态属性与上面配合使用。
@@ -41,11 +42,12 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 
 | 属性 | 说明 | 类型 | 默认值 | 支持全局配置 |
 | --- | --- | --- | --- | --- |
+| `[disabled]` | 禁止与button交互 | `boolean` | `false` |
 | `[nzGhost]` | 幽灵属性，使按钮背景透明 | `boolean` | `false` |
 | `[nzLoading]` | 设置按钮载入状态 | `boolean` | `false` |
 | `[nzShape]` | 设置按钮形状，可选值为 `circle` `round` 或者不设 | `'circle'\|'round'` | - | |
 | `[nzSize]` | 设置按钮大小，可选值为 `small` `large` 或者不设 | `'large'\|'small'\|'default'` | `'default'` | ✅ |
-| `[nzType]` | 设置按钮类型，可选值为 `primary` `dashed` `link` 或者不设 | `'primary'\|'dashed'\|'link'` | - |
+| `[nzType]` | 设置按钮类型，可选值为 `primary` `dashed` `text` `link` 或者不设 | `'primary'\|'dashed'\|'link'\|'text'` | - |
 | `[nzBlock]` | 将按钮宽度调整为其父宽度的选项 | `boolean` | `false` |
 | `[nzDanger]` | 设置危险按钮 | boolean | `false` |  |
 

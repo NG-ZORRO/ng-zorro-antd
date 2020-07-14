@@ -26,7 +26,7 @@ import { NzIconDirective } from 'ng-zorro-antd/icon';
 import { Subject } from 'rxjs';
 import { filter, startWith, takeUntil } from 'rxjs/operators';
 
-export type NzButtonType = 'primary' | 'default' | 'dashed' | 'danger' | 'link' | null;
+export type NzButtonType = 'primary' | 'default' | 'dashed' | 'danger' | 'link' | 'text' | null;
 export type NzButtonShape = 'circle' | 'round' | null;
 export type NzButtonSize = 'large' | 'default' | 'small';
 
@@ -47,6 +47,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'button';
     '[class.ant-btn-primary]': `nzType === 'primary'`,
     '[class.ant-btn-dashed]': `nzType === 'dashed'`,
     '[class.ant-btn-link]': `nzType === 'link'`,
+    '[class.ant-btn-text]': `nzType === 'text'`,
     '[class.ant-btn-danger]': `nzType === 'danger'`,
     '[class.ant-btn-circle]': `nzShape === 'circle'`,
     '[class.ant-btn-round]': `nzShape === 'round'`,
