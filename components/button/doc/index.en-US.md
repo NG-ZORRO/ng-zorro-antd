@@ -15,6 +15,7 @@ In Ant Design we provide 4 types of button.
 - Primary button: indicate the main action, one primary button at most in one section.
 - Default button: indicate a series of actions without priority.
 - Dashed button: used for adding action commonly.
+- Text button: used for the most secondary action.
 - Link button: used for external links.
 
 And 4 other properties additionally.
@@ -38,11 +39,12 @@ To get a customized button, just set `nzType`/`nzShape`/`nzSize`/`nzLoading`/`di
 
 | Property | Description | Type | Default | Global Config |
 | -------- | ----------- | ---- | ------- | ------------- |
+| `[disabled]` | prevents user from interacting with the button | `boolean` | `false` |
 | `[nzGhost]` | make background transparent and invert text and border colors | `boolean` | `false` |
 | `[nzLoading]` | set the loading status of button | `boolean` | `false` |
 | `[nzShape]` | can be set to `circle` `round` or omitted | `'circle'\|'round'` | - | |
 | `[nzSize]` | can be set to `small` `large` or omitted | `'large'\|'small'\|'default'` | `'default'` | ✅ |
-| `[nzType]` | can be set to `primary` `dashed` `link` or omitted (meaning `default`) | `'primary'\|'dashed'\|'link'` | - |
+| `[nzType]` | can be set to `primary` `dashed` `text` `link` or omitted (meaning `default`) | `'primary'\|'dashed'\|'link'\|'text'` | - |
 | `[nzBlock]` | option to fit button width to its parent width | `boolean` | `false` |
 | `[nzDanger]` | set the danger status of button | boolean | `false` |  |
 
