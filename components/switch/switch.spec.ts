@@ -145,12 +145,12 @@ describe('switch', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(switchElement.nativeElement.firstElementChild.firstElementChild.innerText).toBe('off');
+      expect(switchElement.nativeElement.querySelector('.ant-switch-inner').innerText).toBe('off');
       switchElement.nativeElement.click();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(switchElement.nativeElement.firstElementChild.firstElementChild.innerText).toBe('on');
+      expect(switchElement.nativeElement.querySelector('.ant-switch-inner').innerText).toBe('on');
     }));
     it('should focus and blur function work', () => {
       fixture.detectChanges();
@@ -175,12 +175,12 @@ describe('switch', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(switchElement.nativeElement.firstElementChild.firstElementChild.firstElementChild!.classList).toContain('anticon-close');
+      expect(switchElement.nativeElement.querySelector('.ant-switch-inner').firstElementChild!.classList).toContain('anticon-close');
       switchElement.nativeElement.click();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(switchElement.nativeElement.firstElementChild.firstElementChild.firstElementChild!.classList).toContain('anticon-check');
+      expect(switchElement.nativeElement.querySelector('.ant-switch-inner').firstElementChild!.classList).toContain('anticon-check');
     }));
   });
   describe('switch form', () => {

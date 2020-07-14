@@ -53,7 +53,9 @@ const NZ_CONFIG_COMPONENT_NAME = 'switch';
       [nzWaveExtraNode]="true"
       (keydown)="onKeyDown($event)"
     >
-      <i *ngIf="nzLoading" nz-icon nzType="loading" class="ant-switch-loading-icon"></i>
+      <span class="ant-switch-handle">
+        <i *ngIf="nzLoading" nz-icon nzType="loading" class="ant-switch-loading-icon"></i>
+      </span>
       <span class="ant-switch-inner">
         <ng-container *ngIf="isChecked; else uncheckTemplate">
           <ng-container *nzStringTemplateOutlet="nzCheckedChildren">{{ nzCheckedChildren }}</ng-container>

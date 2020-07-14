@@ -97,7 +97,9 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
         [@zoomBigMotion]="'active'"
       >
         <div class="ant-tooltip-content">
-          <div class="ant-tooltip-arrow"></div>
+          <div class="ant-tooltip-arrow">
+            <span class="ant-tooltip-arrow-content"></span>
+          </div>
           <div class="ant-tooltip-inner">
             <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
           </div>
