@@ -487,6 +487,13 @@ describe('tree', () => {
         fixture.detectChanges();
         expect((nativeElement.querySelector("[title='0-2']") as HTMLElement).querySelector('.ant-tree-indent')).toBeDefined();
       }));
+
+      it('should nzBlockNode work', fakeAsync(() => {
+        const { fixture, nativeElement } = testBed;
+        fixture.detectChanges();
+        const treeElement = nativeElement.querySelector('.ant-tree') as HTMLElement;
+        expect(treeElement.classList).toContain('ant-tree-block-node');
+      }));
     });
   });
 
