@@ -75,12 +75,24 @@
       *ngIf="listType !== 'picture-card'"
       class="ant-upload-list-item-card-actions {{ listType === 'picture' ? 'picture' : '' }}"
     >
-      <a *ngIf="file.showDownload" title="{{ locale.downloadFile }}">
+      <button
+        nz-button
+        nzType="text"
+        nzSize="small"
+        *ngIf="file.showDownload"
+        title="{{ locale.downloadFile }}"
+      >
         <ng-template [ngTemplateOutlet]="downloadIcon"></ng-template>
-      </a>
-      <a *ngIf="icons.showRemoveIcon" title="{{ locale.removeFile }}">
+      </button>
+      <button
+        nz-button
+        nzType="text"
+        nzSize="small"
+        *ngIf="icons.showRemoveIcon"
+        title="{{ locale.removeFile }}"
+      >
         <ng-template [ngTemplateOutlet]="removeIcon"></ng-template>
-      </a>
+      </button>
     </span>
   </ng-template>
   <ng-template #preview>

@@ -28,7 +28,7 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   animations: [fadeMotion],
   template: `
     <ng-content></ng-content>
-    <i nz-icon nzType="close" *ngIf="nzMode === 'closeable'" tabindex="-1" (click)="closeTag($event)"></i>
+    <i nz-icon nzType="close" class="ant-tag-close-icon" *ngIf="nzMode === 'closeable'" tabindex="-1" (click)="closeTag($event)"></i>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
