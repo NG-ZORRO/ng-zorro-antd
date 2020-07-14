@@ -120,6 +120,7 @@ export interface CascaderConfig {
 export interface CollapseConfig {
   nzAccordion?: boolean;
   nzBordered?: boolean;
+  nzGhost?: boolean;
 }
 
 export interface CollapsePanelConfig {

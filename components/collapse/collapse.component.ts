@@ -25,15 +25,18 @@ const NZ_CONFIG_COMPONENT_NAME = 'collapse';
     '[class.ant-collapse]': 'true',
     '[class.ant-collapse-icon-position-left]': `nzExpandIconPosition === 'left'`,
     '[class.ant-collapse-icon-position-right]': `nzExpandIconPosition === 'right'`,
+    '[class.ant-collapse-ghost]': `nzGhost`,
     '[class.ant-collapse-borderless]': '!nzBordered'
   }
 })
 export class NzCollapseComponent implements OnDestroy {
   static ngAcceptInputType_nzAccordion: BooleanInput;
   static ngAcceptInputType_nzBordered: BooleanInput;
+  static ngAcceptInputType_nzGhost: BooleanInput;
 
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzAccordion: boolean = false;
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzBordered: boolean = true;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzGhost: boolean = false;
   @Input() nzExpandIconPosition: 'left' | 'right' = 'left';
   private listOfNzCollapsePanelComponent: NzCollapsePanelComponent[] = [];
   private destroy$ = new Subject();
