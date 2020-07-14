@@ -59,12 +59,12 @@ const NZ_CONFIG_COMPONENT_NAME = 'tree';
     <div role="tree">
       <input [ngStyle]="HIDDEN_STYLE" />
     </div>
-    <div [class.ant-select-tree-list]="nzSelectMode" [class.ant-tree-list]="nzSelectMode">
+    <div class="ant-tree-list" [class.ant-select-tree-list]="nzSelectMode">
       <div>
         <cdk-virtual-scroll-viewport
           *ngIf="nzVirtualHeight"
           [class.ant-select-tree-list-holder-inner]="nzSelectMode"
-          [class.ant-tree-list-holder-inner]="nzSelectMode"
+          [class.ant-tree-list-holder-inner]="!nzSelectMode"
           [itemSize]="nzVirtualItemSize"
           [minBufferPx]="nzVirtualMinBufferPx"
           [maxBufferPx]="nzVirtualMaxBufferPx"
@@ -78,7 +78,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'tree';
         <div
           *ngIf="!nzVirtualHeight"
           [class.ant-select-tree-list-holder-inner]="nzSelectMode"
-          [class.ant-tree-list-holder-inner]="nzSelectMode"
+          [class.ant-tree-list-holder-inner]="!nzSelectMode"
           [@.disabled]="beforeInit || noAnimation?.nzNoAnimation"
           [nzNoAnimation]="noAnimation?.nzNoAnimation"
           [@treeCollapseMotion]="nzFlattenNodes.length"
