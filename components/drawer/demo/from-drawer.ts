@@ -5,11 +5,12 @@ import { Component } from '@angular/core';
   template: `
     <button nz-button nzType="primary" (click)="open()">Create</button>
     <nz-drawer
-      [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom': '53px' }"
+      [nzBodyStyle]="{ overflow: 'auto' }"
       [nzMaskClosable]="false"
       [nzWidth]="720"
       [nzVisible]="visible"
       nzTitle="Create"
+      [nzFooter]="footerTpl"
       (nzOnClose)="close()"
     >
       <form nz-form>
@@ -79,6 +80,13 @@ import { Component } from '@angular/core';
             </nz-form-item>
           </div>
         </div>
+
+        <ng-template #footerTpl>
+          <div style="float: right">
+            <button nz-button style="margin-right: 8px;" (click)="close()">Cancel</button>
+            <button nz-button nzType="primary" (click)="close()">Submit</button>
+          </div>
+        </ng-template>
       </form>
     </nz-drawer>
   `
