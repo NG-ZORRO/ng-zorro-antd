@@ -4,6 +4,7 @@
   "printWidth": 140,
   "tabWidth": 2,
   "semi": true,
+  "htmlWhitespaceSensitivity": "ignore",
   "arrowParens": "avoid",
   "bracketSpacing": true,
   "proseWrap": "preserve",
