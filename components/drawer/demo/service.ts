@@ -32,6 +32,7 @@ export class NzDemoDrawerServiceComponent {
   openTemplate(): void {
     const drawerRef = this.drawerService.create({
       nzTitle: 'Template',
+      nzFooter: 'Footer',
       nzContent: this.drawerTemplate,
       nzContentParams: {
         value: this.value

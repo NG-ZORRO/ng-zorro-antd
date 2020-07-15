@@ -85,6 +85,9 @@ const NZ_CONFIG_COMPONENT_NAME = 'drawer';
                 </ng-container>
                 <ng-content *ngIf="!nzContent"></ng-content>
               </div>
+              <div *ngIf="nzFooter" class="ant-drawer-footer">
+                <ng-container *nzStringTemplateOutlet="nzFooter"><div [innerHTML]="nzFooter"></div></ng-container>
+              </div>
             </div>
           </div>
         </div>
@@ -111,6 +114,7 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> exte
   @Input() @InputBoolean() nzNoAnimation = false;
   @Input() @InputBoolean() nzKeyboard: boolean = true;
   @Input() nzTitle?: string | TemplateRef<{}>;
+  @Input() nzFooter?: string | TemplateRef<{}>;
   @Input() nzPlacement: NzDrawerPlacement = 'right';
   @Input() nzMaskStyle: NgStyleInterface = {};
   @Input() nzBodyStyle: NgStyleInterface = {};
