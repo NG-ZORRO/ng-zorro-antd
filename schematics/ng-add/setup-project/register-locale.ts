@@ -1,5 +1,14 @@
 import { Rule, Tree } from '@angular-devkit/schematics';
-import { getProjectFromWorkspace, getProjectMainFile, parseSourceFile, insertImport, findNodes, insertAfterLastOccurrence, getDecoratorMetadata, addSymbolToNgModuleMetadata } from '@angular/cdk/schematics';
+import {
+  addSymbolToNgModuleMetadata,
+  findNodes,
+  getDecoratorMetadata,
+  getProjectFromWorkspace,
+  getProjectMainFile,
+  insertAfterLastOccurrence,
+  insertImport,
+  parseSourceFile
+} from '@angular/cdk/schematics';
 import { Change, InsertChange, NoopChange } from '@schematics/angular/utility/change';
 import { getWorkspace } from '@schematics/angular/utility/config';
 import { getAppModulePath } from '@schematics/angular/utility/ng-ast-utils';
