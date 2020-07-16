@@ -13,7 +13,7 @@ import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { nzModalAnimations } from './modal-animations';
-import { BaseModalContainer } from './modal-container';
+import { BaseModalContainerComponent } from './modal-container';
 import { ModalOptions } from './modal-types';
 
 @Component({
@@ -62,7 +62,7 @@ import { ModalOptions } from './modal-types';
     '(mouseup)': 'onMouseup()'
   }
 })
-export class NzModalContainerComponent extends BaseModalContainer {
+export class NzModalContainerComponent extends BaseModalContainerComponent {
   @ViewChild(CdkPortalOutlet, { static: true }) portalOutlet!: CdkPortalOutlet;
   @ViewChild('modalElement', { static: true }) modalElementRef!: ElementRef<HTMLDivElement>;
   constructor(

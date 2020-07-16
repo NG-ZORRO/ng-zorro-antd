@@ -5,6 +5,7 @@
 
 import { Platform } from '@angular/cdk/platform';
 import { NgZone } from '@angular/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 export class NzWaveRenderer {
   private waveTransitionDuration = 400;
@@ -17,7 +18,12 @@ export class NzWaveRenderer {
     return this.insertExtraNode ? 'ant-click-animating' : 'ant-click-animating-without-extra-node';
   }
 
-  constructor(private triggerElement: HTMLElement, private ngZone: NgZone, private insertExtraNode: boolean, private platformId: {}) {
+  constructor(
+    private triggerElement: HTMLElement,
+    private ngZone: NgZone,
+    private insertExtraNode: boolean,
+    private platformId: NzSafeAny
+  ) {
     this.platform = new Platform(this.platformId);
     this.clickHandler = this.onClick.bind(this);
     this.bindTriggerEvent();

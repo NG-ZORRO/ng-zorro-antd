@@ -27,8 +27,8 @@
     "url": "https://github.com/NG-ZORRO/ng-zorro-antd/issues"
   },
   "dependencies": {
-    "@angular/cdk": "^9.0.0",
-    "@ant-design/icons-angular": "^9.0.0",
+    "@angular/cdk": "^10.0.2",
+    "@ant-design/icons-angular": "10.0.0-beta.0",
     "date-fns": "^2.10.0",
     "resize-observer-polyfill": "^1.5.1"
   },

@@ -5,6 +5,7 @@
 
 import { Directive, ElementRef, Inject, InjectionToken, Input, NgZone, OnDestroy, OnInit, Optional, PLATFORM_ID } from '@angular/core';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzWaveRenderer } from './nz-wave-renderer';
 
 export interface NzWaveConfig {
@@ -47,7 +48,7 @@ export class NzWaveDirective implements OnInit, OnDestroy {
     private elementRef: ElementRef,
     @Optional() @Inject(NZ_WAVE_GLOBAL_CONFIG) private config: NzWaveConfig,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) private animationType: string,
-    @Inject(PLATFORM_ID) private platformId: {}
+    @Inject(PLATFORM_ID) private platformId: NzSafeAny
   ) {
     this.waveDisabled = this.isConfigDisabled();
   }

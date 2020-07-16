@@ -29,7 +29,7 @@
     "trackBy-function": false,
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
-    "directive-class-suffix": true,
+    "directive-class-suffix": [true, "Directive", "Component", "Base"],
     "no-pipe-impure": true,
     "angular-whitespace": [false, "check-interpolation"],
     "directive-selector": [true, "attribute", ["nz"], ["camelCase", "kebab-case"]],

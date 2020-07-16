@@ -1,12 +1,5 @@
 import { Rule, Tree } from '@angular-devkit/schematics';
-import { getProjectFromWorkspace, getProjectMainFile, parseSourceFile } from '@angular/cdk/schematics';
-import {
-  addSymbolToNgModuleMetadata,
-  findNodes,
-  getDecoratorMetadata,
-  insertAfterLastOccurrence,
-  insertImport
-} from '@schematics/angular/utility/ast-utils';
+import { getProjectFromWorkspace, getProjectMainFile, parseSourceFile, insertImport, findNodes, insertAfterLastOccurrence, getDecoratorMetadata, addSymbolToNgModuleMetadata } from '@angular/cdk/schematics';
 import { Change, InsertChange, NoopChange } from '@schematics/angular/utility/change';
 import { getWorkspace } from '@schematics/angular/utility/config';
 import { getAppModulePath } from '@schematics/angular/utility/ng-ast-utils';
@@ -86,19 +79,19 @@ function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string,
   }
 
   const matchingProperties: ts.ObjectLiteralElement[] =
-          (node as ts.ObjectLiteralExpression).properties
-          .filter(prop => prop.kind === ts.SyntaxKind.PropertyAssignment)
-          .filter((prop: ts.PropertyAssignment) => {
-            const name = prop.name;
-            switch (name.kind) {
-              case ts.SyntaxKind.Identifier:
-                return (name as ts.Identifier).getText(moduleSource) === metadataField;
-              case ts.SyntaxKind.StringLiteral:
-                return (name as ts.StringLiteral).text === metadataField;
-            }
+    (node as ts.ObjectLiteralExpression).properties
+      .filter(prop => prop.kind === ts.SyntaxKind.PropertyAssignment)
+      .filter((prop: ts.PropertyAssignment) => {
+        const name = prop.name;
+        switch (name.kind) {
+          case ts.SyntaxKind.Identifier:
+            return (name as ts.Identifier).getText(moduleSource) === metadataField;
+          case ts.SyntaxKind.StringLiteral:
+            return (name as ts.StringLiteral).text === metadataField;
+        }
 
-            return false;
-          });
+        return false;
+      });
 
   if (!matchingProperties) {
     return [];

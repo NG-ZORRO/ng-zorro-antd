@@ -28,7 +28,7 @@ import { NzI18nService, NzModalI18nInterface } from 'ng-zorro-antd/i18n';
 import { takeUntil } from 'rxjs/operators';
 
 import { nzModalAnimations } from './modal-animations';
-import { BaseModalContainer } from './modal-container';
+import { BaseModalContainerComponent } from './modal-container';
 import { ModalOptions } from './modal-types';
 
 @Component({
@@ -104,7 +104,7 @@ import { ModalOptions } from './modal-types';
     '(mouseup)': 'onMouseup()'
   }
 })
-export class NzModalConfirmContainerComponent extends BaseModalContainer {
+export class NzModalConfirmContainerComponent extends BaseModalContainerComponent {
   @ViewChild(CdkPortalOutlet, { static: true }) portalOutlet!: CdkPortalOutlet;
   @ViewChild('modalElement', { static: true }) modalElementRef!: ElementRef<HTMLDivElement>;
   @Output() readonly cancelTriggered = new EventEmitter<void>();
