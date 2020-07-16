@@ -11,13 +11,14 @@ export class NzWaveRenderer {
   private styleForPseudo: HTMLStyleElement | null = null;
   private extraNode: HTMLDivElement | null = null;
   private lastTime = 0;
-  private platform = new Platform();
+  private platform!: Platform;
   clickHandler: () => void;
   get waveAttributeName(): string {
     return this.insertExtraNode ? 'ant-click-animating' : 'ant-click-animating-without-extra-node';
   }
 
-  constructor(private triggerElement: HTMLElement, private ngZone: NgZone, private insertExtraNode: boolean) {
+  constructor(private triggerElement: HTMLElement, private ngZone: NgZone, private insertExtraNode: boolean, private platformId: {}) {
+    this.platform = new Platform(this.platformId);
     this.clickHandler = this.onClick.bind(this);
     this.bindTriggerEvent();
   }
