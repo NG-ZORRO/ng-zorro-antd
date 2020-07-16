@@ -10,7 +10,7 @@ import { isPromise } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 
-import { BaseModalContainer } from './modal-container';
+import { BaseModalContainerComponent } from './modal-container';
 import { NzModalLegacyAPI } from './modal-legacy-api';
 import { ModalOptions } from './modal-types';
 
@@ -34,7 +34,7 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
 
   private closeTimeout?: number;
 
-  constructor(private overlayRef: OverlayRef, private config: ModalOptions, public containerInstance: BaseModalContainer) {
+  constructor(private overlayRef: OverlayRef, private config: ModalOptions, public containerInstance: BaseModalContainerComponent) {
     containerInstance.animationStateChanged
       .pipe(
         filter(event => event.phaseName === 'done' && event.toState === 'enter'),

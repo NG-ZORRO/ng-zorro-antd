@@ -1,6 +1,5 @@
 import { Rule, SchematicsException, Tree } from '@angular-devkit/schematics';
-import { addModuleImportToRootModule, getProjectFromWorkspace, getProjectMainFile } from '@angular/cdk/schematics';
-import { addDeclarationToModule } from '@schematics/angular/utility/ast-utils';
+import { addDeclarationToModule, addModuleImportToRootModule, getProjectFromWorkspace, getProjectMainFile } from '@angular/cdk/schematics';
 import { InsertChange } from '@schematics/angular/utility/change';
 import { getWorkspace } from '@schematics/angular/utility/config';
 import { buildRelativePath } from '@schematics/angular/utility/find-module';

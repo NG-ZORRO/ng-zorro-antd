@@ -16,7 +16,7 @@ import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/com
 
 import { NzIconDirective } from './icon.directive';
 import { NzIconModule } from './icon.module';
-import { NZ_ICONS, NzIconService } from './icon.service';
+import { NzIconService, NZ_ICONS } from './icon.service';
 
 describe('nz-icon', () => {
   describe('basics', () => {

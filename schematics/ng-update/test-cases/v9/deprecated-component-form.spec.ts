@@ -76,9 +76,9 @@ describe('v9 form components migration', () => {
       }`);
       await runMigration();
 
-      expect(warnOutput).toContain( 'index.ts@11:15 - Found deprecated "<nz-form-extra>" component. ' +
+      expect(warnOutput).toContain( '/index.ts@11:15 - Found deprecated "<nz-form-extra>" component. ' +
         'Use "nz-form-control[nzExtra]" to instead please.');
-      expect(warnOutput).toContain( 'index.ts@9:15 - Found deprecated "<nz-form-explain>" component. ' +
+      expect(warnOutput).toContain( '/index.ts@9:15 - Found deprecated "<nz-form-explain>" component. ' +
         'Use "nz-form-control[nzSuccessTip][nzWarningTip][nzErrorTip]..." to instead please.');
     });
 

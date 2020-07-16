@@ -11,7 +11,7 @@ import fnsParse from 'date-fns/parse';
 
 import { WeekDayIndex } from 'ng-zorro-antd/core/time';
 import { convertTokens } from './convert-tokens';
-import { mergeDateConfig, NZ_DATE_CONFIG, NZ_DATE_FNS_COMPATIBLE, NzDateConfig } from './date-config';
+import { mergeDateConfig, NzDateConfig, NZ_DATE_CONFIG, NZ_DATE_FNS_COMPATIBLE } from './date-config';
 import { NzI18nService } from './nz-i18n.service';
 
 export function DATE_HELPER_SERVICE_FACTORY(injector: Injector, config: NzDateConfig, convertFormat: boolean): DateHelperService {

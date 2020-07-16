@@ -10,7 +10,7 @@ import { PREFIX, warn, warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { BehaviorSubject, Observable, of as observableOf, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { JoinedEditorOptions, NZ_CODE_EDITOR_CONFIG, NzCodeEditorConfig, NzCodeEditorLoadingStatus } from './typings';
+import { JoinedEditorOptions, NzCodeEditorConfig, NzCodeEditorLoadingStatus, NZ_CODE_EDITOR_CONFIG } from './typings';
 
 declare const monaco: NzSafeAny;
 

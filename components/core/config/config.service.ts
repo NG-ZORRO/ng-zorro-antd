@@ -9,7 +9,7 @@ import { Observable, Subject } from 'rxjs';
 
 import { filter, mapTo } from 'rxjs/operators';
 
-import { NZ_CONFIG, NzConfig, NzConfigKey } from './config';
+import { NzConfig, NzConfigKey, NZ_CONFIG } from './config';
 
 const isDefined = function (value?: NzSafeAny): boolean {
   return value !== undefined;
