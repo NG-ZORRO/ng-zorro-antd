@@ -5,7 +5,7 @@
 
 import { ComponentType, Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { ChangeDetectorRef, EventEmitter, Injector, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Directive, EventEmitter, Injector, OnDestroy, OnInit } from '@angular/core';
 import { MessageConfig, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSingletonService } from 'ng-zorro-antd/core/services';
 import { Subject } from 'rxjs';
@@ -59,6 +59,7 @@ export abstract class NzMNService {
   }
 }
 
+@Directive()
 export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
   config?: Required<MessageConfig>;
   instances: Array<Required<NzMessageData>> = [];
@@ -137,6 +138,7 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
   }
 }
 
+@Directive()
 export abstract class NzMNComponent implements OnInit, OnDestroy {
   instance!: Required<NzMessageData>;
   index?: number;
@@ -149,7 +151,7 @@ export abstract class NzMNComponent implements OnInit, OnDestroy {
   protected eraseTimingStart?: number;
   protected eraseTTL!: number;
 
-  constructor(protected cdr: ChangeDetectorRef) {}
+  protected constructor(protected cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.options = this.instance.options as Required<NzMessageDataOptions>;

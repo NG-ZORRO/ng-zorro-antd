@@ -40,10 +40,10 @@ import { NzCarouselOpacityStrategy } from './strategies/opacity-strategy';
 import { NzCarouselTransformStrategy } from './strategies/transform-strategy';
 import {
   FromToInterface,
-  NZ_CAROUSEL_CUSTOM_STRATEGIES,
   NzCarouselDotPosition,
   NzCarouselEffects,
   NzCarouselStrategyRegistryItem,
+  NZ_CAROUSEL_CUSTOM_STRATEGIES,
   PointerVector
 } from './typings';
 
@@ -80,7 +80,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'carousel';
         [class.slick-dots-right]="nzDotPosition === 'right'"
       >
         <li *ngFor="let content of carouselContents; let i = index" [class.slick-active]="content.isActive" (click)="goTo(i)">
-          <ng-template [ngTemplateOutlet]="nzDotRender || renderDotTemplate" [ngTemplateOutletContext]="{ $implicit: i }"> </ng-template>
+          <ng-template [ngTemplateOutlet]="nzDotRender || renderDotTemplate" [ngTemplateOutletContext]="{ $implicit: i }"></ng-template>
         </li>
       </ul>
     </div>

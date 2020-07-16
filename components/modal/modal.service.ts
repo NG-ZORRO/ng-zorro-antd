@@ -15,7 +15,7 @@ import { startWith } from 'rxjs/operators';
 
 import { MODAL_MASK_CLASS_NAME, NZ_CONFIG_COMPONENT_NAME } from './modal-config';
 import { NzModalConfirmContainerComponent } from './modal-confirm-container.component';
-import { BaseModalContainer } from './modal-container';
+import { BaseModalContainerComponent } from './modal-container';
 import { NzModalContainerComponent } from './modal-container.component';
 import { NzModalRef } from './modal-ref';
 import { ConfirmType, ModalOptions } from './modal-types';
@@ -138,7 +138,7 @@ export class NzModalService implements OnDestroy {
     return this.overlay.create(overlayConfig);
   }
 
-  private attachModalContainer(overlayRef: OverlayRef, config: ModalOptions): BaseModalContainer {
+  private attachModalContainer(overlayRef: OverlayRef, config: ModalOptions): BaseModalContainerComponent {
     const userInjector = config && config.nzViewContainerRef && config.nzViewContainerRef.injector;
     const injector = new PortalInjector(
       userInjector || this.injector,
@@ -155,15 +155,15 @@ export class NzModalService implements OnDestroy {
         : // If the mode is not `confirm`, use `NzModalContainerComponent`
           NzModalContainerComponent;
 
-    const containerPortal = new ComponentPortal<BaseModalContainer>(ContainerComponent, config.nzViewContainerRef, injector);
-    const containerRef = overlayRef.attach<BaseModalContainer>(containerPortal);
+    const containerPortal = new ComponentPortal<BaseModalContainerComponent>(ContainerComponent, config.nzViewContainerRef, injector);
+    const containerRef = overlayRef.attach<BaseModalContainerComponent>(containerPortal);
 
     return containerRef.instance;
   }
 
   private attachModalContent<T, R>(
     componentOrTemplateRef: ContentType<T>,
-    modalContainer: BaseModalContainer,
+    modalContainer: BaseModalContainerComponent,
     overlayRef: OverlayRef,
     config: ModalOptions<T>
   ): NzModalRef<T, R> {

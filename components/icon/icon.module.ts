@@ -7,7 +7,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { IconDefinition } from '@ant-design/icons-angular';
 
 import { NzIconDirective } from './icon.directive';
-import { NZ_ICONS, NZ_ICONS_PATCH, NzIconPatchService } from './icon.service';
+import { NzIconPatchService, NZ_ICONS, NZ_ICONS_PATCH } from './icon.service';
 
 @NgModule({
   exports: [NzIconDirective],

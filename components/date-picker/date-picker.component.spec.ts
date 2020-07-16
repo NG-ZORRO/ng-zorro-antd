@@ -13,7 +13,7 @@ import { enUS } from 'date-fns/locale';
 
 import { dispatchKeyboardEvent, dispatchMouseEvent, typeInElement } from 'ng-zorro-antd/core/testing';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
-import { NZ_DATE_LOCALE, NzI18nModule, NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzI18nModule, NzI18nService, NZ_DATE_LOCALE } from 'ng-zorro-antd/i18n';
 import en_US from '../i18n/languages/en_US';
 import { NzDatePickerModule } from './date-picker.module';
 import { getPicker, getPickerAbstract, getPickerInput } from './testing/util';

@@ -3,8 +3,9 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, ElementRef, Inject, InjectionToken, Input, NgZone, OnDestroy, OnInit, Optional } from '@angular/core';
+import { Directive, ElementRef, Inject, InjectionToken, Input, NgZone, OnDestroy, OnInit, Optional, PLATFORM_ID } from '@angular/core';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzWaveRenderer } from './nz-wave-renderer';
 
 export interface NzWaveConfig {
@@ -46,7 +47,8 @@ export class NzWaveDirective implements OnInit, OnDestroy {
     private ngZone: NgZone,
     private elementRef: ElementRef,
     @Optional() @Inject(NZ_WAVE_GLOBAL_CONFIG) private config: NzWaveConfig,
-    @Optional() @Inject(ANIMATION_MODULE_TYPE) private animationType: string
+    @Optional() @Inject(ANIMATION_MODULE_TYPE) private animationType: string,
+    @Inject(PLATFORM_ID) private platformId: NzSafeAny
   ) {
     this.waveDisabled = this.isConfigDisabled();
   }
@@ -74,7 +76,7 @@ export class NzWaveDirective implements OnInit, OnDestroy {
 
   renderWaveIfEnabled(): void {
     if (!this.waveDisabled && this.elementRef.nativeElement) {
-      this.waveRenderer = new NzWaveRenderer(this.elementRef.nativeElement, this.ngZone, this.nzWaveExtraNode);
+      this.waveRenderer = new NzWaveRenderer(this.elementRef.nativeElement, this.ngZone, this.nzWaveExtraNode, this.platformId);
     }
   }
 
