@@ -149,7 +149,7 @@ export abstract class NzMNComponent implements OnInit, OnDestroy {
   protected eraseTimingStart?: number;
   protected eraseTTL!: number;
 
-  constructor(protected cdr: ChangeDetectorRef) {}
+  protected constructor(protected cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.options = this.instance.options as Required<NzMessageDataOptions>;
