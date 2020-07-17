@@ -17,12 +17,19 @@ import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewEncapsulati
     </ng-container>
   `,
   host: {
+    class: 'ant-tabs-tabpane',
     '[class.ant-tabs-tabpane-active]': 'active',
-    '[class.ant-tabs-tabpane-inactive]': '!active'
+    '[attr.tabindex]': 'active ? 0 : -1',
+    '[attr.aria-hidden]': '!active',
+    '[style.visibility]': 'tabPaneAnimated ? active ? null : "hidden" : null',
+    '[style.height]': 'tabPaneAnimated ? active ? null : 0 : null',
+    '[style.overflow-y]': 'tabPaneAnimated ? active ? null : "none" : null',
+    '[style.display]': '!tabPaneAnimated ? active ? null : "none" : null'
   }
 })
 export class NzTabBodyComponent {
   @Input() content: TemplateRef<void> | null = null;
   @Input() active = false;
+  @Input() tabPaneAnimated = true;
   @Input() forceRender = false;
 }

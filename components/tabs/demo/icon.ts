@@ -5,7 +5,10 @@ import { Component } from '@angular/core';
   template: `
     <nz-tabset>
       <nz-tab *ngFor="let tab of tabs" [nzTitle]="titleTemplate">
-        <ng-template #titleTemplate> <i nz-icon [nzType]="tab.icon"></i>{{ tab.name }} </ng-template>
+        <ng-template #titleTemplate>
+          <i nz-icon [nzType]="tab.icon"></i>
+          {{ tab.name }}
+        </ng-template>
         {{ tab.name }}
       </nz-tab>
     </nz-tabset>
@@ -14,12 +17,10 @@ import { Component } from '@angular/core';
 export class NzDemoTabsIconComponent {
   tabs = [
     {
-      active: true,
       name: 'Tab 1',
       icon: 'apple'
     },
     {
-      active: false,
       name: 'Tab 2',
       icon: 'android'
     }
