@@ -2,6 +2,7 @@
 category: Components
 type: Navigation
 title: Affix
+cover: https://gw.alipayobjects.com/zos/alicdn/tX6-md4H6/Affix.svg
 ---
 
 Make an element stick to viewport.

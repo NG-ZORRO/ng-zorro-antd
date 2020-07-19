@@ -3,6 +3,7 @@ category: Components
 subtitle: 树选择
 type: 数据录入
 title: TreeSelect
+cover: https://gw.alipayobjects.com/zos/alicdn/Ax4DA0njr/TreeSelect.svg
 ---
 
 树型选择控件。

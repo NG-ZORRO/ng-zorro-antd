@@ -31,7 +31,7 @@ import { FooterModule } from './footer/footer.module';
 import { HeaderModule } from './header/header.module';
 import { NzContributorsListModule } from './share/contributors-list/contributors-list.module';
 import { FixedWidgetsModule } from './share/fixed-widgets/fixed-widgets.module';
-import { NzNavBottomModule } from "./share/nav-bottom/nav-bottom.module";
+import { NzNavBottomModule } from './share/nav-bottom/nav-bottom.module';
 
 const icons: IconDefinition[] = [LeftOutline, RightOutline];
 
@@ -62,14 +62,13 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline];
     NzContributorsListModule,
     FixedWidgetsModule,
     QuicklinkModule,
-    RouterModule.forRoot(routes, environment.production ? { preloadingStrategy: QuicklinkStrategy, scrollPositionRestoration: 'enabled'  } : {}),
+    RouterModule.forRoot(
+      routes,
+      environment.production ? { preloadingStrategy: QuicklinkStrategy, scrollPositionRestoration: 'enabled' } : {}
+    ),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production && !environment.preProduction })
   ],
-  providers: [
-    Title,
-    { provide: NZ_CONFIG, useValue: { icon: { nzTwotoneColor: '#1890ff' } }}
-  ],
+  providers: [Title, { provide: NZ_CONFIG, useValue: { icon: { nzTwotoneColor: '#1890ff' } } }],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule {}

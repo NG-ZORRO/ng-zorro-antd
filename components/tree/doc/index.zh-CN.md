@@ -3,6 +3,7 @@ category: Components
 type: 数据展示
 title: Tree
 subtitle: 树形控件
+cover: https://gw.alipayobjects.com/zos/alicdn/Xh-oWqg9k/Tree.svg
 ---
 
 ## 何时使用
