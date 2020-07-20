@@ -13,6 +13,27 @@ timeline: true
 * 主版本号：含有破坏性更新和新特性，不在发布周期内。
 
 ---
+## 10.0.0-beta.0
+
+`2020-07-20`
+
+### Bug Fixes
+
+* **tree:** 修复 nzBlockNode ([#5507](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5507)) ([5337652](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5337652))
+* **form:** 修复部分数据未定义时的问题 ([#5550](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5550)) ([fdf085b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fdf085b))
+* **tooltip,*:** 修复弹出层部分情况下未适配位置的问题 ([#5542](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5542)) ([55ec1cd](https://github.com/NG-ZORRO/ng-zorro-antd/commit/55ec1cd)), closes [#1825](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1825)
+
+
+### Features
+
+* **modal:** 支持在 footer 为 templateRef 时传入参数 ([#5551](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5551)) ([07d91a1](https://github.com/NG-ZORRO/ng-zorro-antd/commit/07d91a1)), closes [#5506](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5506)
+* **breadcrumb:** 支持 `nzRouteLabelFn` 属性 ([#5523](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5523)) ([#5545](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5545)) ([81ef791](https://github.com/NG-ZORRO/ng-zorro-antd/commit/81ef791))
+* **button:** 支持 text 类型 ([3f5d10b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/3f5d10b))
+* **collapse:** 支持 nzGhost 属性 ([1a408ee](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1a408ee))
+* **divider:** 支持 nzPlain 属性 ([d5232ac](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d5232ac))
+* **drawer:** 支持 `nzFooter` 属性 ([#4618](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4618)) ([#5553](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5553)) ([2cd9e12](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2cd9e12))
+
+
 ## 9.3.0
 
 `2020-07-09`
