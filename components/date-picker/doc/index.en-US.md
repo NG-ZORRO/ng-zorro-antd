@@ -2,6 +2,7 @@
 category: Components
 type: Data Entry
 title: DatePicker
+cover: https://gw.alipayobjects.com/zos/alicdn/RT_USzA48/DatePicker.svg
 ---
 
 To select or input a date.

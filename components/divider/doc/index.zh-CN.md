@@ -3,6 +3,7 @@ category: Components
 type: 其他
 title: Divider
 subtitle: 分割线
+cover: https://gw.alipayobjects.com/zos/alicdn/5swjECahe/Divider.svg
 ---
 
 区隔内容的分割线。

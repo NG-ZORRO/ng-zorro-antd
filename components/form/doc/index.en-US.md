@@ -3,6 +3,7 @@ category: Components
 type: Data Entry
 cols: 1
 title: Form
+cover: https://gw.alipayobjects.com/zos/alicdn/ORmcdeaoO/Form.svg
 ---
 
 Form is used to collect, validate, and submit the user input, usually contains various form items including checkbox, radio, input, select, and etc.

@@ -9,7 +9,7 @@ import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angu
       </a>
     </li>
     <li nz-menu-item [nzSelected]="page === 'components'">
-      <a [routerLink]="['components', 'button', language]">
+      <a [routerLink]="['components', 'overview', language]">
         <span>{{ language == 'zh' ? '组件' : 'Components' }}</span>
       </a>
     </li>

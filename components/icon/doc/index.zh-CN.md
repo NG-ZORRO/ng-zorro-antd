@@ -4,6 +4,7 @@ subtitle: 图标
 type: 通用
 title: Icon
 hasPageDemo: true
+cover: https://gw.alipayobjects.com/zos/alicdn/rrwbSt3FQ/Icon.svg
 ---
 
 语义化的矢量图形。

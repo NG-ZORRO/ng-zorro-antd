@@ -4,6 +4,7 @@ subtitle: 列表
 type: 数据展示
 title: List
 cols: 1
+cover: https://gw.alipayobjects.com/zos/alicdn/5FrZKStG_/List.svg
 ---
 
 通用列表。

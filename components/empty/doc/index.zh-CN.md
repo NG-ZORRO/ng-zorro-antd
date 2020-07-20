@@ -4,6 +4,7 @@ type: 数据展示
 subtitle: 空状态
 title: Empty
 cols: 1
+cover: https://gw.alipayobjects.com/zos/alicdn/MNbKfLBVb/Empty.svg
 ---
 
 空状态时的展示占位图。
