@@ -1,55 +1,66 @@
-<div id="ng-content" [style.transform]="isDrawerOpen ? 'translateX(245px)' : null ">
+<div id="ng-content" [style.transform]="isDrawerOpen ? 'translateX(245px)' : null">
   <div class="page-wrapper">
-    <app-header [windowWidth]="windowWidth"
-                [page]="page"
-                [(language)]="language"
-                (languageChange)="switchLanguage($event)"
-                (versionChange)="navigateToVersion($event)">
-    </app-header>
+    <app-header
+      [windowWidth]="windowWidth"
+      [page]="page"
+      [(language)]="language"
+      (languageChange)="switchLanguage($event)"
+      (versionChange)="navigateToVersion($event)"
+    ></app-header>
     <div class="main-wrapper">
       <div nz-row>
-        <div nz-col
-             *ngIf="!showDrawer"
-             [nzXs]="24"
-             [nzSm]="24"
-             [nzMd]="6"
-             [nzLg]="6"
-             [nzXl]="5"
-             [nzXXl]="4"
-             class="main-menu">
+        <div
+          nz-col
+          *ngIf="!showDrawer"
+          [nzXs]="24"
+          [nzSm]="24"
+          [nzMd]="6"
+          [nzLg]="6"
+          [nzXl]="5"
+          [nzXXl]="4"
+          class="main-menu"
+        >
           <nz-affix [nzOffsetTop]="0">
             <section class="main-menu-inner">
               <ng-template [ngTemplateOutlet]="sideOrDrawerTpl"></ng-template>
             </section>
           </nz-affix>
         </div>
-        <div nz-col
-             class="main-container main-container-component"
-             [nzXs]="24"
-             [nzSm]="24"
-             [nzMd]="18"
-             [nzLg]="18"
-             [nzXl]="19"
-             [nzXXl]="20">
+        <div
+          nz-col
+          class="main-container main-container-component"
+          [nzXs]="24"
+          [nzSm]="24"
+          [nzMd]="18"
+          [nzLg]="18"
+          [nzXl]="19"
+          [nzXXl]="20"
+        >
           <router-outlet></router-outlet>
           <nz-contributors-list></nz-contributors-list>
         </div>
       </div>
       <div nz-row>
-        <div nz-col
-             [nzXs]="{span:24}"
-             [nzSm]="{span:24}"
-             [nzMd]="{span:24}"
-             [nzLg]="{span:18,offset:6}"
-             [nzXl]="{span:19,offset:5}"
-             [nzXXl]="{span:20,offset:4}">
+        <div
+          nz-col
+          [nzXs]="{ span: 24 }"
+          [nzSm]="{ span: 24 }"
+          [nzMd]="{ span: 24 }"
+          [nzLg]="{ span: 18, offset: 6 }"
+          [nzXl]="{ span: 19, offset: 5 }"
+          [nzXXl]="{ span: 20, offset: 4 }"
+        >
           <app-fixed-widgets
             [theme]="theme"
             (themeChange)="onThemeChange($event)"
-            [language]="language">
-          </app-fixed-widgets>
+            [language]="language"
+          ></app-fixed-widgets>
           <nz-nav-bottom></nz-nav-bottom>
-          <app-footer [colorHex]="color" [language]="language" (colorChange)="changeColor($event)"></app-footer>
+          <app-footer
+            [colorHex]="color"
+            [language]="language"
+            (colorChange)="changeColor($event)"
+          ></app-footer>
         </div>
       </div>
     </div>
@@ -59,7 +70,10 @@
 <div class="drawer-wrapper" *ngIf="showDrawer">
   <div class="drawer drawer-left" [class.drawer-open]="isDrawerOpen">
     <div class="drawer-mask" (click)="isDrawerOpen = false"></div>
-    <div class="drawer-content-wrapper" [style.transform]="isDrawerOpen ? null : 'translateX(-100%)'">
+    <div
+      class="drawer-content-wrapper"
+      [style.transform]="isDrawerOpen ? null : 'translateX(-100%)'"
+    >
       <div class="drawer-content">
         <ng-container [ngTemplateOutlet]="sideOrDrawerTpl"></ng-container>
       </div>
@@ -73,23 +87,36 @@
 <ng-template #sideOrDrawerTpl>
   <ul nz-menu [nzMode]="'inline'" class="aside-container menu-site" [nzInlineIndent]="40">
     <ng-container *ngIf="page === 'docs'">
-      <li *ngFor="let intro of routerList.intro" nz-menu-item nzMatchRouter
-          [hidden]="intro.language !== language">
-        <a routerLink="{{intro.path}}">{{intro.label}}</a>
+      <li
+        *ngFor="let intro of routerList.intro"
+        nz-menu-item
+        nzMatchRouter
+        [hidden]="intro.language !== language"
+      >
+        <a routerLink="{{ intro.path }}">{{ intro.label }}</a>
       </li>
     </ng-container>
 
     <ng-container *ngIf="page === 'components'">
-      <li nz-menu-group
-          *ngFor="let group of routerList.components"
-          [hidden]="group.language !== language"
-          [nzTitle]="group.name">
+      <li nz-menu-item nzMatchRouter>
+        <a routerLink="components/overview/{{ language }}">
+          <span *ngIf="language === 'en'">Components Overview</span>
+          <span *ngIf="language === 'zh'">组件总览</span>
+        </a>
+      </li>
+
+      <li
+        nz-menu-group
+        *ngFor="let group of routerList.components"
+        [hidden]="group.language !== language"
+        [nzTitle]="group.name"
+      >
         <ul>
           <ng-container>
             <li nz-menu-item nzMatchRouter *ngFor="let component of group.children">
-              <a routerLink="{{component.path}}">
-                <span>{{component.label}}</span>
-                <span class="chinese">{{component.zh}}</span>
+              <a routerLink="{{ component.path }}">
+                <span>{{ component.label }}</span>
+                <span class="chinese">{{ component.zh }}</span>
               </a>
             </li>
           </ng-container>
@@ -98,24 +125,23 @@
     </ng-container>
 
     <ng-container *ngIf="page === 'experimental'">
-      <li nz-menu-group
-          *ngFor="let group of routerList.components"
-          [hidden]="group.language !== language || (group.experimentalChildren.length === 0)"
-          [nzTitle]="group.name">
+      <li
+        nz-menu-group
+        *ngFor="let group of routerList.components"
+        [hidden]="group.language !== language || group.experimentalChildren.length === 0"
+        [nzTitle]="group.name"
+      >
         <ul>
           <ng-container>
             <li nz-menu-item nzMatchRouter *ngFor="let component of group.experimentalChildren">
-              <a routerLink="{{component.path}}">
-                <span>{{component.label}}</span>
-                <span class="chinese">{{component.zh}}</span>
+              <a routerLink="{{ component.path }}">
+                <span>{{ component.label }}</span>
+                <span class="chinese">{{ component.zh }}</span>
               </a>
             </li>
           </ng-container>
-
         </ul>
       </li>
     </ng-container>
-
   </ul>
 </ng-template>
-

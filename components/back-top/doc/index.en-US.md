@@ -2,6 +2,7 @@
 category: Components
 type: Other
 title: BackTop
+cover: https://gw.alipayobjects.com/zos/alicdn/tJZ5jbTwX/BackTop.svg
 ---
 
 `nz-back-top` makes it easy to go back to the top of the page.

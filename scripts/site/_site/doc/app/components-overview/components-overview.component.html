@@ -1,0 +1,68 @@
+<section class="markdown">
+  <h1>{{ language === 'en' ? 'Components Overview' : '组件总览' }}</h1>
+
+  <section class="markdown">
+    <p *ngIf="language === 'en'">
+      <span><code>ng-zorro-antd</code></span>
+      is an Angular UI lib, follow Ant Design specification, to provide high quantity UI components
+      for web development.
+    </p>
+
+    <p *ngIf="language === 'zh'">
+      <span><code>ng-zorro-antd</code></span>
+      是 Ant Design 的 Angular 实现，为网页开发提供高质量的 UI 组件。
+    </p>
+  </section>
+
+  <nz-divider></nz-divider>
+  <nz-input-group [nzSuffix]="suffixIconSearch" class="components-overview-search">
+    <input
+      type="text"
+      #searchBox
+      nz-input
+      placeholder="{{ language === 'en' ? 'Search in components' : '搜索组件' }}"
+      nzSize="large"
+      (input)="onSearch(searchBox.value)"
+    />
+  </nz-input-group>
+  <ng-template #suffixIconSearch>
+    <i nz-icon nzType="search"></i>
+  </ng-template>
+  <nz-divider></nz-divider>
+
+  <ng-container *ngFor="let group of routerList.components">
+    <ng-container *ngIf="group.language === language && group.children.length > 0">
+      <div class="components-overview">
+        <h3 nz-typography class="components-overview-group-title">
+          {{ group.name }}
+          <nz-tag>{{ group.children.length }}</nz-tag>
+        </h3>
+
+        <div nz-row>
+          <div
+            nz-col
+            nzXs="24"
+            nzSm="12"
+            nzMd="12"
+            nzLg="8"
+            nzXl="6"
+            nzXXl="6"
+            *ngFor="let component of group.children"
+            class="components-overview-card"
+          >
+            <a routerLink="/{{ component.path }}">
+              <nz-card
+                nzHoverable
+                nzTitle="{{ component.label }} {{ language === 'zh' ? component.zh : '' }}"
+              >
+                <div class="components-overview-img">
+                  <img [alt]="component.label" [src]="component.cover" />
+                </div>
+              </nz-card>
+            </a>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+</section>

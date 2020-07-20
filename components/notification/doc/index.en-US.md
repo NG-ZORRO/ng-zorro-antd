@@ -3,6 +3,7 @@ category: Components
 type: Feedback
 noinstant: true
 title: Notification
+cover: https://gw.alipayobjects.com/zos/alicdn/Jxm5nw61w/Notification.svg
 ---
 
 Display a notification message globally.

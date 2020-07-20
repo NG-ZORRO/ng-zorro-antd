@@ -2,6 +2,7 @@
 category: Components
 type: Data Entry
 title: Input
+cover: https://gw.alipayobjects.com/zos/alicdn/xS9YEJhfe/Input.svg
 ---
 
 A basic widget for getting the user input is a text field.

@@ -4,6 +4,7 @@ subtitle: 表单
 type: 数据录入
 cols: 1
 title: Form
+cover: https://gw.alipayobjects.com/zos/alicdn/ORmcdeaoO/Form.svg
 ---
 
 具有数据收集、校验和提交功能的表单，包含复选框、单选框、输入框、下拉选择框等元素。

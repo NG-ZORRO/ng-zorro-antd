@@ -2,6 +2,7 @@
 category: Components
 type: General
 title: Button
+cover: https://gw.alipayobjects.com/zos/alicdn/fNUKzY1sk/Button.svg
 ---
 
 To trigger an operation.

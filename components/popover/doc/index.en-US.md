@@ -2,6 +2,7 @@
 category: Components
 type: Data Display
 title: Popover
+cover: https://gw.alipayobjects.com/zos/alicdn/1PNL1p_cO/Popover.svg
 ---
 
 The floating card popped by clicking or hovering.
