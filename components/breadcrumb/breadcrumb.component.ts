@@ -118,7 +118,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
           .map(segment => segment.path)
           .filter(path => path)
           .join('/');
-        const nextUrl = url + `/${routeURL}`;
+        const nextUrl = url + (routeURL ? `/${routeURL}` : '');
         const breadcrumbLabel = this.nzRouteLabelFn(child.snapshot.data[this.nzRouteLabel]);
         // If have data, go to generate a breadcrumb for it.
         if (routeURL && breadcrumbLabel) {
