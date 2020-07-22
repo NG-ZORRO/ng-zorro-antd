@@ -8,8 +8,8 @@ import { Component } from '@angular/core';
       nzType="primary"
       nz-popover
       nzPopoverTitle="Title"
-      [(nzVisible)]="visible"
-      (nzVisibleChange)="change($event)"
+      [(nzPopoverVisible)]="visible"
+      (nzPopoverVisibleChange)="change($event)"
       nzPopoverTrigger="click"
       [nzPopoverContent]="contentTemplate"
     >
@@ -21,7 +21,7 @@ import { Component } from '@angular/core';
   `
 })
 export class NzDemoPopoverControlComponent {
-  visible: boolean;
+  visible: boolean = false;
 
   clickMe(): void {
     this.visible = false;

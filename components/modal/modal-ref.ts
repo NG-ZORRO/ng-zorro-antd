@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -13,7 +10,7 @@ import { isPromise } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 
-import { BaseModalContainer } from './modal-container';
+import { BaseModalContainerComponent } from './modal-container';
 import { NzModalLegacyAPI } from './modal-legacy-api';
 import { ModalOptions } from './modal-types';
 
@@ -29,15 +26,15 @@ export const enum NzTriggerAction {
 }
 
 export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAPI<T, R> {
-  componentInstance: T | null;
+  componentInstance: T | null = null;
   result?: R;
   state: NzModalState = NzModalState.OPEN;
   afterClose: Subject<R> = new Subject();
   afterOpen: Subject<void> = new Subject();
 
-  private closeTimeout: number;
+  private closeTimeout?: number;
 
-  constructor(private overlayRef: OverlayRef, private config: ModalOptions, public containerInstance: BaseModalContainer) {
+  constructor(private overlayRef: OverlayRef, private config: ModalOptions, public containerInstance: BaseModalContainerComponent) {
     containerInstance.animationStateChanged
       .pipe(
         filter(event => event.phaseName === 'done' && event.toState === 'enter'),
@@ -58,11 +55,11 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
       )
       .subscribe(() => {
         clearTimeout(this.closeTimeout);
-        this.overlayRef.dispose();
+        this._finishDialogClose();
       });
 
     containerInstance.containerClick.pipe(take(1)).subscribe(() => {
-      const cancelable = !this.config.nzCancelLoading && !this.config.nzOkLoading && config.nzMask && config.nzMaskClosable;
+      const cancelable = !this.config.nzCancelLoading && !this.config.nzOkLoading;
       if (cancelable) {
         this.trigger(NzTriggerAction.CANCEL);
       }
@@ -138,10 +135,9 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
         take(1)
       )
       .subscribe(event => {
-        this.state = NzModalState.CLOSED;
         this.overlayRef.detachBackdrop();
         this.closeTimeout = setTimeout(() => {
-          this.overlayRef.dispose();
+          this._finishDialogClose();
         }, event.totalTime + 100);
       });
 
@@ -151,6 +147,7 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
 
   updateConfig(config: ModalOptions): void {
     Object.assign(this.config, config);
+    this.containerInstance.bindBackdropStyle();
     this.containerInstance.cdr.markForCheck();
   }
 
@@ -195,5 +192,10 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
     if (result !== false) {
       this.close(result);
     }
+  }
+
+  _finishDialogClose(): void {
+    this.state = NzModalState.CLOSED;
+    this.overlayRef.dispose();
   }
 }

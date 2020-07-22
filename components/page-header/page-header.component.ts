@@ -1,22 +1,20 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChild,
   ElementRef,
   EventEmitter,
   Input,
-  OnChanges,
+  OnDestroy,
   Optional,
   Output,
-  SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
@@ -24,6 +22,9 @@ import {
 import { Location } from '@angular/common';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { PREFIX } from 'ng-zorro-antd/core/logger';
+import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
+import { Subject } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 import { NzPageHeaderBreadcrumbDirective, NzPageHeaderFooterDirective } from './page-header-cells';
 
 const NZ_CONFIG_COMPONENT_NAME = 'pageHeader';
@@ -35,26 +36,30 @@ const NZ_CONFIG_COMPONENT_NAME = 'pageHeader';
     <ng-content select="nz-breadcrumb[nz-page-header-breadcrumb]"></ng-content>
 
     <div class="ant-page-header-heading">
-      <!--back-->
-      <div *ngIf="nzBackIcon !== null" (click)="onBack()" class="ant-page-header-back">
-        <div role="button" tabindex="0" class="ant-page-header-back-button">
-          <i *ngIf="isStringBackIcon" nz-icon [nzType]="nzBackIcon ? nzBackIcon : 'arrow-left'" nzTheme="outline"></i>
-          <ng-container *ngIf="isTemplateRefBackIcon" [ngTemplateOutlet]="nzBackIcon"></ng-container>
+      <div class="ant-page-header-heading-left">
+        <!--back-->
+        <div *ngIf="nzBackIcon !== null" (click)="onBack()" class="ant-page-header-back">
+          <div role="button" tabindex="0" class="ant-page-header-back-button">
+            <ng-container *nzStringTemplateOutlet="nzBackIcon; let backIcon">
+              <i nz-icon [nzType]="backIcon || 'arrow-left'" nzTheme="outline"></i>
+            </ng-container>
+          </div>
         </div>
+        <!--avatar-->
+        <ng-content select="nz-avatar[nz-page-header-avatar]"></ng-content>
+        <!--title-->
+        <span class="ant-page-header-heading-title" *ngIf="nzTitle">
+          <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+        </span>
+        <ng-content *ngIf="!nzTitle" select="nz-page-header-title, [nz-page-header-title]"></ng-content>
+        <!--subtitle-->
+        <span class="ant-page-header-heading-sub-title" *ngIf="nzSubtitle">
+          <ng-container *nzStringTemplateOutlet="nzSubtitle">{{ nzSubtitle }}</ng-container>
+        </span>
+        <ng-content *ngIf="!nzSubtitle" select="nz-page-header-subtitle, [nz-page-header-subtitle]"></ng-content>
+        <ng-content select="nz-page-header-tags, [nz-page-header-tags]"></ng-content>
       </div>
-      <!--avatar-->
-      <ng-content select="nz-avatar[nz-page-header-avatar]"></ng-content>
-      <!--title-->
-      <span class="ant-page-header-heading-title" *ngIf="nzTitle">
-        <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
-      </span>
-      <ng-content *ngIf="!nzTitle" select="nz-page-header-title, [nz-page-header-title]"></ng-content>
-      <!--subtitle-->
-      <span class="ant-page-header-heading-sub-title" *ngIf="nzSubtitle">
-        <ng-container *nzStringTemplateOutlet="nzSubtitle">{{ nzSubtitle }}</ng-container>
-      </span>
-      <ng-content *ngIf="!nzSubtitle" select="nz-page-header-subtitle, [nz-page-header-subtitle]"></ng-content>
-      <ng-content select="nz-page-header-tags, [nz-page-header-tags]"></ng-content>
+
       <ng-content select="nz-page-header-extra, [nz-page-header-extra]"></ng-content>
     </div>
 
@@ -67,30 +72,42 @@ const NZ_CONFIG_COMPONENT_NAME = 'pageHeader';
     class: 'ant-page-header',
     '[class.has-footer]': 'nzPageHeaderFooter',
     '[class.ant-page-header-ghost]': 'nzGhost',
-    '[class.has-breadcrumb]': 'nzPageHeaderBreadcrumb'
+    '[class.has-breadcrumb]': 'nzPageHeaderBreadcrumb',
+    '[class.ant-page-header-compact]': 'compact'
   }
 })
-export class NzPageHeaderComponent implements OnChanges {
-  isTemplateRefBackIcon = false;
-  isStringBackIcon = false;
-
+export class NzPageHeaderComponent implements AfterViewInit, OnDestroy {
   @Input() nzBackIcon: string | TemplateRef<void> | null = null;
-  @Input() nzTitle: string | TemplateRef<void>;
-  @Input() nzSubtitle: string | TemplateRef<void>;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) nzGhost: boolean;
+  @Input() nzTitle?: string | TemplateRef<void>;
+  @Input() nzSubtitle?: string | TemplateRef<void>;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzGhost: boolean = true;
   @Output() readonly nzBack = new EventEmitter<void>();
 
-  @ContentChild(NzPageHeaderFooterDirective, { static: false }) nzPageHeaderFooter: ElementRef<NzPageHeaderFooterDirective>;
+  @ContentChild(NzPageHeaderFooterDirective, { static: false }) nzPageHeaderFooter?: ElementRef<NzPageHeaderFooterDirective>;
+  @ContentChild(NzPageHeaderBreadcrumbDirective, { static: false }) nzPageHeaderBreadcrumb?: ElementRef<NzPageHeaderBreadcrumbDirective>;
 
-  @ContentChild(NzPageHeaderBreadcrumbDirective, { static: false }) nzPageHeaderBreadcrumb: ElementRef<NzPageHeaderBreadcrumbDirective>;
+  compact = false;
+  destroy$ = new Subject<void>();
 
-  constructor(@Optional() private location: Location, public nzConfigService: NzConfigService) {}
+  constructor(
+    @Optional() private location: Location,
+    public nzConfigService: NzConfigService,
+    private elementRef: ElementRef,
+    private nzResizeObserver: NzResizeObserver,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.hasOwnProperty('nzBackIcon')) {
-      this.isTemplateRefBackIcon = changes.nzBackIcon.currentValue instanceof TemplateRef;
-      this.isStringBackIcon = typeof changes.nzBackIcon.currentValue === 'string';
-    }
+  ngAfterViewInit(): void {
+    this.nzResizeObserver
+      .observe(this.elementRef)
+      .pipe(
+        map(([entry]) => entry.contentRect.width),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((width: number) => {
+        this.compact = width < 768;
+        this.cdr.markForCheck();
+      });
   }
 
   onBack(): void {
@@ -102,5 +119,10 @@ export class NzPageHeaderComponent implements OnChanges {
       }
       this.location.back();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

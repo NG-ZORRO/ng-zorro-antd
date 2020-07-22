@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -12,7 +9,7 @@ import { Observable, Subject } from 'rxjs';
 
 import { filter, mapTo } from 'rxjs/operators';
 
-import { NZ_CONFIG, NzConfig, NzConfigKey } from './config';
+import { NzConfig, NzConfigKey, NZ_CONFIG } from './config';
 
 const isDefined = function (value?: NzSafeAny): boolean {
   return value !== undefined;
@@ -55,7 +52,7 @@ export class NzConfigService {
  * config.
  */
 // tslint:disable-next-line:typedef
-export function WithConfig<T>(componentName: NzConfigKey, innerDefaultValue?: T) {
+export function WithConfig<T>(componentName: NzConfigKey) {
   return function ConfigDecorator(target: NzSafeAny, propName: NzSafeAny, originalDescriptor?: TypedPropertyDescriptor<T>): NzSafeAny {
     const privatePropName = `$$__assignedValue__${propName}`;
 
@@ -68,17 +65,23 @@ export function WithConfig<T>(componentName: NzConfigKey, innerDefaultValue?: T)
     return {
       get(): T | undefined {
         const originalValue = originalDescriptor?.get ? originalDescriptor.get.bind(this)() : this[privatePropName];
+        const assignedByUser = ((this.assignmentCount || {})[propName] || 0) > 1;
 
-        if (isDefined(originalValue)) {
+        if (assignedByUser && isDefined(originalValue)) {
           return originalValue;
         }
 
         const componentConfig = this.nzConfigService.getConfigForComponent(componentName) || {};
         const configValue = componentConfig[propName];
+        const ret = isDefined(configValue) ? configValue : originalValue;
 
-        return isDefined(configValue) ? configValue : innerDefaultValue;
+        return ret;
       },
       set(value?: T): void {
+        // If the value is assigned, we consider the newly assigned value as 'assigned by user'.
+        this.assignmentCount = this.assignmentCount || {};
+        this.assignmentCount[propName] = (this.assignmentCount[propName] || 0) + 1;
+
         if (originalDescriptor?.set) {
           originalDescriptor.set.bind(this)(value);
         } else {

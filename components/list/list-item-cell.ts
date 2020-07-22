@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -26,9 +23,7 @@ import { switchMap, take, takeUntil } from 'rxjs/operators';
   selector: 'nz-list-item-extra, [nz-list-item-extra]',
   exportAs: 'nzListItemExtra',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <ng-content></ng-content>
-  `,
+  template: ` <ng-content></ng-content> `,
   host: {
     class: 'ant-list-item-extra'
   }
@@ -41,12 +36,10 @@ export class NzListItemExtraComponent {
   selector: 'nz-list-item-action',
   exportAs: 'nzListItemAction',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <ng-template><ng-content></ng-content></ng-template>
-  `
+  template: ` <ng-template><ng-content></ng-content></ng-template> `
 })
 export class NzListItemActionComponent {
-  @ViewChild(TemplateRef) templateRef: TemplateRef<void>;
+  @ViewChild(TemplateRef) templateRef?: TemplateRef<void>;
   constructor() {}
 }
 
@@ -66,7 +59,7 @@ export class NzListItemActionComponent {
 })
 export class NzListItemActionsComponent implements OnChanges, OnDestroy {
   @Input() nzActions: Array<TemplateRef<void>> = [];
-  @ContentChildren(NzListItemActionComponent) nzListItemActions: QueryList<NzListItemActionComponent>;
+  @ContentChildren(NzListItemActionComponent) nzListItemActions!: QueryList<NzListItemActionComponent>;
 
   actions: Array<TemplateRef<void>> = [];
   private destroy$ = new Subject();
@@ -88,9 +81,9 @@ export class NzListItemActionsComponent implements OnChanges, OnDestroy {
         if (this.nzActions.length) {
           this.actions = this.nzActions;
         } else {
-          this.actions = this.nzListItemActions.map(action => action.templateRef);
+          this.actions = this.nzListItemActions.map(action => action.templateRef!);
         }
-        this.cdr.markForCheck();
+        this.cdr.detectChanges();
       });
   }
 

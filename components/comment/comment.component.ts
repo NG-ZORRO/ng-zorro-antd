@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -46,9 +43,9 @@ import { NzCommentActionComponent as CommentAction } from './comment-cells';
   }
 })
 export class NzCommentComponent {
-  @Input() nzAuthor: string | TemplateRef<void>;
-  @Input() nzDatetime: string | TemplateRef<void>;
+  @Input() nzAuthor?: string | TemplateRef<void>;
+  @Input() nzDatetime?: string | TemplateRef<void>;
 
-  @ContentChildren(CommentAction) actions: QueryList<CommentAction>;
+  @ContentChildren(CommentAction) actions!: QueryList<CommentAction>;
   constructor() {}
 }

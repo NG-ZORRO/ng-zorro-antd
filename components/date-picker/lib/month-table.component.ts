@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -58,8 +55,8 @@ export class MonthTableComponent extends AbstractTable implements OnChanges {
           content,
           title: content,
           classMap: {},
-          cellRender: valueFunctionProp(this.cellRender, month), // Customized content
-          fullCellRender: valueFunctionProp(this.fullCellRender, month),
+          cellRender: valueFunctionProp(this.cellRender!, month), // Customized content
+          fullCellRender: valueFunctionProp(this.fullCellRender!, month),
           onClick: () => this.chooseMonth(cell.value.getMonth()), // don't use monthValue here,
           onMouseEnter: () => null
         };

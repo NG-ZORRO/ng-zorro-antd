@@ -27,8 +27,8 @@ import { NzMentionComponent } from 'ng-zorro-antd/mention';
 })
 export class NzDemoMentionControlledComponent implements OnInit {
   suggestions = ['afc163', 'benjycui', 'yiminghe', 'RaoHai', '中文', 'にほんご'];
-  validateForm: FormGroup;
-  @ViewChild('mentions', { static: true }) mentionChild: NzMentionComponent;
+  validateForm!: FormGroup;
+  @ViewChild('mentions', { static: true }) mentionChild!: NzMentionComponent;
 
   get mention(): AbstractControl {
     return this.validateForm.get('mention')!;
@@ -63,7 +63,7 @@ export class NzDemoMentionControlledComponent implements OnInit {
   }
 
   resetForm(): void {
-    this.validateForm.reset({
+    this.validateForm?.reset({
       mention: '@afc163 '
     });
   }

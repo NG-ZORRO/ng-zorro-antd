@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -13,20 +10,29 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   selector: '[nzStringTemplateOutlet]',
   exportAs: 'nzStringTemplateOutlet'
 })
-export class NzStringTemplateOutletDirective implements OnChanges {
+export class NzStringTemplateOutletDirective<_T = unknown> implements OnChanges {
   private embeddedViewRef: EmbeddedViewRef<NzSafeAny> | null = null;
+  private context = new NzStringTemplateOutletContext();
   @Input() nzStringTemplateOutletContext: NzSafeAny | null = null;
-  @Input() nzStringTemplateOutlet: string | TemplateRef<NzSafeAny> | null = null;
+  @Input() nzStringTemplateOutlet: NzSafeAny | TemplateRef<NzSafeAny> = null;
+
+  static ngTemplateContextGuard<T>(_dir: NzStringTemplateOutletDirective<T>, _ctx: NzSafeAny): _ctx is NzStringTemplateOutletContext {
+    return true;
+  }
 
   private recreateView(): void {
     this.viewContainer.clear();
     const isTemplateRef = this.nzStringTemplateOutlet instanceof TemplateRef;
     const templateRef = (isTemplateRef ? this.nzStringTemplateOutlet : this.templateRef) as NzSafeAny;
-    this.embeddedViewRef = this.viewContainer.createEmbeddedView(templateRef, this.nzStringTemplateOutletContext);
+    this.embeddedViewRef = this.viewContainer.createEmbeddedView(
+      templateRef,
+      isTemplateRef ? this.nzStringTemplateOutletContext : this.context
+    );
   }
 
   private updateContext(): void {
-    const newCtx = this.nzStringTemplateOutletContext;
+    const isTemplateRef = this.nzStringTemplateOutlet instanceof TemplateRef;
+    const newCtx = isTemplateRef ? this.nzStringTemplateOutletContext : this.context;
     const oldCtx = this.embeddedViewRef!.context as NzSafeAny;
     if (newCtx) {
       for (const propName of Object.keys(newCtx)) {
@@ -38,8 +44,8 @@ export class NzStringTemplateOutletDirective implements OnChanges {
   constructor(private viewContainer: ViewContainerRef, private templateRef: TemplateRef<NzSafeAny>) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    const shouldRecreateView = (ctxChanges: SimpleChanges): boolean => {
-      const { nzStringTemplateOutletContext, nzStringTemplateOutlet } = ctxChanges;
+    const { nzStringTemplateOutletContext, nzStringTemplateOutlet } = changes;
+    const shouldRecreateView = (): boolean => {
       let shouldOutletRecreate = false;
       if (nzStringTemplateOutlet) {
         if (nzStringTemplateOutlet.firstChange) {
@@ -67,7 +73,12 @@ export class NzStringTemplateOutletDirective implements OnChanges {
       const shouldContextRecreate = nzStringTemplateOutletContext && hasContextShapeChanged(nzStringTemplateOutletContext);
       return shouldContextRecreate || shouldOutletRecreate;
     };
-    const recreateView = shouldRecreateView(changes);
+
+    if (nzStringTemplateOutlet) {
+      this.context.$implicit = nzStringTemplateOutlet.currentValue;
+    }
+
+    const recreateView = shouldRecreateView();
     if (recreateView) {
       /** recreate view when context shape or outlet change **/
       this.recreateView();
@@ -76,4 +87,8 @@ export class NzStringTemplateOutletDirective implements OnChanges {
       this.updateContext();
     }
   }
+}
+
+export class NzStringTemplateOutletContext {
+  public $implicit: NzSafeAny;
 }

@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -40,7 +37,7 @@ import { NzTableStyleService } from '../table-style.service';
   `
 })
 export class NzTableFixedRowComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('tdElement') tdElement: ElementRef;
+  @ViewChild('tdElement') tdElement!: ElementRef;
   hostWidth$ = new BehaviorSubject<number | null>(null);
   enableAutoMeasure$ = new BehaviorSubject<boolean>(false);
   private destroy$ = new Subject();

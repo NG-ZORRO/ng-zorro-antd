@@ -1,12 +1,14 @@
 import { Rule, Tree } from '@angular-devkit/schematics';
-import { getProjectFromWorkspace, getProjectMainFile, parseSourceFile } from '@angular/cdk/schematics';
 import {
   addSymbolToNgModuleMetadata,
   findNodes,
   getDecoratorMetadata,
+  getProjectFromWorkspace,
+  getProjectMainFile,
   insertAfterLastOccurrence,
-  insertImport
-} from '@schematics/angular/utility/ast-utils';
+  insertImport,
+  parseSourceFile
+} from '@angular/cdk/schematics';
 import { Change, InsertChange, NoopChange } from '@schematics/angular/utility/change';
 import { getWorkspace } from '@schematics/angular/utility/config';
 import { getAppModulePath } from '@schematics/angular/utility/ng-ast-utils';
@@ -22,7 +24,7 @@ export function registerLocale(options: Schema): Rule {
     const appModulePath = getAppModulePath(host, getProjectMainFile(project));
     const moduleSource = parseSourceFile(host, appModulePath);
 
-    const locale = getCompatibleLocal(options);
+    const locale = options.locale || 'en_US';
     const localePrefix = locale.split('_')[ 0 ];
 
     const recorder = host.beginUpdate(appModulePath);
@@ -50,22 +52,6 @@ export function registerLocale(options: Schema): Rule {
 
     return host;
   };
-}
-
-function getCompatibleLocal(options: Schema): string {
-  const defaultLocal = 'en_US';
-  if (options.locale === options.i18n) {
-    return options.locale;
-  } else if (options.locale === defaultLocal) {
-
-    console.log();
-    console.log(`${chalk.bgYellow('WARN')} ${chalk.cyan('--i18n')} option will be deprecated, ` +
-      `use ${chalk.cyan('--locale')} instead`);
-
-    return options.i18n;
-  } else {
-    return options.locale || defaultLocal;
-  }
 }
 
 function registerLocaleData(moduleSource: ts.SourceFile, modulePath: string, locale: string): Change {
@@ -102,19 +88,19 @@ function insertI18nTokenProvide(moduleSource: ts.SourceFile, modulePath: string,
   }
 
   const matchingProperties: ts.ObjectLiteralElement[] =
-          (node as ts.ObjectLiteralExpression).properties
-          .filter(prop => prop.kind === ts.SyntaxKind.PropertyAssignment)
-          .filter((prop: ts.PropertyAssignment) => {
-            const name = prop.name;
-            switch (name.kind) {
-              case ts.SyntaxKind.Identifier:
-                return (name as ts.Identifier).getText(moduleSource) === metadataField;
-              case ts.SyntaxKind.StringLiteral:
-                return (name as ts.StringLiteral).text === metadataField;
-            }
+    (node as ts.ObjectLiteralExpression).properties
+      .filter(prop => prop.kind === ts.SyntaxKind.PropertyAssignment)
+      .filter((prop: ts.PropertyAssignment) => {
+        const name = prop.name;
+        switch (name.kind) {
+          case ts.SyntaxKind.Identifier:
+            return (name as ts.Identifier).getText(moduleSource) === metadataField;
+          case ts.SyntaxKind.StringLiteral:
+            return (name as ts.StringLiteral).text === metadataField;
+        }
 
-            return false;
-          });
+        return false;
+      });
 
   if (!matchingProperties) {
     return [];

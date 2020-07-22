@@ -13,7 +13,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
   `
 })
 export class NzDemoAutoCompleteOptionsComponent {
-  inputValue: string;
+  inputValue?: string;
   options: string[] = [];
 
   onInput(e: Event): void {

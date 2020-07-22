@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -20,6 +17,14 @@ export interface NzSelectItemInterface {
   groupLabel?: string | TemplateRef<NzSafeAny> | null;
   type?: string;
   key?: NzSafeAny;
+}
+
+export interface NzSelectOptionInterface {
+  label: string | null | TemplateRef<NzSafeAny>;
+  value: NzSafeAny | null;
+  disabled?: boolean;
+  hide?: boolean;
+  groupLabel?: string | TemplateRef<NzSafeAny> | null;
 }
 
 export type NzSelectTopControlItemType = Partial<NzSelectItemInterface> & {

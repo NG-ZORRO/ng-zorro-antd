@@ -1,4 +1,9 @@
 /**
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
+ */
+
+/**
  * @license
  * Copyright Alibaba.com All Rights Reserved.
  *
@@ -14,16 +19,18 @@ import {
   ComponentFactoryResolver,
   Directive,
   ElementRef,
+  EventEmitter,
   Host,
   Input,
   Optional,
+  Output,
   Renderer2,
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { NzTSType } from 'ng-zorro-antd/core/types';
+import { NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 
 import { isTooltipEmpty, NzTooltipBaseComponent, NzTooltipBaseDirective, NzTooltipTrigger } from './base';
 
@@ -35,12 +42,19 @@ import { isTooltipEmpty, NzTooltipBaseComponent, NzTooltipBaseDirective, NzToolt
   }
 })
 export class NzTooltipDirective extends NzTooltipBaseDirective {
-  @Input('nzTooltipTitle') specificTitle: NzTSType;
-  @Input('nz-tooltip') directiveNameTitle: NzTSType | null;
-  @Input('nzTooltipTrigger') specificTrigger: NzTooltipTrigger;
-  @Input('nzTooltipPlacement') specificPlacement: string;
+  @Input('nzTooltipTitle') specificTitle?: NzTSType | null;
+  @Input('nz-tooltip') directiveNameTitle?: NzTSType | null;
+  @Input('nzTooltipTrigger') specificTrigger?: NzTooltipTrigger;
+  @Input('nzTooltipPlacement') specificPlacement?: string;
   @Input('nzTooltipOrigin') specificOrigin?: ElementRef<HTMLElement>;
+  @Input('nzTooltipVisible') specificVisible?: boolean;
+  @Input('nzTooltipMouseEnterDelay') specificMouseEnterDelay?: number;
+  @Input('nzTooltipMouseLeaveDelay') specificMouseLeaveDelay?: number;
+  @Input('nzTooltipOverlayClassName') specificOverlayClassName?: string;
+  @Input('nzTooltipOverlayStyle') specificOverlayStyle?: NgStyleInterface;
 
+  // tslint:disable-next-line:no-output-rename
+  @Output('nzTooltipVisibleChange') readonly specificVisibleChange = new EventEmitter<boolean>();
   componentFactory: ComponentFactory<NzToolTipComponent> = this.resolver.resolveComponentFactory(NzToolTipComponent);
 
   constructor(
@@ -69,6 +83,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
       [cdkConnectedOverlayOpen]="_visible"
       [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"
       [cdkConnectedOverlayPositions]="_positions"
+      [cdkConnectedOverlayPush]="true"
       (backdropClick)="hide()"
       (detach)="hide()"
       (positionChange)="onPositionChange($event)"
@@ -82,7 +97,9 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
         [@zoomBigMotion]="'active'"
       >
         <div class="ant-tooltip-content">
-          <div class="ant-tooltip-arrow"></div>
+          <div class="ant-tooltip-arrow">
+            <span class="ant-tooltip-arrow-content"></span>
+          </div>
           <div class="ant-tooltip-inner">
             <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
           </div>
@@ -93,7 +110,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   preserveWhitespaces: false
 })
 export class NzToolTipComponent extends NzTooltipBaseComponent {
-  @Input() nzTitle: NzTSType | null;
+  @Input() nzTitle: NzTSType | null = null;
 
   constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
     super(cdr, noAnimation);

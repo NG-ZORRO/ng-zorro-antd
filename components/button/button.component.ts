@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -29,7 +26,7 @@ import { NzIconDirective } from 'ng-zorro-antd/icon';
 import { Subject } from 'rxjs';
 import { filter, startWith, takeUntil } from 'rxjs/operators';
 
-export type NzButtonType = 'primary' | 'dashed' | 'danger' | 'link' | null;
+export type NzButtonType = 'primary' | 'default' | 'dashed' | 'danger' | 'link' | 'text' | null;
 export type NzButtonShape = 'circle' | 'round' | null;
 export type NzButtonSize = 'large' | 'default' | 'small';
 
@@ -50,6 +47,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'button';
     '[class.ant-btn-primary]': `nzType === 'primary'`,
     '[class.ant-btn-dashed]': `nzType === 'dashed'`,
     '[class.ant-btn-link]': `nzType === 'link'`,
+    '[class.ant-btn-text]': `nzType === 'text'`,
     '[class.ant-btn-danger]': `nzType === 'danger'`,
     '[class.ant-btn-circle]': `nzShape === 'circle'`,
     '[class.ant-btn-round]': `nzShape === 'round'`,
@@ -59,7 +57,10 @@ const NZ_CONFIG_COMPONENT_NAME = 'button';
     '[class.ant-btn-loading]': `nzLoading`,
     '[class.ant-btn-background-ghost]': `nzGhost`,
     '[class.ant-btn-block]': `nzBlock`,
-    '[class.ant-input-search-button]': `nzSearch`
+    '[class.ant-input-search-button]': `nzSearch`,
+    '[attr.tabindex]': 'disabled ? -1 : (tabIndex === null ? null : tabIndex)',
+    '[attr.disabled]': 'disabled || null',
+    '(click)': 'haltDisabledEvents($event)'
   }
 })
 export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, AfterContentInit {
@@ -68,18 +69,28 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
   static ngAcceptInputType_nzSearch: BooleanInput;
   static ngAcceptInputType_nzLoading: BooleanInput;
   static ngAcceptInputType_nzDanger: BooleanInput;
+  static ngAcceptInputType_disabled: BooleanInput;
 
-  @ContentChild(NzIconDirective, { read: ElementRef }) nzIconDirectiveElement: ElementRef;
+  @ContentChild(NzIconDirective, { read: ElementRef }) nzIconDirectiveElement!: ElementRef;
   @Input() @InputBoolean() nzBlock: boolean = false;
   @Input() @InputBoolean() nzGhost: boolean = false;
   @Input() @InputBoolean() nzSearch: boolean = false;
   @Input() @InputBoolean() nzLoading: boolean = false;
   @Input() @InputBoolean() nzDanger: boolean = false;
+  @Input() @InputBoolean() disabled: boolean = false;
+  @Input() tabIndex: number | string | null = null;
   @Input() nzType: NzButtonType = null;
   @Input() nzShape: NzButtonShape = null;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzButtonSize;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzButtonSize = 'default';
   private destroy$ = new Subject<void>();
   private loading$ = new Subject<boolean>();
+
+  haltDisabledEvents(event: Event): void {
+    if (this.disabled) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+  }
 
   insertSpan(nodes: NodeList, renderer: Renderer2): void {
     nodes.forEach(node => {
@@ -97,7 +108,7 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
     const iconCount = listOfNode.filter(node => node.nodeName === 'I').length;
     const noText = listOfNode.every(node => node.nodeName !== '#text');
     const noSpan = listOfNode.every(node => node.nodeName !== 'SPAN');
-    const isIconOnly = noSpan && noText && iconCount === 1;
+    const isIconOnly = noSpan && noText && iconCount >= 1;
     if (isIconOnly) {
       renderer.addClass(element, 'ant-btn-icon-only');
     }

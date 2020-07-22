@@ -17,7 +17,7 @@ import {
   UP_ARROW,
   ZERO
 } from '@angular/cdk/keycodes';
-import { ConnectedOverlayPositionChange, OverlayContainer } from '@angular/cdk/overlay';
+import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
 import { async, ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -1316,35 +1316,6 @@ describe('cascader', () => {
       expect(testComponent.values![0]).toBe('zhejiang');
     }));
 
-    it('should position change correct', () => {
-      const fakeTopEvent = {
-        connectionPair: {
-          originX: 'center',
-          originY: 'top',
-          overlayX: 'center',
-          overlayY: 'bottom'
-        }
-      } as ConnectedOverlayPositionChange;
-      const fakeBottomEvent = {
-        connectionPair: {
-          originX: 'center',
-          originY: 'bottom',
-          overlayX: 'center',
-          overlayY: 'top'
-        }
-      } as ConnectedOverlayPositionChange;
-
-      fixture.detectChanges();
-      testComponent.cascader.setMenuVisible(true);
-      fixture.detectChanges();
-      testComponent.cascader.onPositionChange(fakeTopEvent);
-      fixture.detectChanges();
-      expect(testComponent.cascader.dropDownPosition).toBe('top');
-      testComponent.cascader.onPositionChange(fakeBottomEvent);
-      fixture.detectChanges();
-      expect(testComponent.cascader.dropDownPosition).toBe('bottom');
-    });
-
     it('should support search', fakeAsync(() => {
       fixture.detectChanges();
       testComponent.nzShowSearch = true;
@@ -1977,8 +1948,8 @@ const options5: any[] = []; // tslint:disable-line:no-any
   ]
 })
 export class NzDemoCascaderDefaultComponent {
-  @ViewChild(NzCascaderComponent, { static: true }) cascader: NzCascaderComponent;
-  @ViewChild('renderTpl', { static: true }) renderTpl: TemplateRef<any>;
+  @ViewChild(NzCascaderComponent, { static: true }) cascader!: NzCascaderComponent;
+  @ViewChild('renderTpl', { static: true }) renderTpl!: TemplateRef<any>;
 
   public nzOptions: any[] | null = options1;
   public values: string[] | number[] | null = null;
@@ -2038,7 +2009,7 @@ export class NzDemoCascaderDefaultComponent {
   ]
 })
 export class NzDemoCascaderLoadDataComponent {
-  @ViewChild(NzCascaderComponent, { static: true }) cascader: NzCascaderComponent;
+  @ViewChild(NzCascaderComponent, { static: true }) cascader!: NzCascaderComponent;
 
   public nzOptions: any[] | null = null;
   public values: string[] | null = null;

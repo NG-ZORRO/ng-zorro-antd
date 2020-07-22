@@ -2,6 +2,7 @@
 category: Components
 type: Data Entry
 title: Autocomplete
+cover: https://gw.alipayobjects.com/zos/alicdn/qtJm4yt45/AutoComplete.svg
 ---
 
 Autocomplete function of input field.
@@ -46,6 +47,7 @@ import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 | `[nzWidth]` | Custom width, unit px | `number` | trigger element width |
 | `[nzOverlayClassName]` | Class name of the dropdown root element | `string` | - |
 | `[nzOverlayStyle]` | Style of the dropdown root element | `object` | - |
+| `[compareWith]` | Same as [SelectControlValueAccessor](https://angular.io/api/forms/SelectControlValueAccessor#caveat-option-selection) | `(o1: any, o2: any) => boolean` | `(o1: any, o2: any) => o1===o2` |
 
 ### nz-auto-option
 

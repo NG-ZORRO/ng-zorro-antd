@@ -86,9 +86,9 @@ describe('dropdown components migration', () => {
       }`);
       await runMigration();
 
-      expect(warnOutput).toContain( 'index.ts@5:9 - Found deprecated "<nz-dropdown>" component. ' +
+      expect(warnOutput).toContain( '/index.ts@5:9 - Found deprecated "<nz-dropdown>" component. ' +
         'Use "[nz-dropdown]" to instead please.');
-      expect(warnOutput).toContain( 'index.ts@13:9 - Found deprecated "<nz-dropdown-button>" component. ' +
+      expect(warnOutput).toContain( '/index.ts@13:9 - Found deprecated "<nz-dropdown-button>" component. ' +
         'Use "[nz-dropdown]" to instead please.');
     });
 

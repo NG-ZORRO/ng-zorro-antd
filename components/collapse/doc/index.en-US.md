@@ -3,6 +3,7 @@ category: Components
 type: Data Display
 title: Collapse
 cols: 1
+cover: https://gw.alipayobjects.com/zos/alicdn/IxH16B9RD/Collapse.svg
 ---
 
 A content area which can be collapsed and expanded.
@@ -24,6 +25,7 @@ import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 | -------- | ----------- | ---- | ------- | ------------- |
 | `[nzAccordion]` | Accordion mode | `boolean` | `false`| ✅ |
 | `[nzBordered]` | Set border style | `boolean` | `true` | ✅ |
+| `[nzGhost]` | Make the collapse borderless and its background transparent | `boolean` | `false` | ✅ |
 | `[nzExpandIconPosition]` | Set expand icon position | `'left' \| 'right'` | `left` | - |
 
 ### nz-collapse-panel

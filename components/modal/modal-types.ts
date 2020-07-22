@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -31,8 +28,8 @@ export class ModalOptions<T = NzSafeAny, R = NzSafeAny> {
   nzCancelLoading?: boolean = false;
   nzNoAnimation?: boolean = false;
   nzAutofocus?: 'ok' | 'cancel' | 'auto' | null = 'auto';
-  nzMask?: boolean = true;
-  nzMaskClosable?: boolean = true;
+  nzMask?: boolean;
+  nzMaskClosable?: boolean;
   nzKeyboard?: boolean = true;
   nzZIndex?: number = 1000;
   nzWidth?: number | string = 520;
@@ -52,7 +49,7 @@ export class ModalOptions<T = NzSafeAny, R = NzSafeAny> {
   nzCancelText?: string | null;
   nzOkText?: string | null;
   nzContent?: string | TemplateRef<NzSafeAny> | Type<T>;
-  nzCloseOnNavigation?: boolean = true;
+  nzCloseOnNavigation?: boolean;
   nzViewContainerRef?: ViewContainerRef;
 
   /**

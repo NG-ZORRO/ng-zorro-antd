@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -21,7 +18,7 @@ import {
 } from '@angular/core';
 
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { NgClassInterface, NgStyleInterface, NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 
 const NZ_CONFIG_COMPONENT_NAME = 'avatar';
 
@@ -34,34 +31,41 @@ const NZ_CONFIG_COMPONENT_NAME = 'avatar';
     <span class="ant-avatar-string" #textEl [ngStyle]="textStyles" *ngIf="nzText && hasText">{{ nzText }}</span>
   `,
   host: {
-    '[class]': 'classMap',
+    '[class.ant-avatar]': 'true',
+    '[class.ant-avatar-lg]': `nzSize === 'large'`,
+    '[class.ant-avatar-sm]': `nzSize === 'small'`,
+    '[class.ant-avatar-square]': `nzShape === 'square'`,
+    '[class.ant-avatar-circle]': `nzShape === 'circle'`,
+    '[class.ant-avatar-icon]': `nzIcon`,
+    '[class.ant-avatar-image]': `hasSrc `,
     '[style.width]': 'customSize',
     '[style.height]': 'customSize',
     '[style.line-height]': 'customSize',
-    '[style.font-size]': '(hasIcon && customSize) ? (nzSize / 2 + "px") : null'
+    // nzSize type is number when customSize is true
+    '[style.font-size.px]': '(hasIcon && customSize) ? $any(nzSize) / 2 : null'
   },
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
 export class NzAvatarComponent implements OnChanges {
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'circle') nzShape: NzShapeSCType;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzSizeLDSType | number;
-  @Input() nzText: string;
-  @Input() nzSrc: string;
-  @Input() nzSrcSet: string;
-  @Input() nzAlt: string;
-  @Input() nzIcon: string;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzShape: NzShapeSCType = 'circle';
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzSizeLDSType | number = 'default';
+  @Input() nzText?: string;
+  @Input() nzSrc?: string;
+  @Input() nzSrcSet?: string;
+  @Input() nzAlt?: string;
+  @Input() nzIcon?: string;
   @Output() readonly nzError = new EventEmitter<Event>();
 
   hasText: boolean = false;
   hasSrc: boolean = true;
   hasIcon: boolean = false;
-  textStyles: {};
-  classMap: {};
+  textStyles: NgStyleInterface = {};
+  classMap: NgClassInterface = {};
   customSize: string | null = null;
 
-  @ViewChild('textEl', { static: false }) textEl: ElementRef;
+  @ViewChild('textEl', { static: false }) textEl?: ElementRef;
 
   private el: HTMLElement = this.elementRef.nativeElement;
 
@@ -71,18 +75,6 @@ export class NzAvatarComponent implements OnChanges {
     private cdr: ChangeDetectorRef,
     private platform: Platform
   ) {}
-
-  setClass(): void {
-    this.classMap = {
-      ['ant-avatar']: true,
-      [`ant-avatar-lg`]: this.nzSize === 'large',
-      [`ant-avatar-sm`]: this.nzSize === 'small',
-      [`ant-avatar-${this.nzShape}`]: this.nzShape,
-      [`ant-avatar-icon`]: this.nzIcon,
-      [`ant-avatar-image`]: this.hasSrc // downgrade after image error
-    };
-    this.cdr.detectChanges();
-  }
 
   imgError($event: Event): void {
     this.nzError.emit($event);
@@ -95,7 +87,7 @@ export class NzAvatarComponent implements OnChanges {
       } else if (this.nzText) {
         this.hasText = true;
       }
-      this.setClass();
+      this.cdr.detectChanges();
       this.setSizeStyle();
       this.notifyCalc();
     }
@@ -106,7 +98,6 @@ export class NzAvatarComponent implements OnChanges {
     this.hasIcon = !this.nzSrc && !!this.nzIcon;
     this.hasSrc = !!this.nzSrc;
 
-    this.setClass();
     this.setSizeStyle();
     this.notifyCalc();
   }
@@ -116,7 +107,7 @@ export class NzAvatarComponent implements OnChanges {
       return;
     }
 
-    const childrenWidth = this.textEl.nativeElement.offsetWidth;
+    const childrenWidth = this.textEl!.nativeElement.offsetWidth;
     const avatarWidth = this.el.getBoundingClientRect().width;
     const scale = avatarWidth - 8 < childrenWidth ? (avatarWidth - 8) / childrenWidth : 1;
     this.textStyles = {

@@ -3,6 +3,7 @@ category: Components
 subtitle: 下拉菜单
 type: 导航
 title: Dropdown
+cover: https://gw.alipayobjects.com/zos/alicdn/eedWN59yJ/Dropdown.svg
 ---
 
 向下弹出的列表。
@@ -59,5 +60,5 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 
 | 方法/属性 | 说明 | 参数 | 返回 |
 | --- | --- | --- | --- |
-| create | 创建右键菜单 | `($event:MouseEvent | {x:number, y:number}, menu:NzDropdownMenuComponent)` | - |
+| create | 创建右键菜单 | `($event:MouseEvent \| {x:number, y:number}, menu:NzDropdownMenuComponent)` | - |
 | close | 关闭右键菜单 | - | - |

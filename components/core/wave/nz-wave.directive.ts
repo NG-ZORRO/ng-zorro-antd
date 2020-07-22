@@ -1,13 +1,11 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { Directive, ElementRef, Inject, InjectionToken, Input, NgZone, OnDestroy, OnInit, Optional } from '@angular/core';
+import { Directive, ElementRef, Inject, InjectionToken, Input, NgZone, OnDestroy, OnInit, Optional, PLATFORM_ID } from '@angular/core';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzWaveRenderer } from './nz-wave-renderer';
 
 export interface NzWaveConfig {
@@ -28,20 +26,20 @@ export function NZ_WAVE_GLOBAL_CONFIG_FACTORY(): NzWaveConfig {
 }
 
 @Directive({
-  selector: '[nz-wave],button[nz-button]',
+  selector: '[nz-wave],button[nz-button]:not([nzType="link"]):not([nzType="text"])',
   exportAs: 'nzWave'
 })
 export class NzWaveDirective implements OnInit, OnDestroy {
   @Input() nzWaveExtraNode = false;
 
-  private waveRenderer: NzWaveRenderer;
+  private waveRenderer?: NzWaveRenderer;
   private waveDisabled: boolean = false;
 
   get disabled(): boolean {
     return this.waveDisabled;
   }
 
-  get rendererRef(): NzWaveRenderer {
+  get rendererRef(): NzWaveRenderer | undefined {
     return this.waveRenderer;
   }
 
@@ -49,7 +47,8 @@ export class NzWaveDirective implements OnInit, OnDestroy {
     private ngZone: NgZone,
     private elementRef: ElementRef,
     @Optional() @Inject(NZ_WAVE_GLOBAL_CONFIG) private config: NzWaveConfig,
-    @Optional() @Inject(ANIMATION_MODULE_TYPE) private animationType: string
+    @Optional() @Inject(ANIMATION_MODULE_TYPE) private animationType: string,
+    @Inject(PLATFORM_ID) private platformId: NzSafeAny
   ) {
     this.waveDisabled = this.isConfigDisabled();
   }
@@ -77,7 +76,7 @@ export class NzWaveDirective implements OnInit, OnDestroy {
 
   renderWaveIfEnabled(): void {
     if (!this.waveDisabled && this.elementRef.nativeElement) {
-      this.waveRenderer = new NzWaveRenderer(this.elementRef.nativeElement, this.ngZone, this.nzWaveExtraNode);
+      this.waveRenderer = new NzWaveRenderer(this.elementRef.nativeElement, this.ngZone, this.nzWaveExtraNode, this.platformId);
     }
   }
 

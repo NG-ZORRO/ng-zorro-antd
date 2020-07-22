@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -12,6 +9,7 @@ import {
   ChangeDetectorRef,
   ComponentFactory,
   ComponentFactoryResolver,
+  Directive,
   ElementRef,
   EventEmitter,
   Input,
@@ -27,13 +25,14 @@ import {
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { DEFAULT_TOOLTIP_POSITIONS, getPlacementName, POSITION_MAP } from 'ng-zorro-antd/core/overlay';
-import { NgClassInterface, NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgClassInterface, NgStyleInterface, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
 import { isNotNil, toBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
 export type NzTooltipTrigger = 'click' | 'focus' | 'hover' | null;
 
+@Directive()
 export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, AfterViewInit {
   directiveNameTitle?: NzTSType | null;
   specificTitle?: NzTSType | null;
@@ -42,18 +41,23 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
   specificTrigger?: NzTooltipTrigger;
   specificPlacement?: string;
   specificOrigin?: ElementRef<HTMLElement>;
-
+  specificVisible?: boolean;
+  specificMouseEnterDelay?: number;
+  specificMouseLeaveDelay?: number;
+  specificOverlayClassName?: string;
+  specificOverlayStyle?: NgStyleInterface;
+  specificVisibleChange = new EventEmitter<boolean>();
   /**
    * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
    * Please use a more specific API. Like `nzTooltipTitle`.
    */
-  @Input() nzTitle: NzTSType | null;
+  @Input() nzTitle?: NzTSType | null;
 
   /**
    * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
    * Please use a more specific API. Like `nzPopoverContent`.
    */
-  @Input() nzContent: NzTSType | null;
+  @Input() nzContent?: NzTSType | null;
 
   /**
    * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
@@ -67,26 +71,26 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
    */
   @Input() nzPlacement: string = 'top';
 
-  @Input() nzMouseEnterDelay: number = 0.15;
-  @Input() nzMouseLeaveDelay: number = 0.1;
-  @Input() nzOverlayClassName: string;
-  @Input() nzOverlayStyle: NgStyleInterface;
-  @Input() nzVisible: boolean;
+  @Input() nzMouseEnterDelay?: number;
+  @Input() nzMouseLeaveDelay?: number;
+  @Input() nzOverlayClassName?: string;
+  @Input() nzOverlayStyle?: NgStyleInterface;
+  @Input() nzVisible?: boolean;
 
   /**
    * For create tooltip dynamically. This should be override for each different component.
    */
-  protected componentFactory: ComponentFactory<NzTooltipBaseComponent>;
+  protected componentFactory!: ComponentFactory<NzTooltipBaseComponent>;
 
   /**
    * This true title that would be used in other parts on this component.
    */
   protected get title(): NzTSType | null {
-    return this.specificTitle || this.directiveNameTitle || this.nzTitle;
+    return this.specificTitle || this.directiveNameTitle || this.nzTitle || null;
   }
 
   protected get content(): NzTSType | null {
-    return this.specificContent || this.directiveNameContent || this.nzContent;
+    return this.specificContent || this.directiveNameContent || this.nzContent || null;
   }
 
   protected get placement(): string {
@@ -98,19 +102,32 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
     return typeof this.specificTrigger !== 'undefined' ? this.specificTrigger : this.nzTrigger;
   }
 
-  protected needProxyProperties = [
-    'nzOverlayClassName',
-    'nzOverlayStyle',
-    'nzMouseEnterDelay',
-    'nzMouseLeaveDelay',
-    'nzVisible',
-    'noAnimation'
-  ];
+  protected get isVisible(): boolean {
+    return this.specificVisible || this.nzVisible || false;
+  }
+
+  protected get mouseEnterDelay(): number {
+    return this.specificMouseEnterDelay || this.nzMouseEnterDelay || 0.15;
+  }
+
+  protected get mouseLeaveDelay(): number {
+    return this.specificMouseLeaveDelay || this.nzMouseLeaveDelay || 0.1;
+  }
+
+  protected get overlayClassName(): string | null {
+    return this.specificOverlayClassName || this.nzOverlayClassName || null;
+  }
+
+  protected get overlayStyle(): NgStyleInterface | null {
+    return this.specificOverlayStyle || this.nzOverlayStyle || null;
+  }
+
+  visible = false;
+  protected needProxyProperties = ['noAnimation'];
 
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
 
-  visible = false;
-  component: NzTooltipBaseComponent;
+  component?: NzTooltipBaseComponent;
 
   protected readonly destroy$ = new Subject<void>();
   protected readonly triggerDisposables: Array<() => void> = [];
@@ -125,6 +142,45 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
     protected noAnimation?: NzNoAnimationDirective
   ) {}
 
+  warnDeprecationIfNeeded(
+    isNeeded: boolean,
+    property: string,
+    newProperty: string,
+    comp: string = 'nz-tooltip',
+    shared: boolean = true
+  ): void {
+    if (isNeeded) {
+      let message = `'${property}' of '${comp}' is deprecated and will be removed in 10.0.0.
+      Please use '${newProperty}' instead.`;
+
+      if (shared) {
+        message = `${message} The same with 'nz-popover' and 'nz-popconfirm'.`;
+      }
+      warnDeprecation(message);
+    }
+  }
+
+  warnDeprecationByChanges(changes: SimpleChanges): void {
+    // warn deprecated things when specific property is not given
+    this.warnDeprecationIfNeeded(changes.nzTitle && !this.specificTitle && !this.directiveNameTitle, 'nzTitle', 'nzTooltipTitle');
+    this.warnDeprecationIfNeeded(changes.nzContent && !this.specificContent, 'nzContent', 'nzPopoverContent', 'nz-popover', false);
+    this.warnDeprecationIfNeeded(changes.nzPlacement && !this.specificPlacement, 'nzPlacement', 'nzTooltipPlacement');
+    this.warnDeprecationIfNeeded(changes.nzTrigger && !this.specificTrigger, 'nzTrigger', 'nzTooltipTrigger');
+    this.warnDeprecationIfNeeded(changes.nzVisible && !this.specificVisible, 'nzVisible', 'nzTooltipVisible');
+    this.warnDeprecationIfNeeded(
+      changes.nzMouseEnterDelay && !this.specificMouseEnterDelay,
+      'nzMouseEnterDelay',
+      'nzTooltipMouseEnterDelay'
+    );
+    this.warnDeprecationIfNeeded(
+      changes.nzMouseLeaveDelay && !this.specificMouseLeaveDelay,
+      'nzMouseLeaveDelay',
+      'nzTooltipMouseLeaveDelay'
+    );
+    this.warnDeprecationIfNeeded(changes.nzOverlayClassName && !this.specificOverlayClassName, 'nzOverlayClassName', 'nzTooltipClassName');
+    this.warnDeprecationIfNeeded(changes.nzOverlayStyle && !this.specificOverlayStyle, 'nzOverlayStyle', 'nzTooltipOverlayStyle');
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     const { nzTrigger, specificTrigger } = changes;
     const trigger = specificTrigger || nzTrigger;
@@ -137,34 +193,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
       this.updateChangedProperties(changes);
     }
 
-    // Warn deprecated things.
-    if (changes.nzTitle) {
-      warnDeprecation(
-        `'nzTitle' of 'nz-tooltip' is deprecated and will be removed in 10.0.0.
-Please use 'nzTooltipTitle' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
-      );
-    }
-
-    if (changes.nzContent) {
-      warnDeprecation(
-        `'nzContent' of 'nz-popover' is deprecated and will be removed in 10.0.0.
-Please use 'nzPopoverContent' instead.`
-      );
-    }
-
-    if (changes.nzPlacement) {
-      warnDeprecation(
-        `'nzPlacement' of 'nz-tooltip' is deprecated and will be removed in 10.0.0.
-Please use 'nzTooltipContent' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
-      );
-    }
-
-    if (changes.nzTrigger) {
-      warnDeprecation(
-        `'nzTrigger' of 'nz-tooltip' is deprecated and will be removed in 10.0.0.
-Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popconfirm'.`
-      );
-    }
+    this.warnDeprecationByChanges(changes);
   }
 
   ngAfterViewInit(): void {
@@ -182,11 +211,11 @@ Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popcon
   }
 
   show(): void {
-    this.component.show();
+    this.component?.show();
   }
 
   hide(): void {
-    this.component.hide();
+    this.component?.hide();
   }
 
   /**
@@ -214,6 +243,7 @@ Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popcon
 
     this.component.nzVisibleChange.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe((visible: boolean) => {
       this.visible = visible;
+      this.specificVisibleChange.emit(visible);
       this.nzVisibleChange.emit(visible);
     });
   }
@@ -230,13 +260,13 @@ Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popcon
       let overlayElement: HTMLElement;
       this.triggerDisposables.push(
         this.renderer.listen(el, 'mouseenter', () => {
-          this.delayEnterLeave(true, true, this.nzMouseEnterDelay);
+          this.delayEnterLeave(true, true, this.mouseEnterDelay);
         })
       );
       this.triggerDisposables.push(
         this.renderer.listen(el, 'mouseleave', () => {
-          this.delayEnterLeave(true, false, this.nzMouseLeaveDelay);
-          if (this.component.overlay.overlayRef && !overlayElement) {
+          this.delayEnterLeave(true, false, this.mouseLeaveDelay);
+          if (this.component?.overlay.overlayRef && !overlayElement) {
             overlayElement = this.component.overlay.overlayRef.overlayElement;
             this.triggerDisposables.push(
               this.renderer.listen(overlayElement, 'mouseenter', () => {
@@ -264,6 +294,52 @@ Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popcon
     } // Else do nothing because user wants to control the visibility programmatically.
   }
 
+  updatePropertiesByChanges(changes: SimpleChanges): void {
+    const properties = {
+      specificTitle: ['nzTitle', this.title],
+      directiveNameTitle: ['nzTitle', this.title],
+      nzTitle: ['nzTitle', this.title],
+      specificContent: ['nzContent', this.content],
+      directiveNameContent: ['nzContent', this.content],
+      nzContent: ['nzContent', this.content],
+      specificTrigger: ['nzTrigger', this.trigger],
+      nzTrigger: ['nzTrigger', this.trigger],
+      specificPlacement: ['nzPlacement', this.placement],
+      nzPlacement: ['nzPlacement', this.placement],
+      specificVisible: ['nzVisible', this.isVisible],
+      nzVisible: ['nzVisible', this.isVisible],
+      specificMouseEnterDelay: ['nzMouseEnterDelay', this.mouseEnterDelay],
+      nzMouseEnterDelay: ['nzMouseEnterDelay', this.mouseEnterDelay],
+      specificMouseLeaveDelay: ['nzMouseLeaveDelay', this.mouseLeaveDelay],
+      nzMouseLeaveDelay: ['nzMouseLeaveDelay', this.mouseLeaveDelay],
+      specificOverlayClassName: ['nzOverlayClassName', this.overlayClassName],
+      nzOverlayClassName: ['nzOverlayClassName', this.overlayClassName],
+      specificOverlayStyle: ['nzOverlayStyle', this.overlayStyle],
+      nzOverlayStyle: ['nzOverlayStyle', this.overlayStyle]
+    };
+
+    const keys = Object.keys(changes);
+    keys.forEach((property: NzSafeAny) => {
+      // @ts-ignore
+      if (properties[property]) {
+        // @ts-ignore
+        const [name, value] = properties[property];
+        this.updateComponentValue(name, value);
+      }
+    });
+  }
+
+  updatePropertiesByArray(): void {
+    this.updateComponentValue('nzTitle', this.title);
+    this.updateComponentValue('nzContent', this.content);
+    this.updateComponentValue('nzPlacement', this.placement);
+    this.updateComponentValue('nzTrigger', this.trigger);
+    this.updateComponentValue('nzVisible', this.isVisible);
+    this.updateComponentValue('nzMouseEnterDelay', this.mouseEnterDelay);
+    this.updateComponentValue('nzMouseLeaveDelay', this.mouseLeaveDelay);
+    this.updateComponentValue('nzOverlayClassName', this.overlayClassName);
+    this.updateComponentValue('nzOverlayStyle', this.overlayStyle);
+  }
   /**
    * Sync changed properties to the component and trigger change detection in that component.
    */
@@ -277,29 +353,12 @@ Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popcon
         this.updateComponentValue(property, this[property]);
       }
     });
-
     if (isArray) {
-      this.updateComponentValue('nzTitle', this.title);
-      this.updateComponentValue('nzContent', this.content);
-      this.updateComponentValue('nzPlacement', this.placement);
-      this.updateComponentValue('nzTrigger', this.trigger);
+      this.updatePropertiesByArray();
     } else {
-      const c = propertiesOrChanges as SimpleChanges;
-      if (c.specificTitle || c.directiveNameTitle || c.nzTitle) {
-        this.updateComponentValue('nzTitle', this.title);
-      }
-      if (c.specificContent || c.directiveNameContent || c.nzContent) {
-        this.updateComponentValue('nzContent', this.content);
-      }
-      if (c.specificTrigger || c.nzTrigger) {
-        this.updateComponentValue('nzTrigger', this.trigger);
-      }
-      if (c.specificPlacement || c.nzPlacement) {
-        this.updateComponentValue('nzPlacement', this.placement);
-      }
+      this.updatePropertiesByChanges(propertiesOrChanges as SimpleChanges);
     }
-
-    this.component.updateByDirective();
+    this.component?.updateByDirective();
   }
 
   private updateComponentValue(key: string, value: NzSafeAny): void {
@@ -337,21 +396,26 @@ Please use 'nzTooltipTrigger' instead. The same with 'nz-popover' and 'nz-popcon
   }
 }
 
+@Directive()
+// tslint:disable-next-line:directive-class-suffix
 export abstract class NzTooltipBaseComponent implements OnDestroy {
-  @ViewChild('overlay', { static: false }) overlay: CdkConnectedOverlay;
+  static ngAcceptInputType_nzVisible: BooleanInput;
+
+  @ViewChild('overlay', { static: false }) overlay!: CdkConnectedOverlay;
 
   nzVisibleChange = new Subject<boolean>();
-  nzTitle: NzTSType | null;
-  nzContent: NzTSType | null;
-  nzOverlayClassName: string;
+  nzTitle: NzTSType | null = null;
+  nzContent: NzTSType | null = null;
+  nzOverlayClassName!: string;
   nzOverlayStyle: NgStyleInterface = {};
-  nzMouseEnterDelay: number;
-  nzMouseLeaveDelay: number;
+  nzMouseEnterDelay?: number;
+  nzMouseLeaveDelay?: number;
 
   set nzVisible(value: boolean) {
     const visible = toBoolean(value);
     if (this._visible !== visible) {
       this._visible = visible;
+      this.nzVisibleChange.next(visible);
     }
   }
 
@@ -383,7 +447,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
     return this.preferredPlacement;
   }
 
-  origin: CdkOverlayOrigin;
+  origin?: CdkOverlayOrigin;
   preferredPlacement = 'top';
 
   _classMap: NgClassInterface = {};

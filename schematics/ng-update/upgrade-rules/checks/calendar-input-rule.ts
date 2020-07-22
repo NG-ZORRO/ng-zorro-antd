@@ -1,8 +1,8 @@
-import { findInputsOnElementWithTag, MigrationRule, ResolvedResource, TargetVersion } from '@angular/cdk/schematics';
+import { findInputsOnElementWithTag, Migration, ResolvedResource, TargetVersion, UpgradeData } from '@angular/cdk/schematics';
 
-export class CalendarTemplateRule extends MigrationRule<null> {
+export class CalendarTemplateRule extends Migration<UpgradeData> {
 
-  ruleEnabled = this.targetVersion === TargetVersion.V9;
+  enabled = this.targetVersion === TargetVersion.V9;
 
   visitTemplate(template: ResolvedResource): void {
 

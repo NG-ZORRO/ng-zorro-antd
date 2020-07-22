@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -23,16 +20,27 @@ export class NzTableStyleService {
   noResult$ = new ReplaySubject<string | TemplateRef<NzSafeAny> | undefined>(1);
   private listOfThWidthConfigPx$ = new BehaviorSubject<Array<string | null>>([]);
   private tableWidthConfigPx$ = new BehaviorSubject<Array<string | null>>([]);
-  private manualWidthConfigPx$ = combineLatest([this.tableWidthConfigPx$, this.listOfThWidthConfigPx$]).pipe(
+  manualWidthConfigPx$ = combineLatest([this.tableWidthConfigPx$, this.listOfThWidthConfigPx$]).pipe(
     map(([widthConfig, listOfWidth]) => (widthConfig.length ? widthConfig : listOfWidth))
   );
   private listOfAutoWidthPx$ = new ReplaySubject<string[]>(1);
   listOfListOfThWidthPx$ = merge(
+    /** init with manual width **/
     this.manualWidthConfigPx$,
     combineLatest([this.listOfAutoWidthPx$, this.manualWidthConfigPx$]).pipe(
       map(([autoWidth, manualWidth]) => {
         /** use autoWidth until column length match **/
-        return autoWidth.length !== manualWidth.length ? manualWidth : autoWidth;
+        if (autoWidth.length === manualWidth.length) {
+          return autoWidth.map((width, index) => {
+            if (width === '0px') {
+              return manualWidth[index] || null;
+            } else {
+              return manualWidth[index] || width;
+            }
+          });
+        } else {
+          return manualWidth;
+        }
       })
     )
   );
@@ -59,7 +67,7 @@ export class NzTableStyleService {
   setListOfTh(listOfTh: NzThMeasureDirective[]): void {
     let columnCount = 0;
     listOfTh.forEach(th => {
-      columnCount += th.colspan || 1;
+      columnCount += (th.colspan && +th.colspan) || (th.colSpan && +th.colSpan) || 1;
     });
     const listOfThPx = listOfTh.map(item => item.nzWidth);
     this.columnCount$.next(columnCount);
@@ -69,7 +77,7 @@ export class NzTableStyleService {
   setListOfMeasureColumn(listOfTh: NzThMeasureDirective[]): void {
     const listOfKeys: string[] = [];
     listOfTh.forEach(th => {
-      const length = th.colspan || 1;
+      const length = (th.colspan && +th.colspan) || (th.colSpan && +th.colSpan) || 1;
       for (let i = 0; i < length; i++) {
         listOfKeys.push(`measure_key_${i}`);
       }

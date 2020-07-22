@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -73,20 +70,27 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
       [class.ant-slider-with-marks]="marksArray"
     >
       <div class="ant-slider-rail"></div>
-      <nz-slider-track [vertical]="nzVertical" [included]="nzIncluded" [offset]="track.offset" [length]="track.length"></nz-slider-track>
+      <nz-slider-track
+        [vertical]="nzVertical"
+        [included]="nzIncluded"
+        [offset]="track.offset!"
+        [length]="track.length!"
+        [reverse]="nzReverse"
+      ></nz-slider-track>
       <nz-slider-step
         *ngIf="marksArray"
         [vertical]="nzVertical"
-        [lowerBound]="bounds.lower"
-        [upperBound]="bounds.upper"
+        [lowerBound]="$any(bounds.lower)"
+        [upperBound]="$any(bounds.upper)"
         [marksArray]="marksArray"
         [included]="nzIncluded"
       ></nz-slider-step>
       <nz-slider-handle
         *ngFor="let handle of handles"
         [vertical]="nzVertical"
-        [offset]="handle.offset"
-        [value]="handle.value"
+        [reverse]="nzReverse"
+        [offset]="handle.offset!"
+        [value]="handle.value!"
         [active]="handle.active"
         [tooltipFormatter]="nzTipFormatter"
         [tooltipVisible]="nzTooltipVisible"
@@ -97,8 +101,8 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
         [vertical]="nzVertical"
         [min]="nzMin"
         [max]="nzMax"
-        [lowerBound]="bounds.lower"
-        [upperBound]="bounds.upper"
+        [lowerBound]="$any(bounds.lower)"
+        [upperBound]="$any(bounds.upper)"
         [marksArray]="marksArray"
         [included]="nzIncluded"
       ></nz-slider-marks>
@@ -114,15 +118,17 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   static ngAcceptInputType_nzMax: NumberInput;
   static ngAcceptInputType_nzMin: NumberInput;
   static ngAcceptInputType_nzStep: NumberInput;
+  static ngAcceptInputType_nzReverse: BooleanInput;
 
-  @ViewChild('slider', { static: true }) slider: ElementRef<HTMLDivElement>;
-  @ViewChildren(NzSliderHandleComponent) handlerComponents: QueryList<NzSliderHandleComponent>;
+  @ViewChild('slider', { static: true }) slider!: ElementRef<HTMLDivElement>;
+  @ViewChildren(NzSliderHandleComponent) handlerComponents!: QueryList<NzSliderHandleComponent>;
 
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzDots: boolean = false;
   @Input() @InputBoolean() nzIncluded: boolean = true;
   @Input() @InputBoolean() nzRange: boolean = false;
   @Input() @InputBoolean() nzVertical: boolean = false;
+  @Input() @InputBoolean() nzReverse: boolean = false;
   @Input() nzDefaultValue?: NzSliderValue;
   @Input() nzMarks: NzMarks | null = null;
   @Input() @InputNumber() nzMax = 100;
@@ -130,7 +136,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   @Input() @InputNumber() nzStep = 1;
   @Input() nzTooltipVisible: NzSliderShowTooltip = 'default';
   @Input() nzTooltipPlacement: string = 'top';
-  @Input() nzTipFormatter: (value: number) => string;
+  @Input() nzTipFormatter?: null | ((value: number) => string);
 
   @Output() readonly nzOnAfterChange = new EventEmitter<NzSliderValue>();
 
@@ -139,16 +145,16 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   cacheSliderLength: number | null = null;
   activeValueIndex: number | undefined = undefined; // Current activated handle's index ONLY for range=true
   track: { offset: null | number; length: null | number } = { offset: null, length: null }; // Track's offset and length
-  handles: NzSliderHandler[]; // Handles' offset
-  marksArray: NzExtendedMark[] | null; // "steps" in array type with more data & FILTER out the invalid mark
+  handles: NzSliderHandler[] = []; // Handles' offset
+  marksArray: NzExtendedMark[] | null = null; // "steps" in array type with more data & FILTER out the invalid mark
   bounds: { lower: NzSliderValue | null; upper: NzSliderValue | null } = { lower: null, upper: null }; // now for nz-slider-step
 
-  private dragStart$: Observable<number>;
-  private dragMove$: Observable<number>;
-  private dragEnd$: Observable<Event>;
-  private dragStart_: Subscription | null;
-  private dragMove_: Subscription | null;
-  private dragEnd_: Subscription | null;
+  private dragStart$?: Observable<number>;
+  private dragMove$?: Observable<number>;
+  private dragEnd$?: Observable<Event>;
+  private dragStart_?: Subscription | null;
+  private dragMove_?: Subscription | null;
+  private dragEnd_?: Subscription | null;
 
   constructor(private sliderService: NzSliderService, private cdr: ChangeDetectorRef, private platform: Platform) {}
 
@@ -214,7 +220,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
 
     e.preventDefault();
 
-    const step = isDecrease ? -this.nzStep : this.nzStep;
+    const step = (isDecrease ? -this.nzStep : this.nzStep) * (this.nzReverse ? -1 : 1);
     const newVal = this.nzRange ? (this.value as number[])[this.activeValueIndex!] + step : (this.value as number) + step;
     this.setActiveValue(ensureNumberInRange(newVal, this.nzMin, this.nzMax));
   }
@@ -308,14 +314,18 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   private onDragStart(value: number): void {
     this.toggleDragMoving(true);
     this.cacheSliderProperty();
-    this.setActiveValueIndex(value);
-    this.setActiveValue(value);
+    this.setActiveValueIndex(this.getLogicalValue(value));
+    this.setActiveValue(this.getLogicalValue(value));
     this.showHandleTooltip(this.nzRange ? this.activeValueIndex : 0);
   }
 
   private onDragMove(value: number): void {
-    this.setActiveValue(value);
+    this.setActiveValue(this.getLogicalValue(value));
     this.cdr.markForCheck();
+  }
+
+  private getLogicalValue(value: number): number {
+    return this.nzReverse ? this.nzMax - value : value;
   }
 
   private onDragEnd(): void {

@@ -1,31 +1,17 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 import { ENTER } from '@angular/cdk/keycodes';
 import { HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpRequest, HttpResponse } from '@angular/common/http';
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Optional,
-  ViewChild,
-  ViewEncapsulation
-} from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, Optional, ViewChild, ViewEncapsulation } from '@angular/core';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { Observable, of, Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
-import { UploadFile, UploadXHRArgs, ZipButtonOptions } from './interface';
+import { NzUploadFile, NzUploadXHRArgs, ZipButtonOptions } from './interface';
 
 @Component({
   selector: '[nz-upload-btn]',
@@ -34,26 +20,21 @@ import { UploadFile, UploadXHRArgs, ZipButtonOptions } from './interface';
   host: {
     '[attr.tabindex]': '"0"',
     '[attr.role]': '"button"',
-    '[class]': 'hostClassMap'
+    '[class.ant-upload]': 'true',
+    '[class.ant-upload-disabled]': 'options.disabled',
+    '(click)': 'onClick()',
+    '(keydown)': 'onKeyDown($event)',
+    '(drop)': 'onFileDrop($event)',
+    '(dragover)': 'onFileDrop($event)'
   },
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None
 })
-export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
+export class NzUploadBtnComponent implements OnDestroy {
   reqs: { [key: string]: Subscription } = {};
-  hostClassMap = {};
-  private inited = false;
   private destroy = false;
-
-  @ViewChild('file', { static: false }) file: ElementRef;
-
-  // #region fields
-  @Input() classes: {} = {};
-  @Input() options: ZipButtonOptions;
-
-  // #endregion
-
-  @HostListener('click')
+  @ViewChild('file', { static: false }) file!: ElementRef;
+  @Input() options!: ZipButtonOptions;
   onClick(): void {
     if (this.options.disabled || !this.options.openFileDialogOnClick) {
       return;
@@ -61,7 +42,6 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     (this.file.nativeElement as HTMLInputElement).click();
   }
 
-  @HostListener('keydown', ['$event'])
   onKeyDown(e: KeyboardEvent): void {
     if (this.options.disabled) {
       return;
@@ -71,8 +51,6 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  @HostListener('drop', ['$event'])
-  @HostListener('dragover', ['$event'])
   // skip safari bug
   onFileDrop(e: DragEvent): void {
     if (this.options.disabled || e.type === 'dragover') {
@@ -149,17 +127,15 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     return true;
   }
 
-  private attachUid(file: UploadFile): UploadFile {
+  private attachUid(file: NzUploadFile): NzUploadFile {
     if (!file.uid) {
-      file.uid = Math.random()
-        .toString(36)
-        .substring(2);
+      file.uid = Math.random().toString(36).substring(2);
     }
     return file;
   }
 
   uploadFiles(fileList: FileList | File[]): void {
-    let filters$: Observable<UploadFile[]> = of(Array.prototype.slice.call(fileList));
+    let filters$: Observable<NzUploadFile[]> = of(Array.prototype.slice.call(fileList));
     if (this.options.filters) {
       this.options.filters.forEach(f => {
         filters$ = filters$.pipe(
@@ -172,7 +148,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     }
     filters$.subscribe(
       list => {
-        list.forEach((file: UploadFile) => {
+        list.forEach((file: NzUploadFile) => {
           this.attachUid(file);
           this.upload(file, list);
         });
@@ -183,14 +159,14 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     );
   }
 
-  private upload(file: UploadFile, fileList: UploadFile[]): void {
+  private upload(file: NzUploadFile, fileList: NzUploadFile[]): void {
     if (!this.options.beforeUpload) {
       return this.post(file);
     }
     const before = this.options.beforeUpload(file, fileList);
     if (before instanceof Observable) {
       before.subscribe(
-        (processedFile: UploadFile) => {
+        (processedFile: NzUploadFile) => {
           const processedFileType = Object.prototype.toString.call(processedFile);
           if (processedFileType === '[object File]' || processedFileType === '[object Blob]') {
             this.attachUid(processedFile);
@@ -208,16 +184,16 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private post(file: UploadFile): void {
+  private post(file: NzUploadFile): void {
     if (this.destroy) {
       return;
     }
-    let process$: Observable<string | Blob | File | UploadFile> = of(file);
+    let process$: Observable<string | Blob | File | NzUploadFile> = of(file);
     const opt = this.options;
     const { uid } = file;
     const { action, data, headers, transformFile } = opt;
 
-    const args: UploadXHRArgs = {
+    const args: NzUploadXHRArgs = {
       action: typeof action === 'string' ? action : '',
       name: opt.name,
       headers,
@@ -241,7 +217,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     };
 
     if (typeof action === 'function') {
-      const actionResult = (action as (file: UploadFile) => string | Observable<string>)(file);
+      const actionResult = (action as (file: NzUploadFile) => string | Observable<string>)(file);
       if (actionResult instanceof Observable) {
         process$ = process$.pipe(
           switchMap(() => actionResult),
@@ -261,7 +237,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     if (typeof data === 'function') {
-      const dataResult = (data as (file: UploadFile) => {} | Observable<{}>)(file);
+      const dataResult = (data as (file: NzUploadFile) => {} | Observable<{}>)(file);
       if (dataResult instanceof Observable) {
         process$ = process$.pipe(
           switchMap(() => dataResult),
@@ -276,7 +252,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     if (typeof headers === 'function') {
-      const headersResult = (headers as (file: UploadFile) => {} | Observable<{}>)(file);
+      const headersResult = (headers as (file: NzUploadFile) => {} | Observable<{}>)(file);
       if (headersResult instanceof Observable) {
         process$ = process$.pipe(
           switchMap(() => headersResult),
@@ -301,7 +277,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  private xhr(args: UploadXHRArgs): Subscription {
+  private xhr(args: NzUploadXHRArgs): Subscription {
     const formData = new FormData();
 
     if (args.data) {
@@ -351,7 +327,7 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     delete this.reqs[uid];
   }
 
-  abort(file?: UploadFile): void {
+  abort(file?: NzUploadFile): void {
     if (file) {
       this.clean(file && file.uid);
     } else {
@@ -359,34 +335,9 @@ export class NzUploadBtnComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  // #region styles
-
-  private prefixCls = 'ant-upload';
-
-  private setClassMap(): void {
-    this.hostClassMap = {
-      [this.prefixCls]: true,
-      [`${this.prefixCls}-disabled`]: this.options.disabled,
-      ...this.classes
-    };
-  }
-
-  // #endregion
-
   constructor(@Optional() private http: HttpClient) {
     if (!http) {
       throw new Error(`Not found 'HttpClient', You can import 'HttpClientModule' in your root module.`);
-    }
-  }
-
-  ngOnInit(): void {
-    this.inited = true;
-    this.setClassMap();
-  }
-
-  ngOnChanges(): void {
-    if (this.inited) {
-      this.setClassMap();
     }
   }
 

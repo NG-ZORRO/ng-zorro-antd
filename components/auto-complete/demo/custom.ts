@@ -10,7 +10,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
         nz-input
         row="4"
         [(ngModel)]="inputValue"
-        (input)="onInput($event.target?.value)"
+        (input)="onInput($event)"
         [nzAutocomplete]="auto"
       ></textarea>
       <nz-autocomplete #auto>
@@ -20,10 +20,11 @@ import { Component, ViewEncapsulation } from '@angular/core';
   `
 })
 export class NzDemoAutoCompleteCustomComponent {
-  inputValue: string;
+  inputValue?: string;
   options: string[] = [];
 
-  onInput(value: string): void {
+  onInput(event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
     this.options = value ? [value, value + value, value + value + value] : [];
   }
 }

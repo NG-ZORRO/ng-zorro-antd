@@ -41,6 +41,13 @@ English | [简体中文](README-zh_CN.md)
 - Powerful theme customization in every detail.
 - Internationalization support for dozens of languages.
 
+
+## ☀️ License
+
+[MIT](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE)
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FNG-ZORRO%2Fng-zorro-antd.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FNG-ZORRO%2Fng-zorro-antd?ref=badge_shield)
+
 ## 🖥 Environment Support
 
 * Angular `^9.0.0` [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
@@ -128,10 +135,6 @@ $ npm run start
 
 Browser would open automatically.
 
-## 🗺 Road Map
-
-Check [this issue](https://github.com/NG-ZORRO/ng-zorro-antd/issues/2025) to read our plans for 2019.
-
 ## 🤝 Contributing
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/NG-ZORRO/ng-zorro-antd/pulls)
@@ -172,6 +175,3 @@ As always, we encourage experienced users to help those who are not familiar wit
 
 > We list some users here, if your company or product uses NG-ZORRO, let us know [here](https://github.com/NG-ZORRO/ng-zorro-antd/issues/1142)!
 
-## ☀️ License
-
-MIT

@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -50,10 +47,10 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
   @Input() nzFormat: string = 'HH:mm:ss';
   @Output() readonly nzCountdownFinish = new EventEmitter<void>();
 
-  diff: number;
+  diff!: number;
 
-  private target: number;
-  private updater_: Subscription | null;
+  private target: number = 0;
+  private updater_?: Subscription | null;
 
   constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone, private platform: Platform) {
     super();

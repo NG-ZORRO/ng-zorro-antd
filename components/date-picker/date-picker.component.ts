@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -10,6 +7,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
   forwardRef,
   Host,
@@ -19,6 +17,7 @@ import {
   OnInit,
   Optional,
   Output,
+  Renderer2,
   SimpleChanges,
   TemplateRef,
   ViewChild,
@@ -28,17 +27,19 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { CandyDate, cloneDate, CompatibleValue } from 'ng-zorro-antd/core/time';
-import { BooleanInput, FunctionProp, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, FunctionProp, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzDatePickerI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DatePickerService } from './date-picker.service';
 
+import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzPickerComponent } from './picker.component';
-import { CompatibleDate, DisabledTimeFn, PanelMode, PresetRanges, SupportTimeOptions } from './standard-types';
+import { CompatibleDate, DisabledTimeFn, NzDateMode, PresetRanges, SupportTimeOptions } from './standard-types';
 
 const POPUP_STYLE_PATCH = { position: 'relative' }; // Aim to override antd's style to support overlay's position strategy (position:absolute will cause it not working beacuse the overlay can't get the height/width of it's content)
+const NZ_CONFIG_COMPONENT_NAME = 'datePicker';
 
 /**
  * The base picker for all common APIs
@@ -48,9 +49,57 @@ const POPUP_STYLE_PATCH = { position: 'relative' }; // Aim to override antd's st
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'nz-date-picker,nz-week-picker,nz-month-picker,nz-year-picker,nz-range-picker',
   exportAs: 'nzDatePicker',
-  templateUrl: './date-picker.component.html',
+  template: `
+    <div
+      nz-picker
+      [isRange]="isRange"
+      [open]="nzOpen"
+      [separator]="nzSeparator"
+      [disabled]="nzDisabled"
+      [inputReadOnly]="nzInputReadOnly"
+      [format]="nzFormat"
+      [allowClear]="nzAllowClear"
+      [autoFocus]="nzAutoFocus"
+      [placeholder]="nzPlaceHolder"
+      [ngClass]="nzClassName"
+      style="display: inherit; align-items: center; width: 100%;"
+      [ngStyle]="nzStyle"
+      [dropdownClassName]="nzDropdownClassName"
+      [popupStyle]="nzPopupStyle"
+      [noAnimation]="!!noAnimation?.nzNoAnimation"
+      [suffixIcon]="nzSuffixIcon"
+      (openChange)="onOpenChange($event)"
+      (focusChange)="onFocusChange($event)"
+    >
+      <date-range-popup
+        *ngIf="realOpenState"
+        [isRange]="isRange"
+        [defaultPickerValue]="nzDefaultPickerValue"
+        [showWeek]="showWeek"
+        [panelMode]="nzMode"
+        (panelModeChange)="onPanelModeChange($event)"
+        (calendarChange)="onCalendarChange($event)"
+        [locale]="nzLocale?.lang!"
+        [showToday]="realShowToday"
+        [showTime]="nzShowTime"
+        [format]="nzFormat"
+        [dateRender]="nzDateRender"
+        [disabledDate]="nzDisabledDate"
+        [disabledTime]="nzDisabledTime"
+        [placeholder]="nzPlaceHolder"
+        [extraFooter]="extraFooter"
+        [ranges]="nzRanges"
+        (resultOk)="onResultOk()"
+      ></date-range-popup>
+    </div>
+  `,
   host: {
-    '[class]': 'hostClassMap'
+    '[class.ant-picker]': `true`,
+    '[class.ant-picker-range]': `isRange`,
+    '[class.ant-picker-large]': `nzSize === 'large'`,
+    '[class.ant-picker-small]': `nzSize === 'small'`,
+    '[class.ant-picker-disabled]': `nzDisabled`,
+    '(click)': 'picker.onClickInputBox($event)'
   },
   providers: [
     DatePickerService,
@@ -65,55 +114,59 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   static ngAcceptInputType_nzAllowClear: BooleanInput;
   static ngAcceptInputType_nzAutoFocus: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzInputReadOnly: BooleanInput;
   static ngAcceptInputType_nzOpen: BooleanInput;
   static ngAcceptInputType_nzShowToday: BooleanInput;
-  static ngAcceptInputType_nzShowTime: BooleanInput;
+  static ngAcceptInputType_nzMode: NzDateMode | NzDateMode[] | string | string[] | null | undefined;
+  static ngAcceptInputType_nzShowTime: BooleanInput | SupportTimeOptions | null | undefined;
 
   isRange: boolean = false; // Indicate whether the value is a range value
   showWeek: boolean = false; // Should show as week picker
   focused: boolean = false;
-  extraFooter: TemplateRef<void> | string;
-  hostClassMap = {};
+  extraFooter?: TemplateRef<NzSafeAny> | string;
 
   protected destroyed$: Subject<void> = new Subject();
   protected isCustomPlaceHolder: boolean = false;
-  private showTime: SupportTimeOptions | boolean;
+  private showTime: SupportTimeOptions | boolean = false;
 
   // --- Common API
   @Input() @InputBoolean() nzAllowClear: boolean = true;
   @Input() @InputBoolean() nzAutoFocus: boolean = false;
   @Input() @InputBoolean() nzDisabled: boolean = false;
-  @Input() @InputBoolean() nzOpen: boolean;
+  @Input() @InputBoolean() nzInputReadOnly: boolean = false;
+  @Input() @InputBoolean() nzOpen?: boolean;
   /**
    * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
    */
-  @Input() nzClassName: string;
-  @Input() nzDisabledDate: (d: Date) => boolean;
-  @Input() nzLocale: NzDatePickerI18nInterface;
-  @Input() nzPlaceHolder: string | string[];
+  @Input() nzClassName: string = '';
+  @Input() nzDisabledDate?: (d: Date) => boolean;
+  @Input() nzLocale!: NzDatePickerI18nInterface;
+  @Input() nzPlaceHolder: string | [string, string] = '';
   @Input() nzPopupStyle: object = POPUP_STYLE_PATCH;
-  @Input() nzDropdownClassName: string;
-  @Input() nzSize: 'large' | 'small';
+  @Input() nzDropdownClassName?: string;
+  @Input() nzSize: 'large' | 'small' | 'default' = 'default';
   /**
    * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
    */
-  @Input() nzStyle: object;
-  @Input() nzFormat: string;
-  @Input() nzDateRender: FunctionProp<TemplateRef<Date> | string>;
-  @Input() nzDisabledTime: DisabledTimeFn;
-  @Input() nzRenderExtraFooter: FunctionProp<TemplateRef<void> | string>;
+  @Input() nzStyle: object | null = null;
+  @Input() nzFormat!: string;
+  @Input() nzDateRender?: TemplateRef<NzSafeAny> | string | FunctionProp<TemplateRef<Date> | string>;
+  @Input() nzDisabledTime?: DisabledTimeFn;
+  @Input() nzRenderExtraFooter?: TemplateRef<NzSafeAny> | string | FunctionProp<TemplateRef<NzSafeAny> | string>;
   @Input() @InputBoolean() nzShowToday: boolean = true;
-  @Input() nzMode: PanelMode | PanelMode[] = 'date';
-  @Input() nzRanges: PresetRanges;
+  @Input() nzMode: NzDateMode | NzDateMode[] = 'date';
+  @Input() nzRanges?: PresetRanges;
   @Input() nzDefaultPickerValue: CompatibleDate | null = null;
-  @Input() nzSeparator: string;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSeparator?: string = undefined;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSuffixIcon: string | TemplateRef<NzSafeAny> = 'calendar';
 
-  @Output() readonly nzOnPanelChange = new EventEmitter<PanelMode | PanelMode[]>();
+  // TODO(@wenqi73) The PanelMode need named for each pickers and export
+  @Output() readonly nzOnPanelChange = new EventEmitter<NzDateMode | NzDateMode[] | string | string[]>();
   @Output() readonly nzOnCalendarChange = new EventEmitter<Array<Date | null>>();
   @Output() readonly nzOnOk = new EventEmitter<CompatibleDate | null>();
   @Output() readonly nzOnOpenChange = new EventEmitter<boolean>();
 
-  @ViewChild(NzPickerComponent, { static: true }) protected picker: NzPickerComponent;
+  @ViewChild(NzPickerComponent, { static: true }) picker!: NzPickerComponent;
 
   @Input() get nzShowTime(): SupportTimeOptions | boolean {
     return this.showTime;
@@ -127,21 +180,13 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     return this.picker.animationOpenState;
   } // Use picker's real open state to let re-render the picker's content when shown up
 
-  updateHostClass(): void {
-    this.hostClassMap = {
-      [`ant-picker`]: true,
-      [`ant-picker-range`]: this.isRange,
-      [`ant-picker-large`]: this.nzSize === 'large',
-      [`ant-picker-small`]: this.nzSize === 'small',
-      [`ant-picker-focused`]: this.focused,
-      [`ant-picker-disabled`]: this.nzDisabled
-    };
-  }
-
   constructor(
+    public nzConfigService: NzConfigService,
     public datePickerService: DatePickerService,
     protected i18n: NzI18nService,
     protected cdr: ChangeDetectorRef,
+    private renderer: Renderer2,
+    private elementRef: ElementRef,
     protected dateHelper: DateHelperService,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {}
@@ -177,7 +222,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
       this.picker.hideOverlay();
     });
 
-    this.updateHostClass();
     // Default format when it's empty
     if (!this.nzFormat) {
       if (this.showWeek) {
@@ -189,10 +233,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.nzSize || changes.nzDisabled) {
-      this.updateHostClass();
-    }
-
     if (changes.nzPopupStyle) {
       // Always assign the popup style patch
       this.nzPopupStyle = this.nzPopupStyle ? { ...this.nzPopupStyle, ...POPUP_STYLE_PATCH } : POPUP_STYLE_PATCH;
@@ -209,7 +249,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     }
 
     if (changes.nzRenderExtraFooter) {
-      this.extraFooter = valueFunctionProp(this.nzRenderExtraFooter);
+      this.extraFooter = valueFunctionProp(this.nzRenderExtraFooter!);
     }
 
     if (changes.nzStyle) {
@@ -269,6 +309,11 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     this.onTouchedFn = fn;
   }
 
+  setDisabledState(isDisabled: boolean): void {
+    this.nzDisabled = isDisabled;
+    this.cdr.markForCheck();
+  }
+
   // ------------------------------------------------------------------------
   // | Internal methods
   // ------------------------------------------------------------------------
@@ -282,7 +327,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
 
   private setDefaultPlaceHolder(): void {
     if (!this.isCustomPlaceHolder && this.nzLocale) {
-      this.nzPlaceHolder = this.isRange ? this.nzLocale.lang.rangePlaceholder : this.nzLocale.lang.placeholder;
+      this.nzPlaceHolder = this.isRange ? (this.nzLocale.lang.rangePlaceholder as [string, string]) : this.nzLocale.lang.placeholder!;
     }
   }
 
@@ -300,18 +345,23 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
 
   onFocusChange(value: boolean): void {
     this.focused = value;
-    this.updateHostClass();
+    // TODO: avoid autoFocus cause change after checked error
+    if (this.focused) {
+      this.renderer.addClass(this.elementRef.nativeElement, 'ant-picker-focused');
+    } else {
+      this.renderer.removeClass(this.elementRef.nativeElement, 'ant-picker-focused');
+    }
   }
 
-  onPanelModeChange(panelMode: PanelMode | PanelMode[]): void {
+  onPanelModeChange(panelMode: NzDateMode | NzDateMode[]): void {
     // this.nzMode = panelMode;
     this.nzOnPanelChange.emit(panelMode);
   }
 
   // Emit nzOnCalendarChange when select date by nz-range-picker
-  onCalendarChange(value: CandyDate[]): void {
-    if (this.isRange) {
-      const rangeValue = value.filter(x => x instanceof CandyDate).map(x => x.nativeDate);
+  onCalendarChange(value: CompatibleValue): void {
+    if (this.isRange && Array.isArray(value)) {
+      const rangeValue = value.filter(x => x instanceof CandyDate).map(x => x!.nativeDate);
       this.nzOnCalendarChange.emit(rangeValue);
     }
   }

@@ -1,41 +1,26 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 import { DOWN_ARROW, ENTER, ESCAPE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
 import {
-  ConnectedOverlayPositionChange,
   ConnectionPositionPair,
   FlexibleConnectedPositionStrategy,
   Overlay,
   OverlayConfig,
   OverlayRef,
-  PositionStrategy,
-  VerticalConnectionPos
+  PositionStrategy
 } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
-import {
-  Directive,
-  ElementRef,
-  ExistingProvider,
-  forwardRef,
-  Inject,
-  Input,
-  NgZone,
-  OnDestroy,
-  Optional,
-  ViewContainerRef
-} from '@angular/core';
+import { Directive, ElementRef, ExistingProvider, forwardRef, Inject, Input, OnDestroy, Optional, ViewContainerRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
+import { NzInputGroupWhitSuffixOrPrefixDirective } from 'ng-zorro-antd/input';
 
-import { fromEvent, merge, Subscription } from 'rxjs';
-import { delay, distinct, map, take, tap } from 'rxjs/operators';
+import { fromEvent, merge, Subject, Subscription } from 'rxjs';
+import { delay, takeUntil, tap } from 'rxjs/operators';
 
 import { NzAutocompleteOptionComponent } from './autocomplete-option.component';
 import { NzAutocompleteComponent } from './autocomplete.component';
@@ -69,7 +54,7 @@ export function getNzAutocompleteMissingPanelError(): Error {
 })
 export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnDestroy {
   /** Bind nzAutocomplete component */
-  @Input() nzAutocomplete: NzAutocompleteComponent;
+  @Input() nzAutocomplete!: NzAutocompleteComponent;
 
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
@@ -82,20 +67,20 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     }
   }
 
-  private overlayRef: OverlayRef | null;
-  private portal: TemplatePortal<{}> | null;
-  private positionStrategy: FlexibleConnectedPositionStrategy;
-  private previousValue: string | number | null;
-  private selectionChangeSubscription: Subscription;
-  private optionsChangeSubscription: Subscription;
-  private overlayBackdropClickSubscription: Subscription;
-  private overlayPositionChangeSubscription: Subscription;
+  private destroy$ = new Subject<void>();
+  private overlayRef: OverlayRef | null = null;
+  private portal: TemplatePortal<{}> | null = null;
+  private positionStrategy!: FlexibleConnectedPositionStrategy;
+  private previousValue: string | number | null = null;
+  private selectionChangeSubscription!: Subscription;
+  private optionsChangeSubscription!: Subscription;
+  private overlayBackdropClickSubscription!: Subscription;
 
   constructor(
     private elementRef: ElementRef,
     private overlay: Overlay,
     private viewContainerRef: ViewContainerRef,
-    private ngZone: NgZone,
+    @Optional() private nzInputGroupWhitSuffixOrPrefixDirective: NzInputGroupWhitSuffixOrPrefixDirective,
     @Optional() @Inject(DOCUMENT) private document: NzSafeAny
   ) {}
 
@@ -104,7 +89,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   }
 
   writeValue(value: NzSafeAny): void {
-    this.setTriggerValue(value);
+    Promise.resolve(null).then(() => this.setTriggerValue(value));
   }
 
   registerOnChange(fn: (value: {}) => {}): void {
@@ -134,9 +119,8 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
       if (this.overlayRef && this.overlayRef.hasAttached()) {
         this.selectionChangeSubscription.unsubscribe();
         this.overlayBackdropClickSubscription.unsubscribe();
-        this.overlayPositionChangeSubscription.unsubscribe();
         this.optionsChangeSubscription.unsubscribe();
-        this.overlayRef.detach();
+        this.overlayRef.dispose();
         this.overlayRef = null;
         this.portal = null;
       }
@@ -185,7 +169,6 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     if (target.type === 'number') {
       value = value === '' ? null : parseFloat(value);
     }
-
     if (this.previousValue !== value) {
       this.previousValue = value;
       this.onChange(value);
@@ -210,12 +193,11 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
    * Subscription data source changes event
    */
   private subscribeOptionsChange(): Subscription {
-    const firstStable = this.ngZone.onStable.asObservable().pipe(take(1));
     const optionChanges = this.nzAutocomplete.options.changes.pipe(
       tap(() => this.positionStrategy.reapplyLastPosition()),
       delay(0)
     );
-    return merge(firstStable, optionChanges).subscribe(() => {
+    return optionChanges.subscribe(() => {
       this.resetActiveItem();
       if (this.panelOpen) {
         this.overlayRef!.updatePosition();
@@ -249,27 +231,12 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     });
   }
 
-  /**
-   * Subscription overlay position changes and reset dropdown position
-   */
-  private subscribeOverlayPositionChange(): Subscription {
-    return this.positionStrategy.positionChanges
-      .pipe(
-        map((position: ConnectedOverlayPositionChange) => position.connectionPair.originY),
-        distinct(),
-        delay(0)
-      )
-      .subscribe((position: VerticalConnectionPos) => {
-        this.nzAutocomplete.updatePosition(position);
-      });
-  }
-
   private attachOverlay(): void {
     if (!this.nzAutocomplete) {
       throw getNzAutocompleteMissingPanelError();
     }
 
-    if (!this.portal) {
+    if (!this.portal && this.nzAutocomplete.template) {
       this.portal = new TemplatePortal(this.nzAutocomplete.template, this.viewContainerRef);
     }
 
@@ -279,10 +246,15 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
 
     if (this.overlayRef && !this.overlayRef.hasAttached()) {
       this.overlayRef.attach(this.portal);
-      this.overlayPositionChangeSubscription = this.subscribeOverlayPositionChange();
       this.selectionChangeSubscription = this.subscribeSelectionChange();
       this.overlayBackdropClickSubscription = this.subscribeOverlayBackdropClick();
       this.optionsChangeSubscription = this.subscribeOptionsChange();
+      this.overlayRef
+        .detachments()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          this.closePanel();
+        });
     }
     this.nzAutocomplete.isOpen = this.panelOpen = true;
   }
@@ -315,7 +287,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   }
 
   private getConnectedElement(): ElementRef {
-    return this.elementRef;
+    return this.nzInputGroupWhitSuffixOrPrefixDirective ? this.nzInputGroupWhitSuffixOrPrefixDirective.elementRef : this.elementRef;
   }
 
   private getHostWidth(): number {
@@ -332,7 +304,8 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
       .flexibleConnectedTo(this.getConnectedElement())
       .withFlexibleDimensions(false)
       .withPush(false)
-      .withPositions(positions);
+      .withPositions(positions)
+      .withTransformOriginOn('.ant-select-dropdown');
     return this.positionStrategy;
   }
 
@@ -355,10 +328,12 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     this.closePanel();
   }
 
-  private setTriggerValue(value: string | number | null): void {
-    this.elementRef.nativeElement.value = value || '';
+  private setTriggerValue(value: NzSafeAny): void {
+    const option = this.nzAutocomplete.getOption(value);
+    const displayValue = option ? option.getLabel() : value;
+    this.elementRef.nativeElement.value = displayValue != null ? displayValue : '';
     if (!this.nzAutocomplete.nzBackfill) {
-      this.previousValue = value;
+      this.previousValue = displayValue;
     }
   }
 

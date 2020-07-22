@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -21,21 +18,19 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd';
+// Import types from monaco editor.
+import { editor } from 'monaco-editor';
 import { warn } from 'ng-zorro-antd/core/logger';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { inNextTick, InputBoolean } from 'ng-zorro-antd/core/util';
 import { BehaviorSubject, combineLatest, fromEvent, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, takeUntil } from 'rxjs/operators';
 
 import { NzCodeEditorService } from './code-editor.service';
 import { DiffEditorOptions, EditorOptions, JoinedEditorOptions, NzEditorMode } from './typings';
-
-// Import types from monaco editor.
-import { editor } from 'monaco-editor';
-import IEditor = editor.IEditor;
-import IDiffEditor = editor.IDiffEditor;
 import ITextModel = editor.ITextModel;
+import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
+import IStandaloneDiffEditor = editor.IStandaloneDiffEditor;
 
 declare const monaco: NzSafeAny;
 
@@ -72,13 +67,13 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
   @Input() nzOriginalText = '';
   @Input() @InputBoolean() nzLoading = false;
   @Input() @InputBoolean() nzFullControl = false;
-  @Input() nzToolkit: TemplateRef<void>;
+  @Input() nzToolkit?: TemplateRef<void>;
 
   @Input() set nzEditorOption(value: JoinedEditorOptions) {
     this.editorOption$.next(value);
   }
 
-  @Output() readonly nzEditorInitialized = new EventEmitter<IEditor | IDiffEditor>();
+  @Output() readonly nzEditorInitialized = new EventEmitter<IStandaloneCodeEditor | IStandaloneDiffEditor>();
 
   editorOptionCached: JoinedEditorOptions = {};
 
@@ -86,7 +81,7 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
   private destroy$ = new Subject<void>();
   private resize$ = new Subject<void>();
   private editorOption$ = new BehaviorSubject<JoinedEditorOptions>({});
-  private editorInstance: IEditor | IDiffEditor;
+  private editorInstance?: IStandaloneCodeEditor | IStandaloneDiffEditor;
   private value = '';
   private modelSet = false;
 
@@ -123,9 +118,9 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
     this.onTouch = fn;
   }
 
-  onChange: OnChangeType;
+  onChange: OnChangeType = (_value: string) => {};
 
-  onTouch: OnTouchedType;
+  onTouch: OnTouchedType = () => {};
 
   layout(): void {
     this.resize$.next();
@@ -191,7 +186,7 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
           debounceTime(50)
         )
         .subscribe(() => {
-          this.editorInstance.layout();
+          this.editorInstance!.layout();
         });
     });
   }
@@ -210,19 +205,19 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
       if (this.modelSet) {
         (this.editorInstance.getModel() as ITextModel).setValue(this.value);
       } else {
-        (this.editorInstance as IEditor).setModel(
+        (this.editorInstance as IStandaloneCodeEditor).setModel(
           monaco.editor.createModel(this.value, (this.editorOptionCached as EditorOptions).language)
         );
         this.modelSet = true;
       }
     } else {
       if (this.modelSet) {
-        const model = (this.editorInstance as IDiffEditor).getModel()!;
+        const model = (this.editorInstance as IStandaloneDiffEditor).getModel()!;
         model.modified.setValue(this.value);
         model.original.setValue(this.nzOriginalText);
       } else {
         const language = (this.editorOptionCached as EditorOptions).language;
-        (this.editorInstance as IDiffEditor).setModel({
+        (this.editorInstance as IStandaloneDiffEditor).setModel({
           original: monaco.editor.createModel(this.nzOriginalText, language),
           modified: monaco.editor.createModel(this.value, language)
         });
@@ -233,8 +228,8 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
 
   private setValueEmitter(): void {
     const model = (this.nzEditorMode === 'normal'
-      ? (this.editorInstance as IEditor).getModel()
-      : (this.editorInstance as IDiffEditor).getModel()!.modified) as ITextModel;
+      ? (this.editorInstance as IStandaloneCodeEditor).getModel()
+      : (this.editorInstance as IStandaloneDiffEditor).getModel()!.modified) as ITextModel;
 
     model.onDidChangeContent(() => {
       this.emitValue(model.getValue());

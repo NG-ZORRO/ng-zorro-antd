@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -31,15 +28,18 @@ import { InputBoolean } from 'ng-zorro-antd/core/util';
   animations: [fadeMotion],
   template: `
     <ng-content></ng-content>
-    <i nz-icon nzType="close" *ngIf="nzMode === 'closeable'" tabindex="-1" (click)="closeTag($event)"></i>
+    <i nz-icon nzType="close" class="ant-tag-close-icon" *ngIf="nzMode === 'closeable'" tabindex="-1" (click)="closeTag($event)"></i>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   host: {
     '[@fadeMotion]': '',
     '[@.disabled]': 'nzNoAnimation',
-    '[style.background-color]': 'presetColor? null : nzColor',
-    '[class]': 'hostClassMap',
+    '[style.background-color]': 'presetColor ? null : nzColor',
+    '[class.ant-tag]': `true`,
+    '[class.ant-tag-has-color]': `nzColor && !presetColor`,
+    '[class.ant-tag-checkable]': `nzMode === 'checkable'`,
+    '[class.ant-tag-checkable-checked]': `nzChecked`,
     '(click)': 'updateCheckedStatus()',
     '(@fadeMotion.done)': 'afterAnimation($event)'
   }
@@ -49,9 +49,9 @@ export class NzTagComponent implements OnInit, OnChanges {
   static ngAcceptInputType_nzNoAnimation: BooleanInput;
 
   presetColor = false;
-  hostClassMap = {};
+  cacheClassName: string | null = null;
   @Input() nzMode: 'default' | 'closeable' | 'checkable' = 'default';
-  @Input() nzColor: string;
+  @Input() nzColor?: string;
   @Input() @InputBoolean() nzChecked = false;
   @Input() @InputBoolean() nzNoAnimation = false;
   @Output() readonly nzAfterClose = new EventEmitter<void>();
@@ -71,13 +71,13 @@ export class NzTagComponent implements OnInit, OnChanges {
 
   private updateClassMap(): void {
     this.presetColor = this.isPresetColor(this.nzColor);
-    this.hostClassMap = {
-      ['ant-tag']: true,
-      ['ant-tag-has-color']: this.nzColor && !this.presetColor,
-      ['ant-tag-checkable']: this.nzMode === 'checkable',
-      ['ant-tag-checkable-checked']: this.nzChecked,
-      [`ant-tag-${this.nzColor}`]: this.presetColor
-    };
+    if (this.cacheClassName) {
+      this.renderer.removeClass(this.elementRef.nativeElement, this.cacheClassName);
+    }
+    if (this.presetColor) {
+      this.cacheClassName = `ant-tag-${this.nzColor}`;
+      this.renderer.addClass(this.elementRef.nativeElement, this.cacheClassName);
+    }
   }
 
   updateCheckedStatus(): void {

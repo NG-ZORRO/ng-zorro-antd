@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -29,8 +26,8 @@ import { slideMotion } from 'ng-zorro-antd/core/animation';
 
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
-import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { InputBoolean, isNil } from 'ng-zorro-antd/core/util';
 
 const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
 
@@ -49,14 +46,15 @@ const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
         [placeholder]="nzPlaceHolder || ('TimePicker.placeholder' | nzI18n)"
         [(ngModel)]="value"
         [disabled]="nzDisabled"
-        (click)="open()"
         (focus)="onFocus(true)"
         (blur)="onFocus(false)"
       />
       <span class="ant-picker-suffix">
-        <i nz-icon nzType="clock-circle"></i>
+        <ng-container *nzStringTemplateOutlet="nzSuffixIcon; let suffixIcon">
+          <i nz-icon [nzType]="suffixIcon"></i>
+        </ng-container>
       </span>
-      <span *ngIf="nzAllowEmpty && value" class="ant-picker-clear" (click)="onClickClearBtn()">
+      <span *ngIf="nzAllowEmpty && value" class="ant-picker-clear" (click)="onClickClearBtn($event)">
         <i nz-icon nzType="close-circle" nzTheme="fill" [attr.aria-label]="nzClearText" [attr.title]="nzClearText"></i>
       </span>
     </div>
@@ -69,10 +67,11 @@ const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayOpen]="nzOpen"
       [cdkConnectedOverlayOffsetY]="-2"
+      [cdkConnectedOverlayTransformOriginOn]="'.ant-picker-dropdown'"
       (detach)="close()"
       (backdropClick)="close()"
     >
-      <div [@slideMotion]="'bottom'" class="ant-picker-dropdown">
+      <div [@slideMotion]="'enter'" class="ant-picker-dropdown">
         <div class="ant-picker-panel-container">
           <div tabindex="-1" class="ant-picker-panel">
             <nz-time-picker-panel
@@ -101,7 +100,14 @@ const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
       </div>
     </ng-template>
   `,
-  host: { '[class]': 'hostClassMap' },
+  host: {
+    '[class.ant-picker]': `true`,
+    '[class.ant-picker-large]': `nzSize === 'large'`,
+    '[class.ant-picker-small]': `nzSize === 'small'`,
+    '[class.ant-picker-disabled]': `nzDisabled`,
+    '[class.ant-picker-focused]': `focused`,
+    '(click)': 'open()'
+  },
   animations: [slideMotion],
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: NzTimePickerComponent, multi: true }]
 })
@@ -112,45 +118,45 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzAutoFocus: BooleanInput;
 
-  private _onChange: (value: Date | null) => void;
-  private _onTouched: () => void;
+  private _onChange?: (value: Date | null) => void;
+  private _onTouched?: () => void;
   isInit = false;
   focused = false;
   value: Date | null = null;
-  origin: CdkOverlayOrigin;
-  hostClassMap = {};
-  inputSize: number;
+  origin!: CdkOverlayOrigin;
+  inputSize?: number;
   overlayPositions: ConnectionPositionPair[] = [
     {
       originX: 'start',
       originY: 'bottom',
       overlayX: 'start',
       overlayY: 'top',
-      offsetX: 0,
       offsetY: 3
     }
   ];
 
-  @ViewChild('inputElement', { static: true }) inputRef: ElementRef<HTMLInputElement>;
+  @ViewChild('inputElement', { static: true }) inputRef!: ElementRef<HTMLInputElement>;
   @Input() nzSize: string | null = null;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 1) nzHourStep: number;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 1) nzMinuteStep: number;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 1) nzSecondStep: number;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'clear') nzClearText: string;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzPopupClassName: string;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzHourStep: number = 1;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzMinuteStep: number = 1;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSecondStep: number = 1;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzClearText: string = 'clear';
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzPopupClassName: string = '';
   @Input() nzPlaceHolder = '';
-  @Input() nzAddOn: TemplateRef<void>;
-  @Input() nzDefaultOpenValue: Date;
-  @Input() nzDisabledHours: () => number[];
-  @Input() nzDisabledMinutes: (hour: number) => number[];
-  @Input() nzDisabledSeconds: (hour: number, minute: number) => number[];
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'HH:mm:ss') nzFormat: string;
+  @Input() nzAddOn?: TemplateRef<void>;
+  @Input() nzDefaultOpenValue?: Date;
+  @Input() nzDisabledHours?: () => number[];
+  @Input() nzDisabledMinutes?: (hour: number) => number[];
+  @Input() nzDisabledSeconds?: (hour: number, minute: number) => number[];
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzFormat: string = 'HH:mm:ss';
   @Input() nzOpen = false;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, false) @InputBoolean() nzUse12Hours: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzUse12Hours: boolean = false;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSuffixIcon: string | TemplateRef<NzSafeAny> = 'clock-circle';
+
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
 
   @Input() @InputBoolean() nzHideDisabledOptions = false;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, true) @InputBoolean() nzAllowEmpty: boolean;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzAllowEmpty: boolean = true;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAutoFocus = false;
 
@@ -169,7 +175,6 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
       return;
     }
     this.focus();
-    this.setClassMap();
     this.nzOpen = true;
     this.nzOpenChange.emit(this.nzOpen);
   }
@@ -190,22 +195,13 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     }
   }
 
-  onClickClearBtn(): void {
+  onClickClearBtn(event: MouseEvent): void {
+    event.stopPropagation();
     this.setValue(null);
   }
 
   onFocus(value: boolean): void {
     this.focused = value;
-    this.setClassMap();
-  }
-
-  private setClassMap(): void {
-    this.hostClassMap = {
-      [`ant-picker`]: true,
-      [`ant-picker-${this.nzSize}`]: isNotNil(this.nzSize),
-      [`ant-picker-disabled`]: this.nzDisabled,
-      [`ant-picker-focused`]: this.focused
-    };
   }
 
   focus(): void {
@@ -229,7 +225,6 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
   ngOnInit(): void {
     this.inputSize = Math.max(8, this.nzFormat.length) + 2;
-    this.setClassMap();
     this.origin = new CdkOverlayOrigin(this.element);
   }
 
@@ -257,12 +252,14 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     this.updateAutoFocus();
   }
 
-  writeValue(time: Date): void {
+  writeValue(time: Date | null | undefined): void {
     if (time instanceof Date) {
       this.value = time;
+    } else if (isNil(time)) {
+      this.value = null;
     } else {
-      warn('Non-Date type is not recommended for time-picker, use "Date" type');
-      this.value = time ? new Date(time) : null;
+      warn('Non-Date type is not recommended for time-picker, use "Date" type.');
+      this.value = new Date(time);
     }
     this.cdr.markForCheck();
   }

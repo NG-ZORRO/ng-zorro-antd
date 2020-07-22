@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -25,9 +22,10 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
+import { NzButtonType } from 'ng-zorro-antd/button';
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { BooleanInput, NzTSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger } from 'ng-zorro-antd/tooltip';
@@ -43,17 +41,23 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   static ngAcceptInputType_nzCondition: BooleanInput;
+  static ngAcceptInputType_nzPopconfirmShowArrow: BooleanInput;
 
-  @Input('nzPopconfirmTitle') specificTitle: NzTSType;
-  @Input('nz-popconfirm') directiveNameTitle: NzTSType | null;
-  @Input('nzPopconfirmTrigger') specificTrigger: NzTooltipTrigger;
-  @Input('nzPopconfirmPlacement') specificPlacement: string;
-  @Input('nzPopconfirmOrigin') specificOrigin: ElementRef<HTMLElement>;
-  @Input() nzOkText: string;
-  @Input() nzOkType: string;
-  @Input() nzCancelText: string;
-  @Input() nzIcon: string | TemplateRef<void>;
-  @Input() @InputBoolean() nzCondition: boolean;
+  @Input('nzPopconfirmTitle') specificTitle?: NzTSType;
+  @Input('nz-popconfirm') directiveNameTitle?: NzTSType | null;
+  @Input('nzPopconfirmTrigger') specificTrigger?: NzTooltipTrigger;
+  @Input('nzPopconfirmPlacement') specificPlacement?: string;
+  @Input('nzPopconfirmOrigin') specificOrigin?: ElementRef<HTMLElement>;
+  @Input('nzPopconfirmMouseEnterDelay') specificMouseEnterDelay?: number;
+  @Input('nzPopconfirmMouseLeaveDelay') specificMouseLeaveDelay?: number;
+  @Input('nzPopconfirmOverlayClassName') specificOverlayClassName?: string;
+  @Input('nzPopconfirmOverlayStyle') specificOverlayStyle?: NgStyleInterface;
+  @Input() nzOkText?: string;
+  @Input() nzOkType?: string;
+  @Input() nzCancelText?: string;
+  @Input() nzIcon?: string | TemplateRef<void>;
+  @Input() @InputBoolean() nzCondition: boolean = false;
+  @Input() @InputBoolean() nzPopconfirmShowArrow: boolean = true;
 
   /**
    * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
@@ -61,6 +65,10 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
    */
   @Input() nzTrigger: NzTooltipTrigger = 'click';
 
+  @Input('nzPopconfirmVisible') specificVisible?: boolean;
+
+  // tslint:disable-next-line:no-output-rename
+  @Output('nzPopconfirmVisibleChange') readonly specificVisibleChange = new EventEmitter<boolean>();
   @Output() readonly nzOnCancel = new EventEmitter<void>();
   @Output() readonly nzOnConfirm = new EventEmitter<void>();
 
@@ -78,7 +86,8 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
     'nzOkType',
     'nzCancelText',
     'nzCondition',
-    'nzIcon'
+    'nzIcon',
+    'nzPopconfirmShowArrow'
   ];
 
   constructor(
@@ -125,6 +134,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
       (positionChange)="onPositionChange($event)"
       [cdkConnectedOverlayPositions]="_positions"
       [cdkConnectedOverlayOpen]="_visible"
+      [cdkConnectedOverlayPush]="true"
     >
       <div
         class="ant-popover"
@@ -135,14 +145,14 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
         [@zoomBigMotion]="'active'"
       >
         <div class="ant-popover-content">
-          <div class="ant-popover-arrow"></div>
+          <div class="ant-popover-arrow" *ngIf="nzPopconfirmShowArrow"></div>
           <div class="ant-popover-inner">
             <div>
               <div class="ant-popover-inner-content">
                 <div class="ant-popover-message">
                   <ng-container *nzStringTemplateOutlet="nzTitle">
-                    <ng-container *nzStringTemplateOutlet="nzIcon">
-                      <i nz-icon [nzType]="nzIcon || 'exclamation-circle'" nzTheme="fill"></i>
+                    <ng-container *nzStringTemplateOutlet="nzIcon; let icon">
+                      <i nz-icon [nzType]="icon || 'exclamation-circle'" nzTheme="fill"></i>
                     </ng-container>
                     <div class="ant-popover-message-title">{{ nzTitle }}</div>
                   </ng-container>
@@ -166,11 +176,12 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   `
 })
 export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestroy {
-  nzCancelText: string;
+  nzCancelText?: string;
   nzCondition = false;
-  nzIcon: string | TemplateRef<void>;
-  nzOkText: string;
-  nzOkType: string = 'primary';
+  nzPopconfirmShowArrow = true;
+  nzIcon?: string | TemplateRef<void>;
+  nzOkText?: string;
+  nzOkType: NzButtonType = 'primary';
 
   readonly nzOnCancel = new Subject<void>();
   readonly nzOnConfirm = new Subject<void>();

@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -14,16 +11,18 @@ import {
   ComponentFactoryResolver,
   Directive,
   ElementRef,
+  EventEmitter,
   Host,
   Input,
   Optional,
+  Output,
   Renderer2,
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
 import { zoomBigMotion } from 'ng-zorro-antd/core/animation';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
-import { NzTSType } from 'ng-zorro-antd/core/types';
+import { NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 
 import { isTooltipEmpty, NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger } from 'ng-zorro-antd/tooltip';
 
@@ -35,12 +34,20 @@ import { isTooltipEmpty, NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTr
   }
 })
 export class NzPopoverDirective extends NzTooltipBaseDirective {
-  @Input('nzPopoverTitle') specificTitle: NzTSType;
-  @Input('nzPopoverContent') specificContent: NzTSType;
-  @Input('nz-popover') directiveNameTitle: NzTSType | null;
-  @Input('nzPopoverTrigger') specificTrigger: NzTooltipTrigger;
-  @Input('nzPopoverPlacement') specificPlacement: string;
-  @Input('nzPopoverOrigin') specificOrigin: ElementRef<HTMLElement>;
+  @Input('nzPopoverTitle') specificTitle?: NzTSType;
+  @Input('nzPopoverContent') specificContent?: NzTSType;
+  @Input('nz-popover') directiveNameTitle?: NzTSType | null;
+  @Input('nzPopoverTrigger') specificTrigger?: NzTooltipTrigger;
+  @Input('nzPopoverPlacement') specificPlacement?: string;
+  @Input('nzPopoverOrigin') specificOrigin?: ElementRef<HTMLElement>;
+  @Input('nzPopoverVisible') specificVisible?: boolean;
+  @Input('nzPopoverMouseEnterDelay') specificMouseEnterDelay?: number;
+  @Input('nzPopoverMouseLeaveDelay') specificMouseLeaveDelay?: number;
+  @Input('nzPopoverOverlayClassName') specificOverlayClassName?: string;
+  @Input('nzPopoverOverlayStyle') specificOverlayStyle?: NgStyleInterface;
+
+  // tslint:disable-next-line:no-output-rename
+  @Output('nzPopoverVisibleChange') readonly specificVisibleChange = new EventEmitter<boolean>();
 
   componentFactory: ComponentFactory<NzPopoverComponent> = this.resolver.resolveComponentFactory(NzPopoverComponent);
 
@@ -74,6 +81,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
       (positionChange)="onPositionChange($event)"
       [cdkConnectedOverlayPositions]="_positions"
       [cdkConnectedOverlayOpen]="_visible"
+      [cdkConnectedOverlayPush]="true"
     >
       <div
         class="ant-popover"

@@ -147,9 +147,11 @@ describe('NzDrawerComponent', () => {
     component.open();
     fixture.detectChanges();
     expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
+    expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('no-mask')).toBe(true);
     expect(overlayContainerElement.querySelector('.ant-drawer .ant-drawer-mask')).toBe(null);
     component.showMask = true;
     fixture.detectChanges();
+    expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('no-mask')).toBe(false);
   });
 
   it('should set nzMaskStyle & nzBodyStyle', () => {
@@ -191,6 +193,22 @@ describe('NzDrawerComponent', () => {
     fixture.detectChanges();
     expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
     expect(overlayContainerElement.querySelector('.ant-drawer .ant-drawer-title .custom-title')).not.toBe(null);
+  });
+
+  it('should support string footer', () => {
+    component.footer = 'test';
+    component.open();
+    fixture.detectChanges();
+    expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
+    expect((overlayContainerElement.querySelector('.ant-drawer .ant-drawer-footer') as HTMLElement).innerText.trim()).toBe('test');
+  });
+
+  it('should support TemplateRef footer', () => {
+    component.footer = component.templateFooter;
+    component.open();
+    fixture.detectChanges();
+    expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
+    expect(overlayContainerElement.querySelector('.ant-drawer .ant-drawer-footer .custom-footer')).not.toBe(null);
   });
 
   it('should support custom width', () => {
@@ -417,6 +435,7 @@ describe('NzDrawerService', () => {
     component.openTemplate();
     fixture.detectChanges();
     tick(300);
+    expect(component.templateDrawerRef?.getContentComponent()).toBeNull();
     expect(component.templateOpenSpy).toHaveBeenCalled();
     fixture.detectChanges();
     (overlayContainerElement.querySelector('.ant-drawer .ant-drawer-mask') as HTMLElement).click();
@@ -430,6 +449,7 @@ describe('NzDrawerService', () => {
     const closeSpy = jasmine.createSpy('afterClose spy').and.returnValue(1);
     const drawerRef = drawerService.create({
       nzTitle: 'Service',
+      nzFooter: 'Footer',
       nzContent: NzDrawerCustomComponent,
       nzContentParams: { value: 1 }
     });
@@ -437,6 +457,7 @@ describe('NzDrawerService', () => {
     drawerRef.afterClose.subscribe(closeSpy);
     fixture.detectChanges();
     expect(openSpy).not.toHaveBeenCalled();
+    expect(drawerRef.getContentComponent()).not.toBeNull();
     tick(300);
     expect(openSpy).toHaveBeenCalled();
     (overlayContainerElement.querySelector('.ant-drawer .close-btn') as HTMLElement).click();
@@ -444,6 +465,7 @@ describe('NzDrawerService', () => {
     tick(300);
     expect(closeSpy).toHaveBeenCalled();
     fixture.detectChanges();
+    expect(drawerRef.getContentComponent()).toBeNull();
   }));
 
   it('should `nzOnCancel` work', fakeAsync(() => {
@@ -481,6 +503,10 @@ describe('NzDrawerService', () => {
       <span class="custom-title">title</span>
       <button class="close-btn"></button>
     </ng-template>
+    <ng-template #customFooter>
+      <span class="custom-footer">footer</span>
+      <button>Submit</button>
+    </ng-template>
     <nz-drawer
       [nzMaskStyle]="{ color: 'gray' }"
       [nzBodyStyle]="{ color: 'gray' }"
@@ -495,6 +521,7 @@ describe('NzDrawerService', () => {
       [nzPlacement]="placement"
       [nzNoAnimation]="noAnimation"
       [nzTitle]="title"
+      [nzFooter]="footer"
       [nzOffsetX]="offsetX"
       [nzOffsetY]="offsetY"
       (nzOnClose)="close()"
@@ -511,6 +538,7 @@ class NzTestDrawerComponent {
   maskClosable = true;
   showMask = true;
   title: string | TemplateRef<void> = '';
+  footer: string | TemplateRef<void> = '';
   stringTitle = 'test';
   width: string | number = '300px';
   height: string | number = '300px';
@@ -518,9 +546,9 @@ class NzTestDrawerComponent {
   noAnimation = false;
   offsetX = 0;
   offsetY = 0;
-  @ViewChild('customTitle', { static: false }) templateTitle: TemplateRef<void>;
-
-  @ViewChild(NzDrawerComponent, { static: false }) drawerComponent: NzDrawerComponent;
+  @ViewChild('customTitle', { static: false }) templateTitle!: TemplateRef<void>;
+  @ViewChild('customFooter', { static: false }) templateFooter!: TemplateRef<void>;
+  @ViewChild(NzDrawerComponent, { static: false }) drawerComponent!: NzDrawerComponent;
 
   open(): void {
     this.visible = true;
@@ -539,13 +567,13 @@ class NzTestDrawerComponent {
   `
 })
 class NzTestDrawerWithServiceComponent {
-  @ViewChild('drawerTemplate', { static: false }) drawerTemplate: TemplateRef<{
+  @ViewChild('drawerTemplate', { static: false }) drawerTemplate!: TemplateRef<{
     $implicit: number;
     drawerRef: NzDrawerRef;
   }>;
   templateOpenSpy = jasmine.createSpy('template afterOpen spy');
   templateCloseSpy = jasmine.createSpy('template afterClose spy');
-  templateDrawerRef: NzDrawerRef;
+  templateDrawerRef?: NzDrawerRef;
 
   constructor(private drawerService: NzDrawerService) {}
 

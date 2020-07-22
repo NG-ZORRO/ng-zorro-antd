@@ -96,17 +96,19 @@ describe('string template outlet', () => {
 @Component({
   template: `
     TargetText
-    <ng-container *nzStringTemplateOutlet="stringTemplateOutlet; context: context">{{ stringTemplateOutlet }}</ng-container>
+    <ng-container *nzStringTemplateOutlet="stringTemplateOutlet; context: context; let stringTemplateOutlet">{{
+      stringTemplateOutlet
+    }}</ng-container>
     <ng-template #stringTpl let-data>The data is {{ data }}</ng-template>
     <ng-template #emptyTpl>Empty Template</ng-template>
     <ng-template #dataTimeTpl let-data let-time="time">The data is {{ data }}, The time is {{ time }}</ng-template>
   `
 })
 export class StringTemplateOutletTestComponent {
-  @ViewChild('stringTpl') stringTpl: TemplateRef<NzSafeAny>;
-  @ViewChild('emptyTpl') emptyTpl: TemplateRef<NzSafeAny>;
-  @ViewChild('dataTimeTpl') dataTimeTpl: TemplateRef<NzSafeAny>;
-  @ViewChild(NzStringTemplateOutletDirective) nzStringTemplateOutletDirective: NzStringTemplateOutletDirective;
+  @ViewChild('stringTpl') stringTpl!: TemplateRef<NzSafeAny>;
+  @ViewChild('emptyTpl') emptyTpl!: TemplateRef<NzSafeAny>;
+  @ViewChild('dataTimeTpl') dataTimeTpl!: TemplateRef<NzSafeAny>;
+  @ViewChild(NzStringTemplateOutletDirective) nzStringTemplateOutletDirective!: NzStringTemplateOutletDirective;
   stringTemplateOutlet: TemplateRef<NzSafeAny> | string | null = null;
   context: NzSafeAny = { $implicit: '' };
 }

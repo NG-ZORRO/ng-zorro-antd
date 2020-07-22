@@ -141,14 +141,12 @@ export class NzTestTdComponent {
   disabled = false;
   expand = false;
   expandChange = jasmine.createSpy('expand change');
-  indentSize: number;
-  left: string | number;
-  right: string | number;
+  indentSize?: number;
+  left?: string | number;
+  right?: string | number;
 }
 
 @Component({
-  template: `
-    <td class="nz-disable-td" [nzChecked]="true"></td>
-  `
+  template: ` <td class="nz-disable-td" [nzChecked]="true"></td> `
 })
 export class NzTestDisableTdComponent {}

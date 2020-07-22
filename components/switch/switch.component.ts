@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -56,7 +53,9 @@ const NZ_CONFIG_COMPONENT_NAME = 'switch';
       [nzWaveExtraNode]="true"
       (keydown)="onKeyDown($event)"
     >
-      <i *ngIf="nzLoading" nz-icon nzType="loading" class="ant-switch-loading-icon"></i>
+      <span class="ant-switch-handle">
+        <i *ngIf="nzLoading" nz-icon nzType="loading" class="ant-switch-loading-icon"></i>
+      </span>
       <span class="ant-switch-inner">
         <ng-container *ngIf="isChecked; else uncheckTemplate">
           <ng-container *nzStringTemplateOutlet="nzCheckedChildren">{{ nzCheckedChildren }}</ng-container>
@@ -80,13 +79,13 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
   isChecked = false;
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
-  @ViewChild('switchElement', { static: true }) private switchElement: ElementRef;
+  @ViewChild('switchElement', { static: true }) private switchElement?: ElementRef;
   @Input() @InputBoolean() nzLoading = false;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzControl = false;
   @Input() nzCheckedChildren: string | TemplateRef<void> | null = null;
   @Input() nzUnCheckedChildren: string | TemplateRef<void> | null = null;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 'default') nzSize: NzSizeDSType;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzSizeDSType = 'default';
 
   onHostClick(e: MouseEvent): void {
     e.preventDefault();
@@ -118,17 +117,17 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
   }
 
   focus(): void {
-    this.focusMonitor.focusVia(this.switchElement.nativeElement, 'keyboard');
+    this.focusMonitor.focusVia(this.switchElement?.nativeElement, 'keyboard');
   }
 
   blur(): void {
-    this.switchElement.nativeElement.blur();
+    this.switchElement?.nativeElement.blur();
   }
 
   constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef, private focusMonitor: FocusMonitor) {}
 
   ngAfterViewInit(): void {
-    this.focusMonitor.monitor(this.switchElement.nativeElement, true).subscribe(focusOrigin => {
+    this.focusMonitor.monitor(this.switchElement!.nativeElement, true).subscribe(focusOrigin => {
       if (!focusOrigin) {
         /** https://github.com/angular/angular/issues/17793 **/
         Promise.resolve().then(() => this.onTouched());
@@ -137,7 +136,7 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
   }
 
   ngOnDestroy(): void {
-    this.focusMonitor.stopMonitoring(this.switchElement.nativeElement);
+    this.focusMonitor.stopMonitoring(this.switchElement!.nativeElement);
   }
 
   writeValue(value: boolean): void {

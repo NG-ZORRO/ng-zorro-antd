@@ -8,7 +8,7 @@
     },
     "migration-v9": {
       "version": "9",
-      "description": "Updates NG-ZORRO to v9",
+      "description": "Updates NG-ZORRO to v9 [https://github.com/NG-ZORRO/ng-zorro-antd/issues/5035]",
       "factory": "./ng-update/index#updateToV9"
     },
     "ng-post-update": {

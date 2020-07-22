@@ -35,7 +35,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="nickname" nzRequired>
           <span>
             Nickname
-            <i nz-icon nz-tooltip nzTitle="What do you want other to call you" nzType="question-circle" nzTheme="outline"></i>
+            <i nz-icon nz-tooltip nzTooltipTitle="What do you want other to call you" nzType="question-circle" nzTheme="outline"></i>
           </span>
         </nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your nickname!">
@@ -117,7 +117,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
   ]
 })
 export class NzDemoFormRegisterComponent implements OnInit {
-  validateForm: FormGroup;
+  validateForm!: FormGroup;
 
   submitForm(): void {
     for (const i in this.validateForm.controls) {

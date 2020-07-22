@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -35,7 +32,7 @@ export class NzTableDataService implements OnDestroy {
     this.pageSizeDistinct$,
     this.listOfCalcOperator$
   ]).pipe(
-    debounceTime(300),
+    debounceTime(0),
     skip(1),
     map(([pageIndex, pageSize, listOfCalc]) => {
       return {
@@ -75,18 +72,20 @@ export class NzTableDataService implements OnDestroy {
       const listOfSortOperator = listOfCalcOperator
         .filter(item => item.sortOrder !== null && typeof item.sortFn === 'function')
         .sort((a, b) => +b.sortPriority - +a.sortPriority);
-      listOfDataAfterCalc.sort((record1, record2) => {
-        for (const item of listOfSortOperator) {
-          const { sortFn, sortOrder } = item;
-          if (sortFn && sortOrder) {
-            const compareResult = (sortFn as NzTableSortFn)(record1, record2, sortOrder);
-            if (compareResult !== 0) {
-              return sortOrder === 'ascend' ? compareResult : -compareResult;
+      if (listOfCalcOperator.length) {
+        listOfDataAfterCalc.sort((record1, record2) => {
+          for (const item of listOfSortOperator) {
+            const { sortFn, sortOrder } = item;
+            if (sortFn && sortOrder) {
+              const compareResult = (sortFn as NzTableSortFn)(record1, record2, sortOrder);
+              if (compareResult !== 0) {
+                return sortOrder === 'ascend' ? compareResult : -compareResult;
+              }
             }
           }
-        }
-        return 0;
-      });
+          return 0;
+        });
+      }
       return listOfDataAfterCalc;
     })
   );

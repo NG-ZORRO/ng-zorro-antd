@@ -33,7 +33,7 @@ import { NZ_CAROUSEL_CUSTOM_STRATEGIES } from './typings';
   `
 })
 export class NzTestCarouselBasicComponent {
-  @ViewChild(NzCarouselComponent, { static: false }) nzCarouselComponent: NzCarouselComponent;
+  @ViewChild(NzCarouselComponent, { static: false }) nzCarouselComponent!: NzCarouselComponent;
   dots = true;
   dotPosition = 'bottom';
   effect = 'scrollx';
@@ -211,7 +211,7 @@ describe('carousel', () => {
     }));
 
     it('should resize content after window resized', fakeAsync(() => {
-      const resizeSpy = spyOn(testComponent.nzCarouselComponent.strategy, 'withCarouselContents');
+      const resizeSpy = spyOn(testComponent.nzCarouselComponent.strategy!, 'withCarouselContents');
       window.dispatchEvent(new Event('resize'));
       tick(16);
       expect(resizeSpy).toHaveBeenCalledTimes(1);

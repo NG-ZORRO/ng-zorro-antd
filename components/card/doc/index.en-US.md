@@ -3,6 +3,7 @@ category: Components
 type: Data Display
 title: Card
 cols: 1
+cover: https://gw.alipayobjects.com/zos/alicdn/keNB-R8Y9/Card.svg
 ---
 
 Simple rectangular container.
@@ -18,7 +19,7 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 ## API
 
 ```html
-<nz-card nzTitle="卡片标题">卡片内容</nz-card>
+<nz-card nzTitle="card title">card content</nz-card>
 ```
 
 ### nz-card

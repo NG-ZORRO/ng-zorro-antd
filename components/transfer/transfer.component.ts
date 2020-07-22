@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -22,9 +19,9 @@ import {
   ViewChildren,
   ViewEncapsulation
 } from '@angular/core';
-import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toArray } from 'ng-zorro-antd/core/util';
-import { NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzI18nService, NzTransferI18nInterface } from 'ng-zorro-antd/i18n';
 
 import { Observable, of, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -41,20 +38,21 @@ import { NzTransferListComponent } from './transfer-list.component';
       class="ant-transfer-list"
       [ngStyle]="nzListStyle"
       data-direction="left"
+      direction="left"
       [titleText]="nzTitles[0]"
       [showSelectAll]="nzShowSelectAll"
       [dataSource]="leftDataSource"
       [filter]="leftFilter"
       [filterOption]="nzFilterOption"
       (filterChange)="handleFilterChange($event)"
-      [renderList]="nzRenderList[0]"
+      [renderList]="nzRenderList && nzRenderList[0]"
       [render]="nzRender"
       [disabled]="nzDisabled"
       [showSearch]="nzShowSearch"
-      [searchPlaceholder]="nzSearchPlaceholder || locale.searchPlaceholder"
+      [searchPlaceholder]="nzSearchPlaceholder || locale?.searchPlaceholder"
       [notFoundContent]="nzNotFoundContent"
-      [itemUnit]="nzItemUnit || locale.itemUnit"
-      [itemsUnit]="nzItemsUnit || locale.itemsUnit"
+      [itemUnit]="nzItemUnit || locale?.itemUnit"
+      [itemsUnit]="nzItemsUnit || locale?.itemsUnit"
       [footer]="nzFooter"
       (handleSelect)="handleLeftSelect($event)"
       (handleSelectAll)="handleLeftSelectAll($event)"
@@ -72,20 +70,21 @@ import { NzTransferListComponent } from './transfer-list.component';
       class="ant-transfer-list"
       [ngStyle]="nzListStyle"
       data-direction="right"
+      direction="right"
       [titleText]="nzTitles[1]"
       [showSelectAll]="nzShowSelectAll"
       [dataSource]="rightDataSource"
       [filter]="rightFilter"
       [filterOption]="nzFilterOption"
       (filterChange)="handleFilterChange($event)"
-      [renderList]="nzRenderList[1]"
+      [renderList]="nzRenderList && nzRenderList[1]"
       [render]="nzRender"
       [disabled]="nzDisabled"
       [showSearch]="nzShowSearch"
-      [searchPlaceholder]="nzSearchPlaceholder || locale.searchPlaceholder"
+      [searchPlaceholder]="nzSearchPlaceholder || locale?.searchPlaceholder"
       [notFoundContent]="nzNotFoundContent"
-      [itemUnit]="nzItemUnit || locale.itemUnit"
-      [itemsUnit]="nzItemsUnit || locale.itemsUnit"
+      [itemUnit]="nzItemUnit || locale?.itemUnit"
+      [itemsUnit]="nzItemsUnit || locale?.itemsUnit"
       [footer]="nzFooter"
       (handleSelect)="handleRightSelect($event)"
       (handleSelectAll)="handleRightSelectAll($event)"
@@ -93,7 +92,9 @@ import { NzTransferListComponent } from './transfer-list.component';
     </nz-transfer-list>
   `,
   host: {
-    '[class]': 'hostClassMap'
+    '[class.ant-transfer]': `true`,
+    '[class.ant-transfer-disabled]': `nzDisabled`,
+    '[class.ant-transfer-customize-list]': `nzRenderList`
   },
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -106,8 +107,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   private unsubscribe$ = new Subject<void>();
   @ViewChildren(NzTransferListComponent)
   private lists!: QueryList<NzTransferListComponent>;
-  locale: NzSafeAny = {};
-  hostClassMap = {};
+  locale!: NzTransferI18nInterface;
 
   leftFilter = '';
   rightFilter = '';
@@ -118,18 +118,18 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
   @Input() nzDataSource: TransferItem[] = [];
   @Input() nzTitles: string[] = ['', ''];
   @Input() nzOperations: string[] = [];
-  @Input() nzListStyle: object;
+  @Input() nzListStyle: NgStyleInterface = {};
   @Input() @InputBoolean() nzShowSelectAll = true;
-  @Input() nzItemUnit: string;
-  @Input() nzItemsUnit: string;
+  @Input() nzItemUnit?: string;
+  @Input() nzItemsUnit?: string;
   @Input() nzCanMove: (arg: TransferCanMove) => Observable<TransferItem[]> = (arg: TransferCanMove) => of(arg.list);
-  @Input() nzRenderList: Array<TemplateRef<void> | null> = [null, null];
-  @Input() nzRender: TemplateRef<void>;
-  @Input() nzFooter: TemplateRef<void>;
+  @Input() nzRenderList: Array<TemplateRef<NzSafeAny> | null> | null = null;
+  @Input() nzRender: TemplateRef<NzSafeAny> | null = null;
+  @Input() nzFooter: TemplateRef<NzSafeAny> | null = null;
   @Input() @InputBoolean() nzShowSearch = false;
-  @Input() nzFilterOption: (inputValue: string, item: TransferItem) => boolean;
-  @Input() nzSearchPlaceholder: string;
-  @Input() nzNotFoundContent: string;
+  @Input() nzFilterOption?: (inputValue: string, item: TransferItem) => boolean;
+  @Input() nzSearchPlaceholder?: string;
+  @Input() nzNotFoundContent?: string;
   @Input() nzTargetKeys: string[] = [];
   @Input() nzSelectedKeys: string[] = [];
 
@@ -236,15 +236,6 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService) {}
 
-  private setClassMap(): void {
-    const prefixCls = 'ant-transfer';
-    this.hostClassMap = {
-      [`${prefixCls}`]: true,
-      [`${prefixCls}-disabled`]: this.nzDisabled,
-      [`${prefixCls}-customize-list`]: this.nzRenderList.some(i => !!i)
-    };
-  }
-
   private markForCheckAllList(): void {
     if (!this.lists) {
       return;
@@ -280,11 +271,9 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
       this.locale = this.i18n.getLocaleData('Transfer');
       this.markForCheckAllList();
     });
-    this.setClassMap();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.setClassMap();
     if (changes.nzDataSource) {
       this.splitDataSource();
       this.updateOperationStatus('left');

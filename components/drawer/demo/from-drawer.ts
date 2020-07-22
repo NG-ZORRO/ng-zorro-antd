@@ -5,15 +5,16 @@ import { Component } from '@angular/core';
   template: `
     <button nz-button nzType="primary" (click)="open()">Create</button>
     <nz-drawer
-      [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom': '53px' }"
+      [nzBodyStyle]="{ overflow: 'auto' }"
       [nzMaskClosable]="false"
       [nzWidth]="720"
       [nzVisible]="visible"
       nzTitle="Create"
+      [nzFooter]="footerTpl"
       (nzOnClose)="close()"
     >
       <form nz-form>
-        <div nz-row nzGutter="8">
+        <div nz-row [nzGutter]="8">
           <div nz-col nzSpan="12">
             <nz-form-item>
               <nz-form-label>Name</nz-form-label>
@@ -33,7 +34,7 @@ import { Component } from '@angular/core';
             </nz-form-item>
           </div>
         </div>
-        <div nz-row nzGutter="8">
+        <div nz-row [nzGutter]="8">
           <div nz-col nzSpan="12">
             <nz-form-item>
               <nz-form-label>Owner</nz-form-label>
@@ -51,7 +52,7 @@ import { Component } from '@angular/core';
             </nz-form-item>
           </div>
         </div>
-        <div nz-row nzGutter="8">
+        <div nz-row [nzGutter]="8">
           <div nz-col nzSpan="12">
             <nz-form-item>
               <nz-form-label>Approver</nz-form-label>
@@ -69,7 +70,7 @@ import { Component } from '@angular/core';
             </nz-form-item>
           </div>
         </div>
-        <div nz-row nzGutter="8">
+        <div nz-row [nzGutter]="8">
           <div nz-col nzSpan="24">
             <nz-form-item>
               <nz-form-label>Description</nz-form-label>
@@ -79,6 +80,13 @@ import { Component } from '@angular/core';
             </nz-form-item>
           </div>
         </div>
+
+        <ng-template #footerTpl>
+          <div style="float: right">
+            <button nz-button style="margin-right: 8px;" (click)="close()">Cancel</button>
+            <button nz-button nzType="primary" (click)="close()">Submit</button>
+          </div>
+        </ng-template>
       </form>
     </nz-drawer>
   `

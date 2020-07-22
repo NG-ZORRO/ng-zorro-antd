@@ -12,11 +12,11 @@ import {
 } from '@ant-design/icons-angular/icons';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 
 import { NzIconDirective } from './icon.directive';
 import { NzIconModule } from './icon.module';
-import { NZ_ICONS, NzIconService } from './icon.service';
+import { NzIconService, NZ_ICONS } from './icon.service';
 
 describe('nz-icon', () => {
   describe('basics', () => {

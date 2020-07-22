@@ -67,7 +67,7 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/tree';
 })
 export class NzDemoTreeDirectoryComponent {
   // activated node
-  activatedNode: NzTreeNode;
+  activatedNode?: NzTreeNode;
   nodes = [
     {
       title: 'parent 0',

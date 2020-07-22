@@ -1,26 +1,38 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { FocusMonitor } from '@angular/cdk/a11y';
 import {
   AfterContentInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChildren,
+  Directive,
+  ElementRef,
   Input,
   OnChanges,
+  OnDestroy,
+  OnInit,
   QueryList,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { BooleanInput, NgClassType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { merge, Subject } from 'rxjs';
+import { flatMap, map, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { NzInputDirective } from './input.directive';
+
+@Directive({
+  selector: `nz-input-group[nzSuffix], nz-input-group[nzPrefix]`
+})
+export class NzInputGroupWhitSuffixOrPrefixDirective {
+  constructor(public elementRef: ElementRef) {}
+}
 
 @Component({
   selector: 'nz-input-group',
@@ -78,6 +90,8 @@ import { NzInputDirective } from './input.directive';
     '[class.ant-input-group-wrapper-lg]': `isAddOn && isLarge`,
     '[class.ant-input-group-wrapper-sm]': `isAddOn && isSmall`,
     '[class.ant-input-affix-wrapper]': `isAffix && !isAddOn`,
+    '[class.ant-input-affix-wrapper-focused]': `isAffix && focused`,
+    '[class.ant-input-affix-wrapper-disabled]': `isAffix && disabled`,
     '[class.ant-input-affix-wrapper-lg]': `isAffix && !isAddOn && isLarge`,
     '[class.ant-input-affix-wrapper-sm]': `isAffix && !isAddOn && isSmall`,
     '[class.ant-input-group]': `!isAffix && !isAddOn`,
@@ -85,26 +99,31 @@ import { NzInputDirective } from './input.directive';
     '[class.ant-input-group-sm]': `!isAffix && !isAddOn && isSmall`
   }
 })
-export class NzInputGroupComponent implements AfterContentInit, OnChanges {
+export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnInit, OnDestroy {
   static ngAcceptInputType_nzSearch: BooleanInput;
   static ngAcceptInputType_nzCompact: BooleanInput;
 
-  @ContentChildren(NzInputDirective) listOfNzInputDirective: QueryList<NzInputDirective>;
-  @Input() nzAddOnBeforeIcon: NgClassType;
-  @Input() nzAddOnAfterIcon: NgClassType;
-  @Input() nzPrefixIcon: NgClassType;
-  @Input() nzSuffixIcon: NgClassType;
-  @Input() nzAddOnBefore: string | TemplateRef<void>;
-  @Input() nzAddOnAfter: string | TemplateRef<void>;
-  @Input() nzPrefix: string | TemplateRef<void>;
-  @Input() nzSuffix: string | TemplateRef<void>;
-  @Input() nzSize: NzSizeLDSType;
+  @ContentChildren(NzInputDirective) listOfNzInputDirective!: QueryList<NzInputDirective>;
+  @Input() nzAddOnBeforeIcon?: string | null = null;
+  @Input() nzAddOnAfterIcon?: string | null = null;
+  @Input() nzPrefixIcon?: string | null = null;
+  @Input() nzSuffixIcon?: string | null = null;
+  @Input() nzAddOnBefore?: string | TemplateRef<void>;
+  @Input() nzAddOnAfter?: string | TemplateRef<void>;
+  @Input() nzPrefix?: string | TemplateRef<void>;
+  @Input() nzSuffix?: string | TemplateRef<void>;
+  @Input() nzSize: NzSizeLDSType = 'default';
   @Input() @InputBoolean() nzSearch = false;
   @Input() @InputBoolean() nzCompact = false;
   isLarge = false;
   isSmall = false;
   isAffix = false;
   isAddOn = false;
+  focused = false;
+  disabled = false;
+  private destroy$ = new Subject<void>();
+
+  constructor(private focusMonitor: FocusMonitor, private elementRef: ElementRef, private cdr: ChangeDetectorRef) {}
 
   updateChildrenInputSize(): void {
     if (this.listOfNzInputDirective) {
@@ -112,8 +131,32 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges {
     }
   }
 
+  ngOnInit(): void {
+    this.focusMonitor
+      .monitor(this.elementRef, true)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(focusOrigin => {
+        this.focused = !!focusOrigin;
+        this.cdr.markForCheck();
+      });
+  }
+
   ngAfterContentInit(): void {
     this.updateChildrenInputSize();
+    const listOfInputChange$ = this.listOfNzInputDirective.changes.pipe(startWith(this.listOfNzInputDirective));
+    listOfInputChange$
+      .pipe(
+        switchMap(list => {
+          return merge(...[listOfInputChange$, ...list.map((input: NzInputDirective) => input.disabled$)]);
+        }),
+        flatMap(() => listOfInputChange$),
+        map(list => list.some((input: NzInputDirective) => input.disabled)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(disabled => {
+        this.disabled = disabled;
+        this.cdr.markForCheck();
+      });
   }
   ngOnChanges(changes: SimpleChanges): void {
     const {
@@ -138,5 +181,9 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges {
     if (nzAddOnAfter || nzAddOnBefore || nzAddOnAfterIcon || nzAddOnBeforeIcon) {
       this.isAddOn = !!(this.nzAddOnAfter || this.nzAddOnBefore || this.nzAddOnAfterIcon || this.nzAddOnBeforeIcon);
     }
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -19,9 +16,8 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
-import { NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -46,12 +42,12 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class NzTextCopyComponent implements OnInit, OnDestroy {
   copied = false;
-  copyId: number;
-  locale: NzSafeAny = {};
+  copyId: number = -1;
+  locale!: NzTextI18nInterface;
   nativeElement = this.host.nativeElement;
   private destroy$ = new Subject();
 
-  @Input() text: string;
+  @Input() text!: string;
   @Output() readonly textCopy = new EventEmitter<string>();
 
   constructor(private host: ElementRef, private cdr: ChangeDetectorRef, private clipboard: Clipboard, private i18n: NzI18nService) {}

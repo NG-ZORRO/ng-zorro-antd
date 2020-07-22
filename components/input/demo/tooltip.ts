@@ -36,7 +36,7 @@ export class NzDemoInputTooltipComponent {
   value = '';
   title = 'Input a number';
 
-  @ViewChild('inputElement', { static: false }) inputElement: ElementRef;
+  @ViewChild('inputElement', { static: false }) inputElement?: ElementRef;
 
   onChange(value: string): void {
     this.updateValue(value);
@@ -54,7 +54,7 @@ export class NzDemoInputTooltipComponent {
     if ((!isNaN(+value) && reg.test(value)) || value === '' || value === '-') {
       this.value = value;
     }
-    this.inputElement.nativeElement.value = this.value;
+    this.inputElement!.nativeElement.value = this.value;
     this.updateTitle();
   }
 

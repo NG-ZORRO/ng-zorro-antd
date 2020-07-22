@@ -1,9 +1,9 @@
-import { MigrationRule, TargetVersion } from '@angular/cdk/schematics';
+import { Migration, TargetVersion, UpgradeData } from '@angular/cdk/schematics';
 import * as ts from 'typescript';
 
-export class DropdownClassRule extends MigrationRule<null> {
+export class DropdownClassRule extends Migration<UpgradeData> {
 
-  ruleEnabled = this.targetVersion === TargetVersion.V9;
+  enabled = this.targetVersion === TargetVersion.V9;
 
   visitNode(node: ts.Node): void {
     if (ts.isIdentifier(node)) {

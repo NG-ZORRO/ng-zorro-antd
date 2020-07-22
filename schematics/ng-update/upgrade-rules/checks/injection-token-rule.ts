@@ -1,10 +1,10 @@
-import { MigrationRule, TargetVersion } from '@angular/cdk/schematics';
+import { Migration, TargetVersion, UpgradeData } from '@angular/cdk/schematics';
 import * as ts from 'typescript';
 import { isNgZorroImportDeclaration } from "../../../utils/ng-update/module-specifiers";
 
-export class InjectionTokenRule extends MigrationRule<null> {
+export class InjectionTokenRule extends Migration<UpgradeData> {
 
-  ruleEnabled = this.targetVersion === TargetVersion.V9;
+  enabled = this.targetVersion === TargetVersion.V9;
 
   visitNode(node: ts.Node): void {
     if (ts.isImportDeclaration(node)) {

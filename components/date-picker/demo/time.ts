@@ -37,7 +37,7 @@ export class NzDemoDatePickerTimeComponent {
     console.log('Selected Time: ', result);
   }
 
-  onOk(result: Date): void {
+  onOk(result: Date | Date[] | null): void {
     console.log('onOk', result);
   }
 }

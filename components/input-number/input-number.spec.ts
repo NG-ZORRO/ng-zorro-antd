@@ -459,7 +459,7 @@ describe('input number', () => {
   `
 })
 export class NzTestInputNumberBasicComponent {
-  @ViewChild(NzInputNumberComponent, { static: false }) nzInputNumberComponent: NzInputNumberComponent;
+  @ViewChild(NzInputNumberComponent, { static: false }) nzInputNumberComponent!: NzInputNumberComponent;
   value?: number | string;
   autofocus = false;
   disabled = false;
@@ -469,7 +469,7 @@ export class NzTestInputNumberBasicComponent {
   placeholder = 'placeholder';
   step = 1;
   precision?: number = 2;
-  precisionMode: 'cut' | 'toFixed' | ((value: number | string, precision?: number) => number);
+  precisionMode?: 'cut' | 'toFixed' | ((value: number | string, precision?: number) => number);
   formatter = (value: number) => (value !== null ? `${value}` : '');
   parser = (value: number) => value;
   modelChange = jasmine.createSpy('change callback');

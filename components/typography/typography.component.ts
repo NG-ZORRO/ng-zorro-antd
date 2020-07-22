@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -38,7 +35,7 @@ import { InputBoolean, InputNumber, isStyleSupport, measure } from 'ng-zorro-ant
 import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
 
 import { NzTextCopyComponent } from './text-copy.component';
 import { NzTextEditComponent } from './text-edit.component';
@@ -60,17 +57,22 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
       <ng-content *ngIf="!content"></ng-content>
       {{ content }}
     </ng-template>
-
     <ng-container *ngIf="!editing">
-      <ng-container *ngIf="expanded || (!nzExpandable && !nzSuffix && nzEllipsisRows === 1) || canCssEllipsis">
+      <ng-container
+        *ngIf="
+          expanded || (!nzExpandable && nzEllipsisRows === 1 && !hasEllipsisObservers) || canCssEllipsis || (nzSuffix && expanded);
+          else jsEllipsis
+        "
+      >
         <ng-template [ngTemplateOutlet]="contentTemplate" [ngTemplateOutletContext]="{ content: nzContent }"></ng-template>
+        <ng-container *ngIf="nzSuffix">{{ nzSuffix }}</ng-container>
       </ng-container>
-      <ng-container *ngIf="(nzEllipsis && !expanded && (nzEllipsisRows > 1 || nzExpandable)) || nzSuffix">
-        <span #ellipsisContainer *ngIf="!expanded"></span>
+      <ng-template #jsEllipsis>
+        <span #ellipsisContainer></span>
         <ng-container *ngIf="isEllipsis">{{ ellipsisStr }}</ng-container>
         <ng-container *ngIf="nzSuffix">{{ nzSuffix }}</ng-container>
         <a #expandable *ngIf="nzExpandable && isEllipsis" class="ant-typography-expand" (click)="onExpand()">{{ locale?.expand }}</a>
-      </ng-container>
+      </ng-template>
     </ng-container>
 
     <nz-text-edit *ngIf="nzEditable" [text]="nzContent" (endEditing)="onEndEditing($event)" (startEditing)="onStartEditing()">
@@ -107,22 +109,24 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzExpandable = false;
   @Input() @InputBoolean() nzEllipsis = false;
-  @Input() nzContent: string;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 1) @InputNumber() nzEllipsisRows: number;
+  @Input() nzContent?: string;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputNumber() nzEllipsisRows: number = 1;
   @Input() nzType: 'secondary' | 'warning' | 'danger' | undefined;
   @Input() nzCopyText: string | undefined;
   @Input() nzSuffix: string | undefined;
   @Output() readonly nzContentChange = new EventEmitter<string>();
   @Output() readonly nzCopy = new EventEmitter<string>();
   @Output() readonly nzExpandChange = new EventEmitter<void>();
+  // This is not a two-way binding output with {@link nzEllipsis}
+  @Output() readonly nzOnEllipsis = new EventEmitter<boolean>();
 
-  @ViewChild(NzTextEditComponent, { static: false }) textEditRef: NzTextEditComponent;
-  @ViewChild(NzTextCopyComponent, { static: false }) textCopyRef: NzTextCopyComponent;
-  @ViewChild('ellipsisContainer', { static: false }) ellipsisContainer: ElementRef<HTMLSpanElement>;
-  @ViewChild('expandable', { static: false }) expandableBtn: ElementRef<HTMLSpanElement>;
-  @ViewChild('contentTemplate', { static: false }) contentTemplate: TemplateRef<{ content: string }>;
+  @ViewChild(NzTextEditComponent, { static: false }) textEditRef?: NzTextEditComponent;
+  @ViewChild(NzTextCopyComponent, { static: false }) textCopyRef?: NzTextCopyComponent;
+  @ViewChild('ellipsisContainer', { static: false }) ellipsisContainer?: ElementRef<HTMLSpanElement>;
+  @ViewChild('expandable', { static: false }) expandableBtn?: ElementRef<HTMLSpanElement>;
+  @ViewChild('contentTemplate', { static: false }) contentTemplate?: TemplateRef<{ content: string }>;
 
-  locale: NzSafeAny = {};
+  locale!: NzTextI18nInterface;
   document: Document;
   expandableBtnElementCache: HTMLElement | null = null;
   editing = false;
@@ -132,8 +136,12 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   expanded: boolean = false;
   ellipsisStr = '...';
 
+  get hasEllipsisObservers(): boolean {
+    return this.nzOnEllipsis.observers.length > 0;
+  }
+
   get canCssEllipsis(): boolean {
-    return this.nzEllipsis && this.cssEllipsis && !this.expanded;
+    return this.nzEllipsis && this.cssEllipsis && !this.expanded && !this.hasEllipsisObservers;
   }
 
   private viewInit = false;
@@ -141,7 +149,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   private destroy$ = new Subject();
   private windowResizeSubscription = Subscription.EMPTY;
   get copyText(): string {
-    return typeof this.nzCopyText === 'string' ? this.nzCopyText : this.nzContent;
+    return (typeof this.nzCopyText === 'string' ? this.nzCopyText : this.nzContent)!;
   }
 
   constructor(
@@ -178,10 +186,15 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
     this.isEllipsis = false;
     this.expanded = true;
     this.nzExpandChange.emit();
+    this.nzOnEllipsis.emit(false);
   }
 
   canUseCSSEllipsis(): boolean {
     if (this.nzEditable || this.nzCopyable || this.nzExpandable || this.nzSuffix) {
+      return false;
+    }
+    // make sure {@link nzOnEllipsis} works, will force use JS to calculations
+    if (this.hasEllipsisObservers) {
       return false;
     }
     if (this.nzEllipsisRows === 1) {
@@ -202,8 +215,8 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   }
 
   getOriginContentViewRef(): { viewRef: EmbeddedViewRef<{ content: string }>; removeView(): void } {
-    const viewRef = this.viewContainerRef.createEmbeddedView<{ content: string }>(this.contentTemplate, {
-      content: this.nzContent
+    const viewRef = this.viewContainerRef.createEmbeddedView<{ content: string }>(this.contentTemplate!, {
+      content: this.nzContent!
     });
     viewRef.detectChanges();
     return {
@@ -219,7 +232,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
       return;
     }
     const { viewRef, removeView } = this.getOriginContentViewRef();
-    const fixedNodes = [this.textCopyRef, this.textEditRef].filter(e => e && e.nativeElement).map(e => e.nativeElement);
+    const fixedNodes = [this.textCopyRef, this.textEditRef].filter(e => e && e.nativeElement).map(e => e!.nativeElement);
     const expandableBtnElement = this.getExpandableBtnElement();
     if (expandableBtnElement) {
       fixedNodes.push(expandableBtnElement);
@@ -236,8 +249,11 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
     removeView();
 
     this.ellipsisText = text;
-    this.isEllipsis = ellipsis;
-    const ellipsisContainerNativeElement = this.ellipsisContainer.nativeElement;
+    if (ellipsis !== this.isEllipsis) {
+      this.isEllipsis = ellipsis;
+      this.nzOnEllipsis.emit(ellipsis);
+    }
+    const ellipsisContainerNativeElement = this.ellipsisContainer!.nativeElement;
     while (ellipsisContainerNativeElement.firstChild) {
       this.renderer.removeChild(ellipsisContainerNativeElement, ellipsisContainerNativeElement.firstChild);
     }

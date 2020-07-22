@@ -3,6 +3,7 @@ category: Components
 type: 数据录入
 title: DatePicker
 subtitle: 日期选择框
+cover: https://gw.alipayobjects.com/zos/alicdn/RT_USzA48/DatePicker.svg
 ---
 
 输入或选择日期的控件。
@@ -25,12 +26,13 @@ import zh from '@angular/common/locales/zh';
 registerLocaleData(zh);
 ```
 
-日期类组件包括以下四种形式。
+日期类组件包括以下五种形式。
 
 - nz-date-picker
 - nz-month-picker
 - nz-range-picker
 - nz-week-picker
+- nz-year-picker
 
 **注意：** 所有输入输出日期对象均为 [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date)，你可以通过 [date-fns](https://date-fns.org/) 工具库获得你需要的数据。
 
@@ -38,20 +40,22 @@ registerLocaleData(zh);
 
 以下 API 为 nz-date-picker、nz-month-picker、nz-range-picker, nz-week-picker 共享的 API。
 
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `[nzAllowClear]` | 是否显示清除按钮 | `boolean` | `true` |
-| `[nzAutoFocus]` | 自动获取焦点 | `boolean` | `false` |
-| `[nzDateRender]` | 自定义日期单元格的内容（month-picker/year-picker不支持） | `TemplateRef<Date> \| string \| ((d: Date) => TemplateRef<Date> \| string)` | - |
-| `[nzDisabled]` | 禁用 | `boolean` | `false` |
-| `[nzDisabledDate]` | 不可选择的日期 | `(current: Date) => boolean` | - |
-| `[nzLocale]` | 国际化配置 | `object` | [默认配置](https://github.com/ant-design/ant-design/blob/master/components/date-picker/locale/example.json) |
-| `[nzOpen]` | 控制弹层是否展开 | `boolean` | - |
-| `[nzPopupStyle]` | 额外的弹出日历样式 | `object` | `{}` |
-| `[nzDropdownClassName]` | 额外的弹出日历 className | `string` | - |
-| `[nzSize]` | 输入框大小，`large` 高度为 40px，`small` 为 24px，默认是 32px | `'large' \| 'small'` | - |
-| `[nzDefaultPickerValue]` | 默认面板日期 | `Date` \| `Date[]` | - |
-| `(nzOnOpenChange)` | 弹出日历和关闭日历的回调 | `EventEmitter<boolean>` | - |
+| 参数 | 说明 | 类型 | 默认值 | 全局配置 |
+| --- | --- | --- | --- | - |
+| `[nzAllowClear]` | 是否显示清除按钮 | `boolean` | `true` | - |
+| `[nzAutoFocus]` | 自动获取焦点 | `boolean` | `false` | - |
+| `[nzDateRender]` | 自定义日期单元格的内容（month-picker/year-picker不支持） | `TemplateRef<Date> \| string \| ((d: Date) => TemplateRef<Date> \| string)` | - | - |
+| `[nzDisabled]` | 禁用 | `boolean` | `false` | - |
+| `[nzInputReadOnly]` | 为 input 标签设置只读属性（避免在移动设备上触发小键盘） | `boolean` | `false` | - |
+| `[nzDisabledDate]` | 不可选择的日期 | `(current: Date) => boolean` | - | - |
+| `[nzLocale]` | 国际化配置 | `object` | [默认配置](https://github.com/ant-design/ant-design/blob/master/components/date-picker/locale/example.json) | - |
+| `[nzOpen]` | 控制弹层是否展开 | `boolean` | - | - |
+| `[nzPopupStyle]` | 额外的弹出日历样式 | `object` | `{}` | - |
+| `[nzDropdownClassName]` | 额外的弹出日历 className | `string` | - | - |
+| `[nzSize]` | 输入框大小，`large` 高度为 40px，`small` 为 24px，默认是 32px | `'large' \| 'small'` | - | - |
+| `[nzDefaultPickerValue]` | 默认面板日期 | `Date` \| `Date[]` | - | - |
+| `[nzSuffixIcon]` | 自定义的后缀图标 | `string` \| `TemplateRef` | - | ✅ |
+| `(nzOnOpenChange)` | 弹出日历和关闭日历的回调 | `EventEmitter<boolean>` | - | - |
 
 ### nz-date-picker
 

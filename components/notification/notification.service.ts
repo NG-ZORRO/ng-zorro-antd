@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -21,7 +18,7 @@ let notificationId = 0;
   providedIn: NzNotificationServiceModule
 })
 export class NzNotificationService extends NzMNService {
-  protected container: NzNotificationContainerComponent;
+  protected container!: NzNotificationContainerComponent;
   protected componentPrefix = 'notification-';
 
   constructor(nzSingletonService: NzSingletonService, overlay: Overlay, injector: Injector) {

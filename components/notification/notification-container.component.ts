@@ -1,13 +1,11 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
 import { NotificationConfig, NzConfigService } from 'ng-zorro-antd/core/config';
+import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { toCssPixel } from 'ng-zorro-antd/core/util';
 
 import { NzMNContainerComponent } from 'ng-zorro-antd/message';
@@ -70,9 +68,9 @@ const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
   `
 })
 export class NzNotificationContainerComponent extends NzMNContainerComponent {
-  bottom: string | null;
-  top: string | null;
-  config: Required<NotificationConfig>;
+  bottom?: string | null;
+  top?: string | null;
+  config!: Required<NotificationConfig>; // initialized by parent class constructor
   instances: Array<Required<NzNotificationData>> = [];
   topLeftInstances: Array<Required<NzNotificationData>> = [];
   topRightInstances: Array<Required<NzNotificationData>> = [];
@@ -135,14 +133,26 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent {
     old.content = _new.content;
     old.template = _new.template;
     old.type = _new.type;
+    old.options = _new.options;
   }
 
   protected readyInstances(): void {
-    this.topLeftInstances = this.instances.filter(m => m.options.nzPosition === 'topLeft');
-    this.topRightInstances = this.instances.filter(m => m.options.nzPosition === 'topRight' || !m.options.nzPosition);
-    this.bottomLeftInstances = this.instances.filter(m => m.options.nzPosition === 'bottomLeft');
-    this.bottomRightInstances = this.instances.filter(m => m.options.nzPosition === 'bottomRight');
+    this.topLeftInstances = this.instances.filter(m => m.options.nzPlacement === 'topLeft');
+    this.topRightInstances = this.instances.filter(m => m.options.nzPlacement === 'topRight' || !m.options.nzPlacement);
+    this.bottomLeftInstances = this.instances.filter(m => m.options.nzPlacement === 'bottomLeft');
+    this.bottomRightInstances = this.instances.filter(m => m.options.nzPlacement === 'bottomRight');
 
     this.cdr.detectChanges();
+  }
+
+  protected mergeOptions(options?: NzNotificationDataOptions): NzNotificationDataOptions {
+    const { nzPosition } = options ?? {};
+
+    if (nzPosition) {
+      warnDeprecation('`nzPosition` of NzNotificationDataOptions is deprecated and would be removed in 10.0.0. Use `nzPlacement` instead.');
+    }
+
+    const { nzDuration, nzAnimate, nzPauseOnHover, nzPlacement } = this.config;
+    return { nzDuration, nzAnimate, nzPauseOnHover, nzPlacement: nzPlacement || nzPosition, ...options };
   }
 }

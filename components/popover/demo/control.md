@@ -7,9 +7,9 @@ title:
 
 ## zh-CN
 
-使用 `nzVisible` 属性控制浮层显示。
+使用 `nzPopoverVisible` 属性控制浮层显示。
 
 ## en-US
 
-Use `nzVisible` prop to control the display of the card.
+Use `nzPopoverVisible` prop to control the display of the card.
 

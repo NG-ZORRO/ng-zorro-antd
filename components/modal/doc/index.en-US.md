@@ -2,6 +2,7 @@
 type: Feedback
 category: Components
 title: Modal
+cover: https://gw.alipayobjects.com/zos/alicdn/3StSdUlSH/Modal.svg
 ---
 
 Modal dialogs.
@@ -42,6 +43,7 @@ The dialog is currently divided into 2 modes, `normal mode` and `confirm box mod
 | nzKeyboard        | Whether support press esc to close | `boolean` | `true` |
 | nzMask            | Whether show mask or not. | `boolean` | `true` | ✅ |
 | nzMaskClosable    | Whether to close the modal dialog when the mask (area outside the modal) is clicked | `boolean` | `true` | ✅ |
+| nzCloseOnNavigation    | Whether to close the modal when the navigation history changes | `boolean` | `true` | ✅ |
 | nzMaskStyle       | Style for modal's mask element. | `object` | - |
 | nzOkText          | Text of the OK button. <i>Set to null to show no ok button (this value is invalid if the nzFooter parameter is used in normal mode)</i> | `string` | OK |
 | nzOkType          | Button type of the OK button. <i>Consistent with the type of the `nz-button`.</i> | `string` | primary |
@@ -56,15 +58,13 @@ The dialog is currently divided into 2 modes, `normal mode` and `confirm box mod
 | nzOnCancel        | Specify a function that will be called when a user clicks mask, close button on top right or Cancel button (If nzContent is Component, the Component instance will be put in as an argument). <i>Note: When created with `NzModalService.create`, this parameter should be passed into the type of function (callback function). This function returns a promise, which is automatically closed when the execution is complete or the promise ends (return `false` to prevent closing)</i> | EventEmitter | - |
 | nzOnOk            | Specify a EventEmitter that will be emitted when a user clicks the OK button (If nzContent is Component, the Component instance will be put in as an argument). <i>Note: When created with `NzModalService.create`, this parameter should be passed into the type of function (callback function). This function returns a promise, which is automatically closed when the execution is complete or the promise ends (return `false` to prevent closing)</i> | EventEmitter | - |
 | nzContent         | Content | string / TemplateRef / Component / ng-content | - |
-| nzComponentParams | When nzContent is a Component, the attributes in this parameter will be passed to the nzContent instance | `object` | - |
+| nzComponentParams | Will be instance property when `nzContent` is a component，will be template variable when `nzContent` is `TemplateRef`  | `object` | - |
 | nzIconType        | Icon type of the Icon component. <i>Only valid in confirm box mode</i> | `string` | question-circle |
 | nzAutofocus        | autofocus and the position，disabled when is `null` | `'ok' \| 'cancel' \| 'auto' \| null` | `'auto'` |
 
 #### Attentions
 
-> The default state of `<nz-modal>` will not be automatically cleared. If you wish to open new content each time, use the `NzModalService` service to create modals (when created as a service, the `nzAfterClose` event will be listened by default aim to destroy the modal).
-
-> Modals created through the `NzModalService` service need you to manage their own life cycle. For example, when you switch the page route, the modal box created by service will not be destroyed automatically. You need to use the modal box's reference to manually destroy it (`NzModalRef.close()` or `NzModalRef.destroy()`).
+> The creation or modification of the `nzComponentParams` property does not trigger the `ngOnChanges` life cycle hook of the `nzContent` component.
 
 #### Using service to create Normal Mode modal
 
@@ -119,12 +119,12 @@ The dialog created by the service method `NzModalService.xxx()` will return a `N
 |----|----|
 | afterOpen                 | Same as nzAfterOpen but of type Observable&lt;void&gt; |
 | afterClose | Same as nzAfterClose, but of type Observable&lt;result:any&gt; |
-| open()                    | Open (display) dialog box. <i>Calling this function will fail if the dialog is already destroyed</i> |
 | close()                   | Close (hide) the dialog. <i>Note: When used for a dialog created as a service, this method will destroy the dialog directly (as with the destroy method)</i> |
 | destroy()                 | Destroy the dialog. <i>Note: Used only for dialogs created by the service (non-service created dialogs, this method only hides the dialog)</i> |
 | getContentComponent()  | Gets the Component instance in the contents of the dialog for `nzContent`. <i> Note: When the dialog is not initialized (`ngOnInit` is not executed), this function will return `undefined`</i> |
 | triggerOk()               | Manually trigger nzOnOk |
 | triggerCancel()           | Manually trigger nzOnCancel |
+| updateConfig(config: ModalOptions): void   | Update the config |
 
 ### ModalButtonOptions (used to customize the bottom button)
 

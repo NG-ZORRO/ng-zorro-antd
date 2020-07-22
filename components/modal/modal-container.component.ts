@@ -1,31 +1,19 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { FocusTrapFactory } from '@angular/cdk/a11y';
+import { ConfigurableFocusTrapFactory } from '@angular/cdk/a11y';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortalOutlet } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  Inject,
-  NgZone,
-  Optional,
-  Renderer2,
-  ViewChild
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inject, Optional, Renderer2, ViewChild } from '@angular/core';
 import { ANIMATION_MODULE_TYPE } from '@angular/platform-browser/animations';
+import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { nzModalAnimations } from './modal-animations';
-import { BaseModalContainer } from './modal-container';
+import { BaseModalContainerComponent } from './modal-container';
 import { ModalOptions } from './modal-types';
 
 @Component({
@@ -36,14 +24,15 @@ import { ModalOptions } from './modal-types';
       #modalElement
       role="document"
       class="ant-modal"
-      [class]="config.nzClassName"
-      [ngStyle]="config.nzStyle"
-      [style.width]="config?.nzWidth | nzToCssUnit"
+      (mousedown)="onMousedown()"
+      [ngClass]="config.nzClassName!"
+      [ngStyle]="config.nzStyle!"
+      [style.width]="config?.nzWidth! | nzToCssUnit"
     >
       <div class="ant-modal-content">
         <button *ngIf="config.nzClosable" nz-modal-close (click)="onCloseClick()"></button>
         <div *ngIf="config.nzTitle" nz-modal-title></div>
-        <div class="ant-modal-body" [ngStyle]="config.nzBodyStyle">
+        <div class="ant-modal-body" [ngStyle]="config.nzBodyStyle!">
           <ng-template cdkPortalOutlet></ng-template>
           <div *ngIf="isStringContent" [innerHTML]="config.nzContent"></div>
         </div>
@@ -63,31 +52,30 @@ import { ModalOptions } from './modal-types';
   host: {
     tabindex: '-1',
     role: 'dialog',
-    class: 'ant-modal-wrap',
-    '[class]': 'config.nzWrapClassName',
+    '[class]': 'config.nzWrapClassName ? "ant-modal-wrap " + config.nzWrapClassName : "ant-modal-wrap"',
     '[style.zIndex]': 'config.nzZIndex',
     '[@.disabled]': 'config.nzNoAnimation',
     '[@modalContainer]': 'state',
     '(@modalContainer.start)': 'onAnimationStart($event)',
     '(@modalContainer.done)': 'onAnimationDone($event)',
-    '(mousedown)': 'onMousedown($event)',
-    '(mouseup)': 'onMouseup($event)'
+    '(click)': 'onContainerClick($event)',
+    '(mouseup)': 'onMouseup()'
   }
 })
-export class NzModalContainerComponent extends BaseModalContainer {
-  @ViewChild(CdkPortalOutlet, { static: true }) portalOutlet: CdkPortalOutlet;
-  @ViewChild('modalElement', { static: true }) modalElementRef: ElementRef<HTMLDivElement>;
+export class NzModalContainerComponent extends BaseModalContainerComponent {
+  @ViewChild(CdkPortalOutlet, { static: true }) portalOutlet!: CdkPortalOutlet;
+  @ViewChild('modalElement', { static: true }) modalElementRef!: ElementRef<HTMLDivElement>;
   constructor(
     elementRef: ElementRef,
-    focusTrapFactory: FocusTrapFactory,
+    focusTrapFactory: ConfigurableFocusTrapFactory,
     cdr: ChangeDetectorRef,
     render: Renderer2,
-    zone: NgZone,
     overlayRef: OverlayRef,
+    nzConfigService: NzConfigService,
     public config: ModalOptions,
     @Optional() @Inject(DOCUMENT) document: NzSafeAny,
     @Optional() @Inject(ANIMATION_MODULE_TYPE) animationType: string
   ) {
-    super(elementRef, focusTrapFactory, cdr, render, zone, overlayRef, config, document, animationType);
+    super(elementRef, focusTrapFactory, cdr, render, overlayRef, nzConfigService, config, document, animationType);
   }
 }

@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -16,8 +13,8 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { toNumber } from 'ng-zorro-antd/core/util';
+import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 
 @Component({
   selector: 'div[nz-pagination-options]',
@@ -54,11 +51,11 @@ export class NzPaginationOptionsComponent implements OnChanges {
   @Input() disabled = false;
   @Input() showSizeChanger = false;
   @Input() showQuickJumper = false;
-  @Input() locale: NzSafeAny = {};
+  @Input() locale!: NzPaginationI18nInterface;
   @Input() total = 0;
   @Input() pageIndex = 1;
   @Input() pageSize = 10;
-  @Input() pageSizeOptions = [];
+  @Input() pageSizeOptions: number[] = [];
   @Output() readonly pageIndexChange = new EventEmitter<number>();
   @Output() readonly pageSizeChange = new EventEmitter<number>();
   listOfPageSizeOption: Array<{ value: number; label: string }> = [];

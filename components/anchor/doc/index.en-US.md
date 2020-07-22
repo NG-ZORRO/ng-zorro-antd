@@ -2,6 +2,7 @@
 category: Components
 type: Other
 title: Anchor
+cover: https://gw.alipayobjects.com/zos/alicdn/_1-C1JwsC/Anchor.svg
 ---
 
 Hyperlinks to scroll on one page.

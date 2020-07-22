@@ -22,10 +22,13 @@ const CI = process.env.CI;
  * to ensures the demos and docs have changes are rebuild.
  */
 task('watch:site', () => {
-  watch([docsGlob, demoGlob]).on(
+  // Globs accepts the Unix-style path separators only
+  const globs = [docsGlob, demoGlob].map(p => p.replace(/\\/g, '/'));
+  watch(globs).on(
     'change',
     debounce(path => {
-      const execArray = /components\/(.+)\/(doc|demo)/.exec(path);
+      const p = path.replace(/\\/g, '/');
+      const execArray = /components\/(.+)\/(doc|demo)/.exec(p);
       if (execArray && execArray[1]) {
         const component = execArray[1];
         console.log(`Reload '${component}'`);
@@ -38,9 +41,7 @@ task('watch:site', () => {
 /** Parse demos and docs to site directory. */
 task('init:site', done => {
   siteGenerate('init');
-  colorGenerate()
-    .then(themeGenerate)
-    .then(done);
+  colorGenerate().then(themeGenerate).then(done);
 });
 
 /** Run `ng serve` */
@@ -78,10 +79,7 @@ task('build:site-issue-helper', execTask('bash', [issueHelperScriptFile]));
 
 /** Build all site projects to the output directory. */
 task(
-  'build:site',
-  CI || process.env.SYSTEM_JOBNAME
-    ? series('build:site-doc', 'build:site-iframe')
-    : series('build:site-doc', 'build:site-iframe', 'build:site-issue-helper')
+  'build:site', series('build:site-doc', 'build:site-iframe', 'build:site-issue-helper')
 );
 
 /** Init site directory, and start watch and ng-serve */

@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -11,7 +8,7 @@ import { isPromise } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzI18nService, NzModalI18nInterface } from 'ng-zorro-antd/i18n';
 
 import { NzModalRef } from './modal-ref';
 import { ModalButtonOptions, ModalOptions } from './modal-types';
@@ -21,7 +18,7 @@ import { ModalButtonOptions, ModalOptions } from './modal-types';
   exportAs: 'NzModalFooterBuiltin',
   template: `
     <ng-container *ngIf="config.nzFooter; else defaultFooterButtons">
-      <ng-container *nzStringTemplateOutlet="config.nzFooter">
+      <ng-container *nzStringTemplateOutlet="config.nzFooter; context: { $implicit: config.nzComponentParams, modalRef: modalRef }">
         <div *ngIf="!buttonsFooter" [innerHTML]="config.nzTitle"></div>
         <ng-container *ngIf="buttonsFooter">
           <button
@@ -31,10 +28,10 @@ import { ModalButtonOptions, ModalOptions } from './modal-types';
             [hidden]="!getButtonCallableProp(button, 'show')"
             [nzLoading]="getButtonCallableProp(button, 'loading')"
             [disabled]="getButtonCallableProp(button, 'disabled')"
-            [nzType]="button.type"
-            [nzShape]="button.shape"
-            [nzSize]="button.size"
-            [nzGhost]="button.ghost"
+            [nzType]="button.type!"
+            [nzShape]="button.shape!"
+            [nzSize]="button.size!"
+            [nzGhost]="button.ghost!"
           >
             {{ button.label }}
           </button>
@@ -44,21 +41,21 @@ import { ModalButtonOptions, ModalOptions } from './modal-types';
     <ng-template #defaultFooterButtons>
       <button
         *ngIf="config.nzCancelText !== null"
-        [attr.cdkFocusInitial]="config.nzAutofocus === 'cancel'"
+        [attr.cdkFocusInitial]="config.nzAutofocus === 'cancel' || null"
         nz-button
         (click)="onCancel()"
-        [nzLoading]="config.nzCancelLoading"
+        [nzLoading]="!!config.nzCancelLoading"
         [disabled]="config.nzCancelDisabled"
       >
         {{ config.nzCancelText || locale.cancelText }}
       </button>
       <button
         *ngIf="config.nzOkText !== null"
-        [attr.cdkFocusInitial]="config.nzAutofocus === 'ok'"
+        [attr.cdkFocusInitial]="config.nzAutofocus === 'ok' || null"
         nz-button
-        [nzType]="config.nzOkType"
+        [nzType]="config.nzOkType!"
         (click)="onOk()"
-        [nzLoading]="config.nzOkLoading"
+        [nzLoading]="!!config.nzOkLoading"
         [disabled]="config.nzOkDisabled"
       >
         {{ config.nzOkText || locale.okText }}
@@ -73,10 +70,10 @@ import { ModalButtonOptions, ModalOptions } from './modal-types';
 export class NzModalFooterComponent implements OnDestroy {
   buttonsFooter = false;
   buttons: ModalButtonOptions[] = [];
-  locale: { okText?: string; cancelText?: string } = {};
+  locale!: NzModalI18nInterface;
   @Output() readonly cancelTriggered = new EventEmitter<void>();
   @Output() readonly okTriggered = new EventEmitter<void>();
-  @Input() modalRef: NzModalRef;
+  @Input() modalRef!: NzModalRef;
   private destroy$ = new Subject<void>();
 
   constructor(private i18n: NzI18nService, public config: ModalOptions) {

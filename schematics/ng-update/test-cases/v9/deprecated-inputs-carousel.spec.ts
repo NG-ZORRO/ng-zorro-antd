@@ -67,9 +67,9 @@ describe('carousel migration', () => {
       }`);
       await runMigration();
 
-      expect(warnOutput).toContain('index.ts@6:24 - Found deprecated "[nzVertical]" input. Use "[nzDotPosition]" to ' +
+      expect(warnOutput).toContain('/index.ts@6:24 - Found deprecated "[nzVertical]" input. Use "[nzDotPosition]" to ' +
         'instead please.');
-      expect(warnOutput).toContain('index.ts@5:25 - Found deprecated "[nzVertical]" input. Use "[nzDotPosition]" to ' +
+      expect(warnOutput).toContain('/index.ts@5:25 - Found deprecated "[nzVertical]" input. Use "[nzDotPosition]" to ' +
         'instead please.');
     });
 

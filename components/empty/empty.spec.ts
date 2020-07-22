@@ -3,8 +3,8 @@ import { Component, DebugElement, Inject, NgModule, TemplateRef, ViewChild } fro
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { NZ_CONFIG, NzConfigService } from 'ng-zorro-antd/core/config';
-import { ComponentBed, createComponentBed } from '../core/testing/componet-bed';
+import { NzConfigService, NZ_CONFIG } from 'ng-zorro-antd/core/config';
+import { ComponentBed, createComponentBed } from '../core/testing/component-bed';
 import { NzI18nService } from '../i18n';
 import en_US from '../i18n/languages/en_US';
 import { NzListModule } from '../list';
@@ -36,8 +36,6 @@ describe('nz-empty', () => {
       expect(emptyComponent.nativeElement.classList.contains('ant-empty')).toBe(true);
 
       const imageEl = emptyComponent.nativeElement.firstChild;
-
-      console.log(imageEl.outerHTML);
 
       expect(imageEl.tagName).toBe('DIV');
       expect(imageEl.classList.contains('ant-empty-image')).toBe(true);
@@ -274,9 +272,9 @@ describe('nz-empty', () => {
   `
 })
 export class NzEmptyTestBasicComponent {
-  @ViewChild('imageTpl', { static: false }) imageTpl: TemplateRef<void>;
-  @ViewChild('contentTpl', { static: false }) contentTpl: TemplateRef<void>;
-  @ViewChild('footerTpl', { static: false }) footerTpl: TemplateRef<void>;
+  @ViewChild('imageTpl', { static: false }) imageTpl!: TemplateRef<void>;
+  @ViewChild('contentTpl', { static: false }) contentTpl!: TemplateRef<void>;
+  @ViewChild('footerTpl', { static: false }) footerTpl!: TemplateRef<void>;
 
   image?: TemplateRef<void> | string;
   content?: TemplateRef<void> | string;
@@ -292,7 +290,7 @@ export class NzEmptyTestBasicComponent {
   `
 })
 export class NzEmptyTestServiceComponent {
-  @ViewChild('tpl', { static: false }) template: TemplateRef<string>;
+  @ViewChild('tpl', { static: false }) template!: TemplateRef<string>;
 
   noResult?: string | null;
 

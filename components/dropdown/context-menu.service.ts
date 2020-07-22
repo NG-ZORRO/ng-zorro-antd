@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -36,14 +33,15 @@ export class NzContextMenuService {
     if ($event instanceof MouseEvent) {
       $event.preventDefault();
     }
-    const positionStrategy = this.overlay.position().flexibleConnectedTo({ x, y }).withPositions(listOfPositions);
+    const positionStrategy = this.overlay
+      .position()
+      .flexibleConnectedTo({ x, y })
+      .withPositions(listOfPositions)
+      .withTransformOriginOn('.ant-dropdown');
     this.overlayRef = this.overlay.create({
       positionStrategy,
       disposeOnNavigation: true,
       scrollStrategy: this.overlay.scrollStrategies.close()
-    });
-    positionStrategy.positionChanges.subscribe(change => {
-      nzDropdownMenuComponent.setValue('dropDownPosition', change.connectionPair.overlayY === 'bottom' ? 'top' : 'bottom');
     });
     this.closeSubscription = merge(
       nzDropdownMenuComponent.descendantMenuItemClick$,

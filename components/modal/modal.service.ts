@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -9,20 +6,21 @@
 import { ComponentType, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal, PortalInjector, TemplatePortal } from '@angular/cdk/portal';
 import { Injectable, Injector, OnDestroy, Optional, SkipSelf, TemplateRef } from '@angular/core';
+import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isNotNil } from 'ng-zorro-antd/core/util';
 import { defer, Observable, Subject } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
+import { MODAL_MASK_CLASS_NAME, NZ_CONFIG_COMPONENT_NAME } from './modal-config';
 import { NzModalConfirmContainerComponent } from './modal-confirm-container.component';
-import { BaseModalContainer } from './modal-container';
+import { BaseModalContainerComponent } from './modal-container';
 import { NzModalContainerComponent } from './modal-container.component';
 import { NzModalRef } from './modal-ref';
 import { ConfirmType, ModalOptions } from './modal-types';
-import { applyConfigDefaults, setContentInstanceParams } from './utils';
+import { applyConfigDefaults, getValueWithConfig, setContentInstanceParams } from './utils';
 
-const MODAL_MASK_CLASS_NAME = 'ant-modal-mask';
 type ContentType<T> = ComponentType<T> | TemplateRef<T> | string;
 
 @Injectable()
@@ -43,7 +41,12 @@ export class NzModalService implements OnDestroy {
     this.openModals.length ? this._afterAllClosed : this._afterAllClosed.pipe(startWith(undefined))
   ) as Observable<void>;
 
-  constructor(private overlay: Overlay, private injector: Injector, @Optional() @SkipSelf() private parentModal: NzModalService) {}
+  constructor(
+    private overlay: Overlay,
+    private injector: Injector,
+    private nzConfigService: NzConfigService,
+    @Optional() @SkipSelf() private parentModal: NzModalService
+  ) {}
 
   create<T, R = NzSafeAny>(config: ModalOptions<T, R>): NzModalRef<T, R> {
     return this.open<T, R>(config.nzContent as ComponentType<T>, config);
@@ -120,21 +123,22 @@ export class NzModalService implements OnDestroy {
   }
 
   private createOverlay(config: ModalOptions): OverlayRef {
+    const globalConfig = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME) || {};
     const overlayConfig = new OverlayConfig({
       hasBackdrop: true,
       scrollStrategy: this.overlay.scrollStrategies.block(),
       positionStrategy: this.overlay.position().global(),
-      disposeOnNavigation: config.nzCloseOnNavigation
+      disposeOnNavigation: getValueWithConfig(config.nzCloseOnNavigation, globalConfig.nzCloseOnNavigation, true)
     });
 
-    if (config.nzMask) {
+    if (getValueWithConfig(config.nzMask, globalConfig.nzMask, true)) {
       overlayConfig.backdropClass = MODAL_MASK_CLASS_NAME;
     }
 
     return this.overlay.create(overlayConfig);
   }
 
-  private attachModalContainer(overlayRef: OverlayRef, config: ModalOptions): BaseModalContainer {
+  private attachModalContainer(overlayRef: OverlayRef, config: ModalOptions): BaseModalContainerComponent {
     const userInjector = config && config.nzViewContainerRef && config.nzViewContainerRef.injector;
     const injector = new PortalInjector(
       userInjector || this.injector,
@@ -151,15 +155,15 @@ export class NzModalService implements OnDestroy {
         : // If the mode is not `confirm`, use `NzModalContainerComponent`
           NzModalContainerComponent;
 
-    const containerPortal = new ComponentPortal<BaseModalContainer>(ContainerComponent, config.nzViewContainerRef, injector);
-    const containerRef = overlayRef.attach<BaseModalContainer>(containerPortal);
+    const containerPortal = new ComponentPortal<BaseModalContainerComponent>(ContainerComponent, config.nzViewContainerRef, injector);
+    const containerRef = overlayRef.attach<BaseModalContainerComponent>(containerPortal);
 
     return containerRef.instance;
   }
 
   private attachModalContent<T, R>(
     componentOrTemplateRef: ContentType<T>,
-    modalContainer: BaseModalContainer,
+    modalContainer: BaseModalContainerComponent,
     overlayRef: OverlayRef,
     config: ModalOptions<T>
   ): NzModalRef<T, R> {
@@ -176,6 +180,8 @@ export class NzModalService implements OnDestroy {
       );
       setContentInstanceParams<T>(contentRef.instance, config.nzComponentParams);
       modalRef.componentInstance = contentRef.instance;
+    } else {
+      modalContainer.attachStringContent();
     }
     return modalRef;
   }

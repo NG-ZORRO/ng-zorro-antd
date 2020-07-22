@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -21,9 +18,9 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { gridResponsiveMap, NzBreakpointEnum, NzBreakpointService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
-import { NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzI18nService, NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -91,7 +88,7 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   @Input() nzShowTotal: TemplateRef<{ $implicit: number; range: [number, number] }> | null = null;
   @Input() nzSize: 'default' | 'small' = 'default';
   @Input() nzPageSizeOptions = [10, 20, 30, 40];
-  @Input() nzItemRender: TemplateRef<PaginationItemRenderContext>;
+  @Input() nzItemRender: TemplateRef<PaginationItemRenderContext> | null = null;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzShowSizeChanger = false;
   @Input() @InputBoolean() nzHideOnSinglePage = false;
@@ -103,7 +100,7 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   @Input() @InputNumber() nzPageSize = 10;
 
   showPagination = true;
-  locale: NzSafeAny = {};
+  locale!: NzPaginationI18nInterface;
   size: 'default' | 'small' = 'default';
 
   private destroy$ = new Subject<void>();

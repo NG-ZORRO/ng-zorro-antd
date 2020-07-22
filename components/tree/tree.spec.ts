@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent, dispatchTouchEvent } from 'ng-zorro-antd/core/testing';
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 import { NzFormatEmitEvent, NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -449,7 +449,6 @@ describe('tree', () => {
         // drag-over-gap-top
         dispatchMouseEvent(passedNode, 'dragover', 300, 340);
         elementNode = nativeElement.querySelector('nz-tree-node:nth-child(2)') as HTMLElement;
-        // console.log(elementNode);
         expect(elementNode.classList).toContain('drag-over-gap-top');
 
         // drag-over
@@ -487,6 +486,13 @@ describe('tree', () => {
         tick(300);
         fixture.detectChanges();
         expect((nativeElement.querySelector("[title='0-2']") as HTMLElement).querySelector('.ant-tree-indent')).toBeDefined();
+      }));
+
+      it('should nzBlockNode work', fakeAsync(() => {
+        const { fixture, nativeElement } = testBed;
+        fixture.detectChanges();
+        const treeElement = nativeElement.querySelector('.ant-tree') as HTMLElement;
+        expect(treeElement.classList).toContain('ant-tree-block-node');
       }));
     });
   });
@@ -586,8 +592,8 @@ describe('tree', () => {
   `
 })
 export class NzTestTreeBasicControlledComponent {
-  @ViewChild('treeComponent', { static: true }) treeComponent: NzTreeComponent;
-  searchValue: string;
+  @ViewChild('treeComponent', { static: true }) treeComponent!: NzTreeComponent;
+  searchValue?: string;
   multiple = true;
   expandAll = false;
   asyncData = false;
@@ -596,8 +602,8 @@ export class NzTestTreeBasicControlledComponent {
   defaultCheckedKeys: string[] = [];
   defaultSelectedKeys: string[] = [];
   defaultExpandedKeys: string[] = [];
-  expandedIcon: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
-  searchFunc: (node: NzTreeNodeOptions) => boolean;
+  expandedIcon?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
+  searchFunc?: (node: NzTreeNodeOptions) => boolean;
   hideUnMatched = false;
   nodes: NzTreeNodeOptions[] | NzTreeNode[] = [
     {
@@ -663,7 +669,7 @@ export class NzTestTreeBasicControlledComponent {
   `
 })
 export class NzTestTreeDraggableComponent {
-  @ViewChild(NzTreeComponent, { static: true }) treeComponent: NzTreeComponent;
+  @ViewChild(NzTreeComponent, { static: true }) treeComponent!: NzTreeComponent;
   defaultExpandedKeys: string[] = [];
   nodes: NzTreeNodeOptions[] | NzTreeNode[] = [
     {
@@ -697,7 +703,7 @@ export class NzTestTreeDraggableComponent {
       isLeaf: true
     }
   ];
-  beforeDrop: () => Observable<boolean>;
+  beforeDrop?: () => Observable<boolean>;
 
   onDragStart(): void {}
 
@@ -728,8 +734,8 @@ export class NzTestTreeDraggableComponent {
   `
 })
 export class NzTestTreeBasicSearchComponent {
-  @ViewChild(NzTreeComponent, { static: true }) treeComponent: NzTreeComponent;
-  searchValue: string;
+  @ViewChild(NzTreeComponent, { static: true }) treeComponent!: NzTreeComponent;
+  searchValue!: string;
   expandAll = true;
   asyncData = false;
   hideUnMatched = true;

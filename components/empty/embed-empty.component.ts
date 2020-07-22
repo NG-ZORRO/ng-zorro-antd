@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -27,7 +24,7 @@ import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
 import { NzConfigService } from 'ng-zorro-antd/core/config';
-import { NZ_EMPTY_COMPONENT_NAME, NzEmptyCustomContent, NzEmptySize } from './config';
+import { NzEmptyCustomContent, NzEmptySize, NZ_EMPTY_COMPONENT_NAME } from './config';
 
 function getEmptySize(componentName: string): NzEmptySize {
   switch (componentName) {
@@ -66,8 +63,8 @@ type NzEmptyContentType = 'component' | 'template' | 'string';
   `
 })
 export class NzEmbedEmptyComponent implements OnChanges, OnInit, OnDestroy {
-  @Input() nzComponentName: string;
-  @Input() specificContent: NzEmptyCustomContent;
+  @Input() nzComponentName?: string;
+  @Input() specificContent?: NzEmptyCustomContent;
 
   content?: NzEmptyCustomContent;
   contentType: NzEmptyContentType = 'string';

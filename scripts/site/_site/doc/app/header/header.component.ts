@@ -13,7 +13,7 @@ const RESPONSIVE_SM = 1200;
         class="nav-phone-icon"
         nzType="unordered-list"
         *ngIf="isMobile"
-        nzOverlayClassName="popover-menu"
+        nzPopoverOverlayClassName="popover-menu"
         nzPopoverPlacement="bottomLeft"
         nz-popover
         [nzPopoverContent]="menu"
@@ -87,7 +87,7 @@ export class HeaderComponent implements OnChanges {
   @Input() windowWidth = 1400;
   @Input() page: 'docs' | 'components' | 'experimental' | string = 'docs';
   @Output() versionChange = new EventEmitter<string>();
-  @Output() languageChange = new EventEmitter<string>();
+  @Output() languageChange = new EventEmitter<'zh' | 'en'>();
 
   searching = false;
   isMobile = false;
@@ -104,7 +104,7 @@ export class HeaderComponent implements OnChanges {
     this.searching = focus;
   }
 
-  onChangeLanguage(language: string): void {
+  onChangeLanguage(language: 'en' | 'zh'): void {
     this.languageChange.emit(language);
   }
 

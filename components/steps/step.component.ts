@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -41,12 +38,9 @@ import { Subject } from 'rxjs';
           <span class="ant-steps-icon" *ngIf="nzStatus === 'error'"><i nz-icon nzType="close"></i></span>
           <span class="ant-steps-icon" *ngIf="(nzStatus === 'process' || nzStatus === 'wait') && !nzIcon">{{ index + 1 }}</span>
           <span class="ant-steps-icon" *ngIf="nzIcon">
-            <ng-container *ngIf="isIconString; else iconTemplate">
-              <i nz-icon [nzType]="!oldAPIIcon && nzIcon" [ngClass]="oldAPIIcon && nzIcon"></i>
+            <ng-container *nzStringTemplateOutlet="nzIcon; let icon">
+              <i nz-icon [nzType]="!oldAPIIcon && icon" [ngClass]="oldAPIIcon && icon"></i>
             </ng-container>
-            <ng-template #iconTemplate>
-              <ng-template [ngTemplateOutlet]="nzIcon"></ng-template>
-            </ng-template>
           </span>
         </ng-template>
         <ng-template [ngIf]="showProcessDot">
@@ -94,11 +88,11 @@ import { Subject } from 'rxjs';
 export class NzStepComponent implements OnDestroy {
   static ngAcceptInputType_nzDisabled: BooleanInput;
 
-  @ViewChild('processDotTemplate', { static: false }) processDotTemplate: TemplateRef<void>;
+  @ViewChild('processDotTemplate', { static: false }) processDotTemplate?: TemplateRef<void>;
 
-  @Input() nzTitle: string | TemplateRef<void>;
-  @Input() nzSubtitle: string | TemplateRef<void>;
-  @Input() nzDescription: string | TemplateRef<void>;
+  @Input() nzTitle?: string | TemplateRef<void>;
+  @Input() nzSubtitle?: string | TemplateRef<void>;
+  @Input() nzDescription?: string | TemplateRef<void>;
   @Input() @InputBoolean() nzDisabled = false;
 
   @Input()
@@ -115,25 +109,22 @@ export class NzStepComponent implements OnDestroy {
   private _status = 'wait';
 
   @Input()
-  get nzIcon(): NgClassType | TemplateRef<void> {
+  get nzIcon(): NgClassType | TemplateRef<void> | undefined {
     return this._icon;
   }
 
-  set nzIcon(value: NgClassType | TemplateRef<void>) {
+  set nzIcon(value: NgClassType | TemplateRef<void> | undefined) {
     if (!(value instanceof TemplateRef)) {
-      this.isIconString = true;
       this.oldAPIIcon = typeof value === 'string' && value.indexOf('anticon') > -1;
     } else {
-      this.isIconString = false;
     }
     this._icon = value;
   }
 
   oldAPIIcon = true;
-  isIconString = true;
-  private _icon: NgClassType | TemplateRef<void>;
+  private _icon?: NgClassType | TemplateRef<void>;
 
-  customProcessTemplate: TemplateRef<{ $implicit: TemplateRef<void>; status: string; index: number }>; // Set by parent.
+  customProcessTemplate?: TemplateRef<{ $implicit: TemplateRef<void>; status: string; index: number }>; // Set by parent.
   direction = 'horizontal';
   index = 0;
   last = false;

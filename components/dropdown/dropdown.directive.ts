@@ -1,13 +1,11 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 import { ESCAPE, hasModifierKey } from '@angular/cdk/keycodes';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { Platform } from '@angular/cdk/platform';
 import { TemplatePortal } from '@angular/cdk/portal';
 import {
   AfterViewInit,
@@ -19,6 +17,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  Renderer2,
   SimpleChanges,
   ViewContainerRef
 } from '@angular/core';
@@ -35,7 +34,6 @@ const listOfPositions = [POSITION_MAP.bottomLeft, POSITION_MAP.bottomRight, POSI
   selector: '[nz-dropdown]',
   exportAs: 'nzDropdown',
   host: {
-    '[attr.disabled]': `nzDisabled ? '' : null`,
     '[class.ant-dropdown-trigger]': 'true'
   }
 })
@@ -45,10 +43,14 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzVisible: BooleanInput;
 
-  private portal: TemplatePortal;
+  private portal?: TemplatePortal;
   private overlayRef: OverlayRef | null = null;
   private destroy$ = new Subject();
-  private positionStrategy = this.overlay.position().flexibleConnectedTo(this.elementRef.nativeElement).withLockedPosition();
+  private positionStrategy = this.overlay
+    .position()
+    .flexibleConnectedTo(this.elementRef.nativeElement)
+    .withLockedPosition()
+    .withTransformOriginOn('.ant-dropdown');
   private inputVisible$ = new BehaviorSubject<boolean>(false);
   private nzTrigger$ = new BehaviorSubject<'click' | 'hover'>('hover');
   private overlayClose$ = new Subject<boolean>();
@@ -59,7 +61,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
   @Input() @InputBoolean() nzClickHide = true;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzVisible = false;
-  @Input() nzOverlayClassName: string | null = null;
+  @Input() nzOverlayClassName: string = '';
   @Input() nzOverlayStyle: IndexableObject = {};
   @Input() nzPlacement: NzPlacementType = 'bottomLeft';
   @Output() readonly nzVisibleChange: EventEmitter<boolean> = new EventEmitter();
@@ -70,13 +72,15 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
     }
   }
 
-  constructor(public elementRef: ElementRef, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {}
+  constructor(
+    public elementRef: ElementRef,
+    private overlay: Overlay,
+    private renderer: Renderer2,
+    private viewContainerRef: ViewContainerRef,
+    private platform: Platform
+  ) {}
 
-  ngOnInit(): void {
-    this.positionStrategy.positionChanges.pipe(takeUntil(this.destroy$)).subscribe(change => {
-      this.setDropdownMenuValue('dropDownPosition', change.connectionPair.originY);
-    });
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     if (this.nzDropdownMenu) {
@@ -117,6 +121,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
           map(([visible, sub]) => visible || sub),
           auditTime(150),
           distinctUntilChanged(),
+          filter(() => this.platform.isBrowser),
           takeUntil(this.destroy$)
         )
         .subscribe((visible: boolean) => {
@@ -178,24 +183,27 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzVisible, nzPlacement, nzDisabled, nzOverlayClassName, nzOverlayStyle, nzTrigger } = changes;
+    const { nzVisible, nzDisabled, nzOverlayClassName, nzOverlayStyle, nzTrigger } = changes;
     if (nzTrigger) {
       this.nzTrigger$.next(this.nzTrigger);
     }
     if (nzVisible) {
       this.inputVisible$.next(this.nzVisible);
     }
-    if (nzDisabled && this.nzDisabled) {
-      this.inputVisible$.next(false);
+    if (nzDisabled) {
+      const nativeElement = this.elementRef.nativeElement;
+      if (this.nzDisabled) {
+        this.renderer.setAttribute(nativeElement, 'disabled', '');
+        this.inputVisible$.next(false);
+      } else {
+        this.renderer.removeAttribute(nativeElement, 'disabled');
+      }
     }
     if (nzOverlayClassName) {
       this.setDropdownMenuValue('nzOverlayClassName', this.nzOverlayClassName);
     }
     if (nzOverlayStyle) {
       this.setDropdownMenuValue('nzOverlayStyle', this.nzOverlayStyle);
-    }
-    if (nzPlacement) {
-      this.setDropdownMenuValue('dropDownPosition', this.nzPlacement.indexOf('top') !== -1 ? 'top' : 'bottom');
     }
   }
 }

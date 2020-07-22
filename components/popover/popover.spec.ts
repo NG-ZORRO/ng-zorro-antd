@@ -4,7 +4,7 @@ import { ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
-import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/componet-bed';
+import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzPopoverDirective } from './popover';
@@ -109,11 +109,18 @@ describe('NzPopover', () => {
   `
 })
 export class NzPopoverTestComponent {
-  @ViewChild('stringPopover', { static: false }) stringPopover: ElementRef;
+  @ViewChild('stringPopover', { static: false }) stringPopover!: ElementRef;
   @ViewChild('stringPopover', { static: false, read: NzPopoverDirective })
-  stringPopoverNzPopoverDirective: NzPopoverDirective;
+  stringPopoverNzPopoverDirective!: NzPopoverDirective;
 
-  @ViewChild('templatePopover', { static: false }) templatePopover: ElementRef;
+  @ViewChild('templatePopover', { static: false }) templatePopover!: ElementRef;
   @ViewChild('templatePopover', { static: false, read: NzPopoverDirective })
-  templatePopoverNzPopoverDirective: NzPopoverDirective;
+  templatePopoverNzPopoverDirective!: NzPopoverDirective;
+
+  visible = false;
+  visibilityTogglingCount = 0;
+
+  onVisibleChange(): void {
+    this.visibilityTogglingCount += 1;
+  }
 }

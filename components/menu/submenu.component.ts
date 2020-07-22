@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -42,7 +39,14 @@ import { NzIsMenuInsideDropDownToken } from './menu.token';
 import { NzMenuModeType, NzMenuThemeType } from './menu.types';
 import { NzSubmenuService } from './submenu.service';
 
-const listOfVerticalPositions = [POSITION_MAP.rightTop, POSITION_MAP.rightBottom, POSITION_MAP.leftTop, POSITION_MAP.leftBottom];
+const listOfVerticalPositions = [
+  POSITION_MAP.rightTop,
+  POSITION_MAP.right,
+  POSITION_MAP.rightBottom,
+  POSITION_MAP.leftTop,
+  POSITION_MAP.left,
+  POSITION_MAP.leftBottom
+];
 const listOfHorizontalPositions = [POSITION_MAP.bottomLeft];
 
 @Component({
@@ -84,8 +88,9 @@ const listOfHorizontalPositions = [POSITION_MAP.bottomLeft];
         (positionChange)="onPositionChange($event)"
         [cdkConnectedOverlayPositions]="overlayPositions"
         [cdkConnectedOverlayOrigin]="origin"
-        [cdkConnectedOverlayWidth]="triggerWidth"
+        [cdkConnectedOverlayWidth]="triggerWidth!"
         [cdkConnectedOverlayOpen]="nzOpen"
+        [cdkConnectedOverlayTransformOriginOn]="'.ant-menu-submenu'"
       >
         <div
           nz-submenu-none-inline-child
@@ -131,7 +136,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   static ngAcceptInputType_nzOpen: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
 
-  @Input() nzMenuClassName: string | null = null;
+  @Input() nzMenuClassName: string = '';
   @Input() nzPaddingLeft: number | null = null;
   @Input() nzTitle: string | TemplateRef<void> | null = null;
   @Input() nzIcon: string | null = null;
@@ -179,9 +184,9 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
     const placement = getPlacementName(position);
-    if (placement === 'rightTop' || placement === 'rightBottom') {
+    if (placement === 'rightTop' || placement === 'rightBottom' || placement === 'right') {
       this.position = 'right';
-    } else if (placement === 'leftTop' || placement === 'leftBottom') {
+    } else if (placement === 'leftTop' || placement === 'leftBottom' || placement === 'left') {
       this.position = 'left';
     }
     this.cdr.markForCheck();

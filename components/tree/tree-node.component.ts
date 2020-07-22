@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -114,35 +111,35 @@ export class NzTreeNodeComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * for global property
    */
-  @Input() icon: string;
-  @Input() title: string;
-  @Input() isLoading: boolean;
-  @Input() isSelected: boolean;
-  @Input() isDisabled: boolean;
-  @Input() isMatched: boolean;
-  @Input() isExpanded: boolean;
-  @Input() isLeaf: boolean;
-  @Input() isChecked: boolean;
-  @Input() isHalfChecked: boolean;
-  @Input() isDisableCheckbox: boolean;
-  @Input() isSelectable: boolean;
-  @Input() canHide: boolean;
-  @Input() isStart: boolean[];
-  @Input() isEnd: boolean[];
-  @Input() nzTreeNode: NzTreeNode;
-  @Input() @InputBoolean() nzShowLine: boolean;
-  @Input() @InputBoolean() nzShowExpand: boolean;
-  @Input() @InputBoolean() nzCheckable: boolean;
-  @Input() @InputBoolean() nzAsyncData: boolean;
+  @Input() icon: string = '';
+  @Input() title: string = '';
+  @Input() isLoading: boolean = false;
+  @Input() isSelected: boolean = false;
+  @Input() isDisabled: boolean = false;
+  @Input() isMatched: boolean = false;
+  @Input() isExpanded!: boolean;
+  @Input() isLeaf!: boolean;
+  @Input() isChecked?: boolean;
+  @Input() isHalfChecked?: boolean;
+  @Input() isDisableCheckbox?: boolean;
+  @Input() isSelectable?: boolean;
+  @Input() canHide?: boolean;
+  @Input() isStart?: boolean[];
+  @Input() isEnd?: boolean[];
+  @Input() nzTreeNode!: NzTreeNode;
+  @Input() @InputBoolean() nzShowLine?: boolean;
+  @Input() @InputBoolean() nzShowExpand?: boolean;
+  @Input() @InputBoolean() nzCheckable?: boolean;
+  @Input() @InputBoolean() nzAsyncData?: boolean;
   @Input() @InputBoolean() nzHideUnMatched = false;
   @Input() @InputBoolean() nzNoAnimation = false;
   @Input() @InputBoolean() nzSelectMode = false;
   @Input() @InputBoolean() nzShowIcon = false;
-  @Input() nzExpandedIcon: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
-  @Input() nzTreeTemplate: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
-  @Input() nzBeforeDrop: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;
+  @Input() nzExpandedIcon?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
+  @Input() nzTreeTemplate: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }> | null = null;
+  @Input() nzBeforeDrop?: (confirm: NzFormatBeforeDropEvent) => Observable<boolean>;
   @Input() nzSearchValue = '';
-  @Input() nzDraggable: boolean;
+  @Input() nzDraggable: boolean = false;
   @Output() readonly nzClick = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzDblClick = new EventEmitter<NzFormatEmitEvent>();
   @Output() readonly nzContextMenu = new EventEmitter<NzFormatEmitEvent>();

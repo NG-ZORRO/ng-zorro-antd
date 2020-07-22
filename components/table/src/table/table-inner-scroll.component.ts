@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -36,7 +33,7 @@ import { NzTableData } from '../table.types';
   encapsulation: ViewEncapsulation.None,
   template: `
     <div class="ant-table-content">
-      <div *ngIf="scrollY" #tableHeaderElement [style]="headerStyleMap" class="ant-table-header nz-table-hide-scrollbar">
+      <div *ngIf="scrollY" #tableHeaderElement [ngStyle]="headerStyleMap" class="ant-table-header nz-table-hide-scrollbar">
         <table
           nz-table-content
           tableLayout="fixed"
@@ -45,7 +42,7 @@ import { NzTableData } from '../table.types';
           [theadTemplate]="theadTemplate"
         ></table>
       </div>
-      <div #tableBodyElement *ngIf="!virtualTemplate" class="ant-table-body" [style]="bodyStyleMap">
+      <div #tableBodyElement *ngIf="!virtualTemplate" class="ant-table-body" [ngStyle]="bodyStyleMap">
         <table
           nz-table-content
           [scrollX]="scrollX"
@@ -83,18 +80,18 @@ export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, On
   @Input() scrollY: string | null = null;
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() widthConfig: string[] = [];
-  @Input() listOfColWidth: string[] = [];
+  @Input() listOfColWidth: Array<string | null> = [];
   @Input() theadTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() virtualTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() virtualItemSize = 0;
   @Input() virtualMaxBufferPx = 200;
   @Input() virtualMinBufferPx = 100;
-  @Input() tableMainElement: HTMLDivElement;
+  @Input() tableMainElement?: HTMLDivElement;
   @Input() virtualForTrackBy: TrackByFunction<NzTableData> = index => index;
-  @ViewChild('tableHeaderElement', { read: ElementRef }) tableHeaderElement: ElementRef;
-  @ViewChild('tableBodyElement', { read: ElementRef }) tableBodyElement: ElementRef;
+  @ViewChild('tableHeaderElement', { read: ElementRef }) tableHeaderElement!: ElementRef;
+  @ViewChild('tableBodyElement', { read: ElementRef }) tableBodyElement!: ElementRef;
   @ViewChild(CdkVirtualScrollViewport, { read: CdkVirtualScrollViewport })
-  cdkVirtualScrollViewport: CdkVirtualScrollViewport;
+  cdkVirtualScrollViewport?: CdkVirtualScrollViewport;
   headerStyleMap = {};
   bodyStyleMap = {};
   @Input() verticalScrollBarWidth = 0;

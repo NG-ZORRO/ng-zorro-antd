@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -39,7 +36,7 @@ import { NzDropdownMenuComponent } from 'ng-zorro-antd/dropdown';
 })
 export class NzFilterTriggerComponent {
   @Input() nzActive = false;
-  @Input() nzDropdownMenu: NzDropdownMenuComponent;
+  @Input() nzDropdownMenu!: NzDropdownMenuComponent;
   @Input() nzVisible = false;
   @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
   onVisibleChange(visible: boolean): void {

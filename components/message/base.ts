@@ -1,14 +1,11 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 import { ComponentType, Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { ChangeDetectorRef, EventEmitter, Injector, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Directive, EventEmitter, Injector, OnDestroy, OnInit } from '@angular/core';
 import { MessageConfig, NzConfigService } from 'ng-zorro-antd/core/config';
 import { NzSingletonService } from 'ng-zorro-antd/core/services';
 import { Subject } from 'rxjs';
@@ -19,15 +16,17 @@ let globalCounter = 0;
 
 export abstract class NzMNService {
   protected abstract componentPrefix: string;
-  protected container: NzMNContainerComponent;
+  protected container?: NzMNContainerComponent;
 
   constructor(protected nzSingletonService: NzSingletonService, protected overlay: Overlay, private injector: Injector) {}
 
   remove(id?: string): void {
-    if (id) {
-      this.container.remove(id);
-    } else {
-      this.container.removeAll();
+    if (this.container) {
+      if (id) {
+        this.container.remove(id);
+      } else {
+        this.container.removeAll();
+      }
     }
   }
 
@@ -60,8 +59,9 @@ export abstract class NzMNService {
   }
 }
 
+@Directive()
 export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
-  config: Required<MessageConfig>;
+  config?: Required<MessageConfig>;
   instances: Array<Required<NzMessageData>> = [];
 
   protected readonly destroy$ = new Subject<void>();
@@ -82,7 +82,7 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
   create(data: NzMessageData): Required<NzMessageData> {
     const instance = this.onCreate(data);
 
-    if (this.instances.length >= this.config.nzMaxStack) {
+    if (this.instances.length >= this.config!.nzMaxStack) {
       this.instances = this.instances.slice(1);
     }
 
@@ -133,24 +133,25 @@ export abstract class NzMNContainerComponent implements OnInit, OnDestroy {
   protected abstract subscribeConfigChange(): void;
 
   protected mergeOptions(options?: NzMessageDataOptions): NzMessageDataOptions {
-    const { nzDuration, nzAnimate, nzPauseOnHover } = this.config;
+    const { nzDuration, nzAnimate, nzPauseOnHover } = this.config!;
     return { nzDuration, nzAnimate, nzPauseOnHover, ...options };
   }
 }
 
+@Directive()
 export abstract class NzMNComponent implements OnInit, OnDestroy {
-  instance: Required<NzMessageData>;
-  index: number;
+  instance!: Required<NzMessageData>;
+  index?: number;
 
   readonly destroyed = new EventEmitter<{ id: string; userAction: boolean }>();
 
-  protected options: Required<NzMessageDataOptions>;
-  protected autoClose: boolean;
+  protected options!: Required<NzMessageDataOptions>;
+  protected autoClose?: boolean;
   protected eraseTimer: number | null = null;
-  protected eraseTimingStart: number;
-  protected eraseTTL: number;
+  protected eraseTimingStart?: number;
+  protected eraseTTL!: number;
 
-  constructor(protected cdr: ChangeDetectorRef) {}
+  protected constructor(protected cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.options = this.instance.options as Required<NzMessageDataOptions>;
@@ -205,7 +206,7 @@ export abstract class NzMNComponent implements OnInit, OnDestroy {
 
   private updateTTL(): void {
     if (this.autoClose) {
-      this.eraseTTL -= Date.now() - this.eraseTimingStart;
+      this.eraseTTL -= Date.now() - this.eraseTimingStart!;
     }
   }
 

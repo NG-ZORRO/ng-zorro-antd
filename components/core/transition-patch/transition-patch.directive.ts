@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -15,7 +12,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
  * https://github.com/angular/angular/issues/34718
  */
 @Directive({
-  selector: '[nz-button],nz-button-group,[nz-icon],[nz-menu-item],[nz-submenu]'
+  selector: '[nz-button],nz-button-group,[nz-icon],[nz-menu-item],[nz-submenu],nz-select-top-control,nz-select-placeholder'
 })
 export class NzTransitionPatchDirective implements AfterViewInit, OnChanges {
   @Input() hidden: NzSafeAny = null;

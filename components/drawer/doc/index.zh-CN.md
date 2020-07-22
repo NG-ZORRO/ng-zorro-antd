@@ -3,6 +3,7 @@ type: 反馈
 category: Components
 subtitle: 抽屉
 title: Drawer
+cover: https://gw.alipayobjects.com/zos/alicdn/7z8NJQhFb/Drawer.svg
 ---
 
 抽屉从父窗体边缘滑入，覆盖住部分父窗体内容。用户在抽屉内操作时不必离开当前任务，操作完成后，可以平滑地回到到原任务。
@@ -25,10 +26,12 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | `[nzClosable]` | 是否显示右上角的关闭按钮 | `boolean` | `true` |
 | `[nzMaskClosable]` | 点击蒙层是否允许关闭 | `boolean` | `true` | ✅ |
 | `[nzMask]` | 是否展示遮罩 | `boolean` | `true` | ✅ |
+| `[nzCloseOnNavigation]`    | 导航历史变化时是否关闭抽屉组件 | `boolean` | `true` | ✅ |
 | `[nzMaskStyle]` | 遮罩样式 | `object` | `{}` |
 | `[nzKeyboard]` | 是否支持键盘 esc 关闭 | `boolean` | `true` |
 | `[nzBodyStyle]` | Drawer body 样式 | `object` | `{}` |
 | `[nzTitle]` | 标题 | `string \| TemplateRef<void>` | - |
+| `[nzFooter]` | 抽屉的页脚 | `string \| TemplateRef<void>` | - |
 | `[nzVisible]` | Drawer 是否可见 | `boolean` | - |
 | `[nzPlacement]` | 抽屉的方向 | `'top' \| 'right' \| 'bottom' \| 'left'` | `'right'` |
 | `[nzWidth]` | 宽度, 只在方向为 `'right'`或`'left'` 时生效 | `number \| string` | `256` |
@@ -43,7 +46,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 
 | 方法名 | 说明 | 参数 | 返回 |
 | --- | --- | --- | --- |
-| create | 创建并打开一个 Drawer | `NzDrawerOptions<T, D, R>`| `NzDrawerRef<R>` |
+| create<T, D, R> | 创建并打开一个 Drawer | `NzDrawerOptions<T, D>`| `NzDrawerRef<T, R>` |
 
 ### NzDrawerOptions
 
@@ -55,10 +58,12 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | nzClosable | 是否显示右上角的关闭按钮 | `boolean` | `true` |
 | nzMaskClosable | 点击蒙层是否允许关闭 | `boolean` | `true` |
 | nzMask | 是否展示遮罩 | `boolean` | `true` |
+| nzCloseOnNavigation    | 导航历史变化时是否关闭抽屉组件 | `boolean` | `true` |
 | nzKeyboard | 是否支持键盘esc关闭 | `boolean` | `true` |
 | nzMaskStyle | 遮罩样式 | `object` | `{}` |
 | nzBodyStyle | Modal body 样式 | `object` | `{}` |
 | nzTitle | 标题 | `string \| TemplateRef<void>` | - |
+| nzFooter | 页脚 | `string \| TemplateRef<void>` | - |
 | nzWidth | 宽度 | `number \| string` | `256` |
 | nzHeight | 高度, 只在方向为 `'top'`或`'bottom'` 时生效 | `number \| string` | `256` |
 | nzWrapClassName | 对话框外层容器的类名 | `string` | - |
@@ -75,6 +80,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | --- | --- | --- |
 | close | 关闭 Drawer | `(result?: R) => void` |
 | open | 打开 Drawer | `() => void` |
+| getContentComponent|  返回 `nzContent` 为组件时的组件实例 | `() => T \| null` |
 
 #### 属性
 

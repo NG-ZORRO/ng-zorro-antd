@@ -3,6 +3,7 @@ category: Components
 type: 数据录入
 title: Autocomplete
 subtitle: 自动完成
+cover: https://gw.alipayobjects.com/zos/alicdn/qtJm4yt45/AutoComplete.svg
 ---
 
 输入框自动完成功能。
@@ -47,6 +48,7 @@ import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 | `[nzWidth]` | 自定义宽度单位 px | `number` | 触发元素宽度 |
 | `[nzOverlayClassName]` | 下拉根元素的类名称 | `string` | - |
 | `[nzOverlayStyle]` | 下拉根元素的样式 | `object` | - |
+| `[compareWith]` | 与 [SelectControlValueAccessor](https://angular.io/api/forms/SelectControlValueAccessor#caveat-option-selection) 相同 | `(o1: any, o2: any) => boolean` | `(o1: any, o2: any) => o1===o2` |
 
 ### nz-auto-option
 

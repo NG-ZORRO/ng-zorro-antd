@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -14,7 +11,7 @@ export class TimeHolder {
   selected12Hours: string | undefined = undefined;
   private _value: Date | undefined;
   private _use12Hours: boolean = false;
-  private _defaultOpenValue: Date;
+  private _defaultOpenValue!: Date;
   private _changes = new Subject<Date>();
 
   setMinutes(value: number, disabled: boolean): this {

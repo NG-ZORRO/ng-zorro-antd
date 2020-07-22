@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -54,7 +51,7 @@ import {
 })
 export class NzListItemMetaComponent {
   avatarStr = '';
-  avatarTpl: TemplateRef<void>;
+  avatarTpl?: TemplateRef<void>;
 
   @Input()
   set nzAvatar(value: string | TemplateRef<void>) {
@@ -66,12 +63,12 @@ export class NzListItemMetaComponent {
     }
   }
 
-  @Input() nzTitle: string | TemplateRef<void>;
+  @Input() nzTitle?: string | TemplateRef<void>;
 
-  @Input() nzDescription: string | TemplateRef<void>;
+  @Input() nzDescription?: string | TemplateRef<void>;
 
-  @ContentChild(DescriptionComponent) descriptionComponent: DescriptionComponent;
-  @ContentChild(TitleComponent) titleComponent: TitleComponent;
+  @ContentChild(DescriptionComponent) descriptionComponent?: DescriptionComponent;
+  @ContentChild(TitleComponent) titleComponent?: TitleComponent;
   constructor(public elementRef: ElementRef, private renderer: Renderer2) {
     this.renderer.addClass(elementRef.nativeElement, 'ant-list-item-meta');
   }

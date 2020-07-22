@@ -1,13 +1,11 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 import {
   AfterContentInit,
+  ChangeDetectorRef,
   ContentChildren,
   Directive,
   Inject,
@@ -52,13 +50,13 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
   level = this.nzSubmenuService ? this.nzSubmenuService.level + 1 : 1;
   selected$ = new Subject<boolean>();
   inlinePaddingLeft: number | null = null;
-  @Input() nzPaddingLeft: number;
+  @Input() nzPaddingLeft?: number;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzSelected = false;
   @Input() @InputBoolean() nzMatchRouterExact = false;
   @Input() @InputBoolean() nzMatchRouter = false;
-  @ContentChildren(RouterLink, { descendants: true }) listOfRouterLink: QueryList<RouterLink>;
-  @ContentChildren(RouterLinkWithHref, { descendants: true }) listOfRouterLinkWithHref: QueryList<RouterLinkWithHref>;
+  @ContentChildren(RouterLink, { descendants: true }) listOfRouterLink!: QueryList<RouterLink>;
+  @ContentChildren(RouterLinkWithHref, { descendants: true }) listOfRouterLinkWithHref!: QueryList<RouterLinkWithHref>;
 
   /** clear all item selected status except this */
   clickMenuItem(e: MouseEvent): void {
@@ -91,6 +89,7 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
       if (this.nzSelected !== hasActiveLinks) {
         this.nzSelected = hasActiveLinks;
         this.setSelectedState(this.nzSelected);
+        this.cdr.markForCheck();
       }
     });
   }
@@ -111,6 +110,7 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
 
   constructor(
     private nzMenuService: MenuService,
+    private cdr: ChangeDetectorRef,
     @Optional() private nzSubmenuService: NzSubmenuService,
     @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean,
     @Optional() private routerLink?: RouterLink,

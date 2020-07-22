@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -19,7 +16,7 @@ import { NzMessageData, NzMessageDataOptions, NzMessageRef } from './typings';
   providedIn: NzMessageServiceModule
 })
 export class NzMessageService extends NzMNService {
-  protected container: NzMessageContainerComponent;
+  protected container?: NzMessageContainerComponent;
   protected componentPrefix = 'message-';
 
   constructor(nzSingletonService: NzSingletonService, overlay: Overlay, injector: Injector) {

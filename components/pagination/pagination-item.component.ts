@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -18,6 +15,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 import { PaginationItemRenderContext, PaginationItemType } from './pagination.types';
 
 @Component({
@@ -29,10 +27,10 @@ import { PaginationItemRenderContext, PaginationItemType } from './pagination.ty
     <ng-template #renderItemTemplate let-type let-page="page">
       <ng-container [ngSwitch]="type">
         <a *ngSwitchCase="'page'">{{ page }}</a>
+        <button [disabled]="disabled" class="ant-pagination-item-link" *ngSwitchCase="'prev'"><i nz-icon nzType="left"></i></button>
+        <button [disabled]="disabled" class="ant-pagination-item-link" *ngSwitchCase="'next'"><i nz-icon nzType="right"></i></button>
         <ng-container *ngSwitchDefault>
           <a class="ant-pagination-item-link" [ngSwitch]="type">
-            <i nz-icon nzType="left" *ngSwitchCase="'prev'"></i>
-            <i nz-icon nzType="right" *ngSwitchCase="'next'"></i>
             <div class="ant-pagination-item-container" *ngSwitchDefault>
               <ng-container [ngSwitch]="type">
                 <i *ngSwitchCase="'prev_5'" nz-icon nzType="double-left" class="ant-pagination-item-link-icon"></i>
@@ -64,8 +62,11 @@ import { PaginationItemRenderContext, PaginationItemType } from './pagination.ty
   }
 })
 export class NzPaginationItemComponent implements OnChanges {
+  static ngAcceptInputType_type: PaginationItemType | string | null | undefined;
+  static ngAcceptInputType_index: number | null | undefined;
+
   @Input() active = false;
-  @Input() locale: NzSafeAny = {};
+  @Input() locale!: NzPaginationI18nInterface;
   @Input() index: number | null = null;
   @Input() disabled = false;
   @Input() type: PaginationItemType | string | null = null;
@@ -94,10 +95,10 @@ export class NzPaginationItemComponent implements OnChanges {
     if (locale || index || type) {
       this.title = ({
         page: `${this.index}`,
-        next: this.locale.next_page,
-        prev: this.locale.prev_page,
-        prev_5: this.locale.prev_5,
-        next_5: this.locale.next_5
+        next: this.locale?.next_page,
+        prev: this.locale?.prev_page,
+        prev_5: this.locale?.prev_5,
+        next_5: this.locale?.next_5
       } as NzSafeAny)[this.type!];
     }
   }

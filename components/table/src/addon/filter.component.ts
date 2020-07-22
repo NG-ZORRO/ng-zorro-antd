@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -21,7 +18,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { NzI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzI18nService, NzTableI18nInterface } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NzTableFilterList } from '../table.types';
@@ -79,7 +76,7 @@ export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
   @Input() listOfFilter: NzTableFilterList = [];
   @Output() readonly filterChange = new EventEmitter<NzSafeAny[] | NzSafeAny>();
   private destroy$ = new Subject();
-  locale: NzI18nInterface['Table'] = {} as NzI18nInterface['Table'];
+  locale!: NzTableI18nInterface;
   isChanged = false;
   isChecked = false;
   isVisible = false;
@@ -134,7 +131,7 @@ export class NzTableFilterComponent implements OnChanges, OnDestroy, OnInit {
       if (this.filterMultiple) {
         this.filterChange.emit(listOfChecked);
       } else {
-        this.filterChange.emit(listOfChecked[0] || null);
+        this.filterChange.emit(listOfChecked.length > 0 ? listOfChecked[0] : null);
       }
       this.isChanged = false;
     }

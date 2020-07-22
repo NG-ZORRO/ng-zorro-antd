@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -43,7 +40,9 @@ const NZ_CONFIG_COMPONENT_NAME = 'backTop';
     <div class="ant-back-top" (click)="clickBackTop()" @fadeMotion *ngIf="visible">
       <ng-template #defaultContent>
         <div class="ant-back-top-content">
-          <div class="ant-back-top-icon"></div>
+          <div class="ant-back-top-icon">
+            <i nz-icon nzType="vertical-align-top"></i>
+          </div>
         </div>
       </ng-template>
       <ng-template [ngTemplateOutlet]="nzTemplate || defaultContent"></ng-template>
@@ -61,9 +60,9 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
 
   visible: boolean = false;
 
-  @Input() nzTemplate: TemplateRef<void>;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME, 400) @InputNumber() nzVisibilityHeight: number;
-  @Input() nzTarget: string | HTMLElement;
+  @Input() nzTemplate?: TemplateRef<void>;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputNumber() nzVisibilityHeight: number = 400;
+  @Input() nzTarget?: string | HTMLElement;
   @Output() readonly nzClick: EventEmitter<boolean> = new EventEmitter();
 
   constructor(

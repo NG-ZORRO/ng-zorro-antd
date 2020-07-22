@@ -1,19 +1,16 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable, Optional } from '@angular/core';
-import { NzSafeAny } from 'ng-zorro-antd';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { PREFIX, warn, warnDeprecation } from 'ng-zorro-antd/core/logger';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { BehaviorSubject, Observable, of as observableOf, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { JoinedEditorOptions, NZ_CODE_EDITOR_CONFIG, NzCodeEditorConfig, NzCodeEditorLoadingStatus } from './typings';
+import { JoinedEditorOptions, NzCodeEditorConfig, NzCodeEditorLoadingStatus, NZ_CODE_EDITOR_CONFIG } from './typings';
 
 declare const monaco: NzSafeAny;
 

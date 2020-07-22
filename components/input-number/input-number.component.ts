@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -68,6 +65,7 @@ import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
         [attr.max]="nzMax"
         [placeholder]="nzPlaceHolder"
         [attr.step]="nzStep"
+        [attr.inputmode]="nzInputMode"
         (keydown)="onKeyDown($event)"
         (keyup)="stop()"
         [ngModel]="displayValue"
@@ -96,10 +94,10 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzAutoFocus: BooleanInput;
 
-  private autoStepTimer: number;
-  private parsedValue: string | number;
-  private value: number;
-  displayValue: string | number;
+  private autoStepTimer?: number;
+  private parsedValue?: string | number;
+  private value?: number;
+  displayValue?: string | number;
   isFocused = false;
   disabledUp = false;
   disabledDown = false;
@@ -107,7 +105,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   onTouched: OnTouchedType = () => {};
   @Output() readonly nzBlur = new EventEmitter();
   @Output() readonly nzFocus = new EventEmitter();
-  @ViewChild('inputElement', { static: true }) inputElement: ElementRef<HTMLInputElement>;
+  @ViewChild('inputElement', { static: true }) inputElement!: ElementRef<HTMLInputElement>;
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzMin: number = -Infinity;
   @Input() nzMax: number = Infinity;
@@ -116,10 +114,11 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
       .trim()
       .replace(/。/g, '.')
       .replace(/[^\w\.-]+/g, '');
-  @Input() nzPrecision: number;
+  @Input() nzPrecision?: number;
   @Input() nzPrecisionMode: 'cut' | 'toFixed' | ((value: number | string, precision?: number) => number) = 'toFixed';
   @Input() nzPlaceHolder = '';
   @Input() nzStep = 1;
+  @Input() nzInputMode: string = 'decimal';
   @Input() nzId: string | null = null;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAutoFocus = false;
@@ -139,7 +138,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     } else if (!this.isNotCompleteNumber(val)) {
       val = `${this.getValidValue(val)}`;
     } else {
-      val = this.value;
+      val = this.value!;
     }
     return this.toNumber(val);
   }
@@ -271,7 +270,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     if (this.nzDisabled) {
       return;
     }
-    const value = this.getCurrentValidValue(this.parsedValue) || 0;
+    const value = this.getCurrentValidValue(this.parsedValue!) || 0;
     let val = 0;
     if (type === 'up') {
       val = this.upStep(value, ratio);
@@ -335,7 +334,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
       this.down(e, ratio);
       this.stop();
     } else if (e.keyCode === ENTER) {
-      this.updateDisplayValue(this.value);
+      this.updateDisplayValue(this.value!);
     }
   }
 
@@ -373,7 +372,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
       if (!focusOrigin) {
         this.isFocused = false;
-        this.updateDisplayValue(this.value);
+        this.updateDisplayValue(this.value!);
         this.nzBlur.emit();
         Promise.resolve().then(() => this.onTouched());
       } else {
@@ -385,7 +384,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.nzFormatter && !changes.nzFormatter.isFirstChange()) {
-      const validValue = this.getCurrentValidValue(this.parsedValue);
+      const validValue = this.getCurrentValidValue(this.parsedValue!);
       this.setValue(validValue);
       this.updateDisplayValue(validValue);
     }

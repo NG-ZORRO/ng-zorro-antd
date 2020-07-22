@@ -1,9 +1,9 @@
-import { MigrationRule, ResolvedResource, TargetVersion } from '@angular/cdk/schematics';
+import { Migration, ResolvedResource, TargetVersion, UpgradeData } from '@angular/cdk/schematics';
 import { findElementWithClassName } from '../../../utils/ng-update/elements';
 
-export class IconTemplateRule extends MigrationRule<null> {
+export class IconTemplateRule extends Migration<UpgradeData> {
 
-  ruleEnabled = this.targetVersion === TargetVersion.V9;
+  enabled = this.targetVersion === TargetVersion.V9;
 
   visitTemplate(template: ResolvedResource): void {
 

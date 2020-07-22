@@ -3,6 +3,7 @@ category: Components
 subtitle: 气泡确认框
 type: 反馈
 title: Popconfirm
+cover: https://gw.alipayobjects.com/zos/alicdn/fjMCD9xRq/Popconfirm.svg
 ---
 
 点击元素，弹出气泡式的确认框。
@@ -27,7 +28,16 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 | `[nzPopconfirmTrigger]` | 触发行为，为 `null` 时不响应光标事件 | `'click' \| 'focus' \| 'hover' \| null` | `'hover'` |
 | `[nzPopconfirmPlacement]` | 气泡框位置 | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
 | `[nzPopconfirmOrigin]` | 气泡框定位元素 | `ElementRef` | - |
-
+| `[nzPopconfirmVisible]` | 显示隐藏气泡框 | `boolean` | `false` |
+| `[nzPopconfirmShowArrow]` | 气泡框是否包含箭头 | `boolean` | `true` |
+| `[nzPopconfirmPlacement]` | 确认框位置 | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
+| `[nzPopconfirmOrigin]` | 确认框定位元素 | `ElementRef` | - |
+| `[nzPopconfirmVisible]` | 显示隐藏确认框 | `boolean` | `false` |
+| `(nzPopconfirmVisibleChange)` | 显示隐藏的事件 | `EventEmitter<boolean>` | - |
+| `[nzPopoverMouseEnterDelay]` | 鼠标移入后延时多少才显示确认框，单位：秒 | `number` | `0.15` |
+| `[nzPopoverMouseLeaveDelay]` | 鼠标移出后延时多少才隐藏确认框，单位：秒 | `number` | `0.1` |
+| `[nzPopoverOverlayClassName]` | 卡片类名 | `string` | - |
+| `[nzPopoverOverlayStyle]` | 卡片样式 | `object` | - |
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
@@ -39,8 +49,10 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 | `(nzOnCancel)` | 点击取消的回调 | `EventEmitter<void>` | - |
 | `(nzOnConfirm)` | 点击确认的回调 | `EventEmitter<void>` | - |
 
+
+
 更多属性请参考 [Tooltip](/components/tooltip/zh#api)。
 
 ## 注意
 
-请确保 `nz-popconfirm` 的子元素能接受 `onMouseEnter`、`onMouseLeave`、`onFocus`、`onClick` 事件。
+请确保 `[nz-popconfirm]` 元素能接受 `onMouseEnter`、`onMouseLeave`、`onFocus`、`onClick` 事件。

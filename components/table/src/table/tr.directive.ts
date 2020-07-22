@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -20,8 +17,8 @@ import { NzTableStyleService } from '../table-style.service';
   }
 })
 export class NzTrDirective implements AfterContentInit, OnDestroy {
-  @ContentChildren(NzThMeasureDirective) listOfNzThDirective: QueryList<NzThMeasureDirective>;
-  @ContentChildren(NzCellFixedDirective) listOfCellFixedDirective: QueryList<NzCellFixedDirective>;
+  @ContentChildren(NzThMeasureDirective) listOfNzThDirective!: QueryList<NzThMeasureDirective>;
+  @ContentChildren(NzCellFixedDirective) listOfCellFixedDirective!: QueryList<NzCellFixedDirective>;
   private destroy$ = new Subject<void>();
   private listOfFixedColumns$ = new ReplaySubject<NzCellFixedDirective[]>(1);
   private listOfColumns$ = new ReplaySubject<NzThMeasureDirective[]>(1);
@@ -66,7 +63,7 @@ export class NzTrDirective implements AfterContentInit, OnDestroy {
           listOfLeftCell.forEach((cell, index) => {
             if (cell.isAutoLeft) {
               const currentArray = listOfLeftCell.slice(0, index);
-              const count = currentArray.reduce((pre, cur) => pre + (cur.colspan || 1), 0);
+              const count = currentArray.reduce((pre, cur) => pre + (cur.colspan || cur.colSpan || 1), 0);
               const width = listOfAutoWidth.slice(0, count).reduce((pre, cur) => pre + cur, 0);
               cell.setAutoLeftWidth(`${width}px`);
             }
@@ -79,7 +76,7 @@ export class NzTrDirective implements AfterContentInit, OnDestroy {
             const cell = listOfRightCell[listOfRightCell.length - index - 1];
             if (cell.isAutoRight) {
               const currentArray = listOfRightCell.slice(listOfRightCell.length - index, listOfRightCell.length);
-              const count = currentArray.reduce((pre, cur) => pre + (cur.colspan || 1), 0);
+              const count = currentArray.reduce((pre, cur) => pre + (cur.colspan || cur.colSpan || 1), 0);
               const width = listOfAutoWidth
                 .slice(listOfAutoWidth.length - count, listOfAutoWidth.length)
                 .reduce((pre, cur) => pre + cur, 0);

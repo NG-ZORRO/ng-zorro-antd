@@ -4,6 +4,7 @@ type: 反馈
 title: Result
 subtitle: 结果
 cols: 1
+cover: https://gw.alipayobjects.com/zos/alicdn/9nepwjaLa/Result.svg
 ---
 
 用于反馈一系列操作任务的处理结果。

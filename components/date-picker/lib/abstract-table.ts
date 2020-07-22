@@ -1,17 +1,16 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef } from '@angular/core';
+import { Directive, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef } from '@angular/core';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { FunctionProp, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core/util';
 import { DateBodyRow, DateCell } from './interface';
 
+@Directive()
+// tslint:disable-next-line:directive-class-suffix
 export abstract class AbstractTable implements OnInit, OnChanges {
   isTemplateRef = isTemplateRef;
   isNonEmptyString = isNonEmptyString;
@@ -21,12 +20,12 @@ export abstract class AbstractTable implements OnInit, OnChanges {
   MAX_COL = 7;
 
   @Input() prefixCls: string = 'ant-picker';
-  @Input() value: CandyDate;
+  @Input() value!: CandyDate;
   @Input() activeDate: CandyDate = new CandyDate();
   @Input() showWeek: boolean = false;
-  @Input() disabledDate: (d: Date) => boolean;
-  @Input() cellRender: FunctionProp<TemplateRef<Date> | string>;
-  @Input() fullCellRender: FunctionProp<TemplateRef<Date> | string>;
+  @Input() disabledDate?: (d: Date) => boolean;
+  @Input() cellRender?: string | TemplateRef<Date> | FunctionProp<TemplateRef<Date> | string>;
+  @Input() fullCellRender?: string | TemplateRef<Date> | FunctionProp<TemplateRef<Date> | string>;
 
   @Output() readonly valueChange = new EventEmitter<CandyDate>();
 

@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -36,7 +33,7 @@ import { NzMenuModeType, NzMenuThemeType } from './menu.types';
       [class.ant-menu-vertical]="!isMenuInsideDropDown"
       [class.ant-dropdown-menu-sub]="isMenuInsideDropDown"
       [class.ant-menu-sub]="!isMenuInsideDropDown"
-      [class]="menuClass"
+      [ngClass]="menuClass"
     >
       <ng-template [ngTemplateOutlet]="templateOutlet"></ng-template>
     </div>
@@ -56,7 +53,7 @@ import { NzMenuModeType, NzMenuThemeType } from './menu.types';
   }
 })
 export class NzSubmenuNoneInlineChildComponent implements OnInit, OnChanges {
-  @Input() menuClass: string | null = null;
+  @Input() menuClass: string = '';
   @Input() theme: NzMenuThemeType = 'light';
   @Input() templateOutlet: TemplateRef<NzSafeAny> | null = null;
   @Input() isMenuInsideDropDown = false;

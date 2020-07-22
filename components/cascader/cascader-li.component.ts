@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -44,11 +41,11 @@ import { NzCascaderOption } from './typings';
 })
 export class NzCascaderOptionComponent {
   @Input() optionTemplate: TemplateRef<NzCascaderOption> | null = null;
-  @Input() option: NzCascaderOption;
+  @Input() option!: NzCascaderOption;
   @Input() activated = false;
-  @Input() highlightText: string;
+  @Input() highlightText!: string;
   @Input() nzLabelProperty = 'label';
-  @Input() columnIndex: number;
+  @Input() columnIndex!: number;
 
   constructor(private cdr: ChangeDetectorRef, elementRef: ElementRef, renderer: Renderer2) {
     renderer.addClass(elementRef.nativeElement, 'ant-cascader-menu-item');

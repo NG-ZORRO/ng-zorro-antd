@@ -3,6 +3,7 @@ type: 反馈
 category: Components
 subtitle: 对话框
 title: Modal
+cover: https://gw.alipayobjects.com/zos/alicdn/3StSdUlSH/Modal.svg
 ---
 
 模态对话框。
@@ -43,6 +44,7 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 | nzKeyboard        | 是否支持键盘esc关闭 | `boolean` | `true` |
 | nzMask            | 是否展示遮罩 | `boolean` | `true` | ✅ |
 | nzMaskClosable    | 点击蒙层是否允许关闭 | `boolean` | `true` | ✅ |
+| nzCloseOnNavigation    | 导航历史变化时是否关闭模态框 | `boolean` | `true` | ✅ |
 | nzMaskStyle       | 遮罩样式 | `object` | - |
 | nzOkText          | 确认按钮文字。<i>设为 null 表示不显示确认按钮（若在普通模式下使用了 nzFooter 参数，则该值无效）</i> | `string` | 确定 |
 | nzOkType          | 确认按钮类型。<i>与button的type类型值一致</i> | `string` | primary |
@@ -57,16 +59,14 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 | nzOnCancel        | 点击遮罩层或右上角叉或取消按钮的回调（若nzContent为Component，则将会以该Component实例作为参数）。<i>注：当以`NzModalService.create`创建时，此参数应传入function（回调函数）。该函数可返回promise，待执行完毕或promise结束时，将自动关闭对话框（返回false可阻止关闭）</i> | EventEmitter | - |
 | nzOnOk            | 点击确定回调（若nzContent为Component，则将会以该Component实例作为参数）。<i>注：当以`NzModalService.create`创建时，此参数应传入function（回调函数）。该函数可返回promise，待执行完毕或promise结束时，将自动关闭对话框（返回false可阻止关闭）</i> | EventEmitter | - |
 | nzContent         | 内容 | string<br>TemplateRef<br>Component<br>ng-content | - |
-| nzComponentParams | 当nzContent为组件类(Component)时，该参数中的属性将传入nzContent实例中 | `object` | - |
+| nzComponentParams | 当 `nzContent` 为组件时将作为实例属性，为 `TemplateRef` 时将作为模版变量 | `object` | - |
 | nzIconType        | 图标 Icon 类型。<i>仅 确认框模式 下有效</i> | `string` | `'question-circle'` |
 | nzAutofocus        | 自动聚焦及聚焦位置，为 `null` 时禁用 | `'ok' \| 'cancel' \| 'auto' \| null` | `'auto'` |
 
 
 #### 注意
 
-> `<nz-modal>` 默认关闭后状态不会自动清空, 如果希望每次打开都是新内容，请采用 `NzModalService` 服务方式创建对话框（当以服务方式创建时，默认会监听 `nzAfterClose` 并销毁对话框）。
-
-> 通过 `NzModalService` 服务方式创建的对话框需要自行管理其生命周期。比如你在页面路由切换时，服务方式创建的对话框并不会被销毁，你需要使用对话框引用来手动销毁（`NzModalRef.close()` 或 `NzModalRef.destroy()`）。
+> `nzComponentParams` 属性的创建或修改不会触发 `nzContent` 组件的 `ngOnChanges` 生命周期钩子。
 
 #### 采用服务方式创建普通模式对话框
 
@@ -120,12 +120,12 @@ constructor(modal: NzModalService) {
 |----|----|
 | afterOpen                 | 同nzAfterOpen，但类型为Observable&lt;void&gt; |
 | afterClose                | 同nzAfterClose，但类型为Observable&lt;result:any&gt; |
-| open()                    | 打开(显示)对话框。<i>若对话框已销毁，则调用此函数将失效</i> |
 | close(result: any)        | 关闭(隐藏)对话框。<i>注：当用于以服务方式创建的对话框，此方法将直接 销毁 对话框（同destroy方法）</i> |
 | destroy(result: any)      | 销毁对话框。<i>注：仅用于服务方式创建的对话框（非服务方式创建的对话框，此方法只会隐藏对话框）</i> |
 | getContentComponent()     | 获取对话框内容中`nzContent`的Component实例instance。<i>注：当对话框还未初始化完毕（`ngOnInit`未执行）时，此函数将返回`undefined`</i> |
 | triggerOk()               | 手动触发nzOnOk |
 | triggerCancel()           | 手动触发nzOnCancel |
+| updateConfig(config: ModalOptions): void   | 更新配置 |
 
 ### ModalButtonOptions（用于自定义底部按钮）
 

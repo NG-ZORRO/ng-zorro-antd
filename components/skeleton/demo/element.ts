@@ -1,4 +1,11 @@
 import { Component } from '@angular/core';
+import {
+  NzSkeletonAvatarShape,
+  NzSkeletonAvatarSize,
+  NzSkeletonButtonShape,
+  NzSkeletonButtonSize,
+  NzSkeletonInputSize
+} from 'ng-zorro-antd/skeleton';
 
 @Component({
   selector: 'nz-demo-skeleton-element',
@@ -76,9 +83,9 @@ export class NzDemoSkeletonElementComponent {
   buttonActive = false;
   avatarActive = false;
   inputActive = false;
-  buttonSize = 'default';
-  avatarSize = 'default';
-  inputSize = 'default';
-  buttonShape = 'default';
-  avatarShape = 'circle';
+  buttonSize: NzSkeletonButtonSize = 'default';
+  avatarSize: NzSkeletonAvatarSize = 'default';
+  inputSize: NzSkeletonInputSize = 'default';
+  buttonShape: NzSkeletonButtonShape = 'default';
+  avatarShape: NzSkeletonAvatarShape = 'circle';
 }

@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -77,7 +74,7 @@ export class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy {
   private destroy$ = new Subject();
   private isNzShowSortChanged = false;
   private isNzShowFilterChanged = false;
-  @Input() nzColumnKey: string;
+  @Input() nzColumnKey?: string;
   @Input() nzFilterMultiple = true;
   @Input() nzSortOrder: NzTableSortOrder = null;
   @Input() nzSortPriority: number | boolean = false;
@@ -92,7 +89,7 @@ export class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy {
   @Output() readonly nzSortOrderChange = new EventEmitter<string | null>();
   @Output() readonly nzFilterChange = new EventEmitter<NzTableFilterValue>();
   /** @deprecated use nzColumnKey instead **/
-  @Input() nzSortKey: string;
+  @Input() nzSortKey?: string;
   /** @deprecated use nzSortOrder instead **/
   @Input() nzSort: NzTableSortOrder = null;
   /** @deprecated use nzSortOrderChange instead **/

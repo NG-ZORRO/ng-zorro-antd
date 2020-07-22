@@ -3,6 +3,7 @@ category: Components
 subtitle: 数字输入框
 type: 数据录入
 title: InputNumber
+cover: https://gw.alipayobjects.com/zos/alicdn/XOS8qZ0kU/InputNumber.svg
 ---
 
 通过鼠标或键盘，输入范围内的数值。
@@ -32,6 +33,7 @@ import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 | `[nzPrecisionMode]` | 数值精度的取值方式 | `'cut' \| 'toFixed' \| ((value: number \| string, precision?: number) => number)` | `'toFixed'` |
 | `[nzSize]` | 输入框大小 | `'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzStep]` | 每次改变步数，可以为小数 | `number \| string` | `1` |
+| `[nzInputMode]` | 提供了用户在编辑元素或其内容时可能输入的数据类型的提示，详见[MDN](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Global_attributes/inputmode) | `string` | `decimal` |
 | `[nzPlaceHolder]` | 选择框默认文字 | `string` | - |
 | `[nzId]` | 组件内部 input 的 id 值 | `string` | - |
 | `(ngModelChange)` | 数值改变时回调 | `EventEmitter<number>` | - |

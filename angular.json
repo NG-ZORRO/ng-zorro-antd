@@ -37,6 +37,11 @@
             ],
             "styles": [
               "site/doc/styles.less"
+            ],
+            "allowedCommonJsDependencies": [
+              "codesandbox",
+              "codesandbox-import-utils",
+              "@ant-design/colors"
             ]
           },
           "configurations": {
@@ -235,7 +240,7 @@
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
-      "styleext": "less"
+      "style": "less"
     },
     "@schematics/angular:directive": {
       "prefix": "app"

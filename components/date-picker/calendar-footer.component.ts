@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -18,6 +15,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { CandyDate } from 'ng-zorro-antd/core/time';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core/util';
 import { DateHelperService, NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
@@ -35,7 +33,7 @@ import { PREFIX_CLASS } from './util';
       <div *ngIf="extraFooter" class="{{ prefixCls }}-footer-extra">
         <ng-container [ngSwitch]="true">
           <ng-container *ngSwitchCase="isTemplateRef(extraFooter)">
-            <ng-container *ngTemplateOutlet="extraFooter"></ng-container>
+            <ng-container *ngTemplateOutlet="$any(extraFooter)"></ng-container>
           </ng-container>
           <ng-container *ngSwitchCase="isNonEmptyString(extraFooter)">
             <span [innerHTML]="extraFooter"></span>
@@ -75,15 +73,15 @@ import { PREFIX_CLASS } from './util';
   `
 })
 export class CalendarFooterComponent implements OnChanges {
-  @Input() locale: NzCalendarI18nInterface;
+  @Input() locale!: NzCalendarI18nInterface;
   @Input() showToday: boolean = false;
   @Input() hasTimePicker: boolean = false;
   @Input() isRange: boolean = false;
 
   @Input() okDisabled: boolean = false;
-  @Input() disabledDate: (d: Date) => boolean;
-  @Input() extraFooter: TemplateRef<void> | string;
-  @Input() rangeQuickSelector: TemplateRef<void>;
+  @Input() disabledDate?: (d: Date) => boolean;
+  @Input() extraFooter?: TemplateRef<void> | string;
+  @Input() rangeQuickSelector: TemplateRef<NzSafeAny> | null = null;
 
   @Output() readonly clickOk = new EventEmitter<void>();
   @Output() readonly clickToday = new EventEmitter<CandyDate>();
@@ -91,15 +89,15 @@ export class CalendarFooterComponent implements OnChanges {
   prefixCls: string = PREFIX_CLASS;
   isTemplateRef = isTemplateRef;
   isNonEmptyString = isNonEmptyString;
-  isTodayDisabled: boolean;
-  todayTitle: string;
+  isTodayDisabled: boolean = false;
+  todayTitle: string = '';
   private now: CandyDate = new CandyDate();
 
   constructor(private dateHelper: DateHelperService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.disabledDate) {
-      this.isTodayDisabled = this.disabledDate && this.disabledDate(this.now.nativeDate);
+      this.isTodayDisabled = !!(this.disabledDate && this.disabledDate(this.now.nativeDate));
     }
     if (changes.locale) {
       // NOTE: Compat for DatePipe formatting rules

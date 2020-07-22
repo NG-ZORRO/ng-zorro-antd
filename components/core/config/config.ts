@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -14,6 +11,7 @@ import { NzSafeAny, NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType } 
 
 export interface NzConfig {
   affix?: AffixConfig;
+  select?: SelectConfig;
   alert?: AlertConfig;
   anchor?: AnchorConfig;
   avatar?: AvatarConfig;
@@ -26,6 +24,7 @@ export interface NzConfig {
   codeEditor?: CodeEditorConfig;
   collapse?: CollapseConfig;
   collapsePanel?: CollapsePanelConfig;
+  datePicker?: DatePickerConfig;
   descriptions?: DescriptionsConfig;
   drawer?: DrawerConfig;
   empty?: EmptyConfig;
@@ -46,6 +45,11 @@ export interface NzConfig {
   tree?: TreeConfig;
   treeSelect?: TreeSelectConfig;
   typography?: TypographyConfig;
+}
+
+export interface SelectConfig {
+  nzBorderless?: boolean;
+  nzSuffixIcon?: TemplateRef<NzSafeAny> | string | null;
 }
 
 export interface AffixConfig {
@@ -116,10 +120,16 @@ export interface CascaderConfig {
 export interface CollapseConfig {
   nzAccordion?: boolean;
   nzBordered?: boolean;
+  nzGhost?: boolean;
 }
 
 export interface CollapsePanelConfig {
   nzShowArrow?: boolean;
+}
+
+export interface DatePickerConfig {
+  nzSeparator?: string;
+  nzSuffixIcon?: string | TemplateRef<NzSafeAny>;
 }
 
 export interface DescriptionsConfig {
@@ -132,6 +142,7 @@ export interface DescriptionsConfig {
 export interface DrawerConfig {
   nzMask?: boolean;
   nzMaskClosable?: boolean;
+  nzCloseOnNavigation?: boolean;
 }
 
 export interface EmptyConfig {
@@ -159,6 +170,7 @@ export interface MessageConfig {
 export interface ModalConfig {
   nzMask?: boolean;
   nzMaskClosable?: boolean;
+  nzCloseOnNavigation?: boolean;
 }
 
 export interface NotificationConfig extends MessageConfig {
@@ -192,7 +204,7 @@ export interface SpaceConfig {
 }
 
 export interface SpinConfig {
-  nzIndicator?: TemplateRef<void>;
+  nzIndicator?: TemplateRef<NzSafeAny>;
 }
 
 export interface SwitchConfig {
@@ -203,6 +215,7 @@ export interface TableConfig {
   nzBordered?: boolean;
   nzSize?: NzSizeMDSType;
   nzShowQuickJumper?: boolean;
+  nzLoadingIndicator?: TemplateRef<NzSafeAny>;
   nzShowSizeChanger?: boolean;
   nzSimple?: boolean;
   nzHideOnSinglePage?: boolean;
@@ -230,6 +243,7 @@ export interface TimePickerConfig {
   nzSecondStep?: number;
   nzPopupClassName?: string;
   nzUse12Hours?: string;
+  nzSuffixIcon?: string | TemplateRef<NzSafeAny>;
 }
 
 export interface TreeConfig {

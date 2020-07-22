@@ -31,7 +31,7 @@ describe('NzPageHeaderComponent', () => {
         NzDemoPageHeaderGhostComponent
       ]
     }).compileComponents();
-    location = TestBed.get(Location);
+    location = TestBed.inject(Location);
   }));
 
   it('should basic work', () => {

@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -21,6 +18,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NzPaginationI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzPaginationItemComponent } from './pagination-item.component';
 import { PaginationItemRenderContext } from './pagination.types';
 
@@ -40,7 +38,7 @@ import { PaginationItemRenderContext } from './pagination.types';
         [locale]="locale"
         [type]="page.type"
         [index]="page.index"
-        [disabled]="page.disabled"
+        [disabled]="!!page.disabled"
         [itemRender]="itemRender"
         [active]="pageIndex === page.index"
         (gotoIndex)="jumpPage($event)"
@@ -65,18 +63,18 @@ import { PaginationItemRenderContext } from './pagination.types';
   `
 })
 export class NzPaginationDefaultComponent implements OnChanges {
-  @ViewChild('containerTemplate', { static: true }) template: TemplateRef<NzSafeAny>;
+  @ViewChild('containerTemplate', { static: true }) template!: TemplateRef<NzSafeAny>;
   @Input() nzSize: 'default' | 'small' = 'default';
-  @Input() itemRender: TemplateRef<PaginationItemRenderContext>;
+  @Input() itemRender: TemplateRef<PaginationItemRenderContext> | null = null;
   @Input() showTotal: TemplateRef<{ $implicit: number; range: [number, number] }> | null = null;
   @Input() disabled = false;
-  @Input() locale: NzSafeAny = {};
+  @Input() locale!: NzPaginationI18nInterface;
   @Input() showSizeChanger = false;
   @Input() showQuickJumper = false;
   @Input() total = 0;
   @Input() pageIndex = 1;
   @Input() pageSize = 10;
-  @Input() pageSizeOptions = [10, 20, 30, 40];
+  @Input() pageSizeOptions: number[] = [10, 20, 30, 40];
   @Output() readonly pageIndexChange = new EventEmitter<number>();
   @Output() readonly pageSizeChange = new EventEmitter<number>();
   ranges = [0, 0];

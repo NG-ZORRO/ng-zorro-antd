@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -18,7 +15,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NumberInput, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NumberInput, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -62,10 +59,10 @@ const NZ_CONFIG_COMPONENT_NAME = 'spin';
 })
 export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
   static ngAcceptInputType_nzDelay: NumberInput;
-  static ngAcceptInputType_nzSimple: NumberInput;
-  static ngAcceptInputType_nzSpinning: NumberInput;
+  static ngAcceptInputType_nzSimple: BooleanInput;
+  static ngAcceptInputType_nzSpinning: BooleanInput;
 
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzIndicator: TemplateRef<void>;
+  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzIndicator: TemplateRef<NzSafeAny> | null = null;
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzTip: string | null = null;
   @Input() @InputNumber() nzDelay = 0;

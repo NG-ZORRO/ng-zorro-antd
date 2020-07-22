@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   selector: 'nz-demo-tabs-guard',
   template: `
     <nz-tabset [nzCanDeactivate]="canDeactivate">
-      <nz-tab *ngFor="let tab of tabs" [nzTitle]="'Tab' + tab"> Content of tab {{ tab }} </nz-tab>
+      <nz-tab *ngFor="let tab of tabs" [nzTitle]="'Tab' + tab">Content of tab {{ tab }}</nz-tab>
     </nz-tabset>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush

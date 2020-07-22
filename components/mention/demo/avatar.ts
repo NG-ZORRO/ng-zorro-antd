@@ -24,7 +24,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
   ]
 })
 export class NzDemoMentionAvatarComponent {
-  inputValue: string;
+  inputValue?: string;
   webFrameworks = [
     { name: 'React', type: 'JavaScript', icon: 'https://zos.alipayobjects.com/rmsportal/LFIeMPzdLcLnEUe.svg' },
     { name: 'Angular', type: 'JavaScript', icon: 'https://zos.alipayobjects.com/rmsportal/PJTbxSvzYWjDZnJ.png' },

@@ -4,6 +4,7 @@ type: 数据展示
 subtitle: 日历
 cols: 1
 title: Calendar
+cover: https://gw.alipayobjects.com/zos/antfincdn/dPQmLq08DI/Calendar.svg
 ---
 
 按照日历形式展示数据的容器。
@@ -52,5 +53,6 @@ registerLocaleData(zh);
 | `[nzDateFullCell]` | （可作为内容）自定义渲染日期单元格，模版内容覆盖单元格 | `TemplateRef<Date>` | - |
 | `[nzMonthCell]` | （可作为内容）自定义渲染月单元格，模版内容会被追加到单元格 | `TemplateRef<Date>` | - |
 | `[nzMonthFullCell]` | （可作为内容）自定义渲染月单元格，模版内容覆盖单元格 | `TemplateRef<Date>` | - |
+| `[nzDisabledDate]` | 不可选择的日期 | `(current: Date) => boolean` | - |
 | `(nzPanelChange)` | 面板变化的回调 | `EventEmitter<{ date: Date, mode: 'month' \| 'year' }>` | - |
 | `(nzSelectChange)` | 选择日期的回调 | `EventEmitter<Date>` | - |

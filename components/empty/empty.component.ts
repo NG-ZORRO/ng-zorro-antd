@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -21,7 +18,7 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { NzI18nService } from 'ng-zorro-antd/i18n';
+import { NzEmptyI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 
 const NzEmptyDefaultImages = ['default', 'simple'] as const;
 type NzEmptyNotFoundImageType = typeof NzEmptyDefaultImages[number] | null | string | TemplateRef<void>;
@@ -58,12 +55,12 @@ type NzEmptyNotFoundImageType = typeof NzEmptyDefaultImages[number] | null | str
 })
 export class NzEmptyComponent implements OnChanges, OnInit, OnDestroy {
   @Input() nzNotFoundImage: NzEmptyNotFoundImageType = 'default';
-  @Input() nzNotFoundContent: string | TemplateRef<void> | null;
-  @Input() nzNotFoundFooter: string | TemplateRef<void>;
+  @Input() nzNotFoundContent?: string | TemplateRef<void> | null;
+  @Input() nzNotFoundFooter?: string | TemplateRef<void>;
 
   isContentString = false;
   isImageBuildIn = true;
-  locale: { [key: string]: string } = {};
+  locale!: NzEmptyI18nInterface;
 
   private readonly destroy$ = new Subject<void>();
 

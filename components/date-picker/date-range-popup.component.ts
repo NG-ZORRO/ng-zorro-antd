@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -30,10 +27,9 @@ import { DatePickerService } from './date-picker.service';
 import {
   CompatibleDate,
   DisabledDateFn,
-  DisabledTimeConfig,
   DisabledTimeFn,
   DisabledTimePartial,
-  PanelMode,
+  NzDateMode,
   PresetRanges,
   RangePartType,
   SupportTimeOptions
@@ -49,7 +45,7 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
   template: `
     <ng-container *ngIf="isRange; else singlePanel">
       <div class="{{ prefixCls }}-range-wrapper {{ prefixCls }}-date-range-wrapper">
-        <div class="{{ prefixCls }}-range-arrow" [style]="datePickerService?.arrowPositionStyle"></div>
+        <div class="{{ prefixCls }}-range-arrow" [ngStyle]="datePickerService?.arrowPositionStyle!"></div>
         <div class="{{ prefixCls }}-panel-container">
           <div class="{{ prefixCls }}-panels">
             <ng-container *ngTemplateOutlet="tplRangePart; context: { partType: 'left' }"></ng-container>
@@ -74,12 +70,13 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
     </ng-template>
 
     <ng-template #tplInnerPopup let-partType="partType">
+      <!-- TODO(@wenqi73) [selectedValue] [hoverValue] types-->
       <inner-popup
         *ngIf="show(partType)"
         [showWeek]="showWeek"
         [endPanelMode]="getPanelMode(endPanelMode, partType)"
         [partType]="partType"
-        [locale]="locale"
+        [locale]="locale!"
         [showTimePicker]="hasTimePicker"
         [timeOptions]="getTimeOptions(partType)"
         [panelMode]="getPanelMode(panelMode, partType)"
@@ -88,8 +85,8 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
         [value]="getValue(partType)"
         [disabledDate]="disabledDate"
         [dateRender]="dateRender"
-        [selectedValue]="datePickerService?.value"
-        [hoverValue]="hoverValue"
+        [selectedValue]="$any(datePickerService?.value)"
+        [hoverValue]="$any(hoverValue)"
         (dayHover)="onDayHover($event)"
         (selectDate)="changeValueFromSelect($event, !showTime)"
         (selectTime)="onSelectTime($event, partType)"
@@ -100,11 +97,11 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
     <ng-template #tplFooter>
       <calendar-footer
         *ngIf="hasFooter"
-        [locale]="locale"
+        [locale]="locale!"
         [isRange]="isRange"
         [showToday]="showToday"
         [hasTimePicker]="hasTimePicker"
-        [okDisabled]="!isAllowed(datePickerService?.value)"
+        [okDisabled]="!isAllowed($any(datePickerService?.value))"
         [extraFooter]="extraFooter"
         [rangeQuickSelector]="ranges ? tplRangeQuickSelector : null"
         (clickOk)="onClickOk()"
@@ -123,8 +120,8 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
       <li
         *ngFor="let name of getObjectKeys(ranges)"
         class="{{ prefixCls }}-preset"
-        (click)="onClickPresetRange(ranges[name])"
-        (mouseenter)="onHoverPresetRange(ranges[name])"
+        (click)="onClickPresetRange(ranges![name])"
+        (mouseenter)="onHoverPresetRange(ranges![name])"
         (mouseleave)="onPresetRangeMouseLeave()"
       >
         <span class="ant-tag ant-tag-blue">{{ name }}</span>
@@ -133,28 +130,27 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
   `
 })
 export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() isRange: boolean;
-  @Input() showWeek: boolean;
-  @Input() locale: NzCalendarI18nInterface;
-  @Input() format: string;
-  @Input() placeholder: string | string[];
-  @Input() disabledDate: DisabledDateFn;
-  @Input() disabledTime: DisabledTimeFn; // This will lead to rebuild time options
-  @Input() showToday: boolean;
-  @Input() showTime: SupportTimeOptions | boolean;
-  @Input() extraFooter: TemplateRef<void> | string;
-  @Input() ranges: PresetRanges;
-  @Input() dateRender: FunctionProp<TemplateRef<Date> | string>;
-  @Input() panelMode: PanelMode | PanelMode[];
-  @Input() defaultPickerValue: CompatibleDate;
-
-  @Output() readonly panelModeChange = new EventEmitter<PanelMode | PanelMode[]>();
+  @Input() isRange!: boolean;
+  @Input() showWeek!: boolean;
+  @Input() locale!: NzCalendarI18nInterface | undefined;
+  @Input() format!: string;
+  @Input() placeholder!: string | string[];
+  @Input() disabledDate?: DisabledDateFn;
+  @Input() disabledTime?: DisabledTimeFn; // This will lead to rebuild time options
+  @Input() showToday!: boolean;
+  @Input() showTime!: SupportTimeOptions | boolean;
+  @Input() extraFooter?: TemplateRef<void> | string;
+  @Input() ranges?: PresetRanges;
+  @Input() dateRender?: string | TemplateRef<Date> | FunctionProp<TemplateRef<Date> | string>;
+  @Input() panelMode!: NzDateMode | NzDateMode[];
+  @Input() defaultPickerValue!: CompatibleDate | undefined | null;
+  @Output() readonly panelModeChange = new EventEmitter<NzDateMode | NzDateMode[]>();
   @Output() readonly calendarChange = new EventEmitter<CompatibleValue>();
   @Output() readonly resultOk = new EventEmitter<void>(); // Emitted when done with date selecting
 
   prefixCls: string = PREFIX_CLASS;
-  endPanelMode: PanelMode | PanelMode[] = 'date';
-  timeOptions: SupportTimeOptions | SupportTimeOptions[] | null;
+  endPanelMode: NzDateMode | NzDateMode[] = 'date';
+  timeOptions: SupportTimeOptions | SupportTimeOptions[] | null = null;
   hoverValue: SingleValue[] = []; // Range ONLY
   destroy$ = new Subject();
 
@@ -195,7 +191,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   initActiveDate(): void {
     const activeDate = this.datePickerService.hasValue()
       ? this.datePickerService.value
-      : this.datePickerService.makeValue(this.defaultPickerValue);
+      : this.datePickerService.makeValue(this.defaultPickerValue!);
     this.datePickerService.setActiveDate(activeDate, !this.showTime);
   }
 
@@ -232,13 +228,13 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  onPanelModeChange(mode: PanelMode, partType?: RangePartType): void {
+  onPanelModeChange(mode: NzDateMode, partType?: RangePartType): void {
     if (this.isRange) {
       const index = this.datePickerService.getActiveIndex(partType);
       if (index === 0) {
-        this.panelMode = [mode, this.panelMode[1]] as PanelMode[];
+        this.panelMode = [mode, this.panelMode[1]] as NzDateMode[];
       } else {
-        this.panelMode = [this.panelMode[0], mode] as PanelMode[];
+        this.panelMode = [this.panelMode[0], mode] as NzDateMode[];
       }
     } else {
       this.panelMode = mode;
@@ -320,11 +316,11 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  getPanelMode(panelMode: PanelMode | PanelMode[], partType?: RangePartType): PanelMode {
+  getPanelMode(panelMode: NzDateMode | NzDateMode[], partType?: RangePartType): NzDateMode {
     if (this.isRange) {
-      return panelMode[this.datePickerService.getActiveIndex(partType)] as PanelMode;
+      return panelMode[this.datePickerService.getActiveIndex(partType)] as NzDateMode;
     } else {
-      return panelMode as PanelMode;
+      return panelMode as NzDateMode;
     }
   }
 
@@ -345,11 +341,11 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  disabledStartTime = (value: Date | Date[]): DisabledTimeConfig => {
+  disabledStartTime: DisabledTimeFn = (value: Date | Date[]) => {
     return this.disabledTime && this.disabledTime(value, 'start');
   };
 
-  disabledEndTime = (value: Date | Date[]): DisabledTimeConfig => {
+  disabledEndTime: DisabledTimeFn = (value: Date | Date[]) => {
     return this.disabledTime && this.disabledTime(value, 'end');
   };
 
@@ -399,7 +395,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  getObjectKeys(obj: object): string[] {
+  getObjectKeys(obj?: PresetRanges): string[] {
     return obj ? Object.keys(obj) : [];
   }
 

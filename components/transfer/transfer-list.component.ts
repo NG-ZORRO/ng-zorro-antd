@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -17,7 +14,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { TransferItem } from './interface';
+import { TransferDirection, TransferItem } from './interface';
 
 @Component({
   selector: 'nz-transfer-list',
@@ -114,29 +111,29 @@ import { TransferItem } from './interface';
 export class NzTransferListComponent {
   // #region fields
 
-  @Input() direction = '';
+  @Input() direction: TransferDirection = 'left';
   @Input() titleText = '';
   @Input() showSelectAll = true;
 
   @Input() dataSource: TransferItem[] = [];
 
-  @Input() itemUnit = '';
-  @Input() itemsUnit = '';
+  @Input() itemUnit: string | undefined = '';
+  @Input() itemsUnit: string | undefined = '';
   @Input() filter = '';
-  @Input() disabled: boolean;
-  @Input() showSearch: boolean;
-  @Input() searchPlaceholder: string;
-  @Input() notFoundContent: string;
-  @Input() filterOption: (inputValue: string, item: TransferItem) => boolean;
+  @Input() disabled?: boolean;
+  @Input() showSearch?: boolean;
+  @Input() searchPlaceholder?: string;
+  @Input() notFoundContent?: string;
+  @Input() filterOption?: (inputValue: string, item: TransferItem) => boolean;
 
-  @Input() renderList: TemplateRef<void>;
-  @Input() render: TemplateRef<void>;
-  @Input() footer: TemplateRef<void>;
+  @Input() renderList: TemplateRef<void> | null = null;
+  @Input() render: TemplateRef<void> | null = null;
+  @Input() footer: TemplateRef<void> | null = null;
 
   // events
   @Output() readonly handleSelectAll: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() readonly handleSelect: EventEmitter<TransferItem> = new EventEmitter();
-  @Output() readonly filterChange: EventEmitter<{ direction: string; value: string }> = new EventEmitter();
+  @Output() readonly filterChange: EventEmitter<{ direction: TransferDirection; value: string }> = new EventEmitter();
 
   stat = {
     checkAll: false,

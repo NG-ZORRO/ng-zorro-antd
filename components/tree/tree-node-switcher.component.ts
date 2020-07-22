@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -55,17 +52,17 @@ import { NzTreeNode, NzTreeNodeOptions } from 'ng-zorro-antd/core/tree';
   }
 })
 export class NzTreeNodeSwitcherComponent {
-  @Input() nzShowExpand: boolean;
-  @Input() nzShowLine: boolean;
-  @Input() nzExpandedIcon: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
+  @Input() nzShowExpand?: boolean;
+  @Input() nzShowLine?: boolean;
+  @Input() nzExpandedIcon?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
   @Input() nzSelectMode = false;
-  @Input() context: NzTreeNode;
-  @Input() isLeaf: boolean;
-  @Input() isLoading: boolean;
-  @Input() isExpanded: boolean;
+  @Input() context!: NzTreeNode;
+  @Input() isLeaf?: boolean;
+  @Input() isLoading?: boolean;
+  @Input() isExpanded?: boolean;
 
   get isShowLineIcon(): boolean {
-    return !this.isLeaf && this.nzShowLine;
+    return !this.isLeaf && !!this.nzShowLine;
   }
 
   get isShowSwitchIcon(): boolean {
@@ -73,7 +70,7 @@ export class NzTreeNodeSwitcherComponent {
   }
 
   get isSwitcherOpen(): boolean {
-    return this.isExpanded && !this.isLeaf;
+    return !!this.isExpanded && !this.isLeaf;
   }
 
   get isSwitcherClose(): boolean {

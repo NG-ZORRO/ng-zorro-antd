@@ -1,7 +1,4 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
@@ -18,10 +15,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { NzTimelineMode } from './timeline.component';
-
-const TimelineTimeDefaultColors = ['red', 'blue', 'green', 'grey', 'gray'] as const;
-export type NzTimelineItemColor = typeof TimelineTimeDefaultColors[number];
+import { TimelineService } from './timeline.service';
+import { NzTimelineItemColor, NzTimelinePosition, TimelineTimeDefaultColors } from './typings';
 
 function isDefaultColor(color?: string): boolean {
   return TimelineTimeDefaultColors.findIndex(i => i === color) !== -1;
@@ -37,8 +32,8 @@ function isDefaultColor(color?: string): boolean {
     <ng-template #template>
       <li
         class="ant-timeline-item"
-        [class.ant-timeline-item-right]="position === 'right'"
-        [class.ant-timeline-item-left]="position === 'left'"
+        [class.ant-timeline-item-right]="(nzPosition || position) === 'right'"
+        [class.ant-timeline-item-left]="(nzPosition || position) === 'left'"
         [class.ant-timeline-item-last]="isLast"
       >
         <div class="ant-timeline-item-tail"></div>
@@ -61,18 +56,20 @@ function isDefaultColor(color?: string): boolean {
   `
 })
 export class NzTimelineItemComponent implements OnChanges {
-  @ViewChild('template', { static: false }) template: TemplateRef<void>;
+  @ViewChild('template', { static: false }) template!: TemplateRef<void>;
 
+  @Input() nzPosition?: NzTimelinePosition;
   @Input() nzColor: NzTimelineItemColor = 'blue';
-  @Input() nzDot: string | TemplateRef<void>;
+  @Input() nzDot?: string | TemplateRef<void>;
 
   isLast = false;
   borderColor: string | null = null;
-  position: NzTimelineMode | undefined;
+  position?: NzTimelinePosition;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private timelineService: TimelineService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.timelineService.markForCheck();
     if (changes.nzColor) {
       this.updateCustomColor();
     }

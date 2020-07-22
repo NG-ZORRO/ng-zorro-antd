@@ -4,6 +4,7 @@ cols: 1
 type: 数据展示
 title: Table
 subtitle: 表格
+cover: https://gw.alipayobjects.com/zos/alicdn/f-SbcX2Lx/Table.svg
 ---
 
 展示行列数据。
@@ -75,7 +76,7 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzWidthConfig]` | 表头分组时指定每列宽度，与 `th` 的 `[nzWidth]` 不可混用 | `string[]` | `[]` |
 | `[nzSize]` | 正常或迷你类型 | `'middle' \| 'small' \| 'default'` | `'default'` | ✅ |
 | `[nzLoading]` | 页面是否加载中 | `boolean` | `false` |
-| `[nzLoadingIndicator]` | 加载指示符 | `TemplateRef<void>` | - |
+| `[nzLoadingIndicator]` | 加载指示符 | `TemplateRef<void>` | - | ✅ |
 | `[nzLoadingDelay]` | 延迟显示加载效果的时间（防止闪烁） | `number` | `0` |
 | `[nzScroll]` | 横向或纵向支持滚动，也可用于指定滚动区域的宽高度：`{ x: "300px", y: "300px" }` | `object` | - |
 | `[nzTitle]` | 表格标题 | `string \| TemplateRef<void>` | - |
@@ -146,6 +147,8 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzAlign]` | 设置列内容的对齐方式 | `'left' \| 'right' \| 'center'` | - |
 | `[nzBreakWord]` | 是否折行显示 | `boolean` | `false` |
 | `[nzEllipsis]` | 超过宽度将自动省略，暂不支持和排序筛选一起使用。仅当表格布局将为 `nzTableLayout="fixed"`时可用 | `boolean` | `false` |
+| `[colSpan]` | 每单元格中扩展列的数量 | `number` | `null` |
+| `[rowSpan]` | 每单元格中扩展行的数量 | `number` | `null` |
 
 
 其他
