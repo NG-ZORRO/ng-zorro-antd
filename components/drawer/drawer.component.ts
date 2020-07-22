@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ConfigurableFocusTrapFactory, FocusTrap } from '@angular/cdk/a11y';
+import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { Overlay, OverlayConfig, OverlayKeyboardDispatcher, OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortalOutlet, ComponentPortal, PortalInjector, TemplatePortal } from '@angular/cdk/portal';
@@ -222,7 +222,7 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> exte
     private overlay: Overlay,
     private injector: Injector,
     private changeDetectorRef: ChangeDetectorRef,
-    private focusTrapFactory: ConfigurableFocusTrapFactory,
+    private focusTrapFactory: FocusTrapFactory,
     private viewContainerRef: ViewContainerRef,
     private overlayKeyboardDispatcher: OverlayKeyboardDispatcher
   ) {
