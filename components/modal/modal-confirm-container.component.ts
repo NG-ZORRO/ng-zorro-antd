@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ConfigurableFocusTrapFactory } from '@angular/cdk/a11y';
+import { FocusTrapFactory } from '@angular/cdk/a11y';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { CdkPortalOutlet } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
@@ -114,7 +114,7 @@ export class NzModalConfirmContainerComponent extends BaseModalContainerComponen
   constructor(
     private i18n: NzI18nService,
     elementRef: ElementRef,
-    focusTrapFactory: ConfigurableFocusTrapFactory,
+    focusTrapFactory: FocusTrapFactory,
     cdr: ChangeDetectorRef,
     render: Renderer2,
     overlayRef: OverlayRef,
