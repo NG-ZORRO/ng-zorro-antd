@@ -35,17 +35,15 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | `[nzTabBarExtraContent]` | tab bar 上额外的元素 | `TemplateRef<void>` | - |
 | `[nzTabBarStyle]` | tab bar 的样式对象 | `object` | - |
 | `[nzTabPosition]` | 页签位置，可选值有 `top` `right` `bottom` `left` | `'top' \| 'right' \| 'bottom' \| 'left'` | `'top'` | |
-| `[nzType]` | 页签的基本样式，可选 `line`、`card` 类型 | `'line' \| 'card'` | `'line'` | ✅ |
+| `[nzType]` | 页签的基本样式 | `'line' \| 'card' \| 'editable-card'` | `'line'` | ✅ |
 | `[nzTabBarGutter]` | tabs 之间的间隙 | `number` | - | ✅ |
 | `[nzHideAll]` | 是否隐藏所有tab内容 | `boolean` | `false` |
-| `[nzShowPagination]` | 是否超出范围时显示pre和next按钮 | `boolean` | `true` | ✅ |
 | `[nzLinkRouter]` | 与 Angular 路由联动 | `boolean` | `false` ||
 | `[nzLinkExact]` | 以严格匹配模式确定联动的路由 | `boolean` | `true` |
 | `[nzCanDeactivate]` | 决定一个 tab 是否可以被切换 | `NzTabsCanDeactivateFn` | - |
+| `[nzCentered]` | 标签居中展示 | `boolean` | `false` |
 | `(nzSelectedIndexChange)` | 当前激活 tab 面板的 序列号变更回调函数 | `EventEmitter<number>` | - |
 | `(nzSelectChange)` | 当前激活 tab 面板变更回调函数 | `EventEmitter<{index: number,tab: NzTabComponent}>` | - |
-| `(nzOnNextClick)` | next 按钮被点击的回调 | `EventEmitter<void>` | - |
-| `(nzOnPrevClick)` | prev 按钮被点击的回调 | `EventEmitter<void>` | - |
 
 ### nz-tab
 
@@ -57,6 +55,19 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | `(nzClick)` | title被点击的回调函数 | `EventEmitter<void>` | - |
 | `(nzSelect)` | tab被选中的回调函数 | `EventEmitter<void>` | - |
 | `(nzDeselect)` | tab被取消选中的回调函数 | `EventEmitter<void>` | - |
+
+### nz-tabset[nzType="editable-card"]
+
+| 参数 | 说明 | 类型 | 默认值 | 全局配置 |
+| --- | --- | --- | --- | --- |
+| `[nzHideAdd]` | 隐藏添加按钮 | `boolean` | `false` |
+| `(nzAdd)` | 点击添加按钮时的事件 | `EventEmitter<>` | - |
+| `(nzClose)` | 点击删除按钮时的事件 | `EventEmitter<{ index: number }>` | - |
+
+### nz-tabset[nzType="editable-card"] > nz-tab
+| 参数 | 说明 | 类型 | 默认值 | 全局配置 |
+| --- | --- | --- | --- | --- |
+| `[nzClosable]` | 显示删除按钮 | `boolean` | `false` |
 
 ### [nz-tab]
 
