@@ -4,7 +4,7 @@
  */
 
 import { AnimationEvent } from '@angular/animations';
-import { ConfigurableFocusTrapFactory, FocusTrap } from '@angular/cdk/a11y';
+import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { BasePortalOutlet, CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { ChangeDetectorRef, ComponentRef, Directive, ElementRef, EmbeddedViewRef, EventEmitter, OnDestroy, Renderer2 } from '@angular/core';
@@ -57,7 +57,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
 
   constructor(
     protected elementRef: ElementRef,
-    protected focusTrapFactory: ConfigurableFocusTrapFactory,
+    protected focusTrapFactory: FocusTrapFactory,
     public cdr: ChangeDetectorRef,
     protected render: Renderer2,
     protected overlayRef: OverlayRef,
