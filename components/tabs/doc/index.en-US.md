@@ -32,17 +32,15 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | `[nzTabBarExtraContent]` | Extra content in tab bar | `TemplateRef<void>` | - |
 | `[nzTabBarStyle]` | Tab bar style object | `object` | - |
 | `[nzTabPosition]` | Position of tabs | `'top' \| 'right' \| 'bottom' \| 'left'` | `'top'` | |
-| `[nzType]` | Basic style of tabs | `'line' \| 'card'` | `'line'` | ✅ |
+| `[nzType]` | Basic style of tabs | `'line' \| 'card' \| 'editable-card'` | `'line'` | ✅ |
 | `[nzTabBarGutter]` | The gap between tabs | `number` | - | ✅ |
 | `[nzHideAll]` | Whether hide all tabs | `boolean` | `false` |
-| `[nzShowPagination]` | Whether show pre or next button when exceed display area | `boolean` | `true` | ✅ |
 | `[nzLinkRouter]` | Link with Angular router. It supports child mode and query param mode | `boolean` | `false` ||
 | `[nzLinkExact]` | Use exact routing matching | `boolean` | `true` |
 | `[nzCanDeactivate]` | Determine if a tab can be deactivated | `NzTabsCanDeactivateFn` | - |
+| `[nzCentered]` | Centers tabs | `boolean` | `false` |
 | `(nzSelectedIndexChange)` | Current tab's index change callback | `EventEmitter<number>` | - |
 | `(nzSelectChange)` | Current tab's change callback | `EventEmitter<{index: number,tab: NzTabComponent}>` | - |
-| `(nzOnNextClick)` | Callback executed when next button is clicked | `EventEmitter<void>` | - |
-| `(nzOnPrevClick)` | Callback executed when prev button is clicked | `EventEmitter<void>` | - |
 
 ### nz-tab
 
@@ -54,6 +52,20 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | `(nzClick)` | title click callback | `EventEmitter<void>` | - |
 | `(nzSelect)` | title select callback | `EventEmitter<void>` | - |
 | `(nzDeselect)` | title deselect callback | `EventEmitter<void>` | - |
+
+### nz-tabset[nzType="editable-card"]
+
+| Property | Description | Type | Default | Global Config |
+| --- | --- | --- | --- | --- |
+| `[nzHideAdd]` | Hide plus icon or not | `boolean` | `false` |
+| `(nzAdd)` | When add button clicked emit | `EventEmitter<>` | - |
+| `(nzClose)` | When close button clicked emit | `EventEmitter<{ index: number }>` | - |
+
+### nz-tabset[nzType="editable-card"] > nz-tab
+| Property | Description | Type | Default | Global Config |
+| --- | --- | --- | --- | --- |
+| `[nzClosable]` | Show close icon or not | `boolean` | `false` |
+
 
 ### [nz-tab]
 
