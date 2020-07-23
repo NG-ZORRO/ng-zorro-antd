@@ -6,7 +6,6 @@
     "baseUrl": ".",
     "rootDir": ".",
     "paths": {
-      "ng-zorro-antd": ["./ng-zorro-antd.module"],
       "ng-zorro-antd/*": ["./*"]
     }
   },

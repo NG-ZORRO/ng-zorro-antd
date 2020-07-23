@@ -48,16 +48,6 @@ stages:
 
   dependsOn: env
 
-- stage: ivy_prebuild
-  jobs:
-    - job: ivy_prebuild
-      steps:
-        - task: Npm@1
-          inputs:
-            command: 'install'
-        - script: |
-            gulp library:ivy-prebuild
-
 - stage: test
   jobs:
     - job: test_components

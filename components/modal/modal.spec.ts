@@ -17,7 +17,7 @@ import {
 import { ComponentFixture, fakeAsync, flush, flushMicrotasks, inject, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NzConfigService } from 'ng-zorro-antd';
+import { NzConfigService } from 'ng-zorro-antd/core/config';
 
 import { createKeyboardEvent, dispatchEvent, dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 
@@ -1528,7 +1528,9 @@ class TestWithViewContainerDirective {
 }
 
 @Component({
-  template: ` <test-with-view-container></test-with-view-container> `
+  template: `
+    <test-with-view-container></test-with-view-container>
+  `
 })
 class TestWithChildViewContainerComponent {
   @ViewChild(TestWithViewContainerDirective) childWithViewContainer!: TestWithViewContainerDirective;
@@ -1549,8 +1551,8 @@ class TestWithOnPushViewContainerComponent {
 @Component({
   template: `
     <ng-template let-modalRef="modalRef">
-      <span class="modal-template-content">Hello {{ value }}</span
-      >{{ setModalRef(modalRef) }}
+      <span class="modal-template-content">Hello {{ value }}</span>
+      {{ setModalRef(modalRef) }}
     </ng-template>
   `
 })
