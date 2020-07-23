@@ -160,6 +160,7 @@ export class NzTabNavBarComponent implements OnInit, AfterViewInit, AfterContent
   private addButtonHeight = 0;
   private selectedIndexChanged = false;
   private lockAnimationTimeoutId = -1;
+  private cssTransformTimeWaitingId = -1;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -216,6 +217,7 @@ export class NzTabNavBarComponent implements OnInit, AfterViewInit, AfterContent
 
   ngOnDestroy(): void {
     window.clearTimeout(this.lockAnimationTimeoutId);
+    window.clearTimeout(this.cssTransformTimeWaitingId);
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -333,7 +335,8 @@ export class NzTabNavBarComponent implements OnInit, AfterViewInit, AfterContent
       this.setTransform(0, newTransform);
     }
 
-    setTimeout(() => {
+    window.clearTimeout(this.cssTransformTimeWaitingId);
+    this.cssTransformTimeWaitingId = setTimeout(() => {
       this.setVisibleRange();
     }, CSS_TRANSFORM_TIME);
   }
@@ -533,6 +536,7 @@ export class NzTabNavBarComponent implements OnInit, AfterViewInit, AfterContent
     if (position && !position.isFirstChange()) {
       this.alignInkBarToSelectedTab();
       this.lockAnimation();
+      this.updateScrollListPosition();
     }
   }
 }

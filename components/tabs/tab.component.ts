@@ -54,6 +54,7 @@ export class NzTabComponent implements OnChanges, OnDestroy, OnInit {
 
   @Input() nzTitle: string | TemplateRef<void> = '';
   @Input() @InputBoolean() nzClosable = false;
+  @Input() nzCloseIcon: string | TemplateRef<NzSafeAny> = 'close';
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzForceRender = false;
   @Output() readonly nzSelect = new EventEmitter<void>();
@@ -81,8 +82,8 @@ export class NzTabComponent implements OnChanges, OnDestroy, OnInit {
   constructor(@Inject(NZ_TAB_SET) public closestTabSet: NzSafeAny) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzTitle, nzDisabled } = changes;
-    if (nzTitle || nzDisabled) {
+    const { nzTitle, nzDisabled, nzForceRender } = changes;
+    if (nzTitle || nzDisabled || nzForceRender) {
       this.stateChanges.next();
     }
   }

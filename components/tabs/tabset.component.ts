@@ -55,7 +55,7 @@ let nextId = 0;
   exportAs: 'nzTabset',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
   providers: [
     {
       provide: NZ_TAB_SET,
@@ -68,6 +68,7 @@ let nextId = 0;
       [selectedIndex]="nzSelectedIndex || 0"
       [inkBarAnimated]="inkBarAnimated"
       [addable]="addable"
+      [addIcon]="nzAddIcon"
       [hideBar]="nzHideAll"
       [position]="position"
       [extraTemplate]="nzTabBarExtraContent"
@@ -97,7 +98,12 @@ let nextId = 0;
           cdkMonitorElementFocus
         >
           <ng-container *nzStringTemplateOutlet="tab.label">{{ tab.label }}</ng-container>
-          <button *ngIf="tab.nzClosable && closable" nz-tab-close-button [closeIcon]="nzCloseIcon" (click)="onClose(i, $event)"></button>
+          <button
+            nz-tab-close-button
+            *ngIf="tab.nzClosable && closable && !tab.nzDisabled"
+            [closeIcon]="tab.nzCloseIcon"
+            (click)="onClose(i, $event)"
+          ></button>
         </div>
       </div>
     </nz-tabs-nav>
@@ -162,7 +168,6 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   @Input() nzCanDeactivate: NzTabsCanDeactivateFn | null = null;
   @Input() nzAddIcon: string | TemplateRef<NzSafeAny> = 'plus';
   @Input() nzTabBarStyle: { [key: string]: string } | null = null;
-  @Input() nzCloseIcon: string | TemplateRef<NzSafeAny> = 'close';
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzType: NzTabType = 'line';
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzSizeLDSType = 'default';
   @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzAnimated: NzAnimatedInterface | boolean = true;
@@ -278,7 +283,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
           if (tabs[i].isActive) {
             // Assign both to the `indexToSelect` and `selectedIndex` so we don't fire a changed
             // event, otherwise the consumer may end up in an infinite loop in some edge cases like
-            // adding a tab within the `selectedIndexChange` event.
+            // adding a tab within the `nzSelectedIndexChange` event.
             this.indexToSelect = this.selectedIndex = i;
             break;
           }
@@ -394,7 +399,6 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
     this.canDeactivateSubscription = this.canDeactivateFun(this.selectedIndex!, index).subscribe(can => {
       if (can) {
         this.nzSelectedIndex = index;
-        this.nzSelectedIndexChange.emit(index);
         this.tabNavBarRef.focusIndex = index;
         this.cdr.markForCheck();
       }
@@ -436,6 +440,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
       const index = this.findShouldActiveTabIndex();
       if (index !== this.selectedIndex) {
         this.setSelectedIndex(index);
+        this.nzSelectedIndexChange.emit(index);
       }
       this.nzHideAll = index === -1;
     }
@@ -456,8 +461,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzShowPagination } = changes;
-    if (nzShowPagination) {
+    if (changes.hasOwnProperty('nzShowPagination')) {
       warnDeprecation(`[nzOnPrevClick] of nz-tabset is not support, will be removed in 11.0.0`);
     }
   }
