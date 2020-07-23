@@ -3,7 +3,7 @@
   "dest": "../publish",
   "deleteDestPath": true,
   "lib": {
-    "entryFile": "./ng-zorro-antd.module.ts"
+    "entryFile": "./public_api"
   },
   "whitelistedNonPeerDependencies": ["tslib", "angular", "date-fns", "@ant-design/icons-angular", "resize-observer-polyfill"]
 }

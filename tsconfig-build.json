@@ -13,9 +13,6 @@
     "target": "es2015",
     "types": []
   },
-  "files": [
-    "./__gen_components/ng-zorro-antd.module.ts"
-  ],
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true,
