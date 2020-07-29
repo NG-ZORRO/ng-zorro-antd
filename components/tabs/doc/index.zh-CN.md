@@ -61,6 +61,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | 参数 | 说明 | 类型 | 默认值 | 全局配置 |
 | --- | --- | --- | --- | --- |
 | `[nzHideAdd]` | 隐藏添加按钮 | `boolean` | `false` |
+| `[nzAddIcon]` | 添加按钮图标 | `string \| TemplateRef<void>` | - |
 | `(nzAdd)` | 点击添加按钮时的事件 | `EventEmitter<>` | - |
 | `(nzClose)` | 点击删除按钮时的事件 | `EventEmitter<{ index: number }>` | - |
 
@@ -68,6 +69,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | 参数 | 说明 | 类型 | 默认值 | 全局配置 |
 | --- | --- | --- | --- | --- |
 | `[nzClosable]` | 显示删除按钮 | `boolean` | `false` |
+| `[nzCloseIcon]` | 关闭按钮图标 | `string \| TemplateRef<void>` | - |
 
 ### [nz-tab]
 
