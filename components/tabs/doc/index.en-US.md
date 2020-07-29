@@ -58,6 +58,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | Property | Description | Type | Default | Global Config |
 | --- | --- | --- | --- | --- |
 | `[nzHideAdd]` | Hide plus icon or not | `boolean` | `false` |
+| `[nzAddIcon]` | Add icon | `string \| TemplateRef<void>` | - |
 | `(nzAdd)` | When add button clicked emit | `EventEmitter<>` | - |
 | `(nzClose)` | When close button clicked emit | `EventEmitter<{ index: number }>` | - |
 
@@ -65,6 +66,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | Property | Description | Type | Default | Global Config |
 | --- | --- | --- | --- | --- |
 | `[nzClosable]` | Show close icon or not | `boolean` | `false` |
+| `[nzCloseIcon]` | Close icon | `string \| TemplateRef<void>` | - |
 
 
 ### [nz-tab]

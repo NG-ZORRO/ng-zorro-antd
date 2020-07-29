@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { FocusableOption } from '@angular/cdk/a11y/key-manager/focus-key-manager';
+import { FocusableOption } from '@angular/cdk/a11y';
 import { Directive, ElementRef, Input } from '@angular/core';
 
 import { NzTabComponent } from './tab.component';

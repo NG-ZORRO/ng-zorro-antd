@@ -102,11 +102,11 @@ export class NzTabNavOperationComponent implements OnDestroy {
   }
 
   getElementWidth(): number {
-    return this.element ? this.element.offsetWidth || 0 : 0;
+    return this.element?.offsetWidth || 0;
   }
 
   getElementHeight(): number {
-    return this.element ? this.element.offsetHeight || 0 : 0;
+    return this.element?.offsetHeight || 0;
   }
 
   ngOnDestroy(): void {
