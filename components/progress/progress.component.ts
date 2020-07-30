@@ -4,7 +4,7 @@
  */
 
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NgStyleInterface, NumberInput } from 'ng-zorro-antd/core/types';
 import { InputNumber, isNotNil } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
@@ -26,7 +26,7 @@ import { handleCircleGradient, handleLinearGradient } from './utils';
 
 let gradientIdSeed = 0;
 
-const NZ_CONFIG_COMPONENT_NAME = 'progress';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'progress';
 const statusIconNameMap = new Map([
   ['success', 'check'],
   ['exception', 'close']
@@ -137,25 +137,27 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
   `
 })
 export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
   static ngAcceptInputType_nzSuccessPercent: NumberInput;
   static ngAcceptInputType_nzPercent: NumberInput;
   static ngAcceptInputType_nzStrokeWidth: NumberInput;
   static ngAcceptInputType_nzGapDegree: NumberInput;
   static ngAcceptInputType_nzSteps: NumberInput;
 
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzShowInfo: boolean = true;
+  @Input() @WithConfig() nzShowInfo: boolean = true;
   @Input() nzWidth = 132;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzStrokeColor?: NzProgressStrokeColorType = undefined;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: 'default' | 'small' = 'default';
+  @Input() @WithConfig() nzStrokeColor?: NzProgressStrokeColorType = undefined;
+  @Input() @WithConfig() nzSize: 'default' | 'small' = 'default';
   @Input() nzFormat?: NzProgressFormatter;
   @Input() @InputNumber() nzSuccessPercent?: number;
   @Input() @InputNumber() nzPercent: number = 0;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputNumber() nzStrokeWidth?: number = undefined;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputNumber() nzGapDegree?: number = undefined;
+  @Input() @WithConfig() @InputNumber() nzStrokeWidth?: number = undefined;
+  @Input() @WithConfig() @InputNumber() nzGapDegree?: number = undefined;
   @Input() nzStatus?: NzProgressStatusType;
   @Input() nzType: NzProgressTypeType = 'line';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzGapPosition: NzProgressGapPositionType = 'top';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzStrokeLinecap: NzProgressStrokeLinecapType = 'round';
+  @Input() @WithConfig() nzGapPosition: NzProgressGapPositionType = 'top';
+  @Input() @WithConfig() nzStrokeLinecap: NzProgressStrokeLinecapType = 'round';
 
   @Input() @InputNumber() nzSteps?: number;
 
@@ -245,7 +247,7 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.updateIcon();

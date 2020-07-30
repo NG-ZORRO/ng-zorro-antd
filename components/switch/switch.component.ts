@@ -20,11 +20,11 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NzSizeDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
-const NZ_CONFIG_COMPONENT_NAME = 'switch';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'switch';
 
 @Component({
   selector: 'nz-switch',
@@ -72,6 +72,8 @@ const NZ_CONFIG_COMPONENT_NAME = 'switch';
   }
 })
 export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, OnDestroy {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
   static ngAcceptInputType_nzLoading: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzControl: BooleanInput;
@@ -85,7 +87,7 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
   @Input() @InputBoolean() nzControl = false;
   @Input() nzCheckedChildren: string | TemplateRef<void> | null = null;
   @Input() nzUnCheckedChildren: string | TemplateRef<void> | null = null;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzSizeDSType = 'default';
+  @Input() @WithConfig() nzSize: NzSizeDSType = 'default';
 
   onHostClick(e: MouseEvent): void {
     e.preventDefault();

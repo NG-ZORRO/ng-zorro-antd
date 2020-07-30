@@ -5,13 +5,13 @@
 
 import { Directive, ElementRef, Input, OnChanges, OnDestroy, Renderer2, SimpleChange, SimpleChanges } from '@angular/core';
 
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, InputObservable } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Observable, Subject } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
-const NZ_CONFIG_COMPONENT_NAME = 'form';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'form';
 
 export type NzFormLayoutType = 'horizontal' | 'vertical' | 'inline';
 
@@ -25,12 +25,13 @@ export type NzFormLayoutType = 'horizontal' | 'vertical' | 'inline';
   }
 })
 export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzNoColon: BooleanInput;
   static ngAcceptInputType_nzDisableAutoTips: BooleanInput;
 
   @Input() nzLayout: NzFormLayoutType = 'horizontal';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzNoColon: boolean = false;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzAutoTips: Record<string, Record<string, string>> = {};
+  @Input() @WithConfig() @InputBoolean() nzNoColon: boolean = false;
+  @Input() @WithConfig() nzAutoTips: Record<string, Record<string, string>> = {};
   @Input() @InputBoolean() nzDisableAutoTips = false;
 
   destroy$ = new Subject();

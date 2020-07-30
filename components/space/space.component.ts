@@ -4,7 +4,7 @@
  */
 
 import { AfterViewInit, ChangeDetectionStrategy, Component, ContentChildren, Input, OnChanges, OnDestroy, QueryList } from '@angular/core';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
@@ -12,13 +12,15 @@ import { startWith, takeUntil } from 'rxjs/operators';
 import { NzSpaceItemComponent } from './space-item.component';
 import { NzSpaceDirection, NzSpaceSize } from './types';
 
-const NZ_CONFIG_COMPONENT_NAME = 'space';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'space';
 
 @Component({
   selector: 'nz-space',
   exportAs: 'NzSpace',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <ng-content></ng-content> `,
+  template: `
+    <ng-content></ng-content>
+  `,
   host: {
     class: 'ant-space',
     '[class.ant-space-horizontal]': 'nzDirection === "horizontal"',
@@ -26,8 +28,10 @@ const NZ_CONFIG_COMPONENT_NAME = 'space';
   }
 })
 export class NzSpaceComponent implements OnChanges, OnDestroy, AfterViewInit {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
   @Input() nzDirection: NzSpaceDirection = 'horizontal';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: number | NzSpaceSize = 'small';
+  @Input() @WithConfig() nzSize: number | NzSpaceSize = 'small';
 
   @ContentChildren(NzSpaceItemComponent) nzSpaceItemComponents!: QueryList<NzSpaceItemComponent>;
 

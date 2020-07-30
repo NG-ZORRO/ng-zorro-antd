@@ -26,7 +26,7 @@ import {
   ViewContainerRef,
   ViewEncapsulation
 } from '@angular/core';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { cancelRequestAnimationFrame, reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzResizeService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -40,7 +40,7 @@ import { NzI18nService, NzTextI18nInterface } from 'ng-zorro-antd/i18n';
 import { NzTextCopyComponent } from './text-copy.component';
 import { NzTextEditComponent } from './text-edit.component';
 
-const NZ_CONFIG_COMPONENT_NAME = 'typography';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'typography';
 const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
 
 @Component({
@@ -75,8 +75,12 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
       </ng-template>
     </ng-container>
 
-    <nz-text-edit *ngIf="nzEditable" [text]="nzContent" (endEditing)="onEndEditing($event)" (startEditing)="onStartEditing()">
-    </nz-text-edit>
+    <nz-text-edit
+      *ngIf="nzEditable"
+      [text]="nzContent"
+      (endEditing)="onEndEditing($event)"
+      (startEditing)="onStartEditing()"
+    ></nz-text-edit>
 
     <nz-text-copy *ngIf="nzCopyable && !editing" [text]="copyText" (textCopy)="onTextCopy($event)"></nz-text-copy>
   `,
@@ -97,6 +101,8 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
   }
 })
 export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
   static ngAcceptInputType_nzCopyable: BooleanInput;
   static ngAcceptInputType_nzEditable: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
@@ -110,7 +116,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   @Input() @InputBoolean() nzExpandable = false;
   @Input() @InputBoolean() nzEllipsis = false;
   @Input() nzContent?: string;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputNumber() nzEllipsisRows: number = 1;
+  @Input() @WithConfig() @InputNumber() nzEllipsisRows: number = 1;
   @Input() nzType: 'secondary' | 'warning' | 'danger' | undefined;
   @Input() nzCopyText: string | undefined;
   @Input() nzSuffix: string | undefined;

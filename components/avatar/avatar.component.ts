@@ -17,10 +17,10 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NgClassInterface, NgStyleInterface, NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 
-const NZ_CONFIG_COMPONENT_NAME = 'avatar';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
 
 @Component({
   selector: 'nz-avatar',
@@ -49,8 +49,9 @@ const NZ_CONFIG_COMPONENT_NAME = 'avatar';
   encapsulation: ViewEncapsulation.None
 })
 export class NzAvatarComponent implements OnChanges {
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzShape: NzShapeSCType = 'circle';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzSizeLDSType | number = 'default';
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+  @Input() @WithConfig() nzShape: NzShapeSCType = 'circle';
+  @Input() @WithConfig() nzSize: NzSizeLDSType | number = 'default';
   @Input() nzText?: string;
   @Input() nzSrc?: string;
   @Input() nzSrcSet?: string;
