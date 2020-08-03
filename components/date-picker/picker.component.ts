@@ -11,6 +11,7 @@ import {
   HorizontalConnectionPos,
   VerticalConnectionPos
 } from '@angular/cdk/overlay';
+import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
@@ -238,6 +239,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     private elementRef: ElementRef,
     private dateHelper: DateHelperService,
     private changeDetector: ChangeDetectorRef,
+    private platform: Platform,
     public datePickerService: DatePickerService,
     @Inject(DOCUMENT) doc: NzSafeAny
   ) {
@@ -260,7 +262,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       this.focus();
     }
 
-    if (this.isRange) {
+    if (this.isRange && this.platform.isBrowser) {
       fromEvent(window, 'resize')
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
