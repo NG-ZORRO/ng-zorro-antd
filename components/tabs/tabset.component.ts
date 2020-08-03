@@ -389,6 +389,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
 
   clickNavItem(tab: NzTabComponent, index: number): void {
     if (!tab.nzDisabled) {
+      // ignore nzCanDeactivate
       tab.nzClick.emit();
       this.setSelectedIndex(index);
     }

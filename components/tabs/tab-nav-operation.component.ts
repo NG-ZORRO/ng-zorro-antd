@@ -82,6 +82,8 @@ export class NzTabNavOperationComponent implements OnDestroy {
 
   onSelect(item: NzTabNavItemDirective): void {
     if (!item.disabled) {
+      // ignore nzCanDeactivate
+      item.tab.nzClick.emit();
       this.selected.emit(item);
     }
   }
