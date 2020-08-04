@@ -16,7 +16,7 @@ import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { NzI18nModule, NzI18nService, NZ_DATE_LOCALE } from 'ng-zorro-antd/i18n';
 import en_US from '../i18n/languages/en_US';
 import { NzDatePickerModule } from './date-picker.module';
-import { getPicker, getPickerAbstract, getPickerInput } from './testing/util';
+import { ENTER_EVENT, getPicker, getPickerAbstract, getPickerInput } from './testing/util';
 import { PREFIX_CLASS } from './util';
 
 registerLocaleData(zh);
@@ -85,7 +85,7 @@ describe('NzDatePickerComponent', () => {
 
     it('should open on enter', fakeAsync(() => {
       fixture.detectChanges();
-      getPickerInput(fixture.debugElement).dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
+      getPickerInput(fixture.debugElement).dispatchEvent(ENTER_EVENT);
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -103,7 +103,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       openPickerByClickTrigger();
       expect(document.activeElement).toEqual(getPickerInput(fixture.debugElement));
-      getPickerInput(fixture.debugElement).dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+      getPickerInput(fixture.debugElement).dispatchEvent(ENTER_EVENT);
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -116,7 +116,7 @@ describe('NzDatePickerComponent', () => {
       const input = getPickerInput(fixture.debugElement) as HTMLInputElement;
       input.value = 'invalid input';
       fixture.detectChanges();
-      input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+      input.dispatchEvent(ENTER_EVENT);
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -264,7 +264,7 @@ describe('NzDatePickerComponent', () => {
       const submit = (date: string) => {
         input.value = date;
         fixture.detectChanges();
-        input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+        input.dispatchEvent(ENTER_EVENT);
         fixture.detectChanges();
         tick(500);
         fixture.detectChanges();
@@ -733,7 +733,7 @@ describe('NzDatePickerComponent', () => {
       const input = getPickerInput(fixture.debugElement);
       typeInElement('2020-03-14 00:00:00', input);
       fixture.detectChanges();
-      input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+      input.dispatchEvent(ENTER_EVENT);
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -830,7 +830,7 @@ describe('NzDatePickerComponent', () => {
 
       // Correct inputing
       input.value = '2018-11-22';
-      input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+      input.dispatchEvent(ENTER_EVENT);
       // dispatchKeyboardEvent(input, 'keyup', ENTER); // Not working?
       fixture.detectChanges();
       flush();
@@ -952,7 +952,7 @@ describe('date-fns testing', () => {
     const input = getPickerInput(fixture.debugElement);
     typeInElement('25.10.2019', input);
     fixture.detectChanges();
-    input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+    input.dispatchEvent(ENTER_EVENT);
     fixture.detectChanges();
     flush();
     const result = (nzOnChange.calls.allArgs()[0] as Date[])[0];
