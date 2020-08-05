@@ -47,7 +47,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 | `[nzNotFoundContent]` | Specify content to show when no result matches.. | `string  \|  TemplateRef<void>` | `'Not Found'` |
 | `[nzPlaceHolder]` | Placeholder of select | `string` | - |
 | `[nzShowArrow]` | Whether to show the drop-down arrow | `boolean` | `true` |
-| `[nzShowSearch]` | Whether show search input in single mode. | `boolean` | `false` |
+| `[nzShowSearch]` | Whether show search input | `boolean` | `false` |
 | `[nzSize]` | Size of Select input | `'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzSuffixIcon]` | The custom suffix icon | `TemplateRef<any> \| string` | - |  ✅ |
 | `[nzRemoveIcon]` | The custom remove icon | `TemplateRef<any>` | - |

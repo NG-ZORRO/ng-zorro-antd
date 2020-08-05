@@ -100,7 +100,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       (clear)="onClearSelection()"
     ></nz-select-clear>
     <nz-select-arrow
-      *ngIf="nzShowArrow && nzMode === 'default'"
+      *ngIf="nzShowArrow"
       [loading]="nzLoading"
       [search]="nzOpen && nzShowSearch"
       [suffixIcon]="nzSuffixIcon"
@@ -147,9 +147,9 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
     '[class.ant-select]': 'true',
     '[class.ant-select-lg]': 'nzSize === "large"',
     '[class.ant-select-sm]': 'nzSize === "small"',
-    '[class.ant-select-show-arrow]': `nzShowArrow && nzMode === 'default'`,
+    '[class.ant-select-show-arrow]': `nzShowArrow`,
     '[class.ant-select-disabled]': 'nzDisabled',
-    '[class.ant-select-show-search]': `nzShowSearch || nzMode !== 'default'`,
+    '[class.ant-select-show-search]': `nzShowSearch`,
     '[class.ant-select-allow-clear]': 'nzAllowClear',
     '[class.ant-select-borderless]': 'nzBorderless',
     '[class.ant-select-open]': 'nzOpen',
