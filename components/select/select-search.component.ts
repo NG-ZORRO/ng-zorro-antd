@@ -95,7 +95,8 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
     const inputDOM = this.inputElement.nativeElement;
     const { focusTrigger, showInput } = changes;
     if (focusTrigger && focusTrigger.currentValue === true && focusTrigger.previousValue === false) {
-      inputDOM.focus();
+      // IE11 cannot input value if focused before removing readonly
+      setTimeout(() => inputDOM.focus());
     }
     if (showInput) {
       if (this.showInput) {
