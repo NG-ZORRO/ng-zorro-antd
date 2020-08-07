@@ -18,6 +18,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { COMPOSITION_BUFFER_MODE } from '@angular/forms';
 
 @Component({
   selector: 'nz-select-search',
@@ -40,7 +41,8 @@ import {
   `,
   host: {
     '[class.ant-select-selection-search]': 'true'
-  }
+  },
+  providers: [{ provide: COMPOSITION_BUFFER_MODE, useValue: false }]
 })
 export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
   @Input() disabled = false;
