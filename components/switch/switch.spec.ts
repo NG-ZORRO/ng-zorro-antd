@@ -162,6 +162,27 @@ describe('switch', () => {
       fixture.detectChanges();
       expect(switchElement.nativeElement.firstElementChild === document.activeElement).toBe(false);
     });
+    it('should aria roles correct', () => {
+      expect(switchElement.nativeElement.firstElementChild!.getAttribute('role')).toBe('switch');
+    });
+    it('should aria states work', fakeAsync(() => {
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(switchElement.nativeElement.firstElementChild!.getAttribute('aria-checked')).toBe('false');
+
+      switchElement.nativeElement.click();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(switchElement.nativeElement.firstElementChild!.getAttribute('aria-checked')).toBe('true');
+
+      switchElement.nativeElement.click();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      expect(switchElement.nativeElement.firstElementChild!.getAttribute('aria-checked')).toBe('false');
+    }));
   });
   describe('template switch', () => {
     let fixture: ComponentFixture<NzTestSwitchTemplateComponent>;
@@ -236,8 +257,7 @@ describe('switch', () => {
       [nzControl]="control"
       [nzCheckedChildren]="checkedChildren"
       [nzUnCheckedChildren]="unCheckedChildren"
-    >
-    </nz-switch>
+    ></nz-switch>
   `
 })
 export class NzTestSwitchBasicComponent {
@@ -258,7 +278,7 @@ export class NzTestSwitchBasicComponent {
   template: `
     <ng-template #checkedChildrenTemplate><i nz-icon nzType="check"></i></ng-template>
     <ng-template #unCheckedChildrenTemplate><i nz-icon nzType="close"></i></ng-template>
-    <nz-switch [nzCheckedChildren]="checkedChildrenTemplate" [nzUnCheckedChildren]="unCheckedChildrenTemplate"> </nz-switch>
+    <nz-switch [nzCheckedChildren]="checkedChildrenTemplate" [nzUnCheckedChildren]="unCheckedChildrenTemplate"></nz-switch>
   `
 })
 export class NzTestSwitchTemplateComponent {}

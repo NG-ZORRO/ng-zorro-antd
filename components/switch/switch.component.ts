@@ -44,6 +44,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'switch';
       nz-wave
       type="button"
       class="ant-switch"
+      role="switch"
       #switchElement
       [disabled]="nzDisabled"
       [class.ant-switch-checked]="isChecked"
@@ -51,6 +52,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'switch';
       [class.ant-switch-disabled]="nzDisabled"
       [class.ant-switch-small]="nzSize === 'small'"
       [nzWaveExtraNode]="true"
+      [attr.aria-checked]="isChecked"
       (keydown)="onKeyDown($event)"
     >
       <span class="ant-switch-handle">
@@ -76,7 +78,8 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzControl: BooleanInput;
 
-  isChecked = false;
+  isChecked: boolean = false;
+  temp: boolean = false;
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
   @ViewChild('switchElement', { static: true }) private switchElement?: ElementRef;
@@ -140,7 +143,7 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
   }
 
   writeValue(value: boolean): void {
-    this.isChecked = value;
+    this.isChecked = !!value;
     this.cdr.markForCheck();
   }
 
