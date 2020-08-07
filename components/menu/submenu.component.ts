@@ -69,6 +69,10 @@ const listOfHorizontalPositions = [POSITION_MAP.bottomLeft];
       [paddingLeft]="nzPaddingLeft || inlinePaddingLeft"
       (subMenuMouseState)="setMouseEnterState($event)"
       (toggleSubMenu)="toggleSubMenu()"
+      role="button"
+      aria-haspopup="menu"
+      [attr.aria-expanded]="nzOpen"
+      [attr.aria-owns]="idString"
     >
       <ng-content select="[title]" *ngIf="!nzTitle"></ng-content>
     </div>
@@ -81,6 +85,7 @@ const listOfHorizontalPositions = [POSITION_MAP.bottomLeft];
       [nzNoAnimation]="noAnimation?.nzNoAnimation"
       [menuClass]="nzMenuClassName"
       [templateOutlet]="subMenuTemplate"
+      [menuId]="idString"
     ></div>
     <ng-template #nonInlineTemplate>
       <ng-template
@@ -102,6 +107,7 @@ const listOfHorizontalPositions = [POSITION_MAP.bottomLeft];
           [isMenuInsideDropDown]="isMenuInsideDropDown"
           [templateOutlet]="subMenuTemplate"
           [menuClass]="nzMenuClassName"
+          [menuId]="idString"
           [@.disabled]="noAnimation?.nzNoAnimation"
           [nzNoAnimation]="noAnimation?.nzNoAnimation"
           (subMenuMouseState)="setMouseEnterState($event)"
@@ -129,7 +135,9 @@ const listOfHorizontalPositions = [POSITION_MAP.bottomLeft];
     '[class.ant-menu-submenu-vertical]': `!isMenuInsideDropDown && mode === 'vertical'`,
     '[class.ant-menu-submenu-horizontal]': `!isMenuInsideDropDown && mode === 'horizontal'`,
     '[class.ant-menu-submenu-inline]': `!isMenuInsideDropDown && mode === 'inline'`,
-    '[class.ant-menu-submenu-active]': `!isMenuInsideDropDown && isActive`
+    '[class.ant-menu-submenu-active]': `!isMenuInsideDropDown && isActive`,
+    '[attr.aria-disabled]': 'nzDisabled? "true":null',
+    role: 'menuitem'
   }
 })
 export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, OnChanges {
@@ -158,6 +166,7 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
   overlayPositions = listOfVerticalPositions;
   isSelected = false;
   isActive = false;
+  idString: string = '';
 
   /** set the submenu host open status directly **/
   setOpenStateWithoutDebounce(open: boolean): void {
@@ -199,7 +208,11 @@ export class NzSubMenuComponent implements OnInit, OnDestroy, AfterContentInit, 
     private platform: Platform,
     @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
-  ) {}
+  ) {
+    const menuId = this.nzMenuService.menuId;
+    const submenuId = this.nzSubmenuService.id;
+    this.idString = `sub${submenuId}$Menu${menuId}`;
+  }
 
   ngOnInit(): void {
     /** submenu theme update **/

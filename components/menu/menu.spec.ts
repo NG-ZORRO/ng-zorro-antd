@@ -75,6 +75,26 @@ describe('menu', () => {
         fixture.detectChanges();
         expect(items[0].nativeElement.classList.contains('ant-menu-item-selected')).toBe(false);
       });
+      it('should roles correct', () => {
+        fixture.detectChanges();
+        expect(items.every(item => item.nativeElement.getAttribute('role') === 'menuitem')).toBe(true);
+        expect(submenu.nativeElement.getAttribute('role')).toBe('menuitem');
+        expect(submenu.nativeElement.firstElementChild.getAttribute('role')).toBe('button');
+        expect(menu.nativeElement.getAttribute('role')).toBe('menu');
+      });
+      it('should aria-disabled correct', () => {
+        fixture.detectChanges();
+        expect(items[1].nativeElement.getAttribute('aria-disabled')).toBe('true');
+      });
+      it('should submenu aria correct', () => {
+        fixture.detectChanges();
+
+        const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
+        const id: string = title.getAttribute('aria-owns');
+        expect(id).toContain('sub1$Menu');
+        expect(title.getAttribute('aria-haspopup')).toBe('menu');
+        expect(title.getAttribute('aria-expanded')).toBe('false');
+      });
     });
     describe('inline', () => {
       let fixture: ComponentFixture<NzTestBasicMenuInlineComponent>;
@@ -116,6 +136,30 @@ describe('menu', () => {
         expect(ul.style.height).toBe('0px');
         expect(submenus[0].nativeElement.classList.contains('ant-menu-submenu-open')).toBe(false);
       }));
+      it('should roles correct', () => {
+        fixture.detectChanges();
+        expect(items.every(item => item.nativeElement.getAttribute('role') === 'menuitem')).toBe(true);
+        expect(submenus.every(submenu => submenu.nativeElement.getAttribute('role') === 'menuitem')).toBe(true);
+        expect(
+          submenus.every(submenu => submenu.nativeElement.querySelector('.ant-menu-submenu-title').getAttribute('role') === 'button')
+        ).toBe(true);
+        expect(submenus.every(submenu => submenu.nativeElement.querySelector('ul').getAttribute('role') === 'menu')).toBe(true);
+        expect(menu.nativeElement.getAttribute('role')).toBe('menu');
+      });
+      it('should submenu aria correct', () => {
+        fixture.detectChanges();
+
+        submenus.forEach(submenu => {
+          const ul = submenu.nativeElement.querySelector('ul');
+          const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
+          const id: string = title.getAttribute('aria-owns');
+          expect(id).toContain(`sub`);
+          expect(id).toContain(`$Menu`);
+          expect(title.getAttribute('aria-haspopup')).toBe('menu');
+          expect(title.getAttribute('aria-expanded')).toBe('false');
+          expect(ul.getAttribute('id')).toBe(id);
+        });
+      });
     });
     describe('inline-collapsed', () => {
       let fixture: ComponentFixture<NzTestMenuInlineCollapsedComponent>;
@@ -402,6 +446,32 @@ describe('menu', () => {
         fixture.detectChanges();
         expect((overlayContainerElement.querySelector('.nested-submenu') as HTMLUListElement).classList).toContain('ant-menu-sub');
       });
+      it('should submenu roles correct', () => {
+        fixture.detectChanges();
+        const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
+        expect(submenu.nativeElement.getAttribute('role')).toBe('menuitem');
+        expect(title?.getAttribute('role')).toBe('button');
+        testComponent.open = true;
+        fixture.detectChanges();
+        const ul = overlayContainerElement.querySelector('ul');
+        expect(ul?.getAttribute('role')).toBe('menu');
+      });
+      it('should submenu aria correct', () => {
+        fixture.detectChanges();
+        const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
+
+        const id: string = title.getAttribute('aria-owns');
+        expect(id).toContain('sub1$Menu');
+        expect(title.getAttribute('aria-haspopup')).toBe('menu');
+        expect(title.getAttribute('aria-expanded')).toBe('false');
+
+        testComponent.open = true;
+        fixture.detectChanges();
+        const ul = overlayContainerElement.querySelector('ul');
+
+        expect(title?.getAttribute('aria-expanded')).toBe('true');
+        expect(ul?.getAttribute('id')).toBe(id);
+      });
     });
     describe('inline submenu', () => {
       let fixture: ComponentFixture<NzTestMenuInlineComponent>;
@@ -446,6 +516,36 @@ describe('menu', () => {
         expect(ul.style.height).toBe('0px');
         expect(submenu.nativeElement.classList.contains('ant-menu-submenu-open')).toBe(false);
       }));
+      it('should submenu roles correct', () => {
+        fixture.detectChanges();
+        const ul = submenu.nativeElement.querySelector('ul');
+        const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
+        expect(submenu.nativeElement.getAttribute('role')).toBe('menuitem');
+        expect(title.getAttribute('role')).toBe('button');
+        expect(ul.getAttribute('role')).toBe('menu');
+      });
+      it('should aria-disabled work', () => {
+        testComponent.disabled = true;
+        fixture.detectChanges();
+        expect(submenu.nativeElement.getAttribute('aria-disabled')).toBe('true');
+      });
+      it('should submenu aria correct', fakeAsync(() => {
+        fixture.detectChanges();
+
+        const ul = submenu.nativeElement.querySelector('ul');
+        const title = submenu.nativeElement.querySelector('.ant-menu-submenu-title');
+        const id: string = title.getAttribute('aria-owns');
+        expect(id).toContain('sub1$Menu');
+        expect(title.getAttribute('aria-haspopup')).toBe('menu');
+        expect(title.getAttribute('aria-expanded')).toBe('false');
+
+        title.click();
+        fixture.detectChanges();
+        tick(500);
+
+        expect(title.getAttribute('aria-expanded')).toBe('true');
+        expect(ul.getAttribute('id')).toBe(id);
+      }));
     });
     describe('ng-for', () => {
       it('should ng for works fine', () => {
@@ -475,7 +575,10 @@ describe('menu', () => {
   template: `
     <ul nz-menu [nzMode]="'horizontal'">
       <li nz-submenu nzMenuClassName="submenu" [nzOpen]="open" [style.width.px]="width">
-        <span title><i nz-icon nzType="setting"></i> Navigation Three - Submenu</span>
+        <span title>
+          <i nz-icon nzType="setting"></i>
+          Navigation Three - Submenu
+        </span>
         <ul>
           <li nz-menu-group>
             <span title>Item 1</span>
@@ -524,7 +627,10 @@ export class NzTestMenuHorizontalComponent {
   template: `
     <ul nz-menu [nzMode]="'inline'" [nzInlineCollapsed]="collapse">
       <li nz-submenu [nzMenuClassName]="submenuClassName" [nzDisabled]="disabled">
-        <span title><i nz-icon nzType="mail"></i> Navigation One</span>
+        <span title>
+          <i nz-icon nzType="mail"></i>
+          Navigation One
+        </span>
         <ul>
           <li nz-menu-item style="padding-left:0px;">Option 1</li>
           <li nz-menu-item>Option 2</li>
@@ -545,7 +651,10 @@ export class NzTestMenuInlineComponent {
   template: `
     <ul nz-menu [nzMode]="'inline'" style="width: 240px;">
       <li *ngFor="let l1 of menus" nz-submenu>
-        <span title><i nz-icon nzType="appstore"></i> {{ l1.text }}</span>
+        <span title>
+          <i nz-icon nzType="appstore"></i>
+          {{ l1.text }}
+        </span>
         <ul>
           <li *ngFor="let l2 of l1.children" nz-submenu>
             <span title>{{ l2.text }}</span>

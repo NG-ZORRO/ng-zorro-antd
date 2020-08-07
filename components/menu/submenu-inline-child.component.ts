@@ -4,6 +4,7 @@
  */
 
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
@@ -25,7 +26,9 @@ import { NzMenuModeType } from './menu.types';
   exportAs: 'nzSubmenuInlineChild',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <ng-template [ngTemplateOutlet]="templateOutlet"></ng-template> `,
+  template: `
+    <ng-template [ngTemplateOutlet]="templateOutlet"></ng-template>
+  `,
   host: {
     '[class.ant-menu]': 'true',
     '[class.ant-menu-inline]': 'true',
@@ -33,11 +36,12 @@ import { NzMenuModeType } from './menu.types';
     '[@collapseMotion]': 'expandState'
   }
 })
-export class NzSubmenuInlineChildComponent implements OnInit, OnChanges {
+export class NzSubmenuInlineChildComponent implements AfterViewInit, OnInit, OnChanges {
   @Input() templateOutlet: TemplateRef<NzSafeAny> | null = null;
   @Input() menuClass: string = '';
   @Input() mode: NzMenuModeType = 'vertical';
   @Input() nzOpen = false;
+  @Input() menuId: string = '';
   listOfCacheClassName: string[] = [];
   expandState = 'collapsed';
   calcMotionState(): void {
@@ -72,6 +76,13 @@ export class NzSubmenuInlineChildComponent implements OnInit, OnChanges {
             this.renderer.addClass(this.elementRef.nativeElement, className);
           });
       }
+    }
+  }
+  ngAfterViewInit(): void {
+    const menuElement = this.elementRef.nativeElement.querySelector('ul');
+    menuElement?.setAttribute('role', 'menu');
+    if (this.menuId !== '') {
+      menuElement?.setAttribute('id', this.menuId);
     }
   }
 }

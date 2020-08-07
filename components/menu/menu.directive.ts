@@ -30,6 +30,8 @@ import { NzIsMenuInsideDropDownToken, NzMenuServiceLocalToken } from './menu.tok
 import { NzMenuModeType, NzMenuThemeType } from './menu.types';
 import { NzSubMenuComponent } from './submenu.component';
 
+let menus = 0;
+
 export function MenuServiceFactory(serviceInsideDropDown: MenuService, serviceOutsideDropDown: MenuService): MenuService {
   return serviceInsideDropDown ? serviceInsideDropDown : serviceOutsideDropDown;
 }
@@ -74,7 +76,8 @@ export function MenuDropDownTokenFactory(isMenuInsideDropDownToken: boolean): bo
     '[class.ant-menu-vertical]': `!isMenuInsideDropDown && actualMode === 'vertical'`,
     '[class.ant-menu-horizontal]': `!isMenuInsideDropDown && actualMode === 'horizontal'`,
     '[class.ant-menu-inline]': `!isMenuInsideDropDown && actualMode === 'inline'`,
-    '[class.ant-menu-inline-collapsed]': `!isMenuInsideDropDown && nzInlineCollapsed`
+    '[class.ant-menu-inline-collapsed]': `!isMenuInsideDropDown && nzInlineCollapsed`,
+    role: 'menu'
   }
 })
 export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnDestroy {
@@ -116,7 +119,9 @@ export class NzMenuDirective implements AfterContentInit, OnInit, OnChanges, OnD
     private nzMenuService: MenuService,
     @Inject(NzIsMenuInsideDropDownToken) public isMenuInsideDropDown: boolean,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) {
+    nzMenuService.setMenuId(++menus);
+  }
 
   ngOnInit(): void {
     combineLatest([this.inlineCollapsed$, this.mode$])

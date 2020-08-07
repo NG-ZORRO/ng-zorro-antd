@@ -26,6 +26,7 @@ export class NzSubmenuService {
     })
   );
   level = 1;
+  id: number = 0;
   isCurrentSubMenuOpen$ = new BehaviorSubject<boolean>(false);
   private isChildSubMenuOpen$ = new BehaviorSubject<boolean>(false);
   /** submenu title & overlay mouse enter status **/
@@ -53,6 +54,7 @@ export class NzSubmenuService {
     if (this.nzHostSubmenuService) {
       this.level = this.nzHostSubmenuService.level + 1;
     }
+    this.id = this.nzMenuService.getNewSubmenuId();
     /** close if menu item clicked **/
     const isClosedByMenuItemClick = this.childMenuItemClick$.pipe(
       flatMap(() => this.mode$),
