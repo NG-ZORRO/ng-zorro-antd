@@ -46,6 +46,7 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
         [@slideMotion]="'enter'"
         [@.disabled]="noAnimation?.nzNoAnimation"
         [nzNoAnimation]="noAnimation?.nzNoAnimation"
+        [attr.id]="id"
         (mouseenter)="setMouseState(true)"
         (mouseleave)="setMouseState(false)"
       >
@@ -63,6 +64,7 @@ export class NzDropdownMenuComponent implements AfterContentInit {
   descendantMenuItemClick$ = this.nzMenuService.descendantMenuItemClick$;
   nzOverlayClassName: string = '';
   nzOverlayStyle: IndexableObject = {};
+  id: string | null = null;
   @ViewChild(TemplateRef, { static: true }) templateRef!: TemplateRef<NzSafeAny>;
 
   setMouseState(visible: boolean): void {

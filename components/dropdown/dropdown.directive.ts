@@ -29,12 +29,16 @@ import { auditTime, distinctUntilChanged, filter, map, mapTo, switchMap, takeUnt
 import { NzDropdownMenuComponent, NzPlacementType } from './dropdown-menu.component';
 
 const listOfPositions = [POSITION_MAP.bottomLeft, POSITION_MAP.bottomRight, POSITION_MAP.topRight, POSITION_MAP.topLeft];
+let dropdowns = 0;
 
 @Directive({
   selector: '[nz-dropdown]',
   exportAs: 'nzDropdown',
   host: {
-    '[class.ant-dropdown-trigger]': 'true'
+    '[class.ant-dropdown-trigger]': 'true',
+    '[attr.aria-owns]': 'nzVisible? dropdownId:null',
+    '[attr.aria-expanded]': 'nzVisible',
+    'aria-haspopup': 'menu'
   }
 })
 export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges, OnInit {
@@ -65,6 +69,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
   @Input() nzOverlayStyle: IndexableObject = {};
   @Input() nzPlacement: NzPlacementType = 'bottomLeft';
   @Output() readonly nzVisibleChange: EventEmitter<boolean> = new EventEmitter();
+  dropdownId: string | null = null;
 
   setDropdownMenuValue<T extends keyof NzDropdownMenuComponent>(key: T, value: NzDropdownMenuComponent[T]): void {
     if (this.nzDropdownMenu) {
@@ -134,6 +139,10 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
           if (visible) {
             /** set up overlayRef **/
             if (!this.overlayRef) {
+              if (this.nzDropdownMenu) {
+                this.dropdownId = `dropdown-${dropdowns++}`;
+                this.nzDropdownMenu.id = this.dropdownId;
+              }
               /** new overlay **/
               this.overlayRef = this.overlay.create({
                 positionStrategy: this.positionStrategy,

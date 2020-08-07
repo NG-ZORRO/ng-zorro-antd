@@ -197,6 +197,27 @@ describe('dropdown', () => {
     fixture.detectChanges();
     expect(fixture.componentInstance.triggerVisible).toHaveBeenCalledTimes(1);
   }));
+  it('should aria states work', fakeAsync(() => {
+    const fixture = createComponent(NzTestDropdownComponent, [], []);
+    fixture.componentInstance.trigger = 'click';
+
+    fixture.detectChanges();
+    const dropdownElement = fixture.debugElement.query(By.directive(NzDropDownDirective)).nativeElement;
+
+    expect(dropdownElement.getAttribute('aria-haspopup')).toBe('menu');
+    expect(dropdownElement.getAttribute('aria-expanded')).toBe('false');
+    expect(dropdownElement.getAttribute('aria-owns')).toBe(null);
+
+    dispatchFakeEvent(dropdownElement, 'click');
+    tick(1000);
+    fixture.detectChanges();
+
+    const overlayMenu = overlayContainerElement.querySelector('.ant-dropdown')!;
+    expect(dropdownElement.getAttribute('aria-expanded')).toBe('true');
+    const id = dropdownElement.getAttribute('aria-owns');
+    expect(id).not.toBe(null);
+    expect(overlayMenu.getAttribute('id')).toBe(id);
+  }));
 });
 
 @Component({
@@ -210,7 +231,8 @@ describe('dropdown', () => {
       [nzBackdrop]="backdrop"
       [nzOverlayClassName]="className"
       [nzOverlayStyle]="overlayStyle"
-      >Trigger
+    >
+      Trigger
     </a>
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu>
@@ -232,9 +254,9 @@ export class NzTestDropdownComponent {
 
 @Component({
   template: `
-    <a nz-dropdown [nzDropdownMenu]="menu" [nzClickHide]="false" [(nzVisible)]="visible" (nzVisibleChange)="triggerVisible($event)"
-      >Hover me</a
-    >
+    <a nz-dropdown [nzDropdownMenu]="menu" [nzClickHide]="false" [(nzVisible)]="visible" (nzVisibleChange)="triggerVisible($event)">
+      Hover me
+    </a>
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu>
         <li nz-menu-item class="first-menu">Clicking me will not close the menu.</li>
