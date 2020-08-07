@@ -395,6 +395,69 @@ describe('input number', () => {
       fixture.detectChanges();
       expect(inputNumber.nativeElement.classList).not.toContain('ant-input-number-focused');
     });
+    it('should aria roles and labels work', () => {
+      fixture.detectChanges();
+      expect(inputElement.getAttribute('role')).toBe('spinbutton');
+      expect(upHandler.getAttribute('role')).toBe('button');
+      expect(downHandler.getAttribute('role')).toBe('button');
+      expect(upHandler.getAttribute('aria-label')).toBe('Increase Value');
+      expect(downHandler.getAttribute('aria-label')).toBe('Decrease Value');
+    });
+    it('should aria value attributes work', () => {
+      testComponent.min = 0;
+      testComponent.max = 10;
+
+      fixture.detectChanges();
+      expect(inputElement.getAttribute('aria-valuemin')).toBe('0');
+      expect(inputElement.getAttribute('aria-valuemax')).toBe('10');
+      expect(inputElement.getAttribute('aria-valuenow')).toBe(null);
+
+      testComponent.nzInputNumberComponent.onModelChange('5');
+      fixture.detectChanges();
+      expect(inputElement.getAttribute('aria-valuenow')).toBe('5');
+
+      dispatchFakeEvent(upHandler, 'mousedown');
+      fixture.detectChanges();
+      expect(inputElement.getAttribute('aria-valuenow')).toBe('6');
+
+      dispatchFakeEvent(downHandler, 'mousedown');
+      fixture.detectChanges();
+      expect(inputElement.getAttribute('aria-valuenow')).toBe('5');
+
+      testComponent.min = 3;
+      testComponent.max = 15;
+      fixture.detectChanges();
+      expect(inputElement.getAttribute('aria-valuemin')).toBe('3');
+      expect(inputElement.getAttribute('aria-valuemax')).toBe('15');
+      expect(inputElement.getAttribute('aria-valuenow')).toBe('5');
+
+      testComponent.nzInputNumberComponent.onModelChange('');
+      fixture.detectChanges();
+      expect(inputElement.getAttribute('aria-valuenow')).toBe(null);
+    });
+    it('should aria disabled work', () => {
+      fixture.detectChanges();
+      expect(upHandler.getAttribute('aria-disabled')).not.toBe('true');
+      expect(downHandler.getAttribute('aria-disabled')).not.toBe('true');
+
+      testComponent.max = 1;
+      testComponent.nzInputNumberComponent.onModelChange('1');
+      fixture.detectChanges();
+      expect(upHandler.getAttribute('aria-disabled')).toBe('true');
+      expect(downHandler.getAttribute('aria-disabled')).not.toBe('true');
+
+      testComponent.min = -1;
+      testComponent.nzInputNumberComponent.onModelChange('-1');
+      fixture.detectChanges();
+      expect(upHandler.getAttribute('aria-disabled')).not.toBe('true');
+      expect(downHandler.getAttribute('aria-disabled')).toBe('true');
+
+      testComponent.nzInputNumberComponent.onModelChange('0');
+      testComponent.disabled = true;
+      fixture.detectChanges();
+      expect(upHandler.getAttribute('aria-disabled')).toBe('true');
+      expect(downHandler.getAttribute('aria-disabled')).toBe('true');
+    });
   });
 
   describe('input number form', () => {
@@ -454,8 +517,7 @@ describe('input number', () => {
       [nzParser]="parser"
       [nzPrecision]="precision"
       [nzPrecisionMode]="precisionMode"
-    >
-    </nz-input-number>
+    ></nz-input-number>
   `
 })
 export class NzTestInputNumberBasicComponent {
