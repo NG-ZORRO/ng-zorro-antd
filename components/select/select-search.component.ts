@@ -61,8 +61,6 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
   }
 
   onValueChange(value: string): void {
-    const inputDOM = this.inputElement.nativeElement;
-    inputDOM.value = value;
     this.value = value;
     this.valueChange.next(value);
     if (this.mirrorSync) {
@@ -71,6 +69,8 @@ export class NzSelectSearchComponent implements AfterViewInit, OnChanges {
   }
 
   clearInputValue(): void {
+    const inputDOM = this.inputElement.nativeElement;
+    inputDOM.value = '';
     this.onValueChange('');
   }
 
