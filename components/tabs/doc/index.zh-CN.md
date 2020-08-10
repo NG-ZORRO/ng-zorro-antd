@@ -75,9 +75,18 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 与 `ng-template` 一同使用，用于标记需要懒加载的 `tab` 内容，具体用法见示例。
 
-### [nz-tab-link]
+### ng-template[nzTabLink] > a[nz-tab-link]
 
 选项卡头显示链接，在路由联动模式下使用。
+
+```html
+<nz-tabset nzLinkRouter>
+  <nz-tab>
+    <a *nzTabLink nz-tab-link [routerLink]="['.']">Link</a>
+    Default.
+  </nz-tab>
+</nz-tabset>
+```
 
 ### 路由联动
 

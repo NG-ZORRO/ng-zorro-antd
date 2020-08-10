@@ -27,7 +27,7 @@ import {
 import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/router';
 
 import { merge, Observable, of, Subject, Subscription } from 'rxjs';
-import { filter, first, startWith, takeUntil } from 'rxjs/operators';
+import { delay, filter, first, startWith, takeUntil } from 'rxjs/operators';
 
 import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { PREFIX, warnDeprecation } from 'ng-zorro-antd/core/logger';
@@ -64,6 +64,7 @@ let nextId = 0;
   ],
   template: `
     <nz-tabs-nav
+      *ngIf="tabs.length"
       [ngStyle]="nzTabBarStyle"
       [selectedIndex]="nzSelectedIndex || 0"
       [inkBarAnimated]="inkBarAnimated"
@@ -229,7 +230,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   // Pick up only direct descendants under ivy rendering engine
   // We filter out only the tabs that belong to this tab set in `tabs`.
   @ContentChildren(NzTabComponent, { descendants: true }) allTabs: QueryList<NzTabComponent> = new QueryList<NzTabComponent>();
-  @ViewChild(NzTabNavBarComponent, { static: true }) tabNavBarRef!: NzTabNavBarComponent;
+  @ViewChild(NzTabNavBarComponent, { static: false }) tabNavBarRef!: NzTabNavBarComponent;
 
   // All the direct tabs for this tab set
   tabs: QueryList<NzTabComponent> = new QueryList<NzTabComponent>();
@@ -265,9 +266,11 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   }
 
   ngAfterContentInit(): void {
+    Promise.resolve().then(() => {
+      this.setUpRouter();
+    });
     this.subscribeToTabLabels();
     this.subscribeToAllTabChanges();
-    this.setUpRouter();
 
     // Subscribe to changes in the amount of tabs, in order to be
     // able to re-render the content as new tabs are added or removed.
@@ -289,6 +292,8 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
           }
         }
       }
+      this.subscribeToTabLabels();
+      this.cdr.markForCheck();
     });
   }
 
@@ -422,12 +427,12 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
       if (!this.router) {
         throw new Error(`${PREFIX} you should import 'RouterModule' if you want to use 'nzLinkRouter'!`);
       }
-
       this.router.events
         .pipe(
           takeUntil(this.destroy$),
           filter(e => e instanceof NavigationEnd),
-          startWith(true)
+          startWith(true),
+          delay(0)
         )
         .subscribe(() => {
           this.updateRouterActive();
@@ -453,6 +458,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
 
     return tabs.findIndex(tab => {
       const c = tab.linkDirective;
+      console.log(c);
       return c ? isActive(c.routerLink) || isActive(c.routerLinkWithHref) : false;
     });
   }
