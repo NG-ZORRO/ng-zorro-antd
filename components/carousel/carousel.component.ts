@@ -170,9 +170,6 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   }
 
   ngAfterViewInit(): void {
-    if (!this.platform.isBrowser) {
-      return;
-    }
     this.slickListEl = this.slickList!.nativeElement;
     this.slickTrackEl = this.slickTrack!.nativeElement;
 
@@ -194,6 +191,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
 
     // If embedded in an entry component, it may do initial render at a inappropriate time.
     // ngZone.onStable won't do this trick
+    // TODO: need to change this.
     Promise.resolve().then(() => {
       this.syncStrategy();
     });
@@ -274,14 +272,14 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     // Load custom strategies first.
     const customStrategy = this.customStrategies ? this.customStrategies.find(s => s.name === this.nzEffect) : null;
     if (customStrategy) {
-      this.strategy = new (customStrategy.strategy as NzSafeAny)(this, this.cdr, this.renderer);
+      this.strategy = new (customStrategy.strategy as NzSafeAny)(this, this.cdr, this.renderer, this.platform);
       return;
     }
 
     this.strategy =
       this.nzEffect === 'scrollx'
-        ? new NzCarouselTransformStrategy(this, this.cdr, this.renderer)
-        : new NzCarouselOpacityStrategy(this, this.cdr, this.renderer);
+        ? new NzCarouselTransformStrategy(this, this.cdr, this.renderer, this.platform)
+        : new NzCarouselOpacityStrategy(this, this.cdr, this.renderer, this.platform);
   }
 
   private scheduleNextTransition(): void {
