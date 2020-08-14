@@ -105,7 +105,7 @@ export class NzCodeEditorService {
 
   private loadMonacoScript(): void {
     if (this.config.useStaticLoading) {
-      this.onLoad();
+      Promise.resolve().then(() => this.onLoad());
       return;
     }
 
