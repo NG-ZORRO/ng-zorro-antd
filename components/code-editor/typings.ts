@@ -31,10 +31,7 @@ export interface NzCodeEditorConfig {
   onInit?(): void;
 }
 
-export const NZ_CODE_EDITOR_CONFIG = new InjectionToken<NzCodeEditorConfig>('nz-code-editor-config', {
-  providedIn: 'root',
-  factory: NZ_CODE_EDITOR_CONFIG_FACTORY
-});
+export const NZ_CODE_EDITOR_CONFIG = new InjectionToken<NzCodeEditorConfig>('nz-code-editor-config');
 
 export function NZ_CODE_EDITOR_CONFIG_FACTORY(): NzCodeEditorConfig {
   return {};
