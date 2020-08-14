@@ -210,7 +210,18 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   constructor(public nzConfigService: NzConfigService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzSteps, nzGapPosition, nzStrokeLinecap, nzStrokeColor, nzGapDegree, nzType, nzStatus, nzPercent, nzSuccessPercent } = changes;
+    const {
+      nzSteps,
+      nzGapPosition,
+      nzStrokeLinecap,
+      nzStrokeColor,
+      nzGapDegree,
+      nzType,
+      nzStatus,
+      nzPercent,
+      nzSuccessPercent,
+      nzStrokeWidth
+    } = changes;
 
     if (nzStatus) {
       this.cachedStatus = this.nzStatus || this.cachedStatus;
@@ -227,7 +238,7 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
       }
     }
 
-    if (nzStatus || nzPercent || nzSuccessPercent) {
+    if (nzStatus || nzPercent || nzSuccessPercent || nzStrokeColor) {
       this.updateIcon();
     }
 
@@ -235,13 +246,15 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
       this.setStrokeColor();
     }
 
-    if (nzGapPosition || nzStrokeLinecap || nzGapDegree || nzType || nzPercent || nzStrokeColor) {
+    if (nzGapPosition || nzStrokeLinecap || nzGapDegree || nzType || nzPercent || nzStrokeColor || nzStrokeColor) {
       this.getCirclePaths();
     }
 
-    if (nzSteps) {
-      this.isSteps = isNotNil(nzSteps.currentValue);
-      this.getSteps();
+    if (nzPercent || nzSteps || nzStrokeWidth) {
+      this.isSteps = isNotNil(this.nzSteps);
+      if (this.isSteps) {
+        this.getSteps();
+      }
     }
   }
 
@@ -273,6 +286,8 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
     const current = Math.floor(this.nzSteps! * (this.nzPercent / 100));
     const stepWidth = this.nzSize === 'small' ? 2 : 14;
 
+    const steps = [];
+
     for (let i = 0; i < this.nzSteps!; i++) {
       let color;
       if (i <= current - 1) {
@@ -283,8 +298,10 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
         width: `${stepWidth}px`,
         height: `${this.strokeWidth}px`
       };
-      this.steps.push(stepStyle);
+      steps.push(stepStyle);
     }
+
+    this.steps = steps;
   }
 
   /**
