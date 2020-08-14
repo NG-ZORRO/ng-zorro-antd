@@ -33,7 +33,7 @@ import { NzTabNavItemDirective } from './tab-nav-item.directive';
       type="button"
       tabindex="-1"
       aria-hidden="true"
-      nzOverlayClassName="ant-tabs-dropdown-menu"
+      nzOverlayClassName="nz-tabs-dropdown"
       #dropdownTrigger="nzDropdown"
       [nzDropdownMenu]="menu"
       [nzOverlayStyle]="{ minWidth: '46px' }"
