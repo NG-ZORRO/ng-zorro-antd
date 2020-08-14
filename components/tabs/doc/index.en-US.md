@@ -73,9 +73,18 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 Tab contents can be lazy loaded by declaring the body in a `ng-template` with the `[nz-tab]` attribute.
 
-### nz-tab-link
+### ng-template[nzTabLink] > a[nz-tab-link]
 
 Show a link in tab's head. Used in router link mode.
+
+```html
+<nz-tabset nzLinkRouter>
+  <nz-tab>
+    <a *nzTabLink nz-tab-link [routerLink]="['.']">Link</a>
+    Default.
+  </nz-tab>
+</nz-tabset>
+```
 
 ### Link Router
 

@@ -26,7 +26,7 @@ import { Subject } from 'rxjs';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
-import { NzTabLinkDirective } from './tab-link.directive';
+import { NzTabLinkDirective, NzTabLinkTemplateDirective } from './tab-link.directive';
 import { NzTabDirective } from './tab.directive';
 
 /**
@@ -61,9 +61,14 @@ export class NzTabComponent implements OnChanges, OnDestroy, OnInit {
   @Output() readonly nzDeselect = new EventEmitter<void>();
   @Output() readonly nzClick = new EventEmitter<void>();
 
+  /**
+   * @deprecated Will be removed in 11.0.0
+   * @breaking-change 11.0.0
+   */
+  @ViewChild('tabLinkTemplate', { static: true }) tabLinkTemplate!: TemplateRef<void>;
+  @ContentChild(NzTabLinkTemplateDirective, { static: false }) nzTabLinkTemplateDirective!: NzTabLinkTemplateDirective;
   @ContentChild(NzTabDirective, { static: false, read: TemplateRef }) template: TemplateRef<void> | null = null;
   @ContentChild(NzTabLinkDirective, { static: false }) linkDirective!: NzTabLinkDirective;
-  @ViewChild('tabLinkTemplate', { static: true }) tabLinkTemplate!: TemplateRef<void>;
   @ViewChild('contentTemplate', { static: true }) contentTemplate!: TemplateRef<NzSafeAny>;
 
   isActive: boolean = false;
@@ -76,7 +81,7 @@ export class NzTabComponent implements OnChanges, OnDestroy, OnInit {
   }
 
   get label(): string | TemplateRef<void> {
-    return this.nzTitle || this.tabLinkTemplate;
+    return this.nzTitle || this.nzTabLinkTemplateDirective?.templateRef || this.tabLinkTemplate;
   }
 
   constructor(@Inject(NZ_TAB_SET) public closestTabSet: NzSafeAny) {}
