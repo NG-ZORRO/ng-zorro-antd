@@ -41,6 +41,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
       <input
         #inputElement
         type="text"
+        readonly
         [size]="inputSize"
         [nzTime]="nzFormat"
         [placeholder]="nzPlaceHolder || ('TimePicker.placeholder' | nzI18n)"
@@ -93,8 +94,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
               [(ngModel)]="value"
               (ngModelChange)="setValue($event)"
               (closePanel)="close()"
-            >
-            </nz-time-picker-panel>
+            ></nz-time-picker-panel>
           </div>
         </div>
       </div>
@@ -105,7 +105,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'timePicker';
     '[class.ant-picker-large]': `nzSize === 'large'`,
     '[class.ant-picker-small]': `nzSize === 'small'`,
     '[class.ant-picker-disabled]': `nzDisabled`,
-    '[class.ant-picker-focused]': `focused`,
+    '[class.ant-picker-focused]': `nzOpen`,
     '(click)': 'open()'
   },
   animations: [slideMotion],
@@ -174,7 +174,6 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     if (this.nzDisabled) {
       return;
     }
-    this.focus();
     this.nzOpen = true;
     this.nzOpenChange.emit(this.nzOpen);
   }
@@ -202,12 +201,6 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
   onFocus(value: boolean): void {
     this.focused = value;
-  }
-
-  focus(): void {
-    if (this.inputRef.nativeElement) {
-      this.inputRef.nativeElement.focus();
-    }
   }
 
   blur(): void {
