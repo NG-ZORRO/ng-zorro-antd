@@ -458,7 +458,6 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
 
     return tabs.findIndex(tab => {
       const c = tab.linkDirective;
-      console.log(c);
       return c ? isActive(c.routerLink) || isActive(c.routerLinkWithHref) : false;
     });
   }
