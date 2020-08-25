@@ -77,12 +77,23 @@ import {
     </div>
     <br />
     <nz-skeleton-element nzType="input" [nzActive]="inputActive" [nzSize]="inputSize" style="width:300px"></nz-skeleton-element>
+    <br />
+    <br />
+    <div nz-row nzAlign="middle" [nzGutter]="8">
+      <div nz-col>
+        ImageActive:
+        <nz-switch [(ngModel)]="imageActive"></nz-switch>
+      </div>
+    </div>
+    <br />
+    <nz-skeleton-element nzType="image" [nzActive]="imageActive"></nz-skeleton-element>
   `
 })
 export class NzDemoSkeletonElementComponent {
   buttonActive = false;
   avatarActive = false;
   inputActive = false;
+  imageActive = false;
   buttonSize: NzSkeletonButtonSize = 'default';
   avatarSize: NzSkeletonAvatarSize = 'default';
   inputSize: NzSkeletonInputSize = 'default';

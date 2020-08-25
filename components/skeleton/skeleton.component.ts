@@ -26,7 +26,8 @@ import { NzSkeletonAvatar, NzSkeletonAvatarShape, NzSkeletonAvatarSize, NzSkelet
   exportAs: 'nzSkeleton',
   host: {
     '[class.ant-skeleton-with-avatar]': '!!nzAvatar',
-    '[class.ant-skeleton-active]': 'nzActive'
+    '[class.ant-skeleton-active]': 'nzActive',
+    '[class.ant-skeleton-round]': '!!nzRound'
   },
   template: `
     <ng-container *ngIf="nzLoading">
@@ -48,6 +49,7 @@ import { NzSkeletonAvatar, NzSkeletonAvatarShape, NzSkeletonAvatarSize, NzSkelet
 export class NzSkeletonComponent implements OnInit, OnChanges {
   @Input() nzActive = false;
   @Input() nzLoading = true;
+  @Input() nzRound = false;
   @Input() nzTitle: NzSkeletonTitle | boolean = true;
   @Input() nzAvatar: NzSkeletonAvatar | boolean = false;
   @Input() nzParagraph: NzSkeletonParagraph | boolean = true;

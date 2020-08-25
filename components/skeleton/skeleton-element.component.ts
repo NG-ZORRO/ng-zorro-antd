@@ -22,7 +22,7 @@ import {
 })
 export class NzSkeletonElementDirective {
   @Input() nzActive: boolean = false;
-  @Input() nzType!: 'button' | 'input' | 'avatar';
+  @Input() nzType!: 'button' | 'input' | 'avatar' | 'image';
 }
 
 @Component({
@@ -35,8 +35,7 @@ export class NzSkeletonElementDirective {
       [class.ant-skeleton-button-circle]="nzShape === 'circle'"
       [class.ant-skeleton-button-lg]="nzSize === 'large'"
       [class.ant-skeleton-button-sm]="nzSize === 'small'"
-    >
-    </span>
+    ></span>
   `
 })
 export class NzSkeletonElementButtonComponent {
@@ -55,8 +54,7 @@ export class NzSkeletonElementButtonComponent {
       [class.ant-skeleton-avatar-lg]="nzSize === 'large'"
       [class.ant-skeleton-avatar-sm]="nzSize === 'small'"
       [ngStyle]="styleMap"
-    >
-    </span>
+    ></span>
   `
 })
 export class NzSkeletonElementAvatarComponent implements OnChanges {
@@ -86,10 +84,25 @@ export class NzSkeletonElementAvatarComponent implements OnChanges {
       [class.ant-skeleton-input]="true"
       [class.ant-skeleton-input-lg]="nzSize === 'large'"
       [class.ant-skeleton-input-sm]="nzSize === 'small'"
-    >
-    </span>
+    ></span>
   `
 })
 export class NzSkeletonElementInputComponent {
   @Input() nzSize: NzSkeletonInputSize = 'default';
+}
+
+@Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'nz-skeleton-element[nzType="image"]',
+  template: `
+    <span [class.ant-skeleton-image]="true">
+      <svg [class.ant-skeleton-image-svg]="true" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+        <path [attr.d]="path" [class.ant-skeleton-image-path]="true" />
+      </svg>
+    </span>
+  `
+})
+export class NzSkeletonElementImageComponent {
+  path: string =
+    'M984.615385 196.923077c0-43.323077-35.446154-78.769231-78.769231-78.769231H118.153846c-43.323077 0-78.769231 35.446154-78.769231 78.769231v630.153846c0 43.323077 35.446154 78.769231 78.769231 78.769231h787.692308c43.323077 0 78.769231-35.446154 78.769231-78.769231V196.923077zM779.815385 748.307692h-571.076923c-23.630769 0-37.415385-25.6-25.6-45.292307l173.292307-301.292308c7.876923-13.784615 25.6-13.784615 33.476923 0l104.369231 179.2c7.876923 11.815385 25.6 13.784615 33.476923 1.969231l84.676923-122.092308c7.876923-11.815385 25.6-11.815385 33.476923 0L801.476923 708.923077c11.815385 17.723077 0 39.384615-21.661538 39.384615zM728.615385 393.846154c-43.323077 0-78.769231-35.446154-78.769231-78.769231s35.446154-78.769231 78.769231-78.769231 78.769231 35.446154 78.76923 78.769231-35.446154 78.769231-78.76923 78.769231z';
 }
