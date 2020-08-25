@@ -12,7 +12,7 @@ import { NzTableLayout } from '../table.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <col [style.width]="width" [style.minWidth]="width" *ngFor="let width of listOfColWidth" />
+    <col [style.width]="width" [style.minWidth]="width" *ngFor="let width of listOfColWidth; trackBy: trackByFn" />
     <thead class="ant-table-thead" *ngIf="theadTemplate">
       <ng-template [ngTemplateOutlet]="theadTemplate"></ng-template>
     </thead>
@@ -32,4 +32,6 @@ export class NzTableContentComponent {
   @Input() contentTemplate: TemplateRef<NzSafeAny> | null = null;
   @Input() listOfColWidth: Array<string | null> = [];
   @Input() scrollX: string | null = null;
+
+  trackByFn = (index: number) => `${index}`;
 }
