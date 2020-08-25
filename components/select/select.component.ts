@@ -149,7 +149,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
     '[class.ant-select-sm]': 'nzSize === "small"',
     '[class.ant-select-show-arrow]': `nzShowArrow && nzMode === 'default'`,
     '[class.ant-select-disabled]': 'nzDisabled',
-    '[class.ant-select-show-search]': `nzShowSearch || nzMode !== 'default'`,
+    '[class.ant-select-show-search]': `(nzShowSearch || nzMode !== 'default') && !nzDisabled`,
     '[class.ant-select-allow-clear]': 'nzAllowClear',
     '[class.ant-select-borderless]': 'nzBorderless',
     '[class.ant-select-open]': 'nzOpen',
