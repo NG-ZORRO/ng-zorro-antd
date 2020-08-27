@@ -247,7 +247,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     if (typeof val === 'number') {
       result = ((precisionFactor * val + precisionFactor * this.nzStep * rat) / precisionFactor).toFixed(precision);
     } else {
-      result = this.nzMin === -Infinity || isNotNil(this.nzMin) ? this.nzStep : this.nzMin;
+      result = this.nzMin === -Infinity || !isNotNil(this.nzMin) ? this.nzStep : this.nzMin;
     }
     return this.toNumber(result);
   }
@@ -259,7 +259,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     if (typeof val === 'number') {
       result = ((precisionFactor * val - precisionFactor * this.nzStep * rat) / precisionFactor).toFixed(precision);
     } else {
-      result = this.nzMin === -Infinity || isNotNil(this.nzMin) ? -this.nzStep : this.nzMin;
+      result = this.nzMin === -Infinity || !isNotNil(this.nzMin) ? -this.nzStep : this.nzMin;
     }
     return this.toNumber(result);
   }
