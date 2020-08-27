@@ -23,14 +23,14 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NgClassType } from 'ng-zorro-antd/core/types';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 
-const NZ_CONFIG_COMPONENT_NAME = 'rate';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'rate';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -76,6 +76,8 @@ const NZ_CONFIG_COMPONENT_NAME = 'rate';
   ]
 })
 export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor, OnChanges {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
   static ngAcceptInputType_nzAllowClear: BooleanInput;
   static ngAcceptInputType_nzAllowHalf: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
@@ -84,8 +86,8 @@ export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor,
 
   @ViewChild('ulElement', { static: false }) private ulElement?: ElementRef;
 
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzAllowClear: boolean = true;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzAllowHalf: boolean = false;
+  @Input() @WithConfig() @InputBoolean() nzAllowClear: boolean = true;
+  @Input() @WithConfig() @InputBoolean() nzAllowHalf: boolean = false;
   @Input() @InputBoolean() nzDisabled: boolean = false;
   @Input() @InputBoolean() nzAutoFocus: boolean = false;
   @Input() nzCharacter?: TemplateRef<void>;
@@ -145,7 +147,7 @@ export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor,
 
   ngOnInit(): void {
     this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => this.cdr.markForCheck());
   }

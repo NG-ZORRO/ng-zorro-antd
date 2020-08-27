@@ -32,7 +32,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
@@ -51,7 +51,7 @@ const defaultFilterOption: NzFilterOptionType = (searchValue: string, item: NzSe
   }
 };
 
-const NZ_CONFIG_COMPONENT_NAME = 'select';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'select';
 
 export type NzSelectSizeType = 'large' | 'default' | 'small';
 
@@ -159,6 +159,8 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
   }
 })
 export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy, AfterContentInit, OnChanges {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
   static ngAcceptInputType_nzAllowClear: BooleanInput;
   static ngAcceptInputType_nzBorderless: BooleanInput;
   static ngAcceptInputType_nzShowSearch: BooleanInput;
@@ -181,7 +183,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @Input() nzDropdownRender: TemplateRef<NzSafeAny> | null = null;
   @Input() nzCustomTemplate: TemplateRef<{ $implicit: NzSelectItemInterface }> | null = null;
   @Input()
-  @WithConfig<TemplateRef<NzSafeAny> | string | null>(NZ_CONFIG_COMPONENT_NAME)
+  @WithConfig<TemplateRef<NzSafeAny> | string | null>()
   nzSuffixIcon: TemplateRef<NzSafeAny> | string | null = null;
   @Input() nzClearIcon: TemplateRef<NzSafeAny> | null = null;
   @Input() nzRemoveIcon: TemplateRef<NzSafeAny> | null = null;
@@ -194,7 +196,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @Input() nzFilterOption: NzFilterOptionType = defaultFilterOption;
   @Input() compareWith: (o1: NzSafeAny, o2: NzSafeAny) => boolean = (o1: NzSafeAny, o2: NzSafeAny) => o1 === o2;
   @Input() @InputBoolean() nzAllowClear = false;
-  @Input() @WithConfig<boolean>(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzBorderless = false;
+  @Input() @WithConfig<boolean>() @InputBoolean() nzBorderless = false;
   @Input() @InputBoolean() nzShowSearch = false;
   @Input() @InputBoolean() nzLoading = false;
   @Input() @InputBoolean() nzAutoFocus = false;

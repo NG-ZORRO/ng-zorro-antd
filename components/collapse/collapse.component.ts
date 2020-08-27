@@ -5,7 +5,7 @@
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, ViewEncapsulation } from '@angular/core';
 
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
@@ -13,14 +13,16 @@ import { takeUntil } from 'rxjs/operators';
 
 import { NzCollapsePanelComponent } from './collapse-panel.component';
 
-const NZ_CONFIG_COMPONENT_NAME = 'collapse';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapse';
 
 @Component({
   selector: 'nz-collapse',
   exportAs: 'nzCollapse',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
-  template: ` <ng-content></ng-content> `,
+  template: `
+    <ng-content></ng-content>
+  `,
   host: {
     '[class.ant-collapse]': 'true',
     '[class.ant-collapse-icon-position-left]': `nzExpandIconPosition === 'left'`,
@@ -30,19 +32,20 @@ const NZ_CONFIG_COMPONENT_NAME = 'collapse';
   }
 })
 export class NzCollapseComponent implements OnDestroy {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzAccordion: BooleanInput;
   static ngAcceptInputType_nzBordered: BooleanInput;
   static ngAcceptInputType_nzGhost: BooleanInput;
 
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzAccordion: boolean = false;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzBordered: boolean = true;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzGhost: boolean = false;
+  @Input() @WithConfig() @InputBoolean() nzAccordion: boolean = false;
+  @Input() @WithConfig() @InputBoolean() nzBordered: boolean = true;
+  @Input() @WithConfig() @InputBoolean() nzGhost: boolean = false;
   @Input() nzExpandIconPosition: 'left' | 'right' = 'left';
   private listOfNzCollapsePanelComponent: NzCollapsePanelComponent[] = [];
   private destroy$ = new Subject();
   constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {
     this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.cdr.markForCheck();

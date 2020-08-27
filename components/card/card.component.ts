@@ -15,7 +15,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NgStyleInterface, NzSizeDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
@@ -23,7 +23,7 @@ import { takeUntil } from 'rxjs/operators';
 import { NzCardGridDirective } from './card-grid.directive';
 import { NzCardTabComponent } from './card-tab.component';
 
-const NZ_CONFIG_COMPONENT_NAME = 'card';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'card';
 
 @Component({
   selector: 'nz-card',
@@ -74,18 +74,19 @@ const NZ_CONFIG_COMPONENT_NAME = 'card';
   }
 })
 export class NzCardComponent implements OnDestroy {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzBordered: BooleanInput;
   static ngAcceptInputType_nzLoading: BooleanInput;
   static ngAcceptInputType_nzHoverable: BooleanInput;
 
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzBordered: boolean = true;
+  @Input() @WithConfig() @InputBoolean() nzBordered: boolean = true;
   @Input() @InputBoolean() nzLoading = false;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzHoverable: boolean = false;
+  @Input() @WithConfig() @InputBoolean() nzHoverable: boolean = false;
   @Input() nzBodyStyle: NgStyleInterface | null = null;
   @Input() nzCover?: TemplateRef<void>;
   @Input() nzActions: Array<TemplateRef<void>> = [];
   @Input() nzType: string | 'inner' | null = null;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzSizeDSType = 'default';
+  @Input() @WithConfig() nzSize: NzSizeDSType = 'default';
   @Input() nzTitle?: string | TemplateRef<void>;
   @Input() nzExtra?: string | TemplateRef<void>;
   @ContentChild(NzCardTabComponent, { static: false }) listOfNzCardTabComponent?: NzCardTabComponent;
@@ -94,7 +95,7 @@ export class NzCardComponent implements OnDestroy {
 
   constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {
     this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.cdr.markForCheck();

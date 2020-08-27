@@ -29,7 +29,7 @@ import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/
 import { merge, Observable, of, Subject, Subscription } from 'rxjs';
 import { delay, filter, first, startWith, takeUntil } from 'rxjs/operators';
 
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { PREFIX, warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { BooleanInput, NumberInput, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, wrapIntoObservable } from 'ng-zorro-antd/core/util';
@@ -46,7 +46,7 @@ import {
 import { NzTabNavBarComponent } from './tab-nav-bar.component';
 import { NzTabComponent, NZ_TAB_SET } from './tab.component';
 
-const NZ_CONFIG_COMPONENT_NAME = 'tabs';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tabs';
 
 let nextId = 0;
 
@@ -145,6 +145,8 @@ let nextId = 0;
   }
 })
 export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy, AfterContentInit, OnChanges {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
   static ngAcceptInputType_nzHideAdd: BooleanInput;
   static ngAcceptInputType_nzHideAll: BooleanInput;
   static ngAcceptInputType_nzCentered: BooleanInput;
@@ -169,10 +171,10 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   @Input() nzCanDeactivate: NzTabsCanDeactivateFn | null = null;
   @Input() nzAddIcon: string | TemplateRef<NzSafeAny> = 'plus';
   @Input() nzTabBarStyle: { [key: string]: string } | null = null;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzType: NzTabType = 'line';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzSizeLDSType = 'default';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzAnimated: NzAnimatedInterface | boolean = true;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzTabBarGutter?: number = undefined;
+  @Input() @WithConfig() nzType: NzTabType = 'line';
+  @Input() @WithConfig() nzSize: NzSizeLDSType = 'default';
+  @Input() @WithConfig() nzAnimated: NzAnimatedInterface | boolean = true;
+  @Input() @WithConfig() nzTabBarGutter?: number = undefined;
   @Input() @InputBoolean() nzHideAdd: boolean = false;
   @Input() @InputBoolean() nzCentered: boolean = false;
   @Input() @InputBoolean() nzHideAll = false;

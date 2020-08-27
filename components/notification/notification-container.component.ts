@@ -4,7 +4,7 @@
  */
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
-import { NotificationConfig, NzConfigService } from 'ng-zorro-antd/core/config';
+import { NotificationConfig, NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { toCssPixel } from 'ng-zorro-antd/core/util';
 
@@ -14,7 +14,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { NzNotificationData, NzNotificationDataOptions } from './typings';
 
-const NZ_CONFIG_COMPONENT_NAME = 'notification';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'notification';
 
 const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
   nzTop: '24px',
@@ -110,7 +110,7 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent {
 
   protected subscribeConfigChange(): void {
     this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => this.updateConfig());
   }
@@ -119,7 +119,7 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent {
     this.config = {
       ...NZ_NOTIFICATION_DEFAULT_CONFIG,
       ...this.config,
-      ...this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME)
+      ...this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME)
     };
 
     this.top = toCssPixel(this.config.nzTop!);

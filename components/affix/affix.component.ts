@@ -22,7 +22,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { NgStyleInterface, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { getStyleAsText, InputNumber, shallowEqual } from 'ng-zorro-antd/core/util';
@@ -33,7 +33,7 @@ import { auditTime, map, takeUntil } from 'rxjs/operators';
 import { AffixRespondEvents } from './respond-events';
 import { getTargetRect, SimpleRect } from './utils';
 
-const NZ_CONFIG_COMPONENT_NAME = 'affix';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'affix';
 const NZ_AFFIX_CLS_PREFIX = 'ant-affix';
 const NZ_AFFIX_DEFAULT_SCROLL_TIME = 20;
 
@@ -49,6 +49,7 @@ const NZ_AFFIX_DEFAULT_SCROLL_TIME = 20;
   encapsulation: ViewEncapsulation.None
 })
 export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzOffsetTop: NumberInput;
   static ngAcceptInputType_nzOffsetBottom: NumberInput;
 
@@ -57,12 +58,12 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() nzTarget?: string | Element | Window;
 
   @Input()
-  @WithConfig<number | null>(NZ_CONFIG_COMPONENT_NAME)
+  @WithConfig<number | null>()
   @InputNumber(undefined)
   nzOffsetTop?: null | number;
 
   @Input()
-  @WithConfig<number | null>(NZ_CONFIG_COMPONENT_NAME)
+  @WithConfig<number | null>()
   @InputNumber(undefined)
   nzOffsetBottom?: null | number;
 

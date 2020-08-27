@@ -26,7 +26,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { treeCollapseMotion } from 'ng-zorro-antd/core/animation';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import {
   flattenTreeData,
@@ -49,7 +49,7 @@ export function NzTreeServiceFactory(higherOrderService: NzTreeBaseService, tree
   return higherOrderService ? higherOrderService : treeService;
 }
 
-const NZ_CONFIG_COMPONENT_NAME = 'tree';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tree';
 
 @Component({
   selector: 'nz-tree',
@@ -130,8 +130,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'tree';
         (nzOnDragLeave)="eventTriggerChanged($event)"
         (nzOnDragEnd)="eventTriggerChanged($event)"
         (nzOnDrop)="eventTriggerChanged($event)"
-      >
-      </nz-tree-node>
+      ></nz-tree-node>
     </ng-template>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -161,6 +160,8 @@ const NZ_CONFIG_COMPONENT_NAME = 'tree';
   }
 })
 export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, ControlValueAccessor, OnChanges, AfterViewInit {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
   static ngAcceptInputType_nzShowIcon: BooleanInput;
   static ngAcceptInputType_nzHideUnMatched: BooleanInput;
   static ngAcceptInputType_nzBlockNode: BooleanInput;
@@ -174,9 +175,9 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   static ngAcceptInputType_nzDraggable: BooleanInput;
   static ngAcceptInputType_nzMultiple: BooleanInput;
 
-  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzShowIcon: boolean = false;
-  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzHideUnMatched: boolean = false;
-  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzBlockNode: boolean = false;
+  @Input() @InputBoolean() @WithConfig() nzShowIcon: boolean = false;
+  @Input() @InputBoolean() @WithConfig() nzHideUnMatched: boolean = false;
+  @Input() @InputBoolean() @WithConfig() nzBlockNode: boolean = false;
   @Input() @InputBoolean() nzExpandAll = false;
   @Input() @InputBoolean() nzSelectMode = false;
   @Input() @InputBoolean() nzCheckStrictly = false;

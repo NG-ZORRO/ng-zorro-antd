@@ -14,14 +14,14 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NumberInput, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 
 import { BehaviorSubject, Subject } from 'rxjs';
 import { debounceTime, flatMap, takeUntil } from 'rxjs/operators';
 
-const NZ_CONFIG_COMPONENT_NAME = 'spin';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
 
 @Component({
   selector: 'nz-spin',
@@ -58,11 +58,13 @@ const NZ_CONFIG_COMPONENT_NAME = 'spin';
   }
 })
 export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
   static ngAcceptInputType_nzDelay: NumberInput;
   static ngAcceptInputType_nzSimple: BooleanInput;
   static ngAcceptInputType_nzSpinning: BooleanInput;
 
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzIndicator: TemplateRef<NzSafeAny> | null = null;
+  @Input() @WithConfig() nzIndicator: TemplateRef<NzSafeAny> | null = null;
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzTip: string | null = null;
   @Input() @InputNumber() nzDelay = 0;
@@ -92,7 +94,7 @@ export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
       this.cdr.markForCheck();
     });
     this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => this.cdr.markForCheck());
   }
