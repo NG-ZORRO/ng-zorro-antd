@@ -1,5 +1,8 @@
-//@import '../../style/index.less';
-//
-//// style dependencies
-//@import '../../popover/style';
-//@import '../../button/style';
+@import '../../style/themes/index';
+@import '../../style/mixins/index';
+
+@popconfirm-prefix-cls: ~'@{ant-prefix}-popconfirm';
+
+.@{popconfirm-prefix-cls} {
+  z-index: @zindex-popoconfirm;
+}
