@@ -7,9 +7,9 @@ title:
 
 ## zh-CN
 
-例如给最后一项加上邮编链接。
+例如仅显示最后一级并加上邮编链接。
 
 ## en-US
 
-For instance, add an external link after the selected value.
+For instance, display only the last level, add an external link after the selected value.
 
