@@ -23,6 +23,7 @@ import {
 } from '@angular/core';
 import { BooleanInput, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { NzInputNumberComponent } from 'ng-zorro-antd/input-number';
 import { merge, Subject } from 'rxjs';
 import { flatMap, map, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { NzInputDirective } from './input.directive';
@@ -48,8 +49,7 @@ export class NzInputGroupWhitSuffixOrPrefixDirective {
         type="addon"
         [icon]="nzAddOnBeforeIcon"
         [template]="nzAddOnBefore"
-      >
-      </span>
+      ></span>
       <span
         *ngIf="isAffix; else contentTemplate"
         class="ant-input-affix-wrapper"
@@ -104,6 +104,7 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   static ngAcceptInputType_nzCompact: BooleanInput;
 
   @ContentChildren(NzInputDirective) listOfNzInputDirective!: QueryList<NzInputDirective>;
+  @ContentChildren(NzInputNumberComponent) listOfNzInputNumberComponent!: QueryList<NzInputNumberComponent>;
   @Input() nzAddOnBeforeIcon?: string | null = null;
   @Input() nzAddOnAfterIcon?: string | null = null;
   @Input() nzPrefixIcon?: string | null = null;
@@ -151,6 +152,20 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
         }),
         flatMap(() => listOfInputChange$),
         map(list => list.some((input: NzInputDirective) => input.disabled)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(disabled => {
+        this.disabled = disabled;
+        this.cdr.markForCheck();
+      });
+    const listOfInputNumberChange$ = this.listOfNzInputNumberComponent.changes.pipe(startWith(this.listOfNzInputNumberComponent));
+    listOfInputNumberChange$
+      .pipe(
+        switchMap(list => {
+          return merge(...[listOfInputNumberChange$, ...list.map((input: NzInputNumberComponent) => input.disabled$)]);
+        }),
+        flatMap(() => listOfInputNumberChange$),
+        map(list => list.some((input: NzInputNumberComponent) => input.nzDisabled)),
         takeUntil(this.destroy$)
       )
       .subscribe(disabled => {

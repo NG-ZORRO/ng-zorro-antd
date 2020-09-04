@@ -26,6 +26,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { BooleanInput, NzSizeLDSType, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'nz-input-number',
@@ -123,6 +124,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAutoFocus = false;
   @Input() nzFormatter: (value: number) => string | number = value => value;
+  disabled$ = new Subject<boolean>();
 
   onModelChange(value: string): void {
     this.parsedValue = this.nzParser(value);
@@ -380,6 +382,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
         this.nzFocus.emit();
       }
     });
+    this.disabled$.next(this.nzDisabled);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -387,6 +390,11 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
       const validValue = this.getCurrentValidValue(this.parsedValue!);
       this.setValue(validValue);
       this.updateDisplayValue(validValue);
+    }
+    if (changes.nzDisabled !== undefined) {
+      // @ts-ignore
+      this.disabled$.next(this.nzDisabled);
+      console.log(this.nzDisabled);
     }
   }
 
