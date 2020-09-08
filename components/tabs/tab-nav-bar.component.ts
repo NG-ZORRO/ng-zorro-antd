@@ -216,8 +216,8 @@ export class NzTabNavBarComponent implements OnInit, AfterViewInit, AfterContent
   }
 
   ngOnDestroy(): void {
-    window.clearTimeout(this.lockAnimationTimeoutId);
-    window.clearTimeout(this.cssTransformTimeWaitingId);
+    clearTimeout(this.lockAnimationTimeoutId);
+    clearTimeout(this.cssTransformTimeWaitingId);
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -335,7 +335,7 @@ export class NzTabNavBarComponent implements OnInit, AfterViewInit, AfterContent
       this.setTransform(0, newTransform);
     }
 
-    window.clearTimeout(this.cssTransformTimeWaitingId);
+    clearTimeout(this.cssTransformTimeWaitingId);
     this.cssTransformTimeWaitingId = setTimeout(() => {
       this.setVisibleRange();
     }, CSS_TRANSFORM_TIME);

@@ -55,13 +55,11 @@ import { TransferDirection, TransferItem } from './interface';
         (nzCheckedChange)="onItemSelectAll($event)"
         [nzIndeterminate]="stat.checkHalf"
         [nzDisabled]="stat.shownCount == 0 || disabled"
-      >
-      </label>
+      ></label>
       <span class="ant-transfer-list-header-selected">
-        <span
-          >{{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }}
-          {{ dataSource.length > 1 ? itemsUnit : itemUnit }}</span
-        >
+        <span>
+          {{ (stat.checkCount > 0 ? stat.checkCount + '/' : '') + stat.shownCount }} {{ dataSource.length > 1 ? itemsUnit : itemUnit }}
+        </span>
         <span *ngIf="titleText" class="ant-transfer-list-header-title">{{ titleText }}</span>
       </span>
     </div>
@@ -120,7 +118,7 @@ export class NzTransferListComponent {
   @Input() itemUnit: string | undefined = '';
   @Input() itemsUnit: string | undefined = '';
   @Input() filter = '';
-  @Input() disabled?: boolean;
+  @Input() disabled: boolean = false;
   @Input() showSearch?: boolean;
   @Input() searchPlaceholder?: string;
   @Input() notFoundContent?: string;

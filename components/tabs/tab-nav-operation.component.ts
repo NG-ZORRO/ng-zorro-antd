@@ -89,7 +89,7 @@ export class NzTabNavOperationComponent implements OnDestroy {
   }
 
   showItems(): void {
-    window.clearTimeout(this.closeAnimationWaitTimeoutId);
+    clearTimeout(this.closeAnimationWaitTimeoutId);
     this.menuOpened = true;
     this.cdr.markForCheck();
   }
@@ -112,6 +112,6 @@ export class NzTabNavOperationComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    window.clearTimeout(this.closeAnimationWaitTimeoutId);
+    clearTimeout(this.closeAnimationWaitTimeoutId);
   }
 }
