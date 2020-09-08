@@ -30,7 +30,7 @@ describe('DateHelperService', () => {
     xit('should do formatting correctly', () => {
       const date = new Date('2018-12-31 12:11:10');
       expect(dateHelper.format(date, 'yyyy-MM-dd')).toBe('2018-12-31');
-      expect(dateHelper.format(date, 'yyyy-ww')).toBe('2018-53');
+      expect(dateHelper.format(date, 'ww')).toBe('01');
     });
 
     it('should get first day of week with 0 by en_US', () => {
@@ -60,7 +60,7 @@ describe('DateHelperService', () => {
     it('should do formatting correctly', () => {
       const date = new Date('2018-12-31 12:11:10');
       expect(dateHelper.format(date, 'yyyy-MM-dd')).toBe('2018-12-31');
-      expect(dateHelper.format(date, 'II')).toBe('01'); // ISO week
+      expect(dateHelper.format(date, 'RRRR-II')).toBe('2019-01'); // ISO week
     });
 
     it('should do parseTime correctly', () => {

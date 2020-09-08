@@ -56,8 +56,10 @@ export class DatePickerService implements OnDestroy {
   }
 
   setValue(value: CompatibleValue): void {
-    this.value = value;
-    this.valueChange$.next(this.value);
+    if (value !== this.value) {
+      this.value = value;
+      this.valueChange$.next(this.value);
+    }
   }
 
   getActiveIndex(part: RangePartType = this.activeInput): number {

@@ -384,6 +384,7 @@ describe('NzDatePickerComponent', () => {
     }));
 
     it('should support nzDefaultPickerValue', fakeAsync(() => {
+      fixture.detectChanges();
       fixtureInstance.nzDefaultPickerValue = new Date('2015-09-17');
       fixture.detectChanges();
       flush();
