@@ -118,6 +118,10 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   private registerListeners(): void {
+    if (!this.platform.isBrowser) {
+      return;
+    }
+
     this.removeListeners();
     this.positionChangeSubscription = this.ngZone.runOutsideAngular(() => {
       return merge(

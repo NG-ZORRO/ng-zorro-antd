@@ -31,7 +31,7 @@ import { NzSkeletonAvatar, NzSkeletonAvatarShape, NzSkeletonAvatarSize, NzSkelet
   template: `
     <ng-container *ngIf="nzLoading">
       <div class="ant-skeleton-header" *ngIf="!!nzAvatar">
-        <nz-skeleton-element nzType="avatar" [nzSize]="avatar.size" [nzShape]="avatar.shape"></nz-skeleton-element>
+        <nz-skeleton-element nzType="avatar" [nzSize]="avatar.size || 'default'" [nzShape]="avatar.shape"></nz-skeleton-element>
       </div>
       <div class="ant-skeleton-content">
         <h3 *ngIf="!!nzTitle" class="ant-skeleton-title" [style.width]="toCSSUnit(title.width)"></h3>

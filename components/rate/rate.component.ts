@@ -90,7 +90,7 @@ export class NzRateComponent implements OnInit, OnDestroy, ControlValueAccessor,
   @Input() @WithConfig() @InputBoolean() nzAllowHalf: boolean = false;
   @Input() @InputBoolean() nzDisabled: boolean = false;
   @Input() @InputBoolean() nzAutoFocus: boolean = false;
-  @Input() nzCharacter?: TemplateRef<void>;
+  @Input() nzCharacter!: TemplateRef<void>;
   @Input() @InputNumber() nzCount: number = 5;
   @Input() nzTooltips: string[] = [];
   @Output() readonly nzOnBlur = new EventEmitter<FocusEvent>();

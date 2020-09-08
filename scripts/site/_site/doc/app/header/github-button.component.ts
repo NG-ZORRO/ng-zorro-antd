@@ -1,5 +1,6 @@
-import { HttpClient } from "@angular/common/http";
-import { ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from "@angular/core";
+import { Platform } from '@angular/cdk/platform';
+import { HttpClient } from '@angular/common/http';
+import { ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-github-btn',
@@ -8,11 +9,8 @@ import { ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from "
       <span class="gh-ico" aria-hidden="true"></span>
       <span class="gh-text">Star</span>
     </a>
-    <a class="gh-count"
-       target="_blank"
-       [href]="'https://github.com/' + org + '/' + repo + '/stargazers'"
-       style="display: block;">
-      {{starCount}}
+    <a class="gh-count" target="_blank" [href]="'https://github.com/' + org + '/' + repo + '/stargazers'" style="display: block;">
+      {{ starCount }}
     </a>
   `,
   host: {
@@ -25,25 +23,26 @@ import { ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from "
   encapsulation: ViewEncapsulation.None
 })
 export class GithubButtonComponent implements OnInit {
-
   starCount = 0;
   org = 'NG-ZORRO';
   repo = 'ng-zorro-antd';
   @Input() responsive: null | 'narrow' | 'crowded' = null;
 
-  constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {
-  }
+  constructor(private http: HttpClient, private cdr: ChangeDetectorRef, private platform: Platform) {}
 
   getStar(): void {
-    this.http.get<{ stargazers_count: number }>(`https://api.github.com/repos/${this.org}/${this.repo}`)
-    .subscribe((res: { stargazers_count: number }) => {
-      this.starCount = res.stargazers_count;
-      this.cdr.markForCheck();
-    })
+    this.http
+      .get<{ stargazers_count: number }>(`https://api.github.com/repos/${this.org}/${this.repo}`)
+      .subscribe((res: { stargazers_count: number }) => {
+        this.starCount = res.stargazers_count;
+        this.cdr.markForCheck();
+      });
   }
 
   ngOnInit(): void {
+    if (!this.platform.isBrowser) {
+      return;
+    }
     this.getStar();
   }
-
 }
