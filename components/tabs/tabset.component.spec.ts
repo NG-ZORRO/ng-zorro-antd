@@ -1,12 +1,13 @@
 import { ENTER, LEFT_ARROW, RIGHT_ARROW, SPACE } from '@angular/cdk/keycodes';
+import { OverlayContainer } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { Component, DebugElement, OnInit, QueryList, ViewChild, ViewChildren, ViewEncapsulation } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router, Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
+import { dispatchFakeEvent, dispatchKeyboardEvent } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { NzTabNavBarComponent } from 'ng-zorro-antd/tabs/tab-nav-bar.component';
@@ -599,10 +600,14 @@ describe('NzTabSet', () => {
   describe('scrollable', () => {
     let fixture: ComponentFixture<ScrollableTabsTestComponent>;
     let element: HTMLElement;
-
+    let overlayContainerElement: HTMLElement;
     beforeEach(fakeAsync(() => {
       fixture = TestBed.createComponent(ScrollableTabsTestComponent);
       element = fixture.nativeElement;
+
+      inject([OverlayContainer], (oc: OverlayContainer) => {
+        overlayContainerElement = oc.getContainerElement();
+      })();
 
       fixture.detectChanges();
       tick(300);
@@ -614,6 +619,26 @@ describe('NzTabSet', () => {
       expect(tabSetComponent.tabNavBarRef.hiddenItems.length).toBeGreaterThan(0);
       expect(element.querySelector('nz-tab-nav-operation')).not.toBeNull();
     });
+
+    it('should get the correct outlet', fakeAsync(() => {
+      fixture.detectChanges();
+      flush(300);
+      fixture.detectChanges();
+      const inTabs = fixture.debugElement.queryAll(By.css('.ant-tabs-tab'));
+      inTabs.forEach(tab => {
+        expect(tab.nativeElement.textContent.trim()).toBe('Title in tabs');
+      });
+
+      dispatchFakeEvent(element.querySelector('nz-tab-nav-operation')!, 'mouseenter');
+      fixture.detectChanges();
+      flush(300);
+      fixture.detectChanges();
+
+      const inMenu = overlayContainerElement.querySelectorAll<HTMLLIElement>('.ant-tabs-dropdown-menu-item');
+      inMenu.forEach((tab: HTMLLIElement) => {
+        expect(tab.textContent!.trim()).toBe('Title in menu');
+      });
+    }));
 
     it('should set transform to visible when selected invisible tab', fakeAsync(() => {
       const tabsList = element.querySelector('.ant-tabs-nav-list')! as HTMLElement;
@@ -803,15 +828,9 @@ xdescribe('NzTabSet router', () => {
       [nzCentered]="centered"
       [nzCanDeactivate]="canDeactivate"
     >
-      <nz-tab nzTitle="Tab 0" nzClosable>
-        Content of Tab Pane 0
-      </nz-tab>
-      <nz-tab nzTitle="Tab 1" nzClosable>
-        Content of Tab Pane 1
-      </nz-tab>
-      <nz-tab nzTitle="Tab 2">
-        Content of Tab Pane 2
-      </nz-tab>
+      <nz-tab nzTitle="Tab 0" nzClosable>Content of Tab Pane 0</nz-tab>
+      <nz-tab nzTitle="Tab 1" nzClosable>Content of Tab Pane 1</nz-tab>
+      <nz-tab nzTitle="Tab 2">Content of Tab Pane 2</nz-tab>
     </nz-tabset>
   `
 })
@@ -841,9 +860,7 @@ class SimpleTabsTestComponent {
 @Component({
   template: `
     <nz-tabset nzType="editable-card" [(nzSelectedIndex)]="selectedIndex" [nzAddIcon]="addTemplate">
-      <nz-tab nzTitle="Tab 0">
-        Content of Tab Pane 0
-      </nz-tab>
+      <nz-tab nzTitle="Tab 0">Content of Tab Pane 0</nz-tab>
       <nz-tab nzClosable [nzTitle]="titleTemplate" [nzCloseIcon]="closeIconTemplate">
         <ng-template nz-tab>
           <span class="content">Template Content of Tab Pane 1</span>
@@ -869,15 +886,9 @@ class TemplateTabsTestComponent {
 @Component({
   template: `
     <nz-tabset nzType="editable-card" [(nzSelectedIndex)]="selectedIndex" (nzSelectedIndexChange)="handleSelection($event)">
-      <nz-tab nzTitle="Tab 0">
-        Content of Tab Pane 0
-      </nz-tab>
-      <nz-tab nzTitle="Tab 1" nzClosable [nzDisabled]="disabled">
-        Content of Tab Pane 1
-      </nz-tab>
-      <nz-tab nzTitle="Tab 2" nzDisabled>
-        Content of Tab Pane 2
-      </nz-tab>
+      <nz-tab nzTitle="Tab 0">Content of Tab Pane 0</nz-tab>
+      <nz-tab nzTitle="Tab 1" nzClosable [nzDisabled]="disabled">Content of Tab Pane 1</nz-tab>
+      <nz-tab nzTitle="Tab 2" nzDisabled>Content of Tab Pane 2</nz-tab>
     </nz-tabset>
   `
 })
@@ -922,7 +933,10 @@ class DynamicTabsTestComponent {
         (nzSelectedIndexChange)="handleSelection($event)"
         [nzTabPosition]="position"
       >
-        <nz-tab *ngFor="let _tab of tabs; let i = index" [nzTitle]="'Tab ' + i">Content of Tab Pane {{ i }}</nz-tab>
+        <nz-tab *ngFor="let _tab of tabs; let i = index" [nzTitle]="titleTemplate">
+          <ng-template #titleTemplate let-visible="visible">Title in {{ visible ? 'tabs' : 'menu' }}</ng-template>
+          Content of Tab Pane {{ i }}
+        </nz-tab>
       </nz-tabset>
     </div>
   `,
@@ -1014,11 +1028,11 @@ class DeprecatedAPITabsTestComponent {
   template: `
     <nz-tabset nzLinkRouter>
       <nz-tab nzTitle="default">
-        <a nz-tab-link [routerLink]="['.']">One</a>
+        <a *nzTabLink nz-tab-link [routerLink]="['.']">One</a>
         One
       </nz-tab>
       <nz-tab nzTitle="two">
-        <a nz-tab-link [routerLink]="['.', 'two']">Two</a>
+        <a *nzTabLink nz-tab-link [routerLink]="['.', 'two']">Two</a>
         Two
       </nz-tab>
     </nz-tabset>
