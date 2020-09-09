@@ -4,14 +4,13 @@
  */
 
 import { Directive, ElementRef } from '@angular/core';
-
-import { NzSafeAny } from '../types';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 /**
  * A patch directive to select the element of a component.
  */
 @Directive({
-  selector: '[nz-element]',
+  selector: '[nzElement], [nz-element]',
   exportAs: 'nzElement'
 })
 export class NzElementPatchDirective {
