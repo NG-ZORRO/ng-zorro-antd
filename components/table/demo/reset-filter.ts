@@ -9,10 +9,10 @@ interface DataItem {
 
 interface ColumnItem {
   name: string;
-  sortOrder?: NzTableSortOrder;
-  sortFn?: NzTableSortFn;
-  listOfFilter?: NzTableFilterList;
-  filterFn?: NzTableFilterFn;
+  sortOrder: NzTableSortOrder | null;
+  sortFn: NzTableSortFn | null;
+  listOfFilter: NzTableFilterList;
+  filterFn: NzTableFilterFn | null;
 }
 
 @Component({
@@ -73,10 +73,14 @@ export class NzDemoTableResetFilterComponent {
     {
       name: 'Age',
       sortOrder: null,
-      sortFn: (a: DataItem, b: DataItem) => a.age - b.age
+      sortFn: (a: DataItem, b: DataItem) => a.age - b.age,
+      listOfFilter: [],
+      filterFn: null
     },
     {
       name: 'Address',
+      sortFn: null,
+      sortOrder: null,
       listOfFilter: [
         { text: 'London', value: 'London' },
         { text: 'Sidney', value: 'Sidney' }

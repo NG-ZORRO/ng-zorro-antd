@@ -30,7 +30,9 @@ interface DataItem {
 export class NzDemoTableMultipleSorterComponent {
   listOfColumn = [
     {
-      title: 'Name'
+      title: 'Name',
+      compare: null,
+      priority: false
     },
     {
       title: 'Chinese Score',
