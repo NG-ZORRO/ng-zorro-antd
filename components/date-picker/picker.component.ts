@@ -63,8 +63,8 @@ import { PREFIX_CLASS } from './util';
         [size]="inputSize"
         (focus)="onFocus()"
         (blur)="onBlur()"
-        (input)="onInputKeyup($event)"
-        (keyup.enter)="onInputKeyup($event, true)"
+        (ngModelChange)="onInputChange($event)"
+        (keyup.enter)="onKeyupEnter($event)"
       />
       <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
     </div>
@@ -96,10 +96,10 @@ import { PREFIX_CLASS } from './util';
         [size]="inputSize"
         (click)="onClickInputBox($event, partType)"
         (blur)="onBlur()"
-        (input)="onInputKeyup($event)"
         (focus)="onFocus(partType)"
-        (keyup.enter)="onInputKeyup($event, true)"
+        (keyup.enter)="onKeyupEnter($event)"
         [(ngModel)]="inputValue[datePickerService.getActiveIndex(partType)]"
+        (ngModelChange)="onInputChange($event)"
         placeholder="{{ getPlaceholder(partType) }}"
       />
     </ng-template>
@@ -343,7 +343,6 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     if (this.realOpenState) {
       this.overlayOpen = false;
       this.openChange.emit(false);
-      this.focus();
     }
   }
 
@@ -411,22 +410,23 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     return this.dateHelper.format(value && (value as CandyDate).nativeDate, this.format);
   }
 
-  onInputKeyup(event: Event, emitValue: boolean = false): void {
-    if (!this.realOpenState) {
-      this.showOverlay();
-      return;
-    }
-    const date = this.checkValidInputDate((event as KeyboardEvent).target!);
+  onInputChange(value: string, isEnter: boolean = false): void {
+    this.showOverlay();
+
+    const date = this.checkValidDate(value);
     if (this.panel && date) {
-      this.panel.changeValueFromSelect(date, emitValue);
+      this.panel.changeValueFromSelect(date, isEnter);
     }
   }
 
-  private checkValidInputDate(inputTarget: EventTarget): CandyDate | null {
-    const input = (inputTarget as HTMLInputElement).value;
-    const date = new CandyDate(this.dateHelper.parseDate(input, this.format));
+  onKeyupEnter(event: Event): void {
+    this.onInputChange((event.target as HTMLInputElement).value, true);
+  }
 
-    if (!date.isValid() || input !== this.dateHelper.format(date.nativeDate, this.format)) {
+  private checkValidDate(value: string): CandyDate | null {
+    const date = new CandyDate(this.dateHelper.parseDate(value, this.format));
+
+    if (!date.isValid() || value !== this.dateHelper.format(date.nativeDate, this.format)) {
       return null;
     }
 

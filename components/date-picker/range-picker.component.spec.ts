@@ -14,7 +14,13 @@ import { dispatchKeyboardEvent, dispatchMouseEvent, typeInElement } from 'ng-zor
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { RangePartType } from 'ng-zorro-antd/date-picker/standard-types';
-import { getPicker, getPickerAbstract, getPickerInput, getRangePickerRightInput } from 'ng-zorro-antd/date-picker/testing/util';
+import {
+  ENTER_EVENT,
+  getPicker,
+  getPickerAbstract,
+  getPickerInput,
+  getRangePickerRightInput
+} from 'ng-zorro-antd/date-picker/testing/util';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/util';
 import { NzDatePickerModule } from './date-picker.module';
 
@@ -80,7 +86,7 @@ describe('NzRangePickerComponent', () => {
 
     it('should open on enter', fakeAsync(() => {
       fixture.detectChanges();
-      getPickerInput(fixture.debugElement).dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
+      getPickerInput(fixture.debugElement).dispatchEvent(ENTER_EVENT);
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -710,12 +716,12 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
 
       // should focus the other input
-      leftInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
+      leftInput.dispatchEvent(ENTER_EVENT);
       fixture.detectChanges();
       expect(getRangePickerRightInput(fixture.debugElement) === document.activeElement).toBeTruthy();
 
       typeInElement('2018-12-12', rightInput);
-      rightInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
+      rightInput.dispatchEvent(ENTER_EVENT);
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -741,7 +747,7 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       typeInElement(newDateString[1], rightInput);
       fixture.detectChanges();
-      rightInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
+      rightInput.dispatchEvent(ENTER_EVENT);
       fixture.detectChanges();
       tick(500);
       expect(nzOnChange).toHaveBeenCalledWith([new Date(newDateString[0]), new Date(newDateString[1])]);
@@ -781,7 +787,7 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       typeInElement('2018-02-06', rightInput);
       fixture.detectChanges();
-      getPickerInput(fixture.debugElement).dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
+      getPickerInput(fixture.debugElement).dispatchEvent(ENTER_EVENT);
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
