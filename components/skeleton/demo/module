@@ -4,5 +4,16 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
 
-export const moduleList = [ NzSkeletonModule, NzListModule, NzSwitchModule, NzIconModule, NzButtonModule, NzRadioModule ];
+export const moduleList = [
+    NzSkeletonModule,
+    NzListModule,
+    NzSwitchModule,
+    NzIconModule,
+    NzButtonModule,
+    NzRadioModule,
+    NzDividerModule,
+    NzSpaceModule
+];
