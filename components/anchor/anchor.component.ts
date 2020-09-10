@@ -23,7 +23,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NgStyleInterface, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -39,7 +39,7 @@ interface Section {
   top: number;
 }
 
-const NZ_CONFIG_COMPONENT_NAME = 'anchor';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'anchor';
 const sharpMatcherRegx = /#([^#]+)$/;
 
 @Component({
@@ -65,6 +65,7 @@ const sharpMatcherRegx = /#([^#]+)$/;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzAffix: BooleanInput;
   static ngAcceptInputType_nzShowInkInFixed: BooleanInput;
   static ngAcceptInputType_nzBounds: NumberInput;
@@ -75,18 +76,18 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
   @Input() @InputBoolean() nzAffix = true;
 
   @Input()
-  @WithConfig(NZ_CONFIG_COMPONENT_NAME)
+  @WithConfig()
   @InputBoolean()
   nzShowInkInFixed: boolean = false;
 
   @Input()
-  @WithConfig(NZ_CONFIG_COMPONENT_NAME)
+  @WithConfig()
   @InputNumber()
   nzBounds: number = 5;
 
   @Input()
   @InputNumber(undefined)
-  @WithConfig<number>(NZ_CONFIG_COMPONENT_NAME)
+  @WithConfig<number>()
   nzOffsetTop?: number = undefined;
 
   @Input() nzContainer?: string | HTMLElement;

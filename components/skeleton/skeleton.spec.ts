@@ -140,6 +140,15 @@ describe('skeleton', () => {
       expect(paragraphs[3].style.width).toBe('');
     });
   });
+
+  describe('#nzRound', () => {
+    it('should round work', () => {
+      expect(dl.nativeElement.querySelector('.ant-skeleton-round')).toBeFalsy();
+      testComp.nzRound = true;
+      fixture.detectChanges();
+      expect(dl.nativeElement.querySelector('.ant-skeleton-round')).toBeTruthy();
+    });
+  });
 });
 
 describe('skeleton element', () => {
@@ -161,6 +170,9 @@ describe('skeleton element', () => {
   it('should nzActive work', () => {
     expect(dl.nativeElement.querySelector('.ant-skeleton-active')).toBeFalsy();
     testComp.nzActive = true;
+    fixture.detectChanges();
+    expect(dl.nativeElement.querySelector('.ant-skeleton-active')).toBeTruthy();
+    testComp.useSuite = 4;
     fixture.detectChanges();
     expect(dl.nativeElement.querySelector('.ant-skeleton-active')).toBeTruthy();
   });
@@ -196,13 +208,30 @@ describe('skeleton element', () => {
     fixture.detectChanges();
     expect(dl.nativeElement.querySelector('.ant-skeleton-button-round')).toBeTruthy();
   });
+
+  it('should image svg work', () => {
+    fixture.detectChanges();
+    expect(dl.nativeElement.querySelector('svg')).toBeNull();
+    testComp.useSuite = 4;
+    fixture.detectChanges();
+    expect(dl.nativeElement.querySelector('svg')).toBeTruthy();
+  });
 });
 
 @Component({
-  template: ` <nz-skeleton [nzActive]="nzActive" [nzAvatar]="nzAvatar" [nzTitle]="nzTitle" [nzParagraph]="nzParagraph"> </nz-skeleton> `
+  template: `
+    <nz-skeleton
+      [nzActive]="nzActive"
+      [nzAvatar]="nzAvatar"
+      [nzTitle]="nzTitle"
+      [nzParagraph]="nzParagraph"
+      [nzRound]="nzRound"
+    ></nz-skeleton>
+  `
 })
 export class NzTestSkeletonComponent {
   nzActive: boolean = false;
+  nzRound: boolean = false;
   nzAvatar: NzSkeletonAvatar | boolean = false;
   nzTitle: NzSkeletonTitle | boolean = false;
   nzParagraph: NzSkeletonParagraph | boolean = false;
@@ -211,11 +240,22 @@ export class NzTestSkeletonComponent {
 @Component({
   template: `
     <ng-container [ngSwitch]="useSuite">
-      <nz-skeleton-element *ngSwitchCase="1" nzType="avatar" [nzActive]="nzActive" [nzSize]="nzSize" [nzShape]="nzShape">
-      </nz-skeleton-element>
-      <nz-skeleton-element *ngSwitchCase="2" nzType="button" [nzActive]="nzActive" [nzSize]="nzSize" [nzShape]="nzShape">
-      </nz-skeleton-element>
-      <nz-skeleton-element *ngSwitchCase="3" nzType="input" [nzActive]="nzActive" [nzSize]="nzSize"> </nz-skeleton-element>
+      <nz-skeleton-element
+        *ngSwitchCase="1"
+        nzType="avatar"
+        [nzActive]="nzActive"
+        [nzSize]="nzSize"
+        [nzShape]="nzShape"
+      ></nz-skeleton-element>
+      <nz-skeleton-element
+        *ngSwitchCase="2"
+        nzType="button"
+        [nzActive]="nzActive"
+        [nzSize]="nzSize"
+        [nzShape]="nzShape"
+      ></nz-skeleton-element>
+      <nz-skeleton-element *ngSwitchCase="3" nzType="input" [nzActive]="nzActive" [nzSize]="nzSize"></nz-skeleton-element>
+      <nz-skeleton-element *ngSwitchCase="4" nzType="image" [nzActive]="nzActive"></nz-skeleton-element>
     </ng-container>
   `
 })

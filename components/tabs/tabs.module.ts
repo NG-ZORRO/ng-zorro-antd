@@ -16,7 +16,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTabAddButtonComponent } from './tab-add-button.component';
 import { NzTabBodyComponent } from './tab-body.component';
 import { NzTabCloseButtonComponent } from './tab-close-button.component';
-import { NzTabLinkDirective } from './tab-link.directive';
+import { NzTabLinkDirective, NzTabLinkTemplateDirective } from './tab-link.directive';
 import { NzTabNavBarComponent } from './tab-nav-bar.component';
 import { NzTabNavItemDirective } from './tab-nav-item.directive';
 import { NzTabNavOperationComponent } from './tab-nav-operation.component';
@@ -38,7 +38,8 @@ const DIRECTIVES = [
   NzTabCloseButtonComponent,
   NzTabDirective,
   NzTabBodyComponent,
-  NzTabLinkDirective
+  NzTabLinkDirective,
+  NzTabLinkTemplateDirective
 ];
 
 @NgModule({

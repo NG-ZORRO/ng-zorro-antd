@@ -13,7 +13,7 @@ import { isNotNil } from 'ng-zorro-antd/core/util';
 import { defer, Observable, Subject } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
-import { MODAL_MASK_CLASS_NAME, NZ_CONFIG_COMPONENT_NAME } from './modal-config';
+import { MODAL_MASK_CLASS_NAME, NZ_CONFIG_MODULE_NAME } from './modal-config';
 import { NzModalConfirmContainerComponent } from './modal-confirm-container.component';
 import { BaseModalContainerComponent } from './modal-container';
 import { NzModalContainerComponent } from './modal-container.component';
@@ -123,7 +123,7 @@ export class NzModalService implements OnDestroy {
   }
 
   private createOverlay(config: ModalOptions): OverlayRef {
-    const globalConfig = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME) || {};
+    const globalConfig: NzSafeAny = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME) || {};
     const overlayConfig = new OverlayConfig({
       hasBackdrop: true,
       scrollStrategy: this.overlay.scrollStrategies.block(),

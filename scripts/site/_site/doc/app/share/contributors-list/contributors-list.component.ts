@@ -70,7 +70,7 @@ export class NzContributorsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.intersectionObserver.unobserve(this.elementRef.nativeElement);
+    this.intersectionObserver?.unobserve(this.elementRef.nativeElement);
   }
 
   reloadContributors(): void {

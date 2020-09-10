@@ -27,7 +27,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzDragService, NzResizeService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
@@ -47,7 +47,7 @@ import {
   PointerVector
 } from './typings';
 
-const NZ_CONFIG_COMPONENT_NAME = 'carousel';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'carousel';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -94,6 +94,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'carousel';
   }
 })
 export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnDestroy, OnChanges {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzEnableSwipe: BooleanInput;
   static ngAcceptInputType_nzDots: BooleanInput;
   static ngAcceptInputType_nzAutoPlay: BooleanInput;
@@ -106,16 +107,16 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
   @ViewChild('slickTrack', { static: false }) slickTrack?: ElementRef;
 
   @Input() nzDotRender?: TemplateRef<{ $implicit: number }>;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzEffect: NzCarouselEffects = 'scrollx';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzEnableSwipe: boolean = true;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzDots: boolean = true;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzAutoPlay: boolean = false;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputNumber() nzAutoPlaySpeed: number = 3000;
+  @Input() @WithConfig() nzEffect: NzCarouselEffects = 'scrollx';
+  @Input() @WithConfig() @InputBoolean() nzEnableSwipe: boolean = true;
+  @Input() @WithConfig() @InputBoolean() nzDots: boolean = true;
+  @Input() @WithConfig() @InputBoolean() nzAutoPlay: boolean = false;
+  @Input() @WithConfig() @InputNumber() nzAutoPlaySpeed: number = 3000;
   @Input() @InputNumber() nzTransitionSpeed = 500;
 
   @Input()
   // @ts-ignore
-  @WithConfig(NZ_CONFIG_COMPONENT_NAME)
+  @WithConfig()
   set nzDotPosition(value: NzCarouselDotPosition) {
     this._dotPosition = value;
     if (value === 'left' || value === 'right') {

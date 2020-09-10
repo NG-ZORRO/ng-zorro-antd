@@ -1,5 +1,5 @@
 ---
-order: 3
+order: 4
 title:
   zh-CN: 包含子组件
   en-US: Contains sub component
@@ -10,5 +10,5 @@ title:
  加载占位图包含子组件。
 
  ## en-US
- 
+
  Skeleton contains sub component.

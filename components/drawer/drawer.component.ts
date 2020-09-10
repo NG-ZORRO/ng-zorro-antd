@@ -29,7 +29,7 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toCssPixel } from 'ng-zorro-antd/core/util';
 
@@ -40,7 +40,7 @@ import { NzDrawerRef } from './drawer-ref';
 
 export const DRAWER_ANIMATE_DURATION = 300;
 
-const NZ_CONFIG_COMPONENT_NAME = 'drawer';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
 
 @Component({
   selector: 'nz-drawer',
@@ -99,6 +99,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'drawer';
 })
 export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> extends NzDrawerRef<T, R>
   implements OnInit, OnDestroy, AfterViewInit, OnChanges, NzDrawerOptionsOfComponent {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzClosable: BooleanInput;
   static ngAcceptInputType_nzMaskClosable: BooleanInput;
   static ngAcceptInputType_nzMask: BooleanInput;
@@ -108,9 +109,9 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> exte
 
   @Input() nzContent!: TemplateRef<{ $implicit: D; drawerRef: NzDrawerRef<R> }> | Type<T>;
   @Input() @InputBoolean() nzClosable: boolean = true;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzMaskClosable: boolean = true;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzMask: boolean = true;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzCloseOnNavigation: boolean = true;
+  @Input() @WithConfig() @InputBoolean() nzMaskClosable: boolean = true;
+  @Input() @WithConfig() @InputBoolean() nzMask: boolean = true;
+  @Input() @WithConfig() @InputBoolean() nzCloseOnNavigation: boolean = true;
   @Input() @InputBoolean() nzNoAnimation = false;
   @Input() @InputBoolean() nzKeyboard: boolean = true;
   @Input() nzTitle?: string | TemplateRef<{}>;

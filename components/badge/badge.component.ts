@@ -22,7 +22,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, isEmpty } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
@@ -31,7 +31,7 @@ import { startWith, take, takeUntil } from 'rxjs/operators';
 import { badgePresetColors } from './preset-colors';
 import { NzBadgeStatusType } from './types';
 
-const NZ_CONFIG_COMPONENT_NAME = 'backTop';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'backTop';
 
 @Component({
   selector: 'nz-badge',
@@ -86,6 +86,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'backTop';
   }
 })
 export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzShowZero: BooleanInput;
   static ngAcceptInputType_nzShowDot: BooleanInput;
   static ngAcceptInputType_nzDot: BooleanInput;
@@ -102,8 +103,8 @@ export class NzBadgeComponent implements OnInit, AfterViewInit, OnChanges, OnDes
   @Input() @InputBoolean() nzShowZero: boolean = false;
   @Input() @InputBoolean() nzShowDot = true;
   @Input() @InputBoolean() nzDot = false;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzOverflowCount: number = 99;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzColor?: string = undefined;
+  @Input() @WithConfig() nzOverflowCount: number = 99;
+  @Input() @WithConfig() nzColor?: string = undefined;
   @Input() nzStyle: { [key: string]: string } | null = null;
   @Input() nzText?: string;
   @Input() nzTitle?: string | null | undefined;

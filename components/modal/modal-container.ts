@@ -13,7 +13,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { getElementOffset } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { FADE_CLASS_NAME_MAP, MODAL_MASK_CLASS_NAME, NZ_CONFIG_COMPONENT_NAME, ZOOM_CLASS_NAME_MAP } from './modal-config';
+import { FADE_CLASS_NAME_MAP, MODAL_MASK_CLASS_NAME, NZ_CONFIG_MODULE_NAME, ZOOM_CLASS_NAME_MAP } from './modal-config';
 
 import { NzModalRef } from './modal-ref';
 import { ModalOptions } from './modal-types';
@@ -44,13 +44,13 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
   protected destroy$ = new Subject();
 
   get showMask(): boolean {
-    const defaultConfig = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME) || {};
+    const defaultConfig: NzSafeAny = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME) || {};
 
     return !!getValueWithConfig<boolean>(this.config.nzMask, defaultConfig.nzMask, true);
   }
 
   get maskClosable(): boolean {
-    const defaultConfig = this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME) || {};
+    const defaultConfig: NzSafeAny = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME) || {};
 
     return !!getValueWithConfig<boolean>(this.config.nzMaskClosable, defaultConfig.nzMaskClosable, true);
   }
@@ -71,7 +71,7 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
     this.isStringContent = typeof config.nzContent === 'string';
     this.setContainer();
     this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.updateMaskClassname();

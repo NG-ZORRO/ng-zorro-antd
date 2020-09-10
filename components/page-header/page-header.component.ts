@@ -20,14 +20,14 @@ import {
 } from '@angular/core';
 
 import { Location } from '@angular/common';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { PREFIX } from 'ng-zorro-antd/core/logger';
 import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { NzPageHeaderBreadcrumbDirective, NzPageHeaderFooterDirective } from './page-header-cells';
 
-const NZ_CONFIG_COMPONENT_NAME = 'pageHeader';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pageHeader';
 
 @Component({
   selector: 'nz-page-header',
@@ -77,10 +77,12 @@ const NZ_CONFIG_COMPONENT_NAME = 'pageHeader';
   }
 })
 export class NzPageHeaderComponent implements AfterViewInit, OnDestroy {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
   @Input() nzBackIcon: string | TemplateRef<void> | null = null;
   @Input() nzTitle?: string | TemplateRef<void>;
   @Input() nzSubtitle?: string | TemplateRef<void>;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzGhost: boolean = true;
+  @Input() @WithConfig() nzGhost: boolean = true;
   @Output() readonly nzBack = new EventEmitter<void>();
 
   @ContentChild(NzPageHeaderFooterDirective, { static: false }) nzPageHeaderFooter?: ElementRef<NzPageHeaderFooterDirective>;

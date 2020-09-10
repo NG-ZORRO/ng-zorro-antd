@@ -52,7 +52,7 @@ title: Ant Design of Angular
 
 ## 设计规范
 
-与 Ant Design 设计规范定期同步，你可以在线查看[同步日志](https://nz-styles-syncer.now.sh/)。
+与 Ant Design 设计规范定期同步，你可以在线查看[同步日志](https://github.com/NG-ZORRO/ng-zorro-antd/actions?query=workflow:"styles-sync")。
 
 ## 安装
 

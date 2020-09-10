@@ -404,6 +404,27 @@ describe('mention', () => {
       expect(mention.isOpen).toBe(true);
     });
 
+    it('should emit nzOnSearchChange when type in @ prefix', () => {
+      spyOn(fixture.componentInstance, 'onSearchChange');
+
+      dispatchFakeEvent(textarea, 'click');
+      fixture.detectChanges();
+      typeInElement('@test', textarea);
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.onSearchChange).toHaveBeenCalledTimes(1);
+
+      typeInElement('@test  @', textarea);
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.onSearchChange).toHaveBeenCalledTimes(2);
+
+      typeInElement('@test  @ @', textarea);
+      fixture.detectChanges();
+
+      expect(fixture.componentInstance.onSearchChange).toHaveBeenCalledTimes(3);
+    });
+
     it('should open the dropdown when the type in # prefix', () => {
       fixture.componentInstance.setArrayPrefix();
       dispatchFakeEvent(textarea, 'click');
@@ -436,8 +457,13 @@ describe('mention', () => {
 @Component({
   template: `
     <nz-mention [nzSuggestions]="suggestions">
-      <textarea *ngIf="!inputTrigger" nz-input [nzAutosize]="{ minRows: 4, maxRows: 4 }" [(ngModel)]="inputValue" nzMentionTrigger>
-      </textarea>
+      <textarea
+        *ngIf="!inputTrigger"
+        nz-input
+        [nzAutosize]="{ minRows: 4, maxRows: 4 }"
+        [(ngModel)]="inputValue"
+        nzMentionTrigger
+      ></textarea>
       <input *ngIf="inputTrigger" nz-input [(ngModel)]="inputValue" nzMentionTrigger />
     </nz-mention>
   `
@@ -452,8 +478,15 @@ class NzTestSimpleMentionComponent {
 
 @Component({
   template: `
-    <nz-mention [nzSuggestions]="webFrameworks" [nzValueWith]="valueWith" [nzPrefix]="prefix" [nzPlacement]="'top'" [nzLoading]="loading">
-      <textarea nz-input [nzAutosize]="{ minRows: 4, maxRows: 4 }" [(ngModel)]="inputValue" nzMentionTrigger> </textarea>
+    <nz-mention
+      [nzSuggestions]="webFrameworks"
+      [nzValueWith]="valueWith"
+      [nzPrefix]="prefix"
+      [nzPlacement]="'top'"
+      [nzLoading]="loading"
+      (nzOnSearchChange)="onSearchChange()"
+    >
+      <textarea nz-input [nzAutosize]="{ minRows: 4, maxRows: 4 }" [(ngModel)]="inputValue" nzMentionTrigger></textarea>
       <ng-container *nzMentionSuggestion="let framework">
         <span class="custom">{{ framework.name }} - {{ framework.type }}</span>
       </ng-container>
@@ -477,6 +510,10 @@ class NzTestPropertyMentionComponent {
 
   setArrayPrefix(): void {
     this.prefix = ['@', '#'];
+  }
+
+  onSearchChange(): void {
+    // noop
   }
 
   fetchSuggestions(): void {

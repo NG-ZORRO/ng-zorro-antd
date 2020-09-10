@@ -9,6 +9,7 @@ import {
   NzSkeletonElementAvatarComponent,
   NzSkeletonElementButtonComponent,
   NzSkeletonElementDirective,
+  NzSkeletonElementImageComponent,
   NzSkeletonElementInputComponent
 } from './skeleton-element.component';
 import { NzSkeletonComponent } from './skeleton.component';
@@ -19,6 +20,7 @@ import { NzSkeletonComponent } from './skeleton.component';
     NzSkeletonElementDirective,
     NzSkeletonElementButtonComponent,
     NzSkeletonElementAvatarComponent,
+    NzSkeletonElementImageComponent,
     NzSkeletonElementInputComponent
   ],
   imports: [CommonModule],
@@ -27,6 +29,7 @@ import { NzSkeletonComponent } from './skeleton.component';
     NzSkeletonElementDirective,
     NzSkeletonElementButtonComponent,
     NzSkeletonElementAvatarComponent,
+    NzSkeletonElementImageComponent,
     NzSkeletonElementInputComponent
   ]
 })

@@ -27,9 +27,9 @@ import {
 import { NavigationEnd, Router, RouterLink, RouterLinkWithHref } from '@angular/router';
 
 import { merge, Observable, of, Subject, Subscription } from 'rxjs';
-import { filter, first, startWith, takeUntil } from 'rxjs/operators';
+import { delay, filter, first, startWith, takeUntil } from 'rxjs/operators';
 
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { PREFIX, warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { BooleanInput, NumberInput, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, wrapIntoObservable } from 'ng-zorro-antd/core/util';
@@ -46,7 +46,7 @@ import {
 import { NzTabNavBarComponent } from './tab-nav-bar.component';
 import { NzTabComponent, NZ_TAB_SET } from './tab.component';
 
-const NZ_CONFIG_COMPONENT_NAME = 'tabs';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'tabs';
 
 let nextId = 0;
 
@@ -64,6 +64,7 @@ let nextId = 0;
   ],
   template: `
     <nz-tabs-nav
+      *ngIf="tabs.length"
       [ngStyle]="nzTabBarStyle"
       [selectedIndex]="nzSelectedIndex || 0"
       [inkBarAnimated]="inkBarAnimated"
@@ -81,6 +82,7 @@ let nextId = 0;
         [class.ant-tabs-tab-active]="nzSelectedIndex === i"
         [class.ant-tabs-tab-disabled]="tab.nzDisabled"
         (click)="clickNavItem(tab, i)"
+        (contextmenu)="contextmenuNavItem(tab, $event)"
         *ngFor="let tab of tabs; let i = index"
       >
         <div
@@ -97,7 +99,7 @@ let nextId = 0;
           nzTabNavItem
           cdkMonitorElementFocus
         >
-          <ng-container *nzStringTemplateOutlet="tab.label">{{ tab.label }}</ng-container>
+          <ng-container *nzStringTemplateOutlet="tab.label; context: { visible: true }">{{ tab.label }}</ng-container>
           <button
             nz-tab-close-button
             *ngIf="tab.nzClosable && closable && !tab.nzDisabled"
@@ -144,6 +146,8 @@ let nextId = 0;
   }
 })
 export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy, AfterContentInit, OnChanges {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
   static ngAcceptInputType_nzHideAdd: BooleanInput;
   static ngAcceptInputType_nzHideAll: BooleanInput;
   static ngAcceptInputType_nzCentered: BooleanInput;
@@ -168,10 +172,10 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   @Input() nzCanDeactivate: NzTabsCanDeactivateFn | null = null;
   @Input() nzAddIcon: string | TemplateRef<NzSafeAny> = 'plus';
   @Input() nzTabBarStyle: { [key: string]: string } | null = null;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzType: NzTabType = 'line';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzSizeLDSType = 'default';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzAnimated: NzAnimatedInterface | boolean = true;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzTabBarGutter?: number = undefined;
+  @Input() @WithConfig() nzType: NzTabType = 'line';
+  @Input() @WithConfig() nzSize: NzSizeLDSType = 'default';
+  @Input() @WithConfig() nzAnimated: NzAnimatedInterface | boolean = true;
+  @Input() @WithConfig() nzTabBarGutter?: number = undefined;
   @Input() @InputBoolean() nzHideAdd: boolean = false;
   @Input() @InputBoolean() nzCentered: boolean = false;
   @Input() @InputBoolean() nzHideAll = false;
@@ -229,7 +233,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   // Pick up only direct descendants under ivy rendering engine
   // We filter out only the tabs that belong to this tab set in `tabs`.
   @ContentChildren(NzTabComponent, { descendants: true }) allTabs: QueryList<NzTabComponent> = new QueryList<NzTabComponent>();
-  @ViewChild(NzTabNavBarComponent, { static: true }) tabNavBarRef!: NzTabNavBarComponent;
+  @ViewChild(NzTabNavBarComponent, { static: false }) tabNavBarRef!: NzTabNavBarComponent;
 
   // All the direct tabs for this tab set
   tabs: QueryList<NzTabComponent> = new QueryList<NzTabComponent>();
@@ -265,9 +269,11 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   }
 
   ngAfterContentInit(): void {
+    Promise.resolve().then(() => {
+      this.setUpRouter();
+    });
     this.subscribeToTabLabels();
     this.subscribeToAllTabChanges();
-    this.setUpRouter();
 
     // Subscribe to changes in the amount of tabs, in order to be
     // able to re-render the content as new tabs are added or removed.
@@ -289,6 +295,8 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
           }
         }
       }
+      this.subscribeToTabLabels();
+      this.cdr.markForCheck();
     });
   }
 
@@ -395,6 +403,13 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
     }
   }
 
+  contextmenuNavItem(tab: NzTabComponent, e: MouseEvent): void {
+    if (!tab.nzDisabled) {
+      // ignore nzCanDeactivate
+      tab.nzContextmenu.emit(e);
+    }
+  }
+
   setSelectedIndex(index: number): void {
     this.canDeactivateSubscription.unsubscribe();
     this.canDeactivateSubscription = this.canDeactivateFun(this.selectedIndex!, index).subscribe(can => {
@@ -422,12 +437,12 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
       if (!this.router) {
         throw new Error(`${PREFIX} you should import 'RouterModule' if you want to use 'nzLinkRouter'!`);
       }
-
       this.router.events
         .pipe(
           takeUntil(this.destroy$),
           filter(e => e instanceof NavigationEnd),
-          startWith(true)
+          startWith(true),
+          delay(0)
         )
         .subscribe(() => {
           this.updateRouterActive();
