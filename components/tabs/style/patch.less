@@ -60,8 +60,20 @@ nz-tabs-nav {
             color: @disabled-color;
             background: transparent;
             cursor: not-allowed;
+
+            a {
+              pointer-events: none;
+              color: @disabled-color;
+            }
           }
         }
       }
     }
+}
+
+.@{tab-prefix-cls} {
+  &-tab-disabled a {
+    pointer-events: none;
+    color: @disabled-color;
+  }
 }

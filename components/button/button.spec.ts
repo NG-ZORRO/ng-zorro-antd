@@ -241,7 +241,9 @@ export class TestButtonIconOnlyComponent {}
 export class TestButtonIconOnlyLoadingComponent {}
 
 @Component({
-  template: ` <a nz-button href="https://ng.ant.design/" [disabled]="disabled">anchor</a> `
+  template: `
+    <a nz-button href="https://ng.ant.design/" [disabled]="disabled">anchor</a>
+  `
 })
 export class TestAnchorButtonComponent {
   disabled = false;
