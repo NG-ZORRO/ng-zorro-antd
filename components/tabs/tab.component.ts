@@ -20,6 +20,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { TabTemplateContext } from './interfaces';
 
 import { Subject } from 'rxjs';
 
@@ -52,7 +53,7 @@ export class NzTabComponent implements OnChanges, OnDestroy, OnInit {
   static ngAcceptInputType_nzClosable: BooleanInput;
   static ngAcceptInputType_nzForceRender: BooleanInput;
 
-  @Input() nzTitle: string | TemplateRef<void> = '';
+  @Input() nzTitle: string | TemplateRef<TabTemplateContext> = '';
   @Input() @InputBoolean() nzClosable = false;
   @Input() nzCloseIcon: string | TemplateRef<NzSafeAny> = 'close';
   @Input() @InputBoolean() nzDisabled = false;
@@ -60,6 +61,7 @@ export class NzTabComponent implements OnChanges, OnDestroy, OnInit {
   @Output() readonly nzSelect = new EventEmitter<void>();
   @Output() readonly nzDeselect = new EventEmitter<void>();
   @Output() readonly nzClick = new EventEmitter<void>();
+  @Output() readonly nzContextmenu = new EventEmitter<MouseEvent>();
 
   /**
    * @deprecated Will be removed in 11.0.0
@@ -80,7 +82,7 @@ export class NzTabComponent implements OnChanges, OnDestroy, OnInit {
     return this.template || this.contentTemplate;
   }
 
-  get label(): string | TemplateRef<void> {
+  get label(): string | TemplateRef<NzSafeAny> {
     return this.nzTitle || this.nzTabLinkTemplateDirective?.templateRef || this.tabLinkTemplate;
   }
 

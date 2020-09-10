@@ -17,6 +17,7 @@ import { NzTabPosition } from 'ng-zorro-antd/tabs';
         [nzDisabled]="tab.disabled"
         (nzSelect)="log(['select', tab])"
         (nzClick)="log(['click', tab])"
+        (nzContextmenu)="log(['contextmenu', tab])"
         (nzDeselect)="log(['deselect', tab])"
       >
         {{ tab.content }}

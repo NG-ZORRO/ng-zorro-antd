@@ -40,3 +40,7 @@ interface NzTabTouchScrollEvent {
 
 export type NzTabScrollEvent = NzTabTouchScrollEvent | NzTabWheelScrollEvent;
 export type NzTabScrollEventHandlerFun<T extends NzTabScrollEvent['event']> = (event: T) => void;
+
+export interface TabTemplateContext {
+  visible: boolean;
+}

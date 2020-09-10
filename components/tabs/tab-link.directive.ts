@@ -8,6 +8,8 @@ import { RouterLink, RouterLinkWithHref } from '@angular/router';
 
 import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 
+import { TabTemplateContext } from './interfaces';
+
 /**
  * Fix https://github.com/angular/angular/issues/8563
  */
@@ -16,7 +18,7 @@ import { warnDeprecation } from 'ng-zorro-antd/core/logger';
   exportAs: 'nzTabLinkTemplate'
 })
 export class NzTabLinkTemplateDirective {
-  constructor(@Host() public templateRef: TemplateRef<void>) {}
+  constructor(@Host() public templateRef: TemplateRef<TabTemplateContext>) {}
 }
 
 /**

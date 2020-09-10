@@ -53,8 +53,9 @@ import { NzTabNavItemDirective } from './tab-nav-item.directive';
           [nzSelected]="item.active"
           [nzDisabled]="item.disabled"
           (click)="onSelect(item)"
+          (contextmenu)="onContextmenu(item, $event)"
         >
-          <ng-container *nzStringTemplateOutlet="item.tab.label">{{ item.tab.label }}</ng-container>
+          <ng-container *nzStringTemplateOutlet="item.tab.label; context: { visible: false }">{{ item.tab.label }}</ng-container>
         </li>
       </ul>
     </nz-dropdown-menu>
@@ -88,6 +89,11 @@ export class NzTabNavOperationComponent implements OnDestroy {
     }
   }
 
+  onContextmenu(item: NzTabNavItemDirective, e: MouseEvent): void {
+    if (!item.disabled) {
+      item.tab.nzContextmenu.emit(e);
+    }
+  }
   showItems(): void {
     clearTimeout(this.closeAnimationWaitTimeoutId);
     this.menuOpened = true;
