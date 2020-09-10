@@ -189,7 +189,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   destroy$ = new Subject();
   prefixCls = PREFIX_CLASS;
   // Index signature in type 'string | string[]' only permits reading
-  inputValue: NzSafeAny;
+  inputValue: NzSafeAny = '';
   activeBarStyle: object = { position: 'absolute' };
   animationOpenState = false;
   overlayOpen: boolean = false; // Available when "open"=undefined
@@ -238,14 +238,13 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   constructor(
     private elementRef: ElementRef,
     private dateHelper: DateHelperService,
-    private changeDetector: ChangeDetectorRef,
+    private cdr: ChangeDetectorRef,
     private platform: Platform,
     public datePickerService: DatePickerService,
     @Inject(DOCUMENT) doc: NzSafeAny
   ) {
     this.document = doc;
     this.origin = new CdkOverlayOrigin(this.elementRef);
-    this.updateInputValue();
   }
 
   ngOnInit(): void {
@@ -253,7 +252,6 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
     this.datePickerService.valueChange$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.updateInputValue();
-      this.changeDetector.markForCheck();
     });
   }
 
@@ -285,7 +283,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         this.focus();
       }
       this.panel?.cdr.markForCheck();
-      this.changeDetector.markForCheck();
+      this.cdr.markForCheck();
     });
   }
 
@@ -386,7 +384,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   onPositionChange(position: ConnectedOverlayPositionChange): void {
     this.currentPositionX = position.connectionPair.originX;
     this.currentPositionY = position.connectionPair.originY;
-    this.changeDetector.detectChanges(); // Take side-effects to position styles
+    this.cdr.detectChanges(); // Take side-effects to position styles
   }
 
   onClickClear(event: MouseEvent): void {
@@ -404,6 +402,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     } else {
       this.inputValue = this.formatValue(newValue as CandyDate);
     }
+    this.cdr.markForCheck();
   }
 
   formatValue(value: CandyDate): string {
@@ -461,7 +460,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   animationDone(): void {
     if (!this.realOpenState) {
       this.animationOpenState = false;
-      this.changeDetector.markForCheck();
+      this.cdr.markForCheck();
     }
   }
 }
