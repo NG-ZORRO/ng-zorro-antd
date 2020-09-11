@@ -39,7 +39,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
     '[class.ant-select-item-option-disabled]': 'disabled',
     '[class.ant-select-item-option-active]': 'activated && !disabled',
     '(mouseenter)': 'onHostMouseEnter()',
-    '(click)': 'onHostClick()'
+    '(mousedown)': 'onHostClick()'
   }
 })
 export class NzOptionItemComponent implements OnChanges {
