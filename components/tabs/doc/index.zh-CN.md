@@ -45,17 +45,6 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | `(nzSelectedIndexChange)` | 当前激活 tab 面板的 序列号变更回调函数 | `EventEmitter<number>` | - |
 | `(nzSelectChange)` | 当前激活 tab 面板变更回调函数 | `EventEmitter<{index: number,tab: NzTabComponent}>` | - |
 
-### nz-tab
-
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `[nzTitle]` | 选项卡头显示文字 | `string \| TemplateRef<void>` | - |
-| `[nzForceRender]` | 被隐藏时是否渲染 DOM 结构 | `boolean` | `false` |
-| `[nzDisabled]` | 是否禁用 | `boolean` | - |
-| `(nzClick)` | title被点击的回调函数 | `EventEmitter<void>` | - |
-| `(nzSelect)` | tab被选中的回调函数 | `EventEmitter<void>` | - |
-| `(nzDeselect)` | tab被取消选中的回调函数 | `EventEmitter<void>` | - |
-
 ### nz-tabset[nzType="editable-card"]
 
 | 参数 | 说明 | 类型 | 默认值 | 全局配置 |
@@ -65,11 +54,46 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | `(nzAdd)` | 点击添加按钮时的事件 | `EventEmitter<>` | - |
 | `(nzClose)` | 点击删除按钮时的事件 | `EventEmitter<{ index: number }>` | - |
 
+
+### nz-tab
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
+| `[nzTitle]` | 选项卡头显示文字 | `string \| TemplateRef<TabTemplateContext>` | - |
+| `[nzForceRender]` | 被隐藏时是否渲染 DOM 结构 | `boolean` | `false` |
+| `[nzDisabled]` | 是否禁用 | `boolean` | - |
+| `(nzClick)` | 单击 title 的回调函数 | `EventEmitter<void>` | - |
+| `(nzContextmenu)` | 右键 title 的回调函数 | `EventEmitter<MouseEvent>` | - |
+| `(nzSelect)` | tab 被选中的回调函数 | `EventEmitter<void>` | - |
+| `(nzDeselect)` | tab 被取消选中的回调函数 | `EventEmitter<void>` | - |
+
 ### nz-tabset[nzType="editable-card"] > nz-tab
 | 参数 | 说明 | 类型 | 默认值 | 全局配置 |
 | --- | --- | --- | --- | --- |
 | `[nzClosable]` | 显示删除按钮 | `boolean` | `false` |
 | `[nzCloseIcon]` | 关闭按钮图标 | `string \| TemplateRef<void>` | - |
+
+
+#### `nz-tab[nzTitle]` 的模版引用变量
+
+| 属性 | 说明 | 类型 |
+| --- | --- | --- |
+| `visible` | 表示是否在可见区域, 为 `false` 时将会被渲染到下拉菜单中 | `boolean` |
+
+在 `nz-tab[nzTitle]` 中使用
+```html
+<nz-tab [nzTitle]="titleTemplate">
+  ...
+  <ng-template #titleTemplate let-visible="visible">...</ng-template>
+</nz-tab>
+```
+
+在 `*nzTabLink` 中使用
+```html
+<nz-tab>
+  <a *nzTabLink="let visible = visible" nz-tab-link [routerLink]="['.']">...</a>
+</nz-tab>
+```
 
 ### [nz-tab]
 
@@ -77,7 +101,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 
 ### ng-template[nzTabLink] > a[nz-tab-link]
 
-选项卡头显示链接，在路由联动模式下使用。
+路由联动可以让 tab 的切换和路由行为相一致。
 
 ```html
 <nz-tabset nzLinkRouter>
@@ -87,7 +111,3 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
   </nz-tab>
 </nz-tabset>
 ```
-
-### 路由联动
-
-路由联动可以让 tab 的切换和路由行为相一致。使用此功能时，title 必须通过 `nz-tab-link` 组件指定。

@@ -82,6 +82,7 @@ let nextId = 0;
         [class.ant-tabs-tab-active]="nzSelectedIndex === i"
         [class.ant-tabs-tab-disabled]="tab.nzDisabled"
         (click)="clickNavItem(tab, i)"
+        (contextmenu)="contextmenuNavItem(tab, $event)"
         *ngFor="let tab of tabs; let i = index"
       >
         <div
@@ -98,7 +99,7 @@ let nextId = 0;
           nzTabNavItem
           cdkMonitorElementFocus
         >
-          <ng-container *nzStringTemplateOutlet="tab.label">{{ tab.label }}</ng-container>
+          <ng-container *nzStringTemplateOutlet="tab.label; context: { visible: true }">{{ tab.label }}</ng-container>
           <button
             nz-tab-close-button
             *ngIf="tab.nzClosable && closable && !tab.nzDisabled"
@@ -402,6 +403,13 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
     }
   }
 
+  contextmenuNavItem(tab: NzTabComponent, e: MouseEvent): void {
+    if (!tab.nzDisabled) {
+      // ignore nzCanDeactivate
+      tab.nzContextmenu.emit(e);
+    }
+  }
+
   setSelectedIndex(index: number): void {
     this.canDeactivateSubscription.unsubscribe();
     this.canDeactivateSubscription = this.canDeactivateFun(this.selectedIndex!, index).subscribe(can => {
@@ -460,7 +468,6 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
 
     return tabs.findIndex(tab => {
       const c = tab.linkDirective;
-      console.log(c);
       return c ? isActive(c.routerLink) || isActive(c.routerLinkWithHref) : false;
     });
   }

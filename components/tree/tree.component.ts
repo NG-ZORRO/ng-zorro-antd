@@ -198,7 +198,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   @Input() nzExpandedKeys: NzTreeNodeKey[] = [];
   @Input() nzSelectedKeys: NzTreeNodeKey[] = [];
   @Input() nzCheckedKeys: NzTreeNodeKey[] = [];
-  @Input() nzSearchValue?: string;
+  @Input() nzSearchValue: string = '';
   @Input() nzSearchFunc?: (node: NzTreeNodeOptions) => boolean;
   @ContentChild('nzTreeTemplate', { static: true }) nzTreeTemplateChild!: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
   @ViewChild(CdkVirtualScrollViewport, { read: CdkVirtualScrollViewport }) cdkVirtualScrollViewport!: CdkVirtualScrollViewport;

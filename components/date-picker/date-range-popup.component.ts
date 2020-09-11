@@ -181,6 +181,9 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     if (changes.panelMode) {
       this.endPanelMode = this.panelMode;
     }
+    if (changes.defaultPickerValue) {
+      this.initActiveDate();
+    }
   }
 
   ngOnDestroy(): void {

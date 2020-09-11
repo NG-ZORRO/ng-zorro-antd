@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Platform } from '@angular/cdk/platform';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -85,7 +86,12 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
   private value = '';
   private modelSet = false;
 
-  constructor(private nzCodeEditorService: NzCodeEditorService, private ngZone: NgZone, elementRef: ElementRef) {
+  constructor(
+    private nzCodeEditorService: NzCodeEditorService,
+    private ngZone: NgZone,
+    elementRef: ElementRef,
+    private platform: Platform
+  ) {
     this.el = elementRef.nativeElement;
   }
 
@@ -93,6 +99,9 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
    * Initialize a monaco editor instance.
    */
   ngAfterViewInit(): void {
+    if (!this.platform.isBrowser) {
+      return;
+    }
     this.nzCodeEditorService.requestToInit().subscribe(option => this.setup(option));
   }
 

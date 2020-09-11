@@ -226,7 +226,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     // Default format when it's empty
     if (!this.nzFormat) {
       if (this.showWeek) {
-        this.nzFormat = 'yyyy-ww'; // Format for week
+        this.nzFormat = this.i18n.getDateLocale() ? 'RRRR-II' : 'yyyy-ww'; // Format for week
       } else {
         this.nzFormat = this.nzShowTime ? 'yyyy-MM-dd HH:mm:ss' : 'yyyy-MM-dd';
       }

@@ -42,17 +42,6 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | `(nzSelectedIndexChange)` | Current tab's index change callback | `EventEmitter<number>` | - |
 | `(nzSelectChange)` | Current tab's change callback | `EventEmitter<{index: number,tab: NzTabComponent}>` | - |
 
-### nz-tab
-
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| `[nzTitle]` | Show text in tab's head | `string \| TemplateRef<void>` | - |
-| `[nzForceRender]` | Forced render of content in tabs, not lazy render after clicking on tabs | `boolean` | `false` |
-| `[nzDisabled]` | tab disable | `boolean` | - |
-| `(nzClick)` | title click callback | `EventEmitter<void>` | - |
-| `(nzSelect)` | title select callback | `EventEmitter<void>` | - |
-| `(nzDeselect)` | title deselect callback | `EventEmitter<void>` | - |
-
 ### nz-tabset[nzType="editable-card"]
 
 | Property | Description | Type | Default | Global Config |
@@ -62,11 +51,47 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 | `(nzAdd)` | When add button clicked emit | `EventEmitter<>` | - |
 | `(nzClose)` | When close button clicked emit | `EventEmitter<{ index: number }>` | - |
 
+### nz-tab
+
+| Property | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
+| `[nzTitle]` | Show text in tab's head | `string \| TemplateRef<void>` | - |
+| `[nzForceRender]` | Forced render of content in tabs, not lazy render after clicking on tabs | `boolean` | `false` |
+| `[nzDisabled]` | tab disable | `boolean` | - |
+| `(nzClick)` | title click callback | `EventEmitter<void>` | - |
+| `(nzContextmenu)` | title contextmenu callback | `EventEmitter<MouseEvent>` | - |
+| `(nzSelect)` | title select callback | `EventEmitter<void>` | - |
+| `(nzDeselect)` | title deselect callback | `EventEmitter<void>` | - |
+
 ### nz-tabset[nzType="editable-card"] > nz-tab
 | Property | Description | Type | Default | Global Config |
 | --- | --- | --- | --- | --- |
 | `[nzClosable]` | Show close icon or not | `boolean` | `false` |
 | `[nzCloseIcon]` | Close icon | `string \| TemplateRef<void>` | - |
+
+
+#### Template variable references of `nz-tab[nzTitle]`
+
+| Property | Description | Type |
+| --- | --- | --- |
+| `visible` | Is the title in the visible area, will be rendered to the dropdown menu if `false`. | `boolean`|
+
+Use in `nz-tab[nzTitle]`
+
+```html
+<nz-tab [nzTitle]="titleTemplate">
+  ...
+  <ng-template #titleTemplate let-visible="visible">...</ng-template>
+</nz-tab>
+```
+
+Use in `*nzTabLink`
+
+```html
+<nz-tab>
+  <a *nzTabLink="let visible = visible" nz-tab-link [routerLink]="['.']">...</a>
+</nz-tab>
+```
 
 
 ### [nz-tab]
@@ -85,7 +110,3 @@ Show a link in tab's head. Used in router link mode.
   </nz-tab>
 </nz-tabset>
 ```
-
-### Link Router
-
-This make the tabs component changes `nzSelectedIndex` with Angular route. You must use `nz-tab-link` instead of `[nzTitle]` in this situation.

@@ -9,12 +9,12 @@ interface DataItem {
 
 interface ColumnItem {
   name: string;
-  sortOrder?: NzTableSortOrder;
-  sortFn?: NzTableSortFn;
-  listOfFilter?: NzTableFilterList;
-  filterFn?: NzTableFilterFn;
-  filterMultiple?: boolean;
-  sortDirections?: NzTableSortOrder[];
+  sortOrder: NzTableSortOrder | null;
+  sortFn: NzTableSortFn | null;
+  listOfFilter: NzTableFilterList;
+  filterFn: NzTableFilterFn | null;
+  filterMultiple: boolean;
+  sortDirections: NzTableSortOrder[];
 }
 
 @Component({
@@ -52,6 +52,7 @@ export class NzDemoTableSortFilterComponent {
       name: 'Name',
       sortOrder: null,
       sortFn: (a: DataItem, b: DataItem) => a.name.localeCompare(b.name),
+      sortDirections: ['ascend', 'descend', null],
       filterMultiple: true,
       listOfFilter: [
         { text: 'Joe', value: 'Joe' },
@@ -63,11 +64,15 @@ export class NzDemoTableSortFilterComponent {
       name: 'Age',
       sortOrder: 'descend',
       sortFn: (a: DataItem, b: DataItem) => a.age - b.age,
-      sortDirections: ['descend', null]
+      sortDirections: ['descend', null],
+      listOfFilter: [],
+      filterFn: null,
+      filterMultiple: true
     },
     {
       name: 'Address',
       sortOrder: null,
+      sortDirections: ['ascend', 'descend', null],
       sortFn: (a: DataItem, b: DataItem) => a.address.length - b.address.length,
       filterMultiple: false,
       listOfFilter: [

@@ -447,7 +447,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
     return this.preferredPlacement;
   }
 
-  origin?: CdkOverlayOrigin;
+  origin!: CdkOverlayOrigin;
   preferredPlacement = 'top';
 
   _classMap: NgClassInterface = {};
