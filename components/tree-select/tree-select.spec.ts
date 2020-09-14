@@ -76,10 +76,18 @@ describe('tree-select component', () => {
       expect(treeSelect.nativeElement.classList).toContain('ant-select-lg');
     }));
     it('should allowClear work', () => {
-      expect(treeSelect.nativeElement.classList).not.toContain('ant-select-allow-clear');
+      const nativeElement = treeSelect.nativeElement as HTMLElement;
+      expect(nativeElement.classList).not.toContain('ant-select-allow-clear');
+      expect(nativeElement.querySelector('nz-select-clear')).toBeNull();
       testComponent.allowClear = true;
       fixture.detectChanges();
-      expect(treeSelect.nativeElement.classList).toContain('ant-select-allow-clear');
+      expect(nativeElement.classList).toContain('ant-select-allow-clear');
+      expect(nativeElement.querySelector('nz-select-clear')).not.toBeNull();
+
+      (nativeElement.querySelector('nz-select-clear') as HTMLElement)!.click();
+      fixture.detectChanges();
+
+      expect(nativeElement.querySelector('nz-select-clear')).toBeNull();
     });
     it('should click toggle open', () => {
       treeSelect.nativeElement.click();
@@ -451,12 +459,15 @@ describe('tree-select component', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(treeSelect.nativeElement.classList).not.toContain('ant-select-disabled');
+      const nativeElement = treeSelect.nativeElement as HTMLElement;
+      expect(nativeElement.classList).not.toContain('ant-select-disabled');
+      expect(nativeElement.querySelector('nz-select-clear')).not.toBeNull();
       testComponent.disable();
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(treeSelect.nativeElement.classList).toContain('ant-select-disabled');
+      expect(nativeElement.classList).toContain('ant-select-disabled');
+      expect(nativeElement.querySelector('nz-select-clear')).toBeNull();
     }));
 
     it('should set null value work', fakeAsync(() => {
