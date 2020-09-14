@@ -25,6 +25,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | Props | Description | Type | Default | Global Config |
 | --- | --- | --- | --- | --- |
 | `[nzClosable]` | Whether a close (x) button is visible on top right of the Drawer dialog or not. | `boolean` | `true` |
+|  `[nzCloseIcon]` | 自定义关闭图标 | `string \| TemplateRef<void> \| null` | `'close'` |
 | `[nzMask]` | Whether to show mask or not. | `boolean` | `true` | ✅ |
 | `[nzMaskClosable]` | Clicking on the mask (area outside the Drawer) to close the Drawer or not. | `boolean` | `true` | ✅ |
 | `[nzCloseOnNavigation]` | Whether to close the drawer when the navigation history changes | `boolean` | `true` | ✅ |
@@ -56,6 +57,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | nzContent |  The drawer body content. | `TemplateRef<{ $implicit: D, drawerRef: NzDrawerRef }> \| Type<T>` | - |
 | nzContentParams | The component inputs the param / The Template context. | `D` | - |
 | nzClosable | Whether a close (x) button is visible on top right of the Drawer dialog or not. | `boolean` | `true` |
+| nzCloseIcon | Custom close icon | `string \| TemplateRef<void> \| null` | `'close'` |
 | nzOnCancel | Execute when click on the mask or the upper cancel button, This function returns a promise, which is automatically closed when the execution is complete or the promise ends (return false to prevent closing) | `() => Promise<any>` | - |
 | nzMaskClosable | Clicking on the mask (area outside the Drawer) to close the Drawer or not. | `boolean` | `true` |
 | nzCloseOnNavigation    | Whether to close the drawer when the navigation history changes | `boolean` | `true` |
@@ -87,6 +89,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | --- | --- | --- |
 | afterOpen | Callback called after open. | `Observable<void>` |
 | afterClose | Callback called after close. | `Observable<R>` |
+| nzCloseIcon | Custom close icon | `string \| TemplateRef<void> \| null` |
 | nzClosable | Whether a close (x) button is visible on top right of the Drawer dialog or not. | `boolean` |
 | nzMaskClosable | Clicking on the mask (area outside the Drawer) to close the Drawer or not. | `boolean` |
 | nzMask | Whether to show mask or not. | `boolean` |

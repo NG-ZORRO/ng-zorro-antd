@@ -101,6 +101,24 @@ describe('NzDrawerComponent', () => {
     expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(false);
   });
 
+  it('should set close icon work', () => {
+    component.open();
+    fixture.detectChanges();
+    expect(overlayContainerElement.querySelector('.ant-drawer .anticon-close')).toBeDefined();
+
+    component.closeIcon = 'close-circle';
+    fixture.detectChanges();
+    expect(overlayContainerElement.querySelector('.ant-drawer .anticon-close')).toBeNull();
+    expect(overlayContainerElement.querySelector('.ant-drawer .anticon-close-circle')).toBeDefined();
+
+    component.closeIcon = component.closeIconTemplateRef;
+    fixture.detectChanges();
+
+    expect(overlayContainerElement.querySelector('.ant-drawer .anticon-close')).toBeNull();
+    expect(overlayContainerElement.querySelector('.ant-drawer .anticon-close-circle')).toBeNull();
+    expect(overlayContainerElement.querySelector('.ant-drawer .anticon-close-square')).toBeDefined();
+  });
+
   it('should not close when click mask', () => {
     component.maskClosable = false;
     component.open();
@@ -188,7 +206,7 @@ describe('NzDrawerComponent', () => {
   });
 
   it('should support TemplateRef title', () => {
-    component.title = component.templateTitle;
+    component.title = component.titleTemplateRef;
     component.open();
     fixture.detectChanges();
     expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
@@ -499,7 +517,8 @@ describe('NzDrawerService', () => {
 @Component({
   template: `
     <button (click)="open()">Open</button>
-    <ng-template #customTitle>
+    <ng-template #closeIconTemplate><i nz-icon nzType="close-circle" nzTheme="outline"></i></ng-template>
+    <ng-template #titleTemplate>
       <span class="custom-title">title</span>
       <button class="close-btn"></button>
     </ng-template>
@@ -513,6 +532,7 @@ describe('NzDrawerService', () => {
       [nzMaskClosable]="maskClosable"
       [nzWrapClassName]="'test-class'"
       [nzZIndex]="1001"
+      [nzCloseIcon]="closeIcon"
       [nzClosable]="closable"
       [nzMask]="showMask"
       [nzVisible]="visible"
@@ -544,9 +564,11 @@ class NzTestDrawerComponent {
   height: string | number = '300px';
   placement = 'left';
   noAnimation = false;
+  closeIcon?: TemplateRef<void> | string;
   offsetX = 0;
   offsetY = 0;
-  @ViewChild('customTitle', { static: false }) templateTitle!: TemplateRef<void>;
+  @ViewChild('titleTemplate', { static: false }) titleTemplateRef!: TemplateRef<void>;
+  @ViewChild('closeIconTemplate', { static: false }) closeIconTemplateRef!: TemplateRef<void>;
   @ViewChild('customFooter', { static: false }) templateFooter!: TemplateRef<void>;
   @ViewChild(NzDrawerComponent, { static: false }) drawerComponent!: NzDrawerComponent;
 
