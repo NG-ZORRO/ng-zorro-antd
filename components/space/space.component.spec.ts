@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { NzSpaceAlign } from 'ng-zorro-antd/space';
 import { NzSpaceComponent } from 'ng-zorro-antd/space/space.component';
 
 import { NzSpaceItemComponent } from './space-item.component';
@@ -115,11 +116,33 @@ describe('Space', () => {
       expect(element.style.marginBottom).toBeFalsy();
     });
   });
+  it('should set align', () => {
+    component.direction = 'vertical';
+    fixture.detectChanges();
+
+    const spaceComponent = fixture.debugElement.query(By.directive(NzSpaceComponent));
+    const spaceNativeElement = spaceComponent.nativeElement as HTMLElement;
+    expect(spaceNativeElement.classList).toContain('ant-space-vertical');
+
+    spaceNativeElement.classList.forEach(className => {
+      expect(className.indexOf('ant-space-align') === -1).toBe(true);
+    });
+
+    component.direction = 'horizontal';
+    fixture.detectChanges();
+
+    expect(spaceNativeElement.classList).toContain('ant-space-align-center');
+
+    component.align = 'end';
+    fixture.detectChanges();
+
+    expect(spaceNativeElement.classList).toContain('ant-space-align-end');
+  });
 });
 
 @Component({
   template: `
-    <nz-space [nzSize]="size" [nzDirection]="direction">
+    <nz-space [nzSize]="size" [nzDirection]="direction" [nzAlign]="align">
       <nz-space-item>
         <div>item</div>
       </nz-space-item>
@@ -136,4 +159,5 @@ class SpaceTestComponent {
   size: string | number = 'small';
   direction = 'horizontal';
   show = false;
+  align?: NzSpaceAlign;
 }

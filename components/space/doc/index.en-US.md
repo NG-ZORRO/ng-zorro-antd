@@ -25,3 +25,4 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 | --- | --- | --- | --- | --- |
 | `[nzSize]` | space size | `small` \| `middle` \| `large` \| `number` | `small` | ✅ |
 | `[nzDirection]` | space direction | `vertical` \| `horizontal` | `horizontal` |  |
+| `[nzAlign]` | align items | `start` \| `end` \| `baseline` \| `horizontal` | - | |
