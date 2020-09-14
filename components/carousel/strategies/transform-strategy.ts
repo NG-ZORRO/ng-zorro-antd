@@ -30,7 +30,8 @@ export class NzCarouselTransformStrategy extends NzCarouselBaseStrategy {
     const carousel = this.carouselComponent!;
     const activeIndex = carousel.activeIndex;
 
-    if (this.contents.length) {
+    // We only do when we are in browser.
+    if (this.platform.isBrowser && this.contents.length) {
       this.renderer.setStyle(this.slickListEl, 'height', `${this.unitHeight}px`);
 
       if (this.vertical) {
