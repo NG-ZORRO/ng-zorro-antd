@@ -46,6 +46,10 @@ import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 | `[nzMaxTagCount]` | Max tag count to show| number | - |
 | `[nzMaxTagPlaceholder]` | Placeholder for not showing tags | TemplateRef<{ $implicit: NzTreeNode[] }> | - |
 | `[nzTreeTemplate]` | Custom Nodes | `TemplateRef<{ $implicit: NzTreeNode }>` | - |
+| `[nzVirtualHeight]` | The height of virtual scroll | `string` | `-` |
+| `[nzVirtualItemSize]` | The size of the items in the list, same as [cdk itemSize](https://material.angular.io/cdk/scrolling/api) | `number` | `28` |
+| `[nzVirtualMaxBufferPx]` | The number of pixels worth of buffer to render for when rendering new items, same as [cdk maxBufferPx](https://material.angular.io/cdk/scrolling/api) | `number` | `500` |
+| `[nzVirtualMinBufferPx]` | The minimum amount of buffer rendered beyond the viewport (in pixels),same as [cdk minBufferPx](https://material.angular.io/cdk/scrolling/api) | `number` | `28` |
 | `(nzExpandChange)` | Callback function for when a treeNode is expanded or collapsed |`EventEmitter<NzFormatEmitEvent>` | - |
 
 #### Methods
