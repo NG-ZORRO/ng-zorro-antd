@@ -3,7 +3,7 @@ import { DOWN_ARROW, ENTER, ESCAPE, RIGHT_ARROW, TAB, UP_ARROW } from '@angular/
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ScrollDispatcher } from '@angular/cdk/scrolling';
 import { Component, NgZone, ViewChild } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -23,31 +23,33 @@ describe('mention', () => {
   const scrolledSubject = new Subject();
   let zone: MockNgZone;
 
-  beforeEach(async(() => {
-    const dir = 'ltr';
-    TestBed.configureTestingModule({
-      imports: [NzMentionModule, NzInputModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
-      declarations: [NzTestSimpleMentionComponent, NzTestPropertyMentionComponent],
-      providers: [
-        { provide: Directionality, useFactory: () => ({ value: dir }) },
-        { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
-        {
-          provide: NgZone,
-          useFactory: () => {
-            zone = new MockNgZone();
-            return zone;
+  beforeEach(
+    waitForAsync(() => {
+      const dir = 'ltr';
+      TestBed.configureTestingModule({
+        imports: [NzMentionModule, NzInputModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
+        declarations: [NzTestSimpleMentionComponent, NzTestPropertyMentionComponent],
+        providers: [
+          { provide: Directionality, useFactory: () => ({ value: dir }) },
+          { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
+          {
+            provide: NgZone,
+            useFactory: () => {
+              zone = new MockNgZone();
+              return zone;
+            }
           }
-        }
-      ]
-    });
+        ]
+      });
 
-    TestBed.compileComponents();
+      TestBed.compileComponents();
 
-    inject([OverlayContainer], (oc: OverlayContainer) => {
-      overlayContainer = oc;
-      overlayContainerElement = oc.getContainerElement();
-    })();
-  }));
+      inject([OverlayContainer], (oc: OverlayContainer) => {
+        overlayContainer = oc;
+        overlayContainerElement = oc.getContainerElement();
+      })();
+    })
+  );
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();

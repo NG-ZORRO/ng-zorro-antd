@@ -1,5 +1,5 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
@@ -8,19 +8,21 @@ import { NzInputGroupComponent } from './input-group.component';
 import { NzInputModule } from './input.module';
 
 describe('input-group', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
-      declarations: [
-        NzTestInputGroupAddonComponent,
-        NzTestInputGroupAffixComponent,
-        NzTestInputGroupMultipleComponent,
-        NzTestInputGroupColComponent,
-        NzTestInputGroupMixComponent
-      ],
-      providers: []
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
+        declarations: [
+          NzTestInputGroupAddonComponent,
+          NzTestInputGroupAffixComponent,
+          NzTestInputGroupMultipleComponent,
+          NzTestInputGroupColComponent,
+          NzTestInputGroupMixComponent
+        ],
+        providers: []
+      }).compileComponents();
+    })
+  );
   describe('input group', () => {
     describe('addon', () => {
       let testComponent: NzTestInputGroupAddonComponent;

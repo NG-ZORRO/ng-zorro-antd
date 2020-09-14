@@ -1,5 +1,5 @@
 import { Component, DebugElement, NO_ERRORS_SCHEMA, ViewChild, ViewEncapsulation } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
@@ -7,20 +7,22 @@ import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzTimePickerPanelComponent } from './time-picker-panel.component';
 
 describe('time-picker-panel', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [FormsModule, NzI18nModule],
-      schemas: [NO_ERRORS_SCHEMA],
-      declarations: [
-        NzTimePickerPanelComponent,
-        NzTestTimePanelComponent,
-        NzTestTimePanelDisabledComponent,
-        NzTest12HourTimePanelComponent,
-        NzTest12HourTimePanelDisabeledComponent
-      ]
-    });
-    TestBed.compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [FormsModule, NzI18nModule],
+        schemas: [NO_ERRORS_SCHEMA],
+        declarations: [
+          NzTimePickerPanelComponent,
+          NzTestTimePanelComponent,
+          NzTestTimePanelDisabledComponent,
+          NzTest12HourTimePanelComponent,
+          NzTest12HourTimePanelDisabeledComponent
+        ]
+      });
+      TestBed.compileComponents();
+    })
+  );
 
   describe('basic time-picker-panel', () => {
     let fixture: ComponentFixture<NzTestTimePanelComponent>;
@@ -317,8 +319,7 @@ describe('time-picker-panel', () => {
       [nzSecondStep]="secondStep"
       [nzMinuteStep]="minuteStep"
       [nzHourStep]="hourStep"
-    >
-    </nz-time-picker-panel>
+    ></nz-time-picker-panel>
   `,
   styleUrls: ['../style/index.less', './style/index.less']
 })
@@ -347,8 +348,7 @@ export class NzTestTimePanelComponent {
       [nzInDatePicker]="inDatePicker"
       [nzHideDisabledOptions]="hideDisabledOptions"
       [nzHourStep]="hourStep"
-    >
-    </nz-time-picker-panel>
+    ></nz-time-picker-panel>
   `,
   styleUrls: ['../style/index.less', './style/index.less']
 })
@@ -392,8 +392,7 @@ export class NzTestTimePanelDisabledComponent {
       [nzDefaultOpenValue]="openValue"
       [nzHourStep]="hourStep"
       [format]="format"
-    >
-    </nz-time-picker-panel>
+    ></nz-time-picker-panel>
   `,
   styleUrls: ['../style/index.less', './style/index.less']
 })
@@ -414,8 +413,7 @@ export class NzTest12HourTimePanelComponent {
       [nzDisabledHours]="disabledHours"
       [nzDisabledMinutes]="disabledMinutes"
       [nzDisabledSeconds]="disabledSeconds"
-    >
-    </nz-time-picker-panel>
+    ></nz-time-picker-panel>
   `,
   styleUrls: ['../style/index.less', './style/index.less']
 })

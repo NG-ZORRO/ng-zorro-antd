@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
 import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor';
@@ -31,12 +31,14 @@ describe('code editor', () => {
   describe('basic', () => {
     // let fixture: ComponentFixture<NzDemoCodeEditorBasicComponent>;
 
-    beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [FormsModule, NzCodeEditorModule],
-        declarations: [NzDemoCodeEditorBasicComponent]
-      }).compileComponents();
-    }));
+    beforeEach(
+      waitForAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [FormsModule, NzCodeEditorModule],
+          declarations: [NzDemoCodeEditorBasicComponent]
+        }).compileComponents();
+      })
+    );
 
     beforeEach(() => {
       // fixture = TestBed.createComponent(NzDemoCodeEditorBasicComponent);
@@ -47,12 +49,14 @@ describe('code editor', () => {
     let fixture: ComponentFixture<NzTestCodeEditorFullControlComponent>;
     let testComponent: NzTestCodeEditorFullControlComponent;
 
-    beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [FormsModule, NzCodeEditorModule],
-        declarations: [NzTestCodeEditorFullControlComponent]
-      }).compileComponents();
-    }));
+    beforeEach(
+      waitForAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [FormsModule, NzCodeEditorModule],
+          declarations: [NzTestCodeEditorFullControlComponent]
+        }).compileComponents();
+      })
+    );
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzTestCodeEditorFullControlComponent);
@@ -60,14 +64,17 @@ describe('code editor', () => {
     });
 
     // It seems that there is no way to waiting for monaco editor to load.
-    xit('should raise error when user try to set value in full control mode', async(() => {
-      const spy = spyOn(console, 'warn');
-      testComponent.code = '123';
-      fixture.detectChanges();
-      expect(spy).toHaveBeenCalledWith(
-        '[NG-ZORRO]',
-        'should not set value when you are using full control mode! It would result in ambiguous data flow!'
-      );
-    }));
+    xit(
+      'should raise error when user try to set value in full control mode',
+      waitForAsync(() => {
+        const spy = spyOn(console, 'warn');
+        testComponent.code = '123';
+        fixture.detectChanges();
+        expect(spy).toHaveBeenCalledWith(
+          '[NG-ZORRO]',
+          'should not set value when you are using full control mode! It would result in ambiguous data flow!'
+        );
+      })
+    );
   });
 });

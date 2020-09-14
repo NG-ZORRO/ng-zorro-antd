@@ -6,7 +6,7 @@
 import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { Overlay, OverlayConfig, OverlayKeyboardDispatcher, OverlayRef } from '@angular/cdk/overlay';
-import { CdkPortalOutlet, ComponentPortal, PortalInjector, TemplatePortal } from '@angular/cdk/portal';
+import { CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
@@ -99,7 +99,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> extends NzDrawerRef<T, R>
+export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
+  extends NzDrawerRef<T, R>
   implements OnInit, OnDestroy, AfterViewInit, OnChanges, NzDrawerOptionsOfComponent {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzClosable: BooleanInput;
@@ -333,7 +334,10 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> exte
     this.bodyPortalOutlet!.dispose();
 
     if (this.nzContent instanceof Type) {
-      const childInjector = new PortalInjector(this.injector, new WeakMap([[NzDrawerRef, this]]));
+      const childInjector = Injector.create({
+        parent: this.injector,
+        providers: [{ provide: NzDrawerRef, useValue: this }]
+      });
       const componentPortal = new ComponentPortal<T>(this.nzContent, null, childInjector);
       const componentRef = this.bodyPortalOutlet!.attachComponentPortal(componentPortal);
       this.componentInstance = componentRef.instance;

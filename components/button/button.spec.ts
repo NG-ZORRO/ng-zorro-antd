@@ -3,36 +3,9 @@ import { fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
-import { NzButtonComponent, NzButtonModule, NzButtonShape, NzButtonSize, NzButtonType } from './index';
+import { NzButtonComponent, NzButtonShape, NzButtonSize, NzButtonType } from './index';
 
 describe('button', () => {
-  describe('anchor', () => {
-    let testBed: ComponentBed<TestAnchorButtonComponent>;
-    let buttonElement: HTMLAnchorElement;
-
-    beforeEach(() => {
-      testBed = createComponentBed(TestAnchorButtonComponent, { imports: [NzButtonModule] });
-      buttonElement = testBed.debugElement.query(By.css('a')).nativeElement;
-    });
-
-    it('should disabled work', () => {
-      testBed.component.disabled = false;
-      testBed.fixture.detectChanges();
-
-      expect(buttonElement.getAttribute('disabled')).toBeNull();
-
-      testBed.component.disabled = true;
-      testBed.fixture.detectChanges();
-
-      expect(buttonElement.getAttribute('disabled')).not.toBeNull();
-      expect(buttonElement.getAttribute('tabindex')).toBe('-1');
-
-      // If the page reloads will be thrown an error
-      expect(() => {
-        buttonElement.click();
-      }).not.toThrowError();
-    });
-  });
   describe('className', () => {
     let testBed: ComponentBed<TestButtonComponent>;
     let buttonElement: HTMLButtonElement;
@@ -239,12 +212,3 @@ export class TestButtonIconOnlyComponent {}
   `
 })
 export class TestButtonIconOnlyLoadingComponent {}
-
-@Component({
-  template: `
-    <a nz-button href="https://ng.ant.design/" [disabled]="disabled">anchor</a>
-  `
-})
-export class TestAnchorButtonComponent {
-  disabled = false;
-}

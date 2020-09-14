@@ -19,7 +19,7 @@ import { BooleanInput, NumberInput, NzSafeAny, NzSizeLDSType } from 'ng-zorro-an
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 
 import { BehaviorSubject, Subject } from 'rxjs';
-import { debounceTime, flatMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, mergeMap, takeUntil } from 'rxjs/operators';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
 
@@ -79,8 +79,8 @@ export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
 
   ngOnInit(): void {
     const loading$ = this.spinning$.pipe(
-      flatMap(() => this.delay$),
-      flatMap(delay => {
+      mergeMap(() => this.delay$),
+      mergeMap(delay => {
         if (delay === 0) {
           return this.spinning$;
         } else {

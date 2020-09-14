@@ -59,8 +59,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
     '[class.ant-btn-block]': `nzBlock`,
     '[class.ant-input-search-button]': `nzSearch`,
     '[attr.tabindex]': 'disabled ? -1 : (tabIndex === null ? null : tabIndex)',
-    '[attr.disabled]': 'disabled || null',
-    '(click)': 'haltDisabledEvents($event)'
+    '[attr.disabled]': 'disabled || null'
   }
 })
 export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, AfterContentInit {
@@ -85,13 +84,6 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
   @Input() @WithConfig() nzSize: NzButtonSize = 'default';
   private destroy$ = new Subject<void>();
   private loading$ = new Subject<boolean>();
-
-  haltDisabledEvents(event: Event): void {
-    if (this.disabled) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-    }
-  }
 
   insertSpan(nodes: NodeList, renderer: Renderer2): void {
     nodes.forEach(node => {

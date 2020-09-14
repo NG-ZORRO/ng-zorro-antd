@@ -6,7 +6,7 @@
 import { Inject, Injectable, Optional, SkipSelf } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { BehaviorSubject, combineLatest, merge, Observable, Subject } from 'rxjs';
-import { auditTime, distinctUntilChanged, filter, flatMap, map, mapTo } from 'rxjs/operators';
+import { auditTime, distinctUntilChanged, filter, map, mapTo, mergeMap } from 'rxjs/operators';
 import { MenuService } from './menu.service';
 import { NzIsMenuInsideDropDownToken } from './menu.token';
 import { NzMenuModeType } from './menu.types';
@@ -55,7 +55,7 @@ export class NzSubmenuService {
     }
     /** close if menu item clicked **/
     const isClosedByMenuItemClick = this.childMenuItemClick$.pipe(
-      flatMap(() => this.mode$),
+      mergeMap(() => this.mode$),
       filter(mode => mode !== 'inline' || this.isMenuInsideDropDown),
       mapTo(false)
     );

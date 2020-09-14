@@ -1,5 +1,5 @@
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { async, discardPeriodicTasks, fakeAsync, tick } from '@angular/core/testing';
+import { discardPeriodicTasks, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -23,14 +23,16 @@ describe('layout', () => {
     let siders: DebugElement[];
     let layouts: DebugElement[];
 
-    beforeEach(async(() => {
-      testBed = createComponentBed(NzLayoutBasicComponent, { imports: [NzLayoutModule] });
-      headers = testBed.fixture.debugElement.queryAll(By.directive(NzHeaderComponent));
-      contents = testBed.fixture.debugElement.queryAll(By.directive(NzContentComponent));
-      footers = testBed.fixture.debugElement.queryAll(By.directive(NzFooterComponent));
-      siders = testBed.fixture.debugElement.queryAll(By.directive(NzSiderComponent));
-      layouts = testBed.fixture.debugElement.queryAll(By.directive(NzLayoutComponent));
-    }));
+    beforeEach(
+      waitForAsync(() => {
+        testBed = createComponentBed(NzLayoutBasicComponent, { imports: [NzLayoutModule] });
+        headers = testBed.fixture.debugElement.queryAll(By.directive(NzHeaderComponent));
+        contents = testBed.fixture.debugElement.queryAll(By.directive(NzContentComponent));
+        footers = testBed.fixture.debugElement.queryAll(By.directive(NzFooterComponent));
+        siders = testBed.fixture.debugElement.queryAll(By.directive(NzSiderComponent));
+        layouts = testBed.fixture.debugElement.queryAll(By.directive(NzLayoutComponent));
+      })
+    );
 
     it('should have correct class', () => {
       expect(headers.every(header => header.nativeElement.classList.contains('ant-layout-header'))).toBe(true);
@@ -177,15 +179,13 @@ describe('layout', () => {
 @Component({
   template: `
     <nz-layout>
-      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="triggerTemplate"> </nz-sider>
+      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="triggerTemplate"></nz-sider>
       <nz-layout>
         <nz-header>
           <i class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" (click)="isCollapsed = !isCollapsed"></i>
         </nz-header>
         <nz-content>
-          <div>
-            Bill is a cat.
-          </div>
+          <div>Bill is a cat.</div>
         </nz-content>
         <nz-footer>Ant Design ©2019 Implement By Angular</nz-footer>
       </nz-layout>
@@ -209,13 +209,11 @@ export class NzLayoutCustomTriggerComponent {
 @Component({
   template: `
     <nz-layout>
-      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzWidth]="width" [nzReverseArrow]="isReverseArrow"> </nz-sider>
+      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzWidth]="width" [nzReverseArrow]="isReverseArrow"></nz-sider>
       <nz-layout>
         <nz-header></nz-header>
         <nz-content>
-          <div>
-            Bill is a cat.
-          </div>
+          <div>Bill is a cat.</div>
         </nz-content>
         <nz-footer>Ant Design ©2019 Implement By Angular</nz-footer>
       </nz-layout>
@@ -231,14 +229,17 @@ export class NzLayoutSideComponent {
 @Component({
   template: `
     <nz-layout>
-      <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzBreakpoint]="'lg'" [nzCollapsedWidth]="0" [nzZeroTrigger]="zeroTrigger">
-      </nz-sider>
+      <nz-sider
+        nzCollapsible
+        [(nzCollapsed)]="isCollapsed"
+        [nzBreakpoint]="'lg'"
+        [nzCollapsedWidth]="0"
+        [nzZeroTrigger]="zeroTrigger"
+      ></nz-sider>
       <nz-layout>
         <nz-header></nz-header>
         <nz-content>
-          <div>
-            Content
-          </div>
+          <div>Content</div>
         </nz-content>
         <nz-footer>Ant Design ©2019 Implement By Angular</nz-footer>
       </nz-layout>
