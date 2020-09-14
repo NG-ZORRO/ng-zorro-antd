@@ -163,7 +163,7 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
       ></nz-select-placeholder>
 
       <nz-select-item
-        *ngIf="!isMultiple && selectedNodes.length === 1"
+        *ngIf="!isMultiple && selectedNodes.length === 1 && !isComposing && inputValue === ''"
         [deletable]="false"
         [disabled]="false"
         [label]="nzDisplayWith(selectedNodes[0])"
@@ -315,6 +315,10 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     this.selectionChangeSubscription.unsubscribe();
   }
 
+  isComposingChange(isComposing: boolean): void {
+    this.isComposing = isComposing;
+  }
+
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = isDisabled;
     this.closeDropDown();
@@ -380,6 +384,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     this.onTouched();
     this.nzOpen = false;
     this.inputValue = '';
+    this.isNotFound = false;
     this.nzOpenChange.emit(this.nzOpen);
     this.cdr.markForCheck();
   }

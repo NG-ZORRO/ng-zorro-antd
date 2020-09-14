@@ -218,7 +218,28 @@ describe('tree-select component', () => {
       expect(overlayContainerElement.querySelector('nz-tree')!.getAttribute('hidden')).toBe('');
       expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeTruthy();
     }));
+    it('should clean search value when reopen', fakeAsync(() => {
+      testComponent.showSearch = true;
+      fixture.detectChanges();
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      treeSelectComponent.inputValue = 'invalid_value';
+      fixture.detectChanges();
+      tick(200);
+      fixture.detectChanges();
+      expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeTruthy();
 
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      tick(200);
+      fixture.detectChanges();
+      treeSelect.nativeElement.click();
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+
+      expect(overlayContainerElement.querySelector('.ant-select-not-found')).toBeFalsy();
+    }));
     it('should max tag count work', fakeAsync(() => {
       fixture.detectChanges();
       testComponent.multiple = true;
@@ -532,8 +553,7 @@ describe('tree-select component', () => {
       [nzMaxTagCount]="maxTagCount"
       [nzDropdownStyle]="{ height: '120px' }"
       nzDropdownClassName="class1 class2"
-    >
-    </nz-tree-select>
+    ></nz-tree-select>
   `
 })
 export class NzTestTreeSelectBasicComponent {
@@ -623,8 +643,7 @@ export class NzTestTreeSelectBasicComponent {
       [nzCheckable]="true"
       [nzCheckStrictly]="checkStrictly"
       [(ngModel)]="value"
-    >
-    </nz-tree-select>
+    ></nz-tree-select>
   `
 })
 export class NzTestTreeSelectCheckableComponent {
@@ -701,7 +720,7 @@ export class NzTestTreeSelectCheckableComponent {
 @Component({
   template: `
     <form [formGroup]="formGroup">
-      <nz-tree-select formControlName="select" style="width: 250px" [nzNodes]="nodes"> </nz-tree-select>
+      <nz-tree-select formControlName="select" style="width: 250px" [nzNodes]="nodes"></nz-tree-select>
     </form>
   `
 })
@@ -743,7 +762,10 @@ export class NzTestTreeSelectFormComponent {
   template: `
     <nz-tree-select [nzNodes]="nodes" [(ngModel)]="value">
       <ng-template #nzTreeTemplate let-node>
-        <span> <i class="anticon anticon-frown-o"></i> {{ node.title }} </span>
+        <span>
+          <i class="anticon anticon-frown-o"></i>
+          {{ node.title }}
+        </span>
       </ng-template>
     </nz-tree-select>
   `
