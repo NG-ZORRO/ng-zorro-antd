@@ -56,7 +56,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzOpenFileDialogOnClick: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzMultiple: BooleanInput;
-  static ngAcceptInputType_nzShowUploadList: BooleanInput | NzShowUploadList | undefined | null;
+  static ngAcceptInputType_nzShowUploadList: BooleanInput | NzShowUploadList;
   static ngAcceptInputType_nzShowButton: BooleanInput;
   static ngAcceptInputType_nzWithCredentials: BooleanInput;
 

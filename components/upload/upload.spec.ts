@@ -953,12 +953,10 @@ describe('upload', () => {
         expect(instance.items[0].thumbUrl.length).toBeGreaterThan(1);
       }));
       it('should be generate thumb when width greater than height', fakeAsync(() => {
-        spyOn(window as any, 'Image').and.callFake(() => {
-          const img = new MockImage();
-          img.width = 2;
-          img.height = 1;
-          return img;
-        });
+        const img = new MockImage();
+        img.width = 2;
+        img.height = 1;
+        spyOn(window as any, 'Image').and.returnValue(img);
 
         instance.listType = 'picture';
         instance.items = [{ originFileObj: new File([''], '1.png', { type: 'image/' }), thgitumbUrl: undefined }];
@@ -1360,7 +1358,10 @@ describe('upload', () => {
       (nzFileListChange)="nzFileListChange($event)"
       (nzChange)="nzChange($event)"
     >
-      <button nz-button><i nz-icon nzType="upload"></i><span>Click to Upload</span></button>
+      <button nz-button>
+        <i nz-icon nzType="upload"></i>
+        <span>Click to Upload</span>
+      </button>
     </nz-upload>
     <ng-template #customnzIconRender>
       <span class="customnzIconRender">asdf</span>
@@ -1485,7 +1486,9 @@ class TestUploadListComponent {
 }
 
 @Component({
-  template: ` <div nz-upload-btn #btn [options]="options" class="test">UPLAOD</div> `
+  template: `
+    <div nz-upload-btn #btn [options]="options" class="test">UPLAOD</div>
+  `
 })
 class TestUploadBtnComponent {
   @ViewChild('btn', { static: false }) comp!: NzUploadBtnComponent;

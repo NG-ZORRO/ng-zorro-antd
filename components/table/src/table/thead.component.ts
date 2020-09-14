@@ -29,7 +29,7 @@ import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { EMPTY, merge, Observable, of, Subject } from 'rxjs';
-import { delay, flatMap, map, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { delay, map, mergeMap, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { NzThAddOnComponent } from '../cell/th-addon.component';
 import { NzTableDataService } from '../table-data.service';
 import { NzTableStyleService } from '../table-style.service';
@@ -133,7 +133,7 @@ export class NzTheadComponent implements AfterContentInit, OnDestroy, AfterViewI
       });
       const listOfCalcOperator$ = listOfColumn$.pipe(
         switchMap(list =>
-          merge(...[listOfColumn$, ...list.map((c: NzThAddOnComponent) => c.calcOperatorChange$)]).pipe(flatMap(() => listOfColumn$))
+          merge(...[listOfColumn$, ...list.map((c: NzThAddOnComponent) => c.calcOperatorChange$)]).pipe(mergeMap(() => listOfColumn$))
         ),
         map(list =>
           list

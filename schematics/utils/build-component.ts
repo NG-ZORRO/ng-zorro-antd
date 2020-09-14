@@ -16,15 +16,14 @@ import {
   mergeWith,
   move,
   noop,
-  url,
   Rule,
   SchematicsException,
-  Tree
+  Tree,
+  url
 } from '@angular-devkit/schematics';
 import { FileSystemSchematicContext } from '@angular-devkit/schematics/tools';
 import { getDefaultComponentOptions, getProjectFromWorkspace } from '@angular/cdk/schematics';
 import { Schema as ComponentOptions, Style } from '@schematics/angular/component/schema';
-import * as ts from 'typescript';
 import {
   addDeclarationToModule,
   addEntryComponentToModule,
@@ -35,13 +34,28 @@ import { InsertChange } from '@schematics/angular/utility/change';
 import { getWorkspace } from '@schematics/angular/utility/config';
 import { buildRelativePath, findModuleFromOptions } from '@schematics/angular/utility/find-module';
 import { parseName } from '@schematics/angular/utility/parse-name';
-import { buildDefaultPath } from '@schematics/angular/utility/project';
 import { validateHtmlSelector, validateName } from '@schematics/angular/utility/validation';
+import { ProjectType, WorkspaceProject } from '@schematics/angular/utility/workspace-models';
 import { readFileSync, statSync } from 'fs';
 import { dirname, join, resolve } from 'path';
+import * as ts from 'typescript';
 
 export interface ZorroComponentOptions extends ComponentOptions {
   classnameWithModule: boolean;
+}
+
+/**
+ * Build a default project path for generating.
+ * @param project The project to build the path for.
+ */
+function buildDefaultPath(project: WorkspaceProject): string {
+  const root = project.sourceRoot
+    ? `/${project.sourceRoot}/`
+    : `/${project.root}/src/`;
+
+  const projectDirName = project.projectType === ProjectType.Application ? 'app' : 'lib';
+
+  return `${root}${projectDirName}`;
 }
 
 /**
@@ -79,9 +93,11 @@ function addDeclarationToNgModule(options: ZorroComponentOptions): Rule {
 
     const modulePath = options.module;
     let source = readIntoSourceFile(host, modulePath);
+
     const componentPath = `/${options.path}/${options.flat ? '' : strings.dasherize(options.name) + '/'}${strings.dasherize(options.name)}.component`;
     const relativePath = buildRelativePath(modulePath, componentPath);
     let classifiedName = strings.classify(`${options.name}Component`);
+
     if (options.classnameWithModule) {
       const modulePrefix = getModuleClassnamePrefix(source);
       if (modulePrefix) {
@@ -90,13 +106,11 @@ function addDeclarationToNgModule(options: ZorroComponentOptions): Rule {
     }
 
     const declarationChanges = addDeclarationToModule(
-      // TODO: TypeScript version mismatch due to @schematics/angular using a different version
-      // than Material. Cast to any to avoid the type assignment failure.
-      // tslint:disable-next-line no-any
-      source as any,
+      source,
       modulePath,
       classifiedName,
-      relativePath);
+      relativePath
+    );
 
     const declarationRecorder = host.beginUpdate(modulePath);
     for (const change of declarationChanges) {
@@ -112,13 +126,11 @@ function addDeclarationToNgModule(options: ZorroComponentOptions): Rule {
 
       const exportRecorder = host.beginUpdate(modulePath);
       const exportChanges = addExportToModule(
-        // TODO: TypeScript version mismatch due to @schematics/angular using a different version
-        // than Material. Cast to any to avoid the type assignment failure.
-        // tslint:disable-next-line no-any
-        source as any,
+        source,
         modulePath,
-        classifiedName,
-        relativePath);
+        strings.classify(`${options.name}Component`),
+        relativePath
+      );
 
       for (const change of exportChanges) {
         if (change instanceof InsertChange) {
@@ -134,12 +146,9 @@ function addDeclarationToNgModule(options: ZorroComponentOptions): Rule {
 
       const entryComponentRecorder = host.beginUpdate(modulePath);
       const entryComponentChanges = addEntryComponentToModule(
-        // TODO: TypeScript version mismatch due to @schematics/angular using a different version
-        // than Material. Cast to any to avoid the type assignment failure.
-        // tslint:disable-next-line no-any
-        source as any,
+        source,
         modulePath,
-        classifiedName,
+        strings.classify(`${options.name}Component`),
         relativePath);
 
       for (const change of entryComponentChanges) {

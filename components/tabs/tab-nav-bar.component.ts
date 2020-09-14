@@ -36,7 +36,7 @@ import { auditTime, takeUntil } from 'rxjs/operators';
 
 import { reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 
 import { NzTabPositionMode, NzTabScrollEvent, NzTabScrollListOffsetEvent } from './interfaces';
 import { NzTabAddButtonComponent } from './tab-add-button.component';
@@ -86,6 +86,8 @@ const CSS_TRANSFORM_TIME = 150;
   }
 })
 export class NzTabNavBarComponent implements OnInit, AfterViewInit, AfterContentChecked, OnDestroy, OnChanges {
+  static ngAcceptInputType_selectedIndex: NumberInput;
+
   @Output() readonly indexFocused: EventEmitter<number> = new EventEmitter<number>();
   @Output() readonly selectFocusedIndex: EventEmitter<number> = new EventEmitter<number>();
   @Output() readonly addClicked = new EventEmitter<void>();

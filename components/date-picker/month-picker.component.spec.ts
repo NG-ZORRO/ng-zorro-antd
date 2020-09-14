@@ -439,9 +439,7 @@ describe('NzMonthPickerComponent', () => {
         (ngModelChange)="nzOnChange($event)"
         [nzRenderExtraFooter]="nzRenderExtraFooter"
       ></nz-month-picker>
-      <ng-template #tplExtraFooter>
-        TEST_EXTRA_FOOTER
-      </ng-template>
+      <ng-template #tplExtraFooter>TEST_EXTRA_FOOTER</ng-template>
 
       <!-- Suite 2 -->
       <!-- use another picker to avoid nzOpen's side-effects beacuse nzOpen act as "true" if used -->
@@ -474,9 +472,9 @@ class NzTestMonthPickerComponent {
   nzSize!: string;
   nzStyle!: NgStyleInterface;
 
-  nzOnOpenChange(): void {}
+  nzOnOpenChange(_: boolean): void {}
 
-  nzOnChange(): void {}
+  nzOnChange(_: Date | null): void {}
 
   nzValue: Date | null = null;
 

@@ -1000,9 +1000,7 @@ describe('date-fns testing', () => {
       <ng-template #tplDateRender let-current>
         <div [class.test-first-day]="current.getDate() === 1">{{ current.getDate() }}</div>
       </ng-template>
-      <ng-template #tplExtraFooter>
-        TEST_EXTRA_FOOTER
-      </ng-template>
+      <ng-template #tplExtraFooter>TEST_EXTRA_FOOTER</ng-template>
 
       <!-- Suite 2 -->
       <!-- use another picker to avoid nzOpen's side-effects beacuse nzOpen act as "true" if used -->
@@ -1036,9 +1034,9 @@ class NzTestDatePickerComponent {
   nzSize!: string;
   nzStyle!: NgStyleInterface;
 
-  nzOnChange(): void {}
+  nzOnChange(_: Date | null): void {}
   nzOnCalendarChange(): void {}
-  nzOnOpenChange(): void {}
+  nzOnOpenChange(_: boolean): void {}
 
   nzValue: Date | null = null;
   nzDefaultPickerValue: Date | null = null;
@@ -1051,9 +1049,9 @@ class NzTestDatePickerComponent {
   nzSuffixIcon!: string;
 
   // nzRanges;
-  nzOnPanelChange(): void {}
+  nzOnPanelChange(_: string): void {}
 
-  nzOnOk(): void {}
+  nzOnOk(_: Date): void {}
 
   // --- Suite 2
   nzOpen: boolean = false;

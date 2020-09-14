@@ -913,9 +913,7 @@ describe('NzRangePickerComponent', () => {
       <ng-template #tplDateRender let-current>
         <div [class.test-first-day]="current.getDate() === 1">{{ current.getDate() }}</div>
       </ng-template>
-      <ng-template #tplExtraFooter>
-        TEST_EXTRA_FOOTER
-      </ng-template>
+      <ng-template #tplExtraFooter>TEST_EXTRA_FOOTER</ng-template>
 
       <!-- Suite 2 -->
       <!-- use another picker to avoid nzOpen's side-effects beacuse nzOpen act as "true" if used -->
@@ -943,9 +941,9 @@ class NzTestRangePickerComponent {
   nzDropdownClassName!: string;
   nzSize!: string;
   nzStyle!: NgStyleInterface;
-  nzOnOpenChange(): void {}
+  nzOnOpenChange(_: boolean): void {}
   modelValue: Array<Date | null> = [];
-  modelValueChange(): void {}
+  modelValueChange(_: Date[]): void {}
   nzDefaultPickerValue!: Array<Date | null>;
   nzSeparator!: string;
 
@@ -957,9 +955,9 @@ class NzTestRangePickerComponent {
   nzMode?: string[];
 
   nzRanges: any; // tslint:disable-line:no-any
-  nzOnPanelChange(): void {}
+  nzOnPanelChange(_: string[]): void {}
   nzOnCalendarChange(): void {}
-  nzOnOk(): void {}
+  nzOnOk(_: Array<null | Date>): void {}
 
   // --- Suite 2
   nzOpen: boolean = false;

@@ -4,7 +4,7 @@
  */
 
 import { ComponentType, Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
-import { ComponentPortal, PortalInjector, TemplatePortal } from '@angular/cdk/portal';
+import { ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { Injectable, Injector, OnDestroy, Optional, SkipSelf, TemplateRef } from '@angular/core';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
@@ -140,13 +140,13 @@ export class NzModalService implements OnDestroy {
 
   private attachModalContainer(overlayRef: OverlayRef, config: ModalOptions): BaseModalContainerComponent {
     const userInjector = config && config.nzViewContainerRef && config.nzViewContainerRef.injector;
-    const injector = new PortalInjector(
-      userInjector || this.injector,
-      new WeakMap<NzSafeAny, NzSafeAny>([
-        [OverlayRef, overlayRef],
-        [ModalOptions, config]
-      ])
-    );
+    const injector = Injector.create({
+      parent: userInjector || this.injector,
+      providers: [
+        { provide: OverlayRef, useValue: overlayRef },
+        { provide: ModalOptions, useValue: config }
+      ]
+    });
 
     const ContainerComponent =
       config.nzModalType === 'confirm'
@@ -186,11 +186,13 @@ export class NzModalService implements OnDestroy {
     return modalRef;
   }
 
-  private createInjector<T, R>(modalRef: NzModalRef<T, R>, config: ModalOptions<T>): PortalInjector {
+  private createInjector<T, R>(modalRef: NzModalRef<T, R>, config: ModalOptions<T>): Injector {
     const userInjector = config && config.nzViewContainerRef && config.nzViewContainerRef.injector;
-    const injectionTokens = new WeakMap<NzSafeAny, NzSafeAny>([[NzModalRef, modalRef]]);
 
-    return new PortalInjector(userInjector || this.injector, injectionTokens);
+    return Injector.create({
+      parent: userInjector || this.injector,
+      providers: [{ provide: NzModalRef, useValue: modalRef }]
+    });
   }
 
   private confirmFactory<T>(options: ModalOptions<T> = {}, confirmType: ConfirmType): NzModalRef<T> {
