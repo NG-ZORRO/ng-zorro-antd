@@ -19,7 +19,7 @@ import {
 } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -58,18 +58,20 @@ describe('cascader', () => {
       return cascader.nativeElement.querySelector('input')!;
     }
 
-    beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [FormsModule, ReactiveFormsModule, NoopAnimationsModule, NzCascaderModule],
-        declarations: [NzDemoCascaderDefaultComponent],
-        providers: []
-      }).compileComponents();
+    beforeEach(
+      waitForAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [FormsModule, ReactiveFormsModule, NoopAnimationsModule, NzCascaderModule],
+          declarations: [NzDemoCascaderDefaultComponent],
+          providers: []
+        }).compileComponents();
 
-      inject([OverlayContainer], (oc: OverlayContainer) => {
-        overlayContainer = oc;
-        overlayContainerElement = oc.getContainerElement();
-      })();
-    }));
+        inject([OverlayContainer], (oc: OverlayContainer) => {
+          overlayContainer = oc;
+          overlayContainerElement = oc.getContainerElement();
+        })();
+      })
+    );
 
     afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
       currentOverlayContainer.ngOnDestroy();
@@ -1548,18 +1550,20 @@ describe('cascader', () => {
     let cascader: DebugElement;
     let testComponent: NzDemoCascaderLoadDataComponent;
 
-    beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [FormsModule, ReactiveFormsModule, NoopAnimationsModule, NzCascaderModule],
-        declarations: [NzDemoCascaderLoadDataComponent],
-        providers: []
-      }).compileComponents();
+    beforeEach(
+      waitForAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [FormsModule, ReactiveFormsModule, NoopAnimationsModule, NzCascaderModule],
+          declarations: [NzDemoCascaderLoadDataComponent],
+          providers: []
+        }).compileComponents();
 
-      inject([OverlayContainer], (oc: OverlayContainer) => {
-        overlayContainer = oc;
-        overlayContainerElement = oc.getContainerElement();
-      })();
-    }));
+        inject([OverlayContainer], (oc: OverlayContainer) => {
+          overlayContainer = oc;
+          overlayContainerElement = oc.getContainerElement();
+        })();
+      })
+    );
 
     afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
       currentOverlayContainer.ngOnDestroy();
@@ -1932,11 +1936,10 @@ const options5: any[] = []; // tslint:disable-line:no-any
       (ngModelChange)="onValueChanges($event)"
       (nzVisibleChange)="onVisibleChange($event)"
       (nzSelect)="onSelect($event)"
-    >
-    </nz-cascader>
+    ></nz-cascader>
 
     <ng-template #renderTpl let-labels="labels" let-selectedOptions="selectedOptions">
-      <ng-container *ngFor="let label of labels; let i = index; let isLast = last"> {{ label }}{{ isLast ? '' : ' | ' }} </ng-container>
+      <ng-container *ngFor="let label of labels; let i = index; let isLast = last">{{ label }}{{ isLast ? '' : ' | ' }}</ng-container>
     </ng-template>
   `,
   styles: [
@@ -1997,8 +2000,7 @@ export class NzDemoCascaderDefaultComponent {
       [nzLoadData]="nzLoadData"
       (ngModelChange)="onValueChanges($event)"
       (nzVisibleChange)="onVisibleChange($event)"
-    >
-    </nz-cascader>
+    ></nz-cascader>
   `,
   styles: [
     `

@@ -1,6 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, flush, inject, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -16,15 +16,17 @@ describe('modal footer directive', () => {
   let testComponent: TestDirectiveFooterComponent;
   let modalService: NzModalService;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NzModalModule, NoopAnimationsModule],
-      declarations: [TestDirectiveFooterComponent, TestDirectiveFooterInServiceComponent, TestDirectiveFooterWithInitOpenedComponent],
-      providers: [NzModalService]
-    });
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NzModalModule, NoopAnimationsModule],
+        declarations: [TestDirectiveFooterComponent, TestDirectiveFooterInServiceComponent, TestDirectiveFooterWithInitOpenedComponent],
+        providers: [NzModalService]
+      });
 
-    TestBed.compileComponents();
-  }));
+      TestBed.compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(TestDirectiveFooterComponent);

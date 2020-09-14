@@ -1,7 +1,7 @@
 import { BACKSPACE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, NgZone, ViewChild } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -17,31 +17,33 @@ describe('tree-select component', () => {
   let overlayContainerElement: HTMLElement;
   let zone: MockNgZone;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NzTreeSelectModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule],
-      declarations: [
-        NzTestTreeSelectBasicComponent,
-        NzTestTreeSelectCheckableComponent,
-        NzTestTreeSelectFormComponent,
-        NzTestTreeSelectCustomizedIconComponent
-      ],
-      providers: [
-        {
-          provide: NgZone,
-          useFactory: () => {
-            zone = new MockNgZone();
-            return zone;
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NzTreeSelectModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule],
+        declarations: [
+          NzTestTreeSelectBasicComponent,
+          NzTestTreeSelectCheckableComponent,
+          NzTestTreeSelectFormComponent,
+          NzTestTreeSelectCustomizedIconComponent
+        ],
+        providers: [
+          {
+            provide: NgZone,
+            useFactory: () => {
+              zone = new MockNgZone();
+              return zone;
+            }
           }
-        }
-      ]
-    });
-    TestBed.compileComponents();
-    inject([OverlayContainer], (oc: OverlayContainer) => {
-      overlayContainer = oc;
-      overlayContainerElement = oc.getContainerElement();
-    })();
-  }));
+        ]
+      });
+      TestBed.compileComponents();
+      inject([OverlayContainer], (oc: OverlayContainer) => {
+        overlayContainer = oc;
+        overlayContainerElement = oc.getContainerElement();
+      })();
+    })
+  );
 
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();

@@ -1,5 +1,5 @@
 import { Component, DebugElement, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import en_US from '../../../i18n/languages/en_US';
 import { NzI18nService } from '../../../i18n/nz-i18n.service';
@@ -9,13 +9,15 @@ import { NzTableComponent } from '../table/table.component';
 describe('nz-table', () => {
   let injector: Injector;
 
-  beforeEach(async(() => {
-    injector = TestBed.configureTestingModule({
-      imports: [NzTableModule],
-      declarations: [NzTestTableBasicComponent, NzTestTableScrollComponent, NzTableSpecCrashComponent]
-    });
-    TestBed.compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      injector = TestBed.configureTestingModule({
+        imports: [NzTableModule],
+        declarations: [NzTestTableBasicComponent, NzTestTableScrollComponent, NzTableSpecCrashComponent]
+      });
+      TestBed.compileComponents();
+    })
+  );
 
   describe('basic nz-table', () => {
     let fixture: ComponentFixture<NzTestTableBasicComponent>;

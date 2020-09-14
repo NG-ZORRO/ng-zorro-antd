@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
@@ -18,21 +18,23 @@ import { NzPageHeaderModule } from './page-header.module';
 
 describe('NzPageHeaderComponent', () => {
   let location: Location;
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NzPageHeaderModule, NzDropDownModule, NzIconTestModule, RouterTestingModule],
-      schemas: [NO_ERRORS_SCHEMA],
-      declarations: [
-        NzDemoPageHeaderBasicComponent,
-        NzDemoPageHeaderBreadcrumbComponent,
-        NzDemoPageHeaderContentComponent,
-        NzDemoPageHeaderActionsComponent,
-        NzDemoPageHeaderResponsiveComponent,
-        NzDemoPageHeaderGhostComponent
-      ]
-    }).compileComponents();
-    location = TestBed.inject(Location);
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NzPageHeaderModule, NzDropDownModule, NzIconTestModule, RouterTestingModule],
+        schemas: [NO_ERRORS_SCHEMA],
+        declarations: [
+          NzDemoPageHeaderBasicComponent,
+          NzDemoPageHeaderBreadcrumbComponent,
+          NzDemoPageHeaderContentComponent,
+          NzDemoPageHeaderActionsComponent,
+          NzDemoPageHeaderResponsiveComponent,
+          NzDemoPageHeaderGhostComponent
+        ]
+      }).compileComponents();
+      location = TestBed.inject(Location);
+    })
+  );
 
   it('should basic work', () => {
     const fixture = TestBed.createComponent(NzDemoPageHeaderBasicComponent);

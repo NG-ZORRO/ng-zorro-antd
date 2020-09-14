@@ -1,5 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NzListModule } from '../list';
 import { NzDemoCommentBasicComponent } from './demo/basic';
@@ -11,13 +11,15 @@ import { NzCommentComponent } from './comment.component';
 import { NzCommentModule } from './comment.module';
 
 describe('NzCommentComponent', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NzCommentModule, NzListModule],
-      schemas: [NO_ERRORS_SCHEMA],
-      declarations: [NzDemoCommentBasicComponent, NzDemoCommentEditorComponent, NzDemoCommentListComponent, NzDemoCommentNestedComponent]
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NzCommentModule, NzListModule],
+        schemas: [NO_ERRORS_SCHEMA],
+        declarations: [NzDemoCommentBasicComponent, NzDemoCommentEditorComponent, NzDemoCommentListComponent, NzDemoCommentNestedComponent]
+      }).compileComponents();
+    })
+  );
 
   it('should basic work', () => {
     const fixture = TestBed.createComponent(NzDemoCommentBasicComponent);

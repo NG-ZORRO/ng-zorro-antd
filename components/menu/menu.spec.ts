@@ -1,6 +1,6 @@
 import { ConnectedOverlayPositionChange, OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { dispatchFakeEvent } from 'ng-zorro-antd/core/testing';
@@ -13,31 +13,33 @@ import { NzSubMenuComponent } from './submenu.component';
 describe('menu', () => {
   let overlayContainer: OverlayContainer;
   let overlayContainerElement: HTMLElement;
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NzMenuModule, NoopAnimationsModule, NzIconTestModule],
-      declarations: [
-        NzTestBasicMenuHorizontalComponent,
-        NzTestBasicMenuInlineComponent,
-        NzTestMenuInlineCollapsedComponent,
-        NzTestMenuSiderCurrentComponent,
-        NzTestMenuThemeComponent,
-        NzTestMenuSwitchModeComponent,
-        NzTestMenuHorizontalComponent,
-        NzTestMenuInlineComponent,
-        NzDemoMenuNgForComponent,
-        NzTestNgIfMenuComponent,
-        NzTestSubMenuSelectedComponent
-      ]
-    });
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NzMenuModule, NoopAnimationsModule, NzIconTestModule],
+        declarations: [
+          NzTestBasicMenuHorizontalComponent,
+          NzTestBasicMenuInlineComponent,
+          NzTestMenuInlineCollapsedComponent,
+          NzTestMenuSiderCurrentComponent,
+          NzTestMenuThemeComponent,
+          NzTestMenuSwitchModeComponent,
+          NzTestMenuHorizontalComponent,
+          NzTestMenuInlineComponent,
+          NzDemoMenuNgForComponent,
+          NzTestNgIfMenuComponent,
+          NzTestSubMenuSelectedComponent
+        ]
+      });
 
-    TestBed.compileComponents();
+      TestBed.compileComponents();
 
-    inject([OverlayContainer], (oc: OverlayContainer) => {
-      overlayContainer = oc;
-      overlayContainerElement = oc.getContainerElement();
-    })();
-  }));
+      inject([OverlayContainer], (oc: OverlayContainer) => {
+        overlayContainer = oc;
+        overlayContainerElement = oc.getContainerElement();
+      })();
+    })
+  );
 
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
@@ -475,7 +477,10 @@ describe('menu', () => {
   template: `
     <ul nz-menu [nzMode]="'horizontal'">
       <li nz-submenu nzMenuClassName="submenu" [nzOpen]="open" [style.width.px]="width">
-        <span title><i nz-icon nzType="setting"></i> Navigation Three - Submenu</span>
+        <span title>
+          <i nz-icon nzType="setting"></i>
+          Navigation Three - Submenu
+        </span>
         <ul>
           <li nz-menu-group>
             <span title>Item 1</span>
@@ -524,7 +529,10 @@ export class NzTestMenuHorizontalComponent {
   template: `
     <ul nz-menu [nzMode]="'inline'" [nzInlineCollapsed]="collapse">
       <li nz-submenu [nzMenuClassName]="submenuClassName" [nzDisabled]="disabled">
-        <span title><i nz-icon nzType="mail"></i> Navigation One</span>
+        <span title>
+          <i nz-icon nzType="mail"></i>
+          Navigation One
+        </span>
         <ul>
           <li nz-menu-item style="padding-left:0px;">Option 1</li>
           <li nz-menu-item>Option 2</li>
@@ -545,7 +553,10 @@ export class NzTestMenuInlineComponent {
   template: `
     <ul nz-menu [nzMode]="'inline'" style="width: 240px;">
       <li *ngFor="let l1 of menus" nz-submenu>
-        <span title><i nz-icon nzType="appstore"></i> {{ l1.text }}</span>
+        <span title>
+          <i nz-icon nzType="appstore"></i>
+          {{ l1.text }}
+        </span>
         <ul>
           <li *ngFor="let l2 of l1.children" nz-submenu>
             <span title>{{ l2.text }}</span>
