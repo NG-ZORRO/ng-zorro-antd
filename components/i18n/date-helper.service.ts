@@ -34,7 +34,7 @@ export abstract class DateHelperService {
 
   abstract getISOWeek(date: Date): number;
   abstract getFirstDayOfWeek(): WeekDayIndex;
-  abstract format(date: Date, formatStr: string): string;
+  abstract format(date: Date | null, formatStr: string): string;
   abstract parseDate(text: string, formatStr?: string): Date;
   abstract parseTime(text: string, formatStr?: string): Date | undefined;
 }
@@ -108,10 +108,9 @@ export class DateHelperByDatePipe extends DateHelperService {
     return new Date(text);
   }
 
-  parseTime(text: string): Date | undefined {
-    if (!text) {
-      return;
-    }
-    return new Date(Date.parse(`1970-01-01 ${text}`));
+  parseTime(text: string): Date {
+    // const formatReg = new RegExp(formatStr.replace(/h|hh|m|mm|s|ss/, '\w+'), 'gi');
+    const now = new Date();
+    return new Date(`${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()} ${text}`);
   }
 }

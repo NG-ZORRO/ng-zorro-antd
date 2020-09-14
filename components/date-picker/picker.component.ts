@@ -36,6 +36,7 @@ import {
 } from '@angular/core';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 
+import { ESCAPE } from '@angular/cdk/keycodes';
 import { CandyDate, CompatibleValue } from 'ng-zorro-antd/core/time';
 import { NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
@@ -372,7 +373,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   onOverlayKeydown(event: KeyboardEvent): void {
-    if (event.key === 'Escape') {
+    if (event.keyCode === ESCAPE) {
       this.datePickerService.setValue(this.datePickerService.initialValue!);
     }
   }

@@ -22,12 +22,14 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { isValid } from 'date-fns';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, isNil } from 'ng-zorro-antd/core/util';
+import { DateHelperService } from 'ng-zorro-antd/i18n';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
 
@@ -42,12 +44,14 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
         #inputElement
         type="text"
         [size]="inputSize"
-        [nzTime]="nzFormat"
         [placeholder]="nzPlaceHolder || ('TimePicker.placeholder' | nzI18n)"
-        [(ngModel)]="value"
+        [(ngModel)]="inputValue"
         [disabled]="nzDisabled"
         (focus)="onFocus(true)"
         (blur)="onFocus(false)"
+        (keyup.enter)="onKeyupEnter()"
+        (keyup.escape)="onKeyupEsc()"
+        (ngModelChange)="onInputChange($event)"
       />
       <span class="ant-picker-suffix">
         <ng-container *nzStringTemplateOutlet="nzSuffixIcon; let suffixIcon">
@@ -69,7 +73,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
       [cdkConnectedOverlayOffsetY]="-2"
       [cdkConnectedOverlayTransformOriginOn]="'.ant-picker-dropdown'"
       (detach)="close()"
-      (backdropClick)="close()"
+      (backdropClick)="setCurrentValueAndClose()"
     >
       <div [@slideMotion]="'enter'" class="ant-picker-dropdown">
         <div class="ant-picker-panel-container">
@@ -91,8 +95,8 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
               [nzClearText]="nzClearText"
               [nzAllowEmpty]="nzAllowEmpty"
               [(ngModel)]="value"
-              (ngModelChange)="setValue($event)"
-              (closePanel)="close()"
+              (ngModelChange)="onPanelValueChange($event)"
+              (closePanel)="setCurrentValueAndClose()"
             ></nz-time-picker-panel>
           </div>
         </div>
@@ -123,7 +127,9 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   private _onTouched?: () => void;
   isInit = false;
   focused = false;
+  inputValue: string = '';
   value: Date | null = null;
+  preValue: Date | null = null;
   origin!: CdkOverlayOrigin;
   inputSize?: number;
   overlayPositions: ConnectionPositionPair[] = [
@@ -161,9 +167,12 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAutoFocus = false;
 
-  setValue(value: Date | null): void {
-    this.value = value ? new Date(value) : null;
-    if (this._onChange) {
+  setValue(value: Date | null, emit: boolean = true): void {
+    // distinguish between preValue and value
+    this.preValue = isValid(value) ? new Date(value!) : null;
+    this.value = isValid(value) ? new Date(value!) : null;
+    this.inputValue = this.dateHelper.format(value, this.nzFormat);
+    if (this._onChange && emit) {
       this._onChange(this.value);
     }
     if (this._onTouched) {
@@ -172,7 +181,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   open(): void {
-    if (this.nzDisabled) {
+    if (this.nzDisabled || this.nzOpen) {
       return;
     }
     this.focus();
@@ -217,11 +226,40 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     }
   }
 
+  onKeyupEsc(): void {
+    this.setValue(this.preValue, false);
+  }
+
+  onKeyupEnter(): void {
+    if (this.nzOpen && isValid(this.value)) {
+      this.setCurrentValueAndClose();
+    } else if (!this.nzOpen) {
+      this.open();
+    }
+  }
+
+  onInputChange(str: string): void {
+    this.open();
+    this.parseTimeString(str);
+  }
+
+  onPanelValueChange(value: Date): void {
+    this.value = value;
+    this.inputValue = this.dateHelper.format(value, this.nzFormat);
+    this.focus();
+  }
+
+  setCurrentValueAndClose(): void {
+    this.setValue(this.value);
+    this.close();
+  }
+
   constructor(
     public nzConfigService: NzConfigService,
     private element: ElementRef,
     private renderer: Renderer2,
-    public cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private dateHelper: DateHelperService
   ) {}
 
   ngOnInit(): void {
@@ -245,6 +283,14 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     }
     if (nzAutoFocus) {
       this.updateAutoFocus();
+    }
+  }
+
+  parseTimeString(str: string): void {
+    const value = this.dateHelper.parseTime(str, this.nzFormat) || null;
+    if (isValid(value)) {
+      this.value = value;
+      this.cdr.markForCheck();
     }
   }
 
