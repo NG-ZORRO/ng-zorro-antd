@@ -5,7 +5,6 @@
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
 import { NotificationConfig, NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
-import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { toCssPixel } from 'ng-zorro-antd/core/util';
 
 import { NzMNContainerComponent } from 'ng-zorro-antd/message';
@@ -146,13 +145,7 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent {
   }
 
   protected mergeOptions(options?: NzNotificationDataOptions): NzNotificationDataOptions {
-    const { nzPosition } = options ?? {};
-
-    if (nzPosition) {
-      warnDeprecation('`nzPosition` of NzNotificationDataOptions is deprecated and would be removed in 10.0.0. Use `nzPlacement` instead.');
-    }
-
     const { nzDuration, nzAnimate, nzPauseOnHover, nzPlacement } = this.config;
-    return { nzDuration, nzAnimate, nzPauseOnHover, nzPlacement: nzPlacement || nzPosition, ...options };
+    return { nzDuration, nzAnimate, nzPauseOnHover, nzPlacement: nzPlacement, ...options };
   }
 }

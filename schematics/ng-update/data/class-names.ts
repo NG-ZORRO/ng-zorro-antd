@@ -15,6 +15,12 @@ export const classNames: VersionChanges<ClassNameUpgradeData> = {
       ]
     },
     {
+      pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/5779',
+      changes: [
+        {replace: 'NzNotificationDataFilled', replaceWith: 'NzNotificationRef'}
+      ]
+    },
+    {
       pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/5778',
       changes: [
         {replace: 'CascaderOption', replaceWith: 'NzCascaderOption'},
