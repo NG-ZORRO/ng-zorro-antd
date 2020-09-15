@@ -15,6 +15,20 @@ export const inputNames: VersionChanges<InputNameUpgradeData> = {
       ]
     }
   ],
+  [ TargetVersion.V10 ]: [
+    {
+      pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/5776',
+      changes: [
+        {
+          replace    : 'nzTarget',
+          replaceWith: 'nzContainer',
+          whitelist  : {
+            elements: [ 'nz-anchor' ]
+          }
+        }
+      ]
+    }
+  ],
   [ TargetVersion.V9 ]: [
     {
       pr     : 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/3909',

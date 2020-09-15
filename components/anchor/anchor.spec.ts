@@ -152,10 +152,10 @@ describe('anchor', () => {
       });
     });
 
-    describe('[nzTarget]', () => {
+    describe('[nzContainer]', () => {
       it('with window', () => {
         spyOn(window, 'addEventListener');
-        context.nzTarget = window;
+        context.nzContainer = window;
         fixture.detectChanges();
         expect(window.addEventListener).toHaveBeenCalled();
       });
@@ -163,7 +163,7 @@ describe('anchor', () => {
         spyOn(context, '_click');
         const el = document.querySelector('#target')!;
         spyOn(el, 'addEventListener');
-        context.nzTarget = '#target';
+        context.nzContainer = '#target';
         fixture.detectChanges();
         expect(el.addEventListener).toHaveBeenCalled();
         page.to('#basic-target');
@@ -235,7 +235,7 @@ describe('anchor', () => {
       [nzBounds]="nzBounds"
       [nzShowInkInFixed]="nzShowInkInFixed"
       [nzOffsetTop]="nzOffsetTop"
-      [nzTarget]="nzTarget"
+      [nzContainer]="nzContainer"
       (nzClick)="_click($event)"
       (nzScroll)="_scroll($event)"
     >
@@ -291,7 +291,7 @@ export class TestComponent {
   nzBounds = 5;
   nzOffsetTop = 0;
   nzShowInkInFixed = false;
-  nzTarget: any = null;
+  nzContainer: any = null;
   _click() {}
   _scroll() {}
 }
