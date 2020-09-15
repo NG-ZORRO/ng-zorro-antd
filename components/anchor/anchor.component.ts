@@ -24,7 +24,6 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NgStyleInterface, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
@@ -91,7 +90,6 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
   nzOffsetTop?: number = undefined;
 
   @Input() nzContainer?: string | HTMLElement;
-  @Input() nzTarget: string | HTMLElement = '';
 
   @Output() readonly nzClick = new EventEmitter<string>();
   @Output() readonly nzScroll = new EventEmitter<NzAnchorLinkComponent>();
@@ -234,19 +232,16 @@ export class NzAnchorComponent implements OnDestroy, AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzOffsetTop, nzTarget, nzContainer } = changes;
+    const { nzOffsetTop, nzContainer } = changes;
     if (nzOffsetTop) {
       this.wrapperStyle = {
         'max-height': `calc(100vh - ${this.nzOffsetTop}px)`
       };
     }
-    if (nzContainer || nzTarget) {
-      const container = this.nzContainer || this.nzTarget;
+    if (nzContainer) {
+      const container = this.nzContainer;
       this.container = typeof container === 'string' ? this.doc.querySelector(container) : container;
       this.registerScrollEvent();
-      if (nzTarget) {
-        warnDeprecation(`'nzTarget' of 'nz-anchor' is deprecated and will be removed in 10.0.0.Please use 'nzContainer' instead.`);
-      }
     }
   }
 }
