@@ -208,7 +208,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     this._nzShowArrow = value;
   }
   get nzShowArrow(): boolean {
-    return this._nzShowArrow || this.nzMode === 'default';
+    return this._nzShowArrow === undefined ? this.nzMode === 'default' : this._nzShowArrow;
   }
 
   @Output() readonly nzOnSearch = new EventEmitter<string>();
