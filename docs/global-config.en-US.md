@@ -105,7 +105,7 @@ export class AppModule {}
 
 ## Dynamically Change Configurations
 
-You can change the global config of a specific component by calling the `set` method of `NzConfigService`. For example, if you want to make all buttons to be barge in size by default, you should:
+You can change the global config of a specific component by calling the `set` method of `NzConfigService`. For example, if you want to make all buttons to be large in size by default, you should:
 
 ```typescript
 import { NzConfigService } from 'ng-zorro-antd/core/config';
