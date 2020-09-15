@@ -13,6 +13,13 @@ export const classNames: VersionChanges<ClassNameUpgradeData> = {
         {replace: 'UploadTransformFileType', replaceWith: 'NzUploadTransformFileType'},
         {replace: 'UploadXHRArgs', replaceWith: 'NzUploadXHRArgs'}
       ]
+    },
+    {
+      pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/5778',
+      changes: [
+        {replace: 'CascaderOption', replaceWith: 'NzCascaderOption'},
+        {replace: 'CascaderSearchOption', replaceWith: 'NzCascaderSearchOption'}
+      ]
     }
   ]
 };
