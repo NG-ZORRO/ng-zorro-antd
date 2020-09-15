@@ -100,7 +100,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       (clear)="onClearSelection()"
     ></nz-select-clear>
     <nz-select-arrow
-      *ngIf="nzShowArrow && nzMode === 'default'"
+      *ngIf="nzShowArrow"
       [loading]="nzLoading"
       [search]="nzOpen && nzShowSearch"
       [suffixIcon]="nzSuffixIcon"
@@ -147,7 +147,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
     '[class.ant-select]': 'true',
     '[class.ant-select-lg]': 'nzSize === "large"',
     '[class.ant-select-sm]': 'nzSize === "small"',
-    '[class.ant-select-show-arrow]': `nzShowArrow && nzMode === 'default'`,
+    '[class.ant-select-show-arrow]': `nzShowArrow`,
     '[class.ant-select-disabled]': 'nzDisabled',
     '[class.ant-select-show-search]': `nzShowSearch || nzMode !== 'default'`,
     '[class.ant-select-allow-clear]': 'nzAllowClear',
@@ -186,7 +186,6 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @Input() nzClearIcon: TemplateRef<NzSafeAny> | null = null;
   @Input() nzRemoveIcon: TemplateRef<NzSafeAny> | null = null;
   @Input() nzMenuItemSelectedIcon: TemplateRef<NzSafeAny> | null = null;
-  @Input() nzShowArrow = true;
   @Input() nzTokenSeparators: string[] = [];
   @Input() nzMaxTagPlaceholder: TemplateRef<{ $implicit: NzSafeAny[] }> | null = null;
   @Input() nzMaxMultipleCount = Infinity;
@@ -203,6 +202,15 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzOpen = false;
   @Input() nzOptions: NzSelectOptionInterface[] = [];
+
+  @Input()
+  set nzShowArrow(value: boolean) {
+    this._nzShowArrow = value;
+  }
+  get nzShowArrow(): boolean {
+    return this._nzShowArrow || this.nzMode === 'default';
+  }
+
   @Output() readonly nzOnSearch = new EventEmitter<string>();
   @Output() readonly nzScrollToBottom = new EventEmitter<void>();
   @Output() readonly nzOpenChange = new EventEmitter<boolean>();
@@ -222,6 +230,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   private isReactiveDriven = false;
   private value: NzSafeAny | NzSafeAny[];
   private destroy$ = new Subject();
+  private _nzShowArrow: boolean | undefined;
   onChange: OnChangeType = () => {};
   onTouched: OnTouchedType = () => {};
   dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
