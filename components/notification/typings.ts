@@ -20,11 +20,6 @@ export interface NzNotificationDataOptions<T = {}> {
   nzDuration?: number;
   nzAnimate?: boolean;
   nzPauseOnHover?: boolean;
-
-  /**
-   * @deprecated use nzPlacement instead, this would be removed in 10.0.0
-   */
-  nzPosition?: NzNotificationPlacement;
 }
 
 export interface NzNotificationData {
@@ -43,9 +38,3 @@ export interface NzNotificationData {
 }
 
 export type NzNotificationRef = Pick<Required<NzNotificationData>, 'onClose' | 'onClick' | 'messageId'>;
-
-/**
- * @deprecated use `NzNotificationRef` instead
- * @breaking-change 10.0.0
- */
-export type NzNotificationDataFilled = NzNotificationRef;
