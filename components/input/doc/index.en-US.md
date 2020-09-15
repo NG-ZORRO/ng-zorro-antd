@@ -27,6 +27,7 @@ All props of input supported by [w3c standards](https://www.w3schools.com/tags/t
 | -------- | ----------- | ---- | ------- |
 | `[nzSize]` | The size of the input box. Note: in the context of a form, the `large` size is used. | `'large' \| 'small' \| 'default'` | `'default'` |
 | `[nzAutosize]` | Only used for `textarea`, height autosize feature, can be set to `boolean` or an object `{ minRows: 2, maxRows: 6 }` | `boolean \| { minRows: number, maxRows: number }` | `false` |
+| `[nzBorderless]` | Whether hide border | `boolean` | `false` |
 
 
 ### nz-input-group

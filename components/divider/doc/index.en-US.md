@@ -1,6 +1,6 @@
 ---
 category: Components
-type: Other
+type: Layout
 title: Divider
 cover: https://gw.alipayobjects.com/zos/alicdn/5swjECahe/Divider.svg
 ---
