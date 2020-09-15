@@ -1,10 +1,14 @@
-import { getImportDeclaration } from '@angular/cdk/schematics';
+import { getExportDeclaration, getImportDeclaration } from '@angular/cdk/schematics';
 import * as ts from 'typescript';
 
-export const materialModuleSpecifier = 'ng-zorro-antd';
+export const ngZorroModuleSpecifier = 'ng-zorro-antd';
 
 export function isNgZorroImportDeclaration(node: ts.Node): boolean {
   return isNgZorroDeclaration(getImportDeclaration(node));
+}
+
+export function isNgZorroExportDeclaration(node: ts.Node): boolean {
+  return isNgZorroDeclaration(getExportDeclaration(node));
 }
 
 function isNgZorroDeclaration(declaration: ts.ImportDeclaration|ts.ExportDeclaration): boolean {
@@ -13,5 +17,5 @@ function isNgZorroDeclaration(declaration: ts.ImportDeclaration|ts.ExportDeclara
   }
 
   const moduleSpecifier = declaration.moduleSpecifier.getText();
-  return moduleSpecifier.indexOf(materialModuleSpecifier) !== -1
+  return moduleSpecifier.indexOf(ngZorroModuleSpecifier) !== -1
 }
