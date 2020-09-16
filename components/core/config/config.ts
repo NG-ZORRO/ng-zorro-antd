@@ -45,6 +45,11 @@ export interface NzConfig {
   tree?: TreeConfig;
   treeSelect?: TreeSelectConfig;
   typography?: TypographyConfig;
+  image?: ImageConfig;
+}
+
+export interface ImageConfig {
+  nzFallback?: string;
 }
 
 export interface SelectConfig {

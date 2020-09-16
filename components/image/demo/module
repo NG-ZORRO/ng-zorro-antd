@@ -1,0 +1,5 @@
+import { NzImageModule } from 'ng-zorro-antd/image';
+
+export const moduleList = [
+  NzImageModule
+];
