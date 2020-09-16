@@ -6,6 +6,21 @@ nz-table-selection {
   display: block;
 }
 
+.nz-table-out-bordered {
+  > .@{table-prefix-cls}-title {
+    border: @table-border;
+    border-bottom: 0;
+  }
+  > .@{table-prefix-cls}-container {
+    border: @table-border;
+    border-bottom: 0;
+  }
+  > .@{table-prefix-cls}-footer {
+    border: @table-border;
+    border-top: 0;
+  }
+}
+
 cdk-virtual-scroll-viewport.ant-table-body {
   overflow-y: scroll;
 }

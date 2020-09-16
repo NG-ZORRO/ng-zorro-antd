@@ -73,6 +73,7 @@ Table 组件同时具备了易用性和高度可定制性
 | `[nzShowPagination]` | 是否显示分页器 | `boolean` | `true` |
 | `[nzPaginationPosition]` | 指定分页显示的位置 | `'top' \| 'bottom' \| 'both'` | `bottom` |
 | `[nzBordered]` | 是否展示外边框和列边框 | `boolean` | `false` | ✅ |
+| `[nzOutBordered]` | 是否显示外边框 | `boolean` | `false` | - |
 | `[nzWidthConfig]` | 表头分组时指定每列宽度，与 `th` 的 `[nzWidth]` 不可混用 | `string[]` | `[]` |
 | `[nzSize]` | 正常或迷你类型 | `'middle' \| 'small' \| 'default'` | `'default'` | ✅ |
 | `[nzLoading]` | 页面是否加载中 | `boolean` | `false` |
