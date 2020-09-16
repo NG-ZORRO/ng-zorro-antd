@@ -199,17 +199,12 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onClickOk(): void {
-    const otherPart = this.datePickerService.activeInput === 'left' ? 'right' : 'left';
-    const selectedValue = this.datePickerService.value;
-    if (this.isAllowed(selectedValue, true)) {
-      this.resultOk.emit();
-    } else {
-      if (this.isRange && this.isOneAllowed(selectedValue as CandyDate[])) {
-        this.datePickerService.inputPartChange$.next(otherPart);
-      } else {
-        this.datePickerService.inputPartChange$.next();
-      }
-    }
+    const inputIndex = { left: 0, right: 1 }[this.datePickerService.activeInput];
+    const value: CandyDate = this.isRange
+      ? (this.datePickerService.value as CandyDate[])[inputIndex]
+      : (this.datePickerService.value as CandyDate);
+    this.changeValueFromSelect(value);
+    this.resultOk.emit();
   }
 
   onClickToday(value: CandyDate): void {
@@ -384,7 +379,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     const value = typeof val === 'function' ? val() : val;
     if (value) {
       this.datePickerService.setValue([new CandyDate(value[0]), new CandyDate(value[1])]);
-      this.resultOk.emit();
+      this.datePickerService.emitValue$.next();
     }
   }
 
