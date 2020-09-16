@@ -24,7 +24,7 @@ import {
 import { NzResizeService } from 'ng-zorro-antd/core/services';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { fromEvent, merge, Subject } from 'rxjs';
-import { delay, filter, startWith, takeUntil } from 'rxjs/operators';
+import { delay, filter, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { NzTableData } from '../table.types';
 
 @Component({
@@ -32,8 +32,8 @@ import { NzTableData } from '../table.types';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <div class="ant-table-content">
-      <div *ngIf="scrollY" #tableHeaderElement [ngStyle]="headerStyleMap" class="ant-table-header nz-table-hide-scrollbar">
+    <ng-container *ngIf="scrollY">
+      <div #tableHeaderElement [ngStyle]="headerStyleMap" class="ant-table-header nz-table-hide-scrollbar">
         <table
           nz-table-content
           tableLayout="fixed"
@@ -45,10 +45,9 @@ import { NzTableData } from '../table.types';
       <div #tableBodyElement *ngIf="!virtualTemplate" class="ant-table-body" [ngStyle]="bodyStyleMap">
         <table
           nz-table-content
-          [scrollX]="scrollX"
           tableLayout="fixed"
+          [scrollX]="scrollX"
           [listOfColWidth]="listOfColWidth"
-          [theadTemplate]="scrollY ? null : theadTemplate"
           [contentTemplate]="contentTemplate"
         ></table>
       </div>
@@ -68,6 +67,18 @@ import { NzTableData } from '../table.types';
           </tbody>
         </table>
       </cdk-virtual-scroll-viewport>
+    </ng-container>
+    <div class="ant-table-content" *ngIf="!scrollY">
+      <div #tableBodyElement class="ant-table-body" [ngStyle]="bodyStyleMap">
+        <table
+          nz-table-content
+          tableLayout="fixed"
+          [scrollX]="scrollX"
+          [listOfColWidth]="listOfColWidth"
+          [theadTemplate]="theadTemplate"
+          [contentTemplate]="contentTemplate"
+        ></table>
+      </div>
     </div>
   `,
   host: {
@@ -130,8 +141,8 @@ export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, On
         overflowY: this.scrollY && hasVerticalScrollBar ? 'scroll' : 'hidden'
       };
       this.bodyStyleMap = {
-        overflowY: this.scrollY ? 'scroll' : null,
-        overflowX: this.scrollX ? 'scroll' : null,
+        overflowY: this.scrollY ? 'scroll' : 'hidden',
+        overflowX: this.scrollX ? 'auto' : null,
         maxHeight: this.scrollY
       };
       this.scroll$.next();
@@ -143,14 +154,19 @@ export class NzTableInnerScrollComponent implements OnChanges, AfterViewInit, On
   ngAfterViewInit(): void {
     if (this.platform.isBrowser) {
       this.ngZone.runOutsideAngular(() => {
-        const scrollEvent$ = fromEvent<MouseEvent>(this.tableBodyElement.nativeElement, 'scroll').pipe(takeUntil(this.destroy$));
-        const scrollX$ = scrollEvent$.pipe(filter(() => !!this.scrollX));
-        const scrollY$ = scrollEvent$.pipe(filter(() => !!this.scrollY));
+        const scrollEvent$ = this.scroll$.pipe(
+          startWith(null),
+          delay(0),
+          switchMap(() => fromEvent<MouseEvent>(this.tableBodyElement.nativeElement, 'scroll').pipe(startWith(true))),
+          takeUntil(this.destroy$)
+        );
         const resize$ = this.resizeService.subscribe().pipe(takeUntil(this.destroy$));
         const data$ = this.data$.pipe(takeUntil(this.destroy$));
-        const setClassName$ = merge(scrollX$, resize$, data$, this.scroll$).pipe(startWith(true), delay(0));
+        const setClassName$ = merge(scrollEvent$, resize$, data$, this.scroll$).pipe(startWith(true), delay(0), takeUntil(this.destroy$));
         setClassName$.subscribe(() => this.setScrollPositionClassName());
-        scrollY$.subscribe(() => (this.tableHeaderElement.nativeElement.scrollLeft = this.tableBodyElement.nativeElement.scrollLeft));
+        scrollEvent$
+          .pipe(filter(() => !!this.scrollY))
+          .subscribe(() => (this.tableHeaderElement.nativeElement.scrollLeft = this.tableBodyElement.nativeElement.scrollLeft));
       });
     }
   }
