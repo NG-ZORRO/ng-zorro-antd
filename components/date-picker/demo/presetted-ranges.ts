@@ -4,10 +4,10 @@ import endOfMonth from 'date-fns/endOfMonth';
 @Component({
   selector: 'nz-demo-date-picker-presetted-ranges',
   template: `
-    <nz-range-picker [nzRanges]="ranges1" ngModel (ngModelChange)="onChange($event)"></nz-range-picker>
+    <nz-range-picker [nzRanges]="ranges" ngModel (ngModelChange)="onChange($event)"></nz-range-picker>
     <br />
     <nz-range-picker
-      [nzRanges]="ranges1"
+      [nzRanges]="ranges"
       nzShowTime
       nzFormat="yyyy/MM/dd HH:mm:ss"
       ngModel
@@ -26,8 +26,7 @@ import endOfMonth from 'date-fns/endOfMonth';
   ]
 })
 export class NzDemoDatePickerPresettedRangesComponent {
-  ranges1 = { Today: [new Date(), new Date()], 'This Month': [new Date(), endOfMonth(new Date())] };
-  ranges2 = { Today: [new Date(), new Date()], 'This Month': [new Date(), endOfMonth(new Date())] };
+  ranges = { Today: [new Date(), new Date()], 'This Month': [new Date(), endOfMonth(new Date())] };
 
   onChange(result: Date[]): void {
     console.log('From: ', result[0], ', to: ', result[1]);
