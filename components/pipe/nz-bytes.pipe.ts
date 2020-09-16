@@ -1,12 +1,10 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 import { Pipe, PipeTransform } from '@angular/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isNumberFinite, toDecimal } from '../core/util/number';
 
 export type ByteUnit = 'B' | 'kB' | 'KB' | 'MB' | 'GB' | 'TB';
@@ -24,8 +22,7 @@ export class NzBytesPipe implements PipeTransform {
     TB: { max: Number.MAX_SAFE_INTEGER, prev: 'GB' }
   };
 
-  // tslint:disable-next-line:no-any
-  transform(input: any, decimal: number = 0, from: ByteUnit = 'B', to?: ByteUnit): any {
+  transform(input: NzSafeAny, decimal: number = 0, from: ByteUnit = 'B', to?: ByteUnit): NzSafeAny {
     if (!(isNumberFinite(input) && isNumberFinite(decimal) && decimal % 1 === 0 && decimal >= 0)) {
       return input;
     }

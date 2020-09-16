@@ -1,19 +1,16 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 import { Pipe, PipeTransform } from '@angular/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Pipe({
   name: 'nzEllipsis'
 })
 export class NzEllipsisPipe implements PipeTransform {
-  // tslint:disable-next-line:no-any
-  transform(value: any, length?: number, suffix: string = '', preserve: boolean = false): any {
+  transform(value: NzSafeAny, length?: number, suffix: string = '', preserve: boolean = false): NzSafeAny {
     if (typeof value !== 'string') {
       return value;
     }

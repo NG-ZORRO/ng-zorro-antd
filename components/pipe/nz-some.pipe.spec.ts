@@ -1,10 +1,10 @@
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzSomePipe } from './nz-some.pipe';
 
 describe('NzSomePipe', () => {
   let pipe: NzSomePipe;
 
-  // tslint:disable-next-line:no-any
-  const fn = (item: any) => {
+  const fn = (item: NzSafeAny) => {
     return item === 2;
   };
 
@@ -22,8 +22,4 @@ describe('NzSomePipe', () => {
   it('Should return false', () => {
     expect(pipe.transform([1, 3], fn)).toEqual(false);
   });
-
-  // it('Should return the value unchanged', () => {
-  //   expect(pipe.transform('a', null)).toEqual('a');
-  // });
 });

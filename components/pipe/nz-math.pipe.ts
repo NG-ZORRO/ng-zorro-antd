@@ -1,12 +1,10 @@
 /**
- * @license
- * Copyright Alibaba.com All Rights Reserved.
- *
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
 import { Pipe, PipeTransform } from '@angular/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { sum } from '../core/util/number';
 
 export enum EMathMethod {
@@ -22,8 +20,7 @@ export enum EMathMethod {
 export class NzMathPipe implements PipeTransform {
   getMethodResult(data: number[], method: string): number {
     let result: number = data[0];
-    // tslint:disable-next-line:no-any
-    data.forEach((item: any) => {
+    data.forEach((item: NzSafeAny) => {
       if (method === EMathMethod.MAX) {
         if (result < item) {
           result = item;
@@ -37,8 +34,7 @@ export class NzMathPipe implements PipeTransform {
     return result;
   }
 
-  // tslint:disable-next-line:no-any
-  transform(value: any, method: string): undefined | number {
+  transform(value: NzSafeAny, method: string): undefined | number {
     if (!Array.isArray(value)) {
       return value;
     }
