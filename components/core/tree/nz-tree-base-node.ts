@@ -3,7 +3,6 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzTreeNodeBaseComponent } from './nz-tree-base.definitions';
 import { NzTreeBaseService } from './nz-tree-base.service';
@@ -46,10 +45,6 @@ export class NzTreeNode {
   private _children: NzTreeNode[] = [];
   private _isLeaf: boolean = false;
   private _isChecked: boolean = false;
-  /**
-   * @deprecated Maybe removed in next major version, use isChecked instead
-   */
-  private _isAllChecked: boolean = false;
   private _isSelectable: boolean = false;
   private _isDisabled: boolean = false;
   private _isDisableCheckbox: boolean = false;
@@ -166,21 +161,8 @@ export class NzTreeNode {
 
   set isChecked(value: boolean) {
     this._isChecked = value;
-    this._isAllChecked = value;
     this.origin.checked = value;
     this.afterValueChange('isChecked');
-  }
-
-  get isAllChecked(): boolean {
-    return this._isAllChecked;
-  }
-
-  /**
-   * @deprecated Maybe removed in next major version, use `isChecked` instead.
-   */
-  set isAllChecked(value: boolean) {
-    warnDeprecation(`'isAllChecked' is going to be removed in 9.0.0. Please use 'isChecked' instead.`);
-    this._isAllChecked = value;
   }
 
   get isHalfChecked(): boolean {
@@ -256,36 +238,16 @@ export class NzTreeNode {
     }
   }
 
-  /**
-   * @deprecated Maybe removed in next major version, use `isChecked` instead.
-   */
   public setChecked(checked: boolean = false, halfChecked: boolean = false): void {
-    warnDeprecation(`'setChecked' is going to be removed in 9.0.0. Please use 'isChecked' instead.`);
     this.origin.checked = checked;
     this.isChecked = checked;
-    this.isAllChecked = checked;
     this.isHalfChecked = halfChecked;
   }
 
-  /**
-   * @not-deprecated Maybe removed in next major version, use `isExpanded` instead.
-   * We need it until tree refactoring is finished
-   */
   public setExpanded(value: boolean): void {
     this._isExpanded = value;
     this.origin.expanded = value;
     this.afterValueChange('isExpanded');
-  }
-
-  /**
-   * @deprecated Maybe removed in next major version, use `isSelected` instead.
-   */
-  public setSelected(value: boolean): void {
-    warnDeprecation(`'setSelected' is going to be removed in 9.0.0. Please use 'isExpanded' isSelected.`);
-    if (this.isDisabled) {
-      return;
-    }
-    this.isSelected = value;
   }
 
   public getParentNode(): NzTreeNode | null {
