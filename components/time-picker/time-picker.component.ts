@@ -167,17 +167,25 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAutoFocus = false;
 
-  setValue(value: Date | null, emit: boolean = true): void {
-    // distinguish between preValue and value
-    this.preValue = isValid(value) ? new Date(value!) : null;
-    this.value = isValid(value) ? new Date(value!) : null;
-    this.inputValue = this.dateHelper.format(value, this.nzFormat);
-    if (this._onChange && emit) {
+  emitValue(value: Date | null): void {
+    this.setValue(value, true);
+
+    if (this._onChange) {
       this._onChange(this.value);
     }
+
     if (this._onTouched) {
       this._onTouched();
     }
+  }
+
+  setValue(value: Date | null, syncPreValue: boolean = false): void {
+    if (syncPreValue) {
+      this.preValue = isValid(value) ? new Date(value!) : null;
+    }
+    this.value = isValid(value) ? new Date(value!) : null;
+    this.inputValue = this.dateHelper.format(value, this.nzFormat);
+    this.cdr.markForCheck();
   }
 
   open(): void {
@@ -207,7 +215,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
 
   onClickClearBtn(event: MouseEvent): void {
     event.stopPropagation();
-    this.setValue(null);
+    this.emitValue(null);
   }
 
   onFocus(value: boolean): void {
@@ -227,7 +235,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   onKeyupEsc(): void {
-    this.setValue(this.preValue, false);
+    this.setValue(this.preValue);
   }
 
   onKeyupEnter(): void {
@@ -244,13 +252,12 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   onPanelValueChange(value: Date): void {
-    this.value = value;
-    this.inputValue = this.dateHelper.format(value, this.nzFormat);
+    this.setValue(value);
     this.focus();
   }
 
   setCurrentValueAndClose(): void {
-    this.setValue(this.value);
+    this.emitValue(this.value);
     this.close();
   }
 
@@ -300,15 +307,18 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   writeValue(time: Date | null | undefined): void {
+    let result: Date | null;
+
     if (time instanceof Date) {
-      this.value = time;
+      result = time;
     } else if (isNil(time)) {
-      this.value = null;
+      result = null;
     } else {
       warn('Non-Date type is not recommended for time-picker, use "Date" type.');
-      this.value = new Date(time);
+      result = new Date(time);
     }
-    this.cdr.markForCheck();
+
+    this.setValue(result, true);
   }
 
   registerOnChange(fn: (time: Date | null) => void): void {

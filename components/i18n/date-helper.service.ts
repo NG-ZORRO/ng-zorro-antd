@@ -9,7 +9,7 @@ import fnsFormat from 'date-fns/format';
 import fnsGetISOWeek from 'date-fns/getISOWeek';
 import fnsParse from 'date-fns/parse';
 
-import { WeekDayIndex } from 'ng-zorro-antd/core/time';
+import { WeekDayIndex, ɵNgTimeParser } from 'ng-zorro-antd/core/time';
 import { mergeDateConfig, NzDateConfig, NZ_DATE_CONFIG } from './date-config';
 import { NzI18nService } from './nz-i18n.service';
 
@@ -108,9 +108,8 @@ export class DateHelperByDatePipe extends DateHelperService {
     return new Date(text);
   }
 
-  parseTime(text: string): Date {
-    // const formatReg = new RegExp(formatStr.replace(/h|hh|m|mm|s|ss/, '\w+'), 'gi');
-    const now = new Date();
-    return new Date(`${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()} ${text}`);
+  parseTime(text: string, formatStr: string): Date {
+    const parser = new ɵNgTimeParser(formatStr, this.i18n.getLocaleId());
+    return parser.toDate(text);
   }
 }
