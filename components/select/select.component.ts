@@ -104,6 +104,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       [loading]="nzLoading"
       [search]="nzOpen && nzShowSearch"
       [suffixIcon]="nzSuffixIcon"
+      (click)="setOpenState(!nzOpen)"
     ></nz-select-arrow>
     <ng-template
       cdkConnectedOverlay
