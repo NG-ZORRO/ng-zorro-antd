@@ -5,7 +5,7 @@ import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/te
 import * as shx from 'shelljs';
 import { SchematicsTestNGConfig, SchematicsTestTsConfig } from '../config';
 
-describe('secondary entry points checks', () => {
+describe('v10 form components migration', () => {
   let runner: SchematicTestRunner;
   let host: TempScopedNodeJsSyncHost;
   let tree: UnitTestTree;
@@ -49,27 +49,28 @@ describe('secondary entry points checks', () => {
 
   // tslint:disable-next-line:no-any
   async function runMigration(): Promise<any> {
-    await runner.runSchematicAsync('migration-v9', {}, tree).toPromise();
+    await runner.runSchematicAsync('migration-v10', {}, tree).toPromise();
   }
 
-  describe('secondary entry points', () => {
+  describe('form components', () => {
 
-    it('warning should be printed', async() => {
-      writeFile('/index.ts', `
-      import { NzTSType } from 'ng-zorro-antd/core';
-      import { isNil } from 'ng-zorro-antd/core';
-      import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
-      import { NzTreeNodeOptions, NzTreeNode } from 'ng-zorro-antd/core';
-     `);
-
+    it('should properly report deprecated input', async() => {
+      writeFile('/index.ts', `;
+      import {Component} from '@angular/core'
+      @Component({
+        template: \`
+        <nz-form-item nzFlex></nz-form-item>
+        <nz-row nzType="flex"></nz-row>
+        <nz-form-item nzType="flex"></nz-form-item>
+        \`
+      })
+      export class MyComp {
+      }`);
       await runMigration();
-
-      const warnLines = ['index.ts@2:7', 'index.ts@3:7', 'index.ts@5:7'];
-
-      warnLines.forEach(line => {
-        expect(warnOutput.toString()).toContain(`/${line} - The entry-point "ng-zorro-antd/core" is remove.`);
-      });
-
+      const output = warnOutput.toString();
+      expect(output).toContain( '/index.ts@5:23 - Found deprecated input \'[nzFlex]\'.');
+      expect(output).toContain( '/index.ts@6:17 - Found deprecated input \'[nzFlex]\'.');
+      expect(output).toContain( '/index.ts@7:23 - Found deprecated input \'[nzFlex]\'.');
     });
 
   });

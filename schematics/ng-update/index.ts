@@ -1,6 +1,5 @@
-import { Rule } from '@angular-devkit/schematics';
+import { Rule, SchematicContext } from '@angular-devkit/schematics';
 import { createMigrationSchematicRule, NullableDevkitMigration, TargetVersion } from '@angular/cdk/schematics';
-import chalk from 'chalk';
 import { ClassNamesMigration } from './data/migrations/class-names';
 import { ruleUpgradeData } from './upgrade-data';
 import { CalendarTemplateRule } from './upgrade-rules/checks/calendar-input-rule';
@@ -8,6 +7,7 @@ import { CarouselTemplateRule } from "./upgrade-rules/checks/carousel-like-templ
 import { DropdownClassRule } from './upgrade-rules/checks/dropdown-class-rule';
 import { DropdownTemplateRule } from './upgrade-rules/checks/dropdown-template-rule';
 import { FormTemplateRule } from './upgrade-rules/checks/form-template-rule';
+import { GridTemplateRule } from './upgrade-rules/checks/grid-template-rule';
 import { IconTemplateRule } from './upgrade-rules/checks/icon-template-rule';
 import { InjectionTokenRule } from "./upgrade-rules/checks/injection-token-rule";
 import { SecondaryEntryPointsRule } from './upgrade-rules/checks/secondary-entry-points-rule';
@@ -22,6 +22,7 @@ const migrations: NullableDevkitMigration[] = [
   CarouselTemplateRule,
   InjectionTokenRule,
   FormTemplateRule,
+  GridTemplateRule,
   SecondaryEntryPointsRule,
   ClassNamesMigration
 ];
@@ -42,16 +43,17 @@ export function updateToV10(): Rule {
 }
 
 /** Post-update schematic to be called when update is finished. */
-export function postUpdate(): Rule {
-  return () => {
-    console.log();
-    console.log(chalk.green('  ✓  NG-ZORRO update complete'));
-    console.log();
-    console.log(
-      chalk.yellow(
-        '  ⚠  Please check the output above for any issues that were detected ' +
-        'but could not be automatically fixed.'
-      )
-    );
-  };
+export function postUpdate(context: SchematicContext, targetVersion: TargetVersion,
+                           hasFailures: boolean): void {
+
+  context.logger.info('');
+  context.logger.info(`  ✓  Updated NG-ZORRO to ${targetVersion}`);
+  context.logger.info('');
+
+  if (hasFailures) {
+    context.logger.warn(
+      '  ⚠  Some issues were detected but could not be fixed automatically. Please check the ' +
+      'output above and fix these issues manually.');
+  }
+
 }
