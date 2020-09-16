@@ -1,10 +1,11 @@
-import { Migration, TargetVersion, UpgradeData } from '@angular/cdk/schematics';
+import { Migration, UpgradeData } from '@angular/cdk/schematics';
 import * as ts from 'typescript';
 import { isNgZorroImportDeclaration } from "../../../utils/ng-update/module-specifiers";
 
-export class InjectionTokenRule extends Migration<UpgradeData> {
+export abstract class InjectionTokenRule extends Migration<UpgradeData> {
 
-  enabled = this.targetVersion === TargetVersion.V9;
+  abstract tokens: string[];
+  abstract getFailure(token: string): string;
 
   visitNode(node: ts.Node): void {
     if (ts.isImportDeclaration(node)) {
@@ -29,11 +30,9 @@ export class InjectionTokenRule extends Migration<UpgradeData> {
     namedImports.elements.filter(element => ts.isIdentifier(element.name)).forEach(element => {
       const importName = element.name.text;
 
-      const deprecatedTokens = ['NZ_MESSAGE_CONFIG', 'NZ_NOTIFICATION_CONFIG', 'NZ_DEFAULT_EMPTY_CONTENT', 'NZ_ICON_DEFAULT_TWOTONE_COLOR'];
-
-      if (deprecatedTokens.indexOf(importName) !== -1) {
+      if (this.tokens.indexOf(importName) !== -1) {
         this.createFailureAtNode(
-          element, `Found deprecated symbol "${importName}" which has been removed. Use global config to instead please.`);
+          element, this.getFailure(importName));
       }
     });
   }

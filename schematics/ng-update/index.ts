@@ -4,12 +4,13 @@ import { ClassNamesMigration } from './data/migrations/class-names';
 import { ruleUpgradeData } from './upgrade-data';
 import { CalendarTemplateRule } from './upgrade-rules/checks/calendar-input-rule';
 import { CarouselTemplateRule } from "./upgrade-rules/checks/carousel-like-template-rule";
+import { DateFnsCompatibleRule } from './upgrade-rules/checks/date-fns-compatible-rule';
 import { DropdownClassRule } from './upgrade-rules/checks/dropdown-class-rule';
 import { DropdownTemplateRule } from './upgrade-rules/checks/dropdown-template-rule';
 import { FormTemplateRule } from './upgrade-rules/checks/form-template-rule';
+import { GlobalConfigRule } from './upgrade-rules/checks/global-config-rule';
 import { GridTemplateRule } from './upgrade-rules/checks/grid-template-rule';
 import { IconTemplateRule } from './upgrade-rules/checks/icon-template-rule';
-import { InjectionTokenRule } from "./upgrade-rules/checks/injection-token-rule";
 import { SecondaryEntryPointsRule } from './upgrade-rules/checks/secondary-entry-points-rule';
 import { TableTemplateRule } from './upgrade-rules/checks/table-template-rule';
 import { TooltipLikeTemplateRule } from './upgrade-rules/checks/tooltip-like-template-rule';
@@ -21,7 +22,8 @@ const migrations: NullableDevkitMigration[] = [
   IconTemplateRule,
   CalendarTemplateRule,
   CarouselTemplateRule,
-  InjectionTokenRule,
+  GlobalConfigRule,
+  DateFnsCompatibleRule,
   FormTemplateRule,
   GridTemplateRule,
   TableTemplateRule,
