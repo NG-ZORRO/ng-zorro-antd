@@ -8,6 +8,7 @@
 
 import { Pipe, PipeTransform } from '@angular/core';
 import { sum } from 'ng-zorro-antd';
+import { NzSafeAny } from '../types';
 
 export enum EMathMethod {
   SUM = 'sum',
@@ -22,8 +23,7 @@ export enum EMathMethod {
 export class NzMathPipe implements PipeTransform {
   getMethodResult(data: number[], method: EMathMethod): number {
     let result: number = data[0];
-    // tslint:disable-next-line:no-any
-    data.forEach((item: any) => {
+    data.forEach((item: NzSafeAny) => {
       if (method === EMathMethod.MAX) {
         if (result < item) {
           result = item;
@@ -37,8 +37,7 @@ export class NzMathPipe implements PipeTransform {
     return result;
   }
 
-  // tslint:disable-next-line:no-any
-  transform(value: any, method: EMathMethod): undefined | number {
+  transform(value: NzSafeAny, method: EMathMethod): undefined | number {
     if (!Array.isArray(value)) {
       return value;
     }

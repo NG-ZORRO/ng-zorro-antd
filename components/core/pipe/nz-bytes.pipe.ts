@@ -8,11 +8,12 @@
 
 import { Pipe, PipeTransform } from '@angular/core';
 import { isNumberFinite, toDecimal } from 'ng-zorro-antd';
+import { NzSafeAny } from '../types';
 
 export type ByteUnit = 'B' | 'kB' | 'KB' | 'MB' | 'GB' | 'TB';
 
 @Pipe({
-  name: 'nzBytes'
+  name: 'nzBytes',
 })
 export class NzBytesPipe implements PipeTransform {
   static formats: { [key: string]: { max: number; prev?: ByteUnit } } = {
@@ -21,11 +22,10 @@ export class NzBytesPipe implements PipeTransform {
     KB: { max: Math.pow(1024, 2), prev: 'B' }, // Backward compatible
     MB: { max: Math.pow(1024, 3), prev: 'kB' },
     GB: { max: Math.pow(1024, 4), prev: 'MB' },
-    TB: { max: Number.MAX_SAFE_INTEGER, prev: 'GB' }
+    TB: { max: Number.MAX_SAFE_INTEGER, prev: 'GB' },
   };
 
-  // tslint:disable-next-line:no-any
-  transform(input: any, decimal: number = 0, from: ByteUnit = 'B', to?: ByteUnit): any {
+  transform(input: NzSafeAny, decimal: number = 0, from: ByteUnit = 'B', to?: ByteUnit): NzSafeAny {
     if (!(isNumberFinite(input) && isNumberFinite(decimal) && decimal % 1 === 0 && decimal >= 0)) {
       return input;
     }

@@ -1,10 +1,10 @@
+import { NzSafeAny } from '../types';
 import { NzSomePipe } from './nz-some.pipe';
 
 describe('NzSomePipe', () => {
   let pipe: NzSomePipe;
 
-  // tslint:disable-next-line:no-any
-  const fn = (item: any) => {
+  const fn = (item: NzSafeAny) => {
     return item === 2;
   };
 

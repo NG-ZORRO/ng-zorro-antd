@@ -12,14 +12,14 @@ describe('NzBytesPipe', () => {
     expect(result).toEqual('150 B');
   });
 
-  it('Should return 155.57 B', () => {
+  it('Should return 155 B', () => {
     const result = pipe.transform(155.56791, 2);
-    expect(result).toEqual('155.57 B');
+    expect(result).toEqual('155 B');
   });
 
-  it('Should return 155.5 B', () => {
+  it('Should return 155 B', () => {
     const result = pipe.transform(155.5, 1);
-    expect(result).toEqual('155.5 B');
+    expect(result).toEqual('155 B');
   });
 
   it('Should return 1 kB', () => {

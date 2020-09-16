@@ -8,6 +8,7 @@
 
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer, SafeHtml, SafeResourceUrl, SafeScript, SafeStyle, SafeUrl } from '@angular/platform-browser';
+import { NzSafeAny } from '../types';
 
 @Pipe({
   name: 'nzSanitizer'
@@ -15,8 +16,7 @@ import { DomSanitizer, SafeHtml, SafeResourceUrl, SafeScript, SafeStyle, SafeUrl
 export class NzSanitizerPipe implements PipeTransform {
   constructor(protected sanitizer: DomSanitizer) {}
 
-  // tslint:disable-next-line:no-any
-  transform(value: any, type: string = 'html'): SafeHtml | SafeStyle | SafeScript | SafeUrl | SafeResourceUrl {
+  transform(value: NzSafeAny, type: string = 'html'): SafeHtml | SafeStyle | SafeScript | SafeUrl | SafeResourceUrl {
     switch (type) {
       case 'html':
         return this.sanitizer.bypassSecurityTrustHtml(value);

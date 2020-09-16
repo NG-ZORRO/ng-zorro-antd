@@ -7,13 +7,13 @@
  */
 
 import { Pipe, PipeTransform } from '@angular/core';
+import { NzSafeAny } from '../types';
 
 @Pipe({
   name: 'nzEllipsis'
 })
 export class NzEllipsisPipe implements PipeTransform {
-  // tslint:disable-next-line:no-any
-  transform(value: any, length?: number, suffix?: string, preserve?: boolean): any {
+  transform(value: NzSafeAny, length?: number, suffix?: string, preserve?: boolean): NzSafeAny {
     if (typeof value !== 'string') {
       return value;
     }
