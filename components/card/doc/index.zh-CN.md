@@ -29,7 +29,7 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 | --- | --- | --- | --- | --- |
 | `[nzActions]` | 卡片操作组，位置在卡片底部 | `Array<TemplateRef<void>>` | - |
 | `[nzBodyStyle]` | 内容区域自定义样式 | `{ [key: string]: string }` | - |
-| `[nzBordered]` | 是否有边框 | `boolean` | `true` | ✅ |
+| `[nzBorderless]` | 是否移除边框 | `boolean` | `false` | ✅ |
 | `[nzCover]` | 卡片封面 | `TemplateRef<void>` | - |
 | `[nzExtra]` | 卡片右上角的操作区域 | `string\|TemplateRef<void>` | - |
 | `[nzHoverable]` | 鼠标移过时可浮起 | `boolean` | `false` | ✅ |
