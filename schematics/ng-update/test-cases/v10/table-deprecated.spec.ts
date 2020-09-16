@@ -5,7 +5,7 @@ import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/te
 import * as shx from 'shelljs';
 import { SchematicsTestNGConfig, SchematicsTestTsConfig } from '../config';
 
-describe('v10 form components migration', () => {
+describe('v10 table components migration', () => {
   let runner: SchematicTestRunner;
   let host: TempScopedNodeJsSyncHost;
   let tree: UnitTestTree;
@@ -52,25 +52,35 @@ describe('v10 form components migration', () => {
     await runner.runSchematicAsync('migration-v10', {}, tree).toPromise();
   }
 
-  describe('grid/form components', () => {
+  describe('table component', () => {
 
     it('should properly report deprecated input', async() => {
       writeFile('/index.ts', `;
       import {Component} from '@angular/core'
       @Component({
         template: \`
-        <nz-form-item nzFlex></nz-form-item>
-        <nz-row nzType="flex"></nz-row>
-        <nz-form-item nzType="flex"></nz-form-item>
+        <table>
+          <thead nzSingleSort (nzSortChange)="change()">
+            <th nzSortKey="key" nzSort="ascend" (nzSortChange)="change()"></th>
+          </thead>
+        </table>
         \`
       })
       export class MyComp {
+        change() {}
       }`);
       await runMigration();
       const output = warnOutput.toString();
-      expect(output).toContain( '/index.ts@5:23 - Found deprecated input \'[nzFlex]\'.');
-      expect(output).toContain( '/index.ts@6:17 - Found deprecated input \'[nzType]\'.');
-      expect(output).toContain( '/index.ts@7:23 - Found deprecated input \'[nzType]\'.');
+      const content = tree.readContent('/index.ts');
+
+      expect(output).toContain( '/index.ts@6:18 - Found deprecated input \'thead[nzSingleSort]\'.');
+      expect(output).toContain( '/index.ts@7:17 - Found deprecated input \'th[nzSortKey]\'.');
+
+      expect(content).toContain(`<table>
+          <thead nzSingleSort (nzSortOrderChange)="change()">
+            <th nzSortKey="key" nzSortOrder="ascend" (nzSortOrderChange)="change()"></th>
+          </thead>
+        </table>`)
     });
 
   });

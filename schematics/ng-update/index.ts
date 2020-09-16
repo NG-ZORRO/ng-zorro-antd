@@ -11,6 +11,7 @@ import { GridTemplateRule } from './upgrade-rules/checks/grid-template-rule';
 import { IconTemplateRule } from './upgrade-rules/checks/icon-template-rule';
 import { InjectionTokenRule } from "./upgrade-rules/checks/injection-token-rule";
 import { SecondaryEntryPointsRule } from './upgrade-rules/checks/secondary-entry-points-rule';
+import { TableTemplateRule } from './upgrade-rules/checks/table-template-rule';
 import { TooltipLikeTemplateRule } from './upgrade-rules/checks/tooltip-like-template-rule';
 
 const migrations: NullableDevkitMigration[] = [
@@ -23,6 +24,7 @@ const migrations: NullableDevkitMigration[] = [
   InjectionTokenRule,
   FormTemplateRule,
   GridTemplateRule,
+  TableTemplateRule,
   SecondaryEntryPointsRule,
   ClassNamesMigration
 ];

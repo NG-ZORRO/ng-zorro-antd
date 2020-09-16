@@ -1,7 +1,6 @@
 import { OutputNameUpgradeData, TargetVersion, VersionChanges } from '@angular/cdk/schematics';
 
 export const outputNames: VersionChanges<OutputNameUpgradeData> = {
-  [ TargetVersion.V7 ]: [],
   [ TargetVersion.V9 ]: [
     {
       pr     : 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/4601',
@@ -11,6 +10,20 @@ export const outputNames: VersionChanges<OutputNameUpgradeData> = {
           replaceWith: 'nzSearchValueChange',
           whitelist  : {
             elements: ['nz-tree']
+          }
+        }
+      ]
+    }
+  ],
+  [ TargetVersion.V10 ]: [
+    {
+      pr     : 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/5792',
+      changes: [
+        {
+          replace    : 'nzSortChange',
+          replaceWith: 'nzSortOrderChange',
+          whitelist  : {
+            elements: ['thead', 'th']
           }
         }
       ]
