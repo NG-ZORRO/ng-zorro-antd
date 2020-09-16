@@ -4,7 +4,7 @@ import endOfMonth from 'date-fns/endOfMonth';
 @Component({
   selector: 'nz-demo-date-picker-presetted-ranges',
   template: `
-    <nz-range-picker [nzRanges]="ranges1" ngModel (ngModelChange)="onChange($event)"></nz-range-picker>
+    <nz-range-picker [nzRanges]="ranges" ngModel (ngModelChange)="onChange($event)"></nz-range-picker>
     <br />
     <nz-range-picker
       [nzRanges]="ranges"
