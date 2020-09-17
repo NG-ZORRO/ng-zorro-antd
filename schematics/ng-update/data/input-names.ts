@@ -27,6 +27,18 @@ export const inputNames: VersionChanges<InputNameUpgradeData> = {
           }
         }
       ]
+    },
+    {
+      pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/5792',
+      changes: [
+        {
+          replace    : 'nzSort',
+          replaceWith: 'nzSortOrder',
+          whitelist  : {
+            elements: [ 'th' ]
+          }
+        }
+      ]
     }
   ],
   [ TargetVersion.V9 ]: [

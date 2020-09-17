@@ -17,13 +17,20 @@ export class GridTemplateRule extends Migration<UpgradeData> {
 
     offsets.push(...findInputsOnElementWithAttr(template.content, 'nzType', ['nz-row']))
     offsets.push(...findInputsOnElementWithTag(template.content, 'nzType', ['nz-form-item', 'nz-row']))
-    offsets.push(...findInputsOnElementWithTag(template.content, 'nzFlex', ['nz-form-item']))
 
     offsets.forEach(offset => {
       this.failures.push({
         filePath: template.filePath,
         position: template.getCharacterAndLineOfPosition(offset),
-          message: `Found deprecated input '[nzFlex]'. Please manually remove this input.`
+          message: `Found deprecated input '[nzType]'. Please manually remove this input.`
+      });
+    })
+
+    findInputsOnElementWithTag(template.content, 'nzFlex', ['nz-form-item']).forEach(offset => {
+      this.failures.push({
+        filePath: template.filePath,
+        position: template.getCharacterAndLineOfPosition(offset),
+        message: `Found deprecated input '[nzFlex]'. Please manually remove this input.`
       });
     })
 

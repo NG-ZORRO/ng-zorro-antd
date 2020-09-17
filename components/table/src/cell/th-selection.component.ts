@@ -49,7 +49,6 @@ export class NzThSelectionComponent implements OnChanges {
   @Input() @InputBoolean() nzShowCheckbox = false;
   @Input() @InputBoolean() nzShowRowSelection = false;
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
-  @Output() readonly nzSortChangeWithKey = new EventEmitter<{ key: string; value: string | null }>();
 
   private isNzShowExpandChanged = false;
   private isNzShowCheckboxChanged = false;

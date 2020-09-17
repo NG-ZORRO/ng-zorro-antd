@@ -17,7 +17,6 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
@@ -25,8 +24,7 @@ import { takeUntil } from 'rxjs/operators';
 import { NzTableFilterFn, NzTableFilterList, NzTableFilterValue, NzTableSortFn, NzTableSortOrder } from '../table.types';
 
 @Component({
-  selector:
-    'th[nzSortKey], th[nzColumnKey], th[nzSort], th[nzSortFn], th[nzSortOrder], th[nzFilters], th[nzShowSort], th[nzShowFilter], th[nzCustomFilter]',
+  selector: 'th[nzColumnKey], th[nzSortFn], th[nzSortOrder], th[nzFilters], th[nzShowSort], th[nzShowFilter], th[nzCustomFilter]',
   preserveWhitespaces: false,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -88,12 +86,6 @@ export class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy {
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
   @Output() readonly nzSortOrderChange = new EventEmitter<string | null>();
   @Output() readonly nzFilterChange = new EventEmitter<NzTableFilterValue>();
-  /** @deprecated use nzColumnKey instead **/
-  @Input() nzSortKey?: string;
-  /** @deprecated use nzSortOrder instead **/
-  @Input() nzSort: NzTableSortOrder = null;
-  /** @deprecated use nzSortOrderChange instead **/
-  @Output() readonly nzSortChange = new EventEmitter<string | null>();
 
   getNextSortDirection(sortDirections: NzTableSortOrder[], current: NzTableSortOrder): NzTableSortOrder {
     const index = sortDirections.indexOf(current);
@@ -138,7 +130,6 @@ export class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy {
     this.sortOrderChange$.pipe(takeUntil(this.destroy$)).subscribe(order => {
       if (this.sortOrder !== order) {
         this.sortOrder = order;
-        this.nzSortChange.emit(order);
         this.nzSortOrderChange.emit(order);
       }
       this.updateCalcOperator();
@@ -148,8 +139,6 @@ export class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     const {
-      nzSortKey,
-      nzSort,
       nzSortDirections,
       nzFilters,
       nzSortOrder,
@@ -165,17 +154,6 @@ export class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy {
         this.sortDirections = this.nzSortDirections;
       }
     }
-    if (nzSort) {
-      this.sortOrder = this.nzSort;
-      this.setSortOrder(this.nzSort);
-      warnDeprecation(
-        `'nzSort' and 'nzSortChange' is deprecated and will be removed in 10.0.0. Please use 'nzSortOrder' and 'nzSortOrderChange' instead.`
-      );
-    }
-    if (nzSortKey) {
-      this.nzColumnKey = this.nzSortKey;
-      warnDeprecation(`'nzSortKey' is deprecated and will be removed in 10.0.0. Please use 'nzColumnKey' instead.`);
-    }
     if (nzSortOrder) {
       this.sortOrder = this.nzSortOrder;
       this.setSortOrder(this.nzSortOrder);
@@ -187,10 +165,7 @@ export class NzThAddOnComponent implements OnChanges, OnInit, OnDestroy {
       this.isNzShowFilterChanged = true;
     }
     const isFirstChange = (value: SimpleChange) => value && value.firstChange && value.currentValue !== undefined;
-    if (
-      (isFirstChange(nzSortKey) || isFirstChange(nzSort) || isFirstChange(nzSortOrder) || isFirstChange(nzSortFn)) &&
-      !this.isNzShowSortChanged
-    ) {
+    if ((isFirstChange(nzSortOrder) || isFirstChange(nzSortFn)) && !this.isNzShowSortChanged) {
       this.nzShowSort = true;
     }
     if (isFirstChange(nzFilters) && !this.isNzShowFilterChanged) {
