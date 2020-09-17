@@ -26,9 +26,3 @@ export interface NzMessageData {
 }
 
 export type NzMessageRef = Pick<Required<NzMessageData>, 'onClose' | 'messageId'>;
-
-/**
- * @deprecated use `NzMessageRef` instead
- * @breaking-change 10.0.0
- */
-export type NzMessageDataFilled = NzMessageRef;

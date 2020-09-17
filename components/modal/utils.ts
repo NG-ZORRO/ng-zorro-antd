@@ -17,7 +17,7 @@ export function getValueWithConfig<T>(userValue: T | undefined, configValue: T |
 /**
  * Assign the params into the content component instance.
  * @deprecated Should use dependency injection to get the params for user
- * @breaking-change 10.0.0
+ * @breaking-change 11.0.0
  */
 export function setContentInstanceParams<T>(instance: T, params: Partial<T> | undefined): void {
   Object.assign(instance, params);

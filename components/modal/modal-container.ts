@@ -9,6 +9,7 @@ import { OverlayRef } from '@angular/cdk/overlay';
 import { BasePortalOutlet, CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { ChangeDetectorRef, ComponentRef, Directive, ElementRef, EmbeddedViewRef, EventEmitter, OnDestroy, Renderer2 } from '@angular/core';
 import { NzConfigService } from 'ng-zorro-antd/core/config';
+import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { getElementOffset } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
@@ -264,11 +265,6 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
     }
   }
 
-  /**
-   * Set the container element.
-   * @deprecated Not supported.
-   * @breaking-change 10.0.0
-   */
   private setContainer(): void {
     const container = this.getContainer();
     if (container) {
@@ -276,11 +272,6 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
     }
   }
 
-  /**
-   * Reset the container element.
-   * @deprecated Not supported.
-   * @breaking-change 10.0.0
-   */
   private resetContainer(): void {
     const container = this.getContainer();
     if (container) {
@@ -288,10 +279,20 @@ export class BaseModalContainerComponent extends BasePortalOutlet implements OnD
     }
   }
 
+  /**
+   * Set the container element.
+   * @deprecated Not supported.
+   * @breaking-change 11.0.0
+   */
   private getContainer(): HTMLElement | null {
     const { nzGetContainer } = this.config;
     const container = typeof nzGetContainer === 'function' ? nzGetContainer() : nzGetContainer;
-    return container instanceof HTMLElement ? container : null;
+    if (container instanceof HTMLElement) {
+      warnDeprecation('nzGetContainer of nz-modal is not support, will be removed in 11.0.0');
+      return container;
+    } else {
+      return null;
+    }
   }
 
   updateMaskClassname(): void {
