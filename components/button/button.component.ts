@@ -39,8 +39,19 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
-    <i nz-icon nzType="loading" *ngIf="nzLoading"></i>
-    <ng-content></ng-content>
+    <ng-container *ngIf="nzLoading; else contentRef">
+      <i nz-icon nzType="loading" *ngIf="nzLoading"></i>
+      <ng-container *ngIf="loadingText">
+        {{ loadingText }}
+      </ng-container>
+      <ng-container *ngIf="!loadingText">
+        <ng-container *ngTemplateOutlet="contentRef"></ng-container>
+      </ng-container>
+    </ng-container>
+
+    <ng-template #contentRef>
+      <ng-content></ng-content>
+    </ng-template>
   `,
   host: {
     '[class.ant-btn]': `true`,
@@ -82,6 +93,7 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
   @Input() nzType: NzButtonType = null;
   @Input() nzShape: NzButtonShape = null;
   @Input() @WithConfig() nzSize: NzButtonSize = 'default';
+  @Input() loadingText: string | undefined = undefined;
   private destroy$ = new Subject<void>();
   private loading$ = new Subject<boolean>();
 

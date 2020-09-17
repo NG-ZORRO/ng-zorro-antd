@@ -51,6 +51,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 | `[nzType]` | 设置按钮类型，可选值为 `primary` `dashed` `text` `link` 或者不设 | `'primary'\|'dashed'\|'link'\|'text'` | - |
 | `[nzBlock]` | 将按钮宽度调整为其父宽度的选项 | `boolean` | `false` |
 | `[nzDanger]` | 设置危险按钮 | boolean | `false` |  |
+| `[loadingText]` | 加载信息 | string | `undefined` |  |
 
 
 ### nz-button-group
