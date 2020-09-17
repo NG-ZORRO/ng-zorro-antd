@@ -65,7 +65,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'card';
   host: {
     '[class.ant-card]': 'true',
     '[class.ant-card-loading]': 'nzLoading',
-    '[class.ant-card-bordered]': 'nzBordered',
+    '[class.ant-card-bordered]': 'nzBorderless === false && nzBordered',
     '[class.ant-card-hoverable]': 'nzHoverable',
     '[class.ant-card-small]': 'nzSize === "small"',
     '[class.ant-card-contain-grid]': 'listOfNzCardGridDirective && listOfNzCardGridDirective.length',
@@ -76,10 +76,12 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'card';
 export class NzCardComponent implements OnDestroy {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzBordered: BooleanInput;
+  static ngAcceptInputType_nzBorderless: BooleanInput;
   static ngAcceptInputType_nzLoading: BooleanInput;
   static ngAcceptInputType_nzHoverable: BooleanInput;
 
   @Input() @WithConfig() @InputBoolean() nzBordered: boolean = true;
+  @Input() @WithConfig() @InputBoolean() nzBorderless: boolean = false;
   @Input() @InputBoolean() nzLoading = false;
   @Input() @WithConfig() @InputBoolean() nzHoverable: boolean = false;
   @Input() nzBodyStyle: NgStyleInterface | null = null;
