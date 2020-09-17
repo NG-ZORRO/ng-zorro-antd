@@ -41,7 +41,7 @@ import { CompatibleDate, DisabledTimeFn, NzDateMode, PresetRanges, SupportTimeOp
 const POPUP_STYLE_PATCH = { position: 'relative' }; // Aim to override antd's style to support overlay's position strategy (position:absolute will cause it not working beacuse the overlay can't get the height/width of it's content)
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'datePicker';
 
-export type NzDatePickerType = 'large' | 'default' | 'small';
+export type NzDatePickerSizeType = 'large' | 'default' | 'small';
 
 /**
  * The base picker for all common APIs
@@ -147,7 +147,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   @Input() nzPlaceHolder: string | [string, string] = '';
   @Input() nzPopupStyle: object = POPUP_STYLE_PATCH;
   @Input() nzDropdownClassName?: string;
-  @Input() nzSize: NzDatePickerType = 'default';
+  @Input() nzSize: NzDatePickerSizeType = 'default';
   /**
    * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
    */
