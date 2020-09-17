@@ -15,8 +15,9 @@ import { dispatchKeyboardEvent, dispatchMouseEvent, typeInElement } from 'ng-zor
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { NzI18nModule, NzI18nService, NZ_DATE_LOCALE } from 'ng-zorro-antd/i18n';
 import en_US from '../i18n/languages/en_US';
+import { NzDatePickerComponent } from './date-picker.component';
 import { NzDatePickerModule } from './date-picker.module';
-import { ENTER_EVENT, getPicker, getPickerAbstract, getPickerInput } from './testing/util';
+import { ENTER_EVENT, getPickerAbstract, getPickerInput } from './testing/util';
 import { PREFIX_CLASS } from './util';
 
 registerLocaleData(zh);
@@ -66,6 +67,21 @@ describe('NzDatePickerComponent', () => {
       expect(getPickerContainer()).not.toBeNull();
 
       dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).toBeNull();
+    }));
+
+    it('should open and close method work', fakeAsync(() => {
+      fixture.detectChanges();
+      fixtureInstance.datePicker.open();
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).not.toBeNull();
+
+      fixtureInstance.datePicker.close();
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -243,12 +259,6 @@ describe('NzDatePickerComponent', () => {
       expect(input.value).toBe('24.02.2020');
     }));
 
-    it('should support nzClassName', () => {
-      const className = (fixtureInstance.nzClassName = 'my-test-class');
-      fixture.detectChanges();
-      expect(getPicker(fixture.debugElement).classList.contains(className)).toBeTruthy();
-    });
-
     it('should support nzDisabledDate', fakeAsync(() => {
       fixture.detectChanges();
       const compareDate = new Date('2018-11-15 00:00:00');
@@ -312,12 +322,6 @@ describe('NzDatePickerComponent', () => {
       fixtureInstance.nzSize = 'small';
       fixture.detectChanges();
       expect(getPickerAbstract(fixture.debugElement).classList.contains(`${PREFIX_CLASS}-small`)).toBeTruthy();
-    });
-
-    it('should support nzStyle', () => {
-      fixtureInstance.nzStyle = { color: 'blue' };
-      fixture.detectChanges();
-      expect(getPicker(fixture.debugElement).style.color).toBe('blue');
     });
 
     it('should support nzOnOpenChange', fakeAsync(() => {
@@ -973,7 +977,6 @@ describe('date-fns testing', () => {
         [nzAutoFocus]="nzAutoFocus"
         [nzDisabled]="nzDisabled"
         [nzInputReadOnly]="nzInputReadOnly"
-        [nzClassName]="nzClassName"
         [nzDisabledDate]="nzDisabledDate"
         [nzFormat]="nzFormat"
         [nzLocale]="nzLocale"
@@ -981,7 +984,6 @@ describe('date-fns testing', () => {
         [nzPopupStyle]="nzPopupStyle"
         [nzDropdownClassName]="nzDropdownClassName"
         [nzSize]="nzSize"
-        [nzStyle]="nzStyle"
         (nzOnOpenChange)="nzOnOpenChange($event)"
         [ngModel]="nzValue"
         (ngModelChange)="nzOnChange($event)"
@@ -1018,13 +1020,12 @@ class NzTestDatePickerComponent {
   useSuite!: 1 | 2 | 3 | 4;
   @ViewChild('tplDateRender', { static: true }) tplDateRender!: TemplateRef<Date>;
   @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter!: TemplateRef<void>;
-
+  @ViewChild(NzDatePickerComponent, { static: false }) datePicker!: NzDatePickerComponent;
   // --- Suite 1
   nzAllowClear: boolean = false;
   nzAutoFocus: boolean = false;
   nzDisabled: boolean = false;
   nzInputReadOnly: boolean = false;
-  nzClassName!: string;
   nzFormat!: string;
   nzDisabledDate!: (d: Date) => boolean;
   nzLocale: any; // tslint:disable-line:no-any
@@ -1032,7 +1033,6 @@ class NzTestDatePickerComponent {
   nzPopupStyle!: NgStyleInterface;
   nzDropdownClassName!: string;
   nzSize!: string;
-  nzStyle!: NgStyleInterface;
 
   nzOnChange(_: Date | null): void {}
   nzOnCalendarChange(): void {}

@@ -58,6 +58,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
         [class.ant-table-has-fix-left]="hasFixLeft"
         [class.ant-table-has-fix-right]="hasFixRight"
         [class.ant-table-bordered]="nzBordered"
+        [class.nz-table-out-bordered]="nzOuterBordered && !nzBordered"
         [class.ant-table-middle]="nzSize === 'middle'"
         [class.ant-table-small]="nzSize === 'small'"
       >
@@ -127,6 +128,7 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   static ngAcceptInputType_nzShowPagination: BooleanInput;
   static ngAcceptInputType_nzLoading: BooleanInput;
   static ngAcceptInputType_nzBordered: BooleanInput;
+  static ngAcceptInputType_nzOuterBordered: BooleanInput;
   static ngAcceptInputType_nzShowSizeChanger: BooleanInput;
   static ngAcceptInputType_nzHideOnSinglePage: BooleanInput;
   static ngAcceptInputType_nzShowQuickJumper: BooleanInput;
@@ -155,6 +157,7 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   @Input() @InputBoolean() nzTemplateMode = false;
   @Input() @InputBoolean() nzShowPagination = true;
   @Input() @InputBoolean() nzLoading = false;
+  @Input() @InputBoolean() nzOuterBordered = false;
   @Input() @WithConfig() nzLoadingIndicator: TemplateRef<NzSafeAny> | null = null;
   @Input() @WithConfig() @InputBoolean() nzBordered: boolean = false;
   @Input() @WithConfig() nzSize: NzTableSize = 'default';

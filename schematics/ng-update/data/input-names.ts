@@ -27,6 +27,37 @@ export const inputNames: VersionChanges<InputNameUpgradeData> = {
           }
         }
       ]
+    },
+    {
+      pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/5792',
+      changes: [
+        {
+          replace    : 'nzSort',
+          replaceWith: 'nzSortOrder',
+          whitelist  : {
+            elements: [ 'th' ]
+          }
+        }
+      ]
+    },
+    {
+      pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/5793',
+      changes: [
+        {
+          replace    : 'nzClassName',
+          replaceWith: 'ngClass',
+          whitelist  : {
+            elements: [ 'nz-date-picker', 'nz-week-picker', 'nz-month-picker', 'nz-year-picker', 'nz-range-picker' ]
+          }
+        },
+        {
+          replace    : 'nzStyle',
+          replaceWith: 'ngStyle',
+          whitelist  : {
+            elements: [ 'nz-date-picker', 'nz-week-picker', 'nz-month-picker', 'nz-year-picker', 'nz-range-picker' ]
+          }
+        }
+      ]
     }
   ],
   [ TargetVersion.V9 ]: [

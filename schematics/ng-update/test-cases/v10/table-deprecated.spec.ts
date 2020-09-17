@@ -5,7 +5,7 @@ import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/te
 import * as shx from 'shelljs';
 import { SchematicsTestNGConfig, SchematicsTestTsConfig } from '../config';
 
-describe('secondary entry points checks', () => {
+describe('v10 table components migration', () => {
   let runner: SchematicTestRunner;
   let host: TempScopedNodeJsSyncHost;
   let tree: UnitTestTree;
@@ -49,27 +49,38 @@ describe('secondary entry points checks', () => {
 
   // tslint:disable-next-line:no-any
   async function runMigration(): Promise<any> {
-    await runner.runSchematicAsync('migration-v9', {}, tree).toPromise();
+    await runner.runSchematicAsync('migration-v10', {}, tree).toPromise();
   }
 
-  describe('secondary entry points', () => {
+  describe('table component', () => {
 
-    it('warning should be printed', async() => {
-      writeFile('/index.ts', `
-      import { NzTSType } from 'ng-zorro-antd/core';
-      import { isNil } from 'ng-zorro-antd/core';
-      import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
-      import { NzTreeNodeOptions, NzTreeNode } from 'ng-zorro-antd/core';
-     `);
-
+    it('should properly report deprecated input', async() => {
+      writeFile('/index.ts', `;
+      import {Component} from '@angular/core'
+      @Component({
+        template: \`
+        <table>
+          <thead nzSingleSort (nzSortChange)="change()">
+            <th nzSortKey="key" nzSort="ascend" (nzSortChange)="change()"></th>
+          </thead>
+        </table>
+        \`
+      })
+      export class MyComp {
+        change() {}
+      }`);
       await runMigration();
+      const output = warnOutput.toString();
+      const content = tree.readContent('/index.ts');
 
-      const warnLines = ['index.ts@2:7', 'index.ts@3:7', 'index.ts@5:7'];
+      expect(output).toContain( '/index.ts@6:18 - Found deprecated input \'thead[nzSingleSort]\'.');
+      expect(output).toContain( '/index.ts@7:17 - Found deprecated input \'th[nzSortKey]\'.');
 
-      warnLines.forEach(line => {
-        expect(warnOutput.toString()).toContain(`/${line} - The entry-point "ng-zorro-antd/core" is remove.`);
-      });
-
+      expect(content).toContain(`<table>
+          <thead nzSingleSort (nzSortOrderChange)="change()">
+            <th nzSortKey="key" nzSortOrder="ascend" (nzSortOrderChange)="change()"></th>
+          </thead>
+        </table>`)
     });
 
   });

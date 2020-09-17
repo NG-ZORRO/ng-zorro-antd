@@ -4,7 +4,7 @@ import { PropertyNameUpgradeData, TargetVersion, VersionChanges } from '@angular
 export const propertyNames: VersionChanges<PropertyNameUpgradeData> = {
   [TargetVersion.V10]: [
     {
-      pr: '',
+      pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/5779',
       changes: [
         {
           replace: 'nzPosition',
@@ -25,6 +25,16 @@ export const propertyNames: VersionChanges<PropertyNameUpgradeData> = {
           replace: 'setSelected',
           replaceWith: '/** TODO(NG-ZORRO V10) setSelected is deprecated, use `isSelected` instead **/setSelected',
           whitelist: {classes: ['NzTreeNode']}
+        }
+      ]
+    },
+    {
+      pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/5798',
+      changes: [
+        {
+          replace: 'updateDefaultOption',
+          replaceWith: '/** TODO(NG-ZORRO V10) updateDefaultOption is deprecated, Please use `set` of `NzConfigService` instead. **/updateDefaultOption',
+          whitelist: {classes: ['NzCodeEditorService']}
         }
       ]
     }

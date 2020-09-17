@@ -328,7 +328,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   // Show overlay content
   showOverlay(): void {
-    if (!this.realOpenState) {
+    if (!this.realOpenState && !this.disabled) {
       this.resetInputWidthAndArrowLeft();
       this.overlayOpen = true;
       this.animationStart();
@@ -351,7 +351,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   onClickInputBox(event: MouseEvent, partType?: RangePartType): void {
     event.stopPropagation();
 
-    if (!this.disabled && !this.isOpenHandledByUser()) {
+    if (!this.isOpenHandledByUser()) {
       this.showOverlay();
     }
     this.onFocus(partType);

@@ -28,7 +28,7 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 | -------- | ----------- | ---- | ------- | ------------- |
 | `[nzActions]` | The action list, shows at the bottom of the Card. | `Array<TemplateRef<void>>` | - |
 | `[nzBodyStyle]` | Inline style to apply to the card content | `{ [key: string]: string }` | - |
-| `[nzBordered]` | Toggles rendering of the border around the card | `boolean` | `true` | ✅ |
+| `[nzBorderless]` | Remove border around the card | `boolean` | `false` | ✅ |
 | `[nzCover]` | Card cover | `TemplateRef<void>` | - |
 | `[nzExtra]` | Content to render in the top-right corner of the card | `string\|TemplateRef<void>` | - |
 | `[nzHoverable]` | Lift up when hovering card | `boolean` | `false` | ✅ |

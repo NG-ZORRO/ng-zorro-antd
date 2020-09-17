@@ -17,7 +17,8 @@ export const classNames: VersionChanges<ClassNameUpgradeData> = {
     {
       pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/5779',
       changes: [
-        {replace: 'NzNotificationDataFilled', replaceWith: 'NzNotificationRef'}
+        {replace: 'NzNotificationDataFilled', replaceWith: 'NzNotificationRef'},
+        {replace: 'NzMessageDataFilled', replaceWith: 'NzMessageRef'}
       ]
     },
     {

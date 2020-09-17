@@ -22,7 +22,9 @@ export function findElementWithTag(html: string, tagName: string): number[] {
 
   visitNodes(document.childNodes);
 
-  return elements.map(element => element.sourceCodeLocation.startTag.startOffset)
+  return elements
+    .filter(e => e?.sourceCodeLocation?.startTag)
+    .map(element => element.sourceCodeLocation.startTag.startOffset)
 }
 
 export function findElementWithClassName(html: string, className: string, tagName: string): number[] {
@@ -43,5 +45,7 @@ export function findElementWithClassName(html: string, className: string, tagNam
 
   visitNodes(document.childNodes);
 
-  return elements.map(element => element.sourceCodeLocation.attrs.class.startOffset)
+  return elements
+    .filter(e => e?.sourceCodeLocation?.startTag)
+    .map(element => element.sourceCodeLocation.attrs.class.startOffset)
 }

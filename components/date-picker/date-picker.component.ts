@@ -24,7 +24,6 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { CandyDate, cloneDate, CompatibleValue } from 'ng-zorro-antd/core/time';
 import { BooleanInput, FunctionProp, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
@@ -35,6 +34,7 @@ import { takeUntil } from 'rxjs/operators';
 import { DatePickerService } from './date-picker.service';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzPickerComponent } from './picker.component';
 import { CompatibleDate, DisabledTimeFn, NzDateMode, PresetRanges, SupportTimeOptions } from './standard-types';
 
@@ -63,9 +63,7 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
       [allowClear]="nzAllowClear"
       [autoFocus]="nzAutoFocus"
       [placeholder]="nzPlaceHolder"
-      [ngClass]="nzClassName"
       style="display: inherit; align-items: center; width: 100%;"
-      [ngStyle]="nzStyle"
       [dropdownClassName]="nzDropdownClassName"
       [popupStyle]="nzPopupStyle"
       [noAnimation]="!!noAnimation?.nzNoAnimation"
@@ -137,21 +135,17 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   @Input() @InputBoolean() nzAutoFocus: boolean = false;
   @Input() @InputBoolean() nzDisabled: boolean = false;
   @Input() @InputBoolean() nzInputReadOnly: boolean = false;
-  @Input() @InputBoolean() nzOpen?: boolean;
   /**
-   * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
+   * @deprecated use method `open` or `close` instead.
+   * @breaking-change 11.0.0
    */
-  @Input() nzClassName: string = '';
+  @Input() @InputBoolean() nzOpen?: boolean;
   @Input() nzDisabledDate?: (d: Date) => boolean;
   @Input() nzLocale!: NzDatePickerI18nInterface;
   @Input() nzPlaceHolder: string | [string, string] = '';
   @Input() nzPopupStyle: object = POPUP_STYLE_PATCH;
   @Input() nzDropdownClassName?: string;
   @Input() nzSize: NzDatePickerSizeType = 'default';
-  /**
-   * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
-   */
-  @Input() nzStyle: object | null = null;
   @Input() nzFormat!: string;
   @Input() nzDateRender?: TemplateRef<NzSafeAny> | string | FunctionProp<TemplateRef<Date> | string>;
   @Input() nzDisabledTime?: DisabledTimeFn;
@@ -222,7 +216,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
       }
       this.onTouchedFn();
       // When value emitted, overlay will be closed
-      this.picker.hideOverlay();
+      this.close();
     });
 
     // Default format when it's empty
@@ -255,16 +249,8 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
       this.extraFooter = valueFunctionProp(this.nzRenderExtraFooter!);
     }
 
-    if (changes.nzStyle) {
-      warnDeprecation(
-        `'nzStyle' in DatePicker is going to be removed in 10.0.0. Please use CSS style attribute like <nz-date-picker style="..."></nz-date-picker> instead.`
-      );
-    }
-
-    if (changes.nzClassName) {
-      warnDeprecation(
-        `'nzClassName' in DatePicker is going to be removed in 10.0.0. Please use CSS class attribute like <nz-date-picker class="..."></nz-date-picker> instead.`
-      );
+    if (changes.nzOpen) {
+      warnDeprecation(`'nzOpen' in DatePicker is going to be removed in 11.0.0. Please use open() or close() method instead.`);
     }
 
     if (changes.nzMode) {
@@ -289,6 +275,14 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
    */
   onOpenChange(open: boolean): void {
     this.nzOnOpenChange.emit(open);
+  }
+
+  public open(): void {
+    this.picker.showOverlay();
+  }
+
+  public close(): void {
+    this.picker.hideOverlay();
   }
 
   // ------------------------------------------------------------------------

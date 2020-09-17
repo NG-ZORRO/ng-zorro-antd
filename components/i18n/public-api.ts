@@ -10,7 +10,6 @@ export * from './nz-i18n.interface';
 export * from './nz-i18n.token';
 export * from './nz-i18n.pipe';
 export * from './date-helper.service';
-export * from './convert-tokens';
 
 export { default as ar_EG } from './languages/ar_EG';
 export { default as az_AZ } from './languages/az_AZ';
