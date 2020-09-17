@@ -5,6 +5,7 @@
 
 import { AfterContentChecked, Directive, ElementRef, Input, OnChanges, OnInit, Optional, Renderer2, SimpleChanges } from '@angular/core';
 import { IconDirective, ThemeType } from '@ant-design/icons-angular';
+import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
 import { NzIconPatchService, NzIconService } from './icon.service';
@@ -17,6 +18,8 @@ import { NzIconPatchService, NzIconService } from './icon.service';
   }
 })
 export class NzIconDirective extends IconDirective implements OnInit, OnChanges, AfterContentChecked {
+  static ngAcceptInputType_nzSpin: BooleanInput;
+
   cacheClassName: string | null = null;
   @Input()
   @InputBoolean()

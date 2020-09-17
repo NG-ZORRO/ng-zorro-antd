@@ -1,4 +1,5 @@
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 
-export const moduleList = [ NzTagModule, NzInputModule ];
+export const moduleList = [ NzTagModule, NzInputModule, NzIconModule ];
