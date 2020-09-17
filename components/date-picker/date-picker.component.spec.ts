@@ -15,6 +15,7 @@ import { dispatchKeyboardEvent, dispatchMouseEvent, typeInElement } from 'ng-zor
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { NzI18nModule, NzI18nService, NZ_DATE_LOCALE } from 'ng-zorro-antd/i18n';
 import en_US from '../i18n/languages/en_US';
+import { NzDatePickerComponent } from './date-picker.component';
 import { NzDatePickerModule } from './date-picker.module';
 import { ENTER_EVENT, getPickerAbstract, getPickerInput } from './testing/util';
 import { PREFIX_CLASS } from './util';
@@ -66,6 +67,21 @@ describe('NzDatePickerComponent', () => {
       expect(getPickerContainer()).not.toBeNull();
 
       dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).toBeNull();
+    }));
+
+    it('should open and close method work', fakeAsync(() => {
+      fixture.detectChanges();
+      fixtureInstance.datePicker.open();
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).not.toBeNull();
+
+      fixtureInstance.datePicker.close();
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -1004,7 +1020,7 @@ class NzTestDatePickerComponent {
   useSuite!: 1 | 2 | 3 | 4;
   @ViewChild('tplDateRender', { static: true }) tplDateRender!: TemplateRef<Date>;
   @ViewChild('tplExtraFooter', { static: true }) tplExtraFooter!: TemplateRef<void>;
-
+  @ViewChild(NzDatePickerComponent, { static: false }) datePicker!: NzDatePickerComponent;
   // --- Suite 1
   nzAllowClear: boolean = false;
   nzAutoFocus: boolean = false;

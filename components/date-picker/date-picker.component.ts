@@ -34,6 +34,7 @@ import { takeUntil } from 'rxjs/operators';
 import { DatePickerService } from './date-picker.service';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzPickerComponent } from './picker.component';
 import { CompatibleDate, DisabledTimeFn, NzDateMode, PresetRanges, SupportTimeOptions } from './standard-types';
 
@@ -132,6 +133,10 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   @Input() @InputBoolean() nzAutoFocus: boolean = false;
   @Input() @InputBoolean() nzDisabled: boolean = false;
   @Input() @InputBoolean() nzInputReadOnly: boolean = false;
+  /**
+   * @deprecated use method `open` or `close` instead.
+   * @breaking-change 11.0.0
+   */
   @Input() @InputBoolean() nzOpen?: boolean;
   @Input() nzDisabledDate?: (d: Date) => boolean;
   @Input() nzLocale!: NzDatePickerI18nInterface;
@@ -209,7 +214,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
       }
       this.onTouchedFn();
       // When value emitted, overlay will be closed
-      this.picker.hideOverlay();
+      this.close();
     });
 
     // Default format when it's empty
@@ -242,6 +247,10 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
       this.extraFooter = valueFunctionProp(this.nzRenderExtraFooter!);
     }
 
+    if (changes.nzOpen) {
+      warnDeprecation(`'nzOpen' in DatePicker is going to be removed in 11.0.0. Please use open() or close() method instead.`);
+    }
+
     if (changes.nzMode) {
       this.setPanelMode();
     }
@@ -264,6 +273,14 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
    */
   onOpenChange(open: boolean): void {
     this.nzOnOpenChange.emit(open);
+  }
+
+  public open(): void {
+    this.picker.showOverlay();
+  }
+
+  public close(): void {
+    this.picker.hideOverlay();
   }
 
   // ------------------------------------------------------------------------
