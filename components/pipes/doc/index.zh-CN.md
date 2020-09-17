@@ -1,7 +1,7 @@
 ---
 category: Components
 type: 通用
-title: Pipe
+title: Pipes
 cols: 1
 experimental: true
 ---
@@ -14,22 +14,18 @@ experimental: true
 - 引入 Pipe 后，像 angular 的默认 Pipe 一样使用
 
 ```ts
-import { NzPipesModule } from 'ng-zorro-antd/pipe';
+import { NzPipesModule } from 'ng-zorro-antd/pipes';
 ```
 
 ## API
 
-```html
-<div>{{ value | nzSafeNull }}</div>
-```
-
-### nz-safe-null
+### __nz-safe-null__
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `replace` | 替换字符 | `string` | '' |
 
-### nz-bytes
+### __nz-bytes__
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
@@ -37,48 +33,29 @@ import { NzPipesModule } from 'ng-zorro-antd/pipe';
 | `from` | 当前值的单位 | `string` | 'B' |
 | `to` | 转换到目标值的单位 | `string` | '' |
 
-### nz-css-unit
+### __nz-css-unit__
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `defaultUnit` | 默认单位 | `string` | 'px' |
 
-### nz-ellipsis
+### __nz-ellipsis__
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `length` | 截取长度 | `number` | '' |
 | `suffix` | 替换字符 | `string` | '' |
-| `preserve` | 是否过滤空格的长度 | `boolean` | false |
 
 
-### nz-math
-
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `method` | 聚合方式 | `string` | '' |
-
-### nz-sanitizer
+### __nz-aggregate__
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `type` | sanitizer类型 | `string` | 'html' |
+| `method` | 聚合方式 | `'sum' \| 'max' \| 'min' \| 'avg'` | '' |
 
-
-### nz-some
-
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `predicate` | 函数 | `object` | '' |
-
-### nz-trim
+### __nz-sanitizer__
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `chars` | 正则表达式 | `string` | '\\s' |
+| `type` | sanitizer 类型 | `string` | 'html' |
 
-### nz-time-range
-
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `format` | 格式 | `string` | 'HH:mm:ss' |

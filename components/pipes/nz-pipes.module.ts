@@ -6,27 +6,15 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
+import { NzAggregatePipe } from './nz-aggregate.pipe';
 import { NzBytesPipe } from './nz-bytes.pipe';
 import { NzToCssUnitPipe } from './nz-css-unit.pipe';
 import { NzEllipsisPipe } from './nz-ellipsis.pipe';
-import { NzMathPipe } from './nz-math.pipe';
 import { NzSafeNullPipe } from './nz-safe-null.pipe';
 import { NzSanitizerPipe } from './nz-sanitizer.pipe';
-import { NzSomePipe } from './nz-some.pipe';
 import { NzTrimPipe } from './nz-trim.pipe';
-import { NzTimeRangePipe } from './time-range.pipe';
 
-const pipes = [
-  NzTimeRangePipe,
-  NzToCssUnitPipe,
-  NzSafeNullPipe,
-  NzSanitizerPipe,
-  NzTrimPipe,
-  NzBytesPipe,
-  NzSomePipe,
-  NzMathPipe,
-  NzEllipsisPipe
-];
+const pipes = [NzToCssUnitPipe, NzSafeNullPipe, NzSanitizerPipe, NzTrimPipe, NzBytesPipe, NzAggregatePipe, NzEllipsisPipe];
 
 @NgModule({
   imports: [CommonModule],

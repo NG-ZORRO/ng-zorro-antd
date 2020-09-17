@@ -4,12 +4,10 @@
  */
 
 export * from './nz-pipes.module';
-export * from './time-range.pipe';
 export * from './nz-css-unit.pipe';
 export * from './nz-bytes.pipe';
 export * from './nz-ellipsis.pipe';
-export * from './nz-math.pipe';
+export * from './nz-aggregate.pipe';
 export * from './nz-safe-null.pipe';
 export * from './nz-sanitizer.pipe';
-export * from './nz-some.pipe';
 export * from './nz-trim.pipe';

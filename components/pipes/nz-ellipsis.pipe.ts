@@ -10,7 +10,7 @@ import { NzSafeAny } from 'ng-zorro-antd/core/types';
   name: 'nzEllipsis'
 })
 export class NzEllipsisPipe implements PipeTransform {
-  transform(value: NzSafeAny, length?: number, suffix: string = '', preserve: boolean = false): NzSafeAny {
+  transform(value: NzSafeAny, length?: number, suffix: string = ''): NzSafeAny {
     if (typeof value !== 'string') {
       return value;
     }
@@ -21,16 +21,6 @@ export class NzEllipsisPipe implements PipeTransform {
       return value;
     }
 
-    let index = len;
-
-    if (preserve) {
-      if (value.indexOf(' ', len) === -1) {
-        index = value.length;
-      } else {
-        index = value.indexOf(' ', len);
-      }
-    }
-
-    return value.substring(0, index) + suffix;
+    return value.substring(0, len) + suffix;
   }
 }

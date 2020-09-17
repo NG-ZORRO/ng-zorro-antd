@@ -7,14 +7,14 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { NzPipesModule } from 'ng-zorro-antd/pipes';
+import { NzPipesModule as NzPipesModuleFromCore } from 'ng-zorro-antd/core/pipe';
 
 import { NzCountdownComponent } from './countdown.component';
 import { NzStatisticNumberComponent } from './statistic-number.component';
 import { NzStatisticComponent } from './statistic.component';
 
 @NgModule({
-  imports: [CommonModule, PlatformModule, NzOutletModule, NzPipesModule],
+  imports: [CommonModule, PlatformModule, NzOutletModule, NzPipesModuleFromCore],
   declarations: [NzStatisticComponent, NzCountdownComponent, NzStatisticNumberComponent],
   exports: [NzStatisticComponent, NzCountdownComponent, NzStatisticNumberComponent]
 })

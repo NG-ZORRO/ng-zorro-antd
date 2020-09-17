@@ -9,7 +9,8 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'nzTrim'
 })
 export class NzTrimPipe implements PipeTransform {
-  transform(text: string, chars: string = '\\s'): string {
-    return typeof text === 'string' ? text.replace(new RegExp(`^[${chars}]+|[${chars}]+$`, 'g'), '') : text;
+  // TODO(chensimeng) trimEnd, trimStart
+  transform(text: string): string {
+    return text.trim();
   }
 }

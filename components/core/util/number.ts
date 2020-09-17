@@ -2,6 +2,7 @@
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 export function getPercent(min: number, max: number, value: number): number {
   return ((value - min) / (max - min)) * 100;
@@ -23,8 +24,7 @@ export function ensureNumberInRange(num: number, min: number, max: number): numb
   }
 }
 
-// tslint:disable-next-line:no-any
-export function isNumberFinite(value: any): boolean {
+export function isNumberFinite(value: NzSafeAny): boolean {
   return typeof value === 'number' && isFinite(value);
 }
 

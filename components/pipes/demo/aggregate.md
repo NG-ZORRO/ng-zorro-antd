@@ -1,8 +1,8 @@
 ---
 order: 4
 title:
-  zh-CN: nzMath
-  en-US: nzMath
+  zh-CN: nzAggregate
+  en-US: nzAggregate
 ---
 
 ## zh-CN

@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-去除字符串左右指定字符
+去除字符串左右空字符串
 
 ## en-US
 
-Strip left and right string
+Strip left and right empty string

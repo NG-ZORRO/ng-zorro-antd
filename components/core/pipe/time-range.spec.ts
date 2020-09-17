@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NzPipesModule } from 'ng-zorro-antd/pipes';
+import { NzPipesModule } from 'ng-zorro-antd/core/pipe';
 
 @Component({
   template: `
