@@ -32,8 +32,8 @@ export class MonthTableComponent extends AbstractTable implements OnChanges, OnI
 
   makeBodyRows(): DateBodyRow[] {
     const months: DateBodyRow[] = [];
-
     let monthValue = 0;
+
     for (let rowIndex = 0; rowIndex < this.MAX_ROW; rowIndex++) {
       const row: DateBodyRow = {
         dateCells: [],
@@ -42,7 +42,7 @@ export class MonthTableComponent extends AbstractTable implements OnChanges, OnI
 
       for (let colIndex = 0; colIndex < this.MAX_COL; colIndex++) {
         const month = this.activeDate.setMonth(monthValue);
-        const isDisabled = this.disabledDate ? this.disabledDate(month.nativeDate) : false;
+        const isDisabled = this.isDisabledMonth(month);
         const content = this.dateHelper.format(month.nativeDate, 'MMM');
         const cell: DateCell = {
           trackByIndex: content,
@@ -67,7 +67,23 @@ export class MonthTableComponent extends AbstractTable implements OnChanges, OnI
     return months;
   }
 
-  addCellProperty(cell: DateCell, month: CandyDate): void {
+  private isDisabledMonth(month: CandyDate): boolean {
+    if (!this.disabledDate) {
+      return false;
+    }
+
+    const firstOfMonth = month.setDate(1);
+
+    for (let date = firstOfMonth; date.getMonth() === month.getMonth(); date = date.addDays(1)) {
+      if (!this.disabledDate(date.nativeDate)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  private addCellProperty(cell: DateCell, month: CandyDate): void {
     if (this.hasRangeValue()) {
       const [startHover, endHover] = this.hoverValue;
       const [startSelected, endSelected] = this.selectedValue;
