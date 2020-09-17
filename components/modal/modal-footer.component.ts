@@ -97,8 +97,6 @@ export class NzModalFooterComponent implements OnDestroy {
   /**
    * Returns the value of the specified key.
    * If it is a function, run and return the return value of the function.
-   * @deprecated Not support use function type.
-   * @breaking-change 10.0.0
    */
   getButtonCallableProp(options: ModalButtonOptions, prop: keyof ModalButtonOptions): boolean {
     const value = options[prop];
@@ -108,8 +106,6 @@ export class NzModalFooterComponent implements OnDestroy {
 
   /**
    * Run function based on the type and set its `loading` prop if needed.
-   * @deprecated Should be set options' value by the user, not library.
-   * @breaking-change 10.0.0
    */
   onButtonClick(options: ModalButtonOptions): void {
     const loading = this.getButtonCallableProp(options, 'loading');
