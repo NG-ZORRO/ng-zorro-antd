@@ -62,12 +62,12 @@ describe('injection tokens migration', () => {
       await runMigration();
 
       const tokensWarn = [
-        '/index.ts@2:16 - Found deprecated symbol "NZ_NOTIFICATION_CONFIG" which has been removed. Use global config to ' +
-        'instead please.',
-        '/index.ts@2:40 - Found deprecated symbol "NZ_MESSAGE_CONFIG" which has been removed. Use global config to ' +
-        'instead please.',
-        '/index.ts@2:59 - Found deprecated symbol "NZ_DEFAULT_EMPTY_CONTENT" which has been removed. Use global config ' +
-        'to instead please.'
+        '/index.ts@2:16 - Found deprecated symbol "NZ_NOTIFICATION_CONFIG" which has been removed. ' +
+        'Please use \'NzConfigService\' instead.',
+        '/index.ts@2:40 - Found deprecated symbol "NZ_MESSAGE_CONFIG" which has been removed. ' +
+        'Please use \'NzConfigService\' instead.',
+        '/index.ts@2:59 - Found deprecated symbol "NZ_DEFAULT_EMPTY_CONTENT" which has been removed. ' +
+        'Please use \'NzConfigService\' instead.'
       ];
 
       tokensWarn.forEach(warn => {
@@ -81,19 +81,22 @@ describe('injection tokens migration', () => {
       import { NZ_DEFAULT_EMPTY_CONTENT } from 'ng-zorro-antd/empty';
       import { NZ_MESSAGE_CONFIG } from 'ng-zorro-antd/message';
       import { NZ_ICON_DEFAULT_TWOTONE_COLOR } from 'ng-zorro-antd';
+      import { NZ_CODE_EDITOR_CONFIG } from 'ng-zorro-antd/code-editor';
 
       `);
       await runMigration();
 
       const tokensWarn = [
-        '/index.ts@2:16 - Found deprecated symbol "NZ_NOTIFICATION_CONFIG" which has been removed. Use global config ' +
-        'to instead please.',
-        '/index.ts@3:16 - Found deprecated symbol "NZ_DEFAULT_EMPTY_CONTENT" which has been removed. Use global config ' +
-        'to instead please.',
-        '/index.ts@4:16 - Found deprecated symbol "NZ_MESSAGE_CONFIG" which has been removed. Use global config to ' +
-        'instead please.',
-        '/index.ts@5:16 - Found deprecated symbol "NZ_ICON_DEFAULT_TWOTONE_COLOR" which has been removed. Use global config to ' +
-        'instead please.'
+        '/index.ts@2:16 - Found deprecated symbol "NZ_NOTIFICATION_CONFIG" which has been removed. ' +
+        'Please use \'NzConfigService\' instead.',
+        '/index.ts@3:16 - Found deprecated symbol "NZ_DEFAULT_EMPTY_CONTENT" which has been removed. ' +
+        'Please use \'NzConfigService\' instead.',
+        '/index.ts@4:16 - Found deprecated symbol "NZ_MESSAGE_CONFIG" which has been removed. ' +
+        'Please use \'NzConfigService\' instead.',
+        '/index.ts@5:16 - Found deprecated symbol "NZ_ICON_DEFAULT_TWOTONE_COLOR" which has been removed. ' +
+        'Please use \'NzConfigService\' instead.',
+        '/index.ts@6:16 - Found deprecated symbol "NZ_CODE_EDITOR_CONFIG" which has been removed. ' +
+        'Please use \'NzConfigService\' instead.'
       ];
 
       tokensWarn.forEach(warn => {

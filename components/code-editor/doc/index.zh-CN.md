@@ -56,7 +56,7 @@ npm install monaco-editor
 
 这样就 OK 了！CodeEditor 组件在需要加载 monaco editor 时自动去 /assets/vs/ 目录下查询。
 
-如果你的静态资源都部署在 CDN 上，你就无须修改 angular.json 文件，但你必须配置 `NZ_CODE_EDITOR_CONFIG` 下的 `assetsRoot` 项。例如你将 monaco editor 的资源放置在了 https://mycdn.com/assets/vs ，你就需要传递 `{ assetsRoot: 'https://mycdn.com/assets' }` 。
+如果你的静态资源都部署在 CDN 上，你就无须修改 angular.json 文件，但你必须通过 `NzConfigService` 配置 `assetsRoot` 属性。例如你将 monaco editor 的资源放置在了 https://mycdn.com/assets/vs ，你就需要传递 `{ assetsRoot: 'https://mycdn.com/assets' }` 。
 
 > 如果你使用静态加载，你就无需修改 angular.json 文件，详见下文。
 
@@ -66,7 +66,7 @@ npm install monaco-editor
 
 方法是使用 Microsoft 提供的 [monaco-editor-webpack-plugin](https://github.com/microsoft/monaco-editor-webpack-plugin) 插件。
 
-1. 在注入 code editor 组件的全局配置项时，请启用 `useStaticLoading` 。
+1. 在 `app.module` 中提供 `NZ_CONFIG` 的值，并设置 `codeEditor` 属性下的 `useStaticLoading` 为 `true` 。
 2. 创建一个 webpack.partial.js 文件，根据插件文档进行相应的配置。
 3. 使用自定义脚本加载器，例如 [ngx-build-plus](https://github.com/manfredsteyer/ngx-build-plus)，在打包时加载这个 webpack 配置。
 
@@ -90,9 +90,11 @@ npm install monaco-editor
 | --- | --- |
 | `layout()` | 强制组件重新渲染 |
 
-### NZ_CODE_EDITOR_CONFIG
+### 全局配置
 
-你可以通过注入令牌 `NZ_CODE_EDITOR_CONFIG` 提供一个符合 `NzCodeEditorConfig` 接口的对象，来进行配置、使用钩子或设置编辑器默认选项。
+你可以通过 `NzConfigService` 的 `set` 方法，设置 `CodeEditor` 组件的默认配置。
+
+#### CodeEditorConfig
 
 | 属性 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |

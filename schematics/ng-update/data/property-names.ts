@@ -27,6 +27,16 @@ export const propertyNames: VersionChanges<PropertyNameUpgradeData> = {
           whitelist: {classes: ['NzTreeNode']}
         }
       ]
+    },
+    {
+      pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/5798',
+      changes: [
+        {
+          replace: 'updateDefaultOption',
+          replaceWith: '/** TODO(NG-ZORRO V10) updateDefaultOption is deprecated, Please use `set` of `NzConfigService` instead. **/updateDefaultOption',
+          whitelist: {classes: ['NzCodeEditorService']}
+        }
+      ]
     }
   ]
 };

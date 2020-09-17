@@ -4,17 +4,17 @@
  */
 
 import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable, Optional } from '@angular/core';
-import { NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
-import { PREFIX, warn, warnDeprecation } from 'ng-zorro-antd/core/logger';
+import { Inject, Injectable } from '@angular/core';
+import { CodeEditorConfig, NzConfigService } from 'ng-zorro-antd/core/config';
+import { PREFIX, warn } from 'ng-zorro-antd/core/logger';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { BehaviorSubject, Observable, of as observableOf, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { JoinedEditorOptions, NzCodeEditorConfig, NzCodeEditorLoadingStatus, NZ_CODE_EDITOR_CONFIG } from './typings';
+import { JoinedEditorOptions, NzCodeEditorLoadingStatus } from './typings';
 
 declare const monaco: NzSafeAny;
 
-const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'codeEditor';
+const NZ_CONFIG_MODULE_NAME = 'codeEditor';
 
 function tryTriggerFunc(fn?: (...args: NzSafeAny[]) => NzSafeAny): (...args: NzSafeAny) => void {
   return (...args: NzSafeAny[]) => {
@@ -33,25 +33,15 @@ export class NzCodeEditorService {
   private loaded$ = new Subject<boolean>();
   private loadingStatus = NzCodeEditorLoadingStatus.UNLOAD;
   private option: JoinedEditorOptions = {};
-  private config: NzCodeEditorConfig;
+  private config: CodeEditorConfig;
 
   option$ = new BehaviorSubject<JoinedEditorOptions>(this.option);
 
-  constructor(
-    private readonly nzConfigService: NzConfigService,
-    @Inject(DOCUMENT) _document: NzSafeAny,
-    @Inject(NZ_CODE_EDITOR_CONFIG) @Optional() config?: NzCodeEditorConfig
-  ) {
+  constructor(private readonly nzConfigService: NzConfigService, @Inject(DOCUMENT) _document: NzSafeAny) {
     const globalConfig = this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME);
 
-    if (config) {
-      warnDeprecation(
-        `'NZ_CODE_EDITOR_CONFIG' is deprecated and will be removed in next minor version. Please use 'NzConfigService' instead.`
-      );
-    }
-
     this.document = _document;
-    this.config = { ...config, ...globalConfig };
+    this.config = { ...globalConfig };
     this.option = this.config.defaultEditorOption || {};
 
     this.nzConfigService.getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME).subscribe(() => {
@@ -60,14 +50,6 @@ export class NzCodeEditorService {
         this._updateDefaultOption(newGlobalConfig.defaultEditorOption);
       }
     });
-  }
-
-  updateDefaultOption(option: JoinedEditorOptions): void {
-    warnDeprecation(
-      `'updateDefaultOption' is deprecated and will be removed in next minor version. Please use 'set' of 'NzConfigService' instead.`
-    );
-
-    this._updateDefaultOption(option);
   }
 
   private _updateDefaultOption(option: JoinedEditorOptions): void {
