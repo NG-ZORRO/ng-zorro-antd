@@ -14,13 +14,7 @@ import { dispatchKeyboardEvent, dispatchMouseEvent, typeInElement } from 'ng-zor
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { RangePartType } from 'ng-zorro-antd/date-picker/standard-types';
-import {
-  ENTER_EVENT,
-  getPicker,
-  getPickerAbstract,
-  getPickerInput,
-  getRangePickerRightInput
-} from 'ng-zorro-antd/date-picker/testing/util';
+import { ENTER_EVENT, getPickerAbstract, getPickerInput, getRangePickerRightInput } from 'ng-zorro-antd/date-picker/testing/util';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/util';
 import { NzDatePickerModule } from './date-picker.module';
 
@@ -159,12 +153,6 @@ describe('NzRangePickerComponent', () => {
       expect(getPickerContainer()).toBeNull();
     }));
 
-    it('should support nzClassName', () => {
-      const className = (fixtureInstance.nzClassName = 'my-test-class');
-      fixture.detectChanges();
-      expect(getPicker(fixture.debugElement).classList.contains(className)).toBeTruthy();
-    });
-
     it('should support nzDisabledDate', fakeAsync(() => {
       fixture.detectChanges();
       const compareDate = new Date('2018-11-15 00:00:00');
@@ -214,12 +202,6 @@ describe('NzRangePickerComponent', () => {
       fixtureInstance.nzSize = 'small';
       fixture.detectChanges();
       expect(getPickerAbstract(fixture.debugElement).classList.contains('ant-picker-small')).toBeTruthy();
-    });
-
-    it('should support nzStyle', () => {
-      fixtureInstance.nzStyle = { color: 'blue' };
-      fixture.detectChanges();
-      expect(getPicker(fixture.debugElement).style.color).toBe('blue');
     });
 
     it('should support nzOnOpenChange', fakeAsync(() => {
@@ -886,14 +868,12 @@ describe('NzRangePickerComponent', () => {
         [nzAllowClear]="nzAllowClear"
         [nzAutoFocus]="nzAutoFocus"
         [nzDisabled]="nzDisabled"
-        [nzClassName]="nzClassName"
         [nzDisabledDate]="nzDisabledDate"
         [nzLocale]="nzLocale"
         [nzPlaceHolder]="nzPlaceHolder"
         [nzPopupStyle]="nzPopupStyle"
         [nzDropdownClassName]="nzDropdownClassName"
         [nzSize]="nzSize"
-        [nzStyle]="nzStyle"
         [nzSeparator]="nzSeparator"
         (nzOnOpenChange)="nzOnOpenChange($event)"
         [(ngModel)]="modelValue"
@@ -933,14 +913,12 @@ class NzTestRangePickerComponent {
   nzAllowClear: boolean = false;
   nzAutoFocus: boolean = false;
   nzDisabled: boolean = false;
-  nzClassName!: string;
   nzDisabledDate!: (d: Date) => boolean;
   nzLocale: any; // tslint:disable-line:no-any
   nzPlaceHolder!: string[];
   nzPopupStyle!: NgStyleInterface;
   nzDropdownClassName!: string;
   nzSize!: string;
-  nzStyle!: NgStyleInterface;
   nzOnOpenChange(_: boolean): void {}
   modelValue: Array<Date | null> = [];
   modelValueChange(_: Date[]): void {}

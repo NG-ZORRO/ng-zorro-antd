@@ -24,7 +24,6 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { CandyDate, cloneDate, CompatibleValue } from 'ng-zorro-antd/core/time';
 import { BooleanInput, FunctionProp, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
@@ -61,9 +60,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'datePicker';
       [allowClear]="nzAllowClear"
       [autoFocus]="nzAutoFocus"
       [placeholder]="nzPlaceHolder"
-      [ngClass]="nzClassName"
       style="display: inherit; align-items: center; width: 100%;"
-      [ngStyle]="nzStyle"
       [dropdownClassName]="nzDropdownClassName"
       [popupStyle]="nzPopupStyle"
       [noAnimation]="!!noAnimation?.nzNoAnimation"
@@ -136,20 +133,12 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   @Input() @InputBoolean() nzDisabled: boolean = false;
   @Input() @InputBoolean() nzInputReadOnly: boolean = false;
   @Input() @InputBoolean() nzOpen?: boolean;
-  /**
-   * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
-   */
-  @Input() nzClassName: string = '';
   @Input() nzDisabledDate?: (d: Date) => boolean;
   @Input() nzLocale!: NzDatePickerI18nInterface;
   @Input() nzPlaceHolder: string | [string, string] = '';
   @Input() nzPopupStyle: object = POPUP_STYLE_PATCH;
   @Input() nzDropdownClassName?: string;
   @Input() nzSize: 'large' | 'small' | 'default' = 'default';
-  /**
-   * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
-   */
-  @Input() nzStyle: object | null = null;
   @Input() nzFormat!: string;
   @Input() nzDateRender?: TemplateRef<NzSafeAny> | string | FunctionProp<TemplateRef<Date> | string>;
   @Input() nzDisabledTime?: DisabledTimeFn;
@@ -251,18 +240,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
 
     if (changes.nzRenderExtraFooter) {
       this.extraFooter = valueFunctionProp(this.nzRenderExtraFooter!);
-    }
-
-    if (changes.nzStyle) {
-      warnDeprecation(
-        `'nzStyle' in DatePicker is going to be removed in 10.0.0. Please use CSS style attribute like <nz-date-picker style="..."></nz-date-picker> instead.`
-      );
-    }
-
-    if (changes.nzClassName) {
-      warnDeprecation(
-        `'nzClassName' in DatePicker is going to be removed in 10.0.0. Please use CSS class attribute like <nz-date-picker class="..."></nz-date-picker> instead.`
-      );
     }
 
     if (changes.nzMode) {
