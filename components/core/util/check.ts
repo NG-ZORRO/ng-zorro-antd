@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { TemplateRef, Type } from '@angular/core';
+import { TemplateRef } from '@angular/core';
 
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 
@@ -50,42 +50,10 @@ export function shallowEqual(objA?: IndexableObject, objB?: IndexableObject): bo
   return true;
 }
 
-export function isInteger(value: string | number): boolean {
-  return typeof value === 'number' && isFinite(value) && Math.floor(value) === value;
-}
-
-export function isEmpty(element: HTMLElement): boolean {
-  const nodes = element.childNodes;
-  for (let i = 0; i < nodes.length; i++) {
-    if (filterNotEmptyNode(nodes.item(i))) {
-      return false;
-    }
-  }
-  return true;
-}
-
-export function filterNotEmptyNode(node: Node): Node | null {
-  if (node) {
-    if (node.nodeType === 1 && (node as HTMLElement).outerHTML.toString().trim().length !== 0) {
-      // ELEMENT_NODE
-      return node;
-    } else if (node.nodeType === 3 && node.textContent!.toString().trim().length !== 0) {
-      // TEXT_NODE
-      return node;
-    }
-    return null;
-  }
-  return null;
-}
-
 export function isNonEmptyString(value: NzSafeAny): boolean {
   return typeof value === 'string' && value !== '';
 }
 
 export function isTemplateRef(value: NzSafeAny): boolean {
   return value instanceof TemplateRef;
-}
-
-export function isComponent(value: NzSafeAny): boolean {
-  return value instanceof Type;
 }

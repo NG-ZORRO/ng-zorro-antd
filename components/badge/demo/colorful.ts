@@ -4,11 +4,12 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-badge-colorful',
   template: `
     <div>
-      <h4 style="margin-bottom: 16px">Presets:</h4>
+      <h4>Presets:</h4>
       <div *ngFor="let color of colors">
         <nz-badge [nzColor]="color" [nzText]="color"></nz-badge>
       </div>
-      <h4 style="margin:16px 0">Custom:</h4>
+      <br />
+      <h4>Custom:</h4>
       <nz-badge nzColor="#f50" nzText="#f50"></nz-badge>
       <br />
       <nz-badge nzColor="#2db7f5" nzText="#2db7f5"></nz-badge>

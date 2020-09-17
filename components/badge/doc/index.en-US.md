@@ -24,13 +24,14 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
 ```
 
 ```html
-<nz-badge [nzCount]="5"></nz-badge>
+<nz-badge [nzCount]="5" nzStandalone></nz-badge>
 ```
 
 ### nz-badge
 
 | Property | Description | Type | Default | Global Config |
 | -------- | ----------- | ---- | ------- | ------------- |
+| `[nzStandalone]` | Whether standalone mode | `boolean` | - | - |
 | `[nzColor]` | Customize Badge dot color | string | - | ✅ |
 | `[nzCount]` | Number to show in badge | `number \| TemplateRef<void>` | - |
 | `[nzDot]` | Whether to display a red dot instead of `count` | `boolean` | `false` |

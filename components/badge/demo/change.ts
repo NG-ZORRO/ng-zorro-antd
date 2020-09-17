@@ -12,8 +12,8 @@ import { Component } from '@angular/core';
         <button nz-button (click)="addCount()"><i nz-icon nzType="plus"></i></button>
       </nz-button-group>
     </div>
-
-    <div style="margin-top: 10px;">
+    <br />
+    <div>
       <nz-badge [nzDot]="dot">
         <a class="head-example"></a>
       </nz-badge>

@@ -25,13 +25,14 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
 ```
 
 ```html
-<nz-badge [nzCount]="5"></nz-badge>
+<nz-badge [nzCount]="5" nzStandalone></nz-badge>
 ```
 
 ### nz-badge
 
 | 参数 | 说明 | 类型 | 默认值 | 全局配置 |
 | --- | --- | --- | --- | --- |
+| `[nzStandalone]` | 是否独立使用 | `boolean` | - | - |
 | `[nzColor]` | 自定义小圆点的颜色 | string | - | ✅ |
 | `[nzCount]` | 展示的数字，大于 nzOverflowCount 时显示为 `${nzOverflowCount}+`，为 0 时隐藏 | `number \| TemplateRef<void>` | - |
 | `[nzDot]` | 不展示数字，只有一个小红点 | `boolean` | `false` |

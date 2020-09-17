@@ -6,13 +6,12 @@
 import { ObserversModule } from '@angular/cdk/observers';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-
+import { NzBadgeSupComponent } from './badge-sup.component';
 import { NzBadgeComponent } from './badge.component';
 
 @NgModule({
-  declarations: [NzBadgeComponent],
+  declarations: [NzBadgeComponent, NzBadgeSupComponent],
   exports: [NzBadgeComponent],
   imports: [CommonModule, ObserversModule, NzOutletModule]
 })
