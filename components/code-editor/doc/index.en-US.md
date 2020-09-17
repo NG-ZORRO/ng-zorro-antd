@@ -49,7 +49,7 @@ If you would like to load monaco dynamically (which means you load resources of 
 ],
 ```
 
-If you deploy resources of monaco editor on CDN, you won't need to modift angular.json. Instead, you should a `NZ_CONFIG_EDITOR_CONFIG` with `assetsRoot` property set. For example, you put resources of monaco editor on https://mycdn.com/assets/vs, you should provide `{ assets: 'https://mycdn.com/assets/vs' }`.
+If you deploy resources of monaco editor on CDN, you won't need to modify angular.json. Instead, you must configure the `assetsRoot` property via `NzConfigService`. For example, you put resources of monaco editor on https://mycdn.com/assets/vs, you should provide `{ assets: 'https://mycdn.com/assets/vs' }`.
 
 > If you are going to use static loading (which we will explain in detail at the bottom of this page), you don't need to modify angular.json file.
 
@@ -59,7 +59,7 @@ Sometimes you need to load AMD module dynamically. But since monaco editor's loa
 
 With help of [monaco-editor-webpack-plguin](https://github.com/microsoft/monaco-editor-webpack-plugin) by Microsoft, you can do that in a convenient way.
 
-1. Please inject a `NZ_CODE_EDITOR_CONFIG` with `useStaticLoading` to be `true`.
+1. Provide the value of `NZ_CONFIG` in `app.module` and set `useStaticLoading` in the `codeEditor` property to `true`.
 2. Create a webpack.partial.js file, and config monaco-editor-webpack-loader.
 3. Use custom webpack loader like [ngx-build-plus](https://github.com/manfredsteyer/ngx-build-plus) to load this webpack config.
 
@@ -83,9 +83,11 @@ If you use static loading, you should not add assets of monaco editor to your pr
 | --- | --- |
 | `layout()` | Force monaco editor to re-render itself |
 
-### NZ_CODE_EDITOR_CONFIG
+### Global Configuration
 
-You can inject an object that implements `NzCodeEditorConfig` with the injection token `NZ_CODE_EDITOR_CONFIG`.
+You can set the default configuration of the `CodeEditor` component through the `set` method of `NzConfigService`.
+
+#### CodeEditorConfig
 
 | Parameter | Description | Type | Default |
 | --- | --- | --- | --- |

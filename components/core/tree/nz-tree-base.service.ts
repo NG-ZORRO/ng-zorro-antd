@@ -330,9 +330,7 @@ export class NzTreeBaseService {
   calcDropPosition(event: DragEvent): number {
     const { clientY } = event;
     // to fix firefox undefined
-    const { top, bottom, height } = event.srcElement
-      ? (event.srcElement as Element).getBoundingClientRect()
-      : (event.target as Element).getBoundingClientRect();
+    const { top, bottom, height } = (event.target as Element).getBoundingClientRect();
     const des = Math.max(height * this.DRAG_SIDE_RANGE, this.DRAG_MIN_GAP);
 
     if (clientY <= top + des) {

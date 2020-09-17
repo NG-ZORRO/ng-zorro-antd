@@ -63,8 +63,8 @@ import { PREFIX_CLASS } from './util';
         [size]="inputSize"
         (focus)="onFocus()"
         (blur)="onBlur()"
-        (input)="onInputKeyup($event)"
-        (keyup.enter)="onInputKeyup($event, true)"
+        (ngModelChange)="onInputChange($event)"
+        (keyup.enter)="onKeyupEnter($event)"
       />
       <ng-container *ngTemplateOutlet="tplRightRest"></ng-container>
     </div>
@@ -96,10 +96,10 @@ import { PREFIX_CLASS } from './util';
         [size]="inputSize"
         (click)="onClickInputBox($event, partType)"
         (blur)="onBlur()"
-        (input)="onInputKeyup($event)"
         (focus)="onFocus(partType)"
-        (keyup.enter)="onInputKeyup($event, true)"
+        (keyup.enter)="onKeyupEnter($event)"
         [(ngModel)]="inputValue[datePickerService.getActiveIndex(partType)]"
+        (ngModelChange)="onInputChange($event)"
         placeholder="{{ getPlaceholder(partType) }}"
       />
     </ng-template>
@@ -189,7 +189,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   destroy$ = new Subject();
   prefixCls = PREFIX_CLASS;
   // Index signature in type 'string | string[]' only permits reading
-  inputValue: NzSafeAny;
+  inputValue: NzSafeAny = '';
   activeBarStyle: object = { position: 'absolute' };
   animationOpenState = false;
   overlayOpen: boolean = false; // Available when "open"=undefined
@@ -238,14 +238,13 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   constructor(
     private elementRef: ElementRef,
     private dateHelper: DateHelperService,
-    private changeDetector: ChangeDetectorRef,
+    private cdr: ChangeDetectorRef,
     private platform: Platform,
     public datePickerService: DatePickerService,
     @Inject(DOCUMENT) doc: NzSafeAny
   ) {
     this.document = doc;
     this.origin = new CdkOverlayOrigin(this.elementRef);
-    this.updateInputValue();
   }
 
   ngOnInit(): void {
@@ -253,7 +252,6 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
     this.datePickerService.valueChange$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.updateInputValue();
-      this.changeDetector.markForCheck();
     });
   }
 
@@ -285,7 +283,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         this.focus();
       }
       this.panel?.cdr.markForCheck();
-      this.changeDetector.markForCheck();
+      this.cdr.markForCheck();
     });
   }
 
@@ -330,7 +328,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   // Show overlay content
   showOverlay(): void {
-    if (!this.realOpenState) {
+    if (!this.realOpenState && !this.disabled) {
       this.resetInputWidthAndArrowLeft();
       this.overlayOpen = true;
       this.animationStart();
@@ -343,7 +341,6 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     if (this.realOpenState) {
       this.overlayOpen = false;
       this.openChange.emit(false);
-      this.focus();
     }
   }
 
@@ -354,7 +351,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   onClickInputBox(event: MouseEvent, partType?: RangePartType): void {
     event.stopPropagation();
 
-    if (!this.disabled && !this.isOpenHandledByUser()) {
+    if (!this.isOpenHandledByUser()) {
       this.showOverlay();
     }
     this.onFocus(partType);
@@ -387,7 +384,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   onPositionChange(position: ConnectedOverlayPositionChange): void {
     this.currentPositionX = position.connectionPair.originX;
     this.currentPositionY = position.connectionPair.originY;
-    this.changeDetector.detectChanges(); // Take side-effects to position styles
+    this.cdr.detectChanges(); // Take side-effects to position styles
   }
 
   onClickClear(event: MouseEvent): void {
@@ -405,28 +402,30 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     } else {
       this.inputValue = this.formatValue(newValue as CandyDate);
     }
+    this.cdr.markForCheck();
   }
 
   formatValue(value: CandyDate): string {
     return this.dateHelper.format(value && (value as CandyDate).nativeDate, this.format);
   }
 
-  onInputKeyup(event: Event, emitValue: boolean = false): void {
-    if (!this.realOpenState) {
-      this.showOverlay();
-      return;
-    }
-    const date = this.checkValidInputDate((event as KeyboardEvent).target!);
+  onInputChange(value: string, isEnter: boolean = false): void {
+    this.showOverlay();
+
+    const date = this.checkValidDate(value);
     if (this.panel && date) {
-      this.panel.changeValueFromSelect(date, emitValue);
+      this.panel.changeValueFromSelect(date, isEnter);
     }
   }
 
-  private checkValidInputDate(inputTarget: EventTarget): CandyDate | null {
-    const input = (inputTarget as HTMLInputElement).value;
-    const date = new CandyDate(this.dateHelper.parseDate(input, this.format));
+  onKeyupEnter(event: Event): void {
+    this.onInputChange((event.target as HTMLInputElement).value, true);
+  }
 
-    if (!date.isValid() || input !== this.dateHelper.format(date.nativeDate, this.format)) {
+  private checkValidDate(value: string): CandyDate | null {
+    const date = new CandyDate(this.dateHelper.parseDate(value, this.format));
+
+    if (!date.isValid() || value !== this.dateHelper.format(date.nativeDate, this.format)) {
       return null;
     }
 
@@ -461,7 +460,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   animationDone(): void {
     if (!this.realOpenState) {
       this.animationOpenState = false;
-      this.changeDetector.markForCheck();
+      this.cdr.markForCheck();
     }
   }
 }

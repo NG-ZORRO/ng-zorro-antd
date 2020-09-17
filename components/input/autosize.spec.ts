@@ -1,5 +1,5 @@
 import { Component, NgZone, ViewEncapsulation } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { dispatchFakeEvent, MockNgZone } from 'ng-zorro-antd/core/testing';
@@ -9,21 +9,23 @@ import { NzInputModule } from './input.module';
 describe('autoresize', () => {
   let zone: MockNgZone;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NzInputModule, FormsModule, ReactiveFormsModule],
-      declarations: [NzTestInputWithTextAreaAutoSizeStringComponent, NzTestInputWithTextAreaAutoSizeObjectComponent],
-      providers: [
-        {
-          provide: NgZone,
-          useFactory: () => {
-            zone = new MockNgZone();
-            return zone;
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NzInputModule, FormsModule, ReactiveFormsModule],
+        declarations: [NzTestInputWithTextAreaAutoSizeStringComponent, NzTestInputWithTextAreaAutoSizeObjectComponent],
+        providers: [
+          {
+            provide: NgZone,
+            useFactory: () => {
+              zone = new MockNgZone();
+              return zone;
+            }
           }
-        }
-      ]
-    }).compileComponents();
-  }));
+        ]
+      }).compileComponents();
+    })
+  );
 
   describe('single input', () => {
     describe('textarea autosize string', () => {

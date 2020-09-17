@@ -27,7 +27,7 @@ import { Component } from '@angular/core';
         and <span nz-typography><code>Axure</code></span
         >), to help people create their product prototypes beautifully and efficiently.
       </p>
-      <article nz-typography>
+      <div nz-typography>
         <ul>
           <li>
             <a href="/docs/spec/proximity">Principles</a>
@@ -39,8 +39,13 @@ import { Component } from '@angular/core';
             <a href="/docs/resource/download">Resource Download</a>
           </li>
         </ul>
-      </article>
-      <nz-divider></nz-divider>
+      </div>
+      <p nz-typography>
+        Press <span nz-typography><kbd>Esc</kbd></span> to exist...
+      </p>
+    </article>
+    <nz-divider></nz-divider>
+    <article nz-typography>
       <h1 nz-typography>介绍</h1>
       <p nz-typography>
         蚂蚁的企业级产品是一个庞大且复杂的体系。这类产品不仅量级巨大且功能复杂，而且变动和并发频繁，常常需要设计与开发能够快速的做出响应。
@@ -61,7 +66,7 @@ import { Component } from '@angular/core';
         <span nz-typography><code>Axure</code></span
         >），来帮助业务快速设计出高质 量的产品原型。
       </p>
-      <article nz-typography>
+      <div nz-typography>
         <ul>
           <li>
             <a href="/docs/spec/proximity">设计原则</a>
@@ -73,7 +78,10 @@ import { Component } from '@angular/core';
             <a href="/docs/resource/download">设计资源</a>
           </li>
         </ul>
-      </article>
+      </div>
+      <p nz-typography>
+        按 <span nz-typography><kbd>Esc</kbd></span> 键退出阅读……
+      </p>
     </article>
   `
 })

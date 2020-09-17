@@ -13,7 +13,7 @@ import {
   ViewChild,
   ViewChildren
 } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -31,41 +31,43 @@ describe('auto-complete', () => {
   const scrolledSubject = new Subject();
   let zone: MockNgZone;
 
-  beforeEach(async(() => {
-    const dir = 'ltr';
-    TestBed.configureTestingModule({
-      imports: [NzAutocompleteModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzInputModule],
-      declarations: [
-        NzTestSimpleAutocompleteComponent,
-        NzTestAutocompletePropertyComponent,
-        NzTestAutocompleteWithoutPanelComponent,
-        NzTestAutocompleteGroupComponent,
-        NzTestAutocompleteWithOnPushDelayComponent,
-        NzTestAutocompleteWithFormComponent,
-        NzTestAutocompleteWithObjectOptionComponent,
-        NzTestAutocompleteDifferentValueWithFormComponent,
-        NzTestAutocompleteWithGroupInputComponent
-      ],
-      providers: [
-        { provide: Directionality, useFactory: () => ({ value: dir }) },
-        { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
-        {
-          provide: NgZone,
-          useFactory: () => {
-            zone = new MockNgZone();
-            return zone;
+  beforeEach(
+    waitForAsync(() => {
+      const dir = 'ltr';
+      TestBed.configureTestingModule({
+        imports: [NzAutocompleteModule, NoopAnimationsModule, FormsModule, ReactiveFormsModule, NzInputModule],
+        declarations: [
+          NzTestSimpleAutocompleteComponent,
+          NzTestAutocompletePropertyComponent,
+          NzTestAutocompleteWithoutPanelComponent,
+          NzTestAutocompleteGroupComponent,
+          NzTestAutocompleteWithOnPushDelayComponent,
+          NzTestAutocompleteWithFormComponent,
+          NzTestAutocompleteWithObjectOptionComponent,
+          NzTestAutocompleteDifferentValueWithFormComponent,
+          NzTestAutocompleteWithGroupInputComponent
+        ],
+        providers: [
+          { provide: Directionality, useFactory: () => ({ value: dir }) },
+          { provide: ScrollDispatcher, useFactory: () => ({ scrolled: () => scrolledSubject }) },
+          {
+            provide: NgZone,
+            useFactory: () => {
+              zone = new MockNgZone();
+              return zone;
+            }
           }
-        }
-      ]
-    });
+        ]
+      });
 
-    TestBed.compileComponents();
+      TestBed.compileComponents();
 
-    inject([OverlayContainer], (oc: OverlayContainer) => {
-      overlayContainer = oc;
-      overlayContainerElement = oc.getContainerElement();
-    })();
-  }));
+      inject([OverlayContainer], (oc: OverlayContainer) => {
+        overlayContainer = oc;
+        overlayContainerElement = oc.getContainerElement();
+      })();
+    })
+  );
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();
@@ -945,8 +947,7 @@ class NzTestSimpleAutocompleteComponent {
         [nzDefaultActiveFirstOption]="false"
         nzBackfill
         #auto
-      >
-      </nz-autocomplete>
+      ></nz-autocomplete>
     </div>
   `
 })
@@ -963,7 +964,9 @@ class NzTestAutocompletePropertyComponent {
 }
 
 @Component({
-  template: ` <input [nzAutocomplete]="auto" /> `
+  template: `
+    <input [nzAutocomplete]="auto" />
+  `
 })
 class NzTestAutocompleteWithoutPanelComponent {
   @ViewChild(NzAutocompleteTriggerDirective, { static: false }) trigger!: NzAutocompleteTriggerDirective;
@@ -998,8 +1001,8 @@ class NzTestAutocompleteWithOnPushDelayComponent implements OnInit {
     <nz-autocomplete #auto>
       <nz-auto-optgroup *ngFor="let group of optionGroups" [nzLabel]="groupTitle">
         <ng-template #groupTitle>
-          <span
-            >{{ group.title }}
+          <span>
+            {{ group.title }}
             <a class="more-link" href="https://www.google.com/search?q=ng+zorro" target="_blank">更多</a>
           </span>
         </ng-template>
@@ -1136,7 +1139,7 @@ class NzTestAutocompleteWithObjectOptionComponent {
   template: `
     <nz-input-group #inputGroupComponent nzSize="large" [nzSuffix]="suffixIcon">
       <input placeholder="input here" nz-input [nzAutocomplete]="auto" />
-      <ng-template #suffixIcon> </ng-template>
+      <ng-template #suffixIcon></ng-template>
       <nz-autocomplete #auto>
         <nz-auto-option nzValue="value">label</nz-auto-option>
       </nz-autocomplete>

@@ -17,13 +17,13 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { slideAlertMotion } from 'ng-zorro-antd/core/animation';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-const NZ_CONFIG_COMPONENT_NAME = 'alert';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
 
 @Component({
   selector: 'nz-alert',
@@ -71,6 +71,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'alert';
   preserveWhitespaces: false
 })
 export class NzAlertComponent implements OnChanges, OnDestroy {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzCloseable: BooleanInput;
   static ngAcceptInputType_nzShowIcon: BooleanInput;
   static ngAcceptInputType_nzBanner: BooleanInput;
@@ -81,8 +82,8 @@ export class NzAlertComponent implements OnChanges, OnDestroy {
   @Input() nzMessage: string | TemplateRef<void> | null = null;
   @Input() nzDescription: string | TemplateRef<void> | null = null;
   @Input() nzType: 'success' | 'info' | 'warning' | 'error' = 'info';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzCloseable: boolean = false;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzShowIcon: boolean = false;
+  @Input() @WithConfig() @InputBoolean() nzCloseable: boolean = false;
+  @Input() @WithConfig() @InputBoolean() nzShowIcon: boolean = false;
   @Input() @InputBoolean() nzBanner = false;
   @Input() @InputBoolean() nzNoAnimation = false;
   @Output() readonly nzOnClose = new EventEmitter<boolean>();
@@ -95,7 +96,7 @@ export class NzAlertComponent implements OnChanges, OnDestroy {
 
   constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {
     this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.cdr.markForCheck();

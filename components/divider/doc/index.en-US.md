@@ -1,6 +1,6 @@
 ---
 category: Components
-type: Other
+type: Layout
 title: Divider
 cover: https://gw.alipayobjects.com/zos/alicdn/5swjECahe/Divider.svg
 ---
@@ -22,7 +22,7 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzDashed]` | whether line is dasded | `boolean` | `false` |
+| `[nzDashed]` | whether line is dashed | `boolean` | `false` |
 | `[nzType]` | direction type of divider | `'horizontal' \| 'vertical'` | `'horizontal'` |
 | `[nzText]` | inner text of divider | `string \| TemplateRef<void>` | - |
 | `[nzPlain]` | Divider text show as plain style | `boolean` | `false` |

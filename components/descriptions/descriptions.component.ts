@@ -17,7 +17,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { gridResponsiveMap, NzBreakpointEnum, NzBreakpointService } from 'ng-zorro-antd/core/services';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
@@ -28,7 +28,7 @@ import { auditTime, startWith, switchMap, takeUntil, tap } from 'rxjs/operators'
 import { NzDescriptionsItemComponent } from './descriptions-item.component';
 import { NzDescriptionsItemRenderProps, NzDescriptionsLayout, NzDescriptionsSize } from './typings';
 
-const NZ_CONFIG_COMPONENT_NAME = 'descriptions';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'descriptions';
 const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
   xxl: 3,
   xl: 3,
@@ -142,17 +142,18 @@ const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
   }
 })
 export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterContentInit {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzBordered: BooleanInput;
   static ngAcceptInputType_nzColon: BooleanInput;
 
   @ContentChildren(NzDescriptionsItemComponent) items!: QueryList<NzDescriptionsItemComponent>;
 
-  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzBordered: boolean = false;
+  @Input() @InputBoolean() @WithConfig() nzBordered: boolean = false;
   @Input() nzLayout: NzDescriptionsLayout = 'horizontal';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzColumn: number | { [key in NzBreakpointEnum]: number } = defaultColumnMap;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzDescriptionsSize = 'default';
+  @Input() @WithConfig() nzColumn: number | { [key in NzBreakpointEnum]: number } = defaultColumnMap;
+  @Input() @WithConfig() nzSize: NzDescriptionsSize = 'default';
   @Input() nzTitle: string | TemplateRef<void> = '';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzColon: boolean = true;
+  @Input() @WithConfig() @InputBoolean() nzColon: boolean = true;
 
   itemMatrix: NzDescriptionsItemRenderProps[][] = [];
   realColumn = 3;

@@ -1,6 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,17 +15,19 @@ registerLocaleData(zh);
 
 describe('time-picker', () => {
   let overlayContainer: OverlayContainer;
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, FormsModule, NzI18nModule, NzTimePickerModule],
-      schemas: [NO_ERRORS_SCHEMA],
-      declarations: [NzTestTimePickerComponent]
-    });
-    TestBed.compileComponents();
-    inject([OverlayContainer], (oc: OverlayContainer) => {
-      overlayContainer = oc;
-    })();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NoopAnimationsModule, FormsModule, NzI18nModule, NzTimePickerModule],
+        schemas: [NO_ERRORS_SCHEMA],
+        declarations: [NzTestTimePickerComponent]
+      });
+      TestBed.compileComponents();
+      inject([OverlayContainer], (oc: OverlayContainer) => {
+        overlayContainer = oc;
+      })();
+    })
+  );
   afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
     currentOverlayContainer.ngOnDestroy();
     overlayContainer.ngOnDestroy();

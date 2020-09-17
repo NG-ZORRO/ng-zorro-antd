@@ -1,7 +1,7 @@
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,27 +15,31 @@ import { NzCalendarHeaderComponent, NzCalendarHeaderComponent as CalendarHeader 
 registerLocaleData(zh);
 
 describe('Calendar Header', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [FormsModule, NzI18nModule, NzRadioModule, NzSelectModule, NoopAnimationsModule],
-      declarations: [
-        CalendarHeader,
-        NzTestCalendarHeaderModeComponent,
-        NzTestCalendarHeaderFullscreenComponent,
-        NzTestCalendarHeaderActiveDateComponent,
-        NzTestCalendarHeaderChangesComponent
-      ]
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [FormsModule, NzI18nModule, NzRadioModule, NzSelectModule, NoopAnimationsModule],
+        declarations: [
+          CalendarHeader,
+          NzTestCalendarHeaderModeComponent,
+          NzTestCalendarHeaderFullscreenComponent,
+          NzTestCalendarHeaderActiveDateComponent,
+          NzTestCalendarHeaderChangesComponent
+        ]
+      }).compileComponents();
+    })
+  );
 
   describe('mode', () => {
     let fixture: ComponentFixture<NzTestCalendarHeaderModeComponent>;
     let component: NzTestCalendarHeaderModeComponent;
 
-    beforeEach(async(() => {
-      fixture = TestBed.createComponent(NzTestCalendarHeaderModeComponent);
-      component = fixture.componentInstance;
-    }));
+    beforeEach(
+      waitForAsync(() => {
+        fixture = TestBed.createComponent(NzTestCalendarHeaderModeComponent);
+        component = fixture.componentInstance;
+      })
+    );
 
     it('should be month by default', () => {
       fixture.detectChanges();
@@ -76,10 +80,12 @@ describe('Calendar Header', () => {
     let fixture: ComponentFixture<NzTestCalendarHeaderFullscreenComponent>;
     let component: NzTestCalendarHeaderFullscreenComponent;
 
-    beforeEach(async(() => {
-      fixture = TestBed.createComponent(NzTestCalendarHeaderFullscreenComponent);
-      component = fixture.componentInstance;
-    }));
+    beforeEach(
+      waitForAsync(() => {
+        fixture = TestBed.createComponent(NzTestCalendarHeaderFullscreenComponent);
+        component = fixture.componentInstance;
+      })
+    );
 
     it('should be true by default', () => {
       fixture.detectChanges();
@@ -111,9 +117,11 @@ describe('Calendar Header', () => {
   describe('activeDate', () => {
     let fixture: ComponentFixture<NzTestCalendarHeaderActiveDateComponent>;
 
-    beforeEach(async(() => {
-      fixture = TestBed.createComponent(NzTestCalendarHeaderActiveDateComponent);
-    }));
+    beforeEach(
+      waitForAsync(() => {
+        fixture = TestBed.createComponent(NzTestCalendarHeaderActiveDateComponent);
+      })
+    );
 
     it('should be now by default', () => {
       const now = new Date();
@@ -144,10 +152,12 @@ describe('Calendar Header', () => {
     let fixture: ComponentFixture<NzTestCalendarHeaderChangesComponent>;
     let component: NzTestCalendarHeaderChangesComponent;
 
-    beforeEach(async(() => {
-      fixture = TestBed.createComponent(NzTestCalendarHeaderChangesComponent);
-      component = fixture.componentInstance;
-    }));
+    beforeEach(
+      waitForAsync(() => {
+        fixture = TestBed.createComponent(NzTestCalendarHeaderChangesComponent);
+        component = fixture.componentInstance;
+      })
+    );
 
     it('should emit yearChange when year changed', () => {
       const header = fixture.debugElement.queryAll(By.directive(CalendarHeader))[0];
@@ -212,7 +222,7 @@ class NzTestCalendarHeaderActiveDateComponent {
 
 @Component({
   template: `
-    <nz-calendar-header (yearChange)="year = $event" (monthChange)="month = $event"> </nz-calendar-header>
+    <nz-calendar-header (yearChange)="year = $event" (monthChange)="month = $event"></nz-calendar-header>
   `
 })
 class NzTestCalendarHeaderChangesComponent {

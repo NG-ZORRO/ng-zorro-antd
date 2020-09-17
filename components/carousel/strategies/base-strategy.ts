@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { Platform } from '@angular/cdk/platform';
 import { ChangeDetectorRef, QueryList, Renderer2 } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -31,7 +32,12 @@ export abstract class NzCarouselBaseStrategy {
     return this.contents[this.maxIndex].el;
   }
 
-  constructor(carouselComponent: NzCarouselComponentAsSource, protected cdr: ChangeDetectorRef, protected renderer: Renderer2) {
+  constructor(
+    carouselComponent: NzCarouselComponentAsSource,
+    protected cdr: ChangeDetectorRef,
+    protected renderer: Renderer2,
+    protected platform: Platform
+  ) {
     this.carouselComponent = carouselComponent;
   }
 
@@ -40,15 +46,26 @@ export abstract class NzCarouselBaseStrategy {
    * @param contents
    */
   withCarouselContents(contents: QueryList<NzCarouselContentDirective> | null): void {
-    // TODO: carousel and its contents should be separated.
     const carousel = this.carouselComponent!;
-    const rect = carousel.el.getBoundingClientRect();
     this.slickListEl = carousel.slickListEl;
     this.slickTrackEl = carousel.slickTrackEl;
-    this.unitWidth = rect.width;
-    this.unitHeight = rect.height;
-    this.contents = contents ? contents.toArray() : [];
+    this.contents = contents?.toArray() || [];
     this.length = this.contents.length;
+
+    if (this.platform.isBrowser) {
+      const rect = carousel.el.getBoundingClientRect();
+      this.unitWidth = rect.width;
+      this.unitHeight = rect.height;
+    } else {
+      // Since we cannot call getBoundingClientRect in server, we just hide all items except for the first one.
+      contents?.forEach((content, index) => {
+        if (index === 0) {
+          this.renderer.setStyle(content.el, 'width', '100%');
+        } else {
+          this.renderer.setStyle(content.el, 'display', 'none');
+        }
+      });
+    }
   }
 
   /**

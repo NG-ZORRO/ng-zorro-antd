@@ -22,7 +22,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { fadeMotion } from 'ng-zorro-antd/core/animation';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzScrollService } from 'ng-zorro-antd/core/services';
 import { NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputNumber } from 'ng-zorro-antd/core/util';
@@ -30,7 +30,7 @@ import { InputNumber } from 'ng-zorro-antd/core/util';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
 
-const NZ_CONFIG_COMPONENT_NAME = 'backTop';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'backTop';
 
 @Component({
   selector: 'nz-back-top',
@@ -53,6 +53,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'backTop';
   preserveWhitespaces: false
 })
 export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzVisibilityHeight: NumberInput;
 
   private scrollListenerDestroy$ = new Subject();
@@ -61,7 +62,7 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
   visible: boolean = false;
 
   @Input() nzTemplate?: TemplateRef<void>;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputNumber() nzVisibilityHeight: number = 400;
+  @Input() @WithConfig() @InputNumber() nzVisibilityHeight: number = 400;
   @Input() nzTarget?: string | HTMLElement;
   @Output() readonly nzClick: EventEmitter<boolean> = new EventEmitter();
 

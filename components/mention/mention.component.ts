@@ -234,7 +234,14 @@ export class NzMentionComponent implements OnDestroy, OnInit, OnChanges {
 
   private suggestionsFilter(value: string, emit: boolean): void {
     const suggestions = value.substring(1);
-    if (this.previousValue === value) {
+    /**
+     * Should always emit (nzOnSearchChange) when value empty
+     *
+     * @[something]... @[empty]... @[empty]
+     *     ^             ^           ^
+     * preValue        preValue  (should emit)
+     */
+    if (this.previousValue === value && value !== this.cursorMention![0]) {
       return;
     }
     this.previousValue = value;

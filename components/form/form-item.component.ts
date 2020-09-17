@@ -3,18 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  Input,
-  OnDestroy,
-  Renderer2,
-  ViewEncapsulation
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, Renderer2, ViewEncapsulation } from '@angular/core';
 
-import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { Subject } from 'rxjs';
 
 export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validating' | null;
@@ -34,16 +24,11 @@ export type NzFormControlStatusType = 'success' | 'error' | 'warning' | 'validat
     '[class.ant-form-item-has-feedback]': 'hasFeedback && status',
     '[class.ant-form-item-with-help]': 'withHelpClass'
   },
-  template: ` <ng-content></ng-content> `
+  template: `
+    <ng-content></ng-content>
+  `
 })
 export class NzFormItemComponent implements OnDestroy, OnDestroy {
-  /**
-   * @deprecated 10.0.0. 'nzFlex' is deprecated and going to be removed in 10.0.0.
-   */
-  @Input() set nzFlex(_: boolean) {
-    warnDeprecation(`'nzFlex' is deprecated and going to be removed in 10.0.0.`);
-  }
-
   status: NzFormControlStatusType = null;
   hasFeedback = false;
   withHelpClass = false;

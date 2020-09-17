@@ -4,8 +4,7 @@
  */
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewEncapsulation } from '@angular/core';
-import { NotificationConfig, NzConfigService } from 'ng-zorro-antd/core/config';
-import { warnDeprecation } from 'ng-zorro-antd/core/logger';
+import { NotificationConfig, NzConfigKey, NzConfigService } from 'ng-zorro-antd/core/config';
 import { toCssPixel } from 'ng-zorro-antd/core/util';
 
 import { NzMNContainerComponent } from 'ng-zorro-antd/message';
@@ -14,7 +13,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { NzNotificationData, NzNotificationDataOptions } from './typings';
 
-const NZ_CONFIG_COMPONENT_NAME = 'notification';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'notification';
 
 const NZ_NOTIFICATION_DEFAULT_CONFIG: Required<NotificationConfig> = {
   nzTop: '24px',
@@ -110,7 +109,7 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent {
 
   protected subscribeConfigChange(): void {
     this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => this.updateConfig());
   }
@@ -119,7 +118,7 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent {
     this.config = {
       ...NZ_NOTIFICATION_DEFAULT_CONFIG,
       ...this.config,
-      ...this.nzConfigService.getConfigForComponent(NZ_CONFIG_COMPONENT_NAME)
+      ...this.nzConfigService.getConfigForComponent(NZ_CONFIG_MODULE_NAME)
     };
 
     this.top = toCssPixel(this.config.nzTop!);
@@ -146,13 +145,7 @@ export class NzNotificationContainerComponent extends NzMNContainerComponent {
   }
 
   protected mergeOptions(options?: NzNotificationDataOptions): NzNotificationDataOptions {
-    const { nzPosition } = options ?? {};
-
-    if (nzPosition) {
-      warnDeprecation('`nzPosition` of NzNotificationDataOptions is deprecated and would be removed in 10.0.0. Use `nzPlacement` instead.');
-    }
-
     const { nzDuration, nzAnimate, nzPauseOnHover, nzPlacement } = this.config;
-    return { nzDuration, nzAnimate, nzPauseOnHover, nzPlacement: nzPlacement || nzPosition, ...options };
+    return { nzDuration, nzAnimate, nzPauseOnHover, nzPlacement: nzPlacement, ...options };
   }
 }

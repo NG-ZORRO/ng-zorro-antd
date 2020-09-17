@@ -28,7 +28,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { DEFAULT_CASCADER_POSITIONS } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput, NgClassType, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -49,7 +49,7 @@ import {
   NzShowSearchOptions
 } from './typings';
 
-const NZ_CONFIG_COMPONENT_NAME = 'cascader';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'cascader';
 const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
 
 @Component({
@@ -93,8 +93,7 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
           nzType="down"
           class="ant-cascader-picker-arrow"
           [class.ant-cascader-picker-arrow-expand]="menuVisible"
-        >
-        </i>
+        ></i>
         <i *ngIf="isLoading" nz-icon nzType="loading" class="ant-cascader-picker-arrow"></i>
         <span
           class="ant-cascader-picker-label"
@@ -187,6 +186,7 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
   }
 })
 export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit, OnDestroy, ControlValueAccessor {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzShowInput: BooleanInput;
   static ngAcceptInputType_nzShowArrow: BooleanInput;
   static ngAcceptInputType_nzAllowClear: BooleanInput;
@@ -212,7 +212,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   @Input() nzLabelRender: TemplateRef<void> | null = null;
   @Input() nzLabelProperty = 'label';
   @Input() nzNotFoundContent?: string | TemplateRef<void>;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzCascaderSize = 'default';
+  @Input() @WithConfig() nzSize: NzCascaderSize = 'default';
   @Input() nzShowSearch: boolean | NzShowSearchOptions = false;
   @Input() nzPlaceHolder: string = '';
   @Input() nzMenuClassName?: string;
@@ -368,7 +368,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     });
 
     this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.cdr.markForCheck();

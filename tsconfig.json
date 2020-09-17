@@ -4,7 +4,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "downlevelIteration": true,
-    "module": "esnext",
+    "module": "es2020",
     "importHelpers": true,
     "rootDir": ".",
     "outDir": "./dist/out-tsc",

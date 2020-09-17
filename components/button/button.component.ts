@@ -18,7 +18,7 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -30,7 +30,7 @@ export type NzButtonType = 'primary' | 'default' | 'dashed' | 'danger' | 'link' 
 export type NzButtonShape = 'circle' | 'round' | null;
 export type NzButtonSize = 'large' | 'default' | 'small';
 
-const NZ_CONFIG_COMPONENT_NAME = 'button';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
 
 @Component({
   selector: 'button[nz-button], a[nz-button]',
@@ -59,11 +59,11 @@ const NZ_CONFIG_COMPONENT_NAME = 'button';
     '[class.ant-btn-block]': `nzBlock`,
     '[class.ant-input-search-button]': `nzSearch`,
     '[attr.tabindex]': 'disabled ? -1 : (tabIndex === null ? null : tabIndex)',
-    '[attr.disabled]': 'disabled || null',
-    '(click)': 'haltDisabledEvents($event)'
+    '[attr.disabled]': 'disabled || null'
   }
 })
 export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, AfterContentInit {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzBlock: BooleanInput;
   static ngAcceptInputType_nzGhost: BooleanInput;
   static ngAcceptInputType_nzSearch: BooleanInput;
@@ -81,16 +81,9 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
   @Input() tabIndex: number | string | null = null;
   @Input() nzType: NzButtonType = null;
   @Input() nzShape: NzButtonShape = null;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzButtonSize = 'default';
+  @Input() @WithConfig() nzSize: NzButtonSize = 'default';
   private destroy$ = new Subject<void>();
   private loading$ = new Subject<boolean>();
-
-  haltDisabledEvents(event: Event): void {
-    if (this.disabled) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-    }
-  }
 
   insertSpan(nodes: NodeList, renderer: Renderer2): void {
     nodes.forEach(node => {
@@ -121,7 +114,7 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
     public nzConfigService: NzConfigService
   ) {
     this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.cdr.markForCheck();

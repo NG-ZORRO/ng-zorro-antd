@@ -18,7 +18,7 @@ import {
 } from '@angular/core';
 import { collapseMotion } from 'ng-zorro-antd/core/animation';
 
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
@@ -26,7 +26,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { NzCollapseComponent } from './collapse.component';
 
-const NZ_CONFIG_COMPONENT_NAME = 'collapsePanel';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'collapsePanel';
 
 @Component({
   selector: 'nz-collapse-panel',
@@ -61,13 +61,14 @@ const NZ_CONFIG_COMPONENT_NAME = 'collapsePanel';
   }
 })
 export class NzCollapsePanelComponent implements OnInit, OnDestroy {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzActive: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzShowArrow: BooleanInput;
 
   @Input() @InputBoolean() nzActive = false;
   @Input() @InputBoolean() nzDisabled = false;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzShowArrow: boolean = true;
+  @Input() @WithConfig() @InputBoolean() nzShowArrow: boolean = true;
   @Input() nzExtra?: string | TemplateRef<void>;
   @Input() nzHeader?: string | TemplateRef<void>;
   @Input() nzExpandedIcon?: string | TemplateRef<void>;
@@ -89,7 +90,7 @@ export class NzCollapsePanelComponent implements OnInit, OnDestroy {
     @Host() private nzCollapseComponent: NzCollapseComponent
   ) {
     this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.cdr.markForCheck();

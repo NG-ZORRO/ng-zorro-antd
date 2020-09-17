@@ -66,7 +66,6 @@ describe('secondary entry points checks', () => {
 
       const warnLines = ['index.ts@2:7', 'index.ts@3:7', 'index.ts@5:7'];
 
-      expect(warnOutput.length).toBe(warnLines.length);
       warnLines.forEach(line => {
         expect(warnOutput.toString()).toContain(`/${line} - The entry-point "ng-zorro-antd/core" is remove.`);
       });

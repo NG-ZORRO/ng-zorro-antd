@@ -111,7 +111,7 @@ describe('nz-empty', () => {
       const contentEl = emptyComponent.nativeElement.lastElementChild;
       expect(contentEl.innerText.trim()).toBe('暂无数据');
 
-      testBed.bed.get(NzI18nService).setLocale(en_US);
+      testBed.bed.inject(NzI18nService).setLocale(en_US);
       fixture.detectChanges();
       expect(contentEl.innerText.trim()).toBe('No Data');
     });

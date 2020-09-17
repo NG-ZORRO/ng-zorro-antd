@@ -6,6 +6,7 @@
 import { Directive, ElementRef, Input, OnChanges, OnDestroy, OnInit, Optional, Renderer2, Self, SimpleChanges } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { BooleanInput, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
@@ -14,6 +15,7 @@ import { filter, takeUntil } from 'rxjs/operators';
   exportAs: 'nzInput',
   host: {
     '[class.ant-input-disabled]': 'disabled',
+    '[class.ant-input-borderless]': 'nzBorderless',
     '[class.ant-input-lg]': `nzSize === 'large'`,
     '[class.ant-input-sm]': `nzSize === 'small'`,
     '[attr.disabled]': 'disabled || null'
@@ -21,7 +23,8 @@ import { filter, takeUntil } from 'rxjs/operators';
 })
 export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
   static ngAcceptInputType_disabled: BooleanInput;
-
+  static ngAcceptInputType_nzBorderless: BooleanInput;
+  @Input() @InputBoolean() nzBorderless = false;
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input()
   get disabled(): boolean {

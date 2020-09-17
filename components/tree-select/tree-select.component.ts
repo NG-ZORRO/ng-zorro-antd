@@ -28,7 +28,7 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { slideMotion, zoomMotion } from 'ng-zorro-antd/core/animation';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 
 import {
@@ -53,7 +53,7 @@ export function higherOrderServiceFactory(injector: Injector): NzTreeBaseService
   return injector.get(NzTreeSelectService);
 }
 
-const NZ_CONFIG_COMPONENT_NAME = 'treeSelect';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'treeSelect';
 const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown';
 
 @Component({
@@ -88,6 +88,7 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
           [hidden]="isNotFound"
           nzNoAnimation
           nzSelectMode
+          nzBlockNode
           [nzData]="nzNodes"
           [nzMultiple]="nzMultiple"
           [nzSearchValue]="inputValue"
@@ -104,14 +105,17 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
           [nzSelectedKeys]="!nzCheckable ? value : []"
           [nzTreeTemplate]="treeTemplate"
           [nzCheckStrictly]="nzCheckStrictly"
+          [nzVirtualItemSize]="nzVirtualItemSize"
+          [nzVirtualMaxBufferPx]="nzVirtualMaxBufferPx"
+          [nzVirtualMinBufferPx]="nzVirtualMinBufferPx"
+          [nzVirtualHeight]="nzVirtualHeight"
           (nzExpandChange)="onExpandedKeysChange($event)"
           (nzClick)="nzTreeClick.emit($event)"
           (nzCheckedKeysChange)="updateSelectedNodes()"
           (nzSelectedKeysChange)="updateSelectedNodes()"
           (nzCheckBoxChange)="nzTreeCheckBoxChange.emit($event)"
           (nzSearchValueChange)="setSearchValues($event)"
-        >
-        </nz-tree>
+        ></nz-tree>
         <span *ngIf="nzNodes.length === 0 || isNotFound" class="ant-select-not-found">
           <nz-embed-empty [nzComponentName]="'tree-select'" [specificContent]="nzNotFoundContent"></nz-embed-empty>
         </span>
@@ -155,18 +159,16 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
         [mirrorSync]="isMultiple"
         [disabled]="nzDisabled"
         [showInput]="nzOpen"
-      >
-      </nz-select-search>
+      ></nz-select-search>
 
       <nz-select-placeholder
         *ngIf="nzPlaceHolder && selectedNodes.length === 0"
         [placeholder]="nzPlaceHolder"
         [style.display]="placeHolderDisplay"
-      >
-      </nz-select-placeholder>
+      ></nz-select-placeholder>
 
       <nz-select-item
-        *ngIf="!isMultiple && selectedNodes.length === 1"
+        *ngIf="!isMultiple && selectedNodes.length === 1 && !isComposing && inputValue === ''"
         [deletable]="false"
         [disabled]="false"
         [label]="nzDisplayWith(selectedNodes[0])"
@@ -174,7 +176,7 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
 
       <nz-select-arrow *ngIf="!isMultiple"></nz-select-arrow>
 
-      <nz-select-clear *ngIf="nzAllowClear" (clear)="onClearSelection()"></nz-select-clear>
+      <nz-select-clear *ngIf="nzAllowClear && !nzDisabled && selectedNodes.length" (clear)="onClearSelection()"></nz-select-clear>
     </div>
   `,
   providers: [
@@ -205,6 +207,8 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
   }
 })
 export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAccessor, OnInit, OnDestroy, OnChanges {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
   static ngAcceptInputType_nzAllowClear: BooleanInput;
   static ngAcceptInputType_nzShowExpand: BooleanInput;
   static ngAcceptInputType_nzShowLine: BooleanInput;
@@ -222,21 +226,25 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   @Input() @InputBoolean() nzAllowClear: boolean = true;
   @Input() @InputBoolean() nzShowExpand: boolean = true;
   @Input() @InputBoolean() nzShowLine: boolean = false;
-  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzDropdownMatchSelectWidth: boolean = true;
+  @Input() @InputBoolean() @WithConfig() nzDropdownMatchSelectWidth: boolean = true;
   @Input() @InputBoolean() nzCheckable: boolean = false;
-  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzHideUnMatched: boolean = false;
-  @Input() @InputBoolean() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzShowIcon: boolean = false;
+  @Input() @InputBoolean() @WithConfig() nzHideUnMatched: boolean = false;
+  @Input() @InputBoolean() @WithConfig() nzShowIcon: boolean = false;
   @Input() @InputBoolean() nzShowSearch: boolean = false;
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAsyncData = false;
   @Input() @InputBoolean() nzMultiple = false;
   @Input() @InputBoolean() nzDefaultExpandAll = false;
   @Input() @InputBoolean() nzCheckStrictly = false;
+  @Input() nzVirtualItemSize = 28;
+  @Input() nzVirtualMaxBufferPx = 500;
+  @Input() nzVirtualMinBufferPx = 28;
+  @Input() nzVirtualHeight: string | null = null;
   @Input() nzExpandedIcon?: TemplateRef<{ $implicit: NzTreeNode; origin: NzTreeNodeOptions }>;
   @Input() nzNotFoundContent?: string;
   @Input() nzNodes: Array<NzTreeNode | NzTreeNodeOptions> = [];
   @Input() nzOpen = false;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzSizeLDSType = 'default';
+  @Input() @WithConfig() nzSize: NzSizeLDSType = 'default';
   @Input() nzPlaceHolder = '';
   @Input() nzDropdownStyle: NgStyleInterface | null = null;
   @Input() nzDropdownClassName?: string;
@@ -316,6 +324,10 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     this.selectionChangeSubscription.unsubscribe();
   }
 
+  isComposingChange(isComposing: boolean): void {
+    this.isComposing = isComposing;
+  }
+
   setDisabledState(isDisabled: boolean): void {
     this.nzDisabled = isDisabled;
     this.closeDropDown();
@@ -381,6 +393,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
     this.onTouched();
     this.nzOpen = false;
     this.inputValue = '';
+    this.isNotFound = false;
     this.nzOpenChange.emit(this.nzOpen);
     this.cdr.markForCheck();
   }

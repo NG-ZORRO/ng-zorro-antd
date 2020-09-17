@@ -6,7 +6,7 @@
 import { FocusTrap, FocusTrapFactory } from '@angular/cdk/a11y';
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { Overlay, OverlayConfig, OverlayKeyboardDispatcher, OverlayRef } from '@angular/cdk/overlay';
-import { CdkPortalOutlet, ComponentPortal, PortalInjector, TemplatePortal } from '@angular/cdk/portal';
+import { CdkPortalOutlet, ComponentPortal, TemplatePortal } from '@angular/cdk/portal';
 import { DOCUMENT } from '@angular/common';
 import {
   AfterViewInit,
@@ -29,7 +29,7 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toCssPixel } from 'ng-zorro-antd/core/util';
 
@@ -40,7 +40,7 @@ import { NzDrawerRef } from './drawer-ref';
 
 export const DRAWER_ANIMATE_DURATION = 300;
 
-const NZ_CONFIG_COMPONENT_NAME = 'drawer';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'drawer';
 
 @Component({
   selector: 'nz-drawer',
@@ -75,7 +75,9 @@ const NZ_CONFIG_COMPONENT_NAME = 'drawer';
                   <ng-container *nzStringTemplateOutlet="nzTitle"><div [innerHTML]="nzTitle"></div></ng-container>
                 </div>
                 <button *ngIf="nzClosable" (click)="closeClick()" aria-label="Close" class="ant-drawer-close" style="--scroll-bar: 0px;">
-                  <i nz-icon nzType="close"></i>
+                  <ng-container *nzStringTemplateOutlet="nzCloseIcon; let closeIcon">
+                    <i nz-icon [nzType]="closeIcon"></i>
+                  </ng-container>
                 </button>
               </div>
               <div class="ant-drawer-body" [ngStyle]="nzBodyStyle">
@@ -97,8 +99,10 @@ const NZ_CONFIG_COMPONENT_NAME = 'drawer';
   preserveWhitespaces: false,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> extends NzDrawerRef<T, R>
+export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny>
+  extends NzDrawerRef<T, R>
   implements OnInit, OnDestroy, AfterViewInit, OnChanges, NzDrawerOptionsOfComponent {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzClosable: BooleanInput;
   static ngAcceptInputType_nzMaskClosable: BooleanInput;
   static ngAcceptInputType_nzMask: BooleanInput;
@@ -107,10 +111,11 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> exte
   static ngAcceptInputType_nzCloseOnNavigation: BooleanInput;
 
   @Input() nzContent!: TemplateRef<{ $implicit: D; drawerRef: NzDrawerRef<R> }> | Type<T>;
+  @Input() nzCloseIcon: string | TemplateRef<void> = 'close';
   @Input() @InputBoolean() nzClosable: boolean = true;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzMaskClosable: boolean = true;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzMask: boolean = true;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzCloseOnNavigation: boolean = true;
+  @Input() @WithConfig() @InputBoolean() nzMaskClosable: boolean = true;
+  @Input() @WithConfig() @InputBoolean() nzMask: boolean = true;
+  @Input() @WithConfig() @InputBoolean() nzCloseOnNavigation: boolean = true;
   @Input() @InputBoolean() nzNoAnimation = false;
   @Input() @InputBoolean() nzKeyboard: boolean = true;
   @Input() nzTitle?: string | TemplateRef<{}>;
@@ -329,7 +334,10 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> exte
     this.bodyPortalOutlet!.dispose();
 
     if (this.nzContent instanceof Type) {
-      const childInjector = new PortalInjector(this.injector, new WeakMap([[NzDrawerRef, this]]));
+      const childInjector = Injector.create({
+        parent: this.injector,
+        providers: [{ provide: NzDrawerRef, useValue: this }]
+      });
       const componentPortal = new ComponentPortal<T>(this.nzContent, null, childInjector);
       const componentRef = this.bodyPortalOutlet!.attachComponentPortal(componentPortal);
       this.componentInstance = componentRef.instance;

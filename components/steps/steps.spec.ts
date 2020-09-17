@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DebugElement, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzDividerModule } from 'ng-zorro-antd/divider';
@@ -12,21 +12,23 @@ import { NzStepsComponent } from './steps.component';
 import { NzStepsModule } from './steps.module';
 
 describe('steps', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NzStepsModule, NzIconTestModule, NzDividerModule],
-      declarations: [
-        NzTestOuterStepsComponent,
-        NzDemoStepsClickableComponent,
-        NzTestInnerStepStringComponent,
-        NzTestInnerStepTemplateComponent,
-        NzTestStepForComponent,
-        NzTestStepAsyncComponent,
-        NzDemoStepsNavComponent
-      ]
-    });
-    TestBed.compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NzStepsModule, NzIconTestModule, NzDividerModule],
+        declarations: [
+          NzTestOuterStepsComponent,
+          NzDemoStepsClickableComponent,
+          NzTestInnerStepStringComponent,
+          NzTestInnerStepTemplateComponent,
+          NzTestStepForComponent,
+          NzTestStepAsyncComponent,
+          NzDemoStepsNavComponent
+        ]
+      });
+      TestBed.compileComponents();
+    })
+  );
   describe('outer steps', () => {
     let fixture: ComponentFixture<NzTestOuterStepsComponent>;
     let testComponent: NzTestOuterStepsComponent;

@@ -30,6 +30,7 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 | `[nzLoading]` | Display the skeleton when `true` | `boolean` | - |
 | `[nzParagraph]` | Show paragraph placeholder | `boolean \| NzSkeletonParagraph` | `true` |
 | `[nzTitle]` | Show title placeholder | `boolean \| NzSkeletonTitle` | `true` |
+| `[nzRound]` | Show paragraph and title radius when `true` | `boolean` | `false` |
 
 
 ### NzSkeletonAvatar
@@ -74,3 +75,10 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 | --- | --- | --- | --- |
 | `[nzActive]` | Show animation effect | `boolean` | `false` |
 | `[nzSize]` | Set the size | `'large' \| 'small' \| 'default'` | `'default'` |
+
+### nz-skeleton-element [nzType="image"]
+
+| Property | Description | Type | Default |
+| --- | --- | --- | --- |
+| `[nzActive]` | Show animation effect | `boolean` | `false` |
+

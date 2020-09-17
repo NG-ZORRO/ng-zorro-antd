@@ -37,25 +37,9 @@ describe('nz-thead', () => {
       expect(upButtons[1].querySelector('.ant-table-column-sorter-down').classList).toContain('anticon-caret-down');
       expect(testComponent.sortChange).toHaveBeenCalledTimes(2);
     });
-    it('should singleSort change', () => {
-      testComponent.singleSort = true;
-      fixture.detectChanges();
-      expect(testComponent.sortChange).toHaveBeenCalledTimes(0);
-      const upButtons = table.nativeElement.querySelectorAll('.ant-table-column-sorters');
-      upButtons[0].click();
-      fixture.detectChanges();
-      expect(testComponent.sortChange).toHaveBeenCalledTimes(1);
-      expect(upButtons[0].querySelector('.ant-table-column-sorter-down').classList).toContain('anticon-caret-down');
-      upButtons[1].click();
-      fixture.detectChanges();
-      expect(upButtons[0].querySelector('.ant-table-column-sorter-down').classList).toContain('anticon-caret-down');
-      expect(upButtons[1].querySelector('.ant-table-column-sorter-down').classList).toContain('anticon-caret-down');
-      expect(testComponent.sortChange).toHaveBeenCalledTimes(2);
-    });
 
     // Test for #3603
     it('should support dynamic headers', () => {
-      testComponent.singleSort = true;
       fixture.detectChanges();
       expect(testComponent.sortChange).toHaveBeenCalledTimes(0);
       let upButtons = table.nativeElement.querySelectorAll('.ant-table-column-sorters');
@@ -79,16 +63,16 @@ describe('nz-thead', () => {
 @Component({
   template: `
     <nz-table>
-      <thead [nzSingleSort]="singleSort" (nzSortChange)="sortChange($event)">
-        <th nzSortKey="first"></th>
-        <th nzSortKey="second"></th>
-        <th *ngFor="let col of columns" [nzSortKey]="col"></th>
+      <thead (nzSortOrderChange)="sortChange($event)">
+        <th nzColumnKey="first" [nzSortFn]="filterFn"></th>
+        <th nzColumnKey="second" [nzSortFn]="filterFn">></th>
+        <th *ngFor="let col of columns" [nzColumnKey]="col" [nzSortFn]="filterFn">></th>
       </thead>
     </nz-table>
   `
 })
 export class NzTheadTestNzTableComponent {
-  singleSort = false;
   sortChange = jasmine.createSpy('sort change');
   columns = ['third', 'fourth'];
+  filterFn = () => -1;
 }

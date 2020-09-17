@@ -7,7 +7,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
-import { getPicker, getPickerAbstract, getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
+import { ENTER_EVENT, getPickerAbstract, getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/util';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
@@ -60,7 +60,7 @@ describe('NzYearPickerComponent', () => {
 
     it('should open on enter', fakeAsync(() => {
       fixture.detectChanges();
-      getPickerInput(fixture.debugElement).dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
+      getPickerInput(fixture.debugElement).dispatchEvent(ENTER_EVENT);
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -143,12 +143,6 @@ describe('NzYearPickerComponent', () => {
       });
     }));
 
-    it('should support nzClassName', () => {
-      const className = (fixtureInstance.nzClassName = 'my-test-class');
-      fixture.detectChanges();
-      expect(getPicker(fixture.debugElement).classList.contains(className)).toBeTruthy();
-    });
-
     it('should support nzCompact', () => {
       fixtureInstance.useSuite = 4;
       fixture.detectChanges();
@@ -207,12 +201,6 @@ describe('NzYearPickerComponent', () => {
       fixtureInstance.nzSize = 'small';
       fixture.detectChanges();
       expect(getPickerAbstract(fixture.debugElement).classList.contains('ant-picker-small')).toBeTruthy();
-    });
-
-    it('should support nzStyle', () => {
-      fixtureInstance.nzStyle = { color: 'blue' };
-      fixture.detectChanges();
-      expect(getPicker(fixture.debugElement).style.color).toBe('blue');
     });
 
     it('should support nzOnOpenChange', fakeAsync(() => {
@@ -368,21 +356,17 @@ describe('NzYearPickerComponent', () => {
         [nzAutoFocus]="nzAutoFocus"
         [nzDisabled]="nzDisabled"
         [nzDisabledDate]="nzDisabledDate"
-        [nzClassName]="nzClassName"
         [nzLocale]="nzLocale"
         [nzPlaceHolder]="nzPlaceHolder"
         [nzPopupStyle]="nzPopupStyle"
         [nzDropdownClassName]="nzDropdownClassName"
         [nzSize]="nzSize"
-        [nzStyle]="nzStyle"
         (nzOnOpenChange)="nzOnOpenChange($event)"
         [ngModel]="nzValue"
         (ngModelChange)="nzOnChange($event)"
         [nzRenderExtraFooter]="nzRenderExtraFooter"
       ></nz-year-picker>
-      <ng-template #tplExtraFooter>
-        TEST_EXTRA_FOOTER
-      </ng-template>
+      <ng-template #tplExtraFooter>TEST_EXTRA_FOOTER</ng-template>
 
       <!-- Suite 2 -->
       <!-- use another picker to avoid nzOpen's side-effects beacuse nzOpen act as "true" if used -->
@@ -407,18 +391,16 @@ class NzTestYearPickerComponent {
   nzAllowClear: boolean = false;
   nzAutoFocus: boolean = false;
   nzDisabled: boolean = false;
-  nzClassName?: string;
   nzDisabledDate?: (d: Date) => boolean;
   nzLocale: any; // tslint:disable-line:no-any
   nzPlaceHolder?: string;
   nzPopupStyle?: NgStyleInterface;
   nzDropdownClassName?: string;
   nzSize?: string;
-  nzStyle?: NgStyleInterface;
 
-  nzOnOpenChange(): void {}
+  nzOnOpenChange(_: boolean): void {}
 
-  nzOnChange(): void {}
+  nzOnChange(_: Date | null): void {}
 
   nzValue: Date | null = null;
 

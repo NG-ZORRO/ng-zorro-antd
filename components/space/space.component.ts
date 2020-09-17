@@ -4,33 +4,43 @@
  */
 
 import { AfterViewInit, ChangeDetectionStrategy, Component, ContentChildren, Input, OnChanges, OnDestroy, QueryList } from '@angular/core';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
 
 import { NzSpaceItemComponent } from './space-item.component';
-import { NzSpaceDirection, NzSpaceSize } from './types';
+import { NzSpaceAlign, NzSpaceDirection, NzSpaceSize } from './types';
 
-const NZ_CONFIG_COMPONENT_NAME = 'space';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'space';
 
 @Component({
-  selector: 'nz-space',
+  selector: 'nz-space, [nz-space]',
   exportAs: 'NzSpace',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <ng-content></ng-content> `,
+  template: `
+    <ng-content></ng-content>
+  `,
   host: {
     class: 'ant-space',
     '[class.ant-space-horizontal]': 'nzDirection === "horizontal"',
-    '[class.ant-space-vertical]': 'nzDirection === "vertical"'
+    '[class.ant-space-vertical]': 'nzDirection === "vertical"',
+    '[class.ant-space-align-start]': 'mergedAlign === "start"',
+    '[class.ant-space-align-end]': 'mergedAlign === "end"',
+    '[class.ant-space-align-center]': 'mergedAlign === "center"',
+    '[class.ant-space-align-baseline]': 'mergedAlign === "baseline"'
   }
 })
 export class NzSpaceComponent implements OnChanges, OnDestroy, AfterViewInit {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
   @Input() nzDirection: NzSpaceDirection = 'horizontal';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: number | NzSpaceSize = 'small';
+  @Input() nzAlign?: NzSpaceAlign;
+  @Input() @WithConfig() nzSize: number | NzSpaceSize = 'small';
 
   @ContentChildren(NzSpaceItemComponent) nzSpaceItemComponents!: QueryList<NzSpaceItemComponent>;
 
+  mergedAlign?: NzSpaceAlign;
   private destroy$ = new Subject();
 
   constructor(public nzConfigService: NzConfigService) {}
@@ -45,6 +55,7 @@ export class NzSpaceComponent implements OnChanges, OnDestroy, AfterViewInit {
 
   ngOnChanges(): void {
     this.updateSpaceItems();
+    this.mergedAlign = this.nzAlign === undefined && this.nzDirection === 'horizontal' ? 'center' : this.nzAlign;
   }
 
   ngOnDestroy(): void {

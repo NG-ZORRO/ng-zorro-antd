@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, DebugElement } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router, Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -21,13 +21,15 @@ describe('breadcrumb', () => {
     let items: DebugElement[];
     let breadcrumb: DebugElement;
 
-    beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [NzBreadCrumbModule],
-        declarations: [NzDemoBreadcrumbBasicComponent],
-        providers: []
-      }).compileComponents();
-    }));
+    beforeEach(
+      waitForAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [NzBreadCrumbModule],
+          declarations: [NzDemoBreadcrumbBasicComponent],
+          providers: []
+        }).compileComponents();
+      })
+    );
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoBreadcrumbBasicComponent);
@@ -47,13 +49,15 @@ describe('breadcrumb', () => {
     let fixture: ComponentFixture<NzDemoBreadcrumbDropdownComponent>;
     let items: DebugElement[];
 
-    beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [NzBreadCrumbModule, NzDropDownModule],
-        declarations: [NzDemoBreadcrumbDropdownComponent],
-        providers: []
-      }).compileComponents();
-    }));
+    beforeEach(
+      waitForAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [NzBreadCrumbModule, NzDropDownModule],
+          declarations: [NzDemoBreadcrumbDropdownComponent],
+          providers: []
+        }).compileComponents();
+      })
+    );
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoBreadcrumbDropdownComponent);
@@ -73,12 +77,14 @@ describe('breadcrumb', () => {
     let items: DebugElement[];
     let breadcrumbs: DebugElement[];
 
-    beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [NzBreadCrumbModule, NzIconTestModule],
-        declarations: [NzDemoBreadcrumbSeparatorComponent]
-      }).compileComponents();
-    }));
+    beforeEach(
+      waitForAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [NzBreadCrumbModule, NzIconTestModule],
+          declarations: [NzDemoBreadcrumbSeparatorComponent]
+        }).compileComponents();
+      })
+    );
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzDemoBreadcrumbSeparatorComponent);
@@ -208,7 +214,7 @@ describe('breadcrumb', () => {
       breadcrumb = fixture.debugElement.query(By.directive(NzBreadCrumbComponent));
 
       fixture.ngZone!.run(() => {
-        router = TestBed.get(Router);
+        router = TestBed.inject(Router);
         router.initialNavigation();
 
         flushFixture(fixture);

@@ -1,7 +1,7 @@
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
@@ -13,13 +13,15 @@ import { NzTimeValueAccessorDirective } from './time-value-accessor.directive';
 registerLocaleData(zh);
 
 describe('input-time', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [FormsModule, NzI18nModule],
-      declarations: [NzTimeValueAccessorDirective, NzTestTimeInputComponent]
-    });
-    TestBed.compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [FormsModule, NzI18nModule],
+        declarations: [NzTimeValueAccessorDirective, NzTestTimeInputComponent]
+      });
+      TestBed.compileComponents();
+    })
+  );
 
   describe('basic input-time', () => {
     let fixture: ComponentFixture<NzTestTimeInputComponent>;
@@ -65,7 +67,9 @@ describe('input-time', () => {
 });
 
 @Component({
-  template: ` <input [(ngModel)]="value" [nzTime]="'HH:mm:ss'" /> `
+  template: `
+    <input [(ngModel)]="value" [nzTime]="'HH:mm:ss'" />
+  `
 })
 export class NzTestTimeInputComponent {
   @ViewChild(NzTimeValueAccessorDirective, { static: false })

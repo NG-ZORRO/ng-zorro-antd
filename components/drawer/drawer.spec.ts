@@ -1,7 +1,7 @@
 import { ESCAPE } from '@angular/cdk/keycodes';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, Input, TemplateRef, ViewChild } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 
@@ -19,12 +19,14 @@ describe('NzDrawerComponent', () => {
   let overlayContainerElement: HTMLElement;
   let forceScrollElement: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NzDrawerModule, NoopAnimationsModule, NzNoAnimationModule],
-      declarations: [NzTestDrawerComponent]
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NzDrawerModule, NoopAnimationsModule, NzNoAnimationModule],
+        declarations: [NzTestDrawerComponent]
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NzTestDrawerComponent);
@@ -99,6 +101,24 @@ describe('NzDrawerComponent', () => {
     (overlayContainerElement.querySelector('.ant-drawer .ant-drawer-close') as HTMLElement).click();
     fixture.detectChanges();
     expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(false);
+  });
+
+  it('should set close icon work', () => {
+    component.open();
+    fixture.detectChanges();
+    expect(overlayContainerElement.querySelector('.ant-drawer .anticon-close')).toBeDefined();
+
+    component.closeIcon = 'close-circle';
+    fixture.detectChanges();
+    expect(overlayContainerElement.querySelector('.ant-drawer .anticon-close')).toBeNull();
+    expect(overlayContainerElement.querySelector('.ant-drawer .anticon-close-circle')).toBeDefined();
+
+    component.closeIcon = component.closeIconTemplateRef;
+    fixture.detectChanges();
+
+    expect(overlayContainerElement.querySelector('.ant-drawer .anticon-close')).toBeNull();
+    expect(overlayContainerElement.querySelector('.ant-drawer .anticon-close-circle')).toBeNull();
+    expect(overlayContainerElement.querySelector('.ant-drawer .anticon-close-square')).toBeDefined();
   });
 
   it('should not close when click mask', () => {
@@ -188,7 +208,7 @@ describe('NzDrawerComponent', () => {
   });
 
   it('should support TemplateRef title', () => {
-    component.title = component.templateTitle;
+    component.title = component.titleTemplateRef;
     component.open();
     fixture.detectChanges();
     expect(overlayContainerElement.querySelector('.ant-drawer')!.classList.contains('ant-drawer-open')).toBe(true);
@@ -407,19 +427,23 @@ describe('NzDrawerService', () => {
   let drawerService: NzDrawerService;
   let overlayContainerElement: HTMLElement;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NzDrawerModule, NoopAnimationsModule],
-      providers: [NzDrawerService],
-      declarations: [NzTestDrawerWithServiceComponent, NzDrawerCustomComponent]
-    });
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NzDrawerModule, NoopAnimationsModule],
+        providers: [NzDrawerService],
+        declarations: [NzTestDrawerWithServiceComponent, NzDrawerCustomComponent]
+      });
+    })
+  );
 
-  beforeEach(async(() => {
-    fixture = TestBed.createComponent(NzTestDrawerWithServiceComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      fixture = TestBed.createComponent(NzTestDrawerWithServiceComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    })
+  );
 
   beforeEach(inject([OverlayContainer, NzDrawerService], (oc: OverlayContainer, ds: NzDrawerService) => {
     overlayContainer = oc;
@@ -499,7 +523,8 @@ describe('NzDrawerService', () => {
 @Component({
   template: `
     <button (click)="open()">Open</button>
-    <ng-template #customTitle>
+    <ng-template #closeIconTemplate><i nz-icon nzType="close-circle" nzTheme="outline"></i></ng-template>
+    <ng-template #titleTemplate>
       <span class="custom-title">title</span>
       <button class="close-btn"></button>
     </ng-template>
@@ -513,6 +538,7 @@ describe('NzDrawerService', () => {
       [nzMaskClosable]="maskClosable"
       [nzWrapClassName]="'test-class'"
       [nzZIndex]="1001"
+      [nzCloseIcon]="closeIcon"
       [nzClosable]="closable"
       [nzMask]="showMask"
       [nzVisible]="visible"
@@ -544,9 +570,11 @@ class NzTestDrawerComponent {
   height: string | number = '300px';
   placement = 'left';
   noAnimation = false;
+  closeIcon?: TemplateRef<void> | string;
   offsetX = 0;
   offsetY = 0;
-  @ViewChild('customTitle', { static: false }) templateTitle!: TemplateRef<void>;
+  @ViewChild('titleTemplate', { static: false }) titleTemplateRef!: TemplateRef<void>;
+  @ViewChild('closeIconTemplate', { static: false }) closeIconTemplateRef!: TemplateRef<void>;
   @ViewChild('customFooter', { static: false }) templateFooter!: TemplateRef<void>;
   @ViewChild(NzDrawerComponent, { static: false }) drawerComponent!: NzDrawerComponent;
 

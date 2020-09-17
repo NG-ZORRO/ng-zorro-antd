@@ -24,6 +24,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | 参数 | 说明 | 类型 | 默认值 | 全局配置 |
 | --- | --- | --- | --- | --- |
 | `[nzClosable]` | 是否显示右上角的关闭按钮 | `boolean` | `true` |
+| `[nzCloseIcon]` | 自定义关闭图标 | `string \| TemplateRef<void> \| null` | `'close'` |
 | `[nzMaskClosable]` | 点击蒙层是否允许关闭 | `boolean` | `true` | ✅ |
 | `[nzMask]` | 是否展示遮罩 | `boolean` | `true` | ✅ |
 | `[nzCloseOnNavigation]`    | 导航历史变化时是否关闭抽屉组件 | `boolean` | `true` | ✅ |
@@ -56,6 +57,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | nzContentParams | 内容组件的输入参数 / Template的 context | `D` | - |
 | nzOnCancel | 点击遮罩层或右上角叉时执行,该函数可返回 promise 待执行完毕或 promise 结束时，将自动关闭对话框（返回false可阻止关闭） | `() => Promise<any>` | - |
 | nzClosable | 是否显示右上角的关闭按钮 | `boolean` | `true` |
+| nzCloseIcon | 自定义关闭图标 | `string \| TemplateRef<void> \| null` | `'close'` |
 | nzMaskClosable | 点击蒙层是否允许关闭 | `boolean` | `true` |
 | nzMask | 是否展示遮罩 | `boolean` | `true` |
 | nzCloseOnNavigation    | 导航历史变化时是否关闭抽屉组件 | `boolean` | `true` |
@@ -89,6 +91,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | afterOpen | 打开之后的回调 | `Observable<void>` |
 | afterClose | 关闭之后的回调 | `Observable<R>` |
 | nzClosable | 是否显示右上角的关闭按钮 | `boolean` |
+| nzCloseIcon | 自定义关闭图标 | `string \| TemplateRef<void> \| null` |
 | nzMaskClosable | 点击蒙层是否允许关闭 | `boolean` |
 | nzMask | 是否展示遮罩 | `boolean` |
 | nzMaskStyle | 遮罩样式 | `object` |

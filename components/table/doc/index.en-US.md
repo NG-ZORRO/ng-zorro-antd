@@ -72,6 +72,7 @@ The data passed to `[nzData]` will be export with [Template Context](https://ang
 | `[nzShowPagination]` | Whether show pagination component in bottom of the table | `boolean` | `true` |
 | `[nzPaginationPosition]` | Specify the position of Pagination | `'top' \| 'bottom' \| 'both'` | `bottom` |
 | `[nzBordered]` | Whether to show all table borders | `boolean` | `false` | ✅ |
+| `[nzOutBordered]` | Whether to show table out borders | `boolean` | `false` | - |
 | `[nzWidthConfig]` | Set col width can not used with `[nzWidth]` of `th` | `string[]` | `[]` |
 | `[nzSize]` | Size of table | `'middle' \| 'small' \| 'default'` | `'default'` | ✅ |
 | `[nzLoading]` | Loading status of table | `boolean` | `false` |

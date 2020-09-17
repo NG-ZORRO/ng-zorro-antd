@@ -52,7 +52,7 @@ Following the Ant Design specification, we developed an Angular UI library `ng-z
 
 ## Design Specification
 
-`ng-zorro-antd` synchronizes design specification with [Ant Design](https://ant.design/docs/spec/introduce) on a regular basis, you can check the [log](https://nz-styles-syncer.now.sh/) online.
+`ng-zorro-antd` synchronizes design specification with [Ant Design](https://ant.design/docs/spec/introduce) on a regular basis, you can check the [log](https://github.com/NG-ZORRO/ng-zorro-antd/actions?query=workflow:"styles-sync") online.
 
 
 ## Installation

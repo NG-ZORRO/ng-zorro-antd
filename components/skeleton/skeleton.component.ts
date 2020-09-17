@@ -26,12 +26,13 @@ import { NzSkeletonAvatar, NzSkeletonAvatarShape, NzSkeletonAvatarSize, NzSkelet
   exportAs: 'nzSkeleton',
   host: {
     '[class.ant-skeleton-with-avatar]': '!!nzAvatar',
-    '[class.ant-skeleton-active]': 'nzActive'
+    '[class.ant-skeleton-active]': 'nzActive',
+    '[class.ant-skeleton-round]': '!!nzRound'
   },
   template: `
     <ng-container *ngIf="nzLoading">
       <div class="ant-skeleton-header" *ngIf="!!nzAvatar">
-        <nz-skeleton-element nzType="avatar" [nzSize]="avatar.size" [nzShape]="avatar.shape"></nz-skeleton-element>
+        <nz-skeleton-element nzType="avatar" [nzSize]="avatar.size || 'default'" [nzShape]="avatar.shape || 'circle'"></nz-skeleton-element>
       </div>
       <div class="ant-skeleton-content">
         <h3 *ngIf="!!nzTitle" class="ant-skeleton-title" [style.width]="toCSSUnit(title.width)"></h3>
@@ -48,6 +49,7 @@ import { NzSkeletonAvatar, NzSkeletonAvatarShape, NzSkeletonAvatarSize, NzSkelet
 export class NzSkeletonComponent implements OnInit, OnChanges {
   @Input() nzActive = false;
   @Input() nzLoading = true;
+  @Input() nzRound = false;
   @Input() nzTitle: NzSkeletonTitle | boolean = true;
   @Input() nzAvatar: NzSkeletonAvatar | boolean = false;
   @Input() nzParagraph: NzSkeletonParagraph | boolean = true;

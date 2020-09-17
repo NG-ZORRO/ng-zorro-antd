@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NzCodeEditorService } from 'ng-zorro-antd/code-editor';
+import { NzConfigService } from 'ng-zorro-antd/core/config';
 
 @Component({
   selector: 'nz-demo-code-editor-config',
@@ -29,10 +29,16 @@ export class NzDemoCodeEditorConfigComponent {
 
 You can refer to [this issue](https://github.com/Microsoft/monaco-editor/issues/338).`;
 
-  constructor(private nzCodeEditorService: NzCodeEditorService) {}
+  constructor(private nzConfigService: NzConfigService) {}
 
   onDarkModeChange(dark: boolean): void {
     this.dark = dark;
-    this.nzCodeEditorService.updateDefaultOption({ theme: dark ? 'vs-dark' : 'vs' });
+    const defaultEditorOption = this.nzConfigService.getConfigForComponent('codeEditor')?.defaultEditorOption || {};
+    this.nzConfigService.set('codeEditor', {
+      defaultEditorOption: {
+        ...defaultEditorOption,
+        theme: dark ? 'vs-dark' : 'vs'
+      }
+    });
   }
 }

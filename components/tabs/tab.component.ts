@@ -20,13 +20,14 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
+import { TabTemplateContext } from './interfaces';
 
 import { Subject } from 'rxjs';
 
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
-import { NzTabLinkDirective } from './tab-link.directive';
+import { NzTabLinkDirective, NzTabLinkTemplateDirective } from './tab-link.directive';
 import { NzTabDirective } from './tab.directive';
 
 /**
@@ -52,7 +53,7 @@ export class NzTabComponent implements OnChanges, OnDestroy, OnInit {
   static ngAcceptInputType_nzClosable: BooleanInput;
   static ngAcceptInputType_nzForceRender: BooleanInput;
 
-  @Input() nzTitle: string | TemplateRef<void> = '';
+  @Input() nzTitle: string | TemplateRef<TabTemplateContext> = '';
   @Input() @InputBoolean() nzClosable = false;
   @Input() nzCloseIcon: string | TemplateRef<NzSafeAny> = 'close';
   @Input() @InputBoolean() nzDisabled = false;
@@ -60,10 +61,16 @@ export class NzTabComponent implements OnChanges, OnDestroy, OnInit {
   @Output() readonly nzSelect = new EventEmitter<void>();
   @Output() readonly nzDeselect = new EventEmitter<void>();
   @Output() readonly nzClick = new EventEmitter<void>();
+  @Output() readonly nzContextmenu = new EventEmitter<MouseEvent>();
 
+  /**
+   * @deprecated Will be removed in 11.0.0
+   * @breaking-change 11.0.0
+   */
+  @ViewChild('tabLinkTemplate', { static: true }) tabLinkTemplate!: TemplateRef<void>;
+  @ContentChild(NzTabLinkTemplateDirective, { static: false }) nzTabLinkTemplateDirective!: NzTabLinkTemplateDirective;
   @ContentChild(NzTabDirective, { static: false, read: TemplateRef }) template: TemplateRef<void> | null = null;
   @ContentChild(NzTabLinkDirective, { static: false }) linkDirective!: NzTabLinkDirective;
-  @ViewChild('tabLinkTemplate', { static: true }) tabLinkTemplate!: TemplateRef<void>;
   @ViewChild('contentTemplate', { static: true }) contentTemplate!: TemplateRef<NzSafeAny>;
 
   isActive: boolean = false;
@@ -75,8 +82,8 @@ export class NzTabComponent implements OnChanges, OnDestroy, OnInit {
     return this.template || this.contentTemplate;
   }
 
-  get label(): string | TemplateRef<void> {
-    return this.nzTitle || this.tabLinkTemplate;
+  get label(): string | TemplateRef<NzSafeAny> {
+    return this.nzTitle || this.nzTabLinkTemplateDirective?.templateRef || this.tabLinkTemplate;
   }
 
   constructor(@Inject(NZ_TAB_SET) public closestTabSet: NzSafeAny) {}

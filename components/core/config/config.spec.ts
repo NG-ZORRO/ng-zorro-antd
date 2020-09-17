@@ -1,5 +1,5 @@
 import { Component, DebugElement } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { NzButtonComponent, NzButtonModule } from 'ng-zorro-antd/button';
@@ -24,12 +24,14 @@ describe('nz global config', () => {
   let buttonEl: HTMLButtonElement;
 
   describe('without config', () => {
-    beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [NzButtonModule],
-        declarations: [NzGlobalConfigTestBasicComponent]
-      }).compileComponents();
-    }));
+    beforeEach(
+      waitForAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [NzButtonModule],
+          declarations: [NzGlobalConfigTestBasicComponent]
+        }).compileComponents();
+      })
+    );
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzGlobalConfigTestBasicComponent);
@@ -49,22 +51,24 @@ describe('nz global config', () => {
   });
 
   describe('with config', () => {
-    beforeEach(async(() => {
-      TestBed.configureTestingModule({
-        imports: [NzButtonModule],
-        declarations: [NzGlobalConfigTestBasicComponent],
-        providers: [
-          {
-            provide: NZ_CONFIG,
-            useValue: {
-              button: {
-                nzSize: 'large'
+    beforeEach(
+      waitForAsync(() => {
+        TestBed.configureTestingModule({
+          imports: [NzButtonModule],
+          declarations: [NzGlobalConfigTestBasicComponent],
+          providers: [
+            {
+              provide: NZ_CONFIG,
+              useValue: {
+                button: {
+                  nzSize: 'large'
+                }
               }
             }
-          }
-        ]
-      }).compileComponents();
-    }));
+          ]
+        }).compileComponents();
+      })
+    );
 
     beforeEach(() => {
       fixture = TestBed.createComponent(NzGlobalConfigTestBasicComponent);

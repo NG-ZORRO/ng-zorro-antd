@@ -116,6 +116,30 @@
               "**/node_modules/**"
             ]
           }
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "options": {
+            "browserTarget": "ng-zorro-antd-doc:build",
+            "serverTarget": "ng-zorro-antd-doc:server"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "ng-zorro-antd-doc:production",
+              "serverTarget": "ng-zorro-antd-doc:production"
+            }
+          }
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "browserTarget": "ng-zorro-antd-doc:build:production",
+            "serverTarget": "ng-zorro-antd-doc:server:production",
+            "routesFile": "scripts/prerender/route-paths.txt"
+          },
+          "configurations": {
+            "production": {}
+          }
         }
       }
     },

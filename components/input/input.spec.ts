@@ -1,5 +1,5 @@
 import { Component, DebugElement } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
@@ -7,13 +7,15 @@ import { NzInputDirective } from './input.directive';
 import { NzInputModule } from './input.module';
 
 describe('input', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
-      declarations: [NzTestInputWithInputComponent, NzTestInputWithTextAreaComponent, NzTestInputFormComponent],
-      providers: []
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [NzInputModule, FormsModule, ReactiveFormsModule, NzIconTestModule],
+        declarations: [NzTestInputWithInputComponent, NzTestInputWithTextAreaComponent, NzTestInputFormComponent],
+        providers: []
+      }).compileComponents();
+    })
+  );
   describe('single input', () => {
     describe('input with input element', () => {
       let fixture: ComponentFixture<NzTestInputWithInputComponent>;

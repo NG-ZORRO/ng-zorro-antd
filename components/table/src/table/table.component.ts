@@ -23,7 +23,7 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { InputBoolean, measureScrollbar } from 'ng-zorro-antd/core/util';
@@ -36,7 +36,7 @@ import { NzTableData, NzTableLayout, NzTablePaginationPosition, NzTableQueryPara
 import { NzTableInnerScrollComponent } from './table-inner-scroll.component';
 import { NzTableVirtualScrollDirective } from './table-virtual-scroll.directive';
 
-const NZ_CONFIG_COMPONENT_NAME = 'table';
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
 
 @Component({
   selector: 'nz-table',
@@ -58,6 +58,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'table';
         [class.ant-table-has-fix-left]="hasFixLeft"
         [class.ant-table-has-fix-right]="hasFixRight"
         [class.ant-table-bordered]="nzBordered"
+        [class.nz-table-out-bordered]="nzOuterBordered && !nzBordered"
         [class.ant-table-middle]="nzSize === 'middle'"
         [class.ant-table-small]="nzSize === 'small'"
       >
@@ -109,8 +110,7 @@ const NZ_CONFIG_COMPONENT_NAME = 'table';
         [nzPageIndex]="nzPageIndex"
         (nzPageSizeChange)="onPageSizeChange($event)"
         (nzPageIndexChange)="onPageIndexChange($event)"
-      >
-      </nz-pagination>
+      ></nz-pagination>
     </ng-template>
     <ng-template #contentTemplate>
       <ng-content></ng-content>
@@ -121,11 +121,14 @@ const NZ_CONFIG_COMPONENT_NAME = 'table';
   }
 })
 export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnChanges, AfterViewInit {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
   static ngAcceptInputType_nzFrontPagination: BooleanInput;
   static ngAcceptInputType_nzTemplateMode: BooleanInput;
   static ngAcceptInputType_nzShowPagination: BooleanInput;
   static ngAcceptInputType_nzLoading: BooleanInput;
   static ngAcceptInputType_nzBordered: BooleanInput;
+  static ngAcceptInputType_nzOuterBordered: BooleanInput;
   static ngAcceptInputType_nzShowSizeChanger: BooleanInput;
   static ngAcceptInputType_nzHideOnSinglePage: BooleanInput;
   static ngAcceptInputType_nzShowQuickJumper: BooleanInput;
@@ -154,13 +157,14 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   @Input() @InputBoolean() nzTemplateMode = false;
   @Input() @InputBoolean() nzShowPagination = true;
   @Input() @InputBoolean() nzLoading = false;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzLoadingIndicator: TemplateRef<NzSafeAny> | null = null;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzBordered: boolean = false;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) nzSize: NzTableSize = 'default';
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzShowSizeChanger: boolean = false;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzHideOnSinglePage: boolean = false;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzShowQuickJumper: boolean = false;
-  @Input() @WithConfig(NZ_CONFIG_COMPONENT_NAME) @InputBoolean() nzSimple: boolean = false;
+  @Input() @InputBoolean() nzOuterBordered = false;
+  @Input() @WithConfig() nzLoadingIndicator: TemplateRef<NzSafeAny> | null = null;
+  @Input() @WithConfig() @InputBoolean() nzBordered: boolean = false;
+  @Input() @WithConfig() nzSize: NzTableSize = 'default';
+  @Input() @WithConfig() @InputBoolean() nzShowSizeChanger: boolean = false;
+  @Input() @WithConfig() @InputBoolean() nzHideOnSinglePage: boolean = false;
+  @Input() @WithConfig() @InputBoolean() nzShowQuickJumper: boolean = false;
+  @Input() @WithConfig() @InputBoolean() nzSimple: boolean = false;
   @Output() readonly nzPageSizeChange = new EventEmitter<number>();
   @Output() readonly nzPageIndexChange = new EventEmitter<number>();
   @Output() readonly nzQueryParams = new EventEmitter<NzTableQueryParams>();
@@ -200,7 +204,7 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
     private nzTableDataService: NzTableDataService
   ) {
     this.nzConfigService
-      .getConfigChangeEventForComponent(NZ_CONFIG_COMPONENT_NAME)
+      .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.cdr.markForCheck();

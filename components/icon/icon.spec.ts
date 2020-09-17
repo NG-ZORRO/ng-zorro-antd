@@ -1,5 +1,5 @@
 import { Component, DebugElement, NgModule } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, inject, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, inject, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import {
   HomeOutline,
@@ -143,17 +143,20 @@ describe('nz-icon', () => {
       fixture = testBed.fixture;
     });
 
-    it('should support iconfont', async(() => {
-      fixture.detectChanges();
-      fixture.whenStable().then(() => {
+    it(
+      'should support iconfont',
+      waitForAsync(() => {
         fixture.detectChanges();
-        icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
-        expect(icons[0].nativeElement.className).toContain('anticon');
-        expect(icons[0].nativeElement.innerHTML).toContain('xlink:href="#icon-tuichu"');
-        expect(icons[1].nativeElement.innerHTML).toContain('link:href="#icon-facebook"');
-        expect(icons[2].nativeElement.innerHTML).toContain('xlink:href="#icon-twitter"');
-      });
-    }));
+        fixture.whenStable().then(() => {
+          fixture.detectChanges();
+          icons = fixture.debugElement.queryAll(By.directive(NzIconDirective));
+          expect(icons[0].nativeElement.className).toContain('anticon');
+          expect(icons[0].nativeElement.innerHTML).toContain('xlink:href="#icon-tuichu"');
+          expect(icons[1].nativeElement.innerHTML).toContain('link:href="#icon-facebook"');
+          expect(icons[2].nativeElement.innerHTML).toContain('xlink:href="#icon-twitter"');
+        });
+      })
+    );
   });
 
   describe('config service', () => {
