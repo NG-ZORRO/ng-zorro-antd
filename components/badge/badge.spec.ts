@@ -36,13 +36,13 @@ describe('badge', () => {
 
     it('should count work', () => {
       fixture.detectChanges();
-      expect(badgeElement.nativeElement.querySelector('sup').classList).toContain('ant-scroll-number');
-      expect(badgeElement.nativeElement.querySelector('sup').classList).toContain('ant-badge-count');
-      expect(badgeElement.nativeElement.querySelector('sup').classList).not.toContain('ant-badge-multiple-words');
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup').classList).toContain('ant-scroll-number');
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup').classList).toContain('ant-badge-count');
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup').classList).not.toContain('ant-badge-multiple-words');
       expect(badgeElement.nativeElement.querySelector('.current').innerText).toBe('5');
       testComponent.count = 10;
       fixture.detectChanges();
-      expect(badgeElement.nativeElement.querySelector('sup').classList).toContain('ant-badge-multiple-words');
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup').classList).toContain('ant-badge-multiple-words');
       expect(badgeElement.nativeElement.querySelectorAll('.current')[0].innerText).toBe('1');
       expect(badgeElement.nativeElement.querySelectorAll('.current')[1].innerText).toBe('0');
     });
@@ -51,22 +51,22 @@ describe('badge', () => {
       testComponent.overflow = 99;
       testComponent.count = 1000;
       fixture.detectChanges();
-      expect(badgeElement.nativeElement.querySelector('sup').getAttribute('title')).toBe('1000');
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup').getAttribute('title')).toBe('1000');
       testComponent.title = 'test';
       fixture.detectChanges();
-      expect(badgeElement.nativeElement.querySelector('sup').getAttribute('title')).toBe('test');
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup').getAttribute('title')).toBe('test');
     });
 
     it('should be no title attribute when `nzTitle` is null', () => {
       testComponent.title = null;
       fixture.detectChanges();
-      expect(badgeElement.nativeElement.querySelector('sup').getAttribute('title')).toBeFalsy();
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup').getAttribute('title')).toBeFalsy();
     });
 
     it('should offset work', () => {
       testComponent.offset = [10, 10];
       fixture.detectChanges();
-      const style = getComputedStyle(badgeElement.nativeElement.querySelector('sup'));
+      const style = getComputedStyle(badgeElement.nativeElement.querySelector('nz-badge-sup'));
       expect(style.right).toBe('-10px');
       expect(style.marginTop).toBe('10px');
     });
@@ -74,15 +74,15 @@ describe('badge', () => {
     it('should overflow work', () => {
       testComponent.overflow = 4;
       fixture.detectChanges();
-      expect(badgeElement.nativeElement.querySelector('sup').innerText).toBe('4+');
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup').innerText).toBe('4+');
       testComponent.overflow = 99;
       testComponent.count = 100;
       fixture.detectChanges();
-      expect(badgeElement.nativeElement.querySelector('sup').innerText).toBe('99+');
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup').innerText).toBe('99+');
       testComponent.overflow = 99;
       testComponent.count = 99;
       fixture.detectChanges();
-      expect(badgeElement.nativeElement.querySelector('sup').innerText).not.toBe('99+');
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup').innerText).not.toBe('99+');
     });
 
     it('should showZero work', fakeAsync(() => {
@@ -90,7 +90,7 @@ describe('badge', () => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(badgeElement.nativeElement.querySelector('sup')).toBeNull();
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup')).toBeNull();
       testComponent.showZero = true;
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('.current').innerText).toBe('0');
@@ -101,7 +101,7 @@ describe('badge', () => {
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(badgeElement.nativeElement.querySelector('sup')).toBeNull();
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup')).toBeNull();
       testComponent.showZero = true;
       fixture.detectChanges();
       expect(badgeElement.nativeElement.querySelector('.current').innerText).toBe('0');
@@ -109,10 +109,10 @@ describe('badge', () => {
 
     it('should dot work', () => {
       fixture.detectChanges();
-      expect(badgeElement.nativeElement.querySelector('sup').classList).not.toContain('ant-badge-dot');
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup').classList).not.toContain('ant-badge-dot');
       testComponent.dot = true;
       fixture.detectChanges();
-      expect(badgeElement.nativeElement.querySelector('sup').classList).toContain('ant-badge-dot');
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup').classList).toContain('ant-badge-dot');
     });
 
     it('should no wrapper work', fakeAsync(() => {
@@ -122,9 +122,8 @@ describe('badge', () => {
       tick(1000);
       fixture.detectChanges();
       badgeElement = fixture.debugElement.query(By.directive(NzBadgeComponent));
-      //      TODO: fix next line error
-      //      expect(badgeElement.nativeElement.classList).toContain('ant-badge-not-a-wrapper');
-      expect(badgeElement.nativeElement.querySelector('sup').style.backgroundColor).toBe('rgb(82, 196, 26)');
+      expect(badgeElement.nativeElement.classList).toContain('ant-badge-not-a-wrapper');
+      expect(badgeElement.nativeElement.querySelector('nz-badge-sup').style.backgroundColor).toBe('rgb(82, 196, 26)');
     }));
 
     it('should status work', () => {
@@ -154,6 +153,7 @@ describe('badge', () => {
       [nzDot]="dot"
       [nzOffset]="offset"
       [nzTitle]="title"
+      [nzStandalone]="!inner"
     >
       <a *ngIf="inner"></a>
     </nz-badge>

@@ -24,13 +24,14 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
 ```
 
 ```html
-<nz-badge [nzCount]="5"></nz-badge>
+<nz-badge [nzCount]="5" nzStandalone></nz-badge>
 ```
 
 ### nz-badge
 
 | Property | Description | Type | Default | Global Config |
 | -------- | ----------- | ---- | ------- | ------------- |
+| `[nzStandalone]` | Whether standalone mode | `boolean` | - | - |
 | `[nzColor]` | Customize Badge dot color | string | - | ✅ |
 | `[nzCount]` | Number to show in badge | `number \| TemplateRef<void>` | - |
 | `[nzDot]` | Whether to display a red dot instead of `count` | `boolean` | `false` |
@@ -38,6 +39,15 @@ import { NzBadgeModule } from 'ng-zorro-antd/badge';
 | `[nzOverflowCount]` | Max count to show | `number` | `99` | ✅ |
 | `[nzShowZero]` | Whether to show badge when `count` is zero | `boolean` | `false` |
 | `[nzStatus]` | Set `nz-badge` as a status dot | `'success' \| 'processing' \| 'default' \| 'error' \| 'warning'` | - |
-| `[nzText]` | If `nzStatus` is set, `text` sets the display text of the status `dot` | `string` | - |
+| `[nzText]` | If `nzStatus` is set, `text` sets the display text of the status `dot` | `string \| TemplateRef<void>` | - |
 | `[nzTitle]` | Text to show when hovering over the badge（Only Non-standalone), hide when value is `null` | `string \| null` | `nzCount` |
 | `[nzOffset]` | set offset of the badge dot, like[x, y] (Only Non-standalone) | `[number, number]` | - |
+
+
+### nz-ribbon
+
+| Property | Description | Type | Default |
+| --- | --- | --- | --- |
+| nzColor | Customize Ribbon color | `string` | - |
+| nzPlacement | The placement of the Ribbon | `start` \| `end` | `end` |
+| nzText | Content inside the Ribbon | `string \| TemplateRef<void>` | - |  |
