@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-返回指定时间格式
+按自定义格式返回间隔时间
 
 ## en-US
 
-Returns the specified time format
+Return interval time in custom format

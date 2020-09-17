@@ -5,8 +5,8 @@
 
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { timeUnits } from '../core/time';
-import { padStart } from '../core/util';
+import { timeUnits } from 'ng-zorro-antd/core/time';
+import { padStart } from 'ng-zorro-antd/core/util';
 
 @Pipe({
   name: 'nzTimeRange',

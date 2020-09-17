@@ -7,8 +7,8 @@ title:
 
 ## zh-CN
 
-Css 单位补全
+Css 单位
 
 ## en-US
 
-Css unit completion
+Css unit

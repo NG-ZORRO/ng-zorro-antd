@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-pipe.module';
+export * from './nz-pipes.module';
 export * from './time-range.pipe';
 export * from './nz-css-unit.pipe';
 export * from './nz-bytes.pipe';

@@ -5,7 +5,7 @@
 
 import { Pipe, PipeTransform } from '@angular/core';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
-import { isNumberFinite, toDecimal } from '../core/util/number';
+import { isNumberFinite, toDecimal } from 'ng-zorro-antd/core/util';
 
 export type ByteUnit = 'B' | 'kB' | 'KB' | 'MB' | 'GB' | 'TB';
 
@@ -16,7 +16,7 @@ export class NzBytesPipe implements PipeTransform {
   static formats: { [key: string]: { max: number; prev?: ByteUnit } } = {
     B: { max: 1024 },
     kB: { max: Math.pow(1024, 2), prev: 'B' },
-    KB: { max: Math.pow(1024, 2), prev: 'B' }, // Backward compatible
+    KB: { max: Math.pow(1024, 2), prev: 'B' },
     MB: { max: Math.pow(1024, 3), prev: 'kB' },
     GB: { max: Math.pow(1024, 4), prev: 'MB' },
     TB: { max: Number.MAX_SAFE_INTEGER, prev: 'GB' }

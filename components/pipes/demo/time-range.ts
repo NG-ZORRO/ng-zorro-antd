@@ -3,10 +3,14 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-pipe-time-range',
   template: `
-    {{ diff | nzTimeRange: format1 }}<br />
-    {{ diff | nzTimeRange: format2 }}<br />
-    {{ diff | nzTimeRange: format3 }}<br />
-    {{ diff1 | nzTimeRange }}<br />
+    {{ diff | nzTimeRange: format1 }}
+    <br />
+    {{ diff | nzTimeRange: format2 }}
+    <br />
+    {{ diff | nzTimeRange: format3 }}
+    <br />
+    {{ diff1 | nzTimeRange }}
+    <br />
   `
 })
 export class NzDemoPipeTimeRangeComponent {

@@ -1,8 +1,7 @@
 ---
 category: Components
-type: 数据录入
-title: 常用
-subtitle: Pipe
+type: 通用
+title: Pipe
 cols: 1
 experimental: true
 ---

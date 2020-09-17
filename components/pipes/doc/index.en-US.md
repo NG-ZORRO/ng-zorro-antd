@@ -1,7 +1,7 @@
 ---
 category: Components
+type: General
 title: Pipe
-type: Data Entry
 cols: 1
 experimental: true
 ---

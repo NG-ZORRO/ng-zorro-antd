@@ -5,7 +5,7 @@
 
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer, SafeHtml, SafeResourceUrl, SafeScript, SafeStyle, SafeUrl } from '@angular/platform-browser';
-import { NzSafeAny } from '../core/types';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 @Pipe({
   name: 'nzSanitizer'

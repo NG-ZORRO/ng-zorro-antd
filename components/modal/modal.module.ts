@@ -11,9 +11,9 @@ import { NgModule } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
-import { NzPipesModule } from 'ng-zorro-antd/core/pipe';
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzPipesModule } from 'ng-zorro-antd/pipes';
 
 import { NzModalCloseComponent } from './modal-close.component';
 import { NzModalConfirmContainerComponent } from './modal-confirm-container.component';
@@ -34,7 +34,8 @@ import { NzModalService } from './modal.service';
     NzButtonModule,
     NzIconModule,
     NzPipesModule,
-    NzNoAnimationModule
+    NzNoAnimationModule,
+    NzPipesModule
   ],
   exports: [NzModalComponent, NzModalFooterDirective],
   providers: [NzModalService],

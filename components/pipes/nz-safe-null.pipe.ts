@@ -4,7 +4,7 @@
  */
 
 import { Pipe, PipeTransform } from '@angular/core';
-import { isNil } from '../core/util/check';
+import { isNil } from 'ng-zorro-antd/core/util';
 
 @Pipe({
   name: 'nzSafeNull'
