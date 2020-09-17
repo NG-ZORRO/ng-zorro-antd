@@ -9,10 +9,11 @@ import { NgModule } from '@angular/core';
 import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzBadgeSupComponent } from './badge-sup.component';
 import { NzBadgeComponent } from './badge.component';
+import { NzRibbonComponent } from './ribbon.component';
 
 @NgModule({
-  declarations: [NzBadgeComponent, NzBadgeSupComponent],
-  exports: [NzBadgeComponent],
+  declarations: [NzBadgeComponent, NzBadgeSupComponent, NzRibbonComponent],
+  exports: [NzBadgeComponent, NzRibbonComponent],
   imports: [CommonModule, ObserversModule, NzOutletModule]
 })
 export class NzBadgeModule {}

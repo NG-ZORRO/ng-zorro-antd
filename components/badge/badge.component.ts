@@ -3,17 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  Input,
-  OnChanges,
-  SimpleChanges,
-  TemplateRef,
-  ViewChild,
-  ViewEncapsulation
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { zoomBadgeMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, NzSafeAny } from 'ng-zorro-antd/core/types';
@@ -37,7 +27,9 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'badge';
         [style.background]="!presetColor && nzColor"
         [ngStyle]="nzStyle"
       ></span>
-      <span class="ant-badge-status-text">{{ nzText }}</span>
+      <span class="ant-badge-status-text">
+        <ng-container *nzStringTemplateOutlet="nzText">{{ nzText }}</ng-container>
+      </span>
     </ng-container>
     <ng-content></ng-content>
     <ng-container *nzStringTemplateOutlet="nzCount">
@@ -67,7 +59,6 @@ export class NzBadgeComponent implements OnChanges {
   static ngAcceptInputType_nzStandalone: BooleanInput;
   showSup = false;
   presetColor: string | null = null;
-  @ViewChild('contentElement', { static: false }) contentElement?: ElementRef;
   @Input() @InputBoolean() nzShowZero: boolean = false;
   @Input() @InputBoolean() nzShowDot = true;
   @Input() @InputBoolean() nzStandalone = false;
@@ -75,7 +66,7 @@ export class NzBadgeComponent implements OnChanges {
   @Input() @WithConfig() nzOverflowCount: number = 99;
   @Input() @WithConfig() nzColor?: string = undefined;
   @Input() nzStyle: { [key: string]: string } | null = null;
-  @Input() nzText?: string;
+  @Input() nzText?: string | TemplateRef<void> | null = null;
   @Input() nzTitle?: string | null | undefined;
   @Input() nzStatus?: NzBadgeStatusType | string;
   @Input() nzCount?: number | TemplateRef<NzSafeAny>;
