@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'nz-demo-pipe-some',
+  selector: 'nz-demo-pipes-some',
   template: `
     {{ [5, 6, 7, 8, 9] | nzSome: method }}
     <br />
@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
     <br />
   `
 })
-export class NzDemoPipeSomeComponent {
+export class NzDemoPipesSomeComponent {
   method = (item: number) => {
     return item === 5;
   };

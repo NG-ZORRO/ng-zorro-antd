@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'nz-demo-pipe-time-range',
+  selector: 'nz-demo-pipes-time-range',
   template: `
     {{ diff | nzTimeRange: format1 }}
     <br />
@@ -13,7 +13,7 @@ import { Component } from '@angular/core';
     <br />
   `
 })
-export class NzDemoPipeTimeRangeComponent {
+export class NzDemoPipesTimeRangeComponent {
   diff = 1000 * 60 * 60 * 24 * 2 + 1000 * 30;
   diff1 = 0;
   format1 = 'HH:mm:ss';

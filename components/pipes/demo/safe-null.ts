@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'nz-demo-pipe-safe-null',
+  selector: 'nz-demo-pipes-safe-null',
   template: `
     <ul>
       <li>使用量：{{ 1000 | nzSafeNull }}</li>
@@ -9,4 +9,4 @@ import { Component } from '@angular/core';
     </ul>
   `
 })
-export class NzDemoPipeSafeNullComponent {}
+export class NzDemoPipesSafeNullComponent {}

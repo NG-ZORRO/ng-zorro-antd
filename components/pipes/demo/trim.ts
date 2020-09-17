@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'nz-demo-pipe-trim',
+  selector: 'nz-demo-pipes-trim',
   template: `
     {{ 'hello' | nzTrim }}
     <br />
@@ -11,4 +11,4 @@ import { Component } from '@angular/core';
     <br />
   `
 })
-export class NzDemoPipeTrimComponent {}
+export class NzDemoPipesTrimComponent {}

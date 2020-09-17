@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'nz-demo-pipe-ellipsis',
+  selector: 'nz-demo-pipes-ellipsis',
   template: `
     {{ 'Hello World' | nzEllipsis: 4 }}
     <br />
@@ -12,4 +12,4 @@ import { Component } from '@angular/core';
     {{ 'Hello World, how is it going?' | nzEllipsis: 14:'...':true }}
   `
 })
-export class NzDemoPipeEllipsisComponent {}
+export class NzDemoPipesEllipsisComponent {}

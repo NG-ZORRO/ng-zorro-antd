@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'nz-demo-pipe-bytes',
+  selector: 'nz-demo-pipes-bytes',
   template: `
     <ul>
       <li>{{ 200 | nzBytes }}</li>
@@ -14,4 +14,4 @@ import { Component } from '@angular/core';
     </ul>
   `
 })
-export class NzDemoPipeBytesComponent {}
+export class NzDemoPipesBytesComponent {}

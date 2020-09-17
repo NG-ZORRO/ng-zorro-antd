@@ -18,10 +18,6 @@ describe('NzMathPipe', () => {
     expect(nzMathPipe.transform([1, 1], EMathMethod.MAX)).toEqual(1);
   });
 
-  it('Should return the value unchanged', () => {
-    expect(nzMathPipe.transform(1, EMathMethod.MAX)).toEqual(1);
-  });
-
   it('Should return undefined', () => {
     expect(nzMathPipe.transform([], EMathMethod.MAX)).toBeUndefined();
   });
@@ -42,10 +38,6 @@ describe('NzMathPipe', () => {
     expect(nzMathPipe.transform([1, 1], EMathMethod.MIN)).toEqual(1);
   });
 
-  it('Should return the value unchanged', () => {
-    expect(nzMathPipe.transform(1, EMathMethod.MIN)).toEqual(1);
-  });
-
   it('Should return undefined', () => {
     expect(nzMathPipe.transform([], EMathMethod.MIN)).toBeUndefined();
   });
@@ -62,10 +54,6 @@ describe('NzMathPipe', () => {
     expect(nzMathPipe.transform([1, 1], EMathMethod.SUM)).toEqual(2);
   });
 
-  it('Should return 15', () => {
-    expect(nzMathPipe.transform(15, EMathMethod.SUM)).toEqual(15);
-  });
-
   it('Should return 2.5', () => {
     expect(nzMathPipe.transform([1, 2, 3, 4], EMathMethod.AVG)).toEqual(2.5);
   });
@@ -76,10 +64,6 @@ describe('NzMathPipe', () => {
 
   it('Should return 1', () => {
     expect(nzMathPipe.transform([1, 1], EMathMethod.AVG)).toEqual(1);
-  });
-
-  it('Should return the value unchanged', () => {
-    expect(nzMathPipe.transform(1, EMathMethod.AVG)).toEqual(1);
   });
 
   it('Should return undefined', () => {

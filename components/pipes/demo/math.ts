@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'nz-demo-pipe-math',
+  selector: 'nz-demo-pipes-math',
   template: `
     {{ [7, 8, 2, 3] | nzMath: 'min' }}
     <br />
@@ -13,4 +13,4 @@ import { Component } from '@angular/core';
     <br />
   `
 })
-export class NzDemoPipeMathComponent {}
+export class NzDemoPipesMathComponent {}

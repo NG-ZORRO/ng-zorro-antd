@@ -1,3 +1,3 @@
-import { NzPipesModule } from 'ng-zorro-antd/pipe';
+import { NzPipesModule } from 'ng-zorro-antd/pipes';
 
 export const moduleList = [ NzPipesModule ];

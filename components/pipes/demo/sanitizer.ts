@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'nz-demo-pipe-sanitizer',
+  selector: 'nz-demo-pipes-sanitizer',
   template: `
     <div [innerHTML]="htmlSnippet | nzSanitizer: 'html'"></div>
     <div [innerHTML]="scriptSnippet | nzSanitizer: 'script'"></div>
@@ -14,7 +14,7 @@ import { Component } from '@angular/core';
     </div>
   `
 })
-export class NzDemoPipeSanitizerComponent {
+export class NzDemoPipesSanitizerComponent {
   htmlSnippet: string = '<p>hello world</p>';
   scriptSnippet: string = '<script>function testScript(){alert("我不会报错！")}</script>';
   styleSnippet: string = "{'height': '20px'}";

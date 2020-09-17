@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'nz-demo-pipe-css-unit',
+  selector: 'nz-demo-pipes-css-unit',
   template: `
     <div>
       <img [style.height]="100 | nzToCssUnit" src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png" />
@@ -10,4 +10,4 @@ import { Component } from '@angular/core';
     <div [style.height]="'100px' | nzToCssUnit"></div>
   `
 })
-export class NzDemoPipeCssUnitComponent {}
+export class NzDemoPipesCssUnitComponent {}
