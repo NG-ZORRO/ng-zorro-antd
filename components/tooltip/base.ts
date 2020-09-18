@@ -37,8 +37,8 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
   directiveNameContent?: NzTSType | null;
   specificTitle?: NzTSType | null;
   specificContent?: NzTSType | null;
-  specificTrigger: NzTooltipTrigger = 'hover';
-  specificPlacement: string = 'top';
+  specificTrigger?: NzTooltipTrigger = 'hover';
+  specificPlacement?: string = 'top';
   specificOrigin?: ElementRef<HTMLElement>;
   specificVisible?: boolean;
   specificMouseEnterDelay?: number;
