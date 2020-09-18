@@ -267,6 +267,21 @@ describe('NzRangePickerComponent', () => {
       expect((result[1] as Date).getDate()).toBe(+rightText);
     }));
 
+    it('should support nzOnCalendarChange when nzShowTime is true', fakeAsync(() => {
+      const nzOnCalendarChange = spyOn(fixtureInstance, 'nzOnCalendarChange');
+      fixtureInstance.nzShowTime = true;
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      const left = getFirstCell('left');
+      dispatchMouseEvent(left, 'click');
+      fixture.detectChanges();
+      dispatchMouseEvent(queryFromOverlay('.ant-picker-ok > button'), 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(nzOnCalendarChange).toHaveBeenCalled();
+    }));
+
     it('should support nzOnChange', fakeAsync(() => {
       fixtureInstance.modelValue = [new Date('2018-11-11'), new Date('2018-11-11')];
       const nzOnChange = spyOn(fixtureInstance, 'modelValueChange');

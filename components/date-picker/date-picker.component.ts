@@ -201,7 +201,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
       if (this.isRange) {
         const vAsRange = value as CandyDate[];
         if (vAsRange.length) {
-          this.onChangeFn([vAsRange[0].nativeDate, vAsRange[1].nativeDate]);
+          this.onChangeFn([vAsRange[0]?.nativeDate ?? null, vAsRange[1]?.nativeDate ?? null]);
         } else {
           this.onChangeFn([]);
         }
@@ -361,12 +361,11 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     }
   }
 
-  // Emitted when done with date selecting
   onResultOk(): void {
     if (this.isRange) {
       const value = this.datePickerService.value as CandyDate[];
       if (value.length) {
-        this.nzOnOk.emit([value[0].nativeDate, value[1].nativeDate]);
+        this.nzOnOk.emit([value[0]?.nativeDate || null, value[1]?.nativeDate || null]);
       } else {
         this.nzOnOk.emit([]);
       }
@@ -377,6 +376,5 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
         this.nzOnOk.emit(null);
       }
     }
-    this.datePickerService.emitValue$.next();
   }
 }

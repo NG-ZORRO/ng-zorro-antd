@@ -18,6 +18,7 @@ import { Component } from '@angular/core';
       [nzPlaceHolder]="['Start Time', 'End Time']"
       ngModel
       (ngModelChange)="onChange($event)"
+      (nzOnCalendarChange)="onCalendarChange($event)"
       (nzOnOk)="onOk($event)"
     ></nz-range-picker>
   `,
@@ -39,5 +40,9 @@ export class NzDemoDatePickerTimeComponent {
 
   onOk(result: Date | Date[] | null): void {
     console.log('onOk', result);
+  }
+
+  onCalendarChange(result: Array<Date | null>): void {
+    console.log('onCalendarChange', result);
   }
 }
