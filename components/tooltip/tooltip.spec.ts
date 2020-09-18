@@ -34,6 +34,15 @@ describe('nz-tooltip', () => {
     overlayContainer.ngOnDestroy();
   });
 
+  function getTextContentOf(selector: string): string | null {
+    const el = overlayContainerElement.querySelector(selector);
+    return el && el.textContent ? el.textContent : null;
+  }
+
+  function getTitleTextContent(): string | null {
+    return getTextContentOf('.ant-tooltip-title');
+  }
+
   function waitingForTooltipToggling(): void {
     fixture.detectChanges();
     tick(500);
@@ -156,7 +165,7 @@ describe('nz-tooltip', () => {
     // it('should nzTooltipTitle support string', fakeAsync(() => {}));
     // it('should nzTooltipTitle support template', fakeAsync(() => {}));
 
-    it('cannot be visible when the title is a falsy value', fakeAsync(() => {
+    it('cannot be visible when the title is empty', fakeAsync(() => {
       const triggerElement = component.titleString.nativeElement;
 
       component.title = null;
@@ -164,10 +173,11 @@ describe('nz-tooltip', () => {
 
       dispatchMouseEvent(triggerElement, 'mouseenter');
       waitingForTooltipToggling();
-      expect(overlayContainerElement.textContent).not.toContain('title-string');
+      expect(getTitleTextContent()).not.toContain('title-string');
       expect(component.visibilityTogglingCount).toBe(0);
     }));
 
+<<<<<<< HEAD
     it('should change overlayStyle when the overlayStyle is changed', fakeAsync(() => {
       const triggerElement = component.titleString.nativeElement;
 
@@ -196,6 +206,9 @@ describe('nz-tooltip', () => {
     }));
 
     it('should hide when the title is changed to null', fakeAsync(() => {
+=======
+    it('should hide when the title is changed to empty', fakeAsync(() => {
+>>>>>>> 13e1a95e... test: add test
       const title = 'title-string';
       const triggerElement = component.titleString.nativeElement;
 
@@ -216,6 +229,7 @@ describe('nz-tooltip', () => {
       expect(component.visibilityTogglingCount).toBe(2);
     }));
 
+    // changing title on the directive should be synced to the component
     it('should set `setTitle` proxy to `nzTitle`', fakeAsync(() => {
       const triggerElement = component.titleString.nativeElement;
       const tooltipComponent = component.titleStringDirective.component!;
@@ -249,6 +263,13 @@ describe('nz-tooltip', () => {
       dispatchMouseEvent(triggerElement, 'mouseenter');
       waitingForTooltipToggling();
       expect(overlayContainerElement.textContent).not.toContain(featureKey);
+    }));
+
+    it('should support changing position', fakeAsync(() => {
+      const tooltipComponent = component.titleStringDirective.component!;
+
+      // here we just making sure the preferred position is the first in the position array
+      expect(tooltipComponent._positions.length).toBe(5);
     }));
   });
 

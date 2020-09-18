@@ -87,6 +87,19 @@ describe('NzPopover', () => {
     expect(getTitleTextContent()).toBeNull();
     expect(getInnerTextContent()).toBeNull();
   }));
+
+  // changing content on the directive should be synced to the component
+  it('should set `setContent` proxy to `nzContent`', fakeAsync(() => {
+    const triggerElement = component.changePopover.nativeElement;
+
+    dispatchMouseEvent(triggerElement, 'mouseenter');
+    waitingForTooltipToggling();
+    expect(getInnerTextContent()).toContain('content');
+
+    component.content = 'changed-content';
+    fixture.detectChanges();
+    expect(getInnerTextContent()).toContain('changed-content');
+  }));
 });
 
 @Component({
@@ -98,6 +111,8 @@ describe('NzPopover', () => {
     <a #templatePopover nz-popover [nzPopoverTitle]="templateTitle" [nzPopoverContent]="templateContent">
       Show
     </a>
+
+    <a #changePopover nz-popover nzPopoverTitle="title-change" [nzPopoverContent]="content"></a>
 
     <ng-template #templateTitle>
       title-template
@@ -117,6 +132,11 @@ export class NzPopoverTestComponent {
   @ViewChild('templatePopover', { static: false, read: NzPopoverDirective })
   templatePopoverNzPopoverDirective!: NzPopoverDirective;
 
+  @ViewChild('changePopover', { static: true }) changePopover!: ElementRef;
+  @ViewChild('changePopover', { static: true, read: NzPopoverDirective })
+  changePopoverNzPopoverDirective!: NzPopoverDirective;
+
+  content = 'content';
   visible = false;
   visibilityTogglingCount = 0;
 
