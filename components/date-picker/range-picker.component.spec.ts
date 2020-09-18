@@ -232,7 +232,7 @@ describe('NzRangePickerComponent', () => {
       fixtureInstance.nzDefaultPickerValue = [new Date('2012-01-18'), new Date('2019-11-11')];
       fixture.detectChanges();
       openPickerByClickTrigger();
-      expect(queryFromOverlay('.ant-picker-panel .ant-picker-header-month-btn').textContent!.indexOf('1') > -1).toBeTruthy();
+      expect(getHeaderMonthBtn().textContent!.indexOf('1') > -1).toBeTruthy();
       expect(queryFromOverlay('.ant-picker-panel:last-child .ant-picker-header-month-btn').textContent!.indexOf('11') > -1).toBeTruthy();
     }));
 
@@ -330,13 +330,13 @@ describe('NzRangePickerComponent', () => {
       // Click previous month button
       dispatchMouseEvent(getPreBtn('left'), 'click');
       fixture.detectChanges();
-      expect(queryFromOverlay('.ant-picker-panel .ant-picker-header-month-btn').textContent!.indexOf('5') > -1).toBeTruthy();
+      expect(getHeaderMonthBtn().textContent!.indexOf('5') > -1).toBeTruthy();
       // Click next month button * 2
       dispatchMouseEvent(getNextBtn('left'), 'click');
       fixture.detectChanges();
       dispatchMouseEvent(getNextBtn('left'), 'click');
       fixture.detectChanges();
-      expect(queryFromOverlay('.ant-picker-panel .ant-picker-header-month-btn').textContent!.indexOf('7') > -1).toBeTruthy();
+      expect(getHeaderMonthBtn().textContent!.indexOf('7') > -1).toBeTruthy();
     }));
 
     it('should support keep initValue when reopen panel', fakeAsync(() => {
@@ -653,8 +653,6 @@ describe('NzRangePickerComponent', () => {
       fixtureInstance.nzDisabledDate = (current: Date) => differenceInDays(current, initial[0]) < 0;
       fixtureInstance.nzShowTime = true;
       fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
       openPickerByClickTrigger();
 
       // Click start date
@@ -669,11 +667,9 @@ describe('NzRangePickerComponent', () => {
       fixtureInstance.modelValue = [new Date('2018-05-15'), new Date('2018-05-15')];
       fixtureInstance.nzShowTime = true;
       fixture.detectChanges();
-      tick();
-      fixture.detectChanges();
       openPickerByClickTrigger();
 
-      expect(queryFromOverlay('.ant-picker-panel .ant-picker-header-month-btn').textContent).toContain('5');
+      expect(getHeaderMonthBtn().textContent).toContain('5');
     }));
 
     it('should support nzRanges', fakeAsync(() => {
@@ -739,8 +735,6 @@ describe('NzRangePickerComponent', () => {
       fixtureInstance.modelValue = [new Date('2019-11-11 11:22:33'), new Date('2019-12-12 11:22:33')];
       fixtureInstance.nzShowTime = true;
       fixture.detectChanges();
-      flush();
-      fixture.detectChanges();
       openPickerByClickTrigger();
 
       const leftInput = getPickerInput(fixture.debugElement);
@@ -796,6 +790,23 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       expect(leftInput.value).toBe('');
       expect(rightInput.value).toBe('2018-02-06');
+    }));
+
+    it('should panel date follows the selected date', fakeAsync(() => {
+      fixtureInstance.nzShowTime = true;
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      const leftInput = getPickerInput(fixture.debugElement);
+      typeInElement('2027-09-17 11:08:22', leftInput);
+      fixture.detectChanges();
+      leftInput.dispatchEvent(ENTER_EVENT);
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getHeaderYearBtn('left').textContent).toContain('2027');
+      // panel month will increase 1
+      expect(getHeaderMonthBtn().textContent).toContain('10');
     }));
   }); // /specified date picker testing
 
@@ -857,6 +868,10 @@ describe('NzRangePickerComponent', () => {
 
   function getHeaderYearBtn(part: RangePartType): HTMLElement {
     return queryFromOverlay(`.ant-picker-panel .ant-picker-header-year-btn:${getCssIndex(part)}`);
+  }
+
+  function getHeaderMonthBtn(): HTMLElement {
+    return queryFromOverlay(`.ant-picker-panel .ant-picker-header-month-btn`);
   }
 
   function getFirstCell(partial: 'left' | 'right'): HTMLElement {

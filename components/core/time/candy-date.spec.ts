@@ -88,20 +88,24 @@ describe('candy-date coverage supplements', () => {
     const randomDay = new CandyDate('2020-09-17');
     const now = new Date();
     let result: SingleValue[];
-    result = normalizeRangeValue([null, randomDay]);
+    result = normalizeRangeValue([null, randomDay], false);
     expect(result[0]!.getMonth()).toEqual(7);
     expect(result[1]!.getMonth()).toEqual(8);
 
-    result = normalizeRangeValue([randomDay, null]);
+    result = normalizeRangeValue([randomDay, null], false);
     expect(result[0]!.getMonth()).toEqual(8);
     expect(result[1]!.getMonth()).toEqual(9);
 
-    result = normalizeRangeValue([null, null]);
+    result = normalizeRangeValue([null, null], false);
     expect(result[0]!.getMonth()).toEqual(now.getMonth());
     expect(result[1]!.getMonth()).toEqual(now.getMonth() + 1);
 
-    result = normalizeRangeValue([new CandyDate(), new CandyDate()]);
+    result = normalizeRangeValue([new CandyDate(), new CandyDate()], false);
     expect(result[0]!.getMonth()).toEqual(now.getMonth());
     expect(result[1]!.getMonth()).toEqual(now.getMonth() + 1);
+
+    result = normalizeRangeValue([new CandyDate(), new CandyDate()], true);
+    expect(result[0]!.getMonth()).toEqual(now.getMonth());
+    expect(result[1]!.getMonth()).toEqual(now.getMonth());
   });
 }); // /candy-date coverage supplements

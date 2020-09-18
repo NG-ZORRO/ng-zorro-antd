@@ -196,7 +196,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     const activeDate = this.datePickerService.hasValue()
       ? this.datePickerService.value
       : this.datePickerService.makeValue(this.defaultPickerValue!);
-    this.datePickerService.setActiveDate(activeDate, !this.showTime);
+    this.datePickerService.setActiveDate(activeDate, this.hasTimePicker);
   }
 
   onClickOk(): void {
@@ -243,11 +243,9 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
 
   onActiveDateChange(value: CandyDate, partType: RangePartType): void {
     if (this.isRange) {
-      if (partType === 'left') {
-        this.datePickerService.setActiveDate([value, value.addMonths(1)]);
-      } else {
-        this.datePickerService.setActiveDate([value.addMonths(-1), value]);
-      }
+      const activeDate: SingleValue[] = [];
+      activeDate[this.datePickerService.getActiveIndex(partType)] = value;
+      this.datePickerService.setActiveDate(activeDate, this.hasTimePicker);
     } else {
       this.datePickerService.setActiveDate(value);
     }

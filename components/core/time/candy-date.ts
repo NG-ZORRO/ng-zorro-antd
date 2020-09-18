@@ -41,7 +41,7 @@ export function wrongSortOrder(rangeValue: SingleValue[]): boolean {
   return !!start && !!end && start.isAfterSecond(end);
 }
 
-export function normalizeRangeValue(value: SingleValue[]): CandyDate[] {
+export function normalizeRangeValue(value: SingleValue[], allowSameMonth: boolean): CandyDate[] {
   const [start, end] = value;
   let newStart: CandyDate = start || new CandyDate();
   let newEnd: CandyDate = end || new CandyDate();
@@ -52,7 +52,7 @@ export function normalizeRangeValue(value: SingleValue[]): CandyDate[] {
     newStart = end.addMonths(-1);
     newEnd = end;
   }
-  if (newEnd.isSameMonth(newStart)) {
+  if (newEnd.isSameMonth(newStart) && !allowSameMonth) {
     newEnd = newStart.addMonths(1);
   }
   return [newStart, newEnd];

@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { ESCAPE } from '@angular/cdk/keycodes';
 import {
   CdkConnectedOverlay,
   CdkOverlayOrigin,
@@ -36,8 +37,7 @@ import {
 } from '@angular/core';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 
-import { ESCAPE } from '@angular/cdk/keycodes';
-import { CandyDate, CompatibleValue } from 'ng-zorro-antd/core/time';
+import { CandyDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
 import { NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 import { fromEvent, Subject } from 'rxjs';
@@ -360,6 +360,12 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   onClickBackdrop(): void {
     if (this.panel?.isAllowed(this.datePickerService.value!, true)) {
+      if (Array.isArray(this.datePickerService.value) && wrongSortOrder(this.datePickerService.value)) {
+        const index = this.datePickerService.getActiveIndex(this.datePickerService.activeInput);
+        const value = this.datePickerService.value[index];
+        this.panel?.changeValueFromSelect(value!, true);
+        return;
+      }
       this.updateInputValue();
       this.datePickerService.emitValue$.next();
     } else {

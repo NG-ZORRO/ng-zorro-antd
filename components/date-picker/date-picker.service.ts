@@ -47,9 +47,9 @@ export class DatePickerService implements OnDestroy {
     }
   }
 
-  setActiveDate(value: CompatibleValue, normalize: boolean = false): void {
+  setActiveDate(value: CompatibleValue, allowSameMonth: boolean = false): void {
     if (this.isRange) {
-      this.activeDate = normalize ? normalizeRangeValue(value as CandyDate[]) : value;
+      this.activeDate = normalizeRangeValue(value as CandyDate[], allowSameMonth);
     } else {
       this.activeDate = cloneDate(value);
     }
