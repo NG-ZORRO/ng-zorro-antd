@@ -363,7 +363,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
   set nzPlacement(value: string) {
     if (value !== this.preferredPlacement) {
       this.preferredPlacement = value;
-      this._positions = [POSITION_MAP[this.nzPlacement], ...this._positions];
+      this._positions = [POSITION_MAP[this.nzPlacement], ...DEFAULT_TOOLTIP_POSITIONS];
     }
   }
 

@@ -91,11 +91,11 @@ describe('NzPopover', () => {
 
 @Component({
   template: `
-    <a #stringPopover nz-popover nzTitle="title-string" nzContent="content-string">
+    <a #stringPopover nz-popover nzPopoverTitle="title-string" nzPopoverContent="content-string">
       Show
     </a>
 
-    <a #templatePopover nz-popover [nzTitle]="templateTitle" [nzContent]="templateContent">
+    <a #templatePopover nz-popover [nzPopoverTitle]="templateTitle" [nzPopoverContent]="templateContent">
       Show
     </a>
 

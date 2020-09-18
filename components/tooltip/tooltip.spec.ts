@@ -153,8 +153,8 @@ describe('nz-tooltip', () => {
 
   describe('content', () => {
     // These specs are covered in previous specs.
-    // it('should nzTitle support string', fakeAsync(() => {}));
-    // it('should nzTitle support template', fakeAsync(() => {}));
+    // it('should nzTooltipTitle support string', fakeAsync(() => {}));
+    // it('should nzTooltipTitle support template', fakeAsync(() => {}));
 
     it('cannot be visible when the title is a falsy value', fakeAsync(() => {
       const triggerElement = component.titleString.nativeElement;
@@ -299,11 +299,11 @@ function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLEleme
       Hover
     </a>
 
-    <a #titleTemplate nz-tooltip [nzTitle]="template" [nzTooltipTrigger]="trigger">
+    <a #titleTemplate nz-tooltip [nzTooltipTitle]="template" [nzTooltipTrigger]="trigger">
       Click
     </a>
 
-    <a #focusTooltip nz-tooltip nzTooltipTrigger="focus" nzTitle="focus">
+    <a #focusTooltip nz-tooltip nzTooltipTrigger="focus" nzTooltipTitle="focus">
       Focus
     </a>
 
@@ -311,7 +311,7 @@ function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLEleme
       #program
       nz-tooltip
       [nzTooltipTrigger]="null"
-      nzTitle="program"
+      nzTooltipTitle="program"
       [nzTooltipVisible]="visible"
       (nzTooltipVisibleChange)="onVisibleChange()"
     >
@@ -320,7 +320,7 @@ function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLEleme
 
     <div>
       <button>A</button>
-      <button #inBtnGroup nz-tooltip nzTitle="title-string">B</button>
+      <button #inBtnGroup nz-tooltip nzTooltipTitle="title-string">B</button>
       <button>C</button>
     </div>
 
