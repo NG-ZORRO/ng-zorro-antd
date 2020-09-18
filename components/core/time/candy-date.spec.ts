@@ -1,4 +1,4 @@
-import { CandyDate } from './candy-date';
+import { CandyDate, normalizeRangeValue, SingleValue } from './candy-date';
 
 describe('candy-date coverage supplements', () => {
   const date = new CandyDate('2018-5-5 12:12:12');
@@ -82,5 +82,26 @@ describe('candy-date coverage supplements', () => {
   it('should throw error while putting invalid date input', () => {
     const errorMessage = 'The input date type is not supported ("Date" is now recommended)';
     expect(() => new CandyDate({} as any)).toThrowError(errorMessage); // tslint:disable-line:no-any
+  });
+
+  it('should normalizeRangeValue work', () => {
+    const randomDay = new CandyDate('2020-09-17');
+    const now = new Date();
+    let result: SingleValue[];
+    result = normalizeRangeValue([null, randomDay]);
+    expect(result[0]!.getMonth()).toEqual(7);
+    expect(result[1]!.getMonth()).toEqual(8);
+
+    result = normalizeRangeValue([randomDay, null]);
+    expect(result[0]!.getMonth()).toEqual(8);
+    expect(result[1]!.getMonth()).toEqual(9);
+
+    result = normalizeRangeValue([null, null]);
+    expect(result[0]!.getMonth()).toEqual(now.getMonth());
+    expect(result[1]!.getMonth()).toEqual(now.getMonth() + 1);
+
+    result = normalizeRangeValue([new CandyDate(), new CandyDate()]);
+    expect(result[0]!.getMonth()).toEqual(now.getMonth());
+    expect(result[1]!.getMonth()).toEqual(now.getMonth() + 1);
   });
 }); // /candy-date coverage supplements

@@ -296,7 +296,13 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(nzOnChange).toHaveBeenCalled();
+      expect(nzOnChange).not.toHaveBeenCalled();
+      // now the cursor focus on right
+      const right = getFirstCell('right');
+      dispatchMouseEvent(right, 'click');
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
       const result = (nzOnChange.calls.allArgs()[0] as Date[][])[0];
       expect((result[0] as Date).getDate()).toBe(+leftText);
     }));
@@ -570,10 +576,10 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
-      expect(leftInput.value.trim()).toBe('2018-12-12 00:00:00');
-      expect(okButton.getAttribute('disabled')).not.toBe(null);
+      expect(leftInput.value.trim()).toBe('2019-11-11 01:00:00');
+      expect(okButton.getAttribute('disabled')).toEqual(null);
 
-      const newValidDateString = ['2018-12-12 01:00:00', '2019-11-11 00:00:00'];
+      const newValidDateString = ['2020-12-12 01:00:00', '2021-11-11 00:00:00'];
       typeInElement(newValidDateString[0], leftInput);
       fixture.detectChanges();
       dispatchMouseEvent(okButton, 'click');
@@ -784,12 +790,12 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       typeInElement('2018-02-06', rightInput);
       fixture.detectChanges();
-      getPickerInput(fixture.debugElement).dispatchEvent(ENTER_EVENT);
+      getRangePickerRightInput(fixture.debugElement).dispatchEvent(ENTER_EVENT);
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(leftInput.value).toBe('2018-02-06');
-      expect(rightInput.value).toBe('2019-08-10');
+      expect(leftInput.value).toBe('');
+      expect(rightInput.value).toBe('2018-02-06');
     }));
   }); // /specified date picker testing
 
@@ -805,8 +811,11 @@ describe('NzRangePickerComponent', () => {
 
       // Click the first cell to change ngModel
       const left = getFirstCell('left');
+      const right = getFirstCell('right');
       const leftText = left.textContent!.trim();
       dispatchMouseEvent(left, 'click');
+      fixture.detectChanges();
+      dispatchMouseEvent(right, 'click');
       fixture.detectChanges();
       expect(fixtureInstance.modelValue[0]!.getDate()).toBe(+leftText);
     }));

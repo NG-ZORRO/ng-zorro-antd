@@ -33,7 +33,7 @@ export class DatePickerService implements OnDestroy {
 
   hasValue(value: CompatibleValue = this.value): boolean {
     if (Array.isArray(value)) {
-      return !!value[0] && !!value[1];
+      return !!value[0] || !!value[1];
     } else {
       return !!value;
     }
