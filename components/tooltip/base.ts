@@ -37,8 +37,8 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
   directiveNameContent?: NzTSType | null;
   specificTitle?: NzTSType | null;
   specificContent?: NzTSType | null;
-  specificTrigger: NzTooltipTrigger = 'hover';
-  specificPlacement: string = 'top';
+  specificTrigger?: NzTooltipTrigger;
+  specificPlacement?: string;
   specificOrigin?: ElementRef<HTMLElement>;
   specificVisible?: boolean;
   specificMouseEnterDelay?: number;
@@ -71,11 +71,11 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
   }
 
   protected get trigger(): NzTooltipTrigger {
-    return this.specificTrigger;
+    return typeof this.specificTrigger !== 'undefined' ? this.specificTrigger : 'hover';
   }
 
   protected get placement(): string {
-    return this.specificPlacement;
+    return this.specificPlacement || 'top';
   }
 
   protected get isVisible(): boolean {
