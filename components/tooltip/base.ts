@@ -37,8 +37,8 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
   directiveNameContent?: NzTSType | null;
   specificTitle?: NzTSType | null;
   specificContent?: NzTSType | null;
-  specificTrigger?: NzTooltipTrigger = 'hover';
-  specificPlacement?: string = 'top';
+  specificTrigger: NzTooltipTrigger = 'hover';
+  specificPlacement: string = 'top';
   specificOrigin?: ElementRef<HTMLElement>;
   specificVisible?: boolean;
   specificMouseEnterDelay?: number;
@@ -71,7 +71,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
   }
 
   protected get trigger(): NzTooltipTrigger {
-    return  this.specificTrigger;
+    return this.specificTrigger;
   }
 
   protected get placement(): string {
@@ -165,7 +165,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
   protected createComponent(): void {
     const componentRef = this.hostView.createComponent(this.componentFactory);
 
-    this.component = componentRef.instance;
+    this.component = componentRef.instance as NzTooltipBaseComponent;
 
     // Remove the component's DOM because it should be in the overlay container.
     this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), componentRef.location.nativeElement);
@@ -218,7 +218,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
       this.triggerDisposables.push(this.renderer.listen(el, 'blur', () => this.hide()));
     } else if (trigger === 'click') {
       this.triggerDisposables.push(
-        this.renderer.listen(el, 'click', e => {
+        this.renderer.listen(el, 'click', (e: MouseEvent) => {
           e.preventDefault();
           this.show();
         })
@@ -238,7 +238,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
       specificMouseEnterDelay: ['nzMouseEnterDelay', this.mouseEnterDelay],
       specificMouseLeaveDelay: ['nzMouseLeaveDelay', this.mouseLeaveDelay],
       specificOverlayClassName: ['nzOverlayClassName', this.overlayClassName],
-      specificOverlayStyle: ['nzOverlayStyle', this.overlayStyle],
+      specificOverlayStyle: ['nzOverlayStyle', this.overlayStyle]
     };
 
     const keys = Object.keys(changes);
