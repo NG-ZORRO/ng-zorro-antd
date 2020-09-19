@@ -177,7 +177,6 @@ describe('nz-tooltip', () => {
       expect(component.visibilityTogglingCount).toBe(0);
     }));
 
-<<<<<<< HEAD
     it('should change overlayStyle when the overlayStyle is changed', fakeAsync(() => {
       const triggerElement = component.titleString.nativeElement;
 
@@ -206,9 +205,6 @@ describe('nz-tooltip', () => {
     }));
 
     it('should hide when the title is changed to null', fakeAsync(() => {
-=======
-    it('should hide when the title is changed to empty', fakeAsync(() => {
->>>>>>> 13e1a95e... test: add test
       const title = 'title-string';
       const triggerElement = component.titleString.nativeElement;
 
