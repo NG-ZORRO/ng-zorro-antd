@@ -197,12 +197,31 @@ describe('dropdown', () => {
     fixture.detectChanges();
     expect(fixture.componentInstance.triggerVisible).toHaveBeenCalledTimes(1);
   }));
+
+  it("should show arrow if it's enabled", fakeAsync(() => {
+    const fixture = createComponent(NzTestDropdownComponent);
+
+    fixture.detectChanges();
+    const dropdownElement = fixture.debugElement.query(By.directive(NzDropDownDirective)).nativeElement;
+
+    dispatchFakeEvent(dropdownElement, 'mouseenter');
+    tick(1000);
+    fixture.detectChanges();
+    expect(overlayContainerElement.querySelector('.ant-dropdown-arrow')).toBeFalsy();
+
+    fixture.componentInstance.arrow = true;
+    fixture.detectChanges();
+    tick(1000);
+    fixture.detectChanges();
+    expect(overlayContainerElement.querySelector('.ant-dropdown-arrow')).toBeTruthy();
+  }));
 });
 
 @Component({
   template: `
     <a
       nz-dropdown
+      [nzArrow]="arrow"
       [nzDropdownMenu]="menu"
       [nzTrigger]="trigger"
       [nzDisabled]="disabled"
@@ -210,7 +229,8 @@ describe('dropdown', () => {
       [nzBackdrop]="backdrop"
       [nzOverlayClassName]="className"
       [nzOverlayStyle]="overlayStyle"
-      >Trigger
+    >
+      Trigger
     </a>
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu>
@@ -222,6 +242,7 @@ describe('dropdown', () => {
   `
 })
 export class NzTestDropdownComponent {
+  arrow = false;
   backdrop = true;
   trigger = 'hover';
   placement = 'bottomLeft';
