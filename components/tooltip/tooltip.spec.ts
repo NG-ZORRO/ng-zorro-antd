@@ -304,7 +304,7 @@ function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLEleme
     <a
       #titleString
       nz-tooltip
-      [nzTitle]="title"
+      [nzTooltipTitle]="title"
       nzTooltipTrigger="hover"
       nzTooltipPlacement="topLeft"
       [nzTooltipOverlayClassName]="class"
@@ -316,13 +316,9 @@ function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLEleme
       Hover
     </a>
 
-    <a #titleTemplate nz-tooltip [nzTooltipTitle]="template" [nzTooltipTrigger]="trigger">
-      Click
-    </a>
+    <a #titleTemplate nz-tooltip [nzTooltipTitle]="template" [nzTooltipTrigger]="trigger">Click</a>
 
-    <a #focusTooltip nz-tooltip nzTooltipTrigger="focus" nzTooltipTitle="focus">
-      Focus
-    </a>
+    <a #focusTooltip nz-tooltip nzTooltipTrigger="focus" nzTooltipTitle="focus">Focus</a>
 
     <a
       #program
@@ -341,9 +337,7 @@ function getOverlayElementForTooltip(tooltip: NzTooltipBaseDirective): HTMLEleme
       <button>C</button>
     </div>
 
-    <ng-template #template>
-      title-template
-    </ng-template>
+    <ng-template #template>title-template</ng-template>
   `
 })
 export class NzTooltipTestComponent {
