@@ -75,12 +75,13 @@ $ npm install ng-zorro-antd
 
 ## Companies using ng-zorro-antd
 
-- [Alibaba](http://www.alibaba.com/)
-- [Aliyun](http://www.aliyun.com/)
+- [Alibaba](https://www.alibaba.com/)
+- [Aliyun](https://www.aliyun.com/)
 - [ThoughtWorks](https://www.thoughtworks.com/)
+- [China Merchants Bank](http://english.cmbchina.com/)
 - [Ververica](https://www.ververica.com/)
 - [Apache Flink](https://flink.apache.org/)
-- [Apache Zeppelin](http://zeppelin.apache.org/)
+- [Apache Zeppelin](https://zeppelin.apache.org/)
 - [Process Automation Group](http://pag.company/)
 - [AISINOCO](http://www.aisino.com/)
 - [GongDao](https://www.gongdao.com/)

@@ -153,9 +153,10 @@ $ npm run start
 
 ## 🎉 谁在使用
 
-- [阿里巴巴](http://www.alibaba.com/)
-- [阿里云](http://www.aliyun.com/)
+- [阿里巴巴](https://www.alibaba.com/)
+- [阿里云](https://www.aliyun.com/)
 - [思特沃克](https://www.thoughtworks.com/)
+- [招商银行](http://www.cmbchina.com/)
 - [共道科技](https://www.gongdao.com/)
 - [优速快递](http://www.uce.cn/)
 - [轻流](https://qingflow.com/)
@@ -163,8 +164,7 @@ $ npm run start
 - [达观数据](http://datagrand.com/)
 - [Ververica](https://www.ververica.com/)
 - [Apache Flink](https://flink.apache.org/)
-- [Apache Zeppelin](http://zeppelin.apache.org/)
-- [Apache Metron](https://metron.apache.org/)
+- [Apache Zeppelin](https://zeppelin.apache.org/)
 - [Process Automation Group](http://pag.company/)
 - [ScentBird](https://www.scentbird.com/)
 - [Southern Institute of Technology](https://www.sit.ac.nz/)

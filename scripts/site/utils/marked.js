@@ -1,4 +1,5 @@
 const marked = require('marked');
+const { parseFragment, serialize } = require('parse5');
 
 const renderer = new marked.Renderer();
 const Prism = require('node-prismjs');
@@ -82,6 +83,27 @@ inside.keyword = Prism.languages.bash.keyword;
 inside.boolean = Prism.languages.bash.boolean;
 inside.operator = Prism.languages.bash.operator;
 inside.punctuation = Prism.languages.bash.punctuation;
+
+const oldLinkHandler = renderer.link;
+renderer.link = function (href, title, text) {
+  const str = oldLinkHandler.call(this, href, title, text);
+  const a = parseFragment(str, {});
+  /**
+   *
+   */
+  if (a && a.childNodes[0] && a.childNodes[0].nodeName === 'a') {
+    if (!/^(?!www\.|(?:http|ftp)s?:\/\/|[A-Za-z]:\\|\/\/).*/.test(href)) {
+      // Open absolute path in new window
+      a.childNodes[0].attrs.push({
+        name: 'target',
+        value: '_blank'
+      });
+    }
+    return serialize(a);
+  }
+
+  return str;
+};
 
 renderer.heading = function (text, level) {
   const lowerText = text.toLowerCase().replace(/ /g, '-').replace(/\./g, '-').replace(/\?/g, '');
