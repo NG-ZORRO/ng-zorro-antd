@@ -534,6 +534,35 @@ describe('nz-slider', () => {
     });
   });
 
+  describe('reverse and min and max', () => {
+    let testBed: ComponentBed<ReverseSliderWithMinAndMaxComponent>;
+    let fixture: ComponentFixture<ReverseSliderWithMinAndMaxComponent>;
+
+    beforeEach(() => {
+      testBed = createComponentBed(ReverseSliderWithMinAndMaxComponent, {
+        imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule]
+      });
+      fixture = testBed.fixture;
+      fixture.detectChanges();
+
+      getReferenceFromFixture(fixture);
+    });
+
+    it('should set the correct maximum value', () => {
+      dispatchClickEventSequence(sliderNativeElement, 0);
+      fixture.detectChanges();
+
+      expect(sliderInstance.value).toEqual(6);
+    });
+
+    it('should set the correct minimum value', () => {
+      dispatchClickEventSequence(sliderNativeElement, 1);
+      fixture.detectChanges();
+
+      expect(sliderInstance.value).toEqual(4);
+    });
+  });
+
   describe('mixed usage', () => {
     let testBed: ComponentBed<MixedSliderComponent>;
     let fixture: ComponentFixture<MixedSliderComponent>;
@@ -786,14 +815,18 @@ const styles = `
 `;
 
 @Component({
-  template: ` <nz-slider [nzDisabled]="disabled"></nz-slider> `,
+  template: `
+    <nz-slider [nzDisabled]="disabled"></nz-slider>
+  `,
   styles: [styles]
 })
 class NzTestSliderComponent {
   disabled = false;
 }
 @Component({
-  template: ` <nz-slider [nzMin]="min" [nzMax]="max"></nz-slider> `,
+  template: `
+    <nz-slider [nzMin]="min" [nzMax]="max"></nz-slider>
+  `,
   styles: [styles]
 })
 class SliderWithMinAndMaxComponent {
@@ -802,13 +835,17 @@ class SliderWithMinAndMaxComponent {
 }
 
 @Component({
-  template: ` <nz-slider [ngModel]="26"></nz-slider> `,
+  template: `
+    <nz-slider [ngModel]="26"></nz-slider>
+  `,
   styles: [styles]
 })
 class SliderWithValueComponent {}
 
 @Component({
-  template: ` <nz-slider [nzStep]="step"></nz-slider> `,
+  template: `
+    <nz-slider [nzStep]="step"></nz-slider>
+  `,
   styles: [styles]
 })
 class SliderWithStepComponent {
@@ -816,19 +853,25 @@ class SliderWithStepComponent {
 }
 
 @Component({
-  template: ` <nz-slider [ngModel]="3" [nzMin]="4" [nzMax]="6"></nz-slider> `,
+  template: `
+    <nz-slider [ngModel]="3" [nzMin]="4" [nzMax]="6"></nz-slider>
+  `,
   styles: [styles]
 })
 class SliderWithValueSmallerThanMinComponent {}
 
 @Component({
-  template: ` <nz-slider [ngModel]="7" [nzMin]="4" [nzMax]="6"></nz-slider> `,
+  template: `
+    <nz-slider [ngModel]="7" [nzMin]="4" [nzMax]="6"></nz-slider>
+  `,
   styles: [styles]
 })
 class SliderWithValueGreaterThanMaxComponent {}
 
 @Component({
-  template: ` <nz-slider nzVertical></nz-slider> `,
+  template: `
+    <nz-slider nzVertical></nz-slider>
+  `,
   styles: [styles]
 })
 class VerticalSliderComponent {}
@@ -841,6 +884,14 @@ class VerticalSliderComponent {}
   `
 })
 class ReverseSliderComponent {}
+
+@Component({
+  template: `
+    <nz-slider [nzMin]="4" [nzMax]="6" nzReverse></nz-slider>
+  `,
+  styles: [styles]
+})
+class ReverseSliderWithMinAndMaxComponent {}
 
 @Component({
   template: `
@@ -888,7 +939,9 @@ class SliderWithFormControlComponent implements OnInit {
 }
 
 @Component({
-  template: ` <nz-slider [nzTooltipVisible]="show" [ngModel]="value"></nz-slider> `
+  template: `
+    <nz-slider [nzTooltipVisible]="show" [ngModel]="value"></nz-slider>
+  `
 })
 class SliderShowTooltipComponent {
   show: NzSliderShowTooltip = 'default';
@@ -896,7 +949,9 @@ class SliderShowTooltipComponent {
 }
 
 @Component({
-  template: ` <nz-slider [nzRange]="range"></nz-slider> `
+  template: `
+    <nz-slider [nzRange]="range"></nz-slider>
+  `
 })
 class NzTestSliderKeyboardComponent {
   range = false;

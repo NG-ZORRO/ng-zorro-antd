@@ -325,7 +325,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
   }
 
   private getLogicalValue(value: number): number {
-    return this.nzReverse ? this.nzMax - value : value;
+    return this.nzReverse ? this.nzMax - value + this.nzMin : value;
   }
 
   private onDragEnd(): void {
