@@ -9,7 +9,7 @@ import fnsFormat from 'date-fns/format';
 import fnsGetISOWeek from 'date-fns/getISOWeek';
 import fnsParse from 'date-fns/parse';
 
-import { WeekDayIndex } from 'ng-zorro-antd/core/time';
+import { WeekDayIndex, ɵNgTimeParser } from 'ng-zorro-antd/core/time';
 import { mergeDateConfig, NzDateConfig, NZ_DATE_CONFIG } from './date-config';
 import { NzI18nService } from './nz-i18n.service';
 
@@ -34,7 +34,7 @@ export abstract class DateHelperService {
 
   abstract getISOWeek(date: Date): number;
   abstract getFirstDayOfWeek(): WeekDayIndex;
-  abstract format(date: Date, formatStr: string): string;
+  abstract format(date: Date | null, formatStr: string): string;
   abstract parseDate(text: string, formatStr?: string): Date;
   abstract parseTime(text: string, formatStr?: string): Date | undefined;
 }
@@ -108,10 +108,8 @@ export class DateHelperByDatePipe extends DateHelperService {
     return new Date(text);
   }
 
-  parseTime(text: string): Date | undefined {
-    if (!text) {
-      return;
-    }
-    return new Date(Date.parse(`1970-01-01 ${text}`));
+  parseTime(text: string, formatStr: string): Date {
+    const parser = new ɵNgTimeParser(formatStr, this.i18n.getLocaleId());
+    return parser.toDate(text);
   }
 }
