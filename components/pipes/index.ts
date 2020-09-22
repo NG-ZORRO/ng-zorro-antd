@@ -3,5 +3,4 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-export * from './nz-pipe.module';
-export * from './time-range.pipe';
+export * from './public-api';

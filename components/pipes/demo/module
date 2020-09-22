@@ -1,0 +1,8 @@
+import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzPipesModule } from 'ng-zorro-antd/pipes';
+import { NzSliderModule } from 'ng-zorro-antd/slider';
+import { NzStatisticModule } from 'ng-zorro-antd/statistic';
+import { NzTableModule } from 'ng-zorro-antd/table';
+
+export const moduleList = [ NzPipesModule, NzTableModule, NzSliderModule, NzInputModule, NzStatisticModule, NzGridModule ];
