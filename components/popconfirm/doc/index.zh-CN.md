@@ -34,10 +34,10 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 | `[nzPopconfirmOrigin]` | 确认框定位元素 | `ElementRef` | - |
 | `[nzPopconfirmVisible]` | 显示隐藏确认框 | `boolean` | `false` |
 | `(nzPopconfirmVisibleChange)` | 显示隐藏的事件 | `EventEmitter<boolean>` | - |
-| `[nzPopoverMouseEnterDelay]` | 鼠标移入后延时多少才显示确认框，单位：秒 | `number` | `0.15` |
-| `[nzPopoverMouseLeaveDelay]` | 鼠标移出后延时多少才隐藏确认框，单位：秒 | `number` | `0.1` |
-| `[nzPopoverOverlayClassName]` | 卡片类名 | `string` | - |
-| `[nzPopoverOverlayStyle]` | 卡片样式 | `object` | - |
+| `[nzPopconfirmMouseEnterDelay]` | 鼠标移入后延时多少才显示确认框，单位：秒 | `number` | `0.15` |
+| `[nzPopconfirmMouseLeaveDelay]` | 鼠标移出后延时多少才隐藏确认框，单位：秒 | `number` | `0.1` |
+| `[nzPopconfirmOverlayClassName]` | 卡片类名 | `string` | - |
+| `[nzPopconfirmOverlayStyle]` | 卡片样式 | `object` | - |
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
