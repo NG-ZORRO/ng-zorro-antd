@@ -37,8 +37,8 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   @Input('nzPopoverTitle') specificTitle?: NzTSType;
   @Input('nzPopoverContent') specificContent?: NzTSType;
   @Input('nz-popover') directiveNameTitle?: NzTSType | null;
-  @Input('nzPopoverTrigger') specificTrigger?: NzTooltipTrigger;
-  @Input('nzPopoverPlacement') specificPlacement?: string;
+  @Input('nzPopoverTrigger') specificTrigger?: NzTooltipTrigger = 'hover';
+  @Input('nzPopoverPlacement') specificPlacement?: string = 'top';
   @Input('nzPopoverOrigin') specificOrigin?: ElementRef<HTMLElement>;
   @Input('nzPopoverVisible') specificVisible?: boolean;
   @Input('nzPopoverMouseEnterDelay') specificMouseEnterDelay?: number;

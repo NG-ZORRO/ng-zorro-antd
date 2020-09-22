@@ -10,7 +10,7 @@ import { Component } from '@angular/core';
       <nz-step nzTitle="Waiting" nzDescription="You can hover on the dot."></nz-step>
     </nz-steps>
     <ng-template #progressTemplate let-dot let-status="status" let-index="index">
-      <span nz-popover nzContent="steps {{ index }} status: {{ status }}" style="margin-left: -100%;">
+      <span nz-popover nzPopoverContent="steps {{ index }} status: {{ status }}" style="margin-left: -100%;">
         <ng-template [ngTemplateOutlet]="dot"></ng-template>
       </span>
     </ng-template>

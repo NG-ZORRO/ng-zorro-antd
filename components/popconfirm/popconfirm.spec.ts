@@ -131,7 +131,7 @@ describe('NzPopconfirm', () => {
     <a
       nz-popconfirm
       #stringTemplate
-      nzTitle="title-string"
+      nzPopconfirmTitle="title-string"
       nzOkText="ok-text"
       nzOkType="default"
       nzCancelText="cancel-text"
@@ -142,7 +142,14 @@ describe('NzPopconfirm', () => {
     >
       Delete
     </a>
-    <a nz-popconfirm #templateTemplate [nzIcon]="icon" [nzTitle]="titleTemplate" (nzOnConfirm)="confirm()" (nzOnCancel)="cancel()">
+    <a
+      nz-popconfirm
+      #templateTemplate
+      [nzIcon]="icon"
+      [nzPopconfirmTitle]="titleTemplate"
+      (nzOnConfirm)="confirm()"
+      (nzOnCancel)="cancel()"
+    >
       Delete
     </a>
 
