@@ -12,10 +12,8 @@ import {
   Directive,
   ElementRef,
   EventEmitter,
-  Input,
   OnChanges,
   OnDestroy,
-  Output,
   Renderer2,
   SimpleChanges,
   TemplateRef,
@@ -47,13 +45,6 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
   specificOverlayStyle?: NgStyleInterface;
   specificVisibleChange = new EventEmitter<boolean>();
 
-  @Input() nzMouseEnterDelay?: number;
-  @Input() nzMouseLeaveDelay?: number;
-  @Input() nzOverlayClassName?: string;
-  @Input() nzOverlayStyle?: NgStyleInterface;
-
-  @Output() readonly nzVisibleChange = new EventEmitter<boolean>();
-
   /**
    * For create tooltip dynamically. This should be override for each different component.
    */
@@ -83,19 +74,19 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
   }
 
   protected get mouseEnterDelay(): number {
-    return this.specificMouseEnterDelay || this.nzMouseEnterDelay || 0.15;
+    return this.specificMouseEnterDelay || 0.15;
   }
 
   protected get mouseLeaveDelay(): number {
-    return this.specificMouseLeaveDelay || this.nzMouseLeaveDelay || 0.1;
+    return this.specificMouseLeaveDelay || 0.1;
   }
 
   protected get overlayClassName(): string | null {
-    return this.specificOverlayClassName || this.nzOverlayClassName || null;
+    return this.specificOverlayClassName || null;
   }
 
   protected get overlayStyle(): NgStyleInterface | null {
-    return this.specificOverlayStyle || this.nzOverlayStyle || null;
+    return this.specificOverlayStyle || null;
   }
 
   visible = false;
@@ -176,7 +167,6 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
     this.component.nzVisibleChange.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe((visible: boolean) => {
       this.visible = visible;
       this.specificVisibleChange.emit(visible);
-      this.nzVisibleChange.emit(visible);
     });
   }
 

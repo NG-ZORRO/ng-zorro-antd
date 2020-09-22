@@ -27,6 +27,32 @@ export const outputNames: VersionChanges<OutputNameUpgradeData> = {
           }
         }
       ]
+    },
+    {
+      pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/5817',
+      changes: [
+        {
+          replace : 'nzVisibleChange',
+          replaceWith: 'nzTooltipVisibleChange',
+          whitelist : {
+            attributes: ['nz-tooltip']
+          }
+        },
+        {
+          replace : 'nzVisibleChange',
+          replaceWith: 'nzPopoverVisibleChange',
+          whitelist : {
+            attributes: ['nz-popover']
+          }
+        },
+        {
+          replace : 'nzVisibleChange',
+          replaceWith: 'nzPopconfirmVisibleChange',
+          whitelist : {
+            attributes: ['nz-popconfirm']
+          }
+        }
+      ]
     }
   ]
 };
