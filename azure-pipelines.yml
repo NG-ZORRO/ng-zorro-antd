@@ -28,6 +28,12 @@ stages:
             command: 'install'
         - script: |
             npm run build
+            export DEPLOY_DOMAIN=https://preview-${SYSTEM_PULLREQUEST_PULLREQUESTNUMBER}-ng-zorro-antd.surge.sh
+            echo 'version' >> dist/.surgeignore
+            echo 'issue-helper' >> dist/.surgeignore
+            npx surge --project ./dist --domain $DEPLOY_DOMAIN
+            tar czvf build.tgz lib dist
+
         - task: CopyFiles@2
           inputs:
             contents: build.tgz
