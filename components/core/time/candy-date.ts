@@ -29,24 +29,32 @@ import startOfWeek from 'date-fns/startOfWeek';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 
+type CandyDateCompareGrain = 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second';
+
 export type WeekDayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
-export type CandyDateCompareGrain = 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second';
 export type CandyDateType = CandyDate | Date | null;
 export type SingleValue = CandyDate | null;
 export type CompatibleValue = SingleValue | SingleValue[];
 
-export function sortRangeValue(rangeValue: SingleValue[]): SingleValue[] {
-  if (Array.isArray(rangeValue)) {
-    const [start, end] = rangeValue;
-    return start && end && start.isAfterSecond(end) ? [end, start] : [start, end];
-  }
-  return rangeValue;
+export function wrongSortOrder(rangeValue: SingleValue[]): boolean {
+  const [start, end] = rangeValue;
+  return !!start && !!end && start.isAfterSecond(end);
 }
 
-export function normalizeRangeValue(value: SingleValue[]): CandyDate[] {
-  const [start, end] = value || [];
-  const newStart = start || new CandyDate();
-  const newEnd = end?.isSameMonth(newStart) ? end.addMonths(1) : end || newStart.addMonths(1);
+export function normalizeRangeValue(value: SingleValue[], allowSameMonth: boolean): CandyDate[] {
+  const [start, end] = value;
+  let newStart: CandyDate = start || new CandyDate();
+  let newEnd: CandyDate = end || new CandyDate();
+  if (start && !end) {
+    newStart = start;
+    newEnd = start.addMonths(1);
+  } else if (!start && end) {
+    newStart = end.addMonths(-1);
+    newEnd = end;
+  }
+  if (newEnd.isSameMonth(newStart) && !allowSameMonth) {
+    newEnd = newStart.addMonths(1);
+  }
   return [newStart, newEnd];
 }
 

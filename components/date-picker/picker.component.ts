@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { ESCAPE } from '@angular/cdk/keycodes';
 import {
   CdkConnectedOverlay,
   CdkOverlayOrigin,
@@ -36,8 +37,7 @@ import {
 } from '@angular/core';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
 
-import { ESCAPE } from '@angular/cdk/keycodes';
-import { CandyDate, CompatibleValue } from 'ng-zorro-antd/core/time';
+import { CandyDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
 import { NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 import { fromEvent, Subject } from 'rxjs';
@@ -179,8 +179,8 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay?: CdkConnectedOverlay;
   @ViewChild('separatorElement', { static: false }) separatorElement?: ElementRef;
   @ViewChild('pickerInput', { static: false }) pickerInput?: ElementRef<HTMLInputElement>;
-  @ViewChildren('rangePickerInput') rangePickerInputs!: QueryList<ElementRef<HTMLInputElement>>;
-  @ContentChild(DateRangePopupComponent) panel!: DateRangePopupComponent;
+  @ViewChildren('rangePickerInput') rangePickerInputs?: QueryList<ElementRef<HTMLInputElement>>;
+  @ContentChild(DateRangePopupComponent) panel?: DateRangePopupComponent;
 
   origin: CdkOverlayOrigin;
   document: Document;
@@ -189,8 +189,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   arrowLeft?: number;
   destroy$ = new Subject();
   prefixCls = PREFIX_CLASS;
-  // Index signature in type 'string | string[]' only permits reading
-  inputValue: NzSafeAny = '';
+  inputValue!: NzSafeAny;
   activeBarStyle: object = { position: 'absolute' };
   animationOpenState = false;
   overlayOpen: boolean = false; // Available when "open"=undefined
@@ -250,7 +249,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   ngOnInit(): void {
     this.inputSize = Math.max(10, this.format.length) + 2;
-
+    this.inputValue = this.isRange ? ['', ''] : '';
     this.datePickerService.valueChange$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.updateInputValue();
     });
@@ -280,9 +279,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
         ...this.datePickerService.arrowPositionStyle,
         width: `${this.inputWidth}px`
       };
-      if (this.document.activeElement !== this.getInput(this.datePickerService.activeInput)) {
-        this.focus();
-      }
+      this.focus();
       this.panel?.cdr.markForCheck();
       this.cdr.markForCheck();
     });
@@ -304,16 +301,19 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     this.arrowLeft = this.inputWidth + this.separatorElement?.nativeElement.offsetWidth || 0;
   }
 
-  getInput(partType?: RangePartType): HTMLInputElement {
+  getInput(partType?: RangePartType): HTMLInputElement | undefined {
     return this.isRange
       ? partType === 'left'
-        ? this.rangePickerInputs.first.nativeElement
-        : this.rangePickerInputs.last.nativeElement
+        ? this.rangePickerInputs?.first.nativeElement
+        : this.rangePickerInputs?.last.nativeElement
       : this.pickerInput!.nativeElement;
   }
 
   focus(): void {
-    this.getInput(this.datePickerService.activeInput).focus(); // Focus on the first input
+    const activeInputElement = this.getInput(this.datePickerService.activeInput);
+    if (this.document.activeElement !== activeInputElement) {
+      activeInputElement?.focus();
+    }
   }
 
   onFocus(partType?: RangePartType): void {
@@ -359,7 +359,13 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   onClickBackdrop(): void {
-    if (this.panel.isAllowed(this.datePickerService.value!, true)) {
+    if (this.panel?.isAllowed(this.datePickerService.value!, true)) {
+      if (Array.isArray(this.datePickerService.value) && wrongSortOrder(this.datePickerService.value)) {
+        const index = this.datePickerService.getActiveIndex(this.datePickerService.activeInput);
+        const value = this.datePickerService.value[index];
+        this.panel?.changeValueFromSelect(value!, true);
+        return;
+      }
       this.updateInputValue();
       this.datePickerService.emitValue$.next();
     } else {

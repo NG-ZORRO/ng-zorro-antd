@@ -18,7 +18,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { CandyDate, cloneDate, CompatibleValue, SingleValue, sortRangeValue } from 'ng-zorro-antd/core/time';
+import { CandyDate, cloneDate, CompatibleValue, SingleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
 import { FunctionProp } from 'ng-zorro-antd/core/types';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
@@ -152,6 +152,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   endPanelMode: NzDateMode | NzDateMode[] = 'date';
   timeOptions: SupportTimeOptions | SupportTimeOptions[] | null = null;
   hoverValue: SingleValue[] = []; // Range ONLY
+  checkedPartArr: boolean[] = [false, false];
   destroy$ = new Subject();
 
   get hasTimePicker(): boolean {
@@ -166,7 +167,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit(): void {
     this.datePickerService.valueChange$.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.initActiveDate();
+      this.updateActiveDate();
       this.cdr.markForCheck();
     });
   }
@@ -182,7 +183,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
       this.endPanelMode = this.panelMode;
     }
     if (changes.defaultPickerValue) {
-      this.initActiveDate();
+      this.updateActiveDate();
     }
   }
 
@@ -191,11 +192,11 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     this.destroy$.complete();
   }
 
-  initActiveDate(): void {
+  updateActiveDate(): void {
     const activeDate = this.datePickerService.hasValue()
       ? this.datePickerService.value
       : this.datePickerService.makeValue(this.defaultPickerValue!);
-    this.datePickerService.setActiveDate(activeDate, !this.showTime);
+    this.datePickerService.setActiveDate(activeDate, this.hasTimePicker);
   }
 
   onClickOk(): void {
@@ -237,19 +238,16 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       this.panelMode = mode;
     }
-    // this.cdr.markForCheck();
     this.panelModeChange.emit(this.panelMode);
   }
 
   onActiveDateChange(value: CandyDate, partType: RangePartType): void {
     if (this.isRange) {
-      if (partType === 'left') {
-        this.datePickerService.activeDate = [value, value.addMonths(1)];
-      } else {
-        this.datePickerService.activeDate = [value.addMonths(-1), value];
-      }
+      const activeDate: SingleValue[] = [];
+      activeDate[this.datePickerService.getActiveIndex(partType)] = value;
+      this.datePickerService.setActiveDate(activeDate, this.hasTimePicker);
     } else {
-      this.datePickerService.activeDate = value;
+      this.datePickerService.setActiveDate(value);
     }
   }
 
@@ -269,49 +267,54 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
 
   changeValueFromSelect(value: CandyDate, emitValue: boolean = true): void {
     if (this.isRange) {
-      let selectedValue: SingleValue[] = cloneDate(this.datePickerService.value) as CandyDate[];
-      let otherPart: RangePartType;
-      if (this.datePickerService.activeInput === 'left') {
-        otherPart = 'right';
-        selectedValue[0] = value;
-      } else {
-        otherPart = 'left';
-        selectedValue[1] = value;
-      }
+      const selectedValue: SingleValue[] = cloneDate(this.datePickerService.value) as CandyDate[];
+      const checkedPart: RangePartType = this.datePickerService.activeInput;
+      const otherPart = this.reversedPart(checkedPart);
 
-      selectedValue = sortRangeValue(selectedValue);
+      selectedValue[this.datePickerService.getActiveIndex(checkedPart)] = value;
+      this.checkedPartArr[this.datePickerService.getActiveIndex(checkedPart)] = true;
       this.hoverValue = selectedValue;
-      this.datePickerService.setValue(selectedValue);
-      this.datePickerService.setActiveDate(selectedValue, !this.showTime);
-      this.datePickerService.inputPartChange$.next();
-
-      if (!this.isAllowed(selectedValue)) {
-        return;
-      }
 
       if (emitValue) {
-        // If the other input has value
-        if (this.isBothAllowed(selectedValue)) {
+        /**
+         * if sort order is wrong, clear the other part's value
+         */
+        if (wrongSortOrder(selectedValue)) {
+          // selectedValue = sortRangeValue(selectedValue);
+          selectedValue[this.datePickerService.getActiveIndex(otherPart)] = null;
+          this.checkedPartArr[this.datePickerService.getActiveIndex(otherPart)] = false;
+        }
+
+        this.datePickerService.setValue(selectedValue);
+
+        /**
+         * range date usually selected paired,
+         * so we emit the date value only both date is allowed and both part are checked
+         */
+        if (this.isBothAllowed(selectedValue) && this.checkedPartArr[0] && this.checkedPartArr[1]) {
           this.calendarChange.emit(selectedValue);
           this.clearHoverValue();
           this.datePickerService.emitValue$.next();
-        } else {
+        } else if (this.isAllowed(selectedValue)) {
           this.calendarChange.emit([value.clone()]);
-          this.datePickerService.inputPartChange$.next(otherPart!);
+          this.datePickerService.inputPartChange$.next(otherPart);
         }
+      } else {
+        this.datePickerService.setValue(selectedValue);
+        this.datePickerService.inputPartChange$.next();
       }
     } else {
       this.datePickerService.setValue(value);
-      this.datePickerService.setActiveDate(value, !this.showTime);
       this.datePickerService.inputPartChange$.next();
 
-      if (!this.isAllowed(value)) {
-        return;
-      }
-      if (emitValue) {
+      if (emitValue && this.isAllowed(value)) {
         this.datePickerService.emitValue$.next();
       }
     }
+  }
+
+  reversedPart(part: RangePartType): RangePartType {
+    return part === 'left' ? 'right' : 'left';
   }
 
   getPanelMode(panelMode: NzDateMode | NzDateMode[], partType?: RangePartType): NzDateMode {
