@@ -6,6 +6,10 @@ cols: 1
 experimental: true
 ---
 
+<blockquote style="border-color: #faad14;">
+<p>NG-ZORRO experiments are features that are released but not yet considered stable or production ready</p>
+<p>Developers and users can opt-in into these features before they are fully released. But <strong>breaking changes</strong> may occur with any release.</p>
+</blockquote>
 
 Common Pipe Collections in Projects
 
@@ -19,14 +23,13 @@ import { NzPipesModule } from 'ng-zorro-antd/pipes';
 
 ## API
 
-### __nz-safe-null__
+### __nzSafeNull__
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `replace` | Replace character | `string` | '' |
 
-
-### __nz-bytes__
+### __nzBytes__
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
@@ -34,13 +37,13 @@ import { NzPipesModule } from 'ng-zorro-antd/pipes';
 | `from` | Unit of current value | `string` | 'B' |
 | `to` | Units converted to target value | `string` | '' |
 
-### __nz-css-unit__
+### __nzToCssUnit__
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `defaultUnit` | Default Unit | `string` | 'px' |
 
-### __nz-ellipsis__
+### __nzEllipsis__
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
@@ -48,13 +51,13 @@ import { NzPipesModule } from 'ng-zorro-antd/pipes';
 | `suffix` | Replace character | `string` | '' |
 
 
-### __nz-aggregate__
+### __nzAggregate__
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `type` | Aggregation | `'sum' \| 'max' \| 'min' \| 'avg'` | '' |
 
-### __nz-sanitizer__
+### __nzSanitizer__
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |

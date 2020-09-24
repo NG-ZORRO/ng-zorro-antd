@@ -14,7 +14,7 @@ import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angu
       </a>
     </li>
     <li nz-menu-item [nzSelected]="page === 'experimental'">
-      <a [routerLink]="['experimental', 'resizable', language]">
+      <a [routerLink]="['experimental', 'pipes', language]">
         <span>{{ language == 'zh' ? '实验性功能' : 'Experimental' }}</span>
       </a>
     </li>
