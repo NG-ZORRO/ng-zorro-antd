@@ -1,6 +1,6 @@
 /
-components/overview/zh
-components/overview/en
+/components/overview/zh
+/components/overview/en
 /components/affix/en
 /components/affix/zh
 /components/alert/en
@@ -145,6 +145,8 @@ components/overview/en
 /docs/schematics/zh
 /docs/universal/en
 /docs/universal/zh
+/experimental/pipes/zh
+/experimental/pipes/en
 /experimental/resizable/zh
 /experimental/pipes/en
 /experimental/pipes/zh

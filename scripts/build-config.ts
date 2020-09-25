@@ -9,6 +9,7 @@ export interface BuildConfig {
   outputDir: string;
   publishDir: string;
   libDir: string;
+  routers: string[];
 }
 
 const BUILD_CONFIG_FILENAME = 'build-config.js';

@@ -1,12 +1,15 @@
+import chalk from 'chalk';
 import * as fs from 'fs-extra';
 import * as less from 'less';
 import * as path from 'path';
+
 import { buildConfig } from '../build-config';
 
 const LessPluginCleanCSS = require('less-plugin-clean-css');
 const NpmImportPlugin = require('less-plugin-npm-import');
 
 async function compileLess(content: string, savePath: string, min: boolean, sub?: boolean, rootPath?: string): Promise<void> {
+  console.log(`Compiling Less sources to ${chalk.gray(savePath)}`);
   // tslint:disable-next-line:no-any
   const plugins: any[] = [];
   const lessOptions: Less.Options = { plugins: plugins, javascriptEnabled: true };
@@ -82,5 +85,7 @@ export async function compile(): Promise<void | void[]> {
   const cssIndex = await fs.readFile(cssIndexPath, { encoding: 'utf8' });
   promiseList.push(compileLess(cssIndex, path.join(targetPath, 'style', 'index.css'), false, true, cssIndexPath));
   promiseList.push(compileLess(cssIndex, path.join(targetPath, 'style', 'index.min.css'), true, true, cssIndexPath));
-  return Promise.all(promiseList).catch(e => console.log(e));
+  for (const task of promiseList) {
+    await task;
+  }
 }
