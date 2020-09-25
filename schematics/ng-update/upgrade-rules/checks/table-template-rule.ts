@@ -12,7 +12,8 @@ export class TableTemplateRule extends Migration<UpgradeData> {
 
   visitTemplate(template: ResolvedResource): void {
 
-    findOutputsOnElementWithTag(template.content, 'nzSortChangeWithKey', ['th'])
+    const content = template.content.replace('nz-table', 'table  ')
+    findOutputsOnElementWithTag(content, 'nzSortChangeWithKey', ['th'])
       .forEach(offset => {
         this.failures.push({
           filePath: template.filePath,
@@ -21,7 +22,7 @@ export class TableTemplateRule extends Migration<UpgradeData> {
         });
       });
 
-    findInputsOnElementWithTag(template.content, 'nzSingleSort', ['thead'])
+    findInputsOnElementWithTag(content, 'nzSingleSort', ['thead'])
       .forEach(offset => {
         this.failures.push({
           filePath: template.filePath,
@@ -30,7 +31,7 @@ export class TableTemplateRule extends Migration<UpgradeData> {
         });
       });
 
-    findInputsOnElementWithTag(template.content, 'nzSortKey', ['th'])
+    findInputsOnElementWithTag(content, 'nzSortKey', ['th'])
       .forEach(offset => {
         this.failures.push({
           filePath: template.filePath,

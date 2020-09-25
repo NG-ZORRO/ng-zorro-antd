@@ -109,6 +109,27 @@ export const inputNames: VersionChanges<InputNameUpgradeData> = {
       pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/5817',
       changes: [
         {
+          replace    : 'nzVisible',
+          replaceWith: 'nzTooltipVisible',
+          whitelist  : {
+            attributes: [ 'nz-tooltip' ]
+          }
+        },
+        {
+          replace    : 'nzVisible',
+          replaceWith: 'nzPopoverVisible',
+          whitelist  : {
+            attributes: [ 'nz-popover' ]
+          }
+        },
+        {
+          replace    : 'nzVisible',
+          replaceWith: 'nzPopconfirmVisible',
+          whitelist  : {
+            attributes: [ 'nz-popconfirm' ]
+          }
+        },
+        {
           replace    : 'nzOverlayStyle',
           replaceWith: 'nzTooltipOverlayStyle',
           whitelist  : {
