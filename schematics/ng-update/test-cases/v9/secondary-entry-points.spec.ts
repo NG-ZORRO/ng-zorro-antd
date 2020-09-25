@@ -60,15 +60,20 @@ describe('secondary entry points checks', () => {
       import { isNil } from 'ng-zorro-antd/core';
       import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
       import { NzTreeNodeOptions, NzTreeNode } from 'ng-zorro-antd/core';
+      import { NzTreeNodeOptions, NzTreeNode } from 'ng-zorro-antd/tree';
+      import { NzTreeNodeOptions, NzTreeNode } from 'ng-zorro-antd';
      `);
 
       await runMigration();
 
       const warnLines = ['index.ts@2:7', 'index.ts@3:7', 'index.ts@5:7'];
-
+      const warnOutputString = warnOutput.toString();
       warnLines.forEach(line => {
-        expect(warnOutput.toString()).toContain(`/${line} - The entry-point "ng-zorro-antd/core" is remove.`);
+        expect(warnOutputString).toContain(`/${line} - The entry-point "ng-zorro-antd/core" is remove`);
       });
+
+      expect(warnOutputString).not.toContain(`/index.ts@6`);
+      expect(warnOutputString).toContain(`/index.ts@7:7 - The entry-point "ng-zorro-antd" is remove`);
 
     });
 

@@ -4,7 +4,7 @@
 
 ### Bug Fixes
 
-* **core:config:** fix empty check ([#5537](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5537)) ([fd979f7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fd979f7))
+* **config:** fix empty check ([#5537](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5537)) ([fd979f7](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fd979f7))
 * **date-picker:** nzDateRender render incorrectly ([#5529](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5529)) ([fa7c7b4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fa7c7b4))
 * **i18n:** export missing languages from public-api ([#5515](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5515)) ([57b1180](https://github.com/NG-ZORRO/ng-zorro-antd/commit/57b1180)), closes [#5510](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5510)
 * **list:** nz-list-item-actions rendered nothing ([#5465](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5465)) ([c126035](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c126035)), closes [#5393](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5393)
