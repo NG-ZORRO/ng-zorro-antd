@@ -3,7 +3,8 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
+import { CandyDate } from 'ng-zorro-antd/core/time';
 import { valueFunctionProp } from 'ng-zorro-antd/core/util';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 import { AbstractTable } from './abstract-table';
@@ -17,19 +18,12 @@ import { DateBodyRow, DateCell, YearCell } from './interface';
   exportAs: 'yearTable',
   templateUrl: 'abstract-table.html'
 })
-export class YearTableComponent extends AbstractTable implements OnChanges {
+export class YearTableComponent extends AbstractTable {
   MAX_ROW = 4;
   MAX_COL = 3;
 
   constructor(private dateHelper: DateHelperService) {
     super();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    super.ngOnChanges(changes);
-    if (changes.value || changes.disabledDate || changes.activeDate) {
-      this.render();
-    }
   }
 
   makeHeadRow(): DateCell[] {
@@ -41,19 +35,21 @@ export class YearTableComponent extends AbstractTable implements OnChanges {
     const startYear = parseInt(`${currentYear / 10}`, 10) * 10;
     const endYear = startYear + 9;
     const previousYear = startYear - 1;
-
     const years: DateBodyRow[] = [];
-
     let yearValue = 0;
+
     for (let rowIndex = 0; rowIndex < this.MAX_ROW; rowIndex++) {
-      const row: DateCell[] = [];
+      const row: DateBodyRow = {
+        dateCells: [],
+        trackByIndex: startYear
+      };
       for (let colIndex = 0; colIndex < this.MAX_COL; colIndex++) {
         const yearNum = previousYear + yearValue;
         const year = this.activeDate.setYear(yearNum);
         const content = this.dateHelper.format(year.nativeDate, 'yyyy');
         const isDisabled = this.disabledDate ? this.disabledDate(year.nativeDate) : false;
-
         const cell: YearCell = {
+          trackByIndex: content,
           value: year.nativeDate,
           isDisabled,
           isSameDecade: yearNum >= startYear && yearNum <= endYear,
@@ -61,28 +57,58 @@ export class YearTableComponent extends AbstractTable implements OnChanges {
           content,
           title: content,
           classMap: {},
+          isLastCellInPanel: year.getYear() === endYear,
+          isFirstCellInPanel: year.getYear() === startYear,
           cellRender: valueFunctionProp(this.cellRender!, year), // Customized content
           fullCellRender: valueFunctionProp(this.fullCellRender!, year),
           onClick: () => this.chooseYear(cell.value.getFullYear()), // don't use yearValue here,
-          onMouseEnter: () => null
+          onMouseEnter: () => this.cellHover.emit(year)
         };
 
-        cell.classMap = this.getClassMap(cell);
-
-        row.push(cell);
+        this.addCellProperty(cell, year);
+        row.dateCells.push(cell);
         yearValue++;
       }
-      years.push({ dateCells: row });
+      years.push(row);
     }
     return years;
   }
 
+  addCellProperty(cell: DateCell, year: CandyDate): void {
+    if (this.hasRangeValue()) {
+      const [startHover, endHover] = this.hoverValue;
+      const [startSelected, endSelected] = this.selectedValue;
+      // Selected
+      if (startSelected?.isSameYear(year)) {
+        cell.isSelectedStart = true;
+        cell.isSelected = true;
+      }
+
+      if (endSelected?.isSameYear(year)) {
+        cell.isSelectedEnd = true;
+        cell.isSelected = true;
+      }
+
+      if (startHover && endHover) {
+        cell.isHoverStart = startHover.isSameYear(year);
+        cell.isHoverEnd = endHover.isSameYear(year);
+        cell.isInHoverRange = startHover.isBeforeYear(year) && year.isBeforeYear(endHover);
+      }
+      cell.isStartSingle = startSelected && !endSelected;
+      cell.isEndSingle = !startSelected && endSelected;
+      cell.isInSelectedRange = startSelected?.isBeforeYear(year) && year?.isBeforeYear(endSelected);
+      cell.isRangeStartNearHover = startSelected && cell.isInHoverRange;
+      cell.isRangeEndNearHover = endSelected && cell.isInHoverRange;
+    } else if (year.isSameYear(this.value)) {
+      cell.isSelected = true;
+    }
+    cell.classMap = this.getClassMap(cell);
+  }
+
   getClassMap(cell: YearCell): { [key: string]: boolean } {
     return {
-      [`${this.prefixCls}-cell`]: true,
-      [`${this.prefixCls}-cell-in-view`]: !!cell.isSameDecade,
-      [`${this.prefixCls}-cell-selected`]: cell.isSelected,
-      [`${this.prefixCls}-cell-disabled`]: cell.isDisabled
+      ...super.getClassMap(cell),
+      [`ant-picker-cell-in-view`]: !!cell.isSameDecade
     };
   }
 

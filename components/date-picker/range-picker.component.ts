@@ -14,6 +14,5 @@ import { NzDatePickerComponent } from './date-picker.component';
 export class NzRangePickerComponent {
   constructor(@Optional() @Host() public datePicker: NzDatePickerComponent) {
     this.datePicker.isRange = true;
-    this.datePicker.nzMode = ['date', 'date'];
   }
 }

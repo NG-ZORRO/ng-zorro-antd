@@ -13,8 +13,6 @@ import { NzDatePickerComponent } from './date-picker.component';
 // tslint:disable-next-line:directive-class-suffix
 export class NzWeekPickerComponent {
   constructor(@Optional() @Host() public datePicker: NzDatePickerComponent) {
-    this.datePicker.showWeek = true;
     this.datePicker.nzMode = 'week';
-    this.datePicker.nzFormat = 'yyyy-ww';
   }
 }

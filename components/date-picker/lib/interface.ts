@@ -4,6 +4,7 @@
  */
 
 import { TemplateRef } from '@angular/core';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 
 export interface PanelSelector {
   className: string;
@@ -13,6 +14,7 @@ export interface PanelSelector {
 }
 
 export interface DateCell {
+  trackByIndex: NzSafeAny;
   value: Date;
   content: TemplateRef<Date> | string;
   onClick(): void;
@@ -25,28 +27,26 @@ export interface DateCell {
   fullCellRender?: TemplateRef<Date> | string;
   isToday?: boolean;
   classMap?: object;
+  isStartSingle?: boolean;
+  isEndSingle?: boolean;
+  isSelectedStart?: boolean;
+  isSelectedEnd?: boolean;
+  isHoverStart?: boolean;
+  isHoverEnd?: boolean;
+  isInHoverRange?: boolean;
+  isInSelectedRange?: boolean;
+  isRangeStartNearHover?: boolean;
+  isRangeEndNearHover?: boolean;
+  isFirstCellInPanel?: boolean;
+  isLastCellInPanel?: boolean;
 }
 
 export interface DateBodyRow {
+  trackByIndex: NzSafeAny;
   dateCells: DateCell[];
-  isCurrent?: boolean; // Is the week that today stays in
   isActive?: boolean; // Is the week that current setting date stays in
-  weekNum?: number;
-  year?: number;
+  weekNum?: number; // Is the week that show number
   classMap?: object;
-}
-
-export interface DayCell extends DateCell {
-  isSelectedStartDate?: boolean;
-  isSelectedEndDate?: boolean;
-  isHoverStartDate?: boolean;
-  isHoverEndDate?: boolean;
-  isInHoverRange?: boolean;
-  isInSelectedRange?: boolean;
-  isLastDayOfMonth?: boolean;
-  isFirstDayOfMonth?: boolean;
-  isStartSingle?: boolean;
-  isEndSingle?: boolean;
 }
 
 export interface DecadeCell extends DateCell {
