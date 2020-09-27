@@ -11,12 +11,11 @@ import { DisabledTimeFn, DisabledTimePartial } from 'ng-zorro-antd/date-picker';
       [nzDisabledDate]="disabledDate"
       [nzDisabledTime]="disabledDateTime"
       [nzShowTime]="{ nzDefaultOpenValue: timeDefaultValue }"
-    >
-    </nz-date-picker>
+    ></nz-date-picker>
     <br />
-    <nz-month-picker [nzDisabledDate]="disabledDate" nzPlaceHolder="Select month"></nz-month-picker>
+    <nz-date-picker nzMode="month" [nzDisabledDate]="disabledDate"></nz-date-picker>
     <br />
-    <nz-year-picker [nzDisabledDate]="disabledDate" nzPlaceHolder="Select year"></nz-year-picker>
+    <nz-date-picker nzMode="year" [nzDisabledDate]="disabledDate"></nz-date-picker>
     <br />
     <nz-range-picker
       [nzDisabledDate]="disabledDate"
@@ -28,10 +27,7 @@ import { DisabledTimeFn, DisabledTimePartial } from 'ng-zorro-antd/date-picker';
   styles: [
     `
       nz-date-picker,
-      nz-month-picker,
-      nz-year-picker,
-      nz-range-picker,
-      nz-week-picker {
+      nz-range-picker {
         margin: 0 8px 12px 0;
       }
     `

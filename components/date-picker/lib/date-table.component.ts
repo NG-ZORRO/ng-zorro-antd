@@ -3,24 +3,13 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChange,
-  SimpleChanges,
-  ViewEncapsulation
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { valueFunctionProp } from 'ng-zorro-antd/core/util';
 
 import { DateHelperService, NzCalendarI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { AbstractTable } from './abstract-table';
-import { DateBodyRow, DateCell, DayCell } from './interface';
+import { DateBodyRow, DateCell } from './interface';
 import { transCompatFormat } from './util';
 
 @Component({
@@ -33,49 +22,9 @@ import { transCompatFormat } from './util';
 })
 export class DateTableComponent extends AbstractTable implements OnChanges, OnInit {
   @Input() locale!: NzCalendarI18nInterface;
-  @Input() selectedValue: CandyDate[] = []; // Range ONLY
-  @Input() hoverValue: CandyDate[] = []; // Range ONLY
-
-  @Output() readonly dayHover = new EventEmitter<CandyDate>(); // Emitted when hover on a day by mouse enter
 
   constructor(private i18n: NzI18nService, private dateHelper: DateHelperService) {
     super();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    super.ngOnChanges(changes);
-    if (
-      this.isDateRealChange(changes.activeDate) ||
-      this.isDateRealChange(changes.value) ||
-      this.isDateRealChange(changes.selectedValue) ||
-      this.isDateRealChange(changes.hoverValue)
-    ) {
-      this.render();
-    }
-  }
-
-  private isDateRealChange(change: SimpleChange): boolean {
-    if (change) {
-      const previousValue: CandyDate | CandyDate[] = change.previousValue;
-      const currentValue: CandyDate | CandyDate[] = change.currentValue;
-      if (Array.isArray(currentValue)) {
-        return (
-          !Array.isArray(previousValue) ||
-          currentValue.length !== previousValue.length ||
-          currentValue.some((value, index) => {
-            const previousCandyDate = previousValue[index];
-            return previousCandyDate instanceof CandyDate ? previousCandyDate.isSameDay(value) : previousCandyDate !== value;
-          })
-        );
-      } else {
-        return !this.isSameDate(previousValue as CandyDate, currentValue);
-      }
-    }
-    return false;
-  }
-
-  private isSameDate(left: CandyDate, right: CandyDate): boolean {
-    return (!left && !right) || (left && right && right.isSameDay(left));
   }
 
   private changeValueFromInside(value: CandyDate): void {
@@ -88,12 +37,13 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
     }
   }
 
-  makeHeadRow(): DayCell[] {
-    const weekDays: DayCell[] = [];
+  makeHeadRow(): DateCell[] {
+    const weekDays: DateCell[] = [];
     const start = this.activeDate.calendarStart({ weekStartsOn: this.dateHelper.getFirstDayOfWeek() });
     for (let colIndex = 0; colIndex < this.MAX_COL; colIndex++) {
       const day = start.addDays(colIndex);
       weekDays.push({
+        trackByIndex: null,
         value: day.nativeDate,
         title: this.dateHelper.format(day.nativeDate, 'E'), // eg. Tue
         content: this.dateHelper.format(day.nativeDate, this.getVeryShortWeekFormat()), // eg. Tu,
@@ -118,9 +68,8 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
       const weekStart = firstDayOfMonth.addDays(week * 7);
       const row: DateBodyRow = {
         isActive: false,
-        isCurrent: false,
         dateCells: [],
-        year: weekStart.getYear()
+        trackByIndex: `${weekStart.getYear()}`
       };
 
       for (let day = 0; day < 7; day++) {
@@ -128,8 +77,8 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
         const dateFormat = transCompatFormat(this.i18n.getLocaleData('DatePicker.lang.dateFormat', 'YYYY-MM-DD'));
         const title = this.dateHelper.format(date.nativeDate, dateFormat);
         const label = this.dateHelper.format(date.nativeDate, 'dd');
-
-        const cell: DayCell = {
+        const cell: DateCell = {
+          trackByIndex: title,
           value: date.nativeDate,
           label: label,
           isSelected: false,
@@ -140,117 +89,69 @@ export class DateTableComponent extends AbstractTable implements OnChanges, OnIn
           fullCellRender: valueFunctionProp(this.fullCellRender!, date),
           content: `${date.getDate()}`,
           onClick: () => this.changeValueFromInside(date),
-          onMouseEnter: () => this.dayHover.emit(date)
+          onMouseEnter: () => this.cellHover.emit(date)
         };
+
+        this.addCellProperty(cell, date);
 
         if (this.showWeek && !row.weekNum) {
           row.weekNum = this.dateHelper.getISOWeek(date.nativeDate);
         }
-
-        if (date.isToday()) {
-          cell.isToday = true;
-          row.isCurrent = true;
+        if (date.isSameDay(this.value)) {
+          row.isActive = date.isSameDay(this.value);
         }
-
-        if (
-          ((Array.isArray(this.selectedValue) && this.selectedValue.length > 0) || (this.hoverValue && this.hoverValue.length > 0)) &&
-          date.isSameMonth(this.activeDate)
-        ) {
-          const [startHover, endHover] = this.hoverValue;
-          const [startSelected, endSelected] = this.selectedValue;
-
-          // Selected
-          if (startSelected && startSelected.isSameDay(date)) {
-            cell.isSelectedStartDate = true;
-            cell.isSelected = true;
-            row.isActive = true;
-          }
-          if (endSelected && endSelected.isSameDay(date)) {
-            cell.isSelectedEndDate = true;
-            cell.isSelected = true;
-            row.isActive = true;
-          } else if (date.isAfterDay(startSelected) && date.isBeforeDay(endSelected)) {
-            cell.isInSelectedRange = true;
-          }
-
-          if (startHover && endHover) {
-            // Hover
-            if (startHover.isSameDay(date)) {
-              cell.isHoverStartDate = true;
-            }
-            if (endHover.isSameDay(date)) {
-              cell.isHoverEndDate = true;
-            }
-            if (date.isLastDayOfMonth()) {
-              cell.isLastDayOfMonth = true;
-            }
-            if (date.isFirstDayOfMonth()) {
-              cell.isFirstDayOfMonth = true;
-            }
-          }
-
-          if (startSelected && !endSelected) {
-            cell.isStartSingle = true;
-          }
-
-          if (!startSelected && endSelected) {
-            cell.isEndSingle = true;
-          }
-
-          if (date.isAfterDay(startHover) && date.isBeforeDay(endHover)) {
-            cell.isInHoverRange = true;
-          }
-        } else if (date.isSameDay(this.value)) {
-          cell.isSelected = true;
-          row.isActive = true;
-        }
-
-        if (this.disabledDate?.(date.nativeDate)) {
-          cell.isDisabled = true;
-        }
-
-        cell.classMap = this.getClassMap(cell);
-
         row.dateCells.push(cell);
       }
-
       row.classMap = {
-        [`${this.prefixCls}-week-panel-row`]: this.showWeek,
-        [`${this.prefixCls}-week-panel-row-selected`]: this.showWeek && row.isActive
+        [`ant-picker-week-panel-row`]: this.showWeek,
+        [`ant-picker-week-panel-row-selected`]: this.showWeek && row.isActive
       };
-
       weekRows.push(row);
     }
-
     return weekRows;
   }
 
-  getClassMap(cell: DayCell): { [key: string]: boolean } {
+  addCellProperty(cell: DateCell, date: CandyDate): void {
+    if (this.hasRangeValue() && !this.showWeek) {
+      const [startHover, endHover] = this.hoverValue;
+      const [startSelected, endSelected] = this.selectedValue;
+      // Selected
+      if (startSelected?.isSameDay(date)) {
+        cell.isSelectedStart = true;
+        cell.isSelected = true;
+      }
+
+      if (endSelected?.isSameDay(date)) {
+        cell.isSelectedEnd = true;
+        cell.isSelected = true;
+      }
+
+      if (startHover && endHover) {
+        cell.isHoverStart = startHover.isSameDay(date);
+        cell.isHoverEnd = endHover.isSameDay(date);
+        cell.isLastCellInPanel = date.isLastDayOfMonth();
+        cell.isFirstCellInPanel = date.isFirstDayOfMonth();
+        cell.isInHoverRange = startHover.isBeforeDay(date) && date.isBeforeDay(endHover);
+      }
+      cell.isStartSingle = startSelected && !endSelected;
+      cell.isEndSingle = !startSelected && endSelected;
+      cell.isInSelectedRange = startSelected?.isBeforeDay(date) && date.isBeforeDay(endSelected);
+      cell.isRangeStartNearHover = startSelected && cell.isInHoverRange;
+      cell.isRangeEndNearHover = endSelected && cell.isInHoverRange;
+    }
+
+    cell.isToday = date.isToday();
+    cell.isSelected = date.isSameDay(this.value);
+    cell.isDisabled = !!this.disabledDate?.(date.nativeDate);
+    cell.classMap = this.getClassMap(cell);
+  }
+
+  getClassMap(cell: DateCell): { [key: string]: boolean } {
     const date = new CandyDate(cell.value);
     return {
-      [`ant-picker-cell`]: true,
+      ...super.getClassMap(cell),
       [`ant-picker-cell-today`]: !!cell.isToday,
-      [`ant-picker-cell-in-view`]: date.isSameMonth(this.activeDate),
-      [`ant-picker-cell-selected`]: cell.isSelected,
-      [`ant-picker-cell-disabled`]: cell.isDisabled,
-      [`ant-picker-cell-in-range`]: !!cell.isInSelectedRange,
-      [`ant-picker-cell-range-start`]: !!cell.isSelectedStartDate,
-      [`ant-picker-cell-range-end`]: !!cell.isSelectedEndDate,
-      [`ant-picker-cell-range-start-single`]: !!cell.isStartSingle,
-      [`ant-picker-cell-range-end-single`]: !!cell.isEndSingle,
-      [`ant-picker-cell-range-hover`]: !!cell.isInHoverRange,
-      [`ant-picker-cell-range-hover-start`]: !!cell.isHoverStartDate,
-      [`ant-picker-cell-range-hover-end`]: !!cell.isHoverEndDate,
-      [`ant-picker-cell-range-hover-edge-start`]: !!cell.isFirstDayOfMonth,
-      [`ant-picker-cell-range-hover-edge-end`]: !!cell.isLastDayOfMonth
+      [`ant-picker-cell-in-view`]: date.isSameMonth(this.activeDate)
     };
-  }
-
-  trackByBodyRow(_index: number, item: DateBodyRow): string {
-    return `${item.year}-${item.weekNum}`;
-  }
-
-  trackByBodyColumn(_index: number, item: DateCell): string {
-    return item.title as string;
   }
 }

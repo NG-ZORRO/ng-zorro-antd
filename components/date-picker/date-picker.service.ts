@@ -4,10 +4,10 @@
  */
 
 import { Injectable, OnDestroy } from '@angular/core';
-import { CandyDate, cloneDate, CompatibleValue, normalizeRangeValue } from 'ng-zorro-antd/core/time';
+import { CandyDate, cloneDate, CompatibleValue, NormalizedMode, normalizeRangeValue } from 'ng-zorro-antd/core/time';
 import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { ReplaySubject, Subject } from 'rxjs';
-import { CompatibleDate, RangePartType } from './standard-types';
+import { CompatibleDate, NzDateMode, RangePartType } from './standard-types';
 
 @Injectable()
 export class DatePickerService implements OnDestroy {
@@ -47,9 +47,14 @@ export class DatePickerService implements OnDestroy {
     }
   }
 
-  setActiveDate(value: CompatibleValue, allowSameMonth: boolean = false): void {
+  setActiveDate(value: CompatibleValue, allowSameInTwoPanel: boolean = false, mode: NormalizedMode = 'month'): void {
+    const parentPanels: { [key in NzDateMode]?: NormalizedMode } = {
+      date: 'month',
+      month: 'year',
+      year: 'decade'
+    };
     if (this.isRange) {
-      this.activeDate = normalizeRangeValue(value as CandyDate[], allowSameMonth);
+      this.activeDate = normalizeRangeValue(value as CandyDate[], allowSameInTwoPanel, parentPanels[mode]);
     } else {
       this.activeDate = cloneDate(value);
     }

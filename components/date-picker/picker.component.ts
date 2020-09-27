@@ -184,7 +184,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   origin: CdkOverlayOrigin;
   document: Document;
-  inputSize?: number;
+  inputSize: number = 12;
   inputWidth?: number;
   arrowLeft?: number;
   destroy$ = new Subject();
@@ -248,7 +248,6 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   ngOnInit(): void {
-    this.inputSize = Math.max(10, this.format.length) + 2;
     this.inputValue = this.isRange ? ['', ''] : '';
     this.datePickerService.valueChange$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.updateInputValue();
@@ -267,6 +266,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
           this.resetInputWidthAndArrowLeft();
         });
     }
+
     this.datePickerService.inputPartChange$.pipe(takeUntil(this.destroy$)).subscribe(partType => {
       if (partType) {
         this.datePickerService.activeInput = partType;
@@ -293,6 +293,10 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.open) {
       this.animationStart();
+    }
+
+    if (changes.format && changes.format.currentValue) {
+      this.inputSize = Math.max(10, this.format.length) + 2;
     }
   }
 

@@ -148,7 +148,6 @@ describe('NzDatePickerComponent', () => {
       expect(getPickerInput(fixture.debugElement).placeholder).toBe('Select date');
 
       openPickerByClickTrigger();
-      expect(getPickerInput(fixture.debugElement).placeholder).toBe('Select date');
       expect(queryFromOverlay(`.${PREFIX_CLASS}-content th`).textContent).toContain('Su');
     }));
 
@@ -501,7 +500,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-picker-header-month-btn').textContent!.indexOf('2019') > -1).toBeTruthy();
       // Click to choose a year to change panel
-      dispatchMouseEvent(queryFromOverlay('td.ant-picker-cell-selected'), 'click');
+      dispatchMouseEvent(queryFromOverlay('td.ant-picker-cell'), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -1045,7 +1044,7 @@ class NzTestDatePickerComponent {
   nzDisabledTime: any; // tslint:disable-line:no-any
   nzRenderExtraFooter!: string | (() => TemplateRef<void> | string);
   nzShowToday = false;
-  nzMode!: string;
+  nzMode: string = 'date';
   nzSuffixIcon!: string;
 
   // nzRanges;

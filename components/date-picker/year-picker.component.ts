@@ -14,6 +14,5 @@ import { NzDatePickerComponent } from './date-picker.component';
 export class NzYearPickerComponent {
   constructor(@Optional() @Host() public datePicker: NzDatePickerComponent) {
     this.datePicker.nzMode = 'year';
-    this.datePicker.nzFormat = 'yyyy';
   }
 }

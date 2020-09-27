@@ -17,9 +17,7 @@ import endOfMonth from 'date-fns/endOfMonth';
   styles: [
     `
       nz-date-picker,
-      nz-month-picker,
-      nz-range-picker,
-      nz-week-picker {
+      nz-range-picker {
         margin: 0 8px 12px 0;
       }
     `

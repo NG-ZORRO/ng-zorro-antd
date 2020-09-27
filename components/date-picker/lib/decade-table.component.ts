@@ -3,7 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnChanges, ViewEncapsulation } from '@angular/core';
 import { AbstractTable } from './abstract-table';
 import { DateBodyRow, DateCell, DecadeCell } from './interface';
 
@@ -19,12 +19,6 @@ const MAX_COL = 3;
   templateUrl: 'abstract-table.html'
 })
 export class DecadeTableComponent extends AbstractTable implements OnChanges {
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.value || changes.disabledDate || changes.activeDate) {
-      this.render();
-    }
-  }
-
   get startYear(): number {
     return parseInt(`${this.activeDate.getYear() / 100}`, 10) * 100;
   }
@@ -46,13 +40,18 @@ export class DecadeTableComponent extends AbstractTable implements OnChanges {
 
     let index = 0;
     for (let rowIndex = 0; rowIndex < MAX_ROW; rowIndex++) {
-      const row: DecadeCell[] = [];
+      const row: DateBodyRow = {
+        dateCells: [],
+        trackByIndex: previousYear
+      };
+
       for (let colIndex = 0; colIndex < MAX_COL; colIndex++) {
         const start = previousYear + index * 10;
         const end = previousYear + index * 10 + 9;
         const content = `${start}-${end}`;
 
         const cell: DecadeCell = {
+          trackByIndex: content,
           value: this.activeDate.setYear(start).nativeDate,
           content,
           title: content,
@@ -68,10 +67,10 @@ export class DecadeTableComponent extends AbstractTable implements OnChanges {
         cell.classMap = this.getClassMap(cell);
         cell.onClick = () => this.chooseDecade(start);
         index++;
-        row.push(cell);
+        row.dateCells.push(cell);
       }
 
-      decades.push({ dateCells: row });
+      decades.push(row);
     }
     return decades;
   }

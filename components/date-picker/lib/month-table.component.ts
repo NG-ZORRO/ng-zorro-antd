@@ -3,11 +3,12 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
-import { ChangeDetectionStrategy, Component, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnChanges, OnInit, ViewEncapsulation } from '@angular/core';
+import { CandyDate } from 'ng-zorro-antd/core/time';
 import { valueFunctionProp } from 'ng-zorro-antd/core/util';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 import { AbstractTable } from './abstract-table';
-import { DateBodyRow, DateCell, DayCell } from './interface';
+import { DateBodyRow, DateCell } from './interface';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -17,19 +18,12 @@ import { DateBodyRow, DateCell, DayCell } from './interface';
   exportAs: 'monthTable',
   templateUrl: 'abstract-table.html'
 })
-export class MonthTableComponent extends AbstractTable implements OnChanges {
+export class MonthTableComponent extends AbstractTable implements OnChanges, OnInit {
   MAX_ROW = 4;
   MAX_COL = 3;
 
   constructor(private dateHelper: DateHelperService) {
     super();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    super.ngOnChanges(changes);
-    if (changes.value || changes.disabledDate || changes.activeDate) {
-      this.render();
-    }
   }
 
   makeHeadRow(): DateCell[] {
@@ -38,46 +32,72 @@ export class MonthTableComponent extends AbstractTable implements OnChanges {
 
   makeBodyRows(): DateBodyRow[] {
     const months: DateBodyRow[] = [];
-    const currentMonth = this.value && this.value.getMonth();
 
     let monthValue = 0;
     for (let rowIndex = 0; rowIndex < this.MAX_ROW; rowIndex++) {
-      const row: DateCell[] = [];
+      const row: DateBodyRow = {
+        dateCells: [],
+        trackByIndex: this.activeDate.getYear()
+      };
+
       for (let colIndex = 0; colIndex < this.MAX_COL; colIndex++) {
         const month = this.activeDate.setMonth(monthValue);
         const isDisabled = this.disabledDate ? this.disabledDate(month.nativeDate) : false;
         const content = this.dateHelper.format(month.nativeDate, 'MMM');
-
         const cell: DateCell = {
+          trackByIndex: content,
           value: month.nativeDate,
           isDisabled,
-          isSelected: monthValue === currentMonth,
+          isSelected: month.isSameMonth(this.value),
           content,
           title: content,
           classMap: {},
           cellRender: valueFunctionProp(this.cellRender!, month), // Customized content
           fullCellRender: valueFunctionProp(this.fullCellRender!, month),
           onClick: () => this.chooseMonth(cell.value.getMonth()), // don't use monthValue here,
-          onMouseEnter: () => null
+          onMouseEnter: () => this.cellHover.emit(month)
         };
 
-        cell.classMap = this.getClassMap(cell);
-
-        row.push(cell);
+        this.addCellProperty(cell, month);
+        row.dateCells.push(cell);
         monthValue++;
       }
-      months.push({ dateCells: row });
+      months.push(row);
     }
     return months;
   }
 
-  getClassMap(cell: DayCell): { [key: string]: boolean } {
-    return {
-      [`ant-picker-cell`]: true,
-      [`ant-picker-cell-in-view`]: true,
-      [`ant-picker-cell-selected`]: cell.isSelected,
-      [`ant-picker-cell-disabled`]: cell.isDisabled
-    };
+  addCellProperty(cell: DateCell, month: CandyDate): void {
+    if (this.hasRangeValue()) {
+      const [startHover, endHover] = this.hoverValue;
+      const [startSelected, endSelected] = this.selectedValue;
+      // Selected
+      if (startSelected?.isSameMonth(month)) {
+        cell.isSelectedStart = true;
+        cell.isSelected = true;
+      }
+
+      if (endSelected?.isSameMonth(month)) {
+        cell.isSelectedEnd = true;
+        cell.isSelected = true;
+      }
+
+      if (startHover && endHover) {
+        cell.isHoverStart = startHover.isSameMonth(month);
+        cell.isHoverEnd = endHover.isSameMonth(month);
+        cell.isLastCellInPanel = month.getMonth() === 11;
+        cell.isFirstCellInPanel = month.getMonth() === 0;
+        cell.isInHoverRange = startHover.isBeforeMonth(month) && month.isBeforeMonth(endHover);
+      }
+      cell.isStartSingle = startSelected && !endSelected;
+      cell.isEndSingle = !startSelected && endSelected;
+      cell.isInSelectedRange = startSelected?.isBeforeMonth(month) && month?.isBeforeMonth(endSelected);
+      cell.isRangeStartNearHover = startSelected && cell.isInHoverRange;
+      cell.isRangeEndNearHover = endSelected && cell.isInHoverRange;
+    } else if (month.isSameMonth(this.value)) {
+      cell.isSelected = true;
+    }
+    cell.classMap = this.getClassMap(cell);
   }
 
   private chooseMonth(month: number): void {

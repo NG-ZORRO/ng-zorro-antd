@@ -174,7 +174,7 @@ describe('NzMonthPickerComponent', () => {
 
     it('should support nzLocale', () => {
       const featureKey = 'TEST_PLACEHOLDER';
-      fixtureInstance.nzLocale = { lang: { placeholder: featureKey } };
+      fixtureInstance.nzLocale = { lang: { monthPlaceholder: featureKey } };
       fixture.detectChanges();
       expect(getPickerInput(fixture.debugElement).getAttribute('placeholder')).toBe(featureKey);
     });
@@ -409,8 +409,9 @@ describe('NzMonthPickerComponent', () => {
   template: `
     <ng-container [ngSwitch]="useSuite">
       <!-- Suite 1 -->
-      <nz-month-picker
+      <nz-date-picker
         *ngSwitchCase="1"
+        nzMode="month"
         [nzAllowClear]="nzAllowClear"
         [nzAutoFocus]="nzAutoFocus"
         [nzDisabled]="nzDisabled"
@@ -424,19 +425,19 @@ describe('NzMonthPickerComponent', () => {
         [ngModel]="nzValue"
         (ngModelChange)="nzOnChange($event)"
         [nzRenderExtraFooter]="nzRenderExtraFooter"
-      ></nz-month-picker>
+      ></nz-date-picker>
       <ng-template #tplExtraFooter>TEST_EXTRA_FOOTER</ng-template>
 
       <!-- Suite 2 -->
       <!-- use another picker to avoid nzOpen's side-effects beacuse nzOpen act as "true" if used -->
-      <nz-month-picker *ngSwitchCase="2" [nzOpen]="nzOpen"></nz-month-picker>
+      <nz-date-picker nzMode="month" *ngSwitchCase="2" [nzOpen]="nzOpen"></nz-date-picker>
 
       <!-- Suite 3 -->
-      <nz-month-picker *ngSwitchCase="3" nzOpen [(ngModel)]="modelValue"></nz-month-picker>
+      <nz-date-picker nzMode="month" *ngSwitchCase="3" nzOpen [(ngModel)]="modelValue"></nz-date-picker>
 
       <!-- Suite 4 -->
       <nz-input-group *ngSwitchCase="4" nzCompact>
-        <nz-month-picker style="width: 200px;"></nz-month-picker>
+        <nz-date-picker nzMode="month" style="width: 200px;"></nz-date-picker>
         <input nz-input type="text" style="width: 200px;" />
       </nz-input-group>
     </ng-container>

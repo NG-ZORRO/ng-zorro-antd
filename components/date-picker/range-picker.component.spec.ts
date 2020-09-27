@@ -609,16 +609,6 @@ describe('NzRangePickerComponent', () => {
       expect(overlayContainerElement.textContent!.indexOf(fixtureInstance.nzRenderExtraFooter) > -1).toBeTruthy();
     }));
 
-    it('should support nzMode', fakeAsync(() => {
-      fixtureInstance.nzMode = ['month', 'year'];
-      fixture.detectChanges();
-      openPickerByClickTrigger();
-      // Left panel
-      expect(overlayContainerElement.querySelector('.ant-picker-panel .ant-picker-header .ant-picker-month-panel')).toBeDefined();
-      // Right panel
-      expect(overlayContainerElement.querySelector('.ant-picker-panel:last-child .ant-picker-header .ant-picker-year-panel')).toBeDefined();
-    }));
-
     it('should support nzOnPanelChange', fakeAsync(() => {
       spyOn(fixtureInstance, 'nzOnPanelChange');
       fixture.detectChanges();
@@ -832,6 +822,70 @@ describe('NzRangePickerComponent', () => {
     }));
   });
 
+  describe('week mode', () => {
+    beforeEach(() => {
+      fixtureInstance.useSuite = 1;
+      fixtureInstance.nzMode = 'week';
+    });
+
+    it('should support week row style', fakeAsync(() => {
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      const leftThirdRow = queryFromOverlay('.ant-picker-panel:first-child table tr:nth-child(3)');
+      const leftThirdRowCell = leftThirdRow.querySelector('td.ant-picker-cell')!;
+      dispatchMouseEvent(leftThirdRowCell, 'click');
+      fixture.detectChanges();
+      expect(leftThirdRow.classList.contains('ant-picker-week-panel-row-selected')).toBeTruthy();
+      const rightThirdRowCell = queryFromOverlay('.ant-picker-panel:last-child table tr:nth-child(3) td.ant-picker-cell');
+      dispatchMouseEvent(rightThirdRowCell, 'click');
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).toBeNull();
+    }));
+  });
+
+  describe('month mode', () => {
+    beforeEach(() => {
+      fixtureInstance.useSuite = 1;
+      fixtureInstance.nzMode = 'month';
+    });
+
+    it('should support month cell style', fakeAsync(() => {
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      const left = getFirstCell('left'); // Use the first cell
+      dispatchMouseEvent(left, 'click');
+      fixture.detectChanges();
+      const rightThirdRowCell = queryFromOverlay('.ant-picker-panel:last-child table tr:nth-child(3) td.ant-picker-cell');
+      dispatchMouseEvent(rightThirdRowCell, 'mouseenter');
+      fixture.detectChanges();
+      expect(rightThirdRowCell.classList.contains('ant-picker-cell-range-hover-end')).toBeTruthy();
+    }));
+  });
+
+  describe('year mode', () => {
+    beforeEach(() => {
+      fixtureInstance.useSuite = 1;
+      fixtureInstance.nzMode = 'year';
+    });
+
+    it('should support year cell style', fakeAsync(() => {
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+
+      const left = getFirstCell('left');
+      dispatchMouseEvent(left, 'click');
+      fixture.detectChanges();
+      const rightThirdRowCell = queryFromOverlay('.ant-picker-panel:last-child table tr:nth-child(3) td.ant-picker-cell');
+      dispatchMouseEvent(rightThirdRowCell, 'mouseenter');
+      fixture.detectChanges();
+      expect(rightThirdRowCell.classList.contains('ant-picker-cell-range-hover-end')).toBeTruthy();
+    }));
+  });
+
   ////////////
 
   function getCssIndex(part: RangePartType): string {
@@ -969,7 +1023,7 @@ class NzTestRangePickerComponent {
   nzDisabledTime: any; // tslint:disable-line:no-any
   nzRenderExtraFooter!: string | (() => TemplateRef<void> | string);
   nzShowToday = false;
-  nzMode?: string[];
+  nzMode = 'date';
 
   nzRanges: any; // tslint:disable-line:no-any
   nzOnPanelChange(_: string[]): void {}

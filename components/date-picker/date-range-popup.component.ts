@@ -18,7 +18,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { CandyDate, cloneDate, CompatibleValue, SingleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
+import { CandyDate, cloneDate, CompatibleValue, NormalizedMode, SingleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
 import { FunctionProp } from 'ng-zorro-antd/core/types';
 import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
@@ -87,7 +87,7 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
         [dateRender]="dateRender"
         [selectedValue]="$any(datePickerService?.value)"
         [hoverValue]="$any(hoverValue)"
-        (dayHover)="onDayHover($event)"
+        (cellHover)="onCellHover($event)"
         (selectDate)="changeValueFromSelect($event, !showTime)"
         (selectTime)="onSelectTime($event, partType)"
         (headerChange)="onActiveDateChange($event, partType)"
@@ -133,8 +133,6 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
   @Input() isRange!: boolean;
   @Input() showWeek!: boolean;
   @Input() locale!: NzCalendarI18nInterface | undefined;
-  @Input() format!: string;
-  @Input() placeholder!: string | string[];
   @Input() disabledDate?: DisabledDateFn;
   @Input() disabledTime?: DisabledTimeFn; // This will lead to rebuild time options
   @Input() showToday!: boolean;
@@ -196,7 +194,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     const activeDate = this.datePickerService.hasValue()
       ? this.datePickerService.value
       : this.datePickerService.makeValue(this.defaultPickerValue!);
-    this.datePickerService.setActiveDate(activeDate, this.hasTimePicker);
+    this.datePickerService.setActiveDate(activeDate, this.hasTimePicker, this.getPanelMode(this.endPanelMode) as NormalizedMode);
   }
 
   onClickOk(): void {
@@ -212,7 +210,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     this.changeValueFromSelect(value, !this.showTime);
   }
 
-  onDayHover(value: CandyDate): void {
+  onCellHover(value: CandyDate): void {
     if (!this.isRange) {
       return;
     }
@@ -245,7 +243,11 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     if (this.isRange) {
       const activeDate: SingleValue[] = [];
       activeDate[this.datePickerService.getActiveIndex(partType)] = value;
-      this.datePickerService.setActiveDate(activeDate, this.hasTimePicker);
+      this.datePickerService.setActiveDate(
+        activeDate,
+        this.hasTimePicker,
+        this.getPanelMode(this.endPanelMode, partType) as NormalizedMode
+      );
     } else {
       this.datePickerService.setActiveDate(value);
     }
