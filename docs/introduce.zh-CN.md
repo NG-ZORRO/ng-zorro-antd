@@ -48,7 +48,7 @@ title: Ant Design of Angular
 [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 ## 支持 Angular 版本
 
-`ng-zorro-antd` 与 `@angular/core` 保持相同的主版本号，目前支持 Angular `^9.0.0` 版本。
+`ng-zorro-antd` 与 `@angular/core` 保持相同的主版本号，目前支持 Angular `^10.0.0` 版本。
 
 ## 设计规范
 
@@ -110,7 +110,7 @@ $ ng add ng-zorro-antd
 
 1. [Stack Overflow](https://stackoverflow.com/questions/tagged/ng-zorro-antd)（English）
 2. [Segment Fault](https://segmentfault.com/t/ng-zorro)（中文）
-3. [![Gitter](https://img.shields.io/gitter/room/ng-zorro/ng-zorro-antd.svg?style=flat-square)](https://gitter.im/ng-zorro/ng-zorro-antd)
+3. [Discussions · NG-ZORRO/ng-zorro-antd](https://github.com/NG-ZORRO/ng-zorro-antd/discussions)
 4. 加入钉钉 NG-ZORRO 自助服务群（中文）
 
 <img src="https://img.alicdn.com/tfs/TB1oRkkzy_1gK0jSZFqXXcpaXXa-750-990.jpg" width="300" loading="lazy" alt="ding talk qr-code">
