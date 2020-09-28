@@ -26,17 +26,6 @@ import zh from '@angular/common/locales/zh';
 registerLocaleData(zh);
 ```
 
-日期类组件包括以下形式：
-
-- nz-date-picker
-- nz-date-picker[nzMode="week"]
-- nz-date-picker[nzMode="month"]
-- nz-date-picker[nzMode="year"]
-- nz-range-picker
-- nz-range-picker[nzMode="week"]
-- nz-range-picker[nzMode="month"]
-- nz-range-picker[nzMode="year"]
-
 **注意：** 所有输入输出日期对象均为 [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date)，你可以通过 [date-fns](https://date-fns.org/) 工具库获得你需要的数据。
 
 ### 共同的 API
@@ -73,46 +62,36 @@ registerLocaleData(zh);
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[ngModel]` | 日期 | `Date` | - |
+| `[(ngModel)]` | 日期 | `Date` | - |
+
+### nz-date-picker[nzMode="date"]
+
+| 参数 | 说明 | 类型 | 默认值 |
+| --- | --- | --- | --- |
 | `[nzDateRender]` | 自定义日期单元格的内容（month-picker/year-picker不支持） | `TemplateRef<Date> \| string \| ((d: Date) => TemplateRef<Date> \| string)` | - | - |
 | `[nzDisabledTime]` | 不可选择的时间 | `(current: Date) => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds }` | - |
 | `[nzShowTime]` | 增加时间选择功能 | `object \| boolean` | [TimePicker Options](/components/time-picker/zh#api) |
 | `[nzShowToday]` | 是否展示“今天”按钮 | `boolean` | `true` |
 | `(nzOnOk)` | 点击确定按钮的回调 | `EventEmitter<Date>` | - |
-| `(ngModelChange)` | 时间发生变化的回调 | `EventEmitter<Date>` | - |
 
-### nz-date-picker [nzMode="week"], [nzMode="month"], [nzMode="year"]
-
-| 参数 | 说明 | 类型 | 默认值 |
-| --- | --- | --- | --- |
-| `[ngModel]` | 日期 | `Date` | - |
-| `(ngModelChange)` | 时间发生变化的回调 | `EventEmitter<Date>` | - |
 
 ### nz-range-picker
 
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[ngModel]` | 日期 | `Date[]` | - |
-| `[nzDisabledTime]` | 不可选择的时间 | `(current: Date, partial: 'start' \| 'end') => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds }` | - |
+| `[(ngModel)]` | 日期 | `Date[]` | - |
 | `[nzRanges]` | 预设时间范围快捷选择 | `{ [ key: string ]: Date[] }  \|  { [ key: string ]: () => Date[] }` | - |
-| `[nzShowTime]` | 增加时间选择功能 | `object \| boolean` | [TimePicker Options](/components/time-picker/zh#api) |
 | `[nzSeparator]` | 分隔符 | `string` | `'~'` |
-| `(nzOnOk)` | 点击确定按钮的回调 | `EventEmitter<Date[]>` | - |
-| `(ngModelChange)` | 时间发生变化的回调 | `EventEmitter<Date[]>` | - |
 | `(nzOnCalendarChange)` | 待选日期发生变化的回调 | `EventEmitter<Date[]>` | - |
 
-### nz-range-picker [nzMode="week"], [nzMode="week"], [nzMode="year"]
-
+### nz-range-picker[nzMode="date"]
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
-| `[ngModel]` | 日期 | `Date[]` | - |
-| `[nzRanges]` | 预设时间范围快捷选择 | `{ [ key: string ]: Date[] }  \|  { [ key: string ]: () => Date[] }` | - |
-| `[nzSeparator]` | 分隔符 | `string` | `'~'` |
+| `[nzShowTime]` | 增加时间选择功能 | `object \| boolean` | [TimePicker Options](/components/time-picker/zh#api) |
+| `[nzDisabledTime]` | 不可选择的时间 | `(current: Date, partial: 'start' \| 'end') => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds }` | - |
 | `(nzOnOk)` | 点击确定按钮的回调 | `EventEmitter<Date[]>` | - |
-| `(ngModelChange)` | 时间发生变化的回调 | `EventEmitter<Date[]>` | - |
-| `(nzOnCalendarChange)` | 待选日期发生变化的回调 | `EventEmitter<Date[]>` | - |
 
-> `nzShowTime` 中当前支持的 `nz-time-picker` 参数有：`nzFormat`, `nzHourStep`, `nzMinuteStep`, `nzSecondStep`, `nzDisabledHours`, `nzDisabledMinutes`, `nzDisabledSeconds`, `nzHideDisabledOptions`, `nzDefaultOpenValue`, `nzAddOn`
+> `nzShowTime` 中当前支持的 `nz-time-picker` 参数有：`nzFormat`, `nzHourStep`, `nzMinuteStep`, `nzSecondStep`, `nzDisabledHours`, `nzDisabledMinutes`, `nzDisabledSeconds`, `nzHideDisabledOptions`, `nzDefaultOpenValue`, `nzAddOn`
 
 ### nzFormat 特别说明
 

@@ -26,17 +26,6 @@ import en from '@angular/common/locales/en';
 registerLocaleData(en);
 ```
 
-There are eight kinds of picker:
-
-- nz-date-picker
-- nz-date-picker[nzMode="week"]
-- nz-date-picker[nzMode="month"]
-- nz-date-picker[nzMode="year"]
-- nz-range-picker
-- nz-range-picker[nzMode="week"]
-- nz-range-picker[nzMode="month"]
-- nz-range-picker[nzMode="year"]
-
 **Note:** All input and output date objects are [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date), you can manipulate it with [date-fns](https://date-fns.org/).
 
 ### Common API
@@ -73,46 +62,35 @@ The following APIs are shared by nz-date-picker, nz-range-picker.
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[ngModel]` | Date | `Date` | - |
+| `[(ngModel)]` | Date | `Date` | - |
+
+### nz-date-picker[nzMode="date"]
+| Property | Description | Type | Default |
+| -------- | ----------- | ---- | ------- |
 | `[nzDateRender]` | custom rendering function for date cells (Not support by month-picker/year-picker) | - |`TemplateRef<Date> \| string \| ((d: Date) => TemplateRef<Date> \| string)` | - | - |
 | `[nzDisabledTime]` | to specify the time that cannot be selected | `(current: Date) => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds }` | - |
 | `[nzShowTime]` | to provide an additional time selection | `object \| boolean` | [TimePicker Options](/components/time-picker/en#api) |
 | `[nzShowToday]` | whether to show 'Today' button | `boolean` | `true` |
 | `(nzOnOk)` | callback when click ok button | `EventEmitter<Date>` | - |
-| `(ngModelChange)` | Date change callback | `EventEmitter<Date>` | - |
-
-### nz-date-picker [nzMode="week"], [nzMode="month"], [nzMode="year"]
-
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
-| `[ngModel]` | Date | `Date` | - |
-| `(ngModelChange)` | Date change callback | `EventEmitter<Date>` | - |
 
 ### nz-range-picker
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[ngModel]` | Date | `Date[]` | - |
-| `[nzDisabledTime]` | to specify the time that cannot be selected | `(current: Date, partial: 'start' \| 'end') => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds }` | - |
+| `[(ngModel)]` | Date | `Date[]` | - |
 | `[nzRanges]` | preseted ranges for quick selection | `{ [ key: string ]: Date[] }  \|  { [ key: string ]: () => Date[] }` | - |
-| `[nzShowTime]` | to provide an additional time selection | `object \| boolean` | [TimePicker Options](/components/time-picker/en#api) |
 | `[nzSeparator]` | separator | `string` | `'~'` |
-| `(nzOnOk)` | click ok callback | `EventEmitter<Date[]>` | - |
-| `(ngModelChange)` | Date change callback | `EventEmitter<Date[]>` | - |
 | `(nzOnCalendarChange)` | The start time or the end time of the range change callback | `EventEmitter<Date[]>` | - |
 
-### nz-range-picker [nzMode="week"], [nzMode="week"], [nzMode="year"]
+### nz-range-picker[nzMode="date"]
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[ngModel]` | Date | `Date[]` | - |
-| `[nzRanges]` | preseted ranges for quick selection | `{ [ key: string ]: Date[] }  \|  { [ key: string ]: () => Date[] }` | - |
-| `[nzSeparator]` | separator | `string` | `'~'` |
+| `[nzShowTime]` | to provide an additional time selection | `object \| boolean` | [TimePicker Options](/components/time-picker/en#api) |
+| `[nzDisabledTime]` | to specify the time that cannot be selected | `(current: Date, partial: 'start' \| 'end') => { nzDisabledHours, nzDisabledMinutes, nzDisabledSeconds }` | - |
 | `(nzOnOk)` | click ok callback | `EventEmitter<Date[]>` | - |
-| `(ngModelChange)` | Date change callback | `EventEmitter<Date[]>` | - |
-| `(nzOnCalendarChange)` | The start time or the end time of the range change callback | `EventEmitter<Date[]>` | - |
 
-> Currently supported `nz-time-picker` parameters in `nzShowTime` are: `nzFormat`, `nzHourStep`, `nzMinuteStep`, `nzSecondStep`, `nzDisabledHours`, `nzDisabledMinutes`, `nzDisabledSeconds`, `nzHideDisabledOptions`, `nzDefaultOpenValue`, `nzAddOn`
+> Currently, supported `nz-time-picker` parameters in `nzShowTime` are: `nzFormat`, `nzHourStep`, `nzMinuteStep`, `nzSecondStep`, `nzDisabledHours`, `nzDisabledMinutes`, `nzDisabledSeconds`, `nzHideDisabledOptions`, `nzDefaultOpenValue`, `nzAddOn`
 
 ### nzFormat special instructions
 

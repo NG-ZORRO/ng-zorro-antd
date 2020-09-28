@@ -1,6 +1,6 @@
 {
   "name": "ng-zorro-antd",
-  "version": "9.3.0",
+  "version": "10.0.0",
   "license": "MIT",
   "description": "An enterprise-class UI components based on Ant Design and Angular",
   "schematics": "./schematics/collection.json",
@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@angular/cdk": "^10.0.0",
-    "@ant-design/icons-angular": "10.0.0",
+    "@ant-design/icons-angular": "^10.0.0",
     "date-fns": "^2.10.0",
     "resize-observer-polyfill": "^1.5.1"
   },

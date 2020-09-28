@@ -25,11 +25,11 @@ import getISOWeek from 'date-fns/getISOWeek';
 export class NzDemoDatePickerRangePickerComponent {
   date = null;
 
-  onChange(result: Date): void {
+  onChange(result: Date[]): void {
     console.log('onChange: ', result);
   }
 
-  getWeek(result: Date): void {
-    console.log('week: ', getISOWeek(result));
+  getWeek(result: Date[]): void {
+    console.log('week: ', result.map(getISOWeek));
   }
 }
