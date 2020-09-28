@@ -80,7 +80,7 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
         (panelModeChange)="onPanelModeChange($event)"
         (calendarChange)="onCalendarChange($event)"
         [locale]="nzLocale?.lang!"
-        [showToday]="realShowToday"
+        [showToday]="nzMode === 'date' && nzShowToday && !isRange && !nzShowTime"
         [showTime]="nzShowTime"
         [dateRender]="nzDateRender"
         [disabledDate]="nzDisabledDate"
@@ -361,11 +361,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     const newValue: CompatibleValue = this.datePickerService.makeValue(value);
     this.datePickerService.setValue(newValue);
     this.datePickerService.initialValue = newValue;
-  }
-
-  get realShowToday(): boolean {
-    // Range only support in single date picker
-    return this.nzMode === 'date' && this.nzShowToday;
   }
 
   onFocusChange(value: boolean): void {
