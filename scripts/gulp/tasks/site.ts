@@ -79,7 +79,7 @@ task('build:site-issue-helper', execTask('bash', [issueHelperScriptFile]));
 
 /** Build all site projects to the output directory. */
 task(
-  'build:site', series('build:site-doc', 'build:site-iframe', 'build:site-issue-helper')
+  'build:site', series('prerender', 'build:site-iframe', 'build:site-issue-helper')
 );
 
 /** Init site directory, and start watch and ng-serve */
@@ -93,4 +93,4 @@ task('build:simple-site', series('init:site', 'build:site-doc'));
 /** Task that use publish code to build ng-zorro-antd-doc project,
  * output included issue-helper/iframe and prerender.
  */
-task('build:release-site', series('init:site', 'site:replace-path', 'build:site', 'prerender'));
+task('build:release-site', series('init:site', 'site:replace-path', 'build:site'));

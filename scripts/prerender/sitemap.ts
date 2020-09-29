@@ -1,6 +1,6 @@
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs-extra';
 import * as os from 'os';
-import { join, resolve } from 'path';
+import { resolve } from 'path';
 import * as sitemap from 'sitemap';
 import { buildConfig } from '../build-config';
 
@@ -42,5 +42,5 @@ export function generateSitemap(): void {
       ...generateUrls('zh')
     ]
   });
-  writeFileSync(join(buildConfig.outputDir, 'sitemap.xml'), sitemapInstance.toString(true));
+  writeFileSync(resolve(buildConfig.outputDir, 'sitemap.xml'), sitemapInstance.toString(true));
 }
