@@ -36,11 +36,12 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
+import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 
 import { CandyDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
 import { NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DatePickerService } from './date-picker.service';
 import { DateRangePopupComponent } from './date-range-popup.component';
@@ -62,8 +63,8 @@ import { PREFIX_CLASS } from './util';
         [(ngModel)]="inputValue"
         placeholder="{{ getPlaceholder() }}"
         [size]="inputSize"
-        (focus)="onFocus()"
-        (blur)="onBlur()"
+        (focus)="onFocus($event)"
+        (blur)="onBlur($event)"
         (ngModelChange)="onInputChange($event)"
         (keyup.enter)="onKeyupEnter($event)"
       />
@@ -95,9 +96,9 @@ import { PREFIX_CLASS } from './util';
         [disabled]="disabled"
         [readOnly]="inputReadOnly"
         [size]="inputSize"
-        (click)="onClickInputBox($event, partType)"
-        (blur)="onBlur()"
-        (focus)="onFocus(partType)"
+        (click)="onClickInputBox($event)"
+        (blur)="onBlur($event)"
+        (focus)="onFocus($event, partType)"
         (keyup.enter)="onKeyupEnter($event)"
         [(ngModel)]="inputValue[datePickerService.getActiveIndex(partType)]"
         (ngModelChange)="onInputChange($event)"
@@ -240,6 +241,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     private dateHelper: DateHelperService,
     private cdr: ChangeDetectorRef,
     private platform: Platform,
+    private nzResizeObserver: NzResizeObserver,
     public datePickerService: DatePickerService,
     @Inject(DOCUMENT) doc: NzSafeAny
   ) {
@@ -260,7 +262,9 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     }
 
     if (this.isRange && this.platform.isBrowser) {
-      fromEvent(window, 'resize')
+      this.resetInputWidthAndArrowLeft();
+      this.nzResizeObserver
+        .observe(this.elementRef)
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
           this.resetInputWidthAndArrowLeft();
@@ -320,14 +324,16 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     }
   }
 
-  onFocus(partType?: RangePartType): void {
+  onFocus(event: FocusEvent, partType?: RangePartType): void {
+    event.preventDefault();
+    this.focusChange.emit(true);
     if (partType) {
       this.datePickerService.inputPartChange$.next(partType);
     }
-    this.focusChange.emit(true);
   }
 
-  onBlur(): void {
+  onBlur(event: FocusEvent): void {
+    event.preventDefault();
     this.focusChange.emit(false);
   }
 
@@ -353,13 +359,11 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     return !this.disabled && !this.isEmptyValue(this.datePickerService.value) && !!this.allowClear;
   }
 
-  onClickInputBox(event: MouseEvent, partType?: RangePartType): void {
+  onClickInputBox(event: MouseEvent): void {
     event.stopPropagation();
-
     if (!this.isOpenHandledByUser()) {
       this.showOverlay();
     }
-    this.onFocus(partType);
   }
 
   onClickBackdrop(): void {
@@ -421,7 +425,13 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   onInputChange(value: string, isEnter: boolean = false): void {
-    this.showOverlay();
+    /**
+     * in IE11 focus/blur will trigger ngModelChange if has placeholder
+     * so we forbidden IE11 to open panel through input change
+     */
+    if (!this.platform.TRIDENT && this.document.activeElement === this.getInput(this.datePickerService.activeInput)) {
+      this.showOverlay();
+    }
 
     const date = this.checkValidDate(value);
     if (this.panel && date) {

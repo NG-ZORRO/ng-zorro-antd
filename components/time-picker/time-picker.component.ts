@@ -4,6 +4,7 @@
  */
 
 import { CdkOverlayOrigin, ConnectionPositionPair } from '@angular/cdk/overlay';
+import { Platform } from '@angular/cdk/platform';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -247,8 +248,10 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   }
 
   onInputChange(str: string): void {
-    this.open();
-    this.parseTimeString(str);
+    if (!this.platform.TRIDENT && document.activeElement === this.inputRef.nativeElement) {
+      this.open();
+      this.parseTimeString(str);
+    }
   }
 
   onPanelValueChange(value: Date): void {
@@ -266,7 +269,8 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
     private element: ElementRef,
     private renderer: Renderer2,
     private cdr: ChangeDetectorRef,
-    private dateHelper: DateHelperService
+    private dateHelper: DateHelperService,
+    private platform: Platform
   ) {}
 
   ngOnInit(): void {

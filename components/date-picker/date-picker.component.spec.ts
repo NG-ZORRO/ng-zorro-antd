@@ -105,6 +105,13 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
+      expect(getPickerContainer()).toBeNull();
+
+      getPickerInput(fixture.debugElement).focus();
+      getPickerInput(fixture.debugElement).dispatchEvent(ENTER_EVENT);
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
     }));
 

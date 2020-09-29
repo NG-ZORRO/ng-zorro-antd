@@ -7,7 +7,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
-import { ENTER_EVENT, getPickerAbstract, getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
+import { getPickerAbstract, getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
 import { PREFIX_CLASS } from 'ng-zorro-antd/date-picker/util';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
@@ -56,15 +56,6 @@ describe('NzYearPickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(getPickerContainer()).toBeNull();
-    }));
-
-    it('should open on enter', fakeAsync(() => {
-      fixture.detectChanges();
-      getPickerInput(fixture.debugElement).dispatchEvent(ENTER_EVENT);
-      fixture.detectChanges();
-      tick(500);
-      fixture.detectChanges();
-      expect(getPickerContainer()).not.toBeNull();
     }));
 
     it('should support nzAllowClear and work properly', fakeAsync(() => {

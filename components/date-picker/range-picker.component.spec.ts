@@ -10,7 +10,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import differenceInDays from 'date-fns/differenceInDays';
 import isSameDay from 'date-fns/isSameDay';
 
-import { dispatchKeyboardEvent, dispatchMouseEvent, typeInElement } from 'ng-zorro-antd/core/testing';
+import { dispatchFakeEvent, dispatchKeyboardEvent, dispatchMouseEvent, typeInElement } from 'ng-zorro-antd/core/testing';
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 import { RangePartType } from 'ng-zorro-antd/date-picker/standard-types';
@@ -78,8 +78,15 @@ describe('NzRangePickerComponent', () => {
       expect(getPickerInput(fixture.debugElement).matches(':focus-within')).toBeTruthy();
     }));
 
-    it('should open on enter', fakeAsync(() => {
+    it('should open on enter while focusing', fakeAsync(() => {
       fixture.detectChanges();
+      getPickerInput(fixture.debugElement).dispatchEvent(ENTER_EVENT);
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
+      expect(getPickerContainer()).toBeNull();
+
+      getPickerInput(fixture.debugElement).focus();
       getPickerInput(fixture.debugElement).dispatchEvent(ENTER_EVENT);
       fixture.detectChanges();
       tick(500);
@@ -942,10 +949,18 @@ describe('NzRangePickerComponent', () => {
     fixture.detectChanges();
     tick(500);
     fixture.detectChanges();
+    dispatchFakeEvent(getPickerInput(fixture.debugElement), 'focus');
+    fixture.detectChanges();
+    tick(500);
+    fixture.detectChanges();
   }
 
   function openRightPickerByClickTrigger(): void {
     dispatchMouseEvent(getRangePickerRightInput(fixture.debugElement), 'click');
+    fixture.detectChanges();
+    tick(500);
+    fixture.detectChanges();
+    dispatchFakeEvent(getRangePickerRightInput(fixture.debugElement), 'focus');
     fixture.detectChanges();
     tick(500);
     fixture.detectChanges();
