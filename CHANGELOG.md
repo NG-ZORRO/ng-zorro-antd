@@ -105,7 +105,7 @@
 
 **table:**
 - `th[nzSort]` has been removed, use `th[nzSortOrder]` instead.
-- `th(nzSortChange) has been removed, use `th(nzSortOrderChange)` instead.
+- `th(nzSortChange)` has been removed, use `th(nzSortOrderChange)` instead. 
 - `th(nzSortChangeWithKey)` has been removed. Please manually remove it.
 - `thead(nzSortChange)` has been removed, use `thead(nzSortOrderChange)` instead.
 - `thead[nzSingleSort]` and `th[nzSortKey]` has been removed. Please manually change to `th[nzSortFn]`.
