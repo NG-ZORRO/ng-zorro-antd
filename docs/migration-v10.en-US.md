@@ -52,7 +52,7 @@ $ tslint --project <tsconfig> --fix
 
 ### 2.Upgrade dependencies
 
-- Upgrade Angular to 9.x version, ref https://update.angular.io/ .
+- Upgrade Angular to 10.x version, ref https://update.angular.io/ .
 - Run `ng update @angular/cdk`, if you have used `@angular/cdk`.
 - If you have used `date-fns@1.x` in your project, upgrade it to `2.x` version, ref https://github.com/date-fns/date-fns-upgrade.
 
