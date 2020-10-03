@@ -12,6 +12,12 @@
       color: @breadcrumb-last-item-color;
     }
   }
+
+  &-rtl {
+    > nz-breadcrumb-item {
+      float: right;
+    }
+  }
 }
 
 nz-breadcrumb {
@@ -24,12 +30,4 @@ nz-breadcrumb-item:last-child {
 
 nz-breadcrumb-item:last-child .ant-breadcrumb-separator {
   display: none;
-}
-
-.@{breadcrumb-prefix-cls} {
-  &-rtl {
-    > nz-breadcrumb-item {
-      float: right;
-    }
-  }
 }
