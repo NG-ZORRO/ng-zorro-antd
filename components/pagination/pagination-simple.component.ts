@@ -83,7 +83,7 @@ export class NzPaginationSimpleComponent implements OnChanges, OnDestroy {
     private elementRef: ElementRef,
     @Optional() directionality: Directionality
   ) {
-    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
       this.updateRtlStyle();
       cdr.detectChanges();
