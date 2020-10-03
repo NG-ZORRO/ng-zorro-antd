@@ -21,6 +21,7 @@
     ></ng-container>
   </ng-container>
 </ng-template>
+<ng-template #con><ng-content></ng-content></ng-template>
 <ng-template #btn>
   <div [ngClass]="classList" [style.display]="nzShowButton ? '' : 'none'">
     <div nz-upload-btn #uploadComp [options]="_btnOptions!">
