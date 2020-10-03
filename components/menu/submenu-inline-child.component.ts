@@ -29,7 +29,9 @@ import { NzMenuModeType } from './menu.types';
   exportAs: 'nzSubmenuInlineChild',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: ` <ng-template [ngTemplateOutlet]="templateOutlet"></ng-template> `,
+  template: `
+    <ng-template [ngTemplateOutlet]="templateOutlet"></ng-template>
+  `,
   host: {
     '[class.ant-menu]': 'true',
     '[class.ant-menu-inline]': 'true',
@@ -48,12 +50,9 @@ export class NzSubmenuInlineChildComponent implements OnDestroy, OnInit, OnChang
   dir: Direction;
   private destroy$ = new Subject<void>();
 
-  constructor(
-    private elementRef: ElementRef,
-    private renderer: Renderer2,
-    directionality: Directionality) {
+  constructor(private elementRef: ElementRef, private renderer: Renderer2, directionality: Directionality) {
     this.dir = directionality.value;
-    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
     });
   }

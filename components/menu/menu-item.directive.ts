@@ -139,7 +139,7 @@ export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterC
     }
 
     this.dir = directionality.value;
-    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
     });
   }
