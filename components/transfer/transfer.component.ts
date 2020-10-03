@@ -57,22 +57,25 @@ import { NzTransferListComponent } from './transfer-list.component';
       [footer]="nzFooter"
       (handleSelect)="handleLeftSelect($event)"
       (handleSelectAll)="handleLeftSelectAll($event)"
-    >
-    </nz-transfer-list>
+    ></nz-transfer-list>
     <div *ngIf="dir === 'ltr'" class="ant-transfer-operation">
       <button nz-button (click)="moveToLeft()" [disabled]="nzDisabled || !leftActive" [nzType]="'primary'" [nzSize]="'small'">
-        <i nz-icon nzType="left"></i><span *ngIf="nzOperations[1]">{{ nzOperations[1] }}</span>
+        <i nz-icon nzType="left"></i>
+        <span *ngIf="nzOperations[1]">{{ nzOperations[1] }}</span>
       </button>
       <button nz-button (click)="moveToRight()" [disabled]="nzDisabled || !rightActive" [nzType]="'primary'" [nzSize]="'small'">
-        <i nz-icon nzType="right"></i><span *ngIf="nzOperations[0]">{{ nzOperations[0] }}</span>
+        <i nz-icon nzType="right"></i>
+        <span *ngIf="nzOperations[0]">{{ nzOperations[0] }}</span>
       </button>
     </div>
     <div *ngIf="dir === 'rtl'" class="ant-transfer-operation">
       <button nz-button (click)="moveToRight()" [disabled]="nzDisabled || !rightActive" [nzType]="'primary'" [nzSize]="'small'">
-        <i nz-icon nzType="left"></i><span *ngIf="nzOperations[0]">{{ nzOperations[0] }}</span>
+        <i nz-icon nzType="left"></i>
+        <span *ngIf="nzOperations[0]">{{ nzOperations[0] }}</span>
       </button>
       <button nz-button (click)="moveToLeft()" [disabled]="nzDisabled || !leftActive" [nzType]="'primary'" [nzSize]="'small'">
-        <i nz-icon nzType="right"></i><span *ngIf="nzOperations[1]">{{ nzOperations[1] }}</span>
+        <i nz-icon nzType="right"></i>
+        <span *ngIf="nzOperations[1]">{{ nzOperations[1] }}</span>
       </button>
     </div>
     <nz-transfer-list
@@ -97,8 +100,7 @@ import { NzTransferListComponent } from './transfer-list.component';
       [footer]="nzFooter"
       (handleSelect)="handleRightSelect($event)"
       (handleSelectAll)="handleRightSelectAll($event)"
-    >
-    </nz-transfer-list>
+    ></nz-transfer-list>
   `,
   host: {
     '[class.ant-transfer]': `true`,
@@ -248,7 +250,7 @@ export class NzTransferComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService, directionality: Directionality) {
     this.dir = directionality.value;
-    directionality.change.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+    directionality.change?.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.dir = directionality.value;
       this.cdr.detectChanges();
     });

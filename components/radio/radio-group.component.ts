@@ -30,7 +30,9 @@ export type NzRadioButtonStyle = 'outline' | 'solid';
   selector: 'nz-radio-group',
   exportAs: 'nzRadioGroup',
   preserveWhitespaces: false,
-  template: ` <ng-content></ng-content> `,
+  template: `
+    <ng-content></ng-content>
+  `,
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
@@ -54,8 +56,8 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDe
 
   private value: NzSafeAny | null = null;
   private destroy$ = new Subject();
-  onChange: OnChangeType = () => { };
-  onTouched: OnTouchedType = () => { };
+  onChange: OnChangeType = () => {};
+  onTouched: OnTouchedType = () => {};
   @Input() @InputBoolean() nzDisabled = false;
   @Input() nzButtonStyle: NzRadioButtonStyle = 'outline';
   @Input() nzSize: NzSizeLDSType = 'default';
@@ -63,12 +65,8 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDe
 
   dir: Direction;
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private nzRadioService: NzRadioService,
-    @Optional() directionality: Directionality
-  ) {
-    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+  constructor(private cdr: ChangeDetectorRef, private nzRadioService: NzRadioService, @Optional() directionality: Directionality) {
+    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
       cdr.detectChanges();
     });

@@ -191,7 +191,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
     @Optional() directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
-    directionality.change.pipe(takeUntil(this.destroyed$)).subscribe(() => {
+    directionality.change?.pipe(takeUntil(this.destroyed$)).subscribe(() => {
       this.dir = directionality.value;
       cdr.detectChanges();
     });

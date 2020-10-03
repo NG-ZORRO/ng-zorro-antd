@@ -4,7 +4,17 @@
  */
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, Optional, TemplateRef, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Optional,
+  TemplateRef,
+  ViewEncapsulation
+} from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -86,11 +96,8 @@ export class NzResultComponent implements OnChanges, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(
-    cdr: ChangeDetectorRef,
-    @Optional() directionality: Directionality
-  ) {
-    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+  constructor(cdr: ChangeDetectorRef, @Optional() directionality: Directionality) {
+    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
       cdr.detectChanges();
     });
@@ -116,7 +123,7 @@ export class NzResultComponent implements OnChanges, OnDestroy {
         ? IconMap[icon as NzResultIconType] || icon
         : icon
       : this.isException
-        ? undefined
-        : IconMap[this.nzStatus as NzResultIconType];
+      ? undefined
+      : IconMap[this.nzStatus as NzResultIconType];
   }
 }

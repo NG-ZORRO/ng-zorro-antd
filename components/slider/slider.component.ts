@@ -167,7 +167,7 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
     directionality: Directionality
   ) {
     this.dir = directionality.value;
-    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
       this.cdr.detectChanges();
     });

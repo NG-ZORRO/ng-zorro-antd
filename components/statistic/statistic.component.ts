@@ -33,7 +33,7 @@ import { NzStatisticValueType } from './typings';
         <span *ngIf="nzPrefix" class="ant-statistic-content-prefix">
           <ng-container *nzStringTemplateOutlet="nzPrefix">{{ nzPrefix }}</ng-container>
         </span>
-        <nz-statistic-number [nzValue]="nzValue" [nzValueTemplate]="nzValueTemplate"> </nz-statistic-number>
+        <nz-statistic-number [nzValue]="nzValue" [nzValueTemplate]="nzValueTemplate"></nz-statistic-number>
         <span *ngIf="nzSuffix" class="ant-statistic-content-suffix">
           <ng-container *nzStringTemplateOutlet="nzSuffix">{{ nzSuffix }}</ng-container>
         </span>
@@ -53,7 +53,7 @@ export class NzStatisticComponent implements OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(cdr: ChangeDetectorRef, @Optional() directionality: Directionality) {
-    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
       cdr.detectChanges();
     });

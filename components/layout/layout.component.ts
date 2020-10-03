@@ -23,7 +23,9 @@ import { NzSiderComponent } from './sider.component';
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
-  template: ` <ng-content></ng-content> `,
+  template: `
+    <ng-content></ng-content>
+  `,
   host: {
     '[class.ant-layout-has-sider]': 'listOfNzSiderComponent.length > 0',
     '[class.ant-layout]': 'true',
@@ -38,7 +40,7 @@ export class NzLayoutComponent implements OnDestroy {
 
   constructor(directionality: Directionality) {
     this.dir = directionality.value;
-    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
     });
   }

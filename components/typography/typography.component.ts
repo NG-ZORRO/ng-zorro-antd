@@ -174,7 +174,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
     private resizeService: NzResizeService,
     @Optional() directionality: Directionality
   ) {
-    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
       cdr.detectChanges();
     });

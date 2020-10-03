@@ -141,7 +141,7 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
     private focusMonitor: FocusMonitor,
     @Optional() directionality: Directionality
   ) {
-    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
       cdr.detectChanges();
     });

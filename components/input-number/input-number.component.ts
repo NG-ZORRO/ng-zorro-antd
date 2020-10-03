@@ -378,7 +378,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
     directionality: Directionality
   ) {
     this.dir = directionality.value;
-    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
     });
   }

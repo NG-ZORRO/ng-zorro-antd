@@ -55,7 +55,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
       <div
         #tableMainElement
         class="ant-table"
-        [class.ant-table-rtl]= "dir === 'rtl'"
+        [class.ant-table-rtl]="dir === 'rtl'"
         [class.ant-table-fixed-header]="nzData.length && scrollY"
         [class.ant-table-fixed-column]="scrollX"
         [class.ant-table-has-fix-left]="hasFixLeft"
@@ -122,7 +122,6 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'table';
   host: {
     '[class.ant-table-wrapper]': 'true',
     '[class.ant-table-wrapper-rtl]': 'dir === "rtl"'
-
   }
 })
 export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnChanges, AfterViewInit {
@@ -217,7 +216,7 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
         this.cdr.markForCheck();
       });
     this.dir = directionality.value;
-    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
       cdr.detectChanges();
     });

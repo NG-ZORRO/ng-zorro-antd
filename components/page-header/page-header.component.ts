@@ -102,7 +102,7 @@ export class NzPageHeaderComponent implements AfterViewInit, OnDestroy {
     private cdr: ChangeDetectorRef,
     @Optional() directionality: Directionality
   ) {
-    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
       cdr.detectChanges();
     });

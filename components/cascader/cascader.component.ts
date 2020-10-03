@@ -329,7 +329,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     renderer.addClass(elementRef.nativeElement, 'ant-cascader-picker');
 
     this.dir = directionality.value;
-    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
     });
   }

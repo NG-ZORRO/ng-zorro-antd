@@ -168,10 +168,10 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
     public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
     private breakpointService: NzBreakpointService,
-    directionality: Directionality) {
-
+    directionality: Directionality
+  ) {
     this.dir = directionality.value;
-    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
     });
   }
@@ -183,10 +183,7 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
   }
 
   ngAfterContentInit(): void {
-    const contentChange$ = this.items.changes.pipe(
-      startWith(this.items),
-      takeUntil(this.destroy$)
-    );
+    const contentChange$ = this.items.changes.pipe(startWith(this.items), takeUntil(this.destroy$));
 
     merge(
       contentChange$,

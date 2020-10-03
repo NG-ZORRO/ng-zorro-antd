@@ -73,7 +73,7 @@ export class NzCommentComponent implements OnDestroy {
     private renderer: Renderer2,
     @Optional() directionality: Directionality
   ) {
-    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
       this.prepareComponentForRtl();
       cdr.detectChanges();

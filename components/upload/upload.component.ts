@@ -174,7 +174,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(private cdr: ChangeDetectorRef, private i18n: NzI18nService, directionality: Directionality) {
     this.dir = directionality.value;
-    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
       this.setClassMap();
       this.cdr.detectChanges();

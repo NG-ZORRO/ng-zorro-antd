@@ -69,7 +69,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
     private renderer: Renderer2,
     @Optional() directionality: Directionality
   ) {
-    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
       this.prepareComponentForRtl();
       cdr.detectChanges();
@@ -151,11 +151,10 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
   }
 
   private prepareComponentForRtl(): void {
-    if (this.dir === "rtl") {
+    if (this.dir === 'rtl') {
       this.renderer.addClass(this.elementRef.nativeElement, 'ant-breadcrumb-rtl');
     } else {
       this.renderer.removeClass(this.elementRef.nativeElement, 'ant-breadcrumb-rtl');
     }
   }
-
 }

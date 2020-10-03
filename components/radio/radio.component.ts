@@ -84,8 +84,8 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
   isChecked = false;
   name: string | null = null;
   isRadioButton = !!this.nzRadioButtonDirective;
-  onChange: OnChangeType = () => { };
-  onTouched: OnTouchedType = () => { };
+  onChange: OnChangeType = () => {};
+  onTouched: OnTouchedType = () => {};
   @ViewChild('inputElement', { static: false }) inputElement?: ElementRef;
   @Input() nzValue: NzSafeAny | null = null;
   @Input() @InputBoolean() nzDisabled = false;
@@ -124,7 +124,7 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
     @Optional() private nzRadioService: NzRadioService,
     @Optional() private nzRadioButtonDirective: NzRadioButtonDirective
   ) {
-    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
       cdr.detectChanges();
     });

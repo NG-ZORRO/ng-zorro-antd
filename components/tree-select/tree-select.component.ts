@@ -318,7 +318,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   ) {
     super(nzTreeService);
 
-    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
       cdr.detectChanges();
     });

@@ -224,7 +224,7 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(cdr: ChangeDetectorRef, public nzConfigService: NzConfigService, @Optional() directionality: Directionality) {
-    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
       cdr.detectChanges();
     });
