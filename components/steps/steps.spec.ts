@@ -1,3 +1,4 @@
+import { Directionality } from '@angular/cdk/bidi';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DebugElement, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -14,6 +15,7 @@ import { NzStepsModule } from './steps.module';
 describe('steps', () => {
   beforeEach(
     waitForAsync(() => {
+      const dir = 'ltr';
       TestBed.configureTestingModule({
         imports: [NzStepsModule, NzIconTestModule, NzDividerModule],
         declarations: [
@@ -24,7 +26,8 @@ describe('steps', () => {
           NzTestStepForComponent,
           NzTestStepAsyncComponent,
           NzDemoStepsNavComponent
-        ]
+        ],
+        providers: [{ provide: Directionality, useFactory: () => ({ value: dir }) }]
       });
       TestBed.compileComponents();
     })

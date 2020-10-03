@@ -80,7 +80,7 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
   dir: Direction;
 
   constructor(cdr: ChangeDetectorRef, @Optional() directionality: Directionality) {
-    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
       this.setClassMap();
       cdr.detectChanges();
