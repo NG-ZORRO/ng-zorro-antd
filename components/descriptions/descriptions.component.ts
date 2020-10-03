@@ -45,8 +45,13 @@ const defaultColumnMap: { [key in NzBreakpointEnum]: number } = {
   exportAs: 'nzDescriptions',
   preserveWhitespaces: false,
   template: `
-    <div *ngIf="nzTitle" class="ant-descriptions-title">
-      <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+    <div *ngIf="nzTitle || nzExtra" class="ant-descriptions-header">
+      <div *ngIf="nzTitle" class="ant-descriptions-title">
+        <ng-container *nzStringTemplateOutlet="nzTitle">{{ nzTitle }}</ng-container>
+      </div>
+      <div *ngIf="nzExtra" class="ant-descriptions-extra">
+        <ng-container *nzStringTemplateOutlet="nzExtra">{{ nzExtra }}</ng-container>
+      </div>
     </div>
     <div class="ant-descriptions-view">
       <table>
@@ -153,6 +158,7 @@ export class NzDescriptionsComponent implements OnChanges, OnDestroy, AfterConte
   @Input() @WithConfig() nzColumn: number | { [key in NzBreakpointEnum]: number } = defaultColumnMap;
   @Input() @WithConfig() nzSize: NzDescriptionsSize = 'default';
   @Input() nzTitle: string | TemplateRef<void> = '';
+  @Input() nzExtra?: string | TemplateRef<void>;
   @Input() @WithConfig() @InputBoolean() nzColon: boolean = true;
 
   itemMatrix: NzDescriptionsItemRenderProps[][] = [];
