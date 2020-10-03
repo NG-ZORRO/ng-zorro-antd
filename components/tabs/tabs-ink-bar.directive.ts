@@ -38,7 +38,7 @@ export class NzTabsInkBarDirective implements OnDestroy {
     @Optional() @Inject(ANIMATION_MODULE_TYPE) public animationMode?: string
   ) {
     this.dir = directionality.value;
-    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
     });
   }
