@@ -1543,12 +1543,6 @@ describe('cascader', () => {
       itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(itemEl1.innerText).toBe('Option1 / Option11');
     });
-
-    // it('#RTL', fakeAsync(() => {
-    //   document.body.setAttribute('dir', 'rtl');
-    //   fixture.detectChanges();
-    //   expect(cascader.nativeElement.classList).not.toContain('ant-cascader-rtl');
-    // }));
   });
 
   describe('load data lazily', () => {
