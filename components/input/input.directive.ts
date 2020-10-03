@@ -51,7 +51,7 @@ export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
   ) {
     renderer.addClass(elementRef.nativeElement, 'ant-input');
     this.dir = directionality.value;
-    directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
     });
   }
