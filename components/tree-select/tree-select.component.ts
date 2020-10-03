@@ -44,8 +44,8 @@ import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 import { NzSelectSearchComponent } from 'ng-zorro-antd/select';
 import { NzTreeComponent } from 'ng-zorro-antd/tree';
 
-import { merge, of as observableOf, Subscription, Subject } from 'rxjs';
-import { filter, tap, takeUntil } from 'rxjs/operators';
+import { merge, of as observableOf, Subject, Subscription } from 'rxjs';
+import { filter, takeUntil, tap } from 'rxjs/operators';
 
 import { Direction, Directionality } from '@angular/cdk/bidi';
 import { NzTreeSelectService } from './tree-select.service';
@@ -296,8 +296,8 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
 
   private destroy$ = new Subject<void>();
 
-  onChange: OnChangeType = _value => { };
-  onTouched: OnTouchedType = () => { };
+  onChange: OnChangeType = _value => {};
+  onTouched: OnTouchedType = () => {};
 
   get placeHolderDisplay(): string {
     return this.inputValue || this.isComposing || this.selectedNodes.length ? 'none' : 'block';
