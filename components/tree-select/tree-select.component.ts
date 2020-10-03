@@ -325,7 +325,6 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
 
     this.renderer.addClass(this.elementRef.nativeElement, 'ant-select');
     this.renderer.addClass(this.elementRef.nativeElement, 'ant-tree-select');
-
     this.dir = directionality.value;
   }
 
@@ -337,6 +336,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
   ngOnDestroy(): void {
     this.isDestroy = true;
     this.closeDropDown();
+    this.selectionChangeSubscription.unsubscribe();
     this.destroy$.next();
     this.destroy$.complete();
   }
@@ -459,7 +459,7 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
 
   subscribeSelectionChange(): Subscription {
     return merge(
-      this.nzTreeClick.pipe(takeUntil(this.destroy$)).pipe(
+      this.nzTreeClick.pipe(
         tap((event: NzFormatEmitEvent) => {
           const node = event.node!;
           if (this.nzCheckable && !node.isDisabled && !node.isDisableCheckbox) {

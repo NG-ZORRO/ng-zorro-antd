@@ -215,14 +215,25 @@ describe('nz-table', () => {
       fixture.detectChanges();
       expect(table.nativeElement.querySelector('.ant-table-placeholder').innerText.trim()).toBe('No Data');
     });
+  });
 
+  describe('Rtl', () => {
+    let fixture: ComponentFixture<ElementWithDir>;
+    let table: DebugElement;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(ElementWithDir);
+      const testBaseTable = fixture.debugElement.query(By.directive(NzTestTableBasicComponent));
+      fixture.detectChanges();
+      table = testBaseTable!.query(By.directive(NzTableComponent));
+    });
     it('#RTL', () => {
-      document.body.setAttribute('dir', 'rtl');
       fixture.detectChanges();
       expect(table.nativeElement.classList).toContain('ant-table-wrapper-rtl');
-      expect(table.nativeElement.querySelector('.ant-table-rtl').classList).toContain('ant-table-rtl');
+      expect(table.nativeElement.querySelector('.ant-table')?.classList).toContain('ant-table-rtl');
     });
   });
+
   describe('scroll nz-table', () => {
     let fixture: ComponentFixture<NzTestTableScrollComponent>;
     let testComponent: NzTestTableScrollComponent;
@@ -261,6 +272,7 @@ describe('nz-table', () => {
 });
 
 @Component({
+  selector: 'test-table-basic',
   template: `
     <nz-table
       #dynamicTable
@@ -444,4 +456,16 @@ export class NzTableSpecCrashComponent {
       }));
     }, 1000);
   }
+}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <test-table-basic></test-table-basic>
+    </div>
+  `
+})
+export class ElementWithDir {
+  direction = 'rtl';
+  changeCount = 0;
 }

@@ -58,7 +58,7 @@ import { NzTransferListComponent } from './transfer-list.component';
       (handleSelect)="handleLeftSelect($event)"
       (handleSelectAll)="handleLeftSelectAll($event)"
     ></nz-transfer-list>
-    <div *ngIf="dir === 'ltr'" class="ant-transfer-operation">
+    <div *ngIf="dir !== 'rtl'" class="ant-transfer-operation">
       <button nz-button (click)="moveToLeft()" [disabled]="nzDisabled || !leftActive" [nzType]="'primary'" [nzSize]="'small'">
         <i nz-icon nzType="left"></i>
         <span *ngIf="nzOperations[1]">{{ nzOperations[1] }}</span>

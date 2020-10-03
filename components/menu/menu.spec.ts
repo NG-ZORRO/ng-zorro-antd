@@ -1,3 +1,4 @@
+import { Directionality } from '@angular/cdk/bidi';
 import { ConnectedOverlayPositionChange, OverlayContainer } from '@angular/cdk/overlay';
 import { Component, DebugElement, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ComponentFixture, fakeAsync, inject, TestBed, tick, waitForAsync } from '@angular/core/testing';
@@ -15,6 +16,7 @@ describe('menu', () => {
   let overlayContainerElement: HTMLElement;
   beforeEach(
     waitForAsync(() => {
+      const dir = 'ltr';
       TestBed.configureTestingModule({
         imports: [NzMenuModule, NoopAnimationsModule, NzIconTestModule],
         declarations: [
@@ -29,7 +31,8 @@ describe('menu', () => {
           NzDemoMenuNgForComponent,
           NzTestNgIfMenuComponent,
           NzTestSubMenuSelectedComponent
-        ]
+        ],
+        providers: [{ provide: Directionality, useFactory: () => ({ value: dir }) }]
       });
 
       TestBed.compileComponents();
