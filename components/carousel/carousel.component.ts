@@ -171,7 +171,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
     this.dir = directionality.value;
     directionality.change.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.dir = directionality.value;
-      this.syncStrategy();
+      this.switchStrategy();
     });
   }
 
@@ -334,7 +334,7 @@ export class NzCarouselComponent implements AfterContentInit, AfterViewInit, OnD
           this.isDragging = true;
           this.strategy?.dragging(this.pointerDelta);
         },
-        () => { },
+        () => {},
         () => {
           if (this.nzEnableSwipe && this.isDragging) {
             const xDelta = this.pointerDelta ? this.pointerDelta.x : 0;
