@@ -196,7 +196,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
       cdr.detectChanges();
     });
     this.dir = directionality.value;
-    cdr.detectChanges();
   }
 
   ngOnInit(): void {
