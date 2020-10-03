@@ -187,19 +187,7 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
     '[class.ant-cascader-focused]': 'isFocused',
     '[class.ant-cascader-rtl]': `dir ==='rtl'`,
     '[class.ant-cascader-picker-rtl]': `dir ==='rtl'`
-  },
-  styles: [
-    `
-      .ant-cascader-menus {
-        margin-top: 4px;
-        margin-bottom: 4px;
-        top: 100%;
-        left: 0;
-        position: relative;
-        width: 100%;
-      }
-    `
-  ]
+  }
 })
 export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit, OnDestroy, ControlValueAccessor {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
