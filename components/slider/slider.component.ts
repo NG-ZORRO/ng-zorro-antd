@@ -441,8 +441,6 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
     const sliderLength = this.getSliderLength();
     const ratio = ensureNumberInRange((position - sliderStart) / sliderLength, 0, 1);
     const val = (this.nzMax - this.nzMin) * (this.nzVertical ? 1 - ratio : ratio) + this.nzMin;
-
-    // FIXME: (wendellhu95) `points` is not calculated falsy
     const points =
       this.nzMarks === null
         ? []
