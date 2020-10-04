@@ -1,8 +1,10 @@
+import { BidiModule, DIR_DOCUMENT } from '@angular/cdk/bidi';
 import { Location } from '@angular/common';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { FakeDocument } from 'ng-zorro-antd/core/testing';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
@@ -18,10 +20,12 @@ import { NzPageHeaderModule } from './page-header.module';
 
 describe('NzPageHeaderComponent', () => {
   let location: Location;
+  let fakeDocument: FakeDocument;
   beforeEach(
     waitForAsync(() => {
+      fakeDocument = { body: {}, documentElement: {} };
       TestBed.configureTestingModule({
-        imports: [NzPageHeaderModule, NzDropDownModule, NzIconTestModule, RouterTestingModule],
+        imports: [BidiModule, NzPageHeaderModule, NzDropDownModule, NzIconTestModule, RouterTestingModule],
         schemas: [NO_ERRORS_SCHEMA],
         declarations: [
           NzDemoPageHeaderBasicComponent,
@@ -30,7 +34,8 @@ describe('NzPageHeaderComponent', () => {
           NzDemoPageHeaderActionsComponent,
           NzDemoPageHeaderResponsiveComponent,
           NzDemoPageHeaderGhostComponent
-        ]
+        ],
+        providers: [{ provide: DIR_DOCUMENT, useFactory: () => fakeDocument }]
       }).compileComponents();
       location = TestBed.inject(Location);
     })
@@ -131,5 +136,25 @@ describe('NzPageHeaderComponent', () => {
     (back as HTMLElement).click();
     fixture.detectChanges();
     expect(context.onBack).toHaveBeenCalled();
+  });
+
+  describe('RTL', () => {
+    beforeEach(() => {
+      fakeDocument.body.dir = 'rtl';
+    });
+
+    it('should className correct', () => {
+      const fixture = TestBed.createComponent(NzDemoPageHeaderBasicComponent);
+      const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
+      fixture.detectChanges();
+      expect(pageHeader.nativeElement.classList).toContain('ant-page-header-rtl');
+    });
+
+    it('should have an default back icon', () => {
+      const fixture = TestBed.createComponent(NzDemoPageHeaderBasicComponent);
+      const pageHeader = fixture.debugElement.query(By.directive(NzPageHeaderComponent));
+      fixture.detectChanges();
+      expect(pageHeader.nativeElement.querySelector('.ant-page-header-back i.anticon-arrow-right')).toBeTruthy();
+    });
   });
 });
