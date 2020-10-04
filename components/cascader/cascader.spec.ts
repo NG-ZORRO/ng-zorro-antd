@@ -1,3 +1,4 @@
+import { BidiModule, DIR_DOCUMENT } from '@angular/cdk/bidi';
 // tslint:disable:no-any
 import {
   COMMA,
@@ -23,7 +24,7 @@ import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { createFakeEvent, createMouseEvent, dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
+import { createFakeEvent, createMouseEvent, dispatchKeyboardEvent, dispatchMouseEvent, FakeDocument } from 'ng-zorro-antd/core/testing';
 
 import { NzCascaderComponent } from './cascader.component';
 import { NzCascaderModule } from './cascader.module';
@@ -45,6 +46,50 @@ describe('cascader', () => {
     return overlayContainerElement.querySelectorAll(`.ant-cascader-menu`);
   }
 
+  let fakeDocument: FakeDocument;
+
+  beforeEach(
+    waitForAsync(() => {
+      fakeDocument = { body: {}, documentElement: {} };
+      TestBed.configureTestingModule({
+        imports: [BidiModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule, NzCascaderModule],
+        declarations: [NzDemoCascaderDefaultComponent, NzDemoCascaderLoadDataComponent],
+        providers: [{ provide: DIR_DOCUMENT, useFactory: () => fakeDocument }]
+      }).compileComponents();
+
+      inject([OverlayContainer], (oc: OverlayContainer) => {
+        overlayContainer = oc;
+        overlayContainerElement = oc.getContainerElement();
+      })();
+    })
+  );
+
+  describe('RTL', () => {
+    it('should RTL className correct', () => {
+      fakeDocument.body.dir = 'rtl';
+      const fixture = TestBed.createComponent(NzDemoCascaderDefaultComponent);
+      const cascader = fixture.debugElement.query(By.directive(NzCascaderComponent));
+      fixture.detectChanges();
+      expect(cascader.nativeElement.className).toContain('ant-cascader-rtl');
+      expect(cascader.nativeElement.className).toContain('ant-cascader-picker-rtl');
+    });
+
+    it('should item arrow display correct direction', () => {
+      const fixture = TestBed.createComponent(NzDemoCascaderDefaultComponent);
+      const testComponent = fixture.debugElement.componentInstance;
+
+      testComponent.nzOptions = options3;
+      fixture.detectChanges();
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
+      itemEl1.click();
+      fixture.detectChanges();
+      const itemEl21 = getItemAtColumnAndRow(2, 1)!;
+      expect(itemEl21.querySelector('.anticon')?.classList).toContain('anticon-right');
+    });
+  });
+
   describe('default', () => {
     let fixture: ComponentFixture<NzDemoCascaderDefaultComponent>;
     let cascader: DebugElement;
@@ -57,21 +102,6 @@ describe('cascader', () => {
     function getInputEl(): HTMLElement {
       return cascader.nativeElement.querySelector('input')!;
     }
-
-    beforeEach(
-      waitForAsync(() => {
-        TestBed.configureTestingModule({
-          imports: [FormsModule, ReactiveFormsModule, NoopAnimationsModule, NzCascaderModule],
-          declarations: [NzDemoCascaderDefaultComponent],
-          providers: []
-        }).compileComponents();
-
-        inject([OverlayContainer], (oc: OverlayContainer) => {
-          overlayContainer = oc;
-          overlayContainerElement = oc.getContainerElement();
-        })();
-      })
-    );
 
     afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
       currentOverlayContainer.ngOnDestroy();
@@ -1549,21 +1579,6 @@ describe('cascader', () => {
     let fixture: ComponentFixture<NzDemoCascaderLoadDataComponent>;
     let cascader: DebugElement;
     let testComponent: NzDemoCascaderLoadDataComponent;
-
-    beforeEach(
-      waitForAsync(() => {
-        TestBed.configureTestingModule({
-          imports: [FormsModule, ReactiveFormsModule, NoopAnimationsModule, NzCascaderModule],
-          declarations: [NzDemoCascaderLoadDataComponent],
-          providers: []
-        }).compileComponents();
-
-        inject([OverlayContainer], (oc: OverlayContainer) => {
-          overlayContainer = oc;
-          overlayContainerElement = oc.getContainerElement();
-        })();
-      })
-    );
 
     afterEach(inject([OverlayContainer], (currentOverlayContainer: OverlayContainer) => {
       currentOverlayContainer.ngOnDestroy();
