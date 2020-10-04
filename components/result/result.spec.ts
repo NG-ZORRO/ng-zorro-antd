@@ -1,6 +1,8 @@
+import { BidiModule, DIR_DOCUMENT } from '@angular/cdk/bidi';
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { FakeDocument } from 'ng-zorro-antd/core/testing';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -88,6 +90,27 @@ describe('nz-result', () => {
       expect(resultEl.nativeElement.classList).toContain('ant-result');
       expect(resultEl.nativeElement.classList).toContain('ant-result-error'); // should status work
       expect(iconView.firstElementChild.classList).toContain('anticon-close-circle');
+    });
+  });
+
+  describe('RTL', () => {
+    let fakeDocument: FakeDocument;
+
+    beforeEach(() => {
+      fakeDocument = { body: { dir: 'rtl' }, documentElement: {} };
+      testBed = createComponentBed(NzTestResultBasicComponent, {
+        imports: [BidiModule, NzResultModule, NzIconModule],
+        providers: [{ provide: DIR_DOCUMENT, useFactory: () => fakeDocument }]
+      });
+      fixture = testBed.fixture;
+      fixture.detectChanges();
+      testComponent = testBed.component;
+      resultEl = fixture.debugElement.query(By.directive(NzResultComponent));
+    });
+
+    it('should className correct', () => {
+      fixture.detectChanges();
+      expect(resultEl.nativeElement.classList).toContain('ant-result-rtl');
     });
   });
 });
