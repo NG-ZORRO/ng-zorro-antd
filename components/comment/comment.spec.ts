@@ -45,8 +45,8 @@ describe('NzCommentComponent', () => {
     fakeDocument.body.dir = 'rtl';
     const fixture = TestBed.createComponent(NzDemoCommentBasicComponent);
     const comment = fixture.debugElement.query(By.directive(NzCommentComponent));
-    expect(comment.nativeElement.classList).toContain('ant-comment-rtl');
     fixture.detectChanges();
+    expect(comment.nativeElement.classList).toContain('ant-comment-rtl');
   });
 
   it('should actions work', () => {

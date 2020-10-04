@@ -1,6 +1,8 @@
+import { DIR_DOCUMENT } from '@angular/cdk/bidi';
 import { Component, DebugElement, Injector, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { FakeDocument } from 'ng-zorro-antd/core/testing';
 import en_US from '../../../i18n/languages/en_US';
 import { NzI18nService } from '../../../i18n/nz-i18n.service';
 import { NzTableModule } from '../table.module';
@@ -8,12 +10,15 @@ import { NzTableComponent } from '../table/table.component';
 
 describe('nz-table', () => {
   let injector: Injector;
+  let fakeDocument: FakeDocument;
 
   beforeEach(
     waitForAsync(() => {
+      fakeDocument = { body: {}, documentElement: {} };
       injector = TestBed.configureTestingModule({
         imports: [NzTableModule],
-        declarations: [NzTestTableBasicComponent, NzTestTableScrollComponent, NzTableSpecCrashComponent]
+        declarations: [NzTestTableBasicComponent, NzTestTableScrollComponent, NzTableSpecCrashComponent],
+        providers: [{ provide: DIR_DOCUMENT, useFactory: () => fakeDocument }]
       });
       TestBed.compileComponents();
     })
@@ -250,6 +255,13 @@ describe('nz-table', () => {
       fixture.detectChanges();
       expect(testComponent.pageIndexChange).toHaveBeenCalledTimes(0);
     });
+  });
+  it('should rtl className correct', () => {
+    fakeDocument.body.dir = 'rtl';
+    const fixture = TestBed.createComponent(NzTestTableBasicComponent);
+    const table = fixture.debugElement.query(By.directive(NzTableComponent));
+    fixture.detectChanges();
+    expect(table.nativeElement.classList).toContain('ant-table-wrapper-rtl');
   });
 });
 
