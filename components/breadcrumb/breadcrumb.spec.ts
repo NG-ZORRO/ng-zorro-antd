@@ -9,6 +9,8 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { NzDemoBreadcrumbDropdownComponent } from './demo/dropdown';
 
+import { DIR_DOCUMENT } from '@angular/cdk/bidi';
+import { FakeDocument } from 'ng-zorro-antd/core/testing';
 import { NzBreadCrumbItemComponent } from './breadcrumb-item.component';
 import { NzBreadCrumbComponent } from './breadcrumb.component';
 import { NzBreadCrumbModule } from './breadcrumb.module';
@@ -16,22 +18,34 @@ import { NzDemoBreadcrumbBasicComponent } from './demo/basic';
 import { NzDemoBreadcrumbSeparatorComponent } from './demo/separator';
 
 describe('breadcrumb', () => {
+  let fakeDocument: FakeDocument;
+
+  beforeEach(
+    waitForAsync(() => {
+      fakeDocument = { body: {}, documentElement: {} };
+      TestBed.configureTestingModule({
+        imports: [NzBreadCrumbModule],
+        declarations: [NzDemoBreadcrumbBasicComponent],
+        providers: [{ provide: DIR_DOCUMENT, useFactory: () => fakeDocument }]
+      }).compileComponents();
+    })
+  );
+
+  it('should RTL work', () => {
+    fakeDocument.body.dir = 'rtl';
+    const fixture = TestBed.createComponent(NzDemoBreadcrumbBasicComponent);
+    const breadcrumb = fixture.debugElement.query(By.directive(NzBreadCrumbComponent));
+    fixture.detectChanges();
+    expect(breadcrumb.nativeElement.classList).toContain('ant-breadcrumb-rtl');
+  });
+
   describe('basic', () => {
     let fixture: ComponentFixture<NzDemoBreadcrumbBasicComponent>;
     let items: DebugElement[];
     let breadcrumb: DebugElement;
 
-    beforeEach(
-      waitForAsync(() => {
-        TestBed.configureTestingModule({
-          imports: [NzBreadCrumbModule],
-          declarations: [NzDemoBreadcrumbBasicComponent],
-          providers: []
-        }).compileComponents();
-      })
-    );
-
     beforeEach(() => {
+      fakeDocument = { body: {}, documentElement: {} };
       fixture = TestBed.createComponent(NzDemoBreadcrumbBasicComponent);
       items = fixture.debugElement.queryAll(By.directive(NzBreadCrumbItemComponent));
       breadcrumb = fixture.debugElement.query(By.directive(NzBreadCrumbComponent));
