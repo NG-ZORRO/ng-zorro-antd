@@ -41,10 +41,17 @@ export interface BreadcrumbOption {
   preserveWhitespaces: false,
   template: `
     <ng-content></ng-content>
-    <ng-container *ngIf="nzAutoGenerate && breadcrumbs.length">
-      <nz-breadcrumb-item *ngFor="let breadcrumb of breadcrumbs">
-        <a [attr.href]="breadcrumb.url" (click)="navigate(breadcrumb.url, $event)">{{ breadcrumb.label }}</a>
-      </nz-breadcrumb-item>
+    <ng-container *ngIf="nzAutoGenerate && breadcrumbs?.length">
+      <ng-container *ngFor="let breadcrumb of breadcrumbs">
+        <nz-breadcrumb-item *ngIf="!nzAutoGenerateTemplate">
+          <a [attr.href]="breadcrumb.url" (click)="navigate(breadcrumb.url, $event)">{{ breadcrumb.label }}</a>
+        </nz-breadcrumb-item>
+        <ng-container *ngIf="nzAutoGenerateTemplate">
+          <ng-container
+            *ngTemplateOutlet="nzAutoGenerateTemplate; context: { $implicit: breadcrumb.label }"
+          ></ng-container>
+        </ng-container>
+      </ng-container>
     </ng-container>
   `
 })
@@ -52,12 +59,13 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
   static ngAcceptInputType_nzAutoGenerate: BooleanInput;
 
   @Input() @InputBoolean() nzAutoGenerate = false;
-  @Input() nzSeparator: string | TemplateRef<void> | null = '/';
+  @Input() nzAutoGenerateTemplate?: TemplateRef<string>;
   @Input() nzRouteLabel: string = 'breadcrumb';
   @Input() nzRouteLabelFn: (label: string) => string = label => label;
+  @Input() nzSeparator: string | TemplateRef<void> | null = '/';
 
-  breadcrumbs: BreadcrumbOption[] = [];
   dir: Direction = 'ltr';
+  breadcrumbs: BreadcrumbOption[] | undefined = [];
 
   private destroy$ = new Subject<void>();
 
