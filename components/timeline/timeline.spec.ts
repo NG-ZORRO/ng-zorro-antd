@@ -1,6 +1,8 @@
+import { BidiModule, DIR_DOCUMENT } from '@angular/cdk/bidi';
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { FakeDocument } from 'ng-zorro-antd/core/testing';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 
 import { NzTimelineComponent } from './timeline.component';
@@ -169,6 +171,33 @@ describe('nz-timeline', () => {
     it('should pending work', () => {
       fixture.detectChanges();
       expect(timeline.nativeElement.querySelector('.ant-timeline-item-pending').innerText).toBe('template');
+    });
+  });
+
+  describe('RTL', () => {
+    let fakeDocument: FakeDocument;
+    let testBed: ComponentBed<NzTestTimelineBasicComponent>;
+    let fixture: ComponentFixture<NzTestTimelineBasicComponent>;
+    let timeline: DebugElement;
+    let items: HTMLDivElement[] = [];
+
+    beforeEach(() => {
+      fakeDocument = { body: { dir: 'rtl' }, documentElement: {} };
+      testBed = createComponentBed(NzTestTimelineBasicComponent, {
+        imports: [BidiModule, NzTimelineModule],
+        providers: [{ provide: DIR_DOCUMENT, useFactory: () => fakeDocument }]
+      });
+      fixture = testBed.fixture;
+
+      fixture.detectChanges();
+
+      timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
+      items = Array.from((fixture.debugElement.nativeElement as HTMLElement).querySelectorAll('.ant-timeline-item'));
+    });
+
+    it('should init className correct', () => {
+      expect(timeline.nativeElement.firstElementChild!.classList).toContain('ant-timeline-rtl');
+      expect(items.length).toBeGreaterThan(0);
     });
   });
 });
