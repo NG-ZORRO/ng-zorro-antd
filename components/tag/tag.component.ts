@@ -13,6 +13,7 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
   Optional,
   Output,
   Renderer2,
@@ -41,10 +42,11 @@ import { takeUntil } from 'rxjs/operators';
     '[class.ant-tag-has-color]': `nzColor && !isPresetColor`,
     '[class.ant-tag-checkable]': `nzMode === 'checkable'`,
     '[class.ant-tag-checkable-checked]': `nzChecked`,
+    '[class.ant-tag-rtl]': `dir === 'rtl'`,
     '(click)': 'updateCheckedStatus()'
   }
 })
-export class NzTagComponent implements OnChanges, OnDestroy {
+export class NzTagComponent implements OnChanges, OnDestroy, OnInit {
   static ngAcceptInputType_nzChecked: BooleanInput;
   isPresetColor = false;
   @Input() nzMode: 'default' | 'closeable' | 'checkable' = 'default';
@@ -52,7 +54,7 @@ export class NzTagComponent implements OnChanges, OnDestroy {
   @Input() @InputBoolean() nzChecked = false;
   @Output() readonly nzOnClose = new EventEmitter<MouseEvent>();
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
-  dir: Direction;
+  dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
 
   updateCheckedStatus(): void {
@@ -70,19 +72,19 @@ export class NzTagComponent implements OnChanges, OnDestroy {
   }
 
   constructor(
-    cdr: ChangeDetectorRef,
+    private cdr: ChangeDetectorRef,
     private renderer: Renderer2,
     private elementRef: ElementRef,
-    @Optional() directionality: Directionality
-  ) {
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      this.prepareComponentForRtl();
-      cdr.detectChanges();
+    @Optional() private directionality: Directionality
+  ) {}
+
+  ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
     });
 
-    this.dir = directionality.value;
-    this.prepareComponentForRtl();
+    this.dir = this.directionality.value;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -101,16 +103,5 @@ export class NzTagComponent implements OnChanges, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  private prepareComponentForRtl(): void {
-    if (this.isRtlLayout) {
-      this.renderer.addClass(this.elementRef.nativeElement, 'ant-tag-rtl');
-    } else {
-      this.renderer.removeClass(this.elementRef.nativeElement, 'ant-tag-rtl');
-    }
-  }
-  get isRtlLayout(): boolean {
-    return this.dir === 'rtl';
   }
 }
