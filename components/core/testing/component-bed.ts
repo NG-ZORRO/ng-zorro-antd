@@ -1,9 +1,7 @@
-import { BidiModule } from '@angular/cdk/bidi';
 import { CommonModule } from '@angular/common';
 import { DebugElement, NgModule, NO_ERRORS_SCHEMA, Type } from '@angular/core';
 import { ComponentFixture, TestBed, TestBedStatic } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RtlContainerComponent } from './rtl-container';
 
 type ComponentBedOptions = Pick<NgModule, 'providers' | 'declarations' | 'imports'>;
 export interface ComponentBed<T> {
@@ -23,8 +21,8 @@ export function createComponentBed<T>(
 ): ComponentBed<T> {
   const { imports, declarations, providers } = options;
   const config = {
-    imports: [BidiModule, NoopAnimationsModule, CommonModule, ...(imports || [])],
-    declarations: [component, ...(declarations || []), RtlContainerComponent],
+    imports: [NoopAnimationsModule, CommonModule, ...(imports || [])],
+    declarations: [component, ...(declarations || [])],
     schemas: [NO_ERRORS_SCHEMA],
     providers: providers || []
   };

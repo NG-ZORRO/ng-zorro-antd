@@ -13,5 +13,4 @@ export * from './wrapped-error-message';
 export * from './fake-viewport-ruler';
 export * from './mock-ng-zone';
 export * from './fake-document';
-export * from './rtl-container';
 export { createComponentBed as ɵcreateComponentBed, ComponentBed as ɵComponentBed } from './component-bed';

@@ -1,9 +1,8 @@
-import { BidiModule } from '@angular/cdk/bidi';
-import { Component, DebugElement } from '@angular/core';
+import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RtlContainerComponent } from 'ng-zorro-antd/core/testing';
 import { NzTagComponent } from './tag.component';
 import { NzTagModule } from './tag.module';
 
@@ -11,7 +10,7 @@ describe('tag', () => {
   beforeEach(fakeAsync(() => {
     TestBed.configureTestingModule({
       imports: [BidiModule, NzTagModule, NoopAnimationsModule],
-      declarations: [NzTestTagBasicComponent, NzTestTagPreventComponent, RtlContainerComponent, NzTestTagRtlComponent]
+      declarations: [NzTestTagBasicComponent, NzTestTagPreventComponent, NzTestTagRtlComponent]
     });
     TestBed.compileComponents();
   }));
@@ -119,21 +118,13 @@ describe('tag', () => {
     }));
   });
   describe('RTL', () => {
-    it('should RTL className correct', () => {
-      const fixture = TestBed.createComponent(NzTestTagRtlComponent);
-      const tag = fixture.debugElement.query(By.directive(NzTagComponent));
-      fixture.detectChanges();
-      expect(tag.nativeElement.className).toContain('ant-tag-rtl');
-    });
-
     it('should className correct on dir change', () => {
       const fixture = TestBed.createComponent(NzTestTagRtlComponent);
-      const rtlContainer = fixture.debugElement.query(By.directive(RtlContainerComponent));
       const tag = fixture.debugElement.query(By.directive(NzTagComponent));
       fixture.detectChanges();
       expect(tag.nativeElement.className).toContain('ant-tag-rtl');
 
-      rtlContainer.componentInstance.direction = 'ltr';
+      fixture.componentInstance.direction = 'ltr';
       fixture.detectChanges();
 
       expect(tag.nativeElement.className).not.toContain('ant-tag-rtl');
@@ -143,12 +134,15 @@ describe('tag', () => {
 
 @Component({
   template: `
-    <rtl-container>
+    <div [dir]="direction">
       <test-tag-basic></test-tag-basic>
-    </rtl-container>
+    </div>
   `
 })
-class NzTestTagRtlComponent {}
+export class NzTestTagRtlComponent {
+  @ViewChild(Dir) dir: Dir = new Dir();
+  direction = 'rtl';
+}
 
 @Component({
   template: `
