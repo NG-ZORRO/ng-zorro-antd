@@ -26,7 +26,7 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 | `[nzPopoverTitle]` | Title of the popover | `string \| TemplateRef<void>` | - |
 | `[nzPopoverContent]` | Content of the popover | `string \| TemplateRef<void>` | - |
 | `[nzPopoverTrigger]` | Popover trigger mode. If set to `null` it would not be triggered | `'click' \| 'focus' \| 'hover' \| null` | `'hover'` |
-| `[nzPopoverPlacement]` | The position of the popover relative to the target | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
+| `[nzPopoverPlacement]` | The position of the popover relative to the target | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom' \| Array<string>` | `'top'` |
 | `[nzPopoverOrigin]` | Origin of the tooltip | `ElementRef` | - |
 | `[nzPopoverVisible]` | Show or hide popover | `boolean` | `false` |
 | `(nzPopoverVisibleChange)` | Callback of hide or show | `EventEmitter<boolean>` | - |

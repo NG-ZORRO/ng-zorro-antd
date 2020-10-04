@@ -38,7 +38,7 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
   @Input('nzTooltipTitle') title?: NzTSType | null;
   @Input('nz-tooltip') directiveTitle?: NzTSType | null;
   @Input('nzTooltipTrigger') trigger?: NzTooltipTrigger = 'hover';
-  @Input('nzTooltipPlacement') placement?: string = 'top';
+  @Input('nzTooltipPlacement') placement?: string | string[] = 'top';
   @Input('nzTooltipOrigin') origin?: ElementRef<HTMLElement>;
   @Input('nzTooltipVisible') visible?: boolean;
   @Input('nzTooltipMouseEnterDelay') mouseEnterDelay?: number;

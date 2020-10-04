@@ -38,7 +38,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   @Input('nzPopoverContent') content?: NzTSType;
   @Input('nz-popover') directiveTitle?: NzTSType | null;
   @Input('nzPopoverTrigger') trigger?: NzTooltipTrigger = 'hover';
-  @Input('nzPopoverPlacement') placement?: string = 'top';
+  @Input('nzPopoverPlacement') placement?: string | string[] = 'top';
   @Input('nzPopoverOrigin') origin?: ElementRef<HTMLElement>;
   @Input('nzPopoverVisible') visible?: boolean;
   @Input('nzPopoverMouseEnterDelay') mouseEnterDelay?: number;
@@ -108,7 +108,7 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
   `
 })
 export class NzPopoverComponent extends NzToolTipComponent {
-  _prefix = 'ant-popover-placement';
+  _prefix = 'ant-popover';
 
   constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
     super(cdr, noAnimation);

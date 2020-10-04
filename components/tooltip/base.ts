@@ -40,7 +40,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
   title?: NzTSType | null;
   content?: NzTSType | null;
   trigger?: NzTooltipTrigger;
-  placement?: string;
+  placement?: string | string[];
   origin?: ElementRef<HTMLElement>;
   visible?: boolean;
   mouseEnterDelay?: number;
@@ -69,8 +69,9 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
     return typeof this.trigger !== 'undefined' ? this.trigger : 'hover';
   }
 
-  protected get _placement(): string {
-    return this.placement || 'top';
+  protected get _placement(): string[] {
+    const p = this.placement;
+    return Array.isArray(p) && p.length > 0 ? p : typeof p === 'string' && p ? [p] : ['top'];
   }
 
   protected get _visible(): boolean {
@@ -336,19 +337,14 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
 
   protected _trigger: NzTooltipTrigger = 'hover';
 
-  set nzPlacement(value: string) {
-    if (value !== this.preferredPlacement) {
-      this.preferredPlacement = value;
-      this._positions = [POSITION_MAP[this.nzPlacement], ...DEFAULT_TOOLTIP_POSITIONS];
-    }
+  set nzPlacement(value: string[]) {
+    const preferredPosition = value.map(placement => POSITION_MAP[placement]);
+    this._positions = [...preferredPosition, ...DEFAULT_TOOLTIP_POSITIONS];
   }
 
-  get nzPlacement(): string {
-    return this.preferredPlacement;
-  }
+  preferredPlacement: string = 'top';
 
   origin!: CdkOverlayOrigin;
-  preferredPlacement = 'top';
 
   _classMap: NgClassInterface = {};
 
@@ -408,6 +404,8 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
   onPositionChange(position: ConnectedOverlayPositionChange): void {
     this.preferredPlacement = getPlacementName(position)!;
     this.updateStyles();
+
+    // We have to trigger immediate change detection or the element would blink.
     this.cdr.detectChanges();
   }
 
