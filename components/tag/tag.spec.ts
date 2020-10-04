@@ -1,20 +1,17 @@
-import { BidiModule, DIR_DOCUMENT } from '@angular/cdk/bidi';
+import { BidiModule } from '@angular/cdk/bidi';
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { FakeDocument } from 'ng-zorro-antd/core/testing';
+import { RtlContainerComponent } from 'ng-zorro-antd/core/testing';
 import { NzTagComponent } from './tag.component';
 import { NzTagModule } from './tag.module';
 
 describe('tag', () => {
-  let fakeDocument: FakeDocument;
   beforeEach(fakeAsync(() => {
-    fakeDocument = { body: {}, documentElement: {} };
     TestBed.configureTestingModule({
       imports: [BidiModule, NzTagModule, NoopAnimationsModule],
-      declarations: [NzTestTagBasicComponent, NzTestTagPreventComponent],
-      providers: [{ provide: DIR_DOCUMENT, useFactory: () => fakeDocument }]
+      declarations: [NzTestTagBasicComponent, NzTestTagPreventComponent, RtlContainerComponent, NzTestTagRtlComponent]
     });
     TestBed.compileComponents();
   }));
@@ -123,14 +120,35 @@ describe('tag', () => {
   });
   describe('RTL', () => {
     it('should RTL className correct', () => {
-      fakeDocument.body.dir = 'rtl';
-      const fixture = TestBed.createComponent(NzTestTagBasicComponent);
-      const cascader = fixture.debugElement.query(By.directive(NzTagComponent));
+      const fixture = TestBed.createComponent(NzTestTagRtlComponent);
+      const tag = fixture.debugElement.query(By.directive(NzTagComponent));
       fixture.detectChanges();
-      expect(cascader.nativeElement.className).toContain('ant-tag-rtl');
+      expect(tag.nativeElement.className).toContain('ant-tag-rtl');
+    });
+
+    it('should className correct on dir change', () => {
+      const fixture = TestBed.createComponent(NzTestTagRtlComponent);
+      const rtlContainer = fixture.debugElement.query(By.directive(RtlContainerComponent));
+      const tag = fixture.debugElement.query(By.directive(NzTagComponent));
+      fixture.detectChanges();
+      expect(tag.nativeElement.className).toContain('ant-tag-rtl');
+
+      rtlContainer.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+
+      expect(tag.nativeElement.className).not.toContain('ant-tag-rtl');
     });
   });
 });
+
+@Component({
+  template: `
+    <rtl-container>
+      <test-tag-basic></test-tag-basic>
+    </rtl-container>
+  `
+})
+class NzTestTagRtlComponent {}
 
 @Component({
   template: `
