@@ -1,15 +1,20 @@
+import { BidiModule, DIR_DOCUMENT } from '@angular/cdk/bidi';
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { FakeDocument } from 'ng-zorro-antd/core/testing';
 import { NzTagComponent } from './tag.component';
 import { NzTagModule } from './tag.module';
 
 describe('tag', () => {
+  let fakeDocument: FakeDocument;
   beforeEach(fakeAsync(() => {
+    fakeDocument = { body: {}, documentElement: {} };
     TestBed.configureTestingModule({
-      imports: [NzTagModule, NoopAnimationsModule],
-      declarations: [NzTestTagBasicComponent, NzTestTagPreventComponent]
+      imports: [BidiModule, NzTagModule, NoopAnimationsModule],
+      declarations: [NzTestTagBasicComponent, NzTestTagPreventComponent],
+      providers: [{ provide: DIR_DOCUMENT, useFactory: () => fakeDocument }]
     });
     TestBed.compileComponents();
   }));
@@ -115,6 +120,15 @@ describe('tag', () => {
       fixture.detectChanges();
       expect(tag.nativeElement.querySelector('.anticon-close')).toBeDefined();
     }));
+  });
+  describe('RTL', () => {
+    it('should RTL className correct', () => {
+      fakeDocument.body.dir = 'rtl';
+      const fixture = TestBed.createComponent(NzTestTagBasicComponent);
+      const cascader = fixture.debugElement.query(By.directive(NzTagComponent));
+      fixture.detectChanges();
+      expect(cascader.nativeElement.className).toContain('ant-tag-rtl');
+    });
   });
 });
 
