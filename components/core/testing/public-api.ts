@@ -12,4 +12,5 @@ export * from './type-in-element';
 export * from './wrapped-error-message';
 export * from './fake-viewport-ruler';
 export * from './mock-ng-zone';
+export * from './fake-document';
 export { createComponentBed as ɵcreateComponentBed, ComponentBed as ɵComponentBed } from './component-bed';

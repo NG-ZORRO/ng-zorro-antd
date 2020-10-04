@@ -7,16 +7,21 @@ import { NzDemoCommentEditorComponent } from './demo/editor';
 import { NzDemoCommentListComponent } from './demo/list';
 import { NzDemoCommentNestedComponent } from './demo/nested';
 
+import { DIR_DOCUMENT } from '@angular/cdk/bidi';
+import { FakeDocument } from 'ng-zorro-antd/core/testing';
 import { NzCommentComponent } from './comment.component';
 import { NzCommentModule } from './comment.module';
 
 describe('NzCommentComponent', () => {
+  let fakeDocument: FakeDocument;
   beforeEach(
     waitForAsync(() => {
+      fakeDocument = { body: {}, documentElement: {} };
       TestBed.configureTestingModule({
         imports: [NzCommentModule, NzListModule],
         schemas: [NO_ERRORS_SCHEMA],
-        declarations: [NzDemoCommentBasicComponent, NzDemoCommentEditorComponent, NzDemoCommentListComponent, NzDemoCommentNestedComponent]
+        declarations: [NzDemoCommentBasicComponent, NzDemoCommentEditorComponent, NzDemoCommentListComponent, NzDemoCommentNestedComponent],
+        providers: [{ provide: DIR_DOCUMENT, useFactory: () => fakeDocument }]
       }).compileComponents();
     })
   );
@@ -34,6 +39,14 @@ describe('NzCommentComponent', () => {
     expect(comment.nativeElement.querySelector('.ant-comment-content-author-time')).toBeTruthy();
     expect(comment.nativeElement.querySelector('.ant-comment-content-author-name').innerText).toBe('Han Solo');
     expect(comment.nativeElement.querySelector('.ant-comment-content-author-time').innerText).toBe(component.time);
+  });
+
+  it('should RTL work', () => {
+    fakeDocument.body.dir = 'rtl';
+    const fixture = TestBed.createComponent(NzDemoCommentBasicComponent);
+    const comment = fixture.debugElement.query(By.directive(NzCommentComponent));
+    expect(comment.nativeElement.classList).toContain('ant-comment-rtl');
+    fixture.detectChanges();
   });
 
   it('should actions work', () => {
