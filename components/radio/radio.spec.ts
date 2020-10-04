@@ -1,16 +1,20 @@
+import { BidiModule, DIR_DOCUMENT } from '@angular/cdk/bidi';
 import { Component, DebugElement, OnInit, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { FakeDocument } from 'ng-zorro-antd/core/testing';
 
 import { NzRadioGroupComponent } from './radio-group.component';
 import { NzRadioComponent } from './radio.component';
 import { NzRadioModule } from './radio.module';
 
 describe('radio', () => {
+  let fakeDocument: FakeDocument;
   beforeEach(fakeAsync(() => {
+    fakeDocument = { body: {}, documentElement: {} };
     TestBed.configureTestingModule({
-      imports: [NzRadioModule, FormsModule, ReactiveFormsModule],
+      imports: [BidiModule, NzRadioModule, FormsModule, ReactiveFormsModule],
       declarations: [
         NzTestRadioSingleComponent,
         NzTestRadioButtonComponent,
@@ -19,7 +23,8 @@ describe('radio', () => {
         NzTestRadioGroupFormComponent,
         NzTestRadioGroupDisabledComponent,
         NzTestRadioGroupDisabledFormComponent
-      ]
+      ],
+      providers: [{ provide: DIR_DOCUMENT, useFactory: () => fakeDocument }]
     });
     TestBed.compileComponents();
   }));
@@ -301,13 +306,32 @@ describe('radio', () => {
       }).not.toThrow();
     }));
   });
+  describe('RTL', () => {
+    beforeEach(() => {
+      fakeDocument.body.dir = 'rtl';
+    });
+
+    it('should single radio className correct', () => {
+      const fixture = TestBed.createComponent(NzTestRadioSingleComponent);
+      const cascader = fixture.debugElement.query(By.directive(NzRadioComponent));
+      fixture.detectChanges();
+      expect(cascader.nativeElement.className).toContain('ant-radio-button-wrapper-rtl');
+    });
+
+    it('should radio group className correct', () => {
+      const fixture = TestBed.createComponent(NzTestRadioGroupComponent);
+      fixture.detectChanges();
+      const radioGroup = fixture.debugElement.query(By.directive(NzRadioGroupComponent));
+      expect(radioGroup.nativeElement.classList).toContain('ant-radio-group-rtl');
+    });
+  });
 });
 
 @Component({
   template: `
-    <label nz-radio [(ngModel)]="value" (ngModelChange)="modelChange($event)" [nzDisabled]="disabled" [nzAutoFocus]="autoFocus"
-      >Radio</label
-    >
+    <label nz-radio [(ngModel)]="value" (ngModelChange)="modelChange($event)" [nzDisabled]="disabled" [nzAutoFocus]="autoFocus">
+      Radio
+    </label>
   `
 })
 export class NzTestRadioSingleComponent {
@@ -319,7 +343,9 @@ export class NzTestRadioSingleComponent {
 }
 
 @Component({
-  template: ` <label nz-radio-button>Radio</label> `
+  template: `
+    <label nz-radio-button>Radio</label>
+  `
 })
 export class NzTestRadioButtonComponent {}
 
