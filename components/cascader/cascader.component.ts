@@ -264,7 +264,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   isFocused = false;
 
   locale!: NzCascaderI18nInterface;
-  dir: Direction;
+  dir: Direction = 'ltr';
 
   private destroy$ = new Subject<void>();
   private inputString = '';
@@ -320,18 +320,13 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     private cdr: ChangeDetectorRef,
     elementRef: ElementRef,
     renderer: Renderer2,
-    directionality: Directionality,
+    @Optional() private directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     this.el = elementRef.nativeElement;
     this.cascaderService.withComponent(this);
     renderer.addClass(elementRef.nativeElement, 'ant-cascader');
     renderer.addClass(elementRef.nativeElement, 'ant-cascader-picker');
-
-    this.dir = directionality.value;
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-    });
   }
 
   ngOnInit(): void {
@@ -384,6 +379,11 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
       .subscribe(() => {
         this.cdr.markForCheck();
       });
+
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.dir = this.directionality.value;
+    });
   }
 
   ngOnDestroy(): void {

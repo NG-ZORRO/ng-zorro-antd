@@ -1,4 +1,4 @@
-import { BidiModule, DIR_DOCUMENT } from '@angular/cdk/bidi';
+import { BidiModule, Dir } from '@angular/cdk/bidi';
 // tslint:disable:no-any
 import {
   COMMA,
@@ -24,7 +24,7 @@ import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick, waitForAsync
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { createFakeEvent, createMouseEvent, dispatchKeyboardEvent, dispatchMouseEvent, FakeDocument } from 'ng-zorro-antd/core/testing';
+import { createFakeEvent, createMouseEvent, dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
 
 import { NzCascaderComponent } from './cascader.component';
 import { NzCascaderModule } from './cascader.module';
@@ -46,15 +46,11 @@ describe('cascader', () => {
     return overlayContainerElement.querySelectorAll(`.ant-cascader-menu`);
   }
 
-  let fakeDocument: FakeDocument;
-
   beforeEach(
     waitForAsync(() => {
-      fakeDocument = { body: {}, documentElement: {} };
       TestBed.configureTestingModule({
         imports: [BidiModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule, NzCascaderModule],
-        declarations: [NzDemoCascaderDefaultComponent, NzDemoCascaderLoadDataComponent],
-        providers: [{ provide: DIR_DOCUMENT, useFactory: () => fakeDocument }]
+        declarations: [NzDemoCascaderDefaultComponent, NzDemoCascaderLoadDataComponent]
       }).compileComponents();
 
       inject([OverlayContainer], (oc: OverlayContainer) => {
@@ -66,16 +62,20 @@ describe('cascader', () => {
 
   describe('RTL', () => {
     it('should RTL className correct', () => {
-      fakeDocument.body.dir = 'rtl';
-      const fixture = TestBed.createComponent(NzDemoCascaderDefaultComponent);
+      const fixture = TestBed.createComponent(NzDemoCascaderRtlComponent);
       const cascader = fixture.debugElement.query(By.directive(NzCascaderComponent));
       fixture.detectChanges();
       expect(cascader.nativeElement.className).toContain('ant-cascader-rtl');
       expect(cascader.nativeElement.className).toContain('ant-cascader-picker-rtl');
+
+      fixture.componentInstance.direction = 'ltr';
+
+      expect(cascader.nativeElement.className).not.toContain('ant-cascader-rtl');
+      expect(cascader.nativeElement.className).not.toContain('ant-cascader-picker-rtl');
     });
 
     it('should item arrow display correct direction', () => {
-      const fixture = TestBed.createComponent(NzDemoCascaderDefaultComponent);
+      const fixture = TestBed.createComponent(NzDemoCascaderRtlComponent);
       const testComponent = fixture.debugElement.componentInstance;
 
       testComponent.nzOptions = options3;
@@ -2071,4 +2071,52 @@ export class NzDemoCascaderLoadDataComponent {
 
   onVisibleChange = jasmine.createSpy('open change');
   onValueChanges = jasmine.createSpy('value change');
+}
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-cascader
+        [nzOptions]="nzOptions"
+        [(ngModel)]="values"
+        [nzAllowClear]="nzAllowClear"
+        [nzAutoFocus]="nzAutoFocus"
+        [nzMenuStyle]="nzMenuStyle"
+        [nzMenuClassName]="nzMenuClassName"
+        [nzColumnClassName]="nzColumnClassName"
+        [nzExpandTrigger]="nzExpandTrigger"
+        [nzDisabled]="nzDisabled"
+        [nzLabelRender]="nzLabelRender"
+        [nzLabelProperty]="nzLabelProperty"
+        [nzValueProperty]="nzValueProperty"
+        [nzPlaceHolder]="nzPlaceHolder"
+        [nzShowArrow]="nzShowArrow"
+        [nzShowInput]="nzShowInput"
+        [nzShowSearch]="nzShowSearch"
+        [nzSize]="nzSize"
+        [nzTriggerAction]="nzTriggerAction"
+        [nzMouseEnterDelay]="nzMouseEnterDelay"
+        [nzMouseLeaveDelay]="nzMouseLeaveDelay"
+        [nzChangeOn]="nzChangeOn"
+        [nzChangeOnSelect]="nzChangeOnSelect"
+        (ngModelChange)="onValueChanges($event)"
+        (nzVisibleChange)="onVisibleChange($event)"
+        (nzSelect)="onSelect($event)"
+      ></nz-cascader>
+
+      <ng-template #renderTpl let-labels="labels" let-selectedOptions="selectedOptions">
+        <ng-container *ngFor="let label of labels; let i = index; let isLast = last">{{ label }}{{ isLast ? '' : ' | ' }}</ng-container>
+      </ng-template>
+    </div>
+  `,
+  styles: [
+    `
+      .ant-cascader-picker {
+        width: 300px;
+      }
+    `
+  ]
+})
+export class NzDemoCascaderRtlComponent extends NzDemoCascaderDefaultComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
 }
