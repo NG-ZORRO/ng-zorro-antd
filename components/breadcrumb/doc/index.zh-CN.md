@@ -26,7 +26,7 @@ import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 | --- | --- | --- | --- |
 | `[nzSeparator]` | 分隔符自定义 | `string \| TemplateRef<void> \| null` | `'/'` |
 | `[nzAutoGenerate]` | 自动生成 Breadcrumb | `boolean` | `false` |
-| `[nzAutoGenerateTemplate]` | 自动生成 Breadcrumb 时自定义 breadcrumb 内容 | `TemplateRef<string>` | - |
+| `[nzAutoGenerateTemplate]` | 自动生成 Breadcrumb 时自定义内容，context 为 label | `TemplateRef<string>` | - |
 | `[nzRouteLabel]` | 自定义 route data 属性名称, `nzAutoGenerate` 为 `true` 时才生效 | `string` | `'breadcrumb'` |
 | `[nzRouteLabelFn]` | 格式化面包屑导航项的显示文字，通常用于在国际化应用中翻译键值, `nzAutoGenerate` 为 `true` 时才生效 | `(label:string) => string` | `label => label` |
 
