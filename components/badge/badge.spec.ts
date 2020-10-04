@@ -1,7 +1,9 @@
+import { DIR_DOCUMENT } from '@angular/cdk/bidi';
 import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { FakeDocument } from 'ng-zorro-antd/core/testing';
 
 import { NgStyleInterface } from 'ng-zorro-antd/core/types';
 
@@ -9,13 +11,24 @@ import { NzBadgeComponent } from './badge.component';
 import { NzBadgeModule } from './badge.module';
 
 describe('badge', () => {
+  let fakeDocument: FakeDocument;
   beforeEach(fakeAsync(() => {
+    fakeDocument = { body: {}, documentElement: {} };
     TestBed.configureTestingModule({
       imports: [NzBadgeModule, NoopAnimationsModule],
-      declarations: [NzTestBadgeBasicComponent]
+      declarations: [NzTestBadgeBasicComponent],
+      providers: [{ provide: DIR_DOCUMENT, useFactory: () => fakeDocument }]
     });
     TestBed.compileComponents();
   }));
+
+  it('should RTL work', () => {
+    fakeDocument.body.dir = 'rtl';
+    const fixture = TestBed.createComponent(NzTestBadgeBasicComponent);
+    const badgeElement = fixture.debugElement.query(By.directive(NzBadgeComponent));
+    fixture.detectChanges();
+    expect(badgeElement.nativeElement.classList).toContain('ant-badge-rtl');
+  });
 
   describe('basic badge', () => {
     let fixture: ComponentFixture<NzTestBadgeBasicComponent>;
