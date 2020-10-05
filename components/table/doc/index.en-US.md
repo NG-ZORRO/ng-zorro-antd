@@ -11,7 +11,7 @@ A table displays rows of data.
 ## When To Use
 
 - To display a collection of structured data.
-- To sort, search, paginate, filter data.
+- To sort, search, paginate and filter data.
 
 ```ts
 import { NzTableModule } from 'ng-zorro-antd/table';
@@ -23,15 +23,15 @@ The Table component is both easy to use and highly customizable.
 
 ### Highly Customizable
 
-You can use `nz-table` like  [` W3C Standard <table>`](https://www.w3.org/TR/html401/struct/tables.html) , developers can control every part of the table as you wish.
+The `nz-table` can be used like  [` W3C Standard <table>`](https://www.w3.org/TR/html401/struct/tables.html). Developers can control every part of the table as they wish.
 
 ### Component Enhancements
 
-The component in `nz-table` such as `th`, `td`, `thead`, etc are enhanced, developers can make the table sortable, filterable, fixed header, server rendering, etc easily with api provided.
+The component in `nz-table` such as `th`, `td`, `thead` etc. are enhanced. Developers can make the table sortable, filterable, with fixed header, perform server side rendering etc. easily with the provided api.
 
 ### Data Processing
 
-The data passed to `[nzData]` will be export with [Template Context](https://angular.io/guide/template-syntax#statement-context) after processing(including paging, sort and filter), developers can use `*ngFor` to render current page data in table.
+The data passed to `[nzData]` is exported with [Template Context](https://angular.io/guide/template-syntax#statement-context) after processing (including paging, sorting and filtering). `*ngFor` can be used to render current page data in table.
 
 ```html
 <nz-table #basicTable [nzData]="dataSet">
@@ -64,21 +64,21 @@ The data passed to `[nzData]` will be export with [Template Context](https://ang
 
 | Property | Description | Type | Default | Global Config |
 | -------- | ----------- | ---- | ------- | ------------- |
-| `[nzData]` | Data record array to be displayed | `any[]` | - |
-| `[nzFrontPagination]` | Whether paginate data in front side，should set to `false` if you want to paginate data in server side or display all data in table | `boolean` | `true` |
-| `[nzTotal]` | Total data count, should set when `nzServerRender` is true | `number` | - |
+| `[nzData]` | Data record array to be rendered | `any[]` | - |
+| `[nzFrontPagination]` | Whether to paginate data on client. Should be set to `false` if data is to be paginated on server side or if all the data is to be displayed at once in the table without any pagination | `boolean` | `true` |
+| `[nzTotal]` | Total data count. Should set when `nzServerRender` is `true` | `number` | - |
 | `[nzPageIndex]` | pageIndex , double binding | `number` | - |
 | `[nzPageSize]` | pageSize, double binding | `number` | - |
-| `[nzShowPagination]` | Whether show pagination component in bottom of the table | `boolean` | `true` |
-| `[nzPaginationPosition]` | Specify the position of Pagination | `'top' \| 'bottom' \| 'both'` | `bottom` |
+| `[nzShowPagination]` | Whether to show pagination component at bottom of the table | `boolean` | `true` |
+| `[nzPaginationPosition]` | Specify the position of pagination | `'top' \| 'bottom' \| 'both'` | `bottom` |
 | `[nzBordered]` | Whether to show all table borders | `boolean` | `false` | ✅ |
-| `[nzOutBordered]` | Whether to show table out borders | `boolean` | `false` | - |
+| `[nzOutBordered]` | Whether to show table outer borders | `boolean` | `false` | - |
 | `[nzWidthConfig]` | Set col width can not used with `[nzWidth]` of `th` | `string[]` | `[]` |
 | `[nzSize]` | Size of table | `'middle' \| 'small' \| 'default'` | `'default'` | ✅ |
 | `[nzLoading]` | Loading status of table | `boolean` | `false` |
-| `[nzLoadingIndicator]` | the spinning indicator | `TemplateRef<void>` | - | ✅ |
-| `[nzLoadingDelay]` | Specifies a delay in milliseconds for loading state (prevent flush) | `number` | `0` |
-| `[nzScroll]` | Whether table can be scrolled in x/y direction, `x` or `y` can be a string that indicates the width and height of table body | `object` | - |
+| `[nzLoadingIndicator]` | The loading indicator | `TemplateRef<void>` | - | ✅ |
+| `[nzLoadingDelay]` | Specifies a delay in milliseconds for loading state (prevents flush) | `number` | `0` |
+| `[nzScroll]` | Whether table can be scrolled in x/y direction. `x` or `y` can be a string that indicates the width and height of table body | `object` | - |
 | `[nzTitle]` | Table title renderer | `string \| TemplateRef<void>` | - |
 | `[nzFooter]` | Table footer renderer | `string \| TemplateRef<void>` | - |
 | `[nzNoResult]` | Custom no result content | `string \| TemplateRef<void>` | - |
@@ -86,18 +86,18 @@ The data passed to `[nzData]` will be export with [Template Context](https://ang
 | `[nzShowQuickJumper]` | Determine whether you can jump to pages directly | `boolean` | `false` | ✅ |
 | `[nzShowSizeChanger]` | Determine whether `nzPageSize` can be changed | `boolean` | `false` | ✅ |
 | `[nzShowTotal]` | To display Pagination total number and range, same as Pagination	 | `TemplateRef<{ $implicit: number, range: [ number, number ] }>` | - |
-| `[nzItemRender]` | to customize Pagination item, same as Pagination | `TemplateRef<{ $implicit: 'page' \| 'prev' \| 'next', page: number }>` | - |
-| `[nzHideOnSinglePage]` | Whether to hide pager on single page | `boolean` | `false` |
-| `[nzSimple]` | whether to use simple mode | `boolean` | - | ✅ |
-| `[nzTemplateMode]` | template mode，no need to pass data to `nzData` | `boolean` | `false` |
+| `[nzItemRender]` | To customize Pagination item, same as Pagination | `TemplateRef<{ $implicit: 'page' \| 'prev' \| 'next', page: number }>` | - |
+| `[nzHideOnSinglePage]` | Whether to hide pagination on single page | `boolean` | `false` |
+| `[nzSimple]` | Whether to use simple mode | `boolean` | - | ✅ |
+| `[nzTemplateMode]` | Template mode，no need to pass data to `nzData` | `boolean` | `false` |
 | `[nzVirtualItemSize]` | The size of the items in the list, same as [cdk itemSize](https://material.angular.io/cdk/scrolling/api) | `number` | `0` |
 | `[nzVirtualMaxBufferPx]` | The number of pixels worth of buffer to render for when rendering new items, same as [cdk maxBufferPx](https://material.angular.io/cdk/scrolling/api) | `number` | `200` |
 | `[nzVirtualMinBufferPx]` | The minimum amount of buffer rendered beyond the viewport (in pixels),same as [cdk minBufferPx](https://material.angular.io/cdk/scrolling/api) | `number` | `100` |
-| `[nzVirtualForTrackBy]` | The TrackByFunction to use for tracking changes. | `TrackByFunction<T>` | - |
-| `(nzPageIndexChange)` | pageIndex change callback | `EventEmitter<number>` | - |
-| `(nzPageSizeChange)` | pageSize change callback | `EventEmitter<number>` | - |
-| `(nzCurrentPageDataChange)` | current pageData change callback | `EventEmitter<any[]>` | - |
-| `(nzQueryParams)` | Get params when work with server pagination, sort and filter | `EventEmitter<NzTableQueryParams>` | - |
+| `[nzVirtualForTrackBy]` | The TrackByFunction to be used for tracking changes. | `TrackByFunction<T>` | - |
+| `(nzPageIndexChange)` | Callback when `pageIndex` changes | `EventEmitter<number>` | - |
+| `(nzPageSizeChange)` | Callback when `pageSize` changes | `EventEmitter<number>` | - |
+| `(nzCurrentPageDataChange)` | Callback when current pageData changes | `EventEmitter<any[]>` | - |
+| `(nzQueryParams)` | Callback with params when working with server side pagination, sorting and filtering | `EventEmitter<NzTableQueryParams>` | - |
 
 ### th
 
@@ -105,38 +105,38 @@ Checkbox property
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzShowCheckbox]` | Whether add nz-checkbox | `boolean` | - |
-| `[nzDisabled]` | Whether disable checkbox | `boolean` | - |
-| `[nzIndeterminate]` | Indeterminate status | `boolean` | - |
+| `[nzShowCheckbox]` | Whether `nz-checkbox` should be shown in the header | `boolean` | - |
+| `[nzDisabled]` | Whether the `nz-checkbox` is disabled | `boolean` | - |
+| `[nzIndeterminate]` | `nz-checkbox` indeterminate status | `boolean` | - |
 | `[nzChecked]` | Checked status, double binding | `boolean` | - |
-| `(nzCheckedChange)` | Checked status change callback | `EventEmitter<boolean>` | - |
+| `(nzCheckedChange)` | Callback when checked status changes | `EventEmitter<boolean>` | - |
 
 Selection property
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzShowRowSelection]` | Whether show selections | `boolean` | - |
-| `[nzSelections]` | Selection options include `text` and `onSelect` function | `Array<{ text: string, onSelect: any }>` | - |
+| `[nzShowRowSelection]` | Whether to show row selection options | `boolean` | - |
+| `[nzSelections]` | Selection options including `text` and `onSelect` callback function | `Array<{ text: string, onSelect: any }>` | - |
 
 Sort property
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzSortFn]` | Sort function, use to sort the data in the browser side(ref to Array.sort compareFunction), set to true when using server sort  | `((a: any, b: any, sortOrder?: string) => number) | boolean` | - |
-| `[nzSortOrder]` | Sort direction | `'ascend' | 'descend' | null` | - |
-| `[nzSortDirections]` | supported sort way, could be `'ascend'`, `'descend'`, `null` | `Array<'ascend' \| 'descend' \| null>` | `['ascend', 'descend', null]` |
-| `(nzSortOrderChange)` | Sort direction change callback | `EventEmitter<'ascend' \| 'descend' \| null>` | - |
+| `[nzSortFn]` | Sort function used to sort the data on client side (ref to Array.sort compareFunction). Should be set to `true` when using server side sorting  | `((a: any, b: any, sortOrder?: string) => number)` | - |
+| `[nzSortOrder]` | Sort direction | `'ascend' \| 'descend' \| null` | - |
+| `[nzSortDirections]` | Supported sort order, could be `'ascend'`, `'descend'`, `null` | `Array<'ascend' \| 'descend' \| null>` | `['ascend', 'descend', null]` |
+| `(nzSortOrderChange)` | Callback when sort direction changes | `EventEmitter<'ascend' \| 'descend' \| null>` | - |
 
 
 Filter property
 
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
-| `[nzShowFilter]` | Whether show filter | `boolean` | - |
-| `[nzFilterFn]` | 	Filter function, use to filter the data in the browser side. Set to true when using server filter | `((value: any, data: any) => boolean;) | boolean` | - |
+| `[nzShowFilter]` | Whether to show filter | `boolean` | - |
+| `[nzFilterFn]` | 	Filter function used to filter the data on client side. Set to `true` when using server side filtering | `((value: any, data: any) => boolean;)` | - |
 | `[nzFilters]` | Filter options,  `text`, and `value` for callback, `byDefault` to enable filter by default | `Array<{ text: string; value: any; byDefault?: boolean }>` | - |
-| `[nzFilterMultiple]` | Whether filter multiple mode | `boolean` | `true` |
-| `(nzFilterChange)` | Filter change callback `value` | `EventEmitter<any[] \| any>` | - |
+| `[nzFilterMultiple]` | Whether multiple mode filtering is enabled | `boolean` | `true` |
+| `(nzFilterChange)` | Callback when filter `value` changes | `EventEmitter<any[] \| any>` | - |
 
 
 
