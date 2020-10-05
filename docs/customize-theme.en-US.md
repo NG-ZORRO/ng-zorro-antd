@@ -244,6 +244,8 @@ changeTheme(theme: 'default' | 'dark'): void {
     style.rel = 'stylesheet';
     style.id = 'dark-theme';
     style.href = 'assets/themes/style.dark.css';
+    
+    document.body.append(style);
   } else {
     const dom = document.getElementById('dark-theme');
     if (dom) {
