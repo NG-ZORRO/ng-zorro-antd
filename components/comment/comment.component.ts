@@ -8,12 +8,11 @@ import {
   ChangeDetectorRef,
   Component,
   ContentChildren,
-  ElementRef,
   Input,
   OnDestroy,
+  OnInit,
   Optional,
   QueryList,
-  Renderer2,
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
@@ -59,42 +58,27 @@ import { NzCommentActionComponent as CommentAction } from './comment-cells';
     '[class.ant-comment-rtl]': `dir === "rtl"`
   }
 })
-export class NzCommentComponent implements OnDestroy {
+export class NzCommentComponent implements OnDestroy, OnInit {
   @Input() nzAuthor?: string | TemplateRef<void>;
   @Input() nzDatetime?: string | TemplateRef<void>;
-  dir: Direction;
+  dir: Direction = 'ltr';
 
   private destroy$ = new Subject<void>();
 
   @ContentChildren(CommentAction) actions!: QueryList<CommentAction>;
-  constructor(
-    cdr: ChangeDetectorRef,
-    private elementRef: ElementRef,
-    private renderer: Renderer2,
-    @Optional() directionality: Directionality
-  ) {
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      this.prepareComponentForRtl();
-      cdr.detectChanges();
+  constructor(private cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {}
+
+  ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
     });
 
-    renderer.addClass(elementRef.nativeElement, 'ant-comment');
-
-    this.dir = directionality.value;
-    this.prepareComponentForRtl();
+    this.dir = this.directionality.value;
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  private prepareComponentForRtl(): void {
-    if (this.dir === 'rtl') {
-      this.renderer.addClass(this.elementRef.nativeElement, 'ant-comment-rtl');
-    } else {
-      this.renderer.removeClass(this.elementRef.nativeElement, 'ant-comment-rtl');
-    }
   }
 }
