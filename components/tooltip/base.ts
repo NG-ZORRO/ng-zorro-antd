@@ -192,12 +192,12 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
             overlayElement = this.component.overlay.overlayRef.overlayElement;
             this.triggerDisposables.push(
               this.renderer.listen(overlayElement, 'mouseenter', () => {
-                this.delayEnterLeave(false, true);
+                this.delayEnterLeave(false, true, this.mouseEnterDelay);
               })
             );
             this.triggerDisposables.push(
               this.renderer.listen(overlayElement, 'mouseleave', () => {
-                this.delayEnterLeave(false, false);
+                this.delayEnterLeave(false, false, this.mouseLeaveDelay);
               })
             );
           }
