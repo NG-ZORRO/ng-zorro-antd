@@ -63,16 +63,9 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDe
   @Input() nzSize: NzSizeLDSType = 'default';
   @Input() nzName: string | null = null;
 
-  dir: Direction;
+  dir: Direction = 'ltr';
 
-  constructor(private cdr: ChangeDetectorRef, private nzRadioService: NzRadioService, @Optional() directionality: Directionality) {
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      cdr.detectChanges();
-    });
-
-    this.dir = directionality.value;
-  }
+  constructor(private cdr: ChangeDetectorRef, private nzRadioService: NzRadioService, @Optional() private directionality: Directionality) {}
 
   ngOnInit(): void {
     this.nzRadioService.selected$.subscribe(value => {
@@ -84,6 +77,13 @@ export class NzRadioGroupComponent implements OnInit, ControlValueAccessor, OnDe
     this.nzRadioService.touched$.subscribe(() => {
       Promise.resolve().then(() => this.onTouched());
     });
+
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
   }
 
   ngOnChanges(changes: SimpleChanges): void {

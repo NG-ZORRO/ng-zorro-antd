@@ -91,7 +91,7 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzAutoFocus = false;
 
-  dir: Direction;
+  dir: Direction = 'ltr';
 
   onHostClick(event: MouseEvent): void {
     /** prevent label click triggered twice. **/
@@ -120,17 +120,10 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef,
     private focusMonitor: FocusMonitor,
-    @Optional() directionality: Directionality,
+    @Optional() private directionality: Directionality,
     @Optional() private nzRadioService: NzRadioService,
     @Optional() private nzRadioButtonDirective: NzRadioButtonDirective
-  ) {
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      cdr.detectChanges();
-    });
-
-    this.dir = directionality.value;
-  }
+  ) {}
 
   setDisabledState(disabled: boolean): void {
     this.nzDisabled = disabled;
@@ -174,6 +167,13 @@ export class NzRadioComponent implements ControlValueAccessor, AfterViewInit, On
         }
       }
     });
+
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
   }
 
   ngAfterViewInit(): void {

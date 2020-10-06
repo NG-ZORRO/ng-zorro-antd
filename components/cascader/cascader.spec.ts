@@ -1693,13 +1693,13 @@ describe('cascader', () => {
       cascader = fixture.debugElement.query(By.directive(NzCascaderComponent));
     });
 
-    it('should RTL className correct', () => {
+    it('should className correct', () => {
       fixture.detectChanges();
       expect(cascader.nativeElement.className).toContain('ant-cascader-rtl');
       expect(cascader.nativeElement.className).toContain('ant-cascader-picker-rtl');
     });
 
-    it('should RTL className correct after change Dir', () => {
+    it('should className correct after change Dir', () => {
       fixture.componentInstance.direction = 'ltr';
       fixture.detectChanges();
 
@@ -1932,6 +1932,8 @@ const options4 = [
 const options5: any[] = []; // tslint:disable-line:no-any
 
 @Component({
+  // tslint:disable-next-line:no-selector
+  selector: 'nz-test-cascader-default',
   template: `
     <nz-cascader
       [nzOptions]="nzOptions"
@@ -2080,51 +2082,17 @@ export class NzDemoCascaderLoadDataComponent {
   onVisibleChange = jasmine.createSpy('open change');
   onValueChanges = jasmine.createSpy('value change');
 }
+
 @Component({
   template: `
     <div [dir]="direction">
-      <nz-cascader
-        [nzOptions]="nzOptions"
-        [(ngModel)]="values"
-        [nzAllowClear]="nzAllowClear"
-        [nzAutoFocus]="nzAutoFocus"
-        [nzMenuStyle]="nzMenuStyle"
-        [nzMenuClassName]="nzMenuClassName"
-        [nzColumnClassName]="nzColumnClassName"
-        [nzExpandTrigger]="nzExpandTrigger"
-        [nzDisabled]="nzDisabled"
-        [nzLabelRender]="nzLabelRender"
-        [nzLabelProperty]="nzLabelProperty"
-        [nzValueProperty]="nzValueProperty"
-        [nzPlaceHolder]="nzPlaceHolder"
-        [nzShowArrow]="nzShowArrow"
-        [nzShowInput]="nzShowInput"
-        [nzShowSearch]="nzShowSearch"
-        [nzSize]="nzSize"
-        [nzTriggerAction]="nzTriggerAction"
-        [nzMouseEnterDelay]="nzMouseEnterDelay"
-        [nzMouseLeaveDelay]="nzMouseLeaveDelay"
-        [nzChangeOn]="nzChangeOn"
-        [nzChangeOnSelect]="nzChangeOnSelect"
-        (ngModelChange)="onValueChanges($event)"
-        (nzVisibleChange)="onVisibleChange($event)"
-        (nzSelect)="onSelect($event)"
-      ></nz-cascader>
-
-      <ng-template #renderTpl let-labels="labels" let-selectedOptions="selectedOptions">
-        <ng-container *ngFor="let label of labels; let i = index; let isLast = last">{{ label }}{{ isLast ? '' : ' | ' }}</ng-container>
-      </ng-template>
+      <nz-cascader [nzOptions]="nzOptions"></nz-cascader>
     </div>
-  `,
-  styles: [
-    `
-      .ant-cascader-picker {
-        width: 300px;
-      }
-    `
-  ]
+  `
 })
-export class NzDemoCascaderRtlComponent extends NzDemoCascaderDefaultComponent {
+export class NzDemoCascaderRtlComponent {
+  @ViewChild(NzCascaderComponent, { static: true }) cascader!: NzCascaderComponent;
+  public nzOptions: any[] | null = options1;
   @ViewChild(Dir) dir!: Dir;
   direction = 'rtl';
 }

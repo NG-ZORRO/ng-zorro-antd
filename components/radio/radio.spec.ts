@@ -1,33 +1,33 @@
-import { BidiModule, DIR_DOCUMENT } from '@angular/cdk/bidi';
+import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, OnInit, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { FakeDocument } from 'ng-zorro-antd/core/testing';
 
 import { NzRadioGroupComponent } from './radio-group.component';
 import { NzRadioComponent } from './radio.component';
 import { NzRadioModule } from './radio.module';
 
 describe('radio', () => {
-  let fakeDocument: FakeDocument;
-  beforeEach(fakeAsync(() => {
-    fakeDocument = { body: {}, documentElement: {} };
-    TestBed.configureTestingModule({
-      imports: [BidiModule, NzRadioModule, FormsModule, ReactiveFormsModule],
-      declarations: [
-        NzTestRadioSingleComponent,
-        NzTestRadioButtonComponent,
-        NzTestRadioGroupComponent,
-        NzTestRadioFormComponent,
-        NzTestRadioGroupFormComponent,
-        NzTestRadioGroupDisabledComponent,
-        NzTestRadioGroupDisabledFormComponent
-      ],
-      providers: [{ provide: DIR_DOCUMENT, useFactory: () => fakeDocument }]
-    });
-    TestBed.compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [BidiModule, NzRadioModule, FormsModule, ReactiveFormsModule],
+        declarations: [
+          NzTestRadioSingleComponent,
+          NzTestRadioButtonComponent,
+          NzTestRadioGroupComponent,
+          NzTestRadioFormComponent,
+          NzTestRadioGroupFormComponent,
+          NzTestRadioGroupDisabledComponent,
+          NzTestRadioGroupDisabledFormComponent,
+          NzTestRadioSingleRtlComponent,
+          NzTestRadioGroupRtlComponent
+        ]
+      });
+      TestBed.compileComponents();
+    })
+  );
   describe('single radio basic', () => {
     let fixture: ComponentFixture<NzTestRadioSingleComponent>;
     let testComponent: NzTestRadioSingleComponent;
@@ -307,27 +307,25 @@ describe('radio', () => {
     }));
   });
   describe('RTL', () => {
-    beforeEach(() => {
-      fakeDocument.body.dir = 'rtl';
-    });
-
     it('should single radio className correct', () => {
-      const fixture = TestBed.createComponent(NzTestRadioSingleComponent);
-      const cascader = fixture.debugElement.query(By.directive(NzRadioComponent));
+      const fixture = TestBed.createComponent(NzTestRadioSingleRtlComponent);
+      const radio = fixture.debugElement.query(By.directive(NzRadioComponent));
       fixture.detectChanges();
-      expect(cascader.nativeElement.className).toContain('ant-radio-button-wrapper-rtl');
+      expect(radio.nativeElement.className).toContain('ant-radio-button-wrapper-rtl');
     });
 
     it('should radio group className correct', () => {
-      const fixture = TestBed.createComponent(NzTestRadioGroupComponent);
-      fixture.detectChanges();
+      const fixture = TestBed.createComponent(NzTestRadioGroupRtlComponent);
       const radioGroup = fixture.debugElement.query(By.directive(NzRadioGroupComponent));
+      fixture.detectChanges();
       expect(radioGroup.nativeElement.classList).toContain('ant-radio-group-rtl');
     });
   });
 });
 
 @Component({
+  // tslint:disable-next-line:no-selector
+  selector: 'nz-test-radio-single',
   template: `
     <label nz-radio [(ngModel)]="value" (ngModelChange)="modelChange($event)" [nzDisabled]="disabled" [nzAutoFocus]="autoFocus">
       Radio
@@ -350,6 +348,8 @@ export class NzTestRadioSingleComponent {
 export class NzTestRadioButtonComponent {}
 
 @Component({
+  // tslint:disable-next-line:no-selector
+  selector: 'nz-test-radio-group',
   template: `
     <nz-radio-group [(ngModel)]="value" [nzName]="name" [nzDisabled]="disabled" (ngModelChange)="modelChange($event)" [nzSize]="size">
       <ng-container [ngClass]>
@@ -473,4 +473,28 @@ export class NzTestRadioGroupDisabledFormComponent implements OnInit {
 export class NzTestRadioGroupSolidComponent {
   value = 'A';
   singleDisabled = false;
+}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-test-radio-single></nz-test-radio-single>
+    </div>
+  `
+})
+export class NzTestRadioSingleRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
+}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-test-radio-group></nz-test-radio-group>
+    </div>
+  `
+})
+export class NzTestRadioGroupRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
 }

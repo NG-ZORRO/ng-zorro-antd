@@ -83,18 +83,15 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
 
   isPendingBoolean: boolean = false;
   timelineItems: NzTimelineItemComponent[] = [];
-  dir: Direction;
+  dir: Direction = 'ltr';
 
   private destroy$ = new Subject<void>();
 
-  constructor(private cdr: ChangeDetectorRef, private timelineService: TimelineService, @Optional() directionality: Directionality) {
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      cdr.detectChanges();
-    });
-
-    this.dir = directionality.value;
-  }
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private timelineService: TimelineService,
+    @Optional() private directionality: Directionality
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const { nzMode, nzReverse, nzPending } = changes;
@@ -112,6 +109,13 @@ export class NzTimelineComponent implements AfterContentInit, OnChanges, OnDestr
     this.timelineService.check$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.cdr.markForCheck();
     });
+
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
   }
 
   ngAfterContentInit(): void {

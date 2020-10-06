@@ -1,8 +1,7 @@
-import { BidiModule, DIR_DOCUMENT } from '@angular/cdk/bidi';
-import { Component, DebugElement } from '@angular/core';
+import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { FakeDocument } from 'ng-zorro-antd/core/testing';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 
 import { NzTimelineComponent } from './timeline.component';
@@ -175,17 +174,15 @@ describe('nz-timeline', () => {
   });
 
   describe('RTL', () => {
-    let fakeDocument: FakeDocument;
-    let testBed: ComponentBed<NzTestTimelineBasicComponent>;
-    let fixture: ComponentFixture<NzTestTimelineBasicComponent>;
+    let testBed: ComponentBed<NzTestTimelineRtlComponent>;
+    let fixture: ComponentFixture<NzTestTimelineRtlComponent>;
     let timeline: DebugElement;
     let items: HTMLDivElement[] = [];
 
     beforeEach(() => {
-      fakeDocument = { body: { dir: 'rtl' }, documentElement: {} };
-      testBed = createComponentBed(NzTestTimelineBasicComponent, {
+      testBed = createComponentBed(NzTestTimelineRtlComponent, {
         imports: [BidiModule, NzTimelineModule],
-        providers: [{ provide: DIR_DOCUMENT, useFactory: () => fakeDocument }]
+        declarations: [NzTestTimelineBasicComponent]
       });
       fixture = testBed.fixture;
 
@@ -203,6 +200,8 @@ describe('nz-timeline', () => {
 });
 
 @Component({
+  // tslint:disable-next-line:no-selector
+  selector: 'nz-test-basic-timeline',
   template: `
     <ng-template #dotTemplate>template</ng-template>
     <nz-timeline [nzPending]="pending" [nzReverse]="reverse" [nzMode]="mode">
@@ -255,3 +254,15 @@ export class NzTestTimelinePendingComponent {}
   `
 })
 export class NzTestTimelineCustomPositionComponent {}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-test-basic-timeline></nz-test-basic-timeline>
+    </div>
+  `
+})
+export class NzTestTimelineRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
+}

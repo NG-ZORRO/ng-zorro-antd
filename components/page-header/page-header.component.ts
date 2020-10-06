@@ -13,6 +13,7 @@ import {
   EventEmitter,
   Input,
   OnDestroy,
+  OnInit,
   Optional,
   Output,
   TemplateRef,
@@ -78,7 +79,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pageHeader';
     '[class.ant-page-header-rtl]': `dir === 'rtl'`
   }
 })
-export class NzPageHeaderComponent implements AfterViewInit, OnDestroy {
+export class NzPageHeaderComponent implements AfterViewInit, OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   @Input() nzBackIcon: string | TemplateRef<void> | null = null;
@@ -92,7 +93,7 @@ export class NzPageHeaderComponent implements AfterViewInit, OnDestroy {
 
   compact = false;
   destroy$ = new Subject<void>();
-  dir: Direction;
+  dir: Direction = 'ltr';
 
   constructor(
     @Optional() private location: Location,
@@ -100,14 +101,16 @@ export class NzPageHeaderComponent implements AfterViewInit, OnDestroy {
     private elementRef: ElementRef,
     private nzResizeObserver: NzResizeObserver,
     private cdr: ChangeDetectorRef,
-    @Optional() directionality: Directionality
-  ) {
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      cdr.detectChanges();
+    @Optional() private directionality: Directionality
+  ) {}
+
+  ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
     });
 
-    this.dir = directionality.value;
+    this.dir = this.directionality.value;
   }
 
   ngAfterViewInit(): void {

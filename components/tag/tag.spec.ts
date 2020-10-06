@@ -120,7 +120,7 @@ describe('tag', () => {
     }));
   });
   describe('RTL', () => {
-    it('should className correct on dir change', fakeAsync(() => {
+    it('should className correct on dir change', () => {
       const fixture = TestBed.createComponent(NzTestTagRtlComponent);
       const tag = fixture.debugElement.query(By.directive(NzTagComponent));
       fixture.detectChanges();
@@ -129,11 +129,13 @@ describe('tag', () => {
       fixture.componentInstance.direction = 'ltr';
       fixture.detectChanges();
       expect(tag.nativeElement.className).not.toContain('ant-tag-rtl');
-    }));
+    });
   });
 });
 
 @Component({
+  // tslint:disable-next-line:no-selector
+  selector: 'nz-test-basic-tag',
   template: `
     <nz-tag [nzMode]="mode" [(nzChecked)]="checked" [nzColor]="color" (nzCheckedChange)="checkedChange($event)" (nzOnClose)="onClose()">
       Tag 1
@@ -160,7 +162,14 @@ export class NzTestTagPreventComponent {
   }
 }
 
-export class NzTestTagRtlComponent extends NzTestTagBasicComponent {
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-test-basic-tag></nz-test-basic-tag>
+    </div>
+  `
+})
+export class NzTestTagRtlComponent {
   @ViewChild(Dir) dir!: Dir;
   direction = 'rtl';
 }
