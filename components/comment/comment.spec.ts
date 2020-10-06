@@ -44,13 +44,6 @@ describe('NzCommentComponent', () => {
       expect(comment.nativeElement.querySelector('.ant-comment-content-author-time').innerText).toBe(component.time);
     });
 
-    it('should RTL work', () => {
-      const fixture = TestBed.createComponent(NzDemoCommentBasicComponent);
-      const comment = fixture.debugElement.query(By.directive(NzCommentComponent));
-      fixture.detectChanges();
-      expect(comment.nativeElement.classList).toContain('ant-comment-rtl');
-    });
-
     it('should actions work', () => {
       const fixture = TestBed.createComponent(NzDemoCommentBasicComponent);
       const component = fixture.componentInstance;
@@ -151,13 +144,13 @@ describe('NzCommentComponent', () => {
   describe('RTL', () => {
     it('should className correct on dir change', () => {
       const fixture = TestBed.createComponent(NzTestCommentRtlComponent);
-      const tag = fixture.debugElement.query(By.directive(NzCommentComponent));
+      const comment = fixture.debugElement.query(By.directive(NzCommentComponent));
       fixture.detectChanges();
-      expect(tag.nativeElement.className).toContain('ant-comment-rtl');
+      expect(comment.nativeElement.classList).toContain('ant-comment-rtl');
 
       fixture.componentInstance.direction = 'ltr';
       fixture.detectChanges();
-      expect(tag.nativeElement.className).not.toContain('ant-comment-rtl');
+      expect(comment.nativeElement.classList).not.toContain('ant-comment-rtl');
     });
   });
 });

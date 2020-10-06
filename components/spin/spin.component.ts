@@ -10,6 +10,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
@@ -75,14 +76,13 @@ export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
   private spinning$ = new BehaviorSubject(this.nzSpinning);
   private delay$ = new BehaviorSubject(this.nzDelay);
   isLoading = true;
-  dir: Direction;
+  dir: Direction = 'ltr';
 
-  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef, directionality: Directionality) {
-    this.dir = directionality.value;
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-    });
-  }
+  constructor(
+    public nzConfigService: NzConfigService,
+    private cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality
+  ) {}
 
   ngOnInit(): void {
     const loading$ = this.spinning$.pipe(
@@ -104,6 +104,13 @@ export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => this.cdr.markForCheck());
+
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
   }
 
   ngOnChanges(changes: SimpleChanges): void {

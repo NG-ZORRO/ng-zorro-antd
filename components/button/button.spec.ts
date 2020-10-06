@@ -1,4 +1,4 @@
-import { Dir } from '@angular/cdk/bidi';
+import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -139,17 +139,17 @@ describe('button', () => {
     let testBed: ComponentBed<TestButtonRtlComponent>;
     let buttonElement: HTMLButtonElement;
     beforeEach(() => {
-      testBed = createComponentBed(TestButtonRtlComponent, { declarations: [NzButtonComponent] });
+      testBed = createComponentBed(TestButtonRtlComponent, { declarations: [NzButtonComponent], imports: [BidiModule] });
       buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
     });
 
     it('should apply classname', () => {
-      fixture.detectChanges();
-      expect(buttonElement.className).toBe('ant-btn-rtl');
+      testBed.fixture.detectChanges();
+      expect(buttonElement.classList).toContain('ant-btn-rtl');
 
-      fixture.componentInstance.direction = 'ltr';
-      fixture.detectChanges();
-      expect(tag.nativeElement.className).not.toContain('ant-btn-rtl');
+      testBed.fixture.componentInstance.direction = 'ltr';
+      testBed.fixture.detectChanges();
+      expect(buttonElement.classList).not.toContain('ant-btn-rtl');
     });
   });
 });

@@ -15,6 +15,8 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
+  Optional,
   Renderer2,
   SimpleChanges,
   ViewEncapsulation
