@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DebugElement } from '@angular/core';
+import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Router, Routes } from '@angular/router';
@@ -9,8 +9,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 import { NzDemoBreadcrumbDropdownComponent } from './demo/dropdown';
 
-import { DIR_DOCUMENT } from '@angular/cdk/bidi';
-import { FakeDocument } from 'ng-zorro-antd/core/testing';
+import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { NzBreadCrumbItemComponent } from './breadcrumb-item.component';
 import { NzBreadCrumbComponent } from './breadcrumb.component';
 import { NzBreadCrumbModule } from './breadcrumb.module';
@@ -18,26 +17,14 @@ import { NzDemoBreadcrumbBasicComponent } from './demo/basic';
 import { NzDemoBreadcrumbSeparatorComponent } from './demo/separator';
 
 describe('breadcrumb', () => {
-  let fakeDocument: FakeDocument;
-
   beforeEach(
     waitForAsync(() => {
-      fakeDocument = { body: {}, documentElement: {} };
       TestBed.configureTestingModule({
-        imports: [NzBreadCrumbModule],
-        declarations: [NzDemoBreadcrumbBasicComponent],
-        providers: [{ provide: DIR_DOCUMENT, useFactory: () => fakeDocument }]
+        imports: [BidiModule, NzBreadCrumbModule],
+        declarations: [NzDemoBreadcrumbBasicComponent, NzTestBreadcrumbRtlComponent]
       }).compileComponents();
     })
   );
-
-  it('should RTL work', () => {
-    fakeDocument.body.dir = 'rtl';
-    const fixture = TestBed.createComponent(NzDemoBreadcrumbBasicComponent);
-    const breadcrumb = fixture.debugElement.query(By.directive(NzBreadCrumbComponent));
-    fixture.detectChanges();
-    expect(breadcrumb.nativeElement.classList).toContain('ant-breadcrumb-rtl');
-  });
 
   describe('basic', () => {
     let fixture: ComponentFixture<NzDemoBreadcrumbBasicComponent>;
@@ -45,7 +32,6 @@ describe('breadcrumb', () => {
     let breadcrumb: DebugElement;
 
     beforeEach(() => {
-      fakeDocument = { body: {}, documentElement: {} };
       fixture = TestBed.createComponent(NzDemoBreadcrumbBasicComponent);
       items = fixture.debugElement.queryAll(By.directive(NzBreadCrumbItemComponent));
       breadcrumb = fixture.debugElement.query(By.directive(NzBreadCrumbComponent));
@@ -256,6 +242,19 @@ describe('breadcrumb', () => {
       }).toThrowError();
     }));
   });
+
+  describe('RTL', () => {
+    it('should className correct on dir change', () => {
+      const fixture = TestBed.createComponent(NzTestBreadcrumbRtlComponent);
+      const breadcrumb = fixture.debugElement.query(By.directive(NzBreadCrumbComponent));
+      fixture.detectChanges();
+      expect(breadcrumb.nativeElement.classList).toContain('ant-breadcrumb-rtl');
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+      expect(breadcrumb.nativeElement.className).not.toContain('ant-breadcrumb-rtl');
+    });
+  });
 });
 
 // tslint:disable-next-line no-any
@@ -266,6 +265,8 @@ function flushFixture(fixture: ComponentFixture<any>): void {
 }
 
 @Component({
+  // tslint:disable-next-line:no-selector
+  selector: 'nz-test-breadcrumb',
   template: `
     <nz-breadcrumb [nzAutoGenerate]="true"></nz-breadcrumb>
     <router-outlet></router-outlet>
@@ -393,3 +394,15 @@ const customRouteLabelRoutes: Routes = [
     ]
   }
 ];
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-demo-breadcrumb-basic></nz-demo-breadcrumb-basic>
+    </div>
+  `
+})
+export class NzTestBreadcrumbRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
+}

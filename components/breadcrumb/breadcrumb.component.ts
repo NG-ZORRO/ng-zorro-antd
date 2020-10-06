@@ -57,7 +57,7 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
   @Input() nzRouteLabelFn: (label: string) => string = label => label;
 
   breadcrumbs: BreadcrumbOption[] | undefined = [];
-  dir: Direction;
+  dir: Direction = 'ltr';
 
   private destroy$ = new Subject<void>();
 
@@ -67,24 +67,24 @@ export class NzBreadCrumbComponent implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef,
     private elementRef: ElementRef,
     private renderer: Renderer2,
-    @Optional() directionality: Directionality
+    @Optional() private directionality: Directionality
   ) {
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      this.prepareComponentForRtl();
-      cdr.detectChanges();
-    });
-
     renderer.addClass(elementRef.nativeElement, 'ant-breadcrumb');
-
-    this.dir = directionality.value;
-    this.prepareComponentForRtl();
   }
 
   ngOnInit(): void {
     if (this.nzAutoGenerate) {
       this.registerRouterChange();
     }
+
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.prepareComponentForRtl();
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
+    this.prepareComponentForRtl();
   }
 
   ngOnDestroy(): void {
