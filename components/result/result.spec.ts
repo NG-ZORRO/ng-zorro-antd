@@ -109,7 +109,6 @@ describe('nz-result', () => {
   describe('RTL', () => {
     let testBed: ComponentBed<NzTestResultRtlComponent>;
     let fixture: ComponentFixture<NzTestResultRtlComponent>;
-    let testComponent: NzTestResultRtlComponent;
     let resultEl: DebugElement;
 
     beforeEach(() => {
@@ -119,13 +118,16 @@ describe('nz-result', () => {
       });
       fixture = testBed.fixture;
       fixture.detectChanges();
-      testComponent = testBed.component;
       resultEl = fixture.debugElement.query(By.directive(NzResultComponent));
     });
 
     it('should className correct', () => {
       fixture.detectChanges();
       expect(resultEl.nativeElement.classList).toContain('ant-result-rtl');
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+      expect(resultEl.nativeElement.className).not.toContain('ant-result-rtl');
     });
   });
 });
