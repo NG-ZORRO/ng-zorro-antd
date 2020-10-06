@@ -135,20 +135,6 @@ describe('tag', () => {
 
 @Component({
   template: `
-    <div [dir]="direction">
-      <nz-tag nzMode="default">
-        Tag 1
-      </nz-tag>
-    </div>
-  `
-})
-export class NzTestTagRtlComponent {
-  @ViewChild(Dir) dir!: Dir;
-  direction = 'rtl';
-}
-
-@Component({
-  template: `
     <nz-tag [nzMode]="mode" [(nzChecked)]="checked" [nzColor]="color" (nzCheckedChange)="checkedChange($event)" (nzOnClose)="onClose()">
       Tag 1
     </nz-tag>
@@ -172,4 +158,9 @@ export class NzTestTagPreventComponent {
   onClose(e: MouseEvent): void {
     e.preventDefault();
   }
+}
+
+export class NzTestTagRtlComponent extends NzTestTagBasicComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
 }
