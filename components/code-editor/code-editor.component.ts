@@ -241,7 +241,9 @@ export class NzCodeEditorComponent implements OnDestroy, AfterViewInit {
       : (this.editorInstance as IStandaloneDiffEditor).getModel()!.modified) as ITextModel;
 
     model.onDidChangeContent(() => {
-      this.emitValue(model.getValue());
+      this.ngZone.run(() => {
+        this.emitValue(model.getValue());
+      });
     });
   }
 
