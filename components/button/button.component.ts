@@ -64,7 +64,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'button';
     '[attr.disabled]': 'disabled || null'
   }
 })
-export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, AfterContentInit {
+export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, AfterContentInit, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzBlock: BooleanInput;
   static ngAcceptInputType_nzGhost: BooleanInput;
@@ -84,7 +84,7 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
   @Input() nzType: NzButtonType = null;
   @Input() nzShape: NzButtonShape = null;
   @Input() @WithConfig() nzSize: NzButtonSize = 'default';
-  dir: Direction;
+  dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
   private loading$ = new Subject<boolean>();
 
@@ -115,7 +115,7 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
     private cdr: ChangeDetectorRef,
     private renderer: Renderer2,
     public nzConfigService: NzConfigService,
-    directionality: Directionality
+    @Optional() private directionality: Directionality
   ) {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
@@ -123,11 +123,15 @@ export class NzButtonComponent implements OnDestroy, OnChanges, AfterViewInit, A
       .subscribe(() => {
         this.cdr.markForCheck();
       });
+  }
 
-    this.dir = directionality.value;
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
+  ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
     });
+
+    this.dir = this.directionality.value;
   }
 
   ngOnChanges(changes: SimpleChanges): void {

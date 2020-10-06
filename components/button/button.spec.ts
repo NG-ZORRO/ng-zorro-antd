@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Dir } from '@angular/cdk/bidi';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
@@ -134,6 +135,23 @@ describe('button', () => {
       expect(buttonElement.classList).toContain('ant-btn-icon-only');
     });
   });
+  describe('className', () => {
+    let testBed: ComponentBed<TestButtonRtlComponent>;
+    let buttonElement: HTMLButtonElement;
+    beforeEach(() => {
+      testBed = createComponentBed(TestButtonRtlComponent, { declarations: [NzButtonComponent] });
+      buttonElement = testBed.debugElement.query(By.directive(NzButtonComponent)).nativeElement;
+    });
+
+    it('should apply classname', () => {
+      fixture.detectChanges();
+      expect(buttonElement.className).toBe('ant-btn-rtl');
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+      expect(tag.nativeElement.className).not.toContain('ant-btn-rtl');
+    });
+  });
 });
 
 @Component({
@@ -212,3 +230,27 @@ export class TestButtonIconOnlyComponent {}
   `
 })
 export class TestButtonIconOnlyLoadingComponent {}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <button
+        nz-button
+        [nzType]="nzType"
+        [nzGhost]="nzGhost"
+        [nzSearch]="nzSearch"
+        [nzLoading]="nzLoading"
+        [nzDanger]="nzDanger"
+        [nzShape]="nzShape"
+        [nzBlock]="nzBlock"
+        [nzSize]="nzSize"
+      >
+        button
+      </button>
+    </div>
+  `
+})
+export class TestButtonRtlComponent extends TestButtonComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
+}
