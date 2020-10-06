@@ -11,6 +11,7 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
   Optional,
   TemplateRef,
   ViewEncapsulation
@@ -83,7 +84,7 @@ const ExceptionStatus = ['404', '500', '403'];
     '[class.ant-result-rtl]': `dir === 'rtl'`
   }
 })
-export class NzResultComponent implements OnChanges, OnDestroy {
+export class NzResultComponent implements OnChanges, OnDestroy, OnInit {
   @Input() nzIcon?: string | TemplateRef<void>;
   @Input() nzTitle?: string | TemplateRef<void>;
   @Input() nzStatus: NzResultStatusType = 'info';
@@ -92,17 +93,19 @@ export class NzResultComponent implements OnChanges, OnDestroy {
 
   icon?: string | TemplateRef<void>;
   isException = false;
-  dir: Direction;
+  dir: Direction = 'ltr';
 
   private destroy$ = new Subject<void>();
 
-  constructor(cdr: ChangeDetectorRef, @Optional() directionality: Directionality) {
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      cdr.detectChanges();
+  constructor(private cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {}
+
+  ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
     });
 
-    this.dir = directionality.value;
+    this.dir = this.directionality.value;
   }
 
   ngOnChanges(): void {

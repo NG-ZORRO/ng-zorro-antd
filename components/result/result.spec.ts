@@ -1,8 +1,7 @@
-import { BidiModule, DIR_DOCUMENT } from '@angular/cdk/bidi';
-import { Component, DebugElement } from '@angular/core';
+import { BidiModule, Dir } from '@angular/cdk/bidi';
+import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { FakeDocument } from 'ng-zorro-antd/core/testing';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -11,6 +10,8 @@ import { NzResultComponent } from './result.component';
 import { NzResultModule } from './result.module';
 
 @Component({
+  // tslint:disable-next-line:no-selector
+  selector: 'nz-test-basic-result',
   template: `
     <nz-result [nzIcon]="icon" [nzStatus]="status" [nzTitle]="title" [nzSubTitle]="subtitle" [nzExtra]="extra">
       <i nz-icon nz-result-icon nzType="up" nzTheme="outline"></i>
@@ -31,13 +32,25 @@ export class NzTestResultBasicComponent {
   extra?: string = 'Extra';
 }
 
-describe('nz-result', () => {
-  let testBed: ComponentBed<NzTestResultBasicComponent>;
-  let fixture: ComponentFixture<NzTestResultBasicComponent>;
-  let testComponent: NzTestResultBasicComponent;
-  let resultEl: DebugElement;
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-test-basic-result></nz-test-basic-result>
+    </div>
+  `
+})
+export class NzTestResultRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
+}
 
+describe('nz-result', () => {
   describe('basic', () => {
+    let testBed: ComponentBed<NzTestResultBasicComponent>;
+    let fixture: ComponentFixture<NzTestResultBasicComponent>;
+    let testComponent: NzTestResultBasicComponent;
+    let resultEl: DebugElement;
+
     beforeEach(() => {
       testBed = createComponentBed(NzTestResultBasicComponent, {
         imports: [NzResultModule, NzIconModule]
@@ -94,13 +107,15 @@ describe('nz-result', () => {
   });
 
   describe('RTL', () => {
-    let fakeDocument: FakeDocument;
+    let testBed: ComponentBed<NzTestResultRtlComponent>;
+    let fixture: ComponentFixture<NzTestResultRtlComponent>;
+    let testComponent: NzTestResultRtlComponent;
+    let resultEl: DebugElement;
 
     beforeEach(() => {
-      fakeDocument = { body: { dir: 'rtl' }, documentElement: {} };
-      testBed = createComponentBed(NzTestResultBasicComponent, {
+      testBed = createComponentBed(NzTestResultRtlComponent, {
         imports: [BidiModule, NzResultModule, NzIconModule],
-        providers: [{ provide: DIR_DOCUMENT, useFactory: () => fakeDocument }]
+        declarations: [NzTestResultBasicComponent]
       });
       fixture = testBed.fixture;
       fixture.detectChanges();
