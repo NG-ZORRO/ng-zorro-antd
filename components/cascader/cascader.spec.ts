@@ -50,7 +50,7 @@ describe('cascader', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [BidiModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule, NzCascaderModule],
-        declarations: [NzDemoCascaderDefaultComponent, NzDemoCascaderLoadDataComponent]
+        declarations: [NzDemoCascaderDefaultComponent, NzDemoCascaderLoadDataComponent, NzDemoCascaderRtlComponent]
       }).compileComponents();
 
       inject([OverlayContainer], (oc: OverlayContainer) => {
@@ -59,36 +59,6 @@ describe('cascader', () => {
       })();
     })
   );
-
-  describe('RTL', () => {
-    it('should RTL className correct', () => {
-      const fixture = TestBed.createComponent(NzDemoCascaderRtlComponent);
-      const cascader = fixture.debugElement.query(By.directive(NzCascaderComponent));
-      fixture.detectChanges();
-      expect(cascader.nativeElement.className).toContain('ant-cascader-rtl');
-      expect(cascader.nativeElement.className).toContain('ant-cascader-picker-rtl');
-
-      fixture.componentInstance.direction = 'ltr';
-
-      expect(cascader.nativeElement.className).not.toContain('ant-cascader-rtl');
-      expect(cascader.nativeElement.className).not.toContain('ant-cascader-picker-rtl');
-    });
-
-    it('should item arrow display correct direction', () => {
-      const fixture = TestBed.createComponent(NzDemoCascaderRtlComponent);
-      const testComponent = fixture.debugElement.componentInstance;
-
-      testComponent.nzOptions = options3;
-      fixture.detectChanges();
-      testComponent.cascader.setMenuVisible(true);
-      fixture.detectChanges();
-      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
-      itemEl1.click();
-      fixture.detectChanges();
-      const itemEl21 = getItemAtColumnAndRow(2, 1)!;
-      expect(itemEl21.querySelector('.anticon')?.classList).toContain('anticon-right');
-    });
-  });
 
   describe('default', () => {
     let fixture: ComponentFixture<NzDemoCascaderDefaultComponent>;
@@ -1710,6 +1680,44 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(testComponent.values!.length).toBe(0);
     }));
+  });
+
+  describe('RTL', () => {
+    let fixture: ComponentFixture<NzDemoCascaderRtlComponent>;
+    let cascader: DebugElement;
+    let testComponent: NzDemoCascaderRtlComponent;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NzDemoCascaderRtlComponent);
+      testComponent = fixture.debugElement.componentInstance;
+      cascader = fixture.debugElement.query(By.directive(NzCascaderComponent));
+    });
+
+    it('should RTL className correct', () => {
+      fixture.detectChanges();
+      expect(cascader.nativeElement.className).toContain('ant-cascader-rtl');
+      expect(cascader.nativeElement.className).toContain('ant-cascader-picker-rtl');
+    });
+
+    it('should RTL className correct after change Dir', () => {
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+
+      expect(cascader.nativeElement.className).not.toContain('ant-cascader-rtl');
+      expect(cascader.nativeElement.className).not.toContain('ant-cascader-picker-rtl');
+    });
+
+    it('should item arrow display correct direction', () => {
+      fixture.detectChanges();
+      testComponent.nzOptions = options3;
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      const itemEl1 = getItemAtColumnAndRow(1, 1)!;
+      itemEl1.click();
+      fixture.detectChanges();
+      const itemEl21 = getItemAtColumnAndRow(2, 1)!;
+      expect(itemEl21.querySelector('.anticon')?.classList).toContain('anticon-left');
+    });
   });
 });
 
