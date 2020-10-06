@@ -1697,12 +1697,9 @@ describe('cascader', () => {
       fixture.detectChanges();
       expect(cascader.nativeElement.className).toContain('ant-cascader-rtl');
       expect(cascader.nativeElement.className).toContain('ant-cascader-picker-rtl');
-    });
 
-    it('should className correct after change Dir', () => {
       fixture.componentInstance.direction = 'ltr';
       fixture.detectChanges();
-
       expect(cascader.nativeElement.className).not.toContain('ant-cascader-rtl');
       expect(cascader.nativeElement.className).not.toContain('ant-cascader-picker-rtl');
     });

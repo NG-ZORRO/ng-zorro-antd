@@ -312,6 +312,10 @@ describe('radio', () => {
       const radio = fixture.debugElement.query(By.directive(NzRadioComponent));
       fixture.detectChanges();
       expect(radio.nativeElement.className).toContain('ant-radio-button-wrapper-rtl');
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+      expect(radio.nativeElement.className).not.toContain('ant-radio-button-wrapper-rtl');
     });
 
     it('should radio group className correct', () => {
@@ -319,6 +323,10 @@ describe('radio', () => {
       const radioGroup = fixture.debugElement.query(By.directive(NzRadioGroupComponent));
       fixture.detectChanges();
       expect(radioGroup.nativeElement.classList).toContain('ant-radio-group-rtl');
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+      expect(radioGroup.nativeElement.className).not.toContain('ant-radio-group-rtl');
     });
   });
 });
