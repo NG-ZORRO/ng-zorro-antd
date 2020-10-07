@@ -1,169 +1,175 @@
 <div
   *ngFor="let file of list"
-  class="ant-upload-list-item ant-upload-list-item-{{
-    file.status
-  }} ant-upload-list-item-list-type-{{ listType }}"
-  [attr.data-key]="file.key"
-  @itemState
-  nz-tooltip
-  [nzTooltipTitle]="file.status === 'error' ? file.message : null"
+  [class.ant-upload-list-picture-card-container]="listType === 'picture-card'"
 >
-  <ng-template #icon>
-    <ng-container [ngSwitch]="file.iconType">
-      <div
-        *ngSwitchCase="'uploading'"
-        class="ant-upload-list-item-thumbnail"
-        [class.ant-upload-list-item-file]="!file.isUploading"
-      >
+  <div
+    class="ant-upload-list-item ant-upload-list-item-{{
+      file.status
+    }} ant-upload-list-item-list-type-{{ listType }}"
+    [attr.data-key]="file.key"
+    @itemState
+    nz-tooltip
+    [nzTooltipTitle]="file.status === 'error' ? file.message : null"
+  >
+    <ng-template #icon>
+      <ng-container [ngSwitch]="file.iconType">
+        <div
+          *ngSwitchCase="'uploading'"
+          class="ant-upload-list-item-thumbnail"
+          [class.ant-upload-list-item-file]="!file.isUploading"
+        >
+          <ng-template
+            [ngTemplateOutlet]="iconNode"
+            [ngTemplateOutletContext]="{ $implicit: file }"
+          ></ng-template>
+        </div>
+        <a
+          *ngSwitchCase="'thumbnail'"
+          class="ant-upload-list-item-thumbnail"
+          [class.ant-upload-list-item-file]="!file.isImageUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          [href]="file.url || file.thumbUrl"
+          (click)="handlePreview(file, $event)"
+        >
+          <img
+            *ngIf="file.isImageUrl; else noImageThumbTpl"
+            class="ant-upload-list-item-image"
+            [src]="file.thumbUrl || file.url"
+            [attr.alt]="file.name"
+          />
+        </a>
+        <span *ngSwitchDefault class="ant-upload-text-icon">
+          <ng-template
+            [ngTemplateOutlet]="iconNode"
+            [ngTemplateOutletContext]="{ $implicit: file }"
+          ></ng-template>
+        </span>
+      </ng-container>
+      <ng-template #noImageThumbTpl>
         <ng-template
           [ngTemplateOutlet]="iconNode"
           [ngTemplateOutletContext]="{ $implicit: file }"
         ></ng-template>
-      </div>
+      </ng-template>
+    </ng-template>
+    <ng-template #iconNode let-file>
+      <ng-container *ngIf="!iconRender; else iconRender">
+        <ng-container [ngSwitch]="listType">
+          <ng-container *ngSwitchCase="'picture'">
+            <ng-container *ngIf="file.isUploading; else iconNodeFileIcon">
+              <i nz-icon nzType="loading"></i>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngSwitchCase="'picture-card'">
+            <ng-container *ngIf="file.isUploading; else iconNodeFileIcon">
+              {{ locale.uploading }}
+            </ng-container>
+          </ng-container>
+          <i *ngSwitchDefault nz-icon [nzType]="file.isUploading ? 'loading' : 'paper-clip'"></i>
+        </ng-container>
+      </ng-container>
+      <ng-template #iconNodeFileIcon>
+        <i nz-icon [nzType]="file.isImageUrl ? 'picture' : 'file'" nzTheme="twotone"></i>
+      </ng-template>
+    </ng-template>
+    <ng-template #downloadOrDelete>
+      <span
+        *ngIf="listType !== 'picture-card'"
+        class="ant-upload-list-item-card-actions {{ listType === 'picture' ? 'picture' : '' }}"
+      >
+        <button
+          nz-button
+          nzType="text"
+          nzSize="small"
+          *ngIf="file.showDownload"
+          title="{{ locale.downloadFile }}"
+        >
+          <ng-template [ngTemplateOutlet]="downloadIcon"></ng-template>
+        </button>
+        <button
+          nz-button
+          nzType="text"
+          nzSize="small"
+          *ngIf="icons.showRemoveIcon"
+          title="{{ locale.removeFile }}"
+        >
+          <ng-template [ngTemplateOutlet]="removeIcon"></ng-template>
+        </button>
+      </span>
+    </ng-template>
+    <ng-template #preview>
       <a
-        *ngSwitchCase="'thumbnail'"
-        class="ant-upload-list-item-thumbnail"
-        [class.ant-upload-list-item-file]="!file.isImageUrl"
+        *ngIf="file.url"
         target="_blank"
         rel="noopener noreferrer"
-        [href]="file.url || file.thumbUrl"
+        [ngClass]="file.listItemNameCls!"
+        [attr.title]="file.name"
+        [href]="file.url"
+        [attr.download]="file.linkProps && file.linkProps.download"
         (click)="handlePreview(file, $event)"
       >
-        <img
-          *ngIf="file.isImageUrl; else noImageThumbTpl"
-          class="ant-upload-list-item-image"
-          [src]="file.thumbUrl || file.url"
-          [attr.alt]="file.name"
-        />
+        {{ file.name }}
       </a>
-      <span *ngSwitchDefault class="ant-upload-text-icon">
-        <ng-template
-          [ngTemplateOutlet]="iconNode"
-          [ngTemplateOutletContext]="{ $implicit: file }"
-        ></ng-template>
+      <span
+        *ngIf="!file.url"
+        [ngClass]="file.listItemNameCls!"
+        [attr.title]="file.name"
+        (click)="handlePreview(file, $event)"
+      >
+        {{ file.name }}
       </span>
-    </ng-container>
-    <ng-template #noImageThumbTpl>
-      <ng-template
-        [ngTemplateOutlet]="iconNode"
-        [ngTemplateOutletContext]="{ $implicit: file }"
-      ></ng-template>
+      <ng-template [ngTemplateOutlet]="downloadOrDelete"></ng-template>
     </ng-template>
-  </ng-template>
-  <ng-template #iconNode let-file>
-    <ng-container *ngIf="!iconRender; else iconRender">
-      <ng-container [ngSwitch]="listType">
-        <ng-container *ngSwitchCase="'picture'">
-          <ng-container *ngIf="file.isUploading; else iconNodeFileIcon">
-            <i nz-icon nzType="loading"></i>
-          </ng-container>
-        </ng-container>
-        <ng-container *ngSwitchCase="'picture-card'">
-          <ng-container *ngIf="file.isUploading; else iconNodeFileIcon">{{
-            locale.uploading
-          }}</ng-container>
-        </ng-container>
-        <i *ngSwitchDefault nz-icon [nzType]="file.isUploading ? 'loading' : 'paper-clip'"></i>
-      </ng-container>
-    </ng-container>
-    <ng-template #iconNodeFileIcon>
-      <i nz-icon [nzType]="file.isImageUrl ? 'picture' : 'file'" nzTheme="twotone"></i>
-    </ng-template>
-  </ng-template>
-  <ng-template #downloadOrDelete>
-    <span
-      *ngIf="listType !== 'picture-card'"
-      class="ant-upload-list-item-card-actions {{ listType === 'picture' ? 'picture' : '' }}"
-    >
-      <button
-        nz-button
-        nzType="text"
-        nzSize="small"
-        *ngIf="file.showDownload"
-        title="{{ locale.downloadFile }}"
-      >
-        <ng-template [ngTemplateOutlet]="downloadIcon"></ng-template>
-      </button>
-      <button
-        nz-button
-        nzType="text"
-        nzSize="small"
+    <ng-template #removeIcon>
+      <i
         *ngIf="icons.showRemoveIcon"
+        (click)="handleRemove(file, $event)"
+        nz-icon
+        nzType="delete"
         title="{{ locale.removeFile }}"
-      >
-        <ng-template [ngTemplateOutlet]="removeIcon"></ng-template>
-      </button>
-    </span>
-  </ng-template>
-  <ng-template #preview>
-    <a
-      *ngIf="file.url"
-      target="_blank"
-      rel="noopener noreferrer"
-      [ngClass]="file.listItemNameCls!"
-      [attr.title]="file.name"
-      [href]="file.url"
-      [attr.download]="file.linkProps && file.linkProps.download"
-      (click)="handlePreview(file, $event)"
-      >{{ file.name }}</a
-    >
+      ></i>
+    </ng-template>
+    <ng-template #downloadIcon>
+      <i
+        *ngIf="file.showDownload"
+        (click)="handleDownload(file)"
+        nz-icon
+        nzType="download"
+        title="{{ locale.downloadFile }}"
+      ></i>
+    </ng-template>
+    <div class="ant-upload-list-item-info">
+      <span>
+        <ng-template [ngTemplateOutlet]="icon"></ng-template>
+        <ng-template [ngTemplateOutlet]="preview"></ng-template>
+      </span>
+    </div>
     <span
-      *ngIf="!file.url"
-      [ngClass]="file.listItemNameCls!"
-      [attr.title]="file.name"
-      (click)="handlePreview(file, $event)"
-      >{{ file.name }}</span
+      *ngIf="listType === 'picture-card' && !file.isUploading"
+      class="ant-upload-list-item-actions"
     >
-    <ng-template [ngTemplateOutlet]="downloadOrDelete"></ng-template>
-  </ng-template>
-  <ng-template #removeIcon>
-    <i
-      *ngIf="icons.showRemoveIcon"
-      (click)="handleRemove(file, $event)"
-      nz-icon
-      nzType="delete"
-      title="{{ locale.removeFile }}"
-    ></i>
-  </ng-template>
-  <ng-template #downloadIcon>
-    <i
-      *ngIf="file.showDownload"
-      (click)="handleDownload(file)"
-      nz-icon
-      nzType="download"
-      title="{{ locale.downloadFile }}"
-    ></i>
-  </ng-template>
-  <div class="ant-upload-list-item-info">
-    <span>
-      <ng-template [ngTemplateOutlet]="icon"></ng-template>
-      <ng-template [ngTemplateOutlet]="preview"></ng-template>
+      <a
+        *ngIf="icons.showPreviewIcon"
+        [href]="file.url || file.thumbUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="{{ locale.previewFile }}"
+        [ngStyle]="!(file.url || file.thumbUrl) ? { opacity: 0.5, 'pointer-events': 'none' } : null"
+        (click)="handlePreview(file, $event)"
+      >
+        <i nz-icon nzType="eye"></i>
+      </a>
+      <ng-template [ngTemplateOutlet]="downloadIcon"></ng-template>
+      <ng-template [ngTemplateOutlet]="removeIcon"></ng-template>
     </span>
-  </div>
-  <span
-    *ngIf="listType === 'picture-card' && !file.isUploading"
-    class="ant-upload-list-item-actions"
-  >
-    <a
-      *ngIf="icons.showPreviewIcon"
-      [href]="file.url || file.thumbUrl"
-      target="_blank"
-      rel="noopener noreferrer"
-      title="{{ locale.previewFile }}"
-      [ngStyle]="!(file.url || file.thumbUrl) ? { opacity: 0.5, 'pointer-events': 'none' } : null"
-      (click)="handlePreview(file, $event)"
-    >
-      <i nz-icon nzType="eye"></i>
-    </a>
-    <ng-template [ngTemplateOutlet]="downloadIcon"></ng-template>
-    <ng-template [ngTemplateOutlet]="removeIcon"></ng-template>
-  </span>
-  <div *ngIf="file.isUploading" class="ant-upload-list-item-progress">
-    <nz-progress
-      [nzPercent]="file.percent!"
-      nzType="line"
-      [nzShowInfo]="false"
-      [nzStrokeWidth]="2"
-    ></nz-progress>
+    <div *ngIf="file.isUploading" class="ant-upload-list-item-progress">
+      <nz-progress
+        [nzPercent]="file.percent!"
+        nzType="line"
+        [nzShowInfo]="false"
+        [nzStrokeWidth]="2"
+      ></nz-progress>
+    </div>
   </div>
 </div>

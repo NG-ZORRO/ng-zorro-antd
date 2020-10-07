@@ -21,8 +21,10 @@ function getBase64(file: File): Promise<string | ArrayBuffer | null> {
         [nzShowButton]="fileList.length < 8"
         [nzPreview]="handlePreview"
       >
-        <i nz-icon nzType="plus"></i>
-        <div class="ant-upload-text">Upload</div>
+        <div>
+          <i nz-icon nzType="plus"></i>
+          <div style="margin-top: 8px">Upload</div>
+        </div>
       </nz-upload>
       <nz-modal [nzVisible]="previewVisible" [nzContent]="modalContent" [nzFooter]="null" (nzOnCancel)="previewVisible = false">
         <ng-template #modalContent>
@@ -30,19 +32,7 @@ function getBase64(file: File): Promise<string | ArrayBuffer | null> {
         </ng-template>
       </nz-modal>
     </div>
-  `,
-  styles: [
-    `
-      i[nz-icon] {
-        font-size: 32px;
-        color: #999;
-      }
-      .ant-upload-text {
-        margin-top: 8px;
-        color: #666;
-      }
-    `
-  ]
+  `
 })
 export class NzDemoUploadPictureCardComponent {
   fileList: NzUploadFile[] = [
