@@ -115,7 +115,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
     }
 
     if (this.component) {
-      this.updateChangedProperties(changes);
+      this.updatePropertiesByChanges(changes);
     }
   }
 
@@ -162,7 +162,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
     this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), componentRef.location.nativeElement);
     this.component.setOverlayOrigin({ elementRef: this.specificOrigin || this.elementRef });
 
-    this.updateChangedProperties(this.needProxyProperties);
+    this.initProperties();
 
     this.component.nzVisibleChange.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe((visible: boolean) => {
       this.visible = visible;
@@ -216,62 +216,41 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
     } // Else do nothing because user wants to control the visibility programmatically.
   }
 
-  updatePropertiesByChanges(changes: SimpleChanges): void {
-    const properties = {
-      specificTitle: ['nzTitle', this.title],
-      directiveNameTitle: ['nzTitle', this.title],
-      specificContent: ['nzContent', this.content],
-      directiveNameContent: ['nzContent', this.content],
-      specificTrigger: ['nzTrigger', this.trigger],
-      specificPlacement: ['nzPlacement', this.placement],
-      specificVisible: ['nzVisible', this.isVisible],
-      specificMouseEnterDelay: ['nzMouseEnterDelay', this.mouseEnterDelay],
-      specificMouseLeaveDelay: ['nzMouseLeaveDelay', this.mouseLeaveDelay],
-      specificOverlayClassName: ['nzOverlayClassName', this.overlayClassName],
-      specificOverlayStyle: ['nzOverlayStyle', this.overlayStyle]
+  private updatePropertiesByChanges(changes: SimpleChanges): void {
+    this.updatePropertiesByKeys(Object.keys(changes));
+  }
+
+  private updatePropertiesByKeys(keys?: string[]): void {
+    interface PropertyMapping {
+      [key: string]: [string, () => unknown];
+    }
+
+    const properties: PropertyMapping = {
+      specificTitle: ['nzTitle', () => this.title],
+      directiveNameTitle: ['nzTitle', () => this.title],
+      specificContent: ['nzContent', () => this.content],
+      directiveNameContent: ['nzContent', () => this.content],
+      specificTrigger: ['nzTrigger', () => this.trigger],
+      specificPlacement: ['nzPlacement', () => this.placement],
+      specificVisible: ['nzVisible', () => this.isVisible],
+      specificMouseEnterDelay: ['nzMouseEnterDelay', () => this.mouseEnterDelay],
+      specificMouseLeaveDelay: ['nzMouseLeaveDelay', () => this.mouseLeaveDelay],
+      specificOverlayClassName: ['nzOverlayClassName', () => this.overlayClassName],
+      specificOverlayStyle: ['nzOverlayStyle', () => this.overlayStyle]
     };
 
-    const keys = Object.keys(changes);
-    keys.forEach((property: NzSafeAny) => {
-      // @ts-ignore
+    (keys || Object.keys(properties).filter(key => key.startsWith('specific'))).forEach((property: NzSafeAny) => {
       if (properties[property]) {
-        // @ts-ignore
-        const [name, value] = properties[property];
-        this.updateComponentValue(name, value);
+        const [name, valueFn] = properties[property];
+        this.updateComponentValue(name, valueFn());
       }
     });
-  }
 
-  updatePropertiesByArray(): void {
-    this.updateComponentValue('nzTitle', this.title);
-    this.updateComponentValue('nzContent', this.content);
-    this.updateComponentValue('nzPlacement', this.placement);
-    this.updateComponentValue('nzTrigger', this.trigger);
-    this.updateComponentValue('nzVisible', this.isVisible);
-    this.updateComponentValue('nzMouseEnterDelay', this.mouseEnterDelay);
-    this.updateComponentValue('nzMouseLeaveDelay', this.mouseLeaveDelay);
-    this.updateComponentValue('nzOverlayClassName', this.overlayClassName);
-    this.updateComponentValue('nzOverlayStyle', this.overlayStyle);
-  }
-  /**
-   * Sync changed properties to the component and trigger change detection in that component.
-   */
-  protected updateChangedProperties(propertiesOrChanges: string[] | SimpleChanges): void {
-    const isArray = Array.isArray(propertiesOrChanges);
-    const keys = isArray ? (propertiesOrChanges as string[]) : Object.keys(propertiesOrChanges);
-
-    keys.forEach((property: NzSafeAny) => {
-      if (this.needProxyProperties.indexOf(property) !== -1) {
-        // @ts-ignore
-        this.updateComponentValue(property, this[property]);
-      }
-    });
-    if (isArray) {
-      this.updatePropertiesByArray();
-    } else {
-      this.updatePropertiesByChanges(propertiesOrChanges as SimpleChanges);
-    }
     this.component?.updateByDirective();
+  }
+
+  private initProperties(): void {
+    this.updatePropertiesByKeys();
   }
 
   private updateComponentValue(key: string, value: NzSafeAny): void {

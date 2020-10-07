@@ -45,7 +45,7 @@ describe('nz-tooltip', () => {
 
   function waitingForTooltipToggling(): void {
     fixture.detectChanges();
-    tick(500);
+    tick(1000);
     fixture.detectChanges();
   }
 
@@ -83,6 +83,7 @@ describe('nz-tooltip', () => {
 
       dispatchMouseEvent(overlayElement, 'mouseleave');
       waitingForTooltipToggling();
+      // FIXME: the following line errors
       expect(overlayContainerElement.textContent).not.toContain(title);
 
       dispatchMouseEvent(triggerElement, 'mouseenter');
