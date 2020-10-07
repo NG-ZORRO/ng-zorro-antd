@@ -71,7 +71,8 @@ import { NzRadioService } from './radio.service';
     '[class.ant-radio-button-wrapper-checked]': 'isChecked && isRadioButton',
     '[class.ant-radio-wrapper-disabled]': 'nzDisabled && !isRadioButton',
     '[class.ant-radio-button-wrapper-disabled]': 'nzDisabled && isRadioButton',
-    '[class.ant-radio-button-wrapper-rtl]': `dir === 'rtl'`,
+    '[class.ant-radio-wrapper-rtl]': `!isRadioButton && dir === 'rtl'`,
+    '[class.ant-radio-button-wrapper-rtl]': `isRadioButton && dir === 'rtl'`,
     '(click)': 'onHostClick($event)'
   }
 })

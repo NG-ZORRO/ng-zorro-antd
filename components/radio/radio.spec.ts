@@ -22,7 +22,8 @@ describe('radio', () => {
           NzTestRadioGroupDisabledComponent,
           NzTestRadioGroupDisabledFormComponent,
           NzTestRadioSingleRtlComponent,
-          NzTestRadioGroupRtlComponent
+          NzTestRadioGroupRtlComponent,
+          NzTestRadioButtonRtlComponent
         ]
       });
       TestBed.compileComponents();
@@ -311,6 +312,17 @@ describe('radio', () => {
       const fixture = TestBed.createComponent(NzTestRadioSingleRtlComponent);
       const radio = fixture.debugElement.query(By.directive(NzRadioComponent));
       fixture.detectChanges();
+      expect(radio.nativeElement.className).toContain('ant-radio-wrapper-rtl');
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+      expect(radio.nativeElement.className).not.toContain('ant-radio-wrapper-rtl');
+    });
+
+    it('should radio button className correct', () => {
+      const fixture = TestBed.createComponent(NzTestRadioButtonRtlComponent);
+      const radio = fixture.debugElement.query(By.directive(NzRadioComponent));
+      fixture.detectChanges();
       expect(radio.nativeElement.className).toContain('ant-radio-button-wrapper-rtl');
 
       fixture.componentInstance.direction = 'ltr';
@@ -491,6 +503,18 @@ export class NzTestRadioGroupSolidComponent {
   `
 })
 export class NzTestRadioSingleRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
+}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <label nz-radio-button>Radio</label>
+    </div>
+  `
+})
+export class NzTestRadioButtonRtlComponent {
   @ViewChild(Dir) dir!: Dir;
   direction = 'rtl';
 }
