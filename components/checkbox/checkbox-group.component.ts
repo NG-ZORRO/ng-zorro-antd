@@ -56,7 +56,7 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, O
   options: NzCheckBoxOptionInterface[] = [];
   @Input() @InputBoolean() nzDisabled = false;
 
-  dir: Direction;
+  dir: Direction = 'ltr';
 
   private destroy$ = new Subject<void>();
 
@@ -73,15 +73,8 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, O
     private elementRef: ElementRef,
     private focusMonitor: FocusMonitor,
     private cdr: ChangeDetectorRef,
-    @Optional() directionality: Directionality
-  ) {
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      cdr.detectChanges();
-    });
-
-    this.dir = directionality.value;
-  }
+    @Optional() private directionality: Directionality
+  ) {}
 
   ngOnInit(): void {
     this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
@@ -89,6 +82,13 @@ export class NzCheckboxGroupComponent implements ControlValueAccessor, OnInit, O
         Promise.resolve().then(() => this.onTouched());
       }
     });
+
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
   }
 
   ngOnDestroy(): void {

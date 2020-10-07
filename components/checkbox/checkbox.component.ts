@@ -66,7 +66,7 @@ import { NzCheckboxWrapperComponent } from './checkbox-wrapper.component';
   host: {
     '[class.ant-checkbox-wrapper]': 'true',
     '[class.ant-checkbox-wrapper-checked]': 'nzChecked',
-    '[class.ant-checkbox-wrapper-rtl]': `dir === 'rtl'`,
+    '[class.ant-checkbox-rtl]': `dir === 'rtl'`,
     '(click)': 'hostClick($event)'
   }
 })
@@ -76,7 +76,7 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
   static ngAcceptInputType_nzIndeterminate: BooleanInput;
   static ngAcceptInputType_nzChecked: BooleanInput;
 
-  dir: Direction;
+  dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
 
   onChange: OnChangeType = () => {};
@@ -137,15 +137,8 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
     @Optional() private nzCheckboxWrapperComponent: NzCheckboxWrapperComponent,
     private cdr: ChangeDetectorRef,
     private focusMonitor: FocusMonitor,
-    @Optional() directionality: Directionality
-  ) {
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      cdr.detectChanges();
-    });
-
-    this.dir = directionality.value;
-  }
+    @Optional() private directionality: Directionality
+  ) {}
 
   ngOnInit(): void {
     this.focusMonitor.monitor(this.elementRef, true).subscribe(focusOrigin => {
@@ -156,13 +149,18 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
     if (this.nzCheckboxWrapperComponent) {
       this.nzCheckboxWrapperComponent.addCheckbox(this);
     }
+
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
   }
   ngAfterViewInit(): void {
     if (this.nzAutoFocus) {
       this.focus();
     }
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   ngOnDestroy(): void {
@@ -170,5 +168,8 @@ export class NzCheckboxComponent implements OnInit, ControlValueAccessor, OnDest
     if (this.nzCheckboxWrapperComponent) {
       this.nzCheckboxWrapperComponent.removeCheckbox(this);
     }
+
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
