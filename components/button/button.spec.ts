@@ -135,7 +135,7 @@ describe('button', () => {
       expect(buttonElement.classList).toContain('ant-btn-icon-only');
     });
   });
-  describe('className', () => {
+  describe('RTL', () => {
     let testBed: ComponentBed<TestButtonRtlComponent>;
     let buttonElement: HTMLButtonElement;
     beforeEach(() => {
