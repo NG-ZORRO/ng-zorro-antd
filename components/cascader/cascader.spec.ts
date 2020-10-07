@@ -1695,14 +1695,22 @@ describe('cascader', () => {
 
     it('should className correct', () => {
       fixture.detectChanges();
-      expect(cascader.nativeElement.className).toContain('ant-cascader-rtl');
       expect(cascader.nativeElement.className).toContain('ant-cascader-picker-rtl');
 
       fixture.componentInstance.direction = 'ltr';
       fixture.detectChanges();
-      expect(cascader.nativeElement.className).not.toContain('ant-cascader-rtl');
       expect(cascader.nativeElement.className).not.toContain('ant-cascader-picker-rtl');
     });
+
+    it('should menu class work', fakeAsync(() => {
+      fixture.detectChanges();
+      cascader.nativeElement.click();
+      fixture.detectChanges();
+      tick(200);
+      fixture.detectChanges();
+      expect(testComponent.cascader.menuVisible).toBe(true);
+      expect(overlayContainerElement.querySelector('.ant-cascader-menus')!.classList).toContain('ant-cascader-menu-rtl');
+    }));
 
     it('should item arrow display correct direction', () => {
       fixture.detectChanges();

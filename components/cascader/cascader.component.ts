@@ -185,7 +185,6 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
     '[class.ant-cascader-picker-open]': 'menuVisible',
     '[class.ant-cascader-picker-with-value]': '!!inputValue',
     '[class.ant-cascader-focused]': 'isFocused',
-    '[class.ant-cascader-rtl]': `dir ==='rtl'`,
     '[class.ant-cascader-picker-rtl]': `dir ==='rtl'`
   }
 })
