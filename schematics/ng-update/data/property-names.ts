@@ -9,7 +9,7 @@ export const propertyNames: VersionChanges<PropertyNameUpgradeData> = {
         {
           replace: 'nzPosition',
           replaceWith: 'nzPlacement',
-          whitelist: {classes: ['NzNotificationDataOptions']}
+          limitedTo: {classes: ['NzNotificationDataOptions']}
         }
       ]
     },
@@ -19,12 +19,12 @@ export const propertyNames: VersionChanges<PropertyNameUpgradeData> = {
         {
           replace: 'isAllChecked',
           replaceWith: 'isChecked',
-          whitelist: {classes: ['NzTreeNode']}
+          limitedTo: {classes: ['NzTreeNode']}
         },
         {
           replace: 'setSelected',
           replaceWith: '/** TODO(NG-ZORRO V10) setSelected is deprecated, use `isSelected` instead **/setSelected',
-          whitelist: {classes: ['NzTreeNode']}
+          limitedTo: {classes: ['NzTreeNode']}
         }
       ]
     },
@@ -34,7 +34,7 @@ export const propertyNames: VersionChanges<PropertyNameUpgradeData> = {
         {
           replace: 'updateDefaultOption',
           replaceWith: '/** TODO(NG-ZORRO V10) updateDefaultOption is deprecated, Please use `set` of `NzConfigService` instead. **/updateDefaultOption',
-          whitelist: {classes: ['NzCodeEditorService']}
+          limitedTo: {classes: ['NzCodeEditorService']}
         }
       ]
     }
