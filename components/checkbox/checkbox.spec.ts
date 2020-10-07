@@ -45,7 +45,7 @@ describe('checkbox', () => {
       expect(checkbox.nativeElement.firstElementChild!.classList.contains('ant-checkbox')).toBe(true);
       expect(checkbox.nativeElement.firstElementChild.firstElementChild!.classList.contains('ant-checkbox-input')).toBe(true);
       expect(checkbox.nativeElement.firstElementChild.lastElementChild.classList.contains('ant-checkbox-inner')).toBe(true);
-      expect(checkbox.nativeElement.lastElementChild.innerText).toBe('Checkbox');
+      expect(checkbox.nativeElement.lastElementChild.innerText).toBe(' Checkbox');
     });
     it('should click change', () => {
       fixture.detectChanges();
