@@ -26,7 +26,7 @@
     "integration": "npm run build:lib && bash ./integration-test.sh"
   },
   "dependencies": {
-    "@angular/cdk": "^10.0.2",
+    "@angular/cdk": "^10.2.4",
     "@ant-design/icons-angular": "^10.0.0",
     "date-fns": "^2.10.0",
     "ngx-quicklink": "^0.2.1",

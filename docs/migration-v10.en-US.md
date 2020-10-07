@@ -44,7 +44,7 @@ $ npm i nz-tslint-rules -D
 }
 ```
 
-#### (1) Run TSLint to check/fix your project
+#### (3) Run TSLint to check/fix your project
 
 ```shell script
 $ tslint --project <tsconfig> --fix
