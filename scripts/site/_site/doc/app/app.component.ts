@@ -26,7 +26,15 @@ type SiteTheme = 'default' | 'dark' | 'compact';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html'
+  templateUrl: './app.component.html',
+  host: {
+    '[class.navigating]': '!navigationEnd'
+  },
+  styles: [`
+    :host.navigating {
+      display: none;
+    }
+  `]
 })
 export class AppComponent implements OnInit, AfterContentInit {
   /**
@@ -34,6 +42,7 @@ export class AppComponent implements OnInit, AfterContentInit {
    * the navigation on the side.
    **/
   showDrawer = false;
+  navigationEnd = false;
   isDrawerOpen = false;
   page: 'docs' | 'components' | 'experimental' | string = 'docs';
   windowWidth = 1400;
@@ -141,6 +150,7 @@ export class AppComponent implements OnInit, AfterContentInit {
 
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
+        this.navigationEnd = true;
         const currentDemoComponent = this.componentList.find(component => `/${component.path}` === this.router.url);
 
         if (currentDemoComponent) {
