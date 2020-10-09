@@ -26,7 +26,7 @@
     "integration": "npm run build:lib && bash ./integration-test.sh"
   },
   "dependencies": {
-    "@angular/cdk": "^10.0.2",
+    "@angular/cdk": "^10.2.4",
     "@ant-design/icons-angular": "^10.0.0",
     "date-fns": "^2.10.0",
     "ngx-quicklink": "^0.2.1",
@@ -79,6 +79,7 @@
     "fs-extra": "^8.1.0",
     "gulp": "^4.0.2",
     "gulp-clean": "^0.4.0",
+    "html-minifier": "^4.0.0",
     "husky": "^3.0.4",
     "immer": "^6.0.1",
     "intersection-observer": "^0.7.0",

@@ -46,7 +46,7 @@ $ npm i nz-tslint-rules -D
 }
 ```
 
-#### (1) 运行 TSLint 检查项目中的一级入口并修复
+#### (3) 运行 TSLint 检查项目中的一级入口并修复
 
 ```shell script
 $ tslint --project <tsconfig> --fix

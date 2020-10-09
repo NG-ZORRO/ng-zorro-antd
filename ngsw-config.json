@@ -4,12 +4,19 @@
     {
       "name": "app",
       "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "ignoreSearch": true,
       "resources": {
         "files": [
           "/favicon.ico",
           "/index.html",
           "/*.css",
-          "/*.js"
+          "/*.js",
+          "!/*-es5*.js"
+        ],
+        "urls": [
+          "https://gw.alipayobjects.com/**",
+          "https://img.alicdn.com/**"
         ]
       }
     }, {
@@ -26,10 +33,14 @@
   ],
   "navigationUrls": [
     "/**",
-    "!/assets/codes/**",
     "!/**/*.*",
     "!/**/*__*",
     "!/**/*__*/**",
-    "!/**/(version|issue-helper|iframe|blog)/**"
+    "!/assets/codes/**",
+    "!/**/stackblitz",
+    "!/version/**",
+    "!/issue-helper/**",
+    "!/iframe/**",
+    "!/blog/**"
   ]
 }

@@ -1,4 +1,5 @@
 import { series, task } from 'gulp';
+import { generate } from '../../prerender/ngsw-config';
 import { generateSitemap } from '../../prerender/sitemap';
 import { execNodeTask } from '../util/task-helpers';
 
@@ -12,8 +13,11 @@ task(':run:sitemap', done => {
   done();
 });
 
+/** Regenerate the ngsw-config to fix https://github.com/angular/angular/issues/23613 */
+task(':run:regen-ngsw-config', generate);
+
 /** Parallel run sitemap and prerender scripts */
-task('run:prerender', series(':run:prerender', ':run:service-work', ':run:sitemap'));
+task('run:prerender', series(':run:prerender', ':run:service-work', ':run:regen-ngsw-config', ':run:sitemap'));
 
 /** Task that builds the universal-app and runs the prerender and sitemap script. */
 task('prerender', series('run:prerender'));

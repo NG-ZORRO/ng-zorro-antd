@@ -8,7 +8,7 @@ export const outputNames: VersionChanges<OutputNameUpgradeData> = {
         {
           replace    : 'nzOnSearchNode',
           replaceWith: 'nzSearchValueChange',
-          whitelist  : {
+          limitedTo  : {
             elements: ['nz-tree']
           }
         }
@@ -22,7 +22,7 @@ export const outputNames: VersionChanges<OutputNameUpgradeData> = {
         {
           replace    : 'nzSortChange',
           replaceWith: 'nzSortOrderChange',
-          whitelist  : {
+          limitedTo  : {
             elements: ['thead', 'th']
           }
         }
@@ -34,21 +34,21 @@ export const outputNames: VersionChanges<OutputNameUpgradeData> = {
         {
           replace : 'nzVisibleChange',
           replaceWith: 'nzTooltipVisibleChange',
-          whitelist : {
+          limitedTo : {
             attributes: ['nz-tooltip']
           }
         },
         {
           replace : 'nzVisibleChange',
           replaceWith: 'nzPopoverVisibleChange',
-          whitelist : {
+          limitedTo : {
             attributes: ['nz-popover']
           }
         },
         {
           replace : 'nzVisibleChange',
           replaceWith: 'nzPopconfirmVisibleChange',
-          whitelist : {
+          limitedTo : {
             attributes: ['nz-popconfirm']
           }
         }

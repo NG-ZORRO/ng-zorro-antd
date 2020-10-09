@@ -7,21 +7,21 @@ const tooltipPrefix = [
       {
         replace    : 'nzTitle',
         replaceWith: 'nzPopconfirmTitle',
-        whitelist  : {
+        limitedTo  : {
           attributes: ['nz-popconfirm']
         }
       },
       {
         replace    : 'nzTrigger',
         replaceWith: 'nzPopconfirmTrigger',
-        whitelist  : {
+        limitedTo  : {
           attributes: ['nz-popconfirm']
         }
       },
       {
         replace    : 'nzPlacement',
         replaceWith: 'nzPopconfirmPlacement',
-        whitelist  : {
+        limitedTo  : {
           attributes: ['nz-popconfirm']
         }
       }
@@ -33,21 +33,21 @@ const tooltipPrefix = [
       {
         replace    : 'nzTitle',
         replaceWith: 'nzTooltipTitle',
-        whitelist  : {
+        limitedTo  : {
           attributes: ['nz-tooltip']
         }
       },
       {
         replace    : 'nzTrigger',
         replaceWith: 'nzTooltipTrigger',
-        whitelist  : {
+        limitedTo  : {
           attributes: ['nz-tooltip']
         }
       },
       {
         replace    : 'nzPlacement',
         replaceWith: 'nzTooltipPlacement',
-        whitelist  : {
+        limitedTo  : {
           attributes: ['nz-tooltip']
         }
       }
@@ -59,34 +59,34 @@ const tooltipPrefix = [
       {
         replace    : 'nzTitle',
         replaceWith: 'nzPopoverTitle',
-        whitelist  : {
+        limitedTo  : {
           attributes: ['nz-popover']
         }
       },
       {
         replace    : 'nzTrigger',
         replaceWith: 'nzPopoverTrigger',
-        whitelist  : {
+        limitedTo  : {
           attributes: ['nz-popover']
         }
       },
       {
         replace    : 'nzPlacement',
         replaceWith: 'nzPopoverPlacement',
-        whitelist  : {
+        limitedTo  : {
           attributes: ['nz-popover']
         }
       },
       {
         replace    : 'nzContent',
         replaceWith: 'nzPopoverContent',
-        whitelist  : {
+        limitedTo  : {
           attributes: ['nz-popover']
         }
       }
     ]
   }
-]
+];
 
 export const inputNames: VersionChanges<InputNameUpgradeData> = {
   [ TargetVersion.V7 ]: [
@@ -96,7 +96,7 @@ export const inputNames: VersionChanges<InputNameUpgradeData> = {
         {
           replace    : 'nzSuffix',
           replaceWith: 'nzAddOnAfter',
-          whitelist  : {
+          limitedTo  : {
             attributes: [ 'nzSearch' ]
           }
         }
@@ -111,105 +111,105 @@ export const inputNames: VersionChanges<InputNameUpgradeData> = {
         {
           replace    : 'nzVisible',
           replaceWith: 'nzTooltipVisible',
-          whitelist  : {
+          limitedTo  : {
             attributes: [ 'nz-tooltip' ]
           }
         },
         {
           replace    : 'nzVisible',
           replaceWith: 'nzPopoverVisible',
-          whitelist  : {
+          limitedTo  : {
             attributes: [ 'nz-popover' ]
           }
         },
         {
           replace    : 'nzVisible',
           replaceWith: 'nzPopconfirmVisible',
-          whitelist  : {
+          limitedTo  : {
             attributes: [ 'nz-popconfirm' ]
           }
         },
         {
           replace    : 'nzOverlayStyle',
           replaceWith: 'nzTooltipOverlayStyle',
-          whitelist  : {
+          limitedTo  : {
             attributes: [ 'nz-tooltip' ]
           }
         },
         {
           replace    : 'nzOverlayStyle',
           replaceWith: 'nzPopoverOverlayStyle',
-          whitelist  : {
+          limitedTo  : {
             attributes: [ 'nz-popover' ]
           }
         },
         {
           replace    : 'nzOverlayStyle',
           replaceWith: 'nzPopconfirmOverlayStyle',
-          whitelist  : {
+          limitedTo  : {
             attributes: [ 'nz-popconfirm' ]
           }
         },
         {
           replace    : 'nzOverlayClassName',
           replaceWith: 'nzTooltipOverlayClassName',
-          whitelist  : {
+          limitedTo  : {
             attributes: [ 'nz-tooltip' ]
           }
         },
         {
           replace    : 'nzOverlayClassName',
           replaceWith: 'nzPopoverOverlayClassName',
-          whitelist  : {
+          limitedTo  : {
             attributes: [ 'nz-popover' ]
           }
         },
         {
           replace    : 'nzOverlayClassName',
           replaceWith: 'nzPopconfirmOverlayClassName',
-          whitelist  : {
+          limitedTo  : {
             attributes: [ 'nz-popconfirm' ]
           }
         },
         {
           replace    : 'nzMouseLeaveDelay',
           replaceWith: 'nzTooltipMouseLeaveDelay',
-          whitelist  : {
+          limitedTo  : {
             attributes: [ 'nz-tooltip' ]
           }
         },
         {
           replace    : 'nzMouseLeaveDelay',
           replaceWith: 'nzPopoverMouseLeaveDelay',
-          whitelist  : {
+          limitedTo  : {
             attributes: [ 'nz-popover' ]
           }
         },
         {
           replace    : 'nzMouseLeaveDelay',
           replaceWith: 'nzPopconfirmMouseLeaveDelay',
-          whitelist  : {
+          limitedTo  : {
             attributes: [ 'nz-popconfirm' ]
           }
         },
         {
           replace    : 'nzMouseEnterDelay',
           replaceWith: 'nzTooltipMouseEnterDelay',
-          whitelist  : {
+          limitedTo  : {
             attributes: [ 'nz-tooltip' ]
           }
         },
         {
           replace    : 'nzMouseEnterDelay',
           replaceWith: 'nzPopoverMouseEnterDelay',
-          whitelist  : {
+          limitedTo  : {
             attributes: [ 'nz-popover' ]
           }
         },
         {
           replace    : 'nzMouseEnterDelay',
           replaceWith: 'nzPopconfirmMouseEnterDelay',
-          whitelist  : {
+          limitedTo  : {
             attributes: [ 'nz-popconfirm' ]
           }
         }
@@ -221,7 +221,7 @@ export const inputNames: VersionChanges<InputNameUpgradeData> = {
         {
           replace    : 'nzTarget',
           replaceWith: 'nzContainer',
-          whitelist  : {
+          limitedTo  : {
             elements: [ 'nz-anchor' ]
           }
         }
@@ -233,7 +233,7 @@ export const inputNames: VersionChanges<InputNameUpgradeData> = {
         {
           replace    : 'nzSort',
           replaceWith: 'nzSortOrder',
-          whitelist  : {
+          limitedTo  : {
             elements: [ 'th' ]
           }
         }
@@ -245,14 +245,14 @@ export const inputNames: VersionChanges<InputNameUpgradeData> = {
         {
           replace    : 'nzClassName',
           replaceWith: 'ngClass',
-          whitelist  : {
+          limitedTo  : {
             elements: [ 'nz-date-picker', 'nz-week-picker', 'nz-month-picker', 'nz-year-picker', 'nz-range-picker' ]
           }
         },
         {
           replace    : 'nzStyle',
           replaceWith: 'ngStyle',
-          whitelist  : {
+          limitedTo  : {
             elements: [ 'nz-date-picker', 'nz-week-picker', 'nz-month-picker', 'nz-year-picker', 'nz-range-picker' ]
           }
         }
@@ -267,28 +267,28 @@ export const inputNames: VersionChanges<InputNameUpgradeData> = {
         {
           replace    : 'nzDefaultExpandAll',
           replaceWith: 'nzExpandAll',
-          whitelist  : {
+          limitedTo  : {
             elements: ['nz-tree', 'nz-tree-node']
           }
         },
         {
           replace    : 'nzDefaultExpandedKeys',
           replaceWith: 'nzExpandedKeys',
-          whitelist  : {
+          limitedTo  : {
             elements: ['nz-tree', 'nz-tree-select']
           }
         },
         {
           replace    : 'nzDefaultSelectedKeys',
           replaceWith: 'nzSelectedKeys',
-          whitelist  : {
+          limitedTo  : {
             elements: ['nz-tree']
           }
         },
         {
           replace    : 'nzDefaultCheckedKeys',
           replaceWith: 'nzCheckedKeys',
-          whitelist  : {
+          limitedTo  : {
             elements: ['nz-tree']
           }
         }
@@ -300,7 +300,7 @@ export const inputNames: VersionChanges<InputNameUpgradeData> = {
         {
           replace    : 'type',
           replaceWith: 'nzType',
-          whitelist  : {
+          limitedTo  : {
             attributes: ['nz-icon']
           }
         }
@@ -312,7 +312,7 @@ export const inputNames: VersionChanges<InputNameUpgradeData> = {
         {
           replace    : 'iconfont',
           replaceWith: 'nzIconfont',
-          whitelist  : {
+          limitedTo  : {
             attributes: ['nz-icon']
           }
         }
@@ -324,7 +324,7 @@ export const inputNames: VersionChanges<InputNameUpgradeData> = {
         {
           replace    : 'spin',
           replaceWith: 'nzSpin',
-          whitelist  : {
+          limitedTo  : {
             attributes: ['nz-icon']
           }
         }
@@ -336,7 +336,7 @@ export const inputNames: VersionChanges<InputNameUpgradeData> = {
         {
           replace    : 'theme',
           replaceWith: 'nzTheme',
-          whitelist  : {
+          limitedTo  : {
             attributes: ['nz-icon']
           }
         }
@@ -348,7 +348,7 @@ export const inputNames: VersionChanges<InputNameUpgradeData> = {
         {
           replace    : 'twoToneColor',
           replaceWith: 'nzTwoToneColor',
-          whitelist  : {
+          limitedTo  : {
             attributes: ['nz-icon']
           }
         }

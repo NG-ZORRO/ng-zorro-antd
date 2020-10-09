@@ -164,7 +164,6 @@ export class InnerPopupComponent implements OnChanges {
   @Input() partType!: RangePartType;
 
   @Output() readonly panelModeChange = new EventEmitter<NzDateMode>();
-
   // TODO: name is not proper
   @Output() readonly headerChange = new EventEmitter<CandyDate>(); // Emitted when user changed the header's value
   @Output() readonly selectDate = new EventEmitter<CandyDate>(); // Emitted when the date is selected by click the date panel
