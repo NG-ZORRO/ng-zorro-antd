@@ -79,6 +79,7 @@
     "fs-extra": "^8.1.0",
     "gulp": "^4.0.2",
     "gulp-clean": "^0.4.0",
+    "html-minifier": "^4.0.0",
     "husky": "^3.0.4",
     "immer": "^6.0.1",
     "intersection-observer": "^0.7.0",
