@@ -10,6 +10,7 @@ import {
   Component,
   Input,
   OnDestroy,
+  OnInit,
   Optional,
   TemplateRef,
   ViewEncapsulation
@@ -41,24 +42,26 @@ import { NzStatisticValueType } from './typings';
     </div>
   `
 })
-export class NzStatisticComponent implements OnDestroy {
+export class NzStatisticComponent implements OnDestroy, OnInit {
   @Input() nzPrefix?: string | TemplateRef<void>;
   @Input() nzSuffix?: string | TemplateRef<void>;
   @Input() nzTitle?: string | TemplateRef<void>;
   @Input() nzValue?: NzStatisticValueType;
   @Input() nzValueStyle: NgStyleInterface = {};
   @Input() nzValueTemplate?: TemplateRef<{ $implicit: NzStatisticValueType }>;
-  dir: Direction;
+  dir: Direction = 'ltr';
 
   private destroy$ = new Subject<void>();
 
-  constructor(cdr: ChangeDetectorRef, @Optional() directionality: Directionality) {
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      cdr.detectChanges();
+  constructor(protected cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {}
+
+  ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
     });
 
-    this.dir = directionality.value;
+    this.dir = this.directionality.value;
   }
 
   ngOnDestroy(): void {

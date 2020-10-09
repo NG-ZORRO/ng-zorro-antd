@@ -39,8 +39,7 @@ const REFRESH_INTERVAL = 1000 / 30;
       [nzTitle]="nzTitle"
       [nzPrefix]="nzPrefix"
       [nzSuffix]="nzSuffix"
-    >
-    </nz-statistic>
+    ></nz-statistic>
 
     <ng-template #countDownTpl>{{ diff | nzTimeRange: nzFormat }}</ng-template>
   `
@@ -54,12 +53,7 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
   private target: number = 0;
   private updater_?: Subscription | null;
 
-  constructor(
-    private cdr: ChangeDetectorRef,
-    private ngZone: NgZone,
-    private platform: Platform,
-    @Optional() directionality: Directionality
-  ) {
+  constructor(cdr: ChangeDetectorRef, private ngZone: NgZone, private platform: Platform, @Optional() directionality: Directionality) {
     super(cdr, directionality);
   }
 
@@ -73,6 +67,7 @@ export class NzCountdownComponent extends NzStatisticComponent implements OnInit
   }
 
   ngOnInit(): void {
+    super.ngOnInit();
     this.syncTimer();
   }
 
