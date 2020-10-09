@@ -111,12 +111,12 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
     this.close(result);
   }
 
-  triggerOk(): void {
-    this.trigger(NzTriggerAction.OK);
+  triggerOk(): Promise<void> {
+    return this.trigger(NzTriggerAction.OK);
   }
 
-  triggerCancel(): void {
-    this.trigger(NzTriggerAction.CANCEL);
+  triggerCancel(): Promise<void> {
+    return this.trigger(NzTriggerAction.CANCEL);
   }
 
   /**
@@ -164,7 +164,7 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
     return this.overlayRef.backdropElement;
   }
 
-  private trigger(action: NzTriggerAction): void {
+  private async trigger(action: NzTriggerAction): Promise<void> {
     const trigger = { ok: this.config.nzOnOk, cancel: this.config.nzOnCancel }[action];
     const loadingKey = { ok: 'nzOkLoading', cancel: 'nzCancelLoading' }[action] as 'nzOkLoading' | 'nzCancelLoading';
     const loading = this.config[loadingKey];
@@ -175,16 +175,17 @@ export class NzModalRef<T = NzSafeAny, R = NzSafeAny> implements NzModalLegacyAP
       trigger.emit(this.getContentComponent());
     } else if (typeof trigger === 'function') {
       const result = trigger(this.getContentComponent());
-      const caseClose = (doClose: boolean | void | {}) => doClose !== false && this.close(doClose as R);
       if (isPromise(result)) {
         this.config[loadingKey] = true;
-        const handleThen = (doClose: boolean | void | {}) => {
+        let doClose: boolean | void | {} = false;
+        try {
+          doClose = await result;
+        } finally {
           this.config[loadingKey] = false;
           this.closeWhitResult(doClose);
-        };
-        result.then(handleThen).catch(handleThen);
+        }
       } else {
-        caseClose(result);
+        this.closeWhitResult(result);
       }
     }
   }
