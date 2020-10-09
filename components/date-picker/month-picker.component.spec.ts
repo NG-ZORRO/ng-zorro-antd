@@ -160,7 +160,7 @@ describe('NzMonthPickerComponent', () => {
       openPickerByClickTrigger();
       const allDisabledCells = overlayContainerElement.querySelectorAll('.ant-picker-month-panel tr td.ant-picker-cell-disabled');
       const disabledCell = allDisabledCells[allDisabledCells.length - 1];
-      expect(disabledCell.textContent).toContain('11');
+      expect(disabledCell.textContent).toContain('10');
     }));
 
     it('should support nzLocale', () => {

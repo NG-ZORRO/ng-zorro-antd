@@ -47,7 +47,7 @@ export class YearTableComponent extends AbstractTable {
         const yearNum = previousYear + yearValue;
         const year = this.activeDate.setYear(yearNum);
         const content = this.dateHelper.format(year.nativeDate, 'yyyy');
-        const isDisabled = this.disabledDate ? this.disabledDate(year.nativeDate) : false;
+        const isDisabled = this.isDisabledYear(year);
         const cell: YearCell = {
           trackByIndex: content,
           value: year.nativeDate,
@@ -74,7 +74,30 @@ export class YearTableComponent extends AbstractTable {
     return years;
   }
 
-  addCellProperty(cell: DateCell, year: CandyDate): void {
+  getClassMap(cell: YearCell): { [key: string]: boolean } {
+    return {
+      ...super.getClassMap(cell),
+      [`ant-picker-cell-in-view`]: !!cell.isSameDecade
+    };
+  }
+
+  private isDisabledYear(year: CandyDate): boolean {
+    if (!this.disabledDate) {
+      return false;
+    }
+
+    const firstOfMonth = year.setMonth(0).setDate(1);
+
+    for (let date = firstOfMonth; date.getYear() === year.getYear(); date = date.addDays(1)) {
+      if (!this.disabledDate(date.nativeDate)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  private addCellProperty(cell: DateCell, year: CandyDate): void {
     if (this.hasRangeValue()) {
       const [startHover, endHover] = this.hoverValue;
       const [startSelected, endSelected] = this.selectedValue;
@@ -103,13 +126,6 @@ export class YearTableComponent extends AbstractTable {
       cell.isSelected = true;
     }
     cell.classMap = this.getClassMap(cell);
-  }
-
-  getClassMap(cell: YearCell): { [key: string]: boolean } {
-    return {
-      ...super.getClassMap(cell),
-      [`ant-picker-cell-in-view`]: !!cell.isSameDecade
-    };
   }
 
   private chooseYear(year: number): void {
