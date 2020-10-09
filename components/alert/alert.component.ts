@@ -12,6 +12,8 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
+  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -72,7 +74,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'alert';
   encapsulation: ViewEncapsulation.None,
   preserveWhitespaces: false
 })
-export class NzAlertComponent implements OnChanges, OnDestroy {
+export class NzAlertComponent implements OnChanges, OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzCloseable: BooleanInput;
   static ngAcceptInputType_nzShowIcon: BooleanInput;
@@ -92,24 +94,27 @@ export class NzAlertComponent implements OnChanges, OnDestroy {
   closed = false;
   iconTheme: 'outline' | 'fill' = 'fill';
   inferredIconType: string = 'info-circle';
-  dir: Direction;
+  dir: Direction = 'ltr';
   private isTypeSet = false;
   private isShowIconSet = false;
   private destroy$ = new Subject();
 
-  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef, directionality: Directionality) {
+  constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.cdr.markForCheck();
       });
+  }
 
-    this.dir = directionality.value;
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
+  ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
       this.cdr.detectChanges();
     });
+
+    this.dir = this.directionality.value;
   }
 
   closeAlert(): void {
