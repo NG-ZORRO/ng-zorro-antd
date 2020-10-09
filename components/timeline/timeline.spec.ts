@@ -1,6 +1,6 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, ViewChild } from '@angular/core';
-import { ComponentFixture } from '@angular/core/testing';
+import { ComponentFixture, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ComponentBed, createComponentBed } from 'ng-zorro-antd/core/testing/component-bed';
 
@@ -179,22 +179,29 @@ describe('nz-timeline', () => {
     let timeline: DebugElement;
     let items: HTMLDivElement[] = [];
 
-    beforeEach(() => {
-      testBed = createComponentBed(NzTestTimelineRtlComponent, {
-        imports: [BidiModule, NzTimelineModule],
-        declarations: [NzTestTimelineBasicComponent]
-      });
-      fixture = testBed.fixture;
+    beforeEach(
+      waitForAsync(() => {
+        testBed = createComponentBed(NzTestTimelineRtlComponent, {
+          imports: [BidiModule, NzTimelineModule],
+          declarations: [NzTestTimelineBasicComponent]
+        });
 
-      fixture.detectChanges();
+        fixture = testBed.fixture;
 
-      timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
-      items = Array.from((fixture.debugElement.nativeElement as HTMLElement).querySelectorAll('.ant-timeline-item'));
-    });
+        fixture.detectChanges();
+
+        timeline = fixture.debugElement.query(By.directive(NzTimelineComponent));
+        items = Array.from((fixture.debugElement.nativeElement as HTMLElement).querySelectorAll('.ant-timeline-item'));
+      })
+    );
 
     it('should init className correct', () => {
       expect(timeline.nativeElement.firstElementChild!.classList).toContain('ant-timeline-rtl');
       expect(items.length).toBeGreaterThan(0);
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+      expect(timeline.nativeElement.firstElementChild!.classList).not.toContain('ant-timeline-rtl');
     });
   });
 });
