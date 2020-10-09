@@ -422,9 +422,10 @@ describe('steps', () => {
     }));
   });
   describe('RTL', () => {
-    it('should className correct on dir change', () => {
+    it('should className correct on dir change', fakeAsync(() => {
       const fixture = TestBed.createComponent(NzTestOuterStepsRtlComponent);
       const outStep = fixture.debugElement.query(By.directive(NzStepsComponent));
+      fixture.componentInstance.direction = 'rtl';
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
@@ -433,7 +434,7 @@ describe('steps', () => {
       fixture.componentInstance.direction = 'ltr';
       fixture.detectChanges();
       expect(outStep.nativeElement.firstElementChild.classList).not.toContain('ant-steps-rtl');
-    });
+    }));
   });
 });
 

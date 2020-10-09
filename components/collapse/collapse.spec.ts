@@ -1,6 +1,6 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -9,13 +9,20 @@ import { NzCollapseComponent } from './collapse.component';
 import { NzCollapseModule } from './collapse.module';
 
 describe('collapse', () => {
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [BidiModule, NzCollapseModule, NoopAnimationsModule],
-      declarations: [NzTestCollapseBasicComponent, NzTestCollapseTemplateComponent, NzTestCollapseIconComponent, NzTestCollapseRtlComponent]
-    });
-    TestBed.compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [BidiModule, NzCollapseModule, NoopAnimationsModule],
+        declarations: [
+          NzTestCollapseBasicComponent,
+          NzTestCollapseTemplateComponent,
+          NzTestCollapseIconComponent,
+          NzTestCollapseRtlComponent
+        ]
+      });
+      TestBed.compileComponents();
+    })
+  );
   describe('collapse basic', () => {
     let fixture: ComponentFixture<NzTestCollapseBasicComponent>;
     let testComponent: NzTestCollapseBasicComponent;

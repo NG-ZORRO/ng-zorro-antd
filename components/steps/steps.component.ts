@@ -93,8 +93,6 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
   }
 
   ngOnInit(): void {
-    this.setClassMap();
-    this.updateChildrenSteps();
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
       this.dir = direction;
       this.setClassMap();
@@ -102,6 +100,8 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
     });
 
     this.dir = this.directionality.value;
+    this.setClassMap();
+    this.updateChildrenSteps();
   }
 
   ngOnDestroy(): void {
@@ -155,9 +155,5 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
       ['ant-steps-navigation']: this.nzType === 'navigation',
       ['ant-steps-rtl']: this.dir === 'rtl'
     };
-  }
-
-  get isRtlLayout(): boolean {
-    return this.dir === 'rtl';
   }
 }

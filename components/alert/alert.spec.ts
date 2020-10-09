@@ -1,6 +1,6 @@
 import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { Component, DebugElement, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
@@ -8,13 +8,15 @@ import { NzAlertComponent } from './alert.component';
 import { NzAlertModule } from './alert.module';
 
 describe('alert', () => {
-  beforeEach(fakeAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [BidiModule, NzAlertModule, NoopAnimationsModule, NzIconTestModule],
-      declarations: [NzDemoTestBasicComponent, NzDemoTestBannerComponent, NzTestAlertRtlComponent]
-    });
-    TestBed.compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [BidiModule, NzAlertModule, NoopAnimationsModule, NzIconTestModule],
+        declarations: [NzDemoTestBasicComponent, NzDemoTestBannerComponent, NzTestAlertRtlComponent]
+      });
+      TestBed.compileComponents();
+    })
+  );
 
   describe('basic alert', () => {
     let fixture: ComponentFixture<NzDemoTestBasicComponent>;

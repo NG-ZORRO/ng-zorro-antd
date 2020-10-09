@@ -17,6 +17,7 @@ import {
   NgZone,
   OnChanges,
   OnDestroy,
+  OnInit,
   Optional,
   Output,
   Renderer2,
@@ -51,7 +52,7 @@ const NZ_AFFIX_DEFAULT_SCROLL_TIME = 20;
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
+export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzOffsetTop: NumberInput;
   static ngAcceptInputType_nzOffsetBottom: NumberInput;
@@ -72,8 +73,7 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   @Output() readonly nzChange = new EventEmitter<boolean>();
 
-  dir: Direction;
-  private directionChangeSubscription: Subscription = Subscription.EMPTY;
+  dir: Direction = 'ltr';
 
   private readonly placeholderNode: HTMLElement;
 
@@ -98,20 +98,23 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
     private ngZone: NgZone,
     private platform: Platform,
     private renderer: Renderer2,
-    cdr: ChangeDetectorRef,
-    @Optional() directionality: Directionality
+    private cdr: ChangeDetectorRef,
+    @Optional() private directionality: Directionality
   ) {
     // The wrapper would stay at the original position as a placeholder.
     this.placeholderNode = el.nativeElement;
     this.document = doc;
+  }
 
-    this.directionChangeSubscription = directionality.change.subscribe(() => {
-      this.dir = directionality.value;
+  ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.registerListeners();
       this.updatePosition({} as Event);
-      cdr.detectChanges();
+      this.cdr.detectChanges();
     });
 
-    this.dir = directionality.value;
+    this.dir = this.directionality.value;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -131,7 +134,6 @@ export class NzAffixComponent implements AfterViewInit, OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this.removeListeners();
-    this.directionChangeSubscription.unsubscribe();
   }
 
   private registerListeners(): void {
