@@ -5,7 +5,7 @@ import { ChangeDetectorRef, Component, Input, OnInit, ViewEncapsulation } from '
 @Component({
   selector: 'app-github-btn',
   template: `
-    <a class="gh-btn" [href]="'https://github.com/' + org + '/' + repo" target="_blank">
+    <a class="gh-btn" [href]="'https://github.com/' + org + '/' + repo" target="_blank" aria-hidden="true">
       <span class="gh-ico" aria-hidden="true"></span>
       <span class="gh-text">Star</span>
     </a>

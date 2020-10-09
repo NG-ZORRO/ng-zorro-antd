@@ -30,7 +30,7 @@ const RESPONSIVE_SM = 1200;
       </div>
     </header>
     <ng-template #menu>
-      <ng-container *ngIf="!searching">
+      <ng-container *ngIf="!searching || windowWidth > 1200">
         <ng-container *ngIf="windowWidth < 1120; else narrowNavigation">
           <ul
             nz-menu

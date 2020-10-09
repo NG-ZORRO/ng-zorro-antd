@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { IconDefinition } from '@ant-design/icons-angular';
-import { LeftOutline, RightOutline } from '@ant-design/icons-angular/icons';
+import { LeftOutline, RightOutline, EditOutline } from '@ant-design/icons-angular/icons';
 import { NzAffixModule } from 'ng-zorro-antd/affix';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -33,7 +33,7 @@ import { NzContributorsListModule } from './share/contributors-list/contributors
 import { FixedWidgetsModule } from './share/fixed-widgets/fixed-widgets.module';
 import { NzNavBottomModule } from './share/nav-bottom/nav-bottom.module';
 
-const icons: IconDefinition[] = [LeftOutline, RightOutline];
+const icons: IconDefinition[] = [LeftOutline, RightOutline, EditOutline];
 
 @NgModule({
   declarations: [AppComponent, DEMOComponent],
@@ -54,7 +54,6 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline];
     NzPopoverModule,
     NzButtonModule,
     NzInputModule,
-    NzIconModule,
     NzBadgeModule,
     HttpClientJsonpModule,
     HeaderModule,
