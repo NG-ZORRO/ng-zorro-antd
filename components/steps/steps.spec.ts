@@ -1,4 +1,4 @@
-import { Directionality } from '@angular/cdk/bidi';
+import { BidiModule, Dir } from '@angular/cdk/bidi';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DebugElement, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
@@ -15,9 +15,8 @@ import { NzStepsModule } from './steps.module';
 describe('steps', () => {
   beforeEach(
     waitForAsync(() => {
-      const dir = 'ltr';
       TestBed.configureTestingModule({
-        imports: [NzStepsModule, NzIconTestModule, NzDividerModule],
+        imports: [BidiModule, NzStepsModule, NzIconTestModule, NzDividerModule],
         declarations: [
           NzTestOuterStepsComponent,
           NzDemoStepsClickableComponent,
@@ -25,9 +24,9 @@ describe('steps', () => {
           NzTestInnerStepTemplateComponent,
           NzTestStepForComponent,
           NzTestStepAsyncComponent,
-          NzDemoStepsNavComponent
-        ],
-        providers: [{ provide: Directionality, useFactory: () => ({ value: dir }) }]
+          NzDemoStepsNavComponent,
+          NzTestOuterStepsRtlComponent
+        ]
       });
       TestBed.compileComponents();
     })
@@ -422,9 +421,25 @@ describe('steps', () => {
         });
     }));
   });
+  describe('RTL', () => {
+    it('should className correct on dir change', () => {
+      const fixture = TestBed.createComponent(NzTestOuterStepsRtlComponent);
+      const outStep = fixture.debugElement.query(By.directive(NzStepsComponent));
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      expect(outStep.nativeElement.firstElementChild.classList).toContain('ant-steps-rtl');
+
+      fixture.componentInstance.direction = 'ltr';
+      fixture.detectChanges();
+      expect(outStep.nativeElement.firstElementChild.classList).not.toContain('ant-steps-rtl');
+    });
+  });
 });
 
 @Component({
+  // tslint:disable-next-line:no-selector
+  selector: 'nz-test-outer-steps',
   template: `
     <nz-steps
       [nzCurrent]="current"
@@ -534,4 +549,16 @@ export class NzTestStepAsyncComponent implements OnInit {
       this.steps = [1, 2, 3];
     }, 1000);
   }
+}
+
+@Component({
+  template: `
+    <div [dir]="direction">
+      <nz-test-outer-steps></nz-test-outer-steps>
+    </div>
+  `
+})
+export class NzTestOuterStepsRtlComponent {
+  @ViewChild(Dir) dir!: Dir;
+  direction = 'rtl';
 }

@@ -77,16 +77,9 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
   showProcessDot = false;
   customProcessDotTemplate?: TemplateRef<{ $implicit: TemplateRef<void>; status: string; index: number }>;
   classMap: NgClassType = {};
-  dir: Direction;
+  dir: Direction = 'ltr';
 
-  constructor(cdr: ChangeDetectorRef, @Optional() directionality: Directionality) {
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      this.setClassMap();
-      cdr.detectChanges();
-    });
-
-    this.dir = directionality.value;
+  constructor(private cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {
     this.setClassMap();
   }
 
@@ -102,6 +95,13 @@ export class NzStepsComponent implements OnChanges, OnInit, OnDestroy, AfterCont
   ngOnInit(): void {
     this.setClassMap();
     this.updateChildrenSteps();
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.setClassMap();
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
   }
 
   ngOnDestroy(): void {
