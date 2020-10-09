@@ -108,7 +108,12 @@ import { PREFIX_CLASS } from './util';
 
     <!-- Right operator icons -->
     <ng-template #tplRightRest>
-      <div class="{{ prefixCls }}-active-bar" [ngStyle]="activeBarStyle"></div>
+      <div
+        class="{{ prefixCls }}-active-bar"
+        style="position: absolute"
+        [style.width.px]="inputWidth"
+        [style.left.px]="datePickerService?.arrowLeft"
+      ></div>
       <span *ngIf="showClear()" class="{{ prefixCls }}-clear" (click)="onClickClear($event)">
         <i nz-icon nzType="close-circle" nzTheme="fill"></i>
       </span>
@@ -187,11 +192,9 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   document: Document;
   inputSize: number = 12;
   inputWidth?: number;
-  arrowLeft?: number;
   destroy$ = new Subject();
   prefixCls = PREFIX_CLASS;
   inputValue!: NzSafeAny;
-  activeBarStyle: object = { position: 'absolute' };
   animationOpenState = false;
   overlayOpen: boolean = false; // Available when "open"=undefined
   overlayPositions: ConnectionPositionPair[] = [
@@ -262,12 +265,11 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     }
 
     if (this.isRange && this.platform.isBrowser) {
-      this.resetInputWidthAndArrowLeft();
       this.nzResizeObserver
         .observe(this.elementRef)
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
-          this.resetInputWidthAndArrowLeft();
+          this.updateInputWidthAndArrowLeft();
         });
     }
 
@@ -275,17 +277,8 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       if (partType) {
         this.datePickerService.activeInput = partType;
       }
-      this.datePickerService.arrowPositionStyle = {
-        left: this.datePickerService.activeInput === 'left' ? '0px' : `${this.arrowLeft}px`
-      };
-      this.activeBarStyle = {
-        ...this.activeBarStyle,
-        ...this.datePickerService.arrowPositionStyle,
-        width: `${this.inputWidth}px`
-      };
       this.focus();
-      this.panel?.cdr.markForCheck();
-      this.cdr.markForCheck();
+      this.updateInputWidthAndArrowLeft();
     });
   }
 
@@ -304,9 +297,12 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     }
   }
 
-  resetInputWidthAndArrowLeft(): void {
+  updateInputWidthAndArrowLeft(): void {
     this.inputWidth = this.rangePickerInputs?.first?.nativeElement.offsetWidth || 0;
-    this.arrowLeft = this.inputWidth + this.separatorElement?.nativeElement.offsetWidth || 0;
+    this.datePickerService.arrowLeft =
+      this.datePickerService.activeInput === 'left' ? 0 : this.inputWidth + this.separatorElement?.nativeElement.offsetWidth || 0;
+    this.panel?.cdr.markForCheck();
+    this.cdr.markForCheck();
   }
 
   getInput(partType?: RangePartType): HTMLInputElement | undefined {
@@ -340,7 +336,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   // Show overlay content
   showOverlay(): void {
     if (!this.realOpenState && !this.disabled) {
-      this.resetInputWidthAndArrowLeft();
+      this.updateInputWidthAndArrowLeft();
       this.overlayOpen = true;
       this.animationStart();
       this.focus();
