@@ -5,7 +5,6 @@
 
 import { Injectable, OnDestroy } from '@angular/core';
 import { CandyDate, cloneDate, CompatibleValue, NormalizedMode, normalizeRangeValue } from 'ng-zorro-antd/core/time';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { ReplaySubject, Subject } from 'rxjs';
 import { CompatibleDate, NzDateMode, RangePartType } from './standard-types';
 
@@ -15,7 +14,7 @@ export class DatePickerService implements OnDestroy {
   value!: CompatibleValue;
   activeDate?: CompatibleValue;
   activeInput: RangePartType = 'left';
-  arrowPositionStyle: { [klass: string]: NzSafeAny } | null = {};
+  arrowLeft: number = 0;
   isRange = false;
 
   valueChange$ = new ReplaySubject<CompatibleValue>(1);

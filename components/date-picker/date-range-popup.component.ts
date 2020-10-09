@@ -45,7 +45,7 @@ import { getTimeConfig, isAllowedDate, PREFIX_CLASS } from './util';
   template: `
     <ng-container *ngIf="isRange; else singlePanel">
       <div class="{{ prefixCls }}-range-wrapper {{ prefixCls }}-date-range-wrapper">
-        <div class="{{ prefixCls }}-range-arrow" [ngStyle]="datePickerService?.arrowPositionStyle!"></div>
+        <div class="{{ prefixCls }}-range-arrow" [style.left.px]="datePickerService?.arrowLeft"></div>
         <div class="{{ prefixCls }}-panel-container">
           <div class="{{ prefixCls }}-panels">
             <ng-container *ngTemplateOutlet="tplRangePart; context: { partType: 'left' }"></ng-container>
@@ -271,7 +271,7 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     if (this.isRange) {
       const selectedValue: SingleValue[] = cloneDate(this.datePickerService.value) as CandyDate[];
       const checkedPart: RangePartType = this.datePickerService.activeInput;
-      const otherPart = this.reversedPart(checkedPart);
+      let nextPart: RangePartType = checkedPart;
 
       selectedValue[this.datePickerService.getActiveIndex(checkedPart)] = value;
       this.checkedPartArr[this.datePickerService.getActiveIndex(checkedPart)] = true;
@@ -282,9 +282,9 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
          * if sort order is wrong, clear the other part's value
          */
         if (wrongSortOrder(selectedValue)) {
-          // selectedValue = sortRangeValue(selectedValue);
-          selectedValue[this.datePickerService.getActiveIndex(otherPart)] = null;
-          this.checkedPartArr[this.datePickerService.getActiveIndex(otherPart)] = false;
+          nextPart = this.reversedPart(checkedPart);
+          selectedValue[this.datePickerService.getActiveIndex(nextPart)] = null;
+          this.checkedPartArr[this.datePickerService.getActiveIndex(nextPart)] = false;
         }
 
         this.datePickerService.setValue(selectedValue);
@@ -298,13 +298,13 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
           this.clearHoverValue();
           this.datePickerService.emitValue$.next();
         } else if (this.isAllowed(selectedValue)) {
+          nextPart = this.reversedPart(checkedPart);
           this.calendarChange.emit([value.clone()]);
-          this.datePickerService.inputPartChange$.next(otherPart);
         }
       } else {
         this.datePickerService.setValue(selectedValue);
-        this.datePickerService.inputPartChange$.next();
       }
+      this.datePickerService.inputPartChange$.next(nextPart);
     } else {
       this.datePickerService.setValue(value);
       this.datePickerService.inputPartChange$.next();
