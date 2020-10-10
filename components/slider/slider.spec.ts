@@ -673,7 +673,7 @@ describe('nz-slider', () => {
 
       dispatchClickEventSequence(sliderNativeElement, 0.13);
       fixture.detectChanges();
-      expect(sliderInstance.value).toBe(1);
+      expect(sliderInstance.value).toBe(0.8);
 
       dispatchClickEventSequence(sliderNativeElement, 0.6);
       fixture.detectChanges();
@@ -936,7 +936,7 @@ class ReverseSliderWithMinAndMaxComponent {}
 class MixedSliderComponent {
   dots = false;
   included = true;
-  marks = { 22: '(22%)', 36: '(36%)' };
+  marks: { [mark: number]: string } = { 22: '(22%)', 36: '(36%)' };
   max = 100;
   min = 0;
   range = false;
