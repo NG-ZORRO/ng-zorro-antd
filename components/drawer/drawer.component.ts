@@ -14,7 +14,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   EventEmitter,
   Inject,
   Injector,
@@ -224,32 +223,29 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> exte
   }
 
   constructor(
-    cdr: ChangeDetectorRef,
+    private cdr: ChangeDetectorRef,
     // tslint:disable-next-line:no-any
     @Optional() @Inject(DOCUMENT) private document: NzSafeAny,
     public nzConfigService: NzConfigService,
     private renderer: Renderer2,
-    private elementRef: ElementRef,
     private overlay: Overlay,
     private injector: Injector,
     private changeDetectorRef: ChangeDetectorRef,
     private focusTrapFactory: FocusTrapFactory,
     private viewContainerRef: ViewContainerRef,
     private overlayKeyboardDispatcher: OverlayKeyboardDispatcher,
-    @Optional() directionality: Directionality
+    @Optional() private directionality: Directionality
   ) {
     super();
-
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      this.prepareComponentForRtl();
-      cdr.detectChanges();
-    });
-
-    this.dir = directionality.value;
   }
 
   ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+    this.dir = this.directionality.value;
+
     this.attachOverlay();
     this.updateOverlayStyle();
     this.updateBodyOverflow();
@@ -438,14 +434,6 @@ export class NzDrawerComponent<T = NzSafeAny, R = NzSafeAny, D = NzSafeAny> exte
     }
     if (this.focusTrap) {
       this.focusTrap.destroy();
-    }
-  }
-
-  private prepareComponentForRtl(): void {
-    if (this.dir === 'rtl') {
-      this.renderer.addClass(this.elementRef.nativeElement, 'ant-drawer-rtl');
-    } else {
-      this.renderer.removeClass(this.elementRef.nativeElement, 'ant-drawer-rtl');
     }
   }
 }
