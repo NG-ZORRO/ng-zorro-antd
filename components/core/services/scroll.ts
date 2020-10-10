@@ -113,20 +113,15 @@ export class NzScrollService {
       const time = timestamp - startTime;
       const nextScrollTop = (easing || easeInOutCubic)(time > duration ? duration : time, scrollTop, y, duration);
       if (this.isWindow(target)) {
-        console.log('1');
         (target as Window).scrollTo(window.pageXOffset, nextScrollTop);
       } else if (target instanceof HTMLDocument || target.constructor.name === 'HTMLDocument') {
-        console.log('2');
         (target as HTMLDocument).documentElement.scrollTop = nextScrollTop;
       } else {
-        console.log('3');
         (target as HTMLElement).scrollTop = nextScrollTop;
       }
       if (time < duration) {
-        console.log('4');
         reqAnimFrame(frameFunc);
       } else if (typeof callback === 'function') {
-        console.log(5);
         callback();
       }
     };
