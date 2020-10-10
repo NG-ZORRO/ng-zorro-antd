@@ -14,6 +14,7 @@ import {
   forwardRef,
   Input,
   OnDestroy,
+  OnInit,
   Optional,
   TemplateRef,
   ViewChild,
@@ -76,7 +77,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'switch';
     '(click)': 'onHostClick($event)'
   }
 })
-export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, OnDestroy {
+export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, OnDestroy, OnInit {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
 
   static ngAcceptInputType_nzLoading: BooleanInput;
@@ -139,14 +140,16 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
     public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
     private focusMonitor: FocusMonitor,
-    @Optional() directionality: Directionality
-  ) {
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      cdr.detectChanges();
+    @Optional() private directionality: Directionality
+  ) {}
+
+  ngOnInit(): void {
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
     });
 
-    this.dir = directionality.value;
+    this.dir = this.directionality.value;
   }
 
   ngAfterViewInit(): void {
