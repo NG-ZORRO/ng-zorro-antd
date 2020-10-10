@@ -2,7 +2,7 @@ import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
 import { AfterContentInit, Component, ElementRef, HostListener, Inject, NgZone, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { en_US, NzI18nService, zh_CN } from 'ng-zorro-antd/i18n';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { VERSION } from 'ng-zorro-antd/version';
@@ -20,21 +20,14 @@ interface DocPageMeta {
   label: string;
   order?: number;
   zh: string;
+  description: string;
 }
 
 type SiteTheme = 'default' | 'dark' | 'compact';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  host: {
-    '[class.navigating]': '!navigationEnd'
-  },
-  styles: [`
-    :host.navigating {
-      display: none;
-    }
-  `]
+  templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit, AfterContentInit {
   /**
@@ -42,7 +35,6 @@ export class AppComponent implements OnInit, AfterContentInit {
    * the navigation on the side.
    **/
   showDrawer = false;
-  navigationEnd = false;
   isDrawerOpen = false;
   page: 'docs' | 'components' | 'experimental' | string = 'docs';
   windowWidth = 1400;
@@ -60,7 +52,7 @@ export class AppComponent implements OnInit, AfterContentInit {
     return window && window.location.href.indexOf('/version') === -1;
   }
 
-  language: 'zh' | 'en' = 'zh';
+  language: 'zh' | 'en' = 'en';
   currentVersion = VERSION.full;
 
   @ViewChild('searchInput', { static: false }) searchInput?: ElementRef<HTMLInputElement>;
@@ -143,33 +135,53 @@ export class AppComponent implements OnInit, AfterContentInit {
     this.currentVersion = version;
   }
 
+  private getLanguageFromURL(url: string): 'en' | 'zh' | null {
+    const language = url.split('/')[url.split('/').length - 1].split('#')[0].split('?')[0];
+    if (['zh', 'en'].indexOf(language) !== -1) {
+      return language as 'en' | 'zh'
+    }
+    return null;
+  }
+
   ngOnInit(): void {
     this.routerList.components.forEach(group => {
       this.componentList = this.componentList.concat([...group.children]);
     });
 
     this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        const language = this.getLanguageFromURL(event.url);
+        if (language) {
+          this.language = language;
+          this.setPage(event.url);
+        }
+      }
       if (event instanceof NavigationEnd) {
-        this.navigationEnd = true;
+        this.language = this.getLanguageFromURL(this.router.url)!;
+
+        this.appService.language$.next(this.language);
+        this.nzI18nService.setLocale(this.language === 'en' ? en_US : zh_CN);
         const currentDemoComponent = this.componentList.find(component => `/${component.path}` === this.router.url);
 
         if (currentDemoComponent) {
-          this.title.setTitle(`${currentDemoComponent.zh} ${currentDemoComponent.label} - NG-ZORRO`);
+          this.updateMateTitle(`${currentDemoComponent.zh} ${currentDemoComponent.label} - NG-ZORRO`);
+          this.updateDocMetaAndLocale(currentDemoComponent.description);
         }
 
         const currentIntroComponent = this.routerList.intro.find(component => `/${component.path}` === this.router.url);
         if (currentIntroComponent) {
-          this.title.setTitle(`${currentIntroComponent.label} - NG-ZORRO`);
+          this.updateMateTitle(`${currentIntroComponent.label} - NG-ZORRO`)
+          this.updateDocMetaAndLocale(currentIntroComponent.description);
+        }
+
+        if (!currentIntroComponent && !currentDemoComponent) {
+          this.updateDocMetaAndLocale();
         }
 
         if (this.router.url !== '/' + this.searchComponent) {
           this.searchComponent = null;
         }
         this.setPage(this.router.url);
-        this.language = this.router.url.split('/')[this.router.url.split('/').length - 1].split('#')[0].split('?')[0] as 'en' | 'zh';
-        this.appService.language$.next(this.language);
-        this.nzI18nService.setLocale(this.language === 'en' ? en_US : zh_CN);
-        this.updateDocMetaAndLocale();
         if (this.docsearch) {
           this.docsearch!.algoliaOptions = { hitsPerPage: 5, facetFilters: [`tags:${this.language}`] };
         }
@@ -177,7 +189,6 @@ export class AppComponent implements OnInit, AfterContentInit {
         if (environment.production && this.platform.isBrowser) {
           window.scrollTo(0, 0);
         }
-
         setTimeout(() => {
           const toc = this.router.parseUrl(this.router.url).fragment || '';
           if (toc) {
@@ -202,32 +213,45 @@ export class AppComponent implements OnInit, AfterContentInit {
     this.addWindowWidthListener();
   }
 
-  updateDocMetaAndLocale(): void {
-    if (this.platform.isBrowser) {
-      const isEn = this.language === 'en';
-      const enDescription =
-        'An enterprise-class UI design language and Angular-based implementation with a set of high-quality Angular components, one of best Angular UI library for enterprises';
-      const zhDescription = 'Ant Design 的 Angular 实现，开发和服务于企业级后台产品，开箱即用的高质量 Angular 组件。';
-      const descriptionContent = isEn ? enDescription : zhDescription;
-      this.meta.updateTag({
-        name: 'description',
-        content: descriptionContent
-      });
-      this.meta.updateTag({
-        name: 'twitter:description',
-        content: descriptionContent
-      });
-      this.meta.updateTag({
-        property: 'og:description',
-        content: descriptionContent
-      });
-      this.meta.updateTag({
-        property: 'og:locale',
-        content: isEn ? 'en_US' : 'zh_CN'
-      });
-      const doc = this.document as Document;
-      this.renderer.setAttribute(doc.documentElement, 'lang', isEn ? 'en' : 'zh-Hans');
+  updateMateTitle(title: string = 'NG-ZORRO - Ant Design Of Angular'): void {
+    this.title.setTitle(title);
+    this.meta.updateTag({
+      property: 'og:title',
+      content: title
+    });
+    this.meta.updateTag({
+      name: 'twitter:title',
+      content: title
+    });
+  }
+
+  updateDocMetaAndLocale(description?: string): void {
+    const isEn = this.language === 'en';
+    const enDescription =
+      'An enterprise-class UI design language and Angular-based implementation with a set of high-quality Angular components, one of best Angular UI library for enterprises';
+    const zhDescription = 'Ant Design 的 Angular 实现，开发和服务于企业级后台产品，开箱即用的高质量 Angular UI 组件库。';
+    let descriptionContent = isEn ? enDescription : zhDescription;
+    if (description) {
+      descriptionContent = description;
     }
+    this.meta.updateTag({
+      name: 'description',
+      content: descriptionContent
+    });
+    this.meta.updateTag({
+      name: 'twitter:description',
+      content: descriptionContent
+    });
+    this.meta.updateTag({
+      property: 'og:description',
+      content: descriptionContent
+    });
+    this.meta.updateTag({
+      property: 'og:locale',
+      content: isEn ? 'en_US' : 'zh_CN'
+    });
+    const doc = this.document as Document;
+    this.renderer.setAttribute(doc.documentElement, 'lang', isEn ? 'en' : 'zh-Hans');
   }
 
   initDocsearch() {

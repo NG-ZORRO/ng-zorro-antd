@@ -1,5 +1,5 @@
 const MD = require('marked');
-const YFM = require('yaml-front-matter');
+const getMeta = require('./get-meta');
 const angularNonBindAble = require('./angular-nonbindable');
 const fs = require('fs');
 const path = require('path');
@@ -50,7 +50,7 @@ function generateToc(meta, raw) {
 }
 
 function baseInfo(file, path) {
-  const meta = YFM.loadFront(file);
+  const meta = getMeta(file)
   const content = meta.__content;
   delete meta.__content;
   return {

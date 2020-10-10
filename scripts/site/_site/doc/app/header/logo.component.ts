@@ -5,7 +5,7 @@ import { Component } from "@angular/core";
   template: `
     <h1>
       <a href id="logo">
-        <img alt="logo" src="./assets/img/logo.svg">
+        <img width="32" height="28.27" alt="logo" src="./assets/img/logo.svg">
         NG-ZORRO
       </a>
     </h1>
