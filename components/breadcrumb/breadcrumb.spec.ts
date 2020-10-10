@@ -229,8 +229,8 @@ describe('breadcrumb', () => {
 
         router.navigate(['one', 'two', 'three', 'four']);
         flushFixture(fixture);
-        expect(breadcrumb.componentInstance.breadcrumbs[0].label).toBe('Go To: Layer 2');
-        expect(breadcrumb.componentInstance.breadcrumbs[1].label).toBe('Go To: Layer 3');
+        const breadcrumbs = fixture.debugElement.queryAll(By.css('.custom-breadcrumb'));
+        expect(breadcrumbs[0].nativeElement.innerHTML).toBe('Go To: <a href="/one/two">Layer 2</a>');
       });
     }));
 
@@ -330,7 +330,11 @@ class NzBreadcrumbRouteLabelWithCustomFnDemoComponent {
       [nzRouteLabel]="'customBreadcrumb'"
       [nzAutoGenerateTemplate]="breadTpl"
     ></nz-breadcrumb>
-    <ng-template #breadTpl let-label>Go To: {{ label }}</ng-template>
+    <ng-template #breadTpl let-url="url" let-label="label">
+      <div class="custom-breadcrumb"
+        >Go To: <a [href]="url">{{ label }}</a></div
+      >
+    </ng-template>
   `
 })
 class NzBreadcrumbRouterLabelWithTemplateComponent {}
