@@ -27,6 +27,10 @@ import { isNotNil, toBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
+export interface PropertyMapping {
+  [key: string]: [string, () => unknown];
+}
+
 export type NzTooltipTrigger = 'click' | 'focus' | 'hover' | null;
 
 @Directive()
@@ -91,7 +95,11 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
 
   private internalVisible = false;
 
-  protected needProxyProperties = ['noAnimation'];
+  protected getProxyPropertyMap(): PropertyMapping {
+    return {
+      noAnimation: ['noAnimation', () => this.noAnimation]
+    };
+  }
 
   component?: NzTooltipBaseComponent;
 
@@ -223,11 +231,8 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
   }
 
   private updatePropertiesByKeys(keys?: string[]): void {
-    interface PropertyMapping {
-      [key: string]: [string, () => unknown];
-    }
-
-    const baseProperties: PropertyMapping = {
+    const mappingProperties: PropertyMapping = {
+      // common mappings
       title: ['nzTitle', () => this._title],
       directiveTitle: ['nzTitle', () => this._title],
       content: ['nzContent', () => this._content],
@@ -238,16 +243,14 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
       mouseEnterDelay: ['nzMouseEnterDelay', () => this._mouseEnterDelay],
       mouseLeaveDelay: ['nzMouseLeaveDelay', () => this._mouseLeaveDelay],
       overlayClassName: ['nzOverlayClassName', () => this._overlayClassName],
-      overlayStyle: ['nzOverlayStyle', () => this._overlayStyle]
+      overlayStyle: ['nzOverlayStyle', () => this._overlayStyle],
+      ...this.getProxyPropertyMap()
     };
 
-    (keys || Object.keys(baseProperties).filter(key => !key.startsWith('directive'))).forEach((property: NzSafeAny) => {
-      if (baseProperties[property]) {
-        const [name, valueFn] = baseProperties[property];
+    (keys || Object.keys(mappingProperties).filter(key => !key.startsWith('directive'))).forEach((property: NzSafeAny) => {
+      if (mappingProperties[property]) {
+        const [name, valueFn] = mappingProperties[property];
         this.updateComponentValue(name, valueFn());
-      } else if (this.needProxyProperties.indexOf(property) !== -1) {
-        // @ts-ignore
-        this.updateComponentValue(property, this[property]);
       }
     });
 

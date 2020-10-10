@@ -28,7 +28,7 @@ import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { BooleanInput, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger } from 'ng-zorro-antd/tooltip';
+import { NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger, PropertyMapping } from 'ng-zorro-antd/tooltip';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -69,15 +69,17 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
     NzPopconfirmComponent
   );
 
-  protected readonly needProxyProperties = [
-    'noAnimation',
-    'nzOkText',
-    'nzOkType',
-    'nzCancelText',
-    'nzCondition',
-    'nzIcon',
-    'nzPopconfirmShowArrow'
-  ];
+  protected getProxyPropertyMap(): PropertyMapping {
+    return {
+      nzOkText: ['nzOkText', () => this.nzOkText],
+      nzOkType: ['nzOkType', () => this.nzOkType],
+      nzCancelText: ['nzCancelText', () => this.nzCancelText],
+      nzCondition: ['nzCondition', () => this.nzCondition],
+      nzIcon: ['nzIcon', () => this.nzIcon],
+      nzPopconfirmShowArrow: ['nzPopconfirmShowArrow', () => this.nzPopconfirmShowArrow],
+      ...super.getProxyPropertyMap()
+    };
+  }
 
   constructor(
     elementRef: ElementRef,
