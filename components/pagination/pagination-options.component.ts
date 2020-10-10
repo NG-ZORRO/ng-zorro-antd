@@ -68,7 +68,7 @@ export class NzPaginationOptionsComponent implements OnChanges {
 
   jumpToPageViaInput($event: Event): void {
     const target = $event.target as HTMLInputElement;
-    const index = toNumber(target.value, this.pageIndex);
+    const index = Math.floor(toNumber(target.value, this.pageIndex));
     this.pageIndexChange.next(index);
     target.value = '';
   }
