@@ -20,7 +20,14 @@ export default {
   DatePicker: {
     lang: {
       placeholder: 'Выберите дату',
+      yearPlaceholder: 'Выберите год',
+      quarterPlaceholder: 'Выберите квартал',
+      monthPlaceholder: 'Выберите месяц',
+      weekPlaceholder: 'Выберите неделю',
       rangePlaceholder: ['Начальная дата', 'Конечная дата'],
+      rangeYearPlaceholder: ['Начальный год', 'Год окончания'],
+      rangeMonthPlaceholder: ['Начальный месяц', 'Конечный месяц'],
+      rangeWeekPlaceholder: ['Начальная неделя', 'Конечная неделя'],
       locale: 'ru_RU',
       today: 'Сегодня',
       now: 'Сейчас',
@@ -49,16 +56,25 @@ export default {
       nextCentury: 'Следующий век'
     },
     timePickerLocale: {
-      placeholder: 'Выберите время'
+      placeholder: 'Выберите время',
+      rangePlaceholder: ['Время начала', 'Время окончания']
     }
   },
   TimePicker: {
-    placeholder: 'Выберите время'
+    placeholder: 'Выберите время',
+    rangePlaceholder: ['Время начала', 'Время окончания']
   },
   Calendar: {
     lang: {
       placeholder: 'Выберите дату',
+      yearPlaceholder: 'Выберите год',
+      quarterPlaceholder: 'Выберите квартал',
+      monthPlaceholder: 'Выберите месяц',
+      weekPlaceholder: 'Выберите неделю',
       rangePlaceholder: ['Начальная дата', 'Конечная дата'],
+      rangeYearPlaceholder: ['Начальный год', 'Год окончания'],
+      rangeMonthPlaceholder: ['Начальный месяц', 'Конечный месяц'],
+      rangeWeekPlaceholder: ['Начальная неделя', 'Конечная неделя'],
       locale: 'ru_RU',
       today: 'Сегодня',
       now: 'Сейчас',
@@ -87,7 +103,8 @@ export default {
       nextCentury: 'Следующий век'
     },
     timePickerLocale: {
-      placeholder: 'Выберите время'
+      placeholder: 'Выберите время',
+      rangePlaceholder: ['Время начала', 'Время окончания']
     }
   },
   global: {
@@ -97,8 +114,11 @@ export default {
     filterTitle: 'Фильтр',
     filterConfirm: 'OK',
     filterReset: 'Сбросить',
+    filterEmptyText: 'Без фильтров',
+    emptyText: 'Нет данных',
     selectAll: 'Выбрать всё',
     selectInvert: 'Инвертировать выбор',
+    selectionAll: 'Выбрать все данные',
     sortTitle: 'Сортировка',
     expand: 'Развернуть строку',
     collapse: 'Свернуть строку',
@@ -116,9 +136,16 @@ export default {
     cancelText: 'Отмена'
   },
   Transfer: {
+    titles: ['', ''],
     searchPlaceholder: 'Поиск',
     itemUnit: 'элем.',
-    itemsUnit: 'элем.'
+    itemsUnit: 'элем.',
+    remove: 'Удалить',
+    selectAll: 'Выбрать все данные',
+    selectCurrent: 'Выбрать текущую страницу',
+    selectInvert: 'Показать в обратном порядке',
+    removeAll: 'Удалить все данные',
+    removeCurrent: 'Удалить текущую страницу'
   },
   Upload: {
     uploading: 'Загрузка...',
@@ -134,12 +161,12 @@ export default {
     icon: 'иконка'
   },
   Text: {
-    edit: 'редактировать',
-    copy: 'копировать',
-    copied: 'скопировано',
-    expand: 'раскрыть'
+    edit: 'Редактировать',
+    copy: 'Копировать',
+    copied: 'Скопировано',
+    expand: 'Раскрыть'
   },
   PageHeader: {
-    back: 'назад'
+    back: 'Назад'
   }
 };

@@ -90,33 +90,65 @@ export default {
       placeholder: 'Seleccionar hora'
     }
   },
+  global: {
+    placeholder: 'Seleccionar'
+  },
   Table: {
-    filterTitle: 'Filtrar Menu',
-    filterConfirm: 'OK',
-    filterReset: 'Restablir'
+    filterTitle: 'Filtrar el menú',
+    filterConfirm: 'D’acord',
+    filterReset: 'Reiniciar',
+    filterEmptyText: 'Sense filtres',
+    selectAll: 'Seleccionar la pàgina actual',
+    selectInvert: 'Invertir la selecció',
+    selectionAll: 'Seleccionar-ho tot',
+    sortTitle: 'Ordenar',
+    expand: 'Ampliar la fila',
+    collapse: 'Plegar la fila',
+    triggerDesc: 'Ordre descendent',
+    triggerAsc: 'Ordre ascendent',
+    cancelSort: 'Desactivar l’ordre'
   },
   Modal: {
-    okText: 'OK',
+    okText: 'D’acord',
     cancelText: 'Cancel·lar',
-    justOkText: 'OK'
+    justOkText: 'D’acord'
   },
   Popconfirm: {
-    okText: 'OK',
+    okText: 'D’acord',
     cancelText: 'Cancel·lar'
   },
   Transfer: {
-    searchPlaceholder: 'Cercar aquí',
-    itemUnit: 'item',
-    itemsUnit: 'items'
+    titles: ['', ''],
+    searchPlaceholder: 'Cercar',
+    itemUnit: 'ítem',
+    itemsUnit: 'ítems',
+    remove: 'Eliminar',
+    selectCurrent: 'Seleccionar la pàgina actual',
+    removeCurrent: 'Eliminar la selecció',
+    selectAll: 'Seleccionar-ho tot',
+    removeAll: 'Eliminar-ho tot',
+    selectInvert: 'Invertir la selecció'
   },
   Upload: {
-    uploading: 'Carregant...',
-    removeFile: 'Elimina el fitxer',
+    uploading: 'Carregant…',
+    removeFile: 'Eliminar el fitxer',
     uploadError: 'Error de càrrega',
     previewFile: 'Vista prèvia del fitxer',
-    downloadFile: "Descarrega l'arxiu"
+    downloadFile: 'Baixar el fitxer'
   },
   Empty: {
     description: 'Sense dades'
+  },
+  Icon: {
+    icon: 'icona'
+  },
+  Text: {
+    edit: 'Editar',
+    copy: 'Copiar',
+    copied: 'Copiat',
+    expand: 'Ampliar'
+  },
+  PageHeader: {
+    back: 'Enrere'
   }
 };

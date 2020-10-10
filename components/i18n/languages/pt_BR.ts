@@ -90,12 +90,22 @@ export default {
       placeholder: 'Hora'
     }
   },
+  global: {
+    placeholder: 'Por favor escolha'
+  },
   Table: {
-    filterTitle: 'Filtro',
+    filterTitle: 'Menu de Filtro',
     filterConfirm: 'OK',
     filterReset: 'Resetar',
     selectAll: 'Selecionar página atual',
-    selectInvert: 'Inverter seleção'
+    selectInvert: 'Inverter seleção',
+    selectionAll: 'Selecionar todo o conteúdo',
+    sortTitle: 'Ordenar título',
+    expand: 'Expandir linha',
+    collapse: 'Colapsar linha',
+    triggerDesc: 'Clique organiza por descendente',
+    triggerAsc: 'Clique organiza por ascendente',
+    cancelSort: 'Clique para cancelar organização'
   },
   Modal: {
     okText: 'OK',
@@ -121,10 +131,16 @@ export default {
   Empty: {
     description: 'Não há dados'
   },
+  Icon: {
+    icon: 'ícone'
+  },
   Text: {
     edit: 'editar',
     copy: 'copiar',
     copied: 'copiado',
     expand: 'expandir'
+  },
+  PageHeader: {
+    back: 'Retornar'
   }
 };

@@ -5,79 +5,6 @@
 
 export default {
   locale: 'nb',
-  DatePicker: {
-    lang: {
-      placeholder: 'Velg dato',
-      rangePlaceholder: ['Startdato', 'Sluttdato'],
-      locale: 'nb_NO',
-      today: 'I dag',
-      now: 'Nå',
-      backToToday: 'Gå til i dag',
-      ok: 'Ok',
-      clear: 'Annuller',
-      month: 'Måned',
-      year: 'År',
-      timeSelect: 'Velg tidspunkt',
-      dateSelect: 'Velg dato',
-      monthSelect: 'Velg måned',
-      yearSelect: 'Velg år',
-      decadeSelect: 'Velg årti',
-      yearFormat: 'YYYY',
-      dateFormat: 'DD.MM.YYYY',
-      dayFormat: 'DD',
-      dateTimeFormat: 'DD.MM.YYYY HH:mm:ss',
-      monthBeforeYear: true,
-      previousMonth: 'Forrige måned(PageUp)',
-      nextMonth: 'Neste måned (PageDown)',
-      previousYear: 'Forrige år (Control + left)',
-      nextYear: 'Neste år (Control + right)',
-      previousDecade: 'Forrige tiår',
-      nextDecade: 'Neste tiår',
-      previousCentury: 'Forrige århundre',
-      nextCentury: 'Neste århundre'
-    },
-    timePickerLocale: {
-      placeholder: 'Velg tid'
-    }
-  },
-  TimePicker: {
-    placeholder: 'Velg tid'
-  },
-  Calendar: {
-    lang: {
-      placeholder: 'Velg dato',
-      rangePlaceholder: ['Startdato', 'Sluttdato'],
-      locale: 'nb_NO',
-      today: 'I dag',
-      now: 'Nå',
-      backToToday: 'Gå til i dag',
-      ok: 'Ok',
-      clear: 'Annuller',
-      month: 'Måned',
-      year: 'År',
-      timeSelect: 'Velg tidspunkt',
-      dateSelect: 'Velg dato',
-      monthSelect: 'Velg måned',
-      yearSelect: 'Velg år',
-      decadeSelect: 'Velg årti',
-      yearFormat: 'YYYY',
-      dateFormat: 'DD.MM.YYYY',
-      dayFormat: 'DD',
-      dateTimeFormat: 'DD.MM.YYYY HH:mm:ss',
-      monthBeforeYear: true,
-      previousMonth: 'Forrige måned(PageUp)',
-      nextMonth: 'Neste måned (PageDown)',
-      previousYear: 'Forrige år (Control + left)',
-      nextYear: 'Neste år (Control + right)',
-      previousDecade: 'Forrige tiår',
-      nextDecade: 'Neste tiår',
-      previousCentury: 'Forrige århundre',
-      nextCentury: 'Neste århundre'
-    },
-    timePickerLocale: {
-      placeholder: 'Velg tid'
-    }
-  },
   Pagination: {
     items_per_page: '/ side',
     jump_to: 'Gå til side',
@@ -89,12 +16,115 @@ export default {
     prev_3: '3 forrige',
     next_3: '3 neste'
   },
+  DatePicker: {
+    lang: {
+      placeholder: 'Velg dato',
+      yearPlaceholder: 'Velg år',
+      quarterPlaceholder: 'Velg kvartal',
+      monthPlaceholder: 'Velg måned',
+      weekPlaceholder: 'Velg uke',
+      rangePlaceholder: ['Startdato', 'Sluttdato'],
+      rangeYearPlaceholder: ['Startår', 'Sluttår'],
+      rangeMonthPlaceholder: ['Startmåned', 'Sluttmåned'],
+      rangeWeekPlaceholder: ['Start uke', 'Sluttuke'],
+      locale: 'nb_NO',
+      today: 'I dag',
+      now: 'Nå',
+      backToToday: 'Gå til i dag',
+      ok: 'Ok',
+      clear: 'Annuller',
+      month: 'Måned',
+      year: 'År',
+      timeSelect: 'Velg tidspunkt',
+      dateSelect: 'Velg dato',
+      weekSelect: 'Velg uke',
+      monthSelect: 'Velg måned',
+      yearSelect: 'Velg år',
+      decadeSelect: 'Velg tiår',
+      yearFormat: 'YYYY',
+      dateFormat: 'DD.MM.YYYY',
+      dayFormat: 'DD',
+      dateTimeFormat: 'DD.MM.YYYY HH:mm:ss',
+      monthBeforeYear: true,
+      previousMonth: 'Forrige måned (PageUp)',
+      nextMonth: 'Neste måned (PageDown)',
+      previousYear: 'Forrige år (Control + venstre)',
+      nextYear: 'Neste år (Control + høyre)',
+      previousDecade: 'Forrige tiår',
+      nextDecade: 'Neste tiår',
+      previousCentury: 'Forrige århundre',
+      nextCentury: 'Neste århundre'
+    },
+    timePickerLocale: {
+      placeholder: 'Velg tid',
+      rangePlaceholder: ['Starttid', 'Sluttid']
+    }
+  },
+  TimePicker: {
+    placeholder: 'Velg tid',
+    rangePlaceholder: ['Starttid', 'Sluttid']
+  },
+  Calendar: {
+    lang: {
+      placeholder: 'Velg dato',
+      yearPlaceholder: 'Velg år',
+      quarterPlaceholder: 'Velg kvartal',
+      monthPlaceholder: 'Velg måned',
+      weekPlaceholder: 'Velg uke',
+      rangePlaceholder: ['Startdato', 'Sluttdato'],
+      rangeYearPlaceholder: ['Startår', 'Sluttår'],
+      rangeMonthPlaceholder: ['Startmåned', 'Sluttmåned'],
+      rangeWeekPlaceholder: ['Start uke', 'Sluttuke'],
+      locale: 'nb_NO',
+      today: 'I dag',
+      now: 'Nå',
+      backToToday: 'Gå til i dag',
+      ok: 'Ok',
+      clear: 'Annuller',
+      month: 'Måned',
+      year: 'År',
+      timeSelect: 'Velg tidspunkt',
+      dateSelect: 'Velg dato',
+      weekSelect: 'Velg uke',
+      monthSelect: 'Velg måned',
+      yearSelect: 'Velg år',
+      decadeSelect: 'Velg tiår',
+      yearFormat: 'YYYY',
+      dateFormat: 'DD.MM.YYYY',
+      dayFormat: 'DD',
+      dateTimeFormat: 'DD.MM.YYYY HH:mm:ss',
+      monthBeforeYear: true,
+      previousMonth: 'Forrige måned (PageUp)',
+      nextMonth: 'Neste måned (PageDown)',
+      previousYear: 'Forrige år (Control + venstre)',
+      nextYear: 'Neste år (Control + høyre)',
+      previousDecade: 'Forrige tiår',
+      nextDecade: 'Neste tiår',
+      previousCentury: 'Forrige århundre',
+      nextCentury: 'Neste århundre'
+    },
+    timePickerLocale: {
+      placeholder: 'Velg tid',
+      rangePlaceholder: ['Starttid', 'Sluttid']
+    }
+  },
+  global: {
+    placeholder: 'Vennligst velg'
+  },
   Table: {
     filterTitle: 'Filtermeny',
     filterConfirm: 'OK',
     filterReset: 'Nullstill',
+    filterEmptyText: 'Ingen filtre',
     selectAll: 'Velg alle',
-    selectInvert: 'Inverter valg'
+    selectInvert: 'Inverter gjeldende side',
+    selectionAll: 'Velg all data',
+    sortTitle: 'Sorter',
+    expand: 'Utvid rad',
+    collapse: 'Skjul rad',
+    triggerDesc: 'Sorter data i synkende rekkefølge',
+    triggerAsc: 'Sorterer data i stigende rekkefølge',
+    cancelSort: 'Klikk for å avbryte sorteringen'
   },
   Modal: {
     okText: 'OK',
@@ -106,9 +136,16 @@ export default {
     cancelText: 'Avbryt'
   },
   Transfer: {
+    titles: ['', ''],
     searchPlaceholder: 'Søk her',
     itemUnit: 'element',
-    itemsUnit: 'elementer'
+    itemsUnit: 'elementer',
+    remove: 'Fjern',
+    selectCurrent: 'Velg gjeldende side',
+    removeCurrent: 'Fjern gjeldende side',
+    selectAll: 'Velg all data',
+    removeAll: 'Fjern all data',
+    selectInvert: 'Inverter gjeldende side'
   },
   Upload: {
     uploading: 'Laster opp...',
@@ -119,5 +156,17 @@ export default {
   },
   Empty: {
     description: 'Ingen data'
+  },
+  Icon: {
+    icon: 'ikon'
+  },
+  Text: {
+    edit: 'Rediger',
+    copy: 'Kopier',
+    copied: 'Kopiert',
+    expand: 'Utvid'
+  },
+  PageHeader: {
+    back: 'Tilbake'
   }
 };

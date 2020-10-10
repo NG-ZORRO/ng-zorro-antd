@@ -337,17 +337,17 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   private setDefaultPlaceHolder(): void {
     if (!this.isCustomPlaceHolder && this.nzLocale) {
       const defaultPlaceholder: { [key in NzDateMode]?: string } = {
-        year: this.nzLocale.lang.yearPlaceholder,
-        month: this.nzLocale.lang.monthPlaceholder,
-        week: this.nzLocale.lang.weekPlaceholder,
-        date: this.nzLocale.lang.placeholder
+        year: this.i18n.getLocaleData('DatePicker.lang.yearPlaceholder'),
+        month: this.i18n.getLocaleData('DatePicker.lang.monthPlaceholder'),
+        week: this.i18n.getLocaleData('DatePicker.lang.weekPlaceholder'),
+        date: this.i18n.getLocaleData('DatePicker.lang.placeholder')
       };
 
       const defaultRangePlaceholder: { [key in NzDateMode]?: string[] } = {
-        year: this.nzLocale.lang.rangeYearPlaceholder,
-        month: this.nzLocale.lang.rangeMonthPlaceholder,
-        week: this.nzLocale.lang.rangeWeekPlaceholder,
-        date: this.nzLocale.lang.rangePlaceholder
+        year: this.i18n.getLocaleData('DatePicker.lang.rangeYearPlaceholder'),
+        month: this.i18n.getLocaleData('DatePicker.lang.rangeMonthPlaceholder'),
+        week: this.i18n.getLocaleData('DatePicker.lang.rangeWeekPlaceholder'),
+        date: this.i18n.getLocaleData('DatePicker.lang.rangePlaceholder')
       };
 
       this.nzPlaceHolder = this.isRange

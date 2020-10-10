@@ -7,6 +7,7 @@ import { Inject, Injectable, Optional } from '@angular/core';
 import { warn } from 'ng-zorro-antd/core/logger';
 import { IndexableObject, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { BehaviorSubject, Observable } from 'rxjs';
+import en_US from './languages/en_US';
 
 import zh_CN from './languages/zh_CN';
 import { DateLocale, NzI18nInterface } from './nz-i18n.interface';
@@ -89,7 +90,7 @@ Welcome to submit a pull request to help us optimize the translations!
 https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md`);
     }
 
-    return result || defaultValue || {};
+    return result || defaultValue || this._getObjectPath(en_US, path) || {};
   }
 
   private _getObjectPath(obj: IndexableObject, path: string): string | object | NzSafeAny {
