@@ -45,6 +45,7 @@ export interface NzConfig {
   tree?: TreeConfig;
   treeSelect?: TreeSelectConfig;
   typography?: TypographyConfig;
+  global?: GlobalConfig;
 }
 
 export interface SelectConfig {
@@ -263,6 +264,10 @@ export interface TreeSelectConfig {
 
 export interface TypographyConfig {
   nzEllipsisRows?: number;
+}
+
+export interface GlobalConfig {
+  nzDirection: 'rtl' | 'ltr';
 }
 
 export type NzConfigKey = keyof NzConfig;

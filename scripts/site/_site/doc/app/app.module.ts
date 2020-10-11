@@ -70,7 +70,7 @@ const icons: IconDefinition[] = [LeftOutline, RightOutline];
     ),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production && !environment.preProduction })
   ],
-  providers: [Title, { provide: NZ_CONFIG, useValue: { icon: { nzTwotoneColor: '#1890ff' } } }],
+  providers: [Title, { provide: NZ_CONFIG, useValue: { icon: { nzTwotoneColor: '#1890ff' }, global: { nzDirection: 'ltr' } } }],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
