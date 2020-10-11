@@ -25,6 +25,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 | `[nzTooltipTitle]` | The text shown in the tooltip | `string \| TemplateRef<void>` | - |
 | `[nzTooltipTrigger]` | Tooltip trigger mode. If set to `null` it would not be triggered | `'click' \| 'focus' \| 'hover' \| null` | `'hover'` |
 | `[nzTooltipPlacement]` | The position of the tooltip relative to the target | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
+| `[nzTooltipColor]` | The background color | `string` | - |
 | `[nzTooltipOrigin]` | Origin of the tooltip | `ElementRef` | - |
 | `[nzTooltipVisible]` | Show or hide tooltip | `boolean` | `false` |
 | `(nzTooltipVisibleChange)` | Callback of hide or show | `EventEmitter<boolean>` | - |

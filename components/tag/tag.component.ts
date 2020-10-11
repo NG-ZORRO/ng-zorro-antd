@@ -15,6 +15,7 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
+import { isPresetColor, NzPresetColor } from 'ng-zorro-antd/core/color';
 import { BooleanInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 
@@ -42,7 +43,7 @@ export class NzTagComponent implements OnChanges {
   static ngAcceptInputType_nzChecked: BooleanInput;
   isPresetColor = false;
   @Input() nzMode: 'default' | 'closeable' | 'checkable' = 'default';
-  @Input() nzColor?: string;
+  @Input() nzColor?: string | NzPresetColor;
   @Input() @InputBoolean() nzChecked = false;
   @Output() readonly nzOnClose = new EventEmitter<MouseEvent>();
   @Output() readonly nzCheckedChange = new EventEmitter<boolean>();
@@ -69,9 +70,7 @@ export class NzTagComponent implements OnChanges {
       if (!this.nzColor) {
         this.isPresetColor = false;
       } else {
-        this.isPresetColor =
-          /^(pink|red|yellow|orange|cyan|green|blue|purple|geekblue|magenta|volcano|gold|lime)(-inverse)?$/.test(this.nzColor) ||
-          /^(success|processing|error|default|warning)$/.test(this.nzColor);
+        this.isPresetColor = isPresetColor(this.nzColor) || /^(success|processing|error|default|warning)$/.test(this.nzColor);
       }
     }
   }
