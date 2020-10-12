@@ -38,7 +38,7 @@ const NZ_MESSAGE_DEFAULT_CONFIG: Required<MessageConfig> = {
 })
 export class NzMessageContainerComponent extends NzMNContainerComponent {
   readonly destroy$ = new Subject<void>();
-  dir: Direction;
+  dir: Direction = 'ltr';
   instances: Array<Required<NzMessageData>> = [];
   top?: string | null;
 
@@ -59,8 +59,9 @@ export class NzMessageContainerComponent extends NzMNContainerComponent {
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         const config = this.nzConfigService.getConfigForComponent(NZ_CONFIG_GLOBAL_NAME);
-        if (config && config.nzDirection) {
-          this.dir = config.nzDirection;
+        if (config) {
+          const { nzDirection } = config;
+          this.dir = nzDirection;
         }
       });
   }
