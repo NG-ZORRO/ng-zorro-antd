@@ -10,12 +10,14 @@ function generateLanguageData(itemData, language, reverseMap, key) {
   const type = itemData[language].type;
   const cover = itemData[language].cover;
   const experimental = itemData[language].experimental;
+  const description = itemData[language].description;
   const content = {
     label: title,
     path: `${experimental ? 'experimental' : 'components'}/${key}/${language}`,
     zh: subtitle,
     experimental: !!experimental,
-    cover: cover
+    cover,
+    description
   };
   if (!reverseMap[type]) {
     reverseMap[type] = { list: [content], language };
@@ -43,19 +45,23 @@ module.exports = function generateRoutes(showCaseTargetPath, componentsDocMap, d
   let intro = [];
   let components = [];
   for (const key in docsMeta) {
+    const enMeta = docsMeta[key].en;
+    const zhMeta = docsMeta[key].zh;
     intro.push({
       path: `docs/${key}/en`,
-      label: docsMeta[key].en.title,
+      label: enMeta.title,
       language: 'en',
-      order: docsMeta[key].en.order,
-      experimental: !!docsMeta[key].en.experimental
+      order: enMeta.order,
+      description: enMeta.description,
+      experimental: !!enMeta.experimental
     });
     intro.push({
       path: `docs/${key}/zh`,
-      label: docsMeta[key].zh.title,
+      label: zhMeta.title,
       language: 'zh',
-      order: docsMeta[key].zh.order,
-      experimental: !!docsMeta[key].zh.experimental
+      order: zhMeta.order,
+      description: zhMeta.description,
+      experimental: !!zhMeta.experimental
     });
   }
   intro.sort((pre, next) => pre.order - next.order);

@@ -1,22 +1,33 @@
 import * as child_process from 'child_process';
-import { readFile, writeFile } from 'fs-extra';
+import { sync as glob } from 'glob';
 import { resolve } from 'path';
 import { buildConfig } from '../build-config';
-const minify = require('html-minifier').minify;
+import { minifyFile } from './minify';
 
-const minifyIndex = async () => {
-  const indexHTMLPath = resolve(buildConfig.outputDir, 'index.html');
-  const input = await readFile(indexHTMLPath);
-  const output = minify(input.toString('UTF-8'), {
-    removeComments: true,
-    collapseWhitespace: true,
-    preserveLineBreaks: true
-  })
-  await writeFile(indexHTMLPath, output);
+const distFiles: {
+  [key: string]: string[]
+} = {
+  html: [
+    'index.html',
+    'docs/**/index.html',
+    'experimental/**/index.html',
+    'components/**/index.html'
+  ],
+  js: ['ngsw-worker.js', 'worker-basic.min.js', 'safety-worker.js'],
+  json: ['manifest.json']
+}
+
+async function minifyFiles(): Promise<void> {
+  for (const type of Object.keys(distFiles)) {
+    const paths: string[] = distFiles[type].map(pattern => glob(pattern, { cwd: buildConfig.outputDir })).reduce((a, b) => [...a, ...b], []);
+    for (const contentPath of paths) {
+      await minifyFile(resolve(buildConfig.outputDir, contentPath), type);
+    }
+  }
 }
 
 export const generate = async () => {
-  await minifyIndex();
+  await minifyFiles();
   return new Promise((res, reject) => {
     const childProcess = child_process.spawn('node_modules/.bin/ngsw-config', ['dist', 'ngsw-config.json'], {
       env: { ...process.env },
@@ -24,8 +35,7 @@ export const generate = async () => {
       stdio: ['pipe', 'ignore', 'ignore']
     });
     childProcess.on('close', (code: number) => {
-      // tslint:disable-next-line:triple-equals
-      code != 0 ? reject(`Process failed with code ${code}`) : res();
+      code !== 0 ? reject(`Process failed with code ${code}`) : res();
     });
   })
 }

@@ -41,6 +41,12 @@
     "!/version/**",
     "!/issue-helper/**",
     "!/iframe/**",
-    "!/blog/**"
+    "!/blog/**",
+    "!/docs/**/*",
+    "!/docs/?*",
+    "!/components/**/*",
+    "!/components/?*",
+    "!/experimental/**/*",
+    "!/experimental/?*"
   ]
 }

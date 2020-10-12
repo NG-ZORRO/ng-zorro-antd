@@ -6,9 +6,9 @@ title: Ant Design of Angular
 Following the Ant Design specification, we developed an Angular UI library `ng-zorro-antd` that contains a set of high-quality components and demos for building rich, interactive user interfaces.
 
 <div class="pic-plus">
-  <img alt="Ant Design" width="150" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg">
+  <img alt="Ant Design" width="150" height="150" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg">
   <span>+</span>
-  <img alt="Angular" height="150" src="https://img.alicdn.com/tfs/TB1Z0PywTtYBeNjy1XdXXXXyVXa-186-200.svg">
+  <img alt="Angular" width="140" height="150" src="https://img.alicdn.com/tfs/TB1Z0PywTtYBeNjy1XdXXXXyVXa-186-200.svg">
 </div>
 
 <style>
