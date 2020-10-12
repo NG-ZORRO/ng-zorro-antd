@@ -4,6 +4,7 @@
 @card-prefix-cls: ~'@{ant-prefix}-card';
 @card-hoverable-hover-border: transparent;
 @card-action-icon-size: 16px;
+@skeleton-prefix-cls: ~'@{ant-prefix}-skeleton';
 
 @gradient-min: fade(@card-skeleton-bg, 20%);
 @gradient-max: fade(@card-skeleton-bg, 40%);
@@ -17,6 +18,10 @@
 
   &-rtl {
     direction: rtl;
+
+    .@{skeleton-prefix-cls}-header {
+      padding: 0 0 0 @card-head-padding;
+    }
   }
 
   &-hoverable {
@@ -84,6 +89,8 @@
     .@{card-prefix-cls}-rtl & {
       margin-right: auto;
       margin-left: 0;
+
+
     }
   }
 
@@ -121,12 +128,12 @@
     }
   }
 
-  &-contain-tabs > &-head &-head-title {
+  &-contain-tabs>&-head &-head-title {
     min-height: @card-head-height - @card-head-padding;
     padding-bottom: 0;
   }
 
-  &-contain-tabs > &-head &-extra {
+  &-contain-tabs>&-head &-extra {
     padding-bottom: 0;
   }
 
@@ -137,7 +144,7 @@
   }
 
   &-cover {
-    > * {
+    >* {
       display: block;
       width: 100%;
     }
@@ -155,7 +162,7 @@
     border-top: @border-width-base @border-style-base @border-color-split;
     .clearfix;
 
-    & > li {
+    &>li {
       float: left;
       margin: @card-actions-li-margin;
       color: @text-color-secondary;
@@ -165,7 +172,7 @@
         float: right;
       }
 
-      > span {
+      >span {
         position: relative;
         display: block;
         min-width: 32px;
@@ -179,7 +186,7 @@
         }
 
         a:not(.@{ant-prefix}-btn),
-        > .anticon {
+        >.anticon {
           display: inline-block;
           width: 100%;
           color: @text-color-secondary;
@@ -191,7 +198,7 @@
           }
         }
 
-        > .anticon {
+        >.anticon {
           font-size: @card-action-icon-size;
           line-height: 22px;
         }
@@ -238,7 +245,8 @@
 
     &-detail {
       overflow: hidden;
-      > div:not(:last-child) {
+
+      >div:not(:last-child) {
         margin-bottom: @margin-xs;
       }
     }
@@ -282,10 +290,12 @@
 }
 
 @keyframes card-loading {
+
   0%,
   100% {
     background-position: 0 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
