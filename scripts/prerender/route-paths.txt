@@ -146,6 +146,8 @@ components/overview/en
 /docs/universal/en
 /docs/universal/zh
 /experimental/resizable/zh
+/experimental/pipes/en
+/experimental/pipes/zh
 /experimental/resizable/en
 /experimental/code-editor/zh
 /experimental/code-editor/en

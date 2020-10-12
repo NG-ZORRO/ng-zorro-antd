@@ -7,7 +7,7 @@ title: Resources
 
 Category | Recommended Components | Detail
 ---------|-----------------------|------
-Component Lib |[NG ALAIN](http://ng-alain.com/)| Admin Template work with ng-zorro-antd
+Component Lib |[NG ALAIN](https://ng-alain.com/)| Admin Template work with ng-zorro-antd
 Component Lib|[Material Design](https://material.angular.io) | Material Design
 Component Lib|[Clarity](https://github.com/vmware/clarity) | Vmware Angular Component Lib
 Component Lib|[Nebular](https://github.com/akveo/nebular/) | Nebular Angular Component Lib
@@ -35,9 +35,9 @@ State Management|[ngrx](https://ngrx.io/) | NGRX state management
 
 - [Angular](https://angular.io/)
 - [Angular Blog](https://blog.angular.io/)
-- [Angular Weekly Meeting Notes](http://g.co/ng/weekly-notes)
+- [Angular Weekly Meeting Notes](https://g.co/ng/weekly-notes)
 - [ThoughtRam Blog](https://blog.thoughtram.io/)
-- [Mgechev Blog](http://blog.mgechev.com/)
+- [Mgechev Blog](https://blog.mgechev.com/)
 - [Angular In Depth](https://indepth.dev/)
 - [Angular Fast](https://web.dev/angular/#fast)
 

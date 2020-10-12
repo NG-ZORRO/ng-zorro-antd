@@ -11,7 +11,7 @@ title: 资源推荐
 
 类型 | 名称 | 描述
 ----|----|--------
-组件库|[NG ALAIN](http://ng-alain.com/) | [cipchk](https://github.com/cipchk) 个人开发的基于 `ng-zorro-antd` 的 Admin 系统解决方案
+组件库|[NG ALAIN](https://ng-alain.com/) | [cipchk](https://github.com/cipchk) 个人开发的基于 `ng-zorro-antd` 的 Admin 系统解决方案
 组件库|[Material Design](https://material.angular.io) | Angular 官方 Material 组件库
 组件库|[Clarity](https://github.com/vmware/clarity) | Vmware Angular 组件库
 组件库|[Nebular](https://github.com/akveo/nebular/) | Nebular Angular 组件库
@@ -44,12 +44,12 @@ title: 资源推荐
 - [Angular调优指南](https://web.dev/angular/#fast)
 - [Angular中文官网](https://angular.cn/)
 - [Angular英文官网](https://angular.io/)
-- [Mgechev Blog](http://blog.mgechev.com/)
+- [Mgechev Blog](https://blog.mgechev.com/)
 - [ThoughtRam Blog](https://blog.thoughtram.io/)
 - [Reactive How](https://reactive.how/)
 - [30 天精通 RxJS](https://blog.jerry-hong.com/series/rxjs)
 - [Angular官方博客](https://blog.angular.io)
-- [Angular Weekly Meeting Notes](http://g.co/ng/weekly-notes)
+- [Angular Weekly Meeting Notes](https://g.co/ng/weekly-notes)
 
 
 ## 设计资源

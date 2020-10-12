@@ -163,6 +163,8 @@ As always, we encourage experienced users to help those who are not familiar wit
 - [Ververica](https://www.ververica.com/)
 - [Apache Flink](https://flink.apache.org/)
 - [Apache Zeppelin](https://zeppelin.apache.org/)
+- [Apache Submarine](https://submarine.apache.org/)
+- [Apache Metron](https://metron.apache.org/)
 - [Process Automation Group](http://pag.company/)
 - [AISINOCO](http://www.aisino.com/)
 - [GongDao](https://www.gongdao.com/)
