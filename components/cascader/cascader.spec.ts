@@ -24,6 +24,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { createFakeEvent, createMouseEvent, dispatchKeyboardEvent, dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
+import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzCascaderComponent } from './cascader.component';
 import { NzCascaderModule } from './cascader.module';
@@ -61,7 +62,7 @@ describe('cascader', () => {
     beforeEach(
       waitForAsync(() => {
         TestBed.configureTestingModule({
-          imports: [FormsModule, ReactiveFormsModule, NoopAnimationsModule, NzCascaderModule],
+          imports: [FormsModule, ReactiveFormsModule, NoopAnimationsModule, NzCascaderModule, NzIconTestModule],
           declarations: [NzDemoCascaderDefaultComponent],
           providers: []
         }).compileComponents();
@@ -619,7 +620,7 @@ describe('cascader', () => {
       expect(control.labelRenderText).toBe('Zhejiang');
     }));
 
-    it('should write value work on setting `nzOptions` asyn (match)', fakeAsync(() => {
+    it('should write value work on setting `nzOptions` async (match)', fakeAsync(() => {
       const control = testComponent.cascader;
       testComponent.nzOptions = null;
       testComponent.values = ['zhejiang', 'hangzhou', 'xihu'];
@@ -637,7 +638,7 @@ describe('cascader', () => {
       expect(control.labelRenderText).toBe('Zhejiang / Hangzhou / West Lake');
     }));
 
-    it('should write value work on setting `nzOptions` asyn (not match)', fakeAsync(() => {
+    it('should write value work on setting `nzOptions` async (not match)', fakeAsync(() => {
       const control = testComponent.cascader;
       testComponent.nzOptions = null;
       testComponent.values = ['zhejiang2', 'hangzhou2', 'xihu2'];
@@ -1543,6 +1544,18 @@ describe('cascader', () => {
       itemEl1 = getItemAtColumnAndRow(1, 1)!;
       expect(itemEl1.innerText).toBe('Option1 / Option11');
     });
+
+    it('should support changing icon', () => {
+      testComponent.nzSuffixIcon = 'home';
+      testComponent.nzExpandIcon = 'home';
+
+      fixture.detectChanges();
+      testComponent.cascader.setMenuVisible(true);
+      fixture.detectChanges();
+      const itemEl1 = getItemAtColumnAndRow(1, 1);
+      expect(itemEl1?.querySelector('.anticon-home')).toBeTruthy();
+      expect(cascader.nativeElement.querySelector('.ant-cascader-picker-arrow')!.classList).toContain('anticon-home');
+    });
   });
 
   describe('load data lazily', () => {
@@ -1911,28 +1924,30 @@ const options5: any[] = []; // tslint:disable-line:no-any
 @Component({
   template: `
     <nz-cascader
-      [nzOptions]="nzOptions"
       [(ngModel)]="values"
       [nzAllowClear]="nzAllowClear"
       [nzAutoFocus]="nzAutoFocus"
-      [nzMenuStyle]="nzMenuStyle"
-      [nzMenuClassName]="nzMenuClassName"
+      [nzChangeOn]="nzChangeOn"
+      [nzChangeOnSelect]="nzChangeOnSelect"
       [nzColumnClassName]="nzColumnClassName"
-      [nzExpandTrigger]="nzExpandTrigger"
       [nzDisabled]="nzDisabled"
-      [nzLabelRender]="nzLabelRender"
+      [nzExpandIcon]="nzExpandIcon"
+      [nzExpandTrigger]="nzExpandTrigger"
       [nzLabelProperty]="nzLabelProperty"
-      [nzValueProperty]="nzValueProperty"
+      [nzLabelRender]="nzLabelRender"
+      [nzMenuClassName]="nzMenuClassName"
+      [nzMenuStyle]="nzMenuStyle"
+      [nzMouseEnterDelay]="nzMouseEnterDelay"
+      [nzMouseLeaveDelay]="nzMouseLeaveDelay"
+      [nzOptions]="nzOptions"
       [nzPlaceHolder]="nzPlaceHolder"
       [nzShowArrow]="nzShowArrow"
       [nzShowInput]="nzShowInput"
       [nzShowSearch]="nzShowSearch"
       [nzSize]="nzSize"
       [nzTriggerAction]="nzTriggerAction"
-      [nzMouseEnterDelay]="nzMouseEnterDelay"
-      [nzMouseLeaveDelay]="nzMouseLeaveDelay"
-      [nzChangeOn]="nzChangeOn"
-      [nzChangeOnSelect]="nzChangeOnSelect"
+      [nzSuffixIcon]="nzSuffixIcon"
+      [nzValueProperty]="nzValueProperty"
       (ngModelChange)="onValueChanges($event)"
       (nzVisibleChange)="onVisibleChange($event)"
       (nzSelect)="onSelect($event)"
@@ -1977,6 +1992,8 @@ export class NzDemoCascaderDefaultComponent {
   nzTriggerAction: string | string[] = 'click';
   nzMouseEnterDelay = 150; // ms
   nzMouseLeaveDelay = 150; // ms
+  nzSuffixIcon = 'down';
+  nzExpandIcon = 'right';
 
   onVisibleChange = jasmine.createSpy('open change');
   onValueChanges = jasmine.createSpy('value change');
