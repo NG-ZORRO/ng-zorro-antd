@@ -593,6 +593,7 @@ describe('nz-slider', () => {
       fixture.detectChanges();
 
       dispatchClickEventSequence(sliderNativeElement, 0.1);
+
       // Potentially a bug of jasmine or karma. Event handler makes calling stack destroyed.
       // dispatchClickEventSequence(sliderNativeElement, 0.8);
       fixture.detectChanges();
@@ -651,8 +652,32 @@ describe('nz-slider', () => {
       expect(overlayContainerElement.textContent).toContain('VALUE-13');
 
       dispatchMouseEvent(handlerHost, 'mouseleave');
-      tick(400); // Wait for tooltip's animations
+      tick(400); // wait for tooltip's animations
       expect(overlayContainerElement.textContent).not.toContain('VALUE-13');
+    }));
+
+    // fix #5699, Slider should work with decimals as well
+    it('should work with decimals', fakeAsync(() => {
+      testComponent.marks = {
+        0.5: '0.5',
+        0.8: '0.8',
+        1: '1',
+        1.2: '1.2',
+        1.5: '1.5',
+        2: '2'
+      };
+      testComponent.min = 0.5;
+      testComponent.max = 2;
+      testComponent.step = null;
+      fixture.detectChanges();
+
+      dispatchClickEventSequence(sliderNativeElement, 0.13);
+      fixture.detectChanges();
+      expect(sliderInstance.value).toBe(0.8);
+
+      dispatchClickEventSequence(sliderNativeElement, 0.6);
+      fixture.detectChanges();
+      expect(sliderInstance.value).toBe(1.5);
     }));
   });
 
@@ -902,16 +927,20 @@ class ReverseSliderWithMinAndMaxComponent {}
       [nzDots]="dots"
       [nzIncluded]="included"
       [nzTipFormatter]="tipFormatter"
+      [nzMin]="min"
+      [nzMax]="max"
     ></nz-slider>
   `,
   styles: [styles]
 })
 class MixedSliderComponent {
-  range = false;
-  step: number | null = 1;
-  marks = { 22: '(22%)', 36: '(36%)' };
   dots = false;
   included = true;
+  marks: { [mark: number]: string } = { 22: '(22%)', 36: '(36%)' };
+  max = 100;
+  min = 0;
+  range = false;
+  step: number | null = 1;
 
   tipFormatter(value: number): string {
     return `VALUE-${value}`;

@@ -441,15 +441,23 @@ export class NzSliderComponent implements ControlValueAccessor, OnInit, OnChange
     const sliderLength = this.getSliderLength();
     const ratio = ensureNumberInRange((position - sliderStart) / sliderLength, 0, 1);
     const val = (this.nzMax - this.nzMin) * (this.nzVertical ? 1 - ratio : ratio) + this.nzMin;
-    const points = this.nzMarks === null ? [] : Object.keys(this.nzMarks).map(parseFloat);
+    const points =
+      this.nzMarks === null
+        ? []
+        : Object.keys(this.nzMarks)
+            .map(parseFloat)
+            .sort((a, b) => a - b);
+
     if (this.nzStep !== 0 && !this.nzDots) {
       const closestOne = Math.round(val / this.nzStep) * this.nzStep;
       points.push(closestOne);
     }
+
     const gaps = points.map(point => Math.abs(val - point));
     const closest = points[gaps.indexOf(Math.min(...gaps))];
 
-    return this.nzStep === null ? closest : parseFloat(closest.toFixed(getPrecision(this.nzStep)));
+    // return parseFloat(closest.toFixed(getPrecision(this.nzStep)));
+    return this.nzStep === 0 ? closest : parseFloat(closest.toFixed(getPrecision(this.nzStep)));
   }
 
   private valueToOffset(value: number): number {
