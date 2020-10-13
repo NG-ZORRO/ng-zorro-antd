@@ -387,7 +387,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
   }
 
   updateByDirective(): void {
-    this.setClassMap();
+    this.updateStyles();
     this.cdr.detectChanges();
 
     Promise.resolve().then(() => {
@@ -407,14 +407,14 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
 
   onPositionChange(position: ConnectedOverlayPositionChange): void {
     this.preferredPlacement = getPlacementName(position)!;
-    this.setClassMap();
+    this.updateStyles();
     this.cdr.detectChanges();
   }
 
-  setClassMap(): void {
+  updateStyles(): void {
     this._classMap = {
       [this.nzOverlayClassName]: true,
-      [`${this._prefix}-${this.preferredPlacement}`]: true
+      [`${this._prefix}-placement-${this.preferredPlacement}`]: true
     };
   }
 

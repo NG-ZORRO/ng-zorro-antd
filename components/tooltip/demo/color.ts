@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { presetColors, presetStatusColors } from 'ng-zorro-antd/core/color';
+import { presetColors } from 'ng-zorro-antd/core/color';
 
 @Component({
   selector: 'nz-demo-tooltip-color',
@@ -25,5 +25,4 @@ import { presetColors, presetStatusColors } from 'ng-zorro-antd/core/color';
 export class NzDemoTooltipColorComponent {
   customColors: string[] = ['#f50', '#2db7f5', '#87d068', '#108ee9'];
   presetColors = presetColors;
-  presetStatusColors = presetStatusColors;
 }

@@ -27,10 +27,10 @@ export function isPresetColor(color: string): color is NzPresetColor {
   return presetColors.indexOf(color as NzSafeAny) !== -1;
 }
 
-export const presetStatusColors = ['success', 'processing', 'error', 'default', 'warning'];
+// export const presetStatusColors = ['success', 'processing', 'error', 'default', 'warning'];
 
-export type NzPresetStatusColor = typeof presetStatusColors[number];
+// export type NzPresetStatusColor = typeof presetStatusColors[number];
 
-export function isPresetStatusColor(color: string): color is NzPresetStatusColor {
-  return presetStatusColors.indexOf(color as NzSafeAny) !== -1;
-}
+// export function isPresetStatusColor(color: string): color is NzPresetStatusColor {
+//   return presetStatusColors.indexOf(color as NzSafeAny) !== -1;
+// }
