@@ -34,19 +34,19 @@ import { isTooltipEmpty, NzTooltipBaseComponent, NzTooltipBaseDirective, NzToolt
   }
 })
 export class NzTooltipDirective extends NzTooltipBaseDirective {
-  @Input('nzTooltipTitle') specificTitle?: NzTSType | null;
-  @Input('nz-tooltip') directiveNameTitle?: NzTSType | null;
-  @Input('nzTooltipTrigger') specificTrigger?: NzTooltipTrigger = 'hover';
-  @Input('nzTooltipPlacement') specificPlacement?: string = 'top';
-  @Input('nzTooltipOrigin') specificOrigin?: ElementRef<HTMLElement>;
-  @Input('nzTooltipVisible') specificVisible?: boolean;
-  @Input('nzTooltipMouseEnterDelay') specificMouseEnterDelay?: number;
-  @Input('nzTooltipMouseLeaveDelay') specificMouseLeaveDelay?: number;
-  @Input('nzTooltipOverlayClassName') specificOverlayClassName?: string;
-  @Input('nzTooltipOverlayStyle') specificOverlayStyle?: NgStyleInterface;
+  @Input('nzTooltipTitle') title?: NzTSType | null;
+  @Input('nz-tooltip') directiveTitle?: NzTSType | null;
+  @Input('nzTooltipTrigger') trigger?: NzTooltipTrigger = 'hover';
+  @Input('nzTooltipPlacement') placement?: string = 'top';
+  @Input('nzTooltipOrigin') origin?: ElementRef<HTMLElement>;
+  @Input('nzTooltipVisible') visible?: boolean;
+  @Input('nzTooltipMouseEnterDelay') mouseEnterDelay?: number;
+  @Input('nzTooltipMouseLeaveDelay') mouseLeaveDelay?: number;
+  @Input('nzTooltipOverlayClassName') overlayClassName?: string;
+  @Input('nzTooltipOverlayStyle') overlayStyle?: NgStyleInterface;
 
   // tslint:disable-next-line:no-output-rename
-  @Output('nzTooltipVisibleChange') readonly specificVisibleChange = new EventEmitter<boolean>();
+  @Output('nzTooltipVisibleChange') readonly visibleChange = new EventEmitter<boolean>();
 
   componentFactory: ComponentFactory<NzToolTipComponent> = this.resolver.resolveComponentFactory(NzToolTipComponent);
 

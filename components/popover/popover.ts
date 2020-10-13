@@ -34,20 +34,20 @@ import { isTooltipEmpty, NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTr
   }
 })
 export class NzPopoverDirective extends NzTooltipBaseDirective {
-  @Input('nzPopoverTitle') specificTitle?: NzTSType;
-  @Input('nzPopoverContent') specificContent?: NzTSType;
-  @Input('nz-popover') directiveNameTitle?: NzTSType | null;
-  @Input('nzPopoverTrigger') specificTrigger?: NzTooltipTrigger = 'hover';
-  @Input('nzPopoverPlacement') specificPlacement?: string = 'top';
-  @Input('nzPopoverOrigin') specificOrigin?: ElementRef<HTMLElement>;
-  @Input('nzPopoverVisible') specificVisible?: boolean;
-  @Input('nzPopoverMouseEnterDelay') specificMouseEnterDelay?: number;
-  @Input('nzPopoverMouseLeaveDelay') specificMouseLeaveDelay?: number;
-  @Input('nzPopoverOverlayClassName') specificOverlayClassName?: string;
-  @Input('nzPopoverOverlayStyle') specificOverlayStyle?: NgStyleInterface;
+  @Input('nzPopoverTitle') title?: NzTSType;
+  @Input('nzPopoverContent') content?: NzTSType;
+  @Input('nz-popover') directiveTitle?: NzTSType | null;
+  @Input('nzPopoverTrigger') trigger?: NzTooltipTrigger = 'hover';
+  @Input('nzPopoverPlacement') placement?: string = 'top';
+  @Input('nzPopoverOrigin') origin?: ElementRef<HTMLElement>;
+  @Input('nzPopoverVisible') visible?: boolean;
+  @Input('nzPopoverMouseEnterDelay') mouseEnterDelay?: number;
+  @Input('nzPopoverMouseLeaveDelay') mouseLeaveDelay?: number;
+  @Input('nzPopoverOverlayClassName') overlayClassName?: string;
+  @Input('nzPopoverOverlayStyle') overlayStyle?: NgStyleInterface;
 
   // tslint:disable-next-line:no-output-rename
-  @Output('nzPopoverVisibleChange') readonly specificVisibleChange = new EventEmitter<boolean>();
+  @Output('nzPopoverVisibleChange') readonly visibleChange = new EventEmitter<boolean>();
 
   componentFactory: ComponentFactory<NzPopoverComponent> = this.resolver.resolveComponentFactory(NzPopoverComponent);
 

@@ -28,7 +28,7 @@ import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { BooleanInput, NgStyleInterface, NzTSType } from 'ng-zorro-antd/core/types';
 
 import { InputBoolean } from 'ng-zorro-antd/core/util';
-import { NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger } from 'ng-zorro-antd/tooltip';
+import { NzTooltipBaseDirective, NzToolTipComponent, NzTooltipTrigger, PropertyMapping } from 'ng-zorro-antd/tooltip';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -43,15 +43,16 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   static ngAcceptInputType_nzCondition: BooleanInput;
   static ngAcceptInputType_nzPopconfirmShowArrow: BooleanInput;
 
-  @Input('nzPopconfirmTitle') specificTitle?: NzTSType;
-  @Input('nz-popconfirm') directiveNameTitle?: NzTSType | null;
-  @Input('nzPopconfirmTrigger') specificTrigger?: NzTooltipTrigger = 'click';
-  @Input('nzPopconfirmPlacement') specificPlacement?: string = 'top';
-  @Input('nzPopconfirmOrigin') specificOrigin?: ElementRef<HTMLElement>;
-  @Input('nzPopconfirmMouseEnterDelay') specificMouseEnterDelay?: number;
-  @Input('nzPopconfirmMouseLeaveDelay') specificMouseLeaveDelay?: number;
-  @Input('nzPopconfirmOverlayClassName') specificOverlayClassName?: string;
-  @Input('nzPopconfirmOverlayStyle') specificOverlayStyle?: NgStyleInterface;
+  @Input('nzPopconfirmTitle') title?: NzTSType;
+  @Input('nz-popconfirm') directiveTitle?: NzTSType | null;
+  @Input('nzPopconfirmTrigger') trigger?: NzTooltipTrigger = 'click';
+  @Input('nzPopconfirmPlacement') placement?: string = 'top';
+  @Input('nzPopconfirmOrigin') origin?: ElementRef<HTMLElement>;
+  @Input('nzPopconfirmMouseEnterDelay') mouseEnterDelay?: number;
+  @Input('nzPopconfirmMouseLeaveDelay') mouseLeaveDelay?: number;
+  @Input('nzPopconfirmOverlayClassName') overlayClassName?: string;
+  @Input('nzPopconfirmOverlayStyle') overlayStyle?: NgStyleInterface;
+  @Input('nzPopconfirmVisible') visible?: boolean;
   @Input() nzOkText?: string;
   @Input() nzOkType?: string;
   @Input() nzCancelText?: string;
@@ -59,16 +60,8 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
   @Input() @InputBoolean() nzCondition: boolean = false;
   @Input() @InputBoolean() nzPopconfirmShowArrow: boolean = true;
 
-  /**
-   * @deprecated 10.0.0. This is deprecated and going to be removed in 10.0.0.
-   * Please use a more specific API. Like `nzTooltipTrigger`.
-   */
-  @Input() nzTrigger: NzTooltipTrigger = 'click';
-
-  @Input('nzPopconfirmVisible') specificVisible?: boolean;
-
   // tslint:disable-next-line:no-output-rename
-  @Output('nzPopconfirmVisibleChange') readonly specificVisibleChange = new EventEmitter<boolean>();
+  @Output('nzPopconfirmVisibleChange') readonly visibleChange = new EventEmitter<boolean>();
   @Output() readonly nzOnCancel = new EventEmitter<void>();
   @Output() readonly nzOnConfirm = new EventEmitter<void>();
 
@@ -76,19 +69,17 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
     NzPopconfirmComponent
   );
 
-  protected readonly needProxyProperties = [
-    'nzOverlayClassName',
-    'nzOverlayStyle',
-    'nzMouseEnterDelay',
-    'nzMouseLeaveDelay',
-    'nzVisible',
-    'nzOkText',
-    'nzOkType',
-    'nzCancelText',
-    'nzCondition',
-    'nzIcon',
-    'nzPopconfirmShowArrow'
-  ];
+  protected getProxyPropertyMap(): PropertyMapping {
+    return {
+      nzOkText: ['nzOkText', () => this.nzOkText],
+      nzOkType: ['nzOkType', () => this.nzOkType],
+      nzCancelText: ['nzCancelText', () => this.nzCancelText],
+      nzCondition: ['nzCondition', () => this.nzCondition],
+      nzIcon: ['nzIcon', () => this.nzIcon],
+      nzPopconfirmShowArrow: ['nzPopconfirmShowArrow', () => this.nzPopconfirmShowArrow],
+      ...super.getProxyPropertyMap()
+    };
+  }
 
   constructor(
     elementRef: ElementRef,

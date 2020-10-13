@@ -27,23 +27,27 @@ import { isNotNil, toBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 
+export interface PropertyMapping {
+  [key: string]: [string, () => unknown];
+}
+
 export type NzTooltipTrigger = 'click' | 'focus' | 'hover' | null;
 
 @Directive()
 export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, AfterViewInit {
-  directiveNameTitle?: NzTSType | null;
-  directiveNameContent?: NzTSType | null;
-  specificTitle?: NzTSType | null;
-  specificContent?: NzTSType | null;
-  specificTrigger?: NzTooltipTrigger;
-  specificPlacement?: string;
-  specificOrigin?: ElementRef<HTMLElement>;
-  specificVisible?: boolean;
-  specificMouseEnterDelay?: number;
-  specificMouseLeaveDelay?: number;
-  specificOverlayClassName?: string;
-  specificOverlayStyle?: NgStyleInterface;
-  specificVisibleChange = new EventEmitter<boolean>();
+  directiveTitle?: NzTSType | null;
+  directiveContent?: NzTSType | null;
+  title?: NzTSType | null;
+  content?: NzTSType | null;
+  trigger?: NzTooltipTrigger;
+  placement?: string;
+  origin?: ElementRef<HTMLElement>;
+  visible?: boolean;
+  mouseEnterDelay?: number;
+  mouseLeaveDelay?: number;
+  overlayClassName?: string;
+  overlayStyle?: NgStyleInterface;
+  visibleChange = new EventEmitter<boolean>();
 
   /**
    * For create tooltip dynamically. This should be override for each different component.
@@ -53,44 +57,49 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
   /**
    * This true title that would be used in other parts on this component.
    */
-  protected get title(): NzTSType | null {
-    return this.specificTitle || this.directiveNameTitle || null;
+  protected get _title(): NzTSType | null {
+    return this.title || this.directiveTitle || null;
   }
 
-  protected get content(): NzTSType | null {
-    return this.specificContent || this.directiveNameContent || null;
+  protected get _content(): NzTSType | null {
+    return this.content || this.directiveContent || null;
   }
 
-  protected get trigger(): NzTooltipTrigger {
-    return typeof this.specificTrigger !== 'undefined' ? this.specificTrigger : 'hover';
+  protected get _trigger(): NzTooltipTrigger {
+    return typeof this.trigger !== 'undefined' ? this.trigger : 'hover';
   }
 
-  protected get placement(): string {
-    return this.specificPlacement || 'top';
+  protected get _placement(): string {
+    return this.placement || 'top';
   }
 
-  protected get isVisible(): boolean {
-    return this.specificVisible || false;
+  protected get _visible(): boolean {
+    return (typeof this.visible !== 'undefined' ? this.visible : this.internalVisible) || false;
   }
 
-  protected get mouseEnterDelay(): number {
-    return this.specificMouseEnterDelay || 0.15;
+  protected get _mouseEnterDelay(): number {
+    return this.mouseEnterDelay || 0.15;
   }
 
-  protected get mouseLeaveDelay(): number {
-    return this.specificMouseLeaveDelay || 0.1;
+  protected get _mouseLeaveDelay(): number {
+    return this.mouseLeaveDelay || 0.1;
   }
 
-  protected get overlayClassName(): string | null {
-    return this.specificOverlayClassName || null;
+  protected get _overlayClassName(): string | null {
+    return this.overlayClassName || null;
   }
 
-  protected get overlayStyle(): NgStyleInterface | null {
-    return this.specificOverlayStyle || null;
+  protected get _overlayStyle(): NgStyleInterface | null {
+    return this.overlayStyle || null;
   }
 
-  visible = false;
-  protected needProxyProperties = ['noAnimation'];
+  private internalVisible = false;
+
+  protected getProxyPropertyMap(): PropertyMapping {
+    return {
+      noAnimation: ['noAnimation', () => this.noAnimation]
+    };
+  }
 
   component?: NzTooltipBaseComponent;
 
@@ -115,7 +124,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
     }
 
     if (this.component) {
-      this.updateChangedProperties(changes);
+      this.updatePropertiesByChanges(changes);
     }
   }
 
@@ -160,13 +169,13 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
 
     // Remove the component's DOM because it should be in the overlay container.
     this.renderer.removeChild(this.renderer.parentNode(this.elementRef.nativeElement), componentRef.location.nativeElement);
-    this.component.setOverlayOrigin({ elementRef: this.specificOrigin || this.elementRef });
+    this.component.setOverlayOrigin({ elementRef: this.origin || this.elementRef });
 
-    this.updateChangedProperties(this.needProxyProperties);
+    this.initProperties();
 
     this.component.nzVisibleChange.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe((visible: boolean) => {
-      this.visible = visible;
-      this.specificVisibleChange.emit(visible);
+      this.internalVisible = visible;
+      this.visibleChange.emit(visible);
     });
   }
 
@@ -174,7 +183,7 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
     // When the method gets invoked, all properties has been synced to the dynamic component.
     // After removing the old API, we can just check the directive's own `nzTrigger`.
     const el = this.elementRef.nativeElement;
-    const trigger = this.specificTrigger;
+    const trigger = this.trigger;
 
     this.removeTriggerListeners();
 
@@ -192,12 +201,12 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
             overlayElement = this.component.overlay.overlayRef.overlayElement;
             this.triggerDisposables.push(
               this.renderer.listen(overlayElement, 'mouseenter', () => {
-                this.delayEnterLeave(false, true);
+                this.delayEnterLeave(false, true, this.mouseEnterDelay);
               })
             );
             this.triggerDisposables.push(
               this.renderer.listen(overlayElement, 'mouseleave', () => {
-                this.delayEnterLeave(false, false);
+                this.delayEnterLeave(false, false, this.mouseLeaveDelay);
               })
             );
           }
@@ -213,65 +222,43 @@ export abstract class NzTooltipBaseDirective implements OnChanges, OnDestroy, Af
           this.show();
         })
       );
-    } // Else do nothing because user wants to control the visibility programmatically.
+    }
+    // Else do nothing because user wants to control the visibility programmatically.
   }
 
-  updatePropertiesByChanges(changes: SimpleChanges): void {
-    const properties = {
-      specificTitle: ['nzTitle', this.title],
-      directiveNameTitle: ['nzTitle', this.title],
-      specificContent: ['nzContent', this.content],
-      directiveNameContent: ['nzContent', this.content],
-      specificTrigger: ['nzTrigger', this.trigger],
-      specificPlacement: ['nzPlacement', this.placement],
-      specificVisible: ['nzVisible', this.isVisible],
-      specificMouseEnterDelay: ['nzMouseEnterDelay', this.mouseEnterDelay],
-      specificMouseLeaveDelay: ['nzMouseLeaveDelay', this.mouseLeaveDelay],
-      specificOverlayClassName: ['nzOverlayClassName', this.overlayClassName],
-      specificOverlayStyle: ['nzOverlayStyle', this.overlayStyle]
+  private updatePropertiesByChanges(changes: SimpleChanges): void {
+    this.updatePropertiesByKeys(Object.keys(changes));
+  }
+
+  private updatePropertiesByKeys(keys?: string[]): void {
+    const mappingProperties: PropertyMapping = {
+      // common mappings
+      title: ['nzTitle', () => this._title],
+      directiveTitle: ['nzTitle', () => this._title],
+      content: ['nzContent', () => this._content],
+      directiveContent: ['nzContent', () => this._content],
+      trigger: ['nzTrigger', () => this._trigger],
+      placement: ['nzPlacement', () => this._placement],
+      visible: ['nzVisible', () => this._visible],
+      mouseEnterDelay: ['nzMouseEnterDelay', () => this._mouseEnterDelay],
+      mouseLeaveDelay: ['nzMouseLeaveDelay', () => this._mouseLeaveDelay],
+      overlayClassName: ['nzOverlayClassName', () => this._overlayClassName],
+      overlayStyle: ['nzOverlayStyle', () => this._overlayStyle],
+      ...this.getProxyPropertyMap()
     };
 
-    const keys = Object.keys(changes);
-    keys.forEach((property: NzSafeAny) => {
-      // @ts-ignore
-      if (properties[property]) {
-        // @ts-ignore
-        const [name, value] = properties[property];
-        this.updateComponentValue(name, value);
+    (keys || Object.keys(mappingProperties).filter(key => !key.startsWith('directive'))).forEach((property: NzSafeAny) => {
+      if (mappingProperties[property]) {
+        const [name, valueFn] = mappingProperties[property];
+        this.updateComponentValue(name, valueFn());
       }
     });
-  }
 
-  updatePropertiesByArray(): void {
-    this.updateComponentValue('nzTitle', this.title);
-    this.updateComponentValue('nzContent', this.content);
-    this.updateComponentValue('nzPlacement', this.placement);
-    this.updateComponentValue('nzTrigger', this.trigger);
-    this.updateComponentValue('nzVisible', this.isVisible);
-    this.updateComponentValue('nzMouseEnterDelay', this.mouseEnterDelay);
-    this.updateComponentValue('nzMouseLeaveDelay', this.mouseLeaveDelay);
-    this.updateComponentValue('nzOverlayClassName', this.overlayClassName);
-    this.updateComponentValue('nzOverlayStyle', this.overlayStyle);
-  }
-  /**
-   * Sync changed properties to the component and trigger change detection in that component.
-   */
-  protected updateChangedProperties(propertiesOrChanges: string[] | SimpleChanges): void {
-    const isArray = Array.isArray(propertiesOrChanges);
-    const keys = isArray ? (propertiesOrChanges as string[]) : Object.keys(propertiesOrChanges);
-
-    keys.forEach((property: NzSafeAny) => {
-      if (this.needProxyProperties.indexOf(property) !== -1) {
-        // @ts-ignore
-        this.updateComponentValue(property, this[property]);
-      }
-    });
-    if (isArray) {
-      this.updatePropertiesByArray();
-    } else {
-      this.updatePropertiesByChanges(propertiesOrChanges as SimpleChanges);
-    }
     this.component?.updateByDirective();
+  }
+
+  private initProperties(): void {
+    this.updatePropertiesByKeys();
   }
 
   private updateComponentValue(key: string, value: NzSafeAny): void {
