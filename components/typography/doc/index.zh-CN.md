@@ -26,6 +26,10 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 | `[nzContent]` | 组件内容 | `string` | - |
 | `[nzCopyable]` | 是否可拷贝，需要配合 `[nzContent]` 使用 | `boolean` | `false` |
 | `[nzEditable]` | 是否可编辑，需要配合 `[nzContent]` 使用 | `boolean` | `false` |
+| `[nzCopyIcons]` | 自定义拷贝图标 | `[string \| TemplateRef<void>, string \| TemplateRef<void>]` | `['copy', 'check']` | ✅ |
+| `[nzCopyTooltips]` | 自定义提示文案，为 `null` 时隐藏文案 | `null \| [string \| TemplateRef<void>, string \| TemplateRef<void>]` | - | ✅ |
+| `[nzEditIcon]` | 自定义编辑图标 | `string \| TemplateRef<void>` | `'edit'` | ✅ |
+| `[nzEditTooltip]` | 自定义提示文案，为 `null` 时隐藏文案 | `null \| string \| TemplateRef<void>` | - | ✅ |
 | `[nzEllipsis]` | 自动溢出省略，动态内容时需要配合 `[nzContent]` 使用 | `boolean` | `false` |
 | `[nzExpandable]` | 自动溢出省略时是否可展开 | `boolean` | `false` ||
 | `[nzSuffix]` | 自动溢出省略时的文本后缀 | `string` | - ||

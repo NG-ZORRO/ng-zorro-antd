@@ -1,8 +1,11 @@
 import { ENTER } from '@angular/cdk/keycodes';
+import { OverlayContainer } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
-import { createKeyboardEvent, dispatchFakeEvent, typeInElement } from 'ng-zorro-antd/core/testing';
+import { ComponentFixture, fakeAsync, flush, inject, TestBed, tick } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { createKeyboardEvent, dispatchFakeEvent, dispatchMouseEvent, typeInElement } from 'ng-zorro-antd/core/testing';
+import { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
 import { NzTypographyComponent } from './typography.component';
@@ -13,10 +16,12 @@ declare const viewport: any;
 
 describe('typography', () => {
   let componentElement: HTMLElement;
+  let overlayContainer: OverlayContainer;
+  let overlayContainerElement: HTMLElement;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CommonModule, NzTypographyModule, NzIconTestModule],
+      imports: [CommonModule, NzTypographyModule, NzIconTestModule, NoopAnimationsModule],
       declarations: [
         NzTestTypographyComponent,
         NzTestTypographyCopyComponent,
@@ -25,6 +30,41 @@ describe('typography', () => {
       ]
     }).compileComponents();
   });
+
+  beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
+    overlayContainer = oc;
+    overlayContainerElement = oc.getContainerElement();
+  }));
+
+  afterEach(() => {
+    overlayContainer.ngOnDestroy();
+  });
+
+  function testCopyButton(
+    fixture: ComponentFixture<NzSafeAny>,
+    copyButton: HTMLButtonElement,
+    onHover: () => void,
+    onClick: () => void
+  ): void {
+    fixture.detectChanges();
+
+    dispatchMouseEvent(copyButton, 'mouseenter');
+    fixture.detectChanges();
+    tick(1000);
+    fixture.detectChanges();
+
+    onHover();
+
+    copyButton.click();
+    fixture.detectChanges();
+
+    onClick();
+
+    dispatchMouseEvent(copyButton, 'mouseleave');
+    fixture.detectChanges();
+    tick(3000);
+    fixture.detectChanges();
+  }
 
   describe('base', () => {
     let fixture: ComponentFixture<NzTestTypographyComponent>;
@@ -68,13 +108,68 @@ describe('typography', () => {
     it('should copyable', () => {
       spyOn(testComponent, 'onCopy');
       const copyButtons = componentElement.querySelectorAll<HTMLButtonElement>('.ant-typography-copy');
-      expect(copyButtons.length).toBe(4);
+      expect(copyButtons.length).toBe(5);
       copyButtons.forEach((btn, i) => {
         btn.click();
         fixture.detectChanges();
         expect(testComponent.onCopy).toHaveBeenCalledWith(`Ant Design-${i}`);
       });
     });
+
+    it('should be set tooltips', fakeAsync(() => {
+      const copyButton = componentElement.querySelector<HTMLButtonElement>('.custom-tooltips .ant-typography-copy')!;
+      testCopyButton(
+        fixture,
+        copyButton,
+        () => {
+          expect(overlayContainerElement.textContent).toContain(testComponent.tooltips![0]);
+        },
+        () => {
+          expect(overlayContainerElement.textContent).toContain(testComponent.tooltips![1]);
+        }
+      );
+    }));
+
+    it('should be hied all tooltips', fakeAsync(() => {
+      const copyButton = componentElement.querySelector<HTMLButtonElement>('.custom-tooltips .ant-typography-copy')!;
+      testComponent.tooltips = null;
+      fixture.detectChanges();
+
+      testCopyButton(
+        fixture,
+        copyButton,
+        () => {
+          expect(overlayContainerElement.textContent).toBeFalsy();
+        },
+        () => {
+          expect(overlayContainerElement.textContent).toBeFalsy();
+        }
+      );
+    }));
+
+    it('should be set icons', fakeAsync(() => {
+      const copyButton = componentElement.querySelector<HTMLButtonElement>('.custom-icons .ant-typography-copy')!;
+      const icon = copyButton.querySelector('.anticon')!;
+
+      // init
+      expect(icon.className).toContain('meh');
+
+      testCopyButton(
+        fixture,
+        copyButton,
+        () => {
+          // hover
+          expect(icon.className).toContain('meh');
+        },
+        () => {
+          // clicked
+          expect(icon.className).toContain('smile');
+        }
+      );
+
+      // done
+      expect(icon.className).toContain('meh');
+    }));
 
     it('should only trigger once within 3000ms', fakeAsync(() => {
       spyOn(testComponent, 'onCopy');
@@ -123,6 +218,35 @@ describe('typography', () => {
       fixture.detectChanges();
       expect(testComponent.str).toBe('This is an editable text.');
     });
+
+    it('should be set icon', fakeAsync(() => {
+      const icon = componentElement.querySelector<HTMLElement>('.anticon')!;
+      expect(icon.className).toContain('edit');
+
+      testComponent.icon = 'smile';
+      fixture.detectChanges();
+
+      expect(icon.className).toContain('smile');
+    }));
+
+    it('should be set tooltip', fakeAsync(() => {
+      testComponent.tooltip = 'click to copy.';
+      const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit')!;
+
+      fixture.detectChanges();
+
+      dispatchMouseEvent(editButton, 'mouseenter');
+      fixture.detectChanges();
+      tick(1000);
+      fixture.detectChanges();
+
+      expect(overlayContainerElement.textContent).toContain(testComponent.tooltip);
+
+      dispatchMouseEvent(editButton, 'mouseleave');
+      fixture.detectChanges();
+      tick(3000);
+      fixture.detectChanges();
+    }));
 
     it('should edit work', () => {
       const editButton = componentElement.querySelector<HTMLButtonElement>('.ant-typography-edit');
@@ -363,9 +487,20 @@ export class NzTestTypographyComponent {}
     <p nz-paragraph nzCopyable class="test-copy-p" nzContent="Ant Design-1" (nzCopy)="onCopy($event)"></p>
     <span nz-text nzCopyable class="test-copy-text" nzContent="Ant Design-2" (nzCopy)="onCopy($event)"></span>
     <span nz-text nzCopyable nzCopyText="Ant Design-3" class="test-copy-replace" (nzCopy)="onCopy($event)">Test</span>
+    <p
+      nz-typography
+      class="custom-icons custom-tooltips"
+      nzCopyable
+      nzContent="Ant Design-4"
+      (nzCopy)="onCopy($event)"
+      [nzCopyTooltips]="tooltips"
+      [nzCopyIcons]="icons"
+    ></p>
   `
 })
 export class NzTestTypographyCopyComponent {
+  tooltips: [string | null, string | null] | null = ['click here', 'coped'];
+  icons: [string, string] | null = ['meh', 'smile'];
   onCopy(_text: string): void {
     // noop
   }
@@ -373,12 +508,15 @@ export class NzTestTypographyCopyComponent {
 
 @Component({
   template: `
-    <p nz-paragraph nzEditable (nzContentChange)="onChange($event)" [nzContent]="str"></p>
+    <p nz-paragraph nzEditable [nzEditIcon]="icon" [nzEditTooltip]="tooltip" (nzContentChange)="onChange($event)" [nzContent]="str"></p>
   `
 })
 export class NzTestTypographyEditComponent {
   @ViewChild(NzTypographyComponent, { static: false }) nzTypographyComponent!: NzTypographyComponent;
   str = 'This is an editable text.';
+  icon = 'edit';
+  tooltip?: string | null;
+
   onChange = (text: string): void => {
     this.str = text;
   };
