@@ -20,6 +20,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
+import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { NgStyleInterface, NumberInput } from 'ng-zorro-antd/core/types';
 import { InputNumber, isNotNil } from 'ng-zorro-antd/core/util';
 
@@ -165,7 +166,10 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   @Input() @WithConfig() nzStrokeColor?: NzProgressStrokeColorType = undefined;
   @Input() @WithConfig() nzSize: 'default' | 'small' = 'default';
   @Input() nzFormat?: NzProgressFormatter;
+
   @Input() @InputNumber() nzSuccessPercent?: number;
+  @Input() nzSuccessStrokeColor?: string;
+
   @Input() @InputNumber() nzPercent: number = 0;
   @Input() @WithConfig() @InputNumber() nzStrokeWidth?: number = undefined;
   @Input() @WithConfig() @InputNumber() nzGapDegree?: number = undefined;
@@ -241,41 +245,36 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
       nzStatus,
       nzPercent,
       nzSuccessPercent,
+      nzSuccessStrokeColor,
       nzStrokeWidth
     } = changes;
+
+    if (nzSuccessPercent) {
+      warnDeprecation('nzSuccessPercent would be removed in v11. Please use `nzSuccess` instead.');
+    }
 
     if (nzStatus) {
       this.cachedStatus = this.nzStatus || this.cachedStatus;
     }
 
-    if (nzPercent || nzSuccessPercent) {
-      const fillAll = parseInt(this.nzPercent.toString(), 10) >= 100;
-      if (fillAll) {
-        if ((isNotNil(this.nzSuccessPercent) && this.nzSuccessPercent! >= 100) || this.nzSuccessPercent === undefined) {
-          this.inferredStatus = 'success';
-        }
-      } else {
-        this.inferredStatus = this.cachedStatus;
-      }
+    if (nzPercent || nzSuccessPercent || nzSuccessStrokeColor) {
+      this.updateStatus();
     }
 
-    if (nzStatus || nzPercent || nzSuccessPercent || nzStrokeColor) {
+    if (nzStatus || nzPercent || nzSuccessPercent || nzSuccessStrokeColor || nzStrokeColor) {
       this.updateIcon();
     }
 
-    if (nzStrokeColor) {
-      this.setStrokeColor();
+    if (nzStrokeColor || nzSuccessStrokeColor) {
+      this.updateStrokeColor();
     }
 
     if (nzGapPosition || nzStrokeLinecap || nzGapDegree || nzType || nzPercent || nzStrokeColor || nzStrokeColor) {
-      this.getCirclePaths();
+      this.updateCirclePaths();
     }
 
     if (nzPercent || nzSteps || nzStrokeWidth) {
-      this.isSteps = this.nzSteps > 0;
-      if (this.isSteps) {
-        this.getSteps();
-      }
+      this.updateSteps();
     }
   }
 
@@ -285,8 +284,8 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.updateIcon();
-        this.setStrokeColor();
-        this.getCirclePaths();
+        this.updateStrokeColor();
+        this.updateCirclePaths();
       });
 
     this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
@@ -307,40 +306,56 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
     this.icon = ret ? ret + (this.isCircleStyle ? '-o' : '-circle-fill') : '';
   }
 
+  private updateStatus(): void {
+    const successPercent = this.nzSuccessPercent;
+    const fillAll = parseInt(this.nzPercent.toString(), 10) >= 100;
+
+    if (fillAll) {
+      if ((isNotNil(successPercent) && successPercent! >= 100) || typeof successPercent === 'undefined') {
+        this.inferredStatus = 'success';
+      }
+    } else {
+      this.inferredStatus = this.cachedStatus;
+    }
+  }
+
   /**
    * Calculate step render configs.
    */
-  private getSteps(): void {
-    const current = Math.floor(this.nzSteps * (this.nzPercent / 100));
-    const stepWidth = this.nzSize === 'small' ? 2 : 14;
+  private updateSteps(): void {
+    this.isSteps = this.nzSteps > 0;
+    if (this.isSteps) {
+      const current = Math.floor(this.nzSteps * (this.nzPercent / 100));
+      const stepWidth = this.nzSize === 'small' ? 2 : 14;
 
-    const steps = [];
+      const steps = [];
 
-    for (let i = 0; i < this.nzSteps; i++) {
-      let color;
-      if (i <= current - 1) {
-        color = this.nzStrokeColor;
+      for (let i = 0; i < this.nzSteps; i++) {
+        let color;
+        if (i <= current - 1) {
+          color = this.nzStrokeColor;
+        }
+        const stepStyle = {
+          backgroundColor: `${color}`,
+          width: `${stepWidth}px`,
+          height: `${this.strokeWidth}px`
+        };
+        steps.push(stepStyle);
       }
-      const stepStyle = {
-        backgroundColor: `${color}`,
-        width: `${stepWidth}px`,
-        height: `${this.strokeWidth}px`
-      };
-      steps.push(stepStyle);
-    }
 
-    this.steps = steps;
+      this.steps = steps;
+    }
   }
 
   /**
    * Calculate paths when the type is circle or dashboard.
    */
-  private getCirclePaths(): void {
+  private updateCirclePaths(): void {
     if (!this.isCircleStyle) {
       return;
     }
 
-    const values = isNotNil(this.nzSuccessPercent) ? [this.nzSuccessPercent!, this.nzPercent] : [this.nzPercent];
+    const values = isNotNil(this.nzSuccessPercent) ? [this.nzSuccessPercent, this.nzPercent] : [this.nzPercent];
 
     // Calculate shared styles.
     const radius = 50 - this.strokeWidth / 2;
@@ -383,6 +398,10 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
       transition: 'stroke-dashoffset .3s ease 0s, stroke-dasharray .3s ease 0s, stroke .3s'
     };
 
+    const getSuccessStrokeColor = (): string => {
+      return this.nzSuccessStrokeColor ?? statusColorMap.get('success')!;
+    };
+
     // Calculate styles for each path.
     this.progressCirclePath = values
       .map((value, index) => {
@@ -392,7 +411,7 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
           strokePathStyle: {
             stroke: !this.isGradient
               ? isSuccessPercent
-                ? statusColorMap.get('success')
+                ? getSuccessStrokeColor()
                 : (this.nzStrokeColor as string)
               : null,
             transition:
@@ -405,7 +424,7 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
       .reverse();
   }
 
-  private setStrokeColor(): void {
+  private updateStrokeColor(): void {
     const color = this.nzStrokeColor;
     const isGradient = (this.isGradient = !!color && typeof color !== 'string');
     if (isGradient && !this.isCircleStyle) {

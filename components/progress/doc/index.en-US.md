@@ -22,8 +22,8 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
 
 ### nz-progress
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
+| Property | Description | Type | Default | Global Config |
+| -------- | ----------- | ---- | ------- | ------------- |
 | `[nzType]` | to set the type | `'line' \| 'circle' \| 'dashboard'` | `'line'` |
 | `[nzFormat]` | template function of the content | `(percent: number) => string \| TemplateRef<{ $implicit: number }>` | `percent => percent + '%'` |
 | `[nzPercent]` | to set the completion percentage | `number` | `0` |
@@ -32,25 +32,26 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
 | `[nzStrokeLinecap]` | to set the style of the progress linecap | `'round' \| 'square'` | `'round'` | ✅ |
 | `[nzStrokeColor]` | color of progress bar, render linear-gradient when passing an object | `string \| { from: string; to: string: direction: string; [percent: string]: string }` | - | ✅ |
 | `[nzSuccessPercent]` | segmented success percent | `number` | 0 |
+| `[nzSuccessStrokeColor]` | color of the success segment | `string` | - |
 
 ### `nzType="line"`
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
+| Property | Description | Type | Default | Global Config |
+| -------- | ----------- | ---- | ------- | ------------- |
 | `[nzStrokeWidth]` | to set the width of the progress bar, unit: `px` | `number` | `8` |
 | `[nzSteps]` | the total step count | `number` | - |
 
 ### `nzType="circle"`
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
+| Property | Description | Type | Default | Global Config |
+| -------- | ----------- | ---- | ------- | ------------- |
 | `[nzWidth]` | to set the canvas width of the circular progress bar, unit: `px` | `number` | `132` |
 | `[nzStrokeWidth]` | to set the width of the circular progress bar, unit: percentage of the canvas width | `number` | `6` | ✅ |
 
 ### `nzType="dashboard"`
 
-| Property | Description | Type | Default |
-| -------- | ----------- | ---- | ------- |
+| Property | Description | Type | Default | Global Config |
+| -------- | ----------- | ---- | ------- | ------------- |
 | `[nzWidth]` | to set the canvas width of the dashboard progress bar, unit: `px` | `number` | `132` |
 | `[nzStrokeWidth]` | to set the width of the dashboard progress bar, unit: percentage of the canvas width | `number` | `6` | ✅ |
 | `[nzGapDegree]` | the gap degree of half circle, 0 ~ 360 | `number` | `0` | ✅ |
