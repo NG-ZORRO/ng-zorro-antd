@@ -35,7 +35,7 @@ import { slideMotion } from 'ng-zorro-antd/core/animation';
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { BooleanInput, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
-import { InputBoolean } from 'ng-zorro-antd/core/util';
+import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 import { BehaviorSubject, combineLatest, merge, Subject } from 'rxjs';
 import { startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { NzOptionGroupComponent } from './option-group.component';
@@ -395,7 +395,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
       case ENTER:
         e.preventDefault();
         if (this.nzOpen) {
-          if (this.activatedValue) {
+          if (isNotNil(this.activatedValue)) {
             this.onItemClick(this.activatedValue);
           }
         } else {
