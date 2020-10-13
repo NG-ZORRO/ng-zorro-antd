@@ -9,7 +9,7 @@ Ant Design allows you to customize some basic design aspects in order to meet th
 
 ## Less variables
 
-We are using [Less](http://lesscss.org/) as the development language for styling. A set of less variables are defined for each design aspect that can be customized to your needs.
+We are using [Less](https://lesscss.org/) as the development language for styling. A set of less variables are defined for each design aspect that can be customized to your needs.
 
 > You can use the theme define file of react version in ng-zorro-antd too.
 

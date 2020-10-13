@@ -37,9 +37,9 @@ title: Ant Design of Angular
 
 - 现代浏览器和 IE11 及以上（需要 [polyfills](https://angular.io/guide/browser-support)）
 - 支持服务端渲染
-- [Electron](http://electron.atom.io/)
+- [Electron](https://electron.atom.io/)
 
-| [<img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/62.2.25/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>IE / Edge | [<img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/62.2.25/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Firefox | [<img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/62.2.25/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Chrome | [<img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/62.2.25/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Safari | [<img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/62.2.25/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Opera | [<img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/62.2.25/electron/electron_48x48.png" alt="Electron" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br>Electron |
+| [<img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/62.2.25/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>IE / Edge | [<img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/62.2.25/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Firefox | [<img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/62.2.25/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Chrome | [<img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/62.2.25/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Safari | [<img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/62.2.25/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Opera | [<img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/62.2.25/electron/electron_48x48.png" alt="Electron" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Electron |
 | --- | --- | --- | --- | --- | --- |
 | IE11, Edge | last 2 versions | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
 
@@ -68,7 +68,7 @@ $ ng add ng-zorro-antd
 
 ## 链接
 
-- [首页](http://ng.ant.design)
+- [首页](https://ng.ant.design)
 - [Angular官方文档](https://angular.io/)
 - [开发脚手架](https://cli.angular.io/)
 - [TypeScript](https://www.typescriptlang.org/)
@@ -80,16 +80,18 @@ $ ng add ng-zorro-antd
 - [阿里巴巴](https://www.alibaba.com/)
 - [阿里云](https://www.aliyun.com/)
 - [思特沃克](https://www.thoughtworks.com/)
-- [招商银行](http://www.cmbchina.com/)
+- [招商银行](https://www.cmbchina.com/)
 - [共道科技](https://www.gongdao.com/)
-- [优速快递](http://www.uce.cn/)
+- [优速快递](https://www.uce.cn/)
 - [轻流](https://qingflow.com/)
-- [航天信息股份有限公司](http://www.aisino.com/)
-- [达观数据](http://datagrand.com/)
+- [航天信息股份有限公司](https://www.aisino.com/)
+- [达观数据](https://datagrand.com/)
 - [Ververica](https://www.ververica.com/)
 - [Apache Flink](https://flink.apache.org/)
 - [Apache Zeppelin](https://zeppelin.apache.org/)
-- [Process Automation Group](http://pag.company/)
+- [Apache Submarine](https://submarine.apache.org/)
+- [Apache Metron](https://metron.apache.org/)
+- [Process Automation Group](https://pag.company/)
 - [ScentBird](https://www.scentbird.com/)
 - [Southern Institute of Technology](https://www.sit.ac.nz/)
 - [Hapify (Dynamic boilerplates tool)](https://hub.hapify.io/)
@@ -98,9 +100,9 @@ $ ng add ng-zorro-antd
 
 ## 如何贡献
 
-在任何形式的参与前，请先阅读 [贡献者文档](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md)。如果你希望参与贡献，欢迎 [Pull Request](https://github.com/NG-ZORRO/ng-zorro-antd/pulls)，或给我们 [报告 Bug](http://ng.ant.design/issue-helper/#/en)。
+在任何形式的参与前，请先阅读 [贡献者文档](https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/CONTRIBUTING.md)。如果你希望参与贡献，欢迎 [Pull Request](https://github.com/NG-ZORRO/ng-zorro-antd/pulls)，或给我们 [报告 Bug](https://ng.ant.design/issue-helper/#/en)。
 
-> 强烈推荐阅读 [《提问的智慧》](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way)、[《如何向开源社区提问题》](https://github.com/seajs/seajs/issues/545) 和 [《如何有效地报告 Bug》](http://www.chiark.greenend.org.uk/%7Esgtatham/bugs-cn.html)、[《如何向开源项目提交无法解答的问题》](https://zhuanlan.zhihu.com/p/25795393)，更好的问题更容易获得帮助。
+> 强烈推荐阅读 [《提问的智慧》](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way)、[《如何向开源社区提问题》](https://github.com/seajs/seajs/issues/545) 和 [《如何有效地报告 Bug》](https://www.chiark.greenend.org.uk/%7Esgtatham/bugs-cn.html)、[《如何向开源项目提交无法解答的问题》](https://zhuanlan.zhihu.com/p/25795393)，更好的问题更容易获得帮助。
 
 ## 社区互助
 

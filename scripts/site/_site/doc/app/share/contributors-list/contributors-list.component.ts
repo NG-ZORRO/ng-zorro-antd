@@ -101,7 +101,7 @@ export class NzContributorsListComponent implements OnInit, OnDestroy {
                   id,
                   count: 1,
                   name: e.commit && e.commit.author.name,
-                  url: `http://github.com/${id}`,
+                  url: `https://github.com/${id}`,
                   avatar: e.author.avatar_url
                 });
               } else {
