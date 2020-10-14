@@ -93,6 +93,7 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
     '[class.ant-typography-secondary]': 'nzType === "secondary"',
     '[class.ant-typography-warning]': 'nzType === "warning"',
     '[class.ant-typography-danger]': 'nzType === "danger"',
+    '[class.ant-typography-success]': 'nzType === "success"',
     '[class.ant-typography-disabled]': 'nzDisabled',
     '[class.ant-typography-ellipsis]': 'nzEllipsis && !expanded',
     '[class.ant-typography-ellipsis-single-line]': 'canCssEllipsis && nzEllipsisRows === 1',
@@ -117,7 +118,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   @Input() @InputBoolean() nzEllipsis = false;
   @Input() nzContent?: string;
   @Input() @WithConfig() @InputNumber() nzEllipsisRows: number = 1;
-  @Input() nzType: 'secondary' | 'warning' | 'danger' | undefined;
+  @Input() nzType: 'secondary' | 'warning' | 'danger' | 'success' | undefined;
   @Input() nzCopyText: string | undefined;
   @Input() nzSuffix: string | undefined;
   @Output() readonly nzContentChange = new EventEmitter<string>();

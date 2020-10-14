@@ -32,7 +32,7 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 | `[nzDisabled]` | Disable content | `boolean` | `false` ||
 | `[nzExpandable]` | Expandable when ellipsis | `boolean` | `false` ||
 | `[nzEllipsisRows]` | Line number | `number` | `1` | ✅ |
-| `[nzType]` | Content type | `'secondary'｜'warning'｜'danger'` | - ||
+| `[nzType]` | Content type | `'secondary' \| 'warning' \| 'danger' \| 'success'` | - ||
 | `(nzContentChange)` | Trigger when user edit the content | `EventEmitter<string>` | - ||
 | `(nzExpandChange)` | Trigger when user expanded the content | `EventEmitter<void>` | - ||
 | `(nzOnEllipsis)` | Trigger when ellipsis status changed | `EventEmitter<boolean>` | - ||

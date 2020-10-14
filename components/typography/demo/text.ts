@@ -3,30 +3,34 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-typography-text',
   template: `
-    <span nz-typography>Ant Design</span>
-    <br />
-    <span nz-typography nzType="secondary">Ant Design</span>
-    <br />
-    <span nz-typography nzType="warning">Ant Design</span>
-    <br />
-    <span nz-typography nzType="danger">Ant Design</span>
-    <br />
-    <span nz-typography nzDisabled>Ant Design</span>
-    <br />
-    <span nz-typography><mark>Ant Design</mark></span>
-    <br />
-    <span nz-typography><code>Ant Design</code></span>
-    <br />
-    <span nz-typography><kbd>Ant Design</kbd></span>
-    <br />
-    <span nz-typography><u>Ant Design</u></span>
-    <br />
-    <span nz-typography><del>Ant Design</del></span>
-    <br />
-    <span nz-typography><strong>Ant Design</strong></span>
-    <br />
-    <span nz-typography><a href="https://ng.ant.design/" target="_blank">Ant Design</a></span>
+    <span nz-typography>Ant Design (default)</span>
+    <span nz-typography nzType="secondary">Ant Design (secondary)</span>
+    <span nz-typography nzType="success">Ant Design (success)</span>
+    <span nz-typography nzType="warning">Ant Design (warning)</span>
+    <span nz-typography nzType="danger">Ant Design (danger)</span>
+    <span nz-typography nzDisabled>Ant Design (disabled)</span>
+    <span nz-typography><mark>Ant Design (mark)</mark></span>
+    <span nz-typography><code>Ant Design (code)</code></span>
+    <span nz-typography><kbd>Ant Design (keyboard)</kbd></span>
+    <span nz-typography><u>Ant Design (underline)</u></span>
+    <span nz-typography><del>Ant Design (delete)</del></span>
+    <span nz-typography><strong>Ant Design (strong)</strong></span>
+    <span nz-typography>
+      <a href="https://ng.ant.design/" target="_blank">
+        Ant Design
+        <Link />
+      </a>
+    </span>
   `,
-  styles: []
+  styles: [
+    `
+      span[nz-typography] {
+        display: block;
+      }
+      span[nz-typography] + span[nz-typography] {
+        margin-top: 8px;
+      }
+    `
+  ]
 })
 export class NzDemoTypographyTextComponent {}
