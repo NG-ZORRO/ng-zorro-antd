@@ -1,6 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { CommonModule } from '@angular/common';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 
-export const moduleList = [ CommonModule, NzAvatarModule, NzBadgeModule, NzButtonModule ];
+export const moduleList = [ CommonModule, NzAvatarModule, NzBadgeModule, NzButtonModule, NzInputNumberModule ];

@@ -21,6 +21,7 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 | `[nzIcon]` | 设置头像的图标类型，参考 `Icon` | `string` | - |
 | `[nzShape]` | 指定头像的形状 | `'circle' \| 'square'` | `'circle'` | ✅ |
 | `[nzSize]` | 设置头像的大小 | `'large' \| 'small' \| 'default' \| number` | `'default'` | ✅ |
+| `[nzGap]` | 字符类型距离左右两侧边界单位像素 | `number` | `4` | ✅ |
 | `[nzSrc]` | 图片类头像的资源地址 | `string` | - |
 | `[nzSrcSet]` | 设置图片类头像响应式资源地址 | string | - |
 | `[nzAlt]` | 图像无法显示时的替代文本 | string | - |
