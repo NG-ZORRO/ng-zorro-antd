@@ -3,12 +3,12 @@ order: 8
 title: Animations Switch
 ---
 
-NG-ZORRO allows developers to turn off animations. You can set animations by adding corresponding directive or
-configurations, or use global configuration to  turn off all animations with.
+NG-ZORRO allows developers to turn off the animations. You can set animations' switch by adding corresponding directives or
+configurations, or use the global configuration to turn off all animations associated with it.
 
-### In Global
+### Turn Off Globally
 
-Replace `BrowserAnimationsModule` with 'NoopAnimationsModule` in the your module.
+Replace `BrowserAnimationsModule` with `NoopAnimationsModule` in the module.
 
 ```ts
 @NgModule({
@@ -19,10 +19,10 @@ Replace `BrowserAnimationsModule` with 'NoopAnimationsModule` in the your module
 })
 ```
 
-### In Templates
+### Turn Off In Templates
 
 
-Import `NzNoAnimationModule` module.
+Import `NzNoAnimationModule`.
 
 ```ts
 import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
@@ -35,7 +35,7 @@ import { NzNoAnimationModule } from 'ng-zorro-antd/core/no-animation';
 })
 ```
 
-Add the `nzNoAnimation` directive to the component that wants to close the animation.
+Add the `nzNoAnimation` directive to the component.
 
 ```HTML
 <nz-modal nzNoAnimation></nz-modal>
@@ -43,9 +43,9 @@ Add the `nzNoAnimation` directive to the component that wants to close the anima
 <nz-form-explain [nzNoAnimation]="true"></nz-form-explain>
 ```
 
-### In Services
+### Turn Off In Services
 
-Add the following configuration to the component that wants to close the animation.
+Add the following configuration while invoking components' services.
 
 #### Modal, Drawer
 
@@ -65,10 +65,10 @@ Add the following configuration to the component that wants to close the animati
 }
 ```
 
-### Turn-Off the Wave Effect
+### Turn Off The Wave Effect
 
-Some component use dynamic style to support wave effect, You can set the provider `NZ_WAVE_GLOBAL_CONFIG` Or use
- `NoopAnimationsModule` to turn off the wave effect.
+Some components use dynamic styles to support wave effects, so their styles are unable to be override directly. Instead, you can set the provider `NZ_WAVE_GLOBAL_CONFIG` or use
+ `NoopAnimationsModule` to turn off the wave effects.
 
 ```ts
 @NgModule({

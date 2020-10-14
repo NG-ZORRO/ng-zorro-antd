@@ -4,13 +4,13 @@ title: Server-side Rendering
 ---
 
 <blockquote style="border-color: #faad14;">
-<p><strong>This guide assumes that you already know about <a href="https://angular.io/guide/universal">Server-side Rendering(SSR)</a>.</strong></p>
+<p><strong>This guide assumes that you have already known about <a href="https://angular.io/guide/universal">Server-side Rendering(SSR)</a>.</strong></p>
 <p>You can also start your project with <a href="https://angular.cn/guide/universal" target="_blank">NG-ZORRO/ng-zorro-universal-starter</a>.</p>
 </blockquote>
 
 This guide is based on the popular [Express](https://expressjs.com/) framework.
 
-## Installation dependence
+## Install dependency
 
 ```bash
 $ ng add @nguniversal/express-engine --clientProject <project-name>
