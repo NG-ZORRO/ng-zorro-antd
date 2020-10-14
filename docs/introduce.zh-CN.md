@@ -115,4 +115,4 @@ $ ng add ng-zorro-antd
 3. [Discussions · NG-ZORRO/ng-zorro-antd](https://github.com/NG-ZORRO/ng-zorro-antd/discussions)
 4. 加入钉钉 NG-ZORRO 自助服务群（中文）
 
-<img src="https://img.alicdn.com/tfs/TB1oRkkzy_1gK0jSZFqXXcpaXXa-750-990.jpg" width="300" loading="lazy" alt="ding talk qr-code">
+<img src="https://img.alicdn.com/tfs/TB1oRkkzy_1gK0jSZFqXXcpaXXa-750-990.jpg" width="300" height="396" loading="lazy" alt="ding talk qr-code">
