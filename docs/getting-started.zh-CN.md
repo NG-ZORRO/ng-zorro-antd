@@ -66,9 +66,9 @@ $ ng serve --port 0 --open
 $ ng build --prod
 ```
 
-入口文件会构建到 `dist` 目录中，你可以自由部署到不同环境中进行引用。
+文件会被打包到 `dist` 目录中。
 
-## 自行构建
+## 手动安装
 
 如果想自己维护工作流，理论上你可以利用 Angular 生态圈中的 各种脚手架进行开发，如果遇到问题可参考我们所使用的 [配置](https://github.com/NG-ZORRO/ng-zorro-antd/tree/master/integration) 进行定制。
 

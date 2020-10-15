@@ -2,17 +2,18 @@
 order: 2
 title: Schematics
 ---
-`ng-zorro-antd` support [schematics](https://blog.angular.io/schematics-an-introduction-dc1dfbc2a2b2), you can init configuration and generate component with schematics now.
+Using a CLI helps initialize projects, generate template codes and reduce development time.
+> The`ng-zorro-antd` scaffolding is essentially based on [schematics](https://blog.angular.io/schematics-an-introduction-dc1dfbc2a2b2).
 
-## Init Project
+## Initialize A Project
 
-Init project with `ng-zorro-antd`.
+Initialize a project with `ng-zorro-antd`.
 
-Run `ng add ng-zorro-antd` in your project directory, and follow the options to configure.
+Run the command `ng add ng-zorro-antd` under your project directory, and follow the options to configure settings including whether you want to import i18n files and stylesheets, and load initial modules.
 
 <img alt="NG-ZORRO CLI" style="display: block; border-radius: 4px; box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.2);" src="https://img.alicdn.com/tfs/TB19fFHdkxz61VjSZFtXXaDSVXa-680-243.svg">
 
-You can choose a preset template to create your project, then develop on this basis code.
+In the meantime, you can choose an existing project template while creating your project, and then develop the project on the basis of it.
 
 <img alt aria-hidden="true" style="display: block; border-radius: 4px; box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.2); max-width: 680px;" src="https://img.alicdn.com/tfs/TB1IC0TeEWF3KVjSZPhXXXclXXa-2000-1078.png">
 
@@ -22,31 +23,9 @@ You can choose a preset template to create your project, then develop on this ba
 ng add ng-zorro-antd [options]
 ```
 
-### Options
-
-***--theme***
-
-`ng-zorro-antd` will create `theme.less` in `src` folder.
-
-You can get more information at the [Customize Theme](/docs/customize-theme/en) part.
-
-***--locale***
-
-If you add `--locale=[language]`，`ng-zorro-antd` import the language package and the [i18n](https://angular.io/guide/i18n) part of angular in the `app.module.ts`.
-
-The default i18n config of `ng-zorro-antd` is `zh_CN` now，you can get more information at the [Internationalization](/docs/i18n/en) part.
-
-***--animations***
-
-Enable the BrowserAnimationsModule your app module
-
-***--gestures***
-
-Install and import hammerjs for gesture support in your project
-
 ## Component Generation
 
-You can get component generation code in our doc after expand the code panel below every example.
+There are template source codes under every component API show case, you may obtain these codes by expanding `Show Code`.
 
 ### Command
 
@@ -54,7 +33,7 @@ You can get component generation code in our doc after expand the code panel bel
 ng g ng-zorro-antd:[schematic] <name> [options]
 ```
 
-For example, you can generate an login form with the follow command.
+For example, you can generate a login form with the follow command.
 
 ```bash
 ng g ng-zorro-antd:form-normal-login login
