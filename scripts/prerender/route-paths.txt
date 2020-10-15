@@ -119,8 +119,6 @@ components/overview/en
 /components/typography/zh
 /components/upload/en
 /components/upload/zh
-/doc/introduce/en
-/doc/introduce/zh
 /docs/animations/en
 /docs/animations/zh
 /docs/changelog/en
@@ -129,6 +127,8 @@ components/overview/en
 /docs/contributing/zh
 /docs/customize-theme/en
 /docs/customize-theme/zh
+/docs/global-config/en
+/docs/global-config/zh
 /docs/experimental/zh
 /docs/experimental/en
 /docs/faq/en
@@ -151,3 +151,5 @@ components/overview/en
 /experimental/resizable/en
 /experimental/code-editor/zh
 /experimental/code-editor/en
+/docs/migration-v10/en
+/docs/migration-v10/zh

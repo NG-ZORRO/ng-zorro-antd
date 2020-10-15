@@ -34,7 +34,7 @@ module.exports = function getMeta(file) {
   }).reduce((a, b) => [...a, ...b], []);
   let description = '';
   for (const content of contents) {
-    if (description.length >= 200) {
+    if (description.length >= 160) {
       break;
     }
     description = description + content.value;

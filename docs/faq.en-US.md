@@ -3,7 +3,7 @@ order: 10
 title: FAQ
 ---
 
-<blockquote style="border-color: #faad14;"><p>For more questions please search <a href="https://github.com/NG-ZORRO/ng-zorro-antd/issues?q=is%3Aopen+is%3Aissue+label%3A%22%3Aquestion%3A+FAQ%22" target="_blank">issues with FAQ tag</a>.</p></blockquote>
+<blockquote style="border-color: #faad14;"><p>For more questions please search <a href="https://github.com/NG-ZORRO/ng-zorro-antd/issues?q=is%3Aopen+is%3Aissue+label%3A%22%3Aquestion%3A+FAQ%22" target="_blank" rel="noopener">issues with FAQ tag</a>.</p></blockquote>
 
 ### The bundle size of Angular and `ng-zorro-antd`
 

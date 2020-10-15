@@ -98,6 +98,10 @@ renderer.link = function (href, title, text) {
         name: 'target',
         value: '_blank'
       });
+      a.childNodes[0].attrs.push({
+        name: 'rel',
+        value: 'noopener'
+      });
     }
     return serialize(a);
   }

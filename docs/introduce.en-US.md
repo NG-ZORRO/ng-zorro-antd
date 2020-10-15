@@ -3,25 +3,13 @@ order: 0
 title: Ant Design of Angular
 ---
 
-An enterprise-class Angular UI Component Library based on Ant Design, all components are open source and free to use under MIT license.
+An enterprise-class Angular UI component library based on Ant Design, all components are open source and free to use under MIT license.
 
 <div class="pic-plus">
   <img alt="Ant Design" width="150" height="150" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg">
   <span>+</span>
   <img alt="Angular" width="140" height="150" src="https://img.alicdn.com/tfs/TB1Z0PywTtYBeNjy1XdXXXXyVXa-186-200.svg">
 </div>
-
-<style>
-.pic-plus > * {
-  display: inline-block !important;
-  vertical-align: middle;
-}
-.pic-plus span {
-  font-size: 30px;
-  color: #aaa;
-  margin: 0 20px;
-}
-</style>
 
 ## Features
 

@@ -11,19 +11,6 @@ title: Ant Design of Angular
   <img alt="Angular" width="140" height="150" src="https://img.alicdn.com/tfs/TB1Z0PywTtYBeNjy1XdXXXXyVXa-186-200.svg">
 </div>
 
-<style>
-.pic-plus > * {
-  display: inline-block !important;
-  vertical-align: middle;
-}
-.pic-plus span {
-  font-size: 30px;
-  color: #aaa;
-  margin: 0 20px;
-}
-</style>
-
-
 ## 特性
 
 - 提炼自企业级中后台产品的交互语言和视觉风格。
