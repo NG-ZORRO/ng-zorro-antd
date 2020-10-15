@@ -108,8 +108,8 @@ export default {
   },
   Transfer: {
     searchPlaceholder: 'Введіть текст для пошуку',
-    itemUnit: 'item',
-    itemsUnit: 'items'
+    itemUnit: 'елем.',
+    itemsUnit: 'елем.'
   },
   Upload: {
     uploading: 'Завантаження ...',

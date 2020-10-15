@@ -28,7 +28,7 @@ import { NzNoAnimationDirective } from 'ng-zorro-antd/core/no-animation';
 import { CandyDate, cloneDate, CompatibleValue } from 'ng-zorro-antd/core/time';
 import { BooleanInput, FunctionProp, NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, toBoolean, valueFunctionProp } from 'ng-zorro-antd/core/util';
-import { DateHelperService, NzDatePickerI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
+import { DateHelperService, NzDatePickerI18nInterface, NzDatePickerLangI18nInterface, NzI18nService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DatePickerService } from './date-picker.service';
@@ -337,23 +337,27 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   private setDefaultPlaceHolder(): void {
     if (!this.isCustomPlaceHolder && this.nzLocale) {
       const defaultPlaceholder: { [key in NzDateMode]?: string } = {
-        year: this.nzLocale.lang.yearPlaceholder,
-        month: this.nzLocale.lang.monthPlaceholder,
-        week: this.nzLocale.lang.weekPlaceholder,
-        date: this.nzLocale.lang.placeholder
+        year: this.getPropertyOfLocale('yearPlaceholder'),
+        month: this.getPropertyOfLocale('monthPlaceholder'),
+        week: this.getPropertyOfLocale('weekPlaceholder'),
+        date: this.getPropertyOfLocale('placeholder')
       };
 
       const defaultRangePlaceholder: { [key in NzDateMode]?: string[] } = {
-        year: this.nzLocale.lang.rangeYearPlaceholder,
-        month: this.nzLocale.lang.rangeMonthPlaceholder,
-        week: this.nzLocale.lang.rangeWeekPlaceholder,
-        date: this.nzLocale.lang.rangePlaceholder
+        year: this.getPropertyOfLocale('rangeYearPlaceholder'),
+        month: this.getPropertyOfLocale('rangeMonthPlaceholder'),
+        week: this.getPropertyOfLocale('rangeWeekPlaceholder'),
+        date: this.getPropertyOfLocale('rangePlaceholder')
       };
 
       this.nzPlaceHolder = this.isRange
         ? defaultRangePlaceholder[this.nzMode as NzDateMode]!
         : defaultPlaceholder[this.nzMode as NzDateMode]!;
     }
+  }
+
+  private getPropertyOfLocale<T extends keyof NzDatePickerLangI18nInterface>(type: T): NzDatePickerLangI18nInterface[T] {
+    return this.nzLocale.lang[type] || this.i18n.getLocaleData(`DatePicker.lang.${type}`);
   }
 
   // Safe way of setting value with default

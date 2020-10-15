@@ -114,6 +114,7 @@ export default {
     filterTitle: '筛选',
     filterConfirm: '确定',
     filterReset: '重置',
+    filterEmptyText: '无筛选项',
     selectAll: '全选当页',
     selectInvert: '反选当页',
     selectionAll: '全选所有',
@@ -136,7 +137,13 @@ export default {
   Transfer: {
     searchPlaceholder: '请输入搜索内容',
     itemUnit: '项',
-    itemsUnit: '项'
+    itemsUnit: '项',
+    remove: '删除',
+    selectCurrent: '全选当页',
+    removeCurrent: '删除当页',
+    selectAll: '全选所有',
+    removeAll: '删除全部',
+    selectInvert: '反选当页'
   },
   Upload: {
     uploading: '文件上传中',
@@ -159,54 +166,5 @@ export default {
   },
   PageHeader: {
     back: '返回'
-  },
-  Form: {
-    defaultValidateMessages: {
-      default: '字段验证错误${label}',
-      required: '请输入${label}',
-      enum: '${label}必须是其中一个[${enum}]',
-      whitespace: '${label}不能为空字符',
-      date: {
-        format: '${label}日期格式无效',
-        parse: '${label}不能转换为日期',
-        invalid: '${label}是一个无效日期'
-      },
-      types: {
-        string: '${label}不是一个有效的${type}',
-        method: '${label}不是一个有效的${type}',
-        array: '${label}不是一个有效的${type}',
-        object: '${label}不是一个有效的${type}',
-        number: '${label}不是一个有效的${type}',
-        date: '${label}不是一个有效的${type}',
-        boolean: '${label}不是一个有效的${type}',
-        integer: '${label}不是一个有效的${type}',
-        float: '${label}不是一个有效的${type}',
-        regexp: '${label}不是一个有效的${type}',
-        email: '${label}不是一个有效的${type}',
-        url: '${label}不是一个有效的${type}',
-        hex: '${label}不是一个有效的${type}'
-      },
-      string: {
-        len: '${label}须为${len}个字符',
-        min: '${label}最少${min}个字符',
-        max: '${label}最多${max}个字符',
-        range: '${label}须在${min}-${max}字符之间'
-      },
-      number: {
-        len: '${label}必须等于${len}',
-        min: '${label}最小值为${min}',
-        max: '${label}最大值为${max}',
-        range: '${label}须在${min}-${max}之间'
-      },
-      array: {
-        len: '须为${len}个${label}',
-        min: '最少${min}个${label}',
-        max: '最多${max}个${label}',
-        range: '${label}数量须在${min}-${max}之间'
-      },
-      pattern: {
-        mismatch: '${label}与模式不匹配${pattern}'
-      }
-    }
   }
 };

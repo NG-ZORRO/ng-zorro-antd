@@ -4,7 +4,7 @@
  */
 
 export default {
-  locale: 'ku-iq',
+  locale: 'ku',
   Pagination: {
     items_per_page: '/ rûpel',
     jump_to: 'Biçe',
