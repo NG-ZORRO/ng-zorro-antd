@@ -73,7 +73,7 @@ export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
   private destroy$ = new Subject<void>();
   private spinning$ = new BehaviorSubject(this.nzSpinning);
   private delay$ = new ReplaySubject<number>(1);
-  isLoading = true;
+  isLoading = false;
 
   constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {}
 
