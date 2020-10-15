@@ -19,8 +19,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { NzInputGroupWhitSuffixOrPrefixDirective } from 'ng-zorro-antd/input';
 
-import { merge, Subscription } from 'rxjs';
-import { delay, filter, tap } from 'rxjs/operators';
+import { Subject, Subscription } from 'rxjs';
+import { delay, filter, takeUntil, tap } from 'rxjs/operators';
 
 import { NzAutocompleteOptionComponent } from './autocomplete-option.component';
 import { NzAutocompleteComponent } from './autocomplete.component';
@@ -67,6 +67,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     }
   }
 
+  private destroy$ = new Subject<void>();
   private overlayRef: OverlayRef | null = null;
   private portal: TemplatePortal<{}> | null = null;
   private positionStrategy!: FlexibleConnectedPositionStrategy;
@@ -214,10 +215,11 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   }
 
   private subscribeOverlayOutsideClick(): Subscription {
-    return merge(
-      this.overlayRef!.outsidePointerEvents().pipe(filter((e: MouseEvent) => !this.elementRef.nativeElement.contains(e.target))),
-      this.overlayRef!.detachments()
-    ).subscribe(() => this.closePanel());
+    return this.overlayRef!.outsidePointerEvents()
+      .pipe(filter((e: MouseEvent) => !this.elementRef.nativeElement.contains(e.target)))
+      .subscribe(() => {
+        this.closePanel();
+      });
   }
 
   private attachOverlay(): void {
@@ -238,6 +240,12 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
       this.selectionChangeSubscription = this.subscribeSelectionChange();
       this.optionsChangeSubscription = this.subscribeOptionsChange();
       this.overlayOutsideClickSubscription = this.subscribeOverlayOutsideClick();
+      this.overlayRef
+        .detachments()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(() => {
+          this.closePanel();
+        });
     }
     this.nzAutocomplete.isOpen = this.panelOpen = true;
   }

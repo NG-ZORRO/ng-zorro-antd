@@ -349,7 +349,6 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
 
   origin!: CdkOverlayOrigin;
   preferredPlacement = 'top';
-
   _classMap: NgClassInterface = {};
   _prefix = 'ant-tooltip-placement';
   _positions: ConnectionPositionPair[] = [...DEFAULT_TOOLTIP_POSITIONS];
