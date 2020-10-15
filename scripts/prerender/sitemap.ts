@@ -1,5 +1,4 @@
-import { readFileSync, writeFileSync } from 'fs-extra';
-import * as os from 'os';
+import { writeFileSync } from 'fs';
 import { resolve } from 'path';
 import * as sitemap from 'sitemap';
 import { buildConfig } from '../build-config';
@@ -14,10 +13,8 @@ const priorityMap: any = {
   '/docs/changelog/en': 0.7
 };
 
-const ROUTES = readFileSync(resolve(__dirname, 'route-paths.txt')).toString().split(os.EOL) as string[];
-
 function generateUrls(lang: 'zh' | 'en'): sitemap.ISitemapItemOptionsLoose[] {
-  const urls = Array.from(new Set(ROUTES.filter(r => r !== '/').map(r => r.replace(/\/(zh|en)$/, ''))));
+  const urls = Array.from(new Set(buildConfig.routers.filter(r => r !== '/').map(r => r.replace(/\/(zh|en)$/, ''))));
   return urls.map((r: string) => {
     const url = `${r}/${lang}`;
     return {

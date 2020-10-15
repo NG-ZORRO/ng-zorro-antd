@@ -17,6 +17,7 @@ schematics/demo
 schematics/utils/create-custom-theme.ts
 schematics/utils/version-names.ts
 ng-zorro.github.io/
+.lighthouseci
 
 # dependencies
 node_modules

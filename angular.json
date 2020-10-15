@@ -135,7 +135,7 @@
           "options": {
             "browserTarget": "ng-zorro-antd-doc:build:production",
             "serverTarget": "ng-zorro-antd-doc:server:production",
-            "routesFile": "scripts/prerender/route-paths.txt"
+            "routesFile": "route-paths.txt"
           },
           "configurations": {
             "production": {}
