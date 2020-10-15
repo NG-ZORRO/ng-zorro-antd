@@ -154,7 +154,7 @@ describe('auto-complete', () => {
 
       expect(fixture.componentInstance.trigger.panelOpen).toBe(true);
 
-      dispatchFakeEvent(document, 'click');
+      dispatchFakeEvent(document.body, 'click');
 
       expect(fixture.componentInstance.trigger.panelOpen).toBe(false);
     }));

@@ -49,10 +49,6 @@ describe('nz-tooltip', () => {
     fixture.detectChanges();
   }
 
-  function getTooltipBackdropElement(): HTMLElement {
-    return overlayContainerElement.querySelector('.cdk-overlay-backdrop') as HTMLElement;
-  }
-
   beforeEach(() => {
     fixture = testBed.fixture;
     component = testBed.component;
@@ -129,7 +125,7 @@ describe('nz-tooltip', () => {
       waitingForTooltipToggling();
       expect(overlayContainerElement.textContent).toContain(title);
 
-      dispatchMouseEvent(getTooltipBackdropElement(), 'click');
+      dispatchMouseEvent(document.body, 'click');
       waitingForTooltipToggling();
       expect(overlayContainerElement.textContent).not.toContain(title);
     }));
@@ -251,7 +247,7 @@ describe('nz-tooltip', () => {
       waitingForTooltipToggling();
       expect(overlayContainerElement.textContent).toContain(featureKey);
 
-      dispatchMouseEvent(getTooltipBackdropElement(), 'click');
+      dispatchMouseEvent(document.body, 'click');
       waitingForTooltipToggling();
       expect(overlayContainerElement.textContent).not.toContain(featureKey);
 

@@ -117,6 +117,10 @@ export class NzSelectTopControlComponent implements OnChanges {
   inputValue: string | null = null;
 
   onHostClick(): void {
+    if (this.open && this.showSearch) {
+      return;
+    }
+
     if (!this.disabled) {
       this.openChange.next(!this.open);
     }

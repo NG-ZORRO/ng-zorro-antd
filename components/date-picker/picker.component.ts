@@ -130,13 +130,12 @@ import { PREFIX_CLASS } from './util';
       nzConnectedOverlay
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayOpen]="realOpenState"
-      [cdkConnectedOverlayHasBackdrop]="!isOpenHandledByUser()"
       [cdkConnectedOverlayPositions]="overlayPositions"
       [cdkConnectedOverlayTransformOriginOn]="'.ant-picker-wrapper'"
       (positionChange)="onPositionChange($event)"
-      (backdropClick)="onClickBackdrop()"
       (detach)="onOverlayDetach()"
       (overlayKeydown)="onOverlayKeydown($event)"
+      (overlayOutsideClick)="onClickOutside($event)"
     >
       <div
         class="ant-picker-wrapper"
@@ -357,12 +356,17 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
 
   onClickInputBox(event: MouseEvent): void {
     event.stopPropagation();
+    this.focus();
     if (!this.isOpenHandledByUser()) {
       this.showOverlay();
     }
   }
 
-  onClickBackdrop(): void {
+  onClickOutside(event: MouseEvent): void {
+    if (this.elementRef.nativeElement.contains(event.target)) {
+      return;
+    }
+
     if (this.panel?.isAllowed(this.datePickerService.value!, true)) {
       if (Array.isArray(this.datePickerService.value) && wrongSortOrder(this.datePickerService.value)) {
         const index = this.datePickerService.getActiveIndex(this.datePickerService.activeInput);

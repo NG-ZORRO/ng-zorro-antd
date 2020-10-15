@@ -21,6 +21,7 @@ import {
   SimpleChanges,
   ViewContainerRef
 } from '@angular/core';
+import { warnDeprecation } from 'ng-zorro-antd/core/logger';
 import { POSITION_MAP } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput, IndexableObject } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
@@ -57,6 +58,10 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
   @Input() nzDropdownMenu: NzDropdownMenuComponent | null = null;
   @Input() nzTrigger: 'click' | 'hover' = 'hover';
   @Input() nzMatchWidthElement: ElementRef | null = null;
+  /**
+   * @deprecated Not supported.
+   * @breaking-change 11.0.0
+   */
   @Input() @InputBoolean() nzBackdrop = true;
   @Input() @InputBoolean() nzClickHide = true;
   @Input() @InputBoolean() nzDisabled = false;
@@ -154,7 +159,6 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
               /** update overlay config **/
               const overlayConfig = this.overlayRef.getConfig();
               overlayConfig.minWidth = triggerWidth;
-              overlayConfig.hasBackdrop = this.nzTrigger === 'click';
             }
             /** open dropdown with animation **/
             this.positionStrategy.withPositions([POSITION_MAP[this.nzPlacement], ...listOfPositions]);
@@ -183,7 +187,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzVisible, nzDisabled, nzOverlayClassName, nzOverlayStyle, nzTrigger } = changes;
+    const { nzVisible, nzDisabled, nzOverlayClassName, nzOverlayStyle, nzTrigger, nzBackdrop } = changes;
     if (nzTrigger) {
       this.nzTrigger$.next(this.nzTrigger);
     }
@@ -204,6 +208,9 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
     }
     if (nzOverlayStyle) {
       this.setDropdownMenuValue('nzOverlayStyle', this.nzOverlayStyle);
+    }
+    if (nzBackdrop) {
+      warnDeprecation('`nzBackdrop` in dropdown component will be removed in 11.0.0.');
     }
   }
 }

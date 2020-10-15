@@ -103,7 +103,7 @@ describe('tree-select component', () => {
       treeSelect.nativeElement.click();
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(true);
-      dispatchFakeEvent(overlayContainerElement.querySelector('.cdk-overlay-backdrop')!, 'click');
+      dispatchFakeEvent(document.body, 'click');
       fixture.detectChanges();
       expect(treeSelectComponent.nzOpen).toBe(false);
       fixture.detectChanges();

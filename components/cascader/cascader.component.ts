@@ -111,13 +111,12 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
-      cdkConnectedOverlayHasBackdrop
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayPositions]="positions"
       [cdkConnectedOverlayTransformOriginOn]="'.ant-cascader-menus'"
-      (backdropClick)="closeMenu()"
-      (detach)="closeMenu()"
       [cdkConnectedOverlayOpen]="menuVisible"
+      (overlayOutsideClick)="onClickOutside($event)"
+      (detach)="closeMenu()"
     >
       <div
         #menu
@@ -310,9 +309,9 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
 
   constructor(
     public cascaderService: NzCascaderService,
-    private i18nService: NzI18nService,
     public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
+    private i18nService: NzI18nService,
     elementRef: ElementRef,
     renderer: Renderer2,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
@@ -585,6 +584,12 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
     this.inSearchingMode
       ? this.cascaderService.setSearchOptionSelected(option as NzCascaderSearchOption)
       : this.cascaderService.setOptionActivated(option, columnIndex, true);
+  }
+
+  onClickOutside(event: MouseEvent): void {
+    if (!this.el.contains(event.target as Node)) {
+      this.closeMenu();
+    }
   }
 
   private isActionTrigger(action: 'click' | 'hover'): boolean {
