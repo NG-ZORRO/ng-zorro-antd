@@ -3,7 +3,7 @@ order: 0
 title: Ant Design of Angular
 ---
 
-Following the Ant Design specification, we developed an Angular UI library `ng-zorro-antd` that contains a set of high-quality components and demos for building rich, interactive user interfaces.
+An enterprise-class Angular UI Component Library based on Ant Design, all components are open source and free to use under MIT license.
 
 <div class="pic-plus">
   <img alt="Ant Design" width="150" height="150" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg">
@@ -25,8 +25,8 @@ Following the Ant Design specification, we developed an Angular UI library `ng-z
 
 ## Features
 
-- An enterprise-class UI design language for web applications.
-- A set of high-quality Angular components out of the box.
+- An enterprise-class UI design language for Angular applications.
+- 60+ high-quality Angular components out of the box.
 - Written in TypeScript with complete defined types.
 - Support OnPush mode, high performance.
 - Powerful theme customization in every detail.
