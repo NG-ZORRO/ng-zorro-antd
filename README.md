@@ -10,7 +10,7 @@ NG-ZORRO
 
 <div align="center">
 
-An enterprise-class Angular UI Component Library based on Ant Design.
+An enterprise-class Angular UI component library based on Ant Design.
 
 [![Azure branch](https://img.shields.io/azure-devops/build/ng-zorro/0d271b73-3774-4dbc-a081-088df0b28bf8/2/master?style=flat-square)](https://dev.azure.com/ng-zorro/NG-ZORRO/_build)
 [![CodeFactor](https://www.codefactor.io/repository/github/ng-zorro/ng-zorro-antd/badge?style=flat-square)](https://www.codefactor.io/repository/github/ng-zorro/ng-zorro-antd)

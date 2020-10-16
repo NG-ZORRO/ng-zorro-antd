@@ -27,7 +27,6 @@ async function minifyHtml(content: string): Promise<string> {
     processScripts: ['text/html'],
     ignoreCustomComments: [],
     removeComments: true,
-    removeOptionalTags: true,
     removeRedundantAttributes: true,
     removeScriptTypeAttributes: true,
     removeStyleLinkTypeAttributes: true,
