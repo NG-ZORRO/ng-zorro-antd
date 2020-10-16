@@ -77,6 +77,10 @@ describe('menu', () => {
         fixture.detectChanges();
         expect(items[0].nativeElement.classList.contains('ant-menu-item-selected')).toBe(false);
       });
+      it('should menu danger work', () => {
+        fixture.detectChanges();
+        expect(items[3].nativeElement.classList.contains('ant-menu-item-danger')).toBe(true);
+      });
     });
     describe('inline', () => {
       let fixture: ComponentFixture<NzTestBasicMenuInlineComponent>;
@@ -625,6 +629,7 @@ export class NzDemoMenuNgForComponent {
       <li nz-menu-item>
         <a href="https://ng.ant.design" target="_blank" rel="noopener noreferrer">Navigation Four - Link</a>
       </li>
+      <li nz-menu-item nzDanger>Navigation Five</li>
     </ul>
   `
 })
