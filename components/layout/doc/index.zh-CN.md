@@ -82,7 +82,6 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 | 参数 | 说明 | 类型 | 默认值 |
 | --- | --- | --- | --- |
 | `[nzBreakpoint]` | 触发响应式布局的断点 | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| 'xxl'` | - |
-| `[nzCollapsed]` | 当前收起状态 | `boolean` | - |
 | `[nzCollapsedWidth]` | 收缩宽度，设置为 0 会出现特殊 trigger | `number` | `64` |
 | `[nzCollapsible]` | 是否可收起 | `boolean` | `false` |
 | `[nzCollapsed]` | 当前收起状态，可双向绑定 | `boolean` | `false` |
