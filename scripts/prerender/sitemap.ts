@@ -7,11 +7,10 @@ import { buildConfig } from '../build-config';
 // tslint:disable-next-line:no-any
 const priorityMap: any = {
   '/docs/introduce/en': 1,
-  '/docs/getting-started/en': 0.9,
+  '/docs/getting-started/en': 0.8,
   '/docs/schematics/en': 0.8,
   '/docs/i18n/en': 0.8,
-  '/docs/faq/en': 0.7,
-  '/docs/changelog/en': 0.7
+  '/docs/faq/en': 0.8
 };
 
 const ROUTES = readFileSync(resolve(__dirname, 'route-paths.txt')).toString().split(os.EOL) as string[];
@@ -22,11 +21,13 @@ function generateUrls(lang: 'zh' | 'en'): sitemap.ISitemapItemOptionsLoose[] {
     const url = `${r}/${lang}`;
     return {
       url,
-      changefreq: sitemap.EnumChangefreq.WEEKLY,
-      priority: priorityMap[url] || 0.5,
+      changefreq: sitemap.EnumChangefreq.HOURLY,
+      priority: priorityMap[url] || 0.6,
+      lastmodrealtime: true, lastmodISO: new Date().toISOString(),
       links: [
         { lang: 'en', url: `${r}/en` },
-        { lang: 'zh', url: `${r}/zh` }
+        { lang: 'zh', url: `${r}/zh` },
+        { lang: 'x-default', url: `${r}/en` }
       ]
     };
   });
@@ -37,7 +38,7 @@ export function generateSitemap(): void {
     hostname: 'https://ng.ant.design',
     cacheTime: 600000,
     urls: [
-      { url: '/', changefreq: sitemap.EnumChangefreq.WEEKLY, priority: 0.5, lastmodrealtime: true },
+      { url: '/', changefreq: sitemap.EnumChangefreq.HOURLY, priority: 1, lastmodrealtime: true, lastmodISO: new Date().toISOString() },
       ...generateUrls('en'),
       ...generateUrls('zh')
     ]

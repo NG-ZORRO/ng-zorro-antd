@@ -1,34 +1,44 @@
 import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT } from '@angular/common';
-import { AfterContentInit, ChangeDetectorRef, Component, ElementRef, HostListener, Inject, NgZone, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, NgZone, OnInit, Renderer2 } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { en_US, NzI18nService, zh_CN } from 'ng-zorro-antd/i18n';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { VERSION } from 'ng-zorro-antd/version';
 import { fromEvent } from 'rxjs';
-import { debounceTime, map, startWith } from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { AppService } from './app.service';
 import { ROUTER_LIST } from './router';
-
-// tslint:disable-next-line:no-any
-declare const docsearch: any;
+import { loadScript } from './utils/load-script';
 
 interface DocPageMeta {
   path: string;
   label: string;
   order?: number;
   zh: string;
+  description: string;
 }
 
 type SiteTheme = 'default' | 'dark' | 'compact';
+const defaultKeywords =
+  'angular, ant design, ant, angular ant design, web, ui, components, ng, zorro, responsive, typescript, css, mobile web, open source, 组件库, 组件, UI 框架';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html'
+  templateUrl: './app.component.html',
+  styles: [
+    `
+      @media (max-width: 767px) {
+        .main-menu {
+          display: none;
+        }
+      }
+    `
+  ]
 })
-export class AppComponent implements OnInit, AfterContentInit {
+export class AppComponent implements OnInit {
   /**
    * When the screen size is smaller that 768 pixel, show the drawer and hide
    * the navigation on the side.
@@ -40,22 +50,12 @@ export class AppComponent implements OnInit, AfterContentInit {
   routerList = ROUTER_LIST;
   componentList: DocPageMeta[] = [];
   searchComponent = null;
-  // tslint:disable-next-line:no-any
-  docsearch: any = null;
+
   theme: SiteTheme = 'default';
 
-  get useDocsearch(): boolean {
-    if (!this.platform.isBrowser) {
-      return false;
-    }
-    return window && window.location.href.indexOf('/version') === -1;
-  }
-
-  language: 'zh' | 'en' = 'zh';
+  language: 'zh' | 'en' = 'en';
   direction: 'ltr' | 'rtl' = 'ltr';
   currentVersion = VERSION.full;
-
-  @ViewChild('searchInput', { static: false }) searchInput?: ElementRef<HTMLInputElement>;
 
   switchLanguage(language: string): void {
     const url = this.router.url.split('/');
@@ -119,7 +119,7 @@ export class AppComponent implements OnInit, AfterContentInit {
     private cdr: ChangeDetectorRef,
     // tslint:disable-next-line:no-any
     @Inject(DOCUMENT) private document: any
-  ) { }
+  ) {}
 
   navigateToPage(url: string): void {
     if (url) {
@@ -146,40 +146,90 @@ export class AppComponent implements OnInit, AfterContentInit {
     this.currentVersion = version;
   }
 
+  private getLanguageFromURL(url: string): 'en' | 'zh' | null {
+    const language = url.split('/')[url.split('/').length - 1].split('#')[0].split('?')[0];
+    if (['zh', 'en'].indexOf(language) !== -1) {
+      return language as 'en' | 'zh';
+    }
+    return null;
+  }
+
   ngOnInit(): void {
+    if (this.platform.isBrowser) {
+      this.renderer.removeClass(this.document.activeElement, 'preload');
+      this.addWindowWidthListener();
+    }
+
     this.routerList.components.forEach(group => {
       this.componentList = this.componentList.concat([...group.children]);
     });
 
     this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        const language = this.getLanguageFromURL(event.url);
+        if (language) {
+          this.language = language;
+          this.setPage(event.url);
+        }
+      }
       if (event instanceof NavigationEnd) {
+        this.language = this.getLanguageFromURL(this.router.url)!;
+
+        this.appService.language$.next(this.language);
+        this.nzI18nService.setLocale(this.language === 'en' ? en_US : zh_CN);
         const currentDemoComponent = this.componentList.find(component => `/${component.path}` === this.router.url);
 
         if (currentDemoComponent) {
-          this.title.setTitle(`${currentDemoComponent.zh} ${currentDemoComponent.label} - NG-ZORRO`);
+          const path = currentDemoComponent.path.replace(/\/(en|zh)/, '');
+          this.updateMateTitle(`${currentDemoComponent.zh}(${currentDemoComponent.label}) | NG-ZORRO`);
+          this.updateDocMetaAndLocale(currentDemoComponent.description, `${currentDemoComponent.label}, ${currentDemoComponent.zh}`, path);
         }
 
         const currentIntroComponent = this.routerList.intro.find(component => `/${component.path}` === this.router.url);
         if (currentIntroComponent) {
-          this.title.setTitle(`${currentIntroComponent.label} - NG-ZORRO`);
+          const path = currentIntroComponent.path.replace(/\/(en|zh)/, '');
+          if (/docs\/introduce/.test(this.router.url)) {
+            if (this.language === 'en') {
+              this.updateMateTitle(`NG-ZORRO - Angular UI component library`);
+            } else {
+              this.updateMateTitle(`NG-ZORRO - 企业级 UI 设计语音和 Angular 组件库`);
+            }
+          } else {
+            this.updateMateTitle(`${currentIntroComponent.label} | NG-ZORRO`);
+          }
+          this.updateDocMetaAndLocale(currentIntroComponent.description, currentIntroComponent.label, path);
+        }
+
+        if (!currentIntroComponent && !currentDemoComponent) {
+          if (/components\/overview/.test(this.router.url)) {
+            if (this.language === 'en') {
+              this.updateMateTitle('Components | NG-ZORRO');
+              this.updateDocMetaAndLocale(
+                'NG-ZORRO provides plenty of UI components to enrich your web applications, and we will improve components experience consistently.',
+                'overview',
+                'components/overview'
+              );
+            } else {
+              this.updateMateTitle('组件(Components) | NG-ZORRO');
+              this.updateDocMetaAndLocale(
+                'NG-ZORRO 为 Web 应用提供了丰富的基础 UI 组件，我们还将持续探索企业级应用的最佳 UI 实践.',
+                'overview, 预览',
+                'components/overview'
+              );
+            }
+          } else {
+            this.updateDocMetaAndLocale();
+          }
         }
 
         if (this.router.url !== '/' + this.searchComponent) {
           this.searchComponent = null;
         }
         this.setPage(this.router.url);
-        this.language = this.router.url.split('/')[this.router.url.split('/').length - 1].split('#')[0].split('?')[0] as 'en' | 'zh';
-        this.appService.language$.next(this.language);
-        this.nzI18nService.setLocale(this.language === 'en' ? en_US : zh_CN);
-        this.updateDocMetaAndLocale();
-        if (this.docsearch) {
-          this.docsearch!.algoliaOptions = { hitsPerPage: 5, facetFilters: [`tags:${this.language}`] };
-        }
 
         if (environment.production && this.platform.isBrowser) {
           window.scrollTo(0, 0);
         }
-
         setTimeout(() => {
           const toc = this.router.parseUrl(this.router.url).fragment || '';
           if (toc) {
@@ -196,75 +246,87 @@ export class AppComponent implements OnInit, AfterContentInit {
     this.detectLanguage();
   }
 
-  ngAfterContentInit(): void {
-    if (this.useDocsearch) {
-      this.initDocsearch();
-    }
-
-    this.addWindowWidthListener();
-  }
-
-  updateDocMetaAndLocale(): void {
-    if (this.platform.isBrowser) {
-      const isEn = this.language === 'en';
-      const enDescription =
-        'An enterprise-class UI design language and Angular-based implementation with a set of high-quality Angular components, one of best Angular UI library for enterprises';
-      const zhDescription = 'Ant Design 的 Angular 实现，开发和服务于企业级后台产品，开箱即用的高质量 Angular 组件。';
-      const descriptionContent = isEn ? enDescription : zhDescription;
-      this.meta.updateTag({
-        name: 'description',
-        content: descriptionContent
-      });
-      this.meta.updateTag({
-        name: 'twitter:description',
-        content: descriptionContent
-      });
-      this.meta.updateTag({
-        property: 'og:description',
-        content: descriptionContent
-      });
-      this.meta.updateTag({
-        property: 'og:locale',
-        content: isEn ? 'en_US' : 'zh_CN'
-      });
-      const doc = this.document as Document;
-      this.renderer.setAttribute(doc.documentElement, 'lang', isEn ? 'en' : 'zh-Hans');
-    }
-  }
-
-  initDocsearch() {
-    this.loadScript('https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js').then(() => {
-      this.docsearch = docsearch({
-        appId: 'BH4D9OD16A',
-        apiKey: '9f7d9d6527ff52ec484e90bb1f256971',
-        indexName: 'ng_zorro',
-        inputSelector: '#search-box input',
-        algoliaOptions: { hitsPerPage: 5, facetFilters: [`tags:${this.language}`] },
-        transformData(hits: any) {
-          // tslint:disable-line:no-any
-          hits.forEach((hit: any) => {
-            // tslint:disable-line:no-any
-            hit.url = hit.url.replace('ng.ant.design', location.host);
-            hit.url = hit.url.replace('https:', location.protocol);
-          });
-          return hits;
-        },
-        debug: false
-      });
+  updateMateTitle(title: string = 'NG-ZORRO | Angular UI component library'): void {
+    this.title.setTitle(title);
+    this.meta.updateTag({
+      property: 'og:title',
+      content: title
+    });
+    this.meta.updateTag({
+      name: 'twitter:title',
+      content: title
     });
   }
 
-  @HostListener('document:keyup.s', ['$event'])
-  onKeyUp(event: KeyboardEvent) {
-    if (this.useDocsearch && this.searchInput && this.searchInput.nativeElement && event.target === document.body) {
-      this.searchInput.nativeElement.focus();
+  updateDocMetaAndLocale(description?: string, keywords?: string, path?: string): void {
+    const isEn = this.language === 'en';
+    const enDescription =
+      'An enterprise-class UI design language and Angular-based implementation with a set of high-quality Angular components, one of best Angular UI library for enterprises';
+    const zhDescription = 'Ant Design 的 Angular 实现，开发和服务于企业级后台产品，开箱即用的高质量 Angular UI 组件库。';
+    let descriptionContent = isEn ? enDescription : zhDescription;
+    if (description) {
+      descriptionContent = description;
+    }
+
+    if (path) {
+      this.addHreflang(path);
+    }
+
+    this.meta.updateTag({
+      name: 'keywords',
+      content: keywords ? `${defaultKeywords}, ${keywords}` : defaultKeywords
+    });
+
+    this.meta.updateTag({
+      name: 'description',
+      content: descriptionContent
+    });
+    this.meta.updateTag({
+      name: 'twitter:description',
+      content: descriptionContent
+    });
+    this.meta.updateTag({
+      property: 'og:description',
+      content: descriptionContent
+    });
+    this.meta.updateTag({
+      property: 'og:locale',
+      content: isEn ? 'en_US' : 'zh_CN'
+    });
+    const doc = this.document as Document;
+    this.renderer.setAttribute(doc.documentElement, 'lang', isEn ? 'en' : 'zh-Hans');
+  }
+
+  private addHreflang(href: string): void {
+    if (!this.platform.isBrowser) {
+      const hreflangs = [
+        {
+          hreflang: 'en',
+          suffix: 'en'
+        },
+        {
+          hreflang: 'x-default',
+          suffix: 'en'
+        },
+        {
+          hreflang: 'zh',
+          suffix: 'zh'
+        }
+      ];
+      hreflangs.forEach(hreflang => {
+        const link = this.renderer.createElement('link');
+        this.renderer.setAttribute(link, 'rel', 'alternate');
+        this.renderer.setAttribute(link, 'hreflang', hreflang.hreflang);
+        this.renderer.setAttribute(link, 'href', `https://ng.ant.design/${href}/${hreflang.suffix}`);
+        this.renderer.appendChild(this.document.head, link);
+      });
     }
   }
 
   // region: color
   color = `#1890ff`;
 
-  initColor() {
+  initColor(): void {
     if (!this.platform.isBrowser) {
       return;
     }
@@ -277,7 +339,7 @@ export class AppComponent implements OnInit, AfterContentInit {
 
   lessLoaded = false;
 
-  changeColor(res: any) {
+  changeColor(res: any): void {
     if (!this.platform.isBrowser) {
       return;
     }
@@ -301,22 +363,11 @@ export class AppComponent implements OnInit, AfterContentInit {
       (window as any).less = {
         async: true
       };
-      this.loadScript(lessUrl).then(() => {
+      loadScript(lessUrl).then(() => {
         this.lessLoaded = true;
         changeColor();
       });
     }
-  }
-
-  loadScript(src: string) {
-    return new Promise((resolve, reject) => {
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = src;
-      script.onload = resolve;
-      script.onerror = reject;
-      document.head!.appendChild(script);
-    });
   }
 
   // endregion
@@ -324,21 +375,22 @@ export class AppComponent implements OnInit, AfterContentInit {
     if (!this.platform.isBrowser) {
       return;
     }
+    this.setShowDrawer();
     this.ngZone.runOutsideAngular(() => {
       fromEvent(window, 'resize')
-        .pipe(
-          startWith(true),
-          debounceTime(50),
-          map(() => window.innerWidth)
-        )
-        .subscribe(width => {
-          this.windowWidth = width;
-          const showDrawer = width <= 768;
-          if (this.showDrawer !== showDrawer) {
-            this.showDrawer = showDrawer;
-          }
+        .pipe(debounceTime(50))
+        .subscribe(() => {
+          this.setShowDrawer();
         });
     });
+  }
+
+  setShowDrawer(): void {
+    if (this.platform.isBrowser) {
+      const width = window.innerWidth;
+      this.windowWidth = width;
+      this.showDrawer = width <= 768;
+    }
   }
 
   private detectLanguage(): void {

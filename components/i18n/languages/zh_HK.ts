@@ -4,7 +4,7 @@
  */
 
 export default {
-  locale: 'zh-tw',
+  locale: 'zh-hk',
   Pagination: {
     items_per_page: '條/頁',
     jump_to: '跳至',

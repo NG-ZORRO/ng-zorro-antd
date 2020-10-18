@@ -10,7 +10,7 @@ NG-ZORRO
 
 <div align="center">
 
-An enterprise-class UI components based on Ant Design and Angular.
+An enterprise-class Angular UI component library based on Ant Design.
 
 [![Azure branch](https://img.shields.io/azure-devops/build/ng-zorro/0d271b73-3774-4dbc-a081-088df0b28bf8/2/master?style=flat-square)](https://dev.azure.com/ng-zorro/NG-ZORRO/_build)
 [![CodeFactor](https://www.codefactor.io/repository/github/ng-zorro/ng-zorro-antd/badge?style=flat-square)](https://www.codefactor.io/repository/github/ng-zorro/ng-zorro-antd)
@@ -33,8 +33,8 @@ English | [简体中文](README-zh_CN.md)
 
 ## ✨ Features
 
-- An enterprise-class UI design system for web applications.
-- A set of high-quality Angular components out of the box.
+- An enterprise-class UI design system for Angular applications.
+- 60+ high-quality Angular components out of the box.
 - Written in TypeScript with predictable static types.
 - The whole package of development and design resources and tools.
 - Support OnPush mode, high performance.
@@ -163,6 +163,8 @@ As always, we encourage experienced users to help those who are not familiar wit
 - [Ververica](https://www.ververica.com/)
 - [Apache Flink](https://flink.apache.org/)
 - [Apache Zeppelin](https://zeppelin.apache.org/)
+- [Apache Submarine](https://submarine.apache.org/)
+- [Apache Metron](https://metron.apache.org/)
 - [Process Automation Group](http://pag.company/)
 - [AISINOCO](http://www.aisino.com/)
 - [GongDao](https://www.gongdao.com/)

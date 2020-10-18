@@ -3,9 +3,21 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://gw.alipayobjects.com" crossorigin="anonymous">
+    <link rel="preconnect" href="https://img.alicdn.com" crossorigin="anonymous">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous">
+    <link rel="preconnect" href="https://vars.hotjar.com">
+    <link rel="preconnect" href="https://script.hotjar.com">
+    <link rel="preconnect" href="https://www.google-analytics.com">
+    <link rel="dns-prefetch" href="https://www.google-analytics.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://api.github.com">
+    <link rel="preload" href="https://script.hotjar.com/font-hotjar_5.65042d.woff2" as="font" type="font/woff2" crossorigin>
+
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="translucent">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="keywords" content="angular, ant design, ant, angular ant design, web, ui, components, ng, zorro, responsive, typescript, css, mobile web, open source, 组件库, 组件, UI 框架">
     <meta name="author" content="NG-ZORRO Team">
     <meta name="description" content="An enterprise-class UI design language and Angular-based implementation with a set of high-quality Angular components, one of best Angular UI library for enterprises">
     <!--Twitter card metadata-->
@@ -27,18 +39,15 @@
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="2048">
     <meta property="og:image:height" content="1536">
+    <meta name="theme-color" content="#1890ff">
 
-    <link rel="icon" href="https://img.alicdn.com/tfs/TB1Jr2ASQvoK1RjSZFDXXXY3pXa-200-200.png" type="image/x-icon">
+    <link rel="icon shortcut" href="https://img.alicdn.com/tfs/TB1Jr2ASQvoK1RjSZFDXXXY3pXa-200-200.png" type="image/x-icon">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-icon-180.png">
     <link rel="apple-touch-icon" sizes="167x167" href="assets/icons/apple-icon-167.png">
     <link rel="apple-touch-icon" sizes="152x152" href="assets/icons/apple-icon-152.png">
     <link rel="apple-touch-icon" sizes="120x120" href="assets/icons/apple-icon-120.png">
-    <link rel="preconnect" href="https://vars.hotjar.com">
-    <link rel="preconnect" href="https://script.hotjar.com">
-    <link rel="preconnect" href="https://www.google-analytics.com">
-    <link rel="preconnect" href="https://cdn.jsdelivr.net">
-    <link rel="preconnect" href="https://api.github.com">
-    <title>NG-ZORRO - Ant Design Of Angular</title>
+    <link rel="manifest" href="manifest.json">
+    <title>NG-ZORRO Angular UI component library</title>
     <base href="/">
     <!-- Hotjar Tracking Code for ng.ant.design -->
     <script>
@@ -51,10 +60,18 @@
         a.appendChild(r);
       })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
     </script>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1890ff">
+
+    <style type="text/css">
+       /* Prevent trigger animations before page load, will be removed when the page is ready */
+      .preload * {
+        -webkit-transition: none !important;
+        -moz-transition: none !important;
+        -ms-transition: none !important;
+        -o-transition: none !important;
+      }
+    </style>
   </head>
-  <body>
+  <body class="preload">
     <app-root></app-root>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-52892298-2"></script>

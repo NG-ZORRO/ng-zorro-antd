@@ -1,4 +1,14 @@
-import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import { Platform } from '@angular/cdk/platform';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewEncapsulation
+} from '@angular/core';
+
+const CNMirrorSite = 'ng-zorro.gitee.io';
 
 @Component({
   selector: 'ul[nz-menu][app-navagation]',
@@ -17,6 +27,9 @@ import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angu
       <a [routerLink]="['experimental', 'pipes', language]">
         <span>{{ language == 'zh' ? '实验性功能' : 'Experimental' }}</span>
       </a>
+    </li>
+    <li *ngIf="showCNMirror && language == 'zh'" nz-menu-item [nzSelected]="false">
+      <a href="https://ng-zorro.gitee.io/">国内镜像</a>
     </li>
     <ng-container *ngIf="!isMobile && responsive === 'crowded'">
       <li nz-submenu [nzTitle]="additionalTitle" nzMenuClassName="top-menu-additional">
@@ -54,13 +67,22 @@ import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angu
   },
   encapsulation: ViewEncapsulation.None
 })
-export class NavigationComponent {
+export class NavigationComponent implements OnInit {
   @Input() language: 'zh' | 'en' = 'zh';
   @Output() languageChange = new EventEmitter<'zh' | 'en'>();
   @Input() responsive: null | 'narrow' | 'crowded' = null;
   @Input() page: 'docs' | 'components' | 'experimental' | string = 'docs';
   @Input() isMobile = false;
-  constructor() {}
+  showCNMirror = false;
+
+  constructor(private platform: Platform) {}
+
+  ngOnInit(): void {
+    if (this.platform.isBrowser) {
+      this.showCNMirror = location.hostname !== CNMirrorSite;
+    }
+  }
+
   changeLanguage(language: 'zh' | 'en', e: MouseEvent): void {
     e.preventDefault();
     this.languageChange.emit(language);

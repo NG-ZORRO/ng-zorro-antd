@@ -99,7 +99,10 @@ export default {
     filterReset: 'Reset',
     selectAll: 'Seleziona pagina corrente',
     selectInvert: 'Inverti selezione nella pagina corrente',
-    sortTitle: 'Ordina'
+    sortTitle: 'Ordina',
+    triggerDesc: 'Clicca per ordinare in modo discendente',
+    triggerAsc: ' Clicca per ordinare in modo ascendente',
+    cancelSort: 'Clicca per eliminare i filtri'
   },
   Modal: {
     okText: 'OK',

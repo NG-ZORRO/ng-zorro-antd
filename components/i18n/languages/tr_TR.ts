@@ -19,8 +19,15 @@ export default {
   },
   DatePicker: {
     lang: {
-      placeholder: 'Tarih Seç',
-      rangePlaceholder: ['Başlangıç Tarihi', 'Bitiş Tarihi'],
+      placeholder: 'Tarih seç',
+      yearPlaceholder: 'Yıl seç',
+      quarterPlaceholder: 'Çeyrek seç',
+      monthPlaceholder: 'Ay seç',
+      weekPlaceholder: 'Hafta seç',
+      rangePlaceholder: ['Başlangıç tarihi', 'Bitiş tarihi'],
+      rangeYearPlaceholder: ['Başlangıç yılı', 'Bitiş yılı'],
+      rangeMonthPlaceholder: ['Başlangıç ayı', 'Bitiş ayı'],
+      rangeWeekPlaceholder: ['Başlangıç haftası', 'Bitiş haftası'],
       locale: 'tr_TR',
       today: 'Bugün',
       now: 'Şimdi',
@@ -49,16 +56,25 @@ export default {
       nextCentury: 'Sonraki Yüzyıl'
     },
     timePickerLocale: {
-      placeholder: 'Zaman Seç'
+      placeholder: 'Zaman seç',
+      rangePlaceholder: ['Başlangıç zamanı', 'Bitiş zamanı']
     }
   },
   TimePicker: {
-    placeholder: 'Zaman Seç'
+    placeholder: 'Zaman seç',
+    rangePlaceholder: ['Başlangıç zamanı', 'Bitiş zamanı']
   },
   Calendar: {
     lang: {
-      placeholder: 'Tarih Seç',
-      rangePlaceholder: ['Başlangıç Tarihi', 'Bitiş Tarihi'],
+      placeholder: 'Tarih seç',
+      yearPlaceholder: 'Yıl seç',
+      quarterPlaceholder: 'Çeyrek seç',
+      monthPlaceholder: 'Ay seç',
+      weekPlaceholder: 'Hafta seç',
+      rangePlaceholder: ['Başlangıç tarihi', 'Bitiş tarihi'],
+      rangeYearPlaceholder: ['Başlangıç yılı', 'Bitiş yılı'],
+      rangeMonthPlaceholder: ['Başlangıç ayı', 'Bitiş ayı'],
+      rangeWeekPlaceholder: ['Başlangıç haftası', 'Bitiş haftası'],
       locale: 'tr_TR',
       today: 'Bugün',
       now: 'Şimdi',
@@ -87,19 +103,27 @@ export default {
       nextCentury: 'Sonraki Yüzyıl'
     },
     timePickerLocale: {
-      placeholder: 'Zaman Seç'
+      placeholder: 'Zaman seç',
+      rangePlaceholder: ['Başlangıç zamanı', 'Bitiş zamanı']
     }
   },
   global: {
     placeholder: 'Lütfen seçiniz'
   },
   Table: {
-    filterTitle: 'Menü Filtrele',
+    filterTitle: 'Filtre menüsü',
     filterConfirm: 'Tamam',
     filterReset: 'Sıfırla',
-    selectAll: 'Hepsini Seç',
-    selectInvert: 'Tersini Seç',
-    sortTitle: 'Sırala'
+    filterEmptyText: 'Filtre yok',
+    selectAll: 'Tüm sayfayı seç',
+    selectInvert: 'Tersini seç',
+    selectionAll: 'Tümünü seç',
+    sortTitle: 'Sırala',
+    expand: 'Satırı genişlet',
+    collapse: 'Satırı daralt',
+    triggerDesc: 'Azalan düzende sırala',
+    triggerAsc: 'Artan düzende sırala',
+    cancelSort: 'Sıralamayı kaldır'
   },
   Modal: {
     okText: 'Tamam',
@@ -114,25 +138,34 @@ export default {
     titles: ['', ''],
     searchPlaceholder: 'Arama',
     itemUnit: 'Öğe',
-    itemsUnit: 'Öğeler'
+    itemsUnit: 'Öğeler',
+    remove: 'Kaldır',
+    selectCurrent: 'Tüm sayfayı seç',
+    removeCurrent: 'Sayfayı kaldır',
+    selectAll: 'Tümünü seç',
+    removeAll: 'Tümünü kaldır',
+    selectInvert: 'Tersini seç'
   },
   Upload: {
     uploading: 'Yükleniyor...',
     removeFile: 'Dosyayı kaldır',
-    uploadError: 'Yükleme Hatası',
-    previewFile: 'Dosyayı Önizle',
+    uploadError: 'Yükleme hatası',
+    previewFile: 'Dosyayı önizle',
     downloadFile: 'Dosyayı indir'
   },
   Empty: {
     description: 'Veri Yok'
   },
   Icon: {
-    icon: 'icon'
+    icon: 'ikon'
   },
   Text: {
-    edit: 'düzenle',
-    copy: 'kopyala',
-    copied: 'kopyalandı',
-    expand: 'genişlet'
+    edit: 'Düzenle',
+    copy: 'Kopyala',
+    copied: 'Kopyalandı',
+    expand: 'Genişlet'
+  },
+  PageHeader: {
+    back: 'Geri'
   }
 };

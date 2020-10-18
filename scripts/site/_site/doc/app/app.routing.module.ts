@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
-import { DEMOComponent } from './_demo/demo.component';
 import { DEMO_ROUTES } from './router';
+import { DEMOComponent } from './_demo/demo.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '/docs/introduce/en' },
@@ -12,5 +12,5 @@ export const routes: Routes = [
     path: 'components/overview',
     loadChildren: () => import('./components-overview/components-overview.module').then(m => m.ComponentsOverviewModule)
   },
-  { path: '**', redirectTo: '/docs/introduce/zh', pathMatch: 'full' }
+  { path: '**', redirectTo: '/docs/introduce/en', pathMatch: 'full' }
 ];

@@ -81,7 +81,6 @@ The sidebar.
 | Property | Description | Type | Default |
 | -------- | ----------- | ---- | ------- |
 | `[nzBreakpoint]` | breakpoints of the responsive layout | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| 'xxl'` | - |
-| `[nzCollapsed]` | to set the current status | `boolean` | - |
 | `[nzCollapsedWidth]` | width of the collapsed sidebar, by setting to `0` a special trigger will appear | `number` | `64` |
 | `[nzCollapsible]` | whether can be collapsed | `boolean` | `false` |
 | `[nzCollapsed]` | the collapsed status can be double binding | `boolean` | `false` |

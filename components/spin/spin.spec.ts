@@ -86,19 +86,31 @@ describe('spin', () => {
     });
 
     it('should delay work', fakeAsync(() => {
+      testComponent.delay = 500;
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      testComponent.delay = 500;
+
+      // true -> false
+      // This should work immediately
       testComponent.spinning = false;
       fixture.detectChanges();
       tick();
       fixture.detectChanges();
-      expect(spin.nativeElement.querySelector('.ant-spin')).toBeDefined();
+      expect(spin.nativeElement.querySelector('.ant-spin')).toBeNull();
+
+      // false -> true
+      // This should be debounced
+      testComponent.spinning = true;
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      expect(spin.nativeElement.querySelector('.ant-spin')).toBeNull();
+
       fixture.detectChanges();
       tick(1000);
       fixture.detectChanges();
-      expect(spin.nativeElement.querySelector('.ant-spin')).toBeNull();
+      expect(spin.nativeElement.querySelector('.ant-spin')).toBeDefined();
     }));
 
     it('should wrapper work', fakeAsync(() => {

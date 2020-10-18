@@ -3,11 +3,11 @@ order: 7
 title: Global Configuration
 ---
 
-We add support of **global configuration** to many components. You can define the default behavior of the component through global configuration, thus reducing the code that needs to be written in the template, and support changing global config at runtime.
+We add a **global configuration** support to many components. You can define the default behavior of these components through the global configuration, which reduces redundant codes that must be written in the templates (makes your codes concise). Moreover, it supports altering the global configuration at runtime.
 
 ## How to Use?
 
-If you want to provide default configurations to some components, you should provide an object that implements the interface `NzConfig` with the injection token `NZ_CONFIG`, in the root module (in another word, to the root injector). Like this:
+In order to provide default configurations in certain components, please pass an object that implements the interface `NzConfig` through the injection token `NZ_CONFIG` in the root injector. For example:
 
 ```typescript
 import { NzConfig, NZ_CONFIG } from 'ng-zorro-antd/core/config';
@@ -30,13 +30,13 @@ const ngZorroConfig: NzConfig = {
 export class AppModule {}
 ```
 
-These global configuration would be injected into a service named `NzConfigService` and gets stored.
+These global configurations would be injected and stored in a service named `NzConfigService`.
 
 ### Provide Template Instances
 
-Being global configuration's entries may accept `TemplateRef<T>` instances, we need a way to create them at application start-up, or, we have to submit them via `NzConfigService`.
+Some components accept `TemplateRef<T>` as a default parameter.
 
-The simpler approach is via `NzConfigService` in the root Component.
+One of the easiest approaches is to invoke relevant functions from `NzConfigService` in the root component.
 
 ```typescript
 export class AppComponent implements OnInit {
@@ -51,9 +51,9 @@ export class AppComponent implements OnInit {
 }
 ```
 
-However this causes the configuration to be spread around.
+However, this violates the separation of concerns principle and causes codes to be bloated in the `AppComponent`.
 
-To solve that, at `NgModule` level we can use a `FactoryProvider` instead of a `ValueProvider` (shown above).
+To solve this, it is recommended to use a `FactoryProvider` instead of a `ValueProvider` (shown above) at the `NgModule` level.
 
 ```typescript
 // The module-level Component which contains template references.
@@ -105,7 +105,7 @@ export class AppModule {}
 
 ## Dynamically Change Configurations
 
-You can change the global config of a specific component by calling the `set` method of `NzConfigService`. For example, if you want to make all buttons to be large in size by default, you should:
+You can alter the global configuration of a specific component through the `set` method of `NzConfigService`. For example:
 
 ```typescript
 import { NzConfigService } from 'ng-zorro-antd/core/config';
@@ -123,20 +123,22 @@ export class ChangeZorroConfigComponent {
 }
 ```
 
+All component instances is responsive to this configuration change (as long as they are not configured independently).
+
 ## Priority of Global Configurations
 
-For any property that supports global configuration, the sequence of priority is as follow:
+For any property that supports global configuration, the sequence of priority is based on following:
 
-**Parameters passed to an component instance (in templates or methods like `service.create` > global config provided with the injection token `NZ_CONFIG` > default value in ng-zorro-antd**
+**Parameters passed to a component instance (in templates or through methods like `service.create` > global configuration provided by the injection token `NZ_CONFIG` > default value in ng-zorro-antd**
 
 For example, if you want to create a `NzNotification` component:
 
-1. When you call `NzNotificationService.success`, you passed `{ nzDuration: 6000 }` as the third parameter
-2. You provide `{ notification: { nzDuration: 5000 } }` with `NZ_CONFIG`
-3. ng-zorro-antd has a default value of 4500
+1. When you call `NzNotificationService.success`, you pass `{ nzDuration: 6000 }` as the third parameter
+2. You provide `{ notification: { nzDuration: 5000 } }` through the injection token `NZ_CONFIG`
+3. `ng-zorro-antd` has a default value of 4500
 
-Eventually, this notification would keep open for 6000 milliseconds.
+Consequently, this particular notification will be visible for 6000 milliseconds.
 
 ## Check all Available Globally Configurable Parameters
 
-The interface `NzConfig` can provide completion suggestions of all components and parameters that are globally configurable. You can also check components' API for more details.
+The interface `NzConfig` provide a complete information about all components and parameters that are globally configurable. You can also check each individual component's API for more details.
