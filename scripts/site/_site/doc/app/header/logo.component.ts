@@ -3,7 +3,7 @@ import { Component } from "@angular/core";
 @Component({
   selector: 'app-logo',
   template: `
-    <a href id="logo">
+    <a href="/" id="logo">
       <img width="32" height="28.27" alt="logo" src="./assets/img/logo.svg">
       <strong>NG-ZORRO</strong>
     </a>
