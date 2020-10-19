@@ -168,7 +168,11 @@ export class AppComponent implements OnInit {
 
         if (currentDemoComponent) {
           const path  = currentDemoComponent.path.replace(/\/(en|zh)/, '');
-          this.updateMateTitle(`${currentDemoComponent.zh}(${currentDemoComponent.label}) | NG-ZORRO`);
+          if (this.language === 'en') {
+            this.updateMateTitle(`${currentDemoComponent.label} | NG-ZORRO`);
+          } else {
+            this.updateMateTitle(`${currentDemoComponent.zh}(${currentDemoComponent.label}) | NG-ZORRO`);
+          }
           this.updateDocMetaAndLocale(currentDemoComponent.description, `${currentDemoComponent.label}, ${currentDemoComponent.zh}`, path);
         }
 
@@ -205,6 +209,7 @@ export class AppComponent implements OnInit {
               );
             }
           } else {
+            this.updateMateTitle(`NG-ZORRO - Angular UI component library`)
             this.updateDocMetaAndLocale();
           }
         }

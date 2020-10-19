@@ -3,7 +3,7 @@ order: 0
 title: Ant Design of Angular
 ---
 
-`ng-zorro-antd` 是 Ant Design 的 Angular 实现，主要用于研发企业级中后台产品。全部代码开源并遵循 MIT 协议，任何企业、组织及个人均可免费使用。
+`ng-zorro-antd` 是遵循 Ant Design 设计规范的 Angular UI 组件库，主要用于研发企业级中后台产品。全部代码开源并遵循 MIT 协议，任何企业、组织及个人均可免费使用。
 
 <div class="pic-plus">
   <img alt="Ant Design" width="150" height="150" src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg">
@@ -14,7 +14,7 @@ title: Ant Design of Angular
 ## 特性
 
 - 提炼自企业级中后台产品的交互语言和视觉风格。
-- 开箱即用的高质量 Angular 组件，与 Angular 保持同步升级。
+- 开箱即用的高质量 Angular 组件库，与 Angular 保持同步升级。
 - 使用 TypeScript 构建，提供完整的类型定义文件。
 - 支持 OnPush 模式，性能卓越。
 - 数十个国际化语言支持。
@@ -26,7 +26,7 @@ title: Ant Design of Angular
 - 支持服务端渲染
 - [Electron](https://electron.atom.io/)
 
-| [<img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/62.2.25/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>IE / Edge | [<img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/62.2.25/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Firefox | [<img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/62.2.25/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Chrome | [<img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/62.2.25/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Safari | [<img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/62.2.25/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Opera | [<img src="https://cdnjs.cloudflare.com/ajax/libs/browser-logos/62.2.25/electron/electron_48x48.png" alt="Electron" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Electron |
+| [<img src="https://img.alicdn.com/tfs/TB1G5ewZuL2gK0jSZPhXXahvXXa-48-48.png" alt="IE / Edge" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges//)<br>IE / Edge | [<img src="https://img.alicdn.com/tfs/TB1Dx73o79l0K4jSZFKXXXFjpXa-48-48.png" alt="Firefox" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Firefox | [<img src="https://img.alicdn.com/tfs/TB1mY9FZrr1gK0jSZFDXXb9yVXa-48-48.png" alt="Chrome" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Chrome | [<img src="https://img.alicdn.com/tfs/TB1Vas5o79l0K4jSZFKXXXFjpXa-48-48.png" alt="Safari" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Safari | [<img src="https://img.alicdn.com/tfs/TB12EmNZET1gK0jSZFrXXcNCXXa-48-48.png" alt="Opera" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Opera | [<img src="https://img.alicdn.com/tfs/TB1TMW8paNj0u4jSZFyXXXgMVXa-48-48.png" alt="Electron" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)<br>Electron |
 | --- | --- | --- | --- | --- | --- |
 | IE11, Edge | last 2 versions | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
 
