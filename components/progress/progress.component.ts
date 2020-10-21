@@ -68,6 +68,7 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
     >
       <!-- line progress -->
       <div *ngIf="nzType === 'line'">
+        <!-- normal line style -->
         <ng-container *ngIf="!isSteps">
           <div class="ant-progress-outer" *ngIf="!isSteps">
             <div class="ant-progress-inner">
@@ -90,7 +91,7 @@ const defaultFormatter: NzProgressFormatter = (p: number): string => `${p}%`;
           </div>
           <ng-template [ngTemplateOutlet]="progressInfoTemplate"></ng-template>
         </ng-container>
-        <!-- Step style progress -->
+        <!-- step style -->
         <div class="ant-progress-steps-outer" *ngIf="isSteps">
           <div *ngFor="let step of steps; let i = index" class="ant-progress-steps-item" [ngStyle]="step"></div>
           <ng-template [ngTemplateOutlet]="progressInfoTemplate"></ng-template>
@@ -159,7 +160,7 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   @Input() @WithConfig() nzGapPosition: NzProgressGapPositionType = 'top';
   @Input() @WithConfig() nzStrokeLinecap: NzProgressStrokeLinecapType = 'round';
 
-  @Input() @InputNumber() nzSteps?: number;
+  @Input() @InputNumber() nzSteps: number = 0;
 
   steps: NzProgressStepItem[] = [];
 
@@ -210,7 +211,18 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
   constructor(public nzConfigService: NzConfigService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzSteps, nzGapPosition, nzStrokeLinecap, nzStrokeColor, nzGapDegree, nzType, nzStatus, nzPercent, nzSuccessPercent } = changes;
+    const {
+      nzSteps,
+      nzGapPosition,
+      nzStrokeLinecap,
+      nzStrokeColor,
+      nzGapDegree,
+      nzType,
+      nzStatus,
+      nzPercent,
+      nzSuccessPercent,
+      nzStrokeWidth
+    } = changes;
 
     if (nzStatus) {
       this.cachedStatus = this.nzStatus || this.cachedStatus;
@@ -227,7 +239,7 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
       }
     }
 
-    if (nzStatus || nzPercent || nzSuccessPercent) {
+    if (nzStatus || nzPercent || nzSuccessPercent || nzStrokeColor) {
       this.updateIcon();
     }
 
@@ -235,13 +247,15 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
       this.setStrokeColor();
     }
 
-    if (nzGapPosition || nzStrokeLinecap || nzGapDegree || nzType || nzPercent || nzStrokeColor) {
+    if (nzGapPosition || nzStrokeLinecap || nzGapDegree || nzType || nzPercent || nzStrokeColor || nzStrokeColor) {
       this.getCirclePaths();
     }
 
-    if (nzSteps) {
-      this.isSteps = isNotNil(nzSteps.currentValue);
-      this.getSteps();
+    if (nzPercent || nzSteps || nzStrokeWidth) {
+      this.isSteps = this.nzSteps > 0;
+      if (this.isSteps) {
+        this.getSteps();
+      }
     }
   }
 
@@ -270,10 +284,12 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
    * Calculate step render configs.
    */
   private getSteps(): void {
-    const current = Math.floor(this.nzSteps! * (this.nzPercent / 100));
+    const current = Math.floor(this.nzSteps * (this.nzPercent / 100));
     const stepWidth = this.nzSize === 'small' ? 2 : 14;
 
-    for (let i = 0; i < this.nzSteps!; i++) {
+    const steps = [];
+
+    for (let i = 0; i < this.nzSteps; i++) {
       let color;
       if (i <= current - 1) {
         color = this.nzStrokeColor;
@@ -283,8 +299,10 @@ export class NzProgressComponent implements OnChanges, OnInit, OnDestroy {
         width: `${stepWidth}px`,
         height: `${this.strokeWidth}px`
       };
-      this.steps.push(stepStyle);
+      steps.push(stepStyle);
     }
+
+    this.steps = steps;
   }
 
   /**

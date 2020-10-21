@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 @Component({
   selector: 'app-footer-item',
   template: `
-    <a [href]="link" target="_blank">
+    <a [href]="link" target="_blank" rel="noopener">
       <span *ngIf="icon || imgSrc" class="rc-footer-item-icon">
         <i *ngIf="icon" nz-icon [nzType]="icon"></i>
         <img *ngIf="imgSrc" [src]="imgSrc" [attr.alt]="imgAlt">

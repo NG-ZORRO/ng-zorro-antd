@@ -10,7 +10,7 @@ NG-ZORRO
 
 <div align="center">
 
-Ant Design 的 Angular 实现，开发和服务于企业级后台产品。
+`ng-zorro-antd` 是 Ant Design 的 Angular 实现，主要用于研发企业级中后台产品。全部代码开源并遵循 MIT 协议，任何企业、组织及个人均可免费使用。
 
 [![Azure branch](https://img.shields.io/azure-devops/build/ng-zorro/0d271b73-3774-4dbc-a081-088df0b28bf8/2/master?style=flat-square)](https://dev.azure.com/ng-zorro/NG-ZORRO/_build)
 [![Codecov](https://img.shields.io/codecov/c/github/NG-ZORRO/ng-zorro-antd.svg?style=flat-square)](https://codecov.io/gh/NG-ZORRO/ng-zorro-antd)
@@ -47,7 +47,7 @@ Ant Design 的 Angular 实现，开发和服务于企业级后台产品。
 
 ## 🖥 支持环境
 
-- Angular `^9.0.0` [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
+- Angular `^10.0.0` [![npm package](https://img.shields.io/npm/v/ng-zorro-antd.svg?style=flat-square)](https://www.npmjs.org/package/ng-zorro-antd)
 - 支持服务端渲染
 - 现代浏览器，以及 Internet Explorer 11+ （使用 [polyfills](https://angular.io/guide/browser-support)）
 - [Electron](http://electron.atom.io/)
@@ -153,9 +153,10 @@ $ npm run start
 
 ## 🎉 谁在使用
 
-- [阿里巴巴](http://www.alibaba.com/)
-- [阿里云](http://www.aliyun.com/)
+- [阿里巴巴](https://www.alibaba.com/)
+- [阿里云](https://www.aliyun.com/)
 - [思特沃克](https://www.thoughtworks.com/)
+- [招商银行](http://www.cmbchina.com/)
 - [共道科技](https://www.gongdao.com/)
 - [优速快递](http://www.uce.cn/)
 - [轻流](https://qingflow.com/)
@@ -163,7 +164,8 @@ $ npm run start
 - [达观数据](http://datagrand.com/)
 - [Ververica](https://www.ververica.com/)
 - [Apache Flink](https://flink.apache.org/)
-- [Apache Zeppelin](http://zeppelin.apache.org/)
+- [Apache Zeppelin](https://zeppelin.apache.org/)
+- [Apache Submarine](https://submarine.apache.org/)
 - [Apache Metron](https://metron.apache.org/)
 - [Process Automation Group](http://pag.company/)
 - [ScentBird](https://www.scentbird.com/)

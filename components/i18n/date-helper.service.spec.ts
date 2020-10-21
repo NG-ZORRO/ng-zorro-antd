@@ -37,8 +37,8 @@ describe('DateHelperService', () => {
     });
 
     it('should do parseTime correctly', () => {
-      expect(dateHelper.parseTime('14:00')?.toTimeString().substr(0, 8)).toBe('14:00:00');
-      expect(dateHelper.parseTime('4:00')?.toTimeString().substr(0, 8)).toBe('04:00:00');
+      expect(dateHelper.parseTime('14:00', 'HH:mm')?.toTimeString().substr(0, 5)).toBe('14:00');
+      expect(dateHelper.parseTime('4:00', 'H:mm')?.toTimeString().substr(0, 5)).toBe('04:00');
     });
   });
 

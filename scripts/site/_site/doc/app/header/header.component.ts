@@ -30,7 +30,7 @@ const RESPONSIVE_SM = 1200;
       </div>
     </header>
     <ng-template #menu>
-      <ng-container *ngIf="!searching">
+      <ng-container *ngIf="!searching || windowWidth > 1200">
         <ng-container *ngIf="windowWidth < 1120; else narrowNavigation">
           <ul
             nz-menu
@@ -93,7 +93,7 @@ export class HeaderComponent implements OnChanges {
   isMobile = false;
   mode = 'horizontal';
   responsive: null | 'narrow' | 'crowded' = null;
-  oldVersionList = ['8.5.x', '7.5.x', '1.8.x', '0.7.x', '0.5.x'];
+  oldVersionList = ['9.3.x', '8.5.x', '7.5.x', '1.8.x', '0.7.x', '0.5.x'];
   currentVersion = VERSION.full;
 
   onChangeVersion(version: string): void {

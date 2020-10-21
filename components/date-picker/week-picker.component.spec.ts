@@ -84,7 +84,7 @@ describe('NzWeekPickerComponent', () => {
 
 @Component({
   template: `
-    <nz-week-picker [nzFormat]="nzFormat" [ngModel]="nzValue"></nz-week-picker>
+    <nz-date-picker nzMode="week" [nzFormat]="nzFormat" [ngModel]="nzValue"></nz-date-picker>
   `
 })
 export class NzTestWeekPickerComponent {

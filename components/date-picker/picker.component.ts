@@ -3,6 +3,7 @@
  * found in the LICENSE file at https://github.com/NG-ZORRO/ng-zorro-antd/blob/master/LICENSE
  */
 
+import { ESCAPE } from '@angular/cdk/keycodes';
 import {
   CdkConnectedOverlay,
   CdkOverlayOrigin,
@@ -35,11 +36,12 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { slideMotion } from 'ng-zorro-antd/core/animation';
+import { NzResizeObserver } from 'ng-zorro-antd/core/resize-observers';
 
-import { CandyDate, CompatibleValue } from 'ng-zorro-antd/core/time';
+import { CandyDate, CompatibleValue, wrongSortOrder } from 'ng-zorro-antd/core/time';
 import { NgStyleInterface, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
-import { fromEvent, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DatePickerService } from './date-picker.service';
 import { DateRangePopupComponent } from './date-range-popup.component';
@@ -61,8 +63,8 @@ import { PREFIX_CLASS } from './util';
         [(ngModel)]="inputValue"
         placeholder="{{ getPlaceholder() }}"
         [size]="inputSize"
-        (focus)="onFocus()"
-        (blur)="onBlur()"
+        (focus)="onFocus($event)"
+        (blur)="onBlur($event)"
         (ngModelChange)="onInputChange($event)"
         (keyup.enter)="onKeyupEnter($event)"
       />
@@ -94,9 +96,9 @@ import { PREFIX_CLASS } from './util';
         [disabled]="disabled"
         [readOnly]="inputReadOnly"
         [size]="inputSize"
-        (click)="onClickInputBox($event, partType)"
-        (blur)="onBlur()"
-        (focus)="onFocus(partType)"
+        (click)="onClickInputBox($event)"
+        (blur)="onBlur($event)"
+        (focus)="onFocus($event, partType)"
         (keyup.enter)="onKeyupEnter($event)"
         [(ngModel)]="inputValue[datePickerService.getActiveIndex(partType)]"
         (ngModelChange)="onInputChange($event)"
@@ -106,7 +108,12 @@ import { PREFIX_CLASS } from './util';
 
     <!-- Right operator icons -->
     <ng-template #tplRightRest>
-      <div class="{{ prefixCls }}-active-bar" [ngStyle]="activeBarStyle"></div>
+      <div
+        class="{{ prefixCls }}-active-bar"
+        style="position: absolute"
+        [style.width.px]="inputWidth"
+        [style.left.px]="datePickerService?.arrowLeft"
+      ></div>
       <span *ngIf="showClear()" class="{{ prefixCls }}-clear" (click)="onClickClear($event)">
         <i nz-icon nzType="close-circle" nzTheme="fill"></i>
       </span>
@@ -178,19 +185,16 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @ViewChild(CdkConnectedOverlay, { static: false }) cdkConnectedOverlay?: CdkConnectedOverlay;
   @ViewChild('separatorElement', { static: false }) separatorElement?: ElementRef;
   @ViewChild('pickerInput', { static: false }) pickerInput?: ElementRef<HTMLInputElement>;
-  @ViewChildren('rangePickerInput') rangePickerInputs!: QueryList<ElementRef<HTMLInputElement>>;
-  @ContentChild(DateRangePopupComponent) panel!: DateRangePopupComponent;
+  @ViewChildren('rangePickerInput') rangePickerInputs?: QueryList<ElementRef<HTMLInputElement>>;
+  @ContentChild(DateRangePopupComponent) panel?: DateRangePopupComponent;
 
   origin: CdkOverlayOrigin;
   document: Document;
-  inputSize?: number;
+  inputSize: number = 12;
   inputWidth?: number;
-  arrowLeft?: number;
   destroy$ = new Subject();
   prefixCls = PREFIX_CLASS;
-  // Index signature in type 'string | string[]' only permits reading
-  inputValue: NzSafeAny = '';
-  activeBarStyle: object = { position: 'absolute' };
+  inputValue!: NzSafeAny;
   animationOpenState = false;
   overlayOpen: boolean = false; // Available when "open"=undefined
   overlayPositions: ConnectionPositionPair[] = [
@@ -240,6 +244,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     private dateHelper: DateHelperService,
     private cdr: ChangeDetectorRef,
     private platform: Platform,
+    private nzResizeObserver: NzResizeObserver,
     public datePickerService: DatePickerService,
     @Inject(DOCUMENT) doc: NzSafeAny
   ) {
@@ -248,8 +253,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   ngOnInit(): void {
-    this.inputSize = Math.max(10, this.format.length) + 2;
-
+    this.inputValue = this.isRange ? ['', ''] : '';
     this.datePickerService.valueChange$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.updateInputValue();
     });
@@ -261,29 +265,20 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     }
 
     if (this.isRange && this.platform.isBrowser) {
-      fromEvent(window, 'resize')
+      this.nzResizeObserver
+        .observe(this.elementRef)
         .pipe(takeUntil(this.destroy$))
         .subscribe(() => {
-          this.resetInputWidthAndArrowLeft();
+          this.updateInputWidthAndArrowLeft();
         });
     }
+
     this.datePickerService.inputPartChange$.pipe(takeUntil(this.destroy$)).subscribe(partType => {
       if (partType) {
         this.datePickerService.activeInput = partType;
       }
-      this.datePickerService.arrowPositionStyle = {
-        left: this.datePickerService.activeInput === 'left' ? '0px' : `${this.arrowLeft}px`
-      };
-      this.activeBarStyle = {
-        ...this.activeBarStyle,
-        ...this.datePickerService.arrowPositionStyle,
-        width: `${this.inputWidth}px`
-      };
-      if (this.document.activeElement !== this.getInput(this.datePickerService.activeInput)) {
-        this.focus();
-      }
-      this.panel?.cdr.markForCheck();
-      this.cdr.markForCheck();
+      this.focus();
+      this.updateInputWidthAndArrowLeft();
     });
   }
 
@@ -296,40 +291,52 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     if (changes.open) {
       this.animationStart();
     }
+
+    if (changes.format && changes.format.currentValue) {
+      this.inputSize = Math.max(10, this.format.length) + 2;
+    }
   }
 
-  resetInputWidthAndArrowLeft(): void {
+  updateInputWidthAndArrowLeft(): void {
     this.inputWidth = this.rangePickerInputs?.first?.nativeElement.offsetWidth || 0;
-    this.arrowLeft = this.inputWidth + this.separatorElement?.nativeElement.offsetWidth || 0;
+    this.datePickerService.arrowLeft =
+      this.datePickerService.activeInput === 'left' ? 0 : this.inputWidth + this.separatorElement?.nativeElement.offsetWidth || 0;
+    this.panel?.cdr.markForCheck();
+    this.cdr.markForCheck();
   }
 
-  getInput(partType?: RangePartType): HTMLInputElement {
+  getInput(partType?: RangePartType): HTMLInputElement | undefined {
     return this.isRange
       ? partType === 'left'
-        ? this.rangePickerInputs.first.nativeElement
-        : this.rangePickerInputs.last.nativeElement
+        ? this.rangePickerInputs?.first.nativeElement
+        : this.rangePickerInputs?.last.nativeElement
       : this.pickerInput!.nativeElement;
   }
 
   focus(): void {
-    this.getInput(this.datePickerService.activeInput).focus(); // Focus on the first input
+    const activeInputElement = this.getInput(this.datePickerService.activeInput);
+    if (this.document.activeElement !== activeInputElement) {
+      activeInputElement?.focus();
+    }
   }
 
-  onFocus(partType?: RangePartType): void {
+  onFocus(event: FocusEvent, partType?: RangePartType): void {
+    event.preventDefault();
+    this.focusChange.emit(true);
     if (partType) {
       this.datePickerService.inputPartChange$.next(partType);
     }
-    this.focusChange.emit(true);
   }
 
-  onBlur(): void {
+  onBlur(event: FocusEvent): void {
+    event.preventDefault();
     this.focusChange.emit(false);
   }
 
   // Show overlay content
   showOverlay(): void {
     if (!this.realOpenState && !this.disabled) {
-      this.resetInputWidthAndArrowLeft();
+      this.updateInputWidthAndArrowLeft();
       this.overlayOpen = true;
       this.animationStart();
       this.focus();
@@ -348,17 +355,21 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     return !this.disabled && !this.isEmptyValue(this.datePickerService.value) && !!this.allowClear;
   }
 
-  onClickInputBox(event: MouseEvent, partType?: RangePartType): void {
+  onClickInputBox(event: MouseEvent): void {
     event.stopPropagation();
-
     if (!this.isOpenHandledByUser()) {
       this.showOverlay();
     }
-    this.onFocus(partType);
   }
 
   onClickBackdrop(): void {
-    if (this.panel.isAllowed(this.datePickerService.value!, true)) {
+    if (this.panel?.isAllowed(this.datePickerService.value!, true)) {
+      if (Array.isArray(this.datePickerService.value) && wrongSortOrder(this.datePickerService.value)) {
+        const index = this.datePickerService.getActiveIndex(this.datePickerService.activeInput);
+        const value = this.datePickerService.value[index];
+        this.panel?.changeValueFromSelect(value!, true);
+        return;
+      }
       this.updateInputValue();
       this.datePickerService.emitValue$.next();
     } else {
@@ -372,7 +383,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   onOverlayKeydown(event: KeyboardEvent): void {
-    if (event.key === 'Escape') {
+    if (event.keyCode === ESCAPE) {
       this.datePickerService.setValue(this.datePickerService.initialValue!);
     }
   }
@@ -410,7 +421,13 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   onInputChange(value: string, isEnter: boolean = false): void {
-    this.showOverlay();
+    /**
+     * in IE11 focus/blur will trigger ngModelChange if has placeholder
+     * so we forbidden IE11 to open panel through input change
+     */
+    if (!this.platform.TRIDENT && this.document.activeElement === this.getInput(this.datePickerService.activeInput)) {
+      this.showOverlay();
+    }
 
     const date = this.checkValidDate(value);
     if (this.panel && date) {

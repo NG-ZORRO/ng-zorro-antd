@@ -53,10 +53,8 @@ describe('tag', () => {
       tag.nativeElement.querySelector('.anticon-close').click();
       fixture.detectChanges();
       expect(testComponent.onClose).toHaveBeenCalledTimes(1);
-      expect(testComponent.afterClose).toHaveBeenCalledTimes(0);
       tick(1000);
       fixture.detectChanges();
-      expect(testComponent.afterClose).toHaveBeenCalledTimes(1);
       expect(fixture.nativeElement.querySelector('nz-tag')).toBeFalsy();
     }));
     it('should color work', () => {
@@ -122,14 +120,7 @@ describe('tag', () => {
 
 @Component({
   template: `
-    <nz-tag
-      [nzMode]="mode"
-      [(nzChecked)]="checked"
-      [nzColor]="color"
-      (nzCheckedChange)="checkedChange($event)"
-      (nzAfterClose)="afterClose()"
-      (nzOnClose)="onClose()"
-    >
+    <nz-tag [nzMode]="mode" [(nzChecked)]="checked" [nzColor]="color" (nzCheckedChange)="checkedChange($event)" (nzOnClose)="onClose()">
       Tag 1
     </nz-tag>
   `

@@ -41,7 +41,7 @@ import { PREFIX_CLASS } from './util';
         </ng-container>
       </div>
       <a
-        *ngIf="showToday && !hasTimePicker"
+        *ngIf="showToday"
         class="{{ prefixCls }}-today-btn {{ isTodayDisabled ? prefixCls + '-today-btn-disabled' : '' }}"
         role="button"
         (click)="isTodayDisabled ? null : onClickToday()"

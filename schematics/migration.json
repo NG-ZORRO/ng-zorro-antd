@@ -12,7 +12,7 @@
       "factory": "./ng-update/index#updateToV9"
     },
     "migration-v10": {
-      "version": "10",
+      "version": "10.0.0-0",
       "description": "Updates NG-ZORRO to v10 [https://github.com/NG-ZORRO/ng-zorro-antd/issues/5775]",
       "factory": "./ng-update/index#updateToV10"
     },

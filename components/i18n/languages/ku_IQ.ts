@@ -21,7 +21,7 @@ export default {
     lang: {
       placeholder: 'Dîrok hilbijêre',
       rangePlaceholder: ['Dîroka destpêkê', 'Dîroka dawîn'],
-      locale: 'ku_IQ',
+      locale: 'ku',
       today: 'Îro',
       now: 'Niha',
       backToToday: 'Vegere îro',
@@ -59,7 +59,7 @@ export default {
     lang: {
       placeholder: 'Dîrok hilbijêre',
       rangePlaceholder: ['Dîroka destpêkê', 'Dîroka dawîn'],
-      locale: 'ku_IQ',
+      locale: 'ku',
       today: 'Îro',
       now: 'Niha',
       backToToday: 'Vegere îro',

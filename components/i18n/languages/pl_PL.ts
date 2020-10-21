@@ -6,9 +6,9 @@
 export default {
   locale: 'pl',
   Pagination: {
-    items_per_page: '/ stronę',
+    items_per_page: 'na stronę',
     jump_to: 'Idź do',
-    jump_to_confirm: 'potwierdzać',
+    jump_to_confirm: 'potwierdź',
     page: '',
     prev_page: 'Poprzednia strona',
     next_page: 'Następna strona',
@@ -95,7 +95,10 @@ export default {
     filterConfirm: 'OK',
     filterReset: 'Wyczyść',
     selectAll: 'Zaznacz bieżącą stronę',
-    selectInvert: 'Odwróć zaznaczenie'
+    selectInvert: 'Odwróć zaznaczenie',
+    triggerDesc: 'Sortuj rosnąco',
+    triggerAsc: 'Sortuj malejąco',
+    cancelSort: 'Usuń sortowanie'
   },
   Modal: {
     okText: 'OK',

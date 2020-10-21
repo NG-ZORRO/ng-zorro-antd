@@ -8,7 +8,7 @@ export const outputNames: VersionChanges<OutputNameUpgradeData> = {
         {
           replace    : 'nzOnSearchNode',
           replaceWith: 'nzSearchValueChange',
-          whitelist  : {
+          limitedTo  : {
             elements: ['nz-tree']
           }
         }
@@ -22,8 +22,34 @@ export const outputNames: VersionChanges<OutputNameUpgradeData> = {
         {
           replace    : 'nzSortChange',
           replaceWith: 'nzSortOrderChange',
-          whitelist  : {
+          limitedTo  : {
             elements: ['thead', 'th']
+          }
+        }
+      ]
+    },
+    {
+      pr: 'https://github.com/NG-ZORRO/ng-zorro-antd/pull/5817',
+      changes: [
+        {
+          replace : 'nzVisibleChange',
+          replaceWith: 'nzTooltipVisibleChange',
+          limitedTo : {
+            attributes: ['nz-tooltip']
+          }
+        },
+        {
+          replace : 'nzVisibleChange',
+          replaceWith: 'nzPopoverVisibleChange',
+          limitedTo : {
+            attributes: ['nz-popover']
+          }
+        },
+        {
+          replace : 'nzVisibleChange',
+          replaceWith: 'nzPopconfirmVisibleChange',
+          limitedTo : {
+            attributes: ['nz-popconfirm']
           }
         }
       ]

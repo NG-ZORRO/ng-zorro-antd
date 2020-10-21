@@ -3,7 +3,7 @@ order: 10
 title: 常见问题
 ---
 
-<blockquote style="border-color: #faad14;"><p>更多常见问题请搜索<a href="https://github.com/NG-ZORRO/ng-zorro-antd/issues?q=is%3Aopen+is%3Aissue+label%3A%22%3Aquestion%3A+FAQ%22" target="_blank">标有 FAQ 的 issue</a>。</p></blockquote>
+<blockquote style="border-color: #faad14;"><p>更多常见问题请搜索<a href="https://github.com/NG-ZORRO/ng-zorro-antd/issues?q=is%3Aopen+is%3Aissue+label%3A%22%3Aquestion%3A+FAQ%22" target="_blank" rel="noopener">标有 FAQ 的 issue</a>。</p></blockquote>
 
 ### Angular 是不是打出来的包很大？ `ng-zorro-antd` 打包大小如何？
 

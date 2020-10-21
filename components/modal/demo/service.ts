@@ -23,12 +23,11 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
     </ng-template>
     <ng-template #tplFooter let-ref="modalRef">
       <button nz-button (click)="ref.destroy()">Destroy</button>
-      <button nz-button nzType="primary" (click)="destroyTplModal(ref)" [nzLoading]="tplModalButtonLoading">
-        Close after submit
-      </button>
+      <button nz-button nzType="primary" (click)="destroyTplModal(ref)" [nzLoading]="tplModalButtonLoading">Close after submit</button>
     </ng-template>
 
-    <br /><br />
+    <br />
+    <br />
 
     <button nz-button nzType="primary" (click)="createComponentModal()">
       <span>Use Component</span>
@@ -36,12 +35,13 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 
     <button nz-button nzType="primary" (click)="createCustomButtonModal()">Custom Button</button>
 
-    <br /><br />
+    <br />
+    <br />
 
     <button nz-button nzType="primary" (click)="openAndCloseAll()">Open more modals then close all after 2s</button>
-    <nz-modal [(nzVisible)]="htmlModalVisible" nzMask="false" [nzZIndex]="1001" nzTitle="Non-service html modal"
-      >This is a non-service html modal</nz-modal
-    >
+    <nz-modal [(nzVisible)]="htmlModalVisible" nzMask="false" [nzZIndex]="1001" nzTitle="Non-service html modal">
+      This is a non-service html modal
+    </nz-modal>
   `,
   styles: [
     `
@@ -94,7 +94,6 @@ export class NzDemoModalServiceComponent {
       nzTitle: 'Modal Title',
       nzContent: NzModalCustomComponent,
       nzViewContainerRef: this.viewContainerRef,
-      nzGetContainer: () => document.body,
       nzComponentParams: {
         title: 'title in component',
         subtitle: 'component sub title，will be changed after 2 sec'

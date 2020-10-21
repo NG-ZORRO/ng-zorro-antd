@@ -1,10 +1,10 @@
 const MD = require('./marked');
-const YFM = require('yaml-front-matter');
+const getMeta = require('./get-meta');
 const angularNonBindAble = require('./angular-nonbindable');
 
 module.exports = function parseDocMd(file, path) {
   // 获取meta信息
-  const meta = YFM.loadFront(file);
+  const meta = getMeta(file);
   const content = meta.__content;
   delete meta.__content;
 

@@ -5,16 +5,14 @@ import { Component } from '@angular/core';
   template: `
     <nz-date-picker [nzFormat]="dateFormat"></nz-date-picker>
     <br />
-    <nz-month-picker [nzFormat]="monthFormat" nzPlaceHolder="Select month"></nz-month-picker>
+    <nz-date-picker nzMode="month" [nzFormat]="monthFormat"></nz-date-picker>
     <br />
     <nz-range-picker [nzFormat]="dateFormat"></nz-range-picker>
   `,
   styles: [
     `
       nz-date-picker,
-      nz-month-picker,
-      nz-range-picker,
-      nz-week-picker {
+      nz-range-picker {
         margin: 0 8px 12px 0;
       }
     `

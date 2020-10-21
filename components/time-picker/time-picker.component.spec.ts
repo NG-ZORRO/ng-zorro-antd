@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { dispatchMouseEvent } from 'ng-zorro-antd/core/testing';
+import { getPickerInput } from 'ng-zorro-antd/date-picker/testing/util';
 import { NzI18nModule } from '../i18n/nz-i18n.module';
 import { NzTimePickerComponent } from './time-picker.component';
 import { NzTimePickerModule } from './time-picker.module';
@@ -94,7 +95,7 @@ describe('time-picker', () => {
       testComponent.date = new Date('2018-11-11 11:11:11');
       fixture.detectChanges();
       tick(500);
-      testComponent.nzTimePickerComponent.cdr.detectChanges();
+      fixture.detectChanges();
       timeElement.nativeElement.querySelector('.ant-picker-clear').click();
       fixture.detectChanges();
       expect(testComponent.date).toBeNull();
@@ -117,6 +118,8 @@ describe('time-picker', () => {
       expect(overlayContainer.getContainerElement().querySelector('.ant-picker-time-panel-cell-selected > div')!.textContent).toBe('11');
 
       dispatchMouseEvent(overlayContainer.getContainerElement().querySelector('.ant-picker-time-panel-cell')!, 'click');
+      fixture.detectChanges();
+      getPickerInput(fixture.debugElement).dispatchEvent(new KeyboardEvent('keyup', { key: 'enter' }));
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();

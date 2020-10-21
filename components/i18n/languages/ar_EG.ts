@@ -98,12 +98,22 @@ export default {
     dateTimeFormat: 'DD-MM-YYYY HH:mm:ss',
     weekFormat: 'wo-YYYY'
   },
+  global: {
+    placeholder: 'يرجى التحديد'
+  },
   Table: {
     filterTitle: 'الفلاتر',
     filterConfirm: 'تأكيد',
     filterReset: 'إعادة ضبط',
     selectAll: 'اختيار الكل',
-    selectInvert: 'إلغاء الاختيار'
+    selectInvert: 'إلغاء الاختيار',
+    selectionAll: 'حدد جميع البيانات',
+    sortTitle: 'رتب',
+    expand: 'توسيع الصف',
+    collapse: 'طي الصف',
+    triggerDesc: 'ترتيب تنازلي',
+    triggerAsc: 'ترتيب تصاعدي',
+    cancelSort: 'إلغاء الترتيب'
   },
   Modal: {
     okText: 'تأكيد',
@@ -128,5 +138,17 @@ export default {
   },
   Empty: {
     description: 'لا توجد بيانات'
+  },
+  Icon: {
+    icon: 'أيقونة'
+  },
+  Text: {
+    edit: 'تعديل',
+    copy: 'نسخ',
+    copied: 'نقل',
+    expand: 'وسع'
+  },
+  PageHeader: {
+    back: 'عودة'
   }
 };

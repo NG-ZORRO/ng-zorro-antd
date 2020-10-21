@@ -179,6 +179,11 @@ describe('progress', () => {
       expect(steps.length).toBe(5);
       expect((steps[0] as HTMLDivElement).style.backgroundColor).toBe('rgb(16, 142, 233)');
       expect((steps[4] as HTMLDivElement).style.backgroundColor).toBeFalsy();
+
+      testComponent.percent = 80;
+      fixture.detectChanges();
+
+      expect((steps[4] as HTMLDivElement).style.backgroundColor).toBeFalsy();
     });
   });
 
@@ -398,9 +403,8 @@ describe('progress', () => {
       [nzStrokeColor]="strokeColor"
       [nzStrokeLinecap]="strokeLinecap"
       [nzSteps]="steps"
-    >
-    </nz-progress>
-    <ng-template #formatterTemplate let-percent> {{ percent }} / 100 </ng-template>
+    ></nz-progress>
+    <ng-template #formatterTemplate let-percent>{{ percent }} / 100</ng-template>
   `
 })
 export class NzTestProgressLineComponent {
@@ -428,8 +432,7 @@ export class NzTestProgressLineComponent {
       [nzStrokeWidth]="strokeWidth"
       [nzPercent]="percent"
       [nzStrokeLinecap]="strokeLinecap"
-    >
-    </nz-progress>
+    ></nz-progress>
   `
 })
 export class NzTestProgressDashBoardComponent {
@@ -451,8 +454,7 @@ export class NzTestProgressDashBoardComponent {
       [nzGapPosition]="gapPosition"
       [nzStrokeColor]="strokeColor"
       [nzStrokeLinecap]="strokeLinecap"
-    >
-    </nz-progress>
+    ></nz-progress>
   `
 })
 export class NzTestProgressCircleComponent {
@@ -463,6 +465,8 @@ export class NzTestProgressCircleComponent {
 }
 
 @Component({
-  template: ` <nz-progress nzType="circle" [nzPercent]="75" [nzSuccessPercent]="60"></nz-progress> `
+  template: `
+    <nz-progress nzType="circle" [nzPercent]="75" [nzSuccessPercent]="60"></nz-progress>
+  `
 })
 export class NzTestProgressCircleSuccessComponent {}

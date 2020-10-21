@@ -105,6 +105,13 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
+      expect(getPickerContainer()).toBeNull();
+
+      getPickerInput(fixture.debugElement).focus();
+      getPickerInput(fixture.debugElement).dispatchEvent(ENTER_EVENT);
+      fixture.detectChanges();
+      tick(500);
+      fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
     }));
 
@@ -148,7 +155,6 @@ describe('NzDatePickerComponent', () => {
       expect(getPickerInput(fixture.debugElement).placeholder).toBe('Select date');
 
       openPickerByClickTrigger();
-      expect(getPickerInput(fixture.debugElement).placeholder).toBe('Select date');
       expect(queryFromOverlay(`.${PREFIX_CLASS}-content th`).textContent).toContain('Su');
     }));
 
@@ -285,6 +291,32 @@ describe('NzDatePickerComponent', () => {
       // But it should be fine to submit an enabled date
       submit('2018-11-11');
       expect(getPickerContainer()).toBeNull();
+    }));
+
+    // #5633
+    it('should support disable year and month right', fakeAsync(() => {
+      fixture.detectChanges();
+      fixtureInstance.nzValue = new Date(2020, 0, 1);
+      fixtureInstance.nzDisabledDate = (date: Date): boolean => date >= new Date(2019, 0, 1) && date < new Date(2019, 0, 2);
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+      openPickerByClickTrigger();
+      dispatchMouseEvent(queryFromOverlay('.ant-picker-header-year-btn'), 'click');
+      fixture.detectChanges();
+
+      const year2019 = getFirstCell();
+      expect(year2019.textContent!.trim()).toBe('2019');
+      expect(year2019.classList).not.toContain('ant-picker-cell-disabled');
+
+      dispatchMouseEvent(year2019, 'click');
+      fixture.detectChanges();
+      dispatchMouseEvent(queryFromOverlay('.ant-picker-header-month-btn'), 'click');
+      fixture.detectChanges();
+
+      const january = getFirstCell();
+      expect(january.textContent!.trim()).toContain('1');
+      expect(january.classList).not.toContain('ant-picker-cell-disabled');
     }));
 
     it('should support nzLocale', () => {
@@ -501,7 +533,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       expect(queryFromOverlay('.ant-picker-header-month-btn').textContent!.indexOf('2019') > -1).toBeTruthy();
       // Click to choose a year to change panel
-      dispatchMouseEvent(queryFromOverlay('td.ant-picker-cell-selected'), 'click');
+      dispatchMouseEvent(queryFromOverlay('td.ant-picker-cell'), 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -1045,7 +1077,7 @@ class NzTestDatePickerComponent {
   nzDisabledTime: any; // tslint:disable-line:no-any
   nzRenderExtraFooter!: string | (() => TemplateRef<void> | string);
   nzShowToday = false;
-  nzMode!: string;
+  nzMode: string = 'date';
   nzSuffixIcon!: string;
 
   // nzRanges;

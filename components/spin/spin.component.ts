@@ -18,8 +18,8 @@ import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/con
 import { BooleanInput, NumberInput, NzSafeAny, NzSizeLDSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
 
-import { BehaviorSubject, Subject } from 'rxjs';
-import { debounceTime, mergeMap, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, ReplaySubject, Subject, timer } from 'rxjs';
+import { debounce, distinctUntilChanged, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'spin';
 
@@ -72,20 +72,21 @@ export class NzSpinComponent implements OnChanges, OnDestroy, OnInit {
   @Input() @InputBoolean() nzSpinning = true;
   private destroy$ = new Subject<void>();
   private spinning$ = new BehaviorSubject(this.nzSpinning);
-  private delay$ = new BehaviorSubject(this.nzDelay);
-  isLoading = true;
+  private delay$ = new ReplaySubject<number>(1);
+  isLoading = false;
 
   constructor(public nzConfigService: NzConfigService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    const loading$ = this.spinning$.pipe(
-      mergeMap(() => this.delay$),
-      mergeMap(delay => {
+    const loading$ = this.delay$.pipe(
+      startWith(this.nzDelay),
+      distinctUntilChanged(),
+      switchMap(delay => {
         if (delay === 0) {
           return this.spinning$;
-        } else {
-          return this.spinning$.pipe(debounceTime(delay));
         }
+
+        return this.spinning$.pipe(debounce(spinning => timer(spinning ? delay : 0)));
       }),
       takeUntil(this.destroy$)
     );

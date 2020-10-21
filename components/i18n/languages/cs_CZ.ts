@@ -90,10 +90,23 @@ export default {
       placeholder: 'Vybrat čas'
     }
   },
+  global: {
+    placeholder: 'Prosím vyber'
+  },
   Table: {
     filterTitle: 'Filtr',
     filterConfirm: 'Potvrdit',
-    filterReset: 'Obnovit'
+    filterReset: 'Obnovit',
+    filterEmptyText: 'Žádné filtry',
+    selectAll: 'Vybrat všehchny řádky na současné stránce',
+    selectInvert: 'Invertovat výběr na současné stránce',
+    selectionAll: 'Vybrat všechny řádky',
+    sortTitle: 'Řadit',
+    expand: 'Rozbalit řádek',
+    collapse: 'Zabalit řádek',
+    triggerDesc: 'Klikni pro sestupné řazení',
+    triggerAsc: 'Klikni pro vzestupné řazení',
+    cancelSort: 'Klikni pro zrušení řazení'
   },
   Modal: {
     okText: 'Ok',

@@ -27,9 +27,7 @@ import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
 import { DateHelperService } from 'ng-zorro-antd/i18n';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-
 import { TimeHolder } from './time-holder';
-import { NzTimeValueAccessorDirective } from './time-value-accessor.directive';
 
 function makeRange(length: number, step: number = 1, start: number = 0): number[] {
   return new Array(Math.ceil(length / step)).fill(0).map((_, i) => (i + start) * step);
@@ -109,6 +107,11 @@ export type NzTimePickerUnit = 'hour' | 'minute' | 'second' | '12-hour';
             {{ 'Calendar.lang.now' | nzI18n }}
           </a>
         </li>
+        <li class="ant-picker-ok">
+          <button nz-button type="button" nzSize="small" nzType="primary" (click)="onClickOk()">
+            {{ 'Calendar.lang.ok' | nzI18n }}
+          </button>
+        </li>
       </ul>
     </div>
   `,
@@ -148,8 +151,6 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
   secondRange!: ReadonlyArray<{ index: number; disabled: boolean }>;
   use12HoursRange!: ReadonlyArray<{ index: number; value: string }>;
 
-  @ViewChild(NzTimeValueAccessorDirective, { static: false })
-  nzTimeValueAccessorDirective?: NzTimeValueAccessorDirective;
   @ViewChild('hourListElement', { static: false })
   hourListElement?: DebugElement;
   @ViewChild('minuteListElement', { static: false }) minuteListElement?: DebugElement;
@@ -275,14 +276,6 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
 
   get nzSecondStep(): number {
     return this._nzSecondStep;
-  }
-
-  selectInputRange(): void {
-    setTimeout(() => {
-      if (this.nzTimeValueAccessorDirective) {
-        this.nzTimeValueAccessorDirective.setRange();
-      }
-    });
   }
 
   buildHours(): void {
@@ -501,6 +494,10 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     this.closePanel.emit();
   }
 
+  onClickOk(): void {
+    this.closePanel.emit();
+  }
+
   isSelectedHour(hour: { index: number; disabled: boolean }): boolean {
     return hour.index === this.time.viewHours;
   }
@@ -523,9 +520,9 @@ export class NzTimePickerPanelComponent implements ControlValueAccessor, OnInit,
     this.time.changes.pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.changed();
       this.touched();
+      this.scrollToTime(120);
     });
     this.buildTimes();
-    this.selectInputRange();
     setTimeout(() => {
       this.scrollToTime();
       this.firstScrolled = true;

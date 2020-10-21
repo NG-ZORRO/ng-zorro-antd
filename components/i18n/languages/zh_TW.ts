@@ -90,21 +90,32 @@ export default {
       placeholder: '請選擇時間'
     }
   },
+  global: {
+    placeholder: '請選擇'
+  },
   Table: {
     filterTitle: '篩選器',
-    filterConfirm: '確 定',
-    filterReset: '重 置',
+    filterConfirm: '確定',
+    filterReset: '重置',
+    filterEmptyText: '無篩選項',
     selectAll: '全部選取',
-    selectInvert: '反向選取'
+    selectInvert: '反向選取',
+    selectionAll: '全選所有',
+    sortTitle: '排序',
+    expand: '展開行',
+    collapse: '關閉行',
+    triggerDesc: '點擊降序',
+    triggerAsc: '點擊升序',
+    cancelSort: '取消排序'
   },
   Modal: {
-    okText: '確 定',
-    cancelText: '取 消',
-    justOkText: 'OK'
+    okText: '確定',
+    cancelText: '取消',
+    justOkText: '知道了'
   },
   Popconfirm: {
-    okText: '確 定',
-    cancelText: '取 消'
+    okText: '確定',
+    cancelText: '取消'
   },
   Transfer: {
     searchPlaceholder: '搜尋資料',
@@ -120,6 +131,15 @@ export default {
   },
   Empty: {
     description: '無此資料'
+  },
+  Icon: {
+    icon: '圖標'
+  },
+  Text: {
+    edit: '編輯',
+    copy: '複製',
+    copied: '複製成功',
+    expand: '展開'
   },
   PageHeader: {
     back: '返回'

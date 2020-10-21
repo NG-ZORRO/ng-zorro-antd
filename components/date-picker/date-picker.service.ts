@@ -4,10 +4,9 @@
  */
 
 import { Injectable, OnDestroy } from '@angular/core';
-import { CandyDate, cloneDate, CompatibleValue, normalizeRangeValue } from 'ng-zorro-antd/core/time';
-import { NzSafeAny } from 'ng-zorro-antd/core/types';
+import { CandyDate, cloneDate, CompatibleValue, NormalizedMode, normalizeRangeValue } from 'ng-zorro-antd/core/time';
 import { ReplaySubject, Subject } from 'rxjs';
-import { CompatibleDate, RangePartType } from './standard-types';
+import { CompatibleDate, NzDateMode, RangePartType } from './standard-types';
 
 @Injectable()
 export class DatePickerService implements OnDestroy {
@@ -15,7 +14,7 @@ export class DatePickerService implements OnDestroy {
   value!: CompatibleValue;
   activeDate?: CompatibleValue;
   activeInput: RangePartType = 'left';
-  arrowPositionStyle: { [klass: string]: NzSafeAny } | null = {};
+  arrowLeft: number = 0;
   isRange = false;
 
   valueChange$ = new ReplaySubject<CompatibleValue>(1);
@@ -33,7 +32,7 @@ export class DatePickerService implements OnDestroy {
 
   hasValue(value: CompatibleValue = this.value): boolean {
     if (Array.isArray(value)) {
-      return !!value[0] && !!value[1];
+      return !!value[0] || !!value[1];
     } else {
       return !!value;
     }
@@ -47,9 +46,14 @@ export class DatePickerService implements OnDestroy {
     }
   }
 
-  setActiveDate(value: CompatibleValue, normalize: boolean = false): void {
+  setActiveDate(value: CompatibleValue, allowSameInTwoPanel: boolean = false, mode: NormalizedMode = 'month'): void {
+    const parentPanels: { [key in NzDateMode]?: NormalizedMode } = {
+      date: 'month',
+      month: 'year',
+      year: 'decade'
+    };
     if (this.isRange) {
-      this.activeDate = normalize ? normalizeRangeValue(value as CandyDate[]) : value;
+      this.activeDate = normalizeRangeValue(value as CandyDate[], allowSameInTwoPanel, parentPanels[mode]);
     } else {
       this.activeDate = cloneDate(value);
     }

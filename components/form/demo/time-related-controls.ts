@@ -20,7 +20,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
       <nz-form-item>
         <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired>MonthPicker</nz-form-label>
         <nz-form-control [nzSm]="16" [nzXs]="24">
-          <nz-month-picker formControlName="monthPicker"></nz-month-picker>
+          <nz-date-picker nzMode="month" formControlName="monthPicker"></nz-date-picker>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>

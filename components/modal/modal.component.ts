@@ -36,7 +36,9 @@ import { getConfigFromComponent } from './utils';
 @Component({
   selector: 'nz-modal',
   exportAs: 'nzModal',
-  template: ` <ng-template><ng-content></ng-content></ng-template> `,
+  template: `
+    <ng-template><ng-content></ng-content></ng-template>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges, NzModalLegacyAPI<T, R>, OnDestroy {
@@ -66,6 +68,10 @@ export class NzModalComponent<T = NzSafeAny, R = NzSafeAny> implements OnChanges
   @Input() nzContent?: string | TemplateRef<{}> | Type<T>;
   @Input() nzComponentParams?: T;
   @Input() nzFooter?: string | TemplateRef<{}> | Array<ModalButtonOptions<T>> | null;
+  /**
+   * @deprecated Not supported.
+   * @breaking-change 11.0.0
+   */
   @Input() nzGetContainer?: HTMLElement | OverlayRef | (() => HTMLElement | OverlayRef);
   @Input() nzZIndex: number = 1000;
   @Input() nzWidth: number | string = 520;

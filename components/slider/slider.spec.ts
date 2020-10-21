@@ -534,6 +534,35 @@ describe('nz-slider', () => {
     });
   });
 
+  describe('reverse and min and max', () => {
+    let testBed: ComponentBed<ReverseSliderWithMinAndMaxComponent>;
+    let fixture: ComponentFixture<ReverseSliderWithMinAndMaxComponent>;
+
+    beforeEach(() => {
+      testBed = createComponentBed(ReverseSliderWithMinAndMaxComponent, {
+        imports: [NzSliderModule, FormsModule, ReactiveFormsModule, NoopAnimationsModule]
+      });
+      fixture = testBed.fixture;
+      fixture.detectChanges();
+
+      getReferenceFromFixture(fixture);
+    });
+
+    it('should set the correct maximum value', () => {
+      dispatchClickEventSequence(sliderNativeElement, 0);
+      fixture.detectChanges();
+
+      expect(sliderInstance.value).toEqual(6);
+    });
+
+    it('should set the correct minimum value', () => {
+      dispatchClickEventSequence(sliderNativeElement, 1);
+      fixture.detectChanges();
+
+      expect(sliderInstance.value).toEqual(4);
+    });
+  });
+
   describe('mixed usage', () => {
     let testBed: ComponentBed<MixedSliderComponent>;
     let fixture: ComponentFixture<MixedSliderComponent>;
@@ -564,6 +593,7 @@ describe('nz-slider', () => {
       fixture.detectChanges();
 
       dispatchClickEventSequence(sliderNativeElement, 0.1);
+
       // Potentially a bug of jasmine or karma. Event handler makes calling stack destroyed.
       // dispatchClickEventSequence(sliderNativeElement, 0.8);
       fixture.detectChanges();
@@ -622,8 +652,32 @@ describe('nz-slider', () => {
       expect(overlayContainerElement.textContent).toContain('VALUE-13');
 
       dispatchMouseEvent(handlerHost, 'mouseleave');
-      tick(400); // Wait for tooltip's animations
+      tick(400); // wait for tooltip's animations
       expect(overlayContainerElement.textContent).not.toContain('VALUE-13');
+    }));
+
+    // fix #5699, Slider should work with decimals as well
+    it('should work with decimals', fakeAsync(() => {
+      testComponent.marks = {
+        0.5: '0.5',
+        0.8: '0.8',
+        1: '1',
+        1.2: '1.2',
+        1.5: '1.5',
+        2: '2'
+      };
+      testComponent.min = 0.5;
+      testComponent.max = 2;
+      testComponent.step = null;
+      fixture.detectChanges();
+
+      dispatchClickEventSequence(sliderNativeElement, 0.13);
+      fixture.detectChanges();
+      expect(sliderInstance.value).toBe(0.8);
+
+      dispatchClickEventSequence(sliderNativeElement, 0.6);
+      fixture.detectChanges();
+      expect(sliderInstance.value).toBe(1.5);
     }));
   });
 
@@ -786,14 +840,18 @@ const styles = `
 `;
 
 @Component({
-  template: ` <nz-slider [nzDisabled]="disabled"></nz-slider> `,
+  template: `
+    <nz-slider [nzDisabled]="disabled"></nz-slider>
+  `,
   styles: [styles]
 })
 class NzTestSliderComponent {
   disabled = false;
 }
 @Component({
-  template: ` <nz-slider [nzMin]="min" [nzMax]="max"></nz-slider> `,
+  template: `
+    <nz-slider [nzMin]="min" [nzMax]="max"></nz-slider>
+  `,
   styles: [styles]
 })
 class SliderWithMinAndMaxComponent {
@@ -802,13 +860,17 @@ class SliderWithMinAndMaxComponent {
 }
 
 @Component({
-  template: ` <nz-slider [ngModel]="26"></nz-slider> `,
+  template: `
+    <nz-slider [ngModel]="26"></nz-slider>
+  `,
   styles: [styles]
 })
 class SliderWithValueComponent {}
 
 @Component({
-  template: ` <nz-slider [nzStep]="step"></nz-slider> `,
+  template: `
+    <nz-slider [nzStep]="step"></nz-slider>
+  `,
   styles: [styles]
 })
 class SliderWithStepComponent {
@@ -816,19 +878,25 @@ class SliderWithStepComponent {
 }
 
 @Component({
-  template: ` <nz-slider [ngModel]="3" [nzMin]="4" [nzMax]="6"></nz-slider> `,
+  template: `
+    <nz-slider [ngModel]="3" [nzMin]="4" [nzMax]="6"></nz-slider>
+  `,
   styles: [styles]
 })
 class SliderWithValueSmallerThanMinComponent {}
 
 @Component({
-  template: ` <nz-slider [ngModel]="7" [nzMin]="4" [nzMax]="6"></nz-slider> `,
+  template: `
+    <nz-slider [ngModel]="7" [nzMin]="4" [nzMax]="6"></nz-slider>
+  `,
   styles: [styles]
 })
 class SliderWithValueGreaterThanMaxComponent {}
 
 @Component({
-  template: ` <nz-slider nzVertical></nz-slider> `,
+  template: `
+    <nz-slider nzVertical></nz-slider>
+  `,
   styles: [styles]
 })
 class VerticalSliderComponent {}
@@ -844,6 +912,14 @@ class ReverseSliderComponent {}
 
 @Component({
   template: `
+    <nz-slider [nzMin]="4" [nzMax]="6" nzReverse></nz-slider>
+  `,
+  styles: [styles]
+})
+class ReverseSliderWithMinAndMaxComponent {}
+
+@Component({
+  template: `
     <nz-slider
       [nzRange]="range"
       [nzStep]="step"
@@ -851,16 +927,20 @@ class ReverseSliderComponent {}
       [nzDots]="dots"
       [nzIncluded]="included"
       [nzTipFormatter]="tipFormatter"
+      [nzMin]="min"
+      [nzMax]="max"
     ></nz-slider>
   `,
   styles: [styles]
 })
 class MixedSliderComponent {
-  range = false;
-  step: number | null = 1;
-  marks = { 22: '(22%)', 36: '(36%)' };
   dots = false;
   included = true;
+  marks: { [mark: number]: string } = { 22: '(22%)', 36: '(36%)' };
+  max = 100;
+  min = 0;
+  range = false;
+  step: number | null = 1;
 
   tipFormatter(value: number): string {
     return `VALUE-${value}`;
@@ -888,7 +968,9 @@ class SliderWithFormControlComponent implements OnInit {
 }
 
 @Component({
-  template: ` <nz-slider [nzTooltipVisible]="show" [ngModel]="value"></nz-slider> `
+  template: `
+    <nz-slider [nzTooltipVisible]="show" [ngModel]="value"></nz-slider>
+  `
 })
 class SliderShowTooltipComponent {
   show: NzSliderShowTooltip = 'default';
@@ -896,7 +978,9 @@ class SliderShowTooltipComponent {
 }
 
 @Component({
-  template: ` <nz-slider [nzRange]="range"></nz-slider> `
+  template: `
+    <nz-slider [nzRange]="range"></nz-slider>
+  `
 })
 class NzTestSliderKeyboardComponent {
   range = false;

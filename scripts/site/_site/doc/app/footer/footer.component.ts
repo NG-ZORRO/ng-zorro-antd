@@ -7,9 +7,9 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
       <section class="rc-footer-container">
         <section class="rc-footer-columns">
           <div app-footer-col [title]="language === 'zh' ? '相关资源' : 'Resources'">
-            <app-footer-item title="NG-ZORRO-MOBILE" link="http://ng.mobile.ant.design/" description="Angular"> </app-footer-item>
+            <app-footer-item title="NG-ZORRO-MOBILE" link="https://ng.mobile.ant.design/" description="Angular"> </app-footer-item>
             <app-footer-item title="Ant Design" link="https://ant.design/docs/react/introduce-cn" description="React"> </app-footer-item>
-            <app-footer-item title="Ant Design" link="http://vue.ant.design/" description="Vue"> </app-footer-item>
+            <app-footer-item title="Ant Design" link="https://vue.ant.design/" description="Vue"> </app-footer-item>
             <app-footer-item title="Angular" link="https://angular.io/"> </app-footer-item>
             <app-footer-item title="Angular CLI" link="https://cli.angular.io/"> </app-footer-item>
           </div>
@@ -27,13 +27,13 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
             <app-footer-item
               icon="history"
               [title]="language === 'zh' ? '更新日志' : 'Changelog'"
-              [link]="language === 'zh' ? 'http://ng.ant.design/docs/changelog/zh' : 'http://ng.ant.design/docs/changelog/en'"
+              [link]="language === 'zh' ? 'https://ng.ant.design/docs/changelog/zh' : 'https://ng.ant.design/docs/changelog/en'"
             >
             </app-footer-item>
             <app-footer-item
               icon="profile"
               [title]="language === 'zh' ? '常见问题' : 'FAQ'"
-              [link]="language === 'zh' ? 'http://ng.ant.design/docs/faq/zh' : 'http://ng.ant.design/docs/faq/en'"
+              [link]="language === 'zh' ? 'https://ng.ant.design/docs/faq/zh' : 'https://ng.ant.design/docs/faq/en'"
             >
             </app-footer-item>
             <app-footer-item

@@ -47,7 +47,7 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
         <nz-select-search
           [disabled]="disabled"
           [value]="inputValue!"
-          [showInput]="open && showSearch"
+          [showInput]="showSearch"
           [mirrorSync]="false"
           [autofocus]="autofocus"
           [focusTrigger]="open"
@@ -70,8 +70,7 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
           [contentTemplateOutletContext]="item.contentTemplateOutletContext"
           (@zoomMotion.done)="onAnimationEnd()"
           (delete)="onDeleteItem(item.contentTemplateOutletContext)"
-        >
-        </nz-select-item>
+        ></nz-select-item>
         <nz-select-search
           [disabled]="disabled"
           [value]="inputValue!"

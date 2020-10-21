@@ -116,6 +116,8 @@ export default {
     filterTitle: 'Filter menu',
     filterConfirm: 'OK',
     filterReset: 'Reset',
+    filterEmptyText: 'No filters',
+    emptyText: 'No data',
     selectAll: 'Select current page',
     selectInvert: 'Invert current page',
     selectionAll: 'Select all data',
@@ -139,7 +141,13 @@ export default {
     titles: ['', ''],
     searchPlaceholder: 'Search here',
     itemUnit: 'item',
-    itemsUnit: 'items'
+    itemsUnit: 'items',
+    remove: 'Remove',
+    selectCurrent: 'Select current page',
+    removeCurrent: 'Remove current page',
+    selectAll: 'Select all data',
+    removeAll: 'Remove all data',
+    selectInvert: 'Invert current page'
   },
   Upload: {
     uploading: 'Uploading...',
@@ -162,54 +170,5 @@ export default {
   },
   PageHeader: {
     back: 'Back'
-  },
-  Form: {
-    defaultValidateMessages: {
-      default: 'Field validation error ${label}',
-      required: 'Please enter ${label}',
-      enum: '${label} must be one of [${enum}]',
-      whitespace: '${label} cannot be a blank character',
-      date: {
-        format: '${label} date format is invalid',
-        parse: '${label} cannot be converted to a date',
-        invalid: '${label} is an invalid date'
-      },
-      types: {
-        string: '${label} is not a valid ${type}',
-        method: '${label} is not a valid ${type}',
-        array: '${label} is not a valid ${type}',
-        object: '${label} is not a valid ${type}',
-        number: '${label} is not a valid ${type}',
-        date: '${label} is not a valid ${type}',
-        boolean: '${label} is not a valid ${type}',
-        integer: '${label} is not a valid ${type}',
-        float: '${label} is not a valid ${type}',
-        regexp: '${label} is not a valid ${type}',
-        email: '${label} is not a valid ${type}',
-        url: '${label} is not a valid ${type}',
-        hex: '${label} is not a valid ${type}'
-      },
-      string: {
-        len: '${label} must be ${len} characters',
-        min: '${label} at least ${min} characters',
-        max: '${label} up to ${max} characters',
-        range: '${label} must be between ${min}-${max} characters'
-      },
-      number: {
-        len: '${label} must be equal to ${len}',
-        min: '${label} minimum value is ${min}',
-        max: '${label} maximum value is ${max}',
-        range: '${label} must be between ${min}-${max}'
-      },
-      array: {
-        len: 'Must be ${len} ${label}',
-        min: 'At least ${min} ${label}',
-        max: 'At most ${max} ${label}',
-        range: 'The amount of ${label} must be between ${min}-${max}'
-      },
-      pattern: {
-        mismatch: '${label} does not match the pattern ${pattern}'
-      }
-    }
   }
 };

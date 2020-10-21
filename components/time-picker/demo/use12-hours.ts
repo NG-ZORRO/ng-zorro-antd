@@ -3,8 +3,8 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'nz-demo-time-picker-use12-hours',
   template: `
-    <nz-time-picker [(ngModel)]="time" [nzUse12Hours]="true"></nz-time-picker>
-    <nz-time-picker [(ngModel)]="time" [nzUse12Hours]="true" nzFormat="h:mm a"></nz-time-picker>
+    <nz-time-picker [(ngModel)]="time" [nzUse12Hours]="true" (ngModelChange)="log($event)"></nz-time-picker>
+    <nz-time-picker [(ngModel)]="time" [nzUse12Hours]="true" (ngModelChange)="log($event)" nzFormat="h:mm a"></nz-time-picker>
   `,
   styles: [
     `
@@ -16,4 +16,8 @@ import { Component } from '@angular/core';
 })
 export class NzDemoTimePickerUse12HoursComponent {
   time: Date | null = null;
+
+  log(value: Date): void {
+    console.log(value);
+  }
 }

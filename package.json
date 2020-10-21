@@ -26,8 +26,8 @@
     "integration": "npm run build:lib && bash ./integration-test.sh"
   },
   "dependencies": {
-    "@angular/cdk": "^10.0.2",
-    "@ant-design/icons-angular": "10.0.0-beta.0",
+    "@angular/cdk": "^10.2.4",
+    "@ant-design/icons-angular": "^10.0.0",
     "date-fns": "^2.10.0",
     "ngx-quicklink": "^0.2.1",
     "resize-observer-polyfill": "^1.5.1"
@@ -66,6 +66,7 @@
     "@types/node": "^12.11.1",
     "@types/parse5": "^5.0.2",
     "@types/shelljs": "^0.8.6",
+    "additional-service-worker-builder": "0.0.1",
     "antd-theme-generator": "1.2.2",
     "chalk": "^2.4.2",
     "classlist.js": "^1.1.20150312",
@@ -78,6 +79,7 @@
     "fs-extra": "^8.1.0",
     "gulp": "^4.0.2",
     "gulp-clean": "^0.4.0",
+    "html-minifier-terser": "^5.1.1",
     "husky": "^3.0.4",
     "immer": "^6.0.1",
     "intersection-observer": "^0.7.0",
@@ -115,6 +117,7 @@
     "rxjs": "~6.6.0",
     "shelljs": "^0.8.3",
     "sitemap": "^4.1.1",
+    "terser": "^5.3.4",
     "ts-node": "~8.3.0",
     "tsickle": "^0.38.1",
     "tslib": "^2.0.0",
