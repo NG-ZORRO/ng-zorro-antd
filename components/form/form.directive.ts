@@ -4,6 +4,7 @@
  */
 
 import { Directive, ElementRef, Input, OnChanges, OnDestroy, Renderer2, SimpleChange, SimpleChanges } from '@angular/core';
+import { ThemeType } from '@ant-design/icons-angular';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { BooleanInput, InputObservable } from 'ng-zorro-antd/core/types';
@@ -14,6 +15,11 @@ import { filter, map } from 'rxjs/operators';
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'form';
 
 export type NzFormLayoutType = 'horizontal' | 'vertical' | 'inline';
+
+export const DefaultTooltipIcon = {
+  type: 'question-circle',
+  theme: 'outline'
+} as const;
 
 @Directive({
   selector: '[nz-form]',
@@ -33,6 +39,7 @@ export class NzFormDirective implements OnChanges, OnDestroy, InputObservable {
   @Input() @WithConfig() @InputBoolean() nzNoColon: boolean = false;
   @Input() @WithConfig() nzAutoTips: Record<string, Record<string, string>> = {};
   @Input() @InputBoolean() nzDisableAutoTips = false;
+  @Input() @WithConfig() nzTooltipIcon: string | { type: string; theme: ThemeType } = DefaultTooltipIcon;
 
   destroy$ = new Subject();
   private inputChanges$ = new Subject<SimpleChanges>();

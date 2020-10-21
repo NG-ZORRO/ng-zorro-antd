@@ -54,9 +54,10 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 | 参数 | 说明 | 类型 | 默认值 | 全局配置 |
 | --- | --- | --- | --- | --- |
 | `[nzLayout]`| 表单布局 | `'horizontal' \| 'vertical' \| 'inline'` | `'horizontal'` |
-| `[nzNoColon]`| 配置 `nz-form-label` 的 `[nzNoColon]` 的默认值 | `boolean` | `false` | ✅ |
 | `[nzAutoTips]`| 配置 `nz-form-control` 的 `[nzAutoTips]` 的默认值, 具体用法请参考示例：**自动提示** | `Record<string, Record<string, string>>` | `{}` | ✅ |
 | `[nzDisableAutoTips]`| 配置 `nz-form-control` 的 `[nzDisableAutoTips]` 的默认值 | `boolean` | `false` | ✅ |
+| `[nzNoColon]`| 配置 `nz-form-label` 的 `[nzNoColon]` 的默认值 | `boolean` | `false` | ✅ |
+| `[nzTooltipIcon]`| 配置 `nz-form-label` 的 `[nzTooltipIcon]` 的默认值 | `string \| { type: string; theme: ThemeType }` | `{ type: 'question-circle', theme: 'outline' }` | ✅ |
 
 ### nz-form-item
 
@@ -75,6 +76,8 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 | `[nzRequired]`| 当前项是否为必填，仅影响样式 | `boolean` | `false` |
 | `[nzNoColon]`| 是否不显示 label 后面的冒号 | `boolean` | `false` |
 | `[nzFor]`| label 标签的 for 属性	 | `string` | - |
+| `[nzTooltipTitle]`| 配置提示信息 | `string \| TemplateRef<void>` | - |
+| `[nzTooltipIcon]`| 配置提示信息的图标 | `string \| NzFormTooltipIcon` | - |
 
 ### nz-form-control
 
