@@ -21,7 +21,7 @@ import {
   SimpleChanges,
   ViewContainerRef
 } from '@angular/core';
-import { POSITION_MAP } from 'ng-zorro-antd/core/overlay';
+import { getPlacementName, POSITION_MAP } from 'ng-zorro-antd/core/overlay';
 import { BooleanInput, IndexableObject } from 'ng-zorro-antd/core/types';
 import { InputBoolean } from 'ng-zorro-antd/core/util';
 import { BehaviorSubject, combineLatest, EMPTY, fromEvent, merge, Subject } from 'rxjs';
@@ -42,6 +42,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
   static ngAcceptInputType_nzClickHide: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzVisible: BooleanInput;
+  static ngAcceptInputType_nzArrow: BooleanInput;
 
   private portal?: TemplatePortal;
   private overlayRef: OverlayRef | null = null;
@@ -54,6 +55,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
   private inputVisible$ = new BehaviorSubject<boolean>(false);
   private nzTrigger$ = new BehaviorSubject<'click' | 'hover'>('hover');
   private overlayClose$ = new Subject<boolean>();
+  @Input() @InputBoolean() nzArrow: boolean = false;
   @Input() nzDropdownMenu: NzDropdownMenuComponent | null = null;
   @Input() nzTrigger: 'click' | 'hover' = 'hover';
   @Input() nzMatchWidthElement: ElementRef | null = null;
@@ -134,6 +136,9 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
           if (visible) {
             /** set up overlayRef **/
             if (!this.overlayRef) {
+              this.positionStrategy.positionChanges
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(p => this.setDropdownMenuValue('placement', getPlacementName(p)!));
               /** new overlay **/
               this.overlayRef = this.overlay.create({
                 positionStrategy: this.positionStrategy,
@@ -183,7 +188,7 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { nzVisible, nzDisabled, nzOverlayClassName, nzOverlayStyle, nzTrigger } = changes;
+    const { nzArrow, nzVisible, nzDisabled, nzOverlayClassName, nzOverlayStyle, nzTrigger } = changes;
     if (nzTrigger) {
       this.nzTrigger$.next(this.nzTrigger);
     }
@@ -204,6 +209,9 @@ export class NzDropDownDirective implements AfterViewInit, OnDestroy, OnChanges,
     }
     if (nzOverlayStyle) {
       this.setDropdownMenuValue('nzOverlayStyle', this.nzOverlayStyle);
+    }
+    if (nzArrow) {
+      this.setDropdownMenuValue('arrow', this.nzArrow);
     }
   }
 }

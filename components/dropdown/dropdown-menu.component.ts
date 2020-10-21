@@ -41,6 +41,13 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
     <ng-template>
       <div
         class="ant-dropdown"
+        [class.ant-dropdown-placement-topLeft]="placement === 'topLeft'"
+        [class.ant-dropdown-placement-topCenter]="placement === 'top'"
+        [class.ant-dropdown-placement-topRight]="placement === 'topRight'"
+        [class.ant-dropdown-placement-bottomLeft]="placement === 'bottomLeft'"
+        [class.ant-dropdown-placement-bottomCenter]="placement === 'bottom'"
+        [class.ant-dropdown-placement-bottomRight]="placement === 'bottomRight'"
+        [class.ant-dropdown-show-arrow]="arrow"
         [ngClass]="nzOverlayClassName"
         [ngStyle]="nzOverlayStyle"
         [@slideMotion]="'enter'"
@@ -49,6 +56,7 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
         (mouseenter)="setMouseState(true)"
         (mouseleave)="setMouseState(false)"
       >
+        <div *ngIf="arrow" class="ant-dropdown-arrow"></div>
         <ng-content></ng-content>
       </div>
     </ng-template>
@@ -58,11 +66,14 @@ export type NzPlacementType = 'bottomLeft' | 'bottomCenter' | 'bottomRight' | 't
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NzDropdownMenuComponent implements AfterContentInit {
+  arrow: boolean = false;
+  dropDownPosition: 'top' | 'center' | 'bottom' = 'bottom';
   mouseState$ = new BehaviorSubject<boolean>(false);
   isChildSubMenuOpen$ = this.nzMenuService.isChildSubMenuOpen$;
   descendantMenuItemClick$ = this.nzMenuService.descendantMenuItemClick$;
   nzOverlayClassName: string = '';
   nzOverlayStyle: IndexableObject = {};
+  placement: string = '';
   @ViewChild(TemplateRef, { static: true }) templateRef!: TemplateRef<NzSafeAny>;
 
   setMouseState(visible: boolean): void {
