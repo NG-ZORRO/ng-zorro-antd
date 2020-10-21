@@ -328,7 +328,6 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
 
   set nzTrigger(value: NzTooltipTrigger) {
     this._trigger = value;
-    this._hasBackdrop = this._trigger === 'click';
   }
 
   get nzTrigger(): NzTooltipTrigger {
@@ -350,9 +349,7 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
 
   origin!: CdkOverlayOrigin;
   preferredPlacement = 'top';
-
   _classMap: NgClassInterface = {};
-  _hasBackdrop = false;
   _prefix = 'ant-tooltip-placement';
   _positions: ConnectionPositionPair[] = [...DEFAULT_TOOLTIP_POSITIONS];
 
@@ -419,6 +416,12 @@ export abstract class NzTooltipBaseComponent implements OnDestroy {
   setOverlayOrigin(origin: CdkOverlayOrigin): void {
     this.origin = origin;
     this.cdr.markForCheck();
+  }
+
+  onClickOutside(event: MouseEvent): void {
+    if (!this.origin.elementRef.nativeElement.contains(event.target)) {
+      this.hide();
+    }
   }
 
   /**

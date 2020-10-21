@@ -109,16 +109,15 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
     <ng-template
       cdkConnectedOverlay
       nzConnectedOverlay
-      [cdkConnectedOverlayHasBackdrop]="true"
       [cdkConnectedOverlayMinWidth]="$any(nzDropdownMatchSelectWidth ? null : triggerWidth)"
       [cdkConnectedOverlayWidth]="$any(nzDropdownMatchSelectWidth ? triggerWidth : null)"
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayTransformOriginOn]="'.ant-select-dropdown'"
       [cdkConnectedOverlayPanelClass]="nzDropdownClassName!"
-      (backdropClick)="setOpenState(false)"
+      [cdkConnectedOverlayOpen]="nzOpen"
+      (overlayOutsideClick)="onClickOutside($event)"
       (detach)="setOpenState(false)"
       (positionChange)="onPositionChange($event)"
-      [cdkConnectedOverlayOpen]="nzOpen"
     >
       <nz-option-container
         [ngStyle]="nzDropdownStyle"
@@ -444,6 +443,12 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
 
   onClearSelection(): void {
     this.updateListOfValue([]);
+  }
+
+  onClickOutside(event: MouseEvent): void {
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.setOpenState(false);
+    }
   }
 
   focus(): void {

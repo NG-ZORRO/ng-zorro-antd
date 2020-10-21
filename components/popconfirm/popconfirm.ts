@@ -119,8 +119,7 @@ export class NzPopconfirmDirective extends NzTooltipBaseDirective {
       cdkConnectedOverlay
       nzConnectedOverlay
       [cdkConnectedOverlayOrigin]="origin"
-      [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"
-      (backdropClick)="hide()"
+      (overlayOutsideClick)="onClickOutside($event)"
       (detach)="hide()"
       (positionChange)="onPositionChange($event)"
       [cdkConnectedOverlayPositions]="_positions"
@@ -180,7 +179,6 @@ export class NzPopconfirmComponent extends NzToolTipComponent implements OnDestr
   protected _trigger: NzTooltipTrigger = 'click';
 
   _prefix = 'ant-popover-placement';
-  _hasBackdrop = true;
 
   constructor(cdr: ChangeDetectorRef, @Host() @Optional() public noAnimation?: NzNoAnimationDirective) {
     super(cdr, noAnimation);

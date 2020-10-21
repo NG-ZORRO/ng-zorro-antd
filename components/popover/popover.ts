@@ -75,13 +75,12 @@ export class NzPopoverDirective extends NzTooltipBaseDirective {
       cdkConnectedOverlay
       nzConnectedOverlay
       [cdkConnectedOverlayOrigin]="origin"
-      [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"
-      (backdropClick)="hide()"
-      (detach)="hide()"
-      (positionChange)="onPositionChange($event)"
       [cdkConnectedOverlayPositions]="_positions"
       [cdkConnectedOverlayOpen]="_visible"
       [cdkConnectedOverlayPush]="true"
+      (overlayOutsideClick)="onClickOutside($event)"
+      (detach)="hide()"
+      (positionChange)="onPositionChange($event)"
     >
       <div
         class="ant-popover"

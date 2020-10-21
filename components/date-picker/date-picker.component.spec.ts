@@ -66,7 +66,7 @@ describe('NzDatePickerComponent', () => {
       openPickerByClickTrigger();
       expect(getPickerContainer()).not.toBeNull();
 
-      dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+      dispatchMouseEvent(document.body, 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -92,7 +92,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       openPickerByClickTrigger();
 
-      dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+      dispatchMouseEvent(document.body, 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -242,7 +242,6 @@ describe('NzDatePickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
-      expect(queryFromOverlay('.cdk-overlay-backdrop')).toBeNull();
 
       fixtureInstance.nzOpen = false;
       fixture.detectChanges();
@@ -362,7 +361,7 @@ describe('NzDatePickerComponent', () => {
       openPickerByClickTrigger();
       expect(nzOnOpenChange).toHaveBeenCalledWith(true);
 
-      dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+      dispatchMouseEvent(document.body, 'click');
       fixture.detectChanges();
       flush();
       expect(nzOnOpenChange).toHaveBeenCalledWith(false);
@@ -776,7 +775,7 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
 
-      dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+      dispatchMouseEvent(document.body, 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();

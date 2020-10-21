@@ -113,7 +113,7 @@ describe('mention', () => {
       fixture.detectChanges();
       flush();
       expect(mention.isOpen).toBe(true);
-      dispatchFakeEvent(document, 'click');
+      dispatchFakeEvent(document.body, 'click');
       expect(mention.isOpen).toBe(false);
     }));
 

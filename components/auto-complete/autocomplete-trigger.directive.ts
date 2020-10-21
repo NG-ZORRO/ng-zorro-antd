@@ -19,8 +19,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { NzSafeAny, OnChangeType, OnTouchedType } from 'ng-zorro-antd/core/types';
 import { NzInputGroupWhitSuffixOrPrefixDirective } from 'ng-zorro-antd/input';
 
-import { fromEvent, merge, Subject, Subscription } from 'rxjs';
-import { delay, takeUntil, tap } from 'rxjs/operators';
+import { Subject, Subscription } from 'rxjs';
+import { delay, filter, takeUntil, tap } from 'rxjs/operators';
 
 import { NzAutocompleteOptionComponent } from './autocomplete-option.component';
 import { NzAutocompleteComponent } from './autocomplete.component';
@@ -74,7 +74,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
   private previousValue: string | number | null = null;
   private selectionChangeSubscription!: Subscription;
   private optionsChangeSubscription!: Subscription;
-  private overlayBackdropClickSubscription!: Subscription;
+  private overlayOutsideClickSubscription!: Subscription;
 
   constructor(
     private elementRef: ElementRef,
@@ -118,7 +118,7 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
 
       if (this.overlayRef && this.overlayRef.hasAttached()) {
         this.selectionChangeSubscription.unsubscribe();
-        this.overlayBackdropClickSubscription.unsubscribe();
+        this.overlayOutsideClickSubscription.unsubscribe();
         this.optionsChangeSubscription.unsubscribe();
         this.overlayRef.dispose();
         this.overlayRef = null;
@@ -214,21 +214,12 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     });
   }
 
-  /**
-   * Subscription external click and close panel
-   */
-  private subscribeOverlayBackdropClick(): Subscription {
-    return merge<MouseEvent | TouchEvent>(
-      fromEvent<MouseEvent>(this.document, 'click'),
-      fromEvent<TouchEvent>(this.document, 'touchend')
-    ).subscribe((event: MouseEvent | TouchEvent) => {
-      const clickTarget = event.target as HTMLElement;
-
-      // Make sure is not self
-      if (clickTarget !== this.elementRef.nativeElement && !this.overlayRef!.overlayElement.contains(clickTarget) && this.panelOpen) {
+  private subscribeOverlayOutsideClick(): Subscription {
+    return this.overlayRef!.outsidePointerEvents()
+      .pipe(filter((e: MouseEvent) => !this.elementRef.nativeElement.contains(e.target)))
+      .subscribe(() => {
         this.closePanel();
-      }
-    });
+      });
   }
 
   private attachOverlay(): void {
@@ -247,8 +238,8 @@ export class NzAutocompleteTriggerDirective implements ControlValueAccessor, OnD
     if (this.overlayRef && !this.overlayRef.hasAttached()) {
       this.overlayRef.attach(this.portal);
       this.selectionChangeSubscription = this.subscribeSelectionChange();
-      this.overlayBackdropClickSubscription = this.subscribeOverlayBackdropClick();
       this.optionsChangeSubscription = this.subscribeOptionsChange();
+      this.overlayOutsideClickSubscription = this.subscribeOverlayOutsideClick();
       this.overlayRef
         .detachments()
         .pipe(takeUntil(this.destroy$))

@@ -60,7 +60,7 @@ describe('NzRangePickerComponent', () => {
       openPickerByClickTrigger();
       expect(getPickerContainer()).not.toBeNull();
 
-      dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+      dispatchMouseEvent(document.body, 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -71,7 +71,7 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       openPickerByClickTrigger();
 
-      dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+      dispatchMouseEvent(document.body, 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -151,7 +151,6 @@ describe('NzRangePickerComponent', () => {
       tick(500);
       fixture.detectChanges();
       expect(getPickerContainer()).not.toBeNull();
-      expect(queryFromOverlay('.cdk-overlay-backdrop')).toBeNull();
 
       fixtureInstance.nzOpen = false;
       fixture.detectChanges();
@@ -217,7 +216,7 @@ describe('NzRangePickerComponent', () => {
       openPickerByClickTrigger();
       expect(nzOnOpenChange).toHaveBeenCalledWith(true);
 
-      dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+      dispatchMouseEvent(document.body, 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -356,7 +355,7 @@ describe('NzRangePickerComponent', () => {
       dispatchMouseEvent(getSuperNextBtn('left'), 'click');
       fixture.detectChanges();
 
-      dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+      dispatchMouseEvent(document.body, 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -430,7 +429,7 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       expect(getRangePickerRightInput(fixture.debugElement) === document.activeElement).toBeTruthy();
 
-      dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+      dispatchMouseEvent(document.body, 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -511,7 +510,7 @@ describe('NzRangePickerComponent', () => {
       ).toBeTruthy();
 
       // Close left panel
-      dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+      dispatchMouseEvent(document.body, 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -537,7 +536,7 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
 
       // Close left panel
-      dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+      dispatchMouseEvent(document.body, 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -548,7 +547,7 @@ describe('NzRangePickerComponent', () => {
       expect(+queryFromOverlay('.ant-picker-time-panel-column:nth-child(3) li:first-child').textContent!.trim()).toBe(1);
 
       // Close left panel
-      dispatchMouseEvent(queryFromOverlay('.cdk-overlay-backdrop'), 'click');
+      dispatchMouseEvent(document.body, 'click');
       fixture.detectChanges();
       tick(500);
       fixture.detectChanges();
@@ -767,7 +766,6 @@ describe('NzRangePickerComponent', () => {
       fixture.detectChanges();
       flush();
       fixture.detectChanges();
-      expect(overlayContainerElement.querySelector('.cdk-overlay-backdrop')).toBeNull();
       // TODO: input value should not be change
       // expect(leftInput.value).toBe('2018-09-11');
     }));

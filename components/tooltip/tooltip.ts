@@ -74,10 +74,9 @@ export class NzTooltipDirective extends NzTooltipBaseDirective {
       nzConnectedOverlay
       [cdkConnectedOverlayOrigin]="origin"
       [cdkConnectedOverlayOpen]="_visible"
-      [cdkConnectedOverlayHasBackdrop]="_hasBackdrop"
       [cdkConnectedOverlayPositions]="_positions"
       [cdkConnectedOverlayPush]="true"
-      (backdropClick)="hide()"
+      (overlayOutsideClick)="onClickOutside($event)"
       (detach)="hide()"
       (positionChange)="onPositionChange($event)"
     >

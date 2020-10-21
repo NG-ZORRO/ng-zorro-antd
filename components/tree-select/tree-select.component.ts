@@ -66,11 +66,10 @@ const TREE_SELECT_DEFAULT_CLASS = 'ant-select-dropdown ant-select-tree-dropdown'
       nzConnectedOverlay
       [cdkConnectedOverlayOrigin]="cdkOverlayOrigin"
       [cdkConnectedOverlayOpen]="nzOpen"
-      [cdkConnectedOverlayHasBackdrop]="true"
       [cdkConnectedOverlayTransformOriginOn]="'.ant-select-tree-dropdown'"
       [cdkConnectedOverlayMinWidth]="$any(nzDropdownMatchSelectWidth ? null : triggerWidth)"
       [cdkConnectedOverlayWidth]="$any(nzDropdownMatchSelectWidth ? triggerWidth : null)"
-      (backdropClick)="closeDropDown()"
+      (overlayOutsideClick)="onClickOutside($event)"
       (detach)="closeDropDown()"
       (positionChange)="onPositionChange($event)"
     >
@@ -516,6 +515,12 @@ export class NzTreeSelectComponent extends NzTreeBase implements ControlValueAcc
       this.removeSelected(node, false);
     });
     this.nzCleared.emit();
+  }
+
+  onClickOutside(event: MouseEvent): void {
+    if (!this.elementRef.nativeElement.contains(event.target)) {
+      this.closeDropDown();
+    }
   }
 
   setSearchValues($event: NzFormatEmitEvent): void {
