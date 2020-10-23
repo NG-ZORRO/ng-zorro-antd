@@ -18,7 +18,8 @@ import {
 } from '@angular/core';
 
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
-import { NgClassInterface, NgStyleInterface, NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { NgClassInterface, NgStyleInterface, NumberInput, NzShapeSCType, NzSizeLDSType } from 'ng-zorro-antd/core/types';
+import { InputNumber } from 'ng-zorro-antd/core/util';
 
 const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
 
@@ -49,9 +50,12 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'avatar';
   encapsulation: ViewEncapsulation.None
 })
 export class NzAvatarComponent implements OnChanges {
+  static ngAcceptInputType_nzGap: NumberInput;
+
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   @Input() @WithConfig() nzShape: NzShapeSCType = 'circle';
   @Input() @WithConfig() nzSize: NzSizeLDSType | number = 'default';
+  @Input() @WithConfig() @InputNumber() nzGap = 4;
   @Input() nzText?: string;
   @Input() nzSrc?: string;
   @Input() nzSrcSet?: string;
@@ -110,7 +114,9 @@ export class NzAvatarComponent implements OnChanges {
 
     const childrenWidth = this.textEl!.nativeElement.offsetWidth;
     const avatarWidth = this.el.getBoundingClientRect().width;
-    const scale = avatarWidth - 8 < childrenWidth ? (avatarWidth - 8) / childrenWidth : 1;
+    const offset = this.nzGap * 2 < avatarWidth ? this.nzGap * 2 : 8;
+    const scale = avatarWidth - offset < childrenWidth ? (avatarWidth - offset) / childrenWidth : 1;
+
     this.textStyles = {
       transform: `scale(${scale}) translateX(-50%)`
     };

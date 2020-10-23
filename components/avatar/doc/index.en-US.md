@@ -17,11 +17,12 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 
 | Property | Description | Type | Default | Global Config |
 | -------- | ----------- | ---- | ------- | ------------- |
-| `[nzIcon]` | the `Icon` type for an icon avatar, see `Icon` | `string` | - |
-| `[nzShape]` | the shape of avatar | `'circle' \| 'square'` | `'circle'` | ✅ |
-| `[nzSize]` | the size of the avatar | `'large' \| 'small' \| 'default' \| number` | `'default'` | ✅ |
-| `[nzSrc]` | the address of the image for an image avatar | `string` | - |
+| `[nzIcon]` | The `Icon` type for an icon avatar, see `Icon` | `string` | - |
+| `[nzShape]` | The shape of avatar | `'circle' \| 'square'` | `'circle'` | ✅ |
+| `[nzSize]` | The size of the avatar | `'large' \| 'small' \| 'default' \| number` | `'default'` | ✅ |
+| `[nzGap]` | Letter type unit distance between left and right sides | `number` | `4` | ✅ |
+| `[nzSrc]` | The address of the image for an image avatar | `string` | - |
 | `[nzSrcSet]` | a list of sources to use for different screen resolutions | string | - |
 | `[nzAlt]` | This attribute defines the alternative text describing the image | string | - |
-| `[nzText]` | letter type avatar | `string` | - |
-| `(nzError)` | handler when img load error, call the `preventDefault` method to prevent default fallback behavior | `EventEmitter<Event>` | - |
+| `[nzText]` | Letter type avatar | `string` | - |
+| `(nzError)` | Handler when img load error, call the `preventDefault` method to prevent default fallback behavior | `EventEmitter<Event>` | - |

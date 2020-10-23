@@ -65,6 +65,7 @@ export interface AlertConfig {
 export interface AvatarConfig {
   nzShape?: NzShapeSCType;
   nzSize?: NzSizeLDSType | number;
+  nzGap?: number;
 }
 
 export interface AnchorConfig {
