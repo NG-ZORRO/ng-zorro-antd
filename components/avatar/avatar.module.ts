@@ -7,11 +7,12 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 
+import { NzAvatarGroupComponent } from './avatar-group.component';
 import { NzAvatarComponent } from './avatar.component';
 
 @NgModule({
-  declarations: [NzAvatarComponent],
-  exports: [NzAvatarComponent],
+  declarations: [NzAvatarComponent, NzAvatarGroupComponent],
+  exports: [NzAvatarComponent, NzAvatarGroupComponent],
   imports: [CommonModule, NzIconModule, PlatformModule]
 })
 export class NzAvatarModule {}

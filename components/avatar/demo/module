@@ -2,6 +2,9 @@ import { CommonModule } from '@angular/common';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 
-export const moduleList = [ CommonModule, NzAvatarModule, NzBadgeModule, NzButtonModule, NzInputNumberModule ];
+export const moduleList = [ CommonModule, NzAvatarModule, NzBadgeModule, NzButtonModule, NzToolTipModule, NzPopoverModule, NzDividerModule, NzInputNumberModule ];

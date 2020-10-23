@@ -26,3 +26,12 @@ import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 | `[nzAlt]` | This attribute defines the alternative text describing the image | string | - |
 | `[nzText]` | Letter type avatar | `string` | - |
 | `(nzError)` | Handler when img load error, call the `preventDefault` method to prevent default fallback behavior | `EventEmitter<Event>` | - |
+
+### nz-avatar-group
+
+```html
+ <nz-avatar-group>
+  <nz-avatar nzIcon="user"></nz-avatar>
+  ...
+</nz-avatar-group>
+```

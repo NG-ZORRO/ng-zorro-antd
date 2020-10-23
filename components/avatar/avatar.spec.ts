@@ -5,6 +5,7 @@ import { createFakeEvent } from 'ng-zorro-antd/core/testing';
 
 import { NzIconTestModule } from 'ng-zorro-antd/icon/testing';
 
+import { NzAvatarGroupComponent } from './avatar-group.component';
 import { NzAvatarComponent } from './avatar.component';
 import { NzAvatarModule } from './avatar.module';
 
@@ -21,7 +22,23 @@ function getType(dl: DebugElement): string {
   }
   return el.innerText.trim().length === 0 ? '' : 'text';
 }
+describe('avatar group', () => {
+  let fixture: ComponentFixture<TestAvatarGroupComponent>;
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [NzAvatarModule],
+      declarations: [TestAvatarGroupComponent]
+    }).compileComponents();
+    fixture = TestBed.createComponent(TestAvatarGroupComponent);
+    fixture.detectChanges();
+  });
 
+  it('should avatar group work', () => {
+    fixture.detectChanges();
+    const avatarGroup = fixture.debugElement.query(By.directive(NzAvatarGroupComponent));
+    expect(avatarGroup.nativeElement.classList).toContain('ant-avatar-group');
+  });
+});
 describe('avatar', () => {
   let fixture: ComponentFixture<TestAvatarComponent>;
   let context: TestAvatarComponent;
@@ -276,3 +293,10 @@ class TestAvatarComponent {
   nzSrcSet?: string;
   nzAlt?: string;
 }
+
+@Component({
+  template: `
+    <nz-avatar-group></nz-avatar-group>
+  `
+})
+class TestAvatarGroupComponent {}
