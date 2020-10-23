@@ -31,7 +31,7 @@ title: 资源推荐
 开发工具 |[Angular Builders](https://github.com/just-jeb/angular-builders) | Angular CLI 的 Webpack 拓展工具
 开发工具 |[ngx-planet](https://github.com/worktile/ngx-planet) | Angular 的微前端方案
 开发工具|[Angular Universal](https://universal.angular.io/) | Angular服务端渲染工具
-数据流方案|[Akita](https://netbasal.gitbook.io/akita/) | Akita 数据流方案
+数据流方案|[Akita](https://datorama.github.io/akita/) | Akita 数据流方案
 数据流方案|[ngxs](https://ngxs.io/) | NGXS 数据流方案
 数据流方案|[ngrx](https://ngrx.io/) | NGRX 数据流方案
 
