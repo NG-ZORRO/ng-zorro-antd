@@ -36,9 +36,7 @@ describe('typography', () => {
     });
 
     it('should selector work', () => {
-      const elements = componentElement.querySelectorAll(
-        'h1[nz-title],' + 'h2[nz-title],' + 'h3[nz-title],' + 'h4[nz-title],' + 'p[nz-paragraph],' + 'span[nz-text]'
-      );
+      const elements = componentElement.querySelectorAll('[nz-typography]');
       elements.forEach(el => {
         expect(el.classList).toContain('ant-typography');
       });
@@ -46,10 +44,9 @@ describe('typography', () => {
 
     it('should [nzType] work', () => {
       expect(componentElement.querySelector('.test-secondary')!.classList).toContain('ant-typography-secondary');
-
       expect(componentElement.querySelector('.test-warning')!.classList).toContain('ant-typography-warning');
-
       expect(componentElement.querySelector('.test-danger')!.classList).toContain('ant-typography-danger');
+      expect(componentElement.querySelector('.test-success')!.classList).toContain('ant-typography-success');
     });
 
     it('should [nzDisabled] work', () => {
@@ -339,21 +336,23 @@ describe('typography', () => {
 
 @Component({
   template: `
-    <h1 nz-title>h1. Ant Design</h1>
-    <h2 nz-title>h2. Ant Design</h2>
-    <h3 nz-title>h3. Ant Design</h3>
-    <h4 nz-title>h4. Ant Design</h4>
-    <p nz-paragraph>Ant Design, a design language for background applications, is refined by Ant UED Team</p>
-    <span nz-text>Ant Design</span>
-    <span class="test-secondary" nz-text nzType="secondary">Ant Design</span>
-    <span class="test-warning" nz-text nzType="warning">Ant Design</span>
-    <span class="test-danger" nz-text nzType="danger">Ant Design</span>
-    <span class="test-disabled" nz-text nzDisabled>Ant Design</span>
-    <span nz-text><mark>Ant Design</mark></span>
-    <span nz-text><code>Ant Design</code></span>
-    <span nz-text><u>Ant Design</u></span>
-    <span nz-text><del>Ant Design</del></span>
-    <span nz-text><strong>Ant Design</strong></span>
+    <h1 nz-typography>h1. Ant Design</h1>
+    <h2 nz-typography>h2. Ant Design</h2>
+    <h3 nz-typography>h3. Ant Design</h3>
+    <h4 nz-typography>h4. Ant Design</h4>
+    <h5 nz-typography>h5. Ant Design</h5>
+    <p nz-typography>Ant Design, a design language for background applications, is refined by Ant UED Team</p>
+    <span nz-typography>Ant Design</span>
+    <span class="test-secondary" nz-typography nzType="secondary">Ant Design</span>
+    <span class="test-success" nz-typography nzType="success">Ant Design</span>
+    <span class="test-warning" nz-typography nzType="warning">Ant Design</span>
+    <span class="test-danger" nz-typography nzType="danger">Ant Design</span>
+    <span class="test-disabled" nz-typography nzDisabled>Ant Design</span>
+    <span nz-typography><mark>Ant Design</mark></span>
+    <span nz-typography><code>Ant Design</code></span>
+    <span nz-typography><u>Ant Design</u></span>
+    <span nz-typography><del>Ant Design</del></span>
+    <span nz-typography><strong>Ant Design</strong></span>
   `
 })
 export class NzTestTypographyComponent {}
@@ -373,7 +372,9 @@ export class NzTestTypographyCopyComponent {
 }
 
 @Component({
-  template: ` <p nz-paragraph nzEditable (nzContentChange)="onChange($event)" [nzContent]="str"></p> `
+  template: `
+    <p nz-paragraph nzEditable (nzContentChange)="onChange($event)" [nzContent]="str"></p>
+  `
 })
 export class NzTestTypographyEditComponent {
   @ViewChild(NzTypographyComponent, { static: false }) nzTypographyComponent!: NzTypographyComponent;

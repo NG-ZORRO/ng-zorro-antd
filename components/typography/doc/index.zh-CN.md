@@ -32,7 +32,7 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 | `[nzCopyText]` | 自定义被拷贝的文本 | `string` | - ||
 | `[nzDisabled]` | 禁用文本 | `boolean` | `false` ||
 | `[nzEllipsisRows]` | 自动溢出省略时省略行数 | `number` | `1` | ✅ |
-| `[nzType]` | 文本类型 | `'secondary'｜'warning'｜'danger'` | - ||
+| `[nzType]` | 文本类型 | `'secondary' \| 'warning' \| 'danger' \| 'success'` | - ||
 | `(nzContentChange)` | 当用户提交编辑内容时触发 | `EventEmitter<string>` | - ||
 | `(nzExpandChange)` | 展开省略文本时触发 | `EventEmitter<void>` | - ||
 | `(nzOnEllipsis)` | 当省略状态变化时触发 | `EventEmitter<boolean>` | - ||
