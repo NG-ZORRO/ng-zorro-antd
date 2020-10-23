@@ -18,6 +18,8 @@ export class MenuService {
   mode$ = new BehaviorSubject<NzMenuModeType>('vertical');
   inlineIndent$ = new BehaviorSubject<number>(24);
   isChildSubMenuOpen$ = new BehaviorSubject<boolean>(false);
+  subMenus: number = 0;
+  menuId: number = 0;
 
   onDescendantMenuItemClick(menu: NzSafeAny): void {
     this.descendantMenuItemClick$.next(menu);
@@ -37,5 +39,11 @@ export class MenuService {
 
   setInlineIndent(indent: number): void {
     this.inlineIndent$.next(indent);
+  }
+  setMenuId(id: number): void {
+    this.menuId = id;
+  }
+  getNewSubmenuId(): number {
+    return ++this.subMenus;
   }
 }

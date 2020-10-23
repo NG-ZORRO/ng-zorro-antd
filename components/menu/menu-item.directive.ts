@@ -37,7 +37,9 @@ import { NzSubmenuService } from './submenu.service';
     '[class.ant-menu-item-selected]': `!isMenuInsideDropDown && nzSelected`,
     '[class.ant-menu-item-disabled]': `!isMenuInsideDropDown && nzDisabled`,
     '[style.paddingLeft.px]': 'nzPaddingLeft || inlinePaddingLeft',
-    '(click)': 'clickMenuItem($event)'
+    '(click)': 'clickMenuItem($event)',
+    '[attr.aria-disabled]': 'nzDisabled? true:null',
+    role: 'menuitem'
   }
 })
 export class NzMenuItemDirective implements OnInit, OnChanges, OnDestroy, AfterContentInit {

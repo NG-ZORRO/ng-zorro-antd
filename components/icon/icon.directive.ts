@@ -84,6 +84,7 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
 
   ngOnInit(): void {
     this.renderer.setAttribute(this.el, 'class', `anticon ${this.el.className}`.trim());
+    this.renderer.setAttribute(this.el, 'role', 'img');
   }
 
   /**
@@ -108,6 +109,7 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
    * Replacement of `changeIcon` for more modifications.
    */
   private changeIcon2(): void {
+    this.setAriaLabel();
     this.setClassName();
     this._changeIcon().then(svgOrRemove => {
       if (svgOrRemove) {
@@ -132,6 +134,10 @@ export class NzIconDirective extends IconDirective implements OnInit, OnChanges,
     } else {
       this.renderer.removeAttribute(svg, 'style');
     }
+  }
+
+  private setAriaLabel(): void {
+    this.renderer.setAttribute(this.el, 'aria-label', this.type as string);
   }
 
   private setClassName(): void {

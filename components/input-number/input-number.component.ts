@@ -33,22 +33,28 @@ import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
   template: `
     <div class="ant-input-number-handler-wrap">
       <span
+        role="button"
+        aria-label="Increase Value"
         unselectable="unselectable"
         class="ant-input-number-handler ant-input-number-handler-up"
         (mousedown)="up($event)"
         (mouseup)="stop()"
         (mouseleave)="stop()"
         [class.ant-input-number-handler-up-disabled]="disabledUp"
+        [attr.aria-disabled]="nzDisabled || disabledUp ? true : null"
       >
         <i nz-icon nzType="up" class="ant-input-number-handler-up-inner"></i>
       </span>
       <span
+        role="button"
+        aria-label="Decrease Value"
         unselectable="unselectable"
         class="ant-input-number-handler ant-input-number-handler-down"
         (mousedown)="down($event)"
         (mouseup)="stop()"
         (mouseleave)="stop()"
         [class.ant-input-number-handler-down-disabled]="disabledDown"
+        [attr.aria-disabled]="nzDisabled || disabledDown ? true : null"
       >
         <i nz-icon nzType="down" class="ant-input-number-handler-down-inner"></i>
       </span>
@@ -56,6 +62,7 @@ import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
     <div class="ant-input-number-input-wrap">
       <input
         #inputElement
+        role="spinbutton"
         autocomplete="off"
         class="ant-input-number-input"
         [attr.id]="nzId"
@@ -66,6 +73,9 @@ import { InputBoolean, isNotNil } from 'ng-zorro-antd/core/util';
         [placeholder]="nzPlaceHolder"
         [attr.step]="nzStep"
         [attr.inputmode]="nzInputMode"
+        [attr.aria-valuemin]="nzMin"
+        [attr.aria-valuemax]="nzMax"
+        [attr.aria-valuenow]="valuenow"
         (keydown)="onKeyDown($event)"
         (keyup)="stop()"
         [ngModel]="displayValue"
@@ -316,6 +326,10 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
         this.disabledDown = true;
       }
     }
+  }
+
+  public get valuenow(): number | null {
+    return this.value || this.value === 0 ? this.value : null;
   }
 
   updateDisplayValue(value: number): void {

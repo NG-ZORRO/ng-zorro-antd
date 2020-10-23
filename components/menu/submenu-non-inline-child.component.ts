@@ -4,8 +4,10 @@
  */
 
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
@@ -52,7 +54,7 @@ import { NzMenuModeType, NzMenuThemeType } from './menu.types';
     '(mouseleave)': 'setMouseState(false)'
   }
 })
-export class NzSubmenuNoneInlineChildComponent implements OnInit, OnChanges {
+export class NzSubmenuNoneInlineChildComponent implements AfterViewInit, OnInit, OnChanges {
   @Input() menuClass: string = '';
   @Input() theme: NzMenuThemeType = 'light';
   @Input() templateOutlet: TemplateRef<NzSafeAny> | null = null;
@@ -61,7 +63,11 @@ export class NzSubmenuNoneInlineChildComponent implements OnInit, OnChanges {
   @Input() position = 'right';
   @Input() nzDisabled = false;
   @Input() nzOpen = false;
+  @Input() menuId: string = '';
   @Output() readonly subMenuMouseState = new EventEmitter<boolean>();
+
+  constructor(private elementRef: ElementRef) {}
+
   setMouseState(state: boolean): void {
     if (!this.nzDisabled) {
       this.subMenuMouseState.next(state);
@@ -86,6 +92,14 @@ export class NzSubmenuNoneInlineChildComponent implements OnInit, OnChanges {
     const { mode, nzOpen } = changes;
     if (mode || nzOpen) {
       this.calcMotionState();
+    }
+  }
+
+  ngAfterViewInit(): void {
+    const menuElement = this.elementRef.nativeElement.querySelector('ul');
+    menuElement?.setAttribute('role', 'menu');
+    if (this.menuId !== '') {
+      menuElement?.setAttribute('id', this.menuId);
     }
   }
 }

@@ -56,6 +56,21 @@ describe('nz-icon', () => {
       expect(icons[0].nativeElement.classList.contains('anticon-question')).not.toBe(true);
     });
 
+    it('should get icon aria label back', () => {
+      fixture.detectChanges();
+      expect(icons[0].nativeElement.getAttribute('role')).toBe('img');
+      expect(icons[0].nativeElement.getAttribute('aria-label')).toBe('question');
+      expect(icons[1].nativeElement.getAttribute('aria-label')).toBe('loading');
+    });
+
+    it('should change aria label when type changes', () => {
+      testComponent.type = 'question-circle';
+      fixture.detectChanges();
+      expect(icons[0].nativeElement.getAttribute('role')).toBe('img');
+      expect(icons[0].nativeElement.getAttribute('aria-label')).toBe('question-circle');
+      expect(icons[0].nativeElement.getAttribute('aria-label')).not.toBe('question');
+    });
+
     it('should support spin and cancel', fakeAsync(() => {
       fixture.detectChanges();
       tick(1000);
