@@ -227,7 +227,7 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
     private cdr: ChangeDetectorRef,
     renderer: Renderer2,
     i18n: NzI18nService,
-    @Optional() @Host() private nzFormDirective: NzFormDirective
+    @Optional() private nzFormDirective: NzFormDirective
   ) {
     renderer.addClass(elementRef.nativeElement, 'ant-form-item-control');
 
