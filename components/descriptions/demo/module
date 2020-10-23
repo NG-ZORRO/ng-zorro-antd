@@ -1,5 +1,6 @@
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 
-export const moduleList = [ NzDescriptionsModule, NzBadgeModule, NzRadioModule ];
+export const moduleList = [ NzDescriptionsModule, NzBadgeModule, NzRadioModule, NzButtonModule ];
