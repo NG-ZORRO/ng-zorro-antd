@@ -87,13 +87,15 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
           class="ant-cascader-picker-clear"
           (click)="clearSelection($event)"
         ></i>
-        <i
-          *ngIf="nzShowArrow && !isLoading"
-          nz-icon
-          nzType="down"
-          class="ant-cascader-picker-arrow"
-          [class.ant-cascader-picker-arrow-expand]="menuVisible"
-        ></i>
+        <ng-container *nzStringTemplateOutlet="nzSuffixIcon">
+          <i
+            *ngIf="nzShowArrow && !isLoading"
+            nz-icon
+            [nzType]="$any(nzSuffixIcon)"
+            class="ant-cascader-picker-arrow"
+            [class.ant-cascader-picker-arrow-expand]="menuVisible"
+          ></i>
+        </ng-container>
         <i *ngIf="isLoading" nz-icon nzType="loading" class="ant-cascader-picker-arrow"></i>
         <span
           class="ant-cascader-picker-label"
@@ -150,6 +152,7 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
             <li
               nz-cascader-option
               *ngFor="let option of options"
+              [expandIcon]="nzExpandIcon"
               [columnIndex]="i"
               [nzLabelProperty]="nzLabelProperty"
               [optionTemplate]="nzOptionRender"
@@ -221,6 +224,9 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
   @Input() nzTriggerAction: NzCascaderTriggerType | NzCascaderTriggerType[] = ['click'] as NzCascaderTriggerType[];
   @Input() nzChangeOn?: (option: NzCascaderOption, level: number) => boolean;
   @Input() nzLoadData?: (node: NzCascaderOption, index: number) => PromiseLike<NzSafeAny>;
+  // TODO: RTL
+  @Input() nzSuffixIcon: string | TemplateRef<void> = 'down';
+  @Input() nzExpandIcon: string | TemplateRef<void> = 'right';
 
   @Input()
   get nzOptions(): NzCascaderOption[] | null {

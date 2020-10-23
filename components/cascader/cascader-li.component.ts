@@ -29,7 +29,12 @@ import { NzCascaderOption } from './typings';
       <span [innerHTML]="optionLabel | nzHighlight: highlightText:'g':'ant-cascader-menu-item-keyword'"></span>
     </ng-template>
     <span *ngIf="!option.isLeaf || option.children?.length || option.loading" class="ant-cascader-menu-item-expand-icon">
-      <i nz-icon [nzType]="option.loading ? 'loading' : 'right'"></i>
+      <i *ngIf="option.loading; else icon" nz-icon nzType="loading"></i>
+      <ng-template #icon>
+        <ng-container *nzStringTemplateOutlet="expandIcon">
+          <i nz-icon [nzType]="$any(expandIcon)"></i>
+        </ng-container>
+      </ng-template>
     </span>
   `,
   host: {
@@ -46,6 +51,8 @@ export class NzCascaderOptionComponent {
   @Input() highlightText!: string;
   @Input() nzLabelProperty = 'label';
   @Input() columnIndex!: number;
+
+  @Input() expandIcon: string | TemplateRef<void> = 'right';
 
   constructor(private cdr: ChangeDetectorRef, elementRef: ElementRef, renderer: Renderer2) {
     renderer.addClass(elementRef.nativeElement, 'ant-cascader-menu-item');

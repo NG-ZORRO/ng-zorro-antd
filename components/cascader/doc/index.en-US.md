@@ -34,20 +34,22 @@ import { NzCascaderModule } from 'ng-zorro-antd/cascader';
 | `[nzChangeOnSelect]` | change value on each selection if set to true, see above demo for details | `boolean` | `false` |
 | `[nzColumnClassName]` | additional className of column in the popup overlay | `string` | - |
 | `[nzDisabled]` | whether disabled select | `boolean` | `false` |
+| `[nzExpandIcon]` | Customize the current item expand icon | `string\|TemplateRef<void>` | - |
 | `[nzExpandTrigger]` | expand current item when click or hover, one of 'click' 'hover' | `'click'\|'hover'` | `'click'` |
+| `[nzLabelProperty]` | the label property name of options | `string` | `'label'` |
+| `[nzLabelRender]` | render template of displaying selected options | `TemplateRef<any>` | - |
+| `[nzLoadData]` | To load option lazily. If setting `ngModel` with an array value and `nzOptions` is not setting, lazy load will be call immediately | `(option: any, index?: index) => PromiseLike<any>` | - |
 | `[nzMenuClassName]` | additional className of popup overlay | `string` | - |
 | `[nzMenuStyle]` | additional css style of popup overlay | `object` | - |
 | `[nzNotFoundContent]` | Specify content to show when no result matches. | `string\|TemplateRef<void>` | - |
-| `[nzLabelProperty]` | the label property name of options | `string` | `'label'` |
-| `[nzLabelRender]` | render template of displaying selected options | `TemplateRef<any>` | - |
 | `[nzOptionRender]` | render template of cascader options | `TemplateRef<{ $implicit: NzCascaderOption, index: number }>` | |
-| `[nzLoadData]` | To load option lazily. If setting `ngModel` with an array value and `nzOptions` is not setting, lazy load will be call immediately | `(option: any, index?: index) => PromiseLike<any>` | - |
 | `[nzOptions]` | data options of cascade | `object[]` | - |
 | `[nzPlaceHolder]` | input placeholder | `string` | `'Please select'` |
 | `[nzShowArrow]` | Whether show arrow | `boolean` | `true` |
 | `[nzShowInput]` | Whether show input | `boolean` | `true` |
 | `[nzShowSearch]` | Whether support search. Cannot be used with `[nzLoadData]` at the same time | `boolean\|NzShowSearchOptions` | `false` |
 | `[nzSize]` | input size, one of `large` `default` `small` | `'large'\|'small'\|'default'` | `'default'` | ✅ |
+| `[nzSuffixIcon]` | 	The custom suffix icon | `string\|TemplateRef<void>` | - |
 | `[nzValueProperty]` | the value property name of options | `string` | `'value'` |
 | `(ngModelChange)` | Emit on values change | `EventEmitter<any[]>` | - |
 | `(nzClear)` | Emit on clear values | `EventEmitter<void>` | - |
