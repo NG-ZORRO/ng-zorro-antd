@@ -6,6 +6,7 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { PlatformModule } from '@angular/cdk/platform';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { NzOutletModule } from 'ng-zorro-antd/core/outlet';
 import { NzTransButtonModule } from 'ng-zorro-antd/core/trans-button';
 
 import { NzI18nModule } from 'ng-zorro-antd/i18n';
@@ -18,7 +19,7 @@ import { NzTextEditComponent } from './text-edit.component';
 import { NzTypographyComponent } from './typography.component';
 
 @NgModule({
-  imports: [CommonModule, NzIconModule, NzToolTipModule, NzInputModule, NzI18nModule, NzTransButtonModule, ClipboardModule],
+  imports: [CommonModule, NzIconModule, NzToolTipModule, NzInputModule, NzI18nModule, NzTransButtonModule, ClipboardModule, NzOutletModule],
   exports: [NzTypographyComponent, NzTextCopyComponent, NzTextEditComponent, PlatformModule],
   declarations: [NzTypographyComponent, NzTextCopyComponent, NzTextEditComponent]
 })

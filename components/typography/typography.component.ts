@@ -29,7 +29,7 @@ import {
 import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { cancelRequestAnimationFrame, reqAnimFrame } from 'ng-zorro-antd/core/polyfill';
 import { NzResizeService } from 'ng-zorro-antd/core/services';
-import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
+import { BooleanInput, NumberInput, NzSafeAny, NzTSType } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber, isStyleSupport, measure } from 'ng-zorro-antd/core/util';
 
 import { Subject, Subscription } from 'rxjs';
@@ -78,11 +78,19 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
     <nz-text-edit
       *ngIf="nzEditable"
       [text]="nzContent"
+      [icon]="nzEditIcon"
+      [tooltip]="nzEditTooltip"
       (endEditing)="onEndEditing($event)"
       (startEditing)="onStartEditing()"
     ></nz-text-edit>
 
-    <nz-text-copy *ngIf="nzCopyable && !editing" [text]="copyText" (textCopy)="onTextCopy($event)"></nz-text-copy>
+    <nz-text-copy
+      *ngIf="nzCopyable && !editing"
+      [text]="copyText"
+      [tooltips]="nzCopyTooltips"
+      [icons]="nzCopyIcons"
+      (textCopy)="onTextCopy($event)"
+    ></nz-text-copy>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -116,6 +124,10 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   @Input() @InputBoolean() nzDisabled = false;
   @Input() @InputBoolean() nzExpandable = false;
   @Input() @InputBoolean() nzEllipsis = false;
+  @Input() @WithConfig() nzCopyTooltips?: [NzTSType, NzTSType] | null = undefined;
+  @Input() @WithConfig() nzCopyIcons: [NzTSType, NzTSType] = ['copy', 'check'];
+  @Input() @WithConfig() nzEditTooltip?: null | NzTSType = undefined;
+  @Input() @WithConfig() nzEditIcon: NzTSType = 'edit';
   @Input() nzContent?: string;
   @Input() @WithConfig() @InputNumber() nzEllipsisRows: number = 1;
   @Input() nzType: 'secondary' | 'warning' | 'danger' | 'success' | undefined;

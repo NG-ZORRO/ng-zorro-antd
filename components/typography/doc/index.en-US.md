@@ -26,6 +26,10 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 | `[nzContent]` | Component content | `string` | - ||
 | `[nzCopyable]` | Can copy, require use `[nzContent]` | `boolean` | `false` ||
 | `[nzEditable]` | Editable, require use `[nzContent]` | `boolean` | `false` ||
+| `[nzCopyIcons]` | Custom copy icons | `[string \| TemplateRef<void>, string \| TemplateRef<void>]` | `['copy', 'check']` | ✅ |
+| `[nzCopyTooltips]` | Custom tooltips text, hide when it is `null` | `null \| [string \| TemplateRef<void>, string \| TemplateRef<void>]` | - | ✅ |
+| `[nzEditIcon]` | Custom edit icon | `string \| TemplateRef<void>` | `'edit'` | ✅ |
+| `[nzEditTooltip]` | Custom tooltip text, hide when it is `null` | `null \| string \| TemplateRef<void>` | - | ✅ |
 | `[nzEllipsis]` | Display ellipsis when overflow, require use `[nzContent]` when dynamic content | `boolean` | `false` ||
 | `[nzSuffix]` | The text suffix when used `nzEllipsis` | `string` | - ||
 | `[nzCopyText]` | Customize the copy text | `string` | - ||

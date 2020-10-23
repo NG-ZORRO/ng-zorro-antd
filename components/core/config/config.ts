@@ -7,7 +7,7 @@ import { InjectionToken, TemplateRef, Type } from '@angular/core';
 
 import { SafeUrl } from '@angular/platform-browser';
 import { NzBreakpointEnum } from 'ng-zorro-antd/core/services';
-import { NzSafeAny, NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType } from 'ng-zorro-antd/core/types';
+import { NzSafeAny, NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType, NzTSType } from 'ng-zorro-antd/core/types';
 
 export interface NzConfig {
   affix?: AffixConfig;
@@ -264,6 +264,10 @@ export interface TreeSelectConfig {
 
 export interface TypographyConfig {
   nzEllipsisRows?: number;
+  nzCopyTooltips?: [NzTSType, NzTSType] | null;
+  nzCopyIcons: [NzTSType, NzTSType];
+  nzEditTooltip?: null | NzTSType;
+  nzEditIcon: NzTSType;
 }
 
 export type NzConfigKey = keyof NzConfig;
