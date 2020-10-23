@@ -32,13 +32,11 @@ describe('anchor', () => {
 
   describe('[default]', () => {
     it(`should scolling to target via click a link`, () => {
-      spyOn(srv, 'scrollTo').and.callFake(
-        (_containerEl: Element | Window, _targetTopValue: number = 0, _easing?: any, callback?: () => void) => {
-          if (callback) {
-            callback();
-          }
+      spyOn(srv, 'scrollTo').and.callFake((_containerEl, _targetTopValue = 0, options = {}) => {
+        if (options.callback) {
+          options.callback();
         }
-      );
+      });
       expect(context._scroll).not.toHaveBeenCalled();
       page.to('#何时使用');
       expect(context._scroll).toHaveBeenCalled();

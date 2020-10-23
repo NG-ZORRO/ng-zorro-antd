@@ -55,6 +55,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'backTop';
 export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
   readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
   static ngAcceptInputType_nzVisibilityHeight: NumberInput;
+  static ngAcceptInputType_nzDuration: NumberInput;
 
   private scrollListenerDestroy$ = new Subject();
   private target: HTMLElement | null = null;
@@ -64,6 +65,7 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
   @Input() nzTemplate?: TemplateRef<void>;
   @Input() @WithConfig() @InputNumber() nzVisibilityHeight: number = 400;
   @Input() nzTarget?: string | HTMLElement;
+  @Input() @InputNumber() nzDuration: number = 450;
   @Output() readonly nzClick: EventEmitter<boolean> = new EventEmitter();
 
   constructor(
@@ -80,7 +82,7 @@ export class NzBackTopComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   clickBackTop(): void {
-    this.scrollSrv.scrollTo(this.getTarget(), 0);
+    this.scrollSrv.scrollTo(this.getTarget(), 0, { duration: this.nzDuration });
     this.nzClick.emit(true);
   }
 
