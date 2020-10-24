@@ -16,6 +16,8 @@ title:
 
 另外，你可以使用 `nzDisableAutoTips` 去禁用它。
 
+> 使用当前的语言环境(`zh-cn`,`en`...)作为 `nzAutoTips` 的 `key` 去查找提示，如果没找到会再用 `default` 查找一次。
+
 ## en-US
 
 Make tips to be easy.  
@@ -26,3 +28,5 @@ Need to customize `Validators` and provide `nzAutoTips` in advance, the priority
 - Via global config set `nzAutoTips`
 
 In addition, you can use `nzDisableAutoTips` to disable it.
+
+> Via the current locale (`zh-cn`, `en`...) is used as the `key` of `nzAutoTips` to search for tips. If it is not found, it will be searched again with `default`.

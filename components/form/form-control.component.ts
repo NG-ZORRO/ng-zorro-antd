@@ -201,7 +201,9 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
           autoErrorTip =
             errors[key]?.[this.localeId] ??
             this.nzAutoTips?.[this.localeId]?.[key] ??
-            this.nzFormDirective?.nzAutoTips?.[this.localeId]?.[key];
+            this.nzAutoTips.default?.[key] ??
+            this.nzFormDirective?.nzAutoTips?.[this.localeId]?.[key] ??
+            this.nzFormDirective?.nzAutoTips.default?.[key];
         }
         if (!!autoErrorTip) {
           break;
