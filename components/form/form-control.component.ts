@@ -56,7 +56,7 @@ const iconTypeMap = {
         <i *ngIf="nzHasFeedback && iconType" nz-icon [nzType]="iconType"></i>
       </span>
     </div>
-    <div class="ant-form-item-explain" *ngIf="innerTip">
+    <div [ngClass]="['ant-form-item-explain', 'ant-form-item-explain-' + status]" *ngIf="innerTip">
       <div @helpMotion>
         <ng-container *nzStringTemplateOutlet="innerTip; context: { $implicit: validateControl }">{{ innerTip }}</ng-container>
       </div>
@@ -75,7 +75,6 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
   private _hasFeedback = false;
   private validateChanges: Subscription = Subscription.EMPTY;
   private validateString: string | null = null;
-  private status: NzFormControlStatusType = null;
   private destroyed$ = new Subject<void>();
   private localeId!: string;
   private autoErrorTip?: string;
@@ -84,6 +83,7 @@ export class NzFormControlComponent implements OnChanges, OnDestroy, OnInit, Aft
     return this.nzDisableAutoTips !== 'default' ? toBoolean(this.nzDisableAutoTips) : this.nzFormDirective?.nzDisableAutoTips;
   }
 
+  status: NzFormControlStatusType = null;
   validateControl: AbstractControl | NgModel | null = null;
   iconType: typeof iconTypeMap[keyof typeof iconTypeMap] | null = null;
   innerTip: string | TemplateRef<{ $implicit: AbstractControl | NgModel }> | null = null;
