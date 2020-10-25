@@ -28,7 +28,7 @@
     position: relative;
 
     .@{ant-prefix}-btn > .@{iconfont-css-prefix}-down {
-      .iconfont-size-under-12px(10px);
+      font-size: 10px;
     }
 
     .@{iconfont-css-prefix}-down::before {
@@ -170,10 +170,12 @@
       transition: all 0.3s;
 
       > .@{iconfont-css-prefix}:first-child,
+      > a > .@{iconfont-css-prefix}:first-child,
       > span > .@{iconfont-css-prefix}:first-child {
         min-width: 12px;
         margin-right: 8px;
         font-size: @font-size-sm;
+        vertical-align: -0.1em;
       }
 
       > a {
@@ -243,8 +245,8 @@
         &-icon {
           margin-right: 0 !important;
           color: @text-color-secondary;
+          font-size: 10px;
           font-style: normal;
-          .iconfont-size-under-12px(10px);
         }
       }
     }
@@ -322,8 +324,8 @@
 .@{dropdown-prefix-cls}-link,
 .@{dropdown-prefix-cls}-button {
   > .@{iconfont-css-prefix}.@{iconfont-css-prefix}-down {
+    font-size: 10px;
     vertical-align: baseline;
-    .iconfont-size-under-12px(10px);
   }
 }
 
