@@ -2,7 +2,7 @@ import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ɵComponentBed as ComponentBed, ɵcreateComponentBed as createComponentBed } from 'ng-zorro-antd/core/testing';
-import { NzFormLabelComponent } from './form-label.component';
+import { NzFormLabelComponent, NzFormTooltipIcon } from './form-label.component';
 
 const testBedOptions = { imports: [NoopAnimationsModule], declarations: [NzFormLabelComponent] };
 
@@ -41,16 +41,40 @@ describe('nz-form-label', () => {
 
       expect(label.nativeElement.querySelector('label').classList).toContain('ant-form-item-no-colon');
     });
+
+    it('should tooltip work', () => {
+      expect(label.nativeElement.querySelector('.ant-form-item-tooltip')).toBeNull();
+
+      testComponent.tooltipTitle = 'tooltip';
+      testBed.fixture.detectChanges();
+
+      expect(label.nativeElement.querySelector('.ant-form-item-tooltip')).toBeDefined();
+      expect(label.nativeElement.querySelector('.anticon-question-circle')).toBeDefined();
+
+      testComponent.tooltipIcon = 'info-circle';
+      testBed.fixture.detectChanges();
+
+      expect(label.nativeElement.querySelector('.ant-form-item-tooltip')).toBeDefined();
+      expect(label.nativeElement.querySelector('.anticon-info-circle')).toBeDefined();
+    });
   });
 });
 
 @Component({
   template: `
-    <nz-form-label [nzFor]="forValue" [nzNoColon]="noColon" [nzRequired]="required"></nz-form-label>
+    <nz-form-label
+      [nzFor]="forValue"
+      [nzNoColon]="noColon"
+      [nzRequired]="required"
+      [nzTooltipTitle]="tooltipTitle"
+      [nzTooltipIcon]="tooltipIcon"
+    ></nz-form-label>
   `
 })
 export class NzTestFormLabelComponent {
   forValue = 'test';
   required = false;
   noColon = false;
+  tooltipTitle?: string;
+  tooltipIcon?: string | NzFormTooltipIcon;
 }

@@ -15,12 +15,23 @@ import {
   SkipSelf,
   ViewEncapsulation
 } from '@angular/core';
-import { BooleanInput } from 'ng-zorro-antd/core/types';
+import { ThemeType } from '@ant-design/icons-angular';
+import { BooleanInput, NzTSType } from 'ng-zorro-antd/core/types';
 
 import { InputBoolean, toBoolean } from 'ng-zorro-antd/core/util';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
-import { NzFormDirective } from './form.directive';
+import { DefaultTooltipIcon, NzFormDirective } from './form.directive';
+
+export interface NzFormTooltipIcon {
+  type: NzTSType;
+  theme: ThemeType;
+}
+
+function toTooltipIcon(value: string | NzFormTooltipIcon): Required<NzFormTooltipIcon> {
+  const icon = typeof value === 'string' ? { type: value } : value;
+  return { ...DefaultTooltipIcon, ...icon };
+}
 
 @Component({
   selector: 'nz-form-label',
@@ -31,6 +42,11 @@ import { NzFormDirective } from './form.directive';
   template: `
     <label [attr.for]="nzFor" [class.ant-form-item-no-colon]="nzNoColon" [class.ant-form-item-required]="nzRequired">
       <ng-content></ng-content>
+      <span *ngIf="nzTooltipTitle" class="ant-form-item-tooltip" nz-tooltip [nzTooltipTitle]="nzTooltipTitle">
+        <ng-container *nzStringTemplateOutlet="tooltipIcon.type; let tooltipIconType">
+          <i nz-icon [nzType]="tooltipIconType" [nzTheme]="tooltipIcon.theme"></i>
+        </ng-container>
+      </span>
     </label>
   `
 })
@@ -48,7 +64,18 @@ export class NzFormLabelComponent implements OnDestroy {
     return this.noColon !== 'default' ? this.noColon : this.nzFormDirective?.nzNoColon;
   }
 
-  noColon: boolean | 'default' = 'default';
+  private noColon: boolean | 'default' = 'default';
+
+  @Input() nzTooltipTitle?: NzTSType;
+  @Input()
+  set nzTooltipIcon(value: string | NzFormTooltipIcon) {
+    this._tooltipIcon = toTooltipIcon(value);
+  }
+  // due to 'get' and 'set' accessor must have the same type, so it was renamed to `tooltipIcon`
+  get tooltipIcon(): NzFormTooltipIcon {
+    return this._tooltipIcon !== 'default' ? this._tooltipIcon : toTooltipIcon(this.nzFormDirective?.nzTooltipIcon || DefaultTooltipIcon);
+  }
+  private _tooltipIcon: NzFormTooltipIcon | 'default' = 'default';
 
   private destroy$ = new Subject();
 
@@ -65,6 +92,14 @@ export class NzFormLabelComponent implements OnDestroy {
         .getInputObservable('nzNoColon')
         .pipe(
           filter(() => this.noColon === 'default'),
+          takeUntil(this.destroy$)
+        )
+        .subscribe(() => this.cdr.markForCheck());
+
+      this.nzFormDirective
+        .getInputObservable('nzTooltipIcon')
+        .pipe(
+          filter(() => this._tooltipIcon === 'default'),
           takeUntil(this.destroy$)
         )
         .subscribe(() => this.cdr.markForCheck());

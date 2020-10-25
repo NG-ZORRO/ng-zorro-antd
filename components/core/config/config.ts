@@ -6,6 +6,7 @@
 import { InjectionToken, TemplateRef, Type } from '@angular/core';
 
 import { SafeUrl } from '@angular/platform-browser';
+import { ThemeType } from '@ant-design/icons-angular';
 import { NzBreakpointEnum } from 'ng-zorro-antd/core/services';
 import { NzSafeAny, NzShapeSCType, NzSizeDSType, NzSizeLDSType, NzSizeMDSType, NzTSType } from 'ng-zorro-antd/core/types';
 
@@ -154,6 +155,7 @@ export interface EmptyConfig {
 export interface FormConfig {
   nzNoColon?: boolean;
   nzAutoTips?: Record<string, Record<string, string>>;
+  nzTooltipIcon?: string | { type: string; theme: ThemeType };
 }
 
 export interface IconConfig {

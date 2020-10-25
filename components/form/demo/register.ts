@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
 
 @Component({
   selector: 'nz-demo-form-register',
@@ -32,11 +33,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="nickname" nzRequired>
-          <span>
-            Nickname
-            <i nz-icon nz-tooltip nzTooltipTitle="What do you want other to call you" nzType="question-circle" nzTheme="outline"></i>
-          </span>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="nickname" nzRequired nzTooltipTitle="What do you want other to call you">
+          <span>Nickname</span>
         </nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input your nickname!">
           <input nz-input id="nickname" formControlName="nickname" />
@@ -68,7 +66,16 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="captcha" nzRequired>Captcha</nz-form-label>
+        <nz-form-label
+          [nzSm]="6"
+          [nzXs]="24"
+          nzFor="captcha"
+          nzRequired
+          nzTooltipTitle="Please click 'Get captcha'"
+          [nzTooltipIcon]="captchaTooltipIcon"
+        >
+          Captcha
+        </nz-form-label>
         <nz-form-control
           [nzSm]="14"
           [nzXs]="24"
@@ -88,7 +95,10 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
       <nz-form-item nz-row class="register-area">
         <nz-form-control [nzSpan]="14" [nzOffset]="6">
           <label nz-checkbox formControlName="agree">
-            <span>I have read the <a>agreement</a></span>
+            <span>
+              I have read the
+              <a>agreement</a>
+            </span>
           </label>
         </nz-form-control>
       </nz-form-item>
@@ -118,6 +128,10 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 })
 export class NzDemoFormRegisterComponent implements OnInit {
   validateForm!: FormGroup;
+  captchaTooltipIcon: NzFormTooltipIcon = {
+    type: 'info-circle',
+    theme: 'twotone'
+  };
 
   submitForm(): void {
     for (const i in this.validateForm.controls) {
