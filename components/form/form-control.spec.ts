@@ -185,7 +185,7 @@ describe('nz-form-control', () => {
 
       expect(formControls[0].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('必填项');
       expect(formControls[1].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('必填项');
-      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入邮箱');
+      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入邮箱/Input is required');
       expect(formControls[3].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('必填项');
 
       testBed.fixture.detectChanges();
@@ -222,7 +222,7 @@ describe('nz-form-control', () => {
 
       expect(formControls[0].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入');
       expect(formControls[1].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入');
-      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入邮箱');
+      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入邮箱/Input is required');
       expect(formControls[3].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入');
 
       testBed.fixture.detectChanges();
@@ -239,7 +239,7 @@ describe('nz-form-control', () => {
 
       expect(formControls[0].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入');
       expect(formControls[1].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入');
-      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入邮箱');
+      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入邮箱/Input is required');
       expect(formControls[3].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入');
       expect(formControls[4].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入');
     });
@@ -263,7 +263,7 @@ describe('nz-form-control', () => {
 
       expect(formControls[0].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('Input is required');
       expect(formControls[1].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('Input is required');
-      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('Input is required');
+      expect(formControls[2].nativeElement.querySelector('.ant-form-item-explain').textContent).toEqual('请输入邮箱/Input is required');
 
       formGroup.get('userName')!.setValue('12345');
       formGroup.get('mobile')!.setValue('12345');
@@ -448,12 +448,13 @@ export class NzTestReactiveFormAutoTipsComponent {
   };
   emailAutoTips = {
     'zh-cn': {
-      required: '请输入邮箱',
       email: '请输入正确的邮箱'
     },
     en: {
-      required: 'Input is required',
       email: 'Please input valid email'
+    },
+    default: {
+      required: '请输入邮箱/Input is required'
     }
   };
 

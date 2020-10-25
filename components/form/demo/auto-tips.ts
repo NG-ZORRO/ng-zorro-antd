@@ -64,14 +64,16 @@ export class NzDemoFormAutoTipsComponent {
   validateForm: FormGroup;
 
   // current locale is key of the nzAutoTips
+  // if it is not found, it will be searched again with `default`
   autoTips: Record<string, Record<string, string>> = {
     'zh-cn': {
-      required: '必填项',
-      email: '邮箱格式不正确'
+      required: '必填项'
     },
     en: {
-      required: 'Input is required',
-      email: 'The input is not valid email'
+      required: 'Input is required'
+    },
+    default: {
+      email: '邮箱格式不正确/The input is not valid email'
     }
   };
 
