@@ -197,6 +197,11 @@ export class DateRangePopupComponent implements OnInit, OnChanges, OnDestroy {
     this.datePickerService.setActiveDate(activeDate, this.hasTimePicker, this.getPanelMode(this.endPanelMode) as NormalizedMode);
   }
 
+  init(): void {
+    this.checkedPartArr = [false, false];
+    this.updateActiveDate();
+  }
+
   onClickOk(): void {
     const inputIndex = { left: 0, right: 1 }[this.datePickerService.activeInput];
     const value: CandyDate = this.isRange

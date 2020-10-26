@@ -7,6 +7,7 @@ import { Directive, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { CandyDate } from 'ng-zorro-antd/core/time';
 import { FunctionProp, NzSafeAny } from 'ng-zorro-antd/core/types';
 import { isNonEmptyString, isTemplateRef } from 'ng-zorro-antd/core/util';
+import { NzCalendarI18nInterface } from 'ng-zorro-antd/i18n';
 import { DateBodyRow, DateCell } from './interface';
 
 @Directive()
@@ -21,6 +22,7 @@ export abstract class AbstractTable implements OnInit, OnChanges {
 
   @Input() prefixCls: string = 'ant-picker';
   @Input() value!: CandyDate;
+  @Input() locale!: NzCalendarI18nInterface;
   @Input() activeDate: CandyDate = new CandyDate();
   @Input() showWeek: boolean = false;
   @Input() selectedValue: CandyDate[] = []; // Range ONLY
@@ -86,6 +88,7 @@ export abstract class AbstractTable implements OnInit, OnChanges {
 
     if (
       changes.disabledDate ||
+      changes.locale ||
       this.isDateRealChange(changes.activeDate) ||
       this.isDateRealChange(changes.value) ||
       this.isDateRealChange(changes.selectedValue) ||

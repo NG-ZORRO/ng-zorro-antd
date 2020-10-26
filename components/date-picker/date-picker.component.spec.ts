@@ -434,6 +434,12 @@ describe('NzDatePickerComponent', () => {
       fixture.detectChanges();
       expect(debugElement.query(By.css(`.anticon-clock-circle`))).toBeDefined();
     }));
+
+    it('should support nzBorderless', fakeAsync(() => {
+      fixtureInstance.nzBorderless = true;
+      fixture.detectChanges();
+      expect(debugElement.query(By.css(`.ant-picker-borderless`))).toBeDefined();
+    }));
   });
 
   describe('panel switch and move forward/afterward', () => {
@@ -1029,6 +1035,7 @@ describe('date-fns testing', () => {
         [nzShowTime]="nzShowTime"
         (nzOnOk)="nzOnOk($event)"
         [nzSuffixIcon]="nzSuffixIcon"
+        [nzBorderless]="nzBorderless"
       ></nz-date-picker>
       <ng-template #tplDateRender let-current>
         <div [class.test-first-day]="current.getDate() === 1">{{ current.getDate() }}</div>
@@ -1078,6 +1085,7 @@ class NzTestDatePickerComponent {
   nzShowToday = false;
   nzMode: string = 'date';
   nzSuffixIcon!: string;
+  nzBorderless = false;
 
   // nzRanges;
   nzOnPanelChange(_: string): void {}
