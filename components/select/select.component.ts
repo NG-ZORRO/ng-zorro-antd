@@ -115,6 +115,7 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       [cdkConnectedOverlayTransformOriginOn]="'.ant-select-dropdown'"
       [cdkConnectedOverlayPanelClass]="nzDropdownClassName!"
       [cdkConnectedOverlayOpen]="nzOpen"
+      (overlayKeydown)="onOverlayKeyDown($event)"
       (overlayOutsideClick)="onClickOutside($event)"
       (detach)="setOpenState(false)"
       (positionChange)="onPositionChange($event)"
@@ -368,6 +369,12 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     this.clearInput();
   }
 
+  onOverlayKeyDown(e: KeyboardEvent): void {
+    if (e.keyCode === ESCAPE) {
+      this.setOpenState(false);
+    }
+  }
+
   onKeyDown(e: KeyboardEvent): void {
     if (this.nzDisabled) {
       return;
@@ -411,7 +418,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
         this.setOpenState(false);
         break;
       case ESCAPE:
-        this.setOpenState(false);
+        /**
+         * Skip the ESCAPE processing, it will be handled in {@link onOverlayKeyDown}.
+         */
         break;
       default:
         if (!this.nzOpen) {

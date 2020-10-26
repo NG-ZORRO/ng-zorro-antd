@@ -1,6 +1,7 @@
-import { BACKSPACE, DOWN_ARROW, ENTER, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
+import { BACKSPACE, DOWN_ARROW, ENTER, ESCAPE, SPACE, TAB, UP_ARROW } from '@angular/cdk/keycodes';
+import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, inject } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import {
@@ -22,12 +23,19 @@ describe('select', () => {
     let component: TestSelectTemplateDefaultComponent;
     let fixture: ComponentFixture<TestSelectTemplateDefaultComponent>;
     let selectElement!: HTMLElement;
+    let overlayContainerElement: HTMLElement;
+
     beforeEach(() => {
       testBed = createComponentBed(TestSelectTemplateDefaultComponent, { imports: [NzSelectModule, NzIconTestModule, FormsModule] });
       component = testBed.component;
       fixture = testBed.fixture;
       selectElement = testBed.debugElement.query(By.directive(NzSelectComponent)).nativeElement;
     });
+
+    beforeEach(inject([OverlayContainer], (oc: OverlayContainer) => {
+      overlayContainerElement = oc.getContainerElement();
+    }));
+
     it('should classname correct', () => {
       expect(selectElement.classList).toContain('ant-select');
       expect(selectElement.classList).toContain('ant-select-single');
@@ -255,6 +263,22 @@ describe('select', () => {
       expect(selectElement.classList).toContain('ant-select-disabled');
       expect(selectElement.querySelector('input')!.getAttribute('disabled')).toBe('');
     }));
+
+    it('should close dropdown when ESC keydown', fakeAsync(() => {
+      component.nzOpen = true;
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+
+      dispatchKeyboardEvent(overlayContainerElement, 'keydown', ESCAPE, overlayContainerElement);
+
+      fixture.detectChanges();
+      flush();
+      fixture.detectChanges();
+
+      expect(component.nzOpen).toBe(false);
+    }));
+
     it('should keydown up arrow and down arrow', fakeAsync(() => {
       const flushChanges = () => {
         fixture.detectChanges();
