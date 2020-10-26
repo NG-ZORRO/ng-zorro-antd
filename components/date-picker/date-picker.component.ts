@@ -72,7 +72,6 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
       (focusChange)="onFocusChange($event)"
     >
       <date-range-popup
-        *ngIf="realOpenState"
         [isRange]="isRange"
         [defaultPickerValue]="nzDefaultPickerValue"
         [showWeek]="nzMode === 'week'"
@@ -97,6 +96,7 @@ export type NzDatePickerSizeType = 'large' | 'default' | 'small';
     '[class.ant-picker-large]': `nzSize === 'large'`,
     '[class.ant-picker-small]': `nzSize === 'small'`,
     '[class.ant-picker-disabled]': `nzDisabled`,
+    '[class.ant-picker-borderless]': `nzBorderless`,
     '(click)': 'picker.onClickInputBox($event)'
   },
   providers: [
@@ -113,6 +113,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   static ngAcceptInputType_nzAllowClear: BooleanInput;
   static ngAcceptInputType_nzAutoFocus: BooleanInput;
   static ngAcceptInputType_nzDisabled: BooleanInput;
+  static ngAcceptInputType_nzBorderless: BooleanInput;
   static ngAcceptInputType_nzInputReadOnly: BooleanInput;
   static ngAcceptInputType_nzOpen: BooleanInput;
   static ngAcceptInputType_nzShowToday: BooleanInput;
@@ -132,6 +133,7 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   @Input() @InputBoolean() nzAllowClear: boolean = true;
   @Input() @InputBoolean() nzAutoFocus: boolean = false;
   @Input() @InputBoolean() nzDisabled: boolean = false;
+  @Input() @InputBoolean() nzBorderless: boolean = false;
   @Input() @InputBoolean() nzInputReadOnly: boolean = false;
   /**
    * @deprecated use method `open` or `close` instead.
@@ -170,10 +172,6 @@ export class NzDatePickerComponent implements OnInit, OnChanges, OnDestroy, Cont
   set nzShowTime(value: SupportTimeOptions | boolean) {
     this.showTime = typeof value === 'object' ? value : toBoolean(value);
   }
-
-  get realOpenState(): boolean {
-    return this.picker.animationOpenState;
-  } // Use picker's real open state to let re-render the picker's content when shown up
 
   constructor(
     public nzConfigService: NzConfigService,

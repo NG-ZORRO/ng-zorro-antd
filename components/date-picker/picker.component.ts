@@ -137,13 +137,7 @@ import { PREFIX_CLASS } from './util';
       (overlayKeydown)="onOverlayKeydown($event)"
       (overlayOutsideClick)="onClickOutside($event)"
     >
-      <div
-        class="ant-picker-wrapper"
-        [nzNoAnimation]="noAnimation"
-        [@slideMotion]="'enter'"
-        (@slideMotion.done)="animationDone()"
-        style="position: relative;"
-      >
+      <div class="ant-picker-wrapper" [nzNoAnimation]="noAnimation" [@slideMotion]="'enter'" style="position: relative;">
         <div
           class="{{ prefixCls }}-dropdown {{ dropdownClassName }}"
           [class.ant-picker-dropdown-placement-bottomLeft]="currentPositionY === 'bottom' && currentPositionX === 'start'"
@@ -185,7 +179,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   @ViewChild('separatorElement', { static: false }) separatorElement?: ElementRef;
   @ViewChild('pickerInput', { static: false }) pickerInput?: ElementRef<HTMLInputElement>;
   @ViewChildren('rangePickerInput') rangePickerInputs?: QueryList<ElementRef<HTMLInputElement>>;
-  @ContentChild(DateRangePopupComponent) panel?: DateRangePopupComponent;
+  @ContentChild(DateRangePopupComponent) panel!: DateRangePopupComponent;
 
   origin: CdkOverlayOrigin;
   document: Document;
@@ -194,7 +188,6 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   destroy$ = new Subject();
   prefixCls = PREFIX_CLASS;
   inputValue!: NzSafeAny;
-  animationOpenState = false;
   overlayOpen: boolean = false; // Available when "open"=undefined
   overlayPositions: ConnectionPositionPair[] = [
     {
@@ -287,10 +280,6 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.open) {
-      this.animationStart();
-    }
-
     if (changes.format && changes.format.currentValue) {
       this.inputSize = Math.max(10, this.format.length) + 2;
     }
@@ -300,7 +289,7 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     this.inputWidth = this.rangePickerInputs?.first?.nativeElement.offsetWidth || 0;
     this.datePickerService.arrowLeft =
       this.datePickerService.activeInput === 'left' ? 0 : this.inputWidth + this.separatorElement?.nativeElement.offsetWidth || 0;
-    this.panel?.cdr.markForCheck();
+    this.panel.cdr.markForCheck();
     this.cdr.markForCheck();
   }
 
@@ -337,9 +326,10 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
     if (!this.realOpenState && !this.disabled) {
       this.updateInputWidthAndArrowLeft();
       this.overlayOpen = true;
-      this.animationStart();
       this.focus();
+      this.panel.init();
       this.openChange.emit(true);
+      this.cdr.markForCheck();
     }
   }
 
@@ -367,11 +357,11 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
       return;
     }
 
-    if (this.panel?.isAllowed(this.datePickerService.value!, true)) {
+    if (this.panel.isAllowed(this.datePickerService.value!, true)) {
       if (Array.isArray(this.datePickerService.value) && wrongSortOrder(this.datePickerService.value)) {
         const index = this.datePickerService.getActiveIndex(this.datePickerService.activeInput);
         const value = this.datePickerService.value[index];
-        this.panel?.changeValueFromSelect(value!, true);
+        this.panel.changeValueFromSelect(value!, true);
         return;
       }
       this.updateInputValue();
@@ -429,12 +419,17 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
      * in IE11 focus/blur will trigger ngModelChange if has placeholder
      * so we forbidden IE11 to open panel through input change
      */
-    if (!this.platform.TRIDENT && this.document.activeElement === this.getInput(this.datePickerService.activeInput)) {
+    if (
+      !this.platform.TRIDENT &&
+      this.document.activeElement === this.getInput(this.datePickerService.activeInput) &&
+      !this.realOpenState
+    ) {
       this.showOverlay();
+      return;
     }
 
     const date = this.checkValidDate(value);
-    if (this.panel && date) {
+    if (date) {
       this.panel.changeValueFromSelect(date, isEnter);
     }
   }
@@ -470,18 +465,5 @@ export class NzPickerComponent implements OnInit, AfterViewInit, OnChanges, OnDe
   // Whether open state is permanently controlled by user himself
   isOpenHandledByUser(): boolean {
     return this.open !== undefined;
-  }
-
-  animationStart(): void {
-    if (this.realOpenState) {
-      this.animationOpenState = true;
-    }
-  }
-
-  animationDone(): void {
-    if (!this.realOpenState) {
-      this.animationOpenState = false;
-      this.cdr.markForCheck();
-    }
   }
 }
