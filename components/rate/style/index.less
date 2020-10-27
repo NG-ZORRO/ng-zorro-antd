@@ -10,7 +10,7 @@
   margin: 0;
   padding: 0;
   color: @rate-star-color;
-  font-size: @rate-star-size;
+  font-size: 20px;
   line-height: unset;
   list-style: none;
   outline: none;
@@ -42,7 +42,7 @@
 
       &:hover,
       &:focus {
-        transform: @rate-star-hover-scale;
+        transform: scale(1.1);
       }
     }
 
@@ -79,9 +79,7 @@
 
   &-text {
     display: inline-block;
-    margin: 0 8px;
+    margin-left: 8px;
     font-size: @font-size-base;
   }
 }
-
-@import './rtl';

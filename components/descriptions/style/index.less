@@ -3,28 +3,17 @@
 
 @descriptions-prefix-cls: ~'@{ant-prefix}-descriptions';
 
-.@{descriptions-prefix-cls} {
-  &-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: @descriptions-title-margin-bottom;
-  }
+@descriptions-default-padding: 16px 24px;
+@descriptions-middle-padding: 12px 24px;
+@descriptions-small-padding: 8px 16px;
 
+.@{descriptions-prefix-cls} {
   &-title {
-    flex: auto;
-    overflow: hidden;
+    margin-bottom: 20px;
     color: @heading-color;
     font-weight: bold;
     font-size: @font-size-lg;
     line-height: @line-height-base;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-
-  &-extra {
-    margin-left: auto;
-    color: @descriptions-extra-color;
-    font-size: @font-size-base;
   }
 
   &-view {
@@ -40,7 +29,7 @@
   &-row {
     > th,
     > td {
-      padding-bottom: @descriptions-item-padding-bottom;
+      padding-bottom: 16px;
     }
     &:last-child {
       border-bottom: none;
@@ -52,24 +41,18 @@
     font-weight: normal;
     font-size: @font-size-base;
     line-height: @line-height-base;
-    text-align: start;
 
     &::after {
-      & when (@descriptions-item-trailing-colon=true) {
-        content: ':';
-      }
-      & when not (@descriptions-item-trailing-colon=true) {
-        content: ' ';
-      }
-
       position: relative;
       top: -0.5px;
-      margin: 0 @descriptions-item-label-colon-margin-right 0
-        @descriptions-item-label-colon-margin-left;
-    }
-
-    &.@{descriptions-prefix-cls}-item-no-colon::after {
+      margin: 0 8px 0 2px;
       content: ' ';
+    }
+  }
+
+  &-item-colon {
+    &::after {
+      content: ':';
     }
   }
 
@@ -82,24 +65,15 @@
 
   &-item-content {
     display: table-cell;
-    flex: 1;
     color: @text-color;
     font-size: @font-size-base;
     line-height: @line-height-base;
-    word-break: break-word;
-    overflow-wrap: break-word;
   }
 
   &-item {
     padding-bottom: 0;
-    vertical-align: top;
     > span {
-      display: inline-flex;
-      align-items: baseline;
-    }
-
-    &-container {
-      display: flex;
+      display: inline-block;
     }
   }
 
@@ -107,7 +81,7 @@
     .@{descriptions-prefix-cls}-row {
       > th,
       > td {
-        padding-bottom: @padding-sm;
+        padding-bottom: 12px;
       }
     }
   }
@@ -116,7 +90,7 @@
     .@{descriptions-prefix-cls}-row {
       > th,
       > td {
-        padding-bottom: @padding-xs;
+        padding-bottom: 8px;
       }
     }
   }
@@ -168,5 +142,3 @@
     }
   }
 }
-
-@import './rtl';

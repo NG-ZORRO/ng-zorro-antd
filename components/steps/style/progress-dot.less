@@ -5,11 +5,10 @@
       line-height: @line-height-base;
     }
     &-tail {
-      top: @steps-dot-top;
+      top: 2px;
       width: 100%;
       margin: 0 0 0 @steps-desciption-max-width / 2;
       padding: 0;
-
       &::after {
         width: ~'calc(100% - 20px)';
         height: 3px;
@@ -27,7 +26,6 @@
       line-height: @steps-dot-size;
       background: transparent;
       border: 0;
-
       .@{steps-prefix-cls}-icon-dot {
         position: relative;
         float: left;
@@ -47,12 +45,16 @@
         }
       }
     }
+    &-content {
+      width: @steps-desciption-max-width;
+    }
     &-process .@{steps-prefix-cls}-item-icon {
-      position: relative;
-      top: -1px;
       width: @steps-current-dot-size;
       height: @steps-current-dot-size;
       line-height: @steps-current-dot-size;
+      .@{steps-prefix-cls}-icon-dot {
+        top: -1px;
+      }
     }
   }
 }
@@ -61,7 +63,6 @@
   .@{steps-prefix-cls}-item-icon {
     margin-top: 8px;
     margin-left: 0;
-    background: none;
   }
   // https://github.com/ant-design/ant-design/issues/18354
   .@{steps-prefix-cls}-item > .@{steps-prefix-cls}-item-container > .@{steps-prefix-cls}-item-tail {

@@ -1,16 +1,14 @@
 .@{steps-prefix-cls}-small {
   &.@{steps-prefix-cls}-horizontal:not(.@{steps-prefix-cls}-label-vertical)
     .@{steps-prefix-cls}-item {
-    padding-left: 12px;
-
-    &:first-child {
-      padding-left: 0;
+    margin-right: 12px;
+    &:last-child {
+      margin-right: 0;
     }
   }
   .@{steps-prefix-cls}-item-icon {
     width: @steps-small-icon-size;
     height: @steps-small-icon-size;
-    margin: @steps-small-icon-margin;
     font-size: @font-size-sm;
     line-height: @steps-small-icon-size;
     text-align: center;

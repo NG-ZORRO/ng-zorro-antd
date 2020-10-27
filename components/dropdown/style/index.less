@@ -1,6 +1,5 @@
 @import '../../style/themes/index';
 @import '../../style/mixins/index';
-@import './status';
 
 @dropdown-prefix-cls: ~'@{ant-prefix}-dropdown';
 
@@ -28,7 +27,7 @@
     position: relative;
 
     .@{ant-prefix}-btn > .@{iconfont-css-prefix}-down {
-      font-size: 10px;
+      .iconfont-size-under-12px(10px);
     }
 
     .@{iconfont-css-prefix}-down::before {
@@ -47,87 +46,18 @@
     display: none;
   }
 
-  // Offset the popover to account for the dropdown arrow
-  &-show-arrow&-placement-topCenter,
-  &-show-arrow&-placement-topLeft,
-  &-show-arrow&-placement-topRight {
-    padding-bottom: @popover-distance;
-  }
-
-  &-show-arrow&-placement-bottomCenter,
-  &-show-arrow&-placement-bottomLeft,
-  &-show-arrow&-placement-bottomRight {
-    padding-top: @popover-distance;
-  }
-
-  // Arrows
-  // .popover-arrow is outer, .popover-arrow:after is inner
-
-  &-arrow {
-    position: absolute;
-    z-index: 1; // lift it up so the menu wouldn't cask shadow on it
-    display: block;
-    width: sqrt(@popover-arrow-width * @popover-arrow-width * 2);
-    height: sqrt(@popover-arrow-width * @popover-arrow-width * 2);
-    background: transparent;
-    border-style: solid;
-    border-width: sqrt(@popover-arrow-width * @popover-arrow-width * 2) / 2;
-    transform: rotate(45deg);
-  }
-
-  &-placement-topCenter > &-arrow,
-  &-placement-topLeft > &-arrow,
-  &-placement-topRight > &-arrow {
-    bottom: @popover-distance - @popover-arrow-width + 2.2px;
-    border-top-color: transparent;
-    border-right-color: @popover-bg;
-    border-bottom-color: @popover-bg;
-    border-left-color: transparent;
-    box-shadow: 3px 3px 7px fade(@black, 7%);
-  }
-  &-placement-topCenter > &-arrow {
-    left: 50%;
-    transform: translateX(-50%) rotate(45deg);
-  }
-  &-placement-topLeft > &-arrow {
-    left: 16px;
-  }
-  &-placement-topRight > &-arrow {
-    right: 16px;
-  }
-
-  &-placement-bottomCenter > &-arrow,
-  &-placement-bottomLeft > &-arrow,
-  &-placement-bottomRight > &-arrow {
-    top: @popover-distance - @popover-arrow-width + 2px;
-    border-top-color: @popover-bg;
-    border-right-color: transparent;
-    border-bottom-color: transparent;
-    border-left-color: @popover-bg;
-    box-shadow: -2px -2px 5px fade(@black, 6%);
-  }
-  &-placement-bottomCenter > &-arrow {
-    left: 50%;
-    transform: translateX(-50%) rotate(45deg);
-  }
-  &-placement-bottomLeft > &-arrow {
-    left: 16px;
-  }
-  &-placement-bottomRight > &-arrow {
-    right: 16px;
-  }
-
   &-menu {
     position: relative;
     margin: 0;
     padding: @dropdown-edge-child-vertical-padding 0;
     text-align: left;
     list-style-type: none;
-    background-color: @dropdown-menu-bg;
+    background-color: @component-background;
     background-clip: padding-box;
     border-radius: @border-radius-base;
     outline: none;
     box-shadow: @box-shadow-base;
+    -webkit-transform: translate3d(0, 0, 0);
 
     &-item-group-title {
       padding: 5px @control-padding-horizontal;
@@ -138,8 +68,6 @@
     &-submenu-popup {
       position: absolute;
       z-index: @zindex-dropdown;
-      background: transparent;
-      box-shadow: none;
 
       > .@{dropdown-prefix-cls}-menu {
         transform-origin: 0 0;
@@ -153,6 +81,7 @@
       ul {
         margin-right: 0.3em;
         margin-left: 0.3em;
+        padding: 0;
       }
     }
 
@@ -169,13 +98,11 @@
       cursor: pointer;
       transition: all 0.3s;
 
-      > .@{iconfont-css-prefix}:first-child,
-      > a > .@{iconfont-css-prefix}:first-child,
-      > span > .@{iconfont-css-prefix}:first-child {
+      > .anticon:first-child,
+      > span > .anticon:first-child {
         min-width: 12px;
         margin-right: 8px;
         font-size: @font-size-sm;
-        vertical-align: -0.1em;
       }
 
       > a {
@@ -184,17 +111,6 @@
         padding: 5px @control-padding-horizontal;
         color: @text-color;
         transition: all 0.3s;
-        &:hover {
-          color: @text-color;
-        }
-      }
-
-      > .@{iconfont-css-prefix} + span > a {
-        color: @text-color;
-        transition: all 0.3s;
-        &:hover {
-          color: @text-color;
-        }
       }
 
       &:first-child {
@@ -225,7 +141,7 @@
 
         &:hover {
           color: @disabled-color;
-          background-color: @dropdown-menu-submenu-disabled-bg;
+          background-color: @component-background;
           cursor: not-allowed;
         }
       }
@@ -241,12 +157,10 @@
       .@{dropdown-prefix-cls}-menu-submenu-arrow {
         position: absolute;
         right: @padding-xs;
-
         &-icon {
-          margin-right: 0 !important;
           color: @text-color-secondary;
-          font-size: 10px;
           font-style: normal;
+          .iconfont-size-under-12px(10px);
         }
       }
     }
@@ -258,7 +172,7 @@
     }
 
     &-submenu-title {
-      padding-right: @control-padding-horizontal + @font-size-sm;
+      padding-right: 26px;
     }
 
     &-submenu-vertical {
@@ -278,7 +192,7 @@
       &,
       .@{dropdown-prefix-cls}-menu-submenu-arrow-icon {
         color: @disabled-color;
-        background-color: @dropdown-menu-submenu-disabled-bg;
+        background-color: @component-background;
         cursor: not-allowed;
       }
     }
@@ -321,21 +235,21 @@
 }
 
 .@{dropdown-prefix-cls}-trigger,
-.@{dropdown-prefix-cls}-link,
-.@{dropdown-prefix-cls}-button {
+.@{dropdown-prefix-cls}-link {
   > .@{iconfont-css-prefix}.@{iconfont-css-prefix}-down {
-    font-size: 10px;
-    vertical-align: baseline;
+    .iconfont-size-under-12px(10px);
   }
 }
 
 .@{dropdown-prefix-cls}-button {
   white-space: nowrap;
 
-  &.@{ant-prefix}-btn-group
-    > .@{ant-prefix}-btn:last-child:not(:first-child):not(.@{ant-prefix}-btn-icon-only) {
+  &.@{ant-prefix}-btn-group > .@{ant-prefix}-btn:last-child:not(:first-child) {
     padding-right: @padding-xs;
     padding-left: @padding-xs;
+  }
+  .@{iconfont-css-prefix}.@{iconfont-css-prefix}-down {
+    .iconfont-size-under-12px(10px);
   }
 }
 
@@ -347,8 +261,7 @@
   }
   .@{dropdown-prefix-cls}-menu-item,
   .@{dropdown-prefix-cls}-menu-submenu-title,
-  .@{dropdown-prefix-cls}-menu-item > a,
-  .@{dropdown-prefix-cls}-menu-item > .@{iconfont-css-prefix} + span > a {
+  .@{dropdown-prefix-cls}-menu-item > a {
     color: @text-color-secondary-dark;
     .@{dropdown-prefix-cls}-menu-submenu-arrow::after {
       color: @text-color-secondary-dark;
@@ -367,5 +280,3 @@
     }
   }
 }
-
-@import './rtl';
