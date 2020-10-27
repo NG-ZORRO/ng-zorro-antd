@@ -18,8 +18,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { BooleanInput, NumberInput, NzSafeAny } from 'ng-zorro-antd/core/types';
-import { Observable, of, Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { Observable, of, Subject, Subscription } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 
 import { InputBoolean, InputNumber, toBoolean } from 'ng-zorro-antd/core/util';
 import { NzI18nService, NzUploadI18nInterface } from 'ng-zorro-antd/i18n';
@@ -60,7 +60,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   static ngAcceptInputType_nzShowButton: BooleanInput;
   static ngAcceptInputType_nzWithCredentials: BooleanInput;
 
-  private i18n$!: Subscription;
+  private destroy$ = new Subject<void>();
   @ViewChild('uploadComp', { static: false }) uploadComp!: NzUploadBtnComponent;
   @ViewChild('listComp', { static: false }) listComp!: NzUploadListComponent;
 
@@ -321,7 +321,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   // #endregion
 
   ngOnInit(): void {
-    this.i18n$ = this.i18n.localeChange.subscribe(() => {
+    this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
       this.locale = this.i18n.getLocaleData('Upload');
       this.detectChangesList();
     });
@@ -332,6 +332,7 @@ export class NzUploadComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.i18n$.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
