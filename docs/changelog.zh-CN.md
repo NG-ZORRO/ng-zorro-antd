@@ -14,6 +14,40 @@ timeline: true
 
 ---
 
+## 10.1.0
+
+`2020-10-30`
+
+
+### Bug Fixes
+
+* **form:** 修复子组件无法接收自动提示的问题 ([#5962](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5962)) ([705d6d8](https://github.com/NG-ZORRO/ng-zorro-antd/commit/705d6d8))
+* **select:** 修复搜索框在 IE11 输入不生效的问题 ([#5953](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5953)) ([5dc1ff3](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5dc1ff3)), closes [#5645](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5645) [#4296](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4296)
+* **select:** 修复 ESC 按键监听的问题 ([#5973](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5973)) ([d898cce](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d898cce)), closes [#5965](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5965)
+* **select:** 修复 title 没有显示的问题 ([#5978](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5978)) ([fd77cd4](https://github.com/NG-ZORRO/ng-zorro-antd/commit/fd77cd4)), closes [#5281](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5281)
+* **tabs:** 修复链接没有激活的问题 ([#5954](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5954)) ([5c661c5](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5c661c5)), closes [#5857](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5857)
+* **time-picker:** 修复 disabled 时清除按钮显示的问题 ([#5990](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5990)) ([761cf40](https://github.com/NG-ZORRO/ng-zorro-antd/commit/761cf40))
+* **upload:** 修复 i18n 的问题 ([#5971](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5971)) ([b067e7e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b067e7e))
+
+
+### Features
+
+* **avatar:** 添加 avatar group 组件 ([#5916](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5916)) ([2dc8d98](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2dc8d98)), closes [#5882](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5882)
+* **avatar:** 支持设置间隔 ([#5920](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5920)) ([f3f1aa9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/f3f1aa9)), closes [#5883](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5883)
+* **back-top:** 添加 `nzDuration` 属性 ([#5892](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5892)) ([b256461](https://github.com/NG-ZORRO/ng-zorro-antd/commit/b256461)), closes [#5887](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5887)
+* **cascader:** 支持后缀和展开图标 ([#5899](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5899)) ([d235589](https://github.com/NG-ZORRO/ng-zorro-antd/commit/d235589)), closes [#5885](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5885)
+* **date-picker:** 添加 `nzBorderless` 属性 ([#5975](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5975)) ([25e41fa](https://github.com/NG-ZORRO/ng-zorro-antd/commit/25e41fa)), closes [#5680](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5680) [#4967](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4967)
+* **descriptions:** 添加 `nzExtra` 属性 ([#5859](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5859)) ([846331e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/846331e)), closes [#5855](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5855)
+* **form:** `nz-form-label` 支持 `nzFormTooltip` ([#5957](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5957)) ([4a00b69](https://github.com/NG-ZORRO/ng-zorro-antd/commit/4a00b69)), closes [#5905](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5905)
+* **form:** 支持 tooltips locale 回退 ([#5967](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5967)) ([c01e20b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/c01e20b)), closes [#5917](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5917)
+* **menu:** 添加 danger 样式 ([#5932](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5932)) ([5c19bbd](https://github.com/NG-ZORRO/ng-zorro-antd/commit/5c19bbd)), closes [#5881](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5881)
+* **tooltip:** 添加 `nzTooltipColor` 属性 ([#5896](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5896)) ([643bd03](https://github.com/NG-ZORRO/ng-zorro-antd/commit/643bd03)), closes [#5884](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5884)
+* **tooltip:** 增强自定义位置 ([#5861](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5861)) ([0fce47e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/0fce47e)), closes [#5733](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5733)
+* **typography:** 支持自定义图标和提示 ([#5911](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5911)) ([2d4cbb0](https://github.com/NG-ZORRO/ng-zorro-antd/commit/2d4cbb0)), closes [#5888](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5888)
+* **typography:** 支持 success 类型 ([#5915](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5915)) ([93c0d46](https://github.com/NG-ZORRO/ng-zorro-antd/commit/93c0d46)), closes [#5906](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5906)
+
+
+
 ## 10.0.2
 
 `2020-10-16`
