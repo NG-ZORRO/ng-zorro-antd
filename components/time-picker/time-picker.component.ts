@@ -59,7 +59,7 @@ const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'timePicker';
           <i nz-icon [nzType]="suffixIcon"></i>
         </ng-container>
       </span>
-      <span *ngIf="nzAllowEmpty && value" class="ant-picker-clear" (click)="onClickClearBtn($event)">
+      <span *ngIf="nzAllowEmpty && !nzDisabled && value" class="ant-picker-clear" (click)="onClickClearBtn($event)">
         <i nz-icon nzType="close-circle" nzTheme="fill" [attr.aria-label]="nzClearText" [attr.title]="nzClearText"></i>
       </span>
     </div>
