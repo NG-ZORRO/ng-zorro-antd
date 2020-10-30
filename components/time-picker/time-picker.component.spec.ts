@@ -72,6 +72,7 @@ describe('time-picker', () => {
       testComponent.disabled = true;
       fixture.detectChanges();
       expect(timeElement.nativeElement.querySelector('input').attributes.getNamedItem('disabled')).toBeDefined();
+      expect(timeElement.nativeElement.querySelector('.ant-picker-clear')).not.toBeTruthy();
       testComponent.disabled = false;
       testComponent.nzTimePickerComponent.setDisabledState(false);
       fixture.detectChanges();
