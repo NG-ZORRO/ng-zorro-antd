@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'nz-demo-tooltip-placement',
   template: `
     <div style="margin-left:60px;">
-      <button nzTooltipTitle="prompt text" nzTooltipPlacement="topLeft" nz-button nz-tooltip>TL</button>
+      <button nzTooltipTitle="prompt text" [nzTooltipPlacement]="['topLeft', 'leftTop']" nz-button nz-tooltip>TL</button>
       <button nzTooltipTitle="prompt text" nzTooltipPlacement="top" nz-button nz-tooltip>Top</button>
       <button nzTooltipTitle="prompt text" nzTooltipPlacement="topRight" nz-button nz-tooltip>TR</button>
     </div>

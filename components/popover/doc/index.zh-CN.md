@@ -27,7 +27,7 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 | `[nzPopoverTitle]` | 标题 | `string \| TemplateRef<void>` | - |
 | `[nzPopoverContent]` | 用于定义内容 | `string \| TemplateRef<void>` | - |
 | `[nzPopoverTrigger]` | 触发行为，为 `null` 时不响应光标事件 | `'click' \| 'focus' \| 'hover' \| null` | `'hover'` |
-| `[nzPopoverPlacement]` | 气泡框位置 | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom'` | `'top'` |
+| `[nzPopoverPlacement]` | 气泡框位置 | `'top' \| 'left' \| 'right' \| 'bottom' \| 'topLeft' \| 'topRight' \| 'bottomLeft' \| 'bottomRight' \| 'leftTop' \| 'leftBottom' \| 'rightTop' \| 'rightBottom' \| Array<string>` | `'top'` |
 | `[nzPopoverOrigin]` | 气泡框定位元素 | `ElementRef` | - |
 | `[nzPopoverVisible]` | 显示隐藏气泡框 | `boolean` | `false` |
 | `(nzPopoverVisibleChange)` | 显示隐藏的事件 | `EventEmitter<boolean>` | - |
