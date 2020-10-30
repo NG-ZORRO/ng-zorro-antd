@@ -35,15 +35,6 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
     <!--single mode-->
     <ng-container [ngSwitch]="mode">
       <ng-container *ngSwitchCase="'default'">
-        <nz-select-item
-          *ngIf="isShowSingleLabel"
-          [deletable]="false"
-          [disabled]="false"
-          [removeIcon]="removeIcon"
-          [label]="listOfTopItem[0].nzLabel"
-          [contentTemplateOutlet]="customTemplate"
-          [contentTemplateOutletContext]="listOfTopItem[0]"
-        ></nz-select-item>
         <nz-select-search
           [disabled]="disabled"
           [value]="inputValue!"
@@ -54,9 +45,28 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
           (isComposingChange)="isComposingChange($event)"
           (valueChange)="onInputValueChange($event)"
         ></nz-select-search>
+        <nz-select-item
+          *ngIf="isShowSingleLabel"
+          [deletable]="false"
+          [disabled]="false"
+          [removeIcon]="removeIcon"
+          [label]="listOfTopItem[0].nzLabel"
+          [contentTemplateOutlet]="customTemplate"
+          [contentTemplateOutletContext]="listOfTopItem[0]"
+        ></nz-select-item>
       </ng-container>
       <ng-container *ngSwitchDefault>
         <!--multiple or tags mode-->
+        <nz-select-search
+          [disabled]="disabled"
+          [value]="inputValue!"
+          [autofocus]="autofocus"
+          [showInput]="true"
+          [mirrorSync]="true"
+          [focusTrigger]="open"
+          (isComposingChange)="isComposingChange($event)"
+          (valueChange)="onInputValueChange($event)"
+        ></nz-select-search>
         <nz-select-item
           *ngFor="let item of listOfSlicedItem; trackBy: trackValue"
           [@zoomMotion]
@@ -71,16 +81,6 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
           (@zoomMotion.done)="onAnimationEnd()"
           (delete)="onDeleteItem(item.contentTemplateOutletContext)"
         ></nz-select-item>
-        <nz-select-search
-          [disabled]="disabled"
-          [value]="inputValue!"
-          [autofocus]="autofocus"
-          [showInput]="true"
-          [mirrorSync]="true"
-          [focusTrigger]="open"
-          (isComposingChange)="isComposingChange($event)"
-          (valueChange)="onInputValueChange($event)"
-        ></nz-select-search>
       </ng-container>
     </ng-container>
     <nz-select-placeholder *ngIf="isShowPlaceholder" [placeholder]="placeHolder"></nz-select-placeholder>
