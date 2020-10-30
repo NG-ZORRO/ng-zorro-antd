@@ -1,7 +1,9 @@
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 interface ItemData {
   gender: string;
@@ -52,39 +54,64 @@ interface Name {
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NzDemoListInfiniteLoadComponent {
+export class NzDemoListInfiniteLoadComponent implements OnInit, OnDestroy {
   ds = new MyDataSource(this.http);
 
-  constructor(private http: HttpClient) {}
+  private destroy$ = new Subject();
+  constructor(private http: HttpClient, private nzMessage: NzMessageService) {}
+
+  ngOnInit(): void {
+    this.ds
+      .completed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.nzMessage.warning('Infinite List loaded all');
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }
 
 class MyDataSource extends DataSource<ItemData> {
-  private length = 100000;
   private pageSize = 10;
-  private cachedData = Array.from<ItemData>({ length: this.length });
+  private cachedData: ItemData[] = [];
   private fetchedPages = new Set<number>();
   private dataStream = new BehaviorSubject<ItemData[]>(this.cachedData);
-  private subscription = new Subscription();
+  private complete$ = new Subject<void>();
+  private disconnect$ = new Subject<void>();
 
   constructor(private http: HttpClient) {
     super();
   }
 
+  completed(): Observable<void> {
+    return this.complete$.asObservable();
+  }
+
   connect(collectionViewer: CollectionViewer): Observable<ItemData[]> {
-    this.subscription.add(
-      collectionViewer.viewChange.subscribe(range => {
-        const startPage = this.getPageForIndex(range.start);
-        const endPage = this.getPageForIndex(range.end - 1);
-        for (let i = startPage; i <= endPage; i++) {
-          this.fetchPage(i);
-        }
-      })
-    );
+    this.setup(collectionViewer);
     return this.dataStream;
   }
 
   disconnect(): void {
-    this.subscription.unsubscribe();
+    this.disconnect$.next();
+    this.disconnect$.complete();
+  }
+
+  private setup(collectionViewer: CollectionViewer): void {
+    this.fetchPage(0);
+    collectionViewer.viewChange.pipe(takeUntil(this.complete$), takeUntil(this.disconnect$)).subscribe(range => {
+      if (this.cachedData.length >= 50) {
+        this.complete$.next();
+        this.complete$.complete();
+      } else {
+        const endPage = this.getPageForIndex(range.end);
+        this.fetchPage(endPage + 1);
+      }
+    });
   }
 
   private getPageForIndex(index: number): number {
