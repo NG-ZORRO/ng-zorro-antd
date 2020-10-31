@@ -6,7 +6,7 @@
   }
 
   // We introduced an extra layer.
-  & > @{breadcrumb-prefix-cls}-item:last-child {
+  & > nz-breadcrumb-item:last-child {
     color: @breadcrumb-last-item-color;
     a {
       color: @breadcrumb-last-item-color;
@@ -18,10 +18,6 @@ nz-breadcrumb {
   display: block;
 }
 
-nz-breadcrumb-item:last-child {
-  color: @breadcrumb-last-item-color;
-}
-
-nz-breadcrumb-item:last-child .ant-breadcrumb-separator {
+nz-breadcrumb-item:last-child .@{breadcrumb-prefix-cls}-separator {
   display: none;
 }
