@@ -2,70 +2,93 @@
 
 @tree-prefix-cls: ~'@{ant-prefix}-tree';
 
-.@{tree-prefix-cls}.@{tree-prefix-cls}-directory {
-  // ================== TreeNode ==================
-  .@{tree-prefix-cls}-treenode {
+.@{tree-prefix-cls} {
+  &.@{tree-prefix-cls}-directory {
     position: relative;
 
-    // Hover color
-    &::before {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 4px;
-      left: 0;
-      transition: background-color 0.3s;
-      content: '';
-      pointer-events: none;
-    }
+    // Stretch selector width
+    > li,
+    .@{tree-prefix-cls}-child-tree > li {
+      span {
+        &.@{tree-prefix-cls}-switcher {
+          position: relative;
+          z-index: 1;
 
-    &:hover {
-      &::before {
-        background: @item-hover-bg;
-      }
-    }
+          &.@{tree-prefix-cls}-switcher-noop {
+            pointer-events: none;
+          }
+        }
 
-    // Elements
-    > * {
-      z-index: 1;
-    }
+        &.@{tree-prefix-cls}-checkbox {
+          position: relative;
+          z-index: 1;
+        }
 
-    // >>> Switcher
-    .@{tree-prefix-cls}-switcher {
-      transition: color 0.3s;
-    }
+        &.@{tree-prefix-cls}-node-content-wrapper {
+          border-radius: 0;
+          user-select: none;
 
-    // >>> Title
-    .@{tree-prefix-cls}-node-content-wrapper {
-      border-radius: 0;
-      user-select: none;
+          &:hover {
+            background: transparent;
 
-      &:hover {
-        background: transparent;
-      }
+            &::before {
+              background: @item-hover-bg;
+            }
+          }
 
-      &.@{tree-prefix-cls}-node-selected {
-        color: @tree-directory-selected-color;
-        background: transparent;
-      }
-    }
+          &.@{tree-prefix-cls}-node-selected {
+            color: @tree-directory-selected-color;
+            background: transparent;
+          }
 
-    // ============= Selected =============
-    &-selected {
-      &:hover::before,
-      &::before {
-        background: @tree-directory-selected-bg;
-      }
+          &::before {
+            position: absolute;
+            right: 0;
+            left: 0;
+            height: @tree-title-height;
+            transition: all 0.3s;
+            content: '';
+          }
 
-      // >>> Switcher
-      .@{tree-prefix-cls}-switcher {
-        color: @tree-directory-selected-color;
+          > span {
+            position: relative;
+            z-index: 1;
+          }
+        }
       }
 
-      // >>> Title
-      .@{tree-prefix-cls}-node-content-wrapper {
-        color: @tree-directory-selected-color;
-        background: transparent;
+      &.@{tree-prefix-cls}-treenode-selected {
+        > span {
+          &.@{tree-prefix-cls}-switcher {
+            color: @tree-directory-selected-color;
+          }
+
+          &.@{tree-prefix-cls}-checkbox {
+            .@{tree-prefix-cls}-checkbox-inner {
+              border-color: @primary-color;
+            }
+
+            &.@{tree-prefix-cls}-checkbox-checked {
+              &::after {
+                border-color: @checkbox-check-color;
+              }
+
+              .@{tree-prefix-cls}-checkbox-inner {
+                background: @checkbox-check-color;
+
+                &::after {
+                  border-color: @primary-color;
+                }
+              }
+            }
+          }
+
+          &.@{tree-prefix-cls}-node-content-wrapper {
+            &::before {
+              background: @tree-directory-selected-bg;
+            }
+          }
+        }
       }
     }
   }

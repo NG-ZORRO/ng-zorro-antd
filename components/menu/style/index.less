@@ -1,6 +1,5 @@
 @import '../../style/themes/index';
 @import '../../style/mixins/index';
-@import './status';
 
 @menu-prefix-cls: ~'@{ant-prefix}-menu';
 
@@ -11,14 +10,12 @@
   margin-bottom: 0;
   padding-left: 0; // Override default ul/ol
   color: @menu-item-color;
-  font-size: @menu-item-font-size;
   line-height: 0; // Fix display inline-block gap
-  text-align: left;
   list-style: none;
   background: @menu-bg;
   outline: none;
   box-shadow: @box-shadow-base;
-  transition: background 0.3s, width 0.3s cubic-bezier(0.2, 0, 0, 1) 0s;
+  transition: background 0.3s, width 0.2s;
   .clearfix;
 
   ul,
@@ -33,17 +30,13 @@
   }
 
   &-item-group-title {
-    height: @menu-item-group-height;
     padding: 8px 16px;
     color: @menu-item-group-title-color;
-    font-size: @menu-item-group-title-font-size;
-    line-height: @menu-item-group-height;
+    font-size: @font-size-base;
+    line-height: @line-height-base;
     transition: all 0.3s;
   }
 
-  &-horizontal &-submenu {
-    transition: border-color 0.3s @ease-in-out, background 0.3s @ease-in-out;
-  }
   &-submenu,
   &-submenu-inline {
     transition: border-color 0.3s @ease-in-out, background 0.3s @ease-in-out,
@@ -64,7 +57,8 @@
     transition: background 0.3s @ease-in-out, padding 0.3s @ease-in-out;
   }
 
-  &-item a {
+  &-item > a {
+    display: block;
     color: @menu-item-color;
     &:hover {
       color: @menu-highlight-color;
@@ -81,7 +75,7 @@
   }
 
   // https://github.com/ant-design/ant-design/issues/19809
-  &-item > .@{ant-prefix}-badge a {
+  &-item > .@{ant-prefix}-badge > a {
     color: @menu-item-color;
     &:hover {
       color: @menu-highlight-color;
@@ -116,8 +110,8 @@
 
   &-item-selected {
     color: @menu-highlight-color;
-    a,
-    a:hover {
+    > a,
+    > a:hover {
       color: @menu-highlight-color;
     }
   }
@@ -131,7 +125,6 @@
   &-vertical-left {
     border-right: @border-width-base @border-style-base @border-color-split;
   }
-
   &-vertical-right {
     border-left: @border-width-base @border-style-base @border-color-split;
   }
@@ -140,18 +133,9 @@
   &-vertical-left&-sub,
   &-vertical-right&-sub {
     min-width: 160px;
-    max-height: calc(100vh - 100px);
     padding: 0;
-    overflow: hidden;
     border-right: 0;
     transform-origin: 0 0;
-
-    // https://github.com/ant-design/ant-design/issues/22244
-    // https://github.com/ant-design/ant-design/issues/26812
-    &:not([class*='-active']) {
-      overflow-x: hidden;
-      overflow-y: auto;
-    }
 
     .@{menu-prefix-cls}-item {
       left: 0;
@@ -171,35 +155,24 @@
     min-width: 114px; // in case of submenu width is too big: https://codesandbox.io/s/qvpwm6mk66
   }
 
-  &-horizontal &-item,
-  &-horizontal &-submenu-title {
-    transition: color 0.3s @ease-in-out, border-color 0.3s @ease-in-out,
-      background 0.3s @ease-in-out;
-  }
   &-item,
   &-submenu-title {
     position: relative;
     display: block;
     margin: 0;
-    padding: @menu-item-padding;
+    padding: 0 20px;
     white-space: nowrap;
     cursor: pointer;
     transition: color 0.3s @ease-in-out, border-color 0.3s @ease-in-out,
       background 0.3s @ease-in-out, padding 0.15s @ease-in-out;
     .@{iconfont-css-prefix} {
       min-width: 14px;
-      margin-right: @menu-icon-margin-right;
+      margin-right: 10px;
       font-size: @menu-icon-size;
       transition: font-size 0.15s @ease-out, margin 0.3s @ease-in-out;
       + span {
         opacity: 1;
         transition: opacity 0.3s @ease-in-out, width 0.3s @ease-in-out;
-      }
-    }
-
-    &.@{menu-prefix-cls}-item-only-child {
-      > .@{iconfont-css-prefix} {
-        margin-right: 0;
       }
     }
   }
@@ -217,28 +190,22 @@
     &-popup {
       position: absolute;
       z-index: @zindex-dropdown;
+      background: @menu-popup-bg;
       border-radius: @border-radius-base;
-      box-shadow: none;
 
-      // https://github.com/ant-design/ant-design/issues/13955
+      .submenu-title-wrapper {
+        padding-right: 20px;
+      }
+
       &::before {
         position: absolute;
         top: -7px;
         right: 0;
         bottom: 0;
         left: 0;
-        z-index: -1;
-        width: 100%;
-        height: 100%;
         opacity: 0.0001;
         content: ' ';
       }
-    }
-
-    // https://github.com/ant-design/ant-design/issues/13955
-    &-placement-rightTop::before {
-      top: 0;
-      left: -7px;
     }
 
     > .@{menu-prefix-cls} {
@@ -247,10 +214,6 @@
       &-submenu-title::after {
         transition: transform 0.3s @ease-in-out;
       }
-    }
-
-    &-popup > .@{menu-prefix-cls} {
-      background-color: @menu-popup-bg;
     }
 
     &-vertical,
@@ -263,15 +226,18 @@
         right: 16px;
         width: 10px;
         transition: transform 0.3s @ease-in-out;
-
         &::before,
         &::after {
           position: absolute;
           width: 6px;
           height: 1.5px;
           // background + background-image to makes before & after cross have same color.
+          // Since `linear-gradient` not work on IE9, we should hack it.
           // ref: https://github.com/ant-design/ant-design/issues/15910
+          background: @menu-bg;
+          background: ~'@{menu-item-color} \9';
           background-image: linear-gradient(to right, @menu-item-color, @menu-item-color);
+          background-image: ~'none \9';
           border-radius: 2px;
           transition: background 0.3s @ease-in-out, transform 0.3s @ease-in-out,
             top 0.3s @ease-in-out;
@@ -288,19 +254,6 @@
         &::after,
         &::before {
           background: linear-gradient(to right, @menu-highlight-color, @menu-highlight-color);
-        }
-      }
-    }
-
-    &-vertical,
-    &-vertical-left,
-    &-vertical-right {
-      > .@{menu-prefix-cls}-submenu-title .@{menu-prefix-cls}-submenu-arrow {
-        &::before {
-          transform: rotate(45deg) translateY(-2px);
-        }
-        &::after {
-          transform: rotate(-45deg) translateY(2px);
         }
       }
     }
@@ -333,33 +286,17 @@
   &-vertical-left &-submenu-selected,
   &-vertical-right &-submenu-selected {
     color: @menu-highlight-color;
+    > a {
+      color: @menu-highlight-color;
+    }
   }
 
   &-horizontal {
-    line-height: @menu-horizontal-line-height;
+    line-height: 46px;
+    white-space: nowrap;
     border: 0;
     border-bottom: @border-width-base @border-style-base @border-color-split;
     box-shadow: none;
-
-    &:not(.@{menu-prefix-cls}-dark) {
-      > .@{menu-prefix-cls}-item,
-      > .@{menu-prefix-cls}-submenu {
-        margin: @menu-item-padding;
-        margin-top: -1px;
-        margin-bottom: 0;
-        padding: @menu-item-padding;
-        padding-right: 0;
-        padding-left: 0;
-
-        &:hover,
-        &-active,
-        &-open,
-        &-selected {
-          color: @menu-highlight-color;
-          border-bottom: 2px solid @menu-highlight-color;
-        }
-      }
-    }
 
     > .@{menu-prefix-cls}-item,
     > .@{menu-prefix-cls}-submenu {
@@ -368,14 +305,19 @@
       display: inline-block;
       vertical-align: bottom;
       border-bottom: 2px solid transparent;
-    }
 
-    > .@{menu-prefix-cls}-submenu > .@{menu-prefix-cls}-submenu-title {
-      padding: 0;
+      &:hover,
+      &-active,
+      &-open,
+      &-selected {
+        color: @menu-highlight-color;
+        border-bottom: 2px solid @menu-highlight-color;
+      }
     }
 
     > .@{menu-prefix-cls}-item {
-      a {
+      > a {
+        display: block;
         color: @menu-item-color;
         &:hover {
           color: @menu-highlight-color;
@@ -384,7 +326,7 @@
           bottom: -2px;
         }
       }
-      &-selected a {
+      &-selected > a {
         color: @menu-highlight-color;
       }
     }
@@ -423,6 +365,7 @@
       margin-bottom: @menu-item-vertical-margin;
       padding: 0 16px;
       overflow: hidden;
+      font-size: @menu-item-font-size;
       line-height: @menu-item-height;
       text-overflow: ellipsis;
     }
@@ -440,12 +383,6 @@
     > .@{menu-prefix-cls}-submenu > .@{menu-prefix-cls}-submenu-title {
       height: @menu-inline-toplevel-item-height;
       line-height: @menu-inline-toplevel-item-height;
-    }
-  }
-
-  &-vertical {
-    .@{menu-prefix-cls}-submenu-title {
-      padding-right: 34px;
     }
   }
 
@@ -482,7 +419,7 @@
       > .@{menu-prefix-cls}-submenu-title,
     > .@{menu-prefix-cls}-submenu > .@{menu-prefix-cls}-submenu-title {
       left: 0;
-      padding: 0 ~'calc(50% - @{menu-icon-size-lg} / 2)';
+      padding: 0 (@menu-collapsed-width - @menu-icon-size-lg) / 2 !important;
       text-overflow: clip;
       .@{menu-prefix-cls}-submenu-arrow {
         display: none;
@@ -498,11 +435,6 @@
         }
       }
     }
-
-    .@{iconfont-css-prefix} {
-      display: inline-block;
-    }
-
     &-tooltip {
       pointer-events: none;
       .@{iconfont-css-prefix} {
@@ -538,16 +470,6 @@
     box-shadow: none;
   }
 
-  &-root&-inline-collapsed {
-    .@{menu-prefix-cls}-item,
-    .@{menu-prefix-cls}-submenu .@{menu-prefix-cls}-submenu-title {
-      > .@{menu-prefix-cls}-inline-collapsed-noicon {
-        font-size: @menu-icon-size-lg;
-        text-align: center;
-      }
-    }
-  }
-
   &-sub&-inline {
     padding: 0;
     border: 0;
@@ -573,7 +495,7 @@
     background: none;
     border-color: transparent !important;
     cursor: not-allowed;
-    a {
+    > a {
       color: @disabled-color !important;
       pointer-events: none;
     }
@@ -590,12 +512,4 @@
   }
 }
 
-// Integration with header element so menu items have the same height
-.@{ant-prefix}-layout-header {
-  .@{menu-prefix-cls} {
-    line-height: inherit;
-  }
-}
-
 @import './dark';
-@import './rtl';

@@ -28,7 +28,7 @@
 
     position: relative;
     display: inline-block;
-    background-color: @cascader-bg;
+    background-color: @component-background;
     border-radius: @border-radius-base;
     outline: 0;
     cursor: pointer;
@@ -49,11 +49,6 @@
 
     &:focus .@{cascader-prefix-cls}-input {
       .active;
-    }
-
-    &-borderless .@{cascader-prefix-cls}-input {
-      border-color: transparent !important;
-      box-shadow: none !important;
     }
 
     &-show-search&-focused {
@@ -110,14 +105,16 @@
       color: @disabled-color;
       font-size: 12px;
       line-height: 12px;
+      transition: transform 0.2s;
+      &&-expand {
+        transform: rotate(180deg);
+      }
     }
   }
 
   // https://github.com/ant-design/ant-design/pull/12407#issuecomment-424657810
   &-picker-label:hover + &-input {
-    &:not(.@{cascader-prefix-cls}-picker-disabled &) {
-      .hover;
-    }
+    .hover;
   }
 
   &-picker-small &-picker-clear,
@@ -130,7 +127,7 @@
     z-index: @zindex-dropdown;
     font-size: @cascader-dropdown-font-size;
     white-space: nowrap;
-    background: @cascader-menu-bg;
+    background: @component-background;
     border-radius: @border-radius-base;
     box-shadow: @box-shadow-base;
 
@@ -171,7 +168,7 @@
     overflow: auto;
     vertical-align: top;
     list-style: none;
-    border-right: @border-width-base @border-style-base @cascader-menu-border-color-split;
+    border-right: @border-width-base @border-style-base @border-color-split;
     -ms-overflow-style: -ms-autohiding-scrollbar; // https://github.com/ant-design/ant-design/issues/11857
 
     &:first-child {
@@ -188,10 +185,8 @@
   }
   &-menu-item {
     padding: @cascader-dropdown-vertical-padding @control-padding-horizontal;
-    overflow: hidden;
     line-height: @cascader-dropdown-line-height;
     white-space: nowrap;
-    text-overflow: ellipsis;
     cursor: pointer;
     transition: all 0.3s;
     &:hover {
@@ -204,16 +199,11 @@
         background: transparent;
       }
     }
-    .@{cascader-prefix-cls}-menu-empty & {
-      color: @disabled-color;
-      cursor: default;
-      pointer-events: none;
-    }
     &-active:not(&-disabled) {
       &,
       &:hover {
         font-weight: @select-item-selected-font-weight;
-        background-color: @cascader-item-selected-bg;
+        background-color: @background-color-light;
       }
     }
     &-expand {
@@ -223,14 +213,11 @@
 
     &-expand &-expand-icon,
     &-loading-icon {
+      .iconfont-size-under-12px(10px);
+
       position: absolute;
       right: @control-padding-horizontal;
       color: @text-color-secondary;
-      font-size: 10px;
-
-      .@{cascader-prefix-cls}-menu-item-disabled& {
-        color: @disabled-color;
-      }
     }
 
     & &-keyword {
@@ -238,5 +225,3 @@
     }
   }
 }
-
-@import './rtl';

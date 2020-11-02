@@ -1,15 +1,11 @@
 .steps-vertical() {
-  display: flex;
-  flex-direction: column;
+  display: block;
   .@{steps-prefix-cls}-item {
     display: block;
-    flex: 1 0 auto;
-    padding-left: 0;
     overflow: visible;
-
     &-icon {
       float: left;
-      margin-right: @steps-vertical-icon-width;
+      margin-right: 16px;
     }
     &-content {
       display: block;
@@ -29,11 +25,10 @@
     > .@{steps-prefix-cls}-item-tail {
     position: absolute;
     top: 0;
-    left: @steps-vertical-tail-width;
+    left: 16px;
     width: 1px;
     height: 100%;
     padding: @steps-icon-size + 6px 0 6px;
-
     &::after {
       width: 1px;
       height: 100%;
@@ -59,7 +54,7 @@
     .@{steps-prefix-cls}-item-tail {
       position: absolute;
       top: 0;
-      left: @steps-vertical-tail-width-sm;
+      left: 12px;
       padding: @steps-small-icon-size + 6px 0 6px;
     }
     .@{steps-prefix-cls}-item-title {

@@ -3,7 +3,6 @@
 @import '../../input/style/mixin';
 
 @input-number-prefix-cls: ~'@{ant-prefix}-input-number';
-@form-item-prefix-cls: ~'@{ant-prefix}-form-item';
 
 .@{input-number-prefix-cls} {
   .reset-component;
@@ -52,10 +51,6 @@
 
   &:hover {
     .hover(@input-number-hover-border-color);
-    & + .@{form-item-prefix-cls}-children-icon {
-      opacity: 0;
-      transition: opacity 0.24s linear 0.24s;
-    }
   }
 
   &-focused {
@@ -67,12 +62,6 @@
     .@{input-number-prefix-cls}-input {
       cursor: not-allowed;
     }
-    .@{input-number-prefix-cls}-handler-wrap {
-      display: none;
-    }
-  }
-
-  &-readonly {
     .@{input-number-prefix-cls}-handler-wrap {
       display: none;
     }
@@ -134,9 +123,10 @@
     .@{input-number-prefix-cls}-handler {
       .@{input-number-prefix-cls}-handler-up-inner,
       .@{input-number-prefix-cls}-handler-down-inner {
+        .iconfont-size-under-12px(7px);
+
         min-width: auto;
         margin-right: 0;
-        font-size: 7px;
       }
     }
   }
@@ -169,8 +159,8 @@
     cursor: pointer;
     &-inner {
       top: 50%;
+      margin-top: -6px;
       text-align: center;
-      transform: translateY(-50%);
     }
     &:hover {
       height: 60% !important;
@@ -187,5 +177,3 @@
     color: @disabled-color;
   }
 }
-
-@import './rtl';
