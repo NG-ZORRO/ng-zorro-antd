@@ -23,8 +23,7 @@ import { NzDisplayedMark, NzExtendedMark, NzMark, NzMarkObj } from './typings';
         [class.ant-slider-mark-active]="attr.active"
         [ngStyle]="attr.style!"
         [innerHTML]="attr.label"
-      >
-      </span>
+      ></span>
     </div>
   `
 })
@@ -39,17 +38,18 @@ export class NzSliderMarksComponent implements OnChanges {
   @Input() max!: number;
   @Input() @InputBoolean() vertical = false;
   @Input() @InputBoolean() included = false;
+  @Input() reverse!: boolean;
 
   marks: NzDisplayedMark[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
-    const { marksArray, lowerBound, upperBound } = changes;
+    const { marksArray, lowerBound, upperBound, reverse } = changes;
 
-    if (marksArray) {
+    if (marksArray || reverse) {
       this.buildMarks();
     }
 
-    if (marksArray || lowerBound || upperBound) {
+    if (marksArray || lowerBound || upperBound || reverse) {
       this.togglePointActive();
     }
   }
@@ -79,16 +79,17 @@ export class NzSliderMarksComponent implements OnChanges {
 
   private getMarkStyles(value: number, range: number, config: NzMark): NgStyleInterface {
     let style;
+    const markValue = this.reverse ? this.max + this.min - value : value;
 
     if (this.vertical) {
       style = {
         marginBottom: '-50%',
-        bottom: `${((value - this.min) / range) * 100}%`
+        bottom: `${((markValue - this.min) / range) * 100}%`
       };
     } else {
       style = {
         transform: `translate3d(-50%, 0, 0)`,
-        left: `${((value - this.min) / range) * 100}%`
+        left: `${((markValue - this.min) / range) * 100}%`
       };
     }
 

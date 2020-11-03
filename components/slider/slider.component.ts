@@ -80,10 +80,13 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
       <nz-slider-step
         *ngIf="marksArray"
         [vertical]="nzVertical"
+        [min]="nzMin"
+        [max]="nzMax"
         [lowerBound]="$any(bounds.lower)"
         [upperBound]="$any(bounds.upper)"
         [marksArray]="marksArray"
         [included]="nzIncluded"
+        [reverse]="nzReverse"
       ></nz-slider-step>
       <nz-slider-handle
         *ngFor="let handle of handles"
@@ -105,6 +108,7 @@ import { NzExtendedMark, NzMarks, NzSliderHandler, NzSliderShowTooltip, NzSlider
         [upperBound]="$any(bounds.upper)"
         [marksArray]="marksArray"
         [included]="nzIncluded"
+        [reverse]="nzReverse"
       ></nz-slider-marks>
     </div>
   `
