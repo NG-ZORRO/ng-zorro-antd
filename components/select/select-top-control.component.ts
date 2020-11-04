@@ -57,16 +57,6 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
       </ng-container>
       <ng-container *ngSwitchDefault>
         <!--multiple or tags mode-->
-        <nz-select-search
-          [disabled]="disabled"
-          [value]="inputValue!"
-          [autofocus]="autofocus"
-          [showInput]="true"
-          [mirrorSync]="true"
-          [focusTrigger]="open"
-          (isComposingChange)="isComposingChange($event)"
-          (valueChange)="onInputValueChange($event)"
-        ></nz-select-search>
         <nz-select-item
           *ngFor="let item of listOfSlicedItem; trackBy: trackValue"
           [@zoomMotion]
@@ -81,13 +71,22 @@ import { NzSelectItemInterface, NzSelectModeType, NzSelectTopControlItemType } f
           (@zoomMotion.done)="onAnimationEnd()"
           (delete)="onDeleteItem(item.contentTemplateOutletContext)"
         ></nz-select-item>
+        <nz-select-search
+          [disabled]="disabled"
+          [value]="inputValue!"
+          [autofocus]="autofocus"
+          [showInput]="true"
+          [mirrorSync]="true"
+          [focusTrigger]="open"
+          (isComposingChange)="isComposingChange($event)"
+          (valueChange)="onInputValueChange($event)"
+        ></nz-select-search>
       </ng-container>
     </ng-container>
     <nz-select-placeholder *ngIf="isShowPlaceholder" [placeholder]="placeHolder"></nz-select-placeholder>
   `,
   host: {
     '[class.ant-select-selector]': 'true',
-    '(click)': 'onHostClick()',
     '(keydown)': 'onHostKeydown($event)'
   }
 })
@@ -108,23 +107,12 @@ export class NzSelectTopControlComponent implements OnChanges {
   @Output() readonly inputValueChange = new EventEmitter<string>();
   @Output() readonly animationEnd = new EventEmitter<void>();
   @Output() readonly deleteItem = new EventEmitter<NzSelectItemInterface>();
-  @Output() readonly openChange = new EventEmitter<boolean>();
   @ViewChild(NzSelectSearchComponent) nzSelectSearchComponent!: NzSelectSearchComponent;
   listOfSlicedItem: NzSelectTopControlItemType[] = [];
   isShowPlaceholder = true;
   isShowSingleLabel = false;
   isComposing = false;
   inputValue: string | null = null;
-
-  onHostClick(): void {
-    if (this.open && this.showSearch) {
-      return;
-    }
-
-    if (!this.disabled) {
-      this.openChange.next(!this.open);
-    }
-  }
 
   onHostKeydown(e: KeyboardEvent): void {
     const inputValue = (e.target as HTMLInputElement).value;
