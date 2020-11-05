@@ -25,7 +25,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | Props | Description | Type | Default | Global Config |
 | --- | --- | --- | --- | --- |
 | `[nzClosable]` | Whether a close (x) button is visible on top right of the Drawer dialog or not. | `boolean` | `true` |
-|  `[nzCloseIcon]` | 自定义关闭图标 | `string \| TemplateRef<void> \| null` | `'close'` |
+| `[nzCloseIcon]` | Custom close icon | `string \| TemplateRef<void> \| null` | `'close'` |
 | `[nzMask]` | Whether to show mask or not. | `boolean` | `true` | ✅ |
 | `[nzMaskClosable]` | Clicking on the mask (area outside the Drawer) to close the Drawer or not. | `boolean` | `true` | ✅ |
 | `[nzCloseOnNavigation]` | Whether to close the drawer when the navigation history changes | `boolean` | `true` | ✅ |
@@ -34,7 +34,7 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 | `[nzBodyStyle]` | Body style for drawer body element. Such as height, padding etc. | `object` | `{}` |
 | `[nzTitle]` | The title for Drawer. | `string \| TemplateRef<void>` | - |
 | `[nzFooter]` | The footer for Drawer. | `string \| TemplateRef<void>` | - |
-| `[nzVisible]` | Whether the Drawer dialog is visible or not. | `boolean` | `false` |
+| `[nzVisible]` | Whether the Drawer dialog is visible or not, you can use `[(nzVisible)]` two-way binding | `boolean` | `false` |
 | `[nzPlacement]` | The placement of the Drawer. | `'top' \| 'right' \| 'bottom' \| 'left'` | `'right'` |
 | `[nzWidth]` | Width of the Drawer dialog, only when placement is `'right'` or `'left'`.  | `number \| string` | `256` |
 | `[nzHeight]` | Height of the Drawer dialog, only when placement is `'top'` or `'bottom'`.  | `number \| string` | `256` |
