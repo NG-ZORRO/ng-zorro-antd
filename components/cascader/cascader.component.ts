@@ -352,7 +352,7 @@ export class NzCascaderComponent implements NzCascaderComponentAsSource, OnInit,
         this.nzSelectionChange.emit([]);
       } else {
         const { option, index } = data;
-        const shouldClose = option.isLeaf;
+        const shouldClose = option.isLeaf || this.nzChangeOnSelect;
         if (shouldClose) {
           this.delaySetMenuVisible(false);
         }
