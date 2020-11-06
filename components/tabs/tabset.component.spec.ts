@@ -238,14 +238,27 @@ describe('NzTabSet', () => {
       expect(tabSetElement.classList).toContain('ant-tabs-editable-card');
     });
 
-    it('should set the correct tabBarGutter', () => {
+    it('should set the correct tabBarGutterxxx', () => {
+      fixture.detectChanges();
+
       const component = fixture.debugElement.componentInstance;
-      const tabsBtn = fixture.debugElement.queryAll(By.css('.ant-tabs-tab-btn'))!;
+      const tabsButtons = fixture.nativeElement.querySelectorAll('.ant-tabs-tab')! as HTMLElement[];
       component.tabBarGutter = 10;
       fixture.detectChanges();
 
-      tabsBtn.forEach(tab => {
-        expect(tab.nativeElement!.style.marginRight).toBe('10px');
+      expect(tabsButtons.length).toBe(3);
+
+      tabsButtons.forEach(tab => {
+        expect(tab.style.marginRight).toBe('10px');
+        expect(tab.style.marginBottom).toBe('');
+      });
+
+      component.position = 'left';
+      fixture.detectChanges();
+
+      tabsButtons.forEach(tab => {
+        expect(tab.style.marginRight).toBe('');
+        expect(tab.style.marginBottom).toBe('10px');
       });
     });
 
