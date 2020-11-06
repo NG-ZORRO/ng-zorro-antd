@@ -92,7 +92,6 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       (animationEnd)="updateCdkConnectedOverlayPositions()"
       (deleteItem)="onItemDelete($event)"
       (keydown)="onKeyDown($event)"
-      (openChange)="setOpenState($event)"
     ></nz-select-top-control>
     <nz-select-clear
       *ngIf="nzAllowClear && !nzDisabled && listOfValue.length"
@@ -104,7 +103,6 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
       [loading]="nzLoading"
       [search]="nzOpen && nzShowSearch"
       [suffixIcon]="nzSuffixIcon"
-      (click)="setOpenState(!nzOpen)"
     ></nz-select-arrow>
     <ng-template
       cdkConnectedOverlay
@@ -156,7 +154,8 @@ export type NzSelectSizeType = 'large' | 'default' | 'small';
     '[class.ant-select-open]': 'nzOpen',
     '[class.ant-select-focused]': 'nzOpen || focused',
     '[class.ant-select-single]': `nzMode === 'default'`,
-    '[class.ant-select-multiple]': `nzMode !== 'default'`
+    '[class.ant-select-multiple]': `nzMode !== 'default'`,
+    '(click)': 'onHostClick()'
   }
 })
 export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnDestroy, AfterContentInit, OnChanges {
@@ -279,6 +278,14 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     const listOfSelectedValue = this.listOfValue.filter(v => !this.compareWith(v, item.nzValue));
     this.updateListOfValue(listOfSelectedValue);
     this.clearInput();
+  }
+
+  onHostClick(): void {
+    if ((this.nzOpen && this.nzShowSearch) || this.nzDisabled) {
+      return;
+    }
+
+    this.setOpenState(!this.nzOpen);
   }
 
   updateListOfContainerItem(): void {
