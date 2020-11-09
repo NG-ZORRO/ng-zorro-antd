@@ -14,6 +14,19 @@ timeline: true
 
 ---
 
+## 10.1.1
+
+`2020-11-09`
+
+### Bug Fixes
+
+* **breadcrumb:** 修复最后一项的样式 ([#5994](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5994)) ([50f0744](https://github.com/NG-ZORRO/ng-zorro-antd/commit/50f0744)), closes [#5942](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5942)
+* **cascader:** 修复菜单关闭行为 ([#6023](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6023)) ([22aea7e](https://github.com/NG-ZORRO/ng-zorro-antd/commit/22aea7e)), closes [#6022](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6022)
+* **cascader:** 修复搜索框样式 ([#6030](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6030)) ([9c4424f](https://github.com/NG-ZORRO/ng-zorro-antd/commit/9c4424f)), closes [#6020](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6020)
+* **select:** 修复被禁用时可以打开下拉框的问题 ([#6008](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6008)) ([79c52ea](https://github.com/NG-ZORRO/ng-zorro-antd/commit/79c52ea)), closes [#6005](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6005) [#6007](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6007)
+* **tabs:** 修复垂直模式下 `nzTabBarGutter` 不生效的问题 ([#5998](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5998)) ([516bf97](https://github.com/NG-ZORRO/ng-zorro-antd/commit/516bf97)), closes [#5396](https://github.com/NG-ZORRO/ng-zorro-antd/issues/5396)
+* **tabs:** 修复 ink-bar 在某些情况下显示不正确的问题 ([#6016](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6016)) ([8af418b](https://github.com/NG-ZORRO/ng-zorro-antd/commit/8af418b)), closes [#6009](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6009) [#4802](https://github.com/NG-ZORRO/ng-zorro-antd/issues/4802) [#3999](https://github.com/NG-ZORRO/ng-zorro-antd/issues/3999)
+
 ## 10.1.0
 
 `2020-10-30`
