@@ -99,8 +99,8 @@ const defaultDisplayRender = (labels: string[]) => labels.join(' / ');
         <i *ngIf="isLoading" nz-icon nzType="loading" class="ant-cascader-picker-arrow"></i>
         <span
           class="ant-cascader-picker-label"
-          [class.ant-cascader-show-search]="!!nzShowSearch"
-          [class.ant-focusd]="!!nzShowSearch && isFocused && !inputValue"
+          [class.ant-cascader-picker-show-search]="!!nzShowSearch"
+          [class.ant-cascader-picker-focused]="!!nzShowSearch && isFocused && !inputValue"
         >
           <ng-container *ngIf="!isLabelRenderTemplate; else labelTemplate">{{ labelRenderText }}</ng-container>
           <ng-template #labelTemplate>
