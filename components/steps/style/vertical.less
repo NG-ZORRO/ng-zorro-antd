@@ -1,4 +1,4 @@
-.steps-vertical() {
+.@{steps-prefix-cls}-vertical {
   display: flex;
   flex-direction: column;
   .@{steps-prefix-cls}-item {
@@ -65,15 +65,5 @@
     .@{steps-prefix-cls}-item-title {
       line-height: @steps-small-icon-size;
     }
-  }
-}
-
-.@{steps-prefix-cls}-vertical {
-  .steps-vertical;
-}
-
-@media (max-width: @screen-xs) {
-  .@{steps-prefix-cls}-horizontal.@{steps-prefix-cls}-label-horizontal {
-    .steps-vertical;
   }
 }
