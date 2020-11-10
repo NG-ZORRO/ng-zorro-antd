@@ -40,20 +40,16 @@ export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
   }
   _disabled = false;
   disabled$ = new Subject<boolean>();
-  dir: Direction;
+  dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
 
   constructor(
     @Optional() @Self() public ngControl: NgControl,
     renderer: Renderer2,
     elementRef: ElementRef,
-    directionality: Directionality
+    @Optional() private directionality: Directionality
   ) {
     renderer.addClass(elementRef.nativeElement, 'ant-input');
-    this.dir = directionality.value;
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-    });
   }
 
   ngOnInit(): void {
@@ -67,6 +63,11 @@ export class NzInputDirective implements OnChanges, OnInit, OnDestroy {
           this.disabled$.next(this.ngControl.disabled!);
         });
     }
+
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

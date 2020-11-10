@@ -205,7 +205,7 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
   @ViewChild(CdkVirtualScrollViewport, { read: CdkVirtualScrollViewport }) cdkVirtualScrollViewport!: CdkVirtualScrollViewport;
   nzFlattenNodes: NzTreeNode[] = [];
   beforeInit = true;
-  dir: Direction;
+  dir: Direction = 'ltr';
 
   @Output() readonly nzExpandedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
   @Output() readonly nzSelectedKeysChange: EventEmitter<string[]> = new EventEmitter<string[]>();
@@ -440,22 +440,22 @@ export class NzTreeComponent extends NzTreeBase implements OnInit, OnDestroy, Co
     nzTreeService: NzTreeBaseService,
     public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
-    directionality: Directionality,
+    @Optional() private directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
   ) {
     super(nzTreeService);
-
-    this.dir = directionality.value;
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      cdr.detectChanges();
-    });
   }
 
   ngOnInit(): void {
     this.nzTreeService.flattenNodes$.pipe(takeUntil(this.destroy$)).subscribe(data => {
       this.nzFlattenNodes = data;
       this.cdr.markForCheck();
+    });
+
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
     });
   }
 

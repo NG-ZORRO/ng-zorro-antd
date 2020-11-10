@@ -9,6 +9,8 @@ import {
   Component,
   ElementRef,
   Input,
+  OnInit,
+  Optional,
   Renderer2,
   TemplateRef,
   ViewEncapsulation
@@ -41,21 +43,27 @@ import { Directionality, Direction } from '@angular/cdk/bidi';
     '[class.ant-cascader-menu-item-disabled]': 'option.disabled'
   }
 })
-export class NzCascaderOptionComponent {
+export class NzCascaderOptionComponent implements OnInit {
   @Input() optionTemplate: TemplateRef<NzCascaderOption> | null = null;
   @Input() option!: NzCascaderOption;
   @Input() activated = false;
   @Input() highlightText!: string;
   @Input() nzLabelProperty = 'label';
   @Input() columnIndex!: number;
-  dir: Direction;
+  dir: Direction = 'ltr';
 
-  constructor(private cdr: ChangeDetectorRef, elementRef: ElementRef, renderer: Renderer2, directionality: Directionality) {
+  constructor(
+    private cdr: ChangeDetectorRef,
+    elementRef: ElementRef,
+    renderer: Renderer2,
+    @Optional() private directionality: Directionality
+  ) {
     renderer.addClass(elementRef.nativeElement, 'ant-cascader-menu-item');
-
-    this.dir = directionality.value;
-    directionality.change.subscribe(() => {
-      this.dir = directionality.value;
+  }
+  ngOnInit(): void {
+    this.dir = this.directionality.value;
+    this.directionality.change.subscribe((direction: Direction) => {
+      this.dir = direction;
     });
   }
 

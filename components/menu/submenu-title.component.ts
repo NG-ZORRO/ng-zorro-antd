@@ -11,6 +11,8 @@ import {
   EventEmitter,
   Input,
   OnDestroy,
+  OnInit,
+  Optional,
   Output,
   TemplateRef,
   ViewEncapsulation
@@ -48,7 +50,7 @@ import { NzMenuModeType } from './menu.types';
     '(mouseleave)': 'setMouseState(false)'
   }
 })
-export class NzSubMenuTitleComponent implements OnDestroy {
+export class NzSubMenuTitleComponent implements OnDestroy, OnInit {
   @Input() nzIcon: string | null = null;
   @Input() nzTitle: string | TemplateRef<void> | null = null;
   @Input() isMenuInsideDropDown = false;
@@ -58,14 +60,15 @@ export class NzSubMenuTitleComponent implements OnDestroy {
   @Output() readonly toggleSubMenu = new EventEmitter();
   @Output() readonly subMenuMouseState = new EventEmitter<boolean>();
 
-  dir: Direction;
+  dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
 
-  constructor(cdr: ChangeDetectorRef, directionality: Directionality) {
-    this.dir = directionality.value;
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      cdr.detectChanges();
+  constructor(private cdr: ChangeDetectorRef, @Optional() private directionality: Directionality) {}
+  ngOnInit(): void {
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
     });
   }
 

@@ -242,7 +242,7 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   // All the direct tabs for this tab set
   tabs: QueryList<NzTabComponent> = new QueryList<NzTabComponent>();
 
-  dir: Direction;
+  dir: Direction = 'ltr';
   private readonly tabSetId!: number;
   private destroy$ = new Subject<void>();
   private indexToSelect: number | null = 0;
@@ -254,16 +254,10 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
   constructor(
     public nzConfigService: NzConfigService,
     private cdr: ChangeDetectorRef,
-    directionality: Directionality,
+    @Optional() private directionality: Directionality,
     @Optional() private router: Router
   ) {
     this.tabSetId = nextId++;
-
-    this.dir = directionality.value;
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      this.cdr.detectChanges();
-    });
   }
 
   ngOnInit(): void {
@@ -273,6 +267,12 @@ export class NzTabSetComponent implements OnInit, AfterContentChecked, OnDestroy
     if (this.nzOnPrevClick.observers.length) {
       warnDeprecation(`(nzOnPrevClick) of nz-tabset is not support, will be removed in 11.0.0`);
     }
+
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
   }
 
   ngOnDestroy(): void {

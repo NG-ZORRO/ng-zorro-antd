@@ -58,7 +58,7 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
 
   readonly actualGutter$ = new ReplaySubject<[number | null, number | null]>(1);
 
-  dir: Direction;
+  dir: Direction = 'ltr';
   private readonly destroy$ = new Subject();
 
   getGutter(): [number | null, number | null] {
@@ -102,16 +102,16 @@ export class NzRowDirective implements OnInit, OnChanges, AfterViewInit, OnDestr
     public ngZone: NgZone,
     public platform: Platform,
     private breakpointService: NzBreakpointService,
-    @Optional() directionality: Directionality
-  ) {
-    this.dir = directionality.value;
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-    });
-  }
+    @Optional() private directionality: Directionality
+  ) {}
 
   ngOnInit(): void {
     this.setGutterStyle();
+
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

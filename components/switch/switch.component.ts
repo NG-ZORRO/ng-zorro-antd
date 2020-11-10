@@ -95,7 +95,7 @@ export class NzSwitchComponent implements ControlValueAccessor, AfterViewInit, O
   @Input() nzUnCheckedChildren: string | TemplateRef<void> | null = null;
   @Input() @WithConfig() nzSize: NzSizeDSType = 'default';
 
-  dir: Direction;
+  dir: Direction = 'ltr';
 
   private destroy$ = new Subject<void>();
 

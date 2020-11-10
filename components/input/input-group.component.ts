@@ -16,6 +16,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   QueryList,
   SimpleChanges,
   TemplateRef,
@@ -124,20 +125,15 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
   isAddOn = false;
   focused = false;
   disabled = false;
-  dir: Direction;
+  dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
 
   constructor(
     private focusMonitor: FocusMonitor,
     private elementRef: ElementRef,
     private cdr: ChangeDetectorRef,
-    directionality: Directionality
-  ) {
-    this.dir = directionality.value;
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-    });
-  }
+    @Optional() private directionality: Directionality
+  ) {}
 
   updateChildrenInputSize(): void {
     if (this.listOfNzInputDirective) {
@@ -153,6 +149,11 @@ export class NzInputGroupComponent implements AfterContentInit, OnChanges, OnIni
         this.focused = !!focusOrigin;
         this.cdr.markForCheck();
       });
+
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+    });
   }
 
   ngAfterContentInit(): void {

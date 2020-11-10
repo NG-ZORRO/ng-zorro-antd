@@ -12,6 +12,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   SimpleChanges,
   TemplateRef,
@@ -73,15 +74,10 @@ export class NzSubmenuNoneInlineChildComponent implements OnDestroy, OnInit, OnC
     }
   }
   expandState = 'collapsed';
-  dir: Direction;
+  dir: Direction = 'ltr';
   private destroy$ = new Subject<void>();
 
-  constructor(directionality: Directionality) {
-    this.dir = directionality.value;
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-    });
-  }
+  constructor(@Optional() private directionality: Directionality) {}
 
   ngOnDestroy(): void {
     this.destroy$.next();
@@ -100,6 +96,11 @@ export class NzSubmenuNoneInlineChildComponent implements OnDestroy, OnInit, OnC
   }
   ngOnInit(): void {
     this.calcMotionState();
+
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+    });
   }
   ngOnChanges(changes: SimpleChanges): void {
     const { mode, nzOpen } = changes;

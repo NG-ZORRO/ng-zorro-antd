@@ -245,7 +245,7 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
   activatedValue: NzSafeAny | null = null;
   listOfValue: NzSafeAny[] = [];
   focused = false;
-  dir: Direction;
+  dir: Direction = 'ltr';
 
   generateTagItem(value: string): NzSelectItemInterface {
     return {
@@ -479,16 +479,9 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
     private elementRef: ElementRef,
     private platform: Platform,
     private focusMonitor: FocusMonitor,
-    @Optional() directionality: Directionality,
+    @Optional() private directionality: Directionality,
     @Host() @Optional() public noAnimation?: NzNoAnimationDirective
-  ) {
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      cdr.detectChanges();
-    });
-
-    this.dir = directionality.value;
-  }
+  ) {}
 
   writeValue(modelValue: NzSafeAny | NzSafeAny[]): void {
     /** https://github.com/angular/angular/issues/14988 **/
@@ -585,6 +578,13 @@ export class NzSelectComponent implements ControlValueAccessor, OnInit, AfterVie
           .filter(item => !!item);
         this.updateListOfContainerItem();
       });
+
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
   }
 
   ngAfterViewInit(): void {

@@ -187,7 +187,7 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
   private destroy$ = new Subject<void>();
   private loading$ = new BehaviorSubject<boolean>(false);
   private templateMode$ = new BehaviorSubject<boolean>(false);
-  dir: Direction;
+  dir: Direction = 'ltr';
   @ContentChild(NzTableVirtualScrollDirective, { static: false })
   nzVirtualScrollDirective!: NzTableVirtualScrollDirective;
   @ViewChild(NzTableInnerScrollComponent) nzTableInnerScrollComponent!: NzTableInnerScrollComponent;
@@ -207,7 +207,7 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
     private cdr: ChangeDetectorRef,
     private nzTableStyleService: NzTableStyleService,
     private nzTableDataService: NzTableDataService,
-    @Optional() directionality: Directionality
+    @Optional() private directionality: Directionality
   ) {
     this.nzConfigService
       .getConfigChangeEventForComponent(NZ_CONFIG_MODULE_NAME)
@@ -215,16 +215,18 @@ export class NzTableComponent<T = NzSafeAny> implements OnInit, OnDestroy, OnCha
       .subscribe(() => {
         this.cdr.markForCheck();
       });
-    this.dir = directionality.value;
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      cdr.detectChanges();
-    });
   }
 
   ngOnInit(): void {
     const { pageIndexDistinct$, pageSizeDistinct$, listOfCurrentPageData$, total$, queryParams$ } = this.nzTableDataService;
     const { theadTemplate$, hasFixLeft$, hasFixRight$ } = this.nzTableStyleService;
+
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
     queryParams$.pipe(takeUntil(this.destroy$)).subscribe(this.nzQueryParams);
     pageIndexDistinct$.pipe(takeUntil(this.destroy$)).subscribe(pageIndex => {
       if (pageIndex !== this.nzPageIndex) {

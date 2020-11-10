@@ -144,7 +144,7 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
   isEllipsis: boolean = true;
   expanded: boolean = false;
   ellipsisStr = '...';
-  dir: Direction;
+  dir: Direction = 'ltr';
 
   get hasEllipsisObservers(): boolean {
     return this.nzOnEllipsis.observers.length > 0;
@@ -172,14 +172,8 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
     private i18n: NzI18nService,
     @Inject(DOCUMENT) document: NzSafeAny,
     private resizeService: NzResizeService,
-    @Optional() directionality: Directionality
+    @Optional() private directionality: Directionality
   ) {
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
-      cdr.detectChanges();
-    });
-
-    this.dir = directionality.value;
     this.document = document;
   }
 
@@ -315,6 +309,13 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
       this.locale = this.i18n.getLocaleData('Text');
       this.cdr.markForCheck();
     });
+
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
+      this.cdr.detectChanges();
+    });
+
+    this.dir = this.directionality.value;
   }
 
   ngAfterViewInit(): void {

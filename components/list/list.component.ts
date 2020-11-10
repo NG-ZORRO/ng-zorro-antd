@@ -12,6 +12,8 @@ import {
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
+  Optional,
   SimpleChanges,
   TemplateRef,
   ViewEncapsulation
@@ -92,7 +94,7 @@ import { NzListFooterComponent, NzListLoadMoreDirective, NzListPaginationCompone
     '[class.ant-list-something-after-last-item]': 'hasSomethingAfterLastItem'
   }
 })
-export class NzListComponent implements AfterContentInit, OnChanges, OnDestroy {
+export class NzListComponent implements AfterContentInit, OnChanges, OnDestroy, OnInit {
   static ngAcceptInputType_nzBordered: BooleanInput;
   static ngAcceptInputType_nzLoading: BooleanInput;
   static ngAcceptInputType_nzSplit: BooleanInput;
@@ -117,7 +119,7 @@ export class NzListComponent implements AfterContentInit, OnChanges, OnDestroy {
   @ContentChild(NzListLoadMoreDirective) nzListLoadMoreDirective!: NzListLoadMoreDirective;
 
   hasSomethingAfterLastItem = false;
-  dir: Direction;
+  dir: Direction = 'ltr';
   private itemLayoutNotifySource = new BehaviorSubject<NzDirectionVHType>(this.nzItemLayout);
   private destroy$ = new Subject<void>();
 
@@ -125,10 +127,11 @@ export class NzListComponent implements AfterContentInit, OnChanges, OnDestroy {
     return this.itemLayoutNotifySource.asObservable();
   }
 
-  constructor(directionality: Directionality) {
-    this.dir = directionality.value;
-    directionality.change?.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      this.dir = directionality.value;
+  constructor(@Optional() private directionality: Directionality) {}
+  ngOnInit(): void {
+    this.dir = this.directionality.value;
+    this.directionality.change?.pipe(takeUntil(this.destroy$)).subscribe((direction: Direction) => {
+      this.dir = direction;
     });
   }
 
