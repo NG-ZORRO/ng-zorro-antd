@@ -35,6 +35,7 @@ export interface NzConfig {
   modal?: ModalConfig;
   notification?: NotificationConfig;
   pageHeader?: PageHeaderConfig;
+  pagination?: PaginationConfig;
   progress?: ProgressConfig;
   rate?: RateConfig;
   space?: SpaceConfig;
@@ -185,6 +186,14 @@ export interface NotificationConfig extends MessageConfig {
 
 export interface PageHeaderConfig {
   nzGhost: boolean;
+}
+
+export interface PaginationConfig {
+  nzSize?: 'default' | 'small';
+  nzPageSizeOptions?: number[];
+  nzShowSizeChanger?: boolean;
+  nzShowQuickJumper?: boolean;
+  nzSimple?: boolean;
 }
 
 export interface ProgressConfig {

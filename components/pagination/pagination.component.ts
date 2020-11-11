@@ -17,6 +17,7 @@ import {
   TemplateRef,
   ViewEncapsulation
 } from '@angular/core';
+import { NzConfigKey, NzConfigService, WithConfig } from 'ng-zorro-antd/core/config';
 import { gridResponsiveMap, NzBreakpointEnum, NzBreakpointService } from 'ng-zorro-antd/core/services';
 import { BooleanInput, NumberInput } from 'ng-zorro-antd/core/types';
 import { InputBoolean, InputNumber } from 'ng-zorro-antd/core/util';
@@ -25,6 +26,8 @@ import { ReplaySubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { PaginationItemRenderContext } from './pagination.types';
+
+const NZ_CONFIG_MODULE_NAME: NzConfigKey = 'pagination';
 
 @Component({
   selector: 'nz-pagination',
@@ -73,6 +76,8 @@ import { PaginationItemRenderContext } from './pagination.types';
   }
 })
 export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
+  readonly _nzModuleName: NzConfigKey = NZ_CONFIG_MODULE_NAME;
+
   static ngAcceptInputType_nzDisabled: BooleanInput;
   static ngAcceptInputType_nzShowSizeChanger: BooleanInput;
   static ngAcceptInputType_nzHideOnSinglePage: BooleanInput;
@@ -86,15 +91,15 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
   @Output() readonly nzPageSizeChange: EventEmitter<number> = new EventEmitter();
   @Output() readonly nzPageIndexChange: EventEmitter<number> = new EventEmitter();
   @Input() nzShowTotal: TemplateRef<{ $implicit: number; range: [number, number] }> | null = null;
-  @Input() nzSize: 'default' | 'small' = 'default';
-  @Input() nzPageSizeOptions = [10, 20, 30, 40];
   @Input() nzItemRender: TemplateRef<PaginationItemRenderContext> | null = null;
+  @Input() @WithConfig() nzSize: 'default' | 'small' = 'default';
+  @Input() @WithConfig() nzPageSizeOptions: number[] = [10, 20, 30, 40];
+  @Input() @WithConfig() @InputBoolean() nzShowSizeChanger = false;
+  @Input() @WithConfig() @InputBoolean() nzShowQuickJumper = false;
+  @Input() @WithConfig() @InputBoolean() nzSimple = false;
   @Input() @InputBoolean() nzDisabled = false;
-  @Input() @InputBoolean() nzShowSizeChanger = false;
-  @Input() @InputBoolean() nzHideOnSinglePage = false;
-  @Input() @InputBoolean() nzShowQuickJumper = false;
-  @Input() @InputBoolean() nzSimple = false;
   @Input() @InputBoolean() nzResponsive = false;
+  @Input() @InputBoolean() nzHideOnSinglePage = false;
   @Input() @InputNumber() nzTotal = 0;
   @Input() @InputNumber() nzPageIndex = 1;
   @Input() @InputNumber() nzPageSize = 10;
@@ -145,7 +150,12 @@ export class NzPaginationComponent implements OnInit, OnDestroy, OnChanges {
     return Math.ceil(total / pageSize);
   }
 
-  constructor(private i18n: NzI18nService, private cdr: ChangeDetectorRef, private breakpointService: NzBreakpointService) {}
+  constructor(
+    private i18n: NzI18nService,
+    private cdr: ChangeDetectorRef,
+    private breakpointService: NzBreakpointService,
+    protected nzConfigService: NzConfigService
+  ) {}
 
   ngOnInit(): void {
     this.i18n.localeChange.pipe(takeUntil(this.destroy$)).subscribe(() => {
