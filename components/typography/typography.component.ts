@@ -60,7 +60,10 @@ const EXPAND_ELEMENT_CLASSNAME = 'ant-typography-expand';
     <ng-container *ngIf="!editing">
       <ng-container
         *ngIf="
-          expanded || (!nzExpandable && nzEllipsisRows === 1 && !hasEllipsisObservers) || canCssEllipsis || (nzSuffix && expanded);
+          expanded ||
+            (!hasOperationsWithEllipsis && nzEllipsisRows === 1 && !hasEllipsisObservers) ||
+            canCssEllipsis ||
+            (nzSuffix && expanded);
           else jsEllipsis
         "
       >
@@ -161,6 +164,10 @@ export class NzTypographyComponent implements OnInit, AfterViewInit, OnDestroy, 
 
   get canCssEllipsis(): boolean {
     return this.nzEllipsis && this.cssEllipsis && !this.expanded && !this.hasEllipsisObservers;
+  }
+
+  get hasOperationsWithEllipsis(): boolean {
+    return (this.nzCopyable || this.nzEditable || this.nzExpandable) && this.nzEllipsis;
   }
 
   private viewInit = false;
