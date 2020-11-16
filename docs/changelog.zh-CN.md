@@ -14,6 +14,18 @@ timeline: true
 
 ---
 
+## 10.1.2
+
+`2020-11-16`
+
+### Bug Fixes
+
+* **i18n:** 导出缺少的语言 ([#6061](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6061)) ([6543a80](https://github.com/NG-ZORRO/ng-zorro-antd/commit/6543a80))
+* **cascader:** 修复 nzChangeOnSelect 的问题 ([#6049](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6049)) ([1575bae](https://github.com/NG-ZORRO/ng-zorro-antd/commit/1575bae)), closes [#6048](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6048)
+* **code-editor:** 记录光标位置及所选区域 ([#6044](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6044)) ([84f520d](https://github.com/NG-ZORRO/ng-zorro-antd/commit/84f520d)), closes [#6038](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6038)
+* **typography:** 修复省略号在可拷贝情况下的问题 ([#6058](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6058)) ([858fff9](https://github.com/NG-ZORRO/ng-zorro-antd/commit/858fff9)), closes [#6057](https://github.com/NG-ZORRO/ng-zorro-antd/issues/6057)
+
+
 ## 10.1.1
 
 `2020-11-09`
