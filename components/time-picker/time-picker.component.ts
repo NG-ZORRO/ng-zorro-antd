@@ -134,7 +134,7 @@ export class NzTimePickerComponent implements ControlValueAccessor, OnInit, Afte
   preValue: Date | null = null;
   origin!: CdkOverlayOrigin;
   inputSize?: number;
-  i18nPlaceHolder$: Observable<string | undefined | null> = of(undefined);
+  i18nPlaceHolder$: Observable<string | undefined> = of(undefined);
   overlayPositions: ConnectionPositionPair[] = [
     {
       originX: 'start',
